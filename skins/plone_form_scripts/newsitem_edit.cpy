@@ -1,0 +1,23 @@
+## Controller Python Script "newsitem_edit"
+##bind container=container
+##bind context=context
+##bind namespace=
+##bind script=script
+##bind subpath=traverse_subpath
+##parameters=text, text_format, title='', description='', subject=None, id=''
+##title=Edit a news item
+##
+state = context.portal_form_controller.getState(script, is_validator=0)
+
+# if there is no id specified, keep the current one
+if not id:
+    id = context.getId()
+
+new_context = context.portal_factory.doCreate(context,id)
+new_context.edit( text, description, text_format )
+new_context.plone_utils.contentEdit( new_context
+                                   , id=id
+                                   , title=title
+                                   , description=description)
+
+return state.set(context=new_context, portal_status_message='News item changes saved.')

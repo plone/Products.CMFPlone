@@ -1,0 +1,144 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+<tal:block metal:fill-slot="head_slot">
+   <tal:block tal:define="dummy python:request.set('disable_border',1)" />
+</tal:block>
+
+<body>
+
+<div metal:fill-slot="main">
+
+    <metal:block tal:condition="not: request/ids | nothing">
+    <tal:block tal:replace="nothing"
+               tal:condition="not: request/ids | nothing"
+               tal:define="referer request/HTTP_REFERER;
+                           existing_message python:referer.find('portal_status_message');
+                           target_url python:test(existing_message!=-1, referer[:referer.find('?')], referer);
+                           dummy python:request.RESPONSE.redirect('%s?%s' % ( target_url
+                                                                            , 'portal_status_message=Please+select+one+or+more+items+to+rename.'))">
+        If someone goes to this form with selecting a object to rename
+        We wil redirect them back from where the came from saying they
+        need to select an item to rename.  This is very messy and should
+        be a PythonScript.
+    </tal:block>
+    </metal:block>
+
+    <h1 i18n:translate="heading_rename_item">Rename item</h1>
+
+    <p i18n:translate="description_rename_item">Each item has a Name and a Title, which you can change by entering the new details below.</p>
+
+    <form name="folder_rename"
+          action="folder_rename"
+          method="post"
+          tal:define="items request/ids|nothing; 
+                      errors options/state/getErrors;"
+          tal:attributes="action string:${here/getId}/${template/getId}"
+          tal:condition="items">
+
+        <input type="hidden" name="form.submitted" value="1" />
+
+        <div class="group"
+             tal:repeat="item items">
+
+            <tal:block tal:define="obj python:getattr(here, item)">
+
+            <span class="legend">
+            <span tal:replace="item" />
+            (<span tal:replace="obj/Title" />)
+            </span>
+
+            <div class="row"
+                 tal:define="error python:errors and errors.get(item, None)">
+
+                <div class="label" i18n:translate="label_new_name">
+                New Name
+                </div>
+
+                <div class="field" tal:attributes="class python:test(error, 'field error', 'field')">
+
+                    <div tal:condition="error">
+                        <tal:block i18n:translate="" content="error">Error</tal:block>
+                        <br />
+                    </div>
+
+                    <input type="hidden"
+                           name="ids:list"
+                           value="fav_999816073"
+                           tal:attributes="value item" />
+                    <input type="text"
+                           name="new_ids:list"
+                           value=""
+                           size="60"
+                           tabindex=""
+                           tal:attributes="value item;
+                                           tabindex tabindex/next;"
+                           />
+
+                </div>
+            </div>
+
+            <div class="row"
+                 tal:define="error python:errors and errors.get(item, None)">
+
+                <div class="label" i18n:translate="label_new_title">
+                New Title
+                </div>
+
+                <div class="field" tal:attributes="class python:test(error, 'field error', 'field')">
+
+                    <div tal:condition="error">
+                        <tal:block i18n:translate="" content="error">Error</tal:block>
+                        <br />
+                    </div>
+
+                    <input type="text"
+                           name="new_titles:list"
+                           value="title"
+                           size="60"
+                           tabindex=""
+                           tal:attributes="value obj/Title;
+                                           tabindex tabindex/next;" />
+                </div>
+
+            </div>
+
+        </tal:block>
+
+        </div>
+
+
+        <div class="row">
+
+            <div class="label">&nbsp;</div>
+
+            <div class="field">
+                <input class="context"
+                       type="submit"
+                       value="Rename All"
+                       name="form.button.RenameAll"
+                       tabindex=""
+                       i18n:attributes="value"
+                       tal:attributes="tabindex tabindex/next;"
+                       />
+                <input class="context"
+                       type="submit"
+                       value="Cancel"
+                       name="form.button.Cancel"
+                       tabindex=""
+                       i18n:attributes="value"
+                       tal:attributes="tabindex tabindex/next;"
+                       />
+            </div>
+
+        </div>
+
+    </form>
+
+
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,215 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
+      lang="en-US"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+<body>
+<div metal:fill-slot="main"
+     tal:define="errors options/state/getErrors;">
+
+    <h1 i18n:translate="heading_edit_item">
+    Edit
+        <span i18n:name="itemtype">
+              <span i18n:translate=""
+                    tal:content="python:here.getTypeInfo().Title()"
+                    tal:omit-tag="">Item type</span>
+        </span>
+    </h1>
+
+    <p i18n:translate="description_edit_link_item">
+    A link is a pointer to a location on the internet or intranet.
+    Enter the relevant details below, and press 'Save'.
+    </p>
+
+        <form class="group"
+              action=""
+              name="edit_form"
+              method="post"
+              tal:attributes="action string:${here/getId}/${template/getId}">
+
+        <span class="legend" i18n:translate="legend_link_details">Link Details</span>
+
+        <div class="row"
+             tal:condition="python:member.getProperty('visible_ids', None)"
+             tal:define="error_id errors/id | nothing;
+                         id python:request.get('id', test(here.show_id(),here.getId(),''));">
+
+            <div class="label">
+
+                <span i18n:translate="label_name">Name</span>
+
+                <div id="id_help"
+                     i18n:translate="help_name"
+                     class="help"
+                     style="visibility:hidden">
+                Enter the Name of the document. This is the part that will show up as part
+                of the web address. This should be short, descriptive
+                and preferrably not contain spaces, underscores or mixed case. Example:
+                "expense-report-2002"
+                </div>
+            </div>
+
+            <div class="field"
+                  tal:attributes="class python:test(error_id, 'field error', 'field')" >
+
+                <div tal:condition="error_id">
+                    <tal:block i18n:translate="" content="error_id">Error</tal:block>
+                    <br />
+                </div>
+
+                <input type="text"
+                       name="id"
+                       value="#"
+                       size="30"
+                       tabindex=""
+                       onfocus="formtooltip('id_help',1)"
+                       onblur="formtooltip('id_help',0)"
+                       tal:attributes="value id;
+                                       tabindex tabindex/next;"
+                       />
+
+            </div>
+
+        </div>
+
+        <input type="hidden"
+               name="id"
+               tal:condition="python:not member.getProperty('visible_ids', None)"
+               tal:attributes="value python:request.get('id', here.getId())"
+               />
+
+        <div class="row"
+             tal:define="error_title errors/title|nothing;
+                         Title request/title | here/Title | nothing;">
+            <div class="label required">
+                <span i18n:translate="label_title">Title</span>
+
+                <div id="title_help"
+                     i18n:translate="help_title"
+                     class="help"
+                     style="visibility:hidden">
+                Enter the title of the document.
+                </div>
+            </div>
+
+            <div class="field"
+                  tal:attributes="class python:test(error_title, 'field error', 'field')" >
+
+                <div tal:condition="error_title">
+                    <tal:block i18n:translate="" content="error_title">Error</tal:block>
+                    <br />
+                </div>
+
+                <input type="text"
+                       name="title"
+                       value="#"
+                       size="30"
+                       tabindex=""
+                       onfocus="formtooltip('title_help',1)"
+                       onblur="formtooltip('title_help',0)"
+                       tal:attributes="value Title;
+                                       tabindex tabindex/next;"
+                       />
+
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="label">
+                <span i18n:translate="label_description">Description</span>
+
+                <div id="description_help"
+                     i18n:translate="help_description"
+                     class="help"
+                     style="visibility:hidden">
+                Enter a brief description of the document.
+                </div>
+            </div>
+            <div class="field" tal:define="description request/description | here/Description | nothing">
+                <textarea cols="40"
+                          rows="5"
+                          tabindex=""
+                          name="description"
+                          tal:content="description"
+                          onfocus="formtooltip('description_help',1)"
+                          onblur="formtooltip('description_help',0)"
+                          tal:attributes="tabindex tabindex/next;">
+                Description
+                </textarea>
+            </div>
+        </div>
+
+        <div class="row"
+             tal:define="error_remote_url errors/remote_url | nothing;
+                         remote_url request/remote_url | here/remote_url | nothing;">
+
+            <div class="label required">
+                <span i18n:translate="label_url">URL</span>
+                <div id="url_help"
+                     i18n:translate="help_url"
+                     class="help"
+                     style="visibility:hidden">
+                The address of the location. Prefix is optional; if not
+                provided, the link will be relative.
+                </div>
+            </div>
+
+            <div tal:attributes="class python:test(error_remote_url, 'field error', 'field')" >
+
+                <div tal:condition="error_remote_url">
+                    <tal:block i18n:translate="" content="error_remote_url">Error</tal:block>
+                    <br />
+                </div>
+
+                <input type="text"
+                       id="uri"
+                       name="remote_url"
+                       size="30"
+                       value="#"
+                       tabindex=""
+                       onfocus="formtooltip('url_help',1)"
+                       onblur="formtooltip('url_help',0)"
+                       tal:attributes="value remote_url;
+                                       tabindex tabindex/next;"
+                       />
+
+                 <span tal:condition="exists:here/link_tree"
+                       tal:define="start_url string:${here/portal_url}/link_tree">
+                     <a href="" onclick="javascript:window.open('url','title', 'width=200,height=200,menubar=no,toolbar=no,scrollbars=no,resizable=yes').focus();return true;"
+                        tal:attributes="href start_url;
+                                        onclick string:window.open('$start_url','Link','width=200,height=200,resizable=yes').focus();; return false;;">
+                     <img src=""
+                          alt=""
+                          title="Link to internal resource"
+                          tal:attributes="src string: ${portal_url}/sitemap_icon.gif" />
+                     </a>
+                 </span>
+
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="label">&nbsp;</div>
+            <div class="field">
+                <input class="context"
+                       tabindex=""
+                       type="submit"
+                       name="form.button.Save"
+                       value="Save"
+                       i18n:attributes="value"
+                       tal:attributes="tabindex tabindex/next;"
+                       />
+                 <input class="context" 
+                           tabindex=""
+                           type="submit" 
+                           name="form.button.Cancel" 
+                           value="Cancel" 
+                           i18n:attributes="value"
+                           tal:attributes="tabindex tabindex/next;" /> 
+            </div>
+        </div>
+        <input type="hidden" name="form.submitted" value="1" />
+    </form>
+</div>
+</body>
+</html>

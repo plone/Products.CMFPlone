@@ -1,0 +1,9 @@
+[default]
+title=Register a User
+
+[validators]
+validators = validate_registration
+ 
+[actions]
+action.failure=traverse_to:string:join_form
+action.success=traverse_to:string:registered

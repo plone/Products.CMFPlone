@@ -1,0 +1,9 @@
+[default]
+title=Rename items
+
+[validators]
+validators=validate_folder_rename
+ 
+[actions]
+action.success=traverse_to:string:folder_contents
+action.success.Topic=redirect_to_action:subtopics

@@ -1,0 +1,11 @@
+[default]
+title=Preference settings
+
+[validators]
+validators..Save=validate_personalize
+validators..Cancel=
+
+[actions]
+action.success..Save=traverse_to:string:personalize
+action.success..Cancel=redirect_to:string:personalize_form
+action.failure=traverse_to:string:personalize_form

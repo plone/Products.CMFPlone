@@ -1,0 +1,11 @@
+[default]
+title=Edit Image
+
+[validators]
+validators..Change=validate_id, validate_image_edit
+validators..Cancel=
+
+[actions]
+action.success..Change=traverse_to:string:image_edit
+action.success..Cancel=redirect_to_action:string:view
+action.failure=traverse_to:string:image_edit_form

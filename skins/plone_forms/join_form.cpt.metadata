@@ -1,0 +1,9 @@
+[default]
+title=Please sign in
+
+[validators]
+validators..Register = validate_registration
+
+[actions]
+action.success..Register = traverse_to:string:register
+action.failure = traverse_to:string:join_form

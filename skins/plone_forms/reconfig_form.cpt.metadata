@@ -1,0 +1,14 @@
+[default]
+title=Plone setup
+
+[security]
+View=0:Authenticated
+
+[validators]
+validators..Save=validate_reconfig
+validators..Cancel=
+
+[actions]
+action.success..Save=traverse_to:string:reconfig
+action.success..Cancel=redirect_to:string:reconfig_form
+action.failure=traverse_to:string:reconfig_form

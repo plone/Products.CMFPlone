@@ -1,0 +1,255 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
+      lang="en-US"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+<body>
+
+<div metal:fill-slot="main"
+     tal:define="errors options/state/getErrors;
+                 syndicateInfo here/syndication_information | nothing">
+
+    <h1 i18n:translate="heading_syndication_properties">Syndication Properties</h1>
+
+    <p i18n:translate="description_syndication_properties">
+    Syndication enables you to syndicate this folder so it can
+    be synchronized from other web sites.
+    </p>
+
+
+    <form action="disableSyndication"
+          tal:attributes="action string:${here/getId}/${template/getId}"
+          name="disable"
+          method="post"
+          tal:condition="syndicateInfo">
+
+        <input type="hidden" name="isAllowed:int" value="0" />
+
+        <input class="standalone"
+               type="submit"
+               value="Disable Syndication"
+               tabindex=""
+               name="form.button.disableSyndication"
+               i18n:attributes="value"
+               tal:attributes="tabindex tabindex/next;"
+               />
+
+        <span tal:replace="nothing">
+        ##### HIDDEN VARIABLES FOR THE FORM_TOOL -- CUT AND PASTE THESE INTO YOUR FORM ####
+        </span>
+        <input type="hidden" name="form.submitted" value="1" />
+
+    </form>
+
+    <form action="enableSyndication"
+          tal:attributes="action string:${here/getId}/${template/getId}"
+          name="enable"
+          method="post"
+          tal:condition="python:not syndicateInfo">
+
+        <input type="hidden" name="isAllowed:int" value="1" />
+
+        <input class="standalone"
+               type="submit"
+               value="Enable syndication"
+               tabindex=""
+               i18n:attributes="value"
+               name="form.button.enableSyndication"
+               tal:attributes="tabindex tabindex/next;"
+               />
+
+        <span tal:replace="nothing">
+        ##### HIDDEN VARIABLES FOR THE FORM_TOOL -- CUT AND PASTE THESE INTO YOUR FORM ####
+        </span>
+        <input type="hidden" name="form.submitted" value="1" />
+
+    </form>
+
+
+    <tal:block condition="python:container.portal_syndication.isSyndicationAllowed(here)">
+    <form id="edit_form"
+          class="group"
+          action="editSynProperties"
+          tal:attributes="action string:${here/getId}/${template/getId}"
+          name="syndication"
+          method="post">
+
+            <div class="group">
+                <span class="legend" i18n:translate="legend_syndication_channel_details">Channel Details</span>
+
+                <div class="row">
+                    <div class="label" i18n:translate="label_syndication_channel_title">Channel Title</div>
+                    <div class="info" tal:content="here/Title">title</div>
+                </div>
+
+                <div class="row">
+                    <div class="label" i18n:translate="label_syndication_channel_description">Channel Description</div>
+                    <div class="info" tal:content="here/Description">description</div>
+                </div>
+            </div>
+
+            <div class="group">
+              <span class="legend" i18n:translate="legend_syndication_details">Syndication Details</span>
+
+                <div class="row">
+                    <div class="label">
+                    <span i18n:translate="label_syndication_update_period">Update Period</span>
+                    <div id="update_period_help"
+                         i18n:translate="help_syndication_update_period"
+                         class="help"
+                         style="visibility:hidden">
+                    Controls how often the channel is updated.
+                    </div>
+                </div>
+
+                <div class="field">
+                    <select name="updatePeriod"
+                            tabindex=""
+                            onfocus="formtooltip('update_period_help',1)"
+                            onblur="formtooltip('update_period_help',0)"
+                            tal:attributes="tabindex tabindex/next;"
+                            >
+                        <option value=""
+                                tal:repeat="period python:container.portal_syndication.buildUpdatePeriods()"
+                                tal:attributes="value python:period[0];
+                                selected python:test(period[0]==container.portal_syndication.getUpdatePeriod(here), 'selected', None);"
+                                tal:content="python:period[1]">
+                                update interval
+                        </option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row" tal:define="updateFrequency python:request.get('updateFrequency', container.portal_syndication.getUpdateFrequency(here));
+                                         error_updateFrequency errors/updateFrequency|nothing">
+                <div class="label required">
+                    <span i18n:translate="label_syndication_update_frequency">Update Frequency</span>
+                    <div id="update_frequency_help"
+                         i18n:translate="help_syndication_update_frequency"
+                         class="help"
+                         style="visibility:hidden">
+                    Controls the frequency of the updates. For example, if you want it to update every second week,
+                    select "weekly" above, and "2" here.
+                    </div>
+                </div>
+
+                <div class="field"
+                     tal:attributes="class python:test(error_updateFrequency, 'field error', 'field')">
+
+                    <div tal:condition="error_updateFrequency">
+                        <tal:block i18n:translate="" content="error_updateFrequency">Error</tal:block>
+                        <br />
+                    </div>
+
+                    <input type="text"
+                           name="updateFrequency"
+                           size="3"
+                           value="#"
+                           tabindex=""
+                           onfocus="formtooltip('update_frequency_help',1)"
+                           onblur="formtooltip('update_frequency_help',0)"
+                           tal:attributes="value updateFrequency;
+                                           tabindex tabindex/next;" />
+                </div>
+            </div>
+
+            <div class="row" tal:define="updateBase python:request.get('updateBase', container.portal_syndication.getUpdateBase(here));
+                                         error_updateBase errors/updateBase|nothing">
+                <div class="label required">
+                    <span i18n:translate="label_syndication_update_base">Update Base</span>
+
+                    <div id="update_base_help"
+                         i18n:translate="help_syndication_update_base"
+                         class="help"
+                         style="visibility:hidden">
+                    This is the date the updater starts counting from.
+                    So if you want to update weekly every Tuesday,
+                    make sure this starts on a Tuesday.
+                    </div>
+                </div>
+                <div class="field"
+                                 tal:attributes="class python:test(error_updateBase, 'field error', 'field')"
+		                 tal:define="inputname  string:updateBase;
+                                             formname   string:edit_form;
+                                             inputvalue updateBase">
+
+                    <div tal:condition="error_updateBase">
+                        <tal:block i18n:translate="" content="error_updateBase">Error</tal:block>
+                        <br />
+                    </div>
+
+                    <div metal:use-macro="here/calendar_slot/macros/calendarDatePickerBox">
+                        calendar popup
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" tal:define="max_items python:request.get('max_items', container.portal_syndication.getMaxItems(here));
+                                         error_max_items errors/max_items|nothing">
+                <div class="label required">
+                    <span i18n:translate="label_syndication_max_items">Maximum Items</span>
+
+                    <div id="max_items_help"
+                         i18n:translate="help_syndication_max_items"
+                         class="help"
+                         style="visibility:hidden">
+                    Maximum number of items that will be syndicated.
+                    </div>
+                </div>
+
+                <div class="field"
+                     tal:attributes="class python:test(error_max_items, 'field error', 'field')">
+
+                    <div tal:condition="error_max_items">
+                        <tal:block i18n:translate="" content="error_max_items">Error</tal:block>
+                        <br />
+                    </div>
+
+                    <input type="text"
+                           name="max_items"
+                           value="#"
+                           size="3"
+                           tabindex=""
+                           onfocus="formtooltip('max_items_help',1)"
+                           onblur="formtooltip('max_items_help',0)"
+                           tal:attributes="value max_items;
+                                           tabindex tabindex/next;" />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="label">&nbsp;</div>
+                <div class="field">
+                    <input class="context"
+                           tabindex=""
+                           type="submit"
+                           value="Save"
+                           i18n:attributes="value"
+                           name="form.button.Save"
+                           tal:attributes="tabindex tabindex/next;"
+                           />
+                </div>
+            </div>
+
+        </div>
+
+        <span tal:replace="nothing">
+        ##### HIDDEN VARIABLES FOR THE FORM_TOOL -- CUT AND PASTE THESE INTO YOUR FORM ####
+        </span>
+	<input type="hidden" name="form.submitted" value="1" />
+
+        </form>
+
+    </tal:block>
+
+</div>
+
+
+<div tal:condition="python:not container.portal_syndication.isSiteSyndicationAllowed()"
+     i18n:translate="description_syndication_disabled">
+  Syndication has been disabled by site administrator.
+</div>
+
+
+</body>
+</html>

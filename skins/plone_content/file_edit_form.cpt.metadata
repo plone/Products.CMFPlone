@@ -1,0 +1,11 @@
+[default]
+title=Edit File
+
+[validators]
+validators..Change=validate_id,validate_file_edit
+validators..Cancel=
+
+[actions]
+action.success..Change=traverse_to:string:file_edit
+action.success..Cancel=redirect_to_action:string:view
+action.failure=traverse_to:string:file_edit_form
