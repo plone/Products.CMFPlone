@@ -1,6 +1,0 @@
-[validators]
-validators = 
-
-[actions]
-action.success = traverse_to:string:prefs_groups_overview
-action.failure = traverse_to:string:prefs_groups_overview
