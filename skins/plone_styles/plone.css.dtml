@@ -203,6 +203,7 @@ input {
 select {
     border: &dtml-borderWidth; solid &dtml-globalBorderColor;;  
     color: &dtml-inputFontColor;;
+    background-color: White;
     vertical-align: top;
 }
 abbr, acronym, .explain {
