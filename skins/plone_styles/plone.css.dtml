@@ -749,9 +749,6 @@ del {
 }
 
 #portal-colophon ul li {
-    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
-    border-width: 1px 1px 1px 1.75em;
-    background-color: &dtml-globalBackgroundColor;;
     font-size: &dtml-fontSmallSize;;
     margin: 0 0.25em;
     padding: 0.1em 0.2em;
