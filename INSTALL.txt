@@ -76,6 +76,11 @@ Installing Plone manually, step by step instructions.
      http://cvs.zope.org/Products/BTreeFolder2/ 
      http://cvs.zope.org/Products/BTreeFolder2/BTreeFolder2.tar.gz?tarball=1 
  
+  - SecureMailHost
+     Included in the Plone tarball 
+     http://sf.net/projects/collective 
+     http://prdownloads.sourceforge.net/collective/SecureMailHost-0.2rc3.tar.gz?download
+
   - CMFFormController 
      Included in the Plone tarball 
      http://sf.net/projects/collective 
