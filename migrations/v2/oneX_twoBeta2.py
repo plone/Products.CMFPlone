@@ -19,6 +19,8 @@ from Products.CMFPlone.migrations.migration_util import safeEditProperty
 from Products.CMFPlone.setup import ConfigurationMethods
 from Products.CMFPlone import ToolNames
 
+from portlet_migration import upgradeSlots2Portlets
+
 from Acquisition import aq_base
 
 def oneX_twoBeta2(portal):
@@ -94,6 +96,8 @@ def oneX_twoBeta2(portal):
     ConfigurationMethods.assignTitles(None, portal)
     out.append("Mark old fs directory views out-dated")
     deprFsViews(portal)
+    out.append("Update slots to portlets")
+    upgradeSlots2Portlets(portal)
     return out
 
 def doit(self):
