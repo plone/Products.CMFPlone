@@ -46,15 +46,22 @@
           tal:attributes="action here/absolute_url"
           tal:define="groups python:Batch(here.portal_groups.listGroups(), 25, int(b_start), orphan=1)">
 
-<!-- jcc: hiding until it actually does something
+	<input
+		tabindex=""
+		type="text"
+		name="addname"
+		value=""
+		tal:attributes="tabindex tabindex/next;"
+		/>
+
        <input class="standalone add"
               tabindex=""
               type="submit"
-              name="prefs_group_details:method"
+              name="prefs_group_add:method"
               value="Add New Group"
               tal:attributes="tabindex tabindex/next;"
               />
--->
+
 	<!-- jcc says: this is confusing. I think quicksearch should right-aligned. There are other solutions, but these two should not
 	be adjacent visually. -->
 
