@@ -73,10 +73,9 @@ h5,
 h6,
 .documentDescription,
 .portalMessage,
-#bodyContent dl,
-#bodyContent ul,
-#bodyContent ol
- {
+.documentContent dl,
+.documentContent ul,
+.documentContent ol {
     height: 100%;
 }
 

@@ -132,14 +132,14 @@ ul {
     line-height: 1.5em;
     list-style-type: square;
     margin: 0.5em 0 0 1.5em;
-    padding:0;
+    padding: 0;
     list-style-image: url(&dtml-portal_url;/bullet.gif);
 }
 
 ol {
     line-height: 1.5em;
-    margin: 0.5em 0 0 2em;
-    padding:0;
+    margin: 0.5em 0 0 1.5em;
+    padding: 0;
 }
 ul a, ol a {
     text-decoration: underline;
@@ -616,8 +616,12 @@ pre {
     text-decoration: none;
 }
 
+#content {
+    padding-top: 1em !important;
+}
+
 .documentEditable {
-    padding: 1em 2em 1em 2em !important;
+    padding: 0em 2em 1em 2em !important;
 }
 
 .configlet .documentEditable {
