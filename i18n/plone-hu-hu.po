@@ -3310,4 +3310,304 @@ msgstr "Régebbi hírek"
 #.   <label for="cb_plain">Plain Text</label>
 #: from plone_content/newsitem_edit_form.pt
 msgid "plain_text"
+msgstr "Sima szöveg"
+
+#: from plone_content/discussionitem_view.pt
+#.   <span>Posted by:</span>
+#: from plone_templates/news.pt
+#.   <span omit-tag="">Posted by</span>
+msgid "posted_by"
+msgstr "Beküldte:"
+
+#: from plone_3rdParty/CMFCollector/collector_macros.pt
+#.   <td align="right">on</td>
+#: from plone_content/discussionitem_view.pt
+#.   <span>at</span>
+msgid "posted_on"
+msgstr "kor (xxx)"
+
+#: from plone_templates/news.pt
+#.   <a attributes="href resultObject/absolute_url" href="/view">
+#.                           Read More
+#.                           </a>
+msgid "read_more"
+msgstr "Részletek"
+
+#: from plone_forms/content_status_history.pt
+#.   <span condition="effective">and <strong>is effective</strong>.</span>
+msgid "status_is_effective"
+msgstr "and <strong>is effective</strong>."
+
+#: from plone_forms/content_status_history.pt
+#.   <span condition="after">but is <strong>no longer</strong> effective.</span>
+msgid "status_no_longer_effective"
+msgstr "but is <strong>no longer</strong> effective."
+
+#: from plone_forms/content_status_history.pt
+#.   <span condition="before">but is <strong>not yet</strong> effective.</span>
+msgid "status_not_yet_effective"
+msgstr "but is <strong>not yet</strong> effective."
+
+#: from plone_content/document_edit_form.pt
+#.   <label for="cb_structuredtext">Structured Text</label>
+#: from plone_content/newsitem_edit_form.pt
+msgid "structured_text"
+msgstr "Struktúrált szöveg"
+
+#: from plone_forms/search_form.pt
+#.   <option attributes="value ever" selected="selected" value="#"> Ever </option>
+msgid "time_ever"
+msgstr "soha"
+
+#: from plone_forms/search_form.pt
+#.   <option attributes="value lastmonth" value="#"> Last month </option>
+msgid "time_last_month"
+msgstr "Utolsó hónap"
+
+#: from plone_forms/search_form.pt
+#.   <option attributes="value lastweek" value="#"> Last week </option>
+msgid "time_last_week"
+msgstr "Utolsó hét"
+
+#: from plone_forms/search_form.pt
+#.   <option attributes="value yesterday" value="#"> Yesterday </option>
+msgid "time_yesterday"
+msgstr "Tegnap"
+
+#: from plone_forms/personalize_form.pt
+#.   <label for="cb_formtooltips">Yes</label>
+#: from plone_forms/personalize_form.pt
+#.   <label for="cb_visible_ids">Yes</label>
+msgid "yes"
+msgstr "Igen"
+
+#: from plone_templates/header.pt
+#.   <span omit-tag="">You are here:</span>
+msgid "you_are_here"
+msgstr "Ön itt áll:"
+
+#: from plone_templates/header.pt
+#.   <span condition="here/portal_membership/isAnonymousUser">You are not logged in</span>
+msgid "you_are_not_logged_in"
+msgstr "Nem lépett még be."
+
+#: .missing file
+#. The below is collected by inserting a plone-my-lang.missing file in the i18n
+#. directory. Thus we can translate tabs, pushishing states, item type names
+#. and type descriptions.
+#. _____________________________________________________________________________
+msgid "Welcome"
+msgstr "Kezdölap"
+
+msgid "Members"
+msgstr "Felhasználók"
+
+msgid "News"
+msgstr "Hírek"
+
+msgid "My Folder"
+msgstr "Mappám"
+
+msgid "My Preferences"
+msgstr "Beállításaim"
+
+msgid "Plone Setup"
+msgstr "Plone beállítása"
+
+msgid "Sign out"
+msgstr "Kilépés "
+
+msgid "Navigation"
+msgstr "Navigálás"
+
+msgid "Editor view"
+msgstr "Szerkeszt? nézet"
+
+msgid "visible"
+msgstr "látható"
+
+msgid "Folder contents"
+msgstr "Mappa tartalom"
+
+msgid "Contents"
+msgstr "Megjegyzések"
+
+msgid "View"
+msgstr "Nézet"
+
+msgid "Edit"
+msgstr "Szerkeszt"
+
+msgid "Properties"
+msgstr "tulajdonságok"
+
+msgid "Publishing"
+msgstr "Publikálás"
+
+msgid "Ordinary view"
+msgstr "Rendes nézet"
+
+msgid "Local Roles"
+msgstr "Helyi feladat"
+
+msgid "Ownership"
+msgstr "Tulajdonos"
+
+msgid "${type}s only"
+msgstr "${type}s only"
+
+msgid "Document"
+msgstr "Dokumentum"
+
+msgid "Image"
+msgstr "Kép"
+
+msgid "File"
+msgstr "Fájl"
+
+msgid "Link"
+msgstr "Link"
+
+msgid "News Item"
+msgstr "Hír elem"
+
+msgid "Topic"
+msgstr "Téma"
+
+msgid "Folder"
+msgstr "Mappa"
+
+msgid "Event"
+msgstr "Esemény"
+
+msgid "Collector"
+msgstr "Collector xxx"
+
+msgid "Collector Subset"
+msgstr "Collector altéma"
+
+msgid "CMF Wiki Page"
 msgstr ""
+
+msgid "CMF Wiki"
+msgstr ""
+
+msgid "Cut"
+msgstr "Kivág"
+
+msgid "Copy"
+msgstr "Másol"
+
+msgid "Delete"
+msgstr "Törlés"
+
+msgid "Change Status"
+msgstr "Állapot vátoztatás"
+
+msgid "This item is currently in the ${review_state} state"
+msgstr "Ez az elem jellenleg ${reviev_state} állapotu."
+
+msgid "Make private"
+msgstr "Priváttá tesz"
+
+msgid "Publish"
+msgstr "Publikál"
+
+msgid "Collector Catalog"
+msgstr ""
+
+msgid "Collector Issue"
+msgstr ""
+
+msgid "Collector Issue Transcript"
+msgstr ""
+
+msgid "Discussion Item"
+msgstr ""
+
+msgid "Favorite"
+msgstr "Kedvencek"
+
+msgid "Documents can contain text that can be formatted using 'Structured Text.'"
+msgstr ""
+
+msgid "Image objects can be embedded in Portal documents."
+msgstr ""
+
+msgid "File objects can contain arbitrary downloadable files."
+msgstr ""
+
+msgid "Link items are URLs that come with additional information."
+msgstr ""
+
+msgid "News Items contain short text articles and carry a title as well as an optional description."
+msgstr ""
+
+msgid "Topics are canned queries for organizing content with up to date queries into the catalog."
+msgstr ""
+
+msgid "Plone folders can define custom 'view' actions, or will behave like directory listings without one defined."
+msgstr ""
+
+msgid "Events are objects for use in Calendar topical queries on the catalog."
+msgstr ""
+
+msgid "A Collector is a facility for tracking bug reports and other issues."
+msgstr ""
+
+msgid "A Collector Subset represents a view on a subset of the issues in a collector."
+msgstr ""
+
+msgid "Loosely organized (yet structured) content can be added to Wikis."
+msgstr ""
+
+msgid "Browse"
+msgstr "Böngészés"
+
+msgid "New Issue"
+msgstr "Új elem"
+
+msgid "Configure"
+msgstr "Beállítás"
+
+msgid "pending"
+msgstr "függ?ben"
+
+msgid "private"
+msgstr "privát"
+
+msgid "published"
+msgstr "publikált"
+
+msgid "No"
+msgstr "Nem"
+
+msgid "Yes"
+msgstr "Igen"
+
+msgid "Comment"
+msgstr "Megjegyzés"
+
+msgid "History"
+msgstr "El?zmények"
+
+msgid "Backlinks"
+msgstr ""
+
+msgid "Advanced"
+msgstr "Részletes"
+
+msgid "Help"
+msgstr "Súgó"
+
+msgid "Criteria"
+msgstr "Kritérium"
+
+msgid "Subtopics"
+msgstr "Altéma"
+
+msgid "Metadata"
+msgstr "Alapadat"
+
+
+--XsQoSWH+UP9D9v3l--
