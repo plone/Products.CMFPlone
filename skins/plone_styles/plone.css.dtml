@@ -815,6 +815,12 @@ div.spacer {
 .highlight {
     background-color: &dtml-evenRowBackground;;
 }
+
+.discreet {
+    color: #999999;
+    font-size: 80%;
+}
+
 div.listingBar {
     background: &dtml-mainTabBackground;;
     border-color: &dtml-mainTabBorderColorSelected;;
@@ -843,7 +849,7 @@ div listingBar img {
 */
 
 a.external {
-    background: White url(<dtml-var portal_url>/ink_icon.gif) 0px 1px no-repeat;
+    background: White url(<dtml-var portal_url>/link_icon.gif) 0px 1px no-repeat;
     padding: 1px 0px 1px 16px;
 }
 div.hiddenlabel {

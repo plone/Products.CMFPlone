@@ -36,11 +36,29 @@
                 <a href="#" tal:attributes="href url"
                 ><img src="#" tal:attributes="src string:${here/portal_url}/${obj/getIcon};alt here/title" /></a>
 
-                <a href="#" tal:attributes="href url"
+                <a href="#" tal:condition="python: obj.portal_type != 'Link'"
+                            tal:attributes="href url"
                             tal:content="obj/title_or_id" />
+
+                <a href="#" 
+                   class="nomarker"
+                   tal:condition="python: obj.portal_type == 'Link'"
+                            tal:attributes="href obj/getRemoteUrl"
+                            tal:content="obj/title_or_id" />
+
+                <span class="discreet" style="font-weight: normal"
+                      tal:condition="python: obj.portal_type == 'Event'">
+    
+                    &nbsp;
+                    <span tal:replace="obj/location">Oslo</span>,
+                    <span tal:replace="python: obj.end().ISO()">from date</span> -
+                    <span tal:replace="python: obj.end().ISO()">to date</span>
+                    
+                </span>
                 </dt>
 
                 <dd>
+
                     <span tal:content="structure python:test(obj.Description(), obj.Description(), '&nbsp;')"> description </span>
                 </dd>
 		    </metal:block>

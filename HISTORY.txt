@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 1.1 - Fyuti
 
+    - External Links in the default folder view now go directly to the URL specified.
+      [limi]
+    
+    - Events now show location and from/to-date in the default folder view.
+      [limi]
+
     - Changed the behaviour of deleting objects in PloneFolder, so the object is checked
       for the Delete Object permission instead of the folder. This means that the workflow
       can restrict the Owner from deleting an object (for example in a published state).
