@@ -46,6 +46,8 @@ class PloneGenerator(Portal.PortalGenerator):
 
     def customizePortalTypes(self, p):
 
+        typesTool=getToolByName(p, 'portal_types')
+
         # BUGBUG FIXME - hack to make Links use the portal_form machinery
         typeInfo = typesTool.getTypeInfo('Link')
         for action in typeInfo.getActions():
@@ -56,7 +58,6 @@ class PloneGenerator(Portal.PortalGenerator):
 
 
         typesToSkip=['Folder', 'Discussion Item', 'Topic']
-        typesTool=getToolByName(p, 'portal_types')
         typesTool._delObject('Folder')
         typesTool.manage_addTypeInformation(FactoryTypeInformation.meta_type
                                            , id='Folder'
