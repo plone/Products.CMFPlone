@@ -18,7 +18,7 @@
                    notFolderContents python:test(template.getId()!='folder_contents', 1, 0);
                    editorView python:test(listContentsPermission and notFolderContents, 1, 0);
                    croppingLength here/navtree_properties/croppingLength | here/portal_properties/navtree_properties/croppingLength | python:18;
-                   rolesSeeContentsView here/navtree_properties/rolesSeeContentsView | here/portal_properties/navtree_properties/rolesSeeContentsView | python:['manager','Reviewer','Owner']
+                   rolesSeeContentsView here/navtree_properties/rolesSeeContentsView | here/portal_properties/navtree_properties/rolesSeeContentsView | python:['Manager','Reviewer','Owner']
                    "
                    tal:on-error="structure string:<!--Error in Navigation!!-->"
                    >
