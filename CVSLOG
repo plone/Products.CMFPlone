@@ -1,3 +1,98 @@
+2004-04-20 01:42  tiran
+
+	* HISTORY.txt, Portal.py, SkinsTool.py (Plone-2_0-branch): Removed
+	  monkey patch that renamed the skin request var to plone_skin and
+	  moved request_varname to our SkinsTool. That's a much better
+	  solution :)
+
+2004-04-20 00:50  tiran
+
+	* skins/plone_content/document_view.pt (Plone-2_0-branch): ups that
+	  last checkin was nonsens, fixed it (thx to jim :)
+
+2004-04-20 00:35  tiran
+
+	* interfaces/: CustomizationPolicy.py, DublinCore.py, HTTPCache.py,
+	  ICMFTool.py, IContentType.py, IDublinCore.py,
+	  IOrderedContainer.py, IPloneBaseTool.py, OrderedContainer.py,
+	  PloneBaseTool.py, RAMCache.py, _DummyInterface.py,
+	  archetypes_tool.py, caching_policy_manager.py, common.py,
+	  content_type_registry.py, cookie_authentication.py, interface.py,
+	  mimetypes_registry.py, plone_utils.py, portal_actionicons.py,
+	  portal_actions.py, portal_calendar.py, portal_catalog.py,
+	  portal_controlpanel.py, portal_discussion.py, portal_factory.py,
+	  portal_form.py, portal_groupdata.py, portal_groups.py,
+	  portal_interface.py, portal_memberdata.py, portal_membership.py,
+	  portal_metadata.py, portal_migration.py, portal_navigation.py,
+	  portal_properties.py, portal_quickinstaller.py,
+	  portal_registration.py, portal_skins.py, portal_syndication.py,
+	  portal_transforms.py, portal_types.py, portal_undo.py,
+	  portal_url.py, portal_workflow.py (tiran-documentation-branch):
+	  Lot's of small improvements and movements
+
+2004-04-20 00:35  runyaga
+
+	* skins/plone_prefs/prefs_group_members.pt (Plone-2_0-branch):
+	  remove extra ">
+
+2004-04-20 00:18  tiran
+
+	* skins/plone_content/document_view.pt (Plone-2_0-branch): use stx
+	  class unless the document.Format() is text/plain, text/plain-pre
+	  or plain
+
+2004-04-19 22:37  tiran
+
+	* skins/plone_styles/plone.css.dtml (Plone-2_0-branch): fixed typo
+	  monospaced -> monospace
+
+2004-04-19 22:12  tiran
+
+	* HISTORY.txt (Plone-2_0-branch): updated history
+
+2004-04-19 20:44  plonista
+
+	* FactoryTool.py (Plone-2_0-branch): Fixed 2837
+
+2004-04-19 12:14  elvix
+
+	* HISTORY.txt (Plone-2_0-branch): updated with recent
+	  javascript-fixes
+
+2004-04-19 12:12  interra
+
+	* skins/plone_prefs/: plone_control_panel.pt,
+	  plone_memberprefs_panel.pt: Better invisible configlet handling.
+	  http://plone.org/collector/3023. Can be applied to
+	  Plone-2_0-branch as well.
+
+2004-04-19 12:12  elvix
+
+	* skins/plone_ecmascript/plone_javascripts.js (Plone-2_0-branch):
+	  fix for http://plone.org/collector/2826 Limit the
+	  search-term-highlighting to not include *all* url parameters
+
+2004-04-19 11:56  mrtopf
+
+	* skins/: plone_form_scripts/discussion_reply.cpy,
+	  plone_form_scripts/discussion_reply.py,
+	  plone_form_scripts/validate_talkback.vpy,
+	  plone_forms/discussion_reply_form.cpt,
+	  plone_forms/discussion_reply_form.cpt.metadata,
+	  plone_forms/discussion_reply_form.pt,
+	  plone_forms/discussion_reply_form.pt.metadata (Plone-2_0-branch):
+	  Fixed bug #472 :
+
+	  - converted discussion to use CMFFormController - changed
+	  variables "title" and "text" to "subject" and "body_text" as
+	  the labels were called due to having "text" already predefined in
+	  the	REQUEST. Will be converted back in discussion_reply.cpy -
+	  made subject and body_text required (actual bugfix)
+
+2004-04-19 05:10  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-04-19 03:05  tiran
 
 	* interfaces/portal_types.py (tiran-documentation-branch): more api
