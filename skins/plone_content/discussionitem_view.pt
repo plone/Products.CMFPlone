@@ -3,13 +3,14 @@
 <html xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:metal="http://xml.zope.org/namespaces/metal"
       metal:use-macro="here/main_template/macros/master">
+
 <body>
 
 <metal:block metal:fill-slot="main">	  
 
     <div tal:condition="here/talkback|nothing"
          tal:define="stx python:modules['Products.PythonScripts.standard'].structured_text">
-    
+
         <div>
             <span tal:replace="structure here/aboveInThread"></span>
         </div>
@@ -20,16 +21,15 @@
             <tr>
                 <th i18n:translate="">Discussion</th><th class="empty">&nbsp;</th>	
             </tr>
-            
+
             <tr>
                 <td colspan="2">
-
                     <h2><img src="discussionitem_icon.gif" alt="Comment" /> <span tal:replace="here/title_or_id">Comment title</span> </h2>
                     <span i18n:translate="">Posted by:</span>
                     <span tal:content="here/Creator">Poster Name</span>
                     <span i18n:translate="">at</span> 
                     <span tal:replace="python: here.toPortalTime(here.modified())">8/23/2001 12:40:44 PM</span>
-                    
+
                     <p tal:content="structure python:stx(here.text)">
         		    This is the body text of the comment. 
         		    </p>
@@ -50,4 +50,6 @@
 </metal:block>
 
 </body>
+
 </html>
+

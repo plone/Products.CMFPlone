@@ -1,0 +1,55 @@
+<div class="row">
+
+    <div class="label">
+        <input class="noborder"
+               type="checkbox" 
+               value="" 
+               name="criterion_ids:list" 
+               id=""
+               tal:attributes="value here/getId; id string:cb_${here/getId}" />
+        
+        <label for="" tal:attributes="for string:cb_${here/getId}">
+            <span tal:content="here/Field">Field</span> <br />
+        </label>
+        
+        <div id="list_criterion_help" 
+             i18n:id="list_criterion_help"
+             class="help" 
+             style="visibility:hidden"
+             tal:content="here/Description">
+        List
+        </div>
+
+        <input type="hidden" 
+               name="criteria.id:records" 
+               value=""
+               tal:attributes="value here/getId" />
+        
+    </div>
+    
+    <div class="field">        
+
+        <select name="criteria.operator:records">
+            <option value=""
+                    tal:attributes="selected not: here/operator">None</option>
+            <option value="or"
+                    tal:attributes="selected python:here.operator == 'or'">matches one of the following</option>
+            <option value="and" 
+                    tal:attributes="selected python:here.operator == 'and'">matches all of the following</option>
+        </select>
+        
+        <br />
+
+        <textarea name="criteria.value:lines:records" 
+                  rows="5" 
+                  cols="40"
+                  tal:content="python:modules['string'].join(here.value, '\n')"
+                  onfocus="formtooltip('list_criterion_help',1)" 
+                  onblur="formtooltip('list_criterion_help',0)"
+        ></textarea>
+        
+    
+    </div>
+    
+</div>
+

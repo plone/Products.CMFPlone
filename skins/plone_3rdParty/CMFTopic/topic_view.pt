@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns:tal="http://xml.zope.org/namespaces/tal"
+    xmlns:metal="http://xml.zope.org/namespaces/metal"
+    metal:use-macro="container/main_template/macros/master">
+
+    <metal:block fill-slot="base">
+            <base href=""
+                  tal:attributes="href python: here.absolute_url() + '/'">
+    </metal:block>
+
+<body>
+
+<div metal:fill-slot="main">
+
+
+    <h1 tal:content="here/title_or_id">
+    Title or id
+    </h1>
+    
+    <div class="description"
+         tal:content="structure here/Description"> 
+    description
+    </div>
+
+    <metal:block tal:define="
+                 b_start string:0;b_start request/b_start | b_start;
+                 results here/queryCatalog;
+                 Batch python:modules['ZTUtils'].Batch;
+                 global batch python:Batch(results, 20, int(b_start), orphan=1)">
+
+
+    <table class="listing"
+           id="sortable"
+           tal:condition="batch">
+
+        <thead>
+            <tr>
+                <th>Title&nbsp;<img src="arrowUp.gif" alt="Sort" height="6" width="9" /></th>
+                <th>Type</th>
+                <th>Last Modified</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+    
+        <tbody>
+        <metal:block tal:repeat="match batch">
+            <tr class="even" 
+        tal:define="oddrow repeat/match/odd" 
+        tal:attributes="class python:test(oddrow, 'even', 'odd')" >
+                <td>
+        <img src="#" tal:attributes="src string:${here/portal_url}/${match/getIcon}" />
+        <a href="#" 
+           tal:attributes="href string:${match/getURL}/view"
+           tal:content="match/Title" />
+                </td>   
+                <td tal:content="match/Type">Type</td>
+                <td>Modification Date [FIXME]</td>
+                <td>Description [FIXME]</td>
+            </tr>
+        </metal:block>
+        </tbody>
+    </table>
+
+
+
+    <span tal:define="p batch/previous" tal:condition="p">
+    <a href=""
+        tal:attributes="href string:?b_start=${p/first}">Previous <span
+        tal:replace="p/length">n</span> items</a>
+    </span>&nbsp;&nbsp;
+
+    <span tal:define="n batch/next" tal:condition="n">
+    <a href=""
+        tal:attributes="href string:?b_start=${batch/end}">Next <span
+        tal:replace="n/length">n</span> items</a>
+    </span>
+
+<metal:block tal:define="topics python:here.objectValues( [ 'Portal Topic' ] )" tal:condition="topics">
+
+    <h2 i18n:translate="">Sub-topics</h2>
+    
+    <ul>
+        <li tal:repeat="topic topics">
+            <p>
+                <a href=""
+                    tal:define="topictitle python:topic.Title() or topic.getId()"
+                    tal:attributes="href topic/absolute_url"
+                    tal:content="topictitle">
+                        Topic Title
+                </a>
+            </p>
+        </li>
+    </ul>    
+    
+</metal:block>
+
+    </metal:block>
+    
+</div>
+
+</body>
+</html>

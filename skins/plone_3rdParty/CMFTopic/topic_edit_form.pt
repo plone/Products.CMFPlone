@@ -13,9 +13,9 @@
 
     <h1 i18n:translate="">Edit Topic</h1>
 
-    <p> 
+    <p i18n:translate=""> 
     A topic is a pre-defined search, showing all items matching
-    criteria you specify. Topics can also contain subtopics.
+    criteria you specify. Topics may also contain sub-topics.
     </p>
     
     <form class="group"
@@ -120,12 +120,15 @@
 
         <div class="row">
 	        <div class="label">
-                <span i18n:id="acquire_criteria">Acquire Criteria</span>
+                <span i18n:id="acquire_criteria">Inherit Criteria</span>
                 <div id="acquire_criteria_help"
                      i18n:id="acquire_criteria_help" 
                      class="help" 
                      style="visibility:hidden">
-                What acquiring means.
+                Toggles inheritance of criteria. For example, if you
+                have specified that only items from the last three days
+                should be shown in a Topic above the current one, this
+                Topic will also have that criterion automatically.
                 </div>
             </div>
             

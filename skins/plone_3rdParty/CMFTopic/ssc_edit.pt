@@ -1,0 +1,45 @@
+<div class="row">
+
+    <div class="label">
+        <input class="noborder"
+               type="checkbox" 
+               value="" 
+               name="criterion_ids:list" 
+               id=""
+               tal:attributes="value here/getId; id string:cb_${here/getId}"
+               />
+        
+        <label for=""
+               tal:attributes="for string:cb_${here/getId}">
+            <span tal:content="here/Field">Field</span>
+            is
+        </label>
+        
+        <div id="string_criterion_help" 
+             i18n:id="sting_criterion_help"
+             class="help" 
+             style="visibility:hidden"
+             tal:content="here/Description">
+        String
+        </div>
+
+        <input type="hidden" 
+               name="criteria.id:records" 
+               value=""
+               tal:attributes="value here/getId"
+               />
+    </div>
+        
+    <div class="field">
+        
+        <input type="text" 
+               name="criteria.value:records"
+               value="" 
+               size="40"
+               tal:attributes="value here/value | nothing" 
+               onfocus="formtooltip('string_criterion_help',1)" 
+               onblur="formtooltip('string_criterion_help',0)"
+               />
+    </div>
+    
+</div>

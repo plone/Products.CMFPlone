@@ -1,6 +1,6 @@
 <html xmlns:tal="http://xml.zope.org/namespaces/tal"
     xmlns:metal="http://xml.zope.org/namespaces/metal"
-    metal:use-macro="here/main_template/macros/master">
+    metal:use-macro="container/main_template/macros/master">
 <body>
 <div metal:fill-slot="main">
 
@@ -18,7 +18,7 @@
         <input type="checkbox" name="ids:list" value="" tal:attributes="value topic/getId">
     </td>
     <td tal:define="queries topic/buildQuery; items python:queries.items()">
-        <a href="" tal:attributes="href string:${request/URL1}/${topic/getId}/topic_edit_form" tal:content="topic/getId">Id</a>
+        <a href="" tal:attributes="href topic/getId" tal:content="topic/getId">Id</a>
         (<span tal:repeat="item items" tal:condition="items">
             <span tal:define="n repeat/item/number; key python:item[0]; value python:item[1]">
             <span tal:replace="string:${key} : ${value}"/>
@@ -42,7 +42,7 @@
 </table>
 </form>
 
-<form tal:attributes="action string:${request/URL1}/topic_addSubtopic" method="get">
+<form action="topic_addSubtopic" method="get">
 <h2> Add subtopic: </h2>
 <p><strong>Id: </strong>
 <input type="text" name="new_id" size="30" /><br />

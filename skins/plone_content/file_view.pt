@@ -13,8 +13,6 @@
     <h1 tal:content="here/title_or_id">Title or id</h1>
     </div>
 
-   
-
     <span class="description" tal:content="structure here/Description">
     Description
     </span>

@@ -1,0 +1,91 @@
+<div class="row">
+
+    <div class="label">
+        <input class="noborder"
+               type="checkbox" 
+               value="" 
+               name="criterion_ids:list" 
+               id=""
+               tal:attributes="value here/getId;
+                               id string:cb_${here/getId};" 
+               />
+        
+        <label for=""
+               tal:attributes="for string:cb_${here/getId}">
+            <span tal:content="here/Field">Field</span>
+            is
+        </label>
+        
+        <div id="integer_criterion_help" 
+             i18n:id="integer_criterion_help"
+             class="help" 
+             style="visibility:hidden"
+             tal:content="here/Description">
+        Integer
+        </div>
+
+        <input type="hidden" 
+               name="criteria.id:records" 
+               value=""
+               tal:attributes="value here/getId" 
+               />
+        
+
+    </div>
+    
+    <div class="field">       
+        
+        <input class="noborder"
+               type="radio" 
+               name="" 
+               value="min" 
+               id=""
+               tal:attributes="checked python:here.direction=='min';
+                               id string:${here/getId}_min;
+                               name string:criteria.direction__${here/getId}:records;" 
+               onfocus="formtooltip('integer_criterion_help',1)" 
+               onblur="formtooltip('integer_criterion_help',0)"
+               />
+        
+        <label for=""
+               tal:attributes="for string:${here/getId}_min">Minimum</label>
+        
+        <input class="noborder"
+               type="radio" 
+               name="" 
+               value="max" 
+               id=""
+               tal:attributes="checked python:here.direction=='max';
+                               id string:${here/getId}_max;
+                               name string:criteria.direction__${here/getId}:records;" 
+               onfocus="formtooltip('integer_criterion_help',1)" 
+               onblur="formtooltip('integer_criterion_help',0)"
+               />
+        
+        <label for=""
+               tal:attributes="for string:${here/getId}_max">Maximum</label>
+        
+        <input class="noborder"
+               type="radio" 
+               name="" 
+               value="min:max" 
+               id=""
+               tal:attributes="checked python:here.direction=='min:max';
+                               id string:${here/getId}_minmax;
+                               name string:criteria.direction__${here/getId}:records;" 
+               onfocus="formtooltip('integer_criterion_help',1)" 
+               onblur="formtooltip('integer_criterion_help',0)"
+                />
+        
+        <label for=""
+               tal:attributes="for string:${here/getId}_minmax">In the range</label>
+
+        <input type="text" 
+               name="criteria.value:records" 
+               value="" 
+               size="20"
+               tal:attributes="value here/getValueString" 
+               />
+     </div>
+     
+</div>       

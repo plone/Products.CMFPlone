@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns:tal="http://xml.zope.org/namespaces/tal"
+    xmlns:metal="http://xml.zope.org/namespaces/metal"
+    metal:use-macro="container/main_template/macros/master">
+
+<body>
+
+<div metal:fill-slot="main">
+
+<h1> 
+    <span i18n:translate="">Criteria for</span>
+    <span tal:replace="here/getId" /> 
+</h1>
+
+<form class="group" action="" method="post" tal:attributes="action here/absolute_url">
+
+    <span class="legend" i18n:translate="">Criteria Details</span>
+
+    <span tal:define="criteria here/listCriteria">
+        <span tal:repeat="criterion criteria">
+            <span tal:define="editform string:criterion/${criterion/getEditForm}"
+                tal:replace="structure python:path(editform)" />
+        </span>
+    </span>
+
+
+    <div class="row">
+    
+        <div class="label">&nbsp;</div>
+        
+        <div class="field">
+            <input class="context"
+                   type="submit" 
+                   name="topic_editCriteria:action"
+                   value="Save changes"
+                   />
+            
+            <input class="context"
+                   type="submit" 
+                   name="topic_deleteCriteria:action"
+                   value="Delete selected criteria"
+                   />
+
+            <input type="hidden" name=":default_action" value="editCriteria">
+        
+        </div>
+
+    </div>
+
+
+</form>
+
+
+<form action="" method="post" tal:attributes="action string:${here/absolute_url}/topic_addCriterion">
+
+<h2 i18n:translate=""> Add New Topic Criteria </h2>
+
+Field id
+
+<select name="field" tal:define="fields here/listAvailableFields">
+            <option value="" tal:repeat="field fields" tal:attributes="value field" tal:content="field">Field</option>
+        </select>
+
+Criteria type
+
+<select name="criterion_type" tal:define="types here/listCriteriaTypes">
+    <option value="" tal:repeat="type types" tal:attributes="value type/name" tal:content="type/name">Type</option>
+</select>
+
+<input class="context" type="submit" value="Add" />
+
+</form>
+
+</div>
+
+</body>
+</html>

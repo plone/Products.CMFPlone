@@ -3,6 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
       lang="en-US"
       metal:use-macro="here/frontpage_template/macros/master">
+
 <body>
 
   <div metal:fill-slot="main"
@@ -14,23 +15,23 @@
           </h1>
       </div>
 
-
       <div class="description"
            tal:content="structure here/Description"> 
       description
       </div>
-        
-        
+
       <p tal:condition="not: len_text"
            i18n:id="no_body_text">
       This document has yet to be written, click the edit tab to change the document.
       </p>
-        
+
       <div tal:condition="len_text"
            tal:replace="structure here/CookedBody">
       </div>
-    
+
   </div>
 
 </body>
+
 </html>
+
