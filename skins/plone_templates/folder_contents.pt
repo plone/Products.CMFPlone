@@ -66,8 +66,8 @@
             <!-- Navigation -->
             <div metal:use-macro="here/batch_macros/macros/navigation" />
             <metal:block define-macro="folder_listing"
-                         tal:define="locked here/lock_icon.gif;
-                                     pencil_icon here/edit.gif;
+                         tal:define="locked portal_object/lock_icon.gif;
+                                     pencil_icon portal_object/edit.gif;
                                      use_folder_contents site_properties/use_folder_contents;
                                      filterOut python:('Favorite',);
                                      filterValues decodedFilter/keys | nothing;
@@ -77,7 +77,8 @@
                                      isExpired nocall:here/isExpired;
                                      toPortalTime nocall:here/toPortalTime;
                                      getObjSize nocall:here/getObjSize;
-                                     lock_tool here/portal_lock|nothing">
+                                     lock_tool here/portal_lock|nothing;
+				     getInfoFor python:wtool.getInfoFor">
                                                                                                                                                                                                                                                                                                                                                     
             <table id="sortable"
                    class="listing"
@@ -230,7 +231,7 @@
                         </td>
     
                         <td class="private"
-                            tal:define="review_state python:here.portal_workflow.getInfoFor(item, 'review_state', '')"
+                            tal:define="review_state python:getInfoFor(item, 'review_state', '')"
                             tal:content="structure python:test(review_state, review_state, '&nbsp;')"
                             tal:attributes="class python:test(review_state, review_state, 'private')"
                             i18n:translate="">&nbsp;

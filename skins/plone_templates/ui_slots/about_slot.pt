@@ -43,7 +43,7 @@
                  />&nbsp;<span tal:omit-tag="" 
                                tal:content="python:here.getTypeInfo().Title()" 
                                i18n:translate="">Object type</span>
-                         <img tal:define="locked here/lock_icon.gif;
+                         <img tal:define="locked portal_object/lock_icon.gif;
                                           lockable python:hasattr(here, 'wl_isLocked');"
                               tal:condition="python:lockable and here.wl_isLocked()"
                               tal:replace="structure python:locked.tag(title='Locked')" />
