@@ -48,6 +48,13 @@
         <h1 i18n:translate="heading_group_memberships_for">Group Memberships for <span tal:replace="string:${member/getUserName}" i18n:name="username"/></h1>
     
     	
+        <a href=""
+           class="link-parent"
+           tal:attributes="href string: $portal_url/prefs_users_overview"
+           i18n:translate="">
+        Up to Users Overview
+        </a>
+
     	<h2 i18n:translate="heading_search_newgroups">Search for new groups</h2>
     	<div metal:use-macro="here/prefs_search_macros/macros/user_group_search">
     	  <metal:block metal:fill-slot="hiddens">

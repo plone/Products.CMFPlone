@@ -55,6 +55,13 @@
          tal:condition="not:group | nothing">
     	<h1 i18n:translate="heading_group_members">Group Members</h1>
     
+        <a href=""
+           class="link-parent"
+           tal:attributes="href string: $portal_url/prefs_groups_overview"
+           i18n:translate="">
+        Up to Groups Overview
+        </a>
+
         <p i18n:translate="label_no_group_specified">No group was specified.</p>
     
         <p><a href="prefs_groups_overview"
@@ -66,6 +73,13 @@
     
         <h1 i18n:translate="heading_group_members_of">Members of the <tal:group content="groupname" i18n:name="groupname">Groupname</tal:group> Group</h1>
     	
+        <a href=""
+           class="link-parent"
+           tal:attributes="href string: $portal_url/prefs_groups_overview"
+           i18n:translate="">
+        Up to Groups Overview
+        </a>
+
         <p i18n:translate="description_group_members_of">
         You can add or remove users from this particular group here. Note that this
         doesn't actually delete the user, it is only removed from this group.

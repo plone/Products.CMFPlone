@@ -84,6 +84,13 @@
                Edit Group Properties for <span tal:replace="group/getGroupName | default" i18n:name="groupname">#unavailable#</span>
         </h1>
     
+        <a href=""
+           class="link-parent"
+           tal:attributes="href string: $portal_url/prefs_groups_overview"
+           i18n:translate="">
+        Up to Groups Overview
+        </a>
+
         <p i18n:translate="description_edit_groupproperties">
         Groups are logical collections of users, like departments and business units.
         They are not directly related to permissions on a global level, you normally

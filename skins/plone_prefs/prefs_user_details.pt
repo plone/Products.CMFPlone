@@ -54,6 +54,13 @@ we eventually might want to merge this form with personalize_form
                         i18n:name="username">username</tal:username>
         </h1>
     
+        <a href=""
+           class="link-parent"
+           tal:attributes="href string: $portal_url/prefs_users_overview"
+           i18n:translate="">
+        Up to Users Overview
+        </a>
+
         <p i18n:translate="label_change_member_properties">
           Change member properties.
         </p>
