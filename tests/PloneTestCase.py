@@ -2,7 +2,7 @@
 # PloneTestCase
 #
 
-# $Id: PloneTestCase.py,v 1.9.2.12 2003/11/14 09:58:38 shh42 Exp $
+# $Id: PloneTestCase.py,v 1.9.2.13 2003/12/28 15:56:09 shh42 Exp $
 
 from Testing import ZopeTestCase
 
@@ -28,7 +28,7 @@ from AccessControl.SecurityManagement import noSecurityManager
 from Acquisition import aq_base
 import time
 
-portal_name  = 'portal'
+portal_name = 'portal'
 portal_owner = 'portal_owner'
 default_user = ZopeTestCase.user_name
 
@@ -37,6 +37,10 @@ class PloneTestCase(ZopeTestCase.PortalTestCase):
 
     def getPortal(self):
         '''Returns the portal object.'''
+        # XXX: Hack. Need to fake a script so that URL1 is 
+        # available in the REQUEST. This should be handled
+        # by ZTC if possible.
+        self.app.REQUEST._script = [portal_name]
         return self.app[portal_name]
 
     def createMemberarea(self, member_id):
