@@ -14,7 +14,7 @@ REQUEST=context.REQUEST
 if type_name is None:
     raise Exception
 
-id=context.generateUniqueId()
+id=context.generateUniqueId(type_name)
 
 context.invokeFactory(id=id, type_name=type_name)
 o=getattr(context, id, None)
