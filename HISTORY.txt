@@ -4,6 +4,14 @@ Changelog for Plone
 
 Plone 2.0 - Fyuti
 
+    - Fixed PloneWorkflow's mapping of ChangeEvents permission to follow the
+      mappings for ModifyPortalContent.
+      [stefan]
+
+    - Made ListFolderContents unavailable to Members when a folder is in the
+      private state (FolderWorkflow).
+      [stefan]
+
     Beta 3
 
     - WARNING! If you attempt to add several Plone sites back-to-back you will
