@@ -16,6 +16,9 @@ def process(name, swhome, ihome):
     # have to set up env first
     import Zope
     configfile = os.path.join(ihome,'etc/zope.conf')
+
+    # nuke remaining command line arguments
+    sys.argv = sys.argv[1:]
     
     # for 2.7 run configure
     Zope.configure(configfile)
