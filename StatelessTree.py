@@ -36,14 +36,16 @@ class NavigationTreeViewBuilder(SimpleItem):
                 
         self.sortCriteria=[c for c in self.sortCriteria 
                            if type(c) in (UnicodeType, StringType) and c.strip()]
-        
+
         tb=StatelessTreeBuilder(context, topObject=self.tree_root,
           childFinder=self.childFinder, includeTop=self.includeTop, 
           showFolderishSiblingsOnly=self.showFolderishSiblingsOnly, 
           showFolderishChildrenOnly=self.showFolderishChildrenOnly, 
           showNonFolderishObject=self.showNonFolderishObject,    
           topLevel=self.topLevel, forceParentsInBatch=self.forceParentsInBatch,
-          skipIndex_html=self.skipIndex_html,bottomLevel=self.bottomLevel)
+          skipIndex_html=self.skipIndex_html,bottomLevel=self.bottomLevel,
+          idsNotToList=getattr(self,'idsNotToList',[])
+          )
     
         batchStart=None
         batchSize=self.batchSize
@@ -134,7 +136,7 @@ class NavigationTreeViewBuilder(SimpleItem):
             for r in res: #filter out metatypes and by except:pass 
                           #all objs producing an error
                 try:
-                    if r.meta_type not in self.metaTypesNotToList:
+                    if r.meta_type not in self.metaTypesNotToList and r.id not in self.idsNotToList:
                         rs.append(r)
                 except :
                     pass

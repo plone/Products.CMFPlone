@@ -37,7 +37,8 @@ def setupNavTreePropertySheet(prop_tool):
     p._setProperty('rolesSeeHiddenContent', ['Manager',] , 'lines')
     p._setProperty('typesForcedFolderContents', [] , 'lines')
     p._setProperty('bottomLevel', 65535 , 'int')
-
+    p._setProperty('idsNotToList', [] , 'lines')
+    
 class StatelessTreeBuilder:
     """ builds a stateless tree structure for objects """
 
@@ -46,7 +47,7 @@ class StatelessTreeBuilder:
     def __init__(self, object, topObject=None, topMetaType='CMF Site',
             maxcount=65535,includeTop=0,topLevel=0,listSiblings=1,
             childFinder=None,showFolderishSiblingsOnly=0,showFolderishChildrenOnly=0,
-            showNonFolderishObject=0,forceParentsInBatch=0,skipIndex_html=0,bottomLevel=65535):
+            showNonFolderishObject=0,forceParentsInBatch=0,skipIndex_html=0,bottomLevel=65535,idsNotToList=[]):
 
         self.object=object
         self.topObject=topObject
@@ -60,11 +61,11 @@ class StatelessTreeBuilder:
         self.showNonFolderishObject=showNonFolderishObject
         self.forceParentsInBatch=forceParentsInBatch
         self.skipIndex_html=skipIndex_html
-        
         if bottomLevel is None:
             bottomLevel=65535
             
         self.bottomLevel=bottomLevel
+        self.idsNotToList=idsNotToList
         
         if topLevel >= 0:
             self.topLevel=topLevel
