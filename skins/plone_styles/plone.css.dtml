@@ -980,6 +980,17 @@ input.searchButton {
     vertical-align: middle;
 }
 
+/* XXX FIXME: rewrite these tables, need vertical/horizontal mode */
+
+.listing th.vertical {
+    padding: 0.5em;
+}
+
+.listing td.vertical {
+    border-top: 1px solid #8cacbb; 
+    padding: 0.5em;
+}
+
 ul.configlets {
     margin: 1em;
     list-style-image: none;
