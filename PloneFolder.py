@@ -1,4 +1,4 @@
-from Products.CMFCore.utils import _verifyActionPermissions, getToolByName
+from Products.CMFCore.utils import _verifyActionPermissions, getToolByName, getActionContext
 from Products.CMFCore.Skinnable import SkinnableObjectManager
 from OFS.Folder import Folder
 from Products.CMFCore.CMFCatalogAware import CMFCatalogAware
@@ -149,20 +149,24 @@ class PloneFolder ( SkinnedFolder, DefaultDublinCoreImpl ):
 
 def _getViewFor(obj, view='view', default=None):
     ti = obj.getTypeInfo()
+    context = getActionContext(obj)
+    
     if ti is not None:
-        actions = [a.getAction() for a in ti.getActions()]
+        actions = ti.listActions()
         for action in actions:
-            if action.get('id', None) == default:
+            _action = action.getAction(context)
+            if _action.get('id', None) == default:
                 default=action
-            if action.get('id', None) == view:
-                if _verifyActionPermissions(obj, action) and action['url']!='':
-                    action = obj.restrictedTraverse(action['url'])
-                    if action is not None:
-                        return action
+            if _action.get('id', None) == view:
+                if _verifyActionPermissions(obj, action) and _action['url']!='':
+                    computed_action = obj.restrictedTraverse(_action['url'])
+                    if computed_action is not None:
+                        return computed_action
 
         if default is not None:    
+            _action = default.getAction(context)
             if _verifyActionPermissions(obj, default):
-                return obj.restrictedTraverse(default['url'])
+                return obj.restrictedTraverse(_action['url'])
 
         # "view" action is not present or not allowed.
         # Find something that's allowed.

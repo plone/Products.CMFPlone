@@ -1,3 +1,7 @@
+2003-04-24  Sidnei da Silva  <sidnei@x3ng.com>
+
+	* PloneFolder.py (_getViewFor): Fixed handling of actions.
+
 2003-04-23  Sidnei da Silva  <sidnei@x3ng.com>
 
 	* skins/plone_scripts/browserDefault.py (act): For some reason, I
