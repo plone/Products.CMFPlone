@@ -66,6 +66,10 @@ def rc3_rc4(portal):
             _actions = ptype._cloneActions()
         except AttributeError:
             # Stumbled across ancient dictionary actions
+            if not hasattr(aq_base(ptype), '_convertActions'):
+                out.append(('Can\'t convert actions of %s! Jumping to next action.' % ptype.getId(), zLOG.ERROR))
+                # XXX that's bad :[
+                continue
             ptype._convertActions()
             _actions = ptype._cloneActions()
 
