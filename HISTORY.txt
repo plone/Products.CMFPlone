@@ -2,6 +2,12 @@ Changelog for Plone
 
    (name of developer listed in brackets)
 
+Plone 2.0.6 - Anti-Pop - (Unreleased)
+
+    - Fixed http://plone.org/collector/3641 - validate_start_end_date chopped
+      off the AM/PM value when saving Events. :-P
+      [stefan]
+
 Plone 2.0.5 - Backed Up Willie - Released December 1, 2004
 
     - Allow migrations to and from release candidates to finish. This was
