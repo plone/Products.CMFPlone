@@ -136,9 +136,10 @@
                     tal:attributes="class   python:test(inheritanceActive,'','noInheritedRoles')">
                 <tal:block tal:repeat="role entry/acquired">
                     <span i18n:translate=""
-                          tal:define="isEnd     repeat/role/end"
-                          tal:content="python:test(isEnd,role,role+',')"
+                          tal:content="role"
                           tal:omit-tag="">Role</span>
+                     <span tal:omit-tag=""
+                           tal:condition="not: repeat/role/end">,</span>
                     <br />
                 </tal:block>
                 </td>
