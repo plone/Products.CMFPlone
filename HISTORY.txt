@@ -2,6 +2,11 @@ Changelog for Plone
 
    (name of developer listed in brackets)
 
+Plone 2.0.3 - Noname
+
+    - Hardened any send mail sending utilities and readying CMF 1.4.4.
+      [andym]
+
     - Fixed a small bug in plone_javascripts.js that prevents the highlight of the search term in simple searchs.
       [azy]
 
