@@ -1,6 +1,7 @@
 import os
 
 import Globals
+from zExceptions import BadRequest
 from Acquisition import aq_base
 from Products.CMFCore import CMFCorePermissions
 from Products.CMFCore.utils import getToolByName
@@ -78,6 +79,9 @@ def alpha1_alpha2(portal):
 
     #Add news folder
     addNewsFolder(portal, out)
+
+    # Add exclude_from_nav index
+    reindex += addExclude_from_navMetadata(portal, out)
 
     # Rebuild catalog
     if reindex:
@@ -347,7 +351,7 @@ def addNewsFolder(portal, out):
         addFolder = portal.manage_addProduct['ATContentTypes'].addATBTreeFolder
         addFolder('news', title='News')
         out.append("Added news folder")
-    news = getattr(portal.aq_inner, 'news')
+    news = getattr(aq_base(portal), 'news')
 
     #Enable ConstrainTypes and set to News
     addable_types = ['News Item']
@@ -357,6 +361,18 @@ def addNewsFolder(portal, out):
     out.append("Set constrain types for news folder")
 
     #Add news_listing.pt as default page
-    if not news.hasProperty('default_pages'):
+    try:
         news.manage_addProperty('default_page', ['news_listing','index_html'], 'lines')
         out.append("Added default view for news folder")
+    except BadRequest:
+        out.append("Default view on news already set")
+
+def addExclude_from_navMetadata(portal, out):
+    """Adds the exclude_from_nav metadata."""
+    catalog = getToolByName(portal, 'portal_catalog', None)
+    if catalog is not None:
+        if 'exclude_from_nav' in catalog.schema():
+            return 0
+        catalog.addColumn('exclude_from_nav')
+        out.append("Added 'exclude_from_nav' metadata to portal_catalog.")
+        return 1

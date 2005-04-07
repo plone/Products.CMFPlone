@@ -3,7 +3,6 @@ import sys
 import traceback
 from types import TupleType, UnicodeType, StringType
 import urlparse
-import operator
 
 from zLOG import LOG, INFO, WARNING
 
@@ -508,7 +507,8 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         #get ids not to list and make a dict to make the search fast
         ids_not_to_list = ntp.idsNotToList
         excluded_ids = {}
-        map(operator.setitem, [excluded_ids]*len(ids_not_to_list), ids_not_to_list, [1]*len(ids_not_to_list))
+        for exc_id in ids_not_to_list:
+            excluded_ids[exc_id]=1
 
         rawresult = ct(**query)
 
@@ -530,7 +530,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                     'review_state': item.review_state,
                     'Description':item.Description,
                     'children':[],
-                    'no_display': excluded_ids.has_key(item.getId)}
+                    'no_display': excluded_ids.has_key(item.getId) or item.exclude_from_nav}
             parentpath = '/'.join(path.split('/')[:-1])
             # Tell parent about self
             cur_parent = result.setdefault(parentpath, {'children':[]})
@@ -576,7 +576,8 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         #get ids not to list and make a dict to make the search fast
         ids_not_to_list = ntp.idsNotToList
         excluded_ids = {}
-        map(operator.setitem, [excluded_ids]*len(ids_not_to_list), ids_not_to_list, [1]*len(ids_not_to_list))
+        for exc_id in ids_not_to_list:
+            excluded_ids[exc_id]=1
 
         rawresult = ct(**query)
 
@@ -588,7 +589,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         result = []
         for r_tuple in dec_result:
             item = r_tuple[1]
-            if not excluded_ids.has_key(item.getId):
+            if not (excluded_ids.has_key(item.getId) or item.exclude_from_nav):
                 data = {'name':item.Title or '\xe2\x80\xa6'.decode('utf-8'),
                         'id':item.getId,'url': item.getURL()}
                 result.append(data)
