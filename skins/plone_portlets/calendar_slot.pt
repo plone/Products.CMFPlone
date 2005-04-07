@@ -329,9 +329,10 @@
 	 nextMonthTime python:here.getNextMonth(month, year);
 	 weeks python:here.portal_calendar.getWeeksList(month=month, year=year);">
 
-      <table cellpadding="2" cellspacing="0" border="0" class="calendar" id="thecalendar">
+      <table cellpadding="2" cellspacing="0" border="0" class="ploneCalendar" id="thePloneCalendar">
+        <thead>
 	<tr tal:define="calendarurl python:'%s?input_id=%s' % (path('template/absolute_url'),input_id) ">
-	  <th>
+	  <th id="calendar-previous">
 	    <a href="" tal:attributes="href python:'%s&amp;month:int=%d&amp;year:int=%d' % (calendarurl,prevMonthTime.month(),prevMonthTime.year())">&laquo;</a>
 	  </th>
 	  <th colspan="5" tal:define="date string:$month/1/$year">
@@ -343,16 +344,18 @@
 	    </span>
 	  </th>
 
-	  <th>
+	  <th id="calendar-next">
 	    <a href="" tal:attributes="href python:'%s&amp;month:int=%d&amp;year:int=%d' % (calendarurl,nextMonthTime.month(),nextMonthTime.year())">&raquo;</a>
 	  </th>
 	</tr>
 
-	<tr tal:define="weekdays here/portal_calendar/getDays">
+	<tr tal:define="weekdays here/portal_calendar/getDays" class="weekdays">
 	  <tal:block repeat="weekday weekdays">
-	    <td class="weekdays" i18n:translate="" tal:content="weekday">Su</td>
+	    <td i18n:translate="" tal:content="weekday">Su</td>
 	  </tal:block>
 	</tr>
+        </thead>
+        <tbody>
 	<tr tal:repeat="week weeks">
 	  <tal:block define="days week">
 	    <tal:block repeat="day days" tal:omit-tag="">
@@ -369,6 +372,7 @@
 	    </tal:block>
 	  </tal:block>
 	</tr>
+        </tbody>
 
       </table>
 
@@ -380,7 +384,7 @@
 <div metal:define-macro="calendarDatePickerBoxOld" tal:define="
            portal_url here/portal_url;
            tabindex tabindex/next|tabindex|nothing;
-           formname request/formname | string:form;
+           formname formname | string:form;
            input_id string:${formname}_${inputname}_${tabindex}">
 
  <comment tal:condition="nothing">
