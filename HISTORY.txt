@@ -4,6 +4,18 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - added installation of default CSS and JavaScripts
+      [elvix]
+
+    - Added CSSRegistry and JSRegistry dependencies. All stylesheets and
+      javascripts are now registered with these tools instead of hrdlinked
+      into header.pt. 
+      [elvix]      
+      
+    - Cut the default Styleesheets and Javascripts into smaller pieces to be
+      served up by the CSS- and JS-Registries
+      [elvix] [limi]
+
     - Added showAllParents property to navtree_properties and to appropriate
       portal migration, added implementation to navtree code in PloneTool.
       [rafrombrc]
