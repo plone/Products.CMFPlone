@@ -591,7 +591,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             item = r_tuple[1]
             if not (excluded_ids.has_key(item.getId) or item.exclude_from_nav):
                 data = {'name':item.Title or '\xe2\x80\xa6'.decode('utf-8'),
-                        'id':item.getId,'url': item.getURL()}
+                        'id':item.getId, 'url': item.getURL(), 'description':item.Description}
                 result.append(data)
         return result
 

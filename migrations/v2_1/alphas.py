@@ -358,6 +358,7 @@ def addNewsFolder(portal, out):
     news.setConstrainTypesMode(1)
     news.setImmediatelyAddableTypes(addable_types)
     news.setLocallyAllowedTypes(addable_types)
+    news.setDescription("Site News")
     out.append("Set constrain types for news folder")
 
     #Add news_listing.pt as default page
