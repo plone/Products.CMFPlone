@@ -186,6 +186,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.failUnless(self.properties.navtree_properties.hasProperty('sortAttribute'))
         self.failUnless(self.properties.navtree_properties.hasProperty('sortOrder'))
         self.failUnless(self.properties.navtree_properties.hasProperty('sitemapDepth'))
+        self.failUnless(self.properties.navtree_properties.hasProperty('showAllParents'))
 
     def testSitemapAction(self):
         # There should be a sitemap action

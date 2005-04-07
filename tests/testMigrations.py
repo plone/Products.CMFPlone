@@ -267,12 +267,14 @@ class TestMigrations_v2_1(MigrationTest):
         self.removeNavTreeProperty('sortAttribute')
         self.removeNavTreeProperty('sortOrder')
         self.removeNavTreeProperty('sitemapDepth')
+        self.removeNavTreeProperty('showAllParents')
         self.failIf(self.properties.navtree_properties.hasProperty('typesToList'))
         updateNavTreeProperties(self.portal, [])
         self.failUnless(self.properties.navtree_properties.hasProperty('typesToList'))
         self.failUnless(self.properties.navtree_properties.hasProperty('sortAttribute'))
         self.failUnless(self.properties.navtree_properties.hasProperty('sortOrder'))
         self.failUnless(self.properties.navtree_properties.hasProperty('sitemapDepth'))
+        self.failUnless(self.properties.navtree_properties.hasProperty('showAllParents'))
 
     def testUpdateNavTreePropertiesTwice(self):
         # Should not fail if migrated again
@@ -280,6 +282,7 @@ class TestMigrations_v2_1(MigrationTest):
         self.removeNavTreeProperty('sortAttribute')
         self.removeNavTreeProperty('sortOrder')
         self.removeNavTreeProperty('sitemapDepth')
+        self.removeNavTreeProperty('showAllParents')
         self.failIf(self.properties.navtree_properties.hasProperty('typesToList'))
         updateNavTreeProperties(self.portal, [])
         updateNavTreeProperties(self.portal, [])
@@ -287,6 +290,7 @@ class TestMigrations_v2_1(MigrationTest):
         self.failUnless(self.properties.navtree_properties.hasProperty('sortAttribute'))
         self.failUnless(self.properties.navtree_properties.hasProperty('sortOrder'))
         self.failUnless(self.properties.navtree_properties.hasProperty('sitemapDepth'))
+        self.failUnless(self.properties.navtree_properties.hasProperty('showAllParents'))
 
     def testUpdateNavTreePropertiesNoTool(self):
         # Should not fail if portal_properties is missing

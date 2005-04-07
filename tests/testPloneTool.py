@@ -460,7 +460,7 @@ class TestNavTree(PloneTestCase.PloneTestCase):
         # See if we can create one at all
         tree = self.utils.createNavTree(self.portal)
         self.failUnless(tree)
-        self.assertEqual(tree.keys(), ['children'])
+        self.failUnless(tree.has_key('children'))
 
     def testCreateNavTreeCurrentItem(self):
         # With the context set to folder2 it should return a dict with
