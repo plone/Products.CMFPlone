@@ -275,6 +275,7 @@ def updateNavTreeProperties(portal, out):
                 propSheet._setProperty('sortAttribute', 'getObjPositionInParent', 'string')
                 propSheet._setProperty('sortOrder', 'asc', 'string')
                 propSheet._setProperty('sitemapDepth', 3, 'int')
+                propSheet._setProperty('showAllParents', 1, 'boolean')
                 out.append('Updated navtree_properties.')
 
 

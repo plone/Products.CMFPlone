@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Added showAllParents property to navtree_properties and to appropriate
+      portal migration, added implementation to navtree code in PloneTool.
+      [rafrombrc]
+
     - Because normalizeISO() only deals with Unicode strings
       titleToNormalizedId() must make sure to pass it only Unicode. Added a
       check and a conversion from the site's default encoding.

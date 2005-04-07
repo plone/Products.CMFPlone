@@ -304,6 +304,7 @@ class PloneGenerator(Portal.PortalGenerator):
         ntp._setProperty('topLevel', 0, 'int')
         ntp._setProperty('idsNotToList', [] , 'lines')
         ntp._setProperty('skipIndex_html',1,'boolean')
+        ntp._setProperty('showAllParents',1,'boolean')
 
         # Canditates to be implemented
         ntp._setProperty('showMyUserFolderOnly', 1, 'boolean')

@@ -476,6 +476,21 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     def createSitemap(self, context):
         return self.createNavTree(context, sitemap=1)
 
+    def _addToNavTreeResult(self, result, data):
+        """ add a piece of content to the result tree """
+        path = data['path']
+        parentpath = '/'.join(path.split('/')[:-1])
+        # Tell parent about self
+        if result.has_key(parentpath):
+            result[parentpath]['children'].append(data)
+        else:
+            result[parentpath] = {'children':[data]}
+        # If we have processed a child already, make sure we register it
+        # as a child
+        if result.has_key(path):
+            data['children'] = result[path]['children']
+        result[path] = data
+
     security.declarePublic('createNavTree')
     def createNavTree(self, context, sitemap=None):
         """Returns a structure that can be used by
@@ -524,19 +539,43 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                     'review_state': item.review_state,
                     'Description':item.Description,
                     'children':[]}
-            parentpath = '/'.join(path.split('/')[:-1])
-            # Tell parent about self
-            if result.has_key(parentpath):
-                result[parentpath]['children'].append(data)
-            else:
-                result[parentpath] = {'children':[data]}
-            # If we have processed a child already, make sure we register it
-            # as a child
-            if result.has_key(path):
-                data['children'] = result[path]['children']
-            result[path] = data
+            self._addToNavTreeResult(result, data)
 
         portalpath = getToolByName(self, 'portal_url').getPortalPath()
+
+        if ntp.showAllParents:
+            portal = getToolByName(self, 'portal_url').getPortalObject()
+            parent = context
+            parents = [parent]
+            while not parent is portal:
+                parent = parent.aq_parent
+                parents.append(parent)
+
+            wf_tool = getToolByName(self, 'portal_workflow')
+            for item in parents:
+                path = '/'.join(item.getPhysicalPath())
+                if not result.has_key(path) or \
+                   not result[path].has_key('path'):
+                    # item was not returned in catalog search
+                    currentItem = path == currentPath
+                    if currentItem:
+                        foundcurrent = path
+                    try:
+                        review_state = wf_tool.getInfoFor(item, 'review_state')
+                    except WorkflowException:
+                        review_state = ''
+                    data = {'Title': item.Title() or '\xe2\x80\xa6'.decode('utf-8'),
+                            'currentItem': currentItem,
+                            'absolute_url': item.absolute_url(),
+                            'getURL': item.absolute_url(),
+                            'path': path,
+                            'icon': item.getIcon(),
+                            'creation_date': item.CreationDate(),
+                            'review_state': review_state,
+                            'Description':item.Description(),
+                            'children':[],
+                            'portal_type':item.portal_type}
+                    self._addToNavTreeResult(result, data)
 
         if not foundcurrent:
             #    result['/'.join(currentPath.split('/')[:-1])]['currentItem'] = True
