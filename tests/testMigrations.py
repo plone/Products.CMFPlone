@@ -23,7 +23,9 @@ from Products.CMFPlone.migrations.v2_1.alphas import addGetObjSizeMetadata
 from Products.CMFPlone.migrations.v2_1.alphas import updateNavTreeProperties
 from Products.CMFPlone.migrations.v2_1.alphas import addSitemapAction
 from Products.CMFPlone.migrations.v2_1.alphas import reindexCatalog
-
+from Products.CMFPlone.migrations.v2_1.alphas import removePortalTabsActions
+from Products.CMFPlone.migrations.v2_1.alphas import addNewsFolder
+from Products.CMFPlone.migrations.v2_1.alphas import addExclude_from_navMetadata
 
 class MigrationTest(PloneTestCase.PloneTestCase):
 
@@ -64,6 +66,11 @@ class MigrationTest(PloneTestCase.PloneTestCase):
         sheet = getattr(tool, 'navtree_properties')
         if sheet.hasProperty(property_id):
             sheet.manage_delProperties([property_id])
+
+    def addActionToTool(self, action_id, category):
+        # adds an action to portal_actions
+        tool = getattr(self.portal, 'portal_actions')
+        tool.addAction(action_id,action_id,'','',category)
 
 
 class TestMigrations_v2(MigrationTest):
@@ -326,6 +333,69 @@ class TestMigrations_v2_1(MigrationTest):
         reindexCatalog(self.portal, [])
         self.assertEqual(len(self.catalog(Title='Foo')), 0)
         self.assertEqual(len(self.catalog(Title='Bar')), 1)
+
+    def testremovePortalTabsActions(self):
+        # Should remove the news and Members actions
+        self.addActionToTool('Members','portal_tabs')
+        self.addActionToTool('news','portal_tabs')
+        removePortalTabsActions(self.portal, [])
+        self.failIf('Members' in [x.id for x in self.actions.listActions()])
+        self.failIf('news' in [x.id for x in self.actions.listActions()])
+
+    def testremovePortalTabsActionsNoActions(self):
+        # Should not fail if the actions are already gone
+        self.removeActionFromTool('Members')
+        self.removeActionFromTool('news')
+        removePortalTabsActions(self.portal, [])
+
+    def testremovePortalTabsActionsNoTool(self):
+        # Should not fail if portal_actions is missing
+        self.portal._delObject('portal_actions')
+        removePortalTabsActions(self.portal, [])
+
+    def testremovePortalTabsActionsTwice(self):
+        # Should not fail if portal_actions is missing
+        removePortalTabsActions(self.portal, [])
+        removePortalTabsActions(self.portal, [])
+        self.failIf('Members' in [x.id for x in self.actions.listActions()])
+        self.failIf('news' in [x.id for x in self.actions.listActions()])
+
+    def testAddNewsFolder(self):
+        self.portal._delObject('news')
+        self.failIf('news' in self.portal.objectIds())
+        addNewsFolder(self.portal, [])
+        self.failUnless('news' in self.portal.objectIds())
+        news = getattr(self.portal.aq_base, 'news')
+        self.assertEqual(news._getPortalTypeName(), 'Large Plone Folder')
+        self.assertEqual(list(news.getProperty('default_page')), ['news_listing','index_html'])
+        self.assertEqual(list(news.getImmediatelyAddableTypes()),['News Item'])
+        self.assertEqual(list(news.getLocallyAllowedTypes()),['News Item'])
+        self.assertEqual(news.getConstrainTypesMode(), 1)
+
+    def testAddNewsFolderTwice(self):
+        self.portal._delObject('news')
+        self.failIf('news' in self.portal.objectIds())
+        addNewsFolder(self.portal, [])
+        addNewsFolder(self.portal, [])
+        self.failUnless('news' in self.portal.objectIds())
+
+    def testAddExclude_from_navMetadata(self):
+        # Should add getObjSize to schema
+        self.catalog.delColumn('exclude_from_nav')
+        addExclude_from_navMetadata(self.portal, [])
+        self.failUnless('exclude_from_nav' in self.catalog.schema())
+
+    def testAddExclude_from_navMetadataTwice(self):
+        # Should not fail if migrated again
+        self.catalog.delColumn('exclude_from_nav')
+        addExclude_from_navMetadata(self.portal, [])
+        addExclude_from_navMetadata(self.portal, [])
+        self.failUnless('exclude_from_nav' in self.catalog.schema())
+
+    def testAddExclude_from_navMetadataNoCatalog(self):
+        # Should not fail if catalog is missing
+        self.portal._delObject('portal_catalog')
+        addExclude_from_navMetadata(self.portal, [])
 
 
 def test_suite():

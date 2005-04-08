@@ -362,6 +362,7 @@ def addNewsFolder(portal, out):
     out.append("Set constrain types for news folder")
 
     #Add news_listing.pt as default page
+    #property manager hasProperty can give odd results ask forgiveness instead
     try:
         news.manage_addProperty('default_page', ['news_listing','index_html'], 'lines')
         out.append("Added default view for news folder")

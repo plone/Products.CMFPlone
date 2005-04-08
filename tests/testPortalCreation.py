@@ -195,6 +195,28 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         else:
             self.fail("Actions tool has no 'sitemap' action")
 
+    def testNoMembersAction(self):
+        # There should not be a Members action
+        for action in self.actions.listActions():
+            if action.getId() == 'Members':
+                self.fail("Actions tool still has 'Members' action")
+
+    def testNoNewsAction(self):
+        # There should not be a news action
+        for action in self.actions.listActions():
+            if action.getId() == 'news':
+                self.fail("Actions tool still has 'News' action")
+
+    def testNewsFolder(self):
+        # The portal should contain news folder
+        self.failUnless('news' in self.portal.objectIds())
+        news = getattr(self.portal.aq_base, 'news')
+        self.assertEqual(news._getPortalTypeName(), 'Large Plone Folder')
+        self.assertEqual(list(news.getProperty('default_page')), ['news_listing','index_html'])
+        self.assertEqual(list(news.getImmediatelyAddableTypes()),['News Item'])
+        self.assertEqual(list(news.getLocallyAllowedTypes()),['News Item'])
+        self.assertEqual(news.getConstrainTypesMode(), 1)
+
 
 class TestPortalBugs(PloneTestCase.PloneTestCase):
 
