@@ -22,6 +22,7 @@ ZopeTestCase.installProduct('ExtendedPathIndex')
 ZopeTestCase.installProduct('SecureMailHost')
 if ZopeTestCase.hasProduct('ExternalEditor'):
     ZopeTestCase.installProduct('ExternalEditor')
+ZopeTestCase.installProduct('CSSRegistry')
 ZopeTestCase.installProduct('CMFPlone')
 ZopeTestCase.installProduct('MailHost', quiet=1)
 ZopeTestCase.installProduct('PageTemplates', quiet=1)
@@ -34,9 +35,6 @@ ZopeTestCase.installProduct('MimetypesRegistry', quiet=1)
 ZopeTestCase.installProduct('PortalTransforms', quiet=1)
 ZopeTestCase.installProduct('ATContentTypes')
 ZopeTestCase.installProduct('ATReferenceBrowserWidget')
-
-# CSSRegistry
-ZopeTestCase.installProduct('CSSRegistry')
 
 
 # Install sessions and error_log

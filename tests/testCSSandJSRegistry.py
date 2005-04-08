@@ -1,5 +1,5 @@
 #
-# Skeleton PloneTestCase
+# CSSRegistry tests
 #
 
 import os, sys
@@ -10,6 +10,7 @@ from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CSSRegistry.config import TOOLNAME, JSTOOLNAME
 from Products.CMFCore.utils import getToolByName
+
 
 class TestCSSRegistry(PloneTestCase.PloneTestCase):
 
@@ -25,7 +26,6 @@ class TestCSSRegistry(PloneTestCase.PloneTestCase):
                  'ploneBase.css','plonePrint.css','plonePresentation.css']
         for e in expected:
             self.failUnless(e in installedStylesheetIds, e)
-            
 
 
 class TestJSRegistry(PloneTestCase.PloneTestCase):
@@ -63,12 +63,12 @@ class TestJSRegistry(PloneTestCase.PloneTestCase):
              'register_function.js']
         for e in expected:
             self.failUnless(e in installedScriptIds, e)
-            
+
     def testJSIsInsertedInPage(self):
         page = self.portal.index_html()
         self.failUnless("" in page)
-            
-            
+
+
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
