@@ -10,6 +10,7 @@
 ##
 from DateTime import DateTime
 from Products.CMFPlone import transaction_note
+from AccessControl import Unauthorized
 
 contentEditSuccess=0
 plone_log=context.plone_log
@@ -34,7 +35,7 @@ def editContent(obj, effective, expiry):
 try:
     editContent(new_context,effective_date,expiration_date)
     contentEditSuccess=1
-except 'Unauthorized':
+except (Unauthorized,'Unauthorized'):
     pass
 
 wfcontext = context
@@ -54,7 +55,7 @@ if not wfcontext:
 if not contentEditSuccess:
     try:
         editContent(wfcontext, effective_date, expiration_date)
-    except 'Unauthorized':
+    except (Unauthorized,'Unauthorized'):
         pass
 
 transaction_note(note)

@@ -34,7 +34,7 @@
 REQUEST=context.REQUEST
 
 if actions is None:
-    raise 'You must pass in the filtered actions'
+    raise AttributeError, 'You must pass in the filtered actions'
     
 if REQUEST.has_key('disable_border'): #short circuit
     return 0

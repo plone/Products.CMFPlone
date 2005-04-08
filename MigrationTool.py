@@ -339,8 +339,8 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     def _check(self):
         """ Are we inside a Plone site?  Are we allowed? """
-        if not hasattr(self,'portal_url'):
-            raise 'You must be in a Plone site to migrate.'
+        if getattr(self,'portal_url', []) == []:
+            raise AttributeError, 'You must be in a Plone site to migrate.'
 
     def _upgrade(self, version):
         version = version.lower()

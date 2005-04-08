@@ -1,5 +1,4 @@
-try: from zExceptions import NotFound
-except ImportError: NotFound = 'NotFound' # Zope < 2.7
+from zExceptions import NotFound
 from Products.CMFCore.utils import _verifyActionPermissions, \
      getToolByName, getActionContext
 from OFS.Folder import Folder
@@ -462,8 +461,8 @@ def _getViewFor(obj, view='view', default=None):
         #for action in actions:
         #    if _verifyActionPermissions(obj, action)  and action.get('action','')!='':
         #        return obj.restrictedTraverse(action['action'])
-        raise 'Unauthorized', ('No accessible views available for %s' %
+        raise Unauthorized, ('No accessible views available for %s' %
                                '/'.join(obj.getPhysicalPath()))
     else:
-        raise 'Not Found', ('Cannot find default view for "%s"' %
+        raise NotFound, ('Cannot find default view for "%s"' %
                             '/'.join(obj.getPhysicalPath()))

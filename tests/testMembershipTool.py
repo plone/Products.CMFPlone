@@ -13,6 +13,7 @@ from Products.CMFPlone.tests import dummy
 from AccessControl.User import nobody
 from Acquisition import aq_base
 from DateTime import DateTime
+from zExceptions import BadRequest
 
 default_user = PloneTestCase.default_user
 
@@ -108,11 +109,10 @@ class TestMembershipTool(PloneTestCase.PloneTestCase):
         self.logout()
         try:
             self.membership.setPassword('geheim')
-        except:
-            # Bl**dy string exceptions
+        except BadRequest:
             import sys; e, v, tb = sys.exc_info(); del tb
-            if str(e) == 'Bad Request' and str(v) == 'Not logged in.':
-                pass    # Test passed
+            if str(v) == 'Not logged in.':
+                pass
             else:
                 raise
 

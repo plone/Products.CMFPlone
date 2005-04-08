@@ -7,6 +7,7 @@ from Products.CMFPlone.PloneUtilities import _createObjectByType
 from OFS.Image import Image
 from AccessControl import ClassSecurityInfo, getSecurityManager
 from Globals import InitializeClass
+from zExceptions import BadRequest
 from Acquisition import aq_base, aq_parent, aq_inner
 from Products.CMFCore.CMFCorePermissions import View
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
@@ -442,11 +443,11 @@ class MembershipTool(PloneBaseTool, BaseTool):
             acl_users = self._findUsersAclHome(member.getUserName())#self.acl_users
             if not acl_users:
                 # should not possibly ever happen
-                raise 'Bad Request', 'did not find current user in any user folder'
+                raise BadRequest, 'did not find current user in any user folder'
             if registration:
                 failMessage = registration.testPasswordValidity(password)
                 if failMessage is not None:
-                    raise 'Bad Request', failMessage
+                    raise BadRequest, failMessage
 
             if domains is None:
                 domains = []
@@ -459,7 +460,7 @@ class MembershipTool(PloneBaseTool, BaseTool):
                 acl_users._doChangeUser(member.getUserName(), password, member.getRoles(), domains)
             self.credentialsChanged(password)
         else:
-            raise 'Bad Request', 'Not logged in.'
+            raise BadRequest, 'Not logged in.'
 
 MembershipTool.__doc__ = BaseTool.__doc__
 

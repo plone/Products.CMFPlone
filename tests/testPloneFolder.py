@@ -13,8 +13,7 @@ from Acquisition import aq_base
 
 try: from zExceptions import NotFound
 except ImportError: NotFound = 'NotFound'
-try: from zExceptions import BadRequest
-except ImportError: BadRequest = 'BadRequest'
+from zExceptions import BadRequest
 
 
 class TestPloneFolder(PloneTestCase.PloneTestCase):
@@ -81,8 +80,7 @@ class TestCheckIdAvailable(PloneTestCase.PloneTestCase):
         except:
             # Zope < 2.7
             e,v,tb = sys.exc_info(); del tb
-            if str(e) != 'Bad Request':
-                raise
+            raise
 
     def testCheckIdRaisesBadRequest(self):
         # _checkId() should raise zExceptions.BadRequest
@@ -95,8 +93,7 @@ class TestCheckIdAvailable(PloneTestCase.PloneTestCase):
         except:
             # Zope < 2.7
             e,v,tb = sys.exc_info(); del tb
-            if str(e) != 'Bad Request':
-                raise
+            raise
 
     def testCheckIdAvailableCatchesBadRequest(self):
         # checkIdAvailable() should catch zExceptions.BadRequest
@@ -114,8 +111,7 @@ class TestCheckIdAvailable(PloneTestCase.PloneTestCase):
         except:
             # Zope < 2.7
             e,v,tb = sys.exc_info(); del tb
-            if str(e) != 'Bad Request':
-                raise
+            raise
 
     def testLPFCheckIdRaisesBadRequest(self):
         # _checkId() should raise zExceptions.BadRequest
@@ -128,8 +124,7 @@ class TestCheckIdAvailable(PloneTestCase.PloneTestCase):
         except:
             # Zope < 2.7
             e,v,tb = sys.exc_info(); del tb
-            if str(e) != 'Bad Request':
-                raise
+            raise
 
     def testLPFCheckIdAvailableCatchesBadRequest(self):
         # checkIdAvailable() should catch zExceptions.BadRequest

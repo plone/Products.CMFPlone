@@ -23,7 +23,7 @@ from Products.CMFPlone.interfaces.BrowserDefault import IBrowserDefault
 from OFS.SimpleItem import SimpleItem
 from OFS.ObjectManager import bad_id
 from Globals import InitializeClass
-from AccessControl import ClassSecurityInfo
+from AccessControl import ClassSecurityInfo, Unauthorized
 from ZODB.POSException import ConflictError
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from DateTime import DateTime
@@ -208,7 +208,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         """
         mt = getToolByName(self, 'portal_membership')
         if not mt.checkPermission(CMFCorePermissions.ModifyPortalContent, obj):
-            raise 'Unauthorized'    # FIXME: Some scripts rely on this being string?
+            raise Unauthorized    # FIXME: Some scripts rely on this being string?
 
         REQUEST = self.REQUEST
         pfx = self.field_prefix
@@ -810,7 +810,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         """
         mt = getToolByName(self, 'portal_membership')
         if not mt.checkPermission(CMFCorePermissions.ModifyPortalContent, obj):
-            raise 'Unauthorized'
+            raise Unauthorized
 
         # Set local role status
         gruf = getToolByName( self, 'portal_url' ).getPortalObject().acl_users
