@@ -4,6 +4,14 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Fixed http://members.plone.org/collector/3924 eradicated all string
+      exceptions.
+      [alecm]
+
+    - Fixed http://members.plone.org/collector/3910 isValidEmail now uses
+      the _checkEmail function from CMFDefault to avoid ValueErrors.
+      [alecm]
+
     - Added empty fill-slot="sub" to discussion_reply_form to get rid of
       the second, broken 'add comment' button showing up on that form
       for top level comments
