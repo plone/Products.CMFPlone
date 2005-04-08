@@ -84,7 +84,6 @@ class TestContentPublishing(PloneTestCase.PloneTestCase):
 
     def testInstaPublishingDocument(self):
         self.folder.invokeFactory('Document', id='mollusk')
-        get_transaction().commit(1)
         mollusk=self.folder.mollusk
         mollusk.document_edit('plain', text, title=props['title'])
         self.failUnless(mollusk.CookedBody()!=text)

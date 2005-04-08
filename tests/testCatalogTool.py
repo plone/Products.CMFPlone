@@ -329,7 +329,6 @@ class TestFolderCataloging(PloneTestCase.PloneTestCase):
 class TestCatalogOrdering(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
-        self.loginPortalOwner()
         self.catalog = self.portal.portal_catalog
         self.folder.invokeFactory('Document', id='doc1', text='foo')
         self.folder.invokeFactory('Document', id='doc2', text='bar')
