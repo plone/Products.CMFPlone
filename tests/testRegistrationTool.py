@@ -78,6 +78,10 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
         # XXX: register has a proxy role but we trip over
         # validate_registration... (2.0.5)
         self.assertRaises(Unauthorized, self.portal.register)
+
+    def testInvalidCMFDefaultEmailFailsValidation(self):
+        # http://plone.org/collector/3910
+        self.failIf(self.registration.isValidEmail('bogus@127.0.0.1'))
     
 
 class TestPasswordGeneration(PloneTestCase.PloneTestCase):
