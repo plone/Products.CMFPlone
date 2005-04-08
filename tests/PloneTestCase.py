@@ -14,6 +14,7 @@ ZopeTestCase.installProduct('DCWorkflow')
 ZopeTestCase.installProduct('CMFActionIcons')
 ZopeTestCase.installProduct('CMFQuickInstallerTool')
 ZopeTestCase.installProduct('CMFFormController')
+ZopeTestCase.installProduct('CSSRegistry')
 ZopeTestCase.installProduct('GroupUserFolder')
 ZopeTestCase.installProduct('ZCTextIndex')
 if ZopeTestCase.hasProduct('TextIndexNG2'):
@@ -22,7 +23,6 @@ ZopeTestCase.installProduct('ExtendedPathIndex')
 ZopeTestCase.installProduct('SecureMailHost')
 if ZopeTestCase.hasProduct('ExternalEditor'):
     ZopeTestCase.installProduct('ExternalEditor')
-ZopeTestCase.installProduct('CSSRegistry')
 ZopeTestCase.installProduct('CMFPlone')
 ZopeTestCase.installProduct('MailHost', quiet=1)
 ZopeTestCase.installProduct('PageTemplates', quiet=1)
@@ -95,7 +95,9 @@ class PloneTestCase(ZopeTestCase.PortalTestCase):
             self.login(name)
 
     def loginPortalOwner(self):
-        '''Use if you need to manipulate the portal itself.'''
+        '''Use if - AND ONLY IF - you need to manipulate the
+           portal object itself.
+        '''
         uf = self.app.acl_users
         user = uf.getUserById(portal_owner).__of__(uf)
         newSecurityManager(None, user)
@@ -130,7 +132,7 @@ def _setupHomeFolder(portal, member_id):
     '''Creates the folders comprising a memberarea.'''
     from Products.CMFPlone.PloneUtilities import _createObjectByType
     membership = portal.portal_membership
-    catalog = portal.portal_catalog
+    catalog = getattr(portal, 'portal_catalog', None)
     # Create home folder
     members = membership.getMembersFolder()
     _createObjectByType('Folder', members, id=member_id)
@@ -139,7 +141,8 @@ def _setupHomeFolder(portal, member_id):
     _createObjectByType('Folder', home, id=membership.personal_id)
     # Uncatalog personal folder
     personal = membership.getPersonalFolder(member_id)
-    catalog.unindexObject(personal)
+    if catalog is not None:
+       catalog.unindexObject(personal)
 
 
 def optimize():
@@ -169,7 +172,6 @@ def optimize():
     # Don't setup Plone content (besides Members folder)
     def setupPortalContent(self, p):
         p.invokeFactory('Large Plone Folder', id='Members')
-        ##p.portal_catalog.unindexObject(p.Members)
     PloneGenerator.setupPortalContent = setupPortalContent
 
 
