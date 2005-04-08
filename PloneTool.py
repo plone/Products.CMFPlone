@@ -591,6 +591,37 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         else:
             return {}
 
+    security.declarePublic('createBreadCrumbs')
+    def createBreadCrumbs(self, context):
+        "Returns a structure for the portal breadcumbs"""
+        ct=getToolByName(self, 'portal_catalog')
+        query = {}
+
+        #Check to see if the current page is a folder default view, if so
+        #get breadcrumbs from the parent folder
+        if self.isDefaultPage(context):
+            currentPath = '/'.join(context.aq_inner.aq_parent.getPhysicalPath())
+        else:
+            currentPath = '/'.join(context.getPhysicalPath())
+        query['path'] = {'query':currentPath, 'navtree':1, 'depth': 0}
+
+        rawresult = ct(**query)
+
+        #sort items on path length
+        dec_result = [(len(r.getPath()),r) for r in rawresult]
+        dec_result.sort()
+
+        # Build result dict
+        result = []
+        for r_tuple in dec_result:
+            item = r_tuple[1]
+            data = {'Title':item.Title or '\xe2\x80\xa6'.decode('utf-8'),
+                    'absolute_url': item.getURL()}
+            result.append(data)
+        return result
+            
+            
+
     # expose ObjectManager's bad_id test to skin scripts
     security.declarePublic('good_id')
     def good_id(self, id):
@@ -935,22 +966,32 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     security.declarePublic('listMetaTags')
     def listMetaTags(self, context):
         """List meta tags helper
-        
+
         Creates a mapping of meta tags -> values for the listMetaTags script
         """
         result = {}
-        for accessor, key in METADATA_DCNAME.items():
+
+        site_props = getToolByName(self, 'portal_properties').site_properties
+
+        use_all = site_props.getProperty('exposeDCMetaTags', None)
+
+        if not use_all:
+            metadata_names = {'Description': METADATA_DCNAME['Description']}
+        else:
+            metadata_names = METADATA_DCNAME
+
+        for accessor, key in metadata_names.items():
             method = getattr(aq_inner(context).aq_explicit, accessor, None)
             if not callable(method):
                 # ups
                 continue
-        
+
             # Catch AttributeErrors raised by some AT applications
             try:
                 value = method()
             except AttributeError:
                 value = None
-        
+
             if not value:
                 # no data
                 continue
@@ -960,49 +1001,51 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             if isinstance(value, (list, tuple)):
                 # convert a list to a string
                 value = ', '.join(value)
-            
+
             # special cases
             if accessor == 'Description':
                 result['description'] = value
-            if accessor == 'Subject':
+            elif accessor == 'Subject':
                 result['keywords'] = value
-            
-            result[key] = value
-        
-        created = context.CreationDate()
-        
-        try:
-            effective = context.EffectiveDate()
-            if effective == 'None':
-                effective = None
-            if effective:
-                effective = DateTime(effective)
-        except AttributeError:
-            effective = None
-  
-        try:
-            expires = context.ExpirationDate()
-            if expires == 'None':
-                expires = None
-            if expires:
-                expires = DateTime(expires)
-        except AttributeError:
-            expires = None
-        
-        #   Filter out DWIMish artifacts on effective / expiration dates
-        if effective is not None and effective > FLOOR_DATE and effective != created:
-            eff_str = effective.Date()
-        else:
-            eff_str = ''
-        
-        if expires is not None and expires < CEILING_DATE:
-            exp_str = expires.Date()
-        else:
-            exp_str = ''
 
-        if exp_str or exp_str:
-            result['DC.date.valid_range'] = '%s - %s' % (eff_str, exp_str)
-        
+            if use_all:
+                result[key] = value
+
+        if use_all:
+            created = context.CreationDate()
+
+            try:
+                effective = context.EffectiveDate()
+                if effective == 'None':
+                    effective = None
+                if effective:
+                    effective = DateTime(effective)
+            except AttributeError:
+                effective = None
+
+            try:
+                expires = context.ExpirationDate()
+                if expires == 'None':
+                    expires = None
+                if expires:
+                    expires = DateTime(expires)
+            except AttributeError:
+                expires = None
+
+            #   Filter out DWIMish artifacts on effective / expiration dates
+            if effective is not None and effective > FLOOR_DATE and effective != created:
+                eff_str = effective.Date()
+            else:
+                eff_str = ''
+
+            if expires is not None and expires < CEILING_DATE:
+                exp_str = expires.Date()
+            else:
+                exp_str = ''
+
+            if exp_str or exp_str:
+                result['DC.date.valid_range'] = '%s - %s' % (eff_str, exp_str)
+
         return result
 
 InitializeClass(PloneTool)

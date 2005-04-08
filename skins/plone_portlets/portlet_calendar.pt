@@ -22,7 +22,8 @@
         <thead>
             <tr>
                 <th id="calendar-previous">
-                    <a href="#" tal:attributes="href python:'%s/%s?month:int=%d&amp;year:int=%d' % (anchor_url, anchor_method, prevMonthTime.month(),prevMonthTime.year())">&laquo;</a>
+                    <a href="#" tal:attributes="href python:'%s/%s?month:int=%d&amp;year:int=%d' % (anchor_url, anchor_method, prevMonthTime.month(),prevMonthTime.year())">
+                    <img src="" alt="" title="Previous month" tal:attributes="src string:${portal_url}/arrowLeft.gif" /></a>
                 </th>
                 <th colspan="5"
                     tal:define="date python:DateTime(year, month, 1);">
@@ -42,67 +43,49 @@
                     </span>
                  </th>
                 <th id="calendar-next">
-                    <a href="#" tal:attributes="href python:'%s/%s?month:int=%d&amp;year:int=%d' % (anchor_url, anchor_method, nextMonthTime.month(),nextMonthTime.year())">&raquo;</a>
+                    <a href="#" tal:attributes="href python:'%s/%s?month:int=%d&amp;year:int=%d' % (anchor_url, anchor_method, nextMonthTime.month(),nextMonthTime.year())">
+                    <img src="" title="Next month" tal:attributes="src string:${portal_url}/arrowRight.gif" /></a>
                 </th>
             </tr>
             <tr tal:define="weekdays here/portal_calendar/getDays" class="weekdays">
-                <tal:block repeat="weekday weekdays">
-                <td i18n:translate="" tal:content="weekday">Su</td>
-               </tal:block>
+                <td i18n:translate="" tal:repeat="weekday weekdays" tal:content="weekday">Su</td>
             </tr>
         </thead>
+        
+        <tal:comment replace="nothing">
+        Sorry for the obtuse formatting below (the stray end-of-tag markers), but until
+        tal:block doesn't render an entire line of blank space when used, this is the only way.
+        </tal:comment>
         <tbody>
-            <tr tal:repeat="week weeks">
-              <tal:block repeat="day week">
-                <tal:block define="daynumber day/day;
-                                   datestring python: '%d%0.2d%0.2d' % (year, month, daynumber);
-                                   javascriptstring string:javascript:%sDay('%s');">
-                  <td class="event" tal:condition="day/event"
-                      tal:attributes="onmouseout  python: javascriptstring % ('hide', datestring);
-                                      onmouseover python: javascriptstring % ('show', datestring);
-                                      class       python:test(current.year()==year and current.month()==month and current.day()==int(daynumber), 'todayevent', 'event')">
-                    <span tal:define="begEndTimes python:here.getBeginAndEndTimes(day=daynumber, month=month, year=year)" tal:omit-tag="">
-                      <span tal:define="begin python:DateTime(begEndTimes[0].timeTime()+86400).ISO();
-                                        end python:DateTime(begEndTimes[1].strftime('%Y/%m/%d')).ISO();
-                                        pss python:modules['Products'].PythonScripts.standard" tal:omit-tag="">
-                      <a href="" tal:attributes="href python:here.portal_url()+'/search?review_state=published&amp;start.query:record:date=%s&amp;start.range:record=max&amp;end.query:record:date=%s&amp;end.range:record=min'%(pss.url_quote(begin),pss.url_quote(end))">
-                        <span tal:replace="python: daynumber or default">&nbsp;</span>
-                      </a>
-                      </span>
-                    </span>
-                  </td>
-                  <tal:notdayevent tal:condition="not: day/event">
-                  <td tal:condition="python: current.year()==year and current.month()==month and current.day()==int(daynumber)"
-                      tal:content="python: daynumber or default" class="todaynoevent">
-                    &nbsp;
-                  </td>
-                  <td tal:condition="not: python: current.year()==year and current.month()==month and current.day()==int(daynumber)"
-                      tal:content="python: daynumber or default">
-                    &nbsp;
-                  </td>
-                  </tal:notdayevent>
-                </tal:block>
-              </tal:block>
+            <tr tal:repeat="week weeks"
+            ><tal:block repeat="day week"
+            ><tal:block define="daynumber day/day;
+                                datestring python: '%d%0.2d%0.2d' % (year, month, daynumber);
+                                day_event day/event;
+                                is_today python: current.day()==int(daynumber) and current.month()==month and current.year()==year">
+               <td class="event" tal:condition="day_event"
+                      tal:attributes="class python:test(is_today, 'todayevent', 'event')"
+                   ><tal:data tal:define="cur_date python:DateTime(year,month,int(daynumber));
+                                          pss_url nocall: python:modules['Products'].PythonScripts.standard.url_quote;
+                                          begin python:pss_url((cur_date.latestTime()).ISO());
+                                          end python:pss_url(cur_date.earliestTime().ISO());" tal:omit-tag=""
+                     ><a href=""
+                         tal:attributes="href string:${here/portal_url}/search?review_state=published&amp;start.query:record:list:date=${begin}&amp;start.range:record=max&amp;end.query:record:list:date=${end}&amp;end.range:record=min;
+                                         title python:'\n'.join([here.toLocalizedTime(cur_date)]+[here.getEventString(e) for e in day['eventslist']]);"
+                         tal:content="python: daynumber or default">
+                      31
+                      </a
+                   ></tal:data>
+                </td
+                ><tal:notdayevent tal:condition="not: day_event"
+               ><td tal:attributes="class python:test(is_today,'todaynoevent',None)"
+                    tal:content="python: daynumber or default"></td
+               ></tal:notdayevent
+            ></tal:block
+            ></tal:block>
             </tr>
         </tbody>
     </table>
-
-
-    <!-- The sticky notes -->
-    <tal:week repeat="week weeks"><tal:day repeat="day week">
-        <div class="dayPopup"
-             id="dummy"
-             tal:attributes="id python:'day%d%0.2d%0.2d' % (year, month, day['day']) "
-             tal:condition="day/event">
-             <div class="date" tal:content="python:here.toLocalizedTime('%d/%0.2d/%0.2d' % (year, month, day['day']))">
-             2001-04-11
-             </div>
-             <tal:event repeat="anevent day/eventslist">
-             <div class="appointment" tal:content="python: here.getEventString(event=anevent)">an event</div>
-             </tal:event>
-        </div>
-      </tal:day>
-    </tal:week>
 
 </div>
 

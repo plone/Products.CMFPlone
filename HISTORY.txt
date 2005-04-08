@@ -4,6 +4,25 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Merged plip93-optimize-templates r6360:HEAD into 2.1 branch.
+      [stefan]
+
+    - Minor refactoring of the calendar portlet to avoid unnecessary duplicate
+      method calls.  Removed getBeginAndEndTimes.
+      [alecm]
+
+    - Replaced breadcrumbs implementation with a faster simpler one based on
+      ExtendedPathIndex.
+      [alecm]
+
+    - Turned off DC MetaTags by default, added a global config to
+      site_properties so that they can be reenabled if desired.
+      [alecm]
+
+    - Made the calendar portlet HTML output Not Suck. The code, however
+      still does. ;)
+      [limi]
+
     - Fixed http://members.plone.org/collector/3924 eradicated all string
       exceptions.
       [alecm]

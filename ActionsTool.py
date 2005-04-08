@@ -112,12 +112,12 @@ class ActionsTool(PloneBaseTool, BaseTool):
                         verified = 1
                         break
             if verified:
-                catlist = filtered_actions.get(category, None)
-                if catlist is None:
-                    filtered_actions[category] = catlist = []
+                catlist = filtered_actions.setdefault(category, [])
+                # XXX Dieter says the check below is unnecessary and very slow,
+                # so away it goes.
                 # Filter out duplicate actions by identity...
-                if not action in catlist:
-                    catlist.append(action)
+                # if not action in catlist:
+                catlist.append(action)
                 # ...should you need it, here's some code that filters
                 # by equality (use instead of the two lines above)
                 #if not [a for a in catlist if a==action]:

@@ -55,6 +55,9 @@ def alpha1_alpha2(portal):
     addVisibleIdsSiteProperty(portal, out)
     deleteVisibleIdsMemberProperty(portal, out)
 
+    # Make a new property exposeDCMetaTags
+    addExposeDCMetaTagsProperty(portal, out)
+
     # Switch path index to ExtendedPathIndex
     reindex += switchPathIndex(portal, out)
 
@@ -207,6 +210,17 @@ def deleteVisibleIdsMemberProperty(portal, out):
         if memberdata.hasProperty('visible_ids'):
             memberdata.manage_delProperties(['visible_ids'])
         out.append("Deleted 'visible_ids' property from portal_memberdata.")
+
+
+def addExposeDCMetaTagsProperty(portal, out):
+    """Adds sitewide config for whether DC metatags are shown."""
+    propTool = getToolByName(portal, 'portal_properties', None)
+    if propTool is not None:
+        propSheet = getattr(aq_base(propTool), 'site_properties', None)
+        if propSheet is not None:
+            if not propSheet.hasProperty('exposeDCMetaTags'):
+                propSheet.manage_addProperty('exposeDCMetaTags', 0, 'boolean')
+            out.append("Added 'exposeDCMetaTags' property to site_properties.")
 
 
 def switchPathIndex(portal, out):
