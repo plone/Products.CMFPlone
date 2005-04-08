@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Moved retrieval of Zope system information out of
+      plone_control_panel.pt and into proxied script getZopeInfo.py so
+      that plone Managers who are not also Zope top-level Managers can
+      view the page
+      [bmh]
+
     - added installation of default CSS and JavaScripts
       [elvix]
 

@@ -49,11 +49,11 @@
 
     </tal:block>
     <div class="discreet"
-        tal:define="cp          here/Control_Panel;
+        tal:define="sys         here/getZopeInfo;
                     mt          here/portal_migration">
         Running Plone <span tal:replace="mt/getInstanceVersion" />,
-                Zope <span tal:replace="cp/version_txt" />, 
-                Python <span tal:replace="cp/sys_version" />
+                Zope <span tal:replace="python:sys[0]" />, 
+                Python <span tal:replace="python:sys[1]" />
     </div>
     </div>
 
