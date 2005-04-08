@@ -197,7 +197,6 @@ class MembershipTool(PloneBaseTool, BaseTool):
         # set title and description (edit invokes reindexObject)
         member_folder.edit(title=member_folder_title,
                            description=member_folder_description)
-        member_folder.reindexObject()
 
         ## Create personal folder for personal items
         _createObjectByType('Folder', member_folder, id=self.personal_id)
