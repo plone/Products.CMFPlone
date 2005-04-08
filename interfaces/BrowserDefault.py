@@ -27,9 +27,10 @@ class IBrowserDefault(Interface):
     def __browser_default__(request):
         """
         Resolve what should be displayed when viewing this object without an
-        explicit template specified. If a default page is set, resolve and 
-        return that. If not, resolve and return the page template found by 
-        getLayout().
+        explicit template specified. Returns a tuple (obj, [path, path]), where
+        obj is the object to publish (usually self), and the list of paths is
+        the list of page templates/object ids to try to use as the view for 
+        this object.
         """
 
     def getDefaultPage():
