@@ -7,17 +7,17 @@ Plone 2.1 - Plaid - (unreleased)
     - Moved retrieval of Zope system information out of
       plone_control_panel.pt and into proxied script getZopeInfo.py so
       that plone Managers who are not also Zope top-level Managers can
-      view the page
+      view the page.
       [bmh]
 
-    - added installation of default CSS and JavaScripts
+    - Added installation of default CSS and JavaScripts.
       [elvix]
 
     - Added CSSRegistry and JSRegistry dependencies. All stylesheets and
-      javascripts are now registered with these tools instead of hrdlinked
-      into header.pt. 
-      [elvix]      
-      
+      javascripts are now registered with these tools instead of hardlinked
+      into header.pt.
+      [elvix]
+
     - Cut the default Styleesheets and Javascripts into smaller pieces to be
       served up by the CSS- and JS-Registries
       [elvix] [limi]
