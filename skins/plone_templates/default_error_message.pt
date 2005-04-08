@@ -27,7 +27,7 @@
 
             <p i18n:translate="description_site_error_mail_admin">
             If you know you have the correct web address but are encountering an error, please
-            send a mail to the administrator of this site.
+            email the administrator of this site.
             </p>
 
             <a href="" 
