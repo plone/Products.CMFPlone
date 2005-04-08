@@ -21,9 +21,8 @@ if type_name is None:
 
 if context.portal_factory.getFactoryTypes().has_key(type_name):
     o = context.restrictedTraverse('portal_factory/' + type_name + '/' + id)
-    tname = o.getTypeInfo().Title()
     portal_status_message = None
-    transaction_note('Initiated creation of %s with id %s in %s' % (tname, id, context.absolute_url()))
+    transaction_note('Initiated creation of %s with id %s in %s' % (o.getTypeInfo().getId(), id, context.absolute_url()))
 else:
     new_id = context.invokeFactory(id=id, type_name=type_name)
     if new_id is None or new_id == '':
@@ -31,7 +30,7 @@ else:
     o=getattr(context, new_id, None)
     tname = o.getTypeInfo().Title()
     portal_status_message = tname + ' has been created.'
-    transaction_note('Created %s with id %s in %s' % (tname, new_id, context.absolute_url()))
+    transaction_note('Created %s with id %s in %s' % (o.getTypeInfo().getId(), new_id, context.absolute_url()))
 
 if o is None:
     raise Exception
