@@ -4,6 +4,7 @@ import re
 
 from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault.RegistrationTool import RegistrationTool as BaseTool
+from Products.CMFDefault.RegistrationTool import _checkEmail
 from Products.CMFPlone import ToolNames
 
 from Globals import InitializeClass
@@ -87,6 +88,8 @@ class RegistrationTool(PloneBaseTool, BaseTool):
     def isValidEmail(self, email):
         """ checks for valid email """
         if EMAIL_RE.search(email) == None:
+            return 0
+        if not _checkEmail(email)[0]:
             return 0
         return 1
 
