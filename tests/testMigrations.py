@@ -23,6 +23,7 @@ from Products.CMFPlone.migrations.v2_1.alphas import addGetObjSizeMetadata
 from Products.CMFPlone.migrations.v2_1.alphas import updateNavTreeProperties
 from Products.CMFPlone.migrations.v2_1.alphas import addSitemapAction
 from Products.CMFPlone.migrations.v2_1.alphas import reindexCatalog
+from Products.CMFPlone.migrations.v2_1.alphas import installCSSandJSRegistries
 
 
 class MigrationTest(PloneTestCase.PloneTestCase):
@@ -64,6 +65,12 @@ class MigrationTest(PloneTestCase.PloneTestCase):
         sheet = getattr(tool, 'navtree_properties')
         if sheet.hasProperty(property_id):
             sheet.manage_delProperties([property_id])
+
+    def uninstallProduct(self, product_name):
+        # Removes a product
+        tool = getattr(self.portal, 'portal_quickinstaller')
+        if tool.isProductInstalled(product_name):
+            tool.uninstallProducts([product_name])
 
 
 class TestMigrations_v2(MigrationTest):
@@ -330,6 +337,29 @@ class TestMigrations_v2_1(MigrationTest):
         reindexCatalog(self.portal, [])
         self.assertEqual(len(self.catalog(Title='Foo')), 0)
         self.assertEqual(len(self.catalog(Title='Bar')), 1)
+
+    def testInstallCSSandJSRegistries(self):
+        # Should install CSSRegistry
+        self.uninstallProduct('CSSRegistry')
+        self.failIf(hasattr(self.portal, 'portal_css'))
+        installCSSandJSRegistries(self.portal, [])
+        self.failUnless('portal_css' in self.portal.objectIds())
+        self.failUnless('portal_javascripts' in self.portal.objectIds())
+
+    def testInstallCSSandJSRegistriesTwice(self):
+        # Should not fail if migrated again
+        self.uninstallProduct('CSSRegistry')
+        self.failIf(hasattr(self.portal, 'portal_css'))
+        installCSSandJSRegistries(self.portal, [])
+        installCSSandJSRegistries(self.portal, [])
+        self.failUnless('portal_css' in self.portal.objectIds())
+        self.failUnless('portal_javascripts' in self.portal.objectIds())
+
+    def testInstallCSSandJSRegistriesNoTools(self):
+        # Should not fail if tools are missing
+        self.portal._delObject('portal_css')
+        self.portal._delObject('portal_javascripts')
+        installCSSandJSRegistries(self.portal, [])
 
 
 def test_suite():

@@ -69,58 +69,17 @@ def alpha1_alpha2(portal):
 
     # Add sitemap action
     addSitemapAction(portal, out)
-    
+
     # Install CSS and Javascript registries
     # also install default CSS and JS in the registry tools
     installCSSandJSRegistries(portal, out)
-    
+
     # Rebuild catalog
     if reindex:
         refreshSkinData(portal, out)
         reindexCatalog(portal, out)
 
     return out
-                 
-    
-def installCSSandJSRegistries(portal, out):
-    """install the CSS and JS registries""" 
-    qi=getToolByName(portal, 'portal_quickinstaller')
-    qi.installProduct('CSSRegistry', locked=0)
-    out.append('Installed CSSRegistry and JSRegistry')
-    cssreg = getToolByName(portal, 'portal_css')
-    cssreg.clearStylesheets()
-    cssreg.registerStylesheet('plonePresentation.css', media='presentation')
-    cssreg.registerStylesheet('plonePrint.css', media='print')
-    cssreg.registerStylesheet('ploneColumns.css')
-    cssreg.registerStylesheet('ploneAuthoring.css')
-    cssreg.registerStylesheet('plonePublic.css')
-    cssreg.registerStylesheet('ploneBase.css')
-    cssreg.registerStylesheet('ploneCustom.css')
-    
-    jsreg = getToolByName(portal, 'portal_javascripts')                                                 
-    jsreg.clearScripts()
-    jsreg.registerScript('sarissa.js.dtml', enabled=False)
-    jsreg.registerScript('vcXMLRPC.js', enabled=False)
-    jsreg.registerScript('correctPREformatting.js', enabled=False)
-    jsreg.registerScript('plone_minwidth.js' , enabled=False)
-    jsreg.registerScript('calendar_formfield.js')
-    jsreg.registerScript('ie5fixes.js')
-    jsreg.registerScript('calendarpopup.js')
-    jsreg.registerScript('collapsiblesections.js')
-    jsreg.registerScript('first_input_focus.js')
-    jsreg.registerScript('folder_contents_filter.js')
-    jsreg.registerScript('fullscreenmode.js')
-    jsreg.registerScript('highlightsearchterms.js')
-    jsreg.registerScript('mark_special_links.js')
-    jsreg.registerScript('select_all.js')
-    jsreg.registerScript('styleswitcher.js')
-    jsreg.registerScript('livesearch.js')
-    jsreg.registerScript('table_sorter.js')
-    jsreg.registerScript('plone_menu.js')
-    jsreg.registerScript('cookie_functions.js')
-    jsreg.registerScript('nodeutilities.js')
-    jsreg.registerScript('plone_javascript_variables.js')
-    jsreg.registerScript('register_function.js')
 
 
 def replaceMailHost(portal, out):
@@ -363,4 +322,51 @@ def reindexCatalog(portal, out):
         catalog.refreshCatalog(clear=1)
         catalog.threshold = old_threshold
         out.append("Reindexed portal_catalog.")
+
+
+def installCSSandJSRegistries(portal, out):
+    """Installs the CSS and JS registries."""
+    qi = getToolByName(portal, 'portal_quickinstaller', None)
+    if qi is not None:
+        if not qi.isProductInstalled('CSSRegistry'):
+            qi.installProduct('CSSRegistry', locked=0)
+
+        cssreg = getToolByName(portal, 'portal_css', None)
+        if cssreg is not None:
+            cssreg.clearStylesheets()
+            cssreg.registerStylesheet('plonePresentation.css', media='presentation')
+            cssreg.registerStylesheet('plonePrint.css', media='print')
+            cssreg.registerStylesheet('ploneColumns.css')
+            cssreg.registerStylesheet('ploneAuthoring.css')
+            cssreg.registerStylesheet('plonePublic.css')
+            cssreg.registerStylesheet('ploneBase.css')
+            cssreg.registerStylesheet('ploneCustom.css')
+
+        jsreg = getToolByName(portal, 'portal_javascripts', None)
+        if jsreg is not None:
+            jsreg.clearScripts()
+            jsreg.registerScript('sarissa.js.dtml', enabled=False)
+            jsreg.registerScript('vcXMLRPC.js', enabled=False)
+            jsreg.registerScript('correctPREformatting.js', enabled=False)
+            jsreg.registerScript('plone_minwidth.js' , enabled=False)
+            jsreg.registerScript('calendar_formfield.js')
+            jsreg.registerScript('ie5fixes.js')
+            jsreg.registerScript('calendarpopup.js')
+            jsreg.registerScript('collapsiblesections.js')
+            jsreg.registerScript('first_input_focus.js')
+            jsreg.registerScript('folder_contents_filter.js')
+            jsreg.registerScript('fullscreenmode.js')
+            jsreg.registerScript('highlightsearchterms.js')
+            jsreg.registerScript('mark_special_links.js')
+            jsreg.registerScript('select_all.js')
+            jsreg.registerScript('styleswitcher.js')
+            jsreg.registerScript('livesearch.js')
+            jsreg.registerScript('table_sorter.js')
+            jsreg.registerScript('plone_menu.js')
+            jsreg.registerScript('cookie_functions.js')
+            jsreg.registerScript('nodeutilities.js')
+            jsreg.registerScript('plone_javascript_variables.js')
+            jsreg.registerScript('register_function.js')
+
+        out.append('Installed CSSRegistry and JSRegistry')
 
