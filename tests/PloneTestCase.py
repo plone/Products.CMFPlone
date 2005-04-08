@@ -55,6 +55,11 @@ default_user = ZopeTestCase.user_name
 class PloneTestCase(ZopeTestCase.PortalTestCase):
     '''TestCase for Plone testing'''
 
+    def _setup(self):
+        # Hack an ACTUAL_URL into the REQUEST
+        ZopeTestCase.PortalTestCase._setup(self)
+        self.app.REQUEST['ACTUAL_URL'] = self.app.REQUEST.get('URL')
+
     def getPortal(self):
         '''Returns the portal object to the bootstrap code.
            DO NOT CALL THIS METHOD! Use the self.portal 
