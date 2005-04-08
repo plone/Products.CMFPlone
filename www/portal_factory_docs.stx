@@ -54,12 +54,12 @@ Using portal_factory
 
 Gotchas 
 
-      If you rename/move your object more than once when saving (move 
-      from tempfolder and generate id based on title afterwards) you 
-      have to commit a subtransaction to be able to do the second 
-      move/rename. Otherwise you will get an error about not being able 
-      to copy/move. 
+      If you rename/move your object more than once when saving (move 
+      from tempfolder and generate id based on title afterwards) you 
+      have to commit a subtransaction to be able to do the second 
+      move/rename. Otherwise you will get an error about not being able 
+      to copy/move. 
 
-      You commit a subtransaction by doing:: 
+      You commit a subtransaction by doing:: 
 
-         get_transaction().commit(1)
+         get_transaction().commit(1)
