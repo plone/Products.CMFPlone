@@ -7,6 +7,14 @@ Plone 2.1 - Plaid - (unreleased)
     - Merged plip93-optimize-templates r6360:HEAD into 2.1 branch.
       [stefan]
 
+    - Removed worklist query from listFilteredActionsFor.
+      http://members.plone.org/collector/3779
+      [alecm]
+
+    - Removed useless check for duplicate actions from listFilteredActionsFor.
+      Gives a big speed improvement thanks to Dieter.
+      [alecm]
+
     - Minor refactoring of the calendar portlet to avoid unnecessary duplicate
       method calls.  Removed getBeginAndEndTimes.
       [alecm]
