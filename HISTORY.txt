@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Added empty fill-slot="sub" to discussion_reply_form to get rid of
+      the second, broken 'add comment' button showing up on that form
+      for top level comments
+      [rafrombrc]
+
     - Moved retrieval of Zope system information out of
       plone_control_panel.pt and into proxied script getZopeInfo.py so
       that plone Managers who are not also Zope top-level Managers can
