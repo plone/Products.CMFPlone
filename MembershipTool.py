@@ -195,15 +195,22 @@ class MembershipTool(PloneBaseTool, BaseTool):
         member_folder.changeOwnership(user)
         member_folder.__ac_local_roles__ = None
         member_folder.manage_setLocalRoles(member_id, ['Owner'])
-        # set title and description (edit invokes reindexObject)
-        member_folder.edit(title=member_folder_title,
-                           description=member_folder_description)
+        # XXX set title and description (edit invokes reindexObject)
+        #member_folder.edit(title=member_folder_title,
+        #                   description=member_folder_description)
+        # We use ATCT now use the mutators
+        member_folder.setTitle(member_folder_title)
+        member_folder.setDescription(member_folder_description)
+        member_folder.reindexObject()
 
         ## Create personal folder for personal items
         _createObjectByType('Folder', member_folder, id=self.personal_id)
         personal = getattr(member_folder, self.personal_id)
-        personal.edit(title=personal_folder_title,
-                      description=personal_folder_description)
+        #personal.edit(title=personal_folder_title,
+        #              description=personal_folder_description)
+        personal.setTitle(member_folder_title)
+        personal.setDescription(member_folder_description)
+        
         # Grant Ownership and Owner role to Member
         personal.changeOwnership(user)
         personal.__ac_local_roles__ = None

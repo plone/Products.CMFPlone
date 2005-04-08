@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Set Title and description on member folders and personal folder.  Was
+      broken due to permissions improvements in AT.
+      [alecm]
+
     - Merged plip93-optimize-templates r6360:HEAD into 2.1 branch.
       [stefan]
 
