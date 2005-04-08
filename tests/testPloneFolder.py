@@ -77,10 +77,6 @@ class TestCheckIdAvailable(PloneTestCase.PloneTestCase):
             self.folder._setObject('foo', dummy.Item())
         except BadRequest:
             pass
-        except:
-            # Zope < 2.7
-            e,v,tb = sys.exc_info(); del tb
-            raise
 
     def testCheckIdRaisesBadRequest(self):
         # _checkId() should raise zExceptions.BadRequest
@@ -90,10 +86,6 @@ class TestCheckIdAvailable(PloneTestCase.PloneTestCase):
             self.folder._checkId('foo')
         except BadRequest:
             pass
-        except:
-            # Zope < 2.7
-            e,v,tb = sys.exc_info(); del tb
-            raise
 
     def testCheckIdAvailableCatchesBadRequest(self):
         # checkIdAvailable() should catch zExceptions.BadRequest
@@ -108,10 +100,6 @@ class TestCheckIdAvailable(PloneTestCase.PloneTestCase):
             self.lpf._setObject('foo', dummy.Item())
         except BadRequest:
             pass
-        except:
-            # Zope < 2.7
-            e,v,tb = sys.exc_info(); del tb
-            raise
 
     def testLPFCheckIdRaisesBadRequest(self):
         # _checkId() should raise zExceptions.BadRequest
@@ -121,10 +109,6 @@ class TestCheckIdAvailable(PloneTestCase.PloneTestCase):
             self.lpf._checkId('foo')
         except BadRequest:
             pass
-        except:
-            # Zope < 2.7
-            e,v,tb = sys.exc_info(); del tb
-            raise
 
     def testLPFCheckIdAvailableCatchesBadRequest(self):
         # checkIdAvailable() should catch zExceptions.BadRequest
