@@ -50,6 +50,7 @@ import types
 portal_name = 'portal'
 portal_owner = 'portal_owner'
 default_user = ZopeTestCase.user_name
+default_password = ZopeTestCase.user_password
 
 
 class PloneTestCase(ZopeTestCase.PortalTestCase):
