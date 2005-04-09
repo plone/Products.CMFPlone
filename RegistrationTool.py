@@ -8,7 +8,7 @@ from Products.CMFDefault.RegistrationTool import _checkEmail
 from Products.CMFPlone import ToolNames
 
 from Globals import InitializeClass
-from AccessControl import ClassSecurityInfo
+from AccessControl import ClassSecurityInfo, Unauthorized
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFPlone.PloneTool import EMAIL_RE
 
@@ -111,6 +111,9 @@ class RegistrationTool(PloneBaseTool, BaseTool):
         membership = getToolByName(self, 'portal_membership')
         utils = getToolByName(self, 'plone_utils')
         member = membership.getMemberById(forgotten_userid)
+
+        if not membership.checkPermission('Mail forgotten password', self):
+            raise Unauthorized, "Mailing forgotten passwords has been disabled"
 
         if member and member.getProperty('email'):
             # add the single email address

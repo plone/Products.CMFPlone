@@ -119,8 +119,10 @@ to become a member.
             <div i18n:translate="help_capslock_password_retrieval"
                  class="formHelp">
                 Case sensitive, make sure caps lock is not enabled.
+                <tal:block condition="python:checkPermission('Mail forgotten password', here)">
                 If you have forgotten your password,
                 <a href="mail_password_form">click here to retrieve it</a>.
+                </tal:block>
             </div>
 
             <input type="password"

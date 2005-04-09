@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Do not display "Forgot your password?" when user doesn't have
+      "Mail forgotten password" permission.  Added a security check to
+      RegistrationTool.mailPassword().
+      http://members.plone.org/collector/3338
+      [dpunktnpunkt]
+
     - Merged PLIP75 - blacklisting of types. The unfriendly_types property in
       site_properties can now be used to give a list of types which will be
       ignored for search purposes (via queryCatalog; the getUserFriendlyTypes()

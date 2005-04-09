@@ -91,7 +91,8 @@
                 </form>
             </div>
 
-            <div class="portletContent even">
+            <div class="portletContent even"
+                 tal:condition="python:checkPermission('Mail forgotten password', here)">
                 <a href="mail_password_form"
                    tal:attributes="href string:${utool}/mail_password_form" accesskey="accesskeys-login" i18n:attributes="accesskey" >
                    <tal:block replace="structure portal_object/info_icon.gif"/>
