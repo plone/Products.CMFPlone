@@ -202,13 +202,16 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.failUnless(hasattr(self.portal, 'portal_javascripts'))
 
     def testUnfriendlyTypesProperty(self):
-        self.failUnless(self.portal.portal_properties.site_properties.hasProperty('unfriendly_types'))
-        self.failUnless('Plone Site' in self.portal.portal_properties.site_properties.getProperty('unfriendly_types'))    
+        # We should have an unfriendly_types property
+        self.failUnless(self.properties.site_properties.hasProperty('unfriendly_types'))
+        self.failUnless('Plone Site' in self.properties.site_properties.getProperty('unfriendly_types'))
 
     def testNonDefaultPageTypes(self):
-        self.failUnless(self.portal.portal_properties.site_properties.hasProperty('non_default_page_types'))
-        self.failUnless('Folder' in self.portal.portal_properties.site_properties.getProperty('non_default_page_types'))
-        self.failUnless('Large Plone Folder' in self.portal.portal_properties.site_properties.getProperty('non_default_page_types'))
+        # We should have a non_default_page_types property
+        self.failUnless(self.properties.site_properties.hasProperty('non_default_page_types'))
+        self.failUnless('Folder' in self.properties.site_properties.getProperty('non_default_page_types'))
+        self.failUnless('Large Plone Folder' in self.properties.site_properties.getProperty('non_default_page_types'))
+
 
 class TestPortalBugs(PloneTestCase.PloneTestCase):
 

@@ -24,6 +24,8 @@ from Products.CMFPlone.migrations.v2_1.alphas import updateNavTreeProperties
 from Products.CMFPlone.migrations.v2_1.alphas import addSitemapAction
 from Products.CMFPlone.migrations.v2_1.alphas import reindexCatalog
 from Products.CMFPlone.migrations.v2_1.alphas import installCSSandJSRegistries
+from Products.CMFPlone.migrations.v2_1.alphas import addUnfriendlyTypesSiteProperty
+from Products.CMFPlone.migrations.v2_1.alphas import addNonDefaultPageTypesSiteProperty
 
 
 class MigrationTest(PloneTestCase.PloneTestCase):
@@ -361,14 +363,55 @@ class TestMigrations_v2_1(MigrationTest):
         self.portal._delObject('portal_javascripts')
         installCSSandJSRegistries(self.portal, [])
 
-    def testUnfriendlyTypesProperty(self):
-        self.failUnless(self.portal.portal_properties.site_properties.hasProperty('unfriendly_types'))
-        self.failUnless('Plone Site' in self.portal.portal_properties.site_properties.getProperty('unfriendly_types'))
+    def testAddUnfriendlyTypesSiteProperty(self):
+        # Should add the unfriendly_types property
+        self.removeSiteProperty('unfriendly_types')
+        self.failIf(self.properties.site_properties.hasProperty('unfriendly_types'))
+        addUnfriendlyTypesSiteProperty(self.portal, [])
+        self.failUnless(self.properties.site_properties.hasProperty('unfriendly_types'))
 
-    def testNonDefaultPageTypes(self):
-        self.failUnless(self.portal.portal_properties.site_properties.hasProperty('non_default_page_types'))
-        self.failUnless('Folder' in self.portal.portal_properties.site_properties.getProperty('non_default_page_types'))
-        self.failUnless('Large Plone Folder' in self.portal.portal_properties.site_properties.getProperty('non_default_page_types'))
+    def testAddUnfriendlyTypesSitePropertyTwice(self):
+        # Should not fail if migrated again
+        self.removeSiteProperty('unfriendly_types')
+        self.failIf(self.properties.site_properties.hasProperty('unfriendly_types'))
+        addUnfriendlyTypesSiteProperty(self.portal, [])
+        addUnfriendlyTypesSiteProperty(self.portal, [])
+        self.failUnless(self.properties.site_properties.hasProperty('unfriendly_types'))
+
+    def testAddUnfriendlyTypesSitePropertyNoTool(self):
+        # Should not fail if portal_properties is missing
+        self.portal._delObject('portal_properties')
+        addUnfriendlyTypesSiteProperty(self.portal, [])
+
+    def testAddUnfriendlyTypesSitePropertyNoSheet(self):
+        # Should not fail if site_properties is missing
+        self.properties._delObject('site_properties')
+        addUnfriendlyTypesSiteProperty(self.portal, [])
+
+    def testAddNonDefaultPageTypesSiteProperty(self):
+        # Should add the non_default_page_types property
+        self.removeSiteProperty('non_default_page_types')
+        self.failIf(self.properties.site_properties.hasProperty('non_default_page_types'))
+        addNonDefaultPageTypesSiteProperty(self.portal, [])
+        self.failUnless(self.properties.site_properties.hasProperty('non_default_page_types'))
+
+    def testAddNonDefaultPageTypesSitePropertyTwice(self):
+        # Should not fail if migrated again
+        self.removeSiteProperty('non_default_page_types')
+        self.failIf(self.properties.site_properties.hasProperty('non_default_page_types'))
+        addNonDefaultPageTypesSiteProperty(self.portal, [])
+        addNonDefaultPageTypesSiteProperty(self.portal, [])
+        self.failUnless(self.properties.site_properties.hasProperty('non_default_page_types'))
+
+    def testAddNonDefaultPageTypesSitePropertyNoTool(self):
+        # Should not fail if portal_properties is missing
+        self.portal._delObject('portal_properties')
+        addNonDefaultPageTypesSiteProperty(self.portal, [])
+
+    def testAddNonDefaultPageTypesSitePropertyNoSheet(self):
+        # Should not fail if site_properties is missing
+        self.properties._delObject('site_properties')
+        addNonDefaultPageTypesSiteProperty(self.portal, [])
 
 
 def test_suite():
