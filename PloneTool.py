@@ -1074,12 +1074,12 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         ttool = getToolByName(self, 'portal_types')
         types = typesList or ttool.listContentTypes()
         
-        unique = {}
+        friendlyTypes = []
         for t in types:
-            if not t in blacklistedTypes:
-                unique[t] = 1 
+            if not t in blacklistedTypes and not t in friendlyTypes:
+                friendlyTypes.append(t)
 
-        return unique.keys()
+        return friendlyTypes
 
 
 InitializeClass(PloneTool)
