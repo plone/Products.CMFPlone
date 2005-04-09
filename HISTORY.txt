@@ -7,7 +7,7 @@ Plone 2.1 - Plaid - (unreleased)
     - Add new method to PloneTool getOwnerId, which gets the id of the owner
       of an object.  It's protected by the view permission on the object, and
       used in ownership_form in place of Creator, which may no be the same as
-      owner for AT types.
+      owner for AT types.  Also modified ownership_form to use form controller.
       http://members.plone.org/collector/3662
       [alecm]
 
