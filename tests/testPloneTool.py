@@ -34,6 +34,13 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
         # Initial creator no longer has Owner role.
         self.assertEqual(doc.get_local_roles_for_userid(default_user), ())
 
+    def testGetOwnerId(self):
+        #Test that getOwnerId gets the Owner Id
+        self.folder.invokeFactory('Document', 'doc2')
+        doc = self.folder.doc2
+        self.utils.changeOwnershipOf(doc, 'new_owner')
+        self.assertEqual(self.utils.getOwnerId(doc), 'new_owner')
+
     def testvalidateSingleEmailAddress(self):
         # Any RFC 822 email address allowed, but address list must fail
         val = self.utils.validateSingleEmailAddress

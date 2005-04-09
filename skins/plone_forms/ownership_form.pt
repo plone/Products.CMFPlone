@@ -35,7 +35,7 @@
                    <tal:block tal:repeat="uid mtool/listMemberIds">
                      <option value=""
                              tal:attributes="value uid;
-                                             selected python:test(uid==here.Creator(), 'selected', None);"
+                                             selected python:test(uid==putils.getOwnerId(here), 'selected', None);"
                              tal:content="uid">username</option>
                    </tal:block>
                 </select>
@@ -56,7 +56,7 @@
                 </div>
             </div>
     
-            <div class="formContols">
+            <div class="formControls">
                     <input class="context"
                            type="submit"
                            name="save"

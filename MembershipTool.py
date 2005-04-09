@@ -208,8 +208,8 @@ class MembershipTool(PloneBaseTool, BaseTool):
         personal = getattr(member_folder, self.personal_id)
         #personal.edit(title=personal_folder_title,
         #              description=personal_folder_description)
-        personal.setTitle(member_folder_title)
-        personal.setDescription(member_folder_description)
+        personal.setTitle(personal_folder_title)
+        personal.setDescription(personal_folder_description)
         
         # Grant Ownership and Owner role to Member
         personal.changeOwnership(user)

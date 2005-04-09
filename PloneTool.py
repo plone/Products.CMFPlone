@@ -858,6 +858,16 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         gruf = getToolByName( self, 'portal_url' ).getPortalObject().acl_users
         return gruf.isLocalRoleAcquired(obj, )
 
+    security.declarePublic("getOwnerId")
+    def getOwnerId(self, obj):
+        """Returns the userid of the owner of an object
+        """
+        mt = getToolByName(self, 'portal_membership')
+        if not mt.checkPermission(CMFCorePermissions.View, obj):
+            raise Unauthorized
+
+        return obj.owner_info()['id']
+
     security.declarePublic('normalizeISO')
     def normalizeISO(self, text=""):
         """

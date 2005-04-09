@@ -4,6 +4,13 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Add new method to PloneTool getOwnerId, which gets the id of the owner
+      of an object.  It's protected by the view permission on the object, and
+      used in ownership_form in place of Creator, which may no be the same as
+      owner for AT types.
+      http://members.plone.org/collector/3662
+      [alecm]
+
     - Set Title and description on member folders and personal folder.  Was
       broken due to permissions improvements in AT.
       [alecm]
