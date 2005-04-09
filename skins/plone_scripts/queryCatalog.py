@@ -9,6 +9,7 @@
 ##
 from ZODB.POSException import ConflictError
 from Products.ZCTextIndex.ParseTree import ParseError
+from Products.CMFCore.utils import getToolByName
 
 results=[]
 catalog=context.portal_catalog
@@ -43,6 +44,14 @@ def quotequery(s):
             terms[idx-1].upper() in tokens):
             terms[idx] = quotestring(terms[idx])
     return ' '.join(terms)
+    
+def ensureFriendlyTypes(query):
+    ploneUtils = getToolByName(context, 'plone_utils')
+    typesList = query.get('portal_type', []) + query.get('Type', [])
+    friendlyTypes = ploneUtils.getUserFriendlyTypes(typesList)
+    if query.has_key('Type'):
+        del query['Type']
+    query['portal_type'] = friendlyTypes
 
 for k, v in REQUEST.items():
     if v and k in indexes:
@@ -70,6 +79,7 @@ for k, v in second_pass.items():
 
 if show_query:
     try:
+        ensureFriendlyTypes(query)
         results=catalog(query)
     except ParseError:
         pass

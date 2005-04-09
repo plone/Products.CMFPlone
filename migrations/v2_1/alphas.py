@@ -5,6 +5,27 @@ from Products.CMFCore import CMFCorePermissions
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.migrations.migration_util import installOrReinstallProduct
 
+# Types which will be installed as "unfriendly" and thus hidden for search
+# purposes
+BASE_UNFRIENDLY_TYPES = ['ATBooleanCriterion', 
+                         'ATDateCriteria',
+                         'ATDateRangeCriterion',
+                         'ATListCriterion',
+                         'ATPortalTypeCriterion',
+                         'ATReferenceCriterion',
+                         'ATSelectionCriterion',
+                         'ATSimpleIntCriterion',
+                         'ATSimpleStringCriterion',
+                         'ATSortCriterion',
+                         'Discussion Item',
+                         'Plone Site',
+                         'TempFolder']
+
+# Types which are not selectable as a default_page
+BASE_NON_DEFAULT_PAGE_TYPES = ['Folder',
+                               'Large Plone Folder',
+                               'Image',
+                               'File']
 
 def two05_alpha1(portal):
     """2.0.5 -> 2.1-alpha1
@@ -82,6 +103,12 @@ def alpha1_alpha2(portal):
         refreshSkinData(portal, out)
         reindexCatalog(portal, out)
 
+    # Add unfriendly_types to site_properties
+    addUnfriendlyTypesProperty(portal, out)
+    
+    # Add non_default_page_types property
+    addNonDefaultPageTypesProperty(portal, out)
+    
     return out
 
 
@@ -337,6 +364,45 @@ def reindexCatalog(portal, out):
         catalog.threshold = old_threshold
         out.append("Reindexed portal_catalog.")
 
+def addUnfriendlyTypesProperty(portal, out):
+    """Add unfriendly_types to site_properties"""
+    ptool = getToolByName(portal, 'portal_properties', None)
+    if not ptool:
+        out.append("Cannot find portal_properties tool!")
+        return
+        
+    siteProps = getattr(ptool, 'site_properties', None)
+    if not siteProps:
+        out.append("Cannot find site_properties in portal_properties!")
+        return
+
+    if siteProps.hasProperty('unfriendly_types'):
+        out.append("unfriendly_types property already exists; stopping")
+        return
+        
+    siteProps.manage_addProperty('unfriendly_types',
+                                 BASE_UNFRIENDLY_TYPES,
+                                 'lines')
+
+def addNonDefaultPageTypesProperty(portal, out):
+    """Add unfriendly_types to site_properties"""
+    ptool = getToolByName(portal, 'portal_properties', None)
+    if not ptool:
+        out.append("Cannot find portal_properties tool!")
+        return
+        
+    siteProps = getattr(ptool, 'site_properties', None)
+    if not siteProps:
+        out.append("Cannot find site_properties in portal_properties!")
+        return
+
+    if siteProps.hasProperty('non_default_page_types'):
+        out.append("unfriendly_types property already exists; stopping")
+        return
+        
+    siteProps.manage_addProperty('non_default_page_types',
+                                 BASE_NON_DEFAULT_PAGE_TYPES,
+                                 'lines')
 
 def installCSSandJSRegistries(portal, out):
     """Installs the CSS and JS registries."""
@@ -383,4 +449,3 @@ def installCSSandJSRegistries(portal, out):
             jsreg.registerScript('register_function.js')
 
         out.append('Installed CSSRegistry and JSRegistry')
-

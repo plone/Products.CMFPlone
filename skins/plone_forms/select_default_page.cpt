@@ -24,7 +24,7 @@
 
         <input type="hidden" name="form.submitted" value="1"/>
     
-        <tal:items define="blacklistedTypes     here/portal_properties/site_properties/non_default_page_types;
+        <tal:items define="blacklistedTypes     here/portal_properties/site_properties/non_default_page_types | python:[];
                            items python:[item for item in here.folderlistingFolderContents() if
                                             item.portal_type not in blacklistedTypes];">
         <tal:hasItems condition="items">
