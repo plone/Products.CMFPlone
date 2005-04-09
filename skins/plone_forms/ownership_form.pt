@@ -15,7 +15,7 @@
     <form action="change_ownership"
           name="ownership_form"
           method="post"
-          tal:attributes="action string:$here_url/change_ownership">
+          tal:attributes="action template/getId">
 
         <fieldset>
             <legend i18n:translate="legend_change_ownership">Change Ownership</legend>
@@ -55,6 +55,8 @@
                            />
                 </div>
             </div>
+
+            <input type="hidden" name="form.submitted" value="1" />
     
             <div class="formControls">
                     <input class="context"
