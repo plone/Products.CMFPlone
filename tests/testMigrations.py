@@ -30,7 +30,7 @@ from Products.CMFPlone.migrations.v2_1.alphas import removePortalTabsActions
 from Products.CMFPlone.migrations.v2_1.alphas import addNewsFolder
 from Products.CMFPlone.migrations.v2_1.alphas import addExclude_from_navMetadata
 from Products.CMFPlone.migrations.v2_1.alphas import indexMembersFolder
-
+from Products.CMFPlone.migrations.v2_1.alphas import addEditContentActions
 
 class MigrationTest(PloneTestCase.PloneTestCase):
 
@@ -486,24 +486,35 @@ class TestMigrations_v2_1(MigrationTest):
         self.portal._delObject('portal_catalog')
         addExclude_from_navMetadata(self.portal, [])
         
-    def testObjectButtonActions(self):
-        atool = self.portal.portal_actions
-        installed = [(a.getId(), a.getCategory()) for a in atool.listActions()]
-        self.failUnless(('cut', 'object_buttons') in installed)
-        self.failUnless(('copy', 'object_buttons') in installed)
-        self.failUnless(('paste', 'object_buttons') in installed)
-        self.failUnless(('delete', 'object_buttons') in installed)
+    def testAddEditContentActions(self):
+        # Should add the edit-content actions
+        editActions = ('cut', 'copy', 'paste', 'delete', 'batch')
+        for a in editActions:
+            self.removeActionFromTool(a)
+            
+        addEditContentActions(self.portal, [])
         
-    def testBatchActions(self):
-        atool = self.portal.portal_actions
-        installed = [(a.getId(), a.getCategory()) for a in atool.listActions()]
-        self.failUnless(('batch', 'batch') in installed)
+        actions = [x.id for x in self.actions.listActions()]
+        for a in editActions:
+            self.failUnless(a in actions)
+
+    def testAddEditcontentActionsTwice(self):
+        # Should add the edit-content actions
+        editActions = ('cut', 'copy', 'paste', 'delete', 'batch')
+        for a in editActions:
+            self.removeActionFromTool(a)
+            
+        addEditContentActions(self.portal, [])
+        addEditContentActions(self.portal, [])
         
-    def testContentsTabDisabled(self):
-        atool = self.portal.portal_actions
-        for a in atool.listActions():
-            if a.getId() == 'contents':
-                self.failIf(a.visible)
+        actions = [x.id for x in self.actions.listActions()]
+        for a in editActions:
+            self.failUnless(a in actions)
+
+    def testAddEditcontentActionsNoTool(self):
+        # Should not fail if portal_actions is missing
+        self.portal._delObject('portal_actions')
+        addEditContentActions(self.portal, [])
 
     def testIndexMembersFolder(self):
         # Members folder should be cataloged
