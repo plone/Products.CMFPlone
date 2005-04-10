@@ -507,6 +507,7 @@ def addExclude_from_navMetadata(portal, out):
         return 1 # Ask for reindexing
     return 0
 
+
 def addEditContentActions(portal, out):
     """Add edit actions in content menu and
        move contents action to batch menu.
@@ -569,7 +570,8 @@ def addEditContentActions(portal, out):
                     permission=newaction['permission'],
                     category=newaction.get('category', CATEGORY),
                     visible=1)
-            out.append("Added '%s' contentmenu action to actions tool." %newaction['name'])
+            out.append("Added '%s' contentmenu action to actions tool." % newaction['name'])
+
 
 def indexMembersFolder(portal, out):
     """Makes sure the Members folder is cataloged."""

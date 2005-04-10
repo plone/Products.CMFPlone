@@ -91,7 +91,7 @@ if cmfcore:
     except ValueError:
         # couldnt make sense of the version number
         pass
-    if x < MINIMUM_CMF_VER:
+    if x <= MINIMUM_CMF_VER:
         log(("Plone requires CMF %s or later. "
              "Your version is: %s" % (MINIMUM_CMF_VER, CMF_VERSION)))
 
