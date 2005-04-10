@@ -232,6 +232,25 @@ class TestMembershipTool(PloneTestCase.PloneTestCase):
         self.failIfEqual(self.membership.getHomeUrl(), None)
         self.assertEqual(self.membership.getHomeUrl('user2'), None)
 
+    def testGetMemberInfo(self):
+        rtool = self.portal.portal_registration
+        mtool = self.portal.portal_membership
+        
+        rtool.addMember('member1', 'password')
+        
+        member1 = mtool.getMemberById('member1')
+        auth = mtool.getAuthenticatedMember()
+        
+        member1.fullname = 'First member'
+        auth.fullname = 'Test user'
+        
+        member1Info = mtool.getMemberInfo('member1')
+        authInfo = mtool.getMemberInfo()
+        
+        self.assertEqual(member1Info['fullname'], 'First member')
+        self.assertEqual(authInfo['fullname'], 'Test user')
+        
+        
 
 class TestCreateMemberarea(PloneTestCase.PloneTestCase):
 

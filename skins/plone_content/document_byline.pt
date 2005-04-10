@@ -12,21 +12,18 @@
        tal:replace="structure python:locked.tag(title='Locked')"
        />
 
-  <span tal:condition="creator"
-        i18n:translate="box_created_by">
-    Created by
-  </span>
-
-  <a href="#" tal:condition="creator_home"
-     tal:attributes="href creator_home"
-     tal:content="creator">
-    bob
-  </a>
-
-  <span tal:condition="not: creator_home"
-        tal:content="creator">
-    bob
-  </span>
+  <tal:name tal:condition="creator"
+        tal:define="author python:mtool.getMemberInfo(creator)"
+        i18n:translate="label_author">
+    By
+      <a href="#"
+         tal:attributes="href string:$here_url/author"
+         tal:content="author/fullname | here/Creator"
+         tal:omit-tag="not:author"
+         i18n:name="author">
+        Bob Dobalina
+      </a>
+  </tal:name>
 
   <br />
 

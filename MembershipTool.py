@@ -53,6 +53,24 @@ class MembershipTool(PloneBaseTool, BaseTool):
     #        _user = BaseTool.getAuthenticatedMember(self)
     #        self.REQUEST.set('_portaluser', _user)
     #    return _user
+    
+    security.declarePublic('getMemberInfo')
+    def getMemberInfo(self, memberId=None):
+        """
+        Return 'harmless' Memberinfo of any member, such as Full name,
+        Location, etc
+        """
+        if not memberId:
+            member = self.getAuthenticatedMember()
+        else:
+            member = self.getMemberById(memberId)
+        
+        if member is None:
+            return None
+
+        memberinfo = { 'fullname' : member.getProperty('fullname') }
+
+        return memberinfo
 
     def getPersonalPortrait(self, member_id = None, verifyPermission=0):
         """
