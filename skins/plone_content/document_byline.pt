@@ -17,7 +17,7 @@
         i18n:translate="label_author">
     By
       <a href="#"
-         tal:attributes="href string:$here_url/author"
+         tal:attributes="href string:${portal_url}/author/${creator}"
          tal:content="author/fullname | here/Creator"
          tal:omit-tag="not:author"
          i18n:name="author">

@@ -13,7 +13,7 @@
 <metal:main fill-slot="main"
     tal:define="errors options/state/getErrors;">
     <tal:main-macro metal:define-macro="main"
-                    tal:define="author python:(len(request.traverse_subpath) > 0 and request.traverse_subpath[0]) or here.Creator() or None;
+                    tal:define="author python:(len(request.traverse_subpath) > 0 and request.traverse_subpath[0]) or None;
                                 portrait python: mtool.getPersonalPortrait(author);
                                 authorinfo python: mtool.getMemberInfo(author);">
 
@@ -30,15 +30,6 @@
         <h1 class="documentFirstHeading" tal:content="authorinfo/fullname">
             Author name
         </h1>
-        
-        <a href=""
-           class="link-parent"
-           tal:attributes="href string:${here/absolute_url}"
-           tal:condition="python:len(request.traverse_subpath) == 0"
-           i18n:translate="go_to_document">
-            Return to
-            <span i18n:name="document_title" tal:omit-tag="" tal:content="here/title_or_id"/>
-        </a>
 
         <img src=""
              alt=""
