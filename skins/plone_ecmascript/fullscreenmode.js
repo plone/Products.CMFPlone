@@ -1,4 +1,3 @@
-
 function setDisplayMode(item, state) {
 // change the display prop of a div to none/block if the div exists
     if (document.getElementById(item) != null) {
@@ -7,6 +6,10 @@ function setDisplayMode(item, state) {
 }
 function fullscreenMode() {
     // toggle the display prop of divs none/block    
+    // XXX FIXME : this one needs fixing before 2.1 final
+    // IE cannot handle dinsplay:table-cell properly
+    // Mozilla shifts margins if we do display:block
+    // - We need a browser-capabilties-branching here
 	if (document.getElementById('portal-top').style.display == 'none') {        
 	    setDisplayMode('portal-top', 'block');
         setDisplayMode('portal-column-one', 'table-cell');
@@ -29,5 +32,4 @@ function fullscreenModeLoad() {
         setDisplayMode('portal-column-two', 'none');    
 	}
 }
-
 registerPloneFunction(fullscreenModeLoad)
