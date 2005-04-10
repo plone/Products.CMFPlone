@@ -321,7 +321,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     security.declarePublic('availableMIMETypes')
     def availableMIMETypes(self):
         """Return a map of mimetypes
-        
+
         Requires mimetype registry from Archetypes 1.3
         """
         mtr = getToolByName(self, 'mimetypes_registry')
@@ -519,6 +519,12 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         if ntp.sortAttribute and ntp.sortOrder:
             query['sort_order'] = ntp.sortOrder
 
+        # Get ids not to list and make a dict to make the search fast
+        ids_not_to_list = ntp.idsNotToList
+        excluded_ids = {}
+        for exc_id in ids_not_to_list:
+            excluded_ids[exc_id] = 1
+
         rawresult = ct(**query)
 
         # Build result dict
@@ -538,7 +544,8 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                     'creation_date': item.CreationDate,
                     'review_state': item.review_state,
                     'Description':item.Description,
-                    'children':[]}
+                    'children':[],
+                    'no_display': excluded_ids.has_key(item.getId) or item.exclude_from_nav}
             self._addToNavTreeResult(result, data)
 
         portalpath = getToolByName(self, 'portal_url').getPortalPath()
@@ -574,7 +581,8 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                             'review_state': review_state,
                             'Description':item.Description(),
                             'children':[],
-                            'portal_type':item.portal_type}
+                            'portal_type':item.portal_type,
+                            'no_display': 0}
                     self._addToNavTreeResult(result, data)
 
         if not foundcurrent:
@@ -590,6 +598,44 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             return result[portalpath]
         else:
             return {}
+
+    security.declarePublic('createTopLevelTabs')
+    def createTopLevelTabs(self):
+        "Returns a structure for the top level tabs"""
+        ct=getToolByName(self, 'portal_catalog')
+        ntp=getToolByName(self, 'portal_properties').navtree_properties
+        query = {}
+
+        portal_path = getToolByName(self, 'portal_url').getPortalPath()
+        query['path'] = {'query':portal_path, 'navtree':1}
+
+        if ntp.sortAttribute:
+            query['sort_on'] = ntp.sortAttribute
+
+        if ntp.typesToList:
+            query['portal_type'] = ntp.typesToList
+
+        # Get ids not to list and make a dict to make the search fast
+        ids_not_to_list = ntp.idsNotToList
+        excluded_ids = {}
+        for exc_id in ids_not_to_list:
+            excluded_ids[exc_id]=1
+
+        rawresult = ct(**query)
+
+        # Sort items on path length
+        dec_result = [(len(r.getPath()),r) for r in rawresult]
+        dec_result.sort()
+
+        # Build result dict
+        result = []
+        for r_tuple in dec_result:
+            item = r_tuple[1]
+            if not (excluded_ids.has_key(item.getId) or item.exclude_from_nav):
+                data = {'name':item.Title or '\xe2\x80\xa6'.decode('utf-8'),
+                        'id':item.getId, 'url': item.getURL(), 'description':item.Description}
+                result.append(data)
+        return result
 
     security.declarePublic('createBreadCrumbs')
     def createBreadCrumbs(self, context):
@@ -619,8 +665,6 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                     'absolute_url': item.getURL()}
             result.append(data)
         return result
-            
-            
 
     # expose ObjectManager's bad_id test to skin scripts
     security.declarePublic('good_id')
@@ -716,20 +760,20 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                         else:
                             return translation, ['view']
             return obj, [page]
-        
+
         # Look for a default_page managed by an IBrowserDefault-implementing
         # object - the behaviour is the same as setting default_page manually
         # on the object, and the current BrowserDefaultMixin implementation
-        # actually stores it as the default_page property, but it's nicer to be 
+        # actually stores it as the default_page property, but it's nicer to be
         # explicit about getting it from IBrowserDefault
         if IBrowserDefault.isImplementedBy(obj):
             page = obj.getDefaultPage()
             # Be totally anal and triple-check...
             if page and ids.has_key(page):
                 return returnPage(obj, page)
-            # IBrowserDefault only manages explicitly contained 
+            # IBrowserDefault only manages explicitly contained
             # default_page's, so don't look for the id in the skin layers
-        
+
         # Look for default_page on the object
         pages = getattr(aq_base(obj), 'default_page', [])
         # Make sure we don't break if default_page is a
@@ -757,8 +801,8 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         for page in default_pages:
             if ids.has_key(page):
                 return returnPage(obj, page)
-        
-        # Look for layout page templates from IBrowserDefault implementations 
+
+        # Look for layout page templates from IBrowserDefault implementations
         # This is checked after default_page and index_html, because we want
         # explicitly created index_html's to override any templates set
         if IBrowserDefault.isImplementedBy(obj):
@@ -780,19 +824,19 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             'Failed to get folderlisting action for folder "%s"' \
             % obj.absolute_url())
             return obj, ['folder_listing']
-            
+
     security.declarePublic('isDefaultPage')
     def isDefaultPage(self, obj):
         """Find out if the given obj is the default page in its parent folder.
         Only considers explicitly contained objects, either set as index_html,
         with the default_page property, or using IBrowserDefault.
         """
-        
+
         parent = obj.aq_inner.aq_parent
-        
+
         if not parent:
             return False
-        
+
         # Explicitly look at IBrowserDefault
         if IBrowserDefault.isImplementedBy(parent):
             page = parent.getDefaultPage()
@@ -801,12 +845,12 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
         # Look for default_page on the object
         pages = getattr(aq_base(obj), 'default_page', [])
-        
+
         # Make sure we don't break if default_page is a
         # string property instead of a sequence
         if type(pages) in (StringType, UnicodeType):
             pages = [pages]
-            
+
         # And also filter out empty strings
         pages = filter(None, pages)
         for page in pages:
@@ -826,7 +870,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         for page in default_pages:
             if page == obj.getId():
                 return True
-        
+
         return False
 
     security.declarePublic('isTranslatable')
@@ -1062,18 +1106,18 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     def getUserFriendlyTypes(self, typesList=[]):
         """Get a list of types which are considered "user friendly" for search
         and selection purposes. This is the list of types available in the
-        portal, minus those defines in the unfriendly_types property in 
+        portal, minus those defines in the unfriendly_types property in
         site_properties, if it exists. If typesList is given, this is used
         as the base list; else all types from portal_types are used.
         """
-        
+
         ptool = getToolByName(self, 'portal_properties')
         siteProperties = getattr(ptool, 'site_properties')
         blacklistedTypes = siteProperties.getProperty('unfriendly_types', [])
-        
+
         ttool = getToolByName(self, 'portal_types')
         types = typesList or ttool.listContentTypes()
-        
+
         friendlyTypes = []
         for t in types:
             if not t in blacklistedTypes and not t in friendlyTypes:

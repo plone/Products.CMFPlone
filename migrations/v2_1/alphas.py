@@ -1,6 +1,7 @@
 import os
 
 from Acquisition import aq_base
+from zExceptions import BadRequest
 from Products.CMFCore import CMFCorePermissions
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.migrations.migration_util import installOrReinstallProduct
@@ -105,6 +106,15 @@ def alpha1_alpha2(portal):
 
     # Add non_default_page_types site property
     addNonDefaultPageTypesSiteProperty(portal, out)
+
+    # Remove old portal_tabs actions
+    removePortalTabsActions(portal, out)
+
+    # Add news folder
+    addNewsFolder(portal, out)
+
+    # Add exclude_from_nav index
+    reindex += addExclude_from_navMetadata(portal, out)
 
     # Rebuild catalog
     if reindex:
@@ -438,4 +448,56 @@ def addNonDefaultPageTypesSiteProperty(portal, out):
                                              BASE_NON_DEFAULT_PAGE_TYPES,
                                              'lines')
             out.append("Added 'non_default_page_types' property to site_properties.")
+
+
+def removePortalTabsActions(portal, out):
+    """Remove portal_tabs actions"""
+    actionsTool = getToolByName(portal, 'portal_actions', None)
+    if actionsTool is not None:
+        i = 0
+        to_delete = []
+        for action in actionsTool.listActions():
+            if action.getId() in ['Members','news'] and action.getCategory() == 'portal_tabs':
+                to_delete.append(i)
+            i += 1
+        if to_delete:
+            actionsTool.deleteActions(to_delete)
+        out.append("Deleted old portal_tabs actions")
+
+
+def addNewsFolder(portal, out):
+    """Add news folder to portal root"""
+    if 'news' not in portal.objectIds():
+        addFolder = portal.manage_addProduct['ATContentTypes'].addATBTreeFolder
+        addFolder('news', title='News')
+        out.append("Added news folder")
+    news = getattr(aq_base(portal), 'news')
+
+    # Enable ConstrainTypes and set to News
+    addable_types = ['News Item']
+    news.setConstrainTypesMode(1)
+    news.setImmediatelyAddableTypes(addable_types)
+    news.setLocallyAllowedTypes(addable_types)
+    news.setDescription("Site News")
+    out.append("Set constrain types for news folder")
+
+    # Add news_listing.pt as default page
+    # property manager hasProperty can give odd results ask forgiveness instead
+    try:
+        news.manage_addProperty('default_page', ['news_listing','index_html'], 'lines')
+        out.append("Added default view for news folder")
+    except BadRequest:
+        out.append("Default view on news already set")
+
+
+def addExclude_from_navMetadata(portal, out):
+    """Adds the exclude_from_nav metadata."""
+    catalog = getToolByName(portal, 'portal_catalog', None)
+    if catalog is not None:
+        if 'exclude_from_nav' in catalog.schema():
+            return 0
+        catalog.addColumn('exclude_from_nav')
+        out.append("Added 'exclude_from_nav' metadata to portal_catalog.")
+        return 1 # Ask for reindexing
+    return 0
 

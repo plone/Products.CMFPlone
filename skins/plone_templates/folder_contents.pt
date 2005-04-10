@@ -74,11 +74,10 @@
                                    preSorted python:(contentFilter and contentFilter.get('sort_on', 'getObjPositionInParent')!='getObjPositionInParent') or (not contentFilter and request.get('sort_on', 'getObjPositionInParent')!='getObjPositionInParent');
                                    isOrderable python:iface_tool.objectImplements(here, orderable_iface);
                                    nosortclass python:test(isOrderable, 'nosort', '');
-                                   canModifyFolderContent python:checkPermission('Modify portal content', here);
-                                   num_types python: len(contentTypes);">
-
-          <div metal:define-macro="add_button" tal:condition="standalone|nothing"
-               tal:define="types contentTypes">
+                                   canModifyFolderContent python:checkPermission('Modify portal content', here);">
+          <div tal:condition="standalone|nothing">
+          <metal:add_button define-macro="add_button"
+                            tal:define="num_types python:len(contentTypes);">
             <!-- Add Item pulldown -->
             <label for="select_add_item">
               <span class="hiddenLabel" i18n:translate="label_add_item">Select an item to add</span>
@@ -91,7 +90,7 @@
                     tal:attributes="tabindex tabindex/next|nothing">
 
               <option value="Select" i18n:translate="label_select">Select</option>
-              <metal:types tal:repeat="ctype types">
+              <metal:types tal:repeat="ctype contentTypes">
                 <option value="Document"
                         tal:define="Id ctype/getId"
                         tal:attributes="value ctype/getId"
@@ -104,18 +103,19 @@
                    name="type_name"
                    value="Content Type Id"
                    tal:condition="python: num_types==1"
-                   tal:attributes="value python:types[0].getId()" />
+                   tal:attributes="value python:contentTypes[0].getId()" />
 
             <input class="standalone"
                    type="submit"
                    name="folder_factories:method"
                    value="Add New Item"
                    tabindex=""
-                   tal:define="ttype python: num_types==1 and here.translate(types[0].Title())"
+                   tal:define="ttype python: num_types==1 and here.translate(contentTypes[0].Title())"
                    tal:condition="python: num_types"
                    tal:attributes="tabindex tabindex/next|nothing;
                                    value python:ttype and here.translate('Add New ${type}', {'type': ttype}) or
                                                           here.translate('label_add_new_item', default='Add New Item')" />
+          </metal:add_button>
           </div>
 
         <!-- Navigation -->

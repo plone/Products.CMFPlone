@@ -1,5 +1,6 @@
 <li class="portletNavigationTreeItem"
     tal:repeat="item options/children">
+    <tal:no-display condition="not: item/no_display">
     
     <tal:level define="level options/level|python:0">
 
@@ -18,4 +19,5 @@
           Get subtree, if available.
     </ul>
     </tal:level>
+    </tal:no-display>
 </li>

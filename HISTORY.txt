@@ -4,17 +4,30 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Merged plip91-folder-based-sections r6405:HEAD into 2.1 branch.
+      [stefan]
+
+    - Implemented PLIP 91: Made sections (global tabs) render the top level
+      folders in the portal root.  Removed existing actions for news and Members
+      and added a news folder with default view set to news_listing.pt (formerly
+      news.pt).  Added support for the property 'idsNotToList' from
+      navtree_properties, so that the navtree and section tabs don't show the
+      listed ids.  Added a catalog metadata column 'exclude_from_nav', so that
+      when a boolean property of that name is set on an object it and it's
+      children will be excluded from the navtree and section tabs.
+      [alecm]
+
     - Do not display "Forgot your password?" when user doesn't have
       "Mail forgotten password" permission.  Added a security check to
       RegistrationTool.mailPassword().
       http://members.plone.org/collector/3338
       [dpunktnpunkt]
 
-    - Merged PLIP75 - blacklisting of types. The unfriendly_types property in
+    - Merged PLIP 75 - blacklisting of types. The unfriendly_types property in
       site_properties can now be used to give a list of types which will be
       ignored for search purposes (via queryCatalog; the getUserFriendlyTypes()
       method in plone_utils can be used to get the same filtering elsewhere).
-      [optilude, jjmurre]
+      [optilude] [jjmurre]
 
     - Add new method to PloneTool getOwnerId, which gets the id of the owner
       of an object.  It's protected by the view permission on the object, and

@@ -86,6 +86,10 @@ class TestCatalogSetup(PloneTestCase.PloneTestCase):
         # getObjSize column should be in catalog schema
         self.failUnless('getObjSize' in self.catalog.schema())
 
+    def testExclude_from_navInSchema(self):
+        # exclude_from_nav column should be in catalog schema
+        self.failUnless('exclude_from_nav' in self.catalog.schema())
+
 
 class TestCatalogIndexing(PloneTestCase.PloneTestCase):
 
