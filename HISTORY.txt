@@ -13,13 +13,13 @@ Plone 2.1 - Plaid - (unreleased)
       via the 'batch' button. It's importance is greatly reduced, because the
       most common operations it was being used for (cut/copy/paste and object)
       are now available directly as actions on the object.
-      [David Convent, optilude]
+      [davconvent] [optilude]
 
     - Made sure migration catalogs the Members folder. This is required for the
       catalog-based navigation stuff.
       [stefan]
 
-    - Merged PLIP76 - author feedback. A new link appears when viewing content
+    - Merged PLIP 76 - author feedback. A new link appears when viewing content
       created by portal members, taking the viewer to an author profile page.
       This page permits logged in users to send feedback via email (without
       exposing the author's email address) using a feedback form. It also shows
