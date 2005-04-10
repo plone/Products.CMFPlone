@@ -49,7 +49,7 @@ For more information:
 
 "Zope community":http://www.zope.org
 
-"CMF website":http://cmf.zope.org
+"CMF website":http://www.zope.org/Products/CMF/index.html
 
 There are "mailing lists":http://plone.org/development/lists and
 "recipe websites":http://www.zopelabs.com

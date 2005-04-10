@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Fixed link to CMF website on welcome page.
+      [stefan]
+
     - Merged plip91-folder-based-sections r6405:HEAD into 2.1 branch.
       [stefan]
 
