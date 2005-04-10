@@ -4,6 +4,13 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Merged PLIP 74 - Cut/copy/paste actions on objects + Batch mode. The
+      'contents' tab is now removed, though folder_contents can be accessed
+      via the 'batch' button. It's importance is greatly reduced, because the
+      most common operations it was being used for (cut/copy/paste and object)
+      are now available directly as actions on the object.
+      [David Convent, optilude]
+
     - Made sure migration catalogs the Members folder. This is required for the
       catalog-based navigation stuff.
       [stefan]

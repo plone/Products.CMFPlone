@@ -288,6 +288,49 @@
         </div>
     </li>
     </tal:templateMixin>
+    
+    <tal:edit define="editActions actions/object_buttons | nothing;"
+              condition="python:editActions">
+              
+        <tal:objectAction repeat="editAction editActions">
+
+            <li class="actionSingular"
+                tal:condition="python:editAction['id'] not in ('delete', 'batch')">
+                <a onMouseUp="if (activeButton != null) resetButton(activeButton);"
+                   tal:content="editAction/name"
+                   tal:attributes="href editAction/url;"
+                   i18n:translate=""/> 
+            </li>
+
+            <li class="actionSingular"
+                tal:condition="python:editAction['id']=='delete'">
+                <a onMouseUp="if (activeButton != null) resetButton(activeButton);"
+                   onclick="#"
+                   tal:define="ptype here/portal_type;
+                               alert_msg python:here.translate('alert_really_delete');"
+                   tal:attributes="href editAction/url;
+                                   onclick string:return confirm('$ptype\n${alert_msg}');;">
+                    <span style="color:red;"
+                          tal:content="editAction/name"
+                          i18n:translate=""/>
+                </a>
+            </li>
+
+        </tal:objectAction>
+    </tal:edit>
+
+    <tal:batch define="batchActions actions/batch | nothing"
+         condition="python: batchActions">
+        <tal:batchAction repeat="batchAction batchActions">
+            <li class="actionSingular"
+                tal:condition="python:here.absolute_url() + '/' + template.getId() != batchAction.get('url')">
+                <a onMouseUp="if (activeButton != null) resetButton(activeButton);"
+                   tal:content="batchAction/name"
+                   tal:attributes="href batchAction/url"
+                   i18n:translate=""/> 
+            </li>
+        </tal:batchAction>
+    </tal:batch>
 
 </ul>
 

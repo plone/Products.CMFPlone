@@ -233,6 +233,25 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.assertEqual(list(news.getImmediatelyAddableTypes()),['News Item'])
         self.assertEqual(list(news.getLocallyAllowedTypes()),['News Item'])
         self.assertEqual(news.getConstrainTypesMode(), 1)
+        
+    def testObjectButtonActions(self):
+        atool = self.portal.portal_actions
+        installed = [(a.getId(), a.getCategory()) for a in atool.listActions()]
+        self.failUnless(('cut', 'object_buttons') in installed)
+        self.failUnless(('copy', 'object_buttons') in installed)
+        self.failUnless(('paste', 'object_buttons') in installed)
+        self.failUnless(('delete', 'object_buttons') in installed)
+        
+    def testBatchActions(self):
+        atool = self.portal.portal_actions
+        installed = [(a.getId(), a.getCategory()) for a in atool.listActions()]
+        self.failUnless(('batch', 'batch') in installed)
+        
+    def testContentsTabDisabled(self):
+        atool = self.portal.portal_actions
+        for a in atool.listActions():
+            if a.getId() == 'contents':
+                self.failIf(a.visible)
 
 
 class TestPortalBugs(PloneTestCase.PloneTestCase):

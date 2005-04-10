@@ -116,6 +116,9 @@ def alpha1_alpha2(portal):
     # Add exclude_from_nav index
     reindex += addExclude_from_navMetadata(portal, out)
 
+    # Add objec cut/copy/paste/delete + batch buttons
+    addEditContentActions(portal, out)
+
     # Make sure the Members folder is cataloged
     indexMembersFolder(portal, out)
 
@@ -504,6 +507,69 @@ def addExclude_from_navMetadata(portal, out):
         return 1 # Ask for reindexing
     return 0
 
+def addEditContentActions(portal, out):
+    """Add edit actions in content menu and
+       move contents action to batch menu.
+    """
+    CATEGORY = 'object_buttons'
+    ACTIONS = (
+        {'id'        : 'cut',
+         'name'      : 'Cut',
+         'action'    : 'string:${object_url}/object_cut',
+         'condition' : 'python:portal.portal_membership.checkPermission("Copy or Move", object.aq_inner.aq_parent) and object is not portal.portal_url.getPortalObject()',
+         'permission': CMFCorePermissions.View,
+        },
+        {'id'        : 'copy',
+         'name'      : 'Copy',
+         'action'    : 'string:${object_url}/object_copy',
+         'condition' : 'python:portal.portal_membership.checkPermission("Copy or Move", object.aq_inner.aq_parent) and object is not portal.portal_url.getPortalObject()',
+         'permission': CMFCorePermissions.View,
+        },
+        {'id'        : 'paste',
+         'name'      : 'Paste',
+         'action'    : 'string:${object_url}/object_paste',
+         'condition' : 'folder/cb_dataValid',
+         'permission': CMFCorePermissions.View,
+        },
+        {'id'        : 'delete',
+         'name'      : 'Delete',
+         'action'    : 'string:${object_url}/object_delete',
+         'condition' : 'python:portal.portal_membership.checkPermission("Delete objects", object.aq_inner.aq_parent) and object is not portal.portal_url.getPortalObject()',
+         'permission': CMFCorePermissions.View,
+        },
+        {'id'        : 'batch',
+         'name'      : 'Batch',
+         'action'    : 'string:${folder_url}/folder_contents',
+         'condition' : 'python:folder.displayContentsTab()',
+         'permission': CMFCorePermissions.View,
+    	 'category'  : 'batch',
+        },
+    )
+
+    actionsTool = getToolByName(portal, 'portal_actions', None)
+    if actionsTool is not None:
+        # first we don't need old 'Contents' action anymore
+        new_actions = actionsTool._cloneActions()
+        for action in new_actions:
+            if action.getId() == 'folderContents':
+                action.visible = 0
+        actionsTool._actions = new_actions
+        # then we add new actions
+        for newaction in ACTIONS:
+            for action in actionsTool.listActions():
+                if action.getId() == newaction['id'] \
+                        and action.getCategory() == newaction.get('category', CATEGORY) \
+		                and action.getCondition() == newaction['condition']:
+                    break # We already have the action
+            else:
+                actionsTool.addAction(newaction['id'],
+                    name=newaction['name'],
+                    action=newaction['action'],
+                    condition=newaction['condition'],
+                    permission=newaction['permission'],
+                    category=newaction.get('category', CATEGORY),
+                    visible=1)
+            out.append("Added '%s' contentmenu action to actions tool." %newaction['name'])
 
 def indexMembersFolder(portal, out):
     """Makes sure the Members folder is cataloged."""

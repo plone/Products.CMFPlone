@@ -485,6 +485,25 @@ class TestMigrations_v2_1(MigrationTest):
         # Should not fail if catalog is missing
         self.portal._delObject('portal_catalog')
         addExclude_from_navMetadata(self.portal, [])
+        
+    def testObjectButtonActions(self):
+        atool = self.portal.portal_actions
+        installed = [(a.getId(), a.getCategory()) for a in atool.listActions()]
+        self.failUnless(('cut', 'object_buttons') in installed)
+        self.failUnless(('copy', 'object_buttons') in installed)
+        self.failUnless(('paste', 'object_buttons') in installed)
+        self.failUnless(('delete', 'object_buttons') in installed)
+        
+    def testBatchActions(self):
+        atool = self.portal.portal_actions
+        installed = [(a.getId(), a.getCategory()) for a in atool.listActions()]
+        self.failUnless(('batch', 'batch') in installed)
+        
+    def testContentsTabDisabled(self):
+        atool = self.portal.portal_actions
+        for a in atool.listActions():
+            if a.getId() == 'contents':
+                self.failIf(a.visible)
 
     def testIndexMembersFolder(self):
         # Members folder should be cataloged
