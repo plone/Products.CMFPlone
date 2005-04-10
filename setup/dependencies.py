@@ -69,7 +69,7 @@ if cmfcore:
     from Products.CMFCore import cmfcore_globals
     from App.Common import package_home
     from os.path import join
-
+    
     x = []
     CMF_VERSION = 'Unknown'
     try:
@@ -84,14 +84,14 @@ if cmfcore:
                 filtered += v
             else:
                 break
-        x = [int(x) for x in filtered.split('.')]
+        cmf_ver = [int(x) for x in filtered.split('.')]
     except IOError:
         # couldnt find file, oh well
         pass
     except ValueError:
         # couldnt make sense of the version number
         pass
-    if x <= MINIMUM_CMF_VER:
+    if tuple(cmf_ver) < MINIMUM_CMF_VER:
         log(("Plone requires CMF %s or later. "
              "Your version is: %s" % (MINIMUM_CMF_VER, CMF_VERSION)))
 
