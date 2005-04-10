@@ -116,6 +116,9 @@ def alpha1_alpha2(portal):
     # Add exclude_from_nav index
     reindex += addExclude_from_navMetadata(portal, out)
 
+    # Make sure the Members folder is cataloged
+    indexMembersFolder(portal, out)
+
     # Rebuild catalog
     if reindex:
         refreshSkinData(portal, out)
@@ -500,4 +503,16 @@ def addExclude_from_navMetadata(portal, out):
         out.append("Added 'exclude_from_nav' metadata to portal_catalog.")
         return 1 # Ask for reindexing
     return 0
+
+
+def indexMembersFolder(portal, out):
+    """Makes sure the Members folder is cataloged."""
+    catalog = getToolByName(portal, 'portal_catalog', None)
+    if catalog is not None:
+        membershipTool = getToolByName(portal, 'portal_membership', None)
+        if membershipTool is not None:
+            members = membershipTool.getMembersFolder()
+            if members is not None:
+                members.reindexObject()
+                out.append('Cataloged Members folder.')
 

@@ -29,6 +29,7 @@ from Products.CMFPlone.migrations.v2_1.alphas import addNonDefaultPageTypesSiteP
 from Products.CMFPlone.migrations.v2_1.alphas import removePortalTabsActions
 from Products.CMFPlone.migrations.v2_1.alphas import addNewsFolder
 from Products.CMFPlone.migrations.v2_1.alphas import addExclude_from_navMetadata
+from Products.CMFPlone.migrations.v2_1.alphas import indexMembersFolder
 
 
 class MigrationTest(PloneTestCase.PloneTestCase):
@@ -126,6 +127,7 @@ class TestMigrations_v2_1(MigrationTest):
         self.icons = self.portal.portal_actionicons
         self.properties = self.portal.portal_properties
         self.memberdata = self.portal.portal_memberdata
+        self.membership = self.portal.portal_membership
         self.catalog = self.portal.portal_catalog
 
     def testAddFullScreenAction(self):
@@ -483,6 +485,31 @@ class TestMigrations_v2_1(MigrationTest):
         # Should not fail if catalog is missing
         self.portal._delObject('portal_catalog')
         addExclude_from_navMetadata(self.portal, [])
+
+    def testIndexMembersFolder(self):
+        # Members folder should be cataloged
+        members = self.membership.getMembersFolder()
+        members.unindexObject()
+        indexMembersFolder(self.portal, [])
+        self.failUnless(self.catalog(id='Members'))
+
+    def testIndexMembersFolderTwice(self):
+        # Should not fail if migrated again
+        members = self.membership.getMembersFolder()
+        members.unindexObject()
+        indexMembersFolder(self.portal, [])
+        indexMembersFolder(self.portal, [])
+        self.failUnless(self.catalog(id='Members'))
+
+    def testIndexMembersFolderNoCatalog(self):
+        # Should not fail if catalog is missing
+        self.portal._delObject('portal_catalog')
+        indexMembersFolder(self.portal, [])
+
+    def testIndexMembersFolderNoMembersFolder(self):
+        # Should not fail if Members folder is missing
+        self.portal._delObject('Members')
+        indexMembersFolder(self.portal, [])
 
 
 def test_suite():

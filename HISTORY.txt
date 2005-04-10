@@ -4,12 +4,16 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Made sure migration catalogs the Members folder. This is required for the
+      catalog-based navigation stuff.
+      [stefan]
+
     - Merged PLIP76 - author feedback. A new link appears when viewing content
       created by portal members, taking the viewer to an author profile page.
       This page permits logged in users to send feedback via email (without
       exposing the author's email address) using a feedback form. It also shows
       the most recent publications by this member.
-      [VladDrac, optilude]
+      [VladDrac] [optilude]
 
     - Fixed link to CMF website on welcome page.
       [stefan]
