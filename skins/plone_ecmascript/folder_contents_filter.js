@@ -1,5 +1,3 @@
-
-
 // Actions used in the folder_contents view
 function submitFolderAction(folderAction) {
     document.folderContentsForm.action = document.folderContentsForm.action+'/'+folderAction;
@@ -17,8 +15,8 @@ function submitFilterAction() {
             else {
                 document.folderContentsForm.filter_state.value='set_view_filter';
             }
-        }						
+        }
     }
     document.folderContentsForm.submit();
 }
-    
+
