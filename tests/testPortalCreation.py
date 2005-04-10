@@ -201,6 +201,10 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.failUnless(hasattr(self.portal, 'portal_css'))
         self.failUnless(hasattr(self.portal, 'portal_javascripts'))
 
+    def test_alldependencies_fulfilled(self):
+        from Products.CMFPlone.setup import dependencies
+	self.failUnlessEqual(dependencies.messages, [])
+
     def testUnfriendlyTypesProperty(self):
         # We should have an unfriendly_types property
         self.failUnless(self.properties.site_properties.hasProperty('unfriendly_types'))

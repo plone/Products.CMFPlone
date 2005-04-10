@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Updated and enhanced the dependency checks to check for the right versions
+      of Python, Zope and CMF.
+      [tiran]
+
     - Merged PLIP 74 - Cut/copy/paste actions on objects + Batch mode. The
       'contents' tab is now removed, though folder_contents can be accessed
       via the 'batch' button. It's importance is greatly reduced, because the
