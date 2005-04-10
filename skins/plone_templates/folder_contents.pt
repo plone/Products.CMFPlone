@@ -113,7 +113,7 @@
                    tal:define="ttype python: num_types==1 and here.translate(contentTypes[0].Title())"
                    tal:condition="python: num_types"
                    tal:attributes="tabindex tabindex/next|nothing;
-                                   value python:ttype and here.translate('Add New ${type}', {'type': ttype}) or
+                                   value python:ttype and here.translate('Add ${type}', {'type': ttype}) or
                                                           here.translate('label_add_new_item', default='Add New Item')" />
           </metal:add_button>
           </div>
