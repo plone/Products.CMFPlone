@@ -1,3 +1,4 @@
+
 function setDisplayMode(item, state) {
 // change the display prop of a div to none/block if the div exists
     if (document.getElementById(item) != null) {
@@ -10,14 +11,19 @@ function fullscreenMode() {
     // IE cannot handle dinsplay:table-cell properly
     // Mozilla shifts margins if we do display:block
     // - We need a browser-capabilties-branching here
-    if (document.getElementById('portal-top').style.display == 'none') {        
-        setDisplayMode('portal-top', 'block');
+    if (document.getElementById('portal-column-one').style.display == 'none') {        
+        //setDisplayMode('portal-top', 'block');
         setDisplayMode('portal-column-one', 'table-cell');
         setDisplayMode('portal-column-two', 'table-cell');
+        if(!document.getElementById('portal-column-one').style.display){
+            // silly IE does not understand display:table-cell, so we must workaround
+            setDisplayMode('portal-column-one', 'block');
+            setDisplayMode('portal-column-two', 'block');
+        }
         // set cookie        
         createCookie('fullscreenMode', '');        
     }else {    
-        setDisplayMode('portal-top', 'none');
+        //setDisplayMode('portal-top', 'none');
         setDisplayMode('portal-column-one', 'none');
         setDisplayMode('portal-column-two', 'none');        
         createCookie('fullscreenMode', '1');    
@@ -27,7 +33,7 @@ function fullscreenMode() {
 function fullscreenModeLoad() {
 // based on cookie hide div
     	if (readCookie('fullscreenMode') == '1') {        
-	    setDisplayMode('portal-top', 'none');
+	    //setDisplayMode('portal-top', 'none');
         setDisplayMode('portal-column-one', 'none');
         setDisplayMode('portal-column-two', 'none');    
 	}
