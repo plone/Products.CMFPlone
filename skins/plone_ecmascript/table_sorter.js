@@ -25,14 +25,11 @@ function compare(a,b)
     return an - bn;
     }
 }
-
-
-
 function getConcatenedTextContent(node) {
     var _result = "";
-	  if (node == null) {
-		    return _result;
-	  }
+      if (node == null) {
+            return _result;
+      }
     var childrens = node.childNodes;
     var i = 0;
     while (i < childrens.length) {
@@ -59,7 +56,7 @@ function getConcatenedTextContent(node) {
         }
         i ++;
     }
-  	return _result;
+    return _result;
 }
 
 function sort(e) {
@@ -105,17 +102,17 @@ function sort(e) {
         a[j] = new Array();
         a[j][0] = getConcatenedTextContent(node.getElementsByTagName("td").item(i));
         a[j][1] = getConcatenedTextContent(node.getElementsByTagName("td").item(1));
-        a[j][2] = getConcatenedTextContent(node.getElementsByTagName("td").item(0));		
+        a[j][2] = getConcatenedTextContent(node.getElementsByTagName("td").item(0));        
         a[j][3] = node;
     }
 
     if (a.length > 1) {
-	
+    
         a.sort(compare);
 
         // not a perfect way to check, but hell, it suits me fine
         if (a[0][0] == getConcatenedTextContent(tbody.getElementsByTagName("tr").item(0).getElementsByTagName("td").item(i))
-	       && a[1][0] == getConcatenedTextContent(tbody.getElementsByTagName("tr").item(1).getElementsByTagName("td").item(i))) 
+           && a[1][0] == getConcatenedTextContent(tbody.getElementsByTagName("tr").item(1).getElementsByTagName("td").item(i))) 
         {
             a.reverse();
             lastindex = el.getElementsByTagName('img').length - 1;
@@ -123,7 +120,7 @@ function sort(e) {
         }
 
     }
-	
+    
     for (var j = 0; j < a.length; j++) {
         tbody.appendChild(a[j][3]);
     }

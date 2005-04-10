@@ -1,5 +1,5 @@
 // Tooltip-like help pop-ups used in forms
-
+// XXX DEPRECATED
 var ie=0 
 if (navigator.appVersion.indexOf("MSIE")!=-1) { 
   ie=1; 

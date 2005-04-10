@@ -10,18 +10,18 @@ function fullscreenMode() {
     // IE cannot handle dinsplay:table-cell properly
     // Mozilla shifts margins if we do display:block
     // - We need a browser-capabilties-branching here
-	if (document.getElementById('portal-top').style.display == 'none') {        
-	    setDisplayMode('portal-top', 'block');
+    if (document.getElementById('portal-top').style.display == 'none') {        
+        setDisplayMode('portal-top', 'block');
         setDisplayMode('portal-column-one', 'table-cell');
         setDisplayMode('portal-column-two', 'table-cell');
         // set cookie        
-	    createCookie('fullscreenMode', '');        
-	}    else {    
-	    setDisplayMode('portal-top', 'none');
+        createCookie('fullscreenMode', '');        
+    }else {    
+        setDisplayMode('portal-top', 'none');
         setDisplayMode('portal-column-one', 'none');
         setDisplayMode('portal-column-two', 'none');        
-	    createCookie('fullscreenMode', '1');    
-	}
+        createCookie('fullscreenMode', '1');    
+    }
 }
 
 function fullscreenModeLoad() {
