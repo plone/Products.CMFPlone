@@ -111,8 +111,9 @@ try:
     # TODO: we might want to check if the user has jpeg and zlib support, too
     import PIL.Image
 except ImportError:
-    log(("PIL not found. "
-         "Please download it from http://www.pythonware.com/products/pil/"))
+    log(("PIL not found. Plone needs PIL 1.1.5 or newer to scale images. "
+         "Please download it from http://www.pythonware.com/products/pil/ or "
+         "http://effbot.org/downloads/#Imaging"))
 
 try:
     import Products.ExternalEditor
