@@ -609,11 +609,14 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         portal_path = getToolByName(self, 'portal_url').getPortalPath()
         query['path'] = {'query':portal_path, 'navtree':1}
 
+        if ntp.typesToList:
+            query['portal_type'] = ntp.typesToList
+
         if ntp.sortAttribute:
             query['sort_on'] = ntp.sortAttribute
 
-        if ntp.typesToList:
-            query['portal_type'] = ntp.typesToList
+        if ntp.sortAttribute and ntp.sortOrder:
+            query['sort_order'] = ntp.sortOrder
 
         # Get ids not to list and make a dict to make the search fast
         ids_not_to_list = ntp.idsNotToList
@@ -623,14 +626,9 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
         rawresult = ct(**query)
 
-        # Sort items on path length
-        dec_result = [(len(r.getPath()),r) for r in rawresult]
-        dec_result.sort()
-
         # Build result dict
         result = []
-        for r_tuple in dec_result:
-            item = r_tuple[1]
+        for item in rawresult:
             if not (excluded_ids.has_key(item.getId) or item.exclude_from_nav):
                 data = {'name':item.Title or '\xe2\x80\xa6'.decode('utf-8'),
                         'id':item.getId, 'url': item.getURL(), 'description':item.Description}
