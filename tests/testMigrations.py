@@ -485,15 +485,13 @@ class TestMigrations_v2_1(MigrationTest):
         # Should not fail if catalog is missing
         self.portal._delObject('portal_catalog')
         addExclude_from_navMetadata(self.portal, [])
-        
+
     def testAddEditContentActions(self):
         # Should add the edit-content actions
         editActions = ('cut', 'copy', 'paste', 'delete', 'batch')
         for a in editActions:
             self.removeActionFromTool(a)
-            
         addEditContentActions(self.portal, [])
-        
         actions = [x.id for x in self.actions.listActions()]
         for a in editActions:
             self.failUnless(a in actions)
@@ -503,10 +501,8 @@ class TestMigrations_v2_1(MigrationTest):
         editActions = ('cut', 'copy', 'paste', 'delete', 'batch')
         for a in editActions:
             self.removeActionFromTool(a)
-            
         addEditContentActions(self.portal, [])
         addEditContentActions(self.portal, [])
-        
         actions = [x.id for x in self.actions.listActions()]
         for a in editActions:
             self.failUnless(a in actions)
