@@ -482,6 +482,66 @@ class TestNavTree(PloneTestCase.PloneTestCase):
         self.failUnless(tree)
 
 
+class TestPortalTabs(PloneTestCase.PloneTestCase):
+    '''Tests for the portal tabs query'''
+
+    def afterSetUp(self):
+        self.utils = self.portal.plone_utils
+        self.populateSite()
+
+    def populateSite(self):
+        self.setRoles(['Manager'])
+        self.portal.invokeFactory('Document', 'doc1')
+        self.portal.invokeFactory('Document', 'doc2')
+        self.portal.invokeFactory('Document', 'doc3')
+        self.portal.invokeFactory('Folder', 'folder1')
+        folder1 = getattr(self.portal, 'folder1')
+        self.portal.invokeFactory('Folder', 'folder2')
+        folder2 = getattr(self.portal, 'folder2')
+        self.setRoles(['Member'])
+
+    def testCreateTopLevelTabs(self):
+        # See if we can create one at all
+        tabs = self.utils.createTopLevelTabs()
+        self.failUnless(tabs)
+        #Only the folders show up
+        self.assertEqual(len(tabs), 2)
+
+    def testTabsRespectFolderOrder(self):
+        # See if reordering causes a change in the tab order
+        tabs1 = self.utils.createTopLevelTabs()
+        self.portal.moveObjectsByDelta('folder2', -1)
+        tabs2 = self.utils.createTopLevelTabs()
+        #Same number of objects
+        self.failUnlessEqual(len(tabs1), len(tabs2))
+        #Different order
+        self.failUnless(tabs1 != tabs2)
+
+
+class TestBreadCrumbs(PloneTestCase.PloneTestCase):
+    '''Tests for the portal tabs query'''
+
+    def afterSetUp(self):
+        self.utils = self.portal.plone_utils
+        self.populateSite()
+
+    def populateSite(self):
+        self.setRoles(['Manager'])
+        self.portal.invokeFactory('Folder', 'folder1')
+        folder1 = getattr(self.portal, 'folder1')
+        folder1.invokeFactory('Document', 'doc11')
+        self.setRoles(['Member'])
+
+    def testCreateBreadCrumbs(self):
+        # See if we can create one at all
+        doc = self.portal.folder1.doc11
+        crumbs = self.utils.createBreadCrumbs(doc)
+        self.failUnless(crumbs)
+        self.assertEqual(len(crumbs), 2)
+        self.assertEqual(crumbs[-1]['absolute_url'], doc.absolute_url())
+        self.assertEqual(crumbs[-2]['absolute_url'],
+                                                doc.aq_parent.absolute_url())
+
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
@@ -490,6 +550,8 @@ def test_suite():
     suite.addTest(makeSuite(TestEditMetadataIndependence))
     suite.addTest(makeSuite(TestFormulatorFields))
     suite.addTest(makeSuite(TestNavTree))
+    suite.addTest(makeSuite(TestPortalTabs))
+    suite.addTest(makeSuite(TestBreadCrumbs))
     return suite
 
 if __name__ == '__main__':

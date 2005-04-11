@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Added unit tests for folder based portal tabs and catalog based
+      breadcrumbs.  Fixed bug in portal tab ordering.
+      [alecm]
+
     - Updated and enhanced the dependency checks to check for the right versions
       of Python, Zope and CMF.
       [tiran]
