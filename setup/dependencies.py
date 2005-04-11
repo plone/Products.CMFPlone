@@ -48,7 +48,7 @@ else:
 
 if ZOPE_VER in ('unknown', (-1, -1, -1)): # -1, -1, 1 is developer release
     log(("Unable to detect Zope version. Please make sure you have Zope "
-         "%s installed." % PREFERRED_ZOPE_VERSION))
+         "%s installed." % PREFERRED_ZOPE_VER))
 elif ZOPE_VER < MINIMUM_ZOPE_VER:
     log(("Zope version %s found but Plone needs at least "
          "Zope %s Please download and install Zope %s "
