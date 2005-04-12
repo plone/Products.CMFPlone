@@ -404,10 +404,10 @@ def installCSSandJSRegistries(portal, out):
         jsreg = getToolByName(portal, 'portal_javascripts', None)
         if jsreg is not None:
             jsreg.clearScripts()
-            jsreg.registerScript('sarissa.js', enabled=False)
             jsreg.registerScript('vcXMLRPC.js', enabled=False)
             jsreg.registerScript('correctPREformatting.js', enabled=False)
             jsreg.registerScript('plone_minwidth.js' , enabled=False)
+            jsreg.registerScript('sarissa.js')
             jsreg.registerScript('calendar_formfield.js')
             jsreg.registerScript('ie5fixes.js')
             jsreg.registerScript('calendarpopup.js')
