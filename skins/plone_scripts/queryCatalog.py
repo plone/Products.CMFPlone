@@ -4,7 +4,7 @@
 ##bind namespace=
 ##bind script=script
 ##bind subpath=traverse_subpath
-##parameters=REQUEST=None,show_all=0,quote_logic=0,quote_logic_indexes=['SearchableText']
+##parameters=REQUEST=None,show_all=0,quote_logic=0,quote_logic_indexes=['SearchableText'],use_types_blacklist=False
 ##title=wraps the portal_catalog with a rules qualified query
 ##
 from ZODB.POSException import ConflictError
@@ -48,10 +48,9 @@ def quotequery(s):
 def ensureFriendlyTypes(query):
     ploneUtils = getToolByName(context, 'plone_utils')
     typesList = query.get('portal_type', []) + query.get('Type', [])
-    friendlyTypes = ploneUtils.getUserFriendlyTypes(typesList)
-    if query.has_key('Type'):
-        del query['Type']
-    query['portal_type'] = friendlyTypes
+    if not typesList:
+        friendlyTypes = ploneUtils.getUserFriendlyTypes(typesList)
+        query['portal_type'] = friendlyTypes
 
 for k, v in REQUEST.items():
     if v and k in indexes:
@@ -79,7 +78,8 @@ for k, v in second_pass.items():
 
 if show_query:
     try:
-        ensureFriendlyTypes(query)
+        if use_types_blacklist:
+            ensureFriendlyTypes(query)
         results=catalog(query)
     except ParseError:
         pass

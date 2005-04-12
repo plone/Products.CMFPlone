@@ -39,7 +39,7 @@ class TestQueryCatalog(PloneTestCase.PloneTestCase):
         # strip portal_types parameter which is auto-set with
         # types blacklisting. Useful to simplify test assertions
         # when we don't care
-        if type(query_dict) == types.DictType:
+        if type(query_dict) == types.DictType and query_dict.has_key('portal_type'):
             del query_dict['portal_type']
         return query_dict
 
@@ -99,15 +99,14 @@ class TestQueryCatalog(PloneTestCase.PloneTestCase):
         request = {'SearchableText':'bar','sort_on':'foozle','sort_limit':50}
         self.assertEqual(self.stripTypes(self.folder.queryCatalog(request)), 
                             request)
-                            
+
     def testBlacklistedTypes(self):
-        request = {'Type':['Document'], 'portal_type':['Random', 'Event']}
+        request = {'SearchableText':'a*'}
         siteProps = self.portal.portal_properties.site_properties
-        siteProps.unfriendly_types = ['Event', 'Unkown Type']
-        qry = self.folder.queryCatalog(request)
+        siteProps.unfriendly_types = ['Event', 'Unknown Type']
+        qry = self.folder.queryCatalog(request,use_types_blacklist=True)
         self.failUnless('Document' in qry['portal_type'])
-        self.failUnless('Random' in qry['portal_type'])
-        self.failIf('Type' in qry)
+        self.failUnless('Event' not in qry['portal_type'])
 
 
 class TestQueryCatalogQuoting(PloneTestCase.PloneTestCase):
@@ -127,7 +126,7 @@ class TestQueryCatalogQuoting(PloneTestCase.PloneTestCase):
         # strip portal_types parameter which is auto-set with
         # types blacklisting. Useful to simplify test assertions
         # when we don't care
-        if type(query_dict) == types.DictType:
+        if type(query_dict) == types.DictType and query_dict.has_key('portal_type'):
             del query_dict['portal_type']
         return query_dict
 

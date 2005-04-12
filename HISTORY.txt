@@ -4,6 +4,14 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - queryCatalog was altering the queries passed to it to filter out types.
+      This is unnecessary; it should only filter when no explicit types list is
+      passed.  Also, queryCatalog is uesful in places other than the search
+      (folder_contents) where the filtering may be undesirable.  As a result
+      the filtering is now optional and enabled by a parameter use_types_blacklist,
+      which is used by default in search.pt and search_rss.dtml.
+      [alecm]
+
     - Added unit tests for folder based portal tabs and catalog based
       breadcrumbs.  Fixed bug in portal tab ordering.
       [alecm]
