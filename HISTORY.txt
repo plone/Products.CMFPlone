@@ -4,6 +4,13 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Restored batchedFolderContents for backwards compatibility, and moved
+      batching into the python script getFolderContents (which takes optional
+      'batch' and 'b_size' parameters).  Marked batchedFolderContents and
+      getFolderListingFolderContents as deprecated, both just call
+      getFolderContents now.
+      [alecm]
+
     - queryCatalog was altering the queries passed to it to filter out types.
       This is unnecessary; it should only filter when no explicit types list is
       passed.  Also, queryCatalog is uesful in places other than the search

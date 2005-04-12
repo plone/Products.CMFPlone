@@ -74,7 +74,7 @@
                              containedobjects python:[ getattr(here, id)
                              for id in request.get('ids', [])
                              if id in here.objectIds() ];
-                             contents containedobjects;
+                             batch containedobjects;
                              global folders_in_publishing python:[o.getId() for o in contents if o.isPrincipiaFolderish];"
                  tal:condition="contents">
               <table summary="" metal:use-macro="here/folder_contents/macros/folder_listing">

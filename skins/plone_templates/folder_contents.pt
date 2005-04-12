@@ -17,8 +17,9 @@
          tal:define="standalone python:1;
                      contentTypes here/getAllowedTypes;
                      contentFilter contentFilter|request/contentFilter|nothing;
+                     b_size b_size|request/b_size|python:100;
                      view_title view_title|request/view_title|nothing;
-                     contents python: here.getFolderContents(contentFilter=contentFilter);
+                     batch python: here.getFolderContents(contentFilter=contentFilter,batch=True, b_size=b_size);
                      full_view full_view|request/full_view|python:True;">
       
       <form name="folderContentsForm"
@@ -49,7 +50,7 @@
             </p>
         </tal:full_view>
 
-        <p tal:condition="not: contents"
+        <p tal:condition="not: batch"
            i18n:translate="description_no_visible_items_add_paste">
            This folder has no visible items. To add content, press the
            add button, or paste content from another location.
@@ -61,12 +62,7 @@
            </tal:comment>
         </metal:override>
         <metal:listing define-macro="folder_listing"
-                       tal:define="b_size batch_size | request/batch_size | python:100;
-                                   contentFilter contentFilter|nothing;
-                                   b_start b_start|request/b_start|python:0;
-                                   Batch python:modules['Products.CMFPlone'].Batch;
-                                   batch batch|contents;
-                                   batch python: (same_type(batch, Batch([],0)) and batch) or Batch(batch, b_size, int(b_start), orphan=0);
+                       tal:define="contentFilter contentFilter|nothing;
                                    isExpired nocall:portal/isExpired;
                                    iface_tool portal/portal_interface;
                                    use_folder_contents site_properties/typesLinkToFolderContentsInFC | python:['Folder','Large Plone Folder'];
@@ -273,7 +269,7 @@
                  name=""
                  value=""
                  tabindex=""
-                 tal:condition="python:contents or here.cb_dataValid and button['id'] == 'paste'"
+                 tal:condition="python:batch or here.cb_dataValid and button['id'] == 'paste'"
                  i18n:attributes="value"
                  tal:attributes="value button/name;
                                  name button/url;

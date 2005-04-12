@@ -10,10 +10,10 @@
 
 <form action="" method="post"
       tal:attributes="action here/absolute_url"
-      tal:define="contents here/listSubtopics;
+      tal:define="batch here/listSubtopics;
                   contentTypes here/getAllowedTypes;">
 
-  <metal:block tal:condition="contents">
+  <metal:block tal:condition="batch">
     <metal:block use-macro="here/folder_contents/macros/folder_listing">
     this is a sortable table that is shared with folder_contents
     </metal:block>

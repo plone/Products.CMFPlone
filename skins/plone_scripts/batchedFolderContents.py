@@ -8,6 +8,9 @@
 ##title=wrapper method around listFolderContents
 ##
 from zLOG import LOG, WARNING
-LOG('Plone Debug', WARNING, 'The getFolderListingFolderContents script is '
-                            'deprecated, please use getFolderContents.')
-return context.getFolderContents(contentFilter)
+LOG('Plone Debug', WARNING, 'The batchedFolderContents script is deprecated, '
+                            'please use getFolderContents with the '
+                            'parameter batch=True')
+
+batch = context.getFolderContents(contentFilter, batch=True)
+return batch
