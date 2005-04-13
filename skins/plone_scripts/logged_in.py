@@ -45,7 +45,7 @@ login_time = member.getProperty('login_time', context.ZopeTime())
 member.setProperties(last_login_time = login_time,
                      login_time = context.ZopeTime())
 
-if  ( str(member.getProperty('login_time', None)) == '2000/01/01' and
+if  ( str(login_time) == '2000/01/01' and
       context.validate_email ):
     return context.restrictedTraverse(login_changepassword)()
 
