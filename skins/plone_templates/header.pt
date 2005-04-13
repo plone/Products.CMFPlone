@@ -11,7 +11,7 @@
           tal:attributes="content string:text/html;;charset=${charset}" />
 
     <title tal:define="portal_title portal_properties/title;
-                       page_title python:here.getPageTitle(here, template, portal_title)" >
+                       page_title here/title_or_id">
         <span tal:replace="page_title" />
         &mdash;
         <span tal:replace="portal_title" />
