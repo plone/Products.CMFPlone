@@ -820,6 +820,116 @@ ol.visualNoMarker {
     padding: 1px;
 }
 
+/*
+** begin ECMAScript Content Action Menus
+*/
+
+.contentActions {
+    background-color: &dtml-contentViewBackgroundColor;;
+    border-left: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
+    border-right: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
+    color: &dtml-contentViewFontColor;;
+    text-align: right;
+    text-transform: &dtml-textTransform;;
+    padding: 0 0 0 1em;
+    z-index: 2;
+    height: 1.2em;
+}
+
+.contentActions ul,
+.contentActions li {
+    margin: 0;
+    list-style: none;
+    list-style-image: none;
+    display: inline;
+    color: &dtml-fontColor;;
+    text-align: left;
+}
+
+.contentActions ul {
+    line-height: 1.2em;
+    height: 1.2em;
+    padding: 0;
+    margin: 0;
+}
+.contentActions li {
+    float: right;
+    background-image: url(<dtml-var portal_url>/arrowDownAlternative.gif);
+    background-repeat: no-repeat;
+    background-position: center right;
+    z-index: 4;
+    border-left: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
+    padding: 0 0 0 1em;
+    margin: 0 1em 0 0;
+}
+
+.menuPosition {
+    /*  The spec says we can't put this on an element with a float (although
+        Opera is the only one that cares) and we need it in order to catch
+        the position:absolute bubbling up */
+    position: relative;
+    }
+
+.actionSingular {
+    background-image: none !important;
+}
+
+.actionItems li {
+    background-image: none;
+}
+
+.contentActions a {
+    text-decoration: none;
+    color: &dtml-contentViewFontColor;;
+    padding: 0 1em 0 0;
+}
+
+.contentActions .actionMenu {
+    visibility: hidden;
+    z-index: 5;
+    position: absolute;
+    top: 0;
+    right: -1px;
+    background: &dtml-contentViewBackgroundColor;;
+    overflow: hidden;
+    height: auto;
+    padding: 0;
+    margin: 1.2em 0 0 0;
+    border: &dtml-borderWidth; &dtml-contentViewBorderColor;;
+    border-style: none &dtml-borderStyle; &dtml-borderStyle; &dtml-borderStyle;;
+}
+
+.actionMenu li {
+    float: none;
+    background: none;
+    display: inline;
+    padding: 0;
+    margin: 0;
+    border: 0;
+}
+
+.actionMenu li a {
+    display: block;
+    white-space: nowrap;
+    padding: 0 0.5em;
+    margin: 0.2em 0;
+}
+
+.actionMenu li a:hover {
+    background-color: &dtml-contentViewBorderColor;;
+    color: White;
+}
+
+.actionMenu .actionSeperator a {
+    margin-top: 0.2em;
+    padding-top: 0.2em;
+    border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
+}
+
+/*
+** end ECMAScript Content Action Menus
+*/
+
 
 
 /* </dtml-with> */

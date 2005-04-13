@@ -185,12 +185,17 @@ form {
     margin: 0;
 }
 textarea {
-    font: 110% "Courier New", Courier, monospace;
+    font: 100% Monaco, "Courier New", Courier, monospace;
     border: &dtml-borderWidth; solid &dtml-globalBorderColor;;
     color: &dtml-inputFontColor;;
     background-color: white;
     width: 100%;
 }
+
+textarea.proportional {
+    font: 100% <dtml-var fontFamily>;
+}
+
 input {
     font-family: <dtml-var fontFamily>;
     visibility: visible;
