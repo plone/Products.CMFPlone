@@ -549,6 +549,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             self._addToNavTreeResult(result, data)
 
         portalpath = getToolByName(self, 'portal_url').getPortalPath()
+        homepagepath = portalpath + '/index_html'
 
         if ntp.showAllParents:
             portal = getToolByName(self, 'portal_url').getPortalObject()
@@ -564,9 +565,12 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                 if not result.has_key(path) or \
                    not result[path].has_key('path'):
                     # item was not returned in catalog search
-                    currentItem = path == currentPath
-                    if currentItem:
-                        foundcurrent = path
+                    if foundcurrent or path == homepagepath:
+                        currentItem = False
+                    else:
+                        currentItem = path == currentPath
+                        if currentItem:
+                            foundcurrent = path
                     try:
                         review_state = wf_tool.getInfoFor(item, 'review_state')
                     except WorkflowException:
