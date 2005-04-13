@@ -71,12 +71,11 @@
             <label for="" i18n:translate="label_affected_content">Affected content</label>
             <div tal:define="physical_path python:'/'.join(here.getPhysicalPath());
                              dummy python:request.set('ids_checked', 1);
-                             containedobjects python:[ getattr(here, id)
-                             for id in request.get('ids', [])
-                             if id in here.objectIds() ];
-                             batch containedobjects;
-                             global folders_in_publishing python:[o.getId() for o in contents if o.isPrincipiaFolderish];"
-                 tal:condition="contents">
+                             ids python:request.get('ids', []);
+                             contentFilter python:{'id':ids};
+                             batch python:here.getFolderContents(contentFilter=contentFilter, batch=True);
+                             global folders_in_publishing python:[o.getId for o in batch if o.isPrincipiaFolderish];"
+                 tal:condition="batch">
               <table summary="" metal:use-macro="here/folder_contents/macros/folder_listing">
               </table>
             </div>
