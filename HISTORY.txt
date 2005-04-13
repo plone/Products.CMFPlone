@@ -4,6 +4,14 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Fixed problem where navtree was duplicate highlighting when user
+      viewed home page.
+      [rafrombrc]
+
+    - Changed content_status_history to work w/ the new catalog-based
+      folder contents code.
+      [rafrombrc]
+
     - Restored batchedFolderContents for backwards compatibility, and moved
       batching into the python script getFolderContents (which takes optional
       'batch' and 'b_size' parameters).  Marked batchedFolderContents and
