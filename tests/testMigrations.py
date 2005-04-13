@@ -31,7 +31,7 @@ from Products.CMFPlone.migrations.v2_1.alphas import addNewsFolder
 from Products.CMFPlone.migrations.v2_1.alphas import addExclude_from_navMetadata
 from Products.CMFPlone.migrations.v2_1.alphas import indexMembersFolder
 from Products.CMFPlone.migrations.v2_1.alphas import addEditContentActions
-from Products.CMFPlone.migrations.v2_1.alphas import addCatalogIndexesAsInvalidIDs
+
 
 class MigrationTest(PloneTestCase.PloneTestCase):
 
