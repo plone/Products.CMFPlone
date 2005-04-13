@@ -10,7 +10,8 @@ Plone 2.1 - Plaid - (unreleased)
       [rafrombrc]
 
     - Fixed problem where navtree was duplicate highlighting when user
-      viewed home page.
+      viewed home page, where folder default pages were showing up when
+      'showAllParents' is True, general default page navtree fixes.
       [rafrombrc]
 
     - Changed content_status_history to work w/ the new catalog-based
