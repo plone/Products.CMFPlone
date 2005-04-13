@@ -332,6 +332,9 @@
 
 .documentActions {
     margin: -1.5em 0 2em 0;
+    float: right;
+    margin: 1em 0 0 0.5em;
+    clear: none;
 }
 
 .documentActions ul {
@@ -380,11 +383,10 @@
     line-height: 1.5em;
 }
 .documentByLine {
-    text-align: right;
     font-size: &dtml-fontSmallSize;;
-    clear: both;
     font-weight: normal;
     color: &dtml-discreetColor;;
+    margin: 0.5em 0 0 0;    
 }
 .documentByLine a {
     text-decoration: underline;

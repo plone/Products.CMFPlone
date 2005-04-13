@@ -171,7 +171,7 @@ input.searchButton {
     border-bottom: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
     border-right: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
     font-weight: normal;
-    padding: 0em 1em 0em 1em;
+    padding: 0.25em 1em;
     text-transform: &dtml-textTransform;;
 }
 .listing .top {
@@ -194,7 +194,7 @@ input.searchButton {
 .listing td,
 .stx table td {
     border-right: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
-    padding: 0em 1em;
+    padding: 0.25em 1em;
     text-align: left;
 }
 .listing a:hover {

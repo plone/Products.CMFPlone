@@ -227,14 +227,14 @@ blockquote {
     font-size: 120%;
 }
 code {
-    font-family: "Courier New", Courier, monospace;
+    font-family: Monaco, "Courier New", Courier, monospace;
     font-size: 120%;
     color: &dtml-fontColor;;
     background-color: &dtml-globalBackgroundColor;;
     padding: 0 0.1em;
 }
 pre {
-    font-family: "Courier New", Courier, monospace;
+    font-family: Monaco, "Courier New", Courier, monospace;
     font-size: 120%;
     padding: 1em;
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
