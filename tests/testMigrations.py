@@ -31,6 +31,7 @@ from Products.CMFPlone.migrations.v2_1.alphas import addNewsFolder
 from Products.CMFPlone.migrations.v2_1.alphas import addExclude_from_navMetadata
 from Products.CMFPlone.migrations.v2_1.alphas import indexMembersFolder
 from Products.CMFPlone.migrations.v2_1.alphas import addEditContentActions
+from Products.CMFPlone.migrations.v2_1.alphas import addCatalogIndexesAsInvalidIDs
 
 class MigrationTest(PloneTestCase.PloneTestCase):
 
@@ -511,6 +512,28 @@ class TestMigrations_v2_1(MigrationTest):
         # Should not fail if portal_actions is missing
         self.portal._delObject('portal_actions')
         addEditContentActions(self.portal, [])
+
+    def testAddCatalogIndexesAsInvalidIDs(self):
+        site_props = self.portal.portal_properties.site_properties
+        site_props.invalid_ids = ()
+        addCatalogIndexesAsInvalidIDs(self.portal, [])
+        self.assertEquals(tuple(self.portal.portal_catalog.indexes()),
+                          site_props.invalid_ids)
+
+    def testAddCatalogIndexesAsInvalidIDsTwice(self):
+        site_props = self.portal.portal_properties.site_properties
+        site_props.invalid_ids = ()
+        addCatalogIndexesAsInvalidIDs(self.portal, [])
+        addCatalogIndexesAsInvalidIDs(self.portal, [])
+        self.assertEquals(tuple(self.portal.portal_catalog.indexes()),
+                          site_props.invalid_ids)
+
+    def testAddCatalogIndexesAsInvalidIDsNoTool(self):
+        self.portal._delObject('portal_catalog')
+        addCatalogIndexesAsInvalidIDs(self.portal, [])
+
+    def testAddCatalogIndexesAsInvalidIDsNoTool(self):
+        pass
 
     def testIndexMembersFolder(self):
         # Members folder should be cataloged

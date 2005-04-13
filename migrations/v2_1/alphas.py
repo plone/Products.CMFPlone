@@ -119,6 +119,9 @@ def alpha1_alpha2(portal):
     # Add objec cut/copy/paste/delete + batch buttons
     addEditContentActions(portal, out)
 
+    # Add portal indexes to invalid ids
+    addCatalogIndexesAsInvalidIDs(portal, out)
+
     # Make sure the Members folder is cataloged
     indexMembersFolder(portal, out)
 
@@ -572,6 +575,17 @@ def addEditContentActions(portal, out):
                     visible=1)
             out.append("Added '%s' contentmenu action to actions tool." % newaction['name'])
 
+def addCatalogIndexesAsInvalidIDs(portal, out):
+    """Prevent catalog indexes from being used as IDs."""
+    catalog = getToolByName(portal, 'portal_catalog', None)
+    if catalog is not None:
+        site_props = portal.portal_properties.site_properties
+        invalid_ids = list(site_props.invalid_ids)
+        for idx in catalog.indexes():
+            if idx not in invalid_ids:
+                invalid_ids.append(idx)
+        site_props.invalid_ids = tuple(invalid_ids)
+        out.append('Made catalog indexes invalid ids.')
 
 def indexMembersFolder(portal, out):
     """Makes sure the Members folder is cataloged."""
