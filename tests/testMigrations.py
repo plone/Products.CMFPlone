@@ -513,28 +513,6 @@ class TestMigrations_v2_1(MigrationTest):
         self.portal._delObject('portal_actions')
         addEditContentActions(self.portal, [])
 
-    def testAddCatalogIndexesAsInvalidIDs(self):
-        site_props = self.portal.portal_properties.site_properties
-        site_props.invalid_ids = ()
-        addCatalogIndexesAsInvalidIDs(self.portal, [])
-        self.assertEquals(tuple(self.portal.portal_catalog.indexes()),
-                          site_props.invalid_ids)
-
-    def testAddCatalogIndexesAsInvalidIDsTwice(self):
-        site_props = self.portal.portal_properties.site_properties
-        site_props.invalid_ids = ()
-        addCatalogIndexesAsInvalidIDs(self.portal, [])
-        addCatalogIndexesAsInvalidIDs(self.portal, [])
-        self.assertEquals(tuple(self.portal.portal_catalog.indexes()),
-                          site_props.invalid_ids)
-
-    def testAddCatalogIndexesAsInvalidIDsNoTool(self):
-        self.portal._delObject('portal_catalog')
-        addCatalogIndexesAsInvalidIDs(self.portal, [])
-
-    def testAddCatalogIndexesAsInvalidIDsNoTool(self):
-        pass
-
     def testIndexMembersFolder(self):
         # Members folder should be cataloged
         members = self.membership.getMembersFolder()
