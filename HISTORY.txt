@@ -5,7 +5,8 @@ Changelog for Plone
 Plone 2.1 - Plaid - (unreleased)
 
     - Fixed bug in logged_in.py where login_password would not have been
-      triggered even when appropriate on first login.
+      triggered even when appropriate on first login; fixed related issue in
+      login_password.pt.
       [rafrombrc]
 
     - Fixed problem where navtree was duplicate highlighting when user
