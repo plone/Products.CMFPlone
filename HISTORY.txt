@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Made prev/next links in calendar portlet respect current query parameters.
+      Fixes bug #3949 (http://members.plone.org/collector/3949).
+      [alecm]
+
     - Added id="breadcrumbs-you-are-here" to the <span> tag where "you are
       here" is printed in global_pathbar.pt. It is now possible to remove
       cleanly that message, applying a CSS rule.
