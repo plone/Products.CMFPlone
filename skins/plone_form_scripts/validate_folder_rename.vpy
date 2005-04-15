@@ -38,9 +38,13 @@ for x in range(0, len(new_ids)):
         continue
 
     if id != newid and newid in object_ids:
-        state.setError(id, 'There is already an item named \'%s\' in this folder.' % newid, 'id_used')
+        message = context.translate(
+            "There is already an item named '${name}' in this folder.",
+            {'name': newid})
 
-    if resp is not None:
+        state.setError(id, message)
+
+    if resp is not None: # XXX when is this ever true?
         return state.set(status='failure', portal_status_message=resp)
 
 if state.getErrors():

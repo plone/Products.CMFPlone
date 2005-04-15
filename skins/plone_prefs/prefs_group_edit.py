@@ -15,7 +15,8 @@ msg = 'No change has been done.'
 if addname:
     context.portal_groups.addGroup(addname,"",(),())
     group=context.portal_groups.getGroupById(addname)
-    msg = 'Group ' + addname + ' has been added.'
+    msg = context.translate("Group ${name} has been added.",
+                            {'name': addname})
 else:
     group=context.portal_groups.getGroupById(groupname)
     msg = 'Changes saved.'

@@ -23,10 +23,11 @@ if not itool.objectImplements(context, INTERFACE):
 
 # Also should never happen
 if not objectId in context.objectIds():
+    message = context.translate("There is no object with short name ${name} "
+                                "in this folder.",
+                                {'name': objectId})
     return state.set(status = 'failure',
-                     portal_status_message = \
-                        'There is no object with short name %s in this folder' \
-                            % objectId)
+                     portal_status_message = message)
 
 context.setDefaultPage(objectId)
 

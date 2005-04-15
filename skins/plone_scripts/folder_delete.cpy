@@ -24,7 +24,13 @@ for id in ids:
 
 if ids:
     status='success'
-    message=', '.join(titles)+' has been deleted.'
+    if len(titles) == 1:
+        message = context.translate("${title} has been deleted.",
+                                    {'title': titles[0]})
+    else:
+        message = context.translate("${titles} have been deleted.",
+                                    {'titles': ', '.join(titles)})
+
     transaction_note('Deleted %s from %s' % (', '.join(titles_and_ids), context.absolute_url()))
     context.manage_delObjects(ids)
 

@@ -16,7 +16,8 @@ REQUEST = context.REQUEST
 parent = context.aq_inner.aq_parent
 parent.manage_cutObjects(context.getId(), REQUEST)
 
-message = context.title_or_id() + ' cut.'
+message = context.translate("${title} cut.",
+                            {'title': context.title_or_id()})
 transaction_note('Cut object %s' % context.absolute_url())
 
 return state.set(status = 'success', portal_status_message = message)

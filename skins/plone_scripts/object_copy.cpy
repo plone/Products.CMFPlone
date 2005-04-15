@@ -16,7 +16,8 @@ REQUEST = context.REQUEST
 parent = context.aq_inner.aq_parent
 parent.manage_copyObjects(context.getId(), REQUEST)
 
-message = context.title_or_id() + ' copied.'
+message = context.translate("${title} copied.",
+                            {'title': context.title_or_id()})
 transaction_note('Copied object %s' % context.absolute_url())
 
 

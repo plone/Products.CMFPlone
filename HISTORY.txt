@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Made all portal_status_messages with dynamic parts translatable.
+      Fixes http://plone.org/collector/2532
+      [dpunktnpunkt]
+
     - Included code from the CatalogOptimizer product, i.e. PLIP 89. This
       gives us DateIndexes and DateRangeIndexes instead of slow FieldIndexes.
       [stefan]
