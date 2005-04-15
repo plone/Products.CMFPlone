@@ -7,7 +7,7 @@
 <!-- The Recent Items box -->
 
 <div metal:define-macro="portlet"
-     tal:condition="not: isAnon">
+     tal:condition="python:not isAnon and template.getId()!='recently_published'">
      
     <tal:recentlist tal:define="last_login_time python:member.getProperty('last_login_time', DateTime());
                  results python:request.get('items',
