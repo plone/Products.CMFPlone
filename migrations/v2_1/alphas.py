@@ -126,7 +126,7 @@ def alpha1_alpha2(portal):
         reindexCatalog(portal, out)
 
     # FIXME: *Must* be called after reindexCatalog.
-    # In tests the reindexing loses the folders for some reason...
+    # In tests, reindexing loses the folders for some reason...
 
     # Make sure the Members folder is cataloged
     indexMembersFolder(portal, out)
@@ -586,8 +586,8 @@ def indexMembersFolder(portal, out):
         if membershipTool is not None:
             members = membershipTool.getMembersFolder()
             if members is not None:
-                members.reindexObject()
-                out.append('Cataloged Members folder.')
+                members.indexObject()
+                out.append('Recataloged Members folder.')
 
 
 def indexNewsFolder(portal, out):
