@@ -4,6 +4,7 @@ from Acquisition import aq_base
 from zExceptions import BadRequest
 from Products.CMFCore import CMFCorePermissions
 from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.PloneUtilities import _createObjectByType
 from Products.CMFPlone.migrations.migration_util import installOrReinstallProduct
 
 # Types which will be installed as "unfriendly" and thus hidden for search
@@ -34,7 +35,7 @@ def two05_alpha1(portal):
     """
     out = []
 
-    # XXX: Must get rid of this!
+    # FIXME: Must get rid of this!
     # ATCT is not installed when SUPPRESS_ATCT_INSTALLATION is set to YES
     # It's required for some unit tests in ATCT [tiran]
     suppress_atct = bool(os.environ.get('SUPPRESS_ATCT_INSTALLATION', None)
@@ -119,13 +120,18 @@ def alpha1_alpha2(portal):
     # Add objec cut/copy/paste/delete + batch buttons
     addEditContentActions(portal, out)
 
-    # Make sure the Members folder is cataloged
-    indexMembersFolder(portal, out)
-
     # Rebuild catalog
     if reindex:
         refreshSkinData(portal, out)
         reindexCatalog(portal, out)
+
+    # FIXME: *Must* be called after reindexCatalog.
+    # In tests the reindexing loses the folders for some reason...
+
+    # Make sure the Members folder is cataloged
+    indexMembersFolder(portal, out)
+    # Make sure the News folder is cataloged
+    indexNewsFolder(portal, out)
 
     return out
 
@@ -468,15 +474,15 @@ def removePortalTabsActions(portal, out):
             i += 1
         if to_delete:
             actionsTool.deleteActions(to_delete)
-        out.append("Deleted old portal_tabs actions")
+        out.append("Deleted old portal_tabs actions.")
 
 
 def addNewsFolder(portal, out):
     """Add news folder to portal root"""
     if 'news' not in portal.objectIds():
-        addFolder = portal.manage_addProduct['ATContentTypes'].addATBTreeFolder
-        addFolder('news', title='News')
-        out.append("Added news folder")
+        _createObjectByType('Large Plone Folder', portal, id='news',
+                            title='News', description='Site News')
+        out.append("Added news folder.")
     news = getattr(aq_base(portal), 'news')
 
     # Enable ConstrainTypes and set to News
@@ -484,16 +490,15 @@ def addNewsFolder(portal, out):
     news.setConstrainTypesMode(1)
     news.setImmediatelyAddableTypes(addable_types)
     news.setLocallyAllowedTypes(addable_types)
-    news.setDescription("Site News")
-    out.append("Set constrain types for news folder")
+    out.append("Set constrain types for news folder.")
 
     # Add news_listing.pt as default page
     # property manager hasProperty can give odd results ask forgiveness instead
     try:
         news.manage_addProperty('default_page', ['news_listing','index_html'], 'lines')
-        out.append("Added default view for news folder")
     except BadRequest:
-        out.append("Default view on news already set")
+        pass
+    out.append("Added default view for news folder.")
 
 
 def addExclude_from_navMetadata(portal, out):
@@ -572,6 +577,7 @@ def addEditContentActions(portal, out):
                     visible=1)
             out.append("Added '%s' contentmenu action to actions tool." % newaction['name'])
 
+
 def indexMembersFolder(portal, out):
     """Makes sure the Members folder is cataloged."""
     catalog = getToolByName(portal, 'portal_catalog', None)
@@ -582,4 +588,13 @@ def indexMembersFolder(portal, out):
             if members is not None:
                 members.reindexObject()
                 out.append('Cataloged Members folder.')
+
+
+def indexNewsFolder(portal, out):
+    """Makes sure the News folder is cataloged."""
+    catalog = getToolByName(portal, 'portal_catalog', None)
+    if catalog is not None:
+        if hasattr(aq_base(portal), 'news'):
+            portal.news.indexObject()
+            out.append('Recataloged news folder.')
 

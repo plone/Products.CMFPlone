@@ -26,6 +26,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.icons = self.portal.portal_actionicons
         self.properties = self.portal.portal_properties
         self.memberdata = self.portal.portal_memberdata
+        self.catalog = self.portal.portal_catalog
 
     def testPloneSkins(self):
         # Plone skins should have been set up
@@ -85,6 +86,19 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         # Members folder should have portal_type 'Large Plone Folder'
         members = self.membership.getMembersFolder()
         self.assertEqual(members._getPortalTypeName(), 'Large Plone Folder')
+
+    def testMembersFolderMeta(self):
+        # Members folder should have title 'Members'
+        members = self.membership.getMembersFolder()
+        self.assertEqual(members.getId(), 'Members')
+        self.assertEqual(members.Title(), 'Members')
+
+    def testMembersFolderIsIndexed(self):
+        # Members folder should be cataloged
+        res = self.catalog(id='Members')
+        self.assertEqual(len(res), 1)
+        self.assertEqual(res[0].getId, 'Members')
+        self.assertEqual(res[0].Title, 'Members')
 
     def testSecureMailHost(self):
         # MailHost should be of the SMH variety
@@ -201,10 +215,6 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.failUnless(hasattr(self.portal, 'portal_css'))
         self.failUnless(hasattr(self.portal, 'portal_javascripts'))
 
-    def test_alldependencies_fulfilled(self):
-        from Products.CMFPlone.setup import dependencies
-	self.failUnlessEqual(dependencies.messages, [])
-
     def testUnfriendlyTypesProperty(self):
         # We should have an unfriendly_types property
         self.failUnless(self.properties.site_properties.hasProperty('unfriendly_types'))
@@ -233,29 +243,41 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.failUnless('news' in self.portal.objectIds())
         news = getattr(self.portal.aq_base, 'news')
         self.assertEqual(news._getPortalTypeName(), 'Large Plone Folder')
+        self.assertEqual(news.Title(), 'News')
+        self.assertEqual(news.Description(), 'Site News')
         self.assertEqual(list(news.getProperty('default_page')), ['news_listing','index_html'])
         self.assertEqual(list(news.getImmediatelyAddableTypes()),['News Item'])
         self.assertEqual(list(news.getLocallyAllowedTypes()),['News Item'])
         self.assertEqual(news.getConstrainTypesMode(), 1)
-        
+
+    def testNewsFolderIsIndexed(self):
+        # News folder should be cataloged
+        res = self.catalog(id='news')
+        self.assertEqual(len(res), 1)
+        self.assertEqual(res[0].getId, 'news')
+        self.assertEqual(res[0].Title, 'News')
+        self.assertEqual(res[0].Description, 'Site News')
+
     def testObjectButtonActions(self):
-        atool = self.portal.portal_actions
-        installed = [(a.getId(), a.getCategory()) for a in atool.listActions()]
+        installed = [(a.getId(), a.getCategory()) for a in self.actions.listActions()]
         self.failUnless(('cut', 'object_buttons') in installed)
         self.failUnless(('copy', 'object_buttons') in installed)
         self.failUnless(('paste', 'object_buttons') in installed)
         self.failUnless(('delete', 'object_buttons') in installed)
-        
+
     def testBatchActions(self):
-        atool = self.portal.portal_actions
-        installed = [(a.getId(), a.getCategory()) for a in atool.listActions()]
+        installed = [(a.getId(), a.getCategory()) for a in self.actions.listActions()]
         self.failUnless(('batch', 'batch') in installed)
-        
+
     def testContentsTabDisabled(self):
-        atool = self.portal.portal_actions
-        for a in atool.listActions():
+        for a in self.actions.listActions():
             if a.getId() == 'contents':
                 self.failIf(a.visible)
+
+    def testAllDependenciesMet(self):
+        from Products.CMFPlone.setup import dependencies
+        msgs = [x for x in dependencies.messages if not x['optional']]
+        self.failUnlessEqual(msgs, [])
 
 
 class TestPortalBugs(PloneTestCase.PloneTestCase):
