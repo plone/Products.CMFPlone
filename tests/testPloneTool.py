@@ -504,8 +504,8 @@ class TestPortalTabs(PloneTestCase.PloneTestCase):
         # See if we can create one at all
         tabs = self.utils.createTopLevelTabs()
         self.failUnless(tabs)
-        #Only the folders show up
-        self.assertEqual(len(tabs), 2)
+        #Only the folders show up (Members, news, folder1, folder2)
+        self.assertEqual(len(tabs), 4)
 
     def testTabsRespectFolderOrder(self):
         # See if reordering causes a change in the tab order
@@ -539,8 +539,8 @@ class TestBreadCrumbs(PloneTestCase.PloneTestCase):
         self.failUnless(crumbs)
         self.assertEqual(len(crumbs), 2)
         self.assertEqual(crumbs[-1]['absolute_url'], doc.absolute_url())
-        self.assertEqual(crumbs[-2]['absolute_url'],
-                                                doc.aq_parent.absolute_url())
+        self.assertEqual(crumbs[-2]['absolute_url'], doc.aq_parent.absolute_url())
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite
