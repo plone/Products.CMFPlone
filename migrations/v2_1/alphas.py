@@ -427,7 +427,7 @@ def installCSSandJSRegistries(portal, out):
             jsreg.registerScript('plone_javascript_variables.js')
             jsreg.registerScript('register_function.js')
 
-        out.append('Installed CSSRegistry and JSRegistry')
+        out.append('Installed CSSRegistry and JSRegistry.')
 
 
 def addUnfriendlyTypesSiteProperty(portal, out):
@@ -645,10 +645,10 @@ def migrateDateIndexes(portal, out):
                 if indextype == 'DateIndex':
                     continue
                 catalog.delIndex(indexname)
-                out.append("Deleted %s '%s'" % (indextype, indexname))
+                out.append("Deleted %s '%s'." % (indextype, indexname))
 
             catalog.addIndex(indexname, 'DateIndex')
-            out.append("Added DateIndex '%s'" % indexname)
+            out.append("Added DateIndex '%s'." % indexname)
             changed = 1 # Ask for reindexing
     return changed
 
@@ -673,11 +673,11 @@ def migrateDateRangeIndexes(portal, out):
                 if indextype == 'DateRangeIndex':
                     continue
                 catalog.delIndex(indexname)
-                out.append("Deleted %s '%s'" % (indextype, indexname))
+                out.append("Deleted %s '%s'." % (indextype, indexname))
 
             extra = Record(since_field=since, until_field=until)
             catalog.addIndex(indexname, 'DateRangeIndex', extra)
-            out.append("Added DateRangeIndex '%s' (%s, %s)" % (indexname, since, until))
+            out.append("Added DateRangeIndex '%s' (%s, %s)." % (indexname, since, until))
             changed = 1 # Ask for reindexing
     return changed
 
