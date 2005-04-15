@@ -4,6 +4,13 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Fixed computeRoleMap.py so that it stores the role information by
+      user/group id not name, as a user and group may have the same name and
+      it would be wrong to combine them.  This is related to issue #3711
+      (http://plone.org/collector/3711) which is itself a GRUF issue fixed in
+      GRUF svn.  Also implemented a faster sort algorithm in the above script.
+      [alecm]
+
     - Made prev/next links in calendar portlet respect current query parameters.
       Fixes bug #3949 (http://members.plone.org/collector/3949).
       [alecm]
