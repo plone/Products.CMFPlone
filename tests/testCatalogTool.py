@@ -11,10 +11,12 @@ from Products.CMFPlone.tests import PloneTestCase
 
 from Acquisition import aq_base
 from Globals import REPLACEABLE
+from DateTime import DateTime
+from Products.CMFCore.CMFCorePermissions import AccessInactivePortalContent
 
 portal_name = PloneTestCase.portal_name
+default_user  = PloneTestCase.default_user
 
-user1  = PloneTestCase.default_user
 user2  = 'u2'
 group2 = 'g2'
 
@@ -71,7 +73,6 @@ class TestCatalogSetup(PloneTestCase.PloneTestCase):
                              'ZCTextIndex Lexicon')
 
     def testPathIsExtendedPathIndex(self):
-        # Path index should be an ExtendedPathIndex
         # path index should be an ExtendedPathIndex
         self.assertEqual(self.catalog.Indexes['path'].__class__.__name__,
                          'ExtendedPathIndex')
@@ -89,6 +90,46 @@ class TestCatalogSetup(PloneTestCase.PloneTestCase):
     def testExclude_from_navInSchema(self):
         # exclude_from_nav column should be in catalog schema
         self.failUnless('exclude_from_nav' in self.catalog.schema())
+
+    def testDateIsDateIndex(self):
+        # Date should be a DateIndex
+        self.assertEqual(self.catalog.Indexes['Date'].__class__.__name__,
+                         'DateIndex')
+
+    def testCreatedIsDateIndex(self):
+        # created should be a DateIndex
+        self.assertEqual(self.catalog.Indexes['created'].__class__.__name__,
+                         'DateIndex')
+
+    def testEffectiveIsDateIndex(self):
+        # effective should be a DateIndex
+        self.assertEqual(self.catalog.Indexes['effective'].__class__.__name__,
+                         'DateIndex')
+
+    def testEndIsDateIndex(self):
+        # end should be a DateIndex
+        self.assertEqual(self.catalog.Indexes['end'].__class__.__name__,
+                         'DateIndex')
+
+    def testExpiresIsDateIndex(self):
+        # expires should be a DateIndex
+        self.assertEqual(self.catalog.Indexes['expires'].__class__.__name__,
+                         'DateIndex')
+
+    def testModifiedIsDateIndex(self):
+        # modified should be a DateIndex
+        self.assertEqual(self.catalog.Indexes['modified'].__class__.__name__,
+                         'DateIndex')
+
+    def testStartIsDateIndex(self):
+        # start should be a DateIndex
+        self.assertEqual(self.catalog.Indexes['start'].__class__.__name__,
+                         'DateIndex')
+
+    def testEffectiveRangeIsDateRangeIndex(self):
+        # effectiveRange should be a DateRangeIndex
+        self.assertEqual(self.catalog.Indexes['effectiveRange'].__class__.__name__,
+                         'DateRangeIndex')
 
 
 class TestCatalogIndexing(PloneTestCase.PloneTestCase):
@@ -268,6 +309,7 @@ class TestCatalogSearching(PloneTestCase.PloneTestCase):
         self.folder.folder_localrole_edit('add', [groupname], 'Owner')
         self.login(user2)
         self.assertEqual(self.catalog(SearchableText='foo')[0].id, 'doc')
+
 
 
 class TestFolderCataloging(PloneTestCase.PloneTestCase):
@@ -541,6 +583,68 @@ class TestCatalogUnindexing(PloneTestCase.PloneTestCase):
         self.failIf(self.catalog(id='doc'))
 
 
+class TestCatalogOptimizer(PloneTestCase.PloneTestCase):
+
+    def afterSetUp(self):
+        self.catalog = self.portal.portal_catalog
+        self.folder.invokeFactory('Document', id='doc')
+
+    def nofx(self):
+        # Removes effective and expires to make sure we only test
+        # the DateRangeIndex.
+        self.catalog.delIndex('effective')
+        self.catalog.delIndex('expires')
+
+    def assertResults(self, result, expect):
+        # Verifies ids of catalog results against expected ids
+        lhs = [r.getId for r in result]
+        lhs.sort()
+        rhs = list(expect)
+        rhs.sort()
+        self.assertEqual(lhs, rhs)
+
+    def testCeilingPatch(self):
+        self.assertEqual(self.folder.doc.expires(), DateTime(2500, 0))
+
+    def testSearchResults(self):
+        res = self.catalog.searchResults()
+        self.assertResults(res, ['Members', 'news', default_user, 'doc'])
+
+    def testCall(self):
+        res = self.catalog()
+        self.assertResults(res, ['Members', 'news', default_user, 'doc'])
+
+    def testSearchResultsExpired(self):
+        self.folder.doc.setExpirationDate(DateTime(2000, 12, 31))
+        self.folder.doc.reindexObject()
+        self.nofx()
+        res = self.catalog.searchResults()
+        self.assertResults(res, ['Members', 'news', default_user])
+
+    def testCallExpired(self):
+        self.folder.doc.setExpirationDate(DateTime(2000, 12, 31))
+        self.folder.doc.reindexObject()
+        self.nofx()
+        res = self.catalog()
+        self.assertResults(res, ['Members', 'news', default_user])
+
+    def testSearchResultsExpiredWithPermission(self):
+        self.folder.doc.setExpirationDate(DateTime(2000, 12, 31))
+        self.folder.doc.reindexObject()
+        self.nofx()
+        self.setPermissions([AccessInactivePortalContent])
+        res = self.catalog.searchResults()
+        self.assertResults(res, ['Members', 'news', default_user, 'doc'])
+
+    def testCallExpiredWithPermission(self):
+        self.folder.doc.setExpirationDate(DateTime(2000, 12, 31))
+        self.folder.doc.reindexObject()
+        self.nofx()
+        self.setPermissions([AccessInactivePortalContent])
+        res = self.catalog()
+        self.assertResults(res, ['Members', 'news', default_user, 'doc'])
+
+
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
@@ -551,6 +655,7 @@ def test_suite():
     suite.addTest(makeSuite(TestCatalogOrdering))
     suite.addTest(makeSuite(TestCatalogBugs))
     suite.addTest(makeSuite(TestCatalogUnindexing))
+    suite.addTest(makeSuite(TestCatalogOptimizer))
     return suite
 
 if __name__ == '__main__':

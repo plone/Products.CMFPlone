@@ -31,6 +31,8 @@ from Products.CMFPlone.migrations.v2_1.alphas import addNewsFolder
 from Products.CMFPlone.migrations.v2_1.alphas import addExclude_from_navMetadata
 from Products.CMFPlone.migrations.v2_1.alphas import indexMembersFolder
 from Products.CMFPlone.migrations.v2_1.alphas import addEditContentActions
+from Products.CMFPlone.migrations.v2_1.alphas import migrateDateIndexes
+from Products.CMFPlone.migrations.v2_1.alphas import migrateDateRangeIndexes
 
 
 class MigrationTest(PloneTestCase.PloneTestCase):
@@ -537,6 +539,64 @@ class TestMigrations_v2_1(MigrationTest):
         # Should not fail if Members folder is missing
         self.portal._delObject('Members')
         indexMembersFolder(self.portal, [])
+
+    def testMigrateDateIndexes(self):
+        # Should migrate date related indexes
+        self.catalog.delIndex('effective')
+        self.catalog.addIndex('effective', 'FieldIndex')
+        self.assertEqual(migrateDateIndexes(self.portal, []), 1)
+        self.assertEqual(self.catalog.Indexes['effective'].__class__.__name__,
+                         'DateIndex')
+
+    def testMigrateDateIndexesTwice(self):
+        # Should not fail if migrated again
+        self.catalog.delIndex('effective')
+        self.catalog.addIndex('effective', 'FieldIndex')
+        self.assertEqual(migrateDateIndexes(self.portal, []), 1)
+        self.assertEqual(migrateDateIndexes(self.portal, []), 0)
+        self.assertEqual(self.catalog.Indexes['effective'].__class__.__name__,
+                         'DateIndex')
+
+    def testMigrateDateIndexesNoCatalog(self):
+        # Should not fail if catalog is missing
+        self.portal._delObject('portal_catalog')
+        self.assertEqual(migrateDateIndexes(self.portal, []), 0)
+
+    def testMigrateDateIndexesNoIndex(self):
+        # Should not fail if an index is missing
+        self.catalog.delIndex('effective')
+        self.assertEqual(migrateDateIndexes(self.portal, []), 1)
+        self.assertEqual(self.catalog.Indexes['effective'].__class__.__name__,
+                         'DateIndex')
+
+    def testMigrateDateRangeIndexes(self):
+        # Should migrate date related indexes
+        self.catalog.delIndex('effectiveRange')
+        self.catalog.addIndex('effectiveRange', 'FieldIndex')
+        self.assertEqual(migrateDateRangeIndexes(self.portal, []), 1)
+        self.assertEqual(self.catalog.Indexes['effectiveRange'].__class__.__name__,
+                         'DateRangeIndex')
+
+    def testMigrateDateRangeIndexesTwice(self):
+        # Should not fail if migrated again
+        self.catalog.delIndex('effectiveRange')
+        self.catalog.addIndex('effectiveRange', 'FieldIndex')
+        self.assertEqual(migrateDateRangeIndexes(self.portal, []), 1)
+        self.assertEqual(migrateDateRangeIndexes(self.portal, []), 0)
+        self.assertEqual(self.catalog.Indexes['effectiveRange'].__class__.__name__,
+                         'DateRangeIndex')
+
+    def testMigrateDateRangeIndexesNoCatalog(self):
+        # Should not fail if catalog is missing
+        self.portal._delObject('portal_catalog')
+        self.assertEqual(migrateDateRangeIndexes(self.portal, []), 0)
+
+    def testMigrateDateRangeIndexesNoIndex(self):
+        # Should not fail if an index is missing
+        self.catalog.delIndex('effectiveRange')
+        self.assertEqual(migrateDateRangeIndexes(self.portal, []), 1)
+        self.assertEqual(self.catalog.Indexes['effectiveRange'].__class__.__name__,
+                         'DateRangeIndex')
 
 
 def test_suite():

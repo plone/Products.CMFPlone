@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Included code from the CatalogOptimizer product, i.e. PLIP 89. This
+      gives us DateIndexes and DateRangeIndexes instead of slow FieldIndexes.
+      [stefan]
+
     - Fixed bug in logged_in.py where login_password would not have been
       triggered even when appropriate on first login; fixed related issue in
       login_password.pt.

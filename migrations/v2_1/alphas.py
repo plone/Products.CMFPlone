@@ -7,28 +7,6 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.PloneUtilities import _createObjectByType
 from Products.CMFPlone.migrations.migration_util import installOrReinstallProduct
 
-# Types which will be installed as "unfriendly" and thus hidden for search
-# purposes
-BASE_UNFRIENDLY_TYPES = ['ATBooleanCriterion',
-                         'ATDateCriteria',
-                         'ATDateRangeCriterion',
-                         'ATListCriterion',
-                         'ATPortalTypeCriterion',
-                         'ATReferenceCriterion',
-                         'ATSelectionCriterion',
-                         'ATSimpleIntCriterion',
-                         'ATSimpleStringCriterion',
-                         'ATSortCriterion',
-                         'Discussion Item',
-                         'Plone Site',
-                         'TempFolder']
-
-# Types which are not selectable as a default_page
-BASE_NON_DEFAULT_PAGE_TYPES = ['Folder',
-                               'Large Plone Folder',
-                               'Image',
-                               'File']
-
 
 def two05_alpha1(portal):
     """2.0.5 -> 2.1-alpha1
@@ -119,6 +97,10 @@ def alpha1_alpha2(portal):
 
     # Add objec cut/copy/paste/delete + batch buttons
     addEditContentActions(portal, out)
+
+    # Install DateIndexes and DateRangeIndexes
+    reindex += migrateDateIndexes(portal, out)
+    reindex += migrateDateRangeIndexes(portal, out)
 
     # Rebuild catalog
     if reindex:
@@ -438,6 +420,22 @@ def installCSSandJSRegistries(portal, out):
 
 def addUnfriendlyTypesSiteProperty(portal, out):
     """Adds unfriendly_types site property."""
+    # Types which will be installed as "unfriendly" and thus hidden for search
+    # purposes
+    BASE_UNFRIENDLY_TYPES = ['ATBooleanCriterion',
+                             'ATDateCriteria',
+                             'ATDateRangeCriterion',
+                             'ATListCriterion',
+                             'ATPortalTypeCriterion',
+                             'ATReferenceCriterion',
+                             'ATSelectionCriterion',
+                             'ATSimpleIntCriterion',
+                             'ATSimpleStringCriterion',
+                             'ATSortCriterion',
+                             'Discussion Item',
+                             'Plone Site',
+                             'TempFolder']
+
     propTool = getToolByName(portal, 'portal_properties', None)
     if propTool is not None:
         propSheet = getattr(propTool, 'site_properties', None)
@@ -451,6 +449,12 @@ def addUnfriendlyTypesSiteProperty(portal, out):
 
 def addNonDefaultPageTypesSiteProperty(portal, out):
     """Adds non_default_page_types site property."""
+    # Types which are not selectable as a default_page
+    BASE_NON_DEFAULT_PAGE_TYPES = ['Folder',
+                                   'Large Plone Folder',
+                                   'Image',
+                                   'File']
+
     propTool = getToolByName(portal, 'portal_properties', None)
     if propTool is not None:
         propSheet = getattr(propTool, 'site_properties', None)
@@ -597,4 +601,71 @@ def indexNewsFolder(portal, out):
         if hasattr(aq_base(portal), 'news'):
             portal.news.indexObject()
             out.append('Recataloged news folder.')
+
+
+class Record:
+    def __init__(self, **kw):
+        self.__dict__.update(kw)
+
+
+def migrateDateIndexes(portal, out):
+    """Converts FieldIndexes to DateIndexes."""
+    DATEINDEXES = (
+    'created',
+    'modified',
+    'Date',
+    'start',
+    'end',
+    'effective',
+    'expires',
+    )
+
+    changed = 0
+    catalog = getToolByName(portal, 'portal_catalog', None)
+    if catalog is not None:
+        for indexname in DATEINDEXES:
+            try:
+                index = catalog._catalog.getIndex(indexname)
+            except KeyError:
+                pass
+            else:
+                indextype = index.__class__.__name__
+                if indextype == 'DateIndex':
+                    continue
+                catalog.delIndex(indexname)
+                out.append("Deleted %s '%s'" % (indextype, indexname))
+
+            catalog.addIndex(indexname, 'DateIndex')
+            out.append("Added DateIndex '%s'" % indexname)
+            changed = 1 # Ask for reindexing
+    return changed
+
+
+def migrateDateRangeIndexes(portal, out):
+    """Creates new DateRangeIndexes."""
+    DATERANGEINDEXES = (
+    ('effectiveRange', 'effective', 'expires'),
+    #('eventRange', 'start', 'end'),
+    )
+
+    changed = 0
+    catalog = getToolByName(portal, 'portal_catalog', None)
+    if catalog is not None:
+        for indexname, since, until in DATERANGEINDEXES:
+            try:
+                index = catalog._catalog.getIndex(indexname)
+            except KeyError:
+                pass
+            else:
+                indextype = index.__class__.__name__
+                if indextype == 'DateRangeIndex':
+                    continue
+                catalog.delIndex(indexname)
+                out.append("Deleted %s '%s'" % (indextype, indexname))
+
+            extra = Record(since_field=since, until_field=until)
+            catalog.addIndex(indexname, 'DateRangeIndex', extra)
+            out.append("Added DateRangeIndex '%s' (%s, %s)" % (indexname, since, until))
+            changed = 1 # Ask for reindexing
+    return changed
 
