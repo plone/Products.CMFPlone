@@ -12,7 +12,6 @@ CEILING_DATE = DateTime(2500, 0)    # 2499/12/31
 # Fixup the ceiling date in CMF 1.4 DublinCore
 #
 if APPLY_CEILING_DATE_PATCH:
-    from Products.CatalogOptimizer.config import CEILING_DATE
     from Products.CMFDefault.DublinCore import DefaultDublinCoreImpl
     DefaultDublinCoreImpl._DefaultDublinCoreImpl__CEILING_DATE = CEILING_DATE
 
