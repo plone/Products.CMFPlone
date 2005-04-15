@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Removed obsolete formtooltips member property.
+      [stefan]
+
     - Made all portal_status_messages with dynamic parts translatable.
       Fixes http://plone.org/collector/2532
       [dpunktnpunkt]

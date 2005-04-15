@@ -194,6 +194,10 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.failUnless(self.properties.site_properties.hasProperty('visible_ids'))
         self.failIf(self.memberdata.hasProperty('visible_ids'))
 
+    def testFormToolTipsProperty(self):
+        # formtooltips should have been removed
+        self.failIf(self.memberdata.hasProperty('formtooltips'))
+
     def testNavTreeProperties(self):
         # navtree_properties should contain the new properties
         self.failUnless(self.properties.navtree_properties.hasProperty('typesToList'))

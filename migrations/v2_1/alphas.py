@@ -58,6 +58,9 @@ def alpha1_alpha2(portal):
     addVisibleIdsSiteProperty(portal, out)
     deleteVisibleIdsMemberProperty(portal, out)
 
+    # Remove obsolete formtooltips property
+    deleteFormToolTipsMemberProperty(portal, out)
+
     # Make a new property exposeDCMetaTags
     addExposeDCMetaTagsProperty(portal, out)
 
@@ -243,6 +246,15 @@ def deleteVisibleIdsMemberProperty(portal, out):
         if memberdata.hasProperty('visible_ids'):
             memberdata.manage_delProperties(['visible_ids'])
         out.append("Deleted 'visible_ids' property from portal_memberdata.")
+
+
+def deleteFormToolTipsMemberProperty(portal, out):
+    """Deletes formtooltips memberdata property."""
+    memberdata = getToolByName(portal, 'portal_memberdata', None)
+    if memberdata is not None:
+        if memberdata.hasProperty('formtooltips'):
+            memberdata.manage_delProperties(['formtooltips'])
+        out.append("Deleted 'formtooltips' property from portal_memberdata.")
 
 
 def addExposeDCMetaTagsProperty(portal, out):

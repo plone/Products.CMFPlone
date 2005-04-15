@@ -17,6 +17,7 @@ from Products.CMFPlone.migrations.v2_1.alphas import addFullScreenAction
 from Products.CMFPlone.migrations.v2_1.alphas import addFullScreenActionIcon
 from Products.CMFPlone.migrations.v2_1.alphas import addVisibleIdsSiteProperty
 from Products.CMFPlone.migrations.v2_1.alphas import deleteVisibleIdsMemberProperty
+from Products.CMFPlone.migrations.v2_1.alphas import deleteFormToolTipsMemberProperty
 from Products.CMFPlone.migrations.v2_1.alphas import switchPathIndex
 from Products.CMFPlone.migrations.v2_1.alphas import addGetObjPositionInParentIndex
 from Products.CMFPlone.migrations.v2_1.alphas import addGetObjSizeMetadata
@@ -215,6 +216,28 @@ class TestMigrations_v2_1(MigrationTest):
         # Should not fail if portal_memberdata is missing
         self.portal._delObject('portal_memberdata')
         deleteVisibleIdsMemberProperty(self.portal, [])
+
+    def testDeleteFormToolTipsMemberProperty(self):
+        # Should delete the memberdata property
+        if not self.memberdata.hasProperty('formtooltips'):
+            self.memberdata.manage_addProperty('formtooltips', 0, 'boolean')
+        self.failUnless(self.memberdata.hasProperty('formtooltips'))
+        deleteFormToolTipsMemberProperty(self.portal, [])
+        self.failIf(self.memberdata.hasProperty('formtooltips'))
+
+    def testDeleteFormToolTipsMemberPropertyTwice(self):
+        # Should not fail if migrated again
+        if not self.memberdata.hasProperty('formtooltips'):
+            self.memberdata.manage_addProperty('formtooltips', 0, 'boolean')
+        self.failUnless(self.memberdata.hasProperty('formtooltips'))
+        deleteFormToolTipsMemberProperty(self.portal, [])
+        deleteFormToolTipsMemberProperty(self.portal, [])
+        self.failIf(self.memberdata.hasProperty('formtooltips'))
+
+    def testDeleteFormToolTipsMemberPropertyNoTool(self):
+        # Should not fail if portal_memberdata is missing
+        self.portal._delObject('portal_memberdata')
+        deleteFormToolTipsMemberProperty(self.portal, [])
 
     def testSwitchPathIndex(self):
         # Should convert 'path' index to EPI
