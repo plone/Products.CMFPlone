@@ -7,6 +7,7 @@ Plone 2.1 - Plaid - (unreleased)
     - Added id="breadcrumbs-you-are-here" to the <span> tag where "you are
       here" is printed in global_pathbar.pt. It is now possible to remove
       cleanly that message, applying a CSS rule.
+      [davconvent]
 
     - Removed obsolete formtooltips member property.
       [stefan]
