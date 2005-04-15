@@ -9,7 +9,8 @@
      tal:define="breadcrumbs python:putils.createBreadCrumbs(here);
                      portal_url portal_url|utool">
 
-    <span tal:omit-tag="" i18n:translate="you_are_here">You are here:</span>
+    <span id="breadcrumbs-you-are-here" i18n:translate="you_are_here">You 
+are here:</span>
     <span tal:condition="breadcrumbs" tal:omit-tag="">
             <a i18n:translate="tabs_home" tal:attributes="href python:portal_url">Home</a>
             <span class="breadcrumbSeparator">&rarr;</span>
