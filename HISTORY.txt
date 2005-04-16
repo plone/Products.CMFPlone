@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Fixed bug http://members.plone.org/collector/3386. Modified 
+      folder_rename_form.pt to reflect user authorisations on each
+      item.
+      [davconvent]
+
     - Implemented fix for http://plone.org/collector/3522 to add default
       groups "Reviewers" and "Administrators" to Plone, with the appropriate
       roles.

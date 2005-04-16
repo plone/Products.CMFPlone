@@ -38,7 +38,8 @@
 
         <fieldset tal:repeat="item items">
 
-          <tal:block tal:define="obj python:getattr(here, item)">
+          <tal:block define="obj python:getattr(here, item);
+                             error python:errors and errors.get(item, None);">
 
             <legend>
               <span tal:replace="item" />
@@ -47,55 +48,66 @@
             </legend>
 
             <div class="field"
-                 tal:define="error python:errors and errors.get(item, None)"
                  tal:attributes="class python:test(error, 'field error', 'field')">
 
-              <label i18n:translate="label_new_short_name">
-                New Short Name
-              </label>
-
               <div tal:condition="error"
                    tal:content="error">Validation error output</div>
 
-                   <input type="hidden"
-                          name="ids:list"
-                          value="fav_999816073"
-                          tal:attributes="value item" />
+              <div tal:define="canRenameItem python:mtool.checkPermission('Delete objects', obj) and mtool.checkPermission('Copy objects', obj);">
 
-                   <input type="text"
-                          name="new_ids:list"
-                          value=""
-                          size="60"
-                          tabindex=""
-                          tal:attributes="value item;
-                                          tabindex tabindex/next;"
-                          />
+                <label i18n:translate="label_new_short_name">
+                  New Short Name
+                </label><div></div>
 
-            </div>
+                    <span tal:condition="not:canRenameItem"
+                          i18:translate="rename_item_not_allowed">
+                        You are not allowed to modify the id of this item.
+                    </span>
 
-            <div class="field"
-                 tal:define="error python:errors and errors.get(item, None)">
+                    <input type="hidden"
+                           name="ids:list"
+                           value="fav_999816073"
+                           tal:condition="canRenameItem"
+                           tal:attributes="value item" />
 
-              <label i18n:translate="label_new_title">
-                New Title
-              </label>
+                    <input type="text"
+                           name="new_ids:list"
+                           value=""
+                           size="60"
+                           tabindex=""
+                           tal:condition="canRenameItem"
+                           tal:attributes="value item;
+                                           tabindex tabindex/next;" />
 
-              <div tal:condition="error"
-                   tal:content="error">Validation error output</div>
+              </div>
 
-                   <input type="text"
-                          name="new_titles:list"
-                          value="title"
-                          size="60"
-                          tabindex=""
-                          tal:attributes="value obj/Title;
-                                          tabindex tabindex/next;" />
+              <div tal:define="canModifyItem python:mtool.checkPermission('Modify portal content', obj);">
+
+                <label i18n:translate="label_new_title">
+                  New Title
+                </label><div></div>
+
+                    <span tal:condition="not:canModifyItem"
+                          i18:translate="change_id_for_item_not_allowed">
+                        You are not allowed to modify the title of this item.
+                    </span>
+
+                    <input type="text"
+                           name="new_titles:list"
+                           value="title"
+                           size="60"
+                           tabindex=""
+                           tal:condition="canModifyItem"
+                           tal:attributes="value obj/Title;
+                                           tabindex tabindex/next;" />
+
+              </div>
+
             </div>
 
           </tal:block>
 
         </fieldset>
-
 
         <div class="formControls">
 
