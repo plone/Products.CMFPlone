@@ -4,10 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
-    - Implemented bug #3522 (http://plone.org/collector/3522) to add default
+    - Implemented fix for http://plone.org/collector/3522 to add default
       groups "Reviewers" and "Administrators" to Plone, with the appropriate
       roles.
-      [initial patch by dn, tests and merge by optilude]
+      [dpunktnpunkt] [optilude]
 
     - Made PloneFolder.moveObjectsByDelta not throw an error when passed a non
       contentish object id (apparently this happens during some migrations).

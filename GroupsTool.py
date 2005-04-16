@@ -11,6 +11,9 @@ class GroupsTool(PloneBaseTool, BaseTool):
     security = ClassSecurityInfo()
     toolicon = 'skins/plone_images/group.gif'
 
+    # No group workspaces by default
+    groupWorkspacesCreationFlag = 0
+
     __implements__ = (PloneBaseTool.__implements__, BaseTool.__implements__, )
 
 GroupsTool.__doc__ = BaseTool.__doc__

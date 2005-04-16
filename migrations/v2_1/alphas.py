@@ -363,6 +363,7 @@ def addSitemapAction(portal, out):
                 )
         out.append("Added 'sitemap' action to actions tool.")
 
+
 def addDefaultGroups(portal, out):
     "Adds default groups Administrators and Reviewers."""
     # See http://plone.org/collector/3522
@@ -384,6 +385,7 @@ def addDefaultGroups(portal, out):
                                 group['roles'],
                                 title = group['title'])
             out.append("Added default group '%s'." % group['id'])
+
 
 def refreshSkinData(portal, out=None):
     """Refreshes skins to make new scripts available in the

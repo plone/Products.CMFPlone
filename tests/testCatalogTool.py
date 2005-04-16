@@ -588,10 +588,6 @@ class TestCatalogOptimizer(PloneTestCase.PloneTestCase):
     def afterSetUp(self):
         self.catalog = self.portal.portal_catalog
         self.folder.invokeFactory('Document', id='doc')
-        
-        # Nuke Administators and Reviewers groups added in 2.1a2 migrations
-        # (and any other migrated-in groups) to avoid test confusion
-        self.portal.portal_groups.removeGroups(self.portal.portal_groups.listGroupIds())
 
     def nofx(self):
         # Removes effective and expires to make sure we only test
