@@ -38,9 +38,9 @@
     
             <a href=""
                class="link-parent"
-               tal:define="parent_url python:here.navigationParent(here, template.getId())"
+               tal:define="parent_url python:here.navigationParent(here, fallThroughDefaultPage = False, checkPermissions = ['List folder contents'])"
                tal:condition="parent_url"
-               tal:attributes="href parent_url"
+               tal:attributes="href string:${parent_url}/folder_contents"
                i18n:translate="go_to_parent_url">
                 Up one level
             </a>
