@@ -31,6 +31,14 @@ class TestGroupsTool(PloneTestCase.PloneTestCase):
         self.groups = self.portal.portal_groups
         self.prefix = self.acl_users.getGroupPrefix()
         self.groups.groupWorkspacesCreationFlag = 0
+        
+        # Nuke Administators and Reviewers groups added in 2.1a2 migrations
+        # (and any other migrated-in groups) to avoid test confusion
+        self.groups.removeGroups(self.groups.listGroupIds())
+        
+        # Remove the group workspaces folder if it was created
+        if self.groups.getGroupWorkspacesFolderId() in self.portal.objectIds():
+            self.portal.manage_delObjects([self.groups.getGroupWorkspacesFolderId()])
 
     def testAddGroup(self):
         self.groups.addGroup('foo', [], [])
@@ -161,8 +169,20 @@ class TestGroupWorkspacesFolder(PloneTestCase.PloneTestCase):
         self.groups = self.portal.portal_groups
         self.prefix = self.acl_users.getGroupPrefix()
         self.groups.groupWorkspacesCreationFlag = 0
-        self.portal.manage_addPortalFolder(self.groups.getGroupWorkspacesFolderId())
+        
+        # Nuke Administators and Reviewers groups added in 2.1a2 migrations
+        # (and any other migrated-in groups) to avoid test confusion
+        self.groups.removeGroups(self.groups.listGroupIds())
 
+        # Create the groups area only if it wasn't added already (which it is)
+        # during migration to 2.1a2
+        if self.groups.getGroupWorkspacesFolderId() not in self.portal.objectIds():
+            self.portal.manage_addPortalFolder(self.groups.getGroupWorkspacesFolderId())
+        
+        # Creating group workspace folders should happen as manager, since only
+        # managers can add groups
+        self.setRoles(['Manager'])
+        
     def testGetGroupWorkspacesFolder(self):
         self.failIfEqual(self.groups.getGroupWorkspacesFolder(), None)
 

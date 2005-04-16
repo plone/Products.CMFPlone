@@ -105,6 +105,9 @@ def alpha1_alpha2(portal):
     reindex += migrateDateIndexes(portal, out)
     reindex += migrateDateRangeIndexes(portal, out)
 
+    # Add groups 'administrators' and 'reviewers'
+    addDefaultGroups(portal, out)
+
     # Rebuild catalog
     if reindex:
         refreshSkinData(portal, out)
@@ -360,6 +363,27 @@ def addSitemapAction(portal, out):
                 )
         out.append("Added 'sitemap' action to actions tool.")
 
+def addDefaultGroups(portal, out):
+    "Adds default groups Administrators and Reviewers."""
+    # See http://plone.org/collector/3522
+    groups = (
+        {'id': 'Administrators',
+         'title': 'Administrators',
+         'roles': ('Manager',), },
+        {'id': 'Reviewers',
+         'title': 'Reviewers',
+         'roles': ('Reviewer',), },
+        )
+    groupsTool = getToolByName(portal, 'portal_groups', None)
+    if groupsTool is not None:
+        for group in groups:
+            # Group already exists:
+            if groupsTool.getGroupById(group['id']): continue
+
+            groupsTool.addGroup(group['id'],
+                                group['roles'],
+                                title = group['title'])
+            out.append("Added default group '%s'." % group['id'])
 
 def refreshSkinData(portal, out=None):
     """Refreshes skins to make new scripts available in the

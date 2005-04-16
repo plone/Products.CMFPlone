@@ -27,6 +27,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.properties = self.portal.portal_properties
         self.memberdata = self.portal.portal_memberdata
         self.catalog = self.portal.portal_catalog
+        self.groups = self.portal.portal_groups
 
     def testPloneSkins(self):
         # Plone skins should have been set up
@@ -277,6 +278,10 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         for a in self.actions.listActions():
             if a.getId() == 'contents':
                 self.failIf(a.visible)
+                
+    def testDefaultGroupsAdded(self):
+        self.failUnless('Administrators' in self.groups.listGroupIds())
+        self.failUnless('Reviewers' in self.groups.listGroupIds())
 
     def testAllDependenciesMet(self):
         from Products.CMFPlone.setup import dependencies

@@ -32,6 +32,10 @@ class TestUserFolder(PloneTestCase.PloneTestCase):
         self.app.REQUEST.set('PARENTS', [self.folder, self.app])
         folder_path = list(self.folder.getPhysicalPath())
         self.app.REQUEST.steps = folder_path + ['doc']
+        
+        # Nuke Administators and Reviewers groups added in 2.1a2 migrations
+        # (and any other migrated-in groups) to avoid test confusion
+        self.portal.portal_groups.removeGroups(self.portal.portal_groups.listGroupIds())
 
     def testGetUser(self):
         self.failIfEqual(self.uf.getUser(default_user), None)

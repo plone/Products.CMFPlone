@@ -23,6 +23,10 @@ class TestMembershipTool(PloneTestCase.PloneTestCase):
     def afterSetUp(self):
         self.membership = self.portal.portal_membership
         self.membership.memberareaCreationFlag = 0
+        
+        # Nuke Administators and Reviewers groups added in 2.1a2 migrations
+        # (and any other migrated-in groups) to avoid test confusion
+        self.portal.portal_groups.removeGroups(self.portal.portal_groups.listGroupIds())
 
     def testGetPersonalFolder(self):
         # Should return the .personal folder

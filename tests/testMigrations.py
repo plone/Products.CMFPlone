@@ -23,6 +23,7 @@ from Products.CMFPlone.migrations.v2_1.alphas import addGetObjPositionInParentIn
 from Products.CMFPlone.migrations.v2_1.alphas import addGetObjSizeMetadata
 from Products.CMFPlone.migrations.v2_1.alphas import updateNavTreeProperties
 from Products.CMFPlone.migrations.v2_1.alphas import addSitemapAction
+from Products.CMFPlone.migrations.v2_1.alphas import addDefaultGroups
 from Products.CMFPlone.migrations.v2_1.alphas import reindexCatalog
 from Products.CMFPlone.migrations.v2_1.alphas import installCSSandJSRegistries
 from Products.CMFPlone.migrations.v2_1.alphas import addUnfriendlyTypesSiteProperty
@@ -366,6 +367,32 @@ class TestMigrations_v2_1(MigrationTest):
         # Should not fail if portal_actions is missing
         self.portal._delObject('portal_actions')
         addSitemapAction(self.portal, [])
+
+    def testAddDefaultGroups(self):
+        self.setRoles(['Manager'])
+        self.portal.portal_groups.removeGroups(('Administrators', 'Reviewers'))
+        addDefaultGroups(self.portal, [])
+        self.failUnless('Administrators' in self.portal.portal_groups.listGroupIds())
+        self.failUnless('Reviewers' in self.portal.portal_groups.listGroupIds())
+
+    def testAddDefaultGroupsTwice(self):
+        self.setRoles(['Manager'])
+        self.portal.portal_groups.removeGroups(('Administrators', 'Reviewers'))
+        out = []
+        addDefaultGroups(self.portal, out)
+        # Reports about the 2 new groups that were added.
+        self.assertEquals(len(out), 2)
+        addDefaultGroups(self.portal, out)
+        # Doesn't add any new groups.
+        self.assertEquals(len(out), 2)
+        self.failUnless('Administrators' in self.portal.portal_groups.listGroupIds())
+        self.failUnless('Reviewers' in self.portal.portal_groups.listGroupIds())
+        
+    def testAddDefaultGroupsNoTool(self):
+        self.setRoles(['Manager'])
+        # Should not fail if portal_groups is missing
+        self.portal._delObject('portal_groups')
+        addDefaultGroups(self.portal, [])
 
     def testReindexCatalog(self):
         # Should rebuild the catalog
