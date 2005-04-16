@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Made PloneFolder.moveObjectsByDelta not throw an error when passed a non
+      contentish object id (apparently this happens during some migrations).
+      Fixes #3959 (http://plone.org/collector/3959).  Requires a small fix in
+      AT done on 1.3 branch.
+      [alecm]
+
     - Fixed computeRoleMap.py so that it stores the role information by
       user/group id not name, as a user and group may have the same name and
       it would be wrong to combine them.  This is related to issue #3711
