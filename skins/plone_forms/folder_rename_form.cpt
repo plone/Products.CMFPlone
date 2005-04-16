@@ -53,7 +53,8 @@
               <div tal:condition="error"
                    tal:content="error">Validation error output</div>
 
-              <div tal:define="canRenameItem python:mtool.checkPermission('Delete objects', obj) and mtool.checkPermission('Copy objects', obj);">
+              <div tal:define="canRenameItem python:mtool.checkPermission('Delete objects', obj) and mtool.checkPermission('Copy objects', obj);"
+                   tal:attributes="class python:test(canRenameItem, nothing, 'error')">
 
                 <label i18n:translate="label_new_short_name">
                   New Short Name
@@ -81,7 +82,8 @@
 
               </div>
 
-              <div tal:define="canModifyItem python:mtool.checkPermission('Modify portal content', obj);">
+              <div tal:define="canModifyItem python:mtool.checkPermission('Modify portal content', obj);"
+                   tal:attributes="class python:test(canModifyItem, nothing, 'error')">
 
                 <label i18n:translate="label_new_title">
                   New Title
