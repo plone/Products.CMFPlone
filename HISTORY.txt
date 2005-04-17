@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Introduced the ExtensibleIndexableObjectWrapper. It's a wrapper based on
+      the IndexableObjectWrapper for the catalog tool that can easily be 
+      extented by registering methods.
+      [tiran]
+
     - Renamed ugly 'PloneUtilities.py' module to 'utils.py'. The former is
       still around but issues a deprecation warning.
       [stefan]
