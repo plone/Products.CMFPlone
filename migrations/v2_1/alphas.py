@@ -377,6 +377,10 @@ def addDefaultGroups(portal, out):
         )
     groupsTool = getToolByName(portal, 'portal_groups', None)
     if groupsTool is not None:
+        # Don't create workspaces
+        flag = groupsTool.groupWorkspacesCreationFlag
+        groupsTool.groupWorkspacesCreationFlag = False
+
         for group in groups:
             # Group already exists:
             if groupsTool.getGroupById(group['id']): continue
@@ -385,6 +389,8 @@ def addDefaultGroups(portal, out):
                                 group['roles'],
                                 title = group['title'])
             out.append("Added default group '%s'." % group['id'])
+
+        groupsTool.groupWorkspacesCreationFlag = flag
 
 
 def refreshSkinData(portal, out=None):

@@ -134,6 +134,7 @@ class TestMigrations_v2_1(MigrationTest):
         self.memberdata = self.portal.portal_memberdata
         self.membership = self.portal.portal_membership
         self.catalog = self.portal.portal_catalog
+        self.groups = self.portal.portal_groups
 
     def testAddFullScreenAction(self):
         # Should add the full_screen action
@@ -369,13 +370,24 @@ class TestMigrations_v2_1(MigrationTest):
         addSitemapAction(self.portal, [])
 
     def testAddDefaultGroups(self):
+        # Should create the admin and reviewer groups
         self.setRoles(['Manager'])
-        self.portal.portal_groups.removeGroups(('Administrators', 'Reviewers'))
+        self.groups.removeGroups(('Administrators', 'Reviewers'))
         addDefaultGroups(self.portal, [])
-        self.failUnless('Administrators' in self.portal.portal_groups.listGroupIds())
-        self.failUnless('Reviewers' in self.portal.portal_groups.listGroupIds())
+        self.failUnless('Administrators' in self.groups.listGroupIds())
+        self.failUnless('Reviewers' in self.groups.listGroupIds())
+
+    def testAddDefaultGroupsDoesntCreateWorkspaces(self):
+        # Should not create workspaces even if enabled
+        self.setRoles(['Manager'])
+        self.groups.groupWorkspaceCreationFlag = True
+        self.groups.removeGroups(('Administrators', 'Reviewers'))
+        addDefaultGroups(self.portal, [])
+        self.failUnless('Administrators' in self.groups.listGroupIds())
+        self.failUnless('Reviewers' in self.groups.listGroupIds())
 
     def testAddDefaultGroupsTwice(self):
+        # Should not fail if migrated again
         self.setRoles(['Manager'])
         self.portal.portal_groups.removeGroups(('Administrators', 'Reviewers'))
         out = []
@@ -385,12 +397,12 @@ class TestMigrations_v2_1(MigrationTest):
         addDefaultGroups(self.portal, out)
         # Doesn't add any new groups.
         self.assertEquals(len(out), 2)
-        self.failUnless('Administrators' in self.portal.portal_groups.listGroupIds())
-        self.failUnless('Reviewers' in self.portal.portal_groups.listGroupIds())
-        
+        self.failUnless('Administrators' in self.groups.listGroupIds())
+        self.failUnless('Reviewers' in self.groups.listGroupIds())
+
     def testAddDefaultGroupsNoTool(self):
-        self.setRoles(['Manager'])
         # Should not fail if portal_groups is missing
+        self.setRoles(['Manager'])
         self.portal._delObject('portal_groups')
         addDefaultGroups(self.portal, [])
 
