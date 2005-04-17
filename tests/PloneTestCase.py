@@ -41,6 +41,7 @@ ZopeTestCase.installProduct('ATReferenceBrowserWidget')
 ZopeTestCase.utils.setupCoreSessions()
 ZopeTestCase.utils.setupSiteErrorLog()
 
+from Products.CMFPlone.PloneUtilities import _createObjectByType
 from AccessControl.SecurityManagement import newSecurityManager
 from AccessControl.SecurityManagement import noSecurityManager
 from Acquisition import aq_base
@@ -60,6 +61,12 @@ class PloneTestCase(ZopeTestCase.PortalTestCase):
         # Hack an ACTUAL_URL into the REQUEST
         ZopeTestCase.PortalTestCase._setup(self)
         self.app.REQUEST['ACTUAL_URL'] = self.app.REQUEST.get('URL')
+        self.app.REQUEST['plone_skin'] = 'Plone Default'
+
+    def _refreshSkinData(self):
+        # Optimize this away as __of__() sets up the skins
+        # during the call to getPortal().
+        pass
 
     def getPortal(self):
         '''Returns the portal object to the bootstrap code.
@@ -136,7 +143,6 @@ def setupPloneSite(app=None, id=portal_name, quiet=0, with_default_memberarea=1)
 
 def _setupHomeFolder(portal, member_id):
     '''Creates the folders comprising a memberarea.'''
-    from Products.CMFPlone.PloneUtilities import _createObjectByType
     membership = portal.portal_membership
     catalog = getattr(portal, 'portal_catalog', None)
     # Create home folder
@@ -177,7 +183,7 @@ def optimize():
     PloneGenerator.setupMembersFolder = setupMembersFolder
     # Don't setup Plone content (besides Members folder)
     def setupPortalContent(self, p):
-        p.invokeFactory('Large Plone Folder', id='Members', title='Members')
+        _createObjectByType('Large Plone Folder', p, id='Members', title='Members')
     PloneGenerator.setupPortalContent = setupPortalContent
 
 
