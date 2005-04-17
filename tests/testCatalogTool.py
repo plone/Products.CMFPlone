@@ -14,6 +14,10 @@ from Globals import REPLACEABLE
 from DateTime import DateTime
 from Products.CMFCore.CMFCorePermissions import AccessInactivePortalContent
 
+from Products.CMFPlone.CatalogTool import ExtensibleIndexableObjectRegistry
+from Products.CMFPlone.CatalogTool import ExtensibleIndexableObjectWrapper
+from Products.CMFPlone.CatalogTool import _eioRegistry
+
 portal_name = PloneTestCase.portal_name
 default_user  = PloneTestCase.default_user
 
@@ -644,6 +648,34 @@ class TestCatalogOptimizer(PloneTestCase.PloneTestCase):
         res = self.catalog()
         self.assertResults(res, ['Members', 'news', default_user, 'doc'])
 
+def dummyMethod(obj, **kwargs):
+    return 'a dummy'
+
+class TestExtensibleIndexableObjectWrapper(PloneTestCase.PloneTestCase):
+    """Tests for the wrapper
+    """
+    
+    def afterSetUp(self):
+        self.folder.invokeFactory('Document', 'doc', title='document')
+        self.doc = self.folder.doc
+        _eioRegistry.register('dummy', dummyMethod)
+        
+    def testSetup(self):
+        doc = self.doc
+        self.failUnlessEqual(doc.getId(), 'doc')
+        self.failUnlessEqual(doc.Title(), 'document')
+        
+    def testWrapper(self):
+        doc = self.doc
+        vars = {'var' : 'a var'}
+        wrapped = ExtensibleIndexableObjectWrapper(vars, doc, self.portal)
+        self.failUnlessEqual(wrapped.var, 'a var')
+        self.failUnlessEqual(wrapped.getId(), 'doc')
+        self.failUnlessEqual(wrapped.Title(), 'document')
+        self.failUnlessEqual(wrapped.dummy, 'a dummy')
+        
+    def beforeTearDown(self):
+        _eioRegistry.unregister('dummy')
 
 def test_suite():
     from unittest import TestSuite, makeSuite
@@ -656,6 +688,7 @@ def test_suite():
     suite.addTest(makeSuite(TestCatalogBugs))
     suite.addTest(makeSuite(TestCatalogUnindexing))
     suite.addTest(makeSuite(TestCatalogOptimizer))
+    suite.addTest(makeSuite(TestExtensibleIndexableObjectWrapper))
     return suite
 
 if __name__ == '__main__':

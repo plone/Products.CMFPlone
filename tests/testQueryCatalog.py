@@ -230,16 +230,16 @@ class TestTextIndexNGParseError(PloneTestCase.PloneTestCase):
         # ZCTextIndex raises ParseError
         res = self.portal.portal_catalog(SearchableText='-foo')
         # -foo means NOT foo in TXNG2 which returns one object (the members 
-        # folder + home folder of test user 1
-        self.failUnlessEqual(len(res), 2, [b.getPath() for b in res])
+        # folder + home folder of test user 1 + the news folder
+        self.failUnlessEqual(len(res), 3, [b.getPath() for b in res])
 
     def testQueryCatalogParseError(self):
         request = {'SearchableText':'-foo'}
         # ZCTextIndex raises ParseError which translates to empty result
         res = self.portal.portal_catalog(SearchableText='-foo')
         # -foo means NOT foo in TXNG2 which returns one object (the members 
-        # folder + home folder of test user 1
-        self.failUnlessEqual(len(res), 2, [b.getPath() for b in res])
+        # folder + home folder of test user 1 + the news folder
+        self.failUnlessEqual(len(res), 3, [b.getPath() for b in res])
 
     def testQueryCatalogParseError3050(self):
         # http://plone.org/collector/3050
@@ -268,7 +268,7 @@ class TestSearchForms(PloneTestCase.PloneTestCase):
         self.setPermissions([AddPortalTopics])
         self.folder.invokeFactory('Topic', id='topic')
         self.folder.topic.topic_view()
-
+        
 
 def test_suite():
     from unittest import TestSuite, makeSuite
