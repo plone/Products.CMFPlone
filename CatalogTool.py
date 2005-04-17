@@ -74,7 +74,7 @@ class CatalogTool(PloneBaseTool, BaseTool):
                , ('Type', 'FieldIndex')
                , ('created', 'DateIndex')
                , ('effective', 'DateIndex')
-               , ('expires', 'FieldIndex')
+               , ('expires', 'DateIndex')
                , ('modified', 'DateIndex')
                , ('allowedRolesAndUsers', 'KeywordIndex')
                , ('review_state', 'FieldIndex')
@@ -82,8 +82,9 @@ class CatalogTool(PloneBaseTool, BaseTool):
                , ('meta_type', 'FieldIndex')
                , ('id', 'FieldIndex')
                , ('getId', 'FieldIndex')
-               , ('path', 'PathIndex')
+               , ('path', 'ExtendedPathIndex')
                , ('portal_type', 'FieldIndex')
+               , ('getObjPositionInParent', 'FieldIndex')
                )
 
     def _removeIndex(self, index):
