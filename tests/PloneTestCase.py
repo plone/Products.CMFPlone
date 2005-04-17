@@ -36,17 +36,16 @@ ZopeTestCase.installProduct('PortalTransforms', quiet=1)
 ZopeTestCase.installProduct('ATContentTypes')
 ZopeTestCase.installProduct('ATReferenceBrowserWidget')
 
-
 # Install sessions and error_log
 ZopeTestCase.utils.setupCoreSessions()
 ZopeTestCase.utils.setupSiteErrorLog()
 
+from Testing.ZopeTestCase.utils import makelist
 from Products.CMFPlone.PloneUtilities import _createObjectByType
 from AccessControl.SecurityManagement import newSecurityManager
 from AccessControl.SecurityManagement import noSecurityManager
 from Acquisition import aq_base
 import time
-import types
 
 portal_name = 'portal'
 portal_owner = 'portal_owner'
@@ -70,7 +69,7 @@ class PloneTestCase(ZopeTestCase.PortalTestCase):
 
     def getPortal(self):
         '''Returns the portal object to the bootstrap code.
-           DO NOT CALL THIS METHOD! Use the self.portal 
+           DO NOT CALL THIS METHOD! Use the self.portal
            attribute to access the portal object from tests.
         '''
         return self.app[portal_name]
@@ -101,9 +100,8 @@ class PloneTestCase(ZopeTestCase.PortalTestCase):
 
     def setGroups(self, groups, name=default_user):
         '''Changes the specified user's groups. Assumes GRUF.'''
-        self.assertEqual(type(groups), types.ListType)
         uf = self.portal.acl_users
-        uf._updateUser(name, groups=groups, domains=[])
+        uf._updateUser(name, groups=makelist(groups), domains=[])
         if name == getSecurityManager().getUser().getId():
             self.login(name)
 
@@ -144,7 +142,6 @@ def setupPloneSite(app=None, id=portal_name, quiet=0, with_default_memberarea=1)
 def _setupHomeFolder(portal, member_id):
     '''Creates the folders comprising a memberarea.'''
     membership = portal.portal_membership
-    catalog = getattr(portal, 'portal_catalog', None)
     # Create home folder
     members = membership.getMembersFolder()
     _createObjectByType('Folder', members, id=member_id)
@@ -153,8 +150,7 @@ def _setupHomeFolder(portal, member_id):
     _createObjectByType('Folder', home, id=membership.personal_id)
     # Uncatalog personal folder
     personal = membership.getPersonalFolder(member_id)
-    if catalog is not None:
-       catalog.unindexObject(personal)
+    personal.unindexObject()
 
 
 def optimize():
