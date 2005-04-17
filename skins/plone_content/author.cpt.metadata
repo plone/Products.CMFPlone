@@ -5,8 +5,8 @@ title=Author information
 View=0:Anonymous
 
 [validators]
-validators..Send=validate_feedback
+validators=validate_feedback
 
 [actions]
-action.success..Send=traverse_to:string:send_feedback
-action.failure..Send=traverse_to:string:author
+action.success=traverse_to:string:send_feedback
+action.failure=traverse_to:string:author
