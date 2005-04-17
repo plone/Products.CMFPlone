@@ -11,7 +11,7 @@
 <div metal:fill-slot="prefs_configlet_main"
      tal:define="errors python:request.get('errors', {});
                 portal_roles mtool/getPortalRoles;
-                Batch python:modules['ZTUtils'].Batch;
+                Batch python:modules['Products.CMFPlone'].Batch;
                 b_start python:request.get('b_start',0);
                 groupname request/groupname|nothing;
                 grouproles python:request.set('grouproles', []);
