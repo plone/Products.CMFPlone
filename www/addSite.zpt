@@ -10,7 +10,7 @@
   <div class="form-title">
   Add Plone Site
   </div>
-
+  
 <form action="manage_addSite" method="POST"
       tal:define="policies python:modules['Products.CMFPlone.Portal'].listPolicies()">
     <div class="form-help">
@@ -72,6 +72,15 @@
     </div>
 
   </form>
+
+  <p>
+  <strong>NOTE:</strong>
+  Do not use non-ASCII characters in <code>Id</code>, <code>Title</code> or 
+  <code>Description</code> when adding a Plone
+  site. You can change it afterwards from Plone itself,
+  but during the initial creation of a site, please don't use any foreign 
+  characters.
+  </p>
 
   </body>
 </html>
