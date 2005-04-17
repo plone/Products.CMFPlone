@@ -203,7 +203,4 @@ def initialize(context):
     Portal.register(context, cmfplone_globals)
 
     import CustomizationPolicy
-    import PrivateSitePolicy
-
     CustomizationPolicy.register(context, cmfplone_globals)
-    PrivateSitePolicy.register(context, cmfplone_globals)
