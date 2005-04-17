@@ -8,3 +8,4 @@ View=0:Authenticated
 action.success..AddGroup = redirect_to:string:prefs_group_details
 action.success..Search   = redirect_to:string:prefs_user_group_search_form
 action.success..Modify   = traverse_to:string:prefs_group_modify
+action.success           = traverse_to:string:prefs_group_modify
