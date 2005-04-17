@@ -9,5 +9,5 @@
 ##
 #given a time string convert it into a DateTime and then format it appropriately
 #use time format of translation service
-from Products.CMFPlone.PloneUtilities import localized_time
+from Products.CMFPlone.utils import localized_time
 return localized_time(time, long_format, context)

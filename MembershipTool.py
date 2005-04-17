@@ -2,8 +2,8 @@ from Products.CMFCore.CMFCorePermissions import SetOwnPassword
 from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault.MembershipTool import MembershipTool as BaseTool
 from Products.CMFPlone import ToolNames
-from Products.CMFPlone.PloneUtilities import translate
-from Products.CMFPlone.PloneUtilities import _createObjectByType
+from Products.CMFPlone.utils import translate
+from Products.CMFPlone.utils import _createObjectByType
 from OFS.Image import Image
 from AccessControl import ClassSecurityInfo, getSecurityManager
 from Globals import InitializeClass

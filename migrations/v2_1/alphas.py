@@ -4,7 +4,7 @@ from Acquisition import aq_base
 from zExceptions import BadRequest
 from Products.CMFCore import CMFCorePermissions
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.PloneUtilities import _createObjectByType
+from Products.CMFPlone.utils import _createObjectByType
 from Products.CMFPlone.migrations.migration_util import installOrReinstallProduct
 
 

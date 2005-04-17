@@ -56,12 +56,17 @@ def initialize(context):
     ModuleSecurityInfo('zLOG').declarePublic('INFO')
     ModuleSecurityInfo('zLOG').declarePublic('WARNING')
     
+    ModuleSecurityInfo('Products.CMFPlone.utils').declarePublic('translate_wrapper')
+    ModuleSecurityInfo('Products.CMFPlone.utils').declarePublic('localized_time')
+    allow_module('Products.CMFPlone.utils')
+
+    # This is now deprecated, use utils instead.
     ModuleSecurityInfo('Products.CMFPlone.PloneUtilities').declarePublic('translate_wrapper')
     ModuleSecurityInfo('Products.CMFPlone.PloneUtilities').declarePublic('localized_time')
     allow_module('Products.CMFPlone.PloneUtilities')
 
     # For form validation bits
-    from PloneUtilities import IndexIterator
+    from Products.CMFPlone.utils import IndexIterator
     allow_class(IndexIterator)
 
     # Make IndexIterator available at module level
@@ -182,23 +187,27 @@ def initialize(context):
               GroupDataTool.GroupDataTool,
             )
 
-    from Products.CMFCore import utils
-    from PloneUtilities import ToolInit
+    from Products.CMFCore.utils import initializeBasesPhase1
+    from Products.CMFCore.utils import initializeBasesPhase2
+    from Products.CMFCore.utils import ContentInit
+    from Products.CMFPlone.utils import ToolInit
 
     # Register tools, content, and customization policies
-    z_bases = utils.initializeBasesPhase1(contentClasses, this_module)
-    utils.initializeBasesPhase2( z_bases, context )
+    z_bases = initializeBasesPhase1(contentClasses, this_module)
+    initializeBasesPhase2(z_bases, context)
 
-    ToolInit('Plone Tool', tools=tools,
-             product_name='CMFPlone', icon='tool.gif',
+    ToolInit('Plone Tool'
+             , tools=tools
+             , product_name='CMFPlone'
+             , icon='tool.gif'
              ).initialize( context )
 
-    utils.ContentInit( 'Plone Content'
-                     , content_types=contentClasses
-                     , permission=ADD_CONTENT_PERMISSION
-                     , extra_constructors=contentConstructors
-                     , fti=ftis
-                     ).initialize( context )
+    ContentInit('Plone Content'
+                , content_types=contentClasses
+                , permission=ADD_CONTENT_PERMISSION
+                , extra_constructors=contentConstructors
+                , fti=ftis
+                ).initialize( context )
 
     Portal.register(context, cmfplone_globals)
 

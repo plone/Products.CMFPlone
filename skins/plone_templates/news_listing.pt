@@ -22,8 +22,7 @@
                  portal_discussion nocall:here/portal_discussion;
                  isDiscussionAllowedFor nocall:portal_discussion/isDiscussionAllowedFor;
                  getDiscussionFor nocall:portal_discussion/getDiscussionFor;
-                 home_url python: mtool.getHomeUrl;
-                 localized_time python: modules['Products.CMFPlone.PloneUtilities'].localized_time;">
+                 home_url python: mtool.getHomeUrl;">
 
 
     <form name="searchresults" action="" method="post" tal:condition="results"
@@ -67,7 +66,7 @@
                         </li>
                         <li>
                             <span tal:omit-tag="" i18n:translate="label_published">Published</span>:
-                            <span tal:replace="python: localized_time(result.Date, context=here)" />
+                            <span tal:replace="python:here.toLocalizedTime(result.Date)" />
                         </li>
                     </ul>
 
