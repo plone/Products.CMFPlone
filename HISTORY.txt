@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Fixed bug http://plone.org/collector/3647 to allow removing all roles
+      from a group.
+
     - Fixed bug http://members.plone.org/collector/3386. Modified 
       folder_rename_form.pt to reflect user authorisations on each
       item.

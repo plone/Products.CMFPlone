@@ -1,11 +1,11 @@
-## Script (Python) "prefs_group_manage"
+## Script (Python) "prefs_group_modify"
 ##bind container=container
 ##bind context=context
 ##bind namespace=
 ##bind script=script
 ##bind subpath=traverse_subpath
 ##parameters=
-##title=Manage groups
+##title=Modify groups
 ##
 REQUEST=context.REQUEST
 groupstool=context.portal_groups
@@ -16,7 +16,7 @@ groups=[group[len('group_'):]
         if group.startswith('group_')]
 
 for group in groups:
-    roles=REQUEST['group_' + group]
+    roles=[r for r in REQUEST['group_' + group] if r]
     groupstool.editGroup(group, roles=roles, groups=())
     portal_status_message = 'Changes saved.'
 
