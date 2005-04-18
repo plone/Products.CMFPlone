@@ -41,7 +41,8 @@ ZopeTestCase.utils.setupCoreSessions()
 ZopeTestCase.utils.setupSiteErrorLog()
 
 from Testing.ZopeTestCase.utils import makelist
-from Products.CMFPlone.PloneUtilities import _createObjectByType
+from Products.CMFPlone.utils import _createObjectByType
+
 from AccessControl.SecurityManagement import newSecurityManager
 from AccessControl.SecurityManagement import noSecurityManager
 from Acquisition import aq_base
