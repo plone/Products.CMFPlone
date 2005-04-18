@@ -62,6 +62,8 @@ class PloneTestCase(ZopeTestCase.PortalTestCase):
         ZopeTestCase.PortalTestCase._setup(self)
         self.app.REQUEST['ACTUAL_URL'] = self.app.REQUEST.get('URL')
         self.app.REQUEST['plone_skin'] = 'Plone Default'
+        # Disable the constraintypes performance hog
+        self.folder.setConstrainTypesMode(0)
 
     def getPortal(self):
         '''Returns the portal object to the bootstrap code.
