@@ -4,12 +4,17 @@
 
 from Products.CMFCore.CatalogTool import CatalogTool as BaseTool
 from Products.CMFCore.CMFCorePermissions import ManagePortal
+from Products.CMFCore.CMFCorePermissions import AccessInactivePortalContent
 from Products.CMFPlone import ToolNames
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
 from Acquisition import aq_inner
 from Acquisition import aq_parent
+from Acquisition import aq_base
+from DateTime import DateTime
 
+from Products.CMFCore.utils import _getAuthenticatedUser
+from Products.CMFCore.utils import _checkPermission
 from Products.CMFCore.CatalogTool import _mergedLocalRoles
 from Products.CMFCore.interfaces.portal_catalog \
         import IndexableObjectWrapper as IIndexableObjectWrapper
@@ -21,9 +26,8 @@ from ZODB.POSException import ConflictError
 from Products.ZCatalog.ZCatalog import ZCatalog
 
 from AccessControl.Permissions import manage_zcatalog_entries as ManageZCatalogEntries
+from AccessControl.Permissions import search_zcatalog as SearchZCatalog
 from AccessControl.PermissionRole import rolesForPermissionOn
-
-from Acquisition import aq_base
 
 
 # Use TextIndexNG2 if installed
@@ -322,6 +326,26 @@ class CatalogTool(PloneBaseTool, BaseTool):
         except TypeError:
             ZCatalog.catalog_object(self, w, uid, idxs)
 
+    security.declareProtected(SearchZCatalog, 'searchResults')
+    def searchResults(self, REQUEST=None, **kw):
+        """ Calls ZCatalog.searchResults with extra arguments that
+            limit the results to what the user is allowed to see.
+
+            This version uses the 'effectiveRange' DateRangeIndex.
+        """
+        user = _getAuthenticatedUser(self)
+        kw['allowedRolesAndUsers'] = self._listAllowedRolesAndUsers(user)
+
+        if not _checkPermission(AccessInactivePortalContent, self):
+            kw['effectiveRange'] = DateTime()
+            if kw.has_key('effective'):
+                del kw['effective']
+            if kw.has_key('expires'):
+                del kw['expires']
+
+        return ZCatalog.searchResults(self, REQUEST, **kw)
+
+    __call__ = searchResults
 
 CatalogTool.__doc__ = BaseTool.__doc__
 
