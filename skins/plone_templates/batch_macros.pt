@@ -9,10 +9,9 @@
      tal:define="request request|here/request|container/request|nothing;
                  batch batch|nothing;
                  mq python:modules['ZTUtils'].make_query;
-                 url python:request.get('URL0');
+                 url string:${here/absolute_url}/${template/getId};
                  currentpage batch/pagenumber;"
      tal:condition="python: batch.next or  batch.previous">
-<!-- testdal: I modified the condition above because for some dark reason "batch/previous|batch/next" doesn't work. DannyB-->
 <!-- XXX tesdal needs to have a look at these
     <metal:rellinks fill-slot="rel_slot">
         <link rel="first" href="" title="First page" tal:attributes="href string:author" />
