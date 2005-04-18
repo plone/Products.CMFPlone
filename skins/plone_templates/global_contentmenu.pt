@@ -92,12 +92,12 @@
             <ul class="actionMenu" id="objectMenu"
                 onmouseover="menuMouseover(event)">
                 <tal:types repeat="ctype menuTypes"> 
-                    <li tal:define="Title ctype/Title; Id ctype/getId">
+                    <li tal:define="Title ctype/Title; Id ctype/getId; Description ctype/Description">
                         <a href="#" 
                            onMouseUp="if (activeButton != null) resetButton(activeButton);"
                            i18n:attributes="title"
                            tal:attributes="href string:${folder/absolute_url}/createObject?type_name=${Id};
-                                           title Title">
+                                           title Description">
                           <img src="folder.gif" 
                                alt="" 
                                width="16" 
@@ -137,7 +137,8 @@
         class="actionSingular">
         <a href="#" 
            tal:define="portaltype python: allowedTypes[0];"
-           tal:attributes="href string:${folder/absolute_url}/createObject?type_name=${portaltype/getId}"
+           tal:attributes="href string:${folder/absolute_url}/createObject?type_name=${portaltype/getId};
+                           title portaltype/Description"
            >
             <img src="folder.gif" 
                  alt="" 

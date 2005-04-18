@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Made 'title' attribute on add-new-item drop down items display item
+      description, as per bug http://members.plone.org/collector/2938.
+      [optilude]
+
     - Introduced the ExtensibleIndexableObjectWrapper. It's a wrapper based on
       the IndexableObjectWrapper for the catalog tool that can easily be 
       extented by registering methods.
