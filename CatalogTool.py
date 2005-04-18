@@ -41,8 +41,8 @@ class ExtensibleIndexableObjectRegistry(dict):
     def register(self, name, callable):
         """Register a callable method for an attribute.
         
-        The method will be called with the object as argument and additional
-        keyword arguments like portal and the workflow vars.
+        The method will be called with the object as first argument and
+        additional keyword arguments like portal and the workflow vars.
         """
         self[name] = callable
         
@@ -51,6 +51,7 @@ class ExtensibleIndexableObjectRegistry(dict):
 
 _eioRegistry = ExtensibleIndexableObjectRegistry()
 registerIndexableAttribute = _eioRegistry.register
+
 
 class ExtensibleIndexableObjectWrapper(object):
     """Extensible wrapper for object indexing
@@ -129,10 +130,7 @@ def getObjPositionInParent(obj, **kwargs):
 registerIndexableAttribute('getObjPositionInParent', getObjPositionInParent)
 
 
-SIZE_CONST = {'kB':1024,
-             'MB':1024*1024,
-             'GB':1024*1024*1024
-            }
+SIZE_CONST = {'kB': 1024, 'MB': 1024*1024, 'GB': 1024*1024*1024}
 SIZE_ORDER = ('GB', 'MB', 'kB')
 
 def getObjSize(obj, **kwargs):

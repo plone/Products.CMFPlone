@@ -648,6 +648,7 @@ class TestCatalogOptimizer(PloneTestCase.PloneTestCase):
         res = self.catalog()
         self.assertResults(res, ['Members', 'news', default_user, 'doc'])
 
+
 def dummyMethod(obj, **kwargs):
     return 'a dummy'
 
@@ -676,6 +677,7 @@ class TestExtensibleIndexableObjectWrapper(PloneTestCase.PloneTestCase):
         
     def beforeTearDown(self):
         _eioRegistry.unregister('dummy')
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite
