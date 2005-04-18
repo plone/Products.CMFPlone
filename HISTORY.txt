@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Added ECMAUnit JavaScript testing framework to skins in anticipation of
+      a real testSuite for the Plone JavaScripts.  
+      Pasted the license and credit files into the top of the library to keep 
+      them contained.
+      [elvix]
+
     - Made 'title' attribute on add-new-item drop down items display item
       description, as per bug http://members.plone.org/collector/2938.
       [optilude]
