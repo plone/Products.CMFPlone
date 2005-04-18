@@ -178,6 +178,13 @@ def optimize():
     def setupPortalContent(self, p):
         _createObjectByType('Large Plone Folder', p, id='Members', title='Members')
     PloneGenerator.setupPortalContent = setupPortalContent
+    # Don't refresh skins for each and every test (request)
+    def setupCurrentSkin(self, REQUEST=None):
+        if REQUEST is None: REQUEST = getattr(self, 'REQUEST', None)
+        if REQUEST is not None and self._v_skindata is None:
+            self.changeSkin('Plone Default')
+    from Products.CMFCore.Skinnable import SkinnableObjectManager
+    SkinnableObjectManager.setupCurrentSkin = setupCurrentSkin
 
 
 optimize()
