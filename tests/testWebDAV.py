@@ -89,7 +89,7 @@ class TestPUTObjects(PloneTestCase.FunctionalTestCase):
         self.assertEqual(response.getStatus(), 201)
         self.failUnless('new_html' in self.folder.objectIds())
         self.assertEqual(self.folder.new_html.EditableBody(), html)
-        self.assertEqual(self.folder.new_html.Type(), 'Document')
+        self.assertEqual(self.folder.new_html.portal_type, 'Document')
 
     def testPUTIndexHtmlDocument(self):
         # Create an index_html document via FTP/DAV
@@ -103,7 +103,7 @@ class TestPUTObjects(PloneTestCase.FunctionalTestCase):
         self.failUnless('index_html' in self.folder.objectIds())
         self.assertEqual(self.folder.index_html.EditableBody(), html)
         self.assertEqual(self.folder._getOb('index_html').EditableBody(), html)
-        self.assertEqual(self.folder.index_html.Type(), 'Document')
+        self.assertEqual(self.folder.index_html.portal_type, 'Document')
 
     def testPUTImage(self):
         # Create a new image via FTP/DAV
@@ -116,7 +116,7 @@ class TestPUTObjects(PloneTestCase.FunctionalTestCase):
         self.assertEqual(response.getStatus(), 201)
         self.failUnless('new_image' in self.folder.objectIds())
         self.assertEqual(str(self.folder.new_image.getImage().data), dummy.GIF)
-        self.assertEqual(self.folder.new_image.Type(), 'Image')
+        self.assertEqual(self.folder.new_image.portal_type, 'Image')
 
     def testPUTIndexHtmlImage(self):
         # Create a new image named index_html via FTP/DAV
@@ -129,7 +129,7 @@ class TestPUTObjects(PloneTestCase.FunctionalTestCase):
         self.assertEqual(response.getStatus(), 201)
         self.failUnless('index_html' in self.folder.objectIds())
         self.assertEqual(str(self.folder.index_html.getImage().data), dummy.GIF)
-        self.assertEqual(self.folder.index_html.Type(), 'Image')
+        self.assertEqual(self.folder.index_html.portal_type, 'Image')
 
     def testPUTDocumentIntoPortal(self):
         # Create a new document in the portal via FTP/DAV
@@ -144,7 +144,7 @@ class TestPUTObjects(PloneTestCase.FunctionalTestCase):
         self.assertEqual(response.getStatus(), 201)
         self.failUnless('new_html' in self.portal.objectIds())
         self.assertEqual(self.portal.new_html.EditableBody(), html)
-        self.assertEqual(self.portal.new_html.Type(), 'Document')
+        self.assertEqual(self.portal.new_html.portal_type, 'Document')
 
     def testPUTIndexHtmlDocumentIntoPortal(self):
         # Create an index_html document in the portal via FTP/DAV
@@ -160,7 +160,7 @@ class TestPUTObjects(PloneTestCase.FunctionalTestCase):
         self.failUnless('index_html' in self.portal.objectIds())
         self.assertEqual(self.portal.index_html.EditableBody(), html)
         self.assertEqual(self.portal._getOb('index_html').EditableBody(), html)
-        self.assertEqual(self.portal.index_html.Type(), 'Document')
+        self.assertEqual(self.portal.index_html.portal_type, 'Document')
 
 
 def test_suite():

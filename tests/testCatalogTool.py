@@ -393,7 +393,7 @@ class TestCatalogOrdering(PloneTestCase.PloneTestCase):
 
     def testOrderIsUpdatedOnPloneFolderMoveByDelta(self):
         self.folder.moveObjectsByDelta('doc1', 2)
-        folder_docs = self.catalog(Type = 'Document',
+        folder_docs = self.catalog(portal_type = 'Document',
                                    path = self.folder.getPhysicalPath(),
                                    sort_on = 'getObjPositionInParent')
         expected = ['doc2','doc3','doc1','doc4']
@@ -401,7 +401,7 @@ class TestCatalogOrdering(PloneTestCase.PloneTestCase):
 
     def testOrderIsUpdatedOnPloneFolderMoveObject(self):
         self.folder.moveObject('doc3', 1)
-        folder_docs = self.catalog(Type = 'Document',
+        folder_docs = self.catalog(portal_type = 'Document',
                                    path = self.folder.getPhysicalPath(),
                                    sort_on = 'getObjPositionInParent')
         expected = ['doc3','doc1','doc2','doc4']
@@ -409,7 +409,7 @@ class TestCatalogOrdering(PloneTestCase.PloneTestCase):
 
     def testOrderIsFineWithObjectCreation(self):
         self.folder.invokeFactory('Document', id='doc5', text='blam')
-        folder_docs = self.catalog(Type = 'Document',
+        folder_docs = self.catalog(portal_type = 'Document',
                                    path = self.folder.getPhysicalPath(),
                                    sort_on = 'getObjPositionInParent')
         expected = ['doc1','doc2','doc3','doc4','doc5']
@@ -417,7 +417,7 @@ class TestCatalogOrdering(PloneTestCase.PloneTestCase):
 
     def testOrderIsFineWithObjectDeletion(self):
         self.folder.manage_delObjects(['doc3',])
-        folder_docs = self.catalog(Type = 'Document',
+        folder_docs = self.catalog(portal_type = 'Document',
                                    path = self.folder.getPhysicalPath(),
                                    sort_on = 'getObjPositionInParent')
         expected = ['doc1','doc2','doc4']
@@ -432,7 +432,7 @@ class TestCatalogOrdering(PloneTestCase.PloneTestCase):
         get_transaction().commit(1)
 
         self.folder.manage_renameObjects(['doc2'], ['buzz'])
-        folder_docs = self.catalog(Type = 'Document',
+        folder_docs = self.catalog(portal_type = 'Document',
                                    path = self.folder.getPhysicalPath(),
                                    sort_on = 'getObjPositionInParent')
         expected = ['doc1','buzz','doc3','doc4']
@@ -458,7 +458,7 @@ class TestCatalogOrdering(PloneTestCase.PloneTestCase):
         self.folder.manage_delObjects(['doc3','doc4','doc5','doc7'])
         expected = ['doc2','doc1','doc6','doc8']
 
-        folder_docs = self.catalog(Type = 'Document',
+        folder_docs = self.catalog(portal_type = 'Document',
                                    path = self.folder.getPhysicalPath(),
                                    sort_on = 'getObjPositionInParent')
         self.failUnlessEqual([b.getId for b in folder_docs], expected)
