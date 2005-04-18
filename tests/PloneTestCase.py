@@ -63,11 +63,6 @@ class PloneTestCase(ZopeTestCase.PortalTestCase):
         self.app.REQUEST['ACTUAL_URL'] = self.app.REQUEST.get('URL')
         self.app.REQUEST['plone_skin'] = 'Plone Default'
 
-    def _refreshSkinData(self):
-        # Optimize this away as __of__() sets up the skins
-        # during the call to getPortal().
-        pass
-
     def getPortal(self):
         '''Returns the portal object to the bootstrap code.
            DO NOT CALL THIS METHOD! Use the self.portal
@@ -77,27 +72,7 @@ class PloneTestCase(ZopeTestCase.PortalTestCase):
 
     def createMemberarea(self, member_id):
         '''Creates a minimal, no-nonsense memberarea.'''
-        membership = self.portal.portal_membership
-        # Owner
-        uf = self.portal.acl_users
-        user = uf.getUserById(member_id)
-        if user is None:
-            raise ValueError, 'Member %s does not exist' % member_id
-        user = user.__of__(uf)
-        # Home folder may already exist (see below)
-        members = membership.getMembersFolder()
-        if not hasattr(aq_base(members), member_id):
-            _setupHomeFolder(self.portal, member_id)
-        # Take ownership of home folder
-        home = membership.getHomeFolder(member_id)
-        home.changeOwnership(user)
-        home.__ac_local_roles__ = None
-        home.manage_setLocalRoles(member_id, ['Owner'])
-        # Take ownership of personal folder
-        personal = membership.getPersonalFolder(member_id)
-        personal.changeOwnership(user)
-        personal.__ac_local_roles__ = None
-        personal.manage_setLocalRoles(member_id, ['Owner'])
+        _createHomeFolder(self.portal, member_id)
 
     def setGroups(self, groups, name=default_user):
         '''Changes the specified user's groups. Assumes GRUF.'''
@@ -133,25 +108,44 @@ def setupPloneSite(app=None, id=portal_name, quiet=0, with_default_memberarea=1)
         factory.manage_addSite(id, '', create_userfolder=1)
         # Precreate default memberarea for performance reasons
         if with_default_memberarea:
-            _setupHomeFolder(app[id], default_user)
+            _createHomeFolder(app[id], default_user, 0)
         # Log out
         noSecurityManager()
         get_transaction().commit()
         if not quiet: ZopeTestCase._print('done (%.3fs)\n' % (time.time()-_start,))
 
 
-def _setupHomeFolder(portal, member_id):
-    '''Creates the folders comprising a memberarea.'''
+def _createHomeFolder(portal, member_id, take_ownership=1):
+    '''Creates a memberarea if it does not already exist.'''
     membership = portal.portal_membership
-    # Create home folder
     members = membership.getMembersFolder()
-    _createObjectByType('Folder', members, id=member_id)
-    # Create personal folder
-    home = membership.getHomeFolder(member_id)
-    _createObjectByType('Folder', home, id=membership.personal_id)
-    # Uncatalog personal folder
-    personal = membership.getPersonalFolder(member_id)
-    personal.unindexObject()
+
+    if not hasattr(aq_base(members), member_id):
+        # Create home folder
+        _createObjectByType('Folder', members, id=member_id)
+        # Create personal folder
+        home = membership.getHomeFolder(member_id)
+        _createObjectByType('Folder', home, id=membership.personal_id)
+        # Uncatalog personal folder
+        personal = membership.getPersonalFolder(member_id)
+        personal.unindexObject()
+
+    if take_ownership:
+        user = portal.acl_users.getUserById(member_id)
+        if user is None:
+            raise ValueError, 'Member %s does not exist' % member_id
+        if not hasattr(user, 'aq_base'):
+            user = user.__of__(portal.acl_users)
+        # Take ownership of home folder
+        home = membership.getHomeFolder(member_id)
+        home.changeOwnership(user)
+        home.__ac_local_roles__ = None
+        home.manage_setLocalRoles(member_id, ['Owner'])
+        # Take ownership of personal folder
+        personal = membership.getPersonalFolder(member_id)
+        personal.changeOwnership(user)
+        personal.__ac_local_roles__ = None
+        personal.manage_setLocalRoles(member_id, ['Owner'])
 
 
 def optimize():
