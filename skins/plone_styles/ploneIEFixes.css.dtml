@@ -64,14 +64,15 @@ body { /* These work in IE only, changes the look of the scrollbar + textareas *
 
 /* Fix for IE float bug */
 * html .visualIEFloatFix,
-* html .visualClear
 * html h1,
 * html h2,
 * html h3,
 * html h4,
 * html h5,
 * html h6,
+* html p,
 * html .documentDescription,
+* html .visualClear
   {
     height: 0.01%;
 }

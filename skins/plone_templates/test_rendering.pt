@@ -94,7 +94,10 @@ The document description
 </p>
 
 <p>
-Normal document body text, Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Quisque odio sem, aliquam ut, suscipit at, aliquet non, justo. Vestibulum vitae urna et mi volutpat luctus. Nulla auctor, lacus ut consectetuer sagittis, erat odio vulputate sapien, eu placerat diam mauris id turpis. Aenean quis ipsum. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Pellentesque rutrum. Sed mattis turpis sit amet ipsum viverra pharetra. Nunc facilisis, augue non dapibus gravida, risus quam vulputate quam, non venenatis dui massa in leo. Maecenas scelerisque dapibus libero. Suspendisse potenti.
+Normal document body text, 
+<strong>strong text</strong>,
+<em>emphasised text</em>,
+Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Quisque odio sem, aliquam ut, suscipit at, aliquet non, justo. Vestibulum vitae urna et mi volutpat luctus. Nulla auctor, lacus ut consectetuer sagittis, erat odio vulputate sapien, eu placerat diam mauris id turpis. Aenean quis ipsum. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Pellentesque rutrum. Sed mattis turpis sit amet ipsum viverra pharetra. Nunc facilisis, augue non dapibus gravida, risus quam vulputate quam, non venenatis dui massa in leo. Maecenas scelerisque dapibus libero. Suspendisse potenti.
 example <a href="#">Normal internal site link</a> inside a paragraph,
 example <a href="http://plone.org">External link to plone.org</a>,
 example <a href="https://plone.org">Secure (HTTPS) link to plone.org</a>,
@@ -104,6 +107,73 @@ example <a href="news://some.site">NNTP (news) link</a>,
 example <a href="irc://some.network/#channel">IRC link</a>.
 </p>
 
+<ul>
+    <li>Unordered list element 1</li>
+    <ul><li>Unordered list subelement 1</li></ul>
+    <li>Unordered list element 2</li>
+    <li>Unordered list element 3</li>
+</ul>
+
+<ol>
+    <li>Ordered list element 1</li>
+    <ol><li>Ordered list subelement 1</li></ol>
+    <li>Ordered list element 2</li>
+    <li>Ordered list element 3</li>
+</ol>
+
+<dl>
+    <dt>Definition list term</dt>
+    <dd>Definition List description, Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Quisque odio sem, aliquam ut, suscipit at, aliquet non, justo.
+    </dd>
+    <dd>Another Definition List description, Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Quisque odio sem, aliquam ut, suscipit at, aliquet non, justo.
+    </dd>
+</dl>
+
+<h2>
+Table of class <code>listing</code>
+</h2>
+
+<table class="listing" id="someid">
+    <!-- By giving a table an ID, it gets the sortable option. 
+         Use class="nosort" to override on a table or column basis. -->
+    <thead>
+        <tr>
+            <th>Table heading</th>
+            <th>Another heading (sortable, click to sort)</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr class="odd">
+            <td>Odd table item</td>
+            <td>More items</td>
+        </tr>
+        <tr class="even">
+            <td>Even table item</td>
+            <td>More items</td>
+        </tr>
+        <tr class="odd">
+            <td>Odd table item</td>
+            <td>More items</td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>
+Table of class <code>vertical listing</code>
+</h2>
+
+<table class="vertical listing">
+    <tbody>
+        <tr>
+            <th>Table heading</th>
+            <td>Odd table item</td>
+        </tr>
+        <tr>
+            <th>Another heading</th>
+            <td>Even table item</td>
+        </tr>
+    </tbody>
+</table>
 
 
 <h2>The Internet Explorer "Peekaboo" bug</h2>
