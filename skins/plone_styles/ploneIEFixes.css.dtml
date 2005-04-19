@@ -55,7 +55,7 @@ body { /* These work in IE only, changes the look of the scrollbar + textareas *
 
 /* Holly hack to kill the Peekaboo bug in IE - details at
    http://www.positioniseverything.net/explorer/peekaboo.html
-   "* html" syntax is added to hide it from IE5/Mac.
+   "* html" syntax is added to hide it from IE5/Mac. ~limi
  */
 
 #floatholder, #float {
