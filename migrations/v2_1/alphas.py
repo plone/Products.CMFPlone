@@ -354,7 +354,7 @@ def addSitemapAction(portal, out):
                 break # We already have the action
         else:
             actionsTool.addAction('sitemap',
-                name='Sitemap',
+                name='Site Map',
                 action='string:$portal_url/sitemap',
                 condition='',
                 permission=CMFCorePermissions.View,
