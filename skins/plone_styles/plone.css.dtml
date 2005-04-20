@@ -1,3 +1,6 @@
+/* <dtml-var "enableHTTPCompression(request=REQUEST, debug=1, css=1)"> (this is for http compression) */
+/* <dtml-with base_properties> (do not remove this :) */
+/* <dtml-call "REQUEST.set('portal_url', portal_url())"> (not this either :) */
 /* The rest of these styles have been moved to the component CSS files,
    this code is still missing. ~limi */
 
@@ -89,3 +92,4 @@
     text-align: center;
     padding: 2px;
 }
+/* </dtml-with> */
