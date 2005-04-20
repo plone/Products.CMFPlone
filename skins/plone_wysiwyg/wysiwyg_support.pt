@@ -4,6 +4,7 @@
 
 <div metal:define-macro="wysiwygEditorBox">
   <textarea name="description"
+            rows="25"
             tal:content="inputvalue"
             tal:attributes="name inputname;
                             id inputname;"></textarea>
