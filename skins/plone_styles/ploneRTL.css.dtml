@@ -1,4 +1,4 @@
-/*  Style sheet for RTL (right-to-left) languages - hard work done by
+/*  Style sheet for RTL (right-to-left) languages - research work done by
  *  Mohsen Moeeni <mohsen at schoolnet.ir>, integration work by
  *  Alexander Limi - http://www.plonesolutions.com
  */
@@ -44,6 +44,7 @@ Anyway, didn't get it fixed but at least we know what it is. :-/
     }
 
 */
+
 #portal-siteactions {
     float: left;
     padding: 3px 0 3px 2em;
