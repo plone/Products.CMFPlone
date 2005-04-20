@@ -195,7 +195,6 @@ input.searchButton {
 .stx table td {
     border-right: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
     padding: 0.25em 1em;
-    text-align: left;
 }
 .listing a:hover {
     text-decoration: underline;
