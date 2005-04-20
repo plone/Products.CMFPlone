@@ -12,11 +12,12 @@ Plone 2.1 - Plaid - (unreleased)
     - Re-did the fix for disappearing text in Internet Explorer, added special
       class 'visualIEFloatFix' that can be used for these, also adding a how-to 
       with examples to plone.org. 
+      [limi]
 
     - Added a reference rendering document to show all the user interface elements
       to ease cross-browser testing of third-party skins. Template name is
       'test_rendering'.
-
+      [limi]
 
     - Added ECMAUnit JavaScript testing framework to skins in anticipation of
       a real testSuite for the Plone JavaScripts.  
