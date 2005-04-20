@@ -427,6 +427,7 @@ def installCSSandJSRegistries(portal, out):
             cssreg.clearStylesheets()
             cssreg.registerStylesheet('plonePresentation.css', media='presentation')
             cssreg.registerStylesheet('plonePrint.css', media='print')
+            cssreg.registerStylesheet('ploneMobile.css', media='handheld')
             cssreg.registerStylesheet('ploneColumns.css')
             cssreg.registerStylesheet('ploneAuthoring.css')
             cssreg.registerStylesheet('plonePublic.css')

@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Added Mobile device support (handheld CSS profile).
+      [limi]
+
     - Fixed http://plone.org/collector/2959 with a minor change to check_id to
       account for portal_factory weirdness.  Also required an update to ATCT
       to do proper id checking on auto-rename.

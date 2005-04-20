@@ -55,10 +55,7 @@
                    id="id"
                    name="id"
                    value=""
-                   size="40"
-                   tabindex=""
-                   tal:attributes="value id;
-                                   tabindex tabindex/next;"
+                   tal:attributes="value id"
                    />
 
           </div>
@@ -86,10 +83,7 @@
                          id="title"
                          name="title"
                          value=""
-                         size="40"
-                         tabindex=""
-                         tal:attributes="value Title;
-                                         tabindex tabindex/next;"
+                         tal:attributes="value Title;"
                          />
 
           </div>
@@ -104,14 +98,9 @@
               A brief description of the item.
             </div>
 
-            <textarea cols="80"
-                      rows="5"
-                      tabindex=""
-                      id="description"
+            <textarea id="description"
                       name="description"
-                      tal:content="description"
-                      tal:attributes="tabindex tabindex/next;"
-                      >
+                      tal:content="description">
               Description
             </textarea>
           </div>
@@ -125,8 +114,7 @@
             <tal:editor define="inputname  string:text;
                                 formname   string:edit_form;
                                 inputvalue text;
-                                cooked_inputvalue cooked_text;
-                                tabindex tabindex/next;">
+                                cooked_inputvalue cooked_text;">
               <div metal:use-macro="here/wysiwyg_support/macros/wysiwygEditorBox">
                 The WYSIWYG code
               </div>
@@ -153,10 +141,7 @@
             <input type="file"
                    id="file"
                    name="file"
-                   size="30"
-                   tabindex=""
                    value=""
-                   tal:attributes="tabindex tabindex/next"
                    />
           </div>
 
@@ -172,21 +157,17 @@
                    i18n:attributes="alt"/>
 
             <input class="context"
-                   tabindex=""
                    type="submit"
                    name="form.button.Save"
                    value="Save"
                    i18n:attributes="value"
-                   tal:attributes="tabindex tabindex/next;
-                                   disabled python:test(isLocked, 'disabled', None);" />
+                   tal:attributes="disabled python:test(isLocked, 'disabled', None);" />
 
             <input class="standalone"
-                   tabindex=""
                    type="submit"
                    name="form.button.Cancel"
                    value="Cancel"
-                   i18n:attributes="value"
-                   tal:attributes="tabindex tabindex/next;" />
+                   i18n:attributes="value" />
           </div>
         </fieldset>
 

@@ -1,0 +1,3 @@
+[default]
+title = Plone Mobile CSS
+cache = HTTPCache

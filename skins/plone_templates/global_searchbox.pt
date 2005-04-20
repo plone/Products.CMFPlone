@@ -19,7 +19,7 @@
                tabindex=""
                name="SearchableText"
                type="text"
-               size="20"
+               size="15"
                value=""
                alt="Search Site"
                autocomplete="off"
