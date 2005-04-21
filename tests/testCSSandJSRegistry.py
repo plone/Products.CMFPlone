@@ -22,9 +22,14 @@ class TestCSSRegistry(PloneTestCase.PloneTestCase):
 
     def testDefaultCssIsInstalled(self):
         installedStylesheetIds = [i['id'] for i in self.tool.getStylesheets()]
-        expected = ['ploneCustom.css','ploneAuthoring.css', 'plonePublic.css',
-                 'ploneBase.css','plonePrint.css','plonePresentation.css',
-                 'ploneMobile.css']
+        expected = ['ploneCustom.css',
+                    'ploneAuthoring.css', 
+                    'plonePublic.css',
+                    'ploneBase.css',
+                    'plonePrint.css',
+                    'plonePresentation.css',
+                    'ploneRTL.css',
+                    'ploneMobile.css']
         for e in expected:
             self.failUnless(e in installedStylesheetIds, e)
 

@@ -433,6 +433,7 @@ def installCSSandJSRegistries(portal, out):
             cssreg.registerStylesheet('plonePublic.css')
             cssreg.registerStylesheet('ploneBase.css')
             cssreg.registerStylesheet('ploneCustom.css')
+            cssreg.registerStylesheet('ploneRTL.css', expression="python:object.isRightToLeft(domain='plone')")
 
         jsreg = getToolByName(portal, 'portal_javascripts', None)
         if jsreg is not None:

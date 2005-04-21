@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Added RTL support (separate CSS is included for this, is only activated
+      when the language is an RTL language).
+      [limi, mohsen]
+
     - Added Mobile device support (handheld CSS profile).
       [limi]
 
