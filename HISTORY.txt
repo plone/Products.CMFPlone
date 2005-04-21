@@ -4,6 +4,13 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Added Topics to the default NavTree listing.
+      [alecm]
+
+    - Made migration work from 2.0 svn, and not fail if SUPPRESS_ATCT_INSTALLATION
+      is set.
+      [alecm]
+
     - Added RTL support (separate CSS is included for this, is only activated
       when the language is an RTL language).
       [limi, mohsen]

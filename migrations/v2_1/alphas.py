@@ -336,7 +336,7 @@ def updateNavTreeProperties(portal, out):
         propSheet = getattr(aq_base(propTool), 'navtree_properties', None)
         if propSheet is not None:
             if not propSheet.hasProperty('typesToList'):
-                propSheet._setProperty('typesToList', ['Folder', 'Large Plone Folder'], 'lines')
+                propSheet._setProperty('typesToList', ['Folder', 'Large Plone Folder', 'Topic'], 'lines')
                 propSheet._setProperty('sortAttribute', 'getObjPositionInParent', 'string')
                 propSheet._setProperty('sortOrder', 'asc', 'string')
                 propSheet._setProperty('sitemapDepth', 3, 'int')
@@ -537,10 +537,11 @@ def addNewsFolder(portal, out):
 
     # Enable ConstrainTypes and set to News
     addable_types = ['News Item']
-    news.setConstrainTypesMode(1)
-    news.setImmediatelyAddableTypes(addable_types)
-    news.setLocallyAllowedTypes(addable_types)
-    out.append("Set constrain types for news folder.")
+    if getattr(news.aq_base, 'setConstrainTypesMode', None) is not None:
+        news.setConstrainTypesMode(1)
+        news.setImmediatelyAddableTypes(addable_types)
+        news.setLocallyAllowedTypes(addable_types)
+        out.append("Set constrain types for news folder.")
 
     # Add news_listing.pt as default page
     # property manager hasProperty can give odd results ask forgiveness instead

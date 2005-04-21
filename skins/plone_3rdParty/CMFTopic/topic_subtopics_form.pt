@@ -28,7 +28,7 @@
                        name="folder_rename_form:method"
                        value="Rename"
                        tabindex=""
-                       tal:condition="python:len(contents) or (here.cb_dataValid and button['id'] == 'paste')"
+                       tal:condition="python:len(batch) or (here.cb_dataValid and button['id'] == 'paste')"
                        tal:attributes="value button/name;
                                        name button/url;
                                        tabindex tabindex/next;" />
