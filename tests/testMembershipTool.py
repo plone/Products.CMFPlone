@@ -283,7 +283,7 @@ class TestCreateMemberarea(PloneTestCase.PloneTestCase):
         self.assertRaises(dummy.Error, self.membership.createMemberarea, 'user2')
 
     def testCreateMemberareaAlternateName(self):
-        # Alternate method name 'createMemberaArea' should work
+        # Alternate method name 'createMemberArea' should work
         members = self.membership.getMembersFolder()
         self.membership.createMemberArea('user2')
         memberfolder = self.membership.getHomeFolder('user2')
