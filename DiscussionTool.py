@@ -17,7 +17,7 @@ class DiscussionTool(PloneBaseTool, BaseTool):
     
     __implements__ = (PloneBaseTool.__implements__, BaseTool.__implements__, )
 
-    security.declareProtected('Modify portal content', 'cookContent')
+    security.declareProtected('Modify portal content', 'cookReply')
     def cookReply(self, reply, text_format=None):
         """ XXX We need this because currently we can not easily change the
             text_format on document objects.  Discussions in plone are going
