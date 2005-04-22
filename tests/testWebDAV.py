@@ -65,7 +65,7 @@ class TestDAVMetadata(PloneTestCase.FunctionalTestCase):
         self.assertEqual(doc.Contributors(), ())
         self.assertEqual(doc.EffectiveDate(), 'None')
         self.assertEqual(doc.ExpirationDate(), 'None')
-        self.assertEqual(doc.Language(), 'en')
+        self.assertEqual(doc.Language(), '')
         self.assertEqual(doc.Rights(), '')
 
 

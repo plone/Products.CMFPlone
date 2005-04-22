@@ -254,7 +254,7 @@ class TestEditMetadata(PloneTestCase.PloneTestCase):
         self.assertEqual(self.doc.text_format, 'text/html')
 
     def testSetLanguage(self):
-        self.assertEqual(self.doc.Language(), 'en')
+        self.assertEqual(self.doc.Language(), '')
         self.utils.editMetadata(self.doc, language='de')
         self.assertEqual(self.doc.Language(), 'de')
 
@@ -436,7 +436,7 @@ class TestFormulatorFields(PloneTestCase.PloneTestCase):
         self.utils.editMetadata(self.doc)
         # XXX: Note that language, format, and rights do not 
         #      receive the Formulator treatment.
-        self.assertEqual(self.doc.Language(), 'en')
+        self.assertEqual(self.doc.Language(), '')
 
 
 class TestNavTree(PloneTestCase.PloneTestCase):
