@@ -4,7 +4,7 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
-    - Fixed http://plone.org/collector/3324 by catching CopyError so
+    - Fixed http://plone.org/collector/3384 by catching CopyError so
       users don't get dumped into the ZMI.
       [bmh]
 
