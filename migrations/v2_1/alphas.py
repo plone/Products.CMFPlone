@@ -105,6 +105,9 @@ def alpha1_alpha2(portal):
     reindex += migrateDateIndexes(portal, out)
     reindex += migrateDateRangeIndexes(portal, out)
 
+    # Add sortable_title index
+    reindex += addSortable_TitleIndex(portal, out)
+
     # Add groups 'administrators' and 'reviewers'
     addDefaultGroups(portal, out)
 
@@ -716,3 +719,23 @@ def migrateDateRangeIndexes(portal, out):
             changed = 1 # Ask for reindexing
     return changed
 
+
+def addSortable_TitleIndex(portal, out):
+    """Adds the sortable_title FieldIndex."""
+    catalog = getToolByName(portal, 'portal_catalog', None)
+    if catalog is not None:
+        try:
+            index = catalog._catalog.getIndex('sortable_title')
+        except KeyError:
+            pass
+        else:
+            indextype = index.__class__.__name__
+            if indextype == 'FieldIndex':
+                return 0
+            catalog.delIndex('sortable_title')
+            out.append("Deleted %s 'sortable_title' from portal_catalog." % indextype)
+
+        catalog.addIndex('sortable_title', 'FieldIndex')
+        out.append("Added FieldIndex 'sortable_title' to portal_catalog.")
+        return 1 # Ask for reindexing
+    return 0

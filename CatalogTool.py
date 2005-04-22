@@ -24,6 +24,7 @@ from OFS.IOrderSupport import IOrderedContainer
 from ZODB.POSException import ConflictError
 
 from Products.ZCatalog.ZCatalog import ZCatalog
+from Products.PluginIndexes.common import safe_callable
 
 from AccessControl.Permissions import manage_zcatalog_entries as ManageZCatalogEntries
 from AccessControl.Permissions import search_zcatalog as SearchZCatalog
@@ -115,6 +116,20 @@ def allowedRolesAndUsers(obj, portal, **kwargs):
     return list(allowed.keys())
 
 registerIndexableAttribute('allowedRolesAndUsers', allowedRolesAndUsers)
+
+
+def sortable_title(obj, **kwargs):
+    """Helper method for to provide FieldIndex for Title
+    """
+    title = getattr(obj, 'Title', None)
+    if title is not None:
+        if safe_callable(title):
+            title = title()
+        if isinstance(title, basestring):
+            return title.lower().strip()
+    return ''
+
+registerIndexableAttribute('sortable_title', sortable_title)
 
 
 def getObjPositionInParent(obj, **kwargs):

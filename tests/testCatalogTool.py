@@ -135,6 +135,11 @@ class TestCatalogSetup(PloneTestCase.PloneTestCase):
         self.assertEqual(self.catalog.Indexes['effectiveRange'].__class__.__name__,
                          'DateRangeIndex')
 
+    def testSortable_TitleIsFieldIndex(self):
+        # sortable_title should be a FieldIndex
+        self.assertEqual(self.catalog.Indexes['sortable_title'].__class__.__name__,
+                         'FieldIndex')
+
 
 class TestCatalogIndexing(PloneTestCase.PloneTestCase):
 

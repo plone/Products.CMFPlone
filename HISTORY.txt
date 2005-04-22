@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - sortable_title FieldIndex added by popular demand.
+      [alecm]
+
     - Made folder_contents useful for viewing and altering non-local content
       (try folder_contents?path=/).  Changed folder_delete, folder_publish,
       and folder_rename to work with paths instead of ids (and altered
@@ -14,8 +17,8 @@ Plone 2.1 - Plaid - (unreleased)
       Removed copy, cut, paste buttons when the folder_contents view isn't
       local, as those actions won't work properly in that circumstance (copy
       can probably be implemented, but will need to use some OFS internals).
-      Added tests for folder_delete, folder_publish, and folder_rename.  This
-      fixes issue #216 (http://plone.org/collector/216).
+      Added tests for folder_delete, folder_publish, and folder_rename.  These
+      changes fix issue #216 (http://plone.org/collector/216).
       [alecm]
 
     - Added Topics to the default NavTree listing.

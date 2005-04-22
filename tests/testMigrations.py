@@ -35,6 +35,7 @@ from Products.CMFPlone.migrations.v2_1.alphas import indexMembersFolder
 from Products.CMFPlone.migrations.v2_1.alphas import addEditContentActions
 from Products.CMFPlone.migrations.v2_1.alphas import migrateDateIndexes
 from Products.CMFPlone.migrations.v2_1.alphas import migrateDateRangeIndexes
+from Products.CMFPlone.migrations.v2_1.alphas import addSortable_TitleIndex
 
 
 class MigrationTest(PloneTestCase.PloneTestCase):
@@ -659,6 +660,26 @@ class TestMigrations_v2_1(MigrationTest):
         self.assertEqual(migrateDateRangeIndexes(self.portal, []), 1)
         self.assertEqual(self.catalog.Indexes['effectiveRange'].__class__.__name__,
                          'DateRangeIndex')
+
+    def testAddSortable_TitleIndex(self):
+        # Should add sortable_title index
+        self.catalog.delIndex('sortable_title')
+        addSortable_TitleIndex(self.portal, [])
+        index = self.catalog._catalog.getIndex('sortable_title')
+        self.assertEqual(index.__class__.__name__, 'FieldIndex')
+
+    def testAddSortable_TitleIndexTwice(self):
+        # Should not fail if migrated again
+        self.catalog.delIndex('sortable_title')
+        addSortable_TitleIndex(self.portal, [])
+        addSortable_TitleIndex(self.portal, [])
+        index = self.catalog._catalog.getIndex('sortable_title')
+        self.assertEqual(index.__class__.__name__, 'FieldIndex')
+
+    def testAddSortable_TitleIndexNoCatalog(self):
+        # Should not fail if portal_catalog is missing
+        self.portal._delObject('portal_catalog')
+        addSortable_TitleIndex(self.portal, [])
 
 
 def test_suite():
