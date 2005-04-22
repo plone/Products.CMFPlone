@@ -3,6 +3,9 @@ Changelog for Plone
    (name of developer listed in brackets)
 
 Plone 2.1 - Plaid - (unreleased)
+ 
+    - Fixed up permissions on new cut/copy/delete actions.
+      [bmh]
 
     - Fixed http://plone.org/collector/3384 by catching CopyError so
       users don't get dumped into the ZMI.
