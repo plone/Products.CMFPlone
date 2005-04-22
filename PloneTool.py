@@ -535,7 +535,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             currentItem = path == currentPath
             if currentItem:
                 foundcurrent = path
-            data = {'Title':item.Title or '\xe2\x80\xa6'.decode('utf-8'),
+            data = {'Title':item.Title or self.utf8_portal('\xe2\x80\xa6', 'ignore'),
                     'currentItem':currentItem,
                     'absolute_url': item.getURL(),
                     'getURL':item.getURL(),
@@ -578,7 +578,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                         review_state = wf_tool.getInfoFor(item, 'review_state')
                     except WorkflowException:
                         review_state = ''
-                    data = {'Title': item.Title() or '\xe2\x80\xa6'.decode('utf-8'),
+                    data = {'Title': item.Title() or self.utf8_portal('\xe2\x80\xa6', 'ignore'),
                             'currentItem': currentItem,
                             'absolute_url': item.absolute_url(),
                             'getURL': item.absolute_url(),
@@ -637,7 +637,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         result = []
         for item in rawresult:
             if not (excluded_ids.has_key(item.getId) or item.exclude_from_nav):
-                data = {'name':item.Title or '\xe2\x80\xa6'.decode('utf-8'),
+                data = {'name':item.Title or self.utf8_portal('\xe2\x80\xa6', 'ignore'),
                         'id':item.getId, 'url': item.getURL(), 'description':item.Description}
                 result.append(data)
         return result
@@ -666,7 +666,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         result = []
         for r_tuple in dec_result:
             item = r_tuple[1]
-            data = {'Title':item.Title or '\xe2\x80\xa6'.decode('utf-8'),
+            data = {'Title':item.Title or self.utf8_portal('\xe2\x80\xa6', 'ignore'),
                     'absolute_url': item.getURL()}
             result.append(data)
         return result
