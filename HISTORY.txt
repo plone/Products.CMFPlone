@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Made sortable_title do useful numerical sorting, and truncate values
+      longer than 30 chars to prevent bloat.
+      [alecm]
+
     - is_folderish metadata added. It contains bool(isPrincipiaFolderish)
       [tiran]
 

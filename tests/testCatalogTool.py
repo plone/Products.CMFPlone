@@ -324,6 +324,52 @@ class TestCatalogSearching(PloneTestCase.PloneTestCase):
         self.assertEqual(self.catalog(SearchableText='foo')[0].id, 'doc')
 
 
+class TestCatalogSorting(PloneTestCase.PloneTestCase):
+
+    def afterSetUp(self):
+        self.catalog = self.portal.portal_catalog
+
+        self.folder.invokeFactory('Document', id='doc', text='foo')
+        self.folder.doc.setTitle('12 Document 25')
+        self.folder.invokeFactory('Document', id='doc2', text='foo')
+        self.folder.doc2.setTitle('3 Document 4')
+        self.folder.invokeFactory('Document', id='doc3', text='foo')
+        self.folder.doc3.setTitle('12 Document 4')
+
+        self.folder.invokeFactory('Document', id='doc4', text='bar')
+        self.folder.doc4.setTitle('document 12')
+        self.folder.invokeFactory('Document', id='doc5', text='bar')
+        self.folder.doc5.setTitle('Document 2')
+        self.folder.invokeFactory('Document', id='doc6', text='bar')
+        self.folder.doc6.setTitle('DOCUMENT 4')
+        self.folder.doc.reindexObject()
+        self.folder.doc2.reindexObject()
+        self.folder.doc3.reindexObject()
+        self.folder.doc4.reindexObject()
+        self.folder.doc5.reindexObject()
+        self.folder.doc6.reindexObject()
+
+    def testSortTitleReturnsProperOrderForNumbers(self):
+        # Documents should be returned in proper numeric order
+        results = self.catalog(SearchableText='foo', sort_on='sortable_title')
+        self.assertEqual(results[0].getId, 'doc2')
+        self.assertEqual(results[1].getId, 'doc3')
+        self.assertEqual(results[2].getId, 'doc')
+
+    def testSortTitleIgnoresCase(self):
+        # Documents should be returned in case insensitive order
+        results = self.catalog(SearchableText='bar', sort_on='sortable_title')
+        self.assertEqual(results[0].getId, 'doc5')
+        self.assertEqual(results[1].getId, 'doc6')
+        self.assertEqual(results[2].getId, 'doc4')
+
+    def testSortableTitleOutput(self):
+        doc = self.folder.doc
+        wrapped = ExtensibleIndexableObjectWrapper(vars, doc, self.portal)
+        
+        self.assertEqual(wrapped.sortable_title, u'00000012 document 00000025')
+
+
 class TestFolderCataloging(PloneTestCase.PloneTestCase):
     # Tests for http://plone.org/collector/2876
     # folder_edit must recatalog. folder_rename must recatalog.
@@ -703,6 +749,7 @@ def test_suite():
     suite.addTest(makeSuite(TestCatalogUnindexing))
     suite.addTest(makeSuite(TestCatalogOptimizer))
     suite.addTest(makeSuite(TestExtensibleIndexableObjectWrapper))
+    suite.addTest(makeSuite(TestCatalogSorting))
     return suite
 
 if __name__ == '__main__':

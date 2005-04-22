@@ -1,6 +1,7 @@
 #
 # Plone CatalogTool
 #
+import re
 
 from Products.CMFCore.CatalogTool import CatalogTool as BaseTool
 from Products.CMFCore.CMFCorePermissions import ManagePortal
@@ -119,6 +120,11 @@ def allowedRolesAndUsers(obj, portal, **kwargs):
 registerIndexableAttribute('allowedRolesAndUsers', allowedRolesAndUsers)
 
 
+def zero_fill(matchobj):
+    return matchobj.group().zfill(8)
+
+num_sort_regex = re.compile('\d+')
+
 def sortable_title(obj, **kwargs):
     """Helper method for to provide FieldIndex for Title
     """
@@ -127,7 +133,12 @@ def sortable_title(obj, **kwargs):
         if safe_callable(title):
             title = title()
         if isinstance(title, basestring):
-            return title.lower().strip()
+            sortabletitle = title.lower().strip()
+            # Replace numbers with zero filled numbers
+            sortabletitle = num_sort_regex.sub(zero_fill, sortabletitle)
+            # Truncate to prevent bloat
+            sortabletitle = unicode(sortabletitle)[:30]
+            return sortabletitle
     return ''
 
 registerIndexableAttribute('sortable_title', sortable_title)
