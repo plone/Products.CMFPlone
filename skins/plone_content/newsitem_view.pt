@@ -6,7 +6,8 @@
 
 <div metal:fill-slot="main">
     <tal:main-macro metal:define-macro="main"
-          tal:define="len_text python:len(here.text)">
+          tal:define="text python:here.CookedBody(stx_level=2);
+                      len_text python:len(text.strip())">
         <h1 tal:content="here/title_or_id" class="documentFirstHeading">
             Title or id
         </h1>
@@ -33,7 +34,7 @@
         <div class="stx"
              tal:condition="len_text"
              tal:omit-tag="python:here.text_format != 'structured-text'">
-            <div tal:replace="structure python:here.CookedBody(stx_level=2)" />
+            <div tal:replace="structure text" />
         </div>
 
         <div metal:use-macro="here/document_relateditems/macros/relatedItems">
