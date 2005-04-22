@@ -107,6 +107,9 @@ def initialize(context):
     ModuleSecurityInfo('DateTime.DateTime').declarePublic('DateTimeError')
     ModuleSecurityInfo('DateTime.DateTime').declarePublic('SyntaxError')
 
+    # Make CopyError importable TTW
+    ModuleSecurityInfo('OFS.CopySupport').declarePublic('CopyError')
+
     # Make base_hasattr importable TTW
     ModuleSecurityInfo('Products.CMFPlone').declarePublic('base_hasattr')
 

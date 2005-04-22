@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Fixed http://plone.org/collector/3324 by catching CopyError so
+      users don't get dumped into the ZMI.
+      [bmh]
+
     - Made sortable_title do useful numerical sorting, and truncate values
       longer than 30 chars to prevent bloat.
       [alecm]

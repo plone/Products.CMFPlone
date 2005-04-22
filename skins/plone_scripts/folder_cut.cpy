@@ -8,11 +8,17 @@
 ##parameters=
 ##title=Cut objects from a folder and copy to the clipboard
 ##
+from OFS.CopySupport import CopyError
 
 REQUEST=context.REQUEST
 if REQUEST.has_key('paths'):
     ids = [p.split('/')[-1] or p.split('/')[-2] for p in REQUEST['paths']]
-    context.manage_cutObjects(ids, REQUEST)
+
+    try:
+        context.manage_cutObjects(ids, REQUEST)
+    except CopyError:
+        message = context.translate("One or more items not moveable.")
+        return state.set(status = 'failure', portal_status_message = message)
 
     from Products.CMFPlone import transaction_note
     transaction_note('Cut %s from %s' % ((str(ids)), context.absolute_url()))
