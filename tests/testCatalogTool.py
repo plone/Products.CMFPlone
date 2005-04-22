@@ -95,6 +95,10 @@ class TestCatalogSetup(PloneTestCase.PloneTestCase):
         # exclude_from_nav column should be in catalog schema
         self.failUnless('exclude_from_nav' in self.catalog.schema())
 
+    def testIs_folderishInSchema(self):
+        # is_folderish column should be in catalog schema
+        self.failUnless('is_folderish' in self.catalog.schema())
+
     def testDateIsDateIndex(self):
         # Date should be a DateIndex
         self.assertEqual(self.catalog.Indexes['Date'].__class__.__name__,

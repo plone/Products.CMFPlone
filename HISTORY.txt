@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - is_folderish metadata added. It contains bool(isPrincipiaFolderish)
+      [tiran]
+
     - sortable_title FieldIndex added by popular demand.
       [alecm]
 

@@ -38,6 +38,7 @@ try:
 except ImportError:
     txng_version = 0
 
+_marker = object()
 
 class ExtensibleIndexableObjectRegistry(dict):
     """Registry for extensible object indexing
@@ -182,6 +183,23 @@ def getObjSize(obj, **kwargs):
     return size
 
 registerIndexableAttribute('getObjSize', getObjSize)
+
+def is_folderish(obj, **kwargs):
+    """get boolean var for isPrincipiaFolderish
+    """
+    return bool(getattr(aq_base(obj), 'isPrincipiaFolderish', False))
+
+registerIndexableAttribute('is_folderish', is_folderish)
+
+def syndication_enabled(obj, **kwargs):
+    """Get state of syndication
+    """
+    syn = getattr(aq_base(obj), 'syndication_information', _marker)
+    if syn is not _marker:
+        return True
+    return False
+
+registerIndexableAttribute('syndication_enabled', syndication_enabled)
 
 
 class CatalogTool(PloneBaseTool, BaseTool):

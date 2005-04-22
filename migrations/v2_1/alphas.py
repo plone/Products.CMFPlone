@@ -108,6 +108,9 @@ def alpha1_alpha2(portal):
     # Add sortable_title index
     reindex += addSortable_TitleIndex(portal, out)
 
+    # add is_folderish metadata
+    reindex += addIs_FolderishMetadata(portal, out)
+
     # Add groups 'administrators' and 'reviewers'
     addDefaultGroups(portal, out)
 
@@ -739,3 +742,15 @@ def addSortable_TitleIndex(portal, out):
         out.append("Added FieldIndex 'sortable_title' to portal_catalog.")
         return 1 # Ask for reindexing
     return 0
+
+def addIs_FolderishMetadata(portal, out):
+    """Adds the is_folderish metadata."""
+    catalog = getToolByName(portal, 'portal_catalog', None)
+    if catalog is not None:
+        if 'is_folderish' in catalog.schema():
+            return 0
+        catalog.addColumn('is_folderish')
+        out.append("Added 'is_folderish' metadata to portal_catalog.")
+        return 1 # Ask for reindexing
+    return 0
+

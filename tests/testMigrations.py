@@ -31,6 +31,7 @@ from Products.CMFPlone.migrations.v2_1.alphas import addNonDefaultPageTypesSiteP
 from Products.CMFPlone.migrations.v2_1.alphas import removePortalTabsActions
 from Products.CMFPlone.migrations.v2_1.alphas import addNewsFolder
 from Products.CMFPlone.migrations.v2_1.alphas import addExclude_from_navMetadata
+from Products.CMFPlone.migrations.v2_1.alphas import addIs_FolderishMetadata
 from Products.CMFPlone.migrations.v2_1.alphas import indexMembersFolder
 from Products.CMFPlone.migrations.v2_1.alphas import addEditContentActions
 from Products.CMFPlone.migrations.v2_1.alphas import migrateDateIndexes
@@ -551,6 +552,24 @@ class TestMigrations_v2_1(MigrationTest):
         # Should not fail if catalog is missing
         self.portal._delObject('portal_catalog')
         addExclude_from_navMetadata(self.portal, [])
+
+    def testAddIs_FolderishMetadata(self):
+        # Should add is_folderish to schema
+        self.catalog.delColumn('is_folderish')
+        addIs_FolderishMetadata(self.portal, [])
+        self.failUnless('is_folderish' in self.catalog.schema())
+
+    def testAddIs_FolderishMetadataTwice(self):
+        # Should not fail if migrated again
+        self.catalog.delColumn('is_folderish')
+        addIs_FolderishMetadata(self.portal, [])
+        addIs_FolderishMetadata(self.portal, [])
+        self.failUnless('is_folderish' in self.catalog.schema())
+
+    def testAddIs_FolderishMetadataNoCatalog(self):
+        # Should not fail if catalog is missing
+        self.portal._delObject('portal_catalog')
+        addIs_FolderishMetadata(self.portal, [])
 
     def testAddEditContentActions(self):
         # Should add the edit-content actions
