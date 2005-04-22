@@ -5,7 +5,7 @@
 ##bind script=script
 ##bind state=state
 ##bind subpath=traverse_subpath
-##parameters=workflow_action=None, ids=[], comment='No comment', expiration_date=None, effective_date=None, include_subfolders=0
+##parameters=workflow_action=None, paths=[], comment='No comment', expiration_date=None, effective_date=None, include_subfolders=0
 ##title=Publish objects from a folder
 ##
 
@@ -20,11 +20,13 @@ success = {}
 
 if workflow_action is None:
     return state.set(status='failure', portal_status_message='You must select a publishing action.')
-if not ids:
+if not paths:
     return state.set(status='failure', portal_status_message='You must select content to change.')
 
-for id in ids:
-    o = getattr(context, id)
+objs = context.getObjectsFromPathList(paths)
+
+for o in objs:
+    obj_path = '/'.join(o.getPhysicalPath())
     try:
         if o.isPrincipiaFolderish and include_subfolders:
             # call the script to do the workflow action
@@ -42,7 +44,7 @@ for id in ids:
                 raise
             except Exception, e:
                 # skip this object but continue with sub-objects.
-                failed[id]=e
+                failed[obj_path]=e
             
             o.folder_publish( workflow_action, 
                               o.objectIds(), 
@@ -55,13 +57,13 @@ for id in ids:
                                      comment,
                                      effective_date=effective_date,
                                      expiration_date=expiration_date )
-            success[id]=comment
+            success[obj_path]=comment
     except ConflictError:
         raise
     except Exception, e:
-        failed[id]=e
+        failed[obj_path]=e
 
-transaction_note( str(ids) + ' transitioned ' + workflow_action )
+transaction_note( str(paths) + ' transitioned ' + workflow_action )
 
 # It is necessary to set the context to override context from content_status_modify
 return state.set(context=context, portal_status_message='Content has been changed.')

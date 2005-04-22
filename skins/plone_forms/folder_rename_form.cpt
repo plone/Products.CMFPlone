@@ -8,9 +8,9 @@
   <body>
 
     <div metal:fill-slot="main">
-      <metal:block tal:condition="not: request/ids | nothing">
+      <metal:block tal:condition="not: request/paths | nothing">
         <tal:block tal:replace="nothing"
-                   tal:condition="not: request/ids | nothing"
+                   tal:condition="not: request/paths | nothing"
                    tal:define="referer request/HTTP_REFERER;
                                existing_message python:referer.find('portal_status_message');
                                target_url python:test(existing_message!=-1, referer[:referer.find('?')], referer);
@@ -29,16 +29,21 @@
       <form name="folder_rename"
             action="folder_rename"
             method="post"
-            tal:define="items request/ids|nothing; 
+            tal:define="paths request/paths|nothing;
+                        items python:here.getObjectsFromPathList(paths);
                         errors options/state/getErrors;"
             tal:attributes="action template/getId"
             tal:condition="items">
 
         <input type="hidden" name="form.submitted" value="1" />
+        <input type="hidden" name="orig_template"
+               tal:condition="request/orig_template|nothing"
+               tal:attributes="value request/orig_template"/>
 
-        <fieldset tal:repeat="item items">
+        <fieldset tal:repeat="obj items">
 
-          <tal:block define="obj python:getattr(here, item);
+          <tal:block define="item obj/getId;
+                             item_path python:'/'.join(obj.getPhysicalPath());
                              error python:errors and errors.get(item, None);">
 
             <legend>
@@ -66,10 +71,10 @@
                     </span>
 
                     <input type="hidden"
-                           name="ids:list"
+                           name="paths:list"
                            value="fav_999816073"
                            tal:condition="canRenameItem"
-                           tal:attributes="value item" />
+                           tal:attributes="value item_path" />
 
                     <input type="text"
                            name="new_ids:list"

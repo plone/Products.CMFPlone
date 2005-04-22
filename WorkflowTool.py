@@ -36,6 +36,9 @@ class WorkflowTool(PloneBaseTool, BaseTool):
         if hasattr(objs, 'startswith'):
             return ()
 
+        #XXX Need to behave differently for paths
+        if len(objs) and '/' in objs[0]:
+            return self.flattenTransitionsForPaths(objs)
         transitions=[]
         t_names=[]
 
@@ -45,6 +48,32 @@ class WorkflowTool(PloneBaseTool, BaseTool):
             trans=()
             try:
                 trans=self.getTransitionsFor(o, container)
+            except ConflictError:
+                raise
+            except:
+                pass
+            if trans:
+                for t in trans:
+                    if t['name'] not in t_names:
+                        transitions.append(t)
+                        t_names.append(t['name'])
+
+        return tuple(transitions[:])
+
+
+    def flattenTransitionsForPaths(self, paths):
+        """ this is even more hokey!!"""
+        if hasattr(paths, 'startswith'):
+            return ()
+
+        transitions=[]
+        t_names=[]
+        portal = getToolByName(self, 'portal_url').getPortalObject()
+
+        for o in [portal.restrictedTraverse(path) for path in paths]:
+            trans=()
+            try:
+                trans=self.getTransitionsFor(o, o.aq_inner.aq_parent)
             except ConflictError:
                 raise
             except:

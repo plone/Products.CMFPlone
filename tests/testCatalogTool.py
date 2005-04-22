@@ -350,7 +350,8 @@ class TestFolderCataloging(PloneTestCase.PloneTestCase):
     def testFolderTitleIsUpdatedOnFolderTitleChange(self):
         # The bug in fact talks about folder_rename
         title = 'Test Folder - Snooze!'
-        self.folder.folder_rename(ids=['foo'], new_ids=['foo'], new_titles=[title])
+        foo_path = '/'.join(self.folder.foo.getPhysicalPath())
+        self.folder.folder_rename(paths=[foo_path], new_ids=['foo'], new_titles=[title])
         results = self.catalog(Title='Snooze')
         self.failUnless(results)
         for result in results:
@@ -361,7 +362,8 @@ class TestFolderCataloging(PloneTestCase.PloneTestCase):
         # The bug in fact talks about folder_rename
         title = 'Test Folder - Snooze!'
         get_transaction().commit(1) # make rename work
-        self.folder.folder_rename(ids=['foo'], new_ids=['bar'], new_titles=[title])
+        foo_path = '/'.join(self.folder.foo.getPhysicalPath())
+        self.folder.folder_rename(paths=[foo_path], new_ids=['bar'], new_titles=[title])
         results = self.catalog(Title='Snooze')
         self.failUnless(results)
         for result in results:
@@ -373,6 +375,7 @@ class TestFolderCataloging(PloneTestCase.PloneTestCase):
         title = 'Test Folder - Snooze!'
         self.failUnless(self.catalog(id='foo'))
         self.folder.foo.setTitle(title)
+        #Title is a TextIndex
         self.failIf(self.catalog(Title='Snooze'))
 
 
@@ -574,7 +577,8 @@ class TestCatalogUnindexing(PloneTestCase.PloneTestCase):
         self.setRoles(['Manager'])
         self.workflow.doActionFor(self.folder.doc, 'publish')
         self.setRoles(['Member'])
-        self.app.REQUEST.set('ids', ['doc'])
+        doc_path = '/'.join(self.folder.doc.getPhysicalPath())
+        self.app.REQUEST.set('paths', [doc_path])
         self.folder.folder_delete()
         self.failIf(self.catalog(id='doc'))
 

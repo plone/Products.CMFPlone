@@ -4,6 +4,20 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Made folder_contents useful for viewing and altering non-local content
+      (try folder_contents?path=/).  Changed folder_delete, folder_publish,
+      and folder_rename to work with paths instead of ids (and altered
+      corresponding forms).  Added new method to workflow tool to get workflow
+      transitions for objects given by path rather than id.  Made the
+      aforementioned scripts redrect to the originating form instead of
+      hard-coded folder_contents (uses request variable 'orig_template').
+      Removed copy, cut, paste buttons when the folder_contents view isn't
+      local, as those actions won't work properly in that circumstance (copy
+      can probably be implemented, but will need to use some OFS internals).
+      Added tests for folder_delete, folder_publish, and folder_rename.  This
+      fixes issue #216 (http://plone.org/collector/216).
+      [alecm]
+
     - Added Topics to the default NavTree listing.
       [alecm]
 

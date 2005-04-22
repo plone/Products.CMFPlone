@@ -20,13 +20,14 @@ if not contentFilter.get('sort_on', None):
         contentFilter.set('sort_on', 'getObjPositionInParent')
     except AttributeError:
         contentFilter['sort_on'] = 'getObjPositionInParent'
-    
-path['query'] = cur_path
-path['depth'] = 1
-try:
-    contentFilter.set('path', path)
-except AttributeError:
-    contentFilter['path'] = path
+
+if contentFilter.get('path', None) is None:
+    path['query'] = cur_path
+    path['depth'] = 1
+    try:
+        contentFilter.set('path', path)
+    except AttributeError:
+        contentFilter['path'] = path
 
 contents = catalog.queryCatalog(contentFilter, show_all=1)
 

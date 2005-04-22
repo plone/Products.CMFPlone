@@ -167,6 +167,7 @@
                                    getInfoFor python:wtool.getInfoFor;
                                    item_url item/getURL|item/absolute_url;
                                    item_id item/getId;
+                                   item_path item/getPath|python:'/'.join(item.getPhysicalPath());
                                    item_title_or_id python: (same_type(item.getId,'') and (item.Title or '[...]')) or item.title_or_id();
                                    item_description item/Description;
                                    item_type item/portal_type;
@@ -190,9 +191,9 @@
                        <td>
                            <input type="checkbox"
                                   class="noborder"
-                                  name="ids:list" id="#"
+                                  name="paths:list" id="#"
                                   value="#"
-                                  tal:attributes="value item_id;
+                                  tal:attributes="value item_path;
                                                   id string:cb_$item_id;
                                                   checked request/ids_checked|nothing;
                                                   alt string:Select $item_title_or_id;
@@ -263,13 +264,18 @@
             <div metal:use-macro="here/batch_macros/macros/navigation" />
         </metal:listing>
 
+        <input type="hidden" name="orig_template"
+               tal:attributes="value template/getId"/>
         <tal:buttons tal:repeat="button actions/folder_buttons|nothing">
           <input class="context"
                  type="submit"
                  name=""
                  value=""
                  tabindex=""
-                 tal:condition="python:batch or here.cb_dataValid and button['id'] == 'paste'"
+                 tal:define="query_path python:path('contentFilter/path|nothing') or request.get('path',None);
+                             path_depth query_path/depth|nothing;
+                             non_local python:path_depth!=1"
+                 tal:condition="python:(batch or here.cb_dataValid and button['id'] == 'paste') and not ( non_local and button['id'] in ['cut','copy','paste'])"
                  i18n:attributes="value"
                  tal:attributes="value button/name;
                                  name button/url;

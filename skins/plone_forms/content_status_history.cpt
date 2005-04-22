@@ -25,7 +25,7 @@
       NOTE: This form does two things.  It will allow you to publish
       multiple files (recursively) and it will allow for you to
       publish a specific piece of content.  This flexibility comes
-      with some complexity.  How we tell is if we have a list of 'ids'
+      with some complexity.  How we tell is if we have a list of 'paths'
       in the REQUEST to be published
     -->
 
@@ -64,13 +64,11 @@
 
           <legend i18n:translate="legend_publishing_details">Publishing Details</legend>
 
-          <div class="field" tal:condition="request/ids|nothing">
+          <div class="field" tal:condition="request/paths|nothing">
             <label for="" i18n:translate="label_affected_content">Affected content</label>
-            <div tal:define="physical_path python:'/'.join(here.getPhysicalPath());
-                             dummy python:request.set('ids_checked', 1);
-                             ids python:request.get('ids', []);
-                             contentFilter python:{'id':ids};
-                             batch python:here.getFolderContents(contentFilter=contentFilter, batch=True);
+            <div tal:define="dummy python:request.set('ids_checked', 1);
+                             paths python:request.get('paths', []);
+                             batch python:here.getObjectsFromPathList(paths,batch=True);
                              global folders_in_publishing python:[o.getId for o in batch if o.isPrincipiaFolderish];"
                  tal:condition="batch">
               <table summary="" metal:use-macro="here/folder_contents/macros/folder_listing">
@@ -179,7 +177,7 @@
 
             <div tal:define="tabindex tabindex/next;
                              error_workflow_action errors/workflow_action|nothing;
-                             objs request/ids|nothing;
+                             objs request/paths|nothing;
                              review_state_label string:No change;
                              target python:test(objs, objs, here);"
                  tal:attributes="class python:test(error_workflow_action, 'field error', 'field')">
@@ -245,14 +243,14 @@
                    value="Save"
                    i18n:attributes="value"
                    tal:attributes="tabindex tabindex/next;"
-                   tal:condition="not:request/ids|nothing"/>
+                   tal:condition="not:request/paths|nothing"/>
             <input class="context"
                    type="submit"
                    name="form.button.FolderPublish"
                    value="Save"
                    i18n:attributes="value"
                    tal:attributes="tabindex tabindex/next;"
-                   tal:condition="request/ids|nothing"/>
+                   tal:condition="request/paths|nothing"/>
             <input class="standalone"
                    type="submit"
                    name="form.button.Cancel"
@@ -267,12 +265,15 @@
             THESE INTO YOUR FORM ####
           </span>
           <input type="hidden" name="form.submitted" value="1" />
+          <input type="hidden" name="orig_template"
+                 tal:condition="request/orig_template|nothing"
+                 tal:attributes="value request/orig_template"/>
 
         </fieldset>
 
       </form>
 
-      <div tal:condition="not: request/ids|nothing">
+      <div tal:condition="not: request/paths|nothing">
 
         <table class="listing nosort" summary="Review History"
                i18n:attributes="summary"
