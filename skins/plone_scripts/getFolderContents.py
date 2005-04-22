@@ -4,7 +4,7 @@
 ##bind namespace=
 ##bind script=script
 ##bind subpath=traverse_subpath
-##parameters=contentFilter=None,batch=False,b_size=100
+##parameters=contentFilter=None,batch=False,b_size=100,full_objects=False
 ##title=wrapper method around to use catalog to get folder contents
 ##
 
@@ -30,6 +30,9 @@ if contentFilter.get('path', None) is None:
         contentFilter['path'] = path
 
 contents = catalog.queryCatalog(contentFilter, show_all=1)
+
+if full_objects:
+    contents = [b.getObject() for b in contents]
 
 if batch:
     from Products.CMFPlone import Batch

@@ -13,5 +13,5 @@ LOG('Plone Debug', WARNING, 'The batchedFolderContents script is DEPRECATED, '
                             'and will be removed in plone 2.3. Please use '
                             'getFolderContents with the parameter batch=True')
 
-batch = context.getFolderContents(contentFilter, batch=True)
+batch = context.getFolderContents(contentFilter, batch=True, full_objects=True)
 return batch

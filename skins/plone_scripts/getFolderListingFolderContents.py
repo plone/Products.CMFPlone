@@ -13,4 +13,4 @@ LOG('Plone Debug', WARNING, 'The getFolderListingFolderContents script is '
                             'DEPRECATED and will be removed in plone 2.3.'
                             'Please use getFolderContents with the parameter'
                             'batch=True')
-return context.getFolderContents(contentFilter)
+return context.getFolderContents(contentFilter, full_objects=True)
