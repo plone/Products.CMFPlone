@@ -791,12 +791,12 @@ ol.visualNoMarker {
 }
 .ploneCalendar .todayevent {
     background-color: &dtml-globalBackgroundColor;;
-    border: 2px &dtml-borderStyle; &dtml-notifyBorderColor;;
+    border: 2px &dtml-borderStyle; #ffa500;
     font-weight: bold;
 }
 .ploneCalendar .todaynoevent {
     border-collapse: collapse;
-    border: 2px &dtml-borderStyle; &dtml-notifyBorderColor;;
+    border: 2px &dtml-borderStyle; #ffa500;
 }
 
 /* for highlighting of search terms */

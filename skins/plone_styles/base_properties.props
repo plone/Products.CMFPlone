@@ -36,8 +36,8 @@ textTransform:string=lowercase
 evenRowBackgroundColor:string=#eef3f5 
 oddRowBackgroundColor:string=transparent
 
-notifyBorderColor:string=#ffa500
-notifyBackgroundColor:string=#ffce7b
+notifyBorderColor:string=#ffee00
+notifyBackgroundColor:string=#ffffa0
 
 discreetColor:string=#76797c
 helpBackgroundColor:string=#ffffe1
