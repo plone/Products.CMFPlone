@@ -1,5 +1,5 @@
 #
-# Test check_id script
+# Tests for scripts behind folder_contents view
 #
 
 import os, sys
@@ -8,11 +8,7 @@ if __name__ == '__main__':
 
 from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
-from Products.CMFPlone.tests import dummy
 
-from AccessControl import getSecurityManager
-from AccessControl import Unauthorized
-from ZODB.POSException import ConflictError
 
 class TestFolderRename(PloneTestCase.PloneTestCase):
     # Tests for http://plone.org/collector/2876
@@ -80,6 +76,7 @@ class TestFolderRename(PloneTestCase.PloneTestCase):
         self.assertEqual(self.folder.foo.baz.Title(),title)
         self.assertEqual(self.folder.bar.blah.Title(),title)
 
+
 class TestFolderDelete(PloneTestCase.PloneTestCase):
     # Tests for http://plone.org/collector/2876
     # folder_edit must recatalog. folder_rename must recatalog.
@@ -114,6 +111,7 @@ class TestFolderDelete(PloneTestCase.PloneTestCase):
         self.folder.folder_delete()
         self.assertEqual(getattr(self.folder.foo, 'doc1', None), None)
         self.assertEqual(getattr(self.folder.bar, 'doc2', None), None)
+
 
 class TestFolderPublish(PloneTestCase.PloneTestCase):
     # Tests for http://plone.org/collector/2876

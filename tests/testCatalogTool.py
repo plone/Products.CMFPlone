@@ -320,7 +320,6 @@ class TestCatalogSearching(PloneTestCase.PloneTestCase):
         self.assertEqual(self.catalog(SearchableText='foo')[0].id, 'doc')
 
 
-
 class TestFolderCataloging(PloneTestCase.PloneTestCase):
     # Tests for http://plone.org/collector/2876
     # folder_edit must recatalog. folder_rename must recatalog.
