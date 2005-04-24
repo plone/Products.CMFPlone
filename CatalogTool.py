@@ -128,7 +128,7 @@ num_sort_regex = re.compile('\d+')
 def sortable_title(obj, portal, **kwargs):
     """Helper method for to provide FieldIndex for Title
     """
-    def_charset = portal.portal_properties.site_properties.getProperty('default_charset', 'utf-8')
+    def_charset = portal.plone_utils.getSiteEncoding()
     title = getattr(obj, 'Title', None)
     if title is not None:
         if safe_callable(title):
