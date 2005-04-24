@@ -305,6 +305,13 @@ class TestCreateMemberarea(PloneTestCase.PloneTestCase):
         memberfolder = self.membership.getHomeFolder('user2')
         self.failUnless(memberfolder, 'createMemberArea failed to create memberarea')
 
+    def testCreateMemberareaLPF(self):
+        # Should create a Large Plone Folder instead of a normal Folder
+        self.membership.setMemberAreaType('Large Plone Folder')
+        self.membership.createMemberarea('user2')
+        memberfolder = self.membership.getHomeFolder('user2')
+        self.assertEqual(memberfolder.getPortalTypeName(), 'Large Plone Folder')
+
 
 class TestMemberareaSetup(PloneTestCase.PloneTestCase):
 

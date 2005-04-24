@@ -6,10 +6,11 @@ from Products.CMFPlone.utils import translate
 from Products.CMFPlone.utils import _createObjectByType
 from OFS.Image import Image
 from AccessControl import ClassSecurityInfo, getSecurityManager
-from Globals import InitializeClass
+from Globals import InitializeClass, DTMLFile
 from zExceptions import BadRequest
 from Acquisition import aq_base, aq_parent, aq_inner
 from Products.CMFCore.CMFCorePermissions import View
+from Products.CMFCore.CMFCorePermissions import ManagePortal
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 
 default_portrait = 'defaultUser.gif'
@@ -32,6 +33,7 @@ class MembershipTool(PloneBaseTool, BaseTool):
     personal_id = '.personal'
     portrait_id = 'MyPortrait'
     default_portrait = 'defaultUser.gif'
+    memberarea_type = 'Folder'
     security = ClassSecurityInfo()
     
     __implements__ = (PloneBaseTool.__implements__, BaseTool.__implements__, )
@@ -39,6 +41,27 @@ class MembershipTool(PloneBaseTool, BaseTool):
     #XXX I'm not quite sure why getPortalRoles is declared 'Managed'
     #    in CMFCore.MembershipTool - but in Plone we are not so anal ;-)
     security.declareProtected(View, 'getPortalRoles')
+
+    security.declareProtected(ManagePortal, 'manage_mapRoles')
+    manage_mapRoles = DTMLFile('www/membershipRolemapping', globals())
+
+    security.declareProtected(ManagePortal, 'manage_setMemberAreaType')
+    def manage_setMemberAreaType(self, type_name, REQUEST=None):
+        """ ZMI method to set the home folder type by its type name.
+        """
+        self.setMemberAreaType(type_name)
+        if REQUEST is not None:
+            REQUEST['RESPONSE'].redirect(self.absolute_url()
+                    + '/manage_mapRoles'
+                    + '?manage_tabs_message=Member+area+type+changed.')
+
+    security.declareProtected(ManagePortal, 'setMemberAreaType')
+    def setMemberAreaType(self, type_name):
+        """ Sets the portal type to use for new home folders.
+        """
+        # No check for folderish since someone somewhere may actually want
+        # members to have objects instead of folders as home "directory".
+        self.memberarea_type = str(type_name).strip()
 
     # XXX: Comment this out to see if we still need it.
     # We don't want to set wrapped users into the request!
@@ -159,7 +182,7 @@ class MembershipTool(PloneBaseTool, BaseTool):
             # XXX exception
             return
         
-        _createObjectByType('Folder', members, id=member_id)
+        _createObjectByType(self.memberarea_type, members, id=member_id)
 
         # get the user object from acl_users
         # XXX what about portal_membership.getAuthenticatedMember()?
