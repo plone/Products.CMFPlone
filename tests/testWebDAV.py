@@ -8,9 +8,8 @@ from Products.CMFCore.utils import getToolByName
 
 from webdav.NullResource import NullResource
 from Acquisition import aq_base
+from StringIO import StringIO
 
-import base64
-auth_info = 'Basic %s' % base64.encodestring('%s:secret' % PloneTestCase.default_user)
 
 def mkdict(items):
     '''Constructs a dict from a sequence of (key, value) pairs.'''
@@ -32,7 +31,7 @@ class TestDAVProperties(PloneTestCase.PloneTestCase):
         self.assertEquals(items['title'], self.portal.title)
 
 
-class TestDAVMetadata(PloneTestCase.PloneTestCase):
+class TestDAVMetadata(PloneTestCase.FunctionalTestCase):
     # Confirms fix for http://plone.org/collector/3217
     # The fix itself is in CMFDefault.Document, not Plone.
 
@@ -44,20 +43,16 @@ class TestDAVMetadata(PloneTestCase.PloneTestCase):
 """
 
     def afterSetUp(self):
-        request = self.app.REQUEST
-        request['PARENTS'] = [self.app]
-        # Fake a PUT request
-        request['BODY'] = self.html
-        request.environ['CONTENT_TYPE'] = 'text/html'
-        request.environ['REQUEST_METHOD'] = 'PUT'
-        request._auth = auth_info
-        request.RESPONSE._auth = 1
-        request.maybe_webdav_client = 1
-        # PUT a document
-        new = NullResource(self.folder, 'doc', request).__of__(self.folder)
-        new.PUT(request, request.RESPONSE)
-        
+        self.basic_auth = '%s:secret' % PloneTestCase.default_user
+        self.folder_path = self.folder.absolute_url(1)
+
     def testDocumentMetadata(self):
+        response = self.publish(self.folder_path+'/doc',
+                                env={'CONTENT_TYPE': 'text/html'},
+                                request_method='PUT',
+                                stdin=StringIO(self.html),
+                                basic=self.basic_auth)
+        self.assertEqual(response.getStatus(), 201)
         doc = self.folder.doc
         self.assertEqual(doc.Title(), 'Foo')
         self.assertEqual(doc.EditableBody(), 'Bar')
