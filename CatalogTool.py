@@ -125,9 +125,10 @@ def zero_fill(matchobj):
 
 num_sort_regex = re.compile('\d+')
 
-def sortable_title(obj, **kwargs):
+def sortable_title(obj, portal, **kwargs):
     """Helper method for to provide FieldIndex for Title
     """
+    def_charset = portal.portal_properties.site_properties.getProperty('default_charset', 'utf-8')
     title = getattr(obj, 'Title', None)
     if title is not None:
         if safe_callable(title):
@@ -137,7 +138,12 @@ def sortable_title(obj, **kwargs):
             # Replace numbers with zero filled numbers
             sortabletitle = num_sort_regex.sub(zero_fill, sortabletitle)
             # Truncate to prevent bloat
-            sortabletitle = unicode(sortabletitle)[:30]
+            for charset in [def_charset, 'latin-1', 'utf-8']:
+                try:
+                    sortabletitle = unicode(sortabletitle, charset)[:30]
+                    break
+                except UnicodeError:
+                    pass
             return sortabletitle
     return ''
 

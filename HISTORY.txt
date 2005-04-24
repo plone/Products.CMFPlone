@@ -3,6 +3,9 @@ Changelog for Plone
    (name of developer listed in brackets)
 
 Plone 2.1 - Plaid - (unreleased)
+
+    - Fixed non-ASCII character issue in sortable_title method.
+      [alecm]
  
     - Fixed up permissions on new cut/copy/delete actions.
       [bmh]

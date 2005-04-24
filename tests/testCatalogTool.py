@@ -369,6 +369,14 @@ class TestCatalogSorting(PloneTestCase.PloneTestCase):
         
         self.assertEqual(wrapped.sortable_title, u'00000012 document 00000025')
 
+    def testSortableNonASCIITitles(self):
+        #test a utf-8 encoded string gets properly unicode converted
+        title = 'La Pe\xc3\xb1a'
+        doc = self.folder.doc
+        doc.setTitle(title)
+        wrapped = ExtensibleIndexableObjectWrapper(vars, doc, self.portal)
+        self.assertEqual(wrapped.sortable_title, u'la pe\xf1a')
+
 
 class TestFolderCataloging(PloneTestCase.PloneTestCase):
     # Tests for http://plone.org/collector/2876
