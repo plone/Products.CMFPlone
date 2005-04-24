@@ -743,6 +743,7 @@ def addSortable_TitleIndex(portal, out):
         return 1 # Ask for reindexing
     return 0
 
+
 def addIs_FolderishMetadata(portal, out):
     """Adds the is_folderish metadata."""
     catalog = getToolByName(portal, 'portal_catalog', None)

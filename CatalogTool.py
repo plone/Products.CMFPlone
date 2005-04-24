@@ -31,7 +31,6 @@ from AccessControl.Permissions import manage_zcatalog_entries as ManageZCatalogE
 from AccessControl.Permissions import search_zcatalog as SearchZCatalog
 from AccessControl.PermissionRole import rolesForPermissionOn
 
-
 # Use TextIndexNG2 if installed
 try: 
     import Products.TextIndexNG2
@@ -40,6 +39,7 @@ except ImportError:
     txng_version = 0
 
 _marker = object()
+
 
 class ExtensibleIndexableObjectRegistry(dict):
     """Registry for extensible object indexing
@@ -195,12 +195,14 @@ def getObjSize(obj, **kwargs):
 
 registerIndexableAttribute('getObjSize', getObjSize)
 
+
 def is_folderish(obj, **kwargs):
-    """get boolean var for isPrincipiaFolderish
+    """Get boolean value of isPrincipiaFolderish flag
     """
     return bool(getattr(aq_base(obj), 'isPrincipiaFolderish', False))
 
 registerIndexableAttribute('is_folderish', is_folderish)
+
 
 def syndication_enabled(obj, **kwargs):
     """Get state of syndication
