@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Merged (some variation of) madduck's member area type selection branch.
+      This allows to configure the portal type used for home folders in the
+      membership tool.
+      [stefan] [madduck]
+
     - Fixed non-ASCII character issue in sortable_title method.
       [alecm]
  
