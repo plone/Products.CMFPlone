@@ -4,6 +4,25 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Publishing the default document in a folder now publishes the folder as
+      well, if possible (and similarly, making the default page visible or
+      private will make the folder visible or private as well)
+      [optilude]
+
+    - content_status_history (Change state button from folder_contents or
+      'advanced' item in state drop-down) is now more consistent, showing
+      the items being affected in both cases, and permits the publishing of
+      folder contents along with a folder no matter which method is used.
+      [optilude]
+
+    - Default content types are now in portal_factory
+      [optilude]
+
+    - registered_notify_template now honours the 'email' parameter passed in
+      instead of using 'member.email', and in the process no longer breaks
+      CMFMember
+      [optilude]
+
     - Merged (some variation of) madduck's member area type selection branch.
       This allows to configure the portal type used for home folders in the
       membership tool.

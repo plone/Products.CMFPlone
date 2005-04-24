@@ -28,6 +28,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.memberdata = self.portal.portal_memberdata
         self.catalog = self.portal.portal_catalog
         self.groups = self.portal.portal_groups
+        self.factory = self.portal.portal_factory
 
     def testPloneSkins(self):
         # Plone skins should have been set up
@@ -282,6 +283,13 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
     def testDefaultGroupsAdded(self):
         self.failUnless('Administrators' in self.groups.listGroupIds())
         self.failUnless('Reviewers' in self.groups.listGroupIds())
+
+    def testDefaultTypesInPortalFactory(self):
+        types = self.factory.getFactoryTypes().keys()
+        for metaType in ('Document', 'Event', 'File', 'Folder', 'Image', 
+                         'Folder', 'Large Plone Folder', 'Link', 'News Item',
+                         'Topic'):
+            self.failUnless(metaType in types)
 
     def testAllDependenciesMet(self):
         from Products.CMFPlone.setup import dependencies

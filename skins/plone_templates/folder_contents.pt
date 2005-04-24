@@ -195,7 +195,7 @@
                                   value="#"
                                   tal:attributes="value item_path;
                                                   id string:cb_$item_id;
-                                                  checked request/ids_checked|nothing;
+                                                  checked python:test(request.get('ids_checked', False), 'checked', None);
                                                   alt string:Select $item_title_or_id;
                                                   title string:Select $item_title_or_id"/>
                       <input type="hidden" name="obj_paths:list" value="#"

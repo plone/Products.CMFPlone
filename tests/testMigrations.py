@@ -37,6 +37,7 @@ from Products.CMFPlone.migrations.v2_1.alphas import addEditContentActions
 from Products.CMFPlone.migrations.v2_1.alphas import migrateDateIndexes
 from Products.CMFPlone.migrations.v2_1.alphas import migrateDateRangeIndexes
 from Products.CMFPlone.migrations.v2_1.alphas import addSortable_TitleIndex
+from Products.CMFPlone.migrations.v2_1.alphas import addDefaultTypesToPortalFactory
 
 
 class MigrationTest(PloneTestCase.PloneTestCase):
@@ -137,6 +138,7 @@ class TestMigrations_v2_1(MigrationTest):
         self.membership = self.portal.portal_membership
         self.catalog = self.portal.portal_catalog
         self.groups = self.portal.portal_groups
+        self.factory = self.portal.portal_factory
 
     def testAddFullScreenAction(self):
         # Should add the full_screen action
@@ -699,6 +701,32 @@ class TestMigrations_v2_1(MigrationTest):
         # Should not fail if portal_catalog is missing
         self.portal._delObject('portal_catalog')
         addSortable_TitleIndex(self.portal, [])
+        
+    def testAddDefaultTypesToPortalFactory(self):
+        # Should add user-visible ATContentTypes types to portal_factory
+        self.factory.manage_setPortalFactoryTypes(listOfTypeIds = [])
+        addDefaultTypesToPortalFactory(self.portal, [])
+        types = self.factory.getFactoryTypes().keys()
+        for metaType in ('Document', 'Event', 'File', 'Folder', 'Image', 
+                         'Folder', 'Large Plone Folder', 'Link', 'News Item',
+                         'Topic'):
+            self.failUnless(metaType in types)
+
+    def testAddDefaultTypesToPortalFactoryTwice(self):
+        # Should not fail if migrated again
+        self.factory.manage_setPortalFactoryTypes(listOfTypeIds = [])
+        addDefaultTypesToPortalFactory(self.portal, [])
+        addDefaultTypesToPortalFactory(self.portal, [])
+        types = self.factory.getFactoryTypes().keys()
+        for metaType in ('Document', 'Event', 'File', 'Folder', 'Image', 
+                         'Folder', 'Large Plone Folder', 'Link', 'News Item',
+                         'Topic'):
+            self.failUnless(metaType in types)
+
+    def testAddDefaultTypesToPortalFactoryNoTool(self):
+        # Should not fail if portal_factory is missing
+        self.portal._delObject('portal_factory')
+        addDefaultTypesToPortalFactory(self.portal, [])
 
 
 def test_suite():

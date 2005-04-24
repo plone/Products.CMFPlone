@@ -8,10 +8,13 @@
 ##parameters=workflow_action=None, comment='', effective_date=None, expiration_date=None, *args
 ##title=handles the workflow transitions of objects
 ##
+from ZODB.POSException import ConflictError
 from DateTime import DateTime
 from Products.CMFPlone import transaction_note
 from AccessControl import Unauthorized
+from Products.CMFCore.utils import getToolByName
 
+plone_utils = getToolByName(context, 'plone_utils')
 contentEditSuccess=0
 plone_log=context.plone_log
 new_context = context.portal_factory.doCreate(context)
@@ -59,6 +62,20 @@ if not contentEditSuccess:
         pass
 
 transaction_note(note)
+
+# If this item is the default page in its parent, attempt to publish that
+# too. It may not be possible, of course
+if plone_utils.isDefaultPage(new_context):
+    parent = new_context.aq_inner.aq_parent
+    try:
+        parent.content_status_modify( workflow_action,
+                                      comment,
+                                      effective_date=effective_date,
+                                      expiration_date=expiration_date )
+    except ConflictError:
+        raise
+    except Exception:
+        pass
 
 return state.set(context=wfcontext,
                  portal_status_message='Your contents status has been modified.')

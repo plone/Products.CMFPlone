@@ -5,7 +5,7 @@
 ##bind script=script
 ##bind state=state
 ##bind subpath=traverse_subpath
-##parameters=workflow_action=None, paths=[], comment='No comment', expiration_date=None, effective_date=None, include_subfolders=0
+##parameters=workflow_action=None, paths=[], comment='No comment', expiration_date=None, effective_date=None, include_children=False
 ##title=Publish objects from a folder
 ##
 
@@ -28,7 +28,8 @@ objs = context.getObjectsFromPathList(paths)
 for o in objs:
     obj_path = '/'.join(o.getPhysicalPath())
     try:
-        if o.isPrincipiaFolderish and include_subfolders:
+        if o.isPrincipiaFolderish and include_children:
+            
             # call the script to do the workflow action
             # catch it if there is not workflow action for this object
             # but continue with subobjects.
@@ -46,10 +47,11 @@ for o in objs:
                 # skip this object but continue with sub-objects.
                 failed[obj_path]=e
             
+            subobject_paths = ["%s/%s" % ('/'.join(o.getPhysicalPath()), id) for id in o.objectIds()]
             o.folder_publish( workflow_action, 
-                              o.objectIds(), 
+                              subobject_paths, 
                               comment=comment, 
-                              include_subfolders=include_subfolders, 
+                              include_children=include_children, 
                               effective_date=effective_date,
                               expiration_date=expiration_date )
         else:
@@ -57,6 +59,7 @@ for o in objs:
                                      comment,
                                      effective_date=effective_date,
                                      expiration_date=expiration_date )
+                                     
             success[obj_path]=comment
     except ConflictError:
         raise
