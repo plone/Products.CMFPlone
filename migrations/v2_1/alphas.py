@@ -747,21 +747,6 @@ def addSortable_TitleIndex(portal, out):
         return 1 # Ask for reindexing
     return 0
 
-def addDefaultTypesToPortalFactory(portal, out):
-    """Put the default content types in portal_factory"""
-    factory = getToolByName(portal, 'portal_factory', None)
-    if factory:
-        types = factory.getFactoryTypes().keys()
-        for metaType in ('Document', 'Event', 'File', 'Folder', 'Image', 
-                         'Folder', 'Large Plone Folder', 'Link', 'News Item',
-                         'Topic'):
-            if metaType not in types:
-                types.append(metaType)
-        factory.manage_setPortalFactoryTypes(listOfTypeIds = types)
-        out.append('Added default content types to portal_factory')
-    else:
-        out.append('Could not find portal_factory tool')
-
 
 def addIs_FolderishMetadata(portal, out):
     """Adds the is_folderish metadata."""
@@ -773,3 +758,17 @@ def addIs_FolderishMetadata(portal, out):
         out.append("Added 'is_folderish' metadata to portal_catalog.")
         return 1 # Ask for reindexing
     return 0
+
+
+def addDefaultTypesToPortalFactory(portal, out):
+    """Put the default content types in portal_factory"""
+    factory = getToolByName(portal, 'portal_factory', None)
+    if factory is not None:
+        types = factory.getFactoryTypes().keys()
+        for metaType in ('Document', 'Event', 'File', 'Folder', 'Image', 
+                         'Folder', 'Large Plone Folder', 'Link', 'News Item',
+                         'Topic'):
+            if metaType not in types:
+                types.append(metaType)
+        factory.manage_setPortalFactoryTypes(listOfTypeIds = types)
+        out.append('Added default content types to portal_factory.')
