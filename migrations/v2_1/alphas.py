@@ -215,7 +215,7 @@ def addFullScreenAction(portal, out):
         else:
             actionsTool.addAction('full_screen',
                 name='Toggle full screen mode',
-                action='string:javascript:fullscreenMode();',
+                action='string:javascript:toggleFullScreenMode();',
                 condition='member',
                 permission=CMFCorePermissions.View,
                 category='document_actions',
