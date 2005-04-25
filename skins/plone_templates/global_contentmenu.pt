@@ -110,7 +110,7 @@
                         </a>
                     </li>
                 </tal:types>
-                <li class="actionSeperator" tal:condition="showMore">
+                <li style="text-align: right;" tal:condition="showMore">
                     <a href="#" class="folderAddMore" title="Show all available content types"
                            onMouseUp="if (activeButton != null) resetButton(activeButton);"
                            i18n:attributes="title"
