@@ -605,11 +605,11 @@ def addEditContentActions(portal, out):
          'permission': CMFCorePermissions.DeleteObjects,
         },
         {'id'        : 'batch',
-         'name'      : 'Batch',
+         'name'      : 'Batch Mode',
          'action'    : 'string:${folder_url}/folder_contents',
          'condition' : 'python:folder.displayContentsTab()',
          'permission': CMFCorePermissions.View,
-    	 'category'  : 'batch',
+         'category'  : 'batch',
         },
     )
 
@@ -626,7 +626,7 @@ def addEditContentActions(portal, out):
             for action in actionsTool.listActions():
                 if action.getId() == newaction['id'] \
                         and action.getCategory() == newaction.get('category', CATEGORY) \
-		                and action.getCondition() == newaction['condition']:
+                    and action.getCondition() == newaction['condition']:
                     break # We already have the action
             else:
                 actionsTool.addAction(newaction['id'],
