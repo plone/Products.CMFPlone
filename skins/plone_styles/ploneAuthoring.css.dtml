@@ -923,6 +923,18 @@ ol.visualNoMarker {
     border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
 }
 
+.contentBatchAction {
+    float: left !important;
+    padding: 0;
+    border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
+    border-right: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
+    border-left: none !important;
+    border-collapse: collapse;
+    position: relative;
+    top: -1px;
+    margin-left: -0.5em !important;
+}
+
 /*
 ** end ECMAScript Content Action Menus
 */

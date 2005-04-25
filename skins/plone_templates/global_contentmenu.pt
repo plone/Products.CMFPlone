@@ -12,8 +12,7 @@
                         transitions workflow_actions;"
                 condition="python:review_state">
 
-    <li tal:condition="not: transitions"
-        class="actionSingular">
+    <li tal:condition="not: transitions">
         <tal:state i18n:translate="label_state">State</tal:state>:
         <span tal:content="review_state"
               tal:attributes="class string:state-${review_state}"
@@ -309,8 +308,7 @@
                    i18n:translate=""/> 
             </li>
 
-            <li class="actionSingular"
-                tal:condition="python:editAction['id']=='delete'">
+            <li tal:condition="python:editAction['id']=='delete'">
                 <a onMouseUp="if (activeButton != null) resetButton(activeButton);"
                    onclick="#"
                    tal:define="ptype here/portal_type;
@@ -328,7 +326,7 @@
     <tal:batch define="batchActions actions/batch | nothing"
          condition="python: batchActions">
         <tal:batchAction repeat="batchAction batchActions">
-            <li class="actionSingular"
+            <li class="contentBatchAction"
                 tal:condition="python:here.absolute_url() + '/' + template.getId() != batchAction.get('url')">
                 <a onMouseUp="if (activeButton != null) resetButton(activeButton);"
                    tal:content="batchAction/name"
