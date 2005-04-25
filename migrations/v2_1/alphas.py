@@ -214,7 +214,7 @@ def addFullScreenAction(portal, out):
                 break # We already have the action
         else:
             actionsTool.addAction('full_screen',
-                name='Full Screen',
+                name='Toggle full screen mode',
                 action='string:javascript:fullscreenMode();',
                 condition='member',
                 permission=CMFCorePermissions.View,
@@ -235,8 +235,8 @@ def addFullScreenActionIcon(portal, out):
             iconsTool.addActionIcon(
                 category='plone',
                 action_id='full_screen',
-                icon_expr='full_screen.gif',
-                title='Full Screen',
+                icon_expr='fullscreenexpand_icon.gif',
+                title='Toggle full screen mode',
                 )
         out.append("Added 'full_screen' icon to actionicons tool.")
 
