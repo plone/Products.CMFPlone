@@ -86,7 +86,7 @@
                <span tal:condition="here/isPrincipiaFolderish" 
                         i18n:translate="label_add_new_item">Add item</span>
                <span tal:condition="not:here/isPrincipiaFolderish" 
-                        i18n:translate="label_add_new_item_in_folder">Add to folder</span>
+                        i18n:translate="label_add_new_item_in_folder">Add to above folder</span>
             </a>
     
             <ul class="actionMenu" id="objectMenu"

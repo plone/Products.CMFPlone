@@ -8,6 +8,10 @@
 
 <metal:block metal:fill-slot="main">
 
+    <div metal:use-macro="here/document_actions/macros/document_actions">
+        Document actions (print, sendto etc)
+    </div>
+
     <h1 i18n:translate="heading_comment">Comment</h1>
 
     <div tal:condition="here/talkback|nothing">
