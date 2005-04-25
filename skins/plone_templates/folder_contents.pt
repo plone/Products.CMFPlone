@@ -27,14 +27,14 @@
             action="folder_object"
             tal:attributes="action here_url">
 
+        <div metal:use-macro="here/document_actions/macros/document_actions">
+            Document actions (print, sendto etc)
+        </div>
         <h1>
           <tal:block replace="structure python:getattr(here, here.getIcon(1))"/>
           <span tal:content="python: view_title or here.title_or_id()" tal:omit-tag="">Directory Id</span>
         </h1>
         <tal:full_view condition="full_view">
-            <div metal:use-macro="here/document_actions/macros/document_actions">
-                Document actions (print, sendto etc)
-            </div>
     
             <a href=""
                class="link-parent"
