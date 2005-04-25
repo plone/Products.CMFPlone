@@ -23,7 +23,7 @@
     </li>
 
 
-    <li class="actionPlural" tal:condition="transitions">
+    <li tal:condition="transitions">
 
         <div class="menuPosition">
             <ul class="actionMenu"
@@ -43,11 +43,12 @@
                 <li class="actionSeperator">
                     <a href="#" 
                        tal:attributes="href string:$here_url/content_status_history"
-                       i18n:translate="label_advanced">Advanced</a>
+                       i18n:translate="label_advanced">Advanced&hellip;</a>
                 </li>
             </ul>
     
              <a href="#"
+                class="contentActionMenuHeader"
                 onclick="return buttonClick(event, 'statusMenu');"
                 onmouseover="buttonMouseover(event, 'statusMenu');">
     
@@ -79,6 +80,7 @@
     <li>
         <div class="menuPosition">
             <a href="#"
+               class="contentActionMenuHeader"
                title="Add new items to this folder"
                onclick="return buttonClick(event, 'objectMenu');"
                onmouseover="buttonMouseover(event, 'objectMenu');"
@@ -108,23 +110,23 @@
                         </a>
                     </li>
                 </tal:types>
-                <li tal:condition="showMore">
+                <li class="actionSeperator" tal:condition="showMore">
                     <a href="#" class="folderAddMore" title="Show all available content types"
                            onMouseUp="if (activeButton != null) resetButton(activeButton);"
                            i18n:attributes="title"
                            tal:attributes="href string:${folder/absolute_url}/folder_factories;">
                           <tal:title i18n:translate="folder_add_more">
-                            More...
+                            More&hellip;
                           </tal:title>
                     </a>
                 </li>
-                <li tal:condition="showSettings">
+                <li class="actionSeperator" tal:condition="showSettings">
                     <a href="#" class="folderAddSettings" title="Configure which content types can be added here"
                            onMouseUp="if (activeButton != null) resetButton(activeButton);"
                            i18n:attributes="title"
                            tal:attributes="href string:${folder/absolute_url}/folder_constraintypes_form;">
                           <tal:title i18n:translate="folder_add_settings">
-                            Settings...
+                            Settings&hellip;
                           </tal:title>
                     </a>
                 </li>
@@ -133,8 +135,7 @@
     </li>
     </tal:dropdown>
 
-    <li tal:condition="not:showMenu"
-        class="actionSingular">
+    <li tal:condition="not:showMenu">
         <a href="#" 
            tal:define="portaltype python: allowedTypes[0];"
            tal:attributes="href string:${folder/absolute_url}/createObject?type_name=${portaltype/getId};
@@ -179,6 +180,7 @@
                 
                 
                 <a href="#"
+                   class="contentActionMenuHeader"
                    title="Choose default view"
                    onclick="return buttonClick(event, 'templateMenu');"
                    onmouseover="buttonMouseover(event, 'templateMenu');"
@@ -217,20 +219,20 @@
                     </tal:layouts>
 
                     <tal:block condition="canSelectDefaultFolderPage">
-                        <li tal:condition="python:selectedLayout != ''">
+                        <li class="actionSeperator" tal:condition="python:selectedLayout != ''">
                             <a title="Select default page" href="#" class="selected"
                                onMouseUp="if (activeButton != null) resetButton(activeButton);"
                                tal:attributes="href string:${folder/absolute_url}/select_default_page;"
                                i18n:attributes="title">
-                                 Select item...
+                                 Select item&hellip;
                             </a>
                         </li>
-                        <li tal:condition="python:selectedLayout == ''">
+                        <li class="actionSeperator" tal:condition="python:selectedLayout == ''">
                             <a title="Change default page" href="#" class="selected"
                                onMouseUp="if (activeButton != null) resetButton(activeButton);"
                                tal:attributes="href string:${folder/absolute_url}/select_default_page;"
                                i18n:attributes="title">
-                                 Change item...
+                                 Change item&hellip;
                             </a>
                         </li>
                     </tal:block>
@@ -249,15 +251,18 @@
                         <span style="white-space:nowrap;"
                               tal:condition="python:value==selectedLayout"
                               tal:attributes="title display"
-                              i18n:translate=""
                               class="selected"
-                              tal:content="display">Template id</span>
+                              >&nbsp;&bull; 
+                              <span i18n:translate="" 
+                                    tal:omit-tag="" 
+                                    tal:content="display">Template id</span>
+                        </span>
                         <a href="#"
                            onMouseUp="if (activeButton != null) resetButton(activeButton);"
                            tal:condition="python:value!=selectedLayout"
                            tal:attributes="href string:${context/absolute_url}/selectViewTemplate?templateId=$value;
                                            title display"
-                           i18n:attributes="title">
+                           i18n:attributes="title">&nbsp;<span style="color:#cde2a7">&bull;</span>
                             <tal:title i18n:translate=""
                                  tal:content="display">Template id</tal:title>
                         </a>
@@ -265,7 +270,8 @@
                     </tal:layouts>
 
                     <tal:block condition="canSelectDefaultContextPage">
-                        <li tal:condition="python:selectedLayout != ''">
+                        <li class="actionSeperator"
+                            tal:condition="python:selectedLayout != ''">
                             <a title="Select default page" href="#" class="selected"
                                onMouseUp="if (activeButton != null) resetButton(activeButton);"
                                tal:attributes="href string:${folder/absolute_url}/select_default_page;"
@@ -273,7 +279,8 @@
                                  Select item...
                             </a>
                         </li>
-                        <li tal:condition="python:selectedLayout == ''">
+                        <li class="actionSeperator"
+                            tal:condition="python:selectedLayout == ''">
                             <a title="Change default page" href="#" class="selected"
                                onMouseUp="if (activeButton != null) resetButton(activeButton);"
                                tal:attributes="href string:${folder/absolute_url}/select_default_page;"
@@ -295,8 +302,7 @@
               
         <tal:objectAction repeat="editAction editActions">
 
-            <li class="actionSingular"
-                tal:condition="python:editAction['id'] not in ('delete', 'batch')">
+            <li tal:condition="python:editAction['id'] not in ('delete', 'batch')">
                 <a onMouseUp="if (activeButton != null) resetButton(activeButton);"
                    tal:content="editAction/name"
                    tal:attributes="href editAction/url;"
@@ -311,8 +317,7 @@
                                alert_msg python:here.translate('alert_really_delete');"
                    tal:attributes="href editAction/url;
                                    onclick string:return confirm('$ptype\n${alert_msg}');;">
-                    <span style="color:red;"
-                          tal:content="editAction/name"
+                    <span tal:content="editAction/name"
                           i18n:translate=""/>
                 </a>
             </li>
