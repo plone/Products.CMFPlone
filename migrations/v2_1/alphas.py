@@ -83,7 +83,7 @@ def alpha1_alpha2(portal):
     # also install default CSS and JS in the registry tools
     installCSSandJSRegistries(portal, out)
 
-    # Add unfriendly_types site property
+    # Add types_not_searched site property
     addUnfriendlyTypesSiteProperty(portal, out)
 
     # Add non_default_page_types site property
@@ -475,10 +475,10 @@ def installCSSandJSRegistries(portal, out):
 
 
 def addUnfriendlyTypesSiteProperty(portal, out):
-    """Adds unfriendly_types site property."""
+    """Adds types_not_searched site property."""
     # Types which will be installed as "unfriendly" and thus hidden for search
     # purposes
-    BASE_UNFRIENDLY_TYPES = ['ATBooleanCriterion',
+    BASE_TYPES_NOT_SEARCHED = ['ATBooleanCriterion',
                              'ATDateCriteria',
                              'ATDateRangeCriterion',
                              'ATListCriterion',
@@ -496,11 +496,11 @@ def addUnfriendlyTypesSiteProperty(portal, out):
     if propTool is not None:
         propSheet = getattr(propTool, 'site_properties', None)
         if propSheet is not None:
-            if not propSheet.hasProperty('unfriendly_types'):
-                propSheet.manage_addProperty('unfriendly_types',
-                                             BASE_UNFRIENDLY_TYPES,
+            if not propSheet.hasProperty('types_not_searched'):
+                propSheet.manage_addProperty('types_not_searched',
+                                             BASE_TYPES_NOT_SEARCHED,
                                              'lines')
-            out.append("Added 'unfriendly_types' property to site_properties.")
+            out.append("Added 'types_not_searched' property to site_properties.")
 
 
 def addNonDefaultPageTypesSiteProperty(portal, out):

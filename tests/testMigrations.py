@@ -443,19 +443,19 @@ class TestMigrations_v2_1(MigrationTest):
         installCSSandJSRegistries(self.portal, [])
 
     def testAddUnfriendlyTypesSiteProperty(self):
-        # Should add the unfriendly_types property
-        self.removeSiteProperty('unfriendly_types')
-        self.failIf(self.properties.site_properties.hasProperty('unfriendly_types'))
+        # Should add the types_not_searched property
+        self.removeSiteProperty('types_not_searched')
+        self.failIf(self.properties.site_properties.hasProperty('types_not_searched'))
         addUnfriendlyTypesSiteProperty(self.portal, [])
-        self.failUnless(self.properties.site_properties.hasProperty('unfriendly_types'))
+        self.failUnless(self.properties.site_properties.hasProperty('types_not_searched'))
 
     def testAddUnfriendlyTypesSitePropertyTwice(self):
         # Should not fail if migrated again
-        self.removeSiteProperty('unfriendly_types')
-        self.failIf(self.properties.site_properties.hasProperty('unfriendly_types'))
+        self.removeSiteProperty('types_not_searched')
+        self.failIf(self.properties.site_properties.hasProperty('types_not_searched'))
         addUnfriendlyTypesSiteProperty(self.portal, [])
         addUnfriendlyTypesSiteProperty(self.portal, [])
-        self.failUnless(self.properties.site_properties.hasProperty('unfriendly_types'))
+        self.failUnless(self.properties.site_properties.hasProperty('types_not_searched'))
 
     def testAddUnfriendlyTypesSitePropertyNoTool(self):
         # Should not fail if portal_properties is missing

@@ -240,7 +240,7 @@ Plone 2.1 - Plaid - (unreleased)
       http://members.plone.org/collector/3338
       [dpunktnpunkt]
 
-    - Merged PLIP 75 - blacklisting of types. The unfriendly_types property in
+    - Merged PLIP 75 - blacklisting of types. The types_not_searched property in
       site_properties can now be used to give a list of types which will be
       ignored for search purposes (via queryCatalog; the getUserFriendlyTypes()
       method in plone_utils can be used to get the same filtering elsewhere).
