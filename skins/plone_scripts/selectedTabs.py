@@ -8,6 +8,8 @@
 ##title=
 ##
 
+from AccessControl import Unauthorized
+
 # we want to centalize where all tab selection is done
 # for now e will start off with the top tabs, 'portal_tabs'
 if obj is None:

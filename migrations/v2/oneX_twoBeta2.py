@@ -18,7 +18,6 @@ from Products.CMFPlone.migrations.v2.plone2_base import setupExtEditor, addDocum
 from Products.CMFPlone.migrations.migration_util import safeEditProperty, addLinesToProperty
 from Products.CMFPlone.setup import ConfigurationMethods
 from Products.CMFPlone import ToolNames
-from Products.CMFPlone.StatelessTreeNav import setupNavTreePropertySheet
 from portlet_migration import upgradeSlots2Portlets
 import plone2_base
 

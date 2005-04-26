@@ -26,8 +26,6 @@ for id, property in context.portal_memberdata.propertyItems():
         processed[id] = REQUEST.get(id)
 if not processed.get('listed'):
     processed['listed'] = ''
-if not processed.get('visible_ids'):
-    processed['visible_ids'] = 0
 context.plone_utils.setMemberProperties(member, **processed)
 
 

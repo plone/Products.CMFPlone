@@ -26,7 +26,7 @@
                     <a href=""
                        tal:attributes="href string:${related/url}/view">
                        <img src="" alt=""
-                            tal:attributes="src string:$portal_url/${related/icon};alt here/title" />
+                            tal:attributes="src string:$portal_url/${related/icon};alt here/Title" />
                        &nbsp;<span tal:replace="related/title">Object related by keyword</span>
                     </a>
                 </div>
@@ -38,7 +38,7 @@
                     <a href=""
                        tal:attributes="href string:${related/url}/view">
                        <img src="" alt=""
-                            tal:attributes="src string:$portal_url/${related/icon};alt here/title" />
+                            tal:attributes="src string:$portal_url/${related/icon};alt here/Title" />
                        &nbsp;<span tal:replace="related/title">Object related by keyword</span>
                     </a>
                 </div>

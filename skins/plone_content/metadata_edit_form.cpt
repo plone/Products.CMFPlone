@@ -3,50 +3,56 @@
       metal:use-macro="here/main_template/macros/master"
       i18n:domain="plone">
 
-  <metal:border fill-slot="top_slot">
+<head>
+    <metal:border fill-slot="top_slot">
     <tal:border define="dummy python:request.set('enable_border',1)" />
-  </metal:border>
+    </metal:border>
 
-  <metal:calendar fill-slot="javascript_head_slot">
+    <metal:calendar fill-slot="javascript_head_slot">
     <!-- ECMAScript calendar -->
     <style type="text/css" media="all"
-	    tal:content="string:@import url($portal_url/jscalendar/calendar-system.css);"></style>
+        tal:content="string:@import url($portal_url/jscalendar/calendar-system.css);"></style>
     <script type="text/javascript"
-	    tal:attributes="src string:$portal_url/jscalendar/calendar_stripped.js"></script>
+        tal:attributes="src string:$portal_url/jscalendar/calendar_stripped.js"></script>
     <script type="text/javascript" charset="iso-8859-1"
-	    tal:condition="exists: portal/jscalendar/calendar-en.js"
-	    tal:attributes="src string:$portal_url/jscalendar/calendar-en.js"></script>
-  </metal:calendar>
+        tal:condition="exists: portal/jscalendar/calendar-en.js"
+        tal:attributes="src string:$portal_url/jscalendar/calendar-en.js"></script>
+    </metal:calendar>
+</head>
 
-  <body>
+<body>
 
     <div metal:fill-slot="main"
          tal:define="errors options/state/getErrors;
                      lockable python:hasattr(here, 'wl_isLocked');
                      isLocked python:lockable and here.wl_isLocked();">
 
-      <h1 i18n:translate="heading_edit_properties">Edit Properties</h1>
+    <div metal:use-macro="here/document_actions/macros/document_actions">
+        Document actions (print, sendto etc)
+    </div>
 
-      <p i18n:translate="description_edit_properties">
-        This information, also referred to as <em>metadata</em> is the
-        collection of information that is used to categorize an
-        object, assign effective dates and expiration dates,
-        language, and keywords.
-      </p>
+    <h1 i18n:translate="heading_edit_properties">Edit Properties</h1>
+
+    <p i18n:translate="description_edit_properties">
+    This information, also referred to as <em>metadata</em> is the
+    collection of information that is used to categorize an
+    object, assign effective dates and expiration dates,
+    language, and keywords.
+    </p>
 
 
-      <form name="edit_form"
-            action=""
-            method="post"
-            tal:attributes="action string:${here/getId}/${template/getId}">
+    <form name="edit_form"
+        action=""
+        method="post"
+        tal:attributes="action string:${here/getId}/${template/getId}">
 
         <fieldset>
 
-          <legend i18n:translate="legend_item_properties">
+            <legend i18n:translate="legend_item_properties">
             Item Properties
-          </legend>
+            </legend>
 
-          <div class="field">
+            <div class="field">
             <label i18n:translate="label_allow_discussion">
               Allow Discussion on this item
             </label>
@@ -103,52 +109,52 @@
 
 
             </metal:block>
-          </div>
-
-          <div class="field">
-            <label i18n:translate="label_keywords">Keywords</label>
-
-            <div class="formHelp" i18n:translate="help_keyword">
-              Keywords relate different types of content to each other.
-              Don't select too many categories.
             </div>
 
-            <div tal:define="global contentSubjects here/Subject;
-                             global allowedSubjects python:here.portal_metadata.listAllowedSubjects(here);
-                             global catalogSubjects python:here.portal_catalog.uniqueValuesFor('Subject');
-                             global allowedSubjects python:list(here.unique(allowedSubjects+catalogSubjects));
-                             dummy python:allowedSubjects.sort( lambda x,y: cmp(x,y) );">
+            <div class="field">
+                <label i18n:translate="label_keywords">Keywords</label>
 
-              <tal:block tal:define="allowRolesToAddKeywords site_properties/allowRolesToAddKeywords"
-                         tal:condition="python:[role for role in user.getRolesInContext(here) if role in allowRolesToAddKeywords]">
-
-                <div style="width: 45%; float: right;">
-
-                  <label for="entered_subjects" i18n:translate="label_new_keywords">New keywords</label>
-
-                  <div class="formHelp" i18n:translate="help_new_keyword">
-                    Each new keyword must be on a separate line.
-                  </div>
-
-                  <textarea id="entered_subjects"
-                            name="subject:lines"
-                            rows="11"
-                            cols="15"
-                            wrap="off"
-                            tabindex=""
-                            tal:attributes="tabindex tabindex/next;"
-                            tal:define="subject python:request.get('subject',[])"
-                            tal:content="python:'\n'.join(subject)"
-                            >selected keywords</textarea>&nbsp;
-
+                <div class="formHelp" i18n:translate="help_keyword">
+                  Keywords relate different types of content to each other.
+                  Don't select too many categories.
                 </div>
-              </tal:block>
 
-              <div style="width: 45%">
-                <label for="predefined_subjects"
-                       i18n:translate="label_existing_keywords">
-                  Existing keywords
-                </label>
+                <div tal:define="global contentSubjects here/Subject;
+                                 global allowedSubjects python:here.portal_metadata.listAllowedSubjects(here);
+                                 global catalogSubjects python:here.portal_catalog.uniqueValuesFor('Subject');
+                                 global allowedSubjects python:list(here.unique(allowedSubjects+catalogSubjects));
+                                 dummy python:allowedSubjects.sort( lambda x,y: cmp(x,y) );">
+
+                <tal:block define="allowRolesToAddKeywords site_properties/allowRolesToAddKeywords"
+                           condition="python:[role for role in user.getRolesInContext(here) if role in allowRolesToAddKeywords]">
+
+                    <div style="width: 45%; float: right;">
+
+                        <label for="entered_subjects" i18n:translate="label_new_keywords">New keywords</label>
+
+                        <div class="formHelp" i18n:translate="help_new_keyword">
+                        Each new keyword must be on a separate line.
+                        </div>
+
+                        <textarea id="entered_subjects"
+                                  name="subject:lines"
+                                  rows="11"
+                                  cols="15"
+                                  wrap="off"
+                                  tabindex=""
+                                  tal:attributes="tabindex tabindex/next;"
+                                  tal:define="subject python:request.get('subject',[])"
+                                  tal:content="python:'\n'.join(subject)"
+                                  >selected keywords</textarea>&nbsp;
+
+                        </div>
+                </tal:block>
+
+                <div style="width: 45%">
+                    <label for="predefined_subjects"
+                           i18n:translate="label_existing_keywords">
+                      Existing keywords
+                    </label>
 
                 <div>
                 </div>

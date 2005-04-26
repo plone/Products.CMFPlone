@@ -36,6 +36,9 @@ class WorkflowTool(PloneBaseTool, BaseTool):
         if hasattr(objs, 'startswith'):
             return ()
 
+        #XXX Need to behave differently for paths
+        if len(objs) and '/' in objs[0]:
+            return self.flattenTransitionsForPaths(objs)
         transitions=[]
         t_names=[]
 
@@ -45,6 +48,32 @@ class WorkflowTool(PloneBaseTool, BaseTool):
             trans=()
             try:
                 trans=self.getTransitionsFor(o, container)
+            except ConflictError:
+                raise
+            except:
+                pass
+            if trans:
+                for t in trans:
+                    if t['name'] not in t_names:
+                        transitions.append(t)
+                        t_names.append(t['name'])
+
+        return tuple(transitions[:])
+
+
+    def flattenTransitionsForPaths(self, paths):
+        """ this is even more hokey!!"""
+        if hasattr(paths, 'startswith'):
+            return ()
+
+        transitions=[]
+        t_names=[]
+        portal = getToolByName(self, 'portal_url').getPortalObject()
+
+        for o in [portal.restrictedTraverse(path) for path in paths]:
+            trans=()
+            try:
+                trans=self.getTransitionsFor(o, o.aq_inner.aq_parent)
             except ConflictError:
                 raise
             except:
@@ -163,6 +192,47 @@ class WorkflowTool(PloneBaseTool, BaseTool):
         """ Return the list of workflows
         """
         return self.objectIds()
+
+    security.declarePrivate('listActions')
+    def listActions(self, info):
+
+        """ Returns a list of actions to be displayed to the user.
+
+        o Invoked by the portal_actions tool.
+        
+        o Allows workflows to include actions to be displayed in the
+          actions box.
+
+        o Object actions are supplied by workflows that apply to the object.
+        
+        o Global actions are supplied by all workflows.
+        """
+        show_globals = False
+        chain = self.getChainFor(info.content)
+        did = {}
+        actions = []
+        for wf_id in chain:
+            did[wf_id] = 1
+            wf = self.getWorkflowById(wf_id)
+            if wf is not None:
+                a = wf.listObjectActions(info)
+                if a is not None:
+                    actions.extend(a)
+                if show_globals:
+                    a = wf.listGlobalActions(info)
+                    if a is not None:
+                        actions.extend(a)
+
+        if show_globals:
+            wf_ids = self.getWorkflowIds()
+            for wf_id in wf_ids:
+                if not did.has_key(wf_id):
+                    wf = self.getWorkflowById(wf_id)
+                    if wf is not None:
+                        a = wf.listGlobalActions(info)
+                        if a is not None:
+                            actions.extend(a)
+        return actions
 
 WorkflowTool.__doc__ = BaseTool.__doc__
 

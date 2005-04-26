@@ -2,93 +2,36 @@
       xmlns:metal="http://xml.zope.org/namespaces/metal"
       i18n:domain="plone">
 <body>
-<!-- This code is *really* messed up, and will be replaced in the next version of Plone. 
-     Do not try to make sense of this.
--->
 <div metal:define-macro="portlet"
        i18n:domain="plone"
        tal:omit-tag=""
-       tal:define="isContainer here/isPrincipiaFolderish|nothing;
-                   navBatchStart request/navBatchStart | python:None;
-                   portalObject portal;
-                   tree python:here.plone_utils.createNavigationTreeBuilder(portalObject,navBatchStart);
-                   showOtherNav python:0;
-                   showNav python:0;
-                   listContentsPermission python:checkPermission('List folder contents', here);
-                   notFolderContents python:test(template.getId()!='folder_contents', 1, 0);
-                   editorView python:test(listContentsPermission and notFolderContents, 1, 0);
-                   croppingLength here/navtree_properties/croppingLength | portal_properties/navtree_properties/croppingLength | python:18;
-                   rolesSeeContentsView here/navtree_properties/rolesSeeContentsView | portal_properties/navtree_properties/rolesSeeContentsView | python:['Manager','Reviewer','Owner'];
-                   useFolderContents here/navtree_properties/typesLinkToFolderContents | portal_properties/navtree_properties/typesLinkToFolderContents | python:[];
-                   desc_ellipsis site_properties/ellipsis;"
-                   >
+       tal:define="data python:here.plone_utils.createNavTree(here, sitemap=None);">
     <div class="portlet" id="portlet-navigation-tree">
-    <div>
         <h5 i18n:translate="box_navigation">Navigation</h5>
         <div class="portletBody">
             <div class="portletContent odd">
-                <tal:batch condition="tree/prev">
-                    <a tal:attributes="href string:${request/URL}?navBatchStart=${tree/prevBatchStart}">
-                        <span tal:replace="desc_ellipsis">...</span>
-                    </a>
-                </tal:batch>
-                <tal:nodes repeat="te tree/list">
-                    <tal:variables define="iscurrent te/iscurrent | python:0;
-                                      sibling python:te['object'];
-                                      typeInfo sibling/getTypeInfo;
-                                      stdCommand python:test(not notFolderContents,'folder_contents',test(typeInfo.id in useFolderContents,'folder_contents',typeInfo.getActionById('view')));
-                                      command python:test(stdCommand in ('folder_contents','folder_listing') and not checkPermission('List folder contents',sibling) ,'',stdCommand);
-                                      title python:te['object'].title_or_id();
-                                      charset site_properties/default_charset|string:utf-8;
-                                      sibling_title python:' '.join( (unicode(title, charset)[:croppingLength]).encode(charset).split(' '));"
-                                      tal:on-error="structure string:&lt;!--Error in Navigation loop!!--&gt;"
-                                           >
-                        <a href=""
-                           tal:condition="python: sibling != portalObject"
-                           tal:define="url string:${sibling/absolute_url}/${command}"
-                           tal:attributes="href url;
-                                           title sibling/Description;
-                                           class python: 'navItem ' + 'navLevel' + str(te['indent']) + test(iscurrent, ' currentNavItem', '');"
-                                           accesskey="accesskeys-navigation"
-                                           i18n:attributes="accesskey">
-                            <img src="" height="16" width="16" alt=""
-                                 class="navIcon"
-                                 tal:attributes="src python:portal_url+'/'+sibling.getIcon(1);
-                                                 title sibling/Type;" />
-                            <span class="navItemText"
-                                  tal:content="sibling_title">
-                                  Nav Item Text
-                            </span>
-                        </a>
+	      <ul class="portletNavigationTree portletNavigationLevel0">
 
-                        <a href=""
-                           tal:condition="python: sibling == portalObject"
-                           tal:define="url string:${sibling/absolute_url}/${command}"
-                           tal:attributes="href url;
-                                           title title;
-                                           class python: 'navItem ' + 'navRootItem' + test(iscurrent, ' currentNavItem', '');"
-                                           accesskey="accesskeys-navigation"
-                                           i18n:attributes="accesskey">
-                            <img src="" height="16" width="16" alt=""
-                                 class="navIconRoot"
-                                 tal:attributes="src string:${here/portal_url}/site_icon.gif;
-                                                 title sibling/Type;" />
-                            <span class="navItemText"
-                                  i18n:translate="tabs_home">
-                                  Home
-                            </span>
-                        </a>
-                    </tal:variables>
-                </tal:nodes>
-                <tal:batch condition="tree/next">
-                    <a tal:attributes="href string:${request/URL}?navBatchStart=${tree/nextBatchStart}">
-                        <span tal:replace="desc_ellipsis">...</span>
-                    </a>
-                </tal:batch>
+		<li class="portletNavigationTreeItem"
+		    tal:condition="portal_properties/navtree_properties/includeTop">
+		  <a tal:attributes="href string:$portal_url;
+			             title portal/Description;
+			             style string:background-image: url($portal_url/site_icon.gif);
+			             class python:test(portal == here or (portal == here.aq_parent and here.plone_utils.isDefaultPage(here)), 'currentNavItem', '');"
+		     accesskey="accesskeys-navigation"
+                     i18n:attributes="accesskey">
+                    <span i18n:translate="tabs_home">
+                      Home
+                    </span>
+		  </a>
+		</li>
+		<li tal:replace="structure python:here.portlet_navtree_macro(children=data.get('children', []), level=1)">
+		  SUBTREE
+		</li>
+	      </ul>
             </div>
         </div>
     </div>
-</div>
 </div>
 </body>
 </html>

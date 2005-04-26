@@ -15,6 +15,7 @@ from OFS.SimpleItem import SimpleItem
 from AccessControl import Unauthorized
 from ZODB.POSException import ConflictError
 from Products.ZCTextIndex.ParseTree import ParseError
+from OFS.CopySupport import CopyError
 
 
 class RestrictedPythonTest(ZopeTestCase.ZopeTestCase):
@@ -77,18 +78,18 @@ class TestSecurityDeclarations(RestrictedPythonTest):
 
 
     def testImport_translate_wrapper(self):
-        self.check('from Products.CMFPlone.PloneUtilities import translate_wrapper')
+        self.check('from Products.CMFPlone.utils import translate_wrapper')
         
     def testAccess_translate_wrapper(self):
-        self.check('import Products.CMFPlone.PloneUtilities;'
-                   'print Products.CMFPlone.PloneUtilities.translate_wrapper')
+        self.check('import Products.CMFPlone.utils;'
+                   'print Products.CMFPlone.utils.translate_wrapper')
 
     def testImport_localized_time(self):
-        self.check('from Products.CMFPlone.PloneUtilities import localized_time')
+        self.check('from Products.CMFPlone.utils import localized_time')
 
     def testAccess_localized_time(self):
-        self.check('import Products.CMFPlone.PloneUtilities;'
-                   'print Products.CMFPlone.PloneUtilities.localized_time')
+        self.check('import Products.CMFPlone.utils;'
+                   'print Products.CMFPlone.utils.localized_time')
 
     def testImport_IndexIterator(self):
         self.check('from Products.CMFPlone import IndexIterator')
@@ -306,6 +307,25 @@ except SyntaxError: pass
         def testAccess_isRTL(self):
             self.check('import Products.PlacelessTranslationService;'
                        'print Products.PlacelessTranslationService.isRTL')
+
+    def testImport_CopyError(self):
+        self.check('from OFS.CopySupport import CopyError')
+
+    def testAccess_CopyError(self):
+        self.check('import OFS.CopySupport;'
+                   'print OFS.CopySupport.CopyError')
+
+    def testCatch_CopyErrorRaisedByPythonModule(self):
+        self.folder._setObject('raiseCopyError', dummy.Raiser(CopyError))
+        try:
+            self.check('''
+from OFS.CopySupport import CopyError
+try: context.raiseCopyError()
+except CopyError: pass
+''')
+        except Exception, e:
+            self.fail('Failed to catch: %s %s (module %s)' %
+                      (e.__class__.__name__, e, e.__module__))
 
 
 class TestAcquisitionMethods(RestrictedPythonTest):

@@ -49,11 +49,11 @@
 
                     <div class="field">
                         <label for="__ac_name"
-                               i18n:translate="label_user_name">Name</label>
+                               i18n:translate="label_login_name">Login Name</label>
                         <br />
                         <input type="text" 
                                size="10" 
-                               alt="Username" 
+                               alt="Login Name" 
                                accesskey="accesskeys-login" 
                                tal:attributes="name ac_name; id ac_name;
                                                value python:request.get(ac_name, ''); 
@@ -91,7 +91,8 @@
                 </form>
             </div>
 
-            <div class="portletContent even">
+            <div class="portletContent even"
+                 tal:condition="python:checkPermission('Mail forgotten password', here)">
                 <a href="mail_password_form"
                    tal:attributes="href string:${utool}/mail_password_form" accesskey="accesskeys-login" i18n:attributes="accesskey" >
                    <tal:block replace="structure portal_object/info_icon.gif"/>

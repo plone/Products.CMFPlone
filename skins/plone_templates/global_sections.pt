@@ -18,7 +18,8 @@
             <a href="" 
                accesskey="accesskeys-tabs" 
                tal:content="tab/name"
-               tal:attributes="href tab/url;"
+               tal:attributes="href tab/url;
+                               title tab/description|nothing"
                i18n:translate=""
                i18n:attributes="accesskey">
             Tab Name

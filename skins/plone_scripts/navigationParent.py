@@ -4,42 +4,77 @@
 ##bind namespace=
 ##bind script=script
 ##bind subpath=traverse_subpath
-##parameters=obj=None,templateId=None
-##title=returns the appropriate url for the parent object
+##parameters=obj=None,templateId=None,fallThroughDefaultPage=True,checkPermissions=[]
+##title=Returns the appropriate url for the parent object
 ##
 
+# - If obj is given, use this as the object to find the parent of, else
+# use the context.
+#
+# - If fallThroughDefaultPage is set to True (default), then if obj/context is
+# the default page (index_html or default_page) of its parent folder, get the
+# parent of that folder. If you intend to link straight to the returned value
+# this is probably what you want - else Zope will show the parent object, which
+# will in turn show obj again (as it is the default page). However, if you
+# intend to append a page template to the link, set this to false to get the
+# "real" parent. folder_contents does this.
+#
+# - If you want to make sure that the current user has permissions other than
+# "View" on the parent object, pass these in as a list in checkPermissions.
+# folder_contents uses this to check the "List folder contents" permission,
+# for example.
+#
+# - templateId is for historical reasons, ignored
+#
+# Returns the absolute url to the parent object, or None if it cannot be
+# found or accessed
+
 from ZODB.POSException import ConflictError
+from Products.CMFCore.utils import getToolByName
+from AccessControl import Unauthorized
+
+portal_url = getToolByName(context, 'portal_url')
+plone_utils = getToolByName(context, 'plone_utils')
+portal_membership = getToolByName(context, 'portal_membership')
 
 if obj is None:
-    obj=context
+    obj = context
 
-checkPermission=context.portal_membership.checkPermission
+checkPermission = portal_membership.checkPermission
 
-if obj.getId()=='index_html': #XXX hardcoded method name
-    obj=obj.aq_parent         # we really want to know if this is a view or not.
+if fallThroughDefaultPage:
+    # In the case that we have an index_html inside and index_html,
+    # we actually need to go the ultimate non-default parent
+    try:
+        while obj is not None and plone_utils.isDefaultPage(obj):
+            obj = obj.aq_parent
+    except Unauthorized:
+        return None
 
-try: # nail in the fuze:if I dont get aq_parent (Unauth), lets take the portal
-    parent=obj.aq_parent
+# Abort if we are at the root of the portal
+if obj is portal_url.getPortalObject():
+    return None
+
+# Get the parent. If we can't get it (unauthorized), use the portal
+try:
+    parent = obj.aq_parent
 except ConflictError:
     raise
 except:
-    parent=context.portal_url
+    return None
 
-relative_ids = context.portal_url.getRelativeContentPath(obj)
+# We may get an unauthorized exception if we're not allowed to access#
+# the parent. In this case, return None
+try:
+    # Skip past the talkback container if that's where we are
+    if parent.getId() == 'talkback':
+        parent = parent.aq_parent
 
-if not relative_ids:
-    return
+    for perm in checkPermissions:
+        if not checkPermission(perm, parent):
+            return None
+    
+    return parent.absolute_url()
 
-if not relative_ids and checkPermission('List folder contents', context):
-    return context.absolute_url() + '/folder_contents'
-
-if relative_ids:
-    if parent.getId()=='talkback': #yikes, what a cheap hack
-        parent=parent.aq_parent
-
-    if parent.isPrincipiaFolderish and \
-       checkPermission('List folder contents', parent) and \
-       templateId and templateId=='folder_contents':
-        return parent.absolute_url() + '/folder_contents'
-    else:
-        return parent.absolute_url()
+except Unauthorized:
+    return None

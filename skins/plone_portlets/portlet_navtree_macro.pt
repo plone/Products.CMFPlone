@@ -1,0 +1,23 @@
+<li class="portletNavigationTreeItem"
+    tal:repeat="item options/children">
+    <tal:no-display condition="not: item/no_display">
+    
+    <tal:level define="level options/level|python:0">
+
+    <a tal:attributes="href item/absolute_url; 
+                       class python:test(item.get('currentItem',0), 'currentNavItem', '');
+                       style string:background-image: url(${item/icon})">
+        <span tal:content="item/Title|nothing" 
+              tal:attributes="title item/Description|nothing;
+                              class string:state-${item/review_state};"
+               />
+    </a>
+    <ul tal:attributes="class python:'portletNavigationTree portletNavigationLevel'+str(level)"
+        tal:define="children item/children|nothing"
+        tal:condition="children"
+        tal:content="structure python:here.portlet_navtree_macro(children=children, level=level+1)">
+          Get subtree, if available.
+    </ul>
+    </tal:level>
+    </tal:no-display>
+</li>

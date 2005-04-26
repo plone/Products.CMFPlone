@@ -7,10 +7,6 @@
 <div metal:fill-slot="main"
      tal:define="auth nocall:here/cookie_authentication|nothing">
 
-<tal:admin tal:condition="python: checkPermission('Manage users', portal)" >
-   <span tal:define="dummy python:request.RESPONSE.redirect(portal_url + '/prefs_users_overview?portal_status_message=New+user+added')" />
-</tal:admin>
-
 <div tal:condition="python: not auth" i18n:translate="registered_disabled">
    Cookie authentication has been disabled.
 </div>

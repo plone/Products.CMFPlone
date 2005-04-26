@@ -13,6 +13,7 @@ from Products.CMFPlone.tests import dummy
 from AccessControl.User import nobody
 from Acquisition import aq_base
 from DateTime import DateTime
+from zExceptions import BadRequest
 
 default_user = PloneTestCase.default_user
 
@@ -22,6 +23,10 @@ class TestMembershipTool(PloneTestCase.PloneTestCase):
     def afterSetUp(self):
         self.membership = self.portal.portal_membership
         self.membership.memberareaCreationFlag = 0
+        
+        # Nuke Administators and Reviewers groups added in 2.1a2 migrations
+        # (and any other migrated-in groups) to avoid test confusion
+        self.portal.portal_groups.removeGroups(self.portal.portal_groups.listGroupIds())
 
     def testGetPersonalFolder(self):
         # Should return the .personal folder
@@ -108,11 +113,10 @@ class TestMembershipTool(PloneTestCase.PloneTestCase):
         self.logout()
         try:
             self.membership.setPassword('geheim')
-        except:
-            # Bl**dy string exceptions
+        except BadRequest:
             import sys; e, v, tb = sys.exc_info(); del tb
-            if str(e) == 'Bad Request' and str(v) == 'Not logged in.':
-                pass    # Test passed
+            if str(v) == 'Not logged in.':
+                pass
             else:
                 raise
 
@@ -232,6 +236,18 @@ class TestMembershipTool(PloneTestCase.PloneTestCase):
         self.failIfEqual(self.membership.getHomeUrl(), None)
         self.assertEqual(self.membership.getHomeUrl('user2'), None)
 
+    def testGetAuthenticatedMemberInfo(self):
+        member = self.membership.getAuthenticatedMember()
+        member.setMemberProperties({'fullname': 'Test user'})
+        info = self.membership.getMemberInfo()
+        self.assertEqual(info['fullname'], 'Test user')
+
+    def testGetMemberInfo(self):
+        self.membership.addMember('user2', 'secret', ['Member'], [],
+                                  properties={'fullname': 'Second user'})
+        info = self.membership.getMemberInfo('user2')
+        self.assertEqual(info['fullname'], 'Second user')
+
 
 class TestCreateMemberarea(PloneTestCase.PloneTestCase):
 
@@ -289,6 +305,13 @@ class TestCreateMemberarea(PloneTestCase.PloneTestCase):
         memberfolder = self.membership.getHomeFolder('user2')
         self.failUnless(memberfolder, 'createMemberArea failed to create memberarea')
 
+    def testCreateMemberareaLPF(self):
+        # Should create a Large Plone Folder instead of a normal Folder
+        self.membership.setMemberAreaType('Large Plone Folder')
+        self.membership.createMemberarea('user2')
+        memberfolder = self.membership.getHomeFolder('user2')
+        self.assertEqual(memberfolder.getPortalTypeName(), 'Large Plone Folder')
+
 
 class TestMemberareaSetup(PloneTestCase.PloneTestCase):
 
@@ -324,36 +347,9 @@ class TestMemberareaSetup(PloneTestCase.PloneTestCase):
         self.failUnless(catalog(id='user2', Type='Folder', Title="user2's Home"),
                         "Could not find user2's home folder in the catalog")
 
-    def testHomePageExists(self):
-        # Should have an index_html document
-        self.failUnless(hasattr(aq_base(self.home), 'index_html'))
-
-    def testHomePageIsDocument(self):
-        # Home page should be a Document
-        page = self.home.index_html
-        self.assertEqual(page.meta_type, 'ATDocument')
-        self.assertEqual(page.portal_type, 'Document')
-
-    def testHomePageIsOwnedByMember(self):
-        # Home page should be owned by member
-        page = self.home.index_html
-        try: owner_info = page.getOwnerTuple()
-        except AttributeError:
-            owner_info = page.getOwner(info=1)
-        self.assertEqual(owner_info[0], [PloneTestCase.portal_name, 'acl_users'])
-        self.assertEqual(owner_info[1], 'user2')
-        self.assertEqual(len(page.get_local_roles()), 1)
-        self.assertEqual(page.get_local_roles_for_userid('user2'), ('Owner',))
-
-    def testHomePageHasEmptyDescription(self):
-        # Home page should not have a description (since 2.0.1)
-        page = self.home.index_html
-        self.failIf(page.Description())
-
-    def testHomePageIsCataloged(self):
-        # Home page should be cataloged
-        catalog = self.portal.portal_catalog
-        self.failUnless(catalog(id='index_html', Title="Home page for user2"))
+    def testHomePageNotExists(self):
+        # Should not have an index_html document anymore
+        self.failIf('index_html' in self.home.objectIds())
 
     def testPersonalFolderExists(self):
         # Should have a .personal folder

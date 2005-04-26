@@ -34,6 +34,13 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
         # Initial creator no longer has Owner role.
         self.assertEqual(doc.get_local_roles_for_userid(default_user), ())
 
+    def testGetOwnerId(self):
+        #Test that getOwnerId gets the Owner Id
+        self.folder.invokeFactory('Document', 'doc2')
+        doc = self.folder.doc2
+        self.utils.changeOwnershipOf(doc, 'new_owner')
+        self.assertEqual(self.utils.getOwnerId(doc), 'new_owner')
+
     def testvalidateSingleEmailAddress(self):
         # Any RFC 822 email address allowed, but address list must fail
         val = self.utils.validateSingleEmailAddress
@@ -173,6 +180,12 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
         self.assertEqual(self.utils.titleToNormalizedId(u"\uc774\ubbf8\uc9f1 Korean"),
                          'c774bbf8c9f1-korean')
 
+    def testTitleToNormalizedIdUTF8(self):
+        # In real life, input will not be Unicode...
+        input = u"Eksempel \xe6\xf8\xe5 norsk \xc6\xd8\xc5".encode('utf-8')
+        self.assertEqual(self.utils.titleToNormalizedId(input),
+                         'eksempel-eoa-norsk-eoa')
+
 
 class TestEditMetadata(PloneTestCase.PloneTestCase):
 
@@ -241,7 +254,7 @@ class TestEditMetadata(PloneTestCase.PloneTestCase):
         self.assertEqual(self.doc.text_format, 'text/html')
 
     def testSetLanguage(self):
-        self.assertEqual(self.doc.Language(), 'en')
+        self.assertEqual(self.doc.Language(), '')
         self.utils.editMetadata(self.doc, language='de')
         self.assertEqual(self.doc.Language(), 'de')
 
@@ -423,7 +436,110 @@ class TestFormulatorFields(PloneTestCase.PloneTestCase):
         self.utils.editMetadata(self.doc)
         # XXX: Note that language, format, and rights do not 
         #      receive the Formulator treatment.
-        self.assertEqual(self.doc.Language(), 'en')
+        self.assertEqual(self.doc.Language(), '')
+
+
+class TestNavTree(PloneTestCase.PloneTestCase):
+    '''Tests for the new navigation tree and sitemap'''
+
+    def afterSetUp(self):
+        self.utils = self.portal.plone_utils
+        self.populateSite()
+
+    def populateSite(self):
+        self.setRoles(['Manager'])
+        self.portal.invokeFactory('Document', 'doc1')
+        self.portal.invokeFactory('Document', 'doc2')
+        self.portal.invokeFactory('Document', 'doc3')
+        self.portal.invokeFactory('Folder', 'folder1')
+        folder1 = getattr(self.portal, 'folder1')
+        folder1.invokeFactory('Document', 'doc11')
+        folder1.invokeFactory('Document', 'doc12')
+        folder1.invokeFactory('Document', 'doc13')
+        self.portal.invokeFactory('Folder', 'folder2')
+        folder2 = getattr(self.portal, 'folder2')
+        folder2.invokeFactory('Document', 'doc21')
+        folder2.invokeFactory('Document', 'doc22')
+        folder2.invokeFactory('Document', 'doc23')
+        self.setRoles(['Member'])
+
+    def testCreateNavTree(self):
+        # See if we can create one at all
+        tree = self.utils.createNavTree(self.portal)
+        self.failUnless(tree)
+        self.failUnless(tree.has_key('children'))
+
+    def testCreateNavTreeCurrentItem(self):
+        # With the context set to folder2 it should return a dict with
+        # currentItem set to True
+        tree = self.utils.createNavTree(self.portal.folder2)
+        self.failUnless(tree)
+        self.assertEqual(tree['children'][-1]['currentItem'], True)
+
+    def testCreateSitemap(self):
+        # Internally createSitemap is the same as createNavTree
+        tree = self.utils.createSitemap(self.portal)
+        self.failUnless(tree)
+
+
+class TestPortalTabs(PloneTestCase.PloneTestCase):
+    '''Tests for the portal tabs query'''
+
+    def afterSetUp(self):
+        self.utils = self.portal.plone_utils
+        self.populateSite()
+
+    def populateSite(self):
+        self.setRoles(['Manager'])
+        self.portal.invokeFactory('Document', 'doc1')
+        self.portal.invokeFactory('Document', 'doc2')
+        self.portal.invokeFactory('Document', 'doc3')
+        self.portal.invokeFactory('Folder', 'folder1')
+        folder1 = getattr(self.portal, 'folder1')
+        self.portal.invokeFactory('Folder', 'folder2')
+        folder2 = getattr(self.portal, 'folder2')
+        self.setRoles(['Member'])
+
+    def testCreateTopLevelTabs(self):
+        # See if we can create one at all
+        tabs = self.utils.createTopLevelTabs()
+        self.failUnless(tabs)
+        #Only the folders show up (Members, news, folder1, folder2)
+        self.assertEqual(len(tabs), 4)
+
+    def testTabsRespectFolderOrder(self):
+        # See if reordering causes a change in the tab order
+        tabs1 = self.utils.createTopLevelTabs()
+        self.portal.moveObjectsByDelta('folder2', -1)
+        tabs2 = self.utils.createTopLevelTabs()
+        #Same number of objects
+        self.failUnlessEqual(len(tabs1), len(tabs2))
+        #Different order
+        self.failUnless(tabs1 != tabs2)
+
+
+class TestBreadCrumbs(PloneTestCase.PloneTestCase):
+    '''Tests for the portal tabs query'''
+
+    def afterSetUp(self):
+        self.utils = self.portal.plone_utils
+        self.populateSite()
+
+    def populateSite(self):
+        self.setRoles(['Manager'])
+        self.portal.invokeFactory('Folder', 'folder1')
+        folder1 = getattr(self.portal, 'folder1')
+        folder1.invokeFactory('Document', 'doc11')
+        self.setRoles(['Member'])
+
+    def testCreateBreadCrumbs(self):
+        # See if we can create one at all
+        doc = self.portal.folder1.doc11
+        crumbs = self.utils.createBreadCrumbs(doc)
+        self.failUnless(crumbs)
+        self.assertEqual(len(crumbs), 2)
+        self.assertEqual(crumbs[-1]['absolute_url'], doc.absolute_url())
+        self.assertEqual(crumbs[-2]['absolute_url'], doc.aq_parent.absolute_url())
 
 
 def test_suite():
@@ -433,6 +549,9 @@ def test_suite():
     suite.addTest(makeSuite(TestEditMetadata))
     suite.addTest(makeSuite(TestEditMetadataIndependence))
     suite.addTest(makeSuite(TestFormulatorFields))
+    suite.addTest(makeSuite(TestNavTree))
+    suite.addTest(makeSuite(TestPortalTabs))
+    suite.addTest(makeSuite(TestBreadCrumbs))
     return suite
 
 if __name__ == '__main__':

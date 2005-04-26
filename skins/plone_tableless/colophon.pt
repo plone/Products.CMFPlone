@@ -34,35 +34,47 @@ This site conforms to the following standards:
 
 <ul>
     <li>
-        <a href="http://www.section508.gov"
-             title="This Plone site conforms to the US Government Section 508 Accessibility Guidelines."
-             i18n:translate=""
-             i18n:attributes="title">
-        Section 508
+        <a href="http://www.section508.gov">
+            <img src=""
+                 height="15"
+                 width="80"
+                 alt="Section 508"
+                 title="This Plone site conforms to the US Government Section 508 Accessibility Guidelines."
+                 tal:attributes="src string:$portal_url/colophon_sec508.gif"
+                 i18n:attributes="alt title" />
         </a>
     </li>
     <li>
-        <a href="http://www.w3.org/WAI/WCAG1AAA-Conformance"
-             title="This Plone site conforms to the W3C-WAI Web Content Accessibility Guidelines."
-             i18n:translate=""
-             i18n:attributes="title">
-        WAI-AAA
+        <a href="http://www.w3.org/WAI/WCAG1AAA-Conformance">
+            <img src=""
+                 height="15"
+                 width="80"
+                 alt="WCAG"
+                 title="This Plone site conforms to the W3C-WAI Web Content Accessibility Guidelines."
+                 tal:attributes="src string:$portal_url/colophon_wai-aa.gif"
+                 i18n:attributes="alt title" />
         </a>
     </li>
     <li>
-        <a href="http://validator.w3.org/check/referer"
-           title="This Plone site is valid XHTML."
-           i18n:translate=""
-           i18n:attributes="title">
-        Valid XHTML
+        <a href="http://validator.w3.org/check/referer">
+            <img src=""
+                 height="15"
+                 width="80"
+                 alt="Valid XHTML"
+                 title="This Plone site is valid XHTML."
+                 tal:attributes="src string:$portal_url/colophon_xhtml.png"
+                 i18n:attributes="alt title" />
         </a>
     </li>
     <li>
-        <a href="http://jigsaw.w3.org/css-validator/check/referer"
-           title="This Plone site was built with valid CSS and semantically correct use of tables."
-           i18n:translate=""
-           i18n:attributes="title">
-	Valid CSS and tableless layout
+        <a href="http://jigsaw.w3.org/css-validator/check/referer">
+            <img src=""
+                 height="15"
+                 width="80"
+                 alt="Valid CSS"
+                 title="This Plone site was built with valid CSS and semantically correct use of tables."
+                 tal:attributes="src string:$portal_url/colophon_csstableless.gif"
+                 i18n:attributes="alt title" />
         </a>
     </li>
 </ul>

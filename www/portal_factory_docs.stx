@@ -10,8 +10,8 @@ Using portal_factory
       Use the portal_factory's Factory Types ZMI tab to specify the types that
       should be created using portal_factory.  Types must be portal_factory 
       aware for this to work.  In Plone 2.0, the stock CMFDefault types (Document,
-      News Item, Event, etc) are all portal_factory aware.  Most types in Archetypes
-      2.0 should also be portal_factory aware.
+      News Item, Event, etc) are all portal_factory aware.  Most types in
+      Archetypes should also be portal_factory aware.
 
    Making Types portal_factory aware
 
@@ -52,3 +52,14 @@ Using portal_factory
 
          http://myportal/myfolder/portal_factory/Document/foo
 
+Gotchas 
+
+      If you rename/move your object more than once when saving (move 
+      from tempfolder and generate id based on title afterwards) you 
+      have to commit a subtransaction to be able to do the second 
+      move/rename. Otherwise you will get an error about not being able 
+      to copy/move. 
+
+      You commit a subtransaction by doing:: 
+
+         get_transaction().commit(1)

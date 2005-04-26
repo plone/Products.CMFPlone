@@ -7,24 +7,38 @@
 <div id="portal-searchbox" metal:define-macro="quick_search">
     <form name="searchform"
           action="search"
-          tal:attributes="action string:${portal_url}/search" >
-        <label for="searchGadget" class="hiddenStructure" i18n:translate="text_search">Search</label>
+          onsubmit="return liveSearchSubmit();"
+          tal:attributes="action string:${portal_url}/search"
+          style="white-space:nowrap">
+
+        <label for="searchGadget" class="hiddenStructure"
+                    i18n:translate="text_search">Search Site</label>
+
+        <div class="LSBox">
         <input id="searchGadget"
+               tabindex=""
                name="SearchableText"
                type="text"
-               size="20"
+               size="15"
                value=""
-               alt="Search"
-               title="Search"
+               alt="Search Site"
+               autocomplete="off"
+               title="Search Site"
                accesskey="accesskeys-search"
                i18n:attributes="alt accesskey title"
                tal:attributes="value request/SearchableText|nothing;
-                               tabindex tabindex/next" class="visibility:visible" />
+                               tabindex tabindex/next"
+               class="visibility:visible" />
+
+        <div class="LSResult" id="LSResult" style=""><div class="LSShadow" id="LSShadow"></div></div>
+        </div>
+
         <input class="searchButton"
                type="submit"
+               tabindex=""
                value="Search"
-           accesskey="accesskeys-search"
-           tal:attributes="tabindex tabindex/next"
+               accesskey="accesskeys-search"
+               tal:attributes="tabindex tabindex/next"
                i18n:attributes="value accesskey" />
     </form>
 </div>

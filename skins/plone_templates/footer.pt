@@ -1,19 +1,27 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
       i18n:domain="plone">
-
 <body>
-
 <div id="portal-footer" metal:define-macro="portal_footer" i18n:domain="plone">
 
-<span i18n:translate="description_copyright" tal:omit-tag="">
-Plone and its visual design is Copyright &copy; 2000-<span i18n:name="current_year" tal:define="now modules/DateTime/DateTime" tal:content="now/year" />
-by
-<span i18n:name="limi"><a href="http://www.plonesolutions.com">Alexander Limi</a></span>,
-<span i18n:name="runyaga"><a href="http://www.enfoldsystems.com">Alan Runyan</a></span>,
-<span i18n:name="blacktar"><a href="http://blacktar.com">Vidar Andersen</a></span>.
-</span>
-
+<div>
+    <span i18n:translate="description_copyright" tal:omit-tag="">
+    Plone and its visual design is Copyright 
+    &copy; 2000-<span i18n:name="current_year" 
+                      tal:define="now modules/DateTime/DateTime" 
+                      tal:content="now/year" /> by
+    <span i18n:name="limi"><a href="http://www.plonesolutions.com">Alexander Limi</a></span>,
+    <span i18n:name="runyaga"><a href="http://www.enfoldsystems.com">Alan Runyan</a></span>,
+    <span i18n:name="blacktar"><a href="http://blacktar.com">Vidar Andersen</a></span>.
+    </span>
 </div>
 
+<div i18n:translate="description_license">
+    Licensed under the 
+    <span i18n:name="license">
+        <a href="http://creativecommons.org/licenses/GPL/2.0/">GNU GPL license</a>.
+    </span>
+</div>
+
+</div>
 </body>
 </html>

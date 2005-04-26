@@ -5,19 +5,21 @@
 ##bind script=script
 ##bind state=state
 ##bind subpath=traverse_subpath
-##parameters=ids=[],new_ids=[],new_titles=[]
+##parameters=paths=[],new_ids=[],new_titles=[]
 ##title=Validate folder renaming
 ##
 
-ids=[id for id in ids if id]
+paths=[path for path in paths if path]
 new_ids=[id for id in new_ids if id]
 new_titles=[title for title in new_titles]
+portal = context.portal_url.getPortalObject()
+check_id = context.check_id
 
-if len(ids)!=len(new_ids):
+if len(paths)!=len(new_ids):
     return state.set(status='failure',
                      portal_status_message='You must provide content names')
 
-if not ids:
+if not paths:
     return state.set(status='failure',
                      portal_status_message='Need source content ids.')
 
@@ -26,22 +28,18 @@ if not new_ids:
     return state.set(status='failure',
                      portal_status_message='Need destination content ids.')
 
-object_ids=context.objectIds()
-
 for x in range(0, len(new_ids)):
-    id = ids[x]
+    path = paths[x]
     newid = new_ids[x]
-    resp = None
+    obj = portal.restrictedTraverse(path)
+    parent = obj.aq_inner.aq_parent
+    id = obj.getId()
 
-    if not id:
-        state.setError(id, 'You must enter a name.', 'input_required')
-        continue
+    if id != newid:
+        error = check_id(newid,required=True,contained_by=parent)
+        if error:
+            state.setError(id, error)
 
-    if id != newid and newid in object_ids:
-        state.setError(id, 'There is already an item named \'%s\' in this folder.' % newid, 'id_used')
-
-    if resp is not None:
-        return state.set(status='failure', portal_status_message=resp)
 
 if state.getErrors():
     return state.set(status='failure',

@@ -7,13 +7,14 @@
 <metal:main fill-slot="main">
     <tal:main-macro metal:define-macro="main"
            tal:define="text python: here.CookedBody(stx_level=2)">
-        <h1 tal:content="here/title_or_id" class="documentFirstHeading">
-          Title or id
-        </h1>
-    
+
         <div metal:use-macro="here/document_actions/macros/document_actions">
             Document actions (print, sendto etc)
         </div>
+
+        <h1 tal:content="here/title_or_id" class="documentFirstHeading">
+          Title or id
+        </h1>
     
         <div class="documentDescription"
              tal:content="here/Description">
@@ -31,6 +32,10 @@
              tal:attributes="class python:test(here.Format() in ('text/structured',
                                                    'text/x-rst', ), 'stx', 'plain')">
             <div tal:replace="structure text" />
+        </div>
+
+        <div metal:use-macro="here/document_relateditems/macros/relatedItems">
+            show related items if they exist
         </div>
     
         <div metal:use-macro="here/document_byline/macros/byline">

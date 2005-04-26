@@ -159,12 +159,12 @@ class TestCreateObjectByURL(PloneTestCase.FunctionalTestCase):
         self.assertEqual(response.getStatus(), 302) # Redirect to document_edit_form
 
         # The redirect URL should contain the factory parts
-        body = response.getBody()
-        self.failUnless(body.startswith(self.folder_url+'/portal_factory/Document/'))
-        self.failUnless(body.endswith('/atct_edit'))
+        location = response.getHeader('Location')
+        self.failUnless(location.startswith(self.folder_url+'/portal_factory/Document/'))
+        self.failUnless(location.endswith('/atct_edit'))
 
         # Perform the redirect
-        edit_form_path = body[len(self.app.REQUEST.SERVER_URL):]
+        edit_form_path = location[len(self.app.REQUEST.SERVER_URL):]
         response = self.publish(edit_form_path, self.basic_auth)
         self.assertEqual(response.getStatus(), 200) # OK
 
@@ -178,12 +178,12 @@ class TestCreateObjectByURL(PloneTestCase.FunctionalTestCase):
         self.assertEqual(response.getStatus(), 302) # Redirect to document_edit_form
 
         # The redirect URL should contain the factory parts
-        body = response.getBody()
-        self.failUnless(body.startswith(self.folder_url+'/portal_factory/Document/'))
-        self.failUnless(body.endswith('/atct_edit'))
+        location = response.getHeader('Location')
+        self.failUnless(location.startswith(self.folder_url+'/portal_factory/Document/'))
+        self.failUnless(location.endswith('/atct_edit'))
 
         # Perform the redirect
-        edit_form_path = body[len(self.app.REQUEST.SERVER_URL):]
+        edit_form_path = location[len(self.app.REQUEST.SERVER_URL):]
         response = self.publish(edit_form_path, self.basic_auth)
         self.assertEqual(response.getStatus(), 200) # OK
 
@@ -211,7 +211,7 @@ class TestCreateObjectByURL(PloneTestCase.FunctionalTestCase):
             self.basic_auth)
 
         self.assertEqual(response.getStatus(), 302) # Redirect to document_view
-        self.failUnless(response.getBody().startswith(self.folder_url+'/foo/view'))
+        self.failUnless(response.getHeader('Location').startswith(self.folder_url+'/foo/view'))
 
         self.failUnless('foo' in self.folder.objectIds())
         self.assertEqual(self.folder.foo.Title(), 'Foo')

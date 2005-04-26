@@ -6,7 +6,7 @@
 ##bind subpath=traverse_subpath
 ##parameters=msgid, mapping={}, default=None, domain='plone', target_language=None
 
-from Products.CMFPlone.PloneUtilities import translate_wrapper
+from Products.CMFPlone.utils import translate_wrapper
 
 value = translate_wrapper(domain,
                           msgid,

@@ -51,7 +51,9 @@ except ConflictError:
     raise
 except: #XXX To many things could possibly go wrong. So we catch all.
     exception = context.plone_utils.exceptionString()
-    return state.set(status='failure', portal_status_message=exception)
+    message = context.translate("Unable to send mail: ${exception}",
+                                {'exception': exception})
+    return state.set(status='failure', portal_status_message=message)
 
 tmsg='Sent page %s to %s' % (url, REQUEST.send_to_address)
 transaction_note(tmsg)

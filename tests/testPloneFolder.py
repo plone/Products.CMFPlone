@@ -9,12 +9,12 @@ if __name__ == '__main__':
 from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
+from Products.CMFPlone.utils import _createObjectByType
 from Acquisition import aq_base
 
 try: from zExceptions import NotFound
 except ImportError: NotFound = 'NotFound'
-try: from zExceptions import BadRequest
-except ImportError: BadRequest = 'BadRequest'
+from zExceptions import BadRequest
 
 
 class TestPloneFolder(PloneTestCase.PloneTestCase):
@@ -66,7 +66,6 @@ class TestCheckIdAvailable(PloneTestCase.PloneTestCase):
     # Fixed in CMFCore.PortalFolder, not Plone.
     
     def afterSetUp(self):
-        from Products.CMFPlone.PloneUtilities import _createObjectByType
         _createObjectByType('Large Plone Folder', self.folder, 'lpf')
         self.lpf = self.folder.lpf
 
@@ -78,11 +77,6 @@ class TestCheckIdAvailable(PloneTestCase.PloneTestCase):
             self.folder._setObject('foo', dummy.Item())
         except BadRequest:
             pass
-        except:
-            # Zope < 2.7
-            e,v,tb = sys.exc_info(); del tb
-            if str(e) != 'Bad Request':
-                raise
 
     def testCheckIdRaisesBadRequest(self):
         # _checkId() should raise zExceptions.BadRequest
@@ -92,11 +86,6 @@ class TestCheckIdAvailable(PloneTestCase.PloneTestCase):
             self.folder._checkId('foo')
         except BadRequest:
             pass
-        except:
-            # Zope < 2.7
-            e,v,tb = sys.exc_info(); del tb
-            if str(e) != 'Bad Request':
-                raise
 
     def testCheckIdAvailableCatchesBadRequest(self):
         # checkIdAvailable() should catch zExceptions.BadRequest
@@ -111,11 +100,6 @@ class TestCheckIdAvailable(PloneTestCase.PloneTestCase):
             self.lpf._setObject('foo', dummy.Item())
         except BadRequest:
             pass
-        except:
-            # Zope < 2.7
-            e,v,tb = sys.exc_info(); del tb
-            if str(e) != 'Bad Request':
-                raise
 
     def testLPFCheckIdRaisesBadRequest(self):
         # _checkId() should raise zExceptions.BadRequest
@@ -125,11 +109,6 @@ class TestCheckIdAvailable(PloneTestCase.PloneTestCase):
             self.lpf._checkId('foo')
         except BadRequest:
             pass
-        except:
-            # Zope < 2.7
-            e,v,tb = sys.exc_info(); del tb
-            if str(e) != 'Bad Request':
-                raise
 
     def testLPFCheckIdAvailableCatchesBadRequest(self):
         # checkIdAvailable() should catch zExceptions.BadRequest

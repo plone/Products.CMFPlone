@@ -11,7 +11,7 @@
           tal:attributes="content string:text/html;;charset=${charset}" />
 
     <title tal:define="portal_title portal_properties/title;
-                       page_title python:here.getPageTitle(here, template, portal_title)" >
+                       page_title here/title_or_id">
         <span tal:replace="page_title" />
         &mdash;
         <span tal:replace="portal_title" />
@@ -27,51 +27,16 @@
           tal:attributes="name python:keyval[0];
                           content python:keyval[1];" />
 
-    <!-- Basic crude style for Netscape4.x - This can be removed
-         if you don't want the special NS4 look - it will still work,
-         just be plain text instead. Column layout for Netscape4.x included -->
-    <link rel="Stylesheet" type="text/css" href="" tal:attributes="href string:$portal_url/ploneNS4.css" />
-
-    <!-- Column style sheet. -->
-    <style type="text/css" media="screen" tal:condition="exists: portal/ploneColumns.css"
-           tal:content="structure string:<!-- @import url($portal_url/ploneColumns.css); -->">
-    </style>
-
-    <!-- Main style sheets for CSS2 capable browsers -->
-    <style type="text/css" media="screen"
-           tal:content="structure string:<!-- @import url($portal_url/plone.css); -->">
-    </style>
-
-    <!-- RTL style sheet for right-to-left languages, only included if PTS
-         reports the language as such -->
-    <style type="text/css" media="screen" tal:condition="isRTL"
-           tal:content="structure string:<!-- @import url($portal_url/plone-rtl.css); -->">
-    </style>
-
-    <!-- Alternate style sheets for the bigger/smaller text switcher -->
-    <link rel="alternate stylesheet" type="text/css" media="screen" href="" tal:attributes="href string:$portal_url/ploneTextSmall.css" title="Small Text" />
-    <link rel="alternate stylesheet" type="text/css" media="screen" href="" tal:attributes="href string:$portal_url/ploneTextLarge.css" title="Large Text" />
-
-    <!-- Style sheet used for printing -->
-    <link rel="stylesheet" type="text/css" media="print" href=""
-          tal:attributes="href string:$portal_url/plonePrint.css" />
-
-    <!-- Style sheet used for presentations (Opera is the only browser supporting this at the moment) -->
-    <link rel="stylesheet" type="text/css" media="projection" href=""
-          tal:attributes="href string:$portal_url/plonePresentation.css" />
-
+    <metal:css metal:use-macro="here/renderAllTheStylesheets/macros/cssrenderer">
+        <!-- Fetch stylesheets from the CSS Registry -->
+    </metal:css>
+    
     <!-- Internet Explorer CSS Fixes -->
     <tal:iefixstart replace="structure string:&lt;!--[if IE]&gt;" />
     <style type="text/css" media="all" tal:condition="exists: portal/ploneIEFixes.css"
            tal:content="string:@import url($portal_url/ploneIEFixes.css);">
     </style>
     <tal:iefixend replace="structure string:&lt;![endif]--&gt;" />
-
-
-    <!-- Custom style sheet if available -->
-    <style type="text/css" media="all" tal:condition="exists: portal/ploneCustom.css"
-           tal:content="structure string:<!-- @import url($portal_url/ploneCustom.css); -->">
-    </style>
 
     <link rel="shortcut icon" href="" type="image/x-icon" tal:attributes="href string:$portal_url/favicon.ico" />
 
@@ -112,22 +77,10 @@
       Inserts javascript specified from a page.
     </metal:block>
 
-    <!-- Common Plone ECMAScripts -->
-
-    <!-- Pull-down ECMAScript menu, only active if logged in -->
-    <script tal:condition="not: isAnon"
-            type="text/javascript"
-            tal:attributes="src string:$portal_url/plone_menu.js">
-    </script>
-
-    <!-- Define dynamic server-side variables for javascripts in this one  -->
-    <script type="text/javascript"
-            tal:attributes="src string:$portal_url/plone_javascript_variables.js">
-    </script>
-
-    <script type="text/javascript"
-            tal:attributes="src string:$portal_url/plone_javascripts.js">
-    </script>
+    <!-- Plone ECMAScripts -->
+    <metal:js metal:use-macro="here/renderAllTheScripts/macros/jsrenderer">
+        <!-- Fetch scripts from the Javascript Registry -->
+    </metal:js>
 
   </head>
 

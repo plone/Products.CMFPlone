@@ -14,10 +14,12 @@ ZopeTestCase.installProduct('DCWorkflow')
 ZopeTestCase.installProduct('CMFActionIcons')
 ZopeTestCase.installProduct('CMFQuickInstallerTool')
 ZopeTestCase.installProduct('CMFFormController')
+ZopeTestCase.installProduct('CSSRegistry')
 ZopeTestCase.installProduct('GroupUserFolder')
 ZopeTestCase.installProduct('ZCTextIndex')
 if ZopeTestCase.hasProduct('TextIndexNG2'):
     ZopeTestCase.installProduct('TextIndexNG2')
+ZopeTestCase.installProduct('ExtendedPathIndex')
 ZopeTestCase.installProduct('SecureMailHost')
 if ZopeTestCase.hasProduct('ExternalEditor'):
     ZopeTestCase.installProduct('ExternalEditor')
@@ -31,67 +33,60 @@ ZopeTestCase.installProduct('ExternalMethod', quiet=1)
 ZopeTestCase.installProduct('Archetypes')
 ZopeTestCase.installProduct('MimetypesRegistry', quiet=1)
 ZopeTestCase.installProduct('PortalTransforms', quiet=1)
-ZopeTestCase.installProduct('ATReferenceBrowserWidget', quiet=1)
 ZopeTestCase.installProduct('ATContentTypes')
+ZopeTestCase.installProduct('ATReferenceBrowserWidget')
 
-# Install sessioning
+# Install sessions and error_log
 ZopeTestCase.utils.setupCoreSessions()
+ZopeTestCase.utils.setupSiteErrorLog()
+
+from Testing.ZopeTestCase.utils import makelist
+from Products.CMFPlone.utils import _createObjectByType
 
 from AccessControl.SecurityManagement import newSecurityManager
 from AccessControl.SecurityManagement import noSecurityManager
 from Acquisition import aq_base
 import time
-import types
 
 portal_name = 'portal'
 portal_owner = 'portal_owner'
 default_user = ZopeTestCase.user_name
+default_password = ZopeTestCase.user_password
 
 
 class PloneTestCase(ZopeTestCase.PortalTestCase):
     '''TestCase for Plone testing'''
 
+    def _setup(self):
+        # Hack an ACTUAL_URL into the REQUEST
+        ZopeTestCase.PortalTestCase._setup(self)
+        self.app.REQUEST['ACTUAL_URL'] = self.app.REQUEST.get('URL')
+        self.app.REQUEST['plone_skin'] = 'Plone Default'
+        # Disable the constraintypes performance hog
+        self.folder.setConstrainTypesMode(0)
+
     def getPortal(self):
         '''Returns the portal object to the bootstrap code.
-           DO NOT CALL THIS METHOD! Use the self.portal 
+           DO NOT CALL THIS METHOD! Use the self.portal
            attribute to access the portal object from tests.
         '''
         return self.app[portal_name]
 
     def createMemberarea(self, member_id):
         '''Creates a minimal, no-nonsense memberarea.'''
-        membership = self.portal.portal_membership
-        # Owner
-        uf = self.portal.acl_users
-        user = uf.getUserById(member_id)
-        if user is None:
-            raise ValueError, 'Member %s does not exist' % member_id
-        user = user.__of__(uf)
-        # Home folder may already exist (see below)
-        members = membership.getMembersFolder()
-        if not hasattr(aq_base(members), member_id):
-            _setupHomeFolder(self.portal, member_id)
-        # Take ownership of home folder
-        home = membership.getHomeFolder(member_id)
-        home.changeOwnership(user)
-        home.__ac_local_roles__ = None
-        home.manage_setLocalRoles(member_id, ['Owner'])
-        # Take ownership of personal folder
-        personal = membership.getPersonalFolder(member_id)
-        personal.changeOwnership(user)
-        personal.__ac_local_roles__ = None
-        personal.manage_setLocalRoles(member_id, ['Owner'])
+        _createHomeFolder(self.portal, member_id)
 
     def setGroups(self, groups, name=default_user):
         '''Changes the specified user's groups. Assumes GRUF.'''
-        self.assertEqual(type(groups), types.ListType)
         uf = self.portal.acl_users
-        uf._updateUser(name, groups=groups, domains=[])
+        uf._updateUser(name, groups=makelist(groups), domains=[])
         if name == getSecurityManager().getUser().getId():
             self.login(name)
 
     def loginPortalOwner(self):
-        '''Use if you need to manipulate the portal itself.'''
+        '''Use if - AND ONLY IF - you need to manipulate the
+           portal object itself.
+        '''
         uf = self.app.acl_users
         user = uf.getUserById(portal_owner).__of__(uf)
         newSecurityManager(None, user)
@@ -115,27 +110,44 @@ def setupPloneSite(app=None, id=portal_name, quiet=0, with_default_memberarea=1)
         factory.manage_addSite(id, '', create_userfolder=1)
         # Precreate default memberarea for performance reasons
         if with_default_memberarea:
-            _setupHomeFolder(app[id], default_user)
+            _createHomeFolder(app[id], default_user, 0)
         # Log out
         noSecurityManager()
         get_transaction().commit()
         if not quiet: ZopeTestCase._print('done (%.3fs)\n' % (time.time()-_start,))
 
 
-def _setupHomeFolder(portal, member_id):
-    '''Creates the folders comprising a memberarea.'''
-    from Products.CMFPlone.PloneUtilities import _createObjectByType
+def _createHomeFolder(portal, member_id, take_ownership=1):
+    '''Creates a memberarea if it does not already exist.'''
     membership = portal.portal_membership
-    catalog = portal.portal_catalog
-    # Create home folder
     members = membership.getMembersFolder()
-    _createObjectByType('Folder', members, id=member_id)
-    # Create personal folder
-    home = membership.getHomeFolder(member_id)
-    _createObjectByType('Folder', home, id=membership.personal_id)
-    # Uncatalog personal folder
-    personal = membership.getPersonalFolder(member_id)
-    catalog.unindexObject(personal)
+
+    if not hasattr(aq_base(members), member_id):
+        # Create home folder
+        _createObjectByType('Folder', members, id=member_id)
+        # Create personal folder
+        home = membership.getHomeFolder(member_id)
+        _createObjectByType('Folder', home, id=membership.personal_id)
+        # Uncatalog personal folder
+        personal = membership.getPersonalFolder(member_id)
+        personal.unindexObject()
+
+    if take_ownership:
+        user = portal.acl_users.getUserById(member_id)
+        if user is None:
+            raise ValueError, 'Member %s does not exist' % member_id
+        if not hasattr(user, 'aq_base'):
+            user = user.__of__(portal.acl_users)
+        # Take ownership of home folder
+        home = membership.getHomeFolder(member_id)
+        home.changeOwnership(user)
+        home.__ac_local_roles__ = None
+        home.manage_setLocalRoles(member_id, ['Owner'])
+        # Take ownership of personal folder
+        personal = membership.getPersonalFolder(member_id)
+        personal.changeOwnership(user)
+        personal.__ac_local_roles__ = None
+        personal.manage_setLocalRoles(member_id, ['Owner'])
 
 
 def optimize():
@@ -164,9 +176,15 @@ def optimize():
     PloneGenerator.setupMembersFolder = setupMembersFolder
     # Don't setup Plone content (besides Members folder)
     def setupPortalContent(self, p):
-        p.invokeFactory('Large Plone Folder', id='Members')
-        ##p.portal_catalog.unindexObject(p.Members)
+        _createObjectByType('Large Plone Folder', p, id='Members', title='Members')
     PloneGenerator.setupPortalContent = setupPortalContent
+    # Don't refresh skins for each and every test (request)
+    def setupCurrentSkin(self, REQUEST=None):
+        if REQUEST is None: REQUEST = getattr(self, 'REQUEST', None)
+        if REQUEST is not None and self._v_skindata is None:
+            self.changeSkin('Plone Default')
+    from Products.CMFCore.Skinnable import SkinnableObjectManager
+    SkinnableObjectManager.setupCurrentSkin = setupCurrentSkin
 
 
 optimize()

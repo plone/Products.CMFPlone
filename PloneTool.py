@@ -15,25 +15,24 @@ from Products.CMFCore import CMFCorePermissions
 from Products.CMFCore.interfaces.DublinCore import DublinCore, MutableDublinCore
 from Products.CMFCore.interfaces.Discussions import Discussable
 from Products.CMFCore.WorkflowCore import WorkflowException
+from Products.CMFDefault.DublinCore import DefaultDublinCoreImpl
 from Products.CMFPlone.interfaces.Translatable import ITranslatable
 from Products.CMFPlone import ToolNames, transaction_note
+from Products.CMFPlone.interfaces.BrowserDefault import IBrowserDefault
 
 from OFS.SimpleItem import SimpleItem
 from OFS.ObjectManager import bad_id
 from Globals import InitializeClass
-from AccessControl import ClassSecurityInfo
-from StatelessTree import NavigationTreeViewBuilder as NTVB
+from AccessControl import ClassSecurityInfo, Unauthorized
 from ZODB.POSException import ConflictError
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
+from DateTime import DateTime
 
 _marker = ()
 _icons = {}
 
-try:
-    True
-except:
-    True=1
-    False=0
+CEILING_DATE = DefaultDublinCoreImpl._DefaultDublinCoreImpl__CEILING_DATE
+FLOOR_DATE = DefaultDublinCoreImpl._DefaultDublinCoreImpl__FLOOR_DATE
 
 def log(summary='', text='', log_level=INFO):
     LOG('Plone Debug', log_level, summary, text)
@@ -62,9 +61,27 @@ mapping = {138: 's', 140: 'OE', 142: 'z', 154: 's', 156: 'oe', 158: 'z', 159: 'Y
 
 def _normalizeChar(c=''):
     if ord(c) < 256:
-        return mapping.get(ord(c),c)
+        return mapping.get(ord(c), c)
     else:
         return "%x" % ord(c)
+
+# dublic core accessor name -> metadata name
+METADATA_DCNAME = {
+    # the first two rows are handle in a special way
+    # 'Description'      : 'description',
+    # 'Subject'          : 'keywords',
+    'Description'      : 'DC.description',
+    'Subject'          : 'DC.subject',
+    'Creator'          : 'DC.creator',
+    'Contributors'     : 'DC.contributors',
+    'Publisher'        : 'DC.publisher',
+    'CreationDate'     : 'DC.date.created',
+    'ModificationDate' : 'DC.date.modified',
+    'Type'             : 'DC.type',
+    'Format'           : 'DC.format',
+    'Language'         : 'DC.language',
+    'Rights'           : 'DC.rights',
+    }
 
 
 class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
@@ -191,7 +208,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         """
         mt = getToolByName(self, 'portal_membership')
         if not mt.checkPermission(CMFCorePermissions.ModifyPortalContent, obj):
-            raise 'Unauthorized'    # FIXME: Some scripts rely on this being string?
+            raise Unauthorized    # FIXME: Some scripts rely on this being string?
 
         REQUEST = self.REQUEST
         pfx = self.field_prefix
@@ -304,7 +321,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     security.declarePublic('availableMIMETypes')
     def availableMIMETypes(self):
         """Return a map of mimetypes
-        
+
         Requires mimetype registry from Archetypes 1.3
         """
         mtr = getToolByName(self, 'mimetypes_registry')
@@ -455,50 +472,204 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             text='\n'.join(traceback.format_exception(*sys.exc_info())),
             log_level=WARNING)
 
-    #replaces navigation_tree_builder.py
-    def createNavigationTreeBuilder(self, tree_root,
-                                    navBatchStart=None,
-                                    showMyUserFolderOnly=None,
-                                    includeTop=None,
-                                    showFolderishSiblingsOnly=None,
-                                    showFolderishChildrenOnly=None,
-                                    showNonFolderishObject=None,
-                                    topLevel=None,
-                                    batchSize=None,
-                                    showTopicResults=None,
-                                    rolesSeeUnpublishedContent=None,
-                                    sortCriteria=None,
-                                    metaTypesNotToList=None,
-                                    parentMetaTypesNotToQuery=None,
-                                    forceParentsInBatch=None,
-                                    skipIndex_html=None,
-                                    rolesSeeHiddenContent=None,
-                                    bottomLevel=None):
+    security.declarePublic('createSitemap')
+    def createSitemap(self, context):
+        return self.createNavTree(context, sitemap=1)
 
-        """ Returns a structure that can be used by
-        navigation_tree_slot.  We are being quite lazy because of
-        massive signature.  """
+    def _addToNavTreeResult(self, result, data):
+        """ add a piece of content to the result tree """
+        path = data['path']
+        parentpath = '/'.join(path.split('/')[:-1])
+        # Tell parent about self
+        if result.has_key(parentpath):
+            result[parentpath]['children'].append(data)
+        else:
+            result[parentpath] = {'children':[data]}
+        # If we have processed a child already, make sure we register it
+        # as a child
+        if result.has_key(path):
+            data['children'] = result[path]['children']
+        result[path] = data
 
-        t_builder = NTVB(tree_root=tree_root,
-                         navBatchStart=navBatchStart,
-                         showMyUserFolderOnly=showMyUserFolderOnly,
-                         includeTop=includeTop,
-                         showFolderishSiblingsOnly=showFolderishSiblingsOnly,
-                         showFolderishChildrenOnly=showFolderishChildrenOnly,
-                         showNonFolderishObject=showNonFolderishObject,
-                         topLevel=topLevel,
-                         batchSize=batchSize,
-                         showTopicResults=showTopicResults,
-                         rolesSeeUnpublishedContent=rolesSeeUnpublishedContent,
-                         sortCriteria=sortCriteria,
-                         metaTypesNotToList=metaTypesNotToList,
-                         parentMetaTypesNotToQuery=parentMetaTypesNotToQuery,
-                         forceParentsInBatch=forceParentsInBatch,
-                         skipIndex_html=skipIndex_html,
-                         rolesSeeHiddenContent=rolesSeeHiddenContent,
-                         bottomLevel=bottomLevel  )
-        ctx_tree_builder=t_builder.__of__(self)
-        return ctx_tree_builder()
+    security.declarePublic('createNavTree')
+    def createNavTree(self, context, sitemap=None):
+        """Returns a structure that can be used by
+        navigation_tree_slot."""
+        ct=getToolByName(self, 'portal_catalog')
+        ntp=getToolByName(self, 'portal_properties').navtree_properties
+        currentPath = None
+        query = {}
+
+        # XXX check if isDefaultPage is in the catalogs
+        #query['isDefaultPage'] = 0
+
+        if context == self or sitemap:
+            currentPath = getToolByName(self, 'portal_url').getPortalPath()
+            query['path'] = {'query':currentPath, 'depth':ntp.sitemapDepth}
+        else:
+            currentPath = '/'.join(context.getPhysicalPath())
+            query['path'] = {'query':currentPath, 'navtree':1}
+
+        if ntp.typesToList:
+            query['portal_type'] = ntp.typesToList
+
+        if ntp.sortAttribute:
+            query['sort_on'] = ntp.sortAttribute
+
+        if ntp.sortAttribute and ntp.sortOrder:
+            query['sort_order'] = ntp.sortOrder
+
+        # Get ids not to list and make a dict to make the search fast
+        ids_not_to_list = ntp.idsNotToList
+        excluded_ids = {}
+        for exc_id in ids_not_to_list:
+            excluded_ids[exc_id] = 1
+
+        rawresult = ct(**query)
+
+        # Build result dict
+        result = {}
+        foundcurrent = False
+        for item in rawresult:
+            path = item.getPath()
+            currentItem = path == currentPath
+            if currentItem:
+                foundcurrent = path
+            data = {'Title':item.Title or self.utf8_portal('\xe2\x80\xa6', 'ignore'),
+                    'currentItem':currentItem,
+                    'absolute_url': item.getURL(),
+                    'getURL':item.getURL(),
+                    'path': path,
+                    'icon':item.getIcon,
+                    'creation_date': item.CreationDate,
+                    'review_state': item.review_state,
+                    'Description':item.Description,
+                    'children':[],
+                    'no_display': excluded_ids.has_key(item.getId) or item.exclude_from_nav}
+            self._addToNavTreeResult(result, data)
+
+        portalpath = getToolByName(self, 'portal_url').getPortalPath()
+
+        if ntp.showAllParents:
+            portal = getToolByName(self, 'portal_url').getPortalObject()
+            parent = context
+            parents = [parent]
+            while not parent is portal:
+                parent = parent.aq_parent
+                parents.append(parent)
+
+            wf_tool = getToolByName(self, 'portal_workflow')
+            for item in parents:
+                path = '/'.join(item.getPhysicalPath())
+                if not result.has_key(path) or \
+                   not result[path].has_key('path'):
+                    # item was not returned in catalog search
+                    if foundcurrent:
+                        currentItem = False
+                    else:
+                        currentItem = path == currentPath
+                        if currentItem:
+                            if self.isDefaultPage(item):
+                                # don't list folder default page
+                                continue
+                            else:
+                                foundcurrent = path
+                    try:
+                        review_state = wf_tool.getInfoFor(item, 'review_state')
+                    except WorkflowException:
+                        review_state = ''
+                    data = {'Title': item.Title() or self.utf8_portal('\xe2\x80\xa6', 'ignore'),
+                            'currentItem': currentItem,
+                            'absolute_url': item.absolute_url(),
+                            'getURL': item.absolute_url(),
+                            'path': path,
+                            'icon': item.getIcon(),
+                            'creation_date': item.CreationDate(),
+                            'review_state': review_state,
+                            'Description':item.Description(),
+                            'children':[],
+                            'portal_type':item.portal_type,
+                            'no_display': 0}
+                    self._addToNavTreeResult(result, data)
+
+        if not foundcurrent:
+            #    result['/'.join(currentPath.split('/')[:-1])]['currentItem'] = True
+            for i in range(1, len(currentPath.split('/')) - len(portalpath.split('/')) + 1):
+                p = '/'.join(currentPath.split('/')[:-i])
+                if result.has_key(p):
+                    foundcurrent = p
+                    result[p]['currentItem'] = True
+                    break
+
+        if result.has_key(portalpath):
+            return result[portalpath]
+        else:
+            return {}
+
+    security.declarePublic('createTopLevelTabs')
+    def createTopLevelTabs(self):
+        "Returns a structure for the top level tabs"""
+        ct=getToolByName(self, 'portal_catalog')
+        ntp=getToolByName(self, 'portal_properties').navtree_properties
+        query = {}
+
+        portal_path = getToolByName(self, 'portal_url').getPortalPath()
+        query['path'] = {'query':portal_path, 'navtree':1}
+
+        if ntp.typesToList:
+            query['portal_type'] = ntp.typesToList
+
+        if ntp.sortAttribute:
+            query['sort_on'] = ntp.sortAttribute
+
+        if ntp.sortAttribute and ntp.sortOrder:
+            query['sort_order'] = ntp.sortOrder
+
+        # Get ids not to list and make a dict to make the search fast
+        ids_not_to_list = ntp.idsNotToList
+        excluded_ids = {}
+        for exc_id in ids_not_to_list:
+            excluded_ids[exc_id]=1
+
+        rawresult = ct(**query)
+
+        # Build result dict
+        result = []
+        for item in rawresult:
+            if not (excluded_ids.has_key(item.getId) or item.exclude_from_nav):
+                data = {'name':item.Title or self.utf8_portal('\xe2\x80\xa6', 'ignore'),
+                        'id':item.getId, 'url': item.getURL(), 'description':item.Description}
+                result.append(data)
+        return result
+
+    security.declarePublic('createBreadCrumbs')
+    def createBreadCrumbs(self, context):
+        "Returns a structure for the portal breadcumbs"""
+        ct=getToolByName(self, 'portal_catalog')
+        query = {}
+
+        #Check to see if the current page is a folder default view, if so
+        #get breadcrumbs from the parent folder
+        if self.isDefaultPage(context):
+            currentPath = '/'.join(context.aq_inner.aq_parent.getPhysicalPath())
+        else:
+            currentPath = '/'.join(context.getPhysicalPath())
+        query['path'] = {'query':currentPath, 'navtree':1, 'depth': 0}
+
+        rawresult = ct(**query)
+
+        #sort items on path length
+        dec_result = [(len(r.getPath()),r) for r in rawresult]
+        dec_result.sort()
+
+        # Build result dict
+        result = []
+        for r_tuple in dec_result:
+            item = r_tuple[1]
+            data = {'Title':item.Title or self.utf8_portal('\xe2\x80\xa6', 'ignore'),
+                    'absolute_url': item.getURL()}
+            result.append(data)
+        return result
 
     # expose ObjectManager's bad_id test to skin scripts
     security.declarePublic('good_id')
@@ -595,6 +766,19 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                             return translation, ['view']
             return obj, [page]
 
+        # Look for a default_page managed by an IBrowserDefault-implementing
+        # object - the behaviour is the same as setting default_page manually
+        # on the object, and the current BrowserDefaultMixin implementation
+        # actually stores it as the default_page property, but it's nicer to be
+        # explicit about getting it from IBrowserDefault
+        if IBrowserDefault.isImplementedBy(obj):
+            page = obj.getDefaultPage()
+            # Be totally anal and triple-check...
+            if page and ids.has_key(page):
+                return returnPage(obj, page)
+            # IBrowserDefault only manages explicitly contained
+            # default_page's, so don't look for the id in the skin layers
+
         # Look for default_page on the object
         pages = getattr(aq_base(obj), 'default_page', [])
         # Make sure we don't break if default_page is a
@@ -623,6 +807,14 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             if ids.has_key(page):
                 return returnPage(obj, page)
 
+        # Look for layout page templates from IBrowserDefault implementations
+        # This is checked after default_page and index_html, because we want
+        # explicitly created index_html's to override any templates set
+        if IBrowserDefault.isImplementedBy(obj):
+            page = obj.getLayout()
+            if page and portal.unrestrictedTraverse(page, None):
+                return obj, page.split('/')
+
         # what if the page isnt found?
         try:
             # look for a type action called "folderlisting"
@@ -638,6 +830,54 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             % obj.absolute_url())
             return obj, ['folder_listing']
 
+    security.declarePublic('isDefaultPage')
+    def isDefaultPage(self, obj):
+        """Find out if the given obj is the default page in its parent folder.
+        Only considers explicitly contained objects, either set as index_html,
+        with the default_page property, or using IBrowserDefault.
+        """
+
+        parent = obj.aq_inner.aq_parent
+
+        if not parent:
+            return False
+
+        # Explicitly look at IBrowserDefault
+        if IBrowserDefault.isImplementedBy(parent):
+            page = parent.getDefaultPage()
+            if page and page == obj.getId():
+                return True
+
+        # Look for default_page on the object
+        pages = getattr(aq_base(obj), 'default_page', [])
+
+        # Make sure we don't break if default_page is a
+        # string property instead of a sequence
+        if type(pages) in (StringType, UnicodeType):
+            pages = [pages]
+
+        # And also filter out empty strings
+        pages = filter(None, pages)
+        for page in pages:
+            if page == obj.getId():
+                return True
+
+        utool = getToolByName(self, 'portal_url')
+        portal = utool.getPortalObject()
+
+        # Try the default sitewide default_page setting
+        for page in portal.portal_properties.site_properties.getProperty('default_page', []):
+            if page == obj.getId():
+                return True
+
+        # No luck, let's look for hardcoded defaults
+        default_pages = ['index_html', ]
+        for page in default_pages:
+            if page == obj.getId():
+                return True
+
+        return False
+
     security.declarePublic('isTranslatable')
     def isTranslatable(self, obj):
         return ITranslatable.isImplementedBy(obj)
@@ -650,7 +890,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         """
         mt = getToolByName(self, 'portal_membership')
         if not mt.checkPermission(CMFCorePermissions.ModifyPortalContent, obj):
-            raise 'Unauthorized'
+            raise Unauthorized
 
         # Set local role status
         gruf = getToolByName( self, 'portal_url' ).getPortalObject().acl_users
@@ -666,6 +906,16 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         """
         gruf = getToolByName( self, 'portal_url' ).getPortalObject().acl_users
         return gruf.isLocalRoleAcquired(obj, )
+
+    security.declarePublic("getOwnerId")
+    def getOwnerId(self, obj):
+        """Returns the userid of the owner of an object
+        """
+        mt = getToolByName(self, 'portal_membership')
+        if not mt.checkPermission(CMFCorePermissions.View, obj):
+            raise Unauthorized
+
+        return obj.owner_info()['id']
 
     security.declarePublic('normalizeISO')
     def normalizeISO(self, text=""):
@@ -747,6 +997,11 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         >>> titleToNormalizedId(u"\uc774\ubbf8\uc9f1 Korean")
         'c774bbf8c9f1-korean'
         """
+
+        # Make sure we are dealing with a unicode string
+        if not isinstance(title, unicode):
+            title = unicode(title, self.getSiteEncoding())
+
         title = title.lower()
         title = title.strip()
         title = self.normalizeISO(title)
@@ -766,6 +1021,115 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         if ext != "":
             base = base + "." + ext
         return base
+
+    security.declarePublic('listMetaTags')
+    def listMetaTags(self, context):
+        """List meta tags helper
+
+        Creates a mapping of meta tags -> values for the listMetaTags script
+        """
+        result = {}
+
+        site_props = getToolByName(self, 'portal_properties').site_properties
+
+        use_all = site_props.getProperty('exposeDCMetaTags', None)
+
+        if not use_all:
+            metadata_names = {'Description': METADATA_DCNAME['Description']}
+        else:
+            metadata_names = METADATA_DCNAME
+
+        for accessor, key in metadata_names.items():
+            method = getattr(aq_inner(context).aq_explicit, accessor, None)
+            if not callable(method):
+                # ups
+                continue
+
+            # Catch AttributeErrors raised by some AT applications
+            try:
+                value = method()
+            except AttributeError:
+                value = None
+
+            if not value:
+                # no data
+                continue
+            if accessor == 'Publisher' and value == 'No publisher':
+                # No publisher is hardcoded (XXX: still?)
+                continue
+            if isinstance(value, (list, tuple)):
+                # convert a list to a string
+                value = ', '.join(value)
+
+            # special cases
+            if accessor == 'Description':
+                result['description'] = value
+            elif accessor == 'Subject':
+                result['keywords'] = value
+
+            if use_all:
+                result[key] = value
+
+        if use_all:
+            created = context.CreationDate()
+
+            try:
+                effective = context.EffectiveDate()
+                if effective == 'None':
+                    effective = None
+                if effective:
+                    effective = DateTime(effective)
+            except AttributeError:
+                effective = None
+
+            try:
+                expires = context.ExpirationDate()
+                if expires == 'None':
+                    expires = None
+                if expires:
+                    expires = DateTime(expires)
+            except AttributeError:
+                expires = None
+
+            #   Filter out DWIMish artifacts on effective / expiration dates
+            if effective is not None and effective > FLOOR_DATE and effective != created:
+                eff_str = effective.Date()
+            else:
+                eff_str = ''
+
+            if expires is not None and expires < CEILING_DATE:
+                exp_str = expires.Date()
+            else:
+                exp_str = ''
+
+            if exp_str or exp_str:
+                result['DC.date.valid_range'] = '%s - %s' % (eff_str, exp_str)
+
+        return result
+
+    security.declarePublic('getUserFriendlyTypes')
+    def getUserFriendlyTypes(self, typesList=[]):
+        """Get a list of types which are considered "user friendly" for search
+        and selection purposes. This is the list of types available in the
+        portal, minus those defines in the unfriendly_types property in
+        site_properties, if it exists. If typesList is given, this is used
+        as the base list; else all types from portal_types are used.
+        """
+
+        ptool = getToolByName(self, 'portal_properties')
+        siteProperties = getattr(ptool, 'site_properties')
+        blacklistedTypes = siteProperties.getProperty('unfriendly_types', [])
+
+        ttool = getToolByName(self, 'portal_types')
+        types = typesList or ttool.listContentTypes()
+
+        friendlyTypes = []
+        for t in types:
+            if not t in blacklistedTypes and not t in friendlyTypes:
+                friendlyTypes.append(t)
+
+        return friendlyTypes
+
 
 InitializeClass(PloneTool)
 

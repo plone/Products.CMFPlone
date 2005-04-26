@@ -33,7 +33,7 @@ inputFontColor:string=Black
 
 textTransform:string=lowercase
 
-evenRowBackgroundColor:string=#edf3fe
+evenRowBackgroundColor:string=#eef3f5 
 oddRowBackgroundColor:string=transparent
 
 notifyBorderColor:string=#ffa500

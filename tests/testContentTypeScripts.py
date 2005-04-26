@@ -198,6 +198,14 @@ class TestContentTypeScripts(PloneTestCase.PloneTestCase):
         self.assertEqual(self.folder.Favorites.meta_type, 'ATFolder')
         self.assertEqual(favorite.meta_type, 'ATFavorite')
 
+    def test_listMetaTypes(self):
+        self.folder.invokeFactory('Document', id='doc')
+        tool = self.portal.plone_utils
+        doc = self.folder.doc
+        doc.setTitle('title')
+        metatypes = tool.listMetaTags(doc)
+        # TODO: atm it checks only of the script can be called w/o an error
+
 
 class TestEditShortName(PloneTestCase.PloneTestCase):
     # Test fix for http://plone.org/collector/2246
@@ -390,6 +398,37 @@ class TestImagePatch(PloneTestCase.PloneTestCase):
         self.assertEqual(tag(self.ob)[-len(endswith):], endswith)
 
 
+class TestWorkflowHistory(PloneTestCase.PloneTestCase):
+
+    def afterSetUp(self):
+        self.folder.invokeFactory('Document',id='doc')
+        self.doc = self.folder.doc
+        self.wf = self.portal.portal_workflow
+
+    def test_WorkflowHistory(self):
+        # see if doc returns any history at this point
+        history = self.doc.getWorkflowHistory()
+        self.failUnlessEqual(history, []) 
+
+        # do a transition 
+        self.setRoles(['Reviewer']) # has no modify portal content permission
+        self.wf.doActionFor(self.doc, 'publish')
+        self.wf.doActionFor(self.doc, 'retract')
+        self.wf.doActionFor(self.doc, 'publish')
+        history = self.doc.getWorkflowHistory()
+
+        # should return no history: no edit permission
+        self.failUnlessEqual([],[])
+
+        # give edit permissions.
+        self.doc.manage_permission('Modify portal content', ['Reviewer'], acquire=0)
+        # should return the history list
+        history = self.doc.getWorkflowHistory()
+        self.failUnlessEqual(history[0]['action'], 'publish')
+        self.failUnlessEqual(history[1]['action'], 'retract')
+        self.failUnlessEqual(history[2]['action'], 'publish')
+
+
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
@@ -400,6 +439,7 @@ def test_suite():
     suite.addTest(makeSuite(TestFileExtensions))
     suite.addTest(makeSuite(TestBadFileIds))
     suite.addTest(makeSuite(TestImagePatch))
+    suite.addTest(makeSuite(TestWorkflowHistory))
     return suite
 
 if __name__ == '__main__':

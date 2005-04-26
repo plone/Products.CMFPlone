@@ -10,23 +10,44 @@
 ##
 
 from Products.CMFPlone import transaction_note
-ids=context.REQUEST.get('ids', [])
+from ZODB.POSException import ConflictError
+paths=context.REQUEST.get('paths', [])
 titles=[]
-titles_and_ids=[]
+titles_and_paths=[]
+failed = {}
+message = ''
 
+portal = context.portal_url.getPortalObject()
 status='failure'
 message='Please select one or more items to delete.'
 
-for id in ids:
-    obj=context.restrictedTraverse(id)
-    titles.append(obj.title_or_id())
-    titles_and_ids.append('%s (%s)' % (obj.title_or_id(), obj.getId()))
+for path in paths:
+    # Skip and note any errors
+    obj = portal.restrictedTraverse(path)
+    try:
+        obj_parent = obj.aq_inner.aq_parent
+        obj_parent.manage_delObjects([obj.getId()])
+        titles.append(obj.title_or_id())
+        titles_and_paths.append('%s (%s)' % (obj.title_or_id(), path))
+    except ConflictError:
+        raise
+    except Exception, e:
+        failed[path]= e
 
-if ids:
+if titles:
     status='success'
-    message=', '.join(titles)+' has been deleted.'
-    transaction_note('Deleted %s from %s' % (', '.join(titles_and_ids), context.absolute_url()))
-    context.manage_delObjects(ids)
+    if len(titles) == 1:
+        message = context.translate("${title} has been deleted.",
+                                    {'title': titles[0]})
+    else:
+        message = context.translate("${titles} have been deleted.",
+                                    {'titles': ', '.join(titles)})
+
+    transaction_note('Deleted %s' % (', '.join(titles_and_paths)))
+
+if failed:
+    if message: message = message + '  '
+    message = message + "%s could not be deleted."%(', '.join(failed.keys()))
 
 return state.set(status=status, portal_status_message=message)
 

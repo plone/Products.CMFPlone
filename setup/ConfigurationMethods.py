@@ -135,10 +135,6 @@ def assignTitles(self, portal):
 
 def addMemberdata(self, portal):
     md=getToolByName(portal, 'portal_memberdata')
-    if not hasattr(md,'formtooltips'):
-        safeEditProperty(md, 'formtooltips', '1', 'boolean')
-    if not hasattr(md,'visible_ids'):
-        safeEditProperty(md, 'visible_ids', '1', 'boolean')
     if not hasattr(md,'wysiwyg_editor'):
         safeEditProperty(md, 'wysiwyg_editor', '', 'string')
     if not hasattr(md,'listed'):
@@ -260,18 +256,6 @@ def addNewActions(self, portal):
                  name='Home',
                  action='string:$portal_url',
                  condition='',
-                 permission='View',
-                 category='portal_tabs')
-    at.addAction('news',
-                 name='News',
-                 action='string:$portal_url/news',
-                 condition='',
-                 permission='View',
-                 category='portal_tabs')
-    at.addAction('Members',
-                 name='Members',
-                 action='python:portal.portal_membership.getMembersFolder().absolute_url()',
-                 condition='python:portal.portal_membership.getMembersFolder()',
                  permission='View',
                  category='portal_tabs')
     at.addAction('change_ownership',

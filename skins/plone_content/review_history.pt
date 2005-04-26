@@ -1,0 +1,43 @@
+<span class="reviewHistory" 
+      metal:define-macro="review_history" 
+      i18n:domain="plone"
+      tal:define="history here/getWorkflowHistory;">
+   <tal:history tal:condition="history"> 				 
+        <fieldset id="history" class="collapsible collapsed">
+        <legend>Workflow History</legend>
+            <table class="listing nosort">
+                <tr>
+                  <th i18n:translate="listingheader_action">Action</th>
+                  <th i18n:translate="listingheader_performed_by">Performed&nbsp;by</th>
+                  <th i18n:translate="listingheader_date_and_time">Date&nbsp;and&nbsp;Time</th>
+                  <th i18n:translate="listingheader_comment">Comment</th>
+                </tr>                
+                <tal:history_data tal:repeat="event history">
+                    <tr tal:define="oddrow repeat/event/odd;"
+                        tal:attributes="class python:test(oddrow, 'even', 'odd')"
+                        tal:condition="event/action">
+                        <td i18n:translate=""><span tal:replace="event/action" /></td>
+                        <td>
+                            <a href=""
+                                 tal:attributes="href string:${portal_url}/author/${event/actor}"
+                                 tal:content="event/actor" />
+                        </td>
+                        <td>
+                         <span tal:replace="python:here.toPortalTime(event['time'],long_format=1)" />
+                         <span tal:condition="event/effective_date|nothing">
+                           (<span i18n:translate="label_publishing_effective" tal:omit-tag="">effective</span>: 
+                           <span tal:replace="python:here.toPortalTime(event['effective_date'],long_format=1)"></span>)
+                         </span>
+                        </td>
+                        <td>
+                            <span tal:condition="event/comments">
+                                <span tal:replace="event/comments"> some comments </span>
+                            </span>
+                            <span tal:condition="not: event/comments" i18n:translate="no_comments" />
+                        </td>
+                    </tr>
+                </tal:history_data>
+           </table>
+        </fieldset>
+    </tal:history>
+</span>

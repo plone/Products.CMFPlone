@@ -11,10 +11,16 @@ from Products.CMFPlone.tests import PloneTestCase
 
 from Acquisition import aq_base
 from Globals import REPLACEABLE
+from DateTime import DateTime
+from Products.CMFCore.CMFCorePermissions import AccessInactivePortalContent
+
+from Products.CMFPlone.CatalogTool import ExtensibleIndexableObjectRegistry
+from Products.CMFPlone.CatalogTool import ExtensibleIndexableObjectWrapper
+from Products.CMFPlone.CatalogTool import _eioRegistry
 
 portal_name = PloneTestCase.portal_name
+default_user  = PloneTestCase.default_user
 
-user1  = PloneTestCase.default_user
 user2  = 'u2'
 group2 = 'g2'
 
@@ -67,7 +73,76 @@ class TestCatalogSetup(PloneTestCase.PloneTestCase):
         def testPloneLexiconIsZCTextLexicon(self):
             # Lexicon should be a ZCTextIndex lexicon
             self.failUnless(hasattr(aq_base(self.catalog), 'plone_lexicon'))
-            self.assertEqual(self.catalog.plone_lexicon.meta_type, 'ZCTextIndex Lexicon')
+            self.assertEqual(self.catalog.plone_lexicon.meta_type,\
+                             'ZCTextIndex Lexicon')
+
+    def testPathIsExtendedPathIndex(self):
+        # path index should be an ExtendedPathIndex
+        self.assertEqual(self.catalog.Indexes['path'].__class__.__name__,
+                         'ExtendedPathIndex')
+
+    def testGetObjPositionInParentIsFieldIndex(self):
+        # getObjPositionInParent index should be a FieldIndex
+        # also see TestCatalogOrdering below
+        self.assertEqual(self.catalog.Indexes['getObjPositionInParent'].__class__.__name__,
+                         'FieldIndex')
+
+    def testGetObjSizeInSchema(self):
+        # getObjSize column should be in catalog schema
+        self.failUnless('getObjSize' in self.catalog.schema())
+
+    def testExclude_from_navInSchema(self):
+        # exclude_from_nav column should be in catalog schema
+        self.failUnless('exclude_from_nav' in self.catalog.schema())
+
+    def testIs_folderishInSchema(self):
+        # is_folderish column should be in catalog schema
+        self.failUnless('is_folderish' in self.catalog.schema())
+
+    def testDateIsDateIndex(self):
+        # Date should be a DateIndex
+        self.assertEqual(self.catalog.Indexes['Date'].__class__.__name__,
+                         'DateIndex')
+
+    def testCreatedIsDateIndex(self):
+        # created should be a DateIndex
+        self.assertEqual(self.catalog.Indexes['created'].__class__.__name__,
+                         'DateIndex')
+
+    def testEffectiveIsDateIndex(self):
+        # effective should be a DateIndex
+        self.assertEqual(self.catalog.Indexes['effective'].__class__.__name__,
+                         'DateIndex')
+
+    def testEndIsDateIndex(self):
+        # end should be a DateIndex
+        self.assertEqual(self.catalog.Indexes['end'].__class__.__name__,
+                         'DateIndex')
+
+    def testExpiresIsDateIndex(self):
+        # expires should be a DateIndex
+        self.assertEqual(self.catalog.Indexes['expires'].__class__.__name__,
+                         'DateIndex')
+
+    def testModifiedIsDateIndex(self):
+        # modified should be a DateIndex
+        self.assertEqual(self.catalog.Indexes['modified'].__class__.__name__,
+                         'DateIndex')
+
+    def testStartIsDateIndex(self):
+        # start should be a DateIndex
+        self.assertEqual(self.catalog.Indexes['start'].__class__.__name__,
+                         'DateIndex')
+
+    def testEffectiveRangeIsDateRangeIndex(self):
+        # effectiveRange should be a DateRangeIndex
+        self.assertEqual(self.catalog.Indexes['effectiveRange'].__class__.__name__,
+                         'DateRangeIndex')
+
+    def testSortable_TitleIsFieldIndex(self):
+        # sortable_title should be a FieldIndex
+        self.assertEqual(self.catalog.Indexes['sortable_title'].__class__.__name__,
+                         'FieldIndex')
 
 
 class TestCatalogIndexing(PloneTestCase.PloneTestCase):
@@ -249,6 +324,60 @@ class TestCatalogSearching(PloneTestCase.PloneTestCase):
         self.assertEqual(self.catalog(SearchableText='foo')[0].id, 'doc')
 
 
+class TestCatalogSorting(PloneTestCase.PloneTestCase):
+
+    def afterSetUp(self):
+        self.catalog = self.portal.portal_catalog
+
+        self.folder.invokeFactory('Document', id='doc', text='foo')
+        self.folder.doc.setTitle('12 Document 25')
+        self.folder.invokeFactory('Document', id='doc2', text='foo')
+        self.folder.doc2.setTitle('3 Document 4')
+        self.folder.invokeFactory('Document', id='doc3', text='foo')
+        self.folder.doc3.setTitle('12 Document 4')
+
+        self.folder.invokeFactory('Document', id='doc4', text='bar')
+        self.folder.doc4.setTitle('document 12')
+        self.folder.invokeFactory('Document', id='doc5', text='bar')
+        self.folder.doc5.setTitle('Document 2')
+        self.folder.invokeFactory('Document', id='doc6', text='bar')
+        self.folder.doc6.setTitle('DOCUMENT 4')
+        self.folder.doc.reindexObject()
+        self.folder.doc2.reindexObject()
+        self.folder.doc3.reindexObject()
+        self.folder.doc4.reindexObject()
+        self.folder.doc5.reindexObject()
+        self.folder.doc6.reindexObject()
+
+    def testSortTitleReturnsProperOrderForNumbers(self):
+        # Documents should be returned in proper numeric order
+        results = self.catalog(SearchableText='foo', sort_on='sortable_title')
+        self.assertEqual(results[0].getId, 'doc2')
+        self.assertEqual(results[1].getId, 'doc3')
+        self.assertEqual(results[2].getId, 'doc')
+
+    def testSortTitleIgnoresCase(self):
+        # Documents should be returned in case insensitive order
+        results = self.catalog(SearchableText='bar', sort_on='sortable_title')
+        self.assertEqual(results[0].getId, 'doc5')
+        self.assertEqual(results[1].getId, 'doc6')
+        self.assertEqual(results[2].getId, 'doc4')
+
+    def testSortableTitleOutput(self):
+        doc = self.folder.doc
+        wrapped = ExtensibleIndexableObjectWrapper(vars, doc, self.portal)
+        
+        self.assertEqual(wrapped.sortable_title, u'00000012 document 00000025')
+
+    def testSortableNonASCIITitles(self):
+        #test a utf-8 encoded string gets properly unicode converted
+        title = 'La Pe\xc3\xb1a'
+        doc = self.folder.doc
+        doc.setTitle(title)
+        wrapped = ExtensibleIndexableObjectWrapper(vars, doc, self.portal)
+        self.assertEqual(wrapped.sortable_title, u'la pe\xf1a')
+
+
 class TestFolderCataloging(PloneTestCase.PloneTestCase):
     # Tests for http://plone.org/collector/2876
     # folder_edit must recatalog. folder_rename must recatalog.
@@ -283,7 +412,8 @@ class TestFolderCataloging(PloneTestCase.PloneTestCase):
     def testFolderTitleIsUpdatedOnFolderTitleChange(self):
         # The bug in fact talks about folder_rename
         title = 'Test Folder - Snooze!'
-        self.folder.folder_rename(ids=['foo'], new_ids=['foo'], new_titles=[title])
+        foo_path = '/'.join(self.folder.foo.getPhysicalPath())
+        self.folder.folder_rename(paths=[foo_path], new_ids=['foo'], new_titles=[title])
         results = self.catalog(Title='Snooze')
         self.failUnless(results)
         for result in results:
@@ -294,7 +424,8 @@ class TestFolderCataloging(PloneTestCase.PloneTestCase):
         # The bug in fact talks about folder_rename
         title = 'Test Folder - Snooze!'
         get_transaction().commit(1) # make rename work
-        self.folder.folder_rename(ids=['foo'], new_ids=['bar'], new_titles=[title])
+        foo_path = '/'.join(self.folder.foo.getPhysicalPath())
+        self.folder.folder_rename(paths=[foo_path], new_ids=['bar'], new_titles=[title])
         results = self.catalog(Title='Snooze')
         self.failUnless(results)
         for result in results:
@@ -306,7 +437,111 @@ class TestFolderCataloging(PloneTestCase.PloneTestCase):
         title = 'Test Folder - Snooze!'
         self.failUnless(self.catalog(id='foo'))
         self.folder.foo.setTitle(title)
+        #Title is a TextIndex
         self.failIf(self.catalog(Title='Snooze'))
+
+
+class TestCatalogOrdering(PloneTestCase.PloneTestCase):
+
+    def afterSetUp(self):
+        self.catalog = self.portal.portal_catalog
+        self.folder.invokeFactory('Document', id='doc1', text='foo')
+        self.folder.invokeFactory('Document', id='doc2', text='bar')
+        self.folder.invokeFactory('Document', id='doc3', text='bloo')
+        self.folder.invokeFactory('Document', id='doc4', text='blee')
+
+    def testInitialOrder(self):
+        self.failUnlessEqual(self.folder.getObjectPosition('doc1'), 1)
+        self.failUnlessEqual(self.folder.getObjectPosition('doc2'), 2)
+        self.failUnlessEqual(self.folder.getObjectPosition('doc3'), 3)
+        self.failUnlessEqual(self.folder.getObjectPosition('doc4'), 4)
+
+    def testOrderIsUpdatedOnPloneFolderMoveByDelta(self):
+        self.folder.moveObjectsByDelta('doc1', 2)
+        folder_docs = self.catalog(portal_type = 'Document',
+                                   path = self.folder.getPhysicalPath(),
+                                   sort_on = 'getObjPositionInParent')
+        expected = ['doc2','doc3','doc1','doc4']
+        self.failUnlessEqual([b.getId for b in folder_docs], expected)
+
+    def testOrderIsUpdatedOnPloneFolderMoveObject(self):
+        self.folder.moveObject('doc3', 1)
+        folder_docs = self.catalog(portal_type = 'Document',
+                                   path = self.folder.getPhysicalPath(),
+                                   sort_on = 'getObjPositionInParent')
+        expected = ['doc3','doc1','doc2','doc4']
+        self.failUnlessEqual([b.getId for b in folder_docs], expected)
+
+    def testOrderIsFineWithObjectCreation(self):
+        self.folder.invokeFactory('Document', id='doc5', text='blam')
+        folder_docs = self.catalog(portal_type = 'Document',
+                                   path = self.folder.getPhysicalPath(),
+                                   sort_on = 'getObjPositionInParent')
+        expected = ['doc1','doc2','doc3','doc4','doc5']
+        self.failUnlessEqual([b.getId for b in folder_docs], expected)
+
+    def testOrderIsFineWithObjectDeletion(self):
+        self.folder.manage_delObjects(['doc3',])
+        folder_docs = self.catalog(portal_type = 'Document',
+                                   path = self.folder.getPhysicalPath(),
+                                   sort_on = 'getObjPositionInParent')
+        expected = ['doc1','doc2','doc4']
+        self.failUnlessEqual([b.getId for b in folder_docs], expected)
+
+    def testOrderIsFineWithObjectRenaming(self):
+
+        # I don't know why this is failing. manage_renameObjects throws an error
+        # that blames permissions or lack of support by the obj. The obj is a
+        # Plone Document, and the owner of doc2 is portal_owner. Harumph.
+
+        get_transaction().commit(1)
+
+        self.folder.manage_renameObjects(['doc2'], ['buzz'])
+        folder_docs = self.catalog(portal_type = 'Document',
+                                   path = self.folder.getPhysicalPath(),
+                                   sort_on = 'getObjPositionInParent')
+        expected = ['doc1','buzz','doc3','doc4']
+        self.failUnlessEqual([b.getId for b in folder_docs], expected)
+
+    def testOrderAfterALotOfChanges(self):
+        # ['doc1','doc2','doc3','doc4']
+
+        self.folder.moveObjectsByDelta('doc1', 2)
+        # ['doc2','doc3','doc1','doc4']
+
+        self.folder.moveObject('doc3', 1)
+        # ['doc3','doc2','doc1','doc4']
+
+        self.folder.invokeFactory('Document', id='doc5', text='blam')
+        self.folder.invokeFactory('Document', id='doc6', text='blam')
+        self.folder.invokeFactory('Document', id='doc7', text='blam')
+        self.folder.invokeFactory('Document', id='doc8', text='blam')
+        # ['doc3','doc2','doc1','doc4','doc5','doc6','doc7','doc8',]
+
+        #self.folder.manage_renameObjects('Document', id='doc5', text='blam')
+
+        self.folder.manage_delObjects(['doc3','doc4','doc5','doc7'])
+        expected = ['doc2','doc1','doc6','doc8']
+
+        folder_docs = self.catalog(portal_type = 'Document',
+                                   path = self.folder.getPhysicalPath(),
+                                   sort_on = 'getObjPositionInParent')
+        self.failUnlessEqual([b.getId for b in folder_docs], expected)
+
+    def testAllObjectsHaveOrder(self):
+        #Make sure that a query with sort_on='getObjPositionInParent'
+        #returns the same number of results as one without, make sure
+        #the Members folder is in the catalog and has getObjPositionInParent
+        all_objs = self.catalog()
+        sorted_objs = self.catalog(sort_on='getObjPositionInParent')
+        self.failUnlessEqual(len(all_objs), len(sorted_objs))
+        
+        members = self.portal.Members
+        members_path = '/'.join(members.getPhysicalPath())
+        members_query = self.catalog(path=members_path)
+        members_sorted = self.catalog(path=members_path, sort_on = 'getObjPositionInParent')
+        self.failUnless(len(members_query))
+        self.failUnlessEqual(len(members_query),len(members_sorted))
 
 
 class TestCatalogBugs(PloneTestCase.PloneTestCase):
@@ -404,7 +639,8 @@ class TestCatalogUnindexing(PloneTestCase.PloneTestCase):
         self.setRoles(['Manager'])
         self.workflow.doActionFor(self.folder.doc, 'publish')
         self.setRoles(['Member'])
-        self.app.REQUEST.set('ids', ['doc'])
+        doc_path = '/'.join(self.folder.doc.getPhysicalPath())
+        self.app.REQUEST.set('paths', [doc_path])
         self.folder.folder_delete()
         self.failIf(self.catalog(id='doc'))
 
@@ -417,6 +653,98 @@ class TestCatalogUnindexing(PloneTestCase.PloneTestCase):
         self.failIf(self.catalog(id='doc'))
 
 
+class TestCatalogOptimizer(PloneTestCase.PloneTestCase):
+
+    def afterSetUp(self):
+        self.catalog = self.portal.portal_catalog
+        self.folder.invokeFactory('Document', id='doc')
+
+    def nofx(self):
+        # Removes effective and expires to make sure we only test
+        # the DateRangeIndex.
+        self.catalog.delIndex('effective')
+        self.catalog.delIndex('expires')
+
+    def assertResults(self, result, expect):
+        # Verifies ids of catalog results against expected ids
+        lhs = [r.getId for r in result]
+        lhs.sort()
+        rhs = list(expect)
+        rhs.sort()
+        self.assertEqual(lhs, rhs)
+
+    def testCeilingPatch(self):
+        self.assertEqual(self.folder.doc.expires(), DateTime(2500, 0))
+
+    def testSearchResults(self):
+        res = self.catalog.searchResults()
+        self.assertResults(res, ['Members', 'news', default_user, 'doc'])
+
+    def testCall(self):
+        res = self.catalog()
+        self.assertResults(res, ['Members', 'news', default_user, 'doc'])
+
+    def testSearchResultsExpired(self):
+        self.folder.doc.setExpirationDate(DateTime(2000, 12, 31))
+        self.folder.doc.reindexObject()
+        self.nofx()
+        res = self.catalog.searchResults()
+        self.assertResults(res, ['Members', 'news', default_user])
+
+    def testCallExpired(self):
+        self.folder.doc.setExpirationDate(DateTime(2000, 12, 31))
+        self.folder.doc.reindexObject()
+        self.nofx()
+        res = self.catalog()
+        self.assertResults(res, ['Members', 'news', default_user])
+
+    def testSearchResultsExpiredWithPermission(self):
+        self.folder.doc.setExpirationDate(DateTime(2000, 12, 31))
+        self.folder.doc.reindexObject()
+        self.nofx()
+        self.setPermissions([AccessInactivePortalContent])
+        res = self.catalog.searchResults()
+        self.assertResults(res, ['Members', 'news', default_user, 'doc'])
+
+    def testCallExpiredWithPermission(self):
+        self.folder.doc.setExpirationDate(DateTime(2000, 12, 31))
+        self.folder.doc.reindexObject()
+        self.nofx()
+        self.setPermissions([AccessInactivePortalContent])
+        res = self.catalog()
+        self.assertResults(res, ['Members', 'news', default_user, 'doc'])
+
+
+def dummyMethod(obj, **kwargs):
+    return 'a dummy'
+
+class TestExtensibleIndexableObjectWrapper(PloneTestCase.PloneTestCase):
+    """Tests for the wrapper
+    """
+    
+    def afterSetUp(self):
+        self.folder.invokeFactory('Document', 'doc', title='document')
+        self.doc = self.folder.doc
+        _eioRegistry.register('dummy', dummyMethod)
+        
+    def testSetup(self):
+        doc = self.doc
+        self.failUnlessEqual(doc.getId(), 'doc')
+        self.failUnlessEqual(doc.Title(), 'document')
+        
+    def testWrapper(self):
+        doc = self.doc
+        vars = {'var' : 'a var'}
+        wrapped = ExtensibleIndexableObjectWrapper(vars, doc, self.portal)
+        self.failUnlessEqual(wrapped.var, 'a var')
+        self.failUnlessEqual(wrapped.getId(), 'doc')
+        self.failUnlessEqual(wrapped.Title(), 'document')
+        self.failUnlessEqual(wrapped.dummy, 'a dummy')
+        
+    def beforeTearDown(self):
+        _eioRegistry.unregister('dummy')
+
+
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
@@ -424,8 +752,12 @@ def test_suite():
     suite.addTest(makeSuite(TestCatalogIndexing))
     suite.addTest(makeSuite(TestCatalogSearching))
     suite.addTest(makeSuite(TestFolderCataloging))
+    suite.addTest(makeSuite(TestCatalogOrdering))
     suite.addTest(makeSuite(TestCatalogBugs))
     suite.addTest(makeSuite(TestCatalogUnindexing))
+    suite.addTest(makeSuite(TestCatalogOptimizer))
+    suite.addTest(makeSuite(TestExtensibleIndexableObjectWrapper))
+    suite.addTest(makeSuite(TestCatalogSorting))
     return suite
 
 if __name__ == '__main__':

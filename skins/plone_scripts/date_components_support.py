@@ -4,7 +4,7 @@
 ##bind namespace=
 ##bind script=script
 ##bind subpath=traverse_subpath
-##parameters=date=None, use_ampm=0
+##parameters=date=None, use_ampm=0, starting_year=None, ending_year=None, future_years=None
 ##title=
 ##
 
@@ -66,12 +66,22 @@ if date.greaterThan(PLONE_CEILING):
 
 # Get portal year range
 site_properties = context.portal_properties.site_properties
-min_year = site_properties.getProperty('calendar_starting_year', 1999)
-max_year = site_properties.getProperty('calendar_future_years_available', 5) + now.year()
+if starting_year is None:
+    min_year = site_properties.getProperty('calendar_starting_year', 1999)
+else:
+    min_year = starting_year
+if ending_year is None:
+    if future_years is None:
+        max_year = site_properties.getProperty('calendar_future_years_available', 5) + now.year()
+    else:
+        max_year = future_years + now.year()
+else:
+    max_year = ending_year
 
 year=int(date.strftime('%Y'))
 
-years.append({'id': '----', 'value': '0000', 'selected': None})
+if min_year != max_year:
+    years.append({'id': '----', 'value': '0000', 'selected': None})
 
 for x in range(min_year, max_year+1):
     d={'id': x, 'value': x, 'selected': None}

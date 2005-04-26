@@ -2,7 +2,474 @@ Changelog for Plone
 
    (name of developer listed in brackets)
 
-Plone 2.1 - Ms. Bumblebee - Alpha1 - Released March 12, 2005 
+Plone 2.1 - Plaid - (unreleased)
+
+    - Changed the order of the documentActions in the default view templates.
+      If you have customized your view templates, you need to move these
+      above the headline tag. Sorry about the inconvenience, but the existing
+      positioning was triggering too many browser bugs. This keeps it simple.
+      Look at 'document_view' if you need an example.
+
+    - Publishing the default document in a folder now publishes the folder as
+      well, if possible (and similarly, making the default page visible or
+      private will make the folder visible or private as well)
+      [optilude]
+
+    - content_status_history (Change state button from folder_contents or
+      'advanced' item in state drop-down) is now more consistent, showing
+      the items being affected in both cases, and permits the publishing of
+      folder contents along with a folder no matter which method is used.
+      [optilude]
+
+    - Default content types are now in portal_factory
+      [optilude]
+
+    - registered_notify_template now honours the 'email' parameter passed in
+      instead of using 'member.email', and in the process no longer breaks
+      CMFMember
+      [optilude]
+
+    - Merged (some variation of) madduck's member area type selection branch.
+      This allows to configure the portal type used for home folders in the
+      membership tool.
+      [stefan] [madduck]
+
+    - Fixed non-ASCII character issue in sortable_title method.
+      [alecm]
+ 
+    - Fixed up permissions on new cut/copy/delete actions.
+      [bmh]
+
+    - Fixed http://plone.org/collector/3384 by catching CopyError so
+      users don't get dumped into the ZMI.
+      [bmh]
+
+    - Made sortable_title do useful numerical sorting, and truncate values
+      longer than 30 chars to prevent bloat.
+      [alecm]
+
+    - is_folderish metadata added. It contains bool(isPrincipiaFolderish)
+      [tiran]
+
+    - sortable_title FieldIndex added by popular demand.
+      [alecm]
+
+    - Made folder_contents useful for viewing and altering non-local content
+      (try folder_contents?path=/).  Changed folder_delete, folder_publish,
+      and folder_rename to work with paths instead of ids (and altered
+      corresponding forms).  Added new method to workflow tool to get workflow
+      transitions for objects given by path rather than id.  Made the
+      aforementioned scripts redrect to the originating form instead of
+      hard-coded folder_contents (uses request variable 'orig_template').
+      Removed copy, cut, paste buttons when the folder_contents view isn't
+      local, as those actions won't work properly in that circumstance (copy
+      can probably be implemented, but will need to use some OFS internals).
+      Added tests for folder_delete, folder_publish, and folder_rename.  These
+      changes fix issue #216 (http://plone.org/collector/216).
+      [alecm]
+
+    - Added Topics to the default NavTree listing.
+      [alecm]
+
+    - Made migration work from 2.0 svn, and not fail if SUPPRESS_ATCT_INSTALLATION
+      is set.
+      [alecm]
+
+    - Added RTL support (separate CSS is included for this, is only activated
+      when the language is an RTL language).
+      [limi, mohsen]
+
+    - Added Mobile device support (handheld CSS profile).
+      [limi]
+
+    - Fixed http://plone.org/collector/2959 with a minor change to check_id to
+      account for portal_factory weirdness.  Also required an update to ATCT
+      to do proper id checking on auto-rename.
+      [alecm]
+
+    - Re-did the fix for disappearing text in Internet Explorer, added special
+      class 'visualIEFloatFix' that can be used for these, also adding a how-to 
+      with examples to plone.org. 
+      [limi]
+
+    - Added a reference rendering document to show all the user interface elements
+      to ease cross-browser testing of third-party skins. Template name is
+      'test_rendering'.
+      [limi]
+
+    - Added ECMAUnit JavaScript testing framework to skins in anticipation of
+      a real testSuite for the Plone JavaScripts.  
+      Pasted the license and credit files into the top of the library to keep 
+      them contained.
+      [elvix]
+
+    - Made 'title' attribute on add-new-item drop down items display item
+      description, as per bug http://members.plone.org/collector/2938.
+      [optilude]
+
+    - Introduced the ExtensibleIndexableObjectWrapper. It's a wrapper based on
+      the IndexableObjectWrapper for the catalog tool that can easily be 
+      extented by registering methods.
+      [tiran]
+
+    - Renamed ugly 'PloneUtilities.py' module to 'utils.py'. The former is
+      still around but issues a deprecation warning.
+      [stefan]
+
+    - Fixed bug http://plone.org/collector/3647 to allow removing all roles
+      from a group.
+      [optilude]
+
+    - Fixed bug http://members.plone.org/collector/3386. Modified 
+      folder_rename_form.pt to reflect user authorisations on each
+      item.
+      [davconvent]
+
+    - Implemented fix for http://plone.org/collector/3522 to add default
+      groups "Reviewers" and "Administrators" to Plone, with the appropriate
+      roles.
+      [dpunktnpunkt] [optilude]
+
+    - Made PloneFolder.moveObjectsByDelta not throw an error when passed a non
+      contentish object id (apparently this happens during some migrations).
+      Fixes #3959 (http://plone.org/collector/3959).  Requires a small fix in
+      AT done on 1.3 branch.
+      [alecm]
+
+    - Fixed computeRoleMap.py so that it stores the role information by
+      user/group id not name, as a user and group may have the same name and
+      it would be wrong to combine them.  This is related to issue #3711
+      (http://plone.org/collector/3711) which is itself a GRUF issue fixed in
+      GRUF svn.  Also implemented a faster sort algorithm in the above script.
+      [alecm]
+
+    - Made prev/next links in calendar portlet respect current query parameters.
+      Fixes bug #3949 (http://members.plone.org/collector/3949).
+      [alecm]
+
+    - Added id="breadcrumbs-you-are-here" to the <span> tag where "you are
+      here" is printed in global_pathbar.pt. It is now possible to remove
+      cleanly that message, applying a CSS rule.
+      [davconvent]
+
+    - Removed obsolete formtooltips member property.
+      [stefan]
+
+    - Made all portal_status_messages with dynamic parts translatable.
+      Fixes http://plone.org/collector/2532
+      [dpunktnpunkt]
+
+    - Included code from the CatalogOptimizer product, i.e. PLIP 89. This
+      gives us DateIndexes and DateRangeIndexes instead of slow FieldIndexes.
+      [stefan]
+
+    - Fixed bug in logged_in.py where login_password would not have been
+      triggered even when appropriate on first login; fixed related issue in
+      login_password.pt.
+      [rafrombrc]
+
+    - Fixed problem where navtree was duplicate highlighting when user
+      viewed home page, where folder default pages were showing up when
+      'showAllParents' is True, general default page navtree fixes.
+      [rafrombrc]
+
+    - Changed content_status_history to work w/ the new catalog-based
+      folder contents code.
+      [rafrombrc]
+
+    - Restored batchedFolderContents for backwards compatibility, and moved
+      batching into the python script getFolderContents (which takes optional
+      'batch' and 'b_size' parameters).  Marked batchedFolderContents and
+      getFolderListingFolderContents as deprecated, both just call
+      getFolderContents now.
+      [alecm]
+
+    - queryCatalog was altering the queries passed to it to filter out types.
+      This is unnecessary; it should only filter when no explicit types list is
+      passed.  Also, queryCatalog is uesful in places other than the search
+      (folder_contents) where the filtering may be undesirable.  As a result
+      the filtering is now optional and enabled by a parameter use_types_blacklist,
+      which is used by default in search.pt and search_rss.dtml.
+      [alecm]
+
+    - Added unit tests for folder based portal tabs and catalog based
+      breadcrumbs.  Fixed bug in portal tab ordering.
+      [alecm]
+
+    - Updated and enhanced the dependency checks to check for the right versions
+      of Python, Zope and CMF.
+      [tiran]
+
+    - Merged PLIP 74 - Cut/copy/paste actions on objects + Batch mode. The
+      'contents' tab is now removed, though folder_contents can be accessed
+      via the 'batch' button. It's importance is greatly reduced, because the
+      most common operations it was being used for (cut/copy/paste and object)
+      are now available directly as actions on the object.
+      [davconvent] [optilude]
+
+    - Made sure migration catalogs the Members folder. This is required for the
+      catalog-based navigation stuff.
+      [stefan]
+
+    - Merged PLIP 76 - author feedback. A new link appears when viewing content
+      created by portal members, taking the viewer to an author profile page.
+      This page permits logged in users to send feedback via email (without
+      exposing the author's email address) using a feedback form. It also shows
+      the most recent publications by this member.
+      [VladDrac] [optilude]
+
+    - Fixed link to CMF website on welcome page.
+      [stefan]
+
+    - Merged plip91-folder-based-sections r6405:HEAD into 2.1 branch.
+      [stefan]
+
+    - Implemented PLIP 91: Made sections (global tabs) render the top level
+      folders in the portal root.  Removed existing actions for news and Members
+      and added a news folder with default view set to news_listing.pt (formerly
+      news.pt).  Added support for the property 'idsNotToList' from
+      navtree_properties, so that the navtree and section tabs don't show the
+      listed ids.  Added a catalog metadata column 'exclude_from_nav', so that
+      when a boolean property of that name is set on an object it and it's
+      children will be excluded from the navtree and section tabs.
+      [alecm]
+
+    - Do not display "Forgot your password?" when user doesn't have
+      "Mail forgotten password" permission.  Added a security check to
+      RegistrationTool.mailPassword().
+      http://members.plone.org/collector/3338
+      [dpunktnpunkt]
+
+    - Merged PLIP 75 - blacklisting of types. The unfriendly_types property in
+      site_properties can now be used to give a list of types which will be
+      ignored for search purposes (via queryCatalog; the getUserFriendlyTypes()
+      method in plone_utils can be used to get the same filtering elsewhere).
+      [optilude] [jjmurre]
+
+    - Add new method to PloneTool getOwnerId, which gets the id of the owner
+      of an object.  It's protected by the view permission on the object, and
+      used in ownership_form in place of Creator, which may no be the same as
+      owner for AT types.  Also modified ownership_form to use form controller.
+      http://members.plone.org/collector/3662
+      [alecm]
+
+    - Set Title and description on member folders and personal folder.  Was
+      broken due to permissions improvements in AT.
+      [alecm]
+
+    - Merged plip93-optimize-templates r6360:HEAD into 2.1 branch.
+      [stefan]
+
+    - Removed worklist query from listFilteredActionsFor.
+      http://members.plone.org/collector/3779
+      [alecm]
+
+    - Removed useless check for duplicate actions from listFilteredActionsFor.
+      Gives a big speed improvement thanks to Dieter.
+      [alecm]
+
+    - Minor refactoring of the calendar portlet to avoid unnecessary duplicate
+      method calls.  Removed getBeginAndEndTimes.
+      [alecm]
+
+    - Replaced breadcrumbs implementation with a faster simpler one based on
+      ExtendedPathIndex.
+      [alecm]
+
+    - Turned off DC MetaTags by default, added a global config to
+      site_properties so that they can be reenabled if desired.
+      [alecm]
+
+    - Made the calendar portlet HTML output Not Suck. The code, however
+      still does. ;)
+      [limi]
+
+    - Fixed http://members.plone.org/collector/3924 eradicated all string
+      exceptions.
+      [alecm]
+
+    - Fixed http://members.plone.org/collector/3910 isValidEmail now uses
+      the _checkEmail function from CMFDefault to avoid ValueErrors.
+      [alecm]
+
+    - Added empty fill-slot="sub" to discussion_reply_form to get rid of
+      the second, broken 'add comment' button showing up on that form
+      for top level comments
+      http://plone.org/collector/3845
+      [rafrombrc]
+
+    - Moved retrieval of Zope system information out of
+      plone_control_panel.pt and into proxied script getZopeInfo.py so
+      that plone Managers who are not also Zope top-level Managers can
+      view the page.
+      [bmh]
+
+    - Added installation of default CSS and JavaScripts.
+      [elvix]
+
+    - Added CSSRegistry and JSRegistry dependencies. All stylesheets and
+      javascripts are now registered with these tools instead of hardlinked
+      into header.pt.
+      [elvix]
+
+    - Cut the default Styleesheets and Javascripts into smaller pieces to be
+      served up by the CSS- and JS-Registries
+      [elvix] [limi]
+
+    - Added showAllParents property to navtree_properties and to appropriate
+      portal migration, added implementation to navtree code in PloneTool.
+      [rafrombrc]
+
+    - Because normalizeISO() only deals with Unicode strings
+      titleToNormalizedId() must make sure to pass it only Unicode. Added a
+      check and a conversion from the site's default encoding.
+      [stefan]
+
+    - Fixed UI task #21: renamed "Name" to "Login Name" in login form and
+      portlet
+      [mrtopf]
+
+    - Fixed UI task #19: default homepage for new members is not created
+      anymore by default
+      [mrtopf]
+
+    - Fixed UI task #5: Status message should show the name instead of
+      title of a portal type on add. Now shows the title.
+      [mrtopf]
+
+    - Fixed UI task #79: removed "you are logged in" message
+      [mrtopf]
+
+    - Fixed UI task #73: added display of plone, zope and python version to
+      the ControlPanel
+      [mrtopf]
+
+    - Merged plip81-BylineHistory r6154:HEAD into 2.1 branch. This adds
+      workflow history to the document byline.
+      [stefan] [ender] [limi]
+
+    - Manually merged new css files from uiteam-plip85-componentized-css
+      r6361:HEAD into 2.1 branch. These are not hooked up to anything just
+      yet, but will be used by the CSSRegistry.
+      [elvix]
+
+    - Split plone_javascripts.js into small components in preparation of the
+      JSRegistry tool.
+      [elvix]
+
+    - Merged uiteam-plip86-catalog-based-folder-listings r5865:HEAD into 2.1
+      branch. Plone's folder_contents and folder_listing templates now use
+      catalog results instead of traversal.
+      [stefan] [alecm] [_ender_] [whit537]
+
+    - Added macros to folder_contents that allow reuse of the entire content
+      area, including the definition of the content list.  Added slots and
+      variables that allow macro users to change the title of the page, the
+      columns displayed, and the type of content filtering and sorting
+      performed.
+      [alecm]
+
+    - Added slot to folder_listing that allows macro users to add custom
+      bylines for specific types.  Also, added the ability to set a limit (in
+      the request or containing template) on the number of items shown in a
+      listing, along with a customizable link to see more contents which
+      defaults to 'folder_contents'.
+      [alecm]
+
+    - Merged uiteam-plip77-78-content-menu-browser-default-refactoring
+      r6317:HEAD into 2.1 branch.
+      [tiran]
+
+      PLIP 77: Constrain addable types on a per-folder basis
+      - New menu item "settings" on "add new item" drop-down to select
+        which items to display, and how.
+      [optilude]
+
+      PLIP 78: "Display" menu to select default view of a folder
+      - Enable TemplateMixin and fix its UI (in ATContentTypes)
+      - Add a "display" drop-down where these can be chosen
+      - On folderish items, an option "select item" - shows browser, select
+        default_page.
+      [optilude] [davconvent]
+
+    - Cleaned up listMetaTypes by moving the payload into PloneTool and
+      cleaning up the code.
+      [tiran]
+
+    - Added PIL to dependencies to be able to close PLIP 82.
+      [stefan]
+
+    - Changed 'context.aq_explicit.getObjectPosition' to
+      'context.aq_inner.aq_explicit.getObjectPosition' in
+      getObjPositionInParent.py to guarantee that we don't acquire
+      getObjectPosition.
+      [rafrombrc]
+
+    - Merged plip-80-navtree r6183:HEAD into 2.1 branch. This adds the new
+      catalog-based navigation tree and sitemap. Plone now depends on the
+      ExtendedPathIndex product.
+      [stefan] [jladage] [tesdal] [elvix]
+
+    - Merged plip79-RelatedItems r6128:HEAD into 2.1 branch. Adds a macro to
+      display related items in all content templates.
+      [stefan] [_ender_] [mrtopf]
+
+    - Merged uiteam-plip73-sanitize-short-names r6113:HEAD into 2.1 branch.
+      This removes "Allow editing of Short Names" from personal prefs and 
+      makes it a site-wide property.
+      [stefan] [alecm]
+
+    - Merged plip72-LiveSearch r6110:HEAD into 2.1 branch. Adds LiveSearch by
+      ObjectRealms to the search box.
+      [stefan] [_ender_] [mrtopf]
+
+    - Merged plip71-full-screen-mode r6124:HEAD into 2.1 branch. This adds a
+      document_action to enter full screen mode.
+      [stefan] [arjen] [elvix]
+
+    - Use 'structure' in sendto_template.pt. Email text doesn't need any
+      transforms.
+      [panjunyong]
+
+    - Added some knobs to jscalendar:
+    
+      - show_hm: show hour and minute dropbox or not 
+      
+      - show_jscalendar: show the jscalendar icon or not. If you hate the fat 
+        javascript, you can turn it off.
+        
+      - starting_year: starting year
+      
+      - ending_year: ending year
+      
+      - future_year: future years after this year
+      
+      - show_single_year: when year is fixed (min_year==max_year), sometimes
+        we don't need to show the single year.
+        [panjunyong]
+
+    - Old popup calender (Plone 1.x) works again.
+      [panjunyong]
+
+    - Don't install SecureMailHost if already installed.
+      [tiran]
+
+    - Added 'SUPPRESS_ATCT_INSTALLATION' environment var check before ATCT
+      installation. It can be set to 'YES' in order to suppress the
+      installation of ATContentTypes at portal creation time for e.g. 
+      migration tests.
+      [tiran]
+
+    - Use images in plone_tableless/colophon.pt just like the one in
+      plone_templates.
+      [panjunyong]
+
+    - Fixed ATContentTypes bug [ 1158950 ] ATTopic default view wrong.
+      PloneUtils.browseDefault wasn't playing nice with folders and template
+      mixin.
+      [tiran]
+
+   Alpha1 - Released March 12, 2005
 
     - No longer uncatalog the Members folder on installation so that the new
       NavTreePortlet (not included) works out of the box.
@@ -12,7 +479,8 @@ Plone 2.1 - Ms. Bumblebee - Alpha1 - Released March 12, 2005
       return a list of mimetype names.
       [tiran]
 
-    - Fixed discussion_reply.cpy to use portal_discussion.getDiscussionFor(obj)
+    - Fixed discussion_reply.cpy to use
+      portal_discussion.getDiscussionFor(obj)
       instead of accessing the talkback object directly.
       [tiran]
 

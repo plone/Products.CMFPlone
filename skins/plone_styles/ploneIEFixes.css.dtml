@@ -11,14 +11,6 @@
     width: auto;
 }
 
-/* Fix for IE float bug */
-* html .visualIEFloatFix {
-    float: left;
-    clear: both;
-    width: 99%;
-}
-
-
 input {
     margin-bottom: 1px; /* bug fix */
 }
@@ -61,20 +53,32 @@ body { /* These work in IE only, changes the look of the scrollbar + textareas *
     scrollbar-arrow-color: &dtml-globalFontColor;;
 }
 
-/* 
-** Fix for IE6 diseappearing float bug and
-** Nonexistant Class for fixing IE5.0
-**  
-** Do not change anything here, this
-** could cause IE 5.0 and/or 6.0 woes.
-**
-** It must be the last defintion, otherwise
-** the rest of the stylesheet will be commented
-** out for IE 5.0.
-*/
+/* Holly hack to kill the Peekaboo bug in IE - details at
+   http://www.positioniseverything.net/explorer/peekaboo.html
+   "* html" syntax is added to hide it from IE5/Mac. ~limi
+ */
 
-.fakeclass {content:"\"/*"}
+#floatholder, #float {
+    height: 1%;
+}
 
+/* Fix for IE float bug */
+* html .visualIEFloatFix,
+* html h1,
+* html h2,
+* html h3,
+* html h4,
+* html h5,
+* html h6,
+* html p,
+* html .documentDescription,
+* html .visualClear
+  {
+    height: 0.01%;
+}
+
+
+/*
 #content,
 #content p,
 .comment,
@@ -84,14 +88,14 @@ h3,
 h4,
 h5,
 h6,
-.documentDescription,
 .portalMessage,
 .link-parent,
 #documentContent dl,
 #documentContent ul,
 #documentContent ol,
 {
-    height: 100%;
+    height: 1%;
 }
+*/
 
 /* </dtml-with> */

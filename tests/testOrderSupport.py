@@ -182,6 +182,14 @@ class TestOrderSupport(PloneTestCase.PloneTestCase):
         self.assertEqual(self.folder.getObjectPosition('bar'), 1) # Did not move
         self.assertEqual(self.folder.getObjectPosition('foo'), 2)
 
+    def testIgnoreNonObjects(self):
+        #Fix for (http://plone.org/collector/3959) non contentish objects
+        #cause errors, we should just ignore them
+        self.folder.moveObjectsByDelta(['bar','blah'], -1)
+        self.assertEqual(self.folder.getObjectPosition('bar'), 0)
+        self.assertEqual(self.folder.getObjectPosition('foo'), 1)
+        self.assertEqual(self.folder.getObjectPosition('baz'), 2)
+
     def testMoveCMFObjectsOnly(self):
         # Plone speciality
         self.folder.manage_addProduct['OFSP'].manage_addDTMLMethod('wilma', file='')

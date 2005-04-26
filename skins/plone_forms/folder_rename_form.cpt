@@ -8,9 +8,9 @@
   <body>
 
     <div metal:fill-slot="main">
-      <metal:block tal:condition="not: request/ids | nothing">
+      <metal:block tal:condition="not: request/paths | nothing">
         <tal:block tal:replace="nothing"
-                   tal:condition="not: request/ids | nothing"
+                   tal:condition="not: request/paths | nothing"
                    tal:define="referer request/HTTP_REFERER;
                                existing_message python:referer.find('portal_status_message');
                                target_url python:test(existing_message!=-1, referer[:referer.find('?')], referer);
@@ -29,16 +29,22 @@
       <form name="folder_rename"
             action="folder_rename"
             method="post"
-            tal:define="items request/ids|nothing; 
+            tal:define="paths request/paths|nothing;
+                        items python:here.getObjectsFromPathList(paths);
                         errors options/state/getErrors;"
             tal:attributes="action template/getId"
             tal:condition="items">
 
         <input type="hidden" name="form.submitted" value="1" />
+        <input type="hidden" name="orig_template"
+               tal:condition="request/orig_template|nothing"
+               tal:attributes="value request/orig_template"/>
 
-        <fieldset tal:repeat="item items">
+        <fieldset tal:repeat="obj items">
 
-          <tal:block tal:define="obj python:getattr(here, item)">
+          <tal:block define="item obj/getId;
+                             item_path python:'/'.join(obj.getPhysicalPath());
+                             error python:errors and errors.get(item, None);">
 
             <legend>
               <span tal:replace="item" />
@@ -47,55 +53,68 @@
             </legend>
 
             <div class="field"
-                 tal:define="error python:errors and errors.get(item, None)"
                  tal:attributes="class python:test(error, 'field error', 'field')">
 
-              <label i18n:translate="label_new_short_name">
-                New Short Name
-              </label>
-
               <div tal:condition="error"
                    tal:content="error">Validation error output</div>
 
-                   <input type="hidden"
-                          name="ids:list"
-                          value="fav_999816073"
-                          tal:attributes="value item" />
+              <div tal:define="canRenameItem python:mtool.checkPermission('Delete objects', obj) and mtool.checkPermission('Copy objects', obj);"
+                   tal:attributes="class python:test(canRenameItem, nothing, 'error')">
 
-                   <input type="text"
-                          name="new_ids:list"
-                          value=""
-                          size="60"
-                          tabindex=""
-                          tal:attributes="value item;
-                                          tabindex tabindex/next;"
-                          />
+                <label i18n:translate="label_new_short_name">
+                  New Short Name
+                </label><div></div>
 
-            </div>
+                    <span tal:condition="not:canRenameItem"
+                          i18:translate="rename_item_not_allowed">
+                        You are not allowed to modify the id of this item.
+                    </span>
 
-            <div class="field"
-                 tal:define="error python:errors and errors.get(item, None)">
+                    <input type="hidden"
+                           name="paths:list"
+                           value="fav_999816073"
+                           tal:condition="canRenameItem"
+                           tal:attributes="value item_path" />
 
-              <label i18n:translate="label_new_title">
-                New Title
-              </label>
+                    <input type="text"
+                           name="new_ids:list"
+                           value=""
+                           size="60"
+                           tabindex=""
+                           tal:condition="canRenameItem"
+                           tal:attributes="value item;
+                                           tabindex tabindex/next;" />
 
-              <div tal:condition="error"
-                   tal:content="error">Validation error output</div>
+              </div>
 
-                   <input type="text"
-                          name="new_titles:list"
-                          value="title"
-                          size="60"
-                          tabindex=""
-                          tal:attributes="value obj/Title;
-                                          tabindex tabindex/next;" />
+              <div tal:define="canModifyItem python:mtool.checkPermission('Modify portal content', obj);"
+                   tal:attributes="class python:test(canModifyItem, nothing, 'error')">
+
+                <label i18n:translate="label_new_title">
+                  New Title
+                </label><div></div>
+
+                    <span tal:condition="not:canModifyItem"
+                          i18:translate="change_id_for_item_not_allowed">
+                        You are not allowed to modify the title of this item.
+                    </span>
+
+                    <input type="text"
+                           name="new_titles:list"
+                           value="title"
+                           size="60"
+                           tabindex=""
+                           tal:condition="canModifyItem"
+                           tal:attributes="value obj/Title;
+                                           tabindex tabindex/next;" />
+
+              </div>
+
             </div>
 
           </tal:block>
 
         </fieldset>
-
 
         <div class="formControls">
 

@@ -49,7 +49,7 @@ For more information:
 
 "Zope community":http://www.zope.org
 
-"CMF website":http://cmf.zope.org
+"CMF website":http://www.zope.org/Products/CMF/index.html
 
 There are "mailing lists":http://plone.org/development/lists and
 "recipe websites":http://www.zopelabs.com
@@ -288,23 +288,49 @@ class PloneGenerator(Portal.PortalGenerator):
 
         addDirectoryViews( sk_tool, 'skins', cmfplone_globals )
 
-    def setupForms(self, p):
-        """ This is being deprecated.  Please see CMFFormController """
-
+    def setupNavTree(self,p):
+        ''' sets up the default propertysheet for the navtree '''
         prop_tool = p.portal_properties
+        prop_tool.manage_addPropertySheet('navtree_properties', 'NavigationTree properties')
 
-        #set up properties for StatelessTreeNav
-        from Products.CMFPlone.StatelessTreeNav \
-             import setupNavTreePropertySheet
-        setupNavTreePropertySheet(prop_tool)
+        ntp=prop_tool.navtree_properties
+        ntp._setProperty('typesToList', ['Folder','Large Plone Folder'], 'lines')
+        ntp._setProperty('sortAttribute', 'getObjPositionInParent', 'string')
+        ntp._setProperty('sortOrder', 'asc', 'string')
+        ntp._setProperty('sitemapDepth', 3, 'int')
+        ntp._setProperty('includeTop', 1, 'boolean')
 
+        # TODO: needs to be supported
+        ntp._setProperty('topLevel', 0, 'int')
+        ntp._setProperty('idsNotToList', [] , 'lines')
+        ntp._setProperty('skipIndex_html',1,'boolean')
+        ntp._setProperty('showAllParents',1,'boolean')
+
+        # Canditates to be implemented
+        ntp._setProperty('showMyUserFolderOnly', 1, 'boolean')
+        ntp._setProperty('showFolderishSiblingsOnly', 1, 'boolean')
+        ntp._setProperty('showFolderishChildrenOnly', 1, 'boolean')
+        ntp._setProperty('showNonFolderishObject', 0, 'boolean')
+        ntp._setProperty('showTopicResults', 1, 'boolean')
+        ntp._setProperty('rolesSeeUnpublishedContent', ['Manager','Reviewer','Owner'] , 'lines')
+        ntp._setProperty('sortCriteria', ['isPrincipiaFolderish,desc']  , 'lines')
+        ntp._setProperty('parentMetaTypesNotToQuery',['TempFolder'],'lines')
+
+        # The following properties will not be supported anymore         
+        ntp._setProperty('batchSize', 30, 'int')
+        ntp._setProperty('croppingLength',256,'int')
+        ntp._setProperty('forceParentsInBatch',0,'boolean')
+        ntp._setProperty('rolesSeeContentsView', ['Manager','Reviewer','Owner'] , 'lines')
+        ntp._setProperty('rolesSeeHiddenContent', ['Manager',] , 'lines')
+        ntp._setProperty('bottomLevel', 65535 , 'int')
+ 
     def setupPlone(self, p):
         self.customizePortalTypes(p)
         self.customizePortalOptions(p)
         self.setupPloneWorkflow(p)
         self.setupPloneSkins(p)
         self.setupPortalContent(p)
-        self.setupForms(p)
+        self.setupNavTree(p)
 
         m = p.portal_migration
 

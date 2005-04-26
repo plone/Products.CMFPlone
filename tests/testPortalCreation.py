@@ -22,6 +22,13 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.workflow = self.portal.portal_workflow
         self.types = self.portal.portal_types
         self.cp = self.portal.portal_controlpanel
+        self.actions = self.portal.portal_actions
+        self.icons = self.portal.portal_actionicons
+        self.properties = self.portal.portal_properties
+        self.memberdata = self.portal.portal_memberdata
+        self.catalog = self.portal.portal_catalog
+        self.groups = self.portal.portal_groups
+        self.factory = self.portal.portal_factory
 
     def testPloneSkins(self):
         # Plone skins should have been set up
@@ -81,6 +88,19 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         # Members folder should have portal_type 'Large Plone Folder'
         members = self.membership.getMembersFolder()
         self.assertEqual(members._getPortalTypeName(), 'Large Plone Folder')
+
+    def testMembersFolderMeta(self):
+        # Members folder should have title 'Members'
+        members = self.membership.getMembersFolder()
+        self.assertEqual(members.getId(), 'Members')
+        self.assertEqual(members.Title(), 'Members')
+
+    def testMembersFolderIsIndexed(self):
+        # Members folder should be cataloged
+        res = self.catalog(id='Members')
+        self.assertEqual(len(res), 1)
+        self.assertEqual(res[0].getId, 'Members')
+        self.assertEqual(res[0].Title, 'Members')
 
     def testSecureMailHost(self):
         # MailHost should be of the SMH variety
@@ -149,11 +169,132 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
 
     def testNoFormProperties(self):
         # form_properties should have been removed
-        self.failIf('form_properties' in self.portal.portal_properties.objectIds())
+        self.failIf('form_properties' in self.properties.objectIds())
 
     def testNoNavigationProperties(self):
         # navigation_properties should have been removed
-        self.failIf('navigation_properties' in self.portal.portal_properties.objectIds())
+        self.failIf('navigation_properties' in self.properties.objectIds())
+
+    def testFullScreenAction(self):
+        # There should be a full_screen action
+        for action in self.actions.listActions():
+            if action.getId() == 'full_screen':
+                break
+        else:
+            self.fail("Actions tool has no 'full_screen' action")
+
+    def testFullScreenActionIcon(self):
+        # There should be a full_screen action icon
+        for icon in self.icons.listActionIcons():
+            if icon.getActionId() == 'full_screen':
+                break
+        else:
+            self.fail("Action icons tool has no 'full_screen' icon")
+
+    def testVisibleIdsSiteProperty(self):
+        # visible_ids should be a site property, not a memberdata property
+        self.failUnless(self.properties.site_properties.hasProperty('visible_ids'))
+        self.failIf(self.memberdata.hasProperty('visible_ids'))
+
+    def testFormToolTipsProperty(self):
+        # formtooltips should have been removed
+        self.failIf(self.memberdata.hasProperty('formtooltips'))
+
+    def testNavTreeProperties(self):
+        # navtree_properties should contain the new properties
+        self.failUnless(self.properties.navtree_properties.hasProperty('typesToList'))
+        self.failUnless(self.properties.navtree_properties.hasProperty('sortAttribute'))
+        self.failUnless(self.properties.navtree_properties.hasProperty('sortOrder'))
+        self.failUnless(self.properties.navtree_properties.hasProperty('sitemapDepth'))
+        self.failUnless(self.properties.navtree_properties.hasProperty('showAllParents'))
+
+    def testSitemapAction(self):
+        # There should be a sitemap action
+        for action in self.actions.listActions():
+            if action.getId() == 'sitemap':
+                break
+        else:
+            self.fail("Actions tool has no 'sitemap' action")
+
+    def testCSSRegistry(self):
+        # We should have portal_css and portal_javascripts tools
+        self.failUnless(hasattr(self.portal, 'portal_css'))
+        self.failUnless(hasattr(self.portal, 'portal_javascripts'))
+
+    def testUnfriendlyTypesProperty(self):
+        # We should have an unfriendly_types property
+        self.failUnless(self.properties.site_properties.hasProperty('unfriendly_types'))
+        self.failUnless('Plone Site' in self.properties.site_properties.getProperty('unfriendly_types'))
+
+    def testNonDefaultPageTypes(self):
+        # We should have a non_default_page_types property
+        self.failUnless(self.properties.site_properties.hasProperty('non_default_page_types'))
+        self.failUnless('Folder' in self.properties.site_properties.getProperty('non_default_page_types'))
+        self.failUnless('Large Plone Folder' in self.properties.site_properties.getProperty('non_default_page_types'))
+
+    def testNoMembersAction(self):
+        # There should not be a Members action
+        for action in self.actions.listActions():
+            if action.getId() == 'Members':
+                self.fail("Actions tool still has 'Members' action")
+
+    def testNoNewsAction(self):
+        # There should not be a news action
+        for action in self.actions.listActions():
+            if action.getId() == 'news':
+                self.fail("Actions tool still has 'News' action")
+
+    def testNewsFolder(self):
+        # The portal should contain news folder
+        self.failUnless('news' in self.portal.objectIds())
+        news = getattr(self.portal.aq_base, 'news')
+        self.assertEqual(news._getPortalTypeName(), 'Large Plone Folder')
+        self.assertEqual(news.Title(), 'News')
+        self.assertEqual(news.Description(), 'Site News')
+        self.assertEqual(list(news.getProperty('default_page')), ['news_listing','index_html'])
+        self.assertEqual(list(news.getImmediatelyAddableTypes()),['News Item'])
+        self.assertEqual(list(news.getLocallyAllowedTypes()),['News Item'])
+        self.assertEqual(news.getConstrainTypesMode(), 1)
+
+    def testNewsFolderIsIndexed(self):
+        # News folder should be cataloged
+        res = self.catalog(id='news')
+        self.assertEqual(len(res), 1)
+        self.assertEqual(res[0].getId, 'news')
+        self.assertEqual(res[0].Title, 'News')
+        self.assertEqual(res[0].Description, 'Site News')
+
+    def testObjectButtonActions(self):
+        installed = [(a.getId(), a.getCategory()) for a in self.actions.listActions()]
+        self.failUnless(('cut', 'object_buttons') in installed)
+        self.failUnless(('copy', 'object_buttons') in installed)
+        self.failUnless(('paste', 'object_buttons') in installed)
+        self.failUnless(('delete', 'object_buttons') in installed)
+
+    def testBatchActions(self):
+        installed = [(a.getId(), a.getCategory()) for a in self.actions.listActions()]
+        self.failUnless(('batch', 'batch') in installed)
+
+    def testContentsTabDisabled(self):
+        for a in self.actions.listActions():
+            if a.getId() == 'contents':
+                self.failIf(a.visible)
+                
+    def testDefaultGroupsAdded(self):
+        self.failUnless('Administrators' in self.groups.listGroupIds())
+        self.failUnless('Reviewers' in self.groups.listGroupIds())
+
+    def testDefaultTypesInPortalFactory(self):
+        types = self.factory.getFactoryTypes().keys()
+        for metaType in ('Document', 'Event', 'File', 'Folder', 'Image', 
+                         'Folder', 'Large Plone Folder', 'Link', 'News Item',
+                         'Topic'):
+            self.failUnless(metaType in types)
+
+    def testAllDependenciesMet(self):
+        from Products.CMFPlone.setup import dependencies
+        msgs = [x for x in dependencies.messages if not x['optional']]
+        self.failUnlessEqual(msgs, [])
 
 
 class TestPortalBugs(PloneTestCase.PloneTestCase):

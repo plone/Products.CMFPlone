@@ -32,6 +32,10 @@ class TestGroupsTool(PloneTestCase.PloneTestCase):
         self.prefix = self.acl_users.getGroupPrefix()
         self.groups.groupWorkspacesCreationFlag = 0
 
+        # Nuke Administators and Reviewers groups added in 2.1a2 migrations
+        # (and any other migrated-in groups) to avoid test confusion
+        self.groups.removeGroups(self.groups.listGroupIds())
+
     def testAddGroup(self):
         self.groups.addGroup('foo', [], [])
         self.assertEqual(self.groups.listGroupIds(), ['foo'])
@@ -161,7 +165,12 @@ class TestGroupWorkspacesFolder(PloneTestCase.PloneTestCase):
         self.groups = self.portal.portal_groups
         self.prefix = self.acl_users.getGroupPrefix()
         self.groups.groupWorkspacesCreationFlag = 0
+        # Note that this is not a proper portal type (anymore) but we don't care
         self.portal.manage_addPortalFolder(self.groups.getGroupWorkspacesFolderId())
+
+        # Nuke Administators and Reviewers groups added in 2.1a2 migrations
+        # (and any other migrated-in groups) to avoid test confusion
+        self.groups.removeGroups(self.groups.listGroupIds())
 
     def testGetGroupWorkspacesFolder(self):
         self.failIfEqual(self.groups.getGroupWorkspacesFolder(), None)

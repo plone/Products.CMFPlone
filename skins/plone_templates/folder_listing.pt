@@ -29,55 +29,105 @@
         </div>
 
         <metal:listingmacro define-macro="listing">
-        <tal:foldercontents define="folderContents python:here.getFolderListingFolderContents(suppressHiddenFiles=1)">
+        <tal:foldercontents define="contentFilter contentFilter|request/contentFilter|nothing;
+                            limit_display limit_display|request/limit_display|nothing;
+                            more_url more_url|request/more_url|string:folder_contents;
+                            folderContents python:here.getFolderContents(contentFilter=contentFilter);
+                            over_limit python: limit_display and len(folderContents) > limit_display;
+                            folderContents python: (over_limit and folderContents[:limit_display]) or folderContents;">
         <tal:listing condition="folderContents"
-                     define="global getObjSize nocall:here/getObjSize;
-                             global toLocalizedTime nocall:here/toLocalizedTime;">
+                     define="global toLocalizedTime nocall:here/toLocalizedTime;
+                             types python:here.portal_types.listTypeTitles();">
 
             <dl>
-	        <tal:entry tal:repeat="obj folderContents">
+	        <tal:entry tal:repeat="item folderContents">
+                <tal:block tal:define="item_url item/getURL|item/absolute_url;
+                                       item_id item/getId|item/id;
+                                       item_title_or_id python: item.Title or item_id; 
+                                       item_description item/Description;
+                                       item_type item/portal_type;
+                                       item_type_title python:types[item_type] or item_type;
+                                       item_typeinfo python: here.portal_types.getTypeInfo(item_type);
+                                       item_modified item/ModificationDate;
+                                       item_wf_state item/review_state;
+                                       item_wf_state_class python:here.getStateClassName(item_wf_state);
+                                       item_icon python:portal_url+'/'+ item_typeinfo.getIcon();
+                                       item_creators item/Creators|item/Creator;
+                                       item_creators python:test(same_type(item_creators,[]) or same_type(item_creators,()), item_creators, [item_creators]);
+                                       item_start item/start/ISO|item/StartDate|nothing;
+                                       item_end item/end/ISO|item/EndDate|nothing;
+                                   ">
 
-                <dt metal:define-macro="listitem"
-                    tal:define="url python: obj.absolute_url()+test(obj.isPrincipiaFolderish,'/','');
-                                icon python: obj.getIcon(1)">
-                <a href="#" tal:attributes="href url">
-                        <img src="" alt=""
-                                        tal:attributes="src string:${utool}/${icon};alt here/title_or_id" />
-                </a>
-
-                <a href="#" tal:condition="python: obj.portal_type not in ['Link', 'Image']"
-                            tal:attributes="href url"
-                            tal:content="obj/title_or_id" />
-
-                <a href="#" tal:condition="python: obj.portal_type == 'Image'"
-                            tal:attributes="href python: url + '/view'"
-                            tal:content="obj/title_or_id" />
-
-                <a href="#" 
-                   tal:condition="python: obj.portal_type == 'Link'"
-                   tal:attributes="href obj/getRemoteUrl;"
-                   class="link-plain"
-                   tal:content="obj/title_or_id" />
-
-                <span class="discreet"
-                      tal:condition="python: obj.portal_type == 'Event'">
-    
-                    &nbsp;
-                    <span tal:replace="obj/location">Oslo</span>,
-                    <span tal:replace="python: obj.start().ISO()">from date</span> -
-                    <span tal:replace="python: obj.end().ISO()">to date</span>
+                    <tal:comment replace="nothing"> 
+                         * Create Creators metadata in the catalog
+                         * Is that necessary? It might be too much information for a simple listing? (alecm)
+                    </tal:comment>
+                       
+                    <dt metal:define-macro="listitem">
                     
-                </span>
-                </dt>
-
-                <dd tal:define="description obj/Description">
-                    <span tal:omit-tag="" tal:condition="not:description"> 
-                        &nbsp; 
-                    </span> 
-                    <span tal:omit-tag="" tal:content="description"> 
-                        description 
-                    </span> 
-                </dd>
+                        <tal:to_view condition="python:item_type in ['File', 'Image']"
+                                     define="url string:${item_url}/view">
+                            <a href="#" tal:attributes="href url">
+                                <img src="" alt=""
+                                     tal:attributes="src item_icon;alt item_title_or_id" />
+                            <a href="#" tal:attributes="href url"
+                                        tal:content="item_title_or_id" />
+                            </a>
+                        </tal:to_view>
+                        
+                        <tal:to_default condition="python:item_type not in ['File', 'Image', 'Link']">
+                            <a href="#" tal:attributes="href item_url">
+                                <img src="" alt=""
+                                     tal:attributes="src item_icon;alt item_title_or_id" />
+                            </a>
+                            <a href="#" tal:attributes="href item_url"
+                                        tal:content="item_title_or_id" />
+                        </tal:to_default>
+                        
+                        <tal:to_external condition="python:item_type == 'Link'">
+                            <a href="#" tal:attributes="href item/getRemoteUrl">
+                                <img src="" alt=""
+                                     tal:attributes="src string:item_icon;alt item_title_or_id" />
+                            </a>
+                            <a href="#" tal:attributes="href item/getRemoteUrl"
+                                        tal:content="item_title_or_id" />
+                        </tal:to_external>
+                    </dt>
+                    <dd class="documentByLine" style="text-align:left; text-transform:lowercase;margin-bottom:0em;">
+                        <span i18n:translate="" tal:content="item_type_title"/>
+                        <tal:creators tal:condition="item_creators">
+                            <span i18n:translate="box_created_by">
+                                Created by
+                            </span>
+                            <span tal:replace="python: ', '.join(item_creators)"/>
+                        </tal:creators>
+                        <span i18n:translate="box_last_modified">
+                          Last modified
+                        </span>
+                        <span tal:replace="python:here.toLocalizedTime(item_modified,long_format=1)">
+                          August 16, 2001 at 23:35:59
+                        </span>                        
+                    </dd>
+                    <dd tal:condition="python: item_type == 'Event'" 
+                        class="documentByLine" style="text-align:left; text-transform:lowercase;margin-bottom:0em;">
+                        <span tal:replace="item/location">Oslo</span>,
+                        <span tal:replace="python:here.toLocalizedTime(item_start,long_format=1)">from date</span> -
+                        <span tal:replace="python:here.toLocalizedTime(item_end,long_format=1)">to date</span>
+                    </dd>
+                    <metal:description define-slot="description_slot">
+                        <tal:comment replace="nothing"> 
+                            *Place custom listing info for custom types here
+                        </tal:comment>
+                    </metal:description>
+                    <dd>
+                        <span tal:omit-tag="" tal:condition="not:item_description"> 
+                            &nbsp; 
+                        </span> 
+                        <span tal:omit-tag="" tal:content="item_description"> 
+                            description 
+                        </span> 
+                    </dd>
+                </tal:block>
 	        </tal:entry>
             </dl>
 

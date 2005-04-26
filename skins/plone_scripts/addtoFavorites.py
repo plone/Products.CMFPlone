@@ -13,8 +13,8 @@ view_url = '%s/%s' % (context.absolute_url(),
                      )
 
 if not homeFolder:
-    msg = 'portal_status_message=Can\'t access home folder. Favorite is not added'
-    return RESPONSE.redirect('%s?%s' % (view_url, msg))
+    msg = "Can't access home folder. Favorite is not added"
+    return RESPONSE.redirect('%s?portal_status_message=%s' % (view_url, msg))
 
 if not hasattr(homeFolder, 'Favorites'):
     homeFolder.invokeFactory('Folder', id='Favorites')
@@ -24,5 +24,7 @@ new_id='fav_' + str(int( context.ZopeTime()))
 myPath=context.portal_url.getRelativeUrl(context)
 targetFolder.invokeFactory('Favorite', id=new_id, title=context.TitleOrId(), remote_url=myPath)
 
-msg = 'portal_status_message=\'%s\' has been added to your Favorites' % context.title_or_id()
-return RESPONSE.redirect('%s?%s' % (view_url, msg))
+msg = context.translate("${title} has been added to your Favorites.",
+                        {'title': context.title_or_id()})
+
+return RESPONSE.redirect('%s?portal_status_message=%s' % (view_url, msg))

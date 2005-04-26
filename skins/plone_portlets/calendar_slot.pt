@@ -116,9 +116,15 @@
     <!-- The calendar date picker. -->
     <div metal:define-macro="calendarDatePickerBox" tal:define="
 	 tabindex tabindex/next|tabindex|nothing;
+         show_hm show_hm | python:1;
+         starting_year starting_year | nothing;
+         ending_year ending_year | nothing;
+         future_years future_years | nothing;
+         show_single_year show_single_year | python: 1;
+         show_jscal show_jscal | python: 1;
 	 input_id string:${formname}_${inputname}_${tabindex};
          use_ampm python:site_properties.getProperty('localLongTimeFormat').find('%p') >= 0;
-         values   python:here.date_components_support(inputvalue, use_ampm);
+         values   python:here.date_components_support(inputvalue, use_ampm, starting_year, ending_year, future_years);
          years values/years;
          months values/months;
          days values/days;
@@ -130,9 +136,9 @@
 
       <input type="hidden" tal:attributes="name string:$inputname;
 	     id input_id;
-	     value inputvalue;" />
+	     value python:not show_hm and inputvalue and inputvalue.strftime('%Y/%m/%d') or inputvalue"/>
 
-      <span>
+      <span tal:condition="python:len(years)!=1">
 	<select name="ic_year"
 		id="ic_year"
 		size="1"
@@ -152,7 +158,22 @@
 	</select>
       </span>
 
-      <span i18n:translate="date_separator">/</span>
+      <span tal:condition="python:len(years)==1">
+        <input name="ic_year"
+               type="hidden"
+                id="ic_year"
+                size="1"
+                value="00"
+                tal:attributes="tabindex tabindex;
+                name string:${inputname}_year;
+                id string:${input_id}_year;
+                value python:years[0]['value']"/>
+        <span tal:content="python:years[0]['value']"
+              tal:condition="show_single_year"></span>
+      </span>
+
+      <span i18n:translate="date_separator"
+            tal:condition="not: python: years[0]['value'] and not show_single_year">/</span>
 
       <span>
 	<select name="ic_month"
@@ -196,9 +217,10 @@
 	</select>
       </span>
 
-      <a tal:attributes="onclick string:return showJsCalendar('${input_id}_month', '$input_id', '${input_id}_year', '${input_id}_month', '${input_id}_day', '${input_id}_hour', '${input_id}_minute', $yearStart, $yearEnd);"><img tal:replace="structure here/popup_calendar.gif" /></a>
+      <a tal:condition="show_jscal"
+         tal:attributes="onclick string:return showJsCalendar('${input_id}_month', '$input_id', '${input_id}_year', '${input_id}_month', '${input_id}_day', '${input_id}_hour', '${input_id}_minute', $yearStart, $yearEnd);"><img tal:replace="structure here/popup_calendar.gif" /></a>
 
-      <span>
+      <span tal:condition="show_hm">
 	<select name="ic_hour"
 		id="ic_hour"
 		size="1"
@@ -218,9 +240,21 @@
 	</select>
       </span>
 
-      <span i18n:translate="time_separator">:</span>
+      <span tal:condition="not: show_hm">
+        <input name="ic_hour"
+               type="hidden"
+                id="ic_hour"
+                size="1"
+                value="00"
+                tal:attributes="tabindex tabindex;
+                name string:${inputname}_hour;
+                id string:${input_id}_hour;"/>
+      </span>
 
-      <span>
+      <span i18n:translate="time_separator"
+            tal:condition="show_hm">:</span>
+
+      <span tal:condition="show_hm">
 	<select name="ic_minute"
 		id="ic_minute"
 		size="1"
@@ -240,7 +274,19 @@
 	</select>
       </span>
 
-      <span tal:condition="use_ampm">
+      <span tal:condition="not: show_hm">
+        <input  name="ic_minute"
+                type="hidden"
+                id="ic_minute"
+                size="1"
+                value="00"
+                tal:attributes="tabindex tabindex;
+                name string:${inputname}_minute;
+                id string:${input_id}_minute;"/>
+      </span>
+
+
+      <span tal:condition="python: use_ampm and show_hm">
         <select name="ic_ampm"
                 id="ic_ampm"
                 size="1"
@@ -260,8 +306,9 @@
         </select>
       </span>
 
-      <span tal:condition="not: use_ampm">
-        <hidden name="ic_ampm"
+      <span tal:condition="python:not use_ampm or not show_hm">
+        <input name="ic_ampm"
+                type="hidden"
                 id="ic_ampm"
                 size="1"
                 tal:attributes="tabindex tabindex;
@@ -280,12 +327,12 @@
 	 year python:request.get('year', DateTime().year());
 	 prevMonthTime python:here.getPreviousMonth(month, year);
 	 nextMonthTime python:here.getNextMonth(month, year);
-	 weeks python:here.portal_calendar.getWeeksList(month=month, year=year);
-	 input_id string:${formname}_${inputname}_${tabindex};">
+	 weeks python:here.portal_calendar.getWeeksList(month=month, year=year);">
 
-      <table cellpadding="2" cellspacing="0" border="0" class="calendar" id="thecalendar">
+      <table cellpadding="2" cellspacing="0" border="0" class="ploneCalendar" id="thePloneCalendar">
+        <thead>
 	<tr tal:define="calendarurl python:'%s?input_id=%s' % (path('template/absolute_url'),input_id) ">
-	  <th>
+	  <th id="calendar-previous">
 	    <a href="" tal:attributes="href python:'%s&amp;month:int=%d&amp;year:int=%d' % (calendarurl,prevMonthTime.month(),prevMonthTime.year())">&laquo;</a>
 	  </th>
 	  <th colspan="5" tal:define="date string:$month/1/$year">
@@ -297,16 +344,18 @@
 	    </span>
 	  </th>
 
-	  <th>
+	  <th id="calendar-next">
 	    <a href="" tal:attributes="href python:'%s&amp;month:int=%d&amp;year:int=%d' % (calendarurl,nextMonthTime.month(),nextMonthTime.year())">&raquo;</a>
 	  </th>
 	</tr>
 
-	<tr tal:define="weekdays here/portal_calendar/getDays">
+	<tr tal:define="weekdays here/portal_calendar/getDays" class="weekdays">
 	  <tal:block repeat="weekday weekdays">
-	    <td class="weekdays" i18n:translate="" tal:content="weekday">Su</td>
+	    <td i18n:translate="" tal:content="weekday">Su</td>
 	  </tal:block>
 	</tr>
+        </thead>
+        <tbody>
 	<tr tal:repeat="week weeks">
 	  <tal:block define="days week">
 	    <tal:block repeat="day days" tal:omit-tag="">
@@ -323,11 +372,54 @@
 	    </tal:block>
 	  </tal:block>
 	</tr>
+        </tbody>
 
       </table>
 
     </div>
     <!-- end of the calendar datepicker box -->
+
+
+<!-- the old popup calendar from Plone 1 -->
+<div metal:define-macro="calendarDatePickerBoxOld" tal:define="
+           portal_url here/portal_url;
+           tabindex tabindex/next|tabindex|nothing;
+           formname formname | string:form;
+           input_id string:${formname}_${inputname}_${tabindex}">
+
+ <comment tal:condition="nothing">
+
+ This template relies on the presence of an 'inputname' variable,
+ which contains the name of the element whose value should be
+ altered when the calendar returns a result.
+ Similarly it requires a 'formname' variable - the name
+ of the form in which this input element resides.
+ Also it should be provided with inputvalue which is the
+ current or default value for the field.
+
+ onfocus and/or onblur are setup as attributes if availabe.
+
+ tabindex is setup is provided.
+
+ </comment>
+
+  <input type="text" tal:attributes="name string:$inputname;
+                                   id input_id;
+                                   value inputvalue;
+                                   onfocus onfocus|nothing;
+                                   onblur onblur|nothing;
+                                   size inputsize|nothing;
+                                   tabindex tabindex;
+                                   alt string:$inputname;
+                                   title string:$inputname"
+                                   />
+
+  <a href="" tal:attributes="onclick string:window.open('$portal_url/calendar_popup?input_id=${input_id}','cal','dependent=yes,width=180,height=180,screenX=200,screenY=300,titlebar=no');; return false">
+    <img tal:replace="structure here/popup_calendar.gif" />
+  </a>
+
+</div>
+<!-- end of the old popup calendar from Plone 1 -->
 
   </body>
 

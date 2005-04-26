@@ -5,6 +5,7 @@ from Products.CMFCore.MemberDataTool import CleanupTemp
 from Products.CMFPlone import ToolNames
 from Globals import InitializeClass
 from ZPublisher.Converters import type_converters
+from zExceptions import BadRequest
 from AccessControl import ClassSecurityInfo
 from Acquisition import aq_base
 from Products.BTreeFolder2.BTreeFolder2 import BTreeFolder2
@@ -230,10 +231,10 @@ class MemberData(BaseData):
             if registration:
                 failMessage = registration.testPropertiesValidity(properties, member)
                 if failMessage is not None:
-                    raise 'Bad Request', failMessage
+                    raise BadRequest, failMessage
             member.setMemberProperties(properties)
         else:
-            raise 'Bad Request', 'Not logged in.'
+            raise BadRequest, 'Not logged in.'
 
 
     security.declarePublic('getProperty')

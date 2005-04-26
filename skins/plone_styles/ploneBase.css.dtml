@@ -1,0 +1,259 @@
+/*
+** Plone style sheet - Base Elements
+**
+** by Alexander Limi - http://www.plonesolutions.com
+**
+** Style sheet documentation can be found at http://plone.org/documentation
+**
+** You should preferrably use ploneCustom.css to add your own CSS classes and to
+** customize your portal, as these are the base fundaments of Plone, and will
+** change and be refined in newer versions. Keeping your changes in
+** ploneCustom.css will make it easier to upgrade.
+**
+** Feel free to use whole or parts of this for your own designs, but give credit
+** where credit is due.
+**
+*/
+
+/* <dtml-var "enableHTTPCompression(request=REQUEST, debug=1, css=1)"> (this is for http compression) */
+/* <dtml-with base_properties> (do not remove this :) */
+/* <dtml-call "REQUEST.set('portal_url', portal_url())"> (not this either :) */
+
+
+body {
+    font: &dtml-fontBaseSize; <dtml-var fontFamily>;
+    background-color: &dtml-backgroundColor;;
+    color: &dtml-fontColor;;
+    margin: 0;
+    padding: 0;
+}
+
+table {
+    font-size: 100%;
+}
+
+a {
+    text-decoration: none;
+    color: &dtml-linkColor;;
+    background-color: transparent;
+}
+img {
+    border: none;
+    vertical-align: middle;
+}
+p {
+    margin: 0.5em 0em 1em 0em;
+    line-height: 1.5em;
+}
+p a {
+    text-decoration: underline;
+}
+p a:visited {
+    color: &dtml-linkVisitedColor;;
+    background-color: transparent;
+}
+p a:active {
+    color: &dtml-linkActiveColor;;
+    background-color: transparent;
+}
+p img {
+    border: 0;
+    margin: 0;
+}
+
+hr {
+    border: 0;
+    height: &dtml-borderWidth;;
+    color: &dtml-globalBorderColor;;
+    background-color: &dtml-globalBorderColor;;
+    margin: 0.5em 0 1em 0;
+}
+
+
+h1, h2, h3, h4, h5, h6 {
+    color: &dtml-fontColor;;
+    background-color: transparent;
+    font-family: &dtml-var headingFontFamily;;
+    font-weight: normal;
+    margin: 0;
+    padding-top: 0.5em;
+    border-bottom: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+}
+
+h1 a,
+h2 a,
+h3 a,
+h4 a,
+h5 a,
+h6 a {
+    color: &dtml-fontColor; ! important;
+}
+
+h1 {
+    font-size: 160%;
+    padding-right: 4em;
+}
+
+h2 {
+    font-size: 150%;
+}
+
+h3 {
+    font-size: 140%;
+    border-bottom: none;
+    font-weight: bold;
+}
+
+h4 {
+    font-size: 120%;
+    border-bottom: none;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    border-bottom: none;
+    font-weight: bold;
+}
+
+h6 {
+    font-size: &dtml-fontSmallSize;;
+    border-bottom: none;
+    font-weight: bold;
+}
+
+
+ul {
+    line-height: 1.5em;
+    margin: 0.5em 0 0 1.5em;
+    padding: 0;
+    list-style-image: url(&dtml-portal_url;/bullet.gif);
+    list-style-type: square;
+}
+
+ol {
+    line-height: 1.5em;
+    margin: 0.5em 0 0 1.5em;
+    padding: 0;
+    list-style-image: none;
+}
+
+ul a, ol a {
+    text-decoration: underline;
+}
+
+li {
+    margin-bottom: 1em;
+}
+
+dt {
+    font-weight: bold;
+}
+
+dt a {
+    text-decoration: underline;
+}
+
+dd {
+    line-height: 1.5em;
+    margin-bottom: 1em;
+}
+dd a {
+    text-decoration: underline;
+}
+
+dd.link a {
+    text-decoration: none;
+    color: &dtml-fontColor;;
+}
+
+fieldset {
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    margin: 1em 0em 1em 0em;
+    padding: 0em 1em 1em 1em;
+    line-height: 1.5em;
+    width: auto;
+}
+legend {
+    background: &dtml-backgroundColor;;
+    padding: 0.5em;
+    font-size: 90%;
+}
+
+form {
+    border: none;
+    margin: 0;
+}
+textarea {
+    font: 100% Monaco, "Courier New", Courier, monospace;
+    border: &dtml-borderWidth; solid &dtml-globalBorderColor;;
+    color: &dtml-inputFontColor;;
+    background-color: white;
+    width: 100%;
+}
+
+textarea.proportional {
+    font: 100% <dtml-var fontFamily>;
+}
+
+input {
+    font-family: <dtml-var fontFamily>;
+    visibility: visible;
+    border: &dtml-borderWidth; solid &dtml-globalBorderColor;;
+    color: &dtml-inputFontColor;;
+    background-color: white;
+    vertical-align: middle;
+}
+select {
+    border: &dtml-borderWidth; solid &dtml-globalBorderColor;;
+    color: &dtml-inputFontColor;;
+    background-color: White;
+    vertical-align: top;
+}
+abbr, acronym, .explain {
+    border-bottom: &dtml-borderWidth; dotted &dtml-fontColor;;
+    color: &dtml-fontColor;;
+    background-color: transparent;
+    cursor: help;
+}
+q {
+    font-family: Times, "Times New Roman", serif;
+    font-style: italic;
+    font-size: 120%;
+}
+blockquote {
+    font-family: Times, "Times New Roman", serif;
+    font-style: italic;
+    font-size: 120%;
+}
+code {
+    font-family: Monaco, "Courier New", Courier, monospace;
+    font-size: 120%;
+    color: &dtml-fontColor;;
+    background-color: &dtml-globalBackgroundColor;;
+    padding: 0 0.1em;
+}
+pre {
+    font-family: Monaco, "Courier New", Courier, monospace;
+    font-size: 120%;
+    padding: 1em;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    color: &dtml-fontColor;;
+    background-color: &dtml-globalBackgroundColor;;
+    overflow: auto;
+}
+.pre a {
+    text-decoration: underline;
+}
+
+ins {
+    color: green;
+    text-decoration: none;
+}
+
+del {
+    color: red;
+    text-decoration: line-through;
+}
+
+/* </dtml-with> */

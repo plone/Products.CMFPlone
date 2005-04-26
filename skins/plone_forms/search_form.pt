@@ -140,7 +140,8 @@
                 <input type="hidden" name="created.range:record" value="min" />
             </div>
     
-            <div class="field" tal:define="portal_types portal/portal_types;">
+            <div class="field" tal:define="plone_utils portal/plone_utils;
+                                           portal_types portal/portal_types;">
                 <label i18n:translate="label_item_type">Item type</label>
 
                 <div class="formHelp" i18n:translate="help_search_item_type">
@@ -164,7 +165,7 @@
                     </label>
                 </span>
                 <br />
-                <tal:contenttypes repeat="type python:portal_types.listContentTypes()">
+                <tal:contenttypes repeat="type python:plone_utils.getUserFriendlyTypes()">
                     <tal:tabindex define="tabindex tabindex/next">
                     <input type="checkbox"
                            name="portal_type:list"

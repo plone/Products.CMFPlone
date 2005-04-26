@@ -1,0 +1,444 @@
+/*
+** Plone style sheet - Public-facing Elements
+**
+** by Alexander Limi - http://www.plonesolutions.com
+**
+** Style sheet documentation can be found at http://plone.org/documentation
+**
+** You should preferrably use ploneCustom.css to add your own CSS classes and to
+** customize your portal, as these are the base fundaments of Plone, and will
+** change and be refined in newer versions. Keeping your changes in
+** ploneCustom.css will make it easier to upgrade.
+**
+** Feel free to use whole or parts of this for your own designs, but give credit
+** where credit is due.
+**
+*/
+
+/* <dtml-var "enableHTTPCompression(request=REQUEST, debug=1, css=1)"> (this is for http compression) */
+/* <dtml-with base_properties> (do not remove this :) */
+/* <dtml-call "REQUEST.set('portal_url', portal_url())"> (not this either :) */
+
+#visual-portal-wrapper {
+    margin: 0;
+    padding: 0;
+}
+
+
+/* Logo properties */
+
+#portal-logo {
+    background: url(&dtml-portal_url;/&dtml-logoName;) no-repeat;
+    border: 0;
+    margin: 0.75em 0em 0.75em 1.5em;
+    padding: 0;
+}
+#portal-logo a {
+    display: block;
+    text-decoration: none;
+    overflow: hidden;
+    border: 0;
+    margin: 0;
+    padding: 0;
+    padding-top: <dtml-var "_[logoName].height">px;
+    height: 0px !important;
+    height /**/: <dtml-var "_[logoName].height">px;
+    width: <dtml-var "_[logoName].width">px;
+    cursor: pointer;
+}
+
+#portal-skinswitcher {
+    /* The skin switcher at the top, only shows up if you have multiple skins available */
+
+}
+
+#portal-skinswitcher a {
+    display: block;
+    float: left;
+}
+
+#portal-top {
+    /* Top section */
+    margin: 0;
+    padding: 0;
+    background-color: transparent;
+}
+
+
+/* Site-wide action menu - font size, contact, index, sitemap etc */
+#portal-siteactions {
+    background-color: transparent;
+    white-space: nowrap;
+    list-style: none;
+    margin: 1px 0 0 0;
+    height: auto;
+    line-height: normal;
+    float: right;
+    padding: 3px 2em 3px 0;
+}
+#portal-siteactions li {
+    display: inline;
+}
+#portal-siteactions li a {
+    background-color: transparent;
+    border: 1px solid &dtml-backgroundColor;;
+    color: &dtml-discreetColor;;
+    height: auto;
+    padding: 0.2em;
+    margin-right: 0.2em;
+    text-decoration: none;
+    text-transform: &dtml-textTransform;;
+}
+#portal-siteactions li.selected a {
+    background-color: &dtml-globalBackgroundColor;;
+    color: &dtml-globalFontColor;;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+}
+#portal-siteactions li a:hover {
+    background-color: &dtml-globalBackgroundColor;;
+    color: &dtml-globalFontColor;;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+}
+
+
+
+/* searchbox style and positioning */
+#portal-searchbox {
+    float: right;
+    clear: right;
+    background-color: transparent;
+    margin: 1.5em 0 0 0;
+    padding: 0 2em 0 0;
+    text-align: right;
+    text-transform: &dtml-textTransform;;
+    white-space: nowrap;
+    z-index: 2;
+}
+#portal-globalnav {
+    /* Navigational Plone Tabs(tm). The power of CSS runs strong in these :) */
+    background-color: transparent;
+    padding: 0em 0em 0em 2em;
+    white-space: nowrap;
+    list-style: none;
+    margin: 0;
+    height: auto;
+    line-height: normal;
+}
+#portal-globalnav li {
+    display: inline;
+}
+#portal-globalnav li a {
+    /* The normal, unselected tabs. They are all links */
+    background-color: transparent;
+    border-color: &dtml-globalBorderColor;;
+    border-width: &dtml-borderWidth;;
+    border-style: &dtml-borderStyle; &dtml-borderStyle; none &dtml-borderStyle;;
+    color: &dtml-globalFontColor;;
+    height: auto;
+    margin-right: 0.5em;
+    padding: 0em 1.5em;
+    text-decoration: none;
+    text-transform: &dtml-textTransform;;
+}
+#portal-globalnav li.selected a {
+    /* The selected tab. There's only one of this */
+    background-color: &dtml-globalBackgroundColor;;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    border-bottom: &dtml-globalBackgroundColor; &dtml-borderWidth; &dtml-borderStyle;;
+    color: &dtml-globalFontColor;;
+}
+#portal-globalnav li a:hover {
+    background-color: &dtml-globalBackgroundColor;;
+    border-color: &dtml-globalBorderColor;;
+    border-bottom-color: &dtml-globalBackgroundColor;;
+    color: &dtml-globalFontColor;;
+}
+#portal-personaltools {
+    /* Bar with personalized menu (user preferences, favorites etc) */
+    background-color: &dtml-globalBackgroundColor;;
+    border-top-color: &dtml-globalBorderColor;;
+    border-top-style: &dtml-borderStyle;;
+    border-top-width: &dtml-borderWidth;;
+    border-bottom-color: &dtml-globalBorderColor;;
+    border-bottom-style: &dtml-borderStyle;;
+    border-bottom-width: &dtml-borderWidth;;
+    line-height: 1.3em;
+    color: &dtml-fontColor;;
+    padding: 0em 3em 0em 3em;
+    margin: 0;
+    text-align: right;
+    text-transform: &dtml-textTransform;;
+    list-style: none;
+}
+#portal-personaltools .portalUser {
+    background: transparent url(&dtml-portal_url;/user.gif) center left no-repeat;
+    padding-left: 15px;
+}
+
+#portal-personaltools .portalNotLoggedIn {
+    color: &dtml-fontColor;;
+    padding: 0;
+    background: transparent;
+    background-image: none;
+} /* Used on all descriptions relevant to those not logged in */
+
+#portal-personaltools li {
+    background: transparent url(&dtml-portal_url;/linkOpaque.gif) center left no-repeat;
+    padding-left: 8px;
+    color: &dtml-globalFontColor;;
+    margin-left: 1em;
+    display: inline;
+}
+#portal-personaltools li a {
+    text-decoration: none;
+    color: &dtml-globalFontColor;;
+}
+.visualCaseSensitive {
+    text-transform: none;
+}
+#portal-breadcrumbs {
+    /* The path bar, including breadcrumbs and add to favorites */
+    border-bottom-color: &dtml-globalBorderColor;;
+    border-bottom-style: &dtml-borderStyle;;
+    border-bottom-width: &dtml-borderWidth;;
+    padding-left: 2em;
+    padding-right: 2em;
+    text-transform: &dtml-textTransform;;
+}
+
+.breadcrumbSeparator {
+    font-size: 120%;
+}
+
+.addFavorite {
+    vertical-align: bottom;
+}
+.contentViews {
+    background-color: transparent;
+    padding-left: 1em;
+    line-height: normal;
+    margin-top: 2.1em;
+    margin-left: 0;
+    list-style: none;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
+    border-top-width: 0px;
+    border-left-width: 0px;
+    border-right-width: 0px;
+}
+.contentViews li {
+    display: inline;
+    padding-top: 0.5em;
+}
+.contentViews li a {
+    background-color: transparent;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
+    border-style: &dtml-borderStyle;;
+    color: &dtml-contentViewFontColor;;
+    height: auto;
+    margin-right: 0.5em;
+    padding: 0em 1.5em;
+    line-height: normal;
+    text-decoration: none;
+    text-transform: &dtml-textTransform;;
+    z-index: 1;
+}
+.contentViews .selected a {
+    background-color: &dtml-contentViewBackgroundColor;;
+    border-bottom: &dtml-contentViewBackgroundColor; &dtml-borderWidth; &dtml-borderStyle;;
+    color: &dtml-contentViewFontColor;;
+}
+.contentViews li a:hover {
+    background-color: &dtml-contentViewBackgroundColor;;
+    color: &dtml-contentViewFontColor;;
+}
+
+
+.configlet .contentViews {
+    font-size: 90%;
+}
+
+#content {
+    padding: 0.139em 1em 0 1em;
+    margin: 0em 0em 2em 0em;
+}
+
+#content-news h1 {
+    margin-bottom: 1em;
+}
+
+.newsItem {
+    margin-bottom: 1em;
+    border-bottom: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+}
+
+.newsContent {
+    padding: 0 1em 1em 1em;
+}
+
+.newsContent ul,
+.newsContent li {
+    display: block;
+    list-style: none;
+    list-style-image: none;
+    margin: 0;
+    padding: 0;
+}
+
+.newsAbout {
+    display: block;
+    color: &dtml-discreetColor;;
+    font-size: &dtml-fontSmallSize;;
+    padding: 0;
+    margin-top: 0;
+    list-style: none;
+    list-style-image: none;
+    float: right;
+    text-align: right;
+}
+
+.newsAbout li {
+    display: inline;
+}
+
+.newsFooter {
+
+}
+
+.newsFooter li {
+    display: inline;
+    margin: 0 1em 0 0;
+}
+
+.documentEditable {
+    padding: 0em 2em 1em 2em !important;
+}
+
+.configlet .documentEditable {
+    padding: 0em !important;
+}
+
+.documentContent {
+    font-size: 110%;
+    padding: 0em 1em 2em 1em !important;
+    background: &dtml-backgroundColor;;
+}
+
+.documentEditable .documentContent {
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
+    padding: 0;
+}
+
+
+
+.documentActions {
+    margin: -1.5em 0 2em 0;
+    float: right;
+    margin: 1em 0 0 0.5em;
+    clear: none;
+}
+
+.documentActions ul {
+    margin: 0 0 0.3em 0;
+    float: right;
+    clear: right;
+}
+
+
+.documentActions ul,
+.documentActions li {
+    display: inline;
+    list-style: none;
+    list-style-image: none;
+}
+.documentActions a {
+    border: 0;
+    text-decoration: none;
+}
+
+.portalMessage,
+.system-message,  /* These two last ones are reST error indicators */
+#error-handling {
+    background-color: &dtml-notifyBackgroundColor;;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-notifyBorderColor;;
+    color: &dtml-fontColor;;
+    font-size: &dtml-fontSmallSize;;
+    font-weight: bold;
+    margin: 1em 0em 0em 0em;
+    padding: 0.5em 1em 0.5em 3em;
+    vertical-align: middle;
+    background-image: url(&dtml-portal_url;/info_icon.gif);
+    background-repeat: no-repeat;
+    background-position: 5px 50%;
+
+}
+.portalMessage a {
+    color: &dtml-fontColor;;
+    text-decoration: underline;
+}
+.documentDescription {
+    /* The summary text describing the document */
+    font-weight: bold;
+    display: block;
+    margin: 1em 0em;
+    line-height: 1.5em;
+}
+.documentByLine {
+    font-size: &dtml-fontSmallSize;;
+    font-weight: normal;
+    color: &dtml-discreetColor;;
+    margin: 0.5em 0 0 0;    
+}
+.documentByLine a {
+    text-decoration: underline;
+}
+
+.productCredits {
+    text-align: right;
+    font-size: &dtml-fontSmallSize;;
+    clear: both;
+    font-weight: normal;
+    color: &dtml-discreetColor;;
+}
+
+.productCredits a {
+    text-decoration: underline;
+}
+
+#portal-footer {
+    background-color: &dtml-globalBackgroundColor;;
+    border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    border-bottom: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    float: none;
+    margin: 2em 0em 1em 0em;
+    padding: 0.5em 0em 1em 0em;
+    text-align: center;
+}
+
+#portal-colophon {
+    float: none;
+    margin: 0em 0em 2em 0em;
+    padding: 0.5em 0em 1em 0em;
+    text-align: center;
+}
+
+#portal-colophon ul,
+#portal-colophon ul li,
+#portal-colophon ul li a {
+    list-style: none;
+    display: inline;
+    text-decoration: none;
+    color: &dtml-fontColor;;
+}
+
+#portal-colophon ul li {
+    font-size: &dtml-fontSmallSize;;
+    margin: 0 0.25em;
+    padding: 0.1em 0.2em;
+}
+
+.netscape4 {
+    display: none;
+}
+
+
+/* </dtml-with> */

@@ -17,18 +17,18 @@
 
     <div class="documentDescription" i18n:translate="description_control_panel">
       Configuration area for Plone and add-on Products.
-    </div>
-
+    </div>              
+                        
     <tal:block tal:repeat="group groups">
-
+                        
         <h2 tal:content="group/title"
             i18n:translate="">Plone Configlet Group Title</h2>
-
+                        
         <ul class="configlets" tal:define="configlets python:controlPanel.enumConfiglets(group=group['id'])">
-
+                        
             <tal:configlet repeat="configlet configlets">
                 <li tal:condition="configlet/visible">
-                    <a href=""
+                    <a href=""          
                        tal:attributes="href configlet/url">
                         <img src="" alt="" tal:attributes="src python:getIconFor('controlpanel',configlet['id']);
                                              alt configlet/description"
@@ -36,17 +36,26 @@
                              tal:on-error="string:" />
                     <tal:configletname tal:content="configlet/name"
                                        i18n:translate=""></tal:configletname>
-                    </a>
-                </li>
-            </tal:configlet>
-
+                    </a>                
+                </li>                   
+            </tal:configlet>            
+                                        
             <li tal:condition="not:configlets" i18n:translate="label_no_panels_available">
                 No Preference Panels available.
-            </li>
-
-        </ul>
-
-    </tal:block>
+            </li>                       
+                                        
+        </ul>                           
+                                        
+                                        
+    </tal:block>                        
+    <div class="discreet"               
+        tal:define="sys here/getZopeInfo;                     
+                    mt  here/portal_migration">
+        <strong>Version info</strong><br />
+        Plone <span tal:replace="mt/getInstanceVersion" />, <br />
+        Zope <span tal:replace="python:sys[0]" />, <br />
+        Python <span tal:replace="python:sys[1]" />
+    </div>
     </div>
 
 </body>

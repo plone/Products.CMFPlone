@@ -13,7 +13,7 @@
              tal:define="dummy python:request.set('disable_border',1)" />
 
 <div metal:fill-slot="main"
-     tal:define="results python:here.queryCatalog(REQUEST=request);
+     tal:define="results python:here.queryCatalog(REQUEST=request,use_types_blacklist=True);
                  Batch python:modules['Products.CMFPlone'].Batch;
                  DateTime python:modules['DateTime'].DateTime;
                  b_size python:30;b_start python:0;b_start request/b_start | b_start;

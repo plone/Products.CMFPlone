@@ -6,27 +6,24 @@
 
 <div metal:fill-slot="main">
     <tal:main-macro metal:define-macro="main">
-        <h1 tal:content="here/title_or_id" class="documentFirstHeading">
-            Title or id
-        </h1>
-
         <div metal:use-macro="here/document_actions/macros/document_actions">
             Document actions (print, sendto etc)
         </div>
 
-            <table class="listing" style="float: right; margin: 0 0 1em 1em;">
+        <h1 tal:content="here/title_or_id" class="documentFirstHeading">
+            Title or id
+        </h1>
+
+            <table class="vertical listing" style="float: right; margin: 0 0 1em 1em;">
 
                 <tbody>
                     <tr>
-                        <th class="vertical"
-                            i18n:translate="event_what">What</th>
-                        <td class="vertical"
-                            tal:content="python:modules['string'].join(here.Subject(), ' ')">Conference</td>
+                        <th i18n:translate="event_what">What</th>
+                        <td tal:content="python:modules['string'].join(here.Subject(), ' ')">Conference</td>
                     </tr>
                     <tr>
-                        <th class="vertical"
-                            i18n:translate="event_when">When</th>
-                        <td class="vertical">
+                        <th i18n:translate="event_when">When</th>
+                        <td>
                             <tal:differentday tal:condition="python:not here.start().Date() == here.end().Date()">
                                 <span tal:replace="python:here.toLocalizedTime(here.start(), long_format=1)">Start Date Time</span>
                                 <span i18n:translate="event_and">to</span> <br />
@@ -44,30 +41,23 @@
                         </td>
                     </tr>
                     <tr>
-                        <th class="vertical"
-                            i18n:translate="event_where">Where</th>
-                        <td class="vertical"
-                            tal:content="here/location">Oslo, Norway</td>
+                        <th i18n:translate="event_where">Where</th>
+                        <td tal:content="here/location">Oslo, Norway</td>
                     </tr>
                     <tr tal:condition="here/contact_name">
-                        <th class="vertical"
-                            i18n:translate="contact_name">Contact Name</th>
-                        <td class="vertical"
-                            tal:content="here/contact_name">John Smith</td>
+                        <th i18n:translate="contact_name">Contact Name</th>
+                        <td tal:content="here/contact_name">John Smith</td>
                     </tr>
                     <tr tal:define="contact_email here/contact_email"
                         tal:condition="here/contact_email">
-                        <th class="vertical"
-                            i18n:translate="contact_email">Contact Email</th>
-                        <td class="vertical">
+                        <th i18n:translate="contact_email">Contact Email</th>
+                        <td>
                             <a tal:replace="structure python: here.spamProtect(contact_email)" />
                         </td>
                     </tr>
                     <tr tal:condition="here/contact_phone">
-                        <th class="vertical"
-                            i18n:translate="contact_phone">Contact Phone</th>
-                        <td class="vertical"
-                            tal:content="here/contact_phone">555-GET-PLONE</td>
+                        <th i18n:translate="contact_phone">Contact Phone</th>
+                        <td tal:content="here/contact_phone">555-GET-PLONE</td>
                     </tr>
                 </tbody>
             </table>
@@ -89,6 +79,9 @@
            tal:content="here/event_url">event_url</a>
         </p>
 
+        <div metal:use-macro="here/document_relateditems/macros/relatedItems">
+            show related items if they exist
+        </div>
 
         <div metal:use-macro="here/document_byline/macros/byline">
             Get the byline - contains details about author and modification date.

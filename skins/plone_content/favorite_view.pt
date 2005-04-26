@@ -6,6 +6,10 @@
 
 <div metal:fill-slot="main">
     <tal:main-macro metal:define-macro="main">
+        <div metal:use-macro="here/document_actions/macros/document_actions">
+            Document actions (print, sendto etc)
+        </div>
+
         <h1 class="documentFirstHeading">
             <span i18n:translate="heading_link_to">Link to</span>
             <a href="#" 

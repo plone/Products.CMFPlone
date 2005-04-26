@@ -23,6 +23,10 @@
                                          {request.get('search_param',''):
                                          request.get('search_term', '')}) or None;">
 
+    <div metal:use-macro="here/document_actions/macros/document_actions">
+        Document actions (print, sendto etc)
+    </div>
+
     <h1 i18n:translate="heading_currently_assigned_shares">
         Current sharing permissions for
         <span tal:content="here/title_or_id" i18n:name="folder">title</span>
@@ -36,7 +40,6 @@
 
     <tal:warning tal:condition="not:iscontainer">
         <div class="portalMessage" style="background-color:rgb(255,191,191)">
-            <img tal:replace="structure here/info.gif" />
             <span style="font-weight:normal" i18n:translate="local_role_warning"><strong>Attention!</strong> You are setting the sharing permissions for a <strong tal:content="here/portal_type"/>.
             if you want to set the permissions for its containing folder, click 
             <a href="" tal:attributes="href python:here.absolute_url()+'/../'+ template.id">here</a>
@@ -136,9 +139,10 @@
                     tal:attributes="class   python:test(inheritanceActive,'','noInheritedRoles')">
                 <tal:block tal:repeat="role entry/acquired">
                     <span i18n:translate=""
-                          tal:define="isEnd     repeat/role/end"
-                          tal:content="python:test(isEnd,role,role+',')"
+                          tal:content="role"
                           tal:omit-tag="">Role</span>
+                     <span tal:omit-tag=""
+                           tal:condition="not: repeat/role/end">,</span>
                     <br />
                 </tal:block>
                 </td>

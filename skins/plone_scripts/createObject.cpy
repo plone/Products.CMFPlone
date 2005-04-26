@@ -28,7 +28,8 @@ else:
     if new_id is None or new_id == '':
        new_id = id
     o=getattr(context, new_id, None)
-    portal_status_message = type_name + ' has been created.'
+    tname = o.getTypeInfo().Title()
+    portal_status_message = tname + ' has been created.'
     transaction_note('Created %s with id %s in %s' % (o.getTypeInfo().getId(), new_id, context.absolute_url()))
 
 if o is None:

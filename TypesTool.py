@@ -12,6 +12,16 @@ class TypesTool(PloneBaseTool, BaseTool):
     
     __implements__ = (PloneBaseTool.__implements__, BaseTool.__implements__, )
 
+    def listTypeTitles(self, container=None):
+        """ Return a dictionary of id/Title combinations """
+        typenames = {}
+        for t in self.listTypeInfo( container ):
+            name = t.getId()
+            if name:
+                typenames[ name ] = t.title_or_id()
+
+        return typenames
+
 TypesTool.__doc__ = BaseTool.__doc__
 
 InitializeClass(TypesTool)

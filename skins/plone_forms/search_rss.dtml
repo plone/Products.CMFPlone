@@ -9,7 +9,7 @@
 <dtml-let 
     start="int(REQUEST.get('b_start', 0))"
     end="REQUEST.get('b_end', start+30)"
-    results="queryCatalog()[start:end]">
+    results="queryCatalog(use_types_blacklist=True)[start:end]">
 <channel rdf:about="<dtml-var absolute_url>">
   <title>&dtml-Title;</title>
   <link>&dtml-portal_url;</link>

@@ -1,5 +1,4 @@
-try: from zExceptions import NotFound
-except ImportError: NotFound = 'NotFound' # Zope < 2.7
+from zExceptions import NotFound
 from Products.CMFCore.utils import _verifyActionPermissions, \
      getToolByName, getActionContext
 from OFS.Folder import Folder
@@ -111,6 +110,7 @@ class OrderedContainer(Folder):
         obj_meta = metadata.pop(obj_idx)
         metadata.insert(position, obj_meta)
         self._objects = tuple(metadata)
+        self._reindexOnReorder()
 
     # Here the implementation of IOrderedContainer starts
     # Once Plone depends on Zope 2.7 this should be replaced by mixing in
@@ -138,7 +138,10 @@ class OrderedContainer(Folder):
         counter = 0
 
         for id in ids:
-            old_position = subset_ids.index(id)
+            try:
+                old_position = subset_ids.index(id)
+            except ValueError:
+                continue
             new_position = max( old_position - abs(delta), min_position )
             if new_position == min_position:
                 min_position += 1
@@ -164,7 +167,24 @@ class OrderedContainer(Folder):
                                          'not exist.' % subset_ids[pos])
             self._objects = tuple(objects)
 
+        self._reindexOnReorder()
         return counter
+
+    security.declarePrivate('_reindexOnReorder')
+    def _reindexOnReorder(self):
+        """ Catalog ordering support """
+
+        # For now we will just reindex all objects in the folder. Later we may
+        # optimize to only reindex the objs that got moved. Ordering is more
+        # for humans than machines, therefore the fact that this won't scale
+        # well for btrees isn't a huge issue, since btrees are more for
+        # machines than humans.
+
+        cat = getToolByName(self, 'portal_catalog')
+        cataloged_objs = cat(path = {'query':'/'.join(self.getPhysicalPath()), 'depth': 1})
+        for brain in cataloged_objs:
+            obj = brain.getObject()
+            cat.indexObject(obj,['getObjPositionInParent',])
 
     security.declarePrivate('getCMFObjectsSubsetIds')
     def getCMFObjectsSubsetIds(self, objs):
@@ -444,8 +464,8 @@ def _getViewFor(obj, view='view', default=None):
         #for action in actions:
         #    if _verifyActionPermissions(obj, action)  and action.get('action','')!='':
         #        return obj.restrictedTraverse(action['action'])
-        raise 'Unauthorized', ('No accessible views available for %s' %
+        raise Unauthorized, ('No accessible views available for %s' %
                                '/'.join(obj.getPhysicalPath()))
     else:
-        raise 'Not Found', ('Cannot find default view for "%s"' %
+        raise NotFound, ('Cannot find default view for "%s"' %
                             '/'.join(obj.getPhysicalPath()))

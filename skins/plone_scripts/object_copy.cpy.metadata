@@ -1,0 +1,6 @@
+[default]
+title=Copy an object
+
+[actions]
+action.success=redirect_to:python:request.get('HTTP_REFERER')
+action.failure=redirect_to:python:request.get('HTTP_REFERER')

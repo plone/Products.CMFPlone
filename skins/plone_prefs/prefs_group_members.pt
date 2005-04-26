@@ -11,7 +11,7 @@
 <div metal:fill-slot="prefs_configlet_main"
      tal:define="errors python:request.get('errors', {});
                 portal_roles mtool/getPortalRoles;
-                Batch python:modules['ZTUtils'].Batch;
+                Batch python:modules['Products.CMFPlone'].Batch;
                 b_start python:request.get('b_start',0);
                 groupname request/groupname|nothing;
                 grouproles python:request.set('grouproles', []);
@@ -31,14 +31,14 @@
     <ul class="contentViews">
         <li class="selected">
             <a href=""
-               tal:attributes="href string:${template/id}?groupname=${groupname}"
+               tal:attributes="href string:${here/absolute_url}/${template/id}?groupname=${groupname}"
                i18n:translate="label_group_members"
             >Group Members</a>
         </li>
 
         <li class="">
             <a href=""
-               tal:attributes="href string:prefs_group_details?groupname=${groupname}"
+               tal:attributes="href string:${here/absolute_url}/prefs_group_details?groupname=${groupname}"
                i18n:translate="label_group_properties"
             >Group Properties</a>
         </li>
@@ -164,51 +164,6 @@
             </a>
         </td>
 
-
-
-
-                <!--
-                  <tal:block tal:define="username python: this_user.getUserName();
-                                         id python: this_user.getId();
-                                         fullname python: this_user.getProperty('fullname', this_user.getProperty('title','No title available'));">
-
-                        <td class="listingCheckbox">
-                        <input type="checkbox"
-                               class="noborder notify"
-                               name="delete:list" tal:attributes="value id" />
-                    </td>
-                    <td tal:condition="this_user/isGroup">
-                        <a tal:attributes="href string:${here/portal_memberdata/absolute_url}/prefs_user_details?userid=$username">
-                         <img src=""
-                              tal:replace="structure portal/group.gif" />&nbsp;<span
-                              tal:replace="username">username</span>
-
-                         (<span tal:replace="fullname">Full Name</span>)
-
-                         </a>
-                    </td>
-
-                    <td tal:condition="not:this_user/isGroup">
-                        <a tal:attributes="href string:${here/portal_memberdata/absolute_url}/prefs_user_details?userid=$username">
-                         <img src=""
-                             tal:replace="structure portal/user.gif" />&nbsp;<span
-                             tal:replace="username">username</span>
-    
-                        (<span tal:replace="fullname">Full Name</span>)
-    
-                        </a>
-                    </td>
-
-                    <td tal:define="email python: this_user.getProperty('email')">
-                        <a href="#" tal:attributes="href string:mailto:${email}"
-                               title="Send a mail to this user"
-                               i18n:attributes="title">
-                        <span tal:replace="email" />
-                        </a>
-                    </td>
-    
-    		</tal:block>
- -->
                 </tr>
     	    </tal:block>
             </table>

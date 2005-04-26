@@ -62,12 +62,10 @@ from Products.CMFPlone.PloneControlPanel import PloneControlPanel, PloneConfigle
 from Products.CMFPlone.PloneFolder import OrderedContainer, BasePloneFolder, PloneFolder
 from Products.CMFPlone.PloneTool import PloneTool
 from Products.CMFPlone.Portal import PloneSite, PloneGenerator
-from Products.CMFPlone.PrivateSitePolicy import PrivateSitePolicy
 from Products.CMFPlone.PropertiesTool import PropertiesTool, SimpleItemWithProperties
 from Products.CMFPlone.QuickInstallerTool import QuickInstallerTool
 from Products.CMFPlone.RegistrationTool import RegistrationTool
 from Products.CMFPlone.SkinsTool import SkinsTool
-from Products.CMFPlone.StatelessTree import NavigationTreeViewBuilder
 from Products.CMFPlone.SyndicationTool import SyndicationTool
 from Products.CMFPlone.TypesTool import TypesTool
 from Products.CMFPlone.UndoTool import UndoTool
@@ -205,12 +203,10 @@ testClasses = [
     (OrderedContainer, ()), (BasePloneFolder, ()), (PloneFolder, ()),
     (PloneTool, ()),
     (PloneSite, ()), # (PloneGenerator, ()), # PloneGenerator has no __implements__
-    (PrivateSitePolicy, ()),
     (PropertiesTool, ()), (SimpleItemWithProperties, ()),
     (QuickInstallerTool, ()),
     (RegistrationTool, ()),
     (SkinsTool, ()),
-    (NavigationTreeViewBuilder, ()),
     (SyndicationTool, ()),
     (TypesTool, ()),
     (UndoTool, ()),

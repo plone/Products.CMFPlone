@@ -1,0 +1,7 @@
+[default]
+title = Select default page
+
+[actions]
+action.success=redirect_to_action:string:view
+action.failure=traverse_to_action:string:view
+action.missing=traverse_to:string:select_default_page

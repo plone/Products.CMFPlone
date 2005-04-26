@@ -1,0 +1,6 @@
+[default]
+title = Select layout
+
+[actions]
+action.failure=redirect_to_action:string:view
+action.success=redirect_to_action:string:view

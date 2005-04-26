@@ -9,13 +9,13 @@
     <tal:main-macro metal:define-macro="main"
                     tal:define="size here/size">
 
-        <h1 tal:content="here/title_or_id" class="documentFirstHeading">
-            Title or id
-        </h1>
-    
         <div metal:use-macro="here/document_actions/macros/document_actions">
             Document actions (print, sendto etc)
         </div>
+
+        <h1 tal:content="here/title_or_id" class="documentFirstHeading">
+            Title or id
+        </h1>
     
         <div class="documentDescription"
              tal:content="here/Description">
@@ -44,6 +44,10 @@
                 </span>
         
             </small>
+        </div>
+
+        <div metal:use-macro="here/document_relateditems/macros/relatedItems">
+            show related items if they exist
         </div>
         
         <div metal:use-macro="here/document_byline/macros/byline">

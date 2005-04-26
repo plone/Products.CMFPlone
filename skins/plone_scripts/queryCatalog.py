@@ -4,11 +4,12 @@
 ##bind namespace=
 ##bind script=script
 ##bind subpath=traverse_subpath
-##parameters=REQUEST=None,show_all=0,quote_logic=0,quote_logic_indexes=['SearchableText']
+##parameters=REQUEST=None,show_all=0,quote_logic=0,quote_logic_indexes=['SearchableText'],use_types_blacklist=False
 ##title=wraps the portal_catalog with a rules qualified query
 ##
 from ZODB.POSException import ConflictError
 from Products.ZCTextIndex.ParseTree import ParseError
+from Products.CMFCore.utils import getToolByName
 
 results=[]
 catalog=context.portal_catalog
@@ -43,6 +44,13 @@ def quotequery(s):
             terms[idx-1].upper() in tokens):
             terms[idx] = quotestring(terms[idx])
     return ' '.join(terms)
+    
+def ensureFriendlyTypes(query):
+    ploneUtils = getToolByName(context, 'plone_utils')
+    typesList = query.get('portal_type', []) + query.get('Type', [])
+    if not typesList:
+        friendlyTypes = ploneUtils.getUserFriendlyTypes(typesList)
+        query['portal_type'] = friendlyTypes
 
 for k, v in REQUEST.items():
     if v and k in indexes:
@@ -70,6 +78,8 @@ for k, v in second_pass.items():
 
 if show_query:
     try:
+        if use_types_blacklist:
+            ensureFriendlyTypes(query)
         results=catalog(query)
     except ParseError:
         pass

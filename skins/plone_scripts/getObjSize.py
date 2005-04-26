@@ -4,11 +4,14 @@
 ##bind namespace=
 ##bind script=script
 ##bind subpath=traverse_subpath
-##parameters=obj, size=None
+##parameters=obj=None, size=None
 ##title=
 ##
 
 from Products.CMFPlone import base_hasattr
+
+if obj is None:
+    obj = context
 
 const = {'kB':1024,
          'MB':1024*1024,

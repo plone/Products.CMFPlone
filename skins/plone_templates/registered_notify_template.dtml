@@ -1,5 +1,5 @@
 From: "&dtml-email_from_name;" <&dtml-email_from_address;>
-To: <dtml-var "member.email">
+To: <dtml-var "email">
 Subject: Portal Membership Information
 Content-Type: text/plain; charset=<dtml-var "portal_properties.site_properties.default_charset">
 

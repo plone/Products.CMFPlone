@@ -4,13 +4,56 @@
 
 import zLOG
 import os
+import sys
 
-def log(message,summary='',severity=zLOG.ERROR, optional=None):
+MINIMUM_PYTHON_VER = (2, 3, 4)
+PREFERRED_PYTHON_VER = "2.3.5 or newer"
+
+MINIMUM_ZOPE_VER = (2, 7, 5)
+PREFERRED_ZOPE_VER = "2.7.5 or newer"
+
+MINIMUM_CMF_VER = (1, 4, 8)
+
+messages = []
+
+def log(message, summary='', severity=zLOG.ERROR, optional=None):
     if optional:
         msg = 'Plone Option'
     else:
         msg = 'Plone Dependency'
-    zLOG.LOG(msg,severity,summary,message + "\n")
+    messages.append({'message' : message, 'summary' : summary,
+                     'severity' : severity, 'optional' : optional
+		    })
+    zLOG.LOG(msg, severity, summary, message + "\n")
+
+# test python version
+PYTHON_VER = sys.version_info[:3]
+if PYTHON_VER < MINIMUM_PYTHON_VER:
+    log(("Python version %s found but Plone needs at least "
+         "Python %s. Please download and install Python %s "
+	 "from http://python.org/" % (PYTHON_VER, 
+	 MINIMUM_PYTHON_VER, PREFERRED_PYTHON_VER) ))
+
+# test zope version
+ZOPE_VER = "unknown"
+try:
+    from App.version_txt import getZopeVersion
+except ImportError:
+    pass
+else:
+    try:
+        ZOPE_VER = getZopeVersion()[:3]
+    except (ValueError, TypeError, KeyError):
+        pass
+
+if ZOPE_VER in ('unknown', (-1, -1, -1)): # -1, -1, 1 is developer release
+    log(("Unable to detect Zope version. Please make sure you have Zope "
+         "%s installed." % PREFERRED_ZOPE_VER))
+elif ZOPE_VER < MINIMUM_ZOPE_VER:
+    log(("Zope version %s found but Plone needs at least "
+         "Zope %s Please download and install Zope %s "
+	 "from http://zope.org/" % 
+	 (ZOPE_VER, MINIMUM_ZOPE_VER, PREFERRED_ZOPE_VER) ))
 
 # make sure CMF is installed
 cmfcore = 0
@@ -26,7 +69,7 @@ if cmfcore:
     from Products.CMFCore import cmfcore_globals
     from App.Common import package_home
     from os.path import join
-
+    
     x = []
     CMF_VERSION = 'Unknown'
     try:
@@ -41,16 +84,16 @@ if cmfcore:
                 filtered += v
             else:
                 break
-        x = [int(x) for x in filtered.split('.')]
+        cmf_ver = [int(x) for x in filtered.split('.')]
     except IOError:
         # couldnt find file, oh well
         pass
     except ValueError:
         # couldnt make sense of the version number
         pass
-    if x < [1,4,2]:
-        log(("Plone requires CMF 1.4.2 or later. "
-             "Your version is: %s" % CMF_VERSION))
+    if tuple(cmf_ver) < MINIMUM_CMF_VER:
+        log(("Plone requires CMF %s or later. "
+             "Your version is: %s" % (MINIMUM_CMF_VER, CMF_VERSION)))
 
 try:
     import Products.CMFQuickInstallerTool
@@ -63,6 +106,14 @@ try:
 except ImportError:
     log(("CMFActionIcons not found. "
          "Please download it from http://cvs.zope.org/Products/"))
+
+try:
+    # TODO: we might want to check if the user has jpeg and zlib support, too
+    import PIL.Image
+except ImportError:
+    log(("PIL not found. Plone needs PIL 1.1.5 or newer to scale images. "
+         "Please download it from http://www.pythonware.com/products/pil/ or "
+         "http://effbot.org/downloads/#Imaging"))
 
 try:
     import Products.ExternalEditor
@@ -79,6 +130,14 @@ except ImportError:
     log(("Epoz not found.  If you want WYSIWYG capabilities "
         "in Plone, you can download it from "
         "http://www.zope.org/Members/mjablonski/Epoz/"),
+        severity=zLOG.INFO, optional=1)
+
+try:
+    import Products.kupu
+except ImportError:
+    log(("Kupu not found.  If you want WYSIWYG capabilities "
+        "in Plone, you can download it from "
+        "http://kupu.oscom.org/"),
         severity=zLOG.INFO, optional=1)
 
 try:
@@ -117,9 +176,16 @@ except ImportError, AttributeError:
 else:
     i18nPath = os.path.join(plonePath, 'i18n')
 
-if not (i18nPath and os.path.isdir(i18nPath) and \
-  os.path.isfile(os.path.join(i18nPath, 'plone-en.po')) ):
-    log(("Plone i18n files not found. Plone "
+if (i18nPath and os.path.isfile(os.path.join(i18nPath, 'plone-en.po')) ):
+    log(("Plone i18n files found at CMFPlone/i18/. Plone's "
+         "i18n files have been moved to the PloneTranslation product. "
+	 "Please remove the CMFPlone/i18n/ folder to avoid conflicts."),
+        severity=zLOG.INFO, optional=1)
+
+try:
+    import Products.PloneTranslations
+except ImportError:
+    log(("PloneTranslation product with i18n files not found. Plone "
          "runs without this, but if you want multilingual "
          "interface or access keys, you must download it from "
          "http://www.sourceforge.net/projects/plone-i18n"),
@@ -177,12 +243,25 @@ except ImportError:
 try:
     import Products.Archetypes
 except ImportError:
+    # TODO we might want to check the AT version
     log(("Archetypes not found. Please "
          "download it from http://sf.net/projects/archetypes"))
 
 try:
-    import Products.ATContentTypes
+    import Products.ATContentTypes.content.document
 except ImportError:
-    log(("ATContentTypes not found. Please "
+    log(("ATContentTypes not found or too old. Please "
          "download it from http://sf.net/projects/collective"))
+
+try:
+    import Products.ExtendedPathIndex
+except ImportError:
+    log(("ExtendedPathIndex not found. "
+         "Please download it from http://sf.net/projects/collective"))
+
+try:
+    import Products.CSSRegistry
+except ImportError:
+    log(("CSSRegistry not found. "
+         "Please download it from http://sf.net/projects/collective"))
 

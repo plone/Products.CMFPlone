@@ -6,28 +6,29 @@
 <!-- THE PATHBAR (breadcrumbs) DEFINITION -->
 <div metal:define-macro="path_bar"
      id="portal-breadcrumbs"
-     tal:define="breadcrumbs python:portal.breadcrumbs(here);
+     tal:define="breadcrumbs python:putils.createBreadCrumbs(here);
                      portal_url portal_url|utool">
 
-    <span tal:omit-tag="" i18n:translate="you_are_here">You are here:</span>
-    <span tal:condition="python:len(breadcrumbs)>1" tal:omit-tag="">
-            <a i18n:translate="tabs_home" tal:attributes="href python:breadcrumbs[0][1]">Home</a>
+    <span id="breadcrumbs-you-are-here" i18n:translate="you_are_here">You 
+are here:</span>
+    <span tal:condition="breadcrumbs" tal:omit-tag="">
+            <a i18n:translate="tabs_home" tal:attributes="href python:portal_url">Home</a>
             <span class="breadcrumbSeparator">&rarr;</span>
     </span>
-    <span tal:condition="python:len(breadcrumbs)==1" i18n:translate="tabs_home" tal:omit-tag="">
+    <span tal:condition="not: breadcrumbs" i18n:translate="tabs_home" tal:omit-tag="">
         Home
     </span>
-    <span tal:repeat="crumb python:breadcrumbs[1:]">
+    <span tal:repeat="crumb breadcrumbs">
         <tal:last tal:define="is_last repeat/crumb/end">
             <a href="#"
-               tal:omit-tag="python:not crumb[1]"
+               tal:omit-tag="not: crumb/absolute_url"
                tal:condition="python:not is_last"
-               tal:attributes="href python:crumb[1]"
-               tal:content="python:crumb[0]"
+               tal:attributes="href crumb/absolute_url"
+               tal:content="crumb/Title"
 	       accesskey="accesskeys-breadcrumbs">crumb</a>
             <span class="breadcrumbSeparator" tal:condition="not: is_last"> &rarr; </span>
             <span tal:condition="is_last"
-                  tal:content="python:crumb[0]">crumb</span>
+                  tal:content="crumb/Title">crumb</span>
          </tal:last>
     </span>
 </div>

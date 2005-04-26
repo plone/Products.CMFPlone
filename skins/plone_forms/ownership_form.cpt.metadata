@@ -1,0 +1,11 @@
+[default]
+title=Change Ownership
+
+[security]
+View=0:Owner,Manager
+
+[validators]
+validators=
+
+[actions]
+action.success=traverse_to:string:change_ownership

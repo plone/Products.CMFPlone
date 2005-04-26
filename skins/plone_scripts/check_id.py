@@ -69,6 +69,11 @@ if contained_by is not None:
 elif portal_factory is not None and portal_factory.isTemporary(context):
     # always check for collisions if we are creating a new object
     checkForCollision = 1
+    try:
+        # XXX this can't really be necessary, can it!?
+        contained_by = context.aq_inner.aq_parent.aq_parent.aq_parent
+    except Unauthorized:
+        pass
 else:
     # if we have an existing object, only check for collisions if we are changing the id
     checkForCollision = (context.getId() != id)

@@ -2,13 +2,15 @@ from Products.CMFCore.CMFCorePermissions import SetOwnPassword
 from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault.MembershipTool import MembershipTool as BaseTool
 from Products.CMFPlone import ToolNames
-from Products.CMFPlone.PloneUtilities import translate
-from Products.CMFPlone.PloneUtilities import _createObjectByType
+from Products.CMFPlone.utils import translate
+from Products.CMFPlone.utils import _createObjectByType
 from OFS.Image import Image
 from AccessControl import ClassSecurityInfo, getSecurityManager
-from Globals import InitializeClass
+from Globals import InitializeClass, DTMLFile
+from zExceptions import BadRequest
 from Acquisition import aq_base, aq_parent, aq_inner
 from Products.CMFCore.CMFCorePermissions import View
+from Products.CMFCore.CMFCorePermissions import ManagePortal
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 
 default_portrait = 'defaultUser.gif'
@@ -31,6 +33,7 @@ class MembershipTool(PloneBaseTool, BaseTool):
     personal_id = '.personal'
     portrait_id = 'MyPortrait'
     default_portrait = 'defaultUser.gif'
+    memberarea_type = 'Folder'
     security = ClassSecurityInfo()
     
     __implements__ = (PloneBaseTool.__implements__, BaseTool.__implements__, )
@@ -38,6 +41,27 @@ class MembershipTool(PloneBaseTool, BaseTool):
     #XXX I'm not quite sure why getPortalRoles is declared 'Managed'
     #    in CMFCore.MembershipTool - but in Plone we are not so anal ;-)
     security.declareProtected(View, 'getPortalRoles')
+
+    security.declareProtected(ManagePortal, 'manage_mapRoles')
+    manage_mapRoles = DTMLFile('www/membershipRolemapping', globals())
+
+    security.declareProtected(ManagePortal, 'manage_setMemberAreaType')
+    def manage_setMemberAreaType(self, type_name, REQUEST=None):
+        """ ZMI method to set the home folder type by its type name.
+        """
+        self.setMemberAreaType(type_name)
+        if REQUEST is not None:
+            REQUEST['RESPONSE'].redirect(self.absolute_url()
+                    + '/manage_mapRoles'
+                    + '?manage_tabs_message=Member+area+type+changed.')
+
+    security.declareProtected(ManagePortal, 'setMemberAreaType')
+    def setMemberAreaType(self, type_name):
+        """ Sets the portal type to use for new home folders.
+        """
+        # No check for folderish since someone somewhere may actually want
+        # members to have objects instead of folders as home "directory".
+        self.memberarea_type = str(type_name).strip()
 
     # XXX: Comment this out to see if we still need it.
     # We don't want to set wrapped users into the request!
@@ -52,6 +76,24 @@ class MembershipTool(PloneBaseTool, BaseTool):
     #        _user = BaseTool.getAuthenticatedMember(self)
     #        self.REQUEST.set('_portaluser', _user)
     #    return _user
+    
+    security.declarePublic('getMemberInfo')
+    def getMemberInfo(self, memberId=None):
+        """
+        Return 'harmless' Memberinfo of any member, such as Full name,
+        Location, etc
+        """
+        if not memberId:
+            member = self.getAuthenticatedMember()
+        else:
+            member = self.getMemberById(memberId)
+        
+        if member is None:
+            return None
+
+        memberinfo = { 'fullname' : member.getProperty('fullname') }
+
+        return memberinfo
 
     def getPersonalPortrait(self, member_id = None, verifyPermission=0):
         """
@@ -113,7 +155,7 @@ class MembershipTool(PloneBaseTool, BaseTool):
             membertool   = getToolByName(self, 'portal_memberdata')
             membertool._setPortrait(portrait, member_id)
 
-    def createMemberarea(self, member_id=None, minimal=0):
+    def createMemberarea(self, member_id=None, minimal=1):
         """
         Create a member area for 'member_id' or the authenticated user.
         """
@@ -140,7 +182,7 @@ class MembershipTool(PloneBaseTool, BaseTool):
             # XXX exception
             return
         
-        _createObjectByType('Folder', members, id=member_id)
+        _createObjectByType(self.memberarea_type, members, id=member_id)
 
         # get the user object from acl_users
         # XXX what about portal_membership.getAuthenticatedMember()?
@@ -194,16 +236,22 @@ class MembershipTool(PloneBaseTool, BaseTool):
         member_folder.changeOwnership(user)
         member_folder.__ac_local_roles__ = None
         member_folder.manage_setLocalRoles(member_id, ['Owner'])
-        # set title and description (edit invokes reindexObject)
-        member_folder.edit(title=member_folder_title,
-                           description=member_folder_description)
+        # XXX set title and description (edit invokes reindexObject)
+        #member_folder.edit(title=member_folder_title,
+        #                   description=member_folder_description)
+        # We use ATCT now use the mutators
+        member_folder.setTitle(member_folder_title)
+        member_folder.setDescription(member_folder_description)
         member_folder.reindexObject()
 
         ## Create personal folder for personal items
         _createObjectByType('Folder', member_folder, id=self.personal_id)
         personal = getattr(member_folder, self.personal_id)
-        personal.edit(title=personal_folder_title,
-                      description=personal_folder_description)
+        #personal.edit(title=personal_folder_title,
+        #              description=personal_folder_description)
+        personal.setTitle(personal_folder_title)
+        personal.setDescription(personal_folder_description)
+        
         # Grant Ownership and Owner role to Member
         personal.changeOwnership(user)
         personal.__ac_local_roles__ = None
@@ -211,34 +259,33 @@ class MembershipTool(PloneBaseTool, BaseTool):
         # Don't add .personal folders to catalog
         catalog.unindexObject(personal)
         
-        if minimal:
-            # don't set up the index_html for unit tests to speed up tests
-            return
+        if not minimal:
+            # if it's minimal, don't create the memberarea but do notification
 
-        ## add homepage text
-        # get the text from portal_skins automagically
-        homepageText = getattr(self, 'homePageText', None)
-        if homepageText:
-            member_object = self.getMemberById(member_id)
-            portal = getToolByName(self, 'portal_url')
-            # call the page template
-            content = homepageText(member=member_object, portal=portal).strip()
-            _createObjectByType('Document', member_folder, id='index_html')
-            hpt = getattr(member_folder, 'index_html')
-            # edit title, text and format
-            # XXX
-            hpt.setTitle(member_folder_index_html_title)
-            if hpt.meta_type == 'Document':
-                # CMFDefault Document
-                hpt.edit(text_format='structured-text', text=content)
-            else:
-                hpt.update(text=content)
-            hpt.setFormat('structured-text')
-            hpt.reindexObject()
-            # Grant Ownership and Owner role to Member
-            hpt.changeOwnership(user)
-            hpt.__ac_local_roles__ = None
-            hpt.manage_setLocalRoles(member_id, ['Owner'])
+            ## add homepage text
+            # get the text from portal_skins automagically
+            homepageText = getattr(self, 'homePageText', None)
+            if homepageText:
+                member_object = self.getMemberById(member_id)
+                portal = getToolByName(self, 'portal_url')
+                # call the page template
+                content = homepageText(member=member_object, portal=portal).strip()
+                _createObjectByType('Document', member_folder, id='index_html')
+                hpt = getattr(member_folder, 'index_html')
+                # edit title, text and format
+                # XXX
+                hpt.setTitle(member_folder_index_html_title)
+                if hpt.meta_type == 'Document':
+                    # CMFDefault Document
+                    hpt.edit(text_format='structured-text', text=content)
+                else:
+                    hpt.update(text=content)
+                hpt.setFormat('structured-text')
+                hpt.reindexObject()
+                # Grant Ownership and Owner role to Member
+                hpt.changeOwnership(user)
+                hpt.__ac_local_roles__ = None
+                hpt.manage_setLocalRoles(member_id, ['Owner'])
 
         ## Hook to allow doing other things after memberarea creation.
         notify_script = getattr(member_folder, 'notifyMemberAreaCreated', None)
@@ -444,11 +491,11 @@ class MembershipTool(PloneBaseTool, BaseTool):
             acl_users = self._findUsersAclHome(member.getUserName())#self.acl_users
             if not acl_users:
                 # should not possibly ever happen
-                raise 'Bad Request', 'did not find current user in any user folder'
+                raise BadRequest, 'did not find current user in any user folder'
             if registration:
                 failMessage = registration.testPasswordValidity(password)
                 if failMessage is not None:
-                    raise 'Bad Request', failMessage
+                    raise BadRequest, failMessage
 
             if domains is None:
                 domains = []
@@ -461,7 +508,7 @@ class MembershipTool(PloneBaseTool, BaseTool):
                 acl_users._doChangeUser(member.getUserName(), password, member.getRoles(), domains)
             self.credentialsChanged(password)
         else:
-            raise 'Bad Request', 'Not logged in.'
+            raise BadRequest, 'Not logged in.'
 
 MembershipTool.__doc__ = BaseTool.__doc__
 
