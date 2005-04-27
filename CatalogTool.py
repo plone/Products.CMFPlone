@@ -337,20 +337,20 @@ class CatalogTool(PloneBaseTool, BaseTool):
 
     security.declarePrivate('indexObject')
     def indexObject(self, object, idxs=[]):
-        '''Add object to catalog.
+        """Add object to catalog.
         The optional idxs argument is a list of specific indexes
         to populate (all of them by default).
-        '''
+        """
         self.reindexObject(object, idxs)
 
     security.declarePrivate('reindexObject')
     def reindexObject(self, object, idxs=[], update_metadata=1):
-        '''Update catalog after object data has changed.
+        """Update catalog after object data has changed.
         The optional idxs argument is a list of specific indexes
         to update (all of them by default).
         The update_metadata flag controls whether the object's
         metadata record is updated as well.
-        '''
+        """
         url = self.__url(object)
         if idxs != []:
             # Filter out invalid indexes.
@@ -359,7 +359,8 @@ class CatalogTool(PloneBaseTool, BaseTool):
         self.catalog_object(object, url, idxs, update_metadata)
 
     security.declareProtected(ManageZCatalogEntries, 'catalog_object')
-    def catalog_object(self, object, uid, idxs=[], update_metadata=1):
+    def catalog_object(self, object, uid, idxs=[],
+                       update_metadata=1, pghandler=None):
         # Wraps the object with workflow and accessibility
         # information just before cataloging.
         wf = getattr(self, 'portal_workflow', None)
@@ -374,9 +375,16 @@ class CatalogTool(PloneBaseTool, BaseTool):
         portal = aq_parent(aq_inner(self))
         w = ExtensibleIndexableObjectWrapper(vars, object, portal=portal)
         try:
-            ZCatalog.catalog_object(self, w, uid, idxs, update_metadata)
+            # pghandler argument got added in Zope 2.8
+            ZCatalog.catalog_object(self, w, uid, idxs,
+                                    update_metadata, pghandler=pghandler)
         except TypeError:
-            ZCatalog.catalog_object(self, w, uid, idxs)
+            try:
+                # update_metadata argument got added somewhere into
+                # the Zope 2.6 line (?)
+                ZCatalog.catalog_object(self, w, uid, idxs, update_metadata)
+            except TypeError:
+                ZCatalog.catalog_object(self, w, uid, idxs)
 
     security.declareProtected(SearchZCatalog, 'searchResults')
     def searchResults(self, REQUEST=None, **kw):

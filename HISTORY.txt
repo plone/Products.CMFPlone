@@ -4,11 +4,16 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Add support for the 'pghandler' argument added in Zope 2.8
+      (though we don't officially support Zope 2.8 yet).
+      [dreamcatcher]
+
     - Changed the order of the documentActions in the default view templates.
       If you have customized your view templates, you need to move these
       above the headline tag. Sorry about the inconvenience, but the existing
       positioning was triggering too many browser bugs. This keeps it simple.
       Look at 'document_view' if you need an example.
+      [limi]
 
     - Publishing the default document in a folder now publishes the folder as
       well, if possible (and similarly, making the default page visible or
