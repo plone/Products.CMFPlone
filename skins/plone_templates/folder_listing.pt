@@ -32,7 +32,7 @@
         <tal:foldercontents define="contentFilter contentFilter|request/contentFilter|nothing;
                             limit_display limit_display|request/limit_display|nothing;
                             more_url more_url|request/more_url|string:folder_contents;
-                            folderContents python:here.getFolderContents(contentFilter=contentFilter);
+                            folderContents folderContents|python:here.getFolderContents(contentFilter=contentFilter);
                             over_limit python: limit_display and len(folderContents) > limit_display;
                             folderContents python: (over_limit and folderContents[:limit_display]) or folderContents;">
         <tal:listing condition="folderContents"
