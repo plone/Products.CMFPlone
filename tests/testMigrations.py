@@ -38,6 +38,8 @@ from Products.CMFPlone.migrations.v2_1.alphas import migrateDateIndexes
 from Products.CMFPlone.migrations.v2_1.alphas import migrateDateRangeIndexes
 from Products.CMFPlone.migrations.v2_1.alphas import addSortable_TitleIndex
 from Products.CMFPlone.migrations.v2_1.alphas import addDefaultTypesToPortalFactory
+from Products.CMFPlone.migrations.v2_1.alphas import addNewsTopic
+from Products.CMFPlone.migrations.v2_1.alphas import addDisableFolderSectionsSiteProperty
 
 
 class MigrationTest(PloneTestCase.PloneTestCase):
@@ -519,23 +521,52 @@ class TestMigrations_v2_1(MigrationTest):
         self.failIf('news' in [x.id for x in self.actions.listActions()])
 
     def testAddNewsFolder(self):
+        #Should add the new news folder with appropriate default view settings
         self.portal._delObject('news')
         self.failIf('news' in self.portal.objectIds())
         addNewsFolder(self.portal, [])
         self.failUnless('news' in self.portal.objectIds())
         news = getattr(self.portal.aq_base, 'news')
         self.assertEqual(news._getPortalTypeName(), 'Large Plone Folder')
-        self.assertEqual(list(news.getProperty('default_page')), ['news_listing','index_html'])
+        self.assertEqual(list(news.getProperty('default_page')), ['news_topic', 'news_listing','index_html'])
         self.assertEqual(list(news.getImmediatelyAddableTypes()),['News Item'])
         self.assertEqual(list(news.getLocallyAllowedTypes()),['News Item'])
         self.assertEqual(news.getConstrainTypesMode(), 1)
 
     def testAddNewsFolderTwice(self):
+        #Should not fail when done twice
         self.portal._delObject('news')
         self.failIf('news' in self.portal.objectIds())
         addNewsFolder(self.portal, [])
         addNewsFolder(self.portal, [])
         self.failUnless('news' in self.portal.objectIds())
+
+    def testAddNewsTopic(self):
+        #Should add the default view for the news folder, a topic
+        news = self.portal.news
+        news._delObject('news_topic')
+        self.failIf('news_topic' in news.objectIds())
+        addNewsTopic(self.portal, [])
+        self.failUnless('news_topic' in news.objectIds())
+        topic = getattr(news.aq_base, 'news_topic')
+        self.assertEqual(topic._getPortalTypeName(), 'Topic')
+
+    def testAddNewsTopicTwice(self):
+        #Should not fail if done twice
+        news = self.portal.news
+        news._delObject('news_topic')
+        self.failIf('news_topic' in news.objectIds())
+        addNewsTopic(self.portal, [])
+        addNewsTopic(self.portal, [])
+        self.failUnless('news_topic' in news.objectIds())
+
+    def testAddNewsTopicNoATCT(self):
+        #Should not do anything unless ATCT is installed
+        news = self.portal.news
+        news._delObject('news_topic')
+        self.portal._delObject('portal_atct')
+        addNewsTopic(self.portal, [])
+        self.failUnless('news_topic' not in news.objectIds())
 
     def testAddExclude_from_navMetadata(self):
         # Should add getObjSize to schema
@@ -727,6 +758,31 @@ class TestMigrations_v2_1(MigrationTest):
         # Should not fail if portal_factory is missing
         self.portal._delObject('portal_factory')
         addDefaultTypesToPortalFactory(self.portal, [])
+
+    def testAddDisableFolderSectionsSiteProperty(self):
+        # Should add the disable_folder_sections property
+        self.removeSiteProperty('disable_folder_sections')
+        self.failIf(self.properties.site_properties.hasProperty('disable_folder_sections'))
+        addDisableFolderSectionsSiteProperty(self.portal, [])
+        self.failUnless(self.properties.site_properties.hasProperty('disable_folder_sections'))
+
+    def testAddDisableFolderSectionsSitePropertyTwice(self):
+        # Should not fail if migrated again
+        self.removeSiteProperty('disable_folder_sections')
+        self.failIf(self.properties.site_properties.hasProperty('disable_folder_sections'))
+        addDisableFolderSectionsSiteProperty(self.portal, [])
+        addDisableFolderSectionsSiteProperty(self.portal, [])
+        self.failUnless(self.properties.site_properties.hasProperty('disable_folder_sections'))
+
+    def testAddDisableFolderSectionsSitePropertyNoTool(self):
+        # Should not fail if portal_properties is missing
+        self.portal._delObject('portal_properties')
+        addDisableFolderSectionsSiteProperty(self.portal, [])
+
+    def testAddDisableFolderSectionsSitePropertyNoSheet(self):
+        # Should not fail if site_properties is missing
+        self.properties._delObject('site_properties')
+        addDisableFolderSectionsSiteProperty(self.portal, [])
 
 
 def test_suite():

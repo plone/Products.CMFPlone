@@ -5,6 +5,7 @@ from types import TupleType, UnicodeType, StringType
 import urlparse
 
 from zLOG import LOG, INFO, WARNING
+from Products.PluginIndexes.common import safe_callable
 
 from Acquisition import aq_base, aq_inner, aq_parent
 from Products.CMFCore.utils import UniqueObject
@@ -498,7 +499,12 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         ct=getToolByName(self, 'portal_catalog')
         ntp=getToolByName(self, 'portal_properties').navtree_properties
         currentPath = None
-        query = {}
+
+        custom_query = getattr(self, 'getCustomNavQuery', None)
+        if custom_query is not None and safe_callable(custom_query):
+            query = custom_query()
+        else:
+            query = {}
 
         # XXX check if isDefaultPage is in the catalogs
         #query['isDefaultPage'] = 0
@@ -611,7 +617,16 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         "Returns a structure for the top level tabs"""
         ct=getToolByName(self, 'portal_catalog')
         ntp=getToolByName(self, 'portal_properties').navtree_properties
-        query = {}
+        stp=getToolByName(self, 'portal_properties').site_properties
+
+        if stp.getProperty('disable_folder_sections', None):
+            return []
+
+        custom_query = getattr(self, 'getCustomNavQuery', None)
+        if custom_query is not None and safe_callable(custom_query):
+            query = custom_query()
+        else:
+            query = {}
 
         portal_path = getToolByName(self, 'portal_url').getPortalPath()
         query['path'] = {'query':portal_path, 'navtree':1}

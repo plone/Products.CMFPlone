@@ -678,25 +678,25 @@ class TestCatalogOptimizer(PloneTestCase.PloneTestCase):
 
     def testSearchResults(self):
         res = self.catalog.searchResults()
-        self.assertResults(res, ['Members', 'news', default_user, 'doc'])
+        self.assertResults(res, ['Members', 'news', 'news_topic', default_user, 'doc'])
 
     def testCall(self):
         res = self.catalog()
-        self.assertResults(res, ['Members', 'news', default_user, 'doc'])
+        self.assertResults(res, ['Members', 'news', 'news_topic', default_user, 'doc'])
 
     def testSearchResultsExpired(self):
         self.folder.doc.setExpirationDate(DateTime(2000, 12, 31))
         self.folder.doc.reindexObject()
         self.nofx()
         res = self.catalog.searchResults()
-        self.assertResults(res, ['Members', 'news', default_user])
+        self.assertResults(res, ['Members', 'news', 'news_topic', default_user])
 
     def testCallExpired(self):
         self.folder.doc.setExpirationDate(DateTime(2000, 12, 31))
         self.folder.doc.reindexObject()
         self.nofx()
         res = self.catalog()
-        self.assertResults(res, ['Members', 'news', default_user])
+        self.assertResults(res, ['Members', 'news', 'news_topic', default_user])
 
     def testSearchResultsExpiredWithPermission(self):
         self.folder.doc.setExpirationDate(DateTime(2000, 12, 31))
@@ -704,7 +704,7 @@ class TestCatalogOptimizer(PloneTestCase.PloneTestCase):
         self.nofx()
         self.setPermissions([AccessInactivePortalContent])
         res = self.catalog.searchResults()
-        self.assertResults(res, ['Members', 'news', default_user, 'doc'])
+        self.assertResults(res, ['Members', 'news', 'news_topic', default_user, 'doc'])
 
     def testCallExpiredWithPermission(self):
         self.folder.doc.setExpirationDate(DateTime(2000, 12, 31))
@@ -712,7 +712,7 @@ class TestCatalogOptimizer(PloneTestCase.PloneTestCase):
         self.nofx()
         self.setPermissions([AccessInactivePortalContent])
         res = self.catalog()
-        self.assertResults(res, ['Members', 'news', default_user, 'doc'])
+        self.assertResults(res, ['Members', 'news', 'news_topic', default_user, 'doc'])
 
 
 def dummyMethod(obj, **kwargs):

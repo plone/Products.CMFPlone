@@ -4,6 +4,28 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Add a hook to call a method or script 'getCustomNavQuery' to createNavTree
+      and createTopLevelTabs.  This method should return a dict to augment the
+      catalog query (i.e. require specific workflow state or custom property),
+      the parameters will not override any of the default parameters.
+      [alecm]
+
+    - Add a disable_folder_sections to site_properties so that people who don't
+      want to use top-level folders for tabs can just use the actions in the
+      original manner.
+      [alecm]
+
+    - Made the default news folder view a Topic at limi's request.  Made
+      changes to the way folderish default documents are handled to make the
+      UI for this sensible.  Folderish default pages now act entirely
+      non-folderish as far as global_contentmenu is concerned.  If such an object
+      wants to have a batch view, add buttons, view control, etc. it must
+      implement them as object actions (like the sub-topic form).  Also, fixed
+      a bug which caused folderish types that had no preset template views
+      to not show their selectable default view menu, leaving a non-working
+      display menu.
+      [alecm]
+
     - Add support for the 'pghandler' argument added in Zope 2.8
       (though we don't officially support Zope 2.8 yet).
       [dreamcatcher]

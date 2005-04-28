@@ -481,6 +481,27 @@ class TestNavTree(PloneTestCase.PloneTestCase):
         tree = self.utils.createSitemap(self.portal)
         self.failUnless(tree)
 
+    def testCustomQuery(self):
+        # Try a custom query script for the navtree that returns only published
+        # objects
+        workflow = self.portal.portal_workflow
+        factory = self.portal.manage_addProduct['PythonScripts']
+        factory.manage_addPythonScript('getCustomNavQuery')
+        script = self.portal.getCustomNavQuery
+        script.ZPythonScript_edit('','return {"review_state":"published"}')
+        self.assertEqual(self.portal.getCustomNavQuery(),{"review_state":"published"})
+        tree = self.utils.createNavTree(self.portal.folder2)
+        self.failUnless(tree)
+        self.failUnless(tree.has_key('children'))
+        #Should only contain current object
+        self.assertEqual(len(tree['children']), 1)
+        #change workflow for folder1
+        workflow.doActionFor(self.portal.folder1, 'publish')
+        self.portal.folder1.reindexObject()
+        tree = self.utils.createNavTree(self.portal.folder2)
+        #Should only contain current object and published folder
+        self.assertEqual(len(tree['children']), 2)
+
 
 class TestPortalTabs(PloneTestCase.PloneTestCase):
     '''Tests for the portal tabs query'''
@@ -516,6 +537,33 @@ class TestPortalTabs(PloneTestCase.PloneTestCase):
         self.failUnlessEqual(len(tabs1), len(tabs2))
         #Different order
         self.failUnless(tabs1 != tabs2)
+
+    def testCustomQuery(self):
+        # Try a custom query script for the tabs that returns only published
+        # objects
+        workflow = self.portal.portal_workflow
+        factory = self.portal.manage_addProduct['PythonScripts']
+        factory.manage_addPythonScript('getCustomNavQuery')
+        script = self.portal.getCustomNavQuery
+        script.ZPythonScript_edit('','return {"review_state":"published"}')
+        self.assertEqual(self.portal.getCustomNavQuery(),{"review_state":"published"})
+        tabs = self.utils.createTopLevelTabs()
+        #Should contain no folders
+        self.assertEqual(len(tabs), 0)
+        #change workflow for folder1
+        workflow.doActionFor(self.portal.folder1, 'publish')
+        self.portal.folder1.reindexObject()
+        tabs = self.utils.createTopLevelTabs()
+        #Should only contain current object and published folder
+        self.assertEqual(len(tabs), 1)
+
+    def testDisableFolderTabs(self):
+        # Setting the site_property disable_folder_sections should remove
+        # all folder based tabs
+        props = self.portal.portal_properties.site_properties
+        props.manage_changeProperties(disable_folder_sections=True)
+        tabs = self.utils.createTopLevelTabs()
+        self.assertEqual(tabs, [])
 
 
 class TestBreadCrumbs(PloneTestCase.PloneTestCase):
