@@ -58,6 +58,11 @@
 	      the user.  You can also edit the e-mail addresses, and
 	      add/remove users.
 	    </p>
+	    <p i18n:translate="user_role_note">
+	      Note that roles listed here apply directly to a user.
+	      They do not reflect additional roles users may have due
+	      to group memberships.
+	    </p>
 
         <form action=""
             name="users_add"
@@ -183,7 +188,7 @@
                     </td>
                     
                     <td class="listingCheckbox"
-                    tal:define="user_roles python:this_user.getRoles();"
+                    tal:define="user_roles python:this_user.getUserRoles();"
                     tal:repeat="portal_role portal_roles">
     
                     <input type="checkbox"
