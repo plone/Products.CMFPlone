@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Updated all references to CSSRegistry to the new, renamed, 
+      ResourceRegistries. Migrations, tests.
+      Instead of name-confusion, there is now the product ResourceRegistries 
+      containing the two tools CSSRegistry and JSregistry.
+      [elvix]
+
     - Fixed http://members.plone.org/collector/3835 - Changed .metadata file
       of prefs_user_manage.cpy script to redirect instead of traverse on
       success

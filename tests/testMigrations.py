@@ -422,8 +422,8 @@ class TestMigrations_v2_1(MigrationTest):
         self.assertEqual(len(self.catalog(Title='Bar')), 1)
 
     def testInstallCSSandJSRegistries(self):
-        # Should install CSSRegistry
-        self.uninstallProduct('CSSRegistry')
+        # Should install ResourceRegistries
+        self.uninstallProduct('ResourceRegistries')
         self.failIf(hasattr(self.portal, 'portal_css'))
         installCSSandJSRegistries(self.portal, [])
         self.failUnless('portal_css' in self.portal.objectIds())
@@ -431,7 +431,7 @@ class TestMigrations_v2_1(MigrationTest):
 
     def testInstallCSSandJSRegistriesTwice(self):
         # Should not fail if migrated again
-        self.uninstallProduct('CSSRegistry')
+        self.uninstallProduct('ResourceRegistries')
         self.failIf(hasattr(self.portal, 'portal_css'))
         installCSSandJSRegistries(self.portal, [])
         installCSSandJSRegistries(self.portal, [])

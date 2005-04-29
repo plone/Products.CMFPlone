@@ -216,7 +216,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         else:
             self.fail("Actions tool has no 'sitemap' action")
 
-    def testCSSRegistry(self):
+    def testResourceRegistries(self):
         # We should have portal_css and portal_javascripts tools
         self.failUnless(hasattr(self.portal, 'portal_css'))
         self.failUnless(hasattr(self.portal, 'portal_javascripts'))

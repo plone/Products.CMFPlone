@@ -435,8 +435,10 @@ def installCSSandJSRegistries(portal, out):
     """Installs the CSS and JS registries."""
     qi = getToolByName(portal, 'portal_quickinstaller', None)
     if qi is not None:
-        if not qi.isProductInstalled('CSSRegistry'):
-            qi.installProduct('CSSRegistry', locked=0)
+        if qi.isProductInstalled('CSSRegistry'):
+            qi.uninstallProduct('CSSRegistry')
+        if not qi.isProductInstalled('ResourceRegistries'):
+            qi.installProduct('ResourceRegistries', locked=0)
 
         cssreg = getToolByName(portal, 'portal_css', None)
         if cssreg is not None:

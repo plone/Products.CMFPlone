@@ -14,7 +14,7 @@ ZopeTestCase.installProduct('DCWorkflow')
 ZopeTestCase.installProduct('CMFActionIcons')
 ZopeTestCase.installProduct('CMFQuickInstallerTool')
 ZopeTestCase.installProduct('CMFFormController')
-ZopeTestCase.installProduct('CSSRegistry')
+ZopeTestCase.installProduct('ResourceRegistries')
 ZopeTestCase.installProduct('GroupUserFolder')
 ZopeTestCase.installProduct('ZCTextIndex')
 if ZopeTestCase.hasProduct('TextIndexNG2'):
@@ -35,6 +35,8 @@ ZopeTestCase.installProduct('MimetypesRegistry', quiet=1)
 ZopeTestCase.installProduct('PortalTransforms', quiet=1)
 ZopeTestCase.installProduct('ATContentTypes')
 ZopeTestCase.installProduct('ATReferenceBrowserWidget')
+
+ZopeTestCase.installProduct('UnicodeDetector')
 
 # Install sessions and error_log
 ZopeTestCase.utils.setupCoreSessions()
