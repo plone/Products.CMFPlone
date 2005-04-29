@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Fixed http://members.plone.org/collector/3819/ - applied the
+      utils.py patch provided by gkirk
+      [rafrombrc]
+
     - Fixed prefs_user_details to only display user roles and not
       roles inherited via groups since those can't be edited on this
       form.
