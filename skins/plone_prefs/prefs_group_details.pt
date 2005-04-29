@@ -10,7 +10,6 @@
 
 <div metal:fill-slot="prefs_configlet_main"
      tal:define="errors python:request.get('errors', {});
-                 acl_users here/acl_users;
                  portal_roles mtool/getPortalRoles;
                  groupname request/groupname | nothing;
                  grouproles python:request.set('grouproles', []);
