@@ -9,13 +9,18 @@
     </metal:override>
 
     <metal:override fill-slot="column_two_slot" />
-
-    <div metal:fill-slot="main">
-      <metal:bodytext metal:define-slot="prefs_configlet_main" tal:content="nothing">
-        The content of a normal configlet.
-      </metal:bodytext>
-
-    </div>
+    
+    <metal:override fill-slot="content">
+      <metal:slot define-slot="prefs_configlet_content">
+	<metal:block metal:use-macro="here/main_template/macros/content">
+	  <metal:override metal:fill-slot="main">
+	    <metal:slot metal:define-slot="prefs_configlet_main" tal:content="nothing">
+	      Page body text
+	    </metal:slot>
+	  </metal:override>
+	</metal:block>
+      </metal:slot>
+    </metal:override>
 
   </tal:block>
 </metal:page>

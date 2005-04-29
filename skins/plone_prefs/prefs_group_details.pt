@@ -8,7 +8,7 @@
 
 <body>
 
-<div metal:fill-slot="prefs_configlet_main"
+<div metal:fill-slot="prefs_configlet_content"
      tal:define="errors python:request.get('errors', {});
                  portal_roles mtool/getPortalRoles;
                  groupname request/groupname | nothing;
@@ -19,41 +19,41 @@
         <tal:defines define="dummy python:request.set('grouproles', group.getRoles())" />
     </tal:conditional>
 
-<div class="configlet">
-
-<div class="documentEditable">
-
-    <!-- simulating views on the groups/user pages until we have real objects. -->
-    <ul class="contentViews">
-        <li class="">
+      <div id="content" class="documentEditable">
+	<!-- simulating views on the groups/user pages until we have real objects. -->
+	<ul class="contentViews">
+	  <li class="">
             <a href=""
                tal:attributes="href string:${here/absolute_url}/prefs_group_members?groupname=${groupname}"
                i18n:translate="label_group_members">Group Members</a>
-        </li>
-
-        <li class="selected">
-        <a href=""
-           tal:attributes="href string:${here/absolute_url}/${template/id}?groupname=${groupname}"
-           i18n:translate="label_group_properties">Group Properties</a>
-        </li>
-    </ul>
+	  </li>
+	  <li class="selected">
+	    <a href=""
+	       tal:attributes="href string:${here/absolute_url}/${template/id}?groupname=${groupname}"
+	       i18n:translate="label_group_properties">Group Properties</a>
+	  </li>
+	</ul>
     
-    <div class="contentActions">
-    &nbsp;
-    </div>        
-    <!-- End of tabs -->
+	<div class="contentActions">
+	  &nbsp;
+	</div>        
 
-    <div class="documentContent"
-         tal:condition="not:group | nothing">
+	<div class="documentContent" id="region-content">
+	  <a name="documentContent"></a>
 
-        <metal:block metal:use-macro="template/macros/props">
+	  <div metal:use-macro="here/global_statusmessage/macros/portal_message">
+	    Portal status message
+	  </div>
+
+	  <!-- When no group is specified, this gets used as the add group page page -->
+	  <div class="configlet" tal:condition="not:group | nothing">
+	    <metal:block metal:use-macro="template/macros/props">
+	      <metal:title metal:fill-slot="title">
+		<h1 i18n:translate="heading_create_group">Create a Group</h1>
+	      </metal:title>
     
-        <metal:title metal:fill-slot="title">
-          <h1 i18n:translate="heading_create_group">Create a Group</h1>
-        </metal:title>
-    
-        <metal:name metal:fill-slot="name">
-            <div class="field">
+	      <metal:name metal:fill-slot="name">
+		<div class="field">
                <label for="addname" i18n:translate="label_name">Short Name</label>
 
                <span class="fieldRequired" title="Required">(Required)</span>
@@ -65,22 +65,13 @@
                <input type="text" name="addname" value="groupname"
                       id="addname"
                       tal:attributes="value group/getGroupName | string:"/>
-            </div>
-         </metal:name>
+		</div>
+	      </metal:name>
+	    </metal:block>
+	  </div>
     
-        <p i18n:translate="label_no_group_specified">No group was specified.</p>
-    
-        <p><a href="prefs_groups_overview"
-              i18n:translate="label_find_group">Find a group here</a></p>
-    
-        </metal:block>
-    
-    </div>
-    
-    <div class="documentContent"
-         tal:condition="group | nothing">
-    
-        <metal:block metal:define-macro="props" tal:omit-tag="">
+	  <div class="configlet" tal:condition="group | nothing">
+            <metal:block metal:define-macro="props" tal:omit-tag="">
     
         <h1 i18n:translate="heading_edit_groupproperties" metal:define-slot="title">
                Edit Group Properties for <span tal:replace="group/getGroupName | default" i18n:name="groupname">#unavailable#</span>

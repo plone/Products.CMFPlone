@@ -28,9 +28,4 @@ if not processed.get('listed'):
     processed['listed'] = ''
 context.plone_utils.setMemberProperties(member, **processed)
 
-
-REFERER=REQUEST.HTTP_REFERER
-if REFERER.find('portal_status_message')!=-1:
-    REFERER=REFERER[:REFERER.find('portal_status_message')]
-url='%s&%s' % (REFERER, 'portal_status_message=Changes+made.')
-return REQUEST.RESPONSE.redirect(url)
+return state.set(portal_status_message='Changes made.')

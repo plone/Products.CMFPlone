@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Minimally reworked user/group control panel pages to plone2.X
+      style fixing http://plone.org/collector/2204 and possibly
+      others.
+      [bmh]
+
     - Updated all references to CSSRegistry to the new, renamed, 
       ResourceRegistries. Migrations, tests.
       Instead of name-confusion, there is now the product ResourceRegistries 
