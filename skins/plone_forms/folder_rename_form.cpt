@@ -8,30 +8,24 @@
   <body>
 
     <div metal:fill-slot="main">
-      <metal:block tal:condition="not: request/paths | nothing">
-        <tal:block tal:replace="nothing"
-                   tal:condition="not: request/paths | nothing"
-                   tal:define="referer request/HTTP_REFERER;
-                               existing_message python:referer.find('portal_status_message');
-                               target_url python:test(existing_message!=-1, referer[:referer.find('?')], referer);
-                               dummy python:request.RESPONSE.redirect('%s?%s' % ( target_url
-                               , 'portal_status_message=Please+select+one+or+more+items+to+rename.'))">
-          If someone goes to this form with selecting a object to rename
-          We wil redirect them back from where the came from saying they
-          need to select an item to rename.  This is very messy and should
-          be a PythonScript.
-        </tal:block>
-      </metal:block>
+
+      <tal:block tal:condition="not: request/paths | nothing"
+                 tal:replace="python:here.redirectToReferrer('Please select one or more items to rename.')"/>
 
       <h1 i18n:translate="heading_rename_item">Rename item</h1>
 
       <p i18n:translate="description_rename_item">Each item has a Name and a Title, which you can change by entering the new details below.</p>
+
+      <tal:defines tal:define="paths request/paths|python:[];
+                        items python:here.getObjectsFromPathList(paths);
+                        errors options/state/getErrors;">
+
+      <tal:block tal:condition="python:paths and not items"
+                 tal:replace="python:here.redirectToReferrer('The item(s) you selected are no longer available.')"/>
+
       <form name="folder_rename"
             action="folder_rename"
             method="post"
-            tal:define="paths request/paths|nothing;
-                        items python:here.getObjectsFromPathList(paths);
-                        errors options/state/getErrors;"
             tal:attributes="action template/getId"
             tal:condition="items">
 
@@ -137,6 +131,7 @@
         </div>
 
       </form>
+      </tal:defines>
 
 
     </div>

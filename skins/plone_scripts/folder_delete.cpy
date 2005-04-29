@@ -23,8 +23,8 @@ message='Please select one or more items to delete.'
 
 for path in paths:
     # Skip and note any errors
-    obj = portal.restrictedTraverse(path)
     try:
+        obj = portal.restrictedTraverse(path)
         obj_parent = obj.aq_inner.aq_parent
         obj_parent.manage_delObjects([obj.getId()])
         titles.append(obj.title_or_id())

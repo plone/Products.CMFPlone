@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Made folder actions (cut, copy, rename, delete, publish) give nice
+      message instead of error when the selected item is no longer available.
+      Fixes issue #3911 (http://members.plone.org/collector/3911).
+      [alecm]
+
     - Made sortable_title use the site-encoding to store the final value (not
       direct unicode).  Also, made sortObjects.py case insensitive.
       [alecm]

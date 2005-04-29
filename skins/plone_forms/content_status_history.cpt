@@ -39,7 +39,10 @@
                      came_from python:request.get('HTTP_REFERER', here.absolute_url()).split('?')[0];
                      dummy python:request.set('orig_template', came_from);
                      ">
-      
+
+      <metal:block tal:condition="python: paths and not batch"
+                   tal:replace="python:here.redirectToReferrer('The item(s) you selected are no longer available.')"/>
+
       <h1 i18n:translate="heading_publishing_process">Publishing process</h1>
 
       <p i18n:translate="description_publishing_process">
@@ -65,7 +68,8 @@
             name="edit_form"
             method="post"
             action="content_status_modify"
-            tal:attributes="action python:test(isFolder,template.getId(),'%s/%s' % (here.getId(),template.getId()))">
+            tal:attributes="action python:test(isFolder,template.getId(),'%s/%s' % (here.getId(),template.getId()))"
+            tal:condition="not:python:paths and not batch">
 
         <fieldset>
 
