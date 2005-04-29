@@ -20,7 +20,7 @@
     <description tal:content="here/Description">
     
     </description>
-    <image rdf:resource="logo.jpg" />
+    <image tal:attributes="rdf:resource here/base_properties/logoName" />
     <sy:updatePeriod><tal:replace replace="here/portal_syndication/getUpdatePeriod" /></sy:updatePeriod>
     <sy:updateFrequency><tal:replace replace="here/portal_syndication/getUpdateFrequency" /></sy:updateFrequency>
     <sy:updateBase><tal:replace replace="python: here.portal_syndication.getHTML4UpdateBase(here)" /></sy:updateBase>

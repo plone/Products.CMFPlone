@@ -3,6 +3,11 @@ Changelog for Plone
    (name of developer listed in brackets)
 
 Plone 2.1 - Plaid - (unreleased)
+
+    - Fixed http://members.plone.org/collector/3903 - Removed
+      hardcoded references to logo.jpg in favor of the logoName
+      variable defined in base_properties.
+      [bmh]
     
     - Fixed http://plone.org/collector/3544 - Use password_confirm as
       the name of the password confirmation field so it doesn't show

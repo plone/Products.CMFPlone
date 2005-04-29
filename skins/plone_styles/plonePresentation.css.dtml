@@ -19,7 +19,7 @@
 /* <dtml-call "REQUEST.set('portal_url', portal_url())"> (not this either :) */
 
 body {
-    background: White url(&dtml-portal_url;/logo.jpg) no-repeat fixed 95% 95%;
+    background: White url(&dtml-portal_url;/&dtml-logoName;) no-repeat fixed 95% 95%;
     font-family: <dtml-var fontFamily>;
     font-size: 50px !important;
     color: Black;
