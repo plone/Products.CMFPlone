@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Fixed http://members.plone.org/collector/3848/ - changed
+      prefs_error_log_update.py to match the button submit values
+      on prefs_error_log_form.
+      [rafrombrc]
+
     - Minimally reworked user/group control panel pages to plone2.X
       style fixing http://plone.org/collector/2204 and possibly
       others.
