@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Fixed http://plone.org/collector/3811 - Start and end times of same-day
+      events now respect AM/PM settings (event_view).
+      [naro]
+
     - Made folder actions (cut, copy, rename, delete, publish) give nice
       message instead of error when the selected item is no longer available.
       Fixes issue #3911 (http://members.plone.org/collector/3911).

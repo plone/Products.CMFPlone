@@ -30,12 +30,13 @@
                                 <span tal:replace="python:here.toLocalizedTime(here.end(), long_format=1)">End Date Time</span>
                             </tal:differentday>
 
-                            <tal:sameday tal:condition="python:here.start().Date() == here.end().Date()">
+                            <tal:sameday tal:condition="python:here.start().Date() == here.end().Date()"
+                                         tal:define="ampm python:site_properties.getProperty('localLongTimeFormat').find('%p') >= 0">
                                 <span tal:replace="python:here.toLocalizedTime(here.start())">Start Date Time</span> <br />
                                 <span i18n:translate="event_from">from</span>
-                                <span tal:replace="python:here.start().TimeMinutes()">Start Time</span>
+                                <span tal:replace="python:test(ampm, here.start().AMPMMinutes(), here.start().TimeMinutes())">Start Time</span>
                                 <span i18n:translate="event_to">to</span>
-                                <span tal:replace="python:here.end().TimeMinutes()">End Date Time</span>
+                                <span tal:replace="python:test(ampm, here.end().AMPMMinutes(), here.end().TimeMinutes())">End Time</span>
                             </tal:sameday>
 
                         </td>
