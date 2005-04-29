@@ -4,7 +4,11 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
-    - Fixed http://plone.org/collector/2791. Timestamps in recently_published
+    - Fixed http://plone.org/collector/3866 - Improved performance of
+      sortObjects helper script by a factor of 3.
+      [axa]
+
+    - Fixed http://plone.org/collector/2791 - Timestamps in recently_published
       and folder_contents now use the configured long format.
       [naro]
 

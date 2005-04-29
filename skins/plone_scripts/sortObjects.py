@@ -8,7 +8,6 @@
 ##title=sorts and pre-filters objects
 ##
 
-contents=list(contents)
-sort = lambda a,b: cmp(getattr(a, method)(), getattr(b, method)())
-contents.sort(sort)
-return contents
+aux = [(getattr(o, method)(), o) for o in contents]
+aux.sort()
+return [x for k, x in aux]
