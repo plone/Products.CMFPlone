@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Fixed http://plone.org/collector/2791. Timestamps in recently_published
+      and folder_contents now use the configured long format.
+      [naro]
+
     - Add a hook to call a method or script 'getCustomNavQuery' to createNavTree
       and createTopLevelTabs.  This method should return a dict to augment the
       catalog query (i.e. require specific workflow state or custom property),

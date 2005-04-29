@@ -40,7 +40,7 @@
 
                     <span class="discreet" i18n:translate="text_creator_date">
                         by <span tal:replace="result/Creator" i18n:name="creator" />,
-                        last updated: <span tal:replace="result/ModificationDate" i18n:name="date" />
+                        last updated: <span tal:replace="python:here.toLocalizedTime(result.ModificationDate, long_format=1)" i18n:name="date" />
                     </span>
                 </dt>
 
