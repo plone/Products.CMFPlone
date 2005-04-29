@@ -5,7 +5,7 @@
 ##bind script=script
 ##bind subpath=traverse_subpath
 ##title=Action to change password
-##parameters=password, confirm, current, domains=None
+##parameters=password, password_confirm, current, domains=None
 
 REQUEST=context.REQUEST
 if REQUEST.form.has_key('cancel'):
@@ -21,7 +21,7 @@ if not mt.testCurrentPassword(current):
                                  REQUEST,
                                  error=failMessage)
 
-failMessage=context.portal_registration.testPasswordValidity(password, confirm)
+failMessage=context.portal_registration.testPasswordValidity(password, password_confirm)
 if failMessage:
     REQUEST.set('portal_status_message', failMessage)
     return context.password_form(context,

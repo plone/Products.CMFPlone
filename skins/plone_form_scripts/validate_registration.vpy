@@ -5,7 +5,7 @@
 ##bind script=script
 ##bind state=state
 ##bind subpath=traverse_subpath
-##parameters=username='',email='',password='',confirm=''
+##parameters=username='',email='',password='',password_confirm=''
 ##title=validates the Registration of a User
 
 reg_tool=context.portal_registration
@@ -29,18 +29,18 @@ if username and username == context.portal_url.getPortalObject().getId():
 
 properties = context.portal_properties.site_properties
 if not properties.validate_email:
-     if password!=confirm:
+     if password!=password_confirm:
          nomatch('password')
-         nomatch('confirm')
+         nomatch('password_confirm')
 
      if not password:
          missing('password')
-     if not confirm:
-         missing('confirm')
+     if not password_confirm:
+         missing('password_confirm')
 
      if not state.getError('password') and len(password) < 5:
          minlimit('password')
-         minlimit('confirm')
+         minlimit('password_confirm')
 
 if not state.getError('username') and not reg_tool.isMemberIdAllowed(username):
     state.setError('username',

@@ -147,8 +147,8 @@
 
           <div class="field"
                tal:condition="not: allowEnterPassword"
-               tal:define="error errors/confirm | nothing;
-                           confirm request/confirm | nothing;"
+               tal:define="error errors/password_confirm | nothing;
+                           password_confirm request/password_confirm | nothing;"
                tal:attributes="class python:test(error, 'field error', 'field')">
 
 
@@ -165,11 +165,11 @@
                   <div tal:content="error">Validation error output</div>
 
                   <input type="password"
-                         name="confirm"
+                         name="password_confirm"
                          size="10"
                          value=""
                          tabindex=""
-                         tal:attributes="value confirm;
+                         tal:attributes="value password_confirm;
                                          tabindex tabindex/next;"
                          />
           </div>
