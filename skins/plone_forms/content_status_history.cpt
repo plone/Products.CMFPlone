@@ -247,14 +247,14 @@
                    value="Save"
                    i18n:attributes="value"
                    tal:attributes="tabindex tabindex/next;"
-                   tal:condition="not:folders_in_publishing"/>
+                   tal:condition="not:request/paths|nothing"/>
             <input class="context"
                    type="submit"
                    name="form.button.FolderPublish"
                    value="Save"
                    i18n:attributes="value"
                    tal:attributes="tabindex tabindex/next;"
-                   tal:condition="folders_in_publishing"/>
+                   tal:condition="request/paths|nothing"/>
             <input class="standalone"
                    type="submit"
                    name="form.button.Cancel"
