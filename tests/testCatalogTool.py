@@ -401,7 +401,7 @@ class TestCatalogSorting(PloneTestCase.PloneTestCase):
         doc = self.folder.doc
         doc.setTitle(title)
         wrapped = ExtensibleIndexableObjectWrapper(vars, doc, self.portal)
-        self.assertEqual(wrapped.sortable_title, u'la pe\xf1a')
+        self.assertEqual(wrapped.sortable_title, u'la pe\xf1a'.encode('utf-8'))
 
 
 class TestFolderCataloging(PloneTestCase.PloneTestCase):

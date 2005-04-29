@@ -141,6 +141,7 @@ def sortable_title(obj, portal, **kwargs):
             for charset in [def_charset, 'latin-1', 'utf-8']:
                 try:
                     sortabletitle = unicode(sortabletitle, charset)[:30]
+                    sortabletitle = sortabletitle.encode(def_charset or 'utf-8')
                     break
                 except UnicodeError:
                     pass

@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Made sortable_title use the site-encoding to store the final value (not
+      direct unicode).  Also, made sortObjects.py case insensitive.
+      [alecm]
+
     - Fixed http://plone.org/collector/3866 - Improved performance of
       sortObjects helper script by a factor of 3.
       [axa]

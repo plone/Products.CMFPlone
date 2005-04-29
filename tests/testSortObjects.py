@@ -20,6 +20,12 @@ class TestSortObjects(PloneTestCase.PloneTestCase):
             dummy.Item('b', 'barney'),
             dummy.Item('a', 'betty'),
         ]
+        self.items2 = [
+            dummy.Item('D', 'Fred'),
+            dummy.Item('c', 'Wilma'),
+            dummy.Item('B', 'barney'),
+            dummy.Item('a', 'betty'),
+        ]
 
     def testSortObjectsDefault(self):
         # Sorts by title_or_id by default
@@ -30,6 +36,11 @@ class TestSortObjects(PloneTestCase.PloneTestCase):
         # Sorts by passed in method
         sorted = self.portal.sortObjects(self.items, 'getId')
         self.assertEqual([x.getId() for x in sorted], ['a', 'b', 'c', 'd'])
+
+    def testSortObjectsIsCaseInsensitive(self):
+        # Sorts by passed in method
+        sorted = self.portal.sortObjects(self.items2, 'getId')
+        self.assertEqual([x.getId() for x in sorted], ['a', 'B', 'c', 'D'])
 
 
 def test_suite():
