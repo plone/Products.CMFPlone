@@ -9,6 +9,8 @@
 <dtml-let 
     start="int(REQUEST.get('b_start', 0))"
     end="REQUEST.get('b_end', start+30)"
+    order="REQUEST.get('sort_on', None) is None and REQUEST.set('sort_order','reverse')"
+    dummy="REQUEST.set('sort_on',REQUEST.get('sort_on','effective'))"
     results="queryCatalog(use_types_blacklist=True)[start:end]">
 <channel rdf:about="<dtml-var absolute_url>">
   <title>&dtml-Title;</title>
