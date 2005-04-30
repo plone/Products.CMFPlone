@@ -4,9 +4,14 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Changed portlet_news.pt and news_listing.pt to do the right
+      thing if the 'news' folder at the root of the site isn't
+      there.
+      [rafrombrc]
+
     - Added some argument type sanity checking to queryCatalog.py;
       it was failing on valid queries b/c it was making assumptions
-      about the types that it was receiving
+      about the types that it was receiving.
       [rafrombrc]
 
     - Add charset info for ZMI pages like addSite.zpt and addPropertySheet.zpt

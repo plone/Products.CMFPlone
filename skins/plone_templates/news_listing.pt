@@ -105,7 +105,8 @@
         No news has been posted.
     </p>
 
-    <div tal:define="contentTypes here/getAllowedTypes" tal:omit-tag="python:1">
+    <div tal:define="contentTypes here/getAllowedTypes" tal:omit-tag="python:1"
+         tal:condition="python:'news' in portal.contentIds() and here==portal.news">
         <tal:add_button metal:use-macro="here/folder_contents/macros/add_button"/>
     </div>
 
