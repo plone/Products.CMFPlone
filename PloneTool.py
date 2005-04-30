@@ -450,8 +450,21 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     security.declarePublic('urlparse')
     def urlparse(self, url):
-        """ returns the pieces of url """
+        """ Returns the pieces of url in a six-part tuple.
+
+        See Python standard library urlparse.urlparse
+        http://python.org/doc/lib/module-urlparse.html
+        """
         return urlparse.urlparse(url)
+
+    security.declarePublic('urlunparse')
+    def urlunparse(self, url_tuple):
+        """ Puts a url back together again, in the manner that urlparse breaks it.
+
+        See also Python standard library: urlparse.urlunparse
+        http://python.org/doc/lib/module-urlparse.html
+        """
+        return urlparse.urlunparse(url_tuple)
 
     # Enable scripts to get the string value of an exception
     # even if the thrown exception is a string and not a

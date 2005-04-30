@@ -12,6 +12,7 @@ import ZTUtils
 
 REQUEST=context.REQUEST
 membership_tool=context.portal_membership
+util = context.plone_utils
 
 isAnonymous = membership_tool.isAnonymousUser()
 
@@ -66,25 +67,25 @@ if hasattr(membership_tool, 'createMemberArea'):
 
     membership_tool.createMemberArea()
 
-# I'm not quite sure where QUERY_STRING is supposed to be.
-# What we will do is say if REFERER startswith REQUEST['came_from']
-# then lets use that instead of came_from. REFERER contains the URL
-# args.
 
-qs = context.create_query_string(
-    REQUEST.get('QUERY_STRING', ''),
-    portal_status_message=("Welcome! You are now logged in.")
-    )
+# Add portal_status_message to the query string of the we came from
 
-REFERER=REQUEST.get('HTTP_REFERER')
 if login_success:
-    URL=login_success
+    dest=login_success
 else:
-    URL=REQUEST.get('came_from', REFERER)
+    # set the standard location to return
+    REFERER = REQUEST.get('HTTP_REFERER', login_success)
+    scheme, location, path, parameters, query, fragment = util.urlparse(REFERER)
 
-if URL.find('?')==-1:
-    dest = '%s?%s' % (URL, qs)
-else:
-    dest = '%s&%s' % (URL, qs)
+    # allow over-rides by request params
+    came_from=REQUEST.get('came_from', None)
+    if came_from:
+        scheme, location, path, parameters, x, fragment = util.urlparse(came_from)
+    query = REQUEST.get('came_from_query', query)
+
+    query = context.create_query_string(query, portal_status_message=("Welcome! You are now logged in."))
+
+    # put everything back together
+    dest = util.urlunparse((scheme, location, path, parameters, query, fragment))
 
 return REQUEST.RESPONSE.redirect(dest)
