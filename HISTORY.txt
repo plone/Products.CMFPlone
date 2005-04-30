@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Add charset info for ZMI pages like addSite.zpt and addPropertySheet.zpt
+      for better Chinese support.
+      [panjunyong]
+
     - Fixed http://members.plone.org/collector/3901 - applied the
       PloneTool.py patch by F Bennett (bierce), which shows full listing of
       inherited roles.
