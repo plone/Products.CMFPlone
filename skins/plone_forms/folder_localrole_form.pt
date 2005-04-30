@@ -196,7 +196,7 @@
 		/>
             <input class="destructive"
                 type="submit"
-                value="Delete Selected Role(s) and User(s)"
+                value="Delete Selected Role(s) and User(s)/Group(s)"
                 name="folder_localrole_delete:method"
                 i18n:attributes="value"
                 tabindex=""
