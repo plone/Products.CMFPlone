@@ -58,10 +58,12 @@ class PloneTestCase(ZopeTestCase.PortalTestCase):
     '''TestCase for Plone testing'''
 
     def _setup(self):
-        # Hack an ACTUAL_URL into the REQUEST
         ZopeTestCase.PortalTestCase._setup(self)
+        # Hack ACTUAL_URL and plone_skin into the REQUEST
         self.app.REQUEST['ACTUAL_URL'] = self.app.REQUEST.get('URL')
         self.app.REQUEST['plone_skin'] = 'Plone Default'
+        # Disable automatic memberarea creation
+        self.portal.portal_membership.memberareaCreationFlag = 0
         # Disable the constraintypes performance hog
         self.folder.setConstrainTypesMode(0)
 
