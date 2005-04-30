@@ -12,7 +12,7 @@
                             end={'query': here.ZopeTime(),
                                  'range': 'min'},
                             sort_on='start',
-                            review_state='published')[:5];"
+                            review_state='published')[:2];"
      tal:condition="results">
 
     <div class="portlet" id="portlet-events">
@@ -42,6 +42,28 @@
                 </div>
 
             </tal:block>
+
+            <div class="portletContent odd">
+
+                <a href=""
+                   class="portletMore"
+                   tal:condition="python:'events' in portal.contentIds()"
+                   tal:attributes="href string:${utool}/events"
+                   i18n:translate="box_morelink"
+                   >
+                    More...
+                </a>
+
+                <a href=""
+                   class="portletMore"
+                   tal:condition="python:'events' not in portal.contentIds()"
+                   tal:attributes="href string:${utool}/events_listing"
+                   i18n:translate="box_morelink"
+                   >
+                    More...
+                </a>
+
+            </div>
 
         </div>
 

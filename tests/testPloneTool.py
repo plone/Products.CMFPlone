@@ -27,6 +27,14 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
         self.folder2.invokeFactory('Folder', 'folder3')
         self.folder3 = self.folder2.folder3
 
+    def assertList(self, result, expect):
+        # Verifies lists have the same contents
+        lhs = [r for r in result]
+        lhs.sort()
+        rhs = list(expect)
+        rhs.sort()
+        self.assertEqual(lhs, rhs)
+
     def testChangeOwnershipOf(self):
         self.folder.invokeFactory('Document', 'doc')
         doc = self.folder.doc
@@ -199,10 +207,9 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
         self.folder1.manage_addLocalRoles('new_owner', ('Reviewer',))
         # Test Normal role acquisition is returned
         filtered_roles = [r for r in gILR(self.folder2) if r[0] == 'new_owner'][0]
-        self.failUnless('Reviewer' in filtered_roles[1], 'Roles are: %s'%str(filtered_roles))
+        self.assertList(filtered_roles[1], ['Reviewer'])
         filtered_roles = [r for r in gILR(self.folder3) if r[0] == 'new_owner'][0]
-        self.failUnless('Reviewer' in filtered_roles[1], 'Roles are: %s'%str(filtered_roles))
-        self.assertEqual(len(filtered_roles[1]), 1)
+        self.assertList(filtered_roles[1], ['Reviewer'])
 
     def testGetInheritedLocalRolesMultiLevel(self):
         # Test for http://members.plone.org/collector/3901
@@ -210,16 +217,14 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
         gILR = self.utils.getInheritedLocalRoles
         self.folder1.manage_addLocalRoles('new_owner', ('Reviewer',))
         self.folder2.manage_addLocalRoles('new_owner',('Owner',))
-        # This should have only the inherited role
-        filtered_roles = [r for r in gILR(self.folder2) if r[0] == 'new_owner'][0]
-        self.failUnless('Reviewer' in filtered_roles[1], 'Roles are: %s'%str(filtered_roles))
-        self.assertEqual(len(filtered_roles[1]), 1)
 
-        #Should have roles inherited from parent and grand-parent
+        # folder2 should have only the inherited role
+        filtered_roles = [r for r in gILR(self.folder2) if r[0] == 'new_owner'][0]
+        self.assertList(filtered_roles[1], ['Reviewer'])
+
+        # folder3 should have roles inherited from parent and grand-parent
         filtered_roles = [r for r in gILR(self.folder3) if r[0] == 'new_owner'][0]
-        self.failUnless('Owner' in filtered_roles[1], 'Roles are: %s'%str(filtered_roles))
-        self.failUnless('Reviewer' in filtered_roles[1], 'Roles are: %s'%str(filtered_roles))
-        self.assertEqual(len(filtered_roles[1]), 2)
+        self.assertList(filtered_roles[1], ['Owner','Reviewer'])
 
 
 class TestEditMetadata(PloneTestCase.PloneTestCase):
@@ -561,7 +566,7 @@ class TestPortalTabs(PloneTestCase.PloneTestCase):
         tabs = self.utils.createTopLevelTabs()
         self.failUnless(tabs)
         #Only the folders show up (Members, news, folder1, folder2)
-        self.assertEqual(len(tabs), 4)
+        self.assertEqual(len(tabs), 5)
 
     def testTabsRespectFolderOrder(self):
         # See if reordering causes a change in the tab order

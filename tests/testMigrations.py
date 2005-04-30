@@ -30,6 +30,7 @@ from Products.CMFPlone.migrations.v2_1.alphas import addUnfriendlyTypesSitePrope
 from Products.CMFPlone.migrations.v2_1.alphas import addNonDefaultPageTypesSiteProperty
 from Products.CMFPlone.migrations.v2_1.alphas import removePortalTabsActions
 from Products.CMFPlone.migrations.v2_1.alphas import addNewsFolder
+from Products.CMFPlone.migrations.v2_1.alphas import addEventsFolder
 from Products.CMFPlone.migrations.v2_1.alphas import addExclude_from_navMetadata
 from Products.CMFPlone.migrations.v2_1.alphas import addIs_FolderishMetadata
 from Products.CMFPlone.migrations.v2_1.alphas import indexMembersFolder
@@ -39,6 +40,7 @@ from Products.CMFPlone.migrations.v2_1.alphas import migrateDateRangeIndexes
 from Products.CMFPlone.migrations.v2_1.alphas import addSortable_TitleIndex
 from Products.CMFPlone.migrations.v2_1.alphas import addDefaultTypesToPortalFactory
 from Products.CMFPlone.migrations.v2_1.alphas import addNewsTopic
+from Products.CMFPlone.migrations.v2_1.alphas import addEventsTopic
 from Products.CMFPlone.migrations.v2_1.alphas import addDisableFolderSectionsSiteProperty
 
 
@@ -567,6 +569,54 @@ class TestMigrations_v2_1(MigrationTest):
         self.portal._delObject('portal_atct')
         addNewsTopic(self.portal, [])
         self.failUnless('news_topic' not in news.objectIds())
+
+    def testAddEventsFolder(self):
+        #Should add the new events folder with appropriate default view settings
+        self.portal._delObject('events')
+        self.failIf('events' in self.portal.objectIds())
+        addEventsFolder(self.portal, [])
+        self.failUnless('events' in self.portal.objectIds())
+        events = getattr(self.portal.aq_base, 'events')
+        self.assertEqual(events._getPortalTypeName(), 'Large Plone Folder')
+        self.assertEqual(list(events.getProperty('default_page')), ['events_topic', 'events_listing','index_html'])
+        self.assertEqual(list(events.getImmediatelyAddableTypes()),['Event'])
+        self.assertEqual(list(events.getLocallyAllowedTypes()),['Event'])
+        self.assertEqual(events.getConstrainTypesMode(), 1)
+
+    def testAddEventsFolderTwice(self):
+        #Should not fail when done twice
+        self.portal._delObject('events')
+        self.failIf('events' in self.portal.objectIds())
+        addEventsFolder(self.portal, [])
+        addEventsFolder(self.portal, [])
+        self.failUnless('events' in self.portal.objectIds())
+
+    def testAddEventsTopic(self):
+        #Should add the default view for the events folder, a topic
+        events = self.portal.events
+        events._delObject('events_topic')
+        self.failIf('events_topic' in events.objectIds())
+        addEventsTopic(self.portal, [])
+        self.failUnless('events_topic' in events.objectIds())
+        topic = getattr(events.aq_base, 'events_topic')
+        self.assertEqual(topic._getPortalTypeName(), 'Topic')
+
+    def testAddEventsTopicTwice(self):
+        #Should not fail if done twice
+        events = self.portal.events
+        events._delObject('events_topic')
+        self.failIf('events_topic' in events.objectIds())
+        addEventsTopic(self.portal, [])
+        addEventsTopic(self.portal, [])
+        self.failUnless('events_topic' in events.objectIds())
+
+    def testAddEventsTopicNoATCT(self):
+        #Should not do anything unless ATCT is installed
+        events = self.portal.events
+        events._delObject('events_topic')
+        self.portal._delObject('portal_atct')
+        addEventsTopic(self.portal, [])
+        self.failUnless('events_topic' not in events.objectIds())
 
     def testAddExclude_from_navMetadata(self):
         # Should add getObjSize to schema

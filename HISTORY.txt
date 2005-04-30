@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Fixed http://members.plone.org/collector/3931 - add 'more ...' link to
+      events portlet, also added new events tab/folder and topic to match the
+      news folder/tab and topic.
+      [lucas]
+
     - Fixed http://members.plone.org/collector/3752 - return rss search results
       in effective date order (reversed), unless another order is explicitly
       given.

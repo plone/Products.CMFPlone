@@ -273,6 +273,35 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.assertEqual(topic._getPortalTypeName(), 'Topic')
         self.assertEqual(topic.buildQuery()['Type'], ('News Item',))
 
+    def testEventsFolder(self):
+        # The portal should contain events folder
+        self.failUnless('events' in self.portal.objectIds())
+        events = getattr(self.portal.aq_base, 'events')
+        self.assertEqual(events._getPortalTypeName(), 'Large Plone Folder')
+        self.assertEqual(events.Title(), 'Events')
+        self.assertEqual(events.Description(), 'Site Events')
+        self.assertEqual(list(events.getProperty('default_page')), ['events_topic','events_listing','index_html'])
+        self.assertEqual(list(events.getImmediatelyAddableTypes()),['Event'])
+        self.assertEqual(list(events.getLocallyAllowedTypes()),['Event'])
+        self.assertEqual(events.getConstrainTypesMode(), 1)
+
+    def testEventsFolderIsIndexed(self):
+        # Events folder should be cataloged
+        res = self.catalog(id='events')
+        self.assertEqual(len(res), 1)
+        self.assertEqual(res[0].getId, 'events')
+        self.assertEqual(res[0].Title, 'Events')
+        self.assertEqual(res[0].Description, 'Site Events')
+
+    def testEventsTopic(self):
+        # Events topic is in place as default view and has a criterion to show
+        # only Events Items.
+        events = self.portal.events
+        self.failUnless('events_topic' in events.objectIds())
+        topic = getattr(events.aq_base, 'events_topic')
+        self.assertEqual(topic._getPortalTypeName(), 'Topic')
+        self.assertEqual(topic.buildQuery()['Type'], ('Event',))
+
     def testObjectButtonActions(self):
         installed = [(a.getId(), a.getCategory()) for a in self.actions.listActions()]
         self.failUnless(('cut', 'object_buttons') in installed)

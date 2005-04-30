@@ -98,6 +98,12 @@ def alpha1_alpha2(portal):
     # Add news topic
     addNewsTopic(portal, out)
 
+    # Add events folder
+    addEventsFolder(portal, out)
+
+    # Add events topic
+    addEventsTopic(portal, out)
+
     # Add exclude_from_nav index
     reindex += addExclude_from_navMetadata(portal, out)
 
@@ -133,6 +139,9 @@ def alpha1_alpha2(portal):
     
     # Make sure the News folder is cataloged
     indexNewsFolder(portal, out)
+
+    # Make sure the Events folder is cataloged
+    indexEventsFolder(portal, out)
 
     # Add non_default_page_types site property
     addDisableFolderSectionsSiteProperty(portal, out)
@@ -569,6 +578,30 @@ def addNewsFolder(portal, out):
         pass
     out.append("Added default view for news folder.")
 
+def addEventsFolder(portal, out):
+    """Add events folder to portal root"""
+    if 'events' not in portal.objectIds():
+        _createObjectByType('Large Plone Folder', portal, id='events',
+                            title='Events', description='Site Events')
+        out.append("Added events folder.")
+    events = getattr(aq_base(portal), 'events')
+
+    # Enable ConstrainTypes and set to Event
+    addable_types = ['Event']
+    if getattr(events.aq_base, 'setConstrainTypesMode', None) is not None:
+        events.setConstrainTypesMode(1)
+        events.setImmediatelyAddableTypes(addable_types)
+        events.setLocallyAllowedTypes(addable_types)
+        out.append("Set constrain types for events folder.")
+
+    # Add events_listing.pt as default page
+    # property manager hasProperty can give odd results ask forgiveness instead
+    try:
+        events.manage_addProperty('default_page', ['events_topic','events_listing','index_html'], 'lines')
+    except BadRequest:
+        pass
+    out.append("Added default view for events folder.")
+
 
 def addExclude_from_navMetadata(portal, out):
     """Adds the exclude_from_nav metadata."""
@@ -666,6 +699,15 @@ def indexNewsFolder(portal, out):
         if hasattr(aq_base(portal), 'news'):
             portal.news.indexObject()
             out.append('Recataloged news folder.')
+
+
+def indexEventsFolder(portal, out):
+    """Makes sure the Events folder is cataloged."""
+    catalog = getToolByName(portal, 'portal_catalog', None)
+    if catalog is not None:
+        if hasattr(aq_base(portal), 'events'):
+            portal.events.indexObject()
+            out.append('Recataloged events folder.')
 
 
 class Record:
@@ -793,6 +835,20 @@ def addNewsTopic(portal, out):
         out.append('Added Topic for default news folder view.')
     else:
         out.append('Topic default news folder view already in place or ATCT is not installed.')
+
+
+def addEventsTopic(portal, out):
+    events = portal.events
+    if 'events_topic' not in events.objectIds() and getattr(portal,'portal_atct', None) is not None:
+        _createObjectByType('Topic', events, id='events_topic',
+                            title='Events', description='Site Events')
+        topic = events.events_topic
+        type_crit = topic.addCriterion('Type','ATPortalTypeCriterion')
+        type_crit.setValue('Event')
+        sort_crit = topic.addCriterion('start','ATSortCriterion')
+        out.append('Added Topic for default events folder view.')
+    else:
+        out.append('Topic default events folder view already in place or ATCT is not installed.')
 
 
 def addDisableFolderSectionsSiteProperty(portal, out):
