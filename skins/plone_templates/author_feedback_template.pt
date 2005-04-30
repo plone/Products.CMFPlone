@@ -4,7 +4,7 @@
                  portal utool/getPortalObject"
 ><div i18n:translate="author_feedback_mailtemplate_body" tal:omit-tag="">
 You are receiving this mail because <span i18n:name="from_address" 
-tal:omit-tag="" tal:content="options/sender_id"/> is sending feedback about content created by you at <span tal:replace="options/url" />.
+tal:omit-tag="" tal:content="options/sender_id"/> is sending feedback about content created by you at <span i18n:name="url" tal:replace="options/url" />.
 
 The message sent was:
 
