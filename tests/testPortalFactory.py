@@ -60,8 +60,8 @@ class TestPortalFactory(PloneTestCase.PloneTestCase):
 
     def testTempObjectLocalRolesBug(self):
         # Evil monkey patch should not change all objects of a class
-        member = self.membership.getMemberById('member')
         self.createMemberarea('member')
+        member = self.membership.getMemberById('member')
 
         # Make an unrelated non-temporary object for comparison
         self.login('manager')
