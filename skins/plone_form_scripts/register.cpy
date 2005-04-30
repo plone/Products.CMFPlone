@@ -51,7 +51,7 @@ state.set(portal_status_message=REQUEST.get('portal_status_message', 'Registered
 state.set(came_from=REQUEST.get('came_from','logged_in'))
 
 if came_from_prefs:
-    state.set(status='prefs')
+    state.set(status='prefs', portal_status_message='User added.')
 
 from Products.CMFPlone import transaction_note
 transaction_note('%s registered' % username)
