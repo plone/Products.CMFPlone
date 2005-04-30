@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Fixed http://members.plone.org/collector/3901 - applied the
+      PloneTool.py patch by F Bennett (bierce), which shows full listing of
+      inherited roles.
+      [alecm]
+
     - Fixed http://members.plone.org/collector/3819/ - applied the
       utils.py patch provided by gkirk
       [rafrombrc]
@@ -38,7 +43,7 @@ Plone 2.1 - Plaid - (unreleased)
       hardcoded references to logo.jpg in favor of the logoName
       variable defined in base_properties.
       [bmh]
-    
+
     - Fixed http://plone.org/collector/3544 - Use password_confirm as
       the name of the password confirmation field so it doesn't show
       up in error logs.  

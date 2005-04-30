@@ -20,6 +20,12 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
         self.utils = self.portal.plone_utils
         self.membership = self.portal.portal_membership
         self.membership.addMember('new_owner', 'secret', ['Member'], [])
+        self.folder.invokeFactory('Folder', 'folder1')
+        self.folder1 = self.folder.folder1
+        self.folder1.invokeFactory('Folder', 'folder2')
+        self.folder2 = self.folder1.folder2
+        self.folder2.invokeFactory('Folder', 'folder3')
+        self.folder3 = self.folder2.folder3
 
     def testChangeOwnershipOf(self):
         self.folder.invokeFactory('Document', 'doc')
@@ -185,6 +191,35 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
         input = u"Eksempel \xe6\xf8\xe5 norsk \xc6\xd8\xc5".encode('utf-8')
         self.assertEqual(self.utils.titleToNormalizedId(input),
                          'eksempel-eoa-norsk-eoa')
+
+    def testGetInheritedLocalRoles(self):
+        # Test basic local roles acquisition is dealt with by
+        # getInheritedLocalRoles
+        gILR = self.utils.getInheritedLocalRoles
+        self.folder1.manage_addLocalRoles('new_owner', ('Reviewer',))
+        # Test Normal role acquisition is returned
+        filtered_roles = [r for r in gILR(self.folder2) if r[0] == 'new_owner'][0]
+        self.failUnless('Reviewer' in filtered_roles[1], 'Roles are: %s'%str(filtered_roles))
+        filtered_roles = [r for r in gILR(self.folder3) if r[0] == 'new_owner'][0]
+        self.failUnless('Reviewer' in filtered_roles[1], 'Roles are: %s'%str(filtered_roles))
+        self.assertEqual(len(filtered_roles[1]), 1)
+
+    def testGetInheritedLocalRolesMultiLevel(self):
+        # Test for http://members.plone.org/collector/3901
+        # make sure local roles are picked up from all folders in tree.
+        gILR = self.utils.getInheritedLocalRoles
+        self.folder1.manage_addLocalRoles('new_owner', ('Reviewer',))
+        self.folder2.manage_addLocalRoles('new_owner',('Owner',))
+        # This should have only the inherited role
+        filtered_roles = [r for r in gILR(self.folder2) if r[0] == 'new_owner'][0]
+        self.failUnless('Reviewer' in filtered_roles[1], 'Roles are: %s'%str(filtered_roles))
+        self.assertEqual(len(filtered_roles[1]), 1)
+
+        #Should have roles inherited from parent and grand-parent
+        filtered_roles = [r for r in gILR(self.folder3) if r[0] == 'new_owner'][0]
+        self.failUnless('Owner' in filtered_roles[1], 'Roles are: %s'%str(filtered_roles))
+        self.failUnless('Reviewer' in filtered_roles[1], 'Roles are: %s'%str(filtered_roles))
+        self.assertEqual(len(filtered_roles[1]), 2)
 
 
 class TestEditMetadata(PloneTestCase.PloneTestCase):

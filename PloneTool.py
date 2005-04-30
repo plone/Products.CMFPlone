@@ -724,7 +724,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             parent = here.aq_parent
             while cont:
                 userroles = parent.acl_users.getLocalRolesForDisplay(parent)
-                for user, roles, type, name in userroles:
+                for user, roles, role_type, name in userroles:
                     # find user in result
                     found=0
                     for user2, roles2, type2, name2 in result:
@@ -732,12 +732,14 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                             # check which roles must be added to roles2
                             for role in roles:
                                 if not role in roles2:
-                                    roles2=roles2+(role,)
+                                    roles2=roles2.append(role)
                             found=1
                             break
                     if found==0:
                         # add it to result
-                        result.append((user, roles, type, name))
+                        # make sure roles is a list so we may append and not
+                        # overwrite the loop variable
+                        result.append([user, list(roles), role_type, name])
                 if parent==portal:
                     cont=0
 		elif not self.isLocalRoleAcquired(parent):
@@ -745,6 +747,11 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                     cont=0
                 else:
                     parent=parent.aq_parent
+
+        # Tuplize all inner roles
+        for pos in range(len(result)-1,-1,-1):
+            result[pos][1] = tuple(result[pos][1])
+            result[pos] = tuple(result[pos])
 
         return tuple(result)
 
