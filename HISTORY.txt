@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Made sure PloneTool.changeOwnershipOf() works recursively.
+      [stefan]
+
     - Fixed user and group name/id fuzzyness in PloneTool.changeOwnershipOf()
       and folder_localrole_form.pt.
       [stefan]

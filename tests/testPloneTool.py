@@ -18,42 +18,6 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
         self.utils = self.portal.plone_utils
-        self.membership = self.portal.portal_membership
-        self.membership.addMember('new_owner', 'secret', ['Member'], [])
-        self.folder.invokeFactory('Folder', 'folder1')
-        self.folder1 = self.folder.folder1
-        self.folder1.invokeFactory('Folder', 'folder2')
-        self.folder2 = self.folder1.folder2
-        self.folder2.invokeFactory('Folder', 'folder3')
-        self.folder3 = self.folder2.folder3
-
-    def assertList(self, result, expect):
-        # Verifies lists have the same contents
-        lhs = [r for r in result]
-        lhs.sort()
-        rhs = list(expect)
-        rhs.sort()
-        self.assertEqual(lhs, rhs)
-
-    def testChangeOwnershipOf(self):
-        self.folder.invokeFactory('Document', 'doc')
-        doc = self.folder.doc
-        self.assertEqual(doc.getOwnerTuple()[1], default_user)
-        self.assertEqual(doc.get_local_roles_for_userid(default_user), ('Owner',))
-
-        self.utils.changeOwnershipOf(doc, 'new_owner')
-        self.assertEqual(doc.getOwnerTuple()[1], 'new_owner')
-        self.assertEqual(doc.get_local_roles_for_userid('new_owner'), ('Owner',))
-
-        # Initial creator no longer has Owner role.
-        self.assertEqual(doc.get_local_roles_for_userid(default_user), ())
-
-    def testGetOwnerId(self):
-        #Test that getOwnerId gets the Owner Id
-        self.folder.invokeFactory('Document', 'doc2')
-        doc = self.folder.doc2
-        self.utils.changeOwnershipOf(doc, 'new_owner')
-        self.assertEqual(self.utils.getOwnerId(doc), 'new_owner')
 
     def testvalidateSingleEmailAddress(self):
         # Any RFC 822 email address allowed, but address list must fail
@@ -200,6 +164,68 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
         self.assertEqual(self.utils.titleToNormalizedId(input),
                          'eksempel-eoa-norsk-eoa')
 
+
+class TestOwnershipStuff(PloneTestCase.PloneTestCase):
+
+    def afterSetUp(self):
+        self.utils = self.portal.plone_utils
+        self.membership = self.portal.portal_membership
+        self.membership.addMember('new_owner', 'secret', ['Member'], [])
+        self.folder.invokeFactory('Folder', 'folder1')
+        self.folder1 = self.folder.folder1
+        self.folder1.invokeFactory('Folder', 'folder2')
+        self.folder2 = self.folder1.folder2
+        self.folder2.invokeFactory('Folder', 'folder3')
+        self.folder3 = self.folder2.folder3
+
+    def assertList(self, result, expect):
+        # Verifies lists have the same contents
+        lhs = [r for r in result]
+        lhs.sort()
+        rhs = list(expect)
+        rhs.sort()
+        self.assertEqual(lhs, rhs)
+
+    def testChangeOwnershipOf(self):
+        # Should take ownership
+        self.assertEqual(self.folder1.getOwnerTuple()[1], default_user)
+        self.assertList(self.folder1.get_local_roles_for_userid(default_user), ['Owner'])
+
+        self.utils.changeOwnershipOf(self.folder1, 'new_owner')
+        self.assertEqual(self.folder1.getOwnerTuple()[1], 'new_owner')
+        self.assertList(self.folder1.get_local_roles_for_userid('new_owner'), ['Owner'])
+
+        # Initial creator no longer has Owner role.
+        self.assertList(self.folder1.get_local_roles_for_userid(default_user), [])
+
+    def testChangeOwnershipOfKeepsOtherRoles(self):
+        # Should preserve roles other than Owner
+        self.folder1.manage_addLocalRoles('new_owner', ('Reviewer',))
+        self.assertList(self.folder1.get_local_roles_for_userid('new_owner'), ['Reviewer'])
+        self.utils.changeOwnershipOf(self.folder1, 'new_owner')
+        self.assertEqual(self.folder1.getOwnerTuple()[1], 'new_owner')
+        self.assertList(self.folder1.get_local_roles_for_userid('new_owner'), ['Owner', 'Reviewer'])
+        self.assertList(self.folder1.get_local_roles_for_userid(default_user), [])
+
+    def testChangeOwnershipOfRecursive(self):
+        # Should take ownership of subobjects as well
+        self.utils.changeOwnershipOf(self.folder1, 'new_owner', recursive=1)
+        self.assertEqual(self.folder1.getOwnerTuple()[1], 'new_owner')
+        self.assertList(self.folder1.get_local_roles_for_userid('new_owner'), ['Owner'])
+        self.assertList(self.folder1.get_local_roles_for_userid(default_user), [])
+        self.assertEqual(self.folder2.getOwnerTuple()[1], 'new_owner')
+        self.assertList(self.folder2.get_local_roles_for_userid('new_owner'), ['Owner'])
+        self.assertList(self.folder2.get_local_roles_for_userid(default_user), [])
+        self.assertEqual(self.folder3.getOwnerTuple()[1], 'new_owner')
+        self.assertList(self.folder3.get_local_roles_for_userid('new_owner'), ['Owner'])
+        self.assertList(self.folder3.get_local_roles_for_userid(default_user), [])
+
+    def testGetOwnerId(self):
+        # Test that getOwnerId gets the Owner Id
+        self.assertEqual(self.utils.getOwnerId(self.folder1), default_user)
+        self.utils.changeOwnershipOf(self.folder1, 'new_owner')
+        self.assertEqual(self.utils.getOwnerId(self.folder1), 'new_owner')
+
     def testGetInheritedLocalRoles(self):
         # Test basic local roles acquisition is dealt with by
         # getInheritedLocalRoles
@@ -216,7 +242,7 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
         # make sure local roles are picked up from all folders in tree.
         gILR = self.utils.getInheritedLocalRoles
         self.folder1.manage_addLocalRoles('new_owner', ('Reviewer',))
-        self.folder2.manage_addLocalRoles('new_owner',('Owner',))
+        self.folder2.manage_addLocalRoles('new_owner', ('Owner',))
 
         # folder2 should have only the inherited role
         filtered_roles = [r for r in gILR(self.folder2) if r[0] == 'new_owner'][0]
@@ -634,6 +660,7 @@ def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
     suite.addTest(makeSuite(TestPloneTool))
+    suite.addTest(makeSuite(TestOwnershipStuff))
     suite.addTest(makeSuite(TestEditMetadata))
     suite.addTest(makeSuite(TestEditMetadataIndependence))
     suite.addTest(makeSuite(TestFormulatorFields))
