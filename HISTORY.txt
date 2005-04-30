@@ -3,6 +3,10 @@ Changelog for Plone
    (name of developer listed in brackets)
 
 Plone 2.1 - Plaid - (unreleased)
+      
+    - Reworked prefs_users_overview to use CMFForumController and to
+      simplify prefs_user_manage.cpy.
+      [bmh]
 
     - Fixed http://members.plone.org/collector/3931 - add 'more ...' link to
       events portlet, also added new events tab/folder and topic to match the

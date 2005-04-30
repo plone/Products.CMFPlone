@@ -11,7 +11,7 @@
 <div metal:fill-slot="prefs_configlet_content"
     tal:define="Batch python:modules['Products.CMFPlone'].Batch;
                 b_start request/b_start | python:0;
-                b_size python:5;
+                b_size request/b_size | python:20;
                 portal_roles here/getGlobalPortalRoles;">
 
       <div id="content" class="documentEditable">
@@ -123,80 +123,67 @@
                 </tal:block>
                 
                 <tal:block repeat="this_user batch">
-                    
-                    <tr tal:define="oddrow repeat/this_user/odd"
-                        tal:attributes="class python:test(oddrow,'odd','even')">
-
-                    <tal:block define="userid python: this_user.getUserId();
-                                       fullname python: this_user.getProperty('fullname')">
+		  <tr tal:define="oddrow repeat/this_user/odd;
+		                  userid this_user/getUserId;
+                                  fullname python: this_user.getProperty('fullname')"
+		      tal:attributes="class python:test(oddrow,'odd','even')">
 
                     <td>
-                        <a href="XXX_prefs_user_details"
-			   tal:attributes="href string:${here/portal_memberdata/absolute_url}/prefs_user_details?userid=$userid">
-			  <tal:block replace="structure portal/user.gif"/>&nbsp;<span tal:replace="this_user/getUserName">username</span>
-			  (<span tal:replace="fullname">Full Name</span>)
-                        </a>
+		      <a href="prefs_user_details"
+			 tal:attributes="href string:${here/portal_memberdata/absolute_url}/prefs_user_details?userid=$userid">
+			<tal:block replace="structure portal/user.gif"/>&nbsp;<span tal:replace="this_user/getUserName">username</span>
+			(<span tal:replace="fullname">Full Name</span>)
+		      </a>
+		      <input type="hidden" name="users.id:records" tal:attributes="value userid" />
                     </td>
 
-		      <td tal:define="email python:this_user.getProperty('email')">
-                        <a href="#"
-                           class="link-plain"
-                           tal:attributes="href string:mailto:${email}"
-                           title="Send a mail to this user"
-                           i18n:attributes="title"
-                           ><tal:block replace="structure here/mail_icon.gif"/></a>
-                        <input style="margin:2px;"
-                               type="text"
-			       size="15"
-			       name=""
-			       value=""
-			       tal:attributes="name string:email_entered_$userid;
-                                               value email" />
-                        <input type="hidden"
-                               name="email_original_userid"
-                               tal:attributes="name string:email_original_$userid;
-                                               value email" />
-		      </td>
+		    <td tal:define="email python:this_user.getProperty('email')">
+		      <a href="#"
+                         class="link-plain"
+                         tal:attributes="href string:mailto:${email}"
+                         title="Send a mail to this user"
+                         i18n:attributes="title"
+                         ><tal:block replace="structure here/mail_icon.gif"/></a>
+		      <input style="margin:2px;"
+                             type="text"
+			     size="15"
+			     name="users.email:records"
+			     value=""
+			     tal:attributes="value email" />
+		    </td>
                     
-                    <td class="listingCheckbox"
-                    tal:define="user_roles python:this_user.getUserRoles();"
-                    tal:repeat="portal_role portal_roles">
-    
-                    <input type="checkbox"
-                           class="noborder"
-                           name="name"
-                           value="Manager"
-                           tal:attributes="name string:user_${this_user/getUserName}:list;
-                                           value portal_role;
-                                           checked python:test(portal_role in user_roles, 'checked' ,'');" />
-                </td>
+		    <td class="listingCheckbox"
+			tal:define="user_roles this_user/getUserRoles"
+			tal:repeat="portal_role portal_roles">
+		      <input type="checkbox"
+			     class="noborder"
+			     name="users.roles:list:records"
+			     value="Manager"
+                             tal:attributes="value portal_role;
+                                             checked python:test(portal_role in user_roles, 'checked', nothing);" />
+		    </td>
 
-                    <td class="listingCheckbox">
-                        <input type="checkbox"
-                            class="noborder"
-                            name="resetpassword:list"
-                            value="value"
-                            tal:attributes="value userid" />
-                    </td>
-
-                    <td class="listingCheckbox">
-                        <input type="checkbox"
-                            class="noborder notify"
-                            name="delete:list"
-                            value="value"
-                            tal:attributes="value userid" />
-                    </td>
-
-                    </tal:block>
+		    <td class="listingCheckbox">
+		      <input type="checkbox"
+			     class="noborder"
+			     name="users.resetpassword:records"
+                             value=""
+                             tal:attributes="value userid" />
+		    </td>
+		    
+		    <td class="listingCheckbox">
+		      <input type="checkbox"
+                             class="noborder notify"
+                             name="delete:list"
+                             value=""
+                             tal:attributes="value userid" />
+		    </td>
+		  </tr>
+		</tal:block>
+                <tr tal:condition="not:batch">
+		  <td i18n:translate="text_nomatches" style="text-align:center;">No matches</td>
                 </tr>
-            </tal:block>
-            <tal:block tal:condition="not:batch">
-                <tr>
-                    <td i18n:translate="text_nomatches" style="text-align:center;">No matches</td>
-                </tr>
-            </tal:block>
-        </table>
-
+	      </table>
 
 	      <div metal:use-macro="here/batch_macros/macros/navigation" />
 
