@@ -13,7 +13,7 @@ from Products.CMFCore.utils import getToolByName
 itool = getToolByName(context, 'portal_interface')
 
 folder = context
-if not folder.isPrincipiaFolderish:
+if folder.isDefaultPageInFolder() or not folder.isPrincipiaFolderish:
     folder = context.aq_inner.aq_parent
 
 if not itool.objectImplements(folder, INTERFACE):

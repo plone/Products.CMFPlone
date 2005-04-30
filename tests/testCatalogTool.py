@@ -289,7 +289,11 @@ class TestCatalogSearching(PloneTestCase.PloneTestCase):
         self.portal.acl_users._doAddUser(user2, 'secret', [], [], [])
 
         self.folder.invokeFactory('Document', id='doc', text='foo')
+        self.folder.invokeFactory('Folder', id='folder2')
+        self.folder.folder2.invokeFactory('Document', id='doc2', text='bar')
         self.workflow.doActionFor(self.folder.doc, 'hide', comment='')
+        self.workflow.doActionFor(self.folder.folder2, 'hide', comment='')
+        self.workflow.doActionFor(self.folder.folder2.doc2, 'hide', comment='')
 
     def addUser2ToGroup(self):
         self.groups.groupWorkspacesCreationFlag = 0
@@ -322,6 +326,28 @@ class TestCatalogSearching(PloneTestCase.PloneTestCase):
         self.folder.folder_localrole_edit('add', [groupname], 'Owner')
         self.login(user2)
         self.assertEqual(self.catalog(SearchableText='foo')[0].id, 'doc')
+
+    def testSearchRespectsLocalRoleAcquisition(self):
+        # After adding a group with access rights and containing user2,
+        # a search must find the document in subfolders.
+        groupname = self.addUser2ToGroup()
+        self.folder.folder_localrole_edit('add', [groupname], 'Owner')
+        self.login(user2)
+        # Local Role works in subfolder
+        self.assertEqual(self.catalog(SearchableText='bar')[0].id, 'doc2')
+
+    def testSearchRespectsLocalRoleAcquisitionDisabled(self):
+        # After adding a group with access rights and containing user2,
+        # a search should not find documents in subfolders which have
+        # disabled local role acquisition.
+        groupname = self.addUser2ToGroup()
+        self.folder.folder_localrole_edit('add', [groupname], 'Owner')
+        # Acquisition off for folder2
+        self.login(default_user)
+        self.folder.folder2.folder_localrole_set(use_acquisition=0)
+        #Everything in subfolder should be invisible
+        self.login(user2)
+        self.failIf(self.catalog(SearchableText='bar'))
 
 
 class TestCatalogSorting(PloneTestCase.PloneTestCase):
@@ -375,7 +401,7 @@ class TestCatalogSorting(PloneTestCase.PloneTestCase):
         doc = self.folder.doc
         doc.setTitle(title)
         wrapped = ExtensibleIndexableObjectWrapper(vars, doc, self.portal)
-        self.assertEqual(wrapped.sortable_title, u'la pe\xf1a')
+        self.assertEqual(wrapped.sortable_title, u'la pe\xf1a'.encode('utf-8'))
 
 
 class TestFolderCataloging(PloneTestCase.PloneTestCase):
@@ -678,25 +704,25 @@ class TestCatalogOptimizer(PloneTestCase.PloneTestCase):
 
     def testSearchResults(self):
         res = self.catalog.searchResults()
-        self.assertResults(res, ['Members', 'news', default_user, 'doc'])
+        self.assertResults(res, ['Members', 'news', 'news_topic', default_user, 'doc'])
 
     def testCall(self):
         res = self.catalog()
-        self.assertResults(res, ['Members', 'news', default_user, 'doc'])
+        self.assertResults(res, ['Members', 'news', 'news_topic', default_user, 'doc'])
 
     def testSearchResultsExpired(self):
         self.folder.doc.setExpirationDate(DateTime(2000, 12, 31))
         self.folder.doc.reindexObject()
         self.nofx()
         res = self.catalog.searchResults()
-        self.assertResults(res, ['Members', 'news', default_user])
+        self.assertResults(res, ['Members', 'news', 'news_topic', default_user])
 
     def testCallExpired(self):
         self.folder.doc.setExpirationDate(DateTime(2000, 12, 31))
         self.folder.doc.reindexObject()
         self.nofx()
         res = self.catalog()
-        self.assertResults(res, ['Members', 'news', default_user])
+        self.assertResults(res, ['Members', 'news', 'news_topic', default_user])
 
     def testSearchResultsExpiredWithPermission(self):
         self.folder.doc.setExpirationDate(DateTime(2000, 12, 31))
@@ -704,7 +730,7 @@ class TestCatalogOptimizer(PloneTestCase.PloneTestCase):
         self.nofx()
         self.setPermissions([AccessInactivePortalContent])
         res = self.catalog.searchResults()
-        self.assertResults(res, ['Members', 'news', default_user, 'doc'])
+        self.assertResults(res, ['Members', 'news', 'news_topic', default_user, 'doc'])
 
     def testCallExpiredWithPermission(self):
         self.folder.doc.setExpirationDate(DateTime(2000, 12, 31))
@@ -712,7 +738,7 @@ class TestCatalogOptimizer(PloneTestCase.PloneTestCase):
         self.nofx()
         self.setPermissions([AccessInactivePortalContent])
         res = self.catalog()
-        self.assertResults(res, ['Members', 'news', default_user, 'doc'])
+        self.assertResults(res, ['Members', 'news', 'news_topic', default_user, 'doc'])
 
 
 def dummyMethod(obj, **kwargs):

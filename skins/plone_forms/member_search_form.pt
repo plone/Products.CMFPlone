@@ -94,7 +94,7 @@
                      <option value="" i18n:translate="search_any_group"> Any Group </option>
                      <option tal:repeat="group grouplist"
                              tal:attributes="value group/getGroupName"
-                             tal:content="group/title_or_id">group name</option>
+                             tal:content="python: group.title or group.getGroupName()">group name</option>
                  </select>
             </div>
             </tal:condition>

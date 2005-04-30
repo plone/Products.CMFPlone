@@ -8,50 +8,51 @@
 
 <body>
 
-<div metal:fill-slot="prefs_configlet_main"
+<div metal:fill-slot="prefs_configlet_content"
      tal:define="userid python:request.get('userid', member.getId());
                 member python:mtool.getMemberById(userid);
+                groups member/getGroups;
                 mdata here/portal_memberdata;
                 errors python:request.get('errors', {});
                 searchonly string:groups;
                 takeaction string:prefs_user_membership_edit;">
 
-<div class="configlet">
-
-<div class="documentEditable">
-
-    <!-- simulating views on the groups/user pages until we have real objects. -->
-    <ul class="contentViews">
-        <li class="">
+      <div id="content" class="documentEditable">
+	<!-- simulating views on the groups/user pages until we have real objects. -->
+	<ul class="contentViews">
+	  <li class="">
             <a href=""
-               tal:attributes="href string: prefs_user_details?userid=${userid}"
-               i18n:translate="label_user_properties"
-            >User Properties</a>
-        </li>
-            
-        <li class="selected">
+	       tal:attributes="href string: prefs_user_details?userid=${userid}"
+	       i18n:translate="label_user_properties">User Properties</a>
+	  </li>
+	  
+	  <li class="selected">
             <a href=""
-               tal:attributes="href string:${template/id}?userid=${userid}"
-               i18n:translate="label_group_memberships"
-            >Group Memberships</a>
-        </li>
-    </ul>
-    
-    <div class="contentActions">
-    &nbsp;
-    </div>        
-    <!-- End of tabs -->
+	       tal:attributes="href string:${template/id}?userid=${userid}"
+	       i18n:translate="label_group_memberships">Group Memberships</a>
+	  </li>
+	</ul>
+	
+	<div class="contentActions">
+	  &nbsp;
+	</div>        
 
-    <div class="documentContent">
+	<div class="documentContent" id="region-content">
+	  <a name="documentContent"></a>
 
-        <h1 i18n:translate="heading_group_memberships_for">Group Memberships for <span tal:replace="string:${member/getUserName}" i18n:name="username"/></h1>
+	  <div metal:use-macro="here/global_statusmessage/macros/portal_message">
+	    Portal status message
+	  </div>
+	  
+	  <div class="configlet">
+	    <h1 i18n:translate="heading_group_memberships_for">Group Memberships for <span tal:replace="string:${member/getUserName}" i18n:name="username"/></h1>
     
-        <a href=""
-           class="link-parent"
-           tal:attributes="href string: $portal_url/prefs_users_overview"
-           i18n:translate="label_up_to_usersoverview">
-        Up to Users Overview
-        </a>
+	    <a href=""
+	       class="link-parent"
+	       tal:attributes="href string: $portal_url/prefs_users_overview"
+	       i18n:translate="label_up_to_usersoverview">
+	      Up to Users Overview
+	    </a>
 
     	<h2 i18n:translate="heading_search_newgroups">Search for new groups</h2>
     	<div metal:use-macro="here/prefs_search_macros/macros/user_group_search">
@@ -73,14 +74,14 @@
     	  <metal:block metal:fill-slot="removables">
     
     	<h2 i18n:translate="heading_memberships_current">Current Group Memberships</h2>
-    	<table class="listing" summary="Group Memberships Listing">
+         <table tal:condition="groups" class="listing" summary="Group Memberships Listing">
     
           <tr>
               <th i18n:translate="listingheader_group_name">Group name</th>
               <th i18n:translate="listingheader_group_remove">Remove Group</th>
           </tr>
     
-    	  <tr tal:repeat="groupid member/getGroups" class="odd">
+    	  <tr tal:repeat="groupid groups" class="odd">
     	      <tal:block tal:define="group python:gtool.getGroupById(groupid);
     		                     groupname group/getGroupName">
                 <td>
@@ -102,13 +103,13 @@
             </tr>
     
             </table>
-            <p tal:condition="not:member/getGroups">This user does not belong to any group.</p>
+            <p tal:condition="not:groups">This user does not belong to any group.</p>
             <input class="destructive"
                    type="submit"
                    name="prefs_user_membership_edit:method"
                    value="Remove selected groups"
                    i18n:attributes="value" 
-                   tal:condition="member/getGroups" />
+                   tal:condition="groups" />
           </metal:block>
         </div>
     </div>

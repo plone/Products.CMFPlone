@@ -7,8 +7,14 @@
 ##parameters=contents, method='title_or_id'
 ##title=sorts and pre-filters objects
 ##
+def get_sortable(o):
+    val = getattr(o, method)()
+    try:
+        val = val.lower()
+    except AttributeError:
+        pass
+    return val
 
-contents=list(contents)
-sort = lambda a,b: cmp(getattr(a, method)(), getattr(b, method)())
-contents.sort(sort)
-return contents
+aux = [(get_sortable(o), o) for o in contents]
+aux.sort()
+return [x[1] for x in aux]

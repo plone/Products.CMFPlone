@@ -14,7 +14,7 @@ ZopeTestCase.installProduct('DCWorkflow')
 ZopeTestCase.installProduct('CMFActionIcons')
 ZopeTestCase.installProduct('CMFQuickInstallerTool')
 ZopeTestCase.installProduct('CMFFormController')
-ZopeTestCase.installProduct('CSSRegistry')
+ZopeTestCase.installProduct('ResourceRegistries')
 ZopeTestCase.installProduct('GroupUserFolder')
 ZopeTestCase.installProduct('ZCTextIndex')
 if ZopeTestCase.hasProduct('TextIndexNG2'):

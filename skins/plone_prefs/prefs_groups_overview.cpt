@@ -8,59 +8,61 @@
 
 <body>
 
-<div metal:fill-slot="prefs_configlet_main"
+<div metal:fill-slot="prefs_configlet_content"
      tal:define="errors python:request.get('errors', {});
                 Batch python:modules['Products.CMFPlone'].Batch;
                 b_start request/b_start | python:0;
                 b_size python:20;
                 portal_roles here/getGlobalPortalRoles;">
 
-<div class="configlet">
-
-<div class="documentEditable">
-
-    <!-- simulating views on the groups/user pages until we have real objects. -->
-    <ul class="contentViews">
-        <li class="">
+      <div id="content" class="documentEditable">
+	<!-- simulating views on the groups/user pages until we have real objects. -->
+	<ul class="contentViews">
+	  <li class="">
             <a href=""
-               tal:attributes="href string:${here/absolute_url}/prefs_users_overview"
+	       tal:attributes="href string:${here/absolute_url}/prefs_users_overview"
                i18n:translate="label_users">Users</a>
-        </li>
-            
-        <li class="selected">
+	  </li>
+	  <li class="selected">
             <a href=""
                tal:attributes="href string:${here/absolute_url}/${template/id}"
                i18n:translate="label_groups">Groups</a>
-        </li>
-    </ul>
+	  </li>
+	</ul>
     
-    <div class="contentActions">
-    &nbsp;
-    </div>        
-    <!-- End of tabs -->
+	<div class="contentActions">
+	  &nbsp;
+	</div>        
 
-    <div class="documentContent">
+	<div class="documentContent">
+	  <a name="documentContent"></a>
+	  
+	  <div metal:use-macro="here/global_statusmessage/macros/portal_message">
+	    Portal status message
+	  </div>
 
-        <h1 i18n:translate="heading_groups_overview">Groups Overview</h1>
+	  <div class="configlet">
+	    <h1 i18n:translate="heading_groups_overview">Groups Overview</h1>
     
-        <a href=""
-           class="link-parent"
-           tal:attributes="href string: $portal_url/plone_control_panel"
-           i18n:translate="label_up_to_plone_setup">
-        Up to Plone Setup
-        </a>
+	    <a href=""
+	       class="link-parent"
+	       tal:attributes="href string: $portal_url/plone_control_panel"
+	       i18n:translate="label_up_to_plone_setup">
+	      Up to Plone Setup
+	    </a>
 
-        <p i18n:translate="description_groups_management">
-          Groups are logical collections of users, such as departments and
-          business units. Groups are not directly related to permissions on
-          a global level, you normally use Roles for that - and let
-          certain Groups have a particular role.
-        </p>
+	    <p i18n:translate="description_groups_management">
+	      Groups are logical collections of users, such as
+	      departments and business units. Groups are not directly
+	      related to permissions on a global level, you normally
+	      use Roles for that - and let certain Groups have a
+	      particular role.
+	    </p>
     
         <form action=""
               name="groups_add"
               method="post"
-              tal:attributes="action string:${here/absolute_url}/${template/getId}"
+              tal:attributes="action template/getId"
               tal:define="searchstring request/searchstring | nothing;
                           groups python:here.prefs_user_group_search(searchstring, 'groups');
                           batch python:Batch(groups, b_size, int(b_start), orphan=1)">

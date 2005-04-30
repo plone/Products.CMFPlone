@@ -46,11 +46,13 @@
     </metal:javascriptslot>
 </head>
 
-<body metal:use-macro="here/global_bodytag/macros/body_tag" tal:attributes="class here/getSectionFromURL"><metal:fillbodytag fill-slot="bodytag_body">
+<body metal:use-macro="here/global_bodytag/macros/body_tag"
+      tal:attributes="class here/getSectionFromURL"><metal:fillbodytag fill-slot="bodytag_body">
+
 
 <div id="visual-portal-wrapper">
 
-<div id="portal-top" i18n:domain="plone">
+  <div id="portal-top" i18n:domain="plone">
 
     <a href="#documentContent" class="hiddenStructure"
        i18n:translate="label_skiptocontent">Skip to content.</a>
@@ -84,7 +86,8 @@
     <div metal:use-macro="here/global_pathbar/macros/path_bar">
         The breadcrumb navigation ("you are here")
     </div>
-</div>
+
+  </div>
 
 <div class="visualClear"></div>
 
@@ -98,7 +101,10 @@
         <div id="portal-column-content"
              tal:define="tabindex python:Iterator(pos=0)">
 
-            <div id="content" tal:attributes="class python:test(is_editable,'documentEditable','')">
+          <metal:block define-slot="content">
+            <div id="content"
+                 metal:define-macro="content"
+                 tal:attributes="class python:test(is_editable,'documentEditable','')">
 
                 <metal:ifborder tal:condition="is_editable" >
                     <div metal:use-macro="here/global_contentviews/macros/content_views">
@@ -133,7 +139,7 @@
                 </div>
 
             </div>
-
+          </metal:block>
         </div>
         <!-- end of main content block -->
 

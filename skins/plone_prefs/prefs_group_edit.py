@@ -13,7 +13,7 @@ REQUEST=context.REQUEST
 msg = 'No change has been done.'
 
 if addname:
-    context.portal_groups.addGroup(addname,"",(),())
+    context.portal_groups.addGroup(addname,(),())
     group=context.portal_groups.getGroupById(addname)
     msg = context.translate("Group ${name} has been added.",
                             {'name': addname})

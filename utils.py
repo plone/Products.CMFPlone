@@ -128,14 +128,21 @@ def localized_time(time = None, long_format = None, context = None):
 
     # extract date parts from DateTime object
     dateParts = time.parts()
+    # use full length day and month, and translate into proper language
+    if long_format:
+        weekday = translate_wrapper('plone', time.Day(), context = context) or time.Day()
+        month = translate_wrapper('plone', time.Mon(), context = context) or time.Mon()
+    else:
+        weekday = ''
+        month = '%02d' % dateParts[1]
     day = '%02d' % dateParts[2]
-    month = '%02d' % dateParts[1]
     year = dateParts[0]
     hour = '%02d' % dateParts[3]
     minute = '%02d' % dateParts[4]
 
     # substitute variables with actual values
     localized_time = dateFormat.replace('${DAY}', str(day))
+    localized_time = localized_time.replace('${WEEKDAY}', str(weekday))
     localized_time = localized_time.replace('${MONTH}', str(month))
     localized_time = localized_time.replace('${YEAR}', str(year))
     localized_time = localized_time.replace('${HOUR}', str(hour))

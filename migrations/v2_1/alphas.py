@@ -83,7 +83,7 @@ def alpha1_alpha2(portal):
     # also install default CSS and JS in the registry tools
     installCSSandJSRegistries(portal, out)
 
-    # Add unfriendly_types site property
+    # Add types_not_searched site property
     addUnfriendlyTypesSiteProperty(portal, out)
 
     # Add non_default_page_types site property
@@ -94,6 +94,9 @@ def alpha1_alpha2(portal):
 
     # Add news folder
     addNewsFolder(portal, out)
+
+    # Add news topic
+    addNewsTopic(portal, out)
 
     # Add exclude_from_nav index
     reindex += addExclude_from_navMetadata(portal, out)
@@ -130,6 +133,9 @@ def alpha1_alpha2(portal):
     
     # Make sure the News folder is cataloged
     indexNewsFolder(portal, out)
+
+    # Add non_default_page_types site property
+    addDisableFolderSectionsSiteProperty(portal, out)
 
     return out
 
@@ -429,8 +435,10 @@ def installCSSandJSRegistries(portal, out):
     """Installs the CSS and JS registries."""
     qi = getToolByName(portal, 'portal_quickinstaller', None)
     if qi is not None:
-        if not qi.isProductInstalled('CSSRegistry'):
-            qi.installProduct('CSSRegistry', locked=0)
+        if qi.isProductInstalled('CSSRegistry'):
+            qi.uninstallProduct('CSSRegistry')
+        if not qi.isProductInstalled('ResourceRegistries'):
+            qi.installProduct('ResourceRegistries', locked=0)
 
         cssreg = getToolByName(portal, 'portal_css', None)
         if cssreg is not None:
@@ -475,10 +483,10 @@ def installCSSandJSRegistries(portal, out):
 
 
 def addUnfriendlyTypesSiteProperty(portal, out):
-    """Adds unfriendly_types site property."""
+    """Adds types_not_searched site property."""
     # Types which will be installed as "unfriendly" and thus hidden for search
     # purposes
-    BASE_UNFRIENDLY_TYPES = ['ATBooleanCriterion',
+    BASE_TYPES_NOT_SEARCHED = ['ATBooleanCriterion',
                              'ATDateCriteria',
                              'ATDateRangeCriterion',
                              'ATListCriterion',
@@ -496,11 +504,11 @@ def addUnfriendlyTypesSiteProperty(portal, out):
     if propTool is not None:
         propSheet = getattr(propTool, 'site_properties', None)
         if propSheet is not None:
-            if not propSheet.hasProperty('unfriendly_types'):
-                propSheet.manage_addProperty('unfriendly_types',
-                                             BASE_UNFRIENDLY_TYPES,
+            if not propSheet.hasProperty('types_not_searched'):
+                propSheet.manage_addProperty('types_not_searched',
+                                             BASE_TYPES_NOT_SEARCHED,
                                              'lines')
-            out.append("Added 'unfriendly_types' property to site_properties.")
+            out.append("Added 'types_not_searched' property to site_properties.")
 
 
 def addNonDefaultPageTypesSiteProperty(portal, out):
@@ -556,7 +564,7 @@ def addNewsFolder(portal, out):
     # Add news_listing.pt as default page
     # property manager hasProperty can give odd results ask forgiveness instead
     try:
-        news.manage_addProperty('default_page', ['news_listing','index_html'], 'lines')
+        news.manage_addProperty('default_page', ['news_topic','news_listing','index_html'], 'lines')
     except BadRequest:
         pass
     out.append("Added default view for news folder.")
@@ -606,7 +614,7 @@ def addEditContentActions(portal, out):
         },
         {'id'        : 'batch',
          'name'      : 'Batch Mode',
-         'action'    : 'string:${folder_url}/folder_contents',
+         'action'    : "python:((object.isDefaultPageInFolder() and object.getParentNode().absolute_url()) or folder_url)+'/folder_contents'",
          'condition' : 'python:folder.displayContentsTab()',
          'permission': CMFCorePermissions.View,
          'category'  : 'batch',
@@ -772,3 +780,32 @@ def addDefaultTypesToPortalFactory(portal, out):
                 types.append(metaType)
         factory.manage_setPortalFactoryTypes(listOfTypeIds = types)
         out.append('Added default content types to portal_factory.')
+
+def addNewsTopic(portal, out):
+    news = portal.news
+    if 'news_topic' not in news.objectIds() and getattr(portal,'portal_atct', None) is not None:
+        _createObjectByType('Topic', news, id='news_topic',
+                            title='News', description='Site News')
+        topic = news.news_topic
+        type_crit = topic.addCriterion('Type','ATPortalTypeCriterion')
+        type_crit.setValue('News Item')
+        sort_crit = topic.addCriterion('created','ATSortCriterion')
+        out.append('Added Topic for default news folder view.')
+    else:
+        out.append('Topic default news folder view already in place or ATCT is not installed.')
+
+
+def addDisableFolderSectionsSiteProperty(portal, out):
+    """Adds disable_folder_sections site property."""
+    # Boolean to disable using toplevel folders as tabs
+    # users who turn this on may want to readd the Members and
+    # News actions.
+    propTool = getToolByName(portal, 'portal_properties', None)
+    if propTool is not None:
+        propSheet = getattr(propTool, 'site_properties', None)
+        if propSheet is not None:
+            if not propSheet.hasProperty('disable_folder_sections'):
+                propSheet.manage_addProperty('disable_folder_sections',
+                                             False,
+                                             'boolean')
+            out.append("Added 'disable_folder_sections' property to site_properties.")

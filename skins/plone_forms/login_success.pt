@@ -22,7 +22,7 @@
                      Batch python:modules['Products.CMFPlone'].Batch;
                      login_time python:member.getProperty('login_time', DateTime());
                      begin_time python:here.ZopeTime('2000/01/01');
-                     validate_email here/validate_email;">
+                     validate_email portal_object/validate_email;">
 
             <div tal:condition="python: not(login_time == begin_time and validate_email)">
                 <div tal:define="came_from request/came_from|nothing" tal:condition="came_from">

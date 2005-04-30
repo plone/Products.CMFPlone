@@ -1,5 +1,5 @@
 <dtml-call "REQUEST.RESPONSE.setHeader('Content-Type', 'text/xml')"><?xml version="1.0" encoding="<dtml-var "portal_properties.site_properties.default_charset">"?>
-
+<dtml-with base_properties>
 <rdf:RDF 
   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
   xmlns:dc="http://purl.org/dc/elements/1.1/"
@@ -9,6 +9,8 @@
 <dtml-let 
     start="int(REQUEST.get('b_start', 0))"
     end="REQUEST.get('b_end', start+30)"
+    order="REQUEST.get('sort_on', None) is None and REQUEST.set('sort_order','reverse')"
+    dummy="REQUEST.set('sort_on',REQUEST.get('sort_on','effective'))"
     results="queryCatalog(use_types_blacklist=True)[start:end]">
 <channel rdf:about="<dtml-var absolute_url>">
   <title>&dtml-Title;</title>
@@ -17,7 +19,7 @@
     &dtml-Description;
   </description>
 
-  <image rdf:resource="&dtml-portal_url;/logo.jpg" />
+  <image rdf:resource="&dtml-portal_url;/&dtml-logoName;" />
 
 <dtml-comment>Start List of Items</dtml-comment>
   <items>
@@ -33,9 +35,9 @@
 
 </channel>
 
-<image rdf:about="&dtml-portal_url;/logo.jpg">
+<image rdf:about="&dtml-portal_url;/&dtml-logoName;">
   <title>&dtml-Title;</title>
-  <url>&dtml-portal_url;/logo.jpg</url>
+  <url>&dtml-portal_url;/&dtml-logoName;</url>
   <link>&dtml-portal_url;/</link>
 </image>
 
@@ -46,3 +48,4 @@
 <dtml-comment>End Item Elements</dtml-comment>
 </dtml-let>
 </rdf:RDF>
+</dtml-with>

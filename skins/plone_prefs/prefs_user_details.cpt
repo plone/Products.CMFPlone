@@ -12,117 +12,119 @@
 we eventually might want to merge this form with personalize_form
 -->
 
-<div metal:fill-slot="prefs_configlet_main"
+<div metal:fill-slot="prefs_configlet_content"
      tal:define="userid python:request.get('userid', member.getId());
                  member python:mtool.getMemberById(userid);
-                 errors python:request.get('errors', {})">
+                 errors options/state/getErrors;">
 
-<div class="configlet">
-
-<div class="documentEditable">
-
-    <!-- simulating views on the groups/user pages until we have real objects. -->
-    <ul class="contentViews">
-        <li class="selected">
+      <div id="content" class="documentEditable">
+	<!-- simulating views on the groups/user pages until we have real objects. -->
+	<ul class="contentViews">
+	  <li class="selected">
             <a href=""
                tal:attributes="href string:${template/id}?userid=${userid}"
                i18n:translate="label_user_properties">
               User Properties
             </a>
-        </li>
+	  </li>
             
-        <li class="">
+	  <li class="">
             <a href=""
                tal:attributes="href string: prefs_user_memberships?userid=${userid}"
                i18n:translate="label_group_memberships">
               Group Memberships
             </a>
-        </li>
-    </ul>
-    
-    <div class="contentActions">
-    &nbsp;
-    </div>        
-    <!-- End of tabs -->
+	  </li>
+	</ul>
+	
+	<div class="contentActions">
+	  &nbsp;
+	</div>        
+	
+	<div class="documentContent" id="region-content">
+	  <a name="documentContent"></a>
+	  
+	  <div metal:use-macro="here/global_statusmessage/macros/portal_message">
+	    Portal status message
+	  </div>
 
-    <div class="documentContent">
-
-        <h1 i18n:translate="heading_prefs_user_details">
-          User Properties for
+	  <div class="configlet">
+	    <h1 i18n:translate="heading_prefs_user_details">
+	      User Properties for
           <tal:username replace="member/getId | default"
                         i18n:name="username">username</tal:username>
-        </h1>
+	    </h1>
     
-        <a href=""
-           class="link-parent"
-           tal:attributes="href string: $portal_url/prefs_users_overview"
-           i18n:translate="label_up_to_usersoverview">
-        Up to Users Overview
-        </a>
+	    <a href=""
+	       class="link-parent"
+	       tal:attributes="href string: $portal_url/prefs_users_overview"
+	       i18n:translate="label_up_to_usersoverview">
+	      Up to Users Overview
+	    </a>
 
-        <p i18n:translate="label_change_member_properties">
-          Change member properties.
-        </p>
+	    <p i18n:translate="label_change_member_properties">
+	      Change member properties.
+	    </p>
     
-        <form class="group"
-              action=""
-              name="users"
-              method="post"
-              enctype="multipart/form-data"
-              tal:condition="user | nothing"
-              tal:attributes="href python:context.absolute_url()+'/'+template.id">
-          <input type="hidden" name="form.submitted" value="1" />
+	    <form action=""
+                  name="users"
+                  method="post"
+                  enctype="multipart/form-data"
+                  tal:condition="user | nothing"
+	          tal:attributes="action template/getId">
+
           <fieldset>
             <legend i18n:translate="legend_member_details">Member Details</legend>
     
             <input type="hidden" name="userid" value="username"
                    tal:attributes="value member/getId" />
     
-            <div class="field"
-                tal:define="error errors/fullname | nothing;
-                    fullname python:request.get('fullname', member.getProperty('fullname', ''));"
-                tal:attributes="class python:test(error, 'field error', 'field')">
-    
-                <label i18n:translate="label_full_name">Full name</label>
+	      <div class="row" tal:define="error errors/fullname| nothing;
+		                           fullname python:request.get('fullname', member.getProperty('fullname', ''));"
+		               tal:attributes="class python:test(error, 'field error', 'field')">
+		<label i18n:translate="label_full_name">Full Name</label>
+		<div class="formHelp" i18n:translate="help_full_name_creation">
+		  Enter full name, eg. John Smith.
+		</div>
 
-                <div tal:content="error">Validation error output</div>
+		<div tal:content="error">Validation error output</div>
+		<input type="text"
+                   name="fullname"
+                   size="30"
+                   value="fullname"
+                   tabindex=""
+                   tal:attributes="value fullname;
+                                   tabindex tabindex/next;"
+                   />
+	      </div>
 
-                <input type="text"
-                        name="fullname"
-                        size="25"
-                        tabindex=""
-                        value="member.fullname html_quote"
-                        tal:attributes="value fullname;
-                                        tabindex tabindex/next;"
-                        />
+	      <div class="field" tal:define="error errors/email | nothing;
+		                              email python:request.get('email', member.getProperty('email',''));"
+                                 tal:attributes="class python:test(error, 'field error', 'field')">
 
-            </div>
-    
-            <div class="field"
-                tal:define="error errors/email | nothing;
-                            email python:request.get('email', member.getProperty('email',''));"
-                tal:attributes="class python:test(error, 'field error', 'field')">
+            <label i18n:translate="label_email">E-mail</label>
 
-                <label for="email" i18n:translate="label_email">E-mail</label>
+            <span class="fieldRequired" title="Required"
+                  i18n:attributes="title"
+                  i18n:translate="label_required">(Required)</span>
 
-                <span class="fieldRequired" title="Required"
-                      i18n:attributes="title"
-                      i18n:translate="label_required">(Required)</span>
+                  <div class="formHelp" i18n:translate="help_email_creation">
+                    Enter an email address. This is necessary in case the password
+                    is lost. We respect your privacy, and will not give the address
+                    away to any third parties or expose it anywhere.
+                  </div>
 
-                <div tal:content="error">Validation error output</div>
+                  <div tal:content="error">Validation error output</div>
 
-                <input type="text"
-                       id="email"
-                       name="email"
-                       size="25"
-                       tabindex=""
-                       value="member.email html_quote"
-                       tal:attributes="value email;
-                                       tabindex tabindex/next;"
-                       />
+                  <input type="text"
+                         name="email"
+                         size="30"
+                         tabindex=""
+                         tal:attributes="value email;
+                                         tabindex tabindex/next;"
+                         />
+	      </div>
 
-            </div>
-    
             <div class="field"
                  tal:define="wysiwyg_editor python:request.get('wysiwyg_editor',
                                                 member.getProperty('wysiwyg_editor',''))">
@@ -230,17 +232,13 @@ we eventually might want to merge this form with personalize_form
                         tal:attributes="tabindex tabindex/next;"
                         />
             </div>
-          </fieldset>
-        </form>
-    
+	      </fieldset>
+	      <input type="hidden" name="form.submitted" value="1" />
+	    </form>
+
+	  </div>
+	</div>
+      </div>
     </div>
-
-</div>
-
-</div>
-
-</div>
-
-</body>
+  </body>
 </html>
-

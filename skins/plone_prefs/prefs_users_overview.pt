@@ -8,7 +8,7 @@
 
 <body>
 
-<div metal:fill-slot="prefs_configlet_main"
+<div metal:fill-slot="prefs_configlet_content"
     tal:define="errors python:request.get('errors', {});
                 Batch python:modules['Products.CMFPlone'].Batch;
                 b_start request/b_start | python:0;
@@ -16,47 +16,53 @@
                 acl_users here/acl_users;
                 portal_roles here/getGlobalPortalRoles;">
 
-<div class="configlet">
+      <div id="content" class="documentEditable">
+	<!-- simulating views on the groups/user pages until we have real objects. -->
+	<ul class="contentViews">
+	  <li class="selected">
+	    <a href=""
+	       tal:attributes="href string:${template/id}"
+	       i18n:translate="label_users">Users</a>
+	  </li>
+	  <li class="">
+	    <a href=""
+	       tal:attributes="href string: prefs_groups_overview"
+	       i18n:translate="label_groups">Groups</a>
+	  </li>
+	</ul>
 
-<div class="documentEditable">
+	<div class="contentActions">
+	  &nbsp;
+	</div>        
 
-    <!-- simulating views on the groups/user pages until we have real objects. -->
-    <ul class="contentViews">
-        <li class="selected">
-        <a href=""
-        tal:attributes="href string:${template/id}"
-        i18n:translate="label_users">Users</a>
-        </li>
+	<div class="documentContent" id="region-content">
+	  <a name="documentContent"></a>
 
-        <li class="">
-        <a href=""
-        tal:attributes="href string: prefs_groups_overview"
-        i18n:translate="label_groups">Groups</a>
-        </li>
-    </ul>
+	  <div metal:use-macro="here/global_statusmessage/macros/portal_message">
+	    Portal status message
+	  </div>
+	  
+	  <div class="configlet">
+	    <h1 i18n:translate="heading_users_overview">Users Overview</h1>
 
-    <div class="contentActions">
-    &nbsp;
-    </div>        
-    <!-- End of tabs -->
+	    <a href=""
+	       class="link-parent"
+	       tal:attributes="href string: $portal_url/plone_control_panel"
+	       i18n:translate="label_up_to_plone_setup">
+	      Up to Plone Setup
+	    </a>
 
-    <div class="documentContent">
-
-        <h1 i18n:translate="heading_users_overview">Users Overview</h1>
-
-        <a href=""
-           class="link-parent"
-           tal:attributes="href string: $portal_url/plone_control_panel"
-           i18n:translate="label_up_to_plone_setup">
-        Up to Plone Setup
-        </a>
-
-        <p i18n:translate="description_user_management">
-        Click the user's name to see and change the details of a specific
-        user. Click the envelope icon to send a mail to the user. 
-        You can also edit 
-        the e-mail addresses, and add/remove users.
-        </p>
+	    <p i18n:translate="description_user_management">
+	      Click the user's name to see and change the details of a
+	      specific user. Click the envelope icon to send a mail to
+	      the user.  You can also edit the e-mail addresses, and
+	      add/remove users.
+	    </p>
+	    <p i18n:translate="user_role_note">
+	      Note that roles listed here apply directly to a user.
+	      They do not reflect additional roles users may have due
+	      to group memberships.
+	    </p>
 
         <form action=""
             name="users_add"
@@ -182,7 +188,7 @@
                     </td>
                     
                     <td class="listingCheckbox"
-                    tal:define="user_roles python:this_user.getRoles();"
+                    tal:define="user_roles python:this_user.getUserRoles();"
                     tal:repeat="portal_role portal_roles">
     
                     <input type="checkbox"
@@ -235,14 +241,11 @@
 
         </form>
 
+	  </div>
+	</div>
+      </div>
     </div>
 
-</div>
-
-</div>
-
-</div>
-
-</body>
+  </body>
 </html>
 

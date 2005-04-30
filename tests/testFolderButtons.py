@@ -11,8 +11,7 @@ from Products.CMFPlone.tests import PloneTestCase
 
 
 class TestFolderRename(PloneTestCase.PloneTestCase):
-    # Tests for http://plone.org/collector/2876
-    # folder_edit must recatalog. folder_rename must recatalog.
+    # Tests for folder_rename and folder_rename_form
 
     def afterSetUp(self):
         self.catalog = self.portal.portal_catalog
@@ -76,10 +75,14 @@ class TestFolderRename(PloneTestCase.PloneTestCase):
         self.assertEqual(self.folder.foo.baz.Title(),title)
         self.assertEqual(self.folder.bar.blah.Title(),title)
 
+    def testNoErrorOnBadPaths(self):
+        # Ensure we don't fail on a bad path
+        self.app.REQUEST.set('paths', ['/garbage/path'])
+        self.folder.folder_rename_form()
+
 
 class TestFolderDelete(PloneTestCase.PloneTestCase):
-    # Tests for http://plone.org/collector/2876
-    # folder_edit must recatalog. folder_rename must recatalog.
+    # Tests for folder_delete.py
 
     def afterSetUp(self):
         self.catalog = self.portal.portal_catalog
@@ -112,10 +115,15 @@ class TestFolderDelete(PloneTestCase.PloneTestCase):
         self.assertEqual(getattr(self.folder.foo, 'doc1', None), None)
         self.assertEqual(getattr(self.folder.bar, 'doc2', None), None)
 
+    def testNoErrorOnBadPaths(self):
+        # Ensure we don't fail on a bad path
+        self.app.REQUEST.set('paths', ['/garbage/path'])
+        self.folder.folder_delete()
+
 
 class TestFolderPublish(PloneTestCase.PloneTestCase):
-    # Tests for http://plone.org/collector/2876
-    # folder_edit must recatalog. folder_rename must recatalog.
+    # Tests for folder_publish and content_status_history and
+    # content_status_modify
 
     def afterSetUp(self):
         self.catalog = self.portal.portal_catalog
@@ -151,6 +159,25 @@ class TestFolderPublish(PloneTestCase.PloneTestCase):
         self.assertEqual(self.wtool.getInfoFor(self.folder.foo.doc1, 'review_state',None), 'published')
         self.assertEqual(self.wtool.getInfoFor(self.folder.bar.doc2, 'review_state',None), 'published')
 
+    def testNoErrorOnBadPaths(self):
+        # Ensure we don't fail on a bad path
+        self.app.REQUEST.set('paths', ['/garbage/path'])
+        self.folder.content_status_history()
+
+
+class TestFolderCutCopy(PloneTestCase.PloneTestCase):
+    # Tests for folder_cut.py and folder_copy.py
+
+    def testCutNoErrorOnBadPaths(self):
+        # Ensure we don't fail on a bad path
+        self.app.REQUEST.set('paths', ['/garbage/path'])
+        self.folder.folder_cut()
+
+    def testCopyNoErrorOnBadPaths(self):
+        # Ensure we don't fail on a bad path
+        self.app.REQUEST.set('paths', ['/garbage/path'])
+        self.folder.folder_copy()
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite
@@ -158,6 +185,7 @@ def test_suite():
     suite.addTest(makeSuite(TestFolderRename))
     suite.addTest(makeSuite(TestFolderDelete))
     suite.addTest(makeSuite(TestFolderPublish))
+    suite.addTest(makeSuite(TestFolderCutCopy))
     return suite
 
 if __name__ == '__main__':

@@ -103,7 +103,7 @@ class TestQueryCatalog(PloneTestCase.PloneTestCase):
     def testBlacklistedTypes(self):
         request = {'SearchableText':'a*'}
         siteProps = self.portal.portal_properties.site_properties
-        siteProps.unfriendly_types = ['Event', 'Unknown Type']
+        siteProps.types_not_searched = ['Event', 'Unknown Type']
         qry = self.folder.queryCatalog(request,use_types_blacklist=True)
         self.failUnless('Document' in qry['portal_type'])
         self.failUnless('Event' not in qry['portal_type'])

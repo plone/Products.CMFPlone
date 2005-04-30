@@ -42,10 +42,20 @@
 
                 <a href=""
                    class="portletMore"
+                   tal:condition="python:'news' in portal.contentIds()"
                    tal:attributes="href string:${utool}/news"
                    i18n:translate="box_morelink"
                    >
-                    More...
+                  More...
+                </a>
+
+                <a href=""
+                   class="portletMore"
+                   tal:condition="python:'news' not in portal.contentIds()"
+                   tal:attributes="href string:${utool}/news_listing"
+                   i18n:translate="box_morelink"
+                   >
+                  More...
                 </a>
 
             </div>

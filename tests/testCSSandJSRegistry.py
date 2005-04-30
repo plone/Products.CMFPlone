@@ -8,7 +8,7 @@ if __name__ == '__main__':
 
 from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
-from Products.CSSRegistry.config import TOOLNAME, JSTOOLNAME
+from Products.ResourceRegistries.config import TOOLNAME, JSTOOLNAME
 from Products.CMFCore.utils import getToolByName
 
 

@@ -228,7 +228,7 @@
                             tal:content="item_size"
                             tal:attributes="class item_wf_state_class"> size </span>
                     </td>
-                    <td tal:content="item_modified"
+                    <td tal:content="python:here.toLocalizedTime(item_modified, long_format=1)"
                         tal:attributes="class item_wf_state_class">
                         08/19/2001 03:01 AM
                     </td>

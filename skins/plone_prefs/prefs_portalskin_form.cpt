@@ -9,7 +9,7 @@
 <body>
 
 <div metal:fill-slot="prefs_configlet_main"
-     tal:define="errors python:request.get('errors', {})">
+     tal:define="errors options/state/getErrors;">
 
     <h1 i18n:translate="heading_skin_setup">Skin Setup</h1>
 
@@ -27,7 +27,7 @@
     <form action=""
           name=""
           method="post"
-          tal:attributes="action string:prefs_portalskin_set"
+          tal:attributes="action string:${here/absolute_url}/${template/getId}"
           tal:define="props python:here.portal_properties;">
 
         <fieldset>
@@ -100,7 +100,7 @@
                        />
             </div>
     
-        <input type="hidden" name="form_submitted" value="1" tal:attributes="value template/id" />
+        <input type="hidden" name="form.submitted" value="1" />
       </fieldset>
     </form>
 

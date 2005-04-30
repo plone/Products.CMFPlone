@@ -8,7 +8,7 @@
 
 <body>
 
-<div metal:fill-slot="prefs_configlet_main"
+<div metal:fill-slot="prefs_configlet_content"
      tal:define="errors python:request.get('errors', {});
                 portal_roles mtool/getPortalRoles;
                 Batch python:modules['Products.CMFPlone'].Batch;
@@ -23,60 +23,57 @@
         <tal:defines define="dummy python:request.set('grouproles', group.getRoles())" />
     </tal:conditional>
 
-<div class="configlet">
-
-<div class="documentEditable">
-
-    <!-- simulating views on the groups/user pages until we have real objects. -->
-    <ul class="contentViews">
-        <li class="selected">
+      <div id="content" class="documentEditable">
+	<!-- simulating views on the groups/user pages until we have real objects. -->
+	<ul class="contentViews">
+	  <li class="selected">
             <a href=""
-               tal:attributes="href string:${here/absolute_url}/${template/id}?groupname=${groupname}"
-               i18n:translate="label_group_members"
-            >Group Members</a>
-        </li>
-
-        <li class="">
+	       tal:attributes="href string:${here/absolute_url}/${template/id}?groupname=${groupname}"
+	       i18n:translate="label_group_members">Group Members</a>
+	  </li>
+	  <li class="">
             <a href=""
-               tal:attributes="href string:${here/absolute_url}/prefs_group_details?groupname=${groupname}"
-               i18n:translate="label_group_properties"
-            >Group Properties</a>
-        </li>
-    </ul>
+	       tal:attributes="href string:${here/absolute_url}/prefs_group_details?groupname=${groupname}"
+               i18n:translate="label_group_properties">Group Properties</a>
+	  </li>
+	</ul>
     
-    <div class="contentActions">
-    &nbsp;
-    </div>        
-    <!-- End of tabs -->
+	<div class="contentActions">
+	  &nbsp;
+	</div>        
 
-    <div class="documentContent"
-         tal:condition="not:group | nothing">
-    	<h1 i18n:translate="heading_group_members">Group Members</h1>
-    
-        <a href=""
-           class="link-parent"
-           tal:attributes="href string: $portal_url/prefs_groups_overview"
-           i18n:translate="label_up_to_groups_overview">
-        Up to Groups Overview
-        </a>
+	<div class="documentContent" id="region-content">
+	  <a name="documentContent"></a>
 
-        <p i18n:translate="label_no_group_specified">No group was specified.</p>
+	  <div metal:use-macro="here/global_statusmessage/macros/portal_message">
+	    Portal status message
+	  </div>
+
+	  <div class="configlet">
+	    <tal:ifnogroups tal:condition="not:group | nothing">
+	      <h1 i18n:translate="heading_group_members">Group Members</h1>
+	      <a href=""
+		 class="link-parent"
+		 tal:attributes="href string: $portal_url/prefs_groups_overview"
+		 i18n:translate="label_up_to_groups_overview">
+		Up to Groups Overview
+	      </a>
+	    
+	      <p i18n:translate="label_no_group_specified">No group was specified.</p>
     
-        <p><a href="prefs_groups_overview"
-              i18n:translate="label_find_group">Find a group here</a></p>
-    </div>
-    
-    <div class="documentContent"
-         tal:condition="group | nothing">
-    
-        <h1 i18n:translate="heading_group_members_of">Members of the <tal:group content="groupname" i18n:name="groupname">Groupname</tal:group> Group</h1>
-    	
-        <a href=""
-           class="link-parent"
-           tal:attributes="href string: $portal_url/prefs_groups_overview"
-           i18n:translate="label_up_to_groups_overview">
-        Up to Groups Overview
-        </a>
+	      <p><a href="prefs_groups_overview"
+		  i18n:translate="label_find_group">Find a group
+		  here</a></p>
+	    </tal:ifnogroups>
+	    
+	    <tal:ifgroups tal:condition="group | nothing">
+	      <h1 i18n:translate="heading_group_members_of">Members of the <tal:group content="groupname" i18n:name="groupname">Groupname</tal:group> Group</h1>
+	      <a href=""
+		 class="link-parent"
+		 tal:attributes="href string: $portal_url/prefs_groups_overview"
+		 i18n:translate="label_up_to_groups_overview">
+		Up to Groups Overview
+	      </a>
 
         <p i18n:translate="description_group_members_of">
         You can add or remove users from this particular group here. Note that this
@@ -178,13 +175,13 @@
                    i18n:attributes="value"
                    tal:condition="group/getGroupMembers" />
     	  </metal:block>
-    	</div>
+	      </div>
+	    </tal:ifgroups>
+	  </div>
+	</div>
+      </div>
     </div>
-</div>
 
-</div>
-
-</div>
-
-</body>
+  </body>
 </html>
+

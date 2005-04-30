@@ -216,15 +216,15 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         else:
             self.fail("Actions tool has no 'sitemap' action")
 
-    def testCSSRegistry(self):
+    def testResourceRegistries(self):
         # We should have portal_css and portal_javascripts tools
         self.failUnless(hasattr(self.portal, 'portal_css'))
         self.failUnless(hasattr(self.portal, 'portal_javascripts'))
 
     def testUnfriendlyTypesProperty(self):
-        # We should have an unfriendly_types property
-        self.failUnless(self.properties.site_properties.hasProperty('unfriendly_types'))
-        self.failUnless('Plone Site' in self.properties.site_properties.getProperty('unfriendly_types'))
+        # We should have an types_not_searched property
+        self.failUnless(self.properties.site_properties.hasProperty('types_not_searched'))
+        self.failUnless('Plone Site' in self.properties.site_properties.getProperty('types_not_searched'))
 
     def testNonDefaultPageTypes(self):
         # We should have a non_default_page_types property
@@ -251,7 +251,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.assertEqual(news._getPortalTypeName(), 'Large Plone Folder')
         self.assertEqual(news.Title(), 'News')
         self.assertEqual(news.Description(), 'Site News')
-        self.assertEqual(list(news.getProperty('default_page')), ['news_listing','index_html'])
+        self.assertEqual(list(news.getProperty('default_page')), ['news_topic','news_listing','index_html'])
         self.assertEqual(list(news.getImmediatelyAddableTypes()),['News Item'])
         self.assertEqual(list(news.getLocallyAllowedTypes()),['News Item'])
         self.assertEqual(news.getConstrainTypesMode(), 1)
@@ -263,6 +263,15 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.assertEqual(res[0].getId, 'news')
         self.assertEqual(res[0].Title, 'News')
         self.assertEqual(res[0].Description, 'Site News')
+
+    def testNewsTopic(self):
+        # News topic is in place as default view and has a criterion to show
+        # only News Items.
+        news = self.portal.news
+        self.failUnless('news_topic' in news.objectIds())
+        topic = getattr(news.aq_base, 'news_topic')
+        self.assertEqual(topic._getPortalTypeName(), 'Topic')
+        self.assertEqual(topic.buildQuery()['Type'], ('News Item',))
 
     def testObjectButtonActions(self):
         installed = [(a.getId(), a.getCategory()) for a in self.actions.listActions()]
@@ -295,6 +304,12 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         from Products.CMFPlone.setup import dependencies
         msgs = [x for x in dependencies.messages if not x['optional']]
         self.failUnlessEqual(msgs, [])
+
+    def testDisableFolderSectionsSiteProperty(self):
+        # The disable_folder_sections site property should be emtpy
+        props = self.portal.portal_properties.site_properties
+        self.failUnless(props.getProperty('disable_folder_sections', None) is not None)
+        self.failIf(props.getProperty('disable_folder_sections'))
 
 
 class TestPortalBugs(PloneTestCase.PloneTestCase):

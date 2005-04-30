@@ -1,0 +1,13 @@
+[default]
+title=Portal Skin Settings
+
+[security]
+View=0:Authenticated
+
+[validators]
+# if you want to validate, note that the form is not set up for errors
+validators=
+
+[actions]
+action.success=traverse_to:string:prefs_portalskin_set
+action.failure=traverse_to:string:prefs_portalskin_form

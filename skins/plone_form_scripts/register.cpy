@@ -5,7 +5,7 @@
 ##bind script=script
 ##bind state=state
 ##bind subpath=traverse_subpath
-##parameters=password='password', confirm='confirm', came_from_prefs=None
+##parameters=password='password', password_confirm='password_confirm', came_from_prefs=None
 ##title=Register a User
 ##
 from ZODB.POSException import ConflictError

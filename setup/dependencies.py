@@ -260,8 +260,8 @@ except ImportError:
          "Please download it from http://sf.net/projects/collective"))
 
 try:
-    import Products.CSSRegistry
+    import Products.ResourceRegistries
 except ImportError:
-    log(("CSSRegistry not found. "
+    log(("ResourceRegistries not found. "
          "Please download it from http://sf.net/projects/collective"))
 

@@ -44,8 +44,10 @@
                       tal:attributes="action string:${utool}/logged_in">
 
                     <input type="hidden" name="came_from" value=""
-                           tal:attributes="value request/URL;
-                                           tabindex tabindex/next" />
+                           tal:attributes="value request/URL" />
+
+                    <input type="hidden" name="came_from_query" value=""
+                           tal:attributes="value request/QUERY_STRING | nothing" />
 
                     <div class="field">
                         <label for="__ac_name"

@@ -19,6 +19,9 @@ if REQUEST.has_key('paths'):
     except CopyError:
         message = context.translate("One or more items not copyable.")
         return state.set(status = 'failure', portal_status_message = message)
+    except AttributeError:
+        message = context.translate("One or more selected items is no longer available.")
+        return state.set(status = 'failure', portal_status_message = message)
 
     from Products.CMFPlone import transaction_note
     transaction_note('Copied %s from %s' % (str(ids), context.absolute_url()))

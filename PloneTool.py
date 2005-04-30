@@ -5,6 +5,7 @@ from types import TupleType, UnicodeType, StringType
 import urlparse
 
 from zLOG import LOG, INFO, WARNING
+from Products.PluginIndexes.common import safe_callable
 
 from Acquisition import aq_base, aq_inner, aq_parent
 from Products.CMFCore.utils import UniqueObject
@@ -449,8 +450,21 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     security.declarePublic('urlparse')
     def urlparse(self, url):
-        """ returns the pieces of url """
+        """ Returns the pieces of url in a six-part tuple.
+
+        See Python standard library urlparse.urlparse
+        http://python.org/doc/lib/module-urlparse.html
+        """
         return urlparse.urlparse(url)
+
+    security.declarePublic('urlunparse')
+    def urlunparse(self, url_tuple):
+        """ Puts a url back together again, in the manner that urlparse breaks it.
+
+        See also Python standard library: urlparse.urlunparse
+        http://python.org/doc/lib/module-urlparse.html
+        """
+        return urlparse.urlunparse(url_tuple)
 
     # Enable scripts to get the string value of an exception
     # even if the thrown exception is a string and not a
@@ -498,7 +512,12 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         ct=getToolByName(self, 'portal_catalog')
         ntp=getToolByName(self, 'portal_properties').navtree_properties
         currentPath = None
-        query = {}
+
+        custom_query = getattr(self, 'getCustomNavQuery', None)
+        if custom_query is not None and safe_callable(custom_query):
+            query = custom_query()
+        else:
+            query = {}
 
         # XXX check if isDefaultPage is in the catalogs
         #query['isDefaultPage'] = 0
@@ -611,7 +630,16 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         "Returns a structure for the top level tabs"""
         ct=getToolByName(self, 'portal_catalog')
         ntp=getToolByName(self, 'portal_properties').navtree_properties
-        query = {}
+        stp=getToolByName(self, 'portal_properties').site_properties
+
+        if stp.getProperty('disable_folder_sections', None):
+            return []
+
+        custom_query = getattr(self, 'getCustomNavQuery', None)
+        if custom_query is not None and safe_callable(custom_query):
+            query = custom_query()
+        else:
+            query = {}
 
         portal_path = getToolByName(self, 'portal_url').getPortalPath()
         query['path'] = {'query':portal_path, 'navtree':1}
@@ -696,7 +724,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             parent = here.aq_parent
             while cont:
                 userroles = parent.acl_users.getLocalRolesForDisplay(parent)
-                for user, roles, type, name in userroles:
+                for user, roles, role_type, name in userroles:
                     # find user in result
                     found=0
                     for user2, roles2, type2, name2 in result:
@@ -704,12 +732,14 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                             # check which roles must be added to roles2
                             for role in roles:
                                 if not role in roles2:
-                                    roles2=roles2+(role,)
+                                    roles2=roles2.append(role)
                             found=1
                             break
                     if found==0:
                         # add it to result
-                        result.append((user, roles, type, name))
+                        # make sure roles is a list so we may append and not
+                        # overwrite the loop variable
+                        result.append([user, list(roles), role_type, name])
                 if parent==portal:
                     cont=0
 		elif not self.isLocalRoleAcquired(parent):
@@ -717,6 +747,11 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                     cont=0
                 else:
                     parent=parent.aq_parent
+
+        # Tuplize all inner roles
+        for pos in range(len(result)-1,-1,-1):
+            result[pos][1] = tuple(result[pos][1])
+            result[pos] = tuple(result[pos])
 
         return tuple(result)
 
@@ -1111,14 +1146,14 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     def getUserFriendlyTypes(self, typesList=[]):
         """Get a list of types which are considered "user friendly" for search
         and selection purposes. This is the list of types available in the
-        portal, minus those defines in the unfriendly_types property in
+        portal, minus those defines in the types_not_searched property in
         site_properties, if it exists. If typesList is given, this is used
         as the base list; else all types from portal_types are used.
         """
 
         ptool = getToolByName(self, 'portal_properties')
         siteProperties = getattr(ptool, 'site_properties')
-        blacklistedTypes = siteProperties.getProperty('unfriendly_types', [])
+        blacklistedTypes = siteProperties.getProperty('types_not_searched', [])
 
         ttool = getToolByName(self, 'portal_types')
         types = typesList or ttool.listContentTypes()
