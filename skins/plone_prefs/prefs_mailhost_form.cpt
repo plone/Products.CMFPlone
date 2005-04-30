@@ -9,7 +9,7 @@
 <body>
 
 <div metal:fill-slot="prefs_configlet_main"
-     tal:define="errors python:request.get('errors', {})">
+     tal:define="errors options/state/getErrors;">
 
     <h1 i18n:translate="heading_mail_setup">Mail Setup</h1>
 
@@ -25,9 +25,9 @@
     </p>
 
     <form action=""
-          name="reconfig"
+          name="mailhost"
           method="post"
-          tal:attributes="action string:prefs_mailhost_set"
+          tal:attributes="action string:${here/absolute_url}/${template/getId}"
           tal:define="props python:here.portal_properties;">
 
         <fieldset>
@@ -125,7 +125,7 @@
                 <input class="context"
                        tabindex=""
                        type="submit"
-                       name="submit"
+                       name="form.button.Save"
                        value="Save"
                        i18n:attributes="value"
                        tal:attributes="tabindex tabindex/next;"
@@ -134,7 +134,7 @@
     
         </fieldset>
 
-        <input type="hidden" name="form_submitted" value="1" tal:attributes="value template/id" />
+        <input type="hidden" name="form.submitted" value="1" />
 
     </form>
 

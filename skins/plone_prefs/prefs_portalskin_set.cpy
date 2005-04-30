@@ -26,6 +26,4 @@ ps.manage_properties(default_skin=default_skin,
                      request_varname=rv)
 
 msg = 'Portal skin updated'
-RESPONSE.redirect('prefs_portalskin_form?portal_status_message=' + msg)
-
-return
+return state.set(portal_status_message=msg)

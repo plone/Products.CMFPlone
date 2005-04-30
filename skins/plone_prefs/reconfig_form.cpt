@@ -270,14 +270,7 @@
                        i18n:attributes="value"
                        tal:attributes="tabindex tabindex/next;"
                        />
-                <input class="standalone"
-                       tabindex=""
-                       type="submit"
-                       name="form.button.Cancel"
-                       value="Cancel"
-                       i18n:attributes="value"
-                       tal:attributes="tabindex tabindex/next;"
-                       />
+
             </div>
         
         </fieldset>

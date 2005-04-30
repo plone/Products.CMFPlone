@@ -6,9 +6,7 @@ View=0:Authenticated
 
 [validators]
 validators=validate_reconfig
-validators..Cancel=
 
 [actions]
 action.success=traverse_to:string:reconfig
-action.success..Cancel=redirect_to:string:reconfig_form
 action.failure=traverse_to:string:reconfig_form
