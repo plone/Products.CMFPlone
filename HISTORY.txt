@@ -3,7 +3,11 @@ Changelog for Plone
    (name of developer listed in brackets)
 
 Plone 2.1 - Plaid - (unreleased)
-      
+
+    - Fixed user and group name/id fuzzyness in PloneTool.changeOwnershipOf()
+      and folder_localrole_form.pt.
+      [stefan]
+
     - Reworked prefs_users_overview to use CMFForumController and to
       simplify prefs_user_manage.cpy.
       [bmh]
