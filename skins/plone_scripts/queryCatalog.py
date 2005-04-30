@@ -47,7 +47,13 @@ def quotequery(s):
     
 def ensureFriendlyTypes(query):
     ploneUtils = getToolByName(context, 'plone_utils')
-    typesList = query.get('portal_type', []) + query.get('Type', [])
+    portal_type = query.get('portal_type', [])
+    if not same_type(portal_type, []):
+        portal_type = [portal_type]
+    Type = query.get('Type', [])
+    if not same_type(Type, []):
+        Type = [Type]
+    typesList = portal_type + Type
     if not typesList:
         friendlyTypes = ploneUtils.getUserFriendlyTypes(typesList)
         query['portal_type'] = friendlyTypes
@@ -63,7 +69,10 @@ for k, v in REQUEST.items():
         param, value = v.split(':')
         second_pass[key] = {param:value}
     elif k=='sort_on' or k=='sort_order' or k=='sort_limit':
-        query.update({k:v})
+        if k=='sort_limit' and not same_type(v, 0):
+            query.update({k:int(v)})
+        else:
+            query.update({k:v})
 
 for k, v in second_pass.items():
     qs = query.get(k)

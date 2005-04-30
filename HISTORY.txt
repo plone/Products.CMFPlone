@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Added some argument type sanity checking to queryCatalog.py;
+      it was failing on valid queries b/c it was making assumptions
+      about the types that it was receiving
+      [rafrombrc]
+
     - Add charset info for ZMI pages like addSite.zpt and addPropertySheet.zpt
       for better Chinese support.
       [panjunyong]
