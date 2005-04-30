@@ -178,9 +178,6 @@ def test_suite():
                                 package='Products.CMFPlone.tests',
                                 test_class=PloneTestCase.FunctionalTestCase))
 
-    suite.addTest(FunctionalDocFileSuite('dav/index_html_put.txt',
-                                package='Products.CMFPlone.tests',
-                                test_class=PloneTestCase.FunctionalTestCase))
     return suite
 
 if __name__ == '__main__':
