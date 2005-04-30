@@ -436,9 +436,9 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                 object.manage_delLocalRoles([o])
 
         #FIX for 1750
-        roles = list(object.get_local_roles_for_userid(user.getUserName()))
+        roles = list(object.get_local_roles_for_userid(user.getId()))
         roles.append('Owner')
-        object.manage_setLocalRoles( user.getUserName(), roles )
+        object.manage_setLocalRoles( user.getId(), roles )
 
         catalog_tool.reindexObject(object)
         if recursive:

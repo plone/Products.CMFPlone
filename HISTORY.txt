@@ -4,9 +4,14 @@ Changelog for Plone
 
 Plone 2.0.6 - Anti-Pop - (Unreleased)
 
+    - Fixed user and group name/id fuzzyness in PloneTool.changeOwnershipOf()
+      and folder_localrole_form.pt. This should make 2.0 branch work better
+      with GRUF3.
+      [stefan]
+
     - Permission settings were not being correctly copied to temp
       folder because we were using 'self' instead of 'intended_parent'
-      for looking up permission roles, thus looking them in the factory
+      for looking up permission roles, thus looking for them in the factory
       tool instead of the target container.
       [dreamcatcher]
 
