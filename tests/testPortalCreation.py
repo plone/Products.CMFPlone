@@ -310,6 +310,13 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         props = self.portal.portal_properties.site_properties
         self.failUnless(props.getProperty('disable_folder_sections', None) is not None)
         self.failIf(props.getProperty('disable_folder_sections'))
+        
+    def testSelectableViewsPropertyAtPortalRoot(self):
+        views = self.portal.getProperty('selectable_views', [])
+        self.failUnless(len(views) == 2)
+        self.failUnless('folder_listing' in views)
+        self.failUnless('news_listing' in views)
+        
 
 
 class TestPortalBugs(PloneTestCase.PloneTestCase):
