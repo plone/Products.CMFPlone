@@ -203,8 +203,8 @@
                                              selectedLayout python:test(isContextDefaultPage, '', actualLayout)"
                                      condition="python:vocab and isContextDefaultPage">
                     <tal:layouts repeat="layout vocab">
-                    <li tal:define="value layout;
-                                    display python:here.translate(vocab.getMsgId(value), default=vocab.getValue(value));">
+                    <li tal:define="value python:layout[0];
+                                    display python:layout[1];">
                         <span style="white-space:nowrap;"
                               tal:condition="python:value==selectedLayout"
                               tal:attributes="title display"
@@ -251,11 +251,12 @@
                                      
                     <tal:layouts repeat="layout vocab">
                     
-                    <li tal:define="value layout;
-                                    display python:here.translate(vocab.getMsgId(value), default=vocab.getValue(value));">
+                    <li tal:define="value python:layout[0];
+                                    display python:layout[1];">
                         <span style="white-space:nowrap;"
                               tal:condition="python:value==selectedLayout"
                               tal:attributes="title display"
+                              i18n:attributes="title"
                               class="selected"
                               >&nbsp;&bull; 
                               <span i18n:translate="" 

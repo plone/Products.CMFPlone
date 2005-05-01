@@ -42,7 +42,9 @@ from Products.CMFPlone.migrations.v2_1.alphas import addDefaultTypesToPortalFact
 from Products.CMFPlone.migrations.v2_1.alphas import addNewsTopic
 from Products.CMFPlone.migrations.v2_1.alphas import addEventsTopic
 from Products.CMFPlone.migrations.v2_1.alphas import addDisableFolderSectionsSiteProperty
+from Products.CMFPlone.migrations.v2_1.alphas import addSiteRootViewTemplates
 
+import types
 
 class MigrationTest(PloneTestCase.PloneTestCase):
 
@@ -833,6 +835,33 @@ class TestMigrations_v2_1(MigrationTest):
         # Should not fail if site_properties is missing
         self.properties._delObject('site_properties')
         addDisableFolderSectionsSiteProperty(self.portal, [])
+        
+    def testAddSiteRootViewTemplates(self):
+        self.portal.manage_delProperties(['selectable_views'])
+        addSiteRootViewTemplates(self.portal, [])
+        views = self.portal.getProperty('selectable_views', None)
+        self.failUnless(type(views) in (types.ListType, types.TupleType,))
+        self.failUnless('folder_listing' in views)
+        self.failUnless('news_listing' in views)
+        
+    def testAddSiteRootViewTemplatesTwice(self):
+        self.portal.manage_delProperties(['selectable_views'])
+        addSiteRootViewTemplates(self.portal, [])
+        addSiteRootViewTemplates(self.portal, [])
+        views = self.portal.getProperty('selectable_views', None)
+        self.failUnless(type(views) in (types.ListType, types.TupleType,))
+        self.failUnless('folder_listing' in views)
+        self.failUnless('news_listing' in views)
+        
+    def testAddSiteRootViewTemplatesPropertyExists(self):
+        self.portal.manage_changeProperties(selectable_views = ['one', 'two'])
+        addSiteRootViewTemplates(self.portal, [])
+        views = self.portal.getProperty('selectable_views', None)
+        self.failUnless(type(views) in (types.ListType, types.TupleType,))
+        self.failUnless(len(views) == 2)
+        self.failUnless('one' in views)
+        self.failUnless('two' in views)
+        
 
 
 def test_suite():

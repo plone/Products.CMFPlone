@@ -4,6 +4,13 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Enabled the "display" menu on the portal root. You can set the templates
+      to be available there using the property "selectable_views" at the root
+      portal object. Also renamed the front page from index_html to front-page
+      and set is as the default page during portal creation, in order to make
+      the "display" menu work as expected immediately after portal creation.
+      [optilude]
+
     - Made sure PloneTool.changeOwnershipOf() works recursively.
       [stefan]
 

@@ -129,6 +129,11 @@ def alpha1_alpha2(portal):
     # Add non_default_page_types site property
     addDisableFolderSectionsSiteProperty(portal, out)
 
+    # Add selectable_views to portal root
+    addSiteRootViewTemplates(portal, out)
+
+    # ADD NEW STUFF BEFORE THIS LINE AND LEAVE THE TRAILER ALONE!
+
     # Rebuild catalog
     if reindex:
         refreshSkinData(portal, out)
@@ -869,3 +874,13 @@ def addDisableFolderSectionsSiteProperty(portal, out):
                                              False,
                                              'boolean')
             out.append("Added 'disable_folder_sections' property to site_properties.")
+
+
+def addSiteRootViewTemplates(portal, out):
+    """Add default view templates to site root"""
+    if not portal.hasProperty('selectable_views'):
+        portal.manage_addProperty('selectable_views', 
+                                  ['folder_listing',
+                                   'news_listing'],
+                                  'lines')
+        out.append("Added 'selectable_views' property to portal root")

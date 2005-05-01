@@ -630,7 +630,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     security.declarePublic('createTopLevelTabs')
     def createTopLevelTabs(self):
-        "Returns a structure for the top level tabs"""
+        """Returns a structure for the top level tabs"""
         ct=getToolByName(self, 'portal_catalog')
         ntp=getToolByName(self, 'portal_properties').navtree_properties
         stp=getToolByName(self, 'portal_properties').site_properties
