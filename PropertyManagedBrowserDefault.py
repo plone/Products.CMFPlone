@@ -99,7 +99,6 @@ class PropertyManagedBrowserDefault:
         the default page and return to using the selected layout template.
         """
         self._selected_default_page = objectId
-        self._p_changed = 1
 
     security.declareProtected(CMFCorePermissions.ModifyPortalContent, 'setLayout')
     def setLayout(self, layout):
@@ -109,7 +108,6 @@ class PropertyManagedBrowserDefault:
         with setDefaultPage(), it is turned off by calling setDefaultPage(None).
         """
         self._selected_layout = layout
-        self._p_changed = 1
         self.setDefaultPage(None)
 
     security.declareProtected(CMFCorePermissions.View, 'getAvailableLayouts')
@@ -119,65 +117,10 @@ class PropertyManagedBrowserDefault:
         """
         views = self.getProperty('selectable_views', [])
         tuples = []
-        
-        # We need to look up the title, but doing so requires traversing to
-        # each item in the list of views. Hence we cache it. The cache is
-        # fully invalidated if any views are not found. The title of a
-        # page template should practically never change, but during development
-        # it might, for instance. Similarly, the list of selectable views
-        # should be very stable.
-        
-        cache = getattr(aq_base(self), '_selectable_views_cache', None)
-        dirty = False
-        
-        if not cache:
-            dirty = True
-        else:
-            examined = 0
-            for view in views:
-                title = cache.get(view, '__marker__')
-                if title == '__marker__':
-                    # title == '__marker__' means that cache doesn't have this view - invalidate
-                    continue
-                elif title is None:
-                    # title == None means that template couldn't be found - ignore
-                    examined += 1
-                    continue
-                else:
-                    examined += 1
-                    tuples.append((view, title,))
-                    
-            # Invalidate if any views were added or removed
-            if examined != len(cache) or examined != len(views):
-                dirty = True
-
-        if dirty:
-            cache = self.invalidateSelectableViewsCache()
-            tuples = []
-            for view in views:
-                title = cache.get(view, None)
-                if title:
-                    tuples.append((view, title,))
+        for view in views:
+            template = getattr(self, view, None)
+            if template:
+                tuples.append((template.getId(), template.title_or_id(),))
         return tuples
         
-    security.declareProtected(CMFCorePermissions.ModifyPortalContent, 
-                                'invalidateSelectableViewsCache')
-    def invalidateSelectableViewsCache(self):
-        """
-        The titles of page templates available as selectable views are cached
-        to avoid having to look them up each time. In practice, they should
-        rarely if ever change, but call this method to invalidate the cache.
-        
-        Returns the cache object.
-        """
-        views = self.getProperty('selectable_views', [])
-        cache = {}
-        for view in views:
-            obj = self.unrestrictedTraverse(view, None)
-            if not obj:
-                cache[view] = None
-            else:
-                cache[view] = obj.title_or_id()
-        self._selectable_views_cache = cache
-        self._p_changed = 1
-        return self._selectable_views_cache
+    

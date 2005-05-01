@@ -82,12 +82,7 @@ class TestPropertyManagedBrowserDefault(PloneTestCase.PloneTestCase):
         # Also make sure we have folder_listing and news_listing as templates
         self.portal.manage_changeProperties(selectable_views = ['folder_listing',
                                                                 'news_listing'])
-        
-        # We mangle the title here for testing, but somehow the change seems
-        # to persiste between tests. Make sure it's reset properly.
-        folderListing = self.portal.unrestrictedTraverse('folder_listing')
-        folderListing.title = 'Folder listing'
-    
+            
     def testDefaultViews(self):
         self.assertEqual(self.portal.getLayout(), 'folder_listing')
         self.assertEqual(self.portal.getDefaultPage(), 'front-page')
@@ -153,58 +148,11 @@ class TestPropertyManagedBrowserDefault(PloneTestCase.PloneTestCase):
     def testTemplateTitles(self):
         views = [v for v in self.portal.getAvailableLayouts() if v[0] == 'folder_listing']
         self.assertEqual(views[0][1], 'Folder listing')
-                
-    def testTitleCache(self):
-        self.portal.invalidateSelectableViewsCache() # Make sure the cache is fresh
-        folderListing = self.portal.unrestrictedTraverse('folder_listing')
-        folderListing.title = 'foo'        
-        views = [v for v in self.portal.getAvailableLayouts() if v[0] == 'folder_listing']
-        # Cached
-        self.assertEqual(views[0][1], 'Folder listing')
-        
-    def testTitleCacheExplicitlyInvalidated(self):
-        self.portal.invalidateSelectableViewsCache() # Make sure the cache is fresh
         folderListing = self.portal.unrestrictedTraverse('folder_listing')
         folderListing.title = 'foo'
-        self.portal.invalidateSelectableViewsCache()
-        views = [v for v in self.portal.getAvailableLayouts() if v[0] == 'folder_listing']
-        self.assertEqual(views[0][1], 'foo')
-        
-    def testTitleCacheImplicitlyInvalidatedByNewView(self):
-        self.portal.invalidateSelectableViewsCache() # Make sure the cache is fresh
-        folderListing = self.portal.unrestrictedTraverse('folder_listing')
-        folderListing.title = 'foo'
-        self.portal.manage_changeProperties(selectable_views = ['folder_listing',
-                                                                'news_listing',
-                                                                'folder_contents'])
         views = [v for v in self.portal.getAvailableLayouts() if v[0] == 'folder_listing']
         self.assertEqual(views[0][1], 'foo')
     
-    def testTitleCacheImplicitlyInvalidatedByRemovingView(self):
-        self.portal.invalidateSelectableViewsCache() # Make sure the cache is fresh
-        folderListing = self.portal.unrestrictedTraverse('folder_listing')
-        folderListing.title = 'foo'
-        self.portal.manage_changeProperties(selectable_views = ['folder_listing'])
-        views = [v for v in self.portal.getAvailableLayouts() if v[0] == 'folder_listing']
-        self.assertEqual(views[0][1], 'foo')
-        
-    def testTitleCacheImplicitlyInvalidatedByChangingView(self):
-        self.portal.invalidateSelectableViewsCache() # Make sure the cache is fresh
-        folderListing = self.portal.unrestrictedTraverse('folder_listing')
-        folderListing.title = 'foo'
-        self.portal.manage_changeProperties(selectable_views = ['folder_listing',
-                                                                'folder_contents'])
-        views = [v for v in self.portal.getAvailableLayouts() if v[0] == 'folder_listing']
-        self.assertEqual(views[0][1], 'foo')
-        
-    def testMissingTemplatesIgnoredAfterCacheInvalidation(self):
-        self.portal.invalidateSelectableViewsCache() # Make sure the cache is fresh
-        self.portal.manage_changeProperties(selectable_views = ['folder_listing', 'foo'])
-        folderListing = self.portal.unrestrictedTraverse('folder_listing')
-        folderListing.title = 'foo'
-        self.portal.invalidateSelectableViewsCache()
-        views = [v[0] for v in self.portal.getAvailableLayouts()]
-        self.failUnless(views == ['folder_listing'])
 
 def test_suite():
     from unittest import TestSuite, makeSuite
