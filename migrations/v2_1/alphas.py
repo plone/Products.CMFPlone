@@ -126,6 +126,9 @@ def alpha1_alpha2(portal):
     # Put default types in portal_factory
     addDefaultTypesToPortalFactory(portal, out)
 
+    # Add non_default_page_types site property
+    addDisableFolderSectionsSiteProperty(portal, out)
+
     # Rebuild catalog
     if reindex:
         refreshSkinData(portal, out)
@@ -136,15 +139,12 @@ def alpha1_alpha2(portal):
 
     # Make sure the Members folder is cataloged
     indexMembersFolder(portal, out)
-    
+
     # Make sure the News folder is cataloged
     indexNewsFolder(portal, out)
 
     # Make sure the Events folder is cataloged
     indexEventsFolder(portal, out)
-
-    # Add non_default_page_types site property
-    addDisableFolderSectionsSiteProperty(portal, out)
 
     return out
 
@@ -580,6 +580,7 @@ def addNewsFolder(portal, out):
         pass
     out.append("Added default view for news folder.")
 
+
 def addEventsFolder(portal, out):
     """Add events folder to portal root"""
     if 'events' not in portal.objectIds():
@@ -824,6 +825,7 @@ def addDefaultTypesToPortalFactory(portal, out):
                 types.append(metaType)
         factory.manage_setPortalFactoryTypes(listOfTypeIds = types)
         out.append('Added default content types to portal_factory.')
+
 
 def addNewsTopic(portal, out):
     news = portal.news
