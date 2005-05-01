@@ -187,6 +187,11 @@ def optimize():
             self.changeSkin('Plone Default')
     from Products.CMFCore.Skinnable import SkinnableObjectManager
     SkinnableObjectManager.setupCurrentSkin = setupCurrentSkin
+    # Don't populate type fields in the CTM schema, FFS!
+    def _ct_defaultAddableTypeIds(self):
+        return []
+    from Products.ATContentTypes.lib.constraintypes import ConstrainTypesMixin
+    ConstrainTypesMixin._ct_defaultAddableTypeIds = _ct_defaultAddableTypeIds
 
 
 optimize()
