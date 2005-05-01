@@ -56,10 +56,6 @@ class ISelectableBrowserDefault(IBrowserDefault):
     layoute template or default page object.
     """
     
-    
-    default_view = Attribute('The id of the page template that is the default view of the object')
-    suppl_views = Attribute('A tuple of page template ids for additional selectable views')
-
     def canSetDefaultPage():
         """
         Return True if the user has permission to select a default page on this
@@ -86,10 +82,14 @@ class ISelectableBrowserDefault(IBrowserDefault):
     def canSetLayout():
         """
         Return True if the current authenticated user is permitted to select
-        a layout, and there is more than one layout to select.
+        a layout.
         """
         
     def getAvailableLayouts():
         """
         Get the layouts registered for this object.
+        
+        This should return a list of tuples: (id, title), where id is the id
+        of the page template providing the layout and title is the title of
+        that page template as it will be displayed to the user.
         """
