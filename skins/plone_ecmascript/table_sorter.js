@@ -1,6 +1,6 @@
 
 /********* Table sorter script *************/
-// Table sorter script, thanks to Geir Bækholt for this.
+// Table sorter script, thanks to Geir BÃ¦kholt for this.
 // DOM table sorter originally made by Paul Sowden 
 
 function compare(a,b)

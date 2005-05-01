@@ -4,6 +4,15 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Manually merged Duncan's plip24-form-unload-branch.
+      Plone will now present a warning message if the user tries to navigate
+      away from a page with a changed form. 
+      [duncanb][elvix]
+      
+    - Changed encoding to utf-8 on javascript files to stay in sync with the
+      rest of Plone.
+      [elvix]
+
     - Enabled the "display" menu on the portal root. You can set the templates
       to be available there using the property "selectable_views" at the root
       portal object. Also renamed the front page from index_html to front-page
