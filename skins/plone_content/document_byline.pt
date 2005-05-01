@@ -14,7 +14,7 @@
 
   <tal:name tal:condition="creator"
         tal:define="author python:mtool.getMemberInfo(creator)"
-        i18n:translate="label_author">
+        i18n:translate="label_by_author">
     By
       <a href="#"
          tal:attributes="href string:${portal_url}/author/${creator}"
