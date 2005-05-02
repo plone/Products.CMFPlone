@@ -11,8 +11,8 @@ from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
 
 
-class TestTemplateMixinScripts(PloneTestCase.PloneTestCase):
-    '''Tests the browser default and folder-default page scripts'''
+class TestBrowserDefaultScripts(PloneTestCase.PloneTestCase):
+    """Tests the browser default and folder-default page scripts"""
 
     def testNoIndexHtml(self):
         # A folder shouldn't have an index_html object at instantiation time
@@ -26,7 +26,7 @@ class TestTemplateMixinScripts(PloneTestCase.PloneTestCase):
 
     def testGetSelectableViewsWithViews(self):
         # Assume folders have at least two possible views to chose from
-        views = self.folder.getSelectableViews()
+        views = [v[0] for v in self.folder.getSelectableViews()]
         self.failUnless(views)
         self.failUnless('folder_listing' in views)
         self.failUnless('atct_album_view' in views)
@@ -54,7 +54,7 @@ class TestTemplateMixinScripts(PloneTestCase.PloneTestCase):
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
-    suite.addTest(makeSuite(TestTemplateMixinScripts))
+    suite.addTest(makeSuite(TestBrowserDefaultScripts))
     return suite
 
 if __name__ == '__main__':

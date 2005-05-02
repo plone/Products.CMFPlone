@@ -58,10 +58,12 @@ class PloneTestCase(ZopeTestCase.PortalTestCase):
     '''TestCase for Plone testing'''
 
     def _setup(self):
-        # Hack an ACTUAL_URL into the REQUEST
         ZopeTestCase.PortalTestCase._setup(self)
+        # Hack ACTUAL_URL and plone_skin into the REQUEST
         self.app.REQUEST['ACTUAL_URL'] = self.app.REQUEST.get('URL')
         self.app.REQUEST['plone_skin'] = 'Plone Default'
+        # Disable automatic memberarea creation
+        self.portal.portal_membership.memberareaCreationFlag = 0
         # Disable the constraintypes performance hog
         self.folder.setConstrainTypesMode(0)
 
@@ -185,6 +187,11 @@ def optimize():
             self.changeSkin('Plone Default')
     from Products.CMFCore.Skinnable import SkinnableObjectManager
     SkinnableObjectManager.setupCurrentSkin = setupCurrentSkin
+    # Don't populate type fields in the CTM schema, FFS!
+    def _ct_defaultAddableTypeIds(self):
+        return []
+    from Products.ATContentTypes.lib.constraintypes import ConstrainTypesMixin
+    ConstrainTypesMixin._ct_defaultAddableTypeIds = _ct_defaultAddableTypeIds
 
 
 optimize()

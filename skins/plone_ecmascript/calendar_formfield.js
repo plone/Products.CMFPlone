@@ -1,4 +1,4 @@
-// jscalendar glue -- Leonard Norrgård <vinsci@*>
+// jscalendar glue -- Leonard NorrgÃ¥rd <vinsci@*>
 // This function gets called when the user clicks on some date.
 function onJsCalendarDateUpdate(cal) {
     var year   = cal.params.input_id_year;

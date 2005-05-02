@@ -424,28 +424,31 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         catalog_tool=getToolByName(self, 'portal_catalog')
         object.changeOwnership(user, recursive)
 
-        # get rid of all other owners
-        owners = object.users_with_local_role('Owner')
-        for o in owners:
-            roles = list(object.get_local_roles_for_userid(o))
-            roles.remove('Owner')
-            if roles:
-                object.manage_setLocalRoles(o, roles)
-            else:
-                object.manage_delLocalRoles([o])
+        def fixOwnerRole(object, user_id):
+            # Get rid of all other owners
+            owners = object.users_with_local_role('Owner')
+            for o in owners:
+                roles = list(object.get_local_roles_for_userid(o))
+                roles.remove('Owner')
+                if roles:
+                    object.manage_setLocalRoles(o, roles)
+                else:
+                    object.manage_delLocalRoles([o])
+            # Fix for 1750
+            roles = list(object.get_local_roles_for_userid(user_id))
+            roles.append('Owner')
+            object.manage_setLocalRoles(user_id, roles)
 
-        #FIX for 1750
-        roles = list(object.get_local_roles_for_userid(user.getUserName()))
-        roles.append('Owner')
-        object.manage_setLocalRoles( user.getUserName(), roles )
-
+        fixOwnerRole(object, user.getId())
         catalog_tool.reindexObject(object)
+
         if recursive:
             purl = getToolByName(self, 'portal_url')
             _path = purl.getRelativeContentURL(object)
             subobjects=[b.getObject() for b in \
                         catalog_tool(path={'query':_path,'level':1})]
             for obj in subobjects:
+                fixOwnerRole(obj, user.getId())
                 catalog_tool.reindexObject(obj)
 
     security.declarePublic('urlparse')
@@ -627,7 +630,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     security.declarePublic('createTopLevelTabs')
     def createTopLevelTabs(self):
-        "Returns a structure for the top level tabs"""
+        """Returns a structure for the top level tabs"""
         ct=getToolByName(self, 'portal_catalog')
         ntp=getToolByName(self, 'portal_properties').navtree_properties
         stp=getToolByName(self, 'portal_properties').site_properties

@@ -64,11 +64,101 @@ class TestDefaultPage(PloneTestCase.PloneTestCase):
         self.assertEquals(self.portal.plone_utils.browserDefault(self.folder),
                             (self.folder, ['d1']))
 
+class TestPropertyManagedBrowserDefault(PloneTestCase.PloneTestCase):
+    """Test the PropertyManagedBrowserDefault mixin class, implemented by
+    the root portal object
+    """
+    
+    def afterSetUp(self):
+        self.setRoles(['Manager'])
+        
+        # Make sure we have the front page; the portal generator should take 
+        # care of this, but let's not be dependent on that in the test
+        if not 'front-page' in self.portal.objectIds():
+            self.portal.invokeFactory('Document', 'front-page',
+                                      title = 'Welcome to Plone')
+        self.portal.setDefaultPage('front-page')
+    
+        # Also make sure we have folder_listing and news_listing as templates
+        self.portal.manage_changeProperties(selectable_views = ['folder_listing',
+                                                                'news_listing'])
+            
+    def testDefaultViews(self):
+        self.assertEqual(self.portal.getLayout(), 'folder_listing')
+        self.assertEqual(self.portal.getDefaultPage(), 'front-page')
+        self.assertEqual(self.portal.defaultView(), 'front-page')
+        self.assertEqual(self.portal.getDefaultLayout(), 'folder_listing')
+        layoutKeys = [v[0] for v in self.portal.getAvailableLayouts()]
+        self.failUnless('folder_listing' in layoutKeys)
+        self.failUnless('news_listing' in layoutKeys)
+        self.assertEqual(self.portal.__browser_default__(None), (self.portal, ['front-page',]))
+        
+    def testCanSetLayout(self):
+        self.failUnless(self.portal.canSetLayout())
+        self.portal.manage_permission('Modify portal content', [], 0)
+        self.failIf(self.portal.canSetLayout()) # Not permitted
+    
+    def testSetLayout(self):
+        self.portal.setLayout('news_listing')
+        self.assertEqual(self.portal.getLayout(), 'news_listing')
+        self.assertEqual(self.portal.getDefaultPage(), None)
+        self.assertEqual(self.portal.defaultView(), 'news_listing')
+        self.assertEqual(self.portal.getDefaultLayout(), 'folder_listing')
+        layoutKeys = [v[0] for v in self.portal.getAvailableLayouts()]
+        self.failUnless('folder_listing' in layoutKeys)
+        self.failUnless('news_listing' in layoutKeys)
+        self.assertEqual(self.portal.__browser_default__(None), (self.portal, ['news_listing',]))
+        
+    def testCanSetDefaultPage(self):
+        self.failUnless(self.portal.canSetDefaultPage())
+        self.portal.invokeFactory('Document', 'ad')
+        self.failIf(self.portal.ad.canSetDefaultPage()) # Not folderish
+        self.portal.manage_permission('Modify portal content', [], 0)
+        self.failIf(self.portal.canSetDefaultPage()) # Not permitted
+        
+    def testSetDefaultPage(self):
+        self.portal.invokeFactory('Document', 'ad')
+        self.portal.setDefaultPage('ad')
+        self.assertEqual(self.portal.getDefaultPage(), 'ad')
+        self.assertEqual(self.portal.defaultView(), 'ad')
+        self.assertEqual(self.portal.__browser_default__(None), (self.portal, ['ad',]))
+        
+        # still have layout settings
+        self.assertEqual(self.portal.getLayout(), 'folder_listing')
+        self.assertEqual(self.portal.getDefaultLayout(), 'folder_listing')
+        layoutKeys = [v[0] for v in self.portal.getAvailableLayouts()]
+        self.failUnless('folder_listing' in layoutKeys)
+        self.failUnless('news_listing' in layoutKeys)
+    
+    def testSetLayoutUnsetsDefaultPage(self):
+        self.portal.invokeFactory('Document', 'ad')
+        self.portal.setDefaultPage('ad')
+        self.assertEqual(self.portal.getDefaultPage(), 'ad')
+        self.assertEqual(self.portal.defaultView(), 'ad')
+        self.portal.setLayout('folder_listing')
+        self.assertEqual(self.portal.getDefaultPage(), None)
+        self.assertEqual(self.portal.defaultView(), 'folder_listing')
+        self.assertEqual(self.portal.__browser_default__(None), (self.portal, ['folder_listing',]))
+
+    def testMissingTemplatesIgnored(self):
+        self.portal.manage_changeProperties(selectable_views = ['folder_listing', 'foo'])
+        views = [v[0] for v in self.portal.getAvailableLayouts()]
+        self.failUnless(views == ['folder_listing'])
+
+    def testTemplateTitles(self):
+        views = [v for v in self.portal.getAvailableLayouts() if v[0] == 'folder_listing']
+        self.assertEqual(views[0][1], 'Folder listing')
+        folderListing = self.portal.unrestrictedTraverse('folder_listing')
+        folderListing.title = 'foo'
+        views = [v for v in self.portal.getAvailableLayouts() if v[0] == 'folder_listing']
+        self.assertEqual(views[0][1], 'foo')
+    
 
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
     suite.addTest(makeSuite(TestDefaultPage))
+    suite.addTest(makeSuite(TestPropertyManagedBrowserDefault))
     return suite
 
 if __name__ == '__main__':

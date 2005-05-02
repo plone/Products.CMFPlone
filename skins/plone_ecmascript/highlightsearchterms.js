@@ -32,7 +32,7 @@ function checkforhighlight(node,word) {
     } 
 }  
 function highlightSearchTerm() {
-    // search-term-highlighter function --  Geir Bækholt
+    // search-term-highlighter function --  Geir BÃ¦kholt
     query = window.location.search
     // _robert_ ie 5 does not have decodeURI 
     if (typeof decodeURI != 'undefined'){

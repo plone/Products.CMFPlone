@@ -22,33 +22,30 @@ class TestPortalFactory(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
         self.membership = self.portal.portal_membership
-        self.portal.acl_users._doAddUser('member', 'secret', ['Member'], [])
-        self.portal.acl_users._doAddUser('reviewer', 'secret', ['Reviewer'], [])
-        self.portal.acl_users._doAddUser('manager', 'secret', ['Manager'], [])
+        self.membership.addMember('member', 'secret', ['Member'], [])
+        self.membership.addMember('manager', 'secret', ['Manager'], [])
 
     def testTraverse(self):
         temp_doc = self.folder.restrictedTraverse('portal_factory/Document/tmp_id')
-        self.assertEqual(temp_doc.meta_type, 'ATDocument')
+        self.assertEqual(temp_doc.portal_type, 'Document')
         self.assertEqual(temp_doc.getId(), 'tmp_id')
 
     def testTraverseTwiceByDifferentContentTypes(self):
         temp_doc = self.folder.restrictedTraverse('portal_factory/Document/tmp_id')
-        self.assertEqual(temp_doc.meta_type, 'ATDocument')
+        self.assertEqual(temp_doc.portal_type, 'Document')
         self.assertEqual(temp_doc.getId(), 'tmp_id')
         temp_img = self.folder.restrictedTraverse('portal_factory/Image/tmp_id_image')
-        self.assertEqual(temp_img.meta_type, 'ATImage')
+        self.assertEqual(temp_img.portal_type, 'Image')
         self.assertEqual(temp_img.getId(), 'tmp_id_image')
 
     def testTempFolderLocalRoles(self):
-        self.membership.addMember('user2', 'secret', ['Member'], [])
+        # Temporary objects should "inherit" local roles from container
+        member = self.membership.getMemberById('member')
         self.portal._addRole('Foo')
 
-        member = self.membership.getMemberById('user2')
-        user = member.getUser()
-
-        self.folder.manage_addLocalRoles('user2', ('Foo',))
-        self.folder.invokeFactory(id='folder2', type_name='Folder')
-        self.folder.folder2.manage_addLocalRoles('user2', ('Reviewer',))
+        self.folder.manage_addLocalRoles('member', ('Foo',))
+        self.folder.invokeFactory('Folder', id='folder2')
+        self.folder.folder2.manage_addLocalRoles('member', ('Reviewer',))
 
         self.assertEqual(sortTuple(member.getRolesInContext(self.folder)),
                          ('Authenticated', 'Foo', 'Member'))
@@ -61,42 +58,43 @@ class TestPortalFactory(PloneTestCase.PloneTestCase):
         self.assertEqual(sortTuple(member.getRolesInContext(temp_object2)),
                          ('Authenticated', 'Foo', 'Member', 'Reviewer'))
 
-    def testTempObjectLocalRoles(self):
+    def testTempObjectLocalRolesBug(self):
+        # Evil monkey patch should not change all objects of a class
+        self.createMemberarea('member')
         member = self.membership.getMemberById('member')
 
+        # Make an unrelated non-temporary object for comparison
         self.login('manager')
-        self.portal.invokeFactory(id='nontmp_id', type_name='Document')
+        self.portal.invokeFactory('Document', id='nontmp_id')
         nontemp_object = getattr(self.portal, 'nontmp_id')
 
-        # assume identify of the ordinary member
+        # Assume identify of the ordinary member
         self.login('member')
-        folder = self.portal.Members.member
+        folder = self.membership.getHomeFolder()
         temp_object = folder.restrictedTraverse('portal_factory/Document/tmp_id')
-        # make sure user is owner of temporary object
+
+        # Make sure member is owner of temporary object
         self.assertEqual(sortTuple(member.getRolesInContext(temp_object)),
                          ('Authenticated', 'Member', 'Owner'))
         self.assertEqual(temp_object.Creator(), 'member')
-        # make sure user is not owner of non-temporary object
+
+        # Make sure member is not owner of non-temporary object
         # (i.e. make sure our evil monkey patch of the temporary instance has
         # not resulted in our patching all instances of the class)
         self.assertEqual(sortTuple(member.getRolesInContext(nontemp_object)),
                          ('Authenticated', 'Member'))
 
-
     def testTempFolderPermissions(self):
+        # TempFolder should "inherit" permission mappings from container
         from Products.CMFCore.CMFCorePermissions import AddPortalContent
 
-        self.folder.invokeFactory(id='folder2', type_name='Folder')
-        f = self.folder.folder2
+        previous_roles = self.folder.rolesOfPermission(AddPortalContent)
+        self.folder.manage_permission(AddPortalContent, ['Anonymous'], 1)
+        new_roles = self.folder.rolesOfPermission(AddPortalContent)
+        self.failIfEqual(previous_roles, new_roles)
 
-        previous_roles = f.rolesOfPermission(AddPortalContent)
-        self.folder.folder2.manage_permission(AddPortalContent,
-                                              ['Anonymous'], 1)
-        new_roles = f.rolesOfPermission(AddPortalContent)
-        self.failIf(previous_roles == new_roles)
-
-        path = 'folder2/portal_factory/Document/tmp_id'
-        temp_folder = self.folder.restrictedTraverse(path).aq_parent
+        temp_folder = self.folder.restrictedTraverse(
+                                'portal_factory/Document/tmp_id').aq_parent
         temp_roles = temp_folder.rolesOfPermission(AddPortalContent)
         self.assertEqual(temp_roles, new_roles)
 
@@ -114,7 +112,6 @@ class TestCreateObject(PloneTestCase.PloneTestCase):
         # Anonymous should not be able to create the (real) object
         # Note that Anonymous used to be able to create the temp object...
         temp_object = self.folder.restrictedTraverse('portal_factory/Document/tmp_id')
-        # but not the final one
         self.logout()
         self.assertRaises(Unauthorized, temp_object.portal_factory.doCreate,
                           temp_object, 'foo')
@@ -128,11 +125,10 @@ class TestCreateObject(PloneTestCase.PloneTestCase):
         self.assertEqual(self.folder.foo.get_local_roles_for_userid(default_user), ('Owner',))
 
     def testUnauthorizedToCreateObjectByDocumentEdit(self):
-        # Anonymous should not be edit the (real) object
+        # Anonymous should not be able to create the (real) object
         # Note that Anonymous used to be able to create the temp object...
         temp_object = self.folder.restrictedTraverse('portal_factory/Document/tmp_id')
         self.logout()
-        # but not the final one
         self.assertRaises(Unauthorized, temp_object.document_edit,
                           id='foo', title='Foo', text_format='plain', text='')
 
@@ -201,7 +197,6 @@ class TestCreateObjectByURL(PloneTestCase.FunctionalTestCase):
                                 '/createObject?type_name=News%20Item',
                                 ) # No basic out info
 
-        # Ok, so here we don't even get far enough for the redirect to occur
         self.assertEqual(response.getStatus(), 401) # Unauthorized
 
     def testCreateObjectByDocumentEdit(self):

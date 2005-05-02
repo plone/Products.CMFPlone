@@ -98,6 +98,12 @@ def alpha1_alpha2(portal):
     # Add news topic
     addNewsTopic(portal, out)
 
+    # Add events folder
+    addEventsFolder(portal, out)
+
+    # Add events topic
+    addEventsTopic(portal, out)
+
     # Add exclude_from_nav index
     reindex += addExclude_from_navMetadata(portal, out)
 
@@ -120,6 +126,14 @@ def alpha1_alpha2(portal):
     # Put default types in portal_factory
     addDefaultTypesToPortalFactory(portal, out)
 
+    # Add non_default_page_types site property
+    addDisableFolderSectionsSiteProperty(portal, out)
+
+    # Add selectable_views to portal root
+    addSiteRootViewTemplates(portal, out)
+
+    # ADD NEW STUFF BEFORE THIS LINE AND LEAVE THE TRAILER ALONE!
+
     # Rebuild catalog
     if reindex:
         refreshSkinData(portal, out)
@@ -130,12 +144,12 @@ def alpha1_alpha2(portal):
 
     # Make sure the Members folder is cataloged
     indexMembersFolder(portal, out)
-    
+
     # Make sure the News folder is cataloged
     indexNewsFolder(portal, out)
 
-    # Add non_default_page_types site property
-    addDisableFolderSectionsSiteProperty(portal, out)
+    # Make sure the Events folder is cataloged
+    indexEventsFolder(portal, out)
 
     return out
 
@@ -443,6 +457,9 @@ def installCSSandJSRegistries(portal, out):
         cssreg = getToolByName(portal, 'portal_css', None)
         if cssreg is not None:
             cssreg.clearStylesheets()
+            # add the bottom ones and the ones with special expressions first.
+            # since registering a stylesheet adds it to the top of the stack
+            cssreg.registerStylesheet('ploneRTL.css',             expression="python:object.isRightToLeft(domain='plone')")
             cssreg.registerStylesheet('plonePresentation.css', media='presentation')
             cssreg.registerStylesheet('plonePrint.css', media='print')
             cssreg.registerStylesheet('ploneMobile.css', media='handheld')
@@ -451,33 +468,33 @@ def installCSSandJSRegistries(portal, out):
             cssreg.registerStylesheet('plonePublic.css')
             cssreg.registerStylesheet('ploneBase.css')
             cssreg.registerStylesheet('ploneCustom.css')
-            cssreg.registerStylesheet('ploneRTL.css', expression="python:object.isRightToLeft(domain='plone')")
 
         jsreg = getToolByName(portal, 'portal_javascripts', None)
         if jsreg is not None:
             jsreg.clearScripts()
-            jsreg.registerScript('vcXMLRPC.js', enabled=False)
-            jsreg.registerScript('correctPREformatting.js', enabled=False)
-            jsreg.registerScript('plone_minwidth.js' , enabled=False)
-            jsreg.registerScript('sarissa.js')
-            jsreg.registerScript('calendar_formfield.js')
-            jsreg.registerScript('ie5fixes.js')
-            jsreg.registerScript('calendarpopup.js')
+            jsreg.registerScript('register_function.js')
+            jsreg.registerScript('plone_javascript_variables.js')
+            jsreg.registerScript('nodeutilities.js')
+            jsreg.registerScript('cookie_functions.js')
+            jsreg.registerScript('livesearch.js')
+            jsreg.registerScript('fullscreenmode.js')
+            jsreg.registerScript('select_all.js')
+            jsreg.registerScript('plone_menu.js')
+            jsreg.registerScript('mark_special_links.js')
             jsreg.registerScript('collapsiblesections.js')
+            jsreg.registerScript('highlightsearchterms.js')
             jsreg.registerScript('first_input_focus.js')
             jsreg.registerScript('folder_contents_filter.js')
-            jsreg.registerScript('fullscreenmode.js')
-            jsreg.registerScript('highlightsearchterms.js')
-            jsreg.registerScript('mark_special_links.js')
-            jsreg.registerScript('select_all.js')
             jsreg.registerScript('styleswitcher.js')
-            jsreg.registerScript('livesearch.js')
             jsreg.registerScript('table_sorter.js')
-            jsreg.registerScript('plone_menu.js')
-            jsreg.registerScript('cookie_functions.js')
-            jsreg.registerScript('nodeutilities.js')
-            jsreg.registerScript('plone_javascript_variables.js')
-            jsreg.registerScript('register_function.js')
+            jsreg.registerScript('calendar_formfield.js')
+            jsreg.registerScript('calendarpopup.js')
+            jsreg.registerScript('ie5fixes.js')
+            jsreg.registerScript('sarissa.js')
+            jsreg.registerScript('plone_minwidth.js' , enabled=False)
+            jsreg.registerScript('correctPREformatting.js', enabled=False)
+            jsreg.registerScript('vcXMLRPC.js', enabled=False)
+
 
         out.append('Installed CSSRegistry and JSRegistry.')
 
@@ -568,6 +585,31 @@ def addNewsFolder(portal, out):
     except BadRequest:
         pass
     out.append("Added default view for news folder.")
+
+
+def addEventsFolder(portal, out):
+    """Add events folder to portal root"""
+    if 'events' not in portal.objectIds():
+        _createObjectByType('Large Plone Folder', portal, id='events',
+                            title='Events', description='Site Events')
+        out.append("Added events folder.")
+    events = getattr(aq_base(portal), 'events')
+
+    # Enable ConstrainTypes and set to Event
+    addable_types = ['Event']
+    if getattr(events.aq_base, 'setConstrainTypesMode', None) is not None:
+        events.setConstrainTypesMode(1)
+        events.setImmediatelyAddableTypes(addable_types)
+        events.setLocallyAllowedTypes(addable_types)
+        out.append("Set constrain types for events folder.")
+
+    # Add events_listing.pt as default page
+    # property manager hasProperty can give odd results ask forgiveness instead
+    try:
+        events.manage_addProperty('default_page', ['events_topic','events_listing','index_html'], 'lines')
+    except BadRequest:
+        pass
+    out.append("Added default view for events folder.")
 
 
 def addExclude_from_navMetadata(portal, out):
@@ -666,6 +708,15 @@ def indexNewsFolder(portal, out):
         if hasattr(aq_base(portal), 'news'):
             portal.news.indexObject()
             out.append('Recataloged news folder.')
+
+
+def indexEventsFolder(portal, out):
+    """Makes sure the Events folder is cataloged."""
+    catalog = getToolByName(portal, 'portal_catalog', None)
+    if catalog is not None:
+        if hasattr(aq_base(portal), 'events'):
+            portal.events.indexObject()
+            out.append('Recataloged events folder.')
 
 
 class Record:
@@ -781,6 +832,7 @@ def addDefaultTypesToPortalFactory(portal, out):
         factory.manage_setPortalFactoryTypes(listOfTypeIds = types)
         out.append('Added default content types to portal_factory.')
 
+
 def addNewsTopic(portal, out):
     news = portal.news
     if 'news_topic' not in news.objectIds() and getattr(portal,'portal_atct', None) is not None:
@@ -793,6 +845,20 @@ def addNewsTopic(portal, out):
         out.append('Added Topic for default news folder view.')
     else:
         out.append('Topic default news folder view already in place or ATCT is not installed.')
+
+
+def addEventsTopic(portal, out):
+    events = portal.events
+    if 'events_topic' not in events.objectIds() and getattr(portal,'portal_atct', None) is not None:
+        _createObjectByType('Topic', events, id='events_topic',
+                            title='Events', description='Site Events')
+        topic = events.events_topic
+        type_crit = topic.addCriterion('Type','ATPortalTypeCriterion')
+        type_crit.setValue('Event')
+        sort_crit = topic.addCriterion('start','ATSortCriterion')
+        out.append('Added Topic for default events folder view.')
+    else:
+        out.append('Topic default events folder view already in place or ATCT is not installed.')
 
 
 def addDisableFolderSectionsSiteProperty(portal, out):
@@ -809,3 +875,13 @@ def addDisableFolderSectionsSiteProperty(portal, out):
                                              False,
                                              'boolean')
             out.append("Added 'disable_folder_sections' property to site_properties.")
+
+
+def addSiteRootViewTemplates(portal, out):
+    """Add default view templates to site root"""
+    if not portal.hasProperty('selectable_views'):
+        portal.manage_addProperty('selectable_views', 
+                                  ['folder_listing',
+                                   'news_listing'],
+                                  'lines')
+        out.append("Added 'selectable_views' property to portal root")

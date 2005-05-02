@@ -188,7 +188,7 @@
         <div class="submit">
 	    <input class="context"
 		type="submit"
-		value="Assign selected role(s) to selected user(s)/group(s)"
+		value="Assign Selected Role(s) to Selected User(s)/Group(s)"
 		name="folder_localrole_add:method"
 		i18n:attributes="value"
 		tabindex=""
@@ -196,7 +196,7 @@
 		/>
             <input class="destructive"
                 type="submit"
-                value="Delete Selected Role(s) and User(s)"
+                value="Delete Selected Role(s) and User(s)/Group(s)"
                 name="folder_localrole_delete:method"
                 i18n:attributes="value"
                 tabindex=""
@@ -260,10 +260,11 @@
                     </thead>
                     <tbody>
                     <tr tal:repeat="member batch">
-                        <td class="field" tal:define="global member_username member/getUserName">
+                        <td class="field" tal:define="member_name member/getUserName;
+                                                      member_id member/getId">
                             <label class="hiddenLabel" for="member_ids:list"
                                    i18n:translate="label_select_user">
-                                select user <span tal:content="member_username" i18n:name="user" />
+                                select user <span tal:content="member_name" i18n:name="user" />
                             </label>
                             <input class="formSelection"
                                    type="checkbox"
@@ -271,13 +272,13 @@
                                    id="#"
                                    value=""
                                    tabindex=""
-                                   tal:attributes="value member_username;
+                                   tal:attributes="value member_id;
                                                    checked python:nResults==1;
                                                    tabindex tabindex/next;"
                             />
                         </td>
 
-                        <td tal:content="python:member_username">username</td>
+                        <td tal:content="member/getUserName">username</td>
                         <td tal:content="member/email">email</td>
                     </tr>
                     </tbody>
@@ -447,8 +448,8 @@
                     </thead>
                     <tbody>
                         <tr tal:repeat="group grouplist">
-                        <td tal:define="global group_name group/getUserName;
-                                               group_id group/getUserId;">
+                        <td tal:define="group_name group/getUserName;
+                                        group_id group/getId;">
                             <label class="hiddenLabel" for="member_ids:list"
                                    i18n:translate="label_select_group">
                                 select group <span tal:content="group_name" i18n:name="name"/>
@@ -519,7 +520,7 @@
             <input class="noborder" type="checkbox" name="use_acquisition:int" value="1" id="inherit"
                 tal:attributes="checked     python:test(inheritanceActive,1,None)"
                 /> 
-            <label for="inherit">inherit roles from higher levels </label>
+            <label for="inherit">Inherit roles from higher levels </label>
             <div class="formHelp" i18n:translate="help_use_acquisition">
                 Determines if the roles given to users and groups from higher levels are in
                 effect in this context.
@@ -529,7 +530,7 @@
         <div class="submit">
             <input class="context"
                 type="submit"
-                value="apply settings"
+                value="Apply Settings"
                 i18n:attributes="value"
                 tabindex=""
                 tal:attributes="tabindex tabindex/next;"

@@ -35,6 +35,8 @@ from ComputedAttribute import ComputedAttribute
 from webdav.NullResource import NullResource
 from Products.CMFPlone.PloneFolder import ReplaceableWrapper
 
+from Products.CMFPlone.PropertyManagedBrowserDefault import PropertyManagedBrowserDefault
+
 __version__='1.1'
 
 default_frontpage=r"""
@@ -93,7 +95,7 @@ factory_type_information = { 'id'             : 'Plone Root'
                        )
   }
 
-class PloneSite(CMFSite, OrderedContainer):
+class PloneSite(CMFSite, OrderedContainer, PropertyManagedBrowserDefault):
     """
     Make PloneSite subclass CMFSite and add some methods.
     This will be useful for adding more things later on.
@@ -101,14 +103,10 @@ class PloneSite(CMFSite, OrderedContainer):
     security=ClassSecurityInfo()
     meta_type = portal_type = 'Plone Site'
     __implements__ = DublinCore.DefaultDublinCoreImpl.__implements__ + \
-                     OrderedContainer.__implements__
+                     OrderedContainer.__implements__ + \
+                    PropertyManagedBrowserDefault.__implements__
 
     manage_renameObject = OrderedContainer.manage_renameObject
-
-    def __browser_default__(self, request):
-        """ Set default so we can return whatever we want instead
-        of index_html """
-        return getToolByName(self, 'plone_utils').browserDefault(self)
 
     def index_html(self):
         """ Acquire if not present. """
@@ -191,9 +189,9 @@ class PloneGenerator(Portal.PortalGenerator):
         members.setDescription("Container for portal members' home directories")
         ##catalog.unindexObject(members) #unindex Members folder
 
-        # add index_html to portal root
-        p.invokeFactory('Document', 'index_html')
-        idx = getattr(p, 'index_html')
+        # add front page to portal root
+        p.invokeFactory('Document', 'front-page')
+        idx = getattr(p, 'front-page')
         idx.setTitle('Welcome to Plone')
         idx.setDescription('This welcome page is used to introduce you'+\
                          ' to the Plone Content Management System.')
@@ -204,6 +202,8 @@ class PloneGenerator(Portal.PortalGenerator):
         else:
             idx.edit(text=default_frontpage)
         idx.reindexObject()
+
+        p.setDefaultPage('front-page')
 
         # add index_html to Members area
         addPy = members.manage_addProduct['PythonScripts'].manage_addPythonScript
