@@ -1,3 +1,3 @@
 // Global Plone variables that need to be accessible to the Javascripts
 var portal_url = '<dtml-var portal_url>'
-var form_modified_message = '<dtml-translate domain="plone" msgid="text_form_modified_message"></dtml-translate>'
+var form_modified_message = '<dtml-var expr="translate('text_form_modified_message', default='Your form has not been saved. All changes you have made will be lost')">'
