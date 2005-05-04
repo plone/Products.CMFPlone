@@ -1,4 +1,4 @@
-## Script (Python) "getReplies"
+## Script (Python) "getReplyReplies"
 ##bind container=container
 ##bind context=context
 ##bind namespace=

@@ -52,8 +52,13 @@ if hasattr(dtool.aq_explicit, 'cookReply'):
 
 parent = tb.aq_parent
 
+# return to the discussable object.
+redirect_target = context.plone_utils.getDiscussionThread(tb)[0]
+view = redirect_target.getTypeInfo().getActionById('view')
+
 from Products.CMFPlone import transaction_note
 transaction_note('Added comment to %s at %s' % (parent.title_or_id(), reply.absolute_url()))
 
-target = '%s/%s' % (parent.absolute_url(), parent.getTypeInfo().getActionById('view'))
+target = '%s/%s?portal_status_message=Comment+added' % (redirect_target.absolute_url(), view)
+
 return req.RESPONSE.redirect(target)

@@ -14,9 +14,7 @@
                  isViewTemplate python:template_id==view_action or view_action=='view';
                  ">
     <tal:allowed condition="python:isDiscussionAllowed and isViewTemplate">
-        <tal:comments tal:define="count python:portal_discussion.getDiscussionFor(here).replyCount(here);
-                                  collapsed python:count&gt;5;
-                                  state_class python:test(collapsed, 'collapsed', '')">
+        <tal:comments>
             <form name="reply"
                   action=""
                   method="post"
@@ -41,13 +39,17 @@
                        />
             </form>
             
-            <a name="comments"> </a>
-            <tal:getreplies repeat="reply python:portal.sort_modified_ascending(
-                                          portal_discussion.getDiscussionFor(here).getReplies())">
-                <div class="comment">
+            <tal:getreplies repeat="reply_dict python:here.getReplyReplies(here)">
+                <div class="comment" style=""
+                    tal:define="indent python:reply_dict['depth']*2;
+                                reply python:reply_dict['object']"
+                    tal:attributes="style string:margin-left:${indent}em;">
+                    
                     <h3>
+                        <a name="comments" tal:attributes="name reply/id">
                         <tal:block replace="structure portal/discussionitem_icon.gif"/>
                         <span tal:replace="reply/title_or_id">Comment title</span>
+                        </a>
                     </h3>
                     <div class="documentByLine"
                          tal:define="anonymous_creator python:reply.Creator()=='Anonymous User'">
@@ -88,63 +90,6 @@
                                i18n:attributes="value"
                                />
                     </form>
-                    <div tal:define="replies python: here.getReplyReplies(reply)" tal:condition="replies">	
-                        <div tal:repeat="lst replies"> 
-                            <div class="comment" 
-                                 tal:define="indent python:(lst['depth']+1)*20;
-                                             lst_object nocall:lst/object" 
-                                 tal:attributes="style string:margin-left: ${indent}px;"> 
-                                <div class="body"> 
-                                    <div class="content"> 	
-                                        <h4>
-                                            <tal:block replace="structure here/discussionitem_icon.gif"/>
-                                            <span tal:replace="lst_object/Title">Comment title</span>
-                                        </h4>
-                                        <div class="documentByLine" 
-                                             tal:define="anonymous_creator python:lst_object.Creator()=='Anonymous User'">
-                                            <span i18n:translate="label_comment_by">Posted by</span>
-                                            <span tal:content="lst_object/Creator"
-                                                  tal:condition="not:anonymous_creator">Poster Name</span>
-                                            <span i18n:translate="label_anonymous_user"
-                                                  tal:condition="anonymous_creator">Anonymous User</span>
-                                            <span i18n:translate="label_commented_at">at</span> 
-                                            <span tal:replace="python:portal.toLocalizedTime(lst_object.modified(),
-                                                          long_format=1)">8/23/2001 12:49:08 PM</span>													
-                                        </div>
-                                        <div style="margin-bottom:1em;margin-top:1em;" 
-                                             tal:content="structure lst_object/CookedBody"> 
-                                            This is the body text of the comment. 
-                                        </div> 
-                                        <form name="reply"
-                                              action="discussion_reply_form"
-                                              method="post"
-                                              style="display: inline;"
-                                              tal:condition="userHasReplyPermission" 
-                                              tal:attributes="action string:${lst_object/absolute_url}/discussion_reply_form" >
-                                            <input class="context" 
-                                                   type="submit" 
-                                                   value="Reply" 
-                                                   i18n:attributes="value"
-                                                   />
-                                        
-                                        </form>
-                                        <form name="" 
-                                              action="" 
-                                              method="post"
-                                              style="display: inline;"
-                                              tal:condition="python:checkPermission('Manage portal', here)"
-                                              tal:attributes="action string:${lst_object/absolute_url}/deleteDiscussion">
-                                            <input class="destructive" 
-                                                   type="submit" 
-                                                   value="Remove"
-                                                   i18n:attributes="value"
-                                               />
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </tal:getreplies>
         </tal:comments>
