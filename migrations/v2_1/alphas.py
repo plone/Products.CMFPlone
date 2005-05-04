@@ -490,6 +490,7 @@ def installCSSandJSRegistries(portal, out):
             jsreg.registerScript('calendar_formfield.js')
             jsreg.registerScript('calendarpopup.js')
             jsreg.registerScript('ie5fixes.js')
+            jsreg.registerScript('formUnload.js')
             jsreg.registerScript('sarissa.js')
             jsreg.registerScript('plone_minwidth.js' , enabled=False)
             jsreg.registerScript('correctPREformatting.js', enabled=False)
