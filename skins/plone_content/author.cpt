@@ -30,6 +30,12 @@
         <h1 class="documentFirstHeading" tal:content="authorinfo/fullname">
             Author name
         </h1>
+        
+        <div class="discreet">
+        Location:
+        &mdash;
+        Main Language:
+        </div>
 
         <img src=""
              alt=""
@@ -45,17 +51,18 @@
         </div>
 
         <div class="visualClear"/>
+            
+        <p>
+        <a href="">Author's home page&hellip;</a>
+        </p>
 
         <!-- feedback form -->        
         <tal:feedbackForm condition="not:isAnon">
         
-            <h2 i18n:translate="heading_author_feedback">
-                Send feedback
-            </h2>
-            
-            <p i18n:translate="description_author_feedback">
-                By filling in the form below, you can send an email to this author
-                with feedback.
+            <p class="discreet"
+               i18n:translate="description_author_feedback">
+                If you want to contact this author, fill in the form
+                below.
             </p>
             
             <form name="feedback_form"
@@ -64,6 +71,8 @@
                 tal:attributes="action string:${here/absolute_url}/${template/getId}">
 
             <fieldset>
+            
+            <legend>Feedback for author</legend>
 
             <div class="field"
               tal:define="error errors/subject|nothing"
