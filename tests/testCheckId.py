@@ -10,6 +10,8 @@ from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
 
+from Products.ATContentTypes.content.document import ATDocument
+
 from AccessControl import getSecurityManager
 from AccessControl import Unauthorized
 from ZODB.POSException import ConflictError
@@ -68,8 +70,8 @@ class TestCheckId(PloneTestCase.PloneTestCase):
         self.assertEqual(r, "'created' is reserved.")
 
     def testCollision(self):
-        self.folder._setObject('foo', dummy.Item('foo'))
-        self.folder._setObject('bar', dummy.Item('bar'))
+        self.folder._setObject('foo', ATDocument('foo'))
+        self.folder._setObject('bar', ATDocument('bar'))
         r = self.folder.foo.check_id('bar')
         self.assertEqual(r, "There is already an item named 'bar' in this folder.")
 
@@ -77,12 +79,18 @@ class TestCheckId(PloneTestCase.PloneTestCase):
         foo = self.folder.restrictedTraverse('portal_factory/Document/foo')
         self.folder._setObject('bar', dummy.Item('bar'))
         r = foo.check_id('bar')
-        self.assertEqual(r, "There is already an item named 'bar' in this folder.")
+        self.assertEqual(r, "'bar' is reserved.")
 
     def testReservedId(self):
         self.folder._setObject('foo', dummy.Item('foo'))
         r = self.folder.foo.check_id('portal_catalog')
         self.assertEqual(r, "'portal_catalog' is reserved.")
+
+    def testHiddenObjectId(self):
+        # if a parallel object is not in content-space, should get 'reserved'
+        # instead of 'taken'
+        r = self.folder.check_id('portal_skins')
+        self.assertEqual(r, "'portal_skins' is reserved.")
 
     def testInvalidId(self):
         self.folder._setObject('foo', dummy.Item('foo'))
@@ -127,15 +135,18 @@ class TestCheckId(PloneTestCase.PloneTestCase):
         self.assertEqual(r, None)   # success
 
     def testCatalogIndexSkipped(self):
-        # Note that the check is skipped when we don't have 
+        # Note that the check is skipped when we don't have
         # the "Search ZCatalogs" permission.
         self.portal.manage_permission('Search ZCatalog', ['Manager'], acquire=0)
 
         r = self.folder.check_id('created')
-        self.assertEqual(r, None)   # success
+        #self.assertEqual(r, None)   # success
+
+        # But now the final hasattr check picks this up
+        self.assertEqual(r, "'created' is reserved.")   # success
 
     def testCollisionSkipped(self):
-        # Note that check is skipped when we don't have 
+        # Note that check is skipped when we don't have
         # the "Access contents information" permission.
         self.folder.manage_permission('Access contents information', ['Manager'], acquire=0)
 
@@ -145,16 +156,17 @@ class TestCheckId(PloneTestCase.PloneTestCase):
         self.assertEqual(r, None)   # success
 
     def testReservedIdSkipped(self):
-        # Note that the check is skipped when we don't have 
-        # the "Add portal content" permission.
+        # This check is picked up by the checkIdAvailable, unless we don't have
+        # the "Add portal content" permission, in which case it is picked up by
+        # the final hasattr check.
         self.folder.manage_permission('Add portal content', ['Manager'], acquire=0)
 
         self.folder._setObject('foo', dummy.Item('foo'))
         r = self.folder.foo.check_id('portal_catalog')
-        self.assertEqual(r, None)   # success
+        self.assertEqual(r, "'portal_catalog' is reserved.")   # success
 
     def testInvalidIdSkipped(self):
-        # Note that the check is skipped when we don't have 
+        # Note that the check is skipped when we don't have
         # the "Add portal content" permission.
         self.folder.manage_permission('Add portal content', ['Manager'], acquire=0)
 
@@ -175,7 +187,7 @@ class TestCrazyRoles(PloneTestCase.PloneTestCase):
             context = self.portal
         perms = context.permissionsOfRole(role)
         return [p['name'] for p in perms if p['selected']]
-        
+
     def assertPermissionsOfRole(self, permissions, role, context=None):
         lhs = list(permissions)[:]
         lhs.sort()
@@ -197,7 +209,7 @@ class TestCrazyRoles(PloneTestCase.PloneTestCase):
         self.logout()
         self.failIf(getSecurityManager().checkPermission('Access contents information', self.app))
         self.failIf(self.membership.checkPermission('Access contents information', self.app))
-        
+
     def test_crazyRoles_2(self):
         # Permission assignments should be reset
         try:
