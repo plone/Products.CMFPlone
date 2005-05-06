@@ -432,7 +432,7 @@ class MembershipTool(PloneBaseTool, BaseTool):
 
         # Now perform individual checks on each user
         res = []
-        portal = self.portal_url.getPortalObject()
+        portal = getToolByName(self, 'portal_url').getPortalObject()
 
         for member in members:
             #user = md.wrapUser(u)

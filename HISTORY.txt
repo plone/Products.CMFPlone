@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Changed member_search_form.pt so that it submits last_login_time as
+      a plain DateTime object rather than a catalog style query dictionary.
+      [rafrombrc]
+
     - Exposing 'language', 'home_page', 'location' and 'description' in
       getMemberInfo() in the MembershipTool. These are used in author.pt.
       [limi]

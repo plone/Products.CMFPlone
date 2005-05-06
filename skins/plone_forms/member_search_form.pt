@@ -64,7 +64,7 @@
                 </div>
     
                 <tal:datetime define="today python:DateTime().earliestTime()">
-                    <select name="last_login_time.query:record:date"
+                    <select name="last_login_time:date"
                             tabindex=""
                             tal:attributes="tabindex tabindex/next;"
                             tal:define="yesterday python:(today-1).Date();
@@ -77,7 +77,6 @@
                         <option value="#" tal:attributes="value ever" selected="selected" i18n:translate="time_ever"> Ever </option>
                     </select>
                 </tal:datetime>
-                <input type="hidden" name="last_login_time.range:record" value="min" />
             </div>
     
             <tal:condition condition="python:checkPermission('View Groups', portal)">
