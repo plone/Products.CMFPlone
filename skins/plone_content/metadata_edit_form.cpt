@@ -245,8 +245,8 @@
 
           <div class="field">
             <label for="format"
-                   i18n:translate="label_format">
-              Format
+                   i18n:translate="label_mimetype">
+              MIME type
             </label>
 
             <div class="formHelp" i18n:translate="help_mimetype">

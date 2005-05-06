@@ -4,6 +4,15 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Fixed http://members.plone.org/collector/2912 - "Format" renamed to
+      "MIME type" in metadata form to avoid confusion with the text format
+      selector.
+      [limi]
+
+    - Fixed http://members.plone.org/collector/3938 - duplicate class 
+      definitions for .even and .odd.
+      [limi]
+
     - Manually merged Duncan's plip24-form-unload-branch.
       Plone will now present a warning message if the user tries to navigate
       away from a page with a changed form. 
