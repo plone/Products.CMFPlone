@@ -4,6 +4,14 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Fixed http://members.plone.org/collector/1987 - 'batch' mode now enabled
+      whenever the List folder contents property is available and one or more
+      of the modification permissions is available (Delete, Copy, Add, Modify).
+      These checks apply to the current object if it is folderish and not set
+      as the Default Page for its parent; otherwise, the checks are made on
+      the parent.
+      [alecm]
+
     - Fixed http://members.plone.org/collector/2912 - "Format" renamed to
       "MIME type" in metadata form to avoid confusion with the text format
       selector.

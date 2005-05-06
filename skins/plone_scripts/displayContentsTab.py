@@ -11,30 +11,34 @@ from AccessControl import Unauthorized
 
 pm=context.portal_membership
 checkPermission=pm.checkPermission
+list_permission = 'List folder contents'
+modification_permissions = ('Modify portal content',
+                            'Add portal content',
+                            'Copy or Move',
+                            'Delete objects')
 
-try:
-    parent = context.aq_parent
-except Unauthorized:
-    parent = None
+contents_object = context
+# If this object is not folderish or is the parent folder's default page,
+# then the folder_contents action is for the parent, check permissions there.
+if contents_object.isDefaultPageInFolder() or not contents_object.isPrincipiaFolderish:
+    try:
+        contents_object = contents_object.getParentNode()
+    except Unauthorized:
+        pass
 
-show = 1
-#We only want to show the 'contents' tab under the following conditions:
-# - If you can DO SOMETHING in a folder_contents view. i.e.
-#   Copy or Move, or Modify portal content, or Add portal content.
-# - If you can not do that in the current context, check the container
-#   to see if you can do SOMETHING
-for permission in ('Copy or Move',
-                   'List folder contents',
-                   'Modify portal content'):
-    if not checkPermission(permission, context):
-        show = 0
-        break
+show = 0
+#We only want to show the 'batch' action under the following conditions:
+# - If you have permission to list the contents of the relavant object, and
+#   you can DO SOMETHING in a folder_contents view. i.e.
+#   Copy or Move, or Modify portal content, Add portal content,
+#   or Delete objects.
 
-if not show and parent is not None:
-    for permission in ('Copy or Move',
-                       #'List folder contents',
-                       'Modify portal content'):
-        if not checkPermission(permission, parent):
-            return 0
+# Require 'List folder contents' on the current object
+if checkPermission(list_permission, contents_object):
+    # If any modifications are allowed on object show the tab.
+    for permission in modification_permissions:
+        if checkPermission(permission, contents_object):
+            show = 1
+            break
 
-return 1
+return show

@@ -13,20 +13,41 @@ from Products.CMFCore.CMFCorePermissions import View
 from Products.CMFCore.CMFCorePermissions import AccessContentsInformation
 from Products.CMFCore.CMFCorePermissions import ListFolderContents
 from Products.CMFCore.CMFCorePermissions import ModifyPortalContent
+from Products.CMFCore.CMFCorePermissions import AddPortalContent
 from AccessControl.Permissions import copy_or_move
+from AccessControl.Permissions import delete_objects
 
 from AccessControl import getSecurityManager
 from Products.CMFCore.utils import _checkPermission
 
 
 class TestDisplayContentsTab(PloneTestCase.PloneTestCase):
-    '''For the contents tab to display a user must have the ModifyPortalContent,
-       ListFolderContents, and copy_or_move permissions either on the object itself,
-       or on its parent object. Yes, all three of 'em.
+    '''For the contents tab to display a user must have the ListFolderContents,
+       and one of the (Modify portal contents, Copy or move, Add portal contents,
+       Delete objects) permissions either on the object itself, or on the
+       parent object if the object is not folderish or is the default page for
+       its parent.
     '''
 
     def afterSetUp(self):
         self.parent = self.folder.aq_parent
+        self.folder.invokeFactory('Folder', id='foo')
+        self.folder.foo.invokeFactory('Document', id='doc1')
+        self.folder.foo.invokeFactory('Folder', id='folder1')
+        folder_path = '/'.join(self.folder.foo.folder1.getPhysicalPath())
+        get_transaction().commit(1) # make rename work
+        # Make the folder the default page
+        self.folder.folder_rename(paths=[folder_path], new_ids=['index_html'], new_titles=['Default Folderish Document'])
+
+    def getModificationPermissions(self):
+        return [ModifyPortalContent,
+                AddPortalContent,
+                copy_or_move,
+                delete_objects]
+
+    def removePermissionsFromObject(self, permissions, object):
+        for permission in permissions:
+            object.manage_permission(permission, ['Manager'], acquire=0)
 
     def testDisplayContentsTab(self):
         # We should see the tab
@@ -42,51 +63,56 @@ class TestDisplayContentsTab(PloneTestCase.PloneTestCase):
         self.folder.manage_permission(ListFolderContents, ['Manager'], acquire=0)
         self.failIf(self.folder.displayContentsTab())
 
-    def testNoModifyPermission(self):
-        # We should not see the tab without ModifyPortalContent
-        self.folder.manage_permission(ModifyPortalContent, ['Manager'], acquire=0)
+    def testNoModificationPermissions(self):
+        # We should see the tab with only copy_or_move
+        perms = self.getModificationPermissions()
+        self.removePermissionsFromObject(perms, self.folder)
         self.failIf(self.folder.displayContentsTab())
 
-    def testNoCopyPermission(self):
-        # We should not see the tab without copy_or_move
-        self.folder.manage_permission(copy_or_move, ['Manager'], acquire=0)
-        self.failIf(self.folder.displayContentsTab())
-
-    def testDefaultParentPermissions(self):
-        # Note that we don not have ModifyPortalContent in the parent by default!
-        self.failIf(_checkPermission(ModifyPortalContent, self.parent))
-        self.failUnless(_checkPermission(ListFolderContents, self.parent))
-        self.failUnless(_checkPermission(copy_or_move, self.parent))
-
-    def testModifyPermissionInParent(self):
-        # We should see the tab once we have all three permissions in the parent
-        self.folder.manage_permission(ModifyPortalContent, ['Manager'], acquire=0)
-        self.parent.manage_permission(ModifyPortalContent, ['Member'], acquire=1)
+    def testOnlyModifyPermission(self):
+        # We should see the tab with only ModifyPortalContent
+        perms = self.getModificationPermissions()
+        perms.remove(ModifyPortalContent)
+        self.removePermissionsFromObject(perms, self.folder)
         self.failUnless(self.folder.displayContentsTab())
 
-    def FUTURE_testNoListPermissionInParent(self):
-        # If we do have ModifyPortalContent in the parent but not
-        # ListFolderContents, we should *not* see the tab.
-        self.folder.manage_permission(ModifyPortalContent, ['Manager'], acquire=0)
-        self.parent.manage_permission(ModifyPortalContent, ['Member'], acquire=1)
-        self.parent.manage_permission(ListFolderContents, ['Manager'], acquire=0)
-        self.failIf(self.folder.displayContentsTab())
-
-    def testNoListPermissionInParent(self):
-        # If we do have ModifyPortalContent in the parent but not
-        # ListFolderContents, we *should* see the tab.
-        self.folder.manage_permission(ModifyPortalContent, ['Manager'], acquire=0)
-        self.parent.manage_permission(ModifyPortalContent, ['Member'], acquire=1)
-        self.parent.manage_permission(ListFolderContents, ['Manager'], acquire=0)
+    def testOnlyCopyPermission(self):
+        # We should see the tab with only copy_or_move
+        perms = self.getModificationPermissions()
+        perms.remove(copy_or_move)
+        self.removePermissionsFromObject(perms, self.folder)
         self.failUnless(self.folder.displayContentsTab())
 
-    def testNoCopyPermissionInParent(self):
-        # If we do have ModifyPortalContent in the parent but not
-        # copy_or_move, we should *not* see the tab.
-        self.folder.manage_permission(ModifyPortalContent, ['Manager'], acquire=0)
-        self.parent.manage_permission(ModifyPortalContent, ['Member'], acquire=1)
-        self.parent.manage_permission(copy_or_move, ['Manager'], acquire=0)
-        self.failIf(self.folder.displayContentsTab())
+    def testOnlyDeletePermission(self):
+        # We should see the tab with only copy_or_move
+        perms = self.getModificationPermissions()
+        perms.remove(delete_objects)
+        self.removePermissionsFromObject(perms, self.folder)
+        self.failUnless(self.folder.displayContentsTab())
+
+    def testOnlyAddPermission(self):
+        # We should see the tab with only copy_or_move
+        perms = self.getModificationPermissions()
+        perms.remove(AddPortalContent)
+        self.removePermissionsFromObject(perms, self.folder)
+        self.failUnless(self.folder.displayContentsTab())
+
+    def testNonFolderishObjectUsesParentPermissions(self):
+        # The availability of the contents tab on a non-folderish object should be
+        # based on the parents permissions.
+        doc = self.folder.foo.doc1
+        self.failUnless(doc.displayContentsTab())
+        self.folder.foo.manage_permission(ListFolderContents, ['Manager'], acquire=0)
+        self.failIf(doc.displayContentsTab())
+
+    def testFolderishDefaultPageUsesParentPermissions(self):
+        # The availability of the contents tab on a default page should be
+        # based on the parents permissions, whether the default page is
+        # folderish or not.
+        def_page = self.folder.foo.index_html
+        self.failUnless(def_page.displayContentsTab())
+        self.folder.foo.manage_permission(ListFolderContents, ['Manager'], acquire=0)
+        self.failIf(def_page.displayContentsTab())
 
 
 def test_suite():
