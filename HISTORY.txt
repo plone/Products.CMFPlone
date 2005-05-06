@@ -4,6 +4,14 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Fixed http://members.plone.org/collector/3681 - No longer allow to add
+      content with ids of skin scripts.
+      [whit537]
+
+    - Fixed http://members.plone.org/collector/3999 - check_id now gives better
+      error messages.
+      [whit537]
+
     - Fixed http://members.plone.org/collector/1987 - 'batch' mode now enabled
       whenever the List folder contents property is available and one or more
       of the modification permissions is available (Delete, Copy, Add, Modify).
