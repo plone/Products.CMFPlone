@@ -1,6 +1,7 @@
 import sys
 import Globals
 from os import path
+from types import UnicodeType
 from Acquisition import aq_base
 
 cmfplone_globals = globals()
@@ -26,6 +27,12 @@ def log(message,summary='',severity=0):
 def transaction_note(note):
     """ Write human legible note """
     T=get_transaction()
+    if isinstance(note, UnicodeType):
+        # Convert unicode to a regular string for the backend write IO.
+        # UTF-8 is the only reasonable choice, as using unicode means
+        # that Latin-1 is probably not enough.
+        note = note.encode('utf-8', 'replace')
+
     if (len(T.description)+len(note))>=65535:
         log('Transaction note too large omitting %s' % str(note))
     else:
