@@ -15,7 +15,8 @@ list_permission = 'List folder contents'
 modification_permissions = ('Modify portal content',
                             'Add portal content',
                             'Copy or Move',
-                            'Delete objects')
+                            'Delete objects',
+                            'Review portal content')
 
 contents_object = context
 # If this object is not folderish or is the parent folder's default page,

@@ -47,7 +47,7 @@ from Products.CMFPlone.migrations.v2_1.alphas import addMemberdataHome_Page
 from Products.CMFPlone.migrations.v2_1.alphas import addMemberdataLocation
 from Products.CMFPlone.migrations.v2_1.alphas import addMemberdataLanguage
 from Products.CMFPlone.migrations.v2_1.alphas import addMemberdataDescription
-
+from Products.CMFPlone.migrations.v2_1.alphas import alterChangeStateActionCondition
 
 import types
 
@@ -955,6 +955,49 @@ class TestMigrations_v2_1(MigrationTest):
         # Should not fail if portal_memberdata is missing
         self.portal._delObject('portal_memberdata')
         addMemberdataLanguage(self.portal, [])
+
+    def testAlterChangeStateActionCondition(self):
+        # The condition for the change_state action should not be blank
+        # and the permission should be set to View
+        new_actions = self.actions._cloneActions()
+        for action in new_actions:
+            if action.getId() == 'change_state':
+                action.condition = ''
+                action.permissions = ('Modify portal contents',)
+        self.actions._actions = new_actions
+
+        actions = [x for x in self.actions.listActions() if x.id == 'change_state']
+        self.failIf(actions[0].condition)
+        self.assertEqual(actions[0].permissions, ('Modify portal contents',))
+        # Modify
+        alterChangeStateActionCondition(self.portal, [])
+        actions = [x for x in self.actions.listActions() if x.id == 'change_state']
+        self.assertEqual(len(actions),1)
+        action = actions[0]
+        self.failUnless(action.condition)
+        self.assertEqual(action.permissions, ('View',))
+
+    def testAlterChangeStateActionConditionTwice(self):
+        # The migration should work if performed twice
+        alterChangeStateActionCondition(self.portal, [])
+        alterChangeStateActionCondition(self.portal, [])
+        actions = [x for x in self.actions.listActions() if x.id == 'change_state']
+        self.assertEqual(len(actions),1)
+        action = actions[0]
+        self.failUnless(action.condition)
+        self.assertEqual(action.permissions, ('View',))
+
+    def testAlterChangeStateActionConditionNoAction(self):
+        # The migration should not add a new action if the action is missing
+        self.removeActionFromTool('change_state')
+        alterChangeStateActionCondition(self.portal, [])
+        actions = [x for x in self.actions.listActions() if x.id == 'change_state']
+        self.assertEqual(len(actions),0)
+
+    def testAlterChangeStateActionConditionNoTool(self):
+        # The migration should work if the tool is missing
+        self.portal._delObject('portal_actions')
+        alterChangeStateActionCondition(self.portal, [])
 
 
 def test_suite():

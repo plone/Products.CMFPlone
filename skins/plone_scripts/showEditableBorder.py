@@ -52,6 +52,9 @@ for action in actions.get('object', []):
     if action.get('id', '')!='view':
         return 1
 
+for action in actions.get('batch', []):
+    return 1
+
 if template_id is None and hasattr(REQUEST['PUBLISHED'], 'getId'):
     template_id=REQUEST['PUBLISHED'].getId()
 
@@ -63,10 +66,13 @@ if idActions.has_key('edit') :
     if (idActions.has_key(template_id) or \
         template_id in ['synPropertiesForm', 'folder_contents', 'folder_listing']) :
         return 1
-        
+
 if mtool.checkPermission('Modify portal content', context):
     return 1
-        
+
+if mtool.checkPermission('Review portal content', context):
+    return 1
+
 if context.portal_workflow.getTransitionsFor(context, context):
     return 1
 

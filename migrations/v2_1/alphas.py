@@ -6,6 +6,7 @@ from Products.CMFCore import CMFCorePermissions
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import _createObjectByType
 from Products.CMFPlone.migrations.migration_util import installOrReinstallProduct
+from Products.CMFCore.Expression import Expression
 
 
 def two05_alpha1(portal):
@@ -156,6 +157,9 @@ def alpha1_alpha2(portal):
     addMemberdataLocation(portal, out)
     addMemberdataDescription(portal, out)
     addMemberdataLanguage(portal, out)
+
+    # Change the condition for the change_state action
+    alterChangeStateActionCondition(portal, out)
 
     return out
 
@@ -675,7 +679,7 @@ def addEditContentActions(portal, out):
         new_actions = actionsTool._cloneActions()
         for action in new_actions:
             if action.getId() == 'folderContents':
-                action.visible = 0
+                action.visible = False
         actionsTool._actions = new_actions
         # then we add new actions
         for newaction in ACTIONS:
@@ -892,6 +896,7 @@ def addSiteRootViewTemplates(portal, out):
                                   'lines')
         out.append("Added 'selectable_views' property to portal root")
 
+
 def addMemberdataHome_Page(portal, out):
     memberdata_tool = getToolByName(portal, 'portal_memberdata', None)
     if memberdata_tool is not None:
@@ -919,3 +924,28 @@ def addMemberdataLanguage(portal, out):
         if not memberdata_tool.hasProperty('language'):
             memberdata_tool.manage_addProperty('language', '', 'string')
             out.append("Added 'description' property to portal_memberdata.")
+
+
+def alterChangeStateActionCondition(portal, out):
+    """ Change the change_state action so that it checks either Modify portal
+        content or Review portal content.
+    """
+    newaction = {'id'        : 'change_state',
+                  'name'      : 'Change State',
+                  'action'    : 'string:${object_url}/object_cut',
+                  'condition' : 'python:portal.portal_membership.checkPermission("Modify portal content", object) or portal.portal_membership.checkPermission("Review portal content", object)',
+                  'permission': CMFCorePermissions.View,
+                  'category': 'folder_buttons',
+                }
+    exists = False
+    actionsTool = getToolByName(portal, 'portal_actions', None)
+    if actionsTool is not None:
+        new_actions = actionsTool._cloneActions()
+        for action in new_actions:
+            if action.getId() == 'change_state':
+                exists = True
+                if not action.condition:
+                    action.permissions = (newaction['permission'],)
+                    action.condition = Expression(text=newaction['condition']) or ''
+                    out.append('Modified existing change_state action')
+        actionsTool._actions = new_actions

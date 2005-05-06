@@ -298,8 +298,8 @@ def addNewActions(self, portal):
     at.addAction('change_state',
                  name='Change State',
                  action='string:content_status_history:method',
-                 condition='',
-                 permission=CMFCorePermissions.ModifyPortalContent,
+                 condition='python:portal.portal_membership.checkPermission("Modify portal content", object) or portal.portal_membership.checkPermission("Review portal content", object)',
+                 permission=CMFCorePermissions.View,
                  category='folder_buttons')
 
 def addSiteActions(self, portal):

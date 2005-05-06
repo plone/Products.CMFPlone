@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Fixed http://members.plone.org/collector/2836 - Review portal contents
+      or Modify portal contents is sufficient to show the change_state action.
+      [alecm]
+
     - Changed member_search_form.pt so that it submits last_login_time as
       a plain DateTime object rather than a catalog style query dictionary.
       [rafrombrc]
