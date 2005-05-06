@@ -135,9 +135,17 @@ if checkForCollision:
         except:
             return "'%s' is reserved." % id
 
-    # Finally, any acquirable object's id is off limits. This protects against
-    # the cases that slipped by Unauthorized above, as well as the case of
-    # presentation templates in portal_skins being overriden.
-    if id != 'index_html':
-        if hasattr(contained_by, id):
-            return "'%s' is reserved." % id
+
+    # Lastly, we want to disallow the id of any of the tools in the portal root,
+    # as well as any object that can be acquired via portal_skins. However, we
+    # do want to allow overriding of *content* in the object's parent path,
+    # including the portal root.
+
+    if id != 'index_html': # always allow index_html
+        portal = context.portal_url.getPortalObject()
+        if id not in portal.contentIds(): # can override root *content*
+            try:
+                if getattr(portal, id, None) is not None: # but not other things
+                    return "'%s' is reserved." % id
+            except Unauthorized:
+                pass # ignore if we don't have permission

@@ -90,6 +90,13 @@ class TestCheckId(PloneTestCase.PloneTestCase):
         r = self.folder.check_id('portal_skins')
         self.assertEqual(r, "'portal_skins' is reserved.")
 
+    def testCanOverrideParentNames(self):
+        self.folder.invokeFactory('Document', id='item1')
+        self.folder.invokeFactory('Folder', id='folder1')
+        self.folder.invokeFactory('Document', id='foo')
+        r = self.folder.folder1.foo.check_id('item1')
+        self.assertEqual(r, None)
+
     def testInvalidId(self):
         self.folder._setObject('foo', dummy.Item('foo'))
         r = self.folder.foo.check_id('_foo')
