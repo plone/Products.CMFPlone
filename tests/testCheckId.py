@@ -10,8 +10,6 @@ from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
 
-from Products.ATContentTypes.content.document import ATDocument
-
 from AccessControl import getSecurityManager
 from AccessControl import Unauthorized
 from ZODB.POSException import ConflictError
@@ -61,7 +59,7 @@ class TestCheckId(PloneTestCase.PloneTestCase):
         self.assertEqual(r, "'=' is not a legal name. The following characters are invalid: =")
 
     def testCatalogIndex(self):
-        # XXX: tripwire
+        # XXX: Tripwire
         have_permission = self.portal.portal_membership.checkPermission
         self.failUnless(have_permission('Search ZCatalog', self.portal.portal_catalog),
                         'Expected permission "Search ZCatalog"')
@@ -70,8 +68,8 @@ class TestCheckId(PloneTestCase.PloneTestCase):
         self.assertEqual(r, "'created' is reserved.")
 
     def testCollision(self):
-        self.folder._setObject('foo', ATDocument('foo'))
-        self.folder._setObject('bar', ATDocument('bar'))
+        self.folder.invokeFactory('Document', id='foo')
+        self.folder.invokeFactory('Document', id='bar')
         r = self.folder.foo.check_id('bar')
         self.assertEqual(r, "There is already an item named 'bar' in this folder.")
 
@@ -87,7 +85,7 @@ class TestCheckId(PloneTestCase.PloneTestCase):
         self.assertEqual(r, "'portal_catalog' is reserved.")
 
     def testHiddenObjectId(self):
-        # if a parallel object is not in content-space, should get 'reserved'
+        # If a parallel object is not in content-space, should get 'reserved'
         # instead of 'taken'
         r = self.folder.check_id('portal_skins')
         self.assertEqual(r, "'portal_skins' is reserved.")
