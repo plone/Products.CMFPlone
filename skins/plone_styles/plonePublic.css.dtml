@@ -386,11 +386,27 @@
     font-size: &dtml-fontSmallSize;;
     font-weight: normal;
     color: &dtml-discreetColor;;
-    margin: 0.5em 0 0 0;    
+    margin: 0;    
 }
 .documentByLine a {
     text-decoration: underline;
 }
+
+/* Useful deviations from regular style on elements */
+
+ul.nomarker,
+ul.nomarker {
+    line-height: 1.5em;
+    margin: 0.5em 0 0 0;
+    padding: 0;
+    list-style-image: none;
+    list-style-type: none;
+}
+
+textarea.proportional {
+    font: 100% <dtml-var fontFamily>;
+}
+
 
 .productCredits {
     text-align: right;

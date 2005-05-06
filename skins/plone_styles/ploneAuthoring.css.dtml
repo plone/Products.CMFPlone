@@ -181,13 +181,6 @@ input.searchButton {
     text-align: right ! important;
     padding: 0em 0em 1em 0em;
 }
-.listing .odd {
-    /*every second line should be shaded */
-    background-color: &dtml-oddRowBackgroundColor;;
-}
-.listing .even {
-    background-color: &dtml-evenRowBackgroundColor;;
-}
 .listing .listingCheckbox {
     text-align: center;
 }
