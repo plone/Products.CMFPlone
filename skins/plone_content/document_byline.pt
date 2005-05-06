@@ -40,13 +40,6 @@
     <br />
   </tal:contrib>
 
-  <tal:rights condition="here/Rights">
-    <span tal:replace="here/Rights">
-      Copyleft NiceCorp Inc.
-    </span>
-    <br />
-  </tal:rights>
-
   <span i18n:translate="box_last_modified">
     last modified
   </span>
@@ -59,6 +52,12 @@
         i18n:translate="time_expired">
     expired
   </span>
+
+  <tal:rights condition="here/Rights">
+    <div tal:replace="here/Rights">
+      Copyleft NiceCorp Inc.
+    </div>
+  </tal:rights>
 
   <br />
   <a href="" xtal:attributes="href ownership_form">Change ownership</a>

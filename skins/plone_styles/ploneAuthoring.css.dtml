@@ -479,26 +479,6 @@ ol.visualNoMarker {
 	margin: 1em;
 }
 
-/* workflow state colors */
-
-.state-private {
-    color: Red;
-}
-.state-visible {
-    color: #74AE0B;
-}
-.state-published {
-    color: &dtml-linkColor;;
-}
-.state-pending {
-    color: &dtml-notifyBorderColor;;
-}
-.state-expired {
-    color: Red;
-}
-.syndicated {
-    color: #008000;
-}
 
 /* Sitemap styling */
 

@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Added ploneGenerated.css for programmatically generated classes, and
+      ploneMember.css for logged in users (for state coloring etc).
+      Cleaned up the configuration a bit (added media declarations), updated
+      tests.
+      [limi]
+
     - Changed 'news' and 'Members' portal tabs migration so that it disables,
       rather than deletes the actions.  No need to be destructive.
       [alecm]

@@ -26,6 +26,8 @@ class TestCSSRegistry(PloneTestCase.PloneTestCase):
                     'ploneAuthoring.css', 
                     'plonePublic.css',
                     'ploneBase.css',
+                    'ploneGenerated.css',
+                    'ploneMember.css',
                     'plonePrint.css',
                     'plonePresentation.css',
                     'ploneRTL.css',
