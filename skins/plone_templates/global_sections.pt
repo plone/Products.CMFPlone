@@ -6,7 +6,7 @@
 <!-- THE SECTION TABS DEFINITION -->
 <div metal:define-macro="portal_tabs"
      tal:omit-tag=""
-     tal:define="selected_tabs python:here.selectedTabs(template_id, here);
+     tal:define="selected_tabs python:here.selectedTabs(template_id, here, portal_tabs);
                  selected_portal_tab selected_tabs/portal;"
      tal:condition="portal_tabs">
     <h5 class="hiddenStructure" i18n:translate="heading_sections">Sections</h5>
