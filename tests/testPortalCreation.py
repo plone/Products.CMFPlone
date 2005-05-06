@@ -339,13 +339,28 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         props = self.portal.portal_properties.site_properties
         self.failUnless(props.getProperty('disable_folder_sections', None) is not None)
         self.failIf(props.getProperty('disable_folder_sections'))
-        
+
     def testSelectableViewsPropertyAtPortalRoot(self):
         views = self.portal.getProperty('selectable_views', [])
         self.failUnless(len(views) == 2)
         self.failUnless('folder_listing' in views)
         self.failUnless('news_listing' in views)
-        
+
+    def testLocationMemberdataProperty(self):
+        # portal_memberdata should have a location property
+        self.failUnless(self.memberdata.hasProperty('location'))
+
+    def testLanguageMemberdataProperty(self):
+        # portal_memberdata should have a language property
+        self.failUnless(self.memberdata.hasProperty('language'))
+
+    def testDescriptionMemberdataProperty(self):
+        # portal_memberdata should have a description property
+        self.failUnless(self.memberdata.hasProperty('description'))
+
+    def testHome_PageMemberdataProperty(self):
+        # portal_memberdata should have a home_page property
+        self.failUnless(self.memberdata.hasProperty('home_page'))
 
 
 class TestPortalBugs(PloneTestCase.PloneTestCase):

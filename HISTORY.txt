@@ -4,6 +4,14 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Changed 'news' and 'Members' portal tabs migration so that it disables,
+      rather than deletes the actions.  No need to be destructive.
+      [alecm]
+
+    - Added new portal_memberdata properties 'home_page', 'language',
+      'location', 'description' (text) at limi's request.
+      [alecm]
+
     - Fixed http://members.plone.org/collector/3095 - You can now use actions
       to create tabs for folders not at the portal root and the tab
       highlighting will work correctly.  This is done by comparing the current

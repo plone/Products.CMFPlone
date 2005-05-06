@@ -43,6 +43,11 @@ from Products.CMFPlone.migrations.v2_1.alphas import addNewsTopic
 from Products.CMFPlone.migrations.v2_1.alphas import addEventsTopic
 from Products.CMFPlone.migrations.v2_1.alphas import addDisableFolderSectionsSiteProperty
 from Products.CMFPlone.migrations.v2_1.alphas import addSiteRootViewTemplates
+from Products.CMFPlone.migrations.v2_1.alphas import addMemberdataHome_Page
+from Products.CMFPlone.migrations.v2_1.alphas import addMemberdataLocation
+from Products.CMFPlone.migrations.v2_1.alphas import addMemberdataLanguage
+from Products.CMFPlone.migrations.v2_1.alphas import addMemberdataDescription
+
 
 import types
 
@@ -90,6 +95,12 @@ class MigrationTest(PloneTestCase.PloneTestCase):
         sheet = getattr(tool, 'navtree_properties')
         if sheet.hasProperty(property_id):
             sheet.manage_delProperties([property_id])
+
+    def removeMemberdataProperty(self, property_id):
+        # Removes a memberdata property from portal_memberdata
+        tool = getattr(self.portal, 'portal_memberdata')
+        if tool.hasProperty(property_id):
+            tool.manage_delProperties([property_id])
 
     def uninstallProduct(self, product_name):
         # Removes a product
@@ -145,6 +156,7 @@ class TestMigrations_v2_1(MigrationTest):
         self.catalog = self.portal.portal_catalog
         self.groups = self.portal.portal_groups
         self.factory = self.portal.portal_factory
+        self.portal_memberdata = self.portal.portal_memberdata
 
     def testAddFullScreenAction(self):
         # Should add the full_screen action
@@ -503,8 +515,9 @@ class TestMigrations_v2_1(MigrationTest):
         self.addActionToTool('Members', 'portal_tabs')
         self.addActionToTool('news', 'portal_tabs')
         removePortalTabsActions(self.portal, [])
-        self.failIf('Members' in [x.id for x in self.actions.listActions()])
-        self.failIf('news' in [x.id for x in self.actions.listActions()])
+        live_actions = self.actions.listActions()
+        self.failIf([x for x in live_actions if x.id == 'Members' and x.visible])
+        self.failIf([x for x in live_actions if x.id == 'news' and x.visible])
 
     def testRemovePortalTabsActionsNoActions(self):
         # Should not fail if the actions are already gone
@@ -521,8 +534,9 @@ class TestMigrations_v2_1(MigrationTest):
         # Should not fail if portal_actions is missing
         removePortalTabsActions(self.portal, [])
         removePortalTabsActions(self.portal, [])
-        self.failIf('Members' in [x.id for x in self.actions.listActions()])
-        self.failIf('news' in [x.id for x in self.actions.listActions()])
+        live_actions = self.actions.listActions()
+        self.failIf([x for x in live_actions if x.id == 'Members' and x.visible])
+        self.failIf([x for x in live_actions if x.id == 'Members' and x.visible])
 
     def testAddNewsFolder(self):
         #Should add the new news folder with appropriate default view settings
@@ -861,7 +875,86 @@ class TestMigrations_v2_1(MigrationTest):
         self.failUnless(len(views) == 2)
         self.failUnless('one' in views)
         self.failUnless('two' in views)
-        
+
+    def testAddMemberdataHome_Page(self):
+        # Should add the home_page property
+        self.removeMemberdataProperty('home_page')
+        self.failIf(self.portal_memberdata.hasProperty('home_page'))
+        addMemberdataHome_Page(self.portal, [])
+        self.failUnless(self.portal_memberdata.hasProperty('home_page'))
+
+    def testAddMemberdataHome_PageTwice(self):
+        # Should not fail if migrated again
+        self.removeMemberdataProperty('home_page')
+        self.failIf(self.portal_memberdata.hasProperty('home_page'))
+        addMemberdataHome_Page(self.portal, [])
+        addMemberdataHome_Page(self.portal, [])
+        self.failUnless(self.portal_memberdata.hasProperty('home_page'))
+
+    def testAddMemberdataHome_PageNoTool(self):
+        # Should not fail if portal_memberdata is missing
+        self.portal._delObject('portal_memberdata')
+        addMemberdataHome_Page(self.portal, [])
+
+    def testAddMemberdataLocation(self):
+        # Should add the location property
+        self.removeMemberdataProperty('location')
+        self.failIf(self.portal_memberdata.hasProperty('location'))
+        addMemberdataLocation(self.portal, [])
+        self.failUnless(self.portal_memberdata.hasProperty('location'))
+
+    def testAddMemberdataLocationTwice(self):
+        # Should not fail if migrated again
+        self.removeMemberdataProperty('location')
+        self.failIf(self.portal_memberdata.hasProperty('location'))
+        addMemberdataLocation(self.portal, [])
+        addMemberdataLocation(self.portal, [])
+        self.failUnless(self.portal_memberdata.hasProperty('location'))
+
+    def testAddMemberdataLocationNoTool(self):
+        # Should not fail if portal_memberdata is missing
+        self.portal._delObject('portal_memberdata')
+        addMemberdataLocation(self.portal, [])
+
+    def testAddMemberdataDescription(self):
+        # Should add the description property
+        self.removeMemberdataProperty('description')
+        self.failIf(self.portal_memberdata.hasProperty('description'))
+        addMemberdataDescription(self.portal, [])
+        self.failUnless(self.portal_memberdata.hasProperty('description'))
+
+    def testAddMemberdataDescriptionTwice(self):
+        # Should not fail if migrated again
+        self.removeMemberdataProperty('description')
+        self.failIf(self.portal_memberdata.hasProperty('description'))
+        addMemberdataDescription(self.portal, [])
+        addMemberdataDescription(self.portal, [])
+        self.failUnless(self.portal_memberdata.hasProperty('description'))
+
+    def testAddMemberdataDescriptionNoTool(self):
+        # Should not fail if portal_memberdata is missing
+        self.portal._delObject('portal_memberdata')
+        addMemberdataDescription(self.portal, [])
+
+    def testAddMemberdataLanguage(self):
+        # Should add the home_page property
+        self.removeMemberdataProperty('language')
+        self.failIf(self.portal_memberdata.hasProperty('language'))
+        addMemberdataLanguage(self.portal, [])
+        self.failUnless(self.portal_memberdata.hasProperty('language'))
+
+    def testAddMemberdataLanguageTwice(self):
+        # Should not fail if migrated again
+        self.removeMemberdataProperty('language')
+        self.failIf(self.portal_memberdata.hasProperty('language'))
+        addMemberdataLanguage(self.portal, [])
+        addMemberdataLanguage(self.portal, [])
+        self.failUnless(self.portal_memberdata.hasProperty('language'))
+
+    def testAddMemberdataLanguageNoTool(self):
+        # Should not fail if portal_memberdata is missing
+        self.portal._delObject('portal_memberdata')
+        addMemberdataLanguage(self.portal, [])
 
 
 def test_suite():

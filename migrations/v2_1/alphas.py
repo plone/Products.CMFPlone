@@ -151,6 +151,12 @@ def alpha1_alpha2(portal):
     # Make sure the Events folder is cataloged
     indexEventsFolder(portal, out)
 
+    # Add new memberdata properties
+    addMemberdataHome_Page(portal, out)
+    addMemberdataLocation(portal, out)
+    addMemberdataDescription(portal, out)
+    addMemberdataLanguage(portal, out)
+
     return out
 
 
@@ -552,15 +558,12 @@ def removePortalTabsActions(portal, out):
     """Remove portal_tabs actions"""
     actionsTool = getToolByName(portal, 'portal_actions', None)
     if actionsTool is not None:
-        i = 0
-        to_delete = []
-        for action in actionsTool.listActions():
-            if action.getId() in ['Members','news'] and action.getCategory() == 'portal_tabs':
-                to_delete.append(i)
-            i += 1
-        if to_delete:
-            actionsTool.deleteActions(to_delete)
-        out.append("Deleted old portal_tabs actions.")
+        new_actions = actionsTool._cloneActions()
+        for action in new_actions:
+            if action.getId() in ['Members','news']:
+                action.visible = 0
+        actionsTool._actions = new_actions
+        out.append("Disabled 'news' and 'Members' portal tabs actions.")
 
 
 def addNewsFolder(portal, out):
@@ -886,3 +889,31 @@ def addSiteRootViewTemplates(portal, out):
                                    'news_listing'],
                                   'lines')
         out.append("Added 'selectable_views' property to portal root")
+
+def addMemberdataHome_Page(portal, out):
+    memberdata_tool = getToolByName(portal, 'portal_memberdata', None)
+    if memberdata_tool is not None:
+        if not memberdata_tool.hasProperty('home_page'):
+            memberdata_tool.manage_addProperty('home_page', '', 'string')
+            out.append("Added 'home_page' property to portal_memberdata.")
+
+def addMemberdataLocation(portal, out):
+    memberdata_tool = getToolByName(portal, 'portal_memberdata', None)
+    if memberdata_tool is not None:
+        if not memberdata_tool.hasProperty('location'):
+            memberdata_tool.manage_addProperty('location', '', 'string')
+            out.append("Added 'location' property to portal_memberdata.")
+
+def addMemberdataDescription(portal, out):
+    memberdata_tool = getToolByName(portal, 'portal_memberdata', None)
+    if memberdata_tool is not None:
+        if not memberdata_tool.hasProperty('description'):
+            memberdata_tool.manage_addProperty('description', '', 'text')
+            out.append("Added 'description' property to portal_memberdata.")
+
+def addMemberdataLanguage(portal, out):
+    memberdata_tool = getToolByName(portal, 'portal_memberdata', None)
+    if memberdata_tool is not None:
+        if not memberdata_tool.hasProperty('language'):
+            memberdata_tool.manage_addProperty('language', '', 'string')
+            out.append("Added 'description' property to portal_memberdata.")
