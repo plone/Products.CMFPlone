@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Exposing 'language', 'home_page', 'location' and 'description' in
+      getMemberInfo() in the MembershipTool. These are used in author.pt.
+      [limi]
+
     - Added ploneGenerated.css for programmatically generated classes, and
       ploneMember.css for logged in users (for state coloring etc).
       Cleaned up the configuration a bit (added media declarations), updated

@@ -91,7 +91,12 @@ class MembershipTool(PloneBaseTool, BaseTool):
         if member is None:
             return None
 
-        memberinfo = { 'fullname' : member.getProperty('fullname') }
+        memberinfo = { 'fullname'    : member.getProperty('fullname'),
+                       'description' : member.getProperty('description'),
+                       'location' : member.getProperty('location'),
+                       'language' : member.getProperty('language'),
+                       'home_page' : member.getProperty('home_page'),
+                     }
 
         return memberinfo
 
