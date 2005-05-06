@@ -19,6 +19,10 @@
 /* <dtml-with base_properties> (do not remove this :) */
 /* <dtml-call "REQUEST.set('portal_url', portal_url())"> (not this either :) */
 
+/* generated icon classes for content types should be applied to wrapper spans
+   instead of on the link class itself because of bugs in Internet Explorer's
+   rendering engine. It will flicker on hover if not. */
+
 
 
 /* </dtml-with> */
