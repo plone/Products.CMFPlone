@@ -4,10 +4,13 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Added Description, Location, Language and Home Page to Author page.
+      [limi]
+
     - Fixed permissions and conditions on folder 'cut' and 'copy' actions
-      perviously they used 'View management screens' and 'Modify portal contents'.
-      Removed action creation from setup/ConfigurationMethods.py for these
-      and change_state.
+      perviously they used 'View management screens' and 'Modify portal 
+      contents'. Removed action creation from setup/ConfigurationMethods.py for
+      these and change_state.
       [alecm]
 
     - Fixed http://members.plone.org/collector/2836 - Review portal contents
