@@ -253,7 +253,7 @@ def addDocumentActions(portal):
     at.addAction('addtofavorites',
                  'Add to Favorites',
                  'string:${object_url}/addtoFavorites',
-                 'member',
+                 'python: member and portal.portal_membership.getHomeFolder()',
                  'View',
                  'document_actions')
 
