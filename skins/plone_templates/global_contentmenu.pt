@@ -90,7 +90,7 @@
 
             <a tal:condition="not: python: here.isPrincipiaFolderish and not isContextDefaultPage"
                class="contentActionMenuHeader"
-               title="Add new items to the folder that this item is contained in"
+               title="Add new items in the same folder as this item"
                onclick="return buttonClick(event, 'objectMenu');"
                onmouseover="buttonMouseover(event, 'objectMenu');"
                i18n:attributes="title"
