@@ -193,18 +193,18 @@ class TestCatalogIndexing(PloneTestCase.PloneTestCase):
         # Reindexing should update metadata
         self.catalog.indexObject(self.folder.doc)
         self.folder.doc.setTitle('Fred')
-        self.folder.doc.setDescription('Barney')
+        self.folder.doc.setDescription('BamBam')
         self.catalog.reindexObject(self.folder.doc)
         brain = self.catalog(id='doc')[0]
         self.assertEqual(brain.id, 'doc')
         self.assertEqual(brain.Title, 'Fred')
-        self.assertEqual(brain.Description, 'Barney')
+        self.assertEqual(brain.Description, 'BamBam')
 
     def testReindexObjectSkipsMetadata(self):
         # Reindexing should not update metadata when update_metadata=0
         self.catalog.indexObject(self.folder.doc)
         self.folder.doc.setTitle('Fred')
-        self.folder.doc.setDescription('Barney')
+        self.folder.doc.setDescription('BamBam')
         self.catalog.reindexObject(self.folder.doc, update_metadata=0)
         brain = self.catalog(id='doc')[0]
         # Metadata did not change
@@ -216,30 +216,30 @@ class TestCatalogIndexing(PloneTestCase.PloneTestCase):
         # Reindexing should only index the Title
         self.catalog.indexObject(self.folder.doc)
         self.folder.doc.setTitle('Fred')
-        self.folder.doc.setDescription('Barney')
+        self.folder.doc.setDescription('BamBam')
         self.catalog.reindexObject(self.folder.doc, idxs=['Title'])
         self.assertEqual(len(self.catalog(id='doc')), 1)
         self.assertEqual(len(self.catalog(Title='Fred')), 1)
         # Description index did not change
         self.assertEqual(len(self.catalog(Description='Bar')), 1)
-        self.assertEqual(len(self.catalog(Description='Barney')), 0)
+        self.assertEqual(len(self.catalog(Description='BamBam')), 0)
 
     def testReindexTitleOnlyUpdatesMetadata(self):
         # Reindexing Title should update metadata
         self.catalog.indexObject(self.folder.doc)
         self.folder.doc.setTitle('Fred')
-        self.folder.doc.setDescription('Barney')
+        self.folder.doc.setDescription('BamBam')
         self.catalog.reindexObject(self.folder.doc, idxs=['Title'])
         brain = self.catalog(id='doc')[0]
         self.assertEqual(brain.id, 'doc')
         self.assertEqual(brain.Title, 'Fred')
-        self.assertEqual(brain.Description, 'Barney')
+        self.assertEqual(brain.Description, 'BamBam')
 
     def testReindexTitleOnlySkipsMetadata(self):
         # Reindexing Title should not update metadata when update_metadata=0
         self.catalog.indexObject(self.folder.doc)
         self.folder.doc.setTitle('Fred')
-        self.folder.doc.setDescription('Barney')
+        self.folder.doc.setDescription('BamBam')
         self.catalog.reindexObject(self.folder.doc, idxs=['Title'], update_metadata=0)
         brain = self.catalog(id='doc')[0]
         # Metadata did not change

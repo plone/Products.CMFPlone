@@ -29,16 +29,17 @@ if file and hasattr(file, 'seek'):
 if not id:
     id = context.getId()
 
-if not file and file_data:
-    file=StringIO(file_data)
-
 new_context = context.portal_factory.doCreate(context, id)
 
-new_context.plone_utils.contentEdit( new_context
-                                   , id=id
-                                   , title=title
-                                   , description=description )
-new_context.edit( precondition=precondition, file=file )
+new_context.plone_utils.contentEdit(new_context,
+                                    id=id,
+                                    title=title,
+                                    description=description)
+
+if file or file_data or precondition:
+    if not file and file_data:
+        file = StringIO(file_data)
+    new_context.edit(precondition=precondition, file=file)
 
 from Products.CMFPlone import transaction_note
 transaction_note('Edited file %s at %s' % (new_context.title_or_id(), new_context.absolute_url()))

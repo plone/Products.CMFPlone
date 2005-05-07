@@ -130,9 +130,9 @@ class TestContentTypes(PloneTestCase.PloneTestCase):
         self.assertEqual(self.folder.folder.Title(), 'Foo')
         self.assertEqual(self.folder.folder.Description(), 'Bar')
         # Edit a second time
-        self.folder.folder.edit(title='Fred', description='Barney')
+        self.folder.folder.edit(title='Fred', description='BamBam')
         self.assertEqual(self.folder.folder.Title(), 'Fred')
-        self.assertEqual(self.folder.folder.Description(), 'Barney')
+        self.assertEqual(self.folder.folder.Description(), 'BamBam')
 
     def testLargePloneFolderEdit(self):
         LargePloneFolder.addLargePloneFolder(self.folder, id='lpf')
