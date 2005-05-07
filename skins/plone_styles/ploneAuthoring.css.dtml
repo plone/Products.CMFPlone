@@ -852,6 +852,7 @@ ol.visualNoMarker {
     background-repeat: no-repeat;
     background-position: center right;
     padding: 0 1em 0 0.5em !important;
+    cursor: pointer;
 }
 
 .contentActions .actionMenu {

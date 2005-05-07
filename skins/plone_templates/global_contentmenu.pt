@@ -80,18 +80,22 @@
     <tal:dropdown tal:condition="showMenu">
     <li>
         <div class="menuPosition">
-            <a href="#"
+            <a tal:condition="python: here.isPrincipiaFolderish and not isContextDefaultPage"
                class="contentActionMenuHeader"
-               title="Add new items to this folder"
+               title="Add new items inside this item"
                onclick="return buttonClick(event, 'objectMenu');"
                onmouseover="buttonMouseover(event, 'objectMenu');"
-               i18n:attributes="title">
-               <span tal:condition="python: here.isPrincipiaFolderish and not isContextDefaultPage"
-                        i18n:translate="label_add_new_item">Add item</span>
-               <span tal:condition="not: python: here.isPrincipiaFolderish and not isContextDefaultPage"
-                        i18n:translate="label_add_new_item_in_folder">Add to above folder</span>
-            </a>
-    
+               i18n:attributes="title"
+               i18n:translate="label_add_new_item">Add item</a>
+
+            <a tal:condition="not: python: here.isPrincipiaFolderish and not isContextDefaultPage"
+               class="contentActionMenuHeader"
+               title="Add new items to the folder that this item is contained in"
+               onclick="return buttonClick(event, 'objectMenu');"
+               onmouseover="buttonMouseover(event, 'objectMenu');"
+               i18n:attributes="title"
+               i18n:translate="label_add_new_item_in_folder">Add to folder</a>
+
             <ul class="actionMenu" id="objectMenu"
                 onmouseover="menuMouseover(event)">
                 <tal:types repeat="ctype menuTypes"> 
