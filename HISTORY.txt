@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Added support for searching for members who have NOT logged in
+      since the specified last_login_time.
+      [rafrombrc]
+
     - Added Description, Location, Language and Home Page to Author page.
       [limi]
 

@@ -1,3 +1,4 @@
+from DateTime import DateTime
 from Products.CMFCore.CMFCorePermissions import SetOwnPassword
 from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault.MembershipTool import MembershipTool as BaseTool
@@ -358,6 +359,7 @@ class MembershipTool(PloneBaseTool, BaseTool):
         email = dict.get('email', None)
         roles = dict.get('roles', None)
         last_login_time = dict.get('last_login_time', None)
+        before_specified_time = dict.get('before_specified_time', None)
         groupname = dict.get('groupname', '').strip()
         is_manager = self.checkPermission('Manage portal', self)
 
@@ -456,7 +458,15 @@ class MembershipTool(PloneBaseTool, BaseTool):
                 if not found:
                     continue
             if last_login_time:
-                if member.last_login_time < last_login_time:
+                if type(member.last_login_time) == type(''):
+                    # value is a string when mem hasn't yet logged in
+                    mem_last_login_time = DateTime(member.last_login_time)
+                else:
+                    mem_last_login_time = member.last_login_time
+                if before_specified_time:
+                    if mem_last_login_time >= last_login_time:
+                        continue
+                elif mem_last_login_time < last_login_time:
                     continue
             res.append(member)
         return res
