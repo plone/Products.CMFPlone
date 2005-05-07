@@ -161,6 +161,8 @@ def alpha1_alpha2(portal):
     # Change the condition for the change_state action
     alterChangeStateActionCondition(portal, out)
 
+    # Fix the conditions and permissions on the folder_buttons actions
+    fixFolderButtonsActions(portal, out)
     return out
 
 
@@ -942,10 +944,67 @@ def alterChangeStateActionCondition(portal, out):
     if actionsTool is not None:
         new_actions = actionsTool._cloneActions()
         for action in new_actions:
-            if action.getId() == 'change_state':
+            if action.getId() == 'change_state' and action.category == newaction['category']:
                 exists = True
                 if not action.condition:
                     action.permissions = (newaction['permission'],)
                     action.condition = Expression(text=newaction['condition']) or ''
                     out.append('Modified existing change_state action')
-        actionsTool._actions = new_actions
+        if exists:
+            actionsTool._actions = new_actions
+        else:
+            actionsTool.addAction(newaction['id'],
+                    name=newaction['name'],
+                    action=newaction['action'],
+                    condition=newaction['condition'],
+                    permission=newaction['permission'],
+                    category=newaction['category'],
+                    visible=1)
+            out.append("Added missing change_state action")
+
+
+def fixFolderButtonsActions(portal, out):
+    """ Change the copy and cut actions so that they check either more
+        appropriate permissions.
+    """
+    CATEGORY = 'folder_buttons'
+    ACTIONS = (
+        {'id'        : 'copy',
+         'name'      : 'Copy',
+         'action'    : 'string:folder_copy:method',
+         'condition' : '',
+         'permission': CMFCorePermissions.Permissions.copy_or_move,
+         'category' : 'folder_buttons',
+        },
+        {'id'        : 'cut',
+         'name'      : 'Cut',
+         'action'    : 'string:folder_cut:method',
+         'condition': 'python:portal.portal_membership.checkPermission("Delete objects", object)',
+         'permission': CMFCorePermissions.Permissions.copy_or_move,
+         'category' : 'folder_buttons',
+        },
+    )
+    actionsTool = getToolByName(portal, 'portal_actions', None)
+    if actionsTool is not None:
+        for newaction in ACTIONS:
+            current_actions = actionsTool._cloneActions()
+            exists = False
+            for action in current_actions:
+                if action.getId() == newaction['id'] and action.category == newaction['category']:
+                    exists = True
+                    if action.permissions != (
+                            CMFCorePermissions.Permissions.copy_or_move,):
+                        action.permissions = (newaction['permission'],)
+                        action.condition = Expression(text=newaction['condition']) or ''
+                        out.append('Modified existing %s action'%newaction['id'])
+            if exists:
+                actionsTool._actions = current_actions
+            else:
+                actionsTool.addAction(newaction['id'],
+                    name=newaction['name'],
+                    action=newaction['action'],
+                    condition=newaction['condition'],
+                    permission=newaction['permission'],
+                    category=newaction['category'],
+                    visible=1)
+                out.append("Added missing %s action"%newaction['id'])

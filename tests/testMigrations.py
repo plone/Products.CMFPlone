@@ -48,6 +48,7 @@ from Products.CMFPlone.migrations.v2_1.alphas import addMemberdataLocation
 from Products.CMFPlone.migrations.v2_1.alphas import addMemberdataLanguage
 from Products.CMFPlone.migrations.v2_1.alphas import addMemberdataDescription
 from Products.CMFPlone.migrations.v2_1.alphas import alterChangeStateActionCondition
+from Products.CMFPlone.migrations.v2_1.alphas import fixFolderButtonsActions
 
 import types
 
@@ -967,14 +968,15 @@ class TestMigrations_v2_1(MigrationTest):
         self.actions._actions = new_actions
 
         actions = [x for x in self.actions.listActions() if x.id == 'change_state']
-        self.failIf(actions[0].condition)
+        self.assertEqual(actions[0].condition, '')
         self.assertEqual(actions[0].permissions, ('Modify portal contents',))
         # Modify
         alterChangeStateActionCondition(self.portal, [])
         actions = [x for x in self.actions.listActions() if x.id == 'change_state']
         self.assertEqual(len(actions),1)
         action = actions[0]
-        self.failUnless(action.condition)
+        action_text = getattr(action.condition, 'text','')
+        self.failUnless(action_text!='')
         self.assertEqual(action.permissions, ('View',))
 
     def testAlterChangeStateActionConditionTwice(self):
@@ -984,17 +986,96 @@ class TestMigrations_v2_1(MigrationTest):
         actions = [x for x in self.actions.listActions() if x.id == 'change_state']
         self.assertEqual(len(actions),1)
         action = actions[0]
-        self.failUnless(action.condition)
+        action_text = getattr(action.condition, 'text','')
+        self.failUnless(action_text!='')
         self.assertEqual(action.permissions, ('View',))
 
     def testAlterChangeStateActionConditionNoAction(self):
-        # The migration should not add a new action if the action is missing
+        # The migration should add a new action if the action is missing
         self.removeActionFromTool('change_state')
         alterChangeStateActionCondition(self.portal, [])
         actions = [x for x in self.actions.listActions() if x.id == 'change_state']
-        self.assertEqual(len(actions),0)
+        self.assertEqual(len(actions),1)
+        action = actions[0]
+        action_text = getattr(action.condition, 'text','')
+        self.failUnless(action_text!='')
+        self.assertEqual(action.permissions, ('View',))
 
     def testAlterChangeStateActionConditionNoTool(self):
+        # The migration should work if the tool is missing
+        self.portal._delObject('portal_actions')
+        alterChangeStateActionCondition(self.portal, [])
+
+    def testFixFolderButtonsActions(self):
+        # The condition for the change_state action should not be blank
+        # and the permission should be set to View
+        current_actions = self.actions._cloneActions()
+        for action in current_actions:
+            if action.getId() in ['copy', 'cut'] and action.category == 'folder_buttons':
+                action.condition = ''
+                action.permissions = ('View management screens',)
+        self.actions._actions = current_actions
+
+        actions = [x for x in self.actions.listActions() if
+                    x.id in ['copy', 'cut'] and x.category == 'folder_buttons']
+        self.assertEqual(len(actions),2)
+        self.assertEqual(actions[0].condition, '')
+        self.assertEqual(actions[1].condition, '')
+        self.assertEqual(actions[0].permissions, ('View management screens',))
+        self.assertEqual(actions[1].permissions, ('View management screens',))
+        # Modify
+        fixFolderButtonsActions(self.portal, [])
+        actions = [x for x in self.actions.listActions() if
+                    x.id in ['copy', 'cut'] and x.category == 'folder_buttons']
+        self.assertEqual(len(actions),2)
+        for action in actions:
+            if action.getId() == 'cut':
+                self.failUnless(action.condition.text!='')
+            else:
+                action_text = getattr(action.condition, 'text','')
+                self.assertEqual(action_text, '', 'Bad condition was: %s'%action_text)
+            self.assertEqual(action.permissions, ('Copy or Move',))
+
+    def testFixFolderButtonsActionsTwice(self):
+        fixFolderButtonsActions(self.portal, [])
+        fixFolderButtonsActions(self.portal, [])
+        actions = [x for x in self.actions.listActions() if
+                    x.id in ['copy', 'cut'] and x.category == 'folder_buttons']
+        self.assertEqual(len(actions),2)
+        for action in actions:
+            if action.getId() == 'cut':
+                action_text = getattr(action.condition, 'text','')
+                self.failUnless(action_text!='')
+            else:
+                action_text = getattr(action.condition, 'text','')
+                self.assertEqual(action_text, '', 'Bad condition was: %s'%action_text)
+            self.assertEqual(action.permissions, ('Copy or Move',))
+
+    def testFixFolderButtonsActionsNoCutAction(self):
+        # The migration should add new actions if the actions are missing
+        self.removeActionFromTool('cut')
+        fixFolderButtonsActions(self.portal, [])
+        actions = [x for x in self.actions.listActions() if
+                    x.id == 'cut' and x.category == 'folder_buttons']
+        self.assertEqual(len(actions),1)
+        for action in actions:
+            action_text = getattr(action.condition, 'text','')
+            self.failUnless(action_text!='')
+            self.assertEqual(action.permissions, ('Copy or Move',))
+
+    def testFixFolderButtonsActionsNoCopyAction(self):
+        # The migration should add new actions if the actions are missing
+        self.removeActionFromTool('copy')
+        fixFolderButtonsActions(self.portal, [])
+        actions = [x for x in self.actions.listActions() if
+                    x.id == 'copy' and x.category == 'folder_buttons']
+        self.assertEqual(len(actions),1)
+        for action in actions:
+            action_text = getattr(action.condition, 'text','')
+            self.assertEqual(action_text, '', 'Bad condition was: %s'%action_text)
+            self.assertEqual(action.permissions, ('Copy or Move',))
+
+    def testFixFolderButtonsActionsNoTool(self):
         # The migration should work if the tool is missing
         self.portal._delObject('portal_actions')
         alterChangeStateActionCondition(self.portal, [])
