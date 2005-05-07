@@ -69,7 +69,8 @@
 #portal-siteactions {
     background-color: transparent;
     white-space: nowrap;
-    list-style: none;
+    list-style-image: none;
+    list-style-type: none;
     margin: 1px 0 0 0;
     height: auto;
     line-height: normal;
@@ -114,8 +115,101 @@
     white-space: nowrap;
     z-index: 2;
 }
+
+/* LiveSearch styles */
+.LSRes {
+    font-family:  <dtml-var fontFamily>;
+    visibility: visible;
+    color: &dtml-globalFontColor;;
+    background-color: &dtml-backgroundColor;;
+    vertical-align: middle;
+    display:block;
+    list-style-image: none;
+    list-style-type: none;
+    text-align: left;
+    min-width: 16.5em;
+    text-transform: none;
+    margin-left: 0;
+    line-height: 1.1em;
+  }
+
+#LSHighlight {
+    background-color: &dtml-globalBackgroundColor;;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    color: &dtml-globalFontColor;;
+}
+
+
+.LSRow {
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-backgroundColor;;
+    white-space: normal;
+    padding:0; 
+    margin: 0;
+    list-style-image: none;
+    list-style-type: none;
+}
+
+.LSRow a {
+    text-decoration: none;
+    font-weight:bold;
+    white-space:nowrap
+}
+
+.LSDescr {
+    color: &dtml-discreetColor;;
+    text-transform: &dtml-textTransform;;
+    padding-left:2.1em;
+    margin-top:-0.1em;
+}
+
+.LSResult {
+    position:relative;
+    display: block;
+    text-align:right;
+    padding-top: 5px;
+    margin: 0;
+    left: 3px;
+    z-index: 3;
+}
+
+.LSShadow {
+    position:relative;
+    text-align:right;
+}
+.livesearchContainer {
+    background-color: &dtml-backgroundColor;;
+    margin-top: 0;
+    padding: 0.5em !important;
+    position: absolute;
+    right:0px;
+    /* Currently exposes a rendering bug in Mozilla */
+    top: -17px;
+    white-space: normal;
+    font-family:  <dtml-var fontFamily>;
+    visibility: visible;
+    text-align:left;
+    color: &dtml-globalFontColor;;
+    background-color: &dtml-backgroundColor;;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    width:300px;
+    text-transform: none;
+}
+
+.LSBox {
+    clear: left;
+    float: left;
+    text-align: right;
+    padding-right: 1px;
+    display:block;
+}
+
+#LSNothingFound {
+    text-align: center;
+    padding: 2px;
+}
+
+/* The global section tabs. */
 #portal-globalnav {
-    /* Navigational Plone Tabs(tm). The power of CSS runs strong in these :) */
     background-color: transparent;
     padding: 0em 0em 0em 2em;
     white-space: nowrap;
@@ -440,7 +534,8 @@ textarea.proportional {
 #portal-colophon ul,
 #portal-colophon ul li,
 #portal-colophon ul li a {
-    list-style: none;
+    list-style-image: none;
+    list-style-type: none;
     display: inline;
     text-decoration: none;
     color: &dtml-fontColor;;
