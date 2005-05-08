@@ -17,7 +17,7 @@ Plone 2.1 - Plaid - (unreleased)
       [limi]
 
     - Fixed permissions and conditions on folder 'cut' and 'copy' actions
-      perviously they used 'View management screens' and 'Modify portal 
+      previously they used 'View management screens' and 'Modify portal
       contents'. Removed action creation from setup/ConfigurationMethods.py for
       these and change_state.
       [alecm]

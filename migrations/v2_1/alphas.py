@@ -158,11 +158,11 @@ def alpha1_alpha2(portal):
     addMemberdataDescription(portal, out)
     addMemberdataLanguage(portal, out)
 
-    # Change the condition for the change_state action
-    alterChangeStateActionCondition(portal, out)
-
     # Fix the conditions and permissions on the folder_buttons actions
     fixFolderButtonsActions(portal, out)
+
+    # Change the condition for the change_state action
+    alterChangeStateActionCondition(portal, out)
     return out
 
 
@@ -934,7 +934,7 @@ def alterChangeStateActionCondition(portal, out):
     """
     newaction = {'id'        : 'change_state',
                   'name'      : 'Change State',
-                  'action'    : 'string:${object_url}/object_cut',
+                  'action'    : 'string:content_status_history:method',
                   'condition' : 'python:portal.portal_membership.checkPermission("Modify portal content", object) or portal.portal_membership.checkPermission("Review portal content", object)',
                   'permission': CMFCorePermissions.View,
                   'category': 'folder_buttons',
