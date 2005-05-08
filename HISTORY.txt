@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Added rel="nofollow" attribute to calendar links. Should ultimately
+      be restricted by a year range, but this is a quick workaround.
+      Closes http://plone.org/development/teams/ui/tasks/89
+      [limi]
+
     - Added support for searching for members who have NOT logged in
       since the specified last_login_time.
       [rafrombrc]
