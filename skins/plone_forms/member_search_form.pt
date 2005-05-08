@@ -64,20 +64,32 @@
                 </div>
     
                 <tal:datetime define="today python:DateTime().earliestTime()">
-                    <select name="last_login_time.query:record:date"
+                    <select name="last_login_time:date"
                             tabindex=""
                             tal:attributes="tabindex tabindex/next;"
                             tal:define="yesterday python:(today-1).Date();
                                         lastweek python:(today-7).Date();
                                         lastmonth python:(today-31).Date();
-                                        ever string:1970/02/01 00:00:00 GMT;">
+                                        ever string:2000/02/01 00:00:00 GMT;">
                         <option value="#" tal:attributes="value yesterday" i18n:translate="time_yesterday"> Yesterday </option>
                         <option value="#" tal:attributes="value lastweek" i18n:translate="time_last_week"> Last week </option>
                         <option value="#" tal:attributes="value lastmonth" i18n:translate="time_last_month"> Last month </option>
                         <option value="#" tal:attributes="value ever" selected="selected" i18n:translate="time_ever"> Ever </option>
                     </select>
                 </tal:datetime>
-                <input type="hidden" name="last_login_time.range:record" value="min" />
+            </div>
+
+            <div class="field">
+              <input type="checkbox" class="noborder"
+                     name="before_specified_time" id="cb_before_specified_time"
+                     tabindex=""
+                     tal:attributes="tabindex tabindex/next;" />
+
+              <label i18n:translate="label_before_specified_time">Not logged in since specified time</label>
+
+              <div class="formHelp" i18n:translate="help_search_before_specified_time">
+                Return members who have NOT logged in since the time specified above.
+              </div>
             </div>
     
             <tal:condition condition="python:checkPermission('View Groups', portal)">

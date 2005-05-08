@@ -26,6 +26,8 @@ class TestCSSRegistry(PloneTestCase.PloneTestCase):
                     'ploneAuthoring.css', 
                     'plonePublic.css',
                     'ploneBase.css',
+                    'ploneGenerated.css',
+                    'ploneMember.css',
                     'plonePrint.css',
                     'plonePresentation.css',
                     'ploneRTL.css',
@@ -66,7 +68,8 @@ class TestJSRegistry(PloneTestCase.PloneTestCase):
              'cookie_functions.js',
              'nodeutilities.js',
              'plone_javascript_variables.js',
-             'register_function.js']
+             'register_function.js', 
+             'formUnload.js']
         for e in expected:
             self.failUnless(e in installedScriptIds, e)
 

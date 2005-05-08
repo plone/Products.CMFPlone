@@ -216,24 +216,28 @@ class TestEditShortName(PloneTestCase.PloneTestCase):
         self.folder.invokeFactory('Image', id='image', file=dummy.Image())
 
     def testFileEditNone(self):
+        self.assertEqual(str(self.folder.file), dummy.TEXT)
         self.folder.file.file_edit(file=None, title='Foo')
         self.assertEqual(self.folder.file.Title(), 'Foo')
         # Data is not changed
         self.assertEqual(str(self.folder.file), dummy.TEXT)
 
     def testImageEditNone(self):
+        self.assertEqual(str(self.folder.image.data), dummy.GIF)
         self.folder.image.image_edit(file=None, title='Foo')
         self.assertEqual(self.folder.image.Title(), 'Foo')
         # Data is not changed
         self.assertEqual(str(self.folder.image.data), dummy.GIF)
 
     def testFileEditEmptyString(self):
+        self.assertEqual(str(self.folder.file), dummy.TEXT)
         self.folder.file.file_edit(file='', title='Foo')
         self.assertEqual(self.folder.file.Title(), 'Foo')
         # Data is not changed
         self.assertEqual(str(self.folder.file), dummy.TEXT)
 
     def testImageEditEmptyString(self):
+        self.assertEqual(str(self.folder.image.data), dummy.GIF)
         self.folder.image.image_edit(file='', title='Foo')
         self.assertEqual(self.folder.image.Title(), 'Foo')
         # Data is not changed
@@ -277,24 +281,32 @@ class TestEditFileKeepsMimeType(PloneTestCase.PloneTestCase):
         self.assertEqual(self.folder.image.content_type, 'image/gif')
 
     def testFileEditKeepsMimeType(self):
+        self.assertEqual(self.folder.file.Format(), 'application/pdf')
+        self.assertEqual(self.folder.file.getFile().content_type, 'application/pdf')
         self.folder.file.file_edit(title='Foo')
         self.assertEqual(self.folder.file.Title(), 'Foo')
         self.assertEqual(self.folder.file.Format(), 'application/pdf')
         self.assertEqual(self.folder.file.getFile().content_type, 'application/pdf')
 
     def testImageEditKeepsMimeType(self):
+        self.assertEqual(self.folder.image.Format(), 'image/gif')
+        self.assertEqual(self.folder.image.content_type, 'image/gif')
         self.folder.image.image_edit(title='Foo')
         self.assertEqual(self.folder.image.Title(), 'Foo')
         self.assertEqual(self.folder.image.Format(), 'image/gif')
         self.assertEqual(self.folder.image.content_type, 'image/gif')
 
     def testFileRenameKeepsMimeType(self):
+        self.assertEqual(self.folder.file.Format(), 'application/pdf')
+        self.assertEqual(self.folder.file.getFile().content_type, 'application/pdf')
         get_transaction().commit(1) # make rename work
         self.folder.file.file_edit(id='foo')
         self.assertEqual(self.folder.foo.Format(), 'application/pdf')
         self.assertEqual(self.folder.foo.getFile().content_type, 'application/pdf')
 
     def testImageRenameKeepsMimeType(self):
+        self.assertEqual(self.folder.image.Format(), 'image/gif')
+        self.assertEqual(self.folder.image.content_type, 'image/gif')
         get_transaction().commit(1) # make rename work
         self.folder.image.image_edit(id='foo')
         self.assertEqual(self.folder.foo.Format(), 'image/gif')

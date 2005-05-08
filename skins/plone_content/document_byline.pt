@@ -6,16 +6,18 @@
                  creator_home python:mtool.getHomeUrl(creator);">
 
   <img src="" alt=""
+       title="This document is locked."
        tal:define="locked portal_object/lock_icon.gif;
                    lockable python:hasattr(here, 'wl_isLocked');"
        tal:condition="python:lockable and here.wl_isLocked()"
        tal:replace="structure python:locked.tag(title='Locked')"
+       i18n:attributes="title"
        />
 
   <tal:name tal:condition="creator"
         tal:define="author python:mtool.getMemberInfo(creator)"
         i18n:translate="label_by_author">
-    By
+    by
       <a href="#"
          tal:attributes="href string:${portal_url}/author/${creator}"
          tal:content="author/fullname | here/Creator"
@@ -23,9 +25,10 @@
          i18n:name="author">
         Bob Dobalina
       </a>
+      
+      &mdash;
+      
   </tal:name>
-
-  <br />
 
   <tal:contrib condition="here/Contributors">
     <span i18n:translate="label_contributors">
@@ -37,15 +40,8 @@
     <br />
   </tal:contrib>
 
-  <tal:rights condition="here/Rights">
-    <span tal:replace="here/Rights">
-      Copyleft NiceCorp Inc.
-    </span>
-    <br />
-  </tal:rights>
-
   <span i18n:translate="box_last_modified">
-    Last modified
+    last modified
   </span>
   <span tal:replace="python:here.toLocalizedTime(here.ModificationDate(),long_format=1)">
     August 16, 2001 at 23:35:59
@@ -57,6 +53,17 @@
     expired
   </span>
 
-  <span metal:use-macro="here/review_history/macros/review_history"/>
+  <tal:rights condition="here/Rights">
+    <div tal:replace="here/Rights">
+      Copyleft NiceCorp Inc.
+    </div>
+  </tal:rights>
 
+  <br />
+  <a href=""
+     tal:condition="isEditable" 
+     tal:attributes="href string:${here/absolute_url}/ownership_form">Change ownership</a>
+
+  <span metal:use-macro="here/review_history/macros/review_history" />
+    
 </div>

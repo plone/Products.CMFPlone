@@ -181,13 +181,6 @@ input.searchButton {
     text-align: right ! important;
     padding: 0em 0em 1em 0em;
 }
-.listing .odd {
-    /*every second line should be shaded */
-    background-color: &dtml-oddRowBackgroundColor;;
-}
-.listing .even {
-    background-color: &dtml-evenRowBackgroundColor;;
-}
 .listing .listingCheckbox {
     text-align: center;
 }
@@ -486,26 +479,6 @@ ol.visualNoMarker {
 	margin: 1em;
 }
 
-/* workflow state colors */
-
-.state-private {
-    color: Red;
-}
-.state-visible {
-    color: #74AE0B;
-}
-.state-published {
-    color: &dtml-linkColor;;
-}
-.state-pending {
-    color: &dtml-notifyBorderColor;;
-}
-.state-expired {
-    color: Red;
-}
-.syndicated {
-    color: #008000;
-}
 
 /* Sitemap styling */
 
@@ -879,6 +852,7 @@ ol.visualNoMarker {
     background-repeat: no-repeat;
     background-position: center right;
     padding: 0 1em 0 0.5em !important;
+    cursor: pointer;
 }
 
 .contentActions .actionMenu {

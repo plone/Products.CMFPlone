@@ -82,8 +82,8 @@
   Do not use non-ASCII characters in <code>Id</code>, <code>Title</code> or 
   <code>Description</code> when adding a Plone
   site. You can change it afterwards from Plone itself,
-  but during the initial creation of a site, please don't use any foreign 
-  characters.
+  but during the initial creation of a site, please don't use any special 
+  characters outside the A-Z and numbers range.
   </p>
 
   </body>

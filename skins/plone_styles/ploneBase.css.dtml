@@ -192,10 +192,6 @@ textarea {
     width: 100%;
 }
 
-textarea.proportional {
-    font: 100% <dtml-var fontFamily>;
-}
-
 input {
     font-family: <dtml-var fontFamily>;
     visibility: visible;

@@ -64,7 +64,7 @@ def _normalizeChar(c=''):
     if ord(c) < 256:
         return mapping.get(ord(c), c)
     else:
-        return "%x" % ord(c)
+        return mapping.get(ord(c), '%x' % ord(c))
 
 # dublic core accessor name -> metadata name
 METADATA_DCNAME = {

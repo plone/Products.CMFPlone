@@ -4,6 +4,94 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Changed the global_defines attribute 'isFolder' to 'isFolderish' - it
+      was only used in one location in the Collective projects I checked, and
+      one location in Plone itself - and didn't really test the right thing.
+      It was also expensive. If you have a third-party product that was using
+      'isFolder' for anything, you should update your code.
+      Removed redundant check in content_status_history as a result.
+      [limi]
+      
+    - Updated 'ownership_form' to not display the subobjects checkbox if the
+      item is not folderish.
+      [limi]
+
+    - Added rel="nofollow" attribute to calendar links. Should ultimately
+      be restricted by a year range, but this is a quick workaround.
+      Closes http://plone.org/development/teams/ui/tasks/89
+      [limi]
+
+    - Added support for searching for members who have NOT logged in
+      since the specified last_login_time.
+      [rafrombrc]
+
+    - Added Description, Location, Language and Home Page to Author page.
+      [limi]
+
+    - Fixed permissions and conditions on folder 'cut' and 'copy' actions
+      previously they used 'View management screens' and 'Modify portal
+      contents'. Removed action creation from setup/ConfigurationMethods.py for
+      these and change_state.
+      [alecm]
+
+    - Fixed http://members.plone.org/collector/2836 - Review portal contents
+      or Modify portal contents is sufficient to show the change_state action.
+      [alecm]
+
+    - Changed member_search_form.pt so that it submits last_login_time as
+      a plain DateTime object rather than a catalog style query dictionary.
+      [rafrombrc]
+
+    - Exposing 'language', 'home_page', 'location' and 'description' in
+      getMemberInfo() in the MembershipTool. These are used in author.pt.
+      [limi]
+
+    - Added ploneGenerated.css for programmatically generated classes, and
+      ploneMember.css for logged in users (for state coloring etc).
+      Cleaned up the configuration a bit (added media declarations), updated
+      tests.
+      [limi]
+
+    - Changed 'news' and 'Members' portal tabs migration so that it disables,
+      rather than deletes the actions.  No need to be destructive.
+      [alecm]
+
+    - Added new portal_memberdata properties 'home_page', 'language',
+      'location', 'description' (text) at limi's request.
+      [alecm]
+
+    - Fixed http://members.plone.org/collector/3095 - You can now use actions
+      to create tabs for folders not at the portal root and the tab
+      highlighting will work correctly.  This is done by comparing the current
+      object path to the actions url (i.e. the id of the action no longer has
+      to be related to the resulting url).
+      [alecm]
+
+    - Fixed http://members.plone.org/collector/3681 - No longer allow to add
+      content with ids of skin scripts.
+      [whit537]
+
+    - Fixed http://members.plone.org/collector/3999 - check_id now gives better
+      error messages.
+      [whit537]
+
+    - Fixed http://members.plone.org/collector/1987 - 'batch' mode now enabled
+      whenever the List folder contents property is available and one or more
+      of the modification permissions is available (Delete, Copy, Add, Modify).
+      These checks apply to the current object if it is folderish and not set
+      as the Default Page for its parent; otherwise, the checks are made on
+      the parent.
+      [alecm]
+
+    - Fixed http://members.plone.org/collector/2912 - "Format" renamed to
+      "MIME type" in metadata form to avoid confusion with the text format
+      selector.
+      [limi]
+
+    - Fixed http://members.plone.org/collector/3938 - duplicate class 
+      definitions for .even and .odd.
+      [limi]
+
     - Manually merged Duncan's plip24-form-unload-branch.
       Plone will now present a warning message if the user tries to navigate
       away from a page with a changed form. 

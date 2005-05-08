@@ -1,3 +1,2 @@
 [default]
-title = Plone RTL CSS
-cache = HTTPCache
+title = Plone Right-to-Left CSS (for Arabic and Hebrew)

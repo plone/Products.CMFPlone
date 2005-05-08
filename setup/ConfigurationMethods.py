@@ -271,18 +271,6 @@ def addNewActions(self, portal):
                  condition='',
                  permission=CMFCorePermissions.AddPortalContent,
                  category='folder_buttons')
-    at.addAction('cut',
-                 name='Cut',
-                 action='string:folder_cut:method',
-                 condition='python:portal.portal_membership.checkPermission("Delete objects", object)',
-                 permission=CMFCorePermissions.ModifyPortalContent,
-                 category='folder_buttons')
-    at.addAction('copy',
-                 name='Copy',
-                 action='string:folder_copy:method',
-                 condition='python:portal.portal_membership.checkPermission("%s", object)' % Permissions.copy_or_move,
-                 permission=Permissions.view_management_screens,
-                 category='folder_buttons')
     at.addAction('paste',
                  name='Paste',
                  action='string:folder_paste:method',
@@ -294,12 +282,6 @@ def addNewActions(self, portal):
                  action='string:folder_delete:method',
                  condition='',
                  permission=Permissions.delete_objects,
-                 category='folder_buttons')
-    at.addAction('change_state',
-                 name='Change State',
-                 action='string:content_status_history:method',
-                 condition='',
-                 permission=CMFCorePermissions.ModifyPortalContent,
                  category='folder_buttons')
 
 def addSiteActions(self, portal):

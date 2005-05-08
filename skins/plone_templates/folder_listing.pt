@@ -7,13 +7,13 @@
 
     <div metal:fill-slot="main">
 
-        <h1 tal:content="here/title_or_id" class="documentFirstHeading">
-            Title or id
-        </h1>
-
         <div metal:use-macro="here/document_actions/macros/document_actions">
             Document actions (print, sendto etc)
         </div>
+
+        <h1 tal:content="here/title_or_id" class="documentFirstHeading">
+            Title or id
+        </h1>
 
         <a href=""
            class="link-parent"
@@ -59,11 +59,6 @@
                                        item_end item/end/ISO|item/EndDate|nothing;
                                    ">
 
-                    <tal:comment replace="nothing"> 
-                         * Create Creators metadata in the catalog
-                         * Is that necessary? It might be too much information for a simple listing? (alecm)
-                    </tal:comment>
-                       
                     <dt metal:define-macro="listitem">
                     
                         <tal:to_view condition="python:item_type in ['File', 'Image']"
@@ -71,8 +66,7 @@
                             <a href="#" tal:attributes="href url">
                                 <img src="" alt=""
                                      tal:attributes="src item_icon;alt item_title_or_id" />
-                            <a href="#" tal:attributes="href url"
-                                        tal:content="item_title_or_id" />
+                                <span tal:replace="item_title_or_id" />
                             </a>
                         </tal:to_view>
                         
@@ -80,18 +74,16 @@
                             <a href="#" tal:attributes="href item_url">
                                 <img src="" alt=""
                                      tal:attributes="src item_icon;alt item_title_or_id" />
+                                <span tal:replace="item_title_or_id" />
                             </a>
-                            <a href="#" tal:attributes="href item_url"
-                                        tal:content="item_title_or_id" />
                         </tal:to_default>
                         
                         <tal:to_external condition="python:item_type == 'Link'">
                             <a href="#" tal:attributes="href item/getRemoteUrl">
                                 <img src="" alt=""
-                                     tal:attributes="src string:item_icon;alt item_title_or_id" />
+                                     tal:attributes="src item_icon;alt item_title_or_id" />
+                                <span tal:content="item_title_or_id" />
                             </a>
-                            <a href="#" tal:attributes="href item/getRemoteUrl"
-                                        tal:content="item_title_or_id" />
                         </tal:to_external>
 
                         <tal:news_date condition="python:item_type == 'News Item'">

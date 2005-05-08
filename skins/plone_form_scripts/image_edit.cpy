@@ -34,7 +34,8 @@ new_context.plone_utils.contentEdit(new_context,
                                     title=title,
                                     description=description)
 
-new_context.edit( precondition=precondition, file=file )
+if file or precondition:
+    new_context.edit(precondition=precondition, file=file)
 
 from Products.CMFPlone import transaction_note
 transaction_note('Edited image %s at %s' % (new_context.title_or_id(), new_context.absolute_url()))

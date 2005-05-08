@@ -32,7 +32,7 @@
         global ztu modules/ZTUtils;
         global actions options/actions|actions;
         global wf_actions workflow_actions;
-        global isFolder python:here.getTypeInfo().getId() in site_properties.use_folder_tabs;
+        global isFolderish here/isPrincipiaFolderish;
         global template_id options/template_id | template/getId | nothing;
         global slots_mapping options/slots_mapping|here/prepare_slots|nothing;
         global Iterator python:modules['Products.CMFPlone'].IndexIterator;
@@ -44,6 +44,7 @@
         global default_language site_properties/default_language|nothing;
         global language python:here.Language() or default_language;
         global is_editable python: checkPermission('Modify portal content', context);
+        global isEditable python: checkPermission('Modify portal content', context);
         global current_page_url request/VIRTUAL_URL|string:${request/SERVER_URL}${request/PATH_TRANSLATED};
         global lockable python:hasattr(here.aq_inner.aq_explicit, 'wl_isLocked');
         global isLocked python:lockable and here.wl_isLocked();

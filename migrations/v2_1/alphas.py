@@ -6,6 +6,7 @@ from Products.CMFCore import CMFCorePermissions
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import _createObjectByType
 from Products.CMFPlone.migrations.migration_util import installOrReinstallProduct
+from Products.CMFCore.Expression import Expression
 
 
 def two05_alpha1(portal):
@@ -151,6 +152,17 @@ def alpha1_alpha2(portal):
     # Make sure the Events folder is cataloged
     indexEventsFolder(portal, out)
 
+    # Add new memberdata properties
+    addMemberdataHome_Page(portal, out)
+    addMemberdataLocation(portal, out)
+    addMemberdataDescription(portal, out)
+    addMemberdataLanguage(portal, out)
+
+    # Fix the conditions and permissions on the folder_buttons actions
+    fixFolderButtonsActions(portal, out)
+
+    # Change the condition for the change_state action
+    alterChangeStateActionCondition(portal, out)
     return out
 
 
@@ -459,14 +471,16 @@ def installCSSandJSRegistries(portal, out):
             cssreg.clearStylesheets()
             # add the bottom ones and the ones with special expressions first.
             # since registering a stylesheet adds it to the top of the stack
-            cssreg.registerStylesheet('ploneRTL.css',             expression="python:object.isRightToLeft(domain='plone')")
+            cssreg.registerStylesheet('ploneRTL.css', expression="python:object.isRightToLeft(domain='plone')")
             cssreg.registerStylesheet('plonePresentation.css', media='presentation')
             cssreg.registerStylesheet('plonePrint.css', media='print')
             cssreg.registerStylesheet('ploneMobile.css', media='handheld')
-            cssreg.registerStylesheet('ploneColumns.css')
-            cssreg.registerStylesheet('ploneAuthoring.css')
-            cssreg.registerStylesheet('plonePublic.css')
-            cssreg.registerStylesheet('ploneBase.css')
+            cssreg.registerStylesheet('ploneGenerated.css', media="screen")
+            cssreg.registerStylesheet('ploneMember.css', expression='not: portal/portal_membership/isAnonymousUser')
+            cssreg.registerStylesheet('ploneColumns.css', media="screen")
+            cssreg.registerStylesheet('ploneAuthoring.css', media="screen")
+            cssreg.registerStylesheet('plonePublic.css', media="screen")
+            cssreg.registerStylesheet('ploneBase.css', media="screen")
             cssreg.registerStylesheet('ploneCustom.css')
 
         jsreg = getToolByName(portal, 'portal_javascripts', None)
@@ -490,6 +504,7 @@ def installCSSandJSRegistries(portal, out):
             jsreg.registerScript('calendar_formfield.js')
             jsreg.registerScript('calendarpopup.js')
             jsreg.registerScript('ie5fixes.js')
+            jsreg.registerScript('formUnload.js')
             jsreg.registerScript('sarissa.js')
             jsreg.registerScript('plone_minwidth.js' , enabled=False)
             jsreg.registerScript('correctPREformatting.js', enabled=False)
@@ -551,15 +566,12 @@ def removePortalTabsActions(portal, out):
     """Remove portal_tabs actions"""
     actionsTool = getToolByName(portal, 'portal_actions', None)
     if actionsTool is not None:
-        i = 0
-        to_delete = []
-        for action in actionsTool.listActions():
-            if action.getId() in ['Members','news'] and action.getCategory() == 'portal_tabs':
-                to_delete.append(i)
-            i += 1
-        if to_delete:
-            actionsTool.deleteActions(to_delete)
-        out.append("Deleted old portal_tabs actions.")
+        new_actions = actionsTool._cloneActions()
+        for action in new_actions:
+            if action.getId() in ['Members','news']:
+                action.visible = 0
+        actionsTool._actions = new_actions
+        out.append("Disabled 'news' and 'Members' portal tabs actions.")
 
 
 def addNewsFolder(portal, out):
@@ -669,7 +681,7 @@ def addEditContentActions(portal, out):
         new_actions = actionsTool._cloneActions()
         for action in new_actions:
             if action.getId() == 'folderContents':
-                action.visible = 0
+                action.visible = False
         actionsTool._actions = new_actions
         # then we add new actions
         for newaction in ACTIONS:
@@ -885,3 +897,114 @@ def addSiteRootViewTemplates(portal, out):
                                    'news_listing'],
                                   'lines')
         out.append("Added 'selectable_views' property to portal root")
+
+
+def addMemberdataHome_Page(portal, out):
+    memberdata_tool = getToolByName(portal, 'portal_memberdata', None)
+    if memberdata_tool is not None:
+        if not memberdata_tool.hasProperty('home_page'):
+            memberdata_tool.manage_addProperty('home_page', '', 'string')
+            out.append("Added 'home_page' property to portal_memberdata.")
+
+def addMemberdataLocation(portal, out):
+    memberdata_tool = getToolByName(portal, 'portal_memberdata', None)
+    if memberdata_tool is not None:
+        if not memberdata_tool.hasProperty('location'):
+            memberdata_tool.manage_addProperty('location', '', 'string')
+            out.append("Added 'location' property to portal_memberdata.")
+
+def addMemberdataDescription(portal, out):
+    memberdata_tool = getToolByName(portal, 'portal_memberdata', None)
+    if memberdata_tool is not None:
+        if not memberdata_tool.hasProperty('description'):
+            memberdata_tool.manage_addProperty('description', '', 'text')
+            out.append("Added 'description' property to portal_memberdata.")
+
+def addMemberdataLanguage(portal, out):
+    memberdata_tool = getToolByName(portal, 'portal_memberdata', None)
+    if memberdata_tool is not None:
+        if not memberdata_tool.hasProperty('language'):
+            memberdata_tool.manage_addProperty('language', '', 'string')
+            out.append("Added 'description' property to portal_memberdata.")
+
+
+def alterChangeStateActionCondition(portal, out):
+    """ Change the change_state action so that it checks either Modify portal
+        content or Review portal content.
+    """
+    newaction = {'id'        : 'change_state',
+                  'name'      : 'Change State',
+                  'action'    : 'string:content_status_history:method',
+                  'condition' : 'python:portal.portal_membership.checkPermission("Modify portal content", object) or portal.portal_membership.checkPermission("Review portal content", object)',
+                  'permission': CMFCorePermissions.View,
+                  'category': 'folder_buttons',
+                }
+    exists = False
+    actionsTool = getToolByName(portal, 'portal_actions', None)
+    if actionsTool is not None:
+        new_actions = actionsTool._cloneActions()
+        for action in new_actions:
+            if action.getId() == 'change_state' and action.category == newaction['category']:
+                exists = True
+                if not action.condition:
+                    action.permissions = (newaction['permission'],)
+                    action.condition = Expression(text=newaction['condition']) or ''
+                    out.append('Modified existing change_state action')
+        if exists:
+            actionsTool._actions = new_actions
+        else:
+            actionsTool.addAction(newaction['id'],
+                    name=newaction['name'],
+                    action=newaction['action'],
+                    condition=newaction['condition'],
+                    permission=newaction['permission'],
+                    category=newaction['category'],
+                    visible=1)
+            out.append("Added missing change_state action")
+
+
+def fixFolderButtonsActions(portal, out):
+    """ Change the copy and cut actions so that they check either more
+        appropriate permissions.
+    """
+    CATEGORY = 'folder_buttons'
+    ACTIONS = (
+        {'id'        : 'copy',
+         'name'      : 'Copy',
+         'action'    : 'string:folder_copy:method',
+         'condition' : '',
+         'permission': CMFCorePermissions.Permissions.copy_or_move,
+         'category' : 'folder_buttons',
+        },
+        {'id'        : 'cut',
+         'name'      : 'Cut',
+         'action'    : 'string:folder_cut:method',
+         'condition': 'python:portal.portal_membership.checkPermission("Delete objects", object)',
+         'permission': CMFCorePermissions.Permissions.copy_or_move,
+         'category' : 'folder_buttons',
+        },
+    )
+    actionsTool = getToolByName(portal, 'portal_actions', None)
+    if actionsTool is not None:
+        for newaction in ACTIONS:
+            current_actions = actionsTool._cloneActions()
+            exists = False
+            for action in current_actions:
+                if action.getId() == newaction['id'] and action.category == newaction['category']:
+                    exists = True
+                    if action.permissions != (
+                            CMFCorePermissions.Permissions.copy_or_move,):
+                        action.permissions = (newaction['permission'],)
+                        action.condition = Expression(text=newaction['condition']) or ''
+                        out.append('Modified existing %s action'%newaction['id'])
+            if exists:
+                actionsTool._actions = current_actions
+            else:
+                actionsTool.addAction(newaction['id'],
+                    name=newaction['name'],
+                    action=newaction['action'],
+                    condition=newaction['condition'],
+                    permission=newaction['permission'],
+                    category=newaction['category'],
+                    visible=1)
+                out.append("Added missing %s action"%newaction['id'])

@@ -8,8 +8,8 @@
     <h1 i18n:translate="heading_change_ownership">Change ownership</h1>
 
     <p i18n:translate="description_change_ownership">
-    You can change the current objects ownership to
-    another member easily from this form.
+    You can transfer the current item's ownership to
+    somebody else using this form.
     </p>
 
     <form action="change_ownership"
@@ -41,7 +41,7 @@
                 </select>
             </div>
     
-            <div class="field">
+            <div class="field" tal:condition="isFolderish">
     
                 <label i18n:translate="label_subobjects">Subobjects</label>
                 
