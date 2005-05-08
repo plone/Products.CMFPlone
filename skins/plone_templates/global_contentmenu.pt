@@ -229,15 +229,15 @@
 
                     <tal:block condition="canSelectDefaultFolderPage">
                         <li class="actionSeperator" tal:condition="python:selectedLayout != ''">
-                            <a title="Select default page" href="#" class="selected"
+                            <a title="Select an item to be used as default view in this folder" href="#" class="selected"
                                onMouseUp="if (activeButton != null) resetButton(activeButton);"
                                tal:attributes="href string:${parent_folder/absolute_url}/select_default_page;"
                                i18n:attributes="title">
-                                 Select item&hellip;
+                                 Choose item&hellip;
                             </a>
                         </li>
                         <li class="actionSeperator" tal:condition="python:selectedLayout == ''">
-                            <a title="Change default page" href="#" class="selected"
+                            <a title="Change the item used as default view in this folder" href="#" class="selected"
                                onMouseUp="if (activeButton != null) resetButton(activeButton);"
                                tal:attributes="href string:${parent_folder/absolute_url}/select_default_page;"
                                i18n:attributes="title">
