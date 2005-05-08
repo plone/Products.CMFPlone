@@ -476,7 +476,7 @@ def installCSSandJSRegistries(portal, out):
             cssreg.registerStylesheet('plonePrint.css', media='print')
             cssreg.registerStylesheet('ploneMobile.css', media='handheld')
             cssreg.registerStylesheet('ploneGenerated.css', media="screen")
-            cssreg.registerStylesheet('ploneMember.css', expression='portal/portal_membership/isAnonymousUser')
+            cssreg.registerStylesheet('ploneMember.css', expression='not: portal/portal_membership/isAnonymousUser')
             cssreg.registerStylesheet('ploneColumns.css', media="screen")
             cssreg.registerStylesheet('ploneAuthoring.css', media="screen")
             cssreg.registerStylesheet('plonePublic.css', media="screen")
