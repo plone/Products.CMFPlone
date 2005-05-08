@@ -41,7 +41,7 @@
                 </select>
             </div>
     
-            <div class="field">
+            <div class="field" tal:condition="isFolderish">
     
                 <label i18n:translate="label_subobjects">Subobjects</label>
                 

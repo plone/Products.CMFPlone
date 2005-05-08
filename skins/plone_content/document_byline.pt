@@ -60,7 +60,9 @@
   </tal:rights>
 
   <br />
-  <a href="" xtal:attributes="href ownership_form">Change ownership</a>
+  <a href=""
+     tal:condition="isEditable" 
+     tal:attributes="href string:${here/absolute_url}/ownership_form">Change ownership</a>
 
   <span metal:use-macro="here/review_history/macros/review_history" />
     
