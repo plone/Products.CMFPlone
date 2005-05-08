@@ -4,6 +4,18 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Changed the global_defines attribute 'isFolder' to 'isFolderish' - it
+      was only used in one location in the Collective projects I checked, and
+      one location in Plone itself - and didn't really test the right thing.
+      It was also expensive. If you have a third-party product that was using
+      'isFolder' for anything, you should update your code.
+      Removed redundant check in content_status_history as a result.
+      [limi]
+      
+    - Updated 'ownership_form' to not display the subobjects checkbox if the
+      item is not folderish.
+      [limi]
+
     - Added rel="nofollow" attribute to calendar links. Should ultimately
       be restricted by a year range, but this is a quick workaround.
       Closes http://plone.org/development/teams/ui/tasks/89
