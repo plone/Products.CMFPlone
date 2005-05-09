@@ -137,8 +137,7 @@ function initalizeTableSort(e) {
         if (re.exec(tbls[t].className) && !xre.exec(tbls[t].className))
         {
             try {
-                var tablename = tbls[t].getAttribute('id');
-                var thead = document.getElementById(tablename).getElementsByTagName("thead").item(0);
+               var thead = tbls[t].getElementsByTagName("thead").item(0);
                 var node;
                 // set up blank spaceholder gifs
                 blankarrow = document.createElement('img');

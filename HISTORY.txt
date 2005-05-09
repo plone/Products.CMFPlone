@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Added [duncanb]'s update for bug #3294. Tables no longer need an id 
+      attribute to be sorted.
+      [elvix]
+
     - Added fix for bug #4027. feed:// and webcal:// links now get special 
       css-classes so that they may be styled appropriately.
       [elvix]
