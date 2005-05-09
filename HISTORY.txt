@@ -4,6 +4,14 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Changed the 2.1 migrations so that they make sure the MemberDataTool is
+      the default (i.e. not CMFMember) before trying to manipulate the
+      properties on the tool, since a) modifying the properties on CMFMember's
+      MemberDataContainer doesn't accomplish anything and b) property
+      name conflicts were causing the Plone migrations to fail in sites
+      w/ CMFMember installed
+      [rafrombrc]
+
     - Changed the global_defines attribute 'isFolder' to 'isFolderish' - it
       was only used in one location in the Collective projects I checked, and
       one location in Plone itself - and didn't really test the right thing.

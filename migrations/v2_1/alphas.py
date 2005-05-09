@@ -5,7 +5,8 @@ from zExceptions import BadRequest
 from Products.CMFCore import CMFCorePermissions
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import _createObjectByType
-from Products.CMFPlone.migrations.migration_util import installOrReinstallProduct
+from Products.CMFPlone.migrations.migration_util import installOrReinstallProduct, \
+     safeGetMemberDataTool
 from Products.CMFCore.Expression import Expression
 
 
@@ -286,7 +287,7 @@ def addVisibleIdsSiteProperty(portal, out):
 
 def deleteVisibleIdsMemberProperty(portal, out):
     """Deletes visible_ids memberdata property."""
-    memberdata = getToolByName(portal, 'portal_memberdata', None)
+    memberdata = safeGetMemberDataTool(portal)
     if memberdata is not None:
         if memberdata.hasProperty('visible_ids'):
             memberdata.manage_delProperties(['visible_ids'])
@@ -295,7 +296,7 @@ def deleteVisibleIdsMemberProperty(portal, out):
 
 def deleteFormToolTipsMemberProperty(portal, out):
     """Deletes formtooltips memberdata property."""
-    memberdata = getToolByName(portal, 'portal_memberdata', None)
+    memberdata = safeGetMemberDataTool(portal)
     if memberdata is not None:
         if memberdata.hasProperty('formtooltips'):
             memberdata.manage_delProperties(['formtooltips'])
@@ -900,28 +901,28 @@ def addSiteRootViewTemplates(portal, out):
 
 
 def addMemberdataHome_Page(portal, out):
-    memberdata_tool = getToolByName(portal, 'portal_memberdata', None)
+    memberdata_tool = safeGetMemberDataTool(portal)
     if memberdata_tool is not None:
         if not memberdata_tool.hasProperty('home_page'):
             memberdata_tool.manage_addProperty('home_page', '', 'string')
             out.append("Added 'home_page' property to portal_memberdata.")
 
 def addMemberdataLocation(portal, out):
-    memberdata_tool = getToolByName(portal, 'portal_memberdata', None)
+    memberdata_tool = safeGetMemberDataTool(portal)
     if memberdata_tool is not None:
         if not memberdata_tool.hasProperty('location'):
             memberdata_tool.manage_addProperty('location', '', 'string')
             out.append("Added 'location' property to portal_memberdata.")
 
 def addMemberdataDescription(portal, out):
-    memberdata_tool = getToolByName(portal, 'portal_memberdata', None)
+    memberdata_tool = safeGetMemberDataTool(portal)
     if memberdata_tool is not None:
         if not memberdata_tool.hasProperty('description'):
             memberdata_tool.manage_addProperty('description', '', 'text')
             out.append("Added 'description' property to portal_memberdata.")
 
 def addMemberdataLanguage(portal, out):
-    memberdata_tool = getToolByName(portal, 'portal_memberdata', None)
+    memberdata_tool = safeGetMemberDataTool(portal)
     if memberdata_tool is not None:
         if not memberdata_tool.hasProperty('language'):
             memberdata_tool.manage_addProperty('language', '', 'string')
