@@ -284,6 +284,18 @@ def addNewActions(self, portal):
                  permission=Permissions.delete_objects,
                  category='folder_buttons')
 
+    # Move change_state to the bottom
+    cloned_actions = at._cloneActions()
+    num_actions = len(cloned_actions)
+    state_index = 0
+    for action in cloned_actions:
+        if action.id == 'change_state' and action.category == 'folder_buttons':
+            break
+        state_index = state_index + 1
+    state_action = cloned_actions.pop(state_index)
+    cloned_actions.append(state_action)
+    at._actions = cloned_actions
+
 def addSiteActions(self, portal):
     # site_actions which have icons associated with them as well
     at=getToolByName(portal, 'portal_actions')
