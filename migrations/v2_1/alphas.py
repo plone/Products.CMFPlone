@@ -926,7 +926,7 @@ def addMemberdataLanguage(portal, out):
     if memberdata_tool is not None:
         if not memberdata_tool.hasProperty('language'):
             memberdata_tool.manage_addProperty('language', '', 'string')
-            out.append("Added 'description' property to portal_memberdata.")
+            out.append("Added 'language' property to portal_memberdata.")
 
 
 def alterChangeStateActionCondition(portal, out):
