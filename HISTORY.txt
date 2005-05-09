@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Added fix for bug #4027. feed:// and webcal:// links now get special 
+      css-classes so that they may be styled appropriately.
+      [elvix]
+
     - Changed the 2.1 migrations so that they make sure the MemberDataTool is
       the default (i.e. not CMFMember) before trying to manipulate the
       properties on the tool, since a) modifying the properties on CMFMember's
