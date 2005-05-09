@@ -519,9 +519,14 @@ textarea.proportional {
     border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
     border-bottom: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
     float: none;
+    line-height: 1.2em;
     margin: 2em 0em 1em 0em;
     padding: 0.5em 0em 1em 0em;
     text-align: center;
+}
+
+#portal-footer a:hover {
+    text-decoration: underline;
 }
 
 #portal-colophon {
