@@ -13,47 +13,44 @@
                  view_action python:hereTypeInfo.getActionById('view');
                  isViewTemplate python:template_id==view_action or view_action=='view';
                  ">
-
     <tal:allowed condition="python:isDiscussionAllowed and isViewTemplate">
-
-        <form name="reply"
-              action=""
-              method="post"
-              tal:condition="userHasReplyPermission"
-              tal:attributes="action string:$here_url/discussion_reply_form">
-
-            <input class="standalone"
-                   type="submit"
-                   value="Add Comment"
-                   i18n:attributes="value"
-                   />
-        </form>
-
-        <form tal:condition="python:userIsAnonymous and not userHasReplyPermission"
-              tal:define="pss modules/Products/PythonScripts/standard"
-              tal:attributes="action python:'%s/login_form?came_from=%s' %
-                                            (here.portal_url(),
-                                            pss.url_quote(request['URL']))">
-
-            <input class="standalone"
-                   type="submit"
-                   value="Log in to add comments"
-                   i18n:attributes="value"
-                   />
-        </form>
-
-        <a name="comments"> </a>
-
-        <tal:getreplies repeat="reply python:portal.sort_modified_ascending(
-                                             portal_discussion.getDiscussionFor(here).getReplies())">
-
-                <div class="comment">
-
+        <tal:comments>
+            <form name="reply"
+                  action=""
+                  method="post"
+                  tal:condition="userHasReplyPermission"
+                  tal:attributes="action string:$here_url/discussion_reply_form">
+    
+                  <input class="standalone"
+                         type="submit"
+                         value="Add Comment"
+                         i18n:attributes="value"
+                         />
+            </form>
+            <form tal:condition="python:userIsAnonymous and not userHasReplyPermission"
+                  tal:define="pss modules/Products/PythonScripts/standard"
+                  tal:attributes="action python:'%s/login_form?came_from=%s' %
+                                                (here.portal_url(),
+                                                pss.url_quote(request['URL']))">
+                <input class="standalone"
+                       type="submit"
+                       value="Log in to add comments"
+                       i18n:attributes="value"
+                       />
+            </form>
+            
+            <tal:getreplies repeat="reply_dict python:here.getReplyReplies(here)">
+                <div class="comment" style=""
+                    tal:define="indent python:reply_dict['depth']*2;
+                                reply python:reply_dict['object']"
+                    tal:attributes="style string:margin-left:${indent}em;">
+                    
                     <h3>
+                        <a name="comments" tal:attributes="name reply/id">
                         <tal:block replace="structure portal/discussionitem_icon.gif"/>
                         <span tal:replace="reply/title_or_id">Comment title</span>
+                        </a>
                     </h3>
-
                     <div class="documentByLine"
                          tal:define="anonymous_creator python:reply.Creator()=='Anonymous User'">
                         <span i18n:translate="label_comment_by">Posted by</span>
@@ -65,75 +62,38 @@
                         <span tal:replace="python:portal.toLocalizedTime(reply.modified(),
                                                   long_format=1)">8/23/2001 12:40:44 PM</span>
                     </div>
-
                     <div class="commentBody"
                          tal:content="structure reply/CookedBody">
-                        This is the body text of the comment.
+                         This is the body text of the comment.
                     </div>
-
                     <form name="reply"
-                         action="discussion_reply_form"
-                         method="post"
-                         style="display: inline;"
-                         tal:attributes="action string:${reply/absolute_url}/discussion_reply_form"
-                         tal:condition="python:checkPermission('Reply to item', reply)">
-
+                          action="discussion_reply_form"
+                          method="post"
+                          style="display: inline;"
+                          tal:attributes="action string:${reply/absolute_url}/discussion_reply_form"
+                          tal:condition="userHasReplyPermission">
                         <input class="standalone"
                                type="submit"
-                               value="Reply to this"
+                               value="Reply"
                                i18n:attributes="value"
                                />
                     </form>
-
                     <form name="delete"
                           action=""
                           method="post"
                           style="display: inline;"
                           tal:condition="python:checkPermission('Manage portal', here)"
                           tal:attributes="action string:${reply/absolute_url}/deleteDiscussion">
-
                         <input class="destructive"
                                type="submit"
-                               value="Remove This Discussion"
+                               value="Remove"
                                i18n:attributes="value"
                                />
                     </form>
-
-                    <div tal:define="replies python:here.getReplyReplies(reply)"
-                         tal:condition="replies">
-
-                        <h4 i18n:translate="legend_replies_to_this_comment">Replies to this comment</h4>
-
-                        <div tal:repeat="lst replies">
-                            <span tal:omit-tag=""
-                                  tal:content="structure python:'&nbsp;' * lst['depth']" />
-                            <a href=""
-                               tal:define="lst_object nocall:lst/object;
-                                           anonymous_creator python:lst_object.Creator()=='Anonymous User'"
-                               tal:attributes="href string:${lst_object/absolute_url}/discussionitem_view">
-                                <tal:block replace="structure here/discussionitem_icon.gif"/>
-                                <span tal:replace="lst_object/Title">Comment title</span>
-                                (<span i18n:translate="label_comment_by">Posted by</span>
-                                <span tal:content="lst_object/Creator"
-                                      tal:condition="not:anonymous_creator">Poster Name</span>
-                                <span i18n:translate="label_anonymous_user"
-                                      tal:condition="anonymous_creator">Anonymous User</span>
-                                <span i18n:translate="label_commented_at">at</span> 
-                                <span tal:replace="python:portal.toLocalizedTime(lst_object.modified(),
-                                                          long_format=1)">8/23/2001 12:49:08 PM</span>)
-                            </a>
-                        </div>
-
-                    </div>
-
                 </div>
-
             </tal:getreplies>
-
+        </tal:comments>
     </tal:allowed>
-
 </div>
-
 </body>
-
 </html>

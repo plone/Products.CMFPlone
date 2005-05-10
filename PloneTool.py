@@ -387,6 +387,24 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                     return w.states[objstate].title
         return None
 
+
+    security.declareProtected(CMFCorePermissions.View, 'getDiscussionThread')
+    def getDiscussionThread(self, discussionContainer):
+        """ Given a discussionContainer, return the thread
+        it is in, upwards, including the parent object that is being discussed"""
+        
+        if hasattr(discussionContainer, 'parentsInThread'):
+            thread = discussionContainer.parentsInThread()
+            if discussionContainer.portal_type == 'Discussion Item':
+                thread.append(discussionContainer)
+        else:
+            if discussionContainer.id=='talkback':
+                thread=[discussionContainer._getDiscussable()]
+            else:
+                thread = [discussionContainer]
+        return thread
+        
+
     # Convenience method since skinstool requires loads of acrobatics.
     # We use this for the reconfig form
     security.declareProtected(CMFCorePermissions.ManagePortal, 'setDefaultSkin')
@@ -745,7 +763,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                         result.append([user, list(roles), role_type, name])
                 if parent==portal:
                     cont=0
-		elif not self.isLocalRoleAcquired(parent):
+                elif not self.isLocalRoleAcquired(parent):
                     # role acq check here
                     cont=0
                 else:

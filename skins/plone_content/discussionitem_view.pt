@@ -7,59 +7,7 @@
              tal:define="dummy python:request.set('disable_border',1)" />
 
 <metal:block metal:fill-slot="main">
-
-    <div metal:use-macro="here/document_actions/macros/document_actions">
-        Document actions (print, sendto etc)
-    </div>
-
-    <h1 i18n:translate="heading_comment">Comment</h1>
-
-    <div tal:condition="here/talkback|nothing">
-
-        <small>
-            <span i18n:translate="description_above_in_comment_thread" tal:omit-tag="">Above in this comment thread:</span>
-            <span tal:replace="structure here/aboveInThread"></span>
-        </small>
-
-        <div class="comment">
-
-            <h2>
-                <tal:block replace="structure here/discussionitem_icon.gif" />
-                <span tal:replace="here/title_or_id">Comment title</span>
-            </h2>
-
-            <div class="documentByLine">
-                <span i18n:translate="posted_by">Posted by</span>
-                <span tal:content="here/Creator">Poster Name</span>
-                <span i18n:translate="posted_on">at</span>
-                <span tal:replace="python: here.toLocalizedTime(here.modified(), long_format=1)">8/23/2001 12:40:44 PM</span>
-            </div>
-
-            <div class="commentBody"
-                 tal:content="structure here/CookedBody">
-            This is the body text of the comment.
-            </div>
-
-            <metal:block use-macro="here/viewThreadsAtBottom/macros/discussionView" />
-
-            <form name="delete"
-                  action=""
-                  method="post"
-                  style="display: inline;"
-                  tal:condition="python: checkPermission('Manage portal', here)"
-                  tal:attributes="action string:${here/absolute_url}/deleteDiscussion">
-
-                <input class="destructive"
-        	       type="submit"
-        	       value="Remove This Reply"
-                   i18n:attributes="value"
-                   />
-            </form>
-
-
-        </div>
-
-    </div>
+	<tal:redirect tal:define="r python:here.redirectToDiscussable()" />
 </metal:block>
 
 <metal:block metal:fill-slot="sub">

@@ -10,13 +10,56 @@
 <metal:block fill-slot="sub" />
 
 <div metal:fill-slot="main"
-     tal:define="errors options/state/getErrors;">
+     tal:define="errors options/state/getErrors;
+                 thread python:here.plone_utils.getDiscussionThread(here);
+                 discussable python:thread[0];
+                 replies python:thread[1:]">
 
-    <h1 i18n:translate="heading_add_comment">Add Comment</h1>
+    
 
-    <p i18n:translate="description_add_comment">
-        You can add a comment by filling out the form below. Plain text formatting.
-    </p>
+    <tal:discussable define="viewAction python:discussable.getTypeInfo().getActionById('view');
+                             
+                             template python:discussable.getTemplateFor(discussable.getLayout());
+                             macros template/macros | nothing;
+                             main_macro macros/main | nothing;
+                             showDiscussable python:main_macro;
+                             template template/id"
+                     >
+
+        <div class="comment" 
+             tal:condition="showDiscussable"
+             tal:define="here python:discussable">
+            <div metal:use-macro="discussable/?template/macros/main"/>
+        </div>
+    </tal:discussable>
+
+    <tal:thread tal:repeat="reply replies">
+        <tal:block tal:define="level repeat/reply/index">
+            <div class="comment"
+                 tal:attributes="style python:'margin-left:'+str((int(level)+1)*2)+'em'">
+               <h3>
+                   <tal:block replace="structure portal/discussionitem_icon.gif"/>
+                   <span tal:replace="reply/title_or_id">Comment title</span>
+               </h3>
+               <div class="documentByLine"
+                    tal:define="anonymous_creator python:reply.Creator()=='Anonymous User'">
+                   <span i18n:translate="label_comment_by">Posted by</span>
+                   <span tal:content="reply/Creator"
+                         tal:condition="not:anonymous_creator">Poster Name</span>
+                   <span i18n:translate="label_anonymous_user"
+                         tal:condition="anonymous_creator">Anonymous User</span>
+                   <span i18n:translate="label_commented_at">at</span> 
+                   <span tal:replace="python:portal.toLocalizedTime(reply.modified(),
+                                             long_format=1)">8/23/2001 12:40:44 PM</span>
+               </div>
+               <div class="commentBody"
+                    tal:content="structure reply/CookedBody">
+                    This is the body text of the comment.
+               </div>
+           </div>    
+                 
+        </tal:block>
+    </tal:thread>
 
     <form name="edit_form"
           method="post"
@@ -25,7 +68,10 @@
 
         <fieldset>
 
-            <legend i18n:translate="legend_comment_details">Comment Details</legend>
+            <legend i18n:translate="legend_comment_details">Add comment</legend>
+            <p i18n:translate="description_add_comment">
+                You can add a comment by filling out the form below. Plain text formatting.
+            </p>
 
             <input type="hidden" name="Creator" value=""
                    tal:attributes="value member/getUserName" />
@@ -75,21 +121,19 @@
             </div>
 
 
-	    <div class="field"
-		tal:define="error errors/subject|nothing;"
-		tal:attributes="class python:test(error, 'field error', 'field')">
+        <div class="field"
+        tal:define="error errors/subject|nothing;"
+        tal:attributes="class python:test(error, 'field error', 'field')">
 
                 <label for="title" i18n:translate="label_subject">Subject</label>
 
-		<span class="fieldRequired" title="Required"
-		      i18n:attributes="title"
-		      i18n:translate="label_required">(Required)</span>
+        <span class="fieldRequired" title="Required"
+              i18n:attributes="title"
+              i18n:translate="label_required">(Required)</span>
 
-		    <div class="formHelp" i18n:translate="help_subject">
-			The subject of your posting.
-		    </div>
+            <div class="formHelp" i18n:translate="help_subject" />
 
-		    <div tal:content="error">Validation error output</div>
+            <div tal:content="error">Validation error output</div>
 
                 <input name="subject"
                        id="subject"
@@ -101,21 +145,19 @@
 
             </div>
 
-	    <div class="field"
-		tal:define="error errors/body_text|nothing;"
-		tal:attributes="class python:test(error, 'field error', 'field')">
+        <div class="field"
+        tal:define="error errors/body_text|nothing;"
+        tal:attributes="class python:test(error, 'field error', 'field')">
 
-                <label for="text" i18n:translate="label_body_text">Body text</label>
+                <label for="text" i18n:translate="label_body_text">Comment</label>
 
-		<span class="fieldRequired" title="Required"
-		      i18n:attributes="title"
-		      i18n:translate="label_required">(Required)</span>
+        <span class="fieldRequired" title="Required"
+              i18n:attributes="title"
+              i18n:translate="label_required">(Required)</span>
 
-		    <div class="formHelp" i18n:translate="help_body_text">
-			The message of your posting.
-		    </div>
+            <div class="formHelp" i18n:translate="help_body_text" />
 
-		    <div tal:content="error">Validation error output</div>
+            <div tal:content="error">Validation error output</div>
 
                 <textarea name="body_text"
                           id="body_text"
