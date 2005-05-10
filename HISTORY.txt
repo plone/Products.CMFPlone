@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Refactored the way portal discussions are displayed. They are now shown
+      in an expanded way so no more clicking is needed to read the entire 
+      discussion. 
+      [ender]      
+
     - Manually merged Duncan's plip24-form-unload-branch.
       Plone will now present a warning message if the user tries to navigate
       away from a page with a changed form. 
