@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<rdf:RDF
+  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  xmlns:dc="http://purl.org/dc/elements/1.1/"
+  xmlns:syn="http://purl.org/rss/1.0/modules/syndication/"
+  xmlns="http://purl.org/rss/1.0/"
+  xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+  xmlns:tal="http://xml.zope.org/namespaces/tal"
+  xmlns:metal="http://xml.zope.org/namespaces/metal">
+
+<tal:block define="dummy context/rssAllowed" />
+
+<tal:attopic condition="python: context.meta_type == 'ATTopic'">
+<tal:block  define="objectList context/queryCatalog">
+    <metal:block use-macro="context/rss_template/macros/master">
+        <metal:block fill-slot="description">
+            <syn:updatePeriod tal:content="syn/getUpdatePeriod|default">hourly</syn:updatePeriod>
+            <syn:updateFrequency tal:content="syn/getUpdateFrequency|default">2</syn:updateFrequency>
+            <syn:updateBase tal:content="syn/getUpdateBase|default">2000-01-01T12:00+00:00</syn:updateBase>
+        </metal:block>
+    </metal:block>
+</tal:block>
+</tal:attopic>
+
+<tal:rest condition="not: python: context.meta_type == 'ATTopic'">
+<tal:block 
+    define="objectList context/getFolderContents">
+    <metal:block use-macro="context/rss_template/macros/master">
+        <metal:block fill-slot="description">
+            <syn:updatePeriod tal:content="syn/getUpdatePeriod|default">hourly</syn:updatePeriod>
+            <syn:updateFrequency tal:content="syn/getUpdateFrequency|default">2</syn:updateFrequency>
+            <syn:updateBase tal:content="syn/getUpdateBase|default">2000-01-01T12:00+00:00</syn:updateBase>
+        </metal:block>
+    </metal:block>
+
+    
+</tal:block>
+</tal:rest>
+
+</rdf:RDF>

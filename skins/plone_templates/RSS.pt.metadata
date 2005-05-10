@@ -1,0 +1,5 @@
+[default]
+title = RSS Feed for folders
+
+# The name RSS.pt is a little annoying, but its keeping with the old
+# CMF name for this page.

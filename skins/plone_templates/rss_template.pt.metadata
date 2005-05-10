@@ -1,0 +1,7 @@
+[default]
+title = A template for RSS results
+
+# this page isn't meant to be called directly
+# instead its meant to be used as a template from
+# other templates, see RSS.pt and search_rss.pt for
+# examples
