@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Added methods for retrieving version tuples to utils module (FS
+      version only) and to MigrationTool (both FS and instance versions)
+      [rafrombrc]
+
     - Added charset to the Content-type header when use RSS to fixed some 
       encoding problem.
       [panjunyong]

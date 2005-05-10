@@ -4,8 +4,9 @@ from OFS.SimpleItem import SimpleItem
 from ZODB.POSException import ConflictError
 
 from Products.CMFCore.utils import UniqueObject, getToolByName
-from Products.CMFCore.CMFCorePermissions import ManagePortal
+from Products.CMFCore.CMFCorePermissions import ManagePortal, View
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
+from Products.CMFPlone.utils import versionTupleFromString
 
 import zLOG
 import traceback
@@ -46,7 +47,7 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
     manage_overview = DTMLFile('www/migrationTool', globals())
     manage_results = DTMLFile('www/migrationResults', globals())
     manage_setup = DTMLFile('www/migrationSetup', globals())
-
+    
     # Add a visual note
     def om_icons(self):
         icons = ({
@@ -99,11 +100,22 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
         """ The version this instance of plone is on """
         return self.Control_Panel.Products.CMFPlone.version.lower()
 
+    security.declareProtected(View, 'getFSVersion')
+    def getFSVersionTuple(self):
+        """ returns tuple representing filesystem version """
+        v_str = self.getFileSystemVersion()
+        return versionTupleFromString(v_str)
+
+    security.declareProtected(View, 'getDBVersion')
+    def getInstanceVersionTuple(self):
+        """ returns tuple representing instance version """
+        v_str = self.getInstanceVersion()
+        return versionTupleFromString(v_str)
+
     security.declareProtected(ManagePortal, 'needUpgrading')
     def needUpgrading(self):
         """ Need upgrading? """
         return self.getInstanceVersion() != self.getFileSystemVersion()
-
 
     security.declareProtected(ManagePortal, 'coreVersions')
     def coreVersions(self):

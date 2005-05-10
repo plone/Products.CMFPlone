@@ -2,10 +2,12 @@ from os.path import join, abspath, dirname, split
 from types import StringType, UnicodeType, IntType
 from DateTime import DateTime
 
+import re
 import Globals
 import OFS
 from Products.CMFCore.utils import ToolInit as CMFCoreToolInit
 from Products.CMFCore.utils import getToolByName
+import Products.CMFPlone as CMFPlone
 
 class IndexIterator:
     __allow_access_to_unprotected_subobjects__ = 1
@@ -234,3 +236,34 @@ def _createObjectByType(type_name, container, id, *args, **kw):
     ob = container._getOb( id )
     
     return fti._finishConstruction(ob)
+
+
+def safeToInt(value):
+    """ convert value to an integer or just return if can't """
+    try:
+        return int(value)
+    except ValueError:
+        return 0
+
+release_levels = ('alpha', 'beta', 'candidate', 'final')
+
+def versionTupleFromString(v_str):
+    """ returns version tuple from passed in version string """
+    regex_str = "(^\d+)[.]?(\d*)[.]?(\d*)[- ]?(alpha|beta|candidate|final)?(\d*)"
+    v_regex = re.compile(regex_str)
+    match = v_regex.match(v_str)
+    if match is None:
+        v_tpl = None
+    else:
+        groups = list(match.groups())
+        for i in (0, 1, 2, 4):
+            groups[i] = safeToInt(groups[i])
+        if groups[3] is None:
+            groups[3] = 'final'
+        v_tpl = tuple(groups)
+    return v_tpl
+
+def getFSVersionTuple():
+    vfile = "%s/version.txt" % CMFPlone.__path__[0]
+    v_str = open(vfile, 'r').read().lower()
+    return versionTupleFromString(v_str)
