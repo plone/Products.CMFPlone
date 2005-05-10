@@ -18,6 +18,7 @@ class TestUtils(PloneTestCase.PloneTestCase):
                        '3-beta': (3, 0, 0, 'beta', 0),
                        '2.1-final1 (SVN)': (2, 1, 0, 'final', 1),
                        'foo': None,
+                       '2.0a3': (2, 0, 0, 'alpha', 3),
                        '1.2 final': (1, 2, 0, 'final', 0)}
         # XXX note that '2.0a3' will currently return (2, 0, 0, 'final', 0),
         #     when really it should return None.  my regex foo is tapped. (ra)

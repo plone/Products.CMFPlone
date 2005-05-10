@@ -239,17 +239,18 @@ def _createObjectByType(type_name, container, id, *args, **kw):
 
 
 def safeToInt(value):
-    """ convert value to an integer or just return if can't """
+    """ convert value to an integer or just return 0 if can't """
     try:
         return int(value)
     except ValueError:
         return 0
 
 release_levels = ('alpha', 'beta', 'candidate', 'final')
+rl_abbr = {'a':'alpha', 'b':'beta', 'rc':'candidate'}
 
 def versionTupleFromString(v_str):
     """ returns version tuple from passed in version string """
-    regex_str = "(^\d+)[.]?(\d*)[.]?(\d*)[- ]?(alpha|beta|candidate|final)?(\d*)"
+    regex_str = "(^\d+)[.]?(\d*)[.]?(\d*)[- ]?(alpha|beta|candidate|final|a|b|rc)?(\d*)"
     v_regex = re.compile(regex_str)
     match = v_regex.match(v_str)
     if match is None:
@@ -260,6 +261,8 @@ def versionTupleFromString(v_str):
             groups[i] = safeToInt(groups[i])
         if groups[3] is None:
             groups[3] = 'final'
+        elif groups[3] in rl_abbr.keys():
+            groups[3] = rl_abbr[groups[3]]
         v_tpl = tuple(groups)
     return v_tpl
 
