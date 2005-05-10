@@ -1,4 +1,4 @@
-<dtml-call "REQUEST.RESPONSE.setHeader('Content-Type', 'text/xml')"><?xml version="1.0" encoding="<dtml-var "portal_properties.site_properties.default_charset">"?>
+<dtml-call "REQUEST.RESPONSE.setHeader('Content-Type', 'text/xml;charset='+portal_properties.site_properties.default_charset"><?xml version="1.0" encoding="<dtml-var "portal_properties.site_properties.default_charset">"?>
 <dtml-with base_properties>
 <rdf:RDF 
   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 

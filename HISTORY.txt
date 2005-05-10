@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Added charset to the Content-type header when use RSS to fixed some 
+      encoding problem.
+      [panjunyong]
+
     - Added [duncanb]'s update for bug #3294. Tables no longer need an id 
       attribute to be sorted.
       [elvix]
