@@ -15,7 +15,7 @@ ZopeTestCase.installProduct('ZChecker')
 
 _print = ZopeTestCase._print
 
-ignoredObjectIds = ['rssBody']
+ignoredObjectIds = ['rssBody', 'RSS', 'rss_template', 'search_rss']
 
 
 class TestSkins(PloneTestCase.PloneTestCase):
