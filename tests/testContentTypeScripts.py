@@ -197,6 +197,8 @@ class TestContentTypeScripts(PloneTestCase.PloneTestCase):
         # Make sure the script created AT types
         self.assertEqual(self.folder.Favorites.meta_type, 'ATFolder')
         self.assertEqual(favorite.meta_type, 'ATFavorite')
+        # Make sure that the script gave a Title to the folder
+        self.assertEqual(self.folder.Favorites.Title(), 'Favorites')
 
     def test_listMetaTypes(self):
         self.folder.invokeFactory('Document', id='doc')

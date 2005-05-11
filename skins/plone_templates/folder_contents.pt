@@ -65,7 +65,8 @@
                        tal:define="contentFilter contentFilter|nothing;
                                    isExpired nocall:portal/isExpired;
                                    iface_tool portal/portal_interface;
-                                   use_folder_contents site_properties/typesLinkToFolderContentsInFC | python:['Folder','Large Plone Folder'];
+                                   use_folder_contents site_properties/typesLinkToFolderContentsInFC|nothing;
+                                   use_view_action site_properties/typesUseViewActionInListings;
                                    orderable_iface string:OFS.IOrderSupport.IOrderedContainer;
                                    preSorted python:(contentFilter and contentFilter.get('sort_on', 'getObjPositionInParent')!='getObjPositionInParent') or (not contentFilter and request.get('sort_on', 'getObjPositionInParent')!='getObjPositionInParent');
                                    isOrderable python:iface_tool.objectImplements(here, orderable_iface);
@@ -168,7 +169,7 @@
                                    item_url item/getURL|item/absolute_url;
                                    item_id item/getId;
                                    item_path item/getPath|python:'/'.join(item.getPhysicalPath());
-                                   item_title_or_id python: (same_type(item.getId,'') and (item.Title or '[...]')) or item.title_or_id();
+                                   item_title_or_id python: (same_type(item.getId,'') and (item.Title or putils.utf8_portal('\xe2\x80\xa6', 'ignore'))) or item.title_or_id();
                                    item_description item/Description;
                                    item_type item/portal_type;
                                    item_typeinfo python: here.portal_types.getTypeInfo(item_type);
@@ -202,11 +203,10 @@
                              tal:attributes="value item_rel_url" />
 
                     </td>
-                    <td tal:define="action python:item_typeinfo.getActionById('view');
-                                    url python:test(item_typeinfo.getId() in use_folder_contents,
-                                    item_url+'/folder_contents',
-                                    item_url+'/'+action);">
-                      <a href="#" tal:attributes="href item_url;
+                    <td tal:define="url python:test(item_type in use_view_action,
+                                    item_url+'/view',
+                                    item_url+'/');">
+                      <a href="#" tal:attributes="href url;
                                                   title item_description;">
                           <img alt="" tal:attributes="src item_icon;
                                                title item_type;"

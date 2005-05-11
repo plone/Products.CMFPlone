@@ -4,6 +4,16 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Added a new typesUseViewActionInListings property in site_properties
+      which can be used for types whose immediate view is not desirable to
+      link to from folder_contents or folder_listing (currently Image and
+      File).  Also, typesLinkToFolderContentsInFC is no longer used, and
+      listing templates have been simplified a bit.
+      [alecm]
+
+    - Gave a title to the Favorites folder.
+      [alecm]
+
     - Refactored the way portal discussions are displayed. They are now shown
       in an expanded way so no more clicking is needed to read the entire 
       discussion. 

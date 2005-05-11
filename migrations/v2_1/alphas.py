@@ -164,6 +164,11 @@ def alpha1_alpha2(portal):
 
     # Change the condition for the change_state action
     alterChangeStateActionCondition(portal, out)
+
+    # Add typesUseViewActionInListings site_property for types like Image and File,
+    # which shouldn't use immediate_view from folder_contents and listings
+    addTypesUseViewActionInListingsProperty(portal, out)
+    
     return out
 
 
@@ -1009,3 +1014,18 @@ def fixFolderButtonsActions(portal, out):
                     category=newaction['category'],
                     visible=1)
                 out.append("Added missing %s action"%newaction['id'])
+
+def addTypesUseViewActionInListingsProperty(portal, out):
+    # Adds a typesUseViewActionInListings list property to site_properties
+    # which is used to determine which types should use not immediate_view
+    # in folder listings (and batch mode).  This is important for types like
+    # Image and File.
+    propTool = getToolByName(portal, 'portal_properties', None)
+    if propTool is not None:
+        propSheet = getattr(propTool, 'site_properties', None)
+        if propSheet is not None:
+            if not propSheet.hasProperty('typesUseViewActionInListings'):
+                propSheet.manage_addProperty('typesUseViewActionInListings',
+                                             ['Image','File'],
+                                             'lines')
+            out.append("Added 'typesUseViewActionInListings' property to site_properties.")

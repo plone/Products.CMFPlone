@@ -33,6 +33,7 @@
                             limit_display limit_display|request/limit_display|nothing;
                             more_url more_url|request/more_url|string:folder_contents;
                             folderContents folderContents|python:here.getFolderContents(contentFilter=contentFilter);
+                            use_view_action site_properties/typesUseViewActionInListings;
                             over_limit python: limit_display and len(folderContents) > limit_display;
                             folderContents python: (over_limit and folderContents[:limit_display]) or folderContents;">
         <tal:listing condition="folderContents"
@@ -43,7 +44,7 @@
 	        <tal:entry tal:repeat="item folderContents">
                 <tal:block tal:define="item_url item/getURL|item/absolute_url;
                                        item_id item/getId|item/id;
-                                       item_title_or_id python: item.Title or item_id; 
+                                       item_title_or_id python:(same_type(item.getId,'') and (item.Title or putils.utf8_portal('\xe2\x80\xa6', 'ignore'))) or item.title_or_id();
                                        item_description item/Description;
                                        item_type item/portal_type;
                                        item_type_title python:types[item_type] or item_type;
@@ -60,24 +61,12 @@
                                    ">
 
                     <dt metal:define-macro="listitem">
-                    
-                        <tal:to_view condition="python:item_type in ['File', 'Image']"
-                                     define="url string:${item_url}/view">
-                            <a href="#" tal:attributes="href url">
-                                <img src="" alt=""
-                                     tal:attributes="src item_icon;alt item_title_or_id" />
-                                <span tal:replace="item_title_or_id" />
-                            </a>
-                        </tal:to_view>
-                        
-                        <tal:to_default condition="python:item_type not in ['File', 'Image', 'Link']">
-                            <a href="#" tal:attributes="href item_url">
-                                <img src="" alt=""
-                                     tal:attributes="src item_icon;alt item_title_or_id" />
-                                <span tal:replace="item_title_or_id" />
-                            </a>
-                        </tal:to_default>
-                        
+                        <a href="#" tal:attributes="href python:test(item_type in use_view_action and item_type != 'Link', item_url+'/view', item_url+'/')">
+                            <img src="" alt=""
+                                 tal:attributes="src item_icon;alt item_title_or_id" />
+                            <span tal:replace="item_title_or_id" />
+                        </a>
+
                         <tal:to_external condition="python:item_type == 'Link'">
                             <a href="#" tal:attributes="href item/getRemoteUrl">
                                 <img src="" alt=""

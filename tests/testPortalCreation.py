@@ -368,6 +368,10 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
                     x.category == 'folder_buttons']
         self.assertEqual(actions[-1].id, 'change_state', [x.id for x in actions])
 
+    def testTypesUseViewActionInListingsProperty(self):
+        # site_properties should have the typesUseViewActionInListings property
+        self.failUnless(self.properties.site_properties.hasProperty('typesUseViewActionInListings'))
+
 
 class TestPortalBugs(PloneTestCase.PloneTestCase):
 

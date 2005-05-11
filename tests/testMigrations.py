@@ -49,6 +49,7 @@ from Products.CMFPlone.migrations.v2_1.alphas import addMemberdataLanguage
 from Products.CMFPlone.migrations.v2_1.alphas import addMemberdataDescription
 from Products.CMFPlone.migrations.v2_1.alphas import alterChangeStateActionCondition
 from Products.CMFPlone.migrations.v2_1.alphas import fixFolderButtonsActions
+from Products.CMFPlone.migrations.v2_1.alphas import addTypesUseViewActionInListingsProperty
 
 import types
 
@@ -1079,6 +1080,31 @@ class TestMigrations_v2_1(MigrationTest):
         # The migration should work if the tool is missing
         self.portal._delObject('portal_actions')
         alterChangeStateActionCondition(self.portal, [])
+
+    def testAddTypesUseViewActionInListingsProperty(self):
+        # Should add the typesUseViewActionInListings property
+        self.removeSiteProperty('typesUseViewActionInListings')
+        self.failIf(self.properties.site_properties.hasProperty('typesUseViewActionInListings'))
+        addTypesUseViewActionInListingsProperty(self.portal, [])
+        self.failUnless(self.properties.site_properties.hasProperty('typesUseViewActionInListings'))
+
+    def testAddTypesUseViewActionInListingsPropertyTwice(self):
+        # Should not fail if migrated again
+        self.removeSiteProperty('typesUseViewActionInListings')
+        self.failIf(self.properties.site_properties.hasProperty('typesUseViewActionInListings'))
+        addTypesUseViewActionInListingsProperty(self.portal, [])
+        addTypesUseViewActionInListingsProperty(self.portal, [])
+        self.failUnless(self.properties.site_properties.hasProperty('typesUseViewActionInListings'))
+
+    def testAddTypesUseViewActionInListingsPropertyNoTool(self):
+        # Should not fail if portal_properties is missing
+        self.portal._delObject('portal_properties')
+        addTypesUseViewActionInListingsProperty(self.portal, [])
+
+    def testAddTypesUseViewActionInListingsPropertyNoSheet(self):
+        # Should not fail if site_properties is missing
+        self.properties._delObject('site_properties')
+        addTypesUseViewActionInListingsProperty(self.portal, [])
 
 
 def test_suite():

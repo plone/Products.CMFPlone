@@ -17,7 +17,7 @@ if not homeFolder:
     return RESPONSE.redirect('%s?portal_status_message=%s' % (view_url, msg))
 
 if not hasattr(homeFolder, 'Favorites'):
-    homeFolder.invokeFactory('Folder', id='Favorites')
+    homeFolder.invokeFactory('Folder', id='Favorites', title='Favorites')
 
 targetFolder = homeFolder.Favorites
 new_id='fav_' + str(int( context.ZopeTime()))
