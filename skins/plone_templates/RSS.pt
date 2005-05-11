@@ -10,31 +10,17 @@
 
 <tal:block define="dummy context/rssAllowed" />
 
-<tal:attopic condition="python: context.meta_type == 'ATTopic'">
-<tal:block  define="objectList context/queryCatalog">
-    <metal:block use-macro="context/rss_template/macros/master">
-        <metal:block fill-slot="description">
-            <syn:updatePeriod tal:content="syn/getUpdatePeriod|default">hourly</syn:updatePeriod>
-            <syn:updateFrequency tal:content="syn/getUpdateFrequency|default">2</syn:updateFrequency>
-            <syn:updateBase tal:content="syn/getUpdateBase|default">2000-01-01T12:00+00:00</syn:updateBase>
-        </metal:block>
-    </metal:block>
-</tal:block>
-</tal:attopic>
-
-<tal:rest condition="not: python: context.meta_type == 'ATTopic'">
 <tal:block 
-    define="objectList context/getFolderContents">
+    define="
+        syn context/portal_syndication; 
+        objectList syn/getSyndicatableContent">
     <metal:block use-macro="context/rss_template/macros/master">
-        <metal:block fill-slot="description">
-            <syn:updatePeriod tal:content="syn/getUpdatePeriod|default">hourly</syn:updatePeriod>
-            <syn:updateFrequency tal:content="syn/getUpdateFrequency|default">2</syn:updateFrequency>
-            <syn:updateBase tal:content="syn/getUpdateBase|default">2000-01-01T12:00+00:00</syn:updateBase>
+        <metal:block fill-slot="syndication">
+            <syn:updatePeriod tal:content="python: syn.getUpdatePeriod(context)|default">hourly</syn:updatePeriod>
+            <syn:updateFrequency tal:content="python: syn.getUpdateFrequency(context)|default">2</syn:updateFrequency>
+            <syn:updateBase tal:content="python: syn.getHTML4UpdateBase(context)|default">2000-01-01T12:00+00:00</syn:updateBase>
         </metal:block>
     </metal:block>
-
-    
 </tal:block>
-</tal:rest>
 
 </rdf:RDF>
