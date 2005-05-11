@@ -100,13 +100,13 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
         """ The version this instance of plone is on """
         return self.Control_Panel.Products.CMFPlone.version.lower()
 
-    security.declareProtected(View, 'getFSVersion')
+    security.declareProtected(View, 'getFSVersionTuple')
     def getFSVersionTuple(self):
         """ returns tuple representing filesystem version """
         v_str = self.getFileSystemVersion()
         return versionTupleFromString(v_str)
 
-    security.declareProtected(View, 'getDBVersion')
+    security.declareProtected(View, 'getInstanceVersionTuple')
     def getInstanceVersionTuple(self):
         """ returns tuple representing instance version """
         v_str = self.getInstanceVersion()
