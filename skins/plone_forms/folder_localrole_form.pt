@@ -47,6 +47,40 @@
         </div>
     </tal:warning>
 
+<form method="post"
+          name="setacquisition"
+          action="folder_localrole_set">
+
+      <fieldset>
+
+        <legend i18n:translate="legend_security_settings">
+            Advanced Settings
+        </legend>
+
+        <div class="field">
+            <input class="noborder" type="checkbox" name="use_acquisition:int" value="1" id="inherit"
+                tal:attributes="checked     python:test(inheritanceActive,1,None)"
+                /> 
+            <label for="inherit">Inherit roles from higher levels </label>
+            <div class="formHelp" i18n:translate="help_use_acquisition">
+                Determines if the roles given to users and groups from higher levels are in
+                effect in this context.
+            </div>
+        </div>
+
+        <div class="submit">
+            <input class="context"
+                type="submit"
+                value="Apply Settings"
+                i18n:attributes="value"
+                tabindex=""
+                tal:attributes="tabindex tabindex/next;"
+                />
+        </div>
+
+      </fieldset>
+    </form>
+
     <!-- form for changing existing roles -->
     <form method="post"
           name="deleterole"
@@ -506,39 +540,7 @@
 
         </tal:groupshares>
 
-    <form method="post"
-          name="setacquisition"
-          action="folder_localrole_set">
-
-      <fieldset>
-
-        <legend i18n:translate="legend_security_settings">
-            Advanced Settings
-        </legend>
-
-        <div class="field">
-            <input class="noborder" type="checkbox" name="use_acquisition:int" value="1" id="inherit"
-                tal:attributes="checked     python:test(inheritanceActive,1,None)"
-                /> 
-            <label for="inherit">Inherit roles from higher levels </label>
-            <div class="formHelp" i18n:translate="help_use_acquisition">
-                Determines if the roles given to users and groups from higher levels are in
-                effect in this context.
-            </div>
-        </div>
-
-        <div class="submit">
-            <input class="context"
-                type="submit"
-                value="Apply Settings"
-                i18n:attributes="value"
-                tabindex=""
-                tal:attributes="tabindex tabindex/next;"
-                />
-        </div>
-
-      </fieldset>
-    </form>
+    
 
       <div metal:use-macro="here/document_byline/macros/byline">
         Get the byline - contains details about author and modification date.
