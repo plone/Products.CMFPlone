@@ -11,13 +11,8 @@
 
     <span id="breadcrumbs-you-are-here" i18n:translate="you_are_here">You 
 are here:</span>
-    <span tal:condition="breadcrumbs" tal:omit-tag="">
-            <a i18n:translate="tabs_home" tal:attributes="href python:portal_url">Home</a>
-            <span class="breadcrumbSeparator">&rarr;</span>
-    </span>
-    <span tal:condition="not: breadcrumbs" i18n:translate="tabs_home" tal:omit-tag="">
-        Home
-    </span>
+    <a i18n:translate="tabs_home" tal:attributes="href python:portal_url">Home</a>
+	<span tal:condition="breadcrumbs" class="breadcrumbSeparator">&rarr;</span>
     <span tal:repeat="crumb breadcrumbs">
         <tal:last tal:define="is_last repeat/crumb/end">
             <a href="#"
