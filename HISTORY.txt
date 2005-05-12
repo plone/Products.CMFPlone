@@ -1766,7 +1766,7 @@ Plone 2.0 - Fyuti - Released March 23, 2004
       the old use_folder_contents.
       [pupq]
 
-    - Diet Plone - an initial page load of Plone was reduced from
+    - Diet Plone® - an initial page load of Plone was reduced from
       150K to 75K, and HTTP requests from 30 to 15 by performing
       the following tweaks:
       [limi]
@@ -2654,7 +2654,7 @@ Plone 1.0.4 - Zita Swoon - Released August 14, 2003
       Content Accessibility Guidelines (WAI-A) and US Government
       Section 508 compliant.  The law applies to all US Federal agencies
       when they develop, procure, maintain, or use electronic and
-      information technology. Under Section 508 (29 U.S.C. 794d),
+      information technology. Under Section 508 (29 U.S.C. § 794d),
       agencies must give disabled employees and members of the public
       access to information that is comparable to the access available
       to others. Plone is now able to be used in these agencies.
