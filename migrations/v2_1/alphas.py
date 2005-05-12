@@ -134,6 +134,9 @@ def alpha1_alpha2(portal):
     # Add selectable_views to portal root
     addSiteRootViewTemplates(portal, out)
 
+    # Add translation service tool to portal root
+    addTranslationServiceTool(portal, out)
+
     # ADD NEW STUFF BEFORE THIS LINE AND LEAVE THE TRAILER ALONE!
 
     # Rebuild catalog
@@ -170,6 +173,15 @@ def alpha1_alpha2(portal):
     addTypesUseViewActionInListingsProperty(portal, out)
     
     return out
+
+
+def addTranslationServiceTool(portal, out):
+    """Adds the TranslationServiceTool to portal."""
+    addCMFPloneTool = portal.manage_addProduct['CMFPlone'].manage_addTool
+    translationServiceTool = getToolByName(portal, 'translation_service', None)
+    if translationServiceTool is None:
+        addCMFPloneTool('Portal Translation Service Tool', None)
+        out.append('Added TranslationService Tool')
 
 
 def replaceMailHost(portal, out):

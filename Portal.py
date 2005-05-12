@@ -371,8 +371,6 @@ class PloneGenerator(Portal.PortalGenerator):
         addCMFPloneTool(ToolNames.ActionIconsTool, None)
         addCMFPloneTool(ToolNames.CalendarTool, None)
 
-        addCMFPloneTool(ToolNames.TranslationServiceTool, None)
-
         # 3rd party tools we depend on
         addCMFPloneTool(ToolNames.QuickInstallerTool, None)
         addCMFPloneTool(ToolNames.GroupsTool, None)
