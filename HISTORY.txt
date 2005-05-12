@@ -4,6 +4,18 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Fixed #850: Allow discussions to be closed.  I changed
+      viewThreadsAtBottom to list existing discussion items even if
+      discussion is disabled.  This requires our own
+      portal_discussion.getDiscussionFor, because CMFDefault's raises
+      DiscussionNotAllowed on this get operation.
+
+      I also added a check for
+      portal_discussion.isDiscussionAllowedFor in validate_talkback
+      because, funnily enough, DiscussionNotAllowed isn't raised on
+      createReply in DiscussionItem when it's turned off.
+      [dpunktnpunkt]
+
     - Added a getGroupInfo() public method to the portal_groups tool, like
       getMemberInfo() in portal_membership tool.
       [gerry_kirk]

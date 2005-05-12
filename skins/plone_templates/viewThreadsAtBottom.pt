@@ -8,17 +8,16 @@
      tal:define="userHasReplyPermission python:checkPermission('Reply to item', here);
                  portal_discussion portal/portal_discussion;
                  isDiscussionAllowed python:portal_discussion.isDiscussionAllowedFor(here);
-                 userIsAnonymous isAnon;
                  hereTypeInfo python:request.get('this_typeinfo', here.getTypeInfo());
                  view_action python:hereTypeInfo.getActionById('view');
                  isViewTemplate python:template_id==view_action or view_action=='view';
                  ">
-    <tal:allowed condition="python:isDiscussionAllowed and isViewTemplate">
+    <tal:allowed condition="isViewTemplate">
         <tal:comments>
             <form name="reply"
                   action=""
                   method="post"
-                  tal:condition="userHasReplyPermission"
+                  tal:condition="python:userHasReplyPermission and isDiscussionAllowed"
                   tal:attributes="action string:$here_url/discussion_reply_form">
     
                   <input class="standalone"
@@ -27,7 +26,7 @@
                          i18n:attributes="value"
                          />
             </form>
-            <form tal:condition="python:userIsAnonymous and not userHasReplyPermission"
+            <form tal:condition="python:isAnon and not userHasReplyPermission and isDiscussionAllowed"
                   tal:define="pss modules/Products/PythonScripts/standard"
                   tal:attributes="action python:'%s/login_form?came_from=%s' %
                                                 (here.portal_url(),
@@ -71,7 +70,7 @@
                           method="post"
                           style="display: inline;"
                           tal:attributes="action string:${reply/absolute_url}/discussion_reply_form"
-                          tal:condition="userHasReplyPermission">
+                          tal:condition="python:userHasReplyPermission and isDiscussionAllowed">
                         <input class="standalone"
                                type="submit"
                                value="Reply"
