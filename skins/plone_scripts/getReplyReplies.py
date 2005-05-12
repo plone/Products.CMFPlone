@@ -7,8 +7,17 @@
 ##parameters=obj
 ##title=gets the replies to an object
 ##
+
 replies = []
 pd = container.portal_discussion
+
+from Products.CMFDefault.DiscussionTool import DiscussionNotAllowed
+try:
+    # We're trying to get discussions for an object that has not only
+    # discussions turned off but also no discussion container.
+    pd.getDiscussionFor(obj)
+except DiscussionNotAllowed:
+    return []
 
 def getRs(obj, replies, counter):
     rs = pd.getDiscussionFor(obj).getReplies()

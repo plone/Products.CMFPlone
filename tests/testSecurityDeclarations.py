@@ -167,6 +167,15 @@ class TestSecurityDeclarations(RestrictedPythonTest):
         self.check('import Products.CMFPlone;'
                    'print Products.CMFPlone.base_hasattr')
 
+    def testImport_DiscussionNotAllowed(self):
+        self.check('from Products.CMFDefault.DiscussionTool '
+                   'import DiscussionNotAllowed')
+
+    def testAccess_DiscussionNotAllowed(self):
+        self.check('from Products.CMFDefault.DiscussionTool '
+                   'import DiscussionNotAllowed;'
+                   'print DiscussionNotAllowed')
+
     def testImport_Unauthorized(self):
         self.check('from AccessControl import Unauthorized')
 

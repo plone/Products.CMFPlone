@@ -120,6 +120,9 @@ def initialize(context):
     # Make base_hasattr importable TTW
     ModuleSecurityInfo('Products.CMFPlone').declarePublic('base_hasattr')
 
+    # Make DiscussionNotAllowed importable TTW
+    ModuleSecurityInfo('Products.CMFDefault.DiscussionTool').declarePublic('DiscussionNotAllowed')
+
     # Setup migrations
     import migrations
     migrations.executeMigrations()
