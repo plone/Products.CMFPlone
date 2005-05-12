@@ -532,6 +532,8 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         navigation_tree_slot."""
         ct=getToolByName(self, 'portal_catalog')
         ntp=getToolByName(self, 'portal_properties').navtree_properties
+        stp=getToolByName(self, 'portal_properties').site_properties
+        view_action_types = stp.getProperty('typesUseViewActionInListings')
         currentPath = None
 
         custom_query = getattr(self, 'getCustomNavQuery', None)
@@ -572,20 +574,23 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         foundcurrent = False
         for item in rawresult:
             path = item.getPath()
+            # Some types may require the 'view' action, respect this
+            item_url = (item.portal_type in view_action_types and
+                                    item.getURL() + '/view') or item.getURL()
             currentItem = path == currentPath
             if currentItem:
                 foundcurrent = path
             data = {'Title':item.Title or self.utf8_portal('\xe2\x80\xa6', 'ignore'),
                     'currentItem':currentItem,
-                    'absolute_url': item.getURL(),
-                    'getURL':item.getURL(),
+                    'absolute_url': item_url,
+                    'getURL':item_url,
                     'path': path,
                     'icon':item.getIcon,
                     'creation_date': item.CreationDate,
                     'review_state': item.review_state,
                     'Description':item.Description,
                     'children':[],
-                    'no_display': excluded_ids.has_key(item.getId) or item.exclude_from_nav}
+                    'no_display': excluded_ids.has_key(item.getId) or not not item.exclude_from_nav}
             self._addToNavTreeResult(result, data)
 
         portalpath = getToolByName(self, 'portal_url').getPortalPath()
@@ -618,10 +623,13 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                         review_state = wf_tool.getInfoFor(item, 'review_state')
                     except WorkflowException:
                         review_state = ''
+                    # Some types may require the 'view' action, respect this
+                    item_url = (item.portal_type in view_action_types and
+                         item.absolute_url() + '/view') or item.absolute_url()
                     data = {'Title': item.Title() or self.utf8_portal('\xe2\x80\xa6', 'ignore'),
                             'currentItem': currentItem,
-                            'absolute_url': item.absolute_url(),
-                            'getURL': item.absolute_url(),
+                            'absolute_url': item_url,
+                            'getURL': item_url,
                             'path': path,
                             'icon': item.getIcon(),
                             'creation_date': item.CreationDate(),
@@ -652,6 +660,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         ct=getToolByName(self, 'portal_catalog')
         ntp=getToolByName(self, 'portal_properties').navtree_properties
         stp=getToolByName(self, 'portal_properties').site_properties
+        view_action_types = stp.getProperty('typesUseViewActionInListings')
 
         if stp.getProperty('disable_folder_sections', None):
             return []
@@ -686,8 +695,10 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         result = []
         for item in rawresult:
             if not (excluded_ids.has_key(item.getId) or item.exclude_from_nav):
+                item_url = (item.portal_type in view_action_types and
+                         item.getURL() + '/view') or item.getURL()
                 data = {'name':item.Title or self.utf8_portal('\xe2\x80\xa6', 'ignore'),
-                        'id':item.getId, 'url': item.getURL(), 'description':item.Description}
+                        'id':item.getId, 'url': item_url, 'description':item.Description}
                 result.append(data)
         return result
 
@@ -695,6 +706,8 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     def createBreadCrumbs(self, context):
         "Returns a structure for the portal breadcumbs"""
         ct=getToolByName(self, 'portal_catalog')
+        stp=getToolByName(self, 'portal_properties').site_properties
+        view_action_types = stp.getProperty('typesUseViewActionInListings')
         query = {}
 
         #Check to see if the current page is a folder default view, if so
@@ -715,8 +728,10 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         result = []
         for r_tuple in dec_result:
             item = r_tuple[1]
+            item_url = (item.portal_type in view_action_types and
+                         item.getURL() + '/view') or item.getURL()
             data = {'Title':item.Title or self.utf8_portal('\xe2\x80\xa6', 'ignore'),
-                    'absolute_url': item.getURL()}
+                    'absolute_url': item_url}
             result.append(data)
         return result
 

@@ -527,6 +527,7 @@ class TestNavTree(PloneTestCase.PloneTestCase):
         folder2.invokeFactory('Document', 'doc21')
         folder2.invokeFactory('Document', 'doc22')
         folder2.invokeFactory('Document', 'doc23')
+        folder2.invokeFactory('File', 'file21')
         self.setRoles(['Member'])
 
     def testCreateNavTree(self):
@@ -541,6 +542,42 @@ class TestNavTree(PloneTestCase.PloneTestCase):
         tree = self.utils.createNavTree(self.portal.folder2)
         self.failUnless(tree)
         self.assertEqual(tree['children'][-1]['currentItem'], True)
+
+    def testCreateNavTreeRespectsTypesWithViewAction(self):
+        # With a File or Image as current action it should return a
+        # currentItem which has '/view' appended to the url
+        tree = self.utils.createNavTree(self.portal.folder2.file21)
+        self.failUnless(tree)
+        # Fail if 'view' is used for parent folder; it should only be on the File
+        self.failIf(tree['children'][-1]['absolute_url'][-5:]=='/view')
+        # Verify we have the correct object and it is the current item
+        self.assertEqual(tree['children'][-1]['children'][-1]['currentItem'],True)
+        self.assertEqual(tree['children'][-1]['children'][-1]['path'].split('/')[-1],'file21')
+        # Verify that we have '/view'
+        self.assertEqual(tree['children'][-1]['children'][-1]['absolute_url'][-5:],'/view')
+
+    def testNavTreeExcludesItemsWithExcludeProperty(self):
+        # Make sure that items witht he exclude_from_nav property set get
+        # no_display set to True
+        self.portal.folder2.manage_addProperty('exclude_from_nav',True,'boolean')
+        self.portal.folder2.reindexObject()
+        tree = self.utils.createNavTree(self.portal.folder2.file21)
+        self.failUnless(tree)
+        self.assertEqual(tree['children'][-1]['no_display'],True)
+        # Shouldn't exlude anything else
+        self.assertEqual(tree['children'][0]['no_display'],False)
+
+    def testNavTreeExcludesItemsInIdsNotToList(self):
+        # Make sure that items whose ids are in the idsNotToList navTree
+        # property get no_display set to True
+        ntp=self.portal.portal_properties.navtree_properties
+        ntp.manage_changeProperties(idsNotToList=['folder2'])
+        tabs = self.utils.createTopLevelTabs()
+        tree = self.utils.createNavTree(self.portal.folder2.file21)
+        self.failUnless(tree)
+        self.assertEqual(tree['children'][-1]['no_display'],True)
+        # Shouldn't exlude anything else
+        self.assertEqual(tree['children'][0]['no_display'],False)
 
     def testCreateSitemap(self):
         # Internally createSitemap is the same as createNavTree
@@ -631,6 +668,42 @@ class TestPortalTabs(PloneTestCase.PloneTestCase):
         tabs = self.utils.createTopLevelTabs()
         self.assertEqual(tabs, [])
 
+    def testTabsExcludeItemsWithExcludeProperty(self):
+        # Make sure that items witht he exclude_from_nav property are purged
+        self.portal.folder2.manage_addProperty('exclude_from_nav',True,'boolean')
+        self.portal.folder2.reindexObject()
+        tabs = self.utils.createTopLevelTabs()
+        self.failUnless(tabs)
+        self.assertEqual(len(tabs),4)
+        tab_names = [t['id'] for t in tabs]
+        self.failIf('folder2' in tab_names)
+
+    def testTabsRespectsTypesWithViewAction(self):
+        # With a type in typesUseViewActionInListings as current action it
+        # should return a tab which has '/view' appended to the url
+        tabs = self.utils.createTopLevelTabs()
+        self.failUnless(tabs)
+        # Fail if 'view' is used for folder
+        self.failIf(tabs[-1]['url'][-5:]=='/view')
+        # Add Folder to site_property
+        props = self.portal.portal_properties.site_properties
+        props.manage_changeProperties(typesUseViewActionInListings=['Image','File','Folder'])
+        # Verify that we have '/view'
+        tabs = self.utils.createTopLevelTabs()
+        self.failUnless(tabs)
+        self.assertEqual(tabs[-1]['url'][-5:],'/view')
+
+    def testTabsExcludeItemsInIdsNotToList(self):
+        # Make sure that items whose ids are in the idsNotToList navTree
+        # property get purged
+        ntp=self.portal.portal_properties.navtree_properties
+        ntp.manage_changeProperties(idsNotToList=['folder2'])
+        tabs = self.utils.createTopLevelTabs()
+        self.failUnless(tabs)
+        self.assertEqual(len(tabs),4)
+        tab_names = [t['id'] for t in tabs]
+        self.failIf('folder2' in tab_names)
+
 
 class TestBreadCrumbs(PloneTestCase.PloneTestCase):
     '''Tests for the portal tabs query'''
@@ -644,6 +717,7 @@ class TestBreadCrumbs(PloneTestCase.PloneTestCase):
         self.portal.invokeFactory('Folder', 'folder1')
         folder1 = getattr(self.portal, 'folder1')
         folder1.invokeFactory('Document', 'doc11')
+        folder1.invokeFactory('File', 'file11')
         self.setRoles(['Member'])
 
     def testCreateBreadCrumbs(self):
@@ -654,6 +728,14 @@ class TestBreadCrumbs(PloneTestCase.PloneTestCase):
         self.assertEqual(len(crumbs), 2)
         self.assertEqual(crumbs[-1]['absolute_url'], doc.absolute_url())
         self.assertEqual(crumbs[-2]['absolute_url'], doc.aq_parent.absolute_url())
+
+    def testBreadcrumbsRespectTypesWithViewAction(self):
+        # With a type in typesUseViewActionInListings as current action it
+        # should return a breadcrumb which has '/view' appended to the url
+        file = self.portal.folder1.file11
+        crumbs = self.utils.createBreadCrumbs(file)
+        self.failUnless(crumbs)
+        self.assertEqual(crumbs[-1]['absolute_url'][-5:],'/view')
 
 
 def test_suite():
