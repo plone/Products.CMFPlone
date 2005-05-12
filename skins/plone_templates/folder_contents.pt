@@ -243,14 +243,14 @@
                       <a href=""
                          title="Move item up"
                          i18n:attributes="title"
-                         tal:attributes="href string:$here_url/folder_position?position=up&amp;id=$item_id">
+                         tal:attributes="href string:$here_url/folder_position?position=up&amp;id=$item_id&amp;template_id=${template/getId}">
                          <img tal:replace="structure arrowUp" />
                       </a>
                       &nbsp;
                       <a href=""
                          title="Move item down"
                          i18n:attributes="title"
-                         tal:attributes="href string:$here_url/folder_position?position=down&amp;id=$item_id">
+                         tal:attributes="href string:$here_url/folder_position?position=down&amp;id=$item_id&amp;template_id=${template/getId}">
                          <img tal:replace="structure arrowDown" />
                       </a>
                     </td>
