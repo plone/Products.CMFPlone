@@ -16,6 +16,24 @@ class GroupsTool(PloneBaseTool, BaseTool):
 
     __implements__ = (PloneBaseTool.__implements__, BaseTool.__implements__, )
 
+
+    security.declarePublic('getGroupInfo')
+    def getGroupInfo(self, groupId):
+        """
+        Return default group info of any group
+        """
+        group = self.getGroupById(groupId)
+        
+        if group is None:
+            return None
+
+        groupinfo = { 'title'    : group.getProperty('title'),
+                      'description' : group.getProperty('description'),
+                      'email' : group.getProperty('email'),
+                     }
+
+        return groupinfo
+
 GroupsTool.__doc__ = BaseTool.__doc__
 
 InitializeClass(GroupsTool)
