@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Made folder_cut, folder_copy, folder_paste, and folder_position redirect
+      to the originating template not hardcoded folder_contents.
+      [alecm]
+
     - Fixed #850: Allow discussions to be closed.  I changed
       viewThreadsAtBottom to list existing discussion items even if
       discussion is disabled.  This requires our own
