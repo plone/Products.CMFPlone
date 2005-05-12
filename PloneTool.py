@@ -294,13 +294,14 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     def _makeTransactionNote(self, obj, msg=''):
         #XXX why not aq_parent()?
         relative_path='/'.join(getToolByName(self, 'portal_url').getRelativeContentPath(obj)[:-1])
+        charset = self.getSiteEncoding()
         if not msg:
             msg=relative_path+'/'+obj.title_or_id()+' has been modified.'
         if isinstance(msg, UnicodeType):
             # Convert unicode to a regular string for the backend write IO.
             # UTF-8 is the only reasonable choice, as using unicode means
             # that Latin-1 is probably not enough.
-            msg = msg.encode('utf-8')
+            msg = msg.encode(charset)
         if not get_transaction().description:
             transaction_note(msg)
 

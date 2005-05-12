@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - PloneTool._makeTransactionNote() now uses the site encoding not UTF-8.
+      [alecm]
+
     - Made folder_cut, folder_copy, folder_paste, and folder_position redirect
       to the originating template not hardcoded folder_contents.
       [alecm]
