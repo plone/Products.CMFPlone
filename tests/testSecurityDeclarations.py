@@ -16,6 +16,7 @@ from AccessControl import Unauthorized
 from ZODB.POSException import ConflictError
 from Products.ZCTextIndex.ParseTree import ParseError
 from OFS.CopySupport import CopyError
+from Products.CMFDefault.DiscussionTool import DiscussionNotAllowed
 
 
 class RestrictedPythonTest(ZopeTestCase.ZopeTestCase):
@@ -166,15 +167,6 @@ class TestSecurityDeclarations(RestrictedPythonTest):
     def testAccess_base_hasattr(self):
         self.check('import Products.CMFPlone;'
                    'print Products.CMFPlone.base_hasattr')
-
-    def testImport_DiscussionNotAllowed(self):
-        self.check('from Products.CMFDefault.DiscussionTool '
-                   'import DiscussionNotAllowed')
-
-    def testAccess_DiscussionNotAllowed(self):
-        self.check('from Products.CMFDefault.DiscussionTool '
-                   'import DiscussionNotAllowed;'
-                   'print DiscussionNotAllowed')
 
     def testImport_Unauthorized(self):
         self.check('from AccessControl import Unauthorized')
@@ -331,6 +323,27 @@ except SyntaxError: pass
 from OFS.CopySupport import CopyError
 try: context.raiseCopyError()
 except CopyError: pass
+''')
+        except Exception, e:
+            self.fail('Failed to catch: %s %s (module %s)' %
+                      (e.__class__.__name__, e, e.__module__))
+
+    def testImport_DiscussionNotAllowed(self):
+        self.check('from Products.CMFDefault.DiscussionTool '
+                   'import DiscussionNotAllowed')
+
+    def testAccess_DiscussionNotAllowed(self):
+        self.check('import Products.CMFDefault.DiscussionTool;'
+                   'print Products.CMFDefault.DiscussionTool.DiscussionNotAllowed')
+
+    def testCatch_DiscussionNotAllowedRaisedByPythonModule(self):
+        self.folder._setObject('raiseDiscussionNotAllowed',
+                               dummy.Raiser(DiscussionNotAllowed))
+        try:
+            self.check('''
+from Products.CMFDefault.DiscussionTool import DiscussionNotAllowed
+try: context.raiseDiscussionNotAllowed()
+except DiscussionNotAllowed: pass
 ''')
         except Exception, e:
             self.fail('Failed to catch: %s %s (module %s)' %
