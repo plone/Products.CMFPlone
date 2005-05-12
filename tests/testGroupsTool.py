@@ -58,21 +58,13 @@ class TestGroupsTool(PloneTestCase.PloneTestCase):
         self.assertEqual(g.aq_parent.__class__.__name__, 'GRUFGroup')
         self.assertEqual(g.aq_parent.aq_parent.__class__.__name__, 'GroupUserFolder')
 
-    def testEditGroupAndGetGroupInfo(self):
+    def testEditGroup(self):
         self.groups.addGroup('foo', )
-        self.groups.editGroup('foo', roles = ['Reviewer'], title = 'A title', description = 'desc', email = 'f@foo.com') # => no domains on groups
+        self.groups.editGroup('foo', roles = ['Reviewer']) #, ['foo.com']) => no domains on groups
         g = self.groups.getGroupById('foo')
         self.assertEqual(sortTuple(g.getRoles()), ('Authenticated', 'Reviewer'))
-	info = self.groups.getGroupInfo('foo')
-        self.assertEqual(info['title'], 'A title')	
-        self.assertEqual(info['description'], 'desc')	
-        self.assertEqual(info['email'], 'f@foo.com')	
         ##self.assertEqual(g.getDomains(), ('foo.com',))                  # No domains on groups
         ##self.assertEqual(g.getGroup()._getPassword(), 'secret')         # No password for groups
-
-    def testGetBadGroupInfo(self):
-	info = self.groups.getGroupInfo('foo')
-        self.assertEqual(info, None)	
 
     def testEditBadGroup(self):
         # Error type depends on the user folder...
@@ -163,6 +155,24 @@ class TestGroupsTool(PloneTestCase.PloneTestCase):
         self.assertEqual(g.__class__.__name__, 'GroupData')
         self.assertEqual(g.aq_parent.__class__.__name__, 'GRUFGroup')
         self.assertEqual(g.aq_parent.aq_parent.__class__.__name__, 'GroupUserFolder')
+
+    def testGetGroupInfo(self):
+        self.groups.addGroup('foo', title='Foo', description='Bar', email='foo@foo.com')
+        info = self.groups.getGroupInfo('foo')
+        self.assertEqual(info.get('title'), 'Foo')
+        self.assertEqual(info.get('description'), 'Bar')
+        self.assertEqual(info.get('email'), None) # No email!
+
+    def testGetGroupInfoAsAnonymous(self):
+        self.groups.addGroup('foo', title='Foo', description='Bar')
+        self.logout()
+        info = self.groups.restrictedTraverse('getGroupInfo')('foo')
+        self.assertEqual(info.get('title'), 'Foo')
+        self.assertEqual(info.get('description'), 'Bar')
+
+    def testGetBadGroupInfo(self):
+        info = self.groups.getGroupInfo('foo')
+        self.assertEqual(info, None)
 
 
 class TestGroupWorkspacesFolder(PloneTestCase.PloneTestCase):
