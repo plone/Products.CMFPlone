@@ -6,14 +6,16 @@
 ##bind subpath=traverse_subpath
 ##parameters=msgid, mapping={}, default=None, domain='plone', target_language=None
 
-from Products.CMFPlone.utils import translate_wrapper
+# get tool
+tool = context.translation_service
 
-value = translate_wrapper(domain,
-                          msgid,
-                          mapping,
-                          context=context,
-                          target_language=target_language,
-                          default=default)
+# this returns type unicode 
+value = tool.utranslate(domain,
+                        msgid,
+                        mapping,
+                        context=context,
+                        target_language=target_language,
+                        default=default)
 
 if not value and default is None:
     value = msgid
@@ -22,4 +24,3 @@ if not value and default is None:
         value = value.replace('${%s}' % k, v)
 
 return value
-    

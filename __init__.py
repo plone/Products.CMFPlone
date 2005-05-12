@@ -63,15 +63,6 @@ def initialize(context):
     ModuleSecurityInfo('zLOG').declarePublic('INFO')
     ModuleSecurityInfo('zLOG').declarePublic('WARNING')
     
-    ModuleSecurityInfo('Products.CMFPlone.utils').declarePublic('translate_wrapper')
-    ModuleSecurityInfo('Products.CMFPlone.utils').declarePublic('localized_time')
-    allow_module('Products.CMFPlone.utils')
-
-    # This is now deprecated, use utils instead.
-    ModuleSecurityInfo('Products.CMFPlone.PloneUtilities').declarePublic('translate_wrapper')
-    ModuleSecurityInfo('Products.CMFPlone.PloneUtilities').declarePublic('localized_time')
-    allow_module('Products.CMFPlone.PloneUtilities')
-
     # For form validation bits
     from Products.CMFPlone.utils import IndexIterator
     allow_class(IndexIterator)
@@ -169,6 +160,7 @@ def initialize(context):
     import CatalogTool, SkinsTool, DiscussionTool
     import CalendarTool, ActionIconsTool, QuickInstallerTool
     import GroupDataTool, GroupsTool
+    import TranslationServiceTool
 
     tools = ( MembershipTool.MembershipTool,
               MemberDataTool.MemberDataTool,
@@ -195,6 +187,7 @@ def initialize(context):
               QuickInstallerTool.QuickInstallerTool,
               GroupsTool.GroupsTool,
               GroupDataTool.GroupDataTool,
+              TranslationServiceTool.TranslationServiceTool,
             )
 
     from Products.CMFCore.utils import initializeBasesPhase1
