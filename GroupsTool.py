@@ -29,8 +29,7 @@ class GroupsTool(PloneBaseTool, BaseTool):
 
         groupinfo = { 'title'    : group.getProperty('title'),
                       'description' : group.getProperty('description'),
-                      'email' : group.getProperty('email'),
-                     }
+                    }
 
         return groupinfo
 
