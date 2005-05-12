@@ -70,6 +70,10 @@ class TestGroupsTool(PloneTestCase.PloneTestCase):
         ##self.assertEqual(g.getDomains(), ('foo.com',))                  # No domains on groups
         ##self.assertEqual(g.getGroup()._getPassword(), 'secret')         # No password for groups
 
+    def testGetBadGroupInfo(self):
+	info = self.groups.getGroupInfo('foo')
+        self.assertEqual(info, None)	
+
     def testEditBadGroup(self):
         # Error type depends on the user folder...
         try:
