@@ -54,6 +54,20 @@ class TranslationServiceTool(PloneBaseTool, UniqueObject, SimpleItem):
         # return as type string
         return m.encode(output_encoding, errors)
         
+    security.declarePublic('asunicodetype')
+    def asunicodetype(self, m, input_encoding=None, errors='strict'):
+        # create type unicode from type string
+        
+        if isinstance(m, unicode): return m
+            
+        if input_encoding is None:
+            # get input encoding from portal
+            plone_tool = getToolByName(self, 'plone_utils')
+            input_encoding = plone_tool.getSiteEncoding()
+            
+        # return as type unicode
+        return unicode(str(m), input_encoding, errors)
+        
     security.declarePublic('localized_time')
     def localized_time(self, time, long_format = None, context = None, domain='plone'):
   
