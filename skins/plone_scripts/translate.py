@@ -6,21 +6,11 @@
 ##bind subpath=traverse_subpath
 ##parameters=msgid, mapping={}, default=None, domain='plone', target_language=None
 
+# translate using unicode type
+value = context.utranslate(msgid, mapping, default, domain, target_language)
+
 # get tool
 tool = context.translation_service
 
-# this returns type unicode 
-value = tool.utranslate(domain,
-                        msgid,
-                        mapping,
-                        context=context,
-                        target_language=target_language,
-                        default=default)
-
-if not value and default is None:
-    value = msgid
-
-    for k, v in mapping.items():
-        value = value.replace('${%s}' % k, v)
-
-return value
+# encode using site encoding
+return tool.encode(value)
