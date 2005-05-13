@@ -52,7 +52,7 @@ def utranslate(*args, **kw):
         # fallback code when the translation service does not
         # support unicode. The dummy service will do 
         # interpolation but nothing more.
-        return dummy_service.translated(*args, **kw)
+        return dummy_service.translate(*args, **kw)
 
     # this returns the translation as type unicode
     return service.utranslate(*args, **kw)
