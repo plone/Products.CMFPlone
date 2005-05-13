@@ -4,6 +4,13 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Add 'shasattr' from Archetypes.utils to __init__.py, make the existing
+      'base_hasattr' a wrapper around this safer more flexible method.
+      Please use this in python scripts and elsewhere in place of 'hasattr'
+      which has serious potential issues.  Can be imported with
+      'from Products.CMFPlone import shasattr'.
+      [alecm]
+
     - Fix livesearch_reply and queryCatalog so that they quote parentheses.
       Otherwise a parse error is thrown.  Fixes
       http://members.plone.org/collector/3067 the other listed characters

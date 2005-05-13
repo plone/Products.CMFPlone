@@ -6,6 +6,7 @@ from Acquisition import aq_base
 
 cmfplone_globals = globals()
 this_module = sys.modules[ __name__ ]
+_marker = []
 
 # Stores the available 'Customization Policies'
 custom_policies = {}
@@ -39,8 +40,8 @@ def transaction_note(note):
         T.note(str(note))
 
 def base_hasattr(ob, name):
-    ob = aq_base(ob)
-    return hasattr(ob, name)
+    #just use shasattr here
+    return shasattr(ob, name, acquire=False)
 
 
 def initialize(context):
@@ -226,3 +227,44 @@ def initialize(context):
 
     import CustomizationPolicy
     CustomizationPolicy.register(context, cmfplone_globals)
+
+def shasattr(obj, attr, acquire=False):
+    """Safe has attribute method
+
+    * It's acquisition safe by default because it's removing the acquisition
+      wrapper before trying to test for the attribute.
+
+    * It's not using hasattr which might swallow a ZODB ConflictError (actually
+      the implementation of hasattr is swallowing all exceptions). Instead of
+      using hasattr it's comparing the output of getattr with a special marker
+      object.
+
+    XXX the getattr() trick can be removed when Python's hasattr() is fixed to
+    catch only AttributeErrors.
+
+    Quoting Shane Hathaway:
+
+    That said, I was surprised to discover that Python 2.3 implements hasattr
+    this way (from bltinmodule.c):
+
+            v = PyObject_GetAttr(v, name);
+            if (v == NULL) {
+                    PyErr_Clear();
+                    Py_INCREF(Py_False);
+                    return Py_False;
+            }
+        Py_DECREF(v);
+        Py_INCREF(Py_True);
+        return Py_True;
+
+    It should not swallow all errors, especially now that descriptors make
+    computed attributes quite common.  getattr() only recently started catching
+    only AttributeErrors, but apparently hasattr is lagging behind.  I suggest
+    the consistency between getattr and hasattr should be fixed in Python, not
+    Zope.
+
+    Shane
+    """
+    if not acquire:
+        obj = aq_base(obj)
+    return getattr(obj, attr, _marker) is not _marker
