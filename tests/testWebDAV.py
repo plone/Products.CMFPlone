@@ -88,8 +88,8 @@ class TestPUTObjects(PloneTestCase.FunctionalTestCase):
 
         self.assertEqual(response.getStatus(), 201)
         self.failUnless('new_html' in self.folder.objectIds())
-        self.assertEqual(self.folder.new_html.EditableBody(), html)
         self.assertEqual(self.folder.new_html.portal_type, 'Document')
+        self.assertEqual(self.folder.new_html.EditableBody(), html)
 
     def testPUTTextDocumentRSTNoContentType(self):
         # Create a new document via FTP/DAV, some clients do not send
@@ -102,8 +102,8 @@ class TestPUTObjects(PloneTestCase.FunctionalTestCase):
 
         self.assertEqual(response.getStatus(), 201)
         self.failUnless('test.rst' in self.folder.objectIds())
-        self.assertEqual(self.folder['test.rst'].EditableBody(), '')
         self.assertEqual(self.folder['test.rst'].portal_type, 'Document')
+        self.assertEqual(self.folder['test.rst'].EditableBody(), '')
 
     def testPUTTextDocumentTXTNoContentType(self):
         # Create a new document via FTP/DAV, some clients do not send
@@ -116,8 +116,8 @@ class TestPUTObjects(PloneTestCase.FunctionalTestCase):
 
         self.assertEqual(response.getStatus(), 201)
         self.failUnless('test.txt' in self.folder.objectIds())
-        self.assertEqual(self.folder['test.txt'].EditableBody(), '')
         self.assertEqual(self.folder['test.txt'].portal_type, 'Document')
+        self.assertEqual(self.folder['test.txt'].EditableBody(), '')
 
     def testPUTTextDocumentININoContentType(self):
         # Create a new document via FTP/DAV, some clients do not send
@@ -130,8 +130,8 @@ class TestPUTObjects(PloneTestCase.FunctionalTestCase):
 
         self.assertEqual(response.getStatus(), 201)
         self.failUnless('test.ini' in self.folder.objectIds())
-        self.assertEqual(self.folder['test.ini'].EditableBody(), '')
         self.assertEqual(self.folder['test.ini'].portal_type, 'Document')
+        self.assertEqual(self.folder['test.ini'].EditableBody(), '')
 
     def testPUTIndexHtmlDocument(self):
         # Create an index_html document via FTP/DAV
@@ -143,9 +143,9 @@ class TestPUTObjects(PloneTestCase.FunctionalTestCase):
 
         self.assertEqual(response.getStatus(), 201)
         self.failUnless('index_html' in self.folder.objectIds())
+        self.assertEqual(self.folder.index_html.portal_type, 'Document')
         self.assertEqual(self.folder.index_html.EditableBody(), html)
         self.assertEqual(self.folder._getOb('index_html').EditableBody(), html)
-        self.assertEqual(self.folder.index_html.portal_type, 'Document')
 
     def testPUTImage(self):
         # Create a new image via FTP/DAV
@@ -157,8 +157,8 @@ class TestPUTObjects(PloneTestCase.FunctionalTestCase):
 
         self.assertEqual(response.getStatus(), 201)
         self.failUnless('new_image' in self.folder.objectIds())
-        self.assertEqual(str(self.folder.new_image.getImage().data), dummy.GIF)
         self.assertEqual(self.folder.new_image.portal_type, 'Image')
+        self.assertEqual(str(self.folder.new_image.getImage().data), dummy.GIF)
 
     def testPUTImageGIFNoContentType(self):
         # Create a new image via FTP/DAV, some clients do not send a
@@ -174,8 +174,8 @@ class TestPUTObjects(PloneTestCase.FunctionalTestCase):
 
         self.assertEqual(response.getStatus(), 201)
         self.failUnless('test.gif' in self.folder.objectIds())
-        self.assertEqual(str(self.folder['test.gif'].getImage().data), dummy.GIF)
         self.assertEqual(self.folder['test.gif'].portal_type, 'Image')
+        self.assertEqual(str(self.folder['test.gif'].getImage().data), dummy.GIF)
 
     def testPUTImageJPGNoContentType(self):
         # Create a new image via FTP/DAV, some clients do not send a
@@ -191,8 +191,8 @@ class TestPUTObjects(PloneTestCase.FunctionalTestCase):
 
         self.assertEqual(response.getStatus(), 201)
         self.failUnless('test.jpg' in self.folder.objectIds())
-        self.assertEqual(str(self.folder['test.jpg'].getImage().data), dummy.GIF)
         self.assertEqual(self.folder['test.jpg'].portal_type, 'Image')
+        self.assertEqual(str(self.folder['test.jpg'].getImage().data), dummy.GIF)
 
     def testPUTImagePNGNoContentType(self):
         # Create a new image via FTP/DAV, some clients do not send a
@@ -208,8 +208,8 @@ class TestPUTObjects(PloneTestCase.FunctionalTestCase):
 
         self.assertEqual(response.getStatus(), 201)
         self.failUnless('test.png' in self.folder.objectIds())
-        self.assertEqual(str(self.folder['test.png'].getImage().data), dummy.GIF)
         self.assertEqual(self.folder['test.png'].portal_type, 'Image')
+        self.assertEqual(str(self.folder['test.png'].getImage().data), dummy.GIF)
 
     def testPUTImageTIFFNoContentType(self):
         # Create a new image via FTP/DAV, some clients do not send a
@@ -225,8 +225,8 @@ class TestPUTObjects(PloneTestCase.FunctionalTestCase):
 
         self.assertEqual(response.getStatus(), 201)
         self.failUnless('test.tiff' in self.folder.objectIds())
-        self.assertEqual(str(self.folder['test.tiff'].getImage().data), dummy.GIF)
         self.assertEqual(self.folder['test.tiff'].portal_type, 'Image')
+        self.assertEqual(str(self.folder['test.tiff'].getImage().data), dummy.GIF)
 
     def testPUTImageICONoContentType(self):
         # Create a new image via FTP/DAV, some clients do not send a
@@ -242,8 +242,8 @@ class TestPUTObjects(PloneTestCase.FunctionalTestCase):
 
         self.assertEqual(response.getStatus(), 201)
         self.failUnless('test.ico' in self.folder.objectIds())
-        self.assertEqual(str(self.folder['test.ico'].getImage().data), dummy.GIF)
         self.assertEqual(self.folder['test.ico'].portal_type, 'Image')
+        self.assertEqual(str(self.folder['test.ico'].getImage().data), dummy.GIF)
 
     def testPUTIndexHtmlImage(self):
         # Create a new image named index_html via FTP/DAV
@@ -255,8 +255,8 @@ class TestPUTObjects(PloneTestCase.FunctionalTestCase):
 
         self.assertEqual(response.getStatus(), 201)
         self.failUnless('index_html' in self.folder.objectIds())
-        self.assertEqual(str(self.folder.index_html.getImage().data), dummy.GIF)
         self.assertEqual(self.folder.index_html.portal_type, 'Image')
+        self.assertEqual(str(self.folder.index_html.getImage().data), dummy.GIF)
 
     def testPUTDocumentIntoPortal(self):
         # Create a new document in the portal via FTP/DAV
@@ -270,8 +270,8 @@ class TestPUTObjects(PloneTestCase.FunctionalTestCase):
 
         self.assertEqual(response.getStatus(), 201)
         self.failUnless('new_html' in self.portal.objectIds())
-        self.assertEqual(self.portal.new_html.EditableBody(), html)
         self.assertEqual(self.portal.new_html.portal_type, 'Document')
+        self.assertEqual(self.portal.new_html.EditableBody(), html)
 
     def testPUTIndexHtmlDocumentIntoPortal(self):
         # Create an index_html document in the portal via FTP/DAV
@@ -285,9 +285,9 @@ class TestPUTObjects(PloneTestCase.FunctionalTestCase):
 
         self.assertEqual(response.getStatus(), 201)
         self.failUnless('index_html' in self.portal.objectIds())
+        self.assertEqual(self.portal.index_html.portal_type, 'Document')
         self.assertEqual(self.portal.index_html.EditableBody(), html)
         self.assertEqual(self.portal._getOb('index_html').EditableBody(), html)
-        self.assertEqual(self.portal.index_html.portal_type, 'Document')
 
 
 def test_suite():
