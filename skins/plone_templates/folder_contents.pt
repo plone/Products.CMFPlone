@@ -107,11 +107,11 @@
                    name="folder_factories:method"
                    value="Add New Item"
                    tabindex=""
-                   tal:define="ttype python: num_types==1 and here.translate(contentTypes[0].Title())"
+                   tal:define="ttype python: num_types==1 and here.utranslate(contentTypes[0].Title())"
                    tal:condition="python: num_types"
                    tal:attributes="tabindex tabindex/next|nothing;
-                                   value python:ttype and here.translate('Add ${type}', {'type': ttype}) or
-                                                          here.translate('label_add_new_item', default='Add New Item')" />
+                                   value python:ttype and here.utranslate('Add ${type}', {'type': ttype}) or
+                                                          here.utranslate('label_add_new_item', default='Add New Item')" />
           </metal:add_button>
           </div>
 

@@ -24,3 +24,4 @@ if not value and default is None:
         value = value.replace('${%s}' % k, v)
 
 return value
+
