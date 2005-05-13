@@ -168,6 +168,13 @@ class TestSecurityDeclarations(RestrictedPythonTest):
         self.check('import Products.CMFPlone;'
                    'print Products.CMFPlone.base_hasattr')
 
+    def testImport_shasattr(self):
+        self.check('from Products.CMFPlone import shasattr')
+
+    def testAccess_shasattr(self):
+        self.check('import Products.CMFPlone;'
+                   'print Products.CMFPlone.shasattr')
+
     def testImport_Unauthorized(self):
         self.check('from AccessControl import Unauthorized')
 
