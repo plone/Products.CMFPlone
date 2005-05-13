@@ -212,8 +212,7 @@
                 </tal:creators>
             </div>
     
-            <div class="field"
-                 tal:condition="python: checkPermission('Review portal content', here)">
+            <div class="field">
     
                 <label for="review_state" i18n:translate="label_review_status">Review status</label>
 

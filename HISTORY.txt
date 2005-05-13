@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Remove permission check in search_form, there's no reason to disallow
+      review_state seraches to users that are not granted 'Review portal
+      contents' on the portal root.  The catalog enforces 'View' security
+      just fine. Resolves http://members.plone.org/collector/2175
+      [alecm]
+
     - PloneTool._makeTransactionNote() now uses the site encoding not UTF-8.
       [alecm]
 
