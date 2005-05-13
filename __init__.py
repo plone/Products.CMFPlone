@@ -1,7 +1,7 @@
 import sys
+import os
 import Globals
-from os import path
-from types import UnicodeType
+from zLOG import LOG, INFO
 from Acquisition import aq_base
 
 cmfplone_globals = globals()
@@ -13,22 +13,17 @@ custom_policies = {}
 
 ADD_CONTENT_PERMISSION = 'Add portal content'
 
-misc_ = {'plone_icon': Globals.ImageFile(path.join('skins',
-                                                   'plone_images',
-                                                   'logoIcon.gif'),
-                                         cmfplone_globals)}
+misc_ = {'plone_icon': Globals.ImageFile(
+                       os.path.join('skins', 'plone_images', 'logoIcon.gif'),
+                       cmfplone_globals)}
 
-# For plone_debug method
-import zLOG
-
-
-def log(message,summary='',severity=0):
-    zLOG.LOG('MyDebugLog',severity,summary,message)
+def log(message, summary='', severity=INFO):
+    LOG('Plone Debug', severity, summary, message)
 
 def transaction_note(note):
     """ Write human legible note """
     T=get_transaction()
-    if isinstance(note, UnicodeType):
+    if isinstance(note, unicode):
         # Convert unicode to a regular string for the backend write IO.
         # UTF-8 is the only reasonable choice, as using unicode means
         # that Latin-1 is probably not enough.
@@ -82,7 +77,7 @@ def initialize(context):
 
     # For content_status_modify
     from Products.CMFCore.WorkflowCore import ObjectMoved, ObjectDeleted, \
-         WorkflowException
+                                              WorkflowException
     ModuleSecurityInfo('Products.CMFCore.WorkflowCore').declarePublic('ObjectMoved')
     ModuleSecurityInfo('Products.CMFCore.WorkflowCore').declarePublic('ObjectDeleted')
     ModuleSecurityInfo('Products.CMFCore.WorkflowCore').declarePublic('WorkflowException')
@@ -118,11 +113,11 @@ def initialize(context):
     # Make CopyError importable TTW
     ModuleSecurityInfo('OFS.CopySupport').declarePublic('CopyError')
 
-    # Make base_hasattr importable TTW
-    ModuleSecurityInfo('Products.CMFPlone').declarePublic('base_hasattr')
-
     # Make DiscussionNotAllowed importable TTW
     ModuleSecurityInfo('Products.CMFDefault.DiscussionTool').declarePublic('DiscussionNotAllowed')
+
+    # Make base_hasattr importable TTW
+    ModuleSecurityInfo('Products.CMFPlone').declarePublic('base_hasattr')
 
     # Setup migrations
     import migrations
@@ -227,6 +222,7 @@ def initialize(context):
 
     import CustomizationPolicy
     CustomizationPolicy.register(context, cmfplone_globals)
+
 
 def shasattr(obj, attr, acquire=False):
     """Safe has attribute method
