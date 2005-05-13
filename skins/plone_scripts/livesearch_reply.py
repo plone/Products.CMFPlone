@@ -25,7 +25,6 @@ def quotestring(s):
 
 def quote_bad_chars(s):
     bad_chars = ["(", ")"]
-    context.plone_log('Replacing bad chars')
     for char in bad_chars:
         s = s.replace(char, quotestring(char))
     return s
