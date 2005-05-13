@@ -12,7 +12,7 @@ from Products.CMFPlone import ToolNames
 from AccessControl import ClassSecurityInfo
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFCore.utils import getToolByName
-from utils import log_deprecated, log, utranslate
+from utils import utranslate
 
 
 class TranslationServiceTool(PloneBaseTool, UniqueObject, SimpleItem):
