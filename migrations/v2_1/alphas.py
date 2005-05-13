@@ -134,6 +134,10 @@ def alpha1_alpha2(portal):
     # Add selectable_views to portal root
     addSiteRootViewTemplates(portal, out)
 
+    # Get rid of CMF typo 'ExpiresDate' metadata in favor of proper DC
+    # 'ExpirationDate' metadata
+    reindex += switchToExpirationDateMetadata(portal, out) 
+
     # ADD NEW STUFF BEFORE THIS LINE AND LEAVE THE TRAILER ALONE!
 
     # Rebuild catalog
@@ -1029,3 +1033,18 @@ def addTypesUseViewActionInListingsProperty(portal, out):
                                              ['Image','File'],
                                              'lines')
             out.append("Added 'typesUseViewActionInListings' property to site_properties.")
+
+def switchToExpirationDateMetadata(portal, out):
+    """Remove ExpiresDate and add ExpirationDate columns the catalog."""
+    catalog = getToolByName(portal, 'portal_catalog', None)
+    if catalog is not None:
+        schema = catalog.schema()
+        if 'ExpiresDate' in schema:
+            catalog.delColumn('ExpiresDate')
+            out.append("Removed 'ExpiresDate' metadata from portal_catalog.")
+        if 'ExpirationDate' in schema:
+            return 0
+        catalog.addColumn('ExpirationDate')
+        out.append("Added 'ExpirationDate' metadata to portal_catalog.")
+        return 1 # Ask for reindexing
+    return 0

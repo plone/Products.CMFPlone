@@ -4,6 +4,22 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Fixed http://plone.org/collector/2416 by updating document_byline to use
+      the portal script.  Changed the isExpired script to prefer the DC
+      Metadata accessor 'ExpirationDate', but fall back on 'expires'.  Also,
+      it now uses safe_callable to determine whether we have an accessor or
+      catalog metadata, rather than strange looking exception handling.
+      [alecm]
+
+    - Changed the bogus 'ExipresDate' metadata from CMFCore to the DC
+      'ExpirationDate' during migration.
+      [alecm]
+
+    - Added safe_callable method to __init__.py.  This is acquisition and
+      ConfilctError safe (it uses shasattr), and should be used in place of
+      callable() when possible.
+      [alecm]
+
     - Add 'shasattr' from Archetypes.utils to __init__.py, make the existing
       'base_hasattr' a wrapper around this safer more flexible method.
       Please use this in python scripts and elsewhere in place of 'hasattr'

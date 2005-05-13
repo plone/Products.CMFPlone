@@ -63,7 +63,6 @@
         </metal:override>
         <metal:listing define-macro="folder_listing"
                        tal:define="contentFilter contentFilter|nothing;
-                                   isExpired nocall:portal/isExpired;
                                    iface_tool portal/portal_interface;
                                    use_folder_contents site_properties/typesLinkToFolderContentsInFC|nothing;
                                    use_view_action site_properties/typesUseViewActionInListings;
@@ -217,7 +216,7 @@
                       </a>
 
                       <span class="state-expired"
-                            tal:condition="python:isExpired(item)"
+                            tal:condition="python:portal.isExpired(item)"
                             i18n:translate="time_expired">expired</span>
                     </td>
 

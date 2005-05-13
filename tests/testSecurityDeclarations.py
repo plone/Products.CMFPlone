@@ -175,6 +175,13 @@ class TestSecurityDeclarations(RestrictedPythonTest):
         self.check('import Products.CMFPlone;'
                    'print Products.CMFPlone.shasattr')
 
+    def testImport_safe_callable(self):
+        self.check('from Products.CMFPlone import safe_callable')
+
+    def testAccess_safe_callable(self):
+        self.check('import Products.CMFPlone;'
+                   'print Products.CMFPlone.safe_callable')
+
     def testImport_Unauthorized(self):
         self.check('from AccessControl import Unauthorized')
 

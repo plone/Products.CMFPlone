@@ -1,6 +1,7 @@
 import sys
 import os
 import Globals
+from types import ClassType
 from zLOG import LOG, INFO
 from Acquisition import aq_base
 
@@ -264,3 +265,11 @@ def shasattr(obj, attr, acquire=False):
     if not acquire:
         obj = aq_base(obj)
     return getattr(obj, attr, _marker) is not _marker
+
+def safe_callable(obj):
+    """Make sure our callable checks are ConflictError and acquisition safe"""
+    if shasattr(obj,'__class__'):
+        if shasattr(obj,'__call__'):
+            return True
+        else:
+            return isinstance(obj, ClassType)

@@ -144,6 +144,14 @@ class TestCatalogSetup(PloneTestCase.PloneTestCase):
         self.assertEqual(self.catalog.Indexes['sortable_title'].__class__.__name__,
                          'FieldIndex')
 
+    def testExpirationDateInSchema(self):
+        # ExpirationDate column should be in catalog schema
+        self.failUnless('ExpirationDate' in self.catalog.schema())
+
+    def testExpiresDateNotInSchema(self):
+        # ExpirationDate column should be in catalog schema
+        self.failIf('ExpiresDate' in self.catalog.schema())
+
 
 class TestCatalogIndexing(PloneTestCase.PloneTestCase):
 

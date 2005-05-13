@@ -50,6 +50,7 @@ from Products.CMFPlone.migrations.v2_1.alphas import addMemberdataDescription
 from Products.CMFPlone.migrations.v2_1.alphas import alterChangeStateActionCondition
 from Products.CMFPlone.migrations.v2_1.alphas import fixFolderButtonsActions
 from Products.CMFPlone.migrations.v2_1.alphas import addTypesUseViewActionInListingsProperty
+from Products.CMFPlone.migrations.v2_1.alphas import switchToExpirationDateMetadata
 
 import types
 
@@ -1105,6 +1106,29 @@ class TestMigrations_v2_1(MigrationTest):
         # Should not fail if site_properties is missing
         self.properties._delObject('site_properties')
         addTypesUseViewActionInListingsProperty(self.portal, [])
+
+    def testSwitchToExpirationDateMetadata(self):
+        # This should delete ExpiresDate and add ExpirationDate to the catalog
+        # schema.
+        self.catalog.addColumn('ExpiresDate')
+        self.catalog.delColumn('ExpirationDate')
+        switchToExpirationDateMetadata(self.portal, [])
+        self.failUnless('ExpirationDate' in self.catalog.schema())
+        self.failUnless('ExpiresDate' not in self.catalog.schema())
+
+    def testSwitchToExpirationDateMetadataTwice(self):
+        # Should not fail if migrated again
+        self.catalog.addColumn('ExpiresDate')
+        self.catalog.delColumn('ExpirationDate')
+        switchToExpirationDateMetadata(self.portal, [])
+        switchToExpirationDateMetadata(self.portal, [])
+        self.failUnless('ExpirationDate' in self.catalog.schema())
+        self.failUnless('ExpiresDate' not in self.catalog.schema())
+
+    def testSwitchToExpirationDateMetadataNoCatalog(self):
+        # Should not fail if the catalog is missing
+        self.portal._delObject('portal_catalog')
+        switchToExpirationDateMetadata(self.portal, [])
 
 
 def test_suite():

@@ -48,7 +48,7 @@
   </span>
 
   <span class="state-expired"
-        tal:condition="python:here.isExpired(here)"
+        tal:condition="python:portal.isExpired(here)"
         i18n:translate="time_expired">
     expired
   </span>
