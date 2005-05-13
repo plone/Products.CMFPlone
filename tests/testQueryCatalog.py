@@ -175,6 +175,12 @@ class TestQueryCatalogQuoting(PloneTestCase.PloneTestCase):
         expected = {}
         self.assertEqual(self.stripTypes(self.folder.queryCatalog(request, show_all=1)), expected)
 
+    def testBadCharsAreQuoted(self):
+        request = {'SearchableText':'context(1)'}
+        # Catalog gets ( or ) in search and quotes them to avoid parse error
+        expected = {'SearchableText':'context"("1")"'}
+        self.assertEqual(self.stripTypes(self.folder.queryCatalog(request)), expected)
+
 
 class TestQueryCatalogParseError(PloneTestCase.PloneTestCase):
     """Checks that the queryCatalog script returns an empty result set

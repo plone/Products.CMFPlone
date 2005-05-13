@@ -7,6 +7,9 @@
 ##parameters=q,limit=10
 ##title=Determine whether to show an id in an edit form
 
+from Products.CMFCore.utils import getToolByName
+ploneUtils = getToolByName(context, 'plone_utils')
+
 # SIMPLE CONFIGURATION
 USE_ICON = True
 USE_RANKING = False
@@ -15,24 +18,28 @@ MAX_DESC = 55
 # generate a result set for the query
 catalog = context.portal_catalog
 
+friendly_types = ploneUtils.getUserFriendlyTypes()
+
+def quotestring(s):
+    return '"%s"' % s
+
+def quote_bad_chars(s):
+    bad_chars = ["(", ")"]
+    context.plone_log('Replacing bad chars')
+    for char in bad_chars:
+        s = s.replace(char, quotestring(char))
+    return s
+
 # for now we just do a full search to prove a point, this is not the
 # way to do this in the future, we'd use a in-memory probability based
 # result set.
-
 # convert queries to zctextindex
-q=q.split(' ')
-r=[]
-searchterms='+'.join(q)
-for w in q:
-    r.append("%s*" % w)
-    
-r = " and ".join(r)
-results = catalog(SearchableText=r)
+r=q.split(' ')
+r = " AND ".join(r)
+r = quote_bad_chars(r)+'*'
+searchterms = r.replace(' ','+')
 
-# add here the types, that should not appear in a search 
-filter=[]
-
-results = [r for r in results if not r.portal_type in filter]
+results = catalog(SearchableText=r, portal_type=friendly_types)
 
 RESPONSE = context.REQUEST.RESPONSE
 RESPONSE.setHeader('Content-Type', 'text/xml')

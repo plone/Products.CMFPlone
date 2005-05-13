@@ -4,6 +4,25 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Fix livesearch_reply and queryCatalog so that they quote parentheses.
+      Otherwise a parse error is thrown.  Fixes
+      http://members.plone.org/collector/3067 the other listed characters
+      from the Silva bug report don't appear to cause problems.  Also, apply
+      quote_logic if enabled to Title and Description text searches, not just
+      SearchableText by default.
+      [alecm]
+
+    - Made the livesearch_reply query a little less strange.  It used to turn
+      'my dumb query' into 'my* and dumb* and query*' which is strange, now it
+      just does 'my AND dumb AND query*'.  Also, the more link was just doing
+      'my+dumb+query', which results in an entirely different set of results
+      than shown in the dropdown, now it uses the same query as the dropdown.
+      [alecm]
+
+    - Use plone_utils.getUserFriendlyTypes() to do type restriction on
+      LiveSearch just like everywhere else.
+      [alecm]
+
     - Remove permission check in search_form, there's no reason to disallow
       review_state seraches to users that are not granted 'Review portal
       contents' on the portal root.  The catalog enforces 'View' security
