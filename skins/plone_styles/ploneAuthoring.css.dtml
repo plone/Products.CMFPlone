@@ -572,72 +572,7 @@ ol.visualNoMarker {
 	vertical-align: middle;
 }
 
-/*
-** Accessibility and visual enhancement elements
-*/
-
-.link-plain {
-    background-image: none;
-    padding: 0;
-}
-
-.link-parent {
-    display: block;
-    background: transparent url(&dtml-portal_url;/arrowUp.gif) 4px 5px no-repeat;
-    padding: 1px 0px 1px 16px;
-    font-size: &dtml-fontSmallSize;;
-}
-
-.link-user {
-    background: transparent url(&dtml-portal_url;/user.gif) 0 1px no-repeat;
-    padding: 1px 0px 1px 16px;
-}
-
-.link-external {
-    background: transparent url(&dtml-portal_url;/link_icon.gif) 0px 1px no-repeat;
-    padding: 1px 0px 1px 16px;
-}
-
-.link-https {
-    background: transparent url(&dtml-portal_url;/lock_icon.gif) 0px 1px no-repeat;
-    padding: 1px 0px 1px 16px;
-}
-
-.link-mailto {
-    background: transparent url(&dtml-portal_url;/mail_icon.gif) 0px 1px no-repeat;
-    padding: 1px 0px 1px 16px;
-}
-
-.link-news {
-    background: transparent url(&dtml-portal_url;/topic_icon.gif) 0px 1px no-repeat;
-    padding: 1px 0px 1px 16px;
-}
-
-.link-ftp {
-    background: transparent url(&dtml-portal_url;/file_icon.gif) 0px 1px no-repeat;
-    padding: 1px 0px 1px 16px;
-}
-
-.link-irc {
-    background: transparent url(&dtml-portal_url;/discussionitem_icon.gif) 0px 1px no-repeat;
-    padding: 1px 0px 1px 16px;
-}
-
-.link-callto {
-    background: transparent url(&dtml-portal_url;/phone_icon.gif) 0px 1px no-repeat;
-    padding: 1px 0px 1px 16px;
-}
-
-.link-comment {
-    background: transparent url(&dtml-portal_url;/discussionitem_icon.gif) center left no-repeat;
-    padding: 1px 0px 1px 16px !important; /* value:  */
-}
-
-.link-anchor {
-    color: &dtml-discreetColor;;
-    text-decoration: none;
-    font-weight: normal;
-}
+/* Accessibility elements */
 
 .hiddenStructure {
     display: block;

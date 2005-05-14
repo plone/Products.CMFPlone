@@ -109,6 +109,8 @@ example <a href="https://plone.org">Secure (HTTPS) link to plone.org</a>,
 example <a href="mailto:some@address">Mailto link</a>,
 example <a href="ftp://some.site">FTP link</a>,
 example <a href="news://some.site">NNTP (news) link</a>,
+example <a href="webcal://some.site">WebCal link</a>,
+example <a href="feed://some.site">RSS feed link</a>,
 example <a href="irc://some.network/#channel">IRC link</a>.
 </p>
 

@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Added icons for feed:// and webcal:// links.
+      [limi] [elvix]
+
     - Fixed http://plone.org/collector/2844 made
       WorkflowTool.getTransitionsFor return the action_url.  This is not
       currently used for the content menu, but it does allow developers to
