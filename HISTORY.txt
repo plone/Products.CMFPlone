@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Fixed http://plone.org/collector/2867 put the list reversal in
+      content_status_history in the proper place.
+      [alecm]
+
     - Fixed http://plone.org/collector/2416 by updating document_byline to use
       the portal script.  Changed the isExpired script to prefer the DC
       Metadata accessor 'ExpirationDate', but fall back on 'expires'.  Also,
