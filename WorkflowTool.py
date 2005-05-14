@@ -2,6 +2,7 @@ from Products.CMFCore.utils import _checkPermission, \
      _getAuthenticatedUser, limitGrantedRoles
 from Products.CMFCore.utils import getToolByName, _dtmldir
 from Products.CMFCore.WorkflowTool import WorkflowTool as BaseTool
+from Products.CMFCore.WorkflowTool import WorkflowInformation
 from Products.CMFPlone import ToolNames
 from ZODB.POSException import ConflictError
 
@@ -91,6 +92,7 @@ class WorkflowTool(PloneBaseTool, BaseTool):
         if type(obj) is type([]):
             return self.flattenTransitions(objs=obj, container=container)
         result = {}
+        info = WorkflowInformation(obj)
         chain = self.getChainFor(obj)
         for wf_id in chain:
             wf = self.getWorkflowById(wf_id)
@@ -108,7 +110,8 @@ class WorkflowTool(PloneBaseTool, BaseTool):
                                     'id': tdef.id,
                                     'title': tdef.title,
                                     'title_or_id': tdef.title_or_id(),
-                                    'name': tdef.actbox_name
+                                    'name': tdef.actbox_name,
+                                    'url': tdef.actbox_url % info
                                     }
         return tuple(result.values())
 

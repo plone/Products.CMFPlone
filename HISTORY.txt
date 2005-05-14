@@ -4,6 +4,13 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Fixed http://plone.org/collector/2844 made
+      WorkflowTool.getTransitionsFor return the action_url.  This is not
+      currently used for the content menu, but it does allow developers to
+      access this information for tighter control over transitions for custom
+      workflows.  Added new testWorkflowToool.py with one lonely test.
+      [alecm]
+
     - Fixed http://plone.org/collector/2867 put the list reversal in
       content_status_history in the proper place.
       [alecm]
