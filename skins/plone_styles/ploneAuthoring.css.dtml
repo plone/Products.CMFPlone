@@ -24,7 +24,6 @@
     background: &dtml-globalBackgroundColor; url(&dtml-portal_url;/linkOpaque.gif) 9px 1px no-repeat;
     cursor: pointer;
     font-size: &dtml-fontSmallSize;;
-    margin-bottom: 1em;
     padding: 1px 1px 1px 15px;
     text-transform: &dtml-textTransform;;
 }
@@ -33,7 +32,6 @@
     background: transparent url(&dtml-portal_url;/linkTransparent.gif) 9px 1px no-repeat;
     cursor: pointer;
     font-size: &dtml-fontSmallSize;;
-    margin-bottom: 1em;
     padding: 1px 1px 1px 15px;
     text-transform: &dtml-textTransform;;
 }
@@ -43,13 +41,12 @@
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-notifyBorderColor;;
     cursor: pointer;
     font-size: &dtml-fontSmallSize;;
-    margin-bottom: 1em;
     padding: 1px 1px 1px 15px;
     text-transform: &dtml-textTransform;;
 }
 input.searchButton {
-    font-size: 100%;
     margin-bottom: &dtml-borderWidth; ! important;
+    font-size: &dtml-fontSmallSize;;
     background: &dtml-backgroundColor; url(&dtml-portal_url;/search_icon.gif) 2px 1px no-repeat;
     cursor: pointer;
     padding: 1px 1px 1px 15px;
@@ -72,7 +69,7 @@ input.searchButton {
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-notifyBorderColor;;
 }
 
-/* The new form elements */
+/* The edit form elements */
 
 .field {
     top: 0;
@@ -82,11 +79,6 @@ input.searchButton {
 
 .field .field {
     margin: 1em 0 0 0;
-}
-
-.field label {
-    font-size: 100%;
-    font-weight: bold;
 }
 
 .fieldRequired {

@@ -184,6 +184,11 @@ form {
     border: none;
     margin: 0;
 }
+
+label {
+    font-weight: bold;
+}
+
 textarea {
     font: 100% Monaco, "Courier New", Courier, monospace;
     border: &dtml-borderWidth; solid &dtml-globalBorderColor;;

@@ -4,6 +4,15 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Finally removed all implicit margins from Plone's input elements - if
+      this leads to some slight disturbances in the force (ie. some of your
+      form elements have explicit margins added to compensate for the old
+      behaviour), I apologize - but this has been around since Plone 1.0, and
+      is just very confusing when you use the form elements. Should be easy
+      to adjust in your Product - just remove the margins you added to the
+      input tags.
+      [limi]
+
     - The tag rendering the description attribute is left out if there's no
       description, it also uses a paragraph tag instead of a div now.
       Resolves http://members.plone.org/collector/3841
