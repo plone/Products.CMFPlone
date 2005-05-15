@@ -16,10 +16,11 @@
             Title or id
         </h1>
 
-        <div class="documentDescription"
-             tal:content="here/Description">
-            description
-        </div>
+        <p class="documentDescription"
+           tal:content="here/Description"
+           tal:condition="here/Description">
+            Description
+        </p>
     
         <p>
             <span i18n:translate="link_address">The link address is:</span>

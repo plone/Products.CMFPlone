@@ -16,9 +16,11 @@
             Document actions (print, sendto etc)
         </div>
     
-        <div class="documentDescription" tal:content="here/Description">
+        <p class="documentDescription"
+           tal:content="here/Description"
+           tal:condition="here/Description">
             News summary
-        </div>
+        </p>
     
         <div tal:condition="here/image|nothing"
              style="float:right; border: 1px solid black; margin: 0 0 1em 1em;">

@@ -20,10 +20,11 @@
           Get the byline - contains details about author and modification date.
         </div>
 
-        <div class="documentDescription"
-             tal:content="here/Description">
-            description
-        </div>
+        <p class="documentDescription"
+           tal:content="here/Description"
+           tal:condition="here/Description">
+            Description
+        </p>
     
         <p tal:condition="python: not text and is_editable"
            i18n:translate="no_body_text"

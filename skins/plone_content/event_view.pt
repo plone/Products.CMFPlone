@@ -63,10 +63,11 @@
                 </tbody>
             </table>
 
-        <div class="documentDescription"
-             tal:content="here/Description">
-            description
-        </div>
+        <p class="documentDescription"
+           tal:content="here/Description"
+           tal:condition="here/Description">
+            Description
+        </p>
 
         <div tal:condition="here/text|nothing">
             <div tal:replace="structure here/text" />

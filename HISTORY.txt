@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - The tag rendering the description attribute is left out if there's no
+      description, it also uses a paragraph tag instead of a div now.
+      Resolves http://members.plone.org/collector/3841
+      [limi]
+
     - Added icons for feed:// and webcal:// links.
       [limi] [elvix]
 
