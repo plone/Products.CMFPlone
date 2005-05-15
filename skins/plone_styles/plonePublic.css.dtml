@@ -300,6 +300,11 @@
     text-transform: &dtml-textTransform;;
 }
 
+#portal-breadcrumbs a {
+    text-decoration: none;
+}
+
+
 .breadcrumbSeparator {
     font-size: 120%;
 }
@@ -467,7 +472,6 @@
 }
 .portalMessage a {
     color: &dtml-fontColor;;
-    text-decoration: underline;
 }
 .documentDescription {
     /* The summary text describing the document */
@@ -481,9 +485,6 @@
     font-weight: normal;
     color: &dtml-discreetColor;;
     margin: 0;    
-}
-.documentByLine a {
-    text-decoration: underline;
 }
 
 /* Useful deviations from regular style on elements */
@@ -510,10 +511,6 @@ textarea.proportional {
     color: &dtml-discreetColor;;
 }
 
-.productCredits a {
-    text-decoration: underline;
-}
-
 #portal-footer {
     background-color: &dtml-globalBackgroundColor;;
     border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
@@ -523,6 +520,10 @@ textarea.proportional {
     margin: 2em 0em 1em 0em;
     padding: 0.5em 0em 1em 0em;
     text-align: center;
+}
+
+#portal-footer a {
+    text-decoration: none;
 }
 
 #portal-footer a:hover {

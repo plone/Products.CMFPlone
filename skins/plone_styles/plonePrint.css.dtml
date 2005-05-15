@@ -86,7 +86,6 @@ a {
 a:link, a:visited {
     color: #520;
     background: transparent;
-    text-decoration: underline;
 }
 
 #content a:link:after, 

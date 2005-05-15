@@ -93,10 +93,6 @@ input.searchButton {
     margin: 0 0 0.2em 0;
 }
 
-.formHelp a {
-    text-decoration: underline;
-}
-
 .formHelp:hover {
     color: &dtml-fontColor;;
     cursor: default;
@@ -181,6 +177,11 @@ input.searchButton {
     border-right: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
     padding: 0.25em 1em;
 }
+
+.listing a {
+    text-decoration: none;
+}
+
 .listing a:hover {
     text-decoration: underline;
 }
@@ -267,6 +268,10 @@ ol.visualNoMarker {
     border: none;
     margin-bottom: 1em;
     padding: 0;
+}
+
+.portlet a {
+    text-decoration: none;
 }
 
 /* Compensation when rendering portlets in the content area */
@@ -528,11 +533,6 @@ ol.visualNoMarker {
     color: &dtml-discreetColor;;
     font-size: &dtml-fontSmallSize;;
     font-weight: normal;
-}
-
-.discreet a {
-    color: &dtml-discreetColor;;
-    text-decoration: underline;
 }
 
 .listingBar {

@@ -4,6 +4,13 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - More spring cleaning: Removed the implicit removal of underlining links -
+      Plone now specifies explicitly when it wants the link to not have an
+      underline, and defaults to having it, like the good HTML citizen it is.
+      Some products may get underlines on links that didn't have them before,
+      but this should be trivial to fix, and is worth it in the long run.
+      [limi]
+
     - Finally removed all implicit margins from Plone's input elements - if
       this leads to some slight disturbances in the force (ie. some of your
       form elements have explicit margins added to compensate for the old

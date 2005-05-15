@@ -33,7 +33,6 @@ table {
 }
 
 a {
-    text-decoration: none;
     color: &dtml-linkColor;;
     background-color: transparent;
 }
@@ -45,9 +44,7 @@ p {
     margin: 0.5em 0em 1em 0em;
     line-height: 1.5em;
 }
-p a {
-    text-decoration: underline;
-}
+
 p a:visited {
     color: &dtml-linkVisitedColor;;
     background-color: transparent;
@@ -138,10 +135,6 @@ ol {
     list-style-image: none;
 }
 
-ul a, ol a {
-    text-decoration: underline;
-}
-
 li {
     margin-bottom: 1em;
 }
@@ -150,16 +143,9 @@ dt {
     font-weight: bold;
 }
 
-dt a {
-    text-decoration: underline;
-}
-
 dd {
     line-height: 1.5em;
     margin-bottom: 1em;
-}
-dd a {
-    text-decoration: underline;
 }
 
 dd.link a {
@@ -242,9 +228,6 @@ pre {
     color: &dtml-fontColor;;
     background-color: &dtml-globalBackgroundColor;;
     overflow: auto;
-}
-.pre a {
-    text-decoration: underline;
 }
 
 ins {
