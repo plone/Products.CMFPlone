@@ -520,8 +520,13 @@ textarea.proportional {
     text-align: center;
 }
 
+#portal-footer p {
+    margin: 0.25em 0;
+}
+
 #portal-footer a {
     text-decoration: none;
+    color: &dtml-linkColor;;
 }
 
 #portal-footer a:hover {
