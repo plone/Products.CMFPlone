@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Replaced registered_notify_template and mail_password_template
+      DTMLs with page templates.  See http://plone.org/collector/3483
+      [dpunktnpunkt]
+
     - More spring cleaning: Removed the implicit removal of underlining links -
       Plone now specifies explicitly when it wants the link to not have an
       underline, and defaults to having it, like the good HTML citizen it is.
