@@ -319,9 +319,6 @@ Table of class <code>vertical listing</code>
                    value="Standalone button" />
             <input type="button"
                    value="Button" />
-            <input class="noborder"
-                   type="button"
-                   value="Button noborder" />
         </div>
     </fieldset>
 </form>
