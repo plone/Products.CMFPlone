@@ -1,0 +1,94 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+<head>
+<metal:fill fill-slot="css_slot">
+<style type="text/css"><!--
+h3 {margin: 0.1em 0em;}
+h2 {background-color: red; color: green; font-style: normal;}
+--></style>
+</metal:fill>
+</head>
+
+<body>
+
+<metal:main fill-slot="main">
+    <tal:main-macro metal:define-macro="main">
+
+<div class="document">
+<h1>IE7 test rendering in Plone</h1>
+
+<div class="content">
+
+<h3>Legend</h3>
+<style type="text/css"><!--
+ div.legend {height: 20px; font-weight: bold; text-indent: 4px;}
+ #fail {background: red; color: white;}
+ #pass {background: green; color: white;}
+--></style>
+<div class="legend" id="pass">PASS</div>
+<div class="legend" id="fail">FAIL</div>
+
+<hr />
+
+<h3>ie7-html4.js</h3>
+<style type="text/css"><!--
+ #ie7-html4 {background: red; height: 20px;}
+ #ie7-html4 abbr {display: block; background: green; height: 20px;}
+--></style>
+<div id="ie7-html4"><abbr>abbr tag</abbr></div>
+
+<h3>ie7-box-model.js</h3>
+<style type="text/css"><!--
+ #ie7-box-model {background: red; height: 20px; overflow: hidden;}
+ #ie7-box-model div.box {position: relative; top: -40px; background: green;
+   height: 40px; border-top: 20px red solid;}
+--></style>
+<div id="ie7-box-model"><div class="box">box model</div></div>
+
+<h3>ie7-png.js</h3>
+<style type="text/css"><!--
+ #ie7-png {background: green; height: 20px;}
+ #ie7-png div.box {height: 20px; background: url(test-trans.png);}
+--></style>
+<div id="ie7-png"><div class="box"></div></div>
+
+<h3>ie7-fixed.js</h3>
+<style type="text/css"><!--
+ #ie7-fixed {background: green; height: 20px;}
+ #ie7-fixed div.box {position: fixed; top: -20px; background: red; height: 20px;}
+--></style>
+<div id="ie7-fixed"><div class="box"></div></div>
+
+<h3>ie7-css2.js</h3>
+<style type="text/css"><!--
+ #ie7-css2 {background: red; height: 20px;}
+ #ie7-css2 > span {display: block; background: green; height: 20px;}
+--></style>
+<div id="ie7-css2"><span>&nbsp</span></div>
+
+<h3>ie7-css3.js</h3>
+<style type="text/css"><!--
+ #ie7-css3 {background: red; height: 20px;}
+ #ie7-css3:empty {background: green;}
+--></style>
+<div id="ie7-css3"></div>
+
+<h3>ie7-css-strict.js</h3>
+<style type="text/css"><!--
+ #ie7-css-strict {background: red; height: 20px;}
+ #ie7-css-strict > span.strict {display: block; background: green; height: 20px;}
+ #ie7-css-strict > span {display: block; background: red}
+--></style>
+<div id="ie7-css-strict"><span class="strict"></span></div>
+</div>
+
+
+    </tal:main-macro>
+</metal:main>
+
+</body>
+</html>
+
