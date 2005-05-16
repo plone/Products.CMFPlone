@@ -677,7 +677,7 @@ def addEditContentActions(portal, out):
          'permission': CMFCorePermissions.Permissions.copy_or_move,
         },
         {'id'        : 'batch',
-         'name'      : 'Batch Mode',
+         'name'      : 'Content',
          'action'    : "python:((object.isDefaultPageInFolder() and object.getParentNode().absolute_url()) or folder_url)+'/folder_contents'",
          'condition' : 'python:folder.displayContentsTab()',
          'permission': CMFCorePermissions.View,

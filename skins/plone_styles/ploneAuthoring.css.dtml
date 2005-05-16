@@ -747,7 +747,6 @@ ol.visualNoMarker {
 
 .contentActions ul {
     line-height: 1.2em;
-    height: 1.2em;
     padding: 0;
     margin: 0;
 }
@@ -777,8 +776,8 @@ ol.visualNoMarker {
 .contentActionMenuHeader {
     background-image: url(<dtml-var portal_url>/arrowDownAlternative.gif);
     background-repeat: no-repeat;
-    background-position: center right;
-    padding: 0 1em 0 0.5em !important;
+    background-position: 95% 60%;
+    padding: 0 1.5em 0 0.5em !important;
     cursor: pointer;
 }
 
@@ -826,7 +825,7 @@ ol.visualNoMarker {
 
 .contentBatchAction {
     float: left !important;
-    padding: 0;
+    padding: 0 0.5em;
     border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
     border-right: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
     border-left: none !important;
