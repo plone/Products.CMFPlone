@@ -5,10 +5,11 @@
 
 <p>
     <span i18n:translate="description_copyright" tal:omit-tag="">
-    Plone<sup>&reg;</sup> and its visual design is copyright 
-    &copy; 2000-<span i18n:name="current_year" 
-                      tal:define="now modules/DateTime/DateTime" 
-                      tal:content="now/year" />
+    Plone<sup>&reg;</sup> and its visual design is
+    <acronym title="Copyright">&copy;</acronym>
+    2000-<span i18n:name="current_year" 
+               tal:define="now modules/DateTime/DateTime" 
+               tal:content="now/year" />
     <span i18n:name="limi"><a href="http://www.plonesolutions.com">Alexander Limi</a></span>,
     <span i18n:name="runyaga"><a href="http://www.enfoldsystems.com">Alan Runyan</a></span>,
     <span i18n:name="blacktar"><a href="http://blacktar.com">Vidar Andersen</a></span>.
