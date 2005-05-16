@@ -21,50 +21,5 @@ div.box h5{background:&dtml-boxHeaderBackground;;border:&dtml-boxBorder;;border-
 div.box h6{background:&dtml-boxHeaderBackground;;border:&dtml-boxBorder;;border-style:solid solid none solid;color:&dtml-boxHeaderFontColor;;padding:0em 1em 0em 1em;text-transform:&dtml-textTransform;;display:block;font-size:1em;height:1.2em;font-weight:normal;}
 div.box input{font-size:100%;}
 
-/* The old tabs format */
-div.tabs{background:&dtml-mainTabBackdrop;;border-collapse:collapse;border-bottom-color:&dtml-mainTabBorderColorSelected;;border-bottom-style:solid;border-bottom-width:1px;padding:0.5em 0em 0em 2em;white-space:nowrap;}
-div.tabs a{background:&dtml-mainTabBackgroundNotSelected;;border-color:&dtml-mainTabBorderColor;;border-width:1px;border-style:solid solid none solid;color:&dtml-mainTabFontColor;;font-weight:&dtml-mainTabFontWeight;;height:1.2em;margin-right:0.5em;padding:0em 2em;text-transform:&dtml-textTransform;:;}
-div.tabs a.selected{background:&dtml-mainTabBackground;;border:1px solid &dtml-mainTabBorderColorSelected;;border-bottom:&dtml-mainTabBackground;1px solid;color:&dtml-mainTabFontColorSelected;;font-weight:&dtml-mainTabFontWeight;:;}
-div.tabs a:hover{background:&dtml-mainTabBackground;;border-color:&dtml-mainTabBorderColorSelected;;border-bottom-color:&dtml-mainTabBackground;;color:&dtml-mainTabFontColorSelected;:;}
-
-span.legend{background:&dtml-contentBackground;;font-size:80%;padding:0.5em;position:relative;top:-0.8em;left:0em;}
-
-/* The old columns format */
-table.columns{width:100%;}
-table.columns td.left{vertical-align:top;width:15%;padding:2em 0em 1em 2em;}
-table.columns td.main{vertical-align:top;padding:0em 2em 1em 2em;margin:0;}
-table.columns td.right{vertical-align:top;width:15%;padding:2em 2em 1em 0em;}
-
-/* Various deprecated elements */
-.addFavorite{vertical-align:bottom;}
-.boxDetails{text-align:right;}
-.breadcrumbs{float:left;text-transform:&dtml-textTransform;:;}
-.caseSensitive{text-transform:none;}
-.currentNavItem{color:&dtml-mainFontColor;;font-weight:bold;}
-.description{font:&dtml-descriptionFont;;display:block;margin:1em 0em;line-height:1.5em;}
-.footer{background:&dtml-footerBackground;;border-top:&dtml-footerBorder;;border-bottom:&dtml-footerBorder;;color:&dtml-mainFontColor;;clear:both;float:none;margin:2em 0em;padding:0.5em 0em 1em 0em;text-align:center;}
-.group{border:&dtml-groupBorder;;margin:1em 0em 1em 0em;padding:0em 1em;}
-.highlight{background-color:&dtml-evenRowBackground;:;}
-.logo{margin:&dtml-logoMargin;;padding:&dtml-logoPadding;:;}
-
-div.document{background:&dtml-mainBackground;;font:&dtml-contentFont;;padding:0;margin:0em 0em 2em 0em;}
-div.documentActions{float:right;margin-top:1.5em;}
-div.editableDocument{background:&dtml-contentBackground;;border:&dtml-contentTabBorder;;font:&dtml-contentFont;;margin:0em 0em 2em 0em;padding:0em 1em 2em 1em;}
-div.field{margin-top:0.2em;}
-div.help{background-color:#FFFFE1;border:1px solid black;font-size:80%;font-weight:normal;line-height:normal;text-align:left;position:absolute;left:-18em;top:1.5em;width:16em;padding:0.5em;}
-div.label{font-weight:bold;display:inline;padding-right:0.5em;}
-div.pathBar{border-bottom-color:&dtml-mainTabBorderColorSelected;;border-bottom-style:solid;border-bottom-width:1px;padding-left:2em;padding-right:2em;text-transform:&dtml-textTransform;:;}
-div.personalBar{background:&dtml-mainTabBackground;;border-bottom-color:&dtml-mainTabBorderColorSelected;;border-bottom-style:solid;border-bottom-width:1px;color:&dtml-mainFontColor;;padding-right:3em;text-align:right;text-transform:&dtml-textTransform;:;}
-div.personalBar a{background-color:transparent;color:&dtml-mainTabFontColorSelected;;font-weight:&dtml-mainTabFontWeight;;margin-left:1em;}
-div.personalBar img{vertical-align:top;}
-div.row{clear:both;min-height:4em;margin:0em 0em 1em 0em;position:relative;}
-div.searchBox{background-color:transparent;color:&dtml-searchFontColor;;float:right;margin:&dtml-searchMargin;;padding:&dtml-searchPadding;;text-align:right;text-transform:&dtml-textTransform;;width:30%;}
-
-/* Old content tabs + bar */
-#contentBar{background:&dtml-contentTabBackground;;border-left:&dtml-contentTabBorder;;border-right:&dtml-contentTabBorder;;color:&dtml-contentTabFontColor;;text-align:right;text-transform:&dtml-textTransform;:;}
-#contentTabs{background:&dtml-contentTabBackdrop;;border-collapse:collapse;border-bottom:&dtml-contentTabBorder;;padding-left:1em;margin-top:2em;white-space:nowrap;}
-#contentTabs a{background:&dtml-contentTabBackgroundNotSelected;;border:&dtml-contentTabBorder;;border-style:solid solid none solid;color:&dtml-contentTabFontColor;;font-weight:&dtml-contentTabFontWeight;;height:1.2em;margin-right:0.5em;padding:0em 2em;text-transform:&dtml-textTransform;:;}
-#contentTabs a.selected{background:&dtml-contentTabBackground;;border-bottom:&dtml-contentTabBackground;1px solid;color:&dtml-contentTabFontColorSelected;;font-weight:&dtml-contentTabFontWeight;:;}
-#contentTabs a:hover{background-color:&dtml-contentTabBackground;;color:&dtml-contentTabFontColorSelected;:;}
 
 /* </dtml-with> */
