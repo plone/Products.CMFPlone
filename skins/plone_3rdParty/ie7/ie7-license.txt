@@ -1,0 +1,12 @@
+The files in this directory are from Dean Edwards' excellent IE7 compatibility
+scripts to work around compliance bugs in Internet Explorer. Human-readable versions can be downloaded from his site - the scripts included with Plone
+are compressed to take up as little bandwidth as possible.
+
+Dean Edwards' web site:
+http://dean.edwards.name/IE7/
+
+The code is licensed under the LGPL:
+http://creativecommons.org/licenses/LGPL/2.1/
+
+The Plone Team would like to express their sincere thanks to Dean Edwards and
+his work, and for licensing it under the LGPL.
