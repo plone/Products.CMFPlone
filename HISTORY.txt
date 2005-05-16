@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Added automatically generated classes for content types. You can now
+      always get a class "contenttype-news-item" for every content type
+      installed. It is normalized according to the same rules as IDs.
+      [limi]
+
     - Replaced registered_notify_template and mail_password_template
       DTMLs with page templates.  See http://plone.org/collector/3483
       [dpunktnpunkt]

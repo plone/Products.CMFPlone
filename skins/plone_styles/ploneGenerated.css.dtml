@@ -23,6 +23,9 @@
    instead of on the link class itself because of bugs in Internet Explorer's
    rendering engine. It will flicker on hover if not. */
 
+<dtml-in "portal_types.listTypeInfo()"> 
+contenttype-<dtml-var "plone_utils.titleToNormalizedId(id)"> { background-image: url(<dtml-var portal_url>/<dtml-var getIcon>); padding-left: 16px;}
+</dtml-in>
 
 
 /* </dtml-with> */
