@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Added jscript that hides traditional add items pull-down in folder_contents.
+      [ender]
+
     - Major refactoring of the CSS, removed all the old navtree classes,
       made most of the templates use the new auto-generated 'contenttype-*'
       classes, and lots of other CSS fixes and tweaks.
@@ -11,7 +14,7 @@ Plone 2.1 - Plaid - (unreleased)
       "here":http://plone.org/documentation/how-to/flickering-background-images-internet-explorer
       [limi]
 
-      - Disabled 'Add to favorites' action until favorites are refactored
+    - Disabled 'Add to favorites' action until favorites are refactored
       in future plone versions. 
       [ender]
   
@@ -1921,7 +1924,7 @@ Plone 2.0 - Fyuti - Released March 23, 2004
 
     - Fix bug 2373 so folder_contents items goto
       getTypeInfo.getActionById('view')
-	[runyaga]
+    [runyaga]
 
     - Removed the ability to edit short names while adding a file,
       since users have problems remembering that the extension has to be
@@ -3524,9 +3527,9 @@ Plone 1.0alpha2
 
     - form validation has been refactored (basiclly the only thing you need
           in validate_xxx.py)
-	- the actual editing scripts call plone_utils.getNextXXXXFor() to get the
+    - the actual editing scripts call plone_utils.getNextXXXXFor() to get the
       next screen to goto
-	- look at plone_scripts/form_scripts/navigation_properties.props if you want
+    - look at plone_scripts/form_scripts/navigation_properties.props if you want
       to change this.
 
     - bad id's will not escape the validation machinery
