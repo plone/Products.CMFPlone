@@ -1011,62 +1011,62 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         """
         return "".join([_normalizeChar(c) for c in text]).encode('ascii')
 
-    security.declarePublic('titleToNormalizedId')
-    def titleToNormalizedId(self, title=""):
+    security.declarePublic('normalizeString')
+    def normalizeString(self, title=""):
         """
         Normalize a title to an id
 
-        titleToNormalizedId() converts a whole string to a normalized form that
+        normalizeString() converts a whole string to a normalized form that
         should be safe to use as in a url, as a css id, etc.
 
         all punctuation and spacing is removed and replaced with a '-':
 
-        >>> titleToNormalizedId("a string with spaces")
+        >>> normalizeString("a string with spaces")
         'a-string-with-spaces'
 
-        >>> titleToNormalizedId("p.u,n;c(t)u!a@t#i$o%n")
+        >>> normalizeString("p.u,n;c(t)u!a@t#i$o%n")
         'p-u-n-c-t-u-a-t-i-o-n'
 
         strings are lowercased:
 
-        >>> titleToNormalizedId("UppERcaSE")
+        >>> normalizeString("UppERcaSE")
         'uppercase'
 
         punctuation, spaces, etc. are trimmed and multiples are reduced to just
         one:
 
-        >>> titleToNormalizedId(" a string    ")
+        >>> normalizeString(" a string    ")
         'a-string'
 
-        >>> titleToNormalizedId(">here's another!")
+        >>> normalizeString(">here's another!")
         'here-s-another'
 
-        >>> titleToNormalizedId("one with !@#$!@#$ stuff in the middle")
+        >>> normalizeString("one with !@#$!@#$ stuff in the middle")
         'one-with-stuff-in-the-middle'
 
         the exception to all this is that if there is something that looks like a
         filename with an extension at the end, it will preserve the last period.
 
-        >>> titleToNormalizedId("this is a file.gif")
+        >>> normalizeString("this is a file.gif")
         'this-is-a-file.gif'
 
-        >>> titleToNormalizedId("this is. also. a file.html")
+        >>> normalizeString("this is. also. a file.html")
         'this-is-also-a-file.html'
 
-        titleToNormalizedId() uses normalizeISO() to convert stray unicode
+        normalizeString() uses normalizeISO() to convert stray unicode
         characters. it will attempt to transliterate many of the common european
         accented letters to rough ASCII equivalents:
 
-        >>> titleToNormalizedId(u"Eksempel \xe6\xf8\xe5 norsk \xc6\xd8\xc5")
+        >>> normalizeString(u"Eksempel \xe6\xf8\xe5 norsk \xc6\xd8\xc5")
         'eksempel-eoa-norsk-eoa'
 
         for characters that we can't transliterate, we just return the hex codes of
         the byte(s) in the character. not pretty, but about the best we can do.
 
-        >>> titleToNormalizedId(u"\u9ad8\u8054\u5408 Chinese")
+        >>> normalizeString(u"\u9ad8\u8054\u5408 Chinese")
         '9ad880545408-chinese'
 
-        >>> titleToNormalizedId(u"\uc774\ubbf8\uc9f1 Korean")
+        >>> normalizeString(u"\uc774\ubbf8\uc9f1 Korean")
         'c774bbf8c9f1-korean'
         """
 

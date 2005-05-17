@@ -4,6 +4,15 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Renamed titleToNormalizedId to the variation prefered by limi
+      normalizeString()
+      [alecm]
+
+    - Fixed http://members.plone.org/collector/4062 made history_form show
+      true causes for an empty page, rather than always assuming that the
+      error is due to missing Historical interface.
+      [alecm]
+
     - Added automatically generated classes for content types. You can now
       always get a class "contenttype-news-item" for every content type
       installed. It is normalized according to the same rules as IDs.

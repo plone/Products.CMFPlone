@@ -248,6 +248,43 @@ class TestMembershipTool(PloneTestCase.PloneTestCase):
         info = self.membership.getMemberInfo('user2')
         self.assertEqual(info['fullname'], 'Second user')
 
+    def testGetCandidateLocalRolesIncludesLocalRolesOnObjectForManager(self):
+        self.folder._addRole('my_test_role')
+        self.folder.manage_setLocalRoles(default_user, ('Manager','Owner'))
+        roles = self.membership.getCandidateLocalRoles(self.folder)
+        self.failUnless('my_test_role' in roles,
+                        'my_test_role not in: %s'%str(roles))
+
+    def testGetCandidateLocalRolesIncludesLocalRolesOnObjectForAssignees(self):
+        self.folder._addRole('my_test_role')
+        self.folder.manage_setLocalRoles(default_user, ('my_test_role','Owner'))
+        roles = self.membership.getCandidateLocalRoles(self.folder)
+        self.failUnless('Owner' in roles)
+        self.failUnless('my_test_role' in roles)
+        self.assertEqual(len(roles), 2)
+
+    def testGetCandidateLocalRolesForManager(self):
+        self.folder._addRole('my_test_role')
+        self.folder.manage_setLocalRoles(default_user, ('Manager','Owner'))
+        roles = self.membership.getCandidateLocalRoles(self.folder)
+        self.failUnless('Manager' in roles)
+        self.failUnless('Owner' in roles)
+        self.failUnless('Reviewer' in roles)
+
+    def testGetCandidateLocalRolesForOwner(self):
+        self.folder._addRole('my_test_role')
+        roles = self.membership.getCandidateLocalRoles(self.folder)
+        self.failUnless('Owner' in roles)
+        self.assertEqual(len(roles), 1)
+
+    def testGetCandidateLocalRolesForAssigned(self):
+        self.folder._addRole('my_test_role')
+        self.folder.manage_setLocalRoles(default_user, ('Reviewer','Owner'))
+        roles = self.membership.getCandidateLocalRoles(self.folder)
+        self.failUnless('Owner' in roles)
+        self.failUnless('Reviewer' in roles)
+        self.assertEqual(len(roles), 2)
+
 
 class TestCreateMemberarea(PloneTestCase.PloneTestCase):
 
