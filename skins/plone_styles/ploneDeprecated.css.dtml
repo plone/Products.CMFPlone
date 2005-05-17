@@ -21,5 +21,18 @@ div.box h5{background:&dtml-boxHeaderBackground;;border:&dtml-boxBorder;;border-
 div.box h6{background:&dtml-boxHeaderBackground;;border:&dtml-boxBorder;;border-style:solid solid none solid;color:&dtml-boxHeaderFontColor;;padding:0em 1em 0em 1em;text-transform:&dtml-textTransform;;display:block;font-size:1em;height:1.2em;font-weight:normal;}
 div.box input{font-size:100%;}
 
+/* Old Navigation tree styling */
+.navIcon, .navIconRoot { position: relative; right: 20px; }
+.navItemText { margin-left: -20px; }
+.navRootItem, .navItem { margin: 0 0 0.2em 0; border: &dtml-borderWidth; &dtml-borderStyle; &dtml-backgroundColor;; display: block; background-repeat: no-repeat; background-position: 0 1px; padding: 0.1em 0.25em 0.2em 20px;margin: 1px 0;} 
+.currentNavItem { ackground-color: &dtml-globalBackgroundColor;;color: &dtml-globalFontColor;;border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;}
+.navLevel1 { margin-left: 0em; }
+.navLevel2 { margin-left: 1em; }
+.navLevel3 { margin-left: 2em; }
+.navLevel4 { margin-left: 3em; }
+.navLevel5 { margin-left: 4em; }
+.navLevel6 { margin-left: 4.5em; }
+.navLevel7 { margin-left: 5em;   }
+.navLevel8 { margin-left: 5.5em; }
 
 /* </dtml-with> */

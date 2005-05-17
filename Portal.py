@@ -74,7 +74,7 @@ return member_search()
 factory_type_information = { 'id'             : 'Plone Root'
   , 'meta_type'      : 'Plone Site'
   , 'description'    : """ The portal_type for the root object in a Plone system."""
-  , 'icon'           : 'folder_icon.gif'
+  , 'icon'           : 'site_icon.gif'
   , 'product'        : 'CMFPlone'
   , 'factory'        : 'manage_addSite'
   , 'filter_content_types' : 0

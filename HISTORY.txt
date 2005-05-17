@@ -4,13 +4,20 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
-    - Disabled 'Add to favorites' action until favorites are refactored
-	  in future plone versions. 
-	  [ender]
-	
-	- Modified labels in personal bar. Removed 'my this' and 'my that'.
-	  It's already a personal bar. 
-	  [ender]
+    - Major refactoring of the CSS, removed all the old navtree classes,
+      made most of the templates use the new auto-generated 'contenttype-*'
+      classes, and lots of other CSS fixes and tweaks.
+      Described the pitfalls for Internet Explorer
+      "here":http://plone.org/documentation/how-to/flickering-background-images-internet-explorer
+      [limi]
+
+      - Disabled 'Add to favorites' action until favorites are refactored
+      in future plone versions. 
+      [ender]
+  
+    - Modified labels in personal bar. Removed 'my this' and 'my that'.
+     It's already a personal bar. 
+      [ender]
 
     - Renamed titleToNormalizedId to the variation prefered by limi
       normalizeString()

@@ -118,6 +118,7 @@
 
         <!-- Navigation -->
         <div metal:use-macro="here/batch_macros/macros/navigation" />
+
           <table id="sortable"
                  class="listing"
                  summary="Content listing"
@@ -165,24 +166,25 @@
                                getRelativeContentURL nocall:utool/getRelativeContentURL
                                ">
                 <tal:items tal:repeat="item batch">
-                   <tr tal:define="oddrow repeat/item/odd;
-                                   getInfoFor python:wtool.getInfoFor;
-                                   item_url item/getURL|item/absolute_url;
-                                   item_id item/getId;
-                                   item_path item/getPath|python:'/'.join(item.getPhysicalPath());
-                                   item_title_or_id python: (same_type(item.getId,'') and (item.Title or putils.utf8_portal('\xe2\x80\xa6', 'ignore'))) or item.title_or_id();
-                                   item_description item/Description;
-                                   item_type item/portal_type;
-                                   item_typeinfo python: here.portal_types.getTypeInfo(item_type);
-                                   item_size item/getObjSize;
-                                   item_modified item/ModificationDate;
-                                   item_wf_state item/review_state|python: getInfoFor(item, 'review_state', '');
-                                   item_wf_state_class python:here.getStateClassName(item_wf_state);
-                                   item_icon python:portal_url+'/'+ item_typeinfo.getIcon();
-                                   hasGetUrl python:hasattr(item.aq_explicit, 'getURL');
-                                   item_rel_url python:hasGetUrl and item.getURL(relative=1) or getRelativeContentURL(item);
+                   <tr tal:define="oddrow               repeat/item/odd;
+                                   getInfoFor           python:wtool.getInfoFor;
+                                   item_url             item/getURL|item/absolute_url;
+                                   item_id              item/getId;
+                                   item_path            item/getPath|python:'/'.join(item.getPhysicalPath());
+                                   item_title_or_id     python: (same_type(item.getId,'') and (item.Title or putils.utf8_portal('\xe2\x80\xa6', 'ignore'))) or item.title_or_id();
+                                   item_description     item/Description;
+                                   item_type            item/portal_type;
+                                   item_typeinfo        python: here.portal_types.getTypeInfo(item_type);
+                                   item_size            item/getObjSize;
+                                   item_modified        item/ModificationDate;
+                                   item_type_class      python:'contenttype-' + putils.normalizeString(item_type);
+                                   item_wf_state        item/review_state|python: getInfoFor(item, 'review_state', '');
+                                   item_wf_state_class  python:here.getStateClassName(item_wf_state);
+                                   item_icon            python:portal_url+'/'+ item_typeinfo.getIcon();
+                                   hasGetUrl            python:hasattr(item.aq_explicit, 'getURL');
+                                   item_rel_url         python:hasGetUrl and item.getURL(relative=1) or getRelativeContentURL(item);
                                    browserDefaultResult here/browserDefault;
-                                   isBrowserDefault python:len(browserDefaultResult[1]) == 1 and item.id == here.browserDefault()[1][0]"
+                                   isBrowserDefault     python:len(browserDefaultResult[1]) == 1 and item.id == here.browserDefault()[1][0]"
                        tal:attributes="class python:test(oddrow, 'even', 'odd')" >
 
                        <tal:comment replace="nothing">
@@ -195,11 +197,11 @@
                                   class="noborder"
                                   name="paths:list" id="#"
                                   value="#"
-                                  tal:attributes="value item_path;
-                                                  id string:cb_$item_id;
+                                  tal:attributes="value   item_path;
+                                                  id      string:cb_$item_id;
                                                   checked python:test(request.get('ids_checked', False), 'checked', None);
-                                                  alt string:Select $item_title_or_id;
-                                                  title string:Select $item_title_or_id"/>
+                                                  alt     string:Select $item_title_or_id;
+                                                  title   string:Select $item_title_or_id" />
                       <input type="hidden" name="obj_paths:list" value="#"
                              tal:attributes="value item_rel_url" />
 
@@ -207,19 +209,21 @@
                     <td tal:define="url python:test(item_type in use_view_action,
                                     item_url+'/view',
                                     item_url+'/');">
-                      <a href="#" tal:attributes="href url;
-                                                  title item_description;">
-                          <img alt="" tal:attributes="src item_icon;
-                                               title item_type;"
-                               i18n:attributes="title"/>
+                        <span tal:attributes="class item_type_class">
+                        <a href="#" tal:attributes="href  url;
+                                                  title string: $item_type: $item_description;
+                                                  class string:$item_wf_state_class visualIconPadding;">
                             <strong tal:omit-tag="python:not isBrowserDefault">
-                            <span tal:content="item_title_or_id"
-                                  tal:attributes="class item_wf_state_class">Title</span></strong>
-                      </a>
-
-                      <span class="state-expired"
-                            tal:condition="python:portal.isExpired(item)"
-                            i18n:translate="time_expired">expired</span>
+                            <span tal:content="item_title_or_id">
+                              Item Title
+                            </span>
+                            </strong>
+                        </a>
+                        </span>
+                        
+                        <span class="state-expired"
+                              tal:condition="python:portal.isExpired(item)"
+                              i18n:translate="time_expired">expired</span>
                     </td>
 
                     <metal:item_slot metal:define-slot="item_display">

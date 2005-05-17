@@ -487,13 +487,14 @@
 
 /* Useful deviations from regular style on elements */
 
-ul.nomarker,
-ul.nomarker {
-    line-height: 1.5em;
-    margin: 0.5em 0 0 0;
-    padding: 0;
-    list-style-image: none;
+/* List classes without markers */
+
+ul.visualNoMarker,
+ol.visualNoMarker {
     list-style-type: none;
+    list-style-image: none;
+    margin: 0.5em 0 0 0;
+    line-height: 1em;
 }
 
 textarea.proportional {
@@ -561,6 +562,69 @@ textarea.proportional {
 }
 
 
+
+/* New navtree styles */
+
+.navTree {
+    list-style: none; 
+    list-style-image: none; 
+    margin-top: 1px;
+}
+
+.navTree li {
+    margin-bottom: 1px;
+}
+
+.navTreeItem {
+    display: block;
+}
+
+.navTreeItem a {
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-backgroundColor;;
+    display: block;
+    text-decoration: none;
+}
+
+.navTreeItem a:hover {
+    background-color: &dtml-globalBackgroundColor;;
+    color: &dtml-globalFontColor;;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+}
+
+.navTreeCurrentItem {
+    background-color: &dtml-globalBackgroundColor;;
+    color: &dtml-globalFontColor;;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor; !important;
+}
+
+.navTreeLevel0 {
+    margin: 0;
+}
+
+
+/* Sitemap styles */
+
+.portal-sitemap {
+    list-style: none;
+    list-style-image: none;
+    margin: 0;
+    font-size: 90%;
+    border: none;
+}
+
+.portal-sitemap .navTreeLevel1 {
+    padding-left: 1em;
+    border-left: 0.5em solid &dtml-globalBorderColor;;
+    margin: 0 0 0 0.5em;
+}
+
+.portal-sitemap .navTreeLevel2 {
+    padding-left: 1em;
+    border-left: 0.5em solid &dtml-globalBackgroundColor;;
+    margin: 0 0 0 0.6em;
+}
+
+
 /*
 ** Accessibility and visual enhancement elements
 */
@@ -575,6 +639,7 @@ textarea.proportional {
     background: transparent url(&dtml-portal_url;/arrowUp.gif) 4px 5px no-repeat;
     padding: 1px 0px 1px 16px;
     font-size: &dtml-fontSmallSize;;
+    text-decoration: none;
 }
 
 .link-user {
