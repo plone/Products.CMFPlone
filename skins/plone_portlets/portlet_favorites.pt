@@ -9,10 +9,13 @@
 <div metal:define-macro="portlet"
      tal:omit-tag=""
      tal:define="folder python:getattr(here.portal_membership.getHomeFolder(), 'Favorites', None);"
-     tal:condition="nocall: folder">
+     tal:condition="python: folder is not None">
 
     <div class="portlet"
-         tal:define="favorites python:test(folder, folder.contentValues('Favorite'), None);" id="portlet-favorites">
+         tal:define="favorites python:folder.getFolderContents({'portal_type': 'Favorite'});
+                     limit python:10;
+                     over_limit python:len(favorites)>limit;
+                     favorites python: favorites[:limit]" id="portlet-favorites">
 
         <h5 i18n:translate="box_my_favorites">My Favorites</h5>
 
@@ -20,21 +23,25 @@
 
             <div class="portletContent odd" tal:condition="favorites">
 
-                <span tal:repeat="o favorites">
+                <tal:notag tal:repeat="o favorites">
                     <a class="marker"
                        href=""
                        tal:attributes="href o/getRemoteUrl"
-                       tal:content="o/title_or_id">Favorite title</a>
+                       tal:content="python:o.Title or o.getId">Favorite title</a>
                     <br />
-                </span>
+                </tal:notag>
 
             </div>
+            
 
-            <div class="portletContent even">
+            <div class="portletContent odd">
                 <a href=""
-                   class="marker"
-                   i18n:translate="box_organize_favorites"
-                   tal:attributes="href string:${folder/absolute_url}/folder_contents">Organize Favorites</a>
+                   class="portletMore"
+                   tal:attributes="href string:${folder/absolute_url}/folder_contents"
+                   i18n:translate="box_morelink"
+                   >
+                    More...
+                </a>
             </div>
 
         </div>

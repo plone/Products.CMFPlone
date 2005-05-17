@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Make portlet_favorites work again and use the catalog like everything
+      else.  Also, use the addable types restrictions in users' Favorites
+      folders.
+      [alecm]
+
     - Fixed an obvious issue at global_defines when there's no
       portal_tabs actions.
       [deo]
