@@ -47,7 +47,9 @@ from Products.CMFPlone.migrations.v2_1.alphas import addMemberdataHome_Page
 from Products.CMFPlone.migrations.v2_1.alphas import addMemberdataLocation
 from Products.CMFPlone.migrations.v2_1.alphas import addMemberdataLanguage
 from Products.CMFPlone.migrations.v2_1.alphas import addMemberdataDescription
+from Products.CMFPlone.migrations.v2_1.alphas import addMemberdataExtEditor
 from Products.CMFPlone.migrations.v2_1.alphas import alterChangeStateActionCondition
+from Products.CMFPlone.migrations.v2_1.alphas import alterExtEditorActionCondition
 from Products.CMFPlone.migrations.v2_1.alphas import fixFolderButtonsActions
 from Products.CMFPlone.migrations.v2_1.alphas import addTypesUseViewActionInListingsProperty
 from Products.CMFPlone.migrations.v2_1.alphas import switchToExpirationDateMetadata

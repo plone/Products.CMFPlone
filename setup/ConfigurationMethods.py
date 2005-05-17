@@ -137,10 +137,17 @@ def addMemberdata(self, portal):
     md=getToolByName(portal, 'portal_memberdata')
     if not hasattr(md,'wysiwyg_editor'):
         safeEditProperty(md, 'wysiwyg_editor', '', 'string')
+
+    if not hasattr(md,'ext_editor'):
+        safeEditProperty(md, 'ext_editor', '0', 'boolean')
+    else:
+        safeEditProperty(md, 'ext_editor','1')
+        
     if not hasattr(md,'listed'):
         safeEditProperty(md, 'listed', '1', 'boolean')
     else:
         safeEditProperty(md, 'listed','1')
+        
     if not hasattr(md, 'fullname'):
         safeEditProperty(md, 'fullname', '', 'string')
     if not hasattr(md, 'error_log_update'):

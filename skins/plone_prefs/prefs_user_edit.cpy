@@ -24,6 +24,10 @@ for id, property in context.portal_memberdata.propertyItems():
         continue
     if REQUEST.has_key(id):
         processed[id] = REQUEST.get(id)
+
+if not processed.get('ext_editor'):
+    processed['ext_editor'] = ''
+
 if not processed.get('listed'):
     processed['listed'] = ''
 context.plone_utils.setMemberProperties(member, **processed)

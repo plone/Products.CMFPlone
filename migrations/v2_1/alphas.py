@@ -162,12 +162,17 @@ def alpha1_alpha2(portal):
     addMemberdataLocation(portal, out)
     addMemberdataDescription(portal, out)
     addMemberdataLanguage(portal, out)
+    addMemberdataExtEditor(portal,out)
 
     # Fix the conditions and permissions on the folder_buttons actions
     fixFolderButtonsActions(portal, out)
 
     # Change the condition for the change_state action
     alterChangeStateActionCondition(portal, out)
+    
+    # Change condition for the external editor action so it checks for the
+    # user preferences.
+    alterExtEditorActionCondition(portal, out)
 
     # Add typesUseViewActionInListings site_property for types like Image and File,
     # which shouldn't use immediate_view from folder_contents and listings
@@ -938,6 +943,12 @@ def addMemberdataLanguage(portal, out):
             memberdata_tool.manage_addProperty('language', '', 'string')
             out.append("Added 'language' property to portal_memberdata.")
 
+def addMemberdataExtEditor(portal, out):
+    memberdata_tool = safeGetMemberDataTool(portal)
+    if memberdata_tool is not None:
+        if not memberdata_tool.hasProperty('ext_editor'):
+            memberdata_tool.manage_addProperty('ext_editor', '1', 'boolean')
+            out.append("Added 'ext_editor' property to portal_memberdata.")
 
 def alterChangeStateActionCondition(portal, out):
     """ Change the change_state action so that it checks either Modify portal
@@ -972,6 +983,39 @@ def alterChangeStateActionCondition(portal, out):
                     category=newaction['category'],
                     visible=1)
             out.append("Added missing change_state action")
+
+
+def alterExtEditorActionCondition(portal, out):
+    """ Change the extedit action so that it checks the user
+    preferences for external editing.
+    """
+    newaction = {'id'        : 'extedit',
+                  'name'      : 'Change State',
+                  'action'    : 'string:$object_url/external_edit',
+                  'condition' : 'python: member and hasattr(member, "ext_editor") and member.ext_editor and object.absolute_url() != portal_url',
+                  'permission': CMFCorePermissions.ModifyPortalContent,
+                  'category': 'document_actions',
+                }
+    exists = False
+    actionsTool = getToolByName(portal, 'portal_actions', None)
+    if actionsTool is not None:
+        new_actions = actionsTool._cloneActions()
+        for action in new_actions:
+            if action.getId() == 'extedit' and action.category == newaction['category']:
+                exists = True
+                action.condition = Expression(text=newaction['condition']) or ''
+                out.append('Modified existing extedit action')
+        if exists:
+            actionsTool._actions = new_actions
+        else:
+            actionsTool.addAction(newaction['id'],
+                    name=newaction['name'],
+                    action=newaction['action'],
+                    condition=newaction['condition'],
+                    permission=newaction['permission'],
+                    category=newaction['category'],
+                    visible=1)
+            out.append("Added missing extedit action")
 
 
 def fixFolderButtonsActions(portal, out):

@@ -3,6 +3,10 @@ Changelog for Plone
    (name of developer listed in brackets)
 
 Plone 2.1 - Plaid - (unreleased)
+    - Made external editing a user preference. It defaults
+      to the setting in the memberdata tool. Migrations should
+      work as well.
+      [ender]
 
     - Showed icon in byline to change ownership. 
       [ender]
