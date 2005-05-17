@@ -255,7 +255,8 @@ def addDocumentActions(portal):
                  'string:${object_url}/addtoFavorites',
                  'python: member and portal.portal_membership.getHomeFolder()',
                  'View',
-                 'document_actions')
+                 'document_actions',
+                 visible=0)
 
 
 def upgradePortalFactory(portal):

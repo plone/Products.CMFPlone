@@ -90,7 +90,8 @@ def rc3_rc4(portal):
                      'string:${object_url}/addtoFavorites',
                      'member',
                      'View',
-                     'document_actions')
+                     'document_actions',
+                     visible=0)
 
     mt=getToolByName(portal, 'portal_membership')
     _actions=mt._cloneActions()

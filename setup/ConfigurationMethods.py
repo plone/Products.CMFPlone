@@ -187,7 +187,7 @@ def correctFolderContentsAction(actionTool):
 def modifyMembershipTool(self, portal):
     mt=getToolByName(portal, 'portal_membership')
     mt.addAction('myworkspace'
-                ,'My Workspace'
+                ,'Workspace'
                 ,'python: portal.portal_membership.getHomeUrl()+"/workspace"'
                 ,'python: member and portal.portal_membership.getHomeFolder()'
                 ,'View'
@@ -200,14 +200,14 @@ def modifyMembershipTool(self, portal):
         if a.id=='logout':
             a.title='Log out'
         if a.id=='preferences':
-            a.title='My Preferences'
+            a.title='Preferences'
             a.action=Expression('string:${portal_url}/plone_memberprefs_panel')
             new_actions.insert(0, a)
         elif a.id in ('addFavorite', 'favorites'):
             a.visible=0
             new_actions.insert(1,a)
         elif a.id=='mystuff':
-            a.title='My Folder'
+            a.title='Personal Folder'
             new_actions.insert(0, a)
         elif a.id=='myworkspace':
             new_actions.insert(1, a)
