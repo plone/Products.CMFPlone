@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Showed icon in byline to change ownership. 
+      [ender]
+
     - Added jscript that hides traditional add items pull-down in folder_contents.
       [ender]
 
