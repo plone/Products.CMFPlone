@@ -50,7 +50,8 @@
             </p>
         </tal:full_view>
 
-        <p tal:condition="not: batch"
+        <p class="discreet"
+           tal:condition="not: batch"
            i18n:translate="description_no_visible_items_add_paste">
            This folder has no visible items. To add content, press the
            add button, or paste content from another location.
