@@ -509,6 +509,7 @@ def installCSSandJSRegistries(portal, out):
             jsreg.registerScript('highlightsearchterms.js')
             jsreg.registerScript('first_input_focus.js')
             jsreg.registerScript('folder_contents_filter.js')
+            jsreg.registerScript('folder_contents_hideAddItems.js')
             jsreg.registerScript('styleswitcher.js')
             jsreg.registerScript('table_sorter.js')
             jsreg.registerScript('calendar_formfield.js')
