@@ -25,9 +25,9 @@
          i18n:name="author">
         Bob Dobalina
       </a>
-      <a href=""
+      <a href="" CMFCorePermissions.ManagePortal
        title="Change ownership"
-       tal:condition="isEditable" 
+       tal:condition="python: isEditable and checkPermission('Manage portal', here)" 
        i18n:attributes="title"
        tal:attributes="href string:${here/absolute_url}/ownership_form;">
        <img src="" tal:attributes="src string:${portal_url}/edit.gif" />
