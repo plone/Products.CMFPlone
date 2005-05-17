@@ -418,7 +418,7 @@
 
 .documentContent {
     font-size: 110%;
-    padding: 0em 1em 2em 1em !important;
+    padding: 1em 1em 2em 1em !important;
     background: &dtml-backgroundColor;;
 }
 
@@ -430,9 +430,8 @@
 
 
 .documentActions {
-    margin: -1.5em 0 2em 0;
     float: right;
-    margin: 1em 0 0 0.5em;
+    margin: 0.4em 0 0 0.5em;
     clear: none;
 }
 
@@ -460,7 +459,7 @@
     color: &dtml-fontColor;;
     font-size: &dtml-fontSmallSize;;
     font-weight: bold;
-    margin: 1em 0em 0em 0em;
+    margin: 1em 0em;
     padding: 0.5em 1em 0.5em 3em;
     vertical-align: middle;
     background-image: url(&dtml-portal_url;/info_icon.gif);

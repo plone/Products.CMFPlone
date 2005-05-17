@@ -41,7 +41,7 @@ img {
     vertical-align: middle;
 }
 p {
-    margin: 0.5em 0em 1em 0em;
+    margin: 0 0 1em 0;
     line-height: 1.5em;
 }
 
@@ -78,7 +78,6 @@ h1, h2, h3, h4, h5, h6 {
     font-family: &dtml-var headingFontFamily;;
     font-weight: normal;
     margin: 0;
-    padding-top: 0.5em;
     border-bottom: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
 }
 
@@ -93,7 +92,6 @@ h6 a {
 
 h1 {
     font-size: 160%;
-    padding-right: 4em;
 }
 
 h2 {
@@ -101,13 +99,13 @@ h2 {
 }
 
 h3 {
-    font-size: 140%;
+    font-size: 125%;
     border-bottom: none;
     font-weight: bold;
 }
 
 h4 {
-    font-size: 120%;
+    font-size: 110%;
     border-bottom: none;
     font-weight: bold;
 }
@@ -116,12 +114,14 @@ h5 {
     font-size: 100%;
     border-bottom: none;
     font-weight: bold;
+    color: &dtml-discreetColor;;
 }
 
 h6 {
     font-size: &dtml-fontSmallSize;;
     border-bottom: none;
     font-weight: bold;
+    color: &dtml-discreetColor;;
 }
 
 

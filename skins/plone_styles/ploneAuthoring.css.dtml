@@ -383,7 +383,7 @@ ul.configletDetails li label {
 }
 
 .spacer {
-	margin: 1em;
+    margin: 1em;
 }
 
 
