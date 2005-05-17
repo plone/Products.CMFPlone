@@ -730,5 +730,19 @@ ul.configletDetails li label {
 */
 
 
+/* Styles to make the editing widgets look more like their view counterparts */
+
+#archetypes-fieldname-title input {
+    font-size: 160%;
+    font-family: &dtml-var headingFontFamily;;
+    font-weight: normal;
+    width: 99%;
+}
+
+#archetypes-fieldname-description textarea {
+    font: 100% <dtml-var fontFamily>;
+    font-weight: bold;
+}
+
 
 /* </dtml-with> */

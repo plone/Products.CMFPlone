@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Added styles that make the editing widgets look more like their view 
+      counterparts.
+      [limi]
+
     - Make portlet_favorites work again and use the catalog like everything
       else.  Also, use the addable types restrictions in users' Favorites
       folders.
