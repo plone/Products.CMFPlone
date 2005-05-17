@@ -588,6 +588,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                     'path': path,
                     'icon':item.getIcon,
                     'creation_date': item.CreationDate,
+                    'portal_type': item.portal_type,
                     'review_state': item.review_state,
                     'Description':item.Description,
                     'children':[],
