@@ -28,6 +28,7 @@ from AccessControl import ClassSecurityInfo, Unauthorized
 from ZODB.POSException import ConflictError
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from DateTime import DateTime
+from Products.CMFPlone.CharNormalization import charNormalization
 
 _marker = ()
 _icons = {}
@@ -49,22 +50,6 @@ def _getaddresses(fieldvalues):
     all = ', '.join(fieldvalues)
     a = AddressList(all)
     return a.addresslist
-
-# table of transliterations that we know how to do
-mapping = {138: 's', 140: 'OE', 142: 'z', 154: 's', 156: 'oe', 158: 'z', 159: 'Y',
-192: 'A', 193: 'A', 194: 'A', 195: 'A', 196: 'A', 197: 'a', 198: 'E', 199: 'C',
-200: 'E', 201: 'E', 202: 'E', 203: 'E', 204: 'I', 205: 'I', 206: 'I', 207: 'I',
-208: 'D', 209: 'n', 211: 'O', 212: 'O', 214: 'O', 216: 'O', 217: 'U', 218: 'U',
-219: 'U', 220: 'U', 221: 'y', 223: 'ss', 224: 'a', 225: 'a', 226: 'a', 227: 'a',
-228: 'a', 229: 'a', 230: 'e', 231: 'c', 232: 'e', 233: 'e', 234: 'e', 235: 'e',
-236: 'i', 237: 'i', 238: 'i', 239: 'i', 240: 'd', 241: 'n', 243: 'o', 244: 'o',
-246: 'o', 248: 'o', 249: 'u', 250: 'u', 251: 'u', 252: 'u', 253: 'y', 255: 'y'}
-
-def _normalizeChar(c=''):
-    if ord(c) < 256:
-        return mapping.get(ord(c), c)
-    else:
-        return mapping.get(ord(c), '%x' % ord(c))
 
 # dublic core accessor name -> metadata name
 METADATA_DCNAME = {
@@ -990,28 +975,6 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
         return obj.owner_info()['id']
 
-    security.declarePublic('normalizeISO')
-    def normalizeISO(self, text=""):
-        """
-        Convert unicode characters to ASCII
-
-        normalizeISO() will turn unicode characters into nice, safe ASCII. for
-        some characters, it will try to transliterate them to something fairly
-        reasonable. for other characters that it can't transliterate, it will just
-        return the numerical value(s) of the bytes in the character (in hex).
-
-        >>> normalizeISO(u"\xe6")
-        'e'
-
-        >>> normalizeISO(u"a")
-        'a'
-
-        >>> normalizeISO(u"\u9ad8")
-        '9ad8'
-
-        """
-        return "".join([_normalizeChar(c) for c in text]).encode('ascii')
-
     security.declarePublic('normalizeString')
     def normalizeString(self, title=""):
         """
@@ -1054,9 +1017,9 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         >>> normalizeString("this is. also. a file.html")
         'this-is-also-a-file.html'
 
-        normalizeString() uses normalizeISO() to convert stray unicode
-        characters. it will attempt to transliterate many of the common european
-        accented letters to rough ASCII equivalents:
+        normalizeString() uses charNormalization() to convert stray unicode
+        characters. it will attempt to transliterate many of the accented 
+	letters to rough ASCII equivalents:
 
         >>> normalizeString(u"Eksempel \xe6\xf8\xe5 norsk \xc6\xd8\xc5")
         'eksempel-eoa-norsk-eoa'
@@ -1077,7 +1040,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
         title = title.lower()
         title = title.strip()
-        title = self.normalizeISO(title)
+        title = charNormalization(self, title)
 
         base = title
         ext   = ""

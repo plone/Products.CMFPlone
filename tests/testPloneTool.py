@@ -113,11 +113,6 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
         self.assertEqual(self.folder.image.Format(), 'image/gif')
         self.assertEqual(self.folder.image.getImage().content_type, 'image/gif')
 
-    def testNormalizeISO(self):
-        self.assertEqual(self.utils.normalizeISO(u"\xe6"), 'e')
-        self.assertEqual(self.utils.normalizeISO(u"a"), 'a')
-        self.assertEqual(self.utils.normalizeISO(u"\u9ad8"), '9ad8')
-
     def testNormalizeStringPunctuation(self):
         # Punctuation and spacing is removed and replaced by '-'
         self.assertEqual(self.utils.normalizeString("a string with spaces"),
