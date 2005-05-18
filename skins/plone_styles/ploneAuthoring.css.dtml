@@ -734,7 +734,7 @@ ul.configletDetails li label {
 
 #archetypes-fieldname-title input {
     font-size: 160%;
-    font-family: &dtml-var headingFontFamily;;
+    font-family: <dtml-var headingFontFamily>;
     font-weight: normal;
     width: 99%;
 }

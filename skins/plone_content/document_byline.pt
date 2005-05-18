@@ -25,13 +25,11 @@
          i18n:name="author">
         Bob Dobalina
       </a>
-      <a href="" 
+      [<a href="" 
        title="Change ownership"
        tal:condition="python: isEditable and checkPermission('Manage portal', here)" 
        i18n:attributes="title"
-       tal:attributes="href string:${here/absolute_url}/ownership_form;">
-       <img src="" tal:attributes="src string:${portal_url}/edit.gif" />
-      </a>
+       tal:attributes="href string:${here/absolute_url}/ownership_form;">Change</a>]
 
       &mdash;
 
