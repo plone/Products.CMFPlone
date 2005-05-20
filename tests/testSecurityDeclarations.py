@@ -77,21 +77,6 @@ class TestSecurityDeclarations(RestrictedPythonTest):
                    'log = getLogger("testlog");'
                    'log.debug("test")')
 
-
-    def testImport_translate_wrapper(self):
-        self.check('from Products.CMFPlone.utils import translate_wrapper')
-        
-    def testAccess_translate_wrapper(self):
-        self.check('import Products.CMFPlone.utils;'
-                   'print Products.CMFPlone.utils.translate_wrapper')
-
-    def testImport_localized_time(self):
-        self.check('from Products.CMFPlone.utils import localized_time')
-
-    def testAccess_localized_time(self):
-        self.check('import Products.CMFPlone.utils;'
-                   'print Products.CMFPlone.utils.localized_time')
-
     def testImport_IndexIterator(self):
         self.check('from Products.CMFPlone import IndexIterator')
 

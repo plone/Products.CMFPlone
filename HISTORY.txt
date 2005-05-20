@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Merged PLIP 98 - Scripted Translation Service Interface. This adds a
+      'translation_service' tool to Plone which replaces the not-quite-sane
+      methods in CMFPlone.utils. UnicodeDecodeErrors should now crop up significantly
+      less often.
+      [longsleep] [stefan]
+
     - Fixed http://plone.org/collector/3267 removed invalid transition
       validity test using the fix by blueszhao in the collector issue.
       [alecm]

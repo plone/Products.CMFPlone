@@ -80,13 +80,13 @@
                 <label for="select_add_item">
                   <span class="hiddenLabel" i18n:translate="label_add_item">Select an item to add</span>
                 </label>
-    
+
                 <select id="select_add_item"
                         name="type_name"
                         tabindex=""
                         tal:condition="python: num_types > 1"
                         tal:attributes="tabindex tabindex/next|nothing">
-    
+
                   <option value="Select" i18n:translate="label_select">Select</option>
                   <metal:types tal:repeat="ctype contentTypes">
                     <option value="Document"
@@ -96,24 +96,24 @@
                             i18n:translate="">Document</option>
                   </metal:types>
                 </select>
-    
+
                 <input type="hidden"
                        name="type_name"
                        value="Content Type Id"
                        tal:condition="python: num_types==1"
                        tal:attributes="value python:contentTypes[0].getId()" />
-    
+
                 <input class="standalone"
                        type="submit"
                        name="folder_factories:method"
                        value="Add New Item"
                        tabindex=""
-                       tal:define="ttype python: num_types==1 and here.translate(contentTypes[0].Title())"
+                       tal:define="ttype python: num_types==1 and here.utranslate(contentTypes[0].Title())"
                        tal:condition="python: num_types"
                        tal:attributes="tabindex tabindex/next|nothing;
-                                       value python:ttype and here.translate('Add ${type}', {'type': ttype}) or
-                                                              here.translate('label_add_new_item', default='Add New Item')" />
-            </div>                                                    
+                                       value python:ttype and here.utranslate('Add ${type}', {'type': ttype}) or
+                                                              here.utranslate('label_add_new_item', default='Add New Item')" />
+            </div>
           </metal:add_button>
           </div>
 
