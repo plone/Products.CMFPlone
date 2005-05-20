@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Fixed http://plone.org/collector/3267 removed invalid transition
+      validity test using the fix by blueszhao in the collector issue.
+      [alecm]
+
     - Applied http://plone.org/collector/4052 titleToNormalizedId (normalizeString)
       improvement. Object id from title generation should work with most of accented
       characters. It is possible to define own normalizations in the CharNormalization.py

@@ -19,12 +19,11 @@ contentEditSuccess=0
 plone_log=context.plone_log
 new_context = context.portal_factory.doCreate(context)
 portal_workflow=new_context.portal_workflow
-current_state=portal_workflow.getInfoFor(new_context, 'review_state')
+transitions = portal_workflow.getTransitionsFor(new_context)
+transition_ids = [t['id'] for t in transitions]
 
-if workflow_action!=current_state and not effective_date and context.EffectiveDate()=='None':
+if workflow_action in transition_ids and not effective_date and context.EffectiveDate()=='None':
     effective_date=DateTime()
-
-#plone_log('effective date ' + str(effective_date))
 
 def editContent(obj, effective, expiry):
     kwargs = {}
@@ -46,7 +45,7 @@ wfcontext = context
 # Create the note while we still have access to wfcontext
 note = 'Changed status of %s at %s' % (wfcontext.title_or_id(), wfcontext.absolute_url())
 
-if workflow_action!=current_state:
+if workflow_action in transition_ids:
     wfcontext=new_context.portal_workflow.doActionFor( context,
                                                        workflow_action,
                                                        comment=comment )
