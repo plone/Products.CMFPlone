@@ -4,6 +4,16 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Fixed http://members.plone.org/collector/2586 changed
+      MembershipTool.getCandidateLocalRoles() to use
+      member.getRolesInContext(obj) instead of member.getRoles(), and to use
+      obj.valid_roles() instead of MembershipTool.getPortalRoles().  This
+      allows loal managers to assign any role, and allows all managers to
+      assign roles that exist only locally and not at the plone root.  A side-
+      effect is that roles defined in the zope root and other folders beneath
+      the portal root will be available as well, just as they are in the ZMI.
+      [alecm]
+
     - Merged PLIP 98 - Scripted Translation Service Interface. This adds a
       'translation_service' tool to Plone which replaces the not-quite-sane
       methods in CMFPlone.utils. UnicodeDecodeErrors should now crop up significantly
