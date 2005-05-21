@@ -141,25 +141,6 @@ def alpha1_alpha2(portal):
     # Add translation service tool to portal root
     addTranslationServiceTool(portal, out)
 
-    # ADD NEW STUFF BEFORE THIS LINE AND LEAVE THE TRAILER ALONE!
-
-    # Rebuild catalog
-    if reindex:
-        refreshSkinData(portal, out)
-        reindexCatalog(portal, out)
-
-    # FIXME: *Must* be called after reindexCatalog.
-    # In tests, reindexing loses the folders for some reason...
-
-    # Make sure the Members folder is cataloged
-    indexMembersFolder(portal, out)
-
-    # Make sure the News folder is cataloged
-    indexNewsFolder(portal, out)
-
-    # Make sure the Events folder is cataloged
-    indexEventsFolder(portal, out)
-
     # Add new memberdata properties
     addMemberdataHome_Page(portal, out)
     addMemberdataLocation(portal, out)
@@ -180,6 +161,31 @@ def alpha1_alpha2(portal):
     # Add typesUseViewActionInListings site_property for types like Image and File,
     # which shouldn't use immediate_view from folder_contents and listings
     addTypesUseViewActionInListingsProperty(portal, out)
+
+    # Change name of plone_setup action
+    changePloneSetupActionToSiteSetup(portal,out)
+
+    # Change plone site FTI icon
+    changePloneSiteIcon(portal, out)
+
+    # ADD NEW STUFF BEFORE THIS LINE AND LEAVE THE TRAILER ALONE!
+
+    # Rebuild catalog
+    if reindex:
+        refreshSkinData(portal, out)
+        reindexCatalog(portal, out)
+
+    # FIXME: *Must* be called after reindexCatalog.
+    # In tests, reindexing loses the folders for some reason...
+
+    # Make sure the Members folder is cataloged
+    indexMembersFolder(portal, out)
+
+    # Make sure the News folder is cataloged
+    indexNewsFolder(portal, out)
+
+    # Make sure the Events folder is cataloged
+    indexEventsFolder(portal, out)
     
     return out
 
@@ -1105,3 +1111,44 @@ def switchToExpirationDateMetadata(portal, out):
         out.append("Added 'ExpirationDate' metadata to portal_catalog.")
         return 1 # Ask for reindexing
     return 0
+
+
+def changePloneSetupActionToSiteSetup(portal, out):
+    """ Change the plone_setup action so that its title is Site Setup.
+    """
+    newaction = {'id': 'plone_setup',
+                'name': 'Site Setup',
+                'action': 'string: ${portal_url}/plone_control_panel',
+                'condition': '', # condition
+                'permission': CMFCorePermissions.ManagePortal,
+                'category': 'user',
+                'visible': 1}
+    exists = False
+    actionsTool = getToolByName(portal, 'portal_actions', None)
+    if actionsTool is not None:
+        new_actions = actionsTool._cloneActions()
+        for action in new_actions:
+            if action.getId() == newaction['id'] and action.category == newaction['category']:
+                exists = True
+                action.title = newaction['name']
+                out.append('Modified existing plone_setup action')
+        if exists:
+            actionsTool._actions = new_actions
+        else:
+            actionsTool.addAction(newaction['id'],
+                    name=newaction['name'],
+                    action=newaction['action'],
+                    condition=newaction['condition'],
+                    permission=newaction['permission'],
+                    category=newaction['category'],
+                    visible=1)
+            out.append("Added missing plone_setup action")
+
+def changePloneSiteIcon(portal, out):
+    """Change the icon for plone site from folder_icon to site_icon"""
+    typesTool = getToolByName(portal, 'portal_types', None)
+    if typesTool is not None:
+        plone_FTI = getattr(typesTool, 'Plone Site', None)
+        if plone_FTI is not None and plone_FTI.content_icon == 'folder_icon.gif':
+            plone_FTI.content_icon = 'site_icon.gif'
+            out.append("Changed Plone Site icon")

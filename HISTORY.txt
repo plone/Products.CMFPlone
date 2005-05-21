@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Fixed http://members.plone.org/collector/4081 changed 'Plone Setup'
+      to 'Site Setup'.
+      [limi] [alecm]
+
     - Fixed http://plone.org/collector/2850 added on-error handler to
       portlet_fetcher, currently provides no traceback as tracebacks are not accessible from untrusted code.
       [alecm]

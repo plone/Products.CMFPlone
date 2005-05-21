@@ -372,6 +372,15 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         # site_properties should have the typesUseViewActionInListings property
         self.failUnless(self.properties.site_properties.hasProperty('typesUseViewActionInListings'))
 
+    def testSiteSetupAction(self):
+        # There should be a Site Setup action
+        for action in self.actions.listActions():
+            if action.getId() == 'plone_setup':
+                self.assertEqual(action.title, 'Site Setup')
+                break
+        else:
+            self.fail("Actions tool has no 'sitemap' action")
+
 
 class TestPortalBugs(PloneTestCase.PloneTestCase):
 
