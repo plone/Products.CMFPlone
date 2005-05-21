@@ -474,7 +474,7 @@
     /* The summary text describing the document */
     font-weight: bold;
     display: block;
-    margin: 1em 0em;
+    margin: 0.5em 0em;
     line-height: 1.5em;
 }
 .documentByLine {
@@ -527,6 +527,7 @@ textarea.proportional {
 #portal-footer a {
     text-decoration: none;
     color: &dtml-linkColor;;
+    border: none;
 }
 
 #portal-footer a:hover {
