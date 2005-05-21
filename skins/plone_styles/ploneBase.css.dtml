@@ -41,7 +41,7 @@ img {
     vertical-align: middle;
 }
 p {
-    margin: 0 0 1em 0;
+    margin: 0 0 0.5em 0;
     line-height: 1.5em;
 }
 
@@ -141,7 +141,7 @@ ol {
 }
 
 li {
-    margin-bottom: 1em;
+    margin-bottom: 0.5em;
 }
 
 dt {
