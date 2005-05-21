@@ -21,7 +21,7 @@
                  anchor_method request/anchor_method | template/getId;">
     <!-- The calendar, rendered as a table -->
 
-    <table cellspacing="0" class="ploneCalendar" id="thePloneCalendar" summary="Calendar" i18n:attributes="summary">
+    <table class="ploneCalendar" id="thePloneCalendar" summary="Calendar" i18n:attributes="summary">
         <thead>
             <tr>
                 <th id="calendar-previous">

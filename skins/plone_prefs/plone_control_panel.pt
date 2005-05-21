@@ -13,7 +13,7 @@
                   groups python:controlPanel.getGroups('site');
                   getIconFor nocall:putils/getIconFor">
 
-    <h1 i18n:translate="heading_control_panel">Plone Setup</h1>
+    <h1 i18n:translate="heading_control_panel">Site Setup</h1>
 
     <div class="documentDescription" i18n:translate="description_control_panel">
       Configuration area for Plone and add-on Products.

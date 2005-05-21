@@ -214,7 +214,7 @@ def modifyMembershipTool(self, portal):
             a.visible=0
             new_actions.insert(1,a)
         elif a.id=='mystuff':
-            a.title='Personal Folder'
+            a.title='My Folder'
             new_actions.insert(0, a)
         elif a.id=='myworkspace':
             new_actions.insert(1, a)

@@ -175,7 +175,7 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
 
     groups = ['site|Plone|Plone Configuration',
               'site|Products|Add-on Product Configuration',
-              'member|Member|Plone Member Preferences']
+              'member|Member|Member Preferences']
 
     def __init__(self, **kw):
         if kw:

@@ -549,6 +549,7 @@ ul.configletDetails li label {
 .ploneCalendar {
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
     margin: 1em 0em;
+    border-collapse: collapse;
 }
 .ploneCalendar a {
     text-decoration: none;

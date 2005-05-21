@@ -1,5 +1,5 @@
 [default]
-title=Plone Setup
+title=Site Setup
 
 [security]
 View=0:Authenticated
