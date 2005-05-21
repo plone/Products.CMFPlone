@@ -28,7 +28,7 @@ from AccessControl import ClassSecurityInfo, Unauthorized
 from ZODB.POSException import ConflictError
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from DateTime import DateTime
-from Products.CMFPlone.CharNormalization import charNormalization
+from Products.CMFPlone.UnicodeNormalizer import normalizeUnicode
 
 _marker = ()
 _icons = {}
@@ -976,7 +976,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         return obj.owner_info()['id']
 
     security.declarePublic('normalizeString')
-    def normalizeString(self, title=""):
+    def normalizeString(self, text):
         """
         Normalize a title to an id
 
@@ -1017,7 +1017,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         >>> normalizeString("this is. also. a file.html")
         'this-is-also-a-file.html'
 
-        normalizeString() uses charNormalization() to convert stray unicode
+        normalizeString() uses normalizeUnicode() to convert stray unicode
         characters. it will attempt to transliterate many of the accented 
 	letters to rough ASCII equivalents:
 
@@ -1035,18 +1035,18 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         """
 
         # Make sure we are dealing with a unicode string
-        if not isinstance(title, unicode):
-            title = unicode(title, self.getSiteEncoding())
+        if not isinstance(text, unicode):
+            text = unicode(text, self.getSiteEncoding())
 
-        title = title.lower()
-        title = title.strip()
-        title = charNormalization(self, title)
+        text = text.lower()
+        text = text.strip()
+        text = normalizeUnicode(text)
 
-        base = title
-        ext   = ""
+        base = text
+        ext  = ""
 
-        m = re.match(r"^(.+)\.(\w{,4})$",title)
-        if m:
+        m = re.match(r"^(.+)\.(\w{,4})$", text)
+        if m is not None:
             base = m.groups()[0]
             ext  = m.groups()[1]
 

@@ -33,8 +33,8 @@ Plone 2.1 - Plaid - (unreleased)
       [alecm]
 
     - Applied http://plone.org/collector/4052 titleToNormalizedId (normalizeString)
-      improvement. Object id from title generation should work with most of accented
-      characters. It is possible to define own normalizations in the CharNormalization.py
+      improvement. Object id from title generation should now work with most accented
+      characters. It is possible to define custom normalizations in UnicodeNormalizer.py
       [naro]
 
     - Added styles that make the editing widgets look more like their view 

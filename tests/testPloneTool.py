@@ -143,21 +143,32 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
 
     def testNormalizeStringAccents(self):
         # European accented chars will be transliterated to rough ASCII equivalents
-        self.assertEqual(self.utils.normalizeString(u"Eksempel \xe6\xf8\xe5 norsk \xc6\xd8\xc5"),
+        input = u"Eksempel \xe6\xf8\xe5 norsk \xc6\xd8\xc5"
+        self.assertEqual(self.utils.normalizeString(input),
                          'eksempel-eoa-norsk-eoa')
-
-    def testNormalizeStringHex(self):
-        # Everything that can't be transliterated will be hex'd
-        self.assertEqual(self.utils.normalizeString(u"\u9ad8\u8054\u5408 Chinese"),
-                         '9ad880545408-chinese')
-        self.assertEqual(self.utils.normalizeString(u"\uc774\ubbf8\uc9f1 Korean"),
-                         'c774bbf8c9f1-korean')
 
     def testNormalizeStringUTF8(self):
         # In real life, input will not be Unicode...
         input = u"Eksempel \xe6\xf8\xe5 norsk \xc6\xd8\xc5".encode('utf-8')
         self.assertEqual(self.utils.normalizeString(input),
                          'eksempel-eoa-norsk-eoa')
+
+    def testNormalizeGreek(self):
+        # Greek letters (not supported by UnicodeData)
+        input = u'\u039d\u03af\u03ba\u03bf\u03c2 \u03a4\u03b6\u03ac\u03bd\u03bf\u03c2'
+        self.assertEqual(self.utils.normalizeString(input), 'nikos-tzanos')
+ 
+    def testNormalizeGreekUTF8(self):
+        # Greek letters (not supported by UnicodeData)
+        input = u'\u039d\u03af\u03ba\u03bf\u03c2 \u03a4\u03b6\u03ac\u03bd\u03bf\u03c2'.encode('utf-8')
+        self.assertEqual(self.utils.normalizeString(input), 'nikos-tzanos')
+ 
+    def testNormalizeStringHex(self):
+        # Everything that can't be transliterated will be hex'd
+        self.assertEqual(self.utils.normalizeString(u"\u9ad8\u8054\u5408 Chinese"),
+                         '9ad880545408-chinese')
+        self.assertEqual(self.utils.normalizeString(u"\uc774\ubbf8\uc9f1 Korean"),
+                         'c774bbf8c9f1-korean')
 
 
 class TestOwnershipStuff(PloneTestCase.PloneTestCase):
