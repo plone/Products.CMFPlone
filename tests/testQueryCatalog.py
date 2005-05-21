@@ -11,7 +11,6 @@ from Products.CMFPlone.tests import PloneTestCase
 
 from Acquisition import aq_base
 from Products.ZCTextIndex.ParseTree import ParseError
-from Products.ZCatalog.Lazy import LazyCat
 
 import types
 
@@ -235,25 +234,21 @@ class TestTextIndexNGParseError(PloneTestCase.PloneTestCase):
     def testParseError(self):
         # ZCTextIndex raises ParseError
         res = self.portal.portal_catalog(SearchableText='-foo')
-        # -foo means NOT foo in TXNG2 which returns one object (the members 
-        # folder + home folder of test user 1 + the news folder
-        self.failUnlessEqual(len(res), 3, [b.getPath() for b in res])
+        # -foo means NOT foo in TXNG2
+        self.assertEqual(len(res), 6, [b.getPath() for b in res])
 
     def testQueryCatalogParseError(self):
         request = {'SearchableText':'-foo'}
         # ZCTextIndex raises ParseError which translates to empty result
-        res = self.portal.portal_catalog(SearchableText='-foo')
-        # -foo means NOT foo in TXNG2 which returns one object (the members 
-        # folder + home folder of test user 1 + the news folder
-        self.failUnlessEqual(len(res), 3, [b.getPath() for b in res])
+        res = self.portal.queryCatalog(request)
+        # -foo means NOT foo in TXNG2
+        self.assertEqual(len(res), 6, [b.getPath() for b in res])
 
     def testQueryCatalogParseError3050(self):
         # http://plone.org/collector/3050
-        request = {'SearchableText':'AND'}
-        # ZCTextIndex raises ParseError which translates to empty result
+        request = {'SearchableText':'foo AND bar'}
         res = self.portal.queryCatalog(request)
-        self.failUnless(isinstance(res, LazyCat))
-        self.failUnlessEqual(len(res), 0)
+        self.failUnlessEqual(len(res), 1)
 
 
 AddPortalTopics = 'Add portal topics'
