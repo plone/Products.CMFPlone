@@ -13,12 +13,12 @@
 <tal:block 
     define="
         syn context/portal_syndication; 
-        objectList syn/getSyndicatableContent">
+        objectList python:list(syn.getSyndicatableContent(here))">
     <metal:block use-macro="context/rss_template/macros/master">
         <metal:block fill-slot="syndication">
-            <syn:updatePeriod tal:content="python: syn.getUpdatePeriod(context)|default">hourly</syn:updatePeriod>
-            <syn:updateFrequency tal:content="python: syn.getUpdateFrequency(context)|default">2</syn:updateFrequency>
-            <syn:updateBase tal:content="python: syn.getHTML4UpdateBase(context)|default">2000-01-01T12:00+00:00</syn:updateBase>
+            <syn:updatePeriod tal:content="python:syn.getUpdatePeriod(context) or default">hourly</syn:updatePeriod>
+            <syn:updateFrequency tal:content="python:syn.getUpdateFrequency(context) or default">2</syn:updateFrequency>
+            <syn:updateBase tal:content="python:syn.getHTML4UpdateBase(context) or default">2000-01-01T12:00+00:00</syn:updateBase>
         </metal:block>
     </metal:block>
 </tal:block>

@@ -28,7 +28,7 @@ class SyndicationTool(PloneBaseTool, BaseTool):
         if hasattr(obj, 'synContentValues'):
             values = obj.synContentValues()
         else:
-            values = self.getFolderContents()
+            values = obj.getFolderContents()
         return values
 
 
