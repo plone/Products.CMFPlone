@@ -7,5 +7,6 @@
 ##parameters=
 ##title=http://cmf.zope.org/Members/tseaver/20020723_external_editor_available
 
+from Products.PythonScripts.standard import url_quote_plus
 return context.REQUEST['RESPONSE'].redirect('%s/externalEdit_/%s' % \
-    (context.aq_parent.absolute_url(), context.getId()) )
+    (context.aq_parent.absolute_url(), url_quote_plus(context.getId())) )

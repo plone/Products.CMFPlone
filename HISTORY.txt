@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - urlquote the external_edit path to make exteranl editor work with
+      Chinese id better
+      [panjunyong]
+
     - Fixed some syndication breakages, and added unit tests for
       portal_syndication.
       [alecm]
