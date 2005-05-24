@@ -32,7 +32,7 @@
         </div>
         <h1>
           <tal:block replace="structure python:getattr(here, here.getIcon(1))"/>
-          <span tal:content="python: view_title or here.title_or_id()" tal:omit-tag="">Directory Id</span>
+          <span tal:content="python: here.utranslate(view_title) or here.title_or_id()" tal:omit-tag="">Directory Id</span>
         </h1>
         <tal:full_view condition="full_view">
     
@@ -76,7 +76,7 @@
           <metal:add_button define-macro="add_button"
                             tal:define="num_types python:len(contentTypes);">
             <!-- Add Item pulldown -->
-            <div id="traditional-add-item-pulldown">
+            <div tal:attributes="id python:test(path('full_view|string:Not Set'), 'traditional-add-item-pulldown',None)">
                 <label for="select_add_item">
                   <span class="hiddenLabel" i18n:translate="label_add_item">Select an item to add</span>
                 </label>
