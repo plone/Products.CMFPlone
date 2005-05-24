@@ -145,6 +145,10 @@ def sortable_title(obj, portal, **kwargs):
                     break
                 except UnicodeError:
                     pass
+                except TypeError:
+                    # If we get a TypeError if we already have a unicode string
+                    sortabletitle = sortabletitle[:30]
+                    break
             return sortabletitle
     return ''
 
