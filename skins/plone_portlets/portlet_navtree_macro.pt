@@ -6,19 +6,20 @@
                        item_type_class     python: 'contenttype-' + here.plone_utils.normalizeString(item['portal_type']);
                        item_wf_state_class python: 'state-' + here.plone_utils.normalizeString(item['review_state']);">
 
-    <a tal:condition="item/currentItem"
-       tal:attributes="href item/absolute_url;
-                       title item/Description|nothing;
-                       class string:$item_type_class $item_wf_state_class navTreeCurrentItem visualIconPadding;"
-        tal:content="item/Title|nothing">
-        Selected Item Title</a>
-
-    <a tal:condition="not: item/currentItem"
-       tal:attributes="href item/absolute_url;
-                       title item/Description|nothing;
-                       class string:$item_type_class $item_wf_state_class visualIconPadding;"
-        tal:content="item/Title|nothing">
-        Unselected Item Title</a>
+    <div tal:attributes="class item_type_class">
+        <a tal:condition="item/currentItem"
+           tal:attributes="href item/absolute_url;
+                           title item/Description|nothing;
+                           class string: $item_wf_state_class visualIconPadding navTreeCurrentItem;"
+            tal:content="item/Title|nothing">
+            Selected Item Title</a>
+        <a tal:condition="not: item/currentItem"
+           tal:attributes="href item/absolute_url;
+                           title item/Description|nothing;
+                           class string: $item_wf_state_class visualIconPadding;"
+            tal:content="item/Title|nothing">
+            Unselected Item Title</a>
+    </div>
         
     <ul tal:attributes="class python:'navTree navTreeLevel'+str(level)"
         tal:define="children item/children|nothing"

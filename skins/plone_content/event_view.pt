@@ -14,54 +14,77 @@
             Title or id
         </h1>
 
-            <table class="vertical listing" style="float: right; margin: 0 0 1em 1em;">
+        <table class="vertical listing" style="float: right; width: 20em;">
 
-                <tbody>
-                    <tr>
-                        <th i18n:translate="event_what">What</th>
-                        <td tal:content="python:modules['string'].join(here.Subject(), ' ')">Conference</td>
-                    </tr>
-                    <tr>
-                        <th i18n:translate="event_when">When</th>
-                        <td>
-                            <tal:differentday tal:condition="python:not here.start().Date() == here.end().Date()">
-                                <span tal:replace="python:here.toLocalizedTime(here.start(), long_format=1)">Start Date Time</span>
-                                <span i18n:translate="event_and">to</span> <br />
-                                <span tal:replace="python:here.toLocalizedTime(here.end(), long_format=1)">End Date Time</span>
-                            </tal:differentday>
+            <tbody>
+                <tr>
+                    <th i18n:translate="event_what">What</th>
+                    <td tal:content="python:modules['string'].join(here.Subject(), ' ')">Conference</td>
+                </tr>
+                <tr>
+                    <th i18n:translate="event_when">When</th>
+                    <td>
+                        <tal:differentday tal:condition="python:not here.start().Date() == here.end().Date()">
+                            <span tal:replace="python:here.toLocalizedTime(here.start(), long_format=1)">Start Date Time</span>
+                            <span i18n:translate="event_and">to</span> <br />
+                            <span tal:replace="python:here.toLocalizedTime(here.end(), long_format=1)">End Date Time</span>
+                        </tal:differentday>
 
-                            <tal:sameday tal:condition="python:here.start().Date() == here.end().Date()"
-                                         tal:define="ampm python:site_properties.getProperty('localLongTimeFormat').find('%p') >= 0">
-                                <span tal:replace="python:here.toLocalizedTime(here.start())">Start Date Time</span> <br />
-                                <span i18n:translate="event_from">from</span>
-                                <span tal:replace="python:test(ampm, here.start().AMPMMinutes(), here.start().TimeMinutes())">Start Time</span>
-                                <span i18n:translate="event_to">to</span>
-                                <span tal:replace="python:test(ampm, here.end().AMPMMinutes(), here.end().TimeMinutes())">End Time</span>
-                            </tal:sameday>
+                        <tal:sameday tal:condition="python:here.start().Date() == here.end().Date()"
+                                     tal:define="ampm python:site_properties.getProperty('localLongTimeFormat').find('%p') >= 0">
+                            <span tal:replace="python:here.toLocalizedTime(here.start())">Start Date Time</span> <br />
+                            <span i18n:translate="event_from">from</span>
+                            <span tal:replace="python:test(ampm, here.start().AMPMMinutes(), here.start().TimeMinutes())">Start Time</span>
+                            <span i18n:translate="event_to">to</span>
+                            <span tal:replace="python:test(ampm, here.end().AMPMMinutes(), here.end().TimeMinutes())">End Time</span>
+                        </tal:sameday>
 
-                        </td>
-                    </tr>
-                    <tr>
-                        <th i18n:translate="event_where">Where</th>
-                        <td tal:content="here/location">Oslo, Norway</td>
-                    </tr>
-                    <tr tal:condition="here/contact_name">
-                        <th i18n:translate="contact_name">Contact Name</th>
-                        <td tal:content="here/contact_name">John Smith</td>
-                    </tr>
-                    <tr tal:define="contact_email here/contact_email"
-                        tal:condition="here/contact_email">
-                        <th i18n:translate="contact_email">Contact Email</th>
-                        <td>
-                            <a tal:replace="structure python: here.spamProtect(contact_email)" />
-                        </td>
-                    </tr>
-                    <tr tal:condition="here/contact_phone">
-                        <th i18n:translate="contact_phone">Contact Phone</th>
-                        <td tal:content="here/contact_phone">555-GET-PLONE</td>
-                    </tr>
-                </tbody>
-            </table>
+                    </td>
+                </tr>
+                <tr>
+                    <th i18n:translate="event_where">Where</th>
+                    <td tal:content="here/location">Oslo, Norway</td>
+                </tr>
+                <tr tal:condition="here/contact_name">
+                    <th i18n:translate="contact_name">Contact Name</th>
+                    <td tal:content="here/contact_name">John Smith</td>
+                </tr>
+                <tr tal:define="contact_email here/contact_email"
+                    tal:condition="here/contact_email">
+                    <th i18n:translate="contact_email">Contact Email</th>
+                    <td>
+                        <a tal:replace="structure python: here.spamProtect(contact_email)" />
+                    </td>
+                </tr>
+                <tr tal:condition="here/contact_phone">
+                    <th i18n:translate="contact_phone">Contact Phone</th>
+                    <td tal:content="here/contact_phone">555-GET-PLONE</td>
+                </tr>
+                <tr tal:condition="here/getAttendees">
+                    <th i18n:translate="contact_attendees">Attendees</th>
+                    <td tal:content="python: ', '.join(here.getAttendees())">Person 1, Person 2</td>
+                </tr>
+                <tr>
+                    <th>Add event to calendar</th>
+                    <td>
+                        <a href="#"
+                           title="Add this item to your vCal calendar"
+                           tal:attributes="href string:${here/absolute_url}/vcs_view">
+                            <img tal:replace="structure here/icon_export_ical.png" /> 
+                            vCal (Windows, Linux)</a><br />
+                        <a href="#"
+                           title="Add this item to your iCal calendar"
+                           tal:attributes="href string:${here/absolute_url}/ics_view">
+                            <img tal:replace="structure here/icon_export_vcal.png" /> 
+                            iCal (Mac OS X)</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div metal:use-macro="here/document_byline/macros/byline">
+            Get the byline - contains details about author and modification date.
+        </div>
 
         <p class="documentDescription"
            tal:content="here/Description"
@@ -69,25 +92,23 @@
             Description
         </p>
 
-        <div tal:condition="here/text|nothing">
-            <div tal:replace="structure here/text" />
+        <div tal:condition="here/getText|nothing">
+            <div tal:replace="structure here/getText" />
         </div>
 
         <p tal:condition="here/event_url|nothing">
-        <span i18n:translate="event_for_more_info_go_to">For more information, visit</span><br />
-
-        <a href="event_url"
-           tal:attributes="href here/event_url"
-           tal:content="here/event_url">event_url</a>
+            <a href="event_url"
+               tal:attributes="href here/event_url"
+               i18n:translate="event_more_information">
+               More information about this event&hellip;</a>
         </p>
 
         <div metal:use-macro="here/document_relateditems/macros/relatedItems">
             show related items if they exist
         </div>
 
-        <div metal:use-macro="here/document_byline/macros/byline">
-            Get the byline - contains details about author and modification date.
-        </div>
+        <div class="visualClear"></div>
+
     </tal:main-macro>
 </div>
 
