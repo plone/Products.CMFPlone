@@ -19,7 +19,8 @@
     over an item for a few seconds to get its description.
     </p>
 
-    <ul class="portal-sitemap navTreeLevel0"
+    <ul id="portal-sitemap"
+        class="navTreeLevel0"
         tal:define="data python:here.plone_utils.createSitemap(here)"
         tal:content="structure python:here.portlet_navtree_macro(children=data.get('children', []), level=1)">
         SUBTREE
