@@ -8,6 +8,7 @@ if __name__ == '__main__':
 
 from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
+from Products.CMFCore.Expression import Expression
 
 from Products.CMFPlone.migrations.v2.two04_two05 import replaceFolderPropertiesWithEdit
 from Products.CMFPlone.migrations.v2.two04_two05 import interchangeEditAndSharing
@@ -55,6 +56,7 @@ from Products.CMFPlone.migrations.v2_1.alphas import addTypesUseViewActionInList
 from Products.CMFPlone.migrations.v2_1.alphas import switchToExpirationDateMetadata
 from Products.CMFPlone.migrations.v2_1.alphas import changePloneSetupActionToSiteSetup
 from Products.CMFPlone.migrations.v2_1.alphas import changePloneSiteIcon
+from Products.CMFPlone.migrations.v2_1.betas import fixObjectPasteActionForDefaultPages
 
 import types
 
@@ -1084,7 +1086,7 @@ class TestMigrations_v2_1(MigrationTest):
     def testFixFolderButtonsActionsNoTool(self):
         # The migration should work if the tool is missing
         self.portal._delObject('portal_actions')
-        alterChangeStateActionCondition(self.portal, [])
+        fixFolderButtonsActions(self.portal, [])
 
     def testAddTypesUseViewActionInListingsProperty(self):
         # Should add the typesUseViewActionInListings property
@@ -1202,6 +1204,49 @@ class TestMigrations_v2_1(MigrationTest):
         # The migration should work if the tool is missing
         self.portal._delObject('portal_types')
         changePloneSiteIcon(self.portal, [])
+
+    def testFixObjectPasteActionForDefaultPages(self):
+        # The action for the paste object button action should detect default
+        # pages and operate on the parent folder.
+        current_actions = self.actions._cloneActions()
+        for action in current_actions:
+            if action.getId() == 'paste' and action.category == 'object_buttons':
+                action.setActionExpression(Expression('string:${object_url}/object_paste'))
+        self.actions._actions = current_actions
+
+        actions = [x for x in self.actions.listActions() if
+                    x.id == 'paste' and x.category == 'object_buttons']
+        self.assertEqual(len(actions),1)
+        self.assertEqual(actions[0].getActionExpression(), 'string:${object_url}/object_paste')
+        # Modify
+        fixObjectPasteActionForDefaultPages(self.portal, [])
+        actions = [x for x in self.actions.listActions() if
+                    x.id == 'paste' and x.category == 'object_buttons']
+        self.assertEqual(len(actions),1)
+        self.assertEqual(actions[0].getActionExpression(), 'python:"%s/object_paste"%(object.isDefaultPageInFolder() and object.getParentNode().absolute_url() or object_url)')
+
+    def testFixObjectPasteActionForDefaultPagesTwice(self):
+        # The migration should work if performed twice
+        fixObjectPasteActionForDefaultPages(self.portal, [])
+        fixObjectPasteActionForDefaultPages(self.portal, [])
+        actions = [x for x in self.actions.listActions() if
+                    x.id == 'paste' and x.category == 'object_buttons']
+        self.assertEqual(len(actions),1)
+        self.assertEqual(actions[0].getActionExpression(), 'python:"%s/object_paste"%(object.isDefaultPageInFolder() and object.getParentNode().absolute_url() or object_url)')
+
+    def testFixObjectPasteActionForDefaultPagesNoAction(self):
+        # The migration should add a new action if the action is missing
+        self.removeActionFromTool('cut')
+        fixObjectPasteActionForDefaultPages(self.portal, [])
+        actions = [x for x in self.actions.listActions() if
+                    x.id == 'paste' and x.category == 'object_buttons']
+        self.assertEqual(len(actions),1)
+        self.assertEqual(actions[0].getActionExpression(), 'python:"%s/object_paste"%(object.isDefaultPageInFolder() and object.getParentNode().absolute_url() or object_url)')
+
+    def testFixObjectPasteActionForDefaultPagesNoTool(self):
+        # The migration should work if the tool is missing
+        self.portal._delObject('portal_actions')
+        fixObjectPasteActionForDefaultPages(self.portal, [])
 
 
 def test_suite():

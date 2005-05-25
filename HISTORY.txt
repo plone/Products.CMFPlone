@@ -6,6 +6,10 @@ Plone 2.1 - Plaid - (Unreleased)
 
    Alpha2 - Released May 25, 2005
 
+    - Make object paste button act on parent folder for folderish default
+      pages.
+      [alecm]
+
     - Fixed the way newsitem_view.pt test for the (optional) image thumbnail.
       [tiran]
 
@@ -26,7 +30,8 @@ Plone 2.1 - Plaid - (Unreleased)
       [limi] [alecm]
 
     - Fixed http://plone.org/collector/2850 added on-error handler to
-      portlet_fetcher, currently provides no traceback as tracebacks are not accessible from untrusted code.
+      portlet_fetcher, currently provides no traceback as tracebacks are not
+      accessible from untrusted code.
       [alecm]
 
     - Fixed http://members.plone.org/collector/2586 changed
