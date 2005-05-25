@@ -106,7 +106,7 @@ def alpha1_alpha2(portal):
     # Add events topic
     addEventsTopic(portal, out)
 
-    # Add exclude_from_nav index
+    # Add exclude_from_nav metadata
     reindex += addExclude_from_navMetadata(portal, out)
 
     # Add objec cut/copy/paste/delete + batch buttons
@@ -1082,6 +1082,7 @@ def fixFolderButtonsActions(portal, out):
                     visible=1)
                 out.append("Added missing %s action"%newaction['id'])
 
+
 def addTypesUseViewActionInListingsProperty(portal, out):
     # Adds a typesUseViewActionInListings list property to site_properties
     # which is used to determine which types should use not immediate_view
@@ -1096,6 +1097,7 @@ def addTypesUseViewActionInListingsProperty(portal, out):
                                              ['Image','File'],
                                              'lines')
             out.append("Added 'typesUseViewActionInListings' property to site_properties.")
+
 
 def switchToExpirationDateMetadata(portal, out):
     """Remove ExpiresDate and add ExpirationDate columns the catalog."""
@@ -1143,6 +1145,7 @@ def changePloneSetupActionToSiteSetup(portal, out):
                     category=newaction['category'],
                     visible=1)
             out.append("Added missing plone_setup action")
+
 
 def changePloneSiteIcon(portal, out):
     """Change the icon for plone site from folder_icon to site_icon"""
