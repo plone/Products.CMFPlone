@@ -1,6 +1,6 @@
 from Products.CMFPlone.interfaces.BrowserDefault import ISelectableBrowserDefault
 
-from Acquisition import aq_base
+from Acquisition import aq_base, aq_inner
 from AccessControl import ClassSecurityInfo
 from Products.CMFCore import CMFCorePermissions
 from Products.CMFCore.utils import getToolByName
@@ -36,6 +36,14 @@ class PropertyManagedBrowserDefault:
         """
         return getToolByName(self, 'plone_utils').browserDefault(self)
 
+    def __call__(self):
+        """
+        Resolve the selected view template
+        """
+        template = self.unrestrictedTraverse(self.getLayout())
+        context = aq_inner(self)
+        template = template.__of__(context)
+        return template(context, context.REQUEST)
 
     security.declareProtected(CMFCorePermissions.View, 'getDefaultPage')
     def getDefaultPage(self):
@@ -44,7 +52,6 @@ class PropertyManagedBrowserDefault:
         page must be contained within this (folderish) item.
         """
         return getattr(aq_base(self), '_selected_default_page', None)
-
 
     security.declareProtected(CMFCorePermissions.View, 'getLayout')
     def getLayout(self, **kw):

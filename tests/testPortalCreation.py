@@ -381,6 +381,11 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         else:
             self.fail("Actions tool has no 'sitemap' action")
 
+    def testFolderlistingAction(self):
+        # Make sure the folderlisting action of a Folder is /view, to ensure
+        # that the layout template will be resolved (see PloneTool.browserDefault)
+        self.assertEqual(self.portal.portal_types['Folder'].getActionById('folderlisting'), 'view')
+        self.assertEqual(self.portal.portal_types['Plone Site'].getActionById('folderlisting'), 'view')
 
 class TestPortalBugs(PloneTestCase.PloneTestCase):
 

@@ -167,7 +167,7 @@ def alpha1_alpha2(portal):
 
     # Change plone site FTI icon
     changePloneSiteIcon(portal, out)
-
+    
     # ADD NEW STUFF BEFORE THIS LINE AND LEAVE THE TRAILER ALONE!
 
     # Rebuild catalog
@@ -1155,3 +1155,4 @@ def changePloneSiteIcon(portal, out):
         if plone_FTI is not None and plone_FTI.content_icon == 'folder_icon.gif':
             plone_FTI.content_icon = 'site_icon.gif'
             out.append("Changed Plone Site icon")
+                        

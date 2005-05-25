@@ -56,7 +56,9 @@ from Products.CMFPlone.migrations.v2_1.alphas import addTypesUseViewActionInList
 from Products.CMFPlone.migrations.v2_1.alphas import switchToExpirationDateMetadata
 from Products.CMFPlone.migrations.v2_1.alphas import changePloneSetupActionToSiteSetup
 from Products.CMFPlone.migrations.v2_1.alphas import changePloneSiteIcon
+
 from Products.CMFPlone.migrations.v2_1.betas import fixObjectPasteActionForDefaultPages
+from Products.CMFPlone.migrations.v2_1.betas import fixFolderlistingAction
 
 import types
 
@@ -1205,6 +1207,20 @@ class TestMigrations_v2_1(MigrationTest):
         self.portal._delObject('portal_types')
         changePloneSiteIcon(self.portal, [])
 
+    def testFixFolderlistingAction(self):
+        fixFolderlistingAction(self.portal, [])
+        self.assertEqual(self.portal.portal_types['Folder'].getActionById('folderlisting'), 'view')
+        self.assertEqual(self.portal.portal_types['Plone Site'].getActionById('folderlisting'), 'view')
+        
+    def testFixFolderlistingActionTwice(self):
+        fixFolderlistingAction(self.portal, [])
+        self.assertEqual(self.portal.portal_types['Folder'].getActionById('folderlisting'), 'view')
+        self.assertEqual(self.portal.portal_types['Plone Site'].getActionById('folderlisting'), 'view')
+        
+    def testFixFolderlistingActionNoTool(self):
+        self.portal._delObject('portal_types')
+        fixFolderlistingAction(self.portal, [])
+
     def testFixObjectPasteActionForDefaultPages(self):
         # The action for the paste object button action should detect default
         # pages and operate on the parent folder.
@@ -1213,7 +1229,6 @@ class TestMigrations_v2_1(MigrationTest):
             if action.getId() == 'paste' and action.category == 'object_buttons':
                 action.setActionExpression(Expression('string:${object_url}/object_paste'))
         self.actions._actions = current_actions
-
         actions = [x for x in self.actions.listActions() if
                     x.id == 'paste' and x.category == 'object_buttons']
         self.assertEqual(len(actions),1)
@@ -1247,7 +1262,6 @@ class TestMigrations_v2_1(MigrationTest):
         # The migration should work if the tool is missing
         self.portal._delObject('portal_actions')
         fixObjectPasteActionForDefaultPages(self.portal, [])
-
 
 def test_suite():
     from unittest import TestSuite, makeSuite

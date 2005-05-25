@@ -32,6 +32,12 @@ class IBrowserDefault(Interface):
         the list of page templates/object ids to try to use as the view for 
         this object.
         """
+        
+    def __call__():
+        """
+        Resolve the selected layout template, i.e. self.getLayout()() wrapped
+        in the current acquisition context.
+        """
 
     def getDefaultPage():
         """

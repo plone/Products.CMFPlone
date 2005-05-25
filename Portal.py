@@ -142,6 +142,12 @@ class PloneSite(CMFSite, OrderedContainer, PropertyManagedBrowserDefault):
 
     management_page_charset = ComputedAttribute(_management_page_charset, 1)
 
+    def view(self):
+        """ Ensure that we get a plain view of the object, via a delegation to
+        __call__(), which is defined in PropertyManagedBrowserDefault
+        """
+        return self()
+
 Globals.InitializeClass(PloneSite)
 
 class PloneGenerator(Portal.PortalGenerator):

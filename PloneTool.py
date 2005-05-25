@@ -29,6 +29,9 @@ from ZODB.POSException import ConflictError
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from DateTime import DateTime
 from Products.CMFPlone.UnicodeNormalizer import normalizeUnicode
+from Products.CMFPlone.PloneFolder import ReplaceableWrapper
+
+from ComputedAttribute import ComputedAttribute
 
 _marker = ()
 _icons = {}
@@ -782,7 +785,41 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     def browserDefault(self, obj):
         """Set default so we can return whatever we want instead of
         index_html
+        
+        This method is complex, and interacts with mechanisms such as
+        IBrowserDefault (implemented in ATContentTypes), LinguaPlone and
+        various mechanisms for setting the default page. 
+        
+        The method returns a tuple (obj, [path]) where path is a path to
+        a template or other object to be acquired and displayed on the object.
+        The path is determined as follows:
+        
+        1. If we're coming from WebDAV, make sure we don't return a contained
+            object "default page" ever
+        2. If there is an index_html attribute (either a contained object or
+            an explicit attribute) on the object, return that as the 
+            "default page". Note that this may be used by things like
+            File and Image to return the contents of the file, for example,
+            not just content-space objects created by the user.
+        3. If the object has a property default_page set and this gives a list
+            of, or single, object id, and that object is is found in the
+            folder or is the name of a skin template, return that id
+        4. If the property default_page is set in site_properties and that
+            property contains a list of ids of which one id is found in the
+            folder, return that id
+        5. If the type has a 'folderlisting' action and no default page is
+            set, use this action. This permits folders to have the default
+            'view' action be 'string:${object_url}/' and hence default to
+            a default page when clicking the 'view' tab, whilst allowing the
+            fallback action to be specified TTW in portal_types (this action
+            is typically hidden)
+        6. If nothing else is found, fall back on the object's 'view' action.
+        7. If this is not found, raise an AttributeError
+            
+        If the returned path is an object, it is checked for ITranslatable. An
+        object which supports translation will then be translated before return.
         """
+        
         # WebDAV in Zope is odd it takes the incoming verb eg: PROPFIND
         # and then requests that object, for example for: /, with verb PROPFIND
         # means acquire PROPFIND from the folder and call it
@@ -795,15 +832,6 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
         portal = getToolByName(self, 'portal_url').getPortalObject()
         wftool = getToolByName(self, 'portal_workflow')
-
-        # The list of ids where we look for default
-        ids = {}
-        # For BTreeFolders we just use the has_key, otherwise build a dict
-        if hasattr(aq_base(obj), 'has_key'):
-            ids = obj
-        else:
-            for id in obj.objectIds():
-                ids[id] = 1
 
         # Looking up translatable is done several places so we make a
         # method for it.
@@ -823,13 +851,45 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                         else:
                             return translation, ['view']
             return obj, [page]
+            
+        # The list of ids where we look for default
+        ids = {}
+        
+        # If we are not dealing with a folder, then leave this empty
+        if obj.isPrincipiaFolderish:
+            # For BTreeFolders we just use the has_key, otherwise build a dict
+            if hasattr(aq_base(obj), 'has_key'):
+                ids = obj
+            else:
+                for id in obj.objectIds():
+                    ids[id] = 1
 
-        # Look for a default_page managed by an IBrowserDefault-implementing
-        # object - the behaviour is the same as setting default_page manually
+        #
+        # 1. Get an attribute or contained object index_html
+        #
+        
+        # Note: The base PloneFolder, as well as ATCT's ATCTOrderedFolder
+        # defines a method index_html() which returns a ReplaceableWrapper.
+        # This is needed for WebDAV to work properly, and to avoid implicit
+        # acquisition of index_html's, which are generally on-object only.
+        # For the purposes of determining a default page, we don't want to
+        # use this index_html(), nor the ComputedAttribute which defines it.
+        
+        if not isinstance(getattr(obj, 'index_html', None), ReplaceableWrapper): 
+            if getattr(aq_base(obj), 'index_html', None) is not None: 
+                return returnPage(obj, 'index_html')
+
+        #
+        # 2. Look for a default_page managed by an IBrowserDefault-implementing
+        #    object
+        #
+        
+        # Note: the behaviour is the same as setting default_page manually
         # on the object, and the current BrowserDefaultMixin implementation
-        # actually stores it as the default_page property, but it's nicer to be
+        # actually stores it as the default_page property, but it's nicer to 
         # explicit about getting it from IBrowserDefault
-        if IBrowserDefault.isImplementedBy(obj):
+        
+        if obj.isPrincipiaFolderish and IBrowserDefault.isImplementedBy(obj):
             page = obj.getDefaultPage()
             # Be totally anal and triple-check...
             if page and ids.has_key(page):
@@ -837,7 +897,10 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             # IBrowserDefault only manages explicitly contained
             # default_page's, so don't look for the id in the skin layers
 
-        # Look for default_page on the object
+        #
+        # 3. Look for a default_page property on the object
+        #
+        
         pages = getattr(aq_base(obj), 'default_page', [])
         # Make sure we don't break if default_page is a
         # string property instead of a sequence
@@ -845,49 +908,61 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             pages = [pages]
         # And also filter out empty strings
         pages = filter(None, pages)
-        for page in pages:
-            if ids.has_key(page):
-                return returnPage(obj, page)
+        if obj.isPrincipiaFolderish:
+            for page in pages:
+                if ids.has_key(page):
+                    return returnPage(obj, page)
+        
         # we look for the default_page in the portal and/or skins aswell.
         # Use path/to/template to reference an object or a skin.
         for page in pages:
-            if portal.unrestrictedTraverse(page,None):
+            if portal.unrestrictedTraverse(page, None):
                 return obj, page.split('/')
 
-        # Try the default sitewide default_page setting
-        for page in portal.portal_properties.site_properties.getProperty('default_page', []):
-            if ids.has_key(page):
-                return returnPage(obj, page)
-
-        # No luck, let's look for hardcoded defaults
-        default_pages = ['index_html', ]
-        for page in default_pages:
-            if ids.has_key(page):
-                return returnPage(obj, page)
-
-        # Look for layout page templates from IBrowserDefault implementations
-        # This is checked after default_page and index_html, because we want
-        # explicitly created index_html's to override any templates set
-        if IBrowserDefault.isImplementedBy(obj):
-            page = obj.getLayout()
-            if page and portal.unrestrictedTraverse(page, None):
-                return obj, page.split('/')
-
-        # what if the page isnt found?
+        #
+        # 4. Try the default sitewide default_page setting
+        #
+        
+        if obj.isPrincipiaFolderish:
+            for page in portal.portal_properties.site_properties.getProperty('default_page', []):
+                if ids.has_key(page):
+                    return returnPage(obj, page)
+                    
+        #
+        # 5. If the object has a 'folderlisting' action, use this
+        #
+        
+        # This allows folders to determine in a flexible manner how they are
+        # displayed when there is no default page, whilst still using 
+        # browserDefault() to show contained objects by default on the 'view'
+        # action
+        
         try:
-            # look for a type action called "folderlisting"
             act = obj.getTypeInfo().getActionById('folderlisting')
             if act.startswith('/'):
                 act = act[1:]
             return obj, [act]
-        except ConflictError:
-            raise
-        except:
-            portal.plone_log("plone_utils.browserDefault",
-            'Failed to get folderlisting action for folder "%s"' \
-            % obj.absolute_url())
-            return obj, ['folder_listing']
+        except ValueError:
+            pass
 
+        #
+        # 6. Fall back on the 'view' action
+        #
+
+        try:
+            act = obj.getTypeInfo().getActionById('view')
+            if act.startswith('/'):
+                act = act[1:]
+            return obj, [act]
+        except ValueError:
+            pass
+            
+        #
+        # 7. If we can't find this either, raise an exception
+        #
+        
+        raise AttributeError, "Failed to get a default page or view_action for %s" %s (obj.absolute_url,)
+            
     security.declarePublic('isDefaultPage')
     def isDefaultPage(self, obj):
         """Find out if the given obj is the default page in its parent folder.

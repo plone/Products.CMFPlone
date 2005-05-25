@@ -11,6 +11,9 @@ def alpha2_beta1(portal):
     #Make object paste action work with all default pages.
     fixObjectPasteActionForDefaultPages(portal, out)
 
+    # Fix folderlisting action for folders
+    fixFolderlistingAction(portal, out)
+
     return out
 
 
@@ -44,3 +47,41 @@ def fixObjectPasteActionForDefaultPages(portal, out):
                     category=newaction['category'],
                     visible=1)
             out.append("Added missing object paste action")
+            
+def fixFolderlistingAction(portal, out):
+    typesTool = getToolByName(portal, 'portal_types', None)
+    if typesTool is not None:
+        folderFTI = getattr(typesTool, 'Folder', None)
+        if folderFTI is not None:
+            haveFolderListing = False
+            for action in folderFTI.listActions():
+                if action.getId() == 'folderlisting':
+                    action.setActionExpression('view')
+                    haveFolderListing = True
+                    break
+            if not haveFolderListing:
+                folderFTI.addAction('folderlisting',
+                                    'Folder view',
+                                    'string:${folder_url}/view',
+                                    '',
+                                    'View',
+                                    'folder',
+                                    visible=0)
+            out.append("Set target expresion of folderlisting action for 'Folder' to 'view'")
+        siteFTI = getattr(typesTool, 'Plone Site', None)
+        if siteFTI is not None:
+            haveFolderListing = False
+            for action in siteFTI.listActions():
+                if action.getId() == 'folderlisting':
+                    action.setActionExpression('view')
+                    haveFolderListing = True
+                    break
+            if not haveFolderListing:
+                siteFTI.addAction('folderlisting',
+                                    'Folder view',
+                                    'string:${folder_url}/view',
+                                    '',
+                                    'View',
+                                    'folder',
+                                    visible=0)
+            out.append("Set target expresion of folderlisting action for 'Plone Site' to 'view'")
