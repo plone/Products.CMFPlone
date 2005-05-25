@@ -4,6 +4,16 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (Unreleased)
 
+    - Fix browserDefault() in PloneTool so that images and files work, and there
+      are less wtf moments. Look at 
+      
+      http://members.plone.org/documentation/manual/plone-developer-reference/
+        specific-areas/content-types/zope-to-browser
+      
+      for details on how the implementation works.
+
+   Alpha2 - Released May 25, 2005
+
     - Make object paste button act on parent folder for folderish default
       pages.
       [alecm]
