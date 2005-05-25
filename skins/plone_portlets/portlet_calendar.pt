@@ -69,9 +69,8 @@
                <td class="event" tal:condition="day_event"
                       tal:attributes="class python:test(is_today, 'todayevent', 'event')"
                    ><tal:data tal:define="cur_date python:DateTime(year,month,int(daynumber));
-                                          pss_url nocall: python:modules['Products'].PythonScripts.standard.url_quote;
-                                          begin python:pss_url((cur_date.latestTime()).ISO());
-                                          end python:pss_url(cur_date.earliestTime().ISO());" tal:omit-tag=""
+                                          begin python:url_quote((cur_date.latestTime()).ISO());
+                                          end python:url_quote(cur_date.earliestTime().ISO());" tal:omit-tag=""
                      ><a href=""
                          tal:attributes="href string:${here/portal_url}/search?review_state=published&amp;start.query:record:list:date=${begin}&amp;start.range:record=max&amp;end.query:record:list:date=${end}&amp;end.range:record=min;
                                          title python:'\n'.join([here.toLocalizedTime(cur_date)]+[here.getEventString(e) for e in day['eventslist']]);"
