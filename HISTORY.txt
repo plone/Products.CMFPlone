@@ -4,11 +4,14 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (Unreleased)
 
+   Alpha2 - Released May 25, 2005
+
+    - Fixed the way newsitem_view.pt test for the (optional) image thumbnail.
+      [tiran]
+
     - Disabled HTTP compression for .css and .js files by default. You can turn
       it on by editing skins/plone_scripts/enableHTTPCompression.py.
       [stefan]
-
-   Alpha2 - Released May 24, 2005
 
     - urlquote the external_edit path to make exteranl editor work with
       Chinese id better
