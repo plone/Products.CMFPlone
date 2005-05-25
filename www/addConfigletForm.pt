@@ -3,8 +3,8 @@
 <span tal:replace="structure here/manage_tabs" />
 
 <form action="registerConfiglet" method="POST">
-    <input name="id">
-    <input type="submit" value="Create">
+    <input name="id" />
+    <input type="submit" value="Create" />
 </form>
 
 </body>
