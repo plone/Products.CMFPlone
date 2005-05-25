@@ -8,17 +8,17 @@ if __name__ == '__main__':
 
 from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
-from Products.ResourceRegistries.config import TOOLNAME, JSTOOLNAME
+from Products.ResourceRegistries.config import CSSTOOLNAME, JSTOOLNAME
 from Products.CMFCore.utils import getToolByName
 
 
 class TestCSSRegistry(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
-        self.tool = getToolByName(self.portal, TOOLNAME)
+        self.tool = getToolByName(self.portal, CSSTOOLNAME)
 
     def testToolExists(self):
-        self.failUnless(TOOLNAME in self.portal.objectIds())
+        self.failUnless(CSSTOOLNAME in self.portal.objectIds())
 
     def testDefaultCssIsInstalled(self):
         installedStylesheetIds = [i['id'] for i in self.tool.getStylesheets()]
