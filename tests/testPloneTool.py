@@ -578,7 +578,6 @@ class TestNavTree(PloneTestCase.PloneTestCase):
         # property get no_display set to True
         ntp=self.portal.portal_properties.navtree_properties
         ntp.manage_changeProperties(idsNotToList=['folder2'])
-        tabs = self.utils.createTopLevelTabs()
         tree = self.utils.createNavTree(self.portal.folder2.file21)
         self.failUnless(tree)
         self.assertEqual(tree['children'][-1]['no_display'],True)
