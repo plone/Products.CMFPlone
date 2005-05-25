@@ -2,8 +2,6 @@
       i18n:domain="plone">
 
 <body>
-
-<!-- RELATED ITEMS -->
 <div metal:define-macro="relatedItems"
     id="relatedItems"
     tal:define="hereTypeInfo python:request.get('this_typeinfo', here.getTypeInfo());
@@ -17,26 +15,27 @@
                 <div class="visualClear" />
                 <fieldset id="relatedItemBox">
                     <legend i18n:translate="">Related items</legend>
-                   
-                    <p>
+                    <ul class="visualNoMarker">
                     <tal:related tal:repeat="item related">
-                        <tal:relItem tal:define="
+                        <li tal:define="
                                 desc                item/Description;
+                                item_type item/portal_type;
+                                item_type_class python: 'contenttype-' + putils.normalizeString(item_type);
                                 item_wf_state       item/review_state|python: getInfoFor(item, 'review_state', '');
-                                item_wf_state_class python:here.getStateClassName(item_wf_state);">
+                                item_wf_state_class python: 'state-' + putils.normalizeString(item_wf_state);">
 
-                            <a href="" 
-                                tal:attributes="href        item/absolute_url;
-                                                title       item/Description;">
-                                <img title="" alt="" src="" tal:attributes="src item/getIcon" /></a>
+                            <span tal:attributes="class item_type_class">
                             <a href="" class=""
-                                tal:attributes="href        item/absolute_url;
-                                                class       item_wf_state_class;
-                                                title       item/Description;">
-                                <span tal:content="item/title_or_id" /></a><br />
-                        </tal:relItem>
+                                tal:attributes="href  item/absolute_url;
+                                                title item/Description;
+                                                class string: $item_wf_state_class visualIconPadding"
+                                tal:content="item/title_or_id">
+                                Related Item
+                            </a>
+                            </span>
+                        </li>
                     </tal:related>
-                    </p>
+                    </ul>
                 </fieldset>
             </tal:block>
         </tal:relatedItems>

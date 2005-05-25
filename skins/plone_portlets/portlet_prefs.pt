@@ -13,7 +13,7 @@
 
     <div class="portlet"
          id="portlet-prefs">
-        <h5 i18n:translate="heading_control_panel">Plone Setup</h5>
+        <h5 i18n:translate="heading_control_panel">Site Setup</h5>
         <div class="portletBody">
 
             <div class="portletContent odd"

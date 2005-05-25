@@ -20,7 +20,7 @@
        class="link-parent"
        tal:attributes="href string: $portal_url/plone_control_panel"
        i18n:translate="label_up_to_plone_setup">
-    Up to Plone Setup
+    Up to Site Setup
     </a>
 
     <p tal:define="heading_description string:description_${request/attr}"

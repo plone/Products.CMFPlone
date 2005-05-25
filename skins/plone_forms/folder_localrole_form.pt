@@ -41,11 +41,55 @@
     <tal:warning tal:condition="not:iscontainer">
         <div class="portalMessage" style="background-color:rgb(255,191,191)">
             <span style="font-weight:normal" i18n:translate="local_role_warning"><strong>Attention!</strong> You are setting the sharing permissions for a <strong tal:content="here/portal_type"/>.
-            if you want to set the permissions for its containing folder, click 
+            If you want to set the permissions for its containing folder, click
             <a href="" tal:attributes="href python:here.absolute_url()+'/../'+ template.id">here</a>
             </span>.
         </div>
     </tal:warning>
+
+
+    <tal:warning tal:condition="python:iscontainer and here.isDefaultPageInFolder()">
+        <div class="portalMessage" style="background-color:rgb(255,191,191)">
+            <span style="font-weight:normal" i18n:translate="local_role_warning"><strong>Attention!</strong> You are setting the sharing permissions for this folder's default page.
+            If you want to set the permissions for its containing folder, click
+            <a href="" tal:attributes="href python:here.absolute_url()+'/../'+ template.id">here</a>
+            </span>.
+        </div>
+    </tal:warning>
+
+<form method="post"
+          name="setacquisition"
+          action="folder_localrole_set">
+
+      <fieldset>
+
+        <legend i18n:translate="legend_security_settings">
+            Advanced Settings
+        </legend>
+
+        <div class="field">
+            <input class="noborder" type="checkbox" name="use_acquisition:int" value="1" id="inherit"
+                tal:attributes="checked     python:test(inheritanceActive,1,None)"
+                /> 
+            <label for="inherit">Inherit roles from higher levels </label>
+            <div class="formHelp" i18n:translate="help_use_acquisition">
+                Determines if the roles given to users and groups from higher levels are in
+                effect in this context.
+            </div>
+        </div>
+
+        <div class="submit">
+            <input class="context"
+                type="submit"
+                value="Apply Settings"
+                i18n:attributes="value"
+                tabindex=""
+                tal:attributes="tabindex tabindex/next;"
+                />
+        </div>
+
+      </fieldset>
+    </form>
 
     <!-- form for changing existing roles -->
     <form method="post"
@@ -506,39 +550,7 @@
 
         </tal:groupshares>
 
-    <form method="post"
-          name="setacquisition"
-          action="folder_localrole_set">
-
-      <fieldset>
-
-        <legend i18n:translate="legend_security_settings">
-            Advanced Settings
-        </legend>
-
-        <div class="field">
-            <input class="noborder" type="checkbox" name="use_acquisition:int" value="1" id="inherit"
-                tal:attributes="checked     python:test(inheritanceActive,1,None)"
-                /> 
-            <label for="inherit">Inherit roles from higher levels </label>
-            <div class="formHelp" i18n:translate="help_use_acquisition">
-                Determines if the roles given to users and groups from higher levels are in
-                effect in this context.
-            </div>
-        </div>
-
-        <div class="submit">
-            <input class="context"
-                type="submit"
-                value="Apply Settings"
-                i18n:attributes="value"
-                tabindex=""
-                tal:attributes="tabindex tabindex/next;"
-                />
-        </div>
-
-      </fieldset>
-    </form>
+    
 
       <div metal:use-macro="here/document_byline/macros/byline">
         Get the byline - contains details about author and modification date.

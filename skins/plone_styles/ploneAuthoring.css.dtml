@@ -24,7 +24,6 @@
     background: &dtml-globalBackgroundColor; url(&dtml-portal_url;/linkOpaque.gif) 9px 1px no-repeat;
     cursor: pointer;
     font-size: &dtml-fontSmallSize;;
-    margin-bottom: 1em;
     padding: 1px 1px 1px 15px;
     text-transform: &dtml-textTransform;;
 }
@@ -33,7 +32,6 @@
     background: transparent url(&dtml-portal_url;/linkTransparent.gif) 9px 1px no-repeat;
     cursor: pointer;
     font-size: &dtml-fontSmallSize;;
-    margin-bottom: 1em;
     padding: 1px 1px 1px 15px;
     text-transform: &dtml-textTransform;;
 }
@@ -43,13 +41,12 @@
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-notifyBorderColor;;
     cursor: pointer;
     font-size: &dtml-fontSmallSize;;
-    margin-bottom: 1em;
     padding: 1px 1px 1px 15px;
     text-transform: &dtml-textTransform;;
 }
 input.searchButton {
-    font-size: 100%;
     margin-bottom: &dtml-borderWidth; ! important;
+    font-size: &dtml-fontSmallSize;;
     background: &dtml-backgroundColor; url(&dtml-portal_url;/search_icon.gif) 2px 1px no-repeat;
     cursor: pointer;
     padding: 1px 1px 1px 15px;
@@ -72,7 +69,7 @@ input.searchButton {
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-notifyBorderColor;;
 }
 
-/* The new form elements */
+/* The edit form elements */
 
 .field {
     top: 0;
@@ -82,11 +79,6 @@ input.searchButton {
 
 .field .field {
     margin: 1em 0 0 0;
-}
-
-.field label {
-    font-size: 100%;
-    font-weight: bold;
 }
 
 .fieldRequired {
@@ -99,10 +91,6 @@ input.searchButton {
     font-size: 90%;
     color: &dtml-discreetColor;;
     margin: 0 0 0.2em 0;
-}
-
-.formHelp a {
-    text-decoration: underline;
 }
 
 .formHelp:hover {
@@ -189,6 +177,11 @@ input.searchButton {
     border-right: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
     padding: 0.25em 1em;
 }
+
+.listing a {
+    text-decoration: none;
+}
+
 .listing a:hover {
     text-decoration: underline;
 }
@@ -246,17 +239,6 @@ ul.configletDetails li label {
     font-weight: bold;
 }
 
-/* List classes without markers */
-
-ul.visualNoMarker,
-ol.visualNoMarker {
-    list-style-type: none;
-    list-style-image: none;
-    margin: 0.5em 0 0 0;
-}
-
-
-
 /* Additional STX workaround classes */
 .stx table p /* stupid STX table workaround */
 {
@@ -275,6 +257,10 @@ ol.visualNoMarker {
     border: none;
     margin-bottom: 1em;
     padding: 0;
+}
+
+.portlet a {
+    text-decoration: none;
 }
 
 /* Compensation when rendering portlets in the content area */
@@ -373,85 +359,6 @@ ol.visualNoMarker {
 }
 
 
-/* Navigation tree styling */
-
-.navIcon,
-.navIconRoot {
-    position: relative;
-    right: 20px;
-}
-
-.navItemText {
-    margin-left: -20px;
-}
-
-.navRootItem,
-.navItem {
-    margin: 0 0 0.2em 0;
-    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-backgroundColor;;
-    display: block;
-    background-repeat: no-repeat;
-    background-position: 0 1px;
-    padding: 0.1em 0.25em 0.2em 20px;
-    margin: 1px 0;
-}
-
-.currentNavItem,
-#portlet-navigation-tree a:hover {
-    background-color: &dtml-globalBackgroundColor;;
-    color: &dtml-globalFontColor;;
-    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
-}
-
-/* The deprecated navtree levels. These will go away once we ship with new 
-   navtree in 2.1 */
-
-.navLevel1 { margin-left: 0em; }
-.navLevel2 { margin-left: 1em; }
-.navLevel3 { margin-left: 2em; }
-.navLevel4 { margin-left: 3em; }
-.navLevel5 { margin-left: 4em; }
-.navLevel6 { margin-left: 4.5em; }
-.navLevel7 { margin-left: 5em;   }
-.navLevel8 { margin-left: 5.5em; }
-
-
-/* New-style navigation tree */
-
-.portletNavigationTree {
-    margin: 0 0 0 0.75em; 
-    padding: 0; 
-    list-style: none; 
-    list-style-image: none; 
-    line-height: 1em;
-}
-
-.portletNavigationTreeItem {
-    margin: 0;
-}
-
-.portletNavigationTreeItem a {
-    display: block;
-    text-decoration: none;
-    padding: 0.5em 0 0.5em 1.75em;
-    background-repeat: no-repeat;
-    background-position: 0 3px;
-    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-backgroundColor;;
-}
-
-.portletNavigationTreeItem a:hover,
-.currentNavItem {
-    background-color: &dtml-globalBackgroundColor;;
-    color: &dtml-globalFontColor;;
-    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor; !important;
-}
-
-/* The new navtree level structure. */
-
-.portletNavigationLevel0 {
-    margin: 0;
-}
-
 
 
 .comment {
@@ -476,30 +383,10 @@ ol.visualNoMarker {
 }
 
 .spacer {
-	margin: 1em;
+    margin: 1em;
 }
 
 
-/* Sitemap styling */
-
-.portal-sitemap {
-    list-style: none;
-    list-style-image: none;
-    margin: 0;
-    font-size: 90%;
-    border: none;
-}
-
-.portal-sitemap .portletNavigationLevel1 {
-    padding-left: 1em;
-    border-left: 0.5em solid &dtml-globalBorderColor;;
-    margin: 0 0 0 0.7em;
-}
-
-.portal-sitemap .portletNavigationLevel2 {
-    padding-left: 1em;
-    border-left: 0.5em solid &dtml-globalBackgroundColor;;
-}
 
 .role-Member {
 
@@ -538,11 +425,6 @@ ol.visualNoMarker {
     font-weight: normal;
 }
 
-.discreet a {
-    color: &dtml-discreetColor;;
-    text-decoration: underline;
-}
-
 .listingBar {
     background-color: &dtml-globalBackgroundColor;;
     border-color: &dtml-globalBorderColor;;
@@ -572,72 +454,7 @@ ol.visualNoMarker {
 	vertical-align: middle;
 }
 
-/*
-** Accessibility and visual enhancement elements
-*/
-
-.link-plain {
-    background-image: none;
-    padding: 0;
-}
-
-.link-parent {
-    display: block;
-    background: transparent url(&dtml-portal_url;/arrowUp.gif) 4px 5px no-repeat;
-    padding: 1px 0px 1px 16px;
-    font-size: &dtml-fontSmallSize;;
-}
-
-.link-user {
-    background: transparent url(&dtml-portal_url;/user.gif) 0 1px no-repeat;
-    padding: 1px 0px 1px 16px;
-}
-
-.link-external {
-    background: transparent url(&dtml-portal_url;/link_icon.gif) 0px 1px no-repeat;
-    padding: 1px 0px 1px 16px;
-}
-
-.link-https {
-    background: transparent url(&dtml-portal_url;/lock_icon.gif) 0px 1px no-repeat;
-    padding: 1px 0px 1px 16px;
-}
-
-.link-mailto {
-    background: transparent url(&dtml-portal_url;/mail_icon.gif) 0px 1px no-repeat;
-    padding: 1px 0px 1px 16px;
-}
-
-.link-news {
-    background: transparent url(&dtml-portal_url;/topic_icon.gif) 0px 1px no-repeat;
-    padding: 1px 0px 1px 16px;
-}
-
-.link-ftp {
-    background: transparent url(&dtml-portal_url;/file_icon.gif) 0px 1px no-repeat;
-    padding: 1px 0px 1px 16px;
-}
-
-.link-irc {
-    background: transparent url(&dtml-portal_url;/discussionitem_icon.gif) 0px 1px no-repeat;
-    padding: 1px 0px 1px 16px;
-}
-
-.link-callto {
-    background: transparent url(&dtml-portal_url;/phone_icon.gif) 0px 1px no-repeat;
-    padding: 1px 0px 1px 16px;
-}
-
-.link-comment {
-    background: transparent url(&dtml-portal_url;/discussionitem_icon.gif) center left no-repeat;
-    padding: 1px 0px 1px 16px !important; /* value:  */
-}
-
-.link-anchor {
-    color: &dtml-discreetColor;;
-    text-decoration: none;
-    font-weight: normal;
-}
+/* Accessibility elements */
 
 .hiddenStructure {
     display: block;
@@ -732,6 +549,7 @@ ol.visualNoMarker {
 .ploneCalendar {
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
     margin: 1em 0em;
+    border-collapse: collapse;
 }
 .ploneCalendar a {
     text-decoration: none;
@@ -820,7 +638,6 @@ ol.visualNoMarker {
 
 .contentActions ul {
     line-height: 1.2em;
-    height: 1.2em;
     padding: 0;
     margin: 0;
 }
@@ -850,8 +667,9 @@ ol.visualNoMarker {
 .contentActionMenuHeader {
     background-image: url(<dtml-var portal_url>/arrowDownAlternative.gif);
     background-repeat: no-repeat;
-    background-position: center right;
-    padding: 0 1em 0 0.5em !important;
+    background-position: 95% 60%;
+    padding: 0 1.5em 0 0.5em !important;
+    cursor: pointer;
     cursor: pointer;
 }
 
@@ -899,7 +717,7 @@ ol.visualNoMarker {
 
 .contentBatchAction {
     float: left !important;
-    padding: 0;
+    padding: 0 0.5em;
     border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
     border-right: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
     border-left: none !important;
@@ -913,6 +731,20 @@ ol.visualNoMarker {
 ** end ECMAScript Content Action Menus
 */
 
+
+/* Styles to make the editing widgets look more like their view counterparts */
+
+#archetypes-fieldname-title input {
+    font-size: 160%;
+    font-family: <dtml-var headingFontFamily>;
+    font-weight: normal;
+    width: 99%;
+}
+
+#archetypes-fieldname-description textarea {
+    font: 100% <dtml-var fontFamily>;
+    font-weight: bold;
+}
 
 
 /* </dtml-with> */

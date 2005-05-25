@@ -7,34 +7,37 @@
 ##parameters=content=None
 ##title=Find out if the object is expired
 ##
+
 from DateTime import DateTime
 from Products.CMFPlone import base_hasattr
+from Products.CMFPlone import safe_callable
 
 if not content:
     content = context
+expiry = None
 
 # NOTE: We also accept catalog brains as 'content' so that the catalog-based
 # folder_contents will work. It's a little magic, but it works.
 
-# XXX: It may be better that we use the DC ExpirationDate() accessor, since at
-# the moment we're relying on the attribute being available on the object
-# explicitly, although this returns an ISO string, not a DateTime object so the 
-# code below would have to be modified. AT's contentExpired() method could also 
-# be used, but then it wouldn't work with non-AT types.
+# ExpirationDate should have an ISO date string, which we need to
+# convert to a DateTime
 
-if base_hasattr(content, 'expires'):
-    try:
-        expiry=content.expires()
-    except AttributeError:
-        # DateTime instances are not callable
-        # This is an artifact from the past
-        
-        # NOTE: This will also happen if content is a catalog brain
-        expiry=content.expires
-    except TypeError:
-        # expires is not the dublin core 'expires' method
-        expiry = None
-    if isinstance(expiry, DateTime) and expiry.isPast():
+# Try DC accessor first
+if base_hasattr(content, 'ExpirationDate'):
+    expiry=content.ExpirationDate
+
+# Try the direct way
+if not expiry and base_hasattr(content, 'expires'):
+    expiry=content.expires
+
+# See if we have a callable
+if safe_callable(expiry):
+    expiry = expiry()
+
+# Convert to DateTime if necessary, ExpirationDate may return 'None'
+if expiry and expiry != 'None' and same_type(expiry, ''):
+    expiry = DateTime(expiry)
+
+if same_type(expiry, DateTime()) and expiry.isPast():
         return 1
-
 return 0

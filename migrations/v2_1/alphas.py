@@ -5,7 +5,9 @@ from zExceptions import BadRequest
 from Products.CMFCore import CMFCorePermissions
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import _createObjectByType
-from Products.CMFPlone.migrations.migration_util import installOrReinstallProduct
+from Products.CMFPlone.migrations.migration_util import installOrReinstallProduct, \
+     safeGetMemberDataTool
+from Products.CMFCore.Expression import Expression
 from Products.CMFCore.Expression import Expression
 
 
@@ -133,6 +135,40 @@ def alpha1_alpha2(portal):
     # Add selectable_views to portal root
     addSiteRootViewTemplates(portal, out)
 
+    # Get rid of CMF typo 'ExpiresDate' metadata in favor of proper DC
+    # 'ExpirationDate' metadata
+    reindex += switchToExpirationDateMetadata(portal, out) 
+
+    # Add translation service tool to portal root
+    addTranslationServiceTool(portal, out)
+
+    # Add new memberdata properties
+    addMemberdataHome_Page(portal, out)
+    addMemberdataLocation(portal, out)
+    addMemberdataDescription(portal, out)
+    addMemberdataLanguage(portal, out)
+    addMemberdataExtEditor(portal,out)
+
+    # Fix the conditions and permissions on the folder_buttons actions
+    fixFolderButtonsActions(portal, out)
+
+    # Change the condition for the change_state action
+    alterChangeStateActionCondition(portal, out)
+    
+    # Change condition for the external editor action so it checks for the
+    # user preferences.
+    alterExtEditorActionCondition(portal, out)
+
+    # Add typesUseViewActionInListings site_property for types like Image and File,
+    # which shouldn't use immediate_view from folder_contents and listings
+    addTypesUseViewActionInListingsProperty(portal, out)
+
+    # Change name of plone_setup action
+    changePloneSetupActionToSiteSetup(portal,out)
+
+    # Change plone site FTI icon
+    changePloneSiteIcon(portal, out)
+
     # ADD NEW STUFF BEFORE THIS LINE AND LEAVE THE TRAILER ALONE!
 
     # Rebuild catalog
@@ -151,7 +187,7 @@ def alpha1_alpha2(portal):
 
     # Make sure the Events folder is cataloged
     indexEventsFolder(portal, out)
-
+    
     # Add new memberdata properties
     addMemberdataHome_Page(portal, out)
     addMemberdataLocation(portal, out)
@@ -164,6 +200,15 @@ def alpha1_alpha2(portal):
     # Change the condition for the change_state action
     alterChangeStateActionCondition(portal, out)
     return out
+
+
+def addTranslationServiceTool(portal, out):
+    """Adds the TranslationServiceTool to portal."""
+    addCMFPloneTool = portal.manage_addProduct['CMFPlone'].manage_addTool
+    translationServiceTool = getToolByName(portal, 'translation_service', None)
+    if translationServiceTool is None:
+        addCMFPloneTool('Portal Translation Service Tool', None)
+        out.append('Added TranslationService Tool')
 
 
 def replaceMailHost(portal, out):
@@ -286,7 +331,7 @@ def addVisibleIdsSiteProperty(portal, out):
 
 def deleteVisibleIdsMemberProperty(portal, out):
     """Deletes visible_ids memberdata property."""
-    memberdata = getToolByName(portal, 'portal_memberdata', None)
+    memberdata = safeGetMemberDataTool(portal)
     if memberdata is not None:
         if memberdata.hasProperty('visible_ids'):
             memberdata.manage_delProperties(['visible_ids'])
@@ -295,7 +340,7 @@ def deleteVisibleIdsMemberProperty(portal, out):
 
 def deleteFormToolTipsMemberProperty(portal, out):
     """Deletes formtooltips memberdata property."""
-    memberdata = getToolByName(portal, 'portal_memberdata', None)
+    memberdata = safeGetMemberDataTool(portal)
     if memberdata is not None:
         if memberdata.hasProperty('formtooltips'):
             memberdata.manage_delProperties(['formtooltips'])
@@ -499,6 +544,7 @@ def installCSSandJSRegistries(portal, out):
             jsreg.registerScript('highlightsearchterms.js')
             jsreg.registerScript('first_input_focus.js')
             jsreg.registerScript('folder_contents_filter.js')
+            jsreg.registerScript('folder_contents_hideAddItems.js')
             jsreg.registerScript('styleswitcher.js')
             jsreg.registerScript('table_sorter.js')
             jsreg.registerScript('calendar_formfield.js')
@@ -667,7 +713,7 @@ def addEditContentActions(portal, out):
          'permission': CMFCorePermissions.Permissions.copy_or_move,
         },
         {'id'        : 'batch',
-         'name'      : 'Batch Mode',
+         'name'      : 'Contents',
          'action'    : "python:((object.isDefaultPageInFolder() and object.getParentNode().absolute_url()) or folder_url)+'/folder_contents'",
          'condition' : 'python:folder.displayContentsTab()',
          'permission': CMFCorePermissions.View,
@@ -900,33 +946,39 @@ def addSiteRootViewTemplates(portal, out):
 
 
 def addMemberdataHome_Page(portal, out):
-    memberdata_tool = getToolByName(portal, 'portal_memberdata', None)
+    memberdata_tool = safeGetMemberDataTool(portal)
     if memberdata_tool is not None:
         if not memberdata_tool.hasProperty('home_page'):
             memberdata_tool.manage_addProperty('home_page', '', 'string')
             out.append("Added 'home_page' property to portal_memberdata.")
 
 def addMemberdataLocation(portal, out):
-    memberdata_tool = getToolByName(portal, 'portal_memberdata', None)
+    memberdata_tool = safeGetMemberDataTool(portal)
     if memberdata_tool is not None:
         if not memberdata_tool.hasProperty('location'):
             memberdata_tool.manage_addProperty('location', '', 'string')
             out.append("Added 'location' property to portal_memberdata.")
 
 def addMemberdataDescription(portal, out):
-    memberdata_tool = getToolByName(portal, 'portal_memberdata', None)
+    memberdata_tool = safeGetMemberDataTool(portal)
     if memberdata_tool is not None:
         if not memberdata_tool.hasProperty('description'):
             memberdata_tool.manage_addProperty('description', '', 'text')
             out.append("Added 'description' property to portal_memberdata.")
 
 def addMemberdataLanguage(portal, out):
-    memberdata_tool = getToolByName(portal, 'portal_memberdata', None)
+    memberdata_tool = safeGetMemberDataTool(portal)
     if memberdata_tool is not None:
         if not memberdata_tool.hasProperty('language'):
             memberdata_tool.manage_addProperty('language', '', 'string')
-            out.append("Added 'description' property to portal_memberdata.")
+            out.append("Added 'language' property to portal_memberdata.")
 
+def addMemberdataExtEditor(portal, out):
+    memberdata_tool = safeGetMemberDataTool(portal)
+    if memberdata_tool is not None:
+        if not memberdata_tool.hasProperty('ext_editor'):
+            memberdata_tool.manage_addProperty('ext_editor', '1', 'boolean')
+            out.append("Added 'ext_editor' property to portal_memberdata.")
 
 def alterChangeStateActionCondition(portal, out):
     """ Change the change_state action so that it checks either Modify portal
@@ -961,6 +1013,39 @@ def alterChangeStateActionCondition(portal, out):
                     category=newaction['category'],
                     visible=1)
             out.append("Added missing change_state action")
+
+
+def alterExtEditorActionCondition(portal, out):
+    """ Change the extedit action so that it checks the user
+    preferences for external editing.
+    """
+    newaction = {'id'        : 'extedit',
+                  'name'      : 'Change State',
+                  'action'    : 'string:$object_url/external_edit',
+                  'condition' : 'python: member and hasattr(member, "ext_editor") and member.ext_editor and object.absolute_url() != portal_url',
+                  'permission': CMFCorePermissions.ModifyPortalContent,
+                  'category': 'document_actions',
+                }
+    exists = False
+    actionsTool = getToolByName(portal, 'portal_actions', None)
+    if actionsTool is not None:
+        new_actions = actionsTool._cloneActions()
+        for action in new_actions:
+            if action.getId() == 'extedit' and action.category == newaction['category']:
+                exists = True
+                action.condition = Expression(text=newaction['condition']) or ''
+                out.append('Modified existing extedit action')
+        if exists:
+            actionsTool._actions = new_actions
+        else:
+            actionsTool.addAction(newaction['id'],
+                    name=newaction['name'],
+                    action=newaction['action'],
+                    condition=newaction['condition'],
+                    permission=newaction['permission'],
+                    category=newaction['category'],
+                    visible=1)
+            out.append("Added missing extedit action")
 
 
 def fixFolderButtonsActions(portal, out):
@@ -1008,3 +1093,77 @@ def fixFolderButtonsActions(portal, out):
                     category=newaction['category'],
                     visible=1)
                 out.append("Added missing %s action"%newaction['id'])
+
+
+def addTypesUseViewActionInListingsProperty(portal, out):
+    # Adds a typesUseViewActionInListings list property to site_properties
+    # which is used to determine which types should use not immediate_view
+    # in folder listings (and batch mode).  This is important for types like
+    # Image and File.
+    propTool = getToolByName(portal, 'portal_properties', None)
+    if propTool is not None:
+        propSheet = getattr(propTool, 'site_properties', None)
+        if propSheet is not None:
+            if not propSheet.hasProperty('typesUseViewActionInListings'):
+                propSheet.manage_addProperty('typesUseViewActionInListings',
+                                             ['Image','File'],
+                                             'lines')
+            out.append("Added 'typesUseViewActionInListings' property to site_properties.")
+
+
+def switchToExpirationDateMetadata(portal, out):
+    """Remove ExpiresDate and add ExpirationDate columns the catalog."""
+    catalog = getToolByName(portal, 'portal_catalog', None)
+    if catalog is not None:
+        schema = catalog.schema()
+        if 'ExpiresDate' in schema:
+            catalog.delColumn('ExpiresDate')
+            out.append("Removed 'ExpiresDate' metadata from portal_catalog.")
+        if 'ExpirationDate' in schema:
+            return 0
+        catalog.addColumn('ExpirationDate')
+        out.append("Added 'ExpirationDate' metadata to portal_catalog.")
+        return 1 # Ask for reindexing
+    return 0
+
+
+def changePloneSetupActionToSiteSetup(portal, out):
+    """ Change the plone_setup action so that its title is Site Setup.
+    """
+    newaction = {'id': 'plone_setup',
+                'name': 'Site Setup',
+                'action': 'string: ${portal_url}/plone_control_panel',
+                'condition': '', # condition
+                'permission': CMFCorePermissions.ManagePortal,
+                'category': 'user',
+                'visible': 1}
+    exists = False
+    actionsTool = getToolByName(portal, 'portal_actions', None)
+    if actionsTool is not None:
+        new_actions = actionsTool._cloneActions()
+        for action in new_actions:
+            if action.getId() == newaction['id'] and action.category == newaction['category']:
+                exists = True
+                action.title = newaction['name']
+                out.append('Modified existing plone_setup action')
+        if exists:
+            actionsTool._actions = new_actions
+        else:
+            actionsTool.addAction(newaction['id'],
+                    name=newaction['name'],
+                    action=newaction['action'],
+                    condition=newaction['condition'],
+                    permission=newaction['permission'],
+                    category=newaction['category'],
+                    visible=1)
+            out.append("Added missing plone_setup action")
+
+
+def changePloneSiteIcon(portal, out):
+    """Change the icon for plone site from folder_icon to site_icon"""
+    typesTool = getToolByName(portal, 'portal_types', None)
+    if typesTool is not None:
+        plone_FTI = getattr(typesTool, 'Plone Site', None)
+        if plone_FTI is not None and plone_FTI.content_icon == 'folder_icon.gif':
+            plone_FTI.content_icon = 'site_icon.gif'
+            out.append("Changed Plone Site icon")

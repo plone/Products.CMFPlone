@@ -16,8 +16,12 @@ if parent is not None:
 else:
     talkback = parent = obj.aq_parent
 
+# remove the discussion item
 talkback.deleteReply( obj.getId() )
 
-view = parent.getTypeInfo().getActionById('view')
-context.REQUEST['RESPONSE'].redirect( parent.absolute_url()
+# redirect to the object that is being discussed
+redirect_target = context.plone_utils.getDiscussionThread(talkback)[0]
+view = redirect_target.getTypeInfo().getActionById('view')
+
+context.REQUEST['RESPONSE'].redirect( redirect_target.absolute_url()
          + '/%s?portal_status_message=Reply+deleted' % view )

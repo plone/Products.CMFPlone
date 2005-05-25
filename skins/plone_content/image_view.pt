@@ -17,10 +17,11 @@
             Title or id
         </h1>
     
-        <div class="documentDescription"
-             tal:content="here/Description">
-        description
-        </div>
+        <p class="documentDescription"
+           tal:content="here/Description"
+           tal:condition="here/Description">
+            Description
+        </p>
 
         <a href=""
            tal:attributes="href string:${here/absolute_url}/image_view_fullscreen">

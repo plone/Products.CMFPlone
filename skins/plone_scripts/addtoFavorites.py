@@ -6,6 +6,7 @@
 ##bind script=script
 ##bind subpath=traverse_subpath
 ##parameters=
+from Products.CMFPlone import shasattr
 RESPONSE = context.REQUEST.RESPONSE
 homeFolder=context.portal_membership.getHomeFolder()
 view_url = '%s/%s' % (context.absolute_url(),
@@ -17,7 +18,13 @@ if not homeFolder:
     return RESPONSE.redirect('%s?portal_status_message=%s' % (view_url, msg))
 
 if not hasattr(homeFolder, 'Favorites'):
-    homeFolder.invokeFactory('Folder', id='Favorites')
+    homeFolder.invokeFactory('Folder', id='Favorites', title='Favorites')
+    addable_types = ['Favorite']
+    favs = homeFolder.Favorites
+    if shasattr(favs, 'setConstrainTypesMode'):
+        favs.setConstrainTypesMode(1)
+        favs.setImmediatelyAddableTypes(addable_types)
+        favs.setLocallyAllowedTypes(addable_types)
 
 targetFolder = homeFolder.Favorites
 new_id='fav_' + str(int( context.ZopeTime()))

@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<rdf:RDF
+  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  xmlns:dc="http://purl.org/dc/elements/1.1/"
+  xmlns:syn="http://purl.org/rss/1.0/modules/syndication/"
+  xmlns="http://purl.org/rss/1.0/"
+  xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+  xmlns:tal="http://xml.zope.org/namespaces/tal"
+  xmlns:metal="http://xml.zope.org/namespaces/metal">
+
+<tal:block 
+    define="
+        syn context/portal_syndication;
+        start python: int(request.get('b_start', 0));
+        end python: int(request.get('b_end', start+syn.max_items));
+        max_items python: syn.max_items;
+        order python: request.get('sort_on', None) and request.set('sort_order', 'reverse');
+        dummy python: request.set('sort_on', request.get('sort_on', 'effective'));
+        objectList python:context.queryCatalog(use_types_blacklist=True)[start:end]">
+    <metal:block use-macro="context/rss_template/macros/master">
+        RSS goes here
+        <metal:block fill-slot="description">
+            These are the search results for the site for the query, showing results <tal:number content="start" /> to <tal:number content="end" />.
+        </metal:block>
+    </metal:block>
+</tal:block>
+</rdf:RDF>

@@ -109,6 +109,8 @@ example <a href="https://plone.org">Secure (HTTPS) link to plone.org</a>,
 example <a href="mailto:some@address">Mailto link</a>,
 example <a href="ftp://some.site">FTP link</a>,
 example <a href="news://some.site">NNTP (news) link</a>,
+example <a href="webcal://some.site">WebCal link</a>,
+example <a href="feed://some.site">RSS feed link</a>,
 example <a href="irc://some.network/#channel">IRC link</a>.
 </p>
 
@@ -179,6 +181,197 @@ Table of class <code>vertical listing</code>
         </tr>
     </tbody>
 </table>
+
+<h2>Forms</h2>
+
+<form>
+    <fieldset>
+        <legend>Fieldset legend</legend>
+
+        <div class="field">
+            <label>Text field</label>
+            <span class="fieldRequired" title="Required"
+                  i18n:attributes="title"
+                  i18n:translate="label_required">(Required)</span>
+            <div class="formHelp">
+                This is the help for this form field. And <a href="#">links are also possible</a>.
+            </div>
+            <input type="text" value="Some content" />
+        </div>
+        <div class="field error">
+            <label>Text field with error</label>
+            <span class="fieldRequired" title="Required"
+                  i18n:attributes="title"
+                  i18n:translate="label_required">(Required)</span>
+            <div class="formHelp">
+                This field is just here to demonstrate an error message.
+            </div>
+            <div>This is the error message.</div>
+            <input type="text" value="Some content" />
+        </div>
+        <div class="field">
+            <label>Checkbox</label>
+            <span class="fieldRequired" title="Required"
+                  i18n:attributes="title"
+                  i18n:translate="label_required">(Required)</span>
+            <div class="formHelp">
+                This is a checkbox field.
+            </div>
+            <input type="checkbox" />
+        </div>
+        <div class="field error">
+            <label>Checkbox with error</label>
+            <span class="fieldRequired" title="Required"
+                  i18n:attributes="title"
+                  i18n:translate="label_required">(Required)</span>
+            <div class="formHelp">
+                This checkbox field is just here to demonstrate an error message.
+            </div>
+            <div>This is the error message.</div>
+            <input type="checkbox" />
+        </div>
+        <div class="field">
+            <label>Checkbox without border</label>
+            <span class="fieldRequired" title="Required"
+                  i18n:attributes="title"
+                  i18n:translate="label_required">(Required)</span>
+            <div class="formHelp">
+                This is a checkbox field.
+            </div>
+            <input type="checkbox"
+                   class="noborder" />
+        </div>
+        <div class="field error">
+            <label>Checkbox without border with error</label>
+            <span class="fieldRequired" title="Required"
+                  i18n:attributes="title"
+                  i18n:translate="label_required">(Required)</span>
+            <div class="formHelp">
+                This checkbox field is just here to demonstrate an error message.
+            </div>
+            <div>This is the error message.</div>
+            <input type="checkbox"
+                   class="noborder" />
+        </div>
+        <div class="field">
+            <label>Radio</label>
+            <span class="fieldRequired" title="Required"
+                  i18n:attributes="title"
+                  i18n:translate="label_required">(Required)</span>
+            <div class="formHelp">
+                This is a checkbox field.
+            </div>
+            <input class="noborder"
+                   type="radio"
+                   name="radio_group1" />
+            <label>First</label>
+            <br />
+            <input class="noborder"
+                   type="radio"
+                   name="radio_group1" />
+            <label>Second</label>
+            <br />
+            <input class="noborder"
+                   type="radio"
+                   name="radio_group1" />
+            <label>Third</label>
+            <br />
+        </div>
+        <div class="field error">
+            <label>Radio with error</label>
+            <span class="fieldRequired" title="Required"
+                  i18n:attributes="title"
+                  i18n:translate="label_required">(Required)</span>
+            <div class="formHelp">
+                This checkbox field is just here to demonstrate an error message.
+            </div>
+            <div>This is the error message.</div>
+            <input class="noborder"
+                   type="radio"
+                   name="radio_group2" />
+            <label>First</label>
+            <br />
+            <input class="noborder"
+                   type="radio"
+                   name="radio_group2" />
+            <label>Second</label>
+            <br />
+            <input class="noborder"
+                   type="radio"
+                   name="radio_group2" />
+            <label>Third</label>
+            <br />
+        </div>
+        <div class="formControls">
+            <input class="context"
+                   type="submit"
+                   value="Context submit" />
+            <input class="standalone"
+                   type="submit"
+                   value="Standalone submit" />
+            <input type="submit"
+                   value="Submit" />
+            <input class="context"
+                   type="button"
+                   value="Context button" />
+            <input class="standalone"
+                   type="button"
+                   value="Standalone button" />
+            <input type="button"
+                   value="Button" />
+        </div>
+    </fieldset>
+</form>
+
+<h2>Table with form elements</h2>
+
+<form>
+    <table id="sortable"
+         class="listing"
+         summary="Content listing"
+         cellpadding="0" cellspacing="0">
+        <thead>
+            <tr>
+                <th class="nosort">
+                    <input class="noborder"
+                           type="checkbox"
+                           src="select_all_icon.gif"
+                           name="selectButton"
+                           title="Select all items"
+                           onClick="toggleSelect(this,'paths:list');"
+                           tal:attributes="src string:$portal_url/select_all_icon.gif"
+                           alt="Select all items"
+                           i18n:attributes="title alt" />
+                </th>
+                <th>&nbsp;Title&nbsp;</th>
+                <th>&nbsp;Stuff&nbsp;</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="odd">
+                <td>
+                   <input type="checkbox"
+                          class="noborder"
+                          name="paths:list" id="#"
+                          value="#" />
+                </td>
+                <td><a href="#">Title</a></td>
+                <td>with class noborder</td>
+            </tr>
+            <tr class="even">
+                <td>
+                   <input type="checkbox"
+                          class="noborder"
+                              name="paths:list" id="#"
+                          value="#" />
+                </td>
+                <td><a href="#">Title</a></td>
+                <td>with class noborder</td>
+            </tr>
+        </tbody>
+    </table>
+</form>
+
 
 
 <h2>The Internet Explorer "Peekaboo" bug</h2>

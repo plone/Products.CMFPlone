@@ -22,7 +22,6 @@
                size="15"
                value=""
                alt="Search Site"
-               autocomplete="off"
                title="Search Site"
                accesskey="accesskeys-search"
                i18n:attributes="alt accesskey title"

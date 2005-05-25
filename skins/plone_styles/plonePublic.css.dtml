@@ -300,6 +300,11 @@
     text-transform: &dtml-textTransform;;
 }
 
+#portal-breadcrumbs a {
+    text-decoration: none;
+}
+
+
 .breadcrumbSeparator {
     font-size: 120%;
 }
@@ -330,7 +335,7 @@
     color: &dtml-contentViewFontColor;;
     height: auto;
     margin-right: 0.5em;
-    padding: 0em 1.5em;
+    padding: 0em 1.25em;
     line-height: normal;
     text-decoration: none;
     text-transform: &dtml-textTransform;;
@@ -413,7 +418,7 @@
 
 .documentContent {
     font-size: 110%;
-    padding: 0em 1em 2em 1em !important;
+    padding: 1em 1em 2em 1em !important;
     background: &dtml-backgroundColor;;
 }
 
@@ -425,16 +430,13 @@
 
 
 .documentActions {
-    margin: -1.5em 0 2em 0;
     float: right;
-    margin: 1em 0 0 0.5em;
+    margin: 0.4em 0 0 0.5em;
     clear: none;
 }
 
 .documentActions ul {
     margin: 0 0 0.3em 0;
-    float: right;
-    clear: right;
 }
 
 
@@ -457,7 +459,7 @@
     color: &dtml-fontColor;;
     font-size: &dtml-fontSmallSize;;
     font-weight: bold;
-    margin: 1em 0em 0em 0em;
+    margin: 1em 0em;
     padding: 0.5em 1em 0.5em 3em;
     vertical-align: middle;
     background-image: url(&dtml-portal_url;/info_icon.gif);
@@ -467,13 +469,12 @@
 }
 .portalMessage a {
     color: &dtml-fontColor;;
-    text-decoration: underline;
 }
 .documentDescription {
     /* The summary text describing the document */
     font-weight: bold;
     display: block;
-    margin: 1em 0em;
+    margin: 0.5em 0em;
     line-height: 1.5em;
 }
 .documentByLine {
@@ -482,19 +483,17 @@
     color: &dtml-discreetColor;;
     margin: 0;    
 }
-.documentByLine a {
-    text-decoration: underline;
-}
 
 /* Useful deviations from regular style on elements */
 
-ul.nomarker,
-ul.nomarker {
-    line-height: 1.5em;
-    margin: 0.5em 0 0 0;
-    padding: 0;
-    list-style-image: none;
+/* List classes without markers */
+
+ul.visualNoMarker,
+ol.visualNoMarker {
     list-style-type: none;
+    list-style-image: none;
+    margin: 0.5em 0 0 0;
+    line-height: 1em;
 }
 
 textarea.proportional {
@@ -510,18 +509,29 @@ textarea.proportional {
     color: &dtml-discreetColor;;
 }
 
-.productCredits a {
-    text-decoration: underline;
-}
-
 #portal-footer {
     background-color: &dtml-globalBackgroundColor;;
     border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
     border-bottom: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
     float: none;
+    line-height: 1.2em;
     margin: 2em 0em 1em 0em;
     padding: 0.5em 0em 1em 0em;
     text-align: center;
+}
+
+#portal-footer p {
+    margin: 0.25em 0;
+}
+
+#portal-footer a {
+    text-decoration: none;
+    color: &dtml-linkColor;;
+    border: none;
+}
+
+#portal-footer a:hover {
+    text-decoration: underline;
 }
 
 #portal-colophon {
@@ -549,6 +559,148 @@ textarea.proportional {
 
 .netscape4 {
     display: none;
+}
+
+
+
+/* New navtree styles */
+
+.navTree {
+    list-style: none; 
+    list-style-image: none; 
+    margin-top: 1px;
+}
+
+.navTree li {
+    margin-bottom: 1px;
+}
+
+.navTreeItem {
+    display: block;
+}
+
+.navTreeItem a {
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-backgroundColor;;
+    display: block;
+    text-decoration: none;
+}
+
+.navTreeItem a:hover {
+    background-color: &dtml-globalBackgroundColor;;
+    color: &dtml-globalFontColor;;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+}
+
+.navTreeCurrentItem {
+    background-color: &dtml-globalBackgroundColor;;
+    color: &dtml-globalFontColor;;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor; !important;
+}
+
+.navTreeLevel0 {
+    margin: 0;
+}
+
+
+/* Sitemap styles */
+
+.portal-sitemap {
+    list-style: none;
+    list-style-image: none;
+    margin: 0;
+    font-size: 90%;
+    border: none;
+}
+
+.portal-sitemap .navTreeLevel1 {
+    padding-left: 1em;
+    border-left: 0.5em solid &dtml-globalBorderColor;;
+    margin: 0 0 0 0.5em;
+}
+
+.portal-sitemap .navTreeLevel2 {
+    padding-left: 1em;
+    border-left: 0.5em solid &dtml-globalBackgroundColor;;
+    margin: 0 0 0 0.6em;
+}
+
+
+/*
+** Accessibility and visual enhancement elements
+*/
+
+.link-plain {
+    background-image: none;
+    padding: 0;
+}
+
+.link-parent {
+    display: block;
+    background: transparent url(&dtml-portal_url;/arrowUp.gif) 4px 5px no-repeat;
+    padding: 1px 0px 1px 16px;
+    font-size: &dtml-fontSmallSize;;
+    text-decoration: none;
+}
+
+.link-user {
+    background: transparent url(&dtml-portal_url;/user.gif) 0 1px no-repeat;
+    padding: 1px 0px 1px 16px;
+}
+
+.link-external {
+    background: transparent url(&dtml-portal_url;/link_icon.gif) 0px 1px no-repeat;
+    padding: 1px 0px 1px 16px;
+}
+
+.link-https {
+    background: transparent url(&dtml-portal_url;/lock_icon.gif) 0px 1px no-repeat;
+    padding: 1px 0px 1px 16px;
+}
+
+.link-mailto {
+    background: transparent url(&dtml-portal_url;/mail_icon.gif) 0px 1px no-repeat;
+    padding: 1px 0px 1px 16px;
+}
+
+.link-news {
+    background: transparent url(&dtml-portal_url;/topic_icon.gif) 0px 1px no-repeat;
+    padding: 1px 0px 1px 16px;
+}
+
+.link-ftp {
+    background: transparent url(&dtml-portal_url;/file_icon.gif) 0px 1px no-repeat;
+    padding: 1px 0px 1px 16px;
+}
+
+.link-irc {
+    background: transparent url(&dtml-portal_url;/discussionitem_icon.gif) 0px 1px no-repeat;
+    padding: 1px 0px 1px 16px;
+}
+
+.link-callto {
+    background: transparent url(&dtml-portal_url;/phone_icon.gif) 0px 1px no-repeat;
+    padding: 1px 0px 1px 16px;
+}
+
+.link-webcal {
+    background: transparent url(&dtml-portal_url;/event_icon.gif) 0px 1px no-repeat;
+    padding: 1px 0px 1px 16px;
+}
+
+.link-feed {
+    background: transparent url(&dtml-portal_url;/rss.gif) 0px 1px no-repeat;
+    padding: 1px 0px 1px 18px;
+}
+
+.link-comment {
+    background: transparent url(&dtml-portal_url;/discussionitem_icon.gif) center left no-repeat;
+    padding: 1px 0px 1px 16px !important; /* value:  */
+}
+
+.link-anchor {
+    color: &dtml-discreetColor;;
+    text-decoration: none;
+    font-weight: normal;
 }
 
 

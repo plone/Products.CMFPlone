@@ -16,6 +16,7 @@ from AccessControl import Unauthorized
 from ZODB.POSException import ConflictError
 from Products.ZCTextIndex.ParseTree import ParseError
 from OFS.CopySupport import CopyError
+from Products.CMFDefault.DiscussionTool import DiscussionNotAllowed
 
 
 class RestrictedPythonTest(ZopeTestCase.ZopeTestCase):
@@ -75,21 +76,6 @@ class TestSecurityDeclarations(RestrictedPythonTest):
         self.check('from logging import getLogger;'
                    'log = getLogger("testlog");'
                    'log.debug("test")')
-
-
-    def testImport_translate_wrapper(self):
-        self.check('from Products.CMFPlone.utils import translate_wrapper')
-        
-    def testAccess_translate_wrapper(self):
-        self.check('import Products.CMFPlone.utils;'
-                   'print Products.CMFPlone.utils.translate_wrapper')
-
-    def testImport_localized_time(self):
-        self.check('from Products.CMFPlone.utils import localized_time')
-
-    def testAccess_localized_time(self):
-        self.check('import Products.CMFPlone.utils;'
-                   'print Products.CMFPlone.utils.localized_time')
 
     def testImport_IndexIterator(self):
         self.check('from Products.CMFPlone import IndexIterator')
@@ -166,6 +152,20 @@ class TestSecurityDeclarations(RestrictedPythonTest):
     def testAccess_base_hasattr(self):
         self.check('import Products.CMFPlone;'
                    'print Products.CMFPlone.base_hasattr')
+
+    def testImport_shasattr(self):
+        self.check('from Products.CMFPlone import shasattr')
+
+    def testAccess_shasattr(self):
+        self.check('import Products.CMFPlone;'
+                   'print Products.CMFPlone.shasattr')
+
+    def testImport_safe_callable(self):
+        self.check('from Products.CMFPlone import safe_callable')
+
+    def testAccess_safe_callable(self):
+        self.check('import Products.CMFPlone;'
+                   'print Products.CMFPlone.safe_callable')
 
     def testImport_Unauthorized(self):
         self.check('from AccessControl import Unauthorized')
@@ -322,6 +322,27 @@ except SyntaxError: pass
 from OFS.CopySupport import CopyError
 try: context.raiseCopyError()
 except CopyError: pass
+''')
+        except Exception, e:
+            self.fail('Failed to catch: %s %s (module %s)' %
+                      (e.__class__.__name__, e, e.__module__))
+
+    def testImport_DiscussionNotAllowed(self):
+        self.check('from Products.CMFDefault.DiscussionTool '
+                   'import DiscussionNotAllowed')
+
+    def testAccess_DiscussionNotAllowed(self):
+        self.check('import Products.CMFDefault.DiscussionTool;'
+                   'print Products.CMFDefault.DiscussionTool.DiscussionNotAllowed')
+
+    def testCatch_DiscussionNotAllowedRaisedByPythonModule(self):
+        self.folder._setObject('raiseDiscussionNotAllowed',
+                               dummy.Raiser(DiscussionNotAllowed))
+        try:
+            self.check('''
+from Products.CMFDefault.DiscussionTool import DiscussionNotAllowed
+try: context.raiseDiscussionNotAllowed()
+except DiscussionNotAllowed: pass
 ''')
         except Exception, e:
             self.fail('Failed to catch: %s %s (module %s)' %

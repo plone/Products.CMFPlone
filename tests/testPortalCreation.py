@@ -362,6 +362,25 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         # portal_memberdata should have a home_page property
         self.failUnless(self.memberdata.hasProperty('home_page'))
 
+    def testChangeStateIsLastFolderButton(self):
+        # Change state button should be the last
+        actions = [x for x in self.actions.listActions() if
+                    x.category == 'folder_buttons']
+        self.assertEqual(actions[-1].id, 'change_state', [x.id for x in actions])
+
+    def testTypesUseViewActionInListingsProperty(self):
+        # site_properties should have the typesUseViewActionInListings property
+        self.failUnless(self.properties.site_properties.hasProperty('typesUseViewActionInListings'))
+
+    def testSiteSetupAction(self):
+        # There should be a Site Setup action
+        for action in self.actions.listActions():
+            if action.getId() == 'plone_setup':
+                self.assertEqual(action.title, 'Site Setup')
+                break
+        else:
+            self.fail("Actions tool has no 'sitemap' action")
+
 
 class TestPortalBugs(PloneTestCase.PloneTestCase):
 

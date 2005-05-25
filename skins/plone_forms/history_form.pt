@@ -3,12 +3,13 @@
         tal:define="HistoryBatchSize python:request.get('HistoryBatchSize',20);
                     first_trx python:request.get('first_transaction',0);
                     last_trx python:20;
-                    history here/manage_change_history|nothing;">
+                    has_history python:getattr(here, 'manage_change_history',None) is not  None;
+                    history python: has_history and here.manage_change_history() or [];">
 
   <form action="#"
         method="post"
         tal:attributes="action here_url"
-        tal:condition="history" >
+        tal:condition="has_history" >
 
   <table summary="History" i18n:attributes="summary" tal:define="history_length python:len(history)">
      <tr>
@@ -51,7 +52,7 @@
   </table>
   </form>
 
-  <metal:block tal:condition="not: history">
+  <metal:block tal:condition="not: has_history">
   <h2 i18n:translate="label_historical_unavailable">Historical not available</h2>
   <span tal:omit-tag="" i18n:translate="description_historical_unavailable">
   This class does not support the historical interface.  The content must

@@ -113,56 +113,62 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
         self.assertEqual(self.folder.image.Format(), 'image/gif')
         self.assertEqual(self.folder.image.getImage().content_type, 'image/gif')
 
-    def testNormalizeISO(self):
-        self.assertEqual(self.utils.normalizeISO(u"\xe6"), 'e')
-        self.assertEqual(self.utils.normalizeISO(u"a"), 'a')
-        self.assertEqual(self.utils.normalizeISO(u"\u9ad8"), '9ad8')
-
-    def testTitleToNormalizedIdPunctuation(self):
+    def testNormalizeStringPunctuation(self):
         # Punctuation and spacing is removed and replaced by '-'
-        self.assertEqual(self.utils.titleToNormalizedId("a string with spaces"),
+        self.assertEqual(self.utils.normalizeString("a string with spaces"),
                          'a-string-with-spaces')
-        self.assertEqual(self.utils.titleToNormalizedId("p.u,n;c(t)u!a@t#i$o%n"),
+        self.assertEqual(self.utils.normalizeString("p.u,n;c(t)u!a@t#i$o%n"),
                          'p-u-n-c-t-u-a-t-i-o-n')
 
-    def testTitleToNormalizedIdLower(self):
+    def testNormalizeStringLower(self):
         # Strings are lowercased
-        self.assertEqual(self.utils.titleToNormalizedId("UppERcaSE"), 'uppercase')
+        self.assertEqual(self.utils.normalizeString("UppERcaSE"), 'uppercase')
 
-    def testTitleToNormalizedIdStrip(self):
+    def testNormalizeStringStrip(self):
         # Punctuation and spaces are trimmed, multiples reduced to 1
-        self.assertEqual(self.utils.titleToNormalizedId(" a string    "),
+        self.assertEqual(self.utils.normalizeString(" a string    "),
                          'a-string')
-        self.assertEqual(self.utils.titleToNormalizedId(">here's another!"),
+        self.assertEqual(self.utils.normalizeString(">here's another!"),
                          'here-s-another')
-        self.assertEqual(self.utils.titleToNormalizedId("one with !@#$!@#$ stuff in the middle"),
+        self.assertEqual(self.utils.normalizeString("one with !@#$!@#$ stuff in the middle"),
                          'one-with-stuff-in-the-middle')
 
-    def testTitleToNormalizedIdFileExtensions(self):
+    def testNormalizeStringFileExtensions(self):
         # If there is something that looks like a file extensions
         # it will be preserved.
-        self.assertEqual(self.utils.titleToNormalizedId("this is a file.gif"),
+        self.assertEqual(self.utils.normalizeString("this is a file.gif"),
                          'this-is-a-file.gif')
-        self.assertEqual(self.utils.titleToNormalizedId("this is. also. a file.html"),
+        self.assertEqual(self.utils.normalizeString("this is. also. a file.html"),
                          'this-is-also-a-file.html')
 
-    def testTitleToNormalizedIdAccents(self):
+    def testNormalizeStringAccents(self):
         # European accented chars will be transliterated to rough ASCII equivalents
-        self.assertEqual(self.utils.titleToNormalizedId(u"Eksempel \xe6\xf8\xe5 norsk \xc6\xd8\xc5"),
+        input = u"Eksempel \xe6\xf8\xe5 norsk \xc6\xd8\xc5"
+        self.assertEqual(self.utils.normalizeString(input),
                          'eksempel-eoa-norsk-eoa')
 
-    def testTitleToNormalizedIdHex(self):
-        # Everything that can't be transliterated will be hex'd
-        self.assertEqual(self.utils.titleToNormalizedId(u"\u9ad8\u8054\u5408 Chinese"),
-                         '9ad880545408-chinese')
-        self.assertEqual(self.utils.titleToNormalizedId(u"\uc774\ubbf8\uc9f1 Korean"),
-                         'c774bbf8c9f1-korean')
-
-    def testTitleToNormalizedIdUTF8(self):
+    def testNormalizeStringUTF8(self):
         # In real life, input will not be Unicode...
         input = u"Eksempel \xe6\xf8\xe5 norsk \xc6\xd8\xc5".encode('utf-8')
-        self.assertEqual(self.utils.titleToNormalizedId(input),
+        self.assertEqual(self.utils.normalizeString(input),
                          'eksempel-eoa-norsk-eoa')
+
+    def testNormalizeGreek(self):
+        # Greek letters (not supported by UnicodeData)
+        input = u'\u039d\u03af\u03ba\u03bf\u03c2 \u03a4\u03b6\u03ac\u03bd\u03bf\u03c2'
+        self.assertEqual(self.utils.normalizeString(input), 'nikos-tzanos')
+ 
+    def testNormalizeGreekUTF8(self):
+        # Greek letters (not supported by UnicodeData)
+        input = u'\u039d\u03af\u03ba\u03bf\u03c2 \u03a4\u03b6\u03ac\u03bd\u03bf\u03c2'.encode('utf-8')
+        self.assertEqual(self.utils.normalizeString(input), 'nikos-tzanos')
+ 
+    def testNormalizeStringHex(self):
+        # Everything that can't be transliterated will be hex'd
+        self.assertEqual(self.utils.normalizeString(u"\u9ad8\u8054\u5408 Chinese"),
+                         '9ad880545408-chinese')
+        self.assertEqual(self.utils.normalizeString(u"\uc774\ubbf8\uc9f1 Korean"),
+                         'c774bbf8c9f1-korean')
 
 
 class TestOwnershipStuff(PloneTestCase.PloneTestCase):
@@ -527,6 +533,7 @@ class TestNavTree(PloneTestCase.PloneTestCase):
         folder2.invokeFactory('Document', 'doc21')
         folder2.invokeFactory('Document', 'doc22')
         folder2.invokeFactory('Document', 'doc23')
+        folder2.invokeFactory('File', 'file21')
         self.setRoles(['Member'])
 
     def testCreateNavTree(self):
@@ -541,6 +548,42 @@ class TestNavTree(PloneTestCase.PloneTestCase):
         tree = self.utils.createNavTree(self.portal.folder2)
         self.failUnless(tree)
         self.assertEqual(tree['children'][-1]['currentItem'], True)
+
+    def testCreateNavTreeRespectsTypesWithViewAction(self):
+        # With a File or Image as current action it should return a
+        # currentItem which has '/view' appended to the url
+        tree = self.utils.createNavTree(self.portal.folder2.file21)
+        self.failUnless(tree)
+        # Fail if 'view' is used for parent folder; it should only be on the File
+        self.failIf(tree['children'][-1]['absolute_url'][-5:]=='/view')
+        # Verify we have the correct object and it is the current item
+        self.assertEqual(tree['children'][-1]['children'][-1]['currentItem'],True)
+        self.assertEqual(tree['children'][-1]['children'][-1]['path'].split('/')[-1],'file21')
+        # Verify that we have '/view'
+        self.assertEqual(tree['children'][-1]['children'][-1]['absolute_url'][-5:],'/view')
+
+    def testNavTreeExcludesItemsWithExcludeProperty(self):
+        # Make sure that items witht he exclude_from_nav property set get
+        # no_display set to True
+        self.portal.folder2.manage_addProperty('exclude_from_nav',True,'boolean')
+        self.portal.folder2.reindexObject()
+        tree = self.utils.createNavTree(self.portal.folder2.file21)
+        self.failUnless(tree)
+        self.assertEqual(tree['children'][-1]['no_display'],True)
+        # Shouldn't exlude anything else
+        self.assertEqual(tree['children'][0]['no_display'],False)
+
+    def testNavTreeExcludesItemsInIdsNotToList(self):
+        # Make sure that items whose ids are in the idsNotToList navTree
+        # property get no_display set to True
+        ntp=self.portal.portal_properties.navtree_properties
+        ntp.manage_changeProperties(idsNotToList=['folder2'])
+        tabs = self.utils.createTopLevelTabs()
+        tree = self.utils.createNavTree(self.portal.folder2.file21)
+        self.failUnless(tree)
+        self.assertEqual(tree['children'][-1]['no_display'],True)
+        # Shouldn't exlude anything else
+        self.assertEqual(tree['children'][0]['no_display'],False)
 
     def testCreateSitemap(self):
         # Internally createSitemap is the same as createNavTree
@@ -631,6 +674,42 @@ class TestPortalTabs(PloneTestCase.PloneTestCase):
         tabs = self.utils.createTopLevelTabs()
         self.assertEqual(tabs, [])
 
+    def testTabsExcludeItemsWithExcludeProperty(self):
+        # Make sure that items witht he exclude_from_nav property are purged
+        self.portal.folder2.manage_addProperty('exclude_from_nav',True,'boolean')
+        self.portal.folder2.reindexObject()
+        tabs = self.utils.createTopLevelTabs()
+        self.failUnless(tabs)
+        self.assertEqual(len(tabs),4)
+        tab_names = [t['id'] for t in tabs]
+        self.failIf('folder2' in tab_names)
+
+    def testTabsRespectsTypesWithViewAction(self):
+        # With a type in typesUseViewActionInListings as current action it
+        # should return a tab which has '/view' appended to the url
+        tabs = self.utils.createTopLevelTabs()
+        self.failUnless(tabs)
+        # Fail if 'view' is used for folder
+        self.failIf(tabs[-1]['url'][-5:]=='/view')
+        # Add Folder to site_property
+        props = self.portal.portal_properties.site_properties
+        props.manage_changeProperties(typesUseViewActionInListings=['Image','File','Folder'])
+        # Verify that we have '/view'
+        tabs = self.utils.createTopLevelTabs()
+        self.failUnless(tabs)
+        self.assertEqual(tabs[-1]['url'][-5:],'/view')
+
+    def testTabsExcludeItemsInIdsNotToList(self):
+        # Make sure that items whose ids are in the idsNotToList navTree
+        # property get purged
+        ntp=self.portal.portal_properties.navtree_properties
+        ntp.manage_changeProperties(idsNotToList=['folder2'])
+        tabs = self.utils.createTopLevelTabs()
+        self.failUnless(tabs)
+        self.assertEqual(len(tabs),4)
+        tab_names = [t['id'] for t in tabs]
+        self.failIf('folder2' in tab_names)
+
 
 class TestBreadCrumbs(PloneTestCase.PloneTestCase):
     '''Tests for the portal tabs query'''
@@ -644,6 +723,7 @@ class TestBreadCrumbs(PloneTestCase.PloneTestCase):
         self.portal.invokeFactory('Folder', 'folder1')
         folder1 = getattr(self.portal, 'folder1')
         folder1.invokeFactory('Document', 'doc11')
+        folder1.invokeFactory('File', 'file11')
         self.setRoles(['Member'])
 
     def testCreateBreadCrumbs(self):
@@ -654,6 +734,14 @@ class TestBreadCrumbs(PloneTestCase.PloneTestCase):
         self.assertEqual(len(crumbs), 2)
         self.assertEqual(crumbs[-1]['absolute_url'], doc.absolute_url())
         self.assertEqual(crumbs[-2]['absolute_url'], doc.aq_parent.absolute_url())
+
+    def testBreadcrumbsRespectTypesWithViewAction(self):
+        # With a type in typesUseViewActionInListings as current action it
+        # should return a breadcrumb which has '/view' appended to the url
+        file = self.portal.folder1.file11
+        crumbs = self.utils.createBreadCrumbs(file)
+        self.failUnless(crumbs)
+        self.assertEqual(crumbs[-1]['absolute_url'][-5:],'/view')
 
 
 def test_suite():

@@ -33,7 +33,6 @@ table {
 }
 
 a {
-    text-decoration: none;
     color: &dtml-linkColor;;
     background-color: transparent;
 }
@@ -42,12 +41,15 @@ img {
     vertical-align: middle;
 }
 p {
-    margin: 0.5em 0em 1em 0em;
+    margin: 0 0 0.5em 0;
     line-height: 1.5em;
 }
+
 p a {
-    text-decoration: underline;
+    text-decoration: none;
+    border-bottom: 1px &dtml-linkColor; solid;
 }
+
 p a:visited {
     color: &dtml-linkVisitedColor;;
     background-color: transparent;
@@ -76,7 +78,6 @@ h1, h2, h3, h4, h5, h6 {
     font-family: &dtml-var headingFontFamily;;
     font-weight: normal;
     margin: 0;
-    padding-top: 0.5em;
     border-bottom: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
 }
 
@@ -91,7 +92,6 @@ h6 a {
 
 h1 {
     font-size: 160%;
-    padding-right: 4em;
 }
 
 h2 {
@@ -99,13 +99,13 @@ h2 {
 }
 
 h3 {
-    font-size: 140%;
+    font-size: 125%;
     border-bottom: none;
     font-weight: bold;
 }
 
 h4 {
-    font-size: 120%;
+    font-size: 110%;
     border-bottom: none;
     font-weight: bold;
 }
@@ -114,12 +114,14 @@ h5 {
     font-size: 100%;
     border-bottom: none;
     font-weight: bold;
+    color: &dtml-discreetColor;;
 }
 
 h6 {
     font-size: &dtml-fontSmallSize;;
     border-bottom: none;
     font-weight: bold;
+    color: &dtml-discreetColor;;
 }
 
 
@@ -138,28 +140,17 @@ ol {
     list-style-image: none;
 }
 
-ul a, ol a {
-    text-decoration: underline;
-}
-
 li {
-    margin-bottom: 1em;
+    margin-bottom: 0.5em;
 }
 
 dt {
     font-weight: bold;
 }
 
-dt a {
-    text-decoration: underline;
-}
-
 dd {
     line-height: 1.5em;
     margin-bottom: 1em;
-}
-dd a {
-    text-decoration: underline;
 }
 
 dd.link a {
@@ -184,6 +175,11 @@ form {
     border: none;
     margin: 0;
 }
+
+label {
+    font-weight: bold;
+}
+
 textarea {
     font: 100% Monaco, "Courier New", Courier, monospace;
     border: &dtml-borderWidth; solid &dtml-globalBorderColor;;
@@ -237,9 +233,6 @@ pre {
     color: &dtml-fontColor;;
     background-color: &dtml-globalBackgroundColor;;
     overflow: auto;
-}
-.pre a {
-    text-decoration: underline;
 }
 
 ins {

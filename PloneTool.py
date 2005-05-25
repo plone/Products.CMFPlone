@@ -28,6 +28,7 @@ from AccessControl import ClassSecurityInfo, Unauthorized
 from ZODB.POSException import ConflictError
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from DateTime import DateTime
+from Products.CMFPlone.UnicodeNormalizer import normalizeUnicode
 
 _marker = ()
 _icons = {}
@@ -49,22 +50,6 @@ def _getaddresses(fieldvalues):
     all = ', '.join(fieldvalues)
     a = AddressList(all)
     return a.addresslist
-
-# table of transliterations that we know how to do
-mapping = {138: 's', 140: 'OE', 142: 'z', 154: 's', 156: 'oe', 158: 'z', 159: 'Y',
-192: 'A', 193: 'A', 194: 'A', 195: 'A', 196: 'A', 197: 'a', 198: 'E', 199: 'C',
-200: 'E', 201: 'E', 202: 'E', 203: 'E', 204: 'I', 205: 'I', 206: 'I', 207: 'I',
-208: 'D', 209: 'n', 211: 'O', 212: 'O', 214: 'O', 216: 'O', 217: 'U', 218: 'U',
-219: 'U', 220: 'U', 221: 'y', 223: 'ss', 224: 'a', 225: 'a', 226: 'a', 227: 'a',
-228: 'a', 229: 'a', 230: 'e', 231: 'c', 232: 'e', 233: 'e', 234: 'e', 235: 'e',
-236: 'i', 237: 'i', 238: 'i', 239: 'i', 240: 'd', 241: 'n', 243: 'o', 244: 'o',
-246: 'o', 248: 'o', 249: 'u', 250: 'u', 251: 'u', 252: 'u', 253: 'y', 255: 'y'}
-
-def _normalizeChar(c=''):
-    if ord(c) < 256:
-        return mapping.get(ord(c), c)
-    else:
-        return mapping.get(ord(c), '%x' % ord(c))
 
 # dublic core accessor name -> metadata name
 METADATA_DCNAME = {
@@ -294,13 +279,14 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     def _makeTransactionNote(self, obj, msg=''):
         #XXX why not aq_parent()?
         relative_path='/'.join(getToolByName(self, 'portal_url').getRelativeContentPath(obj)[:-1])
+        charset = self.getSiteEncoding()
         if not msg:
             msg=relative_path+'/'+obj.title_or_id()+' has been modified.'
         if isinstance(msg, UnicodeType):
             # Convert unicode to a regular string for the backend write IO.
             # UTF-8 is the only reasonable choice, as using unicode means
             # that Latin-1 is probably not enough.
-            msg = msg.encode('utf-8')
+            msg = msg.encode(charset)
         if not get_transaction().description:
             transaction_note(msg)
 
@@ -386,6 +372,24 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                 if w.states.has_key(objstate):
                     return w.states[objstate].title
         return None
+
+
+    security.declareProtected(CMFCorePermissions.View, 'getDiscussionThread')
+    def getDiscussionThread(self, discussionContainer):
+        """ Given a discussionContainer, return the thread
+        it is in, upwards, including the parent object that is being discussed"""
+        
+        if hasattr(discussionContainer, 'parentsInThread'):
+            thread = discussionContainer.parentsInThread()
+            if discussionContainer.portal_type == 'Discussion Item':
+                thread.append(discussionContainer)
+        else:
+            if discussionContainer.id=='talkback':
+                thread=[discussionContainer._getDiscussable()]
+            else:
+                thread = [discussionContainer]
+        return thread
+        
 
     # Convenience method since skinstool requires loads of acrobatics.
     # We use this for the reconfig form
@@ -514,6 +518,8 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         navigation_tree_slot."""
         ct=getToolByName(self, 'portal_catalog')
         ntp=getToolByName(self, 'portal_properties').navtree_properties
+        stp=getToolByName(self, 'portal_properties').site_properties
+        view_action_types = stp.getProperty('typesUseViewActionInListings')
         currentPath = None
 
         custom_query = getattr(self, 'getCustomNavQuery', None)
@@ -554,20 +560,24 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         foundcurrent = False
         for item in rawresult:
             path = item.getPath()
+            # Some types may require the 'view' action, respect this
+            item_url = (item.portal_type in view_action_types and
+                                    item.getURL() + '/view') or item.getURL()
             currentItem = path == currentPath
             if currentItem:
                 foundcurrent = path
             data = {'Title':item.Title or self.utf8_portal('\xe2\x80\xa6', 'ignore'),
                     'currentItem':currentItem,
-                    'absolute_url': item.getURL(),
-                    'getURL':item.getURL(),
+                    'absolute_url': item_url,
+                    'getURL':item_url,
                     'path': path,
                     'icon':item.getIcon,
                     'creation_date': item.CreationDate,
+                    'portal_type': item.portal_type,
                     'review_state': item.review_state,
                     'Description':item.Description,
                     'children':[],
-                    'no_display': excluded_ids.has_key(item.getId) or item.exclude_from_nav}
+                    'no_display': excluded_ids.has_key(item.getId) or not not item.exclude_from_nav}
             self._addToNavTreeResult(result, data)
 
         portalpath = getToolByName(self, 'portal_url').getPortalPath()
@@ -600,10 +610,13 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                         review_state = wf_tool.getInfoFor(item, 'review_state')
                     except WorkflowException:
                         review_state = ''
+                    # Some types may require the 'view' action, respect this
+                    item_url = (item.portal_type in view_action_types and
+                         item.absolute_url() + '/view') or item.absolute_url()
                     data = {'Title': item.Title() or self.utf8_portal('\xe2\x80\xa6', 'ignore'),
                             'currentItem': currentItem,
-                            'absolute_url': item.absolute_url(),
-                            'getURL': item.absolute_url(),
+                            'absolute_url': item_url,
+                            'getURL': item_url,
                             'path': path,
                             'icon': item.getIcon(),
                             'creation_date': item.CreationDate(),
@@ -634,6 +647,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         ct=getToolByName(self, 'portal_catalog')
         ntp=getToolByName(self, 'portal_properties').navtree_properties
         stp=getToolByName(self, 'portal_properties').site_properties
+        view_action_types = stp.getProperty('typesUseViewActionInListings')
 
         if stp.getProperty('disable_folder_sections', None):
             return []
@@ -668,8 +682,10 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         result = []
         for item in rawresult:
             if not (excluded_ids.has_key(item.getId) or item.exclude_from_nav):
+                item_url = (item.portal_type in view_action_types and
+                         item.getURL() + '/view') or item.getURL()
                 data = {'name':item.Title or self.utf8_portal('\xe2\x80\xa6', 'ignore'),
-                        'id':item.getId, 'url': item.getURL(), 'description':item.Description}
+                        'id':item.getId, 'url': item_url, 'description':item.Description}
                 result.append(data)
         return result
 
@@ -677,6 +693,8 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     def createBreadCrumbs(self, context):
         "Returns a structure for the portal breadcumbs"""
         ct=getToolByName(self, 'portal_catalog')
+        stp=getToolByName(self, 'portal_properties').site_properties
+        view_action_types = stp.getProperty('typesUseViewActionInListings')
         query = {}
 
         #Check to see if the current page is a folder default view, if so
@@ -697,8 +715,10 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         result = []
         for r_tuple in dec_result:
             item = r_tuple[1]
+            item_url = (item.portal_type in view_action_types and
+                         item.getURL() + '/view') or item.getURL()
             data = {'Title':item.Title or self.utf8_portal('\xe2\x80\xa6', 'ignore'),
-                    'absolute_url': item.getURL()}
+                    'absolute_url': item_url}
             result.append(data)
         return result
 
@@ -745,7 +765,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                         result.append([user, list(roles), role_type, name])
                 if parent==portal:
                     cont=0
-		elif not self.isLocalRoleAcquired(parent):
+                elif not self.isLocalRoleAcquired(parent):
                     # role acq check here
                     cont=0
                 else:
@@ -955,100 +975,78 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
         return obj.owner_info()['id']
 
-    security.declarePublic('normalizeISO')
-    def normalizeISO(self, text=""):
-        """
-        Convert unicode characters to ASCII
-
-        normalizeISO() will turn unicode characters into nice, safe ASCII. for
-        some characters, it will try to transliterate them to something fairly
-        reasonable. for other characters that it can't transliterate, it will just
-        return the numerical value(s) of the bytes in the character (in hex).
-
-        >>> normalizeISO(u"\xe6")
-        'e'
-
-        >>> normalizeISO(u"a")
-        'a'
-
-        >>> normalizeISO(u"\u9ad8")
-        '9ad8'
-
-        """
-        return "".join([_normalizeChar(c) for c in text]).encode('ascii')
-
-    security.declarePublic('titleToNormalizedId')
-    def titleToNormalizedId(self, title=""):
+    security.declarePublic('normalizeString')
+    def normalizeString(self, text):
         """
         Normalize a title to an id
 
-        titleToNormalizedId() converts a whole string to a normalized form that
+        normalizeString() converts a whole string to a normalized form that
         should be safe to use as in a url, as a css id, etc.
 
         all punctuation and spacing is removed and replaced with a '-':
 
-        >>> titleToNormalizedId("a string with spaces")
+        >>> normalizeString("a string with spaces")
         'a-string-with-spaces'
 
-        >>> titleToNormalizedId("p.u,n;c(t)u!a@t#i$o%n")
+        >>> normalizeString("p.u,n;c(t)u!a@t#i$o%n")
         'p-u-n-c-t-u-a-t-i-o-n'
 
         strings are lowercased:
 
-        >>> titleToNormalizedId("UppERcaSE")
+        >>> normalizeString("UppERcaSE")
         'uppercase'
 
         punctuation, spaces, etc. are trimmed and multiples are reduced to just
         one:
 
-        >>> titleToNormalizedId(" a string    ")
+        >>> normalizeString(" a string    ")
         'a-string'
 
-        >>> titleToNormalizedId(">here's another!")
+        >>> normalizeString(">here's another!")
         'here-s-another'
 
-        >>> titleToNormalizedId("one with !@#$!@#$ stuff in the middle")
+        >>> normalizeString("one with !@#$!@#$ stuff in the middle")
         'one-with-stuff-in-the-middle'
 
         the exception to all this is that if there is something that looks like a
         filename with an extension at the end, it will preserve the last period.
 
-        >>> titleToNormalizedId("this is a file.gif")
+        >>> normalizeString("this is a file.gif")
         'this-is-a-file.gif'
 
-        >>> titleToNormalizedId("this is. also. a file.html")
+        >>> normalizeString("this is. also. a file.html")
         'this-is-also-a-file.html'
 
-        titleToNormalizedId() uses normalizeISO() to convert stray unicode
-        characters. it will attempt to transliterate many of the common european
-        accented letters to rough ASCII equivalents:
+        normalizeString() uses normalizeUnicode() to convert stray unicode
+        characters. it will attempt to transliterate many of the accented 
+	letters to rough ASCII equivalents:
 
-        >>> titleToNormalizedId(u"Eksempel \xe6\xf8\xe5 norsk \xc6\xd8\xc5")
+        >>> normalizeString(u"Eksempel \xe6\xf8\xe5 norsk \xc6\xd8\xc5")
         'eksempel-eoa-norsk-eoa'
 
         for characters that we can't transliterate, we just return the hex codes of
         the byte(s) in the character. not pretty, but about the best we can do.
 
-        >>> titleToNormalizedId(u"\u9ad8\u8054\u5408 Chinese")
+        >>> normalizeString(u"\u9ad8\u8054\u5408 Chinese")
         '9ad880545408-chinese'
 
-        >>> titleToNormalizedId(u"\uc774\ubbf8\uc9f1 Korean")
+        >>> normalizeString(u"\uc774\ubbf8\uc9f1 Korean")
         'c774bbf8c9f1-korean'
         """
 
         # Make sure we are dealing with a unicode string
-        if not isinstance(title, unicode):
-            title = unicode(title, self.getSiteEncoding())
+        if not isinstance(text, unicode):
+            text = unicode(text, self.getSiteEncoding())
 
-        title = title.lower()
-        title = title.strip()
-        title = self.normalizeISO(title)
+        text = text.lower()
+        text = text.strip()
+        text = normalizeUnicode(text)
 
-        base = title
-        ext   = ""
+        base = text
+        ext  = ""
 
-        m = re.match(r"^(.+)\.(\w{,4})$",title)
-        if m:
+        m = re.match(r"^(.+)\.(\w{,4})$", text)
+        if m is not None:
             base = m.groups()[0]
             ext  = m.groups()[1]
 

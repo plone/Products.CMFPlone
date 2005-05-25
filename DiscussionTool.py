@@ -17,6 +17,15 @@ class DiscussionTool(PloneBaseTool, BaseTool):
     
     __implements__ = (PloneBaseTool.__implements__, BaseTool.__implements__, )
 
+    security.declarePublic('getDiscussionFor')
+    def getDiscussionFor(self, content):
+        """Same as CMFDefault.DiscussionTool.getDiscussionFor, but never raises
+        DiscussionNotAllowed."""
+        talkback = getattr( content, 'talkback', None )
+        if talkback is None:
+            talkback = self._createDiscussionFor( content )
+        return talkback
+
     security.declareProtected('Modify portal content', 'cookReply')
     def cookReply(self, reply, text_format=None):
         """ XXX We need this because currently we can not easily change the

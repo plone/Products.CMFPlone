@@ -4,7 +4,7 @@
 ##bind namespace=
 ##bind script=script
 ##bind subpath=traverse_subpath
-##parameters=REQUEST=None,show_all=0,quote_logic=0,quote_logic_indexes=['SearchableText'],use_types_blacklist=False
+##parameters=REQUEST=None,show_all=0,quote_logic=0,quote_logic_indexes=['SearchableText','Description','Title'],use_types_blacklist=False
 ##title=wraps the portal_catalog with a rules qualified query
 ##
 from ZODB.POSException import ConflictError
@@ -44,7 +44,15 @@ def quotequery(s):
             terms[idx-1].upper() in tokens):
             terms[idx] = quotestring(terms[idx])
     return ' '.join(terms)
-    
+
+# We need to quote parentheses when searching text indices (we use
+# quote_logic_indexes as the list of text indices)
+def quote_bad_chars(s):
+    bad_chars = ["(", ")"]
+    for char in bad_chars:
+        s = s.replace(char, quotestring(char))
+    return s
+
 def ensureFriendlyTypes(query):
     ploneUtils = getToolByName(context, 'plone_utils')
     portal_type = query.get('portal_type', [])
@@ -60,8 +68,10 @@ def ensureFriendlyTypes(query):
 
 for k, v in REQUEST.items():
     if v and k in indexes:
-        if quote_logic and k in quote_logic_indexes:
-            v = quotequery(v)
+        if k in quote_logic_indexes:
+            v = quote_bad_chars(v)
+            if quote_logic:
+                v = quotequery(v)
         query.update({k:v})
         show_query=1
     elif k.endswith('_usage'):

@@ -225,7 +225,7 @@ def addDocumentActions(portal):
     at.addAction('extedit',
                  'Edit this file in an external application (Requires Zope ExternalEditor installed)',
                  'string:$object_url/external_edit',
-                 "python: hasattr(portal.portal_properties.site_properties, 'ext_editor') and portal.portal_properties.site_properties.ext_editor and object.absolute_url() != portal_url",
+                 "python: member and hasattr(member, 'ext_editor') and member.ext_editor and object.absolute_url() != portal_url",
                  'Modify portal content',
                  'document_actions')
 
@@ -255,7 +255,8 @@ def addDocumentActions(portal):
                  'string:${object_url}/addtoFavorites',
                  'python: member and portal.portal_membership.getHomeFolder()',
                  'View',
-                 'document_actions')
+                 'document_actions',
+                 visible=0)
 
 
 def upgradePortalFactory(portal):

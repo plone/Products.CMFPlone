@@ -21,7 +21,7 @@
                  anchor_method request/anchor_method | template/getId;">
     <!-- The calendar, rendered as a table -->
 
-    <table cellspacing="0" class="ploneCalendar" id="thePloneCalendar" summary="Calendar" i18n:attributes="summary">
+    <table class="ploneCalendar" id="thePloneCalendar" summary="Calendar" i18n:attributes="summary">
         <thead>
             <tr>
                 <th id="calendar-previous">
@@ -47,7 +47,7 @@
                  </th>
                 <th id="calendar-next">
                     <a href="#" rel="nofollow" tal:attributes="href python:'%s/%s?%s&month:int=%d&amp;year:int=%d&orig_query=%s' % (anchor_url, anchor_method, query_string, nextMonthTime.month(),nextMonthTime.year(),url_quote(query_string))">
-                    <img src="" title="Next month" tal:attributes="src string:${portal_url}/arrowRight.gif" /></a>
+                    <img src="" alt="" title="Next month" tal:attributes="src string:${portal_url}/arrowRight.gif" /></a>
                 </th>
             </tr>
             <tr tal:define="weekdays here/portal_calendar/getDays" class="weekdays">

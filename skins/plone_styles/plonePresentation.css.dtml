@@ -183,7 +183,6 @@ table.listing td {
 a, a:link, a:visited {
     color: #520;
     background: transparent;
-    text-decoration: underline;
 }
 
 /* </dtml-with> */

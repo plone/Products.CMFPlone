@@ -7,6 +7,15 @@
 ##bind subpath=traverse_subpath
 ##parameters=subject='',body_text=''
 ##title=validates a discussion entry
+
+dtool = context.portal_discussion
+try:
+    content = context.parentsInThread()[0]
+except AttributeError:
+    content = context
+if not dtool.isDiscussionAllowedFor(content):
+    raise Exception, "Discussion not allowed."
+
 if not subject:
     state.setError('subject', 'Please submit a subject.', 'subject_required')
 

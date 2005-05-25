@@ -137,10 +137,17 @@ def addMemberdata(self, portal):
     md=getToolByName(portal, 'portal_memberdata')
     if not hasattr(md,'wysiwyg_editor'):
         safeEditProperty(md, 'wysiwyg_editor', '', 'string')
+
+    if not hasattr(md,'ext_editor'):
+        safeEditProperty(md, 'ext_editor', '0', 'boolean')
+    else:
+        safeEditProperty(md, 'ext_editor','1')
+        
     if not hasattr(md,'listed'):
         safeEditProperty(md, 'listed', '1', 'boolean')
     else:
         safeEditProperty(md, 'listed','1')
+        
     if not hasattr(md, 'fullname'):
         safeEditProperty(md, 'fullname', '', 'string')
     if not hasattr(md, 'error_log_update'):
@@ -187,7 +194,7 @@ def correctFolderContentsAction(actionTool):
 def modifyMembershipTool(self, portal):
     mt=getToolByName(portal, 'portal_membership')
     mt.addAction('myworkspace'
-                ,'My Workspace'
+                ,'Workspace'
                 ,'python: portal.portal_membership.getHomeUrl()+"/workspace"'
                 ,'python: member and portal.portal_membership.getHomeFolder()'
                 ,'View'
@@ -200,7 +207,7 @@ def modifyMembershipTool(self, portal):
         if a.id=='logout':
             a.title='Log out'
         if a.id=='preferences':
-            a.title='My Preferences'
+            a.title='Preferences'
             a.action=Expression('string:${portal_url}/plone_memberprefs_panel')
             new_actions.insert(0, a)
         elif a.id in ('addFavorite', 'favorites'):
@@ -283,6 +290,18 @@ def addNewActions(self, portal):
                  condition='',
                  permission=Permissions.delete_objects,
                  category='folder_buttons')
+
+    # Move change_state to the bottom
+    cloned_actions = at._cloneActions()
+    num_actions = len(cloned_actions)
+    state_index = 0
+    for action in cloned_actions:
+        if action.id == 'change_state' and action.category == 'folder_buttons':
+            break
+        state_index = state_index + 1
+    state_action = cloned_actions.pop(state_index)
+    cloned_actions.append(state_action)
+    at._actions = cloned_actions
 
 def addSiteActions(self, portal):
     # site_actions which have icons associated with them as well

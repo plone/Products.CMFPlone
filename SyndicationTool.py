@@ -19,6 +19,19 @@ class SyndicationTool(PloneBaseTool, BaseTool):
     
     __implements__ = (PloneBaseTool.__implements__, BaseTool.__implements__, )
 
+    security.declarePublic('getSyndicatableContent')
+    def getSyndicatableContent(self, obj):
+        """ Use the getFolderContents script, unless
+        an object (like Topic) overrides it 
+        """
+        # should we be doing aq_base here?
+        if hasattr(obj, 'synContentValues'):
+            values = obj.synContentValues()
+        else:
+            values = obj.getFolderContents()
+        return values
+
+
 SyndicationTool.__doc__ = BaseTool.__doc__
 
 InitializeClass(SyndicationTool)

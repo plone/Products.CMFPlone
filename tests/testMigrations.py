@@ -47,8 +47,14 @@ from Products.CMFPlone.migrations.v2_1.alphas import addMemberdataHome_Page
 from Products.CMFPlone.migrations.v2_1.alphas import addMemberdataLocation
 from Products.CMFPlone.migrations.v2_1.alphas import addMemberdataLanguage
 from Products.CMFPlone.migrations.v2_1.alphas import addMemberdataDescription
+from Products.CMFPlone.migrations.v2_1.alphas import addMemberdataExtEditor
 from Products.CMFPlone.migrations.v2_1.alphas import alterChangeStateActionCondition
+from Products.CMFPlone.migrations.v2_1.alphas import alterExtEditorActionCondition
 from Products.CMFPlone.migrations.v2_1.alphas import fixFolderButtonsActions
+from Products.CMFPlone.migrations.v2_1.alphas import addTypesUseViewActionInListingsProperty
+from Products.CMFPlone.migrations.v2_1.alphas import switchToExpirationDateMetadata
+from Products.CMFPlone.migrations.v2_1.alphas import changePloneSetupActionToSiteSetup
+from Products.CMFPlone.migrations.v2_1.alphas import changePloneSiteIcon
 
 import types
 
@@ -1079,6 +1085,123 @@ class TestMigrations_v2_1(MigrationTest):
         # The migration should work if the tool is missing
         self.portal._delObject('portal_actions')
         alterChangeStateActionCondition(self.portal, [])
+
+    def testAddTypesUseViewActionInListingsProperty(self):
+        # Should add the typesUseViewActionInListings property
+        self.removeSiteProperty('typesUseViewActionInListings')
+        self.failIf(self.properties.site_properties.hasProperty('typesUseViewActionInListings'))
+        addTypesUseViewActionInListingsProperty(self.portal, [])
+        self.failUnless(self.properties.site_properties.hasProperty('typesUseViewActionInListings'))
+
+    def testAddTypesUseViewActionInListingsPropertyTwice(self):
+        # Should not fail if migrated again
+        self.removeSiteProperty('typesUseViewActionInListings')
+        self.failIf(self.properties.site_properties.hasProperty('typesUseViewActionInListings'))
+        addTypesUseViewActionInListingsProperty(self.portal, [])
+        addTypesUseViewActionInListingsProperty(self.portal, [])
+        self.failUnless(self.properties.site_properties.hasProperty('typesUseViewActionInListings'))
+
+    def testAddTypesUseViewActionInListingsPropertyNoTool(self):
+        # Should not fail if portal_properties is missing
+        self.portal._delObject('portal_properties')
+        addTypesUseViewActionInListingsProperty(self.portal, [])
+
+    def testAddTypesUseViewActionInListingsPropertyNoSheet(self):
+        # Should not fail if site_properties is missing
+        self.properties._delObject('site_properties')
+        addTypesUseViewActionInListingsProperty(self.portal, [])
+
+    def testSwitchToExpirationDateMetadata(self):
+        # This should delete ExpiresDate and add ExpirationDate to the catalog
+        # schema.
+        self.catalog.addColumn('ExpiresDate')
+        self.catalog.delColumn('ExpirationDate')
+        switchToExpirationDateMetadata(self.portal, [])
+        self.failUnless('ExpirationDate' in self.catalog.schema())
+        self.failUnless('ExpiresDate' not in self.catalog.schema())
+
+    def testSwitchToExpirationDateMetadataTwice(self):
+        # Should not fail if migrated again
+        self.catalog.addColumn('ExpiresDate')
+        self.catalog.delColumn('ExpirationDate')
+        switchToExpirationDateMetadata(self.portal, [])
+        switchToExpirationDateMetadata(self.portal, [])
+        self.failUnless('ExpirationDate' in self.catalog.schema())
+        self.failUnless('ExpiresDate' not in self.catalog.schema())
+
+    def testSwitchToExpirationDateMetadataNoCatalog(self):
+        # Should not fail if the catalog is missing
+        self.portal._delObject('portal_catalog')
+        switchToExpirationDateMetadata(self.portal, [])
+
+    def testChangePloneSetupActionToSiteSetup(self):
+        # The plone_setup action should be renamed to 'Site Setup'
+        new_actions = self.actions._cloneActions()
+        for action in new_actions:
+            if action.getId() == 'plone_setup':
+                action.title = 'Plone Setup'
+        self.actions._actions = new_actions
+
+        actions = [x for x in self.actions.listActions() if x.id == 'plone_setup']
+        self.assertEqual(actions[0].title, 'Plone Setup')
+        # Modify
+        changePloneSetupActionToSiteSetup(self.portal, [])
+        actions = [x for x in self.actions.listActions() if x.id == 'plone_setup']
+        self.assertEqual(len(actions),1)
+        action = actions[0]
+        self.assertEqual(action.title, 'Site Setup')
+
+    def testChangePloneSetupActionToSiteSetupTwice(self):
+        # The migration should work if performed twice
+        changePloneSetupActionToSiteSetup(self.portal, [])
+        changePloneSetupActionToSiteSetup(self.portal, [])
+        actions = [x for x in self.actions.listActions() if x.id == 'plone_setup']
+        self.assertEqual(len(actions),1)
+        action = actions[0]
+        self.assertEqual(action.title, 'Site Setup')
+
+    def testChangePloneSetupActionToSiteSetupNoAction(self):
+        # The migration should add a new action if the action is missing
+        self.removeActionFromTool('plone_setup')
+        changePloneSetupActionToSiteSetup(self.portal, [])
+        actions = [x for x in self.actions.listActions() if x.id == 'plone_setup']
+        self.assertEqual(len(actions),1)
+        action = actions[0]
+        self.assertEqual(action.title, 'Site Setup')
+
+    def testChangePloneSetupActionToSiteSetupNoTool(self):
+        # The migration should work if the tool is missing
+        self.portal._delObject('portal_actions')
+        changePloneSetupActionToSiteSetup(self.portal, [])
+
+    def testChangePloneSiteIcon(self):
+        # The Plone Site FTI icon should be changed to site_icon
+        fti = getattr(self.portal.portal_types,'Plone Site')
+        fti.content_icon='folder_icon.gif'
+        fti = getattr(self.portal.portal_types,'Plone Site')
+        self.assertEqual(fti.content_icon, 'folder_icon.gif')
+
+        # Modify
+        changePloneSiteIcon(self.portal, [])
+        fti = getattr(self.portal.portal_types,'Plone Site')
+        self.assertEqual(fti.content_icon, 'site_icon.gif')
+
+    def testChangePloneSiteIconTwice(self):
+        # The migration should work if performed twice
+        changePloneSiteIcon(self.portal, [])
+        changePloneSiteIcon(self.portal, [])
+        fti = getattr(self.portal.portal_types,'Plone Site')
+        self.assertEqual(fti.content_icon, 'site_icon.gif')
+
+    def testChangePloneSiteIconNoType(self):
+        # The migration should not fail if the FTI is missing
+        self.portal.portal_types._delObject('Plone Site')
+        changePloneSiteIcon(self.portal, [])
+
+    def testChangePloneSiteIconNoTool(self):
+        # The migration should work if the tool is missing
+        self.portal._delObject('portal_types')
+        changePloneSiteIcon(self.portal, [])
 
 
 def test_suite():

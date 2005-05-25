@@ -4,7 +4,7 @@
 ##bind namespace=
 ##bind script=script
 ##bind subpath=traverse_subpath
-##parameters=position, id
+##parameters=position, id, template_id='folder_contents'
 ##title=Move objects in a ordered folder
 ##
 from Products.PythonScripts.standard import url_quote
@@ -29,5 +29,5 @@ if position.lower()=='ordered':
 msg="Item's position has changed."
 response=context.REQUEST.RESPONSE
 return response.redirect('%s/%s?portal_status_message=%s' % (context.absolute_url(),
-                                                             'folder_contents',
+                                                             template_id,
                                                              url_quote(msg)) )

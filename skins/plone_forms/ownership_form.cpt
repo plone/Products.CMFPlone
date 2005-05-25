@@ -15,7 +15,7 @@
     <form action="change_ownership"
           name="ownership_form"
           method="post"
-          tal:attributes="action template/getId">
+          tal:attributes="action string:${here_url}/${template/getId}">
 
         <fieldset>
             <legend i18n:translate="legend_change_ownership">Change Ownership</legend>

@@ -321,7 +321,6 @@ label {
 }
 .portalMessage a {
     color: &dtml-fontColor;;
-    text-decoration: underline;
 }
 .documentDescription {
     /* The summary text describing the document */
@@ -335,9 +334,6 @@ label {
     clear: both;
     font-weight: normal;
     color: &dtml-discreetColor;;
-}
-.documentByLine a {
-    text-decoration: underline;
 }
 
 #portal-footer {

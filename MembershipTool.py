@@ -525,6 +525,24 @@ class MembershipTool(PloneBaseTool, BaseTool):
         else:
             raise BadRequest, 'Not logged in.'
 
+    security.declareProtected(View, 'getCandidateLocalRoles')
+    def getCandidateLocalRoles(self, obj):
+        """ What local roles can I assign?
+            Override the CMFCore version so that we can see the local roles on
+            an object, and so that local managers can assign all roles locally.
+        """
+        member = self.getAuthenticatedMember()
+        # Use getRolesInContext as someone may be a local manager
+        if 'Manager' in member.getRolesInContext(obj):
+            # Use valid_roles as we may want roles defined only on a subobject
+            local_roles = [r for r in obj.valid_roles() if r not in
+                            ('Anonymous', 'Authenticated', 'Shared')]
+        else:
+            local_roles = [ role for role in member.getRolesInContext(obj)
+                            if role not in ('Member', 'Authenticated') ]
+        local_roles.sort()
+        return tuple(local_roles)
+
 MembershipTool.__doc__ = BaseTool.__doc__
 
 InitializeClass(MembershipTool)

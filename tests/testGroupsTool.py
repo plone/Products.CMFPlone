@@ -60,7 +60,7 @@ class TestGroupsTool(PloneTestCase.PloneTestCase):
 
     def testEditGroup(self):
         self.groups.addGroup('foo', )
-        self.groups.editGroup('foo', roles = ['Reviewer'])  #, ['foo.com']) => no domains on groups
+        self.groups.editGroup('foo', roles = ['Reviewer']) #, ['foo.com']) => no domains on groups
         g = self.groups.getGroupById('foo')
         self.assertEqual(sortTuple(g.getRoles()), ('Authenticated', 'Reviewer'))
         ##self.assertEqual(g.getDomains(), ('foo.com',))                  # No domains on groups
@@ -155,6 +155,24 @@ class TestGroupsTool(PloneTestCase.PloneTestCase):
         self.assertEqual(g.__class__.__name__, 'GroupData')
         self.assertEqual(g.aq_parent.__class__.__name__, 'GRUFGroup')
         self.assertEqual(g.aq_parent.aq_parent.__class__.__name__, 'GroupUserFolder')
+
+    def testGetGroupInfo(self):
+        self.groups.addGroup('foo', title='Foo', description='Bar', email='foo@foo.com')
+        info = self.groups.getGroupInfo('foo')
+        self.assertEqual(info.get('title'), 'Foo')
+        self.assertEqual(info.get('description'), 'Bar')
+        self.assertEqual(info.get('email'), None) # No email!
+
+    def testGetGroupInfoAsAnonymous(self):
+        self.groups.addGroup('foo', title='Foo', description='Bar')
+        self.logout()
+        info = self.groups.restrictedTraverse('getGroupInfo')('foo')
+        self.assertEqual(info.get('title'), 'Foo')
+        self.assertEqual(info.get('description'), 'Bar')
+
+    def testGetBadGroupInfo(self):
+        info = self.groups.getGroupInfo('foo')
+        self.assertEqual(info, None)
 
 
 class TestGroupWorkspacesFolder(PloneTestCase.PloneTestCase):

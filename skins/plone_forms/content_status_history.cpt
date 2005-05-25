@@ -68,7 +68,7 @@
             name="edit_form"
             method="post"
             action="content_status_modify"
-            tal:attributes="action string:${here/absolute_url}/${here/getId}"
+            tal:attributes="action string:${here/absolute_url}/${template/getId}"
             tal:condition="not:python:paths and not batch">
 
         <fieldset>
@@ -296,10 +296,10 @@
             <th i18n:translate="listingheader_comment">Comment</th>
           </tr>
 
-          <metal:block tal:define="reverseList nocall:portal/reverseList"
+          <metal:block tal:define="review_history python: portal.reverseList(review_history);"
                        tal:repeat="items review_history">
-            <tr tal:define="review_history python: reverseList(review_history);
-                            global odd repeat/items/odd; global rhComments items/comments;"
+            <tr tal:define="odd repeat/items/odd;
+                            rhComments items/comments;"
                 tal:attributes="class python:test(odd, 'even', 'odd')"
                 tal:condition="items/action">
               <td i18n:translate="">

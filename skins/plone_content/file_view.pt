@@ -18,10 +18,11 @@
             Title or id
         </h1>
     
-        <div class="documentDescription"
-             tal:content="here/Description">
-            description
-        </div>
+        <p class="documentDescription"
+           tal:content="here/Description"
+           tal:condition="here/Description">
+            Description
+        </p>
     
         <p>
             <a href=""

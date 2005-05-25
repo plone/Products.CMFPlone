@@ -159,7 +159,6 @@
                   tal:condition="python:folder != parent_folder" />
         </a>
     </li>
-    
     </tal:add>
 
     <tal:templateMixin define="contextHasIndexHtml context/hasIndexHtml;
@@ -366,6 +365,8 @@
             </li>
         </tal:batchAction>
     </tal:batch>
+
+
 
 </ul>
 

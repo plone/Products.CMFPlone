@@ -19,7 +19,7 @@ function scanforlinks(){
             } else if (linkval.indexOf('http:') != 0){
                 // not a http-link. Possibly an internal relative link, but also possibly a mailto or other protocol
                 // add tests for relevant protocols as you like.
-                protocols = ['mailto', 'ftp', 'news', 'irc', 'h323', 'sip', 'callto', 'https']
+                protocols = ['mailto', 'ftp', 'news', 'irc', 'h323', 'sip', 'callto', 'https', 'feed', 'webcal']
                 // h323, sip and callto are internet telephony VoIP protocols
                 for (p=0; p < protocols.length; p++){
                     if (linkval.indexOf(protocols[p]+':') == 0){

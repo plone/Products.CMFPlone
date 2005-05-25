@@ -33,6 +33,7 @@
                             limit_display limit_display|request/limit_display|nothing;
                             more_url more_url|request/more_url|string:folder_contents;
                             folderContents folderContents|python:here.getFolderContents(contentFilter=contentFilter);
+                            use_view_action site_properties/typesUseViewActionInListings;
                             over_limit python: limit_display and len(folderContents) > limit_display;
                             folderContents python: (over_limit and folderContents[:limit_display]) or folderContents;">
         <tal:listing condition="folderContents"
@@ -43,13 +44,14 @@
 	        <tal:entry tal:repeat="item folderContents">
                 <tal:block tal:define="item_url item/getURL|item/absolute_url;
                                        item_id item/getId|item/id;
-                                       item_title_or_id python: item.Title or item_id; 
+                                       item_title_or_id python:(same_type(item.getId,'') and (item.Title or putils.utf8_portal('\xe2\x80\xa6', 'ignore'))) or item.title_or_id();
                                        item_description item/Description;
                                        item_type item/portal_type;
                                        item_type_title python:types[item_type] or item_type;
                                        item_typeinfo python: here.portal_types.getTypeInfo(item_type);
                                        item_modified item/ModificationDate;
                                        item_created item/CreationDate;
+                                       item_type_class python: 'contenttype-' + putils.normalizeString(item_type);
                                        item_wf_state item/review_state;
                                        item_wf_state_class python:here.getStateClassName(item_wf_state);
                                        item_icon python:portal_url+'/'+ item_typeinfo.getIcon();
@@ -60,62 +62,60 @@
                                    ">
 
                     <dt metal:define-macro="listitem">
-                    
-                        <tal:to_view condition="python:item_type in ['File', 'Image']"
-                                     define="url string:${item_url}/view">
-                            <a href="#" tal:attributes="href url">
-                                <img src="" alt=""
-                                     tal:attributes="src item_icon;alt item_title_or_id" />
-                                <span tal:replace="item_title_or_id" />
-                            </a>
-                        </tal:to_view>
-                        
-                        <tal:to_default condition="python:item_type not in ['File', 'Image', 'Link']">
-                            <a href="#" tal:attributes="href item_url">
-                                <img src="" alt=""
-                                     tal:attributes="src item_icon;alt item_title_or_id" />
-                                <span tal:replace="item_title_or_id" />
-                            </a>
-                        </tal:to_default>
-                        
+
+                        <span tal:attributes="class item_type_class">
+                        <a href="#" 
+                           tal:attributes="href python:test(item_type in use_view_action and item_type != 'Link', item_url+'/view', item_url+'/');
+                                           class string:$item_wf_state_class visualIconPadding"
+                           tal:content="item_title_or_id">
+                            Item Title
+                        </a>
+                        </span>
+
                         <tal:to_external condition="python:item_type == 'Link'">
-                            <a href="#" tal:attributes="href item/getRemoteUrl">
-                                <img src="" alt=""
-                                     tal:attributes="src item_icon;alt item_title_or_id" />
-                                <span tal:content="item_title_or_id" />
+                            <span tal:attributes="class item_type_class">
+                            <a href="#"
+                               tal:content="item_title_or_id"
+                               tal:attributes="href item/getRemoteUrl;
+                                               class item_wf_state_class">
+                                External Link
                             </a>
+                            </span>
                         </tal:to_external>
 
-                        <tal:news_date condition="python:item_type == 'News Item'">
-                            <span class="discreet" tal:content="python:toLocalizedTime(item_created,long_format=1)">Monday Feb 14, 2001 12:54:27</span>
-                        </tal:news_date>
                     </dt>
-                    <dd class="documentByLine" style="text-align:left; text-transform:lowercase;margin-bottom:0em;">
-                        <span i18n:translate="" tal:content="item_type_title"/>
+
+                    <span class="documentByLine">
+
+                        <span tal:condition="python: item_type == 'Event'">
+                            (<span tal:replace="string:${item/location}">Oslo</span>, from
+                             <span tal:replace="python:toLocalizedTime(item_start,long_format=1)">from date</span> to
+                             <span tal:replace="python:toLocalizedTime(item_end,long_format=1)">to date</span>)
+                        </span>
+                        &mdash;
                         <tal:creators tal:condition="item_creators">
                             <span i18n:translate="box_created_by">
-                                Created by
+                                by
                             </span>
-                            <span tal:replace="python: ', '.join(item_creators)"/>,
+                            <span tal:replace="python: ', '.join(item_creators)"/>
                         </tal:creators>
-                        <span i18n:translate="box_last_modified">
-                          Last modified
-                        </span>
-                        <span tal:replace="python:toLocalizedTime(item_modified,long_format=1)">
-                          August 16, 2001 at 23:35:59
-                        </span>
-                    </dd>
-                    <dd tal:condition="python: item_type == 'Event'" 
-                        class="documentByLine" style="text-align:left; text-transform:lowercase;margin-bottom:0em;">
-                        <span tal:replace="string:${item/location}">Oslo</span>
-                        <span tal:replace="python:toLocalizedTime(item_start,long_format=1)">from date</span> -
-                        <span tal:replace="python:toLocalizedTime(item_end,long_format=1)">to date</span>
-                    </dd>
-                    <metal:description define-slot="description_slot">
-                        <tal:comment replace="nothing"> 
-                            *Place custom listing info for custom types here
-                        </tal:comment>
-                    </metal:description>
+                        <tal:modified condition="python: item_type != 'Event'">
+                            &mdash;
+                            <tal:mod i18n:translate="box_last_modified">
+                              last modified
+                            </tal:mod>
+                            <span tal:replace="python:toLocalizedTime(item_modified,long_format=1)">
+                              August 16, 2001 at 23:35:59
+                            </span>
+                        </tal:modified>
+
+                        <metal:description define-slot="description_slot">
+                            <tal:comment replace="nothing"> 
+                                Place custom listing info for custom types here
+                            </tal:comment>
+                        </metal:description>
+                    </span>
+
                     <dd>
                         <span tal:omit-tag="" tal:condition="not:item_description"> 
                             &nbsp; 
