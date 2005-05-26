@@ -4,6 +4,19 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (Unreleased)
 
+    - Overrode listTypeInfo from CMFCore.TypesTool.  The original method was
+      doing security checks on the TypeInformation objects themselves in
+      addtion to the isConstructionAllowed test.  This was very expensive and
+      only useful if someone had set custom security restrictions on some
+      TypeInformation objects in the types tool through the ZMI.  I cannot see
+      a reasonable reason for someone to do such a thing.  Also, removed a
+      check for null TypeInfo.getId(), as this will never happen, if it
+      does it's a bug in and of itself and shouldn't be ignored.  Also,
+      changed the check shich ensures that our objectValues() are TypeInfoish
+      to use the clear and sane interface.isImplementedBy(obj) instead of the
+      getattr(aq_base(type),'_isTypeInformation',0) it was using before.
+      [alecm]
+
     - Fix browserDefault() in PloneTool so that images and files work, and there
       are less wtf moments. Look at 
       
