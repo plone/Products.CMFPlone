@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (Unreleased)
 
+    - Fix http://plone.org/collector/3279 integrate new jscalendar 1.0
+      [hannosch]
+
     - Overrode listTypeInfo from CMFCore.TypesTool.  The original method was
       doing security checks on the TypeInformation objects themselves in
       addtion to the isConstructionAllowed test.  This was very expensive and

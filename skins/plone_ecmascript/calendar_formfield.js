@@ -41,13 +41,13 @@ function showJsCalendar(input_id_anchor, input_id, input_id_year, input_id_month
     var cal = window.calendar;
 
     var params = {
-	'range' : [yearStart, yearEnd],
-	inputField : input_id,
+        'range' : [yearStart, yearEnd],
+        inputField : input_id,
         input_id_year : input_id_year,
-	input_id_month: input_id_month,
-	input_id_day  : input_id_day
-	// input_id_hour : input_id_hour,
-	// input_id_minute: input_id_minute
+        input_id_month: input_id_month,
+        input_id_day  : input_id_day
+        // input_id_hour : input_id_hour,
+        // input_id_minute: input_id_minute
     };
 
     function param_default(pname, def) { if (typeof params[pname] == "undefined") { params[pname] = def; } };
@@ -61,7 +61,8 @@ function showJsCalendar(input_id_anchor, input_id, input_id_year, input_id_month
     param_default("singleClick",    true);
     param_default("disableFunc",    null);
     param_default("dateStatusFunc", params["disableFunc"]); // takes precedence if both are defined
-    param_default("mondayFirst",    true);
+    param_default("dateText",       null);
+    param_default("firstDay",       1);
     param_default("align",          "Bl");
     param_default("range",          [1900, 2999]);
     param_default("weekNumbers",    true);
@@ -73,9 +74,15 @@ function showJsCalendar(input_id_anchor, input_id, input_id_year, input_id_month
     param_default("date",           null);
     param_default("showsTime",      false);
     param_default("timeFormat",     "24");
+    param_default("electric",       true);
+    param_default("step",           2);
+    param_default("position",       null);
+    param_default("cache",          false);
+    param_default("showOthers",     false);
+    param_default("multiple",       null);
 
-    if (!window.calendar) {
-	window.calendar = cal = new Calendar(true, //params.mondayFirst,
+    if (!(cal && params.cache)) {
+	window.calendar = cal = new Calendar(params.firstDay,
 	     null,
 	     onJsCalendarDateUpdate,
 	     function(cal) { cal.hide(); });
@@ -83,17 +90,22 @@ function showJsCalendar(input_id_anchor, input_id, input_id_year, input_id_month
 	cal.weekNumbers = true;
 	mustCreate = true;
     } else {
-	cal.hide();
+        cal.hide();
     }
+    cal.showsOtherMonths = false;
+    cal.yearStep = 2;
     cal.setRange(yearStart,yearEnd);
     cal.params = params;
     cal.setDateStatusHandler(null);
+    cal.getDateText = null;
     cal.setDateFormat(format);
     if (mustCreate)
 	cal.create();
-    cal.parseDate(dateEl.value || dateEl.innerHTML);
     cal.refresh();
-    cal.showAtElement(input_id_anchor, null);
+    if (!params.position)
+        cal.showAtElement(input_id_anchor, null);
+    else
+        cal.showAt(params.position[0], params.position[1]);
     return false;
 }
 

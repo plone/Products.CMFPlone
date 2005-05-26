@@ -1,15 +1,17 @@
-<?xml version="1.0" encoding="iso-8859-2"?>
-<! DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ro" lang="ro">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <!-- $Id$ -->
 
 <head>
 <meta http-equiv="content-type" content="text/xml; charset=utf-8" />
 <title>The Coolest DHTML Calendar - Online Demo</title>
+<link rel="stylesheet" type="text/css" media="all" href="theme.css" title="Aqua" />
 <link rel="alternate stylesheet" type="text/css" media="all" href="calendar-blue.css" title="winter" />
+<link rel="alternate stylesheet" type="text/css" media="all" href="calendar-blue2.css" title="blue" />
 <link rel="alternate stylesheet" type="text/css" media="all" href="calendar-brown.css" title="summer" />
 <link rel="alternate stylesheet" type="text/css" media="all" href="calendar-green.css" title="green" />
-<link rel="stylesheet" type="text/css" media="all" href="calendar-win2k-1.css" title="win2k-1" />
+<link rel="alternate stylesheet" type="text/css" media="all" href="calendar-win2k-1.css" title="win2k-1" />
 <link rel="alternate stylesheet" type="text/css" media="all" href="calendar-win2k-2.css" title="win2k-2" />
 <link rel="alternate stylesheet" type="text/css" media="all" href="calendar-win2k-cold-1.css" title="win2k-cold-1" />
 <link rel="alternate stylesheet" type="text/css" media="all" href="calendar-win2k-cold-2.css" title="win2k-cold-2" />
@@ -58,39 +60,42 @@ function selected(cal, date) {
 // destroying it.
 function closeHandler(cal) {
   cal.hide();                        // hide the calendar
-  cal.destroy();
-  calendar = null;
+//  cal.destroy();
+  _dynarch_popupCalendar = null;
 }
 
 // This function shows the calendar under the element having the given id.
 // It takes care of catching "mousedown" signals on document and hiding the
 // calendar if the click was outside.
-function showCalendar(id, format, showsTime) {
+function showCalendar(id, format, showsTime, showsOtherMonths) {
   var el = document.getElementById(id);
-  if (calendar != null) {
+  if (_dynarch_popupCalendar != null) {
     // we already have some calendar created
-    calendar.hide();                 // so we hide it first.
+    _dynarch_popupCalendar.hide();                 // so we hide it first.
   } else {
     // first-time call, create the calendar.
-    var cal = new Calendar(true, null, selected, closeHandler);
+    var cal = new Calendar(1, null, selected, closeHandler);
     // uncomment the following line to hide the week numbers
     // cal.weekNumbers = false;
     if (typeof showsTime == "string") {
       cal.showsTime = true;
       cal.time24 = (showsTime == "24");
     }
-    calendar = cal;                  // remember it in the global var
+    if (showsOtherMonths) {
+      cal.showsOtherMonths = true;
+    }
+    _dynarch_popupCalendar = cal;                  // remember it in the global var
     cal.setRange(1900, 2070);        // min/max year allowed.
     cal.create();
   }
-  calendar.setDateFormat(format);    // set the specified date format
-  calendar.parseDate(el.value);      // try to parse the text in field
-  calendar.sel = el;                 // inform it what input field we use
+  _dynarch_popupCalendar.setDateFormat(format);    // set the specified date format
+  _dynarch_popupCalendar.parseDate(el.value);      // try to parse the text in field
+  _dynarch_popupCalendar.sel = el;                 // inform it what input field we use
 
   // the reference element that we pass to showAtElement is the button that
   // triggers the calendar.  In this example we align the calendar bottom-right
   // to the button.
-  calendar.showAtElement(el.nextSibling, "Br");        // show the calendar
+  _dynarch_popupCalendar.showAtElement(el.nextSibling, "Br");        // show the calendar
 
   return false;
 }
@@ -124,7 +129,7 @@ function showFlatCalendar() {
   var parent = document.getElementById("display");
 
   // construct a calendar giving only the "selected" handler.
-  var cal = new Calendar(true, null, flatSelected);
+  var cal = new Calendar(0, null, flatSelected);
 
   // hide week numbers
   cal.weekNumbers = false;
@@ -159,20 +164,24 @@ padding: 0px 5px; cursor: default; font-size: 80%; }
 </head>
 <body onload="showFlatCalendar()">
 
-<h2><a href="http://dynarch.com/mishoo/calendar.epl"
-title="Visit the project website">jscalendar</a>-0.9.5
-"Your favorite time, bis"</h2>
+<h2><a href="http://www.dynarch.com/projects/calendar/"
+title="Visit the project website">jscalendar</a>-1.0
+"It is happening again"</h2>
 
 <p>
 <div style="float: right; border: 1px solid #b87; padding: 2px; font-size: 90%; background: #ffb;">
 Theme:<br />
+<a href="#" id="defaultTheme" onclick="return setActiveStyleSheet(this, 'Aqua');">Aqua</a>
+|
 <a href="#" onclick="return setActiveStyleSheet(this, 'winter');">winter</a>
+|
+<a href="#" onclick="return setActiveStyleSheet(this, 'blue');">blue</a>
 |
 <a href="#" onclick="return setActiveStyleSheet(this, 'summer');">summer</a>
 |
 <a href="#" onclick="return setActiveStyleSheet(this, 'green');">green</a>
 <br />
-<a href="#" id="defaultTheme" onclick="return setActiveStyleSheet(this, 'win2k-1');">win2k-1</a>
+<a href="#" onclick="return setActiveStyleSheet(this, 'win2k-1');">win2k-1</a>
 |
 <a href="#" onclick="return setActiveStyleSheet(this, 'win2k-2');">win2k-2</a>
 |
@@ -182,7 +191,7 @@ Theme:<br />
 <br />
 <a href="#" onclick="return setActiveStyleSheet(this, 'system');">system</a>
 <script type="text/javascript">
-setActiveStyleSheet(document.getElementById("defaultTheme"), "win2k-1");
+setActiveStyleSheet(document.getElementById("defaultTheme"), "Aqua");
 </script>
 </div>
 <a href="release-notes.html">Release notes</a>.
@@ -190,12 +199,15 @@ setActiveStyleSheet(document.getElementById("defaultTheme"), "win2k-1");
 Set it up in minutes:
   <a href="simple-1.html">popup calendar</a>,
   <a href="simple-2.html">flat calendar</a>.
+Other samples:
+  <a href="simple-3.html">special days</a>,
+  <a href="dayinfo.html">day info</a>,
+  <a href="multiple-dates.html">multiple dates selection</a>
 <br />
 Documentation:
   <a href="doc/html/reference.html">HTML</a>,
   <a href="doc/reference.pdf">PDF</a>.
 <br />
-<b style="color: red">Donate!  Keep me on it!  Details on <a href="http://dynarch.com/mishoo/calendar.epl">the Calendar website</a>.</b>
 </p>
 
 <div style="padding-left:20px; font-size: 90%; font-style: italic;">
@@ -215,12 +227,12 @@ Popup examples
 
 <b>Date #1:</b> <input type="text" name="date1" id="sel1" size="30"
 ><input type="reset" value=" ... "
-onclick="return showCalendar('sel1', '%Y-%m-%d [%W] %H:%M', '24');"> %Y-%m-%d [%W] %H:%M -- single
+onclick="return showCalendar('sel1', '%Y-%m-%d [%W] %H:%M', '24', true);"> %Y-%m-%d [%W] %H:%M -- single
 click<br />
 
 <b>Date #2:</b> <input type="text" name="date2" id="sel2" size="30"
 ><input type="reset" value=" ... "
-onclick="return showCalendar('sel2', '%a, %b %e, %Y [%I:%M%p]', '12');"> %a, %b %e, %Y [%I:%M%p]
+onclick="return showCalendar('sel2', '%a, %b %e, %Y [%I:%M %p]', '12');"> %a, %b %e, %Y [%I:%M %p]
 -- double click
 
 <br /><br />
@@ -253,17 +265,9 @@ double click
 
 </form>
 
-<p>This is release <b>0.9.5</b>.  Works on MSIE/Win 5.0 or better, Opera 7,
-Mozilla, Netscape 6.x, 7.0 and all other Gecko-s, Konqueror and Safari.</p>
-
-<p class="help">You can click on "Mo"/"Su" (first day name displayed) to
-change the first day of week (Sunday/Monday) (since 0.8 this is also mapped
-on the "-" button in the top-left corner).  Use the navigation buttons
-("&lt;&lt;", "&lt;", "Today", "&gt;", "&gt;&gt;") to move to the prev/next
-year/month.  Keep the mouse button pressed for a short time over one of
-these buttons to get a menu for faster selection.  You can drag the "status
-bar" (that's where the tooltips appear) or title bar (that's where the
-currently selected month/year shows up) to move the whole calendar.</p>
+<p>This is release <b>1.0</b>.  Works on MSIE/Win 5.0 or better (really),
+Opera 7+, Mozilla, Firefox, Netscape 6.x, 7.0 and all other Gecko-s,
+Konqueror and Safari.</p>
 
 <h4>Keyboard navigation</h4>
 
@@ -287,7 +291,7 @@ dates (only for popup calendars; does <em>not</em> work with Opera
 
           </td>
 
-          <td style="padding: 5px; margin: 5px; border: 1px solid #984; background: #ed9; width: 15em;">
+          <td style="padding: 5px; margin: 5px; border: 1px solid #984; background: #ed9; width: 19em;">
 
             <div style="background: #984; color: #fea; font-weight: bold; padding: 2px; text-align: center">
               Flat calendar
@@ -298,9 +302,9 @@ dates (only for popup calendars; does <em>not</em> work with Opera
 
             <!-- the calendar will be inserted here -->
             <div id="display" style="float: right; clear: both;"></div>
-            <div id="preview" style="font-size: 80%; text-align: center; padding: 2px"></div>
+            <div id="preview" style="font-size: 80%; text-align: center; padding: 2px">&nbsp;</div>
 
-            <p style="width: 12em"><small>
+            <p style="clear: both;"><small>
               The example above uses the <code>setDisabledHandler()</code> member function
               to setup a handler that would only enable days withing a range of 10 days,
               forward or backward, from the current date.
@@ -314,13 +318,13 @@ dates (only for popup calendars; does <em>not</em> work with Opera
       </table>
 
 <hr /><address>
-&copy; <a href="http://dynarch.com">dynarch.com</a> 2002-2003 <br />
-Author: <a href="http://dynarch.com/mishoo/">Mihai
+&copy; <a href="http://www.dynarch.com/">dynarch.com</a> 2002-2005 <br />
+Author: <a href="http://www.bazon.net/mishoo/">Mihai
 Bazon</a><br /> Distributed under the <a
 href="http://www.gnu.org/licenses/lgpl.html">GNU LGPL</a>.</address>
 
-<p style="font-size: smaller">If you use this script on a public page it
-would be nice if you would <a href="mailto:mishoo@infoiasi.ro">let me
+<p style="font-size: smaller">If you use this script on a public page we
+would love it if you would <a href="http://www.dynarch.com/contact.html">let us
 know</a>.</p>
 
 </body></html>
