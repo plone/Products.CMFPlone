@@ -7,10 +7,14 @@
 ##parameters=time=None, long_format=None
 ##title=
 ##
-#given a time string convert it into a DateTime and then format it appropriately
-#use time format of translation service
+# The time parameter must be either a string that is suitable for
+# initializing a DateTime or a DateTime object.
+# Returns a localized string.
 
-# get tool
+from DateTime.DateTime import DateTime
+
+if isinstance(time, DateTime):
+    time = time.rfc822()
+
 tool = context.translation_service
-
 return tool.localized_time(time, long_format, context, domain='plone')

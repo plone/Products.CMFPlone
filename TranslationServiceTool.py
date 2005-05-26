@@ -153,9 +153,9 @@ class TranslationServiceTool(PloneBaseTool, UniqueObject, SimpleItem):
         # XXX: implement me
         
         # translate the time string
-        localized_time = self.utranslate(domain, msgid, mapping, context, default=None)
+        localized_time = self.utranslate(domain, msgid, mapping, context)
    
-        if localized_time is None and context is not None:
+        if localized_time.startswith('date_') and context is not None:
             # msg catalog was not able to translate this msgids
             # use default setting
 
@@ -168,7 +168,7 @@ class TranslationServiceTool(PloneBaseTool, UniqueObject, SimpleItem):
             return time.strftime(format)
     
         # Avoid breakage if no dateFormat and no context (not caught above)
-        if localized_time is None:
+        if localized_time.startswith('date_'):
             return time.ISO()
     
         # return localized_time string
