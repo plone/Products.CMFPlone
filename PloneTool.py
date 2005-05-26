@@ -975,40 +975,69 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         if not parent:
             return False
 
-        # Explicitly look at IBrowserDefault
+
+        # The list of ids where we look for default
+        ids = {}
+        
+        # For BTreeFolders we just use the has_key, otherwise build a dict
+        if hasattr(aq_base(parent), 'has_key'):
+            ids = parent
+        else:
+            for id in parent.objectIds():
+                ids[id] = 1
+
+        #
+        # 1. Get an attribute or contained object index_html
+        #
+        
+        if not isinstance(getattr(parent, 'index_html', None), ReplaceableWrapper): 
+            index_html = getattr(aq_base(parent), 'index_html', None)
+            if not index_html is not None:
+                if type(index_html) == type(obj) and index_html == obj:
+                    return True
+                else:
+                    return False
+
+        #
+        # 2. Look for a default_page managed by an IBrowserDefault-implementing
+        #    object
+        #
+        
         if IBrowserDefault.isImplementedBy(parent):
             page = parent.getDefaultPage()
-            if page and page == obj.getId():
-                return True
-
-        # Look for default_page on the object
-        pages = getattr(aq_base(obj), 'default_page', [])
-
-        # Make sure we don't break if default_page is a
-        # string property instead of a sequence
+            if page and ids.has_key(page):
+                if page == obj.getId():
+                    return True
+                else:
+                    return False
+            
+        #
+        # 3. Look for a default_page property on the object
+        #
+        
+        pages = getattr(aq_base(parent), 'default_page', [])
         if type(pages) in (StringType, UnicodeType):
             pages = [pages]
-
-        # And also filter out empty strings
         pages = filter(None, pages)
         for page in pages:
-            if page == obj.getId():
-                return True
+            if ids.has_key(page):
+                if page == obj.getId():
+                    return True
+                else:
+                    return False
 
-        utool = getToolByName(self, 'portal_url')
-        portal = utool.getPortalObject()
-
-        # Try the default sitewide default_page setting
+        #
+        # 4. Try the default sitewide default_page setting
+        #
+        
+        portal = getToolByName(self, 'portal_url').getPortalObject()
         for page in portal.portal_properties.site_properties.getProperty('default_page', []):
-            if page == obj.getId():
-                return True
-
-        # No luck, let's look for hardcoded defaults
-        default_pages = ['index_html', ]
-        for page in default_pages:
-            if page == obj.getId():
-                return True
-
+            if ids.has_key(page):
+                if page == obj.getId():
+                    return True
+                else:
+                    return False
+                    
         return False
 
     security.declarePublic('isTranslatable')
