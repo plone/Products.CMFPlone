@@ -37,8 +37,7 @@
                             over_limit python: limit_display and len(folderContents) > limit_display;
                             folderContents python: (over_limit and folderContents[:limit_display]) or folderContents;">
         <tal:listing condition="folderContents"
-                     define="toLocalizedTime nocall:here/toLocalizedTime;
-                             types python:here.portal_types.listTypeTitles();">
+                     define="toLocalizedTime nocall:here/toLocalizedTime;">
 
             <dl>
 	        <tal:entry tal:repeat="item folderContents">
@@ -47,7 +46,7 @@
                                        item_title_or_id python:(same_type(item.getId,'') and (item.Title or putils.utf8_portal('\xe2\x80\xa6', 'ignore'))) or item.title_or_id();
                                        item_description item/Description;
                                        item_type item/portal_type;
-                                       item_type_title python:types[item_type] or item_type;
+                                       item_type_title item/Type;
                                        item_typeinfo python: here.portal_types.getTypeInfo(item_type);
                                        item_modified item/ModificationDate;
                                        item_created item/CreationDate;
