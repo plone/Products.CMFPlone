@@ -26,7 +26,7 @@
                      id_query string:&amp;id=$create_id;
                      query python:test(create_id, id_query, '');">
                    
-        <fieldset tal:define="allowedContentTypes allowedSortedContentTypes|here/allowedContentTypes">
+        <fieldset tal:define="allowedContentTypes python:here.sortObjects(here.allowedContentTypes())">
 
             <legend i18n:translate="legend_items_available">Items Available</legend>
 
