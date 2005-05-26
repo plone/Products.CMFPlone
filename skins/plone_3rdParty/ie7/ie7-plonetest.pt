@@ -67,7 +67,7 @@ h2 {background-color: red; color: green; font-style: normal;}
  #ie7-css2 {background: red; height: 20px;}
  #ie7-css2 > span {display: block; background: green; height: 20px;}
 --></style>
-<div id="ie7-css2"><span>&nbsp</span></div>
+<div id="ie7-css2"><span>&nbsp;</span></div>
 
 <h3>ie7-css3.js</h3>
 <style type="text/css"><!--
@@ -83,6 +83,7 @@ h2 {background-color: red; color: green; font-style: normal;}
  #ie7-css-strict > span {display: block; background: red}
 --></style>
 <div id="ie7-css-strict"><span class="strict"></span></div>
+</div>
 </div>
 
 

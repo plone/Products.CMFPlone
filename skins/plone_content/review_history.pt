@@ -23,6 +23,7 @@
                 <span tal:replace="event/comments"> some comments </span>
             </dd>
             </tal:history_data>
+        </dl>
         </fieldset>
     </tal:history>
 </span>
