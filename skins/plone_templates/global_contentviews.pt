@@ -57,7 +57,7 @@
                          tal:condition="icon"
                          tal:replace="structure icon" />
                     
-                    <tal:action content="action/name" i18n:translate="">
+                    <tal:action tal:content="action/name" i18n:translate="">
                     Action name
                     </tal:action>
                 </a>

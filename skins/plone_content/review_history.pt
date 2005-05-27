@@ -8,16 +8,17 @@
         <dl>
             <tal:history_data tal:repeat="event history">
             <dt tal:condition="event/action">
-                <span tal:content="event/action" i18n:translate="">Action</span> by
-                <a href=""
-                   tal:attributes="href string:${portal_url}/author/${event/actor}"
-                   tal:content="event/actor">Actor</a>
+                <span i18n:translate="label_history_entry">
+                    <span tal:content="event/action" i18n:name="action" i18n:translate="">action</span> by
+                    <a href="" i18n:name="author"
+                       tal:attributes="href string:${portal_url}/author/${event/actor}"
+                       tal:content="event/actor">Actor</a>
+                </span>
                 <div tal:content="python:here.toPortalTime(event['time'],long_format=1)" />
                 <div tal:condition="event/effective_date|nothing">
                     (<span i18n:translate="label_publishing_effective" tal:omit-tag="">effective</span>: 
                     <span tal:replace="python:here.toPortalTime(event['effective_date'],long_format=1)"></span>)
                 </div>
-
             </dt>
             <dd tal:condition="event/comments">
                 <span tal:replace="event/comments"> some comments </span>

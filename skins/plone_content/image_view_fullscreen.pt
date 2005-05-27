@@ -4,6 +4,8 @@
 
 <head>
 
+    <metal:block tal:define="dummy python:request.RESPONSE.setHeader('Content-Type', 'text/html;;charset='+context.plone_utils.getSiteEncoding())" />
+
     <style type="text/css" media="screen">
     body {
         background-color: white; 
@@ -39,12 +41,12 @@
     <a href=""
        tal:attributes="href request/HTTP_REFERER"
        tal:condition="request/HTTP_REFERER"
-       i18n:translate="">Back to site<br /><tal:block replace="structure here/tag" /></a>
+       ><span i18n:translate="label_back_to_site">Back to site</span><br /><tal:block replace="structure here/tag" /></a>
 
     <a href=""
        tal:attributes="href here/portal_url"
        tal:condition="not: request/HTTP_REFERER"
-       i18n:translate="">Home<br/><tal:block replace="structure here/tag" /></a>
+       ><span i18n:translate="label_home">Home</span><br/><tal:block replace="structure here/tag" /></a>
 </div>    
 
 </body>

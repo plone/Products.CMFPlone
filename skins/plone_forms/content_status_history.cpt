@@ -302,8 +302,8 @@
                             rhComments items/comments;"
                 tal:attributes="class python:test(odd, 'even', 'odd')"
                 tal:condition="items/action">
-              <td i18n:translate="">
-                <span tal:replace="items/action" />
+              <td i18n:translate="" tal:content="items/action">
+                action
               </td>
 
               <td>

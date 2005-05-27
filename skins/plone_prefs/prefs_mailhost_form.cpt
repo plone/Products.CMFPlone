@@ -87,7 +87,8 @@
                 <label i18n:translate="label_smtp_userid">ESMTP user</label>
 
                 <div class="formHelp" i18n:translate="help_smtp_userid">
-                XXX
+                This is the username used for authentication to your e-mail server.
+                Usally it is not required to provide one.
                 </div>
 
                 <div tal:content="error">Validation error output</div>
@@ -107,7 +108,8 @@
                 <label i18n:translate="label_smtp_pass">ESMTP password</label>
 
                 <div class="formHelp" i18n:translate="help_smtp_pass">
-                XXX
+                This is the password used for the given username.
+                It is only required if you have specified a username.
                 </div>
 
                 <div tal:content="error">Validation error output</div>
