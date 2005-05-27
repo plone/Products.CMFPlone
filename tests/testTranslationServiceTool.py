@@ -19,14 +19,14 @@ class TestToLocalizedTime(PloneTestCase.PloneTestCase):
         self.script = self.portal.toLocalizedTime
 
     def testDateTimeArg(self):
-        value = self.script(DateTime('Mar 9, 1997 1:45pm US/Pacific'),
+        value = self.script(DateTime('Mar 9, 1997 1:45pm'),
                             long_format=True)
         # TranslationServiceTool falls back to time formats in site properties
         # because PTS isn't installed
         self.assertEquals(value, '1997-03-09 13:45')
 
     def testStringArg(self):
-        value = self.script('Mar 9, 1997 1:45pm US/Pacific', long_format=True)
+        value = self.script('Mar 9, 1997 1:45pm', long_format=True)
         # TranslationServiceTool falls back to time formats in site properties
         # because PTS isn't installed
         self.assertEquals(value, '1997-03-09 13:45')
@@ -38,7 +38,7 @@ class TestTranslationServiceTool(PloneTestCase.PloneTestCase):
         self.tool = self.portal.translation_service
 
     def testLocalized_time(self):
-        value = self.tool.localized_time('Mar 9, 1997 1:45pm US/Pacific',
+        value = self.tool.ulocalized_time('Mar 9, 1997 1:45pm',
                                          long_format=True)
         # TranslationServiceTool falls back to time formats in site properties
         # because PTS isn't installed
