@@ -26,7 +26,7 @@ try:
     action = fti.getActionById('folderlisting')
 except ValueError:
     try:
-        action = fti.getActionBy('view')
+        action = fti.getActionById('view')
     except ValueError:
         pass
         
