@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (Unreleased)
 
+    - Fix http://plone.org/collector/4049 - the template showing the discussion
+      threads at the bottom of an item's view template now has a more sensible
+      check to make sure it picks the correct view template.
+      [optilude]
+
     - Fix http://plone.org/collector/3279 integrate new jscalendar 1.0
       [hannosch]
 

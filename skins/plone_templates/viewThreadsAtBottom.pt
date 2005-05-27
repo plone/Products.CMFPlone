@@ -9,8 +9,8 @@
                  portal_discussion portal/portal_discussion;
                  isDiscussionAllowed python:portal_discussion.isDiscussionAllowedFor(here);
                  hereTypeInfo python:request.get('this_typeinfo', here.getTypeInfo());
-                 view_action python:hereTypeInfo.getActionById('view');
-                 isViewTemplate python:template_id==view_action or view_action=='view';
+                 viewTemplate here/getViewTemplateId;
+                 isViewTemplate python:template_id==viewTemplate;
                  ">
     <tal:allowed condition="isViewTemplate">
         <tal:comments>
