@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (Unreleased)
 
+    - Fixed http://members.plone.org/collector/2659 using patch by fschulze.
+      [alecm]
+
     - Fix http://plone.org/collector/4049 - the template showing the discussion
       threads at the bottom of an item's view template now has a more sensible
       check to make sure it picks the correct view template.

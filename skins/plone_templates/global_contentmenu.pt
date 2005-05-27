@@ -48,10 +48,13 @@
                 </li>
             </ul>
     
-             <a href="#"
+             <a href="content_status_history"
                 class="contentActionMenuHeader"
+                title="Change the state of this item"
                 onclick="return buttonClick(event, 'statusMenu');"
-                onmouseover="buttonMouseover(event, 'statusMenu');">
+                onmouseover="buttonMouseover(event, 'statusMenu');"
+                i18n:attributes="title"
+                tal:attributes="href string:$here_url/content_status_history;">
     
                 <span i18n:translate="label_state">State</span>:
         
@@ -82,19 +85,23 @@
         <div class="menuPosition">
             <a tal:condition="python: here.isPrincipiaFolderish and not isContextDefaultPage"
                class="contentActionMenuHeader"
+               href="folder_factories"
                title="Add new items inside this item"
                onclick="return buttonClick(event, 'objectMenu');"
                onmouseover="buttonMouseover(event, 'objectMenu');"
                i18n:attributes="title"
-               i18n:translate="label_add_new_item">Add item</a>
+               i18n:translate="label_add_new_item"
+               tal:attributes="href string:${here_url}/folder_factories;">Add item</a>
 
             <a tal:condition="not: python: here.isPrincipiaFolderish and not isContextDefaultPage"
                class="contentActionMenuHeader"
+               href="folder_factories"
                title="Add new items in the same folder as this item"
                onclick="return buttonClick(event, 'objectMenu');"
                onmouseover="buttonMouseover(event, 'objectMenu');"
                i18n:attributes="title"
-               i18n:translate="label_add_new_item_in_folder">Add to folder</a>
+               i18n:translate="label_add_new_item_in_folder"
+               tal:attributes="href string:${parent_folder/absolute_url}/folder_factories;">Add to folder</a>
 
             <ul class="actionMenu" id="objectMenu"
                 onmouseover="menuMouseover(event)">
