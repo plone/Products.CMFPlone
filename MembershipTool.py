@@ -3,7 +3,6 @@ from Products.CMFCore.CMFCorePermissions import SetOwnPassword
 from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault.MembershipTool import MembershipTool as BaseTool
 from Products.CMFPlone import ToolNames
-from Products.CMFPlone.utils import translate
 from Products.CMFPlone.utils import _createObjectByType
 from OFS.Image import Image
 from AccessControl import ClassSecurityInfo, getSecurityManager
@@ -203,38 +202,48 @@ class MembershipTool(PloneBaseTool, BaseTool):
                 raise NotImplementedError, \
                     'cannot get user for member area creation'
 
-        ## get some translations
+        ## translate the default content
 
-        # before translation we must set right encodings in header to make PTS happy
-        properties = getToolByName(self, 'portal_properties')
-        charset = properties.site_properties.getProperty('default_charset', 'utf-8')
-        self.REQUEST.RESPONSE.setHeader('Content-Type', 'text/html;charset=%s' % charset)
+        # get some translation interfaces
+        translation_service = getToolByName(self, 'translation_service')
+        utranslate = translation_service.utranslate
+        encode = translation_service.encode
+        
+        # convert the member_id to unicode type
+        umember_id = translation_service.asunicodetype(member_id, errors='replace')
 
-        member_folder_title = translate(
+        member_folder_title = utranslate(
             'plone', 'title_member_folder',
-            {'member': member_id}, self,
-            default = "%s's Home" % member_id)
+            {'member': umember_id}, self,
+            default = "%s's Home" % umember_id)
        
-        member_folder_description = translate(
+        member_folder_description = utranslate(
             'plone', 'description_member_folder',
-            {'member': member_id}, self,
+            {'member': umember_id}, self,
             default = 'Home page area that contains the items created ' \
-            'and collected by %s' % member_id)
+            'and collected by %s' % umember_id)
 
-        member_folder_index_html_title = translate(
+        member_folder_index_html_title = utranslate(
             'plone', 'title_member_folder_index_html',
-            {'member': member_id}, self,
-            default = "Home page for %s" % member_id)
+            {'member': umember_id}, self,
+            default = "Home page for %s" % umember_id)
 
-        personal_folder_title = translate(
+        personal_folder_title = utranslate(
             'plone', 'title_member_personal_folder',
-            {'member': member_id}, self,
-            default = "Personal Items for %s" % member_id)
+            {'member': umember_id}, self,
+            default = "Personal Items for %s" % umember_id)
 
-        personal_folder_description = translate(
+        personal_folder_description = utranslate(
             'plone', 'description_member_personal_folder',
-            {'member': member_id}, self,
-            default = 'contains personal workarea items for %s' % member_id)
+            {'member': umember_id}, self,
+            default = 'contains personal workarea items for %s' % umember_id)
+ 
+        # encode strings to site encoding as we dont like to store type unicode atm
+        member_folder_title = encode(member_folder_title, errors='replace')
+        member_folder_description = encode(member_folder_description, errors='replace')
+        member_folder_index_html_title = encode(member_folder_index_html_title, errors='replace')
+        personal_folder_title = encode(personal_folder_title, errors='replace')
+        personal_folder_description = encode(personal_folder_description, errors='replace')
 
         ## Modify member folder
         member_folder = self.getHomeFolder(member_id)

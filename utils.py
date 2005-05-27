@@ -1,20 +1,11 @@
-from os.path import join, abspath, dirname, split
-from types import StringType, UnicodeType, IntType
-from DateTime import DateTime
-
 import re
 import Globals
 import OFS
+from os.path import join, abspath, dirname, split
 from Products.CMFCore.utils import ToolInit as CMFCoreToolInit
 from Products.CMFCore.utils import getToolByName
 import Products.CMFPlone as CMFPlone
-
-# get the registered translation service and the dummy
-from Products.PageTemplates.GlobalTranslationService import \
-     getGlobalTranslationService, DummyTranslationService
-
-# make a dummy translation service
-dummy_service = DummyTranslationService()
+import i18nl10n
 
 class IndexIterator:
     __allow_access_to_unprotected_subobjects__ = 1
@@ -39,25 +30,10 @@ def log_deprecated(message, summary='Deprecation Warning',
 def log(message,summary='',severity=0):
     zLOG.LOG('Plone: ',severity,summary,message)
 
-# unicode aware translate method
-def utranslate(*args, **kw):
-    # python useable unicode aware translate method
-
-    # get the global translation service
-    service = getGlobalTranslationService()
-
-    # check for a translation method for unicode translations
-    translate = getattr(service, 'utranslate', None)
-    if translate is None:
-        # fallback code when the translation service does not
-        # support unicode. The dummy service will do 
-        # interpolation but nothing more.
-        return dummy_service.translate(*args, **kw)
-
-    # this returns the translation as type unicode
-    return service.utranslate(*args, **kw)
-    
-translate = utranslate # backwards compatibility
+# keep these here to not fully change the old api
+# please use i18nl10n directly
+utranslate = i18nl10n.utranslate
+ulocalized_time = i18nl10n.ulocalized_time
 
 class ToolInit(CMFCoreToolInit):
 

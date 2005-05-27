@@ -11,10 +11,6 @@
 # initializing a DateTime or a DateTime object.
 # Returns a localized string.
 
-from DateTime.DateTime import DateTime
-
-if isinstance(time, DateTime):
-    time = time.rfc822()
-
 tool = context.translation_service
-return tool.localized_time(time, long_format, context, domain='plone')
+return tool.ulocalized_time(time, long_format, context, domain='plone')
+
