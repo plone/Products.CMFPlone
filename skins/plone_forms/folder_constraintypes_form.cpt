@@ -117,6 +117,7 @@
                                 tal:content="type/title_or_id"
                                 tal:attributes="value type/getId;
                                                 selected python:test(type.getId() in currentAllow, 'selected', None);"
+                                i18n:translate=""
                                 >dummy</option>
                     </select>
                 </div>
@@ -149,6 +150,7 @@
                                 tal:content="type/title_or_id"
                                 tal:attributes="value type/getId;
                                                 selected python:test(type.getId() in currentPrefer, 'selected', None);"
+                                i18n:translate=""
                                 >dummy</option>
                     </select>
                 </div>

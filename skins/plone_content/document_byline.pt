@@ -15,8 +15,8 @@
        />
 
     <tal:name tal:condition="creator"
-        tal:define="author python:mtool.getMemberInfo(creator)"
-        i18n:translate="label_by_author">
+        tal:define="author python:mtool.getMemberInfo(creator)">
+      <span i18n:translate="label_by_author">
         by
       <a href="#"
          tal:attributes="href string:${portal_url}/author/${creator}"
@@ -25,11 +25,13 @@
          i18n:name="author">
         Bob Dobalina
       </a>
+      </span>
       <tal:ownership condition="python: isEditable and checkPermission('Manage portal', here)">
-      [<a href="" 
-       title="Change ownership"
-       i18n:attributes="title"
-       tal:attributes="href string:${here/absolute_url}/ownership_form;">Change</a>]
+        <a href="" 
+        title="Change ownership"
+        i18n:attributes="title"
+        i18n:translate="label_change_author"
+        tal:attributes="href string:${here/absolute_url}/ownership_form;">[Change ownership]</a>
       </tal:ownership>
 
       &mdash;

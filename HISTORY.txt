@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (Unreleased)
 
+    - Fix http://plone.org/collector/4089 fix some i18n markup
+      [hannosch]
+
     - Fixed http://members.plone.org/collector/2659 using patch by fschulze.
       [alecm]
 
