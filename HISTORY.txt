@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.0.6 - Anti-Pop - (Unreleased)
 
+    - Backported index_html WebDAV fix and tests from Plone 2.1.
+      (didn't I do that before?)
+      [dreamcatcher]
+
     - Fixed user and group name/id fuzzyness in PloneTool.changeOwnershipOf()
       and folder_localrole_form.pt. This should make 2.0 branch work better
       with GRUF3.

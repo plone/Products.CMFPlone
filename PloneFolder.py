@@ -27,6 +27,7 @@ from interfaces.OrderedContainer import IOrderedContainer
 
 from OFS.ObjectManager import REPLACEABLE
 from ComputedAttribute import ComputedAttribute
+from webdav.NullResource import NullResource
 
 class ReplaceableWrapper:
     """ A wrapper around an object to make it replaceable """
@@ -276,6 +277,13 @@ class BasePloneFolder( SkinnedFolder, DefaultDublinCoreImpl ):
 
     def index_html(self):
         """ Acquire if not present. """
+        request = getattr(self, 'REQUEST', None)
+        if request and request.has_key('REQUEST_METHOD'):
+            if (request.maybe_webdav_client and
+                request['REQUEST_METHOD'] in  ['PUT']):
+                # Very likely a WebDAV client trying to create something
+                return ReplaceableWrapper(NullResource(self, 'index_html'))
+        # Acquire from parent
         _target = aq_parent(aq_inner(self)).aq_acquire('index_html')
         return ReplaceableWrapper(aq_base(_target).__of__(self))
 

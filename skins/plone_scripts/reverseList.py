@@ -1,4 +1,4 @@
-## Script (Python) "reverseList.py $Revision: 1.1.1.2 $"
+## Script (Python) "reverseList.py $Revision$"
 ##bind container=container
 ##bind context=context
 ##bind namespace=

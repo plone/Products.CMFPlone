@@ -1,4 +1,4 @@
-## Script (Python) "unauthRedirect.py $Revision: 1.1 $"
+## Script (Python) "unauthRedirect.py $Revision$"
 ##parameters=
 ##title=clear browser cookie
 ##

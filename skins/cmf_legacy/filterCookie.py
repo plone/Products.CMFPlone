@@ -1,4 +1,4 @@
-## Script (Python) "filterCookie.py $Revision: 1.1 $"
+## Script (Python) "filterCookie.py $Revision$"
 ##parameters=
 ##title=Manage filter cookie
 ##

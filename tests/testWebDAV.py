@@ -2,14 +2,26 @@ import os, sys
 if __name__ == '__main__':
     execfile(os.path.join(sys.path[0], 'framework.py'))
 
+from cStringIO import StringIO
 from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
+from Products.CMFPlone.tests import dummy
 from Products.CMFCore.utils import getToolByName
 
 from webdav.NullResource import NullResource
 from Acquisition import aq_base
 from StringIO import StringIO
 
+
+default_user = ZopeTestCase.user_name
+default_password = ZopeTestCase.user_password
+
+html = """\
+<html>
+<head><title>Foo</title></head>
+<body>Bar</body>
+</html>
+"""
 
 def mkdict(items):
     '''Constructs a dict from a sequence of (key, value) pairs.'''
@@ -35,13 +47,6 @@ class TestDAVMetadata(PloneTestCase.FunctionalTestCase):
     # Confirms fix for http://plone.org/collector/3217
     # The fix itself is in CMFDefault.Document, not Plone.
 
-    html = """\
-<html>
-<head><title>Foo</title></head>
-<body>Bar</body>
-</html>
-"""
-
     def afterSetUp(self):
         self.basic_auth = '%s:secret' % PloneTestCase.default_user
         self.folder_path = self.folder.absolute_url(1)
@@ -50,7 +55,7 @@ class TestDAVMetadata(PloneTestCase.FunctionalTestCase):
         response = self.publish(self.folder_path+'/doc',
                                 env={'CONTENT_TYPE': 'text/html'},
                                 request_method='PUT',
-                                stdin=StringIO(self.html),
+                                stdin=StringIO(html),
                                 basic=self.basic_auth)
         self.assertEqual(response.getStatus(), 201)
         doc = self.folder.doc
@@ -67,11 +72,106 @@ class TestDAVMetadata(PloneTestCase.FunctionalTestCase):
         self.assertEqual(doc.Rights(), '')
 
 
+class TestPUTObjects(PloneTestCase.FunctionalTestCase):
+    # PUT objects into Plone including special cases like index_html.
+    # Confirms fix for http://plone.org/collector/1375
+
+    def afterSetUp(self):
+        self.basic_auth = '%s:%s' % (default_user, default_password)
+        self.portal_path = self.portal.absolute_url(1)
+        self.folder_path = self.folder.absolute_url(1)
+
+    def testPUTDocument(self):
+        # Create a new document via FTP/DAV
+        response = self.publish(self.folder_path+'/new_html',
+                                env={'CONTENT_TYPE': 'text/html'},
+                                request_method='PUT',
+                                stdin=StringIO(html),
+                                basic=self.basic_auth)
+
+        self.assertEqual(response.getStatus(), 201)
+        self.failUnless('new_html' in self.folder.objectIds())
+        self.assertEqual(self.folder.new_html.EditableBody(), 'Bar')
+        self.assertEqual(self.folder.new_html.portal_type, 'Document')
+
+    def testPUTIndexHtmlDocument(self):
+        # Create an index_html document via FTP/DAV
+        response = self.publish(self.folder_path+'/index_html',
+                                env={'CONTENT_TYPE': 'text/html'},
+                                request_method='PUT',
+                                stdin=StringIO(html),
+                                basic=self.basic_auth)
+
+        self.assertEqual(response.getStatus(), 201, response.getBody())
+        self.failUnless('index_html' in self.folder.objectIds())
+        self.assertEqual(self.folder.index_html.EditableBody(), 'Bar')
+        self.assertEqual(self.folder._getOb('index_html').EditableBody(), 'Bar')
+        self.assertEqual(self.folder.index_html.portal_type, 'Document')
+
+    def testPUTImage(self):
+        # Create a new image via FTP/DAV
+        response = self.publish(self.folder_path+'/new_image',
+                                env={'CONTENT_TYPE': 'image/gif'},
+                                request_method='PUT',
+                                stdin=StringIO(dummy.GIF),
+                                basic=self.basic_auth)
+
+        self.assertEqual(response.getStatus(), 201)
+        self.failUnless('new_image' in self.folder.objectIds())
+        self.assertEqual(str(self.folder.new_image.data), dummy.GIF)
+        self.assertEqual(self.folder.new_image.portal_type, 'Image')
+
+    def testPUTIndexHtmlImage(self):
+        # Create a new image named index_html via FTP/DAV
+        response = self.publish(self.folder_path+'/index_html',
+                                env={'CONTENT_TYPE': 'image/gif'},
+                                request_method='PUT',
+                                stdin=StringIO(dummy.GIF),
+                                basic=self.basic_auth)
+
+        self.assertEqual(response.getStatus(), 201)
+        self.failUnless('index_html' in self.folder.objectIds())
+        self.assertEqual(str(self.folder.index_html.data), dummy.GIF)
+        self.assertEqual(self.folder.index_html.portal_type, 'Image')
+
+    def testPUTDocumentIntoPortal(self):
+        # Create a new document in the portal via FTP/DAV
+        self.setRoles(['Manager'])
+
+        response = self.publish(self.portal_path+'/new_html',
+                                env={'CONTENT_TYPE': 'text/html'},
+                                request_method='PUT',
+                                stdin=StringIO(html),
+                                basic=self.basic_auth)
+
+        self.assertEqual(response.getStatus(), 201)
+        self.failUnless('new_html' in self.portal.objectIds())
+        self.assertEqual(self.portal.new_html.EditableBody(), 'Bar')
+        self.assertEqual(self.portal.new_html.portal_type, 'Document')
+
+    def testPUTIndexHtmlDocumentIntoPortal(self):
+        # Create an index_html document in the portal via FTP/DAV
+        self.setRoles(['Manager'])
+
+        response = self.publish(self.portal_path+'/index_html',
+                                env={'CONTENT_TYPE': 'text/html'},
+                                request_method='PUT',
+                                stdin=StringIO(html),
+                                basic=self.basic_auth)
+
+        self.assertEqual(response.getStatus(), 201)
+        self.failUnless('index_html' in self.portal.objectIds())
+        self.assertEqual(self.portal.index_html.EditableBody(), 'Bar')
+        self.assertEqual(self.portal._getOb('index_html').EditableBody(), 'Bar')
+        self.assertEqual(self.portal.index_html.portal_type, 'Document')
+
+
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
     suite.addTest(makeSuite(TestDAVProperties))
     suite.addTest(makeSuite(TestDAVMetadata))
+    suite.addTest(makeSuite(TestPUTObjects))
     return suite
 
 if __name__ == '__main__':
