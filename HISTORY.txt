@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (Unreleased)
 
+    - Fixed http://plone.org/collector/3688 and added a test.  Also added a 
+      test to ensure that portal_factory respects PLIP 16 local role inheritance.
+      [geoffd]
+
     - Fixing markup to make zchecker happy and changed table summaries to use
       non-literal msgids, plus some minor i18n changes.
       [hannosch]

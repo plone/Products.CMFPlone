@@ -48,8 +48,7 @@ class TempFolder(TempFolderBase):
         Zope's and GRUF's User.getRolesInContext both walk up the
         acquisition hierarchy using aq_parent(aq_inner(obj)) when
         they gather local roles, and this process will result in
-        their walking from TempFolder to portal_factory to the portal root.
-        XXX If we implement PLIP16, this will have to be modified!!!"""
+        their walking from TempFolder to portal_factory to the portal root."""
         object = aq_parent(aq_parent(self))
         local_roles = {}
         while 1:
@@ -66,7 +65,7 @@ class TempFolder(TempFolderBase):
                         if not role in local_roles[k]:
                             local_roles[k].append(role)
 
-            # Check if local role has to be acquired.
+            # Check if local role has to be acquired (PLIP 16)
             if getattr(object, '__ac_local_roles_block__', None):
                 # Ok, we have to stop there, as lr. blocking is enabled
                 break
@@ -347,29 +346,65 @@ class FactoryTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     index_html = None  # call __call__, not index_html
 
+
     def _getTempFolder(self, type_name):
+        AP = CMFCorePermissions.AddPortalContent
+        
         factory_info = self.REQUEST.get(FACTORY_INFO, {})
         tempFolder = factory_info.get(type_name, None)
-        if not tempFolder:
-            # make sure we can add an object of this type to the temp folder
-            types_tool = getToolByName(self, 'portal_types')
-            if not type_name in types_tool.TempFolder.allowed_content_types:
-                # update allowed types for tempfolder
-                all_types = types_tool.listContentTypes()
-                types_tool.TempFolder.allowed_content_types = (all_types)
-
-            tempFolder = TempFolder(type_name).__of__(self)
-            intended_parent = aq_parent(self)
-            for p in intended_parent.ac_inherited_permissions(1):
-                name, value = p[:2]
-                p = Permission(name, value, intended_parent)
-                roles = p.getRoles(default=[])
-                tempFolder.manage_permission(name, tuple(roles),
-                                             acquire=type(roles) is ListType)
-            factory_info[type_name] = tempFolder
-            self.REQUEST.set(FACTORY_INFO, factory_info)
-        else:
+        if tempFolder:
             tempFolder = aq_inner(tempFolder).__of__(self)
+            return tempFolder
+        
+        # make sure we can add an object of this type to the temp folder
+        types_tool = getToolByName(self, 'portal_types')
+        if not type_name in types_tool.TempFolder.allowed_content_types:
+            # update allowed types for tempfolder
+            types_tool.TempFolder.allowed_content_types=(types_tool.listContentTypes())
+            
+        tempFolder = TempFolder(type_name).__of__(self)
+        intended_parent = aq_parent(self)
+        portal = getToolByName(self, 'portal_url').getPortalObject()
+        folder_roles = {} # mapping from permission name to list or tuple of roles
+                          # list if perm is acquired; tuple if not
+        n_acquired = 0    # number of permissions that are acquired
+
+        # build initial folder_roles dictionary
+        for p in intended_parent.ac_inherited_permissions(1):
+            name, value = p[:2]
+            p=Permission(name,value,intended_parent)
+            roles = p.getRoles()
+            folder_roles[name] = roles
+            if type(roles) is ListType:
+                n_acquired += 1
+
+        # If intended_parent is not the portal, walk up the acquisition hierarchy and
+        # acquire permissions explicitly so we can assign the acquired version to the
+        # temp_folder.  In addition to being cumbersome, this is undoubtedly very slow.
+        if intended_parent != portal:
+            parent = aq_parent(aq_inner(intended_parent))
+            while(n_acquired and parent!=portal):
+                n_acquired = 0
+                for p in parent.ac_inherited_permissions(1):
+                    name, value = p[:2]
+                    roles = folder_roles[name]
+                    if type(roles) is ListType:
+                        p=Permission(name,value,parent)
+                        aq_roles=p.getRoles()
+                        for r in aq_roles:
+                            if not r in roles:
+                                roles.append(r)
+                        if type(aq_roles) is ListType:
+                            n_acquired += 1
+                        else:
+                            roles = tuple(roles)
+                        folder_roles[name] = roles
+                parent = aq_parent(aq_inner(parent))
+        for name, roles in folder_roles.items():
+            tempFolder.manage_permission(name, roles, acquire=type(roles) is ListType)
+
+        factory_info[type_name] = tempFolder
+        self.REQUEST.set(FACTORY_INFO, factory_info)
         return tempFolder
 
 Globals.InitializeClass(FactoryTool)
