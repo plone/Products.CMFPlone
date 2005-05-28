@@ -5,7 +5,7 @@
 
   <head>
       <metal:block fill-slot="top_slot">
-        <span tal:replace="nothing"
+        <tal:insert tal:replace="nothing"
               tal:define="dummy python:request.set('enable_border', 1)" />
       </metal:block>
   </head>

@@ -25,7 +25,7 @@
         tal:define="children item/children|nothing"
         tal:condition="children"
         tal:content="structure python:here.portlet_navtree_macro(children=children, level=level+1)">
-          Get subtree, if available.
+          <li>Get subtree, if available.</li>
     </ul>
     </tal:level>
 </li>
