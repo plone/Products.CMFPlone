@@ -73,8 +73,7 @@
         <table class="listing"
             id="sortable"
             tal:define="searchresults python:Batch(here.prefs_user_group_search(searchstring, searchfor), 25, int(b_start), orphan=1)"
-            summary="Returned results"
-            i18n:attributes="summary">
+            summary="Returned results" i18n:attributes="summary_returned_results;">
 
             <tr>
                 <th tal:condition="request/takeaction | nothing">&nbsp;</th>

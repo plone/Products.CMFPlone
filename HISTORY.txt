@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (Unreleased)
 
+    - Fixing markup to make zchecker happy and changed table summaries to use
+      non-literal msgids, plus some minor i18n changes.
+      [hannosch]
+
     - Fixing http://plone.org/collector/4106 - arrow is in wrong direction
       in breadcrumbs when using RTL sites. When using mixed RTL and LTR
       content, the order is jumbled, though - not sure if this is common

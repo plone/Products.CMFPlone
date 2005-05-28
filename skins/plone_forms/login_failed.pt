@@ -10,14 +10,13 @@
 
 <div metal:fill-slot="main">
 
-
     <div tal:define="p_props here/portal_properties;
                      success request/success|nothing;">
         <div tal:condition="not:success">
             <h1 i18n:translate="heading_sign_in_failure_auth">Sign-in failure</h1>
 
             <p i18n:translate="description_not_logged_in_username_incorrect">
-            You are not currently logged in.  Your user name and/or password
+            You are not currently logged in. Your user name and/or password
             may be incorrect.
             </p>
 
@@ -33,7 +32,7 @@
 
             <p i18n:translate="description_signin_fail_cookies">
             You are not currently signed in because you are not accepting
-            cookies.  Please make sure that your browser is configured to
+            cookies. Please make sure that your browser is configured to
             <a href="enabling_cookies"
                i18n:name="link"
                i18n:translate="description_signin_fail_cookies_link">
@@ -57,7 +56,7 @@
                problem can be fixed.</li>
             </ul>
          </div>
-	  </div>
+    </div>
 </div>
 
 </body>

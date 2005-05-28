@@ -24,7 +24,7 @@
     
         <div tal:define="image here/image_thumb|nothing" tal:condition="image"
              style="float:right; border: 1px solid black; margin: 0 0 1em 1em;">
-            <img tal:replace="structure image" />
+            <img tal:replace="structure image" src="" alt="" />
         </div>
 
         <p tal:condition="python: not len_text and is_editable"

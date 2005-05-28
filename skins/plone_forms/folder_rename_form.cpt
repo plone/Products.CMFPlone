@@ -60,7 +60,7 @@
                 </label><div></div>
 
                     <span tal:condition="not:canRenameItem"
-                          i18:translate="rename_item_not_allowed">
+                          i18n:translate="rename_item_not_allowed">
                         You are not allowed to modify the id of this item.
                     </span>
 
@@ -89,7 +89,7 @@
                 </label><div></div>
 
                     <span tal:condition="not:canModifyItem"
-                          i18:translate="change_id_for_item_not_allowed">
+                          i18n:translate="change_id_for_item_not_allowed">
                         You are not allowed to modify the title of this item.
                     </span>
 

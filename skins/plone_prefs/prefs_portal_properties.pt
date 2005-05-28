@@ -59,8 +59,7 @@
     
                 <textarea tal:attributes="name id;"
                           tal:condition="python:obj.getPropertyType(id) in ('utext','lines','ulines')"
-                          tal:content="python:'\n'.join(obj.getProperty(id))"
-                ><tal:block repeat="val python:obj.getProperty(id)"><tal:block replace="val" /></tal:block></textarea>
+                          tal:content="python:'\n'.join(obj.getProperty(id))"></textarea>
 
 
                 <textarea tal:attributes="name id;"

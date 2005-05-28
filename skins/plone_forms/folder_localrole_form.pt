@@ -107,7 +107,8 @@
         <input type="hidden" name="change_type" value="delete" />
         <input type="hidden" name="member_role" value="" />
 
-        <table class="listing" summary="Currently assigned local roles" tal:define="showPortraits python:1">
+        <table class="listing" summary="Currently assigned local roles" i18n:attributes="summary summary_assigned_roles;"
+               tal:define="showPortraits python:1">
             <thead>
             <tr>
                 <th>
@@ -154,20 +155,17 @@
                 </td>
 
                 <td valign="top" tal:condition="not: isGroup">
-                        <img src=""
-                                 tal:condition="not: showPortraits"
-                                 tal:replace="structure portal/user.gif;" />
-           
-                        <img tal:replace="structure here/user.gif" />
-                        <span tal:replace="entry/name">
-                                    username
-                        </span>
+                    <img src="" alt=""
+                         tal:condition="not: showPortraits"
+                         tal:replace="structure portal/user.gif;" />
+                    <img src="" alt=""
+                         tal:replace="structure here/user.gif" />
+                    <span tal:replace="entry/name">username</span>
                 </td>
                 <td valign="top" tal:condition="isGroup">
-                        <img tal:replace="structure here/group.gif" />
-                        <span tal:replace="entry/name">
-                                    groupname
-                        </span>
+                    <img src="" alt=""
+                         tal:replace="structure here/group.gif" />
+                    <span tal:replace="entry/name">groupname</span>
                 </td>
 
                 <td valign="top" tal:condition="isGroup"
@@ -213,9 +211,10 @@
         <div class="label" i18n:translate="label_localroles_to_assign_to_selected_users">Roles to assign to selected user(s)/group(s)</div>
 
         <div class="field"
-             tal:define="data    python:here.formatColumns(avail_roles);">
-            <table cellspacing="3">
-                <tr tal:repeat="row     data">
+             tal:define="data python:here.formatColumns(avail_roles);">
+            <table cellspacing="3" summary="Roles to assign"
+                   i18n:attributes="summary summary_localroles_to_assign;">
+                <tr tal:repeat="row data">
                     <td tal:repeat="lrole row">
                         <input type="checkbox" name="member_roles:list" 
                                 tal:condition="lrole"
@@ -285,7 +284,7 @@
                 <!-- batch navigation -->
                 <div metal:use-macro="here/batch_macros/macros/navigation" />
 
-                <table class="listing" summary="Search results">
+                <table class="listing" summary="Search results" i18n:attributes="summary summary_search_results;">
                     <thead>
                     <tr>
                         <th>
@@ -474,7 +473,7 @@
 
                     <input type="hidden" name="change_type" value="add" />
 
-                    <table class="listing" summary="Available groups">
+                    <table class="listing" summary="Available groups" i18n:attributes="summary summary_available_groups;">
                     <thead>
                         <tr>
                         <th>

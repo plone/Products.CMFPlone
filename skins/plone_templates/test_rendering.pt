@@ -116,14 +116,14 @@ example <a href="irc://some.network/#channel">IRC link</a>.
 
 <ul>
     <li>Unordered list element 1</li>
-    <ul><li>Unordered list subelement 1</li></ul>
+    <li><ul><li>Unordered list subelement 1</li></ul></li>
     <li>Unordered list element 2</li>
     <li>Unordered list element 3</li>
 </ul>
 
 <ol>
     <li>Ordered list element 1</li>
-    <ol><li>Ordered list subelement 1</li></ol>
+    <li><ol><li>Ordered list subelement 1</li></ol></li>
     <li>Ordered list element 2</li>
     <li>Ordered list element 3</li>
 </ol>
@@ -140,7 +140,7 @@ example <a href="irc://some.network/#channel">IRC link</a>.
 Table of class <code>listing</code>
 </h2>
 
-<table class="listing" id="someid">
+<table class="listing" id="someid" summary="Sortable table example">
     <!-- By giving a table an ID, it gets the sortable option. 
          Use class="nosort" to override on a table or column basis. -->
     <thead>
@@ -169,7 +169,7 @@ Table of class <code>listing</code>
 Table of class <code>vertical listing</code>
 </h2>
 
-<table class="vertical listing">
+<table class="vertical listing" summary="Vertical listing example">
     <tbody>
         <tr>
             <th>Table heading</th>

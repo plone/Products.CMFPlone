@@ -78,7 +78,8 @@
           <div class="field" tal:condition="batch">
             <label for="" i18n:translate="label_affected_content">Affected content</label>
             <div tal:define="dummy python:request.set('ids_checked', 1);">
-              <table summary="" metal:use-macro="here/folder_contents/macros/folder_listing">
+              <table summary="Affected content" i18n:attributes="summary summary_affected_content;"
+                     metal:use-macro="here/folder_contents/macros/folder_listing">
               </table>
             </div>
           </div>
@@ -284,7 +285,7 @@
       <div tal:condition="not: request/paths|nothing">
 
         <table class="listing nosort" summary="Review History"
-               i18n:attributes="summary"
+               i18n:attributes="summary summary_review_history;"
                tal:define="review_history python:wtool.getInfoFor(here, 'review_history', []);
                                 review_history python:[review for review in review_history if review.get('action','')]"
                tal:condition="review_history">

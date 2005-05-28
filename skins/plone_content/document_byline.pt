@@ -28,10 +28,10 @@
       </span>
       <tal:ownership condition="python: isEditable and checkPermission('Manage portal', here)">
         <a href="" 
-        title="Change ownership"
-        i18n:attributes="title"
-        i18n:translate="label_change_author"
-        tal:attributes="href string:${here/absolute_url}/ownership_form;">[Change ownership]</a>
+           title="Change ownership"
+           i18n:attributes="title"
+           i18n:translate="label_change_author"
+           tal:attributes="href string:${here/absolute_url}/ownership_form;">[Change ownership]</a>
       </tal:ownership>
 
       &mdash;
@@ -50,7 +50,9 @@
        tal:condition="python: isEditable and checkPermission('Manage properties', here)" 
        i18n:attributes="title"
        tal:attributes="href string:${here/absolute_url}/base_metadata;">
-       <img src="" tal:attributes="src string:${portal_url}/edit.gif" />
+      <img src="" tal:attributes="src string:${portal_url}/edit.gif"
+           alt="Change contributers"
+           i18n:attributes="alt"/>
       </a>
 
     <br />

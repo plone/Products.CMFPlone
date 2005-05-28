@@ -21,7 +21,7 @@
     </a>
 
     <p i18n:translate="description_portal_properties">
-    description_portal_properties
+        This is a list of properties you can set for your site.
     </p>
 
     <dl>
