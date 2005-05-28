@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (Unreleased)
 
+    - Fixing http://plone.org/collector/4106 - arrow is in wrong direction
+      in breadcrumbs when using RTL sites. When using mixed RTL and LTR
+      content, the order is jumbled, though - not sure if this is common
+      in those languages.
+      [limi]
+
     - Fix http://plone.org/collector/4089 fix some i18n markup
       [hannosch]
 
