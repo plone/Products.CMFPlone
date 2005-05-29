@@ -56,7 +56,7 @@
                 i18n:attributes="title"
                 tal:attributes="href string:$here_url/content_status_history;">
     
-                <span i18n:translate="label_state">State</span>:
+                <span i18n:translate="label_state">State:</span>
         
                 <span tal:content="review_state"
                          tal:attributes="class string:state-${review_state}"
