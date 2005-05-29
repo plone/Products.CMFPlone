@@ -2,7 +2,7 @@
      metal:define-macro="byline"
      i18n:domain="plone"
      tal:condition="python: site_properties.allowAnonymousViewAbout or not isAnon"
-     tal:define="creator here/Creator;
+     tal:define="creator python:putils.getOwnerId(here);
                  creator_home python:mtool.getHomeUrl(creator);">
 
     <img src="" alt=""

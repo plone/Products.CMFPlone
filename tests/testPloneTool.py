@@ -10,6 +10,7 @@ from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
 from DateTime import DateTime
+from Products.CMFPlone.utils import _createObjectByType
 
 default_user = PloneTestCase.default_user
 
@@ -183,6 +184,15 @@ class TestOwnershipStuff(PloneTestCase.PloneTestCase):
         self.folder2 = self.folder1.folder2
         self.folder2.invokeFactory('Folder', 'folder3')
         self.folder3 = self.folder2.folder3
+        
+        self.folder2.invokeFactory('Document', 'doc1')
+        self.doc1 = self.folder2.doc1
+        
+        # Be able to test old-style folders and docs, too
+        _createObjectByType('CMF Folder', self.folder2, 'cmffolder')
+        self.cmffolder = self.folder2.cmffolder
+        _createObjectByType('CMF Document', self.folder2, 'cmfdoc')
+        self.cmfdoc = self.folder2.cmfdoc
 
     def assertList(self, result, expect):
         # Verifies lists have the same contents
@@ -226,6 +236,29 @@ class TestOwnershipStuff(PloneTestCase.PloneTestCase):
         self.assertList(self.folder3.get_local_roles_for_userid('new_owner'), ['Owner'])
         self.assertList(self.folder3.get_local_roles_for_userid(default_user), [])
 
+    def testChangeOwnershipOfFolderChangesCreator(self):
+        # Test both AT and CMF folders
+        self.utils.changeOwnershipOf(self.folder1, 'new_owner')
+        self.utils.changeOwnershipOf(self.cmffolder, 'new_owner')
+        self.assertEqual(self.folder1.Creator(), 'new_owner')
+        self.assertEqual(self.cmffolder.Creator(), 'new_owner')
+        
+    def testChangeOwnershipOfDocumentChangesCreator(self):
+       # Test both AT and CMF documents
+        self.utils.changeOwnershipOf(self.doc1, 'new_owner')
+        self.utils.changeOwnershipOf(self.cmfdoc, 'new_owner')
+        self.assertEqual(self.doc1.Creator(), 'new_owner')
+        self.assertEqual(self.cmfdoc.Creator(), 'new_owner')
+
+    def testChangeOwnershipOfChangesCreatorRecursive(self):
+        self.utils.changeOwnershipOf(self.folder1, 'new_owner', recursive=1)
+        self.assertEquals(self.folder1.Creator(), 'new_owner')
+        self.assertEquals(self.folder2.Creator(), 'new_owner')
+        self.assertEquals(self.folder3.Creator(), 'new_owner')
+        self.assertEquals(self.cmffolder.Creator(), 'new_owner')
+        self.assertEquals(self.doc1.Creator(), 'new_owner')
+        self.assertEquals(self.cmfdoc.Creator(), 'new_owner')
+        
     def testGetOwnerId(self):
         # Test that getOwnerId gets the Owner Id
         self.assertEqual(self.utils.getOwnerId(self.folder1), default_user)

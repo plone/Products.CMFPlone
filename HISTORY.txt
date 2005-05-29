@@ -4,8 +4,18 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (Unreleased)
 
+    - Fixed http://members.plone.org/collector/4033 and related craziness, and
+      added some tests. This makes changeOwnershipOf() and the ownership_form
+      change the Creator() correctly for Archetypes based content, such as
+      ATContentTypes. Note that it would be desirable to port this fix to
+      Archetypes and remove the fixCreator() sub-method in changeOwnershipOf()
+      to improve performance and clean up the code, but until this can be done,
+      we need the fix here.
+      [optilude]
+
     - Fixed http://plone.org/collector/3688 and added a test.  Also added a 
-      test to ensure that portal_factory respects PLIP 16 local role inheritance.
+      test to ensure that portal_factory respects PLIP 16 local role
+      inheritance.
       [geoffd]
 
     - Fixing markup to make zchecker happy and changed table summaries to use
