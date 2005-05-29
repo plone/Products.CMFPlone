@@ -15,7 +15,7 @@
                 condition="python:review_state">
 
     <li tal:condition="not: transitions">
-        <tal:state i18n:translate="label_state">State</tal:state>:
+        <tal:state i18n:translate="label_state">State:</tal:state>
         <span tal:content="review_state"
               tal:attributes="class string:state-${review_state}"
               i18n:translate="">
