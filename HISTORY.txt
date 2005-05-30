@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.0.6 - Anti-Pop - (Unreleased)
 
+    - Fixed index_html hack to return 404 for requests other than
+      (PUT, HEAD, GET, POST).
+      [dreamcatcher]
+
     - Backported index_html WebDAV fix and tests from Plone 2.1.
       (didn't I do that before?)
       [dreamcatcher]
