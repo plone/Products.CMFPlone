@@ -450,7 +450,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             if object.Creator() != owner:
                 # Fix for 4033 - make sure Creators is updated
                 try:
-                    # AT's ExtensibleMetadata has a creators field that
+                    # AT's ExtensibleMetadata has a creators field that
                     # should get updated; Creator() returns Creators()[0]
                     creators = list(object.Creators())
                     if owner in creators:
