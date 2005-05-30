@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (Unreleased)
 
+    - Fixed index_html hack to return 404 for requests other than
+      (PUT, HEAD, GET, POST).
+      [dreamcatcher]
+
     - Updated "my folder" action to point straight to folder, not to 
       folder_contents
       [optilude]
