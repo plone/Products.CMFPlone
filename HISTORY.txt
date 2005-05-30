@@ -4,6 +4,16 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (Unreleased)
 
+    - Updated "my folder" action to point straight to folder, not to 
+      folder_contents
+      [optilude]
+
+    - Changed 'batch' action which was previously hidden by a condition in
+      global_contentmenus to use a pair of actions, batch and nobatch, with
+      mutually exclusive conditions. This effectively creates a toggle, which
+      is much more sensible than having to click the 'view' tab to get back.
+      [optilude]
+
     - Fixed http://members.plone.org/collector/4033 and related craziness, and
       added some tests. This makes changeOwnershipOf() and the ownership_form
       change the Creator() correctly for Archetypes based content, such as

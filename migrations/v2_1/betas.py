@@ -11,6 +11,12 @@ def alpha2_beta1(portal):
     #Make object paste action work with all default pages.
     fixObjectPasteActionForDefaultPages(portal, out)
 
+    # Make batch action a toggle by using a pair of actions
+    fixBatchActionToggle(portal, out)
+
+    # Update the 'my folder' action to not use folder_contents
+    fixMyFolderAction(portal, out)
+
     return out
 
 
@@ -44,3 +50,57 @@ def fixObjectPasteActionForDefaultPages(portal, out):
                     category=newaction['category'],
                     visible=1)
             out.append("Added missing object paste action")
+            
+def fixBatchActionToggle(portal, out):
+    """Fix batch actions so as to function as a toggle
+    """
+    ACTIONS = (
+        {'id'        : 'batch',
+         'name'      : 'Contents',
+         'action'    : "python:((object.isDefaultPageInFolder() and object.getParentNode().absolute_url()) or folder_url)+'/folder_contents'",
+         'condition' : "python:folder.displayContentsTab() and object.REQUEST['ACTUAL_URL'] != object.absolute_url() + '/folder_contents'",
+         'permission': CMFCorePermissions.View,
+         'category'  : 'batch',
+        },
+        {'id'        : 'nobatch',
+         'name'      : 'Default view',
+         'action'    : "string:${folder_url}/view",
+         'condition' : "python:folder.displayContentsTab() and object.REQUEST['ACTUAL_URL'] == object.absolute_url() + '/folder_contents'",
+         'permission': CMFCorePermissions.View,
+         'category'  : 'batch',
+        },
+    )
+
+    actionsTool = getToolByName(portal, 'portal_actions', None)
+    if actionsTool is not None:
+        # update/add actions
+        for newaction in ACTIONS:
+            idx = 0
+            for action in actionsTool.listActions():
+                # if action exists, remove and re-add
+                if action.getId() == newaction['id'] \
+                        and action.getCategory() == newaction['category']:
+                    actionsTool.deleteActions((idx,))
+                    break
+                idx += 1
+                
+            actionsTool.addAction(newaction['id'],
+                name=newaction['name'],
+                action=newaction['action'],
+                condition=newaction['condition'],
+                permission=newaction['permission'],
+                category=newaction['category'],
+                visible=1)
+                    
+            out.append("Added '%s' contentmenu action to actions tool." % newaction['name'])
+
+def fixMyFolderAction(portal, out):
+    """Fix my folder action to point to folder w/o folder_contents
+    """
+    actionsTool = getToolByName(portal, 'portal_membership', None)
+    if actionsTool is not None:
+        for action in actionsTool.listActions():
+            if action.getId() == 'mystuff' and action.getCategory() == 'user':
+                action.setActionExpression(Expression('string:${portal/portal_membership/getHomeUrl}'))
+                out.append("Made the 'mystuff' action point to folder listing instead of folder_contents")
+                break

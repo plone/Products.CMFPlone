@@ -363,8 +363,7 @@
     <tal:batch define="batchActions actions/batch | nothing"
          condition="python: batchActions">
         <tal:batchAction repeat="batchAction batchActions">
-            <li class="contentBatchAction"
-                tal:condition="python:here.absolute_url() + '/' + template.getId() != batchAction.get('url')">
+            <li class="contentBatchAction">
                 <a onMouseUp="if (activeButton != null) resetButton(activeButton);"
                    tal:content="batchAction/name"
                    tal:attributes="href batchAction/url"
@@ -372,8 +371,6 @@
             </li>
         </tal:batchAction>
     </tal:batch>
-
-
 
 </ul>
 

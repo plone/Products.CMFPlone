@@ -58,6 +58,8 @@ from Products.CMFPlone.migrations.v2_1.alphas import changePloneSetupActionToSit
 from Products.CMFPlone.migrations.v2_1.alphas import changePloneSiteIcon
 
 from Products.CMFPlone.migrations.v2_1.betas import fixObjectPasteActionForDefaultPages
+from Products.CMFPlone.migrations.v2_1.betas import fixBatchActionToggle
+from Products.CMFPlone.migrations.v2_1.betas import fixMyFolderAction
 
 import types
 
@@ -72,9 +74,9 @@ class MigrationTest(PloneTestCase.PloneTestCase):
         actions = [x for x in actions if x.id != action_id]
         typeob._actions = tuple(actions)
 
-    def removeActionFromTool(self, action_id):
+    def removeActionFromTool(self, action_id, action_provider='portal_actions'):
         # Removes an action from portal_actions
-        tool = getattr(self.portal, 'portal_actions')
+        tool = getattr(self.portal, action_provider)
         actions = tool.listActions()
         actions = [x for x in actions if x.id != action_id]
         tool._actions = tuple(actions)
@@ -1247,6 +1249,50 @@ class TestMigrations_v2_1(MigrationTest):
         # The migration should work if the tool is missing
         self.portal._delObject('portal_actions')
         fixObjectPasteActionForDefaultPages(self.portal, [])
+        
+    def testFixBatchActionToggle(self):
+        editActions = ('batch', 'nobatch')
+        for a in editActions:
+            self.removeActionFromTool(a)
+        fixBatchActionToggle(self.portal, [])
+        actions = [x.id for x in self.actions.listActions()]
+        for a in editActions:
+            self.failUnless(a in actions)
+
+    def testFixBatchActionToggleTwice(self):
+        editActions = ('batch', 'nobatch')
+        for a in editActions:
+            self.removeActionFromTool(a)
+        fixBatchActionToggle(self.portal, [])
+        fixBatchActionToggle(self.portal, [])
+        actions = [x.id for x in self.actions.listActions()]
+        for a in editActions:
+            self.failUnless(a in actions)
+
+    def testFixBatchActionToggleNoTool(self):
+        self.portal._delObject('portal_actions')
+        fixBatchActionToggle(self.portal, [])
+        
+    def testFixMyFolderAction(self):
+        self.removeActionFromTool('mystuff', 'portal_membership')
+        fixMyFolderAction(self.portal, [])
+        actions = [(x.id, x.getActionExpression()) for x in self.membership.listActions()]
+        for a in actions:
+            if a[0] == 'mystuff':
+                self.failIf('folder_contents' in a[1])
+
+    def testFixMyFolderActionTwice(self):
+        self.removeActionFromTool('mystuff', 'portal_membership')
+        fixMyFolderAction(self.portal, [])
+        fixMyFolderAction(self.portal, [])
+        actions = [(x.id, x.getActionExpression()) for x in self.membership.listActions()]
+        for a in actions:
+            if a[0] == 'mystuff':
+                self.failIf('folder_contents' in a[1])
+
+    def testFixBatchActionToggleNoTool(self):
+        self.portal._delObject('portal_membership')
+        fixMyFolderAction(self.portal, [])
 
 def test_suite():
     from unittest import TestSuite, makeSuite

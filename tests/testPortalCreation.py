@@ -312,6 +312,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
     def testBatchActions(self):
         installed = [(a.getId(), a.getCategory()) for a in self.actions.listActions()]
         self.failUnless(('batch', 'batch') in installed)
+        self.failUnless(('nobatch', 'batch') in installed)
 
     def testContentsTabDisabled(self):
         for a in self.actions.listActions():
