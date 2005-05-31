@@ -445,28 +445,8 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             roles = list(object.get_local_roles_for_userid(user_id))
             roles.append('Owner')
             object.manage_setLocalRoles(user_id, roles)
-            
-        def fixCreator(object, owner, recursive=False):
-            if object.Creator() != owner:
-                # Fix for 4033 - make sure Creators is updated
-                try:
-                    # AT's ExtensibleMetadata has a creators field that
-                    # should get updated; Creator() returns Creators()[0]
-                    creators = list(object.Creators())
-                    if owner in creators:
-                        # Don't add same creator twice, but move to front
-                        del creators[creators.index(owner)]
-                    object.setCreators([owner] + creators)                    
-                except AttributeError:
-                    # Don't mind if we can't do this
-                    pass
-            if recursive:
-                for child in object.objectValues():
-                    fixCreator(child, owner, recursive)
-            
 
         fixOwnerRole(object, user.getId())
-        fixCreator(object, owner, recursive)
         catalog_tool.reindexObject(object)
 
         if recursive:
