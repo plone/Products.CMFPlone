@@ -309,14 +309,22 @@ Table of class <code>vertical listing</code>
             <input class="standalone"
                    type="submit"
                    value="Standalone submit" />
+            <input class="destructive"
+                   type="submit"
+                   value="Destructive submit" />
             <input type="submit"
                    value="Submit" />
+        </div>
+        <div class="formControls">
             <input class="context"
                    type="button"
                    value="Context button" />
             <input class="standalone"
                    type="button"
                    value="Standalone button" />
+            <input class="destructive"
+                   type="button"
+                   value="Destructive button" />
             <input type="button"
                    value="Button" />
         </div>
