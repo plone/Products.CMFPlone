@@ -165,6 +165,7 @@ class TestPUTObjects(PloneTestCase.FunctionalTestCase):
         self.assertEqual(self.portal._getOb('index_html').EditableBody(), 'Bar')
         self.assertEqual(self.portal.index_html.portal_type, 'Document')
 
+
 class TestDAVOperations(PloneTestCase.FunctionalTestCase):
 
     def afterSetUp(self):
@@ -179,9 +180,8 @@ class TestDAVOperations(PloneTestCase.FunctionalTestCase):
 
         # Do a PROPFIND on folder/index_html, this needs to result in a NotFound.
         response = self.publish(self.folder_path + '/sub/index_html',
-                                env={},
                                 request_method='PROPFIND',
-                                stdin=StringIO(''),
+                                stdin=StringIO(),
                                 basic=self.basic_auth)
 
         self.assertEqual(response.getStatus(), 404, response.getBody())
@@ -193,9 +193,8 @@ class TestDAVOperations(PloneTestCase.FunctionalTestCase):
 
         # Do a PROPFIND on folder/index_html, this needs to result in a 207
         response = self.publish(self.folder_path + '/sub/index_html',
-                                env={},
                                 request_method='PROPFIND',
-                                stdin=StringIO(''),
+                                stdin=StringIO(),
                                 basic=self.basic_auth)
 
         self.assertEqual(response.getStatus(), 207, response.getBody())
@@ -208,9 +207,8 @@ class TestDAVOperations(PloneTestCase.FunctionalTestCase):
 
         # Do a PROPFIND on portal/index_html, this needs to result in a NotFound.
         response = self.publish(self.portal_path + '/index_html',
-                                env={},
                                 request_method='PROPFIND',
-                                stdin=StringIO(''),
+                                stdin=StringIO(),
                                 basic=self.basic_auth)
 
         self.assertEqual(response.getStatus(), 404, response.getBody())
@@ -223,12 +221,12 @@ class TestDAVOperations(PloneTestCase.FunctionalTestCase):
 
         # Do a PROPFIND on folder/index_html, this needs to result in a 207
         response = self.publish(self.portal_path + '/index_html',
-                                env={},
                                 request_method='PROPFIND',
-                                stdin=StringIO(''),
+                                stdin=StringIO(),
                                 basic=self.basic_auth)
 
         self.assertEqual(response.getStatus(), 207, response.getBody())
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite
