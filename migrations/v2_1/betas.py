@@ -17,6 +17,9 @@ def alpha2_beta1(portal):
     # Update the 'my folder' action to not use folder_contents
     fixMyFolderAction(portal, out)
 
+    # Bring ploneRTL back to the nearly-top of the stack
+    reorderStylesheets(portal, out)
+    
     return out
 
 
@@ -104,3 +107,45 @@ def fixMyFolderAction(portal, out):
                 action.setActionExpression(Expression('string:${portal/portal_membership/getHomeUrl}'))
                 out.append("Made the 'mystuff' action point to folder listing instead of folder_contents")
                 break
+
+def reorderStylesheets(portal, out):
+    """ Fix the position of the ploneRTL and member.css stylesheet
+
+    After the 'alphas' migration, ploneRTL was at the bottom of the
+    pile - it should be near the top in order to overwrite common
+    plone stuff (which is left-to-right) for right-to-left (hebrew,
+    arabic, etc.) usage.
+
+    ploneMember.css breaks some stylesheet-combining order, so we're
+    moving it to the bottom of the list.
+    """
+    qi = getToolByName(portal, 'portal_quickinstaller', None)
+    if qi is not None:
+        if not qi.isProductInstalled('ResourceRegistries'):
+            qi.installProduct('ResourceRegistries', locked=0)
+        cssreg = getToolByName(portal, 'portal_css', None)
+        if cssreg is not None:
+            stylesheets = list(cssreg.getStylesheets())
+            stylesheet_ids = [item.get('id') for item in stylesheets]
+            # Failsafe: first make sure the two stylesheets exist in the list
+            if 'ploneRTL.css' not in stylesheet_ids:
+                cssreg.registerStylesheet('ploneRTL.css',
+                                           expression="python:object.isRightToLeft(domain='plone')")
+            if 'ploneCustom.css' not in stylesheet_ids:
+                cssreg.registerStylesheet('ploneCustom.css')
+            if 'ploneMember.css' not in stylesheet_ids:
+                cssreg.registerStylesheet('ploneMember.css',
+                                           expression='not: portal/portal_membership/isAnonymousUser')
+            # Now move 'em
+            stylesheets = list(cssreg.getStylesheets())
+            stylesheet_ids = [item.get('id') for item in stylesheets]
+            ploneCustom_position = stylesheet_ids.index('ploneCustom.css')
+            ploneRTL_position = stylesheet_ids.index('ploneRTL.css')
+            difference = ploneRTL_position - ploneCustom_position
+            if difference > 1:
+                for step in range(difference - 1):
+                    cssreg.moveStylesheet('ploneRTL.css', 'up')
+                out.append("Moved 'ploneRTL.css' to a correct position")
+            for step in range(len(stylesheet_ids)):
+                # Brute-force... ALL the way down.
+                cssreg.moveStylesheet('ploneMember.css', 'down') 

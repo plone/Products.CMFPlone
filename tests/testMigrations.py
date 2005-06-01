@@ -60,6 +60,7 @@ from Products.CMFPlone.migrations.v2_1.alphas import changePloneSiteIcon
 from Products.CMFPlone.migrations.v2_1.betas import fixObjectPasteActionForDefaultPages
 from Products.CMFPlone.migrations.v2_1.betas import fixBatchActionToggle
 from Products.CMFPlone.migrations.v2_1.betas import fixMyFolderAction
+from Products.CMFPlone.migrations.v2_1.betas import reorderStylesheets
 
 import types
 
@@ -1293,6 +1294,20 @@ class TestMigrations_v2_1(MigrationTest):
     def testFixBatchActionToggleNoTool(self):
         self.portal._delObject('portal_membership')
         fixMyFolderAction(self.portal, [])
+
+    def testReorderStylesheets(self):
+        """ ploneRTL should be right below ploneCustom.css
+
+        By default, ploneCustom.css is the top one, so ploneRTL.css
+        should be in spot number 2. Also, member.css must be at the
+        bottom of the list
+        """
+        cssreg = self.portal.portal_css
+        stylesheets = list(cssreg.getStylesheets())
+        stylesheet_ids = [ item.get('id') for item in stylesheets ]
+        self.assertEquals(stylesheet_ids[0], 'ploneCustom.css')
+        self.assertEquals(stylesheet_ids[1], 'ploneRTL.css')
+        self.assertEquals(stylesheet_ids[-1], 'ploneMember.css') 
 
 def test_suite():
     from unittest import TestSuite, makeSuite
