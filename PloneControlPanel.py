@@ -209,7 +209,7 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
                 for g in self.groups
                 if category=='' or g.split('|')[0]==category]
 
-    security.declareProtected( SetOwnProperties, 'enumConfiglets' )
+    security.declarePublic( 'enumConfiglets' )
     def enumConfiglets(self,group=None):
         portal=getToolByName(self,'portal_url').getPortalObject()
         mtool = getToolByName(self,'portal_membership')

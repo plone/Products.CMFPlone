@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (Unreleased)
 
+    - Fixed http://plone.org/collector/3410 by declaring enumConfliglets
+      public.  The method does its own security checks for each configlet
+      action.
+      [alecm]
+
     - Fixed index_html hack to return 404 for requests other than
       (PUT, HEAD, GET, POST).
       [dreamcatcher]
