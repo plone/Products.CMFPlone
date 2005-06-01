@@ -113,7 +113,8 @@ try:
 except ImportError:
     log(("PIL not found. Plone needs PIL 1.1.5 or newer to scale images. "
          "Please download it from http://www.pythonware.com/products/pil/ or "
-         "http://effbot.org/downloads/#Imaging"))
+         "http://effbot.org/downloads/#Imaging"), 
+         severity=zLOG.INFO, optional=1)
 
 try:
     import Products.ExternalEditor
