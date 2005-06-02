@@ -6,6 +6,10 @@
 ##bind subpath=traverse_subpath
 ##parameters=msgid, mapping={}, default=None, domain='plone', target_language=None
 
+# handle the possible "nothing" condition in folder_contents.pt ln 21 gracefully
+if msgid == None:
+    return None
+
 # get tool
 tool = context.translation_service
 
