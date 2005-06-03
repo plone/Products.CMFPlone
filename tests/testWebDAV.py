@@ -351,6 +351,61 @@ class TestDAVOperations(PloneTestCase.FunctionalTestCase):
 
         self.assertEqual(response.getStatus(), 207, response.getBody())
 
+    def test_propfind_portal_root_index_html_exists(self):
+        if 'index_html' not in self.portal.objectIds():
+            self.portal.invokeFactory('Document', 'index_html')
+
+        self.failUnless('index_html' in self.portal.objectIds())
+
+        # Do a PROPFIND on portal, this needs to result in a 207
+        response = self.publish(self.portal_path,
+                                request_method='PROPFIND',
+                                stdin=StringIO(),
+                                basic=self.basic_auth)
+
+        self.assertEqual(response.getStatus(), 207, response.getBody())
+
+    def test_propfind_portal_root_index_html_not_exists(self):
+        if 'index_html' in self.portal.objectIds():
+            self.portal.manage_delObjects('index_html')
+
+        self.failIf('index_html' in self.portal.objectIds())
+
+        # Do a PROPFIND on portal, this needs to result in a 207
+        response = self.publish(self.portal_path,
+                                request_method='PROPFIND',
+                                stdin=StringIO(),
+                                basic=self.basic_auth)
+
+        self.assertEqual(response.getStatus(), 207, response.getBody())
+
+    def test_propfind_folder_index_html_exists(self):
+        if 'index_html' not in self.folder.objectIds():
+            self.folder.invokeFactory('Document', 'index_html')
+
+        self.failUnless('index_html' in self.folder.objectIds())
+
+        # Do a PROPFIND on folder, this needs to result in a 207
+        response = self.publish(self.folder_path,
+                                request_method='PROPFIND',
+                                stdin=StringIO(),
+                                basic=self.basic_auth)
+
+        self.assertEqual(response.getStatus(), 207, response.getBody())
+
+    def test_propfind_folder_index_html_not_exists(self):
+        if 'index_html' in self.folder.objectIds():
+            self.folder.manage_delObjects('index_html')
+
+        self.failIf('index_html' in self.folder.objectIds())
+
+        # Do a PROPFIND on folder, this needs to result in a 207
+        response = self.publish(self.folder_path,
+                                request_method='PROPFIND',
+                                stdin=StringIO(),
+                                basic=self.basic_auth)
+
+        self.assertEqual(response.getStatus(), 207, response.getBody())
 
 def test_suite():
     from unittest import TestSuite, makeSuite
