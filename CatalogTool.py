@@ -125,6 +125,7 @@ def zero_fill(matchobj):
 
 num_sort_regex = re.compile('\d+')
 
+
 def sortable_title(obj, portal, **kwargs):
     """Helper method for to provide FieldIndex for Title
     """
