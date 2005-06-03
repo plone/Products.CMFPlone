@@ -132,13 +132,6 @@ class TestSecurityDeclarations(RestrictedPythonTest):
         self.check('from Products.CMFPlone import Batch;'
                    'print Batch([], 0).nexturls')
 
-    def testImport_transaction_note(self):
-        self.check('from Products.CMFPlone import transaction_note')
-
-    def testAccess_transaction_note(self):
-        self.check('import Products.CMFPlone;'
-                   'print Products.CMFPlone.transaction_note')
-
     def testImport_listPolicies(self):
         self.check('from Products.CMFPlone.Portal import listPolicies')
 
@@ -146,26 +139,67 @@ class TestSecurityDeclarations(RestrictedPythonTest):
         self.check('import Products.CMFPlone.Portal;'
                    'print Products.CMFPlone.Portal.listPolicies')
 
+    # utils
+
+    def testImport_transaction_note(self):
+        self.check('from Products.CMFPlone.utils import transaction_note')
+
+    def testAccess_transaction_note(self):
+        self.check('import Products.CMFPlone.utils;'
+                   'print Products.CMFPlone.utils.transaction_note')
+
     def testImport_base_hasattr(self):
-        self.check('from Products.CMFPlone import base_hasattr')
+        self.check('from Products.CMFPlone.utils import base_hasattr')
 
     def testAccess_base_hasattr(self):
+        self.check('import Products.CMFPlone.utils;'
+                   'print Products.CMFPlone.utils.base_hasattr')
+
+    def testImport_safe_hasattr(self):
+        self.check('from Products.CMFPlone.utils import safe_hasattr')
+
+    def testAccess_safe_hasattr(self):
+        self.check('import Products.CMFPlone.utils;'
+                   'print Products.CMFPlone.utils.safe_hasattr')
+
+    def testImport_safe_callable(self):
+        self.check('from Products.CMFPlone.utils import safe_callable')
+
+    def testAccess_safe_callable(self):
+        self.check('import Products.CMFPlone.utils;'
+                   'print Products.CMFPlone.utils.safe_callable')
+
+    # B/w compatibility
+
+    def testImport_transaction_note_bbb(self):
+        self.check('from Products.CMFPlone import transaction_note')
+
+    def testAccess_transaction_note_bbb(self):
+        self.check('import Products.CMFPlone;'
+                   'print Products.CMFPlone.transaction_note')
+
+    def testImport_base_hasattr_bbb(self):
+        self.check('from Products.CMFPlone import base_hasattr')
+
+    def testAccess_base_hasattr_bbb(self):
         self.check('import Products.CMFPlone;'
                    'print Products.CMFPlone.base_hasattr')
 
-    def testImport_shasattr(self):
-        self.check('from Products.CMFPlone import shasattr')
+    def testImport_safe_hasattr_bbb(self):
+        self.check('from Products.CMFPlone import safe_hasattr')
 
-    def testAccess_shasattr(self):
+    def testAccess_safe_hasattr_bbb(self):
         self.check('import Products.CMFPlone;'
-                   'print Products.CMFPlone.shasattr')
+                   'print Products.CMFPlone.safe_hasattr')
 
-    def testImport_safe_callable(self):
+    def testImport_safe_callable_bbb(self):
         self.check('from Products.CMFPlone import safe_callable')
 
-    def testAccess_safe_callable(self):
+    def testAccess_safe_callable_bbb(self):
         self.check('import Products.CMFPlone;'
                    'print Products.CMFPlone.safe_callable')
+
+    # Exceptions
 
     def testImport_Unauthorized(self):
         self.check('from AccessControl import Unauthorized')
@@ -212,19 +246,6 @@ except ConflictError: pass
         except Exception, e:
             self.fail('Failed to catch: %s %s (module %s)' %
                       (e.__class__.__name__, e, e.__module__))
-
-    def testImport_getToolByName(self):
-        self.check('from Products.CMFCore.utils import getToolByName')
-
-    def testAccess_getToolByName(self):
-        # XXX: Note that this is NOT allowed!
-        self.checkUnauthorized('from Products.CMFCore import utils;'
-                               'print utils.getToolByName')
-
-    def testUse_getToolByName(self):
-        self.app.manage_addFolder('portal_membership') # Fake a portal tool
-        self.check('from Products.CMFCore.utils import getToolByName;'
-                   'print getToolByName(context, "portal_membership")')
 
     def testImport_ParseError(self):
         self.check('from Products.ZCTextIndex.ParseTree import ParseError')
@@ -293,21 +314,6 @@ except SyntaxError: pass
                 self.fail('Failed to catch: %s %s (module %s)' %
                           (e.__class__.__name__, e, e.__module__))
 
-    try:
-        from Products import PlacelessTranslationService
-    except ImportError:
-        pass
-    else:
-        def testImport_PTS(self):
-            self.check('from Products import PlacelessTranslationService')
-
-        def testImport_isRTL(self):
-            self.check('from Products.PlacelessTranslationService import isRTL')
-
-        def testAccess_isRTL(self):
-            self.check('import Products.PlacelessTranslationService;'
-                       'print Products.PlacelessTranslationService.isRTL')
-
     def testImport_CopyError(self):
         self.check('from OFS.CopySupport import CopyError')
 
@@ -347,6 +353,38 @@ except DiscussionNotAllowed: pass
         except Exception, e:
             self.fail('Failed to catch: %s %s (module %s)' %
                       (e.__class__.__name__, e, e.__module__))
+
+    # isRTL
+
+    try:
+        from Products import PlacelessTranslationService
+    except ImportError:
+        pass
+    else:
+        def testImport_PTS(self):
+            self.check('from Products import PlacelessTranslationService')
+
+        def testImport_isRTL(self):
+            self.check('from Products.PlacelessTranslationService import isRTL')
+
+        def testAccess_isRTL(self):
+            self.check('import Products.PlacelessTranslationService;'
+                       'print Products.PlacelessTranslationService.isRTL')
+
+    # getToolByName
+
+    def testImport_getToolByName(self):
+        self.check('from Products.CMFCore.utils import getToolByName')
+
+    def testAccess_getToolByName(self):
+        # XXX: Note that this is NOT allowed!
+        self.checkUnauthorized('from Products.CMFCore import utils;'
+                               'print utils.getToolByName')
+
+    def testUse_getToolByName(self):
+        self.app.manage_addFolder('portal_membership') # Fake a portal tool
+        self.check('from Products.CMFCore.utils import getToolByName;'
+                   'print getToolByName(context, "portal_membership")')
 
 
 class TestAcquisitionMethods(RestrictedPythonTest):

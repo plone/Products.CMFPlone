@@ -5,7 +5,7 @@ from types import TupleType, UnicodeType, StringType
 import urlparse
 
 from zLOG import LOG, INFO, WARNING
-from Products.PluginIndexes.common import safe_callable
+from Products.CMFPlone.utils import safe_callable
 
 from Acquisition import aq_base, aq_inner, aq_parent
 from Products.CMFCore.utils import UniqueObject

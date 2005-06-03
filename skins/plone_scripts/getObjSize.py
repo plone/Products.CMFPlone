@@ -8,7 +8,7 @@
 ##title=
 ##
 
-from Products.CMFPlone import base_hasattr
+from Products.CMFPlone.utils import base_hasattr
 
 if obj is None:
     obj = context

@@ -1,9 +1,6 @@
 import sys
 import os
 import Globals
-from types import ClassType
-from zLOG import LOG, INFO
-from Acquisition import aq_base
 
 cmfplone_globals = globals()
 this_module = sys.modules[ __name__ ]
@@ -18,27 +15,6 @@ misc_ = {'plone_icon': Globals.ImageFile(
                        os.path.join('skins', 'plone_images', 'logoIcon.gif'),
                        cmfplone_globals)}
 
-def log(message, summary='', severity=INFO):
-    LOG('Plone Debug', severity, summary, message)
-
-def transaction_note(note):
-    """ Write human legible note """
-    T=get_transaction()
-    if isinstance(note, unicode):
-        # Convert unicode to a regular string for the backend write IO.
-        # UTF-8 is the only reasonable choice, as using unicode means
-        # that Latin-1 is probably not enough.
-        note = note.encode('utf-8', 'replace')
-
-    if (len(T.description)+len(note))>=65535:
-        log('Transaction note too large omitting %s' % str(note))
-    else:
-        T.note(str(note))
-
-def base_hasattr(ob, name):
-    #just use shasattr here
-    return shasattr(ob, name, acquire=False)
-
 
 def initialize(context):
 
@@ -51,7 +27,7 @@ def initialize(context):
     from AccessControl import ModuleSecurityInfo
     from AccessControl import allow_module, allow_class, allow_type
 
-    # zLOG is deprecated in Zope >2.7.0, use logger instead
+    # zLOG is deprecated in Zope > 2.7.0, use logger instead
     ModuleSecurityInfo('logging').declarePublic('getLogger')
     from logging import Logger
     allow_class(Logger)
@@ -91,7 +67,7 @@ def initialize(context):
     from StringIO import StringIO
     allow_class(StringIO)
 
-    ModuleSecurityInfo('Products.CMFPlone').declarePublic('transaction_note')
+    # Make listPolicies importable TTW
     ModuleSecurityInfo('Products.CMFPlone.Portal').declarePublic('listPolicies')
 
     # Make Unauthorized importable TTW
@@ -113,8 +89,13 @@ def initialize(context):
     # Make DiscussionNotAllowed importable TTW
     ModuleSecurityInfo('Products.CMFDefault.DiscussionTool').declarePublic('DiscussionNotAllowed')
 
-    # Make base_hasattr importable TTW
-    ModuleSecurityInfo('Products.CMFPlone').declarePublic('base_hasattr')
+    # Backward compatibility only, please import from utils directly
+    from Products.CMFPlone.utils import transaction_note, base_hasattr, \
+                                        safe_hasattr, safe_callable
+    this_module.transaction_note = transaction_note
+    this_module.base_hasattr = base_hasattr
+    this_module.safe_hasattr = safe_hasattr
+    this_module.safe_callable = safe_callable
 
     # Setup migrations
     import migrations
@@ -221,53 +202,3 @@ def initialize(context):
 
     import CustomizationPolicy
     CustomizationPolicy.register(context, cmfplone_globals)
-
-
-def shasattr(obj, attr, acquire=False):
-    """Safe has attribute method
-
-    * It's acquisition safe by default because it's removing the acquisition
-      wrapper before trying to test for the attribute.
-
-    * It's not using hasattr which might swallow a ZODB ConflictError (actually
-      the implementation of hasattr is swallowing all exceptions). Instead of
-      using hasattr it's comparing the output of getattr with a special marker
-      object.
-
-    XXX the getattr() trick can be removed when Python's hasattr() is fixed to
-    catch only AttributeErrors.
-
-    Quoting Shane Hathaway:
-
-    That said, I was surprised to discover that Python 2.3 implements hasattr
-    this way (from bltinmodule.c):
-
-            v = PyObject_GetAttr(v, name);
-            if (v == NULL) {
-                    PyErr_Clear();
-                    Py_INCREF(Py_False);
-                    return Py_False;
-            }
-        Py_DECREF(v);
-        Py_INCREF(Py_True);
-        return Py_True;
-
-    It should not swallow all errors, especially now that descriptors make
-    computed attributes quite common.  getattr() only recently started catching
-    only AttributeErrors, but apparently hasattr is lagging behind.  I suggest
-    the consistency between getattr and hasattr should be fixed in Python, not
-    Zope.
-
-    Shane
-    """
-    if not acquire:
-        obj = aq_base(obj)
-    return getattr(obj, attr, _marker) is not _marker
-
-def safe_callable(obj):
-    """Make sure our callable checks are ConflictError and acquisition safe"""
-    if shasattr(obj,'__class__'):
-        if shasattr(obj,'__call__'):
-            return True
-        else:
-            return isinstance(obj, ClassType)

@@ -6,7 +6,8 @@
 ##bind script=script
 ##bind subpath=traverse_subpath
 ##parameters=
-from Products.CMFPlone import shasattr
+from Products.CMFPlone.utils import base_hasattr
+
 RESPONSE = context.REQUEST.RESPONSE
 homeFolder=context.portal_membership.getHomeFolder()
 view_url = '%s/%s' % (context.absolute_url(),
@@ -17,11 +18,11 @@ if not homeFolder:
     msg = "Can't access home folder. Favorite is not added"
     return RESPONSE.redirect('%s?portal_status_message=%s' % (view_url, msg))
 
-if not hasattr(homeFolder, 'Favorites'):
+if not base_hasattr(homeFolder, 'Favorites'):
     homeFolder.invokeFactory('Folder', id='Favorites', title='Favorites')
     addable_types = ['Favorite']
     favs = homeFolder.Favorites
-    if shasattr(favs, 'setConstrainTypesMode'):
+    if base_hasattr(favs, 'setConstrainTypesMode'):
         favs.setConstrainTypesMode(1)
         favs.setImmediatelyAddableTypes(addable_types)
         favs.setLocallyAllowedTypes(addable_types)

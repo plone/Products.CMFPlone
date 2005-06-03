@@ -25,7 +25,7 @@ from OFS.IOrderSupport import IOrderedContainer
 from ZODB.POSException import ConflictError
 
 from Products.ZCatalog.ZCatalog import ZCatalog
-from Products.PluginIndexes.common import safe_callable
+from Products.CMFPlone.utils import safe_callable
 
 from AccessControl.Permissions import manage_zcatalog_entries as ManageZCatalogEntries
 from AccessControl.Permissions import search_zcatalog as SearchZCatalog

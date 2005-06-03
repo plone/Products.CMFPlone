@@ -6,6 +6,8 @@ from Products.CMFCore.utils import ToolInit as CMFCoreToolInit
 from Products.CMFCore.utils import getToolByName
 import Products.CMFPlone as CMFPlone
 import i18nl10n
+from types import ClassType
+from Acquisition import aq_base
 
 class IndexIterator:
     __allow_access_to_unprotected_subobjects__ = 1
@@ -24,11 +26,11 @@ class IndexIterator:
 import zLOG
 def log_deprecated(message, summary='Deprecation Warning',
                    severity=zLOG.WARNING):
-    zLOG.LOG('Plone: ',severity,summary,message)
+    zLOG.LOG('Plone: ', severity, summary, message)
 
 # generic log method
-def log(message,summary='',severity=0):
-    zLOG.LOG('Plone: ',severity,summary,message)
+def log(message, summary='', severity=zLOG.INFO):
+    zLOG.LOG('Plone: ', severity, summary, message)
 
 # keep these here to not fully change the old api
 # please use i18nl10n directly
@@ -92,11 +94,11 @@ class ToolInit(CMFCoreToolInit):
 
 def _createObjectByType(type_name, container, id, *args, **kw):
     """Create an object without performing security checks
-    
+
     invokeFactory and fti.constructInstance perform some security checks
     before creating the object. Use this function instead if you need to
     skip these checks.
-    
+
     This method uses some code from
     CMFCore.TypesTool.FactoryTypeInformation.constructInstance
     to create the object without security checks.
@@ -117,11 +119,11 @@ def _createObjectByType(type_name, container, id, *args, **kw):
     # construct the object
     m(id, *args, **kw)
     ob = container._getOb( id )
-    
+
     return fti._finishConstruction(ob)
 
 def safeToInt(value):
-    """ convert value to an integer or just return 0 if can't """
+    """Convert value to integer or just return 0 if we can't"""
     try:
         return int(value)
     except ValueError:
@@ -131,7 +133,7 @@ release_levels = ('alpha', 'beta', 'candidate', 'final')
 rl_abbr = {'a':'alpha', 'b':'beta', 'rc':'candidate'}
 
 def versionTupleFromString(v_str):
-    """ returns version tuple from passed in version string """
+    """Returns version tuple from passed in version string"""
     regex_str = "(^\d+)[.]?(\d*)[.]?(\d*)[- ]?(alpha|beta|candidate|final|a|b|rc)?(\d*)"
     v_regex = re.compile(regex_str)
     match = v_regex.match(v_str)
@@ -149,6 +151,49 @@ def versionTupleFromString(v_str):
     return v_tpl
 
 def getFSVersionTuple():
+    """Reads version.txt and returns version tuple"""
     vfile = "%s/version.txt" % CMFPlone.__path__[0]
     v_str = open(vfile, 'r').read().lower()
     return versionTupleFromString(v_str)
+
+
+def transaction_note(note):
+    """Write human legible note"""
+    T=get_transaction()
+    if isinstance(note, unicode):
+        # Convert unicode to a regular string for the backend write IO.
+        # UTF-8 is the only reasonable choice, as using unicode means
+        # that Latin-1 is probably not enough.
+        note = note.encode('utf-8', 'replace')
+
+    if (len(T.description)+len(note))>=65535:
+        log('Transaction note too large omitting %s' % str(note))
+    else:
+        T.note(str(note))
+
+
+def base_hasattr(obj, name):
+    """Like safe_hasattr, but also disables acquisition."""
+    return safe_hasattr(aq_base(obj), name)
+
+
+def safe_hasattr(obj, name, _marker=object()):
+    """Make sure we don't mask exceptions like hasattr().
+
+    We don't want exceptions other than AttributeError to be masked,
+    since that too often masks other programming errors.
+    Three-argument getattr() doesn't mask those, so we use that to
+    implement our own hasattr() replacement.
+    """
+    return getattr(obj, name, _marker) is not _marker
+
+
+def safe_callable(obj):
+    """Make sure our callable checks are ConflictError safe."""
+    if safe_hasattr(obj, '__class__'):
+        if safe_hasattr(obj, '__call__'):
+            return True
+        else:
+            return isinstance(obj, ClassType)
+    else:
+        return callable(obj)

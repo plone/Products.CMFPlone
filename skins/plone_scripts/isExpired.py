@@ -9,8 +9,8 @@
 ##
 
 from DateTime import DateTime
-from Products.CMFPlone import base_hasattr
-from Products.CMFPlone import safe_callable
+from Products.CMFPlone.utils import base_hasattr
+from Products.CMFPlone.utils import safe_callable
 
 if not content:
     content = context

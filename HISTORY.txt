@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (Unreleased)
 
+    - Moved transaction_note, base_hasattr, safe_hasattr, and safe_callable
+      to the utils module. Got rid of AT-style shasattr. Fixed safe_callable
+      and made sure we use our version of safe_callable throughout.
+      [stefan]
+
     - Fixed http://plone.org/collector/3410 by declaring enumConfliglets
       public.  The method does its own security checks for each configlet
       action.
