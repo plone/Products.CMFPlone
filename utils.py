@@ -1,14 +1,22 @@
 import re
 import Globals
 import OFS
+import i18nl10n
 from os.path import join, abspath, dirname, split
 from Products.CMFCore.utils import ToolInit as CMFCoreToolInit
 from Products.CMFCore.utils import getToolByName
-import Products.CMFPlone as CMFPlone
-import i18nl10n
 from types import ClassType
 from Acquisition import aq_base
-from Products.CMFPlone import transaction
+
+# Duplicated here to avoid import loop
+try:
+    import transaction
+except ImportError:
+    import transaction_ as transaction
+
+# Canonical way to get at CMFPlone directory
+PACKAGE_HOME = Globals.package_home(globals())
+
 
 class IndexIterator:
     __allow_access_to_unprotected_subobjects__ = 1
@@ -22,6 +30,7 @@ class IndexIterator:
             self.pos += 1
             return self.pos
         raise KeyError, 'Reached upper bounds'
+
 
 # deprecration warning
 import zLOG
@@ -37,6 +46,7 @@ def log(message, summary='', severity=zLOG.INFO):
 # please use i18nl10n directly
 utranslate = i18nl10n.utranslate
 ulocalized_time = i18nl10n.ulocalized_time
+
 
 class ToolInit(CMFCoreToolInit):
 
@@ -58,8 +68,7 @@ class ToolInit(CMFCoreToolInit):
         except (IOError, OSError):
             # Fallback:
             # Assume path is relative to CMFPlone directory
-            plone_path = dirname(__file__)
-            path = abspath(join(plone_path, path))
+            path = abspath(join(PACKAGE_HOME, path))
             try:
                 icon = Globals.ImageFile(path, pack.__dict__)
             except (IOError, OSError):
@@ -93,6 +102,7 @@ class ToolInit(CMFCoreToolInit):
                         setattr(misc, pid, Misc(pid, {}))
                     getattr(misc, pid)[name] = icon
 
+
 def _createObjectByType(type_name, container, id, *args, **kw):
     """Create an object without performing security checks
 
@@ -122,6 +132,7 @@ def _createObjectByType(type_name, container, id, *args, **kw):
     ob = container._getOb( id )
 
     return fti._finishConstruction(ob)
+
 
 def safeToInt(value):
     """Convert value to integer or just return 0 if we can't"""
@@ -153,7 +164,7 @@ def versionTupleFromString(v_str):
 
 def getFSVersionTuple():
     """Reads version.txt and returns version tuple"""
-    vfile = "%s/version.txt" % CMFPlone.__path__[0]
+    vfile = "%s/version.txt" % PACKAGE_HOME
     v_str = open(vfile, 'r').read().lower()
     return versionTupleFromString(v_str)
 

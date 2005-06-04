@@ -210,4 +210,4 @@ def initialize(context):
 try:
     import transaction
 except ImportError:
-    from Products.CMFPlone import transaction_ as transaction
+    import transaction_ as transaction
