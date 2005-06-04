@@ -2,7 +2,7 @@
 # Zope 2.8-style transaction module for Zope <= 2.7.
 #
 
-# $Id: zopetransaction.py 8925 2005-06-03 00:43:31Z shh42 $
+# $Id$
 
 def get():
     return get_transaction()
