@@ -20,12 +20,12 @@ from Products.CMFCore.CatalogTool import _mergedLocalRoles
 from Products.CMFCore.interfaces.portal_catalog \
         import IndexableObjectWrapper as IIndexableObjectWrapper
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
-from Products.CMFPlone import base_hasattr
+from Products.CMFPlone.utils import base_hasattr
+from Products.CMFPlone.utils import safe_callable
 from OFS.IOrderSupport import IOrderedContainer
 from ZODB.POSException import ConflictError
 
 from Products.ZCatalog.ZCatalog import ZCatalog
-from Products.CMFPlone.utils import safe_callable
 
 from AccessControl.Permissions import manage_zcatalog_entries as ManageZCatalogEntries
 from AccessControl.Permissions import search_zcatalog as SearchZCatalog
