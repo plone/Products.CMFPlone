@@ -202,3 +202,12 @@ def initialize(context):
 
     import CustomizationPolicy
     CustomizationPolicy.register(context, cmfplone_globals)
+
+    ModuleSecurityInfo('Products.CMFPlone').declarePrivate('transaction')
+
+
+# Zope 2.8-style transaction module
+try:
+    import transaction
+except ImportError:
+    from Products.CMFPlone import transaction_ as transaction

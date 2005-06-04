@@ -25,7 +25,7 @@ from Products.CMFPlone import cmfplone_globals
 from Products.CMFQuickInstallerTool import QuickInstallerTool, AlreadyInstalled
 from Products.CMFPlone.setup.ConfigurationMethods import addSiteProperties
 from Products.CMFPlone.migrations.migration_util import safeEditProperty
-from Products.CMFPlone import ToolNames
+from Products.CMFPlone import ToolNames, transaction
 
 from Products.CMFCore import CachingPolicyManager
 from Products.CMFCore.CMFCorePermissions import ListFolderContents, SetOwnProperties, SetOwnPassword
@@ -204,7 +204,7 @@ def addGroupUserFolder(portal):
         NOTE: In the Install routine for GRUF it does a subtransaction commit()
         so that you can manipulate the acl_users folders.
     """
-    get_transaction().commit(1)
+    transaction.commit(1)
     out=[]
     out.append('Adding GroupUserFolder to portal')
     qi=getToolByName(portal, 'portal_quickinstaller')

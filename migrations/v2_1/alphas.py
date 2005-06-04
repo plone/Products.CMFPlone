@@ -8,6 +8,7 @@ from Products.CMFPlone.utils import _createObjectByType
 from Products.CMFPlone.migrations.migration_util import installOrReinstallProduct, \
      safeGetMemberDataTool
 from Products.CMFCore.Expression import Expression
+from Products.CMFPlone import transaction
 
 
 def two05_alpha1(portal):
@@ -247,7 +248,7 @@ def installATContentTypes(portal, out):
 def migrateToATCT(portal, out):
     """Switches portal to ATContentTypes.
     """
-    get_transaction().commit(1)
+    transaction.commit(1)
     migrateFromCMFtoATCT = portal.migrateFromCMFtoATCT
     switchCMF2ATCT = portal.switchCMF2ATCT
     #out.append('Migrating and switching to ATContentTypes ...')
@@ -257,17 +258,17 @@ def migrateToATCT(portal, out):
         switchCMF2ATCT(skip_rename=False)
     except IndexError:
         switchCMF2ATCT(skip_rename=True)
-    get_transaction().commit(1)
+    transaction.commit(1)
     #out.append('Switched portal to ATContentTypes.')
 
 
 def migrateToATCT10(portal, out):
     """Switches portal to ATCT 1.0
     """
-    get_transaction().commit(1)
+    transaction.commit(1)
     tool = portal.portal_atct
     tool.migrateToATCT()
-    get_transaction().commit(1)
+    transaction.commit(1)
 
 
 def addFullScreenAction(portal, out):

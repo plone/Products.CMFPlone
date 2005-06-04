@@ -17,7 +17,7 @@ from Products.CMFCore.Expression import Expression
 from Products.CMFPlone.migrations.v2.plone2_base import setupExtEditor, addDocumentActions, addActionIcons
 from Products.CMFPlone.migrations.migration_util import safeEditProperty, addLinesToProperty
 from Products.CMFPlone.setup import ConfigurationMethods
-from Products.CMFPlone import ToolNames
+from Products.CMFPlone import ToolNames, transaction
 from portlet_migration import upgradeSlots2Portlets
 import plone2_base
 
@@ -355,7 +355,7 @@ def addGroupUserFolder(portal):
         NOTE: In the Install routine for GRUF it does a subtransaction commit()
         so that you can manipulate the acl_users folders.
     """
-    get_transaction().commit(1)
+    transaction.commit(1)
 
     qi=getToolByName(portal, 'portal_quickinstaller')
     addGRUFTool=portal.manage_addProduct['GroupUserFolder'].manage_addTool

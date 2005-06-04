@@ -6,6 +6,7 @@ import urlparse
 
 from zLOG import LOG, INFO, WARNING
 from Products.CMFPlone.utils import safe_callable
+from Products.CMFPlone import transaction
 
 from Acquisition import aq_base, aq_inner, aq_parent
 from Products.CMFCore.utils import UniqueObject
@@ -290,7 +291,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             # UTF-8 is the only reasonable choice, as using unicode means
             # that Latin-1 is probably not enough.
             msg = msg.encode(charset)
-        if not get_transaction().description:
+        if not transaction.get().description:
             transaction_note(msg)
 
     security.declarePublic('contentEdit')

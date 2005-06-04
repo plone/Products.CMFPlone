@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (Unreleased)
 
+    - Introduced a Zope 2.8-style transaction module. Plone code should now use
+      'from Products.CMFPlone import transaction' which will work in Zope 2.7
+      and Zope 2.8.
+      [stefan]
+
     - Moved transaction_note, base_hasattr, safe_hasattr, and safe_callable
       to the utils module. Got rid of AT-style shasattr. Fixed safe_callable
       and made sure we use our version of safe_callable throughout.

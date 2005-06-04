@@ -2,6 +2,7 @@ from Products.ExternalMethod.ExternalMethod import manage_addExternalMethod
 from Products.CMFPlone.Portal import manage_addSite
 from Products.SiteAccess.SiteRoot import manage_addSiteRoot
 from Products.SiteAccess.AccessRule import manage_addAccessRule
+from Products.CMFPlone import transaction
 
 from AccessControl.SecurityManagement import newSecurityManager
 from AccessControl.SecurityManagement import noSecurityManager
@@ -87,7 +88,7 @@ def create(app, admin_username='admin'):
             qit.installProduct(product)
 
     # 6. commit
-    get_transaction().commit()
+    transaction.commit()
 
     noSecurityManager()
     out.append("Finished")

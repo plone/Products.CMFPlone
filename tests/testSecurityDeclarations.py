@@ -386,6 +386,15 @@ except DiscussionNotAllowed: pass
         self.check('from Products.CMFCore.utils import getToolByName;'
                    'print getToolByName(context, "portal_membership")')
 
+    # transaction
+
+    def testImport_transaction(self):
+        self.checkUnauthorized('from Products.CMFPlone import transaction')
+
+    def testUse_transaction(self):
+        self.checkUnauthorized('from Products.CMFPlone import transaction;'
+                               'transaction.get()')
+
 
 class TestAcquisitionMethods(RestrictedPythonTest):
 

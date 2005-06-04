@@ -8,6 +8,7 @@ import Products.CMFPlone as CMFPlone
 import i18nl10n
 from types import ClassType
 from Acquisition import aq_base
+from Products.CMFPlone import transaction
 
 class IndexIterator:
     __allow_access_to_unprotected_subobjects__ = 1
@@ -159,7 +160,7 @@ def getFSVersionTuple():
 
 def transaction_note(note):
     """Write human legible note"""
-    T=get_transaction()
+    T=transaction.get()
     if isinstance(note, unicode):
         # Convert unicode to a regular string for the backend write IO.
         # UTF-8 is the only reasonable choice, as using unicode means
