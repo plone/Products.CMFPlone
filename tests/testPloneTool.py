@@ -565,7 +565,7 @@ class TestNavTree(PloneTestCase.PloneTestCase):
     def testNavTreeExcludesItemsWithExcludeProperty(self):
         # Make sure that items witht he exclude_from_nav property set get
         # no_display set to True
-        self.portal.folder2.manage_addProperty('exclude_from_nav',True,'boolean')
+        self.portal.folder2.setExcludeFromNav(True)
         self.portal.folder2.reindexObject()
         tree = self.utils.createNavTree(self.portal.folder2.file21)
         self.failUnless(tree)
@@ -676,7 +676,7 @@ class TestPortalTabs(PloneTestCase.PloneTestCase):
 
     def testTabsExcludeItemsWithExcludeProperty(self):
         # Make sure that items witht he exclude_from_nav property are purged
-        self.portal.folder2.manage_addProperty('exclude_from_nav',True,'boolean')
+        self.portal.folder2.setExcludeFromNav(True)
         self.portal.folder2.reindexObject()
         tabs = self.utils.createTopLevelTabs()
         self.failUnless(tabs)
