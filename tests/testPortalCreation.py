@@ -7,6 +7,7 @@ if __name__ == '__main__':
     execfile(os.path.join(sys.path[0], 'framework.py'))
 
 from Testing import ZopeTestCase
+from Products.CMFCore import CMFCorePermissions
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
 
@@ -475,6 +476,14 @@ class TestManagementPageCharset(PloneTestCase.PloneTestCase):
         self.portal._delObject('portal_properties')
         manage_charset = getattr(self.portal, 'management_page_charset', None)
         self.assertEqual(manage_charset, 'utf-8')
+
+    def testOwnerHasAccessInactivePermission(self):
+        permission_on_role = [p for p in self.portal.permissionsOfRole('Owner')
+            if p['name'] == CMFCorePermissions.AccessInactivePortalContent][0]
+        self.failUnless(permission_on_role['selected'])
+        cur_perms = self.portal.permission_settings(
+                            CMFCorePermissions.AccessInactivePortalContent)[0]
+        self.failUnless(cur_perms['acquire'])
 
 
 def test_suite():

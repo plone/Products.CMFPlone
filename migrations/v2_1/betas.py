@@ -19,6 +19,9 @@ def alpha2_beta1(portal):
 
     # Bring ploneRTL back to the nearly-top of the stack
     reorderStylesheets(portal, out)
+
+    # Grant Access inactive portal content to Owner
+    allowOwnerToAccessInactiveContent(portal, out)
     
     return out
 
@@ -149,3 +152,17 @@ def reorderStylesheets(portal, out):
             for step in range(len(stylesheet_ids)):
                 # Brute-force... ALL the way down.
                 cssreg.moveStylesheet('ploneMember.css', 'down') 
+
+
+def allowOwnerToAccessInactiveContent(portal, out):
+    permission = CMFCorePermissions.AccessInactivePortalContent
+    cur_perms=portal.permission_settings(permission)[0]
+    roles = portal.valid_roles()
+    if 'Owner' in roles:
+        cur_allowed = [roles[i] for i in range(len(cur_perms['roles'])) if cur_perms['roles'][i]['checked']]
+        if 'Owner' not in cur_allowed:
+            cur_allowed.append('Owner')
+            acquire = cur_perms['acquire'] and 1 or 0
+            portal.manage_permission(permission, tuple(cur_allowed),
+                                                        acquire=acquire)
+            out.append('Cranted "Access inactive portal content" permission to Owner role')

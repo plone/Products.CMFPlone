@@ -340,6 +340,11 @@ def addSiteActions(self, portal):
                      'textsize_large.gif',
                      'Large Text')
 
+def setPortalDefaultPermissions(self, portal):
+    portal.manage_permission(CMFCorePermissions.AccessInactivePortalContent,
+                                                ('Owner',), acquire=1)
+
+
 functions = {
     'addSiteProperties': addSiteProperties,
     'setupDefaultLeftRightSlots': setupDefaultLeftRightSlots,
@@ -355,6 +360,7 @@ functions = {
     'modifyActionProviders': modifyActionProviders,
     'addErrorLog':addErrorLog,
     'addSiteActions':addSiteActions,
+    'setPortalDefaultPermissions':setPortalDefaultPermissions,
     }
 
 class GeneralSetup(SetupWidget):

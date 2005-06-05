@@ -398,11 +398,16 @@ class CatalogTool(PloneBaseTool, BaseTool):
             limit the results to what the user is allowed to see.
 
             This version uses the 'effectiveRange' DateRangeIndex.
+
+            It also accepts a keyword argument show_inactive to disable
+            effectiveRange checking entirely even for those withot portal wide
+            AccessInactivePortalContent permission.
         """
+        show_inactive = kw.get('show_inactive', False)
         user = _getAuthenticatedUser(self)
         kw['allowedRolesAndUsers'] = self._listAllowedRolesAndUsers(user)
 
-        if not _checkPermission(AccessInactivePortalContent, self):
+        if not show_inactive and not _checkPermission(AccessInactivePortalContent, self):
             kw['effectiveRange'] = DateTime()
             if kw.has_key('effective'):
                 del kw['effective']

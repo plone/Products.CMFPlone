@@ -4,6 +4,14 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (Unreleased)
 
+    - Fixed http://members.plone.org/collector/4137 by introducing a keyword
+      argument 'show_inactive'to CatalogTool.searchResults and queryCatalog
+      which disables expiry filtering.  Also granted the 'Access inactive
+      portal contents' permission to Owner in migration, and made
+      getFolderContents to pass the 'show_inactive' parameter when the current
+      user has that permission on the relevant folder.
+      [alecm]
+
     - Introduced a Zope 2.8-style transaction module. Plone code should now use
       'from Products.CMFPlone import transaction' which will work in Zope 2.7
       and Zope 2.8.

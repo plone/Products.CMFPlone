@@ -688,7 +688,7 @@ class TestCatalogUnindexing(PloneTestCase.PloneTestCase):
         self.failIf(self.catalog(id='doc'))
 
 
-class TestCatalogOptimizer(PloneTestCase.PloneTestCase):
+class TestCatalogExpirationFiltering(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
         self.catalog = self.portal.portal_catalog
@@ -732,6 +732,13 @@ class TestCatalogOptimizer(PloneTestCase.PloneTestCase):
         self.nofx()
         res = self.catalog()
         self.assertResults(res, ['Members', 'events', 'events_topic', 'news', 'news_topic', default_user])
+
+    def testCallExpiredWithExpiredDisabled(self):
+        self.folder.doc.setExpirationDate(DateTime(2000, 12, 31))
+        self.folder.doc.reindexObject()
+        self.nofx()
+        res = self.catalog(show_inactive=True)
+        self.assertResults(res, ['Members', 'events', 'events_topic', 'news', 'news_topic', default_user, 'doc'])
 
     def testSearchResultsExpiredWithPermission(self):
         self.folder.doc.setExpirationDate(DateTime(2000, 12, 31))
@@ -790,7 +797,7 @@ def test_suite():
     suite.addTest(makeSuite(TestCatalogOrdering))
     suite.addTest(makeSuite(TestCatalogBugs))
     suite.addTest(makeSuite(TestCatalogUnindexing))
-    suite.addTest(makeSuite(TestCatalogOptimizer))
+    suite.addTest(makeSuite(TestCatalogExpirationFiltering))
     suite.addTest(makeSuite(TestExtensibleIndexableObjectWrapper))
     suite.addTest(makeSuite(TestCatalogSorting))
     return suite

@@ -9,6 +9,7 @@ if __name__ == '__main__':
 from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFCore.Expression import Expression
+from Products.CMFCore import CMFCorePermissions
 
 from Products.CMFPlone.migrations.v2.two04_two05 import replaceFolderPropertiesWithEdit
 from Products.CMFPlone.migrations.v2.two04_two05 import interchangeEditAndSharing
@@ -61,6 +62,7 @@ from Products.CMFPlone.migrations.v2_1.betas import fixObjectPasteActionForDefau
 from Products.CMFPlone.migrations.v2_1.betas import fixBatchActionToggle
 from Products.CMFPlone.migrations.v2_1.betas import fixMyFolderAction
 from Products.CMFPlone.migrations.v2_1.betas import reorderStylesheets
+from Products.CMFPlone.migrations.v2_1.betas import allowOwnerToAccessInactiveContent
 
 import types
 
@@ -1307,7 +1309,68 @@ class TestMigrations_v2_1(MigrationTest):
         stylesheet_ids = [ item.get('id') for item in stylesheets ]
         self.assertEquals(stylesheet_ids[0], 'ploneCustom.css')
         self.assertEquals(stylesheet_ids[1], 'ploneRTL.css')
-        self.assertEquals(stylesheet_ids[-1], 'ploneMember.css') 
+        self.assertEquals(stylesheet_ids[-1], 'ploneMember.css')
+
+    def testAllowOwnerToAccessInactiveContent(self):
+        # Should grant the "Access inactive ..." permission to owner
+        self.portal.manage_permission(
+                            CMFCorePermissions.AccessInactivePortalContent,
+                            (), acquire=1)
+        permission_on_role = [p for p in self.portal.permissionsOfRole('Owner')
+            if p['name'] == CMFCorePermissions.AccessInactivePortalContent][0]
+        self.failIf(permission_on_role['selected'])
+        allowOwnerToAccessInactiveContent(self.portal,[])
+        permission_on_role = [p for p in self.portal.permissionsOfRole('Owner')
+            if p['name'] == CMFCorePermissions.AccessInactivePortalContent][0]
+        self.failUnless(permission_on_role['selected'])
+
+    def testAllowOwnerToAccessInactiveContentPreservesExisting(self):
+        # Should not remove customized permissions
+        self.portal.manage_permission(
+                            CMFCorePermissions.AccessInactivePortalContent,
+                            ('Member',), acquire=1)
+        allowOwnerToAccessInactiveContent(self.portal,[])
+        # Make sure Owner was added
+        permission_on_role = [p for p in self.portal.permissionsOfRole('Owner')
+            if p['name'] == CMFCorePermissions.AccessInactivePortalContent][0]
+        self.failUnless(permission_on_role['selected'])
+        # Make sure original permission was preserved
+        permission_on_role = [p for p in self.portal.permissionsOfRole('Member')
+            if p['name'] == CMFCorePermissions.AccessInactivePortalContent][0]
+        self.failUnless(permission_on_role['selected'])
+
+    def testAllowOwnerToAccessInactiveContentPreservesAcquire(self):
+        # Should preserve custom acquire settings
+        self.portal.manage_permission(
+                            CMFCorePermissions.AccessInactivePortalContent,
+                            ('Manager'), acquire=0)
+        allowOwnerToAccessInactiveContent(self.portal,[])
+        cur_perms = self.portal.permission_settings(
+                            CMFCorePermissions.AccessInactivePortalContent)[0]
+        self.failIf(cur_perms['acquire'])
+        # Try again with explicitly enabled acquire
+        self.portal.manage_permission(
+                            CMFCorePermissions.AccessInactivePortalContent,
+                            ('Manager'), acquire=1)
+        allowOwnerToAccessInactiveContent(self.portal,[])
+        cur_perms = self.portal.permission_settings(
+                            CMFCorePermissions.AccessInactivePortalContent)[0]
+        self.failUnless(cur_perms['acquire'])
+
+    def testAllowOwnerToAccessInactiveContentTwice(self):
+        # Should not fail if performed twice
+        self.portal.manage_permission(
+                            CMFCorePermissions.AccessInactivePortalContent,
+                            ('Manager'), acquire=0)
+        allowOwnerToAccessInactiveContent(self.portal,[])
+        cur_perms1 = self.portal.permission_settings(
+                            CMFCorePermissions.AccessInactivePortalContent)[0]
+        allowOwnerToAccessInactiveContent(self.portal,[])
+        cur_perms2 = self.portal.permission_settings(
+                            CMFCorePermissions.AccessInactivePortalContent)[0]
+        self.assertEqual(cur_perms1,cur_perms2)
+
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite
