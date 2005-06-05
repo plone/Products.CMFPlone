@@ -55,10 +55,10 @@
             </tr>
         </thead>
         
-        <tal:comment replace="nothing">
+        <tal:comment replace="nothing"><!--
         Sorry for the obtuse formatting below (the stray end-of-tag markers), but until
         tal:block doesn't render an entire line of blank space when used, this is the only way.
-        </tal:comment>
+        --></tal:comment>
         <tbody>
             <tr tal:repeat="week weeks"
             ><tal:block repeat="day week"
