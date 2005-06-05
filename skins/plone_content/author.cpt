@@ -63,7 +63,7 @@
         <a href="#" tal:attributes="href authorinfo/home_page">Author's home page in this site&hellip;</a>
         </p>
 
-        <p tal:condition="python: not mtool.getHomeFolder() and authorinfo/home_page">
+        <p tal:condition="python: not mtool.getHomeFolder() and authorinfo['home_page']">
         <a href="#" tal:attributes="href authorinfo/home_page">Author's external home page&hellip;</a>
         </p>
 
