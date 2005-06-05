@@ -452,7 +452,9 @@ def addDefaultGroups(portal, out):
          'roles': ('Reviewer',), },
         )
     groupsTool = getToolByName(portal, 'portal_groups', None)
-    if groupsTool is not None:
+    acl_users = getToolByName(portal, 'acl_users', None)
+    has_gruf_userfolder = hasattr(acl_users, 'getGroupByName')
+    if groupsTool is not None and has_gruf_userfolder:
         # Don't create workspaces
         flag = groupsTool.groupWorkspacesCreationFlag
         groupsTool.groupWorkspacesCreationFlag = False

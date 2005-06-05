@@ -31,7 +31,7 @@ class TestQueryCatalog(PloneTestCase.PloneTestCase):
     would be searched.
     """
 
-    def dummyCatalog(self, query_dict):
+    def dummyCatalog(self,query_dict,**kw):
         return query_dict
 
     def stripTypes(self, query_dict):
@@ -118,7 +118,7 @@ class TestQueryCatalogQuoting(PloneTestCase.PloneTestCase):
     would be searched.
     """
 
-    def dummyCatalog(self, query_dict):
+    def dummyCatalog(self, query_dict, **kw):
         return query_dict
         
     def stripTypes(self, query_dict):
