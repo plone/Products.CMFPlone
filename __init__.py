@@ -208,6 +208,8 @@ def initialize(context):
 
 # Zope 2.8-style transaction module
 try:
-    import transaction
+    import Zope2
 except ImportError:
     import transaction_ as transaction
+else:
+    import transaction
