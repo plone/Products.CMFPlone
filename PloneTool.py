@@ -19,7 +19,8 @@ from Products.CMFCore.interfaces.Discussions import Discussable
 from Products.CMFCore.WorkflowCore import WorkflowException
 from Products.CMFDefault.DublinCore import DefaultDublinCoreImpl
 from Products.CMFPlone.interfaces.Translatable import ITranslatable
-from Products.CMFPlone import ToolNames, transaction_note
+from Products.CMFPlone import ToolNames
+from Products.CMFPlone import transaction_note
 from Products.CMFPlone.interfaces.BrowserDefault import IBrowserDefault
 
 from OFS.SimpleItem import SimpleItem
