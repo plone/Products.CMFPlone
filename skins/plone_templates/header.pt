@@ -12,9 +12,13 @@
 
     <title tal:define="portal_title portal_properties/title;
                        page_title here/title_or_id">
-        <tal:page_title tal:replace="page_title" />
+        <tal:pagetitle replace="page_title">
+            Inserts page title
+        </tal:pagetitle>
         &mdash;
-        <tal:portal_title tal:replace="portal_title" />
+        <tal:portaltitle replace="portal_title">
+            Inserts portal title
+        </tal:portaltitle>
     </title>
 
     <metal:baseslot define-slot="base" />
