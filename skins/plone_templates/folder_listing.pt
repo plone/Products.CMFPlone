@@ -62,9 +62,10 @@
 
                     <dt metal:define-macro="listitem">
 
-                        <span tal:attributes="class item_type_class">
+                        <span tal:attributes="class item_type_class"
+                              tal:condition="python:item_type != 'Link'">
                         <a href="#" 
-                           tal:attributes="href python:test(item_type in use_view_action and item_type != 'Link', item_url+'/view', item_url+'/');
+                           tal:attributes="href python:test(item_type in use_view_action, item_url+'/view', item_url+'/');
                                            class string:$item_wf_state_class visualIconPadding"
                            tal:content="item_title_or_id">
                             Item Title
