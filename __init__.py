@@ -90,12 +90,9 @@ def initialize(context):
     ModuleSecurityInfo('Products.CMFDefault.DiscussionTool').declarePublic('DiscussionNotAllowed')
 
     # Backward compatibility only, please import from utils directly
-    from Products.CMFPlone.utils import transaction_note, base_hasattr, \
-                                        safe_hasattr, safe_callable
+    from Products.CMFPlone.utils import transaction_note, base_hasattr
     this_module.transaction_note = transaction_note
     this_module.base_hasattr = base_hasattr
-    this_module.safe_hasattr = safe_hasattr
-    this_module.safe_callable = safe_callable
 
     # Setup migrations
     import migrations
