@@ -167,7 +167,7 @@ Installing Plone manually, step by step instructions.
    CMFPlone
    CMFQuickInstallerTool
    CMFTopic
-   CSSRegistry
+   ResourceRegistries
    Epoz
    ExternalEditor
    ExtendedPathIndex
