@@ -73,7 +73,7 @@
     &mdash; expired
     </span>
 
-    <span tal:define="lock string:$portal_url/lock_icon.gif"
+    <span tal:define="locked portal_object/lock_icon.gif"
           tal:condition="isLocked">
         <img src=""
              tal:replace="structure python:locked.tag(title='This item is locked')"
