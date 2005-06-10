@@ -12,7 +12,10 @@ from Products.CMFPlone import ToolNames
 from AccessControl import ClassSecurityInfo
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFCore.utils import getToolByName
-from i18nl10n import utranslate, ulocalized_time
+from i18nl10n import utranslate, ulocalized_time, \
+                     monthname_msgid, monthname_msgid_abbr, \
+                     weekdayname_msgid, weekdayname_msgid_abbr, \
+                     weekdayname_msgid_short
 
 class TranslationServiceTool(PloneBaseTool, UniqueObject, SimpleItem):
     """ Utility methods to access the translation machinery """
@@ -64,10 +67,31 @@ class TranslationServiceTool(PloneBaseTool, UniqueObject, SimpleItem):
         
     security.declarePublic('ulocalized_time')
     def ulocalized_time(self, time, long_format = None, context = None, domain='plone'):
-  
         # get some context if none is passed
         if context is None: context = self
-
         return ulocalized_time(time, long_format, context, domain)
+
+    security.declarePublic('day_msgid')
+    def day_msgid(self, number, format=''):
+        # return the msgid which can be passed to translation service
+        # for l10n of weekday names
+        # format is either '', 'a', 's'
+        if format == 's':
+            # short format
+            method = weekdayname_msgid_short
+        elif format == 'a':
+            # abbreviation
+            method = weekdayname_msgid_abbr
+        else:
+            # long format
+            method = weekdayname_msgid
+        return method(number)
+
+    security.declarePublic('month_msgid')
+    def month_msgid(self, number, format=''):
+        # return the msgid which can be passed to translation service
+        # for l10n of month names
+        # format is either '' or 'a' (long or abbreviation)
+        return 'a' == format and monthname_msgid_abbr(number) or monthname_msgid(number)
 
 InitializeClass(TranslationServiceTool)

@@ -79,10 +79,10 @@ def ulocalized_time(time, long_format = None, context = None, domain='plone'):
     # add weekday name, abbr. weekday name, month name, abbr month name
     weekday = int(time.strftime('%w')) # weekday, sunday = 0
     monthday = int(time.strftime('%m')) # month, january = 1
-    mapping['A']=weekdayname_english(weekday)
-    mapping['a']=weekdayname_english(weekday, 'a')
-    mapping['B']=monthname_english(weekday)
-    mapping['b']=monthname_english(weekday, 'a')
+    mapping['A']=weekdayname_msgid(weekday)
+    mapping['a']=weekdayname_msgid_abbr(weekday)
+    mapping['B']=monthname_msgid(weekday)
+    mapping['b']=monthname_msgid_abbr(weekday)
     
     # feed translateable elements to translation service
     for key in ('A', 'a', 'B', 'b',):
@@ -113,7 +113,9 @@ def _numbertoenglishname(number, format='', attr='_days'):
     # starting with Sunday == 0
     # and January = 1
     # format is either '', 'a' or 'p')
-    # see DateTime.py for details of this formats
+    #   ''  means full name (January, February, ...)
+    #   'a' means abbreviated (Jan, Feb, ..)
+    #   'p' means abbreviated with . (dot) at end (Jan., Feb., ...)
     
     number = int(number)
     if format: attr = '%s_%s' % (attr, format)
@@ -131,3 +133,32 @@ def weekdayname_english(number, format=''):
     # returns the english name of month with number
     return _numbertoenglishname(number, format=format, attr='_days')
 
+def monthname_msgid(number):
+    # returns the msgid for monthname
+    # use to translate to full monthname (January, February, ...)
+    # eg. month_jan, month_feb, ...
+    return "month_%s" % monthname_english(number, format='a').lower()
+    
+def monthname_msgid_abbr(number):
+    # returns the msgid for the abbreviated monthname
+    # use to translate to abbreviated format (Jan, Feb, ...)
+    # eg. month_jan_abbr, month_feb_abbr, ...
+    return "month_%s_abbr" % monthname_english(number, format='a').lower()
+    
+def weekdayname_msgid(number):
+    # returns the msgid for the weekdayname
+    # use to translate to full weekdayname (Monday, Tuesday, ...)
+    # eg. weekday_mon, weekday_tue, ...
+    return "weekday_%s" % weekdayname_english(number, format='a').lower()
+    
+def weekdayname_msgid_abbr(number):
+    # returns the msgid for abbreviated weekdayname
+    # use to translate to abbreviated format (Mon, Tue, ...)
+    # eg. weekday_mon_abbr, weekday_tue_abbr, ...
+    return "weekday_%s_abbr" % weekdayname_english(number, format='a').lower()
+    
+def weekdayname_msgid_short(number):
+    # return the msgid for short weekdayname
+    # use to translate to 2 char format (Mo, Tu, ...)
+    # eg. weekday_mon_short, weekday_tue_short, ...
+    return "weekday_%s_short" % weekdayname_english(number, format='a').lower()
