@@ -3,6 +3,11 @@ Changelog for Plone
    (name of developer listed in brackets)
 
 Plone 2.1 - Plaid - (Unreleased)
+    - Removed review_state='published' from the query for author page and
+      navigationLocalRelated. Catalog deals with permissions already.
+      Issue 2304.
+      [ender]
+
     - Fixed http://plone.org/collector/3714. Use ACTUAL_URL to skip to content.
       [ender, neaj]
 
