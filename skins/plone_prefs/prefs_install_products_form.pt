@@ -8,7 +8,7 @@
 <body>
 
 
-<div metal:fill-slot="prefs_configlet_main" i18n:domain="plone" tal:define="QI python:here.portal_url.getPortalObject().portal_quickinstaller">
+<div metal:fill-slot="prefs_configlet_main" i18n:domain="plone" tal:define="QI python:context.portal_url.getPortalObject().portal_quickinstaller">
     
     <h1 i18n:translate="heading_addremove_products">Add/Remove Products</h1>
 
@@ -172,6 +172,27 @@
                    />
         </fieldset>
     </form>
+
+    <div 
+        tal:define="broken QI/getBrokenInstalls" 
+        tal:condition="broken"
+        style="float: left">
+    <h2>Broken products</h2>
+    <p>Some products were found to have errors when compiling the install file.</p>
+    <ul>
+        <li tal:repeat="product broken">
+           <span tal:replace="product/productname">
+                        Product Name
+           </span>
+           <dl>
+                <dt>Type</dt>
+                <dd tal:content="product/type" />
+                <dt>Value</dt>
+                <dd tal:content="product/value" />
+            </dl>
+        </li>
+    </ul>
+    </div>
 </div>
 
 </body>
