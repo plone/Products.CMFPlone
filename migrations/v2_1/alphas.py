@@ -890,6 +890,8 @@ def addNewsTopic(portal, out):
         topic = news.news_topic
         type_crit = topic.addCriterion('Type','ATPortalTypeCriterion')
         type_crit.setValue('News Item')
+        state_crit = topic.addCriterion('review_state','ATSimpleStringCriterion')
+        state_crit.setValue('published')
         sort_crit = topic.addCriterion('created','ATSortCriterion')
         out.append('Added Topic for default news folder view.')
     else:
@@ -904,6 +906,8 @@ def addEventsTopic(portal, out):
         topic = events.events_topic
         type_crit = topic.addCriterion('Type','ATPortalTypeCriterion')
         type_crit.setValue('Event')
+        state_crit = topic.addCriterion('review_state','ATSimpleStringCriterion')
+        state_crit.setValue('published')
         sort_crit = topic.addCriterion('start','ATSortCriterion')
         out.append('Added Topic for default events folder view.')
     else:
