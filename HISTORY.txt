@@ -3,6 +3,9 @@ Changelog for Plone
    (name of developer listed in brackets)
 
 Plone 2.1 - Plaid - (Unreleased)
+    - Fixed http://members.plone.org/collector/4114 by adding new criteria
+      to the news and events topics.
+      [alecm]
 
     - Fixed http://members.plone.org/collector/4149 - incorrect tal:define for
       locked items in the byline. Thanks to Raphael Ritz for the fix

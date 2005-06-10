@@ -273,6 +273,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         topic = getattr(news.aq_base, 'news_topic')
         self.assertEqual(topic._getPortalTypeName(), 'Topic')
         self.assertEqual(topic.buildQuery()['Type'], ('News Item',))
+        self.assertEqual(topic.buildQuery()['review_state'], 'published')
 
     def testEventsFolder(self):
         # The portal should contain events folder
@@ -302,6 +303,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         topic = getattr(events.aq_base, 'events_topic')
         self.assertEqual(topic._getPortalTypeName(), 'Topic')
         self.assertEqual(topic.buildQuery()['Type'], ('Event',))
+        self.assertEqual(topic.buildQuery()['review_state'], 'published')
 
     def testObjectButtonActions(self):
         installed = [(a.getId(), a.getCategory()) for a in self.actions.listActions()]

@@ -63,6 +63,8 @@ from Products.CMFPlone.migrations.v2_1.betas import fixBatchActionToggle
 from Products.CMFPlone.migrations.v2_1.betas import fixMyFolderAction
 from Products.CMFPlone.migrations.v2_1.betas import reorderStylesheets
 from Products.CMFPlone.migrations.v2_1.betas import allowOwnerToAccessInactiveContent
+from Products.CMFPlone.migrations.v2_1.betas import restrictNewsTopicToPublished
+from Products.CMFPlone.migrations.v2_1.betas import restrictEventsTopicToPublished
 
 import types
 
@@ -1369,6 +1371,52 @@ class TestMigrations_v2_1(MigrationTest):
         cur_perms2 = self.portal.permission_settings(
                             CMFCorePermissions.AccessInactivePortalContent)[0]
         self.assertEqual(cur_perms1,cur_perms2)
+
+    def testRestrictNewsTopicToPublished(self):
+        #Should add a new 'published' criterion to the News topic
+        topic = self.portal.news.news_topic
+        topic.deleteCriterion('crit__review_state_ATSimpleStringCriterion')
+        self.assertRaises(AttributeError, topic.getCriterion,
+                            'crit__review_state_ATSimpleStringCriterion')
+        restrictNewsTopicToPublished(self.portal, [])
+        self.failUnless(topic.getCriterion('crit__review_state_ATSimpleStringCriterion'))
+
+    def testRestrictNewsTopicToPublishedTwice(self):
+        #Should not fail if done twice
+        topic = self.portal.news.news_topic
+        topic.deleteCriterion('crit__review_state_ATSimpleStringCriterion')
+        restrictNewsTopicToPublished(self.portal, [])
+        restrictNewsTopicToPublished(self.portal, [])
+        self.failUnless(topic.getCriterion('crit__review_state_ATSimpleStringCriterion'))
+
+    def testRestrictNewsTopicToPublishedNoTopic(self):
+        #Should not do anything unless ATCT is installed
+        news = self.portal.news
+        news._delObject('news_topic')
+        restrictNewsTopicToPublished(self.portal, [])
+
+    def testRestrictEventsTopicToPublished(self):
+        #Should add a new 'published' criterion to the News topic
+        topic = self.portal.events.events_topic
+        topic.deleteCriterion('crit__review_state_ATSimpleStringCriterion')
+        self.assertRaises(AttributeError, topic.getCriterion,
+                            'crit__review_state_ATSimpleStringCriterion')
+        restrictEventsTopicToPublished(self.portal, [])
+        self.failUnless(topic.getCriterion('crit__review_state_ATSimpleStringCriterion'))
+
+    def testRestrictEventsTopicToPublishedTwice(self):
+        #Should not fail if done twice
+        topic = self.portal.events.events_topic
+        topic.deleteCriterion('crit__review_state_ATSimpleStringCriterion')
+        restrictEventsTopicToPublished(self.portal, [])
+        restrictEventsTopicToPublished(self.portal, [])
+        self.failUnless(topic.getCriterion('crit__review_state_ATSimpleStringCriterion'))
+
+    def testRestrictEventsTopicToPublishedNoTopic(self):
+        #Should not do anything unless ATCT is installed
+        news = self.portal.events
+        news._delObject('events_topic')
+        restrictEventsTopicToPublished(self.portal, [])
 
 
 

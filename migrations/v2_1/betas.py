@@ -22,6 +22,10 @@ def alpha2_beta1(portal):
 
     # Grant Access inactive portal content to Owner
     allowOwnerToAccessInactiveContent(portal, out)
+
+    # Add criteria to News and Events topics to restrict to published
+    restrictNewsTopicToPublished(portal, out)
+    restrictEventsTopicToPublished(portal, out)
     
     return out
 
@@ -166,3 +170,35 @@ def allowOwnerToAccessInactiveContent(portal, out):
             portal.manage_permission(permission, tuple(cur_allowed),
                                                         acquire=acquire)
             out.append('Cranted "Access inactive portal content" permission to Owner role')
+
+
+def restrictNewsTopicToPublished(portal, out):
+    news = getattr(portal,'news', None)
+    topic = getattr(news,'news_topic', None)
+    if topic is not None:
+        crit = getattr(topic, 'crit__review_state_ATSimpleStringCriterion', None)
+        if crit is None:
+            state_crit = topic.addCriterion('review_state',
+                                                 'ATSimpleStringCriterion')
+            state_crit.setValue('published')
+            out.append('Added published criterion to news topic.')
+        else:
+            out.append('News topic already restricted to published.')
+    else:
+        out.append('News topic view not in place!')
+
+
+def restrictEventsTopicToPublished(portal, out):
+    events = getattr(portal,'events', None)
+    topic = getattr(events,'events_topic', None)
+    if topic is not None:
+        crit = getattr(topic, 'crit__review_state_ATSimpleStringCriterion', None)
+        if crit is None:
+            state_crit = topic.addCriterion('review_state',
+                                                 'ATSimpleStringCriterion')
+            state_crit.setValue('published')
+            out.append('Added published criterion to events topic.')
+        else:
+            out.append('Events topic already restricted to published.')
+    else:
+        out.append('Events topic view not in place!')
