@@ -242,7 +242,9 @@ class TestPUTObjects(PloneTestCase.FunctionalTestCase):
 
         self.assertEqual(response.getStatus(), 201)
         self.failUnless('test.ico' in self.folder.objectIds())
-        self.assertEqual(self.folder['test.ico'].portal_type, 'Image')
+        self.assertEqual(
+            self.folder['test.ico'].portal_type, 'Image', 
+            'If you are on a Mac and this fails, please see: http://plone.org/documentation/error/unittest to fix.')
         self.assertEqual(str(self.folder['test.ico'].getImage().data), dummy.GIF)
 
     def testPUTIndexHtmlImage(self):
