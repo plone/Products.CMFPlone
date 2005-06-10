@@ -3,6 +3,8 @@ Changelog for Plone
    (name of developer listed in brackets)
 
 Plone 2.1 - Plaid - (Unreleased)
+    - Fixed http://plone.org/collector/3714. Use ACTUAL_URL to skip to content.
+      [ender, neaj]
 
     - Fixed http://members.plone.org/collector/4137 by introducing a keyword
       argument 'show_inactive'to CatalogTool.searchResults and queryCatalog
