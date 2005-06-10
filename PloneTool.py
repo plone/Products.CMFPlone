@@ -1139,6 +1139,11 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         >>> normalizeString(u"\uc774\ubbf8\uc9f1 Korean")
         'c774bbf8c9f1-korean'
         """
+        # Make sure we are dealing with a stringish type
+        if not isinstance(text, basestring):
+            # This most surely ends up in something the user does not expect
+            # to see. But at least it does not break.
+            text = repr(text)
 
         # Make sure we are dealing with a unicode string
         if not isinstance(text, unicode):
