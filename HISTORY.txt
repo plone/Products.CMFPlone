@@ -3,6 +3,13 @@ Changelog for Plone
    (name of developer listed in brackets)
 
 Plone 2.1 - Plaid - (Unreleased)
+
+    - Fixed http://members.plone.org/collector/3256
+      Plone Config -> Add/Remove Products:
+      Added "product filesystem version" in the message displayed for
+      products that need updating.
+      [briang]
+
     - Fixed http://members.plone.org/collector/4164 the getIcon and
       getTypeInfo calls were no longer needed.
       [alecm]
