@@ -128,7 +128,7 @@
                 <label for="title" i18n:translate="label_subject">Subject</label>
 
         <span class="fieldRequired" title="Required"
-              i18n:attributes="title"
+              i18n:attributes="title title_required;"
               i18n:translate="label_required">(Required)</span>
 
             <div class="formHelp" i18n:translate="help_subject" />
@@ -152,7 +152,7 @@
                 <label for="text" i18n:translate="label_body_text">Comment</label>
 
         <span class="fieldRequired" title="Required"
-              i18n:attributes="title"
+              i18n:attributes="title title_required;"
               i18n:translate="label_required">(Required)</span>
 
             <div class="formHelp" i18n:translate="help_body_text" />

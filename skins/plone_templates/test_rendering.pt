@@ -191,7 +191,7 @@ Table of class <code>vertical listing</code>
         <div class="field">
             <label>Text field</label>
             <span class="fieldRequired" title="Required"
-                  i18n:attributes="title"
+                  i18n:attributes="title title_required;"
                   i18n:translate="label_required">(Required)</span>
             <div class="formHelp">
                 This is the help for this form field. And <a href="#">links are also possible</a>.
@@ -201,7 +201,7 @@ Table of class <code>vertical listing</code>
         <div class="field error">
             <label>Text field with error</label>
             <span class="fieldRequired" title="Required"
-                  i18n:attributes="title"
+                  i18n:attributes="title title_required;"
                   i18n:translate="label_required">(Required)</span>
             <div class="formHelp">
                 This field is just here to demonstrate an error message.
@@ -212,7 +212,7 @@ Table of class <code>vertical listing</code>
         <div class="field">
             <label>Checkbox</label>
             <span class="fieldRequired" title="Required"
-                  i18n:attributes="title"
+                  i18n:attributes="title title_required;"
                   i18n:translate="label_required">(Required)</span>
             <div class="formHelp">
                 This is a checkbox field.
@@ -222,7 +222,7 @@ Table of class <code>vertical listing</code>
         <div class="field error">
             <label>Checkbox with error</label>
             <span class="fieldRequired" title="Required"
-                  i18n:attributes="title"
+                  i18n:attributes="title title_required;"
                   i18n:translate="label_required">(Required)</span>
             <div class="formHelp">
                 This checkbox field is just here to demonstrate an error message.
@@ -233,7 +233,7 @@ Table of class <code>vertical listing</code>
         <div class="field">
             <label>Checkbox without border</label>
             <span class="fieldRequired" title="Required"
-                  i18n:attributes="title"
+                  i18n:attributes="title title_required;"
                   i18n:translate="label_required">(Required)</span>
             <div class="formHelp">
                 This is a checkbox field.
@@ -244,7 +244,7 @@ Table of class <code>vertical listing</code>
         <div class="field error">
             <label>Checkbox without border with error</label>
             <span class="fieldRequired" title="Required"
-                  i18n:attributes="title"
+                  i18n:attributes="title title_required;"
                   i18n:translate="label_required">(Required)</span>
             <div class="formHelp">
                 This checkbox field is just here to demonstrate an error message.
@@ -256,7 +256,7 @@ Table of class <code>vertical listing</code>
         <div class="field">
             <label>Radio</label>
             <span class="fieldRequired" title="Required"
-                  i18n:attributes="title"
+                  i18n:attributes="title title_required;"
                   i18n:translate="label_required">(Required)</span>
             <div class="formHelp">
                 This is a checkbox field.
@@ -280,7 +280,7 @@ Table of class <code>vertical listing</code>
         <div class="field error">
             <label>Radio with error</label>
             <span class="fieldRequired" title="Required"
-                  i18n:attributes="title"
+                  i18n:attributes="title title_required;"
                   i18n:translate="label_required">(Required)</span>
             <div class="formHelp">
                 This checkbox field is just here to demonstrate an error message.
