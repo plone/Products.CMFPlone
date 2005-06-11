@@ -177,8 +177,8 @@
         tal:define="broken QI/getBrokenInstalls" 
         tal:condition="broken"
         style="float: left">
-    <h2>Broken products</h2>
-    <p>Some products were found to have errors when compiling the install file.</p>
+    <h2 i18n:translate="heading_broken_products">Broken products</h2>
+    <p i18n:translate="description_broken_products">Some products were found to have errors when compiling the install file.</p>
     <ul>
         <li tal:repeat="product broken">
            <span tal:replace="product/productname">
