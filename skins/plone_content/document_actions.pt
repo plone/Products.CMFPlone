@@ -8,7 +8,7 @@
                  getIconFor nocall:putils/getIconFor"
      tal:condition="document_actions">
 
-    <h5 class="hiddenStructure">Document Actions</h5>
+    <h5 class="hiddenStructure" i18n:translate="heading_document_actions">Document Actions</h5>
 
     <ul>
     <tal:actions repeat="daction document_actions">

@@ -56,7 +56,9 @@
 		<div class="field">
                <label for="addname" i18n:translate="label_name">Short Name</label>
 
-               <span class="fieldRequired" title="Required">(Required)</span>
+               <span class="fieldRequired" title="Required"
+                     i18n:attributes="title title_required"
+                     i18n:translate="label_required">(Required)</span>
 
                 <div class="formHelp" i18n:translate="help_groupname">
                 A unique identifier for the group. Can not be changed after creation.

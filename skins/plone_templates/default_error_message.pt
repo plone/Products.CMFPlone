@@ -39,7 +39,7 @@
             Thank you.
             </p>
 
-            <code>
+            <code i18n:translate="text_error_not_found">
             404 Not Found
             </code>
 

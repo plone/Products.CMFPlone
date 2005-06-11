@@ -185,9 +185,9 @@
                         Product Name
            </span>
            <dl>
-                <dt>Type</dt>
+                <dt i18n:translate="label_error_type">Type</dt>
                 <dd tal:content="product/type" />
-                <dt>Value</dt>
+                <dt i18n:translate="label_error_value">Value</dt>
                 <dd tal:content="product/value" />
             </dl>
         </li>

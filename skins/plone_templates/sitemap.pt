@@ -23,7 +23,7 @@
         class="navTreeLevel0"
         tal:define="data python:here.plone_utils.createSitemap(here)"
         tal:content="structure python:here.portlet_navtree_macro(children=data.get('children', []), level=1)">
-        <li>SUBTREE</li>
+        SUBTREE
     </ul>
 
 </metal:main>

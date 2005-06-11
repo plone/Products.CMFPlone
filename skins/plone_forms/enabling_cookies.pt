@@ -12,10 +12,10 @@
 <h1 i18n:translate="heading_enable_cookies">How to Enable Cookies</h1>
 
 <ul>
-  <li><a href="" tal:attributes="href string:${request/URL}#ie">Internet Explorer</a></li>
-  <li><a href="" tal:attributes="href string:${request/URL}#mozilla">Mozilla</a></li>
-  <li><a href="" tal:attributes="href string:${request/URL}#opera">Opera</a></li>
-  <li><a href="" tal:attributes="href string:${request/URL}#netscape">Netscape</a></li>
+  <li><a i18n:translate="heading_internet_explorer" href="" tal:attributes="href string:${request/URL}#ie">Internet Explorer</a></li>
+  <li><a i18n:translate="heading_mozilla" href="" tal:attributes="href string:${request/URL}#mozilla">Mozilla</a></li>
+  <li><a i18n:translate="heading_opera" href="" tal:attributes="href string:${request/URL}#opera">Opera</a></li>
+  <li><a i18n:translate="heading_netscape_navigator" href="" tal:attributes="href string:${request/URL}#netscape">Netscape Navigator</a></li>
 </ul>
 
 <h3 id="ie" i18n:translate="heading_internet_explorer">Internet Explorer</h3>
