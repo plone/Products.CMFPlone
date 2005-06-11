@@ -175,13 +175,11 @@
                                    item_title_or_id     python: (same_type(item.getId,'') and (item.Title or putils.utf8_portal('\xe2\x80\xa6', 'ignore'))) or item.title_or_id();
                                    item_description     item/Description;
                                    item_type            item/portal_type;
-                                   item_typeinfo        python: here.portal_types.getTypeInfo(item_type);
                                    item_size            item/getObjSize;
                                    item_modified        item/ModificationDate;
                                    item_type_class      python:'contenttype-' + putils.normalizeString(item_type);
                                    item_wf_state        item/review_state|python: getInfoFor(item, 'review_state', '');
                                    item_wf_state_class  python:here.getStateClassName(item_wf_state);
-                                   item_icon            python:portal_url+'/'+ item_typeinfo.getIcon();
                                    hasGetUrl            python:hasattr(item.aq_explicit, 'getURL');
                                    item_rel_url         python:hasGetUrl and item.getURL(relative=1) or getRelativeContentURL(item);
                                    browserDefaultResult here/browserDefault;

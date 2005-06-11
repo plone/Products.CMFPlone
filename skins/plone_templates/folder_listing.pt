@@ -47,13 +47,11 @@
                                        item_description item/Description;
                                        item_type item/portal_type;
                                        item_type_title item/Type;
-                                       item_typeinfo python: here.portal_types.getTypeInfo(item_type);
                                        item_modified item/ModificationDate;
                                        item_created item/CreationDate;
                                        item_type_class python: 'contenttype-' + putils.normalizeString(item_type);
                                        item_wf_state item/review_state;
                                        item_wf_state_class python:here.getStateClassName(item_wf_state);
-                                       item_icon python:portal_url+'/'+ item_typeinfo.getIcon();
                                        item_creators item/Creators|item/Creator;
                                        item_creators python:test(same_type(item_creators,[]) or same_type(item_creators,()), item_creators, [item_creators]);
                                        item_start item/start/ISO|item/StartDate|nothing;
