@@ -304,6 +304,10 @@ class TestCatalogSearching(PloneTestCase.PloneTestCase):
         self.workflow.doActionFor(self.folder.folder2, 'hide', comment='')
         self.workflow.doActionFor(self.folder.folder2.doc2, 'hide', comment='')
 
+        #used for testing AND/OR search functionality below
+        self.folder.invokeFactory('Document', id='aaa', text='aaa')
+        self.folder.invokeFactory('Document', id='bbb', text='bbb')
+
     def addUser2ToGroup(self):
         self.groups.groupWorkspacesCreationFlag = 0
         self.groups.addGroup(group2, None, [], [])
@@ -327,6 +331,19 @@ class TestCatalogSearching(PloneTestCase.PloneTestCase):
         # Document should not be found when user2 does a search
         self.login(user2)
         self.assertEqual(len(self.catalog(SearchableText='foo')), 0)
+
+    def testSearchReturnsDocumentUsing_DefaultAND(self):
+        # Documents should not be found when searching 'aaa bbb' (which should default to AND)
+        self.assertEqual(len(self.catalog(SearchableText='aaa+bbb')), 0)
+
+    def testSearchReturnsDocumentUsing_AND(self):
+        # Documents should not be found when owner does a search using AND
+        self.assertEqual(len(self.catalog(SearchableText='aaa AND bbb')), 0)
+
+    def testSearchReturnsDocumentUsing_OR(self):
+        # Two documents (aaa, bbb)  should be found when owner does a search using OR 
+        results = self.catalog(SearchableText='aaa OR bbb')
+        self.assertEqual(len(results), 2)
 
     def testSearchReturnsDocumentWhenPermissionIsTroughLocalRole(self):
         # After adding a group with access rights and containing user2,
