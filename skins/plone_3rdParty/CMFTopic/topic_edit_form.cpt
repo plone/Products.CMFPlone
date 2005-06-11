@@ -72,7 +72,7 @@
                 <label for="title" i18n:translate="label_title">Title</label>
                 
                 <span class="fieldRequired" title="Required"
-                      i18n:attributes="title"
+                      i18n:attributes="title title_required;"
                       i18n:translate="label_required">(Required)</span>
                     
                 <div tal:content="error">Validation error output</div>
