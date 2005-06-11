@@ -3,6 +3,10 @@ Changelog for Plone
    (name of developer listed in brackets)
 
 Plone 2.1 - Plaid - (Unreleased)
+    - Fixed http://members.plone.org/collector/4055 by returning an empty list
+      in getAddableTypesInMenu if the View permission is not available.
+      [alecm]
+
     - Fixed http://members.plone.org/collector/4114 by adding new criteria
       to the news and events topics.
       [alecm]
