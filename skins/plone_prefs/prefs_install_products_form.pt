@@ -147,8 +147,8 @@
                                tal:attributes="href string:${QI/absolute_url}/reinstallProducts?products=${pid}"> 
                                 <img tal:replace="structure here/error_icon.gif" 
                                 />&nbsp;<span i18n:translate="label_outdated_product_reinstall">
-                                        This product has been upgraded, click here to reinstall
-                                        </span>
+                                        This product has been upgraded, click here to reinstall</span>.
+                                <span>Filesystem version is <b tal:content="python:QI.getProductVersion(product['id'])" /></span>
                             </a>
                         </li>
                         
