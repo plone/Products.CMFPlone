@@ -28,12 +28,10 @@
 
         <div class="menuPosition">
             <ul class="actionMenu"
-                id="statusMenu"
-                onmouseover="menuMouseover(event)">  
+                id="statusMenu">
                 <tal:block repeat="transition transitions">
                 <li>
                     <a href="#"
-                       onMouseUp="if (activeButton != null) resetButton(activeButton);" 
                        i18n:translate=""
                        tal:content="transition/name"
                        i18n:attributes="title"
@@ -51,8 +49,7 @@
              <a href="content_status_history"
                 class="contentActionMenuHeader"
                 title="Change the state of this item"
-                onclick="return buttonClick(event, 'statusMenu');"
-                onmouseover="buttonMouseover(event, 'statusMenu');"
+                onclick="return activateMenu(event, 'statusMenu');"
                 i18n:attributes="title"
                 tal:attributes="href string:$here_url/content_status_history;">
     
@@ -87,8 +84,7 @@
                class="contentActionMenuHeader"
                href="folder_factories"
                title="Add new items inside this item"
-               onclick="return buttonClick(event, 'objectMenu');"
-               onmouseover="buttonMouseover(event, 'objectMenu');"
+               onclick="return activateMenu(event, 'objectMenu');"
                i18n:attributes="title"
                i18n:translate="label_add_new_item"
                tal:attributes="href string:${here_url}/folder_factories;">Add item</a>
@@ -97,18 +93,15 @@
                class="contentActionMenuHeader"
                href="folder_factories"
                title="Add new items in the same folder as this item"
-               onclick="return buttonClick(event, 'objectMenu');"
-               onmouseover="buttonMouseover(event, 'objectMenu');"
+               onclick="return activateMenu(event, 'objectMenu');"
                i18n:attributes="title"
                i18n:translate="label_add_new_item_in_folder"
                tal:attributes="href string:${parent_folder/absolute_url}/folder_factories;">Add to folder</a>
 
-            <ul class="actionMenu" id="objectMenu"
-                onmouseover="menuMouseover(event)">
+            <ul class="actionMenu" id="objectMenu">
                 <tal:types repeat="ctype menuTypes"> 
                     <li tal:define="Title ctype/Title; Id ctype/getId; Description ctype/Description">
                         <a href="#" 
-                           onMouseUp="if (activeButton != null) resetButton(activeButton);"
                            i18n:attributes="title"
                            tal:attributes="href string:${parent_folder/absolute_url}/createObject?type_name=${Id};
                                            title Description">
@@ -124,7 +117,6 @@
                 </tal:types>
                 <li style="text-align: right;" tal:condition="showMore">
                     <a href="#" class="folderAddMore" title="Show all available content types"
-                           onMouseUp="if (activeButton != null) resetButton(activeButton);"
                            i18n:attributes="title"
                            tal:attributes="href string:${parent_folder/absolute_url}/folder_factories;">
                           <tal:title i18n:translate="folder_add_more">
@@ -134,7 +126,6 @@
                 </li>
                 <li class="actionSeperator" tal:condition="showSettings">
                     <a href="#" class="folderAddSettings" title="Configure which content types can be added here"
-                           onMouseUp="if (activeButton != null) resetButton(activeButton);"
                            i18n:attributes="title"
                            tal:attributes="href string:${parent_folder/absolute_url}/folder_constraintypes_form;">
                           <tal:title i18n:translate="folder_add_settings">
@@ -197,15 +188,14 @@
                 <a href="#"
                    class="contentActionMenuHeader"
                    title="Choose default view"
-                   onclick="return buttonClick(event, 'templateMenu');"
-                   onmouseover="buttonMouseover(event, 'templateMenu');"
+                   onclick="return activateMenu(event, 'templateMenu');"
                    i18n:attributes="title"
-                   tal:condition="not:dimMenu">
+                   tal:condition="not:dimMenu"
+                   tal:attributes="href string:$here_url/select_default_view;">
                     <span i18n:translate="label_choose_template">Display</span>
                 </a>
 
-                <ul class="actionMenu" id="templateMenu" condition="not:dimMenu"
-                    onmouseover="menuMouseover(event)">
+                <ul class="actionMenu" id="templateMenu" condition="not:dimMenu">
                     
                     <!-- Parent Views menu -->
                     <tal:parentViews define="vocab parentVocab;
@@ -222,7 +212,6 @@
                               class="selected"
                               tal:content="display">Template id</span>
                         <a href="#"
-                           onMouseUp="if (activeButton != null) resetButton(activeButton);"
                            tal:condition="python:value!=selectedLayout"
                            tal:attributes="href string:${parent_folder/absolute_url}/selectViewTemplate?templateId=$value;
                                            title display"
@@ -236,7 +225,6 @@
                     <tal:block condition="canSelectDefaultFolderPage">
                         <li class="actionSeperator" tal:condition="python:selectedLayout != ''">
                             <a title="Select an item to be used as default view in this folder" href="#" class="selected"
-                               onMouseUp="if (activeButton != null) resetButton(activeButton);"
                                tal:attributes="href string:${parent_folder/absolute_url}/select_default_page;"
                                i18n:attributes="title">
                                  Choose item&hellip;
@@ -244,7 +232,6 @@
                         </li>
                         <li class="actionSeperator" tal:condition="python:selectedLayout == ''">
                             <a title="Change the item used as default view in this folder" href="#" class="selected"
-                               onMouseUp="if (activeButton != null) resetButton(activeButton);"
                                tal:attributes="href string:${parent_folder/absolute_url}/select_default_page;"
                                i18n:attributes="title">
                                  Change item&hellip;
@@ -274,7 +261,6 @@
                                     tal:content="display">Template id</span>
                         </span>
                         <a href="#"
-                           onMouseUp="if (activeButton != null) resetButton(activeButton);"
                            tal:condition="python:value!=selectedLayout"
                            tal:attributes="href string:${context/absolute_url}/selectViewTemplate?templateId=$value;
                                            title display"
@@ -289,7 +275,6 @@
                         <li class="actionSeperator"
                             tal:condition="python:selectedLayout != ''">
                             <a title="Select default page" href="#" class="selected"
-                               onMouseUp="if (activeButton != null) resetButton(activeButton);"
                                tal:attributes="href string:${parent_folder/absolute_url}/select_default_page;"
                                i18n:attributes="title">
                                  Select item&hellip;
@@ -298,7 +283,6 @@
                         <li class="actionSeperator"
                             tal:condition="python:selectedLayout == ''">
                             <a title="Change default page" href="#" class="selected"
-                               onMouseUp="if (activeButton != null) resetButton(activeButton);"
                                tal:attributes="href string:${parent_folder/absolute_url}/select_default_page;"
                                i18n:attributes="title">
                                  Change item&hellip;
@@ -312,7 +296,6 @@
                                define="selectedLayout context/getLayout|nothing;">
                         <li class="actionSeperator" tal:condition="python:selectedLayout != ''">
                             <a title="Select default page" href="#" class="selected"
-                               onMouseUp="if (activeButton != null) resetButton(activeButton);"
                                tal:attributes="href string:${parent_folder/absolute_url}/select_default_page;"
                                i18n:attributes="title">
                                  Select item&hellip;
@@ -320,7 +303,6 @@
                         </li>
                         <li class="actionSeperator" tal:condition="python:selectedLayout == ''">
                             <a title="Change default page" href="#" class="selected"
-                               onMouseUp="if (activeButton != null) resetButton(activeButton);"
                                tal:attributes="href string:${parent_folder/absolute_url}/select_default_page;"
                                i18n:attributes="title">
                                  Change item&hellip;
@@ -339,15 +321,13 @@
         <tal:objectAction repeat="editAction editActions">
 
             <li tal:condition="python:editAction['id'] not in ('delete', 'batch')">
-                <a onMouseUp="if (activeButton != null) resetButton(activeButton);"
-                   tal:content="editAction/name"
+                <a tal:content="editAction/name"
                    tal:attributes="href editAction/url;"
                    i18n:translate=""/> 
             </li>
 
             <li tal:condition="python:editAction['id']=='delete'">
-                <a onMouseUp="if (activeButton != null) resetButton(activeButton);"
-                   onclick="#"
+                <a onclick="#"
                    tal:define="ptype here/portal_type;
                                alert_msg python:here.translate('alert_really_delete');"
                    tal:attributes="href editAction/url;
@@ -364,8 +344,7 @@
          condition="python: batchActions">
         <tal:batchAction repeat="batchAction batchActions">
             <li class="contentBatchAction">
-                <a onMouseUp="if (activeButton != null) resetButton(activeButton);"
-                   tal:content="batchAction/name"
+                <a tal:content="batchAction/name"
                    tal:attributes="href batchAction/url"
                    i18n:translate=""/> 
             </li>

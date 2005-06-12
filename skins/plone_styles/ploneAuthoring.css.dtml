@@ -673,7 +673,7 @@ ul.configletDetails li label {
 }
 
 .contentActions .actionMenu {
-    visibility: hidden;
+    display: none;
     z-index: 5;
     position: absolute;
     top: 0;

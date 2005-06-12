@@ -20,6 +20,9 @@ def alpha2_beta1(portal):
     # Bring ploneRTL back to the nearly-top of the stack
     reorderStylesheets(portal, out)
 
+    # Exchange plone_menu.js with dropdown.js
+    exchangePloneMenuWithDropDown(portal, out)
+
     # Grant Access inactive portal content to Owner
     allowOwnerToAccessInactiveContent(portal, out)
 
@@ -157,6 +160,18 @@ def reorderStylesheets(portal, out):
                 # Brute-force... ALL the way down.
                 cssreg.moveStylesheet('ploneMember.css', 'down') 
 
+def exchangePloneMenuWithDropDown(portal, out):
+    qi = getToolByName(portal, 'portal_quickinstaller', None)
+    if qi is not None:
+        if not qi.isProductInstalled('ResourceRegistries'):
+            qi.installProduct('ResourceRegistries', locked=0)
+        jsreg = getToolByName(portal, 'portal_javascripts', None)
+        if jsreg is not None:
+            js_dict = jsreg.getScriptsDict()
+            menu = js_dict.get('plone_menu.js', None)
+            if menu is not None:
+                jsreg.unregisterScript('plone_menu.js')
+            jsreg.registerScript('dropdown.js')
 
 def allowOwnerToAccessInactiveContent(portal, out):
     permission = CMFCorePermissions.AccessInactivePortalContent
