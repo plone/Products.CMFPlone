@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (Unreleased)
 
+    - Fixed http://plone.org/collector/2756 portlet_calendar localization is
+      working now. had to introduce a new method on the calendar_tool to get
+      the correct daynumbers.
+      [hannosch]
+
     - Fixed http://plone.org/collector/3365 calendar_slot.pt has been moved to
       plone_templates/calendar_macros.pt and cleaned up
       [hannosch]

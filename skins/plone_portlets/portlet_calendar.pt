@@ -20,7 +20,8 @@
                  query_string python:request.get('orig_query', None);
                  query_string python: (query_string is None and request.get('QUERY_STRING', None)) or query_string;
                  url_quote python:modules['Products.PythonScripts.standard'].url_quote;
-                 anchor_method request/anchor_method | template/getId;">
+                 anchor_method request/anchor_method | template/getId;
+                 translation_service nocall:here/translation_service;">
     <!-- The calendar, rendered as a table -->
 
     <table class="ploneCalendar" id="thePloneCalendar" summary="Calendar" i18n:attributes="summary">
@@ -36,10 +37,10 @@
                     tal:define="date python:DateTime(year, month, 1);">
                     <span i18n:translate="" tal:omit-tag="">
                         <span i18n:name="monthname">
-                            <span i18n:translate=""
-                                  tal:define="monthstring python:date.strftime('%B').capitalize();"
-                                  tal:attributes="id string:calendar-month-$monthstring"
-                                  tal:content="string:$monthstring"
+                            <span tal:define="month_id python:translation_service.month_msgid(date.month());
+                                              month_english python:here.utranslate(month_id, target_language='en');"
+                                  tal:attributes="id string:calendar-month-$month_english"
+                                  tal:content="python: here.utranslate(month_id)"
                                   id="calendar-month-month">&nbsp;</span>
                         </span>
                         <span i18n:name="year"
@@ -48,7 +49,7 @@
                               tal:attributes="id string:calendar-year-$year;"
                               id="calendar-year">&nbsp;</span>
                     </span>
-                 </th>
+                </th>
                 <th id="calendar-next">
                     <a href="#" rel="nofollow" 
                        tal:attributes="href python:'%s/%s?%s&amp;month:int=%d&amp;year:int=%d&amp;orig_query=%s' % (anchor_url, anchor_method, query_string, nextMonthTime.month(),nextMonthTime.year(),url_quote(query_string))"
@@ -57,8 +58,11 @@
                     </a>
                 </th>
             </tr>
-            <tr tal:define="weekdays here/portal_calendar/getDays" class="weekdays">
-                <td i18n:translate="" tal:repeat="weekday weekdays" tal:content="weekday">Su</td>
+            <tr tal:define="weekdaynumbers here/portal_calendar/getDayNumbers" class="weekdays">
+                <tal:data tal:repeat="daynumber weekdaynumbers">
+                    <td tal:define="day_id python:translation_service.day_msgid(daynumber, format='s');"
+                        tal:content="python: here.utranslate(day_id)">Su</td>
+                </tal:data>
             </tr>
         </thead>
         
