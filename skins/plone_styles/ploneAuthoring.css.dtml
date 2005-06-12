@@ -679,7 +679,6 @@ ul.configletDetails li label {
     top: 0;
     right: -1px;
     background: &dtml-contentViewBackgroundColor;;
-    overflow: hidden;
     height: auto;
     padding: 0;
     margin: 1.2em 0 0 0;
@@ -689,7 +688,7 @@ ul.configletDetails li label {
 
 .actionMenu li {
     float: none;
-    background: none;
+    background: transparent;
     display: inline;
     padding: 0;
     margin: 0;

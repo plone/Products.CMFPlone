@@ -47,9 +47,8 @@
             </ul>
     
              <a href="content_status_history"
-                class="contentActionMenuHeader"
+                class="contentActionMenuHeader statusMenu"
                 title="Change the state of this item"
-                onclick="return activateMenu(event, 'statusMenu');"
                 i18n:attributes="title"
                 tal:attributes="href string:$here_url/content_status_history;">
     
@@ -81,19 +80,17 @@
     <li>
         <div class="menuPosition">
             <a tal:condition="python: here.isPrincipiaFolderish and not isContextDefaultPage"
-               class="contentActionMenuHeader"
+               class="contentActionMenuHeader objectMenu"
                href="folder_factories"
                title="Add new items inside this item"
-               onclick="return activateMenu(event, 'objectMenu');"
                i18n:attributes="title"
                i18n:translate="label_add_new_item"
                tal:attributes="href string:${here_url}/folder_factories;">Add item</a>
 
             <a tal:condition="not: python: here.isPrincipiaFolderish and not isContextDefaultPage"
-               class="contentActionMenuHeader"
+               class="contentActionMenuHeader objectMenu"
                href="folder_factories"
                title="Add new items in the same folder as this item"
-               onclick="return activateMenu(event, 'objectMenu');"
                i18n:attributes="title"
                i18n:translate="label_add_new_item_in_folder"
                tal:attributes="href string:${parent_folder/absolute_url}/folder_factories;">Add to folder</a>
@@ -186,9 +183,8 @@
                 
                 
                 <a href="#"
-                   class="contentActionMenuHeader"
+                   class="contentActionMenuHeader templateMenu"
                    title="Choose default view"
-                   onclick="return activateMenu(event, 'templateMenu');"
                    i18n:attributes="title"
                    tal:condition="not:dimMenu"
                    tal:attributes="href string:$here_url/select_default_view;">

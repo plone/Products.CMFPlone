@@ -267,7 +267,6 @@ label {
     top: 0;
     right: -1px;
     background: &dtml-contentViewBackgroundColor;;
-    overflow: hidden;
     height: auto;
     padding: 0;
     margin: 0.2em 0 0 0;
@@ -278,7 +277,7 @@ label {
 .actionMenu li {
     font-size: 10px !important;
     float: none;
-    background: none;
+    background: transparent;
     display: inline;
     padding: 0;
     margin: 0;
