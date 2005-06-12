@@ -14,10 +14,10 @@
                        tal:attributes="href string:${portal_url}/author/${event/actor}"
                        tal:content="event/actor">Actor</a>
                 </span>
-                <div tal:content="python:here.toPortalTime(event['time'],long_format=1)" />
+                <div tal:content="python:here.toLocalizedTime(event['time'],long_format=1)" />
                 <div tal:condition="event/effective_date|nothing">
                     (<span i18n:translate="label_publishing_effective" tal:omit-tag="">effective</span>: 
-                    <span tal:replace="python:here.toPortalTime(event['effective_date'],long_format=1)"></span>)
+                    <span tal:replace="python:here.toLocalizedTime(event['effective_date'],long_format=1)"></span>)
                 </div>
             </dt>
             <dd tal:condition="event/comments">
