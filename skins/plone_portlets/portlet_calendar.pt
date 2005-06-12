@@ -31,7 +31,8 @@
                     <a href="#" rel="nofollow"
                         tal:attributes="href python:'%s/%s?%s&amp;month:int=%d&amp;year:int=%d&amp;orig_query=%s' % (anchor_url, anchor_method, query_string, prevMonthTime.month(),prevMonthTime.year(),url_quote(query_string))"
                         tal:condition="python: yearmonth > (prevYearMin.year(), prevYearMin.month())">
-                    <img src="" alt="" title="Previous month" tal:attributes="src string:${portal_url}/arrowLeft.gif" /></a>
+                    <img src="" alt="" title="Previous month" i18n:attributes="title title_previous_month;"
+                         tal:attributes="src string:${portal_url}/arrowLeft.gif" /></a>
                 </th>
                 <th colspan="5"
                     tal:define="date python:DateTime(year, month, 1);">
@@ -54,7 +55,8 @@
                     <a href="#" rel="nofollow" 
                        tal:attributes="href python:'%s/%s?%s&amp;month:int=%d&amp;year:int=%d&amp;orig_query=%s' % (anchor_url, anchor_method, query_string, nextMonthTime.month(),nextMonthTime.year(),url_quote(query_string))"
                        tal:condition="python: yearmonth < (nextYearMax.year(), nextYearMax.month())">
-                         <img src="" alt="" title="Next month" tal:attributes="src string:${portal_url}/arrowRight.gif" />
+                         <img src="" alt="" title="Next month" i18n:attributes="title title_next_month;"
+                              tal:attributes="src string:${portal_url}/arrowRight.gif" />
                     </a>
                 </th>
             </tr>
