@@ -6,6 +6,7 @@ Plone 2.1 - Plaid - (Unreleased)
 
     - Fixed http://plone.org/collector/4136
       you couldn't pick january or the first of a month with the js date picker
+      reflected changes in the tests
       [hannosch]
 
     - Fixed http://members.plone.org/collector/3256

@@ -49,7 +49,7 @@ class TestDateComponentsSupport(PloneTestCase.PloneTestCase):
 
     def testMonths(self):
         data = [
-            {'selected': None, 'id': '----',      'value': '01'},
+            {'selected': None, 'id': '----',      'value': '00'},
             {'selected': None, 'id': 'January',   'value': '01'},
             {'selected': None, 'id': 'February',  'value': '02'},
             {'selected': None, 'id': 'March',     'value': '03'},
@@ -70,7 +70,7 @@ class TestDateComponentsSupport(PloneTestCase.PloneTestCase):
 
     def testDays(self):
         data = [
-            {'selected': None, 'id': '----', 'value': '01'},
+            {'selected': None, 'id': '----', 'value': '00'},
             {'selected': 1,    'id': 1,      'value': '01'},
             {'selected': None, 'id': 2,      'value': '02'},
             {'selected': None, 'id': 3,      'value': '03'},
@@ -203,7 +203,7 @@ class TestDateComponentsSupportDefault(PloneTestCase.PloneTestCase):
 
     def testMonths(self):
         data = [
-            {'selected': 1,    'id': '----',      'value': '01'},
+            {'selected': 1,    'id': '----',      'value': '00'},
             {'selected': None, 'id': 'January',   'value': '01'},
             {'selected': None, 'id': 'February',  'value': '02'},
             {'selected': None, 'id': 'March',     'value': '03'},
@@ -224,7 +224,7 @@ class TestDateComponentsSupportDefault(PloneTestCase.PloneTestCase):
 
     def testDays(self):
         data = [
-            {'selected': 1,    'id': '----', 'value': '01'},
+            {'selected': 1,    'id': '----', 'value': '00'},
             {'selected': None, 'id': 1,      'value': '01'},
             {'selected': None, 'id': 2,      'value': '02'},
             {'selected': None, 'id': 3,      'value': '03'},
