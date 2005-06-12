@@ -3,115 +3,6 @@
       i18n:domain="plone">
 
   <body>
-
-    <!--
-      This portlet is now deprecated.  It has been moved to
-      portlet_calendar.  The calendar date pickers will remain until
-      they are moved to their own macros.
-    -->
-
-    <div metal:define-macro="calendarBox"
-	 tal:omit-tag=""
-	 tal:define="DateTime python:modules['DateTime'].DateTime;
-	 current python:DateTime();
-	 month python:request.get('month', current.month());
-	 year python:request.get('year', current.year());
-	 prevMonthTime python:here.getPreviousMonth(month, year);
-	 nextMonthTime python:here.getNextMonth(month, year);
-	 weeks python:here.portal_calendar.getEventsForCalendar(month=month, year=year);
-	 anchor_url request/anchor_url|here/absolute_url;
-	 anchor_method request/anchor_method|template/getId;">
-      <!-- The calendar, rendered as a table -->
-
-      <table cellspacing="0" class="calendar" id="thecalendar" summary="Calendar" i18n:attributes="summary">
-	<thead>
-	  <tr>
-	    <th id="calendar-previous">
-	      <a href="#" tal:attributes="href python:'%s/%s?month:int=%d&amp;year:int=%d' % (anchor_url, anchor_method, prevMonthTime.month(),prevMonthTime.year())">&laquo;</a>
-	    </th>
-	    <th colspan="5"
-		tal:define="date python:DateTime(int(year), int(month), 1);">
-	      <span i18n:translate="" tal:omit-tag="">
-		<span i18n:name="monthname">
-		  <span i18n:translate=""
-			tal:define="monthstring python:date.strftime('%B').capitalize();"
-			tal:attributes="id string:calendar-month-$monthstring"
-			tal:content="string:$monthstring"
-		  id="calendar-month-month">&nbsp;</span>
-		</span>
-		<span i18n:name="year"
-		      tal:define="year python:date.year()"
-		      tal:content="string:$year"
-		      tal:attributes="id string:calendar-year-$year;"
-		id="calendar-year">&nbsp;</span>
-	      </span>
-	    </th>
-	    <th id="calendar-next">
-	      <a href="#" tal:attributes="href python:'%s/%s?month:int=%d&amp;year:int=%d' % (anchor_url, anchor_method, nextMonthTime.month(),nextMonthTime.year())">&raquo;</a>
-	    </th>
-	  </tr>
-	  <tr tal:define="weekdays here/portal_calendar/getDays" class="weekdays">
-	    <tal:block repeat="weekday weekdays">
-	      <td i18n:translate="" tal:content="weekday">Su</td>
-	    </tal:block>
-	  </tr>
-	</thead>
-	<tbody>
-	  <tr tal:repeat="week weeks">
-	    <tal:block repeat="day week">
-	      <tal:block define="daynumber day/day;
-			 datestring python: '%d%0.2d%0.2d' % (year, month, daynumber);
-			 javascriptstring string:javascript:%sDay('%s');">
-		<td class="event" tal:condition="day/event"
-		    tal:attributes="onmouseout  python: javascriptstring % ('hide', datestring);
-		    onmouseover python: javascriptstring % ('show', datestring);
-		    class       python:test(current.year()==year and current.month()==month and current.day()==int(daynumber), 'todayevent', 'event')">
-		  <span tal:define="begEndTimes python:here.getBeginAndEndTimes(day=daynumber, month=month, year=year)" tal:omit-tag="">
-		    <span tal:define="begin python:DateTime(begEndTimes[0].timeTime()+86400).ISO();
-			  end python:DateTime(begEndTimes[1].strftime('%Y/%m/%d')).ISO();
-			  pss python:modules['Products'].PythonScripts.standard" tal:omit-tag="">
-		      <a href="" tal:attributes="href python:utool()+'/search?review_state=published&amp;start.query:record:date=%s&amp;start.range:record=max&amp;end.query:record:date=%s&amp;end.range:record=min'%(pss.url_quote(begin),pss.url_quote(end))">
-			<span tal:replace="python: daynumber or default">&nbsp;</span>
-		      </a>
-		    </span>
-		  </span>
-		</td>
-		<tal:notdayevent tal:condition="not: day/event">
-		  <td tal:condition="python: current.year()==year and current.month()==month and current.day()==int(daynumber)"
-		      tal:content="python: daynumber or default" class="todaynoevent">
-		    &nbsp;
-		  </td>
-		  <td tal:condition="not: python: current.year()==year and current.month()==month and current.day()==int(daynumber)"
-		      tal:content="python: daynumber or default">
-		    &nbsp;
-		  </td>
-		</tal:notdayevent>
-	      </tal:block>
-	    </tal:block>
-	  </tr>
-	</tbody>
-      </table>
-
-
-      <!-- The sticky notes -->
-      <tal:block repeat="week weeks">
-	<tal:block repeat="day week">
-	  <div class="dayPopup"
-	       id="dummy"
-	       tal:attributes="id python:'day%d%0.2d%0.2d' % (year, month, day['day']) "
-	       tal:condition="day/event">
-	    <div class="date" tal:content="python:here.toLocalizedTime('%d/%0.2d/%0.2d' % (year, month, day['day']))">
-	      2001-04-11
-	    </div>
-	    <tal:block repeat="anevent day/eventslist">
-	      <div class="appointment" tal:content="python: here.getEventString(event=anevent)">an event</div>
-	    </tal:block>
-	  </div>
-	</tal:block>
-      </tal:block>
-
-    </div>
-
     
     <!-- The calendar date picker. -->
     <div metal:define-macro="calendarDatePickerBox" tal:define="
@@ -319,6 +210,7 @@
       </span>
     </div>
 
+
     <div metal:define-macro="calendarDatePickerBoxPopup"
 	 class="container"
 	 tal:define="DateTime python:modules['DateTime'].DateTime;
@@ -378,48 +270,6 @@
 
     </div>
     <!-- end of the calendar datepicker box -->
-
-
-<!-- the old popup calendar from Plone 1 -->
-<div metal:define-macro="calendarDatePickerBoxOld" tal:define="
-           portal_url here/portal_url;
-           tabindex tabindex/next|tabindex|nothing;
-           formname formname | string:form;
-           input_id string:${formname}_${inputname}_${tabindex}">
-
- <comment tal:condition="nothing">
-
- This template relies on the presence of an 'inputname' variable,
- which contains the name of the element whose value should be
- altered when the calendar returns a result.
- Similarly it requires a 'formname' variable - the name
- of the form in which this input element resides.
- Also it should be provided with inputvalue which is the
- current or default value for the field.
-
- onfocus and/or onblur are setup as attributes if availabe.
-
- tabindex is setup is provided.
-
- </comment>
-
-  <input type="text" tal:attributes="name string:$inputname;
-                                   id input_id;
-                                   value inputvalue;
-                                   onfocus onfocus|nothing;
-                                   onblur onblur|nothing;
-                                   size inputsize|nothing;
-                                   tabindex tabindex;
-                                   alt string:$inputname;
-                                   title string:$inputname"
-                                   />
-
-  <a href="" tal:attributes="onclick string:window.open('$portal_url/calendar_popup?input_id=${input_id}','cal','dependent=yes,width=180,height=180,screenX=200,screenY=300,titlebar=no');; return false">
-    <img tal:replace="structure here/popup_calendar.gif" />
-  </a>
-
-</div>
-<!-- end of the old popup calendar from Plone 1 -->
 
   </body>
 
