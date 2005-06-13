@@ -126,14 +126,6 @@ except ImportError:
         severity=zLOG.INFO, optional=1)
 
 try:
-    import Products.Epoz
-except ImportError:
-    log(("Epoz not found.  If you want WYSIWYG capabilities "
-        "in Plone, you can download it from "
-        "http://www.zope.org/Members/mjablonski/Epoz/"),
-        severity=zLOG.INFO, optional=1)
-
-try:
     import Products.kupu
 except ImportError:
     log(("Kupu not found.  If you want WYSIWYG capabilities "

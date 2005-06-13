@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (Unreleased)
 
+    - Merged plip83-kupu-integration r7083:7084 into 2.1 branch.
+      [stefan]
+
     - Fixed http://plone.org/collector/1382 - Redirection after login has been changed.
       Original behavior is to strip any query string passed before redirecting.
       Now, if query string exists (such as when coming from discussion_reply_form.pt),
