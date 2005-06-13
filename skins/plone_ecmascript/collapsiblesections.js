@@ -64,7 +64,7 @@ function activateCollapsibles(){
         var legendChildren = legend.childNodes;
         for (i = 0; i < legendChildren.length; i++) {
             elm = legendChildren[i].cloneNode(true);
-            if (i == 0 && i.nodeName == 'IMG') { // it's the icon
+            if (i == 0 && elm.nodeName == 'IMG') { // it's the icon
                 elm.setAttribute('src','treeCollapsed.gif');
             }    
             cLegend.appendChild(elm);
