@@ -20,9 +20,6 @@ def alpha2_beta1(portal):
     # Bring ploneRTL back to the nearly-top of the stack
     reorderStylesheets(portal, out)
 
-    # Exchange plone_menu.js with dropdown.js
-    exchangePloneMenuWithDropDown(portal, out)
-
     # Grant Access inactive portal content to Owner
     allowOwnerToAccessInactiveContent(portal, out)
 
@@ -30,6 +27,9 @@ def alpha2_beta1(portal):
     restrictNewsTopicToPublished(portal, out)
     restrictEventsTopicToPublished(portal, out)
     
+    # Exchange plone_menu.js with dropdown.js
+    exchangePloneMenuWithDropDown(portal, out)
+
     return out
 
 
@@ -156,11 +156,19 @@ def exchangePloneMenuWithDropDown(portal, out):
             qi.installProduct('ResourceRegistries', locked=0)
         jsreg = getToolByName(portal, 'portal_javascripts', None)
         if jsreg is not None:
-            js_dict = jsreg.getScriptsDict()
-            menu = js_dict.get('plone_menu.js', None)
-            if menu is not None:
-                jsreg.unregisterScript('plone_menu.js')
             jsreg.registerScript('dropdown.js')
+            try:
+                jsreg.moveResourceBefore('dropdown.js', 'plone_menu.js')
+            except ValueError:
+                try:
+                    jsreg.moveResourceBefore('dropdown.js', 'sarissa.js')
+                except ValueError:
+                    # ok we stay at the bottom
+                    pass
+            try:
+                jsreg.unregisterResource('plone_menu.js')
+            except ValueError:
+                pass
 
 def allowOwnerToAccessInactiveContent(portal, out):
     permission = CMFCorePermissions.AccessInactivePortalContent

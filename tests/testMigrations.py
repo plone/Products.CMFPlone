@@ -65,6 +65,7 @@ from Products.CMFPlone.migrations.v2_1.betas import reorderStylesheets
 from Products.CMFPlone.migrations.v2_1.betas import allowOwnerToAccessInactiveContent
 from Products.CMFPlone.migrations.v2_1.betas import restrictNewsTopicToPublished
 from Products.CMFPlone.migrations.v2_1.betas import restrictEventsTopicToPublished
+from Products.CMFPlone.migrations.v2_1.betas import exchangePloneMenuWithDropDown
 
 import types
 
@@ -1312,6 +1313,13 @@ class TestMigrations_v2_1(MigrationTest):
         self.assertEquals(stylesheet_ids[-1], 'ploneCustom.css')
         self.assertEquals(stylesheet_ids[-2], 'ploneRTL.css')
         self.assertEquals(stylesheet_ids[0], 'ploneMember.css')
+
+    def testExchangePloneMenuWithDropDown(self):
+        jsreg = self.portal.portal_javascripts
+        scripts = list(jsreg.getResources())
+        script_ids = [ item.get('id') for item in scripts ]
+        self.failIf('plone_menu.js' in script_ids)
+        self.failUnless('dropdown.js' in script_ids)
 
     def testAllowOwnerToAccessInactiveContent(self):
         # Should grant the "Access inactive ..." permission to owner
