@@ -603,6 +603,31 @@ textarea.proportional {
 }
 
 
+/* Collapsible elements */
+
+div.collapsedFieldset {
+    border-bottom: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor; !important;
+    margin: 1em 0em 1em 0em;
+    padding: 1px;
+}
+
+span.collapsedLegend {
+    background: &dtml-backgroundColor;;
+    line-height: 1.5em;
+    width: auto;
+    position: relative;
+    top: 0.75em;
+    left: 1em;
+    width: auto;
+    padding: 0.5em;
+    font-size: 90%;
+}
+
+img.collapseIcon {
+    margin-right: 0.5em;
+}
+
+
 /* Sitemap styles */
 
 #portal-sitemap {
