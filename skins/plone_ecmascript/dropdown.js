@@ -1,29 +1,58 @@
 
-var actionMenus = new Array();
 var actionMenuIds = new Array();
+
+function getContainerWith(node, func) {
+    // Starting with the given node, find the nearest containing element
+    // for which the function func returns true.
+    
+    while (node != null) {
+        if (func(node)) {
+            return node;
+        }
+        node = node.parentNode;
+    }
+    return false;
+}
+
+function stringInList(name, list) {
+    for (i = 0; i < list.length; i++) {
+        if (list[i] == name){
+            return true;
+        }
+    }
+    return false;
+}
 
 function activateMenu(event) {
     if (!event) var event = window.event; // IE compatibility
 
-    class_name = this.className;
-    if (class_name.indexOf('contentActionMenuHeader')== -1) {
+    // terminate if we hit a non-compliant DOM implementation
+    // returning true, so the link is still followed
+    if (!document.getElementById){return true;}
+
+    if (!this.className) {
+        return true;
+    }
+
+    classes = this.className.split(' ');
+    if (!stringInList('contentActionMenuHeader', classes)) {
         // not the correct element, the event needs to bubble up/down
         return true;
     }
-    // extract the target id
-    classes = class_name.split(' ');
     // last class is the menu_id
     menu_id = classes.pop();
 
-    if (!actionMenus[menu_id]) {
+    menu_body = document.getElementById(menu_id);
+    if (!menu_body) {
         return true;
     }
-    menu = actionMenus[menu_id];
-    menu_body = menu.body;
 
-    if (menu_body.style.display != 'none') {
+    // check if the menu is visible
+    if (menu_body.style.display && menu_body.style.display != 'none') {
+        // it's visible - hide it
         menu_body.style.display = 'none';
     } else {
+        // it's invisible - make it visible
         try {
             // using table fixes the cut off of elements in Firefox
             menu_body.style.display = 'table';
@@ -31,60 +60,80 @@ function activateMenu(event) {
             // IE doesn't know table
             menu_body.style.display = 'block';
         }
-        menu.active = true;
     }
 
+    return false;
+}
+
+function isActionMenu(node) {
+    if (node.className) {
+        if (node.className.indexOf('actionMenu') >= 0) {
+            return true;
+        }
+    }
     return false;
 }
 
 function menuDocumentMouseDown(event) {
     if (!event) var event = window.event; // IE compatibility
 
-    // hide all menus
-    for (i=0; i < actionMenuIds.length; i++) {
-        menu = actionMenus[actionMenuIds[i]]
-        if (!menu) {
-            continue
-        }
-        menu.body.style.display = 'none';
-        menu.active = false;
+    if (event.target)
+        targ = event.target;
+    else if (event.srcElement)
+        targ = event.srcElement;
+
+    container = getContainerWith(targ, isActionMenu);
+    if (container) {
+        // targ is part of the menu, so just return and do the default
+        return true;
     }
 
-    return false;
+    // hide all menus
+    for (i=0; i < actionMenuIds.length; i++) {
+        menu_body = document.getElementById(actionMenuIds[i]);
+        if (!menu_body) {
+            continue
+        }
+        menu_body.style.display = 'none';
+    }
+
+    return true;
 }
 
 function menuMouseOver(event) {
     if (!event) var event = window.event; // IE compatibility
 
-    class_name = this.className;
-    if (class_name.indexOf('contentActionMenuHeader')== -1) {
+    if (!this.className) {
+        return true;
+    }
+
+    classes = this.className.split(' ');
+    if (!stringInList('contentActionMenuHeader', classes)) {
         // not the correct element, the event needs to bubble up/down
         return true;
     }
-    // extract the target id
-    classes = class_name.split(' ');
     // last class is the menu_id
     menu_id = classes.pop();
 
     var switch_menu = false;
     // hide all menus
     for (i=0; i < actionMenuIds.length; i++) {
-        menu = actionMenus[actionMenuIds[i]]
-        if (!menu) {
+        menu_body = document.getElementById(actionMenuIds[i]);
+        if (!menu_body) {
             continue
         }
-        if (menu.active) {
-            // we have to turn on another menu below
+        // check if the menu is visible
+        if (menu_body.style.display && menu_body.style.display != 'none') {
             switch_menu = true;
         }
-        if (menu.id != menu_id) {
-            // turn off menu when it's not the current one
-            menu.body.style.display = 'none';
+        // turn off menu when it's not the current one
+        if (menu_body.id != menu_id) {
+            menu_body.style.display = 'none';
         }
     }
 
     if (switch_menu) {
-        menu_body = actionMenus[menu_id].body;
+        menu_body = document.getElementById(menu_id);
         try {
             // using table fixes the cut off of elements in Firefox
             menu_body.style.display = 'table';
@@ -99,7 +148,6 @@ function menuMouseOver(event) {
 
 function initializeMenus() {
     // terminate if we hit a non-compliant DOM implementation
-    // returning true, so the link is still followed
     if (! document.getElementsByTagName){return false;}
     if (! document.getElementById){return false;}
 
@@ -123,17 +171,7 @@ function initializeMenus() {
             continue
         }
 
-        if (!actionMenus[menu_id]) {
-            menu = new Object();
-            actionMenus[menu_id] = menu;
-            actionMenuIds.push(menu_id);
-        } else {
-            menu = actionMenus[menu_id];
-        }
-        menu.id = menu_id;
-        menu.active = false;
-        menu.header = menu_header;
-        menu.body = menu_body;
+        actionMenuIds.push(menu_id);
 
         menu_header.onclick = activateMenu;
         menu_header.onmouseover = menuMouseOver;
