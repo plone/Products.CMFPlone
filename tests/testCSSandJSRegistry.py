@@ -21,7 +21,7 @@ class TestCSSRegistry(PloneTestCase.PloneTestCase):
         self.failUnless(CSSTOOLNAME in self.portal.objectIds())
 
     def testDefaultCssIsInstalled(self):
-        installedStylesheetIds = [i['id'] for i in self.tool.getStylesheets()]
+        installedStylesheetIds = [i['id'] for i in self.tool.getResources()]
         expected = ['ploneCustom.css',
                     'ploneAuthoring.css', 
                     'plonePublic.css',
@@ -45,9 +45,9 @@ class TestJSRegistry(PloneTestCase.PloneTestCase):
         self.failUnless(JSTOOLNAME in self.portal.objectIds())
 
     def testDefaultJSIsInstalled(self):
-        installedScriptIds = [i['id'] for i in self.tool.getScripts()]
+        installedScriptIds = [i['id'] for i in self.tool.getResources()]
         for s in installedScriptIds[:]:
-            installedScriptIds += self.tool.concatenatedscripts.get(s)
+            installedScriptIds += self.tool.concatenatedresources.get(s)
         expected = [
              'correctPREformatting.js',
              'plone_minwidth.js',

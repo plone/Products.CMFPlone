@@ -171,7 +171,7 @@
                                 <a href="" tal:attributes="href item/getURL"
                                    tal:content="item/Title">title</a>
                             </td>
-                            <td tal:content="python:here.toPortalTime(item.Date)">
+                            <td tal:content="python:here.toLocalizedTime(item.Date)">
                                 Date
                             </td>
                         </tr>

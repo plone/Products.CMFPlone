@@ -135,8 +135,7 @@ def reorderStylesheets(portal, out):
             qi.installProduct('ResourceRegistries', locked=0)
         cssreg = getToolByName(portal, 'portal_css', None)
         if cssreg is not None:
-            stylesheets = list(cssreg.getStylesheets())
-            stylesheet_ids = [item.get('id') for item in stylesheets]
+            stylesheet_ids = [item.get('id') for item in cssreg.getResources()]
             # Failsafe: first make sure the two stylesheets exist in the list
             if 'ploneRTL.css' not in stylesheet_ids:
                 cssreg.registerStylesheet('ploneRTL.css',
@@ -147,18 +146,8 @@ def reorderStylesheets(portal, out):
                 cssreg.registerStylesheet('ploneMember.css',
                                            expression='not: portal/portal_membership/isAnonymousUser')
             # Now move 'em
-            stylesheets = list(cssreg.getStylesheets())
-            stylesheet_ids = [item.get('id') for item in stylesheets]
-            ploneCustom_position = stylesheet_ids.index('ploneCustom.css')
-            ploneRTL_position = stylesheet_ids.index('ploneRTL.css')
-            difference = ploneRTL_position - ploneCustom_position
-            if difference > 1:
-                for step in range(difference - 1):
-                    cssreg.moveStylesheet('ploneRTL.css', 'up')
-                out.append("Moved 'ploneRTL.css' to a correct position")
-            for step in range(len(stylesheet_ids)):
-                # Brute-force... ALL the way down.
-                cssreg.moveStylesheet('ploneMember.css', 'down') 
+            cssreg.moveResourceBefore('ploneRTL.css', 'ploneCustom.css')
+            cssreg.moveResourceToTop('ploneMember.css')
 
 def exchangePloneMenuWithDropDown(portal, out):
     qi = getToolByName(portal, 'portal_quickinstaller', None)
