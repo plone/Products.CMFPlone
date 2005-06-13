@@ -136,7 +136,7 @@
                              onClick="toggleSelect(this,'paths:list');"
                              tal:attributes="src string:$portal_url/select_all_icon.gif"
                              alt="Select all items"
-                             i18n:attributes="title alt"
+                             i18n:attributes="title label_select_all_items; alt label_select_all_items;"
                   />
                   </th>
                   <th tal:attributes="class python:nosortclass"
@@ -246,14 +246,14 @@
                     <td tal:condition="python:isOrderable and canModifyFolderContent and not preSorted">
                       <a href=""
                          title="Move item up"
-                         i18n:attributes="title"
+                         i18n:attributes="title title_move_item_up;"
                          tal:attributes="href string:$here_url/folder_position?position=up&amp;id=$item_id&amp;template_id=${template/getId}">
                          <img tal:replace="structure arrowUp" />
                       </a>
                       &nbsp;
                       <a href=""
                          title="Move item down"
-                         i18n:attributes="title"
+                         i18n:attributes="title title_move_item_down;"
                          tal:attributes="href string:$here_url/folder_position?position=down&amp;id=$item_id&amp;template_id=${template/getId}">
                          <img tal:replace="structure arrowDown" />
                       </a>

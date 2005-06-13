@@ -41,7 +41,7 @@
                            name="prefs_user_group_search_form"
                            value="Search"
                            tabindex=""
-                           i18n:attributes="value"
+                           i18n:attributes="value label_search;"
                            tal:attributes="name string:${template/id}:method;
 		                           tabindex tabindex/next;" />
 
@@ -57,7 +57,7 @@
                    onClick="toggleSelect(this, 'add:list');"
                    tal:attributes="src string:$portal_url/select_all_icon.gif"
                    alt="Select all items"
-                   i18n:attributes="title alt"/>
+                   i18n:attributes="title label_select_all_items; alt label_select_all_items;"/>
             </th>
             
 	    <th i18n:translate="listingheader_name">Group/User name</th>
@@ -113,7 +113,7 @@
                value="Use Selected..."
 	       tal:condition="batch"
                tal:attributes="tabindex tabindex/next;"
-               i18n:attributes="value" />
+               i18n:attributes="value label_use_selected;" />
 	</metal:block>
 
 	<metal:block metal:define-slot="removables" />

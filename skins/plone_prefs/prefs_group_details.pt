@@ -215,7 +215,7 @@
                            type="submit"
                            name="prefs_group_edit:method"
                            value="Save"
-                           i18n:attributes="value" />
+                           i18n:attributes="value label_save;" />
                 </div>
             </fieldset>
         </form>

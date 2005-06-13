@@ -37,9 +37,12 @@
                 </div>
 
                 <div class="formControls">
-                    <input class="standalone" type="submit" name="submit" value="Refresh" i18n:attributes="value" />
-                    <input class="standalone" type="submit" name="submit" value="Clear Displayed Entries" i18n:attributes="value" />
-                    <input class="standalone" type="submit" name="submit" value="Show all entries" i18n:attributes="value" />
+                    <input class="standalone" type="submit" name="submit"
+                           value="Refresh" i18n:attributes="value label_refresh;" />
+                    <input class="standalone" type="submit" name="submit"
+                           value="Clear Displayed Entries" i18n:attributes="value label_clear_displayed_entries;" />
+                    <input class="standalone" type="submit" name="submit"
+                           value="Show all entries" i18n:attributes="value label_show_all_entries;" />
                 </div>
 
                 <table class="listing"
@@ -125,7 +128,7 @@
                        type="submit" 
                        name="submit" 
                        value="Save"
-                       i18n:attributes="value" />
+                       i18n:attributes="value label_save;" />
             </div>
 
             </fieldset>

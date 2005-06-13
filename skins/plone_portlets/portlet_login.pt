@@ -17,7 +17,7 @@
     <div class="portlet"
          tal:condition="python: not auth"
          id="portlet-login">
-        <h5 i18n:translate="box_sign_in">Log in</h5>
+        <h5 i18n:translate="label_log_in">Log in</h5>
         <div class="portletBody">
             <div class="portletContent" i18n:translate="login_portlet_disabled">
             Cookie authentication disabled.  Login portlet
@@ -33,7 +33,7 @@
          tal:condition="python: auth"
          id="portlet-login">
 
-        <h5 i18n:translate="box_sign_in">Log in</h5>
+        <h5 i18n:translate="label_log_in">Log in</h5>
 
         <div class="portletBody">
 
@@ -53,14 +53,14 @@
                         <label for="__ac_name"
                                i18n:translate="label_login_name">Login Name</label>
                         <br />
-                        <input type="text" 
-                               size="10" 
-                               alt="Login Name" 
-                               accesskey="accesskeys-login" 
+                        <input type="text"
+                               size="10"
+                               alt="Login Name"
+                               accesskey="accesskeys-login"
                                tal:attributes="name ac_name; id ac_name;
-                                               value python:request.get(ac_name, ''); 
+                                               value python:request.get(ac_name, '');
                                                tabindex tabindex/next"
-                               i18n:attributes="alt" 
+                               i18n:attributes="alt label_login_name;"
                                />
                     </div>
                     
@@ -69,12 +69,12 @@
                                i18n:translate="label_password">Password</label>
                         <br />
                         <input type="password"
-                               size="10" 
-                               alt="Password" 
-                               accesskey="accesskeys-login" 
+                               size="10"
+                               alt="Password"
+                               accesskey="l"
                                tal:attributes="name ac_password; id ac_password;
-                                               tabindex tabindex/next;" 
-                               i18n:attributes="alt accesskey" 
+                                               tabindex tabindex/next;"
+                               i18n:attributes="alt label_password; accesskey accesskeys-login;"
                                />
                     </div>
                     
@@ -87,7 +87,7 @@
                                alt="Log in"
                                tal:attributes="tabindex tabindex/next"
                                accesskey="accesskeys-login"
-                               i18n:attributes="value alt"
+                               i18n:attributes="value label_log_in; alt label_log_in;"
                                />
                     </div>
                 </form>
@@ -96,7 +96,7 @@
             <div class="portletContent even"
                  tal:condition="python:checkPermission('Mail forgotten password', here)">
                 <a href="mail_password_form"
-                   tal:attributes="href string:${utool}/mail_password_form" accesskey="accesskeys-login" i18n:attributes="accesskey" >
+                   tal:attributes="href string:${utool}/mail_password_form">
                    <tal:block replace="structure portal_object/info_icon.gif"/>
                    <span tal:omit-tag="" i18n:translate="box_forgot_password_option">Forgot your password?</span>
                 </a>
@@ -106,7 +106,7 @@
                 tal:define="join python:[a['url'] for a in actions['user'] if a['id']=='join']"
                 tal:condition="python:test(join and hasattr(here,'portal_registration') and checkPermission('Add portal member', here), 1, 0)">
 
-                <a href="" tal:attributes="href python:join.pop()" accesskey="accesskeys-login" i18n:attributes="accesskey" >
+                <a href="" tal:attributes="href python:join.pop()">
                     <tal:block replace="structure portal_object/user.gif"/>
                     <span tal:omit-tag="" i18n:translate="box_new_user_option">New user?</span>
                 </a>

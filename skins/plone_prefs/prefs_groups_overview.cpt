@@ -75,7 +75,7 @@
                      name="form.button.AddGroup"
                      value="Add New Group"
                      tal:attributes="tabindex tabindex/next;"
-                     i18n:attributes="value"
+                     i18n:attributes="value label_add_new_group;"
                      />
 
             <input type="hidden" value="b_start" name="b_start" 
@@ -102,7 +102,7 @@
                                name="form.button.Search"
                                value="Search"
                                tabindex=""
-                               i18n:attributes="value"
+                               i18n:attributes="value label_search;"
                                tal:attributes="tabindex tabindex/next;" />
     
                     </th>
@@ -180,7 +180,7 @@
                    name="form.button.Modify"
                    value="Apply Changes"
                    tal:attributes="tabindex tabindex/next;"
-                   i18n:attributes="value"
+                   i18n:attributes="value label_apply_changes;"
                    tal:condition="groups"
                    />
         </form>

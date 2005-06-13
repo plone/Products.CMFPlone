@@ -61,7 +61,7 @@
             name="prefs_user_group_search:method"
             value="Search"
             tal:attributes="tabindex tabindex/next;"
-            i18n:attributes="value"
+            i18n:attributes="value label_search;"
             />
 
 
@@ -138,7 +138,7 @@
         tal:condition="request/takeaction | nothing"
             tal:attributes="tabindex tabindex/next;
                         name string:${request/takeaction}:method"
-            i18n:attributes="value"
+            i18n:attributes="value label_use_selected;"
             />
 
     </form>

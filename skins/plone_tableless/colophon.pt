@@ -1,6 +1,8 @@
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en" lang="en"
       i18n:domain="plone">
 
+<head><title></title></head>
 <body>
 
 <div id="portal-colophon" metal:define-macro="colophon" i18n:domain="plone">
@@ -25,7 +27,7 @@
      alt="Powered by Plone"
      title="This Plone site was built using the Plone Content Management System. Click for more information."
      tal:attributes="src string:$portal_url/plone_powered.gif" 
-     i18n:attributes="alt title" />
+     i18n:attributes="alt label_powered_by_plone; title title_built_with_plone;" />
 </a>
 
 <p i18n:translate="text_conforms_to_standards" class="discreet">
@@ -41,7 +43,7 @@ This site conforms to the following standards:
                  alt="Section 508"
                  title="This Plone site conforms to the US Government Section 508 Accessibility Guidelines."
                  tal:attributes="src string:$portal_url/colophon_sec508.gif"
-                 i18n:attributes="alt title" />
+		 i18n:attributes="alt label_section_508; title title_section_508;" />
         </a>
     </li>
     <li>
@@ -52,7 +54,7 @@ This site conforms to the following standards:
                  alt="WCAG"
                  title="This Plone site conforms to the W3C-WAI Web Content Accessibility Guidelines."
                  tal:attributes="src string:$portal_url/colophon_wai-aa.gif"
-                 i18n:attributes="alt title" />
+		 i18n:attributes="alt label_wcag; title title_wcag;" />
         </a>
     </li>
     <li>
@@ -63,7 +65,7 @@ This site conforms to the following standards:
                  alt="Valid XHTML"
                  title="This Plone site is valid XHTML."
                  tal:attributes="src string:$portal_url/colophon_xhtml.png"
-                 i18n:attributes="alt title" />
+		 i18n:attributes="alt label_xhtml; title title_xhtml;" />
         </a>
     </li>
     <li>
@@ -74,7 +76,7 @@ This site conforms to the following standards:
                  alt="Valid CSS"
                  title="This Plone site was built with valid CSS and semantically correct use of tables."
                  tal:attributes="src string:$portal_url/colophon_csstableless.gif"
-                 i18n:attributes="alt title" />
+		 i18n:attributes="alt label_css; title title_css_with_semantically_correct_tables;" />
         </a>
     </li>
 </ul>

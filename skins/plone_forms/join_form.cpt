@@ -205,7 +205,7 @@
                    tabindex=""
                    name="form.button.Register"
                    value="Register"
-                   i18n:attributes="value"
+                   i18n:attributes="value label_register;"
                    tal:attributes="tabindex tabindex/next;" />
           </div>
 

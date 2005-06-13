@@ -349,7 +349,7 @@ Table of class <code>vertical listing</code>
                            onClick="toggleSelect(this,'paths:list');"
                            tal:attributes="src string:$portal_url/select_all_icon.gif"
                            alt="Select all items"
-                           i18n:attributes="title alt" />
+                           i18n:attributes="title label_select_all_items; alt label_select_all_items;" />
                 </th>
                 <th>&nbsp;Title&nbsp;</th>
                 <th>&nbsp;Stuff&nbsp;</th>

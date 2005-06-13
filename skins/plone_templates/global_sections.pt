@@ -16,12 +16,10 @@
         <li tal:attributes="id string:portaltab-${tab/id};
                             class python:test(selected_portal_tab==tab['id'], 'selected', 'plain');">
             <a href="" 
-               accesskey="accesskeys-tabs" 
                tal:content="tab/name"
                tal:attributes="href tab/url;
                                title tab/description|nothing"
-               i18n:translate=""
-               i18n:attributes="accesskey">
+               i18n:translate="">
             Tab Name
             </a>
         </li>
