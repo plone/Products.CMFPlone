@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (Unreleased)
 
+    - Added framework for ECMAScript Unit Tests.
+      [fschulze]
+
     - Partially fixed http://plone.org/collector/4077 and #3535 accesskeys are
       properly definied now, but still need to be changed to numeric values
       [hannosch]
