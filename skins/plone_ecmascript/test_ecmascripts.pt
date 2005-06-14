@@ -1,0 +1,80 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+<head>
+    <metal:css_slot fill-slot="css_slot">
+        <style type="text/css" rel="stylesheet">
+            div.placeholder {
+                margin: 1em 0 0 0;
+                padding: 1px;
+                border: 1px solid black;
+            }
+            div.placeholder h3,
+            div.placeholder p {
+                margin: 0.5em 1em;
+            }
+        </style>
+    </metal:css_slot>
+    <metal:javascript_head_slot fill-slot="javascript_head_slot">
+        <script type="text/javascript" src="ecmaunit.js"> </script>
+        <script type="text/javascript" src="testnodeutilities.js"> </script>
+        <script type="text/javascript" src="testcases.js"> </script>
+        <script type="text/javascript">
+//<![CDATA[
+        function getLink(link, desc, bName) {
+            var a = document.createElement("a");
+
+            a.setAttribute((bName?"name":"href"), link);
+            if(desc) 
+                a.appendChild(document.createTextNode(desc));
+            return a;
+        };
+
+        function runTestCase(testCase) {
+            // append TOC entry
+            var name = testCase.name;
+            var toc = document.getElementById("testResultsToc");
+            var results_box = document.getElementById("testResultsPlaceHolder");
+            toc.appendChild(document.createElement("br"));
+            toc.appendChild(getLink("#"+name, name+" Results", false));
+            
+            // append testcase section
+            var placeHolder = document.createElement("div");
+            placeHolder.className = "placeholder";
+            placeHolder.appendChild(getLink("#"+name, null, true));
+            var header = document.createElement("h3");
+            header.appendChild(document.createTextNode(name+" Results"));
+            placeHolder.appendChild(header);
+            results_box.appendChild(placeHolder);
+            results_box.appendChild(document.createElement("br"));
+            testCase.initialize(new HTMLReporter(placeHolder));
+            testCase.runTests();
+        };
+//]]>
+        </script>
+    </metal:javascript_head_slot>
+</head>
+
+<body>
+
+<metal:main fill-slot="main">
+
+    <h1 class="documentFirstHeading">
+      Plone ECMAScript Unit Tests
+    </h1>
+
+    <p class="documentDescription">
+      This page is the entry to the ECMAScript Unit Tests.
+    </p>
+
+    <button onclick="runTestCases()">Run Testcases</button>
+    <button onclick="alert(document.getElementById('testResultsPlaceHolder').innerHTML)">markup</button>
+    <div id="testResultsToc"> </div>
+    <div id="testResultsPlaceHolder"></div>
+    <div id="testSandbox"></div>
+</metal:main>
+
+</body>
+</html>
