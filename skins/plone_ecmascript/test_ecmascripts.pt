@@ -6,8 +6,8 @@
 <head>
     <metal:css_slot fill-slot="css_slot">
         <style type="text/css" rel="stylesheet">
-            div.placeholder {
-                margin: 1em 0 0 0;
+            .placeholder {
+                margin: 0 0 1em 0;
                 padding: 1px;
                 border: 1px solid black;
             }
@@ -37,9 +37,12 @@
             var name = testCase.name;
             var toc = document.getElementById("testResultsToc");
             var results_box = document.getElementById("testResultsPlaceHolder");
-            toc.appendChild(document.createElement("br"));
-            toc.appendChild(getLink("#"+name, name+" Results", false));
-            
+
+            // create toc element
+            var toc_item = document.createElement("li");
+            toc_item.appendChild(getLink("test_ecmascripts#"+name, name+" Results", false));
+            toc.appendChild(toc_item);
+
             // append testcase section
             var placeHolder = document.createElement("div");
             placeHolder.className = "placeholder";
@@ -48,10 +51,23 @@
             header.appendChild(document.createTextNode(name+" Results"));
             placeHolder.appendChild(header);
             results_box.appendChild(placeHolder);
-            results_box.appendChild(document.createElement("br"));
             testCase.initialize(new HTMLReporter(placeHolder));
             testCase.runTests();
         };
+
+        function clearOutput() {
+            clearChildNodes(document.getElementById("testResultsToc"));
+            clearChildNodes(document.getElementById("testResultsPlaceHolder"));
+            clearChildNodes(document.getElementById("testSandbox"));
+        }
+
+        function showMarkup() {
+            var text = document.getElementById('testResultsPlaceHolder').innerHTML
+            var msg = this.document.createTextNode(text);
+            var sandbox = document.getElementById("testSandbox");
+            clearChildNodes(sandbox);
+            sandbox.appendChild(msg);
+        }
 //]]>
         </script>
     </metal:javascript_head_slot>
@@ -69,9 +85,10 @@
       This page is the entry to the ECMAScript Unit Tests.
     </p>
 
-    <button onclick="runTestCases()">Run Testcases</button>
-    <button onclick="alert(document.getElementById('testResultsPlaceHolder').innerHTML)">markup</button>
-    <div id="testResultsToc"> </div>
+    <button onclick="runTestCases();">Run Testcases</button>
+    <button onclick="clearOutput();">Clear output</button>
+    <button onclick="showMarkup();">Show Markup</button>
+    <ul id="testResultsToc"> </ul>
     <div id="testResultsPlaceHolder"></div>
     <div id="testSandbox"></div>
 </metal:main>
