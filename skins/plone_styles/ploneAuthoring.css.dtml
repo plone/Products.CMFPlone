@@ -696,16 +696,16 @@ ul.configletDetails li label {
 }
 
 .actionMenu dd.activated {
-    display: block;
+    display: block !important;
 }
 .actionMenu dd.activated {
     /* this one will be ignored by IE, it is here to fix the cut-off error in
        Firefox */
-    display: table;
+    display: table !important;
 }
 
 .actionMenu dd.deactivated {
-    display: none;
+    display: none !important;
 }
 
 .actionMenu .actionMenuContent li {
