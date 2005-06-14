@@ -1,5 +1,5 @@
 
-function WrapNodeTestCase(){
+function WrapNodeTestCase() {
     this.name = 'WrapNodeTestCase';
 
     this.setUp = function() {
@@ -50,3 +50,119 @@ function WrapNodeTestCase(){
     }
 }
 WrapNodeTestCase.prototype = new TestCase;
+testcase_registry.registerTestCase(WrapNodeTestCase, 'nodeutilities');
+
+
+function NodeContainedTestCase() {
+    this.name = 'NodeContainedTestCase';
+
+    this.setUp = function() {
+        this.sandbox = document.getElementById("testSandbox");
+        clearChildNodes(this.sandbox);
+
+    }
+
+//nodeContained
+
+    this.tearDown = function() {
+        clearChildNodes(this.sandbox);
+    }
+}
+NodeContainedTestCase.prototype = new TestCase;
+testcase_registry.registerTestCase(NodeContainedTestCase, 'nodeutilities');
+
+
+function FindContainerTestCase() {
+    this.name = 'FindContainerTestCase';
+
+    this.setUp = function() {
+        this.sandbox = document.getElementById("testSandbox");
+        clearChildNodes(this.sandbox);
+
+    }
+
+//findContainer
+
+    this.tearDown = function() {
+        clearChildNodes(this.sandbox);
+    }
+}
+FindContainerTestCase.prototype = new TestCase;
+testcase_registry.registerTestCase(FindContainerTestCase, 'nodeutilities');
+
+
+function HasClassNameTestCase() {
+    this.name = 'HasClassNameTestCase';
+
+    this.setUp = function() {
+        this.sandbox = document.getElementById("testSandbox");
+        clearChildNodes(this.sandbox);
+
+    }
+
+//hasClassName
+
+    this.tearDown = function() {
+        clearChildNodes(this.sandbox);
+    }
+}
+HasClassNameTestCase.prototype = new TestCase;
+testcase_registry.registerTestCase(HasClassNameTestCase, 'nodeutilities');
+
+
+function AddClassNameTestCase() {
+    this.name = 'AddClassNameTestCase';
+
+    this.setUp = function() {
+        this.sandbox = document.getElementById("testSandbox");
+        clearChildNodes(this.sandbox);
+
+    }
+
+//addClassName
+
+    this.tearDown = function() {
+        clearChildNodes(this.sandbox);
+    }
+}
+AddClassNameTestCase.prototype = new TestCase;
+testcase_registry.registerTestCase(AddClassNameTestCase, 'nodeutilities');
+
+
+function RemoveClassNameTestCase() {
+    this.name = 'RemoveClassNameTestCase';
+
+    this.setUp = function() {
+        this.sandbox = document.getElementById("testSandbox");
+        clearChildNodes(this.sandbox);
+
+    }
+
+//removeClassName
+
+    this.tearDown = function() {
+        clearChildNodes(this.sandbox);
+    }
+}
+RemoveClassNameTestCase.prototype = new TestCase;
+testcase_registry.registerTestCase(RemoveClassNameTestCase, 'nodeutilities');
+
+
+function ReplaceClassNameTestCase() {
+    this.name = 'ReplaceClassNameTestCase';
+
+    this.setUp = function() {
+        this.sandbox = document.getElementById("testSandbox");
+        clearChildNodes(this.sandbox);
+
+    }
+
+//replaceClassName
+
+    this.tearDown = function() {
+        clearChildNodes(this.sandbox);
+    }
+}
+ReplaceClassNameTestCase.prototype = new TestCase;
+testcase_registry.registerTestCase(ReplaceClassNameTestCase, 'nodeutilities');
+
