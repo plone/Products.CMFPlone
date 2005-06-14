@@ -4,6 +4,7 @@ function WrapNodeTestCase(){
 
     this.setUp = function() {
         this.sandbox = document.getElementById("testSandbox");
+        clearChildNodes(this.sandbox);
 
         var node = document.createElement("span");
         node.appendChild(document.createTextNode("Hallo, Welt!"));
