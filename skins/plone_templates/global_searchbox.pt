@@ -21,10 +21,9 @@
                type="text"
                size="15"
                value=""
-               alt="Search Site"
                title="Search Site"
-               accesskey="accesskeys-search"
-               i18n:attributes="alt accesskey title"
+               accesskey="s"
+               i18n:attributes="accesskey accesskeys-search; title title_search_site;"
                tal:attributes="value request/SearchableText|nothing;
                                tabindex tabindex/next"
                class="visibility:visible" />
@@ -36,9 +35,8 @@
                type="submit"
                tabindex=""
                value="Search"
-               accesskey="accesskeys-search"
                tal:attributes="tabindex tabindex/next"
-               i18n:attributes="value accesskey" />
+               i18n:attributes="value label_search;" />
     </form>
 </div>
 

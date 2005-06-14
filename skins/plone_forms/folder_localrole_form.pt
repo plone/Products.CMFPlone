@@ -82,7 +82,7 @@
             <input class="context"
                 type="submit"
                 value="Apply Settings"
-                i18n:attributes="value"
+                i18n:attributes="value label_apply_settings;"
                 tabindex=""
                 tal:attributes="tabindex tabindex/next;"
                 />
@@ -233,7 +233,7 @@
 		type="submit"
 		value="Assign Selected Role(s) to Selected User(s)/Group(s)"
 		name="folder_localrole_add:method"
-		i18n:attributes="value"
+		i18n:attributes="value label_assign_roles_to_users_groups;"
 		tabindex=""
 		tal:attributes="tabindex tabindex/next;"
 		/>
@@ -241,7 +241,7 @@
                 type="submit"
                 value="Delete Selected Role(s) and User(s)/Group(s)"
                 name="folder_localrole_delete:method"
-                i18n:attributes="value"
+                i18n:attributes="value label_delete_roles_users_groups;"
                 tabindex=""
                 tal:attributes="tabindex tabindex/next;"
                 />
@@ -355,7 +355,7 @@
                     <input class="context"
                             type="submit"
                             value="Assign Local Role to Selected User(s)"
-                            i18n:attributes="value"
+                            i18n:attributes="value label_assign_local_role_to_users;"
                             tabindex=""
                             tal:attributes="tabindex tabindex/next;"
                             />
@@ -439,7 +439,7 @@
                     <input class="context"
                             type="submit"
                             value="Perform Search"
-                            i18n:attributes="value"
+                            i18n:attributes="value label_perform_search;"
                             tabindex=""
                             tal:attributes="tabindex tabindex/next;"
                             />
@@ -537,7 +537,7 @@
                         <input class="context"
                             type="submit"
                             value="Assign Local Role to Selected Group(s)"
-                            i18n:attributes="value"
+                            i18n:attributes="value label_assign_role_to_groups;"
                             tabindex=""
                             tal:attributes="tabindex tabindex/next;"
                             />

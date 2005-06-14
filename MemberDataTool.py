@@ -12,6 +12,8 @@ from Products.BTreeFolder2.BTreeFolder2 import BTreeFolder2
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFCore.CMFCorePermissions import SetOwnProperties, ManagePortal
+from ZODB.POSException import ConflictError
+
 
 class MemberDataTool(PloneBaseTool, BaseTool):
 
@@ -302,6 +304,8 @@ class MemberData(BaseData):
                         # If it works, add a marker to retreive the data from the user object
                         self.setProperty(id, value)             # This is GRUF's method
                         setattr(self, "%s_USER" % id, 1)
+                    except ConflictError:
+                        raise
                     except:
                         # It didn't work... use the regular way, then - and remove the marker
                         setattr(self, id, value)

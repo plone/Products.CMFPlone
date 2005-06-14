@@ -265,7 +265,7 @@
                        type="submit"
                        name="submit"
                        value="Search"
-                       i18n:attributes="value"
+                       i18n:attributes="value label_search;"
                        tal:attributes="tabindex tabindex/next;"
                        />
             </div>

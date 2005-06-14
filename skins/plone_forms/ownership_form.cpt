@@ -63,7 +63,7 @@
                            type="submit"
                            name="save"
                            value="Save"
-                           i18n:attributes="value"
+                           i18n:attributes="value label_save;"
                            />
             </div>
         </fieldset>

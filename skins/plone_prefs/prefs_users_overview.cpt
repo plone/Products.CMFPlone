@@ -71,7 +71,7 @@
                      type="submit"
                      name="form.button.AddUser"
                      value="Add New User"
-                     i18n:attributes="value"
+                     i18n:attributes="value label_add_new_user;"
                      tal:attributes="tabindex tabindex/next;"
 		/>
 	      <input type="hidden" name="form.submitted" value="1" />
@@ -103,7 +103,7 @@
                            name="form.button.Search"
                            value="Search"
                            tabindex=""
-                           i18n:attributes="value"
+                           i18n:attributes="value label_search;"
                            tal:attributes="tabindex tabindex/next;" />
 
                     </th>
@@ -142,7 +142,7 @@
                          class="link-plain"
                          tal:attributes="href string:mailto:${email}"
                          title="Send a mail to this user"
-                         i18n:attributes="title"
+                         i18n:attributes="title title_send_mail_to_user;"
                          ><tal:block replace="structure here/mail_icon.gif"/></a>
 		      <input style="margin:2px;"
                              type="text"
@@ -192,7 +192,7 @@
 		     type="submit"
 		     name="form.button.Modify"
 		     value="Apply Changes"
-		     i18n:attributes="value"
+		     i18n:attributes="value label_apply_changes;"
 		     tal:attributes="tabindex tabindex/next;"
 		     tal:condition="batch" 
 		/>

@@ -86,7 +86,7 @@
             
             <input class="context"
                    type="submit"
-                   i18n:attributes="value"
+                   i18n:attributes="value label_install;"
                    value="Install"
                    />
         </fieldset>
@@ -167,7 +167,7 @@
         
             <input class="context"
                    type="submit"
-                   i18n:attributes="value"
+                   i18n:attributes="value label_uninstall;"
                    value="Uninstall"
                    name="uninstallProducts:method"
                    />

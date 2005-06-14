@@ -68,7 +68,7 @@
 
         <fieldset>
 
-            <legend i18n:translate="legend_comment_details">Add comment</legend>
+            <legend i18n:translate="legend_add_comment">Add comment</legend>
             <p i18n:translate="description_add_comment">
                 You can add a comment by filling out the form below. Plain text formatting.
             </p>
@@ -98,7 +98,7 @@
                            value="" alt="Username" title="Name"
                            size="40"
                            tabindex=""
-                           i18n:attributes="title"
+                           i18n:attributes="title label_name; alt label_username;"
                            tal:attributes="tabindex tabindex/next;" />
 
                 </div>
@@ -113,7 +113,7 @@
                            tabindex=""
                            value="" alt="Password" title="Password"
                            size="40"
-                           i18n:attributes="title"
+                           i18n:attributes="title label_password; alt label_password;"
                            tal:attributes="tabindex tabindex/next;" />
 
                 </div>
@@ -131,8 +131,6 @@
               i18n:attributes="title title_required;"
               i18n:translate="label_required">(Required)</span>
 
-            <div class="formHelp" i18n:translate="help_subject" />
-
             <div tal:content="error">Validation error output</div>
 
                 <input name="subject"
@@ -149,13 +147,11 @@
         tal:define="error errors/body_text|nothing;"
         tal:attributes="class python:test(error, 'field error', 'field')">
 
-                <label for="text" i18n:translate="label_body_text">Comment</label>
+                <label for="text" i18n:translate="label_comment">Comment</label>
 
         <span class="fieldRequired" title="Required"
               i18n:attributes="title title_required;"
               i18n:translate="label_required">(Required)</span>
-
-            <div class="formHelp" i18n:translate="help_body_text" />
 
             <div tal:content="error">Validation error output</div>
 
@@ -177,7 +173,7 @@
                        type="submit"
                        value="Add Comment"
                        name="form.button.Save"
-                       i18n:attributes="value"
+                       i18n:attributes="value label_save;"
                        tal:attributes="tabindex tabindex/next;
                                        name string:discussion_reply:method;" />
 

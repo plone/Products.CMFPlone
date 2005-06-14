@@ -27,7 +27,7 @@
 	     alt="Powered by Plone"
 	     title="This Plone site was built using the Plone Content Management System. Click for more information."
 	     tal:attributes="src string:$portal_url/plone_powered.gif"
-	     i18n:attributes="alt title" />
+	     i18n:attributes="alt label_powered_by_plone; title title_built_with_plone;" />
       </a>
 
       <metal:slot define-slot="colophon" />
@@ -45,7 +45,7 @@
 		 alt="Section 508"
 		 title="This Plone site conforms to the US Government Section 508 Accessibility Guidelines."
 		 tal:attributes="src string:$portal_url/colophon_sec508.gif"
-		 i18n:attributes="alt title" />
+		 i18n:attributes="alt label_section_508; title title_section_508;" />
 	  </a>
 	</li>
 	<li>
@@ -56,7 +56,7 @@
 		 alt="WCAG"
 		 title="This Plone site conforms to the W3C-WAI Web Content Accessibility Guidelines."
 		 tal:attributes="src string:$portal_url/colophon_wai-aa.gif"
-		 i18n:attributes="alt title" />
+		 i18n:attributes="alt label_wcag; title title_wcag;" />
 	  </a>
 	</li>
 	<li>
@@ -67,7 +67,7 @@
 		 alt="Valid XHTML"
 		 title="This Plone site is valid XHTML."
 		 tal:attributes="src string:$portal_url/colophon_xhtml.png"
-		 i18n:attributes="alt title" />
+		 i18n:attributes="alt label_xhtml; title title_xhtml;" />
 	  </a>
 	</li>
 	<li>
@@ -78,7 +78,7 @@
 		 alt="Valid CSS"
 		 title="This Plone site was built with valid CSS."
 		 tal:attributes="src string:$portal_url/colophon_css.png"
-		 i18n:attributes="alt title" />
+		 i18n:attributes="alt label_css; title title_css;" />
 	  </a>
 	</li>
 	<li>
@@ -89,7 +89,7 @@
 		 alt="Usable in any browser"
 		 title="This Plone site is usable in any web browser."
 		 tal:attributes="src string:$portal_url/colophon_anybrowser.png"
-		 i18n:attributes="alt title" />
+		 i18n:attributes="alt label_any_browser; title title_any_browser;" />
 	  </a>
 	</li>
       </ul>

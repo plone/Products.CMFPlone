@@ -250,21 +250,21 @@
                    type="submit"
                    name="form.button.Publish"
                    value="Save"
-                   i18n:attributes="value"
+                   i18n:attributes="value label_save;"
                    tal:attributes="tabindex tabindex/next;"
                    tal:condition="not:request/paths|nothing"/>
             <input class="context"
                    type="submit"
                    name="form.button.FolderPublish"
                    value="Save"
-                   i18n:attributes="value"
+                   i18n:attributes="value label_save;"
                    tal:attributes="tabindex tabindex/next;"
                    tal:condition="request/paths|nothing"/>
             <input class="standalone"
                    type="submit"
                    name="form.button.Cancel"
                    value="Cancel"
-                   i18n:attributes="value"
+                   i18n:attributes="value label_cancel;"
                    tal:attributes="tabindex tabindex/next;"/>
           </div>
 

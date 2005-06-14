@@ -117,7 +117,7 @@
                  value="Rename All"
                  name="form.button.RenameAll"
                  tabindex=""
-                 i18n:attributes="value"
+                 i18n:attributes="value label_rename_all;"
                  tal:attributes="tabindex tabindex/next;"
                  />
           <input class="standalone"
@@ -125,7 +125,7 @@
                  value="Cancel"
                  name="form.button.Cancel"
                  tabindex=""
-                 i18n:attributes="value"
+                 i18n:attributes="value label_cancel;"
                  tal:attributes="tabindex tabindex/next;"
                  />
         </div>

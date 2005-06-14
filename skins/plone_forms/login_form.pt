@@ -163,7 +163,7 @@ to become a member.
                    type="submit"
                    name="submit"
                    value="Log in"
-                   i18n:attributes="value"
+                   i18n:attributes="value label_log_in;"
                    tal:attributes="tabindex tabindex/next;"
                    />
 

@@ -107,7 +107,7 @@
                    type="submit"
                    name="form.button.Send"
                    value="Send"
-                   i18n:attributes="value"
+                   i18n:attributes="value label_send;"
                    tal:attributes="tabindex tabindex/next;"
                    />
           </div>

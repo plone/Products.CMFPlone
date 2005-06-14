@@ -24,7 +24,7 @@
                  translation_service nocall:here/translation_service;">
     <!-- The calendar, rendered as a table -->
 
-    <table class="ploneCalendar" id="thePloneCalendar" summary="Calendar" i18n:attributes="summary">
+    <table class="ploneCalendar" id="thePloneCalendar" summary="Calendar" i18n:attributes="summary summary_calendar;">
         <thead>
             <tr>
                 <th id="calendar-previous">

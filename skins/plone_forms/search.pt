@@ -45,7 +45,7 @@
         </strong>
 
         <a href="" tal:attributes="href string:$here_url/search_rss?${request/QUERY_STRING}">
-        <img i18n:attributes="title alt"
+        <img i18n:attributes="title title_rss_feed; alt label_rss_feed;"
              tal:attributes="src string:$portal_url/rss.gif"
              src="rss.gif"
              alt="RSS Feed"
@@ -73,7 +73,7 @@
                      title="Relevance"
                      tal:condition="result/data_record_normalized_score_"
                      i18n:translate="label_relevance_percentage"
-                     i18n:attributes="title">
+                     i18n:attributes="title title_relevance;">
                     [<span tal:replace="result/data_record_normalized_score_"
                                       i18n:name="percentage">23%</span>%]
                </span>

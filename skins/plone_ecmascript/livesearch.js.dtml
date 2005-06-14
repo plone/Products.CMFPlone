@@ -243,7 +243,7 @@ function liveSearchDoSearch() {
 		showResult(result);	
 		return;
 	}
-	liveSearchReq = Sarissa.getXmlHttpRequest();
+	liveSearchReq = new XMLHttpRequest();
 	liveSearchReq.onreadystatechange= liveSearchProcessReqChange;
 	liveSearchReq.open("GET", liveSearchRoot + queryTarget + searchInput.value );
 	liveSearchLast = searchInput.value;

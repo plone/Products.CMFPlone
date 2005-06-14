@@ -68,7 +68,7 @@
                           value="Add user to selected groups"                     
     	       	          tal:condition="batch" 
                           tal:attributes="tabindex tabindex/next;"    
-                          i18n:attributes="value" />
+                          i18n:attributes="value label_add_user_to_group;" />
     	  </metal:block>
     
     	  <metal:block metal:fill-slot="removables">
@@ -108,7 +108,7 @@
                    type="submit"
                    name="prefs_user_membership_edit:method"
                    value="Remove selected groups"
-                   i18n:attributes="value" 
+                   i18n:attributes="value label_remove_selected_groups;" 
                    tal:condition="groups" />
           </metal:block>
         </div>

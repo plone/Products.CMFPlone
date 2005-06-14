@@ -358,14 +358,14 @@
                    tal:condition="isLocked"
                    tal:replace="structure python:locked.tag(title='This item is locked')"
                    alt="Object locked"
-                   i18n:attributes="alt"/>
+                   i18n:attributes="alt label_object_locked;"/>
 
             <input class="context"
                    tabindex=""
                    type="submit"
                    name="form.button.Save"
                    value="Save"
-                   i18n:attributes="value"
+                   i18n:attributes="value label_save;"
                    tal:attributes="tabindex tabindex/next;
                                    disabled python:test(isLocked, 'disabled', None);" />
 
@@ -375,7 +375,7 @@
                    type="submit"
                    name="form.button.Cancel"
                    value="Cancel"
-                   i18n:attributes="value"
+                   i18n:attributes="value label_cancel;"
                    tal:attributes="tabindex tabindex/next;" />
           </div>
         </fieldset>

@@ -267,7 +267,7 @@
                        type="submit"
                        name="form.button.Save"
                        value="Save"
-                       i18n:attributes="value"
+                       i18n:attributes="value label_save;"
                        tal:attributes="tabindex tabindex/next;"
                        />
 

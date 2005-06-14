@@ -17,8 +17,8 @@
         id="user-name"
         tal:omit-tag="not: mtool/getHomeFolder"
         tal:attributes="href string:${mtool/getHomeUrl}"
-        accesskey="accesskeys-personalbar"
-        i18n:attributes="accesskey">
+        accesskey="u"
+        i18n:attributes="accesskey accesskeys-personalbar;">
         <span class="visualCaseSensitive"
               tal:replace="user/getUserName">
              John
@@ -28,9 +28,7 @@
     <tal:actions tal:repeat="action python:here.getOrderedUserActions(keyed_actions=keyed_actions)">
         <li>
             <a href=""
-               tal:attributes="href action/url"
-               accesskey="accesskeys-personalbar"
-               i18n:attributes="accesskey">
+               tal:attributes="href action/url">
                <tal:actionname i18n:translate="" tal:content="action/name">dummy</tal:actionname>
             </a>
         </li>

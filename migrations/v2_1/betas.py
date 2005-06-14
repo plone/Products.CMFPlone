@@ -1,6 +1,8 @@
 from Products.CMFCore import CMFCorePermissions
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.Expression import Expression
+from Products.CMFPlone.migrations.migration_util import installOrReinstallProduct, \
+     safeGetMemberDataTool, safeEditProperty
 
 
 def alpha2_beta1(portal):
@@ -26,7 +28,10 @@ def alpha2_beta1(portal):
     # Add criteria to News and Events topics to restrict to published
     restrictNewsTopicToPublished(portal, out)
     restrictEventsTopicToPublished(portal, out)
-    
+
+    # Install kupu
+    installKupu(portal, out)
+
     # Exchange plone_menu.js with dropdown.js
     exchangePloneMenuWithDropDown(portal, out)
 
@@ -223,3 +228,16 @@ def restrictEventsTopicToPublished(portal, out):
             out.append('Events topic already restricted to published.')
     else:
         out.append('Events topic view not in place!')
+
+
+def installKupu(portal, out):
+    """Quickinstalls Kupu if not installed yet."""
+    # Kupu is optional
+    if 'kupu' in portal.Control_Panel.Products.objectIds():
+        installOrReinstallProduct(portal, 'kupu', out)
+        # Make kupu the default
+        md = safeGetMemberDataTool(portal)
+        if md and not hasattr(md, 'wysiwyg_editor'):
+            safeEditProperty(md, 'wysiwyg_editor', 'Kupu', 'string')
+        out.append('Set Kupu as default WYSIWYG editor.')
+

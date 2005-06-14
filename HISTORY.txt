@@ -12,6 +12,17 @@ Plone 2.1 - Plaid - (Unreleased)
       scripts.
       [fschulze]
 
+    - Partially fixed http://plone.org/collector/4077 and #3535 accesskeys are
+      properly definied now, but still need to be changed to numeric values
+      [hannosch]
+
+    - Fixed http://plone.org/collector/2414 all literal msgid's converted to
+      non-literal
+      [hannosch]
+
+    - Merged plip83-kupu-integration r7083:7084 into 2.1 branch.
+      [stefan]
+
     - Fixed http://plone.org/collector/1382 - Redirection after login has been changed.
       Original behavior is to strip any query string passed before redirecting.
       Now, if query string exists (such as when coming from discussion_reply_form.pt),

@@ -11,7 +11,7 @@
                    lockable python:hasattr(here, 'wl_isLocked');"
        tal:condition="python:lockable and here.wl_isLocked()"
        tal:replace="structure python:locked.tag(title='Locked')"
-       i18n:attributes="title"
+       i18n:attributes="title label_document_locked;"
        />
 
     <tal:name tal:condition="creator"
@@ -29,7 +29,7 @@
       <tal:ownership condition="python: isEditable and checkPermission('Manage portal', here)">
         <a href="" 
            title="Change ownership"
-           i18n:attributes="title"
+           i18n:attributes="title label_change_ownership;"
            i18n:translate="label_change_author"
            tal:attributes="href string:${here/absolute_url}/ownership_form;">[Change ownership]</a>
       </tal:ownership>
@@ -48,11 +48,11 @@
     <a href="" 
        title="Change contributers"
        tal:condition="python: isEditable and checkPermission('Manage properties', here)" 
-       i18n:attributes="title"
+       i18n:attributes="title label_change_contributers;"
        tal:attributes="href string:${here/absolute_url}/base_metadata;">
       <img src="" tal:attributes="src string:${portal_url}/edit.gif"
            alt="Change contributers"
-           i18n:attributes="alt"/>
+           i18n:attributes="alt label_change_contributers;"/>
       </a>
 
     <br />
@@ -78,7 +78,7 @@
         <img src=""
              tal:replace="structure python:locked.tag(title='This item is locked')"
              alt="Object locked"
-             i18n:attributes="alt" />
+             i18n:attributes="alt label_object_locked;" />
     </span>
 
     <tal:rights condition="here/Rights">

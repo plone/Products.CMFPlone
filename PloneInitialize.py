@@ -81,7 +81,7 @@ def create(app, admin_username='admin'):
     # 5. add in products
     qit = plone.portal_quickinstaller
 
-    products_to_install = ["Epoz",]
+    products_to_install = ["kupu",]
     ids = [ x['id'] for x in qit.listInstallableProducts(skipInstalled=1) ]
     for product in products_to_install:
         if product in ids:
