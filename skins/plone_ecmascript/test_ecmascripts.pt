@@ -19,7 +19,7 @@
     </metal:css_slot>
     <metal:javascript_head_slot fill-slot="javascript_head_slot">
         <script type="text/javascript" src="ecmaunit.js"> </script>
-        <script type="text/javascript" src="testnodeutilities.js"> </script>
+        <script type="text/javascript" src="testNodeutilities.js"> </script>
         <script type="text/javascript" src="testcases.js"> </script>
         <script type="text/javascript">
 //<![CDATA[
