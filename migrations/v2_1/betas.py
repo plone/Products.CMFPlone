@@ -169,6 +169,15 @@ def exchangePloneMenuWithDropDown(portal, out):
                 jsreg.unregisterResource('plone_menu.js')
             except ValueError:
                 pass
+            jsreg.registerScript('cssQuery.js')
+            try:
+                jsreg.moveResourceBefore('cssQuery.js', 'plone_javascript_variables.js')
+            except ValueError:
+                try:
+                    jsreg.moveResourceBefore('cssQuery.js', 'register_function.js')
+                except ValueError:
+                    # ok put to the top
+                    jsreg.moveResourceToTop('cssQuery.js')
 
 def allowOwnerToAccessInactiveContent(portal, out):
     permission = CMFCorePermissions.AccessInactivePortalContent

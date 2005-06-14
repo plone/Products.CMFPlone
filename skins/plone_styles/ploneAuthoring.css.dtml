@@ -647,13 +647,6 @@ ul.configletDetails li label {
     border-left: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
 }
 
-.menuPosition {
-    /*  The spec says we can't put this on an element with a float (although
-        Opera is the only one that cares) and we need it in order to catch
-        the position:absolute bubbling up */
-    position: relative;
-    }
-
 .actionItems li {
     background-image: none;
 }
@@ -664,7 +657,23 @@ ul.configletDetails li label {
     padding: 0 0.5em;
 }
 
-.contentActionMenuHeader {
+.actionMenu {
+    /*  The spec says we can't put this on an element with a float (although
+        Opera is the only one that cares) and we need it in order to catch
+        the position:absolute bubbling up */
+
+    position: relative;
+    margin: 0;
+    padding: 0;
+}
+
+.actionMenu .actionMenuHeader {
+    margin: 0;
+    padding: 0;
+    font-weight: normal;
+}
+
+.actionMenu .actionMenuHeader a {
     background-image: url(<dtml-var portal_url>/arrowDownAlternative.gif);
     background-repeat: no-repeat;
     background-position: 95% 60%;
@@ -672,7 +681,7 @@ ul.configletDetails li label {
     cursor: pointer;
 }
 
-.contentActions .actionMenu {
+.contentActions .actionMenu .actionMenuContent {
     display: none;
     z-index: 5;
     position: absolute;
@@ -686,7 +695,20 @@ ul.configletDetails li label {
     border-style: none &dtml-borderStyle; &dtml-borderStyle; &dtml-borderStyle;;
 }
 
-.actionMenu li {
+.actionMenu dd.activated {
+    display: block;
+}
+.actionMenu dd.activated {
+    /* this one will be ignored by IE, it is here to fix the cut-off error in
+       Firefox */
+    display: table;
+}
+
+.actionMenu dd.deactivated {
+    display: none;
+}
+
+.actionMenu .actionMenuContent li {
     float: none;
     background: transparent;
     display: inline;
@@ -695,19 +717,19 @@ ul.configletDetails li label {
     border: 0;
 }
 
-.actionMenu li a {
+.actionMenu .actionMenuContent li a {
     display: block;
     white-space: nowrap;
     padding: 0 0.5em;
     margin: 0.2em 0;
 }
 
-.actionMenu li a:hover {
+.actionMenu .actionMenuContent li a:hover {
     background-color: &dtml-contentViewBorderColor;;
     color: White;
 }
 
-.actionMenu .actionSeperator a {
+.actionMenu .actionMenuContent .actionSeperator a {
     margin-top: 0.2em;
     padding-top: 0.2em;
     border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;

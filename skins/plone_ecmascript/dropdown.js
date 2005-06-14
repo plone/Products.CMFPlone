@@ -1,80 +1,78 @@
+/*
+ * This is the code for the dropdown menus. It uses the following markup:
+ *
+ * <dl class="actionMenu" id="uniqueIdForThisMenu">
+ *   <dt class="actionMenuHeader">
+ *     <!-- The following a-tag needs to be clicked to dropdown the menu -->
+ *     <a href="some_destination">A Title</a>
+ *   </dt>
+ *   <dd class="actionMenuContent">
+ *     <!-- Here can be any content you want -->
+ *   </dd>
+ * </dl>
+ *
+ * When the menu is toggled, then the dd with the class actionMenuContent will
+ * get an additional class which switches between 'activated' and 'deactivated'.
+ * You can use this to style it accordingly, for example:
+ *
+ * .actionMenu .activated {
+ *   display: block;
+ * }
+ *
+ * .actionMenu .deactivated {
+ *   display: none;
+ * }
+ *
+ * When you click somewhere else than the menu, then all open menus will be
+ * deactivated. When you move your mouse over the a-tag of another menu, then
+ * that one will be activated and all others deactivated.
+ *
+ * This file uses functions from register_function.js, cssQuery.js and
+ * nodeutils.js.
+ *
+ */
 
-var actionMenuIds = new Array();
-
-function getContainerWith(node, func) {
-    // Starting with the given node, find the nearest containing element
-    // for which the function func returns true.
-    
-    while (node != null) {
-        if (func(node)) {
-            return node;
-        }
-        node = node.parentNode;
+function isActionMenu(node) {
+    if (hasClassName(node, 'actionMenu')) {
+        return true;
     }
     return false;
 }
 
-function stringInList(name, list) {
-    for (i = 0; i < list.length; i++) {
-        if (list[i] == name){
-            return true;
-        }
-    }
-    return false;
-}
-
-function activateMenu(event) {
+function toggleMenu(event) {
     if (!event) var event = window.event; // IE compatibility
 
     // terminate if we hit a non-compliant DOM implementation
     // returning true, so the link is still followed
     if (!document.getElementById){return true;}
 
-    if (!this.className) {
+    if (!this.tagName && (this.tagName == 'A' || this.tagName == 'a')) {
         return true;
     }
 
-    classes = this.className.split(' ');
-    if (!stringInList('contentActionMenuHeader', classes)) {
-        // not the correct element, the event needs to bubble up/down
+    container = findContainer(this, isActionMenu);
+    if (!container) {
         return true;
     }
-    // last class is the menu_id
-    menu_id = classes.pop();
 
-    menu_body = document.getElementById(menu_id);
+    menu_body = cssQuery('dd.actionMenuContent', container)[0];
     if (!menu_body) {
         return true;
     }
 
     // check if the menu is visible
-    if (menu_body.style.display && menu_body.style.display != 'none') {
+    if (hasClassName(menu_body, 'activated')) {
         // it's visible - hide it
-        menu_body.style.display = 'none';
+        replaceClassName(menu_body, 'activated', 'deactivated', true);
     } else {
         // it's invisible - make it visible
-        try {
-            // using table fixes the cut off of elements in Firefox
-            menu_body.style.display = 'table';
-        } catch(e) {
-            // IE doesn't know table
-            menu_body.style.display = 'block';
-        }
+        replaceClassName(menu_body, 'deactivated', 'activated', true);
     }
 
     return false;
 }
 
-function isActionMenu(node) {
-    if (node.className) {
-        if (node.className.indexOf('actionMenu') >= 0) {
-            return true;
-        }
-    }
-    return false;
-}
-
-function menuDocumentMouseDown(event) {
+function actionMenuDocumentMouseDown(event) {
     if (!event) var event = window.event; // IE compatibility
 
     if (event.target)
@@ -82,64 +80,53 @@ function menuDocumentMouseDown(event) {
     else if (event.srcElement)
         targ = event.srcElement;
 
-    container = getContainerWith(targ, isActionMenu);
+    container = findContainer(targ, isActionMenu);
     if (container) {
         // targ is part of the menu, so just return and do the default
         return true;
     }
 
     // hide all menus
-    for (i=0; i < actionMenuIds.length; i++) {
-        menu_body = document.getElementById(actionMenuIds[i]);
-        if (!menu_body) {
-            continue
-        }
-        menu_body.style.display = 'none';
+    menu_bodys = cssQuery('dl.actionMenu > dd.actionMenuContent');
+    for (i in menu_bodys) {
+        replaceClassName(menu_bodys[i], 'activated', 'deactivated', true);
     }
 
     return true;
 }
 
-function menuMouseOver(event) {
+function actionMenuMouseOver(event) {
     if (!event) var event = window.event; // IE compatibility
 
-    if (!this.className) {
+    if (!this.tagName && (this.tagName == 'A' || this.tagName == 'a')) {
         return true;
     }
 
-    classes = this.className.split(' ');
-    if (!stringInList('contentActionMenuHeader', classes)) {
-        // not the correct element, the event needs to bubble up/down
+    container = findContainer(this, isActionMenu);
+    if (!container) {
         return true;
     }
-    // last class is the menu_id
-    menu_id = classes.pop();
+    menu_id = container.id;
 
     var switch_menu = false;
     // hide all menus
-    for (i=0; i < actionMenuIds.length; i++) {
-        menu_body = document.getElementById(actionMenuIds[i]);
-        if (!menu_body) {
-            continue
-        }
+    menu_bodys = cssQuery('dl.actionMenu > dd.actionMenuContent');
+    for (i in menu_bodys) {
+        menu_body = menu_bodys[i]
         // check if the menu is visible
-        if (menu_body.style.display && menu_body.style.display != 'none') {
+        if (hasClassName(menu_body, 'activated')) {
             switch_menu = true;
         }
         // turn off menu when it's not the current one
         if (menu_body.id != menu_id) {
-            menu_body.style.display = 'none';
+            replaceClassName(menu_body, 'activated', 'deactivated', true);
         }
     }
 
     if (switch_menu) {
-        menu_body = document.getElementById(menu_id);
-        try {
-            // using table fixes the cut off of elements in Firefox
-            menu_body.style.display = 'table';
-        } catch(e) {
-            // IE doesn't know table
-            menu_body.style.display = 'block';
+        menu_body = cssQuery('#'+menu_id+' > dd.actionMenuContent')[0];
+        if (menu_body) {
+            replaceClassName(menu_body, 'deactivated', 'activated', true);
         }
     }
 
@@ -151,30 +138,14 @@ function initializeMenus() {
     if (! document.getElementsByTagName){return false;}
     if (! document.getElementById){return false;}
 
-    document.onmousedown = menuDocumentMouseDown
+    document.onmousedown = actionMenuDocumentMouseDown
 
-    links = document.getElementsByTagName('a');
-    for (i=0; i < links.length; i++) {
-        if (links[i].className.indexOf('contentActionMenuHeader')== -1) {
-            continue
-        }
-        menu_header = links[i]
+    menu_headers = cssQuery('dl.actionMenu > dt.actionMenuHeader > a');
+    for (i in menu_headers) {
+        menu_header = menu_headers[i]
 
-        // extract the target id
-        classes = menu_header.className.split(' ')
-        // last class is the menu_id
-        menu_id = classes.pop();
-
-        // see whether the target is available
-        menu_body = document.getElementById(menu_id);
-        if (!menu_body) {
-            continue
-        }
-
-        actionMenuIds.push(menu_id);
-
-        menu_header.onclick = activateMenu;
-        menu_header.onmouseover = menuMouseOver;
+        menu_header.onclick = toggleMenu;
+        menu_header.onmouseover = actionMenuMouseOver;
     }
 }
 

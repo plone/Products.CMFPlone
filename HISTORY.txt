@@ -3,6 +3,11 @@ Changelog for Plone
    (name of developer listed in brackets)
 
 Plone 2.1 - Plaid - (Unreleased)
+    - Refactored the dropdown menu. It's using css classes for styling of
+      visibility. This involves new markup for the menus.
+      Also added cssQuery by Dean Edwards to ease development of such kind of
+      scripts.
+      [fschulze]
 
     - Fixed http://plone.org/collector/1382 - Redirection after login has been changed.
       Original behavior is to strip any query string passed before redirecting.

@@ -5,18 +5,84 @@ function wrapNode(node, wrappertype, wrapperclass){
     wrapper = document.createElement(wrappertype)
     wrapper.className = wrapperclass;
     innerNode = node.parentNode.replaceChild(wrapper,node);
-    wrapper.appendChild(innerNode)
+    wrapper.appendChild(innerNode);
 }
+
 function nodeContained(innernode, outernode){
     // check if innernode is contained in outernode
-    var node
+    var node;
     node = innernode.parentNode;
-    while (node != document){
-        if (node == outernode){
+    while (node != document) {
+        if (node == outernode) {
             return true; 
-            break
-            }
-        node=node.parentNode
         }
-    return false
+        node=node.parentNode;
     }
+    return false;
+}
+
+function findContainer(node, func) {
+    // Starting with the given node, find the nearest containing element
+    // for which the given function returns true.
+
+    while (node != null) {
+        if (func(node)) {
+            return node;
+        }
+        node = node.parentNode;
+    }
+    return false;
+}
+
+function hasClassName(node, class_name) {
+    if (node.className) {
+        class_names = node.className.split(' ');
+        for (class_index in class_names) {
+            if (class_names[class_index] == class_name){
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+function addClassName(node, class_name) {
+    if (!hasClassName(node, class_name)) {
+        node.className += " "+class_name;
+    }
+}
+
+function removeClassName(node, class_name) {
+    if (node.className) {
+        class_names = node.className.split(' ');
+        var new_classes = new Array();
+        for (class_index in class_names) {
+            cn = class_names[class_index];
+            if (cn != class_name) {
+                new_classes.push(cn);
+            }
+        }
+        node.className = new_classes.join(" ");
+    }
+}
+
+function replaceClassName(node, old_class, new_class, ignore_missing) {
+    if (node.className) {
+        class_names = node.className.split(' ');
+        var new_classes = new Array();
+        var found_old = false;
+        for (class_index in class_names) {
+            cn = class_names[class_index];
+            if (cn == old_class) {
+                found_old = true;
+                continue;
+            } else if (cn != new_class) {
+                new_classes.push(cn);
+            }
+        }
+        if (found_old || ignore_missing) {
+            new_classes.push(new_class);
+        }
+        node.className = new_classes.join(" ");
+    }
+}

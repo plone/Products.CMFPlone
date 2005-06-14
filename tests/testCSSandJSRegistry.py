@@ -65,6 +65,7 @@ class TestJSRegistry(PloneTestCase.PloneTestCase):
              'livesearch.js',
              'table_sorter.js',
              'dropdown.js',
+             'cssQuery.js',
              'cookie_functions.js',
              'nodeutilities.js',
              'plone_javascript_variables.js',

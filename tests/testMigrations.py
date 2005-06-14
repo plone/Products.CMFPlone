@@ -1320,6 +1320,7 @@ class TestMigrations_v2_1(MigrationTest):
         script_ids = [ item.get('id') for item in scripts ]
         self.failIf('plone_menu.js' in script_ids)
         self.failUnless('dropdown.js' in script_ids)
+        self.failUnless('cssQuery.js' in script_ids)
 
     def testAllowOwnerToAccessInactiveContent(self):
         # Should grant the "Access inactive ..." permission to owner
