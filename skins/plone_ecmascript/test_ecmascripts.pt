@@ -71,6 +71,8 @@
 //]]>
         </script>
     </metal:javascript_head_slot>
+    <metal:block fill-slot="top_slot"
+                 tal:define="dummy python:request.set('disable_border',1)" />
 </head>
 
 <body>
