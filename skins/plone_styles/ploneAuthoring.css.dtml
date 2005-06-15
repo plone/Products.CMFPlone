@@ -671,6 +671,7 @@ ul.configletDetails li label {
     margin: 0;
     padding: 0;
     font-weight: normal;
+    cursor: pointer;
 }
 
 .actionMenu .actionMenuHeader a {
@@ -687,12 +688,20 @@ ul.configletDetails li label {
     position: absolute;
     top: 0;
     right: -1px;
-    background: &dtml-contentViewBackgroundColor;;
     height: auto;
     padding: 0;
-    margin: 1.2em 0 0 0;
+    margin: 0;
+    cursor: pointer;
+}
+
+.contentActions .actionMenu .actionMenuContent ul {
+    display: block;
+    background: &dtml-contentViewBackgroundColor;;
     border: &dtml-borderWidth; &dtml-contentViewBorderColor;;
     border-style: none &dtml-borderStyle; &dtml-borderStyle; &dtml-borderStyle;;
+    margin: 1.2em 0 0 0;
+    padding: 0;
+    cursor: pointer;
 }
 
 .actionMenu dd.activated {
@@ -702,6 +711,8 @@ ul.configletDetails li label {
     /* this one will be ignored by IE, it is here to fix the cut-off error in
        Firefox */
     display: table !important;
+    border-collapse: collapse;
+    border-spacing: 0;
 }
 
 .actionMenu dd.deactivated {
