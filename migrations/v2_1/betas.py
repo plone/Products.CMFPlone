@@ -145,7 +145,10 @@ def migrateResourceRegistries(portal, out):
         if base_hasattr(cssreg, 'concatenatedstylesheets'):
             cssreg.concatenatedresources = cssreg.concatenatedstylesheets
             del cssreg.concatenatedstylesheets
-    out.append("Done migrating CSSRegistry.")
+        cssreg.cookResources()
+        out.append("Done migrating CSSRegistry.")
+    else:
+        out.append("No CSSRegistry found.")
 
     out.append("Migrating JSSRegistry.")
     jsreg = getToolByName(portal, 'portal_css')
@@ -161,7 +164,10 @@ def migrateResourceRegistries(portal, out):
         if base_hasattr(jsreg, 'concatenatedscripts'):
             jsreg.concatenatedresources = jsreg.concatenatedscripts
             del jsreg.concatenatedscripts
-    out.append("Done migrating JSSRegistry.")
+        jsreg.cookResources()
+        out.append("Done migrating JSSRegistry.")
+    else:
+        out.append("No JSRegistry found.")
 
 
 def reorderStylesheets(portal, out):

@@ -1299,6 +1299,24 @@ class TestMigrations_v2_1(MigrationTest):
         self.portal._delObject('portal_membership')
         fixMyFolderAction(self.portal, [])
 
+    def testCSSRegistryMigration(self):
+        cssreg = self.portal.portal_css
+        self.failIf(hasattr(cssreg, 'stylesheets'))
+        self.failIf(hasattr(cssreg, 'cookedstylesheets'))
+        self.failIf(hasattr(cssreg, 'concatenatedstylesheets'))
+        self.failUnless(hasattr(cssreg, 'resources'))
+        self.failUnless(hasattr(cssreg, 'cookedresources'))
+        self.failUnless(hasattr(cssreg, 'concatenatedresources'))
+
+    def testJSRegistryMigration(self):
+        jsreg = self.portal.portal_javascripts
+        self.failIf(hasattr(jsreg, 'scripts'))
+        self.failIf(hasattr(jsreg, 'cookedscripts'))
+        self.failIf(hasattr(jsreg, 'concatenatedscripts'))
+        self.failUnless(hasattr(jsreg, 'resources'))
+        self.failUnless(hasattr(jsreg, 'cookedresources'))
+        self.failUnless(hasattr(jsreg, 'concatenatedresources'))
+
     def testReorderStylesheets(self):
         """ ploneRTL should be right above ploneCustom.css
 
