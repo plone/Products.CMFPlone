@@ -188,17 +188,6 @@ def alpha1_alpha2(portal):
     # Make sure the Events folder is cataloged
     indexEventsFolder(portal, out)
     
-    # Add new memberdata properties
-    addMemberdataHome_Page(portal, out)
-    addMemberdataLocation(portal, out)
-    addMemberdataDescription(portal, out)
-    addMemberdataLanguage(portal, out)
-
-    # Fix the conditions and permissions on the folder_buttons actions
-    fixFolderButtonsActions(portal, out)
-
-    # Change the condition for the change_state action
-    alterChangeStateActionCondition(portal, out)
     return out
 
 

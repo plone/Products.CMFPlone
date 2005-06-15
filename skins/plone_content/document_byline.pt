@@ -7,7 +7,6 @@
 
     <img src="" alt=""
        title="This document is locked."
-       title="This document is locked."
        tal:define="locked portal_object/lock_icon.gif;
                    lockable python:hasattr(here, 'wl_isLocked');"
        tal:condition="python:lockable and here.wl_isLocked()"

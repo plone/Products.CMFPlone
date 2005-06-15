@@ -670,7 +670,6 @@ ul.configletDetails li label {
     background-position: 95% 60%;
     padding: 0 1.5em 0 0.5em !important;
     cursor: pointer;
-    cursor: pointer;
 }
 
 .contentActions .actionMenu {
