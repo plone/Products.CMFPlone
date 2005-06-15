@@ -193,7 +193,7 @@
                     <span i18n:translate="label_choose_template">Display</span>
                 </a>
               </dt>
-              <dd class="actionMenuContent" condition="not:dimMenu">
+              <dd class="actionMenuContent" tal:condition="not:dimMenu">
                 <ul>
                     <!-- Parent Views menu -->
                     <tal:parentViews define="vocab parentVocab;
