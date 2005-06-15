@@ -10,8 +10,138 @@ from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
 
+from Products.CMFPlone.utils import _createObjectByType
+from Products.CMFPlone.PloneFolder import ReplaceableWrapper
+
+
+class TestPloneToolBrowserDefault(PloneTestCase.PloneTestCase):
+    """Test the PloneTool's browserDefault() method in various use cases.
+    This class basically tests the functionality when items have default pages
+    and actions that resolve to actual objects. The cases where a default_page
+    may be set to a non-existing object are covered by TestDefaultPage below.
+    """
+    
+    def afterSetUp(self):
+        self.setRoles(['Manager'])
+        
+        _createObjectByType('Folder',       self.portal, 'atctfolder')
+        _createObjectByType('CMF Folder',   self.portal, 'cmffolder')
+        _createObjectByType('Document',     self.portal, 'atctdocument')
+        _createObjectByType('CMF Document', self.portal, 'cmfdocument')
+        _createObjectByType('File',         self.portal, 'atctfile')
+        _createObjectByType('CMF File',     self.portal, 'cmffile')
+            
+        self.putils = self.portal.plone_utils
+            
+    # Folders with IBrowserDefault - default page, index_html, global default
+    
+    def testBrowserDefaultMixinFolderDefaultPage(self):
+        self.portal.atctfolder.invokeFactory('Document', 'default')
+        self.portal.atctfolder.setDefaultPage('default')
+        self.assertEqual(self.putils.browserDefault(self.portal.atctfolder),
+                         (self.portal.atctfolder, ['default'],))
+   
+    def testBrowserDefaultMixinFolderIndexHtml(self):
+        self.portal.atctfolder.invokeFactory('Document', 'default')
+        self.portal.atctfolder.setDefaultPage('default')
+        # index_html should always win - it's an explicit override!
+        self.portal.atctfolder.invokeFactory('Document', 'index_html')
+        self.assertEqual(self.putils.browserDefault(self.portal.atctfolder),
+                         (self.portal.atctfolder, ['index_html'],))
+        
+    def testBrowserDefaultMixinFolderGlobalDefaultPage(self):
+        self.portal.portal_properties.site_properties.manage_changeProperties(default_page = ['foo'])
+        self.portal.atctfolder.invokeFactory('Document', 'foo')
+        self.assertEqual(self.putils.browserDefault(self.portal.atctfolder),
+                         (self.portal.atctfolder, ['foo']))
+            
+    # Folders without IBrowserDefault - index_html, default_page, global default
+        
+    def testNonBrowserDefaultMixinFolderDefaultPageProperty(self):
+        self.portal.cmffolder.invokeFactory('Document', 'foo')
+        self.portal.cmffolder.manage_addProperty('default_page', 'foo', 'string')
+        self.assertEqual(self.putils.browserDefault(self.portal.cmffolder),
+                         (self.portal.cmffolder, ['foo'],))
+        
+    def testNonBrowserDefaultMixinFolderIndexHtml(self):
+        self.portal.cmffolder.manage_addProperty('default_page', 'foo', 'string')
+        self.portal.cmffolder.invokeFactory('Document', 'foo')
+        # Again, index_html always wins!
+        self.portal.cmffolder.invokeFactory('Document', 'index_html')
+        self.assertEqual(self.putils.browserDefault(self.portal.cmffolder),
+                         (self.portal.cmffolder, ['index_html'],))
+    
+    def testNonBrowserDefaultMixinFolderGlobalDefaultPage(self):
+        self.portal.portal_properties.site_properties.manage_changeProperties(default_page = ['foo'])
+        self.portal.cmffolder.invokeFactory('Document', 'foo')
+        self.assertEqual(self.putils.browserDefault(self.portal.cmffolder),
+                         (self.portal.cmffolder, ['foo']))
+    
+    # folderlisting action resolution (for folders without default pages)
+    
+    def testBrowserDefaultMixinFolderFolderlistingAction(self):
+        viewAction = self.portal.portal_types['Folder'].getActionById('folderlisting')
+        self.assertEqual(self.putils.browserDefault(self.portal.atctfolder),
+                         (self.portal.atctfolder, [viewAction]))
+        
+    def testNoneBrowserDefaultMixinFolderFolderlistingAction(self):
+        viewAction = self.portal.portal_types['CMF Folder'].getActionById('folderlisting')
+        self.assertEqual(self.putils.browserDefault(self.portal.cmffolder),
+                         (self.portal.cmffolder, [viewAction]))    
+    
+    # View action resolution (last fallback)
+    
+    def testViewMethodWithBrowserDefaultMixinGetsSelectedLayout(self):
+        layout = self.portal.atctdocument.getLayout()
+        resolved = getattr(self.portal.atctdocument, layout)()
+        self.assertEqual(self.portal.atctdocument.view(), resolved)
+        
+    def testViewMethodWithoutBrowserDefaultMixinGetsViewAction(self):
+        viewAction = self.portal.portal_types['CMF Document'].getActionById('view')
+        resolved = getattr(self.portal.cmfdocument, viewAction)()
+        self.assertEqual(self.portal.cmfdocument.view(), resolved)
+        
+    def testCallWithBrowserDefaultMixinGetsSelectedLayout(self):
+        layout = self.portal.atctdocument.getLayout()
+        resolved = getattr(self.portal.atctdocument, layout)()
+        self.assertEqual(self.portal.atctdocument(), resolved)
+        
+    def testCallWithoutBrowserDefaultMixinGetsViewAction(self):
+        viewAction = self.portal.portal_types['CMF Document'].getActionById('view')
+        resolved = self.portal.cmfdocument.unrestrictedTraverse(viewAction)()
+        self.assertEqual(self.portal.cmfdocument(), resolved)
+    
+    # Dump data from file objects (via index_html), but get template when explicitly called
+            
+    def testBrowserDefaultMixinFileViewMethodGetsTemplate(self):
+        layout = self.portal.atctfile.getLayout()
+        resolved = getattr(self.portal.atctfile, layout)()
+        self.assertEqual(self.portal.atctfile.view(), resolved)
+        
+    def testNonBrowserDefaultMixinFileViewMethodGetsTemplateFromViewAction(self):
+        viewAction = self.portal.portal_types['CMF File'].getActionById('view')
+        resolved = getattr(self.portal.atctfile, viewAction)()
+        self.assertEqual(self.portal.atctfile.view(), resolved)
+        
+    # Ensure index_html acquisition and replaceablewrapper
+    
+    def testIndexHtmlNotAcquired(self):
+        self.portal.atctfolder.invokeFactory('Document', 'index_html')
+        self.portal.atctfolder.invokeFactory('Folder', 'subfolder')
+        viewAction = self.portal.portal_types['Folder'].getActionById('folderlisting')
+        self.assertEqual(self.putils.browserDefault(self.portal.atctfolder.subfolder),
+                         (self.portal.atctfolder.subfolder, [viewAction]))
+        
+    def testIndexHtmlReplaceableWrapper(self):
+        self.portal.atctdocument.index_html = ReplaceableWrapper(None)
+        viewAction = self.portal.portal_types['Document'].getActionById('view')
+        self.assertEqual(self.putils.browserDefault(self.portal.atctdocument),
+                         (self.portal.atctdocument, [viewAction]))
+        
 
 class TestDefaultPage(PloneTestCase.PloneTestCase):
+    """Test the default_page functionality in more detail
+    """
 
     def afterSetUp(self):
         self.ob = dummy.DefaultPage()
@@ -51,12 +181,6 @@ class TestDefaultPage(PloneTestCase.PloneTestCase):
         self.ob.keys = ['FrontPage']
         self.assertEquals(self.getDefault(), (self.ob, ['FrontPage']))
 
-    def testBrowserDefaultLayout(self):
-        # Test assumes ATContentTypes + BrowserDefaultMixin + atct_album_view
-        self.folder.setLayout('atct_album_view')
-        self.assertEquals(self.portal.plone_utils.browserDefault(self.folder), 
-                            (self.folder, ['atct_album_view']))
-
     def testBrowserDefaultPage(self):
         # Test assumes ATContentTypes + BrowserDefaultMixin
         self.folder.invokeFactory('Document', 'd1', title='document 1')
@@ -83,6 +207,12 @@ class TestPropertyManagedBrowserDefault(PloneTestCase.PloneTestCase):
         self.portal.manage_changeProperties(selectable_views = ['folder_listing',
                                                                 'news_listing'])
             
+    def testCall(self):
+        self.portal.setLayout('news_listing')
+        resolved = self.portal()
+        target = self.portal.unrestrictedTraverse('news_listing')()
+        self.assertEqual(resolved, target)
+            
     def testDefaultViews(self):
         self.assertEqual(self.portal.getLayout(), 'folder_listing')
         self.assertEqual(self.portal.getDefaultPage(), 'front-page')
@@ -107,7 +237,15 @@ class TestPropertyManagedBrowserDefault(PloneTestCase.PloneTestCase):
         layoutKeys = [v[0] for v in self.portal.getAvailableLayouts()]
         self.failUnless('folder_listing' in layoutKeys)
         self.failUnless('news_listing' in layoutKeys)
-        self.assertEqual(self.portal.__browser_default__(None), (self.portal, ['news_listing',]))
+        
+        view = self.portal.view()
+        browserDefault = self.portal.__browser_default__(None)[1][0]
+        browserDefaultResolved = self.portal.unrestrictedTraverse(browserDefault)()
+        template = self.portal.defaultView()
+        templateResolved = self.portal.unrestrictedTraverse(template)()
+        
+        self.assertEqual(view, browserDefaultResolved)
+        self.assertEqual(view, templateResolved)
         
     def testCanSetDefaultPage(self):
         self.failUnless(self.portal.canSetDefaultPage())
@@ -138,7 +276,15 @@ class TestPropertyManagedBrowserDefault(PloneTestCase.PloneTestCase):
         self.portal.setLayout('folder_listing')
         self.assertEqual(self.portal.getDefaultPage(), None)
         self.assertEqual(self.portal.defaultView(), 'folder_listing')
-        self.assertEqual(self.portal.__browser_default__(None), (self.portal, ['folder_listing',]))
+        
+        view = self.portal.view()
+        browserDefault = self.portal.__browser_default__(None)[1][0]
+        browserDefaultResolved = self.portal.unrestrictedTraverse(browserDefault)()
+        template = self.portal.defaultView()
+        templateResolved = self.portal.unrestrictedTraverse(template)()
+        
+        self.assertEqual(view, browserDefaultResolved)
+        self.assertEqual(view, templateResolved)
 
     def testMissingTemplatesIgnored(self):
         self.portal.manage_changeProperties(selectable_views = ['folder_listing', 'foo'])
@@ -154,9 +300,11 @@ class TestPropertyManagedBrowserDefault(PloneTestCase.PloneTestCase):
         self.assertEqual(views[0][1], 'foo')
     
 
+
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
+    suite.addTest(makeSuite(TestPloneToolBrowserDefault))
     suite.addTest(makeSuite(TestDefaultPage))
     suite.addTest(makeSuite(TestPropertyManagedBrowserDefault))
     return suite

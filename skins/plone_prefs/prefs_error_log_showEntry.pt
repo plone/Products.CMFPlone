@@ -38,13 +38,16 @@
                         i18n:translate="label_user_name">User Name (User Id)</dt>
                     <dd tal:content="string: ${entry/username} (${entry/userid})">joe (joe)</dd>
 
-                    <dt align="left" valign="top">Request URL</dt>
+                    <dt align="left" valign="top"
+                        i18n:translate="label_request_url">Request URL</dt>
                     <dd tal:content="entry/url">http://example.com</dd>
 
-                    <dt align="left" valign="top">Exception Type</dt>
+                    <dt align="left" valign="top"
+                        i18n:translate="label_exception_type">Exception Type</dt>
                     <dd tal:content="entry/type">AttributeError</dd>
 
-                    <dt align="left" valign="top">Exception Value</dt>
+                    <dt align="left" valign="top"
+                        i18n:translate="label_exception_value">Exception Value</dt>
                     <dd tal:content="entry/value">gak</dd>
                 </dl>
                 
@@ -56,11 +59,11 @@
                 </pre>
 
                 <p tal:condition="entry/tb_text"><a href="" tal:attributes="href
-                    string:error_log/getLogEntryAsText?id=${entry/id}">Display
-                    traceback as text</a></p>
+                    string:error_log/getLogEntryAsText?id=${entry/id}"
+                    i18n:translate="label_traceback_as_text">Display traceback as text</a></p>
 
                 <div tal:condition="entry/req_html">
-                    <h3>REQUEST</h3>
+                    <h3 i18n:translate="heading_request">REQUEST</h3>
                     <div tal:replace="structure entry/req_html"></div>
                 </div>
             </div>

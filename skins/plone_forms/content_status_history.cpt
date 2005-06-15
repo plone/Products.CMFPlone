@@ -78,7 +78,8 @@
           <div class="field" tal:condition="batch">
             <label for="" i18n:translate="label_affected_content">Affected content</label>
             <div tal:define="dummy python:request.set('ids_checked', 1);">
-              <table summary="" metal:use-macro="here/folder_contents/macros/folder_listing">
+              <table summary="Affected content" i18n:attributes="summary summary_affected_content;"
+                     metal:use-macro="here/folder_contents/macros/folder_listing">
               </table>
             </div>
           </div>
@@ -123,7 +124,7 @@
                              tabindex tabindex/next;"
                  tal:attributes="class python:test(error, 'field error', 'field')">
 
-              <div metal:use-macro="here/calendar_slot/macros/calendarDatePickerBox">
+              <div metal:use-macro="here/calendar_macros/macros/calendarDatePickerBox">
                 calendar pop-up
               </div>
 
@@ -150,7 +151,7 @@
                                tabindex tabindex/next;"
                    tal:attributes="class python:test(error, 'field error', 'field')">
 
-                <div metal:use-macro="here/calendar_slot/macros/calendarDatePickerBox">
+                <div metal:use-macro="here/calendar_macros/macros/calendarDatePickerBox">
                   calendar pop-up
                 </div>
               </div>
@@ -249,21 +250,21 @@
                    type="submit"
                    name="form.button.Publish"
                    value="Save"
-                   i18n:attributes="value"
+                   i18n:attributes="value label_save;"
                    tal:attributes="tabindex tabindex/next;"
                    tal:condition="not:request/paths|nothing"/>
             <input class="context"
                    type="submit"
                    name="form.button.FolderPublish"
                    value="Save"
-                   i18n:attributes="value"
+                   i18n:attributes="value label_save;"
                    tal:attributes="tabindex tabindex/next;"
                    tal:condition="request/paths|nothing"/>
             <input class="standalone"
                    type="submit"
                    name="form.button.Cancel"
                    value="Cancel"
-                   i18n:attributes="value"
+                   i18n:attributes="value label_cancel;"
                    tal:attributes="tabindex tabindex/next;"/>
           </div>
 
@@ -284,7 +285,7 @@
       <div tal:condition="not: request/paths|nothing">
 
         <table class="listing nosort" summary="Review History"
-               i18n:attributes="summary"
+               i18n:attributes="summary summary_review_history;"
                tal:define="review_history python:wtool.getInfoFor(here, 'review_history', []);
                                 review_history python:[review for review in review_history if review.get('action','')]"
                tal:condition="review_history">
@@ -302,8 +303,8 @@
                             rhComments items/comments;"
                 tal:attributes="class python:test(odd, 'even', 'odd')"
                 tal:condition="items/action">
-              <td i18n:translate="">
-                <span tal:replace="items/action" />
+              <td i18n:translate="" tal:content="items/action">
+                action
               </td>
 
               <td>

@@ -120,6 +120,7 @@ class DefaultPage(Item):
 
     def __init__(self, default=['test'], keys=['index_html']):
         self.keys = keys
+        self.isPrincipiaFolderish = 1 # fake a folder
         self.set_default(default)
 
     def set_default(self, default, has_key=0):
@@ -129,6 +130,7 @@ class DefaultPage(Item):
     def has_key(self, key):
         return self._has_key or key in self.keys
 
+    
 
 class ImageComputedProps(Item):
     '''Helper for testing the imagePatch interaction with

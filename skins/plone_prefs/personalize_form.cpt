@@ -65,7 +65,7 @@
                 <label for="email" i18n:translate="label_email">E-mail</label>
     
                 <span class="fieldRequired" title="Required"
-                      i18n:attributes="title"
+                      i18n:attributes="title title_required;"
                       i18n:translate="label_required">(Required)</span>
     
                 <div tal:content="error">Validation error output</div>
@@ -234,7 +234,7 @@
                        type="submit"
                        value="Save"
                        name="form.button.Save"
-                       i18n:attributes="value"
+                       i18n:attributes="value label_save;"
                        tal:attributes="tabindex tabindex/next;"
                        />
                 <input class="standalone"
@@ -242,7 +242,7 @@
                        type="submit"
                        value="Cancel"
                        name="form.button.Cancel"
-                       i18n:attributes="value"
+                       i18n:attributes="value label_cancel;"
                        tal:attributes="tabindex tabindex/next;"
                        />
             </div>

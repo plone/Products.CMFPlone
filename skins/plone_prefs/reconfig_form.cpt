@@ -41,7 +41,7 @@
                 <label i18n:translate="label_portal_title">Portal title</label>
     
                 <span class="fieldRequired" title="Required"
-                      i18n:attributes="title"
+                      i18n:attributes="title title_required;"
                       i18n:translate="label_required">(Required)</span>
     
                 <div class="formHelp" i18n:translate="help_portal_title">
@@ -106,7 +106,7 @@
                 <label i18n:translate="label_portal_from_address">Portal 'From' address</label>
     
                 <span class="fieldRequired" title="Required"
-                      i18n:attributes="title"
+                      i18n:attributes="title title_required;"
                       i18n:translate="label_required">(Required)</span>
     
                 <div class="formHelp" i18n:translate="help_portal_from_address">
@@ -267,7 +267,7 @@
                        type="submit"
                        name="form.button.Save"
                        value="Save"
-                       i18n:attributes="value"
+                       i18n:attributes="value label_save;"
                        tal:attributes="tabindex tabindex/next;"
                        />
 

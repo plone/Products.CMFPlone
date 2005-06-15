@@ -8,7 +8,7 @@ from Products.CMFPlone.utils import _createObjectByType
 from Products.CMFPlone.migrations.migration_util import installOrReinstallProduct, \
      safeGetMemberDataTool
 from Products.CMFCore.Expression import Expression
-from Products.CMFCore.Expression import Expression
+from Products.CMFPlone import transaction
 
 
 def two05_alpha1(portal):
@@ -107,7 +107,7 @@ def alpha1_alpha2(portal):
     # Add events topic
     addEventsTopic(portal, out)
 
-    # Add exclude_from_nav index
+    # Add exclude_from_nav metadata
     reindex += addExclude_from_navMetadata(portal, out)
 
     # Add objec cut/copy/paste/delete + batch buttons
@@ -168,7 +168,7 @@ def alpha1_alpha2(portal):
 
     # Change plone site FTI icon
     changePloneSiteIcon(portal, out)
-
+    
     # ADD NEW STUFF BEFORE THIS LINE AND LEAVE THE TRAILER ALONE!
 
     # Rebuild catalog
@@ -259,7 +259,7 @@ def installATContentTypes(portal, out):
 def migrateToATCT(portal, out):
     """Switches portal to ATContentTypes.
     """
-    get_transaction().commit(1)
+    transaction.commit(1)
     migrateFromCMFtoATCT = portal.migrateFromCMFtoATCT
     switchCMF2ATCT = portal.switchCMF2ATCT
     #out.append('Migrating and switching to ATContentTypes ...')
@@ -269,17 +269,17 @@ def migrateToATCT(portal, out):
         switchCMF2ATCT(skip_rename=False)
     except IndexError:
         switchCMF2ATCT(skip_rename=True)
-    get_transaction().commit(1)
+    transaction.commit(1)
     #out.append('Switched portal to ATContentTypes.')
 
 
 def migrateToATCT10(portal, out):
     """Switches portal to ATCT 1.0
     """
-    get_transaction().commit(1)
+    transaction.commit(1)
     tool = portal.portal_atct
     tool.migrateToATCT()
-    get_transaction().commit(1)
+    transaction.commit(1)
 
 
 def addFullScreenAction(portal, out):
@@ -463,7 +463,9 @@ def addDefaultGroups(portal, out):
          'roles': ('Reviewer',), },
         )
     groupsTool = getToolByName(portal, 'portal_groups', None)
-    if groupsTool is not None:
+    acl_users = getToolByName(portal, 'acl_users', None)
+    has_gruf_userfolder = hasattr(acl_users, 'getGroupByName')
+    if groupsTool is not None and has_gruf_userfolder:
         # Don't create workspaces
         flag = groupsTool.groupWorkspacesCreationFlag
         groupsTool.groupWorkspacesCreationFlag = False
@@ -513,7 +515,7 @@ def installCSSandJSRegistries(portal, out):
 
         cssreg = getToolByName(portal, 'portal_css', None)
         if cssreg is not None:
-            cssreg.clearStylesheets()
+            cssreg.clearResources()
             # add the bottom ones and the ones with special expressions first.
             # since registering a stylesheet adds it to the top of the stack
             cssreg.registerStylesheet('ploneRTL.css', expression="python:object.isRightToLeft(domain='plone')")
@@ -530,7 +532,7 @@ def installCSSandJSRegistries(portal, out):
 
         jsreg = getToolByName(portal, 'portal_javascripts', None)
         if jsreg is not None:
-            jsreg.clearScripts()
+            jsreg.clearResources()
             jsreg.registerScript('register_function.js')
             jsreg.registerScript('plone_javascript_variables.js')
             jsreg.registerScript('nodeutilities.js')
@@ -1167,3 +1169,4 @@ def changePloneSiteIcon(portal, out):
         if plone_FTI is not None and plone_FTI.content_icon == 'folder_icon.gif':
             plone_FTI.content_icon = 'site_icon.gif'
             out.append("Changed Plone Site icon")
+                        

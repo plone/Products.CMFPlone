@@ -38,7 +38,7 @@
             <label for="send_to_address" i18n:translate="label_send_to_mail">Send to</label>
 
             <span class="fieldRequired" title="Required"
-                  i18n:attributes="title"
+                  i18n:attributes="title title_required;"
                   i18n:translate="label_required">(Required)</span>
 
                   <div class="formHelp" i18n:translate="help_send_to_mail">
@@ -64,7 +64,7 @@
             <label for="send_from_address" i18n:translate="label_send_from">From</label>
 
             <span class="fieldRequired" title="Required"
-                  i18n:attributes="title"
+                  i18n:attributes="title title_required;"
                   i18n:translate="label_required">(Required)</span>
 
                   <div class="formHelp" i18n:translate="help_send_from">
@@ -107,7 +107,7 @@
                    type="submit"
                    name="form.button.Send"
                    value="Send"
-                   i18n:attributes="value"
+                   i18n:attributes="value label_send;"
                    tal:attributes="tabindex tabindex/next;"
                    />
           </div>

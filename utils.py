@@ -1,20 +1,24 @@
-from os.path import join, abspath, dirname, split
-from types import StringType, UnicodeType, IntType
-from DateTime import DateTime
-
 import re
 import Globals
 import OFS
+import i18nl10n
+from os.path import join, abspath, dirname, split
 from Products.CMFCore.utils import ToolInit as CMFCoreToolInit
 from Products.CMFCore.utils import getToolByName
-import Products.CMFPlone as CMFPlone
+from types import ClassType
+from Acquisition import aq_base
 
-# get the registered translation service and the dummy
-from Products.PageTemplates.GlobalTranslationService import \
-     getGlobalTranslationService, DummyTranslationService
+# Duplicated here to avoid import loop
+try:
+    import Zope2
+except ImportError:
+    import transaction_ as transaction
+else:
+    import transaction
 
-# make a dummy translation service
-dummy_service = DummyTranslationService()
+# Canonical way to get at CMFPlone directory
+PACKAGE_HOME = Globals.package_home(globals())
+
 
 class IndexIterator:
     __allow_access_to_unprotected_subobjects__ = 1
@@ -29,35 +33,22 @@ class IndexIterator:
             return self.pos
         raise KeyError, 'Reached upper bounds'
 
+
 # deprecration warning
 import zLOG
 def log_deprecated(message, summary='Deprecation Warning',
                    severity=zLOG.WARNING):
-    zLOG.LOG('Plone: ',severity,summary,message)
+    zLOG.LOG('Plone: ', severity, summary, message)
 
 # generic log method
-def log(message,summary='',severity=0):
-    zLOG.LOG('Plone: ',severity,summary,message)
+def log(message, summary='', severity=zLOG.INFO):
+    zLOG.LOG('Plone: ', severity, summary, message)
 
-# unicode aware translate method
-def utranslate(*args, **kw):
-    # python useable unicode aware translate method
+# keep these here to not fully change the old api
+# please use i18nl10n directly
+utranslate = i18nl10n.utranslate
+ulocalized_time = i18nl10n.ulocalized_time
 
-    # get the global translation service
-    service = getGlobalTranslationService()
-
-    # check for a translation method for unicode translations
-    translate = getattr(service, 'utranslate', None)
-    if translate is None:
-        # fallback code when the translation service does not
-        # support unicode. The dummy service will do 
-        # interpolation but nothing more.
-        return dummy_service.translate(*args, **kw)
-
-    # this returns the translation as type unicode
-    return service.utranslate(*args, **kw)
-    
-translate = utranslate # backwards compatibility
 
 class ToolInit(CMFCoreToolInit):
 
@@ -79,8 +70,7 @@ class ToolInit(CMFCoreToolInit):
         except (IOError, OSError):
             # Fallback:
             # Assume path is relative to CMFPlone directory
-            plone_path = dirname(__file__)
-            path = abspath(join(plone_path, path))
+            path = abspath(join(PACKAGE_HOME, path))
             try:
                 icon = Globals.ImageFile(path, pack.__dict__)
             except (IOError, OSError):
@@ -114,13 +104,14 @@ class ToolInit(CMFCoreToolInit):
                         setattr(misc, pid, Misc(pid, {}))
                     getattr(misc, pid)[name] = icon
 
+
 def _createObjectByType(type_name, container, id, *args, **kw):
     """Create an object without performing security checks
-    
+
     invokeFactory and fti.constructInstance perform some security checks
     before creating the object. Use this function instead if you need to
     skip these checks.
-    
+
     This method uses some code from
     CMFCore.TypesTool.FactoryTypeInformation.constructInstance
     to create the object without security checks.
@@ -141,11 +132,12 @@ def _createObjectByType(type_name, container, id, *args, **kw):
     # construct the object
     m(id, *args, **kw)
     ob = container._getOb( id )
-    
+
     return fti._finishConstruction(ob)
 
+
 def safeToInt(value):
-    """ convert value to an integer or just return 0 if can't """
+    """Convert value to integer or just return 0 if we can't"""
     try:
         return int(value)
     except ValueError:
@@ -155,7 +147,7 @@ release_levels = ('alpha', 'beta', 'candidate', 'final')
 rl_abbr = {'a':'alpha', 'b':'beta', 'rc':'candidate'}
 
 def versionTupleFromString(v_str):
-    """ returns version tuple from passed in version string """
+    """Returns version tuple from passed in version string"""
     regex_str = "(^\d+)[.]?(\d*)[.]?(\d*)[- ]?(alpha|beta|candidate|final|a|b|rc)?(\d*)"
     v_regex = re.compile(regex_str)
     match = v_regex.match(v_str)
@@ -173,6 +165,49 @@ def versionTupleFromString(v_str):
     return v_tpl
 
 def getFSVersionTuple():
-    vfile = "%s/version.txt" % CMFPlone.__path__[0]
+    """Reads version.txt and returns version tuple"""
+    vfile = "%s/version.txt" % PACKAGE_HOME
     v_str = open(vfile, 'r').read().lower()
     return versionTupleFromString(v_str)
+
+
+def transaction_note(note):
+    """Write human legible note"""
+    T=transaction.get()
+    if isinstance(note, unicode):
+        # Convert unicode to a regular string for the backend write IO.
+        # UTF-8 is the only reasonable choice, as using unicode means
+        # that Latin-1 is probably not enough.
+        note = note.encode('utf-8', 'replace')
+
+    if (len(T.description)+len(note))>=65535:
+        log('Transaction note too large omitting %s' % str(note))
+    else:
+        T.note(str(note))
+
+
+def base_hasattr(obj, name):
+    """Like safe_hasattr, but also disables acquisition."""
+    return safe_hasattr(aq_base(obj), name)
+
+
+def safe_hasattr(obj, name, _marker=object()):
+    """Make sure we don't mask exceptions like hasattr().
+
+    We don't want exceptions other than AttributeError to be masked,
+    since that too often masks other programming errors.
+    Three-argument getattr() doesn't mask those, so we use that to
+    implement our own hasattr() replacement.
+    """
+    return getattr(obj, name, _marker) is not _marker
+
+
+def safe_callable(obj):
+    """Make sure our callable checks are ConflictError safe."""
+    if safe_hasattr(obj, '__class__'):
+        if safe_hasattr(obj, '__call__'):
+            return True
+        else:
+            return isinstance(obj, ClassType)
+    else:
+        return callable(obj)

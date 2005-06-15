@@ -95,7 +95,7 @@
                           value="Add selected users to this group"
                           tal:condition="batch" 
                           tal:attributes="tabindex tabindex/next;"    
-                          i18n:attributes="value" />
+                          i18n:attributes="value label_add_users_to_group;" />
     	  </metal:block>
     
     	  <metal:block metal:fill-slot="removables">
@@ -113,7 +113,7 @@
                                onClick="toggleSelect(this, 'delete:list');"
                                tal:attributes="src string:$portal_url/select_all_icon.gif"
                                alt="Select all items"
-                               i18n:attributes="title alt"/>
+                               i18n:attributes="title label_select_all_items; alt label_select_all_items;"/>
                                <!--Remove user from this group-->
                     </th>
                     <th i18n:translate="listingheader_user_name">User name</th>
@@ -155,7 +155,7 @@
             <a  href="#"
                 tal:attributes="href string:mailto:${email}"
                 title="Send a mail to this user"
-                i18n:attributes="title"
+                i18n:attributes="title title_send_mail_to_user;"
                 tal:condition="email">
                 <span tal:replace="email" />
             </a>
@@ -172,7 +172,7 @@
                    type="submit"
                    name="prefs_group_members_edit:method"
                    value="Remove selected users"
-                   i18n:attributes="value"
+                   i18n:attributes="value label_remove_selected_users;"
                    tal:condition="group/getGroupMembers" />
     	  </metal:block>
 	      </div>

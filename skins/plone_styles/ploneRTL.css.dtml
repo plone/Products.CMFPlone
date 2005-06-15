@@ -137,8 +137,9 @@ Anyway, didn't get it fixed but at least we know what it is. :-/
     text-align: left;
 }
 
+/* .system-message and #error-handling are reST error indicators */
 .portalMessage,
-.system-message,  /* These two last ones are reST error indicators */
+.system-message,
 #error-handling {
     padding: 0.5em 3em 0.5em 1em;
     background-position: 98% center ;
@@ -181,6 +182,8 @@ input.searchButton {
 .card {
     float: right;
 }
+
+.listing { border-collapse: separate; }
 
 .listing th,
 .stx table th {

@@ -52,7 +52,7 @@
                    type="submit"
                    name="form.button.Save"
                    value="Save"
-                   i18n:attributes="value"
+                   i18n:attributes="value label_save;"
                    tal:attributes="tabindex tabindex/next;"
                    />
             <input class="context"
@@ -60,23 +60,24 @@
                    type="submit"
                    name="form.button.Cancel"
                    value="Cancel"
-                   i18n:attributes="value"
+                   i18n:attributes="value label_cancel;"
                    tal:attributes="tabindex tabindex/next;"
                    />
           </div>
 
         </tal:hasItems>
-        <tal:noitems condition="not:nocall:items"
-                    i18n:translate="help_no_selectable_default_pages">
-                There are no items in this folder that can be selected as 
-                a default view page.
+        <tal:noitems condition="not:nocall:items">
+          <div i18n:translate="help_no_selectable_default_pages">
+             There are no items in this folder that can be selected as 
+             a default view page.
+          </div>
           <div class="formControls">
                 <input class="context"
                    tabindex=""
                    type="submit"
                    name="form.button.Cancel"
                    value="Ok"
-                   i18n:attributes="value"
+                   i18n:attributes="value label_ok;"
                    tal:attributes="tabindex tabindex/next;"
                    />
           </div>

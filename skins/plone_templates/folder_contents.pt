@@ -5,7 +5,7 @@
 
   <head>
       <metal:block fill-slot="top_slot">
-        <span tal:replace="nothing"
+        <tal:insert tal:replace="nothing"
               tal:define="dummy python:request.set('enable_border', 1)" />
       </metal:block>
   </head>
@@ -32,7 +32,7 @@
         </div>
         <h1>
           <tal:block replace="structure python:getattr(here, here.getIcon(1))"/>
-          <span tal:content="python: view_title or here.title_or_id()" tal:omit-tag="">Directory Id</span>
+          <span tal:content="python: here.utranslate(view_title) or here.title_or_id()" tal:omit-tag="">Directory Id</span>
         </h1>
         <tal:full_view condition="full_view">
     
@@ -76,7 +76,7 @@
           <metal:add_button define-macro="add_button"
                             tal:define="num_types python:len(contentTypes);">
             <!-- Add Item pulldown -->
-            <div id="traditional-add-item-pulldown">
+            <div tal:attributes="id python:test(path('full_view|string:Not Set'), 'traditional-add-item-pulldown',None)">
                 <label for="select_add_item">
                   <span class="hiddenLabel" i18n:translate="label_add_item">Select an item to add</span>
                 </label>
@@ -136,7 +136,7 @@
                              onClick="toggleSelect(this,'paths:list');"
                              tal:attributes="src string:$portal_url/select_all_icon.gif"
                              alt="Select all items"
-                             i18n:attributes="title alt"
+                             i18n:attributes="title label_select_all_items; alt label_select_all_items;"
                   />
                   </th>
                   <th tal:attributes="class python:nosortclass"
@@ -175,13 +175,11 @@
                                    item_title_or_id     python: (same_type(item.getId,'') and (item.Title or putils.utf8_portal('\xe2\x80\xa6', 'ignore'))) or item.title_or_id();
                                    item_description     item/Description;
                                    item_type            item/portal_type;
-                                   item_typeinfo        python: here.portal_types.getTypeInfo(item_type);
                                    item_size            item/getObjSize;
                                    item_modified        item/ModificationDate;
                                    item_type_class      python:'contenttype-' + putils.normalizeString(item_type);
                                    item_wf_state        item/review_state|python: getInfoFor(item, 'review_state', '');
                                    item_wf_state_class  python:here.getStateClassName(item_wf_state);
-                                   item_icon            python:portal_url+'/'+ item_typeinfo.getIcon();
                                    hasGetUrl            python:hasattr(item.aq_explicit, 'getURL');
                                    item_rel_url         python:hasGetUrl and item.getURL(relative=1) or getRelativeContentURL(item);
                                    browserDefaultResult here/browserDefault;
@@ -248,14 +246,14 @@
                     <td tal:condition="python:isOrderable and canModifyFolderContent and not preSorted">
                       <a href=""
                          title="Move item up"
-                         i18n:attributes="title"
+                         i18n:attributes="title title_move_item_up;"
                          tal:attributes="href string:$here_url/folder_position?position=up&amp;id=$item_id&amp;template_id=${template/getId}">
                          <img tal:replace="structure arrowUp" />
                       </a>
                       &nbsp;
                       <a href=""
                          title="Move item down"
-                         i18n:attributes="title"
+                         i18n:attributes="title title_move_item_down;"
                          tal:attributes="href string:$here_url/folder_position?position=down&amp;id=$item_id&amp;template_id=${template/getId}">
                          <img tal:replace="structure arrowDown" />
                       </a>

@@ -40,6 +40,7 @@ ZopeTestCase.installProduct('ATReferenceBrowserWidget')
 ZopeTestCase.utils.setupCoreSessions()
 ZopeTestCase.utils.setupSiteErrorLog()
 
+from Products.CMFPlone import transaction
 from Testing.ZopeTestCase.utils import makelist
 from Products.CMFPlone.utils import _createObjectByType
 
@@ -115,7 +116,7 @@ def setupPloneSite(app=None, id=portal_name, quiet=0, with_default_memberarea=1)
             _createHomeFolder(app[id], default_user, 0)
         # Log out
         noSecurityManager()
-        get_transaction().commit()
+        transaction.commit()
         if not quiet: ZopeTestCase._print('done (%.3fs)\n' % (time.time()-_start,))
 
 
@@ -180,14 +181,7 @@ def optimize():
     def setupPortalContent(self, p):
         _createObjectByType('Large Plone Folder', p, id='Members', title='Members')
     PloneGenerator.setupPortalContent = setupPortalContent
-    # Don't refresh skins for each and every test (request)
-    def setupCurrentSkin(self, REQUEST=None):
-        if REQUEST is None: REQUEST = getattr(self, 'REQUEST', None)
-        if REQUEST is not None and self._v_skindata is None:
-            self.changeSkin('Plone Default')
-    from Products.CMFCore.Skinnable import SkinnableObjectManager
-    SkinnableObjectManager.setupCurrentSkin = setupCurrentSkin
-    # Don't populate type fields in the CTM schema, FFS!
+    # Don't populate type fields in the ConstrainTypesMixin schema, FFS!
     def _ct_defaultAddableTypeIds(self):
         return []
     from Products.ATContentTypes.lib.constraintypes import ConstrainTypesMixin

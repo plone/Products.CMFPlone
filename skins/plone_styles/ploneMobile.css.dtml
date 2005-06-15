@@ -307,8 +307,9 @@ label {
     padding: 0.5em;
 }
 
+/* .system-message and #error-handling are reST error indicators */
 .portalMessage,
-.system-message,  /* These two last ones are reST error indicators */
+.system-message,
 #error-handling {
     background-color: &dtml-notifyBackgroundColor;;
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-notifyBorderColor;;

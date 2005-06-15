@@ -86,6 +86,13 @@ else:
     query = context.create_query_string(query, portal_status_message=("Welcome! You are now logged in."))
 
     # put everything back together
-    dest = util.urlunparse((scheme, location, path, parameters, query, fragment))
+    #
+    # If query string exists (such as when coming from discussion_reply_form.pt - collector #1382),
+    #  don't strip it off.  Otherwise, use original behavior of not including the query string.
+    #
+    if x:
+       dest = util.urlunparse((scheme, location, path, parameters, "%s&amp;%s" % (x,query), fragment))
+    else:
+       dest = util.urlunparse((scheme, location, path, parameters, query, fragment))
 
 return REQUEST.RESPONSE.redirect(dest)

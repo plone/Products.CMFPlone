@@ -98,7 +98,9 @@ property useful here is "onUpdate".</p>
 
 <p><b>Input field with a trigger button.</b> Clicking the button activates
 the calendar.  Note that this one needs double-click (singleClick parameter
-is explicitely set to false).</p>
+is explicitely set to false).  Also demonstrates the "step" parameter
+introduced in 0.9.6 (show all years in drop-down boxes, instead of every
+other year as default).</p>
 
 <form action="#" method="get">
 <input type="text" name="date" id="f_date_b" /><button type="reset" id="f_trigger_b">...</button>
@@ -110,7 +112,8 @@ is explicitely set to false).</p>
         ifFormat       :    "%m/%d/%Y %I:%M %p",       // format of the input field
         showsTime      :    true,            // will display a time selector
         button         :    "f_trigger_b",   // trigger for the calendar (button ID)
-        singleClick    :    false            // double-click mode
+        singleClick    :    false,           // double-click mode
+        step           :    1                // show all years in drop-down boxes (instead of every other year as default)
     });
 </script>
 

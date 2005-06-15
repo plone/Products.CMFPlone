@@ -13,6 +13,7 @@ from Acquisition import aq_base
 from Globals import REPLACEABLE
 from DateTime import DateTime
 from Products.CMFCore.CMFCorePermissions import AccessInactivePortalContent
+from Products.CMFPlone import transaction
 
 from Products.CMFPlone.CatalogTool import ExtensibleIndexableObjectRegistry
 from Products.CMFPlone.CatalogTool import ExtensibleIndexableObjectWrapper
@@ -303,6 +304,10 @@ class TestCatalogSearching(PloneTestCase.PloneTestCase):
         self.workflow.doActionFor(self.folder.folder2, 'hide', comment='')
         self.workflow.doActionFor(self.folder.folder2.doc2, 'hide', comment='')
 
+        #used for testing AND/OR search functionality below
+        self.folder.invokeFactory('Document', id='aaa', text='aaa')
+        self.folder.invokeFactory('Document', id='bbb', text='bbb')
+
     def addUser2ToGroup(self):
         self.groups.groupWorkspacesCreationFlag = 0
         self.groups.addGroup(group2, None, [], [])
@@ -326,6 +331,19 @@ class TestCatalogSearching(PloneTestCase.PloneTestCase):
         # Document should not be found when user2 does a search
         self.login(user2)
         self.assertEqual(len(self.catalog(SearchableText='foo')), 0)
+
+    def testSearchReturnsDocumentUsing_DefaultAND(self):
+        # Documents should not be found when searching 'aaa bbb' (which should default to AND)
+        self.assertEqual(len(self.catalog(SearchableText='aaa+bbb')), 0)
+
+    def testSearchReturnsDocumentUsing_AND(self):
+        # Documents should not be found when owner does a search using AND
+        self.assertEqual(len(self.catalog(SearchableText='aaa AND bbb')), 0)
+
+    def testSearchReturnsDocumentUsing_OR(self):
+        # Two documents (aaa, bbb)  should be found when owner does a search using OR 
+        results = self.catalog(SearchableText='aaa OR bbb')
+        self.assertEqual(len(results), 2)
 
     def testSearchReturnsDocumentWhenPermissionIsTroughLocalRole(self):
         # After adding a group with access rights and containing user2,
@@ -435,7 +453,7 @@ class TestFolderCataloging(PloneTestCase.PloneTestCase):
         # Test for catalog that searches to ensure folder titles are 
         # updated in the catalog. 
         title = 'Test Folder - Snooze!'
-        get_transaction().commit(1) # make rename work
+        transaction.commit(1) # make rename work
         self.folder.foo.folder_edit(title, '', id='bar')
         results = self.catalog(Title='Snooze')
         self.failUnless(results)
@@ -457,7 +475,7 @@ class TestFolderCataloging(PloneTestCase.PloneTestCase):
     def testFolderTitleIsUpdatedOnFolderRename(self):
         # The bug in fact talks about folder_rename
         title = 'Test Folder - Snooze!'
-        get_transaction().commit(1) # make rename work
+        transaction.commit(1) # make rename work
         foo_path = '/'.join(self.folder.foo.getPhysicalPath())
         self.folder.folder_rename(paths=[foo_path], new_ids=['bar'], new_titles=[title])
         results = self.catalog(Title='Snooze')
@@ -528,7 +546,7 @@ class TestCatalogOrdering(PloneTestCase.PloneTestCase):
         # that blames permissions or lack of support by the obj. The obj is a
         # Plone Document, and the owner of doc2 is portal_owner. Harumph.
 
-        get_transaction().commit(1)
+        transaction.commit(1)
 
         self.folder.manage_renameObjects(['doc2'], ['buzz'])
         folder_docs = self.catalog(portal_type = 'Document',
@@ -687,7 +705,7 @@ class TestCatalogUnindexing(PloneTestCase.PloneTestCase):
         self.failIf(self.catalog(id='doc'))
 
 
-class TestCatalogOptimizer(PloneTestCase.PloneTestCase):
+class TestCatalogExpirationFiltering(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
         self.catalog = self.portal.portal_catalog
@@ -731,6 +749,13 @@ class TestCatalogOptimizer(PloneTestCase.PloneTestCase):
         self.nofx()
         res = self.catalog()
         self.assertResults(res, ['Members', 'events', 'events_topic', 'news', 'news_topic', default_user])
+
+    def testCallExpiredWithExpiredDisabled(self):
+        self.folder.doc.setExpirationDate(DateTime(2000, 12, 31))
+        self.folder.doc.reindexObject()
+        self.nofx()
+        res = self.catalog(show_inactive=True)
+        self.assertResults(res, ['Members', 'events', 'events_topic', 'news', 'news_topic', default_user, 'doc'])
 
     def testSearchResultsExpiredWithPermission(self):
         self.folder.doc.setExpirationDate(DateTime(2000, 12, 31))
@@ -789,7 +814,7 @@ def test_suite():
     suite.addTest(makeSuite(TestCatalogOrdering))
     suite.addTest(makeSuite(TestCatalogBugs))
     suite.addTest(makeSuite(TestCatalogUnindexing))
-    suite.addTest(makeSuite(TestCatalogOptimizer))
+    suite.addTest(makeSuite(TestCatalogExpirationFiltering))
     suite.addTest(makeSuite(TestExtensibleIndexableObjectWrapper))
     suite.addTest(makeSuite(TestCatalogSorting))
     return suite

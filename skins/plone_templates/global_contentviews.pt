@@ -37,11 +37,10 @@
     <div metal:define-macro="content_actions"
          i18n:domain="plone"
          class="contentActions"
-         tal:define="content_actions actions/object_actions|nothing;
-                     global allowedSortedContentTypes python:here.sortObjects(here.allowedContentTypes());">
+         tal:define="content_actions actions/object_actions|nothing;">
 
         <h5 class="hiddenStructure" 
-            tal:condition="content_actions | allowedSortedContentTypes | wf_state"
+            tal:condition="content_actions | wf_state"
             i18n:translate="heading_actions">Actions</h5>
 
         <ul tal:condition="content_actions" class="actionItems">
@@ -58,7 +57,7 @@
                          tal:condition="icon"
                          tal:replace="structure icon" />
                     
-                    <tal:action content="action/name" i18n:translate="">
+                    <tal:action tal:content="action/name" i18n:translate="">
                     Action name
                     </tal:action>
                 </a>

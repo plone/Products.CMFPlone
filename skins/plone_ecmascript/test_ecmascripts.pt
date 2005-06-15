@@ -1,0 +1,52 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+<head>
+    <metal:css_slot fill-slot="css_slot">
+        <style type="text/css" rel="stylesheet">
+            .placeholder {
+                margin: 0 0 1em 0;
+                padding: 1px;
+                border: 1px solid black;
+            }
+            div.placeholder h3,
+            div.placeholder p {
+                margin: 0.5em 1em;
+            }
+        </style>
+    </metal:css_slot>
+    <metal:javascript_head_slot fill-slot="javascript_head_slot">
+        <script type="text/javascript" src="ecmaunit.js"> </script>
+        <script type="text/javascript" src="unittestUtilities.js"> </script>
+        <script type="text/javascript" src="testNodeutilities.js"> </script>
+    </metal:javascript_head_slot>
+    <metal:block fill-slot="top_slot"
+                 tal:define="dummy python:request.set('disable_border',1)" />
+</head>
+
+<body>
+
+<metal:main fill-slot="main">
+
+    <h1 class="documentFirstHeading">
+      Plone ECMAScript Unit Tests
+    </h1>
+
+    <p class="documentDescription">
+      This page is the entry to the ECMAScript Unit Tests.
+    </p>
+
+    <button onclick="runTestCases();">Run Testcases</button>
+    <button onclick="clearOutput();">Clear output</button>
+    <button onclick="showMarkup();">Show Markup</button>
+    <button onclick="showTestSuites();">Show Test Suites</button>
+    <div id="testInfos"></div>
+    <ul id="testResultsToc"></ul>
+    <div id="testResultsPlaceHolder"></div>
+    <div id="testSandbox"></div>
+</metal:main>
+
+</body>
+</html>

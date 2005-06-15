@@ -75,13 +75,13 @@
                      name="form.button.AddGroup"
                      value="Add New Group"
                      tal:attributes="tabindex tabindex/next;"
-                     i18n:attributes="value"
+                     i18n:attributes="value label_add_new_group;"
                      />
 
             <input type="hidden" value="b_start" name="b_start" 
                  tal:attributes="value b_start"/>
                  
-            <table class="listing" summary="Select roles for each group" i18n:attributes="summary">
+            <table class="listing" summary="Select roles for each group" i18n:attributes="summary summary_roles_for_groups;">
                    
                 <tr>
                     <th colspan="6"
@@ -102,7 +102,7 @@
                                name="form.button.Search"
                                value="Search"
                                tabindex=""
-                               i18n:attributes="value"
+                               i18n:attributes="value label_search;"
                                tal:attributes="tabindex tabindex/next;" />
     
                     </th>
@@ -124,13 +124,13 @@
     
     
                 <tal:block repeat="this_group batch">
-                    <input type="hidden" name="" tal:attributes="name string:group_${this_group/getGroupName}:list" value=""/>
                     <tr tal:define="oddrow repeat/this_group/odd"
                         tal:attributes="class python:test(oddrow,'odd','even')">
     
                     <tal:block define="roles python:['this']">
     
                     <td>
+                        <input type="hidden" name="" tal:attributes="name string:group_${this_group/getGroupName}:list" value=""/>
                         <a href="#"
                            tal:attributes="href string:${here_url}/prefs_group_members?groupname=${this_group/getGroupName}">
     
@@ -180,7 +180,7 @@
                    name="form.button.Modify"
                    value="Apply Changes"
                    tal:attributes="tabindex tabindex/next;"
-                   i18n:attributes="value"
+                   i18n:attributes="value label_apply_changes;"
                    tal:condition="groups"
                    />
         </form>

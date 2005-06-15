@@ -37,8 +37,7 @@
                             over_limit python: limit_display and len(folderContents) > limit_display;
                             folderContents python: (over_limit and folderContents[:limit_display]) or folderContents;">
         <tal:listing condition="folderContents"
-                     define="toLocalizedTime nocall:here/toLocalizedTime;
-                             types python:here.portal_types.listTypeTitles();">
+                     define="toLocalizedTime nocall:here/toLocalizedTime;">
 
             <dl>
 	        <tal:entry tal:repeat="item folderContents">
@@ -47,14 +46,12 @@
                                        item_title_or_id python:(same_type(item.getId,'') and (item.Title or putils.utf8_portal('\xe2\x80\xa6', 'ignore'))) or item.title_or_id();
                                        item_description item/Description;
                                        item_type item/portal_type;
-                                       item_type_title python:types[item_type] or item_type;
-                                       item_typeinfo python: here.portal_types.getTypeInfo(item_type);
+                                       item_type_title item/Type;
                                        item_modified item/ModificationDate;
                                        item_created item/CreationDate;
                                        item_type_class python: 'contenttype-' + putils.normalizeString(item_type);
                                        item_wf_state item/review_state;
                                        item_wf_state_class python:here.getStateClassName(item_wf_state);
-                                       item_icon python:portal_url+'/'+ item_typeinfo.getIcon();
                                        item_creators item/Creators|item/Creator;
                                        item_creators python:test(same_type(item_creators,[]) or same_type(item_creators,()), item_creators, [item_creators]);
                                        item_start item/start/ISO|item/StartDate|nothing;
@@ -63,9 +60,10 @@
 
                     <dt metal:define-macro="listitem">
 
-                        <span tal:attributes="class item_type_class">
+                        <span tal:attributes="class item_type_class"
+                              tal:condition="python:item_type != 'Link'">
                         <a href="#" 
-                           tal:attributes="href python:test(item_type in use_view_action and item_type != 'Link', item_url+'/view', item_url+'/');
+                           tal:attributes="href python:test(item_type in use_view_action, item_url+'/view', item_url+'/');
                                            class string:$item_wf_state_class visualIconPadding"
                            tal:content="item_title_or_id">
                             Item Title

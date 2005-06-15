@@ -63,7 +63,7 @@
         <a href="#" tal:attributes="href authorinfo/home_page">Author's home page in this site&hellip;</a>
         </p>
 
-        <p tal:condition="python: not mtool.getHomeFolder() and authorinfo/home_page">
+        <p tal:condition="python: not mtool.getHomeFolder() and authorinfo['home_page']">
         <a href="#" tal:attributes="href authorinfo/home_page">Author's external home page&hellip;</a>
         </p>
 
@@ -125,7 +125,7 @@
                        type="submit"
                        name="form.button.Send"
                        value="Send"
-                       i18n:attributes="value"
+                       i18n:attributes="value label_send;"
                        tal:attributes="tabindex tabindex/next;" />
 
             </div>
@@ -171,7 +171,7 @@
                                 <a href="" tal:attributes="href item/getURL"
                                    tal:content="item/Title">title</a>
                             </td>
-                            <td tal:content="python:here.toPortalTime(item.Date)">
+                            <td tal:content="python:here.toLocalizedTime(item.Date)">
                                 Date
                             </td>
                         </tr>
@@ -190,7 +190,7 @@
        <input class="standalone"
            type="submit"
            value="Log in to send feedback"
-           i18n:attributes="value"
+           i18n:attributes="value label_login_to_send_feedback;"
            />
     </form>
 

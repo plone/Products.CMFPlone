@@ -12,6 +12,7 @@ from Products.CMFPlone.tests import PloneTestCase
 from AccessControl import Unauthorized, getSecurityManager
 from OFS.CopySupport import CopyError
 from Acquisition import aq_base
+from Products.CMFPlone import transaction
 
 from Products.CMFCore.utils import getToolByName
 
@@ -32,7 +33,7 @@ class TestCutPasteSecurity(PloneTestCase.PloneTestCase):
 
         # We need to commit here so that _p_jar isn't None and move
         # will work
-        get_transaction().commit(1)
+        transaction.commit(1)
         folder.manage_renameObject('testrename', 'new')
         self.failIf(hasattr(aq_base(folder), 'testrename'))
         self.failUnless(hasattr(aq_base(folder), 'new'))
@@ -76,7 +77,7 @@ class TestCutPasteSecurity(PloneTestCase.PloneTestCase):
 
         # We need to commit here so that _p_jar isn't None and move
         # will work
-        get_transaction().commit(1)
+        transaction.commit(1)
 
         dest = self.membership.getPersonalFolder('user1')
         dest.manage_pasteObjects(src.manage_cutObjects('testcut'))
@@ -92,7 +93,7 @@ class TestCutPasteSecurity(PloneTestCase.PloneTestCase):
 
         # We need to commit here so that _p_jar isn't None and move
         # will work
-        get_transaction().commit(1)
+        transaction.commit(1)
 
         self.login('user2')
         self.assertRaises(Unauthorized, src.restrictedTraverse, 'manage_cutObjects')

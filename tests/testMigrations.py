@@ -8,6 +8,8 @@ if __name__ == '__main__':
 
 from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
+from Products.CMFCore.Expression import Expression
+from Products.CMFCore import CMFCorePermissions
 
 from Products.CMFPlone.migrations.v2.two04_two05 import replaceFolderPropertiesWithEdit
 from Products.CMFPlone.migrations.v2.two04_two05 import interchangeEditAndSharing
@@ -56,6 +58,14 @@ from Products.CMFPlone.migrations.v2_1.alphas import switchToExpirationDateMetad
 from Products.CMFPlone.migrations.v2_1.alphas import changePloneSetupActionToSiteSetup
 from Products.CMFPlone.migrations.v2_1.alphas import changePloneSiteIcon
 
+from Products.CMFPlone.migrations.v2_1.betas import fixObjectPasteActionForDefaultPages
+from Products.CMFPlone.migrations.v2_1.betas import fixBatchActionToggle
+from Products.CMFPlone.migrations.v2_1.betas import fixMyFolderAction
+from Products.CMFPlone.migrations.v2_1.betas import reorderStylesheets
+from Products.CMFPlone.migrations.v2_1.betas import allowOwnerToAccessInactiveContent
+from Products.CMFPlone.migrations.v2_1.betas import restrictNewsTopicToPublished
+from Products.CMFPlone.migrations.v2_1.betas import restrictEventsTopicToPublished
+
 import types
 
 class MigrationTest(PloneTestCase.PloneTestCase):
@@ -69,9 +79,9 @@ class MigrationTest(PloneTestCase.PloneTestCase):
         actions = [x for x in actions if x.id != action_id]
         typeob._actions = tuple(actions)
 
-    def removeActionFromTool(self, action_id):
+    def removeActionFromTool(self, action_id, action_provider='portal_actions'):
         # Removes an action from portal_actions
-        tool = getattr(self.portal, 'portal_actions')
+        tool = getattr(self.portal, action_provider)
         actions = tool.listActions()
         actions = [x for x in actions if x.id != action_id]
         tool._actions = tuple(actions)
@@ -1084,7 +1094,7 @@ class TestMigrations_v2_1(MigrationTest):
     def testFixFolderButtonsActionsNoTool(self):
         # The migration should work if the tool is missing
         self.portal._delObject('portal_actions')
-        alterChangeStateActionCondition(self.portal, [])
+        fixFolderButtonsActions(self.portal, [])
 
     def testAddTypesUseViewActionInListingsProperty(self):
         # Should add the typesUseViewActionInListings property
@@ -1202,6 +1212,212 @@ class TestMigrations_v2_1(MigrationTest):
         # The migration should work if the tool is missing
         self.portal._delObject('portal_types')
         changePloneSiteIcon(self.portal, [])
+
+    def testFixObjectPasteActionForDefaultPages(self):
+        # The action for the paste object button action should detect default
+        # pages and operate on the parent folder.
+        current_actions = self.actions._cloneActions()
+        for action in current_actions:
+            if action.getId() == 'paste' and action.category == 'object_buttons':
+                action.setActionExpression(Expression('string:${object_url}/object_paste'))
+        self.actions._actions = current_actions
+        actions = [x for x in self.actions.listActions() if
+                    x.id == 'paste' and x.category == 'object_buttons']
+        self.assertEqual(len(actions),1)
+        self.assertEqual(actions[0].getActionExpression(), 'string:${object_url}/object_paste')
+        # Modify
+        fixObjectPasteActionForDefaultPages(self.portal, [])
+        actions = [x for x in self.actions.listActions() if
+                    x.id == 'paste' and x.category == 'object_buttons']
+        self.assertEqual(len(actions),1)
+        self.assertEqual(actions[0].getActionExpression(), 'python:"%s/object_paste"%(object.isDefaultPageInFolder() and object.getParentNode().absolute_url() or object_url)')
+
+    def testFixObjectPasteActionForDefaultPagesTwice(self):
+        # The migration should work if performed twice
+        fixObjectPasteActionForDefaultPages(self.portal, [])
+        fixObjectPasteActionForDefaultPages(self.portal, [])
+        actions = [x for x in self.actions.listActions() if
+                    x.id == 'paste' and x.category == 'object_buttons']
+        self.assertEqual(len(actions),1)
+        self.assertEqual(actions[0].getActionExpression(), 'python:"%s/object_paste"%(object.isDefaultPageInFolder() and object.getParentNode().absolute_url() or object_url)')
+
+    def testFixObjectPasteActionForDefaultPagesNoAction(self):
+        # The migration should add a new action if the action is missing
+        self.removeActionFromTool('cut')
+        fixObjectPasteActionForDefaultPages(self.portal, [])
+        actions = [x for x in self.actions.listActions() if
+                    x.id == 'paste' and x.category == 'object_buttons']
+        self.assertEqual(len(actions),1)
+        self.assertEqual(actions[0].getActionExpression(), 'python:"%s/object_paste"%(object.isDefaultPageInFolder() and object.getParentNode().absolute_url() or object_url)')
+
+    def testFixObjectPasteActionForDefaultPagesNoTool(self):
+        # The migration should work if the tool is missing
+        self.portal._delObject('portal_actions')
+        fixObjectPasteActionForDefaultPages(self.portal, [])
+        
+    def testFixBatchActionToggle(self):
+        editActions = ('batch', 'nobatch')
+        for a in editActions:
+            self.removeActionFromTool(a)
+        fixBatchActionToggle(self.portal, [])
+        actions = [x.id for x in self.actions.listActions()]
+        for a in editActions:
+            self.failUnless(a in actions)
+
+    def testFixBatchActionToggleTwice(self):
+        editActions = ('batch', 'nobatch')
+        for a in editActions:
+            self.removeActionFromTool(a)
+        fixBatchActionToggle(self.portal, [])
+        fixBatchActionToggle(self.portal, [])
+        actions = [x.id for x in self.actions.listActions()]
+        for a in editActions:
+            self.failUnless(a in actions)
+
+    def testFixBatchActionToggleNoTool(self):
+        self.portal._delObject('portal_actions')
+        fixBatchActionToggle(self.portal, [])
+        
+    def testFixMyFolderAction(self):
+        self.removeActionFromTool('mystuff', 'portal_membership')
+        fixMyFolderAction(self.portal, [])
+        actions = [(x.id, x.getActionExpression()) for x in self.membership.listActions()]
+        for a in actions:
+            if a[0] == 'mystuff':
+                self.failIf('folder_contents' in a[1])
+
+    def testFixMyFolderActionTwice(self):
+        self.removeActionFromTool('mystuff', 'portal_membership')
+        fixMyFolderAction(self.portal, [])
+        fixMyFolderAction(self.portal, [])
+        actions = [(x.id, x.getActionExpression()) for x in self.membership.listActions()]
+        for a in actions:
+            if a[0] == 'mystuff':
+                self.failIf('folder_contents' in a[1])
+
+    def testFixBatchActionToggleNoTool(self):
+        self.portal._delObject('portal_membership')
+        fixMyFolderAction(self.portal, [])
+
+    def testReorderStylesheets(self):
+        """ ploneRTL should be right above ploneCustom.css
+
+        By default, ploneCustom.css is the bottom one, so ploneRTL.css
+        should be in spot number 2. Also, member.css must be at the
+        top of the list
+        """
+        cssreg = self.portal.portal_css
+        stylesheets = list(cssreg.getResources())
+        stylesheet_ids = [ item.get('id') for item in stylesheets ]
+        self.assertEquals(stylesheet_ids[-1], 'ploneCustom.css')
+        self.assertEquals(stylesheet_ids[-2], 'ploneRTL.css')
+        self.assertEquals(stylesheet_ids[0], 'ploneMember.css')
+
+    def testAllowOwnerToAccessInactiveContent(self):
+        # Should grant the "Access inactive ..." permission to owner
+        self.portal.manage_permission(
+                            CMFCorePermissions.AccessInactivePortalContent,
+                            (), acquire=1)
+        permission_on_role = [p for p in self.portal.permissionsOfRole('Owner')
+            if p['name'] == CMFCorePermissions.AccessInactivePortalContent][0]
+        self.failIf(permission_on_role['selected'])
+        allowOwnerToAccessInactiveContent(self.portal,[])
+        permission_on_role = [p for p in self.portal.permissionsOfRole('Owner')
+            if p['name'] == CMFCorePermissions.AccessInactivePortalContent][0]
+        self.failUnless(permission_on_role['selected'])
+
+    def testAllowOwnerToAccessInactiveContentPreservesExisting(self):
+        # Should not remove customized permissions
+        self.portal.manage_permission(
+                            CMFCorePermissions.AccessInactivePortalContent,
+                            ('Member',), acquire=1)
+        allowOwnerToAccessInactiveContent(self.portal,[])
+        # Make sure Owner was added
+        permission_on_role = [p for p in self.portal.permissionsOfRole('Owner')
+            if p['name'] == CMFCorePermissions.AccessInactivePortalContent][0]
+        self.failUnless(permission_on_role['selected'])
+        # Make sure original permission was preserved
+        permission_on_role = [p for p in self.portal.permissionsOfRole('Member')
+            if p['name'] == CMFCorePermissions.AccessInactivePortalContent][0]
+        self.failUnless(permission_on_role['selected'])
+
+    def testAllowOwnerToAccessInactiveContentPreservesAcquire(self):
+        # Should preserve custom acquire settings
+        self.portal.manage_permission(
+                            CMFCorePermissions.AccessInactivePortalContent,
+                            ('Manager'), acquire=0)
+        allowOwnerToAccessInactiveContent(self.portal,[])
+        cur_perms = self.portal.permission_settings(
+                            CMFCorePermissions.AccessInactivePortalContent)[0]
+        self.failIf(cur_perms['acquire'])
+        # Try again with explicitly enabled acquire
+        self.portal.manage_permission(
+                            CMFCorePermissions.AccessInactivePortalContent,
+                            ('Manager'), acquire=1)
+        allowOwnerToAccessInactiveContent(self.portal,[])
+        cur_perms = self.portal.permission_settings(
+                            CMFCorePermissions.AccessInactivePortalContent)[0]
+        self.failUnless(cur_perms['acquire'])
+
+    def testAllowOwnerToAccessInactiveContentTwice(self):
+        # Should not fail if performed twice
+        self.portal.manage_permission(
+                            CMFCorePermissions.AccessInactivePortalContent,
+                            ('Manager'), acquire=0)
+        allowOwnerToAccessInactiveContent(self.portal,[])
+        cur_perms1 = self.portal.permission_settings(
+                            CMFCorePermissions.AccessInactivePortalContent)[0]
+        allowOwnerToAccessInactiveContent(self.portal,[])
+        cur_perms2 = self.portal.permission_settings(
+                            CMFCorePermissions.AccessInactivePortalContent)[0]
+        self.assertEqual(cur_perms1,cur_perms2)
+
+    def testRestrictNewsTopicToPublished(self):
+        #Should add a new 'published' criterion to the News topic
+        topic = self.portal.news.news_topic
+        topic.deleteCriterion('crit__review_state_ATSimpleStringCriterion')
+        self.assertRaises(AttributeError, topic.getCriterion,
+                            'crit__review_state_ATSimpleStringCriterion')
+        restrictNewsTopicToPublished(self.portal, [])
+        self.failUnless(topic.getCriterion('crit__review_state_ATSimpleStringCriterion'))
+
+    def testRestrictNewsTopicToPublishedTwice(self):
+        #Should not fail if done twice
+        topic = self.portal.news.news_topic
+        topic.deleteCriterion('crit__review_state_ATSimpleStringCriterion')
+        restrictNewsTopicToPublished(self.portal, [])
+        restrictNewsTopicToPublished(self.portal, [])
+        self.failUnless(topic.getCriterion('crit__review_state_ATSimpleStringCriterion'))
+
+    def testRestrictNewsTopicToPublishedNoTopic(self):
+        #Should not do anything unless ATCT is installed
+        news = self.portal.news
+        news._delObject('news_topic')
+        restrictNewsTopicToPublished(self.portal, [])
+
+    def testRestrictEventsTopicToPublished(self):
+        #Should add a new 'published' criterion to the News topic
+        topic = self.portal.events.events_topic
+        topic.deleteCriterion('crit__review_state_ATSimpleStringCriterion')
+        self.assertRaises(AttributeError, topic.getCriterion,
+                            'crit__review_state_ATSimpleStringCriterion')
+        restrictEventsTopicToPublished(self.portal, [])
+        self.failUnless(topic.getCriterion('crit__review_state_ATSimpleStringCriterion'))
+
+    def testRestrictEventsTopicToPublishedTwice(self):
+        #Should not fail if done twice
+        topic = self.portal.events.events_topic
+        topic.deleteCriterion('crit__review_state_ATSimpleStringCriterion')
+        restrictEventsTopicToPublished(self.portal, [])
+        restrictEventsTopicToPublished(self.portal, [])
+        self.failUnless(topic.getCriterion('crit__review_state_ATSimpleStringCriterion'))
+
+    def testRestrictEventsTopicToPublishedNoTopic(self):
+        #Should not do anything unless ATCT is installed
+        news = self.portal.events
+        news._delObject('events_topic')
+        restrictEventsTopicToPublished(self.portal, [])
+
 
 
 def test_suite():

@@ -14,7 +14,6 @@ catalog = getToolByName(context, 'portal_catalog')
 
 found   = {}
 content = catalog.searchResults(Creator      = author, 
-                                review_state = 'published', 
                                 sort_on      = 'modified', 
                                 sort_order   = 'reverse')
 

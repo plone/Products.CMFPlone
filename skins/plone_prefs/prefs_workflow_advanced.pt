@@ -46,7 +46,7 @@
           action="prefs_workflow_advanced_edit" 
           method="post">
 
-        <fieldset tal:define="allowedContentTypes allowedSortedContentTypes|here/allowedContentTypes">
+        <fieldset tal:define="allowedContentTypes python:here.sortObjects(here.allowedContentTypes())">
 
         <legend i18n:translate="legend_contenttypes">Content types</legend>
 
@@ -89,7 +89,7 @@
                        type="submit"
                        name="Change"
                        value="Save"
-                       i18n:attributes="value"
+                       i18n:attributes="value label_save;"
                        tal:attributes="tabindex tabindex/next;" />
             </div>
         </fieldset>

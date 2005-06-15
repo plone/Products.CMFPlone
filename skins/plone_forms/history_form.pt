@@ -11,7 +11,7 @@
         tal:attributes="action here_url"
         tal:condition="has_history" >
 
-  <table summary="History" i18n:attributes="summary" tal:define="history_length python:len(history)">
+  <table summary="History" i18n:attributes="summary summary_history;" tal:define="history_length python:len(history)">
      <tr>
        <td>
          <div class="list-nav" tal:condition="first_trx" tal:define="next python:(first_trx*2-last_trx)">
@@ -41,12 +41,12 @@
                 type="submit"
                 name="manage_customHistoryCopy:method"
                 value="Copy to present"
-                i18n:attributes="value" />
+                i18n:attributes="value label_copy_to_present;" />
          <input class="context"
                 type="submit"
                 name="manage_historicalComparison:method"
                 value="Compare"
-                i18n:attributes="value" />
+                i18n:attributes="value label_compare;" />
        </td>
      </tr>
   </table>

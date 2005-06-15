@@ -12,12 +12,12 @@
                    lockable python:hasattr(here, 'wl_isLocked');"
        tal:condition="python:lockable and here.wl_isLocked()"
        tal:replace="structure python:locked.tag(title='Locked')"
-       i18n:attributes="title"
+       i18n:attributes="title label_document_locked;"
        />
 
     <tal:name tal:condition="creator"
-        tal:define="author python:mtool.getMemberInfo(creator)"
-        i18n:translate="label_by_author">
+        tal:define="author python:mtool.getMemberInfo(creator)">
+      <span i18n:translate="label_by_author">
         by
       <a href="#"
          tal:attributes="href string:${portal_url}/author/${creator}"
@@ -26,11 +26,13 @@
          i18n:name="author">
         Bob Dobalina
       </a>
+      </span>
       <tal:ownership condition="python: isEditable and checkPermission('Manage portal', here)">
-      [<a href="" 
-       title="Change ownership"
-       i18n:attributes="title"
-       tal:attributes="href string:${here/absolute_url}/ownership_form;">Change</a>]
+        <a href="" 
+           title="Change ownership"
+           i18n:attributes="title label_change_ownership;"
+           i18n:translate="label_change_author"
+           tal:attributes="href string:${here/absolute_url}/ownership_form;">[Change ownership]</a>
       </tal:ownership>
 
       &mdash;
@@ -47,9 +49,11 @@
     <a href="" 
        title="Change contributers"
        tal:condition="python: isEditable and checkPermission('Manage properties', here)" 
-       i18n:attributes="title"
+       i18n:attributes="title label_change_contributers;"
        tal:attributes="href string:${here/absolute_url}/base_metadata;">
-       <img src="" tal:attributes="src string:${portal_url}/edit.gif" />
+      <img src="" tal:attributes="src string:${portal_url}/edit.gif"
+           alt="Change contributers"
+           i18n:attributes="alt label_change_contributers;"/>
       </a>
 
     <br />
@@ -70,12 +74,12 @@
     &mdash; expired
     </span>
 
-    <span tal:define="lock string:$portal_url/lock_icon.gif"
+    <span tal:define="locked portal_object/lock_icon.gif"
           tal:condition="isLocked">
         <img src=""
              tal:replace="structure python:locked.tag(title='This item is locked')"
              alt="Object locked"
-             i18n:attributes="alt" />
+             i18n:attributes="alt label_object_locked;" />
     </span>
 
     <tal:rights condition="here/Rights">

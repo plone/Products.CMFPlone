@@ -7,8 +7,15 @@ function setFocus(){
         for (var i = 0; (node = formnode.getElementsByTagName('div').item(i)); i++) {
             if (xre.exec(node.className)){
                 for (var j = 0; (inputnode = node.getElementsByTagName('input').item(j)); j++) {
-                    inputnode.focus();
-                    return;   
+                    try {
+                        if (inputnode.focus) { // check availability first
+                            inputnode.focus();
+                            return;
+                        }
+                    } catch(e) {
+                        // try next one, this can happen with a hidden or
+                        // invisible input field
+                    }
                 }
             }
         }

@@ -2,6 +2,7 @@ from Products.ExternalMethod.ExternalMethod import manage_addExternalMethod
 from Products.CMFPlone.Portal import manage_addSite
 from Products.SiteAccess.SiteRoot import manage_addSiteRoot
 from Products.SiteAccess.AccessRule import manage_addAccessRule
+from Products.CMFPlone import transaction
 
 from AccessControl.SecurityManagement import newSecurityManager
 from AccessControl.SecurityManagement import noSecurityManager
@@ -80,14 +81,14 @@ def create(app, admin_username='admin'):
     # 5. add in products
     qit = plone.portal_quickinstaller
 
-    products_to_install = ["Epoz",]
+    products_to_install = ["kupu",]
     ids = [ x['id'] for x in qit.listInstallableProducts(skipInstalled=1) ]
     for product in products_to_install:
         if product in ids:
             qit.installProduct(product)
 
     # 6. commit
-    get_transaction().commit()
+    transaction.commit()
 
     noSecurityManager()
     out.append("Finished")

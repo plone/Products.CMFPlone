@@ -116,7 +116,7 @@
                        type="submit"
                        name="submit"
                        value="Save"
-                       i18n:attributes="value"
+                       i18n:attributes="value label_save;"
                        tal:attributes="tabindex tabindex/next;"
                        />
                 <input type="hidden" name="form_submitted" value="1" tal:attributes="value template/id" />
@@ -128,7 +128,7 @@
               method="post"
               tal:attributes="action string:prefs_syndication_set">
     
-            <input type="submit" value="Disable Syndication" i18n:attributes="value" />
+            <input type="submit" value="Disable Syndication" i18n:attributes="value label_disable_syndication;" />
             <input type="hidden" name="isAllowed:int" value="0" />
         </form>
     
@@ -139,7 +139,7 @@
           tal:condition="not:isSynAllowed"
           tal:attributes="action string:prefs_syndication_set">
         <input class="standalone" type="submit" value="Enable Syndication"
-               i18n:attributes="value" />
+               i18n:attributes="value label_enable_syndication;" />
         <input type="hidden" name="isAllowed:int" value="1" />
 
     </form>

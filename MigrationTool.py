@@ -7,6 +7,7 @@ from Products.CMFCore.utils import UniqueObject, getToolByName
 from Products.CMFCore.CMFCorePermissions import ManagePortal, View
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFPlone.utils import versionTupleFromString
+from Products.CMFPlone import transaction
 
 import zLOG
 import traceback
@@ -294,7 +295,7 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
                     raise
                 else:
                     # abort transaction to safe the zodb
-                    get_transaction().abort()
+                    transaction.abort()
 
         out.append(("End of upgrade path, migration has finished", zLOG.INFO))
 
@@ -337,7 +338,7 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
 
         if dry_run:
             out.append(("Dry run selected, transaction aborted", zLOG.INFO))
-            get_transaction().abort()
+            transaction.abort()
 
         # log all this to the ZLOG
         for msg, sev in out: log(msg, severity=sev)

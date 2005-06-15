@@ -50,7 +50,7 @@ You will receive an email shortly containing your password
         <input class="standalone"
                type="submit"
                value="Log in"
-               i18n:attributes="value"
+               i18n:attributes="value label_log_in;"
                />
     </form>
 </tal:block>

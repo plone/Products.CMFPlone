@@ -37,7 +37,7 @@
      
 
         <tal:exists condition="here/getTypes">
-        <dt>Types</dt>
+        <dt i18n:translate="label_types">Types</dt>
         <dd>
             <ul>
                 <li tal:repeat="type here/getTypes"
@@ -49,7 +49,7 @@
         </tal:exists>
 
         <tal:exists condition="here/getSkins">
-        <dt>Skins</dt>
+        <dt i18n:translate="label_skins">Skins</dt>
         <dd>
             <ul>
                 <li tal:repeat="skin here/getSkins"
@@ -61,7 +61,7 @@
         </tal:exists>
         
         <tal:exists condition="here/getActions">
-        <dt>Actions</dt>
+        <dt i18n:translate="label_actions">Actions</dt>
         <dd>
             <ul>
                 <li tal:repeat="action here/getActions"
@@ -73,7 +73,7 @@
         </tal:exists>
         
         <tal:exists condition="here/getPortalObjects">
-        <dt>Portal Objects</dt>
+        <dt i18n:translate="label_portal_objects">Portal Objects</dt>
         <dd>
             <ul>
                 <li tal:repeat="object here/getPortalObjects"
@@ -85,7 +85,7 @@
         </tal:exists>
         
         <tal:exists condition="here/getWorkflows">
-        <dt>Workflows</dt>
+        <dt i18n:translate="label_workflows">Workflows</dt>
         <dd>
             <ul>
                 <li tal:repeat="wf here/getWorkflows"
@@ -97,7 +97,7 @@
         </tal:exists>
         
         <tal:exists condition="here/getSlots">
-        <dt>Portlets</dt>
+        <dt i18n:translate="label_portlets">Portlets</dt>
         <dd>
             <ul>
                 <li tal:repeat="portlet here/getSlots"

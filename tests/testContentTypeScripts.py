@@ -13,6 +13,7 @@ from Products.CMFPlone.tests import dummy
 AddPortalTopics = 'Add portal topics'
 from DateTime import DateTime
 from Products.CMFPlone import LargePloneFolder
+from Products.CMFPlone import transaction
 
 
 #XXX NOTE
@@ -254,12 +255,12 @@ class TestEditShortName(PloneTestCase.PloneTestCase):
         self.assertEqual(str(self.folder.image.data), dummy.GIF)
 
     def testFileEditShortName(self):
-        get_transaction().commit(1) # make rename work
+        transaction.commit(1) # make rename work
         self.folder.file.file_edit(id='fred')
         self.failUnless('fred' in self.folder.objectIds())
 
     def testImageEditShortName(self):
-        get_transaction().commit(1) # make rename work
+        transaction.commit(1) # make rename work
         self.folder.image.image_edit(id='fred')
         self.failUnless('fred' in self.folder.objectIds())
 
@@ -301,7 +302,7 @@ class TestEditFileKeepsMimeType(PloneTestCase.PloneTestCase):
     def testFileRenameKeepsMimeType(self):
         self.assertEqual(self.folder.file.Format(), 'application/pdf')
         self.assertEqual(self.folder.file.getFile().content_type, 'application/pdf')
-        get_transaction().commit(1) # make rename work
+        transaction.commit(1) # make rename work
         self.folder.file.file_edit(id='foo')
         self.assertEqual(self.folder.foo.Format(), 'application/pdf')
         self.assertEqual(self.folder.foo.getFile().content_type, 'application/pdf')
@@ -309,7 +310,7 @@ class TestEditFileKeepsMimeType(PloneTestCase.PloneTestCase):
     def testImageRenameKeepsMimeType(self):
         self.assertEqual(self.folder.image.Format(), 'image/gif')
         self.assertEqual(self.folder.image.content_type, 'image/gif')
-        get_transaction().commit(1) # make rename work
+        transaction.commit(1) # make rename work
         self.folder.image.image_edit(id='foo')
         self.assertEqual(self.folder.foo.Format(), 'image/gif')
         self.assertEqual(self.folder.foo.content_type, 'image/gif')
@@ -352,7 +353,7 @@ class TestFileExtensions(PloneTestCase.PloneTestCase):
     def afterSetUp(self):
         self.folder.invokeFactory('File', id=self.file_id)
         self.folder.invokeFactory('Image', id=self.image_id)
-        get_transaction().commit(1) # make rename work
+        transaction.commit(1) # make rename work
 
     def testUploadFile(self):
         self.folder[self.file_id].file_edit(file=dummy.File('fred.txt'))
@@ -381,7 +382,7 @@ class TestBadFileIds(PloneTestCase.PloneTestCase):
     def afterSetUp(self):
         self.folder.invokeFactory('File', id=self.file_id)
         self.folder.invokeFactory('Image', id=self.image_id)
-        get_transaction().commit(1) # make rename work
+        transaction.commit(1) # make rename work
 
     def testUploadBadFile(self):
         # http://plone.org/collector/3416

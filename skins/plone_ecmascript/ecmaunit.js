@@ -1,49 +1,16 @@
+/*****************************************************************************
+ *
+ * Copyright (c) 2003-2004 EcmaUnit Contributors. All rights reserved.
+ *
+ * This software is distributed under the terms of the EcmaUnit
+ * License. See LICENSE.txt for license text. For a list of EcmaUnit
+ * Contributors see CREDITS.txt.
+ *
+ *****************************************************************************/
+
+// $Id: ecmaunit.js 10153 2005-03-29 09:50:05Z guido $
+
 /*
-Copyright (c) 2003-2004, EcmaUnit Contributors
-All rights reserved.
-
-LICENSE
-
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are
-met:
-
-
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
-
-    * Redistributions in binary form must reproduce the above
-      copyright notice, this list of conditions and the following
-      disclaimer in the documentation and/or other materials provided
-      with the distribution.
-
-    * Neither the name of EcmaUnit nor the names of its contributors may
-      be used to endorse or promote products derived from this
-      software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-
-
-CREDITS
-
-This package was written by Guido Wesdorp (guido@infrae.com), with the help of 
-Philipp von Weitershausen (philikon@philikon.de).
-
-Inspiration came from the jsUnit package by Edward Hieatt (edward@jsunit.net),
-a unit test suite for JavaScript, and Python's pyunit package written by
-Steve Purcell.
-
    Object-oriented prototype-based unit test suite
 */
 
@@ -66,32 +33,46 @@ function TestCase() {
         /* this will be called after each test method that has been ran */
     };
 
-    this.assertEquals = function(var1, var2) {
+    this.assertEquals = function(var1, var2, message) {
         /* assert whether 2 vars have the same value */
+        if (!message)  {
+            message = '';
+        } else {
+            message = "'" + message + "' ";
+        }
         if (var1 && var1.toSource && var2 && var2.toSource) {
             if (var1.toSource() != var2.toSource()) {
-                throw('Assertion failed: ' + var1 + ' != ' + var2);
+                this._throwException('Assertion ' + message + 'failed: ' + 
+                                        var1 + ' != ' + var2);
             };
         } else {
             if (var1 != var2) {
-                throw('Assertion failed: ' + var1 + ' != ' + var2);
+                this._throwException('Assertion ' + message + 'failed: ' + 
+                                        var1 + ' != ' + var2);
             };
         };
     };
 
-    this.assert = function(statement) {
+    this.debug = function(msg) {
+        this._reporter.debug(msg);
+    }
+    this.assert = function(statement, message) {
         /* assert whether a variable resolves to true */
         if (!statement) {
-            throw('Assertion ' + statement.toString ? statement.toString() : statement + ' failed');
+            if (!message) message = (statement && statement.toString) ? 
+                                        statement.toString() : statement;
+            this._throwException('Assertion \'' + message + '\' failed');
         };
     };
 
     this.assertTrue = this.assert;
 
-    this.assertFalse = function(statement) {
+    this.assertFalse = function(statement, message) {
         /* assert whether a variable resolves to false */
         if (statement) {
-            throw('Assertion ' + statement.toString() + ' failed');
+            if (!message) message = statement.toString ? 
+                    statement.toString() : statement;
+            this._throwException('AssertFalse \'' + message + '\' failed');
         };
     };
 
@@ -100,33 +81,40 @@ function TestCase() {
         if (!context) {
             context = null;
         };
-        if (!exception) {
-            return;
-        };
         var exception_thrown = false;
+        // remove the first three args, they're the function's normal args
+        var args = [];
+        for (var i=3; i < arguments.length; i++) {
+            args.push(arguments[i]);
+        };
         try {
-            func.apply(context, arguments);
+            func.apply(context, args);
         } catch(e) {
-            if (exception.toSource && e.toSource) {
-                exception = exception.toSource();
-                e = e.toSource();
-            } else if (exception.toString && e.toString) {
-                exception = exception.toString();
-                e = e.toString();
-            };
-            if (e != exception) {
-                throw('Function threw the wrong exception ' + 
-                        e.toString() + ', while expecting ' + 
-                        exception.toString());
+            // allow catching undefined exceptions too
+            if (exception === undefined) {
+            } else if (exception) {
+                if (exception.toSource && e.toSource) {
+                    exception = exception.toSource();
+                    e = e.toSource();
+                };
+                if (exception.toString && e.toString) {
+                    exception = exception.toString();
+                    e = e.toString();
+                };
+                if (e != exception) {
+                    this._throwException('Function threw the wrong ' +
+                            'exception ' + e.toString() + 
+                            ', while expecting ' + exception.toString());
+                };
             };
             exception_thrown = true;
         };
         if (!exception_thrown) {
             if (exception) {
-                throw("function didn\'t raise exception \'" + 
-                        exception.toString() + "'");
+                this._throwException("function didn\'t raise exception \'" + 
+                                        exception.toString() + "'");
             } else {
-                throw('function didn\'t raise exception');
+                this._throwException('function didn\'t raise exception');
             };
         };
     };
@@ -152,8 +140,12 @@ function TestCase() {
                     this[attr]();
                     this._reporter.reportSuccess(this.name, attr);
                 } catch(e) {
-                    this._reporter.reportError(this.name, attr, e);
-                    this._exceptions.push(new Array(this.name, attr, e));
+                    var raw = e;
+                    if (e.name && e.message) { // Microsoft
+                        e = e.name + ': ' + e.message;
+                    }
+                    this._reporter.reportError(this.name, attr, e, raw);
+                    this._exceptions.push(new Array(this.name, attr, e, raw));
                 };
                 this.tearDown();
                 numtests++;
@@ -164,6 +156,35 @@ function TestCase() {
         return new Array(numtests, totaltime);
     };
 
+    this._throwException = function(message) {
+        var lineno = this._getLineNo();
+        if (lineno) {
+            message = 'line ' + lineno + ' - ' + message;
+        };
+        throw(message);
+    };
+
+    this._getLineNo = function() {
+        /* tries to get the line no in Moz */
+        var stack = undefined;
+        try {notdefined()} catch(e) {stack = e.stack};
+        if (stack) {
+            stack = stack.toString().split('\n');
+            for (var i=0; i < stack.length; i++) {
+                var line = stack[i].split('@')[1];
+                if (line.indexOf('ecmaunit') == -1) {
+                    // return the first line after we get out of ecmaunit
+                    var chunks = line.split(':');
+                    var lineno = chunks[chunks.length - 1];
+                    if (lineno != '0') {
+                        return lineno;
+                    };
+                };
+            };
+        } else {
+            return false;
+        };
+    };
 };
 
 function TestSuite(reporter) {
@@ -207,31 +228,74 @@ function TestSuite(reporter) {
 };
 
 function StdoutReporter(verbose) {
-  this.verbose = verbose; //XXX verbose not yet supported
+    this.verbose = verbose;
+    this.debug = function(text) {
+        print(text+"\n");
+    }
 
     this.reportSuccess = function(testcase, attr) {
         /* report a test success */
-        print('.');
+        if (this.verbose) {
+            print(testcase + '.' + attr + '(): OK');
+        } else {
+            print('.');
+        };
     };
 
-    this.reportError = function(testcase, attr, exception) {
+    this.reportError = function(testcase, attr, exception, raw) {
         /* report a test failure */
-        print('F');
+        if (this.verbose) {
+            print(testcase + '.' + attr + '(): FAILED!');
+        } else {
+            print('F');
+        };
     };
 
     this.summarize = function(numtests, time, exceptions) {
-        print(numtests + ' tests ran in ' + time / 1000.0 + ' seconds');
+        print('\n' + numtests + ' tests ran in ' + time / 1000.0 + 
+                ' seconds\n');
         if (exceptions.length) {
             for (var i=0; i < exceptions.length; i++) {
                 var testcase = exceptions[i][0];
                 var attr = exceptions[i][1];
                 var exception = exceptions[i][2];
+                var raw = exceptions[i][3];
                 print(testcase + '.' + attr + ', exception: ' + exception);
+                if (verbose) {
+                    this._printStackTrace(raw);
+                };
             };
             print('NOT OK!');
         } else {
             print('OK!');
         };
+    };
+
+    this._printStackTrace = function(exc) {
+        if (!exc.stack) {
+            print('no stacktrace available');
+            return;
+        };
+        var lines = exc.stack.toString().split('\n');
+        var toprint = [];
+        for (var i=0; i < lines.length; i++) {
+            var line = lines[i];
+            if (line.indexOf('ecmaunit.js') > -1) {
+                // remove useless bit of traceback
+                break;
+            };
+            if (line.charAt(0) == '(') {
+                line = 'function' + line;
+            };
+            var chunks = line.split('@');
+            toprint.push(chunks);
+        };
+        toprint.reverse();
+        for (var i=0; i < toprint.length; i++) {
+            print('  ' + toprint[i][1]);
+            print('    ' + toprint[i][0]);
+        };
+        print();
     };
 };
 
@@ -240,6 +304,12 @@ function HTMLReporter(outputelement, verbose) {
     this.document = outputelement.ownerDocument;
     this.verbose = verbose; //XXX verbose not yet supported
 
+    this.debug = function(text) {
+        var msg = this.document.createTextNode(text);
+        var div = this.document.createElement('div');
+        div.appendChild(msg);
+        this.outputelement.appendChild(div);
+    }
     this.reportSuccess = function(testcase, attr) {
         /* report a test success */
         // a single dot looks rather small
@@ -247,10 +317,12 @@ function HTMLReporter(outputelement, verbose) {
         this.outputelement.appendChild(dot);
     };
 
-    this.reportError = function(testcase, attr, exception) {
+    this.reportError = function(testcase, attr, exception, raw) {
         /* report a test failure */
         var f = this.document.createTextNode('F');
         this.outputelement.appendChild(f);
+        if (this.verbose) {
+        };
     };
 
     this.summarize = function(numtests, time, exceptions) {
@@ -265,12 +337,28 @@ function HTMLReporter(outputelement, verbose) {
                 var testcase = exceptions[i][0];
                 var attr = exceptions[i][1];
                 var exception = exceptions[i][2];
+                var raw = exceptions[i][3];
                 var div = this.document.createElement('div');
+                var lines = exception.split('\n');
                 var text = this.document.createTextNode(
-                    testcase + '.' + attr + ', exception: ' + exception);
+                    testcase + '.' + attr + ', exception ');
                 div.appendChild(text);
+                // add some formatting for Opera: this browser displays nice
+                // tracebacks...
+                for (var j=0; j < lines.length; j++) {
+                    var text = lines[j];
+                    if (j > 0) {
+                        text = '\xa0\xa0\xa0\xa0' + text;
+                    };
+                    div.appendChild(this.document.createTextNode(text));
+                    div.appendChild(this.document.createElement('br'));
+                };
                 div.style.color = 'red';
                 this.outputelement.appendChild(div);
+                if (this.verbose) {
+                    // display stack trace on Moz
+                    this._displayStackTrace(raw);
+                };
             };
             var div = this.document.createElement('div');
             var text = this.document.createTextNode('NOT OK!');
@@ -291,6 +379,63 @@ function HTMLReporter(outputelement, verbose) {
             div.style.textAlign = 'center';
             div.style.marginTop = '1em';
             this.outputelement.appendChild(div);
+        };
+    };
+
+    this._displayStackTrace = function(exc) {
+        /*
+        if (arguments.caller) {
+            // IE
+            var caller = arguments;
+            toprint = [];
+            while (caller) {
+                var callee = caller.callee.toString();
+                callee = callee.replace('\n', '').replace(/\s+/g, ' ');
+                var funcsig = /(.*?)\s*\{/.exec(callee)[1];
+                var args = caller.callee.arguments;
+                var displayargs = [];
+                for (var i=0; i < args.length; i++) {
+                    displayargs.push(args[i].toString());
+                };
+                toprint.push((funcsig + ' - (' + displayargs + ')'));
+                caller = caller.caller;
+            };
+            toprint.reverse();
+            var pre = this.document.createElement('pre');
+            for (var i=0; i < toprint.length; i++) {
+                pre.appendChild(document.createTextNode(toprint[i]));
+                pre.appendChild(document.createElement('br'));
+            };
+            this.outputelement.appendChild(pre);
+        };
+        */
+        if (exc.stack) {
+            // Moz (sometimes)
+            var lines = exc.stack.toString().split('\n');
+            var toprint = []; // need to reverse this before outputting
+            for (var i=0; i < lines.length; i++) {
+                var line = lines[i];
+                if (line.indexOf('ecmaunit.js') > -1) {
+                    // remove useless bit of traceback
+                    break;
+                };
+                if (line[0] == '(') {
+                    line = 'function' + line;
+                };
+                line = line.split('@');
+                toprint.push(line);
+            };
+            toprint.reverse();
+            var pre = this.document.createElement('pre');
+            for (var i=0; i < toprint.length; i++) {
+                pre.appendChild(
+                    this.document.createTextNode(
+                        '  ' + toprint[i][1] + '\n    ' + toprint[i][0] + '\n'
+                    )
+                );
+            };
+            pre.appendChild(document.createTextNode('\n'));
+            this.outputelement.appendChild(pre);
         };
     };
 };

@@ -20,12 +20,12 @@ from Products.CMFCore.CatalogTool import _mergedLocalRoles
 from Products.CMFCore.interfaces.portal_catalog \
         import IndexableObjectWrapper as IIndexableObjectWrapper
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
-from Products.CMFPlone import base_hasattr
+from Products.CMFPlone.utils import base_hasattr
+from Products.CMFPlone.utils import safe_callable
 from OFS.IOrderSupport import IOrderedContainer
 from ZODB.POSException import ConflictError
 
 from Products.ZCatalog.ZCatalog import ZCatalog
-from Products.PluginIndexes.common import safe_callable
 
 from AccessControl.Permissions import manage_zcatalog_entries as ManageZCatalogEntries
 from AccessControl.Permissions import search_zcatalog as SearchZCatalog
@@ -125,6 +125,7 @@ def zero_fill(matchobj):
 
 num_sort_regex = re.compile('\d+')
 
+
 def sortable_title(obj, portal, **kwargs):
     """Helper method for to provide FieldIndex for Title
     """
@@ -145,6 +146,10 @@ def sortable_title(obj, portal, **kwargs):
                     break
                 except UnicodeError:
                     pass
+                except TypeError:
+                    # If we get a TypeError if we already have a unicode string
+                    sortabletitle = sortabletitle[:30]
+                    break
             return sortabletitle
     return ''
 
@@ -393,11 +398,16 @@ class CatalogTool(PloneBaseTool, BaseTool):
             limit the results to what the user is allowed to see.
 
             This version uses the 'effectiveRange' DateRangeIndex.
+
+            It also accepts a keyword argument show_inactive to disable
+            effectiveRange checking entirely even for those withot portal wide
+            AccessInactivePortalContent permission.
         """
+        show_inactive = kw.get('show_inactive', False)
         user = _getAuthenticatedUser(self)
         kw['allowedRolesAndUsers'] = self._listAllowedRolesAndUsers(user)
 
-        if not _checkPermission(AccessInactivePortalContent, self):
+        if not show_inactive and not _checkPermission(AccessInactivePortalContent, self):
             kw['effectiveRange'] = DateTime()
             if kw.has_key('effective'):
                 del kw['effective']

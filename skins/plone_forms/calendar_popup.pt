@@ -43,7 +43,7 @@
       Choose a date
     </div>
 
-    <div metal:use-macro="here/calendar_slot/macros/calendarDatePickerBoxPopup">
+    <div metal:use-macro="here/calendar_macros/macros/calendarDatePickerBoxPopup">
       Show calendar
     </div>
 

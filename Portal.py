@@ -112,10 +112,16 @@ class PloneSite(CMFSite, OrderedContainer, PropertyManagedBrowserDefault):
         """ Acquire if not present. """
         request = getattr(self, 'REQUEST', None)
         if request and request.has_key('REQUEST_METHOD'):
-            if (request.maybe_webdav_client and
-                request['REQUEST_METHOD'] in  ['PUT']):
-                # Very likely a WebDAV client trying to create something
-                return ReplaceableWrapper(NullResource(self, 'index_html'))
+            if request.maybe_webdav_client:
+                method = request['REQUEST_METHOD']
+                if method in ('PUT',):
+                    # Very likely a WebDAV client trying to create something
+                    return ReplaceableWrapper(NullResource(self, 'index_html'))
+                elif method in ('GET', 'HEAD', 'POST'):
+                    # Do nothing, let it go and acquire.
+                    pass
+                else:
+                    raise AttributeError, 'index_html'
         # Acquire from skin.
         _target = self.__getattr__('index_html')
         return ReplaceableWrapper(aq_base(_target).__of__(self))
@@ -141,6 +147,12 @@ class PloneSite(CMFSite, OrderedContainer, PropertyManagedBrowserDefault):
         return 'utf-8'
 
     management_page_charset = ComputedAttribute(_management_page_charset, 1)
+
+    def view(self):
+        """ Ensure that we get a plain view of the object, via a delegation to
+        __call__(), which is defined in PropertyManagedBrowserDefault
+        """
+        return self()
 
 Globals.InitializeClass(PloneSite)
 

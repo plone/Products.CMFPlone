@@ -31,7 +31,7 @@
                     <a href=""          
                        tal:attributes="href configlet/url">
                         <img src="" alt="" tal:attributes="src python:getIconFor('controlpanel',configlet['id']);
-                                             alt configlet/description"
+                                                           alt configlet/name;"
                              i18n:attributes="alt"
                              tal:on-error="string:" />
                     <tal:configletname tal:content="configlet/name"
@@ -51,7 +51,7 @@
     <div class="discreet"               
         tal:define="sys here/getZopeInfo;                     
                     mt  here/portal_migration">
-        <strong>Plone version overview</strong><br />
+        <strong i18n:translate="heading_plone_version_overview">Plone version overview</strong><br />
         Plone <span tal:replace="mt/getInstanceVersion" />, <br />
         Zope <span tal:replace="python:sys[0]" />, <br />
         Python <span tal:replace="python:sys[1]" />

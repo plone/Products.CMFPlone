@@ -92,9 +92,9 @@ for x in range(min_year, max_year+1):
 month=int(date.strftime('%m'))
 
 if default:
-    months.append({'id': '----', 'value': '01', 'selected': 1})
+    months.append({'id': '----', 'value': '00', 'selected': 1})
 else:
-    months.append({'id': '----', 'value': '01', 'selected': None})
+    months.append({'id': '----', 'value': '00', 'selected': None})
 
 for x in range(1, 13):
     d={'id': month_dict[x], 'value': '%02d' % x, 'selected': None}
@@ -105,9 +105,9 @@ for x in range(1, 13):
 day=int(date.strftime('%d'))
 
 if default:
-    days.append({'id': '----', 'value': '01', 'selected': 1})
+    days.append({'id': '----', 'value': '00', 'selected': 1})
 else:
-    days.append({'id': '----', 'value': '01', 'selected': None})
+    days.append({'id': '----', 'value': '00', 'selected': None})
 
 for x in range(1, 32):
     d={'id': x, 'value': '%02d' % x, 'selected': None}

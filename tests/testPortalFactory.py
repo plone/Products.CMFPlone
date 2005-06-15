@@ -8,6 +8,7 @@ if __name__ == '__main__':
 
 from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
+from Products.CMFCore import CMFCorePermissions
 
 from AccessControl import Unauthorized
 default_user = PloneTestCase.default_user
@@ -16,6 +17,8 @@ def sortTuple(t):
     l = list(t)
     l.sort()
     return tuple(l)
+
+ADD_DOC_PERM = 'ATContentTypes: Add Document'
 
 
 class TestPortalFactory(PloneTestCase.PloneTestCase):
@@ -57,6 +60,94 @@ class TestPortalFactory(PloneTestCase.PloneTestCase):
         temp_object2 = self.folder.folder2.restrictedTraverse('portal_factory/Document/tmp_id')
         self.assertEqual(sortTuple(member.getRolesInContext(temp_object2)),
                          ('Authenticated', 'Foo', 'Member', 'Reviewer'))
+        
+    def testTempFolderLocalRolesWithBlocking(self):
+        # Temporary objects should "inherit" local roles from container,
+        # but also need to respect PLIP 16 local role blocking
+        member = self.membership.getMemberById('member')
+        self.portal._addRole('Foo')
+
+        self.folder.manage_addLocalRoles('member', ('Foo',))
+        self.folder.invokeFactory('Folder', id='folder2')
+        self.folder.folder2.manage_addLocalRoles('member', ('Reviewer',))
+        # make folder2 not inherit local roles
+        self.portal.plone_utils.acquireLocalRoles(self.folder.folder2, status=0)
+
+        self.assertEqual(sortTuple(member.getRolesInContext(self.folder.folder2)),
+                         ('Authenticated', 'Member', 'Reviewer'))
+
+        temp_object2 = self.folder.folder2.restrictedTraverse('portal_factory/Document/tmp_id')
+        self.assertEqual(sortTuple(member.getRolesInContext(temp_object2)),
+                         ('Authenticated', 'Member', 'Reviewer'))
+
+    def testTempFolderPermissionAq(self):
+        from Products.CMFPlone.FactoryTool import FACTORY_INFO
+        # Temporary folder should acquire same permissions as the intended parent
+        self.login('manager')
+        self.portal.invokeFactory('Folder', id='folder1')
+        folder1 = self.portal.folder1
+        folder1.invokeFactory('Folder', id='folder2')
+        folder2 = folder1.folder2
+        folder2.invokeFactory('Folder', id='folder3')
+        folder3 = folder1.folder2.folder3
+        folder3.restrictedTraverse('portal_factory/Document/tmp_id')
+        # clear out the cached factory info (this would happen by itself in an actual request)
+        self.portal.REQUEST.set(FACTORY_INFO, {})
+
+        # make sure no permission is available initially
+        self.login('member')
+        pm = self.portal.portal_membership
+        assert (not pm.checkPermission(ADD_DOC_PERM, folder3))
+        self.assertRaises(Unauthorized, folder3.restrictedTraverse, 'portal_factory/Document/tmp_id/atct_edit')
+        # clear out the cached factory info (this would happen by itself in an actual request)
+        self.portal.REQUEST.set(FACTORY_INFO, {})
+
+        # grant the add permission on the parent
+        self.login('manager')
+        folder3.manage_permission(ADD_DOC_PERM, ['Authenticated'], 1)
+
+        # now make sure we can see it
+        self.login('member')
+        assert (pm.checkPermission(ADD_DOC_PERM, folder3))
+        #folder3.setConstrainTypesMode(0)
+        folder3.restrictedTraverse('portal_factory/Document/tmp_id/atct_edit')
+        # clear out the cached factory info (this would happen by itself in an actual request)
+        self.portal.REQUEST.set(FACTORY_INFO, {})
+
+        # blow away folder3 and start again
+        self.login('manager')
+        folder2.manage_delObjects(['folder3'])
+        folder2.invokeFactory('Folder', id='folder3')
+        folder3 = folder1.folder2.folder3
+
+        # grant the add permission on the grandparent
+        folder2.manage_permission(ADD_DOC_PERM, ['Authenticated'], 1)
+
+        # now make sure we can see it
+        self.login('member')
+        assert (pm.checkPermission(ADD_DOC_PERM, folder3))
+        folder3.restrictedTraverse('portal_factory/Document/tmp_id')
+        # clear out the cached factory info (this would happen by itself in an actual request)
+        self.portal.REQUEST.set(FACTORY_INFO, {})
+
+        # blow away folder2 and start again
+        self.login('manager')
+        folder1.manage_delObjects(['folder2'])
+        folder1.invokeFactory('Folder', id='folder2')
+        folder2 = folder1.folder2
+        folder2.invokeFactory('Folder', id='folder3')
+        folder3 = folder1.folder2.folder3
+
+        # add the permission on the portal root
+        self.portal.manage_permission(ADD_DOC_PERM, ['Authenticated'], 1)
+
+        # now make sure we can see it
+        self.login('member')
+        assert (pm.checkPermission(ADD_DOC_PERM, folder3))
+        folder3.restrictedTraverse('portal_factory/Document/tmp_id')
+        # clear out the cached factory info (this would happen by itself in an actual request)
+        self.portal.REQUEST.set(FACTORY_INFO, {})
+
 
     def testTempObjectLocalRolesBug(self):
         # Evil monkey patch should not change all objects of a class
@@ -88,14 +179,15 @@ class TestPortalFactory(PloneTestCase.PloneTestCase):
         # TempFolder should "inherit" permission mappings from container
         from Products.CMFCore.CMFCorePermissions import AddPortalContent
 
-        previous_roles = self.folder.rolesOfPermission(AddPortalContent)
+        previous_roles = [r for r in self.folder.rolesOfPermission(AddPortalContent) if r['name'] == 'Anonymous']
         self.folder.manage_permission(AddPortalContent, ['Anonymous'], 1)
-        new_roles = self.folder.rolesOfPermission(AddPortalContent)
+        new_roles = [r for r in self.folder.rolesOfPermission(AddPortalContent) if r['name'] == 'Anonymous']
         self.failIfEqual(previous_roles, new_roles)
 
         temp_folder = self.folder.restrictedTraverse(
                                 'portal_factory/Document/tmp_id').aq_parent
-        temp_roles = temp_folder.rolesOfPermission(AddPortalContent)
+        temp_roles = [r for r in temp_folder.rolesOfPermission(AddPortalContent) if r['name'] == 'Anonymous']
+        
         self.assertEqual(temp_roles, new_roles)
 
 

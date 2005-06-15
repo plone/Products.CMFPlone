@@ -105,7 +105,7 @@ we eventually might want to merge this form with personalize_form
             <label i18n:translate="label_email">E-mail</label>
 
             <span class="fieldRequired" title="Required"
-                  i18n:attributes="title"
+                  i18n:attributes="title title_required;"
                   i18n:translate="label_required">(Required)</span>
 
                   <div class="formHelp" i18n:translate="help_email_creation">
@@ -246,7 +246,7 @@ we eventually might want to merge this form with personalize_form
                         type="submit"
                         value="Save"
                         name="prefs_user_edit:method"
-                        i18n:attributes="value"
+                        i18n:attributes="value label_save;"
                         tal:attributes="tabindex tabindex/next;"
                         />
             </div>

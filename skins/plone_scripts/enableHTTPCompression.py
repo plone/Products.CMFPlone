@@ -12,7 +12,8 @@
 # css: set this to 1 inside a css file (for later use)
 # js: set this to 1 inside a js file (for later use)
 
-ENABLE_ZLIB_COMPRESSION = 1
+# Set this to 1 to enable Zope's HTTP compression
+ENABLE_ZLIB_COMPRESSION = 0
 
 if not ENABLE_ZLIB_COMPRESSION:
     if debug:

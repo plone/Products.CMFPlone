@@ -242,7 +242,9 @@ class TestPUTObjects(PloneTestCase.FunctionalTestCase):
 
         self.assertEqual(response.getStatus(), 201)
         self.failUnless('test.ico' in self.folder.objectIds())
-        self.assertEqual(self.folder['test.ico'].portal_type, 'Image')
+        self.assertEqual(
+            self.folder['test.ico'].portal_type, 'Image', 
+            'If you are on a Mac and this fails, please see: http://plone.org/documentation/error/unittest to fix.')
         self.assertEqual(str(self.folder['test.ico'].getImage().data), dummy.GIF)
 
     def testPUTIndexHtmlImage(self):
@@ -290,6 +292,123 @@ class TestPUTObjects(PloneTestCase.FunctionalTestCase):
         self.assertEqual(self.portal._getOb('index_html').EditableBody(), html)
 
 
+class TestDAVOperations(PloneTestCase.FunctionalTestCase):
+
+    def afterSetUp(self):
+        self.loginPortalOwner()
+        self.basic_auth = '%s:%s' % (PloneTestCase.portal_owner, '')
+        self.portal_path = self.portal.absolute_url(1)
+        self.folder_path = self.folder.absolute_url(1)
+
+    def test_document_propfind_index_html_non_exist_folder(self):
+        self.folder.invokeFactory('Folder', 'sub')
+        self.failIf('index_html' in self.folder.sub.objectIds())
+
+        # Do a PROPFIND on folder/index_html, this needs to result in a NotFound.
+        response = self.publish(self.folder_path + '/sub/index_html',
+                                request_method='PROPFIND',
+                                stdin=StringIO(),
+                                basic=self.basic_auth)
+
+        self.assertEqual(response.getStatus(), 404, response.getBody())
+
+    def test_document_propfind_index_html_exist_folder(self):
+        self.folder.invokeFactory('Folder', 'sub')
+        self.folder.sub.invokeFactory('Document', 'index_html')
+        self.failUnless('index_html' in self.folder.sub.objectIds())
+
+        # Do a PROPFIND on folder/index_html, this needs to result in a 207
+        response = self.publish(self.folder_path + '/sub/index_html',
+                                request_method='PROPFIND',
+                                stdin=StringIO(),
+                                basic=self.basic_auth)
+
+        self.assertEqual(response.getStatus(), 207, response.getBody())
+
+    def test_document_propfind_index_html_non_exist_portal(self):
+        if 'index_html' in self.portal.objectIds():
+            self.portal.manage_delObjects('index_html')
+
+        self.failIf('index_html' in self.portal.objectIds())
+
+        # Do a PROPFIND on portal/index_html, this needs to result in a NotFound.
+        response = self.publish(self.portal_path + '/index_html',
+                                request_method='PROPFIND',
+                                stdin=StringIO(),
+                                basic=self.basic_auth)
+
+        self.assertEqual(response.getStatus(), 404, response.getBody())
+
+    def test_document_propfind_index_html_exist_portal(self):
+        if 'index_html' not in self.portal.objectIds():
+            self.portal.invokeFactory('Document', 'index_html')
+
+        self.failUnless('index_html' in self.portal.objectIds())
+
+        # Do a PROPFIND on folder/index_html, this needs to result in a 207
+        response = self.publish(self.portal_path + '/index_html',
+                                request_method='PROPFIND',
+                                stdin=StringIO(),
+                                basic=self.basic_auth)
+
+        self.assertEqual(response.getStatus(), 207, response.getBody())
+
+    def test_propfind_portal_root_index_html_exists(self):
+        if 'index_html' not in self.portal.objectIds():
+            self.portal.invokeFactory('Document', 'index_html')
+
+        self.failUnless('index_html' in self.portal.objectIds())
+
+        # Do a PROPFIND on portal, this needs to result in a 207
+        response = self.publish(self.portal_path,
+                                request_method='PROPFIND',
+                                stdin=StringIO(),
+                                basic=self.basic_auth)
+
+        self.assertEqual(response.getStatus(), 207, response.getBody())
+
+    def test_propfind_portal_root_index_html_not_exists(self):
+        if 'index_html' in self.portal.objectIds():
+            self.portal.manage_delObjects('index_html')
+
+        self.failIf('index_html' in self.portal.objectIds())
+
+        # Do a PROPFIND on portal, this needs to result in a 207
+        response = self.publish(self.portal_path,
+                                request_method='PROPFIND',
+                                stdin=StringIO(),
+                                basic=self.basic_auth)
+
+        self.assertEqual(response.getStatus(), 207, response.getBody())
+
+    def test_propfind_folder_index_html_exists(self):
+        if 'index_html' not in self.folder.objectIds():
+            self.folder.invokeFactory('Document', 'index_html')
+
+        self.failUnless('index_html' in self.folder.objectIds())
+
+        # Do a PROPFIND on folder, this needs to result in a 207
+        response = self.publish(self.folder_path,
+                                request_method='PROPFIND',
+                                stdin=StringIO(),
+                                basic=self.basic_auth)
+
+        self.assertEqual(response.getStatus(), 207, response.getBody())
+
+    def test_propfind_folder_index_html_not_exists(self):
+        if 'index_html' in self.folder.objectIds():
+            self.folder.manage_delObjects('index_html')
+
+        self.failIf('index_html' in self.folder.objectIds())
+
+        # Do a PROPFIND on folder, this needs to result in a 207
+        response = self.publish(self.folder_path,
+                                request_method='PROPFIND',
+                                stdin=StringIO(),
+                                basic=self.basic_auth)
+
+        self.assertEqual(response.getStatus(), 207, response.getBody())
+
 def test_suite():
     from unittest import TestSuite, makeSuite
     from Testing.ZopeTestCase import FunctionalDocFileSuite
@@ -299,6 +418,7 @@ def test_suite():
     # DISABLED the metadata test, this is not yet implemented in ATCT
     ##suite.addTest(makeSuite(TestDAVMetadata))
     suite.addTest(makeSuite(TestPUTObjects))
+    suite.addTest(makeSuite(TestDAVOperations))
 
     # This, ladies and gentlemen, is a functional *doctest*:
     suite.addTest(FunctionalDocFileSuite('dav/index_html_put.txt',

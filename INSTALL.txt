@@ -34,10 +34,10 @@ Installing Plone manually, step by step instructions.
  
   **MANDATORY** 
  
-  - Zope 2.7.5 (not 2.8)
-     http://zope.org/Products/Zope/2.7.5
-     http://zope.org/Products/Zope/2.7.5/Zope-2.7.5.tgz
-     Note: Zope 2.7 requires Python 2.3.5.
+  - Zope 2.7.6 (not 2.8)
+     http://zope.org/Products/Zope/2.7.6
+     http://zope.org/Products/Zope/2.7.6/Zope-2.7.6-final.tgz
+     Note: Zope 2.7 requires Python 2.3.5 (not 2.4)
  
   - CMF 1.4.8 (not 1.5)
      Included in the Plone tarball 
@@ -72,7 +72,7 @@ Installing Plone manually, step by step instructions.
   - ATContentTypes 1.0 or newer
      Included in the Plone tarball
      
-  - CSSRegistry
+  - ResourceRegistries
      Included in the Plone tarball
      
   - ExtendedPathIndex
@@ -81,7 +81,8 @@ Installing Plone manually, step by step instructions.
   - Python Imaging Library 1.1.5 or newer
      Not included in the Plone tarball
      http://effbot.org/downloads/#Imaging
-     Note: You have to build PIL with jpeg and png support. Read the README of PIL for more informations.
+     Note: You have to build PIL with jpeg and png support. See the README
+     of PIL for more information.
 
 ------------------------------------------------------------------------------- 
  
@@ -166,8 +167,7 @@ Installing Plone manually, step by step instructions.
    CMFPlone
    CMFQuickInstallerTool
    CMFTopic
-   CSSRegistry
-   Epoz
+   ResourceRegistries
    ExternalEditor
    ExtendedPathIndex
    DCWorkflow

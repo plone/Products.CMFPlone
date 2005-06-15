@@ -19,6 +19,7 @@ from AccessControl.Permissions import delete_objects
 
 from AccessControl import getSecurityManager
 from Products.CMFCore.utils import _checkPermission
+from Products.CMFPlone import transaction
 
 
 class TestDisplayContentsTab(PloneTestCase.PloneTestCase):
@@ -35,7 +36,7 @@ class TestDisplayContentsTab(PloneTestCase.PloneTestCase):
         self.folder.foo.invokeFactory('Document', id='doc1')
         self.folder.foo.invokeFactory('Folder', id='folder1')
         folder_path = '/'.join(self.folder.foo.folder1.getPhysicalPath())
-        get_transaction().commit(1) # make rename work
+        transaction.commit(1) # make rename work
         # Make the folder the default page
         self.folder.folder_rename(paths=[folder_path], new_ids=['index_html'], new_titles=['Default Folderish Document'])
 

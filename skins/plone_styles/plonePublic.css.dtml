@@ -451,8 +451,9 @@
     text-decoration: none;
 }
 
+/* .system-message and #error-handling are reST error indicators */
 .portalMessage,
-.system-message,  /* These two last ones are reST error indicators */
+.system-message,
 #error-handling {
     background-color: &dtml-notifyBackgroundColor;;
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-notifyBorderColor;;
@@ -602,9 +603,34 @@ textarea.proportional {
 }
 
 
+/* Collapsible elements */
+
+div.collapsedFieldset {
+    border-bottom: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor; !important;
+    margin: 1em 0em 1em 0em;
+    padding: 1px;
+}
+
+span.collapsedLegend {
+    background: &dtml-backgroundColor;;
+    line-height: 1.5em;
+    width: auto;
+    position: relative;
+    top: 0.75em;
+    left: 1em;
+    width: auto;
+    padding: 0.5em;
+    font-size: 90%;
+}
+
+img.collapseIcon {
+    margin-right: 0.5em;
+}
+
+
 /* Sitemap styles */
 
-.portal-sitemap {
+#portal-sitemap {
     list-style: none;
     list-style-image: none;
     margin: 0;
@@ -612,13 +638,13 @@ textarea.proportional {
     border: none;
 }
 
-.portal-sitemap .navTreeLevel1 {
+#portal-sitemap .navTreeLevel1 {
     padding-left: 1em;
     border-left: 0.5em solid &dtml-globalBorderColor;;
     margin: 0 0 0 0.5em;
 }
 
-.portal-sitemap .navTreeLevel2 {
+#portal-sitemap .navTreeLevel2 {
     padding-left: 1em;
     border-left: 0.5em solid &dtml-globalBackgroundColor;;
     margin: 0 0 0 0.6em;

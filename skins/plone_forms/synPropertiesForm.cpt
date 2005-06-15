@@ -30,7 +30,7 @@
                value="Disable Syndication"
                tabindex=""
                name="form.button.disableSyndication"
-               i18n:attributes="value"
+               i18n:attributes="value label_disable_syndication;"
                tal:attributes="tabindex tabindex/next;"
                />
 
@@ -50,7 +50,7 @@
                type="submit"
                value="Enable syndication"
                tabindex=""
-               i18n:attributes="value"
+               i18n:attributes="value label_enable_syndication;"
                name="form.button.enableSyndication"
                tal:attributes="tabindex tabindex/next;"
                />
@@ -141,7 +141,7 @@
               
               <div tal:content="error">Validation error output</div>
 
-              <div metal:use-macro="here/calendar_slot/macros/calendarDatePickerBox">
+              <div metal:use-macro="here/calendar_macros/macros/calendarDatePickerBox">
                 calendar popup
               </div>
             </div>
@@ -154,7 +154,7 @@
               <label i18n:translate="label_syndication_max_items">Maximum Items</label>
               
               <span class="fieldRequired" title="Required"
-                    i18n:attributes="title"
+                    i18n:attributes="title title_required;"
                     i18n:translate="label_required">(Required)</span>
                     
                     <div class="formHelp" i18n:translate="help_syndication_max_items">
@@ -177,7 +177,7 @@
                      tabindex=""
                      type="submit"
                      value="Save"
-                     i18n:attributes="value"
+                     i18n:attributes="value label_save;"
                      name="form.button.Save"
                      tal:attributes="tabindex tabindex/next;"
                      />

@@ -49,6 +49,8 @@
    
    fontColor - the main font color
    
+   fontSmallSize - used for various elements like buttons and discreet text
+   
    backgroundColor - the background color 
    
    linkColor - the color used on normal links
@@ -71,13 +73,13 @@
    
    headingFontFamily - font family for h1/h2/h3/h4/h5/h6 headlines.
    
-   headingFontBaseSize - the base size used when calculating the different headline sizes
-   
    contentViewBorderColor - the content view tabs border color
    
    contentViewBackgroundColor - the content view tabs background color
    
    contentViewFontColor - the font color used in the content view tabs
+   
+   inputFontColor - the font color used for input elements
    
    textTransform - whether to lowercase text in portlets, tabs etc.
    

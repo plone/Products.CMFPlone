@@ -15,7 +15,7 @@
   Add Propertysheet
   </div>
 
-<form action="manage_addPropertySheet" method="POST">
+<form action="manage_addPropertySheet" method="post">
     <div class="form-help">
     Enter an ID and title to add a new PropertySheet.
     </div>

@@ -10,6 +10,7 @@ from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
 from Products.CMFPlone.utils import _createObjectByType
+from Products.CMFPlone import transaction
 from Acquisition import aq_base
 
 try: from zExceptions import NotFound
@@ -48,7 +49,7 @@ class TestPloneFolder(PloneTestCase.PloneTestCase):
 
     def testRenameFolderKeepsPosition(self):
         # Cover http://plone.org/collector/2796
-        get_transaction().commit(1) # make rename work
+        transaction.commit(1) # make rename work
         self.folder.sub2.folder_edit('Foo', 'Description', id='foo')
         self.assertEqual(self.folder.foo.Title(), 'Foo')
         # Order should remain the same

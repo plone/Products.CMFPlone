@@ -13,7 +13,7 @@
 </dtml-let>
 <dtml-var manage_tabs>
 
-<form action="&dtml-absolute_url;" method="POST">
+<form action="&dtml-absolute_url;" method="post">
 
 <dtml-if actions>
 <table>

@@ -117,6 +117,7 @@
                                 tal:content="type/title_or_id"
                                 tal:attributes="value type/getId;
                                                 selected python:test(type.getId() in currentAllow, 'selected', None);"
+                                i18n:translate=""
                                 >dummy</option>
                     </select>
                 </div>
@@ -149,6 +150,7 @@
                                 tal:content="type/title_or_id"
                                 tal:attributes="value type/getId;
                                                 selected python:test(type.getId() in currentPrefer, 'selected', None);"
+                                i18n:translate=""
                                 >dummy</option>
                     </select>
                 </div>
@@ -159,7 +161,7 @@
                        type="submit"
                        name="form.button.Save"
                        value="Save"
-                       i18n:attributes="value"
+                       i18n:attributes="value label_save;"
                        tal:attributes="tabindex tabindex/next;"
                        />
                     <input class="standalone"
@@ -167,7 +169,7 @@
                        type="submit"
                        name="form.button.Cancel"
                        value="Cancel"
-                       i18n:attributes="value"
+                       i18n:attributes="value label_cancel;"
                        tal:attributes="tabindex tabindex/next;"
                        />
                 </div>

@@ -11,15 +11,16 @@
 <body>
 <metal:main fill-slot="main">
 
-    <h1>Site map</h1>
+    <h1 i18n:translate="label_site_map">Site map</h1>
     
     <p class="documentDescription"
-       i18n:translate="">
+       i18n:translate="description_site_map">
     An overview of the available content on this site. Keep the pointer still 
     over an item for a few seconds to get its description.
     </p>
 
-    <ul class="portal-sitemap navTreeLevel0"
+    <ul id="portal-sitemap"
+        class="navTreeLevel0"
         tal:define="data python:here.plone_utils.createSitemap(here)"
         tal:content="structure python:here.portlet_navtree_macro(children=data.get('children', []), level=1)">
         SUBTREE

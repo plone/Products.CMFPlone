@@ -10,6 +10,7 @@ from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
 
+from Products.CMFPlone.utils import _createObjectByType
 
 class TestBrowserDefaultScripts(PloneTestCase.PloneTestCase):
     """Tests the browser default and folder-default page scripts"""
@@ -49,6 +50,16 @@ class TestBrowserDefaultScripts(PloneTestCase.PloneTestCase):
         self.failUnless(self.folder.canSelectDefaultPage())
         self.folder.saveDefaultPage('test')
         self.failUnless(self.folder.test.isDefaultPageInFolder())
+
+    def testGetViewTemplateId(self):
+        self.folder.setLayout('atct_album_view')
+        self.assertEqual(self.folder.getViewTemplateId(), 'atct_album_view')
+        
+    def testGetViewTemplateIdNonBrowserDefault(self):
+        _createObjectByType('CMF Folder', self.folder, 'cmffolder')
+        _createObjectByType('CMF Document', self.folder, 'cmfdocument')
+        self.assertEqual(self.folder.cmffolder.getViewTemplateId(), 'folder_listing')
+        self.assertEqual(self.folder.cmfdocument.getViewTemplateId(), 'document_view')
 
 
 def test_suite():

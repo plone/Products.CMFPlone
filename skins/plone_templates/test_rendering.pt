@@ -116,14 +116,14 @@ example <a href="irc://some.network/#channel">IRC link</a>.
 
 <ul>
     <li>Unordered list element 1</li>
-    <ul><li>Unordered list subelement 1</li></ul>
+    <li><ul><li>Unordered list subelement 1</li></ul></li>
     <li>Unordered list element 2</li>
     <li>Unordered list element 3</li>
 </ul>
 
 <ol>
     <li>Ordered list element 1</li>
-    <ol><li>Ordered list subelement 1</li></ol>
+    <li><ol><li>Ordered list subelement 1</li></ol></li>
     <li>Ordered list element 2</li>
     <li>Ordered list element 3</li>
 </ol>
@@ -140,7 +140,7 @@ example <a href="irc://some.network/#channel">IRC link</a>.
 Table of class <code>listing</code>
 </h2>
 
-<table class="listing" id="someid">
+<table class="listing" id="someid" summary="Sortable table example">
     <!-- By giving a table an ID, it gets the sortable option. 
          Use class="nosort" to override on a table or column basis. -->
     <thead>
@@ -169,7 +169,7 @@ Table of class <code>listing</code>
 Table of class <code>vertical listing</code>
 </h2>
 
-<table class="vertical listing">
+<table class="vertical listing" summary="Vertical listing example">
     <tbody>
         <tr>
             <th>Table heading</th>
@@ -191,7 +191,7 @@ Table of class <code>vertical listing</code>
         <div class="field">
             <label>Text field</label>
             <span class="fieldRequired" title="Required"
-                  i18n:attributes="title"
+                  i18n:attributes="title title_required;"
                   i18n:translate="label_required">(Required)</span>
             <div class="formHelp">
                 This is the help for this form field. And <a href="#">links are also possible</a>.
@@ -201,7 +201,7 @@ Table of class <code>vertical listing</code>
         <div class="field error">
             <label>Text field with error</label>
             <span class="fieldRequired" title="Required"
-                  i18n:attributes="title"
+                  i18n:attributes="title title_required;"
                   i18n:translate="label_required">(Required)</span>
             <div class="formHelp">
                 This field is just here to demonstrate an error message.
@@ -212,7 +212,7 @@ Table of class <code>vertical listing</code>
         <div class="field">
             <label>Checkbox</label>
             <span class="fieldRequired" title="Required"
-                  i18n:attributes="title"
+                  i18n:attributes="title title_required;"
                   i18n:translate="label_required">(Required)</span>
             <div class="formHelp">
                 This is a checkbox field.
@@ -222,7 +222,7 @@ Table of class <code>vertical listing</code>
         <div class="field error">
             <label>Checkbox with error</label>
             <span class="fieldRequired" title="Required"
-                  i18n:attributes="title"
+                  i18n:attributes="title title_required;"
                   i18n:translate="label_required">(Required)</span>
             <div class="formHelp">
                 This checkbox field is just here to demonstrate an error message.
@@ -233,7 +233,7 @@ Table of class <code>vertical listing</code>
         <div class="field">
             <label>Checkbox without border</label>
             <span class="fieldRequired" title="Required"
-                  i18n:attributes="title"
+                  i18n:attributes="title title_required;"
                   i18n:translate="label_required">(Required)</span>
             <div class="formHelp">
                 This is a checkbox field.
@@ -244,7 +244,7 @@ Table of class <code>vertical listing</code>
         <div class="field error">
             <label>Checkbox without border with error</label>
             <span class="fieldRequired" title="Required"
-                  i18n:attributes="title"
+                  i18n:attributes="title title_required;"
                   i18n:translate="label_required">(Required)</span>
             <div class="formHelp">
                 This checkbox field is just here to demonstrate an error message.
@@ -256,7 +256,7 @@ Table of class <code>vertical listing</code>
         <div class="field">
             <label>Radio</label>
             <span class="fieldRequired" title="Required"
-                  i18n:attributes="title"
+                  i18n:attributes="title title_required;"
                   i18n:translate="label_required">(Required)</span>
             <div class="formHelp">
                 This is a checkbox field.
@@ -280,7 +280,7 @@ Table of class <code>vertical listing</code>
         <div class="field error">
             <label>Radio with error</label>
             <span class="fieldRequired" title="Required"
-                  i18n:attributes="title"
+                  i18n:attributes="title title_required;"
                   i18n:translate="label_required">(Required)</span>
             <div class="formHelp">
                 This checkbox field is just here to demonstrate an error message.
@@ -309,14 +309,22 @@ Table of class <code>vertical listing</code>
             <input class="standalone"
                    type="submit"
                    value="Standalone submit" />
+            <input class="destructive"
+                   type="submit"
+                   value="Destructive submit" />
             <input type="submit"
                    value="Submit" />
+        </div>
+        <div class="formControls">
             <input class="context"
                    type="button"
                    value="Context button" />
             <input class="standalone"
                    type="button"
                    value="Standalone button" />
+            <input class="destructive"
+                   type="button"
+                   value="Destructive button" />
             <input type="button"
                    value="Button" />
         </div>
@@ -341,7 +349,7 @@ Table of class <code>vertical listing</code>
                            onClick="toggleSelect(this,'paths:list');"
                            tal:attributes="src string:$portal_url/select_all_icon.gif"
                            alt="Select all items"
-                           i18n:attributes="title alt" />
+                           i18n:attributes="title label_select_all_items; alt label_select_all_items;" />
                 </th>
                 <th>&nbsp;Title&nbsp;</th>
                 <th>&nbsp;Stuff&nbsp;</th>

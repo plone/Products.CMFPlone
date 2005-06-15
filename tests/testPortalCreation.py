@@ -7,6 +7,7 @@ if __name__ == '__main__':
     execfile(os.path.join(sys.path[0], 'framework.py'))
 
 from Testing import ZopeTestCase
+from Products.CMFCore import CMFCorePermissions
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
 
@@ -272,6 +273,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         topic = getattr(news.aq_base, 'news_topic')
         self.assertEqual(topic._getPortalTypeName(), 'Topic')
         self.assertEqual(topic.buildQuery()['Type'], ('News Item',))
+        self.assertEqual(topic.buildQuery()['review_state'], 'published')
 
     def testEventsFolder(self):
         # The portal should contain events folder
@@ -301,6 +303,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         topic = getattr(events.aq_base, 'events_topic')
         self.assertEqual(topic._getPortalTypeName(), 'Topic')
         self.assertEqual(topic.buildQuery()['Type'], ('Event',))
+        self.assertEqual(topic.buildQuery()['review_state'], 'published')
 
     def testObjectButtonActions(self):
         installed = [(a.getId(), a.getCategory()) for a in self.actions.listActions()]
@@ -312,6 +315,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
     def testBatchActions(self):
         installed = [(a.getId(), a.getCategory()) for a in self.actions.listActions()]
         self.failUnless(('batch', 'batch') in installed)
+        self.failUnless(('nobatch', 'batch') in installed)
 
     def testContentsTabDisabled(self):
         for a in self.actions.listActions():
@@ -381,6 +385,11 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         else:
             self.fail("Actions tool has no 'sitemap' action")
 
+    def testFolderlistingAction(self):
+        # Make sure the folderlisting action of a Folder is /view, to ensure
+        # that the layout template will be resolved (see PloneTool.browserDefault)
+        self.assertEqual(self.portal.portal_types['Folder'].getActionById('folderlisting'), 'view')
+        self.assertEqual(self.portal.portal_types['Plone Site'].getActionById('folderlisting'), 'view')
 
 class TestPortalBugs(PloneTestCase.PloneTestCase):
 
@@ -469,6 +478,14 @@ class TestManagementPageCharset(PloneTestCase.PloneTestCase):
         self.portal._delObject('portal_properties')
         manage_charset = getattr(self.portal, 'management_page_charset', None)
         self.assertEqual(manage_charset, 'utf-8')
+
+    def testOwnerHasAccessInactivePermission(self):
+        permission_on_role = [p for p in self.portal.permissionsOfRole('Owner')
+            if p['name'] == CMFCorePermissions.AccessInactivePortalContent][0]
+        self.failUnless(permission_on_role['selected'])
+        cur_perms = self.portal.permission_settings(
+                            CMFCorePermissions.AccessInactivePortalContent)[0]
+        self.failUnless(cur_perms['acquire'])
 
 
 def test_suite():

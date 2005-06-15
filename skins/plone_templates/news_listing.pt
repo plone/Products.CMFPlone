@@ -5,14 +5,8 @@
 
 <head>
 
-    <tal:comment replace="nothing">
-    Please note that this template will most likely be renamed to news_listing
-    in the future, so if you reference this template or its macros from
-    another template, make sure to change it when you upgrade.
-    </tal:comment>
 </head>
-             
-             
+
 <body>
 <div metal:fill-slot="main" id="content-news"
      tal:define="results python:container.portal_catalog(portal_type='News Item',sort_on='Date',sort_order='reverse',review_state='published');
