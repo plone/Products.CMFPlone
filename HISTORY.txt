@@ -3,6 +3,9 @@ Changelog for Plone
    (name of developer listed in brackets)
 
 Plone 2.1 - Plaid - (Unreleased)
+    - Fixed migrations of older instances caused by the ResourceRegistries
+      refactoring.
+      [fschulze]
 
     - Added framework for ECMAScript Unit Tests.
       [fschulze]
