@@ -31,7 +31,9 @@ class TestCSSRegistry(PloneTestCase.PloneTestCase):
                     'plonePrint.css',
                     'plonePresentation.css',
                     'ploneRTL.css',
-                    'ploneMobile.css']
+                    'ploneMobile.css',
+                    'ploneTextSmall.css',
+                    'ploneTextLarge.css']
         for e in expected:
             self.failUnless(e in installedStylesheetIds, e)
 

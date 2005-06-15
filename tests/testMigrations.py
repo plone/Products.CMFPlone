@@ -1331,6 +1331,13 @@ class TestMigrations_v2_1(MigrationTest):
         self.assertEquals(stylesheet_ids[-2], 'ploneRTL.css')
         self.assertEquals(stylesheet_ids[0], 'ploneMember.css')
 
+    def testAddedFontSizeStylesheets(self):
+        cssreg = self.portal.portal_css
+        stylesheets = list(cssreg.getResources())
+        stylesheet_ids = [ item.get('id') for item in stylesheets ]
+        self.failUnless('ploneTextSmall.css' in stylesheet_ids)
+        self.failUnless('ploneTextLarge.css' in stylesheet_ids)
+
     def testAllowOwnerToAccessInactiveContent(self):
         # Should grant the "Access inactive ..." permission to owner
         self.portal.manage_permission(

@@ -36,6 +36,9 @@ def alpha2_beta1(portal):
     # Install kupu
     installKupu(portal, out)
 
+    # Add the stylesheets for font size the selector
+    addFontSizeStylesheets(portal, out)
+
     return out
 
 
@@ -259,3 +262,28 @@ def installKupu(portal, out):
             safeEditProperty(md, 'wysiwyg_editor', 'Kupu', 'string')
         out.append('Set Kupu as default WYSIWYG editor.')
 
+
+def addFontSizeStylesheets(portal, out):
+    """Add the stylesheets for font size the selector."""
+    cssreg = getToolByName(portal, 'portal_css', None)
+    if cssreg is not None:
+        stylesheet_ids = [item.get('id') for item in cssreg.getResources()]
+        # Failsafe: first make sure the stylesheets don't exist in the list
+        if 'ploneTextSmall.css' not in stylesheet_ids:
+            cssreg.registerStylesheet('ploneTextSmall.css',
+                                      media='screen',
+                                      rel='alternate stylesheet',
+                                      title='Small Text',
+                                      rendering='link')
+            if 'ploneRTL.css' in stylesheet_ids:
+                cssreg.moveResourceBefore('ploneTextSmall.css', 'ploneRTL.css')
+            out.append('Added ploneTextSmall.css to CSSRegistry.')
+        if 'ploneTextLarge.css' not in stylesheet_ids:
+            cssreg.registerStylesheet('ploneTextLarge.css',
+                                      media='screen',
+                                      rel='alternate stylesheet',
+                                      title='Large Text',
+                                      rendering='link')
+            if 'ploneRTL.css' in stylesheet_ids:
+                cssreg.moveResourceBefore('ploneTextLarge.css', 'ploneRTL.css')
+            out.append('Added ploneTextLarge.css to CSSRegistry.')

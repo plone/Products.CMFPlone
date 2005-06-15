@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (Unreleased)
 
+    - Reactivated alternate font size stylesheets.
+      [fschulze]
+
     - Added some missing i18n markup. Fixed ZChecker error regarding '>'
       [hannosch]
 
