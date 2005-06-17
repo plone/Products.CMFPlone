@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (Unreleased)
 
+    - Moved 3rd party ecma scripts like sarissa, livesearch, ecmaunit and
+      vcXMLRPC to plone_3rdParty. 3rd party code will be included by an
+      svn:external rule soon.
+      [tiran]
+
     - Reactivated alternate font size stylesheets.
       [fschulze]
 
