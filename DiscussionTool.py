@@ -5,6 +5,7 @@ from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
 from Acquisition import aq_base
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
+from Products.CMFPlone.ActionsTool import getOAI
 
 from Products.CMFCore.utils import format_stx
 from DocumentTemplate.DT_Util import html_quote
@@ -46,6 +47,10 @@ class DiscussionTool(PloneBaseTool, BaseTool):
         else:
             reply.cooked_text = format_stx(text=text, level=level)
             reply.text = text
+            
+    # overwrite getOAI hook in order to use our method
+    def _getOAI(self, context, object):
+        return getOAI(context, object)
 
 DiscussionTool.__doc__ = BaseTool.__doc__
 

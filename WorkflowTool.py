@@ -11,6 +11,7 @@ from AccessControl import ClassSecurityInfo
 from Products.CMFCore import CMFCorePermissions
 from Products.DCWorkflow.Transitions import TRIGGER_USER_ACTION
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
+from Products.CMFPlone.ActionsTool import getOAI
 
 class WorkflowTool(PloneBaseTool, BaseTool):
 
@@ -21,14 +22,15 @@ class WorkflowTool(PloneBaseTool, BaseTool):
     
     __implements__ = (PloneBaseTool.__implements__, BaseTool.__implements__, )
 
-    security.declarePublic('doActionFor')
-    def doActionFor(self, ob, action, wf_id=None, *args, **kw):
-        """ it appears that objects are reindexed after they
-            are transitioned in DCWorkflow.  """
-        result=BaseTool.doActionFor(self, ob, action, wf_id, *args, **kw)
-        if result:
-            result.reindexObjectSecurity()
-            return result
+## reindexObjectSecurity() is called over _invokeWithNotification()+ _reindexWorkflowVariables()
+#    security.declarePublic('doActionFor')
+#    def doActionFor(self, ob, action, wf_id=None, *args, **kw):
+#        """ it appears that objects are reindexed after they
+#            are transitioned in DCWorkflow.  """
+#        result=BaseTool.doActionFor(self, ob, action, wf_id, *args, **kw)
+#        if result:
+#            result.reindexObjectSecurity()
+#            return result
 
     #XXX this should not make it into 1.0
     # Refactor me, my maker was tired
@@ -196,46 +198,50 @@ class WorkflowTool(PloneBaseTool, BaseTool):
         """
         return self.objectIds()
 
-    security.declarePrivate('listActions')
-    def listActions(self, info):
-
-        """ Returns a list of actions to be displayed to the user.
-
-        o Invoked by the portal_actions tool.
+#    security.declarePrivate('listActions')
+#    def listActions(self, info):
+#
+#        """ Returns a list of actions to be displayed to the user.
+#
+#        o Invoked by the portal_actions tool.
+#        
+#        o Allows workflows to include actions to be displayed in the
+#          actions box.
+#
+#        o Object actions are supplied by workflows that apply to the object.
+#        
+#        o Global actions are supplied by all workflows.
+#        """
+#        show_globals = False
+#        chain = self.getChainFor(info.content)
+#        did = {}
+#        actions = []
+#        for wf_id in chain:
+#            did[wf_id] = 1
+#            wf = self.getWorkflowById(wf_id)
+#            if wf is not None:
+#                a = wf.listObjectActions(info)
+#                if a is not None:
+#                    actions.extend(a)
+#                if show_globals:
+#                    a = wf.listGlobalActions(info)
+#                    if a is not None:
+#                        actions.extend(a)
+#
+#        if show_globals:
+#            wf_ids = self.getWorkflowIds()
+#            for wf_id in wf_ids:
+#                if not did.has_key(wf_id):
+#                    wf = self.getWorkflowById(wf_id)
+#                    if wf is not None:
+#                        a = wf.listGlobalActions(info)
+#                        if a is not None:
+#                            actions.extend(a)
+#        return actions
         
-        o Allows workflows to include actions to be displayed in the
-          actions box.
-
-        o Object actions are supplied by workflows that apply to the object.
-        
-        o Global actions are supplied by all workflows.
-        """
-        show_globals = False
-        chain = self.getChainFor(info.content)
-        did = {}
-        actions = []
-        for wf_id in chain:
-            did[wf_id] = 1
-            wf = self.getWorkflowById(wf_id)
-            if wf is not None:
-                a = wf.listObjectActions(info)
-                if a is not None:
-                    actions.extend(a)
-                if show_globals:
-                    a = wf.listGlobalActions(info)
-                    if a is not None:
-                        actions.extend(a)
-
-        if show_globals:
-            wf_ids = self.getWorkflowIds()
-            for wf_id in wf_ids:
-                if not did.has_key(wf_id):
-                    wf = self.getWorkflowById(wf_id)
-                    if wf is not None:
-                        a = wf.listGlobalActions(info)
-                        if a is not None:
-                            actions.extend(a)
-        return actions
+    # overwrite getOAI hook in order to use our method
+    def _getOAI(self, context, object):
+        return getOAI(context, object)
 
 WorkflowTool.__doc__ = BaseTool.__doc__
 
