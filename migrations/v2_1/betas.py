@@ -254,7 +254,11 @@ def restrictEventsTopicToPublished(portal, out):
 def installKupu(portal, out):
     """Quickinstalls Kupu if not installed yet."""
     # Kupu is optional
-    if 'kupu' in portal.Control_Panel.Products.objectIds():
+    try:
+        import Products.kupu
+    except ImportError:
+        pass
+    else:
         installOrReinstallProduct(portal, 'kupu', out)
         # Make kupu the default
         md = safeGetMemberDataTool(portal)
