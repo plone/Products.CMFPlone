@@ -39,6 +39,9 @@ def alpha2_beta1(portal):
     # Add the stylesheets for font size the selector
     addFontSizeStylesheets(portal, out)
 
+    # Add cssQuery.js
+    addCssQueryJS(portal, out)
+
     return out
 
 
@@ -204,6 +207,18 @@ def reorderStylesheets(portal, out):
             cssreg.moveResourceBefore('ploneRTL.css', 'ploneCustom.css')
             cssreg.moveResourceToTop('ploneMember.css')
 
+def addCssQueryJS(portal, out):
+    jsreg = getToolByName(portal, 'portal_javascripts', None)
+    if jsreg is not None:
+        jsreg.registerScript('cssQuery.js')
+        try:
+            jsreg.moveResourceBefore('cssQuery.js', 'plone_javascript_variables.js')
+        except ValueError:
+            try:
+                jsreg.moveResourceBefore('cssQuery.js', 'register_function.js')
+            except ValueError:
+                # ok put to the top
+                jsreg.moveResourceToTop('cssQuery.js')
 
 def allowOwnerToAccessInactiveContent(portal, out):
     permission = CMFCorePermissions.AccessInactivePortalContent

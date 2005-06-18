@@ -65,6 +65,7 @@ from Products.CMFPlone.migrations.v2_1.betas import reorderStylesheets
 from Products.CMFPlone.migrations.v2_1.betas import allowOwnerToAccessInactiveContent
 from Products.CMFPlone.migrations.v2_1.betas import restrictNewsTopicToPublished
 from Products.CMFPlone.migrations.v2_1.betas import restrictEventsTopicToPublished
+from Products.CMFPlone.migrations.v2_1.betas import addCssQueryJS
 
 import types
 
@@ -1337,6 +1338,12 @@ class TestMigrations_v2_1(MigrationTest):
         stylesheet_ids = [ item.get('id') for item in stylesheets ]
         self.failUnless('ploneTextSmall.css' in stylesheet_ids)
         self.failUnless('ploneTextLarge.css' in stylesheet_ids)
+
+    def testaddCssQueryJS(self):
+        jsreg = self.portal.portal_javascripts
+        scripts = list(jsreg.getResources())
+        script_ids = [ item.get('id') for item in scripts ]
+        self.failUnless('cssQuery.js' in script_ids)
 
     def testAllowOwnerToAccessInactiveContent(self):
         # Should grant the "Access inactive ..." permission to owner
