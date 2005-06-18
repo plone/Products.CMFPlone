@@ -20,6 +20,7 @@
     <metal:javascript_head_slot fill-slot="javascript_head_slot">
         <script type="text/javascript" src="ecmaunit.js"> </script>
         <script type="text/javascript" src="unittestUtilities.js"> </script>
+        <script type="text/javascript" src="testHighlightsearchterms.js"> </script>
         <script type="text/javascript" src="testNodeutilities.js"> </script>
     </metal:javascript_head_slot>
     <metal:block fill-slot="top_slot"
