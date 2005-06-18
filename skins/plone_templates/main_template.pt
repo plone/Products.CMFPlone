@@ -179,14 +179,15 @@
       <hr class="netscape4" />
 
       <metal:block i18n:domain="plone">
-	<div id="portal-footer" metal:use-macro="here/footer/macros/portal_footer">
-	  Footer
-	</div>
 
-	<div id="portal-colophon" metal:use-macro="here/colophon/macros/colophon">
-	  The colophon area - contains details about the production of
-	  the site. Typically "powered by" buttons, standards, tools used.
-	</div>
+        <metal:footer use-macro="here/footer/macros/portal_footer">
+          Footer
+        </metal:footer>
+
+        <metal:colophon use-macro="here/colophon/macros/colophon">
+          The colophon area - contains details about the production of
+          the site. Typically "powered by" buttons, standards, tools used.
+        </metal:colophon>
       </metal:block>
 
     </div>

@@ -6,7 +6,7 @@
 <p>
     <span i18n:translate="description_copyright" tal:omit-tag="">
     Plone<sup>&reg;</sup> and its visual design is
-    <acronym title="Copyright" i18n:attributes="title title_copyright;">&copy;</acronym>
+    <acronym title="Copyright" i18n:name="copyright" i18n:attributes="title title_copyright;">&copy;</acronym>
     2000-<span i18n:name="current_year" 
                tal:define="now modules/DateTime/DateTime" 
                tal:content="now/year" />
