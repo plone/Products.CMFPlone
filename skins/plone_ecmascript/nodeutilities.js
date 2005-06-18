@@ -20,3 +20,32 @@ function nodeContained(innernode, outernode){
         }
     return false
     }
+
+function textTraverse(node, result) {
+    // traverse childnodes
+    if (!node){return false}
+    if (node.hasChildNodes) {
+        var i;
+        for (i in node.childNodes) {
+            textTraverse(node.childNodes[i], result);
+        }
+        if (node.nodeType == 3) {
+            // this is a text node
+            result.push(node.nodeValue);
+        }
+    }
+}
+
+function getInnerTextCompatible(node) {
+    var result = new Array();
+    textTraverse(node, result);
+    return result.join("");
+}
+
+function getInnerTextFast(node) {
+    if (node.innerText) {
+        return node.innerText;
+    } else {
+        return getInnerTextCompatible(node);
+    }
+}

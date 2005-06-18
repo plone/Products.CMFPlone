@@ -69,7 +69,7 @@ function NodeContainedTestCase() {
     }
 }
 NodeContainedTestCase.prototype = new TestCase;
-testcase_registry.registerTestCase(NodeContainedTestCase, 'nodeutilities');
+//testcase_registry.registerTestCase(NodeContainedTestCase, 'nodeutilities');
 
 
 function FindContainerTestCase() {
@@ -88,7 +88,7 @@ function FindContainerTestCase() {
     }
 }
 FindContainerTestCase.prototype = new TestCase;
-testcase_registry.registerTestCase(FindContainerTestCase, 'nodeutilities');
+//testcase_registry.registerTestCase(FindContainerTestCase, 'nodeutilities');
 
 
 function HasClassNameTestCase() {
@@ -107,7 +107,7 @@ function HasClassNameTestCase() {
     }
 }
 HasClassNameTestCase.prototype = new TestCase;
-testcase_registry.registerTestCase(HasClassNameTestCase, 'nodeutilities');
+//testcase_registry.registerTestCase(HasClassNameTestCase, 'nodeutilities');
 
 
 function AddClassNameTestCase() {
@@ -126,7 +126,7 @@ function AddClassNameTestCase() {
     }
 }
 AddClassNameTestCase.prototype = new TestCase;
-testcase_registry.registerTestCase(AddClassNameTestCase, 'nodeutilities');
+//testcase_registry.registerTestCase(AddClassNameTestCase, 'nodeutilities');
 
 
 function RemoveClassNameTestCase() {
@@ -145,7 +145,7 @@ function RemoveClassNameTestCase() {
     }
 }
 RemoveClassNameTestCase.prototype = new TestCase;
-testcase_registry.registerTestCase(RemoveClassNameTestCase, 'nodeutilities');
+//testcase_registry.registerTestCase(RemoveClassNameTestCase, 'nodeutilities');
 
 
 function ReplaceClassNameTestCase() {
@@ -164,5 +164,51 @@ function ReplaceClassNameTestCase() {
     }
 }
 ReplaceClassNameTestCase.prototype = new TestCase;
-testcase_registry.registerTestCase(ReplaceClassNameTestCase, 'nodeutilities');
+//testcase_registry.registerTestCase(ReplaceClassNameTestCase, 'nodeutilities');
+
+
+function GetInnerTextTestCase() {
+    this.name = 'GetInnerTextTestCase';
+
+    this.setUp = function() {
+        this.sandbox = document.getElementById("testSandbox");
+        clearChildNodes(this.sandbox);
+
+        var node = document.createElement("span");
+        node.appendChild(document.createTextNode("foo"));
+        this.sandbox.appendChild(node);
+        var node = document.createElement("div");
+        node.appendChild(document.createTextNode("bar"));
+        this.sandbox.appendChild(node);
+    }
+
+    this.testGetInnerTextFast = function() {
+        text = getInnerTextFast(this.sandbox);
+        this.assert(text.indexOf('foo') >= 0);
+        this.assert(text.indexOf('bar') >= 0);
+    }
+
+    this.testGetInnerTextCompatible = function() {
+        text = getInnerTextCompatible(this.sandbox);
+        this.assertEquals(text, "foobar");
+    }
+
+    this.testGetInnerTextFastVsHtml = function() {
+        text = getInnerTextFast(this.sandbox);
+        html = this.sandbox.innerHTML;
+        this.assertNotEquals(text, html);
+    }
+
+    this.testGetInnerTextCompatibleVsHtml = function() {
+        text = getInnerTextCompatible(this.sandbox);
+        html = this.sandbox.innerHTML;
+        this.assertNotEquals(text, html);
+    }
+
+    this.tearDown = function() {
+        clearChildNodes(this.sandbox);
+    }
+}
+GetInnerTextTestCase.prototype = new TestCase;
+testcase_registry.registerTestCase(GetInnerTextTestCase, 'nodeutilities');
 
