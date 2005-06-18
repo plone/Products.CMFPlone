@@ -1,18 +1,3 @@
-function climb(node, word){
-     // traverse childnodes
-    if (! node){return false}
-    if (node.hasChildNodes) {
-        var i;
-        for (i=0;i<node.childNodes.length;i++) {
-            climb(node.childNodes[i],word);
-        }
-        if (node.nodeType == 3){
-            checkforhighlight(node, word);
-           // check all textnodes. Feels inefficient, but works
-        }
-    }
-}
-
 function checkforhighlight(node,word) {
     ind = node.nodeValue.toLowerCase().indexOf(word.toLowerCase())
     if (ind != -1) {
@@ -60,7 +45,7 @@ function highlightSearchTerm() {
                 if (queries[q].toLowerCase() != 'not'
                     && queries[q].toLowerCase() != 'and'
                     && queries[q].toLowerCase() != 'or') {
-                    climb(contentarea,queries[q]);
+                    walkTextNodes(contentarea, checkforhighlight, queries[q]);
                 }
             }
         }

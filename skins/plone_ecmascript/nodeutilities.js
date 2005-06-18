@@ -21,24 +21,26 @@ function nodeContained(innernode, outernode){
     return false
     }
 
-function textTraverse(node, result) {
-    // traverse childnodes
+function walkTextNodes(node, func, data) {
+    // traverse childnodes and call func when a textnode is found
     if (!node){return false}
     if (node.hasChildNodes) {
         var i;
         for (i in node.childNodes) {
-            textTraverse(node.childNodes[i], result);
+            walkTextNodes(node.childNodes[i], func, data);
         }
         if (node.nodeType == 3) {
             // this is a text node
-            result.push(node.nodeValue);
+            func(node, data);
         }
     }
 }
 
 function getInnerTextCompatible(node) {
     var result = new Array();
-    textTraverse(node, result);
+    walkTextNodes(node,
+                  function(n, d){d.push(n.nodeValue)},
+                  result);
     return result.join("");
 }
 
