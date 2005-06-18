@@ -32,14 +32,18 @@ function checkforhighlight(node,word) {
     } 
 }  
 function highlightSearchTerm() {
+    // terminate if we hit a non-compliant DOM implementation
+    if (!W3CDOM){return false};
+
     // search-term-highlighter function --  Geir Bækholt
     query = window.location.search
-    // _robert_ ie 5 does not have decodeURI 
-    if (typeof decodeURI != 'undefined'){
-        query = unescape(decodeURI(query)) // thanks, Casper 
-    }
-    else {
-        return false
+    if (typeof decodeURI != 'undefined') {
+        query = decodeURI(query);
+    } else if (typeof unescape != 'undefined') {
+        // _robert_ ie 5 does not have decodeURI 
+        query = unescape(query);
+    } else {
+        // we just try to be lucky, for single words this will still work
     }
     if (query){
         var qfinder = new RegExp()
