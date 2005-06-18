@@ -3,6 +3,11 @@ Changelog for Plone
    (name of developer listed in brackets)
 
 Plone 2.1 - Plaid - (Unreleased)
+    - Added filtering of tests to ECMAScript Unit Tests.
+      [fschulze]
+
+    - Add cssQuery.js to portal_javascripts when installing or migrating.
+      [fschulze]
 
     - Moved 3rd party ecma scripts like sarissa, livesearch, ecmaunit and
       vcXMLRPC to plone_3rdParty. 3rd party code will be included by an
