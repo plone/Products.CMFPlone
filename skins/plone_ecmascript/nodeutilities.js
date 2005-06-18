@@ -39,8 +39,12 @@ function hasClassName(node, class_name) {
 }
 
 function addClassName(node, class_name) {
-    if (!hasClassName(node, class_name)) {
-        node.className += " "+class_name;
+    if (!node.className) {
+        node.className = class_name;
+    } else if (!hasClassName(node, class_name)) {
+        var className = node.className+" "+class_name;
+        // cleanup
+        node.className = className.split(/\s+/).join(' ');
     }
 }
 
@@ -48,9 +52,10 @@ function removeClassName(node, class_name) {
     var className = node.className;
     if (className) {
         // remove
-        className.replace(new RegExp('\\b'+class_name+'\\b'), '');
+        className = className.replace(new RegExp('\\b'+class_name+'\\b'), '');
         // cleanup
-        node.className = className.split(/\s+/).join(' ');
+        className = className.replace(/\s+/g, ' ');
+        node.className = className.replace(/\s+$/g, '');
     }
 }
 
@@ -63,7 +68,8 @@ function replaceClassName(node, old_class, new_class, ignore_missing) {
             // replace
             className = className.replace(new RegExp('\\b'+old_class+'\\b'), new_class);
             // cleanup
-            node.className = className.split(/\s+/).join(' ');
+            className = className.replace(/\s+/g, ' ');
+            node.className = className.replace(/\s+$/g, '');
         }
     }
 }

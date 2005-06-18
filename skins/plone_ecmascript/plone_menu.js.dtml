@@ -375,39 +375,6 @@ menu.isInitialized = true;
     return node;
 }
 
-    function hasClassName(el, name) {
-    
-    var i, list;
-    
-    // Return true if the given element currently has the given class
-    // name.
-    
-    list = el.className.split(" ");
-    for (i = 0; i < list.length; i++)
-    if (list[i] == name){
-        return true;
-        }
-    return false;
-}
-
-function removeClassName(el, name) {
-    
-    var i, curList, newList;
-    
-    if (el.className == null){
-        return;
-        }
-    // Remove the given class name from the element's className property.
-    
-    newList = new Array();
-    curList = el.className.split(" ");
-    for (i = 0; i < curList.length; i++){
-        if (curList[i] != name){
-            newList.push(curList[i]);
-            el.className = newList.join(" ");
-        }
-    }
-}
 function getPageOffsetLeft(el) {
 
 var x;
