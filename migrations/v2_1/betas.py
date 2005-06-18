@@ -141,7 +141,9 @@ def migrateResourceRegistries(portal, out):
     cssreg = getToolByName(portal, 'portal_css')
     if cssreg is not None:
         if base_hasattr(cssreg, 'stylesheets'):
-            cssreg.resources = cssreg.stylesheets
+            stylesheets = list(cssreg.stylesheets)
+            stylesheets.reverse() # the order was reversed
+            cssreg.resources = tuple(stylesheets)
             del cssreg.stylesheets
     
         if base_hasattr(cssreg, 'cookedstylesheets'):
