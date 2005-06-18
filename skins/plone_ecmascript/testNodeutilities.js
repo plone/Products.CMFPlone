@@ -98,16 +98,30 @@ function HasClassNameTestCase() {
         this.sandbox = document.getElementById("testSandbox");
         clearChildNodes(this.sandbox);
 
+        this.testnode = document.createElement("div");
+        this.testnode.className = "foo bar  hamEggs ";
+        this.sandbox.appendChild(this.testnode);
     }
 
-//hasClassName
+    this.testAtStart = function() {
+        this.assertTrue(hasClassName(this.testnode, 'foo'));
+    }
+
+    this.testAtEnd = function() {
+        this.assertTrue(hasClassName(this.testnode, 'hamEggs'));
+    }
+
+    this.testNoPartialMatch = function() {
+        this.assertFalse(hasClassName(this.testnode, 'ham'));
+        this.assertFalse(hasClassName(this.testnode, 'Eggs'));
+    }
 
     this.tearDown = function() {
         clearChildNodes(this.sandbox);
     }
 }
 HasClassNameTestCase.prototype = new TestCase;
-//testcase_registry.registerTestCase(HasClassNameTestCase, 'nodeutilities');
+testcase_registry.registerTestCase(HasClassNameTestCase, 'nodeutilities');
 
 
 function AddClassNameTestCase() {
@@ -117,16 +131,29 @@ function AddClassNameTestCase() {
         this.sandbox = document.getElementById("testSandbox");
         clearChildNodes(this.sandbox);
 
+        this.testnode = document.createElement("div");
+        this.sandbox.appendChild(this.testnode);
     }
 
-//addClassName
+    this.testAdd = function() {
+        addClassName(this.testnode, 'spam');
+        this.assertEquals(this.testnode.className, 'spam');
+        addClassName(this.testnode, 'foo');
+        this.assertEquals(this.testnode.className, 'spam foo');
+    }
+
+    this.testDoubleAdd = function() {
+        addClassName(this.testnode, 'spam');
+        addClassName(this.testnode, 'spam');
+        this.assertEquals(this.testnode.className, 'spam');
+    }
 
     this.tearDown = function() {
         clearChildNodes(this.sandbox);
     }
 }
 AddClassNameTestCase.prototype = new TestCase;
-//testcase_registry.registerTestCase(AddClassNameTestCase, 'nodeutilities');
+testcase_registry.registerTestCase(AddClassNameTestCase, 'nodeutilities');
 
 
 function RemoveClassNameTestCase() {
@@ -136,16 +163,32 @@ function RemoveClassNameTestCase() {
         this.sandbox = document.getElementById("testSandbox");
         clearChildNodes(this.sandbox);
 
+        this.testnode = document.createElement("div");
+        this.testnode.className = "foo bar  hamEggs ";
+        this.sandbox.appendChild(this.testnode);
     }
 
-//removeClassName
+    this.testRemove = function() {
+        removeClassName(this.testnode, 'bar');
+        this.assertTrue(this.testnode.className.indexOf('bar') < 0);
+    }
+
+    this.testCleanup = function() {
+        removeClassName(this.testnode, 'bar');
+        this.assertEquals(this.testnode.className, "foo hamEggs");
+    }
+
+    this.testPartial = function() {
+        removeClassName(this.testnode, 'ham');
+        this.assertEquals(this.testnode.className, "foo bar hamEggs");
+    }
 
     this.tearDown = function() {
         clearChildNodes(this.sandbox);
     }
 }
 RemoveClassNameTestCase.prototype = new TestCase;
-//testcase_registry.registerTestCase(RemoveClassNameTestCase, 'nodeutilities');
+testcase_registry.registerTestCase(RemoveClassNameTestCase, 'nodeutilities');
 
 
 function ReplaceClassNameTestCase() {
@@ -155,16 +198,43 @@ function ReplaceClassNameTestCase() {
         this.sandbox = document.getElementById("testSandbox");
         clearChildNodes(this.sandbox);
 
+        this.testnode = document.createElement("div");
+        this.testnode.className = "foo bar  hamEggs ";
+        this.sandbox.appendChild(this.testnode);
     }
 
-//replaceClassName
+    this.testReplace = function() {
+        replaceClassName(this.testnode, 'bar', 'spam');
+        this.assertTrue(this.testnode.className.indexOf('bar') < 0);
+        this.assertFalse(this.testnode.className.indexOf('spam') < 0);
+    }
+
+    this.testCleanup = function() {
+        replaceClassName(this.testnode, 'bar', 'spam');
+        this.assertEquals(this.testnode.className, "foo spam hamEggs");
+    }
+
+    this.testPartial = function() {
+        replaceClassName(this.testnode, 'ham', 'spam');
+        this.assertEquals(this.testnode.className, "foo bar hamEggs");
+    }
+
+    this.testMissing = function() {
+        replaceClassName(this.testnode, 'bacon', 'spam');
+        this.assertEquals(this.testnode.className, "foo bar hamEggs");
+    }
+
+    this.testIgnoreMissing = function() {
+        replaceClassName(this.testnode, 'bacon', 'spam', true);
+        this.assertEquals(this.testnode.className, "foo bar hamEggs spam");
+    }
 
     this.tearDown = function() {
         clearChildNodes(this.sandbox);
     }
 }
 ReplaceClassNameTestCase.prototype = new TestCase;
-//testcase_registry.registerTestCase(ReplaceClassNameTestCase, 'nodeutilities');
+testcase_registry.registerTestCase(ReplaceClassNameTestCase, 'nodeutilities');
 
 
 function GetInnerTextTestCase() {
