@@ -6,6 +6,7 @@ function TestCaseRegistry() {
         if (!testcase) {
             throw('TestCaseRegistry.registerTestCase() requires a testcase as argument');
         }
+        testcase = new testcase();
         if (!suite_name) {
             suite_name = 'default';
         }
@@ -109,7 +110,7 @@ function runTestCases() {
     testcase_registry.setTestFilter(test_filter);
     var testcases = testcase_registry.getFilteredTestCases();
     for (var testcase_index in testcases) {
-        runTestCase(new testcases[testcase_index]());
+        runTestCase(testcases[testcase_index]);
     }
 }
 

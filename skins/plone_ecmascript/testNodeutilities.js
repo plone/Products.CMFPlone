@@ -98,22 +98,22 @@ function HasClassNameTestCase() {
         this.sandbox = document.getElementById("testSandbox");
         clearChildNodes(this.sandbox);
 
-        this.testnode = document.createElement("div");
-        this.testnode.className = "foo bar  hamEggs ";
-        this.sandbox.appendChild(this.testnode);
+        this.node = document.createElement("div");
+        this.node.className = "foo bar  hamEggs ";
+        this.sandbox.appendChild(this.node);
     }
 
     this.testAtStart = function() {
-        this.assertTrue(hasClassName(this.testnode, 'foo'));
+        this.assertTrue(hasClassName(this.node, 'foo'));
     }
 
     this.testAtEnd = function() {
-        this.assertTrue(hasClassName(this.testnode, 'hamEggs'));
+        this.assertTrue(hasClassName(this.node, 'hamEggs'));
     }
 
     this.testNoPartialMatch = function() {
-        this.assertFalse(hasClassName(this.testnode, 'ham'));
-        this.assertFalse(hasClassName(this.testnode, 'Eggs'));
+        this.assertFalse(hasClassName(this.node, 'ham'));
+        this.assertFalse(hasClassName(this.node, 'Eggs'));
     }
 
     this.tearDown = function() {
@@ -131,21 +131,21 @@ function AddClassNameTestCase() {
         this.sandbox = document.getElementById("testSandbox");
         clearChildNodes(this.sandbox);
 
-        this.testnode = document.createElement("div");
-        this.sandbox.appendChild(this.testnode);
+        this.node = document.createElement("div");
+        this.sandbox.appendChild(this.node);
     }
 
     this.testAdd = function() {
-        addClassName(this.testnode, 'spam');
-        this.assertEquals(this.testnode.className, 'spam');
-        addClassName(this.testnode, 'foo');
-        this.assertEquals(this.testnode.className, 'spam foo');
+        addClassName(this.node, 'spam');
+        this.assertEquals(this.node.className, 'spam');
+        addClassName(this.node, 'foo');
+        this.assertEquals(this.node.className, 'spam foo');
     }
 
     this.testDoubleAdd = function() {
-        addClassName(this.testnode, 'spam');
-        addClassName(this.testnode, 'spam');
-        this.assertEquals(this.testnode.className, 'spam');
+        addClassName(this.node, 'spam');
+        addClassName(this.node, 'spam');
+        this.assertEquals(this.node.className, 'spam');
     }
 
     this.tearDown = function() {
@@ -163,24 +163,24 @@ function RemoveClassNameTestCase() {
         this.sandbox = document.getElementById("testSandbox");
         clearChildNodes(this.sandbox);
 
-        this.testnode = document.createElement("div");
-        this.testnode.className = "foo bar  hamEggs ";
-        this.sandbox.appendChild(this.testnode);
+        this.node = document.createElement("div");
+        this.node.className = "foo bar  hamEggs ";
+        this.sandbox.appendChild(this.node);
     }
 
     this.testRemove = function() {
-        removeClassName(this.testnode, 'bar');
-        this.assertTrue(this.testnode.className.indexOf('bar') < 0);
+        removeClassName(this.node, 'bar');
+        this.assertTrue(this.node.className.indexOf('bar') < 0, this.node.className);
     }
 
     this.testCleanup = function() {
-        removeClassName(this.testnode, 'bar');
-        this.assertEquals(this.testnode.className, "foo hamEggs");
+        removeClassName(this.node, 'bar');
+        this.assertEquals(this.node.className, "foo hamEggs", this.node.className);
     }
 
     this.testPartial = function() {
-        removeClassName(this.testnode, 'ham');
-        this.assertEquals(this.testnode.className, "foo bar hamEggs");
+        removeClassName(this.node, 'ham');
+        this.assertEquals(this.node.className, "foo bar hamEggs", this.node.className);
     }
 
     this.tearDown = function() {
@@ -198,35 +198,35 @@ function ReplaceClassNameTestCase() {
         this.sandbox = document.getElementById("testSandbox");
         clearChildNodes(this.sandbox);
 
-        this.testnode = document.createElement("div");
-        this.testnode.className = "foo bar  hamEggs ";
-        this.sandbox.appendChild(this.testnode);
+        this.node = document.createElement("div");
+        this.node.className = "foo bar  hamEggs ";
+        this.sandbox.appendChild(this.node);
     }
 
     this.testReplace = function() {
-        replaceClassName(this.testnode, 'bar', 'spam');
-        this.assertTrue(this.testnode.className.indexOf('bar') < 0);
-        this.assertFalse(this.testnode.className.indexOf('spam') < 0);
+        replaceClassName(this.node, 'bar', 'spam');
+        this.assertTrue(this.node.className.indexOf('bar') < 0, this.node.className);
+        this.assertFalse(this.node.className.indexOf('spam') < 0, this.node.className);
     }
 
     this.testCleanup = function() {
-        replaceClassName(this.testnode, 'bar', 'spam');
-        this.assertEquals(this.testnode.className, "foo spam hamEggs");
+        replaceClassName(this.node, 'bar', 'spam');
+        this.assertEquals(this.node.className, "foo spam hamEggs", this.node.className);
     }
 
     this.testPartial = function() {
-        replaceClassName(this.testnode, 'ham', 'spam');
-        this.assertEquals(this.testnode.className, "foo bar hamEggs");
+        replaceClassName(this.node, 'ham', 'spam');
+        this.assertEquals(this.node.className, "foo bar hamEggs", this.node.className);
     }
 
     this.testMissing = function() {
-        replaceClassName(this.testnode, 'bacon', 'spam');
-        this.assertEquals(this.testnode.className, "foo bar hamEggs");
+        replaceClassName(this.node, 'bacon', 'spam');
+        this.assertEquals(this.node.className, "foo bar hamEggs", this.node.className);
     }
 
     this.testIgnoreMissing = function() {
-        replaceClassName(this.testnode, 'bacon', 'spam', true);
-        this.assertEquals(this.testnode.className, "foo bar hamEggs spam");
+        replaceClassName(this.node, 'bacon', 'spam', true);
+        this.assertEquals(this.node.className, "foo bar hamEggs spam", this.node.className);
     }
 
     this.tearDown = function() {
