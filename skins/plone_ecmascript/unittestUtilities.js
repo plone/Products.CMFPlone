@@ -15,24 +15,63 @@ function TestCaseRegistry() {
         this._testcases[suite_name].push(testcase);
     }
 
+    this.setTestSuiteFilter = function(filter) {
+        if (filter) {
+            this.suite_filter = new RegExp(filter, "i");
+        } else {
+            this.suite_filter = null;
+        }
+    }
+
+    this.setTestFilter = function(filter) {
+        if (filter) {
+            this.test_filter = new RegExp(filter, "i");
+        } else {
+            this.test_filter = null;
+        }
+    }
+
     this.getFilteredTestCases = function() {
         var testcases = new Array();
 
-        for (suite_name in this._testcases) {
-            var suite = this._testcases[suite_name];
-            for (test_index in suite) {
-                testcases.push(suite[test_index]);
+        var suites = this.getFilteredTestSuitNames();
+        for (suite_index in suites) {
+            var suite = this._testcases[suites[suite_index]];
+            for (var test_index in suite) {
+                var testcase = suite[test_index];
+                if (this.test_filter) {
+                    if (!this.test_filter.test(testcase.name)) {
+                        continue;
+                    }
+                }
+                testcases.push(testcase);
             }
         }
 
         return testcases;
     }
 
-    this.getTestSuitNames = function() {
+    this.getFilteredTestSuitNames = function() {
         var names = new Array();
 
-        for (suite_name in this._testcases) {
+        for (var suite_name in this._testcases) {
+            if (this.suite_filter) {
+                if (!this.suite_filter.test(suite_name)) {
+                    continue;
+                }
+            }
             names.push(suite_name);
+        }
+
+        return names;
+    }
+
+    this.getFilteredTestNames = function() {
+        var names = new Array();
+
+        var testcases = this.getFilteredTestCases();
+        for (var testcase_index in testcases) {
+            names.push(testcases[testcase_index].name);
         }
 
         return names;
@@ -64,10 +103,13 @@ function runTestCase(testCase) {
 };
 
 function runTestCases() {
+    var suite_filter = document.getElementById('suite-filter').value;
+    var test_filter = document.getElementById('test-filter').value;
+    testcase_registry.setTestSuiteFilter(suite_filter);
+    testcase_registry.setTestFilter(test_filter);
     var testcases = testcase_registry.getFilteredTestCases();
-    for (testcase_index in testcases) {
-        testcase = testcases[testcase_index];
-        runTestCase(new testcase());
+    for (var testcase_index in testcases) {
+        runTestCase(new testcases[testcase_index]());
     }
 }
 
@@ -77,8 +119,13 @@ function clearOutput() {
     clearChildNodes(document.getElementById("testSandbox"));
 }
 
-function showTestSuites() {
-    putTextInPlaceHolder(testcase_registry.getTestSuitNames());
+function showFilteredTests() {
+    var suite_filter = document.getElementById('suite-filter').value;
+    var test_filter = document.getElementById('test-filter').value;
+    testcase_registry.setTestSuiteFilter(suite_filter);
+    testcase_registry.setTestFilter(test_filter);
+    putTextInPlaceHolder(testcase_registry.getFilteredTestSuitNames() +
+                         testcase_registry.getFilteredTestNames());
 }
 
 function showMarkup() {

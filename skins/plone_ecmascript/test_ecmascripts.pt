@@ -39,10 +39,22 @@
       This page is the entry to the ECMAScript Unit Tests.
     </p>
 
-    <button onclick="runTestCases();">Run Testcases</button>
-    <button onclick="clearOutput();">Clear output</button>
-    <button onclick="showMarkup();">Show Markup</button>
-    <button onclick="showTestSuites();">Show Test Suites</button>
+    <div>
+        <button onclick="runTestCases();">Run Testcases</button>
+        <button onclick="clearOutput();">Clear output</button>
+        <button onclick="showMarkup();">Show Markup</button>
+        <button onclick="showFilteredTests();">Show Test Suites</button>
+    </div>
+    <div>
+        Suite filter: <input id="suite-filter"
+                             type="text"
+                             value=""
+                             tal:attributes="value request/suite_filter|nothing;" />
+        Test filter:  <input id="test-filter"
+                             type="text"
+                             value=""
+                             tal:attributes="value request/test_filter|nothing;" />
+    </div>
     <div id="testInfos"></div>
     <ul id="testResultsToc"></ul>
     <div id="testResultsPlaceHolder"></div>
