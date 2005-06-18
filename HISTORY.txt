@@ -3,13 +3,30 @@ Changelog for Plone
    (name of developer listed in brackets)
 
 Plone 2.1 - Plaid - (Unreleased)
-    - Added framework for ECMAScript Unit Tests.
-      [fschulze]
 
     - Refactored the dropdown menu. It's using css classes for styling of
       visibility. This involves new markup for the menus.
       Also added cssQuery by Dean Edwards to ease development of such kind of
       scripts.
+      [fschulze]
+
+    - Moved 3rd party ecma scripts like sarissa, livesearch, ecmaunit and
+      vcXMLRPC to plone_3rdParty. 3rd party code will be included by an
+      svn:external rule soon.
+      [tiran]
+
+    - Reactivated alternate font size stylesheets.
+      [fschulze]
+
+    - Added some missing i18n markup. Fixed ZChecker error regarding '>'
+      [hannosch]
+
+    - Fixed migrations of older instances caused by the ResourceRegistries
+      refactoring. If you updated and migrated while this was still broken,
+      then you might have to force a migration from alpha2 or even alpha1.
+      [fschulze]
+
+    - Added framework for ECMAScript Unit Tests.
       [fschulze]
 
     - Partially fixed http://plone.org/collector/4077 and #3535 accesskeys are

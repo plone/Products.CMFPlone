@@ -504,7 +504,7 @@ def installCSSandJSRegistries(portal, out):
 
         cssreg = getToolByName(portal, 'portal_css', None)
         if cssreg is not None:
-            cssreg.clearResources()
+            cssreg.clearStylesheets()
             # add the bottom ones and the ones with special expressions first.
             # since registering a stylesheet adds it to the top of the stack
             cssreg.registerStylesheet('ploneRTL.css', expression="python:object.isRightToLeft(domain='plone')")
@@ -521,7 +521,7 @@ def installCSSandJSRegistries(portal, out):
 
         jsreg = getToolByName(portal, 'portal_javascripts', None)
         if jsreg is not None:
-            jsreg.clearResources()
+            jsreg.clearScripts()
             jsreg.registerScript('register_function.js')
             jsreg.registerScript('plone_javascript_variables.js')
             jsreg.registerScript('nodeutilities.js')

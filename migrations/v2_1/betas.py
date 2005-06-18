@@ -3,6 +3,7 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.Expression import Expression
 from Products.CMFPlone.migrations.migration_util import installOrReinstallProduct, \
      safeGetMemberDataTool, safeEditProperty
+from Products.CMFPlone.utils import base_hasattr
 
 
 def alpha2_beta1(portal):
@@ -19,6 +20,9 @@ def alpha2_beta1(portal):
     # Update the 'my folder' action to not use folder_contents
     fixMyFolderAction(portal, out)
 
+    # Migrate ResourceRegistries
+    migrateResourceRegistries(portal, out)
+
     # Bring ploneRTL back to the nearly-top of the stack
     reorderStylesheets(portal, out)
 
@@ -31,6 +35,9 @@ def alpha2_beta1(portal):
 
     # Install kupu
     installKupu(portal, out)
+
+    # Add the stylesheets for font size the selector
+    addFontSizeStylesheets(portal, out)
 
     # Exchange plone_menu.js with dropdown.js
     exchangePloneMenuWithDropDown(portal, out)
@@ -122,6 +129,52 @@ def fixMyFolderAction(portal, out):
                 action.setActionExpression(Expression('string:${portal/portal_membership/getHomeUrl}'))
                 out.append("Made the 'mystuff' action point to folder listing instead of folder_contents")
                 break
+
+
+def migrateResourceRegistries(portal, out):
+    """Migrate ResourceRegistries
+    
+    ResourceRegistries got refactored to use one base class, that needs a
+    migration.
+    """
+    out.append("Migrating CSSRegistry.")
+    cssreg = getToolByName(portal, 'portal_css')
+    if cssreg is not None:
+        if base_hasattr(cssreg, 'stylesheets'):
+            cssreg.resources = cssreg.stylesheets
+            del cssreg.stylesheets
+    
+        if base_hasattr(cssreg, 'cookedstylesheets'):
+            cssreg.cookedresources = cssreg.cookedstylesheets
+            del cssreg.cookedstylesheets
+    
+        if base_hasattr(cssreg, 'concatenatedstylesheets'):
+            cssreg.concatenatedresources = cssreg.concatenatedstylesheets
+            del cssreg.concatenatedstylesheets
+        cssreg.cookResources()
+        out.append("Done migrating CSSRegistry.")
+    else:
+        out.append("No CSSRegistry found.")
+
+    out.append("Migrating JSSRegistry.")
+    jsreg = getToolByName(portal, 'portal_css')
+    if jsreg is not None:
+        if base_hasattr(jsreg, 'scripts'):
+            jsreg.resources = jsreg.scripts
+            del jsreg.scripts
+    
+        if base_hasattr(jsreg, 'cookedscripts'):
+            jsreg.cookedresources = jsreg.cookedscripts
+            del jsreg.cookedscripts
+    
+        if base_hasattr(jsreg, 'concatenatedscripts'):
+            jsreg.concatenatedresources = jsreg.concatenatedscripts
+            del jsreg.concatenatedscripts
+        jsreg.cookResources()
+        out.append("Done migrating JSSRegistry.")
+    else:
+        out.append("No JSRegistry found.")
+
 
 def reorderStylesheets(portal, out):
     """ Fix the position of the ploneRTL and member.css stylesheet
@@ -241,3 +294,28 @@ def installKupu(portal, out):
             safeEditProperty(md, 'wysiwyg_editor', 'Kupu', 'string')
         out.append('Set Kupu as default WYSIWYG editor.')
 
+
+def addFontSizeStylesheets(portal, out):
+    """Add the stylesheets for font size the selector."""
+    cssreg = getToolByName(portal, 'portal_css', None)
+    if cssreg is not None:
+        stylesheet_ids = [item.get('id') for item in cssreg.getResources()]
+        # Failsafe: first make sure the stylesheets don't exist in the list
+        if 'ploneTextSmall.css' not in stylesheet_ids:
+            cssreg.registerStylesheet('ploneTextSmall.css',
+                                      media='screen',
+                                      rel='alternate stylesheet',
+                                      title='Small Text',
+                                      rendering='link')
+            if 'ploneRTL.css' in stylesheet_ids:
+                cssreg.moveResourceBefore('ploneTextSmall.css', 'ploneRTL.css')
+            out.append('Added ploneTextSmall.css to CSSRegistry.')
+        if 'ploneTextLarge.css' not in stylesheet_ids:
+            cssreg.registerStylesheet('ploneTextLarge.css',
+                                      media='screen',
+                                      rel='alternate stylesheet',
+                                      title='Large Text',
+                                      rendering='link')
+            if 'ploneRTL.css' in stylesheet_ids:
+                cssreg.moveResourceBefore('ploneTextLarge.css', 'ploneRTL.css')
+            out.append('Added ploneTextLarge.css to CSSRegistry.')

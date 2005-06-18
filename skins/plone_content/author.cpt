@@ -19,7 +19,7 @@
 
         <tal:noAuthor condition="not: authorinfo">
             <div class="visualClear"/>
-            <div class="portalMessage">
+            <div class="portalMessage" i18n:translate="text_no_user_by_name">
                 No user by that name
             </div>
         </tal:noAuthor>
@@ -39,7 +39,7 @@
             </tal:location>
 
             <tal:language condition="authorinfo/language">
-            Main Language:
+            <span i18n:translate="label_main_language">Main Language:</span>
             <span tal:replace="authorinfo/language">Some language</span>
             </tal:language>
         </div>
@@ -60,11 +60,13 @@
         <div class="visualClear"/>
             
         <p tal:condition="mtool/getHomeFolder">
-        <a href="#" tal:attributes="href authorinfo/home_page">Author's home page in this site&hellip;</a>
+        <a href="#" tal:attributes="href authorinfo/home_page"
+           i18n:translate="label_author_internal_home_page">Author's home page in this site&hellip;</a>
         </p>
 
         <p tal:condition="python: not mtool.getHomeFolder() and authorinfo['home_page']">
-        <a href="#" tal:attributes="href authorinfo/home_page">Author's external home page&hellip;</a>
+        <a href="#" tal:attributes="href authorinfo/home_page"
+           i18n:translate="label_author_external_home_page">Author's external home page&hellip;</a>
         </p>
 
         <!-- feedback form -->        
@@ -83,12 +85,12 @@
 
             <fieldset>
             
-            <legend>Feedback for author</legend>
+            <legend i18n:translate="legend_feedback_for_author">Feedback for author</legend>
 
             <div class="field"
               tal:define="error errors/subject|nothing"
               tal:attributes="class python:test(error, 'field error', 'field')">
-              <label for="subject">
+              <label for="subject" i18n:translate="label_subject">
                 Subject
               </label>
 
@@ -104,7 +106,7 @@
             <div class="field"
               tal:define="error errors/message|nothing"
               tal:attributes="class python:test(error, 'field error', 'field')">
-              <label for="message">
+              <label for="message" i18n:translate="label_message">
                 Message
               </label>
         
@@ -157,7 +159,7 @@
             </a>
         
             <div metal:define-macro="user_content_listing">
-            <table class="listing">
+            <table class="listing" summary="Lists content written by an author grouped by content type" i18n:attributes="summary summary_author_content_list;">
                 <tal:repeat repeat="content_by_type author_content">
                     <tr>
                         <th colspan="2"

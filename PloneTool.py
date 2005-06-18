@@ -8,7 +8,11 @@ from zLOG import LOG, INFO, WARNING
 from Products.CMFPlone.utils import safe_callable
 from Products.CMFPlone import transaction
 
+from AccessControl import getSecurityManager
 from Acquisition import aq_base, aq_inner, aq_parent
+
+from ComputedAttribute import ComputedAttribute
+
 from Products.CMFCore.utils import UniqueObject
 from Products.CMFCore.utils import _checkPermission, \
      _getAuthenticatedUser, limitGrantedRoles
@@ -33,8 +37,6 @@ from DateTime import DateTime
 from Products.CMFPlone.UnicodeNormalizer import normalizeUnicode
 from Products.CMFPlone.PloneFolder import ReplaceableWrapper
 
-from ComputedAttribute import ComputedAttribute
-
 _marker = ()
 _icons = {}
 
@@ -48,7 +50,8 @@ from Products.SecureMailHost.SecureMailHost import EMAIL_RE
 from Products.SecureMailHost.SecureMailHost import EMAIL_CUTOFF_RE
 BAD_CHARS = re.compile(r'[^a-zA-Z0-9-_~,.$\(\)# ]').findall
 
-#XXX Remove this when we don't depend on python2.1 any longer, use email.Utils.getaddresses instead
+# XXX Remove this when we don't depend on python2.1 any longer,
+# use email.Utils.getaddresses instead
 from rfc822 import AddressList
 def _getaddresses(fieldvalues):
     """Return a list of (REALNAME, EMAIL) for each fieldvalue."""
@@ -58,7 +61,7 @@ def _getaddresses(fieldvalues):
 
 # dublic core accessor name -> metadata name
 METADATA_DCNAME = {
-    # the first two rows are handle in a special way
+    # The first two rows are handle in a special way
     # 'Description'      : 'description',
     # 'Subject'          : 'keywords',
     'Description'      : 'DC.description',
@@ -79,11 +82,12 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     """Various utility methods."""
 
     id = 'plone_utils'
-    meta_type= ToolNames.UtilsTool
+    meta_type = ToolNames.UtilsTool
     toolicon = 'skins/plone_images/site_icon.gif'
     security = ClassSecurityInfo()
     plone_tool = 1
-    field_prefix = 'field_' # Prefix for forms fields!?
+    # Prefix for forms fields!?
+    field_prefix = 'field_'
 
     __implements__ = (PloneBaseTool.__implements__,
                       SimpleItem.__implements__, )
@@ -91,17 +95,16 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     security.declareProtected(CMFCorePermissions.ManagePortal,
                               'setMemberProperties')
     def setMemberProperties(self, member, **properties):
-        membership=getToolByName(self, 'portal_membership')
+        membership = getToolByName(self, 'portal_membership')
         if hasattr(member, 'getId'):
-            member=member.getId()
-        user=membership.getMemberById(member)
+            member = member.getId()
+        user = membership.getMemberById(member)
         user.setMemberProperties(properties)
 
     security.declarePublic('getSiteEncoding')
     def getSiteEncoding(self):
-        """Get the default_charset or fallback to utf8
-        """
-        pprop   = getToolByName(self, 'portal_properties')
+        """Get the default_charset or fallback to utf8."""
+        pprop = getToolByName(self, 'portal_properties')
         default = 'utf-8'
         try:
             charset = pprop.site_properties.getProperty('default_charset', default)
@@ -111,11 +114,10 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     security.declarePublic('portal_utf8')
     def portal_utf8(self, str, errors='strict'):
-        """Transforms an string in portal encoding to utf8
-        """
+        """Transforms an string in portal encoding to utf8."""
         charset = self.getSiteEncoding()
         if charset.lower() in ('utf-8', 'utf8'):
-            # test
+            # Test
             unicode(str, 'utf-8', errors)
             return str
         else:
@@ -123,11 +125,10 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     security.declarePublic('utf8_portal')
     def utf8_portal(self, str, errors='strict'):
-        """Transforms an utf8 string to portal encoding
-        """
+        """Transforms an utf8 string to portal encoding."""
         charset = self.getSiteEncoding()
         if charset.lower() in ('utf-8', 'utf8'):
-            # test
+            # Test
             unicode(str, 'utf-8', errors)
             return str
         else:
@@ -135,19 +136,17 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     security.declarePrivate('getMailHost')
     def getMailHost(self):
-        """Get the MailHost
-        """
+        """Gets the MailHost."""
         return getattr(aq_parent(self), 'MailHost')
 
     security.declarePublic('sendto')
     def sendto(self, send_to_address, send_from_address, comment,
                subject='Plone', **kwargs ):
-        """Sends a link of a page to someone
-        """
+        """Sends a link of a page to someone."""
         host = self.getMailHost()
         template = getattr(self, 'sendto_template')
         encoding = self.getSiteEncoding()
-        # cook from template
+        # Cook from template
         message = template(self, send_to_address=send_to_address,
                            send_from_address=send_from_address,
                            comment=comment, subject=subject, **kwargs
@@ -157,31 +156,31 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                                  subtype='plain', charset=encoding,
                                  debug=False
                                 )
-        #print result[2].as_string()
 
     security.declarePublic('validateSingleNormalizedEmailAddress')
     def validateSingleNormalizedEmailAddress(self, address):
-        """Lower-level function to validate a single normalized email address, see validateEmailAddress
+        """Lower-level function to validate a single normalized email address,
+        see validateEmailAddress.
         """
         host = self.getMailHost()
         return host.validateSingleNormalizedEmailAddress(address)
 
     security.declarePublic('validateSingleEmailAddress')
     def validateSingleEmailAddress(self, address):
-        """Validate a single email address, see also validateEmailAddresses
-        """
+        """Validate a single email address, see also validateEmailAddresses."""
         host = self.getMailHost()
         return host.validateSingleEmailAddress(address)
 
     security.declarePublic('validateEmailAddresses')
     def validateEmailAddresses(self, addresses):
-        """Validate a list of possibly several email addresses, see also validateSingleEmailAddress
+        """Validate a list of possibly several email addresses, see also
+        validateSingleEmailAddress.
         """
         host = self.getMailHost()
         return host.validateEmailAddresses(addresses)
 
     security.declarePublic('editMetadata')
-    def editMetadata( self
+    def editMetadata(self
                      , obj
                      , allowDiscussion=None
                      , title=None
@@ -194,18 +193,20 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                      , language=None
                      , rights=None
                      ,  **kwargs):
-        """ Responsible for setting metadata on a content object
-            we assume the obj implements IDublinCoreMetadata.
+        """Responsible for setting metadata on a content object.
+
+        We assume the obj implements IDublinCoreMetadata.
         """
         mt = getToolByName(self, 'portal_membership')
         if not mt.checkPermission(CMFCorePermissions.ModifyPortalContent, obj):
-            raise Unauthorized    # FIXME: Some scripts rely on this being string?
+            # FIXME: Some scripts rely on this being string?
+            raise Unauthorized
 
         REQUEST = self.REQUEST
         pfx = self.field_prefix
 
         def getfield(request, name, default=None, pfx=pfx):
-            return request.form.get(pfx+name, default)
+            return request.form.get(pfx + name, default)
 
         def tuplify(value):
             return tuple(filter(None, value))
@@ -240,14 +241,14 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                 if not hasattr(obj, 'allow_discussion'):
                     allowDiscussion = None
                 allowDiscussion = REQUEST.get('allowDiscussion', allowDiscussion)
-            if type(allowDiscussion)==StringType:
-                allowDiscussion=allowDiscussion.lower().strip()
-            if allowDiscussion=='default':
-                allowDiscussion=None
-            elif allowDiscussion=='off':
-                allowDiscussion=0
-            elif allowDiscussion=='on':
-                allowDiscussion=1
+            if type(allowDiscussion) == StringType:
+                allowDiscussion = allowDiscussion.lower().strip()
+            if allowDiscussion == 'default':
+                allowDiscussion = None
+            elif allowDiscussion == 'off':
+                allowDiscussion = 0
+            elif allowDiscussion == 'on':
+                allowDiscussion = 1
             disc_tool.overrideDiscussionFor(obj, allowDiscussion)
 
         if MutableDublinCore.isImplementedBy(obj):
@@ -274,19 +275,19 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     def _renameObject(self, obj, id):
         if not id:
-            REQUEST=self.REQUEST
+            REQUEST = self.REQUEST
             id = REQUEST.get('id', '')
-            id = REQUEST.get(self.field_prefix+'id', '')
+            id = REQUEST.get(self.field_prefix + 'id', '')
         if id != obj.getId():
             parent = aq_parent(aq_inner(obj))
             parent.manage_renameObject(obj.getId(), id)
 
     def _makeTransactionNote(self, obj, msg=''):
-        #XXX why not aq_parent()?
-        relative_path='/'.join(getToolByName(self, 'portal_url').getRelativeContentPath(obj)[:-1])
+        #XXX Why not aq_parent()?
+        relative_path = '/'.join(getToolByName(self, 'portal_url').getRelativeContentPath(obj)[:-1])
         charset = self.getSiteEncoding()
         if not msg:
-            msg=relative_path+'/'+obj.title_or_id()+' has been modified.'
+            msg = relative_path + '/' + obj.title_or_id() + ' has been modified.'
         if isinstance(msg, UnicodeType):
             # Convert unicode to a regular string for the backend write IO.
             # UTF-8 is the only reasonable choice, as using unicode means
@@ -297,37 +298,34 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     security.declarePublic('contentEdit')
     def contentEdit(self, obj, **kwargs):
-        """ encapsulates how the editing of content occurs """
-
+        """Encapsulates how the editing of content occurs."""
         try:
             self.editMetadata(obj, **kwargs)
         except AttributeError, msg:
             log('Failure editing metadata at: %s.\n%s\n' %
                 (obj.absolute_url(), msg))
-
         if kwargs.get('id', None) is not None:
             self._renameObject(obj, id=kwargs['id'].strip())
-
         self._makeTransactionNote(obj)
 
     security.declarePublic('availableMIMETypes')
     def availableMIMETypes(self):
-        """Return a map of mimetypes
+        """Returns a map of mimetypes.
 
-        Requires mimetype registry from Archetypes 1.3
+        Requires mimetype registry from Archetypes 1.3.
         """
         mtr = getToolByName(self, 'mimetypes_registry')
         return mtr.list_mimetypes()
 
     security.declareProtected(CMFCorePermissions.View, 'getWorkflowChainFor')
     def getWorkflowChainFor(self, object):
-        """ Proxy the request for the chain to the workflow
-            tool, as this method is private there.
+        """Proxy the request for the chain to the workflow tool, as
+        this method is private there.
         """
         wftool = getToolByName(self, 'portal_workflow')
-        wfs=()
+        wfs = ()
         try:
-            wfs=wftool.getChainFor(object)
+            wfs = wftool.getChainFor(object)
         except ConflictError:
             raise
         except:
@@ -336,40 +334,39 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     security.declareProtected(CMFCorePermissions.View, 'getIconFor')
     def getIconFor(self, category, id, default=_marker):
-        """ Cache point for actionicons.getActionIcon call
-            also we want to allow for a default icon id to be
-            passed in.
-        """
-        #short circuit the lookup
-        if (category, id) in _icons.keys():
-            return _icons[ (category, id) ]
+        """Cache point for actionicons.getActionIcon call.
 
+        Also we want to allow for a default icon id to be passed in.
+        """
+        # Short circuit the lookup
+        if (category, id) in _icons.keys():
+            return _icons[(category, id)]
         try:
-            actionicons=getToolByName(self, 'portal_actionicons')
-            iconinfo=actionicons.getActionIcon(category, id)
-            icon=_icons.setdefault( (category, id), iconinfo )
+            actionicons = getToolByName(self, 'portal_actionicons')
+            iconinfo = actionicons.getActionIcon(category, id)
+            icon = _icons.setdefault( (category, id), iconinfo )
         except KeyError:
             if default is not _marker:
-                icon=default
+                icon = default
             else:
                 raise
-
-        #we want to return the actual object
+        # We want to return the actual object
         return icon
 
     security.declareProtected(CMFCorePermissions.View, 'getReviewStateTitleFor')
     def getReviewStateTitleFor(self, obj):
         """Utility method that gets the workflow state title for the
-        object's review_state.  Returns None if no review_state found.
-        """
+        object's review_state.
 
-        wf_tool=getToolByName(self, 'portal_workflow')
-        wfs=()
-        review_states=()
-        objstate=None
+        Returns None if no review_state found.
+        """
+        wf_tool = getToolByName(self, 'portal_workflow')
+        wfs = ()
+        review_states = ()
+        objstate = None
         try:
-            objstate=wf_tool.getInfoFor(obj, 'review_state')
-            wfs=wf_tool.getWorkflowsFor(obj)
+            objstate = wf_tool.getInfoFor(obj, 'review_state')
+            wfs = wf_tool.getWorkflowsFor(obj)
         except WorkflowException, e:
             pass
         if wfs:
@@ -378,12 +375,11 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                     return w.states[objstate].title
         return None
 
-
     security.declareProtected(CMFCorePermissions.View, 'getDiscussionThread')
     def getDiscussionThread(self, discussionContainer):
-        """ Given a discussionContainer, return the thread
-        it is in, upwards, including the parent object that is being discussed"""
-        
+        """Given a discussionContainer, return the thread it is in, upwards,
+        including the parent object that is being discussed.
+        """
         if hasattr(discussionContainer, 'parentsInThread'):
             thread = discussionContainer.parentsInThread()
             if discussionContainer.portal_type == 'Discussion Item':
@@ -394,15 +390,14 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             else:
                 thread = [discussionContainer]
         return thread
-        
 
     # Convenience method since skinstool requires loads of acrobatics.
     # We use this for the reconfig form
     security.declareProtected(CMFCorePermissions.ManagePortal, 'setDefaultSkin')
     def setDefaultSkin(self, default_skin):
-        """ sets the default skin """
-        st=getToolByName(self, 'portal_skins')
-        st.default_skin=default_skin
+        """Sets the default skin."""
+        st = getToolByName(self, 'portal_skins')
+        st.default_skin = default_skin
 
     # Set the skin on the page to the specified value
     # Can be called from a page template, but it must be called before
@@ -411,26 +406,25 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     # method that is slated for CMF 1.4
     security.declarePublic('setCurrentSkin')
     def setCurrentSkin(self, skin_name):
-        """ sets the current skin """
+        """Sets the current skin."""
         portal = getToolByName(self, 'portal_url').getPortalObject()
-        portal._v_skindata=(self.REQUEST, self.getSkinByName(skin_name), {} )
+        portal._v_skindata = (self.REQUEST, self.getSkinByName(skin_name), {})
 
     security.declareProtected(CMFCorePermissions.ManagePortal,
                               'changeOwnershipOf')
     def changeOwnershipOf(self, object, owner, recursive=0):
-        """ changes the ownership of an object """
-        membership=getToolByName(self, 'portal_membership')
+        """Changes the ownership of an object."""
+        membership = getToolByName(self, 'portal_membership')
         if owner not in membership.listMemberIds():
             raise KeyError, 'Only users in this site can be made owners.'
-        acl_users=getattr(self, 'acl_users')
+        acl_users = getattr(self, 'acl_users')
         user = acl_users.getUser(owner)
         if user is not None:
             user = user.__of__(acl_users)
         else:
-            from AccessControl import getSecurityManager
             user = getSecurityManager().getUser()
 
-        catalog_tool=getToolByName(self, 'portal_catalog')
+        catalog_tool = getToolByName(self, 'portal_catalog')
         object.changeOwnership(user, recursive)
 
         def fixOwnerRole(object, user_id):
@@ -454,56 +448,58 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         if recursive:
             purl = getToolByName(self, 'portal_url')
             _path = purl.getRelativeContentURL(object)
-            subobjects=[b.getObject() for b in \
-                        catalog_tool(path={'query':_path,'level':1})]
+            subobjects = [b.getObject() for b in \
+                         catalog_tool(path={'query':_path,'level':1})]
             for obj in subobjects:
                 fixOwnerRole(obj, user.getId())
                 catalog_tool.reindexObject(obj)
 
     security.declarePublic('urlparse')
     def urlparse(self, url):
-        """ Returns the pieces of url in a six-part tuple.
+        """Returns the pieces of url in a six-part tuple.
 
-        See Python standard library urlparse.urlparse
+        See Python standard library urlparse.urlparse:
         http://python.org/doc/lib/module-urlparse.html
         """
         return urlparse.urlparse(url)
 
     security.declarePublic('urlunparse')
     def urlunparse(self, url_tuple):
-        """ Puts a url back together again, in the manner that urlparse breaks it.
+        """Puts a url back together again, in the manner that
+        urlparse breaks it.
 
-        See also Python standard library: urlparse.urlunparse
+        See also Python standard library: urlparse.urlunparse:
         http://python.org/doc/lib/module-urlparse.html
         """
         return urlparse.urlunparse(url_tuple)
 
-    # Enable scripts to get the string value of an exception
-    # even if the thrown exception is a string and not a
-    # subclass of Exception.
+    # Enable scripts to get the string value of an exception even if the
+    # thrown exception is a string and not a subclass of Exception.
     def exceptionString(self):
-        s = sys.exc_info()[:2]  # don't assign the traceback to s
-                                # (otherwise will generate a circular reference)
+        # Don't assign the traceback to s
+        # (otherwise will generate a circular reference)
+        s = sys.exc_info()[:2]
         if s[0] == None:
             return None
         if type(s[0]) == type(''):
             return s[0]
         return str(s[1])
 
-    # provide a way of dumping an exception to the log even if we
+    # Provide a way of dumping an exception to the log even if we
     # catch it and otherwise ignore it
     def logException(self):
-        """Dump an exception to the log"""
+        """Dumps an exception to the log."""
         log(summary=self.exceptionString(),
             text='\n'.join(traceback.format_exception(*sys.exc_info())),
             log_level=WARNING)
 
     security.declarePublic('createSitemap')
     def createSitemap(self, context):
+        """Returns a sitemap navtree structure."""
         return self.createNavTree(context, sitemap=1)
 
     def _addToNavTreeResult(self, result, data):
-        """ add a piece of content to the result tree """
+        """Adds a piece of content to the result tree."""
         path = data['path']
         parentpath = '/'.join(path.split('/')[:-1])
         # Tell parent about self
@@ -517,13 +513,13 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             data['children'] = result[path]['children']
         result[path] = data
 
+    # XXX Please, refactor me! :-)
     security.declarePublic('createNavTree')
     def createNavTree(self, context, sitemap=None):
-        """Returns a structure that can be used by
-        navigation_tree_slot."""
-        ct=getToolByName(self, 'portal_catalog')
-        ntp=getToolByName(self, 'portal_properties').navtree_properties
-        stp=getToolByName(self, 'portal_properties').site_properties
+        """Returns a structure that can be used by navigation_tree_slot."""
+        ct = getToolByName(self, 'portal_catalog')
+        ntp = getToolByName(self, 'portal_properties').navtree_properties
+        stp = getToolByName(self, 'portal_properties').site_properties
         view_action_types = stp.getProperty('typesUseViewActionInListings')
         currentPath = None
 
@@ -648,10 +644,10 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     security.declarePublic('createTopLevelTabs')
     def createTopLevelTabs(self):
-        """Returns a structure for the top level tabs"""
-        ct=getToolByName(self, 'portal_catalog')
-        ntp=getToolByName(self, 'portal_properties').navtree_properties
-        stp=getToolByName(self, 'portal_properties').site_properties
+        """Returns a structure for the top level tabs."""
+        ct = getToolByName(self, 'portal_catalog')
+        ntp = getToolByName(self, 'portal_properties').navtree_properties
+        stp = getToolByName(self, 'portal_properties').site_properties
         view_action_types = stp.getProperty('typesUseViewActionInListings')
 
         if stp.getProperty('disable_folder_sections', None):
@@ -696,14 +692,14 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     security.declarePublic('createBreadCrumbs')
     def createBreadCrumbs(self, context):
-        "Returns a structure for the portal breadcumbs"""
-        ct=getToolByName(self, 'portal_catalog')
-        stp=getToolByName(self, 'portal_properties').site_properties
+        """Returns a structure for the portal breadcumbs."""
+        ct = getToolByName(self, 'portal_catalog')
+        stp = getToolByName(self, 'portal_properties').site_properties
         view_action_types = stp.getProperty('typesUseViewActionInListings')
         query = {}
 
-        #Check to see if the current page is a folder default view, if so
-        #get breadcrumbs from the parent folder
+        # Check to see if the current page is a folder default view, if so
+        # get breadcrumbs from the parent folder
         if self.isDefaultPage(context):
             currentPath = '/'.join(context.aq_inner.aq_parent.getPhysicalPath())
         else:
@@ -712,7 +708,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
         rawresult = ct(**query)
 
-        #sort items on path length
+        # Sort items on path length
         dec_result = [(len(r.getPath()),r) for r in rawresult]
         dec_result.sort()
 
@@ -727,54 +723,51 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             result.append(data)
         return result
 
-    # expose ObjectManager's bad_id test to skin scripts
     security.declarePublic('good_id')
     def good_id(self, id):
+        """Exposes ObjectManager's bad_id test to skin scripts."""
         m = bad_id(id)
         if m is not None:
             return 0
         return 1
 
-    # add a helper function to show what chars are bad in the
-    # good_id function
     security.declarePublic('bad_chars')
     def bad_chars(self, id):
-        """ Returns a list of the Bad characters """
+        """Returns a list of the Bad characters."""
         return BAD_CHARS(id)
 
-    # returns the acquired local roles
     security.declarePublic('getInheritedLocalRoles')
     def getInheritedLocalRoles(self, here):
+        """Returns a tuple with the acquired local roles."""
         portal = here.portal_url.getPortalObject()
-        result=[]
-        cont=1
+        result = []
+        cont = 1
         if portal != here:
             parent = here.aq_parent
             while cont:
                 userroles = parent.acl_users.getLocalRolesForDisplay(parent)
                 for user, roles, role_type, name in userroles:
-                    # find user in result
-                    found=0
+                    # Find user in result
+                    found = 0
                     for user2, roles2, type2, name2 in result:
-                        if user2==user:
-                            # check which roles must be added to roles2
+                        if user2 == user:
+                            # Check which roles must be added to roles2
                             for role in roles:
                                 if not role in roles2:
-                                    roles2=roles2.append(role)
-                            found=1
+                                    roles2 = roles2.append(role)
+                            found = 1
                             break
-                    if found==0:
-                        # add it to result
-                        # make sure roles is a list so we may append and not
-                        # overwrite the loop variable
+                    if found == 0:
+                        # Add it to result and make sure roles is a list so
+                        # we may append and not overwrite the loop variable
                         result.append([user, list(roles), role_type, name])
-                if parent==portal:
-                    cont=0
+                if parent == portal:
+                    cont = 0
                 elif not self.isLocalRoleAcquired(parent):
-                    # role acq check here
-                    cont=0
+                    # Role acquired check here
+                    cont = 0
                 else:
-                    parent=parent.aq_parent
+                    parent = parent.aq_parent
 
         # Tuplize all inner roles
         for pos in range(len(result)-1,-1,-1):
@@ -785,21 +778,20 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     security.declarePublic('browserDefault')
     def browserDefault(self, obj):
-        """Set default so we can return whatever we want instead of
-        index_html
-        
+        """Sets default so we can return whatever we want instead of index_html.
+
         This method is complex, and interacts with mechanisms such as
         IBrowserDefault (implemented in ATContentTypes), LinguaPlone and
-        various mechanisms for setting the default page. 
-        
+        various mechanisms for setting the default page.
+
         The method returns a tuple (obj, [path]) where path is a path to
         a template or other object to be acquired and displayed on the object.
         The path is determined as follows:
-        
+
         1. If we're coming from WebDAV, make sure we don't return a contained
             object "default page" ever
         2. If there is an index_html attribute (either a contained object or
-            an explicit attribute) on the object, return that as the 
+            an explicit attribute) on the object, return that as the
             "default page". Note that this may be used by things like
             File and Image to return the contents of the file, for example,
             not just content-space objects created by the user.
@@ -817,11 +809,11 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             is typically hidden)
         6. If nothing else is found, fall back on the object's 'view' action.
         7. If this is not found, raise an AttributeError
-            
+
         If the returned path is an object, it is checked for ITranslatable. An
         object which supports translation will then be translated before return.
         """
-        
+
         # WebDAV in Zope is odd it takes the incoming verb eg: PROPFIND
         # and then requests that object, for example for: /, with verb PROPFIND
         # means acquire PROPFIND from the folder and call it
@@ -830,7 +822,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         if request and request.has_key('REQUEST_METHOD'):
             if request['REQUEST_METHOD'] not in  ['GET', 'HEAD', 'POST']:
                 return obj, [request['REQUEST_METHOD']]
-        # now back to normal
+        # Now back to normal
 
         portal = getToolByName(self, 'portal_url').getPortalObject()
         wftool = getToolByName(self, 'portal_workflow')
@@ -853,10 +845,10 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                         else:
                             return translation, ['view']
             return obj, [page]
-            
+
         # The list of ids where we look for default
         ids = {}
-        
+
         # If we are not dealing with a folder, then leave this empty
         if obj.isPrincipiaFolderish:
             # For BTreeFolders we just use the has_key, otherwise build a dict
@@ -869,28 +861,28 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         #
         # 1. Get an attribute or contained object index_html
         #
-        
+
         # Note: The base PloneFolder, as well as ATCT's ATCTOrderedFolder
         # defines a method index_html() which returns a ReplaceableWrapper.
         # This is needed for WebDAV to work properly, and to avoid implicit
         # acquisition of index_html's, which are generally on-object only.
         # For the purposes of determining a default page, we don't want to
         # use this index_html(), nor the ComputedAttribute which defines it.
-        
-        if not isinstance(getattr(obj, 'index_html', None), ReplaceableWrapper): 
-            if getattr(aq_base(obj), 'index_html', None) is not None: 
+
+        if not isinstance(getattr(obj, 'index_html', None), ReplaceableWrapper):
+            if getattr(aq_base(obj), 'index_html', None) is not None:
                 return returnPage(obj, 'index_html')
 
         #
         # 2. Look for a default_page managed by an IBrowserDefault-implementing
         #    object
         #
-        
+
         # Note: the behaviour is the same as setting default_page manually
         # on the object, and the current BrowserDefaultMixin implementation
-        # actually stores it as the default_page property, but it's nicer to 
+        # actually stores it as the default_page property, but it's nicer to
         # explicit about getting it from IBrowserDefault
-        
+
         if obj.isPrincipiaFolderish and IBrowserDefault.isImplementedBy(obj):
             page = obj.getDefaultPage()
             # Be totally anal and triple-check...
@@ -902,7 +894,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         #
         # 3. Look for a default_page property on the object
         #
-        
+
         pages = getattr(aq_base(obj), 'default_page', [])
         # Make sure we don't break if default_page is a
         # string property instead of a sequence
@@ -914,7 +906,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             for page in pages:
                 if ids.has_key(page):
                     return returnPage(obj, page)
-        
+
         # we look for the default_page in the portal and/or skins aswell.
         # Use path/to/template to reference an object or a skin.
         for page in pages:
@@ -924,21 +916,21 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         #
         # 4. Try the default sitewide default_page setting
         #
-        
+
         if obj.isPrincipiaFolderish:
             for page in portal.portal_properties.site_properties.getProperty('default_page', []):
                 if ids.has_key(page):
                     return returnPage(obj, page)
-                    
+
         #
         # 5. If the object has a 'folderlisting' action, use this
         #
-        
+
         # This allows folders to determine in a flexible manner how they are
-        # displayed when there is no default page, whilst still using 
+        # displayed when there is no default page, whilst still using
         # browserDefault() to show contained objects by default on the 'view'
         # action
-        
+
         try:
             act = obj.getTypeInfo().getActionById('folderlisting')
             if act.startswith('/'):
@@ -958,16 +950,17 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             return obj, [act]
         except ValueError:
             pass
-            
+
         #
         # 7. If we can't find this either, raise an exception
         #
-        
+
         raise AttributeError, "Failed to get a default page or view_action for %s" %s (obj.absolute_url,)
-            
+
     security.declarePublic('isDefaultPage')
     def isDefaultPage(self, obj):
-        """Find out if the given obj is the default page in its parent folder.
+        """Finds out if the given obj is the default page in its parent folder.
+
         Only considers explicitly contained objects, either set as index_html,
         with the default_page property, or using IBrowserDefault.
         """
@@ -977,10 +970,9 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         if not parent:
             return False
 
-
         # The list of ids where we look for default
         ids = {}
-        
+
         # For BTreeFolders we just use the has_key, otherwise build a dict
         if hasattr(aq_base(parent), 'has_key'):
             ids = parent
@@ -991,8 +983,8 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         #
         # 1. Get an attribute or contained object index_html
         #
-        
-        if not isinstance(getattr(parent, 'index_html', None), ReplaceableWrapper): 
+
+        if not isinstance(getattr(parent, 'index_html', None), ReplaceableWrapper):
             index_html = getattr(aq_base(parent), 'index_html', None)
             if not index_html is not None:
                 if type(index_html) == type(obj) and index_html == obj:
@@ -1004,7 +996,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         # 2. Look for a default_page managed by an IBrowserDefault-implementing
         #    object
         #
-        
+
         if IBrowserDefault.isImplementedBy(parent):
             page = parent.getDefaultPage()
             if page and ids.has_key(page):
@@ -1012,11 +1004,11 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                     return True
                 else:
                     return False
-            
+
         #
         # 3. Look for a default_page property on the object
         #
-        
+
         pages = getattr(aq_base(parent), 'default_page', [])
         if type(pages) in (StringType, UnicodeType):
             pages = [pages]
@@ -1031,7 +1023,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         #
         # 4. Try the default sitewide default_page setting
         #
-        
+
         portal = getToolByName(self, 'portal_url').getPortalObject()
         for page in portal.portal_properties.site_properties.getProperty('default_page', []):
             if ids.has_key(page):
@@ -1039,16 +1031,18 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                     return True
                 else:
                     return False
-                    
+
         return False
 
     security.declarePublic('isTranslatable')
     def isTranslatable(self, obj):
+        """Checks if a given object implements the ITranslatable interface."""
         return ITranslatable.isImplementedBy(obj)
 
-    security.declarePublic("acquireLocalRoles")
+    security.declarePublic('acquireLocalRoles')
     def acquireLocalRoles(self, obj, status = 1):
         """If status is 1, allow acquisition of local roles (regular behaviour).
+
         If it's 0, prohibit it (it will allow some kind of local role blacklisting).
         GRUF IS REQUIRED FOR THIS TO WORK.
         """
@@ -1063,28 +1057,27 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         # Reindex the whole stuff.
         obj.reindexObjectSecurity()
 
-    security.declarePublic("isLocalRoleAcquired")
+    security.declarePublic('isLocalRoleAcquired')
     def isLocalRoleAcquired(self, obj):
-        """GRUF IS REQUIRED FOR THIS TO WORK.
-        Return Local Role acquisition blocking status. True if normal, false if blocked.
+        """Returns local role acquisition blocking status.
+
+        True if normal, false if blocked.
+        GRUF IS REQUIRED FOR THIS TO WORK.
         """
         gruf = getToolByName( self, 'portal_url' ).getPortalObject().acl_users
         return gruf.isLocalRoleAcquired(obj, )
 
-    security.declarePublic("getOwnerId")
+    security.declarePublic('getOwnerId')
     def getOwnerId(self, obj):
-        """Returns the userid of the owner of an object
-        """
+        """Returns the userid of the owner of an object."""
         mt = getToolByName(self, 'portal_membership')
         if not mt.checkPermission(CMFCorePermissions.View, obj):
             raise Unauthorized
-
         return obj.owner_info()['id']
 
     security.declarePublic('normalizeString')
     def normalizeString(self, text):
-        """
-        Normalize a title to an id
+        """Normalizes a title to an id.
 
         normalizeString() converts a whole string to a normalized form that
         should be safe to use as in a url, as a css id, etc.
@@ -1124,8 +1117,8 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         'this-is-also-a-file.html'
 
         normalizeString() uses normalizeUnicode() to convert stray unicode
-        characters. it will attempt to transliterate many of the accented 
-	letters to rough ASCII equivalents:
+        characters. it will attempt to transliterate many of the accented
+        letters to rough ASCII equivalents:
 
         >>> normalizeString(u"Eksempel \xe6\xf8\xe5 norsk \xc6\xd8\xc5")
         'eksempel-eoa-norsk-eoa'
@@ -1171,14 +1164,12 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     security.declarePublic('listMetaTags')
     def listMetaTags(self, context):
-        """List meta tags helper
+        """Lists meta tags helper.
 
-        Creates a mapping of meta tags -> values for the listMetaTags script
+        Creates a mapping of meta tags -> values for the listMetaTags script.
         """
         result = {}
-
         site_props = getToolByName(self, 'portal_properties').site_properties
-
         use_all = site_props.getProperty('exposeDCMetaTags', None)
 
         if not use_all:
@@ -1189,7 +1180,6 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         for accessor, key in metadata_names.items():
             method = getattr(aq_inner(context).aq_explicit, accessor, None)
             if not callable(method):
-                # ups
                 continue
 
             # Catch AttributeErrors raised by some AT applications
@@ -1199,7 +1189,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                 value = None
 
             if not value:
-                # no data
+                # No data
                 continue
             if accessor == 'Publisher' and value == 'No publisher':
                 # No publisher is hardcoded (XXX: still?)
@@ -1208,7 +1198,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                 # convert a list to a string
                 value = ', '.join(value)
 
-            # special cases
+            # Special cases
             if accessor == 'Description':
                 result['description'] = value
             elif accessor == 'Subject':
@@ -1238,7 +1228,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             except AttributeError:
                 expires = None
 
-            #   Filter out DWIMish artifacts on effective / expiration dates
+            # Filter out DWIMish artifacts on effective / expiration dates
             if effective is not None and effective > FLOOR_DATE and effective != created:
                 eff_str = effective.Date()
             else:
@@ -1257,10 +1247,13 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     security.declarePublic('getUserFriendlyTypes')
     def getUserFriendlyTypes(self, typesList=[]):
         """Get a list of types which are considered "user friendly" for search
-        and selection purposes. This is the list of types available in the
-        portal, minus those defines in the types_not_searched property in
-        site_properties, if it exists. If typesList is given, this is used
-        as the base list; else all types from portal_types are used.
+        and selection purposes.
+
+        This is the list of types available in the portal, minus those defines
+        in the types_not_searched property in site_properties, if it exists.
+
+        If typesList is given, this is used as the base list; else all types
+        from portal_types are used.
         """
 
         ptool = getToolByName(self, 'portal_properties')
@@ -1279,4 +1272,3 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
 
 InitializeClass(PloneTool)
-

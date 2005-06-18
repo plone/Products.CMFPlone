@@ -1300,6 +1300,24 @@ class TestMigrations_v2_1(MigrationTest):
         self.portal._delObject('portal_membership')
         fixMyFolderAction(self.portal, [])
 
+    def testCSSRegistryMigration(self):
+        cssreg = self.portal.portal_css
+        self.failIf(hasattr(cssreg, 'stylesheets'))
+        self.failIf(hasattr(cssreg, 'cookedstylesheets'))
+        self.failIf(hasattr(cssreg, 'concatenatedstylesheets'))
+        self.failUnless(hasattr(cssreg, 'resources'))
+        self.failUnless(hasattr(cssreg, 'cookedresources'))
+        self.failUnless(hasattr(cssreg, 'concatenatedresources'))
+
+    def testJSRegistryMigration(self):
+        jsreg = self.portal.portal_javascripts
+        self.failIf(hasattr(jsreg, 'scripts'))
+        self.failIf(hasattr(jsreg, 'cookedscripts'))
+        self.failIf(hasattr(jsreg, 'concatenatedscripts'))
+        self.failUnless(hasattr(jsreg, 'resources'))
+        self.failUnless(hasattr(jsreg, 'cookedresources'))
+        self.failUnless(hasattr(jsreg, 'concatenatedresources'))
+
     def testReorderStylesheets(self):
         """ ploneRTL should be right above ploneCustom.css
 
@@ -1313,6 +1331,13 @@ class TestMigrations_v2_1(MigrationTest):
         self.assertEquals(stylesheet_ids[-1], 'ploneCustom.css')
         self.assertEquals(stylesheet_ids[-2], 'ploneRTL.css')
         self.assertEquals(stylesheet_ids[0], 'ploneMember.css')
+
+    def testAddedFontSizeStylesheets(self):
+        cssreg = self.portal.portal_css
+        stylesheets = list(cssreg.getResources())
+        stylesheet_ids = [ item.get('id') for item in stylesheets ]
+        self.failUnless('ploneTextSmall.css' in stylesheet_ids)
+        self.failUnless('ploneTextLarge.css' in stylesheet_ids)
 
     def testExchangePloneMenuWithDropDown(self):
         jsreg = self.portal.portal_javascripts

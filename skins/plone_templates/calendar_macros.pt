@@ -14,7 +14,7 @@
          show_single_year show_single_year | python: 1;
          show_jscal show_jscal | python: 1;
 	 input_id string:${formname}_${inputname}_${tabindex};
-         use_ampm python:site_properties.getProperty('localLongTimeFormat').find('%p') >= 0;
+         use_ampm python: '%p' in site_properties.getProperty('localLongTimeFormat');
          values   python:here.date_components_support(inputvalue, use_ampm, starting_year, ending_year, future_years);
          years values/years;
          months values/months;
@@ -109,7 +109,7 @@
       </span>
 
       <a tal:condition="show_jscal"
-         tal:attributes="onclick string:return showJsCalendar('${input_id}_month', '$input_id', '${input_id}_year', '${input_id}_month', '${input_id}_day', '${input_id}_hour', '${input_id}_minute', $yearStart, $yearEnd);"><img tal:replace="structure here/popup_calendar.gif" /></a>
+         tal:attributes="onclick string:return showJsCalendar('${input_id}_month', '$input_id', '${input_id}_year', '${input_id}_month', '${input_id}_day', '${input_id}_hour', '${input_id}_minute', $yearStart, $yearEnd);"><img alt="" src="" tal:replace="structure here/popup_calendar.gif" /></a>
 
       <span tal:condition="show_hm">
 	<select name="ic_hour"
@@ -221,7 +221,7 @@
 	 nextMonthTime python:here.getNextMonth(month, year);
 	 weeks python:here.portal_calendar.getWeeksList(month=month, year=year);">
 
-      <table cellpadding="2" cellspacing="0" border="0" class="ploneCalendar" id="thePloneCalendar">
+      <table cellpadding="2" cellspacing="0" border="0" class="ploneCalendar" id="thePloneCalendar" summary="A calendar date picker box.">
         <thead>
 	<tr tal:define="calendarurl python:'%s?input_id=%s' % (path('template/absolute_url'),input_id) ">
 	  <th id="calendar-previous">
