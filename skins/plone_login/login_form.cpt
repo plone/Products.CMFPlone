@@ -1,0 +1,175 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+<head>
+    <script type="text/javascript" metal:fill-slot="javascript_head_slot">
+    </script>
+</head>
+
+<body>
+
+<div metal:fill-slot="main"
+     tal:define="auth nocall:here/cookie_authentication|nothing;
+                 came_from request/came_from|request/HTTP_REFERER|nothing;
+                 global ztutils modules/ZTUtils;
+                 errors options/state/getErrors;">
+
+<h1 i18n:translate="heading_sign_in">Please log in</h1>
+
+<p i18n:translate="description_sign_in">
+To access this part of the site, you need to log in with your user name and password.
+</p>
+
+<p i18n:translate="description_no_account"
+   tal:define="join python:[a['url'] for a in actions['user'] if a['id']=='join']"
+   tal:condition="python: join and checkPermission('Add portal member', here)">
+
+If you do not have an account here, head over to the
+
+<span i18n:name="registration_form">
+    <a href=""
+       tal:define="join python:join.pop();
+                   join python:join+test(join.find('?')==-1, '?', '&amp;')+ztutils.make_query(came_from=came_from);"
+       tal:attributes="href join"
+       i18n:translate="description_no_account_registration_linktext">
+        registration form
+    </a>
+</span>
+
+to become a member.
+
+</p>
+
+<script tal:condition="nothing" type="text/javascript" tal:content="structure context/login_cookie_message" />
+
+<div id="enable_cookies_message" class="portalMessage" style="display:none">
+  Cookies are not enabled. You must <a href="enabling_cookies">enable cookies</a> before you can log in.
+</div>
+
+<div tal:condition="python: not auth" i18n:translate="login_form_disabled">
+    While cookie authentication is disabled, cookie-based login is not available.
+</div>
+
+<form tal:attributes="action python:context.absolute_url()+'/'+template.id"
+      method="post"
+      id="login_form"
+      tal:condition="python:auth">
+
+    <fieldset tal:define="ac_name auth/name_cookie;
+	                  ac_password auth/pw_cookie;
+	                  ac_persist auth/persist_cookie">
+
+        <legend i18n:translate="legend_account_details">Account details</legend>
+
+        <input type="hidden"
+            name="came_from"
+            value=""
+	    tal:attributes="value came_from" />
+
+        <input type="hidden" name="form.submitted" value="1" />
+        <input type="hidden" name="js_enabled" id="js_enabled" value="0" />
+        <input type="hidden" name="cookies_enabled" id="cookies_enabled" value="0" />
+        <input type="hidden" name="login_name" id="login_name" value="" />
+        <input type="hidden" name="pwd_empty" id="pwd_empty" value="0" />
+
+        <div class="field"
+             tal:define="error python:errors.get(ac_name, None);
+                         value python:request.get('login_name', request.get(ac_name, None));"
+             tal:attributes="class python:test(error, 'field error', 'field')">
+
+            <label i18n:translate="label_login_name"
+                   tal:attributes="for ac_name">Login Name</label>
+
+            <div i18n:translate="help_login_name_caps"
+                 class="formHelp">
+    		Login names are case sensitive, make sure the caps lock key is not enabled.
+            </div>
+
+            <div tal:content="error">Validation error output</div>
+
+            <input type="text"
+                   size="15"
+                   tabindex=""
+                   tal:attributes="name ac_name;
+                                   id ac_name;
+                                   value value;
+                                   tabindex tabindex/next;"
+                   />
+
+	</div>
+
+	<div class="field"
+             tal:define="error python:errors.get(ac_password, None);"
+             tal:attributes="class python:test(error, 'field error', 'field')">
+
+            <label i18n:translate="label_password"
+                   tal:attributes="for ac_password">Password</label>
+
+            <div i18n:translate="help_capslock_password_retrieval"
+                 class="formHelp">
+                Case sensitive, make sure caps lock is not enabled.
+                <tal:block condition="python:checkPermission('Mail forgotten password', here)">
+                If you have forgotten your password,
+                <a href="mail_password_form">click here to retrieve it</a>.
+                </tal:block>
+            </div>
+
+            <div tal:content="error">Validation error output</div>
+
+            <input type="password"
+                   size="15"
+                   tabindex=""
+                   tal:attributes="name ac_password;
+                                   id ac_password;
+                                   tabindex tabindex/next;"
+                   />
+	</div>
+
+        <div class="field">
+
+            <input type="checkbox"
+                   class="noborder formRememberName"
+                   value="1"
+                   checked="checked"
+                   id="cb_remember"
+                   tabindex=""
+                   tal:attributes="name ac_persist;
+                                   tabindex tabindex/next;
+                                   checked python:request.get(ac_name, '') and 'checked' or None;"
+                   />
+
+            <label for="cb_remember" i18n:translate="label_remember_my_name">Remember my name.</label>
+
+            <div i18n:translate="help_remember_my_name"
+                 class="formHelp">
+                Check this to have your user name filled in automatically when you log in later.
+            </div>
+
+        </div>
+
+        <div class="formControls">
+
+            <input class="context"
+                   tabindex=""
+                   type="submit"
+                   name="submit"
+                   value="Log in"
+                   i18n:attributes="value label_log_in;"
+                   tal:attributes="tabindex tabindex/next;
+	                           onclick string:javascript:return setLoginVars('$ac_name','login_name','$ac_password','pwd_empty','js_enabled','cookies_enabled');"
+                   />
+
+        </div>
+
+        <p i18n:translate="remember_to_log_out">
+            Please log out or exit your browser when you're done.
+        </p>
+
+    </fieldset>
+
+</form>
+</div>
+
+</body>
+</html>
