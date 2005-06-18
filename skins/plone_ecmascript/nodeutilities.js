@@ -26,7 +26,9 @@ function walkTextNodes(node, func, data) {
     if (!node){return false}
     if (node.hasChildNodes) {
         var i;
-        for (i in node.childNodes) {
+        // we can't use for (i in childNodes) here, because the number of
+        // childNodes might change (higlightsearchterms)
+        for (i=0;i<node.childNodes.length;i++) {
             walkTextNodes(node.childNodes[i], func, data);
         }
         if (node.nodeType == 3) {
