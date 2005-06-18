@@ -53,6 +53,26 @@ function TestCase() {
         };
     };
 
+    this.assertNotEquals = function(var1, var2, message) {
+        /* assert whether 2 vars have different values */
+        if (!message)  {
+            message = '';
+        } else {
+            message = "'" + message + "' ";
+        }
+        if (var1 && var1.toSource && var2 && var2.toSource) {
+            if (var1.toSource() == var2.toSource()) {
+                this._throwException('Assertion ' + message + 'failed: ' + 
+                                        var1 + ' == ' + var2);
+            };
+        } else {
+            if (var1 == var2) {
+                this._throwException('Assertion ' + message + 'failed: ' + 
+                                        var1 + ' == ' + var2);
+            };
+        };
+    };
+
     this.debug = function(msg) {
         this._reporter.debug(msg);
     }
