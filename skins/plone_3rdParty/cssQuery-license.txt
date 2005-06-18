@@ -1,0 +1,13 @@
+The cssQuery.js file is Dean Edwards' excellent javascript function for
+fetching elements form the DOM with css selectors. A Human-readable version can
+be downloaded from his site - the script included with Plone is compressed to
+take up as little bandwidth as possible.
+
+Dean Edwards' web site:
+http://dean.edwards.name/my/cssQuery/
+
+The code is licensed under the LGPL:
+http://creativecommons.org/licenses/LGPL/2.1/
+
+The Plone Team would like to express their sincere thanks to Dean Edwards and
+his work, and for licensing it under the LGPL.
