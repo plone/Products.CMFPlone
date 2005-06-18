@@ -10,8 +10,7 @@ function activateCollapsibles(){
      */
 
     // terminate if we hit a non-compliant DOM implementation
-    if (! document.getElementsByTagName){return false};
-    if (! document.getElementById){return false};
+    if (!W3CDOM){return false};
 
     // only search in the content-area
     contentarea = getContentArea()
@@ -82,11 +81,7 @@ registerPloneFunction(activateCollapsibles)
 
 function addHandler(target,eventName,obj,handlerName) { 
     fn = function(e){obj[handlerName](e)};
-    if ( window.addEventListener ) { 
-         target.addEventListener(eventName, fn, false);
-    } else if ( window.attachEvent ) { 
-         target.attachEvent("on" + eventName, fn);
-    } 
+    registerEventListener(target, eventName, fn);
 }
 
 
