@@ -1,9 +1,13 @@
+import os, string
+from Acquisition import aq_base
 from Products.CMFCore import CMFCorePermissions
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.Expression import Expression
 from Products.CMFPlone.migrations.migration_util import installOrReinstallProduct, \
      safeGetMemberDataTool, safeEditProperty
 from Products.CMFPlone.utils import base_hasattr
+from Products.CMFCore.DirectoryView import createDirectoryView
+from Products.CMFPlone.migrations.migration_util import cleanupSkinPath
 
 
 def alpha2_beta1(portal):
@@ -33,6 +37,9 @@ def alpha2_beta1(portal):
     restrictNewsTopicToPublished(portal, out)
     restrictEventsTopicToPublished(portal, out)
 
+    # Install new login skins and scripts
+    installLogin(portal, out)
+
     # Install kupu
     installKupu(portal, out)
 
@@ -43,6 +50,45 @@ def alpha2_beta1(portal):
     addCssQueryJS(portal, out)
 
     return out
+
+
+def installLogin(portal, out):
+    # register new login scripts
+    jsreg = getToolByName(portal, 'portal_javascripts', None)
+    if jsreg is not None:
+        if not 'login.js' in [r['id'] for r in jsreg.getResources()]:
+            jsreg.registerScript('login.js')
+            out.append('Registered login.js')
+
+    # register login skin
+    st = getToolByName(portal, 'portal_skins')
+    if not hasattr(aq_base(st), 'plone_login'):
+	createDirectoryView(st, os.path.join('CMFPlone', 'skins', 'plone_login'))
+        out.append('Added directory view for plone_login')
+
+    # add login skin to Plone Default, Plone Tableless skins
+    skins = ['Plone Default', 'Plone Tableless']
+    selections = st._getSelections()
+    for s in skins:
+        if not selections.has_key(s):
+           continue
+	cleanupSkinPath(portal, s)
+        path = st.getSkinPath(s)
+        path = map(string.strip, string.split(path,','))
+        if not 'plone_login' in path:
+            path.append('plone_login')
+            st.addSkinSelection(s, ','.join(path))
+            out.append('Added plone_login to %s' % s)
+
+    # add a property to control whether or not "user name not found" message
+    # should be displayed on login failure
+    propTool = getToolByName(portal, 'portal_properties', None)
+    if propTool is not None:
+        propSheet = getattr(propTool, 'site_properties', None)
+        if propSheet is not None:
+            if not propSheet.hasProperty('verify_login_name'):
+                propSheet.manage_addProperty('verify_login_name', 1, 'boolean')
+            out.append("Added 'verify_login_name' property to site_properties.")
 
 
 def fixObjectPasteActionForDefaultPages(portal, out):
@@ -304,3 +350,4 @@ def addFontSizeStylesheets(portal, out):
             if 'ploneRTL.css' in stylesheet_ids:
                 cssreg.moveResourceBefore('ploneTextLarge.css', 'ploneRTL.css')
             out.append('Added ploneTextLarge.css to CSSRegistry.')
+

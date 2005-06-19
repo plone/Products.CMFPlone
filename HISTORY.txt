@@ -6,6 +6,18 @@ Plone 2.1 - Plaid - (Unreleased)
     - Some i18n markup corrections after loginageddon
       [hannosch]
 
+    - Loginageddon!  Moved login, logout, and registration-related forms
+      and scripts to the new plone_login skin.  Converted login forms and
+      scripts to formcontroller forms and scripts.  Moved cookie testing
+      and related javascript from login_form into login.js.  Made the
+      cookie test messages internationalizable.  Made login sequence fail
+      more gracefully when cookies are disabled.  Added nice error 
+      messages that explain why a login failed (e.g. no login name, no
+      password, and (optionally) login name not found).  The login name
+      not found test can be enabled/disabled via a new site_property,
+      verify_login_name.  Fixes 2408, 2458, 2250, and 3335.
+     [geoffd]
+ 
     - Fixed http://plone.org/collector/3018 no duplicate id="portal-footer"
       [hannosch]
 
