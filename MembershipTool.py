@@ -25,6 +25,8 @@ Default page for %s
   tab above.
 """
 
+_marker = object()
+
 class MembershipTool(PloneBaseTool, BaseTool):
 
     meta_type = ToolNames.MembershipTool
@@ -133,6 +135,28 @@ class MembershipTool(PloneBaseTool, BaseTool):
 
         membertool._deletePortrait(member_id)
 
+    def getHomeFolder(self, id=None, verifyPermission=0):
+        """ Return a member's home folder object, or None.
+        dwm: straight from CMF1.5.2
+        """
+        if id is None:
+            member = self.getAuthenticatedMember()
+            if not hasattr(member, 'getMemberId'):
+                return None
+            id = member.getMemberId()
+        members = self.getMembersFolder()
+        if members:
+            try:
+                folder = members._getOb(id)
+                if verifyPermission and not _checkPermission(View, folder):
+                    # Don't return the folder if the user can't get to it.
+                    return None
+                return folder
+            # KeyError added to deal with btree member folders
+            except (AttributeError, KeyError, TypeError):
+                pass
+        return None
+
     def getPersonalFolder(self, member_id=None):
         """
         returns the Personal Item folder for a member
@@ -159,6 +183,12 @@ class MembershipTool(PloneBaseTool, BaseTool):
             portrait = Image(id=member_id, file=portrait, title='')
             membertool   = getToolByName(self, 'portal_memberdata')
             membertool._setPortrait(portrait, member_id)
+
+
+##     security.declarePrivate('wrapUser')
+##     def wrapUser(self, u):
+##         self.createMemberarea(u.getId())
+##         return BaseTool.wrapUser(self, u)
 
     def createMemberarea(self, member_id=None, minimal=1):
         """
@@ -205,7 +235,12 @@ class MembershipTool(PloneBaseTool, BaseTool):
         ## translate the default content
 
         # get some translation interfaces
-        translation_service = getToolByName(self, 'translation_service')
+
+        translation_service = getToolByName(self, 'translation_service', _marker)
+        if translation_service is _marker:
+            # test environ, some other aberent sitch
+            return
+        
         utranslate = translation_service.utranslate
         encode = translation_service.encode
         
