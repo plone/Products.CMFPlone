@@ -10,6 +10,9 @@ from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
 from cStringIO import StringIO
 import traceback
+from sets import Set
+
+expected_filtered_actions=Set(['site_actions', 'object', 'workflow', 'portal_tabs', 'global', 'batch', 'object_buttons', 'document_actions', 'user', 'folder_buttons', 'folder'])
 
 class TestActionsTool(PloneTestCase.PloneTestCase):
 
@@ -42,7 +45,8 @@ class TestActionsTool(PloneTestCase.PloneTestCase):
         self.assertEqual(action_infos[-1].category, 'foo_category')
 
     def testListFilteredActionsFor(self):
-        self.actions.listFilteredActionsFor(self.folder)
+        self.assertEqual(Set(self.actions.listFilteredActionsFor(self.folder).keys()),
+                         expected_filtered_actions)
 
     def testMissingActionProvider(self):
         self.portal._delObject('portal_registration')
