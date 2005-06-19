@@ -3,7 +3,8 @@ Changelog for Plone
    (name of developer listed in brackets)
 
 Plone 2.1 - Plaid - (Unreleased)
-    - Some i18n markup corrections after loginageddon
+    - Some i18n markup corrections after loginageddon and one metadata file
+      in the wrong place
       [hannosch]
 
     - Loginageddon!  Moved login, logout, and registration-related forms
