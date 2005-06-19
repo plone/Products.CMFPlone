@@ -3,6 +3,9 @@ Changelog for Plone
    (name of developer listed in brackets)
 
 Plone 2.1 - Plaid - (Unreleased)
+    - Some i18n markup corrections after loginageddon
+      [hannosch]
+
     - Fixed http://plone.org/collector/3018 no duplicate id="portal-footer"
       [hannosch]
 

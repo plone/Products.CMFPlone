@@ -32,9 +32,9 @@
          They will remain as long as you are logged in.
       </p>
 
-      <p i18n:translate="login_came_from" tal:condition="came_from">
-        <a href="" tal:attributes="href came_from">
-          Click here to continue to the page from which you came</a>
+      <p tal:condition="came_from">
+        <a href="" tal:attributes="href came_from" i18n:translate="login_came_from">
+          Click here to continue to the page from which you came.</a>
       </p>
 
       <p i18n:translate="description_newbie_pointers">
@@ -59,6 +59,4 @@
 
 </body>
 </html>
-
-
 

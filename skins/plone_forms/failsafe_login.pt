@@ -85,12 +85,12 @@ to become a member.
 
         <div class="field">
 
-            <label i18n:translate="label_user_name"
-                   tal:attributes="for ac_name">User Name</label>
+            <label i18n:translate="label_login_name"
+                   tal:attributes="for ac_name">Login Name</label>
 
-            <div i18n:translate="help_user_name_caps"
+            <div i18n:translate="help_login_name_caps"
                  class="formHelp">
-    		User names are case sensitive, make sure the caps lock key is not enabled.
+    		Login names are case sensitive, make sure the caps lock key is not enabled.
             </div>
 
             <input type="text"
