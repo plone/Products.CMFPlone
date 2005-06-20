@@ -1,6 +1,9 @@
 from Globals import InitializeClass
 from AccessControl import ClassSecurityInfo
 from Products.CMFPlone.interfaces.PloneBaseTool import IPloneBaseTool
+from Acquisition import aq_base
+from Acquisition import aq_parent
+from Acquisition import aq_inner
 
 TempFolderClass = None
 
