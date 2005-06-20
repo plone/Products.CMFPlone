@@ -77,5 +77,5 @@ if plone_utils.isDefaultPage(new_context):
         pass
 
 return state.set(context=wfcontext,
-                 portal_status_message='Your contents status has been modified.')
+                 portal_status_message='Your content\'s status has been modified.')
 
