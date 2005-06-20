@@ -23,7 +23,6 @@ if membership_tool.isAnonymousUser():
 
 member = membership_tool.getAuthenticatedMember()
 login_time = member.getProperty('login_time', context.ZopeTime())
-context.plone_log(login_time)
 if  str(login_time) == '2000/01/01':
     state.set(status='initial_login')
 member.setProperties(last_login_time = login_time,
@@ -43,7 +42,5 @@ if hasattr(membership_tool, 'createMemberArea'):
     # call createMemberArea under CMF HEAD+.
 
     membership_tool.createMemberArea()
-
-context.plone_log(state.getStatus())
 
 return state
