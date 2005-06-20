@@ -258,15 +258,18 @@ def reorderStylesheets(portal, out):
 def addCssQueryJS(portal, out):
     jsreg = getToolByName(portal, 'portal_javascripts', None)
     if jsreg is not None:
-        jsreg.registerScript('cssQuery.js')
-        try:
-            jsreg.moveResourceBefore('cssQuery.js', 'plone_javascript_variables.js')
-        except ValueError:
+        script_ids = [item.get('id') for item in jsreg.getResources()]
+        # Failsafe: first make sure the two stylesheets exist in the list
+        if 'cssQuery.js' not in script_ids:
+            jsreg.registerScript('cssQuery.js')
             try:
-                jsreg.moveResourceBefore('cssQuery.js', 'register_function.js')
+                jsreg.moveResourceBefore('cssQuery.js', 'plone_javascript_variables.js')
             except ValueError:
-                # ok put to the top
-                jsreg.moveResourceToTop('cssQuery.js')
+                try:
+                    jsreg.moveResourceBefore('cssQuery.js', 'register_function.js')
+                except ValueError:
+                    # ok put to the top
+                    jsreg.moveResourceToTop('cssQuery.js')
 
 def allowOwnerToAccessInactiveContent(portal, out):
     permission = CMFCorePermissions.AccessInactivePortalContent
