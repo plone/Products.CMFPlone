@@ -593,6 +593,12 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
             wf_tool = getToolByName(self, 'portal_workflow')
             for item in parents:
+                if getattr(item, 'getPhysicalPath', None) is None:
+                    # when Z3-style views are used, the view class will be in
+                    # the 'parents' list, but will not support 'getPhysicalPath'
+                    # we can just skip it b/c it's not an object in the content
+                    # tree that should be showing up in the nav tree (ra)
+                    continue
                 path = '/'.join(item.getPhysicalPath())
                 if not result.has_key(path) or \
                    not result[path].has_key('path'):

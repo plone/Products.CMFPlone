@@ -3,6 +3,10 @@ Changelog for Plone
    (name of developer listed in brackets)
 
 Plone 2.1 - Plaid - (Unreleased)
+    - Tiny change to the nav tree code in PloneTool.py so the nav tree won't
+      barf when there is a Z3-style view class in the acquisition hierarchy
+      [rafrombrc]
+
     - Some i18n markup corrections after loginageddon and one metadata file
       in the wrong place
       [hannosch]
