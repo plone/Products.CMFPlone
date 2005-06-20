@@ -144,7 +144,7 @@ if(_SARISSA_IS_IE){
          * Emulate XMLHttpRequest
          * @constructor
          */
-        function XMLHttpRequest(){
+        XMLHttpRequest = function (){
             return new ActiveXObject(_SARISSA_XMLHTTP_PROGID);
         };
     };
