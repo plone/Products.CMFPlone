@@ -5,9 +5,6 @@
 
 <body>
 
-<tal:isanon tal:condition="isAnon" tal:replace="nothing">
-   <tal:dummy tal:define="dummy python:request.RESPONSE.redirect(portal_url+'/login_failed')" />
-</tal:isanon>
 <tal:block tal:condition="exists: here/portal_skins | nothing"
            tal:replace="nothing">
     <tal:block tal:condition="here/portal_skins/updateSkinCookie | nothing"
@@ -15,7 +12,7 @@
 </tal:block>
 
 <div metal:fill-slot="main">
-
+  <div tal:condition="not:isAnon">
     <div tal:define="came_from request/came_from|nothing;
                      DateTime python:modules['DateTime'].DateTime;
                      Batch python:modules['Products.CMFPlone'].Batch;
@@ -55,6 +52,10 @@
            >set up your Preferences</a></span>.
       </p>
     </div>
+  </div>
+  <div tal:condition="isAnon">
+    <div metal:use-macro="here/login_failed/macros/login_failed" />
+  </div>
 </div>
 
 </body>
