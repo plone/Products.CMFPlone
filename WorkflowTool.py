@@ -11,7 +11,6 @@ from AccessControl import ClassSecurityInfo
 from Products.CMFCore import CMFCorePermissions
 from Products.DCWorkflow.Transitions import TRIGGER_USER_ACTION
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
-from Products.CMFPlone.ActionsTool import getOAI
 
 class WorkflowTool(PloneBaseTool, BaseTool):
 
@@ -238,10 +237,6 @@ class WorkflowTool(PloneBaseTool, BaseTool):
 #                        if a is not None:
 #                            actions.extend(a)
 #        return actions
-        
-    # overwrite getOAI hook in order to use our method
-    def _getOAI(self, context, object):
-        return getOAI(context, object)
 
 WorkflowTool.__doc__ = BaseTool.__doc__
 
