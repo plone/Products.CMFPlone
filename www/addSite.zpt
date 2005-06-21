@@ -30,13 +30,7 @@
     </div>
     <input type="text" name="title" size="40" value="Portal" />
 
-    <div class="form-label">
-    Membership source 
-    </div>
-      <select name="create_userfolder">
-        <option value="1">Create a new user folder in the portal</option>
-        <option value="0">I have an existing user folder and want to use that instead</option>
-      </select>
+    <input type="hidden" name="create_userfolder" value="1">
 
     <div class="form-label">
     Description
