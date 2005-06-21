@@ -8,13 +8,19 @@ if __name__ == '__main__':
 
 from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
+from Products.CMFPlone.tests.PloneTestCase import FunctionalTestCase
+from Products.CMFPlone.tests.PloneTestCase import default_user
+from Products.CMFPlone.tests.PloneTestCase import default_password
 from Products.CMFPlone.tests import dummy
+import difflib
+import re
 
 from Products.CMFPlone.utils import _createObjectByType
 from Products.CMFPlone.PloneFolder import ReplaceableWrapper
 
+RE_REMOVE_DOCCONT = re.compile('href="http://.*?#documentContent"')
 
-class TestPloneToolBrowserDefault(PloneTestCase.PloneTestCase):
+class TestPloneToolBrowserDefault(FunctionalTestCase):
     """Test the PloneTool's browserDefault() method in various use cases.
     This class basically tests the functionality when items have default pages
     and actions that resolve to actual objects. The cases where a default_page
@@ -23,6 +29,7 @@ class TestPloneToolBrowserDefault(PloneTestCase.PloneTestCase):
     
     def afterSetUp(self):
         self.setRoles(['Manager'])
+        self.basic_auth = '%s:%s' % (default_user, default_password)
         
         _createObjectByType('Folder',       self.portal, 'atctfolder')
         _createObjectByType('CMF Folder',   self.portal, 'cmffolder')
@@ -32,7 +39,26 @@ class TestPloneToolBrowserDefault(PloneTestCase.PloneTestCase):
         _createObjectByType('CMF File',     self.portal, 'cmffile')
             
         self.putils = self.portal.plone_utils
-            
+    
+    def compareLayoutVsView(self, obj, path="", viewaction=None):
+        if viewaction is None:
+            viewaction = obj.getLayout()
+        resolved = getattr(obj, viewaction)()
+        base_path = obj.absolute_url(1)
+                
+        response = self.publish(base_path+path, self.basic_auth)
+        body = response.getBody()
+        
+        # request/ACTUAL_URL is fubar in tests, remove line that depends on it
+        resolved = RE_REMOVE_DOCCONT.sub('', resolved)
+        body = RE_REMOVE_DOCCONT.sub('', body)
+        
+        if not body == resolved:
+            diff = difflib.unified_diff(body.split("\n"),
+                                        resolved.split("\n"))
+            self.fail("\n".join([line for line in diff]))
+        return response
+    
     # Folders with IBrowserDefault - default page, index_html, global default
     
     def testBrowserDefaultMixinFolderDefaultPage(self):
@@ -92,36 +118,33 @@ class TestPloneToolBrowserDefault(PloneTestCase.PloneTestCase):
     # View action resolution (last fallback)
     
     def testViewMethodWithBrowserDefaultMixinGetsSelectedLayout(self):
-        layout = self.portal.atctdocument.getLayout()
-        resolved = getattr(self.portal.atctdocument, layout)()
-        self.assertEqual(self.portal.atctdocument.view(), resolved)
+        self.compareLayoutVsView(self.portal.atctdocument, path="/view")
         
     def testViewMethodWithoutBrowserDefaultMixinGetsViewAction(self):
         viewAction = self.portal.portal_types['CMF Document'].getActionById('view')
-        resolved = getattr(self.portal.cmfdocument, viewAction)()
-        self.assertEqual(self.portal.cmfdocument.view(), resolved)
+        obj = self.portal.cmfdocument
+        self.compareLayoutVsView(self.portal.cmfdocument, path="/view",
+                                 viewaction=viewAction)
         
     def testCallWithBrowserDefaultMixinGetsSelectedLayout(self):
-        layout = self.portal.atctdocument.getLayout()
-        resolved = getattr(self.portal.atctdocument, layout)()
-        self.assertEqual(self.portal.atctdocument(), resolved)
+        self.compareLayoutVsView(self.portal.atctdocument, path="")
         
     def testCallWithoutBrowserDefaultMixinGetsViewAction(self):
         viewAction = self.portal.portal_types['CMF Document'].getActionById('view')
-        resolved = self.portal.cmfdocument.unrestrictedTraverse(viewAction)()
-        self.assertEqual(self.portal.cmfdocument(), resolved)
+        obj = self.portal.cmfdocument
+        self.compareLayoutVsView(self.portal.cmfdocument, path="",
+                                 viewaction=viewAction)
     
     # Dump data from file objects (via index_html), but get template when explicitly called
             
     def testBrowserDefaultMixinFileViewMethodGetsTemplate(self):
-        layout = self.portal.atctfile.getLayout()
-        resolved = getattr(self.portal.atctfile, layout)()
-        self.assertEqual(self.portal.atctfile.view(), resolved)
+        self.compareLayoutVsView(self.portal.atctfile, path="/view")
         
     def testNonBrowserDefaultMixinFileViewMethodGetsTemplateFromViewAction(self):
-        viewAction = self.portal.portal_types['CMF File'].getActionById('view')
-        resolved = getattr(self.portal.atctfile, viewAction)()
-        self.assertEqual(self.portal.atctfile.view(), resolved)
+        obj = self.portal.atctfile
+        response = self.compareLayoutVsView(obj, path="",
+                                            viewaction="index_html")
+        self.failUnlessEqual(response.getBody(), str(obj.getFile()))
         
     # Ensure index_html acquisition and replaceablewrapper
     
