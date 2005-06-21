@@ -34,7 +34,7 @@
 
         <fieldset>
 
-            <legend i18n:translate="legend_member_details">Member Details</legend>
+            <legend i18n:translate="legend_member_details">Personal Details</legend>
     
             <div class="field"
                  tal:define="error errors/fullname | nothing;
@@ -62,7 +62,7 @@
                              email python:request.get('email', member.getProperty('email',''));"
                  tal:attributes="class python:test(error, 'field error', 'field')">
     
-                <label for="email" i18n:translate="label_email">E-mail</label>
+                <label for="email" i18n:translate="label_email">E-mail address</label>
     
                 <span class="fieldRequired" title="Required"
                       i18n:attributes="title title_required;"
@@ -82,6 +82,47 @@
     
             </div>
     
+            <div class="field"
+                 tal:define="error errors/location | nothing;
+                             location python:request.get('fullname', member.getProperty('location', ''));"
+                 tal:attributes="class python:test(error, 'field error', 'field')">
+    
+                <label for="location" i18n:translate="label_location">Location</label>
+    
+                <div tal:content="error">Validation error output</div>
+    
+                <input type="text"
+                       id="location"
+                       name="location"
+                       size="25"
+                       tabindex=""
+                       value="member.location html_quote"
+                       tal:attributes="value location;
+                                       tabindex tabindex/next;"
+                       />
+    
+            </div>
+
+<!-- XXX: For some reason, this doesn't work
+
+            <div class="field"
+                 tal:define="error errors/description | nothing;
+                             location python:request.get('description', member.getProperty('description', ''));"
+                 tal:attributes="class python:test(error, 'field error', 'field')">
+    
+                <label for="description" i18n:translate="label_description">Description</label>
+    
+                <div tal:content="error">Validation error output</div>
+    
+                <textarea type="text"
+                       id="description"
+                       name="description"
+                       value="member.description html_quote"
+                       tal:content="description"
+                       />
+    
+            </div>
+-->
             <div class="field"
                      tal:define="wysiwyg_editor python:request.get('wysiwyg_editor',
                                                 member.getProperty('wysiwyg_editor',''))">
