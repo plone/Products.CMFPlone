@@ -8,7 +8,7 @@ Plone 2.1 - Plaid - (Unreleased)
       [rafrombrc]
 
     - Some i18n markup corrections after loginageddon and one metadata file
-      in the wrong place
+      in the wrong place, fixed http://plone.org/collector/4197
       [hannosch]
 
     - Loginageddon!  Moved login, logout, and registration-related forms

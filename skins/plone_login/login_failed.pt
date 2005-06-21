@@ -20,12 +20,11 @@
 
     <p i18n:translate="description_enable_cookies">
       If your user name and password are correct, the problem may be that
-      your browser is not configured to 
+      your browser is not configured to <span i18n:name="link">
       <a href="enabling_cookies"
-        i18n:name="link"
         i18n:translate="description_login_fail_enable_cookies">
           accept cookies
-      </a>.
+      </a></span>.
     </p>
 
     <p i18n:translate="description_still_failure">
