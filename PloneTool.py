@@ -29,7 +29,8 @@ from Products.CMFPlone.interfaces.BrowserDefault import IBrowserDefault
 
 from OFS.SimpleItem import SimpleItem
 from OFS.ObjectManager import bad_id
-from Globals import InitializeClass
+from Globals import InitializeClass, DevelopmentMode
+
 from AccessControl import ClassSecurityInfo, Unauthorized
 from ZODB.POSException import ConflictError
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
@@ -781,6 +782,81 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             result[pos] = tuple(result[pos])
 
         return tuple(result)
+
+    security.declarePublic('getDevelopmentMode')
+    def getDevelopmentMode(self):
+        """\
+        If Zope is running in development mode (debug mode), return True, otherwise False.
+        """
+        return DevelopmentMode
+    
+    security.declarePublic('addPortalMessage')
+    def addPortalMessage(self, messagedict):
+        """\
+        Call this once or more to add messages to be displayed at the
+        top of the web page.
+
+        NOTE: Do NOT call RESPONSE.redirect() or use the redirect
+        action in CMFFormController, as this will loose all messages
+        and none will be shown. Do not use redirects, even if you
+        think that your own product isn't impacted, as Plone pages are
+        built from the output of many different products and you would
+        break another product. Instead, use traverse to show other
+        content instead of redirect. Please remove any redirect()
+        calls you may be using in existing Products.
+
+        Examples:
+
+           putils.addPortalMessage({'message' : 'A random warning message',
+                                    'type' : 'warn'})
+           putils.addPortalMessage({'message' : 'A random info message'})
+           putils.addPortalMessage({'type': 'structure',
+                                    'message' : '<dl><dt class="definition_term">Message<dd>This is a raw HTML message, referencing a CSS class "definition_term" to specify a style.</dl>'})
+
+        The messagedict argument is a dict with two standard keys:
+            'message': a string, with the text message you want to show
+            'type':    optional, defaults to 'info'. The type determines how
+                       the message will be rendered, as it is used to select
+                       the CSS class for the message. Predefined types are:
+                       'info' - for informational messages
+                       'warn' - for warning messages
+                       'stop' - for messages about restricted access or errors.
+                       'structure' - for using HTML in the message, see below.
+
+                       For complete control of how your message will be
+                       rendered, set messagedict['type'] to 'structure' and
+                       make messagedict['message'] a HTML fragment, the
+                       HTML fragment will then be inserted into the web
+                       page in the portal message area. This works just
+                       like tal:replace="structure ..." in ZPT.
+
+        Portal messages are by default rendered by the
+        global_statusmessage.pt page template.
+
+        It is also possible to add messages from page templates, as
+        long as they are processed before the portal_message macro is
+        called by the main template. Examples:
+
+          <tal:block tal:define="temp python:putils.addPortalMessage({'message':'A random info message'})" />
+          <tal:block tal:define="temp python:putils.addPortalMessage({'message':'<ul><li>A HTML structure message</ul>', 'type':'structure'})" />
+        """
+        # Set message type to 'info', if no type is given.
+        if not 'type' in messagedict: messagedict['type'] = 'info'
+        request = self.REQUEST
+        messages = request.get('portalMessages')
+        if messages is None:
+            messages=[]
+        messages.append(messagedict)
+        request.set('portalMessages', messages)
+
+    security.declarePublic('getPortalMessages')
+    def getPortalMessages(self):
+        """\
+        Return portal messages that will be displayed when the
+        response web page is rendered. Portal messages are by default
+        rendered by the global_statusmessage.pt page template.
+        """
+        return self.REQUEST.get('portalMessages')
 
     security.declarePublic('browserDefault')
     def browserDefault(self, obj):

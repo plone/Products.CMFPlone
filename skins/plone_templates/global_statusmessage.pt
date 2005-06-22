@@ -4,14 +4,52 @@
 <body>
 
 <!-- THE STATUS MESSAGE DEFINITION -->
-<div class="portalMessage"
-         i18n:domain="plone"
-         metal:define-macro="portal_message"
-         tal:define="portal_message request/portal_status_message | nothing"
-         tal:condition="portal_message">
+<tal:block i18n:domain="plone"
+           metal:define-macro="portal_message">
+
+  <tal:block tal:define="portal_message request/portal_status_message | nothing"
+             tal:condition="portal_message">
+    <div class="portalMessage">
         <tal:msg tal:content="portal_message" i18n:translate="">Portal Message</tal:msg>
-</div>
+    </div>
+    <div class="portalMessage" tal:condition="python:putils.getDevelopmentMode()">
 
+	An installed Product is using a deprecated method to
+	display the above portal message.
 
+	<hr />Please update your products to use PloneTool.addPortalMessage().
+	The above message was instead shown by the deprecated method of adding
+	'?portal_status_message=...'  to the URL. This method will not be
+	supported in future Plone versions, as it makes the resulting page
+	problematic to bookmark (in addition to other problems).
+ 
+	<hr />This deprecation message is only shown while Zope is
+	running in development or debug mode. To disable it even while
+	in development mode, modify the global_statusmessage.pt page
+	template.
+
+    </div>
+  </tal:block>
+
+  <tal:block tal:repeat="message python: putils.getPortalMessages()">
+	<tal:block
+	    tal:define="type_css_map python: {'info':'portalMessage',
+	                                      'warn':'portalWarningMessage',
+					      'stop':'portalStopMessage',
+					      'structure':'__structure'
+					     };">
+	<div class=""
+	     tal:define="cssclass python:type_css_map[message['type']];"
+	     tal:condition="python:cssclass != '__structure'"
+	     tal:attributes="class cssclass"
+	     tal:content="message/message">
+	     Message
+	</div>
+	<tal:block
+	     tal:condition="python: message['type']=='structure'"
+	     tal:replace="structure message/message" />
+	</tal:block>
+  </tal:block>
+</tal:block>
 </body>
 </html>

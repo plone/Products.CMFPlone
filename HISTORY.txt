@@ -4,6 +4,17 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (Unreleased)
 
+    - New infrastructure for showing portal messages! You can now show
+      more than one message per web page (this also allows independent
+      products to show messages that will all be shown), as well as
+      messages of different types ('info', 'warn', 'stop' and
+      'structure' are predefined types). See PloneTool.addPortalMessage().
+      [vinsci]
+
+    - New function to allow page templates to determine if Zope is being
+      run in development/debug mode. See PloneTool.getDevelopmentMode().
+      [vinsci]
+
     - Removed plone prefix from stylesheets, only ploneCustom.css is kept.
       [fschulze]
 
