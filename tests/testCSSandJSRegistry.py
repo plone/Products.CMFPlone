@@ -23,17 +23,17 @@ class TestCSSRegistry(PloneTestCase.PloneTestCase):
     def testDefaultCssIsInstalled(self):
         installedStylesheetIds = [i['id'] for i in self.tool.getResources()]
         expected = ['ploneCustom.css',
-                    'ploneAuthoring.css', 
-                    'plonePublic.css',
-                    'ploneBase.css',
-                    'ploneGenerated.css',
-                    'ploneMember.css',
-                    'plonePrint.css',
-                    'plonePresentation.css',
-                    'ploneRTL.css',
-                    'ploneMobile.css',
-                    'ploneTextSmall.css',
-                    'ploneTextLarge.css']
+                    'authoring.css', 
+                    'public.css',
+                    'base.css',
+                    'generated.css',
+                    'member.css',
+                    'print.css',
+                    'presentation.css',
+                    'RTL.css',
+                    'mobile.css',
+                    'textSmall.css',
+                    'textLarge.css']
         for e in expected:
             self.failUnless(e in installedStylesheetIds, e)
 
@@ -66,7 +66,8 @@ class TestJSRegistry(PloneTestCase.PloneTestCase):
              'styleswitcher.js',
              'livesearch.js',
              'table_sorter.js',
-             'plone_menu.js',
+             'dropdown.js',
+             'cssQuery.js',
              'cookie_functions.js',
              'nodeutilities.js',
              'plone_javascript_variables.js',

@@ -1,5 +1,8 @@
 
 function correctPREformatting(){
+    // terminate if we hit a non-compliant DOM implementation
+    if (!W3CDOM){return false};
+
         // small utility thing to correct formatting for PRE-elements and some others
         // thanks to Michael Zeltner for CSS-guruness and research ;) 
 		// currently not activated

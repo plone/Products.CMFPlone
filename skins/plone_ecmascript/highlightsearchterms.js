@@ -1,65 +1,67 @@
-function climb(node, word){
-     // traverse childnodes
-    if (! node){return false}
-    if (node.hasChildNodes) {
-        var i;
-        for (i=0;i<node.childNodes.length;i++) {
-            climb(node.childNodes[i],word);
-        }
-        if (node.nodeType == 3){
-            checkforhighlight(node, word);
-           // check all textnodes. Feels inefficient, but works
+function highlightTermInNode(node, word) {
+    var contents = node.nodeValue;
+    var index = contents.toLowerCase().indexOf(word.toLowerCase());
+    if (index < 0){return false};
+
+    var parent = node.parentNode;
+    if (parent.className != "highlightedSearchTerm") {
+        // make 3 shiny new nodes
+        hiword = document.createElement("span");
+        hiword.className = "highlightedSearchTerm";
+        hiword.appendChild(document.createTextNode(contents.substr(index, word.length)));
+        parent.insertBefore(document.createTextNode(contents.substr(0, index)), node);
+        parent.insertBefore(hiword, node);
+        parent.insertBefore(document.createTextNode(contents.substr(index+word.length)), node);
+        parent.removeChild(node);
+    }
+}
+
+function highlightSearchTerms(terms, startnode) {
+    // terminate if we hit a non-compliant DOM implementation
+    if (!W3CDOM){return false};
+    if (!terms){return false};
+    if (!startnode){return false};
+
+    var term_index;
+    for (term_index in terms) {
+        // don't highlight reserved catalog search terms
+        var term = terms[term_index];
+        term_lower = term.toLowerCase();
+        if (term_lower != 'not'
+            && term_lower != 'and'
+            && term_lower != 'or') {
+            walkTextNodes(startnode, highlightTermInNode, term);
         }
     }
 }
 
-function checkforhighlight(node,word) {
-    ind = node.nodeValue.toLowerCase().indexOf(word.toLowerCase())
-    if (ind != -1) {
-        if (node.parentNode.className != "highlightedSearchTerm"){
-            par = node.parentNode;
-            contents = node.nodeValue;
-        
-            // make 3 shiny new nodes
-            hiword = document.createElement("span");
-            hiword.className = "highlightedSearchTerm";
-            hiword.appendChild(document.createTextNode(contents.substr(ind,word.length)));
-            par.insertBefore(document.createTextNode(contents.substr(0,ind)),node);
-            par.insertBefore(hiword,node);
-            par.insertBefore(document.createTextNode(contents.substr(ind+word.length)),node);
-            par.removeChild(node);
-        }
-    } 
-}  
-function highlightSearchTerm() {
-    // search-term-highlighter function --  Geir Bækholt
-    query = window.location.search
-    // _robert_ ie 5 does not have decodeURI 
-    if (typeof decodeURI != 'undefined'){
-        query = unescape(decodeURI(query)) // thanks, Casper 
+function getSearchTermsFromURI(uri) {
+    var query;
+    if (typeof decodeURI != 'undefined') {
+        query = decodeURI(uri);
+    } else if (typeof unescape != 'undefined') {
+        // _robert_ ie 5 does not have decodeURI 
+        query = unescape(uri);
+    } else {
+        // we just try to be lucky, for single words this will still work
     }
-    else {
-        return false
+    var qfinder = new RegExp("searchterm=([^&]*)", "gi");
+    var qq = qfinder.exec(query);
+    if (qq && qq[1]) {
+        return qq[1].replace(/\+/g,' ').split(/\s+/);
     }
-    if (query){
-        var qfinder = new RegExp()
-        qfinder.compile("searchterm=([^&]*)","gi")
-        qq = qfinder.exec(query)
-        if (qq && qq[1]){
-            query = qq[1]
-            if (!query){return false}
-            queries = query.replace(/\+/g,' ').split(/\s+/)            
-            // make sure we start the right place so we don't higlight menuitems or breadcrumb
-            contentarea = getContentArea();
-            for (q=0;q<queries.length;q++) {
-                // don't highlight reserved catalog search terms
-                if (queries[q].toLowerCase() != 'not'
-                    && queries[q].toLowerCase() != 'and'
-                    && queries[q].toLowerCase() != 'or') {
-                    climb(contentarea,queries[q]);
-                }
-            }
-        }
-    }
+    return false;
 }
-registerPloneFunction(highlightSearchTerm);
+
+function highlightSearchTermsFromURI() {
+    // terminate if we hit a non-compliant DOM implementation
+    if (!W3CDOM){return false};
+
+    // search-term-highlighter function --  Geir Bækholt
+    terms = getSearchTermsFromURI(window.location.search);
+    // make sure we start the right place so we don't higlight menuitems or breadcrumb
+    contentarea = getContentArea();
+    highlightSearchTerms(terms, contentarea);
+}
+
+registerPloneFunction(highlightSearchTermsFromURI);

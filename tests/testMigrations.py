@@ -65,6 +65,9 @@ from Products.CMFPlone.migrations.v2_1.betas import reorderStylesheets
 from Products.CMFPlone.migrations.v2_1.betas import allowOwnerToAccessInactiveContent
 from Products.CMFPlone.migrations.v2_1.betas import restrictNewsTopicToPublished
 from Products.CMFPlone.migrations.v2_1.betas import restrictEventsTopicToPublished
+from Products.CMFPlone.migrations.v2_1.betas import addCssQueryJS
+from Products.CMFPlone.migrations.v2_1.betas import exchangePloneMenuWithDropDown
+from Products.CMFPlone.migrations.v2_1.betas import removePlonePrefixFromStylesheets
 
 import types
 
@@ -1328,15 +1331,65 @@ class TestMigrations_v2_1(MigrationTest):
         stylesheets = list(cssreg.getResources())
         stylesheet_ids = [ item.get('id') for item in stylesheets ]
         self.assertEquals(stylesheet_ids[-1], 'ploneCustom.css')
-        self.assertEquals(stylesheet_ids[-2], 'ploneRTL.css')
-        self.assertEquals(stylesheet_ids[0], 'ploneMember.css')
+        self.assertEquals(stylesheet_ids[-2], 'RTL.css')
+        self.assertEquals(stylesheet_ids[0], 'member.css')
 
     def testAddedFontSizeStylesheets(self):
         cssreg = self.portal.portal_css
         stylesheets = list(cssreg.getResources())
         stylesheet_ids = [ item.get('id') for item in stylesheets ]
-        self.failUnless('ploneTextSmall.css' in stylesheet_ids)
-        self.failUnless('ploneTextLarge.css' in stylesheet_ids)
+        self.failUnless('textSmall.css' in stylesheet_ids)
+        self.failUnless('textLarge.css' in stylesheet_ids)
+
+    def testaddCssQueryJS(self):
+        jsreg = self.portal.portal_javascripts
+        scripts = list(jsreg.getResources())
+        script_ids = [ item.get('id') for item in scripts ]
+        self.failUnless('cssQuery.js' in script_ids)
+
+    def testExchangePloneMenuWithDropDown(self):
+        jsreg = self.portal.portal_javascripts
+        scripts = list(jsreg.getResources())
+        script_ids = [ item.get('id') for item in scripts ]
+        self.failIf('plone_menu.js' in script_ids)
+        self.failUnless('dropdown.js' in script_ids)
+        self.failUnless('cssQuery.js' in script_ids)
+
+    def testRemovePlonePrefixFromStylesheets(self):
+        cssreg = self.portal.portal_css
+        stylesheets = list(cssreg.getResources())
+        stylesheet_ids = [ item.get('id') for item in stylesheets ]
+        self.failIf('ploneAuthoring.css' in stylesheet_ids)
+        self.failIf('ploneBase.css' in stylesheet_ids)
+        self.failIf('ploneColumns.css' in stylesheet_ids)
+        self.failIf('ploneDeprecated.css' in stylesheet_ids)
+        self.failIf('ploneGenerated.css' in stylesheet_ids)
+        self.failIf('ploneIEFixes.css' in stylesheet_ids)
+        self.failIf('ploneMember.css' in stylesheet_ids)
+        self.failIf('ploneMobile.css' in stylesheet_ids)
+        self.failIf('ploneNS4.css' in stylesheet_ids)
+        self.failIf('plonePresentation.css' in stylesheet_ids)
+        self.failIf('plonePrint.css' in stylesheet_ids)
+        self.failIf('plonePublic.css' in stylesheet_ids)
+        self.failIf('ploneRTL.css' in stylesheet_ids)
+        self.failIf('ploneTextHuge.css' in stylesheet_ids)
+        self.failIf('ploneTextLarge.css' in stylesheet_ids)
+        self.failIf('ploneTextSmall.css' in stylesheet_ids)
+        self.failUnless('authoring.css' in stylesheet_ids)
+        self.failUnless('base.css' in stylesheet_ids)
+        self.failUnless('columns.css' in stylesheet_ids)
+        self.failUnless('generated.css' in stylesheet_ids)
+        self.failUnless('member.css' in stylesheet_ids)
+        self.failUnless('mobile.css' in stylesheet_ids)
+        self.failUnless('presentation.css' in stylesheet_ids)
+        self.failUnless('print.css' in stylesheet_ids)
+        self.failUnless('public.css' in stylesheet_ids)
+        self.failUnless('RTL.css' in stylesheet_ids)
+        self.failUnless('textLarge.css' in stylesheet_ids)
+        self.failUnless('textSmall.css' in stylesheet_ids)
+        # the only one which doesn't get renamed, because there is special
+        # logic in ResourceRegistries
+        self.failUnless('ploneCustom.css' in stylesheet_ids)
 
     def testAllowOwnerToAccessInactiveContent(self):
         # Should grant the "Access inactive ..." permission to owner

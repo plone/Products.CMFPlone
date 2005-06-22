@@ -1,9 +1,13 @@
+import os, string
+from Acquisition import aq_base
 from Products.CMFCore import CMFCorePermissions
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.Expression import Expression
 from Products.CMFPlone.migrations.migration_util import installOrReinstallProduct, \
      safeGetMemberDataTool, safeEditProperty
 from Products.CMFPlone.utils import base_hasattr
+from Products.CMFCore.DirectoryView import createDirectoryView
+from Products.CMFPlone.migrations.migration_util import cleanupSkinPath
 
 
 def alpha2_beta1(portal):
@@ -33,13 +37,64 @@ def alpha2_beta1(portal):
     restrictNewsTopicToPublished(portal, out)
     restrictEventsTopicToPublished(portal, out)
 
+    # Install new login skins and scripts
+    installLogin(portal, out)
+
     # Install kupu
     installKupu(portal, out)
 
     # Add the stylesheets for font size the selector
     addFontSizeStylesheets(portal, out)
 
+    # Add cssQuery.js
+    addCssQueryJS(portal, out)
+
+    # Exchange plone_menu.js with dropdown.js
+    exchangePloneMenuWithDropDown(portal, out)
+
+    # Remove plone prefix of stylesheet files
+    removePlonePrefixFromStylesheets(portal, out)
+
     return out
+
+
+def installLogin(portal, out):
+    # register new login scripts
+    jsreg = getToolByName(portal, 'portal_javascripts', None)
+    if jsreg is not None:
+        if not 'login.js' in [r['id'] for r in jsreg.getResources()]:
+            jsreg.registerScript('login.js')
+            out.append('Registered login.js')
+
+    # register login skin
+    st = getToolByName(portal, 'portal_skins')
+    if not hasattr(aq_base(st), 'plone_login'):
+	createDirectoryView(st, os.path.join('CMFPlone', 'skins', 'plone_login'))
+        out.append('Added directory view for plone_login')
+
+    # add login skin to Plone Default, Plone Tableless skins
+    skins = ['Plone Default', 'Plone Tableless']
+    selections = st._getSelections()
+    for s in skins:
+        if not selections.has_key(s):
+           continue
+	cleanupSkinPath(portal, s)
+        path = st.getSkinPath(s)
+        path = map(string.strip, string.split(path,','))
+        if not 'plone_login' in path:
+            path.append('plone_login')
+            st.addSkinSelection(s, ','.join(path))
+            out.append('Added plone_login to %s' % s)
+
+    # add a property to control whether or not "user name not found" message
+    # should be displayed on login failure
+    propTool = getToolByName(portal, 'portal_properties', None)
+    if propTool is not None:
+        propSheet = getattr(propTool, 'site_properties', None)
+        if propSheet is not None:
+            if not propSheet.hasProperty('verify_login_name'):
+                propSheet.manage_addProperty('verify_login_name', 1, 'boolean')
+            out.append("Added 'verify_login_name' property to site_properties.")
 
 
 def fixObjectPasteActionForDefaultPages(portal, out):
@@ -138,7 +193,9 @@ def migrateResourceRegistries(portal, out):
     cssreg = getToolByName(portal, 'portal_css')
     if cssreg is not None:
         if base_hasattr(cssreg, 'stylesheets'):
-            cssreg.resources = cssreg.stylesheets
+            stylesheets = list(cssreg.stylesheets)
+            stylesheets.reverse() # the order was reversed
+            cssreg.resources = tuple(stylesheets)
             del cssreg.stylesheets
     
         if base_hasattr(cssreg, 'cookedstylesheets'):
@@ -204,6 +261,76 @@ def reorderStylesheets(portal, out):
             cssreg.moveResourceBefore('ploneRTL.css', 'ploneCustom.css')
             cssreg.moveResourceToTop('ploneMember.css')
 
+def addCssQueryJS(portal, out):
+    jsreg = getToolByName(portal, 'portal_javascripts', None)
+    if jsreg is not None:
+        script_ids = [item.get('id') for item in jsreg.getResources()]
+        # Failsafe: first make sure the stylesheet doesn't exist in the list
+        if 'cssQuery.js' not in script_ids:
+            jsreg.registerScript('cssQuery.js')
+            try:
+                jsreg.moveResourceBefore('cssQuery.js', 'plone_javascript_variables.js')
+            except ValueError:
+                try:
+                    jsreg.moveResourceBefore('cssQuery.js', 'register_function.js')
+                except ValueError:
+                    # ok put to the top
+                    jsreg.moveResourceToTop('cssQuery.js')
+
+def exchangePloneMenuWithDropDown(portal, out):
+    qi = getToolByName(portal, 'portal_quickinstaller', None)
+    if qi is not None:
+        if not qi.isProductInstalled('ResourceRegistries'):
+            qi.installProduct('ResourceRegistries', locked=0)
+        jsreg = getToolByName(portal, 'portal_javascripts', None)
+        if jsreg is not None:
+            script_ids = [item.get('id') for item in jsreg.getResources()]
+            # Failsafe: first make sure the stylesheet doesn't exist in the list
+            if 'dropdown.js' not in script_ids:
+                jsreg.registerScript('dropdown.js')
+                if 'plone_menu.js' in script_ids:
+                    jsreg.moveResourceBefore('dropdown.js', 'plone_menu.js')
+                    jsreg.unregisterResource('plone_menu.js')
+                elif 'sarissa.js' in script_ids:
+                    jsreg.moveResourceBefore('dropdown.js', 'sarissa.js')
+                else:
+                    # ok we stay at the bottom
+                    pass
+
+def removePlonePrefixFromStylesheets(portal, out):
+    out.append("Removing plone prefix from stylesheets.")
+    names = [
+        ('ploneAuthoring.css', 'authoring.css'),
+        ('ploneBase.css', 'base.css'),
+        ('ploneColumns.css', 'columns.css'),
+        ('ploneDeprecated.css', 'deprecated.css'),
+        ('ploneGenerated.css', 'generated.css'),
+        ('ploneIEFixes.css', 'IEFixes.css'),
+        ('ploneMember.css', 'member.css'),
+        ('ploneMobile.css', 'mobile.css'),
+        ('ploneNS4.css', 'NS4.css'),
+        ('plonePresentation.css', 'presentation.css'),
+        ('plonePrint.css', 'print.css'),
+        ('plonePublic.css', 'public.css'),
+        ('ploneRTL.css', 'RTL.css'),
+        ('ploneTextHuge.css', 'textHuge.css'),
+        ('ploneTextLarge.css', 'textLarge.css'),
+        ('ploneTextSmall.css', 'textSmall.css'),
+    ]
+    cssreg = getToolByName(portal, 'portal_css', None)
+    if cssreg is not None:
+        stylesheet_ids = [item.get('id') for item in cssreg.getResources()]
+        for old, new in names:
+            if old in stylesheet_ids:
+                if new in stylesheet_ids:
+                    # delete the old name
+                    cssreg.unregisterResource(old)
+                else:
+                    # rename
+                    cssreg.renameResource(old, new)
+    else:
+        out.append("No CSSRegistry found.")
+    out.append("Finished removing plone prefix from stylesheets.")
 
 def allowOwnerToAccessInactiveContent(portal, out):
     permission = CMFCorePermissions.AccessInactivePortalContent
@@ -291,3 +418,4 @@ def addFontSizeStylesheets(portal, out):
             if 'ploneRTL.css' in stylesheet_ids:
                 cssreg.moveResourceBefore('ploneTextLarge.css', 'ploneRTL.css')
             out.append('Added ploneTextLarge.css to CSSRegistry.')
+

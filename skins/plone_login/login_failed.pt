@@ -1,0 +1,53 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+<body>
+
+<div metal:fill-slot="main">
+  <div metal:define-macro="login_failed">
+    <h1 i18n:translate="heading_sign_in_failure_auth">Sign-in failure</h1>
+
+    <p i18n:translate="description_not_logged_in_username_incorrect">
+      You are not currently logged in. Your user name and/or password
+      may be incorrect.
+    </p>
+
+    <p><a href="mail_password_form" i18n:translate="description_failed_login_link">
+      Click here to have your password mailed to you if you have forgotten it.</a>
+    </p>
+
+    <p i18n:translate="description_enable_cookies">
+      If your user name and password are correct, the problem may be that
+      your browser is not configured to <span i18n:name="link">
+      <a href="enabling_cookies"
+        i18n:translate="description_login_fail_enable_cookies">
+          accept cookies
+      </a></span>.
+    </p>
+
+    <p i18n:translate="description_still_failure">
+      If you are still reaching this page after correctly configuring
+      your browser, here are some possible reasons:
+    </p>
+
+    <ul>
+      <li i18n:translate="description_still_failure_reason1">
+        You may be running web filtering software that
+        disables cookies.  If so, you will need to configure the
+        software so that it enables you to accept cookies from
+        <span tal:replace="utool" i18n:name="url"/>
+      </li>
+      <li i18n:translate="description_still_failure_reason2">
+        Your computer may be behind a firewall or proxy server
+        that prevents cookies from being sent to or from your browser.
+        If so, you will need to ask your systems administrator if the
+        problem can be fixed.
+      </li>
+    </ul>
+  </div>
+</div>
+
+</body>
+</html>

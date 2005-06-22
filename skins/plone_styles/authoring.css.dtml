@@ -1,0 +1,781 @@
+/*
+** Plone style sheet - Public-facing Elements
+**
+** by Alexander Limi - http://www.plonesolutions.com
+**
+** Style sheet documentation can be found at http://plone.org/documentation
+**
+** You should preferrably use ploneCustom.css to add your own CSS classes and to
+** customize your portal, as these are the base fundaments of Plone, and will
+** change and be refined in newer versions. Keeping your changes in
+** ploneCustom.css will make it easier to upgrade.
+**
+** Feel free to use whole or parts of this for your own designs, but give credit
+** where credit is due.
+**
+*/
+
+/* <dtml-var "enableHTTPCompression(request=REQUEST, debug=1, css=1)"> (this is for http compression) */
+/* <dtml-with base_properties> (do not remove this :) */
+/* <dtml-call "REQUEST.set('portal_url', portal_url())"> (not this either :) */
+
+.standalone,
+.documentEditable * .standalone {
+    background: &dtml-globalBackgroundColor; url(&dtml-portal_url;/linkOpaque.gif) 9px 1px no-repeat;
+    cursor: pointer;
+    font-size: &dtml-fontSmallSize;;
+    padding: 1px 1px 1px 15px;
+    text-transform: &dtml-textTransform;;
+}
+.context,
+.documentEditable * .context {
+    background: transparent url(&dtml-portal_url;/linkTransparent.gif) 9px 1px no-repeat;
+    cursor: pointer;
+    font-size: &dtml-fontSmallSize;;
+    padding: 1px 1px 1px 15px;
+    text-transform: &dtml-textTransform;;
+}
+.destructive,
+.documentEditable * .destructive {
+    background: &dtml-notifyBackgroundColor; url(&dtml-portal_url;/linkTransparent.gif) 9px 1px no-repeat;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-notifyBorderColor;;
+    cursor: pointer;
+    font-size: &dtml-fontSmallSize;;
+    padding: 1px 1px 1px 15px;
+    text-transform: &dtml-textTransform;;
+}
+input.searchButton {
+    margin-bottom: &dtml-borderWidth; ! important;
+    font-size: &dtml-fontSmallSize;;
+    background: &dtml-backgroundColor; url(&dtml-portal_url;/search_icon.gif) 2px 1px no-repeat;
+    cursor: pointer;
+    padding: 1px 1px 1px 15px;
+    text-transform: &dtml-textTransform;;
+
+}
+.noborder,
+.documentEditable * .noborder {
+    border: none;
+    margin: 0;
+    background-color: transparent;
+}
+.add,
+.documentEditable * .add {
+}
+.quickSearch {
+}
+.notify,
+.documentEditable * .notify {
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-notifyBorderColor;;
+}
+
+/* The edit form elements */
+
+.field {
+    top: 0;
+    left: 0;
+    margin: 0 1em 1em 0;
+}
+
+.field .field {
+    margin: 1em 0 0 0;
+}
+
+.fieldRequired {
+    background: url(&dtml-portal_url;/required.gif) center left no-repeat;
+    padding: 0 0 0 8px;
+    color: &dtml-backgroundColor;;
+}
+
+.formHelp {
+    font-size: 90%;
+    color: &dtml-discreetColor;;
+    margin: 0 0 0.2em 0;
+}
+
+.formHelp:hover {
+    color: &dtml-fontColor;;
+    cursor: default;
+}
+
+.formControls {
+   margin: 1em 0 0 0;
+}
+
+.error {
+    /* Class for error indication in forms */
+    background-color: &dtml-notifyBackgroundColor;;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-notifyBorderColor;;
+    padding: 1em;
+    margin: 0 0 1em 0;
+    width: 95% !important;
+}
+
+.error .fieldRequired {
+   color: &dtml-notifyBackgroundColor;;
+}
+
+.card {
+    background-color: &dtml-globalBackgroundColor;;
+    border-color: &dtml-globalBorderColor;;
+    border-width: &dtml-borderWidth;;
+    border-style: &dtml-borderStyle;;
+    float: left;
+    margin: 1em;
+    text-align: center;
+    width: 110px;
+    padding: 1em 0;
+}
+
+.portrait {
+    background-color: &dtml-globalBackgroundColor;;
+    border-color: &dtml-globalBorderColor;;
+    border-width: &dtml-borderWidth;;
+    border-style: &dtml-borderStyle;;
+    font-size: &dtml-fontSmallSize;;
+    margin: 0.5em;
+    padding: 1em 0 0.5em 0;
+    text-align: center;
+    width: 100px;
+}
+
+.portraitPhoto {
+    border: 1px solid black;
+}
+
+.listing,
+.stx table {
+    /* The default table for document listings. Contains name, document types, modification times etc in a file-browser-like fashion */
+    border-collapse: collapse;
+    border-left: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    border-bottom: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    font-size: &dtml-fontSmallSize;;
+    margin: 1em 0em 1em 0em;
+}
+.listing th,
+.stx table th {
+    background: &dtml-globalBackgroundColor;;
+    border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    border-bottom: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    border-right: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    font-weight: normal;
+    padding: 0.25em 1em;
+    text-transform: &dtml-textTransform;;
+}
+.listing .top {
+    border-left: &dtml-borderWidth; &dtml-borderStyle; &dtml-backgroundColor;;
+    border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-backgroundColor; ! important;
+    border-right: &dtml-borderWidth; &dtml-borderStyle; &dtml-backgroundColor; ! important;
+    text-align: right ! important;
+    padding: 0em 0em 1em 0em;
+}
+.listing .listingCheckbox {
+    text-align: center;
+}
+.listing td,
+.stx table td {
+    border-right: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    padding: 0.25em 1em;
+}
+
+.listing a {
+    text-decoration: none;
+}
+
+.listing a:hover {
+    text-decoration: underline;
+}
+.listing img {
+    vertical-align: middle;
+}
+
+/* Vertical addition class */
+
+.vertical th {
+    padding: 0.5em;
+}
+
+.vertical td {
+    border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    padding: 0.5em;
+}
+
+
+
+ul.configlets {
+    margin: 1em;
+    list-style-image: none;
+    list-style: none;
+}
+
+ul.configlets li {
+    margin-bottom: 1em;
+}
+
+ul.configlets li a {
+	text-decoration: none;
+}
+
+ul.configlets li label {
+    font-weight: bold;
+}
+
+ul.configletDetails {
+    margin: 0em 1em 1em 4em;
+    list-style-image: none;
+    list-style: none;
+}
+
+ul.configletDetails li {
+    margin-bottom: 1em;
+    display: inline;
+}
+
+ul.configletDetails li a {
+	text-decoration: none;
+}
+
+ul.configletDetails li label {
+    font-weight: bold;
+}
+
+/* Additional STX workaround classes */
+.stx table p /* stupid STX table workaround */
+{
+    margin: 0;
+    padding: 0;
+}
+.stx table  /* stupid STX table workaround */
+{
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor; ! important;
+}
+.stx table td {
+    border-bottom: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+}
+
+.portlet {
+    border: none;
+    margin-bottom: 1em;
+    padding: 0;
+}
+
+.portlet a {
+    text-decoration: none;
+}
+
+/* Compensation when rendering portlets in the content area */
+#region-content .portlet {
+    font-size: 94%;
+}
+
+.portlet h4 { /* The new base portlet header, h5 and h6 will be for use inside
+                 the portlet in the upcoming versions. */
+    background-color: &dtml-globalBackgroundColor;;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    padding: 0em 0.3em 0em 1em;
+    text-transform: &dtml-textTransform;;
+    display: block;
+    font-size: 1em;
+    font-weight: normal;
+}
+.portlet h5 {
+    background-color: &dtml-globalBackgroundColor;;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    padding: 0em 1em 0em 1em;
+    text-transform: &dtml-textTransform;;
+    display: inline;
+    font-size: 1em;
+    font-weight: normal;
+    white-space: nowrap;
+    position: relative;
+    top: -&dtml-borderWidth;;
+}
+.portlet h6 {
+    background-color: &dtml-globalBackgroundColor;;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    padding: 0em 0.3em 0em 1em;
+    text-transform: &dtml-textTransform;;
+    display: block;
+    font-size: 1em;
+    font-weight: normal;
+}
+
+.portletBody {
+    position: relative;
+    top: -&dtml-borderWidth;;
+    background: transparent;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+}
+.portletDetails {
+    text-align: right;
+}
+
+.portletContent {
+    padding: 1em;
+}
+.portletAction {
+    float: right;
+    width: 0.8em;
+    text-align: center;
+    display: block;
+    text-transform: none;
+    border-left: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    padding-left: 0.3em;
+}
+
+.portlet h1,
+.portlet h2,
+.portlet h3,
+.portlet h4 {
+    margin: 0;
+    padding: 0;
+}
+
+.portlet .even {
+    background-color: &dtml-evenRowBackgroundColor;;
+}
+.portlet .odd {
+    background-color: &dtml-oddRowBackgroundColor;;
+}
+.portlet input {
+    font-size: 100%;
+}
+
+.portletSyndication {
+    display: block;
+    float: left; 
+    border: 1px solid #8cacbb; 
+    background-color: #dee7ec;
+    font-size: 85%;
+}
+
+.portletMore {
+    display: block;
+    text-align: right;
+}
+
+.portletFooter {
+    padding: 0.5em 1em 1em 1em;
+}
+
+
+
+
+.comment {
+    background: &dtml-evenRowBackgroundColor;; 
+    border: &dtml-borderWidth; &dtml-borderStyleAnnotations; &dtml-globalBorderColor;; 
+    padding: 0 1em 0.5em 1em;
+    margin-bottom: 1em;
+}
+
+.comment h1,
+.comment h2,
+.comment h3,
+.comment h4, 
+.comment h5,
+.comment h6 {
+    border-bottom: &dtml-borderWidth; &dtml-borderStyleAnnotations; &dtml-discreetColor;;
+    font-weight: normal;
+}
+
+.commentBody {
+    margin: 0 1em 1em 1em;
+}
+
+.spacer {
+    margin: 1em;
+}
+
+
+
+.role-Member {
+
+}
+.role-Reviewer {
+
+}
+.role-Manager {
+
+}
+.role-Translator {
+
+}
+.location-frontpage {
+
+}
+.location-news {
+
+}
+.location-members {
+
+}
+.even {
+    background-color: &dtml-evenRowBackgroundColor;;
+}
+.odd {
+    background-color: &dtml-oddRowBackgroundColor;;
+}
+.visualHighlight {
+    background-color: &dtml-evenRowBackgroundColor;;
+}
+
+.discreet {
+    color: &dtml-discreetColor;;
+    font-size: &dtml-fontSmallSize;;
+    font-weight: normal;
+}
+
+.listingBar {
+    background-color: &dtml-globalBackgroundColor;;
+    border-color: &dtml-globalBorderColor;;
+    border-style: &dtml-borderStyle;;
+    border-width: &dtml-borderWidth;;
+    padding: 0em 1em;
+    text-align: center;
+    text-transform: &dtml-textTransform;;
+    vertical-align: top;
+    margin: 1em 0em;
+    font-size: 94%;
+    clear: both;
+}
+.listingBar span.previous,
+.listingPrevious {
+    text-align: left;
+    float: left;
+    margin-right: 1em;
+}
+.listingBar span.next,
+.listingNext {
+    text-align: right;
+    float: right;
+    margin-left: 1em;
+}
+.listingBar img {
+	vertical-align: middle;
+}
+
+/* Accessibility elements */
+
+.hiddenStructure {
+    display: block;
+    background: transparent;
+    background-image: none; /* safari bug */
+    border: none;
+    height: 1px;
+    overflow: hidden;
+    padding: 0;
+    margin: -1px 0 0 -1px;
+    width: 1px;
+}
+
+.contentViews .hiddenStructure,
+.contentActions .hiddenStructure {
+    position: absolute;
+    top: -200px;
+    left: -200px;
+}
+
+.visualClear {
+    display: block;
+    clear: both;
+}
+.hiddenLabel {
+    display: block;
+    background: transparent;
+    background-image: none; /* safari bug */
+    border: none;
+    height: 1px;
+    overflow: hidden;
+    padding: 0;
+    margin: -1px 0 0 -1px;
+    width: 1px;
+}
+.label {
+    font-weight: bold;
+    display: inline;
+    padding-right: 0.5em;
+}
+
+.optionsToggle {
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    color: &dtml-fontColor;;
+    background-color: &dtml-globalBackgroundColor;;
+    font-weight: normal !important;
+    font-size: &dtml-fontSmallSize;;
+}
+
+.portalNotLoggedIn {} /* Used on all descriptions relevant to those not logged in */
+
+#portal-column-content fieldset > * input:focus,
+#portal-column-content fieldset > * textarea:focus {
+    border-color: &dtml-notifyBorderColor;;
+    border-width: &dtml-borderWidth;;
+}
+
+.visualOverflow {
+    overflow: auto;
+    margin: 0 0 1em 0;
+}
+
+.visualOverflow pre,
+.visualOverflow table,
+.visualOverflow img {
+    margin: 0;
+}
+
+.visualFontSizeCorrection { /* Correction for WYSIWYG editors */
+    font-size: 75%;
+    background: transparent;
+    background-image: none;
+}
+
+/*
+** Calendar elements - used in the calendar rendering
+*/
+
+.dayPopup {
+    background-color: &dtml-helpBackgroundColor;;
+    border: &dtml-borderWidth; &dtml-borderStyle; Black;
+    padding: 0.2em;
+    position: absolute;
+    visibility: hidden;
+    width: 12em;
+    z-index: 2;
+}
+.date {
+    font-weight: bold;
+}
+
+.ploneCalendar {
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    margin: 1em 0em;
+    border-collapse: collapse;
+}
+.ploneCalendar a {
+    text-decoration: none;
+}
+.ploneCalendar a:hover {
+    text-decoration: none;
+}
+.ploneCalendar th {
+    background-color: &dtml-globalBackgroundColor;;
+    font-weight: bold;
+    text-align: center;
+    padding: 2px;
+}
+.ploneCalendar td {
+    background-color: transparent;
+    width: 1.5em;
+    text-align: right;
+    padding: 2px;
+}
+.ploneCalendar .weekdays td {
+    background-color: &dtml-globalBackgroundColor;;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    border-style: &dtml-borderStyle; none;
+    text-align: center;
+    padding: 2px;
+}
+.ploneCalendar .event {
+    background-color: &dtml-globalBackgroundColor;;
+    font-weight: bold;
+}
+.ploneCalendar .todayevent {
+    background-color: &dtml-globalBackgroundColor;;
+    border: 2px &dtml-borderStyle; #ffa500;
+    font-weight: bold;
+}
+.ploneCalendar .todaynoevent {
+    border-collapse: collapse;
+    border: 2px &dtml-borderStyle; #ffa500;
+}
+
+/* for highlighting of search terms */
+
+.highlightedSearchTerm {
+   background-color: #feff82;
+}
+
+/* for greying out inherited roles */
+
+.noInheritedRoles {
+    color: #a0a0a0;
+}
+
+/* for highlighting current items, like the language or today in the calendar */
+
+.currentItem {
+    border-collapse: collapse;
+    border: 2px &dtml-borderStyle; &dtml-notifyBorderColor;;
+    padding: 1px;
+}
+
+/*
+** begin ECMAScript Content Action Menus
+*/
+
+.contentActions {
+    background-color: &dtml-contentViewBackgroundColor;;
+    border-left: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
+    border-right: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
+    color: &dtml-contentViewFontColor;;
+    text-align: right;
+    text-transform: &dtml-textTransform;;
+    padding: 0 0 0 1em;
+    z-index: 2;
+    height: 1.2em;
+}
+
+.contentActions ul,
+.contentActions li {
+    margin: 0;
+    list-style: none;
+    list-style-image: none;
+    display: inline;
+    color: &dtml-fontColor;;
+    text-align: left;
+}
+
+.contentActions ul {
+    line-height: 1.2em;
+    padding: 0;
+    margin: 0;
+}
+.contentActions li {
+    float: right;
+    z-index: 4;
+    border-left: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
+}
+
+.actionItems li {
+    background-image: none;
+}
+
+.contentActions a {
+    text-decoration: none;
+    color: &dtml-contentViewFontColor;;
+    padding: 0 0.5em;
+}
+
+.actionMenu {
+    /*  The spec says we can't put this on an element with a float (although
+        Opera is the only one that cares) and we need it in order to catch
+        the position:absolute bubbling up */
+
+    position: relative;
+    margin: 0;
+    padding: 0;
+}
+
+.actionMenu .actionMenuHeader {
+    margin: 0;
+    padding: 0;
+    font-weight: normal;
+    cursor: pointer;
+}
+
+.actionMenu .actionMenuHeader a {
+    background-image: url(<dtml-var portal_url>/arrowDownAlternative.gif);
+    background-repeat: no-repeat;
+    background-position: 95% 60%;
+    padding: 0 1.5em 0 0.5em !important;
+    cursor: pointer;
+}
+
+.contentActions .actionMenu .actionMenuContent {
+    display: none;
+    z-index: 5;
+    position: absolute;
+    top: 0;
+    right: -1px;
+    height: auto;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+}
+
+.contentActions .actionMenu .actionMenuContent ul {
+    display: block;
+    background: &dtml-contentViewBackgroundColor;;
+    border: &dtml-borderWidth; &dtml-contentViewBorderColor;;
+    border-style: none &dtml-borderStyle; &dtml-borderStyle; &dtml-borderStyle;;
+    margin: 1.2em 0 0 0;
+    padding: 0;
+    cursor: pointer;
+}
+
+.actionMenu dd.activated {
+    display: block !important;
+}
+.actionMenu dd.activated {
+    /* this one will be ignored by IE, it is here to fix the cut-off error in
+       Firefox */
+    display: table !important;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+.actionMenu dd.deactivated {
+    display: none !important;
+}
+
+.actionMenu .actionMenuContent li {
+    float: none;
+    background: transparent;
+    display: inline;
+    padding: 0;
+    margin: 0;
+    border: 0;
+}
+
+.actionMenu .actionMenuContent li a {
+    display: block;
+    white-space: nowrap;
+    padding: 0 0.5em;
+    margin: 0.2em 0;
+}
+
+.actionMenu .actionMenuContent li a:hover {
+    background-color: &dtml-contentViewBorderColor;;
+    color: White;
+}
+
+.actionMenu .actionMenuContent .actionSeperator a {
+    margin-top: 0.2em;
+    padding-top: 0.2em;
+    border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
+}
+
+.contentBatchAction {
+    float: left !important;
+    padding: 0 0.5em;
+    border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
+    border-right: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
+    border-left: none !important;
+    border-collapse: collapse;
+    position: relative;
+    top: -1px;
+    margin-left: -0.5em !important;
+}
+
+/*
+** end ECMAScript Content Action Menus
+*/
+
+
+/* Styles to make the editing widgets look more like their view counterparts */
+
+#archetypes-fieldname-title input {
+    font-size: 160%;
+    font-family: <dtml-var headingFontFamily>;
+    font-weight: normal;
+    width: 99%;
+}
+
+#archetypes-fieldname-description textarea {
+    font: 100% <dtml-var fontFamily>;
+    font-weight: bold;
+}
+
+
+/* </dtml-with> */

@@ -1,9 +1,0 @@
-[default]
-title=Please sign in
-
-[validators]
-validators = validate_emailaddr,validate_registration
-
-[actions]
-action.success = traverse_to:string:register
-action.failure = traverse_to:string:join_form

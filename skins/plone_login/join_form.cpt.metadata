@@ -1,0 +1,10 @@
+[default]
+title=Please sign in
+border=None
+
+[validators]
+validators = validate_emailaddr,join_form_validate
+
+[actions]
+action.success = traverse_to:string:register
+action.failure = traverse_to:string:join_form

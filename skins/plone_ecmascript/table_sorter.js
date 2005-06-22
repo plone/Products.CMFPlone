@@ -127,6 +127,9 @@ function sort(e) {
 }
     
 function initalizeTableSort(e) {
+    // terminate if we hit a non-compliant DOM implementation
+    if (!W3CDOM){return false};
+
     var tbls = document.getElementsByTagName('table');
     for (var t = 0; t < tbls.length; t++)
         {

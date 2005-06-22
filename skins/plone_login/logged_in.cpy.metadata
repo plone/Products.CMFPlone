@@ -1,0 +1,4 @@
+[actions]
+action.success=traverse_to:string:login_next
+action.initial_login=traverse_to:string:login_initial
+action.failure=traverse_to:string:login_failed

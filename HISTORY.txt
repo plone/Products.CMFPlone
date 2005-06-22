@@ -4,6 +4,43 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (Unreleased)
 
+    - Removed plone prefix from stylesheets, only ploneCustom.css is kept.
+      [fschulze]
+
+    - Refactored the dropdown menu. It's using css classes for styling of
+      visibility. This involves new markup for the menus.
+      Fixes http://plone.org/collector/2793 - ADD ITEM MENU cuts some entries
+      [fschulze]
+
+    - Tiny change to the nav tree code in PloneTool.py so the nav tree won't
+      barf when there is a Z3-style view class in the acquisition hierarchy
+      [rafrombrc]
+
+    - Some i18n markup corrections after loginageddon and one metadata file
+      in the wrong place, fixed http://plone.org/collector/4197
+      [hannosch]
+
+    - Loginageddon!  Moved login, logout, and registration-related forms
+      and scripts to the new plone_login skin.  Converted login forms and
+      scripts to formcontroller forms and scripts.  Moved cookie testing
+      and related javascript from login_form into login.js.  Made the
+      cookie test messages internationalizable.  Made login sequence fail
+      more gracefully when cookies are disabled.  Added nice error 
+      messages that explain why a login failed (e.g. no login name, no
+      password, and (optionally) login name not found).  The login name
+      not found test can be enabled/disabled via a new site_property,
+      verify_login_name.  Fixes 2408, 2458, 2250, and 3335.
+     [geoffd]
+ 
+    - Fixed http://plone.org/collector/3018 no duplicate id="portal-footer"
+      [hannosch]
+
+    - Added filtering of tests to ECMAScript Unit Tests.
+      [fschulze]
+
+    - Add cssQuery.js to portal_javascripts when installing or migrating.
+      [fschulze]
+
     - Moved 3rd party ecma scripts like sarissa, livesearch, ecmaunit and
       vcXMLRPC to plone_3rdParty. 3rd party code will be included by an
       svn:external rule soon.

@@ -1,5 +1,8 @@
 // Focus on error 
 function setFocus(){
+    // terminate if we hit a non-compliant DOM implementation
+    if (!W3CDOM){return false};
+
     var xre = new RegExp(/\berror\b/);
     // Search only forms to avoid spending time on regular text
     for (var f = 0; (formnode = document.getElementsByTagName('form').item(f)); f++){
