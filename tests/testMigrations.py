@@ -66,6 +66,7 @@ from Products.CMFPlone.migrations.v2_1.betas import allowOwnerToAccessInactiveCo
 from Products.CMFPlone.migrations.v2_1.betas import restrictNewsTopicToPublished
 from Products.CMFPlone.migrations.v2_1.betas import restrictEventsTopicToPublished
 from Products.CMFPlone.migrations.v2_1.betas import addCssQueryJS
+from Products.CMFPlone.migrations.v2_1.betas import exchangePloneMenuWithDropDown
 
 import types
 
@@ -1343,6 +1344,14 @@ class TestMigrations_v2_1(MigrationTest):
         jsreg = self.portal.portal_javascripts
         scripts = list(jsreg.getResources())
         script_ids = [ item.get('id') for item in scripts ]
+        self.failUnless('cssQuery.js' in script_ids)
+
+    def testExchangePloneMenuWithDropDown(self):
+        jsreg = self.portal.portal_javascripts
+        scripts = list(jsreg.getResources())
+        script_ids = [ item.get('id') for item in scripts ]
+        self.failIf('plone_menu.js' in script_ids)
+        self.failUnless('dropdown.js' in script_ids)
         self.failUnless('cssQuery.js' in script_ids)
 
     def testAllowOwnerToAccessInactiveContent(self):

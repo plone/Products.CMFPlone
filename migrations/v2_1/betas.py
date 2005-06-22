@@ -49,6 +49,9 @@ def alpha2_beta1(portal):
     # Add cssQuery.js
     addCssQueryJS(portal, out)
 
+    # Exchange plone_menu.js with dropdown.js
+    exchangePloneMenuWithDropDown(portal, out)
+
     return out
 
 
@@ -259,7 +262,7 @@ def addCssQueryJS(portal, out):
     jsreg = getToolByName(portal, 'portal_javascripts', None)
     if jsreg is not None:
         script_ids = [item.get('id') for item in jsreg.getResources()]
-        # Failsafe: first make sure the two stylesheets exist in the list
+        # Failsafe: first make sure the stylesheet doesn't exist in the list
         if 'cssQuery.js' not in script_ids:
             jsreg.registerScript('cssQuery.js')
             try:
@@ -270,6 +273,26 @@ def addCssQueryJS(portal, out):
                 except ValueError:
                     # ok put to the top
                     jsreg.moveResourceToTop('cssQuery.js')
+
+def exchangePloneMenuWithDropDown(portal, out):
+    qi = getToolByName(portal, 'portal_quickinstaller', None)
+    if qi is not None:
+        if not qi.isProductInstalled('ResourceRegistries'):
+            qi.installProduct('ResourceRegistries', locked=0)
+        jsreg = getToolByName(portal, 'portal_javascripts', None)
+        if jsreg is not None:
+            script_ids = [item.get('id') for item in jsreg.getResources()]
+            # Failsafe: first make sure the stylesheet doesn't exist in the list
+            if 'dropdown.js' not in script_ids:
+                jsreg.registerScript('dropdown.js')
+                if 'plone_menu.js' in script_ids:
+                    jsreg.moveResourceBefore('dropdown.js', 'plone_menu.js')
+                    jsreg.unregisterResource('plone_menu.js')
+                elif 'sarissa.js' in script_ids:
+                    jsreg.moveResourceBefore('dropdown.js', 'sarissa.js')
+                else:
+                    # ok we stay at the bottom
+                    pass
 
 def allowOwnerToAccessInactiveContent(portal, out):
     permission = CMFCorePermissions.AccessInactivePortalContent

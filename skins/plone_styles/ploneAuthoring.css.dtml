@@ -647,13 +647,6 @@ ul.configletDetails li label {
     border-left: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
 }
 
-.menuPosition {
-    /*  The spec says we can't put this on an element with a float (although
-        Opera is the only one that cares) and we need it in order to catch
-        the position:absolute bubbling up */
-    position: relative;
-    }
-
 .actionItems li {
     background-image: none;
 }
@@ -664,7 +657,24 @@ ul.configletDetails li label {
     padding: 0 0.5em;
 }
 
-.contentActionMenuHeader {
+.actionMenu {
+    /*  The spec says we can't put this on an element with a float (although
+        Opera is the only one that cares) and we need it in order to catch
+        the position:absolute bubbling up */
+
+    position: relative;
+    margin: 0;
+    padding: 0;
+}
+
+.actionMenu .actionMenuHeader {
+    margin: 0;
+    padding: 0;
+    font-weight: normal;
+    cursor: pointer;
+}
+
+.actionMenu .actionMenuHeader a {
     background-image: url(<dtml-var portal_url>/arrowDownAlternative.gif);
     background-repeat: no-repeat;
     background-position: 95% 60%;
@@ -672,43 +682,65 @@ ul.configletDetails li label {
     cursor: pointer;
 }
 
-.contentActions .actionMenu {
-    visibility: hidden;
+.contentActions .actionMenu .actionMenuContent {
+    display: none;
     z-index: 5;
     position: absolute;
     top: 0;
     right: -1px;
-    background: &dtml-contentViewBackgroundColor;;
-    overflow: hidden;
     height: auto;
     padding: 0;
-    margin: 1.2em 0 0 0;
-    border: &dtml-borderWidth; &dtml-contentViewBorderColor;;
-    border-style: none &dtml-borderStyle; &dtml-borderStyle; &dtml-borderStyle;;
+    margin: 0;
+    cursor: pointer;
 }
 
-.actionMenu li {
+.contentActions .actionMenu .actionMenuContent ul {
+    display: block;
+    background: &dtml-contentViewBackgroundColor;;
+    border: &dtml-borderWidth; &dtml-contentViewBorderColor;;
+    border-style: none &dtml-borderStyle; &dtml-borderStyle; &dtml-borderStyle;;
+    margin: 1.2em 0 0 0;
+    padding: 0;
+    cursor: pointer;
+}
+
+.actionMenu dd.activated {
+    display: block !important;
+}
+.actionMenu dd.activated {
+    /* this one will be ignored by IE, it is here to fix the cut-off error in
+       Firefox */
+    display: table !important;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+.actionMenu dd.deactivated {
+    display: none !important;
+}
+
+.actionMenu .actionMenuContent li {
     float: none;
-    background: none;
+    background: transparent;
     display: inline;
     padding: 0;
     margin: 0;
     border: 0;
 }
 
-.actionMenu li a {
+.actionMenu .actionMenuContent li a {
     display: block;
     white-space: nowrap;
     padding: 0 0.5em;
     margin: 0.2em 0;
 }
 
-.actionMenu li a:hover {
+.actionMenu .actionMenuContent li a:hover {
     background-color: &dtml-contentViewBorderColor;;
     color: White;
 }
 
-.actionMenu .actionSeperator a {
+.actionMenu .actionMenuContent .actionSeperator a {
     margin-top: 0.2em;
     padding-top: 0.2em;
     border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;

@@ -260,39 +260,46 @@ label {
     padding: 0 0.6em 0 0;
 }
 
-.contentActions .actionMenu {
-    visibility: hidden;
+.contentActions .actionMenu .actionMenuContent {
+    display: none;
     z-index: 5;
     position: absolute;
     top: 0;
     right: -1px;
-    background: &dtml-contentViewBackgroundColor;;
-    overflow: hidden;
     height: auto;
     padding: 0;
-    margin: 0.2em 0 0 0;
-    border: &dtml-borderWidth; &dtml-contentViewBorderColor;;
-    border-style: none &dtml-borderStyle; &dtml-borderStyle; &dtml-borderStyle;;
+    margin: 0;
+    cursor: pointer;
 }
 
-.actionMenu li {
+.contentActions .actionMenu .actionMenuContent ul {
+    display: block;
+    background: &dtml-contentViewBackgroundColor;;
+    border: &dtml-borderWidth; &dtml-contentViewBorderColor;;
+    border-style: none &dtml-borderStyle; &dtml-borderStyle; &dtml-borderStyle;;
+    margin: 0.2em 0 0 0;
+    padding: 0;
+    cursor: pointer;
+}
+
+.actionMenu .actionMenuContent li {
     font-size: 10px !important;
     float: none;
-    background: none;
+    background: transparent;
     display: inline;
     padding: 0;
     margin: 0;
     border: 0;
 }
 
-.actionMenu li a {
+.actionMenu .actionMenuContent li a {
     display: block;
     white-space: nowrap;
     padding: 0 0.2em;
     margin: 0.2em 0;
 }
 
-.actionMenu .actionSeperator a {
+.actionMenu .actionMenuContent .actionSeperator a {
     margin-top: 0.2em;
     padding-top: 0.2em;
     border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
