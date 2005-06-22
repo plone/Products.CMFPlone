@@ -115,11 +115,11 @@
                 <textarea type="text"
                        id="description"
                        name="description"
-                       value="member.description html_quote"
                        tal:content="description"
                        />
     
             </div>
+
             <div class="field"
                      tal:define="wysiwyg_editor python:request.get('wysiwyg_editor',
                                                 member.getProperty('wysiwyg_editor',''))">
