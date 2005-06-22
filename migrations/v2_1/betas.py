@@ -52,6 +52,9 @@ def alpha2_beta1(portal):
     # Exchange plone_menu.js with dropdown.js
     exchangePloneMenuWithDropDown(portal, out)
 
+    # Remove plone prefix of stylesheet files
+    removePlonePrefixFromStylesheets(portal, out)
+
     return out
 
 
@@ -293,6 +296,41 @@ def exchangePloneMenuWithDropDown(portal, out):
                 else:
                     # ok we stay at the bottom
                     pass
+
+def removePlonePrefixFromStylesheets(portal, out):
+    out.append("Removing plone prefix from stylesheets.")
+    names = [
+        ('ploneAuthoring.css', 'authoring.css'),
+        ('ploneBase.css', 'base.css'),
+        ('ploneColumns.css', 'columns.css'),
+        ('ploneDeprecated.css', 'deprecated.css'),
+        ('ploneGenerated.css', 'generated.css'),
+        ('ploneIEFixes.css', 'IEFixes.css'),
+        ('ploneMember.css', 'member.css'),
+        ('ploneMobile.css', 'mobile.css'),
+        ('ploneNS4.css', 'NS4.css'),
+        ('plonePresentation.css', 'presentation.css'),
+        ('plonePrint.css', 'print.css'),
+        ('plonePublic.css', 'public.css'),
+        ('ploneRTL.css', 'RTL.css'),
+        ('ploneTextHuge.css', 'textHuge.css'),
+        ('ploneTextLarge.css', 'textLarge.css'),
+        ('ploneTextSmall.css', 'textSmall.css'),
+    ]
+    cssreg = getToolByName(portal, 'portal_css', None)
+    if cssreg is not None:
+        stylesheet_ids = [item.get('id') for item in cssreg.getResources()]
+        for old, new in names:
+            if old in stylesheet_ids:
+                if new in stylesheet_ids:
+                    # delete the old name
+                    cssreg.unregisterResource(old)
+                else:
+                    # rename
+                    cssreg.renameResource(old, new)
+    else:
+        out.append("No CSSRegistry found.")
+    out.append("Finished removing plone prefix from stylesheets.")
 
 def allowOwnerToAccessInactiveContent(portal, out):
     permission = CMFCorePermissions.AccessInactivePortalContent

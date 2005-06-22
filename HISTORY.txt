@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (Unreleased)
 
+    - Removed plone prefix from stylesheets, only ploneCustom.css is kept.
+      [fschulze]
+
     - Refactored the dropdown menu. It's using css classes for styling of
       visibility. This involves new markup for the menus.
       Fixes http://plone.org/collector/2793 - ADD ITEM MENU cuts some entries
