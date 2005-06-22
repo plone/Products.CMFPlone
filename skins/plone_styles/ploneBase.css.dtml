@@ -114,16 +114,13 @@ h5 {
     font-size: 100%;
     border-bottom: none;
     font-weight: bold;
-    color: &dtml-discreetColor;;
 }
 
 h6 {
     font-size: &dtml-fontSmallSize;;
     border-bottom: none;
     font-weight: bold;
-    color: &dtml-discreetColor;;
 }
-
 
 ul {
     line-height: 1.5em;

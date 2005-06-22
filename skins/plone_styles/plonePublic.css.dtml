@@ -365,6 +365,14 @@
     margin-bottom: 1em;
 }
 
+/* only h5/h6 headlines in the content area should have the discreet color */
+
+#content h5,
+#content h6 {
+    color: &dtml-discreetColor;;
+}
+
+
 .newsItem {
     margin-bottom: 1em;
     border-bottom: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
