@@ -108,6 +108,9 @@ class PloneSite(CMFSite, OrderedContainer, PropertyManagedBrowserDefault):
 
     manage_renameObject = OrderedContainer.manage_renameObject
 
+    moveObject = OrderedContainer.moveObject
+    moveObjectsByDelta = OrderedContainer.moveObjectsByDelta
+
     def index_html(self):
         """ Acquire if not present. """
         request = getattr(self, 'REQUEST', None)
