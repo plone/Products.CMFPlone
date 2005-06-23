@@ -49,9 +49,11 @@ try:
 except ConflictError:
     raise
 except: #XXX DateTime and contentEdit() has many things that could go wrong - catch all.
-    return state.set(portal_status_message='Error saving event.', new_status='failure')
+    context.plone_utils.addPortalMessage('Error saving event.')
+    return state.set(new_status='failure')
 
 from Products.CMFPlone import transaction_note
 transaction_note('Edited event %s at %s' % (str(new_context.title_or_id()), new_context.absolute_url()))
 
-return state.set(context=new_context, portal_status_message='Event changes saved.')
+context.plone_utils.addPortalMessage('Event changes saved.')
+return state.set(context=new_context)

@@ -20,4 +20,5 @@ pSyn.editSyInformationProperties(context,
 from Products.CMFPlone import transaction_note
 transaction_note('Updated syndication properties for %s at %s' % (context.title_or_id(), context.absolute_url()))
 
-return state.set(portal_status_message='Syndication properties updated.')
+context.plone_utils.addPortalMessage('Syndication properties updated.')
+return state

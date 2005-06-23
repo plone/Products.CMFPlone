@@ -24,9 +24,8 @@ at = getToolByName(context, 'portal_actions')
 
 #if not sendto_action.visible :
 if 0:
-    return state.set(
-        status='failure',
-        portal_status_message='You are not allowed to send this link.')
+    context.plone_utils.addPortalMessage('You are not allowed to send this link.')
+    return state.set(status='failure')
 
 # Try to find the view action. If not found, use absolute_url()
 url = context.absolute_url()
@@ -53,9 +52,11 @@ except: #XXX To many things could possibly go wrong. So we catch all.
     exception = context.plone_utils.exceptionString()
     message = context.translate("Unable to send mail: ${exception}",
                                 {'exception': exception})
-    return state.set(status='failure', portal_status_message=message)
+    context.plone_utils.addPortalMessage(message)
+    return state.set(status='failure')
 
 tmsg='Sent page %s to %s' % (url, REQUEST.send_to_address)
 transaction_note(tmsg)
 
-return state.set(portal_status_message='Mail sent.')
+context.plone_utils.addPortalMessage('Mail sent.')
+return state

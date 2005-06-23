@@ -13,7 +13,8 @@ if not title:
     state.setError('title', 'This field is required, please provide some information.', 'input_required')
 
 if state.getErrors():
-    return state.set(status='failure', portal_status_message='Please correct the indicated errors.')
+    context.plone_utils.addPortalMessage('Please correct the indicated errors.')
+    return state.set(status='failure')
 else:
     return state
 

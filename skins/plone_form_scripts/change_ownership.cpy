@@ -17,4 +17,5 @@ context.plone_utils.changeOwnershipOf(context, userid, subobjects)
 
 transaction_note('Changed owner of %s at %s to %s' % (context.title_or_id(), context.absolute_url(), userid))
 
-return state.set( context = context, portal_status_message='Ownership has been changed.' )
+context.plone_utils.addPortalMessage('Ownership has been changed.')
+return state.set( context = context)

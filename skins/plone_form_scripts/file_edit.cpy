@@ -44,4 +44,5 @@ if file or file_data or precondition:
 from Products.CMFPlone import transaction_note
 transaction_note('Edited file %s at %s' % (new_context.title_or_id(), new_context.absolute_url()))
 
-return state.set(context=new_context, portal_status_message='File changes saved.')
+context.plone_utils.addPortalMessage('File changes saved.')
+return state.set(context=new_context)

@@ -15,8 +15,7 @@ context.setConstrainTypesMode(constrainTypesMode)
 context.setLocallyAllowedTypes(locallyAllowedTypes)
 context.setImmediatelyAddableTypes(immediatelyAddableTypes)
 
-portal_status_message = "Changes made"
-
-return state.set(portal_status_message=portal_status_message)
+context.plone_utils.addPortalMessage('Changes made')
+return state
 
 

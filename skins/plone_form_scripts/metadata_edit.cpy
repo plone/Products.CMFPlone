@@ -38,4 +38,5 @@ new_context.plone_utils.editMetadata(new_context,
 from Products.CMFPlone import transaction_note
 transaction_note('Edited properties for %s at %s' % (new_context.title_or_id(), new_context.absolute_url()))
 
-return state.set(context=new_context, portal_status_message='Content properties have been saved.')
+context.plone_utils.addPortalMessage('Content properties have been saved.')
+return state.set(context=new_context)

@@ -10,5 +10,6 @@
 
 # nothing to check?
 #if state.getErrors():
-#    return state.set(status='failure', portal_status_message='Please correct the indicated errors.')
+#    context.plone_utils.addPortalMessage('Please correct the indicated errors.')
+#    return state.set(status='failure')
 return state
