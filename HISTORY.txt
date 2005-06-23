@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.0.6 - Anti-Pop - (Unreleased)
 
+    - Fixed PloneFolder.manage_delObjects() so it returns to the ZMI.
+      Thanks to George Geller.
+      [stefan]
+
     - Fixed index_html hack to return 404 for requests other than
       (PUT, HEAD, GET, POST).
       [dreamcatcher]
