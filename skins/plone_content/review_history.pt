@@ -2,10 +2,11 @@
       metal:define-macro="review_history" 
       i18n:domain="plone"
       tal:define="history here/getWorkflowHistory;">
-   <tal:history tal:condition="history">
-        <fieldset id="history" class="collapsible collapsed" style="width: 35%;">
-        <legend i18n:translate="label_history">History</legend>
-        <dl>
+    <tal:history tal:condition="history">
+      <dl id="history" class="collapsible collapsedOnLoad">
+        <dt class="collapsibleHeader" i18n:translate="label_history">History</dt>
+        <dd class="collapsibleContent">
+          <dl>
             <tal:history_data tal:repeat="event history">
             <dt tal:condition="event/action">
                 <span i18n:translate="label_history_entry">
@@ -24,7 +25,8 @@
                 <span tal:replace="event/comments"> some comments </span>
             </dd>
             </tal:history_data>
-        </dl>
-        </fieldset>
+          </dl>
+        <dd>
+      </dl>
     </tal:history>
 </span>

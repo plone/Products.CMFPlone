@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (Unreleased)
 
+    - Simplified collapsibles, this involves new markup.
+      This fixes http://plone.org/collector/4035 - "Collapsible fieldsets take
+      up too much space".
+      [fschulze]
+
     - Fixed PloneFolder.manage_delObjects() so it returns to the ZMI.
       Thanks to George Geller.
       [stefan]

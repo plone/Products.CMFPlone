@@ -1,130 +1,78 @@
-function activateCollapsibles(){
-    /*
-     * a script that searches for sections that can be (or are already) collapsed
-     * - and enables the collapse-behavior
+/*
+ * This is the code for the collapsibles. It uses the following markup:
+ *
+ * <dl class="collapsible">
+ *   <dt class="collapsibleHeader">
+ *     A Title
+ *   </dt>
+ *   <dd class="collapsibleContent">
+ *     <!-- Here can be any content you want -->
+ *   </dd>
+ * </dl>
+ *
+ * When the collapsible is toggled, then the dl will get an additional class
+ * which switches between 'collapsed' and 'expanded'.
+ * You can use this to style it accordingly, for example:
+ *
+ * .collapsible.expanded .collapsibleContent {
+ *   display: block;
+ * }
+ *
+ * .collapsible.collapsed .collapsibleContent {
+ *   display: none;
+ * }
+ *
+ * If you add the 'collapsedOnLoad' class to the dl, then it will get
+ * collapsed on page load, this is done, so the content is accessible even when
+ * javascript is disabled.
+ *
+ * This file uses functions from register_function.js, cssQuery.js and
+ * nodeutils.js.
+ *
+ */
 
-     * usage : give the class "collapsible" to a fieldset
-     * also , give it a <legend> with some descriptive text.
-     * you can also add the class "collapsed" amounting to a total of <fieldset class="collapsible collapsed">
-     * to make the section pre-collapsed
-     */
-
-    // terminate if we hit a non-compliant DOM implementation
-    if (!W3CDOM){return false};
-
-    // only search in the content-area
-    contentarea = getContentArea()
-    if (! contentarea){return false}
-
-    // gather all objects that are to be collapsed
-    // we only do fieldsets for now. perhaps DIVs later is it is needed...
-    collapsibles = contentarea.getElementsByTagName('fieldset');
-
-    for (i=0; i < collapsibles.length; i++) {
-        if (collapsibles[i].className.indexOf('collapsible')== -1 ) {
-            continue;
-        }
-        
-        fieldset = collapsibles[i]
-        legends = fieldset.getElementsByTagName('LEGEND')
-        /*
-         * get the legend
-         * if there is no legend, we do not touch the fieldset at all.
-         * we assume that if there is a legend, there is only one.
-         * nothing else makes any sense
-         */
-        if (! legends.length) {
-            continue;
-        }
-        legend = legends[0]
-
-        // add the icon/button with its functionality to the legend
-        icon = document.createElement('img');
-        icon.setAttribute('src','treeExpanded.gif')
-        icon.setAttribute('class','collapseIcon')
-        icon.setAttribute('height','9')
-        icon.setAttribute('width','9')
-
-        
-        // insert the icon icon at the start of the legend
-        legend.insertBefore(icon,legend.firstChild)
-
-        /*
-         * create a DOM fragment to represent the collapsed fieldset
-         * it's a div + span, very similar to fieldset + legend, but I couldn't
-         * make fieldset collapse to a single line no matter what I tried. -- NeilK.
-         */
-        
-        cFieldset = document.createElement('div');
-        cFieldset.setAttribute('class','collapsedFieldset');
-        
-        cLegend = document.createElement('span');
-        cLegend.setAttribute('class', 'collapsedLegend');
-        var legendChildren = legend.childNodes;
-        for (i = 0; i < legendChildren.length; i++) {
-            elm = legendChildren[i].cloneNode(true);
-            if (i == 0 && elm.nodeName == 'IMG') { // it's the icon
-                elm.setAttribute('src','treeCollapsed.gif');
-            }    
-            cLegend.appendChild(elm);
-        }
-        
-        cFieldset.appendChild(cLegend)
-     
-        new Collapsible();  // hack for some old browsers to wake it up.
-        c = new Collapsible(fieldset, cFieldset, legend, cLegend);
-        c.init();
+function isCollapsible(node) {
+    if (hasClassName(node, 'collapsible')) {
+        return true;
     }
-}
-    
-registerPloneFunction(activateCollapsibles)
+    return false;
+};
 
-function addHandler(target,eventName,obj,handlerName) { 
-    fn = function(e){obj[handlerName](e)};
-    registerEventListener(target, eventName, fn);
-}
+function toggleCollapsible(event) {
+    if (!event) var event = window.event; // IE compatibility
 
-
-// defines two nodes that are siblings, clicking on one hides itself
-// and reveals the other.
-function Collapsible(expanded, collapsed, collapseButton, expandButton) {
-    this.expanded = expanded;
-    this.collapsed = collapsed;
-    this.expandButton = expandButton;
-    this.collapseButton = collapseButton;
-}
-
-
-
-Collapsible.prototype.init = function() {
-    
-    // add handlers to collapse/expand. 
-    addHandler(this.collapseButton, "click", this, "collapse")
-    addHandler(this.expandButton, "click", this, "expand")
-    
-//    addListener(this.collapseButton, closure(this.collapse) );
-//  addListener(this.expandButton, closure(this.expand) );
-    
-    /* by default, show expanded, 
-     * unless expanded class name also has 
-     * 'collapsed' in it, i.e. <fieldset class="collapsible collapsed">
-     */
-    if (this.expanded.className.indexOf('collapsed') == -1 ) {
-        this.collapse();
-    } else {
-        this.expand();
+    if (!this.tagName && (this.tagName == 'DT' || this.tagName == 'dt')) {
+        return true;
     }
-+
-    // assumption: expanded is already in document, has parent node.
-    this.expanded.parentNode.insertBefore( this.collapsed, this.expanded );
-}
 
-Collapsible.prototype.collapse = function() {
-    this.expanded.style.display = 'none';
-    this.collapsed.style.display = 'block';
-}    
+    container = findContainer(this, isCollapsible);
+    if (!container) {
+        return true;
+    }
 
-Collapsible.prototype.expand = function() {
-    this.expanded.style.display = 'block';
-    this.collapsed.style.display = 'none';
-}    
+    if (hasClassName(container, 'collapsed')) {
+        replaceClassName(container, 'collapsed', 'expanded');
+    } else if (hasClassName(container, 'expanded')) {
+        replaceClassName(container, 'expanded', 'collapsed');
+    }
+};
+
+function activateCollapsibles() {
+    if (!W3CDOM) {return false;}
+
+    collapsibles = cssQuery('dl.collapsible');
+    for (i in collapsibles) {
+        collapsible = collapsibles[i];
+
+        collapsible_header = cssQuery('dt.collapsibleHeader', collapsible)[0];
+        collapsible_header.onclick = toggleCollapsible;
+
+        if (hasClassName(collapsible, 'collapsedOnLoad')) {
+            replaceClassName(collapsible, 'collapsedOnLoad', 'collapsed');
+        } else {
+            addClassName(collapsible, 'expanded');
+        }
+    }
+};
+
+registerPloneFunction(activateCollapsibles);
