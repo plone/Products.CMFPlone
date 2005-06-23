@@ -674,7 +674,8 @@ ul.configletDetails li label {
     cursor: pointer;
 }
 
-.actionMenu .actionMenuHeader a {
+.actionMenu.activated .actionMenuHeader a,
+.actionMenu.deactivated .actionMenuHeader a {
     background-image: url(<dtml-var portal_url>/arrowDownAlternative.gif);
     background-repeat: no-repeat;
     background-position: 95% 60%;
@@ -704,10 +705,10 @@ ul.configletDetails li label {
     cursor: pointer;
 }
 
-.actionMenu dd.activated {
+.actionMenu.activated .actionMenuContent {
     display: block !important;
 }
-.actionMenu dd.activated {
+.actionMenu.activated .actionMenuContent {
     /* this one will be ignored by IE, it is here to fix the cut-off error in
        Firefox */
     display: table !important;
@@ -715,7 +716,7 @@ ul.configletDetails li label {
     border-spacing: 0;
 }
 
-.actionMenu dd.deactivated {
+.actionMenu.deactivated .actionMenuContent {
     display: none !important;
 }
 

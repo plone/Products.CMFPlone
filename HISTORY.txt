@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (Unreleased)
 
+    - Changed dropdowns slightly, now the activated/deactivated class is set
+      on the dl, not on the dd. When javascript is disabled, the dropdowns
+      don't have an arrow anymore.
+      [fschulze]
+
     - Simplified collapsibles, this involves new markup.
       This fixes http://plone.org/collector/4035 - "Collapsible fieldsets take
       up too much space".
