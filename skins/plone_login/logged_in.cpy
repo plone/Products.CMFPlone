@@ -19,7 +19,8 @@ if REQUEST.get('__cp', None) is not None:
 membership_tool=context.portal_membership
 if membership_tool.isAnonymousUser():
     REQUEST.RESPONSE.expireCookie('__ac', path='/')
-    return state.set(status='failure', portal_status_message='Login failed')
+    context.plone_utils.addPortalMessage('Login failed')
+    return state.set(status='failure')
 
 member = membership_tool.getAuthenticatedMember()
 login_time = member.getProperty('login_time', context.ZopeTime())

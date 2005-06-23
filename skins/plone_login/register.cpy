@@ -28,7 +28,8 @@ try:
     portal_registration.addMember(username, password, properties=REQUEST)
 except AttributeError:
     state.setError('username', 'The login name you selected is already in use or is not valid. Please choose another.')
-    return state.set(status='failure', portal_status_message='Please correct the indicated errors.')
+    context.plone_utils.addPortalMessage('Please correct the indicated errors.')
+    return state.set(status='failure')
 
 if site_properties.validate_email or REQUEST.get('mail_me', 0):
     try:
@@ -45,13 +46,15 @@ if site_properties.validate_email or REQUEST.get('mail_me', 0):
         state.setError('email', 'We were unable to send your password to your email address: '+str(err))
         state.set(came_from='logged_in')
         context.acl_users.userFolderDelUsers([username,])
-        return state.set(status='failure', portal_status_message='Please enter a valid email address.')
-        
-state.set(portal_status_message=REQUEST.get('portal_status_message', 'Registered.'))
+        context.plone_utils.addPortalMessage('Please enter a valid email address.')
+        return state.set(status='failure')
+
+context.plone_utils.addPortalMessage('Registered.')        
 state.set(came_from=REQUEST.get('came_from','logged_in'))
 
 if came_from_prefs:
-    state.set(status='prefs', portal_status_message='User added.')
+    context.plone_utils.addPortalMessage('User added.')        
+    state.set(status='prefs')
 
 from Products.CMFPlone import transaction_note
 transaction_note('%s registered' % username)

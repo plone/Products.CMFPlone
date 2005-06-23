@@ -40,8 +40,10 @@ if mt.isAnonymousUser():
                     state.setError(ac_name, 'Login name not found.', 'login_name_not_found')
 	        elif not password_empty:
                     state.setError(ac_password, 'Password incorrect.', 'password_incorrect')
-	state.set(status='failure', portal_status_message=LOGIN_FAILED_MESSAGE)
+	context.plone_utils.addPortalMessage(LOGIN_FAILED_MESSAGE)
+	state.set(status='failure')
     else: # no javascript - do low tech login failure
-	state.set(status='failure_page', portal_status_message=LOGIN_FAILED_MESSAGE)
+	context.plone_utils.addPortalMessage(LOGIN_FAILED_MESSAGE)
+	state.set(status='failure_page')
 
 return state
