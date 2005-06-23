@@ -76,6 +76,5 @@ if plone_utils.isDefaultPage(new_context):
     except Exception:
         pass
 
-return state.set(context=wfcontext,
-                 portal_status_message='Your content\'s status has been modified.')
-
+context.plone_utils.addPortalMessage('Your content\'s status has been modified.')
+return state.set(context=wfcontext)
