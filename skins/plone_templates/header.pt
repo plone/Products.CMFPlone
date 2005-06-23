@@ -31,6 +31,11 @@
           tal:attributes="name python:keyval[0];
                           content python:keyval[1];" />
 
+    <!-- Plone ECMAScripts -->
+    <metal:js metal:use-macro="here/renderAllTheScripts/macros/jsrenderer">
+        <!-- Fetch scripts from the Javascript Registry -->
+    </metal:js>
+
     <metal:css metal:use-macro="here/renderAllTheStylesheets/macros/cssrenderer">
         <!-- Fetch stylesheets from the CSS Registry -->
     </metal:css>
@@ -81,11 +86,6 @@
     <metal:block metal:define-slot="javascript_head_slot" tal:replace="nothing">
       Inserts javascript specified from a page.
     </metal:block>
-
-    <!-- Plone ECMAScripts -->
-    <metal:js metal:use-macro="here/renderAllTheScripts/macros/jsrenderer">
-        <!-- Fetch scripts from the Javascript Registry -->
-    </metal:js>
 
   </head>
 
