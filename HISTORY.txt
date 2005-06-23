@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (Unreleased)
 
+    - Moved some interfaces to CMFDynamicViewFTI
+      [tiran]
+
     - Removed plone prefix from stylesheets, only ploneCustom.css is kept.
       [fschulze]
 
