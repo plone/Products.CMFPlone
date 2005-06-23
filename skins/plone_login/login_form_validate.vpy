@@ -16,7 +16,8 @@ js_enabled = int(request.get('js_enabled',0)) # is javascript enabled?
 cookies_enabled = int(request.get('cookies_enabled',0)) # are cookies enabled?
 
 if js_enabled and not cookies_enabled:
-    state.set(status='enable_cookies', portal_status_message='You must enable cookies before you can log in')
+    context.plone_utils.addPortalMessage('You must enable cookies before you can log in')
+    state.set(status='enable_cookies')
     return state
 
 mt=context.portal_membership

@@ -15,7 +15,8 @@ REQUEST=context.REQUEST
 membership_tool=context.portal_membership
 if membership_tool.isAnonymousUser():
     REQUEST.RESPONSE.expireCookie('__ac', path='/')
-    return state.set(status='failure', portal_status_message='Login failed')
+    context.plone_utils.addPortalMessage('Login failed')
+    return state.set(status='failure')
 
 came_from = REQUEST.get('came_from', None)
 # if we weren't called from something that set 'came_from' or if HTTP_REFERER
@@ -27,10 +28,7 @@ if came_from is not None:
 
 #if came_from:
 #    util = context.plone_utils
-#    # Add portal_status_message to the query string of the we came from
-#    scheme, location, path, parameters, query, fragment = util.urlparse(came_from)
-#    query = context.create_query_string(query, portal_status_message='Welcome! You are now logged in.')
-#    came_from = util.urlunparse(scheme, location, path, parameters, query, fragment)
+#    util.addPortalMessage('Welcome! You are now logged in.')
 
 state.set(came_from=came_from)
 return state
