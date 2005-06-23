@@ -55,6 +55,9 @@ def alpha2_beta1(portal):
     # Remove plone prefix of stylesheet files
     removePlonePrefixFromStylesheets(portal, out)
 
+    # Add the plone_3rdParty to the skin layers
+    add3rdPartySkinPath(portal, out)
+
     return out
 
 
@@ -418,4 +421,22 @@ def addFontSizeStylesheets(portal, out):
             if 'ploneRTL.css' in stylesheet_ids:
                 cssreg.moveResourceBefore('ploneTextLarge.css', 'ploneRTL.css')
             out.append('Added ploneTextLarge.css to CSSRegistry.')
+
+
+def add3rdPartySkinPath(portal, out):
+    """Add the plone_3rdParty to the skin layers."""
+    st = getToolByName(portal, 'portal_skins')
+    skins = ['Plone Default', 'Plone Tableless']
+    selections = st._getSelections()
+    for s in skins:
+        if not selections.has_key(s):
+           continue
+        cleanupSkinPath(portal, s)
+        path = st.getSkinPath(s)
+        path = map(string.strip, string.split(path,','))
+        if not 'plone_3rdParty' in path:
+            path.append('plone_3rdParty')
+            st.addSkinSelection(s, ','.join(path))
+            out.append('Added plone_3rdParty to %s' % s)
+
 
