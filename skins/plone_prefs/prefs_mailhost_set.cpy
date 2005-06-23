@@ -15,6 +15,5 @@ mh = context.MailHost
 
 mh.manage_makeChanges('Plone Mail Host', smtp_server, smtp_port, smtp_userid, smtp_pass)
 
-msg = 'Mail Host Updated'
-
-return state.set(portal_status_message=msg)
+context.plone_utils.addPortalMessage('Mail Host Updated')
+return state

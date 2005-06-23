@@ -9,7 +9,7 @@
 ##
 REQUEST=context.REQUEST
 groupstool=context.portal_groups
-portal_status_message = 'No changes done.'
+message = 'No changes done.'
 
 groups=[group[len('group_'):]
         for group in REQUEST.keys()
@@ -18,7 +18,7 @@ groups=[group[len('group_'):]
 for group in groups:
     roles=[r for r in REQUEST['group_' + group] if r]
     groupstool.editGroup(group, roles=roles, groups=())
-    portal_status_message = 'Changes saved.'
+    message = 'Changes saved.'
 
 delete=REQUEST.get('delete',[])
 
@@ -26,12 +26,13 @@ if delete:
     groupstool.removeGroups(delete)
 
     if (1 < len(delete)):
-        portal_status_message=context.translate(
+        message=context.translate(
             "Groups ${names} have been deleted.",
             {'names': ', '.join(delete)})
     else:
-        portal_status_message=context.translate(
+        message=context.translate(
             "Group ${name} has been deleted.",
             {'name': ''.join(delete)})
 
-return state.set(portal_status_message=portal_status_message)
+context.plone_utils.addPortalMessage(message)
+return state

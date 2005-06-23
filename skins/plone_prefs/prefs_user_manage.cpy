@@ -37,4 +37,5 @@ for user in users:
 if delete:
     acl_users.userFolderDelUsers(delete)
 
-return state.set(portal_status_message=context.translate('Changes applied.'))
+context.plone_utils.addPortalMessage(context.translate('Changes applied.'))
+return state

@@ -32,4 +32,5 @@ if not processed.get('listed'):
     processed['listed'] = ''
 context.plone_utils.setMemberProperties(member, **processed)
 
-return state.set(portal_status_message='Changes made.')
+context.plone_utils.addPortalMessage('Changes made.')
+return state
