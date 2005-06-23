@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (Unreleased)
 
+    - Fixed PloneFolder.manage_delObjects() so it returns to the ZMI.
+      Thanks to George Geller.
+      [stefan]
+
     - Removed plone prefix from stylesheets, only ploneCustom.css is kept.
       [fschulze]
 
