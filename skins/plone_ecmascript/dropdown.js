@@ -37,14 +37,14 @@ function isActionMenu(node) {
         return true;
     }
     return false;
-}
+};
 
 function toggleMenu(event) {
     if (!event) var event = window.event; // IE compatibility
 
     // terminate if we hit a non-compliant DOM implementation
     // returning true, so the link is still followed
-    if (!document.getElementById){return true;}
+    if (!W3CDOM){return true;}
 
     if (!this.tagName && (this.tagName == 'A' || this.tagName == 'a')) {
         return true;
@@ -70,7 +70,7 @@ function toggleMenu(event) {
     }
 
     return false;
-}
+};
 
 function actionMenuDocumentMouseDown(event) {
     if (!event) var event = window.event; // IE compatibility
@@ -93,7 +93,7 @@ function actionMenuDocumentMouseDown(event) {
     }
 
     return true;
-}
+};
 
 function actionMenuMouseOver(event) {
     if (!event) var event = window.event; // IE compatibility
@@ -131,22 +131,21 @@ function actionMenuMouseOver(event) {
     }
 
     return true;
-}
+};
 
 function initializeMenus() {
     // terminate if we hit a non-compliant DOM implementation
-    if (! document.getElementsByTagName){return false;}
-    if (! document.getElementById){return false;}
+    if (!W3CDOM){return false;}
 
-    document.onmousedown = actionMenuDocumentMouseDown
+    document.onmousedown = actionMenuDocumentMouseDown;
 
     menu_headers = cssQuery('dl.actionMenu > dt.actionMenuHeader > a');
     for (i in menu_headers) {
-        menu_header = menu_headers[i]
+        menu_header = menu_headers[i];
 
         menu_header.onclick = toggleMenu;
         menu_header.onmouseover = actionMenuMouseOver;
     }
-}
+};
 
 registerPloneFunction(initializeMenus);
