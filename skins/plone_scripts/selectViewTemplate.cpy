@@ -20,4 +20,5 @@ if not itool.objectImplements(context, INTERFACE):
 
 context.setLayout(templateId)
 
-return state.set(portal_status_message = 'View changed')
+context.plone_utils.addPortalMessage('View changed')
+return state

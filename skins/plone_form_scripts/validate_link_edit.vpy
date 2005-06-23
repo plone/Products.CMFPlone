@@ -16,4 +16,5 @@ if state.getErrors():
     context.plone_utils.addPortalMessage('Please correct the indicated errors.')
     return state.set(status='failure')
 else:
-    return state.set(portal_status_message='Your link changes have been saved.')
+    context.plone_utils.addPortalMessage('Your link changes have been saved.')
+    return state

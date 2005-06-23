@@ -49,5 +49,6 @@ if failed:
     if message: message = message + '  '
     message = message + "%s could not be deleted."%(', '.join(failed.keys()))
 
-return state.set(status=status, portal_status_message=message)
+context.plone_utils.addPortalMessage(message)
+return state.set(status=status)
 

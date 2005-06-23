@@ -9,21 +9,21 @@
 
 REQUEST=context.REQUEST
 if REQUEST.form.has_key('cancel'):
-    REQUEST.set('portal_status_message', 'Password change was canceled.')
+    context.plone_utils.addPortalMessage('Password change was canceled.')
     return context.plone_memberprefs_panel()
 
 mt=context.portal_membership
 
 if not mt.testCurrentPassword(current):
     failMessage='Does not match current password.'
-    REQUEST.set('portal_status_message', 'Does not match current password.')
+    context.plone_utils.addPortalMessage(failMessage)
     return context.password_form(context,
                                  REQUEST,
                                  error=failMessage)
 
 failMessage=context.portal_registration.testPasswordValidity(password, password_confirm)
 if failMessage:
-    REQUEST.set('portal_status_message', failMessage)
+    context.plone_utils.addPortalMessage(failMessage)
     return context.password_form(context,
                                  REQUEST,
                                  error=failMessage)
@@ -33,7 +33,7 @@ try:
     mt.setPassword(password, domains)
 except AttributeError:
     failMessage='While changing your password an AttributeError occurred.  This is usually caused by your user being defined outside the portal.'
-    REQUEST.set('portal_status_message', failMessage)
+    context.plone_utils.addPortalMessage(failMessage)
     return context.password_form(context,
                                  REQUEST,
                                  error=failMessage)

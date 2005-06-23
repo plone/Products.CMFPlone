@@ -19,7 +19,8 @@ if context.cb_dataValid:
     try:
         context.manage_pasteObjects(context.REQUEST['__cp'])        
         transaction_note('Pasted content to %s' % (context.absolute_url()))
-        return state.set(portal_status_message='Item(s) pasted.')
+        context.plone_utils.addPortalMessage('Item(s) pasted.')
+        return state
     except ConflictError:
         raise
     except ValueError: 
@@ -29,5 +30,5 @@ if context.cb_dataValid:
     except: # fallback
         msg='Paste could not find clipboard content.'
 
-return state.set(status='failure', portal_status_message=msg)
-
+context.plone_utils.addPortalMessage(msg)
+return state.set(status='failure')
