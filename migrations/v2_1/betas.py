@@ -69,7 +69,7 @@ def installLogin(portal, out):
     # register login skin
     st = getToolByName(portal, 'portal_skins')
     if not hasattr(aq_base(st), 'plone_login'):
-	createDirectoryView(st, os.path.join('CMFPlone', 'skins', 'plone_login'))
+        createDirectoryView(st, os.path.join('CMFPlone', 'skins', 'plone_login'))
         out.append('Added directory view for plone_login')
 
     # add login skin to Plone Default, Plone Tableless skins
@@ -78,7 +78,7 @@ def installLogin(portal, out):
     for s in skins:
         if not selections.has_key(s):
            continue
-	cleanupSkinPath(portal, s)
+        cleanupSkinPath(portal, s)
         path = st.getSkinPath(s)
         path = map(string.strip, string.split(path,','))
         if not 'plone_login' in path:
