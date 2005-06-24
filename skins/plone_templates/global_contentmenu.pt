@@ -180,8 +180,9 @@
                 
                 <span title="Delete or rename the index_html item to gain full control over how this folder is displayed."
                    i18n:attributes="title title_remove_index_html_for_display_control;"
-                   tal:condition="dimMenu">
-                    <span i18n:translate="label_disabled_display_menu">Display</span>
+                   tal:condition="dimMenu"
+                   i18n:translate="label_disabled_display_menu">
+                  Display
                 </span>
                 
                 
