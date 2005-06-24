@@ -315,28 +315,35 @@
     </li>
     </tal:templateMixin>
     
-    <tal:edit define="editActions actions/object_buttons | nothing;"
+    <tal:edit define="editActions actions/object_buttons | nothing;
+                      getIconFor nocall:putils/getIconFor;"
               condition="python:editActions">
               
         <tal:objectAction repeat="editAction editActions">
-
-            <li tal:condition="python:editAction['id'] not in ('delete', 'batch')">
+          <tal:action define="icon python:getIconFor('object_buttons', editAction['id'], None);
+                              class_name string:actionicon-object_buttons-${editAction/id} visualIconReplace;
+                              class_name python:test(icon, class_name, nothing);">
+            <li tal:condition="python:editAction['id'] not in ('delete', 'batch')"
+                tal:attributes="class class_name">
                 <a tal:content="editAction/name"
-                   tal:attributes="href editAction/url;"
+                   tal:attributes="href editAction/url;
+                                   title editAction/name;"
                    i18n:translate=""/> 
             </li>
 
-            <li tal:condition="python:editAction['id']=='delete'">
+            <li tal:condition="python:editAction['id']=='delete'"
+                tal:attributes="class class_name">
                 <a onclick="#"
                    tal:define="ptype here/portal_type;
                                alert_msg python:here.translate('alert_really_delete');"
                    tal:attributes="href editAction/url;
+                                   title editAction/name;
                                    onclick string:return confirm('$ptype\n${alert_msg}');;">
                     <span tal:content="editAction/name"
                           i18n:translate=""/>
                 </a>
             </li>
-
+          </tal:action>
         </tal:objectAction>
     </tal:edit>
 
