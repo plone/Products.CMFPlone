@@ -66,8 +66,10 @@ except:
 # We may get an unauthorized exception if we're not allowed to access#
 # the parent. In this case, return None
 try:
-    # Skip past the talkback container if that's where we are
-    if parent.getId() == 'talkback':
+    if getattr(parent, 'getId', None) is None or \
+           parent.getId() == 'talkback':
+        # Skip any Z3 views that may be in the acq tree;
+        # Skip past the talkback container if that's where we are
         parent = parent.aq_parent
 
     for perm in checkPermissions:

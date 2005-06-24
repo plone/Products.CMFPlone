@@ -3,6 +3,10 @@ Changelog for Plone
    (name of developer listed in brackets)
 
 Plone 2.1 - Plaid - (Unreleased)
+
+    - Slight change to navigationParent script so that it won't fail
+      when a Z3 view is in the acquisition tree
+      [rafrombrc]
     
     - Added recently_modified page to link to from the recent changes
       portlet.
