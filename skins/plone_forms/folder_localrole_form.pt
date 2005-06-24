@@ -341,7 +341,7 @@
                             multiple="multiple"
                             tabindex=""
                             tal:attributes="tabindex tabindex/next;">
-                        <option tal:repeat="lroles python:mtool.getCandidateLocalRoles(here)"
+                        <option tal:repeat="lroles python:[r for r in mtool.getCandidateLocalRoles(here) if r!='Owner']"
                                 tal:attributes="value lroles"
                                 tal:content="lroles"
                                 i18n:translate="">
@@ -524,7 +524,7 @@
                                 multiple="multiple"
                                 tabindex=""
                                 tal:attributes="tabindex tabindex/next;">
-                            <option tal:repeat="lroles python:mtool.getCandidateLocalRoles(here)"
+                            <option tal:repeat="lroles python:[r for r in mtool.getCandidateLocalRoles(here) if r!='Owner']"
                                     tal:attributes="value lroles"
                                     tal:content="lroles"
                                     i18n:translate="">

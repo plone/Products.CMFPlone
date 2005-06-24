@@ -4,6 +4,17 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (Unreleased)
 
+    - Removed Owner from candidate local roles in folder_localrole_form 
+      (http://members.plone.org/development/teams/ui/tasks/11)
+      [ender]
+    
+    - Added recently_modified page to link to from the recent changes
+      portlet.
+      [ender]
+    
+    - Added state coloring in recent changes portlet and search results.
+      [ender]
+
     - Total rewrite of portlet HTML and CSS. Will keep backwards compatibility
       until Plone 2.2 is released, though. The old div-based layout is 
       deprecated in favor of a more light-weight markup using definition lists 
