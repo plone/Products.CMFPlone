@@ -3,10 +3,6 @@ Changelog for Plone
    (name of developer listed in brackets)
 
 Plone 2.1 - Plaid - (Unreleased)
-
-    - Removed Owner from candidate local roles in folder_localrole_form 
-      (http://members.plone.org/development/teams/ui/tasks/11)
-      [ender]
     
     - Added recently_modified page to link to from the recent changes
       portlet.
