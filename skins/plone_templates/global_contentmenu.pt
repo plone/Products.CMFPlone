@@ -321,13 +321,14 @@
               
         <tal:objectAction repeat="editAction editActions">
           <tal:action define="icon python:getIconFor('object_buttons', editAction['id'], None);
-                              class_name string:actionicon-object_buttons-${editAction/id} visualIconReplace;
+                              class_name string:actionicon-object_buttons-${editAction/id};
                               class_name python:test(icon, class_name, nothing);">
             <li tal:condition="python:editAction['id'] not in ('delete', 'batch')"
                 tal:attributes="class class_name">
                 <a tal:content="editAction/name"
                    tal:attributes="href editAction/url;
-                                   title editAction/name;"
+                                   title editAction/name;
+                                   class python:test(icon, 'visualIconReplace', nothing);"
                    i18n:translate=""/> 
             </li>
 
@@ -338,9 +339,10 @@
                                alert_msg python:here.translate('alert_really_delete');"
                    tal:attributes="href editAction/url;
                                    title editAction/name;
-                                   onclick string:return confirm('$ptype\n${alert_msg}');;">
-                    <span tal:content="editAction/name"
-                          i18n:translate=""/>
+                                   class python:test(icon, 'visualIconReplace', nothing);
+                                   onclick string:return confirm('$ptype\n${alert_msg}');;"
+                   tal:content="editAction/name"
+                   i18n:translate="">
                 </a>
             </li>
           </tal:action>
