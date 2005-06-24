@@ -160,7 +160,10 @@ if (!window.beforeunload) (function() {
         var tool = window.onbeforeunload && window.onbeforeunload.tool;
         var content = getContentArea();
         if (tool && content) {
-            tool.addForms(content);
+            var forms = cssQuery('form.enableUnloadProtection');
+            for (var i in forms) {
+                tool.addForm(forms[i]);
+            }
         }
     });
 })();
