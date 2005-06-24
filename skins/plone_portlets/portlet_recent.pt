@@ -47,7 +47,7 @@
   
     <dd class="portletFooter even">
         <a href="#"
-           tal:attributes="href string:${portal_url}/recently_published"
+           tal:attributes="href string:${portal_url}/recently_modified"
            i18n:translate="portlet_more_recently_changed">
         All recent changes&hellip;
         </a>
