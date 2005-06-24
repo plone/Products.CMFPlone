@@ -339,8 +339,18 @@ def addDeprecatedAndPortletStylesheets(portal, out):
     out.append("Adding Portlet and Deprecated stylesheets.")
     cssreg = getToolByName(portal, 'portal_css', None)
     if cssreg is not None:
-        cssreg.registerStylesheet('deprecated.css', media="screen")
-        cssreg.registerStylesheet('portlets.css', media="screen")
+        stylesheet_ids = [item.get('id') for item in cssreg.getResources()]
+        stylesheets_to_move_after = ('base.css', 'public.css', 'authoring.css', 'member.css')
+        if 'deprecated.css' not in stylesheet_ids:
+            cssreg.registerStylesheet('deprecated.css', media="screen")
+            for style_id in stylesheets_to_move_after:
+                if style_id in stylesheet_ids:
+                    # found an existing stylesheet, place the new one below
+                    cssreg.moveResourceAfter('deprecated.css', style_id)
+                    break # we are done
+        if 'portlets.css' not in stylesheet_ids:
+            cssreg.registerStylesheet('portlets.css', media="screen")
+            cssreg.moveResourceAfter('portlets.css', 'deprecated.css')
     else:
         out.append("No CSSRegistry found.")
     out.append("Finished adding Portlet and Deprecated stylesheets.")
