@@ -78,7 +78,8 @@
     padding: 3px 2em 3px 0;
 }
 #portal-siteactions li {
-    display: inline;
+    display: block;
+    float: left;
 }
 #portal-siteactions li a {
     background-color: transparent;
