@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (Unreleased)
 
+    - Removed data/navigation_properties that was deprecated in Plone 2.0, as
+      well as the data/ directory. Migrations to remove the property sheet
+      from ZODB has been added before.
+      [vinsci]
+
     - Changed unload protection, so only forms with
       class="enableUnloadProtection" are checked.
       [fschulze]
