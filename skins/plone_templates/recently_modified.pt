@@ -27,14 +27,16 @@
         <tal:results tal:repeat="result batch">
 
             <dl>
-                <dt>
+                <dt tal:define="item_wf_state result/review_state;
+                                item_wf_state_class python:here.getStateClassName(item_wf_state);">
                     <img src="" alt="" style="border: 0"
                          tal:attributes="src result/getIcon;
                                          alt result/Type" />
 
                     <a href="/view"
                        tal:content="result/Title"
-                       tal:attributes="href result/getURL">
+                       tal:attributes="href result/getURL;
+                                       class string:$item_wf_state_class">
                     Title
                     </a>
 
