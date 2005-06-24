@@ -10,12 +10,8 @@
                 getIconFor nocall:putils/getIconFor"
     tal:condition="site_actions">
 
-    <tal:actions repeat="saction site_actions">
-      <li tal:define="icon python:getIconFor('site_actions', saction['id'], None);
-                      class_name string:actionicon-site_actions-${saction/id} visualIconReplace;
-                      class_name python:test(icon, class_name, nothing);"
-          tal:attributes="id string:siteaction-${saction/id};
-                          class class_name"><a
+    <li tal:repeat="saction site_actions"
+        tal:attributes="id string:siteaction-${saction/id}"><a
            href=""
            tal:define="title saction/name"
            i18n:attributes="title"
@@ -24,7 +20,6 @@
            tal:attributes="href saction/url;
                            title title;"
            >Site action</a></li>
-    </tal:actions>
 
 </ul>
 </body>
