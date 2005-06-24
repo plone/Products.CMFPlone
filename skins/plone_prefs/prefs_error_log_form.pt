@@ -86,7 +86,9 @@
             </fieldset>
         </form>
 
-    <form action="prefs_error_log_setProperties" method="post">
+    <form action="prefs_error_log_setProperties"
+          method="post"
+          class="enableUnloadProtection">
     
         <fieldset tal:define="props here/error_log/getProperties">
         

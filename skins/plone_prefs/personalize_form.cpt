@@ -29,6 +29,7 @@
     <form action="personalize"
           method="post"
           enctype="multipart/form-data"
+          class="enableUnloadProtection"
           tal:condition="member"
           tal:attributes="action template/getId">
 

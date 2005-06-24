@@ -95,6 +95,7 @@
         <form action=""
               name="groups"
               method="post"
+              class="enableUnloadProtection"
               tal:attributes="action string:${gtool/absolute_url}"
               tal:define="targetobject gdtool;
                           targetGetProperty nocall:group/getProperty | nocall:here/returnNone;">

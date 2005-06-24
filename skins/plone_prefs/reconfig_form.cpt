@@ -27,6 +27,7 @@
     <form action=""
           name="reconfig"
           method="post"
+          class="enableUnloadProtection"
           tal:attributes="action string:${here/absolute_url}/${template/getId}">
         
         <fieldset>

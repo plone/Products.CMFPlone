@@ -27,6 +27,7 @@
     <form action=""
           name="mailhost"
           method="post"
+          class="enableUnloadProtection"
           tal:attributes="action string:${here/absolute_url}/${template/getId}"
           tal:define="props python:here.portal_properties;">
 

@@ -70,6 +70,7 @@ we eventually might want to merge this form with personalize_form
                   name="users"
                   method="post"
                   enctype="multipart/form-data"
+                  class="enableUnloadProtection"
                   tal:condition="user | nothing"
               tal:attributes="action template/getId">
 
