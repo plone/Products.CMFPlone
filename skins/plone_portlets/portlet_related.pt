@@ -3,52 +3,52 @@
       i18n:domain="plone">
 <body>
 
-<!-- The Related Items box -->
+<!-- Should be removed once the related items list on the view templates is
+     in place (Plone 2.1) ~limi -->
 
 <div metal:define-macro="portlet"
      tal:define="related here/navigationLocalRelated;
                  relatedLocal related/local;
-                 relatedRemote related/remote;
-                 "
-     tal:condition="python: relatedLocal or relatedRemote" >
+                 relatedRemote related/remote;"
+     tal:condition="python: relatedLocal or relatedRemote">
 
-    <div class="portlet"
-         id="portlet-related">
+<dl class="portlet"
+    id="portlet-related">
 
-        <h5 i18n:translate="box_related">Related</h5>
+    <dt class="portletHeader"
+        i18n:translate="box_related">Related</dt>
 
-        <div class="portletBody">
+    <dd class="portletItemSingle odd" tal:condition="relatedLocal">
+        <strong i18n:translate="box_local_resources">Local resources</strong>
+        <br />
+        <ul class="visualNoMarker">
+            <li tal:repeat="related relatedLocal">
+                <a href=""
+                   tal:attributes="href string:${related/url}/view">
+                   <img src="" alt=""
+                        tal:attributes="src string:$portal_url/${related/icon};alt here/Title" />
+                   &nbsp;<span tal:replace="related/title">Object related by keyword</span>
+                </a>
+            </li>
+        </ul>
+    </dd>
 
-            <div class="portletContent odd" tal:condition="relatedLocal">
-                <strong i18n:translate="box_local_resources">Local resources</strong>
-                <br />
-                <div tal:repeat="related relatedLocal">
-                    <a href=""
-                       tal:attributes="href string:${related/url}/view">
-                       <img src="" alt=""
-                            tal:attributes="src string:$portal_url/${related/icon};alt here/Title" />
-                       &nbsp;<span tal:replace="related/title">Object related by keyword</span>
-                    </a>
-                </div>
-            </div>
+    <dd class="portletItemSingle even" tal:condition="relatedRemote">
+        <strong i18n:translate="box_external_links">External links</strong>
+        <ul class="visualNoMarker">
+            <li tal:repeat="related relatedRemote">
+                <a href=""
+                   tal:attributes="href string:${related/url}/view">
+                   <img src="" alt=""
+                        tal:attributes="src string:$portal_url/${related/icon};alt here/Title" />
+                   &nbsp;<span tal:replace="related/title">Object related by keyword</span>
+                </a>
+            </li>
+        </ul>
+    </dd>
 
-            <div class="portletContent even" tal:condition="relatedRemote">
-                <strong i18n:translate="box_external_links">External links</strong>
-                <div tal:repeat="related relatedRemote">
-                    <a href=""
-                       tal:attributes="href string:${related/url}/view">
-                       <img src="" alt=""
-                            tal:attributes="src string:$portal_url/${related/icon};alt here/Title" />
-                       &nbsp;<span tal:replace="related/title">Object related by keyword</span>
-                    </a>
-                </div>
-            </div>
-
-        </div>
-
-    </div>
+</dl>
 
 </div>
-
 </body>
 </html>

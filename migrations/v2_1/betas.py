@@ -55,6 +55,9 @@ def alpha2_beta1(portal):
     # Remove plone prefix of stylesheet files
     removePlonePrefixFromStylesheets(portal, out)
 
+    # Add deprecated and portlet style sheets
+    addDeprecatedAndPortletStylesheets(portal, out)
+    
     return out
 
 
@@ -331,6 +334,16 @@ def removePlonePrefixFromStylesheets(portal, out):
     else:
         out.append("No CSSRegistry found.")
     out.append("Finished removing plone prefix from stylesheets.")
+
+def addDeprecatedAndPortletStylesheets(portal, out):
+    out.append("Adding Portlet and Deprecated stylesheets.")
+    cssreg = getToolByName(portal, 'portal_css', None)
+    if cssreg is not None:
+        cssreg.registerStylesheet('deprecated.css', media="screen")
+        cssreg.registerStylesheet('portlets.css', media="screen")
+    else:
+        out.append("No CSSRegistry found.")
+    out.append("Finished adding Portlet and Deprecated stylesheets.")
 
 def allowOwnerToAccessInactiveContent(portal, out):
     permission = CMFCorePermissions.AccessInactivePortalContent

@@ -1,70 +1,65 @@
 <html xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:metal="http://xml.zope.org/namespaces/metal"
       i18n:domain="plone">
-
 <body>
-
-<!-- The Recent Items box -->
-
 <div metal:define-macro="portlet"
      tal:condition="python:not isAnon and template.getId()!='recently_published'">
      
-    <tal:recentlist tal:define="last_login_time python:member.getProperty('last_login_time', DateTime());
+
+<tal:recentlist tal:define="last_login_time python:member.getProperty('last_login_time', DateTime());
                  results python:request.get('items',
-                                            here.portal_catalog.searchResults(modified={'query': last_login_time,
-                                                                                        'range': 'min'},
-                                                                              sort_on='modified',
-                                                                              sort_order='reverse',
-                                                                              review_state='published')[:5]);">
+                                            here.portal_catalog.searchResults(sort_on='modified',
+                                                                              sort_order='reverse')[:5]);">
 
-    <div class="portlet" id="portlet-recent">
+<dl class="portlet" id="portlet-recent">
+  
+    <span class="portletTopLeft" />
+    <dt class="portletHeader">
+        <a href="#" i18n:translate="portlet_recentitems">Recent Changes</a>
+    </dt>
+    <span class="portletTopRight" />
+  
+    <tal:items tal:repeat="obj results">
+    <dd class="portletItem"
+        tal:define="oddrow repeat/obj/odd"
+        tal:attributes="class python:test(oddrow, 
+                                         'portletItem even', 
+                                         'portletItem odd')">
+        <a href=""
+           tal:attributes="href string:${obj/getURL}/view;
+                           title obj/Description">
+            <tal:title content="python:test(obj.Title, obj.Title, obj.id)">
+            Plone 2.1 released!
+            </tal:title>
+            <span class="portletItemDetails"
+                  tal:content="python:here.toLocalizedTime(obj.ModificationDate)"
+                  >May 5</span>
+        </a>
+    </dd>
+    </tal:items>
 
-        <h5 i18n:translate="box_recentitems">Recent Items</h5>
+    <dd class="portletItem" 
+        tal:condition="not: results"
+        i18n:translate="portlet_recent_no_items">
+        No items changed yet.
+    </dd>
 
-        <div class="portletBody">
+  
+    <dd class="portletFooter even">
+        <a href="#"
+           tal:attributes="href string:${portal_url}/recently_published"
+           i18n:translate="portlet_more_recently_changed">
+        All recent changes&hellip;
+        </a>
+    </dd>
+  
+    <span class="portletBottomLeft" />
+    <span class="portletBottomRight" />
+  
+</dl>
 
-            <tal:block tal:repeat="obj results">
-
-                <div tal:define="oddrow repeat/obj/odd"
-                     tal:attributes="class python:test(oddrow, 'portletContent even', 'portletContent odd')">
-
-                    <a href=""
-                       tal:attributes="href string:${obj/getURL}/view;
-                                       title obj/Description">
-                        <span tal:replace="python:test(obj.Title, obj.Title, obj.id)"> Item title </span>
-                    </a>
-
-                    <div class="portletDetails"
-                         tal:content="python:here.toLocalizedTime(obj.ModificationDate)">July 7, 08:11</div>
-                </div>
-
-            </tal:block>
-
-            <div class="portletContent odd" tal:condition="not: results"
-                 i18n:translate="box_recently_no_items">
-            No items published or changed since your last log-in.
-            </div>
-
-            <div class="portletContent odd">
-
-                <a href=""
-                   class="portletMore"
-                   tal:attributes="href string:${portal_url}/recently_published"
-                   i18n:translate="box_morelink"
-                   >
-                    More...
-                </a>
-
-            </div>
-
-        </div>
-
-    </div>
-
-    </tal:recentlist>
+</tal:recentlist>
     
 </div>
-
 </body>
-
 </html>

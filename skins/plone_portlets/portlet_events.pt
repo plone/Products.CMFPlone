@@ -1,76 +1,81 @@
 <html xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:metal="http://xml.zope.org/namespaces/metal"
       i18n:domain="plone">
-
 <body>
-
-<!-- The events box -->
-
 <div metal:define-macro="portlet"
      tal:define="results python:here.portal_catalog.searchResults(
-                            portal_type='Event',
-                            end={'query': here.ZopeTime(),
-                                 'range': 'min'},
-                            sort_on='start',
-                            review_state='published')[:2];"
+                 portal_type='Event',
+                 end={'query': here.ZopeTime(),
+                      'range': 'min'},
+                 sort_on='start',
+                 review_state='published')[:5];"
      tal:condition="results">
 
-    <div class="portlet" id="portlet-events">
+<dl class="portlet" id="portlet-events">
+  
+    <span class="portletTopLeft" />
+    <dt class="portletHeader">
+        <a href="#"
+           i18n:translate="box_events">Upcoming Events</a>
+    </dt>
+    <span class="portletTopRight" />
+  
+    <tal:events tal:repeat="obj results">
+    <dd class="portletItem"
+        tal:define="oddrow repeat/obj/odd"
+        tal:attributes="class python:test(oddrow, 'portletItem even', 'portletItem odd')">
+        <a href="#"
+           tal:attributes="href obj/getURL;
+                           title obj/Description">
+            <img tal:replace="structure here/event_icon.gif" />
+            <span tal:replace="python:test(obj.Title, obj.Title, obj.getId)">
+             Some Event 
+            </span>
+            <span class="portletItemDetails">
+                <tal:condition condition="obj/location">
+                    <tal:location content="obj/location">Location</tal:location>, <br />
+                </tal:condition>
+                <tal:date content="python:here.toLocalizedTime(obj.start)">
+                May 5
+                </tal:date>
+            </span>
+        </a>
+    </dd>
+    </tal:events>
+  
+    <dd class="portletFooter">
+        <a href=""
+           tal:condition="python:'events' in portal.contentIds()"
+           tal:attributes="href string:${utool}/events"
+           i18n:translate="portlet_upcoming_events">
+            <img tal:replace="structure here/event_icon.gif" />
+            Upcoming events&hellip;
+        </a>
 
-        <h5 i18n:translate="box_events">Upcoming Events</h5>
+        <a href=""
+           tal:condition="python:'events' not in portal.contentIds()"
+           tal:attributes="href string:${utool}/events_listing"
+           i18n:translate="portlet_upcoming_events">
+            <img tal:replace="structure here/event_icon.gif" />
+            Upcoming events&hellip;
+        </a>
 
-        <div class="portletBody">
+        <br />
+        <a href=""
+           tal:condition="python:'events' in portal.contentIds()"
+           tal:attributes="href string:${utool}/events"
+           i18n:translate="portlet_previous_events">
+            <img tal:replace="structure here/undo_icon.gif" />
+            Previous events&hellip;
+        </a>
+    </dd>
+  
+    <span class="portletBottomLeft" />
+    <span class="portletBottomRight" />
+  
+</dl>
 
-            <tal:block tal:repeat="obj results">
-
-                <div tal:define="oddrow repeat/obj/odd"
-                     tal:attributes="class python:test(oddrow, 'portletContent even', 'portletContent odd')">
-
-                    <a href=""
-                       tal:attributes="href obj/getURL;
-                                       title obj/Description">
-                        <tal:block replace="structure here/event_icon.gif"/>
-                        <span tal:replace="python:test(obj.Title, obj.Title, obj.getId)"> Event </span>
-                    </a>
-
-                    <div class="portletDetails">
-                        <tal:condition condition="obj/location">
-                            <tal:location content="obj/location">Location</tal:location>, <br />
-		        </tal:condition>
-                        <tal:date content="python:here.toLocalizedTime(obj.start)">July 7, 08:11</tal:date>
-                    </div>
-                </div>
-
-            </tal:block>
-
-            <div class="portletContent odd">
-
-                <a href=""
-                   class="portletMore"
-                   tal:condition="python:'events' in portal.contentIds()"
-                   tal:attributes="href string:${utool}/events"
-                   i18n:translate="box_morelink"
-                   >
-                    More...
-                </a>
-
-                <a href=""
-                   class="portletMore"
-                   tal:condition="python:'events' not in portal.contentIds()"
-                   tal:attributes="href string:${utool}/events_listing"
-                   i18n:translate="box_morelink"
-                   >
-                    More...
-                </a>
-
-            </div>
-
-        </div>
-
-    </div>
 
 </div>
-
 </body>
-
 </html>

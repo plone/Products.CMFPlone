@@ -6,32 +6,34 @@
        i18n:domain="plone"
        tal:omit-tag=""
        tal:define="data python:here.plone_utils.createNavTree(here, sitemap=None);">
-    <div class="portlet" id="portlet-navigation-tree">
-        <h5 i18n:translate="box_navigation">Navigation</h5>
-        <div class="portletBody">
-            <div class="portletContent odd">
-                <ul class="navTree navTreeLevel0">
+       
+<dl class="portlet" id="portlet-navigation-tree">
+    <dt class="portletHeader"
+        i18n:translate="box_navigation">
+        <a href="#" tal:attributes="href string:$portal_url/sitemap">Navigation</a>
+    </dt>
+    
+    <dd class="portletItemSingle">
+        <ul class="portletNavigationTree portletNavigationLevel0">
 
-                    <li class="navTreeItem"
-                        tal:condition="portal_properties/navtree_properties/includeTop">
+	        <li class="portletNavigationTreeItem"
+	            tal:condition="portal_properties/navtree_properties/includeTop">
+	            <a tal:attributes="href string:$portal_url;
+		                           title portal/Description;
+		                           style string:background-image: url($portal_url/site_icon.gif);
+		                           class python:test(portal == here or (portal == here.aq_parent and here.plone_utils.isDefaultPage(here)), 'currentNavItem', '');">
+                    <span tal:omit-tag=""
+                          i18n:translate="tabs_home">Home</span>
+	            </a>
+            </li>
 
-                        <div class="contenttype-plone-site">
-                        <a tal:attributes="href string:$portal_url;
-                                           title portal/Description;
-                                           class python:test(portal == here or (portal == here.aq_parent and here.plone_utils.isDefaultPage(here)), 'navTreeCurrentItem visualIconPadding', 'visualIconPadding');"
-                           i18n:translate="tabs_home">
-                        Home
-                        </a>
-                        </div>
-                    </li>
+        	<li tal:replace="structure python:here.portlet_navtree_macro(children=data.get('children', []), level=1)">
+	        SUBTREE
+            </li>
+        </ul>
+    </dd>
+</dl>
 
-                    <li tal:replace="structure python:here.portlet_navtree_macro(children=data.get('children', []), level=1)">
-                      SUBTREE
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
 </div>
 </body>
 </html>

@@ -4,6 +4,14 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (Unreleased)
 
+    - Total rewrite of portlet HTML and CSS. Will keep backwards compatibility
+      until Plone 2.2 is released, though. The old div-based layout is 
+      deprecated in favor of a more light-weight markup using definition lists 
+      and allowing interesting skinning variations - round corners using CSS,
+      for example. It also has bigger click areas, making it easier to navigate
+      the portlets.
+      [limi]
+
     - Changed dropdowns slightly, now the activated/deactivated class is set
       on the dl, not on the dd. When javascript is disabled, the dropdowns
       don't have an arrow anymore.
