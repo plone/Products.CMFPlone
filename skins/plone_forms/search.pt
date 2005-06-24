@@ -58,16 +58,19 @@
         <tal:results repeat="result batch">
         <tal:entry define="result_url result/getURL;
                            url string:$result_url/view?searchterm=${searchterm};">
-            <dt>
-        <a href="#"
-                tal:attributes="href url">
+            <dt tal:define="item_wf_state result/review_state;
+                            item_wf_state_class python:here.getStateClassName(item_wf_state);">
+                <a href="#"
+                tal:attributes="href url;">
                 <img src="#"
                      height="16"
                      width="16"
                      alt=""
                      tal:on-error="structure python:path('here/linkOpaque.gif')"
                      tal:replace="structure python:path('here/%s' % result.getIcon)" /></a>&nbsp;<a
-                href="#" tal:attributes="href url"
+                     href="#" 
+                     tal:attributes="href url;
+                                     class string:$item_wf_state_class"
                 tal:content="python:result.Title or result.getId" />
                <span class="discreet" 
                      title="Relevance"
