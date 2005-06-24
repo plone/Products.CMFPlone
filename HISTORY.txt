@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (Unreleased)
 
+    - Changed unload protection, so only forms with
+      class="enableUnloadProtection" are checked.
+      [fschulze]
+
     - Slight change to navigationParent script so that it won't fail
       when a Z3 view is in the acquisition tree
       [rafrombrc]
