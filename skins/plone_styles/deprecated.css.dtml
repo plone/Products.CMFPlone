@@ -2,37 +2,111 @@
    the next version of Plone. They are here for backwards compatibility only. */
 
 /* <dtml-var "enableHTTPCompression(request=REQUEST, debug=1, css=1)"> (this is for http compression) */
-/* <dtml-with stylesheet_properties> (do not remove this :) */
-a.skipnav{visibility:hidden;position:absolute;}
-div listingBar img{vertical-align:middle;}
+/* <dtml-with base_properties> (do not remove this :) */
+/* <dtml-call "REQUEST.set('portal_url', portal_url())"> (not this either :) */
 
-/* The old portlet style format */
-div.box{border:none;margin:0em 0em 2em 0em;padding:0;}
-div.box .content{padding:1em;}
-div.box .even{background-color:&dtml-boxEvenBackground;:;}
-div.box .odd{background-color:&dtml-boxOddBackground;:;}
-div.box a.close{float:right;text-transform:none;border-left:&dtml-boxBorder;;padding:0em 0.2em;}
-div.box div.body{background:transparent;border-collapse:collapse;border:&dtml-boxBorder; !important:;}
-div.box h1,
-div.box h2,
-div.box h3,
-div.box h4{margin:0;padding:0;font-weight:normal;}
-div.box h5{background:&dtml-boxHeaderBackground;;border:&dtml-boxBorder;;border-style:solid solid none solid;color:&dtml-boxHeaderFontColor;;padding:0em 1em 0em 1em;text-transform:&dtml-textTransform;;display:inline;font-size:1em;height:1em;font-weight:normal;}
-div.box h6{background:&dtml-boxHeaderBackground;;border:&dtml-boxBorder;;border-style:solid solid none solid;color:&dtml-boxHeaderFontColor;;padding:0em 1em 0em 1em;text-transform:&dtml-textTransform;;display:block;font-size:1em;height:1.2em;font-weight:normal;}
-div.box input{font-size:100%;}
+/* Old div-based portlet syntax - this is deprecated and will be removed in plone 2.2, please use the new
+   definition list-based portlets above in your products. */
 
-/* Old Navigation tree styling */
-.navIcon, .navIconRoot { position: relative; right: 20px; }
-.navItemText { margin-left: -20px; }
-.navRootItem, .navItem { margin: 0 0 0.2em 0; border: &dtml-borderWidth; &dtml-borderStyle; &dtml-backgroundColor;; display: block; background-repeat: no-repeat; background-position: 0 1px; padding: 0.1em 0.25em 0.2em 20px;margin: 1px 0;} 
-.currentNavItem { ackground-color: &dtml-globalBackgroundColor;;color: &dtml-globalFontColor;;border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;}
-.navLevel1 { margin-left: 0em; }
-.navLevel2 { margin-left: 1em; }
-.navLevel3 { margin-left: 2em; }
-.navLevel4 { margin-left: 3em; }
-.navLevel5 { margin-left: 4em; }
-.navLevel6 { margin-left: 4.5em; }
-.navLevel7 { margin-left: 5em;   }
-.navLevel8 { margin-left: 5.5em; }
+div.portlet {
+    border: none;
+    margin-bottom: 1em;
+    padding: 0;
+}
+
+div.portlet a {
+    text-decoration: none;
+}
+
+/* Compensation when rendering portlets in the content area */
+#region-content .portlet {
+    font-size: 94%;
+}
+
+div.portlet h4 { /* The new base portlet header, h5 and h6 will be for use inside
+                 the portlet in the upcoming versions. */
+    background-color: &dtml-globalBackgroundColor;;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    padding: 0em 0.3em 0em 1em;
+    text-transform: &dtml-textTransform;;
+    display: block;
+    font-size: 1em;
+    font-weight: normal;
+}
+div.portlet h5 {
+    background-color: &dtml-globalBackgroundColor;;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    padding: 0em 1em 0em 1em;
+    text-transform: &dtml-textTransform;;
+    display: inline;
+    font-size: 1em;
+    font-weight: normal;
+    white-space: nowrap;
+    position: relative;
+    top: -&dtml-borderWidth;;
+}
+div.portlet h6 {
+    background-color: &dtml-globalBackgroundColor;;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    padding: 0em 0.3em 0em 1em;
+    text-transform: &dtml-textTransform;;
+    display: block;
+    font-size: 1em;
+    font-weight: normal;
+}
+
+div.portletBody {
+    position: relative;
+    top: -&dtml-borderWidth;;
+    background: transparent;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+}
+div.portletDetails {
+    text-align: right;
+}
+
+div.portletContent {
+    padding: 1em;
+}
+div.portletAction {
+    float: right;
+    width: 0.8em;
+    text-align: center;
+    display: block;
+    text-transform: none;
+    border-left: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    padding-left: 0.3em;
+}
+
+div.portlet h1,
+div.portlet h2,
+div.portlet h3,
+div.portlet h4 {
+    margin: 0;
+    padding: 0;
+}
+
+div.portlet input {
+    font-size: 100%;
+}
+
+div.portletSyndication {
+    display: block;
+    float: left; 
+    border: 1px solid #8cacbb; 
+    background-color: #dee7ec;
+    font-size: 85%;
+}
+
+a.portletMore {
+    display: block;
+    text-align: right;
+}
+
+div.portletFooter {
+    padding: 0.5em 1em 1em 1em;
+}
+
+
 
 /* </dtml-with> */

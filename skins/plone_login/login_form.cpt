@@ -5,6 +5,8 @@
 <head>
     <script type="text/javascript" metal:fill-slot="javascript_head_slot">
     </script>
+    <metal:block fill-slot="top_slot"
+                 tal:define="dummy python:request.set('disable_border',1)" />
 </head>
 
 <body>

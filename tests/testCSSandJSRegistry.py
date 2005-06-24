@@ -26,6 +26,8 @@ class TestCSSRegistry(PloneTestCase.PloneTestCase):
                     'authoring.css', 
                     'public.css',
                     'base.css',
+                    'portlets.css',
+                    'deprecated.css',
                     'generated.css',
                     'member.css',
                     'print.css',

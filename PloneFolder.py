@@ -340,7 +340,7 @@ class BasePloneFolder( SkinnedFolder, DefaultDublinCoreImpl ):
             if not mt.checkPermission(Permissions.delete_objects, item):
                 raise Unauthorized, (
                     "Do not have permissions to remove this object")
-        SkinnedFolder.manage_delObjects(self, ids, REQUEST=REQUEST)
+        return SkinnedFolder.manage_delObjects(self, ids, REQUEST=REQUEST)
 
     def __browser_default__(self, request):
         """ Set default so we can return whatever we want instead

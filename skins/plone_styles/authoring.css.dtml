@@ -203,7 +203,7 @@ input.searchButton {
 
 
 ul.configlets {
-    margin: 1em;
+    margin: 1em 0;
     list-style-image: none;
     list-style: none;
 }
@@ -239,6 +239,17 @@ ul.configletDetails li label {
     font-weight: bold;
 }
 
+/* List classes without markers */
+
+ul.visualNoMarker,
+ol.visualNoMarker {
+    list-style-type: none;
+    list-style-image: none;
+    margin: 0.5em 0 0 0;
+}
+
+
+
 /* Additional STX workaround classes */
 .stx table p /* stupid STX table workaround */
 {
@@ -253,111 +264,84 @@ ul.configletDetails li label {
     border-bottom: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
 }
 
-.portlet {
-    border: none;
-    margin-bottom: 1em;
-    padding: 0;
-}
+/* Navigation tree styling */
 
-.portlet a {
-    text-decoration: none;
-}
-
-/* Compensation when rendering portlets in the content area */
-#region-content .portlet {
-    font-size: 94%;
-}
-
-.portlet h4 { /* The new base portlet header, h5 and h6 will be for use inside
-                 the portlet in the upcoming versions. */
-    background-color: &dtml-globalBackgroundColor;;
-    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
-    padding: 0em 0.3em 0em 1em;
-    text-transform: &dtml-textTransform;;
-    display: block;
-    font-size: 1em;
-    font-weight: normal;
-}
-.portlet h5 {
-    background-color: &dtml-globalBackgroundColor;;
-    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
-    padding: 0em 1em 0em 1em;
-    text-transform: &dtml-textTransform;;
-    display: inline;
-    font-size: 1em;
-    font-weight: normal;
-    white-space: nowrap;
+.navIcon,
+.navIconRoot {
     position: relative;
-    top: -&dtml-borderWidth;;
+    right: 20px;
 }
-.portlet h6 {
+
+.navItemText {
+    margin-left: -20px;
+}
+
+.navRootItem,
+.navItem {
+    margin: 0 0 0.2em 0;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-backgroundColor;;
+    display: block;
+    background-repeat: no-repeat;
+    background-position: 0 1px;
+    padding: 0.1em 0.25em 0.2em 20px;
+    margin: 1px 0;
+}
+
+.currentNavItem,
+#portlet-navigation-tree a:hover {
     background-color: &dtml-globalBackgroundColor;;
-    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
-    padding: 0em 0.3em 0em 1em;
-    text-transform: &dtml-textTransform;;
-    display: block;
-    font-size: 1em;
-    font-weight: normal;
-}
-
-.portletBody {
-    position: relative;
-    top: -&dtml-borderWidth;;
-    background: transparent;
+    color: &dtml-globalFontColor;;
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
 }
-.portletDetails {
-    text-align: right;
+
+/* The deprecated navtree levels. These will go away once we ship with new 
+   navtree in 2.1 */
+
+.navLevel1 { margin-left: 0em; }
+.navLevel2 { margin-left: 1em; }
+.navLevel3 { margin-left: 2em; }
+.navLevel4 { margin-left: 3em; }
+.navLevel5 { margin-left: 4em; }
+.navLevel6 { margin-left: 4.5em; }
+.navLevel7 { margin-left: 5em;   }
+.navLevel8 { margin-left: 5.5em; }
+
+
+/* New-style navigation tree */
+
+.portletNavigationTree {
+    margin: 0 0 0 0.75em; 
+    padding: 0; 
+    list-style: none; 
+    list-style-image: none; 
+    line-height: 1em;
 }
 
-.portletContent {
-    padding: 1em;
-}
-.portletAction {
-    float: right;
-    width: 0.8em;
-    text-align: center;
-    display: block;
-    text-transform: none;
-    border-left: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
-    padding-left: 0.3em;
-}
-
-.portlet h1,
-.portlet h2,
-.portlet h3,
-.portlet h4 {
+.portletNavigationTreeItem {
     margin: 0;
-    padding: 0;
 }
 
-.portlet .even {
-    background-color: &dtml-evenRowBackgroundColor;;
-}
-.portlet .odd {
-    background-color: &dtml-oddRowBackgroundColor;;
-}
-.portlet input {
-    font-size: 100%;
-}
-
-.portletSyndication {
+.portletNavigationTreeItem a {
     display: block;
-    float: left; 
-    border: 1px solid #8cacbb; 
-    background-color: #dee7ec;
-    font-size: 85%;
+    text-decoration: none;
+    padding: 0.5em 0 0.5em 1.75em;
+    background-repeat: no-repeat;
+    background-position: 0 3px;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-backgroundColor;;
 }
 
-.portletMore {
-    display: block;
-    text-align: right;
+.portletNavigationTreeItem a:hover,
+.currentNavItem {
+    background-color: &dtml-globalBackgroundColor;;
+    color: &dtml-globalFontColor;;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor; !important;
 }
 
-.portletFooter {
-    padding: 0.5em 1em 1em 1em;
-}
+/* The new navtree level structure. */
 
+.portletNavigationLevel0 {
+    margin: 0;
+}
 
 
 
@@ -674,7 +658,8 @@ ul.configletDetails li label {
     cursor: pointer;
 }
 
-.actionMenu .actionMenuHeader a {
+.actionMenu.activated .actionMenuHeader a,
+.actionMenu.deactivated .actionMenuHeader a {
     background-image: url(<dtml-var portal_url>/arrowDownAlternative.gif);
     background-repeat: no-repeat;
     background-position: 95% 60%;
@@ -704,10 +689,10 @@ ul.configletDetails li label {
     cursor: pointer;
 }
 
-.actionMenu dd.activated {
+.actionMenu.activated .actionMenuContent {
     display: block !important;
 }
-.actionMenu dd.activated {
+.actionMenu.activated .actionMenuContent {
     /* this one will be ignored by IE, it is here to fix the cut-off error in
        Firefox */
     display: table !important;
@@ -715,7 +700,7 @@ ul.configletDetails li label {
     border-spacing: 0;
 }
 
-.actionMenu dd.deactivated {
+.actionMenu.deactivated .actionMenuContent {
     display: none !important;
 }
 

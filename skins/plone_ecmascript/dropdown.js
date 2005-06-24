@@ -11,15 +11,15 @@
  *   </dd>
  * </dl>
  *
- * When the menu is toggled, then the dd with the class actionMenuContent will
- * get an additional class which switches between 'activated' and 'deactivated'.
+ * When the menu is toggled, then the dl with the class actionMenu will get an
+ * additional class which switches between 'activated' and 'deactivated'.
  * You can use this to style it accordingly, for example:
  *
- * .actionMenu .activated {
+ * .actionMenu.activated {
  *   display: block;
  * }
  *
- * .actionMenu .deactivated {
+ * .actionMenu.deactivated {
  *   display: none;
  * }
  *
@@ -37,40 +37,35 @@ function isActionMenu(node) {
         return true;
     }
     return false;
-}
+};
 
 function toggleMenu(event) {
     if (!event) var event = window.event; // IE compatibility
 
     // terminate if we hit a non-compliant DOM implementation
     // returning true, so the link is still followed
-    if (!document.getElementById){return true;}
+    if (!W3CDOM){return true;}
 
     if (!this.tagName && (this.tagName == 'A' || this.tagName == 'a')) {
         return true;
     }
 
-    container = findContainer(this, isActionMenu);
+    var container = findContainer(this, isActionMenu);
     if (!container) {
         return true;
     }
 
-    menu_body = cssQuery('dd.actionMenuContent', container)[0];
-    if (!menu_body) {
-        return true;
-    }
-
     // check if the menu is visible
-    if (hasClassName(menu_body, 'activated')) {
+    if (hasClassName(container, 'activated')) {
         // it's visible - hide it
-        replaceClassName(menu_body, 'activated', 'deactivated', true);
+        replaceClassName(container, 'activated', 'deactivated', true);
     } else {
         // it's invisible - make it visible
-        replaceClassName(menu_body, 'deactivated', 'activated', true);
+        replaceClassName(container, 'deactivated', 'activated', true);
     }
 
     return false;
-}
+};
 
 function actionMenuDocumentMouseDown(event) {
     if (!event) var event = window.event; // IE compatibility
@@ -80,20 +75,20 @@ function actionMenuDocumentMouseDown(event) {
     else if (event.srcElement)
         targ = event.srcElement;
 
-    container = findContainer(targ, isActionMenu);
+    var container = findContainer(targ, isActionMenu);
     if (container) {
         // targ is part of the menu, so just return and do the default
         return true;
     }
 
     // hide all menus
-    menu_bodys = cssQuery('dl.actionMenu > dd.actionMenuContent');
-    for (i in menu_bodys) {
-        replaceClassName(menu_bodys[i], 'activated', 'deactivated', true);
+    menus = cssQuery('dl.actionMenu');
+    for (var i in menus) {
+        replaceClassName(menus[i], 'activated', 'deactivated', true);
     }
 
     return true;
-}
+};
 
 function actionMenuMouseOver(event) {
     if (!event) var event = window.event; // IE compatibility
@@ -102,51 +97,56 @@ function actionMenuMouseOver(event) {
         return true;
     }
 
-    container = findContainer(this, isActionMenu);
+    var container = findContainer(this, isActionMenu);
     if (!container) {
         return true;
     }
-    menu_id = container.id;
+    var menu_id = container.id;
 
     var switch_menu = false;
     // hide all menus
-    menu_bodys = cssQuery('dl.actionMenu > dd.actionMenuContent');
-    for (i in menu_bodys) {
-        menu_body = menu_bodys[i]
+    var menus = cssQuery('dl.actionMenu');
+    for (var i in menus) {
+        var menu = menus[i]
         // check if the menu is visible
-        if (hasClassName(menu_body, 'activated')) {
+        if (hasClassName(menu, 'activated')) {
             switch_menu = true;
         }
         // turn off menu when it's not the current one
-        if (menu_body.id != menu_id) {
-            replaceClassName(menu_body, 'activated', 'deactivated', true);
+        if (menu.id != menu_id) {
+            replaceClassName(menu, 'activated', 'deactivated', true);
         }
     }
 
     if (switch_menu) {
-        menu_body = cssQuery('#'+menu_id+' > dd.actionMenuContent')[0];
-        if (menu_body) {
-            replaceClassName(menu_body, 'deactivated', 'activated', true);
+        var menu = cssQuery('#'+menu_id)[0];
+        if (menu) {
+            replaceClassName(menu, 'deactivated', 'activated', true);
         }
     }
 
     return true;
-}
+};
 
 function initializeMenus() {
     // terminate if we hit a non-compliant DOM implementation
-    if (! document.getElementsByTagName){return false;}
-    if (! document.getElementById){return false;}
+    if (!W3CDOM) {return false;}
 
-    document.onmousedown = actionMenuDocumentMouseDown
+    document.onmousedown = actionMenuDocumentMouseDown;
 
-    menu_headers = cssQuery('dl.actionMenu > dt.actionMenuHeader > a');
-    for (i in menu_headers) {
-        menu_header = menu_headers[i]
+    // hide all menus
+    menus = cssQuery('dl.actionMenu');
+    for (var i in menus) {
+        replaceClassName(menus[i], 'activated', 'deactivated', true);
+    }
+
+    var menu_headers = cssQuery('dl.actionMenu > dt.actionMenuHeader > a');
+    for (var i in menu_headers) {
+        menu_header = menu_headers[i];
 
         menu_header.onclick = toggleMenu;
         menu_header.onmouseover = actionMenuMouseOver;
     }
-}
+};
 
 registerPloneFunction(initializeMenus);

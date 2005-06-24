@@ -58,6 +58,9 @@ def alpha2_beta1(portal):
     # Add the plone_3rdParty to the skin layers
     add3rdPartySkinPath(portal, out)
 
+    # Add deprecated and portlet style sheets
+    addDeprecatedAndPortletStylesheets(portal, out)
+    
     return out
 
 
@@ -72,7 +75,7 @@ def installLogin(portal, out):
     # register login skin
     st = getToolByName(portal, 'portal_skins')
     if not hasattr(aq_base(st), 'plone_login'):
-	createDirectoryView(st, os.path.join('CMFPlone', 'skins', 'plone_login'))
+        createDirectoryView(st, os.path.join('CMFPlone', 'skins', 'plone_login'))
         out.append('Added directory view for plone_login')
 
     # add login skin to Plone Default, Plone Tableless skins
@@ -81,7 +84,7 @@ def installLogin(portal, out):
     for s in skins:
         if not selections.has_key(s):
            continue
-	cleanupSkinPath(portal, s)
+        cleanupSkinPath(portal, s)
         path = st.getSkinPath(s)
         path = map(string.strip, string.split(path,','))
         if not 'plone_login' in path:
@@ -334,6 +337,16 @@ def removePlonePrefixFromStylesheets(portal, out):
     else:
         out.append("No CSSRegistry found.")
     out.append("Finished removing plone prefix from stylesheets.")
+
+def addDeprecatedAndPortletStylesheets(portal, out):
+    out.append("Adding Portlet and Deprecated stylesheets.")
+    cssreg = getToolByName(portal, 'portal_css', None)
+    if cssreg is not None:
+        cssreg.registerStylesheet('deprecated.css', media="screen")
+        cssreg.registerStylesheet('portlets.css', media="screen")
+    else:
+        out.append("No CSSRegistry found.")
+    out.append("Finished adding Portlet and Deprecated stylesheets.")
 
 def allowOwnerToAccessInactiveContent(portal, out):
     permission = CMFCorePermissions.AccessInactivePortalContent

@@ -3,6 +3,11 @@
       metal:use-macro="here/main_template/macros/master"
       i18n:domain="plone">
 
+<head>
+    <metal:block fill-slot="top_slot"
+                 tal:define="dummy python:request.set('disable_border',1)" />
+</head>
+
 <body>
 
 <tal:block tal:condition="exists: here/portal_skins | nothing"

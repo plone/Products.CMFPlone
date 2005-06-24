@@ -100,7 +100,7 @@
       <fieldset>
 
         <legend i18n:translate="legend_assigned_roles">
-            Assigned Roles
+            Assigned Roles for
             <span tal:content="here/title_or_id" i18n:name="folder">title</span>
         </legend>
 
