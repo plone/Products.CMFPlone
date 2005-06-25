@@ -16,6 +16,19 @@ def two05_alpha1(portal):
     """
     out = []
 
+    # We do this earlier to avoid reindexing twice
+    reindex = tweakIndexes(portal, out)
+
+    # Tweak Properties And CSS. This needs to happen earlier so that
+    # ATCT migration doesn't fail
+    tweakPropertiesAndCSS(portal, out)
+
+    migrated = migrateCatalogIndexes(portal, out)
+
+    if not migrated and reindex:
+        refreshSkinData(portal, out)
+        reindexCatalog(portal, out)
+    
     # FIXME: Must get rid of this!
     # ATCT is not installed when SUPPRESS_ATCT_INSTALLATION is set to YES
     # It's required for some unit tests in ATCT [tiran]
@@ -44,14 +57,65 @@ def two05_alpha1(portal):
         #migrateToATCT(portal, out)
         migrateToATCT10(portal, out)
 
+    get_transaction().commit()
+    
     return out
 
+def tweakPropertiesAndCSS(portal, out):
+    # Install CSS and Javascript registries
+    # also install default CSS and JS in the registry tools
+    installCSSandJSRegistries(portal, out)
+    
+    # Add translation service tool to portal root
+    addTranslationServiceTool(portal, out)
+
+    # Add new memberdata properties
+    addMemberdataHome_Page(portal, out)
+    addMemberdataLocation(portal, out)
+    addMemberdataDescription(portal, out)
+    addMemberdataLanguage(portal, out)
+    addMemberdataExtEditor(portal,out)
+
+    # Update navtree_properties
+    updateNavTreeProperties(portal, out)
+
+def tweakIndexes(portal, out):
+    reindex = 0
+
+    # Switch path index to ExtendedPathIndex
+    reindex += switchPathIndex(portal, out)
+
+    # Add getObjPositionInParent index
+    reindex += addGetObjPositionInParentIndex(portal, out)
+
+    # Add getObjSize support to catalog
+    reindex += addGetObjSizeMetadata(portal, out)
+
+    # Add exclude_from_nav metadata
+    reindex += addExclude_from_navMetadata(portal, out)
+
+    # Install DateIndexes and DateRangeIndexes
+    reindex += migrateDateIndexes(portal, out)
+    reindex += migrateDateRangeIndexes(portal, out)
+
+    # Add sortable_title index
+    reindex += addSortable_TitleIndex(portal, out)
+
+    # add is_folderish metadata
+    reindex += addIs_FolderishMetadata(portal, out)
+
+    # Get rid of CMF typo 'ExpiresDate' metadata in favor of proper DC
+    # 'ExpirationDate' metadata
+    reindex += switchToExpirationDateMetadata(portal, out) 
+
+    return reindex
 
 def alpha1_alpha2(portal):
     """2.1-alpha1 -> 2.1-alpha2
     """
     out = []
-    reindex = 0
+
+    reindex = tweakIndexes(portal, out)
 
     # Add full_screen action
     addFullScreenAction(portal, out)
@@ -67,24 +131,8 @@ def alpha1_alpha2(portal):
     # Make a new property exposeDCMetaTags
     addExposeDCMetaTagsProperty(portal, out)
 
-    # Switch path index to ExtendedPathIndex
-    reindex += switchPathIndex(portal, out)
-
-    # Add getObjPositionInParent index
-    reindex += addGetObjPositionInParentIndex(portal, out)
-
-    # Add getObjSize support to catalog
-    reindex += addGetObjSizeMetadata(portal, out)
-
-    # Update navtree_properties
-    updateNavTreeProperties(portal, out)
-
     # Add sitemap action
     addSitemapAction(portal, out)
-
-    # Install CSS and Javascript registries
-    # also install default CSS and JS in the registry tools
-    installCSSandJSRegistries(portal, out)
 
     # Add types_not_searched site property
     addUnfriendlyTypesSiteProperty(portal, out)
@@ -107,21 +155,8 @@ def alpha1_alpha2(portal):
     # Add events topic
     addEventsTopic(portal, out)
 
-    # Add exclude_from_nav metadata
-    reindex += addExclude_from_navMetadata(portal, out)
-
     # Add objec cut/copy/paste/delete + batch buttons
     addEditContentActions(portal, out)
-
-    # Install DateIndexes and DateRangeIndexes
-    reindex += migrateDateIndexes(portal, out)
-    reindex += migrateDateRangeIndexes(portal, out)
-
-    # Add sortable_title index
-    reindex += addSortable_TitleIndex(portal, out)
-
-    # add is_folderish metadata
-    reindex += addIs_FolderishMetadata(portal, out)
 
     # Add groups 'administrators' and 'reviewers'
     addDefaultGroups(portal, out)
@@ -134,20 +169,6 @@ def alpha1_alpha2(portal):
 
     # Add selectable_views to portal root
     addSiteRootViewTemplates(portal, out)
-
-    # Get rid of CMF typo 'ExpiresDate' metadata in favor of proper DC
-    # 'ExpirationDate' metadata
-    reindex += switchToExpirationDateMetadata(portal, out) 
-
-    # Add translation service tool to portal root
-    addTranslationServiceTool(portal, out)
-
-    # Add new memberdata properties
-    addMemberdataHome_Page(portal, out)
-    addMemberdataLocation(portal, out)
-    addMemberdataDescription(portal, out)
-    addMemberdataLanguage(portal, out)
-    addMemberdataExtEditor(portal,out)
 
     # Fix the conditions and permissions on the folder_buttons actions
     fixFolderButtonsActions(portal, out)
@@ -487,9 +508,12 @@ def reindexCatalog(portal, out):
     if catalog is not None:
         # Reduce threshold for the reindex run
         old_threshold = catalog.threshold
+        pg_threshold = getattr(catalog, 'pgthreshold', 0)
+        catalog.pgthreshold = 300
         catalog.threshold = 2000
         catalog.refreshCatalog(clear=1)
         catalog.threshold = old_threshold
+        catalog.pgthreshold = pg_threshold
         out.append("Reindexed portal_catalog.")
 
 
@@ -1158,4 +1182,27 @@ def changePloneSiteIcon(portal, out):
         if plone_FTI is not None and plone_FTI.content_icon == 'folder_icon.gif':
             plone_FTI.content_icon = 'site_icon.gif'
             out.append("Changed Plone Site icon")
-                        
+
+def migrateCatalogIndexes(portal, out):
+    """Migrate catalog indexes if running under Zope 2.8"""
+    from Products.ZCatalog.ZCatalog import ZCatalog
+    migrated = False
+    if not hasattr(ZCatalog, 'manage_convertIndexes'):
+        return migrated
+    FLAG = '_z28_migrated'
+    for obj in portal.objectValues():
+        if not isinstance(obj, ZCatalog):
+            continue
+        if getattr(aq_base(obj), FLAG, False):
+            continue
+        out.append("Running manage_convertIndexes on "
+                   "ZCatalog instance '%s'" % obj.getId())
+        p_threshold = getattr(obj, 'pgthreshold', 0)
+        obj.pgthreshold = 300
+        obj.manage_convertIndexes()
+        obj.pgthreshold = p_threshold
+        out.append("Finished migrating catalog indexes "
+                   "for ZCatalog instance '%s'" % obj.getId())
+        setattr(obj, FLAG, True)
+        migrated = True
+    return migrated
