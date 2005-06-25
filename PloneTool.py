@@ -843,11 +843,9 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
           <tal:block tal:define="temp python:putils.addPortalMessage('<ul><li>A HTML structure message</ul>','structure')" />
         """
         request = self.REQUEST
-        messages = request.get('portalMessages')
-        if messages is None:
-            messages=[]
+        messages = request.get('portal_messages', [])
         messages.append({ 'message':message, 'type':type })
-        request.set('portalMessages', messages)
+        request.set('portal_messages', messages)
 
     security.declarePublic('getPortalMessages')
     def getPortalMessages(self):
@@ -856,7 +854,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         response web page is rendered. Portal messages are by default
         rendered by the global_statusmessage.pt page template.
         """
-        return self.REQUEST.get('portalMessages')
+        return self.REQUEST.get('portal_messages')
 
     security.declarePublic('browserDefault')
     def browserDefault(self, obj):
