@@ -38,4 +38,5 @@ if delete:
     acl_users.userFolderDelUsers(delete)
 
 context.plone_utils.addPortalMessage(context.translate('Changes applied.'))
+context.REQUEST.stripFormData() # fix issue 3835
 return state

@@ -4,6 +4,19 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (Unreleased)
 
+    - Fix the previously worked around issue #3835 'The Apply Changes
+      button performs like search button in User & Groups
+      administrator'. Previously this was worked around by changing
+      the .metadata from 'traverse_to' to 'redirect_to'. The real fix
+      is to use REQUEST.stripFormData() and then traverse.
+      [vinsci]
+
+    - Monkey patch ZPublisher.HTTPRequest to add a new method stripFormData(). That
+      is to be called in form scripts before traversing, to make sure the target
+      template doesn't get misleading information in the request. Call like this:
+      context.REQUEST.stripFormData()
+      [vinsci]
+
     - Make first batch of portal messages be displayed using addPortalMessage rather
       than the old URL hack of adding ...?portal_status_message=message to the URL.
       [vinsci]

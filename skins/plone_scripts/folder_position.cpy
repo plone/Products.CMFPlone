@@ -30,14 +30,5 @@ if position.lower()=='ordered':
 msg="Item's position has changed."
 context.plone_utils.addPortalMessage(msg)
 
-# XXX/vinsci: portal_status_message refactoring: make these lines a function (need to call it from many form scripts)
-#
-# Strip form data from request, before traversing (otherwise
-# they'll be used again in the template we traverse to).
-for key in context.REQUEST.form.keys():
-    del context.REQUEST.other[key]
-context.REQUEST.form.clear()
-# not needed:
-# del context.REQUEST.environ['QUERY_STRING']
-
+context.REQUEST.stripFormData()
 return state
