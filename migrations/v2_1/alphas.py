@@ -17,13 +17,13 @@ def two05_alpha1(portal):
     out = []
 
     # We do this earlier to avoid reindexing twice
+    migrated = migrateCatalogIndexes(portal, out)
     reindex = tweakIndexes(portal, out)
 
     # Tweak Properties And CSS. This needs to happen earlier so that
     # ATCT migration doesn't fail
     tweakPropertiesAndCSS(portal, out)
 
-    migrated = migrateCatalogIndexes(portal, out)
 
     if not migrated and reindex:
         refreshSkinData(portal, out)
@@ -115,7 +115,7 @@ def alpha1_alpha2(portal):
     """
     out = []
 
-    reindex = tweakIndexes(portal, out)
+    reindex = 0
 
     # Add full_screen action
     addFullScreenAction(portal, out)
