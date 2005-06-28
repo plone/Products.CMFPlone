@@ -1,0 +1,81 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en"
+      metal:use-macro="here/prefs_main_template/macros/master"
+      i18n:domain="plone">
+
+<metal:block metal:fill-slot="top_slot"
+             tal:define="dummy python:request.set('disable_border',1)" />
+
+<body>
+
+<div metal:fill-slot="prefs_configlet_main"
+     tal:define="errors options/state/getErrors;">
+
+    <h1 i18n:translate="heading_search_setup">Search Setup</h1>
+
+    <a href=""
+       class="link-parent"
+       tal:attributes="href string: $portal_url/plone_control_panel"
+       i18n:translate="label_up_to_plone_setup">
+    Up to Site Setup
+    </a>
+
+    <p i18n:translate="description_search_setup">
+        Search setup for Plone.
+    </p>
+
+    <form action=""
+          name="search"
+          method="post"
+          tal:attributes="action string:${here/absolute_url}/${template/getId}"
+          tal:define="props python:here.portal_properties;">
+
+        <fieldset>
+            <legend i18n:translate="legend_search_details">Use LiveSearch feature</legend>
+    
+            <div class="field"
+                 tal:define="livesearch request/livesearch | site_properties/enable_livesearch;
+                             error errors/livesearch | nothing;"
+                 tal:attributes="class python:test(error, 'field error', 'field')">
+    
+                <label i18n:translate="label_livesearch_enable">Enable LiveSearch</label>
+    
+                <div class="formHelp" id="livesearch_help"
+                     i18n:translate="help_livesearch">
+		     Enable the LiveSearch feature (like Google) to see live
+		     results if the Browser supports the JavaScript.
+                </div>
+    
+                <div tal:content="error">Validation error output</div>
+    
+                <input type="checkbox"
+		       class="noborder"
+		       name="livesearch"
+		       id="cb_livesearch"
+                       tal:attributes="checked python:test(livesearch, 'checked', None);
+                                       tabindex tabindex/next;" />
+            </div>
+    
+            <div class="formControls">
+                <input class="context"
+                       tabindex=""
+                       type="submit"
+                       name="form.button.Save"
+                       value="Save"
+                       i18n:attributes="value label_save;"
+                       tal:attributes="tabindex tabindex/next;"
+                       />
+            </div>
+    
+        </fieldset>
+
+        <input type="hidden" name="form.submitted" value="1" />
+
+    </form>
+
+</div>
+
+</body>
+</html>
+
+

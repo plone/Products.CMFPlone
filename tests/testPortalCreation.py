@@ -390,6 +390,11 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         # that the layout template will be resolved (see PloneTool.browserDefault)
         self.assertEqual(self.portal.portal_types['Folder'].getActionById('folderlisting'), 'view')
         self.assertEqual(self.portal.portal_types['Plone Site'].getActionById('folderlisting'), 'view')
+    
+    def testEnableLivesearchProperty(self):
+        # navigation_properties should have been removed
+        self.failUnless(self.properties.site_properties.hasProperty('enable_livesearch'))
+
 
 class TestPortalBugs(PloneTestCase.PloneTestCase):
 

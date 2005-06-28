@@ -142,6 +142,14 @@ default_configlets = (
      'permission': ManagePortal,
      'imageUrl':'zope_icon.gif'},
 
+    {
+        'id':'SearchSettings',
+        'appId':'PloneSearch',
+        'name':'Search Settings',
+        'action':'string:${portal_url}/prefs_search_form',
+        'category':'Plone',
+     'permission': ManagePortal,
+     'imageUrl':'site_icon.gif'},
 
 )
 
