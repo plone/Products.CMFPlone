@@ -57,7 +57,7 @@ def two05_alpha1(portal):
         #migrateToATCT(portal, out)
         migrateToATCT10(portal, out)
 
-    get_transaction().commit()
+    get_transaction().commit(1)
     
     return out
 
@@ -1189,7 +1189,7 @@ def migrateCatalogIndexes(portal, out):
     migrated = False
     if not hasattr(ZCatalog, 'manage_convertIndexes'):
         return migrated
-    FLAG = '_z28_migrated'
+    FLAG = '_migrated_280'
     for obj in portal.objectValues():
         if not isinstance(obj, ZCatalog):
             continue
@@ -1203,6 +1203,5 @@ def migrateCatalogIndexes(portal, out):
         obj.pgthreshold = p_threshold
         out.append("Finished migrating catalog indexes "
                    "for ZCatalog instance '%s'" % obj.getId())
-        setattr(obj, FLAG, True)
         migrated = True
     return migrated
