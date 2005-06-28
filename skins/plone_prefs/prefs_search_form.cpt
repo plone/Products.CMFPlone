@@ -11,7 +11,7 @@
 <div metal:fill-slot="prefs_configlet_main"
      tal:define="errors options/state/getErrors;">
 
-    <h1 i18n:translate="heading_search_setup">Search Setup</h1>
+    <h1 i18n:translate="heading_search_setup">Search Settings</h1>
 
     <a href=""
        class="link-parent"
@@ -21,7 +21,7 @@
     </a>
 
     <p i18n:translate="description_search_setup">
-        Search setup for Plone.
+        Search settings for Plone.
     </p>
 
     <form action=""
