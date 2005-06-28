@@ -63,6 +63,9 @@ def alpha2_beta1(portal):
 
     #Add LiveSearch site property
     addEnableLivesearchProperty(portal, out)
+    
+    #Add icon for search settings configlet
+    addIconforSearchSettingsConfiglet(portal,out)
 
     return out
 
@@ -465,4 +468,22 @@ def addEnableLivesearchProperty(portal, out):
             if not propSheet.hasProperty('enable_livesearch'):
                 propSheet.manage_addProperty('enable_livesearch', 0, 'boolean')
             out.append("Added 'enable_livesearch' property to site_properties.")
+
+def addIconforSearchSettingsConfiglet(portal,out):
+    """Adds an icon for the search settings configlet. """
+    ai.addActionIcon('Plone', 'SearchSettings', 'search_icon.gif', 'Search Settings')
+    iconsTool = getToolByName(portal, 'portal_actionicons', None)
+    if iconsTool is not None:
+        for icon in iconsTool.listActionIcons():
+            if icon.getActionId() == 'SearchSettings':
+                break # We already have the icon
+        else:
+            iconsTool.addActionIcon(
+                category='Plone',
+                action_id='SearchSettings',
+                icon_expr='search_icon.gif',
+                title='Search Settings',
+                )
+        out.append("Added 'search' icon to actionicons tool.")
+
 
