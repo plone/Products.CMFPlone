@@ -57,7 +57,7 @@ def two05_alpha1(portal):
         #migrateToATCT(portal, out)
         migrateToATCT10(portal, out)
 
-    get_transaction().commit(1)
+    transaction.commit(1)
     
     return out
 
