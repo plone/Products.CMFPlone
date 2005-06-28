@@ -149,7 +149,7 @@ default_configlets = (
         'action':'string:${portal_url}/prefs_search_form',
         'category':'Plone',
      'permission': ManagePortal,
-     'imageUrl':'site_icon.gif'},
+     'imageUrl':'search_icon.gif'},
 
 )
 
