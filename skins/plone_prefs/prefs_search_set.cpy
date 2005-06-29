@@ -5,7 +5,7 @@
 ##bind script=script
 ##bind state=state
 ##bind subpath=traverse_subpath
-##parameters=livesearch=False, RESPONSE=None
+##parameters=livesearch=False, portaltypes=None, RESPONSE=None
 ##title=Set Search Prefs
 ##
 
@@ -16,6 +16,7 @@ portal_properties=getToolByName(context, 'portal_properties')
 
 
 jstool=getToolByName(context, 'portal_javascripts')
+position=jstool.getResourcePosition('livesearch.js')
 jstool.unregisterResource('livesearch.js')
 
 if livesearch:
@@ -24,6 +25,10 @@ if livesearch:
 else:
   portal_properties.site_properties.manage_changeProperties(enable_livesearch=False)
   jstool.registerScript('livesearch.js',enabled=False)
+
+jstool.moveResource('livesearch.js',position)
+
+portal_properties.site_properties.manage_changeProperties(types_not_searched=portaltypes)
 
 msg = 'Search settings updated.' 
 
