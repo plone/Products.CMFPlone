@@ -62,7 +62,7 @@ def addSiteProperties(self, portal):
     if not hasattr(p, 'calendar_future_years_available'):
         safeEditProperty(p, 'calendar_future_years_available', 5, 'int')
     if not hasattr(p,'enable_livesearch'):
-        safeEditProperty(p, 'enable_livesearch', 0, 'boolean')
+        safeEditProperty(p, 'enable_livesearch', 1, 'boolean')
 
 
 def setupDefaultLeftRightSlots(self, portal):

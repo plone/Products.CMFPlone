@@ -466,7 +466,7 @@ def addEnableLivesearchProperty(portal, out):
         propSheet = getattr(aq_base(propTool), 'site_properties', None)
         if propSheet is not None:
             if not propSheet.hasProperty('enable_livesearch'):
-                propSheet.manage_addProperty('enable_livesearch', 0, 'boolean')
+                propSheet.manage_addProperty('enable_livesearch', 1, 'boolean')
             out.append("Added 'enable_livesearch' property to site_properties.")
 
 def addIconforSearchSettingsConfiglet(portal,out):
