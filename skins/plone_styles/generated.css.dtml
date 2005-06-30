@@ -27,6 +27,7 @@
 
 <dtml-in "portal_types.listTypeInfo()">
 .contenttype-<dtml-var "plone_utils.normalizeString(id)"> { background-image: url(<dtml-var portal_url>/<dtml-var getIcon>); background-repeat: no-repeat; background-position: 0% 50%;}
+.contenttype-<dtml-var "plone_utils.normalizeString(id)"> a:hover { background-image: url(<dtml-var portal_url>/<dtml-var getIcon>); background-repeat: no-repeat; background-position: 0% 50%; margin-left: -1px;}
 </dtml-in>
 
 <dtml-in "getActionIconList()">
@@ -38,6 +39,9 @@
 
 .visualIconPadding {
     padding-left: 18px;
+    height: 1.5em;
+    margin-left: -1px;
+    margin-bottom: 1px;
 }
 
 .visualIconReplace {
