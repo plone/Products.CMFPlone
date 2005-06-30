@@ -471,6 +471,7 @@ def addEnableLivesearchProperty(portal, out):
 
 def addIconforSearchSettingsConfiglet(portal,out):
     """Adds an icon for the search settings configlet. """
+    ai=getToolByName(portal, 'portal_actionicons')
     ai.addActionIcon('Plone', 'SearchSettings', 'search_icon.gif', 'Search Settings')
     iconsTool = getToolByName(portal, 'portal_actionicons', None)
     if iconsTool is not None:
