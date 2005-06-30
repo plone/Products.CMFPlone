@@ -122,8 +122,7 @@
 
           <table id="sortable"
                  class="listing"
-                 summary="Content listing"
-                 cellpadding="0" cellspacing="0">
+                 summary="Content listing">
             <thead>
               <metal:block tal:condition="batch|not:standalone|nothing">
                 <tr>
@@ -172,7 +171,7 @@
                                    item_url             item/getURL|item/absolute_url;
                                    item_id              item/getId;
                                    item_path            item/getPath|python:'/'.join(item.getPhysicalPath());
-                                   item_title_or_id     python: (same_type(item.getId,'') and (item.Title or putils.utf8_portal('\xe2\x80\xa6', 'ignore'))) or item.title_or_id();
+                                   item_title_or_id     python: (same_type(item.getId,'') and (item.Title or putils.utf8_portal('\x5b\xc2\xb7\xc2\xb7\xc2\xb7\x5d', 'ignore'))) or item.title_or_id();
                                    item_description     item/Description;
                                    item_type            item/portal_type;
                                    item_size            item/getObjSize;

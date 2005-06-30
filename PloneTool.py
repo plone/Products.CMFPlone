@@ -567,7 +567,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             currentItem = path == currentPath
             if currentItem:
                 foundcurrent = path
-            data = {'Title':item.Title or self.utf8_portal('\xe2\x80\xa6', 'ignore'),
+            data = {'Title':item.Title or self.utf8_portal('\x5b\xc2\xb7\xc2\xb7\xc2\xb7\x5d', 'ignore'),
                     'currentItem':currentItem,
                     'absolute_url': item_url,
                     'getURL':item_url,
@@ -620,7 +620,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                     # Some types may require the 'view' action, respect this
                     item_url = (item.portal_type in view_action_types and
                          item.absolute_url() + '/view') or item.absolute_url()
-                    data = {'Title': item.Title() or self.utf8_portal('\xe2\x80\xa6', 'ignore'),
+                    data = {'Title': item.Title() or self.utf8_portal('\x5b\xc2\xb7\xc2\xb7\xc2\xb7\x5d', 'ignore'),
                             'currentItem': currentItem,
                             'absolute_url': item_url,
                             'getURL': item_url,
@@ -724,7 +724,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             item = r_tuple[1]
             item_url = (item.portal_type in view_action_types and
                          item.getURL() + '/view') or item.getURL()
-            data = {'Title':item.Title or self.utf8_portal('\xe2\x80\xa6', 'ignore'),
+            data = {'Title':item.Title or self.utf8_portal('\x5b\xc2\xb7\xc2\xb7\xc2\xb7\x5d', 'ignore'),
                     'absolute_url': item_url}
             result.append(data)
         return result
