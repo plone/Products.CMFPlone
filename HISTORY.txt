@@ -4,6 +4,17 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (Unreleased)
 
+    - Refactoring use of __browser_default__() to use CMF 1.5-style aliases
+      and FTIs, with __browser_default__() still being the fallback for old
+      classes. Some tests had to be fixed for this, too.
+      
+      Adding aliases for view, edit, properties, sharing. Fixing up some uses
+      of getActionById() which were failing because of these aliases.
+      
+      Note that we now depend on fixes to CMFFormController, ATContentTypes and
+      CMFDynamicViewFTI checked in alongside this commit.
+      [optilude]
+
     - CMF 1.5 Cookie Crumbler distinguishes between login attempt and
       authorization failure, making require_login obsolete.
       [stefan]

@@ -4,11 +4,9 @@
 <body>
 <div metal:define-macro="relatedItems"
     id="relatedItems"
-    tal:define="hereTypeInfo python:request.get('this_typeinfo', here.getTypeInfo());
-                getInfoFor python:wtool.getInfoFor;
-                view_action python:hereTypeInfo.getActionById('view');
-                other_action python:hereTypeInfo.getActionById('folderlisting', '');
-                isViewTemplate python: template_id==view_action or view_action == 'view' or other_action==template_id;">
+    tal:define="getInfoFor python:wtool.getInfoFor;
+                viewTemplateId here/getViewTemplateId;
+                isViewTemplate python: template_id==viewTemplateId">
     <tal:allowed condition="isViewTemplate">
         <tal:relatedItems tal:define="related python:here.computeRelatedItems();">
             <tal:block tal:condition="python:related">

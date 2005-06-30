@@ -125,12 +125,14 @@ class DefaultPage(Item):
 
     def set_default(self, default, has_key=0):
         self.default_page = default
-        self._has_key = has_key
+        if has_key:
+            if type(default) == type(''):
+                self.keys = [default]
+            self.keys = default
 
     def has_key(self, key):
-        return self._has_key or key in self.keys
+        return key in self.keys
 
-    
 
 class ImageComputedProps(Item):
     '''Helper for testing the imagePatch interaction with

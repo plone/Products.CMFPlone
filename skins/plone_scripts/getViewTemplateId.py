@@ -19,18 +19,8 @@ if itool.objectImplements(context, INTERFACE):
 # Else, if there is a 'folderlisting' action, this will take precedence for
 # folders, so try this, else use the 'view' action.
 
-action = None
-fti = context.getTypeInfo()
+action = context.lookupTypeAction('folderlisting')
+if action is None:
+    action = context.lookupTypeAction('view')
 
-try:
-    action = fti.getActionById('folderlisting')
-except ValueError:
-    try:
-        action = fti.getActionById('view')
-    except ValueError:
-        pass
-        
-if action and action[0] == '/':
-    action = action[1:]
-        
 return action

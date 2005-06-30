@@ -111,6 +111,11 @@ class PloneSite(CMFSite, OrderedContainer, PropertyManagedBrowserDefault):
     moveObject = OrderedContainer.moveObject
     moveObjectsByDelta = OrderedContainer.moveObjectsByDelta
 
+    def __browser_default__(self, request):
+        """ Set default so we can return whatever we want instead
+        of index_html """
+        return getToolByName(self, 'plone_utils').browserDefault(self)
+
     def index_html(self):
         """ Acquire if not present. """
         request = getattr(self, 'REQUEST', None)
