@@ -16,11 +16,6 @@ def addErrorLog(self, portal):
         manage_addErrorLog(portal)
         portal.error_log.copy_to_zlog = 1
 
-def modifyAuthentication(self, portal):
-    #set up cookie crumbler
-    cookie_authentication = getToolByName(portal, 'cookie_authentication')
-    cookie_authentication._updateProperty('auto_login_page', 'require_login')
-
 def installPortalTools(self,portal):
     ''' This should be done in Products/CMFPlone/Portal.py in setupTools '''
     pass
@@ -359,7 +354,6 @@ functions = {
     'addNewActions': addNewActions,
     'modifySkins': modifySkins,
     'installPortalTools': installPortalTools,
-    'modifyAuthentication': modifyAuthentication,
     'modifyActionProviders': modifyActionProviders,
     'addErrorLog':addErrorLog,
     'addSiteActions':addSiteActions,

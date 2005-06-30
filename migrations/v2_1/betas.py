@@ -61,11 +61,14 @@ def alpha2_beta1(portal):
     # Add deprecated and portlet style sheets
     addDeprecatedAndPortletStylesheets(portal, out)
 
-    #Add LiveSearch site property
+    # Add LiveSearch site property
     addEnableLivesearchProperty(portal, out)
     
-    #Add icon for search settings configlet
+    # Add icon for search settings configlet
     addIconForSearchSettingsConfiglet(portal,out)
+
+    # CMF 1.5 Cookie Crumbler has new properties
+    sanitizeCookieCrumbler(portal, out)
 
     return out
 
@@ -487,3 +490,15 @@ def addIconForSearchSettingsConfiglet(portal, out):
                 title='Search Settings',
                 )
         out.append("Added 'search' icon to actionicons tool.")
+
+
+def sanitizeCookieCrumbler(portal, out):
+    """CMF 1.5 Cookie Crumbler handles the require login nonsense just fine."""
+    cc = getToolByName(portal, 'cookie_authentication', None)
+    if cc is not None:
+        if cc.hasProperty('unauth_page'):
+            cc._updateProperty('auto_login_page', 'login_form')
+            out.append("Set 'Login page ID' of Cookie Crumbler to 'login_form'.")
+            cc._updateProperty('unauth_page', 'insufficient_privileges')
+            out.append("Set 'Failed authorization page ID' of Cookie Crumbler to 'insufficient_privileges'.")
+

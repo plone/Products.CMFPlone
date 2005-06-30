@@ -70,6 +70,7 @@ from Products.CMFPlone.migrations.v2_1.betas import exchangePloneMenuWithDropDow
 from Products.CMFPlone.migrations.v2_1.betas import removePlonePrefixFromStylesheets
 from Products.CMFPlone.migrations.v2_1.betas import addEnableLivesearchProperty
 from Products.CMFPlone.migrations.v2_1.betas import addIconForSearchSettingsConfiglet
+from Products.CMFPlone.migrations.v2_1.betas import sanitizeCookieCrumbler
 
 import types
 
@@ -179,6 +180,7 @@ class TestMigrations_v2_1(MigrationTest):
         self.groups = self.portal.portal_groups
         self.factory = self.portal.portal_factory
         self.portal_memberdata = self.portal.portal_memberdata
+        self.cc = self.portal.cookie_authentication
 
     def testAddFullScreenAction(self):
         # Should add the full_screen action
@@ -1532,6 +1534,26 @@ class TestMigrations_v2_1(MigrationTest):
         # Should not fail if portal_actionicons is missing
         self.portal._delObject('portal_actionicons')
         addIconForSearchSettingsConfiglet(self.portal, [])
+
+    def testSanitizeCookieCrumbler(self):
+        # Should set CC properties
+        self.cc.manage_changeProperties(unauth_page='', auto_login_page='')
+        sanitizeCookieCrumbler(self.portal, [])
+        self.assertEqual(self.cc.unauth_page, 'insufficient_privileges')
+        self.assertEqual(self.cc.auto_login_page, 'login_form')
+
+    def testSanitizeCookieCrumblerTwice(self):
+        # Should not fail if migrated again
+        self.cc.manage_changeProperties(unauth_page='', auto_login_page='')
+        sanitizeCookieCrumbler(self.portal, [])
+        sanitizeCookieCrumbler(self.portal, [])
+        self.assertEqual(self.cc.unauth_page, 'insufficient_privileges')
+        self.assertEqual(self.cc.auto_login_page, 'login_form')
+
+    def testSanitizeCookieCrumblerNoTool(self):
+        # Should not fail if cookie_authentication is missing
+        self.portal._delObject('cookie_authentication')
+        sanitizeCookieCrumbler(self.portal, [])
 
 
 def test_suite():
