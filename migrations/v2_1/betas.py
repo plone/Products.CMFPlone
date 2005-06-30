@@ -60,7 +60,13 @@ def alpha2_beta1(portal):
 
     # Add deprecated and portlet style sheets
     addDeprecatedAndPortletStylesheets(portal, out)
+
+    #Add LiveSearch site property
+    addEnableLivesearchProperty(portal, out)
     
+    #Add icon for search settings configlet
+    addIconforSearchSettingsConfiglet(portal,out)
+
     return out
 
 
@@ -451,5 +457,33 @@ def add3rdPartySkinPath(portal, out):
             path.append('plone_3rdParty')
             st.addSkinSelection(s, ','.join(path))
             out.append('Added plone_3rdParty to %s' % s)
+
+
+def addEnableLivesearchProperty(portal, out):
+    """Adds sitewide config for Livesearch."""
+    propTool = getToolByName(portal, 'portal_properties', None)
+    if propTool is not None:
+        propSheet = getattr(aq_base(propTool), 'site_properties', None)
+        if propSheet is not None:
+            if not propSheet.hasProperty('enable_livesearch'):
+                propSheet.manage_addProperty('enable_livesearch', 1, 'boolean')
+            out.append("Added 'enable_livesearch' property to site_properties.")
+
+def addIconforSearchSettingsConfiglet(portal,out):
+    """Adds an icon for the search settings configlet. """
+    ai.addActionIcon('Plone', 'SearchSettings', 'search_icon.gif', 'Search Settings')
+    iconsTool = getToolByName(portal, 'portal_actionicons', None)
+    if iconsTool is not None:
+        for icon in iconsTool.listActionIcons():
+            if icon.getActionId() == 'SearchSettings':
+                break # We already have the icon
+        else:
+            iconsTool.addActionIcon(
+                category='Plone',
+                action_id='SearchSettings',
+                icon_expr='search_icon.gif',
+                title='Search Settings',
+                )
+        out.append("Added 'search' icon to actionicons tool.")
 
 

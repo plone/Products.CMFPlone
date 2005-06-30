@@ -61,6 +61,9 @@ def addSiteProperties(self, portal):
         safeEditProperty(p, 'calendar_starting_year', 1999, 'int')
     if not hasattr(p, 'calendar_future_years_available'):
         safeEditProperty(p, 'calendar_future_years_available', 5, 'int')
+    if not hasattr(p,'enable_livesearch'):
+        safeEditProperty(p, 'enable_livesearch', 1, 'boolean')
+
 
 def setupDefaultLeftRightSlots(self, portal):
     """ sets up the slots on objectmanagers """

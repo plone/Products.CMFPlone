@@ -3,6 +3,10 @@ Changelog for Plone
    (name of developer listed in brackets)
 
 Plone 2.1 - Plaid - (Unreleased)
+    - Added a configlet for setting search options, to enable/disable LiveSearch
+      and to set the types_not_searched property. This is requested in
+      http://plone.org/collector/4032
+      [jok2]
 
     - Moved some interfaces to CMFDynamicViewFTI
       [tiran]

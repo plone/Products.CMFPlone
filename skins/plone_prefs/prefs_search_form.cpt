@@ -1,0 +1,132 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en"
+      metal:use-macro="here/prefs_main_template/macros/master"
+      i18n:domain="plone">
+
+<metal:block metal:fill-slot="top_slot"
+             tal:define="dummy python:request.set('disable_border',1)" />
+
+<body>
+
+<div metal:fill-slot="prefs_configlet_main"
+     tal:define="errors options/state/getErrors;">
+
+    <h1 i18n:translate="heading_search_setup">Search Settings</h1>
+
+    <a href=""
+       class="link-parent"
+       tal:attributes="href string: $portal_url/plone_control_panel"
+       i18n:translate="label_up_to_plone_setup">
+    Up to Site Setup
+    </a>
+
+    <p i18n:translate="description_search_setup">
+        Search settings for Plone.
+    </p>
+
+    <form action=""
+          name="search"
+          method="post"
+          tal:attributes="action string:${here/absolute_url}/${template/getId}"
+          tal:define="props python:here.portal_properties;">
+
+        <fieldset>
+            <legend i18n:translate="legend_search_details">Search details</legend>
+    
+            <div class="field"
+                 tal:define="livesearch request/livesearch | site_properties/enable_livesearch;
+                             error errors/livesearch | nothing;"
+                 tal:attributes="class python:test(error, 'field error', 'field')">
+    
+                <label i18n:translate="label_livesearch_enable">Enable LiveSearch</label>
+    
+                <div class="formHelp" id="livesearch_help"
+                     i18n:translate="help_livesearch">
+		     Enable the LiveSearch feature (like Google) to see live
+		     results if the Browser supports the JavaScript.
+                </div>
+    
+                <div tal:content="error">Validation error output</div>
+
+                    <input type="radio"
+                       class="noborder"
+                       name="livesearch"
+                       value="on"
+                       id="cb_livesearch_on"
+                       tabindex=""
+                       tal:attributes="tabindex tabindex;
+                                       checked livesearch;"
+                       />
+    
+                <label for="cb_livesearch_on" i18n:translate="yes">Yes</label>
+    
+                <br />
+    
+                <input type="radio"
+                       class="noborder"
+                       name="livesearch"
+                       value=""
+                       id="cb_livesearch_off"
+                       tabindex=""
+                       tal:attributes="tabindex tabindex;
+                                       checked not:livesearch;"
+                       />
+    
+                <label for="cb_livesearch_off" i18n:translate="no">No</label>
+    
+            </div>
+	    <div class="field"
+	         tal:define="searchblacklist request/searchblacklist | site_properties/types_not_searched;
+		             error errors/searchblacklist | nothing;">
+                <label i18n:translate="label_search_types_blacklist">Define the types not to be searched</label>
+    
+                <div class="formHelp" id="searchblacklist_help"
+                     i18n:translate="help_searchblacklist">
+		     Define the types that should NOT be searched when you use
+		     the searchbox.
+                </div>
+		<div>
+                   <ul class="configlets">
+                     <li tal:define="portaltypes context/getPortalTypes;
+                                     dummy python:portaltypes.sort()"
+                         tal:repeat="ptype portaltypes">
+                       <input class="noborder"
+                           type="checkbox"
+                           name="portaltypes:list"
+                           tal:attributes="value ptype;
+                                           id ptype;
+                                           checked python:test(ptype in searchblacklist,'checked','');" />
+                       <label for="" tal:attributes="for ptype">
+                       <span tal:replace="ptype">
+                        Type name
+                       </span>
+                       </label>
+                    </li>
+                   </ul>
+		</div>
+    
+                <div tal:content="error">Validation error output</div>
+	    </div>    
+            <div class="formControls">
+                <input class="context"
+                       tabindex=""
+                       type="submit"
+                       name="form.button.Save"
+                       value="Save"
+                       i18n:attributes="value label_save;"
+                       tal:attributes="tabindex tabindex/next;"
+                       />
+            </div>
+    
+        </fieldset>
+
+        <input type="hidden" name="form.submitted" value="1" />
+
+    </form>
+
+</div>
+
+</body>
+</html>
+
+

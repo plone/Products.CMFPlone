@@ -68,6 +68,7 @@ from Products.CMFPlone.migrations.v2_1.betas import restrictEventsTopicToPublish
 from Products.CMFPlone.migrations.v2_1.betas import addCssQueryJS
 from Products.CMFPlone.migrations.v2_1.betas import exchangePloneMenuWithDropDown
 from Products.CMFPlone.migrations.v2_1.betas import removePlonePrefixFromStylesheets
+from Products.CMFPlone.migrations.v2_1.betas import addEnableLivesearchProperty
 
 import types
 
@@ -1495,6 +1496,11 @@ class TestMigrations_v2_1(MigrationTest):
         news = self.portal.events
         news._delObject('events_topic')
         restrictEventsTopicToPublished(self.portal, [])
+
+    def testAddEnableLivesearchProperty(self):
+        # Should not fail if portal_properties is missing
+        self.portal._delObject('portal_properties')
+        addEnableLivesearchProperty(self.portal, [])
 
 
 
