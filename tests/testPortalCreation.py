@@ -390,10 +390,18 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         # that the layout template will be resolved (see PloneTool.browserDefault)
         self.assertEqual(self.portal.portal_types['Folder'].getActionById('folderlisting'), 'view')
         self.assertEqual(self.portal.portal_types['Plone Site'].getActionById('folderlisting'), 'view')
-    
+
     def testEnableLivesearchProperty(self):
-        # navigation_properties should have been removed
+        # site_properties should have enable_livesearch property
         self.failUnless(self.properties.site_properties.hasProperty('enable_livesearch'))
+
+    def testSearchSettingsActionIcon(self):
+        # There should be a SearchSettings action icon
+        for icon in self.icons.listActionIcons():
+            if icon.getActionId() == 'SearchSettings':
+                break
+        else:
+            self.fail("Action icons tool has no 'SearchSettings' icon")
 
 
 class TestPortalBugs(PloneTestCase.PloneTestCase):

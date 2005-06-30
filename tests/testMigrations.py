@@ -69,6 +69,7 @@ from Products.CMFPlone.migrations.v2_1.betas import addCssQueryJS
 from Products.CMFPlone.migrations.v2_1.betas import exchangePloneMenuWithDropDown
 from Products.CMFPlone.migrations.v2_1.betas import removePlonePrefixFromStylesheets
 from Products.CMFPlone.migrations.v2_1.betas import addEnableLivesearchProperty
+from Products.CMFPlone.migrations.v2_1.betas import addIconForSearchSettingsConfiglet
 
 import types
 
@@ -1258,7 +1259,7 @@ class TestMigrations_v2_1(MigrationTest):
         # The migration should work if the tool is missing
         self.portal._delObject('portal_actions')
         fixObjectPasteActionForDefaultPages(self.portal, [])
-        
+
     def testFixBatchActionToggle(self):
         editActions = ('batch', 'nobatch')
         for a in editActions:
@@ -1281,7 +1282,7 @@ class TestMigrations_v2_1(MigrationTest):
     def testFixBatchActionToggleNoTool(self):
         self.portal._delObject('portal_actions')
         fixBatchActionToggle(self.portal, [])
-        
+
     def testFixMyFolderAction(self):
         self.removeActionFromTool('mystuff', 'portal_membership')
         fixMyFolderAction(self.portal, [])
@@ -1299,7 +1300,7 @@ class TestMigrations_v2_1(MigrationTest):
             if a[0] == 'mystuff':
                 self.failIf('folder_contents' in a[1])
 
-    def testFixBatchActionToggleNoTool(self):
+    def testFixMyFolderActionNoTool(self):
         self.portal._delObject('portal_membership')
         fixMyFolderAction(self.portal, [])
 
@@ -1322,12 +1323,11 @@ class TestMigrations_v2_1(MigrationTest):
         self.failUnless(hasattr(jsreg, 'concatenatedresources'))
 
     def testReorderStylesheets(self):
-        """ ploneRTL should be right above ploneCustom.css
-
-        By default, ploneCustom.css is the bottom one, so ploneRTL.css
-        should be in spot number 2. Also, member.css must be at the
-        top of the list
-        """
+        # ploneRTL should be right above ploneCustom.css
+        #
+        # By default, ploneCustom.css is the bottom one, so ploneRTL.css
+        # should be in spot number 2. Also, member.css must be at the
+        # top of the list
         cssreg = self.portal.portal_css
         stylesheets = list(cssreg.getResources())
         stylesheet_ids = [ item.get('id') for item in stylesheets ]
@@ -1452,7 +1452,7 @@ class TestMigrations_v2_1(MigrationTest):
         self.assertEqual(cur_perms1,cur_perms2)
 
     def testRestrictNewsTopicToPublished(self):
-        #Should add a new 'published' criterion to the News topic
+        # Should add a new 'published' criterion to the News topic
         topic = self.portal.news.news_topic
         topic.deleteCriterion('crit__review_state_ATSimpleStringCriterion')
         self.assertRaises(AttributeError, topic.getCriterion,
@@ -1461,7 +1461,7 @@ class TestMigrations_v2_1(MigrationTest):
         self.failUnless(topic.getCriterion('crit__review_state_ATSimpleStringCriterion'))
 
     def testRestrictNewsTopicToPublishedTwice(self):
-        #Should not fail if done twice
+        # Should not fail if done twice
         topic = self.portal.news.news_topic
         topic.deleteCriterion('crit__review_state_ATSimpleStringCriterion')
         restrictNewsTopicToPublished(self.portal, [])
@@ -1469,13 +1469,13 @@ class TestMigrations_v2_1(MigrationTest):
         self.failUnless(topic.getCriterion('crit__review_state_ATSimpleStringCriterion'))
 
     def testRestrictNewsTopicToPublishedNoTopic(self):
-        #Should not do anything unless ATCT is installed
+        # Should not do anything unless ATCT is installed
         news = self.portal.news
         news._delObject('news_topic')
         restrictNewsTopicToPublished(self.portal, [])
 
     def testRestrictEventsTopicToPublished(self):
-        #Should add a new 'published' criterion to the News topic
+        # Should add a new 'published' criterion to the News topic
         topic = self.portal.events.events_topic
         topic.deleteCriterion('crit__review_state_ATSimpleStringCriterion')
         self.assertRaises(AttributeError, topic.getCriterion,
@@ -1484,7 +1484,7 @@ class TestMigrations_v2_1(MigrationTest):
         self.failUnless(topic.getCriterion('crit__review_state_ATSimpleStringCriterion'))
 
     def testRestrictEventsTopicToPublishedTwice(self):
-        #Should not fail if done twice
+        # Should not fail if done twice
         topic = self.portal.events.events_topic
         topic.deleteCriterion('crit__review_state_ATSimpleStringCriterion')
         restrictEventsTopicToPublished(self.portal, [])
@@ -1492,16 +1492,46 @@ class TestMigrations_v2_1(MigrationTest):
         self.failUnless(topic.getCriterion('crit__review_state_ATSimpleStringCriterion'))
 
     def testRestrictEventsTopicToPublishedNoTopic(self):
-        #Should not do anything unless ATCT is installed
+        # Should not do anything unless ATCT is installed
         news = self.portal.events
         news._delObject('events_topic')
         restrictEventsTopicToPublished(self.portal, [])
 
     def testAddEnableLivesearchProperty(self):
+        # Should add the enable_livesearch site property
+        self.removeSiteProperty('enable_livesearch')
+        addEnableLivesearchProperty(self.portal, [])
+        self.failUnless(self.properties.site_properties.hasProperty('enable_livesearch'))
+
+    def testAddEnableLivesearchPropertyTwice(self):
+        # Should not fail if migrated again
+        self.removeSiteProperty('enable_livesearch')
+        addEnableLivesearchProperty(self.portal, [])
+        addEnableLivesearchProperty(self.portal, [])
+        self.failUnless(self.properties.site_properties.hasProperty('enable_livesearch'))
+
+    def testAddEnableLivesearchPropertyNoTool(self):
         # Should not fail if portal_properties is missing
         self.portal._delObject('portal_properties')
         addEnableLivesearchProperty(self.portal, [])
 
+    def testAddIconForSearchSettingsConfiglet(self):
+        # Should add the full_screen action icon
+        self.removeActionIconFromTool('SearchSettings')
+        addIconForSearchSettingsConfiglet(self.portal, [])
+        self.failUnless('SearchSettings' in [x.getActionId() for x in self.icons.listActionIcons()])
+
+    def testAddIconForSearchSettingsConfigletTwice(self):
+        # Should not fail if migrated again
+        self.removeActionIconFromTool('SearchSettings')
+        addIconForSearchSettingsConfiglet(self.portal, [])
+        addIconForSearchSettingsConfiglet(self.portal, [])
+        self.failUnless('SearchSettings' in [x.getActionId() for x in self.icons.listActionIcons()])
+
+    def testAddIconForSearchSettingsConfigletNoTool(self):
+        # Should not fail if portal_actionicons is missing
+        self.portal._delObject('portal_actionicons')
+        addIconForSearchSettingsConfiglet(self.portal, [])
 
 
 def test_suite():

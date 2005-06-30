@@ -65,7 +65,7 @@ def alpha2_beta1(portal):
     addEnableLivesearchProperty(portal, out)
     
     #Add icon for search settings configlet
-    addIconforSearchSettingsConfiglet(portal,out)
+    addIconForSearchSettingsConfiglet(portal,out)
 
     return out
 
@@ -408,12 +408,14 @@ def installKupu(portal, out):
     except ImportError:
         pass
     else:
-        installOrReinstallProduct(portal, 'kupu', out)
-        # Make kupu the default
-        md = safeGetMemberDataTool(portal)
-        if md and not hasattr(md, 'wysiwyg_editor'):
-            safeEditProperty(md, 'wysiwyg_editor', 'Kupu', 'string')
-        out.append('Set Kupu as default WYSIWYG editor.')
+        # Kupu is not installed by e.g. tests
+        if 'kupu' in portal.Control_Panel.Products.objectIds():
+            installOrReinstallProduct(portal, 'kupu', out)
+            # Make kupu the default
+            md = safeGetMemberDataTool(portal)
+            if md and not hasattr(md, 'wysiwyg_editor'):
+                safeEditProperty(md, 'wysiwyg_editor', 'Kupu', 'string')
+            out.append('Set Kupu as default WYSIWYG editor.')
 
 
 def addFontSizeStylesheets(portal, out):
@@ -469,10 +471,9 @@ def addEnableLivesearchProperty(portal, out):
                 propSheet.manage_addProperty('enable_livesearch', 1, 'boolean')
             out.append("Added 'enable_livesearch' property to site_properties.")
 
-def addIconforSearchSettingsConfiglet(portal,out):
+
+def addIconForSearchSettingsConfiglet(portal, out):
     """Adds an icon for the search settings configlet. """
-    ai=getToolByName(portal, 'portal_actionicons')
-    ai.addActionIcon('Plone', 'SearchSettings', 'search_icon.gif', 'Search Settings')
     iconsTool = getToolByName(portal, 'portal_actionicons', None)
     if iconsTool is not None:
         for icon in iconsTool.listActionIcons():
@@ -486,5 +487,3 @@ def addIconforSearchSettingsConfiglet(portal,out):
                 title='Search Settings',
                 )
         out.append("Added 'search' icon to actionicons tool.")
-
-
