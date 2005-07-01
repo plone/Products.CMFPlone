@@ -782,39 +782,150 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
         return tuple(result)
 
+    #
+    # The three methods used in determining what the default-page of a folder
+    # is. These are:
+    #
+    #   - getDefaultPage(folder)
+    #       : get id of contentish object that is default-page in the folder
+    #   - isDefaultPage(object)   
+    #       : determine if an object is the default-page in its parent folder
+    #   - browserDefault(object)  
+    #       : lookup rules for old-style content types
+    #
+
+    security.declarePublic('isDefaultPage')
+    def isDefaultPage(self, obj):
+        """Finds out if the given obj is the default page in its parent folder.
+
+        Only considers explicitly contained objects, either set as index_html,
+        with the default_page property, or using IBrowserDefault.
+        """
+
+        parent = obj.aq_inner.aq_parent
+        if not parent:
+            return False
+
+        parentDefaultPage = self.getDefaultPage(parent)
+        if parentDefaultPage is None or '/' in parentDefaultPage:
+            return False
+        else:
+            return (parentDefaultPage == obj.getId())
+
+    security.declarePublic('getDefaultPage')
+    def getDefaultPage(self, obj):
+        """Given a folderish item, find out if it has a defaul-page using
+        the following lookup rules:
+        
+            1. A content object called 'index_html' wins
+            2. If the folder implements IBrowserDefault, query this
+            3. Else, look up the property default_page on the object
+                - Note that in this case, the returned id may *not* be of an
+                  object in the folder, since it could be acquired from a
+                  parent folder or skin layer
+            4. Else, look up the property default_page in site_properties for
+                magic ids and test these
+            
+        The id of the first matching item is returned. If no default page is
+        set, None is returned. If a non-folderish item is passed in, return
+        None always.
+        """
+
+        # XXX: This method is called by CMFDynamicViewFTI directly, as well
+        # as by browserDefault() below. browserDefault() contains logic for
+        # looking up ITranslatable (LinguaPlone), which browserDefault() retains.
+        # However, browserDefault() is no longer called with CMF 1.5 and the new
+        # CMFDynamicViewFTI. Because the lookup method is quite different, there
+        # is no obvious way to make CMFDynamicViewFTI ITranslatable aware. Thus,
+        # if/when LinguaPlone tries to use the new FTI to get CMF 1.5 / Plone 2.1
+        # goodness, it will likely break. The simple workaround is to set the
+        # (Default) method alias to an empty string, thus falling back on
+        # __browser_default__(), but this reduces flexibility. Instead, tesdal
+        # & co need to look at CMFDynamicViewFTI to make it ITranslatable aware.
+        #   [~optilude]
+
+        # Short circuit if we are not looking at a Folder
+        if not obj.isPrincipiaFolderish:
+            return None
+
+        # The list of ids where we look for default
+        ids = {}
+
+        portal = getToolByName(self, 'portal_url').getPortalObject()
+        wftool = getToolByName(self, 'portal_workflow')
+
+        # For BTreeFolders we just use the has_key, otherwise build a dict
+        if hasattr(aq_base(obj), 'has_key'):
+            ids = obj
+        else:
+            for id in obj.objectIds():
+                ids[id] = 1
+
+        # 1. test for contentish index_html
+        if ids.has_key('index_html'):
+            return 'index_html'
+
+        # 2. Test for IBrowserDefault
+        if IBrowserDefault.isImplementedBy(obj):
+            page = obj.getDefaultPage()
+            if page is not None and ids.has_key(page):
+                return page
+
+        # 3. Test for default_page property in folder, then skins
+        pages = getattr(aq_base(obj), 'default_page', [])
+        if type(pages) in (StringType, UnicodeType):
+            pages = [pages]
+        for page in pages:
+            if page and ids.has_key(page):
+                return page
+        for page in pages:
+            if portal.unrestrictedTraverse(page, None):
+                return page
+
+        # 4. Test for default sitewide default_page setting
+        for page in portal.portal_properties.site_properties.getProperty('default_page', []):
+            if ids.has_key(page):
+                return page
+
+        return None
+
     security.declarePublic('browserDefault')
     def browserDefault(self, obj):
         """Sets default so we can return whatever we want instead of index_html.
 
         This method is complex, and interacts with mechanisms such as
-        IBrowserDefault (implemented in ATContentTypes), LinguaPlone and
+        IBrowserDefault (implemented in CMFDynamicViewFTI), LinguaPlone and
         various mechanisms for setting the default page.
 
         The method returns a tuple (obj, [path]) where path is a path to
         a template or other object to be acquired and displayed on the object.
         The path is determined as follows:
 
-        1. If we're coming from WebDAV, make sure we don't return a contained
+        0. If we're coming from WebDAV, make sure we don't return a contained
             object "default page" ever
-        2. If there is an index_html attribute (either a contained object or
+        1. If there is an index_html attribute (either a contained object or
             an explicit attribute) on the object, return that as the
             "default page". Note that this may be used by things like
             File and Image to return the contents of the file, for example,
             not just content-space objects created by the user.
+        2. If the object implements IBrowserDefault, query this for the
+            default page.
         3. If the object has a property default_page set and this gives a list
             of, or single, object id, and that object is is found in the
             folder or is the name of a skin template, return that id
         4. If the property default_page is set in site_properties and that
             property contains a list of ids of which one id is found in the
             folder, return that id
-        5. If the type has a 'folderlisting' action and no default page is
+        5. If the object implements IBrowserDefault, try to get the selected
+            layout.
+        6. If the type has a 'folderlisting' action and no default page is
             set, use this action. This permits folders to have the default
             'view' action be 'string:${object_url}/' and hence default to
             a default page when clicking the 'view' tab, whilst allowing the
             fallback action to be specified TTW in portal_types (this action
             is typically hidden)
-        6. If nothing else is found, fall back on the object's 'view' action.
-        7. If this is not found, raise an AttributeError
+        7. If nothing else is found, fall back on the object's 'view' action.
+        8. If this is not found, raise an AttributeError
 
         If the returned path is an object, it is checked for ITranslatable. An
         object which supports translation will then be translated before return.
@@ -841,7 +952,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             # in the correct language.
             implemented = ITranslatable.isImplementedBy(obj)
             if not implemented or implemented and not obj.isTranslation():
-                pageobj = getattr(obj,page,None)
+                pageobj = getattr(obj, page, None)
                 if pageobj is not None and ITranslatable.isImplementedBy(pageobj):
                     translation = pageobj.getTranslation()
                     if translation is not None and \
@@ -883,59 +994,36 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         # 2. Look for a default_page managed by an IBrowserDefault-implementing
         #    object
         #
-
-        # Note: the behaviour is the same as setting default_page manually
-        # on the object, and the current BrowserDefaultMixin implementation
-        # actually stores it as the default_page property, but it's nicer to
-        # explicit about getting it from IBrowserDefault
-
-        if obj.isPrincipiaFolderish and IBrowserDefault.isImplementedBy(obj):
-            page = obj.getDefaultPage()
-            # Be totally anal and triple-check...
-            if page and ids.has_key(page):
-                return returnPage(obj, page)
-            # IBrowserDefault only manages explicitly contained
-            # default_page's, so don't look for the id in the skin layers
-
-        #
         # 3. Look for a default_page property on the object
-        #
-
-        pages = getattr(aq_base(obj), 'default_page', [])
-        # Make sure we don't break if default_page is a
-        # string property instead of a sequence
-        if type(pages) in (StringType, UnicodeType):
-            pages = [pages]
-        # And also filter out empty strings
-        pages = filter(None, pages)
-        if obj.isPrincipiaFolderish:
-            for page in pages:
-                if ids.has_key(page):
-                    return returnPage(obj, page)
-
-        # we look for the default_page in the portal and/or skins aswell.
-        # Use path/to/template to reference an object or a skin.
-        for page in pages:
-            if portal.unrestrictedTraverse(page, None):
-                return obj, page.split('/')
-
         #
         # 4. Try the default sitewide default_page setting
         #
 
         if obj.isPrincipiaFolderish:
-            for page in portal.portal_properties.site_properties.getProperty('default_page', []):
-                if ids.has_key(page):
-                    return returnPage(obj, page)
+            defaultPage = self.getDefaultPage(obj)
+            if defaultPage is not None:
+                if ids.has_key(defaultPage):
+                    return returnPage(obj, defaultPage)
+                else:
+                    # For the default_page property, we may get things in the
+                    # skin layers or with an explicit path - split this path
+                    # to comply with the __browser_default__() spec
+                    return obj, defaultPage.split('/')
+
+        # 5. If there is no default page, try IBrowserDefault.getLayout()
+
+        if IBrowserDefault.isImplementedBy(obj):
+            return obj, [obj.getLayout()]
 
         #
-        # 5. If the object has a 'folderlisting' action, use this
+        # 6. If the object has a 'folderlisting' action, use this
         #
 
         # This allows folders to determine in a flexible manner how they are
         # displayed when there is no default page, whilst still using
         # browserDefault() to show contained objects by default on the 'view'
-        # action
+        # action (this applies to old-style folders only, IBrowserDefault is
+        # managed explicitly above)
 
         try:
             act = obj.getTypeInfo().getActionById('folderlisting')
@@ -946,7 +1034,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             pass
 
         #
-        # 6. Fall back on the 'view' action
+        # 7. Fall back on the 'view' action
         #
 
         try:
@@ -958,87 +1046,10 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             pass
 
         #
-        # 7. If we can't find this either, raise an exception
+        # 8. If we can't find this either, raise an exception
         #
 
         raise AttributeError, "Failed to get a default page or view_action for %s" %s (obj.absolute_url,)
-
-    security.declarePublic('isDefaultPage')
-    def isDefaultPage(self, obj):
-        """Finds out if the given obj is the default page in its parent folder.
-
-        Only considers explicitly contained objects, either set as index_html,
-        with the default_page property, or using IBrowserDefault.
-        """
-
-        parent = obj.aq_inner.aq_parent
-
-        if not parent:
-            return False
-
-        # The list of ids where we look for default
-        ids = {}
-
-        # For BTreeFolders we just use the has_key, otherwise build a dict
-        if hasattr(aq_base(parent), 'has_key'):
-            ids = parent
-        else:
-            for id in parent.objectIds():
-                ids[id] = 1
-
-        #
-        # 1. Get an attribute or contained object index_html
-        #
-
-        if not isinstance(getattr(parent, 'index_html', None), ReplaceableWrapper):
-            index_html = getattr(aq_base(parent), 'index_html', None)
-            if not index_html is not None:
-                if type(index_html) == type(obj) and index_html == obj:
-                    return True
-                else:
-                    return False
-
-        #
-        # 2. Look for a default_page managed by an IBrowserDefault-implementing
-        #    object
-        #
-
-        if IBrowserDefault.isImplementedBy(parent):
-            page = parent.getDefaultPage()
-            if page and ids.has_key(page):
-                if page == obj.getId():
-                    return True
-                else:
-                    return False
-
-        #
-        # 3. Look for a default_page property on the object
-        #
-
-        pages = getattr(aq_base(parent), 'default_page', [])
-        if type(pages) in (StringType, UnicodeType):
-            pages = [pages]
-        pages = filter(None, pages)
-        for page in pages:
-            if ids.has_key(page):
-                if page == obj.getId():
-                    return True
-                else:
-                    return False
-
-        #
-        # 4. Try the default sitewide default_page setting
-        #
-
-        portal = getToolByName(self, 'portal_url').getPortalObject()
-        for page in portal.portal_properties.site_properties.getProperty('default_page', []):
-            if ids.has_key(page):
-                if page == obj.getId():
-                    return True
-                else:
-                    return False
-
-        return False
 
     security.declarePublic('isTranslatable')
     def isTranslatable(self, obj):

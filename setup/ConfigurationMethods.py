@@ -16,11 +16,6 @@ def addErrorLog(self, portal):
         manage_addErrorLog(portal)
         portal.error_log.copy_to_zlog = 1
 
-def modifyAuthentication(self, portal):
-    #set up cookie crumbler
-    cookie_authentication = getToolByName(portal, 'cookie_authentication')
-    cookie_authentication._updateProperty('auto_login_page', 'require_login')
-
 def installPortalTools(self,portal):
     ''' This should be done in Products/CMFPlone/Portal.py in setupTools '''
     pass
@@ -61,6 +56,7 @@ def addSiteProperties(self, portal):
         safeEditProperty(p, 'calendar_starting_year', 1999, 'int')
     if not hasattr(p, 'calendar_future_years_available'):
         safeEditProperty(p, 'calendar_future_years_available', 5, 'int')
+
 
 def setupDefaultLeftRightSlots(self, portal):
     """ sets up the slots on objectmanagers """
@@ -356,7 +352,6 @@ functions = {
     'addNewActions': addNewActions,
     'modifySkins': modifySkins,
     'installPortalTools': installPortalTools,
-    'modifyAuthentication': modifyAuthentication,
     'modifyActionProviders': modifyActionProviders,
     'addErrorLog':addErrorLog,
     'addSiteActions':addSiteActions,

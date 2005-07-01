@@ -1,4 +1,4 @@
-from Products.CMFPlone.interfaces.BrowserDefault import ISelectableBrowserDefault
+from Products.CMFDynamicViewFTI.interfaces import ISelectableBrowserDefault
 
 from Acquisition import aq_base, aq_inner
 from AccessControl import ClassSecurityInfo
@@ -26,15 +26,6 @@ class PropertyManagedBrowserDefault:
             return self.getDefaultPage()
         else:
             return self.getLayout()
-
-    def __browser_default__(self, request):
-        """
-        Resolve what should be displayed when viewing this object without an
-        explicit template specified. If a default page is set, resolve and
-        return that. If not, resolve and return the page template found by
-        getLayout().
-        """
-        return getToolByName(self, 'plone_utils').browserDefault(self)
 
     def __call__(self):
         """

@@ -30,6 +30,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.catalog = self.portal.portal_catalog
         self.groups = self.portal.portal_groups
         self.factory = self.portal.portal_factory
+        self.cc = self.portal.cookie_authentication
 
     def testPloneSkins(self):
         # Plone skins should have been set up
@@ -390,6 +391,25 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         # that the layout template will be resolved (see PloneTool.browserDefault)
         self.assertEqual(self.portal.portal_types['Folder'].getActionById('folderlisting'), 'view')
         self.assertEqual(self.portal.portal_types['Plone Site'].getActionById('folderlisting'), 'view')
+
+    def testEnableLivesearchProperty(self):
+        # site_properties should have enable_livesearch property
+        self.failUnless(self.properties.site_properties.hasProperty('enable_livesearch'))
+
+    def testSearchSettingsActionIcon(self):
+        # There should be a SearchSettings action icon
+        for icon in self.icons.listActionIcons():
+            if icon.getActionId() == 'SearchSettings':
+                break
+        else:
+            self.fail("Action icons tool has no 'SearchSettings' icon")
+
+    def testCookieCrumblerProperties(self):
+        # Cookie Crumbler should have unauth_page set to insufficient privileges
+        # and the auto login page restored to login_form
+        self.assertEqual(self.cc.getProperty('unauth_page'), 'insufficient_privileges')
+        self.assertEqual(self.cc.getProperty('auto_login_page'), 'login_form')
+
 
 class TestPortalBugs(PloneTestCase.PloneTestCase):
 

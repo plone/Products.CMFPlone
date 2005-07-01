@@ -242,7 +242,7 @@ class CatalogTool(PloneBaseTool, BaseTool):
     security.declarePublic('enumerateIndexes') 
     def enumerateIndexes(self):
 
-        return ( ('Subject', 'KeywordIndex')
+        idxs = ( ('Subject', 'KeywordIndex')
                , ('Creator', 'FieldIndex')
                , ('Date', 'DateIndex')
                , ('Type', 'FieldIndex')
@@ -259,6 +259,37 @@ class CatalogTool(PloneBaseTool, BaseTool):
                , ('path', 'ExtendedPathIndex')
                , ('portal_type', 'FieldIndex')
                , ('getObjPositionInParent', 'FieldIndex')
+               )
+        return tuple([(n, t, None) for n, t in idxs])
+
+    security.declarePublic( 'enumerateColumns' )
+    def enumerateColumns( self ):
+        #   Return a sequence of schema names to be cached.
+        #   Creator is deprecated and may go away, use listCreators!
+        return ( 'Subject'
+               , 'Title'
+               , 'Description'
+               , 'Type'
+               , 'review_state'
+               , 'Creator'
+               , 'listCreators'
+               , 'Date'
+               , 'getIcon'
+               , 'created'
+               , 'effective'
+               , 'expires'
+               , 'modified'
+               , 'CreationDate'
+               , 'EffectiveDate'
+               , 'ExpirationDate'
+               , 'ModificationDate'
+               , 'getId'
+               , 'portal_type'
+               # plone metadata
+               , 'id', # BBB to be removed in Plone 2.2
+               'is_folderish',
+               'getObjSize',
+               'exclude_from_nav',
                )
 
     def _removeIndex(self, index):

@@ -58,6 +58,21 @@ def alpha2_beta1(portal):
     # Add deprecated and portlet style sheets
     addDeprecatedAndPortletStylesheets(portal, out)
     
+    # Add the plone_3rdParty to the skin layers
+    add3rdPartySkinPath(portal, out)
+
+    # Add deprecated and portlet style sheets
+    addDeprecatedAndPortletStylesheets(portal, out)
+
+    # Add LiveSearch site property
+    addEnableLivesearchProperty(portal, out)
+    
+    # Add icon for search settings configlet
+    addIconForSearchSettingsConfiglet(portal,out)
+
+    # CMF 1.5 Cookie Crumbler has new properties
+    sanitizeCookieCrumbler(portal, out)
+
     return out
 
 
@@ -404,13 +419,19 @@ def restrictEventsTopicToPublished(portal, out):
 def installKupu(portal, out):
     """Quickinstalls Kupu if not installed yet."""
     # Kupu is optional
-    if 'kupu' in portal.Control_Panel.Products.objectIds():
-        installOrReinstallProduct(portal, 'kupu', out)
-        # Make kupu the default
-        md = safeGetMemberDataTool(portal)
-        if md and not hasattr(md, 'wysiwyg_editor'):
-            safeEditProperty(md, 'wysiwyg_editor', 'Kupu', 'string')
-        out.append('Set Kupu as default WYSIWYG editor.')
+    try:
+        import Products.kupu
+    except ImportError:
+        pass
+    else:
+        # Kupu is not installed by e.g. tests
+        if 'kupu' in portal.Control_Panel.Products.objectIds():
+            installOrReinstallProduct(portal, 'kupu', out)
+            # Make kupu the default
+            md = safeGetMemberDataTool(portal)
+            if md and not hasattr(md, 'wysiwyg_editor'):
+                safeEditProperty(md, 'wysiwyg_editor', 'Kupu', 'string')
+            out.append('Set Kupu as default WYSIWYG editor.')
 
 
 def addFontSizeStylesheets(portal, out):
@@ -437,4 +458,60 @@ def addFontSizeStylesheets(portal, out):
             if 'ploneRTL.css' in stylesheet_ids:
                 cssreg.moveResourceBefore('ploneTextLarge.css', 'ploneRTL.css')
             out.append('Added ploneTextLarge.css to CSSRegistry.')
+
+
+def add3rdPartySkinPath(portal, out):
+    """Add the plone_3rdParty to the skin layers."""
+    st = getToolByName(portal, 'portal_skins')
+    skins = ['Plone Default', 'Plone Tableless']
+    selections = st._getSelections()
+    for s in skins:
+        if not selections.has_key(s):
+           continue
+        cleanupSkinPath(portal, s)
+        path = st.getSkinPath(s)
+        path = map(string.strip, string.split(path,','))
+        if not 'plone_3rdParty' in path:
+            path.append('plone_3rdParty')
+            st.addSkinSelection(s, ','.join(path))
+            out.append('Added plone_3rdParty to %s' % s)
+
+
+def addEnableLivesearchProperty(portal, out):
+    """Adds sitewide config for Livesearch."""
+    propTool = getToolByName(portal, 'portal_properties', None)
+    if propTool is not None:
+        propSheet = getattr(aq_base(propTool), 'site_properties', None)
+        if propSheet is not None:
+            if not propSheet.hasProperty('enable_livesearch'):
+                propSheet.manage_addProperty('enable_livesearch', 1, 'boolean')
+            out.append("Added 'enable_livesearch' property to site_properties.")
+
+
+def addIconForSearchSettingsConfiglet(portal, out):
+    """Adds an icon for the search settings configlet. """
+    iconsTool = getToolByName(portal, 'portal_actionicons', None)
+    if iconsTool is not None:
+        for icon in iconsTool.listActionIcons():
+            if icon.getActionId() == 'SearchSettings':
+                break # We already have the icon
+        else:
+            iconsTool.addActionIcon(
+                category='Plone',
+                action_id='SearchSettings',
+                icon_expr='search_icon.gif',
+                title='Search Settings',
+                )
+        out.append("Added 'search' icon to actionicons tool.")
+
+
+def sanitizeCookieCrumbler(portal, out):
+    """CMF 1.5 Cookie Crumbler handles the require login nonsense just fine."""
+    cc = getToolByName(portal, 'cookie_authentication', None)
+    if cc is not None:
+        if cc.hasProperty('unauth_page'):
+            cc._updateProperty('auto_login_page', 'login_form')
+            out.append("Set 'Login page ID' of Cookie Crumbler to 'login_form'.")
+            cc._updateProperty('unauth_page', 'insufficient_privileges')
+            out.append("Set 'Failed authorization page ID' of Cookie Crumbler to 'insufficient_privileges'.")
 

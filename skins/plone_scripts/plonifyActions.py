@@ -37,7 +37,17 @@ for action in actionlist:
     else:
         item['url']=aurl
 
-    if item['url'].split('/')[-1]==template_id:
+    action_method=item['url'].split('/')[-1]
+
+    # Action method may be a method alias: Attempt to resolve to a template.
+    try:
+        action_method=context.getTypeInfo().queryMethodID(action_method,
+                                                          default = action_method)
+    except AttributeError:
+        # Don't raise if we don't have a CMF 1.5 FTI
+        pass
+
+    if action_method==template_id:
         item['selected']=1
         use_default=0
 
