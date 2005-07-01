@@ -65,7 +65,7 @@ def installLogin(portal, out):
     # register new login scripts
     jsreg = getToolByName(portal, 'portal_javascripts', None)
     if jsreg is not None:
-        if not 'login.js' in [r['id'] for r in jsreg.getResources()]:
+        if not 'login.js' in jsreg.getResourceIds():
             jsreg.registerScript('login.js')
             out.append('Registered login.js')
 
@@ -250,7 +250,7 @@ def reorderStylesheets(portal, out):
             qi.installProduct('ResourceRegistries', locked=0)
         cssreg = getToolByName(portal, 'portal_css', None)
         if cssreg is not None:
-            stylesheet_ids = [item.get('id') for item in cssreg.getResources()]
+            stylesheet_ids = cssreg.getResourceIds()
             # Failsafe: first make sure the two stylesheets exist in the list
             if 'ploneRTL.css' not in stylesheet_ids:
                 cssreg.registerStylesheet('ploneRTL.css',
@@ -267,7 +267,7 @@ def reorderStylesheets(portal, out):
 def addCssQueryJS(portal, out):
     jsreg = getToolByName(portal, 'portal_javascripts', None)
     if jsreg is not None:
-        script_ids = [item.get('id') for item in jsreg.getResources()]
+        script_ids = jsreg.getResourceIds()
         # Failsafe: first make sure the stylesheet doesn't exist in the list
         if 'cssQuery.js' not in script_ids:
             jsreg.registerScript('cssQuery.js')
@@ -287,7 +287,7 @@ def exchangePloneMenuWithDropDown(portal, out):
             qi.installProduct('ResourceRegistries', locked=0)
         jsreg = getToolByName(portal, 'portal_javascripts', None)
         if jsreg is not None:
-            script_ids = [item.get('id') for item in jsreg.getResources()]
+            script_ids = jsreg.getResourceIds()
             # Failsafe: first make sure the stylesheet doesn't exist in the list
             if 'dropdown.js' not in script_ids:
                 jsreg.registerScript('dropdown.js')
@@ -322,7 +322,7 @@ def removePlonePrefixFromStylesheets(portal, out):
     ]
     cssreg = getToolByName(portal, 'portal_css', None)
     if cssreg is not None:
-        stylesheet_ids = [item.get('id') for item in cssreg.getResources()]
+        stylesheet_ids = cssreg.getResourceIds()
         for old, new in names:
             if old in stylesheet_ids:
                 if new in stylesheet_ids:
@@ -339,7 +339,7 @@ def addDeprecatedAndPortletStylesheets(portal, out):
     out.append("Adding Portlet and Deprecated stylesheets.")
     cssreg = getToolByName(portal, 'portal_css', None)
     if cssreg is not None:
-        stylesheet_ids = [item.get('id') for item in cssreg.getResources()]
+        stylesheet_ids = cssreg.getResourceIds()
         stylesheets_to_move_after = ('base.css', 'public.css', 'authoring.css', 'member.css')
         if 'deprecated.css' not in stylesheet_ids:
             cssreg.registerStylesheet('deprecated.css', media="screen")
@@ -417,7 +417,7 @@ def addFontSizeStylesheets(portal, out):
     """Add the stylesheets for font size the selector."""
     cssreg = getToolByName(portal, 'portal_css', None)
     if cssreg is not None:
-        stylesheet_ids = [item.get('id') for item in cssreg.getResources()]
+        stylesheet_ids = cssreg.getResourceIds()
         # Failsafe: first make sure the stylesheets don't exist in the list
         if 'ploneTextSmall.css' not in stylesheet_ids:
             cssreg.registerStylesheet('ploneTextSmall.css',

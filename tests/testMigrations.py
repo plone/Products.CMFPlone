@@ -1328,37 +1328,32 @@ class TestMigrations_v2_1(MigrationTest):
         top of the list
         """
         cssreg = self.portal.portal_css
-        stylesheets = list(cssreg.getResources())
-        stylesheet_ids = [ item.get('id') for item in stylesheets ]
+        stylesheet_ids = cssreg.getResourceIds()
         self.assertEquals(stylesheet_ids[-1], 'ploneCustom.css')
         self.assertEquals(stylesheet_ids[-2], 'RTL.css')
         self.assertEquals(stylesheet_ids[0], 'member.css')
 
     def testAddedFontSizeStylesheets(self):
         cssreg = self.portal.portal_css
-        stylesheets = list(cssreg.getResources())
-        stylesheet_ids = [ item.get('id') for item in stylesheets ]
+        stylesheet_ids = cssreg.getResourceIds()
         self.failUnless('textSmall.css' in stylesheet_ids)
         self.failUnless('textLarge.css' in stylesheet_ids)
 
     def testaddCssQueryJS(self):
         jsreg = self.portal.portal_javascripts
-        scripts = list(jsreg.getResources())
-        script_ids = [ item.get('id') for item in scripts ]
+        script_ids = jsreg.getResourceIds()
         self.failUnless('cssQuery.js' in script_ids)
 
     def testExchangePloneMenuWithDropDown(self):
         jsreg = self.portal.portal_javascripts
-        scripts = list(jsreg.getResources())
-        script_ids = [ item.get('id') for item in scripts ]
+        script_ids = jsreg.getResourceIds()
         self.failIf('plone_menu.js' in script_ids)
         self.failUnless('dropdown.js' in script_ids)
         self.failUnless('cssQuery.js' in script_ids)
 
     def testRemovePlonePrefixFromStylesheets(self):
         cssreg = self.portal.portal_css
-        stylesheets = list(cssreg.getResources())
-        stylesheet_ids = [ item.get('id') for item in stylesheets ]
+        stylesheet_ids = cssreg.getResourceIds()
         self.failIf('ploneAuthoring.css' in stylesheet_ids)
         self.failIf('ploneBase.css' in stylesheet_ids)
         self.failIf('ploneColumns.css' in stylesheet_ids)
