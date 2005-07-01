@@ -6,11 +6,17 @@
 ##bind script=script
 ##bind subpath=traverse_subpath
 ##parameters=
+from AccessControl import Unauthorized
 
 INTERFACE = 'Products.CMFPlone.interfaces.BrowserDefault.ISelectableBrowserDefault'
 
-if not context.isPrincipiaFolderish:
-    return False
+# It's silly but because this is often called on the parent folder, we must
+# ensure we have permission.
+try:
+    if not context.isPrincipiaFolderish:
+        return False
+except Unauthorized:
+        return False
 
 from Products.CMFCore.utils import getToolByName
 itool = getToolByName(context, 'portal_interface')

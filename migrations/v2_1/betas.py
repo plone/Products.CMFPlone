@@ -8,12 +8,15 @@ from Products.CMFPlone.migrations.migration_util import installOrReinstallProduc
 from Products.CMFPlone.utils import base_hasattr
 from Products.CMFCore.DirectoryView import createDirectoryView
 from Products.CMFPlone.migrations.migration_util import cleanupSkinPath
+from alphas import reindexCatalog, indexMembersFolder, indexNewsFolder, \
+                    indexEventsFolder
 
 
 def alpha2_beta1(portal):
     """2.1-alpha2 -> 2.1-beta1
     """
     out = []
+    reindex = 0
 
     #Make object paste action work with all default pages.
     fixObjectPasteActionForDefaultPages(portal, out)
@@ -57,7 +60,37 @@ def alpha2_beta1(portal):
 
     # Add deprecated and portlet style sheets
     addDeprecatedAndPortletStylesheets(portal, out)
-    
+
+    # Convert navtree whitelist to blacklist
+    convertNavTreeWhitelistToBlacklist(portal, out)
+
+    # Add Index for is_default_page
+    reindex += addIsDefaultPageIndex(portal, out)
+
+    # Add Index for is_foldersh and remove corresponding metadata
+    reindex += addIsFolderishIndex(portal, out)
+
+    # Change conditions on content actions to be respectful of parent permissions
+    fixContentActionConditions(portal, out)
+
+    # ADD NEW STUFF BEFORE THIS LINE AND LEAVE THE TRAILER ALONE!
+
+    # Rebuild catalog
+    if reindex:
+        reindexCatalog(portal, out)
+
+    # FIXME: *Must* be called after reindexCatalog.
+    # In tests, reindexing loses the folders for some reason...
+
+    # Make sure the Members folder is cataloged
+    indexMembersFolder(portal, out)
+
+    # Make sure the News folder is cataloged
+    indexNewsFolder(portal, out)
+
+    # Make sure the Events folder is cataloged
+    indexEventsFolder(portal, out)
+
     # Add the plone_3rdParty to the skin layers
     add3rdPartySkinPath(portal, out)
 
@@ -153,14 +186,14 @@ def fixBatchActionToggle(portal, out):
         {'id'        : 'batch',
          'name'      : 'Contents',
          'action'    : "python:((object.isDefaultPageInFolder() and object.getParentNode().absolute_url()) or folder_url)+'/folder_contents'",
-         'condition' : "python:folder.displayContentsTab() and object.REQUEST['ACTUAL_URL'] != object.absolute_url() + '/folder_contents'",
+         'condition' : "python:portal.portal_membership.checkPermission('View',folder) and folder.displayContentsTab() and object.REQUEST['ACTUAL_URL'] != object.absolute_url() + '/folder_contents'",
          'permission': CMFCorePermissions.View,
          'category'  : 'batch',
         },
         {'id'        : 'nobatch',
          'name'      : 'Default view',
          'action'    : "string:${folder_url}/view",
-         'condition' : "python:folder.displayContentsTab() and object.REQUEST['ACTUAL_URL'] == object.absolute_url() + '/folder_contents'",
+         'condition' : "python:portal.portal_membership.checkPermission('View',folder) and folder.displayContentsTab() and object.REQUEST['ACTUAL_URL'] == object.absolute_url() + '/folder_contents'",
          'permission': CMFCorePermissions.View,
          'category'  : 'batch',
         },
@@ -515,3 +548,136 @@ def sanitizeCookieCrumbler(portal, out):
             cc._updateProperty('unauth_page', 'insufficient_privileges')
             out.append("Set 'Failed authorization page ID' of Cookie Crumbler to 'insufficient_privileges'.")
 
+
+def convertNavTreeWhitelistToBlacklist(portal, out):
+    """Makes navtree_properties typesToList typesNotToList with appropriate
+       conversion."""
+    bl = ['ATBooleanCriterion',
+          'ATCurrentAuthorCriterion',
+          'ATPathCriterion',
+          'ATDateCriteria',
+          'ATDateRangeCriterion',
+          'ATListCriterion',
+          'ATPortalTypeCriterion',
+          'ATReferenceCriterion',
+          'ATSelectionCriterion',
+          'ATSimpleIntCriterion',
+          'ATSimpleStringCriterion',
+          'ATSortCriterion',
+          'Discussion Item',
+          'Plone Site',
+          'TempFolder']
+    propTool = getToolByName(portal, 'portal_properties', None)
+    typesTool = getToolByName(portal, 'portal_types', None)
+    if propTool is not None:
+        propSheet = getattr(aq_base(propTool), 'navtree_properties', None)
+        sitepropSheet = getattr(aq_base(propTool), 'site_properties', None)
+        if propSheet is not None:
+            if propSheet.hasProperty('typesToList'):
+                propSheet.manage_delProperties(['typesToList'])
+                out.append('Removed navtree whitelist')
+            if sitepropSheet is not None:
+                bl = sitepropSheet.getProperty('types_not_searched', bl)
+                # Let's add the two new criteria to the not searched list as well
+                if 'ATCurrentAuthorCriterion' not in bl:
+                    bl= bl + ('ATCurrentAuthorCriterion','ATPathCriterion')
+                    sitepropSheet.manage_changeProperties(types_not_searched=bl)
+                    out.append('Added new entries to "types_not_searched" site_property')
+            if not propSheet.hasProperty('typesNotToList'):
+                propSheet._setProperty('typesNotToList', bl, 'lines')
+                out.append('Added navtree blacklist')
+
+
+def addIsDefaultPageIndex(portal, out):
+    """Adds the is_default_page FieldIndex."""
+    catalog = getToolByName(portal, 'portal_catalog', None)
+    if catalog is not None:
+        try:
+            index = catalog._catalog.getIndex('is_default_page')
+        except KeyError:
+            pass
+        else:
+            indextype = index.__class__.__name__
+            if indextype == 'FieldIndex':
+                return 0
+            catalog.delIndex('is_default_page')
+            out.append("Deleted %s 'is_default_page' from portal_catalog." % indextype)
+
+        catalog.addIndex('is_default_page', 'FieldIndex')
+        out.append("Added FieldIndex 'is_default_page' to portal_catalog.")
+        return 1 # Ask for reindexing
+    return 0
+
+
+def fixContentActionConditions(portal,out):
+    """Don't use aq_parent in action conditions directly, as it will fail if
+       we don't have permissions on the parent"""
+    ACTIONS = (
+        {'id'        : 'cut',
+         'name'      : 'Cut',
+         'action'    : 'string:${object_url}/object_cut',
+         'condition' : 'python:portal.portal_membership.checkPermission("Delete objects", object.aq_inner.getParentNode()) and object is not portal.portal_url.getPortalObject()',
+         'permission': CMFCorePermissions.Permissions.copy_or_move,
+         'category'  : 'object_buttons',
+        },
+        {'id'        : 'paste',
+         'name'      : 'Paste',
+         'action'    : 'string:${object_url}/object_paste',
+         'condition' : 'folder/cb_dataValid|nothing',
+         'permission': CMFCorePermissions.View,
+         'category'  : 'object_buttons',
+        },
+        {'id'        : 'delete',
+         'name'      : 'Delete',
+         'action'    : 'string:${object_url}/object_delete',
+         'condition' : 'python:portal.portal_membership.checkPermission("Delete objects", object.aq_inner.getParentNode()) and object is not portal.portal_url.getPortalObject()',
+         'permission': CMFCorePermissions.DeleteObjects,
+         'category'  : 'object_buttons',
+        })
+
+    actionsTool = getToolByName(portal, 'portal_actions', None)
+    if actionsTool is not None:
+        # update/add actions
+        for newaction in ACTIONS:
+            idx = 0
+            for action in actionsTool.listActions():
+                # if action exists, remove and re-add
+                if action.getId() == newaction['id'] \
+                        and action.getCategory() == newaction['category']:
+                    actionsTool.deleteActions((idx,))
+                    break
+                idx += 1
+
+            actionsTool.addAction(newaction['id'],
+                name=newaction['name'],
+                action=newaction['action'],
+                condition=newaction['condition'],
+                permission=newaction['permission'],
+                category=newaction['category'],
+                visible=1)
+
+            out.append("Added '%s' contentmenu action to actions tool." % newaction['name'])
+
+
+def addIsFolderishIndex(portal, out):
+    """Adds the is_folderish FieldIndex and removes the metadata."""
+    catalog = getToolByName(portal, 'portal_catalog', None)
+    if catalog is not None:
+        try:
+            index = catalog._catalog.getIndex('is_folderish')
+        except KeyError:
+            pass
+        else:
+            indextype = index.__class__.__name__
+            if indextype == 'FieldIndex':
+                return 0
+            catalog.delIndex('is_folderish')
+            out.append("Deleted %s 'is_folderish' from portal_catalog." % indextype)
+
+        catalog.addIndex('is_folderish', 'FieldIndex')
+        out.append("Added FieldIndex 'is_folderish' to portal_catalog.")
+        if 'is_folderish' in catalog.schema():
+            catalog.delColumn('is_folderish')
+            out.append("Removed metadata 'is_folderish' from portal_catalog.")
+        return 1 # Ask for reindexing
+    return 0

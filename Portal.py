@@ -314,7 +314,22 @@ class PloneGenerator(Portal.PortalGenerator):
         prop_tool.manage_addPropertySheet('navtree_properties', 'NavigationTree properties')
 
         ntp=prop_tool.navtree_properties
-        ntp._setProperty('typesToList', ['Folder','Large Plone Folder'], 'lines')
+        navtree_bl=['ATBooleanCriterion',
+                    'ATCurrentAuthorCriterion',
+                    'ATPathCriterion',
+                    'ATDateCriteria',
+                    'ATDateRangeCriterion',
+                    'ATListCriterion',
+                    'ATPortalTypeCriterion',
+                    'ATReferenceCriterion',
+                    'ATSelectionCriterion',
+                    'ATSimpleIntCriterion',
+                    'ATSimpleStringCriterion',
+                    'ATSortCriterion',
+                    'Discussion Item',
+                    'Plone Site',
+                    'TempFolder']
+        ntp._setProperty('typesNotToList', navtree_bl, 'lines')
         ntp._setProperty('sortAttribute', 'getObjPositionInParent', 'string')
         ntp._setProperty('sortOrder', 'asc', 'string')
         ntp._setProperty('sitemapDepth', 3, 'int')

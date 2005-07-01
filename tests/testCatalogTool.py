@@ -96,9 +96,10 @@ class TestCatalogSetup(PloneTestCase.PloneTestCase):
         # exclude_from_nav column should be in catalog schema
         self.failUnless('exclude_from_nav' in self.catalog.schema())
 
-    def testIs_folderishInSchema(self):
-        # is_folderish column should be in catalog schema
-        self.failUnless('is_folderish' in self.catalog.schema())
+    def testIs_folderishIsFieldIndex(self):
+        # is_folderish should be a FieldIndex
+        self.failUnless(self.catalog.Indexes['is_folderish'].__class__.__name__,
+                        'FieldIndex')
 
     def testDateIsDateIndex(self):
         # Date should be a DateIndex
@@ -152,6 +153,11 @@ class TestCatalogSetup(PloneTestCase.PloneTestCase):
     def testExpiresDateNotInSchema(self):
         # ExpirationDate column should be in catalog schema
         self.failIf('ExpiresDate' in self.catalog.schema())
+
+    def testIs_Default_PageIsFieldIndex(self):
+        # sortable_title should be a FieldIndex
+        self.assertEqual(self.catalog.Indexes['is_default_page'].__class__.__name__,
+                         'FieldIndex')
 
 
 class TestCatalogIndexing(PloneTestCase.PloneTestCase):

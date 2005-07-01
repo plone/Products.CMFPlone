@@ -63,6 +63,8 @@ class PloneTestCase(ZopeTestCase.PortalTestCase):
         # Hack ACTUAL_URL and plone_skin into the REQUEST
         self.app.REQUEST['ACTUAL_URL'] = self.app.REQUEST.get('URL')
         self.app.REQUEST['plone_skin'] = 'Plone Default'
+        # Need PARENTS in request otherwise REQUEST.clone() fails
+        self.app.REQUEST.set('PARENTS', [self.app])
         # Disable automatic memberarea creation
         self.portal.portal_membership.memberareaCreationFlag = 0
         # Disable the constraintypes performance hog

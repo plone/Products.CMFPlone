@@ -204,7 +204,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
 
     def testNavTreeProperties(self):
         # navtree_properties should contain the new properties
-        self.failUnless(self.properties.navtree_properties.hasProperty('typesToList'))
+        self.failUnless(self.properties.navtree_properties.hasProperty('typesNotToList'))
         self.failUnless(self.properties.navtree_properties.hasProperty('sortAttribute'))
         self.failUnless(self.properties.navtree_properties.hasProperty('sortOrder'))
         self.failUnless(self.properties.navtree_properties.hasProperty('sitemapDepth'))

@@ -14,7 +14,9 @@ cur_path = '/'.join(context.getPhysicalPath())
 path = {}
 
 if not contentFilter:
-    contentFilter=context.REQUEST
+    contentFilter=context.REQUEST.clone()
+# Make a copy just in case
+contentFilter = dict(contentFilter).copy()
 
 if not contentFilter.get('sort_on', None):
     try:

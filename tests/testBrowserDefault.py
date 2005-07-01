@@ -350,6 +350,18 @@ class TestPropertyManagedBrowserDefault(PloneTestCase.PloneTestCase):
         self.failUnless('folder_listing' in layoutKeys)
         self.failUnless('news_listing' in layoutKeys)
 
+    def testSetDefaultPageUpdatesCatalog(self):
+        # Ensure that Default page changes update the catalog
+        cat = self.portal.portal_catalog
+        self.portal.invokeFactory('Document', 'ad')
+        self.portal.invokeFactory('Document', 'other')
+        self.assertEqual(len(cat(getId=['ad','other'],is_default_page=True)), 0)
+        self.portal.setDefaultPage('ad')
+        self.assertEqual(len(cat(getId='ad',is_default_page=True)), 1)
+        self.portal.setDefaultPage('other')
+        self.assertEqual(len(cat(getId='other',is_default_page=True)), 1)
+        self.assertEqual(len(cat(getId='ad',is_default_page=True)), 0)
+
     def testSetLayoutUnsetsDefaultPage(self):
         self.portal.invokeFactory('Document', 'ad')
         self.portal.setDefaultPage('ad')

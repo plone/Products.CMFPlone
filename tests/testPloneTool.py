@@ -536,6 +536,14 @@ class TestNavTree(PloneTestCase.PloneTestCase):
         folder2.invokeFactory('File', 'file21')
         self.setRoles(['Member'])
 
+    def testTypesToList(self):
+        # Make sure typesToList() returns the expected types
+        wl = self.utils.typesToList()
+        self.failUnless('Folder' in wl)
+        self.failUnless('Large Plone Folder' in wl)
+        self.failUnless('Topic' in wl)
+        self.failIf('ATReferenceCriterion' in wl)
+
     def testCreateNavTree(self):
         # See if we can create one at all
         tree = self.utils.createNavTree(self.portal)
@@ -583,6 +591,15 @@ class TestNavTree(PloneTestCase.PloneTestCase):
         self.assertEqual(tree['children'][-1]['no_display'],True)
         # Shouldn't exlude anything else
         self.assertEqual(tree['children'][0]['no_display'],False)
+
+    def testNavTreeExcludesDefaultPage(self):
+        # Make sure that items which are the default page are excluded
+        self.portal.folder2.setDefaultPage('doc21')
+        tree = self.utils.createNavTree(self.portal.folder2.file21)
+        self.failUnless(tree)
+        # Ensure that our 'doc21' default page is not in the tree.
+        self.assertEqual([c for c in tree['children'][-1]['children']
+                                            if c['path'][-5:]=='doc21'],[])
 
     def testCreateSitemap(self):
         # Internally createSitemap is the same as createNavTree
@@ -633,7 +650,7 @@ class TestPortalTabs(PloneTestCase.PloneTestCase):
         # See if we can create one at all
         tabs = self.utils.createTopLevelTabs()
         self.failUnless(tabs)
-        #Only the folders show up (Members, news, folder1, folder2)
+        #Only the folders show up (Members, news, events, folder1, folder2)
         self.assertEqual(len(tabs), 5)
 
     def testTabsRespectFolderOrder(self):
@@ -675,11 +692,13 @@ class TestPortalTabs(PloneTestCase.PloneTestCase):
 
     def testTabsExcludeItemsWithExcludeProperty(self):
         # Make sure that items witht he exclude_from_nav property are purged
+        tabs = self.utils.createTopLevelTabs()
+        orig_len = len(tabs)
         self.portal.folder2.setExcludeFromNav(True)
         self.portal.folder2.reindexObject()
         tabs = self.utils.createTopLevelTabs()
         self.failUnless(tabs)
-        self.assertEqual(len(tabs),4)
+        self.assertEqual(len(tabs), orig_len - 1)
         tab_names = [t['id'] for t in tabs]
         self.failIf('folder2' in tab_names)
 
@@ -701,13 +720,26 @@ class TestPortalTabs(PloneTestCase.PloneTestCase):
     def testTabsExcludeItemsInIdsNotToList(self):
         # Make sure that items whose ids are in the idsNotToList navTree
         # property get purged
+        tabs = self.utils.createTopLevelTabs()
+        orig_len = len(tabs)
         ntp=self.portal.portal_properties.navtree_properties
         ntp.manage_changeProperties(idsNotToList=['folder2'])
         tabs = self.utils.createTopLevelTabs()
         self.failUnless(tabs)
-        self.assertEqual(len(tabs),4)
+        self.assertEqual(len(tabs), orig_len - 1)
         tab_names = [t['id'] for t in tabs]
         self.failIf('folder2' in tab_names)
+
+    def testTabsExcludeNonFolderishItems(self):
+        # Make sure that items witht he exclude_from_nav property are purged
+        tabs = self.utils.createTopLevelTabs()
+        orig_len = len(tabs)
+        self.setRoles(['Manager','Member'])
+        self.portal.invokeFactory('Document','foo')
+        self.portal.foo.reindexObject()
+        tabs = self.utils.createTopLevelTabs()
+        self.failUnless(tabs)
+        self.assertEqual(len(tabs),orig_len)
 
 
 class TestBreadCrumbs(PloneTestCase.PloneTestCase):

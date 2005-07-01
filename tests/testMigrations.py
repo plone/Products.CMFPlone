@@ -71,6 +71,10 @@ from Products.CMFPlone.migrations.v2_1.betas import removePlonePrefixFromStylesh
 from Products.CMFPlone.migrations.v2_1.betas import addEnableLivesearchProperty
 from Products.CMFPlone.migrations.v2_1.betas import addIconForSearchSettingsConfiglet
 from Products.CMFPlone.migrations.v2_1.betas import sanitizeCookieCrumbler
+from Products.CMFPlone.migrations.v2_1.betas import convertNavTreeWhitelistToBlacklist
+from Products.CMFPlone.migrations.v2_1.betas import addIsDefaultPageIndex
+from Products.CMFPlone.migrations.v2_1.betas import addIsFolderishIndex
+from Products.CMFPlone.migrations.v2_1.betas import fixContentActionConditions
 
 import types
 
@@ -118,6 +122,13 @@ class MigrationTest(PloneTestCase.PloneTestCase):
         sheet = getattr(tool, 'navtree_properties')
         if sheet.hasProperty(property_id):
             sheet.manage_delProperties([property_id])
+
+    def addNavTreeProperty(self, property_id):
+        # Removes a navtree property from portal_properties
+        tool = getattr(self.portal, 'portal_properties')
+        sheet = getattr(tool, 'navtree_properties')
+        if not sheet.hasProperty(property_id):
+            sheet.manage_addProperty(property_id,[],'lines')
 
     def removeMemberdataProperty(self, property_id):
         # Removes a memberdata property from portal_memberdata
@@ -678,20 +689,29 @@ class TestMigrations_v2_1(MigrationTest):
 
     def testAddIs_FolderishMetadata(self):
         # Should add is_folderish to schema
-        self.catalog.delColumn('is_folderish')
+        try:
+            self.catalog.delColumn('is_folderish')
+        except (AttributeError, ValueError):
+            pass
         addIs_FolderishMetadata(self.portal, [])
         self.failUnless('is_folderish' in self.catalog.schema())
 
     def testAddIs_FolderishMetadataTwice(self):
         # Should not fail if migrated again
-        self.catalog.delColumn('is_folderish')
+        try:
+            self.catalog.delColumn('is_folderish')
+        except (AttributeError, ValueError):
+            pass
         addIs_FolderishMetadata(self.portal, [])
         addIs_FolderishMetadata(self.portal, [])
         self.failUnless('is_folderish' in self.catalog.schema())
 
     def testAddIs_FolderishMetadataNoCatalog(self):
         # Should not fail if catalog is missing
-        self.portal._delObject('portal_catalog')
+        try:
+            self.portal._delObject('portal_catalog')
+        except (AttributeError, ValueError):
+            pass
         addIs_FolderishMetadata(self.portal, [])
 
     def testAddEditContentActions(self):
@@ -1549,6 +1569,102 @@ class TestMigrations_v2_1(MigrationTest):
         # Should not fail if cookie_authentication is missing
         self.portal._delObject('cookie_authentication')
         sanitizeCookieCrumbler(self.portal, [])
+
+    def testConvertNavTreeWhitelistToBlacklist(self):
+        # Should add convert navtree_property typesToList into typesNotToList
+        self.removeNavTreeProperty('typesNotToList')
+        self.addNavTreeProperty('typesToList')
+        self.failIf(self.properties.navtree_properties.hasProperty('typesNotToList'))
+        self.failUnless(self.properties.navtree_properties.hasProperty('typesToList'))
+        convertNavTreeWhitelistToBlacklist(self.portal, [])
+        self.failUnless(self.properties.navtree_properties.hasProperty('typesNotToList'))
+        self.failIf(self.properties.navtree_properties.hasProperty('typesToList'))
+
+    def testConvertNavTreeWhitelistToBlacklistTwice(self):
+        # Should not fail if migrated again
+        self.removeNavTreeProperty('typesNotToList')
+        self.addNavTreeProperty('typesToList')
+        convertNavTreeWhitelistToBlacklist(self.portal, [])
+        convertNavTreeWhitelistToBlacklist(self.portal, [])
+        self.failUnless(self.properties.navtree_properties.hasProperty('typesNotToList'))
+        self.failIf(self.properties.navtree_properties.hasProperty('typesToList'))
+
+    def testConvertNavTreeWhitelistToBlacklistNoTool(self):
+        # Should not fail if portal_properties is missing
+        self.portal._delObject('portal_properties')
+        convertNavTreeWhitelistToBlacklist(self.portal, [])
+
+    def testConvertNavTreeWhitelistToBlacklistNoSheet(self):
+        # Should not fail if navtree_properties is missing
+        self.properties._delObject('navtree_properties')
+        convertNavTreeWhitelistToBlacklist(self.portal, [])
+
+    def testAddIsDefaultPageIndex(self):
+        # Should add IsDefaultPage index
+        self.catalog.delIndex('is_default_page')
+        addIsDefaultPageIndex(self.portal, [])
+        index = self.catalog._catalog.getIndex('is_default_page')
+        self.assertEqual(index.__class__.__name__, 'FieldIndex')
+
+    def testAddIsDefaultPageIndexTwice(self):
+        # Should not fail if migrated again
+        self.catalog.delIndex('is_default_page')
+        addIsDefaultPageIndex(self.portal, [])
+        addIsDefaultPageIndex(self.portal, [])
+        index = self.catalog._catalog.getIndex('is_default_page')
+        self.assertEqual(index.__class__.__name__, 'FieldIndex')
+
+    def testAddIsDefaultPageIndexNoCatalog(self):
+        # Should not fail if portal_catalog is missing
+        self.portal._delObject('portal_catalog')
+        addIsDefaultPageIndex(self.portal, [])
+
+    def testAddIsFolderishIndex(self):
+        # Should add IsDefaultPage index
+        self.catalog.delIndex('is_folderish')
+        self.catalog.addColumn('is_folderish')
+        addIsFolderishIndex(self.portal, [])
+        index = self.catalog._catalog.getIndex('is_folderish')
+        self.assertEqual(index.__class__.__name__, 'FieldIndex')
+        self.failIf('is_folderish' in self.catalog.schema())
+
+    def testAddIsFolderishIndexTwice(self):
+        # Should not fail if migrated again
+        self.catalog.delIndex('is_folderish')
+        self.catalog.addColumn('is_folderish')
+        addIsFolderishIndex(self.portal, [])
+        addIsFolderishIndex(self.portal, [])
+        index = self.catalog._catalog.getIndex('is_folderish')
+        self.assertEqual(index.__class__.__name__, 'FieldIndex')
+
+    def testAddIsFolderishIndexNoCatalog(self):
+        # Should not fail if portal_catalog is missing
+        self.portal._delObject('portal_catalog')
+        addIsFolderishIndex(self.portal, [])
+
+    def testFixContentActionConditions(self):
+        editActions = ('cut', 'paste', 'delete')
+        for a in editActions:
+            self.removeActionFromTool(a)
+        fixContentActionConditions(self.portal, [])
+        actions = [x.id for x in self.actions.listActions()]
+        for a in editActions:
+            self.failUnless(a in actions)
+
+    def testFixContentActionConditionsTwice(self):
+        editActions = ('cut', 'paste', 'delete')
+        for a in editActions:
+            self.removeActionFromTool(a)
+        fixContentActionConditions(self.portal, [])
+        fixContentActionConditions(self.portal, [])
+        actions = [x.id for x in self.actions.listActions()]
+        for a in editActions:
+            self.failUnless(a in actions)
+
+    def testFixContentActionConditionsNoTool(self):
+        self.portal._delObject('portal_actions')
+        fixContentActionConditions(self.portal, [])
+
 
 
 def test_suite():

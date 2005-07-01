@@ -4,6 +4,22 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (Unreleased)
 
+    - Added is_default_page index to catalog, and made navtree no longer show
+      objects which are the default page in a folder.
+      [alecm]
+
+    - Fixed a number of security related issues.  We cannot assume that we can
+      access attributes of the parent object (this includes using 'folder' in
+      actions and 'aq_parent' in skins).  This fixes viewing visible objects
+      in private folders, and also some PLIP 16 issues.  There are still
+      issues due to the fact that restrictedTraverse() will not work for
+      objects which have an ancestor with 'Access contents information'
+      disabled.
+      [alecm]
+
+    - Made NavTree use a black list of portal_types not a white list.
+      [alecm]
+
     - Removed data/navigation_properties that was deprecated in Plone 2.0, as
       well as the data/ directory. Migrations to remove the property sheet
       from ZODB has been added before.
@@ -39,11 +55,11 @@ Plone 2.1 - Plaid - (Unreleased)
     - Slight change to navigationParent script so that it won't fail
       when a Z3 view is in the acquisition tree
       [rafrombrc]
-    
+
     - Added recently_modified page to link to from the recent changes
       portlet.
       [ender]
-    
+
     - Added state coloring in recent changes portlet and search results.
       [ender]
 

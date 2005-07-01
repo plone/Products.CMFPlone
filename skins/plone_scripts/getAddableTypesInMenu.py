@@ -15,7 +15,7 @@ mtool = getToolByName(context, 'portal_membership')
 
 folder = context
 if folder.isDefaultPageInFolder() or not folder.isPrincipiaFolderish:
-    folder = context.aq_inner.aq_parent
+    folder = context.aq_inner.getParentNode()
 
 if not itool.objectImplements(folder, INTERFACE):
     return allowedTypes

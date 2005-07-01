@@ -227,6 +227,15 @@ def syndication_enabled(obj, **kwargs):
 registerIndexableAttribute('syndication_enabled', syndication_enabled)
 
 
+def is_default_page(obj, portal, **kwargs):
+    """Is this the default page in its folder
+    """
+    ptool = portal.plone_utils
+    return ptool.isDefaultPage(obj)
+
+registerIndexableAttribute('is_default_page', is_default_page)
+
+
 class CatalogTool(PloneBaseTool, BaseTool):
 
     meta_type = ToolNames.CatalogTool

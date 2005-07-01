@@ -95,7 +95,18 @@ class PropertyManagedBrowserDefault:
         template returned by getLayout(). Pass None for objectId to turn off
         the default page and return to using the selected layout template.
         """
+        new_page = old_page = None
+        if objectId is not None:
+            new_page = getattr(self, objectId, None)
+        old_id = getattr(self, '_selected_default_page',None)
+        if old_id is not None:
+            old_page = getattr(self, old_id, None)
         self._selected_default_page = objectId
+        if new_page != old_page:
+            if new_page is not None:
+                new_page.reindexObject(['is_default_page'])
+            if old_page is not None:
+                old_page.reindexObject(['is_default_page'])
 
     security.declareProtected(CMFCorePermissions.ModifyPortalContent, 'setLayout')
     def setLayout(self, layout):

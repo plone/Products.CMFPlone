@@ -20,7 +20,7 @@
 	            <a tal:attributes="href string:$portal_url;
 		                           title portal/Description;
 		                           style string:background-image: url($portal_url/site_icon.gif);
-		                           class python:test(portal == here or (portal == here.aq_parent and here.plone_utils.isDefaultPage(here)), 'currentNavItem', '');">
+		                           class python:test(portal == here or (portal == here.getParentNode() and here.plone_utils.isDefaultPage(here)), 'currentNavItem', '');">
                     <span tal:omit-tag=""
                           i18n:translate="tabs_home">Home</span>
 	            </a>

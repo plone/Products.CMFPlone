@@ -513,6 +513,17 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             data['children'] = result[path]['children']
         result[path] = data
 
+    def typesToList(self):
+        ntp = getToolByName(self, 'portal_properties').navtree_properties
+        ttool = getToolByName(self, 'portal_types', None)
+        bl = ntp.getProperty('typesNotToList')
+        bl_dict = {}
+        for t in bl:
+            bl_dict[t] = 1
+        all_types = ttool.listContentTypes()
+        wl = [t for t in all_types if not bl_dict.has_key(t)]
+        return wl
+
     # XXX Please, refactor me! :-)
     security.declarePublic('createNavTree')
     def createNavTree(self, context, sitemap=None):
@@ -539,14 +550,15 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             currentPath = '/'.join(context.getPhysicalPath())
             query['path'] = {'query':currentPath, 'navtree':1}
 
-        if ntp.typesToList:
-            query['portal_type'] = ntp.typesToList
+        query['portal_type'] = self.typesToList()
 
         if ntp.sortAttribute:
             query['sort_on'] = ntp.sortAttribute
 
         if ntp.sortAttribute and ntp.sortOrder:
             query['sort_order'] = ntp.sortOrder
+
+        query['is_default_page'] = False
 
         # Get ids not to list and make a dict to make the search fast
         ids_not_to_list = ntp.idsNotToList
@@ -668,14 +680,16 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         portal_path = getToolByName(self, 'portal_url').getPortalPath()
         query['path'] = {'query':portal_path, 'navtree':1}
 
-        if ntp.typesToList:
-            query['portal_type'] = ntp.typesToList
+        query['portal_type'] = self.typesToList()
 
         if ntp.sortAttribute:
             query['sort_on'] = ntp.sortAttribute
 
         if ntp.sortAttribute and ntp.sortOrder:
             query['sort_order'] = ntp.sortOrder
+
+        query['is_default_page'] = False
+        query['is_folderish'] = True
 
         # Get ids not to list and make a dict to make the search fast
         ids_not_to_list = ntp.idsNotToList

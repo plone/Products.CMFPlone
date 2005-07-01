@@ -434,8 +434,11 @@ def updateNavTreeProperties(portal, out):
         if propSheet is not None:
             if not propSheet.hasProperty('typesToList'):
                 propSheet._setProperty('typesToList', ['Folder', 'Large Plone Folder', 'Topic'], 'lines')
+            if not propSheet.hasProperty('sortAttribute'):
                 propSheet._setProperty('sortAttribute', 'getObjPositionInParent', 'string')
+            if not propSheet.hasProperty('sortOrder'):
                 propSheet._setProperty('sortOrder', 'asc', 'string')
+            if not propSheet.hasProperty('sitemapDepth'):
                 propSheet._setProperty('sitemapDepth', 3, 'int')
             if not propSheet.hasProperty('showAllParents'):
                 propSheet._setProperty('showAllParents', 1, 'boolean')
