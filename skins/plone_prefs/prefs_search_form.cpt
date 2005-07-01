@@ -21,7 +21,7 @@
     </a>
 
     <p i18n:translate="description_search_setup">
-        Search settings for Plone.
+        Search settings for Site.
     </p>
 
     <form action=""
@@ -86,7 +86,7 @@
 		     the searchbox.
                 </div>
 		<div>
-                   <ul class="configlets">
+                   <ul class="configlets" tal:define="portal_types portal/portal_types;">
                      <li tal:define="portaltypes context/getPortalTypes;
                                      dummy python:portaltypes.sort()"
                          tal:repeat="ptype portaltypes">
@@ -96,11 +96,11 @@
                            tal:attributes="value ptype;
                                            id ptype;
                                            checked python:test(ptype in searchblacklist,'checked','');" />
-                       <label for="" tal:attributes="for ptype">
-                       <span tal:replace="ptype">
-                        Type name
-                       </span>
-                       </label>
+                       <label for=""
+                           i18n:translate=""
+                           tal:attributes="for ptype"
+                           tal:content="python: portal_types.getTypeInfo(ptype).Title()"
+                           />
                     </li>
                    </ul>
 		</div>

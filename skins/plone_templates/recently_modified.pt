@@ -68,7 +68,7 @@
         </form>
 
     <p tal:condition="not: results" i18n:translate="text_no_new_modified_items">
-        No items have been modified..
+        No items have been modified.
     </p>
 
   </div>

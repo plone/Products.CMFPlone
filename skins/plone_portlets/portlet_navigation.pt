@@ -8,9 +8,8 @@
        tal:define="data python:here.plone_utils.createNavTree(here, sitemap=None);">
        
 <dl class="portlet" id="portlet-navigation-tree">
-    <dt class="portletHeader"
-        i18n:translate="box_navigation">
-        <a href="#" tal:attributes="href string:$portal_url/sitemap">Navigation</a>
+    <dt class="portletHeader">
+        <a href="#" tal:attributes="href string:$portal_url/sitemap" i18n:translate="box_navigation">Navigation</a>
     </dt>
     
     <dd class="portletItemSingle">

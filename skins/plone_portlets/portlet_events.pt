@@ -46,27 +46,30 @@
     <dd class="portletFooter">
         <a href=""
            tal:condition="python:'events' in portal.contentIds()"
-           tal:attributes="href string:${utool}/events"
-           i18n:translate="portlet_upcoming_events">
+           tal:attributes="href string:${utool}/events">
             <img tal:replace="structure here/event_icon.gif" />
-            Upcoming events&hellip;
+            <span i18n:translate="box_upcoming_events">
+                Upcoming events&hellip;
+            </span>
         </a>
 
         <a href=""
            tal:condition="python:'events' not in portal.contentIds()"
-           tal:attributes="href string:${utool}/events_listing"
-           i18n:translate="portlet_upcoming_events">
+           tal:attributes="href string:${utool}/events_listing">
             <img tal:replace="structure here/event_icon.gif" />
-            Upcoming events&hellip;
+            <span i18n:translate="box_upcoming_events">
+                Upcoming events&hellip;
+            </span>
         </a>
 
         <br />
         <a href=""
            tal:condition="python:'events' in portal.contentIds()"
-           tal:attributes="href string:${utool}/events"
-           i18n:translate="portlet_previous_events">
+           tal:attributes="href string:${utool}/events">
             <img tal:replace="structure here/undo_icon.gif" />
-            Previous events&hellip;
+            <span i18n:translate="box_previous_events">
+                Previous events&hellip;
+            </span>
         </a>
     </dd>
   

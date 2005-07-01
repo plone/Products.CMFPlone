@@ -329,6 +329,7 @@
                    tal:attributes="href editAction/url;
                                    title editAction/name;
                                    class python:test(icon, 'visualIconReplace', nothing);"
+                   i18n:attributes="title"
                    i18n:translate=""/> 
             </li>
 
@@ -342,6 +343,7 @@
                                    class python:test(icon, 'visualIconReplace', nothing);
                                    onclick string:return confirm('$ptype\n${alert_msg}');;"
                    tal:content="editAction/name"
+                   i18n:attributes="title"
                    i18n:translate="">
                 </a>
             </li>

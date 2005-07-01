@@ -10,7 +10,7 @@
 <dl class="portlet"
     id="portlet-prefs">
     <dt class="portletHeader"
-        i18n:translate="heading_control_panel">Plone Setup</dt>
+        i18n:translate="heading_control_panel">Site Setup</dt>
 
         <dd class="portletItemSingle"
             tal:repeat="group groups">

@@ -35,7 +35,7 @@
 
         <fieldset>
 
-            <legend i18n:translate="legend_member_details">Personal Details</legend>
+            <legend i18n:translate="legend_personal_details">Personal Details</legend>
     
             <div class="field"
                  tal:define="error errors/fullname | nothing;
@@ -63,7 +63,7 @@
                              email python:request.get('email', member.getProperty('email',''));"
                  tal:attributes="class python:test(error, 'field error', 'field')">
     
-                <label for="email" i18n:translate="label_email">E-mail address</label>
+                <label for="email" i18n:translate="label_email">E-mail</label>
     
                 <span class="fieldRequired" title="Required"
                       i18n:attributes="title title_required;"

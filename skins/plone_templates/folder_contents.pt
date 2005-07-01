@@ -122,7 +122,8 @@
 
           <table id="sortable"
                  class="listing"
-                 summary="Content listing">
+                 summary="Content listing"
+                 i18n:attributes="summary summary_content_listing;">
             <thead>
               <metal:block tal:condition="batch|not:standalone|nothing">
                 <tr>

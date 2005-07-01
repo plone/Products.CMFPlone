@@ -15,7 +15,7 @@
   
     <span class="portletTopLeft" />
     <dt class="portletHeader">
-        <a href="#" i18n:translate="portlet_recentitems">Recent Changes</a>
+        <a href="#" i18n:translate="box_recent_changes">Recent Changes</a>
     </dt>
     <span class="portletTopRight" />
     <tal:items tal:repeat="obj results">
@@ -44,7 +44,7 @@
 
     <dd class="portletItem" 
         tal:condition="not: results"
-        i18n:translate="portlet_recent_no_items">
+        i18n:translate="box_recent_no_items">
         No items changed yet.
     </dd>
 
@@ -52,7 +52,7 @@
     <dd class="portletFooter even">
         <a href="#"
            tal:attributes="href string:${portal_url}/recently_modified"
-           i18n:translate="portlet_more_recently_changed">
+           i18n:translate="box_more_recently_changed">
         All recent changes&hellip;
         </a>
     </dd>
