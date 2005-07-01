@@ -52,9 +52,9 @@
                     </span>
                 </th>
                 <th id="calendar-next">
-                    <a href="#" rel="nofollow" 
+                    <a href="#" rel="nofollow"
                        tal:attributes="href python:'%s/%s?%s&amp;month:int=%d&amp;year:int=%d&amp;orig_query=%s' % (anchor_url, anchor_method, query_string, nextMonthTime.month(),nextMonthTime.year(),url_quote(query_string))"
-                       tal:condition="python: yearmonth < (nextYearMax.year(), nextYearMax.month())">
+                       tal:condition="python: yearmonth &lt; (nextYearMax.year(), nextYearMax.month())">
                          <img src="" alt="" title="Next month" i18n:attributes="title title_next_month;"
                               tal:attributes="src string:${portal_url}/arrowRight.gif" />
                     </a>
@@ -67,7 +67,7 @@
                 </tal:data>
             </tr>
         </thead>
-        
+
         <tal:comment replace="nothing"><!--
         Sorry for the obtuse formatting below (the stray end-of-tag markers), but until
         tal:block doesn't render an entire line of blank space when used, this is the only way.
