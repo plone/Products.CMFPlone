@@ -361,6 +361,8 @@ class TestPropertyManagedBrowserDefault(PloneTestCase.PloneTestCase):
         self.portal.setDefaultPage('other')
         self.assertEqual(len(cat(getId='other',is_default_page=True)), 1)
         self.assertEqual(len(cat(getId='ad',is_default_page=True)), 0)
+        self.portal.setDefaultPage(None)
+        self.assertEqual(len(cat(getId=['ad','other'],is_default_page=True)), 0)
 
     def testSetLayoutUnsetsDefaultPage(self):
         self.portal.invokeFactory('Document', 'ad')

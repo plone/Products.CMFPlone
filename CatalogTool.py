@@ -268,6 +268,8 @@ class CatalogTool(PloneBaseTool, BaseTool):
                , ('path', 'ExtendedPathIndex')
                , ('portal_type', 'FieldIndex')
                , ('getObjPositionInParent', 'FieldIndex')
+               , ('is_folderish', 'FieldIndex')
+               , ('is_default_page', 'FieldIndex')
                )
         return tuple([(n, t, None) for n, t in idxs])
 
@@ -296,7 +298,6 @@ class CatalogTool(PloneBaseTool, BaseTool):
                , 'portal_type'
                # plone metadata
                , 'id', # BBB to be removed in Plone 2.2
-               'is_folderish',
                'getObjSize',
                'exclude_from_nav',
                )

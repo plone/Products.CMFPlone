@@ -663,6 +663,9 @@ def addIsFolderishIndex(portal, out):
     """Adds the is_folderish FieldIndex and removes the metadata."""
     catalog = getToolByName(portal, 'portal_catalog', None)
     if catalog is not None:
+        if 'is_folderish' in catalog.schema():
+            catalog.delColumn('is_folderish')
+            out.append("Removed metadata 'is_folderish' from portal_catalog.")
         try:
             index = catalog._catalog.getIndex('is_folderish')
         except KeyError:
@@ -676,8 +679,5 @@ def addIsFolderishIndex(portal, out):
 
         catalog.addIndex('is_folderish', 'FieldIndex')
         out.append("Added FieldIndex 'is_folderish' to portal_catalog.")
-        if 'is_folderish' in catalog.schema():
-            catalog.delColumn('is_folderish')
-            out.append("Removed metadata 'is_folderish' from portal_catalog.")
         return 1 # Ask for reindexing
     return 0
