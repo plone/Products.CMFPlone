@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (Unreleased)
 
+    - Fixed http://plone.org/collector/4241 MembershipTool.py used
+      _checkPermission without importing it
+      [hannosch]
+
     - Added is_default_page index to catalog, and made navtree no longer show
       objects which are the default page in a folder.
       [alecm]

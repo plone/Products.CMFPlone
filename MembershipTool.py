@@ -1,6 +1,6 @@
 from DateTime import DateTime
 from Products.CMFCore.CMFCorePermissions import SetOwnPassword
-from Products.CMFCore.utils import getToolByName
+from Products.CMFCore.utils import getToolByName, _checkPermission
 from Products.CMFDefault.MembershipTool import MembershipTool as BaseTool
 from Products.CMFPlone import ToolNames
 from Products.CMFPlone.utils import _createObjectByType
