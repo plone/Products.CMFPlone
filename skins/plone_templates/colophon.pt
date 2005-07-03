@@ -20,14 +20,13 @@
 
       -->
 
-      <a href="http://plone.org">
-	<img src=""
-	     height="15"
-	     width="80"
-	     alt="Powered by Plone"
-	     title="This Plone site was built using the Plone Content Management System. Click for more information."
-	     tal:attributes="src string:$portal_url/plone_powered.gif"
-	     i18n:attributes="alt label_powered_by_plone; title title_built_with_plone;" />
+      <a href="http://plone.org"
+         class="colophonIcon"
+         title="This Plone site was built using the Plone Content Management System. Click for more information."
+         tal:attributes="style string:background-image: url(${portal_url}/plone_powered.gif);;"
+         i18n:attributes="title title_built_with_plone;"
+         i18n:translate="label_powered_by_plone">
+        Powered by Plone
       </a>
 
       <metal:slot define-slot="colophon" />
@@ -36,63 +35,60 @@
 	This site conforms to the following standards:
       </p>
 
+      <div class="colophonWrapper">
       <ul>
 	<li>
-	  <a href="http://www.section508.gov">
-	    <img src=""
-		 height="15"
-		 width="80"
-		 alt="Section 508"
-		 title="This Plone site conforms to the US Government Section 508 Accessibility Guidelines."
-		 tal:attributes="src string:$portal_url/colophon_sec508.gif"
-		 i18n:attributes="alt label_section_508; title title_section_508;" />
-	  </a>
+      <a href="http://www.section508.gov"
+         class="colophonIcon"
+         title="This Plone site conforms to the US Government Section 508 Accessibility Guidelines."
+         tal:attributes="style string:background-image: url(${portal_url}/colophon_sec508.gif);;"
+         i18n:attributes="title title_section_508;"
+         i18n:translate="label_section_508">
+        Section 508
+      </a>
 	</li>
 	<li>
-	  <a href="http://www.w3.org/WAI/WCAG1AA-Conformance">
-	    <img src=""
-		 height="15"
-		 width="80"
-		 alt="WCAG"
-		 title="This Plone site conforms to the W3C-WAI Web Content Accessibility Guidelines."
-		 tal:attributes="src string:$portal_url/colophon_wai-aa.gif"
-		 i18n:attributes="alt label_wcag; title title_wcag;" />
-	  </a>
+      <a href="http://www.w3.org/WAI/WCAG1AA-Conformance"
+         class="colophonIcon"
+         title="This Plone site conforms to the W3C-WAI Web Content Accessibility Guidelines."
+         tal:attributes="style string:background-image: url(${portal_url}/colophon_wai-aa.gif);;"
+         i18n:attributes="title title_wcag;"
+         i18n:translate="label_wcag">
+        WCAG
+      </a>
 	</li>
 	<li>
-	  <a href="http://validator.w3.org/check/referer">
-	    <img src=""
-		 height="15"
-		 width="80"
-		 alt="Valid XHTML"
-		 title="This Plone site is valid XHTML."
-		 tal:attributes="src string:$portal_url/colophon_xhtml.png"
-		 i18n:attributes="alt label_xhtml; title title_xhtml;" />
-	  </a>
+      <a href="http://validator.w3.org/check/referer"
+         class="colophonIcon"
+         title="This Plone site is valid XHTML."
+         tal:attributes="style string:background-image: url(${portal_url}/colophon_xhtml.png);;"
+         i18n:attributes="title title_xhtml;"
+         i18n:translate="label_xhtml">
+        Valid XHTML
+      </a>
 	</li>
 	<li>
-	  <a href="http://jigsaw.w3.org/css-validator/check/referer">
-	    <img src=""
-		 height="15"
-		 width="80"
-		 alt="Valid CSS"
-		 title="This Plone site was built with valid CSS."
-		 tal:attributes="src string:$portal_url/colophon_css.png"
-		 i18n:attributes="alt label_css; title title_css;" />
-	  </a>
+      <a href="http://jigsaw.w3.org/css-validator/check/referer"
+         class="colophonIcon"
+         title="This Plone site was built with valid CSS."
+         tal:attributes="style string:background-image: url(${portal_url}/colophon_css.png);;"
+         i18n:attributes="title title_css;"
+         i18n:translate="label_css">
+        Valid CSS
+      </a>
 	</li>
 	<li>
-	  <a href="http://plone.org/browsersupport">
-	    <img src=""
-		 height="15"
-		 width="80"
-		 alt="Usable in any browser"
-		 title="This Plone site is usable in any web browser."
-		 tal:attributes="src string:$portal_url/colophon_anybrowser.png"
-		 i18n:attributes="alt label_any_browser; title title_any_browser;" />
-	  </a>
+      <a href="http://plone.org/browsersupport"
+         class="colophonIcon"
+         title="This Plone site is usable in any web browser."
+         tal:attributes="style string:background-image: url(${portal_url}/colophon_anybrowser.png);;"
+         i18n:attributes="title title_any_browser;"
+         i18n:translate="label_any_browser">
+        Usable in any browser
+      </a>
 	</li>
       </ul>
+      </div>
 
     </div>
 

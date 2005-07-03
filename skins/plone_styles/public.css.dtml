@@ -560,10 +560,43 @@ textarea.proportional {
     color: &dtml-fontColor;;
 }
 
+#portal-colophon ul {
+    display: table-row;
+    list-style-type: none;
+}
+
 #portal-colophon ul li {
+    display: table-cell;
     font-size: &dtml-fontSmallSize;;
     margin: 0 0.25em;
     padding: 0.1em 0.2em;
+}
+
+#portal-colophon .colophonWrapper {
+    display: table;
+    margin: 0 auto;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+#portal-colophon .colophonIcon {
+    display: block; /* This is for Mozilla, as it doesn't support
+                       inline-block. The colophon icons aren't in
+                       one line though. */
+    display: inline-block;
+    text-decoration: none;
+    overflow: hidden;
+    border: 0;
+    margin: 0 auto;
+    padding: 0;
+    padding-top: 15px;
+    height: 0px !important;
+    height /**/: 15px;
+    width: 80px;
+}
+
+#portal-colophon a.colophonIcon {
+    cursor: pointer;
 }
 
 .netscape4 {
