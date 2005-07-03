@@ -706,7 +706,7 @@ ol.visualNoMarker {
 
 .actionMenu .actionMenuContent li {
     float: none;
-    background: transparent;
+    background-color: transparent;
     display: inline;
     padding: 0;
     margin: 0;
@@ -741,6 +741,20 @@ ol.visualNoMarker {
     position: relative;
     top: -1px;
     margin-left: -0.5em !important;
+}
+
+#objectMenu.actionMenu .actionMenuContent li {
+    display: block;
+}
+
+#objectMenu.actionMenu .actionMenuContent li,
+#objectMenu.actionMenu .actionMenuContent li a:hover {
+    background-position: 3px 50%;
+    margin-left: 0;
+}
+
+#objectMenu.actionMenu .actionMenuContent li a {
+    padding-left: 22px;
 }
 
 /*

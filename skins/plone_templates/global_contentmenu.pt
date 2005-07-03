@@ -98,16 +98,13 @@
           <dd class="actionMenuContent">
             <ul>
                 <tal:types repeat="ctype menuTypes"> 
-                    <li tal:define="Title ctype/Title; Id ctype/getId; Description ctype/Description">
+                    <li tal:define="Title ctype/Title; Id ctype/getId; Description ctype/Description;
+                                    item_type_class python: 'contenttype-' + here.plone_utils.normalizeString(Id);"
+                        tal:attributes="class string:${item_type_class}">
                         <a href="#" 
                            i18n:attributes="title"
                            tal:attributes="href string:${parent_folder/absolute_url}/createObject?type_name=${Id};
                                            title Description">
-                          <img src="folder.gif" 
-                               alt="" 
-                               width="16" 
-                               height="16" 
-                               tal:attributes="src string:$portal_url/${ctype/getIcon}" />
                           <tal:title i18n:translate=""
                                      tal:content="Title">Title</tal:title>
                         </a>
