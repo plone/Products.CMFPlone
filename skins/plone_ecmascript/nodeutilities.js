@@ -2,16 +2,15 @@
 function wrapNode(node, wrappertype, wrapperclass){
     /* utility function to wrap a node in an arbitrary element of type "wrappertype"
      * with a class of "wrapperclass" */
-    wrapper = document.createElement(wrappertype)
+    var wrapper = document.createElement(wrappertype)
     wrapper.className = wrapperclass;
-    innerNode = node.parentNode.replaceChild(wrapper,node);
+    var innerNode = node.parentNode.replaceChild(wrapper,node);
     wrapper.appendChild(innerNode);
 }
 
 function nodeContained(innernode, outernode){
     // check if innernode is contained in outernode
-    var node;
-    node = innernode.parentNode;
+    var node = innernode.parentNode;
     while (node != document) {
         if (node == outernode) {
             return true; 
@@ -78,10 +77,9 @@ function walkTextNodes(node, func, data) {
     // traverse childnodes and call func when a textnode is found
     if (!node){return false}
     if (node.hasChildNodes) {
-        var i;
         // we can't use for (i in childNodes) here, because the number of
         // childNodes might change (higlightsearchterms)
-        for (i=0;i<node.childNodes.length;i++) {
+        for (var i=0;i<node.childNodes.length;i++) {
             walkTextNodes(node.childNodes[i], func, data);
         }
         if (node.nodeType == 3) {

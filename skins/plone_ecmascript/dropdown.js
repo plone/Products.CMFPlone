@@ -82,7 +82,7 @@ function actionMenuDocumentMouseDown(event) {
     }
 
     // hide all menus
-    menus = cssQuery('dl.actionMenu');
+    var menus = cssQuery('dl.actionMenu');
     for (var i in menus) {
         replaceClassName(menus[i], 'activated', 'deactivated', true);
     }
@@ -135,14 +135,14 @@ function initializeMenus() {
     document.onmousedown = actionMenuDocumentMouseDown;
 
     // hide all menus
-    menus = cssQuery('dl.actionMenu');
+    var menus = cssQuery('dl.actionMenu');
     for (var i in menus) {
         replaceClassName(menus[i], 'activated', 'deactivated', true);
     }
 
     var menu_headers = cssQuery('dl.actionMenu > dt.actionMenuHeader > a');
     for (var i in menu_headers) {
-        menu_header = menu_headers[i];
+        var menu_header = menu_headers[i];
 
         menu_header.onclick = toggleMenu;
         menu_header.onmouseover = actionMenuMouseOver;

@@ -45,7 +45,7 @@ function toggleCollapsible(event) {
         return true;
     }
 
-    container = findContainer(this, isCollapsible);
+    var container = findContainer(this, isCollapsible);
     if (!container) {
         return true;
     }
@@ -60,11 +60,11 @@ function toggleCollapsible(event) {
 function activateCollapsibles() {
     if (!W3CDOM) {return false;}
 
-    collapsibles = cssQuery('dl.collapsible');
-    for (i in collapsibles) {
+    var collapsibles = cssQuery('dl.collapsible');
+    for (var i in collapsibles) {
         collapsible = collapsibles[i];
 
-        collapsible_header = cssQuery('dt.collapsibleHeader', collapsible)[0];
+        var collapsible_header = cssQuery('dt.collapsibleHeader', collapsible)[0];
         collapsible_header.onclick = toggleCollapsible;
 
         if (hasClassName(collapsible, 'collapsedOnLoad')) {

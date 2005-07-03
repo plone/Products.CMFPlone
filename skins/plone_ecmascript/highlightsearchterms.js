@@ -6,7 +6,7 @@ function highlightTermInNode(node, word) {
     var parent = node.parentNode;
     if (parent.className != "highlightedSearchTerm") {
         // make 3 shiny new nodes
-        hiword = document.createElement("span");
+        var hiword = document.createElement("span");
         hiword.className = "highlightedSearchTerm";
         hiword.appendChild(document.createTextNode(contents.substr(index, word.length)));
         parent.insertBefore(document.createTextNode(contents.substr(0, index)), node);
@@ -22,11 +22,10 @@ function highlightSearchTerms(terms, startnode) {
     if (!terms){return false};
     if (!startnode){return false};
 
-    var term_index;
-    for (term_index in terms) {
+    for (var term_index in terms) {
         // don't highlight reserved catalog search terms
         var term = terms[term_index];
-        term_lower = term.toLowerCase();
+        var term_lower = term.toLowerCase();
         if (term_lower != 'not'
             && term_lower != 'and'
             && term_lower != 'or') {
@@ -58,9 +57,9 @@ function highlightSearchTermsFromURI() {
     if (!W3CDOM){return false};
 
     // search-term-highlighter function --  Geir Bækholt
-    terms = getSearchTermsFromURI(window.location.search);
+    var terms = getSearchTermsFromURI(window.location.search);
     // make sure we start the right place so we don't higlight menuitems or breadcrumb
-    contentarea = getContentArea();
+    var contentarea = getContentArea();
     highlightSearchTerms(terms, contentarea);
 }
 
