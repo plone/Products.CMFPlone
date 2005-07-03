@@ -287,6 +287,9 @@
     text-decoration: none;
     color: &dtml-globalFontColor;;
 }
+#portal-personaltools .visualIconPadding {
+    padding-left: 10px;
+}
 .visualCaseSensitive {
     text-transform: none;
 }

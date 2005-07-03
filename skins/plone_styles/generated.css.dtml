@@ -31,7 +31,7 @@
 </dtml-in>
 
 <dtml-in "getActionIconList()">
-.actionicon-<dtml-var category>-<dtml-var action> { background-image: url(<dtml-var portal_url>/<dtml-var icon>); background-repeat: no-repeat; background-position: 0% 50%;}
+.actionicon-<dtml-var category>-<dtml-var action> { background-image: url(<dtml-var portal_url>/<dtml-var icon>) !important; background-repeat: no-repeat; background-position: 0% 50%;}
 </dtml-in>
 
 /* Complimentary padding class for the generated icons - we have to do it

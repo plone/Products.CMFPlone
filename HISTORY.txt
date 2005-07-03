@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (Unreleased)
 
+    - Made it possible to show action icons in personal-bar.
+      [fschulze]
+
     - Fixed http://plone.org/collector/4229 Error in sharing tab, roles.append
       changes a list inplace
       [hannosch]
