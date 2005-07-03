@@ -16,17 +16,15 @@ portal_properties=getToolByName(context, 'portal_properties')
 
 
 jstool=getToolByName(context, 'portal_javascripts')
-position=jstool.getResourcePosition('livesearch.js')
-jstool.unregisterResource('livesearch.js')
 
 if livesearch:
   portal_properties.site_properties.manage_changeProperties(enable_livesearch=True)
-  jstool.registerScript('livesearch.js',enabled=True)
+  jstool.getResource('livesearch.js').setEnabled(True)
+  jstool.cookResources()
 else:
   portal_properties.site_properties.manage_changeProperties(enable_livesearch=False)
-  jstool.registerScript('livesearch.js',enabled=False)
-
-jstool.moveResource('livesearch.js',position)
+  jstool.getResource('livesearch.js').setEnabled(False)
+  jstool.cookResources()
 
 portal_properties.site_properties.manage_changeProperties(types_not_searched=portaltypes)
 
