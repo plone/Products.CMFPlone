@@ -36,9 +36,9 @@ function TestCaseRegistry() {
         var testcases = new Array();
 
         var suites = this.getFilteredTestSuitNames();
-        for (suite_index in suites) {
+        for (var suite_index=0; suite_index < suites.length; suite_index++) {
             var suite = this._testcases[suites[suite_index]];
-            for (var test_index in suite) {
+            for (var test_index=0; test_index < suite.length; test_index++) {
                 var testcase = suite[test_index];
                 if (this.test_filter) {
                     if (!this.test_filter.test(testcase.name)) {
@@ -109,7 +109,7 @@ function runTestCases() {
     testcase_registry.setTestSuiteFilter(suite_filter);
     testcase_registry.setTestFilter(test_filter);
     var testcases = testcase_registry.getFilteredTestCases();
-    for (var testcase_index in testcases) {
+    for (var testcase_index; testcase_index < testcases.length; testcase_index++) {
         runTestCase(testcases[testcase_index]);
     }
 }

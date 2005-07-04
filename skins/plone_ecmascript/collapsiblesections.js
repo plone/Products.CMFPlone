@@ -61,8 +61,8 @@ function activateCollapsibles() {
     if (!W3CDOM) {return false;}
 
     var collapsibles = cssQuery('dl.collapsible');
-    for (var i in collapsibles) {
-        collapsible = collapsibles[i];
+    for (var i=0; i < collapsibles.length; i++) {
+        var collapsible = collapsibles[i];
 
         var collapsible_header = cssQuery('dt.collapsibleHeader', collapsible)[0];
         collapsible_header.onclick = toggleCollapsible;

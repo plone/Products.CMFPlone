@@ -161,7 +161,7 @@ if (!window.beforeunload) (function() {
         var content = getContentArea();
         if (tool && content) {
             var forms = cssQuery('form.enableUnloadProtection');
-            for (var i in forms) {
+            for (var i=0; i < forms.length; i++) {
                 tool.addForm(forms[i]);
             }
         }

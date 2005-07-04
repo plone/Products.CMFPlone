@@ -83,7 +83,7 @@ function actionMenuDocumentMouseDown(event) {
 
     // hide all menus
     var menus = cssQuery('dl.actionMenu');
-    for (var i in menus) {
+    for (var i=0; i < menus.length; i++) {
         replaceClassName(menus[i], 'activated', 'deactivated', true);
     }
 
@@ -106,7 +106,7 @@ function actionMenuMouseOver(event) {
     var switch_menu = false;
     // hide all menus
     var menus = cssQuery('dl.actionMenu');
-    for (var i in menus) {
+    for (var i=0; i < menus.length; i++) {
         var menu = menus[i]
         // check if the menu is visible
         if (hasClassName(menu, 'activated')) {
@@ -136,12 +136,12 @@ function initializeMenus() {
 
     // hide all menus
     var menus = cssQuery('dl.actionMenu');
-    for (var i in menus) {
+    for (var i=0; i < menus.length; i++) {
         replaceClassName(menus[i], 'activated', 'deactivated', true);
     }
 
     var menu_headers = cssQuery('dl.actionMenu > dt.actionMenuHeader > a');
-    for (var i in menu_headers) {
+    for (var i=0; i < menu_headers.length; i++) {
         var menu_header = menu_headers[i];
 
         menu_header.onclick = toggleMenu;
