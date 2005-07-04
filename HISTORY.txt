@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (Unreleased)
 
+    - Fixed http://plone.org/collector/4247 remove unused group_submit variable
+      [hannosch]
+
     - Made it possible to show action icons in personal-bar.
       [fschulze]
 
