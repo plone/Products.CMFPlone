@@ -109,7 +109,7 @@ function runTestCases() {
     testcase_registry.setTestSuiteFilter(suite_filter);
     testcase_registry.setTestFilter(test_filter);
     var testcases = testcase_registry.getFilteredTestCases();
-    for (var testcase_index; testcase_index < testcases.length; testcase_index++) {
+    for (var testcase_index=0; testcase_index < testcases.length; testcase_index++) {
         runTestCase(testcases[testcase_index]);
     }
 }
@@ -125,8 +125,8 @@ function showFilteredTests() {
     var test_filter = document.getElementById('test-filter').value;
     testcase_registry.setTestSuiteFilter(suite_filter);
     testcase_registry.setTestFilter(test_filter);
-    putTextInPlaceHolder(testcase_registry.getFilteredTestSuitNames() +
-                         testcase_registry.getFilteredTestNames());
+    putTextInPlaceHolder(testcase_registry.getFilteredTestSuitNames().join(', ') +
+                         testcase_registry.getFilteredTestNames().join(', '));
 }
 
 function showMarkup() {
