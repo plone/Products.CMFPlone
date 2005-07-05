@@ -136,21 +136,26 @@
 
     <li tal:condition="not:showMenu">
         <a href="#" 
-           tal:define="portaltype python: allowedTypes[0];"
+           tal:define="portaltype python: allowedTypes[0];
+                       typetitle portaltype/Title;"
            tal:attributes="href string:${parent_folder/absolute_url}/createObject?type_name=${portaltype/getId};
                            title portaltype/Description"
            >
             <img src="folder.gif" 
-                 alt="" 
-                 width="16" 
-                 height="16" 
-                 tal:attributes="src string:$portal_url/${portaltype/getIcon}"/>
-            <span tal:define="ttype python:here.translate(portaltype.Title())"
-                  tal:replace="python:here.translate('Add ${type}', {'type':ttype})"
-                  tal:condition="python:folder == parent_folder" />
-            <span tal:define="ttype python:here.translate(portaltype.Title())"
-                  tal:replace="python:here.translate('Add ${type} to folder', {'type':ttype})"
-                  tal:condition="python:folder != parent_folder" />
+                 alt=""
+                 width="16"
+                 height="16"
+                 tal:attributes="src string:$portal_url/${portaltype/getIcon};
+                                 alt typetitle;"
+                 i18n:attributes="alt" />
+            <span i18n:translate="label_add_type"
+                  tal:condition="python:folder == parent_folder">
+                Add <span tal:replace="typetitle" i18n:name="type" />
+            </span>
+            <span i18n:translate="label_add_type_to_folder"
+                  tal:condition="python:folder != parent_folder">
+                Add <span tal:replace="typetitle" i18n:name="type" /> to folder
+            </span>
         </a>
     </li>
     </tal:add>
@@ -334,11 +339,12 @@
                 tal:attributes="class class_name">
                 <a onclick="#"
                    tal:define="ptype here/portal_type;
-                               alert_msg python:here.translate('alert_really_delete');"
+                               alert_msg python:here.translate('alert_really_delete');
+                               ptype_translated python:here.translate(ptype);"
                    tal:attributes="href editAction/url;
                                    title editAction/name;
                                    class python:test(icon, 'visualIconReplace', nothing);
-                                   onclick string:return confirm('$ptype\n${alert_msg}');;"
+                                   onclick string:return confirm('$ptype_translated\n${alert_msg}');;"
                    tal:content="editAction/name"
                    i18n:attributes="title"
                    i18n:translate="">
