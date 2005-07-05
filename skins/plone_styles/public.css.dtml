@@ -310,6 +310,8 @@
 
 .breadcrumbSeparator {
     font-size: 120%;
+    position: relative;
+    top: 0.15em;
 }
 
 .addFavorite {
@@ -608,45 +610,6 @@ textarea.proportional {
 
 
 
-/* New navtree styles */
-
-.navTree {
-    list-style: none; 
-    list-style-image: none; 
-    margin-top: 1px;
-}
-
-.navTree li {
-    margin-bottom: 1px;
-}
-
-.navTreeItem {
-    display: block;
-    padding: 0;
-    margin: 0;
-}
-
-.navTreeItem a {
-    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-backgroundColor;;
-    display: block;
-    text-decoration: none;
-}
-
-.navTreeItem a:hover {
-    background-color: &dtml-globalBackgroundColor;;
-    color: &dtml-globalFontColor;;
-    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
-}
-
-.navTreeCurrentItem {
-    background-color: &dtml-globalBackgroundColor;;
-    color: &dtml-globalFontColor;;
-    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor; !important;
-}
-
-.navTreeLevel0 {
-    margin: 0;
-}
 
 
 /* Collapsible elements */

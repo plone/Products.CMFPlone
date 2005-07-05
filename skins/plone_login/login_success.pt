@@ -27,16 +27,16 @@
 
       <h1 i18n:translate="heading_you_are_now_logged_in">You are now logged in</h1>
 
+      <p tal:condition="came_from">
+        <a href="" tal:attributes="href came_from" i18n:translate="login_came_from">
+          Click here to continue to the page from which you came.</a>
+      </p>
+
       <p i18n:translate="description_logged_in_explain">
          Notice that the top right bar has changed. It now
          contains several personalized items. Use these items
          to control your settings and your personal area.
          They will remain as long as you are logged in.
-      </p>
-
-      <p tal:condition="came_from">
-        <a href="" tal:attributes="href came_from" i18n:translate="login_came_from">
-          Click here to continue to the page from which you came.</a>
       </p>
 
       <p i18n:translate="description_newbie_pointers">

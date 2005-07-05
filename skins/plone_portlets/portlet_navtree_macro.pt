@@ -10,7 +10,7 @@
         <a tal:condition="item/currentItem"
            tal:attributes="href item/absolute_url;
                            title item/Description|nothing;
-                           class string: $item_wf_state_class navTreeCurrentItem visualIconPadding;"
+                           class string: $item_wf_state_class navTreeCurrentItem visualIconPadding $item_type_class;"
             tal:content="item/Title|nothing">
             Selected Item Title</a>
         <a tal:condition="not: item/currentItem"
