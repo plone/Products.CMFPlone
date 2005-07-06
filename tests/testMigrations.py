@@ -1666,7 +1666,7 @@ class TestMigrations_v2_1(MigrationTest):
         self.portal._delObject('portal_actions')
         fixContentActionConditions(self.portal, [])
 
-    def testMigrateToDynamicFTIs(self):
+    def DISABLED_testMigrateToDynamicFTIs(self):
         ttool = self.portal.portal_types
         ttool.manage_addTypeInformation('Factory-based Type Information',
                                         'Foo',

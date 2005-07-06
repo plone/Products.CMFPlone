@@ -108,7 +108,7 @@ def alpha2_beta1(portal):
     sanitizeCookieCrumbler(portal, out)
 
     # replace old-style FTIs w/ ones supporting dynamic views
-    migrateToDynamicFTIs(portal, out)
+    #migrateToDynamicFTIs(portal, out)
     
     return out
 
