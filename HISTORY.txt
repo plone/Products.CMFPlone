@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (Unreleased)
 
+    - Ceiling date patch is obsolete for CMF 1.5 - removed it.
+      [hannosch]
+
     - Fixed http://plone.org/collector/4247 remove unused group_submit variable
       [hannosch]
 
