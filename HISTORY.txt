@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (Unreleased)
 
+    - Use a global define for visible_ids so that it is automatically used for
+      custom types.
+      [alecm]
+
     - Added migration of all FTIs to new "FTI with dynamic views"
       [rafrombrc]
 
