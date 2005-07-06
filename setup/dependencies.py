@@ -113,7 +113,7 @@ except ImportError:
 try:
     import Products.ExternalEditor
 except ImportError:
-    log(("ExternalEditor not found.  If you want "
+    log(("ExternalEditor not found. If you want "
          "the external edit functionality, please "
          "download it from "
          "http://plope.com/software/ExternalEditor"),
@@ -122,7 +122,7 @@ except ImportError:
 try:
     import Products.kupu
 except ImportError:
-    log(("Kupu not found.  If you want WYSIWYG capabilities "
+    log(("Kupu not found. If you want WYSIWYG capabilities "
         "in Plone, you can download it from "
         "http://kupu.oscom.org/"),
         severity=zLOG.INFO, optional=1)
