@@ -10,9 +10,9 @@ MINIMUM_PYTHON_VER = (2, 3, 4)
 PREFERRED_PYTHON_VER = "2.3.5 or newer"
 
 MINIMUM_ZOPE_VER = (2, 7, 5)
-PREFERRED_ZOPE_VER = "2.7.5 or newer"
+PREFERRED_ZOPE_VER = "2.7.6 or newer"
 
-MINIMUM_CMF_VER = (1, 4, 8)
+MINIMUM_CMF_VER = (1, 5, 2)
 
 messages = []
 
@@ -102,12 +102,6 @@ except ImportError:
          "Please download it from http://sf.net/projects/collective"))
 
 try:
-    import Products.CMFActionIcons
-except ImportError:
-    log(("CMFActionIcons not found. "
-         "Please download it from http://cvs.zope.org/Products/"))
-
-try:
     # TODO: we might want to check if the user has jpeg and zlib support, too
     import PIL.Image
 except ImportError:
@@ -122,7 +116,7 @@ except ImportError:
     log(("ExternalEditor not found.  If you want "
          "the external edit functionality, please "
          "download it from "
-         "http://www.zope.org/Members/Caseman/ExternalEditor"),
+         "http://plope.com/software/ExternalEditor"),
         severity=zLOG.INFO, optional=1)
 
 try:
@@ -213,7 +207,7 @@ try:
     import Products.BTreeFolder2
 except ImportError:
     log(("BTreeFolder2 not found. Please download it "
-         "from http://cvs.zope.org/Products"))
+         "from http://hathawaymix.org/Software/BTreeFolder2"))
 
 try:
     import Products.SecureMailHost
@@ -244,17 +238,22 @@ try:
     import Products.ATContentTypes.content.document
 except ImportError:
     log(("ATContentTypes not found or too old. Please "
-         "download it from http://sf.net/projects/collective"))
+         "download it from http://plone.org/products/atcontenttypes"))
 
 try:
     import Products.ExtendedPathIndex
 except ImportError:
     log(("ExtendedPathIndex not found. "
-         "Please download it from http://sf.net/projects/collective"))
+         "Please download it from http://plone.org/products/extendedpathindex"))
 
 try:
     import Products.ResourceRegistries
 except ImportError:
     log(("ResourceRegistries not found. "
-         "Please download it from http://sf.net/projects/collective"))
+         "Please download it from http://plone.org/products/resourceregistries"))
 
+try:
+    import Products.CMFDynamicViewFTI
+except ImportError:
+    log(("CMFDynamicViewFTI not found. "
+         "Please download it from http://plone.org/products/cmfdynamicviewfti"))
