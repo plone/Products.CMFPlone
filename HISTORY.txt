@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (Unreleased)
 
+    - Added the phrase "Open Source" to the colophon to keep google happy
+      [geoffd]
+
     - Fixed method alias handling in portal_factory 
       (http://plone.org/collector/4263)
       [geoffd]
