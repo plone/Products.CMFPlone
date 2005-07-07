@@ -106,9 +106,6 @@ def alpha2_beta1(portal):
 
     # CMF 1.5 Cookie Crumbler has new properties
     sanitizeCookieCrumbler(portal, out)
-
-    # replace old-style FTIs w/ ones supporting dynamic views
-    #migrateToDynamicFTIs(portal, out)
     
     return out
 
@@ -685,30 +682,3 @@ def addIsFolderishIndex(portal, out):
         out.append("Added FieldIndex 'is_folderish' to portal_catalog.")
         return 1 # Ask for reindexing
     return 0
-
-def migrateToDynamicFTIs(portal, out):
-    """Converts all of the old-style static FTI's into new-style dynamic
-       ones."""
-    ttool = getToolByName(portal, 'portal_types', None)
-    if ttool is not None:
-        fti_ids = ttool.objectIds(spec="Factory-based Type Information")
-        old_fti_ids = []
-        default_ftis = ttool.listDefaultTypeInformation()
-        add_meta_type = "Factory-based Type Information with dynamic views"
-        for fti_id in fti_ids:
-            old_fti = ttool.getTypeInfo(fti_id)
-            for typeinfo_name, def_fti in default_ftis:
-                if def_fti['product'] == old_fti.product and \
-                   def_fti['meta_type'] == old_fti.Metatype():
-                    old_fti_id = "OLD %s" % fti_id
-                    ttool.manage_renameObject(fti_id, old_fti_id)
-                    old_fti_ids.append(old_fti_id)
-                    ttool.manage_addTypeInformation(add_meta_type,
-                                                    id=fti_id,
-                                                    typeinfo_name=typeinfo_name)
-                    new_fti = ttool.getTypeInfo(fti_id)
-                    new_fti.manage_changeProperties(**dict(old_fti.propertyItems()))
-                    out.append("Migrated %s FTI" % fti_id)
-                    break
-        
-        ttool.manage_delObjects(old_fti_ids)

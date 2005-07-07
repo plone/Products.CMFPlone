@@ -8,9 +8,6 @@ Plone 2.1 - Plaid - (Unreleased)
       custom types.
       [alecm]
 
-    - Added migration of all FTIs to new "FTI with dynamic views"
-      [rafrombrc]
-
     - Ceiling date patch is obsolete for CMF 1.5 - removed it.
       [hannosch]
 

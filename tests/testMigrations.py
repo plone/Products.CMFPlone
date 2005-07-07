@@ -75,7 +75,6 @@ from Products.CMFPlone.migrations.v2_1.betas import convertNavTreeWhitelistToBla
 from Products.CMFPlone.migrations.v2_1.betas import addIsDefaultPageIndex
 from Products.CMFPlone.migrations.v2_1.betas import addIsFolderishIndex
 from Products.CMFPlone.migrations.v2_1.betas import fixContentActionConditions
-from Products.CMFPlone.migrations.v2_1.betas import migrateToDynamicFTIs
 
 import types
 
@@ -1665,25 +1664,6 @@ class TestMigrations_v2_1(MigrationTest):
     def testFixContentActionConditionsNoTool(self):
         self.portal._delObject('portal_actions')
         fixContentActionConditions(self.portal, [])
-
-    def DISABLED_testMigrateToDynamicFTIs(self):
-        ttool = self.portal.portal_types
-        ttool.manage_addTypeInformation('Factory-based Type Information',
-                                        'Foo',
-                                        'ATContentTypes: ATDocument (ATDocument)')
-        fti = ttool.getTypeInfo('Foo')
-        fti.manage_changeProperties(**{'title': "Foo Title",
-                                       'description': "Foo Description"})
-        get_transaction().commit(1) # needed so rename doesn't fail
-        self.loginPortalOwner()
-        migrateToDynamicFTIs(self.portal, [])
-        self.failIf('Foo' in ttool.objectIds(spec='Factory-based Type Information'))
-        self.failUnless('Foo' in \
-                        ttool.objectIds(spec='Factory-based Type Information with dynamic views'))
-        fti = ttool.getTypeInfo('Foo')
-        self.failIf(fti is None)
-        self.failUnless(fti.getProperty('title') == "Foo Title")
-        self.failUnless(fti.getProperty('description') == "Foo Description")
 
 
 def test_suite():
