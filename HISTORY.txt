@@ -2,7 +2,7 @@ Changelog for Plone
 
    (name of developer listed in brackets)
 
-Plone 2.1 - Plaid - (Unreleased)
+Plone 2.1 - Plaid - Beta1 - Released July 7, 2005
 
     - Move reindexOnReorder stuff into PloneTool, and use it from the
       folder_position script.  This way non-ATCT/PloneFolder types get proper
