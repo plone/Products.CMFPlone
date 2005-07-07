@@ -74,6 +74,21 @@ def alpha2_beta1(portal):
     # Change conditions on content actions to be respectful of parent permissions
     fixContentActionConditions(portal, out)
 
+    # Add the plone_3rdParty to the skin layers
+    add3rdPartySkinPath(portal, out)
+
+    # Add deprecated and portlet style sheets
+    addDeprecatedAndPortletStylesheets(portal, out)
+
+    # Add LiveSearch site property
+    addEnableLivesearchProperty(portal, out)
+    
+    # Add icon for search settings configlet
+    addIconForSearchSettingsConfiglet(portal,out)
+
+    # CMF 1.5 Cookie Crumbler has new properties
+    sanitizeCookieCrumbler(portal, out)
+    
     # Fix folderlisting action for portal
     fixFolderlistingAction(portal, out)
 
@@ -95,21 +110,6 @@ def alpha2_beta1(portal):
     # Make sure the Events folder is cataloged
     indexEventsFolder(portal, out)
 
-    # Add the plone_3rdParty to the skin layers
-    add3rdPartySkinPath(portal, out)
-
-    # Add deprecated and portlet style sheets
-    addDeprecatedAndPortletStylesheets(portal, out)
-
-    # Add LiveSearch site property
-    addEnableLivesearchProperty(portal, out)
-    
-    # Add icon for search settings configlet
-    addIconForSearchSettingsConfiglet(portal,out)
-
-    # CMF 1.5 Cookie Crumbler has new properties
-    sanitizeCookieCrumbler(portal, out)
-    
     return out
 
 
