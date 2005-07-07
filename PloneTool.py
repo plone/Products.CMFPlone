@@ -515,8 +515,8 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     def typesToList(self):
         ntp = getToolByName(self, 'portal_properties').navtree_properties
-        ttool = getToolByName(self, 'portal_types', None)
-        bl = ntp.getProperty('metaTypesNotToList')
+        ttool = getToolByName(self, 'portal_types')
+        bl = ntp.getProperty('metaTypesNotToList', ())
         bl_dict = {}
         for t in bl:
             bl_dict[t] = 1
