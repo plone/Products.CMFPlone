@@ -303,7 +303,20 @@ class FactoryTool(PloneBaseTool, UniqueObject, SimpleItem):
         if hasattr(intended_parent, id):
             return # do normal traversal via __bobo_traverse__
 
-        # about to create an object - prevent further traversal
+        # about to create an object - further traversal will be prevented
+        #
+        # before halting traversal, check for method aliases
+        # stack should be [...optional stuff..., id, type_name]
+        key = stack and stack[-3] or '(Default)'
+        ti = types_tool.getTypeInfo(type_name)
+        method_id = ti and ti.queryMethodID(key)
+        if method_id:
+            if key != '(Default)':
+                del(stack[-3])
+            if method_id != '(Default)':
+                stack.insert(-2, method_id)
+            REQUEST._hacked_path = 1
+        
         stack.reverse()
         factory_info = {'stack':stack}
         REQUEST.set(FACTORY_INFO, factory_info)
