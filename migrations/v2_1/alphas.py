@@ -24,7 +24,6 @@ def two05_alpha1(portal):
     # ATCT migration doesn't fail
     tweakPropertiesAndCSS(portal, out)
 
-
     if not migrated and reindex:
         refreshSkinData(portal, out)
         reindexCatalog(portal, out)
@@ -499,10 +498,11 @@ def refreshSkinData(portal, out=None):
     """Refreshes skins to make new scripts available in the
     current transaction.
     """
-    if hasattr(portal, '_v_skindata'):
+    if hasattr(aq_base(self.portal), 'clearCurrentSkin'):
+        portal.clearCurrentSkin()
+    else: # CMF 1.4
         portal._v_skindata = None
-    if hasattr(portal, 'setupCurrentSkin'):
-        portal.setupCurrentSkin()
+    portal.setupCurrentSkin()
 
 
 def reindexCatalog(portal, out):
