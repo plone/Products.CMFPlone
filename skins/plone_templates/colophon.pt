@@ -26,7 +26,7 @@
          tal:attributes="style string:background-image: url(${portal_url}/plone_powered.gif);;"
          i18n:attributes="title title_built_with_plone;"
          i18n:translate="label_powered_by_plone">
-        Powered by Plone
+        Powered by the Plone Content Management System
       </a>
 
       <metal:slot define-slot="colophon" />

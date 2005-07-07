@@ -5,7 +5,11 @@
 
 <p>
     <span i18n:translate="description_copyright" tal:omit-tag="">
-    The Plone&trade; Content Management System is Copyright
+    The 
+    <span i18n:name="plonecms">
+        <a href="http://plone.org" >Plone&trade; Content Management System</a>
+    </span>
+    is Copyright
     <acronym title="Copyright" i18n:name="copyright" i18n:attributes="title title_copyright;">&copy;</acronym>
     2000-<span i18n:name="current_year" 
                tal:define="now modules/DateTime/DateTime" 
