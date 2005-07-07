@@ -1304,5 +1304,25 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
         return friendlyTypes
 
+    security.declarePublic('reindexOnReorder')
+    def reindexOnReorder(self, parent):
+        """ Catalog ordering support """
+
+        # For now we will just reindex all objects in the folder. Later we may
+        # optimize to only reindex the objs that got moved. Ordering is more
+        # for humans than machines, therefore the fact that this won't scale
+        # well for btrees isn't a huge issue, since btrees are more for
+        # machines than humans.
+        mtool = getToolByName(self, 'portal_membership')
+        if not mtool.checkPermission(CMFCorePermissions.ModifyPortalContent,
+                                                                    parent):
+            return
+        cat = getToolByName(self, 'portal_catalog')
+        cataloged_objs = cat(path = {'query':'/'.join(parent.getPhysicalPath()), 'depth': 1})
+        for brain in cataloged_objs:
+            obj = brain.getObject()
+            cat.reindexObject(obj,['getObjPositionInParent'],
+                                                    update_metadata=0)
+
 
 InitializeClass(PloneTool)

@@ -514,20 +514,36 @@ class TestCatalogOrdering(PloneTestCase.PloneTestCase):
         self.failUnlessEqual(self.folder.getObjectPosition('doc3'), 3)
         self.failUnlessEqual(self.folder.getObjectPosition('doc4'), 4)
 
-    def testOrderIsUpdatedOnPloneFolderMoveByDelta(self):
-        self.folder.moveObjectsByDelta('doc1', 2)
+    def testOrderIsUpdatedOnMoveDown(self):
+        self.folder.folder_position('down','doc1')
         folder_docs = self.catalog(portal_type = 'Document',
                                    path = self.folder.getPhysicalPath(),
                                    sort_on = 'getObjPositionInParent')
-        expected = ['doc2','doc3','doc1','doc4']
+        expected = ['doc2','doc1','doc3','doc4']
         self.failUnlessEqual([b.getId for b in folder_docs], expected)
 
-    def testOrderIsUpdatedOnPloneFolderMoveObject(self):
-        self.folder.moveObject('doc3', 1)
+    def testOrderIsUpdatedOnMoveUp(self):
+        self.folder.folder_position('up','doc3')
+        folder_docs = self.catalog(portal_type = 'Document',
+                                   path = self.folder.getPhysicalPath(),
+                                   sort_on = 'getObjPositionInParent')
+        expected = ['doc1','doc3','doc2','doc4']
+        self.failUnlessEqual([b.getId for b in folder_docs], expected)
+
+    def testOrderIsUpdatedOnMoveTop(self):
+        self.folder.folder_position('top','doc3')
         folder_docs = self.catalog(portal_type = 'Document',
                                    path = self.folder.getPhysicalPath(),
                                    sort_on = 'getObjPositionInParent')
         expected = ['doc3','doc1','doc2','doc4']
+        self.failUnlessEqual([b.getId for b in folder_docs], expected)
+
+    def testOrderIsUpdatedOnMoveBottom(self):
+        self.folder.folder_position('bottom','doc3')
+        folder_docs = self.catalog(portal_type = 'Document',
+                                   path = self.folder.getPhysicalPath(),
+                                   sort_on = 'getObjPositionInParent')
+        expected = ['doc1','doc2','doc4','doc3']
         self.failUnlessEqual([b.getId for b in folder_docs], expected)
 
     def testOrderIsFineWithObjectCreation(self):
@@ -564,10 +580,11 @@ class TestCatalogOrdering(PloneTestCase.PloneTestCase):
     def testOrderAfterALotOfChanges(self):
         # ['doc1','doc2','doc3','doc4']
 
-        self.folder.moveObjectsByDelta('doc1', 2)
+        self.folder.folder_position('down','doc1')
+        self.folder.folder_position('down','doc1')
         # ['doc2','doc3','doc1','doc4']
 
-        self.folder.moveObject('doc3', 1)
+        self.folder.folder_position('top','doc3')
         # ['doc3','doc2','doc1','doc4']
 
         self.folder.invokeFactory('Document', id='doc5', text='blam')

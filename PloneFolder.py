@@ -110,7 +110,6 @@ class OrderedContainer(Folder):
         obj_meta = metadata.pop(obj_idx)
         metadata.insert(position, obj_meta)
         self._objects = tuple(metadata)
-        self._reindexOnReorder()
 
     # Here the implementation of IOrderedContainer starts
     # Once Plone depends on Zope 2.7 this should be replaced by mixing in
@@ -166,25 +165,7 @@ class OrderedContainer(Folder):
                         raise ValueError('The object with the id "%s" does '
                                          'not exist.' % subset_ids[pos])
             self._objects = tuple(objects)
-
-        self._reindexOnReorder()
         return counter
-
-    security.declarePrivate('_reindexOnReorder')
-    def _reindexOnReorder(self):
-        """ Catalog ordering support """
-
-        # For now we will just reindex all objects in the folder. Later we may
-        # optimize to only reindex the objs that got moved. Ordering is more
-        # for humans than machines, therefore the fact that this won't scale
-        # well for btrees isn't a huge issue, since btrees are more for
-        # machines than humans.
-
-        cat = getToolByName(self, 'portal_catalog')
-        cataloged_objs = cat(path = {'query':'/'.join(self.getPhysicalPath()), 'depth': 1})
-        for brain in cataloged_objs:
-            obj = brain.getObject()
-            cat.indexObject(obj,['getObjPositionInParent',])
 
     security.declarePrivate('getCMFObjectsSubsetIds')
     def getCMFObjectsSubsetIds(self, objs):
@@ -258,6 +239,8 @@ class OrderedContainer(Folder):
         method = OrderedContainer.inheritedAttribute('manage_renameObject')
         result = method(self, id, new_id, REQUEST)
         self.moveObject(new_id, objidx)
+        putils = getToolByName(self, 'plone_utils')
+        putils.reindexOnReorder(self)
 
         return result
 

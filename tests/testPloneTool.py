@@ -666,7 +666,9 @@ class TestPortalTabs(PloneTestCase.PloneTestCase):
     def testTabsRespectFolderOrder(self):
         # See if reordering causes a change in the tab order
         tabs1 = self.utils.createTopLevelTabs()
-        self.portal.moveObjectsByDelta('folder2', -1)
+        # Must be manager to change order on portal itself
+        self.setRoles(['Manager','Member'])
+        self.portal.folder_position('up', 'folder2')
         tabs2 = self.utils.createTopLevelTabs()
         #Same number of objects
         self.failUnlessEqual(len(tabs1), len(tabs2))

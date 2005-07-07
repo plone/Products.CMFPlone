@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (Unreleased)
 
+    - Move reindexOnReorder stuff into PloneTool, and use it from the
+      folder_position script.  This way non-ATCT/PloneFolder types get proper
+      reordering in the GUI.  Order reindex on rename is still not available
+      for custom types.
+      [alecm]
+
     - Added the phrase "Open Source" to the colophon to keep google happy
       [geoffd]
 
