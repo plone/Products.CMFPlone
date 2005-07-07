@@ -75,6 +75,7 @@ from Products.CMFPlone.migrations.v2_1.betas import convertNavTreeWhitelistToBla
 from Products.CMFPlone.migrations.v2_1.betas import addIsDefaultPageIndex
 from Products.CMFPlone.migrations.v2_1.betas import addIsFolderishIndex
 from Products.CMFPlone.migrations.v2_1.betas import fixContentActionConditions
+from Products.CMFPlone.migrations.v2_1.betas import fixFolderlistingAction
 
 import types
 
@@ -1684,6 +1685,18 @@ class TestMigrations_v2_1(MigrationTest):
     def testFixContentActionConditionsNoTool(self):
         self.portal._delObject('portal_actions')
         fixContentActionConditions(self.portal, [])
+
+    def testFixFolderlistingAction(self):
+        fixFolderlistingAction(self.portal, [])
+        self.assertEqual(self.portal.portal_types['Plone Site'].getActionById('folderlisting'), 'view')
+        
+    def testFixFolderlistingActionTwice(self):
+        fixFolderlistingAction(self.portal, [])
+        self.assertEqual(self.portal.portal_types['Plone Site'].getActionById('folderlisting'), 'view')
+        
+    def testFixFolderlistingActionNoTool(self):
+        self.portal._delObject('portal_types')
+        fixFolderlistingAction(self.portal, [])
 
 
 def test_suite():

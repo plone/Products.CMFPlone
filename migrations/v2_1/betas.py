@@ -74,6 +74,9 @@ def alpha2_beta1(portal):
     # Change conditions on content actions to be respectful of parent permissions
     fixContentActionConditions(portal, out)
 
+    # Fix folderlisting action for portal
+    fixFolderlistingAction(portal, out)
+
     # ADD NEW STUFF BEFORE THIS LINE AND LEAVE THE TRAILER ALONE!
 
     # Rebuild catalog
@@ -695,3 +698,28 @@ def addIsFolderishIndex(portal, out):
         out.append("Added FieldIndex 'is_folderish' to portal_catalog.")
         return 1 # Ask for reindexing
     return 0
+
+def fixFolderlistingAction(portal, out):
+    """Fixes the folder listing action for portal to make it
+       work properly with the new browser default magic
+    """
+    typesTool = getToolByName(portal, 'portal_types', None)
+    if typesTool is not None:
+        siteFTI = getattr(typesTool, 'Plone Site', None)
+        if siteFTI is not None:
+            haveFolderListing = False
+            for action in siteFTI.listActions():
+                if action.getId() == 'folderlisting':
+                    action.setActionExpression(Expression('string:${folder_url}/view'))
+                    action.condition = ''
+                    haveFolderListing = True
+                    break
+            if not haveFolderListing:
+                siteFTI.addAction('folderlisting',
+                                    'Folder view',
+                                    'string:${folder_url}/view',
+                                    '',
+                                    'View',
+                                    'folder',
+                                    visible=0)
+            out.append("Set target expresion of folderlisting action for 'Plone Site' to 'view'")
