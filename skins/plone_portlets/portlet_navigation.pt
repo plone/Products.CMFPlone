@@ -27,7 +27,7 @@
                     </a>
                 </div>
             </li>
-            <li tal:replace="structure python:here.portlet_navtree_macro(children=data.get('children', []), level=1)">
+            <li tal:replace="structure python:here.portlet_navtree_macro(children=data.get('children', []), level=1, show_children=True)">
                 SUBTREE
             </li>
         </ul>

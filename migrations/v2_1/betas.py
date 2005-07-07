@@ -568,6 +568,7 @@ def convertNavTreeWhitelistToBlacklist(portal, out):
           'Discussion Item',
           'Plone Site',
           'TempFolder']
+    types_dict={}
     propTool = getToolByName(portal, 'portal_properties', None)
     typesTool = getToolByName(portal, 'portal_types', None)
     if propTool is not None:
@@ -577,6 +578,9 @@ def convertNavTreeWhitelistToBlacklist(portal, out):
             if propSheet.hasProperty('typesToList'):
                 propSheet.manage_delProperties(['typesToList'])
                 out.append('Removed navtree whitelist')
+            if propSheet.hasProperty('typesNotToList'):
+                propSheet.manage_delProperties(['typesNotToList'])
+                out.append('Removed old navtree blacklist')
             if sitepropSheet is not None:
                 bl = sitepropSheet.getProperty('types_not_searched', bl)
                 # Let's add the two new criteria to the not searched list as well
@@ -584,9 +588,18 @@ def convertNavTreeWhitelistToBlacklist(portal, out):
                     bl= bl + ('ATCurrentAuthorCriterion','ATPathCriterion')
                     sitepropSheet.manage_changeProperties(types_not_searched=bl)
                     out.append('Added new entries to "types_not_searched" site_property')
-            if not propSheet.hasProperty('typesNotToList'):
-                propSheet._setProperty('typesNotToList', bl, 'lines')
+            if not propSheet.hasProperty('metaTypesNotToList'):
+                propSheet._setProperty('metaTypesNotToList', bl, 'lines')
                 out.append('Added navtree blacklist')
+            else:
+                # Combine existing values with not searchable types
+                bl2 = propSheet.getProperty('metaTypesNotToList')
+                if isinstance(bl2,basestring): bl2 = [bl2]
+                for i in tuple(bl)+tuple(bl2):
+                    types_dict[i] = True
+                propSheet.manage_delProperties(['metaTypesNotToList'])
+                propSheet._setProperty('metaTypesNotToList', types_dict.keys(),'lines')
+                out.append('Updated navtree blacklist')
 
 
 def addIsDefaultPageIndex(portal, out):

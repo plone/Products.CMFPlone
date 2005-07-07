@@ -1571,23 +1571,43 @@ class TestMigrations_v2_1(MigrationTest):
         sanitizeCookieCrumbler(self.portal, [])
 
     def testConvertNavTreeWhitelistToBlacklist(self):
-        # Should add convert navtree_property typesToList into typesNotToList
-        self.removeNavTreeProperty('typesNotToList')
+        # Should add navtree_property metaTypesToList and remove typesNotToList
+        # and typesToList
+        self.removeNavTreeProperty('metaTypesNotToList')
         self.addNavTreeProperty('typesToList')
-        self.failIf(self.properties.navtree_properties.hasProperty('typesNotToList'))
+        self.addNavTreeProperty('typesNotToList')
+        self.failIf(self.properties.navtree_properties.hasProperty('metaTypesNotToList'))
+        self.failUnless(self.properties.navtree_properties.hasProperty('typesNotToList'))
         self.failUnless(self.properties.navtree_properties.hasProperty('typesToList'))
         convertNavTreeWhitelistToBlacklist(self.portal, [])
-        self.failUnless(self.properties.navtree_properties.hasProperty('typesNotToList'))
+        self.failUnless(self.properties.navtree_properties.hasProperty('metaTypesNotToList'))
         self.failIf(self.properties.navtree_properties.hasProperty('typesToList'))
+        self.failIf(self.properties.navtree_properties.hasProperty('typesNotToList'))
 
     def testConvertNavTreeWhitelistToBlacklistTwice(self):
-        # Should not fail if migrated again
-        self.removeNavTreeProperty('typesNotToList')
+        # Should not fail if migrated again, and should yield the same value
+        self.removeNavTreeProperty('metaTypesNotToList')
         self.addNavTreeProperty('typesToList')
+        self.addNavTreeProperty('typesNotToList')
         convertNavTreeWhitelistToBlacklist(self.portal, [])
+        first_list = list(self.properties.navtree_properties.getProperty('metaTypesNotToList'))
         convertNavTreeWhitelistToBlacklist(self.portal, [])
-        self.failUnless(self.properties.navtree_properties.hasProperty('typesNotToList'))
+        second_list= list(self.properties.navtree_properties.getProperty('metaTypesNotToList'))
+        first_list.sort()
+        second_list.sort()
+        self.assertEqual(second_list, first_list)
         self.failIf(self.properties.navtree_properties.hasProperty('typesToList'))
+        self.failIf(self.properties.navtree_properties.hasProperty('typesNotToList'))
+
+    def testConvertNavTreeWhitelistToBlacklistUpdatesExisting(self):
+        # Should add new not searchable types to existing blacklist
+        self.properties.navtree_properties.manage_changeProperties(metaTypesNotToList=('nonsense1','nonsense2'))
+        convertNavTreeWhitelistToBlacklist(self.portal, [])
+        # Check if we preserved the original values
+        self.failUnless('nonsense1' in self.properties.navtree_properties.getProperty('metaTypesNotToList'))
+        self.failUnless('nonsense2' in self.properties.navtree_properties.getProperty('metaTypesNotToList'))
+        # Check if we added the new values
+        self.failUnless('ATCurrentAuthorCriterion' in self.properties.navtree_properties.getProperty('metaTypesNotToList'))
 
     def testConvertNavTreeWhitelistToBlacklistNoTool(self):
         # Should not fail if portal_properties is missing

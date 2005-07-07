@@ -4,6 +4,14 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (Unreleased)
 
+    - Added support for parentMetaTypesNotToQuery to the navtree.
+      [alecm]
+
+    - Use the old fashioned (but badly named) metaTypesNotToList for the
+      navtree blacklist, instead of reinventing the wheel, appending the
+      necessary new values to that list in migration.
+      [alecm]
+
     - Use a global define for visible_ids so that it is automatically used for
       custom types.
       [alecm]

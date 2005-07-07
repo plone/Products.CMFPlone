@@ -516,7 +516,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     def typesToList(self):
         ntp = getToolByName(self, 'portal_properties').navtree_properties
         ttool = getToolByName(self, 'portal_types', None)
-        bl = ntp.getProperty('typesNotToList')
+        bl = ntp.getProperty('metaTypesNotToList')
         bl_dict = {}
         for t in bl:
             bl_dict[t] = 1
@@ -560,6 +560,8 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
         query['is_default_page'] = False
 
+        parentTypesNQ = ntp.getProperty('parentMetaTypesNotToQuery', ())
+
         # Get ids not to list and make a dict to make the search fast
         ids_not_to_list = ntp.idsNotToList
         excluded_ids = {}
@@ -589,6 +591,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                     'portal_type': item.portal_type,
                     'review_state': item.review_state,
                     'Description':item.Description,
+                    'show_children':item.portal_type not in parentTypesNQ,
                     'children':[],
                     'no_display': excluded_ids.has_key(item.getId) or not not item.exclude_from_nav}
             self._addToNavTreeResult(result, data)

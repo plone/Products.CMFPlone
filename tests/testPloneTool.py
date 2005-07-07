@@ -601,6 +601,16 @@ class TestNavTree(PloneTestCase.PloneTestCase):
         self.assertEqual([c for c in tree['children'][-1]['children']
                                             if c['path'][-5:]=='doc21'],[])
 
+    def testNavTreeMarksParentMetaTypesNotToQuery(self):
+        # Make sure that items whose ids are in the idsNotToList navTree
+        # property get no_display set to True
+        tree = self.utils.createNavTree(self.portal.folder2.file21)
+        self.assertEqual(tree['children'][-1]['show_children'],True)
+        ntp=self.portal.portal_properties.navtree_properties
+        ntp.manage_changeProperties(parentMetaTypesNotToQuery=['Folder'])
+        tree = self.utils.createNavTree(self.portal.folder2.file21)
+        self.assertEqual(tree['children'][-1]['show_children'],False)
+
     def testCreateSitemap(self):
         # Internally createSitemap is the same as createNavTree
         tree = self.utils.createSitemap(self.portal)
