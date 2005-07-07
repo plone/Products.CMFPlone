@@ -108,3 +108,7 @@ def registerMigrations():
     MigrationTool.registerUpgradePath('2.1-alpha2',
                                       '2.1-beta1',
                                       v2_1.betas.alpha2_beta1)
+
+    MigrationTool.registerUpgradePath('2.1-beta1',
+                                      '2.1-beta2 (SVN/UNRELEASED)',
+                                      null)
