@@ -498,7 +498,7 @@ def refreshSkinData(portal, out=None):
     """Refreshes skins to make new scripts available in the
     current transaction.
     """
-    if hasattr(aq_base(self.portal), 'clearCurrentSkin'):
+    if hasattr(aq_base(portal), 'clearCurrentSkin'):
         portal.clearCurrentSkin()
     else: # CMF 1.4
         portal._v_skindata = None
