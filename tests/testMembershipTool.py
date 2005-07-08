@@ -138,7 +138,9 @@ class TestMembershipTool(PloneTestCase.PloneTestCase):
         # return None for unknown users,
         self.assertEqual(self.membership.getMemberById('foo'), None)
         # and return None for users defined outside of the portal.
-        self.assertEqual(self.membership.getMemberById(PloneTestCase.portal_owner), None)
+        ##self.assertEqual(self.membership.getMemberById(PloneTestCase.portal_owner), None)
+        # Since CMF 1.5.2 the membershiptool will search "up"
+        self.failIfEqual(self.membership.getMemberById(PloneTestCase.portal_owner), None)
 
     def testGetMemberByIdIsWrapped(self):
         member = self.membership.getMemberById(default_user)
