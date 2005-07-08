@@ -13,6 +13,8 @@ from Products.CMFPlone.utils import _createObjectByType
 from Products.CMFPlone import transaction
 from Acquisition import aq_base
 
+from OFS.IOrderSupport import IOrderedContainer
+
 try: from zExceptions import NotFound
 except ImportError: NotFound = 'NotFound'
 from zExceptions import BadRequest
@@ -59,6 +61,11 @@ class TestPloneFolder(PloneTestCase.PloneTestCase):
     def testCanViewManagementScreen(self):
         # Make sure the ZMI management screen works
         self.folder.manage_main()
+
+    def testLargePloneFolderIsNotOrdered(self):
+        _createObjectByType('Large Plone Folder', self.folder, 'lpf')
+        lpf = self.folder.lpf
+        self.failIf(IOrderedContainer.isImplementedBy(lpf))
 
 
 class TestCheckIdAvailable(PloneTestCase.PloneTestCase):

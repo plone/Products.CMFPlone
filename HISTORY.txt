@@ -4,7 +4,11 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - Beta1 - Released July 7, 2005
 
-    - Move reindexOnReorder stuff into PloneTool, and use it from the
+    - PloneFolderBase (and hence LargePloneFolder) no longer inherits
+      SkinnedFolder, as SkinnedFolder has OrderSupport in CMF 1.5.
+      [alecm]
+
+    - Moved reindexOnReorder stuff into PloneTool, and use it from the
       folder_position script.  This way non-ATCT/PloneFolder types get proper
       reordering in the GUI.  Order reindex on rename is still not available
       for custom types.

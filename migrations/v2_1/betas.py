@@ -418,7 +418,7 @@ def allowOwnerToAccessInactiveContent(portal, out):
             acquire = cur_perms['acquire'] and 1 or 0
             portal.manage_permission(permission, tuple(cur_allowed),
                                                         acquire=acquire)
-            out.append('Cranted "Access inactive portal content" permission to Owner role')
+            out.append('Granted "Access inactive portal content" permission to Owner role')
 
 
 def restrictNewsTopicToPublished(portal, out):
