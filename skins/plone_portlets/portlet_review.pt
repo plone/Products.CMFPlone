@@ -23,7 +23,7 @@
             <img src="" alt="" height="16" width="16"
                  tal:attributes="src string:${here/portal_url}/${o/getIcon};
                                  title o/Type;" />
-            <span tal:replace="o/title_or_id">
+            <span tal:replace="o/pretty_title_or_id">
             Extended Calendar Product
             </span>
             <span class="portletItemDetails"

@@ -34,7 +34,7 @@
                 <h2>
                     <a href="/view" 
                        tal:attributes="href resulturl" 
-                       tal:content="result/Title">
+                       tal:content="result/pretty_title_or_id">
                         News headline
                     </a>
                 </h2>

@@ -14,7 +14,7 @@
             Document actions (print, sendto etc)
         </div>
 
-        <h1 tal:content="here/title_or_id" class="documentFirstHeading">
+        <h1 tal:content="here/pretty_title_or_id" class="documentFirstHeading">
             Title or id
         </h1>
     

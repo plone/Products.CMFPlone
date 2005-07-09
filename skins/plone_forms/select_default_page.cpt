@@ -37,7 +37,7 @@
                         <img src="" alt=""
                             tal:attributes="src item_icon;
                                             alt item_typeinfo/Title" />
-                        <span tal:replace="item/Title"/>
+                        <span tal:replace="item/pretty_title_or_id"/>
                     </dt>
                     <dd>
                         <span tal:replace="item/Description"/>
