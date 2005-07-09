@@ -291,10 +291,6 @@
                       tabindex=""
                       tal:attributes="tabindex tabindex/next;"
                       >
-                <option value=""
-                        i18n:translate="choose_language">
-                  Choose Language
-                </option>
                 <option tal:repeat="language here/availableLanguages"
                         tal:attributes="value python:language[0];
                                         selected python:test(sel_language == language[0], 'selected', None)"

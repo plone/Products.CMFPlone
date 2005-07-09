@@ -155,5 +155,5 @@ value = [
 
 value.sort(lambda x,y:cmp(x[1], y[1]))
 # Put 'Not specified' at the top.
-value.insert(0,('','Not specified'))
+value.insert(0,('',context.translate('Not specified')))
 return value
