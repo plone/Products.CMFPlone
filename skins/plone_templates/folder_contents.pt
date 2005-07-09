@@ -32,7 +32,7 @@
         </div>
         <h1>
           <tal:block replace="structure python:getattr(here, here.getIcon(1))"/>
-          <span tal:content="python: here.utranslate(view_title) or here.pretty_title_or_id()" tal:omit-tag="">Directory Id</span>
+          <span tal:content="python: here.utranslate(view_title) or putils.pretty_title_or_id(here)" tal:omit-tag="">Directory Id</span>
         </h1>
         <tal:full_view condition="full_view">
     
@@ -168,17 +168,16 @@
                                ">
                 <tal:items tal:repeat="item batch">
                    <tr tal:define="oddrow               repeat/item/odd;
-                                   getInfoFor           python:wtool.getInfoFor;
                                    item_url             item/getURL|item/absolute_url;
                                    item_id              item/getId;
                                    item_path            item/getPath|python:'/'.join(item.getPhysicalPath());
-                                   item_title_or_id     item/pretty_title_or_id;
+                                   item_title_or_id   item/pretty_title_or_id;
                                    item_description     item/Description;
                                    item_type            item/portal_type;
                                    item_size            item/getObjSize;
                                    item_modified        item/ModificationDate;
                                    item_type_class      python:'contenttype-' + putils.normalizeString(item_type);
-                                   item_wf_state        item/review_state|python: getInfoFor(item, 'review_state', '');
+                                   item_wf_state        item/review_state|python: wtool.getInfoFor(item, 'review_state', '');
                                    item_wf_state_class  python:here.getStateClassName(item_wf_state);
                                    hasGetUrl            python:hasattr(item.aq_explicit, 'getURL');
                                    item_rel_url         python:hasGetUrl and item.getURL(relative=1) or getRelativeContentURL(item);
