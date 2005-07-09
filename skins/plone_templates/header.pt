@@ -11,7 +11,7 @@
           tal:attributes="content string:text/html;;charset=${charset}" />
 
     <title tal:define="portal_title portal_properties/title;
-                       page_title here/title_or_id">
+                       page_title here/pretty_title_or_id">
         <tal:pagetitle replace="page_title">
             Inserts page title
         </tal:pagetitle>

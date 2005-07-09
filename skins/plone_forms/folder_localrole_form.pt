@@ -100,7 +100,7 @@
 
         <legend i18n:translate="legend_assigned_roles">
             Assigned Roles for
-            <span tal:content="here/title_or_id" i18n:name="folder">title</span>
+            <span tal:content="here/pretty_title_or_id" i18n:name="folder">title</span>
         </legend>
 
         <input type="hidden" name="change_type" value="delete" />
@@ -373,7 +373,7 @@
 
         <h1 i18n:translate="heading_add_sharing_permissions">
           Add sharing permissions for
-          <tal:block tal:content="here/title_or_id" i18n:name="item">title</tal:block>
+          <tal:block tal:content="here/pretty_title_or_id" i18n:name="item">title</tal:block>
         </h1>
 
 

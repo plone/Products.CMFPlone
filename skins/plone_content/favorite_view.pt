@@ -14,7 +14,7 @@
             <span i18n:translate="heading_link_to">Link to</span>
             <a href="#" 
                tal:attributes="href here/getRemoteUrl"
-               tal:content="here/title_or_id">zope.org</a>
+               tal:content="here/pretty_title_or_id">zope.org</a>
         </h1>
     
         <div metal:use-macro="here/document_actions/macros/document_actions">

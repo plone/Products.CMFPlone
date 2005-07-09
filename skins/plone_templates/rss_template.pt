@@ -20,7 +20,7 @@
 <metal:block tal:define="dummy python:request.RESPONSE.setHeader('Content-Type', 'text/xml;;charset='+context.plone_utils.getSiteEncoding())" />
 
 <channel rdf:about="" tal:attributes="rdf:about request/URL" >
-  <title tal:content="context/Title">The title</title>
+  <title tal:content="context/pretty_title_or_id">The title</title>
   <link tal:content="context/portal_url">http://url.to.portal</link>
   
   <description>

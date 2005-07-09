@@ -12,7 +12,7 @@ parents = context.parentsInThread()
 
 if parents:
     for parent in parents:
-        crumbs.append('<a href="%s">%s</a> ' % (parent.absolute_url(), parent.pretty_title_or_id()))
+        crumbs.append('<a href="%s">%s</a> ' % (parent.absolute_url(), putils.pretty_title_or_id(parent)))
 
     breadcrumbs = '<strong>&raquo;</strong> '.join(crumbs)
 
