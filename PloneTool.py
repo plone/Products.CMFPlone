@@ -853,7 +853,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         # looking up ITranslatable (LinguaPlone), which browserDefault() retains.
         # However, browserDefault() is no longer called with CMF 1.5 and the new
         # CMFDynamicViewFTI. Because the lookup method is quite different, there
-        # is no obvious way to make CMFDynamicViewFTI ITranslatable aware. Thus,
+        # is no obvious way to make CMFDynamicViewFTI ITranslatable aware. Thus,
         # if/when LinguaPlone tries to use the new FTI to get CMF 1.5 / Plone 2.1
         # goodness, it will likely break. The simple workaround is to set the
         # (Default) method alias to an empty string, thus falling back on
