@@ -2,6 +2,13 @@ Changelog for Plone
 
    (name of developer listed in brackets)
 
+Plone 2.1 - Plaid - Beta2 - unreleased
+
+    - Resurrection of old edit template for CMF content types. It is possible
+      to edit and view old style content types again. These templates should be
+      removed in 2.2.
+      [tiran]
+
 Plone 2.1 - Plaid - Beta1 - Released July 7, 2005
 
     - PloneFolderBase (and hence LargePloneFolder) no longer inherits

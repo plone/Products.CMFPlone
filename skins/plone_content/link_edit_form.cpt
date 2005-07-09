@@ -1,0 +1,200 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+  <body>
+    <div metal:fill-slot="main"
+         tal:define="errors options/state/getErrors;
+                     lockable python:hasattr(here, 'wl_isLocked');
+                     isLocked python:lockable and here.wl_isLocked();">
+
+      <h1 i18n:translate="heading_edit_item">
+        Edit
+        <span i18n:name="itemtype">
+          <span i18n:translate=""
+                tal:content="python:here.getTypeInfo().Title()"
+                tal:omit-tag="">Item type</span>
+        </span>
+      </h1>
+
+      <p i18n:translate="description_edit_link_item">
+        A link is a pointer to a location on the internet or intranet.
+        Enter the relevant details below, and press 'Save'.
+      </p>
+
+      <form name="edit_form"
+            action="."
+            method="post"
+            enctype="multipart/form-data"
+            tal:attributes="action string:${here/getId}/${template/getId}" >
+
+        <fieldset>
+
+          <legend i18n:translate="legend_link_details">Link Details</legend>
+
+          <div class="field"
+               tal:condition="python:site_properties.getProperty('visible_ids', None)"
+               tal:define="error errors/id | nothing;
+                           id python:request.get('id', test(here.show_id(),here.getId(),''));"
+               tal:attributes="class python:test(error, 'field error', 'field')">
+
+            <label for="id" i18n:translate="label_short_name">Short Name</label>
+
+            <div class="formHelp" i18n:translate="help_shortname">
+                   Short Name is part of the item's web address. 
+		           For accessibility reasons, do not use spaces, upper case, 
+                   underscores, or special characters.
+            </div>
+
+            <div tal:content="error">Validation error output</div>
+
+            <input type="text"
+                   id="id"
+                   name="id"
+                   value=""
+                   size="40"
+                   tabindex=""
+                   tal:attributes="value id;
+                                   tabindex tabindex/next;"
+                   />
+
+          </div>
+
+          <input type="hidden"
+                 name="id"
+                 tal:condition="python:not site_properties.getProperty('visible_ids', '')"
+                 tal:attributes="value python:request.get('id', here.getId())"
+                 />
+
+          <div class="field"
+               tal:define="error errors/title|nothing;
+                           Title request/title | here/Title;"
+               tal:attributes="class python:test(error, 'field error', 'field')">
+
+            <label for="title" i18n:translate="label_title">Title</label>
+
+            <span class="fieldRequired" title="Required"
+                  i18n:attributes="title"
+                  i18n:translate="label_required">(Required)</span>
+
+                  <div tal:content="error">Validation error output</div>
+
+                  <input type="text"
+                         id="title"
+                         name="title"
+                         value=""
+                         size="40"
+                         tabindex=""
+                         tal:attributes="value Title;
+                                         tabindex tabindex/next;"
+                         />
+
+          </div>
+
+          <div class="field"
+               tal:define="description request/description | here/Description ">
+
+            <label for="description" i18n:translate="label_description">Description</label>
+
+            <div class="formHelp" i18n:translate="help_description_link">
+              A brief description of the item.
+            </div>
+
+            <textarea cols="80"
+                      rows="5"
+                      tabindex=""
+                      id="description"
+                      name="description"
+                      tal:content="description"
+                      tal:attributes="tabindex tabindex/next;"
+                      >
+              Description
+            </textarea>
+          </div>
+
+          <div class="field"
+               tal:define="error errors/remote_url | nothing;
+                           remote_url request/remote_url | here/remote_url | nothing;"
+               tal:attributes="class python:test(error, 'field error', 'field')">
+
+            <label for="uri" i18n:translate="label_url">URL</label>
+
+            <span class="fieldRequired" title="Required"
+                  i18n:attributes="title"
+                  i18n:translate="label_required">(Required)</span>
+
+                  <div class="formHelp" i18n:translate="help_url">
+                    Prefix is optional; if not provided, the link will be relative.
+                  </div>
+
+                  <div tal:content="error">Validation error output</div>
+
+                  <input type="text"
+                         id="uri"
+                         name="remote_url"
+                         size="30"
+                         value=""
+                         tabindex=""
+                         tal:attributes="value remote_url;
+                                         tabindex tabindex/next;"
+                         />
+
+                  <!-- Commented out, doesn't work properly. Maybe after 1.1. :)
+
+
+                       <span tal:condition="exists:here/link_tree"
+                             tal:define="start_url string:${utool}/link_tree">
+                         <a href="" onclick="javascript:window.open('url','title', 'width=200,height=200,menubar=no,toolbar=no,scrollbars=no,resizable=yes').focus();return true;"
+                            tal:attributes="href start_url;
+                                            onclick string:window.open('$start_url','Link','width=200,height=200,resizable=yes').focus();; return false;;">
+                           <img src=""
+                                alt=""
+                                title="Link to internal resource"
+                                tal:attributes="src string: ${portal_url}/sitemap_icon.gif" />
+                         </a>
+                  </span>
+                  -->
+          </div>
+
+          <div class="formControls"
+               tal:define="process_creation request/process_creation|nothing;">
+
+            <img src="" class="context"
+                   tal:define="locked portal_object/lock_icon.gif;"
+                   tal:condition="isLocked"
+                   tal:replace="structure python:locked.tag(title='This item is locked')"
+                   alt="Object locked"
+                   i18n:attributes="alt"/>
+
+            <input class="context"
+                   tabindex=""
+                   type="submit"
+                   name="form.button.Save"
+                   value="Save"
+                   i18n:attributes="value"
+                   tal:attributes="tabindex tabindex/next;
+                                   disabled python:test(isLocked, 'disabled', None);" />
+
+
+            <input class="standalone"
+                   tabindex=""
+                   type="submit"
+                   name="form.button.Cancel"
+                   value="Cancel"
+                   i18n:attributes="value"
+                   tal:attributes="tabindex tabindex/next;" />
+          </div>
+        </fieldset>
+
+        <input type="hidden" name="form.submitted" value="1" />
+      </form>
+
+      <div metal:use-macro="here/document_byline/macros/byline">
+        Get the byline - contains details about author and modification date.
+      </div>
+
+    </div>
+
+  </body>
+</html>

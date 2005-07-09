@@ -61,7 +61,7 @@
                     <th i18n:translate="contact_phone">Contact Phone</th>
                     <td tal:content="here/contact_phone">555-GET-PLONE</td>
                 </tr>
-                <tr tal:condition="here/getAttendees">
+                <tr tal:condition="here/getAttendees|nothing">
                     <th i18n:translate="contact_attendees">Attendees</th>
                     <td tal:content="python: ', '.join(here.getAttendees())">Person 1, Person 2</td>
                 </tr>
