@@ -46,7 +46,7 @@
                     <h3>
                         <a name="comments" tal:attributes="name reply/id">
                         <tal:block replace="structure portal/discussionitem_icon.gif"/>
-                        <span tal:replace="reply/title_or_id">Comment title</span>
+                        <span tal:replace="reply/pretty_title_or_id">Comment title</span>
                         </a>
                     </h3>
                     <div class="documentByLine"

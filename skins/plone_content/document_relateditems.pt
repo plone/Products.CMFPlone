@@ -27,7 +27,7 @@
                                 tal:attributes="href  item/absolute_url;
                                                 title item/Description;
                                                 class string: $item_wf_state_class visualIconPadding"
-                                tal:content="item/title_or_id">
+                                tal:content="item/pretty_title_or_id">
                                 Related Item
                             </a>
                             </span>

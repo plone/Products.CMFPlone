@@ -195,18 +195,6 @@ def alpha1_alpha2(portal):
     if reindex:
         refreshSkinData(portal, out)
         reindexCatalog(portal, out)
-
-    # FIXME: *Must* be called after reindexCatalog.
-    # In tests, reindexing loses the folders for some reason...
-
-    # Make sure the Members folder is cataloged
-    indexMembersFolder(portal, out)
-
-    # Make sure the News folder is cataloged
-    indexNewsFolder(portal, out)
-
-    # Make sure the Events folder is cataloged
-    indexEventsFolder(portal, out)
     
     return out
 

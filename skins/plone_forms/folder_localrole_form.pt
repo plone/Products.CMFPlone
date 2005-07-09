@@ -28,7 +28,7 @@
 
     <h1 i18n:translate="heading_currently_assigned_shares">
         Current sharing permissions for
-        <span tal:content="here/title_or_id" i18n:name="folder">title</span>
+        <span tal:content="here/pretty_title_or_id" i18n:name="folder">title</span>
     </h1>
 
     <p i18n:translate="description_share_folders_items_current_shares">

@@ -11,7 +11,7 @@
             Document actions (print, sendto etc)
         </div>
 
-        <h1 tal:content="here/title_or_id" class="documentFirstHeading">
+        <h1 tal:content="here/pretty_title_or_id" class="documentFirstHeading">
             Title or id
         </h1>
 
@@ -43,14 +43,14 @@
 	        <tal:entry tal:repeat="item folderContents">
                 <tal:block tal:define="item_url item/getURL|item/absolute_url;
                                        item_id item/getId|item/id;
-                                       item_title_or_id python:(same_type(item.getId,'') and (item.Title or putils.utf8_portal('\xe2\x80\xa6', 'ignore'))) or item.title_or_id();
+                                       item_title_or_id item/pretty_title_or_id;
                                        item_description item/Description;
                                        item_type item/portal_type;
                                        item_type_title item/Type;
                                        item_modified item/ModificationDate;
                                        item_created item/CreationDate;
                                        item_type_class python: 'contenttype-' + putils.normalizeString(item_type);
-                                       item_wf_state item/review_state;
+                                       item_wf_state        item/review_state|python: wtool.getInfoFor(item, 'review_state', '');
                                        item_wf_state_class python:here.getStateClassName(item_wf_state);
                                        item_creators item/Creators|item/Creator;
                                        item_creators python:test(same_type(item_creators,[]) or same_type(item_creators,()), item_creators, [item_creators]);

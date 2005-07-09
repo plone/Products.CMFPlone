@@ -9,6 +9,7 @@
 
 from Products.CMFCore.utils import getToolByName
 ploneUtils = getToolByName(context, 'plone_utils')
+pretty_title_or_id = ploneUtils.pretty_title_or_id
 
 # SIMPLE CONFIGURATION
 USE_ICON = True
@@ -56,7 +57,7 @@ else:
     for result in results[:limit]:
         print '''<li class="LSRow">''',
         print '''<img src="/%s"/>''' % result.getIcon,
-        print '''<a href="%s">%s</a>''' % (result.getURL(), result.Title)
+        print '''<a href="%s">%s</a>''' % (result.getURL(), pretty_title_or_id(result))
         print '''<span class="discreet">[%s%%]</span>''' % result.data_record_normalized_score_
         print '''<div class="discreet" style="margin-left: 2.5em;">%s</div>''' % (result.Description)
         print '''</li>'''

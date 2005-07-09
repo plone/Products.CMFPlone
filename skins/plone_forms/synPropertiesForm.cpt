@@ -69,7 +69,7 @@
 
           <dl>
             <dt i18n:translate="label_syndication_channel_title">Channel Title</dt>
-            <dd tal:content="here/Title">title</dd>
+            <dd tal:content="here/pretty_title_or_id">title</dd>
             
             <dt i18n:translate="label_syndication_channel_description">Channel Description</dt>
             <dd tal:content="here/Description">description</dd>

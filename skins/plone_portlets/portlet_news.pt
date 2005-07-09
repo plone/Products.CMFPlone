@@ -31,7 +31,7 @@
                tal:attributes="href obj/getURL;
                                title obj/Description">
                 <tal:block replace="structure here/newsitem_icon.gif"/>
-                <span tal:replace="python:test(obj.Title, obj.Title, obj.getId)">
+                <span tal:replace="obj/pretty_title_or_id">
                 Plone 2.1 announced!
                 </span>
                 <span class="portletItemDetails"
