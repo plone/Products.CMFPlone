@@ -18,8 +18,7 @@
     
 
     <tal:discussable define="viewAction python:discussable.getTypeInfo().getActionById('view');
-                             
-                             template python:discussable.getTemplateFor(discussable.getLayout());
+                             template python:path('nocall: here/%s'%discussable.getLayout());
                              macros template/macros | nothing;
                              main_macro macros/main | nothing;
                              showDiscussable python:main_macro;

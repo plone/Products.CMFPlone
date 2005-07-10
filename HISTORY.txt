@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - Beta2 - unreleased
 
+    - Fixed discussion_reply_form to work with CMFDynamicViewFTI stuff.
+      [alecm]
+
     - Added dummy savepoint method to transaction_.py
       [tiran]
 
