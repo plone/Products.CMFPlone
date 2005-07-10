@@ -9,6 +9,7 @@ from types import ClassType
 from Acquisition import aq_base
 
 # Duplicated here to avoid import loop
+# BBB: Zope 2.7
 try:
     import Zope2
 except ImportError:

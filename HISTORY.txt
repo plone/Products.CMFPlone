@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - Beta2 - unreleased
 
+    - Added dummy savepoint method to _transaction
+      [tiran]
+
     - Resurrection of old edit template for CMF content types. It is possible
       to edit and view old style content types again. These templates should be
       removed in 2.2.
