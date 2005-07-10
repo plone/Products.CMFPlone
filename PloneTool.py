@@ -889,7 +889,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             if page is not None and ids.has_key(page):
                 return page
 
-        # 3. Test for default_page property in folder, then skins
+        # 3. Test for default_page property in folder, then skins
         pages = getattr(aq_base(obj), 'default_page', [])
         if type(pages) in (StringType, UnicodeType):
             pages = [pages]
