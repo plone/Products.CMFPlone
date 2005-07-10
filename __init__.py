@@ -209,8 +209,6 @@ try:
     import Zope2
 except ImportError:
     import transaction_ as transaction
-    # maybe a nice idea but it would conflict with Five and Zope3+Zope2.7
-    #sys.modules['transaction'] = transaction
 else:
     import transaction
 
