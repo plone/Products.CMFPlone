@@ -10,13 +10,13 @@ def get():
     return get_transaction()
 
 def begin():
-    return get_transaction().begin()
+    get_transaction().begin()
 
 def commit(sub=False):
-    return get_transaction().commit(sub)
+    get_transaction().commit(sub)
 
 def abort(sub=False):
-    return get_transaction().abort(sub)
+    get_transaction().abort(sub)
 
 def savepoint(optimistic=False):
     # a savepoint is like a subtransaction
