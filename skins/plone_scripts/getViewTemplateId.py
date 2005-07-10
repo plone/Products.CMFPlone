@@ -17,7 +17,7 @@ if itool.objectImplements(context, INTERFACE):
     return context.getLayout()
 
 # Else, if there is a 'folderlisting' action, this will take precedence for
-# folders, so try this, else use the 'view' action.
+# folders, so try this, else use the 'view' action.
 
 action = context.lookupTypeAction('folderlisting')
 if action is None:
