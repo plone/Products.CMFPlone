@@ -77,7 +77,7 @@
             <label for="title" i18n:translate="label_headline">Headline</label>
 
             <span class="fieldRequired" title="Required"
-                  i18n:attributes="title"
+                  i18n:attributes="title title_required;"
                   i18n:translate="label_required">(Required)</span>
 
                   <div tal:content="error">Validation error output</div>
@@ -152,7 +152,7 @@
                    type="submit"
                    name="form.button.Save"
                    value="Save"
-                   i18n:attributes="value"
+                   i18n:attributes="value label_save;"
                    tal:attributes="tabindex tabindex/next;
                                    disabled python:test(isLocked, 'disabled', None);" />
 
@@ -162,7 +162,7 @@
                    type="submit"
                    name="form.button.Cancel"
                    value="Cancel"
-                   i18n:attributes="value"
+                   i18n:attributes="value label_cancel;"
                    tal:attributes="tabindex tabindex/next;" />
           </div>
         </fieldset>

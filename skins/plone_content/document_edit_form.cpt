@@ -74,7 +74,7 @@
             <label for="title" i18n:translate="label_title">Title</label>
 
             <span class="fieldRequired" title="Required"
-                  i18n:attributes="title"
+                  i18n:attributes="title title_required;"
                   i18n:translate="label_required">(Required)</span>
 
                   <div tal:content="error">Validation error output</div>
@@ -109,7 +109,7 @@
                tal:define="text python:request.get('text', getattr(here,'text',''));
                            cooked_text python:request.get('text',getattr(here,'cooked_text',''))">
 
-            <label for="text" i18n:translate="label_body_text">Body text</label>
+            <label for="text" i18n:translate="label_body_text">Body Text</label>
 
             <tal:editor define="inputname  string:text;
                                 formname   string:edit_form;
@@ -160,14 +160,14 @@
                    type="submit"
                    name="form.button.Save"
                    value="Save"
-                   i18n:attributes="value"
+                   i18n:attributes="value label_save;"
                    tal:attributes="disabled python:test(isLocked, 'disabled', None);" />
 
             <input class="standalone"
                    type="submit"
                    name="form.button.Cancel"
                    value="Cancel"
-                   i18n:attributes="value" />
+                   i18n:attributes="value label_cancel;" />
           </div>
         </fieldset>
 

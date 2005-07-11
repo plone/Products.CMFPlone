@@ -130,7 +130,7 @@
             <label for="file" i18n:translate="label_file">File</label>
 
             <span class="fieldRequired" title="Required"
-                  i18n:attributes="title"
+                  i18n:attributes="title title_required;"
                   i18n:translate="label_required">(Required)</span>
 
                   <div class="formHelp" i18n:translate="help_file">
@@ -194,7 +194,7 @@
                    tabindex=""
                    name="form.button.Save"
                    value="Save"
-                   i18n:attributes="value"
+                   i18n:attributes="value label_save;"
                    tal:attributes="tabindex tabindex/next;
                                    disabled python:test(isLocked, 'disabled', None);" />
             <input class="standalone"
@@ -202,7 +202,7 @@
                    tabindex=""
                    name="form.button.Cancel"
                    value="Cancel"
-                   i18n:attributes="value"
+                   i18n:attributes="value label_cancel;"
                    tal:attributes="tabindex tabindex/next"
                    />
           </div>

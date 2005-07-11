@@ -89,7 +89,7 @@
             <label for="title" i18n:translate="label_title">Title</label>
 
             <span class="fieldRequired" title="Required"
-                  i18n:attributes="title"
+                  i18n:attributes="title title_required;"
                   i18n:translate="label_required">(Required)</span>
 
                   <div tal:content="error">Validation error output</div>
@@ -126,7 +126,7 @@
           </div>
 
           <div class="field">
-            <label for="event_type" i18n:translate="label_event_type">Event Type</label>
+            <label for="event_type" i18n:translate="label_event_type">Event Type(s)</label>
 
             <div class="formHelp" i18n:translate="help_event_type">
               Multiple event types possible by depressing Ctrl (or Apple
@@ -204,7 +204,7 @@
             <label for="start_date" i18n:translate="label_event_start">Event Starts</label>
 
             <span class="fieldRequired" title="Required"
-                  i18n:attributes="title"
+                  i18n:attributes="title title_required;"
                   i18n:translate="label_required">(Required)</span>
 
                   <div class="formHelp" i18n:translate="help_event_start">
@@ -233,7 +233,7 @@
             <label for="end_date" i18n:translate="label_event_end">Event Ends</label>
 
             <span class="fieldRequired" title="Required"
-                  i18n:attributes="title"
+                  i18n:attributes="title title_required;"
                   i18n:translate="label_required">(Required)</span>
 
                   <div class="formHelp" i18n:translate="help_event_end">
@@ -324,7 +324,7 @@
                    type="submit"
                    name="form.button.Save"
                    value="Save"
-                   i18n:attributes="value"
+                   i18n:attributes="value label_save;"
                    tal:attributes="tabindex tabindex/next;
                                    disabled python:test(isLocked, 'disabled', None);" />
 
@@ -333,7 +333,7 @@
                    type="submit"
                    name="form.button.Cancel"
                    value="Cancel"
-                   i18n:attributes="value"
+                   i18n:attributes="value label_cancel;"
                    tal:attributes="tabindex tabindex/next"
                    />
           </div>
