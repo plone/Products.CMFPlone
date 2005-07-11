@@ -10,6 +10,7 @@ from Products.CMFPlone.migrations.migration_util import installOrReinstallProduc
 from Products.CMFCore.Expression import Expression
 from Products.CMFPlone import transaction
 
+INDEXES_CONVERTED = "_p21_converted"
 
 def two05_alpha1(portal):
     """2.0.5 -> 2.1-alpha1
@@ -57,7 +58,6 @@ def two05_alpha1(portal):
         migrateToATCT10(portal, out)
 
     transaction.commit(1)
-    
     return out
 
 def tweakPropertiesAndCSS(portal, out):
@@ -80,7 +80,6 @@ def tweakPropertiesAndCSS(portal, out):
 
 def tweakIndexes(portal, out):
     reindex = 0
-
     # Switch path index to ExtendedPathIndex
     reindex += switchPathIndex(portal, out)
 
@@ -1180,11 +1179,11 @@ def migrateCatalogIndexes(portal, out):
     migrated = False
     if not hasattr(ZCatalog, 'manage_convertIndexes'):
         return migrated
-    FLAG = '_migrated_280'
+
     for obj in portal.objectValues():
         if not isinstance(obj, ZCatalog):
             continue
-        if getattr(aq_base(obj), FLAG, False):
+        if getattr(aq_base(obj), INDEXES_CONVERTED, False):
             continue
         out.append("Running manage_convertIndexes on "
                    "ZCatalog instance '%s'" % obj.getId())
@@ -1192,6 +1191,8 @@ def migrateCatalogIndexes(portal, out):
         obj.pgthreshold = 300
         obj.manage_convertIndexes()
         obj.pgthreshold = p_threshold
+        setattr(aq_base(obj), INDEXES_CONVERTED, True)
+        setattr(aq_base(obj), '_p_changed', True)
         out.append("Finished migrating catalog indexes "
                    "for ZCatalog instance '%s'" % obj.getId())
         migrated = True
