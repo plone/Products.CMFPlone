@@ -111,4 +111,4 @@ def registerMigrations():
 
     MigrationTool.registerUpgradePath('2.1-beta1',
                                       '2.1-beta2 (SVN/UNRELEASED)',
-                                      null)
+                                      v2_1.betas.beta1_beta2)

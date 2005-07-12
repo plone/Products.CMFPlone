@@ -78,6 +78,8 @@ from Products.CMFPlone.migrations.v2_1.betas import addIsDefaultPageIndex
 from Products.CMFPlone.migrations.v2_1.betas import addIsFolderishIndex
 from Products.CMFPlone.migrations.v2_1.betas import fixContentActionConditions
 from Products.CMFPlone.migrations.v2_1.betas import fixFolderlistingAction
+from Products.CMFPlone.migrations.v2_1.betas import fixFolderContentsActionAgain
+from Products.CMFPlone.migrations.v2_1.betas import changePortalActionCategory
 
 import types
 
@@ -91,6 +93,13 @@ class MigrationTest(PloneTestCase.PloneTestCase):
         actions = info.listActions()
         actions = [x for x in actions if x.id != action_id]
         typeob._actions = tuple(actions)
+
+    def addActionToType(self, type_name, action_id, category):
+        # Removes an action from a portal type
+        tool = getattr(self.portal, 'portal_types')
+        info = tool.getTypeInfo(type_name)
+        typeob = getattr(tool, info.getId())
+        typeob.addAction(action_id, action_id, '', '', '', category)
 
     def removeActionFromTool(self, action_id, action_provider='portal_actions'):
         # Removes an action from portal_actions
@@ -1716,6 +1725,98 @@ class TestMigrations_v2_1(MigrationTest):
     def testFixFolderlistingActionNoTool(self):
         self.portal._delObject('portal_types')
         fixFolderlistingAction(self.portal, [])
+
+    def testFixFolderContentsActionAgain(self):
+        removeActions = ('batch', 'nobatch')
+        editActions = ('folderContents',)
+        for a in removeActions:
+            self.addActionToTool(a,'batch')
+        for a in editActions:
+            self.removeActionFromTool(a)
+        fixFolderContentsActionAgain(self.portal, [])
+        actions = [x.id for x in self.actions.listActions()]
+        for a in editActions:
+            self.failUnless(a in actions)
+        for a in removeActions:
+            self.failIf(a in actions)
+
+    def testFixFolderContentsActionAgainTwice(self):
+        removeActions = ('batch', 'nobatch')
+        editActions = ('folderContents',)
+        for a in removeActions:
+            self.addActionToTool(a,'batch')
+        for a in editActions:
+            self.removeActionFromTool(a)
+        fixFolderContentsActionAgain(self.portal, [])
+        fixFolderContentsActionAgain(self.portal, [])
+        actions = [x.id for x in self.actions.listActions()]
+        for a in editActions:
+            self.failUnless(a in actions)
+        for a in removeActions:
+            self.failIf(a in actions)
+
+    def testFixFolderContentsAgainWithExistingAction(self):
+        editActions = ('folderContents',)
+        for a in editActions:
+            self.removeActionFromTool(a)
+            self.addActionToTool(a,'folder')
+        fixFolderContentsActionAgain(self.portal, [])
+        actions = [(x.id,x.category) for x in self.actions.listActions()]
+        for a in editActions:
+            self.failUnless((a,'object') in actions)
+            self.failIf((a,'folder') in actions)
+
+    def testFixFolderContentsActionAgainNoTool(self):
+        self.portal._delObject('portal_actions')
+        fixFolderContentsActionAgain(self.portal, [])
+
+    def testChangePortalActionCategory(self):
+        # This should change the 'view' and 'edit' actions for the Plone Site
+        # FTI to have category 'object'
+        edit_actions = ('view','edit')
+        for action in edit_actions:
+            self.removeActionFromType('Plone Site', action)
+            self.addActionToType('Plone Site', action, 'folder')
+
+        changePortalActionCategory(self.portal, [])
+        fti = getattr(self.portal.portal_types, 'Plone Site')
+        actions = [(x.getId(), x.category) for x in fti.listActions()]
+        for a in edit_actions:
+            self.failIf((a,'folder') in actions)
+            self.failUnless((a,'object') in actions)
+
+    def testChangePortalActionCategoryTwice(self):
+        # The migration should work if performed twice
+        edit_actions = ('view','edit')
+        for action in edit_actions:
+            self.removeActionFromType('Plone Site', action)
+            self.addActionToType('Plone Site', action, 'folder')
+
+        changePortalActionCategory(self.portal, [])
+        changePortalActionCategory(self.portal, [])
+        fti = getattr(self.portal.portal_types, 'Plone Site')
+        actions = [(x.getId(), x.category) for x in fti.listActions()]
+        for a in edit_actions:
+            self.failIf((a,'folder') in actions)
+            # Should only have one action
+            self.assertEqual(actions.count((a,'object')), 1)
+
+    def testChangePortalActionCategoryNoAction(self):
+        # The migration should not fail if the action is missing
+        edit_actions = ('view','edit')
+        for action in edit_actions:
+            self.removeActionFromType('Plone Site', action)
+        changePortalActionCategory(self.portal, [])
+
+    def testChangePortalActionCategoryNoFTI(self):
+        # The migration should work if the FTI is missing
+        self.portal.portal_types._delObject('Plone Site')
+        changePortalActionCategory(self.portal, [])
+
+    def testChangePortalActionCategoryNoTool(self):
+        # The migration should work if the tool is missing
+        self.portal._delObject('portal_types')
+        changePortalActionCategory(self.portal, [])
 
 
 def test_suite():

@@ -179,11 +179,8 @@ def correctFolderContentsAction(actionTool):
     for action in _actions:
         if action.id=='folderContents':
             action.name=action.title='Contents'
-            if action.condition.text.find('folder is not object') != -1:
-                action.condition=Expression('python:member and folder is not object and object.displayContentsTab()')
-                action.permissions=(CMFCorePermissions.ListFolderContents,)
-            elif action.condition.text.find('folder is object') != -1:
-                action.condition=Expression('python:portal.portal_membership.checkPermission("View",folder) and folder.displayContentsTab()')
+            action.condition=Expression('object/displayContentsTab')
+            action.permissions=(CMFCorePermissions.ListFolderContents,)
     actionTool._actions=_actions
 
 

@@ -98,12 +98,10 @@ class TestDisplayContentsTab(PloneTestCase.PloneTestCase):
         self.removePermissionsFromObject(perms, self.folder)
         self.failUnless(self.folder.displayContentsTab())
 
-    def testNonFolderishObjectUsesParentPermissions(self):
+    def testNonFolderishObjectDoesNotShowTab(self):
         # The availability of the contents tab on a non-folderish object should be
         # based on the parents permissions.
         doc = self.folder.foo.doc1
-        self.failUnless(doc.displayContentsTab())
-        self.folder.foo.manage_permission(ListFolderContents, ['Manager'], acquire=0)
         self.failIf(doc.displayContentsTab())
 
     def testFolderishDefaultPageUsesParentPermissions(self):

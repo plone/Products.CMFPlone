@@ -314,15 +314,10 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.failUnless(('paste', 'object_buttons') in installed)
         self.failUnless(('delete', 'object_buttons') in installed)
 
-    def testBatchActions(self):
-        installed = [(a.getId(), a.getCategory()) for a in self.actions.listActions()]
-        self.failUnless(('batch', 'batch') in installed)
-        self.failUnless(('nobatch', 'batch') in installed)
-
-    def testContentsTabDisabled(self):
+    def testContentsTabVisible(self):
         for a in self.actions.listActions():
-            if a.getId() == 'contents':
-                self.failIf(a.visible)
+            if a.getId() == 'folderContents':
+                self.failUnless(a.visible)
                 
     def testDefaultGroupsAdded(self):
         self.failUnless('Administrators' in self.groups.listGroupIds())

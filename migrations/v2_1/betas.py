@@ -98,6 +98,21 @@ def alpha2_beta1(portal):
     if reindex:
         reindexCatalog(portal, out)
 
+
+
+def beta1_beta2(portal):
+    """2.1-beta1 -> 2.1-beta2
+    """
+    out = []
+    reindex = 0
+
+    # Fix folderlisting action for portal
+    fixFolderContentsActionAgain(portal, out)
+
+    # Change the actions on the Portal FTI to category 'object' in order to
+    # get consistent tab ordering across the portal.
+    changePortalActionCategory(portal, out)
+
     # FIXME: *Must* be called after reindexCatalog.
     # In tests, reindexing loses the folders for some reason...
 
@@ -723,3 +738,70 @@ def fixFolderlistingAction(portal, out):
                                     'folder',
                                     visible=0)
             out.append("Set target expresion of folderlisting action for 'Plone Site' to 'view'")
+
+
+def fixFolderContentsActionAgain(portal, out):
+    """Remove batch toggle actions and replace folder_contents action
+    """
+    REMOVE_ACTIONS=('batch','nobatch')
+    REMOVE_CATEGORY='batch'
+    ACTIONS = (
+        {'id'        : 'folderContents',
+         'name'      : 'Contents',
+         'action'    : "python:((object.isDefaultPageInFolder() and object.getParentNode().absolute_url()) or folder_url)+'/folder_contents'",
+         'condition' : "object/displayContentsTab",
+         'permission': CMFCorePermissions.ListFolderContents,
+         'category'  : 'object',
+        },
+    )
+
+    actionsTool = getToolByName(portal, 'portal_actions', None)
+    if actionsTool is not None:
+        # First delete the batch toggle actions
+        idx = 0
+        del_idxs=[]
+        for action in actionsTool.listActions():
+            if action.getId() in REMOVE_ACTIONS \
+                    and action.getCategory() == REMOVE_CATEGORY:
+                del_idxs.append(idx)
+            idx += 1
+        actionsTool.deleteActions(del_idxs)
+
+        # Now Remove and readd the contents action
+        for newaction in ACTIONS:
+            idx = 0
+            del_idxs=[]
+            for action in actionsTool.listActions():
+                # if action exists, remove (including duplicates)
+                if action.getId() == newaction['id'] \
+                        and action.getCategory() in (newaction['category'], 'folder'):
+                    del_idxs.append(idx)
+                idx += 1
+            actionsTool.deleteActions(del_idxs)
+
+            #Add the action
+            actionsTool.addAction(newaction['id'],
+                name=newaction['name'],
+                action=newaction['action'],
+                condition=newaction['condition'],
+                permission=newaction['permission'],
+                category=newaction['category'],
+                visible=1)
+
+            out.append("Fixed '%s' action to actions tool." % newaction['name'])
+
+def changePortalActionCategory(portal, out):
+    """Change the category for the Plone Site type actions to 'object'"""
+    EDIT_ACTIONS=('view','edit')
+    OLD_CATEGORY='folder'
+    NEW_CATEGORY='object'
+    ttool = getToolByName(portal, 'portal_types', None)
+    if ttool is not None:
+        fti = getattr(ttool, 'Plone Site', None)
+        if fti is not None:
+            current_actions = fti._cloneActions()
+            for action in current_actions:
+                if action.getId() in EDIT_ACTIONS and action.category == OLD_CATEGORY:
+                    action.category = 'object'
+                    out.append("Changed category of Plone Site %s action to 'object'"%action.getId())
+            fti._actions = current_actions

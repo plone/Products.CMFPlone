@@ -21,11 +21,14 @@ modification_permissions = ('Modify portal content',
 contents_object = context
 # If this object is not folderish or is the parent folder's default page,
 # then the folder_contents action is for the parent, check permissions there.
-if contents_object.isDefaultPageInFolder() or not contents_object.isPrincipiaFolderish:
+if contents_object.isDefaultPageInFolder():
     try:
         contents_object = contents_object.getParentNode()
     except Unauthorized:
-        pass
+        return 0
+
+if not contents_object.isPrincipiaFolderish:
+    return 0
 
 show = 0
 #We only want to show the 'batch' action under the following conditions:

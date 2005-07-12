@@ -4,6 +4,13 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - Beta2 - unreleased
 
+    - Changed category of 'view' and 'edit' actions on 'Plone Site' to
+      'object'.
+      [alecm]
+
+    - Implemented limi's suggestion for contents tab.
+      [alecm]
+
     - Fixed discussion_reply_form to work with CMFDynamicViewFTI stuff.
       [alecm]
 

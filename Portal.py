@@ -84,13 +84,13 @@ factory_type_information = { 'id'             : 'Plone Root'
                          , 'name'          : 'View'
                          , 'action': 'string:${object_url}'
                          , 'permissions'   : (CMFCorePermissions.View,)
-                         , 'category'      : 'folder'
+                         , 'category'      : 'object'
                          }
                        , { 'id'            : 'edit'
                          , 'name'          : 'Edit'
                          , 'action': 'string:${object_url}/folder_edit_form'
                          , 'permissions'   : (CMFCorePermissions.ManageProperties,)
-                         , 'category'      : 'folder'
+                         , 'category'      : 'object'
                          }
                        )
   }

@@ -12,7 +12,7 @@ from cStringIO import StringIO
 import traceback
 from sets import Set
 
-expected_filtered_actions=Set(['site_actions', 'object', 'workflow', 'portal_tabs', 'global', 'batch', 'object_buttons', 'document_actions', 'user', 'folder_buttons', 'folder'])
+expected_filtered_actions=Set(['site_actions', 'object', 'workflow', 'portal_tabs', 'global', 'object_buttons', 'document_actions', 'user', 'folder_buttons', 'folder'])
 
 class TestActionsTool(PloneTestCase.PloneTestCase):
 
