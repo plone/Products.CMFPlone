@@ -1,4 +1,7 @@
 from __future__ import nested_scopes
+import logging
+import os, sys, re
+
 from ComputedAttribute import ComputedAttribute
 from Products.CMFPlone import cmfplone_globals
 from Products.CMFPlone import custom_policies
@@ -28,7 +31,6 @@ from Products.CMFDefault import Portal, DublinCore
 from Products.CMFDynamicViewFTI.browserdefault import BrowserDefaultMixin
 from Products.CMFPlone.PloneFolder import OrderedContainer
 import Globals
-import os, sys, re
 
 from AccessControl import ClassSecurityInfo
 from Acquisition import aq_inner, aq_parent, aq_base
@@ -36,35 +38,19 @@ from ComputedAttribute import ComputedAttribute
 from webdav.NullResource import NullResource
 from Products.CMFPlone.PloneFolder import ReplaceableWrapper
 
-
+LOG = logging.getLogger('Plone')
 __version__='1.1'
 
-default_frontpage=r"""
-You can customize this frontpage by clicking the edit tab on this document if you
-have the correct permissions. Create folders and put content in those folders.
-Folders will show up in the navigation box if they are published. It's a very
-simple and powerful system.
-
-For more information:
-
-"Plone website":http://www.plone.org
-
-"Zope community":http://www.zope.org
-
-"CMF website":http://www.zope.org/Products/CMF/index.html
-
-There are "mailing lists":http://plone.org/development/lists and
-"recipe websites":http://www.zopelabs.com
-available to provide assistance to you and your new-found Content Management System.
-"Online chat":http://plone.org/development/chat is also a nice way
-of getting advice and help.
-
-Please contribute your experiences at the "Plone website":http://www.plone.org
-
-Thanks for using our product.
-
-"The Plone Team":http://plone.org/about/team
-"""
+default_frontpage="Unable to load front-page skeleton file"
+WWW_DIR = os.path.join(os.path.dirname(__file__), 'www')
+try:
+    f = open(os.path.join(WWW_DIR, 'default_frontpage.stx'), 'r')
+except IOError:
+    LOG.error('Unable to open frontpage skeleton', exc_info=True)
+else:
+    default_frontpage = f.read()
+    f.close()
+    del f
 
 member_indexhtml="""\
 member_search=context.restrictedTraverse('member_search_form')
