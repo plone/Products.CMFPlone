@@ -424,6 +424,11 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         aliases = fti.getMethodAliases()
         self.assertEqual(aliases, expected_aliases)
 
+    def testPortalZMIOrder(self):
+        # Should have alphabetically ordered plone site
+        ids = self.portal.objectIds()
+        self.assertEqual(ids[0], 'acl_users')
+
 
 class TestPortalBugs(PloneTestCase.PloneTestCase):
 

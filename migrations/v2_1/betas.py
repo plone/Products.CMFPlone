@@ -11,6 +11,7 @@ from Products.CMFCore.DirectoryView import createDirectoryView
 from Products.CMFPlone.migrations.migration_util import cleanupSkinPath
 from alphas import reindexCatalog, indexMembersFolder, indexNewsFolder, \
                     indexEventsFolder, convertPloneFTIToCMFDynamicViewFTI
+from OFS.OrderSupport import OrderSupport
 
 
 def alpha2_beta1(portal):
@@ -119,6 +120,9 @@ def beta1_beta2(portal):
 
     # Add method aliases for PloneSite
     addMethodAliasesForPloneSite(portal, out)
+
+    # Reorder portal in ZMI
+    reorderPortal(portal, out)
 
     # FIXME: *Must* be called after reindexCatalog.
     # In tests, reindexing loses the folders for some reason...
@@ -795,7 +799,7 @@ def fixFolderContentsActionAgain(portal, out):
                 category=newaction['category'],
                 visible=1)
 
-            out.append("Fixed '%s' action to actions tool." % newaction['name'])
+            out.append("Fixed '%s' action on actions tool." % newaction['name'])
 
 
 def changePortalActionCategory(portal, out):
@@ -834,3 +838,16 @@ def addMethodAliasesForPloneSite(portal, out):
             cur_aliases = fti.getMethodAliases()
             if cur_aliases.get('view', None) != '(dynamic view)':
                 fti.setMethodAliases(aliases)
+                out.append("Added method aliases to Plone Site FTI")
+
+def reorderPortal(portal, out):
+    """Reorder that nasty ZMI"""
+    ids = portal.objectIds()
+    sortable_ids = [(o.lower(),o) for o in ids]
+    sortable_ids.sort()
+    ids = [s[1] for s in sortable_ids]
+    OrderSupport.moveObjectsByDelta(portal, ids, -len(ids))
+    # Index order change
+    for id, obj in portal.contentItems():
+        obj.reindexObject(idxs=['getObjPositionInParent'])
+    out.append("Reordered objects in plone ZMI")

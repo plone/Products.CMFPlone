@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - Beta2 - unreleased
 
+    - Returned sane (case-insensitive alphabetical) order to the portal ZMI.
+      [alecm]
+
     - Took care of http://plone.org/collector/4224 by disabling the ZMI
       ordering interface for the Plone Site object.
       [stefan]
