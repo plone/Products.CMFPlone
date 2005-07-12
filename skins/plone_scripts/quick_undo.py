@@ -25,7 +25,7 @@ if '?' in came_from:
 
 try:
     o = context.portal_url.getPortalObject().restrictedTraverse(path)
-except (Unauthorized,KeyError):
+except (Unauthorized, KeyError, AttributeError):
     came_from=context.portal_url()
 
 return request.RESPONSE.redirect( '%s?%s' % ( came_from
