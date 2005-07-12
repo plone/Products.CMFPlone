@@ -44,6 +44,12 @@ class TestTranslationServiceTool(PloneTestCase.PloneTestCase):
         # because PTS isn't installed
         self.assertEquals(value, '1997-03-09 13:45')
 
+    def test_ulocalized_time_fetch_error(self):
+        # http://plone.org/collector/4251
+        error = "(Missing.Value,), {}"
+	value = self.tool.ulocalized_time(error)
+	self.failUnlessEqual(value, None)
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite

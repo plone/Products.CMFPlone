@@ -2,8 +2,10 @@
 Collection of i18n and l10n utility methods.
 All methods here may return unicode type.
 """
-
+import logging
 from DateTime import DateTime
+
+LOG = logging.getLogger('Plone')
 
 # get the registered translation service and the dummy
 from Products.PageTemplates.GlobalTranslationService import \
@@ -66,7 +68,12 @@ def ulocalized_time(time, long_format = None, context = None, domain='plone'):
     mapping = {}
     # convert to DateTime instances. Either a date string or 
     # a DateTime instance needs to be passed.
-    time = DateTime(time)
+    try:
+        time = DateTime(time)
+    except:
+        LOG.error('Failed to convert %s into a DateTime object' % time,
+                   exc_info=True)
+        return None
        
     if context is None:
         # when without context, we cannot do very much.

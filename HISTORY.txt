@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - Beta2 - unreleased
 
+    - Fixed http://plone.org/collector/4251. ulocalized_time() fetches
+      all DateTime errors and logs them.
+      [tiran]
+
     - Returned sane (case-insensitive alphabetical) order to the portal ZMI.
       [alecm]
 
