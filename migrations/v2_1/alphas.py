@@ -4,17 +4,27 @@ from Acquisition import aq_base
 from zExceptions import BadRequest
 from Products.CMFCore import CMFCorePermissions
 from Products.CMFCore.utils import getToolByName
+from Products.CMFDynamicViewFTI.migrate import migrateFTI
+from Products.CMFDynamicViewFTI.fti import DynamicViewTypeInformation
 from Products.CMFPlone.utils import _createObjectByType
 from Products.CMFPlone.migrations.migration_util import installOrReinstallProduct, \
      safeGetMemberDataTool
 from Products.CMFCore.Expression import Expression
 from Products.CMFPlone import transaction
 
+fti_meta_type = DynamicViewTypeInformation.meta_type
+
 
 def two05_alpha1(portal):
     """2.0.5 -> 2.1-alpha1
     """
     out = []
+
+
+    # Convert Plone Site FTI to CMFDynamicViewFTI this must be done before
+    # any reindexing, we'll also do it later so that we don't force people to
+    # migrate from alpha
+    convertPloneFTIToCMFDynamicViewFTI(portal, out)
 
     # We do this earlier to avoid reindexing twice
     migrated = migrateCatalogIndexes(portal, out)
@@ -1195,3 +1205,41 @@ def migrateCatalogIndexes(portal, out):
                    "for ZCatalog instance '%s'" % obj.getId())
         migrated = True
     return migrated
+
+
+def convertPloneFTIToCMFDynamicViewFTI(portal, out):
+    FTI='Plone Site'
+    ttool = getToolByName(portal, 'portal_types', None)
+    if ttool is not None:
+        fti = getattr(ttool, 'Plone Site', None)
+        if fti is not None:
+            if fti.meta_type == fti_meta_type:
+                return
+            # Get full type name
+            name = [t[0] for t in ttool.listDefaultTypeInformation()
+                                if t[1].get('id','')=='Plone Root']
+            if name:
+                name = name[0]
+                migrateFTI(portal, 'Plone Site', name, fti_meta_type)
+                out.append("Converted Plone Site to CMFDynamicViewFTI")
+                # Transfer old selectable views
+                views = portal.getProperty('selectable_views', ())
+                if views is not ():
+                    portal.manage_delProperties(['selectable_views'])
+                    new_fti = portal.getTypeInfo()
+                    new_fti.manage_changeProperties(view_methods=views, default_view=views and views[0])
+                    out.append("Transferred portal selectable views")
+
+                # Transfer old layout
+                old_layout = getattr(portal, '_selected_layout', ())
+                if old_layout is not ():
+                    del portal._selected_layout
+                    portal.setLayout(old_layout)
+                    out.append("Transferred portal default layout")
+
+                # Transfer old default page
+                old_default = getattr(portal, '_selected_default_page', ())
+                if old_default is not ():
+                    del portal._selected_default_page
+                    portal.setDefaultPage(old_default)
+                    out.append("Transferred portal default page")

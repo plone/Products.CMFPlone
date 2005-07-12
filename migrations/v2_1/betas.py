@@ -10,7 +10,7 @@ from Products.CMFPlone.utils import base_hasattr
 from Products.CMFCore.DirectoryView import createDirectoryView
 from Products.CMFPlone.migrations.migration_util import cleanupSkinPath
 from alphas import reindexCatalog, indexMembersFolder, indexNewsFolder, \
-                    indexEventsFolder
+                    indexEventsFolder, convertPloneFTIToCMFDynamicViewFTI
 
 
 def alpha2_beta1(portal):
@@ -106,12 +106,19 @@ def beta1_beta2(portal):
     out = []
     reindex = 0
 
+    # Convert Plone Site FTI to CMFDynamicViewFTI again, for people already on
+    # an alpha or beta.
+    convertPloneFTIToCMFDynamicViewFTI(portal, out)
+
     # Fix folderlisting action for portal
     fixFolderContentsActionAgain(portal, out)
 
     # Change the actions on the Portal FTI to category 'object' in order to
     # get consistent tab ordering across the portal.
     changePortalActionCategory(portal, out)
+
+    # Add method aliases for PloneSite
+    addMethodAliasesForPloneSite(portal, out)
 
     # FIXME: *Must* be called after reindexCatalog.
     # In tests, reindexing loses the folders for some reason...
@@ -790,6 +797,7 @@ def fixFolderContentsActionAgain(portal, out):
 
             out.append("Fixed '%s' action to actions tool." % newaction['name'])
 
+
 def changePortalActionCategory(portal, out):
     """Change the category for the Plone Site type actions to 'object'"""
     EDIT_ACTIONS=('view','edit')
@@ -805,3 +813,24 @@ def changePortalActionCategory(portal, out):
                     action.category = 'object'
                     out.append("Changed category of Plone Site %s action to 'object'"%action.getId())
             fti._actions = current_actions
+
+
+def addMethodAliasesForPloneSite(portal, out):
+    """Add standard method aliases to Plone Site FTI"""
+    aliases = {
+                '(Default)'  : '(dynamic view)',
+                'view'       : '(dynamic view)',
+                'index.html' : '(dynamic view)',
+                'edit'       : 'folder_edit_form',
+                'properties' : '',
+                'sharing'    : 'folder_localrole_form',
+                'gethtml'    : '',
+                'mkdir'      : '',
+              }
+    ttool = getToolByName(portal, 'portal_types', None)
+    if ttool is not None:
+        fti = getattr(ttool, 'Plone Site', None)
+        if fti is not None:
+            cur_aliases = fti.getMethodAliases()
+            if cur_aliases.get('view', None) != '(dynamic view)':
+                fti.setMethodAliases(aliases)

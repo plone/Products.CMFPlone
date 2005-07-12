@@ -78,6 +78,10 @@ from Products.CMFPlone.migrations.v2_1.betas import fixContentActionConditions
 from Products.CMFPlone.migrations.v2_1.betas import fixFolderlistingAction
 from Products.CMFPlone.migrations.v2_1.betas import fixFolderContentsActionAgain
 from Products.CMFPlone.migrations.v2_1.betas import changePortalActionCategory
+from Products.CMFPlone.migrations.v2_1.alphas import convertPloneFTIToCMFDynamicViewFTI
+from Products.CMFPlone.migrations.v2_1.betas import addMethodAliasesForPloneSite
+
+from Products.CMFDynamicViewFTI.migrate import migrateFTI
 
 import types
 
@@ -1798,6 +1802,108 @@ class TestMigrations_v2_1(MigrationTest):
         # The migration should work if the tool is missing
         self.portal._delObject('portal_types')
         changePortalActionCategory(self.portal, [])
+
+    def testConvertPloneFTIToCMFDynamicViewFTI(self):
+        ttool = self.portal.portal_types
+        name = [t[0] for t in ttool.listDefaultTypeInformation()
+                                if t[1].get('id','')=='Plone Root'][0]
+        # Convert to old-school FTI
+        migrateFTI(self.portal, 'Plone Site', name,
+                                            'Factory-based Type Information')
+        self.assertEqual(getattr(ttool, 'Plone Site').meta_type,
+                                            'Factory-based Type Information')
+        # Convert back
+        convertPloneFTIToCMFDynamicViewFTI(self.portal, [])
+        self.assertEqual(self.portal.getTypeInfo().meta_type,
+                        'Factory-based Type Information with dynamic views')
+
+    def testConvertPloneFTIToCMFDynamicViewFTIConvertsViews(self):
+        ttool = self.portal.portal_types
+        name = [t[0] for t in ttool.listDefaultTypeInformation()
+                                if t[1].get('id','')=='Plone Root'][0]
+        # Convert to old-school FTI
+        migrateFTI(self.portal, 'Plone Site', name,
+                                            'Factory-based Type Information')
+        self.assertEqual(getattr(ttool, 'Plone Site').meta_type,
+                                            'Factory-based Type Information')
+        # Set old style PropertyManaged default page/layout
+        self.portal._selected_default_page = 'blah'
+        self.portal._selected_layout = 'view'
+        self.portal.manage_delProperties(['selectable_views'])
+        self.portal.manage_addProperty('selectable_views', ('base_view','view','base_edit'), 'lines')
+        # Convert back
+        convertPloneFTIToCMFDynamicViewFTI(self.portal, [])
+        # check layout transfer
+        self.assertEqual(self.portal.getDefaultPage(), 'blah')
+        self.assertEqual(self.portal.getAvailableLayouts(), [('base_view','Base View'),('view', 'view'),('base_edit', 'Edit')])
+        self.assertEqual(self.portal.getLayout(), 'view')
+
+    def testConvertPloneFTIToCMFDynamicViewFTITwice(self):
+        ttool = self.portal.portal_types
+        name = [t[0] for t in ttool.listDefaultTypeInformation()
+                                if t[1].get('id','')=='Plone Root'][0]
+        # Convert to old-school FTI
+        migrateFTI(self.portal, 'Plone Site', name,
+                                            'Factory-based Type Information')
+        # Convert back
+        convertPloneFTIToCMFDynamicViewFTI(self.portal, [])
+        convertPloneFTIToCMFDynamicViewFTI(self.portal, [])
+        self.assertEqual(self.portal.getTypeInfo().meta_type,
+                        'Factory-based Type Information with dynamic views')
+
+    def testConvertPloneFTIToCMFDynamicViewFTINoFTI(self):
+        self.portal.portal_types._delObject('Plone Site')
+        # Convert back
+        convertPloneFTIToCMFDynamicViewFTI(self.portal, [])
+
+    def testConvertPloneFTIToCMFDynamicViewFTINoTool(self):
+        self.portal._delObject('portal_types')
+        # Convert back
+        convertPloneFTIToCMFDynamicViewFTI(self.portal, [])
+
+    def testAddMethodAliasesForPloneSite(self):
+        # Should add method aliases to the Plone Site FTI
+        expected_aliases = {
+                '(Default)'  : '(dynamic view)',
+                'view'       : '(dynamic view)',
+                'index.html' : '(dynamic view)',
+                'edit'       : 'folder_edit_form',
+                'sharing'    : 'folder_localrole_form',
+              }
+        fti = self.portal.getTypeInfo()
+        fti.setMethodAliases({})
+        addMethodAliasesForPloneSite(self.portal, [])
+        fti = self.portal.getTypeInfo()
+        aliases = fti.getMethodAliases()
+        self.assertEqual(aliases, expected_aliases)
+
+    def testAddMethodAliasesForPloneSiteTwice(self):
+        # Should not fail if done twice
+        expected_aliases = {
+                '(Default)'  : '(dynamic view)',
+                'view'       : '(dynamic view)',
+                'index.html' : '(dynamic view)',
+                'edit'       : 'folder_edit_form',
+                'sharing'    : 'folder_localrole_form',
+              }
+        fti = self.portal.getTypeInfo()
+        fti.setMethodAliases({})
+        addMethodAliasesForPloneSite(self.portal, [])
+        addMethodAliasesForPloneSite(self.portal, [])
+        fti = self.portal.getTypeInfo()
+        aliases = fti.getMethodAliases()
+        self.assertEqual(aliases, expected_aliases)
+
+    def testAddMethodAliasesForPloneSiteNoFTI(self):
+        # Should not fail FTI is missing
+        self.portal.portal_types._delObject('Plone Site')
+        addMethodAliasesForPloneSite(self.portal, [])
+
+    def testAddMethodAliasesForPloneSiteNoTool(self):
+        # Should not fail tool is missing
+        self.portal._delObject('portal_types')
+        addMethodAliasesForPloneSite(self.portal, [])
+
 
 
 def test_suite():

@@ -385,8 +385,8 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
     def testFolderlistingAction(self):
         # Make sure the folderlisting action of a Folder is /view, to ensure
         # that the layout template will be resolved (see PloneTool.browserDefault)
-        self.assertEqual(self.portal.portal_types['Folder'].getActionById('folderlisting'), 'view')
-        self.assertEqual(self.portal.portal_types['Plone Site'].getActionById('folderlisting'), 'view')
+        self.assertEqual(self.types['Folder'].getActionById('folderlisting'), 'view')
+        self.assertEqual(self.types['Plone Site'].getActionById('folderlisting'), 'view')
 
     def testEnableLivesearchProperty(self):
         # site_properties should have enable_livesearch property
@@ -405,6 +405,24 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         # and the auto login page restored to login_form
         self.assertEqual(self.cc.getProperty('unauth_page'), 'insufficient_privileges')
         self.assertEqual(self.cc.getProperty('auto_login_page'), 'login_form')
+
+    def testPortalFTIIsDynamicFTI(self):
+        # Plone Site FTI should be a DynamicView FTI
+        fti = self.portal.getTypeInfo()
+        self.assertEqual(fti.meta_type, 'Factory-based Type Information with dynamic views')
+
+    def testPloneSiteFTIHasMethodAliases(self):
+        # Should add method aliases to the Plone Site FTI
+        expected_aliases = {
+                '(Default)'  : '(dynamic view)',
+                'view'       : '(dynamic view)',
+                'index.html' : '(dynamic view)',
+                'edit'       : 'folder_edit_form',
+                'sharing'    : 'folder_localrole_form',
+              }
+        fti = self.portal.getTypeInfo()
+        aliases = fti.getMethodAliases()
+        self.assertEqual(aliases, expected_aliases)
 
 
 class TestPortalBugs(PloneTestCase.PloneTestCase):

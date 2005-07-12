@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - Beta2 - unreleased
 
+    - Removed PropertyManagedBrowserDefault, and mane the portal root support
+      BrowserDefaultMixin as implemented by CMFDynamicViewFTI.
+      [alecm]
+
     - Fixed http://plone.org/collector/4216 - migration would add
       'contents' action more than once.
       [stefan]

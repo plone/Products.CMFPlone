@@ -25,6 +25,7 @@ from Products.CMFCore.TypesTool import FactoryTypeInformation
 from Products.CMFCore.DirectoryView import addDirectoryViews
 from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault import Portal, DublinCore
+from Products.CMFDynamicViewFTI.browserdefault import BrowserDefaultMixin
 from Products.CMFPlone.PloneFolder import OrderedContainer
 import Globals
 import os, sys, re
@@ -35,7 +36,6 @@ from ComputedAttribute import ComputedAttribute
 from webdav.NullResource import NullResource
 from Products.CMFPlone.PloneFolder import ReplaceableWrapper
 
-from Products.CMFPlone.PropertyManagedBrowserDefault import PropertyManagedBrowserDefault
 
 __version__='1.1'
 
@@ -93,9 +93,19 @@ factory_type_information = { 'id'             : 'Plone Root'
                          , 'category'      : 'object'
                          }
                        )
+  , 'aliases'        : {
+                        '(Default)'  : '(dynamic view)',
+                        'view'       : '(dynamic view)',
+                        'index.html' : '(dynamic view)',
+                        'edit'       : 'folder_edit_form',
+                        'properties' : '',
+                        'sharing'    : 'folder_localrole_form',
+                        'gethtml'    : '',
+                        'mkdir'      : '',
+                       }
   }
 
-class PloneSite(CMFSite, OrderedContainer, PropertyManagedBrowserDefault):
+class PloneSite(CMFSite, OrderedContainer, BrowserDefaultMixin):
     """
     Make PloneSite subclass CMFSite and add some methods.
     This will be useful for adding more things later on.
@@ -104,7 +114,7 @@ class PloneSite(CMFSite, OrderedContainer, PropertyManagedBrowserDefault):
     meta_type = portal_type = 'Plone Site'
     __implements__ = DublinCore.DefaultDublinCoreImpl.__implements__ + \
                      OrderedContainer.__implements__ + \
-                    PropertyManagedBrowserDefault.__implements__
+                     BrowserDefaultMixin.__implements__
 
     manage_renameObject = OrderedContainer.manage_renameObject
 
@@ -158,7 +168,7 @@ class PloneSite(CMFSite, OrderedContainer, PropertyManagedBrowserDefault):
 
     def view(self):
         """ Ensure that we get a plain view of the object, via a delegation to
-        __call__(), which is defined in PropertyManagedBrowserDefault
+        __call__(), which is defined in BrowserDefaultMixin
         """
         return self()
 

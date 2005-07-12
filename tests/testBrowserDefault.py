@@ -270,9 +270,8 @@ class TestDefaultPage(PloneTestCase.PloneTestCase):
         self.assertEquals(self.portal.plone_utils.browserDefault(self.folder),
                             (self.folder, ['d1']))
 
-class TestPropertyManagedBrowserDefault(PloneTestCase.PloneTestCase):
-    """Test the PropertyManagedBrowserDefault mixin class, implemented by
-    the root portal object
+class TestPortalBrowserDefault(PloneTestCase.PloneTestCase):
+    """Test the BrowserDefaultMixin as implemented by the root portal object
     """
     
     def afterSetUp(self):
@@ -286,8 +285,9 @@ class TestPropertyManagedBrowserDefault(PloneTestCase.PloneTestCase):
         self.portal.setDefaultPage('front-page')
     
         # Also make sure we have folder_listing and news_listing as templates
-        self.portal.manage_changeProperties(selectable_views = ['folder_listing',
-                                                                'news_listing'])
+        self.portal.getTypeInfo().manage_changeProperties(view_methods =
+                                        ['folder_listing', 'news_listing'],
+                                        default_view = 'folder_listing')
             
     def testCall(self):
         self.portal.setLayout('news_listing')
@@ -307,7 +307,7 @@ class TestPropertyManagedBrowserDefault(PloneTestCase.PloneTestCase):
         
     def testCanSetLayout(self):
         self.failUnless(self.portal.canSetLayout())
-        self.portal.manage_permission('Modify portal content', [], 0)
+        self.portal.manage_permission("Modify view template", [], 0)
         self.failIf(self.portal.canSetLayout()) # Not permitted
     
     def testSetLayout(self):
@@ -333,7 +333,7 @@ class TestPropertyManagedBrowserDefault(PloneTestCase.PloneTestCase):
         self.failUnless(self.portal.canSetDefaultPage())
         self.portal.invokeFactory('Document', 'ad')
         self.failIf(self.portal.ad.canSetDefaultPage()) # Not folderish
-        self.portal.manage_permission('Modify portal content', [], 0)
+        self.portal.manage_permission("Modify view template", [], 0)
         self.failIf(self.portal.canSetDefaultPage()) # Not permitted
         
     def testSetDefaultPage(self):
@@ -383,7 +383,7 @@ class TestPropertyManagedBrowserDefault(PloneTestCase.PloneTestCase):
         self.assertEqual(view, templateResolved)
 
     def testMissingTemplatesIgnored(self):
-        self.portal.manage_changeProperties(selectable_views = ['folder_listing', 'foo'])
+        self.portal.getTypeInfo().manage_changeProperties(view_methods = ['folder_listing', 'foo'])
         views = [v[0] for v in self.portal.getAvailableLayouts()]
         self.failUnless(views == ['folder_listing'])
 
@@ -401,7 +401,7 @@ def test_suite():
     suite = TestSuite()
     suite.addTest(makeSuite(TestPloneToolBrowserDefault))
     suite.addTest(makeSuite(TestDefaultPage))
-    suite.addTest(makeSuite(TestPropertyManagedBrowserDefault))
+    suite.addTest(makeSuite(TestPortalBrowserDefault))
     return suite
 
 if __name__ == '__main__':
