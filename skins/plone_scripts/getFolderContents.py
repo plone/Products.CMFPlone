@@ -14,23 +14,19 @@ cur_path = '/'.join(context.getPhysicalPath())
 path = {}
 
 if not contentFilter:
-    contentFilter=context.REQUEST.clone()
-# Make a copy just in case
-contentFilter = dict(contentFilter).copy()
+    contentFilter=dict(context.REQUEST)
+    # The form is what really matters
+    contentFilter.update(dict(getattr(context.REQUEST, 'form',{})))
+else:
+    contentFilter = dict(contentFilter)
 
 if not contentFilter.get('sort_on', None):
-    try:
-        contentFilter.set('sort_on', 'getObjPositionInParent')
-    except AttributeError:
-        contentFilter['sort_on'] = 'getObjPositionInParent'
+    contentFilter['sort_on'] = 'getObjPositionInParent'
 
 if contentFilter.get('path', None) is None:
     path['query'] = cur_path
     path['depth'] = 1
-    try:
-        contentFilter.set('path', path)
-    except AttributeError:
-        contentFilter['path'] = path
+    contentFilter['path'] = path
 
 show_inactive = mtool.checkPermission('Access inactive portal content', context)
 
