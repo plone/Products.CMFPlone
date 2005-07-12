@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - Beta2 - unreleased
 
+    - Took care of http://plone.org/collector/4224 by disabling the ZMI
+      ordering interface for the Plone Site object.
+      [stefan]
+
     - Removed PropertyManagedBrowserDefault, and mane the portal root support
       BrowserDefaultMixin as implemented by CMFDynamicViewFTI.
       [alecm]

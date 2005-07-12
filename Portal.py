@@ -121,6 +121,11 @@ class PloneSite(CMFSite, OrderedContainer, BrowserDefaultMixin):
     moveObject = OrderedContainer.moveObject
     moveObjectsByDelta = OrderedContainer.moveObjectsByDelta
 
+    # Switch off ZMI ordering interface as it assumes a slightly
+    # different functionality
+    has_order_support = 0
+    manage_main = Globals.DTMLFile('www/main', globals())
+
     def __browser_default__(self, request):
         """ Set default so we can return whatever we want instead
         of index_html """
