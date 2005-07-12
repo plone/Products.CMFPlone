@@ -37,8 +37,6 @@ from Products.CMFPlone.migrations.v2_1.alphas import addExclude_from_navMetadata
 from Products.CMFPlone.migrations.v2_1.alphas import addIs_FolderishMetadata
 from Products.CMFPlone.migrations.v2_1.alphas import indexMembersFolder
 from Products.CMFPlone.migrations.v2_1.alphas import addEditContentActions
-from Products.CMFPlone.migrations.v2_1.alphas import INDEXES_CONVERTED
-from Products.CMFPlone.migrations.v2_1.alphas import migrateCatalogIndexes
 from Products.CMFPlone.migrations.v2_1.alphas import migrateDateIndexes
 from Products.CMFPlone.migrations.v2_1.alphas import migrateDateRangeIndexes
 from Products.CMFPlone.migrations.v2_1.alphas import addSortable_TitleIndex
@@ -794,23 +792,6 @@ class TestMigrations_v2_1(MigrationTest):
         self.assertEqual(self.catalog.Indexes['effective'].__class__.__name__,
                          'DateIndex')
 
-    def testMigrateCatalogIndexesNotRerun(self):
-        # if catalog is converted to 2.8 style, all catalog should be flagged
-        from Products.ZCatalog.ZCatalog import ZCatalog
-        from Acquisition import aq_base
-        portal = self.portal
-        
-        migrateCatalogIndexes(portal, [])
-
-        # get cats
-        cats = [aq_base(obj) for obj in portal.objectValues() \
-                if isinstance(obj, ZCatalog)]
-
-        # test for dogs
-        [self.assertEqual((dog.getId(), getattr(dog, INDEXES_CONVERTED, False)), (dog.getId(),True)) \
-         for dog in cats]
-
-
     def testMigrateDateIndexesNoCatalog(self):
         # Should not fail if catalog is missing
         self.portal._delObject('portal_catalog')
@@ -931,7 +912,7 @@ class TestMigrations_v2_1(MigrationTest):
         self.failUnless('folder_listing' in views)
         self.failUnless('news_listing' in views)
         
-    def testAddSiteRootViewTemplatestwice(self):
+    def testAddSiteRootViewTemplatesTwice(self):
         self.portal.manage_delProperties(['selectable_views'])
         addSiteRootViewTemplates(self.portal, [])
         addSiteRootViewTemplates(self.portal, [])
