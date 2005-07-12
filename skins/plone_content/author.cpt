@@ -18,7 +18,7 @@
                                 authorinfo python: mtool.getMemberInfo(author);">
 
         <tal:noAuthor condition="not: authorinfo">
-            <div class="visualClear"/>
+            <div class="visualClear"></div>
             <div class="portalMessage" i18n:translate="text_no_user_by_name">
                 No user by that name
             </div>
@@ -57,7 +57,7 @@
             Author description.
         </div>
 
-        <div class="visualClear"/>
+        <div class="visualClear"></div>
             
         <p tal:condition="mtool/getHomeFolder">
         <a href="#" tal:attributes="href authorinfo/home_page"

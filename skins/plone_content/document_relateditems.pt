@@ -10,7 +10,7 @@
     <tal:allowed condition="isViewTemplate">
         <tal:relatedItems tal:define="related python:here.computeRelatedItems();">
             <tal:block tal:condition="python:related">
-                <div class="visualClear" />
+                <div class="visualClear"></div>
                 <fieldset id="relatedItemBox">
                     <legend i18n:translate="label_related_items">Related item(s)</legend>
                     <ul class="visualNoMarker">
