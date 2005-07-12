@@ -738,8 +738,7 @@ def addEditContentActions(portal, out):
         for newaction in ACTIONS:
             for action in actionsTool.listActions():
                 if action.getId() == newaction['id'] \
-                        and action.getCategory() == newaction.get('category', CATEGORY) \
-                    and action.getCondition() == newaction['condition']:
+                        and action.getCategory() == newaction.get('category', CATEGORY):
                     break # We already have the action
             else:
                 actionsTool.addAction(newaction['id'],

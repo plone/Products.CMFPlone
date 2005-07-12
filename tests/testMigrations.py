@@ -736,7 +736,7 @@ class TestMigrations_v2_1(MigrationTest):
         for a in editActions:
             self.failUnless(a in actions)
 
-    def testAddEditcontentActionsTwice(self):
+    def testAddEditContentActionsTwice(self):
         # Should add the edit-content actions
         editActions = ('cut', 'copy', 'paste', 'delete', 'batch')
         for a in editActions:
@@ -747,7 +747,7 @@ class TestMigrations_v2_1(MigrationTest):
         for a in editActions:
             self.failUnless(a in actions)
 
-    def testAddEditcontentActionsNoTool(self):
+    def testAddEditContentActionsNoTool(self):
         # Should not fail if portal_actions is missing
         self.portal._delObject('portal_actions')
         addEditContentActions(self.portal, [])
