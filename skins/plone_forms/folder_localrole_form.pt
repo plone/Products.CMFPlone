@@ -9,7 +9,6 @@
 <body>
 
   <div metal:fill-slot="main"
-
        tal:define="Batch python:modules['Products.CMFPlone'].Batch;
                    username member/getUserName;
                    avail_roles python:[role for role in container.portal_membership.getCandidateLocalRoles(here) if role!='Owner'];
@@ -31,21 +30,28 @@
         <span tal:content="here/pretty_title_or_id" i18n:name="folder">title</span>
     </h1>
 
-    <p i18n:translate="description_share_folders_items_current_shares">
-        You can share the rights for both folders (including content) and single items.
-        These users have privileges here:
-    </p>
-
-
     <tal:warning tal:condition="not:iscontainer">
         <div class="portalMessage" style="background-color:rgb(255,191,191)">
-            <span style="font-weight:normal" i18n:translate="local_role_warning_type"><strong>Attention!</strong> You are setting the sharing permissions for a <strong i18n:name="type" tal:content="here/portal_type"/>.
-            If you want to set the permissions for its containing folder, click <span i18n:name="link">
-            <a href="" i18n:translate="local_role_warning_link" tal:attributes="href python:here.absolute_url()+'/../'+ template.id">here</a></span>
+            <span style="font-weight:normal" 
+                  i18n:translate="local_role_warning_type">
+                <strong>Attention!</strong> 
+                You are setting the sharing permissions for a 
+                <strong i18n:name="type" tal:content="here/portal_type"/>.
+                If you want to set the permissions for its containing folder, 
+                click 
+                <span i18n:name="link">
+                    <a href="" 
+                       i18n:translate="local_role_warning_link" 
+                       tal:attributes="href python:here.absolute_url()+'/../'+ template.id">here</a>
+               </span>.
             </span>
         </div>
     </tal:warning>
 
+    <p i18n:translate="description_share_folders_items_current_shares">
+        You can share the rights for both entire folders and single items.
+        These users have privileges here:
+    </p>
 
     <tal:warning tal:condition="python:iscontainer and here.isDefaultPageInFolder()">
         <div class="portalMessage" style="background-color:rgb(255,191,191)">
@@ -55,40 +61,6 @@
             </span>
         </div>
     </tal:warning>
-
-<form method="post"
-          name="setacquisition"
-          action="folder_localrole_set">
-
-      <fieldset>
-
-        <legend i18n:translate="legend_security_settings">
-            Advanced Settings
-        </legend>
-
-        <div class="field">
-            <input class="noborder" type="checkbox" name="use_acquisition:int" value="1" id="inherit"
-                tal:attributes="checked     python:test(inheritanceActive,1,None)"
-                /> 
-            <label for="inherit" i18n:translate="label_use_acquisition">Inherit roles from higher levels</label>
-            <div class="formHelp" i18n:translate="help_use_acquisition">
-                Determines if the roles given to users and groups from higher levels are in
-                effect in this context.
-            </div>
-        </div>
-
-        <div class="submit">
-            <input class="context"
-                type="submit"
-                value="Apply Settings"
-                i18n:attributes="value label_apply_settings;"
-                tabindex=""
-                tal:attributes="tabindex tabindex/next;"
-                />
-        </div>
-
-      </fieldset>
-    </form>
 
     <!-- form for changing existing roles -->
     <form method="post"
@@ -228,14 +200,14 @@
         </div>
 
         <div class="submit">
-	    <input class="context"
-		type="submit"
-		value="Assign Selected Role(s) to Selected User(s)/Group(s)"
-		name="folder_localrole_add:method"
-		i18n:attributes="value label_assign_roles_to_users_groups;"
-		tabindex=""
-		tal:attributes="tabindex tabindex/next;"
-		/>
+            <input class="context"
+                   type="submit"
+                   value="Assign Selected Role(s) to Selected User(s)/Group(s)"
+                   name="folder_localrole_add:method"
+                   i18n:attributes="value label_assign_roles_to_users_groups;"
+                   tabindex=""
+                   tal:attributes="tabindex tabindex/next;"
+                   />
             <input class="destructive"
                 type="submit"
                 value="Delete Selected Role(s) and User(s)/Group(s)"
@@ -548,11 +520,50 @@
 
         </tal:groupshares>
 
-    
+    <form method="post"
+          name="setacquisition"
+          action="folder_localrole_set">
 
-      <div metal:use-macro="here/document_byline/macros/byline">
+      <fieldset>
+
+        <legend i18n:translate="legend_security_settings">
+            Advanced Settings
+        </legend>
+
+        <div class="field">
+            <input class="noborder"
+                   type="checkbox"
+                   name="use_acquisition:int"
+                   value="1"
+                   id="inherit"
+                   tal:attributes="checked python:test(inheritanceActive,1,None)"
+                   /> 
+            <label for="inherit" i18n:translate="label_use_acquisition">
+            Inherit roles from higher levels
+            </label>
+            <div class="formHelp" i18n:translate="help_use_acquisition">
+                Determines if the roles given to users and groups from higher levels are in
+                effect in this context. Use this to block people that have local roles in higher-level
+                folders from accessing this folder.
+            </div>
+        </div>
+
+        <div class="submit">
+            <input class="context"
+                type="submit"
+                value="Apply Settings"
+                i18n:attributes="value label_apply_settings;"
+                tabindex=""
+                tal:attributes="tabindex tabindex/next;"
+                />
+        </div>
+
+      </fieldset>
+    </form>
+
+    <div metal:use-macro="here/document_byline/macros/byline">
         Get the byline - contains details about author and modification date.
-      </div>
+    </div>
 
     </div>
 
