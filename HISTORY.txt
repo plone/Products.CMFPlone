@@ -4,6 +4,18 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - Beta2 - unreleased
 
+    - Fixed issues related to External Editor action (2939, 3008, 4176), using
+      a script from glenfant.  The icon appears only when both 'Modify portal
+      contents' and 'Use external editor' are available, the user has the a
+      member property set, and the object supports WebDAV editing/locking, and
+      isn't locked.
+      [alecm]
+
+    - Added a monkey patch to CMFCore.ActionInformation.ActionInfo so that
+      permissions on 'document_actions' are evaluated in the context of the
+      object not the portal.
+      [alecm]
+
     - Partial fix for http://plone.org/collector/4272 some missing i18n markup
       [hannosch]
 

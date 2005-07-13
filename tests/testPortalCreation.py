@@ -365,6 +365,10 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         # portal_memberdata should have a home_page property
         self.failUnless(self.memberdata.hasProperty('home_page'))
 
+    def testExtEditorMemberdataProperty(self):
+        # portal_memberdata should have a location property
+        self.assertEqual(self.memberdata.getProperty('ext_editor'), 0)
+
     def testChangeStateIsLastFolderButton(self):
         # Change state button should be the last
         actions = [x for x in self.actions.listActions() if

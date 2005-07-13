@@ -81,6 +81,9 @@ from Products.CMFPlone.migrations.v2_1.betas import changePortalActionCategory
 from Products.CMFPlone.migrations.v2_1.alphas import convertPloneFTIToCMFDynamicViewFTI
 from Products.CMFPlone.migrations.v2_1.betas import addMethodAliasesForPloneSite
 from Products.CMFPlone.migrations.v2_1.betas import updateParentMetaTypesNotToQuery
+from Products.CMFPlone.migrations.v2_1.betas import fixCutActionPermission
+from Products.CMFPlone.migrations.v2_1.betas import fixExtEditAction
+from Products.CMFPlone.migrations.v2_1.betas import changeMemberdataExtEditor
 
 from Products.CMFDynamicViewFTI.migrate import migrateFTI
 
@@ -1706,6 +1709,7 @@ class TestMigrations_v2_1(MigrationTest):
         
     def testFixFolderlistingActionTwice(self):
         fixFolderlistingAction(self.portal, [])
+        fixFolderlistingAction(self.portal, [])
         self.assertEqual(self.portal.portal_types['Plone Site'].getActionById('folderlisting'), 'view')
         
     def testFixFolderlistingActionNoTool(self):
@@ -1940,6 +1944,78 @@ class TestMigrations_v2_1(MigrationTest):
         # Should not fail if the tool is missing
         self.portal._delObject('portal_properties')
         updateParentMetaTypesNotToQuery(self.portal, [])
+
+    def testFixCutActionPermission(self):
+        editActions = ('cut',)
+        for a in editActions:
+            self.removeActionFromTool(a)
+        fixCutActionPermission(self.portal, [])
+        actions = [x.id for x in self.actions.listActions()]
+        for a in editActions:
+            self.failUnless(a in actions)
+
+    def testFixCutActionPermissionTwice(self):
+        editActions = ('cut',)
+        for a in editActions:
+            self.removeActionFromTool(a)
+        fixCutActionPermission(self.portal, [])
+        fixCutActionPermission(self.portal, [])
+        actions = [x.id for x in self.actions.listActions()]
+        for a in editActions:
+            self.failUnless(a in actions)
+
+    def testFixCutActionPermissionNoTool(self):
+        self.portal._delObject('portal_actions')
+        fixCutActionPermission(self.portal, [])
+
+    def testFixExtEditAction(self):
+        editActions = ('extedit',)
+        for a in editActions:
+            self.removeActionFromTool(a)
+        fixExtEditAction(self.portal, [])
+        actions = [x.id for x in self.actions.listActions()]
+        for a in editActions:
+            self.failUnless(a in actions)
+
+    def testFixExtEditActionTwice(self):
+        editActions = ('extedit',)
+        for a in editActions:
+            self.removeActionFromTool(a)
+        fixExtEditAction(self.portal, [])
+        fixExtEditAction(self.portal, [])
+        actions = [x.id for x in self.actions.listActions()]
+        for a in editActions:
+            self.failUnless(a in actions)
+
+    def testFixExtEditActionNoTool(self):
+        self.portal._delObject('portal_actions')
+        fixExtEditAction(self.portal, [])
+
+    def testChangeMemberdataExtEditor(self):
+        # Should add the ext_editor property
+        self.removeMemberdataProperty('ext_editor')
+        self.failIf(self.portal_memberdata.hasProperty('ext_editor'))
+        changeMemberdataExtEditor(self.portal, [])
+        self.assertEqual(self.portal_memberdata.getProperty('ext_editor'), 0)
+
+    def testChangeMemberdataExtEditorExists(self):
+        # Should alter existing ext_editor property
+        self.portal_memberdata.manage_changeProperties(ext_editor=1)
+        changeMemberdataExtEditor(self.portal, [])
+        self.assertEqual(self.portal_memberdata.getProperty('ext_editor'), 0)
+
+    def testChangeMemberdataExtEditorTwice(self):
+        # Should not fail if migrated again
+        self.removeMemberdataProperty('ext_editor')
+        self.failIf(self.portal_memberdata.hasProperty('ext_editor'))
+        changeMemberdataExtEditor(self.portal, [])
+        changeMemberdataExtEditor(self.portal, [])
+        self.assertEqual(self.portal_memberdata.getProperty('ext_editor'), 0)
+
+    def testChangeMemberdataExtEditor(self):
+        # Should not fail if portal_memberdata is missing
+        self.portal._delObject('portal_memberdata')
+        changeMemberdataExtEditor(self.portal, [])
 
 
 def test_suite():

@@ -18,6 +18,7 @@ class TestActionsTool(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
         self.actions = self.portal.portal_actions
+        self.portal.acl_users._doAddUser('user1', 'secret', ['Member'], [])
 
     def fail_tb(self, msg):
         """ special fail for capturing errors """
@@ -61,6 +62,27 @@ class TestActionsTool(PloneTestCase.PloneTestCase):
             self.actions.listFilteredActionsFor(self.folder)
         except :
             self.fail_tb('Should not bomb out if a provider is broken')
+
+    def testDocumentActionsPermissionBug(self):
+        # Test to ensure that permissions for items categorized as
+        # 'document_actions' have their permissions evaluated in the context
+        # of the content object.
+        self.actions.addAction(id='foo',
+                               name='foo_name',
+                               action='foo_action',
+                               condition='',
+                               permission='View',
+                               category='document_actions',
+                               visible=1)
+        actions = self.actions.listFilteredActionsFor(self.folder)
+        match = [a for a in actions['document_actions'] if a['id'] == 'foo']
+        self.failUnless(match)
+        self.portal.portal_workflow.doActionFor(self.folder, 'hide')
+        self.login('user1')
+        actions = self.actions.listFilteredActionsFor(self.folder)
+        match = [a for a in actions.get('document_actions', []) if a['id'] == 'foo']
+        self.failIf(match)
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite

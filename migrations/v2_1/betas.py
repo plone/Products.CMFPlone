@@ -9,6 +9,7 @@ from Products.CMFPlone.migrations.migration_util import installOrReinstallProduc
 from Products.CMFPlone.utils import base_hasattr
 from Products.CMFCore.DirectoryView import createDirectoryView
 from Products.CMFPlone.migrations.migration_util import cleanupSkinPath
+from Products.CMFPlone.migrations.migration_util import safeEditProperty
 from alphas import reindexCatalog, indexMembersFolder, indexNewsFolder, \
                     indexEventsFolder, convertPloneFTIToCMFDynamicViewFTI
 
@@ -123,6 +124,15 @@ def beta1_beta2(portal):
     # Add 'Large Plone Folder' to the list of types not to query for the
     # navtree
     updateParentMetaTypesNotToQuery(portal, out)
+
+    # Fix cut action permissions to use something saner than 'Copy or Move'
+    fixCutActionPermission(portal, out)
+
+    # Fix condition on External Editor action
+    fixExtEditAction(portal, out)
+
+    # Disable external editor member property by default
+    changeMemberdataExtEditor(portal, out)
 
     # FIXME: *Must* be called after reindexCatalog.
     # In tests, reindexing loses the folders for some reason...
@@ -855,3 +865,80 @@ def updateParentMetaTypesNotToQuery(portal, out):
                 ntp.manage_changeProperties(parentMetaTypesNotToQuery=list(val)+['Large Plone Folder'])
                 out.append("Added 'Large Plone Folder' to 'parentMetaTypesNotToQuery' in navtree_properties")
 
+
+def fixCutActionPermission(portal,out):
+    """Use more a reasonable permission for the cut action"""
+    ACTIONS = (
+        {'id'        : 'cut',
+         'name'      : 'Cut',
+         'action'    : 'string:${object_url}/object_cut',
+         'condition' : 'python:portal.portal_membership.checkPermission("Delete objects", object.aq_inner.getParentNode()) and portal.portal_membership.checkPermission("Copy or Move", object) and object is not portal.portal_url.getPortalObject()',
+         'permission': CMFCorePermissions.DeleteObjects,
+         'category'  : 'object_buttons',
+         },
+        )
+
+    actionsTool = getToolByName(portal, 'portal_actions', None)
+    if actionsTool is not None:
+        # update/add actions
+        for newaction in ACTIONS:
+            idx = 0
+            for action in actionsTool.listActions():
+                # if action exists, remove and re-add
+                if action.getId() == newaction['id'] \
+                        and action.getCategory() == newaction['category']:
+                    actionsTool.deleteActions((idx,))
+                    break
+                idx += 1
+
+            actionsTool.addAction(newaction['id'],
+                name=newaction['name'],
+                action=newaction['action'],
+                condition=newaction['condition'],
+                permission=newaction['permission'],
+                category=newaction['category'],
+                visible=1)
+
+            out.append("Added '%s' contentmenu action to actions tool." % newaction['name'])
+
+
+def fixExtEditAction(portal,out):
+    """Make the external editor action appear in a reasonable way"""
+    ACTIONS = (
+            {'id'        : 'extedit',
+             'name'      : 'Edit this file in an external application (Requires Zope ExternalEditor installed)',
+             'action'    : 'string:$object_url/external_edit',
+             'condition' : 'object/externalEditorEnabled',
+             'permission': CMFCorePermissions.ModifyPortalContent,
+             'category'  : 'document_actions'
+            },)
+
+    actionsTool = getToolByName(portal, 'portal_actions', None)
+    if actionsTool is not None:
+        # update/add actions
+        for newaction in ACTIONS:
+            idx = 0
+            for action in actionsTool.listActions():
+                # if action exists, remove and re-add
+                if action.getId() == newaction['id'] \
+                        and action.getCategory() == newaction['category']:
+                    actionsTool.deleteActions((idx,))
+                    break
+                idx += 1
+
+            actionsTool.addAction(newaction['id'],
+                name=newaction['name'],
+                action=newaction['action'],
+                condition=newaction['condition'],
+                permission=newaction['permission'],
+                category=newaction['category'],
+                visible=1)
+
+            out.append("Added '%s' action to actions tool." % newaction['name'])
+
+
+def changeMemberdataExtEditor(portal, out):
+    memberdata_tool = safeGetMemberDataTool(portal)
+    if memberdata_tool is not None:
+        safeEditProperty(memberdata_tool, 'ext_editor', 0, 'boolean')
+        out.append("Turned off 'ext_editor' property on portal_memberdata by default.")

@@ -135,9 +135,9 @@ def addMemberdata(self, portal):
         safeEditProperty(md, 'wysiwyg_editor', '', 'string')
 
     if not hasattr(md,'ext_editor'):
-        safeEditProperty(md, 'ext_editor', '0', 'boolean')
+        safeEditProperty(md, 'ext_editor', 0, 'boolean')
     else:
-        safeEditProperty(md, 'ext_editor','1')
+        safeEditProperty(md, 'ext_editor', 0)
         
     if not hasattr(md,'listed'):
         safeEditProperty(md, 'listed', '1', 'boolean')
