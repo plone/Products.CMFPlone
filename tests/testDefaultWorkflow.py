@@ -503,6 +503,18 @@ class TestDefaultWorkflow(PloneTestCase.PloneTestCase):
         self.failUnless(len(worklist) == 1)
         self.failUnless(worklist[0] == self.doc)
 
+    def testStateTitles(self):
+        state_titles = { 'private': 'Private',
+                        'visible': 'Public Draft',
+                        'pending': 'Pending',
+                        'published': 'Published'
+                        }
+        for wf in self.workflow.objectValues():
+            for state_id, title in state_titles.items():
+                state = getattr(wf.states, state_id, None)
+                if state is not None:
+                    self.assertEqual(state.title, title)
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite

@@ -84,6 +84,7 @@ from Products.CMFPlone.migrations.v2_1.betas import updateParentMetaTypesNotToQu
 from Products.CMFPlone.migrations.v2_1.betas import fixCutActionPermission
 from Products.CMFPlone.migrations.v2_1.betas import fixExtEditAction
 from Products.CMFPlone.migrations.v2_1.betas import changeMemberdataExtEditor
+from Products.CMFPlone.migrations.v2_1.betas import fixWorkflowStateTitles
 
 from Products.CMFDynamicViewFTI.migrate import migrateFTI
 
@@ -2013,6 +2014,54 @@ class TestMigrations_v2_1(MigrationTest):
         # Should not fail if portal_memberdata is missing
         self.portal._delObject('portal_memberdata')
         changeMemberdataExtEditor(self.portal, [])
+
+    def testFixWorkflowStateTitles(self):
+        wfs = ('plone_workflow','folder_workflow')
+        wftool = self.portal.portal_workflow
+        for wfid in wfs:
+            wf = getattr(wftool, wfid)
+            for state in wf.states.objectValues():
+                state.setProperties(title='junk')
+                self.assertEqual(state.title, 'junk')
+
+        fixWorkflowStateTitles(self.portal, [])
+        self.assertEqual(wftool.plone_workflow.states.visible.title,
+                            'Public Draft')
+        self.assertEqual(wftool.folder_workflow.states.visible.title,
+                            'Public Draft')
+
+    def testFixWorkflowStateTitlesTwice(self):
+        wfs = ('plone_workflow','folder_workflow')
+        wftool = self.portal.portal_workflow
+        for wfid in wfs:
+            wf = getattr(wftool, wfid)
+            for state in wf.states.objectValues():
+                state.setProperties(title='junk')
+                self.assertEqual(state.title, 'junk')
+
+        fixWorkflowStateTitles(self.portal, [])
+        fixWorkflowStateTitles(self.portal, [])
+        self.assertEqual(wftool.plone_workflow.states.visible.title,
+                            'Public Draft')
+        self.assertEqual(wftool.folder_workflow.states.visible.title,
+                            'Public Draft')
+
+    def testFixWorkflowStateTitlesNoState(self):
+        self.portal.portal_workflow.plone_workflow.states._delObject('published')
+        fixWorkflowStateTitles(self.portal, [])
+
+    def testFixWorkflowStateTitlesNoStates(self):
+        self.portal.portal_workflow.plone_workflow._delObject('states')
+        fixWorkflowStateTitles(self.portal, [])
+
+    def testFixWorkflowStateTitlesNoWF(self):
+        self.portal.portal_workflow._delObject('plone_workflow')
+        fixWorkflowStateTitles(self.portal, [])
+
+    def testFixWorkflowStateTitlesNoTool(self):
+        self.portal._delObject('portal_workflow')
+        fixWorkflowStateTitles(self.portal, [])
+
 
 
 def test_suite():

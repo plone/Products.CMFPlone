@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - Beta2 - unreleased
 
+    - Migrated to some nicer workflow state titles.
+      [alecm]
+
     - Fixed issues related to External Editor action (2939, 3008, 4176), using
       a script from glenfant.  The icon appears only when both 'Modify portal
       contents' and 'Use external editor' are available, the user has the a

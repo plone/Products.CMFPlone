@@ -134,6 +134,9 @@ def beta1_beta2(portal):
     # Disable external editor member property by default
     changeMemberdataExtEditor(portal, out)
 
+    # Fix Workflow state titles
+    fixWorkflowStateTitles(portal, out)
+
     # FIXME: *Must* be called after reindexCatalog.
     # In tests, reindexing loses the folders for some reason...
 
@@ -942,3 +945,23 @@ def changeMemberdataExtEditor(portal, out):
     if memberdata_tool is not None:
         safeEditProperty(memberdata_tool, 'ext_editor', 0, 'boolean')
         out.append("Turned off 'ext_editor' property on portal_memberdata by default.")
+
+
+def fixWorkflowStateTitles(portal, out):
+    """Fix titles for default workflow states"""
+    wftool = getattr(portal, 'portal_workflow', None)
+    wfs = ('plone_workflow','folder_workflow')
+    state_titles = { 'private': 'Private',
+                     'visible': 'Public Draft',
+                     'pending': 'Pending',
+                     'published': 'Published'
+                    }
+    for wfid in wfs:
+        wf = getattr(wftool, wfid, None)
+        wf_states = getattr(wf, 'states', None)
+        if wf_states is not None:
+            for state, title in state_titles.items():
+                wf_state = getattr(wf.states, state, None)
+                if wf_state is not None and wf_state.title != title:
+                    wf_state.title = title
+                    out.append("Updated workflow titles for state %s"%state)
