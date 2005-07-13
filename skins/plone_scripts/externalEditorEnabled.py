@@ -22,10 +22,6 @@ member = mtool.getAuthenticatedMember()
 if not member.getProperty('ext_editor', False):
     return False
 
-# Check user permission
-if not mtool.checkPermission('Use external editor', context):
-    return False
-
 # Object implements lock interface
 if not portal.portal_interface.objectImplements(context, 'webdav.WriteLockInterface.WriteLockInterface'):
     return False
@@ -36,9 +32,4 @@ if context.wl_isLocked():
     return False
 
 # Content may provide data to the external editor ?
-has_ee_method = False
-for method_name in ('manage_FTPget', 'EditableBody', 'document_src', 'read'):
-    if base_hasattr(context, method_name):
-        has_ee_method = True
-        break
-return has_ee_method
+return not not portal.externalEditLink_(context)
