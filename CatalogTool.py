@@ -444,7 +444,9 @@ class CatalogTool(PloneBaseTool, BaseTool):
             effectiveRange checking entirely even for those withot portal wide
             AccessInactivePortalContent permission.
         """
+        kw = kw.copy()
         show_inactive = kw.get('show_inactive', False)
+
         user = _getAuthenticatedUser(self)
         kw['allowedRolesAndUsers'] = self._listAllowedRolesAndUsers(user)
 

@@ -310,8 +310,8 @@ class TestCatalogSearching(PloneTestCase.PloneTestCase):
         self.workflow.doActionFor(self.folder.folder2, 'hide', comment='')
         self.workflow.doActionFor(self.folder.folder2.doc2, 'hide', comment='')
 
-        #used for testing AND/OR search functionality below
-        self.folder.invokeFactory('Document', id='aaa', text='aaa')
+        # Used for testing AND/OR search functionality below
+        self.folder.invokeFactory('Document', id='aaa', text='aaa', title='ccc')
         self.folder.invokeFactory('Document', id='bbb', text='bbb')
 
     def addUser2ToGroup(self):
@@ -340,11 +340,13 @@ class TestCatalogSearching(PloneTestCase.PloneTestCase):
 
     def testSearchReturnsDocumentUsing_DefaultAND(self):
         # Documents should not be found when searching 'aaa bbb' (which should default to AND)
-        self.assertEqual(len(self.catalog(SearchableText='aaa+bbb')), 0)
+        self.assertEqual(len(self.catalog(SearchableText='aaa bbb')), 0)
+        self.assertEqual(len(self.catalog(SearchableText='aaa ccc')), 1)
 
     def testSearchReturnsDocumentUsing_AND(self):
         # Documents should not be found when owner does a search using AND
         self.assertEqual(len(self.catalog(SearchableText='aaa AND bbb')), 0)
+        self.assertEqual(len(self.catalog(SearchableText='aaa AND ccc')), 1)
 
     def testSearchReturnsDocumentUsing_OR(self):
         # Two documents (aaa, bbb)  should be found when owner does a search using OR 
@@ -772,6 +774,13 @@ class TestCatalogExpirationFiltering(PloneTestCase.PloneTestCase):
         self.nofx()
         res = self.catalog()
         self.assertResults(res, ['Members', 'events', 'events_topic', 'news', 'news_topic', default_user])
+
+    def testSearchResultsExpiredWithExpiredDisabled(self):
+        self.folder.doc.setExpirationDate(DateTime(2000, 12, 31))
+        self.folder.doc.reindexObject()
+        self.nofx()
+        res = self.catalog.searchResults(show_inactive=True)
+        self.assertResults(res, ['Members', 'events', 'events_topic', 'news', 'news_topic', default_user, 'doc'])
 
     def testCallExpiredWithExpiredDisabled(self):
         self.folder.doc.setExpirationDate(DateTime(2000, 12, 31))
