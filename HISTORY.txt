@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - Beta2 - unreleased
 
+    - Partial fix for http://plone.org/collector/4272 some missing i18n markup
+      [hannosch]
+
     - Added 'Large Plone Folder' to parentMetaTypesNotToQuey navtree_property.
       This ensures that large folders will not display their contents in the
       navtree.

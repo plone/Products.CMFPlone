@@ -140,7 +140,7 @@
                        typetitle portaltype/Title;"
            tal:attributes="href string:${parent_folder/absolute_url}/createObject?type_name=${portaltype/getId};
                            title portaltype/Description"
-           >
+           i18n:attributes="title">
             <img src="folder.gif" 
                  alt=""
                  width="16"
@@ -184,7 +184,7 @@
                    i18n:attributes="title title_remove_index_html_for_display_control;"
                    tal:condition="dimMenu"
                    i18n:translate="label_disabled_display_menu">
-                  Display
+                    Display
                 </span>
                 
                 
@@ -193,7 +193,8 @@
                    i18n:attributes="title title_choose_default_view;"
                    tal:condition="not:dimMenu"
                    tal:attributes="href string:$here_url/select_default_view;">
-                    <span i18n:translate="label_choose_template">Display</span>
+                   i18n:translate="label_choose_template">
+                    Display
                 </a>
               </dt>
               <dd class="actionMenuContent" tal:condition="not:dimMenu">
@@ -216,9 +217,10 @@
                            tal:condition="python:value!=selectedLayout"
                            tal:attributes="href string:${parent_folder/absolute_url}/selectViewTemplate?templateId=$value;
                                            title display"
-                           i18n:attributes="title">
-                            <tal:title i18n:translate=""
-                                 tal:content="display">Template id</tal:title>
+                           i18n:attributes="title"
+                           i18n:translate=""
+                           tal:content="display">
+                            Template id
                         </a>
                     </li>
                     </tal:layouts>
@@ -227,14 +229,16 @@
                         <li class="actionSeperator" tal:condition="python:selectedLayout != ''">
                             <a title="Select an item to be used as default view in this folder" href="#" class="selected"
                                tal:attributes="href string:${parent_folder/absolute_url}/select_default_page;"
-                               i18n:attributes="title title_select_default_view_item;">
+                               i18n:attributes="title title_select_default_view_item;"
+                               i18n:translate="label_choose_item">
                                  Choose item&hellip;
                             </a>
                         </li>
                         <li class="actionSeperator" tal:condition="python:selectedLayout == ''">
                             <a title="Change the item used as default view in this folder" href="#" class="selected"
                                tal:attributes="href string:${parent_folder/absolute_url}/select_default_page;"
-                               i18n:attributes="title title_change_default_view_item;">
+                               i18n:attributes="title title_change_default_view_item;"
+                               i18n:translate="label_change_item">
                                  Change item&hellip;
                             </a>
                         </li>
@@ -277,7 +281,8 @@
                             tal:condition="python:selectedLayout != ''">
                             <a title="Select default page" href="#" class="selected"
                                tal:attributes="href string:${parent_folder/absolute_url}/select_default_page;"
-                               i18n:attributes="title title_select_default_page;">
+                               i18n:attributes="title title_select_default_page;"
+                               i18n:translate="label_select_item">
                                  Select item&hellip;
                             </a>
                         </li>
@@ -285,7 +290,8 @@
                             tal:condition="python:selectedLayout == ''">
                             <a title="Change default page" href="#" class="selected"
                                tal:attributes="href string:${parent_folder/absolute_url}/select_default_page;"
-                               i18n:attributes="title title_change_default_page;">
+                               i18n:attributes="title title_change_default_page;"
+                               i18n:translate="label_change_item">
                                  Change item&hellip;
                             </a>
                         </li>
@@ -298,14 +304,16 @@
                         <li class="actionSeperator" tal:condition="python:selectedLayout != ''">
                             <a title="Select default page" href="#" class="selected"
                                tal:attributes="href string:${parent_folder/absolute_url}/select_default_page;"
-                               i18n:attributes="title title_select_default_page;">
+                               i18n:attributes="title title_select_default_page;"
+                               i18n:translate="label_select_item">
                                  Select item&hellip;
                             </a>
                         </li>
                         <li class="actionSeperator" tal:condition="python:selectedLayout == ''">
                             <a title="Change default page" href="#" class="selected"
                                tal:attributes="href string:${parent_folder/absolute_url}/select_default_page;"
-                               i18n:attributes="title title_change_default_page;">
+                               i18n:attributes="title title_change_default_page;"
+                               i18n:translate="label_change_item">
                                  Change item&hellip;
                             </a>
                         </li>
@@ -332,7 +340,9 @@
                                    title editAction/name;
                                    class python:test(icon, 'visualIconReplace', nothing);"
                    i18n:attributes="title"
-                   i18n:translate=""/> 
+                   i18n:translate="">
+                    Action name
+                </a>
             </li>
 
             <li tal:condition="python:editAction['id']=='delete'"
@@ -348,6 +358,7 @@
                    tal:content="editAction/name"
                    i18n:attributes="title"
                    i18n:translate="">
+                    Action name
                 </a>
             </li>
           </tal:action>
@@ -360,7 +371,9 @@
             <li class="contentBatchAction">
                 <a tal:content="batchAction/name"
                    tal:attributes="href batchAction/url"
-                   i18n:translate=""/> 
+                   i18n:translate="">
+                    Action name
+                </a>
             </li>
         </tal:batchAction>
     </tal:batch>
@@ -370,4 +383,3 @@
 </metal:menubarmacro>
 </body>
 </html>
-
