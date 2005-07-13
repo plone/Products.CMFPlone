@@ -192,7 +192,7 @@
                    title="Choose default view"
                    i18n:attributes="title title_choose_default_view;"
                    tal:condition="not:dimMenu"
-                   tal:attributes="href string:$here_url/select_default_view;">
+                   tal:attributes="href string:$here_url/select_default_view;"
                    i18n:translate="label_choose_template">
                     Display
                 </a>
