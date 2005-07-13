@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - Beta2 - unreleased
 
+    - Added 'Large Plone Folder' to parentMetaTypesNotToQuey navtree_property.
+      This ensures that large folders will not display their contents in the
+      navtree.
+      [alecm]
+
     - Fixed http://plone.org/collector/4251. ulocalized_time() fetches
       all DateTime errors and logs them.
       [tiran]

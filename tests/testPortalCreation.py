@@ -206,6 +206,8 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         # navtree_properties should contain the new properties
         self.failUnless(self.properties.navtree_properties.hasProperty('metaTypesNotToList'))
         self.failUnless(self.properties.navtree_properties.hasProperty('parentMetaTypesNotToQuery'))
+        self.failUnless('Large Plone Folder' in
+                            self.properties.navtree_properties.getProperty('parentMetaTypesNotToQuery'))
         self.failUnless(self.properties.navtree_properties.hasProperty('sortAttribute'))
         self.failUnless(self.properties.navtree_properties.hasProperty('sortOrder'))
         self.failUnless(self.properties.navtree_properties.hasProperty('sitemapDepth'))

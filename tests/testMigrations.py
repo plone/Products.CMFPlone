@@ -81,6 +81,7 @@ from Products.CMFPlone.migrations.v2_1.betas import changePortalActionCategory
 from Products.CMFPlone.migrations.v2_1.alphas import convertPloneFTIToCMFDynamicViewFTI
 from Products.CMFPlone.migrations.v2_1.betas import addMethodAliasesForPloneSite
 from Products.CMFPlone.migrations.v2_1.betas import reorderPortal
+from Products.CMFPlone.migrations.v2_1.betas import updateParentMetaTypesNotToQuery
 
 from Products.CMFDynamicViewFTI.migrate import migrateFTI
 
@@ -1924,6 +1925,41 @@ class TestMigrations_v2_1(MigrationTest):
         self.failIf(self.catalog(path=path_query,
                         sort_on='getObjPositionInParent')[0].getId == 'news')
 
+    def testUpdateParentMetaTypesNotToQuery(self):
+        # Adds missing property and sets proper default value
+        ntp = self.properties.navtree_properties
+        self.removeNavTreeProperty('parentMetaTypesNotToQuery')
+        self.failIf(ntp.hasProperty('parentMetaTypesNotToQuery'))
+        updateParentMetaTypesNotToQuery(self.portal, [])
+        self.assertEqual(ntp.getProperty('parentMetaTypesNotToQuery'),
+                                    ('Large Plone Folder',))
+
+    def testUpdateParentMetaTypesNotToQueryDoesNotErase(self):
+        # Adds missing property and sets proper default value
+        ntp = self.properties.navtree_properties
+        ntp.manage_changeProperties(parentMetaTypesNotToQuery=('Document', 'Folder'))
+        updateParentMetaTypesNotToQuery(self.portal, [])
+        self.assertEqual(ntp.getProperty('parentMetaTypesNotToQuery'),
+                                    ('Document', 'Folder', 'Large Plone Folder'))
+
+    def testUpdateParentMetaTypesNotToQueryTwice(self):
+        # Should not duplcate the value if run twice
+        ntp = self.properties.navtree_properties
+        self.removeNavTreeProperty('parentMetaTypesNotToQuery')
+        updateParentMetaTypesNotToQuery(self.portal, [])
+        updateParentMetaTypesNotToQuery(self.portal, [])
+        self.assertEqual(ntp.getProperty('parentMetaTypesNotToQuery'),
+                                    ('Large Plone Folder',))
+
+    def testUpdateParentMetaTypesNotToQueryNoSheet(self):
+        # Should not fail if the prop sheet is missing
+        self.properties._delObject('navtree_properties')
+        updateParentMetaTypesNotToQuery(self.portal, [])
+
+    def testUpdateParentMetaTypesNotToQueryNoTool(self):
+        # Should not fail if the tool is missing
+        self.portal._delObject('portal_properties')
+        updateParentMetaTypesNotToQuery(self.portal, [])
 
 
 def test_suite():

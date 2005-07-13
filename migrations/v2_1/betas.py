@@ -124,6 +124,10 @@ def beta1_beta2(portal):
     # Reorder portal in ZMI
     reorderPortal(portal, out)
 
+    # Add 'Large Plone Folder' to the list of types not to query for the
+    # navtree
+    updateParentMetaTypesNotToQuery(portal, out)
+
     # FIXME: *Must* be called after reindexCatalog.
     # In tests, reindexing loses the folders for some reason...
 
@@ -851,3 +855,19 @@ def reorderPortal(portal, out):
     for id, obj in portal.contentItems():
         obj.reindexObject(idxs=['getObjPositionInParent'])
     out.append("Reordered objects in plone ZMI")
+
+def updateParentMetaTypesNotToQuery(portal, out):
+    """Add Large Plone Folder to the list of types not to query"""
+    props = getattr(portal, 'portal_properties', None)
+    if props is not None:
+        ntp = getattr(props, 'navtree_properties', None)
+        if ntp is not None:
+            val = ntp.getProperty('parentMetaTypesNotToQuery',None)
+            if val is None:
+                ntp.manage_addProperty('parentMetaTypesNotToQuery',
+                                            ['Large Plone Folder'], 'lines')
+                out.append("Added missing 'parentMetaTypesNotToQuery' property to navtree_properties")
+            elif 'Large Plone Folder' not in val:
+                ntp.manage_changeProperties(parentMetaTypesNotToQuery=list(val)+['Large Plone Folder'])
+                out.append("Added 'Large Plone Folder' to 'parentMetaTypesNotToQuery' in navtree_properties")
+                
