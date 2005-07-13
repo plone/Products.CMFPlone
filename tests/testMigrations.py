@@ -80,7 +80,6 @@ from Products.CMFPlone.migrations.v2_1.betas import fixFolderContentsActionAgain
 from Products.CMFPlone.migrations.v2_1.betas import changePortalActionCategory
 from Products.CMFPlone.migrations.v2_1.alphas import convertPloneFTIToCMFDynamicViewFTI
 from Products.CMFPlone.migrations.v2_1.betas import addMethodAliasesForPloneSite
-from Products.CMFPlone.migrations.v2_1.betas import reorderPortal
 from Products.CMFPlone.migrations.v2_1.betas import updateParentMetaTypesNotToQuery
 
 from Products.CMFDynamicViewFTI.migrate import migrateFTI
@@ -1905,25 +1904,6 @@ class TestMigrations_v2_1(MigrationTest):
         # Should not fail tool is missing
         self.portal._delObject('portal_types')
         addMethodAliasesForPloneSite(self.portal, [])
-
-    def testReorderPortal(self):
-        from OFS.OrderSupport import OrderSupport
-        OrderSupport.moveObjectsByDelta(self.portal, ['news'], -200)
-        self.assertEqual(self.portal.objectIds()[0], 'news')
-        reorderPortal(self.portal, [])
-        self.assertEqual(self.portal.objectIds()[0], 'acl_users')
-
-    def testReorderPortalUpdatesCatalog(self):
-        from OFS.OrderSupport import OrderSupport
-        OrderSupport.moveObjectsByDelta(self.portal, ['news'], -200)
-        self.portal.news.reindexObject()
-        path_query = {'query':'/'.join(self.portal.getPhysicalPath()),
-                      'depth':1}
-        self.assertEqual(self.catalog(path=path_query,
-                        sort_on='getObjPositionInParent')[0].getId, 'news')
-        reorderPortal(self.portal, [])
-        self.failIf(self.catalog(path=path_query,
-                        sort_on='getObjPositionInParent')[0].getId == 'news')
 
     def testUpdateParentMetaTypesNotToQuery(self):
         # Adds missing property and sets proper default value

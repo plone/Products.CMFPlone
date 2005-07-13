@@ -11,7 +11,6 @@ from Products.CMFCore.DirectoryView import createDirectoryView
 from Products.CMFPlone.migrations.migration_util import cleanupSkinPath
 from alphas import reindexCatalog, indexMembersFolder, indexNewsFolder, \
                     indexEventsFolder, convertPloneFTIToCMFDynamicViewFTI
-from OFS.OrderSupport import OrderSupport
 
 
 def alpha2_beta1(portal):
@@ -120,9 +119,6 @@ def beta1_beta2(portal):
 
     # Add method aliases for PloneSite
     addMethodAliasesForPloneSite(portal, out)
-
-    # Reorder portal in ZMI
-    reorderPortal(portal, out)
 
     # Add 'Large Plone Folder' to the list of types not to query for the
     # navtree
@@ -844,18 +840,6 @@ def addMethodAliasesForPloneSite(portal, out):
                 fti.setMethodAliases(aliases)
                 out.append("Added method aliases to Plone Site FTI")
 
-def reorderPortal(portal, out):
-    """Reorder that nasty ZMI"""
-    ids = portal.objectIds()
-    sortable_ids = [(o.lower(),o) for o in ids]
-    sortable_ids.sort()
-    ids = [s[1] for s in sortable_ids]
-    OrderSupport.moveObjectsByDelta(portal, ids, -len(ids))
-    # Index order change
-    for id, obj in portal.contentItems():
-        obj.reindexObject(idxs=['getObjPositionInParent'])
-    out.append("Reordered objects in plone ZMI")
-
 def updateParentMetaTypesNotToQuery(portal, out):
     """Add Large Plone Folder to the list of types not to query"""
     props = getattr(portal, 'portal_properties', None)
@@ -870,4 +854,4 @@ def updateParentMetaTypesNotToQuery(portal, out):
             elif 'Large Plone Folder' not in val:
                 ntp.manage_changeProperties(parentMetaTypesNotToQuery=list(val)+['Large Plone Folder'])
                 out.append("Added 'Large Plone Folder' to 'parentMetaTypesNotToQuery' in navtree_properties")
-                
+
