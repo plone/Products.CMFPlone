@@ -1833,15 +1833,12 @@ class TestMigrations_v2_1(MigrationTest):
                                             'Factory-based Type Information')
         # Set old style PropertyManaged default page/layout
         self.portal._selected_default_page = 'blah'
-        self.portal._selected_layout = 'view'
-        self.portal.manage_delProperties(['selectable_views'])
-        self.portal.manage_addProperty('selectable_views', ('base_view','view','base_edit'), 'lines')
         # Convert back
         convertPloneFTIToCMFDynamicViewFTI(self.portal, [])
         # check layout transfer
         self.assertEqual(self.portal.getDefaultPage(), 'blah')
-        self.assertEqual(self.portal.getAvailableLayouts(), [('base_view','Base View'),('view', 'view'),('base_edit', 'Edit')])
-        self.assertEqual(self.portal.getLayout(), 'view')
+        self.assertEqual(self.portal.getAvailableLayouts(), [('folder_listing', 'Standard listing'), ('news_listing', 'News')])
+        self.assertEqual(self.portal.getLayout(), 'folder_listing')
 
     def testConvertPloneFTIToCMFDynamicViewFTITwice(self):
         ttool = self.portal.portal_types

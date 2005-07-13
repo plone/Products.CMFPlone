@@ -1209,37 +1209,29 @@ def migrateCatalogIndexes(portal, out):
 
 def convertPloneFTIToCMFDynamicViewFTI(portal, out):
     FTI='Plone Site'
+    views = ('folder_listing','news_listing')
     ttool = getToolByName(portal, 'portal_types', None)
     if ttool is not None:
         fti = getattr(ttool, 'Plone Site', None)
         if fti is not None:
-            if fti.meta_type == fti_meta_type:
-                return
-            # Get full type name
-            name = [t[0] for t in ttool.listDefaultTypeInformation()
-                                if t[1].get('id','')=='Plone Root']
-            if name:
-                name = name[0]
-                migrateFTI(portal, 'Plone Site', name, fti_meta_type)
-                out.append("Converted Plone Site to CMFDynamicViewFTI")
-                # Transfer old selectable views
-                views = portal.getProperty('selectable_views', ())
-                if views is not ():
-                    portal.manage_delProperties(['selectable_views'])
-                    new_fti = portal.getTypeInfo()
-                    new_fti.manage_changeProperties(view_methods=views, default_view=views and views[0])
-                    out.append("Transferred portal selectable views")
+            if fti.meta_type != fti_meta_type:
+                # Get full type name
+                name = [t[0] for t in ttool.listDefaultTypeInformation()
+                                    if t[1].get('id','')=='Plone Root']
+                if name:
+                    name = name[0]
+                    migrateFTI(portal, 'Plone Site', name, fti_meta_type)
+                    out.append("Converted Plone Site to CMFDynamicViewFTI")
 
-                # Transfer old layout
-                old_layout = getattr(portal, '_selected_layout', ())
-                if old_layout is not ():
-                    del portal._selected_layout
-                    portal.setLayout(old_layout)
-                    out.append("Transferred portal default layout")
-
-                # Transfer old default page
-                old_default = getattr(portal, '_selected_default_page', ())
-                if old_default is not ():
-                    del portal._selected_default_page
-                    portal.setDefaultPage(old_default)
-                    out.append("Transferred portal default page")
+                    # limi says don't bother transferring old views
+                    # Transfer old default page
+                    old_default = getattr(portal, '_selected_default_page', ())
+                    if old_default is not ():
+                        del portal._selected_default_page
+                        portal.setDefaultPage(old_default)
+                        out.append("Transferred portal default page")
+            # add sensible default methods
+            new_fti = portal.getTypeInfo()
+            if 'folder_listing' not in portal.getAvailableLayouts():
+                new_fti.manage_changeProperties(view_methods=views, default_view=views and views[0])
+                out.append("Updated portal selectable views")
