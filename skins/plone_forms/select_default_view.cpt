@@ -12,7 +12,7 @@
       <h1 i18n:translate="heading_select_default_view">Select default view</h1>
 
       <div class="documentDescription" i18n:translate="description_select_default_view">
-        Please select template which will be displayed as the default view of the
+        Please select which template should be used as the default view of the
         folder.
       </div>
 
@@ -57,7 +57,7 @@
                         <a title="Select an item to be used as default view in this folder" href="#" class="selected"
                            tal:attributes="href string:${parent_folder/absolute_url}/select_default_page;"
                            i18n:attributes="title title_select_default_view_item;">
-                             Choose item&hellip;
+                             Choose a content item&hellip;
                         </a>
                     </dd>
                     <dd class="actionSeperator" tal:condition="python:selectedLayout == ''">
@@ -65,7 +65,7 @@
                         <a title="Change the item used as default view in this folder" href="#" class="selected"
                            tal:attributes="href string:${parent_folder/absolute_url}/select_default_page;"
                            i18n:attributes="title title_change_default_view_item;">
-                             Change item&hellip;
+                             Select a content item&hellip;
                         </a>
                     </dd>
                 </tal:block>
