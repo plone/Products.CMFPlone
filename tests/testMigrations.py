@@ -85,6 +85,8 @@ from Products.CMFPlone.migrations.v2_1.betas import fixCutActionPermission
 from Products.CMFPlone.migrations.v2_1.betas import fixExtEditAction
 from Products.CMFPlone.migrations.v2_1.betas import changeMemberdataExtEditor
 from Products.CMFPlone.migrations.v2_1.betas import fixWorkflowStateTitles
+from Products.CMFPlone.migrations.v2_1.betas import changeSiteActions
+from Products.CMFPlone.migrations.v2_1.betas import removePloneSetupActionFromPortalMembership
 
 from Products.CMFDynamicViewFTI.migrate import migrateFTI
 
@@ -108,7 +110,8 @@ class MigrationTest(PloneTestCase.PloneTestCase):
         typeob = getattr(tool, info.getId())
         typeob.addAction(action_id, action_id, '', '', '', category)
 
-    def removeActionFromTool(self, action_id, action_provider='portal_actions'):
+    def removeActionFromTool(self, action_id,
+                                            action_provider='portal_actions'):
         # Removes an action from portal_actions
         tool = getattr(self.portal, action_provider)
         actions = tool.listActions()
@@ -123,9 +126,10 @@ class MigrationTest(PloneTestCase.PloneTestCase):
         except KeyError:
             pass # No icon associated
 
-    def addActionToTool(self, action_id, category):
+    def addActionToTool(self, action_id, category,
+                                            action_provider='portal_actions'):
         # Adds an action to portal_actions
-        tool = getattr(self.portal, 'portal_actions')
+        tool = getattr(self.portal, action_provider)
         tool.addAction(action_id, action_id, '', '', '', category)
 
     def removeSiteProperty(self, property_id):
@@ -1202,7 +1206,7 @@ class TestMigrations_v2_1(MigrationTest):
         self.assertEqual(actions[0].title, 'Plone Setup')
         # Modify
         changePloneSetupActionToSiteSetup(self.portal, [])
-        actions = [x for x in self.actions.listActions() if x.id == 'plone_setup']
+        actions = [x for x in self.actions.listActions() if x.id == 'plone_setup' and x.category == 'user']
         self.assertEqual(len(actions),1)
         action = actions[0]
         self.assertEqual(action.title, 'Site Setup')
@@ -1211,7 +1215,7 @@ class TestMigrations_v2_1(MigrationTest):
         # The migration should work if performed twice
         changePloneSetupActionToSiteSetup(self.portal, [])
         changePloneSetupActionToSiteSetup(self.portal, [])
-        actions = [x for x in self.actions.listActions() if x.id == 'plone_setup']
+        actions = [x for x in self.actions.listActions() if x.id == 'plone_setup' and x.category == 'user']
         self.assertEqual(len(actions),1)
         action = actions[0]
         self.assertEqual(action.title, 'Site Setup')
@@ -1220,7 +1224,7 @@ class TestMigrations_v2_1(MigrationTest):
         # The migration should add a new action if the action is missing
         self.removeActionFromTool('plone_setup')
         changePloneSetupActionToSiteSetup(self.portal, [])
-        actions = [x for x in self.actions.listActions() if x.id == 'plone_setup']
+        actions = [x for x in self.actions.listActions() if x.id == 'plone_setup' and x.category == 'user']
         self.assertEqual(len(actions),1)
         action = actions[0]
         self.assertEqual(action.title, 'Site Setup')
@@ -2062,6 +2066,90 @@ class TestMigrations_v2_1(MigrationTest):
         self.portal._delObject('portal_workflow')
         fixWorkflowStateTitles(self.portal, [])
 
+    def testChangeSiteActions(self):
+        # Remove some actions, add some others, and change the category of
+        # plone_setup
+        removeActions = ('small_text', 'normal_text', 'large_text')
+        editActions = ('plone_setup','accessibility','contact')
+        for a in removeActions:
+            self.addActionToTool(a,'site_actions')
+        for a in editActions:
+            self.removeActionFromTool(a)
+        changeSiteActions(self.portal, [])
+        actions = [x.id for x in self.actions.listActions()]
+        for a in editActions:
+            self.failUnless(a in actions)
+        for a in removeActions:
+            self.failIf(a in actions)
+
+    def testChangeSiteActionsChangesCategory(self):
+        # Existing actions should be removed and recategorized
+        editActions = ('plone_setup','accessibility','contact')
+        for a in editActions:
+            self.removeActionFromTool(a)
+            self.addActionToTool(a, 'user')
+        changeSiteActions(self.portal, [])
+        actions = [x for x in self.actions.listActions() if x.id in editActions]
+        # No duplicates
+        self.assertEqual(len(actions), len(editActions))
+        for a in actions:
+            self.assertEqual(a.category, 'site_actions')
+
+    def testChangeSiteActionsTwice(self):
+        # Should not fail or duplicate if performed twice
+        removeActions = ('small_text', 'normal_text', 'large_text')
+        editActions = ('plone_setup','accessibility','contact')
+        for a in removeActions:
+            self.addActionToTool(a,'site_actions')
+        for a in editActions:
+            self.removeActionFromTool(a)
+            self.addActionToTool(a, 'user')
+        changeSiteActions(self.portal, [])
+        changeSiteActions(self.portal, [])
+        actions = [x for x in self.actions.listActions() if x.id in editActions]
+        # No duplicates
+        self.assertEqual(len(actions), len(editActions))
+        for a in actions:
+            self.assertEqual(a.category, 'site_actions')
+
+    def testChangeSiteActionsNoTool(self):
+        # Should not fail if the tool is missing
+        self.portal._delObject('portal_actions')
+        changeSiteActions(self.portal, [])
+
+    def testRemovePloneSetupActionFromPortalMembership(self):
+        # Should remove the plone_setup action from the membership_tool
+        removeActions = ('plone_setup', )
+        for a in removeActions:
+            self.addActionToTool(a,'site_actions', 'portal_membership')
+        removePloneSetupActionFromPortalMembership(self.portal, [])
+        actions = [x for x in self.portal.portal_membership.listActions()]
+        for a in removeActions:
+            self.failIf(a in actions)
+
+    def testRemovePloneSetupActionFromPortalMembershipTwice(self):
+        # Should not fail if performed twice
+        removeActions = ('plone_setup', )
+        for a in removeActions:
+            self.addActionToTool(a,'site_actions', 'portal_membership')
+        removePloneSetupActionFromPortalMembership(self.portal, [])
+        removePloneSetupActionFromPortalMembership(self.portal, [])
+        actions = [x for x in self.portal.portal_membership.listActions()]
+        for a in removeActions:
+            self.failIf(a in actions)
+
+    def testRemovePloneSetupActionFromPortalMembershipNoAction(self):
+        # Should not fail if action is missing
+        removeActions = ('plone_setup', )
+        removePloneSetupActionFromPortalMembership(self.portal, [])
+        actions = [x for x in self.portal.portal_membership.listActions()]
+        for a in removeActions:
+            self.failIf(a in actions)
+
+    def testRemovePloneSetupActionFromPortalMembershipNoTool(self):
+        # Should not fail if tool is missing
+        self.portal._delObject('portal_membership')
+        removePloneSetupActionFromPortalMembership(self.portal, [])
 
 
 def test_suite():

@@ -430,6 +430,17 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         aliases = fti.getMethodAliases()
         self.assertEqual(aliases, expected_aliases)
 
+    def testSiteActions(self):
+        installed = [(a.getId(), a.getCategory()) for a in self.actions.listActions()]
+        self.failUnless(('sitemap', 'site_actions') in installed)
+        self.failUnless(('contact', 'site_actions') in installed)
+        self.failUnless(('accessibility', 'site_actions') in installed)
+        self.failUnless(('plone_setup', 'site_actions') in installed)
+
+    def testNoMembershipToolPloneSetupAction(self):
+        installed = [a.getId() for a in self.membership.listActions()]
+        self.failIf('plone_setup' in installed)
+
 
 class TestPortalBugs(PloneTestCase.PloneTestCase):
 

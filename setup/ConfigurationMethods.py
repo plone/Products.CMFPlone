@@ -296,43 +296,6 @@ def addNewActions(self, portal):
     cloned_actions.append(state_action)
     at._actions = cloned_actions
 
-def addSiteActions(self, portal):
-    # site_actions which have icons associated with them as well
-    at=getToolByName(portal, 'portal_actions')
-    ai=getToolByName(portal, 'portal_actionicons')
-
-    at.addAction('small_text',
-                 name='Small Text',
-                 action="string:javascript:setActiveStyleSheet('Small Text', 1);",
-                 condition='',
-                 permission=CMFCorePermissions.View,
-                 category="site_actions")
-    at.addAction('normal_text',
-                 name='Normal Text',
-                 action="string:javascript:setActiveStyleSheet('', 1);",
-                 condition='',
-                 permission=CMFCorePermissions.View,
-                 category="site_actions")
-    at.addAction('large_text',
-                 name='Large Text',
-                 action="string:javascript:setActiveStyleSheet('Large Text', 1);",
-                 condition='',
-                 permission=CMFCorePermissions.View,
-                 category="site_actions")
-
-    ai.addActionIcon('site_actions',
-                     'small_text',
-                     'textsize_small.gif',
-                     'Small Text')
-    ai.addActionIcon('site_actions',
-                     'normal_text',
-                     'textsize_normal.gif',
-                     'Normal Text')
-    ai.addActionIcon('site_actions',
-                     'large_text',
-                     'textsize_large.gif',
-                     'Large Text')
-
 def setPortalDefaultPermissions(self, portal):
     portal.manage_permission(CMFCorePermissions.AccessInactivePortalContent,
                                                 ('Owner',), acquire=1)
@@ -351,7 +314,6 @@ functions = {
     'installPortalTools': installPortalTools,
     'modifyActionProviders': modifyActionProviders,
     'addErrorLog':addErrorLog,
-    'addSiteActions':addSiteActions,
     'setPortalDefaultPermissions':setPortalDefaultPermissions,
     }
 

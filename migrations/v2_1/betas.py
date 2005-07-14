@@ -137,6 +137,13 @@ def beta1_beta2(portal):
     # Fix Workflow state titles
     fixWorkflowStateTitles(portal, out)
 
+    # Remove the text size actions, add contact and accessibility actions, and
+    # move site setup to site_actions
+    changeSiteActions(portal, out)
+
+    # Remove the oddly located plone_membership plone_setup action
+    removePloneSetupActionFromPortalMembership(portal, out)
+
     # FIXME: *Must* be called after reindexCatalog.
     # In tests, reindexing loses the folders for some reason...
 
@@ -192,7 +199,8 @@ def installLogin(portal, out):
 
 
 def fixObjectPasteActionForDefaultPages(portal, out):
-    """ Change the plone_setup action so that its title is Site Setup.
+    """ Fix the object paste action so that paste into default pages pastes
+        into the parent.
     """
     newaction =  {'id'        : 'paste',
                   'name'      : 'Paste',
@@ -965,3 +973,80 @@ def fixWorkflowStateTitles(portal, out):
                 if wf_state is not None and wf_state.title != title:
                     wf_state.title = title
                     out.append("Updated workflow titles for state %s"%state)
+
+
+def changeSiteActions(portal, out):
+    """Remove text size actions, add accessibility and contact actions,
+       move site setup to site_actions"""
+    REMOVE_ACTIONS=('small_text','normal_text','large_text')
+    REMOVE_CATEGORY='site_actions'
+    ACTIONS=(    {'id': 'accessibility',
+                  'name': 'accessibility',
+                  'action': 'string: ${portal_url}/accessibility',
+                  'condition': '',
+                  'permission': CMFCorePermissions.View,
+                  'category': 'site_actions',
+                  'visible': 1},
+                 {'id': 'contact',
+                  'name': 'Contact',
+                  'action': 'string: ${portal_url}/contact',
+                  'condition': '',
+                  'permission': CMFCorePermissions.View,
+                  'category': 'site_actions',
+                  'visible': 1},
+                 {'id': 'plone_setup',
+                  'name': 'Site Setup',
+                  'action': 'string: ${portal_url}/plone_control_panel',
+                  'condition': '',
+                  'permission': CMFCorePermissions.ManagePortal,
+                  'category': 'site_actions',
+                  'visible': 1}
+            )
+    actionsTool = getToolByName(portal, 'portal_actions', None)
+    if actionsTool is not None:
+        # First delete the text size toggle actions
+        idx = 0
+        del_idxs=[]
+        for action in actionsTool.listActions():
+            if action.getId() in REMOVE_ACTIONS \
+                    and action.getCategory() == REMOVE_CATEGORY:
+                del_idxs.append(idx)
+            idx += 1
+        actionsTool.deleteActions(del_idxs)
+
+        # Now Remove and readd the contents action
+        for newaction in ACTIONS:
+            idx = 0
+            del_idxs=[]
+            for action in actionsTool.listActions():
+                # if action exists, remove (including duplicates from any category)
+                if action.getId() == newaction['id']:
+                    del_idxs.append(idx)
+                idx += 1
+            actionsTool.deleteActions(del_idxs)
+
+            #Add the action
+            actionsTool.addAction(newaction['id'],
+                name=newaction['name'],
+                action=newaction['action'],
+                condition=newaction['condition'],
+                permission=newaction['permission'],
+                category=newaction['category'],
+                visible=1)
+
+            out.append("Fixed '%s' action on actions tool." % newaction['name'])
+
+def removePloneSetupActionFromPortalMembership(portal, out):
+    """Remove plone_setup action from portal_membership"""
+    REMOVE_ACTIONS=('plone_setup',)
+    actionsTool = getToolByName(portal, 'portal_membership', None)
+    if actionsTool is not None:
+        # First delete the text size toggle actions
+        idx = 0
+        del_idxs=[]
+        for action in actionsTool.listActions():
+            if action.getId() in REMOVE_ACTIONS:
+                del_idxs.append(idx)
+                out.append("Removed action %s from portal_membership"%action.getId())
+            idx += 1
+        actionsTool.deleteActions(del_idxs)
