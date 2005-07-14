@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - Beta2 - unreleased
 
+    - Fixed failing unit tests due to cleanupFilename removal. atct's base.py
+      _setATCTFileContent method relied on getting a false value back from
+      normalizeString when called with None.
+      [hannosch]
+
     - Removed text size actions, moved Site Setup action to site_actions, and
       added contact and accessibility site_actions.
       [alecm]

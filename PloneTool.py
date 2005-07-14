@@ -1169,6 +1169,11 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         """
         # Make sure we are dealing with a stringish type
         if not isinstance(text, basestring):
+            # Catch the special None case or we would return 'none' evaluating
+            # to True, which is totally unexpected
+            if text is None:
+                return None
+
             # This most surely ends up in something the user does not expect
             # to see. But at least it does not break.
             text = repr(text)
