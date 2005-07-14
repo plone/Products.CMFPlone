@@ -43,28 +43,30 @@
                                     display python:layout[1];">
                         <input type="radio" name="templateId" value=""
                                tal:attributes="value value;
-                                               disabled python:value==selectedLayout"/> 
-                        <span tal:replace="display"/>
+                                               disabled python:value==selectedLayout"/>
+                        <span tal:content="display" i18n:translate=""/>
                         <span class="discreet"
                               tal:condition="python:value==selectedLayout"
-                              i18n:translate="">(current)</span>
+                              i18n:translate="label_current">(current)</span>
                     </dt>
                 </tal:item>
                 <tal:block condition="canSelectDefaultFolderPage">
                     <dt>&nbsp;</dt>
                     <dd class="actionSeperator" tal:condition="python:selectedLayout != ''">
-                        <span i18n:translate="">or</span>
+                        <span i18n:translate="label_or">or</span>
                         <a title="Select an item to be used as default view in this folder" href="#" class="selected"
                            tal:attributes="href string:${parent_folder/absolute_url}/select_default_page;"
-                           i18n:attributes="title title_select_default_view_item;">
+                           i18n:attributes="title title_select_default_view_item;"
+                           i18n:translate="label_choose_content_item">
                              Choose a content item&hellip;
                         </a>
                     </dd>
                     <dd class="actionSeperator" tal:condition="python:selectedLayout == ''">
-                        <span i18n:translate="">or</span>
+                        <span i18n:translate="label_or">or</span>
                         <a title="Change the item used as default view in this folder" href="#" class="selected"
                            tal:attributes="href string:${parent_folder/absolute_url}/select_default_page;"
-                           i18n:attributes="title title_change_default_view_item;">
+                           i18n:attributes="title title_change_default_view_item;"
+                           i18n:translate="label_select_content_item">
                              Select a content item&hellip;
                         </a>
                     </dd>

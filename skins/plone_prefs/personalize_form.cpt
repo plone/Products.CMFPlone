@@ -85,13 +85,13 @@
 
             <div class="field"
                  tal:define="error errors/location | nothing;
-                             location python:request.get('fullname', member.getProperty('location', ''));"
+                             location python:request.get('location', member.getProperty('location', ''));"
                  tal:attributes="class python:test(error, 'field error', 'field')">
 
                 <label for="location" i18n:translate="label_location">Location</label>
 
-                <div class="formHelp" i18n:translate="help_biography">
-                You location - either city and country - or in a company setting,
+                <div class="formHelp" i18n:translate="help_location">
+                Your location - either city and country - or in a company setting,
                 where your office is located.
                 </div>
 
