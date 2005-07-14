@@ -1,0 +1,61 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+<head></head>
+
+<body>
+<div metal:fill-slot="main">
+
+    <h2>How to use Access Keys</h2>
+
+    <dl>
+        <dt>Internet Explorer 5+ (Windows)</dt>
+        <dd>
+        Hold down the <code>Alt</code> key, press the number or letter of the 
+        access key, release both keys then press <code>ENTER</code>.
+        </dd>
+
+        <dt>Internet Explorer 4 (Windows)</dt>
+        <dd>
+        Hold down the <code>Alt</code> key and press the number or letter of 
+        the access key.
+        </dd>
+        
+        <dt>Internet Explorer 5+ (Mac)</dt>
+        <dd>
+        Hold down the <code>Ctrl</code> key and press the number or letter of 
+        the access key.
+        </dd>
+
+        <dt>Internet Explorer 4.5 (Mac)</dt>
+        <dd>Access keys are not supported, please use a different browser.</dd>
+
+        <dt>Netscape 6 and earlier (All platforms)</dt>
+        <dd>Access keys are not supported, please use a different browser.</dd>
+
+
+        <dt>Firefox, Mozilla and Netscape 7+ (Windows)</dt>
+        <dd>
+        Hold down the <code>Alt</code> key and press the number or letter of 
+        the access key.
+        </dd>
+
+        <dt>Firefox, Mozilla and Netscape 7+ (Mac OS X)</dt>
+        <dd>
+        Hold down the <code>Ctrl</code> key and press the number or letter of 
+        the access key.
+        </dd>
+
+        <dt>Safari and Omniweb (Mac)</dt>
+        <dd>
+        Hold down the <code>Ctrl</code> key and press the number or letter of 
+        the access key.
+        </dd>
+    </dl>
+
+
+</div>
+</body>
+</html>
