@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - Beta2 - unreleased
 
+    - Remove accesskeys as they are interfering with screen reader shortcuts
+      This fixes http://plone.org/collector/3535
+      [hannosch]
+
     - Migrated to some nicer workflow state titles.
       [alecm]
 

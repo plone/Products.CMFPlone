@@ -22,8 +22,9 @@ are here:</span>
                tal:omit-tag="not: crumb/absolute_url"
                tal:condition="python:not is_last"
                tal:attributes="href crumb/absolute_url"
-               tal:content="crumb/Title"
-	       accesskey="accesskeys-breadcrumbs">crumb</a>
+               tal:content="crumb/Title">
+                crumb
+            </a>
             <span class="breadcrumbSeparator" tal:condition="not: is_last"> 
                 <tal:ltr condition="not: isRTL">&rarr;</tal:ltr> 
                 <tal:rtl condition="isRTL">&larr;</tal:rtl> 

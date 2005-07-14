@@ -46,12 +46,10 @@
                 <input type="text"
                        size="10"
                        alt="Login Name"
-                       accesskey="accesskeys-login"
                        tal:attributes="name ac_name; id ac_name;
                                        value python:request.get(ac_name, '');
                                        tabindex tabindex/next"
-                       i18n:attributes="alt label_login_name;"
-                       />
+                       i18n:attributes="alt label_login_name;"/>
             </div>
             
             <div class="field">
@@ -61,11 +59,9 @@
                 <input type="password"
                        size="10"
                        alt="Password"
-                       accesskey="l"
                        tal:attributes="name ac_password; id ac_password;
                                        tabindex tabindex/next;"
-                       i18n:attributes="alt label_password; accesskey accesskeys-login;"
-                       />
+                       i18n:attributes="alt label_password;"/>
             </div>
 
             <div id="enable_cookies_message" class="portalMessage" style="display:none">
@@ -81,10 +77,7 @@
                        alt="Log in"
                        tal:attributes="tabindex tabindex/next;
                                   onclick string:javascript:return setLoginVars('$ac_name','login_name','$ac_password','pwd_empty','js_enabled','cookies_enabled');"
-
-                       accesskey="accesskeys-login"
-                       i18n:attributes="value label_log_in; alt label_log_in;"
-                       />
+                       i18n:attributes="value label_log_in; alt label_log_in;"/>
             </div>
         </form>
     </dd>
