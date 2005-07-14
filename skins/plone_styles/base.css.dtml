@@ -206,14 +206,15 @@ abbr, acronym, .explain {
     cursor: help;
 }
 q {
-    font-family: Times, "Times New Roman", serif;
+    font-family: Baskerville, Georgia, serif;
     font-style: italic;
     font-size: 120%;
 }
 blockquote {
-    font-family: Times, "Times New Roman", serif;
-    font-style: italic;
-    font-size: 120%;
+    padding-left: 0.5em;
+    margin-left: 0;
+    border-left: 4px solid &dtml-globalBorderColor;;
+    color: &dtml-discreetColor;;
 }
 code {
     font-family: Monaco, "Courier New", Courier, monospace;
