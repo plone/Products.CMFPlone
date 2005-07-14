@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - Beta2 - unreleased
 
+    - Removed text size actions, moved Site Setup action to site_actions, and
+      added contact and accessibility site_actions.
+      [alecm]
+
     - Added in some more character mappings to UnicodeNormalizer that were
       definied in ATCT's now removed cleanupFilename method
       [hannosch]
