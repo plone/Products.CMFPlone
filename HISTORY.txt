@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - Beta2 - unreleased
 
+    - Added in some more character mappings to UnicodeNormalizer that were
+      definied in ATCT's now removed cleanupFilename method
+      [hannosch]
+
     - Remove accesskeys as they are interfering with screen reader shortcuts
       This fixes http://plone.org/collector/3535
       [hannosch]
