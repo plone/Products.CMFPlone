@@ -275,10 +275,8 @@
                  name=""
                  value=""
                  tabindex=""
-                 tal:define="query_path python:path('contentFilter/path|nothing') or request.get('path',None);
-                             path_depth query_path/depth|nothing;
-                             non_local python:path_depth!=1"
-                 tal:condition="python:(batch or here.cb_dataValid and button['id'] == 'paste') and not ( non_local and button['id'] in ['cut','copy','paste'])"
+                 tal:define="query_path python:path('contentFilter/path|nothing') or request.get('path',None);"
+                 tal:condition="python:(batch or here.cb_dataValid and button['id'] == 'paste') and not ( query_path and button['id'] in ['cut','copy','paste'])"
                  i18n:attributes="value"
                  tal:attributes="value button/name;
                                  name button/url;
