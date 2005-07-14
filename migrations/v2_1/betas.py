@@ -83,13 +83,13 @@ def alpha2_beta1(portal):
 
     # Add LiveSearch site property
     addEnableLivesearchProperty(portal, out)
-    
+
     # Add icon for search settings configlet
     addIconForSearchSettingsConfiglet(portal,out)
 
     # CMF 1.5 Cookie Crumbler has new properties
     sanitizeCookieCrumbler(portal, out)
-    
+
     # Fix folderlisting action for portal
     fixFolderlistingAction(portal, out)
 
@@ -982,14 +982,14 @@ def changeSiteActions(portal, out):
     REMOVE_CATEGORY='site_actions'
     ACTIONS=(    {'id': 'accessibility',
                   'name': 'accessibility',
-                  'action': 'string: ${portal_url}/accessibility',
+                  'action': 'string: ${portal_url}/accessibility-info',
                   'condition': '',
                   'permission': CMFCorePermissions.View,
                   'category': 'site_actions',
                   'visible': 1},
                  {'id': 'contact',
                   'name': 'Contact',
-                  'action': 'string: ${portal_url}/contact',
+                  'action': 'string: ${portal_url}/contact-info',
                   'condition': '',
                   'permission': CMFCorePermissions.View,
                   'category': 'site_actions',
