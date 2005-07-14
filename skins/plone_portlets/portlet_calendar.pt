@@ -41,7 +41,7 @@
                             <span tal:define="month_id python:translation_service.month_msgid(date.month());
                                               month_english python:here.utranslate(month_id, target_language='en');"
                                   tal:attributes="id string:calendar-month-$month_english"
-                                  tal:content="python: here.utranslate(month_id)"
+                                  tal:content="python: here.utranslate(month_id, default=month_english)"
                                   id="calendar-month-month">&nbsp;</span>
                         </span>
                         <span i18n:name="year"
@@ -61,8 +61,9 @@
             </tr>
             <tr tal:define="weekdaynumbers here/portal_calendar/getDayNumbers" class="weekdays">
                 <tal:data tal:repeat="daynumber weekdaynumbers">
-                    <td tal:define="day_id python:translation_service.day_msgid(daynumber, format='s');"
-                        tal:content="python: here.utranslate(day_id)">Su</td>
+                    <td tal:define="day_id python:translation_service.day_msgid(daynumber, format='s');
+                                    day_english python:here.utranslate(day_id, target_language='en');"
+                        tal:content="python: here.utranslate(day_id, default=day_english)">Su</td>
                 </tal:data>
             </tr>
         </thead>
