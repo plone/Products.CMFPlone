@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - Beta2 - unreleased
 
+    - Fixed inappropriate condition on folder_constraintypes_form.
+      [alecm]
+
     - Made tableless skin use showEditableBorder, fixed
       http://members.plone.org/collector/4291.
       [alecm]

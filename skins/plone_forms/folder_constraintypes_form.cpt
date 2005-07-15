@@ -52,9 +52,9 @@
                        types are addable in this folder.
                     </div>
                     
-                    <tal:mode condition="python:here.aq_inner.aq_parent.portal_type == here.portal_type">
+                    <tal:mode condition="python:ifacetool.objectImplements(here.aq_inner.getParentNode(),'Products.CMFPlone.interfaces.ConstrainTypes.IConstrainTypes')">
                         <input type="radio"
-                               name="constrainTypesMode"
+                               name="constrainTypesMode:int"
                                id="mode_acquire"
                                value="-1"
                                class="noborder"
@@ -68,7 +68,7 @@
                     </tal:mode>
                     
                     <input type="radio"
-                           name="constrainTypesMode"
+                           name="constrainTypesMode:int"
                            id="mode_disable"
                            value="0"
                            class="noborder"
@@ -81,7 +81,7 @@
                     <br />
                     
                     <input type="radio"
-                           name="constrainTypesMode"
+                           name="constrainTypesMode:int"
                            id="mode_enable"
                            value="1"
                            class="noborder"
