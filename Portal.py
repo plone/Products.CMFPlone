@@ -39,7 +39,6 @@ from webdav.NullResource import NullResource
 from Products.CMFPlone.PloneFolder import ReplaceableWrapper
 
 LOG = logging.getLogger('Plone')
-__version__='1.1'
 
 default_frontpage="Unable to load front-page skeleton file"
 WWW_DIR = os.path.join(os.path.dirname(__file__), 'www')
