@@ -104,9 +104,10 @@
           <metal:block define-slot="content">
             <div id="content"
                  metal:define-macro="content"
-                 tal:attributes="class python:test(is_editable,'documentEditable','')">
+                 tal:define="show_border python:here.showEditableBorder(template_id=template_id, actions=actions );"
+                 tal:attributes="class python:test(show_border,'documentEditable','')">
 
-                <metal:ifborder tal:condition="is_editable" >
+                <metal:ifborder tal:condition="show_border" >
                     <div metal:use-macro="here/global_contentviews/macros/content_views">
                         The content views (View, Edit, Properties, Workflow)
                     </div>
