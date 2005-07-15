@@ -646,6 +646,67 @@ class TestNavTree(PloneTestCase.PloneTestCase):
         #Should only contain current object and published folder
         self.assertEqual(len(tree['children']), 2)
 
+    def testComplexSitemap(self):
+        # create and test a reasonabley complex sitemap
+        path = lambda x: '/'.join(x.getPhysicalPath())
+        # We do this in a strange order in order to maximally demonstrate the bug
+        folder1 = self.portal.folder1
+        folder1.invokeFactory('Folder','subfolder1')
+        subfolder1 = folder1.subfolder1
+        folder1.invokeFactory('Folder','subfolder2')
+        subfolder2 = folder1.subfolder2
+        subfolder1.invokeFactory('Folder','subfolder11')
+        subfolder11 = subfolder1.subfolder11
+        subfolder1.invokeFactory('Folder','subfolder12')
+        subfolder12 = subfolder1.subfolder12
+        subfolder2.invokeFactory('Folder','subfolder21')
+        subfolder21 = subfolder2.subfolder21
+        folder1.invokeFactory('Folder','subfolder3')
+        subfolder3 = folder1.subfolder3
+        subfolder2.invokeFactory('Folder','subfolder22')
+        subfolder22 = subfolder2.subfolder22
+        subfolder22.invokeFactory('Folder','subfolder221')
+        subfolder221 = subfolder22.subfolder221
+
+        # Increase depth
+        ntp=self.portal.portal_properties.navtree_properties
+        ntp.manage_changeProperties(sitemapDepth=5)
+
+        sitemap = self.utils.createSitemap(self.portal)
+
+        folder1map = sitemap['children'][6]
+        self.assertEqual(len(folder1map['children']), 6)
+        self.assertEqual(folder1map['path'], path(folder1))
+
+        subfolder1map = folder1map['children'][3]
+        self.assertEqual(subfolder1map['path'], path(subfolder1))
+        self.assertEqual(len(subfolder1map['children']), 2)
+
+        subfolder2map = folder1map['children'][4]
+        self.assertEqual(subfolder2map['path'], path(subfolder2))
+        self.assertEqual(len(subfolder2map['children']), 2)
+
+        subfolder3map = folder1map['children'][5]
+        self.assertEqual(subfolder3map['path'], path(subfolder3))
+        self.assertEqual(len(subfolder3map['children']), 0)
+
+        subfolder11map = subfolder1map['children'][0]
+        self.assertEqual(subfolder11map['path'], path(subfolder11))
+        self.assertEqual(len(subfolder11map['children']), 0)
+
+        subfolder21map = subfolder2map['children'][0]
+        self.assertEqual(subfolder21map['path'], path(subfolder21))
+        self.assertEqual(len(subfolder21map['children']), 0)
+
+        subfolder22map = subfolder2map['children'][1]
+        self.assertEqual(subfolder22map['path'], path(subfolder22))
+        self.assertEqual(len(subfolder22map['children']), 1)
+
+        # Why isn't this showing up in the sitemap
+        subfolder221map = subfolder22map['children'][0]
+        self.assertEqual(subfolder221map['path'], path(subfolder221))
+        self.assertEqual(len(subfolder221map['children']), 0)
+
 
 class TestPortalTabs(PloneTestCase.PloneTestCase):
     '''Tests for the portal tabs query'''

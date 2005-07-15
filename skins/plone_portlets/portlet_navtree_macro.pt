@@ -5,7 +5,7 @@
     <tal:level define="level               options/level|python:0;
                        item_type_class     python: 'contenttype-' + here.plone_utils.normalizeString(item['portal_type']);
                        item_wf_state_class python: 'state-' + here.plone_utils.normalizeString(item['review_state']);
-                       parent_shows_children options/show_children|nothing;
+                       parent_shows_children options/show_children|python:True;
                        children item/children|nothing;">
 
     <div tal:attributes="class item_type_class">
