@@ -3,18 +3,83 @@
       metal:use-macro="here/main_template/macros/master"
       i18n:domain="plone">
 
-<head></head>
+<head>
+    <metal:noborder fill-slot="top_slot"
+                 tal:define="dummy python:request.set('disable_border',1)" />
+</head>
 
 <body>
 <div metal:fill-slot="main">
 
-    <h2>How to use Access Keys</h2>
+    <h1>Accessibility information</h1>
+
+    <p>
+    This site uses the <a href="http://plone.org">Content Management System Plone</a>,
+    and has been designed this site to be completely accessible and usable, working in 
+    accordance with the Web Content Accessibility Guidelines 
+    (<acronym title="Web Content Accessibility Guidelines">WCAG</acronym> v1.0).
+    If there is anything on this site &mdash; accessibility or validation related &mdash;
+    that is not according to the standard, please contact the 
+    <a href="/contact-info"
+       tal:attributes="href string:${portal_url}/contact-info">Site Administration</a>, 
+    and not the Plone Team.
+    </p>
+    
+    <h2>Access keys</h2>
+
+    <p>
+    Access keys are a navigation device enabling you to get around this web
+    site using your keyboard.
+    </p>
+
+    <p>
+    In-depth information about access keys can be found at 
+    <a href="http://www.w3.org/TR/WCAG10-HTML-TECHS/#link-accesskey">W3C Accessibility Guidelines.</a>
+    </p>
+
+    <h3>Available access keys</h3>
+
+    <p>This site uses a setup that closely matches most international
+    recommendations on access keys. These are:
+
+    <ul>
+        <li><code>1</code> &mdash; Home Page</li>
+        <li><code>2</code> &mdash; Skip to content</li>
+        <li><code>3</code> &mdash; Site Map</li>
+        <li><code>4</code> &mdash; Search field focus</li>
+        <li><code>5</code> &mdash; Advanced Search</li>
+        <li><code>6</code> &mdash; Site navigation tree</li>
+        <li><code>7</code> &mdash; Not used</li>
+        <li><code>8</code> &mdash; Not used</li>
+        <li><code>9</code> &mdash; Contact information</li>
+        <li><code>0</code> &mdash; Access Key details</li>
+    </ul>
+
+    <h3>Using access keys in different web browsers</h3>
 
     <dl>
         <dt>Internet Explorer 5+ (Windows)</dt>
         <dd>
         Hold down the <code>Alt</code> key, press the number or letter of the 
         access key, release both keys then press <code>ENTER</code>.
+        </dd>
+
+        <dt>Firefox, Mozilla and Netscape 7+ (Windows)</dt>
+        <dd>
+        Hold down the <code>Alt</code> key and press the number or letter of 
+        the access key.
+        </dd>
+
+        <dt>Firefox, Mozilla and Netscape 7+ (Mac OS X)</dt>
+        <dd>
+        Hold down the <code>Ctrl</code> key and press the number or letter of 
+        the access key.
+        </dd>
+
+        <dt>Safari and Omniweb (Mac OS X)</dt>
+        <dd>
+        Hold down the <code>Ctrl</code> key and press the number or letter of 
+        the access key.
         </dd>
 
         <dt>Internet Explorer 4 (Windows)</dt>
@@ -36,24 +101,25 @@
         <dd>Access keys are not supported, please use a different browser.</dd>
 
 
-        <dt>Firefox, Mozilla and Netscape 7+ (Windows)</dt>
-        <dd>
-        Hold down the <code>Alt</code> key and press the number or letter of 
-        the access key.
-        </dd>
-
-        <dt>Firefox, Mozilla and Netscape 7+ (Mac OS X)</dt>
-        <dd>
-        Hold down the <code>Ctrl</code> key and press the number or letter of 
-        the access key.
-        </dd>
-
-        <dt>Safari and Omniweb (Mac)</dt>
-        <dd>
-        Hold down the <code>Ctrl</code> key and press the number or letter of 
-        the access key.
-        </dd>
     </dl>
+
+<h2>Accessibility Statement</h2>
+
+
+<p>
+We have undertaken to use our knowledge and understanding of the ways in which 
+different people access the Internet, to develop a web site that is clear and 
+simple for everybody to use.
+</p>
+
+<h2>Validation</h2>
+
+<p>
+We have used eXtensible HyperText Markup Language (<acronym title="eXtensible Hyper Text Markup Language">XHTML</acronym>) 1.0 and <acronym title="Cascading Style Sheets">CSS</acronym> that conforms to specification, as laid out by the <acronym title="World Wide Web Consortium">W3C</acronym> because we believe that usability and accessibility must have a solid foundation.
+</p>
+<p>
+We have also endeavoured to achieve AAA accessibility as measured against version 1.0 of the <acronym title="Web Content Accessibility Guidelines">WCAG</acronym>. We are aware however, that a number of the Priority 3 checkpoints of the <acronym title="Web Content Accessibility Guidelines">WCAG</acronym> are subjective and although we are sure that we have met them squarely, there may be instances where interpretation may vary.
+</p>
 
 
 </div>
