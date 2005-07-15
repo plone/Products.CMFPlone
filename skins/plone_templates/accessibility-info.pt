@@ -14,7 +14,7 @@
     <h1>Accessibility information</h1>
 
     <p>
-    This site uses the <a href="http://plone.org">Content Management System Plone</a>,
+    This site uses the <a href="http://plone.org">Open Source Content Management System Plone</a>,
     and has been designed this site to be completely accessible and usable, working in 
     accordance with the Web Content Accessibility Guidelines 
     (<acronym title="Web Content Accessibility Guidelines">WCAG</acronym> v1.0).
@@ -112,15 +112,28 @@ different people access the Internet, to develop a web site that is clear and
 simple for everybody to use.
 </p>
 
-<h2>Validation</h2>
+<h3>Validation</h3>
 
 <p>
-We have used eXtensible HyperText Markup Language (<acronym title="eXtensible Hyper Text Markup Language">XHTML</acronym>) 1.0 and <acronym title="Cascading Style Sheets">CSS</acronym> that conforms to specification, as laid out by the <acronym title="World Wide Web Consortium">W3C</acronym> because we believe that usability and accessibility must have a solid foundation.
-</p>
-<p>
-We have also endeavoured to achieve AAA accessibility as measured against version 1.0 of the <acronym title="Web Content Accessibility Guidelines">WCAG</acronym>. We are aware however, that a number of the Priority 3 checkpoints of the <acronym title="Web Content Accessibility Guidelines">WCAG</acronym> are subjective and although we are sure that we have met them squarely, there may be instances where interpretation may vary.
+We have used eXtensible HyperText Markup Language 
+(<acronym title="eXtensible Hyper Text Markup Language">XHTML</acronym>) 1.0 
+and <acronym title="Cascading Style Sheets">CSS</acronym> that conforms to 
+specification, as laid out by the <acronym title="World Wide Web Consortium">W3C</acronym> 
+because we believe that usability and accessibility must have a solid foundation. 
+If anything on this web site does not validate correctly, please contact the 
+<a href="/contact-info"
+   tal:attributes="href string:${portal_url}/contact-info">Site Administration</a>, 
+and not the Plone Team.
 </p>
 
+<p>
+We have also endeavoured to achieve AA accessibility as measured against 
+version 1.0 of the <acronym title="Web Content Accessibility Guidelines">WCAG</acronym>. 
+We are aware however, that a number of the Priority 3 checkpoints of the 
+<acronym title="Web Content Accessibility Guidelines">WCAG</acronym> are 
+subjective and although we are sure that we have met them squarely, there may 
+be instances where interpretation may vary.
+</p>
 
 </div>
 </body>
