@@ -50,6 +50,9 @@ def log(message, summary='', severity=zLOG.INFO):
 utranslate = i18nl10n.utranslate
 ulocalized_time = i18nl10n.ulocalized_time
 
+from Products.PageTemplates.GlobalTranslationService import \
+     getGlobalTranslationService
+
 
 class ToolInit(CMFCoreToolInit):
 
