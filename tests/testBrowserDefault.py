@@ -390,10 +390,14 @@ class TestPortalBrowserDefault(PloneTestCase.PloneTestCase):
     def testTemplateTitles(self):
         views = [v for v in self.portal.getAvailableLayouts() if v[0] == 'folder_listing']
         self.assertEqual(views[0][1], 'Standard listing')
-        folderListing = self.portal.unrestrictedTraverse('folder_listing')
-        folderListing.title = 'foo'
-        views = [v for v in self.portal.getAvailableLayouts() if v[0] == 'folder_listing']
-        self.assertEqual(views[0][1], 'foo')
+        try:
+            folderListing = self.portal.unrestrictedTraverse('folder_listing')
+            folderListing.title = 'foo'
+            views = [v for v in self.portal.getAvailableLayouts() if v[0] == 'folder_listing']
+            self.assertEqual(views[0][1], 'foo')
+        finally:
+            # Restore title to avoid side-effects
+            folderListing.title = 'Standard listing'
 
 
 def test_suite():
