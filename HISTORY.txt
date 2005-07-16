@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - Beta2 - unreleased
 
+    - Fixed http://members.plone.org/collector/3242 added And/Or search option
+      to Subject field on search_form.
+      [alecm]
+
     - Fixed http://members.plone.org/collector/3211 by updating the permission
       on PloneTool.setMemberProperties, the other permissions are fixed in
       CMF 1.5.

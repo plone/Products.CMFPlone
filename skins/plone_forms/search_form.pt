@@ -67,13 +67,13 @@
                 <label for="Subject" i18n:translate="label_keywords">Keywords</label>
 
                 <div class="formHelp" i18n:translate="help_search_keywords">
-                Return items matching one or more of these keywords.
+                Return items matching some or all of these keywords.
                 Multiple words may be found by pressing <strong>Ctrl</strong>
                 (or <strong>Apple</strong> key on Mac) while clicking the
                 keywords.
                 </div>
 
-                <select name="Subject:list"
+                <select name="Subject.query:record:list"
                         id="Subject"
                         size="7"
                         multiple="multiple"
@@ -90,6 +90,32 @@
                             i18n:translate=""
                             >dummy</option>
                 </select>
+                <br />
+
+                <input type="radio"
+                       name="Subject.operator:record"
+                       id="Subject_or"
+                       value="or"
+                       class="noborder"
+                       tabindex=""
+                       tal:attributes="tabindex tabindex/next;
+                                       checked python:1"/>
+                    <label for="Subject_or" i18n:translate="description_subject_or">
+                        Match any
+                    </label>
+                    <br />
+
+                <input type="radio"
+                        name="Subject.operator:record"
+                        id="Subject_and"
+                        value="and"
+                        class="noborder"
+                        tabindex=""
+                        tal:attributes="tabindex tabindex/next;
+                                        checked python:0"/>
+                <label for="Subject_and" i18n:translate="description_subject_or">
+                    Match all
+                </label>
             </div>
     
             <div class="field">
