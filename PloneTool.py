@@ -93,7 +93,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     __implements__ = (PloneBaseTool.__implements__,
                       SimpleItem.__implements__, )
 
-    security.declareProtected(CMFCorePermissions.ManagePortal,
+    security.declareProtected(CMFCorePermissions.ManageUsers,
                               'setMemberProperties')
     def setMemberProperties(self, member, **properties):
         membership = getToolByName(self, 'portal_membership')
