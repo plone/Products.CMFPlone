@@ -14,6 +14,7 @@ from Products.CMFCore.CMFCorePermissions import AccessContentsInformation
 from Products.CMFCore.CMFCorePermissions import ListFolderContents
 from Products.CMFCore.CMFCorePermissions import ModifyPortalContent
 from Products.CMFCore.CMFCorePermissions import AddPortalContent
+from Products.CMFCore.CMFCorePermissions import ReviewPortalContent
 from AccessControl.Permissions import copy_or_move
 from AccessControl.Permissions import delete_objects
 
@@ -44,7 +45,8 @@ class TestDisplayContentsTab(PloneTestCase.PloneTestCase):
         return [ModifyPortalContent,
                 AddPortalContent,
                 copy_or_move,
-                delete_objects]
+                delete_objects,
+                ReviewPortalContent]
 
     def removePermissionsFromObject(self, permissions, object):
         for permission in permissions:

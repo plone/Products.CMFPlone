@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - Beta2 - unreleased
 
+    - Fixed http://members.plone.org/collector/4242 by updating test.
+      [alecm]
+
     - Fixed inappropriate condition on folder_constraintypes_form.
       [alecm]
 
