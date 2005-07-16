@@ -94,7 +94,7 @@
             <!-- start of the left (by default at least) column -->
             <td id="portal-column-one"
                 metal:define-slot="column_one_slot"
-                tal:condition="slots_mapping/left">
+                tal:condition="sl">
               <div class="visualPadding">
                 <metal:portlets define-slot="portlets_one_slot">
                   <metal:leftportlets use-macro="here/portlets_fetcher/macros/left_column">
@@ -157,7 +157,7 @@
             <!-- start of right (by default at least) column -->
             <td id="portal-column-two"
                 metal:define-slot="column_two_slot"
-                tal:condition="slots_mapping/right">
+                tal:condition="sr">
               <div class="visualPadding">
                 <metal:portlets define-slot="portlets_two_slot">
                   <metal:rightportlets use-macro="here/portlets_fetcher/macros/right_column">
