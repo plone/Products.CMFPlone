@@ -74,6 +74,13 @@ function GetSearchTermsFromURITestCase() {
         this.assertEquals(terms[1], 'bar');
     }
 
+    this.testNoEmptyTerms = function() {
+        var uri = "?searchterm=%20bar";
+        var terms = getSearchTermsFromURI(uri);
+        this.assertEquals(terms.length, 1, 'number of searchterms in '+uri);
+        this.assertEquals(terms[0], 'bar');
+    }
+
     this.tearDown = function() {
         clearChildNodes(this.sandbox);
     }

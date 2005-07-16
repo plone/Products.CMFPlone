@@ -47,7 +47,14 @@ function getSearchTermsFromURI(uri) {
     var qfinder = new RegExp("searchterm=([^&]*)", "gi");
     var qq = qfinder.exec(query);
     if (qq && qq[1]) {
-        return qq[1].replace(/\+/g,' ').split(/\s+/);
+        var result = new Array();
+        var terms = qq[1].replace(/\+/g,' ').split(/\s+/);
+        for (var i=0; i < terms.length; i++) {
+            if (terms[i] != '') {
+                result.push(terms[i]);
+            }
+        }
+        return result;
     }
     return false;
 }
