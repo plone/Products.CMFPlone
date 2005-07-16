@@ -130,7 +130,8 @@ Plone 2.1 - Plaid - Beta2 - unreleased
       (http://plone.org/collector/4263)
       [geoffd]
 
-    - Added support for parentMetaTypesNotToQuery to the navtree.
+    - Added support for parentMetaTypesNotToQuery to the navtree. Fixed
+      http://members.plone.org/collector/4258
       [alecm]
 
     - Use the old fashioned (but badly named) metaTypesNotToList for the
