@@ -52,7 +52,7 @@
                  i18n:attributes="alt label_object_locked;" />
         </span>
 
-        <div condition="here/Contributors">
+        <div tal:condition="here/Contributors">
             <span i18n:translate="label_contributors">
               Contributors:
             </span>
