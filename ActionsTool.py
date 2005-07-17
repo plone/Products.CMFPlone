@@ -76,32 +76,3 @@ class ActionsTool(PloneBaseTool, BaseTool):
 ActionsTool.__doc__ = BaseTool.__doc__
 
 InitializeClass(ActionsTool)
-
-# Monkeypatch for ActionInfo to support 'document_actions'
-from Products.CMFCore.ActionInformation import ActionInfo
-
-def _checkPermissions(self):
-    """ Check permissions in the current context.
-        Action categories beginning with "document" will now have permissions
-        evaluated in the object's security context
-    """
-    category = self['category']
-    object = self._ec.contexts['object']
-    if object is not None and ( category.startswith('object') or
-                                category.startswith('workflow') or
-                                category.startswith('document') ):
-        context = object
-    else:
-        folder = self._ec.contexts['folder']
-        if folder is not None and category.startswith('folder'):
-            context = folder
-        else:
-            context = self._ec.contexts['portal']
-
-    for permission in self['permissions']:
-        if _checkPermission(permission, context):
-            return True
-    return False
-
-ActionInfo._plone_mp_checkPermissions = ActionInfo._checkPermissions.im_func
-ActionInfo._checkPermissions = _checkPermissions
