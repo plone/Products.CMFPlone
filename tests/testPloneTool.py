@@ -170,12 +170,9 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
         self.assertEqual(self.utils.normalizeString(u"\uc774\ubbf8\uc9f1 Korean"),
                          'c774bbf8c9f1-korean')
 
-    def testNormalizeStringNone(self):
-        # None should be treated special
-        self.assertEqual(self.utils.normalizeString(None), None)
-
     def testNormalizeStringObject(self):
         # Objects should be converted to strings using repr()
+        self.assertEqual(self.utils.normalizeString(None), 'none')
         self.assertEqual(self.utils.normalizeString(True), 'true')
         self.assertEqual(self.utils.normalizeString(False), 'false')
 

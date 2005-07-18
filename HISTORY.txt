@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - Beta2 - unreleased
 
+    - Reverted change to normalizeString as Archetypes relied on it in the
+      title to id autogeneration code.
+      [hannosch]
+
     - Fixed http://members.plone.org/collector/3242 added And/Or search option
       to Subject field on search_form.
       [alecm]
