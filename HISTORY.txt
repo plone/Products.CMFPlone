@@ -4,6 +4,14 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - Beta2 - unreleased
 
+    - Removed all references to getStateClassName() as this was just a
+      makeshift solution that was used before we got the normalizeString()
+      method in PloneTool.
+      [limi]
+
+    - Hooked up the new HTML-formatted and improved start page
+      [limi]
+
     - Reverted change to normalizeString as Archetypes relied on it in the
       title to id autogeneration code.
       [hannosch]
