@@ -230,7 +230,7 @@
     color: &dtml-globalFontColor;;
     height: auto;
     margin-right: 0.5em;
-    padding: 0em 1.5em;
+    padding: 0em 1.25em;
     text-decoration: none;
     text-transform: &dtml-textTransform;;
 }
@@ -340,7 +340,7 @@
     color: &dtml-contentViewFontColor;;
     height: auto;
     margin-right: 0.5em;
-    padding: 0em 1.25em;
+    padding: 0em 1em;
     line-height: normal;
     text-decoration: none;
     text-transform: &dtml-textTransform;;
