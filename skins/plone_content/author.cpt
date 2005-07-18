@@ -147,17 +147,9 @@
                            condition="author_content">
         
             <h2 i18n:translate="heading_author_content">
-                Recent content by this member
+                Latest content created by this user
             </h2>
-        
-            <a href=""
-               class="link-parent"
-               tal:attributes="href string:${here/absolute_url}/search?Creator=${author}&amp;review_state=published&amp;sort_on=Date&amp;sort_order=reverse"
-               i18n:translate="go_to_search_author_content">
-                Find all published content by 
-                <span i18n:name="user" tal:omit-tag="" tal:content="authorinfo/fullname | author"/>
-            </a>
-        
+                
             <div metal:define-macro="user_content_listing">
             <table class="listing" summary="Lists content written by an author grouped by content type" i18n:attributes="summary summary_author_content_list;">
                 <tal:repeat repeat="content_by_type author_content">
@@ -181,6 +173,14 @@
                 </tal:repeat>
             </table>
             </div>
+
+            <a href=""
+               tal:attributes="href string:${here/absolute_url}/search?Creator=${author}&amp;review_state=published&amp;sort_on=Date&amp;sort_order=reverse"
+               i18n:translate="go_to_search_author_content">
+                All content created by 
+                <span i18n:name="user" tal:omit-tag="" tal:content="python:authorinfo['fullname'] or author"/>&hellip;
+            </a>
+
         </tal:authorContent>
         
     </tal:haveAuthor>
