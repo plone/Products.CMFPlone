@@ -11,8 +11,19 @@
 <body>
 <div metal:fill-slot="main">
 
-    <h1 i18n:translate="heading_accessibility_info">Accessibility information</h1>
+    <ul id="portal-siteactions">
+        <li>Text size:
+        <li id="siteaction-small_text"><a href="javascript:setActiveStyleSheet('Small Text',1);"
+                                          title="Small Text">Small</a></li>
+        <li id="siteaction-normal_text"><a href="javascript:setActiveStyleSheet('',1);"
+                                           title="Normal Text">Normal</a></li>
+        <li id="siteaction-large_text"><a href="javascript:setActiveStyleSheet('Large Text', 1);"
+                                          title="Large Text">Large</a></li>
+    </ul>
 
+    <h1 i18n:translate="heading_accessibility_info">Accessibility</h1>
+
+    
     <p i18n:translate="description_accessibility_info">
     This site uses the <a href="http://plone.org" i18n:name="plone">Open Source Content Management System Plone</a>,
     and has been designed this site to be completely accessible and usable, working in 
@@ -21,7 +32,7 @@
               title="Web Content Accessibility Guidelines"
               i18n:attributes="title title_wcag;">WCAG</acronym> v1.0).
     If there is anything on this site &mdash; accessibility or validation related &mdash;
-    that is not according to the standard, please contact the <span i18n:name="site_admin"
+    that is not according to the standard, please contact the <span i18n:name="site_admin">
     <a href="/contact-info" i18n:translate="label_site_admin"
        tal:attributes="href string:${portal_url}/contact-info">Site Administration</a></span>, 
     and not the Plone Team.

@@ -246,10 +246,6 @@ label {
     margin: 0 0.2em 0 0;
 }
 
-.actionSingular {
-    background-image: none !important;
-}
-
 .actionItems li {
     background-image: none;
 }
