@@ -11,125 +11,145 @@
 <body>
 <div metal:fill-slot="main">
 
-    <h1>Accessibility information</h1>
+    <h1 i18n:translate="heading_accessibility_info">Accessibility information</h1>
 
-    <p>
-    This site uses the <a href="http://plone.org">Open Source Content Management System Plone</a>,
+    <p i18n:translate="description_accessibility_info">
+    This site uses the <a href="http://plone.org" i18n:name="plone">Open Source Content Management System Plone</a>,
     and has been designed this site to be completely accessible and usable, working in 
     accordance with the Web Content Accessibility Guidelines 
-    (<acronym title="Web Content Accessibility Guidelines">WCAG</acronym> v1.0).
+    (<acronym i18n:name="wcag"
+              title="Web Content Accessibility Guidelines"
+              i18n:attributes="title title_wcag;">WCAG</acronym> v1.0).
     If there is anything on this site &mdash; accessibility or validation related &mdash;
-    that is not according to the standard, please contact the 
-    <a href="/contact-info"
-       tal:attributes="href string:${portal_url}/contact-info">Site Administration</a>, 
+    that is not according to the standard, please contact the <span i18n:name="site_admin"
+    <a href="/contact-info" i18n:translate="label_site_admin"
+       tal:attributes="href string:${portal_url}/contact-info">Site Administration</a></span>, 
     and not the Plone Team.
     </p>
     
-    <h2>Access keys</h2>
+    <h2 i18n:translate="heading_access_keys">Access keys</h2>
 
-    <p>
+    <p i18n:translate="description_access_keys">
     Access keys are a navigation device enabling you to get around this web
     site using your keyboard.
     </p>
 
-    <p>
-    In-depth information about access keys can be found at 
-    <a href="http://www.w3.org/TR/WCAG10-HTML-TECHS/#link-accesskey">W3C Accessibility Guidelines</a>.
+    <p i18n:translate="description_access_keys_more_info">
+    In-depth information about access keys can be found at <span i18n:name="wcag">
+    <a href="http://www.w3.org/TR/WCAG10-HTML-TECHS/#link-accesskey"
+       i18n:translate="label_w3c_accessibility_guide">W3C Accessibility Guidelines</a></span>.
     </p>
 
-    <h3>Available access keys</h3>
+    <h3 i18n:translate="heading_available_access_keys">Available access keys</h3>
 
-    <p>This site uses a setup that closely matches most international
+    <p i18n:translate="description_available_access_keys">This site uses a setup that closely matches most international
     recommendations on access keys. These are:
     </p>
 
     <ul>
-        <li><code>1</code> &mdash; Home Page</li>
-        <li><code>2</code> &mdash; Skip to content</li>
-        <li><code>3</code> &mdash; Site Map</li>
-        <li><code>4</code> &mdash; Search field focus</li>
-        <li><code>5</code> &mdash; Advanced Search</li>
-        <li><code>6</code> &mdash; Site navigation tree</li>
-        <li><code>7</code> &mdash; Not used</li>
-        <li><code>8</code> &mdash; Not used</li>
-        <li><code>9</code> &mdash; Contact information</li>
-        <li><code>0</code> &mdash; Access Key details</li>
+        <li i18n:translate="accesskey_home_page"><code>1</code> &mdash; Home Page</li>
+        <li i18n:translate="accesskey_skip_to_content"><code>2</code> &mdash; Skip to content</li>
+        <li i18n:translate="accesskey_sitemap"><code>3</code> &mdash; Site Map</li>
+        <li i18n:translate="accesskey_search_field"><code>4</code> &mdash; Search field focus</li>
+        <li i18n:translate="accesskey_advanced_search"><code>5</code> &mdash; Advanced Search</li>
+        <li i18n:translate="accesskey_navigation"><code>6</code> &mdash; Site navigation tree</li>
+        <li i18n:translate="accesskey_not_used"><code>7</code> &mdash; Not used</li>
+        <li i18n:translate="accesskey_not_used"><code>8</code> &mdash; Not used</li>
+        <li i18n:translate="accesskey_contact"><code>9</code> &mdash; Contact information</li>
+        <li i18n:translate="accesskey_accesskey_details"><code>0</code> &mdash; Access Key details</li>
     </ul>
 
-    <h3>Using access keys in different web browsers</h3>
+    <h3 i18n:translate="heading_access_keys_usage">Using access keys in different web browsers</h3>
 
     <dl>
-        <dt>Internet Explorer 5+ (Windows)</dt>
-        <dd>
+        <dt i18:translate="label_ie5_win">Internet Explorer 5+ (Windows)</dt>
+        <dd i18:translate="description_accesskey_ie5_win">
         Hold down the <code>Alt</code> key, press the number or letter of the 
         access key, release both keys then press <code>ENTER</code>.
         </dd>
 
-        <dt>Firefox, Mozilla and Netscape 7+ (Windows)</dt>
-        <dd>
+        <dt i18:translate="label_mozilla_win">Firefox, Mozilla and Netscape 7+ (Windows)</dt>
+        <dd i18:translate="description_accesskey_mozilla_win">
         Hold down the <code>Alt</code> key and press the number or letter of 
         the access key.
         </dd>
 
-        <dt>Firefox, Mozilla and Netscape 7+ (Mac OS X)</dt>
-        <dd>
+        <dt i18:translate="label_mozilla_mac">Firefox, Mozilla and Netscape 7+ (Mac OS X)</dt>
+        <dd i18:translate="description_accesskey_mozilla_mac">
         Hold down the <code>Ctrl</code> key and press the number or letter of 
         the access key.
         </dd>
 
-        <dt>Safari and Omniweb (Mac OS X)</dt>
-        <dd>
+        <dt i18:translate="label_safari_mac">Safari and Omniweb (Mac OS X)</dt>
+        <dd i18:translate="description_accesskey_safari_mac">
         Hold down the <code>Ctrl</code> key and press the number or letter of 
         the access key.
         </dd>
 
-        <dt>Internet Explorer 4 (Windows)</dt>
-        <dd>
+        <dt i18:translate="label_ie4_win">Internet Explorer 4 (Windows)</dt>
+        <dd i18:translate="description_accesskey_ie4_win">
         Hold down the <code>Alt</code> key and press the number or letter of 
         the access key.
         </dd>
         
-        <dt>Internet Explorer 5+ (Mac)</dt>
-        <dd>
+        <dt i18:translate="label_ie5_mac">Internet Explorer 5+ (Mac)</dt>
+        <dd i18:translate="description_accesskey_ie5_mac">
         Hold down the <code>Ctrl</code> key and press the number or letter of 
         the access key.
         </dd>
 
-        <dt>Internet Explorer 4.5 (Mac)</dt>
-        <dd>Access keys are not supported, please use a different browser.</dd>
+        <dt i18:translate="label_ie4_mac">Internet Explorer 4.5 (Mac)</dt>
+        <dd i18:translate="description_accesskey_ie4_mac">
+        Access keys are not supported, please use a different browser.
+        </dd>
 
-        <dt>Netscape 6 and earlier (All platforms)</dt>
-        <dd>Access keys are not supported, please use a different browser.</dd>
+        <dt i18:translate="label_netscape6_all">Netscape 6 and earlier (All platforms)</dt>
+        <dd i18:translate="description_accesskey_netscape6_all">
+        Access keys are not supported, please use a different browser.
+        </dd>
 
     </dl>
 
-    <h2>Accessibility Statement</h2>
+    <h2 i18n:translate="heading_accessibility_statement">Accessibility Statement</h2>
 
-    <p>
+    <p i18n:translate="description_accessibility_statement">
     We have undertaken to use our knowledge and understanding of the ways in which 
     different people access the Internet, to develop a web site that is clear and 
     simple for everybody to use.
     </p>
 
-    <h3>Validation</h3>
+    <h3 i18n:translate="heading_validation">Validation</h3>
 
-    <p>
+    <p i18n:translate="description_validation">
     We have used eXtensible HyperText Markup Language 
-    (<acronym title="eXtensible Hyper Text Markup Language">XHTML</acronym>) 1.0 
-    and <acronym title="Cascading Style Sheets">CSS</acronym> that conforms to 
-    specification, as laid out by the <acronym title="World Wide Web Consortium">W3C</acronym> 
-    because we believe that usability and accessibility must have a solid foundation. 
+    (<acronym i18n:name="xhtml"
+              title="eXtensible Hyper Text Markup Language"
+              i18n:attributes="title title_xhtml;">XHTML</acronym>) 1.0 
+    and <acronym i18n:name="css"
+                 title="Cascading Style Sheets"
+                 i18n:attributes="title title_css;">CSS</acronym> that conforms to 
+    specification, as laid out by the
+    <acronym i18n:name="w3c"
+             title="World Wide Web Consortium"
+             i18n:attributes="title title_w3c;">W3C</acronym> because we believe
+    that usability and accessibility must have a solid foundation. 
     If anything on this web site does not validate correctly, please contact the 
-    <a href="/contact-info"
-       tal:attributes="href string:${portal_url}/contact-info">Site Administration</a>, 
+    <span i18n:name="site_admin"><a href="/contact-info"
+          tal:attributes="href string:${portal_url}/contact-info"
+          i18n:translate="label_site_admin">Site Administration</a></span>, 
     and not the Plone Team.
     </p>
 
-    <p>
+    <p i18n:translate="description_wcag_aa_rating">
     We have also endeavoured to achieve AA accessibility as measured against 
-    version 1.0 of the <acronym title="Web Content Accessibility Guidelines">WCAG</acronym>. 
+    version 1.0 of the
+    <acronym i18n:name="wcag"
+             title="Web Content Accessibility Guidelines"
+             i18n:attributes="title title_wcag;">WCAG</acronym>.
     We are aware however, that a number of the Priority 3 checkpoints of the 
-    <acronym title="Web Content Accessibility Guidelines">WCAG</acronym> are 
+    <acronym i18n:name="wcag2"
+             title="Web Content Accessibility Guidelines"
+             i18n:attributes="title title_wcag;">WCAG</acronym> are 
     subjective and although we are sure that we have met them squarely, there may 
     be instances where interpretation may vary.
     </p>
