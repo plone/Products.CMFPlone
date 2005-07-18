@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - Beta2 - unreleased
 
+    - Adding display of currently selected default-page to "display" menu and
+      cleaning up markup a bit. Still some CSS work to be done before this is 
+      fully OK.
+      [optilude]
+
     - All icons for content types are now displayed using CSS - this closes
       http://members.plone.org/collector/3138
 

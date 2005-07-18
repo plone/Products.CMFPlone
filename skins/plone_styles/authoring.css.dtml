@@ -678,6 +678,14 @@ ol.visualNoMarker {
     border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
 }
 
+.actionMenu .actionMenuContent .actionSeperator div.currentDefaultPage {
+    margin-top: 0.2em;
+    padding: 0.2em 0.5em 0em 0.5em;
+    white-space: nowrap;
+    border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
+}
+
+
 .contentBatchAction {
     float: left !important;
     padding: 0 0.5em;
