@@ -43,7 +43,7 @@ LOG = logging.getLogger('Plone')
 default_frontpage="Unable to load front-page skeleton file"
 WWW_DIR = os.path.join(os.path.dirname(__file__), 'www')
 try:
-    f = open(os.path.join(WWW_DIR, 'default_frontpage.stx'), 'r')
+    f = open(os.path.join(WWW_DIR, 'default_frontpage.html'), 'r')
 except IOError:
     LOG.error('Unable to open frontpage skeleton', exc_info=True)
 else:
@@ -213,12 +213,12 @@ class PloneGenerator(Portal.PortalGenerator):
         p.invokeFactory('Document', 'front-page')
         idx = getattr(p, 'front-page')
         idx.setTitle('Welcome to Plone')
-        idx.setDescription('This welcome page is used to introduce you'+\
-                         ' to the Plone Content Management System.')
-        idx.setFormat('structured-text')
+        idx.setDescription('Congratulations! You have successfully'+\
+                         ' installed Plone.')
+        idx.setFormat('html')
         if idx.meta_type == 'Document':
             # CMFDefault document
-            idx.edit('structured-text', default_frontpage)
+            idx.edit('html', default_frontpage)
         else:
             idx.edit(text=default_frontpage)
         idx.reindexObject()
