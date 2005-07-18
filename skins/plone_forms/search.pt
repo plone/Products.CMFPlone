@@ -59,7 +59,7 @@
         <tal:entry define="result_url result/getURL;
                            url string:$result_url/view?searchterm=${searchterm};">
             <dt tal:define="item_wf_state result/review_state;
-                            item_wf_state_class python:here.plone_utils.normalizeString(item_wf_state);">
+                            item_wf_state_class python:'state-' + here.plone_utils.normalizeString(item_wf_state);">
                 <a href="#"
                 tal:attributes="href url;">
                 <img src="#"

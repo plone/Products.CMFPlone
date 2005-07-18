@@ -22,7 +22,7 @@
     <dd class="portletItem"
         tal:define="oddrow repeat/obj/odd;
                     item_wf_state obj/review_state;
-                    item_wf_state_class python:here.plone_utils.normalizeString(item_wf_state);
+                    item_wf_state_class python:'state-' + here.plone_utils.normalizeString(item_wf_state);
                     item_type_class python: 'contenttype-' + here.plone_utils.normalizeString(obj.portal_type);"
         tal:attributes="class python:test(oddrow, 
                                          'portletItem even', 

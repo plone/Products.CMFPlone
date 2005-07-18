@@ -178,7 +178,7 @@
                                    item_modified        item/ModificationDate;
                                    item_type_class      python:'contenttype-' + putils.normalizeString(item_type);
                                    item_wf_state        item/review_state|python: wtool.getInfoFor(item, 'review_state', '');
-                                   item_wf_state_class  python:here.plone_utils.normalizeString(item_wf_state);
+                                   item_wf_state_class  python:'state-' + here.plone_utils.normalizeString(item_wf_state);
                                    hasGetUrl            python:hasattr(item.aq_explicit, 'getURL');
                                    item_rel_url         python:hasGetUrl and item.getURL(relative=1) or getRelativeContentURL(item);
                                    browserDefaultResult here/browserDefault;
