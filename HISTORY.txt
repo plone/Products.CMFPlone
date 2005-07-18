@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - Beta2 - unreleased
 
+    - All icons for content types are now displayed using CSS - this closes
+      http://members.plone.org/collector/3138
+
     - Removed all references to getStateClassName() as this was just a
       makeshift solution that was used before we got the normalizeString()
       method in PloneTool.

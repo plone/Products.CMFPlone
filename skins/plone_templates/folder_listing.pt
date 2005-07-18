@@ -40,7 +40,7 @@
                      define="toLocalizedTime nocall:here/toLocalizedTime;">
 
             <dl>
-	        <tal:entry tal:repeat="item folderContents">
+                <tal:entry tal:repeat="item folderContents">
                 <tal:block tal:define="item_url item/getURL|item/absolute_url;
                                        item_id item/getId|item/id;
                                        item_title_or_id item/pretty_title_or_id;
@@ -51,7 +51,7 @@
                                        item_created item/CreationDate;
                                        item_type_class python: 'contenttype-' + putils.normalizeString(item_type);
                                        item_wf_state        item/review_state|python: wtool.getInfoFor(item, 'review_state', '');
-                                       item_wf_state_class python:'state-' + here.plone_utils.normalizeString(item_wf_state);
+                                       item_wf_state_class python:'state-' + putils.normalizeString(item_wf_state);
                                        item_creators item/Creators|item/Creator;
                                        item_creators python:test(same_type(item_creators,[]) or same_type(item_creators,()), item_creators, [item_creators]);
                                        item_start item/start/ISO|item/StartDate|nothing;
@@ -123,7 +123,7 @@
                         </span> 
                     </dd>
                 </tal:block>
-	        </tal:entry>
+                </tal:entry>
             </dl>
         </tal:listing>
         <metal:empty metal:define-slot="no_items_in_listing">

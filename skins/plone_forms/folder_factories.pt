@@ -37,18 +37,12 @@
 
                 <form name="quickAdd" action="createObject" method="post">
     
-                    <a href="#" tal:attributes="href python:'createObject?type_name='+pss.url_quote(Id)">
-                        <img src=""
-                             alt=""
-                             width="16"
-                             height="16"
-                             tal:attributes="src string:$portal_url/${ctype/getIcon}" />
-                    </a>
-                  
-                    <label i18n:translate="" tal:content="Title">
-                    Title
+                    <label i18n:translate="" 
+                           tal:attributes="class python: 'contenttype-' + putils.normalizeString(Id) + ' visualIconPadding';
+                                           for Title;">
+                    &nbsp;
                     </label>
-    
+
                     <input name="type_name"
                          type="hidden"
                          value=""
@@ -63,11 +57,11 @@
                          type="submit"
                          value="Add"
                          tabindex=""
-                         i18n:attributes="value label_add;"
-                         tal:attributes="tabindex tabindex/next;"
+                         i18n:attributes="value"
+                         tal:attributes="id Id;
+                                         value string:Add ${Title}"
                          />
-                    <br />
-                    <p class="formHelp" tal:content="ctype/Description" i18n:translate="">
+                        <p class="formHelp" tal:content="ctype/Description" i18n:translate="">
                     Item description
                     </p>
                 

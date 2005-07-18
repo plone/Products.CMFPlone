@@ -59,19 +59,14 @@
         <tal:entry define="result_url result/getURL;
                            url string:$result_url/view?searchterm=${searchterm};">
             <dt tal:define="item_wf_state result/review_state;
-                            item_wf_state_class python:'state-' + here.plone_utils.normalizeString(item_wf_state);">
-                <a href="#"
-                tal:attributes="href url;">
-                <img src="#"
-                     height="16"
-                     width="16"
-                     alt=""
-                     tal:on-error="structure python:path('here/linkOpaque.gif')"
-                     tal:replace="structure python:path('here/%s' % result.getIcon)" /></a>&nbsp;<a
+                            item_wf_state_class python:'state-' + putils.normalizeString(item_wf_state);">
+                <span tal:attributes="class python: 'contenttype-' + putils.normalizeString(result.portal_type)">
+                    <a
                      href="#" 
                      tal:attributes="href url;
-                                     class string:$item_wf_state_class"
+                                     class string:$item_wf_state_class visualIconPadding"
                 tal:content="result/pretty_title_or_id" />
+                </span>
                <span class="discreet" 
                      title="Relevance"
                      tal:condition="result/data_record_normalized_score_"

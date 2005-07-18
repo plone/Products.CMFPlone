@@ -616,7 +616,6 @@ textarea.proportional {
 
 dl.collapsible {
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor; !important;
-    width: 35%;
     margin: 1em 0 0 0;
     padding: 0;
 }
@@ -654,7 +653,7 @@ dl.collapsible.expanded dt.collapsibleHeader {
 }
 
 dl.collapsible.collapsed {
-    border-width: &dtml-borderWidth; 0px 0px 0px !important;
+    border: none !important;
     height: 1em;
     width: auto;
 }

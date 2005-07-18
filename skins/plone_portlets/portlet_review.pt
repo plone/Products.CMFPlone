@@ -17,12 +17,11 @@
         tal:define="oddrow repeat/o/odd"
         tal:attributes="class python:test(oddrow, 'portletItem odd','portletItem even')">
 
+        <span tal:attributes="class python:'contenttype-' + putils.normalizeString(o.portal_type)">
         <a href="#"
+           class="visualIconPadding"
            tal:attributes="href string:${o/absolute_url}/view;
                            title o/Description">
-            <img src="" alt="" height="16" width="16"
-                 tal:attributes="src string:${here/portal_url}/${o/getIcon};
-                                 title o/Type;" />
             <span tal:replace="o/pretty_title_or_id">
             Extended Calendar Product
             </span>
@@ -30,6 +29,7 @@
                   tal:define="moddate o/ModificationDate;"
                   tal:content="python:here.toLocalizedTime(moddate)">May 5</span>
         </a>
+        </span>
 
     </dd>
     </tal:items>
