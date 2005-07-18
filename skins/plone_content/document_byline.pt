@@ -20,7 +20,7 @@
             by
           <a href="#"
              tal:attributes="href string:${portal_url}/author/${creator}"
-             tal:content="author/fullname | here/Creator"
+             tal:content="python:author['fullname'] or creator"
              tal:omit-tag="not:author"
              i18n:name="author">
             Bob Dobalina
