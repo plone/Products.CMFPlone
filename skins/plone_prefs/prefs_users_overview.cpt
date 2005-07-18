@@ -112,7 +112,7 @@
                            name="form.button.FindAll"
                            value="Find all"
                            tabindex=""
-                           i18n:attributes="value label_search;"
+                           i18n:attributes="value label_findall;"
                            tal:attributes="tabindex tabindex/next;" />
 
                     </th>
