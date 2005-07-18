@@ -28,7 +28,7 @@
 
             <dl>
                 <dt tal:define="item_wf_state result/review_state;
-                                item_wf_state_class python:here.getStateClassName(item_wf_state);">
+                                item_wf_state_class python:here.plone_utils.normalizeString(item_wf_state);">
                     <img src="" alt="" style="border: 0"
                          tal:attributes="src result/getIcon;
                                          alt result/Type" />
