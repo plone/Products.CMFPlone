@@ -82,7 +82,8 @@
               method="post"
               tal:attributes="action template/getId"
               tal:define="searchstring request/searchstring | nothing;
-                          portal_users python:mtool.searchForMembers(name=searchstring);
+                          findAll python:'form.button.FindAll' in request.keys();
+                          portal_users python:(searchstring or findAll) and mtool.searchForMembers(name=searchstring) or [];
                           batch python:Batch(portal_users, b_size, int(b_start), orphan=1)">
 	      <input type="hidden" name="form.submitted" value="1" />
               
@@ -102,6 +103,14 @@
                            class="searchButton"
                            name="form.button.Search"
                            value="Search"
+                           tabindex=""
+                           i18n:attributes="value label_search;"
+                           tal:attributes="tabindex tabindex/next;" />
+                           
+            <input type="submit"
+                           class="searchButton"
+                           name="form.button.FindAll"
+                           value="Find all"
                            tabindex=""
                            i18n:attributes="value label_search;"
                            tal:attributes="tabindex tabindex/next;" />
@@ -181,7 +190,12 @@
 		  </tr>
 		</tal:block>
                 <tr tal:condition="not:batch">
-		  <td i18n:translate="text_nomatches" style="text-align:center;">No matches</td>
+		            <td tal:condition="searchstring" 
+		                i18n:translate="text_nomatches" 
+		                style="text-align:center;">No matches</td>
+		            <td tal:condition="not:searchstring" 
+		                i18n:translate="text_no_searchstring" 
+		                style="text-align:center;">You must search enter a username to search for</td>
                 </tr>
 	      </table>
 

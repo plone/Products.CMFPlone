@@ -4,6 +4,15 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - Beta2 - unreleased
 
+    - Making member overview preference page not perform a full member search
+      by default, but adding a "Find all" button to find all members if you
+      need this listing. This fixes http://members.plone.org/collector/2530.
+      The bug also mentions that we could have "Find all" the default behaviour 
+      when there are sufficiently few members. However, there has been no
+      followup on how we can efficiently count the number of members, so this
+      is still an open feature request.
+      [optilude]
+
     - Adding display of currently selected default-page to "display" menu and
       cleaning up markup a bit. Still some CSS work to be done before this is 
       fully OK.
