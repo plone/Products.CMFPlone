@@ -5,6 +5,7 @@ from Products.CMFCore.WorkflowTool import WorkflowTool as BaseTool
 from Products.CMFCore.WorkflowTool import WorkflowInformation
 from Products.CMFPlone import ToolNames
 from ZODB.POSException import ConflictError
+from Acquisition import aq_base
 
 from Globals import InitializeClass
 from AccessControl import ClassSecurityInfo
@@ -111,7 +112,7 @@ class WorkflowTool(PloneBaseTool, BaseTool):
                                     'id': tdef.id,
                                     'title': tdef.title,
                                     'title_or_id': tdef.title_or_id(),
-                                    'name': tdef.actbox_name,
+                                    'name': tdef.actbox_name % info,
                                     'url': tdef.actbox_url % info
                                     }
         return tuple(result.values())
@@ -237,6 +238,22 @@ class WorkflowTool(PloneBaseTool, BaseTool):
 #                        if a is not None:
 #                            actions.extend(a)
 #        return actions
+
+    security.declarePublic('getStateTitleForState')
+    def getTitleForStateOnType(self, state_name, p_type):
+        """Returns the workflow state title for a given state name,
+           uses a portal_type to determine which workflow to use
+        """
+        if p_type is not None:
+            chain = self.getChainForPortalType(p_type)
+            for wf_id in chain:
+                wf = self.getWorkflowById(wf_id)
+                if wf is not None:
+                    states = wf.states
+                    state = getattr(states, state_name, None)
+                    if state is not None:
+                        return getattr(aq_base(state), 'title', None) or state_name
+        return state_name
 
 WorkflowTool.__doc__ = BaseTool.__doc__
 

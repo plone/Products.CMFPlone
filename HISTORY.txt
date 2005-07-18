@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - Beta2 - unreleased
 
+    - Finished http://plone.org/collector/1805 without any catalog metadata
+      even.  Added a method to WorkflowTool that retrieves a state title given
+      a state id and a portal_type.  As a result it can be used for brains and
+      objects alike.
+      [alecm]
+
     - Making member overview preference page not perform a full member search
       by default, but adding a "Find all" button to find all members if you
       need this listing. This fixes http://members.plone.org/collector/2530.

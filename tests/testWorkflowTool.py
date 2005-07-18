@@ -37,6 +37,17 @@ class TestWorkflowTool(PloneTestCase.PloneTestCase):
         # Test that url has filled in string substitutions for content url
         self.failUnless('http://' in trans[0]['url'])
 
+    def testGetTitleForStateOnType(self):
+        state_id = self.workflow.getInfoFor(self.doc, 'review_state', '')
+        state_title = self.workflow.getTitleForStateOnType(state_id, self.doc.portal_type)
+        self.assertEqual(state_id, 'visible')
+        self.assertEqual(state_title, 'Public Draft')
+
+    def testGetTitleForStateOnTypeFallsBackOnStateId(self):
+        state_id = 'nonsense'
+        state_title = self.workflow.getTitleForStateOnType(state_id, self.doc.portal_type)
+        self.assertEqual(state_title, 'nonsense')
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite

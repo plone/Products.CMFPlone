@@ -178,6 +178,7 @@
                                    item_modified        item/ModificationDate;
                                    item_type_class      python:'contenttype-' + putils.normalizeString(item_type);
                                    item_wf_state        item/review_state|python: wtool.getInfoFor(item, 'review_state', '');
+                                   item_state_title     python:wtool.getTitleForStateOnType(item_wf_state, item_type);
                                    item_wf_state_class  python:'state-' + putils.normalizeString(item_wf_state);
                                    hasGetUrl            python:hasattr(item.aq_explicit, 'getURL');
                                    item_rel_url         python:hasGetUrl and item.getURL(relative=1) or getRelativeContentURL(item);
@@ -237,10 +238,10 @@
                     </td>
                     <td>
                         <span i18n:translate=""
-                              tal:condition="item_wf_state"
-                              tal:content="item_wf_state"
+                              tal:condition="item_state_title"
+                              tal:content="item_state_title"
                               tal:attributes="class item_wf_state_class" />
-                        <span tal:condition="not: item_wf_state">&nbsp;</span>
+                        <span tal:condition="not: item_state_title">&nbsp;</span>
                     </td>
                     <td tal:condition="python:isOrderable and canModifyFolderContent and not preSorted">
                       <a href=""
