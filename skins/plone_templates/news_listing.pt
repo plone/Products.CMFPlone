@@ -21,14 +21,15 @@
     <form name="searchresults" action="" method="post" tal:condition="results"
                       tal:define="batch python:Batch(results, 15, int(b_start), orphan=1)">
 
-        <metal:block tal:repeat="result python:[brain.getObject() for brain in batch]">
+        <metal:block tal:repeat="result batch">
 
             <div class="newsItem"
                  metal:define-macro="listitem"
                  tal:define="resultObject result/getObject;
                              creator result/Creator;
-                             resulturl resultObject/absolute_url;
-                             has_body resultObject/CookedBody">
+                             resulturl resultObject/absolute_url | nothing;
+                             has_body resultObject/CookedBody | nothing"
+                 tal:condition="python:resultObject is not None">
 
                 <h2>
                     <a href="/view" 
