@@ -4,6 +4,13 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - Beta2 - unreleased
 
+    - Making prefs_group_members a form controller template, which should be
+      somewhat safer from reported navigation and persistence problems, and
+      makes it possible to replicate the no-search-on-page-load behaviour
+      already added to prefs_users_overview. Group overview pages still not
+      converted, mainly because these templates are a mess. :-(
+      [optilude]
+
     - Making the images in document_actions.pt have their height and width
       set with CSS instead of attributes on the image tag. This closes
       http://members.plone.org/collector/3823, which advocated using the
