@@ -10,7 +10,6 @@
 <body>
 <div metal:fill-slot="main" id="content-news"
      tal:define="results python:container.portal_catalog(portal_type='News Item',sort_on='Date',sort_order='reverse',review_state='published');
-                 results python:[r for r in results if r.getObject()];
                  Batch python:modules['Products.CMFPlone'].Batch;
                  b_start python:request.get('b_start',0);
                  portal_discussion nocall:here/portal_discussion;
@@ -22,7 +21,7 @@
     <form name="searchresults" action="" method="post" tal:condition="results"
                       tal:define="batch python:Batch(results, 15, int(b_start), orphan=1)">
 
-        <metal:block tal:repeat="result batch">
+        <metal:block tal:repeat="result python:[brain.getObject() for brain in batch]">
 
             <div class="newsItem"
                  metal:define-macro="listitem"
