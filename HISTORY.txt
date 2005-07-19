@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - Beta2 - unreleased
 
+    - Fixed http://members.plone.org/collector/4302 using jenner's template
+      with a few simplifications, and some changes to folder_contents to make
+      reusability even easier.
+      [alecm]
+
     - Finished http://plone.org/collector/1805 without any catalog metadata
       even.  Added a method to WorkflowTool that retrieves a state title given
       a state id and a portal_type.  As a result it can be used for brains and
