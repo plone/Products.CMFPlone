@@ -4,6 +4,15 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - Beta2 - unreleased
 
+    - Making the images in document_actions.pt have their height and width
+      set with CSS instead of attributes on the image tag. This closes
+      http://members.plone.org/collector/3823, which advocated using the
+      image's own height and width. This approach was deemed unnecessary,
+      since we probably want them all to be consistent, and having to traverse
+      to each image is an unnecessary performance hit for something that'll stay
+      16x16 almost always. :)
+      [optilude]
+
     - Fixed http://members.plone.org/collector/4302 using jenner's template
       with a few simplifications, and some changes to folder_contents to make
       reusability even easier.

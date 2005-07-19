@@ -464,6 +464,11 @@
     text-decoration: none;
 }
 
+.documentActions img {
+    height: 16px;
+    width: 16px;
+}
+
 /* .system-message and #error-handling are reST error indicators */
 .portalMessage,
 .system-message,
