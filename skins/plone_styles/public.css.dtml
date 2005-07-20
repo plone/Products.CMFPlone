@@ -501,6 +501,7 @@
     font-weight: normal;
     color: &dtml-discreetColor;;
     margin: 0;    
+    display: inline;
 }
 
 /* Useful deviations from regular style on elements */
@@ -651,26 +652,44 @@ dl.collapsible dd.collapsibleContent > dl {
     padding: 0;
 }
 
-dl.collapsible.expanded dt.collapsibleHeader {
+dl.expandedInlineCollapsible dt.collapsibleHeader,
+dl.expandedBlockCollapsible dt.collapsibleHeader {
     padding-left: 22px;
     background: &dtml-backgroundColor; url(treeExpanded.gif) no-repeat 6px 50%;
     cursor: pointer;
 }
 
-dl.collapsible.collapsed {
+dl.collapsedBlockCollapsible {
     border: none !important;
     height: 1em;
     width: auto;
 }
 
-dl.collapsible.collapsed dt.collapsibleHeader {
+dl.collapsedBlockCollapsible dt.collapsibleHeader {
     padding-left: 22px;
     background: &dtml-backgroundColor; url(treeCollapsed.gif) no-repeat 6px 50%;
     cursor: pointer;
 }
 
-dl.collapsible.collapsed dd.collapsibleContent {
+dl.collapsedInlineCollapsible dd.collapsibleContent,
+dl.collapsedBlockCollapsible dd.collapsibleContent {
     display: none;
+}
+
+dl.collapsedInlineCollapsible {
+    border: none !important;
+    height: 1em;
+    width: auto;
+    display: inline;
+}
+
+dl.collapsedInlineCollapsible dt.collapsibleHeader {
+    padding-left: 22px;
+    background: &dtml-backgroundColor; url(treeCollapsed.gif) no-repeat 6px 50%;
+    cursor: pointer;
+    display: inline;
+    top: 0;
+    left: 0;
 }
 
 
