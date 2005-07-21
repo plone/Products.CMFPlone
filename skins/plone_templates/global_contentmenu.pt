@@ -7,7 +7,9 @@
 
 <ul tal:define="folder python:test(getattr(here.aq_explicit, 'isPrincipiaFolderish', 0), here, here.getParentNode());
                 isContextDefaultPage here/isDefaultPageInFolder;
-                parent_folder python: isContextDefaultPage and here.getParentNode() or folder;">
+                parent_folder python: isContextDefaultPage and here.getParentNode() or folder;
+                disableMenu python:here.portal_factory.isTemporary(here);"
+    tal:condition="not:disableMenu">
 
 
     <tal:states define="review_state wf_state;

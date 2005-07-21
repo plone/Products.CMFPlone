@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - Beta2 - unreleased
 
+    - Fixing http://members.plone.org/collector/4300 by disabling the content
+      menu when the object is in the factory. PLIP 24 form unload protection
+      takes care of the other cases.
+      [optilude]
+
     - Added link to ownership_form on the sharing page. Changed
       warning text a bit for when you visit this page for non-contentish
       items so it shows the title of the portal_type and not the id.
