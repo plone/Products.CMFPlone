@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - Beta2 - unreleased
 
+    - Fixed http://plone.org/collector/4083. 
+      <div class="visualClear"><!-- --></div> to remove whitespace
+      in IE.
+      [ender]
+
     - Fixing http://members.plone.org/collector/4300 by disabling the content
       menu when the object is in the factory. PLIP 24 form unload protection
       takes care of the other cases.

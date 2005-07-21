@@ -83,7 +83,7 @@
            </div>
       </div>
 
-      <div class="visualClear"></div>
+      <div class="visualClear"><!-- --></div>
 
       <!-- The wrapper table. It contains the three columns. There's a table-less
            alternative in the plone_tableless skin layer that you can use if you
@@ -173,7 +173,7 @@
       </table>
       <!-- end column wrapper -->
 
-      <div class="visualClear"></div>
+      <div class="visualClear"><!-- --></div>
 
 
       <hr class="netscape4" />

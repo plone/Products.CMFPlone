@@ -47,11 +47,11 @@
         </div>
 
         <!-- Navigation -->
-        <div class="visualClear">&nbsp;</div>
+        <div class="visualClear"><!-- --></div>
 
         <div metal:use-macro="here/batch_macros/macros/navigation" />
 
-        <div class="visualClear">&nbsp;</div>
+        <div class="visualClear"><!-- --></div>
 
     </div>
 

@@ -89,7 +89,7 @@
 
   </div>
 
-<div class="visualClear"></div>
+<div class="visualClear"><!-- --></div>
 
 <!-- The wrapper div. It contains the three columns. -->
 <div id="portal-columns" tal:attributes="class string:${hidecolumns}">
@@ -177,7 +177,7 @@
     </div>
     <!-- end of the right (by default at least) column -->
 
-    <div class="visualClear">&nbsp;</div>
+    <div class="visualClear"><!-- --></div>
 
 </div>
 <!-- end column wrapper -->

@@ -110,7 +110,7 @@
             show related items if they exist
         </div>
 
-        <div class="visualClear"></div>
+        <div class="visualClear"><!-- --></div>
 
     </tal:main-macro>
 </div>
