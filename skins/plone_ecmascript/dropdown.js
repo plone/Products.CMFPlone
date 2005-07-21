@@ -25,7 +25,9 @@
  *
  * When you click somewhere else than the menu, then all open menus will be
  * deactivated. When you move your mouse over the a-tag of another menu, then
- * that one will be activated and all others deactivated.
+ * that one will be activated and all others deactivated. When you click on a
+ * link inside the actionMenuContent element, then the menu will be closed and
+ * the link followed.
  *
  * This file uses functions from register_function.js, cssQuery.js and
  * nodeutils.js.
@@ -39,16 +41,19 @@ function isActionMenu(node) {
     return false;
 };
 
-function toggleMenu(event) {
+function hideAllMenus() {
+    var menus = cssQuery('dl.actionMenu');
+    for (var i=0; i < menus.length; i++) {
+        replaceClassName(menus[i], 'activated', 'deactivated', true);
+    }
+};
+
+function toggleMenuHandler(event) {
     if (!event) var event = window.event; // IE compatibility
 
     // terminate if we hit a non-compliant DOM implementation
     // returning true, so the link is still followed
     if (!W3CDOM){return true;}
-
-    if (!this.tagName && (this.tagName == 'A' || this.tagName == 'a')) {
-        return true;
-    }
 
     var container = findContainer(this, isActionMenu);
     if (!container) {
@@ -67,6 +72,15 @@ function toggleMenu(event) {
     return false;
 };
 
+function hideMenusHandler(event) {
+    if (!event) var event = window.event; // IE compatibility
+
+    hideAllMenus();
+
+    // we want to follow this link
+    return true;
+};
+
 function actionMenuDocumentMouseDown(event) {
     if (!event) var event = window.event; // IE compatibility
 
@@ -81,11 +95,7 @@ function actionMenuDocumentMouseDown(event) {
         return true;
     }
 
-    // hide all menus
-    var menus = cssQuery('dl.actionMenu');
-    for (var i=0; i < menus.length; i++) {
-        replaceClassName(menus[i], 'activated', 'deactivated', true);
-    }
+    hideAllMenus();
 
     return true;
 };
@@ -134,18 +144,22 @@ function initializeMenus() {
 
     document.onmousedown = actionMenuDocumentMouseDown;
 
-    // hide all menus
-    var menus = cssQuery('dl.actionMenu');
-    for (var i=0; i < menus.length; i++) {
-        replaceClassName(menus[i], 'activated', 'deactivated', true);
-    }
+    hideAllMenus();
 
+    // add toggle function to header links
     var menu_headers = cssQuery('dl.actionMenu > dt.actionMenuHeader > a');
     for (var i=0; i < menu_headers.length; i++) {
         var menu_header = menu_headers[i];
 
-        menu_header.onclick = toggleMenu;
+        menu_header.onclick = toggleMenuHandler;
         menu_header.onmouseover = actionMenuMouseOver;
+    }
+
+    // add hide function to all links in the dropdown, so the dropdown closes
+    // when any link is clicked
+    var links_in_content = cssQuery('dl.actionMenu > dd.actionMenuContent a');
+    for (var i=0; i < links_in_content.length; i++) {
+        links_in_content[i].onclick = hideMenusHandler;
     }
 };
 
