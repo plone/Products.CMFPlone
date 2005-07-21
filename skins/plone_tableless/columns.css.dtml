@@ -68,4 +68,20 @@ body {
     margin: 0 0 0 <dtml-var columnOneWidth missing="16em">;
 }
 
+/* fullscreen */
+
+body.fullscreen #portal-column-one,
+body.fullscreen #portal-column-two {
+    display: none;
+}
+body.fullscreen #visual-column-wrapper {
+    margin-right: 0;
+}
+body.fullscreen #portal-column-content {
+    margin-left: 0;
+}
+body.fullscreen #portal-column-content #content {
+    margin: 0;
+}
+
 /* </dtml-with> */

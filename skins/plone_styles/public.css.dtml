@@ -795,4 +795,13 @@ dl.collapsedInlineCollapsible dt.collapsibleHeader {
 }
 
 
+/* fullscreen */
+
+body.fullscreen #portal-logo,
+body.fullscreen #portal-siteactions,
+body.fullscreen #portal-searchbox {
+    display: none;
+}
+
+
 /* </dtml-with> */

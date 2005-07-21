@@ -43,4 +43,11 @@
     padding: 2em 2em 1em 0em;
 }
 
+/* fullscreen */
+
+body.fullscreen #portal-column-one,
+body.fullscreen #portal-column-two {
+    display: none;
+}
+
 /* </dtml-with> */
