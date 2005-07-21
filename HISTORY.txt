@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - Beta2 - unreleased
 
+    - Added link to ownership_form on the sharing page. Changed
+      warning text a bit for when you visit this page for non-contentish
+      items so it shows the title of the portal_type and not the id.
+      The sharing page really needs to be refactored in the next release.
+      [ender]
+
     - Making prefs_group_members a form controller template, which should be
       somewhat safer from reported navigation and persistence problems, and
       makes it possible to replicate the no-search-on-page-load behaviour

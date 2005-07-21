@@ -15,6 +15,7 @@
                    b_size python:12;b_start python:0;b_start request/b_start | b_start;
                    tabindex python:Iterator();
                    iscontainer here/isPrincipiaFolderish|nothing;
+                   itemPortalTypeTitle python:here.getTypeInfo().Title();
                    inheritanceActive python:putils.isLocalRoleAcquired(here);
                    search_submitted request/role_submit|nothing;
                    search_results python:search_submitted and mtool.searchForMembers(
@@ -36,8 +37,8 @@
                   i18n:translate="local_role_warning_type">
                 <strong>Attention!</strong> 
                 You are setting the sharing permissions for a 
-                <strong i18n:name="type" tal:content="here/portal_type"/>.
-                If you want to set the permissions for its containing folder, 
+                <strong i18n:name="type" tal:content="itemPortalTypeTitle"/>.
+                If you want to set the permissions for its container, 
                 click 
                 <span i18n:name="link">
                     <a href="" 
@@ -344,8 +345,7 @@
                                         (search_submitted and not search_results))">
 
         <h1 i18n:translate="heading_add_sharing_permissions">
-          Add sharing permissions for
-          <tal:block tal:content="here/pretty_title_or_id" i18n:name="item">title</tal:block>
+          Add sharing permissions to users
         </h1>
 
 
@@ -558,8 +558,20 @@
                 />
         </div>
 
+
       </fieldset>
     </form>
+    
+    <tal:change_ownership condition="python: checkPermission('Manage portal', here)">
+        <h1 i18n:translate="change_ownership">Change ownership</h1>
+        <p i18n:translate="description_change_ownership">
+            To change the ownership for this <span i18n:name="type" tal:content="itemPortalTypeTitle"/>, click 
+            <span i18n:name="link_to_ownership_form">
+            <a href="" tal:attributes="href string:${here/absolute_url}/ownership_form"
+               i18n:translate="link_label_change_ownership">here</a>
+            </span>
+        </p>
+    </tal:change_ownership>
 
     <div metal:use-macro="here/document_byline/macros/byline">
         Get the byline - contains details about author and modification date.
