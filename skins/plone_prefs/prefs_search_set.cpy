@@ -26,8 +26,13 @@ else:
   jstool.getResource('livesearch.js').setEnabled(False)
   jstool.cookResources()
 
-portal_properties.site_properties.manage_changeProperties(types_not_searched=portaltypes)
+# The menu pretends to be a whitelist, but we are storing a blacklist so that
+# new types are searchable by default. Inverse the list.
+allTypes = context.getPortalTypes()
+blacklistedTypes = [t for t in allTypes if t not in portaltypes]
 
-msg = 'Search settings updated.' 
+portal_properties.site_properties.manage_changeProperties(types_not_searched=blacklistedTypes)
+
+msg = 'Search settings updated.'
 
 return state.set(portal_status_message=msg)

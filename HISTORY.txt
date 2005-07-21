@@ -3,6 +3,14 @@ Changelog for Plone
    (name of developer listed in brackets)
 
 Plone 2.1 - Plaid - Beta2 - unreleased
+
+    - Made the blacklisting control in the search control panel act as a
+      whitelist. That is, new types appear as selected by default and the
+      backing store is a blacklist, but the user selects which type to be
+      searched, not which types not to be searched, which is easier on the
+      mind.
+      [optilude]
+
     - Created an Actions drop-down menu with cut, copy, paste
       and delete in there. I know the label is not optimal
       but I think this is nicer and cleaner.

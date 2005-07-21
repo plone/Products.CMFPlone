@@ -76,26 +76,31 @@
     
             </div>
 	    <div class="field"
-	         tal:define="searchblacklist request/searchblacklist | site_properties/types_not_searched;
-		             error errors/searchblacklist | nothing;">
-                <label i18n:translate="label_search_types_blacklist">Define the types not to be searched</label>
+	         tal:define="
+	               allTypes         here/getPortalTypes;
+	               dummy            python:allTypes.sort();
+	               blacklisted      site_properties/types_not_searched;
+	               searchTypes      python:[t for t in allTypes if t not in blacklisted];
+	               portal_types portal/portal_types;
+	               error errors/searchTypes | nothing;">
+                <label i18n:translate="label_search_types">Define the types to be searched</label>
     
-                <div class="formHelp" id="searchblacklist_help"
-                     i18n:translate="help_searchblacklist">
-		     Define the types that should NOT be searched when you use
-		     the searchbox.
+                <div class="formHelp" id="seachtypes_help"
+                     i18n:translate="help_searchtypes">
+		             Define the types that should searched when you use the searchbox.
+		             Note that if new content types are installed, they will be enabled
+		             for search by default unless explicitly turned off here or by the
+		             relevant installer.
                 </div>
-		<div>
-                   <ul class="configlets" tal:define="portal_types portal/portal_types;">
-                     <li tal:define="portaltypes context/getPortalTypes;
-                                     dummy python:portaltypes.sort()"
-                         tal:repeat="ptype portaltypes">
+		            <div>
+                   <ul class="configlets">
+                     <li tal:repeat="ptype allTypes">
                        <input class="noborder"
                            type="checkbox"
                            name="portaltypes:list"
                            tal:attributes="value ptype;
                                            id ptype;
-                                           checked python:test(ptype in searchblacklist,'checked','');" />
+                                           checked python:test(ptype in searchTypes,'checked','');" />
                        <label for=""
                            i18n:translate=""
                            tal:attributes="for ptype"
@@ -103,10 +108,10 @@
                            />
                     </li>
                    </ul>
-		</div>
+		            </div>
     
                 <div tal:content="error">Validation error output</div>
-	    </div>    
+	          </div>    
             <div class="formControls">
                 <input class="context"
                        tabindex=""
