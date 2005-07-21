@@ -360,41 +360,57 @@
     <tal:edit define="editActions actions/object_buttons | nothing;
                       getIconFor nocall:putils/getIconFor;"
               condition="python:editActions">
-              
-        <tal:objectAction repeat="editAction editActions">
-          <tal:action define="icon python:getIconFor('object_buttons', editAction['id'], None);
-                              class_name string:actionicon-object_buttons-${editAction/id};
-                              class_name python:test(icon, class_name, nothing);">
-            <li tal:condition="python:editAction['id'] not in ('delete', 'batch')"
-                tal:attributes="class class_name">
-                <a tal:content="editAction/name"
-                   tal:attributes="href editAction/url;
-                                   title editAction/name;
-                                   class python:test(icon, 'visualIconReplace', nothing);"
-                   i18n:attributes="title"
-                   i18n:translate="">
-                    Action name
-                </a>
-            </li>
-
-            <li tal:condition="python:editAction['id']=='delete'"
-                tal:attributes="class class_name">
-                <a onclick="#"
-                   tal:define="ptype here/portal_type;
-                               alert_msg python:here.translate('alert_really_delete', default='Do you really want to delete the item?');
-                               ptype_translated python:here.translate(ptype);"
-                   tal:attributes="href editAction/url;
-                                   title editAction/name;
-                                   class python:test(icon, 'visualIconReplace', nothing);
-                                   onclick string:return confirm('$ptype_translated\n${alert_msg}');;"
-                   tal:content="editAction/name"
-                   i18n:attributes="title"
-                   i18n:translate="">
-                    Action name
-                </a>
-            </li>
-          </tal:action>
-        </tal:objectAction>
+        <li>
+            <dl class="actionMenu" id="actionDropDownMenu">
+                <dt class="actionMenuHeader">
+                    <a href="#"
+                       title="Actions"
+                       i18n:attributes="title title_actions_menu;"
+                       tal:attributes="href string:${parent_folder/absolute_url}/folder_contents;"
+                       i18n:translate="label_actions_menu">
+                        Actions
+                    </a>
+                </dt>
+                <dd class="actionMenuContent">
+                    <ul>
+                        <tal:objectAction repeat="editAction editActions">
+                            <tal:action define="icon python:getIconFor('object_buttons', editAction['id'], None);
+                                  class_name string:actionicon-object_buttons-${editAction/id};
+                                  class_name python:test(icon, class_name, nothing);">
+                                <li tal:condition="python:editAction['id'] not in ('delete', 'batch')"
+                                    tal:attributes="class class_name">
+                                    <a tal:content="editAction/name"
+                                       tal:attributes="href editAction/url;
+                                       title editAction/name;
+                                       class python:test(icon, 'visualIconReplace', nothing);"
+                                       i18n:attributes="title"
+                                       i18n:translate="">
+                                        Action name
+                                    </a>
+                                </li>
+    
+                                <li tal:condition="python:editAction['id']=='delete'"
+                                    tal:attributes="class class_name">
+                                    <a onclick="#"
+                                       tal:define="ptype here/portal_type;
+                                                   alert_msg python:here.translate('alert_really_delete', default='Do you really want to delete the item?');
+                                                   ptype_translated python:here.translate(ptype);"
+                                       tal:attributes="href editAction/url;
+                                                       title editAction/name;
+                                                       class python:test(icon, 'visualIconReplace', nothing);
+                                                       onclick string:return confirm('$ptype_translated\n${alert_msg}');;"
+                                       tal:content="editAction/name"
+                                       i18n:attributes="title"
+                                       i18n:translate="">
+                                        Action name
+                                    </a>
+                                </li>
+                            </tal:action>
+                        </tal:objectAction>
+                    </ul>
+                </dd>
+            </dl>
+        </li>
     </tal:edit>
 
     <tal:batch define="batchActions actions/batch | nothing"

@@ -3,6 +3,10 @@ Changelog for Plone
    (name of developer listed in brackets)
 
 Plone 2.1 - Plaid - Beta2 - unreleased
+    - Created an Actions drop-down menu with cut, copy, paste
+      and delete in there. I know the label is not optimal
+      but I think this is nicer and cleaner.
+      [ender]
 
     - Fixed http://plone.org/collector/4083. 
       <div class="visualClear"><!-- --></div> to remove whitespace
