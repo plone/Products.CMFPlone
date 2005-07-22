@@ -3,6 +3,11 @@ Changelog for Plone
    (name of developer listed in brackets)
 
 Plone 2.1 - Plaid - Beta2 - unreleased
+    - Changed add to favorites icon in document actions to the 
+      appropriate icon. Before it used the site icon while the
+      portal_type uses a heart. They must match and now they do.
+      [ender]
+
     - Applied patch from http://plone.org/collector/4205. Better check
       for existance of member folders. Thanks to Tiran.
       [ender]

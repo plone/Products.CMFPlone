@@ -55,7 +55,7 @@ def rc3_rc4(portal):
     out.append('Adding AddToFavorites to portal_actions and portal_actionicons')
     ai=getToolByName(portal, 'portal_actionicons')
     try:
-        ai.addActionIcon('plone', 'addtofavorites', 'site_icon.gif', 'AddToFavorites')
+        ai.addActionIcon('plone', 'addtofavorites', 'favorite_icon.gif', 'AddToFavorites')
     except KeyError:
         pass #Duplicate definition!
 
