@@ -6,7 +6,7 @@ function wrapNode(node, wrappertype, wrapperclass){
     wrapper.className = wrapperclass;
     var innerNode = node.parentNode.replaceChild(wrapper,node);
     wrapper.appendChild(innerNode);
-}
+};
 
 function nodeContained(innernode, outernode){
     // check if innernode is contained in outernode
@@ -18,7 +18,7 @@ function nodeContained(innernode, outernode){
         node=node.parentNode;
     }
     return false;
-}
+};
 
 function findContainer(node, func) {
     // Starting with the given node, find the nearest containing element
@@ -31,11 +31,11 @@ function findContainer(node, func) {
         node = node.parentNode;
     }
     return false;
-}
+};
 
 function hasClassName(node, class_name) {
     return new RegExp('\\b'+class_name+'\\b').test(node.className);
-}
+};
 
 function addClassName(node, class_name) {
     if (!node.className) {
@@ -45,7 +45,7 @@ function addClassName(node, class_name) {
         // cleanup
         node.className = className.split(/\s+/).join(' ');
     }
-}
+};
 
 function removeClassName(node, class_name) {
     var className = node.className;
@@ -56,7 +56,7 @@ function removeClassName(node, class_name) {
         className = className.replace(/\s+/g, ' ');
         node.className = className.replace(/\s+$/g, '');
     }
-}
+};
 
 function replaceClassName(node, old_class, new_class, ignore_missing) {
     if (ignore_missing && !hasClassName(node, old_class)) {
@@ -71,7 +71,7 @@ function replaceClassName(node, old_class, new_class, ignore_missing) {
             node.className = className.replace(/\s+$/g, '');
         }
     }
-}
+};
 
 function walkTextNodes(node, func, data) {
     // traverse childnodes and call func when a textnode is found
@@ -87,7 +87,14 @@ function walkTextNodes(node, func, data) {
             func(node, data);
         }
     }
-}
+};
+
+/* These are two functions, because getInnerTextFast doesn't always return the
+ * the same results, as it depends on the implementation of node.innerText of
+ * the browser. getInnerTextCompatible will always return the same values, but
+ * is a bit slower. The difference is just in the whitespace, so if this
+ * doesn't matter, you should always use getInnerTextFast.
+ */
 
 function getInnerTextCompatible(node) {
     var result = new Array();
@@ -95,7 +102,7 @@ function getInnerTextCompatible(node) {
                   function(n, d){d.push(n.nodeValue)},
                   result);
     return result.join("");
-}
+};
 
 function getInnerTextFast(node) {
     if (node.innerText) {
@@ -103,4 +110,4 @@ function getInnerTextFast(node) {
     } else {
         return getInnerTextCompatible(node);
     }
-}
+};
