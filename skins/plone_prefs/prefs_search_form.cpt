@@ -77,14 +77,16 @@
             </div>
 	    <div class="field"
 	         tal:define="
-	               allTypes         here/getPortalTypes;
-	               dummy            python:allTypes.sort();
+	               portal_types     portal/portal_types;
+	               allTypes         python:[portal_types.getTypeInfo(t) for t in here.getPortalTypes()];
+	               dummy            python:allTypes.sort(lambda x,y: cmp(x.title_or_id(), y.title_or_id()));
+	               numTypes         python:len(allTypes);
+	               numCols          python:3;
+	               sublistLen       python:numTypes % numCols == 0 and numTypes / numCols or numTypes / numCols + 1;
+	               typeLists        python:[allTypes[i*sublistLen:(i == numCols - 1 and numTypes or (i+1)*sublistLen)] for i in range(numCols)];
 	               blacklisted      site_properties/types_not_searched;
-	               searchTypes      python:[t for t in allTypes if t not in blacklisted];
-	               portal_types portal/portal_types;
-	               error errors/searchTypes | nothing;">
+	               searchTypes      python:[t.getId() for t in allTypes if t.getId() not in blacklisted];">
                 <label i18n:translate="label_search_types">Define the types to be searched</label>
-    
                 <div class="formHelp" id="seachtypes_help"
                      i18n:translate="help_searchtypes">
 		             Define the types that should searched when you use the searchbox.
@@ -92,25 +94,25 @@
 		             for search by default unless explicitly turned off here or by the
 		             relevant installer.
                 </div>
-		            <div>
+		            <div style="float:left; margin-right: 2em;" tal:repeat="sublist typeLists">
                    <ul class="configlets">
-                     <li tal:repeat="ptype allTypes">
+                     <li tal:repeat="ptypeInfo sublist">
                        <input class="noborder"
                            type="checkbox"
                            name="portaltypes:list"
-                           tal:attributes="value ptype;
-                                           id ptype;
-                                           checked python:test(ptype in searchTypes,'checked','');" />
+                           tal:attributes="value ptypeInfo/getId;
+                                           id ptypeInfo/getId;
+                                           checked python:test(ptypeInfo.getId() in searchTypes,'checked','');" />
                        <label for=""
                            i18n:translate=""
-                           tal:attributes="for ptype"
-                           tal:content="python: portal_types.getTypeInfo(ptype).Title()"
+                           tal:attributes="for ptypeInfo/getId"
+                           tal:content="ptypeInfo/Title"
                            />
                     </li>
                    </ul>
 		            </div>
     
-                <div tal:content="error">Validation error output</div>
+                <div class="visualClear"><!----></div>
 	          </div>    
             <div class="formControls">
                 <input class="context"
