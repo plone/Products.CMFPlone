@@ -11,6 +11,20 @@
 <div metal:fill-slot="prefs_configlet_main"
      tal:define="errors options/state/getErrors;">
 
+<tal:disabled tal:condition="nothing">
+<!-- I couldn't use the javascript_head_slot from this template, so I put it here -->
+<script type="text/javascript">
+<!--
+registerPloneFunction(
+    function() {
+        var nodes = cssQuery('#searchtypes-field ul li');
+        sortNodes(nodes, getInnerTextFast);
+    }
+);
+//-->
+</script>
+</tal:disabled>
+
     <h1 i18n:translate="heading_search_setup">Search Settings</h1>
 
     <a href=""
@@ -75,7 +89,7 @@
                 <label for="cb_livesearch_off" i18n:translate="no">No</label>
     
             </div>
-	    <div class="field"
+	    <div class="field" id="searchtypes-field"
 	         tal:define="
 	               portal_types     portal/portal_types;
 	               allTypes         python:[portal_types.getTypeInfo(t) for t in here.getPortalTypes()];
@@ -101,18 +115,18 @@
                            type="checkbox"
                            name="portaltypes:list"
                            tal:attributes="value ptypeInfo/getId;
-                                           id ptypeInfo/getId;
+                                           id python:putils.normalizeString(ptypeInfo.getId());
                                            checked python:test(ptypeInfo.getId() in searchTypes,'checked','');" />
                        <label for=""
                            i18n:translate=""
-                           tal:attributes="for ptypeInfo/getId"
+                           tal:attributes="for python:putils.normalizeString(ptypeInfo.getId())"
                            tal:content="ptypeInfo/Title"
                            />
                     </li>
                    </ul>
 		            </div>
     
-                <div class="visualClear"><!----></div>
+                <div class="visualClear"><!-- --></div>
 	          </div>    
             <div class="formControls">
                 <input class="context"

@@ -161,6 +161,10 @@ function initializeMenus() {
     for (var i=0; i < menu_contents.length; i++) {
         menu_contents[i].onclick = hideMenusHandler;
     }
+
+    // uncomment to enable sorting of elements
+    //var nodes = cssQuery('#objectMenu > dd.actionMenuContent li');
+    //sortNodes(nodes, getInnerTextFast);
 };
 
 registerPloneFunction(initializeMenus);

@@ -111,3 +111,42 @@ function getInnerTextFast(node) {
         return getInnerTextCompatible(node);
     }
 };
+
+/* This function reorder nodes in the DOM.
+ * fetch_func - the function which returns the value for comparison
+ * cmp_func - the compare function, if not provided then the string of the
+ * value returned by fetch_func is used.
+ */
+function sortNodes(nodes, fetch_func, cmp_func) {
+    // wrapper for sorting
+    var SortNodeWrapper = function(node) {
+        this.value = fetch_func(node);
+        this.cloned_node = node.cloneNode(true);
+        this.toString = function() {
+            if (this.value.toString) {
+                return this.value.toString();
+            } else {
+                return this.value;
+            }
+        }
+    }
+
+    // wrap nodes
+    var items = new Array();
+    for (var i=0; i<nodes.length; i++) {
+        items.push(new SortNodeWrapper(nodes[i]));
+    }
+
+    //sort
+    if (cmp_func) {
+        items.sort(cmp_func);
+    } else {
+        items.sort();
+    }
+
+    // reorder nodes
+    for (var i=0; i<items.length; i++) {
+        var dest = nodes[i];
+        dest.parentNode.replaceChild(items[i].cloned_node, dest);
+    }
+};
