@@ -88,6 +88,7 @@ from Products.CMFPlone.migrations.v2_1.betas import fixWorkflowStateTitles
 from Products.CMFPlone.migrations.v2_1.betas import changeSiteActions
 from Products.CMFPlone.migrations.v2_1.betas import removePloneSetupActionFromPortalMembership
 from Products.CMFPlone.migrations.v2_1.betas import fixViewMethodAliases
+from Products.CMFPlone.migrations.v2_1.betas import fixPortalEditAndSharingActions
 
 from Products.CMFDynamicViewFTI.migrate import migrateFTI
 
@@ -2213,6 +2214,48 @@ class TestMigrations_v2_1(MigrationTest):
         # Should not fail if tool is missing
         self.portal._delObject('portal_types')
         fixViewMethodAliases(self.portal, [])
+
+    def testFixPortalEditAndSharingActions(self):
+        # Portal should use /edit and /sharing for edit and sharing actions
+        fti = self.portal.getTypeInfo()
+        for action in fti.listActions():
+            if action.getId() == 'edit':
+                action.setActionExpression('string:${object_url}/folder_edit_form')
+            elif action.getId() == 'local_roles':
+                action.setActionExpression('string:${object_url}/folder_localrole_form')
+        fixPortalEditAndSharingActions(self.portal, [])
+        for action in fti.listActions():
+            if action.getId() == 'edit':
+                self.assertEqual(action.getActionExpression(), 'string:${object_url}/edit')
+            elif action.getId() == 'local_roles':
+                self.assertEqual(action.getActionExpression(), 'string:${object_url}/sharing')
+
+    def testFixPortalEditAndSharingActionsTwice(self):
+        # Portal should use /edit and /sharing for edit and sharing actions
+        fti = self.portal.getTypeInfo()
+        for action in fti.listActions():
+            if action.getId() == 'edit':
+                action.setActionExpression('string:${object_url}/folder_edit_form')
+            elif action.getId() == 'local_roles':
+                action.setActionExpression('string:${object_url}/folder_localrole_form')
+        fixPortalEditAndSharingActions(self.portal, [])
+        fixPortalEditAndSharingActions(self.portal, [])
+        for action in fti.listActions():
+            if action.getId() == 'edit':
+                self.assertEqual(action.getActionExpression(), 'string:${object_url}/edit')
+            elif action.getId() == 'local_roles':
+                self.assertEqual(action.getActionExpression(), 'string:${object_url}/sharing')
+
+    def testFixPortalEditAndSharingActionsNoTool(self):
+        # Should not fail if tool is missing
+        self.portal._delObject('portal_types')
+        fixPortalEditAndSharingActions(self.portal, [])
+
+    def testFixPortalEditAndSharingActionsNoFTI(self):
+        # Should not fail if FTI is missing
+        self.portal.portal_types._delObject('Plone Site')
+        fixPortalEditAndSharingActions(self.portal, [])
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite

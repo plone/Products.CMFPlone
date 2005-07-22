@@ -159,6 +159,9 @@ def beta1_beta2(portal):
     # Make sure our 'view' alises are (selected layout)
     fixViewMethodAliases(portal, out)
 
+    # Make portal root use /edit and /sharing URLs on actions
+    fixPortalEditAndSharingActions(portal, out)
+
     return out
 
 
@@ -1070,3 +1073,19 @@ def fixViewMethodAliases(portal, out):
                     aliases['view'] = '(selected layout)'
                     fti.setMethodAliases(aliases)
                     out.append("Fixed 'view' method alias for %s FTI" % (typeName,))
+
+def fixPortalEditAndSharingActions(portal, out):
+    """The 'edit' and 'sharing' actions of the portal should use the method
+    aliases /edit and /sharing.
+    """
+    ttool = getToolByName(portal, 'portal_types', None)
+    if ttool is not None:
+        fti = getattr(ttool, 'Plone Site', None)
+        if fti is not None:
+            for action in fti.listActions():
+                if action.getId() == 'edit':
+                    action.setActionExpression('string:${object_url}/edit')
+                    out.append('Set portal root edit action to use /edit method alias')
+                elif action.getId() == 'local_roles':
+                    action.setActionExpression('string:${object_url}/sharing')
+                    out.append('Set portal root sharing action to use /sharing method alias')

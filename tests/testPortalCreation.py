@@ -449,6 +449,14 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
             aliases = fti.getMethodAliases()
             self.assertEqual(aliases['view'], '(selected layout)')
 
+    def testPortalUsesMethodAliases(self):
+        fti = self.portal.getTypeInfo()
+        for action in fti.listActions():
+            if action.getId() == 'edit':
+                self.assertEqual(action.getActionExpression(), 'string:${object_url}/edit')
+            if action.getId() == 'sharing':
+                self.assertEqual(action.getActionExpression(), 'string:${object_url}/sharing')
+
 class TestPortalBugs(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):

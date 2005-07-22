@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - Beta2 - unreleased
 
+    - Made the portal root use the /edit and /sharing method aliases for its
+      'edit' and 'sharing' tabs/actions.
+      [optilude]
+
     - Made the 'view' method aliases point to '(selected layout)' instead of
       '(default view)'. This assures consistency with previous behaviour,
       so that /view at the end of a URL always gets the item itself, ignoring
