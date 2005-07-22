@@ -157,9 +157,9 @@ function initializeMenus() {
 
     // add hide function to all links in the dropdown, so the dropdown closes
     // when any link is clicked
-    var links_in_content = cssQuery('dl.actionMenu > dd.actionMenuContent a');
-    for (var i=0; i < links_in_content.length; i++) {
-        links_in_content[i].onclick = hideMenusHandler;
+    var menu_contents = cssQuery('dl.actionMenu > dd.actionMenuContent');
+    for (var i=0; i < menu_contents.length; i++) {
+        menu_contents[i].onclick = hideMenusHandler;
     }
 };
 
