@@ -156,6 +156,9 @@ def beta1_beta2(portal):
     # Make sure the Events folder is cataloged
     indexEventsFolder(portal, out)
 
+    # Make sure our 'view' alises are (selected layout)
+    fixViewMethodAliases(portal, out)
+
     return out
 
 
@@ -844,7 +847,7 @@ def addMethodAliasesForPloneSite(portal, out):
     """Add standard method aliases to Plone Site FTI"""
     aliases = {
                 '(Default)'  : '(dynamic view)',
-                'view'       : '(dynamic view)',
+                'view'       : '(selected layout)',
                 'index.html' : '(dynamic view)',
                 'edit'       : 'folder_edit_form',
                 'properties' : '',
@@ -857,7 +860,7 @@ def addMethodAliasesForPloneSite(portal, out):
         fti = getattr(ttool, 'Plone Site', None)
         if fti is not None:
             cur_aliases = fti.getMethodAliases()
-            if cur_aliases.get('view', None) != '(dynamic view)':
+            if cur_aliases.get('view', None) != '(selected layout)':
                 fti.setMethodAliases(aliases)
                 out.append("Added method aliases to Plone Site FTI")
 
@@ -1050,3 +1053,20 @@ def removePloneSetupActionFromPortalMembership(portal, out):
                 out.append("Removed action %s from portal_membership"%action.getId())
             idx += 1
         actionsTool.deleteActions(del_idxs)
+
+def fixViewMethodAliases(portal, out):
+    """The 'view' method alias should be (selected layout), not (default view),
+    because you should be able to use /view to avoid any default-page being
+    displayed. Fix all ATCT types and Plone Site.
+    """
+    types = ('Document', 'Event', 'Favorite', 'File', 'Folder', 'Image', 'Link', 'News Item', 'Topic', 'Plone Site')
+    ttool = getToolByName(portal, 'portal_types', None)
+    if ttool is not None:
+        for typeName in types:
+            fti = getattr(ttool, typeName, None)
+            if fti is not None:
+                aliases = fti.getMethodAliases().copy()
+                if aliases.get('view', None) != '(selected layout)':
+                    aliases['view'] = '(selected layout)'
+                    fti.setMethodAliases(aliases)
+                    out.append("Fixed 'view' method alias for %s FTI" % (typeName,))

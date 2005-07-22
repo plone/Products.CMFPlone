@@ -421,7 +421,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         # Should add method aliases to the Plone Site FTI
         expected_aliases = {
                 '(Default)'  : '(dynamic view)',
-                'view'       : '(dynamic view)',
+                'view'       : '(selected layout)',
                 'index.html' : '(dynamic view)',
                 'edit'       : 'folder_edit_form',
                 'sharing'    : 'folder_localrole_form',
@@ -441,6 +441,13 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         installed = [a.getId() for a in self.membership.listActions()]
         self.failIf('plone_setup' in installed)
 
+    def testTypesHaveSelectedLayoutViewAction(self):
+        # Should add method aliases to the Plone Site FTI
+        types = ('Document', 'Event', 'Favorite', 'File', 'Folder', 'Image', 'Link', 'News Item', 'Topic', 'Plone Site')
+        for typeName in types:
+            fti = getattr(self.types, typeName)
+            aliases = fti.getMethodAliases()
+            self.assertEqual(aliases['view'], '(selected layout)')
 
 class TestPortalBugs(PloneTestCase.PloneTestCase):
 

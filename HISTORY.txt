@@ -4,6 +4,15 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - Beta2 - unreleased
 
+    - Made the 'view' method aliases point to '(selected layout)' instead of
+      '(default view)'. This assures consistency with previous behaviour,
+      so that /view at the end of a URL always gets the item itself, ignoring
+      any default-page that may be set. Note that the 'view' *action* still
+      points to 'string:${object_url}', so that the 'view' tab, as well as
+      the '(Default)' target, still get '(dynamic view)' (and thus default
+      pages) for types other than File and Image.
+      [optilude]
+
     - Fixed http://members.plone.org/collector/4327. The live search now
       honours typeUseViewActionInListings.
       [optilude]

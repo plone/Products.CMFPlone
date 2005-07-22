@@ -87,6 +87,7 @@ from Products.CMFPlone.migrations.v2_1.betas import changeMemberdataExtEditor
 from Products.CMFPlone.migrations.v2_1.betas import fixWorkflowStateTitles
 from Products.CMFPlone.migrations.v2_1.betas import changeSiteActions
 from Products.CMFPlone.migrations.v2_1.betas import removePloneSetupActionFromPortalMembership
+from Products.CMFPlone.migrations.v2_1.betas import fixViewMethodAliases
 
 from Products.CMFDynamicViewFTI.migrate import migrateFTI
 
@@ -1872,7 +1873,7 @@ class TestMigrations_v2_1(MigrationTest):
         # Should add method aliases to the Plone Site FTI
         expected_aliases = {
                 '(Default)'  : '(dynamic view)',
-                'view'       : '(dynamic view)',
+                'view'       : '(selected layout)',
                 'index.html' : '(dynamic view)',
                 'edit'       : 'folder_edit_form',
                 'sharing'    : 'folder_localrole_form',
@@ -1888,7 +1889,7 @@ class TestMigrations_v2_1(MigrationTest):
         # Should not fail if done twice
         expected_aliases = {
                 '(Default)'  : '(dynamic view)',
-                'view'       : '(dynamic view)',
+                'view'       : '(selected layout)',
                 'index.html' : '(dynamic view)',
                 'edit'       : 'folder_edit_form',
                 'sharing'    : 'folder_localrole_form',
@@ -2151,6 +2152,67 @@ class TestMigrations_v2_1(MigrationTest):
         self.portal._delObject('portal_membership')
         removePloneSetupActionFromPortalMembership(self.portal, [])
 
+    def testFixViewMethodAliases(self):
+        # Should set 'view' alias for core types and Plone Site to (selected layout)
+        types = ('Document', 'Event', 'Favorite', 'File', 'Folder', 'Image', 'Link', 'News Item', 'Topic', 'Plone Site')
+        ttool = self.portal.portal_types
+
+        for typeName in types:
+            fti = getattr(ttool, typeName)
+            aliases = fti.getMethodAliases()
+            aliases['view'] = '(dynamic view)'
+            fti.setMethodAliases(aliases)
+
+        fixViewMethodAliases(self.portal, [])
+
+        for typeName in types:
+            fti = getattr(ttool, typeName)
+            aliases = fti.getMethodAliases()
+            self.assertEqual(aliases['view'], '(selected layout)', typeName)
+
+
+    def testFixViewMethodAliasesTwice(self):
+        # Should not fail if called twice
+        types = ('Document', 'Event', 'Favorite', 'File', 'Folder', 'Image', 'Link', 'News Item', 'Topic', 'Plone Site')
+        ttool = self.portal.portal_types
+
+        for typeName in types:
+            fti = getattr(ttool, typeName)
+            aliases = fti.getMethodAliases()
+            aliases['view'] = '(dynamic view)'
+            fti.setMethodAliases(aliases)
+
+        fixViewMethodAliases(self.portal, [])
+        fixViewMethodAliases(self.portal, [])
+
+        for typeName in types:
+            fti = getattr(ttool, typeName)
+            aliases = fti.getMethodAliases()
+            self.assertEqual(aliases['view'], '(selected layout)')
+
+    def testFixViewMethodAliasesNoFTI(self):
+        # Should not fail if there is no FTI, but convert rest
+        types = ('Event', 'Favorite', 'File', 'Folder', 'Image', 'Link', 'News Item', 'Topic', 'Plone Site')
+        ttool = self.portal.portal_types
+        ttool._delObject('Document')
+
+        for typeName in types:
+            fti = getattr(ttool, typeName)
+            aliases = fti.getMethodAliases()
+            aliases['view'] = '(dynamic view)'
+            fti.setMethodAliases(aliases)
+
+        fixViewMethodAliases(self.portal, [])
+
+        for typeName in types:
+            fti = getattr(ttool, typeName)
+            aliases = fti.getMethodAliases()
+            self.assertEqual(aliases['view'], '(selected layout)')
+
+    def testFixViewMethodAliasesNoTool(self):
+        # Should not fail if tool is missing
+        self.portal._delObject('portal_types')
+        fixViewMethodAliases(self.portal, [])
 
 def test_suite():
     from unittest import TestSuite, makeSuite

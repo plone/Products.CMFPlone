@@ -73,14 +73,20 @@ factory_type_information = { 'id'             : 'Plone Root'
                          }
                        , { 'id'            : 'edit'
                          , 'name'          : 'Edit'
-                         , 'action': 'string:${object_url}/folder_edit_form'
+                         , 'action': 'string:${object_url}/edit'
+                         , 'permissions'   : (CMFCorePermissions.ManageProperties,)
+                         , 'category'      : 'object'
+                         }
+                       , { 'id'            : 'sharing'
+                         , 'name'          : 'Sharing'
+                         , 'action': 'string:${object_url}/sharing'
                          , 'permissions'   : (CMFCorePermissions.ManageProperties,)
                          , 'category'      : 'object'
                          }
                        )
   , 'aliases'        : {
                         '(Default)'  : '(dynamic view)',
-                        'view'       : '(dynamic view)',
+                        'view'       : '(selected layout)',
                         'index.html' : '(dynamic view)',
                         'edit'       : 'folder_edit_form',
                         'properties' : '',
