@@ -13,7 +13,8 @@
                  portal_roles mtool/getPortalRoles;
                  groupname request/groupname | nothing;
                  grouproles python:request.set('grouproles', []);
-                 group python:gtool.getGroupById(groupname)">
+                 group python:gtool.getGroupById(groupname);
+				 grouptitle group/getGroupTitleOrName | nothing">
 
     <tal:conditional condition="group">
         <tal:defines define="dummy python:request.set('grouproles', group.getRoles())" />
@@ -76,7 +77,7 @@
             <metal:block metal:define-macro="props" tal:omit-tag="">
     
         <h1 i18n:translate="heading_edit_groupproperties" metal:define-slot="title">
-               Edit Group Properties for <span tal:replace="group/getGroupName | default" i18n:name="groupname">#unavailable#</span>
+               Edit Group Properties for <span tal:replace="grouptitle | default" i18n:name="groupname">#unavailable#</span>
         </h1>
     
         <a href=""

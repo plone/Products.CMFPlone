@@ -3,6 +3,17 @@ Changelog for Plone
    (name of developer listed in brackets)
 
 Plone 2.1 - Plaid - Beta2 - unreleased
+    - Fixed issue http://members.plone.org/collector/2669. Also made
+      the group prefs suck a bit less. These pages really have to
+      be taken care of in the next release. I also disabled the
+      group search feature in prefs_groups_overview because it 
+      made things much worse. It's no use to have a search box
+      that doesn't search. 
+      So, now groups are shown using their title and descriptions
+      for tooltips. folder_localrole_form also uses this info.
+      This requires a GRUF update!!
+      [ender]
+
     - Changed add to favorites icon in document actions to the 
       appropriate icon. Before it used the site icon while the
       portal_type uses a heart. They must match and now they do.

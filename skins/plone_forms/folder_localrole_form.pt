@@ -457,29 +457,37 @@
                                tabindex=""
                                tal:attributes="tabindex tabindex/next;"/>
                         </th>
-                        <th i18n:translate="listingheader_name">Name</th>
+                        <th i18n:translate="listingheader_name">Title</th>
+                        <th i18n:translate="listingheader_name">Description</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr tal:repeat="group grouplist">
-                        <td tal:define="group_name group/getUserName;
-                                        group_id group/getId;">
-                            <label class="hiddenLabel" for="member_ids:list"
-                                   i18n:translate="label_select_group">
-                                select group <span tal:content="group_name" i18n:name="name"/>
-                            </label>
-                            <input class="formSelection"
-                                type="checkbox"
-                                name="member_ids:list"
-                                id="#"
-                                value=""
-                                tabindex=""
-                                tal:attributes="value group_id;
-                                                tabindex tabindex/next;"/>
-                        </td>
-                        <td tal:content="group/getUserNameWithoutGroupPrefix">
-                            groupname
-                        </td>
+                        <tal:group tal:define="group_name group/getUserName;
+                                        group_id group/getId;
+                                        group_title group/getGroupTitleOrName;
+                                        group_description python:group.getProperty('description', '')">
+                            <td>
+                                <label class="hiddenLabel" for="member_ids:list"
+                                       i18n:translate="label_select_group">
+                                    select group <span tal:content="group_name" i18n:name="name"/>
+                                </label>
+                                <input class="formSelection"
+                                    type="checkbox"
+                                    name="member_ids:list"
+                                    id="#"
+                                    value=""
+                                    tabindex=""
+                                    tal:attributes="value group_id;
+                                                    tabindex tabindex/next;"/>
+                            </td>
+                            <td tal:content="group_title">
+                                groupname
+                            </td>
+                            <td tal:content="group_description">
+                                description
+                            </td>                            
+                        </tal:group>
                         </tr>
                     </tbody>
                     </table>

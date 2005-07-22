@@ -15,7 +15,7 @@ retlist = []
 if restrict != "groups":
     retlist = retlist + members_tool.searchForMembers(REQUEST=None, name=searchstring)
 if restrict != "users":
-    retlist = retlist + groups_tool.searchForGroups(REQUEST=None, name=searchstring)
+    retlist = retlist + groups_tool.searchForGroups(REQUEST=None, title_or_name=searchstring)
 
 if ignore:
   retlist = [r for r in retlist if r not in ignore]
