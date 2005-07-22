@@ -728,7 +728,7 @@ dl.collapsedInlineCollapsible dt.collapsibleHeader {
 .link-parent {
     display: block;
     background: transparent url(&dtml-portal_url;/arrowUp.gif) 4px 5px no-repeat;
-    padding: 1px 0px 16px 16px;
+    padding: 1px 0px 10px 16px;
     font-size: &dtml-fontSmallSize;;
     text-decoration: none;
 }
