@@ -189,7 +189,7 @@ def modifyMembershipTool(self, portal):
     mt.addAction('myworkspace'
                 ,'Workspace'
                 ,'python: portal.portal_membership.getHomeUrl()+"/workspace"'
-                ,'python: member and portal.portal_membership.getHomeFolder()'
+                ,'python: member and portal.portal_membership.getHomeFolder() is not None'
                 ,'View'
                 ,'user'
                 , visible=0)

@@ -3,6 +3,9 @@ Changelog for Plone
    (name of developer listed in brackets)
 
 Plone 2.1 - Plaid - Beta2 - unreleased
+    - Applied patch from http://plone.org/collector/4205. Better check
+      for existance of member folders. Thanks to Tiran.
+      [ender]
 
     - Made the blacklisting control in the search control panel act as a
       whitelist. That is, new types appear as selected by default and the

@@ -253,7 +253,7 @@ def addDocumentActions(portal):
     at.addAction('addtofavorites',
                  'Add to Favorites',
                  'string:${object_url}/addtoFavorites',
-                 'python: member and portal.portal_membership.getHomeFolder()',
+                 'python: member and portal.portal_membership.getHomeFolder() is not None',
                  'View',
                  'document_actions',
                  visible=0)
