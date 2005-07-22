@@ -8,8 +8,15 @@
 ##title=Determine whether to show an id in an edit form
 
 from Products.CMFCore.utils import getToolByName
+
 ploneUtils = getToolByName(context, 'plone_utils')
 pretty_title_or_id = ploneUtils.pretty_title_or_id
+
+portalProperties = getToolByName(context, 'portal_properties')
+siteProperties = getattr(portalProperties, 'site_properties', None)
+useViewAction = []
+if siteProperties is not None:
+    useViewAction = siteProperties.getProperty('typesUseViewActionInListings', [])
 
 # SIMPLE CONFIGURATION
 USE_ICON = True
@@ -55,9 +62,14 @@ else:
     print '''<legend id="livesearchLegend">LiveSearch &darr;</legend>'''
     print '''<ul class="LSTable">'''
     for result in results[:limit]:
+
+        itemUrl = result.getURL()
+        if result.portal_type in useViewAction:
+            itemUrl += '/view'
+
         print '''<li class="LSRow">''',
         print '''<img src="/%s"/>''' % result.getIcon,
-        print '''<a href="%s">%s</a>''' % (result.getURL(), pretty_title_or_id(result))
+        print '''<a href="%s">%s</a>''' % (itemUrl, pretty_title_or_id(result))
         print '''<span class="discreet">[%s%%]</span>''' % result.data_record_normalized_score_
         print '''<div class="discreet" style="margin-left: 2.5em;">%s</div>''' % (result.Description)
         print '''</li>'''

@@ -3,6 +3,11 @@ Changelog for Plone
    (name of developer listed in brackets)
 
 Plone 2.1 - Plaid - Beta2 - unreleased
+
+    - Fixed http://members.plone.org/collector/4327. The live search now
+      honours typeUseViewActionInListings.
+      [optilude]
+
     - Fixed issue http://members.plone.org/collector/2669. Also made
       the group prefs suck a bit less. These pages really have to
       be taken care of in the next release. I also disabled the
