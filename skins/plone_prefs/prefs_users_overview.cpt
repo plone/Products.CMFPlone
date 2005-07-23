@@ -195,7 +195,7 @@
 		                style="text-align:center;">No matches</td>
 		            <td tal:condition="not:searchstring" 
 		                i18n:translate="text_no_searchstring" 
-		                style="text-align:center;">You must search enter a username to search for</td>
+		                style="text-align:center;">You must first enter a username to search for</td>
                 </tr>
 	      </table>
 

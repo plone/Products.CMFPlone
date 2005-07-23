@@ -72,7 +72,7 @@
          class="colophonIcon"
          title="This Plone site was built with valid CSS."
          tal:attributes="style string:background-image: url(${portal_url}/colophon_css.png);;"
-         i18n:attributes="title title_css;"
+         i18n:attributes="title title_built_with_css;"
          i18n:translate="label_css">
         Valid CSS
       </a>

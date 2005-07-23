@@ -216,7 +216,7 @@
                            i18n:attributes="title label_select_all_items; alt label_select_all_items;"/>
                 </th>
           
-          	    <th i18n:translate="listingheader_name">Group/User name</th>
+          	    <th i18n:translate="listingheader_group_user_name">Group/User name</th>
           	  </tr>
 
           	  <tal:block repeat="obj batch">
