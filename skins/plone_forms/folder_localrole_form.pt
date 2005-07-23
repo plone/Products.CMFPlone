@@ -571,7 +571,7 @@
     </form>
     
     <tal:change_ownership condition="python: checkPermission('Manage portal', here)">
-        <h1 i18n:translate="change_ownership">Change ownership</h1>
+        <h1 i18n:translate="label_change_ownership">Change ownership</h1>
         <p i18n:translate="description_change_ownership_of_article">
             To change the ownership for this <span i18n:name="type" tal:content="itemPortalTypeTitle"/>, click 
             <span i18n:name="link_to_ownership_form">

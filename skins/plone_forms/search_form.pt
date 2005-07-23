@@ -113,7 +113,7 @@
                         tabindex=""
                         tal:attributes="tabindex tabindex/next;
                                         checked python:0"/>
-                <label for="Subject_and" i18n:translate="description_subject_or">
+                <label for="Subject_and" i18n:translate="description_subject_and">
                     Match all
                 </label>
             </div>
