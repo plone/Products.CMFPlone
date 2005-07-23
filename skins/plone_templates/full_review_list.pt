@@ -18,7 +18,7 @@
                  b_start request/b_start | b_start;
                  batch python:Batch(revList, b_size, int(b_start), orphan=1);">
 
-    <h1 i18n:translate="title_review_list">Full review list:</h1>
+    <h1 i18n:translate="heading_full_review_list">Full review list:</h1>
 
     <form name="worklistForm"
             method="post"

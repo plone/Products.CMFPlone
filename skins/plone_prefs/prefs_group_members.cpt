@@ -17,7 +17,7 @@
                 groupname request/groupname|nothing;
                 grouproles python:request.set('grouproles', []);
                 group python:gtool.getGroupById(groupname);
-				grouptitle group/getGroupTitleOrName|groupname;
+                grouptitle group/getGroupTitleOrName|groupname;
                 groupMembers group/getGroupMembers;">
 
     <tal:conditional condition="group">

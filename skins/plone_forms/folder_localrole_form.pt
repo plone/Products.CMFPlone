@@ -457,8 +457,8 @@
                                tabindex=""
                                tal:attributes="tabindex tabindex/next;"/>
                         </th>
-                        <th i18n:translate="listingheader_name">Title</th>
-                        <th i18n:translate="listingheader_name">Description</th>
+                        <th i18n:translate="listingheader_title">Title</th>
+                        <th i18n:translate="listingheader_description">Description</th>
                         </tr>
                     </thead>
                     <tbody>

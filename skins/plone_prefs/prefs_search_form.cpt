@@ -124,10 +124,10 @@ registerPloneFunction(
                            />
                     </li>
                    </ul>
-		            </div>
-    
+                </div>
+
                 <div class="visualClear"><!-- --></div>
-	          </div>    
+            </div>
             <div class="formControls">
                 <input class="context"
                        tabindex=""

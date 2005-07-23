@@ -12,7 +12,7 @@
 <div metal:fill-slot="main">
 
     <ul id="portal-siteactions">
-        <li>Text size:
+        <li>Text size:</li>
         <li id="siteaction-small_text"><a href="javascript:setActiveStyleSheet('Small Text',1);"
                                           title="Small Text">Small</a></li>
         <li id="siteaction-normal_text"><a href="javascript:setActiveStyleSheet('',1);"
