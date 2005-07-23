@@ -7,18 +7,22 @@
 <ul metal:define-macro="site_actions"
     id="portal-siteactions"
     tal:define="site_actions actions/site_actions|nothing;
-                getIconFor nocall:putils/getIconFor"
+                getIconFor nocall:putils/getIconFor;
+                accesskeys python: {'sitemap' : '3', 'accessibility' : '0', 'contact' : '9'};"
     tal:condition="site_actions">
 
     <li tal:repeat="saction site_actions"
         tal:attributes="id string:siteaction-${saction/id}"><a
            href=""
-           tal:define="title saction/name"
+           tal:define="title saction/name;
+                       id saction/id;
+                       accesskey python: accesskeys.get(id, '');"
            i18n:attributes="title"
            i18n:translate=""
            tal:content="title"
            tal:attributes="href saction/url;
-                           title title;"
+                           title title;
+                           accesskey accesskey;"
            >Site action</a></li>
 
 </ul>

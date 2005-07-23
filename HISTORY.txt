@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - Beta2 - unreleased
 
+    - Implemented accesskeys as per accessibility-info page definition.
+      [hannosch]
+
     - Made the portal root use the /edit and /sharing method aliases for its
       'edit' and 'sharing' tabs/actions.
       [optilude]

@@ -49,8 +49,14 @@
 
         <div id="portal-header">
           <a class="hiddenStructure"
-              tal:attributes="href string:${request/ACTUAL_URL}#documentContent"
+             accesskey="2"
+             tal:attributes="href string:${request/ACTUAL_URL}#documentContent"
              i18n:translate="label_skiptocontent">Skip to content</a>
+
+          <a class="hiddenStructure"
+             accesskey="6"
+             tal:attributes="href string:${request/ACTUAL_URL}#portlet-navigation-tree"
+             i18n:translate="label_skiptonavigation">Skip to navigation</a>
   
              <div metal:use-macro="here/global_siteactions/macros/site_actions">
                Site-wide actions (Contact, Sitemap, Help, Style Switcher etc)

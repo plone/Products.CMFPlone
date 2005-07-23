@@ -55,7 +55,13 @@
   <div id="portal-top" i18n:domain="plone">
 
     <a href="#documentContent" class="hiddenStructure"
+       accesskey="2"
        i18n:translate="label_skiptocontent">Skip to content.</a>
+
+    <a class="hiddenStructure"
+       accesskey="6"
+       tal:attributes="href string:${request/ACTUAL_URL}#portlet-navigation-tree"
+       i18n:translate="label_skiptonavigation">Skip to navigation</a>
 
     <div metal:use-macro="here/global_skinswitcher/macros/skin_tabs">
         The skin switcher tabs. Based on which role you have, you
