@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - Beta2 - unreleased
 
+    - Made check_id.py prevent method aliases like 'sharing' and 'edit' as
+      object ids. This fixes http://members.plone.org/collector/4331.
+      [optilude]
+
     - Implemented accesskeys as per accessibility-info page definition.
       [hannosch]
 

@@ -892,6 +892,13 @@ class TestIDGenerationMethods(PloneTestCase.PloneTestCase):
         self.assertEqual(self.utils.pretty_title_or_id(self.folder, 'Marker'),
                                 'Marker')
 
+    def testGetMethodAliases(self):
+        fti = self.folder.getTypeInfo()
+        expectedAliases = fti.getMethodAliases()
+        aliases = self.utils.getMethodAliases(fti)
+        self.assertEqual(len(expectedAliases), len(aliases))
+        for k, v in aliases.items():
+            self.assertEqual(expectedAliases[k], v)
 
 def test_suite():
     from unittest import TestSuite, makeSuite

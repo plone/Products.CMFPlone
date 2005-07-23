@@ -135,6 +135,14 @@ if checkForCollision:
         except:
             return "'%s' is reserved." % id
 
+    # make sure we don't collide with any parent method aliases
+    if plone_utils is not None:
+        parentFti = contained_by.getTypeInfo()
+        aliases = plone_utils.getMethodAliases(parentFti)
+        if aliases is not None:
+            for alias in aliases.keys():
+                if id == alias:
+                    return "'%s' is reserved." % id
 
     # Lastly, we want to disallow the id of any of the tools in the portal root,
     # as well as any object that can be acquired via portal_skins. However, we

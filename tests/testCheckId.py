@@ -186,6 +186,16 @@ class TestCheckId(PloneTestCase.PloneTestCase):
         self.assertEqual(r, None)   # success
 
 
+    def testParentMethodAliasDisallowed(self):
+        # Note that the check is skipped when we don't have
+        # the "Add portal content" permission.
+        self.folder.manage_permission('Add portal content', ['Manager'], acquire=0)
+
+        self.folder._setObject('foo', dummy.Item('foo'))
+        for alias in self.folder.getTypeInfo().getMethodAliases().keys():
+            r = self.folder.foo.check_id(alias)
+            self.assertEqual(r, "'%s' is reserved." % alias)   # success
+
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()

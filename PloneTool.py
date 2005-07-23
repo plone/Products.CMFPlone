@@ -1365,6 +1365,10 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         return empty
 
     def pretty_title_or_id(self, obj, empty_value=_marker):
+        """Return the best possible title or id of an item, regardless
+        of whether obj is a catalog brain or an object, but returning an
+        empty title marker if the id is not set (i.e. it's auto-generated).
+        """
         obj = aq_base(obj)
         title = getattr(obj, 'Title', None)
         if safe_callable(title):
@@ -1380,5 +1384,14 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             empty_value = self.getEmptyTitle()
         return empty_value
 
+    def getMethodAliases(self, typeInfo):
+        """Given an FTI, return the dict of method aliases defined on that
+        FTI. If there are no method aliases (i.e. this FTI doesn't support it), 
+        return None"""
+        getMethodAliases = getattr(typeInfo, 'getMethodAliases', None)
+        if getMethodAliases is not None and safe_callable(getMethodAliases):
+            return getMethodAliases()
+        else:
+            return None
 
 InitializeClass(PloneTool)
