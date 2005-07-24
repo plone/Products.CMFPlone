@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - Beta2 - unreleased
 
+    - Fixed HEAD requests for folders. The browserDefault code mustn't look up
+      the template for HEAD requests. Instead it should invoke the HEAD() api
+      method defined in webdav.Collection. This fixes an ATCT bug and
+      http://plone.org/collector/4290. 
+      [tiran]
+
     - Made check_id.py prevent method aliases like 'sharing' and 'edit' as
       object ids. This fixes http://members.plone.org/collector/4331.
       [optilude]

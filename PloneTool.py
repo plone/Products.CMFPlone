@@ -955,7 +955,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         # its all very odd and WebDAV'y
         request = getattr(self, 'REQUEST', None)
         if request and request.has_key('REQUEST_METHOD'):
-            if request['REQUEST_METHOD'] not in  ['GET', 'HEAD', 'POST']:
+            if request['REQUEST_METHOD'] not in  ['GET', 'POST']:
                 return obj, [request['REQUEST_METHOD']]
         # Now back to normal
 
