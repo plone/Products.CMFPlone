@@ -20,6 +20,7 @@ from Products.CMFPlone.utils import _createObjectByType
 from Products.CMFPlone.PloneFolder import ReplaceableWrapper
 
 RE_REMOVE_DOCCONT = re.compile('href="http://.*?#documentContent"')
+RE_REMOVE_NAVTREE = re.compile('href="http://.*?#portlet-navigation-tree"')
 
 class TestPloneToolBrowserDefault(FunctionalTestCase):
     """Test the PloneTool's browserDefault() method in various use cases.
@@ -54,9 +55,11 @@ class TestPloneToolBrowserDefault(FunctionalTestCase):
         response = self.publish(base_path+path, self.basic_auth)
         body = response.getBody()
 
-        # request/ACTUAL_URL is fubar in tests, remove line that depends on it
+        # request/ACTUAL_URL is fubar in tests, remove lines that depend on it
         resolved = RE_REMOVE_DOCCONT.sub('', resolved)
+        resolved = RE_REMOVE_NAVTREE.sub('', resolved)
         body = RE_REMOVE_DOCCONT.sub('', body)
+        body = RE_REMOVE_NAVTREE.sub('', body)
 
         if not body:
             self.fail('No body in response')
