@@ -34,9 +34,8 @@ registerPloneFunction(
     Up to Site Setup
     </a>
 
-    <p class="documentDescription"
-       i18n:translate="description_search_setup">
-        Search settings for the site.
+    <p i18n:translate="description_search_setup">
+        Search settings for Site.
     </p>
 
     <form action=""
@@ -47,48 +46,33 @@ registerPloneFunction(
 
         <fieldset>
             <legend i18n:translate="legend_search_details">Search details</legend>
-
+    
             <div class="field"
-                 tal:define="livesearch request/livesearch | site_properties/enable_livesearch;
-                             error errors/livesearch | nothing;"
+                 tal:define="enable_livesearch request/enable_livesearch | site_properties/enable_livesearch;
+                             error errors/enable_livesearch | nothing;"
                  tal:attributes="class python:test(error, 'field error', 'field')">
 
-                <label i18n:translate="label_livesearch_enable">Enable LiveSearch</label>
-
+                <input type="checkbox"
+                       class="noborder"
+                       name="enable_livesearch"
+                       value="1"
+                       id="cb_enable_livesearch"
+                       tabindex=""
+                       tal:attributes="tabindex tabindex;
+                                       checked enable_livesearch;"
+                       /> 
+    
+                <label for="enable_livesearch" 
+                    i18n:translate="label_livesearch_enable">Enable LiveSearch</label>
+    
                 <div class="formHelp" id="livesearch_help"
                      i18n:translate="help_livesearch">
-             Enable LiveSearch to see live search
-             results if the browser supports Javascript.
+                     Enable the LiveSearch feature (like Google) to see live
+                     results if the Browser supports the JavaScript.
                 </div>
-
+    
                 <div tal:content="error">Validation error output</div>
-
-                    <input type="radio"
-                       class="noborder"
-                       name="livesearch"
-                       value="on"
-                       id="cb_livesearch_on"
-                       tabindex=""
-                       tal:attributes="tabindex tabindex;
-                                       checked livesearch;"
-                       />
-
-                <label for="cb_livesearch_on" i18n:translate="yes">Yes</label>
-
-                <br />
-
-                <input type="radio"
-                       class="noborder"
-                       name="livesearch"
-                       value=""
-                       id="cb_livesearch_off"
-                       tabindex=""
-                       tal:attributes="tabindex tabindex;
-                                       checked not:livesearch;"
-                       />
-
-                <label for="cb_livesearch_off" i18n:translate="no">No</label>
-
+    
             </div>
         <div class="field" id="searchtypes-field"
              tal:define="
@@ -139,7 +123,7 @@ registerPloneFunction(
                        tal:attributes="tabindex tabindex/next;"
                        />
             </div>
-
+    
         </fieldset>
 
         <input type="hidden" name="form.submitted" value="1" />
