@@ -85,11 +85,11 @@
                              error errors/smtp_userid | nothing;"
                  tal:attributes="class python:test(error, 'field error', 'field')">
     
-                <label i18n:translate="label_smtp_userid">ESMTP user</label>
+                <label i18n:translate="label_smtp_userid">ESMTP username</label>
 
                 <div class="formHelp" i18n:translate="help_smtp_userid">
-                This is the username used for authentication to your e-mail server.
-                Usally it is not required to provide one.
+                Username for authentication to your e-mail server.
+                Not required unless you are using ESMTP.
                 </div>
 
                 <div tal:content="error">Validation error output</div>
@@ -109,8 +109,7 @@
                 <label i18n:translate="label_smtp_pass">ESMTP password</label>
 
                 <div class="formHelp" i18n:translate="help_smtp_pass">
-                This is the password used for the given username.
-                It is only required if you have specified a username.
+                The password for the ESMTP user account.
                 </div>
 
                 <div tal:content="error">Validation error output</div>

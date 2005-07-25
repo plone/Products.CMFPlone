@@ -34,8 +34,9 @@ registerPloneFunction(
     Up to Site Setup
     </a>
 
-    <p i18n:translate="description_search_setup">
-        Search settings for Site.
+    <p class="documentDescription"
+       i18n:translate="description_search_setup">
+        Search settings for the site.
     </p>
 
     <form action=""
@@ -46,20 +47,20 @@ registerPloneFunction(
 
         <fieldset>
             <legend i18n:translate="legend_search_details">Search details</legend>
-    
+
             <div class="field"
                  tal:define="livesearch request/livesearch | site_properties/enable_livesearch;
                              error errors/livesearch | nothing;"
                  tal:attributes="class python:test(error, 'field error', 'field')">
-    
+
                 <label i18n:translate="label_livesearch_enable">Enable LiveSearch</label>
-    
+
                 <div class="formHelp" id="livesearch_help"
                      i18n:translate="help_livesearch">
-		     Enable the LiveSearch feature (like Google) to see live
-		     results if the Browser supports the JavaScript.
+             Enable LiveSearch to see live search
+             results if the browser supports Javascript.
                 </div>
-    
+
                 <div tal:content="error">Validation error output</div>
 
                     <input type="radio"
@@ -71,11 +72,11 @@ registerPloneFunction(
                        tal:attributes="tabindex tabindex;
                                        checked livesearch;"
                        />
-    
+
                 <label for="cb_livesearch_on" i18n:translate="yes">Yes</label>
-    
+
                 <br />
-    
+
                 <input type="radio"
                        class="noborder"
                        name="livesearch"
@@ -85,30 +86,30 @@ registerPloneFunction(
                        tal:attributes="tabindex tabindex;
                                        checked not:livesearch;"
                        />
-    
+
                 <label for="cb_livesearch_off" i18n:translate="no">No</label>
-    
+
             </div>
-	    <div class="field" id="searchtypes-field"
-	         tal:define="
-	               portal_types     portal/portal_types;
-	               allTypes         python:[portal_types.getTypeInfo(t) for t in here.getPortalTypes()];
-	               dummy            python:allTypes.sort(lambda x,y: cmp(x.title_or_id(), y.title_or_id()));
-	               numTypes         python:len(allTypes);
-	               numCols          python:3;
-	               sublistLen       python:numTypes % numCols == 0 and numTypes / numCols or numTypes / numCols + 1;
-	               typeLists        python:[allTypes[i*sublistLen:(i == numCols - 1 and numTypes or (i+1)*sublistLen)] for i in range(numCols)];
-	               blacklisted      site_properties/types_not_searched;
-	               searchTypes      python:[t.getId() for t in allTypes if t.getId() not in blacklisted];">
+        <div class="field" id="searchtypes-field"
+             tal:define="
+                   portal_types     portal/portal_types;
+                   allTypes         python:[portal_types.getTypeInfo(t) for t in here.getPortalTypes()];
+                   dummy            python:allTypes.sort(lambda x,y: cmp(x.title_or_id(), y.title_or_id()));
+                   numTypes         python:len(allTypes);
+                   numCols          python:3;
+                   sublistLen       python:numTypes % numCols == 0 and numTypes / numCols or numTypes / numCols + 1;
+                   typeLists        python:[allTypes[i*sublistLen:(i == numCols - 1 and numTypes or (i+1)*sublistLen)] for i in range(numCols)];
+                   blacklisted      site_properties/types_not_searched;
+                   searchTypes      python:[t.getId() for t in allTypes if t.getId() not in blacklisted];">
                 <label i18n:translate="label_search_types">Define the types to be searched</label>
                 <div class="formHelp" id="seachtypes_help"
                      i18n:translate="help_searchtypes">
-		             Define the types that should searched when you use the searchbox.
-		             Note that if new content types are installed, they will be enabled
-		             for search by default unless explicitly turned off here or by the
-		             relevant installer.
+                     Define the types that should searched when you use the searchbox.
+                     Note that if new content types are installed, they will be enabled
+                     for search by default unless explicitly turned off here or by the
+                     relevant installer.
                 </div>
-		            <div style="float:left; margin-right: 2em;" tal:repeat="sublist typeLists">
+                    <div style="float:left; margin-right: 2em;" tal:repeat="sublist typeLists">
                    <ul class="configlets">
                      <li tal:repeat="ptypeInfo sublist">
                        <input class="noborder"
@@ -138,7 +139,7 @@ registerPloneFunction(
                        tal:attributes="tabindex tabindex/next;"
                        />
             </div>
-    
+
         </fieldset>
 
         <input type="hidden" name="form.submitted" value="1" />

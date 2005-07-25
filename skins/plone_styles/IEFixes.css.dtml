@@ -74,28 +74,7 @@ body { /* These work in IE only, changes the look of the scrollbar + textareas *
 * html .documentDescription,
 * html .visualClear
   {
-    height: 0.01%;
+    height: 0.1%;
 }
-
-
-/*
-#content,
-#content p,
-.comment,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-.portalMessage,
-.link-parent,
-#documentContent dl,
-#documentContent ul,
-#documentContent ol,
-{
-    height: 1%;
-}
-*/
 
 /* </dtml-with> */
