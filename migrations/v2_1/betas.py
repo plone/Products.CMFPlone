@@ -161,6 +161,9 @@ def beta1_beta2(portal):
 
     # Make portal root use /edit and /sharing URLs on actions
     fixPortalEditAndSharingActions(portal, out)
+    
+    # Add CMFUid tools
+    addCMFUidTools(portal, out)
 
     return out
 
@@ -1089,3 +1092,33 @@ def fixPortalEditAndSharingActions(portal, out):
                 elif action.getId() == 'local_roles':
                     action.setActionExpression('string:${object_url}/sharing')
                     out.append('Set portal root sharing action to use /sharing method alias')
+                    
+def addCMFUidTools(portal, out):
+    """Adds CMFUid tools to the plone instance
+    
+    CMFUid is an new CMF core product to handle uids the CMF way. CMF uids are
+    different to AT uuids but can be used in parallel.
+    """
+    tools = (('Unique Id Annotation Tool', 'portal_uidannotation'),
+             ('Unique Id Generator Tool', 'portal_uidgenerator'),
+             ('Unique Id Handler Tool', 'portal_uidhandler')
+            )
+    added = []
+    try:
+        addCMFUidTool = portal.manage_addProduct['CMFUid'].manage_addTool
+    except AttributeError:
+        pass
+    else:
+        for tool, id in tools:
+            try:
+                addCMFUidTool(tool, None)
+            except BadRequest:
+                # already there
+                pass
+            else:
+                tool = getattr(portal, id)
+                tool.title = "CMF %s" % tool
+                added.append(id)
+    if added:
+        out.append('Added CMFUid tool(s) %s' % ', '.join(added))
+            

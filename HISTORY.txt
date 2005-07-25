@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - Beta2 - unreleased
 
+    - Added CMFUid tools. CMF 1.5 has a new core product CMFUid which is 
+      used to assign and query uids mostly like Archetypes. Products designed
+      for CMF 1.5 might depend on the tools.
+      [tiran]
+
     - Fixed HEAD requests for folders. The browserDefault code mustn't look up
       the template for HEAD requests. Instead it should invoke the HEAD() api
       method defined in webdav.Collection. This fixes an ATCT bug and

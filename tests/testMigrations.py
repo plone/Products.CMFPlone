@@ -89,6 +89,7 @@ from Products.CMFPlone.migrations.v2_1.betas import changeSiteActions
 from Products.CMFPlone.migrations.v2_1.betas import removePloneSetupActionFromPortalMembership
 from Products.CMFPlone.migrations.v2_1.betas import fixViewMethodAliases
 from Products.CMFPlone.migrations.v2_1.betas import fixPortalEditAndSharingActions
+from Products.CMFPlone.migrations.v2_1.betas import addCMFUidTools
 
 from Products.CMFDynamicViewFTI.migrate import migrateFTI
 
@@ -2256,6 +2257,28 @@ class TestMigrations_v2_1(MigrationTest):
         self.portal.portal_types._delObject('Plone Site')
         fixPortalEditAndSharingActions(self.portal, [])
 
+    def testHasCMFUidTools(self):
+        portal_ids = self.portal.objectIds()
+        tool_ids = ('portal_uidgenerator', 'portal_uidannotation',
+                   'portal_uidhandler')
+        for id in tool_ids:
+            self.failUnless(id in portal_ids, id)
+            
+    def testaddCMFUidTools(self):
+        tool_ids = ('portal_uidgenerator', 'portal_uidannotation',
+                   'portal_uidhandler')
+        # remove tools
+        self.portal.manage_delObjects(list(tool_ids))
+        for id in tool_ids:
+            self.failIf(id in self.portal.objectIds(), id)
+        # add tools
+        addCMFUidTools(self.portal, [])
+        for id in tool_ids:
+            self.failUnless(id in self.portal.objectIds(), id)
+            tool = getattr(self.portal, id)
+            self.failUnless(tool.title) # has it a title?
+        # a second add shouldn't break
+        addCMFUidTools(self.portal, [])
 
 def test_suite():
     from unittest import TestSuite, makeSuite
