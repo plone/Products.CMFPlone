@@ -90,6 +90,7 @@ from Products.CMFPlone.migrations.v2_1.betas import removePloneSetupActionFromPo
 from Products.CMFPlone.migrations.v2_1.betas import fixViewMethodAliases
 from Products.CMFPlone.migrations.v2_1.betas import fixPortalEditAndSharingActions
 from Products.CMFPlone.migrations.v2_1.betas import addCMFUidTools
+from Products.CMFPlone.migrations.v2_1.betas import fixCSSMediaTypes
 
 from Products.CMFDynamicViewFTI.migrate import migrateFTI
 
@@ -2279,6 +2280,27 @@ class TestMigrations_v2_1(MigrationTest):
             self.failUnless(tool.title) # has it a title?
         # a second add shouldn't break
         addCMFUidTools(self.portal, [])
+    
+    def testfixCSSMediaTypes(self):
+        cssmediatypes = [
+            ('member.css', 'screen'),
+            ('RTL.css', 'screen'),
+            ('presentation.css', 'projection'),
+            ('ploneCustom.css', 'all'),
+        ]
+        cssreg = getattr(self.portal, 'portal_css')
+        stylesheet_ids = cssreg.getResourceIds()
+        #correct the media types
+        fixCSSMediaTypes(self.portal, [])
+        #check if the media types are set correctly
+        for stylesheet,cssmediatype in cssmediatypes:
+            if stylesheet in stylesheet_ids:
+                cssresource=cssreg.getResouce(stylesheet)
+                self.assertEqual(cssresouce.getMedia(),cssmediatype)
+        # a second add shouldn't break
+        fixCSSMediaTypes(self.portal, [])
+
+        
 
 def test_suite():
     from unittest import TestSuite, makeSuite

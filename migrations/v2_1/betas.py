@@ -165,6 +165,9 @@ def beta1_beta2(portal):
     # Add CMFUid tools
     addCMFUidTools(portal, out)
 
+    # Correct CSS media types
+    fixCSSMediaTypes(portal,out)
+
     return out
 
 
@@ -1121,4 +1124,27 @@ def addCMFUidTools(portal, out):
                 added.append(id)
     if added:
         out.append('Added CMFUid tool(s) %s' % ', '.join(added))
-            
+
+def fixCSSMediaTypes(portal,out):
+    """Fixes some css media types in the Resource Registry,
+    like missing media type or wrong 'presentation' media type 
+    """
+    cssreg = getToolByName(portal, 'portal_css', None)
+    stylesheet_ids = cssreg.getResourceIds()
+    cssmediatypes = [
+        ('member.css', 'screen'),
+        ('RTL.css', 'screen'),
+        ('presentation.css', 'projection'),
+        ('ploneCustom.css', 'all'),
+    ]
+    changed=[]
+    if cssreg is not None:
+        for stylesheet,cssmediatype in cssmediatypes:
+            if stylesheet in stylesheet_ids:
+                cssresource=cssreg.getResource(stylesheet)
+                cssresource.setMedia(cssmediatype)
+                changed.append(stylesheet)
+                out.append('Set media type for %s to %s' % (stylesheet,cssmediatype))
+    if changed:
+        out.append('Corrected CSS media types')
+        
