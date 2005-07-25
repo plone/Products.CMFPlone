@@ -28,6 +28,12 @@ class TestMembershipTool(PloneTestCase.PloneTestCase):
         # (and any other migrated-in groups) to avoid test confusion
         self.portal.portal_groups.removeGroups(self.portal.portal_groups.listGroupIds())
 
+    def addMember(self, username, fullname, email, roles, last_login_time):
+        self.membership.addMember(username, 'secret', roles, [])
+        member = self.membership.getMemberById(username)
+        member.setMemberProperties({'fullname': fullname, 'email': email,
+                                    'last_login_time': DateTime(last_login_time),})
+
     def testGetPersonalFolder(self):
         # Should return the .personal folder
         personal = getattr(self.folder, self.membership.personal_id, None)
@@ -287,6 +293,23 @@ class TestMembershipTool(PloneTestCase.PloneTestCase):
         self.failUnless('Reviewer' in roles)
         self.assertEqual(len(roles), 2)
 
+    def test_bug4333_delete_user_remove_memberdata(self):
+        # delete user should delete poral_memberdata
+        memberdata = self.portal.portal_memberdata
+        self.setRoles(['Manager'])
+        self.addMember('barney', 'Barney Rubble', 'barney@bedrock.com', ['Member'], '2002-01-01')
+        barney = self.membership.getMemberById('barney')
+        self.failUnlessEqual(barney.email, 'barney@bedrock.com')
+        del barney
+        
+        self.membership.deleteMembers('barney')
+        md = memberdata._members
+        self.failIf(md.has_key('barney'))
+        
+        self.membership.addMember('barney', 'secret', ['Members'], [])
+        barney = self.membership.getMemberById('barney')
+        self.failIfEqual(barney.fullname, 'Barney Rubble')
+        self.failIfEqual(barney.email, 'barney@bedrock.com')
 
 class TestCreateMemberarea(PloneTestCase.PloneTestCase):
 
