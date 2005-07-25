@@ -26,22 +26,30 @@
    http://plone.org/documentation/how-to/flickering-background-images-internet-explorer */
 
 <dtml-in "portal_types.listTypeInfo()">
-.contenttype-<dtml-var "plone_utils.normalizeString(id)"> { background-image: url(<dtml-var portal_url>/<dtml-var getIcon>); background-repeat: no-repeat; background-position: 0% 50%;}
-.contenttype-<dtml-var "plone_utils.normalizeString(id)"> a:hover { background-image: url(<dtml-var portal_url>/<dtml-var getIcon>); background-repeat: no-repeat; background-position: 0% 50%; margin-left: -1px;}
+.contenttype-<dtml-var "plone_utils.normalizeString(id)"> { background-image: url(<dtml-var portal_url>/<dtml-var getIcon>); background-repeat: no-repeat; background-position: 0% 3px;}
+.contenttype-<dtml-var "plone_utils.normalizeString(id)"> a:hover { background-image: url(<dtml-var portal_url>/<dtml-var getIcon>); background-repeat: no-repeat; background-position: 0% 2px; margin-left: -1px;}
 </dtml-in>
 
 <dtml-in "getActionIconList()">
 .actionicon-<dtml-var category>-<dtml-var action> { background-image: url(<dtml-var portal_url>/<dtml-var icon>) !important; background-repeat: no-repeat; background-position: 0% 50%;}
 </dtml-in>
 
-/* Complimentary padding class for the generated icons - we have to do it
+/* Extra padding class for the generated icons - we have to do it
    this way because of the IE flicker bug on hovering. */
 
 .visualIconPadding {
     padding-left: 18px;
-    height: 1.5em;
     margin-left: -1px;
     margin-bottom: 1px;
+    min-height: 1.6em;
+    height: auto;
+    line-height: 1.6em;
+}
+
+/* And another IE workaround */
+
+* html .visualIconPadding {
+    height: 1.6em;
 }
 
 .visualIconReplace {

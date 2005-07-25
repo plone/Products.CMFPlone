@@ -28,17 +28,15 @@
 
             <dl>
                 <dt tal:define="item_wf_state result/review_state;
-                                item_wf_state_class python:'state-' + here.plone_utils.normalizeString(item_wf_state);">
-                    <img src="" alt="" style="border: 0"
-                         tal:attributes="src result/getIcon;
-                                         alt result/Type" />
-
+                                item_wf_state_class python:'state-' + putils.normalizeString(item_wf_state);">
+                    <span tal:attributes="class python: 'contenttype-' + putils.normalizeString(result.portal_type) + ' visualIconPadding'">
                     <a href="/view"
                        tal:content="result/pretty_title_or_id"
                        tal:attributes="href result/getURL;
                                        class string:$item_wf_state_class">
                     Title
                     </a>
+                    </span>
 
                     <span class="discreet" i18n:translate="text_creator_date">
                         by <span tal:replace="result/Creator" i18n:name="creator" />,

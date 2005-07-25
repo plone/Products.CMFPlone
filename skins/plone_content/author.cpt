@@ -35,10 +35,10 @@
             <tal:location condition="authorinfo/location">
             <span i18n:translate="label_location">Location:</span>
             <span tal:replace="authorinfo/location">Some location</span>
-            &mdash;
             </tal:location>
 
             <tal:language condition="authorinfo/language">
+            &mdash;
             <span i18n:translate="label_main_language">Main Language:</span>
             <span tal:replace="authorinfo/language">Some language</span>
             </tal:language>
@@ -175,7 +175,7 @@
             </div>
 
             <a href=""
-               tal:attributes="href string:${here/absolute_url}/search?Creator=${author}&amp;review_state=published&amp;sort_on=Date&amp;sort_order=reverse"
+               tal:attributes="href string:${here/absolute_url}/search?Creator=${author}&amp;sort_on=Date&amp;sort_order=reverse"
                i18n:translate="go_to_search_author_content">
                 All content created by 
                 <span i18n:name="user" tal:omit-tag="" tal:content="python:authorinfo['fullname'] or author"/>&hellip;

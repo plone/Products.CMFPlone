@@ -81,38 +81,39 @@
                             </span>
                         </tal:to_external>
 
+                        <span class="documentByLine">
+
+                            <span tal:condition="python: item_type == 'Event'">
+                                (<span tal:replace="string:${item/location}">Oslo</span>, from
+                                 <span tal:replace="python:toLocalizedTime(item_start,long_format=1)">from date</span> to
+                                 <span tal:replace="python:toLocalizedTime(item_end,long_format=1)">to date</span>)
+                            &mdash;
+                            </span>
+                            <tal:creators tal:condition="item_creators">
+                                <span i18n:translate="box_created_by">
+                                    by
+                                </span>
+                                <span tal:replace="python: ', '.join(item_creators)"/>
+                            </tal:creators>
+                            <tal:modified condition="python: item_type != 'Event'">
+                                &mdash;
+                                <tal:mod i18n:translate="box_last_modified">
+                                  last modified
+                                </tal:mod>
+                                <span tal:replace="python:toLocalizedTime(item_modified,long_format=1)">
+                                  August 16, 2001 at 23:35:59
+                                </span>
+                            </tal:modified>
+
+                            <metal:description define-slot="description_slot">
+                                <tal:comment replace="nothing"> 
+                                    Place custom listing info for custom types here
+                                </tal:comment>
+                            </metal:description>
+                        </span>
+
                     </dt>
 
-                    <span class="documentByLine">
-
-                        <span tal:condition="python: item_type == 'Event'">
-                            (<span tal:replace="string:${item/location}">Oslo</span>, from
-                             <span tal:replace="python:toLocalizedTime(item_start,long_format=1)">from date</span> to
-                             <span tal:replace="python:toLocalizedTime(item_end,long_format=1)">to date</span>)
-                        </span>
-                        &mdash;
-                        <tal:creators tal:condition="item_creators">
-                            <span i18n:translate="box_created_by">
-                                by
-                            </span>
-                            <span tal:replace="python: ', '.join(item_creators)"/>
-                        </tal:creators>
-                        <tal:modified condition="python: item_type != 'Event'">
-                            &mdash;
-                            <tal:mod i18n:translate="box_last_modified">
-                              last modified
-                            </tal:mod>
-                            <span tal:replace="python:toLocalizedTime(item_modified,long_format=1)">
-                              August 16, 2001 at 23:35:59
-                            </span>
-                        </tal:modified>
-
-                        <metal:description define-slot="description_slot">
-                            <tal:comment replace="nothing"> 
-                                Place custom listing info for custom types here
-                            </tal:comment>
-                        </metal:description>
-                    </span>
 
                     <dd>
                         <span tal:omit-tag="" tal:condition="not:item_description"> 

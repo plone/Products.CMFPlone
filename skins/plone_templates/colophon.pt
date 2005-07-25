@@ -22,7 +22,7 @@
 
       <a href="http://plone.org"
          class="colophonIcon"
-         title="This Plone site was built using the Plone Content Management System. Click for more information."
+         title="This Plone site was built using Plone, the Open Source Content Management System. Click for more information."
          tal:attributes="style string:background-image: url(${portal_url}/plone_powered.gif);;"
          i18n:attributes="title title_built_with_plone;"
          i18n:translate="label_powered_by_plone">

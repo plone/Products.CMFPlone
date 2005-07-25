@@ -143,6 +143,29 @@ dd.portletFooter {
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor; !important;
 }
 
+li.navTreeCurrentItem {
+    display: block;
+    padding: 0 0 0 1px;
+    margin: 0 0 2px -1px;
+}
+
+li.navTreeCurrentItem a,
+li.navTreeCurrentItem a:hover {
+    display: block;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBackgroundColor; !important;
+    min-height: 1.6em;
+    line-height: 1.6em;
+    height: auto;
+}
+
+/* Another workaround for broken Internet Explorer */
+
+* html li.navTreeCurrentItem a,
+* html li.navTreeCurrentItem a:hover {
+    height: 1.6em;
+}
+
+
 .navTreeLevel0 {
     margin: 0;
 }

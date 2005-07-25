@@ -11,7 +11,7 @@
 
       <h1 i18n:translate="heading_select_default_page">Select default page</h1>
 
-      <div class="documentDescription" i18n:translate="description_select_default_page">
+      <div class="discreet" i18n:translate="description_select_default_page">
         Please select item which will be displayed as the default page of the
         folder.
       </div>
@@ -33,14 +33,18 @@
                     <dt tal:define="item_typeinfo python: here.portal_types.getTypeInfo(item.portal_type);
                                     item_icon string:${utool}/${item_typeinfo/getIcon};">
                         <input type="radio" name="objectId" value="" 
-                            tal:attributes="value item/getId"/> 
+                            tal:attributes="value item/getId;
+                                            id item/getId;"/> 
                         <img src="" alt=""
                             tal:attributes="src item_icon;
                                             alt item_typeinfo/Title" />
-                        <span tal:replace="item/pretty_title_or_id"/>
+                        <label tal:attributes="for item/getId"
+                               tal:content="item/pretty_title_or_id">
+                            Item title
+                        </label>
                     </dt>
-                    <dd>
-                        <span tal:replace="item/Description"/>
+                    <dd tal:content="item/Description">
+                        Item Description
                     </dd>
                 </tal:item>
 
