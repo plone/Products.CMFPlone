@@ -361,12 +361,12 @@ def reorderStylesheets(portal, out):
             stylesheet_ids = cssreg.getResourceIds()
             # Failsafe: first make sure the two stylesheets exist in the list
             if 'ploneRTL.css' not in stylesheet_ids:
-                cssreg.registerStylesheet('ploneRTL.css', media='screen', 
+                cssreg.registerStylesheet('ploneRTL.css',
                                            expression="python:object.isRightToLeft(domain='plone')")
             if 'ploneCustom.css' not in stylesheet_ids:
-                cssreg.registerStylesheet('ploneCustom.css', media='screen')
+                cssreg.registerStylesheet('ploneCustom.css')
             if 'ploneMember.css' not in stylesheet_ids:
-                cssreg.registerStylesheet('ploneMember.css', media='screen',
+                cssreg.registerStylesheet('ploneMember.css',
                                            expression='not: portal/portal_membership/isAnonymousUser')
             # Now move 'em
             cssreg.moveResourceBefore('ploneRTL.css', 'ploneCustom.css')
