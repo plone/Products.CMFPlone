@@ -118,6 +118,9 @@ function getInnerTextFast(node) {
  * value returned by fetch_func is used.
  */
 function sortNodes(nodes, fetch_func, cmp_func) {
+    // terminate if we hit a non-compliant DOM implementation
+    if (!W3CDOM){return false};
+
     // wrapper for sorting
     var SortNodeWrapper = function(node) {
         this.value = fetch_func(node);
