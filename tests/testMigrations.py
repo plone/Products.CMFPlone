@@ -2295,8 +2295,8 @@ class TestMigrations_v2_1(MigrationTest):
         #check if the media types are set correctly
         for stylesheet,cssmediatype in cssmediatypes:
             if stylesheet in stylesheet_ids:
-                cssresource=cssreg.getResouce(stylesheet)
-                self.assertEqual(cssresouce.getMedia(),cssmediatype)
+                cssresource=cssreg.getResource(stylesheet)
+                self.assertEqual(cssresource.getMedia(),cssmediatype)
         # a second add shouldn't break
         fixCSSMediaTypes(self.portal, [])
 
