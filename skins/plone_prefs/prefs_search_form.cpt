@@ -34,8 +34,9 @@ registerPloneFunction(
     Up to Site Setup
     </a>
 
-    <p i18n:translate="description_search_setup">
-        Search settings for Site.
+    <p class="documentDescription" 
+       i18n:translate="description_search_setup">
+       Search settings for Site.
     </p>
 
     <form action=""
