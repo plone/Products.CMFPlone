@@ -532,17 +532,17 @@ def installCSSandJSRegistries(portal, out):
             cssreg.clearStylesheets()
             # add the bottom ones and the ones with special expressions first.
             # since registering a stylesheet adds it to the top of the stack
-            cssreg.registerStylesheet('ploneRTL.css', expression="python:object.isRightToLeft(domain='plone')")
-            cssreg.registerStylesheet('plonePresentation.css', media='presentation')
+            cssreg.registerStylesheet('ploneRTL.css', media='screen', expression="python:object.isRightToLeft(domain='plone')")
+            cssreg.registerStylesheet('plonePresentation.css', media='projection')
             cssreg.registerStylesheet('plonePrint.css', media='print')
             cssreg.registerStylesheet('ploneMobile.css', media='handheld')
             cssreg.registerStylesheet('ploneGenerated.css', media="screen")
-            cssreg.registerStylesheet('ploneMember.css', expression='not: portal/portal_membership/isAnonymousUser')
+            cssreg.registerStylesheet('ploneMember.css', media='screen', expression='not: portal/portal_membership/isAnonymousUser')
             cssreg.registerStylesheet('ploneColumns.css', media="screen")
             cssreg.registerStylesheet('ploneAuthoring.css', media="screen")
             cssreg.registerStylesheet('plonePublic.css', media="screen")
             cssreg.registerStylesheet('ploneBase.css', media="screen")
-            cssreg.registerStylesheet('ploneCustom.css')
+            cssreg.registerStylesheet('ploneCustom.css', media='screen')
 
         jsreg = getToolByName(portal, 'portal_javascripts', None)
         if jsreg is not None:
