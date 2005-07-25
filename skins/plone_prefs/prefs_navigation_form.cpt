@@ -1,0 +1,129 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en"
+      metal:use-macro="here/prefs_main_template/macros/master"
+      i18n:domain="plone">
+
+<metal:block metal:fill-slot="top_slot"
+             tal:define="dummy python:request.set('disable_border',1)" />
+
+<body>
+
+<div metal:fill-slot="prefs_configlet_main"
+     tal:define="errors options/state/getErrors;">
+
+    <h1 i18n:translate="heading_search_setup">Navigation Settings</h1>
+
+    <a href=""
+       class="link-parent"
+       tal:attributes="href string: $portal_url/plone_control_panel"
+       i18n:translate="label_up_to_plone_setup">
+    Up to Site Setup
+    </a>
+
+    <p i18n:translate="description_search_setup">
+        Lets you control how navigation is constructed in your site.
+    </p>
+
+    <form action=""
+          name=""
+          method="post"
+          tal:attributes="action string:${here/absolute_url}/${template/getId}">
+
+        <fieldset>
+            <legend i18n:translate="legend_search_details">Navigation details</legend>
+
+            <div class="field"
+                 tal:define="error nothing;"
+                 tal:attributes="class python:test(error, 'field error', 'field')">
+
+                <input type="checkbox"
+                       class="noborder"
+                       id="cb_allow_any"
+                       name="allow_any"
+                       tal:define="generatedtabs nothing"
+                       tal:attributes="checked python:test(generatedtabs, 'checked', '')" />
+
+
+                <label i18n:translate="label_livesearch_enable">Automatically generate tabs</label>
+
+                <div class="formHelp" i18n:translate="help_livesearch">
+                By default, all folders created at the root level will have global section
+                navigation generated. You can turn this off if you prefer manually constructing
+                this part of the navigation.
+                </div>
+            </div>
+
+
+            <div class="field" id="navigationtypes-field"
+                 tal:define="
+                       portal_types     portal/portal_types;
+                       allTypes         python:[portal_types.getTypeInfo(t) for t in here.getPortalTypes()];
+                       dummy            python:allTypes.sort(lambda x,y: cmp(x.title_or_id(), y.title_or_id()));
+                       numTypes         python:len(allTypes);
+                       numCols          python:3;
+                       sublistLen       python:numTypes % numCols == 0 and numTypes / numCols or numTypes / numCols + 1;
+                       typeLists        python:[allTypes[i*sublistLen:(i == numCols - 1 and numTypes or (i+1)*sublistLen)] for i in range(numCols)];
+                       blacklisted      site_properties/types_not_searched;
+                       searchTypes      python:[t.getId() for t in allTypes if t.getId() not in blacklisted];">
+
+                <label i18n:translate="label_navigation_types">Displayed content types</label>
+
+                <div class="formHelp" id="navigationtypes_help"
+                     i18n:translate="help_navigationtypes">
+                     The content types that should be shown in the navigation tree and the site map.
+                </div>
+
+                <div style="float:left; margin-right: 2em;" tal:repeat="sublist typeLists">
+                   <ul class="configlets">
+                     <li tal:repeat="ptypeInfo sublist">
+                       <input class="noborder"
+                           type="checkbox"
+                           name="portaltypes:list"
+                           tal:attributes="value ptypeInfo/getId;
+                                           id python:putils.normalizeString(ptypeInfo.getId());
+                                           checked python:test(ptypeInfo.getId() in searchTypes,'checked','');" />
+                       <label for=""
+                           i18n:translate=""
+                           tal:attributes="for python:putils.normalizeString(ptypeInfo.getId())"
+                           tal:content="ptypeInfo/Title"
+                           />
+                    </li>
+                   </ul>
+                </div>
+
+                <div class="field">
+                    
+                    <label i18n:translate="label_wf_states_shown">Displayed workflow states</label>
+
+                    <div class="formHelp"
+                         i18n:translate="help_wf_states_shown">
+                         The workflow states that should be shown in the navigation tree and the site map.
+                    </div>
+                </div>
+
+                <div class="visualClear"><!-- --></div>
+            </div>
+            
+            <div class="formControls">
+                <input class="context"
+                       tabindex=""
+                       type="submit"
+                       name="form.button.Save"
+                       value="Save"
+                       i18n:attributes="value label_save;"
+                       tal:attributes="tabindex tabindex/next;"
+                       />
+            </div>
+
+        </fieldset>
+
+        <input type="hidden" name="form.submitted" value="1" />
+
+    </form>
+
+</div>
+
+</body>
+</html>
+
+
