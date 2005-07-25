@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - Beta2 - unreleased
 
+    - Fixed http://members.plone.org/collector/4324 need to ensure we are
+      passing strings to utranslate.
+      [alecm]
+
     - Added CMFUid tools. CMF 1.5 has a new core product CMFUid which is 
       used to assign and query uids mostly like Archetypes. Products designed
       for CMF 1.5 might depend on the tools.

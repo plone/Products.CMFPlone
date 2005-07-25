@@ -18,7 +18,7 @@
                      contentTypes here/getAllowedTypes;
                      contentFilter contentFilter|request/contentFilter|nothing;
                      b_size b_size|request/b_size|python:100;
-                     view_title view_title|request/view_title|nothing;
+                     view_title view_title|request/view_title|string:;
                      batch python: here.getFolderContents(contentFilter=contentFilter,batch=True, b_size=b_size);
                      full_view full_view|request/full_view|python:True;">
       
@@ -32,7 +32,7 @@
         </div>
         <h1>
           <tal:block replace="structure python:getattr(here, here.getIcon(1))"/>
-          <span tal:content="python: here.utranslate(view_title) or putils.pretty_title_or_id(here)" tal:omit-tag="">Directory Id</span>
+          <span tal:content="python: view_title and here.utranslate(view_title) or putils.pretty_title_or_id(here)" tal:omit-tag="">Directory Id</span>
         </h1>
         <tal:full_view condition="full_view">
     
