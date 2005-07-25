@@ -21,7 +21,8 @@ if siteProperties is not None:
 # SIMPLE CONFIGURATION
 USE_ICON = True
 USE_RANKING = False
-MAX_DESC = 55
+MAX_TITLE = 29
+MAX_DESCRIPTION = 93
 
 # generate a result set for the query
 catalog = context.portal_catalog
@@ -69,10 +70,19 @@ else:
 
         print '''<li class="LSRow">''',
         print '''<img src="/%s"/>''' % result.getIcon,
-        print '''<a href="%s">%s</a>''' % (itemUrl, pretty_title_or_id(result))
+        full_title = pretty_title_or_id(result)
+        if len(full_title) >= MAX_TITLE:
+            display_title = ''.join((full_title[:MAX_TITLE],'...'))
+        else:
+            display_title = full_title
+        print '''<a href="%s" title="%s">%s</a>''' % (itemUrl, full_title, display_title)
         print '''<span class="discreet">[%s%%]</span>''' % result.data_record_normalized_score_
-        print '''<div class="discreet" style="margin-left: 2.5em;">%s</div>''' % (result.Description)
+        display_description = result.Description
+        if len(display_description) >= MAX_DESCRIPTION:
+            display_description = ''.join((display_description[:MAX_DESCRIPTION],'...'))
+        print '''<div class="discreet" style="margin-left: 2.5em;">%s</div>''' % (display_description)
         print '''</li>'''
+        full_title, display_title, display_description = None, None, None
     if len(results)>limit:
         # add a more... row
         print '''<li class="LSRow">'''

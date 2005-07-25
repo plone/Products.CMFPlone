@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - Beta2 - unreleased
 
+    - Making the livesearch result truncate title and id, as offered by jeffk
+      in http://members.plone.org/collector/4329. Thanks for the patch!
+      [optilude]
+
     - Fixed http://members.plone.org/collector/4324 need to ensure we are
       passing strings to utranslate.
       [alecm]
