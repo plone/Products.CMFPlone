@@ -25,7 +25,7 @@
     </tal:conditional>
 
     <div id="content" class="documentEditable">
-    
+
     <!-- simulating views on the groups/user pages until we have real objects. -->
     <ul class="contentViews">
       <li class="selected">
@@ -39,10 +39,10 @@
                i18n:translate="label_group_properties">Group Properties</a>
       </li>
     </ul>
-    
+
     <div class="contentActions">
       &nbsp;
-    </div>        
+    </div>
 
     <div class="documentContent" id="region-content">
       <a name="documentContent"></a>
@@ -60,14 +60,14 @@
              i18n:translate="label_up_to_groups_overview">
             Up to Groups Overview
           </a>
-        
+
           <p i18n:translate="label_no_group_specified">No group was specified.</p>
-    
+
           <p>
             <a href="prefs_groups_overview" i18n:translate="label_find_group">Find a group here</a>
           </p>
         </tal:ifnogroups>
-        
+
         <tal:ifgroups tal:condition="group | nothing">
           <h1 i18n:translate="heading_group_members_of">Members of the <tal:group content="grouptitle" i18n:name="groupname">Groupname</tal:group> group</h1>
           <a href=""
@@ -81,18 +81,18 @@
             You can add or remove users from this particular group here. Note that this
             doesn't actually delete the user, it is only removed from this group.
           </p>
-    
+
 
           <form action=""
                     name="groups"
                     method="post"
                     tal:attributes="action string:${here/absolute_url}/${template/getId}"
-          	        tal:define="searchstring request/searchstring | nothing;
-          	                    findAll python:'form.button.FindAll' in request.keys();
+                    tal:define="searchstring request/searchstring | nothing;
+                                findAll python:'form.button.FindAll' in request.keys();
                                 results python:(searchstring or findAll) and here.prefs_user_group_search(searchstring, 'users', ignore=groupMembers) or [];
                                 batch python:Batch(results, b_size, int(b_start), orphan=1)">
 
-          	<h2 i18n:translate="heading_groupmembers_current">Current group members</h2>
+            <h2 i18n:translate="heading_groupmembers_current">Current group members</h2>
               <table class="listing" summary="Group Members Listing"
                  tal:condition="groupMembers">
 
@@ -112,7 +112,7 @@
                       <th i18n:translate="listingheader_user_name">User name</th>
                       <th i18n:translate="listingheader_email_address">E-mail Address</th>
                   </tr>
-    
+
                   <tal:block tal:repeat="this_user groupMembers">
                     <tr tal:define="oddrow repeat/this_user/odd"
                         tal:attributes="class python:test(oddrow,'odd','even')">
@@ -144,7 +144,7 @@
                             </a>
                           </td>
                         </tal:block>
-                        
+
                         <td tal:define="email python: this_user.getProperty('email')">
                             <a  href="#"
                                 tal:attributes="href string:mailto:${email}"
@@ -170,22 +170,22 @@
 
             <h2 i18n:translate="heading_search_newmembers">Search for new group members</h2>
 
-          	<input type="hidden" name="groupname" value="groupname" tal:attributes="value groupname" />
-          	<input type="hidden" name="form.submitted" value="1" />
+            <input type="hidden" name="groupname" value="groupname" tal:attributes="value groupname" />
+            <input type="hidden" name="form.submitted" value="1" />
 
             <table class="listing" summary="Groups">
-          	  <tr>
-          	    <th colspan="2">
-          	      <span tal:omit-tag="" i18n:translate="label_quick_search">Quick search</span>:
+              <tr>
+                <th colspan="2">
+                  <span tal:omit-tag="" i18n:translate="label_quick_search">Quick search</span>:
                     <input class="quickSearch"
                            tabindex=""
                            type="text"
                            name="searchstring"
                            value=""
                            tal:attributes="value searchstring;
-  	                           tabindex tabindex/next;"
+                               tabindex tabindex/next;"
                            />
-  
+
                     <input type="hidden" name="searchonly" value="groups" />
                     <input type="submit"
                            class="searchButton"
@@ -197,14 +197,14 @@
                     <input type="submit"
                            class="searchButton"
                            name="form.button.FindAll"
-                           value="Find all"
+                           value="Show all"
                            tabindex=""
-                           i18n:attributes="value label_findall;"
+                           i18n:attributes="value label_showall;"
                            tal:attributes="tabindex tabindex/next;" />
-          	    </th>
-          	  </tr>
-          	  <tr>
-          	    <th>
+                </th>
+              </tr>
+              <tr>
+                <th>
                     <input class="noborder"
                            type="checkbox"
                            src="select_all_icon.gif"
@@ -215,58 +215,59 @@
                            alt="Select all items"
                            i18n:attributes="title label_select_all_items; alt label_select_all_items;"/>
                 </th>
-          
-          	    <th i18n:translate="listingheader_group_user_name">Group/User name</th>
-          	  </tr>
 
-          	  <tal:block repeat="obj batch">
+                <th i18n:translate="listingheader_group_user_name">Group/User name</th>
+              </tr>
+
+              <tal:block repeat="obj batch">
                 <tr tal:define="oddrow repeat/obj/odd"
-          	        tal:attributes="class python:test(oddrow,'odd','even')">
+                    tal:attributes="class python:test(oddrow,'odd','even')">
 
-          	      <td class="listingCheckbox">
+                  <td class="listingCheckbox">
                     <input type="checkbox"
                            class="noborder"
                            name="add:list"
                            value="value"
-          		             tal:attributes="value obj/getGroupId | obj/getId" />
-          	      </td>
+                             tal:attributes="value obj/getGroupId | obj/getId" />
+                  </td>
 
-          	      <td>
-              		  <img src="user.gif" alt="" />
-              		  <a href="" tal:attributes="href string:prefs_user_details?userid=${obj/getId}"
+                  <td>
+                      <img src="user.gif" alt="" />
+                      <a href="" tal:attributes="href string:prefs_user_details?userid=${obj/getId}"
                                tal:content="obj/getUserName | default">
                       <span i18n:translate="link_username_not_available">username not available</span>
                     </a>
-          	      </td>
-          	    </tr>
-          	  </tal:block>
+                  </td>
+                </tr>
+              </tal:block>
             </table>
 
             <tal:block condition="not:batch">
-          	  <p tal:condition="searchstring" 
-		                i18n:translate="text_nomatches">No matches</p>
-		          <p tal:condition="not:searchstring" 
-		                i18n:translate="text_no_searchstring">You must first enter a username to search for</p>
-          	</tal:block>
+              <p tal:condition="searchstring"
+                        i18n:translate="text_nomatches">No matches</p>
+                  <p tal:condition="not:searchstring"
+                     class="discreet"
+                     i18n:translate="text_no_searchstring">Enter a username to search for, or click 'Show All'.</p>
+            </tal:block>
 
-            <input type="hidden" value="b_start" name="b_start" 
+            <input type="hidden" value="b_start" name="b_start"
                      tal:attributes="value b_start"/>
 
-          	<div metal:use-macro="here/batch_macros/macros/navigation" />
+            <div metal:use-macro="here/batch_macros/macros/navigation" />
 
-          	<input class="context"
-                    tabindex=""                                 
-                    type="submit"                               
+            <input class="context"
+                    tabindex=""
+                    type="submit"
                     name="form.button.Add"
                     value="Add selected users to this group"
-                    tal:condition="batch" 
-                    tal:attributes="tabindex tabindex/next;"    
+                    tal:condition="batch"
+                    tal:attributes="tabindex tabindex/next;"
                     i18n:attributes="value label_add_users_to_group;" />
 
           </form>
         </tal:ifgroups>
       </div>
-      
+
     </div>
     </div>
 
