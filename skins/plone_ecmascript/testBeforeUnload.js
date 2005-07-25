@@ -1,9 +1,5 @@
 // Test form beforeUnload processing
 
-// The handler is careful not to use any global variables, so we have
-// to work a bit to find out its class.
-var BeforeUnloadHandler = window.onbeforeunload.tool.constructor;
-
 function PloneBeforeUnloadTestCase() {
     this.name = 'PloneBeforeUnloadTestCase';
 
@@ -48,10 +44,17 @@ function PloneBeforeUnloadTestCase() {
 
 PloneBeforeUnloadTestCase.prototype = new TestCase;
 Class = PloneBeforeUnloadTestCase.prototype;
-var BeforeUnloadHandler = window.onbeforeunload.tool.constructor;
+
+var BeforeUnloadHandler = null;
 
 Class.setUp = function() {
-    
+    // The handler is careful not to use any global variables, so we have
+    // to work a bit to find out its class.
+    if (!BeforeUnloadHandler && window.onbeforeunload) {
+        BeforeUnloadHandler = window.onbeforeunload.tool.constructor;
+    }
+    window.onbeforeunload = null;
+
     this.bu = new BeforeUnloadHandler();
 };
 
