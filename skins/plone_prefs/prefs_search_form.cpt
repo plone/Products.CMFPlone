@@ -78,11 +78,7 @@ registerPloneFunction(
              tal:define="
                    portal_types     portal/portal_types;
                    allTypes         python:[portal_types.getTypeInfo(t) for t in here.getPortalTypes()];
-                   dummy            python:allTypes.sort(lambda x,y: cmp(x.title_or_id(), y.title_or_id()));
-                   numTypes         python:len(allTypes);
-                   numCols          python:3;
-                   sublistLen       python:numTypes % numCols == 0 and numTypes / numCols or numTypes / numCols + 1;
-                   typeLists        python:[allTypes[i*sublistLen:(i == numCols - 1 and numTypes or (i+1)*sublistLen)] for i in range(numCols)];
+                   typeLists        python:here.createMultiColumnList(allTypes, numCols=3, sort_on='title_or_id');
                    blacklisted      site_properties/types_not_searched;
                    searchTypes      python:[t.getId() for t in allTypes if t.getId() not in blacklisted];">
                 <label i18n:translate="label_search_types">Define the types to be searched</label>
