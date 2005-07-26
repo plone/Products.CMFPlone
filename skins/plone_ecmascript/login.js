@@ -15,7 +15,7 @@ function cookiesEnabled() {
   // cookie not changed?  fail
   if (dc.indexOf(c) == -1) return 0;
   // delete cookie
-  // document.cookie = "cookieTest=; expires=Thu, 01-Jan-70 00:00:01 GMT";
+  document.cookie = "cookieTest=; expires=Thu, 01-Jan-70 00:00:01 GMT";
   return 1;
 }
 
@@ -49,14 +49,19 @@ function setLoginVars(user_name_id, alt_user_name_id, password_id, empty_passwor
   return 1;
 }
 
-function showEnableCookiesMessage() {
-  // Show the element with id enable_cookes_message if cookies are not enabled
-  if (!cookiesEnabled()) {
-    msg = document.getElementById('enable_cookies_message')
-    if (msg) {
-       msg.style.display = 'block';
-    }
+function showCookieMessage(id) {
+  // Show the element with the given id if cookies are not enabled
+  msg = document.getElementById('enable_cookies_message')
+  if (msg) {
+     if (!cookiesEnabled()) {
+        msg.style.display = 'block';
+     }
   }
+}
+
+function showEnableCookiesMessage() {
+  // Show the element with the id 'enable_cookies_message' if cookies are not enabled
+  showCookieMessage('enable_cookies_message')
 }
 // Call showEnableCookiesMessage after the page loads
 registerPloneFunction(showEnableCookiesMessage);

@@ -1,20 +1,18 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
-      metal:use-macro="here/main_template/macros/master"
       i18n:domain="plone">
-
 <head>
-    <script type="text/javascript" metal:fill-slot="javascript_head_slot">
-    </script>
-    <metal:block fill-slot="top_slot"
-                 tal:define="dummy python:request.set('disable_border',1)" />
+    <script type="text/javascript" tal:attributes="src python:context.portal_url()+'/login.js'" />
 </head>
 
 <body>
 
-<div metal:fill-slot="main"
-     tal:define="auth nocall:here/cookie_authentication|nothing;
+<div tal:define="global checkPermission nocall:here/portal_membership/checkPermission;
+                 global actions python:context.portal_actions.listFilteredActionsFor(context);
+		 global Iterator python:modules['Products.CMFPlone'].IndexIterator;
+		 global tabindex python:Iterator(pos=30000);
+                 auth nocall:here/cookie_authentication|nothing;
                  came_from request/came_from|request/HTTP_REFERER|nothing;
-                 came_from python:test(utool.isURLInPortal(came_from), came_from, None);
+                 came_from python:test(here.portal_url.isURLInPortal(came_from), came_from, None);
                  global ztutils modules/ZTUtils;
                  errors options/state/getErrors;">
 
@@ -47,7 +45,7 @@ to become a member.
 
 <script tal:condition="nothing" type="text/javascript" tal:content="structure context/login_cookie_message" />
 
-<div id="enable_cookies_message" i18n:translate="enable_cookies_message" class="portalMessage" style="display:none">
+<div id="enable_cookies_message" class="portalMessage" style="display:none">
   Cookies are not enabled. You must <a href="enabling_cookies">enable cookies</a> before you can log in.
 </div>
 
