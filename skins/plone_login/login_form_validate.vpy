@@ -12,8 +12,10 @@
 LOGIN_FAILED_MESSAGE = 'Login failed'  # XXX need a friendlier message here
 
 request = context.REQUEST
-js_enabled = int(request.get('js_enabled',0)) # is javascript enabled?
-cookies_enabled = int(request.get('cookies_enabled',0)) # are cookies enabled?
+js_enabled = request.get('js_enabled',0) # is javascript enabled?
+js_enabled = js_enabled=='1' or js_enabled==1
+cookies_enabled = request.get('cookies_enabled',0) # are cookies enabled?
+cookies_enabled = cookies_enabled=='1' or cookies_enabled==1
 
 if js_enabled and not cookies_enabled:
     state.set(status='enable_cookies', portal_status_message='You must enable cookies before you can log in')

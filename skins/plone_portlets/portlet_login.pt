@@ -46,7 +46,7 @@
                 <input type="text"
                        size="10"
                        alt="Login Name"
-		       onclick="msg=document.getElementById('cookies_message'); if(msg) {if(!cookiesEnabled()) {msg.style.display='block';}}"
+		       onclick="showCookieMessage('cookies_message','cookies_enabled')"
                        tal:attributes="name ac_name; id ac_name;
                                        value python:request.get(ac_name, '');
                                        tabindex tabindex/next"
@@ -60,7 +60,7 @@
                 <input type="password"
                        size="10"
                        alt="Password"
-		       onclick="msg=document.getElementById('cookies_message'); if(msg) {if(!cookiesEnabled()) {msg.style.display='block';}}"
+		       onclick="showCookieMessage('cookies_message','cookies_enabled')"
                        tal:attributes="name ac_password; id ac_password;
                                        tabindex tabindex/next;"
                        i18n:attributes="alt label_password;"/>
