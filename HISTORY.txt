@@ -8,6 +8,12 @@ Plone 2.1 - Plaid - Beta2 - unreleased
       button gets clicked more than once.
       [fschulze]
 
+    - Fleshed out the contact-info page as a form controller page, making it
+      possible to send feedback as anonymous user and as member (without 
+      filling e-mail address and fullname). Also displays the portal 
+      description.
+      [jok2]
+
     - Fixed http://members.plone.org/collector/4335 added a method to URLTool
       to determine whther a URL is local to the portal.  This will be moved
       into CMFCore ASAP, pending write access.
