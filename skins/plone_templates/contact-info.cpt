@@ -17,7 +17,7 @@
         <tal:feedbackForm condition="not:isAnon">
         
             <p class="discreet"
-               i18n:translate="description_site_feedback">
+               i18n:translate="description_contact_info_feedback">
                 If you want to contact the portal administrator, fill in the form
                 below.
             </p>
@@ -29,7 +29,7 @@
 
             <fieldset>
             
-            <legend i18n:translate="legend_feedback_for_site">Feedback for site</legend>
+            <legend i18n:translate="legend_feedback_for_contact_info">Feedback for contact page</legend>
 
             <div class="field"
               tal:define="error errors/subject|nothing"
