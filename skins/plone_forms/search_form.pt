@@ -93,9 +93,9 @@
                 <br />
 
                 <input type="radio"
-                       name="Subject.operator:record"
+                       name="Subject.operator:record:ignore_empty"
                        id="Subject_or"
-                       value="or"
+                       value=""
                        class="noborder"
                        tabindex=""
                        tal:attributes="tabindex tabindex/next;
@@ -106,7 +106,7 @@
                     <br />
 
                 <input type="radio"
-                        name="Subject.operator:record"
+                        name="Subject.operator:record:ignore_empty"
                         id="Subject_and"
                         value="and"
                         class="noborder"
