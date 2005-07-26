@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - Beta2 - unreleased
 
+    - Change order of folderlisting/view default action determination to fix
+      discussion visibility on folderish AT types.
+      [alecm]
+
     - Added javascript handler to form submit buttons which warns when the
       button gets clicked more than once.
       [fschulze]
