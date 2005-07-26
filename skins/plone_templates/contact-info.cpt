@@ -12,6 +12,7 @@
 <div metal:fill-slot="main">
 
     <h1>Contact information</h1>
+	<p tal:content="site_properties/description">Site Description</p>
 
 </div>
 </body>
