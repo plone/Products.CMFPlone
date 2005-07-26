@@ -60,11 +60,7 @@
                        portal_types     portal/portal_types;
                        navtree_props    portal/portal_properties/navtree_properties; 
                        allTypes         python:[portal_types.getTypeInfo(t) for t in here.getPortalTypes()];
-                       dummy            python:allTypes.sort(lambda x,y: cmp(x.title_or_id(), y.title_or_id()));
-                       numTypes         python:len(allTypes);
-                       numCols          python:3;
-                       sublistLen       python:numTypes % numCols == 0 and numTypes / numCols or numTypes / numCols + 1;
-                       typeLists        python:[allTypes[i*sublistLen:(i == numCols - 1 and numTypes or (i+1)*sublistLen)] for i in range(numCols)];
+                       typeLists        python:here.createMultiColumnList(allTypes, numCols=3, sort_on='title_or_id');
                        blacklisted      navtree_props/metaTypesNotToList;
                        searchTypes      python:[t.getId() for t in allTypes if t.getId() not in blacklisted];">
 
@@ -92,24 +88,55 @@
                     </li>
                    </ul>
                 </div>
+            </div>
 
-                <div class="visualClear"><!-- --></div>
+            <div class="visualClear"><!-- --></div>
 
-                <div class="field" tal:replace="nothing">
-                    
-                    XXX: Disable until we have something to hook this up to
-                    
-                    <label i18n:translate="label_wf_states_shown">Displayed workflow states</label>
+            <div class="field" id="navigationstates-field"
+                 tal:define="
+                       navtree_props    portal/portal_properties/navtree_properties;
+                       states          python:wtool.listWFStates(filter_similar=1);
+                       state_titles    python:[(s.title, s.getId()) for s in states];
+                       state_lists     python: here.createMultiColumnList(state_titles, numCols=1, sort_on='self');
+                       cur_list      navtree_props/wf_states_to_show;">
+                <label i18n:translate="label_wf_states">Displayed workflow states</label>
 
-                    <div class="formHelp"
-                         i18n:translate="help_wf_states_shown">
-                         The workflow states that should be shown in the navigation tree and the site map.
-                    </div>
+                <div class="formHelp"
+                         i18n:translate="help_wf_states">
+                    The workflow states that should be shown in the navigation tree and the site map.
+                </div>
+                <div id="navtree_wf_filter">
+                    <input class="noborder"
+                           type="checkbox"
+                           name="enable_wf_state_filtering"
+                           id="enable-wf-state-filtering"
+                           tal:attributes="checked navtree_props/enable_wf_state_filtering;" />
+                    <label for="enable-wf-state-filtering"
+                           i18n:translate="label_navtree_wf_enable">Filter on workflow state</label>
                 </div>
 
-                
+                <label i18n:translate="label_navtree_states_shown">Show only the following states:</label>
+                <div style="float:left; margin-right: 2em;" tal:repeat="sublist state_lists">
+
+                   <ul class="configlets">
+                     <li tal:repeat="state sublist">
+                       <input class="noborder"
+                           type="checkbox"
+                           name="wf_states_to_show:list"
+                           tal:attributes="value python:state[1];
+                                           id python:putils.normalizeString(state[1]);
+                                           checked python:test(state[1] in cur_list,'checked','');" />
+                       <label for=""
+                           i18n:translate=""
+                           tal:attributes="for python:putils.normalizeString(state[1])"
+                           tal:content="python:state[0]"
+                           />
+                     </li>
+                   </ul>
+                </div>
+
             </div>
-            
+
             <div class="formControls">
                 <input class="context"
                        tabindex=""

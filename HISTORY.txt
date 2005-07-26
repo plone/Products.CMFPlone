@@ -4,7 +4,13 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - Beta2 - unreleased
 
-    - Add properties wf_states_to_show, and enable_wf_state_filtering to
+    - Hooked up navtree wf config to the configlet, needs serious UI tweaking.
+      Added a method to the WorkflowTool to return all wf states in the
+      portal.  Added a python script that converts a list into a list of
+      sublists for making columns.
+      [alecm]
+
+    - Added properties wf_states_to_show, and enable_wf_state_filtering to
       navtree_properties.  These filter the navtree/sitemap/portal tabs
       results by workflow state.
       [alecm]

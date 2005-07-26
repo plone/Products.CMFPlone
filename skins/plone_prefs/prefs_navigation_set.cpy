@@ -5,7 +5,7 @@
 ##bind script=script
 ##bind state=state
 ##bind subpath=traverse_subpath
-##parameters=generated_tabs=False, portaltypes=[], RESPONSE=None
+##parameters=generated_tabs=False, portaltypes=[], enable_wf_state_filtering=False, wf_states_to_show=[], RESPONSE=None
 ##title=Set Navigation Prefs
 ##
 
@@ -24,7 +24,10 @@ else:
 allTypes = context.getPortalTypes()
 blacklistedTypes = [t for t in allTypes if t not in portaltypes]
 
-portal_properties.navtree_properties.manage_changeProperties(metaTypesNotToList=blacklistedTypes)
+portal_properties.navtree_properties.manage_changeProperties(
+                        metaTypesNotToList=blacklistedTypes,
+                        enable_wf_state_filtering=enable_wf_state_filtering,
+                        wf_states_to_show=wf_states_to_show)
 
 msg = 'Navigation settings updated.'
 

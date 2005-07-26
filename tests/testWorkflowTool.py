@@ -48,6 +48,30 @@ class TestWorkflowTool(PloneTestCase.PloneTestCase):
         state_title = self.workflow.getTitleForStateOnType(state_id, self.doc.portal_type)
         self.assertEqual(state_title, 'nonsense')
 
+    def testListWFStates(self):
+        states = self.workflow.listWFStates()
+        self.assertEqual(len(states), 7)
+        pub_states = [s for s in states if s.id=='published']
+        priv_states = [s for s in states if s.id=='private']
+        pend_states = [s for s in states if s.id=='pending']
+        vis_states = [s for s in states if s.id=='visible']
+        self.assertEqual(len(pub_states), 2)
+        self.assertEqual(len(priv_states), 2)
+        self.assertEqual(len(pend_states), 1)
+        self.assertEqual(len(vis_states), 2)
+
+    def testListWFStatesFiltersSimilar(self):
+        states = self.workflow.listWFStates(filter_similar=True)
+        self.assertEqual(len(states), 4)
+        pub_states = [s for s in states if s.id=='published']
+        priv_states = [s for s in states if s.id=='private']
+        pend_states = [s for s in states if s.id=='pending']
+        vis_states = [s for s in states if s.id=='visible']
+        self.assertEqual(len(pub_states), 1)
+        self.assertEqual(len(priv_states), 1)
+        self.assertEqual(len(pend_states), 1)
+        self.assertEqual(len(vis_states), 1)
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite
