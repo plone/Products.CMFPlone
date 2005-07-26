@@ -137,6 +137,8 @@
 
             </div>
 
+            <div class="visualClear"><!-- --></div>
+
             <div class="formControls">
                 <input class="context"
                        tabindex=""
