@@ -24,6 +24,7 @@
             <form name="feedback_form"
                 action=""
                 method="post"
+                tal:define="errors options/state/getErrors"
                 tal:attributes="action string:${here/absolute_url}/${template/getId}">
 
             <fieldset>
@@ -82,7 +83,7 @@
                      />
             </div>
             </tal:feedbackForm>
-                <tal:feedbackForm condition="not:isAnon" 
+            <tal:feedbackForm condition="not:isAnon" 
                               tal:define="fullname python:request.get('fullname', member.getProperty('fullname', ''));
                                           email python:request.get('email', member.getProperty('email',''));">
                 <input type="hidden" name="sender_fullname" value="fullname" tal:attributes="value fullname" />
