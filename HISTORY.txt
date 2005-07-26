@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - Beta2 - unreleased
 
+    - Adding navigation control panel, and fixing a possible Search control
+      panel migration problem in the process.
+      [optilude, limi]
+
     - Making the livesearch result truncate title and id, as offered by jeffk
       in http://members.plone.org/collector/4329. Thanks for the patch!
       [optilude]

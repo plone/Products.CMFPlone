@@ -161,12 +161,18 @@ def beta1_beta2(portal):
 
     # Make portal root use /edit and /sharing URLs on actions
     fixPortalEditAndSharingActions(portal, out)
-    
+
     # Add CMFUid tools
     addCMFUidTools(portal, out)
 
     # Correct CSS media types
     fixCSSMediaTypes(portal,out)
+
+    # Add icon for navigation settings configlet
+    addIconForNavigationSettingsConfiglet(portal,out)
+
+    # Be sure that Search and Navigation panels are installed
+    addSearchAndNavigationConfiglets(portal, out)
 
     return out
 
@@ -593,7 +599,7 @@ def addIconForSearchSettingsConfiglet(portal, out):
                 break # We already have the icon
         else:
             iconsTool.addActionIcon(
-                category='Plone',
+                category='controlpanel',
                 action_id='SearchSettings',
                 icon_expr='search_icon.gif',
                 title='Search Settings',
@@ -1147,4 +1153,47 @@ def fixCSSMediaTypes(portal,out):
                 out.append('Set media type for %s to %s' % (stylesheet,cssmediatype))
     if changed:
         out.append('Corrected CSS media types')
-        
+
+def addIconForNavigationSettingsConfiglet(portal, out):
+    """Adds an icon for the navigation settings configlet. """
+    iconsTool = getToolByName(portal, 'portal_actionicons', None)
+    if iconsTool is not None:
+        for icon in iconsTool.listActionIcons():
+            if icon.getActionId() == 'NavigationSettings':
+                break # We already have the icon
+        else:
+            iconsTool.addActionIcon(
+                category='controlpanel',
+                action_id='NavigationSettings',
+                icon_expr='navigation_icon.gif',
+                title='Navigation Settings',
+                )
+        out.append("Added 'navigation' icon to actionicons tool.")
+
+def addSearchAndNavigationConfiglets(portal, out):
+    """Add the configlets for the search and navigation settings"""
+    controlPanel = getToolByName(portal, 'portal_controlpanel', None)
+    if controlPanel is not None:
+        haveSearch = False
+        haveNavigation = False
+        for configlet in controlPanel.listActions():
+            if configlet.getId() == 'SearchSettings':
+                haveSearch = True
+            if configlet.getId() == 'NavigationSettings':
+                haveNavigation = True
+        if not haveSearch:
+            controlPanel.registerConfiglet(id         = 'SearchSettings',
+                                           appId      = 'Plone',
+                                           name       = 'Search Settings',
+                                           action     = 'string:${portal_url}/prefs_search_form',
+                                           category   = 'Plone',
+                                           permission = CMFCorePermissions.ManagePortal,)
+            out.append("Added search settings to the control panel")
+        if not haveNavigation:
+            controlPanel.registerConfiglet(id         = 'NavigationSettings',
+                                           appId      = 'Plone',
+                                           name       = 'Navigation Settings',
+                                           action     = 'string:${portal_url}/prefs_navigation_form',
+                                           category   = 'Plone',
+                                           permission = CMFCorePermissions.ManagePortal,)
+            out.append("Added navigation settings to the control panel")

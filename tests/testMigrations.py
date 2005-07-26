@@ -91,6 +91,8 @@ from Products.CMFPlone.migrations.v2_1.betas import fixViewMethodAliases
 from Products.CMFPlone.migrations.v2_1.betas import fixPortalEditAndSharingActions
 from Products.CMFPlone.migrations.v2_1.betas import addCMFUidTools
 from Products.CMFPlone.migrations.v2_1.betas import fixCSSMediaTypes
+from Products.CMFPlone.migrations.v2_1.betas import addIconForNavigationSettingsConfiglet
+from Products.CMFPlone.migrations.v2_1.betas import addSearchAndNavigationConfiglets
 
 from Products.CMFDynamicViewFTI.migrate import migrateFTI
 
@@ -219,6 +221,7 @@ class TestMigrations_v2_1(MigrationTest):
         self.factory = self.portal.portal_factory
         self.portal_memberdata = self.portal.portal_memberdata
         self.cc = self.portal.cookie_authentication
+        self.cp = self.portal.portal_controlpanel
 
     def testAddFullScreenAction(self):
         # Should add the full_screen action
@@ -2300,7 +2303,46 @@ class TestMigrations_v2_1(MigrationTest):
         # a second add shouldn't break
         fixCSSMediaTypes(self.portal, [])
 
-        
+    def testAddIconForNavigationSettingsConfiglet(self):
+        # Should add the full_screen action icon
+        self.removeActionIconFromTool('NavigationSettings')
+        addIconForNavigationSettingsConfiglet(self.portal, [])
+        self.failUnless('NavigationSettings' in [x.getActionId() for x in self.icons.listActionIcons()])
+
+    def testAddIconForNavigationSettingsConfigletTwice(self):
+        # Should not fail if migrated again
+        self.removeActionIconFromTool('NavigationSettings')
+        addIconForNavigationSettingsConfiglet(self.portal, [])
+        addIconForNavigationSettingsConfiglet(self.portal, [])
+        self.failUnless('NavigationSettings' in [x.getActionId() for x in self.icons.listActionIcons()])
+
+    def testAddIconForNavigationSettingsConfigletNoTool(self):
+        # Should not fail if portal_actionicons is missing
+        self.portal._delObject('portal_actionicons')
+        addIconForNavigationSettingsConfiglet(self.portal, [])
+
+    def testAddSearchAndNavigationConfiglets(self):
+        # Should add the full_screen action icon
+        self.removeActionFromTool('NavigationSettings', 'portal_controlpanel')
+        self.removeActionFromTool('SearchSettings', 'portal_controlpanel')
+        addSearchAndNavigationConfiglets(self.portal, [])
+        self.failUnless('NavigationSettings' in [x.getId() for x in self.cp.listActions()])
+        self.failUnless('SearchSettings' in [x.getId() for x in self.cp.listActions()])
+
+    def testAddSearchAndNavigationConfigletsTwice(self):
+        # Should not fail if done twice
+        self.removeActionFromTool('NavigationSettings', 'portal_controlpanel')
+        self.removeActionFromTool('SearchSettings', 'portal_controlpanel')
+        addSearchAndNavigationConfiglets(self.portal, [])
+        addSearchAndNavigationConfiglets(self.portal, [])
+        self.failUnless('NavigationSettings' in [x.getId() for x in self.cp.listActions()])
+        self.failUnless('SearchSettings' in [x.getId() for x in self.cp.listActions()])
+
+    def testAddSearchAndNavigationConfigletsNoTool(self):
+        # Should not fail if tool is missing
+        self.portal._delObject('portal_controlpanel')
+        addSearchAndNavigationConfiglets(self.portal, [])
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite

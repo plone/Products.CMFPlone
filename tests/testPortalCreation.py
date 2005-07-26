@@ -457,6 +457,25 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
             if action.getId() == 'sharing':
                 self.assertEqual(action.getActionExpression(), 'string:${object_url}/sharing')
 
+    def testNavigationSettingsActionIcon(self):
+        # There should be a NavigationSettings action icon
+        for icon in self.icons.listActionIcons():
+            if icon.getActionId() == 'NavigationSettings':
+                break
+        else:
+            self.fail("Action icons tool has no 'NavigationSettings' icon")
+
+    def testNavigationAndSearchPanelsInstalled(self):
+        # Navigation and search panels should be installed
+        haveSearch = False
+        haveNavigation = False
+        for panel in self.cp.listActions():
+            if panel.getId() == 'SearchSettings':
+                haveSearch = True
+            elif panel.getId() == 'NavigationSettings':
+                haveNavigation = True
+        self.failUnless(haveSearch and haveNavigation)
+
 class TestPortalBugs(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):

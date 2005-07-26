@@ -42,8 +42,7 @@ registerPloneFunction(
     <form action=""
           name="search"
           method="post"
-          tal:attributes="action string:${here/absolute_url}/${template/getId}"
-          tal:define="props python:here.portal_properties;">
+          tal:attributes="action string:${here/absolute_url}/${template/getId}">
 
         <fieldset>
             <legend i18n:translate="legend_search_details">Search details</legend>

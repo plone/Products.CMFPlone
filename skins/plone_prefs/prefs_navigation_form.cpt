@@ -11,7 +11,7 @@
 <div metal:fill-slot="prefs_configlet_main"
      tal:define="errors options/state/getErrors;">
 
-    <h1 i18n:translate="heading_search_setup">Navigation Settings</h1>
+    <h1 i18n:translate="heading_navigation_setup">Navigation Settings</h1>
 
     <a href=""
        class="link-parent"
@@ -20,7 +20,7 @@
     Up to Site Setup
     </a>
 
-    <p i18n:translate="description_search_setup">
+    <p i18n:translate="description_navigation_setup">
         Lets you control how navigation is constructed in your site.
     </p>
 
@@ -30,23 +30,24 @@
           tal:attributes="action string:${here/absolute_url}/${template/getId}">
 
         <fieldset>
-            <legend i18n:translate="legend_search_details">Navigation details</legend>
+            <legend i18n:translate="legend_navigation_details">Navigation details</legend>
 
             <div class="field"
-                 tal:define="error nothing;"
+                 tal:define="generated_tabs python: not site_properties.disable_folder_sections;
+                             generated_tabs request/generated_tabs | generated_tabs;
+                             error errors/generated_tabs | nothing;"
                  tal:attributes="class python:test(error, 'field error', 'field')">
 
                 <input type="checkbox"
                        class="noborder"
                        id="cb_allow_any"
-                       name="allow_any"
-                       tal:define="generatedtabs nothing"
-                       tal:attributes="checked python:test(generatedtabs, 'checked', '')" />
+                       name="generated_tabs"
+                       value="1"
+                       tal:attributes="checked python:test(generated_tabs, 'checked', None)" />
 
+                <label i18n:translate="label_generated_tabs_enable">Automatically generate tabs</label>
 
-                <label i18n:translate="label_livesearch_enable">Automatically generate tabs</label>
-
-                <div class="formHelp" i18n:translate="help_livesearch">
+                <div class="formHelp" i18n:translate="help_generated_tabs">
                 By default, all folders created at the root level will have global section
                 navigation generated. You can turn this off if you prefer manually constructing
                 this part of the navigation.
@@ -57,13 +58,14 @@
             <div class="field" id="navigationtypes-field"
                  tal:define="
                        portal_types     portal/portal_types;
+                       navtree_props    portal/portal_properties/navtree_properties; 
                        allTypes         python:[portal_types.getTypeInfo(t) for t in here.getPortalTypes()];
                        dummy            python:allTypes.sort(lambda x,y: cmp(x.title_or_id(), y.title_or_id()));
                        numTypes         python:len(allTypes);
                        numCols          python:3;
                        sublistLen       python:numTypes % numCols == 0 and numTypes / numCols or numTypes / numCols + 1;
                        typeLists        python:[allTypes[i*sublistLen:(i == numCols - 1 and numTypes or (i+1)*sublistLen)] for i in range(numCols)];
-                       blacklisted      site_properties/types_not_searched;
+                       blacklisted      navtree_props/metaTypesNotToList;
                        searchTypes      python:[t.getId() for t in allTypes if t.getId() not in blacklisted];">
 
                 <label i18n:translate="label_navigation_types">Displayed content types</label>
@@ -91,7 +93,11 @@
                    </ul>
                 </div>
 
-                <div class="field">
+                <div class="visualClear"><!-- --></div>
+
+                <div class="field" tal:replace="nothing">
+                    
+                    XXX: Disable until we have something to hook this up to
                     
                     <label i18n:translate="label_wf_states_shown">Displayed workflow states</label>
 
@@ -101,7 +107,7 @@
                     </div>
                 </div>
 
-                <div class="visualClear"><!-- --></div>
+                
             </div>
             
             <div class="formControls">
