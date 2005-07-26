@@ -28,6 +28,7 @@ site_properties = getToolByName(context, 'portal_properties').site_properties
 ## make these arguments?
 subject = REQUEST.get('subject', '')
 message = REQUEST.get('message', '')
+referer = REQUEST.get('referer', '')
 
 sender = mtool.getAuthenticatedMember()
 
@@ -54,7 +55,8 @@ encoding = plone_utils.getSiteEncoding()
 ## Add fullname, memberid to sender 
 variables = {'send_from_address' : send_from_address,
              'sender_id'         : sender_id,
-             'url'               : ,
+             'url'               : referer,
+	     'referer'           : referer,
              'subject'           : subject,
              'message'           : message
              }

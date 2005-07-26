@@ -8,5 +8,5 @@ View=0:Authenticated
 validators=validate_feedback
 
 [actions]
-action.success = traverse_to:string:contact-info
-action.failure = traverse_to:string:contact-info
+action.success = traverse_to:string:contact_info
+action.failure = traverse_to:string:contact_info
