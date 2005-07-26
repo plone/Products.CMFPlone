@@ -177,6 +177,9 @@ def beta1_beta2(portal):
     # Make sure the Events folder is cataloged
     indexEventsFolder(portal, out)
 
+    # add formsubmithelpers.js to ResourceRegistries
+    addFormSubmitHelpersJS(portal, out)
+
     return out
 
 
@@ -1214,3 +1217,12 @@ def addSearchAndNavigationConfiglets(portal, out):
                                            category   = 'Plone',
                                            permission = CMFCorePermissions.ManagePortal,)
             out.append("Added navigation settings to the control panel")
+
+def addFormSubmitHelpersJS(portal, out):
+    """Add formsubmithelpers.js to ResourceRegistries.
+    """
+    jsreg = getToolByName(portal, 'portal_javascripts', None)
+    if jsreg is not None:
+        if not 'formsubmithelpers.js' in jsreg.getResourceIds():
+            jsreg.registerScript('formsubmithelpers.js')
+            out.append('Registered formsubmithelpers.js')
