@@ -144,6 +144,27 @@ def beta1_beta2(portal):
     # Remove the oddly located plone_membership plone_setup action
     removePloneSetupActionFromPortalMembership(portal, out)
 
+    # Make sure our 'view' alises are (selected layout)
+    fixViewMethodAliases(portal, out)
+
+    # Make portal root use /edit and /sharing URLs on actions
+    fixPortalEditAndSharingActions(portal, out)
+    
+    # Add CMFUid tools
+    addCMFUidTools(portal, out)
+
+    # Correct CSS media types
+    fixCSSMediaTypes(portal,out)
+
+    # Add properties for filtering the navtree/sitemap by workflow state
+    addWFStateFilteringToNavTree(portal, out)
+
+    # Add icon for navigation settings configlet
+    addIconForNavigationSettingsConfiglet(portal,out)
+
+    # Be sure that Search and Navigation panels are installed
+    addSearchAndNavigationConfiglets(portal, out)
+
     # FIXME: *Must* be called after reindexCatalog.
     # In tests, reindexing loses the folders for some reason...
 
@@ -155,24 +176,6 @@ def beta1_beta2(portal):
 
     # Make sure the Events folder is cataloged
     indexEventsFolder(portal, out)
-
-    # Make sure our 'view' alises are (selected layout)
-    fixViewMethodAliases(portal, out)
-
-    # Make portal root use /edit and /sharing URLs on actions
-    fixPortalEditAndSharingActions(portal, out)
-
-    # Add CMFUid tools
-    addCMFUidTools(portal, out)
-
-    # Correct CSS media types
-    fixCSSMediaTypes(portal,out)
-
-    # Add icon for navigation settings configlet
-    addIconForNavigationSettingsConfiglet(portal,out)
-
-    # Be sure that Search and Navigation panels are installed
-    addSearchAndNavigationConfiglets(portal, out)
 
     return out
 
@@ -1153,6 +1156,20 @@ def fixCSSMediaTypes(portal,out):
                 out.append('Set media type for %s to %s' % (stylesheet,cssmediatype))
     if changed:
         out.append('Corrected CSS media types')
+
+def addWFStateFilteringToNavTree(portal,out):
+    """ Adds enable_wf_state_filtering and wf_states_to_show properties to the
+        navtree_properties
+    """
+    props = getToolByName(portal, 'portal_properties', None)
+    propSheet = getattr(props, 'navtree_properties', None)
+    if propSheet is not None:
+        if not propSheet.hasProperty('enable_wf_state_filtering'):
+            propSheet.manage_addProperty('enable_wf_state_filtering', 0, 'boolean')
+        out.append("Added 'enable_wf_state_filtering' property to navtree_properties.")
+        if not propSheet.hasProperty('wf_states_to_show'):
+            propSheet.manage_addProperty('wf_states_to_show', [], 'lines')
+        out.append("Added 'wf_states_to_show' property to navtree_properties.")
 
 def addIconForNavigationSettingsConfiglet(portal, out):
     """Adds an icon for the navigation settings configlet. """

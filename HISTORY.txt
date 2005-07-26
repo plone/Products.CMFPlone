@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - Beta2 - unreleased
 
+    - Add properties wf_states_to_show, and enable_wf_state_filtering to
+      navtree_properties.  These filter the navtree/sitemap/portal tabs
+      results by workflow state.
+      [alecm]
+
     - Adding navigation control panel, and fixing a possible Search control
       panel migration problem in the process.
       [optilude, limi]

@@ -212,6 +212,8 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.failUnless(self.properties.navtree_properties.hasProperty('sortOrder'))
         self.failUnless(self.properties.navtree_properties.hasProperty('sitemapDepth'))
         self.failUnless(self.properties.navtree_properties.hasProperty('showAllParents'))
+        self.failUnless(self.properties.navtree_properties.hasProperty('wf_states_to_show'))
+        self.failUnless(self.properties.navtree_properties.hasProperty('enable_wf_state_filtering'))
 
     def testSitemapAction(self):
         # There should be a sitemap action

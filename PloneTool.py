@@ -559,6 +559,9 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         if ntp.sortAttribute and ntp.sortOrder:
             query['sort_order'] = ntp.sortOrder
 
+        if ntp.enable_wf_state_filtering:
+            query['review_state'] = ntp.wf_states_to_show
+
         query['is_default_page'] = False
 
         parentTypesNQ = ntp.getProperty('parentMetaTypesNotToQuery', ())
@@ -691,6 +694,9 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
         if ntp.sortAttribute and ntp.sortOrder:
             query['sort_order'] = ntp.sortOrder
+
+        if ntp.enable_wf_state_filtering:
+            query['review_state'] = ntp.wf_states_to_show
 
         query['is_default_page'] = False
         query['is_folderish'] = True

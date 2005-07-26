@@ -643,6 +643,24 @@ class TestNavTree(PloneTestCase.PloneTestCase):
         #Should only contain current object and published folder
         self.assertEqual(len(tree['children']), 2)
 
+    def testStateFiltering(self):
+        # Test Navtree workflow state filtering
+        workflow = self.portal.portal_workflow
+        ntp=self.portal.portal_properties.navtree_properties
+        ntp.manage_changeProperties(wf_states_to_show=['published'])
+        ntp.manage_changeProperties(enable_wf_state_filtering=True)
+        tree = self.utils.createNavTree(self.portal.folder2)
+        self.failUnless(tree)
+        self.failUnless(tree.has_key('children'))
+        #Should only contain current object
+        self.assertEqual(len(tree['children']), 1)
+        #change workflow for folder1
+        workflow.doActionFor(self.portal.folder1, 'publish')
+        self.portal.folder1.reindexObject()
+        tree = self.utils.createNavTree(self.portal.folder2)
+        #Should only contain current object and published folder
+        self.assertEqual(len(tree['children']), 2)
+
     def testComplexSitemap(self):
         # create and test a reasonabley complex sitemap
         path = lambda x: '/'.join(x.getPhysicalPath())
@@ -758,7 +776,23 @@ class TestPortalTabs(PloneTestCase.PloneTestCase):
         workflow.doActionFor(self.portal.folder1, 'publish')
         self.portal.folder1.reindexObject()
         tabs = self.utils.createTopLevelTabs()
-        #Should only contain current object and published folder
+        #Should only contain the published folder
+        self.assertEqual(len(tabs), 1)
+
+    def testStateFiltering(self):
+        # Test tabs workflow state filtering
+        workflow = self.portal.portal_workflow
+        ntp=self.portal.portal_properties.navtree_properties
+        ntp.manage_changeProperties(wf_states_to_show=['published'])
+        ntp.manage_changeProperties(enable_wf_state_filtering=True)
+        tabs = self.utils.createTopLevelTabs()
+        #Should contain no folders
+        self.assertEqual(len(tabs), 0)
+        #change workflow for folder1
+        workflow.doActionFor(self.portal.folder1, 'publish')
+        self.portal.folder1.reindexObject()
+        tabs = self.utils.createTopLevelTabs()
+        #Should only contain the published folder
         self.assertEqual(len(tabs), 1)
 
     def testDisableFolderTabs(self):

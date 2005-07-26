@@ -91,6 +91,7 @@ from Products.CMFPlone.migrations.v2_1.betas import fixViewMethodAliases
 from Products.CMFPlone.migrations.v2_1.betas import fixPortalEditAndSharingActions
 from Products.CMFPlone.migrations.v2_1.betas import addCMFUidTools
 from Products.CMFPlone.migrations.v2_1.betas import fixCSSMediaTypes
+from Products.CMFPlone.migrations.v2_1.betas import addWFStateFilteringToNavTree
 from Products.CMFPlone.migrations.v2_1.betas import addIconForNavigationSettingsConfiglet
 from Products.CMFPlone.migrations.v2_1.betas import addSearchAndNavigationConfiglets
 
@@ -2302,6 +2303,36 @@ class TestMigrations_v2_1(MigrationTest):
                 self.assertEqual(cssresource.getMedia(),cssmediatype)
         # a second add shouldn't break
         fixCSSMediaTypes(self.portal, [])
+
+    def testAddWFStateFilteringToNavTree(self):
+        # Should add new navtree_properties
+        self.removeNavTreeProperty('enable_wf_state_filtering')
+        self.removeNavTreeProperty('wf_states_to_show')
+        self.failIf(self.properties.navtree_properties.hasProperty('enable_wf_state_filtering'))
+        addWFStateFilteringToNavTree(self.portal, [])
+        self.failUnless(self.properties.navtree_properties.hasProperty('enable_wf_state_filtering'))
+        self.failUnless(self.properties.navtree_properties.hasProperty('wf_states_to_show'))
+
+    def testAddWFStateFilteringToNavTreeTwice(self):
+        # Should not fail if migrated again
+        self.removeNavTreeProperty('enable_wf_state_filtering')
+        self.removeNavTreeProperty('wf_states_to_show')
+        self.failIf(self.properties.navtree_properties.hasProperty('enable_wf_state_filtering'))
+        addWFStateFilteringToNavTree(self.portal, [])
+        addWFStateFilteringToNavTree(self.portal, [])
+        self.failUnless(self.properties.navtree_properties.hasProperty('enable_wf_state_filtering'))
+        self.failUnless(self.properties.navtree_properties.hasProperty('wf_states_to_show'))
+
+    def testAddWFStateFilteringToNavTreeNoTool(self):
+        # Should not fail if portal_properties is missing
+        self.portal._delObject('portal_properties')
+        addWFStateFilteringToNavTree(self.portal, [])
+
+    def testAddWFStateFilteringToNavTreeNoSheet(self):
+        # Should not fail if navtree_properties is missing
+        self.properties._delObject('navtree_properties')
+        addWFStateFilteringToNavTree(self.portal, [])
+
 
     def testAddIconForNavigationSettingsConfiglet(self):
         # Should add the full_screen action icon
