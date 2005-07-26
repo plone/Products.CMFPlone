@@ -1,9 +1,6 @@
 [default]
 proxy=Manager,Anonymous
 
-[security]
-View=0:Authenticated
-
 [validators]
 validators=validate_site_feedback
 

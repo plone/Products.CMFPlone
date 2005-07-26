@@ -13,7 +13,9 @@ reg_tool=context.portal_registration
 if not sender_from_address:
     state.setError('sender_from_address', 'Please submit an email address.', 'sender_from_address_required')
 else:
-    if not reg_tool.isValidEmail(sender_from_address):
+    if reg_tool.isValidEmail(sender_from_address):
+        pass
+    else:
         state.setError('sender_from_address', 'You entered an invalid email address.', 'invalid_email')
  
 if not sender_fullname:
