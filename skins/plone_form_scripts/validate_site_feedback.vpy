@@ -5,13 +5,14 @@
 ##bind script=script
 ##bind state=state  
 ##bind subpath=traverse_subpath
-##parameters=subject,message,email
+##parameters=subject,message,sender_from_address,sender_fullname
 ##title=validates the form for sending feedback
 
-plone_utils=context.plone_utils
+if not sender_from_address:
+    state.setError('sender_from_address', 'Please submit an email address.', 'email_required')
 
-if not email:
-    state.setError('author', 'Please submit an email address.', 'email_required')
+if not sender_fullname:
+    state.setError('sender_fullname', 'Please enter your name.', 'email_required')
 
 if not (subject and subject.strip()):
     state.setError('subject', 'Please enter a subject.', 'email_required')
