@@ -5,7 +5,7 @@ proxy=Manager,Anonymous
 View=0:Authenticated
 
 [validators]
-validators=validate_feedback
+validators=validate_site_feedback
 
 [actions]
 action.success = traverse_to:string:contact_info

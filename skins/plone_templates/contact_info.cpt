@@ -78,7 +78,7 @@
 
             </fieldset>
 
-            <input type="hidden" name="referer" value="" tal:attributes="value here/portal_url" />
+            <input type="hidden" name="email" value="testuser@example.org" />
             <input type="hidden" name="form.submitted" value="1" />
 
             </form>
