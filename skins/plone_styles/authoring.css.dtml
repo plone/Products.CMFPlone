@@ -667,6 +667,13 @@ ol.visualNoMarker {
     margin: 0.2em 0;
 }
 
+.actionMenu .actionMenuContent .selected {
+    display: block;
+    white-space: nowrap;
+    padding: 0 0.5em;
+    margin: 0.2em 0;
+}
+
 .actionMenu .actionMenuContent li a:hover {
     background-color: &dtml-contentViewBorderColor;;
     color: White;
@@ -684,7 +691,6 @@ ol.visualNoMarker {
     white-space: nowrap;
     border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
 }
-
 
 .contentBatchAction {
     float: left !important;

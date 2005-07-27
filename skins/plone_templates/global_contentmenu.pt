@@ -229,7 +229,7 @@
                         <tal:parentDefaultPage condition="canSelectDefaultFolderPage">
                             <tal:haveSelectedLayout condition="python:selectedLayout != ''">
                                 <li class="actionSeperator">
-                                    <a title="Select an item to be used as default view in this folder" href="#" class="selected"
+                                    <a title="Select an item to be used as default view in this folder" href="#"
                                        tal:attributes="href string:${parent_folder/absolute_url}/select_default_page;"
                                        i18n:attributes="title title_select_default_view_item;"
                                        i18n:translate="label_choose_item">
@@ -244,7 +244,7 @@
                                     </div>
                                 </li>
                                 <li>
-                                    <a title="Change the item used as default view in this folder" href="#" class="selected"
+                                    <a title="Change the item used as default view in this folder" href="#"
                                        tal:attributes="href string:${parent_folder/absolute_url}/select_default_page;"
                                        i18n:attributes="title title_change_default_view_item;"
                                        i18n:translate="label_change_item">
@@ -274,7 +274,7 @@
                                       tal:attributes="title display"
                                       i18n:attributes="title"
                                       class="selected"
-                                      >&nbsp;&bull; 
+                                      > 
                                       <span i18n:translate="" 
                                             tal:omit-tag="" 
                                             tal:content="display">Template id</span>
@@ -283,7 +283,7 @@
                                    tal:condition="python:value!=selectedLayout"
                                    tal:attributes="href string:${context/absolute_url}/selectViewTemplate?templateId=$value;
                                                    title display"
-                                   i18n:attributes="title">&nbsp;<span style="color:#cde2a7">&bull;</span>
+                                   i18n:attributes="title">
                                     <tal:title i18n:translate=""
                                          tal:content="display">Template id</tal:title>
                                 </a>
@@ -292,8 +292,8 @@
 
                         <tal:contextDefaultPage condition="canSelectDefaultContextPage">
                             <tal:haveSelectedLayout condition="python:selectedLayout != ''">
-                                <li>
-                                    <a title="Select an item to be used as default view in this folder" href="#" class="selected"
+                                <li class="actionSeperator">
+                                    <a title="Select an item to be used as default view in this folder" href="#"
                                        tal:attributes="href string:${here/absolute_url}/select_default_page;"
                                        i18n:attributes="title title_select_default_page;"
                                        i18n:translate="label_choose_item">
@@ -326,7 +326,7 @@
                                 define="selectedLayout context/getLayout|nothing;">
                         <tal:haveSelectedLayout condition="python:selectedLayout != ''">
                             <li class="actionSeperator">
-                                <a title="Select an item to be used as default view in this folder" href="#" class="selected"
+                                <a title="Select an item to be used as default view in this folder" href="#"
                                    tal:attributes="href string:${parent_folder/absolute_url}/select_default_page;"
                                    i18n:attributes="title title_select_default_page;"
                                    i18n:translate="label_choose_item">
