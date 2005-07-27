@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - Beta2 - unreleased
 
+    - Added main macros to templates which may be used as default content
+      views so that they play nicely with discussion_reply_form.
+      [alecm]
+
     - Fixed http://members.plone.org/collector/4333 prefs_user_manage now uses
       portal_membership.deleteMembers instead of acting directly on acl_users.
       On deletion local roles are now removed, but the member area is

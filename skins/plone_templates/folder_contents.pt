@@ -13,6 +13,7 @@
   <body>
 
     <div metal:fill-slot="main">
+    <metal:main-macro define-macro="main">
     <metal:contentsmacro define-macro="contents"
          tal:define="standalone python:1;
                      contentTypes here/getAllowedTypes;
@@ -291,6 +292,7 @@
       </form>
 
     </metal:contentsmacro>
+    </metal:main-macro>
     </div>
 
 

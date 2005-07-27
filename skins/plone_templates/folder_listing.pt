@@ -6,6 +6,7 @@
 <body>
 
     <div metal:fill-slot="main">
+    <metal:main-macro define-macro="main">
 
         <div metal:use-macro="here/document_actions/macros/document_actions">
             Document actions (print, sendto etc)
@@ -17,7 +18,7 @@
 
         <a href=""
            class="link-parent"
-           tal:define="parent_url python:here.navigationParent(here, template.getId())"
+           tal:define="parent_url python:here.navigationParent(here, template_id)"
            tal:condition="parent_url"
            tal:attributes="href parent_url"
            i18n:translate="go_to_parent_url">
@@ -137,6 +138,7 @@
 
         </tal:foldercontents>
         </metal:listingmacro>
+    </metal:main-macro>
     </div>
 
 </body>

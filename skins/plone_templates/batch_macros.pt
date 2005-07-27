@@ -8,8 +8,9 @@
      metal:define-macro="navigation"
      tal:define="request request|here/request|container/request|nothing;
                  batch batch|nothing;
+                 template_id template_id|template/getId;
                  mq python:modules['ZTUtils'].make_query;
-                 url batch_base_url | string:${here/absolute_url}/${template/getId};
+                 url batch_base_url | string:${here/absolute_url}/${template_id};
                  currentpage batch/pagenumber;"
      tal:condition="python: batch.next or  batch.previous">
 <!-- XXX tesdal needs to have a look at these
