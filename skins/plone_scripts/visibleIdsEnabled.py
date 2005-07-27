@@ -18,7 +18,7 @@ if pm.isAnonymousUser():
     return False
 
 user = pm.getAuthenticatedMember()
-context.plone_log('%s'%user.getProperty('visible_ids'))
+
 if user is not None:
     return user.getProperty('visible_ids', False)
 
