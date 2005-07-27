@@ -193,10 +193,10 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         else:
             self.fail("Action icons tool has no 'full_screen' icon")
 
-    def testVisibleIdsSiteProperty(self):
-        # visible_ids should be a site property, not a memberdata property
+    def testVisibleIdsProperties(self):
+        # visible_ids should be a site property and a memberdata property
         self.failUnless(self.properties.site_properties.hasProperty('visible_ids'))
-        self.failIf(self.memberdata.hasProperty('visible_ids'))
+        self.failUnless(self.memberdata.hasProperty('visible_ids'))
 
     def testFormToolTipsProperty(self):
         # formtooltips should have been removed

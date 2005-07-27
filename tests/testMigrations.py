@@ -94,6 +94,7 @@ from Products.CMFPlone.migrations.v2_1.betas import fixCSSMediaTypes
 from Products.CMFPlone.migrations.v2_1.betas import addWFStateFilteringToNavTree
 from Products.CMFPlone.migrations.v2_1.betas import addIconForNavigationSettingsConfiglet
 from Products.CMFPlone.migrations.v2_1.betas import addSearchAndNavigationConfiglets
+from Products.CMFPlone.migrations.v2_1.betas import readdVisibleIdsMemberProperty
 
 from Products.CMFDynamicViewFTI.migrate import migrateFTI
 
@@ -2373,6 +2374,26 @@ class TestMigrations_v2_1(MigrationTest):
         # Should not fail if tool is missing
         self.portal._delObject('portal_controlpanel')
         addSearchAndNavigationConfiglets(self.portal, [])
+
+    def testReaddVisibleIdsMemberProperty(self):
+        # Should add the visible_ids property
+        self.removeMemberdataProperty('visible_ids')
+        self.failIf(self.portal.portal_memberdata.hasProperty('visible_ids'))
+        readdVisibleIdsMemberProperty(self.portal, [])
+        self.failUnless(self.portal.portal_memberdata.hasProperty('visible_ids'))
+
+    def testReaddVisibleIdsMemberPropertyTwice(self):
+        # Should not fail if migrated again
+        self.removeMemberdataProperty('visible_ids')
+        self.failIf(self.portal.portal_memberdata.hasProperty('visible_ids'))
+        readdVisibleIdsMemberProperty(self.portal, [])
+        readdVisibleIdsMemberProperty(self.portal, [])
+        self.failUnless(self.portal.portal_memberdata.hasProperty('visible_ids'))
+
+    def testReaddVisibleIdsMemberPropertyNoTool(self):
+        # Should not fail if portal_properties is missing
+        self.portal._delObject('portal_memberdata')
+        readdVisibleIdsMemberProperty(self.portal, [])
 
 
 def test_suite():

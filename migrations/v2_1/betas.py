@@ -165,6 +165,12 @@ def beta1_beta2(portal):
     # Be sure that Search and Navigation panels are installed
     addSearchAndNavigationConfiglets(portal, out)
 
+    # add formsubmithelpers.js to ResourceRegistries
+    addFormSubmitHelpersJS(portal, out)
+
+    # Re-Add the memberdata property for visible ids
+    readdVisibleIdsMemberProperty(portal, out)
+
     # FIXME: *Must* be called after reindexCatalog.
     # In tests, reindexing loses the folders for some reason...
 
@@ -176,9 +182,6 @@ def beta1_beta2(portal):
 
     # Make sure the Events folder is cataloged
     indexEventsFolder(portal, out)
-
-    # add formsubmithelpers.js to ResourceRegistries
-    addFormSubmitHelpersJS(portal, out)
 
     return out
 
@@ -1226,3 +1229,12 @@ def addFormSubmitHelpersJS(portal, out):
         if not 'formsubmithelpers.js' in jsreg.getResourceIds():
             jsreg.registerScript('formsubmithelpers.js')
             out.append('Registered formsubmithelpers.js')
+
+
+def readdVisibleIdsMemberProperty(portal, out):
+    """Re-Adds member config for editable short names."""
+    mpropTool = getToolByName(portal, 'portal_memberdata', None)
+    if mpropTool is not None:
+        if not mpropTool.hasProperty('visible_ids'):
+            mpropTool.manage_addProperty('visible_ids', 0, 'boolean')
+        out.append("Added 'visible_ids' property to portal_memberdata.")

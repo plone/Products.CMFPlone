@@ -132,7 +132,8 @@ def alpha1_alpha2(portal):
 
     # Make visible_ids a site-wide property
     addVisibleIdsSiteProperty(portal, out)
-    deleteVisibleIdsMemberProperty(portal, out)
+    # No longer delete this, as we don't want to loose custom settings.
+    # deleteVisibleIdsMemberProperty(portal, out)
 
     # Remove obsolete formtooltips property
     deleteFormToolTipsMemberProperty(portal, out)

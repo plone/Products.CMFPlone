@@ -209,6 +209,29 @@
             </div>
 
             <div class="field"
+                     tal:condition="site_properties/visible_ids|nothing"
+                     tal:define="visible_ids python:request.get('visible_ids', member.getProperty('visible_ids',''));">
+
+                <input type="checkbox"
+                       class="noborder"
+                       name="visible_ids"
+                       id="cb_invisible_ids"
+                       tal:attributes="tabindex tabindex/next;
+                                       checked python:test(visible_ids, 'checked', None);"
+                       />
+
+                <label for="cb_invisible_ids" 
+                       i18n:translate="label_edit_short_names">Allow editing of Short Names</label>
+
+                <div class="formHelp" i18n:translate="help_display_names">
+                Determines if Short Names (also known as IDs) are
+                changable when editing items. If Short Names
+                are not displayed, they will be generated automatically.
+                </div>
+
+            </div>
+
+            <div class="field"
                     tal:condition="here/portal_skins/allow_any"
                     tal:define="skinvar python:request.get(here.portal_skins.getRequestVarname(), '');
                     skindefault here/portal_skins/getDefaultSkin;
