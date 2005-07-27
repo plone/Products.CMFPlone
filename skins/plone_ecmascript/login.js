@@ -19,32 +19,19 @@ function cookiesEnabled() {
   return 1;
 }
 
-function lazyCookiesEnabled(id) {
-  // Test to see if cookies are enabled and store the result in element with given id.
-  // First check the specified element; only if it is empty, run the test
-  if (id) {
-     el = document.getElementById(id);
-     if (el.value == '') {
-        el.value = cookiesEnabled()
-     }
-     if (el.value=='1') {
-        return 1;
-     } else {
-        return 0;
-     }
-  } else {
-    return cookiesEnabled()
-  }
-}
-
 function setLoginVars(user_name_id, alt_user_name_id, password_id, empty_password_id, js_enabled_id, cookies_enabled_id) {
   // Indicate that javascript is enabled, set cookie status, copy username and password length info to 
   // alternative variables since these vars are removed from the request by zope's authentication mechanism.
   if (js_enabled_id) {
-    document.getElementById(js_enabled_id).value = 1;
+    el = document.getElementById(js_enabled_id);
+    if (el) { el.value = 1; }
   }
   if (cookies_enabled_id) {
-    lazyCookiesEnabled(cookies_enabled_id);
+    el = document.getElementById(cookies_enabled_id);
+    // Do a fresh cookies enabled test every time we press the login button
+    //   so that we are up to date in case the user enables cookies after seeing
+    //   the cookies message.
+    if (el) { el.value = cookiesEnabled(); } 
   }
   if (user_name_id && alt_user_name_id) {
     user_name = document.getElementById(user_name_id)
@@ -67,11 +54,13 @@ function setLoginVars(user_name_id, alt_user_name_id, password_id, empty_passwor
   return 1;
 }
 
-function showCookieMessage(msg_id, storage_id) {
+function showCookieMessage(msg_id) {
   // Show the element with the given id if cookies are not enabled
   msg = document.getElementById(msg_id)
   if (msg) {
-     if (!lazyCookiesEnabled(storage_id)) {
+     if (cookiesEnabled()) {
+        msg.style.display = 'none';
+     } else {
         msg.style.display = 'block';
      }
   }
@@ -79,7 +68,7 @@ function showCookieMessage(msg_id, storage_id) {
 
 function showEnableCookiesMessage() {
   // Show the element with the id 'enable_cookies_message' if cookies are not enabled
-  showCookieMessage('enable_cookies_message', null)
+  showCookieMessage('enable_cookies_message')
 }
 // Call showEnableCookiesMessage after the page loads
 registerPloneFunction(showEnableCookiesMessage);

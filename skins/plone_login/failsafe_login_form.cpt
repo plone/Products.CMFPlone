@@ -43,9 +43,7 @@ to become a member.
 
 </p>
 
-<script tal:condition="nothing" type="text/javascript" tal:content="structure context/login_cookie_message" />
-
-<div id="enable_cookies_message" class="portalMessage" style="display:none">
+<div id="enable_cookies_message" i18n:translate="enable_cookies_message" class="portalMessage" style="display:none">
   Cookies are not enabled. You must <a href="enabling_cookies">enable cookies</a> before you can log in.
 </div>
 
@@ -71,7 +69,7 @@ to become a member.
 
         <input type="hidden" name="form.submitted" value="1" />
         <input type="hidden" name="js_enabled" id="js_enabled" value="0" />
-        <input type="hidden" name="cookies_enabled" id="cookies_enabled" value="0" />
+        <input type="hidden" name="cookies_enabled" id="cookies_enabled" value="" />
         <input type="hidden" name="login_name" id="login_name" value="" />
         <input type="hidden" name="pwd_empty" id="pwd_empty" value="0" />
 
