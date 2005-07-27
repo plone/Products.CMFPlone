@@ -18,14 +18,17 @@ plone_utils = getToolByName(context, 'plone_utils')
 site_properties = getToolByName(context, 'portal_properties').site_properties
 pretty_title_or_id = plone_utils.pretty_title_or_id
 empty_title = plone_utils.getEmptyTitle()
+show = False
 
-# need to check visible state of 'sendto' action in portal_actions
-# but I couldn't figure out how - update collector issue #1490
-# when implemented
 at = getToolByName(context, 'portal_actions')
 
-#if not sendto_action.visible :
-if 0:
+actions = at.listActionInfos(object=context)
+# Check for visbility of sendto action
+for action in actions:
+    if action['id'] == 'sendto' and action['category'] == 'document_actions':
+        show = True
+
+if not show:
     return state.set(
         status='failure',
         portal_status_message='You are not allowed to send this link.')

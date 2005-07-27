@@ -707,7 +707,7 @@ def fixContentActionConditions(portal,out):
         {'id'        : 'cut',
          'name'      : 'Cut',
          'action'    : 'string:${object_url}/object_cut',
-         'condition' : 'python:portal.portal_membership.checkPermission("Delete objects", object.aq_inner.getParentNode()) and object is not portal.portal_url.getPortalObject()',
+         'condition' : 'python:portal.portal_membership.checkPermission("Delete objects", object.aq_inner.getParentNode()) and object is not portal',
          'permission': CMFCorePermissions.Permissions.copy_or_move,
          'category'  : 'object_buttons',
         },
@@ -721,7 +721,7 @@ def fixContentActionConditions(portal,out):
         {'id'        : 'delete',
          'name'      : 'Delete',
          'action'    : 'string:${object_url}/object_delete',
-         'condition' : 'python:portal.portal_membership.checkPermission("Delete objects", object.aq_inner.getParentNode()) and object is not portal.portal_url.getPortalObject()',
+         'condition' : 'python:portal.portal_membership.checkPermission("Delete objects", object.aq_inner.getParentNode()) and object is not portal',
          'permission': CMFCorePermissions.DeleteObjects,
          'category'  : 'object_buttons',
         })

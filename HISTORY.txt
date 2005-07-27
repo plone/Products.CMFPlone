@@ -4,9 +4,14 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - Beta2 - unreleased
 
+    - Fixed http://plone.org/collector/1490 by ensuring that sendto only works
+      when the action is visible.
+      [alecm]
+
     - Added an immediateLogout method to MembershipTool.py that resets the
       current security context and logs the current user out immediately.
-      Used in logout.py [geoffd]
+      Used in logout.py
+      [geoffd]
 
     - Added main macros to templates which may be used as default content
       views so that they play nicely with discussion_reply_form.
