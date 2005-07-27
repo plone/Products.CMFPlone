@@ -4,8 +4,12 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - Beta2 - unreleased
 
-    - Fixed http://plone.org/collector/1490 by ensuring that sendto only works
-      when the action is visible.
+    - Added language to personalize form and put prefs_user_details back in
+      sync with personalize.
+      [alecm]
+
+    - Fixed http://members.plone.org/collector/1490 by ensuring that sendto
+      only works when the action is visible.
       [alecm]
 
     - Added an immediateLogout method to MembershipTool.py that resets the
