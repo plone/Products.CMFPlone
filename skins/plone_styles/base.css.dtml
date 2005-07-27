@@ -225,7 +225,7 @@ code {
 }
 pre {
     font-family: Monaco, "Courier New", Courier, monospace;
-    font-size: 120%;
+    font-size: 100%;
     padding: 1em;
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
     color: &dtml-fontColor;;
