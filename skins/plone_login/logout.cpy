@@ -8,6 +8,7 @@
 ##parameters=
 
 REQUEST = context.REQUEST
+
 # if REQUEST.has_key('portal_skin'):
 #   context.portal_skins.clearSkinCookie()
 
@@ -30,7 +31,9 @@ REQUEST.SESSION.invalidate()
 from Products.CMFPlone import transaction_note
 transaction_note('Logged out')
 
-# kill the current security context
-context.portal_membership.immediateLogout()
+# If you want to do a traverse next, instead of a redirect, you need to
+# kill the current security context.  Keep in mind that this may mean
+# that you end up on a logged_out page with a context that you can't view...
+# context.portal_membership.immediateLogout()
 
-return state.set(next_action='traverse_to:string:'+REQUEST.URL1+'/logged_out')
+return state.set(next_action='redirect_to:string:'+REQUEST.URL1+'/logged_out')
