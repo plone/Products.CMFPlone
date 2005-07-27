@@ -15,6 +15,7 @@
     <tal:main-macro metal:define-macro="main"
                     tal:define="author python:(len(request.traverse_subpath) > 0 and request.traverse_subpath[0]) or None;
                                 portrait python: mtool.getPersonalPortrait(author);
+				portal_types portal/portal_types;
                                 authorinfo python: mtool.getMemberInfo(author);">
 
         <tal:noAuthor condition="not: authorinfo">
@@ -156,7 +157,7 @@
                     <tr>
                         <th colspan="2"
 			    i18n:translate=""
-                            tal:content="content_by_type/portal_type">
+                            tal:content="python: portal_types.getTypeInfo(content_by_type['portal_type']).Title()">
                             Type
                         </th>
                     </tr>
