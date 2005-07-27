@@ -294,18 +294,25 @@ class TestMembershipTool(PloneTestCase.PloneTestCase):
         self.assertEqual(len(roles), 2)
 
     def test_bug4333_delete_user_remove_memberdata(self):
-        # delete user should delete poral_memberdata
+        # delete user should delete portal_memberdata
         memberdata = self.portal.portal_memberdata
         self.setRoles(['Manager'])
         self.addMember('barney', 'Barney Rubble', 'barney@bedrock.com', ['Member'], '2002-01-01')
         barney = self.membership.getMemberById('barney')
         self.failUnlessEqual(barney.email, 'barney@bedrock.com')
         del barney
-        
-        self.membership.deleteMembers('barney')
+
+        self.membership.deleteMembers(['barney'])
         md = memberdata._members
         self.failIf(md.has_key('barney'))
-        
+
+        # There is an _v_ variable that is killed at the end of each request
+        # which stores a temporary version of the member object, this is
+        # a problem in this test.  In fact, this test does not really
+        # demonstrate the bug, which is actually caused by the script not
+        # using the tool.
+        memberdata._v_temps = None
+
         self.membership.addMember('barney', 'secret', ['Members'], [])
         barney = self.membership.getMemberById('barney')
         self.failIfEqual(barney.fullname, 'Barney Rubble')

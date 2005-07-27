@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - Beta2 - unreleased
 
+    - Fixed http://members.plone.org/collector/4333 prefs_user_manage now uses
+      portal_membership.deleteMembers instead of acting directly on acl_users.
+      On deletion local roles are now removed, but the member area is
+      preserved.
+      [alecm]
+
     - Added the last missing accesskey to search_form and put in a link below
       the search box.
       [hannosch]
