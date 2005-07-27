@@ -30,4 +30,7 @@ REQUEST.SESSION.invalidate()
 from Products.CMFPlone import transaction_note
 transaction_note('Logged out')
 
-return state.set(next_action='redirect_to:string:'+REQUEST.URL1+'/logged_out')
+# kill the current security context
+context.portal_membership.immediateLogout()
+
+return state.set(next_action='traverse_to:string:'+REQUEST.URL1+'/logged_out')

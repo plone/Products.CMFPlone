@@ -8,6 +8,7 @@ from OFS.Image import Image
 from AccessControl import ClassSecurityInfo, getSecurityManager
 from Globals import InitializeClass, DTMLFile
 from zExceptions import BadRequest
+from AccessControl.SecurityManagement import noSecurityManager
 from Acquisition import aq_base, aq_parent, aq_inner
 from Products.CMFCore.CMFCorePermissions import View
 from Products.CMFCore.CMFCorePermissions import ManagePortal
@@ -586,6 +587,13 @@ class MembershipTool(PloneBaseTool, BaseTool):
                             if role not in ('Member', 'Authenticated') ]
         local_roles.sort()
         return tuple(local_roles)
+
+
+    security.declareProtected(View, 'immediateLogout')
+    def immediateLogout(self):
+        """ Log the current user out immediately.  Used by logout.py so that
+            we do not have to do a redirect to show the logged out status. """
+        noSecurityManager()
 
 MembershipTool.__doc__ = BaseTool.__doc__
 

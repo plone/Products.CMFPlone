@@ -27,7 +27,7 @@ if came_from is not None:
 
 #if came_from:
 #    util = context.plone_utils
-#    # Add portal_status_message to the query string of the we came from
+#    # Add portal_status_message to the query string of the url we came from
 #    scheme, location, path, parameters, query, fragment = util.urlparse(came_from)
 #    query = context.create_query_string(query, portal_status_message='Welcome! You are now logged in.')
 #    came_from = util.urlunparse(scheme, location, path, parameters, query, fragment)

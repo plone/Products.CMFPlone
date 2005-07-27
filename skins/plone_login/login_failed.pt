@@ -6,7 +6,10 @@
 <body>
 
 <div metal:fill-slot="main">
-  <div metal:define-macro="login_failed">
+  <div metal:define-macro="login_failed"
+       tal:define="login_name python:request.get('login_name', '');
+                   global ztutils modules/ZTUtils;">
+
     <h1 i18n:translate="heading_sign_in_failure_auth">Sign-in failure</h1>
 
     <p i18n:translate="description_not_logged_in_username_incorrect">
@@ -14,7 +17,7 @@
       may be incorrect.
     </p>
 
-    <p><a href="mail_password_form" i18n:translate="description_failed_login_link">
+    <p><a tal:attributes="href python:'mail_password_form?'+ztutils.make_query(userid=login_name)" i18n:translate="description_failed_login_link">
       Click here to have your password mailed to you if you have forgotten it.</a>
     </p>
 

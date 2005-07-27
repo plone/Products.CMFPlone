@@ -56,6 +56,13 @@
               tal:condition="prefs" tal:attributes="href python:prefs.pop()"
            >set up your Preferences</a></span>.
       </p>
+
+      <div tal:condition="python:request.get('js_enabled','1')=='0'">
+         <br />
+         <p>Note: If you do not remain logged in after leaving this page, it is because
+         you need to <a href="enabling_cookies">enable cookies</a> in your browser.</p>
+      </div>
+
     </div>
   </div>
   <div tal:condition="isAnon">

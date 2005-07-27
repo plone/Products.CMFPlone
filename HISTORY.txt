@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - Beta2 - unreleased
 
+    - Added an immediateLogout method to MembershipTool.py that resets the
+      current security context and logs the current user out immediately.
+      Used in logout.py [geoffd]
+
     - Added main macros to templates which may be used as default content
       views so that they play nicely with discussion_reply_form.
       [alecm]

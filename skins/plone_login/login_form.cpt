@@ -60,7 +60,8 @@ to become a member.
 
     <fieldset tal:define="ac_name auth/name_cookie;
 	                  ac_password auth/pw_cookie;
-	                  ac_persist auth/persist_cookie">
+	                  ac_persist auth/persist_cookie;
+			  login_name python:request.get('login_name', request.get(ac_name, ''));">
 
         <legend i18n:translate="legend_account_details">Account details</legend>
 
@@ -76,8 +77,7 @@ to become a member.
         <input type="hidden" name="pwd_empty" id="pwd_empty" value="0" />
 
         <div class="field"
-             tal:define="error python:errors.get(ac_name, None);
-                         value python:request.get('login_name', request.get(ac_name, None));"
+             tal:define="error python:errors.get(ac_name, None);"
              tal:attributes="class python:test(error, 'field error', 'field')">
 
             <label i18n:translate="label_login_name"
@@ -95,7 +95,7 @@ to become a member.
                    tabindex=""
                    tal:attributes="name ac_name;
                                    id ac_name;
-                                   value value;
+                                   value login_name;
                                    tabindex tabindex/next;"
                    />
 
@@ -113,7 +113,7 @@ to become a member.
                 Case sensitive, make sure caps lock is not enabled.
                 <tal:block condition="python:checkPermission('Mail forgotten password', here)">
                 If you have forgotten your password,
-                <a href="mail_password_form">click here to retrieve it</a>.
+                <a tal:attributes="href python:'mail_password_form?'+ztutils.make_query(userid=login_name)">click here to retrieve it</a>.
                 </tal:block>
             </div>
 
