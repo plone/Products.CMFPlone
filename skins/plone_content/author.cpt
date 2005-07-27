@@ -13,7 +13,7 @@
 <metal:main fill-slot="main"
     tal:define="errors options/state/getErrors;">
     <tal:main-macro metal:define-macro="main"
-                    tal:define="author python:(len(request.traverse_subpath) > 0 and request.traverse_subpath[0]) or None;
+                    tal:define="author python:(len(request.traverse_subpath) > 0 and request.traverse_subpath[0]) or request.get('author', None);
                                 portrait python: mtool.getPersonalPortrait(author);
 				portal_types portal/portal_types;
                                 authorinfo python: mtool.getMemberInfo(author);">
