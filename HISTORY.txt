@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - Beta2 - unreleased
 
+    - Added the last missing accesskey to search_form and put in a link below
+      the search box.
+      [hannosch]
+
     - Reenabled visible_ids memberdata property.  This field will determine
       the visiblity of ids on a member by member basis, only if the sitewide
       property is enabled.

@@ -116,6 +116,17 @@
     z-index: 2;
 }
 
+#portal-advanced-search {
+    margin-top: 0.2em;
+    clear: both;
+}
+
+#portal-advanced-search a {
+    color: &dtml-discreetColor;;
+    text-decoration: none;
+    text-transform: &dtml-textTransform;;
+}
+
 /* LiveSearch styles */
 .LSRes {
     font-family:  <dtml-var fontFamily>;

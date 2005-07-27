@@ -38,7 +38,18 @@
                value="Search"
                tal:attributes="tabindex tabindex/next"
                i18n:attributes="value label_search;" />
+
     </form>
+
+    <div id="portal-advanced-search">
+        <a href="#"
+           tal:attributes="href string:$portal_url/search_form"
+           i18n:translate="label_advanced_search"
+           accesskey="5">
+            Advanced Search
+        </a>
+    </div>
+
 </div>
 
 </body>
