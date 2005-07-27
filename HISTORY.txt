@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - Beta2 - unreleased
 
+    - Fixed author home page link in author.pt
+      [panjunyong]
+
     - Change order of folderlisting/view default action determination to fix
       discussion visibility on folderish AT types.
       [alecm]
