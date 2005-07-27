@@ -1,6 +1,5 @@
 /*
 ** Table-based column layout for all browsers.
-** By Alexander Limi, http://www.plonesolutions.com
 **
 ** There's a table-less column layout alternative in the plone_tableless
 ** skin layer, if you prefer layouts without tables.

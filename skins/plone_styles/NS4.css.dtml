@@ -1,7 +1,6 @@
 /* 
 ** Plone style sheet for Netscape 4 and other non-CSS2-compatible browsers.
 ** Copyright Plone Foundation, et al.
-** Please reuse whatever you find useful here, and credit where credit is due :)
 */
 
 /* <dtml-var "enableHTTPCompression(request=REQUEST, debug=1, css=1)"> (this is for http compression) */

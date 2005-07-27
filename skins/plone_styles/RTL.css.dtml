@@ -1,7 +1,4 @@
-/*  Style sheet for RTL (right-to-left) languages - research work done by
- *  Mohsen Moeeni <mohsen at schoolnet.ir>, integration work by
- *  Alexander Limi - http://www.plonesolutions.com
- */
+/*  Style sheet for RTL (right-to-left) languages  */
 
 /* <dtml-var "enableHTTPCompression(request=REQUEST, debug=1, css=1)"> (this is for http compression) */
 /* <dtml-with base_properties> (do not remove this :) */
