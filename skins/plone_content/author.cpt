@@ -137,7 +137,7 @@
 
             <input type="hidden" name="author" value="" tal:attributes="value author" />
             <input type="hidden" name="referer" value="" 
-              tal:attributes="value python:request.get('HTTP_REFERER', 'unknown url')" />
+              tal:attributes="value python:request.get('referer', request.get('HTTP_REFERER', 'unknown url') )" />
             <input type="hidden" name="form.submitted" value="1" />
 
             </form>
