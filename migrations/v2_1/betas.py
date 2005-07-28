@@ -60,9 +60,6 @@ def alpha2_beta1(portal):
     # Remove plone prefix of stylesheet files
     removePlonePrefixFromStylesheets(portal, out)
 
-    # Add deprecated and portlet style sheets
-    addDeprecatedAndPortletStylesheets(portal, out)
-
     # Convert navtree whitelist to blacklist
     convertNavTreeWhitelistToBlacklist(portal, out)
 
@@ -173,6 +170,9 @@ def beta1_beta2(portal):
 
     # Add CMF types to blacklists
     addCMFTypesToSearchBlackList(portal, out)
+
+    # Convert default page types to whitelist
+    convertDefaultPageTypesToWhitelist(portal, out)
 
     # FIXME: *Must* be called after reindexCatalog.
     # In tests, reindexing loses the folders for some reason...
@@ -1283,3 +1283,19 @@ def addCMFTypesToSearchBlackList(portal, out):
             propSheet.manage_changeProperties(types_not_searched=list(old_val) +
                                               MORE_TYPES_NOT_SEARCHED)
             out.append("Added CMF types to 'types_not_searched' property.")
+
+def convertDefaultPageTypesToWhitelist(portal, out):
+    """Adds non_default_page_types site property."""
+    # Types which are not selectable as a default_page
+    DEFAULT_PAGE_TYPES = ('Document', 'Event', 'Link', 'News Item', 'Topic')
+
+    propTool = getToolByName(portal, 'portal_properties', None)
+    propSheet = getattr(propTool, 'site_properties', None)
+    if propSheet is not None:
+        if propSheet.hasProperty('non_default_page_types'):
+            propSheet.manage_delProperties(['non_default_page_types'])
+            out.append("Removed 'non_default_page_types' property to site_properties.")
+        if not propSheet.hasProperty('default_page_types'):
+            propSheet.manage_addProperty('default_page_types',
+                                         DEFAULT_PAGE_TYPES, 'lines')
+            out.append("Added 'default_page_types' property to site_properties.")

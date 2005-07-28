@@ -235,10 +235,12 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.failUnless('CMF Document' in self.properties.site_properties.getProperty('types_not_searched'))
 
     def testNonDefaultPageTypes(self):
-        # We should have a non_default_page_types property
-        self.failUnless(self.properties.site_properties.hasProperty('non_default_page_types'))
-        self.failUnless('Folder' in self.properties.site_properties.getProperty('non_default_page_types'))
-        self.failUnless('Large Plone Folder' in self.properties.site_properties.getProperty('non_default_page_types'))
+        # We should have a default_page_types property
+        self.failUnless(self.properties.site_properties.hasProperty('default_page_types'))
+        self.failUnless('Folder' not in self.properties.site_properties.getProperty('default_page_types'))
+        self.failUnless('Large Plone Folder' not in self.properties.site_properties.getProperty('default_page_types'))
+        self.failUnless('Topic' in self.properties.site_properties.getProperty('default_page_types'))
+        self.failUnless('Document' in self.properties.site_properties.getProperty('default_page_types'))
 
     def testNoMembersAction(self):
         # There should not be a Members action

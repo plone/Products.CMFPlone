@@ -96,6 +96,7 @@ from Products.CMFPlone.migrations.v2_1.betas import addIconForNavigationSettings
 from Products.CMFPlone.migrations.v2_1.betas import addSearchAndNavigationConfiglets
 from Products.CMFPlone.migrations.v2_1.betas import readdVisibleIdsMemberProperty
 from Products.CMFPlone.migrations.v2_1.betas import addCMFTypesToSearchBlackList
+from Products.CMFPlone.migrations.v2_1.betas import convertDefaultPageTypesToWhitelist
 
 from Products.CMFDynamicViewFTI.migrate import migrateFTI
 
@@ -148,6 +149,13 @@ class MigrationTest(PloneTestCase.PloneTestCase):
         if sheet.hasProperty(property_id):
             sheet.manage_delProperties([property_id])
 
+    def addSiteProperty(self, property_id):
+        # adds a site property to portal_properties
+        tool = getattr(self.portal, 'portal_properties')
+        sheet = getattr(tool, 'site_properties')
+        if not sheet.hasProperty(property_id):
+            sheet.manage_addProperty(property_id,[],'lines')
+
     def removeNavTreeProperty(self, property_id):
         # Removes a navtree property from portal_properties
         tool = getattr(self.portal, 'portal_properties')
@@ -156,7 +164,7 @@ class MigrationTest(PloneTestCase.PloneTestCase):
             sheet.manage_delProperties([property_id])
 
     def addNavTreeProperty(self, property_id):
-        # Removes a navtree property from portal_properties
+        # adds a navtree property to portal_properties
         tool = getattr(self.portal, 'portal_properties')
         sheet = getattr(tool, 'navtree_properties')
         if not sheet.hasProperty(property_id):
@@ -2397,7 +2405,7 @@ class TestMigrations_v2_1(MigrationTest):
         readdVisibleIdsMemberProperty(self.portal, [])
 
     def testAddCMFTypesToSearchBlackList(self):
-        # Should add the types_not_searched property
+        # Should add CMF types to the types_not_searched property
         self.removeSiteProperty('types_not_searched')
         self.failIf(self.properties.site_properties.hasProperty('types_not_searched'))
         addCMFTypesToSearchBlackList(self.portal, [])
@@ -2432,6 +2440,36 @@ class TestMigrations_v2_1(MigrationTest):
         # Should not fail if site_properties is missing
         self.properties._delObject('site_properties')
         addCMFTypesToSearchBlackList(self.portal, [])
+
+    def testConvertDefaultPageTypesToWhitelist(self):
+        # Should add the default_page_types property and remove the
+        # non_default_page_types property
+        self.addSiteProperty('non_default_page_types')
+        self.removeSiteProperty('default_page_types')
+        self.failIf(self.properties.site_properties.hasProperty('default_page_types'))
+        self.failUnless(self.properties.site_properties.hasProperty('non_default_page_types'))
+        convertDefaultPageTypesToWhitelist(self.portal, [])
+        self.failIf(self.properties.site_properties.hasProperty('non_default_page_types'))
+        self.failUnless(self.properties.site_properties.hasProperty('default_page_types'))
+
+    def testConvertDefaultPageTypesToWhitelistTwice(self):
+        # Should not fail if migrated again
+        self.addSiteProperty('non_default_page_types')
+        self.removeSiteProperty('default_page_types')
+        convertDefaultPageTypesToWhitelist(self.portal, [])
+        convertDefaultPageTypesToWhitelist(self.portal, [])
+        self.failIf(self.properties.site_properties.hasProperty('non_default_page_types'))
+        self.failUnless(self.properties.site_properties.hasProperty('default_page_types'))
+
+    def testConvertDefaultPageTypesToWhitelistNoTool(self):
+        # Should not fail if portal_properties is missing
+        self.portal._delObject('portal_properties')
+        convertDefaultPageTypesToWhitelist(self.portal, [])
+
+    def testConvertDefaultPageTypesToWhitelistNoSheet(self):
+        # Should not fail if site_properties is missing
+        self.properties._delObject('site_properties')
+        convertDefaultPageTypesToWhitelist(self.portal, [])
 
 
 def test_suite():

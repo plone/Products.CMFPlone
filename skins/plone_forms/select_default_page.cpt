@@ -24,9 +24,10 @@
 
         <input type="hidden" name="form.submitted" value="1"/>
     
-        <tal:items define="blacklistedTypes     here/portal_properties/site_properties/non_default_page_types | python:[];
+        <tal:items define="availableTypes     here/portal_properties/site_properties/default_page_types | python:[];
                            items python:[item for item in here.getFolderContents() if
-                                            item.portal_type not in blacklistedTypes];">
+                                            item.portal_type in availableTypes];
+                           cur_page here/getDefaultPage|nothing">
         <tal:hasItems condition="items">
             <dl>
                 <tal:item repeat="item items">
@@ -34,7 +35,8 @@
                                     item_icon string:${utool}/${item_typeinfo/getIcon};">
                         <input type="radio" name="objectId" value="" 
                             tal:attributes="value item/getId;
-                                            id item/getId;"/> 
+                                            id item/getId;
+                                            checked python:test(item.getId==cur_page,'checked',None);"/>
                         <img src="" alt=""
                             tal:attributes="src item_icon;
                                             alt item_typeinfo/Title" />

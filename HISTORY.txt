@@ -4,6 +4,14 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - Beta2 - unreleased
 
+    - Added default_page_types and removed non_default_page_types.  This means
+      That third party-content types that want to be used as default pages
+      need to be added to the list, but it also means that folderish types
+      which generally don't make any sense as default pages are not allowed by
+      default.  Also, made the default page selection form show the currently
+      selected item.
+      [alecm]
+
     - Added CMF types to types_not_searched.
       [alecm]
 

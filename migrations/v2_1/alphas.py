@@ -899,7 +899,7 @@ def addDefaultTypesToPortalFactory(portal, out):
     if factory is not None:
         types = factory.getFactoryTypes().keys()
         for metaType in ('Document', 'Event', 'File', 'Folder', 'Image', 
-                         'Folder', 'Large Plone Folder', 'Link', 'News Item',
+                         'Large Plone Folder', 'Link', 'News Item',
                          'Topic'):
             if metaType not in types:
                 types.append(metaType)
