@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - Beta2 - unreleased
 
+    - Fixed plone_javascript_variables.dtml and plone_scripts/translate.py to 
+      cope with i18n strings including the ' char.
+      Checked in without running the tests cause tests do not run on Windows.
+      Will run tests under Mac... and remove this comment.
+      [gotcha]
+
     - Added language to personalize form and put prefs_user_details back in
       sync with personalize.
       [alecm]
