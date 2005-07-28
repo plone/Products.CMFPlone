@@ -129,7 +129,7 @@
                             <label for=""
                                    i18n:translate=""
                                    tal:attributes="for python:putils.normalizeString(state[1])"
-                                   tal:content="python:state[0]"
+                                   tal:content="python:state[0] or state[1]"
                                    />
                         </li>
                     </ul>
