@@ -30,6 +30,11 @@ class TestURLTool(PloneTestCase.PloneTestCase):
                                    'http://nohost:8080/portal/baz'))
         self.failIf(url_tool.isURLInPortal(
                                    'http://nohost/'))
+        # Relative urls always succeed
+        self.failUnless(url_tool.isURLInPortal(
+                                   '/images'))
+        self.failUnless(url_tool.isURLInPortal(
+                                   'images/img1.jpg'))
 
 
 def test_suite():

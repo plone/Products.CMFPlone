@@ -18,13 +18,18 @@ class URLTool(PloneBaseTool, BaseTool):
     def isURLInPortal(self, url):
         """ Check if a given url is on the same host and contains the portal
             path.  Used to ensure that login forms can determine relevant
-            referrers (i.e. in portal).
+            referrers (i.e. in portal).  Also return true for relative urls,
+            though techincally they may not be part of the portal, it's a good
+            guess (just like assuming https://portal is in the same portal as
+            http://portal).
         """
         p_url = self()
-        p_host_path = urlparse(p_url)[1:3]
-        url_host_path = urlparse(url)[1:3]
-        return (p_host_path[0] == url_host_path[0] and
-                    url_host_path[1].startswith(p_host_path[1]))
+        p_host_path = urlparse(p_url)[0:3]
+        url_host_path = urlparse(url)[0:3]
+        # check for urls without protocol (i.e. relative urls), or urls with
+        # the same host and path.
+        return (p_host_path[1] == url_host_path[1] and
+          url_host_path[2].startswith(p_host_path[2])) or not url_host_path[0]
 
 URLTool.__doc__ = BaseTool.__doc__
 

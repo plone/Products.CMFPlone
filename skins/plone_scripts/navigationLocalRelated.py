@@ -11,6 +11,7 @@
 local = []
 remote = []
 subjects=None
+isURLInPortal = context.portal_url.isURLInPortal
 
 if obj is None:
     obj=context
@@ -28,7 +29,7 @@ if subjects:
                                    , sort_order = 'reverse'  ):
         url=o.getURL()
         if url == abs_url: continue # s/b if o is obj but fails
-        rurl = o.getRemoteUrl # getRemoteUrl is index as getRemoteUrl
+        rurl = o.getRemoteUrl # getRemoteUrl is indexed as getRemoteUrl
         title=pretty_title_or_id(o)
 
         lnk = {'title' : title,
@@ -36,7 +37,7 @@ if subjects:
                'rurl' : rurl,
                'icon' : o.getIcon,
               }
-        if rurl and not rurl.startswith(portal_url): #we need UIDs
+        if rurl and not isURLInPortal(rurl): #we need UIDs
             remote.append(lnk)
         else:
             local.append(lnk)
