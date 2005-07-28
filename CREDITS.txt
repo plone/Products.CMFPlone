@@ -92,7 +92,8 @@ contributed code.
 
   Alec Mitchell (alecm) -- Bug fixes in all corners, new features here and there.
 
-  Martin Aspeli (optilude) -- 
+  Martin Aspeli (optilude) -- Bits hanging off the "display" menu and various
+  other bits that hang off these bits, and many bug fixes here and there.
 
   Florian Schulze (fschulze) -- 
 
