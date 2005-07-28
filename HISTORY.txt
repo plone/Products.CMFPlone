@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - Beta2 - unreleased
 
+    - Made portlet_recent use types_not_searched to limit returned types.
+      [alecm]
+
     - Made search form use workflow state titles, and multiple columns for
       types list.
       [alecm]

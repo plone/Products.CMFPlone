@@ -7,9 +7,11 @@
      
 
 <tal:recentlist tal:define="last_login_time python:member.getProperty('last_login_time', DateTime());
+                 typesToShow  python:putils.getUserFriendlyTypes();
                  results python:request.get('items',
                                             here.portal_catalog.searchResults(sort_on='modified',
-                                                                              sort_order='reverse')[:5]);">
+                                            portal_type=typesToShow,
+                                            sort_order='reverse')[:5]);">
 
 <dl class="portlet" id="portlet-recent">
   

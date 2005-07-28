@@ -166,8 +166,7 @@
                 <input type="hidden" name="created.range:record" value="min" />
             </div>
     
-            <div class="field" tal:define="plone_utils portal/plone_utils;
-                                           portal_types portal/portal_types;">
+            <div class="field" tal:define="portal_types portal/portal_types;">
                 <label i18n:translate="label_item_type">Item type</label>
 
                 <div class="formHelp" i18n:translate="help_search_item_type">
@@ -192,7 +191,7 @@
                 </span>
                 <br />
                 <div style="float:left; margin-right: 2em;"
-                     tal:define="allTypes python:plone_utils.getUserFriendlyTypes();
+                     tal:define="allTypes python:putils.getUserFriendlyTypes();
                              typeLists python:here.createMultiColumnList(allTypes, numCols=2, sort_on='self');"
                      tal:repeat="sublist typeLists">
                     <tal:items repeat="type sublist">
