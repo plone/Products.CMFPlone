@@ -511,10 +511,10 @@ class TestCatalogOrdering(PloneTestCase.PloneTestCase):
         self.folder.invokeFactory('Document', id='doc4', text='blee')
 
     def testInitialOrder(self):
-        self.failUnlessEqual(self.folder.getObjectPosition('doc1'), 1)
-        self.failUnlessEqual(self.folder.getObjectPosition('doc2'), 2)
-        self.failUnlessEqual(self.folder.getObjectPosition('doc3'), 3)
-        self.failUnlessEqual(self.folder.getObjectPosition('doc4'), 4)
+        self.failUnlessEqual(self.folder.getObjectPosition('doc1'), 0)
+        self.failUnlessEqual(self.folder.getObjectPosition('doc2'), 1)
+        self.failUnlessEqual(self.folder.getObjectPosition('doc3'), 2)
+        self.failUnlessEqual(self.folder.getObjectPosition('doc4'), 3)
 
     def testOrderIsUpdatedOnMoveDown(self):
         self.folder.folder_position('down','doc1')

@@ -195,9 +195,15 @@ class MembershipTool(PloneBaseTool, BaseTool):
         """
         Create a member area for 'member_id' or the authenticated user.
         """
+        if not self.getMemberareaCreationFlag():
+            return None
+        members = self.getMembersFolder()
+        if members is None:
+            return None
+        if self.isAnonymousUser():
+            return None
         catalog = getToolByName(self, 'portal_catalog')
         membership = getToolByName(self, 'portal_membership')
-        members = self.getMembersFolder()
 
         if not member_id:
             # member_id is optional (see CMFCore.interfaces.portal_membership:
@@ -207,11 +213,6 @@ class MembershipTool(PloneBaseTool, BaseTool):
 
         if hasattr(members, 'aq_explicit'):
             members=members.aq_explicit
-
-        if members is None:
-            # no members area
-            # XXX exception?
-            return
         
         if hasattr(members, member_id):
             # has already this member
@@ -263,23 +264,11 @@ class MembershipTool(PloneBaseTool, BaseTool):
             'plone', 'title_member_folder_index_html',
             {'member': umember_id}, self,
             default = "Home page for %s" % umember_id)
-
-        personal_folder_title = utranslate(
-            'plone', 'title_member_personal_folder',
-            {'member': umember_id}, self,
-            default = "Personal Items for %s" % umember_id)
-
-        personal_folder_description = utranslate(
-            'plone', 'description_member_personal_folder',
-            {'member': umember_id}, self,
-            default = 'contains personal workarea items for %s' % umember_id)
  
         # encode strings to site encoding as we dont like to store type unicode atm
         member_folder_title = encode(member_folder_title, errors='replace')
         member_folder_description = encode(member_folder_description, errors='replace')
         member_folder_index_html_title = encode(member_folder_index_html_title, errors='replace')
-        personal_folder_title = encode(personal_folder_title, errors='replace')
-        personal_folder_description = encode(personal_folder_description, errors='replace')
 
         ## Modify member folder
         member_folder = self.getHomeFolder(member_id)
@@ -295,21 +284,6 @@ class MembershipTool(PloneBaseTool, BaseTool):
         member_folder.setDescription(member_folder_description)
         member_folder.reindexObject()
 
-        ## Create personal folder for personal items
-        _createObjectByType('Folder', member_folder, id=self.personal_id)
-        personal = getattr(member_folder, self.personal_id)
-        #personal.edit(title=personal_folder_title,
-        #              description=personal_folder_description)
-        personal.setTitle(personal_folder_title)
-        personal.setDescription(personal_folder_description)
-        
-        # Grant Ownership and Owner role to Member
-        personal.changeOwnership(user)
-        personal.__ac_local_roles__ = None
-        personal.manage_setLocalRoles(member_id, ['Owner'])
-        # Don't add .personal folders to catalog
-        catalog.unindexObject(personal)
-        
         if not minimal:
             # if it's minimal, don't create the memberarea but do notification
 

@@ -70,8 +70,6 @@ class PloneTestCase(ZopeTestCase.PortalTestCase):
         self.app.REQUEST['plone_skin'] = 'Plone Default'
         # Need PARENTS in request otherwise REQUEST.clone() fails
         self.app.REQUEST.set('PARENTS', [self.app])
-        # Disable automatic memberarea creation
-        self.portal.portal_membership.memberareaCreationFlag = 0
         # Disable the constraintypes performance hog
         self.folder.setConstrainTypesMode(0)
 
@@ -135,12 +133,6 @@ def _createHomeFolder(portal, member_id, take_ownership=1):
     if not hasattr(aq_base(members), member_id):
         # Create home folder
         _createObjectByType('Folder', members, id=member_id)
-        # Create personal folder
-        home = membership.getHomeFolder(member_id)
-        _createObjectByType('Folder', home, id=membership.personal_id)
-        # Uncatalog personal folder
-        personal = membership.getPersonalFolder(member_id)
-        personal.unindexObject()
 
     if take_ownership:
         user = portal.acl_users.getUserById(member_id)
@@ -153,11 +145,6 @@ def _createHomeFolder(portal, member_id, take_ownership=1):
         home.changeOwnership(user)
         home.__ac_local_roles__ = None
         home.manage_setLocalRoles(member_id, ['Owner'])
-        # Take ownership of personal folder
-        personal = membership.getPersonalFolder(member_id)
-        personal.changeOwnership(user)
-        personal.__ac_local_roles__ = None
-        personal.manage_setLocalRoles(member_id, ['Owner'])
 
 
 def optimize():
