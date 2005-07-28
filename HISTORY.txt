@@ -4,6 +4,13 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - Beta2 - unreleased
 
+    - Closed bug http://members.plone.org/collector/4344 by limiting the
+      number of items that can be added to the portal status message string
+      when deleting items. This is really more of a usability fix, since 
+      we don't actually check the length of the titles; the full fix for the
+      issue will appear when we merge the improved status message handling.
+      [optilude]
+
     - Fixed http://members.plone.org/collector/4346 by using the suggested
       fix.  Thanks sdouche.
       [alecm]
