@@ -8,7 +8,6 @@
 ##title=wrapper method around to use catalog to get folder contents
 ##
 
-catalog = context.portal_catalog.aq_inner
 mtool = context.portal_membership
 cur_path = '/'.join(context.getPhysicalPath())
 path = {}
@@ -30,7 +29,7 @@ if contentFilter.get('path', None) is None:
 
 show_inactive = mtool.checkPermission('Access inactive portal content', context)
 
-contents = catalog.queryCatalog(contentFilter, show_all=1, show_inactive=show_inactive)
+contents = context.queryCatalog(contentFilter, show_all=1, show_inactive=show_inactive)
 
 if full_objects:
     contents = [b.getObject() for b in contents]
