@@ -90,6 +90,8 @@ contributed code.
 
   Chad Whitacre -- Action Menu Fixes - "Zetaweb":http://www.zetaweb.com/
 
+  Alec Mitchell (alecm) -- Bug fixes in all corners, new features here and there.
+
 Companies (in randomized order):
 
   "Ingeniweb":http://www.ingeniweb.com -- 
