@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - Beta2 - unreleased
 
+    - Fixed http://members.plone.org/collector/4346 by using the suggested
+      fix.  Thanks sdouche.
+      [alecm]
+
     - Fixed plone_javascript_variables.dtml and plone_scripts/translate.py to 
       cope with i18n strings including the ' char.
       [gotcha]
