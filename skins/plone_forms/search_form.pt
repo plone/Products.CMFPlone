@@ -191,7 +191,11 @@
                     </label>
                 </span>
                 <br />
-                <tal:contenttypes repeat="type python:plone_utils.getUserFriendlyTypes()">
+                <div style="float:left; margin-right: 2em;"
+                     tal:define="allTypes python:plone_utils.getUserFriendlyTypes();
+                             typeLists python:here.createMultiColumnList(allTypes, numCols=2, sort_on='self');"
+                     tal:repeat="sublist typeLists">
+                    <tal:items repeat="type sublist">
                     <tal:tabindex define="tabindex tabindex/next">
                     <input type="checkbox"
                            name="portal_type:list"
@@ -209,9 +213,13 @@
                            />
                     <br />
                     </tal:tabindex>
-                </tal:contenttypes>
+                    </tal:items>
+                </div>
             </div>
-    
+
+            <div class="visualClear"><!-- --></div>
+            <br />
+
             <div class="field">
                 <label for="Creator" i18n:translate="label_author">Author</label>
 
@@ -250,7 +258,7 @@
     
                 <span class="optionsToggle" tal:define="tabindex tabindex/next">
                 <input type="checkbox"
-                       onclick="javascript:toggleSelect(this, 'review_state', true);"
+                       onclick="javascript:toggleSelect(this, 'review_state:list', true);"
                        name="rs_toggle"
                        value="#"
                        id="rs_toggle"
@@ -265,25 +273,30 @@
                 </label>
                 <br />
                 </span>
-                <tal:states tal:repeat="state python:portal.portal_catalog.uniqueValuesFor('review_state')">
-                    <metal:block tal:define="tabindex tabindex/next">
-                    <input type="checkbox"
-                           name="review_state"
-                           value="#"
+
+                <tal:states define="
+                                navtree_props    portal/portal_properties/navtree_properties;
+                                states          python:wtool.listWFStates(filter_similar=1);
+                                state_titles    python:[(s.title, s.getId()) for s in states];
+                                state_lists     python: here.createMultiColumnList(state_titles, numCols=1, sort_on='self');"
+                            repeat="sublist state_lists">
+                    <tal:items repeat="state sublist">
+                    <input class="noborder"
+                           type="checkbox"
+                           name="review_state:list"
                            checked="checked"
-                           class="noborder"
-                           tabindex=""
-                           tal:attributes="value state;
-                                           tabindex tabindex;
-                                           id string:review_state_${tabindex}"/>
-                    <label for=""
+                           tal:attributes="value python:state[1];
+                                           id python:putils.normalizeString(state[1]);" />
+                    <label for="review_state:list"
                            i18n:translate=""
-                           tal:content="state"
-                           tal:attributes="for string:review_state_${tabindex}" />
-                    <br />
-                    </metal:block>
+                           tal:content="python:state[0] or state[1]"
+                           />
+                    <br/>
+                    </tal:items>
                 </tal:states>
             </div>
+
+            <div class="visualClear"><!-- --></div>
 
             <div class="formControls">
                 <input class="context"

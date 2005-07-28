@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - Beta2 - unreleased
 
+    - Made search form use workflow state titles, and multiple columns for
+      types list.
+      [alecm]
+
     - Fixed http://members.plone.org/collector/4345 by checking the flag.
       [alecm]
 
