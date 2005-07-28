@@ -46,7 +46,8 @@ to become a member.
 </p>
 
 <div id="enable_cookies_message" i18n:translate="enable_cookies_message" class="portalMessage" style="display:none">
-  Cookies are not enabled. You must <a href="enabling_cookies">enable cookies</a> before you can log in.
+  Cookies are not enabled. You must <span i18n:name="enable_cookies">
+  <a href="enabling_cookies" i18n:translate="label_enable_cookies">enable cookies</a></span> before you can log in.
 </div>
 
 <div tal:condition="python: not auth" i18n:translate="login_form_disabled">
@@ -108,13 +109,17 @@ to become a member.
             <label i18n:translate="label_password"
                    tal:attributes="for ac_password">Password</label>
 
-            <div i18n:translate="help_capslock_password_retrieval"
-                 class="formHelp">
-                Case sensitive, make sure caps lock is not enabled.
-                <tal:block condition="python:checkPermission('Mail forgotten password', here)">
-                If you have forgotten your password,
-                <a tal:attributes="href python:'mail_password_form?'+ztutils.make_query(userid=login_name)">click here to retrieve it</a>.
-                </tal:block>
+            <div class="formHelp">
+                <div i18n:translate="help_capslock_password">
+                    Case sensitive, make sure caps lock is not enabled.
+                </div>
+                <div tal:condition="python:checkPermission('Mail forgotten password', here)"
+                     i18n:translate="help_password_retrieval">
+                    If you have forgotten your password,
+                    <span i18n:name="click_here">
+                        <a tal:attributes="href python:'mail_password_form?'+ztutils.make_query(userid=login_name)">click here to retrieve it</a>
+                    </span>.
+                </div>
             </div>
 
             <div tal:content="error">Validation error output</div>

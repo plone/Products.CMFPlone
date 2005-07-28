@@ -159,7 +159,7 @@ we eventually might want to merge this form with personalize_form
 
                 <label for="language" i18n:translate="label_language">Language</label>
 
-                <div class="formHelp" i18n:translate="help_language">
+                <div class="formHelp" i18n:translate="help_preferred_language">
                 Your preferred language.
                 </div>
 
