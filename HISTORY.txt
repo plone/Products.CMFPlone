@@ -26,7 +26,7 @@ Plone 2.1 - Plaid - Beta2 - unreleased
       [optilude]
 
     - Fixed http://members.plone.org/collector/4346 by using the suggested
-      fix.  Thanks sdouche.
+      fix.  Thanks Tim Hicks.
       [alecm]
 
     - Fixed plone_javascript_variables.dtml and plone_scripts/translate.py to 
@@ -88,7 +88,7 @@ Plone 2.1 - Plaid - Beta2 - unreleased
       [alecm]
 
     - Hooked up navtree wf config to the configlet, needs serious UI tweaking.
-      Added a method to the WorkflowTool to return all wf states in the
+      Added a method to the WorkflowTool to list all wf states in the
       portal.  Added a python script that converts a list into a list of
       sublists for making columns.
       [alecm]

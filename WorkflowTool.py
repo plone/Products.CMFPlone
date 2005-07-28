@@ -255,8 +255,8 @@ class WorkflowTool(PloneBaseTool, BaseTool):
                         return getattr(aq_base(state), 'title', None) or state_name
         return state_name
 
-    security.declareProtected(CMFCorePermissions.ManagePortal, 'listWFStates')
-    def listWFStates(self, filter_similar=False):
+    security.declarePublic('listWFStatesByTitle')
+    def listWFStatesByTitle(self, filter_similar=False):
         """Returns the states of all available workflows, optionally filtering
            out states with matching title and id"""
         states = []
@@ -272,7 +272,7 @@ class WorkflowTool(PloneBaseTool, BaseTool):
                         if not dup_list.has_key(key):
                             states.append(state)
                         dup_list[key] = 1
-        return states
+        return [(s.title, s.getId()) for s in states]
 
 WorkflowTool.__doc__ = BaseTool.__doc__
 

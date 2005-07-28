@@ -95,9 +95,8 @@
             <div class="field" id="navigationstates-field"
                  tal:define="
                        navtree_props    portal/portal_properties/navtree_properties;
-                       states          python:wtool.listWFStates(filter_similar=1);
-                       state_titles    python:[(s.title, s.getId()) for s in states];
-                       state_lists     python: here.createMultiColumnList(state_titles, numCols=1, sort_on='self');
+                       states          python:wtool.listWFStatesByTitle(filter_similar=1);
+                       state_lists     python: here.createMultiColumnList(states, numCols=1, sort_on='self');
                        cur_list      navtree_props/wf_states_to_show;">
 
                 <fieldset id="navtree_wf_filter">
