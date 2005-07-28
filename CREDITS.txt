@@ -92,6 +92,12 @@ contributed code.
 
   Alec Mitchell (alecm) -- Bug fixes in all corners, new features here and there.
 
+  Martin Aspeli (optilude) -- 
+
+  Florian Schulze (fschulze) -- 
+
+  Hanno Schlichting (hannosch) -- i18n and bug fixes
+
 Companies (in randomized order):
 
   "Ingeniweb":http://www.ingeniweb.com -- 
