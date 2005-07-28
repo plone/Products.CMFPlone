@@ -99,43 +99,42 @@
                        state_titles    python:[(s.title, s.getId()) for s in states];
                        state_lists     python: here.createMultiColumnList(state_titles, numCols=1, sort_on='self');
                        cur_list      navtree_props/wf_states_to_show;">
-                <label i18n:translate="label_wf_states">Displayed workflow states</label>
 
-                <div class="formHelp"
-                         i18n:translate="help_wf_states">
-                    The workflow states that should be shown in the navigation tree and the site map.
-                </div>
-                <div id="navtree_wf_filter">
-                    <input class="noborder"
-                           type="checkbox"
-                           name="enable_wf_state_filtering"
-                           id="enable-wf-state-filtering"
-                           tal:attributes="checked navtree_props/enable_wf_state_filtering;" />
-                    <label for="enable-wf-state-filtering"
-                           i18n:translate="label_navtree_wf_enable">Filter on workflow state</label>
-                </div>
-                
-                <div style="margin: 0.5em 0 0 2em">
-                    <label i18n:translate="label_navtree_states_shown">Show only the following states:</label>
-                    <div style="float:left; margin-right 2em;" tal:repeat="sublist state_lists">
-
-                       <ul class="configlets">
-                         <li tal:repeat="state sublist">
-                           <input class="noborder"
+                <fieldset id="navtree_wf_filter">
+                    <legend>
+                        <input class="noborder"
                                type="checkbox"
-                               name="wf_states_to_show:list"
-                               tal:attributes="value python:state[1];
-                                               id python:putils.normalizeString(state[1]);
-                                               checked python:test(state[1] in cur_list,'checked','');" />
-                           <label for=""
-                               i18n:translate=""
-                               tal:attributes="for python:putils.normalizeString(state[1])"
-                               tal:content="python:state[0]"
-                               />
-                         </li>
-                       </ul>
+                               name="enable_wf_state_filtering"
+                               id="enable-wf-state-filtering"
+                               tal:attributes="checked navtree_props/enable_wf_state_filtering;" />
+                        <label for="enable-wf-state-filtering"
+                               style="font-size: 110%"
+                               i18n:translate="label_navtree_wf_enable">Filter on workflow state</label>
+                    </legend>
+
+                    <div class="formHelp"
+                             i18n:translate="help_wf_states">
+                        The workflow states that should be shown in the navigation tree and the site map.
                     </div>
-                </div>
+
+                    <tal:states repeat="sublist state_lists">
+                    <ul class="configlets">
+                        <li tal:repeat="state sublist">
+                            <input class="noborder"
+                                   type="checkbox"
+                                   name="wf_states_to_show:list"
+                                   tal:attributes="value python:state[1];
+                                                   id python:putils.normalizeString(state[1]);
+                                                   checked python:test(state[1] in cur_list,'checked','');" />
+                            <label for=""
+                                   i18n:translate=""
+                                   tal:attributes="for python:putils.normalizeString(state[1])"
+                                   tal:content="python:state[0]"
+                                   />
+                        </li>
+                    </ul>
+                    </tal:states>
+            </fieldset>
 
             </div>
 
