@@ -232,6 +232,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         # We should have an types_not_searched property
         self.failUnless(self.properties.site_properties.hasProperty('types_not_searched'))
         self.failUnless('Plone Site' in self.properties.site_properties.getProperty('types_not_searched'))
+        self.failUnless('CMF Document' in self.properties.site_properties.getProperty('types_not_searched'))
 
     def testNonDefaultPageTypes(self):
         # We should have a non_default_page_types property

@@ -95,6 +95,7 @@ from Products.CMFPlone.migrations.v2_1.betas import addWFStateFilteringToNavTree
 from Products.CMFPlone.migrations.v2_1.betas import addIconForNavigationSettingsConfiglet
 from Products.CMFPlone.migrations.v2_1.betas import addSearchAndNavigationConfiglets
 from Products.CMFPlone.migrations.v2_1.betas import readdVisibleIdsMemberProperty
+from Products.CMFPlone.migrations.v2_1.betas import addCMFTypesToSearchBlackList
 
 from Products.CMFDynamicViewFTI.migrate import migrateFTI
 
@@ -2394,6 +2395,43 @@ class TestMigrations_v2_1(MigrationTest):
         # Should not fail if portal_properties is missing
         self.portal._delObject('portal_memberdata')
         readdVisibleIdsMemberProperty(self.portal, [])
+
+    def testAddCMFTypesToSearchBlackList(self):
+        # Should add the types_not_searched property
+        self.removeSiteProperty('types_not_searched')
+        self.failIf(self.properties.site_properties.hasProperty('types_not_searched'))
+        addCMFTypesToSearchBlackList(self.portal, [])
+        self.failUnless(self.properties.site_properties.hasProperty('types_not_searched'))
+        self.failUnless('CMF Document' in self.properties.site_properties.getProperty('types_not_searched'))
+
+    def testAddCMFTypesToSearchBlackListTwice(self):
+        # Should not fail if migrated again
+        self.removeSiteProperty('types_not_searched')
+        self.failIf(self.properties.site_properties.hasProperty('types_not_searched'))
+        addCMFTypesToSearchBlackList(self.portal, [])
+        list_len = len(self.properties.site_properties.getProperty('types_not_searched'))
+        addCMFTypesToSearchBlackList(self.portal, [])
+        list_len2 = len(self.properties.site_properties.getProperty('types_not_searched'))
+        self.assertEqual(list_len2, list_len)
+
+    def testAddCMFTypesToSearchBlackListPreservesChanges(self):
+        # Should preserve existing values
+        self.properties.site_properties.manage_changeProperties(types_not_searched=
+                                            ['test type'])
+        addCMFTypesToSearchBlackList(self.portal, [])
+        self.failUnless('CMF Document' in self.properties.site_properties.getProperty('types_not_searched'))
+        self.failUnless('test type' in self.properties.site_properties.getProperty('types_not_searched'))
+
+
+    def testAddCMFTypesToSearchBlackListNoTool(self):
+        # Should not fail if portal_properties is missing
+        self.portal._delObject('portal_properties')
+        addCMFTypesToSearchBlackList(self.portal, [])
+
+    def testAddCMFTypesToSearchBlackListNoSheet(self):
+        # Should not fail if site_properties is missing
+        self.properties._delObject('site_properties')
+        addCMFTypesToSearchBlackList(self.portal, [])
 
 
 def test_suite():

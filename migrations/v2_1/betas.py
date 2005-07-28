@@ -171,6 +171,9 @@ def beta1_beta2(portal):
     # Re-Add the memberdata property for visible ids
     readdVisibleIdsMemberProperty(portal, out)
 
+    # Add CMF types to blacklists
+    addCMFTypesToSearchBlackList(portal, out)
+
     # FIXME: *Must* be called after reindexCatalog.
     # In tests, reindexing loses the folders for some reason...
 
@@ -1238,3 +1241,45 @@ def readdVisibleIdsMemberProperty(portal, out):
         if not mpropTool.hasProperty('visible_ids'):
             mpropTool.manage_addProperty('visible_ids', 0, 'boolean')
         out.append("Added 'visible_ids' property to portal_memberdata.")
+
+
+def addCMFTypesToSearchBlackList(portal, out):
+    """Adds CMF types to types_not_searched site property."""
+    BASE_TYPES_NOT_SEARCHED = ['ATBooleanCriterion',
+                             'ATDateCriteria',
+                             'ATDateRangeCriterion',
+                             'ATListCriterion',
+                             'ATPortalTypeCriterion',
+                             'ATReferenceCriterion',
+                             'ATSelectionCriterion',
+                             'ATSimpleIntCriterion',
+                             'ATSimpleStringCriterion',
+                             'ATSortCriterion',
+                             'Discussion Item',
+                             'Plone Site',
+                             'TempFolder']
+    MORE_TYPES_NOT_SEARCHED = ['CMF Document',
+                               'CMF Event',
+                               'CMF Favorite',
+                               'CMF File',
+                               'CMF Folder',
+                               'CMF Image',
+                               'CMF Large Plone Folder',
+                               'CMF Link',
+                               'CMF News Item',
+                               'CMF Topic']
+
+    propTool = getToolByName(portal, 'portal_properties', None)
+    propSheet = getattr(propTool, 'site_properties', None)
+    if propSheet is not None:
+        old_val = propSheet.getProperty('types_not_searched', None)
+        if old_val is None:
+            propSheet.manage_addProperty('types_not_searched',
+                                             BASE_TYPES_NOT_SEARCHED +
+                                             MORE_TYPES_NOT_SEARCHED,
+                                             'lines')
+            out.append("Added 'types_not_searched' property to site_properties.")
+        elif 'CMF Document' not in old_val:
+            propSheet.manage_changeProperties(types_not_searched=list(old_val) +
+                                              MORE_TYPES_NOT_SEARCHED)
+            out.append("Added CMF types to 'types_not_searched' property.")
