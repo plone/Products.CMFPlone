@@ -7,7 +7,7 @@
     <span i18n:translate="description_copyright" tal:omit-tag="">
     The 
     <span i18n:name="plonecms">
-        <a href="http://plone.org" >Plone&trade; Open Source Content Management System</a>
+        <a href="http://plone.org" i18n:translate="label_plone_cms">Plone&trade; Open Source Content Management System</a>
     </span>
     is Copyright
     <acronym title="Copyright" i18n:name="copyright" i18n:attributes="title title_copyright;">&copy;</acronym>
@@ -34,7 +34,7 @@
     <span i18n:translate="description_license">
     Distributed under the 
         <span i18n:name="license">
-            <a href="http://creativecommons.org/licenses/GPL/2.0/">GNU GPL license</a>
+            <a href="http://creativecommons.org/licenses/GPL/2.0/" i18n:translate="label_gnu_gpl_licence">GNU GPL license</a>
         </span>.
     </span>
 </p>
