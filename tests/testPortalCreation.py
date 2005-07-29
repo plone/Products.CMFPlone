@@ -354,7 +354,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.failUnless('atct_album_view' in views)
 
     def testSelectableViewsOnTopic(self):
-        views = self.portal.portal_types.Folder.getAvailableViewMethods(None)
+        views = self.portal.portal_types.Topic.getAvailableViewMethods(None)
         self.failUnless('folder_listing' in views)
         self.failUnless('atct_album_view' in views)
         self.failUnless('atct_topic_view' in views)
