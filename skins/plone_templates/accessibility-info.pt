@@ -12,13 +12,19 @@
 <div metal:fill-slot="main">
 
     <ul id="portal-siteactions">
-        <li>Text size:</li>
+        <li i18n:translate="text_size">Text size:</li>
         <li id="siteaction-small_text"><a href="javascript:setActiveStyleSheet('Small Text',1);"
-                                          title="Small Text">Small</a></li>
+                                          title="Small Text"
+                                          i18n:attributes="title title_small_text;"
+                                          i18n:translate="small_text">Small</a></li>
         <li id="siteaction-normal_text"><a href="javascript:setActiveStyleSheet('',1);"
-                                           title="Normal Text">Normal</a></li>
+                                           title="Normal Text"
+                                           i18n:attributes="title title_normal_text;"
+                                           i18n:translate="normal_text">Normal</a></li>
         <li id="siteaction-large_text"><a href="javascript:setActiveStyleSheet('Large Text', 1);"
-                                          title="Large Text">Large</a></li>
+                                          title="Large Text"
+                                          i18n:attributes="title title_large_text;"
+                                          i18n:translate="large_text">Large</a></li>
     </ul>
 
     <h1 i18n:translate="heading_accessibility_info">Accessibility</h1>
