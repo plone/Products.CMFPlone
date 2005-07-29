@@ -188,6 +188,7 @@ Anyway, didn't get it fixed but at least we know what it is. :-/
 
 input.searchButton {
     padding: 1px 15px 1px 1px;
+    background-position: 90% 1px;
  }
 
 .field {
