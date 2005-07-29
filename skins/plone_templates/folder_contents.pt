@@ -21,7 +21,7 @@
                      b_size b_size|request/b_size|python:100;
                      view_title view_title|request/view_title|string:;
                      contentsMethod python:test(here.portal_type=='Topic', here.queryCatalog, here.getFolderContents);
-                     batch python:contentsMethod(contentFilter,batch=True, b_size=b_size);
+                     batch batch|python:contentsMethod(contentFilter,batch=True, b_size=b_size);
                      full_view full_view|request/full_view|python:True;">
       
       <form name="folderContentsForm"
