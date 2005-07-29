@@ -153,6 +153,7 @@ function initalizeTableSort(e) {
                     // check that the columns does not have class="nosort"
                     if (!xre.exec(node.className)) {
                         node.insertBefore(blankarrow.cloneNode(1), node.firstChild);
+                        node.style.cursor = 'pointer';
                         if (!initialsort) {
                             initialsort = true;
                             uparrow = document.createElement('img');

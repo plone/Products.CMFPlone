@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - Beta2 - unreleased
 
+    - Fixed http://plone.org/collector/3906 - header now shows correct mouse
+      pointer cursor when table is sortable.
+      [hannosch]
+
     - Added migration to add new view templates to folderish types (including
       Smart Folders).
       [alecm, limi]
