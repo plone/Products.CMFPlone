@@ -55,11 +55,11 @@ Anyway, didn't get it fixed but at least we know what it is. :-/
 
 
 #portal-globalnav {
-    padding: 0em 2em 0em 0em;
+    padding: 0em 2em 0em 0em !important;
 }
 
 #portal-globalnav li a {
-    margin-left: 0.5em;
+    margin-left: 0.5em !important;
 }
 
 #portal-personaltools {
@@ -179,8 +179,6 @@ input.searchButton {
 .card {
     float: right;
 }
-
-.listing { border-collapse: separate; }
 
 .listing th,
 .stx table th {
