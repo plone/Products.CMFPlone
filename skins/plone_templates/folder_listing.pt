@@ -33,7 +33,8 @@
         <tal:foldercontents define="contentFilter contentFilter|request/contentFilter|nothing;
                             limit_display limit_display|request/limit_display|nothing;
                             more_url more_url|request/more_url|string:folder_contents;
-                            folderContents folderContents|python:here.getFolderContents(contentFilter=contentFilter);
+                            contentsMethod python:test(here.portal_type=='Topic', here.queryCatalog, here.getFolderContents);
+                            folderContents folderContents|python:contentsMethod(contentFilter);
                             use_view_action site_properties/typesUseViewActionInListings;
                             over_limit python: limit_display and len(folderContents) > limit_display;
                             folderContents python: (over_limit and folderContents[:limit_display]) or folderContents;">

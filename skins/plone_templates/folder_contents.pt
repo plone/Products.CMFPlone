@@ -20,7 +20,8 @@
                      contentFilter contentFilter|request/contentFilter|nothing;
                      b_size b_size|request/b_size|python:100;
                      view_title view_title|request/view_title|string:;
-                     batch python: here.getFolderContents(contentFilter=contentFilter,batch=True, b_size=b_size);
+                     contentsMethod python:test(here.portal_type=='Topic', here.queryCatalog, here.getFolderContents);
+                     batch python:contentsMethod(contentFilter,batch=True, b_size=b_size);
                      full_view full_view|request/full_view|python:True;">
       
       <form name="folderContentsForm"
@@ -275,7 +276,7 @@
                tal:attributes="value template/getId"/>
         <tal:buttons tal:repeat="button actions/folder_buttons|nothing"
                      tal:define="contentFilter contentFilter|python:{'path':'/'};
-                                 query_path python:path('contentFilter/path|nothing') or request.get('path',None);">
+                                 query_path python:path('contentFilter/path|nothing') or request.get('path',None) or context.portal_type == 'Topic';">
           <input class="context"
                  type="submit"
                  name=""

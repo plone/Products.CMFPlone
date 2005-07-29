@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - Beta2 - unreleased
 
+    - Made folder_listing and folder_contents suitable for use as Smart Folder
+      views.
+      [alecm]
+
     - Fixed http://plone.org/collector/3906 wrong mousepointer on head of
       sortable lists
       [hannosch]
