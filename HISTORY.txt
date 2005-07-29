@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - Beta2 - unreleased
 
+    - Fixed http://plone.org/collector/3906 wrong mousepointer on head of
+      sortable lists
+      [hannosch]
+
     - Fixed http://members.plone.org/collector/2771 (4350) using the new
       isURLInPortal method, which now also returns true on relative URLs.
       [alecm]

@@ -159,6 +159,7 @@ input.searchButton {
     font-weight: normal;
     padding: 0.25em 1em;
     text-transform: &dtml-textTransform;;
+    cursor: pointer;
 }
 .listing .top {
     border-left: &dtml-borderWidth; &dtml-borderStyle; &dtml-backgroundColor;;
