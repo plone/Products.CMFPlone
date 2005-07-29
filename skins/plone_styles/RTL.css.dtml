@@ -4,6 +4,30 @@
 /* <dtml-with base_properties> (do not remove this :) */
 /* <dtml-call "REQUEST.set('portal_url', portal_url())"> (not this either :) */
 
+<dtml-in "portal_types.listTypeInfo()">
+.contenttype-<dtml-var "plone_utils.normalizeString(id)"> { background-position: 100% 3px;}
+.contenttype-<dtml-var "plone_utils.normalizeString(id)"> a:hover { background-position: 100% 2px; margin-right: -1px; margin-left: 0;}
+</dtml-in>
+
+<dtml-in "getActionIconList()">
+.actionicon-<dtml-var category>-<dtml-var action> { background-position: 100% 50%;}
+</dtml-in>
+
+/* Extra padding class for the generated icons - we have to do it
+   this way because of the IE flicker bug on hovering. */
+
+.visualIconPadding {
+    padding-right: 18px;
+    padding-left: 0;
+    margin-right: -1px;
+    margin-left: 0;
+    margin-bottom: 1px;
+    min-height: 1.6em;
+    height: auto;
+    line-height: 1.6em;
+}
+
+
 h1 {
     padding-left: 4em;
     padding-right: 0;
