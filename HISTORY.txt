@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - Beta2 - unreleased
 
+    - Added migration to add new view templates to folderish types (including
+      Smart Folders).
+      [alecm, limi]
+
     - Made folder_listing and folder_contents suitable for use as Smart Folder
       views.
       [alecm]

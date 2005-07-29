@@ -97,6 +97,7 @@ from Products.CMFPlone.migrations.v2_1.betas import addSearchAndNavigationConfig
 from Products.CMFPlone.migrations.v2_1.betas import readdVisibleIdsMemberProperty
 from Products.CMFPlone.migrations.v2_1.betas import addCMFTypesToSearchBlackList
 from Products.CMFPlone.migrations.v2_1.betas import convertDefaultPageTypesToWhitelist
+from Products.CMFPlone.migrations.v2_1.betas import changeAvailableViewsForFolders
 
 from Products.CMFDynamicViewFTI.migrate import migrateFTI
 
@@ -2470,6 +2471,34 @@ class TestMigrations_v2_1(MigrationTest):
         # Should not fail if site_properties is missing
         self.properties._delObject('site_properties')
         convertDefaultPageTypesToWhitelist(self.portal, [])
+
+    def testChangeAvailableViewsForFolders(self):
+        # Should add a list of view template to the various folderish types
+        # tests on Topic
+        types = self.portal.portal_types
+        types.Topic.manage_changeProperties(view_methods=['atct_topic_view'])
+        self.assertEqual(types.Topic.view_methods, ('atct_topic_view',))
+        changeAvailableViewsForFolders(self.portal, [])
+        self.failUnless('atct_album_view' in types.Topic.getAvailableViewMethods(None))
+
+    def testChangeAvailableViewsForFoldersTwice(self):
+        # Should not fail if migrated again (test of Folder this time
+        types = self.portal.portal_types
+        types.Folder.manage_changeProperties(view_methods=['folder_listing'])
+        self.assertEqual(types.Folder.view_methods, ('folder_listing',))
+        changeAvailableViewsForFolders(self.portal, [])
+        changeAvailableViewsForFolders(self.portal, [])
+        self.failUnless('atct_album_view' in types.Folder.getAvailableViewMethods(None))
+
+    def testChangeAvailableViewsForFoldersNoTool(self):
+        # Should not fail if portal_properties is missing
+        self.portal._delObject('portal_types')
+        changeAvailableViewsForFolders(self.portal, [])
+
+    def testChangeAvailableViewsForFoldersNoFTI(self):
+        # Should not fail if site_properties is missing
+        self.portal.portal_types._delObject('Topic')
+        changeAvailableViewsForFolders(self.portal, [])
 
 
 def test_suite():

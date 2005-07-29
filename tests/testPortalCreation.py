@@ -348,11 +348,16 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.failUnless(props.getProperty('disable_folder_sections', None) is not None)
         self.failIf(props.getProperty('disable_folder_sections'))
 
-    def testSelectableViewsPropertyAtPortalRoot(self):
-        views = self.portal.getProperty('selectable_views', [])
-        self.failUnless(len(views) == 2)
+    def testSelectableViewsOnFolder(self):
+        views = self.portal.portal_types.Folder.getAvailableViewMethods(None)
         self.failUnless('folder_listing' in views)
-        self.failUnless('news_listing' in views)
+        self.failUnless('atct_album_view' in views)
+
+    def testSelectableViewsOnTopic(self):
+        views = self.portal.portal_types.Folder.getAvailableViewMethods(None)
+        self.failUnless('folder_listing' in views)
+        self.failUnless('atct_album_view' in views)
+        self.failUnless('atct_topic_view' in views)
 
     def testLocationMemberdataProperty(self):
         # portal_memberdata should have a location property
