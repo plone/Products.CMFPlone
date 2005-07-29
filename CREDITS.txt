@@ -95,7 +95,8 @@ contributed code.
   Martin Aspeli (optilude) -- Bits hanging off the "display" menu and various
   other bits that hang off these bits, and many bug fixes here and there.
 
-  Florian Schulze (fschulze) -- 
+  Florian Schulze (fschulze) -- Javascript, CSS, bug fixing, bug categorization
+  and usability without javascript.
 
   Hanno Schlichting (hannosch) -- i18n and bug fixes
 
