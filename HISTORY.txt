@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - Beta2 - unreleased
 
+    - Added new permission Allow Sendto to Plone. The sendto method, script
+      and action are protected by the new permission. Change the permission
+      in the portal root to prevent certain users like Anonymous to use or
+      abuse the feature.
+      [tiran]
+
     - Fixed issue that caused Plone/AT Folders contained in a BaseBTreeFolder
       subclass to inheirt the parent index_html ComputedAttribute and attempt
       to use that as the default view resulting in a 404. Thanks to tim2p

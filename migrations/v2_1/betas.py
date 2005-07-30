@@ -12,6 +12,7 @@ from Products.CMFPlone.migrations.migration_util import cleanupSkinPath
 from Products.CMFPlone.migrations.migration_util import safeEditProperty
 from alphas import reindexCatalog, indexMembersFolder, indexNewsFolder, \
                     indexEventsFolder, convertPloneFTIToCMFDynamicViewFTI
+from Products.CMFPlone.PloneTool import AllowSendto
 
 
 def alpha2_beta1(portal):
@@ -188,6 +189,12 @@ def beta1_beta2(portal):
 
     # Make sure the Events folder is cataloged
     indexEventsFolder(portal, out)
+
+    # add formsubmithelpers.js to ResourceRegistries
+    addFormSubmitHelpersJS(portal, out)
+    
+    # setup new Allow Sendto permission
+    setupAllowSendtoPermission(portal, out)
 
     return out
 
@@ -1141,7 +1148,7 @@ def addCMFUidTools(portal, out):
                 pass
             else:
                 tool = getattr(portal, id)
-                tool.title = "CMF %s" % tool
+                tool.title = "CMF %s" % id
                 added.append(id)
     if added:
         out.append('Added CMFUid tool(s) %s' % ', '.join(added))
@@ -1236,6 +1243,21 @@ def addFormSubmitHelpersJS(portal, out):
             jsreg.registerScript('formsubmithelpers.js')
             out.append('Registered formsubmithelpers.js')
 
+def setupAllowSendtoPermission(portal, out):
+    """Setup and configure new Allow Sendto permission
+    """
+    portal.manage_permission(AllowSendto,
+                             ('Anonymous', 'Manager', 'Member',),
+                             acquire=1)
+    atool = getToolByName(portal, 'portal_actions', None)
+    if atool is None:
+        return
+    actions = atool._cloneActions()
+    for action in actions:
+        if action.getId() == "sendto":
+            action.permissions = (AllowSendto,)
+    atool._actions = actions
+    out.append("Changed sendto action permission to Allow Sendto")        
 
 def readdVisibleIdsMemberProperty(portal, out):
     """Re-Adds member config for editable short names."""
@@ -1243,6 +1265,7 @@ def readdVisibleIdsMemberProperty(portal, out):
     if mpropTool is not None:
         if not mpropTool.hasProperty('visible_ids'):
             mpropTool.manage_addProperty('visible_ids', 0, 'boolean')
+        out.append("Added 'visible_ids' property to portal_memberdata.")
         out.append("Added 'visible_ids' property to portal_memberdata.")
 
 
@@ -1318,3 +1341,4 @@ def changeAvailableViewsForFolders(portal, out):
                     views = ['atct_topic_view']+views
                 fti.manage_changeProperties(view_methods=views)
                 out.append("Added new view templates to %s FTI."%type_name)
+

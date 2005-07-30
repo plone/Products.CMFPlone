@@ -17,6 +17,7 @@ from ZODB.POSException import ConflictError
 from Products.ZCTextIndex.ParseTree import ParseError
 from OFS.CopySupport import CopyError
 from Products.CMFDefault.DiscussionTool import DiscussionNotAllowed
+from Products.CMFPlone.PloneTool import AllowSendto
 
 
 class RestrictedPythonTest(ZopeTestCase.ZopeTestCase):
@@ -381,6 +382,16 @@ except DiscussionNotAllowed: pass
         self.checkUnauthorized('from Products.CMFPlone import transaction;'
                                'transaction.get()')
 
+    # allow sendto
+    def testImport_AllowSendto(self):
+        self.check('from Products.CMFPlone.PloneTool import AllowSendto')
+
+    def testAccess_AllowSendto(self):
+        # XXX: Note that this is NOT allowed!
+        self.checkUnauthorized('from Products.CMFPlone import PloneTool;'
+                               'print PloneTool.AllowSendto')
+    
+
 
 class TestAcquisitionMethods(RestrictedPythonTest):
 
@@ -405,12 +416,53 @@ class TestAcquisitionMethods(RestrictedPythonTest):
     def test_aq_acquire(self):
         self.checkUnauthorized('print context.aq_acquire')
 
+class TestAllowSendtoSecurity(PloneTestCase.PloneTestCase):
+        
+    def test_AllowSendto(self):
+        portal = self.portal
+        mtool = self.portal.portal_membership
+        checkPermission = mtool.checkPermission
+        
+        # should be allowed as Member
+        self.failUnless(checkPermission(AllowSendto, portal))
+        # should be allowed as Manager
+        self.setRoles(['Manager'])
+        self.failUnless(checkPermission(AllowSendto, portal))
+        # should be allowed as anonymous
+        self.logout()
+        self.failUnless(checkPermission(AllowSendto, portal))
+        
+    def test_allowsendto_changed(self):
+        mtool = self.portal.portal_membership
+        checkPermission = mtool.checkPermission
+        
+        self.setRoles(['Manager'])
+        self.portal.manage_permission(AllowSendto, roles=('Manager',),
+                                      acquire=False)
+        self.setRoles(['Member'])
+        
+        self.failIf(checkPermission(AllowSendto, self.portal))
+        
+    def test_sendto_script_failes(self):
+        # set permission to Manager only
+        self.setRoles(['Manager'])
+        self.portal.manage_permission(AllowSendto, roles=('Manager',),
+                                      acquire=False)
+        self.setRoles(['Member'])
+        # get sendto script in context of folder
+        sendto = self.folder.sendto
+        # should faile with the not allowed msg check if the msg 
+        # contains the string
+        msg = sendto()
+        errormsg = "You%20are%20not%20allowed%20to%20send%20this%20link"
+        self.failIf(str(msg).find(errormsg) != -1, str(msg))
 
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
     suite.addTest(makeSuite(TestSecurityDeclarations))
     suite.addTest(makeSuite(TestAcquisitionMethods))
+    suite.addTest(makeSuite(TestAllowSendtoSecurity))
     return suite
 
 if __name__ == '__main__':

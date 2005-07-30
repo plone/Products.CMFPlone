@@ -88,6 +88,9 @@ def initialize(context):
 
     # Make DiscussionNotAllowed importable TTW
     ModuleSecurityInfo('Products.CMFDefault.DiscussionTool').declarePublic('DiscussionNotAllowed')
+    
+    # Make AllowSendto importable TTW
+    ModuleSecurityInfo('Products.CMFPlone.PloneTool').declarePublic('AllowSendto')
 
     # Backward compatibility only, please import from utils directly
     from Products.CMFPlone.utils import transaction_note, base_hasattr

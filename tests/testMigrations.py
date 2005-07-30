@@ -10,6 +10,7 @@ from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFCore.Expression import Expression
 from Products.CMFCore import CMFCorePermissions
+from Products.CMFPlone.PloneTool import AllowSendto
 
 from Products.CMFPlone.migrations.v2.two04_two05 import replaceFolderPropertiesWithEdit
 from Products.CMFPlone.migrations.v2.two04_two05 import interchangeEditAndSharing
@@ -94,6 +95,7 @@ from Products.CMFPlone.migrations.v2_1.betas import fixCSSMediaTypes
 from Products.CMFPlone.migrations.v2_1.betas import addWFStateFilteringToNavTree
 from Products.CMFPlone.migrations.v2_1.betas import addIconForNavigationSettingsConfiglet
 from Products.CMFPlone.migrations.v2_1.betas import addSearchAndNavigationConfiglets
+from Products.CMFPlone.migrations.v2_1.betas import setupAllowSendtoPermission
 from Products.CMFPlone.migrations.v2_1.betas import readdVisibleIdsMemberProperty
 from Products.CMFPlone.migrations.v2_1.betas import addCMFTypesToSearchBlackList
 from Products.CMFPlone.migrations.v2_1.betas import convertDefaultPageTypesToWhitelist
@@ -2384,6 +2386,22 @@ class TestMigrations_v2_1(MigrationTest):
         # Should not fail if tool is missing
         self.portal._delObject('portal_controlpanel')
         addSearchAndNavigationConfiglets(self.portal, [])
+        
+    def testSendtoActionAllowSendtoPermission(self):
+        atool = self.portal.portal_actions
+        for action in atool._cloneActions():
+            if action.getId() == "sendto":
+                self.failUnlessEqual(action.permissions,
+                                     (AllowSendto,))
+ 
+    def testSendtoActionAllowSendtoPermissionNA(self):
+        atool = self.portal.portal_actions
+        # should not break if action is not available
+        atool._actions = ()
+        setupAllowSendtoPermission(self.portal, [])
+        # should not break if tool is missing
+        self.portal._delObject('portal_actions')
+        setupAllowSendtoPermission(self.portal, [])
 
     def testReaddVisibleIdsMemberProperty(self):
         # Should add the visible_ids property

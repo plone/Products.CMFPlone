@@ -38,6 +38,10 @@ DateTime.SyntaxError
 from Products.CMFPlone.UnicodeNormalizer import normalizeUnicode
 from Products.CMFPlone.PloneFolder import ReplaceableWrapper
 
+AllowSendto = "Allow sendto"
+CMFCorePermissions.setDefaultRoles(AllowSendto, 
+                                   ('Anonymous', 'Manager',))
+
 _marker = ()
 _icons = {}
 
@@ -140,7 +144,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         """Gets the MailHost."""
         return getattr(aq_parent(self), 'MailHost')
 
-    security.declarePublic('sendto')
+    security.declareProtected(AllowSendto, 'sendto')
     def sendto(self, send_to_address, send_from_address, comment,
                subject='Plone', **kwargs ):
         """Sends a link of a page to someone."""
