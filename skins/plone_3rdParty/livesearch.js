@@ -69,27 +69,27 @@ function getElementDimensions(elemID) {
 }
 
 function liveSearchInit() {
-	searchInput = document.getElementById('searchGadget');
-	if (searchInput == null || searchInput == undefined) return;
-	
-	if (navigator.userAgent.indexOf("Safari") > 0) {
-		searchInput.addEventListener("keydown",liveSearchKeyPress,false);
-		searchInput.addEventListener("focus",liveSearchDoSearch,false);
-		searchInput.addEventListener("keydown",liveSearchStart, false); 
-//		searchInput.addEventListener("blur",liveSearchHide,false);
-	} else if (navigator.product == "Gecko") {
-		searchInput.addEventListener("keypress",liveSearchKeyPress,false);
-		searchInput.addEventListener("blur",liveSearchHideDelayed,false);
-		searchInput.addEventListener("keypress",liveSearchStart, false); 
-	} else {
-		searchInput.attachEvent('onkeydown',liveSearchKeyPress);
-		searchInput.attachEvent("onkeydown",liveSearchStart); 
-//		searchInput.attachEvent("onblur",liveSearchHide);
-		isIE = true;
-	}
-		
-    
-	searchInput.setAttribute("autocomplete","off");
+    searchInput = document.getElementById('searchGadget');
+    if (searchInput == null || searchInput == undefined) retu
+//  Only keypress catches repeats in moz/FF but keydown is needed for
+//  khtml based browsers.
+    if (navigator.userAgent.indexOf("KHTML") > 0) {
+        searchInput.addEventListener("keydown",liveSearchKeyPress,false);
+        searchInput.addEventListener("focus",liveSearchDoSearch,false);
+        searchInput.addEventListener("keydown",liveSearchStart, false);
+    } else if (searchInput.addEventListener) {
+        searchInput.addEventListener("keypress",liveSearchKeyPress,false);
+        searchInput.addEventListener("blur",liveSearchHideDelayed,false);
+        searchInput.addEventListener("keypress",liveSearchStart, false);
+    } else {
+        searchInput.attachEvent("onkeydown",liveSearchKeyPress);
+        searchInput.attachEvent("onkeydown",liveSearchStart);
+//      searchInput.attachEvent("onblur",liveSearchHide);
+        isIE = true;
+    }
+
+//  Why doesn't this work in konq, setting it inline does.
+    searchInput.setAttribute("autocomplete","off");
 
 	var pos = getElementDimensions('searchGadget');	
 	result = document.getElementById('LSResult');
