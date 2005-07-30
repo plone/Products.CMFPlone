@@ -37,7 +37,7 @@
                   i18n:translate="local_role_warning_type">
                 <strong>Attention!</strong> 
                 You are setting the sharing permissions for a 
-                <strong i18n:name="type"><span tal:content="itemPortalTypeTitle" i18n:translate="">type</span></strong>.
+                <strong i18n:name="type"><tal:translate content="itemPortalTypeTitle" i18n:translate="">type</tal:translate></strong>.
                 If you want to set the permissions for its container, 
                 click 
                 <span i18n:name="link">
@@ -575,7 +575,7 @@
         <p i18n:translate="description_change_ownership_of_article">
             To change the ownership for this
             <span i18n:name="type">
-                <span tal:content="itemPortalTypeTitle" i18n:translate="">type</span>
+                <tal:translate content="itemPortalTypeTitle" i18n:translate="">type</tal:translate>
             </span>, click 
             <span i18n:name="link_to_ownership_form">
             <a href="" tal:attributes="href string:${here/absolute_url}/ownership_form"
