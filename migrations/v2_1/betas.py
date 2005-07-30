@@ -1014,7 +1014,7 @@ def changeSiteActions(portal, out):
     REMOVE_ACTIONS=('small_text','normal_text','large_text')
     REMOVE_CATEGORY='site_actions'
     ACTIONS=(    {'id': 'accessibility',
-                  'name': 'accessibility',
+                  'name': 'Accessibility',
                   'action': 'string: ${portal_url}/accessibility-info',
                   'condition': '',
                   'permission': CMFCorePermissions.View,
