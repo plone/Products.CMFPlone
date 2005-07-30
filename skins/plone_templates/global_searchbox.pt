@@ -29,9 +29,6 @@
                                tabindex tabindex/next"
                class="visibility:visible" />
 
-        <div class="LSResult" id="LSResult" style=""><div class="LSShadow" id="LSShadow"></div></div>
-        </div>
-
         <input class="searchButton"
                type="submit"
                tabindex=""
@@ -39,14 +36,17 @@
                tal:attributes="tabindex tabindex/next"
                i18n:attributes="value label_search;" />
 
+        <div class="LSResult" id="LSResult" style=""><div class="LSShadow" id="LSShadow"></div></div>
+        </div>
     </form>
 
-    <div id="portal-advanced-search">
+    <div id="portal-advanced-search"
+         class="hiddenStructure">
         <a href="#"
            tal:attributes="href string:$portal_url/search_form"
            i18n:translate="label_advanced_search"
            accesskey="5">
-            Advanced Search
+            Advanced Search&hellip;
         </a>
     </div>
 
