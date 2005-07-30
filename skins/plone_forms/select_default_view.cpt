@@ -35,24 +35,25 @@
 
         <input type="hidden" name="form.submitted" value="1"/>
     
-            <dl tal:define="vocab parentVocab;
+            <div tal:define="vocab parentVocab;
                             actualLayout parent_folder/getLayout|nothing;
                             selectedLayout python:test(isContextDefaultPage, '', actualLayout)">
                 <tal:item repeat="layout vocab">
-                    <dt tal:define="value python:layout[0];
-                                    display python:layout[1];">
-                        <input type="radio" name="templateId" value=""
+                    <tal:vars define="value python:layout[0];
+                                      display python:layout[1];">
+                        <input type="radio" class="noborder" name="templateId" value=""
                                tal:attributes="value value;
                                                disabled python:value==selectedLayout"/>
-                        <span tal:content="display" i18n:translate=""/>
+                        <label tal:content="display" i18n:translate="">
+                            Layout name
+                        </label>
                         <span class="discreet"
                               tal:condition="python:value==selectedLayout"
-                              i18n:translate="label_current">(current)</span>
-                    </dt>
+                              i18n:translate="label_current">(current)</span><br />
+                    </tal:vars>
                 </tal:item>
-                <tal:block condition="canSelectDefaultFolderPage">
-                    <dt>&nbsp;</dt>
-                    <dd class="actionSeperator" tal:condition="python:selectedLayout != ''">
+                <p condition="canSelectDefaultFolderPage">
+                    <tal:selected condition="python:selectedLayout != ''">
                         <span i18n:translate="label_or">or</span>
                         <a title="Select an item to be used as default view in this folder" href="#" class="selected"
                            tal:attributes="href string:${parent_folder/absolute_url}/select_default_page;"
@@ -60,8 +61,8 @@
                            i18n:translate="label_choose_content_item">
                              Choose a content item&hellip;
                         </a>
-                    </dd>
-                    <dd class="actionSeperator" tal:condition="python:selectedLayout == ''">
+                    </tal:selected>
+                    <tal:selected condition="python:selectedLayout == ''">
                         <span i18n:translate="label_or">or</span>
                         <a title="Change the item used as default view in this folder" href="#" class="selected"
                            tal:attributes="href string:${parent_folder/absolute_url}/select_default_page;"
@@ -69,9 +70,9 @@
                            i18n:translate="label_select_content_item">
                              Select a content item&hellip;
                         </a>
-                    </dd>
-                </tal:block>
-            </dl>
+                    </tal:selected>
+                </p>
+            </div>
 
           <div class="formControls">
             <input class="context"
@@ -82,7 +83,7 @@
                    i18n:attributes="value label_save;"
                    tal:attributes="tabindex tabindex/next;"
                    />
-            <input class="context"
+            <input class="standalone"
                    tabindex=""
                    type="submit"
                    name="form.button.Cancel"
