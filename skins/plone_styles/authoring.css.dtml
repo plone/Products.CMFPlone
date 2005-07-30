@@ -352,7 +352,10 @@ ol.visualNoMarker {
     margin-left: 1em;
 }
 .listingBar img {
-	vertical-align: middle;
+    vertical-align: middle;
+}
+.listingBar a {
+    text-decoration: none;
 }
 
 /* Accessibility elements */
