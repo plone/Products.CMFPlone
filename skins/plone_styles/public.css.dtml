@@ -807,10 +807,13 @@ dl.collapsedInlineCollapsible dt.collapsibleHeader {
 /* fullscreen */
 
 body.fullscreen #portal-logo,
-body.fullscreen #portal-siteactions,
-body.fullscreen #portal-searchbox {
+body.fullscreen #portal-siteactions {
     display: none;
 }
 
+body.fullscreen #portal-searchbox {
+    margin: 1.1em 0.5em 0 0.5em;
+    padding: 0;
+}
 
 /* </dtml-with> */
