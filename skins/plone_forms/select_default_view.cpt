@@ -52,7 +52,7 @@
                               i18n:translate="label_current">(current)</span><br />
                     </tal:vars>
                 </tal:item>
-                <p condition="canSelectDefaultFolderPage">
+                <p tal:condition="canSelectDefaultFolderPage">
                     <tal:selected condition="python:selectedLayout != ''">
                         <span i18n:translate="label_or">or</span>
                         <a title="Select an item to be used as default view in this folder" href="#" class="selected"

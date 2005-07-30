@@ -16,7 +16,7 @@
                tal:content="now/year" />
     by the 
     <span i18n:name="plonefoundation">
-        <a href="http://plone.org/foundation">Plone Foundation</a>
+        <a href="http://plone.org/foundation" i18n:translate="label_plone_foundation">Plone Foundation</a>
     </span>
     et al.
     </span>
@@ -27,7 +27,7 @@
     <span i18n:translate="description_trademark">
     Plone&trade; and the Plone logo are trademarks of the  
         <span i18n:name="plonefoundation">
-            <a href="http://plone.org/foundation">Plone Foundation</a>
+            <a href="http://plone.org/foundation" i18n:translate="label_plone_foundation">Plone Foundation</a>
         </span>.
     </span>
 
