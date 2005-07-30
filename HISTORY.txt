@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - Beta2 - unreleased
 
+    - Fixed issue that caused Plone/AT Folders contained in a BaseBTreeFolder
+      subclass to inheirt the parent index_html ComputedAttribute and attempt
+      to use that as the default view resulting in a 404. Thanks to tim2p
+      for finding this.
+      [alecm]
+
     - Fixed http://members.plone.org/collector/4351 by not relying on
       getTypeInfo() being available on the object.
       [optilude]

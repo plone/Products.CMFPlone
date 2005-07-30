@@ -1011,7 +1011,8 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         # use this index_html(), nor the ComputedAttribute which defines it.
 
         if not isinstance(getattr(obj, 'index_html', None), ReplaceableWrapper):
-            if getattr(aq_base(obj), 'index_html', None) is not None:
+            index_obj = getattr(aq_base(obj), 'index_html', None)
+            if index_obj is not None and not isinstance(index_obj, ComputedAttribute):
                 return returnPage(obj, 'index_html')
 
         #
