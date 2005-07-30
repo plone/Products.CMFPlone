@@ -196,6 +196,18 @@ class TestCheckId(PloneTestCase.PloneTestCase):
             r = self.folder.foo.check_id(alias)
             self.assertEqual(r, "'%s' is reserved." % alias)   # success
 
+    def testCheckingMethodAliasesOnPortalRoot(self):
+        # Test for bug http://members.plone.org/collector/4351
+        self.setRoles(['Manager'])
+        self.portal.manage_permission('Add portal content', ['Manager'], acquire=0)
+
+        # Should not raise: Before we were using obj.getTypeInfo(), which is
+        # not defined on the portal root.
+        try:
+            self.portal.check_id('foo')
+        except AttributeError, e:
+            self.fail(e)
+
 
 class TestVisibleIdsEnabled(PloneTestCase.PloneTestCase):
     '''Tests the visibleIdsEnabled script'''

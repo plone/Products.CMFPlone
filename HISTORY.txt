@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - Beta2 - unreleased
 
+    - Fixed http://members.plone.org/collector/4351 by not relying on
+      getTypeInfo() being available on the object.
+      [optilude]
+
     - Fixed http://plone.org/collector/3906 - header now shows correct mouse
       pointer cursor when table is sortable.
       [hannosch]
