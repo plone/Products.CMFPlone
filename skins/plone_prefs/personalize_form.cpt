@@ -157,6 +157,7 @@
                        name="description"
                        tal:content="description"
                        rows="5"
+                       tal:attributes="tabindex tabindex/next;"
                        />
 
             </div>
