@@ -550,20 +550,22 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
         if context == self or sitemap:
             currentPath = getToolByName(self, 'portal_url').getPortalPath()
-            query['path'] = {'query':currentPath, 'depth':ntp.sitemapDepth}
+            query['path'] = {'query':currentPath, 
+                             'depth':ntp.getProperty('sitemapDepth', 2)}
         else:
             currentPath = '/'.join(context.getPhysicalPath())
             query['path'] = {'query':currentPath, 'navtree':1}
 
         query['portal_type'] = self.typesToList()
 
-        if ntp.sortAttribute:
+        if ntp.getProperty('sortAttribute', False):
             query['sort_on'] = ntp.sortAttribute
 
-        if ntp.sortAttribute and ntp.sortOrder:
+        if (ntp.getProperty('sortAttribute', False) and 
+            ntp.getProperty('sortOrder', False)):
             query['sort_order'] = ntp.sortOrder
 
-        if ntp.enable_wf_state_filtering:
+        if ntp.getProperty('enable_wf_state_filtering', False):
             query['review_state'] = ntp.wf_states_to_show
 
         query['is_default_page'] = False
@@ -571,7 +573,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         parentTypesNQ = ntp.getProperty('parentMetaTypesNotToQuery', ())
 
         # Get ids not to list and make a dict to make the search fast
-        ids_not_to_list = ntp.idsNotToList
+        ids_not_to_list = ntp.getProperty('idsNotToList', ())
         excluded_ids = {}
         for exc_id in ids_not_to_list:
             excluded_ids[exc_id] = 1
@@ -606,7 +608,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
         portalpath = getToolByName(self, 'portal_url').getPortalPath()
 
-        if ntp.showAllParents:
+        if ntp.getProperty('showAllParents', False):
             portal = getToolByName(self, 'portal_url').getPortalObject()
             parent = context
             parents = [parent]
@@ -693,20 +695,21 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
         query['portal_type'] = self.typesToList()
 
-        if ntp.sortAttribute:
+        if ntp.getProperty('sortAttribute', False):
             query['sort_on'] = ntp.sortAttribute
 
-        if ntp.sortAttribute and ntp.sortOrder:
+        if (ntp.getProperty('sortAttribute', False) and 
+            ntp.getProperty('sortOrder', False)):
             query['sort_order'] = ntp.sortOrder
 
-        if ntp.enable_wf_state_filtering:
+        if ntp.getProperty('enable_wf_state_filtering', False):
             query['review_state'] = ntp.wf_states_to_show
 
         query['is_default_page'] = False
         query['is_folderish'] = True
 
         # Get ids not to list and make a dict to make the search fast
-        ids_not_to_list = ntp.idsNotToList
+        ids_not_to_list = ntp.getProperty('idsNotToList', ())
         excluded_ids = {}
         for exc_id in ids_not_to_list:
             excluded_ids[exc_id]=1
