@@ -23,7 +23,8 @@
          minutes values/minutes;
          ampm values/ampm;
          yearStart python:years[0]['value'];
-         yearEnd python:years[-1]['value'];">
+         yearEnd python:years[-1]['value'];
+         translation_service nocall:here/translation_service;">
 
       <input type="hidden" tal:attributes="name string:$inputname;
 	     id input_id;
@@ -79,9 +80,13 @@
 
 	  <option value="subj"
 		  tal:repeat="month months"
-		  tal:attributes="value month/value; selected month/selected"
-		  i18n:translate=""
-	  tal:content="month/id">month name</option>
+		  tal:attributes="value month/value; selected month/selected">
+              <tal:block define="month_id python:translation_service.month_msgid(month['value']);
+                                 month_english month/id;"
+                         content="python: here.utranslate(month_id, default=month_english)">
+                  month name
+              </tal:block>
+          </option>
 
 	</select>
       </span>
