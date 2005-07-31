@@ -188,7 +188,7 @@
 .livesearchContainer {
     background-color: &dtml-backgroundColor;;
     margin-top: 0;
-    padding: 0.5em !important;
+    padding: 0 !important;
     position: absolute;
     right:0px;
     /* Currently exposes a rendering bug in Mozilla */
@@ -198,10 +198,16 @@
     visibility: visible;
     text-align:left;
     color: &dtml-globalFontColor;;
-    background-color: &dtml-backgroundColor;;
+    background-color: transparent;
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
     width:300px;
     text-transform: none;
+}
+
+/* Workaround for Internet Explorer's broken z-index implementation */
+.LSIEFix {
+    background-color: &dtml-backgroundColor;;
+    padding: 0.5em !important;
 }
 
 .LSBox {

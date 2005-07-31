@@ -61,6 +61,7 @@ if not results:
 else:
     print '''<fieldset class="livesearchContainer">'''
     print '''<legend id="livesearchLegend">LiveSearch &darr;</legend>'''
+    print '''<div class="LSIEFix">'''
     print '''<ul class="LSTable">'''
     for result in results[:limit]:
 
@@ -86,9 +87,10 @@ else:
     if len(results)>limit:
         # add a more... row
         print '''<li class="LSRow">'''
-        print '<a href="%s" style="font-weight:normal">More...</a>' % ('search?SearchableText=' + searchterms)
+        print '<a href="%s" style="font-weight:normal">Show all&hellip;</a>' % ('search?SearchableText=' + searchterms)
         print '''</li>'''
     print '''</ul>'''
+    print '''</div>'''
     print '''</fieldset>'''
 
 return printed
