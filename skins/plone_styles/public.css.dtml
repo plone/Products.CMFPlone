@@ -816,8 +816,10 @@ body.fullscreen #portal-siteactions {
 }
 
 body.fullscreen #portal-searchbox {
-    margin: 1.1em 0.5em 0 0.5em;
-    padding: 0;
+    margin: 1.1em 0.5em 0 0.5em; 
+    padding: 0; 
+    position: relative;
 }
+
 
 /* </dtml-with> */
