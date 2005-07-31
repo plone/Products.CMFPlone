@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - Beta2 - unreleased
 
+    - Fixed bottom of selected tab in IE.
+      [spliter]
+
     - Added new permission Allow Sendto to Plone. The sendto method, script
       and action are protected by the new permission. Change the permission
       in the portal root to prevent certain users like Anonymous to use or

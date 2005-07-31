@@ -38,6 +38,11 @@ textarea {
     width: 88%;
 }
 
+/* Fix bottom margin on tabs in IE */
+#portal-globalnav li.selected a {
+position: relative;
+}
+
 .hiddenStructure { /* This is necessary to eliminate the 1px high object in
                       the document flow in place of .hiddenStructure block objects */
     position: absolute;
