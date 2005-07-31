@@ -11,7 +11,7 @@
 <body>
 <div metal:fill-slot="main">
 
-    <h1 i18n:translate="header_contact_information">Contact information</h1>
+    <h1 i18n:translate="heading_contact_information">Contact information</h1>
 	<p tal:content="site_properties/description">Site Description</p>
         <!-- feedback form -->        
         
