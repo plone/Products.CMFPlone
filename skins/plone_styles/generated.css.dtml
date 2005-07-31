@@ -24,12 +24,35 @@
    http://plone.org/documentation/how-to/flickering-background-images-internet-explorer */
 
 <dtml-in "portal_types.listTypeInfo()">
-.contenttype-<dtml-var "plone_utils.normalizeString(id)"> { background-image: url(<dtml-var portal_url>/<dtml-var getIcon>); background-repeat: no-repeat; background-position: 0% 3px;}
-.contenttype-<dtml-var "plone_utils.normalizeString(id)"> a:hover { background-image: url(<dtml-var portal_url>/<dtml-var getIcon>); background-repeat: no-repeat; background-position: 0% 2px; margin-left: -1px;}
+    .contenttype-<dtml-var "plone_utils.normalizeString(id)"> { 
+        background-image: url(<dtml-var portal_url>/<dtml-var getIcon>); 
+        background-repeat: no-repeat; 
+        background-position: 0% 1px;
+    }
+    /* Holy hack to prevent items from shifting to the left in IE*/
+    * html .contenttype-<dtml-var "plone_utils.normalizeString(id)"> { 
+        height: 1%;
+    }
+    #portlet-navigation-tree .contenttype-<dtml-var "plone_utils.normalizeString(id)"> { 
+        background-position: 0% 3px;
+    }
+    #portlet-navigation-tree .contenttype-<dtml-var "plone_utils.normalizeString(id)"> a:hover {
+        background-image: url(<dtml-var portal_url>/<dtml-var getIcon>); 
+        background-repeat: no-repeat; 
+        background-position: 0% 2px; 
+        margin-left: -1px;
+    }
+    td .contenttype-<dtml-var "plone_utils.normalizeString(id)"> { 
+        display: block; 
+    }
 </dtml-in>
 
 <dtml-in "getActionIconList()">
-.actionicon-<dtml-var category>-<dtml-var action> { background-image: url(<dtml-var portal_url>/<dtml-var icon>) !important; background-repeat: no-repeat; background-position: 0% 50%;}
+    .actionicon-<dtml-var category>-<dtml-var action> { 
+        background-image: url(<dtml-var portal_url>/<dtml-var icon>) !important; 
+        background-repeat: no-repeat; 
+        background-position: 0% 50%;
+    }
 </dtml-in>
 
 /* Extra padding class for the generated icons - we have to do it

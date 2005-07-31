@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - Beta2 - unreleased
 
+    - Fixing content-type icon display in folder listing, recent portlet etc.
+      [spliter]
+
     - Fixed bottom of selected tab in IE.
       [spliter]
 
