@@ -86,9 +86,6 @@ def oneX_twoBeta2(portal):
     out.append("Adding in new form controller")
     addFormController(portal)
 
-    out.append("Adding in site actions")
-    ConfigurationMethods.addSiteActions(portal, portal)
-
     out.append("Moving portraits into the memberdata tool")
     #migrate Memberdata, Membership and Portraits
     migrateMemberdataTool(portal)
