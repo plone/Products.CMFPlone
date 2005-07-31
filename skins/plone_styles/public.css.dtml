@@ -646,10 +646,9 @@ dl.collapsible dt.collapsibleHeader {
     background: &dtml-backgroundColor;;
     font-size: 90%;
     line-height: 1.5em;
-    width: auto;
+    vertical-align: middle;
     position: relative;
     top: -0.75em;
-    vertical-align: middle;
     left: 1em;
     width: auto;
     margin: 0;
@@ -669,7 +668,7 @@ dl.collapsible dd.collapsibleContent > dl {
 
 dl.expandedInlineCollapsible dt.collapsibleHeader,
 dl.expandedBlockCollapsible dt.collapsibleHeader {
-    padding-left: 22px;
+    padding: 0 6px 0 22px;
     background: &dtml-backgroundColor; url(treeExpanded.gif) no-repeat 6px 50%;
     cursor: pointer;
 }
@@ -681,8 +680,8 @@ dl.collapsedBlockCollapsible {
 }
 
 dl.collapsedBlockCollapsible dt.collapsibleHeader {
-    padding-left: 22px;
-    background: &dtml-backgroundColor; url(treeCollapsed.gif) no-repeat 6px 50%;
+    padding: 0 0 0 22px; 
+    background: transparent url(treeCollapsed.gif) no-repeat 6px 50%;
     cursor: pointer;
 }
 
@@ -699,8 +698,8 @@ dl.collapsedInlineCollapsible {
 }
 
 dl.collapsedInlineCollapsible dt.collapsibleHeader {
-    padding-left: 22px;
-    background: &dtml-backgroundColor; url(treeCollapsed.gif) no-repeat 6px 50%;
+    padding: 0 0 0 22px; 
+    background: transparent url(treeCollapsed.gif) no-repeat 6px 50%;
     cursor: pointer;
     display: inline;
     top: 0;
@@ -808,7 +807,6 @@ dl.collapsedInlineCollapsible dt.collapsibleHeader {
     text-decoration: none;
     font-weight: normal;
 }
-
 
 /* fullscreen */
 
