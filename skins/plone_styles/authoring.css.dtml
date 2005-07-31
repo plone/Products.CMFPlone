@@ -452,7 +452,7 @@ ol.visualNoMarker {
 
 .ploneCalendar {
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
-    margin: 1em 0em;
+    margin: 0 auto 1em;
     border-collapse: collapse;
 }
 .ploneCalendar a {
