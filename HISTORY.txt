@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - Beta2 - unreleased
 
+    - Making the "display" menu display the default-page if you are looking
+      directly at a folder that has a default-page (e.g. its contents view)
+      [optilude]
+
     - Fixing content-type icon display in folder listing, recent portlet etc.
       [spliter]
 

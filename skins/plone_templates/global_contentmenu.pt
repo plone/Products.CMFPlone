@@ -162,7 +162,7 @@
     </li>
     </tal:add>
 
-    <tal:templateMixin define="contextHasIndexHtml context/hasIndexHtml;
+    <tal:displayMenu define="contextHasIndexHtml context/hasIndexHtml;
                                folderHasIndexHtml parent_folder/hasIndexHtml;
                                parentVocab parent_folder/getSelectableViews;
                                contextVocab here/getSelectableViews;
@@ -262,8 +262,10 @@
                                   of a folder. Transitive default-pages are just too confusing.
                       -->
                     <tal:contextViewsSelection 
-                                    define="vocab contextVocab;
-                                            selectedLayout context/getLayout|nothing;"
+                                    define="vocab          contextVocab;
+                                            defaultPageId  context/getDefaultPage;
+                                            defaultPage    python:defaultPageId is not None and getattr(here, defaultPageId, None) or None;
+                                            selectedLayout python:defaultPage is None and context.getLayout() or ''"
                                     condition="python:vocab">
                                      
                         <tal:layouts repeat="layout vocab">
@@ -304,7 +306,7 @@
                             <tal:haveDefaultPage condition="python:selectedLayout == ''">
                                 <li class="actionSeperator">
                                     <div class="currentDefaultPage selected">
-                                        <span tal:replace="here/title_or_id"/>
+                                        <span tal:replace="defaultPage/title_or_id"/>
                                     </div>
                                 </li>
                                 <li>
@@ -355,7 +357,7 @@
               </dd>
             </dl>
     </li>
-    </tal:templateMixin>
+    </tal:displayMenu>
     
     <tal:edit define="editActions actions/object_buttons | nothing;
                       getIconFor nocall:putils/getIconFor;"
