@@ -36,11 +36,14 @@
     #portlet-navigation-tree .contenttype-<dtml-var "plone_utils.normalizeString(id)"> { 
         background-position: 0% 3px;
     }
-    #portlet-navigation-tree .contenttype-<dtml-var "plone_utils.normalizeString(id)"> a:hover {
+    #portlet-navigation-tree .contenttype-<dtml-var "plone_utils.normalizeString(id)"> a:hover { 
         background-image: url(<dtml-var portal_url>/<dtml-var getIcon>); 
         background-repeat: no-repeat; 
         background-position: 0% 2px; 
         margin-left: -1px;
+    }
+    * html #portlet-navigation-tree .contenttype-<dtml-var "plone_utils.normalizeString(id)"> a:hover {
+        position: relative;
     }
     td .contenttype-<dtml-var "plone_utils.normalizeString(id)"> { 
         display: block; 
