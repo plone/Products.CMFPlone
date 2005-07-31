@@ -54,8 +54,7 @@
                                        item_type_class python: 'contenttype-' + putils.normalizeString(item_type);
                                        item_wf_state        item/review_state|python: wtool.getInfoFor(item, 'review_state', '');
                                        item_wf_state_class python:'state-' + putils.normalizeString(item_wf_state);
-                                       item_creators item/aq_explicit/Creators|item/Creator;
-                                       item_creators python:test(same_type(item_creators,[]) or same_type(item_creators,()), item_creators, [item_creators]);
+                                       item_creator item/Creator;
                                        item_start item/start/ISO|item/StartDate|nothing;
                                        item_end item/end/ISO|item/EndDate|nothing;
                                    ">
@@ -91,11 +90,11 @@
                                  <span tal:replace="python:toLocalizedTime(item_end,long_format=1)">to date</span>)
                             &mdash;
                             </span>
-                            <tal:creators tal:condition="item_creators">
+                            <tal:creators tal:condition="item_creator">
                                 <span i18n:translate="box_created_by">
                                     by
                                 </span>
-                                <span tal:replace="python: ', '.join(item_creators)"/>
+                                <span tal:replace="item_creator"/>
                             </tal:creators>
                             <tal:modified condition="python: item_type != 'Event'">
                                 &mdash;
