@@ -17,13 +17,13 @@
                 ac_persist auth/persist_cookie|nothing;"
     tal:condition="python: auth">
 
-    <span class="portletTopLeft" />
+    <!-- span class="portletTopLeft" /-->
     <dt class="portletHeader">
         <a href="#" 
            tal:attributes="href string:$portal_url/login_form"
            i18n:translate="box_sign_in">Log in</a>
     </dt>
-    <span class="portletTopRight" />
+    <!-- span class="portletTopRight" /-->
   
     <dd class="portletItem odd">
         <form action="login_form"
@@ -103,8 +103,8 @@
         </a>
     </dd>
       
-    <span class="portletBottomLeft" />
-    <span class="portletBottomRight" />
+    <!-- span class="portletBottomLeft" /-->
+    <!-- span class="portletBottomRight" /-->
 </dl>
 
 
@@ -114,11 +114,11 @@
     id="portlet-login"
     tal:condition="python: not auth">
 
-    <span class="portletTopLeft" />
+    <!-- span class="portletTopLeft" /-->
     <dt class="portletHeader">
         <a href="#" i18n:translate="box_sign_in">Log in</a>
     </dt>
-    <span class="portletTopRight" />
+    <!-- span class="portletTopRight" /-->
 
     <dd class="portletItem"
         tal:condition="python: not auth"
@@ -127,8 +127,8 @@
         Login portlet not available.
     </dd>
 
-    <span class="portletBottomLeft" />
-    <span class="portletBottomRight" />
+    <!-- span class="portletBottomLeft" /-->
+    <!-- span class="portletBottomRight" /-->
 </dl>
 
 

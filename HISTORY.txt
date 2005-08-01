@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - Beta2 - unreleased
 
+    - Commented out markup code for rounded corners in the portlets. The
+      tags like <span class="portletTopLeft" /> inside the <dl> were
+      destroying the XHTML validation because only <dd> and <dt> are
+      allowed in a definition list.
+      [tiran]
+
     - Fixed issue with dashed borders in IE, and applied IEFixes which was
       going unused.
       [alecm]

@@ -13,12 +13,12 @@
 
 <dl class="portlet" id="portlet-events">
   
-    <span class="portletTopLeft" />
+    <!-- span class="portletTopLeft" /-->
     <dt class="portletHeader">
         <a href="#"
            i18n:translate="box_events">Upcoming Events</a>
     </dt>
-    <span class="portletTopRight" />
+    <!-- span class="portletTopRight" /-->
   
     <tal:events tal:repeat="obj results">
     <dd class="portletItem"
@@ -73,8 +73,8 @@
         </a>
     </dd>
   
-    <span class="portletBottomLeft" />
-    <span class="portletBottomRight" />
+    <!-- span class="portletBottomLeft" /-->
+    <!-- span class="portletBottomRight" /-->
   
 </dl>
 
