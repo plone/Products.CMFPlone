@@ -310,6 +310,7 @@ class TestMembershipTool(PloneTestCase.PloneTestCase):
         self.failIfEqual(barney.fullname, 'Barney Rubble')
         self.failIfEqual(barney.email, 'barney@bedrock.com')
 
+
 class TestCreateMemberarea(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
