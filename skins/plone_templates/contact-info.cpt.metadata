@@ -9,4 +9,4 @@ validators=validate_site_feedback
 
 [actions]
 action.success=traverse_to:string:send_feedback_site
-action.failure=traverse_to:string:contact_info
+action.failure=traverse_to:string:contact-info
