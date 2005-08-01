@@ -2,7 +2,7 @@ Changelog for Plone
 
    (name of developer listed in brackets)
 
-Plone 2.1 - Plaid - Beta2 - unreleased
+Plone 2.1 - Plaid - RC1 - Released August 1, 2005
 
     - Added log.py module and made Plone use only one style of logging (zLOG).
       There is no logger named 'Plone' configured anywhere, so we better not
