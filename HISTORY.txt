@@ -2,6 +2,16 @@ Changelog for Plone
 
    (name of developer listed in brackets)
 
+Plone 2.1 - Plaid - RC2 - unreleased
+
+    - Made language selector visible even if no document actions are defined
+      for the current user
+      [jok2]
+    
+    - Don't require a full name for the site feedback in the contact-info page,
+      as the full name is not required for members.
+      [jok2]
+
 Plone 2.1 - Plaid - RC1 - Released August 1, 2005
 
     - Added log.py module and made Plone use only one style of logging (zLOG).
