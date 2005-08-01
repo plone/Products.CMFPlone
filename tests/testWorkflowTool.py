@@ -48,6 +48,16 @@ class TestWorkflowTool(PloneTestCase.PloneTestCase):
         state_title = self.workflow.getTitleForStateOnType(state_id, self.doc.portal_type)
         self.assertEqual(state_title, 'nonsense')
 
+    def testGetTitleForTransitionOnType(self):
+        state_id = 'hide'
+        state_title = self.workflow.getTitleForTransitionOnType(state_id, self.doc.portal_type)
+        self.assertEqual(state_title, 'Make private')
+
+    def testGetTitleForTransitionOnTypeFallsBackOnTransitionId(self):
+        state_id = 'nonsense'
+        state_title = self.workflow.getTitleForTransitionOnType(state_id, self.doc.portal_type)
+        self.assertEqual(state_title, 'nonsense')
+
     def testListWFStatesByTitle(self):
         states = self.workflow.listWFStatesByTitle()
         self.assertEqual(len(states), 7)

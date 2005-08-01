@@ -239,7 +239,7 @@ class WorkflowTool(PloneBaseTool, BaseTool):
 #                            actions.extend(a)
 #        return actions
 
-    security.declarePublic('getStateTitleForState')
+    security.declarePublic('getTitleForStateOnType')
     def getTitleForStateOnType(self, state_name, p_type):
         """Returns the workflow state title for a given state name,
            uses a portal_type to determine which workflow to use
@@ -254,6 +254,22 @@ class WorkflowTool(PloneBaseTool, BaseTool):
                     if state is not None:
                         return getattr(aq_base(state), 'title', None) or state_name
         return state_name
+
+    security.declarePublic('getTitleForTransitionOnType')
+    def getTitleForTransitionOnType(self, trans_name, p_type):
+        """Returns the workflow transition title for a given transition name,
+           uses a portal_type to determine which workflow to use
+        """
+        if p_type is not None:
+            chain = self.getChainForPortalType(p_type)
+            for wf_id in chain:
+                wf = self.getWorkflowById(wf_id)
+                if wf is not None:
+                    transitions = wf.transitions
+                    trans = getattr(transitions, trans_name, None)
+                    if trans is not None:
+                        return getattr(aq_base(trans), 'actbox_name', None) or trans_name
+        return trans_name
 
     security.declarePublic('listWFStatesByTitle')
     def listWFStatesByTitle(self, filter_similar=False):

@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - Beta2 - unreleased
 
+    - Made history table use transition titles instead of ids (requires new
+      portal_workflow method).  Also localized dates in that table, and
+      removed duplication of history from content_status_history.
+      [alecm]
+
     - Commented out markup code for rounded corners in the portlets. The
       tags like <span class="portletTopLeft" /> inside the <dl> were
       destroying the XHTML validation because only <dd> and <dt> are
