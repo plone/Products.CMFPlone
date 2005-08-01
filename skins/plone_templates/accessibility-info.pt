@@ -30,8 +30,8 @@
     <h1 i18n:translate="heading_accessibility_info">Accessibility</h1>
 
     <p i18n:translate="description_accessibility_info">
-    This site uses the <a href="http://plone.org" i18n:name="plone">Open Source Content Management System Plone</a>,
-    and has been designed this site to be completely accessible and usable, working in 
+    This site uses the <a href="http://plone.org" i18n:name="plone">Open Source Content Management System Plone</a>
+    and has been designed to be completely accessible and usable, working in
     accordance with the Web Content Accessibility Guidelines 
     (<acronym i18n:name="wcag"
               title="Web Content Accessibility Guidelines"
