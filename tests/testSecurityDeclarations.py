@@ -70,6 +70,27 @@ class TestSecurityDeclarations(RestrictedPythonTest):
         self.check('import zLOG;'
                    'print zLOG.WARNING')
 
+    def testImport_log(self):
+        self.check('from Products.CMFPlone.utils import log')
+
+    def testAccess_log(self):
+        self.check('from Products.CMFPlone import utils;'
+                   'print utils.log')
+
+    def testImport_log_deprecated(self):
+        self.check('from Products.CMFPlone.utils import log_deprecated')
+
+    def testAccess_log_deprecated(self):
+        self.check('from Products.CMFPlone import utils;'
+                   'print utils.log_deprecated')
+
+    def testImport_log_exc(self):
+        self.check('from Products.CMFPlone.utils import log_exc')
+
+    def testAccess_log_exc(self):
+        self.check('from Products.CMFPlone import utils;'
+                   'print utils.log_exc')
+
     def testImport_getLogger(self):
         self.check('from logging import getLogger')
 

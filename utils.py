@@ -1,7 +1,6 @@
 import re
 import Globals
 import OFS
-import i18nl10n
 from os.path import join, abspath, dirname, split
 from Products.CMFCore.utils import ToolInit as CMFCoreToolInit
 from Products.CMFCore.utils import getToolByName
@@ -20,6 +19,17 @@ else:
 # Canonical way to get at CMFPlone directory
 PACKAGE_HOME = Globals.package_home(globals())
 
+# Log methods
+from log import log
+from log import log_exc
+from log import log_deprecated
+
+# Keep these here to not fully change the old API
+# please use i18nl10n directly
+from i18nl10n import utranslate
+from i18nl10n import ulocalized_time
+from i18nl10n import getGlobalTranslationService
+
 
 class IndexIterator:
     __allow_access_to_unprotected_subobjects__ = 1
@@ -33,25 +43,6 @@ class IndexIterator:
             self.pos += 1
             return self.pos
         raise KeyError, 'Reached upper bounds'
-
-
-# deprecration warning
-import zLOG
-def log_deprecated(message, summary='Deprecation Warning',
-                   severity=zLOG.WARNING):
-    zLOG.LOG('Plone: ', severity, summary, message)
-
-# generic log method
-def log(message, summary='', severity=zLOG.INFO):
-    zLOG.LOG('Plone: ', severity, summary, message)
-
-# keep these here to not fully change the old api
-# please use i18nl10n directly
-utranslate = i18nl10n.utranslate
-ulocalized_time = i18nl10n.ulocalized_time
-
-from Products.PageTemplates.GlobalTranslationService import \
-     getGlobalTranslationService
 
 
 class ToolInit(CMFCoreToolInit):

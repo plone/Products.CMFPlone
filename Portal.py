@@ -1,5 +1,4 @@
 from __future__ import nested_scopes
-import logging
 import os, sys, re
 
 from ComputedAttribute import ComputedAttribute
@@ -37,15 +36,14 @@ from Acquisition import aq_inner, aq_parent, aq_base
 from ComputedAttribute import ComputedAttribute
 from webdav.NullResource import NullResource
 from Products.CMFPlone.PloneFolder import ReplaceableWrapper
-
-LOG = logging.getLogger('Plone')
+from Products.CMFPlone.utils import log_exc
 
 default_frontpage="Unable to load front-page skeleton file"
 WWW_DIR = os.path.join(os.path.dirname(__file__), 'www')
 try:
     f = open(os.path.join(WWW_DIR, 'default_frontpage.html'), 'r')
 except IOError:
-    LOG.error('Unable to open frontpage skeleton', exc_info=True)
+    log_exc('Unable to open frontpage skeleton')
 else:
     default_frontpage = f.read()
     f.close()

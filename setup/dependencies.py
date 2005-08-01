@@ -16,15 +16,15 @@ MINIMUM_CMF_VER = (1, 5, 2)
 
 messages = []
 
-def log(message, summary='', severity=zLOG.ERROR, optional=None):
+def log(message, summary='', severity=zLOG.ERROR, optional=0):
     if optional:
-        msg = 'Plone Option'
+        subsys = 'Plone Option'
     else:
-        msg = 'Plone Dependency'
+        subsys = 'Plone Dependency'
     messages.append({'message' : message, 'summary' : summary,
                      'severity' : severity, 'optional' : optional
 		    })
-    zLOG.LOG(msg, severity, summary, message + "\n")
+    zLOG.LOG(subsys, severity, summary, message + "\n")
 
 # test python version
 PYTHON_VER = sys.version_info[:3]

@@ -9,9 +9,9 @@
 ##
 
 from Products.CMFCore.WorkflowCore import WorkflowException
+from Products.CMFPlone.utils import log
 
 history = []
-log = context.plone_log
 
 # check if the current user has the proper permissions
 if context.portal_membership.checkPermission('Modify portal content', context):
@@ -27,7 +27,7 @@ if context.portal_membership.checkPermission('Modify portal content', context):
         history = context.reverseList(review_history)
 
     except WorkflowException:
-        log( 'CMFPlone/skins/plone_scripts/getWorkflowHistory',
+        log( 'CMFPlone/skins/plone_scripts/getWorkflowHistory: '
              '%s has no associated workflow' % context.absolute_url() )
 
 return history

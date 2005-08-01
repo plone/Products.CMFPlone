@@ -7,10 +7,10 @@
 ##parameters=contentFilter=None,suppressHiddenFiles=1
 ##title=wrapper method around listFolderContents
 ##
-from zLOG import LOG, WARNING
+from Products.CMFPlone.utils import log_deprecated
 # XXX DEPRECATION ahead!
-LOG('Plone Debug', WARNING, 'The getFolderListingFolderContents script is '
-                            'DEPRECATED and will be removed in plone 2.3.'
-                            'Please use getFolderContents with the parameter'
-                            'batch=True')
+log_deprecated('The getFolderListingFolderContents script is '
+               'deprecated and will be removed in Plone 2.2. '
+               'Please use getFolderContents with the parameter '
+               'batch=True.')
 return context.getFolderContents(contentFilter, full_objects=True)

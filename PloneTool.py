@@ -4,8 +4,9 @@ import traceback
 from types import TupleType, UnicodeType, StringType
 import urlparse
 
-from zLOG import LOG, INFO, WARNING
 from Products.CMFPlone.utils import safe_callable
+from Products.CMFPlone.utils import log
+from Products.CMFPlone.utils import log_exc
 from Products.CMFPlone import transaction
 
 from AccessControl import getSecurityManager
@@ -47,9 +48,6 @@ _icons = {}
 
 CEILING_DATE = DefaultDublinCoreImpl._DefaultDublinCoreImpl__CEILING_DATE
 FLOOR_DATE = DefaultDublinCoreImpl._DefaultDublinCoreImpl__FLOOR_DATE
-
-def log(summary='', text='', log_level=INFO):
-    LOG('Plone Debug', log_level, summary, text)
 
 from Products.SecureMailHost.SecureMailHost import EMAIL_RE
 from Products.SecureMailHost.SecureMailHost import EMAIL_CUTOFF_RE
@@ -493,10 +491,8 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     # Provide a way of dumping an exception to the log even if we
     # catch it and otherwise ignore it
     def logException(self):
-        """Dumps an exception to the log."""
-        log(summary=self.exceptionString(),
-            text='\n'.join(traceback.format_exception(*sys.exc_info())),
-            log_level=WARNING)
+        """Dumps most recent exception to the log."""
+        log_exc()
 
     security.declarePublic('createSitemap')
     def createSitemap(self, context):
