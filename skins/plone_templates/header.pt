@@ -42,8 +42,8 @@
     
     <!-- Internet Explorer CSS Fixes + IE7 for compliance fixes (limited set) -->
     <tal:iefixstart replace="structure string:&lt;!--[if lt IE 7]&gt;" />
-        <style type="text/css" media="all" tal:condition="exists: portal/ploneIEFixes.css"
-               tal:content="string:@import url($portal_url/ploneIEFixes.css);">
+        <style type="text/css" media="all" tal:condition="exists: portal/IEFixes.css"
+               tal:content="string:@import url($portal_url/IEFixes.css);">
         </style>
     <tal:iefixend replace="structure string:&lt;![endif]--&gt;" />
 

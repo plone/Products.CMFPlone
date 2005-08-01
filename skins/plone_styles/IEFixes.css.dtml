@@ -89,4 +89,13 @@ body { /* These work in IE only, changes the look of the scrollbar + textareas *
     height: 0.1%;
 }
 
+/* There appears to be a bug in some IE 6 versions that causes dashed borders
+   to get positioned strangely (i.e. out of the portlet in this case), and
+   to move about when scrolling.  May be related to:
+   http://mtiki.mmf.at/mt/archives/000011.html */
+
+dd.portletFooter {
+    border-top-style: solid;
+}
+
 /* </dtml-with> */

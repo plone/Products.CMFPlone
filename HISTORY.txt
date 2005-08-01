@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - Beta2 - unreleased
 
+    - Fixed issue with dashed borders in IE, and applied IEFixes which was
+      going unused.
+      [alecm]
+
     - Simplified creator checking in folder_listing, as the usage of creators
       made no sense.  Let's just use Creator and be dones with it.
       [alecm]
