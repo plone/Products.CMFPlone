@@ -48,7 +48,7 @@
                tal:attributes="href string:${utool}/news"
                i18n:translate="box_more_news_link"
                >
-              More News&hellip;
+              More news&hellip;
             </a>
 
             <a href=""
@@ -57,7 +57,7 @@
                tal:attributes="href string:${utool}/news_listing"
                i18n:translate="box_more_news_link"
                >
-              More News&hellip;
+              More news&hellip;
             </a>
         </dd>
     </dl>
