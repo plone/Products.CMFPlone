@@ -5,7 +5,7 @@
 ##bind script=script
 ##bind state=state  
 ##bind subpath=traverse_subpath
-##parameters=subject,message,sender_from_address,sender_fullname
+##parameters=subject,message,sender_from_address
 ##title=validates the form for sending feedback
 
 reg_tool=context.portal_registration 
@@ -18,9 +18,6 @@ else:
     else:
         state.setError('sender_from_address', 'You entered an invalid email address.', 'invalid_email')
  
-if not sender_fullname:
-    state.setError('sender_fullname', 'Please enter your name.', 'sender_fullname_required')
-
 if not (subject and subject.strip()):
     state.setError('subject', 'Please enter a subject.', 'subject_required')
 
