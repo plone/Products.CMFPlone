@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - RC2 - unreleased
 
+    - Removed reindex method from CatalogTool.py since it is redundant and
+      as of CMF 1.5.3 differs in signature from the base type's method.
+      [geoffd]
+
     - Made language selector visible even if no document actions are defined
       for the current user
       [jok2]

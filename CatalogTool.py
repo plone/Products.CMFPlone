@@ -390,20 +390,6 @@ class CatalogTool(PloneBaseTool, BaseTool):
         """
         self.reindexObject(object, idxs)
 
-    security.declarePrivate('reindexObject')
-    def reindexObject(self, object, idxs=[], update_metadata=1):
-        """Update catalog after object data has changed.
-        The optional idxs argument is a list of specific indexes
-        to update (all of them by default).
-        The update_metadata flag controls whether the object's
-        metadata record is updated as well.
-        """
-        url = self.__url(object)
-        if idxs != []:
-            # Filter out invalid indexes.
-            valid_indexes = self._catalog.indexes.keys()
-            idxs = [i for i in idxs if i in valid_indexes]
-        self.catalog_object(object, url, idxs, update_metadata)
 
     security.declareProtected(ManageZCatalogEntries, 'catalog_object')
     def catalog_object(self, object, uid, idxs=[],
