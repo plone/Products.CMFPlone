@@ -5,8 +5,8 @@
 <div metal:define-macro="document_actions"
      class="documentActions"
      tal:define="document_actions actions/document_actions|nothing;
-                 getIconFor nocall:putils/getIconFor"
-     tal:condition="document_actions">
+                 getIconFor nocall:putils/getIconFor">
+    <tal:docactions tal:condition="document_actions">
 
     <h5 class="hiddenStructure" i18n:translate="heading_document_actions">Document Actions</h5>
 
@@ -28,6 +28,7 @@
     </tal:actions>
 
     </ul>
+    </tal:docactions>
 
     <tal:lang tal:condition="exists: here/global_languageselector">
       <metal:lang use-macro="here/global_languageselector/macros/language">
