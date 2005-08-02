@@ -82,31 +82,31 @@
                  tal:attributes="value b_start"/>
                  
             <table class="listing" summary="Select roles for each group" i18n:attributes="summary summary_roles_for_groups;">
-                   
-                <tr>
-                    <th colspan="6"
-                        tal:attributes="colspan python:len(portal_roles)+2">
-                        <span tal:omit-tag="" i18n:translate="label_group_search">Group Search</span>:
-                        <input class="quickSearch"
-                               tabindex=""
-                               type="text"
-                               name="searchstring"
-                               value=""
-                               tal:attributes="value searchstring;
-                                               tabindex tabindex/next;"
-                               />
-                    
-                        <input type="hidden" name="searchonly" value="groups" />
-                        <input type="submit"
-                               class="searchButton"
-                               name="form.button.Search"
-                               value="Search"
-                               tabindex=""
-                               i18n:attributes="value label_search;"
-                               tal:attributes="tabindex tabindex/next;" />
-    
-                    </th>
-                </tr>
+                <!-- commented this part until it is really integrated in the page, right now it isn't -->   
+                <!-- <tr> -->
+                    <!-- <th colspan="6" -->
+                        <!-- tal:attributes="colspan python:len(portal_roles)+2"> -->
+                        <!-- <span tal:omit-tag="" i18n:translate="label_group_search">Group Search</span>: -->
+                        <!-- <input class="quickSearch" -->
+                               <!-- tabindex="" -->
+                               <!-- type="text" -->
+                               <!-- name="searchstring" -->
+                               <!-- value="" -->
+                               <!-- tal:attributes="value searchstring; -->
+                                               <!-- tabindex tabindex/next;" -->
+                               <!-- /> -->
+
+                        <!-- <input type="hidden" name="searchonly" value="groups" /> -->
+                        <!-- <input type="submit" -->
+                               <!-- class="searchButton" -->
+                               <!-- name="form.button.Search" -->
+                               <!-- value="Search" -->
+                               <!-- tabindex="" -->
+                               <!-- i18n:attributes="value label_search;" -->
+                               <!-- tal:attributes="tabindex tabindex/next;" /> -->
+
+                    <!-- </th> -->
+                <!-- </tr> -->
                 <tal:block tal:condition="groups">
                     <tr>
                         <th rowspan="2" i18n:translate="listingheader_group_name">Group name</th>
@@ -132,10 +132,11 @@
                     <td>
                         <input type="hidden" name="" tal:attributes="name string:group_${this_group/getGroupName}:list" value=""/>
                         <a href="#"
-                           tal:attributes="href string:${here_url}/prefs_group_members?groupname=${this_group/getGroupName}">
-    
+                           tal:attributes="href string:${here_url}/prefs_group_members?groupname=${this_group/getGroupName};
+                                           title python:this_group.getProperty('description','')">
+
                             <tal:block replace="structure portal/group.gif"/>&nbsp;
-                            <tal:group tal:replace="this_group/getGroupName" />
+                            <tal:group tal:replace="this_group/getGroupTitleOrName|this_group/getGroupName" />
                         </a>
 
                     </td>

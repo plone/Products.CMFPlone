@@ -13,13 +13,15 @@
   <body>
 
     <div metal:fill-slot="main">
+    <metal:main-macro define-macro="main">
     <metal:contentsmacro define-macro="contents"
          tal:define="standalone python:1;
                      contentTypes here/getAllowedTypes;
                      contentFilter contentFilter|request/contentFilter|nothing;
                      b_size b_size|request/b_size|python:100;
-                     view_title view_title|request/view_title|nothing;
-                     batch python: here.getFolderContents(contentFilter=contentFilter,batch=True, b_size=b_size);
+                     view_title view_title|request/view_title|string:;
+                     contentsMethod python:test(here.portal_type=='Topic', here.queryCatalog, here.getFolderContents);
+                     batch batch|python:contentsMethod(contentFilter,batch=True, b_size=b_size);
                      full_view full_view|request/full_view|python:True;">
       
       <form name="folderContentsForm"
@@ -32,7 +34,7 @@
         </div>
         <h1>
           <tal:block replace="structure python:getattr(here, here.getIcon(1))"/>
-          <span tal:content="python: here.utranslate(view_title) or here.title_or_id()" tal:omit-tag="">Directory Id</span>
+          <span tal:content="python: view_title and here.utranslate(view_title) or putils.pretty_title_or_id(here)" tal:omit-tag="">Directory Id</span>
         </h1>
         <tal:full_view condition="full_view">
     
@@ -63,12 +65,13 @@
            </tal:comment>
         </metal:override>
         <metal:listing define-macro="folder_listing"
-                       tal:define="contentFilter contentFilter|nothing;
+                       tal:define="contentFilter contentFilter|python:{'path':'/'};
                                    iface_tool portal/portal_interface;
                                    use_folder_contents site_properties/typesLinkToFolderContentsInFC|nothing;
                                    use_view_action site_properties/typesUseViewActionInListings;
+                                   query_path python:path('contentFilter/path|nothing') or request.get('path',None);
                                    orderable_iface string:OFS.IOrderSupport.IOrderedContainer;
-                                   preSorted python:(contentFilter and contentFilter.get('sort_on', 'getObjPositionInParent')!='getObjPositionInParent') or (not contentFilter and request.get('sort_on', 'getObjPositionInParent')!='getObjPositionInParent');
+                                   preSorted python:query_path or ((contentFilter and contentFilter.get('sort_on', 'getObjPositionInParent')!='getObjPositionInParent') or (not contentFilter and request.get('sort_on', 'getObjPositionInParent')!='getObjPositionInParent'));
                                    isOrderable python:iface_tool.objectImplements(here, orderable_iface);
                                    nosortclass python:test(isOrderable, 'nosort', '');
                                    canModifyFolderContent python:checkPermission('Modify portal content', here);">
@@ -123,7 +126,7 @@
           <table id="sortable"
                  class="listing"
                  summary="Content listing"
-                 cellpadding="0" cellspacing="0">
+                 i18n:attributes="summary summary_content_listing;">
             <thead>
               <metal:block tal:condition="batch|not:standalone|nothing">
                 <tr>
@@ -168,18 +171,18 @@
                                ">
                 <tal:items tal:repeat="item batch">
                    <tr tal:define="oddrow               repeat/item/odd;
-                                   getInfoFor           python:wtool.getInfoFor;
                                    item_url             item/getURL|item/absolute_url;
                                    item_id              item/getId;
                                    item_path            item/getPath|python:'/'.join(item.getPhysicalPath());
-                                   item_title_or_id     python: (same_type(item.getId,'') and (item.Title or putils.utf8_portal('\xe2\x80\xa6', 'ignore'))) or item.title_or_id();
+                                   item_title_or_id   item/pretty_title_or_id;
                                    item_description     item/Description;
                                    item_type            item/portal_type;
                                    item_size            item/getObjSize;
                                    item_modified        item/ModificationDate;
                                    item_type_class      python:'contenttype-' + putils.normalizeString(item_type);
-                                   item_wf_state        item/review_state|python: getInfoFor(item, 'review_state', '');
-                                   item_wf_state_class  python:here.getStateClassName(item_wf_state);
+                                   item_wf_state        item/review_state|python: wtool.getInfoFor(item, 'review_state', '');
+                                   item_state_title     python:wtool.getTitleForStateOnType(item_wf_state, item_type);
+                                   item_wf_state_class  python:'state-' + putils.normalizeString(item_wf_state);
                                    hasGetUrl            python:hasattr(item.aq_explicit, 'getURL');
                                    item_rel_url         python:hasGetUrl and item.getURL(relative=1) or getRelativeContentURL(item);
                                    browserDefaultResult here/browserDefault;
@@ -238,10 +241,10 @@
                     </td>
                     <td>
                         <span i18n:translate=""
-                              tal:condition="item_wf_state"
-                              tal:content="item_wf_state"
+                              tal:condition="item_state_title"
+                              tal:content="item_state_title"
                               tal:attributes="class item_wf_state_class" />
-                        <span tal:condition="not: item_wf_state">&nbsp;</span>
+                        <span tal:condition="not: item_state_title">&nbsp;</span>
                     </td>
                     <td tal:condition="python:isOrderable and canModifyFolderContent and not preSorted">
                       <a href=""
@@ -268,27 +271,29 @@
             <div metal:use-macro="here/batch_macros/macros/navigation" />
         </metal:listing>
 
+        <metal:buttons define-macro="folder_buttons">
         <input type="hidden" name="orig_template"
                tal:attributes="value template/getId"/>
-        <tal:buttons tal:repeat="button actions/folder_buttons|nothing">
+        <tal:buttons tal:repeat="button actions/folder_buttons|nothing"
+                     tal:define="contentFilter contentFilter|python:{'path':'/'};
+                                 query_path python:path('contentFilter/path|nothing') or request.get('path',None) or context.portal_type == 'Topic';">
           <input class="context"
                  type="submit"
                  name=""
                  value=""
                  tabindex=""
-                 tal:define="query_path python:path('contentFilter/path|nothing') or request.get('path',None);
-                             path_depth query_path/depth|nothing;
-                             non_local python:path_depth!=1"
-                 tal:condition="python:(batch or here.cb_dataValid and button['id'] == 'paste') and not ( non_local and button['id'] in ['cut','copy','paste'])"
+                 tal:condition="python:(batch or here.cb_dataValid and button['id'] == 'paste') and not ( query_path and button['id'] in ['cut','copy','paste'])"
                  i18n:attributes="value"
                  tal:attributes="value button/name;
                                  name button/url;
                                  tabindex tabindex/next;
                                  class python:test((button['id'] == 'paste'), 'standalone', 'context')" />
         </tal:buttons>
+        </metal:buttons>
       </form>
 
     </metal:contentsmacro>
+    </metal:main-macro>
     </div>
 
 

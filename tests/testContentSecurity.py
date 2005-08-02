@@ -109,6 +109,21 @@ class TestContentSecurity(PloneTestCase.PloneTestCase):
         # This should not raise Unauthorized
         subfolder.new.base_view()
 
+    def testViewAllowedOnContentInPrivateFolder(self):
+        self.login('user1')
+        folder = self.membership.getHomeFolder('user1')
+        folder.content_status_modify(workflow_action='private')
+        folder.invokeFactory('Document', id='doc1')
+        doc = folder.doc1
+        doc.content_status_modify(workflow_action='publish')
+        doc.manage_addLocalRoles('user2', ('Owner',))
+        self.login('user2')
+        # This should not raise Unauthorized
+        doc.base_view()
+        # Neither should anonymous
+        self.logout()
+        doc.base_view()
+
     def testViewAllowedOnContentInAcquisitionBlockedFolderWithCustomWorkflow(self):
         # Another test for http://members.plone.org/collector/4055
         # using a paired down version of the custom workflow described therein

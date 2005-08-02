@@ -253,7 +253,7 @@ def addDocumentActions(portal):
     at.addAction('addtofavorites',
                  'Add to Favorites',
                  'string:${object_url}/addtoFavorites',
-                 'python: member and portal.portal_membership.getHomeFolder()',
+                 'python: member and portal.portal_membership.getHomeFolder() is not None',
                  'View',
                  'document_actions',
                  visible=0)
@@ -402,7 +402,7 @@ def addActionIcons(portal):
     ai.addActionIcon('plone', 'print', 'print_icon.gif', 'Print')
     ai.addActionIcon('plone', 'rss', 'rss.gif', 'Syndication')
     ai.addActionIcon('plone', 'extedit', 'extedit_icon.gif', 'ExternalEdit')
-    ai.addActionIcon('plone', 'addtofavorites', 'site_icon.gif', 'AddToFavorites')
+    ai.addActionIcon('plone', 'addtofavorites', 'favorite_icon.gif', 'AddToFavorites')
     qi=getToolByName(portal, 'portal_quickinstaller')
     qi.notifyInstalled('CMFActionIcons')
 

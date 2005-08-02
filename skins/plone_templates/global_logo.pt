@@ -8,7 +8,8 @@
     <a href="/"
        tal:attributes="href portal_url"
        tal:define="portal_title portal_properties/title;"
-       tal:content="string:$portal_title">
+       tal:content="string:$portal_title"
+       accesskey="1">
         Plone
     </a>
 </h1>

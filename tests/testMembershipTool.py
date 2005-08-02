@@ -22,21 +22,20 @@ class TestMembershipTool(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
         self.membership = self.portal.portal_membership
-        self.membership.memberareaCreationFlag = 0
         
         # Nuke Administators and Reviewers groups added in 2.1a2 migrations
         # (and any other migrated-in groups) to avoid test confusion
         self.portal.portal_groups.removeGroups(self.portal.portal_groups.listGroupIds())
 
-    def testGetPersonalFolder(self):
-        # Should return the .personal folder
-        personal = getattr(self.folder, self.membership.personal_id, None)
-        self.failIfEqual(personal, None)
-        self.assertEqual(self.membership.getPersonalFolder(default_user), personal)
+    def addMember(self, username, fullname, email, roles, last_login_time):
+        self.membership.addMember(username, 'secret', roles, [])
+        member = self.membership.getMemberById(username)
+        member.setMemberProperties({'fullname': fullname, 'email': email,
+                                    'last_login_time': DateTime(last_login_time),})
 
-    def testGetPersonalFolderIfMissing(self):
-        # Should return None as the .personal folder is missing
-        self.folder._delObject(self.membership.personal_id)
+    def testNoMorePersonalFolder(self):
+        personal = getattr(self.folder, self.membership.personal_id, None)
+        self.assertEqual(personal, None)
         self.assertEqual(self.membership.getPersonalFolder(default_user), None)
 
     def testGetPersonalFolderIfNoHome(self):
@@ -124,7 +123,6 @@ class TestMembershipTool(PloneTestCase.PloneTestCase):
         # Password should be changed and user must not change group membership
         group2 = 'g2'
         groups = self.portal.portal_groups
-        groups.groupWorkspacesCreationFlag = 0
         groups.addGroup(group2, None, [], [])
         group = groups.getGroupById(group2)
         group.addMember(default_user)
@@ -138,7 +136,9 @@ class TestMembershipTool(PloneTestCase.PloneTestCase):
         # return None for unknown users,
         self.assertEqual(self.membership.getMemberById('foo'), None)
         # and return None for users defined outside of the portal.
-        self.assertEqual(self.membership.getMemberById(PloneTestCase.portal_owner), None)
+        ##self.assertEqual(self.membership.getMemberById(PloneTestCase.portal_owner), None)
+        # Since CMF 1.5.2 the membershiptool will search "up"
+        self.failIfEqual(self.membership.getMemberById(PloneTestCase.portal_owner), None)
 
     def testGetMemberByIdIsWrapped(self):
         member = self.membership.getMemberById(default_user)
@@ -285,12 +285,36 @@ class TestMembershipTool(PloneTestCase.PloneTestCase):
         self.failUnless('Reviewer' in roles)
         self.assertEqual(len(roles), 2)
 
+    def test_bug4333_delete_user_remove_memberdata(self):
+        # delete user should delete portal_memberdata
+        memberdata = self.portal.portal_memberdata
+        self.setRoles(['Manager'])
+        self.addMember('barney', 'Barney Rubble', 'barney@bedrock.com', ['Member'], '2002-01-01')
+        barney = self.membership.getMemberById('barney')
+        self.failUnlessEqual(barney.email, 'barney@bedrock.com')
+        del barney
+
+        self.membership.deleteMembers(['barney'])
+        md = memberdata._members
+        self.failIf(md.has_key('barney'))
+
+        # There is an _v_ variable that is killed at the end of each request
+        # which stores a temporary version of the member object, this is
+        # a problem in this test.  In fact, this test does not really
+        # demonstrate the bug, which is actually caused by the script not
+        # using the tool.
+        memberdata._v_temps = None
+
+        self.membership.addMember('barney', 'secret', ['Members'], [])
+        barney = self.membership.getMemberById('barney')
+        self.failIfEqual(barney.fullname, 'Barney Rubble')
+        self.failIfEqual(barney.email, 'barney@bedrock.com')
+
 
 class TestCreateMemberarea(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
         self.membership = self.portal.portal_membership
-        self.membership.memberareaCreationFlag = 0
         self.membership.addMember('user2', 'secret', ['Member'], [])
 
     def testCreateMemberarea(self):
@@ -299,16 +323,19 @@ class TestCreateMemberarea(PloneTestCase.PloneTestCase):
         self.membership.createMemberarea('user2')
         memberfolder = self.membership.getHomeFolder('user2')
         self.failUnless(memberfolder, 'createMemberarea failed to create memberarea')
+        # member area creation should be on by default
+        self.failUnless(self.membership.getMemberareaCreationFlag())
 
-    def testWrapUserCreatesMemberarea(self):
-        # This test serves to trip us up should this ever change
-        # Also see http://plone.org/collector/1697
-        members = self.membership.getMembersFolder()
-        user = self.portal.acl_users.getUserById('user2')
-        self.membership.memberareaCreationFlag = 1
-        self.membership.wrapUser(user)
-        memberfolder = self.membership.getHomeFolder('user2')
-        self.failUnless(memberfolder, 'wrapUser failed to create memberarea')
+##     def testWrapUserCreatesMemberarea(self):
+##         # This test serves to trip us up should this ever change
+##         # Also see http://plone.org/collector/1697
+##         members = self.membership.getMembersFolder()
+##         user = self.portal.acl_users.getUserById('user2')
+##         self.membership.memberareaCreationFlag = 1
+##         import pdb; pdb.set_trace()
+##         self.membership.wrapUser(user)
+##         memberfolder = self.membership.getHomeFolder('user2')
+##         self.failUnless(memberfolder, 'wrapUser failed to create memberarea')
 
     def testCreatMemberareaUsesCurrentUser(self):
         # Should create a memberarea for user2
@@ -349,12 +376,19 @@ class TestCreateMemberarea(PloneTestCase.PloneTestCase):
         memberfolder = self.membership.getHomeFolder('user2')
         self.assertEqual(memberfolder.getPortalTypeName(), 'Large Plone Folder')
 
+    def testCreateMemberareaWhenDisabled(self):
+        # Should not create a member area
+        self.membership.setMemberareaCreationFlag()
+        self.failIf(self.membership.getMemberareaCreationFlag())
+        self.membership.createMemberarea('user2')
+        memberfolder = self.membership.getHomeFolder('user2')
+        self.failIf(memberfolder, 'createMemberarea created memberarea despite flag')
+
 
 class TestMemberareaSetup(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
         self.membership = self.portal.portal_membership
-        self.membership.memberareaCreationFlag = 0
         self.membership.addMember('user2', 'secret', ['Member'], [])
         self.membership.createMemberarea('user2')
         self.home = self.membership.getHomeFolder('user2')
@@ -388,44 +422,12 @@ class TestMemberareaSetup(PloneTestCase.PloneTestCase):
         # Should not have an index_html document anymore
         self.failIf('index_html' in self.home.objectIds())
 
-    def testPersonalFolderExists(self):
-        # Should have a .personal folder
-        self.failUnless(hasattr(aq_base(self.home), self.membership.personal_id))
-
-    def testPersonalFolderIsPloneFolder(self):
-        # .personal should be a Plone folder
-        personal = self.home[self.membership.personal_id]
-        self.assertEqual(personal.meta_type, 'ATFolder')
-        self.assertEqual(personal.portal_type, 'Folder')
-
-    def testPersonalFolderIsOwnedByMember(self):
-        # .personal should be owned by member
-        personal = self.home[self.membership.personal_id]
-        try: owner_info = personal.getOwnerTuple()
-        except AttributeError:
-            owner_info = personal.getOwner(info=1)
-        self.assertEqual(owner_info[0], [PloneTestCase.portal_name, 'acl_users'])
-        self.assertEqual(owner_info[1], 'user2')
-        self.assertEqual(len(personal.get_local_roles()), 1)
-        self.assertEqual(personal.get_local_roles_for_userid('user2'), ('Owner',))
-
-    def testPersonalFolderHasDescription(self):
-        # .personal should have a description
-        personal = self.home[self.membership.personal_id]
-        self.failUnless(personal.Description())
-
-    def testPersonalFolderIsNotCataloged(self):
-        # .personal should not be cataloged
-        catalog = self.portal.portal_catalog
-        self.failIf(catalog(Title='Personal Items'))
-
 
 class TestSearchForMembers(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
         self.memberdata = self.portal.portal_memberdata
         self.membership = self.portal.portal_membership
-        self.membership.memberareaCreationFlag = 0
         # Don't let default_user disturb results
         self.portal.acl_users._doDelUsers([default_user])
         # Add some members

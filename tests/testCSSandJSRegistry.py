@@ -21,17 +21,21 @@ class TestCSSRegistry(PloneTestCase.PloneTestCase):
         self.failUnless(CSSTOOLNAME in self.portal.objectIds())
 
     def testDefaultCssIsInstalled(self):
-        installedStylesheetIds = [i['id'] for i in self.tool.getResources()]
+        installedStylesheetIds = self.tool.getResourceIds()
         expected = ['ploneCustom.css',
-                    'ploneAuthoring.css', 
-                    'plonePublic.css',
-                    'ploneBase.css',
-                    'ploneGenerated.css',
-                    'ploneMember.css',
-                    'plonePrint.css',
-                    'plonePresentation.css',
-                    'ploneRTL.css',
-                    'ploneMobile.css']
+                    'authoring.css', 
+                    'public.css',
+                    'base.css',
+                    'portlets.css',
+                    'deprecated.css',
+                    'generated.css',
+                    'member.css',
+                    'print.css',
+                    'presentation.css',
+                    'RTL.css',
+                    'mobile.css',
+                    'textSmall.css',
+                    'textLarge.css']
         for e in expected:
             self.failUnless(e in installedStylesheetIds, e)
 
@@ -45,9 +49,7 @@ class TestJSRegistry(PloneTestCase.PloneTestCase):
         self.failUnless(JSTOOLNAME in self.portal.objectIds())
 
     def testDefaultJSIsInstalled(self):
-        installedScriptIds = [i['id'] for i in self.tool.getResources()]
-        for s in installedScriptIds[:]:
-            installedScriptIds += self.tool.concatenatedresources.get(s)
+        installedScriptIds = self.tool.getResourceIds()
         expected = [
              'correctPREformatting.js',
              'plone_minwidth.js',
@@ -64,12 +66,14 @@ class TestJSRegistry(PloneTestCase.PloneTestCase):
              'styleswitcher.js',
              'livesearch.js',
              'table_sorter.js',
-             'plone_menu.js',
+             'dropdown.js',
+             'cssQuery.js',
              'cookie_functions.js',
              'nodeutilities.js',
              'plone_javascript_variables.js',
              'register_function.js', 
-             'formUnload.js']
+             'formUnload.js',
+             'formsubmithelpers.js']
         for e in expected:
             self.failUnless(e in installedScriptIds, e)
 

@@ -20,7 +20,9 @@
     <metal:javascript_head_slot fill-slot="javascript_head_slot">
         <script type="text/javascript" src="ecmaunit.js"> </script>
         <script type="text/javascript" src="unittestUtilities.js"> </script>
+        <script type="text/javascript" src="testHighlightsearchterms.js"> </script>
         <script type="text/javascript" src="testNodeutilities.js"> </script>
+        <script type="text/javascript" src="testBeforeUnload.js"> </script>
     </metal:javascript_head_slot>
     <metal:block fill-slot="top_slot"
                  tal:define="dummy python:request.set('disable_border',1)" />
@@ -38,10 +40,22 @@
       This page is the entry to the ECMAScript Unit Tests.
     </p>
 
-    <button onclick="runTestCases();">Run Testcases</button>
-    <button onclick="clearOutput();">Clear output</button>
-    <button onclick="showMarkup();">Show Markup</button>
-    <button onclick="showTestSuites();">Show Test Suites</button>
+    <div>
+        <button onclick="runTestCases();">Run Testcases</button>
+        <button onclick="clearOutput();">Clear output</button>
+        <button onclick="showMarkup();">Show Markup</button>
+        <button onclick="showFilteredTests();">Show Test Suites</button>
+    </div>
+    <div>
+        Suite filter: <input id="suite-filter"
+                             type="text"
+                             value=""
+                             tal:attributes="value request/suite_filter|nothing;" />
+        Test filter:  <input id="test-filter"
+                             type="text"
+                             value=""
+                             tal:attributes="value request/test_filter|nothing;" />
+    </div>
     <div id="testInfos"></div>
     <ul id="testResultsToc"></ul>
     <div id="testResultsPlaceHolder"></div>

@@ -13,6 +13,8 @@ from Products.CMFPlone.utils import _createObjectByType
 from Products.CMFPlone import transaction
 from Acquisition import aq_base
 
+from OFS.IOrderSupport import IOrderedContainer
+
 try: from zExceptions import NotFound
 except ImportError: NotFound = 'NotFound'
 from zExceptions import BadRequest
@@ -21,9 +23,7 @@ from zExceptions import BadRequest
 class TestPloneFolder(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
-        # Get rid of the .personal subfolder
         membership = self.portal.portal_membership
-        self.folder._delObject(membership.personal_id)
         # Create a bunch of subfolders
         self.folder.invokeFactory('Folder', id='sub1')
         self.folder.invokeFactory('Folder', id='sub2')
@@ -59,6 +59,11 @@ class TestPloneFolder(PloneTestCase.PloneTestCase):
     def testCanViewManagementScreen(self):
         # Make sure the ZMI management screen works
         self.folder.manage_main()
+
+    def testLargePloneFolderIsNotOrdered(self):
+        _createObjectByType('Large Plone Folder', self.folder, 'lpf')
+        lpf = self.folder.lpf
+        self.failIf(IOrderedContainer.isImplementedBy(lpf))
 
 
 class TestCheckIdAvailable(PloneTestCase.PloneTestCase):
@@ -122,9 +127,7 @@ class TestFolderListing(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
         self.workflow = self.portal.portal_workflow
-        # Get rid of the .personal subfolder
         membership = self.portal.portal_membership
-        self.folder._delObject(membership.personal_id)
         # Create some objects to list
         self.folder.invokeFactory('Folder', id='sub1')
         self.folder.invokeFactory('Folder', id='sub2')

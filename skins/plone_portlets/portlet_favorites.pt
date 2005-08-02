@@ -27,7 +27,7 @@
                     <a class="marker"
                        href=""
                        tal:attributes="href o/getRemoteUrl"
-                       tal:content="python:o.Title or o.getId">Favorite title</a>
+                       tal:content="o/pretty_title_or_id">Favorite title</a>
                     <br />
                 </tal:notag>
 

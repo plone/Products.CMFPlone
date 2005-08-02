@@ -15,90 +15,91 @@
                 portal_roles here/getGlobalPortalRoles;">
 
       <div id="content" class="documentEditable">
-	<!-- simulating views on the groups/user pages until we have real objects. -->
-	<ul class="contentViews">
-	  <li class="selected">
-	    <a href=""
-	       tal:attributes="href template/getId"
-	       i18n:translate="label_users">Users</a>
-	  </li>
-	  <li class="">
-	    <a href="prefs_groups_overview"
-	       i18n:translate="label_groups">Groups</a>
-	  </li>
-	</ul>
+    <!-- simulating views on the groups/user pages until we have real objects. -->
+    <ul class="contentViews">
+      <li class="selected">
+        <a href=""
+           tal:attributes="href template/getId"
+           i18n:translate="label_users">Users</a>
+      </li>
+      <li class="">
+        <a href="prefs_groups_overview"
+           i18n:translate="label_groups">Groups</a>
+      </li>
+    </ul>
 
-	<div class="contentActions">
-	  &nbsp;
-	</div>        
+    <div class="contentActions">
+      &nbsp;
+    </div>
 
-	<div class="documentContent" id="region-content">
-	  <a name="documentContent"></a>
+    <div class="documentContent" id="region-content">
+      <a name="documentContent"></a>
 
-	  <div metal:use-macro="here/global_statusmessage/macros/portal_message">
-	    Portal status message
-	  </div>
-	  
-	  <div class="configlet">
-	    <h1 i18n:translate="heading_users_overview">Users Overview</h1>
+      <div metal:use-macro="here/global_statusmessage/macros/portal_message">
+        Portal status message
+      </div>
 
-	    <a href=""
-	       class="link-parent"
-	       tal:attributes="href string: $portal_url/plone_control_panel"
-	       i18n:translate="label_up_to_plone_setup">
-	      Up to Site Setup
-	    </a>
+      <div class="configlet">
+        <h1 i18n:translate="heading_users_overview">Users Overview</h1>
 
-	    <p i18n:translate="description_user_management">
-	      Click the user's name to see and change the details of a
-	      specific user. Click the envelope icon to send a mail to
-	      the user.  You can also edit the e-mail addresses, and
-	      add/remove users.
-	    </p>
-	    <p i18n:translate="user_role_note">
-	      Note that roles listed here apply directly to a user.
-	      They do not reflect additional roles users may have due
-	      to group memberships.
-	    </p>
+        <a href=""
+           class="link-parent"
+           tal:attributes="href string: $portal_url/plone_control_panel"
+           i18n:translate="label_up_to_plone_setup">
+          Up to Site Setup
+        </a>
 
-	    <form action=""
-	          name="users_add"
-	          method="post"
-	          tal:attributes="action template/getId">
+        <p i18n:translate="description_user_management">
+          Click the user's name to see and change the details of a
+          specific user. Click the envelope icon to send a mail to
+          the user.  You can also edit the e-mail addresses, and
+          add/remove users.
+        </p>
+        <p i18n:translate="user_role_note">
+          Note that roles listed here apply directly to a user.
+          They do not reflect additional roles users may have due
+          to group memberships.
+        </p>
 
-	      <input class="standalone add"
+        <form action=""
+              name="users_add"
+              method="post"
+              tal:attributes="action template/getId">
+
+          <input class="standalone add"
                      tabindex=""
                      type="submit"
                      name="form.button.AddUser"
                      value="Add New User"
                      i18n:attributes="value label_add_new_user;"
                      tal:attributes="tabindex tabindex/next;"
-		/>
-	      <input type="hidden" name="form.submitted" value="1" />
-	    </form>
-        
+        />
+          <input type="hidden" name="form.submitted" value="1" />
+        </form>
+
         <form action=""
               name="users_search"
               method="post"
               tal:attributes="action template/getId"
               tal:define="searchstring request/searchstring | nothing;
-                          portal_users python:mtool.searchForMembers(name=searchstring);
+                          findAll python:'form.button.FindAll' in request.keys();
+                          portal_users python:(searchstring or findAll) and mtool.searchForMembers(name=searchstring) or [];
                           batch python:Batch(portal_users, b_size, int(b_start), orphan=1)">
-	      <input type="hidden" name="form.submitted" value="1" />
-              
-	      <table class="listing" summary="User Listing">
+          <input type="hidden" name="form.submitted" value="1" />
+
+          <table class="listing" summary="User Listing">
                 <tr>
-		  <th colspan="6" tal:attributes="colspan python:len(portal_roles)+4">
-		    <span tal:omit-tag="" i18n:translate="label_user_search">User Search</span>:
-		    <input tabindex=""
+          <th colspan="6" tal:attributes="colspan python:len(portal_roles)+4">
+            <span tal:omit-tag="" i18n:translate="label_user_search">User Search</span>:
+            <input tabindex=""
                            type="text"
                            name="searchstring"
                            value=""
                            tal:attributes="value searchstring;
                                            tabindex tabindex/next;"
-		      />
+              />
 
-		    <input type="submit"
+            <input type="submit"
                            class="searchButton"
                            name="form.button.Search"
                            value="Search"
@@ -106,101 +107,115 @@
                            i18n:attributes="value label_search;"
                            tal:attributes="tabindex tabindex/next;" />
 
+            <input type="submit"
+                           class="searchButton"
+                           name="form.button.FindAll"
+                           value="Show all"
+                           tabindex=""
+                           i18n:attributes="value label_showall;"
+                           tal:attributes="tabindex tabindex/next;" />
+
                     </th>
                 </tr>
                 <tal:block tal:condition="portal_users" >
-		  <tr>
-		    <th rowspan="2" i18n:translate="listingheader_user_name">User name</th>
-		    <th rowspan="2" i18n:translate="listingheader_email_address">E-mail Address</th>
-		    <th colspan="3" tal:attributes="colspan python:len(portal_roles)"
-		        i18n:translate="listingheader_roles">Roles</th>
-		    <th rowspan="2" i18n:translate="listingheader_reset_password">Reset Password</th>
-		    <th rowspan="2" i18n:translate="listingheader_remove_user">Remove user</th>
-		  </tr>
-		  <tr>
-		    <th tal:repeat="portal_role portal_roles" tal:content="portal_role" i18n:translate="">Role</th>
-		  </tr>
+          <tr>
+            <th rowspan="2" i18n:translate="listingheader_user_name">User name</th>
+            <th rowspan="2" i18n:translate="listingheader_email_address">E-mail Address</th>
+            <th colspan="3" tal:attributes="colspan python:len(portal_roles)"
+                i18n:translate="listingheader_roles">Roles</th>
+            <th rowspan="2" i18n:translate="listingheader_reset_password">Reset Password</th>
+            <th rowspan="2" i18n:translate="listingheader_remove_user">Remove user</th>
+          </tr>
+          <tr>
+            <th tal:repeat="portal_role portal_roles" tal:content="portal_role" i18n:translate="">Role</th>
+          </tr>
                 </tal:block>
-                
+
                 <tal:block repeat="this_user batch">
-		  <tr tal:define="oddrow repeat/this_user/odd;
-		                  userid this_user/getUserId;
+          <tr tal:define="oddrow repeat/this_user/odd;
+                          userid this_user/getUserId;
                                   fullname python: this_user.getProperty('fullname')"
-		      tal:attributes="class python:test(oddrow,'odd','even')">
+              tal:attributes="class python:test(oddrow,'odd','even')">
 
                     <td>
-		      <a href="prefs_user_details"
-			 tal:attributes="href string:${here/portal_memberdata/absolute_url}/prefs_user_details?userid=$userid">
-			<tal:block replace="structure portal/user.gif"/>&nbsp;<span tal:replace="this_user/getUserName">username</span>
-			(<span tal:replace="fullname">Full Name</span>)
-		      </a>
-		      <input type="hidden" name="users.id:records" tal:attributes="value userid" />
+              <a href="prefs_user_details"
+             tal:attributes="href string:${here/portal_memberdata/absolute_url}/prefs_user_details?userid=$userid">
+            <tal:block replace="structure portal/user.gif"/>&nbsp;<span tal:replace="this_user/getUserName">username</span>
+            (<span tal:replace="fullname">Full Name</span>)
+              </a>
+              <input type="hidden" name="users.id:records" tal:attributes="value userid" />
                     </td>
 
-		    <td tal:define="email python:this_user.getProperty('email')">
-		      <a href="#"
+            <td tal:define="email python:this_user.getProperty('email')">
+              <a href="#"
                          class="link-plain"
                          tal:attributes="href string:mailto:${email}"
                          title="Send a mail to this user"
                          i18n:attributes="title title_send_mail_to_user;"
                          ><tal:block replace="structure here/mail_icon.gif"/></a>
-		      <input style="margin:2px;"
+              <input style="margin:2px;"
                              type="text"
-			     size="15"
-			     name="users.email:records"
-			     value=""
-			     tal:attributes="value email" />
-		    </td>
-                    
-		    <td class="listingCheckbox"
-			tal:define="user_roles this_user/getUserRoles"
-			tal:repeat="portal_role portal_roles">
-		      <input type="checkbox"
-			     class="noborder"
-			     name="users.roles:list:records"
-			     value="Manager"
+                 size="15"
+                 name="users.email:records"
+                 value=""
+                 tal:attributes="value email" />
+            </td>
+
+            <td class="listingCheckbox"
+            tal:define="user_roles this_user/getUserRoles"
+            tal:repeat="portal_role portal_roles">
+              <input type="checkbox"
+                 class="noborder"
+                 name="users.roles:list:records"
+                 value="Manager"
                              tal:attributes="value portal_role;
                                              checked python:test(portal_role in user_roles, 'checked', nothing);" />
-		    </td>
+            </td>
 
-		    <td class="listingCheckbox">
-		      <input type="checkbox"
-			     class="noborder"
-			     name="users.resetpassword:records"
+            <td class="listingCheckbox">
+              <input type="checkbox"
+                 class="noborder"
+                 name="users.resetpassword:records"
                              value=""
                              tal:attributes="value userid" />
-		    </td>
-		    
-		    <td class="listingCheckbox">
-		      <input type="checkbox"
+            </td>
+
+            <td class="listingCheckbox">
+              <input type="checkbox"
                              class="noborder notify"
                              name="delete:list"
                              value=""
                              tal:attributes="value userid" />
-		    </td>
-		  </tr>
-		</tal:block>
+            </td>
+          </tr>
+        </tal:block>
                 <tr tal:condition="not:batch">
-		  <td i18n:translate="text_nomatches" style="text-align:center;">No matches</td>
+                    <td tal:condition="searchstring"
+                        i18n:translate="text_nomatches"
+                        style="text-align:center;">No matches</td>
+                    <td tal:condition="not:searchstring"
+                        class="discreet"
+                        i18n:translate="text_no_searchstring"
+                        style="text-align:center; font-size: 100%;">Enter a username to search for, or click 'Show All'</td>
                 </tr>
-	      </table>
+          </table>
 
-	      <div metal:use-macro="here/batch_macros/macros/navigation" />
+          <div metal:use-macro="here/batch_macros/macros/navigation" />
 
-	      <input class="context"
-		     tabindex=""
-		     type="submit"
-		     name="form.button.Modify"
-		     value="Apply Changes"
-		     i18n:attributes="value label_apply_changes;"
-		     tal:attributes="tabindex tabindex/next;"
-		     tal:condition="batch" 
-		/>
+          <input class="context"
+             tabindex=""
+             type="submit"
+             name="form.button.Modify"
+             value="Apply Changes"
+             i18n:attributes="value label_apply_changes;"
+             tal:attributes="tabindex tabindex/next;"
+             tal:condition="batch"
+        />
 
-	    </form>
+        </form>
 
-	  </div>
-	</div>
+      </div>
+    </div>
       </div>
     </div>
 

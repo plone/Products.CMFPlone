@@ -7,8 +7,9 @@
 <div id="portal-searchbox" metal:define-macro="quick_search">
     <form name="searchform"
           action="search"
-          onsubmit="return liveSearchSubmit();"
-          tal:attributes="action string:${portal_url}/search"
+          tal:define="livesearch site_properties/enable_livesearch"
+          tal:attributes="action string:${portal_url}/search;
+                          onsubmit python:test(livesearch==True,'return liveSearchSubmit()','')"
           style="white-space:nowrap">
 
         <label for="searchGadget" class="hiddenStructure"
@@ -22,14 +23,11 @@
                size="15"
                value=""
                title="Search Site"
-               accesskey="s"
-               i18n:attributes="accesskey accesskeys-search; title title_search_site;"
+               accesskey="4"
+               i18n:attributes="title title_search_site;"
                tal:attributes="value request/SearchableText|nothing;
                                tabindex tabindex/next"
                class="visibility:visible" />
-
-        <div class="LSResult" id="LSResult" style=""><div class="LSShadow" id="LSShadow"></div></div>
-        </div>
 
         <input class="searchButton"
                type="submit"
@@ -37,7 +35,21 @@
                value="Search"
                tal:attributes="tabindex tabindex/next"
                i18n:attributes="value label_search;" />
+
+        <div class="LSResult" id="LSResult" style=""><div class="LSShadow" id="LSShadow"></div></div>
+        </div>
     </form>
+
+    <div id="portal-advanced-search"
+         class="hiddenStructure">
+        <a href="#"
+           tal:attributes="href string:$portal_url/search_form"
+           i18n:translate="label_advanced_search"
+           accesskey="5">
+            Advanced Search&hellip;
+        </a>
+    </div>
+
 </div>
 
 </body>

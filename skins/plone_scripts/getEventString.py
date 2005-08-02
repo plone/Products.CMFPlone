@@ -1,8 +1,12 @@
 ##parameters=event
+from Products.CMFCore.utils import getToolByName
+
+plone_utils = getToolByName(context, 'plone_utils')
+encoding = plone_utils.getSiteEncoding()
 
 start = event['start'] and ':'.join(event['start'].split(':')[:2]) or ''
 end = event['end'] and ':'.join(event['end'].split(':')[:2]) or ''
-title = event['title'] or "something"
+title = unicode(event['title'], encoding) or 'event'
 
 if start and end:
     eventstring = "%s-%s %s" % (start, end, title)

@@ -8,31 +8,28 @@
 ##title=wrapper method around to use catalog to get folder contents
 ##
 
-catalog = context.portal_catalog.aq_inner
 mtool = context.portal_membership
 cur_path = '/'.join(context.getPhysicalPath())
 path = {}
 
 if not contentFilter:
-    contentFilter=context.REQUEST
+    contentFilter=dict(context.REQUEST)
+    # The form is what really matters
+    contentFilter.update(dict(getattr(context.REQUEST, 'form',{})))
+else:
+    contentFilter = dict(contentFilter)
 
 if not contentFilter.get('sort_on', None):
-    try:
-        contentFilter.set('sort_on', 'getObjPositionInParent')
-    except AttributeError:
-        contentFilter['sort_on'] = 'getObjPositionInParent'
+    contentFilter['sort_on'] = 'getObjPositionInParent'
 
 if contentFilter.get('path', None) is None:
     path['query'] = cur_path
     path['depth'] = 1
-    try:
-        contentFilter.set('path', path)
-    except AttributeError:
-        contentFilter['path'] = path
+    contentFilter['path'] = path
 
 show_inactive = mtool.checkPermission('Access inactive portal content', context)
 
-contents = catalog.queryCatalog(contentFilter, show_all=1, show_inactive=show_inactive)
+contents = context.queryCatalog(contentFilter, show_all=1, show_inactive=show_inactive)
 
 if full_objects:
     contents = [b.getObject() for b in contents]

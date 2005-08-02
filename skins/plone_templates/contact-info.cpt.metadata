@@ -1,0 +1,12 @@
+[default]
+title= Contact information
+
+[security]
+View=0:Anonymous
+
+[validators]
+validators=validate_site_feedback
+
+[actions]
+action.success=traverse_to:string:send_feedback_site
+action.failure=traverse_to:string:contact-info

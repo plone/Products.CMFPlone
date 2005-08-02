@@ -20,7 +20,7 @@
 <metal:block tal:define="dummy python:request.RESPONSE.setHeader('Content-Type', 'text/xml;;charset='+context.plone_utils.getSiteEncoding())" />
 
 <channel rdf:about="" tal:attributes="rdf:about request/URL" >
-  <title tal:content="context/Title">The title</title>
+  <title tal:content="context/pretty_title_or_id">The title</title>
   <link tal:content="context/portal_url">http://url.to.portal</link>
   
   <description>
@@ -53,7 +53,7 @@
 
 </channel>
 
-<tal:block repeat="brain python: objects">    <item tal:define="obj_item brain/getObject|nocall:brain">        <title tal:content="obj_item/Title">Title</title>        <link tal:content="obj_item/Identifier">Identifier</link>        <description tal:content="obj_item/Description">            Description        </description>        <dc:publisher tal:content="obj_item/Publisher">Publisher</dc:publisher>        <dc:creator tal:content="obj_item/Creator">Creator</dc:creator>        <dc:rights tal:content="obj_item/Rights">Rights</dc:rights>        <tal:block tal:repeat="item obj_item/Subject">            <dc:subject tal:content="item">Item</dc:subject>        </tal:block>        <dc:date tal:content="python: obj_item.modified().HTML4()">Modification date</dc:date>        <dc:type tal:content="obj_item/Type">Type</dc:type>    </item></tal:block>
+<tal:block repeat="brain python: objects">    <item tal:define="obj_item brain/getObject|nocall:brain">        <title tal:content="obj_item/pretty_title_or_id">Title</title>        <link tal:content="obj_item/Identifier">Identifier</link>        <description tal:content="obj_item/Description">            Description        </description>        <dc:publisher tal:content="obj_item/Publisher">Publisher</dc:publisher>        <dc:creator tal:content="obj_item/Creator">Creator</dc:creator>        <dc:rights tal:content="obj_item/Rights">Rights</dc:rights>        <tal:block tal:repeat="item obj_item/Subject">            <dc:subject tal:content="item">Item</dc:subject>        </tal:block>        <dc:date tal:content="python: obj_item.modified().HTML4()">Modification date</dc:date>        <dc:type tal:content="obj_item/Type">Type</dc:type>    </item></tal:block>
 
 </metal:block>
 </rdf:RDF>

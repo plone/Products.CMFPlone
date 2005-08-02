@@ -154,10 +154,16 @@ if (!window.beforeunload) (function() {
     window.onbeforeunload = new BeforeUnloadHandler().execute;
     
     registerPloneFunction(function() {
+        // terminate if we hit a non-compliant DOM implementation
+        if (!W3CDOM){return false};
+
         var tool = window.onbeforeunload && window.onbeforeunload.tool;
         var content = getContentArea();
         if (tool && content) {
-            tool.addForms(content);
+            var forms = cssQuery('form.enableUnloadProtection');
+            for (var i=0; i < forms.length; i++) {
+                tool.addForm(forms[i]);
+            }
         }
     });
 })();

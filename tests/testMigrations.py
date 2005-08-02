@@ -10,6 +10,7 @@ from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFCore.Expression import Expression
 from Products.CMFCore import CMFCorePermissions
+from Products.CMFPlone.PloneTool import AllowSendto
 
 from Products.CMFPlone.migrations.v2.two04_two05 import replaceFolderPropertiesWithEdit
 from Products.CMFPlone.migrations.v2.two04_two05 import interchangeEditAndSharing
@@ -65,6 +66,42 @@ from Products.CMFPlone.migrations.v2_1.betas import reorderStylesheets
 from Products.CMFPlone.migrations.v2_1.betas import allowOwnerToAccessInactiveContent
 from Products.CMFPlone.migrations.v2_1.betas import restrictNewsTopicToPublished
 from Products.CMFPlone.migrations.v2_1.betas import restrictEventsTopicToPublished
+from Products.CMFPlone.migrations.v2_1.betas import addCssQueryJS
+from Products.CMFPlone.migrations.v2_1.betas import exchangePloneMenuWithDropDown
+from Products.CMFPlone.migrations.v2_1.betas import removePlonePrefixFromStylesheets
+from Products.CMFPlone.migrations.v2_1.betas import addEnableLivesearchProperty
+from Products.CMFPlone.migrations.v2_1.betas import addIconForSearchSettingsConfiglet
+from Products.CMFPlone.migrations.v2_1.betas import sanitizeCookieCrumbler
+from Products.CMFPlone.migrations.v2_1.betas import convertNavTreeWhitelistToBlacklist
+from Products.CMFPlone.migrations.v2_1.betas import addIsDefaultPageIndex
+from Products.CMFPlone.migrations.v2_1.betas import addIsFolderishIndex
+from Products.CMFPlone.migrations.v2_1.betas import fixContentActionConditions
+from Products.CMFPlone.migrations.v2_1.betas import fixFolderlistingAction
+from Products.CMFPlone.migrations.v2_1.betas import fixFolderContentsActionAgain
+from Products.CMFPlone.migrations.v2_1.betas import changePortalActionCategory
+from Products.CMFPlone.migrations.v2_1.alphas import convertPloneFTIToCMFDynamicViewFTI
+from Products.CMFPlone.migrations.v2_1.betas import addMethodAliasesForPloneSite
+from Products.CMFPlone.migrations.v2_1.betas import updateParentMetaTypesNotToQuery
+from Products.CMFPlone.migrations.v2_1.betas import fixCutActionPermission
+from Products.CMFPlone.migrations.v2_1.betas import fixExtEditAction
+from Products.CMFPlone.migrations.v2_1.betas import changeMemberdataExtEditor
+from Products.CMFPlone.migrations.v2_1.betas import fixWorkflowStateTitles
+from Products.CMFPlone.migrations.v2_1.betas import changeSiteActions
+from Products.CMFPlone.migrations.v2_1.betas import removePloneSetupActionFromPortalMembership
+from Products.CMFPlone.migrations.v2_1.betas import fixViewMethodAliases
+from Products.CMFPlone.migrations.v2_1.betas import fixPortalEditAndSharingActions
+from Products.CMFPlone.migrations.v2_1.betas import addCMFUidTools
+from Products.CMFPlone.migrations.v2_1.betas import fixCSSMediaTypes
+from Products.CMFPlone.migrations.v2_1.betas import addWFStateFilteringToNavTree
+from Products.CMFPlone.migrations.v2_1.betas import addIconForNavigationSettingsConfiglet
+from Products.CMFPlone.migrations.v2_1.betas import addSearchAndNavigationConfiglets
+from Products.CMFPlone.migrations.v2_1.betas import setupAllowSendtoPermission
+from Products.CMFPlone.migrations.v2_1.betas import readdVisibleIdsMemberProperty
+from Products.CMFPlone.migrations.v2_1.betas import addCMFTypesToSearchBlackList
+from Products.CMFPlone.migrations.v2_1.betas import convertDefaultPageTypesToWhitelist
+from Products.CMFPlone.migrations.v2_1.betas import changeAvailableViewsForFolders
+
+from Products.CMFDynamicViewFTI.migrate import migrateFTI
 
 import types
 
@@ -79,7 +116,15 @@ class MigrationTest(PloneTestCase.PloneTestCase):
         actions = [x for x in actions if x.id != action_id]
         typeob._actions = tuple(actions)
 
-    def removeActionFromTool(self, action_id, action_provider='portal_actions'):
+    def addActionToType(self, type_name, action_id, category):
+        # Removes an action from a portal type
+        tool = getattr(self.portal, 'portal_types')
+        info = tool.getTypeInfo(type_name)
+        typeob = getattr(tool, info.getId())
+        typeob.addAction(action_id, action_id, '', '', '', category)
+
+    def removeActionFromTool(self, action_id,
+                                            action_provider='portal_actions'):
         # Removes an action from portal_actions
         tool = getattr(self.portal, action_provider)
         actions = tool.listActions()
@@ -94,9 +139,10 @@ class MigrationTest(PloneTestCase.PloneTestCase):
         except KeyError:
             pass # No icon associated
 
-    def addActionToTool(self, action_id, category):
+    def addActionToTool(self, action_id, category,
+                                            action_provider='portal_actions'):
         # Adds an action to portal_actions
-        tool = getattr(self.portal, 'portal_actions')
+        tool = getattr(self.portal, action_provider)
         tool.addAction(action_id, action_id, '', '', '', category)
 
     def removeSiteProperty(self, property_id):
@@ -106,12 +152,26 @@ class MigrationTest(PloneTestCase.PloneTestCase):
         if sheet.hasProperty(property_id):
             sheet.manage_delProperties([property_id])
 
+    def addSiteProperty(self, property_id):
+        # adds a site property to portal_properties
+        tool = getattr(self.portal, 'portal_properties')
+        sheet = getattr(tool, 'site_properties')
+        if not sheet.hasProperty(property_id):
+            sheet.manage_addProperty(property_id,[],'lines')
+
     def removeNavTreeProperty(self, property_id):
         # Removes a navtree property from portal_properties
         tool = getattr(self.portal, 'portal_properties')
         sheet = getattr(tool, 'navtree_properties')
         if sheet.hasProperty(property_id):
             sheet.manage_delProperties([property_id])
+
+    def addNavTreeProperty(self, property_id):
+        # adds a navtree property to portal_properties
+        tool = getattr(self.portal, 'portal_properties')
+        sheet = getattr(tool, 'navtree_properties')
+        if not sheet.hasProperty(property_id):
+            sheet.manage_addProperty(property_id,[],'lines')
 
     def removeMemberdataProperty(self, property_id):
         # Removes a memberdata property from portal_memberdata
@@ -174,6 +234,8 @@ class TestMigrations_v2_1(MigrationTest):
         self.groups = self.portal.portal_groups
         self.factory = self.portal.portal_factory
         self.portal_memberdata = self.portal.portal_memberdata
+        self.cc = self.portal.cookie_authentication
+        self.cp = self.portal.portal_controlpanel
 
     def testAddFullScreenAction(self):
         # Should add the full_screen action
@@ -671,20 +733,29 @@ class TestMigrations_v2_1(MigrationTest):
 
     def testAddIs_FolderishMetadata(self):
         # Should add is_folderish to schema
-        self.catalog.delColumn('is_folderish')
+        try:
+            self.catalog.delColumn('is_folderish')
+        except (AttributeError, ValueError):
+            pass
         addIs_FolderishMetadata(self.portal, [])
         self.failUnless('is_folderish' in self.catalog.schema())
 
     def testAddIs_FolderishMetadataTwice(self):
         # Should not fail if migrated again
-        self.catalog.delColumn('is_folderish')
+        try:
+            self.catalog.delColumn('is_folderish')
+        except (AttributeError, ValueError):
+            pass
         addIs_FolderishMetadata(self.portal, [])
         addIs_FolderishMetadata(self.portal, [])
         self.failUnless('is_folderish' in self.catalog.schema())
 
     def testAddIs_FolderishMetadataNoCatalog(self):
         # Should not fail if catalog is missing
-        self.portal._delObject('portal_catalog')
+        try:
+            self.portal._delObject('portal_catalog')
+        except (AttributeError, ValueError):
+            pass
         addIs_FolderishMetadata(self.portal, [])
 
     def testAddEditContentActions(self):
@@ -697,7 +768,7 @@ class TestMigrations_v2_1(MigrationTest):
         for a in editActions:
             self.failUnless(a in actions)
 
-    def testAddEditcontentActionsTwice(self):
+    def testAddEditContentActionsTwice(self):
         # Should add the edit-content actions
         editActions = ('cut', 'copy', 'paste', 'delete', 'batch')
         for a in editActions:
@@ -708,7 +779,7 @@ class TestMigrations_v2_1(MigrationTest):
         for a in editActions:
             self.failUnless(a in actions)
 
-    def testAddEditcontentActionsNoTool(self):
+    def testAddEditContentActionsNoTool(self):
         # Should not fail if portal_actions is missing
         self.portal._delObject('portal_actions')
         addEditContentActions(self.portal, [])
@@ -1156,7 +1227,7 @@ class TestMigrations_v2_1(MigrationTest):
         self.assertEqual(actions[0].title, 'Plone Setup')
         # Modify
         changePloneSetupActionToSiteSetup(self.portal, [])
-        actions = [x for x in self.actions.listActions() if x.id == 'plone_setup']
+        actions = [x for x in self.actions.listActions() if x.id == 'plone_setup' and x.category == 'user']
         self.assertEqual(len(actions),1)
         action = actions[0]
         self.assertEqual(action.title, 'Site Setup')
@@ -1165,7 +1236,7 @@ class TestMigrations_v2_1(MigrationTest):
         # The migration should work if performed twice
         changePloneSetupActionToSiteSetup(self.portal, [])
         changePloneSetupActionToSiteSetup(self.portal, [])
-        actions = [x for x in self.actions.listActions() if x.id == 'plone_setup']
+        actions = [x for x in self.actions.listActions() if x.id == 'plone_setup' and x.category == 'user']
         self.assertEqual(len(actions),1)
         action = actions[0]
         self.assertEqual(action.title, 'Site Setup')
@@ -1174,7 +1245,7 @@ class TestMigrations_v2_1(MigrationTest):
         # The migration should add a new action if the action is missing
         self.removeActionFromTool('plone_setup')
         changePloneSetupActionToSiteSetup(self.portal, [])
-        actions = [x for x in self.actions.listActions() if x.id == 'plone_setup']
+        actions = [x for x in self.actions.listActions() if x.id == 'plone_setup' and x.category == 'user']
         self.assertEqual(len(actions),1)
         action = actions[0]
         self.assertEqual(action.title, 'Site Setup')
@@ -1254,7 +1325,7 @@ class TestMigrations_v2_1(MigrationTest):
         # The migration should work if the tool is missing
         self.portal._delObject('portal_actions')
         fixObjectPasteActionForDefaultPages(self.portal, [])
-        
+
     def testFixBatchActionToggle(self):
         editActions = ('batch', 'nobatch')
         for a in editActions:
@@ -1277,7 +1348,7 @@ class TestMigrations_v2_1(MigrationTest):
     def testFixBatchActionToggleNoTool(self):
         self.portal._delObject('portal_actions')
         fixBatchActionToggle(self.portal, [])
-        
+
     def testFixMyFolderAction(self):
         self.removeActionFromTool('mystuff', 'portal_membership')
         fixMyFolderAction(self.portal, [])
@@ -1295,23 +1366,92 @@ class TestMigrations_v2_1(MigrationTest):
             if a[0] == 'mystuff':
                 self.failIf('folder_contents' in a[1])
 
-    def testFixBatchActionToggleNoTool(self):
+    def testFixMyFolderActionNoTool(self):
         self.portal._delObject('portal_membership')
         fixMyFolderAction(self.portal, [])
 
-    def testReorderStylesheets(self):
-        """ ploneRTL should be right above ploneCustom.css
-
-        By default, ploneCustom.css is the bottom one, so ploneRTL.css
-        should be in spot number 2. Also, member.css must be at the
-        top of the list
-        """
+    def testCSSRegistryMigration(self):
         cssreg = self.portal.portal_css
-        stylesheets = list(cssreg.getResources())
-        stylesheet_ids = [ item.get('id') for item in stylesheets ]
+        self.failIf(hasattr(cssreg, 'stylesheets'))
+        self.failIf(hasattr(cssreg, 'cookedstylesheets'))
+        self.failIf(hasattr(cssreg, 'concatenatedstylesheets'))
+        self.failUnless(hasattr(cssreg, 'resources'))
+        self.failUnless(hasattr(cssreg, 'cookedresources'))
+        self.failUnless(hasattr(cssreg, 'concatenatedresources'))
+
+    def testJSRegistryMigration(self):
+        jsreg = self.portal.portal_javascripts
+        self.failIf(hasattr(jsreg, 'scripts'))
+        self.failIf(hasattr(jsreg, 'cookedscripts'))
+        self.failIf(hasattr(jsreg, 'concatenatedscripts'))
+        self.failUnless(hasattr(jsreg, 'resources'))
+        self.failUnless(hasattr(jsreg, 'cookedresources'))
+        self.failUnless(hasattr(jsreg, 'concatenatedresources'))
+
+    def testReorderStylesheets(self):
+        # ploneRTL should be right above ploneCustom.css
+        #
+        # By default, ploneCustom.css is the bottom one, so ploneRTL.css
+        # should be in spot number 2. Also, member.css must be at the
+        # top of the list
+        cssreg = self.portal.portal_css
+        stylesheet_ids = cssreg.getResourceIds()
         self.assertEquals(stylesheet_ids[-1], 'ploneCustom.css')
-        self.assertEquals(stylesheet_ids[-2], 'ploneRTL.css')
-        self.assertEquals(stylesheet_ids[0], 'ploneMember.css')
+        self.assertEquals(stylesheet_ids[-2], 'RTL.css')
+        self.assertEquals(stylesheet_ids[0], 'member.css')
+
+    def testAddedFontSizeStylesheets(self):
+        cssreg = self.portal.portal_css
+        stylesheet_ids = cssreg.getResourceIds()
+        self.failUnless('textSmall.css' in stylesheet_ids)
+        self.failUnless('textLarge.css' in stylesheet_ids)
+
+    def testaddCssQueryJS(self):
+        jsreg = self.portal.portal_javascripts
+        script_ids = jsreg.getResourceIds()
+        self.failUnless('cssQuery.js' in script_ids)
+
+    def testExchangePloneMenuWithDropDown(self):
+        jsreg = self.portal.portal_javascripts
+        script_ids = jsreg.getResourceIds()
+        self.failIf('plone_menu.js' in script_ids)
+        self.failUnless('dropdown.js' in script_ids)
+        self.failUnless('cssQuery.js' in script_ids)
+
+    def testRemovePlonePrefixFromStylesheets(self):
+        cssreg = self.portal.portal_css
+        stylesheet_ids = cssreg.getResourceIds()
+        self.failIf('ploneAuthoring.css' in stylesheet_ids)
+        self.failIf('ploneBase.css' in stylesheet_ids)
+        self.failIf('ploneColumns.css' in stylesheet_ids)
+        self.failIf('ploneDeprecated.css' in stylesheet_ids)
+        self.failIf('ploneGenerated.css' in stylesheet_ids)
+        self.failIf('ploneIEFixes.css' in stylesheet_ids)
+        self.failIf('ploneMember.css' in stylesheet_ids)
+        self.failIf('ploneMobile.css' in stylesheet_ids)
+        self.failIf('ploneNS4.css' in stylesheet_ids)
+        self.failIf('plonePresentation.css' in stylesheet_ids)
+        self.failIf('plonePrint.css' in stylesheet_ids)
+        self.failIf('plonePublic.css' in stylesheet_ids)
+        self.failIf('ploneRTL.css' in stylesheet_ids)
+        self.failIf('ploneTextHuge.css' in stylesheet_ids)
+        self.failIf('ploneTextLarge.css' in stylesheet_ids)
+        self.failIf('ploneTextSmall.css' in stylesheet_ids)
+        self.failUnless('authoring.css' in stylesheet_ids)
+        self.failUnless('base.css' in stylesheet_ids)
+        self.failUnless('columns.css' in stylesheet_ids)
+        self.failUnless('generated.css' in stylesheet_ids)
+        self.failUnless('member.css' in stylesheet_ids)
+        self.failUnless('mobile.css' in stylesheet_ids)
+        self.failUnless('presentation.css' in stylesheet_ids)
+        self.failUnless('print.css' in stylesheet_ids)
+        self.failUnless('public.css' in stylesheet_ids)
+        self.failUnless('RTL.css' in stylesheet_ids)
+        self.failUnless('textLarge.css' in stylesheet_ids)
+        self.failUnless('textSmall.css' in stylesheet_ids)
+        # the only one which doesn't get renamed, because there is special
+        # logic in ResourceRegistries
+        self.failUnless('ploneCustom.css' in stylesheet_ids)
 
     def testAllowOwnerToAccessInactiveContent(self):
         # Should grant the "Access inactive ..." permission to owner
@@ -1373,7 +1513,7 @@ class TestMigrations_v2_1(MigrationTest):
         self.assertEqual(cur_perms1,cur_perms2)
 
     def testRestrictNewsTopicToPublished(self):
-        #Should add a new 'published' criterion to the News topic
+        # Should add a new 'published' criterion to the News topic
         topic = self.portal.news.news_topic
         topic.deleteCriterion('crit__review_state_ATSimpleStringCriterion')
         self.assertRaises(AttributeError, topic.getCriterion,
@@ -1382,7 +1522,7 @@ class TestMigrations_v2_1(MigrationTest):
         self.failUnless(topic.getCriterion('crit__review_state_ATSimpleStringCriterion'))
 
     def testRestrictNewsTopicToPublishedTwice(self):
-        #Should not fail if done twice
+        # Should not fail if done twice
         topic = self.portal.news.news_topic
         topic.deleteCriterion('crit__review_state_ATSimpleStringCriterion')
         restrictNewsTopicToPublished(self.portal, [])
@@ -1390,13 +1530,13 @@ class TestMigrations_v2_1(MigrationTest):
         self.failUnless(topic.getCriterion('crit__review_state_ATSimpleStringCriterion'))
 
     def testRestrictNewsTopicToPublishedNoTopic(self):
-        #Should not do anything unless ATCT is installed
+        # Should not do anything unless ATCT is installed
         news = self.portal.news
         news._delObject('news_topic')
         restrictNewsTopicToPublished(self.portal, [])
 
     def testRestrictEventsTopicToPublished(self):
-        #Should add a new 'published' criterion to the News topic
+        # Should add a new 'published' criterion to the News topic
         topic = self.portal.events.events_topic
         topic.deleteCriterion('crit__review_state_ATSimpleStringCriterion')
         self.assertRaises(AttributeError, topic.getCriterion,
@@ -1405,7 +1545,7 @@ class TestMigrations_v2_1(MigrationTest):
         self.failUnless(topic.getCriterion('crit__review_state_ATSimpleStringCriterion'))
 
     def testRestrictEventsTopicToPublishedTwice(self):
-        #Should not fail if done twice
+        # Should not fail if done twice
         topic = self.portal.events.events_topic
         topic.deleteCriterion('crit__review_state_ATSimpleStringCriterion')
         restrictEventsTopicToPublished(self.portal, [])
@@ -1413,11 +1553,970 @@ class TestMigrations_v2_1(MigrationTest):
         self.failUnless(topic.getCriterion('crit__review_state_ATSimpleStringCriterion'))
 
     def testRestrictEventsTopicToPublishedNoTopic(self):
-        #Should not do anything unless ATCT is installed
+        # Should not do anything unless ATCT is installed
         news = self.portal.events
         news._delObject('events_topic')
         restrictEventsTopicToPublished(self.portal, [])
 
+    def testAddEnableLivesearchProperty(self):
+        # Should add the enable_livesearch site property
+        self.removeSiteProperty('enable_livesearch')
+        addEnableLivesearchProperty(self.portal, [])
+        self.failUnless(self.properties.site_properties.hasProperty('enable_livesearch'))
+
+    def testAddEnableLivesearchPropertyTwice(self):
+        # Should not fail if migrated again
+        self.removeSiteProperty('enable_livesearch')
+        addEnableLivesearchProperty(self.portal, [])
+        addEnableLivesearchProperty(self.portal, [])
+        self.failUnless(self.properties.site_properties.hasProperty('enable_livesearch'))
+
+    def testAddEnableLivesearchPropertyNoTool(self):
+        # Should not fail if portal_properties is missing
+        self.portal._delObject('portal_properties')
+        addEnableLivesearchProperty(self.portal, [])
+
+    def testAddIconForSearchSettingsConfiglet(self):
+        # Should add the full_screen action icon
+        self.removeActionIconFromTool('SearchSettings')
+        addIconForSearchSettingsConfiglet(self.portal, [])
+        self.failUnless('SearchSettings' in [x.getActionId() for x in self.icons.listActionIcons()])
+
+    def testAddIconForSearchSettingsConfigletTwice(self):
+        # Should not fail if migrated again
+        self.removeActionIconFromTool('SearchSettings')
+        addIconForSearchSettingsConfiglet(self.portal, [])
+        addIconForSearchSettingsConfiglet(self.portal, [])
+        self.failUnless('SearchSettings' in [x.getActionId() for x in self.icons.listActionIcons()])
+
+    def testAddIconForSearchSettingsConfigletNoTool(self):
+        # Should not fail if portal_actionicons is missing
+        self.portal._delObject('portal_actionicons')
+        addIconForSearchSettingsConfiglet(self.portal, [])
+
+    def testSanitizeCookieCrumbler(self):
+        # Should set CC properties
+        self.cc.manage_changeProperties(unauth_page='', auto_login_page='')
+        sanitizeCookieCrumbler(self.portal, [])
+        self.assertEqual(self.cc.unauth_page, 'insufficient_privileges')
+        self.assertEqual(self.cc.auto_login_page, 'login_form')
+
+    def testSanitizeCookieCrumblerTwice(self):
+        # Should not fail if migrated again
+        self.cc.manage_changeProperties(unauth_page='', auto_login_page='')
+        sanitizeCookieCrumbler(self.portal, [])
+        sanitizeCookieCrumbler(self.portal, [])
+        self.assertEqual(self.cc.unauth_page, 'insufficient_privileges')
+        self.assertEqual(self.cc.auto_login_page, 'login_form')
+
+    def testSanitizeCookieCrumblerNoTool(self):
+        # Should not fail if cookie_authentication is missing
+        self.portal._delObject('cookie_authentication')
+        sanitizeCookieCrumbler(self.portal, [])
+
+    def testConvertNavTreeWhitelistToBlacklist(self):
+        # Should add navtree_property metaTypesToList and remove typesNotToList
+        # and typesToList
+        self.removeNavTreeProperty('metaTypesNotToList')
+        self.addNavTreeProperty('typesToList')
+        self.addNavTreeProperty('typesNotToList')
+        self.failIf(self.properties.navtree_properties.hasProperty('metaTypesNotToList'))
+        self.failUnless(self.properties.navtree_properties.hasProperty('typesNotToList'))
+        self.failUnless(self.properties.navtree_properties.hasProperty('typesToList'))
+        convertNavTreeWhitelistToBlacklist(self.portal, [])
+        self.failUnless(self.properties.navtree_properties.hasProperty('metaTypesNotToList'))
+        self.failIf(self.properties.navtree_properties.hasProperty('typesToList'))
+        self.failIf(self.properties.navtree_properties.hasProperty('typesNotToList'))
+
+    def testConvertNavTreeWhitelistToBlacklistTwice(self):
+        # Should not fail if migrated again, and should yield the same value
+        self.removeNavTreeProperty('metaTypesNotToList')
+        self.addNavTreeProperty('typesToList')
+        self.addNavTreeProperty('typesNotToList')
+        convertNavTreeWhitelistToBlacklist(self.portal, [])
+        first_list = list(self.properties.navtree_properties.getProperty('metaTypesNotToList'))
+        convertNavTreeWhitelistToBlacklist(self.portal, [])
+        second_list= list(self.properties.navtree_properties.getProperty('metaTypesNotToList'))
+        first_list.sort()
+        second_list.sort()
+        self.assertEqual(second_list, first_list)
+        self.failIf(self.properties.navtree_properties.hasProperty('typesToList'))
+        self.failIf(self.properties.navtree_properties.hasProperty('typesNotToList'))
+
+    def testConvertNavTreeWhitelistToBlacklistUpdatesExisting(self):
+        # Should add new not searchable types to existing blacklist
+        self.properties.navtree_properties.manage_changeProperties(metaTypesNotToList=('nonsense1','nonsense2'))
+        convertNavTreeWhitelistToBlacklist(self.portal, [])
+        # Check if we preserved the original values
+        self.failUnless('nonsense1' in self.properties.navtree_properties.getProperty('metaTypesNotToList'))
+        self.failUnless('nonsense2' in self.properties.navtree_properties.getProperty('metaTypesNotToList'))
+        # Check if we added the new values
+        self.failUnless('ATCurrentAuthorCriterion' in self.properties.navtree_properties.getProperty('metaTypesNotToList'))
+
+    def testConvertNavTreeWhitelistToBlacklistNoTool(self):
+        # Should not fail if portal_properties is missing
+        self.portal._delObject('portal_properties')
+        convertNavTreeWhitelistToBlacklist(self.portal, [])
+
+    def testConvertNavTreeWhitelistToBlacklistNoSheet(self):
+        # Should not fail if navtree_properties is missing
+        self.properties._delObject('navtree_properties')
+        convertNavTreeWhitelistToBlacklist(self.portal, [])
+
+    def testAddIsDefaultPageIndex(self):
+        # Should add IsDefaultPage index
+        self.catalog.delIndex('is_default_page')
+        addIsDefaultPageIndex(self.portal, [])
+        index = self.catalog._catalog.getIndex('is_default_page')
+        self.assertEqual(index.__class__.__name__, 'FieldIndex')
+
+    def testAddIsDefaultPageIndexTwice(self):
+        # Should not fail if migrated again
+        self.catalog.delIndex('is_default_page')
+        addIsDefaultPageIndex(self.portal, [])
+        addIsDefaultPageIndex(self.portal, [])
+        index = self.catalog._catalog.getIndex('is_default_page')
+        self.assertEqual(index.__class__.__name__, 'FieldIndex')
+
+    def testAddIsDefaultPageIndexNoCatalog(self):
+        # Should not fail if portal_catalog is missing
+        self.portal._delObject('portal_catalog')
+        addIsDefaultPageIndex(self.portal, [])
+
+    def testAddIsFolderishIndex(self):
+        # Should add IsDefaultPage index
+        self.catalog.delIndex('is_folderish')
+        self.catalog.addColumn('is_folderish')
+        addIsFolderishIndex(self.portal, [])
+        index = self.catalog._catalog.getIndex('is_folderish')
+        self.assertEqual(index.__class__.__name__, 'FieldIndex')
+        self.failIf('is_folderish' in self.catalog.schema())
+
+    def testAddIsFolderishIndexTwice(self):
+        # Should not fail if migrated again
+        self.catalog.delIndex('is_folderish')
+        self.catalog.addColumn('is_folderish')
+        addIsFolderishIndex(self.portal, [])
+        addIsFolderishIndex(self.portal, [])
+        index = self.catalog._catalog.getIndex('is_folderish')
+        self.assertEqual(index.__class__.__name__, 'FieldIndex')
+
+    def testAddIsFolderishIndexNoCatalog(self):
+        # Should not fail if portal_catalog is missing
+        self.portal._delObject('portal_catalog')
+        addIsFolderishIndex(self.portal, [])
+
+    def testFixContentActionConditions(self):
+        editActions = ('cut', 'paste', 'delete')
+        for a in editActions:
+            self.removeActionFromTool(a)
+        fixContentActionConditions(self.portal, [])
+        actions = [x.id for x in self.actions.listActions()]
+        for a in editActions:
+            self.failUnless(a in actions)
+
+    def testFixContentActionConditionsTwice(self):
+        editActions = ('cut', 'paste', 'delete')
+        for a in editActions:
+            self.removeActionFromTool(a)
+        fixContentActionConditions(self.portal, [])
+        fixContentActionConditions(self.portal, [])
+        actions = [x.id for x in self.actions.listActions()]
+        for a in editActions:
+            self.failUnless(a in actions)
+
+    def testFixContentActionConditionsNoTool(self):
+        self.portal._delObject('portal_actions')
+        fixContentActionConditions(self.portal, [])
+
+    def testFixFolderlistingAction(self):
+        fixFolderlistingAction(self.portal, [])
+        self.assertEqual(self.portal.portal_types['Plone Site'].getActionById('folderlisting'), 'view')
+        
+    def testFixFolderlistingActionTwice(self):
+        fixFolderlistingAction(self.portal, [])
+        fixFolderlistingAction(self.portal, [])
+        self.assertEqual(self.portal.portal_types['Plone Site'].getActionById('folderlisting'), 'view')
+        
+    def testFixFolderlistingActionNoTool(self):
+        self.portal._delObject('portal_types')
+        fixFolderlistingAction(self.portal, [])
+
+    def testFixFolderContentsActionAgain(self):
+        removeActions = ('batch', 'nobatch')
+        editActions = ('folderContents',)
+        for a in removeActions:
+            self.addActionToTool(a,'batch')
+        for a in editActions:
+            self.removeActionFromTool(a)
+        fixFolderContentsActionAgain(self.portal, [])
+        actions = [x.id for x in self.actions.listActions()]
+        for a in editActions:
+            self.failUnless(a in actions)
+        for a in removeActions:
+            self.failIf(a in actions)
+
+    def testFixFolderContentsActionAgainTwice(self):
+        removeActions = ('batch', 'nobatch')
+        editActions = ('folderContents',)
+        for a in removeActions:
+            self.addActionToTool(a,'batch')
+        for a in editActions:
+            self.removeActionFromTool(a)
+        fixFolderContentsActionAgain(self.portal, [])
+        fixFolderContentsActionAgain(self.portal, [])
+        actions = [x.id for x in self.actions.listActions()]
+        for a in editActions:
+            self.failUnless(a in actions)
+        for a in removeActions:
+            self.failIf(a in actions)
+
+    def testFixFolderContentsAgainWithExistingAction(self):
+        editActions = ('folderContents',)
+        for a in editActions:
+            self.removeActionFromTool(a)
+            self.addActionToTool(a,'folder')
+        fixFolderContentsActionAgain(self.portal, [])
+        actions = [(x.id,x.category) for x in self.actions.listActions()]
+        for a in editActions:
+            self.failUnless((a,'object') in actions)
+            self.failIf((a,'folder') in actions)
+
+    def testFixFolderContentsActionAgainNoTool(self):
+        self.portal._delObject('portal_actions')
+        fixFolderContentsActionAgain(self.portal, [])
+
+    def testChangePortalActionCategory(self):
+        # This should change the 'view' and 'edit' actions for the Plone Site
+        # FTI to have category 'object'
+        edit_actions = ('view','edit')
+        for action in edit_actions:
+            self.removeActionFromType('Plone Site', action)
+            self.addActionToType('Plone Site', action, 'folder')
+
+        changePortalActionCategory(self.portal, [])
+        fti = getattr(self.portal.portal_types, 'Plone Site')
+        actions = [(x.getId(), x.category) for x in fti.listActions()]
+        for a in edit_actions:
+            self.failIf((a,'folder') in actions)
+            self.failUnless((a,'object') in actions)
+
+    def testChangePortalActionCategoryTwice(self):
+        # The migration should work if performed twice
+        edit_actions = ('view','edit')
+        for action in edit_actions:
+            self.removeActionFromType('Plone Site', action)
+            self.addActionToType('Plone Site', action, 'folder')
+
+        changePortalActionCategory(self.portal, [])
+        changePortalActionCategory(self.portal, [])
+        fti = getattr(self.portal.portal_types, 'Plone Site')
+        actions = [(x.getId(), x.category) for x in fti.listActions()]
+        for a in edit_actions:
+            self.failIf((a,'folder') in actions)
+            # Should only have one action
+            self.assertEqual(actions.count((a,'object')), 1)
+
+    def testChangePortalActionCategoryNoAction(self):
+        # The migration should not fail if the action is missing
+        edit_actions = ('view','edit')
+        for action in edit_actions:
+            self.removeActionFromType('Plone Site', action)
+        changePortalActionCategory(self.portal, [])
+
+    def testChangePortalActionCategoryNoFTI(self):
+        # The migration should work if the FTI is missing
+        self.portal.portal_types._delObject('Plone Site')
+        changePortalActionCategory(self.portal, [])
+
+    def testChangePortalActionCategoryNoTool(self):
+        # The migration should work if the tool is missing
+        self.portal._delObject('portal_types')
+        changePortalActionCategory(self.portal, [])
+
+    def testConvertPloneFTIToCMFDynamicViewFTI(self):
+        ttool = self.portal.portal_types
+        name = [t[0] for t in ttool.listDefaultTypeInformation()
+                                if t[1].get('id','')=='Plone Root'][0]
+        # Convert to old-school FTI
+        migrateFTI(self.portal, 'Plone Site', name,
+                                            'Factory-based Type Information')
+        self.assertEqual(getattr(ttool, 'Plone Site').meta_type,
+                                            'Factory-based Type Information')
+        # Convert back
+        convertPloneFTIToCMFDynamicViewFTI(self.portal, [])
+        self.assertEqual(self.portal.getTypeInfo().meta_type,
+                        'Factory-based Type Information with dynamic views')
+
+    def testConvertPloneFTIToCMFDynamicViewFTIConvertsViews(self):
+        ttool = self.portal.portal_types
+        name = [t[0] for t in ttool.listDefaultTypeInformation()
+                                if t[1].get('id','')=='Plone Root'][0]
+        # Convert to old-school FTI
+        migrateFTI(self.portal, 'Plone Site', name,
+                                            'Factory-based Type Information')
+        self.assertEqual(getattr(ttool, 'Plone Site').meta_type,
+                                            'Factory-based Type Information')
+        # Set old style PropertyManaged default page/layout
+        self.portal._selected_default_page = 'blah'
+        # Convert back
+        convertPloneFTIToCMFDynamicViewFTI(self.portal, [])
+        # check layout transfer
+        self.assertEqual(self.portal.getDefaultPage(), 'blah')
+        self.assertEqual(self.portal.getAvailableLayouts(), [('folder_listing', 'Standard listing'), ('news_listing', 'News')])
+        self.assertEqual(self.portal.getLayout(), 'folder_listing')
+
+    def testConvertPloneFTIToCMFDynamicViewFTITwice(self):
+        ttool = self.portal.portal_types
+        name = [t[0] for t in ttool.listDefaultTypeInformation()
+                                if t[1].get('id','')=='Plone Root'][0]
+        # Convert to old-school FTI
+        migrateFTI(self.portal, 'Plone Site', name,
+                                            'Factory-based Type Information')
+        # Convert back
+        convertPloneFTIToCMFDynamicViewFTI(self.portal, [])
+        convertPloneFTIToCMFDynamicViewFTI(self.portal, [])
+        self.assertEqual(self.portal.getTypeInfo().meta_type,
+                        'Factory-based Type Information with dynamic views')
+
+    def testConvertPloneFTIToCMFDynamicViewFTINoFTI(self):
+        self.portal.portal_types._delObject('Plone Site')
+        # Convert back
+        convertPloneFTIToCMFDynamicViewFTI(self.portal, [])
+
+    def testConvertPloneFTIToCMFDynamicViewFTINoTool(self):
+        self.portal._delObject('portal_types')
+        # Convert back
+        convertPloneFTIToCMFDynamicViewFTI(self.portal, [])
+
+    def testAddMethodAliasesForPloneSite(self):
+        # Should add method aliases to the Plone Site FTI
+        expected_aliases = {
+                '(Default)'  : '(dynamic view)',
+                'view'       : '(selected layout)',
+                'index.html' : '(dynamic view)',
+                'edit'       : 'folder_edit_form',
+                'sharing'    : 'folder_localrole_form',
+              }
+        fti = self.portal.getTypeInfo()
+        fti.setMethodAliases({})
+        addMethodAliasesForPloneSite(self.portal, [])
+        fti = self.portal.getTypeInfo()
+        aliases = fti.getMethodAliases()
+        self.assertEqual(aliases, expected_aliases)
+
+    def testAddMethodAliasesForPloneSiteTwice(self):
+        # Should not fail if done twice
+        expected_aliases = {
+                '(Default)'  : '(dynamic view)',
+                'view'       : '(selected layout)',
+                'index.html' : '(dynamic view)',
+                'edit'       : 'folder_edit_form',
+                'sharing'    : 'folder_localrole_form',
+              }
+        fti = self.portal.getTypeInfo()
+        fti.setMethodAliases({})
+        addMethodAliasesForPloneSite(self.portal, [])
+        addMethodAliasesForPloneSite(self.portal, [])
+        fti = self.portal.getTypeInfo()
+        aliases = fti.getMethodAliases()
+        self.assertEqual(aliases, expected_aliases)
+
+    def testAddMethodAliasesForPloneSiteNoFTI(self):
+        # Should not fail FTI is missing
+        self.portal.portal_types._delObject('Plone Site')
+        addMethodAliasesForPloneSite(self.portal, [])
+
+    def testAddMethodAliasesForPloneSiteNoTool(self):
+        # Should not fail tool is missing
+        self.portal._delObject('portal_types')
+        addMethodAliasesForPloneSite(self.portal, [])
+
+    def testUpdateParentMetaTypesNotToQuery(self):
+        # Adds missing property and sets proper default value
+        ntp = self.properties.navtree_properties
+        self.removeNavTreeProperty('parentMetaTypesNotToQuery')
+        self.failIf(ntp.hasProperty('parentMetaTypesNotToQuery'))
+        updateParentMetaTypesNotToQuery(self.portal, [])
+        self.assertEqual(ntp.getProperty('parentMetaTypesNotToQuery'),
+                                    ('Large Plone Folder',))
+
+    def testUpdateParentMetaTypesNotToQueryDoesNotErase(self):
+        # Adds missing property and sets proper default value
+        ntp = self.properties.navtree_properties
+        ntp.manage_changeProperties(parentMetaTypesNotToQuery=('Document', 'Folder'))
+        updateParentMetaTypesNotToQuery(self.portal, [])
+        self.assertEqual(ntp.getProperty('parentMetaTypesNotToQuery'),
+                                    ('Document', 'Folder', 'Large Plone Folder'))
+
+    def testUpdateParentMetaTypesNotToQueryTwice(self):
+        # Should not duplcate the value if run twice
+        ntp = self.properties.navtree_properties
+        self.removeNavTreeProperty('parentMetaTypesNotToQuery')
+        updateParentMetaTypesNotToQuery(self.portal, [])
+        updateParentMetaTypesNotToQuery(self.portal, [])
+        self.assertEqual(ntp.getProperty('parentMetaTypesNotToQuery'),
+                                    ('Large Plone Folder',))
+
+    def testUpdateParentMetaTypesNotToQueryNoSheet(self):
+        # Should not fail if the prop sheet is missing
+        self.properties._delObject('navtree_properties')
+        updateParentMetaTypesNotToQuery(self.portal, [])
+
+    def testUpdateParentMetaTypesNotToQueryNoTool(self):
+        # Should not fail if the tool is missing
+        self.portal._delObject('portal_properties')
+        updateParentMetaTypesNotToQuery(self.portal, [])
+
+    def testFixCutActionPermission(self):
+        editActions = ('cut',)
+        for a in editActions:
+            self.removeActionFromTool(a)
+        fixCutActionPermission(self.portal, [])
+        actions = [x.id for x in self.actions.listActions()]
+        for a in editActions:
+            self.failUnless(a in actions)
+
+    def testFixCutActionPermissionTwice(self):
+        editActions = ('cut',)
+        for a in editActions:
+            self.removeActionFromTool(a)
+        fixCutActionPermission(self.portal, [])
+        fixCutActionPermission(self.portal, [])
+        actions = [x.id for x in self.actions.listActions()]
+        for a in editActions:
+            self.failUnless(a in actions)
+
+    def testFixCutActionPermissionNoTool(self):
+        self.portal._delObject('portal_actions')
+        fixCutActionPermission(self.portal, [])
+
+    def testFixExtEditAction(self):
+        editActions = ('extedit',)
+        for a in editActions:
+            self.removeActionFromTool(a)
+        fixExtEditAction(self.portal, [])
+        actions = [x.id for x in self.actions.listActions()]
+        for a in editActions:
+            self.failUnless(a in actions)
+
+    def testFixExtEditActionTwice(self):
+        editActions = ('extedit',)
+        for a in editActions:
+            self.removeActionFromTool(a)
+        fixExtEditAction(self.portal, [])
+        fixExtEditAction(self.portal, [])
+        actions = [x.id for x in self.actions.listActions()]
+        for a in editActions:
+            self.failUnless(a in actions)
+
+    def testFixExtEditActionNoTool(self):
+        self.portal._delObject('portal_actions')
+        fixExtEditAction(self.portal, [])
+
+    def testChangeMemberdataExtEditor(self):
+        # Should add the ext_editor property
+        self.removeMemberdataProperty('ext_editor')
+        self.failIf(self.portal_memberdata.hasProperty('ext_editor'))
+        changeMemberdataExtEditor(self.portal, [])
+        self.assertEqual(self.portal_memberdata.getProperty('ext_editor'), 0)
+
+    def testChangeMemberdataExtEditorExists(self):
+        # Should alter existing ext_editor property
+        self.portal_memberdata.manage_changeProperties(ext_editor=1)
+        changeMemberdataExtEditor(self.portal, [])
+        self.assertEqual(self.portal_memberdata.getProperty('ext_editor'), 0)
+
+    def testChangeMemberdataExtEditorTwice(self):
+        # Should not fail if migrated again
+        self.removeMemberdataProperty('ext_editor')
+        self.failIf(self.portal_memberdata.hasProperty('ext_editor'))
+        changeMemberdataExtEditor(self.portal, [])
+        changeMemberdataExtEditor(self.portal, [])
+        self.assertEqual(self.portal_memberdata.getProperty('ext_editor'), 0)
+
+    def testChangeMemberdataExtEditor(self):
+        # Should not fail if portal_memberdata is missing
+        self.portal._delObject('portal_memberdata')
+        changeMemberdataExtEditor(self.portal, [])
+
+    def testFixWorkflowStateTitles(self):
+        wfs = ('plone_workflow','folder_workflow')
+        wftool = self.portal.portal_workflow
+        for wfid in wfs:
+            wf = getattr(wftool, wfid)
+            for state in wf.states.objectValues():
+                state.setProperties(title='junk')
+                self.assertEqual(state.title, 'junk')
+
+        fixWorkflowStateTitles(self.portal, [])
+        self.assertEqual(wftool.plone_workflow.states.visible.title,
+                            'Public Draft')
+        self.assertEqual(wftool.folder_workflow.states.visible.title,
+                            'Public Draft')
+
+    def testFixWorkflowStateTitlesTwice(self):
+        wfs = ('plone_workflow','folder_workflow')
+        wftool = self.portal.portal_workflow
+        for wfid in wfs:
+            wf = getattr(wftool, wfid)
+            for state in wf.states.objectValues():
+                state.setProperties(title='junk')
+                self.assertEqual(state.title, 'junk')
+
+        fixWorkflowStateTitles(self.portal, [])
+        fixWorkflowStateTitles(self.portal, [])
+        self.assertEqual(wftool.plone_workflow.states.visible.title,
+                            'Public Draft')
+        self.assertEqual(wftool.folder_workflow.states.visible.title,
+                            'Public Draft')
+
+    def testFixWorkflowStateTitlesNoState(self):
+        self.portal.portal_workflow.plone_workflow.states._delObject('published')
+        fixWorkflowStateTitles(self.portal, [])
+
+    def testFixWorkflowStateTitlesNoStates(self):
+        self.portal.portal_workflow.plone_workflow._delObject('states')
+        fixWorkflowStateTitles(self.portal, [])
+
+    def testFixWorkflowStateTitlesNoWF(self):
+        self.portal.portal_workflow._delObject('plone_workflow')
+        fixWorkflowStateTitles(self.portal, [])
+
+    def testFixWorkflowStateTitlesNoTool(self):
+        self.portal._delObject('portal_workflow')
+        fixWorkflowStateTitles(self.portal, [])
+
+    def testChangeSiteActions(self):
+        # Remove some actions, add some others, and change the category of
+        # plone_setup
+        removeActions = ('small_text', 'normal_text', 'large_text')
+        editActions = ('plone_setup','accessibility','contact')
+        for a in removeActions:
+            self.addActionToTool(a,'site_actions')
+        for a in editActions:
+            self.removeActionFromTool(a)
+        changeSiteActions(self.portal, [])
+        actions = [x.id for x in self.actions.listActions()]
+        for a in editActions:
+            self.failUnless(a in actions)
+        for a in removeActions:
+            self.failIf(a in actions)
+
+    def testChangeSiteActionsChangesCategory(self):
+        # Existing actions should be removed and recategorized
+        editActions = ('plone_setup','accessibility','contact')
+        for a in editActions:
+            self.removeActionFromTool(a)
+            self.addActionToTool(a, 'user')
+        changeSiteActions(self.portal, [])
+        actions = [x for x in self.actions.listActions() if x.id in editActions]
+        # No duplicates
+        self.assertEqual(len(actions), len(editActions))
+        for a in actions:
+            self.assertEqual(a.category, 'site_actions')
+
+    def testChangeSiteActionsTwice(self):
+        # Should not fail or duplicate if performed twice
+        removeActions = ('small_text', 'normal_text', 'large_text')
+        editActions = ('plone_setup','accessibility','contact')
+        for a in removeActions:
+            self.addActionToTool(a,'site_actions')
+        for a in editActions:
+            self.removeActionFromTool(a)
+            self.addActionToTool(a, 'user')
+        changeSiteActions(self.portal, [])
+        changeSiteActions(self.portal, [])
+        actions = [x for x in self.actions.listActions() if x.id in editActions]
+        # No duplicates
+        self.assertEqual(len(actions), len(editActions))
+        for a in actions:
+            self.assertEqual(a.category, 'site_actions')
+
+    def testChangeSiteActionsNoTool(self):
+        # Should not fail if the tool is missing
+        self.portal._delObject('portal_actions')
+        changeSiteActions(self.portal, [])
+
+    def testRemovePloneSetupActionFromPortalMembership(self):
+        # Should remove the plone_setup action from the membership_tool
+        removeActions = ('plone_setup', )
+        for a in removeActions:
+            self.addActionToTool(a,'site_actions', 'portal_membership')
+        removePloneSetupActionFromPortalMembership(self.portal, [])
+        actions = [x for x in self.portal.portal_membership.listActions()]
+        for a in removeActions:
+            self.failIf(a in actions)
+
+    def testRemovePloneSetupActionFromPortalMembershipTwice(self):
+        # Should not fail if performed twice
+        removeActions = ('plone_setup', )
+        for a in removeActions:
+            self.addActionToTool(a,'site_actions', 'portal_membership')
+        removePloneSetupActionFromPortalMembership(self.portal, [])
+        removePloneSetupActionFromPortalMembership(self.portal, [])
+        actions = [x for x in self.portal.portal_membership.listActions()]
+        for a in removeActions:
+            self.failIf(a in actions)
+
+    def testRemovePloneSetupActionFromPortalMembershipNoAction(self):
+        # Should not fail if action is missing
+        removeActions = ('plone_setup', )
+        removePloneSetupActionFromPortalMembership(self.portal, [])
+        actions = [x for x in self.portal.portal_membership.listActions()]
+        for a in removeActions:
+            self.failIf(a in actions)
+
+    def testRemovePloneSetupActionFromPortalMembershipNoTool(self):
+        # Should not fail if tool is missing
+        self.portal._delObject('portal_membership')
+        removePloneSetupActionFromPortalMembership(self.portal, [])
+
+    def testFixViewMethodAliases(self):
+        # Should set 'view' alias for core types and Plone Site to (selected layout)
+        types = ('Document', 'Event', 'Favorite', 'File', 'Folder', 'Image', 'Link', 'News Item', 'Topic', 'Plone Site')
+        ttool = self.portal.portal_types
+
+        for typeName in types:
+            fti = getattr(ttool, typeName)
+            aliases = fti.getMethodAliases()
+            aliases['view'] = '(dynamic view)'
+            fti.setMethodAliases(aliases)
+
+        fixViewMethodAliases(self.portal, [])
+
+        for typeName in types:
+            fti = getattr(ttool, typeName)
+            aliases = fti.getMethodAliases()
+            self.assertEqual(aliases['view'], '(selected layout)', typeName)
+
+
+    def testFixViewMethodAliasesTwice(self):
+        # Should not fail if called twice
+        types = ('Document', 'Event', 'Favorite', 'File', 'Folder', 'Image', 'Link', 'News Item', 'Topic', 'Plone Site')
+        ttool = self.portal.portal_types
+
+        for typeName in types:
+            fti = getattr(ttool, typeName)
+            aliases = fti.getMethodAliases()
+            aliases['view'] = '(dynamic view)'
+            fti.setMethodAliases(aliases)
+
+        fixViewMethodAliases(self.portal, [])
+        fixViewMethodAliases(self.portal, [])
+
+        for typeName in types:
+            fti = getattr(ttool, typeName)
+            aliases = fti.getMethodAliases()
+            self.assertEqual(aliases['view'], '(selected layout)')
+
+    def testFixViewMethodAliasesNoFTI(self):
+        # Should not fail if there is no FTI, but convert rest
+        types = ('Event', 'Favorite', 'File', 'Folder', 'Image', 'Link', 'News Item', 'Topic', 'Plone Site')
+        ttool = self.portal.portal_types
+        ttool._delObject('Document')
+
+        for typeName in types:
+            fti = getattr(ttool, typeName)
+            aliases = fti.getMethodAliases()
+            aliases['view'] = '(dynamic view)'
+            fti.setMethodAliases(aliases)
+
+        fixViewMethodAliases(self.portal, [])
+
+        for typeName in types:
+            fti = getattr(ttool, typeName)
+            aliases = fti.getMethodAliases()
+            self.assertEqual(aliases['view'], '(selected layout)')
+
+    def testFixViewMethodAliasesNoTool(self):
+        # Should not fail if tool is missing
+        self.portal._delObject('portal_types')
+        fixViewMethodAliases(self.portal, [])
+
+    def testFixPortalEditAndSharingActions(self):
+        # Portal should use /edit and /sharing for edit and sharing actions
+        fti = self.portal.getTypeInfo()
+        for action in fti.listActions():
+            if action.getId() == 'edit':
+                action.setActionExpression('string:${object_url}/folder_edit_form')
+            elif action.getId() == 'local_roles':
+                action.setActionExpression('string:${object_url}/folder_localrole_form')
+        fixPortalEditAndSharingActions(self.portal, [])
+        for action in fti.listActions():
+            if action.getId() == 'edit':
+                self.assertEqual(action.getActionExpression(), 'string:${object_url}/edit')
+            elif action.getId() == 'local_roles':
+                self.assertEqual(action.getActionExpression(), 'string:${object_url}/sharing')
+
+    def testFixPortalEditAndSharingActionsTwice(self):
+        # Portal should use /edit and /sharing for edit and sharing actions
+        fti = self.portal.getTypeInfo()
+        for action in fti.listActions():
+            if action.getId() == 'edit':
+                action.setActionExpression('string:${object_url}/folder_edit_form')
+            elif action.getId() == 'local_roles':
+                action.setActionExpression('string:${object_url}/folder_localrole_form')
+        fixPortalEditAndSharingActions(self.portal, [])
+        fixPortalEditAndSharingActions(self.portal, [])
+        for action in fti.listActions():
+            if action.getId() == 'edit':
+                self.assertEqual(action.getActionExpression(), 'string:${object_url}/edit')
+            elif action.getId() == 'local_roles':
+                self.assertEqual(action.getActionExpression(), 'string:${object_url}/sharing')
+
+    def testFixPortalEditAndSharingActionsNoTool(self):
+        # Should not fail if tool is missing
+        self.portal._delObject('portal_types')
+        fixPortalEditAndSharingActions(self.portal, [])
+
+    def testFixPortalEditAndSharingActionsNoFTI(self):
+        # Should not fail if FTI is missing
+        self.portal.portal_types._delObject('Plone Site')
+        fixPortalEditAndSharingActions(self.portal, [])
+
+    def testHasCMFUidTools(self):
+        portal_ids = self.portal.objectIds()
+        tool_ids = ('portal_uidgenerator', 'portal_uidannotation',
+                   'portal_uidhandler')
+        for id in tool_ids:
+            self.failUnless(id in portal_ids, id)
+            
+    def testaddCMFUidTools(self):
+        tool_ids = ('portal_uidgenerator', 'portal_uidannotation',
+                   'portal_uidhandler')
+        # remove tools
+        self.portal.manage_delObjects(list(tool_ids))
+        for id in tool_ids:
+            self.failIf(id in self.portal.objectIds(), id)
+        # add tools
+        addCMFUidTools(self.portal, [])
+        for id in tool_ids:
+            self.failUnless(id in self.portal.objectIds(), id)
+            tool = getattr(self.portal, id)
+            self.failUnless(tool.title) # has it a title?
+        # a second add shouldn't break
+        addCMFUidTools(self.portal, [])
+    
+    def testfixCSSMediaTypes(self):
+        cssmediatypes = [
+            ('member.css', 'screen'),
+            ('RTL.css', 'screen'),
+            ('presentation.css', 'projection'),
+            ('ploneCustom.css', 'all'),
+        ]
+        cssreg = getattr(self.portal, 'portal_css')
+        stylesheet_ids = cssreg.getResourceIds()
+        #correct the media types
+        fixCSSMediaTypes(self.portal, [])
+        #check if the media types are set correctly
+        for stylesheet,cssmediatype in cssmediatypes:
+            if stylesheet in stylesheet_ids:
+                cssresource=cssreg.getResource(stylesheet)
+                self.assertEqual(cssresource.getMedia(),cssmediatype)
+        # a second add shouldn't break
+        fixCSSMediaTypes(self.portal, [])
+
+    def testAddWFStateFilteringToNavTree(self):
+        # Should add new navtree_properties
+        self.removeNavTreeProperty('enable_wf_state_filtering')
+        self.removeNavTreeProperty('wf_states_to_show')
+        self.failIf(self.properties.navtree_properties.hasProperty('enable_wf_state_filtering'))
+        addWFStateFilteringToNavTree(self.portal, [])
+        self.failUnless(self.properties.navtree_properties.hasProperty('enable_wf_state_filtering'))
+        self.failUnless(self.properties.navtree_properties.hasProperty('wf_states_to_show'))
+
+    def testAddWFStateFilteringToNavTreeTwice(self):
+        # Should not fail if migrated again
+        self.removeNavTreeProperty('enable_wf_state_filtering')
+        self.removeNavTreeProperty('wf_states_to_show')
+        self.failIf(self.properties.navtree_properties.hasProperty('enable_wf_state_filtering'))
+        addWFStateFilteringToNavTree(self.portal, [])
+        addWFStateFilteringToNavTree(self.portal, [])
+        self.failUnless(self.properties.navtree_properties.hasProperty('enable_wf_state_filtering'))
+        self.failUnless(self.properties.navtree_properties.hasProperty('wf_states_to_show'))
+
+    def testAddWFStateFilteringToNavTreeNoTool(self):
+        # Should not fail if portal_properties is missing
+        self.portal._delObject('portal_properties')
+        addWFStateFilteringToNavTree(self.portal, [])
+
+    def testAddWFStateFilteringToNavTreeNoSheet(self):
+        # Should not fail if navtree_properties is missing
+        self.properties._delObject('navtree_properties')
+        addWFStateFilteringToNavTree(self.portal, [])
+
+
+    def testAddIconForNavigationSettingsConfiglet(self):
+        # Should add the full_screen action icon
+        self.removeActionIconFromTool('NavigationSettings')
+        addIconForNavigationSettingsConfiglet(self.portal, [])
+        self.failUnless('NavigationSettings' in [x.getActionId() for x in self.icons.listActionIcons()])
+
+    def testAddIconForNavigationSettingsConfigletTwice(self):
+        # Should not fail if migrated again
+        self.removeActionIconFromTool('NavigationSettings')
+        addIconForNavigationSettingsConfiglet(self.portal, [])
+        addIconForNavigationSettingsConfiglet(self.portal, [])
+        self.failUnless('NavigationSettings' in [x.getActionId() for x in self.icons.listActionIcons()])
+
+    def testAddIconForNavigationSettingsConfigletNoTool(self):
+        # Should not fail if portal_actionicons is missing
+        self.portal._delObject('portal_actionicons')
+        addIconForNavigationSettingsConfiglet(self.portal, [])
+
+    def testAddSearchAndNavigationConfiglets(self):
+        # Should add the full_screen action icon
+        self.removeActionFromTool('NavigationSettings', 'portal_controlpanel')
+        self.removeActionFromTool('SearchSettings', 'portal_controlpanel')
+        addSearchAndNavigationConfiglets(self.portal, [])
+        self.failUnless('NavigationSettings' in [x.getId() for x in self.cp.listActions()])
+        self.failUnless('SearchSettings' in [x.getId() for x in self.cp.listActions()])
+
+    def testAddSearchAndNavigationConfigletsTwice(self):
+        # Should not fail if done twice
+        self.removeActionFromTool('NavigationSettings', 'portal_controlpanel')
+        self.removeActionFromTool('SearchSettings', 'portal_controlpanel')
+        addSearchAndNavigationConfiglets(self.portal, [])
+        addSearchAndNavigationConfiglets(self.portal, [])
+        self.failUnless('NavigationSettings' in [x.getId() for x in self.cp.listActions()])
+        self.failUnless('SearchSettings' in [x.getId() for x in self.cp.listActions()])
+
+    def testAddSearchAndNavigationConfigletsNoTool(self):
+        # Should not fail if tool is missing
+        self.portal._delObject('portal_controlpanel')
+        addSearchAndNavigationConfiglets(self.portal, [])
+        
+    def testSendtoActionAllowSendtoPermission(self):
+        atool = self.portal.portal_actions
+        for action in atool._cloneActions():
+            if action.getId() == "sendto":
+                self.failUnlessEqual(action.permissions,
+                                     (AllowSendto,))
+ 
+    def testSendtoActionAllowSendtoPermissionNA(self):
+        atool = self.portal.portal_actions
+        # should not break if action is not available
+        atool._actions = ()
+        setupAllowSendtoPermission(self.portal, [])
+        # should not break if tool is missing
+        self.portal._delObject('portal_actions')
+        setupAllowSendtoPermission(self.portal, [])
+
+    def testReaddVisibleIdsMemberProperty(self):
+        # Should add the visible_ids property
+        self.removeMemberdataProperty('visible_ids')
+        self.failIf(self.portal.portal_memberdata.hasProperty('visible_ids'))
+        readdVisibleIdsMemberProperty(self.portal, [])
+        self.failUnless(self.portal.portal_memberdata.hasProperty('visible_ids'))
+
+    def testReaddVisibleIdsMemberPropertyTwice(self):
+        # Should not fail if migrated again
+        self.removeMemberdataProperty('visible_ids')
+        self.failIf(self.portal.portal_memberdata.hasProperty('visible_ids'))
+        readdVisibleIdsMemberProperty(self.portal, [])
+        readdVisibleIdsMemberProperty(self.portal, [])
+        self.failUnless(self.portal.portal_memberdata.hasProperty('visible_ids'))
+
+    def testReaddVisibleIdsMemberPropertyNoTool(self):
+        # Should not fail if portal_properties is missing
+        self.portal._delObject('portal_memberdata')
+        readdVisibleIdsMemberProperty(self.portal, [])
+
+    def testAddCMFTypesToSearchBlackList(self):
+        # Should add CMF types to the types_not_searched property
+        self.removeSiteProperty('types_not_searched')
+        self.failIf(self.properties.site_properties.hasProperty('types_not_searched'))
+        addCMFTypesToSearchBlackList(self.portal, [])
+        self.failUnless(self.properties.site_properties.hasProperty('types_not_searched'))
+        self.failUnless('CMF Document' in self.properties.site_properties.getProperty('types_not_searched'))
+
+    def testAddCMFTypesToSearchBlackListTwice(self):
+        # Should not fail if migrated again
+        self.removeSiteProperty('types_not_searched')
+        self.failIf(self.properties.site_properties.hasProperty('types_not_searched'))
+        addCMFTypesToSearchBlackList(self.portal, [])
+        list_len = len(self.properties.site_properties.getProperty('types_not_searched'))
+        addCMFTypesToSearchBlackList(self.portal, [])
+        list_len2 = len(self.properties.site_properties.getProperty('types_not_searched'))
+        self.assertEqual(list_len2, list_len)
+
+    def testAddCMFTypesToSearchBlackListPreservesChanges(self):
+        # Should preserve existing values
+        self.properties.site_properties.manage_changeProperties(types_not_searched=
+                                            ['test type'])
+        addCMFTypesToSearchBlackList(self.portal, [])
+        self.failUnless('CMF Document' in self.properties.site_properties.getProperty('types_not_searched'))
+        self.failUnless('test type' in self.properties.site_properties.getProperty('types_not_searched'))
+
+
+    def testAddCMFTypesToSearchBlackListNoTool(self):
+        # Should not fail if portal_properties is missing
+        self.portal._delObject('portal_properties')
+        addCMFTypesToSearchBlackList(self.portal, [])
+
+    def testAddCMFTypesToSearchBlackListNoSheet(self):
+        # Should not fail if site_properties is missing
+        self.properties._delObject('site_properties')
+        addCMFTypesToSearchBlackList(self.portal, [])
+
+    def testConvertDefaultPageTypesToWhitelist(self):
+        # Should add the default_page_types property and remove the
+        # non_default_page_types property
+        self.addSiteProperty('non_default_page_types')
+        self.removeSiteProperty('default_page_types')
+        self.failIf(self.properties.site_properties.hasProperty('default_page_types'))
+        self.failUnless(self.properties.site_properties.hasProperty('non_default_page_types'))
+        convertDefaultPageTypesToWhitelist(self.portal, [])
+        self.failIf(self.properties.site_properties.hasProperty('non_default_page_types'))
+        self.failUnless(self.properties.site_properties.hasProperty('default_page_types'))
+
+    def testConvertDefaultPageTypesToWhitelistTwice(self):
+        # Should not fail if migrated again
+        self.addSiteProperty('non_default_page_types')
+        self.removeSiteProperty('default_page_types')
+        convertDefaultPageTypesToWhitelist(self.portal, [])
+        convertDefaultPageTypesToWhitelist(self.portal, [])
+        self.failIf(self.properties.site_properties.hasProperty('non_default_page_types'))
+        self.failUnless(self.properties.site_properties.hasProperty('default_page_types'))
+
+    def testConvertDefaultPageTypesToWhitelistNoTool(self):
+        # Should not fail if portal_properties is missing
+        self.portal._delObject('portal_properties')
+        convertDefaultPageTypesToWhitelist(self.portal, [])
+
+    def testConvertDefaultPageTypesToWhitelistNoSheet(self):
+        # Should not fail if site_properties is missing
+        self.properties._delObject('site_properties')
+        convertDefaultPageTypesToWhitelist(self.portal, [])
+
+    def testChangeAvailableViewsForFolders(self):
+        # Should add a list of view template to the various folderish types
+        # tests on Topic
+        types = self.portal.portal_types
+        types.Topic.manage_changeProperties(view_methods=['atct_topic_view'])
+        self.assertEqual(types.Topic.view_methods, ('atct_topic_view',))
+        changeAvailableViewsForFolders(self.portal, [])
+        self.failUnless('atct_album_view' in types.Topic.getAvailableViewMethods(None))
+
+    def testChangeAvailableViewsForFoldersTwice(self):
+        # Should not fail if migrated again (test of Folder this time
+        types = self.portal.portal_types
+        types.Folder.manage_changeProperties(view_methods=['folder_listing'])
+        self.assertEqual(types.Folder.view_methods, ('folder_listing',))
+        changeAvailableViewsForFolders(self.portal, [])
+        changeAvailableViewsForFolders(self.portal, [])
+        self.failUnless('atct_album_view' in types.Folder.getAvailableViewMethods(None))
+
+    def testChangeAvailableViewsForFoldersNoTool(self):
+        # Should not fail if portal_properties is missing
+        self.portal._delObject('portal_types')
+        changeAvailableViewsForFolders(self.portal, [])
+
+    def testChangeAvailableViewsForFoldersNoFTI(self):
+        # Should not fail if site_properties is missing
+        self.portal.portal_types._delObject('Topic')
+        changeAvailableViewsForFolders(self.portal, [])
 
 
 def test_suite():

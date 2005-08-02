@@ -4,7 +4,7 @@
 ##bind namespace=
 ##bind script=script
 ##bind subpath=traverse_subpath
-##parameters=msgid, mapping={}, default=None, domain='plone', target_language=None
+##parameters=msgid, mapping={}, default=None, domain='plone', target_language=None, escape_for_js=False
 
 # NOTE: using this script means you ignore unicode and hope
 #       that the system will handle that for you. Use the
@@ -26,4 +26,9 @@ for k, v in mapping.items():
 value = context.utranslate(msgid, mapping, default, domain, target_language)
 
 # encode using site encoding
-return encode(value)
+result=encode(value)
+
+if escape_for_js:
+    return result.replace("'", "\\'")
+else:
+    return result

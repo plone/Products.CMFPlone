@@ -9,7 +9,8 @@
 ##
 
 acl_users = context.acl_users
-getMemberById = context.portal_membership.getMemberById
+mtool = context.portal_membership
+getMemberById = mtool.getMemberById
 mailPassword = context.portal_registration.mailPassword
 setMemberProperties = context.plone_utils.setMemberProperties
 generatePassword = context.portal_registration.generatePassword
@@ -35,6 +36,8 @@ for user in users:
         mailPassword(user.id, context.REQUEST)
 
 if delete:
-    acl_users.userFolderDelUsers(delete)
+    # BBB We should eventually have a global switch to determine member area
+    # deletion
+    mtool.deleteMembers(delete, delete_memberareas=0, delete_localroles=1)
 
 return state.set(portal_status_message=context.translate('Changes applied.'))

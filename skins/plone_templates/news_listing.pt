@@ -10,7 +10,6 @@
 <body>
 <div metal:fill-slot="main" id="content-news"
      tal:define="results python:container.portal_catalog(portal_type='News Item',sort_on='Date',sort_order='reverse',review_state='published');
-                 results python:[r for r in results if r.getObject()];
                  Batch python:modules['Products.CMFPlone'].Batch;
                  b_start python:request.get('b_start',0);
                  portal_discussion nocall:here/portal_discussion;
@@ -28,13 +27,14 @@
                  metal:define-macro="listitem"
                  tal:define="resultObject result/getObject;
                              creator result/Creator;
-                             resulturl resultObject/absolute_url;
-                             has_body resultObject/CookedBody">
+                             resulturl resultObject/absolute_url | nothing;
+                             has_body resultObject/CookedBody | nothing"
+                 tal:condition="python:resultObject is not None">
 
                 <h2>
                     <a href="/view" 
                        tal:attributes="href resulturl" 
-                       tal:content="result/Title">
+                       tal:content="result/pretty_title_or_id">
                         News headline
                     </a>
                 </h2>

@@ -130,14 +130,16 @@
                     <ul class="configletDetails">
                         <li tal:condition="python:container.portal_quickinstaller.getProductFile(pid)">
                             <a tal:attributes="href string:${QI/absolute_url}/prefs_install_product_readme?filereadme=${product/id}" >
-                                <img tal:replace="structure here/book_icon.gif" />
+                                <img alt="" src=""
+                                     tal:replace="structure here/book_icon.gif" />
                                 <span i18n:translate="text_product_description">Product Description</span>
                             </a>
                         </li>
                         
                         <li>
                             <a tal:attributes="href string:${QI/absolute_url}/${product/id}/prefs_installed_product_overview">
-                                <img tal:replace="structure here/document_icon.gif" />
+                                <img alt="" src=""
+                                     tal:replace="structure here/document_icon.gif" />
                                 <span i18n:translate="link_install_products_log">Install log</span>
                             </a>
                         </li>
@@ -145,7 +147,8 @@
                         <li tal:condition="python:QI.isProductAvailable(product['id'])"> 
                             <a tal:condition="python:prodver != product['installedVersion']" 
                                tal:attributes="href string:${QI/absolute_url}/reinstallProducts?products=${pid}"> 
-                                <img tal:replace="structure here/error_icon.gif" />
+                                <img alt="" src=""
+                                     tal:replace="structure here/error_icon.gif" />
                                 <span i18n:translate="label_outdated_product_reinstall">
                                     This product has been upgraded, click here to reinstall.
                                     Filesystem version is <b i18n:name="version" tal:content="python:QI.getProductVersion(product['id'])" />
@@ -154,7 +157,8 @@
                         </li>
                         
                         <li tal:condition="python:not QI.isProductAvailable(product['id'])">
-                            <img tal:replace="structure here/error_icon.gif" />
+                            <img alt="" src=""
+                                 tal:replace="structure here/error_icon.gif" />
                             <span i18n:translate="text_product_unavailable">
                                 This Product has been removed from the file system.
                             </span>

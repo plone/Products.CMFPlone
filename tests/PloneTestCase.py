@@ -6,11 +6,16 @@
 
 from Testing import ZopeTestCase
 
+# XXX: Suppress DeprecationWarnings
+import warnings
+warnings.simplefilter('ignore', DeprecationWarning, append=1)
+
 ZopeTestCase.installProduct('CMFCore')
 ZopeTestCase.installProduct('CMFDefault')
 ZopeTestCase.installProduct('CMFCalendar')
 ZopeTestCase.installProduct('CMFTopic')
 ZopeTestCase.installProduct('DCWorkflow')
+ZopeTestCase.installProduct('CMFUid', quiet=1)
 ZopeTestCase.installProduct('CMFActionIcons')
 ZopeTestCase.installProduct('CMFQuickInstallerTool')
 ZopeTestCase.installProduct('CMFFormController')
@@ -63,8 +68,8 @@ class PloneTestCase(ZopeTestCase.PortalTestCase):
         # Hack ACTUAL_URL and plone_skin into the REQUEST
         self.app.REQUEST['ACTUAL_URL'] = self.app.REQUEST.get('URL')
         self.app.REQUEST['plone_skin'] = 'Plone Default'
-        # Disable automatic memberarea creation
-        self.portal.portal_membership.memberareaCreationFlag = 0
+        # Need PARENTS in request otherwise REQUEST.clone() fails
+        self.app.REQUEST.set('PARENTS', [self.app])
         # Disable the constraintypes performance hog
         self.folder.setConstrainTypesMode(0)
 
@@ -128,12 +133,6 @@ def _createHomeFolder(portal, member_id, take_ownership=1):
     if not hasattr(aq_base(members), member_id):
         # Create home folder
         _createObjectByType('Folder', members, id=member_id)
-        # Create personal folder
-        home = membership.getHomeFolder(member_id)
-        _createObjectByType('Folder', home, id=membership.personal_id)
-        # Uncatalog personal folder
-        personal = membership.getPersonalFolder(member_id)
-        personal.unindexObject()
 
     if take_ownership:
         user = portal.acl_users.getUserById(member_id)
@@ -146,11 +145,6 @@ def _createHomeFolder(portal, member_id, take_ownership=1):
         home.changeOwnership(user)
         home.__ac_local_roles__ = None
         home.manage_setLocalRoles(member_id, ['Owner'])
-        # Take ownership of personal folder
-        personal = membership.getPersonalFolder(member_id)
-        personal.changeOwnership(user)
-        personal.__ac_local_roles__ = None
-        personal.manage_setLocalRoles(member_id, ['Owner'])
 
 
 def optimize():

@@ -27,13 +27,11 @@
 
             <p i18n:translate="description_site_error_mail_admin">
             If you know you have the correct web address but are encountering an error, please
-            email the administrator of this site.
+            contact the <span i18n:name="site_admin">
+            <a href="#" 
+               i18n:translate="label_site_admin"
+               tal:attributes="href string:${portal_url}/contact-info">Site Administration</a></span>.
             </p>
-
-            <a href="" 
-               tal:replace="structure python: here.spamProtect(site_properties.email_from_address)">
-               example@mail.com
-            </a>
 
             <p i18n:translate="description_site_error_thank_you">
             Thank you.

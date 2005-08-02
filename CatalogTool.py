@@ -227,6 +227,15 @@ def syndication_enabled(obj, **kwargs):
 registerIndexableAttribute('syndication_enabled', syndication_enabled)
 
 
+def is_default_page(obj, portal, **kwargs):
+    """Is this the default page in its folder
+    """
+    ptool = portal.plone_utils
+    return ptool.isDefaultPage(obj)
+
+registerIndexableAttribute('is_default_page', is_default_page)
+
+
 class CatalogTool(PloneBaseTool, BaseTool):
 
     meta_type = ToolNames.CatalogTool
@@ -242,7 +251,7 @@ class CatalogTool(PloneBaseTool, BaseTool):
     security.declarePublic('enumerateIndexes') 
     def enumerateIndexes(self):
 
-        return ( ('Subject', 'KeywordIndex')
+        idxs = ( ('Subject', 'KeywordIndex')
                , ('Creator', 'FieldIndex')
                , ('Date', 'DateIndex')
                , ('Type', 'FieldIndex')
@@ -259,6 +268,38 @@ class CatalogTool(PloneBaseTool, BaseTool):
                , ('path', 'ExtendedPathIndex')
                , ('portal_type', 'FieldIndex')
                , ('getObjPositionInParent', 'FieldIndex')
+               , ('is_folderish', 'FieldIndex')
+               , ('is_default_page', 'FieldIndex')
+               )
+        return tuple([(n, t, None) for n, t in idxs])
+
+    security.declarePublic( 'enumerateColumns' )
+    def enumerateColumns( self ):
+        #   Return a sequence of schema names to be cached.
+        #   Creator is deprecated and may go away, use listCreators!
+        return ( 'Subject'
+               , 'Title'
+               , 'Description'
+               , 'Type'
+               , 'review_state'
+               , 'Creator'
+               , 'listCreators'
+               , 'Date'
+               , 'getIcon'
+               , 'created'
+               , 'effective'
+               , 'expires'
+               , 'modified'
+               , 'CreationDate'
+               , 'EffectiveDate'
+               , 'ExpirationDate'
+               , 'ModificationDate'
+               , 'getId'
+               , 'portal_type'
+               # plone metadata
+               , 'id', # BBB to be removed in Plone 2.2
+               'getObjSize',
+               'exclude_from_nav',
                )
 
     def _removeIndex(self, index):
@@ -349,20 +390,6 @@ class CatalogTool(PloneBaseTool, BaseTool):
         """
         self.reindexObject(object, idxs)
 
-    security.declarePrivate('reindexObject')
-    def reindexObject(self, object, idxs=[], update_metadata=1):
-        """Update catalog after object data has changed.
-        The optional idxs argument is a list of specific indexes
-        to update (all of them by default).
-        The update_metadata flag controls whether the object's
-        metadata record is updated as well.
-        """
-        url = self.__url(object)
-        if idxs != []:
-            # Filter out invalid indexes.
-            valid_indexes = self._catalog.indexes.keys()
-            idxs = [i for i in idxs if i in valid_indexes]
-        self.catalog_object(object, url, idxs, update_metadata)
 
     security.declareProtected(ManageZCatalogEntries, 'catalog_object')
     def catalog_object(self, object, uid, idxs=[],
@@ -403,7 +430,9 @@ class CatalogTool(PloneBaseTool, BaseTool):
             effectiveRange checking entirely even for those withot portal wide
             AccessInactivePortalContent permission.
         """
+        kw = kw.copy()
         show_inactive = kw.get('show_inactive', False)
+
         user = _getAuthenticatedUser(self)
         kw['allowedRolesAndUsers'] = self._listAllowedRolesAndUsers(user)
 

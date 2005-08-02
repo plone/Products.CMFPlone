@@ -1,5 +1,4 @@
 from types import ModuleType, ListType, TupleType
-from zLOG import LOG, INFO
 from Products.CMFPlone.interfaces.interface import Interface
 from Products.CMFPlone.interfaces.InterfaceTool import IInterfaceTool
 from Acquisition import aq_base
@@ -14,9 +13,6 @@ from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Interface.Implements import getImplements, flattenInterfaces
 from Interface import Interface
 from Interface.IMethod import IMethod
-
-def log(summary='', text='', log_level=INFO):
-    LOG('InterfaceTool', log_level, summary, text)
 
 _marker = ('module_finder',)
 

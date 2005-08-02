@@ -37,6 +37,51 @@ class TestWorkflowTool(PloneTestCase.PloneTestCase):
         # Test that url has filled in string substitutions for content url
         self.failUnless('http://' in trans[0]['url'])
 
+    def testGetTitleForStateOnType(self):
+        state_id = self.workflow.getInfoFor(self.doc, 'review_state', '')
+        state_title = self.workflow.getTitleForStateOnType(state_id, self.doc.portal_type)
+        self.assertEqual(state_id, 'visible')
+        self.assertEqual(state_title, 'Public Draft')
+
+    def testGetTitleForStateOnTypeFallsBackOnStateId(self):
+        state_id = 'nonsense'
+        state_title = self.workflow.getTitleForStateOnType(state_id, self.doc.portal_type)
+        self.assertEqual(state_title, 'nonsense')
+
+    def testGetTitleForTransitionOnType(self):
+        state_id = 'hide'
+        state_title = self.workflow.getTitleForTransitionOnType(state_id, self.doc.portal_type)
+        self.assertEqual(state_title, 'Make private')
+
+    def testGetTitleForTransitionOnTypeFallsBackOnTransitionId(self):
+        state_id = 'nonsense'
+        state_title = self.workflow.getTitleForTransitionOnType(state_id, self.doc.portal_type)
+        self.assertEqual(state_title, 'nonsense')
+
+    def testListWFStatesByTitle(self):
+        states = self.workflow.listWFStatesByTitle()
+        self.assertEqual(len(states), 7)
+        pub_states = [s for s in states if s[1]=='published']
+        priv_states = [s for s in states if s[1]=='private']
+        pend_states = [s for s in states if s[1]=='pending']
+        vis_states = [s for s in states if s[1]=='visible']
+        self.assertEqual(len(pub_states), 2)
+        self.assertEqual(len(priv_states), 2)
+        self.assertEqual(len(pend_states), 1)
+        self.assertEqual(len(vis_states), 2)
+
+    def testListWFStatesByTitleFiltersSimilar(self):
+        states = self.workflow.listWFStatesByTitle(filter_similar=True)
+        self.assertEqual(len(states), 4)
+        pub_states = [s for s in states if s[1]=='published']
+        priv_states = [s for s in states if s[1]=='private']
+        pend_states = [s for s in states if s[1]=='pending']
+        vis_states = [s for s in states if s[1]=='visible']
+        self.assertEqual(len(pub_states), 1)
+        self.assertEqual(len(priv_states), 1)
+        self.assertEqual(len(pend_states), 1)
+        self.assertEqual(len(vis_states), 1)
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite

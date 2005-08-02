@@ -9,14 +9,13 @@
 <body>
 
   <div metal:fill-slot="main"
-
        tal:define="Batch python:modules['Products.CMFPlone'].Batch;
                    username member/getUserName;
                    avail_roles python:[role for role in container.portal_membership.getCandidateLocalRoles(here) if role!='Owner'];
-                   group_submit request/group_submit|nothing;
                    b_size python:12;b_start python:0;b_start request/b_start | b_start;
                    tabindex python:Iterator();
                    iscontainer here/isPrincipiaFolderish|nothing;
+                   itemPortalTypeTitle python:here.getTypeInfo().Title();
                    inheritanceActive python:putils.isLocalRoleAcquired(here);
                    search_submitted request/role_submit|nothing;
                    search_results python:search_submitted and mtool.searchForMembers(
@@ -29,24 +28,31 @@
 
     <h1 i18n:translate="heading_currently_assigned_shares">
         Current sharing permissions for
-        <span tal:content="here/title_or_id" i18n:name="folder">title</span>
+        <span tal:content="here/pretty_title_or_id" i18n:name="folder">title</span>
     </h1>
-
-    <p i18n:translate="description_share_folders_items_current_shares">
-        You can share the rights for both folders (including content) and single items.
-        These users have privileges here:
-    </p>
-
 
     <tal:warning tal:condition="not:iscontainer">
         <div class="portalMessage" style="background-color:rgb(255,191,191)">
-            <span style="font-weight:normal" i18n:translate="local_role_warning_type"><strong>Attention!</strong> You are setting the sharing permissions for a <strong i18n:name="type" tal:content="here/portal_type"/>.
-            If you want to set the permissions for its containing folder, click <span i18n:name="link">
-            <a href="" i18n:translate="local_role_warning_link" tal:attributes="href python:here.absolute_url()+'/../'+ template.id">here</a></span>
+            <span style="font-weight:normal" 
+                  i18n:translate="local_role_warning_type">
+                <strong>Attention!</strong> 
+                You are setting the sharing permissions for a 
+                <strong i18n:name="type"><tal:translate content="itemPortalTypeTitle" i18n:translate="">type</tal:translate></strong>.
+                If you want to set the permissions for its container, 
+                click 
+                <span i18n:name="link">
+                    <a href="" 
+                       i18n:translate="local_role_warning_link" 
+                       tal:attributes="href python:here.absolute_url()+'/../'+ template.id">here</a>
+               </span>.
             </span>
         </div>
     </tal:warning>
 
+    <p i18n:translate="description_share_folders_items_current_shares">
+        You can share the rights for both entire folders and single items.
+        These users have privileges here:
+    </p>
 
     <tal:warning tal:condition="python:iscontainer and here.isDefaultPageInFolder()">
         <div class="portalMessage" style="background-color:rgb(255,191,191)">
@@ -57,40 +63,6 @@
         </div>
     </tal:warning>
 
-<form method="post"
-          name="setacquisition"
-          action="folder_localrole_set">
-
-      <fieldset>
-
-        <legend i18n:translate="legend_security_settings">
-            Advanced Settings
-        </legend>
-
-        <div class="field">
-            <input class="noborder" type="checkbox" name="use_acquisition:int" value="1" id="inherit"
-                tal:attributes="checked     python:test(inheritanceActive,1,None)"
-                /> 
-            <label for="inherit" i18n:translate="label_use_acquisition">Inherit roles from higher levels</label>
-            <div class="formHelp" i18n:translate="help_use_acquisition">
-                Determines if the roles given to users and groups from higher levels are in
-                effect in this context.
-            </div>
-        </div>
-
-        <div class="submit">
-            <input class="context"
-                type="submit"
-                value="Apply Settings"
-                i18n:attributes="value label_apply_settings;"
-                tabindex=""
-                tal:attributes="tabindex tabindex/next;"
-                />
-        </div>
-
-      </fieldset>
-    </form>
-
     <!-- form for changing existing roles -->
     <form method="post"
           name="deleterole"
@@ -100,8 +72,8 @@
       <fieldset>
 
         <legend i18n:translate="legend_assigned_roles">
-            Assigned Roles
-            <span tal:content="here/title_or_id" i18n:name="folder">title</span>
+            Assigned Roles for
+            <span tal:content="here/pretty_title_or_id" i18n:name="folder">title</span>
         </legend>
 
         <input type="hidden" name="change_type" value="delete" />
@@ -229,14 +201,14 @@
         </div>
 
         <div class="submit">
-	    <input class="context"
-		type="submit"
-		value="Assign Selected Role(s) to Selected User(s)/Group(s)"
-		name="folder_localrole_add:method"
-		i18n:attributes="value label_assign_roles_to_users_groups;"
-		tabindex=""
-		tal:attributes="tabindex tabindex/next;"
-		/>
+            <input class="context"
+                   type="submit"
+                   value="Assign Selected Role(s) to Selected User(s)/Group(s)"
+                   name="folder_localrole_add:method"
+                   i18n:attributes="value label_assign_roles_to_users_groups;"
+                   tabindex=""
+                   tal:attributes="tabindex tabindex/next;"
+                   />
             <input class="destructive"
                 type="submit"
                 value="Delete Selected Role(s) and User(s)/Group(s)"
@@ -373,8 +345,7 @@
                                         (search_submitted and not search_results))">
 
         <h1 i18n:translate="heading_add_sharing_permissions">
-          Add sharing permissions for
-          <tal:block tal:content="here/title_or_id" i18n:name="item">title</tal:block>
+          Add sharing permissions to users
         </h1>
 
 
@@ -486,29 +457,37 @@
                                tabindex=""
                                tal:attributes="tabindex tabindex/next;"/>
                         </th>
-                        <th i18n:translate="listingheader_name">Name</th>
+                        <th i18n:translate="listingheader_title">Title</th>
+                        <th i18n:translate="listingheader_description">Description</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr tal:repeat="group grouplist">
-                        <td tal:define="group_name group/getUserName;
-                                        group_id group/getId;">
-                            <label class="hiddenLabel" for="member_ids:list"
-                                   i18n:translate="label_select_group">
-                                select group <span tal:content="group_name" i18n:name="name"/>
-                            </label>
-                            <input class="formSelection"
-                                type="checkbox"
-                                name="member_ids:list"
-                                id="#"
-                                value=""
-                                tabindex=""
-                                tal:attributes="value group_id;
-                                                tabindex tabindex/next;"/>
-                        </td>
-                        <td tal:content="group/getUserNameWithoutGroupPrefix">
-                            groupname
-                        </td>
+                        <tal:group tal:define="group_name group/getUserName;
+                                        group_id group/getId;
+                                        group_title group/getGroupTitleOrName;
+                                        group_description python:group.getProperty('description', '')">
+                            <td>
+                                <label class="hiddenLabel" for="member_ids:list"
+                                       i18n:translate="label_select_group">
+                                    select group <span tal:content="group_name" i18n:name="name"/>
+                                </label>
+                                <input class="formSelection"
+                                    type="checkbox"
+                                    name="member_ids:list"
+                                    id="#"
+                                    value=""
+                                    tabindex=""
+                                    tal:attributes="value group_id;
+                                                    tabindex tabindex/next;"/>
+                            </td>
+                            <td tal:content="group_title">
+                                groupname
+                            </td>
+                            <td tal:content="group_description">
+                                description
+                            </td>                            
+                        </tal:group>
                         </tr>
                     </tbody>
                     </table>
@@ -549,11 +528,65 @@
 
         </tal:groupshares>
 
-    
+    <form method="post"
+          name="setacquisition"
+          action="folder_localrole_set">
 
-      <div metal:use-macro="here/document_byline/macros/byline">
+      <fieldset>
+
+        <legend i18n:translate="legend_security_settings">
+            Advanced Settings
+        </legend>
+
+        <div class="field">
+            <input class="noborder"
+                   type="checkbox"
+                   name="use_acquisition:int"
+                   value="1"
+                   id="inherit"
+                   tal:attributes="checked python:test(inheritanceActive,1,None)"
+                   /> 
+            <label for="inherit" i18n:translate="label_use_acquisition">
+            Inherit roles from higher levels
+            </label>
+            <div class="formHelp" i18n:translate="help_use_acquisition">
+                Determines if the roles given to users and groups from higher levels are in
+                effect in this context. Use this to block people that have local roles in higher-level
+                folders from accessing this folder.
+            </div>
+        </div>
+
+        <div class="submit">
+            <input class="context"
+                type="submit"
+                value="Apply Settings"
+                i18n:attributes="value label_apply_settings;"
+                tabindex=""
+                tal:attributes="tabindex tabindex/next;"
+                />
+        </div>
+
+
+      </fieldset>
+    </form>
+    
+    <tal:change_ownership condition="python: checkPermission('Manage portal', here)">
+        <h1 i18n:translate="label_change_ownership">Change ownership</h1>
+        <p i18n:translate="description_change_ownership_of_article">
+            To change the ownership for this
+            <span i18n:name="type">
+                <tal:translate content="itemPortalTypeTitle" i18n:translate="">type</tal:translate>
+            </span>, click 
+            <span i18n:name="link_to_ownership_form">
+            <a href="" tal:attributes="href string:${here/absolute_url}/ownership_form"
+               i18n:translate="label_here">here</a>
+            </span>
+        </p>
+    </tal:change_ownership>
+
+    <div metal:use-macro="here/document_byline/macros/byline">
         Get the byline - contains details about author and modification date.
-      </div>
+    </div>
 
     </div>
 

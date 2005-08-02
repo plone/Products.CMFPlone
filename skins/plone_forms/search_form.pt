@@ -67,13 +67,13 @@
                 <label for="Subject" i18n:translate="label_keywords">Keywords</label>
 
                 <div class="formHelp" i18n:translate="help_search_keywords">
-                Return items matching one or more of these keywords.
+                Return items matching some or all of these keywords.
                 Multiple words may be found by pressing <strong>Ctrl</strong>
                 (or <strong>Apple</strong> key on Mac) while clicking the
                 keywords.
                 </div>
 
-                <select name="Subject:list"
+                <select name="Subject.query:record:list"
                         id="Subject"
                         size="7"
                         multiple="multiple"
@@ -90,6 +90,32 @@
                             i18n:translate=""
                             >dummy</option>
                 </select>
+                <br />
+
+                <input type="radio"
+                       name="Subject.operator:record:ignore_empty"
+                       id="Subject_or"
+                       value=""
+                       class="noborder"
+                       tabindex=""
+                       tal:attributes="tabindex tabindex/next;
+                                       checked python:1"/>
+                    <label for="Subject_or" i18n:translate="description_subject_or">
+                        Match any
+                    </label>
+                    <br />
+
+                <input type="radio"
+                        name="Subject.operator:record:ignore_empty"
+                        id="Subject_and"
+                        value="and"
+                        class="noborder"
+                        tabindex=""
+                        tal:attributes="tabindex tabindex/next;
+                                        checked python:0"/>
+                <label for="Subject_and" i18n:translate="description_subject_and">
+                    Match all
+                </label>
             </div>
     
             <div class="field">
@@ -140,8 +166,7 @@
                 <input type="hidden" name="created.range:record" value="min" />
             </div>
     
-            <div class="field" tal:define="plone_utils portal/plone_utils;
-                                           portal_types portal/portal_types;">
+            <div class="field" tal:define="portal_types portal/portal_types;">
                 <label i18n:translate="label_item_type">Item type</label>
 
                 <div class="formHelp" i18n:translate="help_search_item_type">
@@ -165,7 +190,11 @@
                     </label>
                 </span>
                 <br />
-                <tal:contenttypes repeat="type python:plone_utils.getUserFriendlyTypes()">
+                <div style="float:left; margin-right: 2em;"
+                     tal:define="allTypes python:putils.getUserFriendlyTypes();
+                             typeLists python:here.createMultiColumnList(allTypes, numCols=2, sort_on='self');"
+                     tal:repeat="sublist typeLists">
+                    <tal:items repeat="type sublist">
                     <tal:tabindex define="tabindex tabindex/next">
                     <input type="checkbox"
                            name="portal_type:list"
@@ -183,9 +212,13 @@
                            />
                     <br />
                     </tal:tabindex>
-                </tal:contenttypes>
+                    </tal:items>
+                </div>
             </div>
-    
+
+            <div class="visualClear"><!-- --></div>
+            <br />
+
             <div class="field">
                 <label for="Creator" i18n:translate="label_author">Author</label>
 
@@ -224,7 +257,7 @@
     
                 <span class="optionsToggle" tal:define="tabindex tabindex/next">
                 <input type="checkbox"
-                       onclick="javascript:toggleSelect(this, 'review_state', true);"
+                       onclick="javascript:toggleSelect(this, 'review_state:list', true);"
                        name="rs_toggle"
                        value="#"
                        id="rs_toggle"
@@ -239,25 +272,29 @@
                 </label>
                 <br />
                 </span>
-                <tal:states tal:repeat="state python:portal.portal_catalog.uniqueValuesFor('review_state')">
-                    <metal:block tal:define="tabindex tabindex/next">
-                    <input type="checkbox"
-                           name="review_state"
-                           value="#"
+
+                <tal:states define="
+                                navtree_props    portal/portal_properties/navtree_properties;
+                                states          python:wtool.listWFStatesByTitle(filter_similar=1);
+                                state_lists     python: here.createMultiColumnList(states, numCols=1, sort_on='self');"
+                            repeat="sublist state_lists">
+                    <tal:items repeat="state sublist">
+                    <input class="noborder"
+                           type="checkbox"
+                           name="review_state:list"
                            checked="checked"
-                           class="noborder"
-                           tabindex=""
-                           tal:attributes="value state;
-                                           tabindex tabindex;
-                                           id string:review_state_${tabindex}"/>
-                    <label for=""
+                           tal:attributes="value python:state[1];
+                                           id python:putils.normalizeString(state[1]);" />
+                    <label for="review_state:list"
                            i18n:translate=""
-                           tal:content="state"
-                           tal:attributes="for string:review_state_${tabindex}" />
-                    <br />
-                    </metal:block>
+                           tal:content="python:state[0] or state[1]"
+                           />
+                    <br/>
+                    </tal:items>
                 </tal:states>
             </div>
+
+            <div class="visualClear"><!-- --></div>
 
             <div class="formControls">
                 <input class="context"

@@ -1,0 +1,351 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+<head>
+  <metal:calendar fill-slot="javascript_head_slot">
+    <!-- ECMAScript calendar -->
+    <style type="text/css" media="all"
+	    tal:content="string:@import url($portal_url/jscalendar/calendar-system.css);"></style>
+    <script type="text/javascript"
+	    tal:attributes="src string:$portal_url/jscalendar/calendar_stripped.js"></script>
+    <script type="text/javascript" charset="iso-8859-1"
+	    tal:condition="exists: portal/jscalendar/calendar-en.js"
+	    tal:attributes="src string:$portal_url/jscalendar/calendar-en.js"></script>
+  </metal:calendar>
+</head>
+
+  <body>
+
+    <div metal:fill-slot="main"
+         tal:define="errors options/state/getErrors;
+                     lockable python:hasattr(here, 'wl_isLocked');
+                     isLocked python:lockable and here.wl_isLocked();">
+
+      <h1 i18n:translate="heading_edit_item">
+        Edit
+        <span i18n:name="itemtype">
+          <span i18n:translate=""
+                tal:content="python:here.getTypeInfo().Title()"
+                tal:omit-tag="">Item type</span>
+        </span>
+      </h1>
+
+      <p i18n:translate="description_edit_event">
+        Fill in the details of the event you want to add.
+      </p>
+
+
+      <form name="edit_form"
+            action="."
+            method="post"
+            enctype="multipart/form-data"
+            tal:attributes="action string:${here/getId}/${template/getId}" >
+
+        <fieldset>
+
+          <legend i18n:translate="legend_event_details">Event Details</legend>
+
+          <div class="field"
+               tal:condition="python:site_properties.getProperty('visible_ids', None)"
+               tal:define="error errors/id | nothing;
+                           id python:request.get('id', test(here.show_id(),here.getId(),''));"
+               tal:attributes="class python:test(error, 'field error', 'field')">
+
+            <label for="id" i18n:translate="label_short_name">Short Name</label>
+
+            <div class="formHelp" i18n:translate="help_shortname">
+                   Short Name is part of the item's web address. 
+		           For accessibility reasons, do not use spaces, upper case, 
+                   underscores, or special characters.
+            </div>
+
+            <div tal:content="error">Validation error output</div>
+
+            <input type="text"
+                   id="id"
+                   name="id"
+                   value=""
+                   size="40"
+                   tabindex=""
+                   tal:attributes="value id;
+                                   tabindex tabindex/next;"
+                   />
+
+          </div>
+
+          <input type="hidden"
+                 name="id"
+                 tal:condition="python:not site_properties.getProperty('visible_ids', '')"
+                 tal:attributes="value python:request.get('id', here.getId())"
+                 />
+
+          <div class="field"
+               tal:define="error errors/title|nothing;
+                           Title request/title | here/Title;"
+               tal:attributes="class python:test(error, 'field error', 'field')">
+
+            <label for="title" i18n:translate="label_title">Title</label>
+
+            <span class="fieldRequired" title="Required"
+                  i18n:attributes="title title_required;"
+                  i18n:translate="label_required">(Required)</span>
+
+                  <div tal:content="error">Validation error output</div>
+
+                  <input type="text"
+                         id="title"
+                         name="title"
+                         value=""
+                         size="40"
+                         tabindex=""
+                         tal:attributes="value Title;
+                                         tabindex tabindex/next;"
+                         />
+
+          </div>
+
+
+          <div class="field">
+            <label for="location" i18n:translate="label_event_location">Event Location</label>
+
+            <div class="formHelp" i18n:translate="help_event_location">
+              Enter the location where the event will take place.
+            </div>
+
+            <input type="text"
+                   id="location"
+                   name="location"
+                   size="25"
+                   value="location"
+                   tabindex=""
+                   tal:attributes="value python: request.get('location',getattr(here,'location',''));
+                                   tabindex tabindex/next"
+                   />
+          </div>
+
+          <div class="field">
+            <label for="event_type" i18n:translate="label_event_type">Event Type(s)</label>
+
+            <div class="formHelp" i18n:translate="help_event_type">
+              Multiple event types possible by depressing Ctrl (or Apple
+              key on Mac).
+            </div>
+
+            <select name="event_type:list"
+                    id="event_type"
+                    multiple="multiple"
+                    tabindex=""
+                    size="6"
+                    tal:attributes="tabindex tabindex/next;"
+                    tal:define="contentSubject request/event_type | here/Subject;
+                                allowedSubjects python:here.portal_metadata.listAllowedSubjects(here)">
+
+              <option tal:replace="nothing">Event Type 1</option>
+              <option tal:replace="nothing">Event Type 2</option>
+              <option tal:replace="nothing">...</option>
+              <option value="subj"
+                      tal:repeat="subj allowedSubjects"
+                      tal:attributes="value subj; selected python:subj in contentSubject and 1 or 0"
+                      tal:content="subj"
+                      i18n:domain="plone-metadata"
+                      i18n:translate="">Event Type N</option>
+            </select>
+          </div>
+
+          <div class="field"
+               tal:define="description request/description | here/Description ">
+
+            <label for="description" i18n:translate="label_description">Description</label>
+
+            <div class="formHelp" i18n:translate="help_description">
+              A brief description of the item.
+            </div>
+
+            <textarea cols="80"
+                      rows="5"
+                      tabindex=""
+                      id="description"
+                      name="description"
+                      tal:content="description"
+                      tal:attributes="tabindex tabindex/next;"
+                      >
+              Description
+            </textarea>
+          </div>
+
+          <div class="field">
+            <label for="event_url" i18n:translate="label_event_url">Event URL</label>
+
+            <div class="formHelp" i18n:translate="help_event_url">
+              Optional web address of a page containing more info about
+              the event.
+            </div>
+
+            <input type="text"
+                   id="event_url"
+                   name="event_url"
+                   size="25"
+                   value="event_url"
+                   tabindex=""
+                   tal:attributes="value python:request.get('event_url',getattr(here,'event_url',''));
+                                   tabindex tabindex/next"
+                   />
+          </div>
+
+          <div class="field"
+               tal:define="here_start here/start|nothing;
+                           start_date python:request.get('start_date', here_start);
+                           start_date python:start_date or here_start;
+                           error errors/start_date | nothing;"
+               tal:attributes="class python:test(error, 'field error', 'field')">
+
+            <label for="start_date" i18n:translate="label_event_start">Event Starts</label>
+
+            <span class="fieldRequired" title="Required"
+                  i18n:attributes="title title_required;"
+                  i18n:translate="label_required">(Required)</span>
+
+                  <div class="formHelp" i18n:translate="help_event_start">
+                    Click the calendar icon to select a date or browse the calendar.
+                  </div>
+
+                  <div tal:content="error">Validation error output</div>
+
+                  <div tal:define="inputname  string:start_date;
+                                   formname   string:edit_form;
+                                   inputvalue start_date;
+                                   tabindex tabindex/next;">
+                    <div metal:use-macro="here/calendar_macros/macros/calendarDatePickerBox">
+                      Get date selectors.
+                    </div>
+                  </div>
+          </div>
+
+          <div class="field"
+               tal:define="here_end here/end|nothing;
+                           end_date python:request.get('end_date', here_end);
+                           end_date python:end_date or here_end;
+                           error errors/end_date | nothing;"
+               tal:attributes="class python:test(error, 'field error', 'field')">
+
+            <label for="end_date" i18n:translate="label_event_end">Event Ends</label>
+
+            <span class="fieldRequired" title="Required"
+                  i18n:attributes="title title_required;"
+                  i18n:translate="label_required">(Required)</span>
+
+                  <div class="formHelp" i18n:translate="help_event_end">
+                    Click the calendar icon to select a date or browse the calendar.
+                  </div>
+
+                  <div tal:content="error">Validation error output</div>
+
+                  <div tal:define="inputname  string:end_date;
+                                   formname   string:edit_form;
+                                   inputvalue end_date;
+                                   tabindex tabindex/next;">
+
+                    <div metal:use-macro="here/calendar_macros/macros/calendarDatePickerBox">
+                      a calendar, hopefully
+                    </div>
+                  </div>
+
+          </div>
+
+          <div class="field">
+            <label for="contact_name" i18n:translate="label_contact_name">Contact Name</label>
+
+            <div class="formHelp" i18n:translate="help_contact_name">
+              Contact person or organization for the event.
+            </div>
+
+            <input type="text"
+                   id="contact_name"
+                   name="contact_name"
+                   size="25"
+                   value=""
+                   tabindex=""
+                   tal:attributes="value python:request.get('contact_name',getattr(here,'contact_name',''));
+                                   tabindex tabindex/next"
+                   />
+          </div>
+
+          <div class="field">
+            <label for="contact_email" i18n:translate="label_contact_email">Contact E-mail</label>
+
+            <div class="formHelp" i18n:translate="help_contact_email">
+              E-mail address to display for information regarding
+              the event.
+            </div>
+
+            <input type="text"
+                   id="contact_email"
+                   name="contact_email"
+                   size="25"
+                   value="contact_email"
+                   tabindex=""
+                   tal:attributes="value python:request.get('contact_email',getattr(here,'contact_email',''));
+                                   tabindex tabindex/next"
+                   />
+          </div>
+
+          <div class="field">
+            <label for="contact_phone" i18n:translate="label_contact_phone">Contact Phone</label>
+
+            <div class="formHelp" i18n:translate="help_contact_phone">
+              Phone number to call for information and/or booking.
+            </div>
+
+            <input type="text"
+                   id="contact_phone"
+                   name="contact_phone"
+                   size="25"
+                   value="contact_phone"
+                   tabindex=""
+                   tal:attributes="value python:request.get('contact_phone',getattr(here,'contact_phone',''));
+                                   tabindex tabindex/next"
+                   />
+          </div>
+
+          <div class="formControls"
+               tal:define="process_creation request/process_creation|nothing;">
+
+            <img src="" class="context"
+                   tal:define="locked portal_object/lock_icon.gif;"
+                   tal:condition="isLocked"
+                   tal:replace="structure python:locked.tag(title='This item is locked')"
+                   alt="Object locked"
+                   i18n:attributes="alt"/>
+
+            <input class="context"
+                   tabindex=""
+                   type="submit"
+                   name="form.button.Save"
+                   value="Save"
+                   i18n:attributes="value label_save;"
+                   tal:attributes="tabindex tabindex/next;
+                                   disabled python:test(isLocked, 'disabled', None);" />
+
+            <input class="context"
+                   tabindex=""
+                   type="submit"
+                   name="form.button.Cancel"
+                   value="Cancel"
+                   i18n:attributes="value label_cancel;"
+                   tal:attributes="tabindex tabindex/next"
+                   />
+          </div>
+
+          <input type="hidden" name="form.submitted" value="1" />
+
+        </fieldset>
+
+      </form>
+
+    </div>
+
+  </body>
+
+</html>

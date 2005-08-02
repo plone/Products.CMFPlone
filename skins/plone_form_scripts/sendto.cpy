@@ -11,19 +11,29 @@
 REQUEST=context.REQUEST
 
 from Products.CMFPlone import transaction_note
+from Products.CMFPlone.PloneTool import AllowSendto
 from Products.CMFCore.utils import getToolByName
 from ZODB.POSException import ConflictError
 
 plone_utils = getToolByName(context, 'plone_utils')
+mtool = getToolByName(context, 'portal_membership')
 site_properties = getToolByName(context, 'portal_properties').site_properties
+pretty_title_or_id = plone_utils.pretty_title_or_id
+empty_title = plone_utils.getEmptyTitle()
 
-# need to check visible state of 'sendto' action in portal_actions
-# but I couldn't figure out how - update collector issue #1490
-# when implemented
+if not mtool.checkPermission(AllowSendto, context):
+    return state.set(
+            status='failure',
+            portal_status_message='You are not allowed to send this link.')
+
 at = getToolByName(context, 'portal_actions')
-
-#if not sendto_action.visible :
-if 0:
+show = False
+actions = at.listActionInfos(object=context)
+# Check for visbility of sendto action
+for action in actions:
+    if action['id'] == 'sendto' and action['category'] == 'document_actions':
+        show = True
+if not show:
     return state.set(
         status='failure',
         portal_status_message='You are not allowed to send this link.')
@@ -38,9 +48,9 @@ if ti is not None:
 
 variables = {'send_from_address' : REQUEST.send_from_address,
              'send_to_address'   : REQUEST.send_to_address,
-             'subject'           : context.Title(),
+             'subject'           : pretty_title_or_id(context),
              'url'               : url,
-             'title'             : context.Title(),
+             'title'             : pretty_title_or_id(context),
              'description'       : context.Description(),
              'comment'           : REQUEST.get('comment', None)
              }

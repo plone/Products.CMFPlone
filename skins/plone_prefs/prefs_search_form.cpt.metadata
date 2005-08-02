@@ -1,0 +1,12 @@
+[default]
+title=Search Setup
+
+[security]
+View=0:Authenticated
+
+[validators]
+validators=
+
+[actions]
+action.success=traverse_to:string:prefs_search_set
+action.failure=traverse_to:string:prefs_search_form

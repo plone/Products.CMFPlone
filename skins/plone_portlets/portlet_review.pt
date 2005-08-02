@@ -1,49 +1,44 @@
 <html xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:metal="http://xml.zope.org/namespaces/metal"
       i18n:domain="plone">
-
 <body>
-
-<!-- The review box -->
-
 <div metal:define-macro="portlet"
      tal:define="DateTime python:modules['DateTime'].DateTime;
                  results here/my_worklist;"
      tal:condition="results">
 
-    <div class="portlet" id="portlet-workflow-review">
+<dl class="portlet" id="portlet-workflow-review">
 
-        <h5 i18n:translate="box_review_list">Review List</h5>
+    <dt class="portletHeader"
+        i18n:translate="box_review_list">Review List</dt>
 
-        <div class="portletBody">
-            <tal:block repeat="o results">
-            <div tal:define="oddrow repeat/o/odd"
-                 tal:attributes="class python:test(oddrow, 'portletContent odd','portletContent even')">
+    <tal:items repeat="o results">
+    <dd class="portletItem"
+        tal:define="oddrow repeat/o/odd"
+        tal:attributes="class python:test(oddrow, 'portletItem odd','portletItem even')">
 
-                    <a href="#"
-                       class="marker"
-                       tal:attributes="href string:${o/absolute_url}/view;
-                                       title o/Description">
-                        <img src="" alt="" height="16" width="16"
-                             tal:attributes="src string:${here/portal_url}/${o/getIcon};
-                                             title o/Type;" />
-                        <span tal:replace="o/title_or_id">
-                        Extended Calendar Product
-                        </span>
-                    </a>
+        <span tal:attributes="class python:'contenttype-' + putils.normalizeString(o.portal_type)">
+        <a href="#"
+           class="visualIconPadding"
+           tal:attributes="href string:${o/absolute_url}/view;
+                           title o/Description">
+            <span tal:replace="o/pretty_title_or_id">
+            Extended Calendar Product
+            </span>
+            <span class="portletItemDetails"
+                  tal:define="moddate o/ModificationDate;"
+                  tal:content="python:here.toLocalizedTime(moddate)">May 5</span>
+        </a>
+        </span>
 
-                    <div class="portletDetails"
-                         tal:define="moddate o/ModificationDate;"
-                         tal:content="python:here.toLocalizedTime(moddate)">July 7, 08:11</div>
-            </div>
-            </tal:block>
+    </dd>
+    </tal:items>
 
-        </div>
-
-    </div>
+    <dd class="portletFooter">
+        <a href="#" tal:attributes="href string:${portal_url}/full_review_list">Full review list&hellip;</a>
+    </dd>
+</dl>
 
 </div>
-
 </body>
-
 </html>

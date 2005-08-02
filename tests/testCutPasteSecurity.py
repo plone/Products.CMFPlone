@@ -51,7 +51,8 @@ class TestCutPasteSecurity(PloneTestCase.PloneTestCase):
         self.login('user1')
         src = self.membership.getHomeFolder('user1')
         src.invokeFactory('Document', id='testcopy')
-        dest = self.membership.getPersonalFolder('user1')
+        src.invokeFactory('Folder', id='dest')
+        dest = src.dest
         dest.manage_pasteObjects(src.manage_copyObjects('testcopy'))
 
         # After a copy/paste, they should *both* have a copy
@@ -64,7 +65,7 @@ class TestCutPasteSecurity(PloneTestCase.PloneTestCase):
         src.invokeFactory('Document', id='testcopy')
 
         self.login('user2')
-        dest = self.membership.getPersonalFolder('user2')
+        dest = self.membership.getHomeFolder('user2')
         dest.manage_pasteObjects(src.manage_copyObjects('testcopy'))
         # After a copy/paste, they should *both* have a copy
         self.failUnless(hasattr(aq_base(src), 'testcopy'))
@@ -79,7 +80,8 @@ class TestCutPasteSecurity(PloneTestCase.PloneTestCase):
         # will work
         transaction.commit(1)
 
-        dest = self.membership.getPersonalFolder('user1')
+        src.invokeFactory('Folder', id='dest')
+        dest = src.dest
         dest.manage_pasteObjects(src.manage_cutObjects('testcut'))
 
         # After a cut/paste, only destination has a copy

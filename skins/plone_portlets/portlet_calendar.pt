@@ -29,10 +29,10 @@
             <tr>
                 <th id="calendar-previous">
                     <a href="#" rel="nofollow"
-                        tal:attributes="href python:'%s/%s?%s&amp;month:int=%d&amp;year:int=%d&amp;orig_query=%s' % (anchor_url, anchor_method, query_string, prevMonthTime.month(),prevMonthTime.year(),url_quote(query_string))"
-                        tal:condition="python: yearmonth > (prevYearMin.year(), prevYearMin.month())">
-                    <img src="" alt="" title="Previous month" i18n:attributes="title title_previous_month;"
-                         tal:attributes="src string:${portal_url}/arrowLeft.gif" /></a>
+                       title="Previous month"
+                       tal:attributes="href python:'%s/%s?%s&amp;month:int=%d&amp;year:int=%d&amp;orig_query=%s' % (anchor_url, anchor_method, query_string, prevMonthTime.month(),prevMonthTime.year(),url_quote(query_string))"
+                       tal:condition="python: yearmonth > (prevYearMin.year(), prevYearMin.month())"
+                       i18n:attributes="title title_previous_month;">&laquo;</a>
                 </th>
                 <th colspan="5"
                     tal:define="date python:DateTime(year, month, 1);">
@@ -41,7 +41,7 @@
                             <span tal:define="month_id python:translation_service.month_msgid(date.month());
                                               month_english python:here.utranslate(month_id, target_language='en');"
                                   tal:attributes="id string:calendar-month-$month_english"
-                                  tal:content="python: here.utranslate(month_id)"
+                                  tal:content="python: here.utranslate(month_id, default=month_english)"
                                   id="calendar-month-month">&nbsp;</span>
                         </span>
                         <span i18n:name="year"
@@ -52,22 +52,22 @@
                     </span>
                 </th>
                 <th id="calendar-next">
-                    <a href="#" rel="nofollow" 
+                    <a href="#" rel="nofollow"
+                       title="Next month"
                        tal:attributes="href python:'%s/%s?%s&amp;month:int=%d&amp;year:int=%d&amp;orig_query=%s' % (anchor_url, anchor_method, query_string, nextMonthTime.month(),nextMonthTime.year(),url_quote(query_string))"
-                       tal:condition="python: yearmonth < (nextYearMax.year(), nextYearMax.month())">
-                         <img src="" alt="" title="Next month" i18n:attributes="title title_next_month;"
-                              tal:attributes="src string:${portal_url}/arrowRight.gif" />
-                    </a>
+                       tal:condition="python: yearmonth &lt; (nextYearMax.year(), nextYearMax.month())"
+                       i18n:attributes="title title_next_month;">&raquo;</a>
                 </th>
             </tr>
             <tr tal:define="weekdaynumbers here/portal_calendar/getDayNumbers" class="weekdays">
                 <tal:data tal:repeat="daynumber weekdaynumbers">
-                    <td tal:define="day_id python:translation_service.day_msgid(daynumber, format='s');"
-                        tal:content="python: here.utranslate(day_id)">Su</td>
+                    <td tal:define="day_id python:translation_service.day_msgid(daynumber, format='s');
+                                    day_english python:here.utranslate(day_id, target_language='en');"
+                        tal:content="python: here.utranslate(day_id, default=day_english)">Su</td>
                 </tal:data>
             </tr>
         </thead>
-        
+
         <tal:comment replace="nothing"><!--
         Sorry for the obtuse formatting below (the stray end-of-tag markers), but until
         tal:block doesn't render an entire line of blank space when used, this is the only way.

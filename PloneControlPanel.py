@@ -133,15 +133,29 @@ default_configlets = (
 #     'permission': ManagePortal,
 #     'imageUrl':'site_icon.gif'},
 
-    {
-        'id':'ZMI',
-        'appId':'ZMI',
-        'name':'Zope Management Interface',
-        'action':'string:${portal_url}/manage_main',
-        'category':'Plone',
+    {'id':'ZMI',
+     'appId':'ZMI',
+     'name':'Zope Management Interface',
+     'action':'string:${portal_url}/manage_main',
+     'category':'Plone',
      'permission': ManagePortal,
      'imageUrl':'zope_icon.gif'},
 
+    {'id':'SearchSettings',
+     'appId':'Plone',
+     'name':'Search Settings',
+     'action':'string:${portal_url}/prefs_search_form',
+     'category':'Plone',
+     'permission': ManagePortal,
+     'imageUrl':'search_icon.gif'},
+
+     {'id':'NavigationSettings',
+     'appId':'Plone',
+     'name':'Navigation Settings',
+     'action':'string:${portal_url}/prefs_navigation_form',
+     'category':'Plone',
+     'permission': ManagePortal,
+     'imageUrl':'navigation_icon.gif'},
 
 )
 

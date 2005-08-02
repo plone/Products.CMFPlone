@@ -3,7 +3,7 @@ from Products.CMFCore.utils import _verifyActionPermissions, \
      getToolByName, getActionContext
 from OFS.Folder import Folder
 from Products.CMFCore.CMFCatalogAware import CMFCatalogAware
-from Products.CMFDefault.SkinnedFolder import SkinnedFolder
+from Products.CMFCore.PortalFolder import PortalFolderBase
 from Products.CMFDefault.DublinCore import DefaultDublinCoreImpl
 #from Products.CMFCore.interfaces.DublinCore import DublinCore as IDublinCore
 #from Products.CMFCore.interfaces.Contentish import Contentish as IContentish
@@ -110,7 +110,6 @@ class OrderedContainer(Folder):
         obj_meta = metadata.pop(obj_idx)
         metadata.insert(position, obj_meta)
         self._objects = tuple(metadata)
-        self._reindexOnReorder()
 
     # Here the implementation of IOrderedContainer starts
     # Once Plone depends on Zope 2.7 this should be replaced by mixing in
@@ -166,25 +165,7 @@ class OrderedContainer(Folder):
                         raise ValueError('The object with the id "%s" does '
                                          'not exist.' % subset_ids[pos])
             self._objects = tuple(objects)
-
-        self._reindexOnReorder()
         return counter
-
-    security.declarePrivate('_reindexOnReorder')
-    def _reindexOnReorder(self):
-        """ Catalog ordering support """
-
-        # For now we will just reindex all objects in the folder. Later we may
-        # optimize to only reindex the objs that got moved. Ordering is more
-        # for humans than machines, therefore the fact that this won't scale
-        # well for btrees isn't a huge issue, since btrees are more for
-        # machines than humans.
-
-        cat = getToolByName(self, 'portal_catalog')
-        cataloged_objs = cat(path = {'query':'/'.join(self.getPhysicalPath()), 'depth': 1})
-        for brain in cataloged_objs:
-            obj = brain.getObject()
-            cat.indexObject(obj,['getObjPositionInParent',])
 
     security.declarePrivate('getCMFObjectsSubsetIds')
     def getCMFObjectsSubsetIds(self, objs):
@@ -258,19 +239,21 @@ class OrderedContainer(Folder):
         method = OrderedContainer.inheritedAttribute('manage_renameObject')
         result = method(self, id, new_id, REQUEST)
         self.moveObject(new_id, objidx)
+        putils = getToolByName(self, 'plone_utils')
+        putils.reindexOnReorder(self)
 
         return result
 
 InitializeClass(OrderedContainer)
 
-class BasePloneFolder( SkinnedFolder, DefaultDublinCoreImpl ):
+class BasePloneFolder( CMFCatalogAware, PortalFolderBase, DefaultDublinCoreImpl ):
     """Implements basic Plone folder functionality except ordering support.
     """
 
     security=ClassSecurityInfo()
 
     __implements__ =  DefaultDublinCoreImpl.__implements__ + \
-                      (SkinnedFolder.__implements__,WriteLockInterface)
+                      (PortalFolderBase.__implements__,WriteLockInterface)
 
     manage_options = Folder.manage_options + \
                      CMFCatalogAware.manage_options
@@ -295,6 +278,9 @@ class BasePloneFolder( SkinnedFolder, DefaultDublinCoreImpl ):
             return view(*(self, self.REQUEST))
         else:
             return view()
+
+    security.declareProtected(Permissions.view, 'view')
+    view = __call__
 
     def index_html(self):
         """ Acquire if not present. """
@@ -327,7 +313,7 @@ class BasePloneFolder( SkinnedFolder, DefaultDublinCoreImpl ):
                                         portal_status_message='Folder added')
 
     manage_addFolder = manage_addPloneFolder
-    manage_renameObject = SkinnedFolder.manage_renameObject
+    manage_renameObject = PortalFolderBase.manage_renameObject
 
     security.declareProtected(Permissions.delete_objects, 'manage_delObjects')
     def manage_delObjects(self, ids=[], REQUEST=None):
@@ -340,7 +326,7 @@ class BasePloneFolder( SkinnedFolder, DefaultDublinCoreImpl ):
             if not mt.checkPermission(Permissions.delete_objects, item):
                 raise Unauthorized, (
                     "Do not have permissions to remove this object")
-        SkinnedFolder.manage_delObjects(self, ids, REQUEST=REQUEST)
+        return PortalFolderBase.manage_delObjects(self, ids, REQUEST=REQUEST)
 
     def __browser_default__(self, request):
         """ Set default so we can return whatever we want instead
@@ -354,7 +340,7 @@ class BasePloneFolder( SkinnedFolder, DefaultDublinCoreImpl ):
                       sort_on=None,
                       reverse=0):
         """ Able to sort on field """
-        values=SkinnedFolder.contentValues(self, spec=spec, filter=filter)
+        values=PortalFolderBase.contentValues(self, spec=spec, filter=filter)
         if sort_on is not None:
             values.sort(lambda x, y, sort_on=sort_on: safe_cmp(getattr(x,sort_on),
                                                                getattr(y,sort_on)))
@@ -368,7 +354,7 @@ class BasePloneFolder( SkinnedFolder, DefaultDublinCoreImpl ):
         """
         Optionally you can suppress "hidden" files, or files that begin with .
         """
-        contents=SkinnedFolder.listFolderContents(self,
+        contents=PortalFolderBase.listFolderContents(self,
                                                   spec=spec,
                                                   contentFilter=contentFilter)
         if suppressHiddenFiles:

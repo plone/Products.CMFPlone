@@ -127,6 +127,9 @@ function sort(e) {
 }
     
 function initalizeTableSort(e) {
+    // terminate if we hit a non-compliant DOM implementation
+    if (!W3CDOM){return false};
+
     var tbls = document.getElementsByTagName('table');
     for (var t = 0; t < tbls.length; t++)
         {
@@ -150,6 +153,7 @@ function initalizeTableSort(e) {
                     // check that the columns does not have class="nosort"
                     if (!xre.exec(node.className)) {
                         node.insertBefore(blankarrow.cloneNode(1), node.firstChild);
+                        node.style.cursor = 'pointer';
                         if (!initialsort) {
                             initialsort = true;
                             uparrow = document.createElement('img');

@@ -4,9 +4,9 @@
  * give them a class of 'link-plain'
  */
 function scanforlinks(){
-    // securing against really old DOMs.
-    if (! document.getElementsByTagName){return false};
-    if (! document.getElementById){return false};
+    // terminate if we hit a non-compliant DOM implementation
+    if (!W3CDOM){return false};
+
     contentarea = getContentArea()
     if (! contentarea){return false}
     links = contentarea.getElementsByTagName('a');

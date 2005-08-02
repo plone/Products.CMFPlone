@@ -11,7 +11,7 @@
           tal:attributes="content string:text/html;;charset=${charset}" />
 
     <title tal:define="portal_title portal_properties/title;
-                       page_title here/title_or_id">
+                       page_title here/pretty_title_or_id">
         <tal:pagetitle replace="page_title">
             Inserts page title
         </tal:pagetitle>
@@ -31,18 +31,29 @@
           tal:attributes="name python:keyval[0];
                           content python:keyval[1];" />
 
+    <!-- Plone ECMAScripts -->
+    <metal:js metal:use-macro="here/renderAllTheScripts/macros/jsrenderer">
+        <!-- Fetch scripts from the Javascript Registry -->
+    </metal:js>
+
     <metal:css metal:use-macro="here/renderAllTheStylesheets/macros/cssrenderer">
         <!-- Fetch stylesheets from the CSS Registry -->
     </metal:css>
     
-    <!-- Internet Explorer CSS Fixes -->
-    <tal:iefixstart replace="structure string:&lt;!--[if IE]&gt;" />
-    <style type="text/css" media="all" tal:condition="exists: portal/ploneIEFixes.css"
-           tal:content="string:@import url($portal_url/ploneIEFixes.css);">
-    </style>
+    <!-- Internet Explorer CSS Fixes + IE7 for compliance fixes (limited set) -->
+    <tal:iefixstart replace="structure string:&lt;!--[if lt IE 7]&gt;" />
+        <style type="text/css" media="all" tal:condition="exists: portal/IEFixes.css"
+               tal:content="string:@import url($portal_url/IEFixes.css);">
+        </style>
     <tal:iefixend replace="structure string:&lt;![endif]--&gt;" />
 
     <link rel="shortcut icon" type="image/x-icon" tal:attributes="href string:$portal_url/favicon.ico" />
+
+    <!-- Put this inside iefixstart to apply the IE7 script. It will be very slow, and currently
+         breaks with plonePrint.css and plonePresentation.css for unknown reasons.
+        <script src="ie7-standard.js" type="text/javascript" tal:attributes="src string:$portal_url/ie7/ie7-standard.js"></script>
+    -->
+
 
     <link rel="home" href="" title="Front page" tal:attributes="href string:$portal_url" />
     <link rel="search" title="Search this site" tal:attributes="href string:$portal_url/search_form" />
@@ -81,11 +92,6 @@
     <metal:block metal:define-slot="javascript_head_slot" tal:replace="nothing">
       Inserts javascript specified from a page.
     </metal:block>
-
-    <!-- Plone ECMAScripts -->
-    <metal:js metal:use-macro="here/renderAllTheScripts/macros/jsrenderer">
-        <!-- Fetch scripts from the Javascript Registry -->
-    </metal:js>
 
   </head>
 

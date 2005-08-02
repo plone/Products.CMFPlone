@@ -33,7 +33,7 @@
                                          alt result/Type" />
 
                     <a href="/view"
-                       tal:content="result/Title"
+                       tal:content="result/pretty_title_or_id"
                        tal:attributes="href result/getURL">
                     Title
                     </a>

@@ -298,7 +298,10 @@ class TestCreateObjectByURL(PloneTestCase.FunctionalTestCase):
             self.basic_auth)
 
         self.assertEqual(response.getStatus(), 302) # Redirect to document_view
-        self.failUnless(response.getHeader('Location').startswith(self.folder_url+'/foo/view'))
+        viewAction = self.portal.portal_types['Document'].getActionById('view')
+        if viewAction and not viewAction[0] == '/':
+            viewAction = "/" + viewAction
+        self.failUnless(response.getHeader('Location').startswith(self.folder_url+'/foo' + viewAction))
 
         self.failUnless('foo' in self.folder.objectIds())
         self.assertEqual(self.folder.foo.Title(), 'Foo')

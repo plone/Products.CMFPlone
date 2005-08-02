@@ -48,4 +48,5 @@
         global lockable python:hasattr(here.aq_inner.aq_explicit, 'wl_isLocked');
         global isLocked python:lockable and here.wl_isLocked();
         global isRTL python:here.isRightToLeft(domain='plone');
+        global visible_ids here/visibleIdsEnabled|nothing;
         " />

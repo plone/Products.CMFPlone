@@ -5,6 +5,7 @@ from Products.CMFCore.WorkflowTool import WorkflowTool as BaseTool
 from Products.CMFCore.WorkflowTool import WorkflowInformation
 from Products.CMFPlone import ToolNames
 from ZODB.POSException import ConflictError
+from Acquisition import aq_base
 
 from Globals import InitializeClass
 from AccessControl import ClassSecurityInfo
@@ -21,14 +22,15 @@ class WorkflowTool(PloneBaseTool, BaseTool):
     
     __implements__ = (PloneBaseTool.__implements__, BaseTool.__implements__, )
 
-    security.declarePublic('doActionFor')
-    def doActionFor(self, ob, action, wf_id=None, *args, **kw):
-        """ it appears that objects are reindexed after they
-            are transitioned in DCWorkflow.  """
-        result=BaseTool.doActionFor(self, ob, action, wf_id, *args, **kw)
-        if result:
-            result.reindexObjectSecurity()
-            return result
+## reindexObjectSecurity() is called over _invokeWithNotification()+ _reindexWorkflowVariables()
+#    security.declarePublic('doActionFor')
+#    def doActionFor(self, ob, action, wf_id=None, *args, **kw):
+#        """ it appears that objects are reindexed after they
+#            are transitioned in DCWorkflow.  """
+#        result=BaseTool.doActionFor(self, ob, action, wf_id, *args, **kw)
+#        if result:
+#            result.reindexObjectSecurity()
+#            return result
 
     #XXX this should not make it into 1.0
     # Refactor me, my maker was tired
@@ -110,7 +112,7 @@ class WorkflowTool(PloneBaseTool, BaseTool):
                                     'id': tdef.id,
                                     'title': tdef.title,
                                     'title_or_id': tdef.title_or_id(),
-                                    'name': tdef.actbox_name,
+                                    'name': tdef.actbox_name % info,
                                     'url': tdef.actbox_url % info
                                     }
         return tuple(result.values())
@@ -196,46 +198,97 @@ class WorkflowTool(PloneBaseTool, BaseTool):
         """
         return self.objectIds()
 
-    security.declarePrivate('listActions')
-    def listActions(self, info):
+#    security.declarePrivate('listActions')
+#    def listActions(self, info):
+#
+#        """ Returns a list of actions to be displayed to the user.
+#
+#        o Invoked by the portal_actions tool.
+#        
+#        o Allows workflows to include actions to be displayed in the
+#          actions box.
+#
+#        o Object actions are supplied by workflows that apply to the object.
+#        
+#        o Global actions are supplied by all workflows.
+#        """
+#        show_globals = False
+#        chain = self.getChainFor(info.content)
+#        did = {}
+#        actions = []
+#        for wf_id in chain:
+#            did[wf_id] = 1
+#            wf = self.getWorkflowById(wf_id)
+#            if wf is not None:
+#                a = wf.listObjectActions(info)
+#                if a is not None:
+#                    actions.extend(a)
+#                if show_globals:
+#                    a = wf.listGlobalActions(info)
+#                    if a is not None:
+#                        actions.extend(a)
+#
+#        if show_globals:
+#            wf_ids = self.getWorkflowIds()
+#            for wf_id in wf_ids:
+#                if not did.has_key(wf_id):
+#                    wf = self.getWorkflowById(wf_id)
+#                    if wf is not None:
+#                        a = wf.listGlobalActions(info)
+#                        if a is not None:
+#                            actions.extend(a)
+#        return actions
 
-        """ Returns a list of actions to be displayed to the user.
-
-        o Invoked by the portal_actions tool.
-        
-        o Allows workflows to include actions to be displayed in the
-          actions box.
-
-        o Object actions are supplied by workflows that apply to the object.
-        
-        o Global actions are supplied by all workflows.
+    security.declarePublic('getTitleForStateOnType')
+    def getTitleForStateOnType(self, state_name, p_type):
+        """Returns the workflow state title for a given state name,
+           uses a portal_type to determine which workflow to use
         """
-        show_globals = False
-        chain = self.getChainFor(info.content)
-        did = {}
-        actions = []
-        for wf_id in chain:
-            did[wf_id] = 1
-            wf = self.getWorkflowById(wf_id)
-            if wf is not None:
-                a = wf.listObjectActions(info)
-                if a is not None:
-                    actions.extend(a)
-                if show_globals:
-                    a = wf.listGlobalActions(info)
-                    if a is not None:
-                        actions.extend(a)
+        if p_type is not None:
+            chain = self.getChainForPortalType(p_type)
+            for wf_id in chain:
+                wf = self.getWorkflowById(wf_id)
+                if wf is not None:
+                    states = wf.states
+                    state = getattr(states, state_name, None)
+                    if state is not None:
+                        return getattr(aq_base(state), 'title', None) or state_name
+        return state_name
 
-        if show_globals:
-            wf_ids = self.getWorkflowIds()
-            for wf_id in wf_ids:
-                if not did.has_key(wf_id):
-                    wf = self.getWorkflowById(wf_id)
-                    if wf is not None:
-                        a = wf.listGlobalActions(info)
-                        if a is not None:
-                            actions.extend(a)
-        return actions
+    security.declarePublic('getTitleForTransitionOnType')
+    def getTitleForTransitionOnType(self, trans_name, p_type):
+        """Returns the workflow transition title for a given transition name,
+           uses a portal_type to determine which workflow to use
+        """
+        if p_type is not None:
+            chain = self.getChainForPortalType(p_type)
+            for wf_id in chain:
+                wf = self.getWorkflowById(wf_id)
+                if wf is not None:
+                    transitions = wf.transitions
+                    trans = getattr(transitions, trans_name, None)
+                    if trans is not None:
+                        return getattr(aq_base(trans), 'actbox_name', None) or trans_name
+        return trans_name
+
+    security.declarePublic('listWFStatesByTitle')
+    def listWFStatesByTitle(self, filter_similar=False):
+        """Returns the states of all available workflows, optionally filtering
+           out states with matching title and id"""
+        states = []
+        dup_list = {}
+        for wf in self.objectValues():
+            state_folder = getattr(wf, 'states', None)
+            if state_folder is not None:
+                if not filter_similar:
+                    states.extend(state_folder.objectValues())
+                else:
+                    for state in state_folder.objectValues():
+                        key = '%s:%s'%(state.id,state.title)
+                        if not dup_list.has_key(key):
+                            states.append(state)
+                        dup_list[key] = 1
+        return [(s.title, s.getId()) for s in states]
 
 WorkflowTool.__doc__ = BaseTool.__doc__
 

@@ -96,9 +96,10 @@ class TestCatalogSetup(PloneTestCase.PloneTestCase):
         # exclude_from_nav column should be in catalog schema
         self.failUnless('exclude_from_nav' in self.catalog.schema())
 
-    def testIs_folderishInSchema(self):
-        # is_folderish column should be in catalog schema
-        self.failUnless('is_folderish' in self.catalog.schema())
+    def testIs_folderishIsFieldIndex(self):
+        # is_folderish should be a FieldIndex
+        self.failUnless(self.catalog.Indexes['is_folderish'].__class__.__name__,
+                        'FieldIndex')
 
     def testDateIsDateIndex(self):
         # Date should be a DateIndex
@@ -152,6 +153,11 @@ class TestCatalogSetup(PloneTestCase.PloneTestCase):
     def testExpiresDateNotInSchema(self):
         # ExpirationDate column should be in catalog schema
         self.failIf('ExpiresDate' in self.catalog.schema())
+
+    def testIs_Default_PageIsFieldIndex(self):
+        # sortable_title should be a FieldIndex
+        self.assertEqual(self.catalog.Indexes['is_default_page'].__class__.__name__,
+                         'FieldIndex')
 
 
 class TestCatalogIndexing(PloneTestCase.PloneTestCase):
@@ -304,8 +310,8 @@ class TestCatalogSearching(PloneTestCase.PloneTestCase):
         self.workflow.doActionFor(self.folder.folder2, 'hide', comment='')
         self.workflow.doActionFor(self.folder.folder2.doc2, 'hide', comment='')
 
-        #used for testing AND/OR search functionality below
-        self.folder.invokeFactory('Document', id='aaa', text='aaa')
+        # Used for testing AND/OR search functionality below
+        self.folder.invokeFactory('Document', id='aaa', text='aaa', title='ccc')
         self.folder.invokeFactory('Document', id='bbb', text='bbb')
 
     def addUser2ToGroup(self):
@@ -334,11 +340,13 @@ class TestCatalogSearching(PloneTestCase.PloneTestCase):
 
     def testSearchReturnsDocumentUsing_DefaultAND(self):
         # Documents should not be found when searching 'aaa bbb' (which should default to AND)
-        self.assertEqual(len(self.catalog(SearchableText='aaa+bbb')), 0)
+        self.assertEqual(len(self.catalog(SearchableText='aaa bbb')), 0)
+        self.assertEqual(len(self.catalog(SearchableText='aaa ccc')), 1)
 
     def testSearchReturnsDocumentUsing_AND(self):
         # Documents should not be found when owner does a search using AND
         self.assertEqual(len(self.catalog(SearchableText='aaa AND bbb')), 0)
+        self.assertEqual(len(self.catalog(SearchableText='aaa AND ccc')), 1)
 
     def testSearchReturnsDocumentUsing_OR(self):
         # Two documents (aaa, bbb)  should be found when owner does a search using OR 
@@ -503,25 +511,41 @@ class TestCatalogOrdering(PloneTestCase.PloneTestCase):
         self.folder.invokeFactory('Document', id='doc4', text='blee')
 
     def testInitialOrder(self):
-        self.failUnlessEqual(self.folder.getObjectPosition('doc1'), 1)
-        self.failUnlessEqual(self.folder.getObjectPosition('doc2'), 2)
-        self.failUnlessEqual(self.folder.getObjectPosition('doc3'), 3)
-        self.failUnlessEqual(self.folder.getObjectPosition('doc4'), 4)
+        self.failUnlessEqual(self.folder.getObjectPosition('doc1'), 0)
+        self.failUnlessEqual(self.folder.getObjectPosition('doc2'), 1)
+        self.failUnlessEqual(self.folder.getObjectPosition('doc3'), 2)
+        self.failUnlessEqual(self.folder.getObjectPosition('doc4'), 3)
 
-    def testOrderIsUpdatedOnPloneFolderMoveByDelta(self):
-        self.folder.moveObjectsByDelta('doc1', 2)
+    def testOrderIsUpdatedOnMoveDown(self):
+        self.folder.folder_position('down','doc1')
         folder_docs = self.catalog(portal_type = 'Document',
                                    path = self.folder.getPhysicalPath(),
                                    sort_on = 'getObjPositionInParent')
-        expected = ['doc2','doc3','doc1','doc4']
+        expected = ['doc2','doc1','doc3','doc4']
         self.failUnlessEqual([b.getId for b in folder_docs], expected)
 
-    def testOrderIsUpdatedOnPloneFolderMoveObject(self):
-        self.folder.moveObject('doc3', 1)
+    def testOrderIsUpdatedOnMoveUp(self):
+        self.folder.folder_position('up','doc3')
+        folder_docs = self.catalog(portal_type = 'Document',
+                                   path = self.folder.getPhysicalPath(),
+                                   sort_on = 'getObjPositionInParent')
+        expected = ['doc1','doc3','doc2','doc4']
+        self.failUnlessEqual([b.getId for b in folder_docs], expected)
+
+    def testOrderIsUpdatedOnMoveTop(self):
+        self.folder.folder_position('top','doc3')
         folder_docs = self.catalog(portal_type = 'Document',
                                    path = self.folder.getPhysicalPath(),
                                    sort_on = 'getObjPositionInParent')
         expected = ['doc3','doc1','doc2','doc4']
+        self.failUnlessEqual([b.getId for b in folder_docs], expected)
+
+    def testOrderIsUpdatedOnMoveBottom(self):
+        self.folder.folder_position('bottom','doc3')
+        folder_docs = self.catalog(portal_type = 'Document',
+                                   path = self.folder.getPhysicalPath(),
+                                   sort_on = 'getObjPositionInParent')
+        expected = ['doc1','doc2','doc4','doc3']
         self.failUnlessEqual([b.getId for b in folder_docs], expected)
 
     def testOrderIsFineWithObjectCreation(self):
@@ -558,10 +582,11 @@ class TestCatalogOrdering(PloneTestCase.PloneTestCase):
     def testOrderAfterALotOfChanges(self):
         # ['doc1','doc2','doc3','doc4']
 
-        self.folder.moveObjectsByDelta('doc1', 2)
+        self.folder.folder_position('down','doc1')
+        self.folder.folder_position('down','doc1')
         # ['doc2','doc3','doc1','doc4']
 
-        self.folder.moveObject('doc3', 1)
+        self.folder.folder_position('top','doc3')
         # ['doc3','doc2','doc1','doc4']
 
         self.folder.invokeFactory('Document', id='doc5', text='blam')
@@ -749,6 +774,13 @@ class TestCatalogExpirationFiltering(PloneTestCase.PloneTestCase):
         self.nofx()
         res = self.catalog()
         self.assertResults(res, ['Members', 'events', 'events_topic', 'news', 'news_topic', default_user])
+
+    def testSearchResultsExpiredWithExpiredDisabled(self):
+        self.folder.doc.setExpirationDate(DateTime(2000, 12, 31))
+        self.folder.doc.reindexObject()
+        self.nofx()
+        res = self.catalog.searchResults(show_inactive=True)
+        self.assertResults(res, ['Members', 'events', 'events_topic', 'news', 'news_topic', default_user, 'doc'])
 
     def testCallExpiredWithExpiredDisabled(self):
         self.folder.doc.setExpirationDate(DateTime(2000, 12, 31))

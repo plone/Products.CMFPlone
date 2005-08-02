@@ -30,6 +30,10 @@ if not processed.get('ext_editor'):
 
 if not processed.get('listed'):
     processed['listed'] = ''
+
+if not processed.get('visible_ids'):
+    processed['visible_ids'] = 0
+
 context.plone_utils.setMemberProperties(member, **processed)
 
 return state.set(portal_status_message='Changes made.')

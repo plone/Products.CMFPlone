@@ -6,9 +6,14 @@
 ##bind script=script
 ##bind subpath=traverse_subpath
 ##parameters=
-
-if not context.isPrincipiaFolderish:
-    return False    
+from AccessControl import Unauthorized
+# It's silly but because this is often called on the parent folder, we must
+# ensure we have permission.
+try:
+    if not context.isPrincipiaFolderish:
+        return False
+except Unauthorized:
+        return False
 
 if 'index_html' in context.objectIds():
     return True

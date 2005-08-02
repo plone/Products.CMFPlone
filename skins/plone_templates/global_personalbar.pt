@@ -6,7 +6,8 @@
 <!-- THE PERSONAL BAR DEFINITION -->
 
 <div metal:define-macro="personal_bar"
-      tal:define="display_actions python:user_actions[:-1]+global_actions+user_actions[-1:];"
+      tal:define="display_actions python:user_actions[:-1]+global_actions+user_actions[-1:];
+                  getIconFor nocall:putils/getIconFor;"
       tal:omit-tag="">
 
 <h5 class="hiddenStructure" i18n:translate="heading_personal_tools">Personal tools</h5>
@@ -16,9 +17,7 @@
         tal:condition="not: isAnon"><a 
         id="user-name"
         tal:omit-tag="not: mtool/getHomeFolder"
-        tal:attributes="href string:${mtool/getHomeUrl}"
-        accesskey="u"
-        i18n:attributes="accesskey accesskeys-personalbar;">
+        tal:attributes="href string:${mtool/getHomeUrl}">
         <span class="visualCaseSensitive"
               tal:replace="user/getUserName">
              John
@@ -26,9 +25,13 @@
     </a></li>
 
     <tal:actions tal:repeat="action python:here.getOrderedUserActions(keyed_actions=keyed_actions)">
-        <li>
+        <li tal:define="icon python:getIconFor(action['category'], action['id'], None);
+                        class_name string:actionicon-${action/category}-${action/id};
+                        class_name python:test(icon, class_name, nothing);"
+            tal:attributes="class class_name">
             <a href=""
-               tal:attributes="href action/url">
+               tal:attributes="href action/url;
+                               class python:test(icon, 'visualIconPadding', nothing);">
                <tal:actionname i18n:translate="" tal:content="action/name">dummy</tal:actionname>
             </a>
         </li>

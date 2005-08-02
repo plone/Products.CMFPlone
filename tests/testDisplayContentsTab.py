@@ -14,6 +14,7 @@ from Products.CMFCore.CMFCorePermissions import AccessContentsInformation
 from Products.CMFCore.CMFCorePermissions import ListFolderContents
 from Products.CMFCore.CMFCorePermissions import ModifyPortalContent
 from Products.CMFCore.CMFCorePermissions import AddPortalContent
+from Products.CMFCore.CMFCorePermissions import ReviewPortalContent
 from AccessControl.Permissions import copy_or_move
 from AccessControl.Permissions import delete_objects
 
@@ -44,7 +45,8 @@ class TestDisplayContentsTab(PloneTestCase.PloneTestCase):
         return [ModifyPortalContent,
                 AddPortalContent,
                 copy_or_move,
-                delete_objects]
+                delete_objects,
+                ReviewPortalContent]
 
     def removePermissionsFromObject(self, permissions, object):
         for permission in permissions:
@@ -98,12 +100,10 @@ class TestDisplayContentsTab(PloneTestCase.PloneTestCase):
         self.removePermissionsFromObject(perms, self.folder)
         self.failUnless(self.folder.displayContentsTab())
 
-    def testNonFolderishObjectUsesParentPermissions(self):
+    def testNonFolderishObjectDoesNotShowTab(self):
         # The availability of the contents tab on a non-folderish object should be
         # based on the parents permissions.
         doc = self.folder.foo.doc1
-        self.failUnless(doc.displayContentsTab())
-        self.folder.foo.manage_permission(ListFolderContents, ['Manager'], acquire=0)
         self.failIf(doc.displayContentsTab())
 
     def testFolderishDefaultPageUsesParentPermissions(self):

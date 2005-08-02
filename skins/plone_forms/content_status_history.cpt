@@ -11,12 +11,12 @@
   <metal:calendar fill-slot="javascript_head_slot">
     <!-- ECMAScript calendar -->
     <style type="text/css" media="all"
-	    tal:content="string:@import url($portal_url/jscalendar/calendar-system.css);"></style>
+            tal:content="string:@import url($portal_url/jscalendar/calendar-system.css);"></style>
     <script type="text/javascript"
-	    tal:attributes="src string:$portal_url/jscalendar/calendar_stripped.js"></script>
+            tal:attributes="src string:$portal_url/jscalendar/calendar_stripped.js"></script>
     <script type="text/javascript" charset="iso-8859-1"
-	    tal:condition="exists: portal/jscalendar/calendar-en.js"
-	    tal:attributes="src string:$portal_url/jscalendar/calendar-en.js"></script>
+            tal:condition="exists: portal/jscalendar/calendar-en.js"
+            tal:attributes="src string:$portal_url/jscalendar/calendar-en.js"></script>
   </metal:calendar>
 
   <body>
@@ -284,62 +284,10 @@
 
       <div tal:condition="not: request/paths|nothing">
 
-        <table class="listing nosort" summary="Review History"
-               i18n:attributes="summary summary_review_history;"
-               tal:define="review_history python:wtool.getInfoFor(here, 'review_history', []);
-                                review_history python:[review for review in review_history if review.get('action','')]"
-               tal:condition="review_history">
+        <div metal:use-macro="here/document_byline/macros/byline">
+            Get the byline - contains details about author and modification date.
+        </div>
 
-          <tr>
-            <th i18n:translate="listingheader_action">Action</th>
-            <th i18n:translate="listingheader_performed_by">Performed&nbsp;by</th>
-            <th i18n:translate="listingheader_date_and_time">Date&nbsp;and&nbsp;Time</th>
-            <th i18n:translate="listingheader_comment">Comment</th>
-          </tr>
-
-          <metal:block tal:define="review_history python: portal.reverseList(review_history);"
-                       tal:repeat="items review_history">
-            <tr tal:define="odd repeat/items/odd;
-                            rhComments items/comments;"
-                tal:attributes="class python:test(odd, 'even', 'odd')"
-                tal:condition="items/action">
-              <td i18n:translate="" tal:content="items/action">
-                action
-              </td>
-
-              <td>
-                <a href="/Members/runyaga"
-                   tal:attributes="href python: mtool.getHomeUrl(items.get('actor'), '')"
-                   tal:content="items/actor">
-                  runyaga
-                </a>
-              </td>
-
-              <td>
-                <span tal:replace="python: items['time']" />
-                <span tal:condition="items/effective_date|nothing">
-                  (<span i18n:translate="label_publishing_effective" tal:omit-tag="">effective</span>:
-                  <span tal:replace="python: items['effective_date']"></span>)
-                </span>
-              </td>
-
-              <td>
-                <span tal:condition="rhComments">
-                  <span tal:replace="rhComments"> some comments </span>
-                </span>
-
-                <span tal:condition="not: rhComments" i18n:translate="no_comments">
-                  No comments.
-                </span>
-              </td>
-            </tr>
-          </metal:block>
-        </table>
-
-      </div>
-
-      <div metal:use-macro="here/document_byline/macros/byline">
-        Get the byline - contains details about author and modification date.
       </div>
 
     </div>

@@ -88,6 +88,9 @@ def initialize(context):
 
     # Make DiscussionNotAllowed importable TTW
     ModuleSecurityInfo('Products.CMFDefault.DiscussionTool').declarePublic('DiscussionNotAllowed')
+    
+    # Make AllowSendto importable TTW
+    ModuleSecurityInfo('Products.CMFPlone.PloneTool').declarePublic('AllowSendto')
 
     # Backward compatibility only, please import from utils directly
     from Products.CMFPlone.utils import transaction_note, base_hasattr
@@ -204,9 +207,11 @@ def initialize(context):
 
 
 # Zope 2.8-style transaction module
+# BBB: Zope 2.7
 try:
     import Zope2
 except ImportError:
     import transaction_ as transaction
 else:
     import transaction
+

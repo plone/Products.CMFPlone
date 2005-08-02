@@ -11,12 +11,14 @@
 local = []
 remote = []
 subjects=None
+isURLInPortal = context.portal_url.isURLInPortal
 
 if obj is None:
     obj=context
 
 abs_url = obj.absolute_url()
 portal_url = context.portal_url.getPortalObject().absolute_url()
+pretty_title_or_id = context.plone_utils.pretty_title_or_id
 
 if hasattr(obj.aq_explicit, 'Subject'):
     subjects=obj.Subject()
@@ -27,19 +29,15 @@ if subjects:
                                    , sort_order = 'reverse'  ):
         url=o.getURL()
         if url == abs_url: continue # s/b if o is obj but fails
-        rurl = o.getRemoteUrl # getRemoteUrl is index as getRemoteUrl
-        title=''
-        if o.Title:
-            title=o.Title
-        else:
-            title=o.getId #getId() is indexed as the getId property
+        rurl = o.getRemoteUrl # getRemoteUrl is indexed as getRemoteUrl
+        title=pretty_title_or_id(o)
 
         lnk = {'title' : title,
                'url'  : url,
                'rurl' : rurl,
                'icon' : o.getIcon,
               }
-        if rurl and not rurl.startswith(portal_url): #we need UIDs
+        if rurl and not isURLInPortal(rurl): #we need UIDs
             remote.append(lnk)
         else:
             local.append(lnk)

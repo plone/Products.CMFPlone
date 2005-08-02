@@ -1,0 +1,101 @@
+/*
+** Stylesheet with Internet Explorer-specific workarounds.
+*/
+/* <dtml-var "enableHTTPCompression(request=REQUEST, debug=1, css=1)"> (this is for http compression) */
+/* <dtml-with base_properties> */
+
+* html #portal-columns {
+  width: 100%;
+}
+* html*#portal-columns {
+    width: auto;
+}
+
+input {
+    margin-bottom: 1px; /* bug fix */
+}
+
+table.listing td.top {
+    /* insane IE row bug workaround */
+    position: relative;
+    left: -1px;
+    top: -1px;
+}
+
+div#portal-columns div.portlet {
+    text-align: left;
+}
+div#portal-columns div#portal-column-one,
+div#portal-columns div#portal-column-two {
+    overflow: hidden;
+}
+
+textarea {
+    width: 97%;
+}
+
+.visualOverflow {
+    width: 88%;
+}
+
+/* Fix bottom margin on tabs in IE */
+#portal-globalnav li.selected a {
+position: relative;
+}
+
+/* Calendar fixes */
+.ploneCalendar .todaynoevent,
+.ploneCalendar .todayevent {
+    position: relative;
+}
+
+
+.hiddenStructure { /* This is necessary to eliminate the 1px high object in
+                      the document flow in place of .hiddenStructure block objects */
+    position: absolute;
+}
+
+body { /* These work in IE only, changes the look of the scrollbar + textareas */
+    scrollbar-base-color: &dtml-globalBackgroundColor;;
+    scrollbar-highlight-color: &dtml-globalBackgroundColor;;
+    scrollbar-track-color: &dtml-evenRowBackgroundColor;;
+    scrollbar-darkshadow-color: &dtml-evenRowBackgroundColor;;
+    scrollbar-3dlight-color: &dtml-globalBorderColor;;
+    scrollbar-shadow-color: &dtml-globalBorderColor;;
+    scrollbar-arrow-color: &dtml-globalFontColor;;
+}
+
+/* Holly hack to kill the Peekaboo bug in IE - details at
+   http://www.positioniseverything.net/explorer/peekaboo.html
+   "* html" syntax is added to hide it from IE5/Mac. ~limi
+ */
+
+#floatholder, #float {
+    height: 1%;
+}
+
+/* Fix for IE float bug */
+* html .visualIEFloatFix,
+* html h1,
+* html h2,
+* html h3,
+* html h4,
+* html h5,
+* html h6,
+* html p,
+* html .documentDescription,
+* html .visualClear
+  {
+    height: 0.1%;
+}
+
+/* There appears to be a bug in some IE 6 versions that causes dashed borders
+   to get positioned strangely (i.e. out of the portlet in this case), and
+   to move about when scrolling.  May be related to:
+   http://mtiki.mmf.at/mt/archives/000011.html */
+
+dd.portletFooter {
+    border-top-style: solid;
+}
+
+/* </dtml-with> */

@@ -170,6 +170,12 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
         self.assertEqual(self.utils.normalizeString(u"\uc774\ubbf8\uc9f1 Korean"),
                          'c774bbf8c9f1-korean')
 
+    def testNormalizeStringObject(self):
+        # Objects should be converted to strings using repr()
+        self.assertEqual(self.utils.normalizeString(None), 'none')
+        self.assertEqual(self.utils.normalizeString(True), 'true')
+        self.assertEqual(self.utils.normalizeString(False), 'false')
+
 
 class TestOwnershipStuff(PloneTestCase.PloneTestCase):
 
@@ -536,6 +542,14 @@ class TestNavTree(PloneTestCase.PloneTestCase):
         folder2.invokeFactory('File', 'file21')
         self.setRoles(['Member'])
 
+    def testTypesToList(self):
+        # Make sure typesToList() returns the expected types
+        wl = self.utils.typesToList()
+        self.failUnless('Folder' in wl)
+        self.failUnless('Large Plone Folder' in wl)
+        self.failUnless('Topic' in wl)
+        self.failIf('ATReferenceCriterion' in wl)
+
     def testCreateNavTree(self):
         # See if we can create one at all
         tree = self.utils.createNavTree(self.portal)
@@ -584,6 +598,25 @@ class TestNavTree(PloneTestCase.PloneTestCase):
         # Shouldn't exlude anything else
         self.assertEqual(tree['children'][0]['no_display'],False)
 
+    def testNavTreeExcludesDefaultPage(self):
+        # Make sure that items which are the default page are excluded
+        self.portal.folder2.setDefaultPage('doc21')
+        tree = self.utils.createNavTree(self.portal.folder2.file21)
+        self.failUnless(tree)
+        # Ensure that our 'doc21' default page is not in the tree.
+        self.assertEqual([c for c in tree['children'][-1]['children']
+                                            if c['path'][-5:]=='doc21'],[])
+
+    def testNavTreeMarksParentMetaTypesNotToQuery(self):
+        # Make sure that items whose ids are in the idsNotToList navTree
+        # property get no_display set to True
+        tree = self.utils.createNavTree(self.portal.folder2.file21)
+        self.assertEqual(tree['children'][-1]['show_children'],True)
+        ntp=self.portal.portal_properties.navtree_properties
+        ntp.manage_changeProperties(parentMetaTypesNotToQuery=['Folder'])
+        tree = self.utils.createNavTree(self.portal.folder2.file21)
+        self.assertEqual(tree['children'][-1]['show_children'],False)
+
     def testCreateSitemap(self):
         # Internally createSitemap is the same as createNavTree
         tree = self.utils.createSitemap(self.portal)
@@ -610,6 +643,85 @@ class TestNavTree(PloneTestCase.PloneTestCase):
         #Should only contain current object and published folder
         self.assertEqual(len(tree['children']), 2)
 
+    def testStateFiltering(self):
+        # Test Navtree workflow state filtering
+        workflow = self.portal.portal_workflow
+        ntp=self.portal.portal_properties.navtree_properties
+        ntp.manage_changeProperties(wf_states_to_show=['published'])
+        ntp.manage_changeProperties(enable_wf_state_filtering=True)
+        tree = self.utils.createNavTree(self.portal.folder2)
+        self.failUnless(tree)
+        self.failUnless(tree.has_key('children'))
+        #Should only contain current object
+        self.assertEqual(len(tree['children']), 1)
+        #change workflow for folder1
+        workflow.doActionFor(self.portal.folder1, 'publish')
+        self.portal.folder1.reindexObject()
+        tree = self.utils.createNavTree(self.portal.folder2)
+        #Should only contain current object and published folder
+        self.assertEqual(len(tree['children']), 2)
+
+    def testComplexSitemap(self):
+        # create and test a reasonabley complex sitemap
+        path = lambda x: '/'.join(x.getPhysicalPath())
+        # We do this in a strange order in order to maximally demonstrate the bug
+        folder1 = self.portal.folder1
+        folder1.invokeFactory('Folder','subfolder1')
+        subfolder1 = folder1.subfolder1
+        folder1.invokeFactory('Folder','subfolder2')
+        subfolder2 = folder1.subfolder2
+        subfolder1.invokeFactory('Folder','subfolder11')
+        subfolder11 = subfolder1.subfolder11
+        subfolder1.invokeFactory('Folder','subfolder12')
+        subfolder12 = subfolder1.subfolder12
+        subfolder2.invokeFactory('Folder','subfolder21')
+        subfolder21 = subfolder2.subfolder21
+        folder1.invokeFactory('Folder','subfolder3')
+        subfolder3 = folder1.subfolder3
+        subfolder2.invokeFactory('Folder','subfolder22')
+        subfolder22 = subfolder2.subfolder22
+        subfolder22.invokeFactory('Folder','subfolder221')
+        subfolder221 = subfolder22.subfolder221
+
+        # Increase depth
+        ntp=self.portal.portal_properties.navtree_properties
+        ntp.manage_changeProperties(sitemapDepth=5)
+
+        sitemap = self.utils.createSitemap(self.portal)
+
+        folder1map = sitemap['children'][6]
+        self.assertEqual(len(folder1map['children']), 6)
+        self.assertEqual(folder1map['path'], path(folder1))
+
+        subfolder1map = folder1map['children'][3]
+        self.assertEqual(subfolder1map['path'], path(subfolder1))
+        self.assertEqual(len(subfolder1map['children']), 2)
+
+        subfolder2map = folder1map['children'][4]
+        self.assertEqual(subfolder2map['path'], path(subfolder2))
+        self.assertEqual(len(subfolder2map['children']), 2)
+
+        subfolder3map = folder1map['children'][5]
+        self.assertEqual(subfolder3map['path'], path(subfolder3))
+        self.assertEqual(len(subfolder3map['children']), 0)
+
+        subfolder11map = subfolder1map['children'][0]
+        self.assertEqual(subfolder11map['path'], path(subfolder11))
+        self.assertEqual(len(subfolder11map['children']), 0)
+
+        subfolder21map = subfolder2map['children'][0]
+        self.assertEqual(subfolder21map['path'], path(subfolder21))
+        self.assertEqual(len(subfolder21map['children']), 0)
+
+        subfolder22map = subfolder2map['children'][1]
+        self.assertEqual(subfolder22map['path'], path(subfolder22))
+        self.assertEqual(len(subfolder22map['children']), 1)
+
+        # Why isn't this showing up in the sitemap
+        subfolder221map = subfolder22map['children'][0]
+        self.assertEqual(subfolder221map['path'], path(subfolder221))
+        self.assertEqual(len(subfolder221map['children']), 0)
+
 
 class TestPortalTabs(PloneTestCase.PloneTestCase):
     '''Tests for the portal tabs query'''
@@ -633,13 +745,15 @@ class TestPortalTabs(PloneTestCase.PloneTestCase):
         # See if we can create one at all
         tabs = self.utils.createTopLevelTabs()
         self.failUnless(tabs)
-        #Only the folders show up (Members, news, folder1, folder2)
+        #Only the folders show up (Members, news, events, folder1, folder2)
         self.assertEqual(len(tabs), 5)
 
     def testTabsRespectFolderOrder(self):
         # See if reordering causes a change in the tab order
         tabs1 = self.utils.createTopLevelTabs()
-        self.portal.moveObjectsByDelta('folder2', -1)
+        # Must be manager to change order on portal itself
+        self.setRoles(['Manager','Member'])
+        self.portal.folder_position('up', 'folder2')
         tabs2 = self.utils.createTopLevelTabs()
         #Same number of objects
         self.failUnlessEqual(len(tabs1), len(tabs2))
@@ -662,7 +776,23 @@ class TestPortalTabs(PloneTestCase.PloneTestCase):
         workflow.doActionFor(self.portal.folder1, 'publish')
         self.portal.folder1.reindexObject()
         tabs = self.utils.createTopLevelTabs()
-        #Should only contain current object and published folder
+        #Should only contain the published folder
+        self.assertEqual(len(tabs), 1)
+
+    def testStateFiltering(self):
+        # Test tabs workflow state filtering
+        workflow = self.portal.portal_workflow
+        ntp=self.portal.portal_properties.navtree_properties
+        ntp.manage_changeProperties(wf_states_to_show=['published'])
+        ntp.manage_changeProperties(enable_wf_state_filtering=True)
+        tabs = self.utils.createTopLevelTabs()
+        #Should contain no folders
+        self.assertEqual(len(tabs), 0)
+        #change workflow for folder1
+        workflow.doActionFor(self.portal.folder1, 'publish')
+        self.portal.folder1.reindexObject()
+        tabs = self.utils.createTopLevelTabs()
+        #Should only contain the published folder
         self.assertEqual(len(tabs), 1)
 
     def testDisableFolderTabs(self):
@@ -675,11 +805,13 @@ class TestPortalTabs(PloneTestCase.PloneTestCase):
 
     def testTabsExcludeItemsWithExcludeProperty(self):
         # Make sure that items witht he exclude_from_nav property are purged
+        tabs = self.utils.createTopLevelTabs()
+        orig_len = len(tabs)
         self.portal.folder2.setExcludeFromNav(True)
         self.portal.folder2.reindexObject()
         tabs = self.utils.createTopLevelTabs()
         self.failUnless(tabs)
-        self.assertEqual(len(tabs),4)
+        self.assertEqual(len(tabs), orig_len - 1)
         tab_names = [t['id'] for t in tabs]
         self.failIf('folder2' in tab_names)
 
@@ -701,13 +833,26 @@ class TestPortalTabs(PloneTestCase.PloneTestCase):
     def testTabsExcludeItemsInIdsNotToList(self):
         # Make sure that items whose ids are in the idsNotToList navTree
         # property get purged
+        tabs = self.utils.createTopLevelTabs()
+        orig_len = len(tabs)
         ntp=self.portal.portal_properties.navtree_properties
         ntp.manage_changeProperties(idsNotToList=['folder2'])
         tabs = self.utils.createTopLevelTabs()
         self.failUnless(tabs)
-        self.assertEqual(len(tabs),4)
+        self.assertEqual(len(tabs), orig_len - 1)
         tab_names = [t['id'] for t in tabs]
         self.failIf('folder2' in tab_names)
+
+    def testTabsExcludeNonFolderishItems(self):
+        # Make sure that items witht he exclude_from_nav property are purged
+        tabs = self.utils.createTopLevelTabs()
+        orig_len = len(tabs)
+        self.setRoles(['Manager','Member'])
+        self.portal.invokeFactory('Document','foo')
+        self.portal.foo.reindexObject()
+        tabs = self.utils.createTopLevelTabs()
+        self.failUnless(tabs)
+        self.assertEqual(len(tabs),orig_len)
 
 
 class TestBreadCrumbs(PloneTestCase.PloneTestCase):
@@ -743,6 +888,52 @@ class TestBreadCrumbs(PloneTestCase.PloneTestCase):
         self.assertEqual(crumbs[-1]['absolute_url'][-5:],'/view')
 
 
+class TestIDGenerationMethods(PloneTestCase.PloneTestCase):
+    '''Tests the isIDAutoGenerated method and pretty_title_or_id'''
+
+    def afterSetUp(self):
+        self.utils = self.portal.plone_utils
+
+    def testAutoGeneratedId(self):
+        r = self.utils.isIDAutoGenerated('document.2004-11-09.0123456789')
+        self.assertEqual(r, True)
+
+    def testValidPortalTypeNameButNotAutoGeneratedId(self):
+        # This was raising an IndexError exception for
+        # Zope < 2.7.3 (DateTime.py < 1.85.12.11) and a
+        # SyntaxError for Zope >= 2.7.3 (DateTime.py >= 1.85.12.11)
+        r = self.utils.isIDAutoGenerated('document.tar.gz')
+        self.assertEqual(r, False)
+        r = self.utils.isIDAutoGenerated('document.tar.12/32/2004')
+        self.assertEqual(r, False)
+        r = self.utils.isIDAutoGenerated('document.tar.12/31/2004 12:62')
+        self.assertEqual(r, False)
+
+    def test_pretty_title_or_id_returns_title(self):
+        self.folder.setTitle('My pretty title')
+        self.assertEqual(self.utils.pretty_title_or_id(self.folder), 'My pretty title')
+
+    def test_pretty_title_or_id_returns_id(self):
+        self.folder.setTitle('')
+        self.assertEqual(self.utils.pretty_title_or_id(self.folder), self.folder.getId())
+
+    def test_pretty_title_or_id_when_autogenerated(self):
+        self.setRoles(['Manager','Member'])
+        self.folder.setTitle('')
+        self.folder.setId('folder.2004-11-09.0123456789')
+        self.assertEqual(self.utils.pretty_title_or_id(self.folder),
+                         self.utils.getEmptyTitle())
+        self.assertEqual(self.utils.pretty_title_or_id(self.folder, 'Marker'),
+                                'Marker')
+
+    def testGetMethodAliases(self):
+        fti = self.folder.getTypeInfo()
+        expectedAliases = fti.getMethodAliases()
+        aliases = self.utils.getMethodAliases(fti)
+        self.assertEqual(len(expectedAliases), len(aliases))
+        for k, v in aliases.items():
+            self.assertEqual(expectedAliases[k], v)
+
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
@@ -754,6 +945,7 @@ def test_suite():
     suite.addTest(makeSuite(TestNavTree))
     suite.addTest(makeSuite(TestPortalTabs))
     suite.addTest(makeSuite(TestBreadCrumbs))
+    suite.addTest(makeSuite(TestIDGenerationMethods))
     return suite
 
 if __name__ == '__main__':

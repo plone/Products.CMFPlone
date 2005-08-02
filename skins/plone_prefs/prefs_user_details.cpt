@@ -70,6 +70,7 @@ we eventually might want to merge this form with personalize_form
                   name="users"
                   method="post"
                   enctype="multipart/form-data"
+                  class="enableUnloadProtection"
                   tal:condition="user | nothing"
               tal:attributes="action template/getId">
 
@@ -124,6 +125,84 @@ we eventually might want to merge this form with personalize_form
                                          tabindex tabindex/next;"
                          />
           </div>
+
+            <div class="field"
+                 tal:define="error errors/location | nothing;
+                             location python:request.get('location', member.getProperty('location', ''));"
+                 tal:attributes="class python:test(error, 'field error', 'field')">
+
+                <label for="location" i18n:translate="label_location">Location</label>
+
+                <div class="formHelp" i18n:translate="help_location">
+                Your location - either city and country - or in a company setting,
+                where your office is located.
+                </div>
+
+                <div tal:content="error">Validation error output</div>
+
+                <input type="text"
+                       id="location"
+                       name="location"
+                       size="25"
+                       tabindex=""
+                       value="member.location html_quote"
+                       tal:attributes="value location;
+                                       tabindex tabindex/next;"
+                       />
+
+            </div>
+
+            <div class="field"
+                 tal:define="error errors/language | nothing;
+                             language python:request.get('language', member.getProperty('language', ''));"
+                 tal:attributes="class python:test(error, 'field error', 'field')">
+
+                <label for="language" i18n:translate="label_language">Language</label>
+
+                <div class="formHelp" i18n:translate="help_preferred_language">
+                Your preferred language.
+                </div>
+
+                <div tal:content="error">Validation error output</div>
+
+
+                <select name="language"
+                        id="language"
+                        tabindex=""
+                        tal:attributes="tabindex tabindex/next;">
+                    <tal:block tal:repeat="lang here/availableLanguages">
+                        <option value="None"
+                            tal:content="python:lang[1]"
+                            tal:attributes="value python:lang[0];
+                                            selected python:test(language==lang[0], 'selected', None);">
+                        </option>
+                    </tal:block>
+                 </select>
+
+            </div>
+
+            <div class="field"
+                 tal:define="error errors/description | nothing;
+                             description python:request.get('description', member.getProperty('description', ''));"
+                 tal:attributes="class python:test(error, 'field error', 'field')">
+
+                <label for="description" i18n:translate="label_biography">Biography</label>
+
+                <div class="formHelp" i18n:translate="help_biography">
+                A short overview of who you are and what you do. Will be displayed
+                on the your author page, linked from the items you create.
+                </div>
+
+                <div tal:content="error">Validation error output</div>
+
+                <textarea type="text"
+                       id="description"
+                       name="description"
+                       tal:content="description"
+                       rows="5"
+                       />
+
+            </div>
 
             <div class="field"
                  tal:define="wysiwyg_editor python:request.get('wysiwyg_editor',
@@ -194,6 +273,29 @@ we eventually might want to merge this form with personalize_form
 
                 <div class="formHelp" i18n:translate="help_listed_search">
                 Determines if your user name is listed in member searches done on this site.
+                </div>
+
+            </div>
+
+            <div class="field"
+                     tal:condition="site_properties/visible_ids|nothing"
+                     tal:define="visible_ids python:request.get('visible_ids', member.getProperty('visible_ids',''));">
+
+                <input type="checkbox"
+                       class="noborder"
+                       name="visible_ids"
+                       id="cb_invisible_ids"
+                       tal:attributes="tabindex tabindex/next;
+                                       checked python:test(visible_ids, 'checked', None);"
+                       />
+
+                <label for="cb_invisible_ids" 
+                       i18n:translate="label_edit_short_names">Allow editing of Short Names</label>
+
+                <div class="formHelp" i18n:translate="help_display_names">
+                Determines if Short Names (also known as IDs) are
+                changable when editing items. If Short Names
+                are not displayed, they will be generated automatically.
                 </div>
 
             </div>

@@ -16,11 +16,6 @@ def addErrorLog(self, portal):
         manage_addErrorLog(portal)
         portal.error_log.copy_to_zlog = 1
 
-def modifyAuthentication(self, portal):
-    #set up cookie crumbler
-    cookie_authentication = getToolByName(portal, 'cookie_authentication')
-    cookie_authentication._updateProperty('auto_login_page', 'require_login')
-
 def installPortalTools(self,portal):
     ''' This should be done in Products/CMFPlone/Portal.py in setupTools '''
     pass
@@ -61,6 +56,7 @@ def addSiteProperties(self, portal):
         safeEditProperty(p, 'calendar_starting_year', 1999, 'int')
     if not hasattr(p, 'calendar_future_years_available'):
         safeEditProperty(p, 'calendar_future_years_available', 5, 'int')
+
 
 def setupDefaultLeftRightSlots(self, portal):
     """ sets up the slots on objectmanagers """
@@ -139,9 +135,9 @@ def addMemberdata(self, portal):
         safeEditProperty(md, 'wysiwyg_editor', '', 'string')
 
     if not hasattr(md,'ext_editor'):
-        safeEditProperty(md, 'ext_editor', '0', 'boolean')
+        safeEditProperty(md, 'ext_editor', 0, 'boolean')
     else:
-        safeEditProperty(md, 'ext_editor','1')
+        safeEditProperty(md, 'ext_editor', 0)
         
     if not hasattr(md,'listed'):
         safeEditProperty(md, 'listed', '1', 'boolean')
@@ -183,11 +179,8 @@ def correctFolderContentsAction(actionTool):
     for action in _actions:
         if action.id=='folderContents':
             action.name=action.title='Contents'
-            if action.condition.text.find('folder is not object') != -1:
-                action.condition=Expression('python:member and folder is not object and object.displayContentsTab()')
-                action.permissions=(CMFCorePermissions.ListFolderContents,)
-            elif action.condition.text.find('folder is object') != -1:
-                action.condition=Expression('python: folder.displayContentsTab()')
+            action.condition=Expression('object/displayContentsTab')
+            action.permissions=(CMFCorePermissions.ListFolderContents,)
     actionTool._actions=_actions
 
 
@@ -196,7 +189,7 @@ def modifyMembershipTool(self, portal):
     mt.addAction('myworkspace'
                 ,'Workspace'
                 ,'python: portal.portal_membership.getHomeUrl()+"/workspace"'
-                ,'python: member and portal.portal_membership.getHomeFolder()'
+                ,'python: member and portal.portal_membership.getHomeFolder() is not None'
                 ,'View'
                 ,'user'
                 , visible=0)
@@ -303,43 +296,6 @@ def addNewActions(self, portal):
     cloned_actions.append(state_action)
     at._actions = cloned_actions
 
-def addSiteActions(self, portal):
-    # site_actions which have icons associated with them as well
-    at=getToolByName(portal, 'portal_actions')
-    ai=getToolByName(portal, 'portal_actionicons')
-
-    at.addAction('small_text',
-                 name='Small Text',
-                 action="string:javascript:setActiveStyleSheet('Small Text', 1);",
-                 condition='',
-                 permission=CMFCorePermissions.View,
-                 category="site_actions")
-    at.addAction('normal_text',
-                 name='Normal Text',
-                 action="string:javascript:setActiveStyleSheet('', 1);",
-                 condition='',
-                 permission=CMFCorePermissions.View,
-                 category="site_actions")
-    at.addAction('large_text',
-                 name='Large Text',
-                 action="string:javascript:setActiveStyleSheet('Large Text', 1);",
-                 condition='',
-                 permission=CMFCorePermissions.View,
-                 category="site_actions")
-
-    ai.addActionIcon('site_actions',
-                     'small_text',
-                     'textsize_small.gif',
-                     'Small Text')
-    ai.addActionIcon('site_actions',
-                     'normal_text',
-                     'textsize_normal.gif',
-                     'Normal Text')
-    ai.addActionIcon('site_actions',
-                     'large_text',
-                     'textsize_large.gif',
-                     'Large Text')
-
 def setPortalDefaultPermissions(self, portal):
     portal.manage_permission(CMFCorePermissions.AccessInactivePortalContent,
                                                 ('Owner',), acquire=1)
@@ -356,10 +312,8 @@ functions = {
     'addNewActions': addNewActions,
     'modifySkins': modifySkins,
     'installPortalTools': installPortalTools,
-    'modifyAuthentication': modifyAuthentication,
     'modifyActionProviders': modifyActionProviders,
     'addErrorLog':addErrorLog,
-    'addSiteActions':addSiteActions,
     'setPortalDefaultPermissions':setPortalDefaultPermissions,
     }
 

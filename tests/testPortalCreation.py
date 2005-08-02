@@ -30,6 +30,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.catalog = self.portal.portal_catalog
         self.groups = self.portal.portal_groups
         self.factory = self.portal.portal_factory
+        self.cc = self.portal.cookie_authentication
 
     def testPloneSkins(self):
         # Plone skins should have been set up
@@ -192,10 +193,10 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         else:
             self.fail("Action icons tool has no 'full_screen' icon")
 
-    def testVisibleIdsSiteProperty(self):
-        # visible_ids should be a site property, not a memberdata property
+    def testVisibleIdsProperties(self):
+        # visible_ids should be a site property and a memberdata property
         self.failUnless(self.properties.site_properties.hasProperty('visible_ids'))
-        self.failIf(self.memberdata.hasProperty('visible_ids'))
+        self.failUnless(self.memberdata.hasProperty('visible_ids'))
 
     def testFormToolTipsProperty(self):
         # formtooltips should have been removed
@@ -203,11 +204,16 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
 
     def testNavTreeProperties(self):
         # navtree_properties should contain the new properties
-        self.failUnless(self.properties.navtree_properties.hasProperty('typesToList'))
+        self.failUnless(self.properties.navtree_properties.hasProperty('metaTypesNotToList'))
+        self.failUnless(self.properties.navtree_properties.hasProperty('parentMetaTypesNotToQuery'))
+        self.failUnless('Large Plone Folder' in
+                            self.properties.navtree_properties.getProperty('parentMetaTypesNotToQuery'))
         self.failUnless(self.properties.navtree_properties.hasProperty('sortAttribute'))
         self.failUnless(self.properties.navtree_properties.hasProperty('sortOrder'))
         self.failUnless(self.properties.navtree_properties.hasProperty('sitemapDepth'))
         self.failUnless(self.properties.navtree_properties.hasProperty('showAllParents'))
+        self.failUnless(self.properties.navtree_properties.hasProperty('wf_states_to_show'))
+        self.failUnless(self.properties.navtree_properties.hasProperty('enable_wf_state_filtering'))
 
     def testSitemapAction(self):
         # There should be a sitemap action
@@ -226,12 +232,15 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         # We should have an types_not_searched property
         self.failUnless(self.properties.site_properties.hasProperty('types_not_searched'))
         self.failUnless('Plone Site' in self.properties.site_properties.getProperty('types_not_searched'))
+        self.failUnless('CMF Document' in self.properties.site_properties.getProperty('types_not_searched'))
 
     def testNonDefaultPageTypes(self):
-        # We should have a non_default_page_types property
-        self.failUnless(self.properties.site_properties.hasProperty('non_default_page_types'))
-        self.failUnless('Folder' in self.properties.site_properties.getProperty('non_default_page_types'))
-        self.failUnless('Large Plone Folder' in self.properties.site_properties.getProperty('non_default_page_types'))
+        # We should have a default_page_types property
+        self.failUnless(self.properties.site_properties.hasProperty('default_page_types'))
+        self.failUnless('Folder' not in self.properties.site_properties.getProperty('default_page_types'))
+        self.failUnless('Large Plone Folder' not in self.properties.site_properties.getProperty('default_page_types'))
+        self.failUnless('Topic' in self.properties.site_properties.getProperty('default_page_types'))
+        self.failUnless('Document' in self.properties.site_properties.getProperty('default_page_types'))
 
     def testNoMembersAction(self):
         # There should not be a Members action
@@ -312,15 +321,10 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.failUnless(('paste', 'object_buttons') in installed)
         self.failUnless(('delete', 'object_buttons') in installed)
 
-    def testBatchActions(self):
-        installed = [(a.getId(), a.getCategory()) for a in self.actions.listActions()]
-        self.failUnless(('batch', 'batch') in installed)
-        self.failUnless(('nobatch', 'batch') in installed)
-
-    def testContentsTabDisabled(self):
+    def testContentsTabVisible(self):
         for a in self.actions.listActions():
-            if a.getId() == 'contents':
-                self.failIf(a.visible)
+            if a.getId() == 'folderContents':
+                self.failUnless(a.visible)
                 
     def testDefaultGroupsAdded(self):
         self.failUnless('Administrators' in self.groups.listGroupIds())
@@ -344,11 +348,16 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.failUnless(props.getProperty('disable_folder_sections', None) is not None)
         self.failIf(props.getProperty('disable_folder_sections'))
 
-    def testSelectableViewsPropertyAtPortalRoot(self):
-        views = self.portal.getProperty('selectable_views', [])
-        self.failUnless(len(views) == 2)
+    def testSelectableViewsOnFolder(self):
+        views = self.portal.portal_types.Folder.getAvailableViewMethods(None)
         self.failUnless('folder_listing' in views)
-        self.failUnless('news_listing' in views)
+        self.failUnless('atct_album_view' in views)
+
+    def testSelectableViewsOnTopic(self):
+        views = self.portal.portal_types.Topic.getAvailableViewMethods(None)
+        self.failUnless('folder_listing' in views)
+        self.failUnless('atct_album_view' in views)
+        self.failUnless('atct_topic_view' in views)
 
     def testLocationMemberdataProperty(self):
         # portal_memberdata should have a location property
@@ -365,6 +374,10 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
     def testHome_PageMemberdataProperty(self):
         # portal_memberdata should have a home_page property
         self.failUnless(self.memberdata.hasProperty('home_page'))
+
+    def testExtEditorMemberdataProperty(self):
+        # portal_memberdata should have a location property
+        self.assertEqual(self.memberdata.getProperty('ext_editor'), 0)
 
     def testChangeStateIsLastFolderButton(self):
         # Change state button should be the last
@@ -388,8 +401,90 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
     def testFolderlistingAction(self):
         # Make sure the folderlisting action of a Folder is /view, to ensure
         # that the layout template will be resolved (see PloneTool.browserDefault)
-        self.assertEqual(self.portal.portal_types['Folder'].getActionById('folderlisting'), 'view')
-        self.assertEqual(self.portal.portal_types['Plone Site'].getActionById('folderlisting'), 'view')
+        self.assertEqual(self.types['Folder'].getActionById('folderlisting'), 'view')
+        self.assertEqual(self.types['Plone Site'].getActionById('folderlisting'), 'view')
+
+    def testEnableLivesearchProperty(self):
+        # site_properties should have enable_livesearch property
+        self.failUnless(self.properties.site_properties.hasProperty('enable_livesearch'))
+
+    def testSearchSettingsActionIcon(self):
+        # There should be a SearchSettings action icon
+        for icon in self.icons.listActionIcons():
+            if icon.getActionId() == 'SearchSettings':
+                break
+        else:
+            self.fail("Action icons tool has no 'SearchSettings' icon")
+
+    def testCookieCrumblerProperties(self):
+        # Cookie Crumbler should have unauth_page set to insufficient privileges
+        # and the auto login page restored to login_form
+        self.assertEqual(self.cc.getProperty('unauth_page'), 'insufficient_privileges')
+        self.assertEqual(self.cc.getProperty('auto_login_page'), 'login_form')
+
+    def testPortalFTIIsDynamicFTI(self):
+        # Plone Site FTI should be a DynamicView FTI
+        fti = self.portal.getTypeInfo()
+        self.assertEqual(fti.meta_type, 'Factory-based Type Information with dynamic views')
+
+    def testPloneSiteFTIHasMethodAliases(self):
+        # Should add method aliases to the Plone Site FTI
+        expected_aliases = {
+                '(Default)'  : '(dynamic view)',
+                'view'       : '(selected layout)',
+                'index.html' : '(dynamic view)',
+                'edit'       : 'folder_edit_form',
+                'sharing'    : 'folder_localrole_form',
+              }
+        fti = self.portal.getTypeInfo()
+        aliases = fti.getMethodAliases()
+        self.assertEqual(aliases, expected_aliases)
+
+    def testSiteActions(self):
+        installed = [(a.getId(), a.getCategory()) for a in self.actions.listActions()]
+        self.failUnless(('sitemap', 'site_actions') in installed)
+        self.failUnless(('contact', 'site_actions') in installed)
+        self.failUnless(('accessibility', 'site_actions') in installed)
+        self.failUnless(('plone_setup', 'site_actions') in installed)
+
+    def testNoMembershipToolPloneSetupAction(self):
+        installed = [a.getId() for a in self.membership.listActions()]
+        self.failIf('plone_setup' in installed)
+
+    def testTypesHaveSelectedLayoutViewAction(self):
+        # Should add method aliases to the Plone Site FTI
+        types = ('Document', 'Event', 'Favorite', 'File', 'Folder', 'Image', 'Link', 'News Item', 'Topic', 'Plone Site')
+        for typeName in types:
+            fti = getattr(self.types, typeName)
+            aliases = fti.getMethodAliases()
+            self.assertEqual(aliases['view'], '(selected layout)')
+
+    def testPortalUsesMethodAliases(self):
+        fti = self.portal.getTypeInfo()
+        for action in fti.listActions():
+            if action.getId() == 'edit':
+                self.assertEqual(action.getActionExpression(), 'string:${object_url}/edit')
+            if action.getId() == 'sharing':
+                self.assertEqual(action.getActionExpression(), 'string:${object_url}/sharing')
+
+    def testNavigationSettingsActionIcon(self):
+        # There should be a NavigationSettings action icon
+        for icon in self.icons.listActionIcons():
+            if icon.getActionId() == 'NavigationSettings':
+                break
+        else:
+            self.fail("Action icons tool has no 'NavigationSettings' icon")
+
+    def testNavigationAndSearchPanelsInstalled(self):
+        # Navigation and search panels should be installed
+        haveSearch = False
+        haveNavigation = False
+        for panel in self.cp.listActions():
+            if panel.getId() == 'SearchSettings':
+                haveSearch = True
+            elif panel.getId() == 'NavigationSettings':
+                haveNavigation = True
+        self.failUnless(haveSearch and haveNavigation)
 
 class TestPortalBugs(PloneTestCase.PloneTestCase):
 

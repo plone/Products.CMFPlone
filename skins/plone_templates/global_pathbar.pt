@@ -12,18 +12,20 @@
     <span id="breadcrumbs-you-are-here" i18n:translate="you_are_here">You 
 are here:</span>
     <a i18n:translate="tabs_home" tal:attributes="href python:portal_url">Home</a>
-	<span tal:condition="breadcrumbs" class="breadcrumbSeparator">
+    <span tal:condition="breadcrumbs" class="breadcrumbSeparator">
         <tal:ltr condition="not: isRTL">&rarr;</tal:ltr> 
         <tal:rtl condition="isRTL">&larr;</tal:rtl> 
-	</span>
-    <span tal:repeat="crumb breadcrumbs">
+    </span>
+    <span tal:repeat="crumb breadcrumbs"
+          tal:attributes="dir python:test(isRTL, 'rtl', 'ltr')">
         <tal:last tal:define="is_last repeat/crumb/end">
             <a href="#"
                tal:omit-tag="not: crumb/absolute_url"
                tal:condition="python:not is_last"
                tal:attributes="href crumb/absolute_url"
-               tal:content="crumb/Title"
-	       accesskey="accesskeys-breadcrumbs">crumb</a>
+               tal:content="crumb/Title">
+                crumb
+            </a>
             <span class="breadcrumbSeparator" tal:condition="not: is_last"> 
                 <tal:ltr condition="not: isRTL">&rarr;</tal:ltr> 
                 <tal:rtl condition="isRTL">&larr;</tal:rtl> 

@@ -35,7 +35,11 @@
         <tal:items define="currentMode    request/constrainTypesMode | here/getConstrainTypesMode;
                            currentAllow   request/locallyAllowedTypes | here/getLocallyAllowedTypes;
                            currentPrefer  request/immediatelyAddableTypes | here/getImmediatelyAddableTypes;
-                           availableTypes here/getDefaultAddableTypes;">
+                           availableTypes here/getDefaultAddableTypes;
+                           parent here/aq_inner/getParentNode;
+                           parent_allowed_types getLocallyAllowedTypes|python:[];
+                           parent_immediate_types parent/getImmediatelyAddableTypes|python:[];
+                           default_types here/getDefaultAddableTypes">
     
             <fieldset>
 
@@ -52,9 +56,9 @@
                        types are addable in this folder.
                     </div>
                     
-                    <tal:mode condition="python:here.aq_inner.aq_parent.portal_type == here.portal_type">
+                    <tal:mode condition="python:ifacetool.objectImplements(parent,'Products.CMFPlone.interfaces.ConstrainTypes.IConstrainTypes')">
                         <input type="radio"
-                               name="constrainTypesMode"
+                               name="constrainTypesMode:int"
                                id="mode_acquire"
                                value="-1"
                                class="noborder"
@@ -68,7 +72,7 @@
                     </tal:mode>
                     
                     <input type="radio"
-                           name="constrainTypesMode"
+                           name="constrainTypesMode:int"
                            id="mode_disable"
                            value="0"
                            class="noborder"
@@ -81,7 +85,7 @@
                     <br />
                     
                     <input type="radio"
-                           name="constrainTypesMode"
+                           name="constrainTypesMode:int"
                            id="mode_enable"
                            value="1"
                            class="noborder"

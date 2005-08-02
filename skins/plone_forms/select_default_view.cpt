@@ -1,0 +1,101 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+<metal:block fill-slot="top_slot"
+             tal:define="dummy python:request.set('disable_border',1)" />
+
+  <body>
+
+    <div metal:fill-slot="main">
+
+      <h1 i18n:translate="heading_select_default_view">Select default view</h1>
+
+      <div class="documentDescription" i18n:translate="description_select_default_view">
+        Please select which template should be used as the default view of the
+        folder.
+      </div>
+
+
+      <form name="default_view_form"
+            action="."
+            method="post"
+            tal:attributes="action string:${here/absolute_url}/${template/getId}"
+            tal:define="folder python:test(getattr(here.aq_explicit, 'isPrincipiaFolderish', 0), here, here.getParentNode());
+                        isContextDefaultPage here/isDefaultPageInFolder;
+                        parent_folder python: isContextDefaultPage and here.getParentNode() or folder;
+                        contextHasIndexHtml context/hasIndexHtml;
+                        folderHasIndexHtml parent_folder/hasIndexHtml;
+                        parentVocab parent_folder/getSelectableViews;
+                        contextVocab here/getSelectableViews;
+                        canSelectDefaultFolderPage parent_folder/canSelectDefaultPage;
+                        canSelectDefaultContextPage here/canSelectDefaultPage;
+                        parentHasActions python:parentVocab or canSelectDefaultFolderPage;
+                        contextHasActions python:contextVocab or canSelectDefaultContextPage;">
+
+        <input type="hidden" name="form.submitted" value="1"/>
+    
+            <div tal:define="vocab parentVocab;
+                            actualLayout parent_folder/getLayout|nothing;
+                            selectedLayout python:test(isContextDefaultPage, '', actualLayout)">
+                <tal:item repeat="layout vocab">
+                    <tal:vars define="value python:layout[0];
+                                      display python:layout[1];">
+                        <input type="radio" class="noborder" name="templateId" value=""
+                               tal:attributes="value value;
+                                               disabled python:value==selectedLayout"/>
+                        <label tal:content="display" i18n:translate="">
+                            Layout name
+                        </label>
+                        <span class="discreet"
+                              tal:condition="python:value==selectedLayout"
+                              i18n:translate="label_current">(current)</span><br />
+                    </tal:vars>
+                </tal:item>
+                <p tal:condition="canSelectDefaultFolderPage">
+                    <tal:selected condition="python:selectedLayout != ''">
+                        <span i18n:translate="label_or">or</span>
+                        <a title="Select an item to be used as default view in this folder" href="#" class="selected"
+                           tal:attributes="href string:${parent_folder/absolute_url}/select_default_page;"
+                           i18n:attributes="title title_select_default_view_item;"
+                           i18n:translate="label_choose_content_item">
+                             Choose a content item&hellip;
+                        </a>
+                    </tal:selected>
+                    <tal:selected condition="python:selectedLayout == ''">
+                        <span i18n:translate="label_or">or</span>
+                        <a title="Change the item used as default view in this folder" href="#" class="selected"
+                           tal:attributes="href string:${parent_folder/absolute_url}/select_default_page;"
+                           i18n:attributes="title title_change_default_view_item;"
+                           i18n:translate="label_select_content_item">
+                             Select a content item&hellip;
+                        </a>
+                    </tal:selected>
+                </p>
+            </div>
+
+          <div class="formControls">
+            <input class="context"
+                   tabindex=""
+                   type="submit"
+                   name="form.button.Save"
+                   value="Save"
+                   i18n:attributes="value label_save;"
+                   tal:attributes="tabindex tabindex/next;"
+                   />
+            <input class="standalone"
+                   tabindex=""
+                   type="submit"
+                   name="form.button.Cancel"
+                   value="Cancel"
+                   i18n:attributes="value label_cancel;"
+                   tal:attributes="tabindex tabindex/next;"
+                   />
+          </div>
+
+      </form>
+
+    </div>
+
+  </body>
+</html>

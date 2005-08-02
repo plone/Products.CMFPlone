@@ -1,6 +1,6 @@
 from DateTime import DateTime
 from Products.CMFCore.CMFCorePermissions import SetOwnPassword
-from Products.CMFCore.utils import getToolByName
+from Products.CMFCore.utils import getToolByName, _checkPermission
 from Products.CMFDefault.MembershipTool import MembershipTool as BaseTool
 from Products.CMFPlone import ToolNames
 from Products.CMFPlone.utils import _createObjectByType
@@ -8,6 +8,7 @@ from OFS.Image import Image
 from AccessControl import ClassSecurityInfo, getSecurityManager
 from Globals import InitializeClass, DTMLFile
 from zExceptions import BadRequest
+from AccessControl.SecurityManagement import noSecurityManager
 from Acquisition import aq_base, aq_parent, aq_inner
 from Products.CMFCore.CMFCorePermissions import View
 from Products.CMFCore.CMFCorePermissions import ManagePortal
@@ -24,6 +25,8 @@ Default page for %s
   To change the content just click the 'edit'
   tab above.
 """
+
+_marker = object()
 
 class MembershipTool(PloneBaseTool, BaseTool):
 
@@ -133,6 +136,28 @@ class MembershipTool(PloneBaseTool, BaseTool):
 
         membertool._deletePortrait(member_id)
 
+    def getHomeFolder(self, id=None, verifyPermission=0):
+        """ Return a member's home folder object, or None.
+        dwm: straight from CMF1.5.2
+        """
+        if id is None:
+            member = self.getAuthenticatedMember()
+            if not hasattr(member, 'getMemberId'):
+                return None
+            id = member.getMemberId()
+        members = self.getMembersFolder()
+        if members:
+            try:
+                folder = members._getOb(id)
+                if verifyPermission and not _checkPermission(View, folder):
+                    # Don't return the folder if the user can't get to it.
+                    return None
+                return folder
+            # KeyError added to deal with btree member folders
+            except (AttributeError, KeyError, TypeError):
+                pass
+        return None
+
     def getPersonalFolder(self, member_id=None):
         """
         returns the Personal Item folder for a member
@@ -160,13 +185,25 @@ class MembershipTool(PloneBaseTool, BaseTool):
             membertool   = getToolByName(self, 'portal_memberdata')
             membertool._setPortrait(portrait, member_id)
 
+
+##     security.declarePrivate('wrapUser')
+##     def wrapUser(self, u):
+##         self.createMemberarea(u.getId())
+##         return BaseTool.wrapUser(self, u)
+
     def createMemberarea(self, member_id=None, minimal=1):
         """
         Create a member area for 'member_id' or the authenticated user.
         """
+        if not self.getMemberareaCreationFlag():
+            return None
+        members = self.getMembersFolder()
+        if members is None:
+            return None
+        if self.isAnonymousUser():
+            return None
         catalog = getToolByName(self, 'portal_catalog')
         membership = getToolByName(self, 'portal_membership')
-        members = self.getMembersFolder()
 
         if not member_id:
             # member_id is optional (see CMFCore.interfaces.portal_membership:
@@ -176,11 +213,6 @@ class MembershipTool(PloneBaseTool, BaseTool):
 
         if hasattr(members, 'aq_explicit'):
             members=members.aq_explicit
-
-        if members is None:
-            # no members area
-            # XXX exception?
-            return
         
         if hasattr(members, member_id):
             # has already this member
@@ -205,7 +237,12 @@ class MembershipTool(PloneBaseTool, BaseTool):
         ## translate the default content
 
         # get some translation interfaces
-        translation_service = getToolByName(self, 'translation_service')
+
+        translation_service = getToolByName(self, 'translation_service', _marker)
+        if translation_service is _marker:
+            # test environ, some other aberent sitch
+            return
+        
         utranslate = translation_service.utranslate
         encode = translation_service.encode
         
@@ -227,23 +264,11 @@ class MembershipTool(PloneBaseTool, BaseTool):
             'plone', 'title_member_folder_index_html',
             {'member': umember_id}, self,
             default = "Home page for %s" % umember_id)
-
-        personal_folder_title = utranslate(
-            'plone', 'title_member_personal_folder',
-            {'member': umember_id}, self,
-            default = "Personal Items for %s" % umember_id)
-
-        personal_folder_description = utranslate(
-            'plone', 'description_member_personal_folder',
-            {'member': umember_id}, self,
-            default = 'contains personal workarea items for %s' % umember_id)
  
         # encode strings to site encoding as we dont like to store type unicode atm
         member_folder_title = encode(member_folder_title, errors='replace')
         member_folder_description = encode(member_folder_description, errors='replace')
         member_folder_index_html_title = encode(member_folder_index_html_title, errors='replace')
-        personal_folder_title = encode(personal_folder_title, errors='replace')
-        personal_folder_description = encode(personal_folder_description, errors='replace')
 
         ## Modify member folder
         member_folder = self.getHomeFolder(member_id)
@@ -259,21 +284,6 @@ class MembershipTool(PloneBaseTool, BaseTool):
         member_folder.setDescription(member_folder_description)
         member_folder.reindexObject()
 
-        ## Create personal folder for personal items
-        _createObjectByType('Folder', member_folder, id=self.personal_id)
-        personal = getattr(member_folder, self.personal_id)
-        #personal.edit(title=personal_folder_title,
-        #              description=personal_folder_description)
-        personal.setTitle(personal_folder_title)
-        personal.setDescription(personal_folder_description)
-        
-        # Grant Ownership and Owner role to Member
-        personal.changeOwnership(user)
-        personal.__ac_local_roles__ = None
-        personal.manage_setLocalRoles(member_id, ['Owner'])
-        # Don't add .personal folders to catalog
-        catalog.unindexObject(personal)
-        
         if not minimal:
             # if it's minimal, don't create the memberarea but do notification
 
@@ -551,6 +561,13 @@ class MembershipTool(PloneBaseTool, BaseTool):
                             if role not in ('Member', 'Authenticated') ]
         local_roles.sort()
         return tuple(local_roles)
+
+
+    security.declareProtected(View, 'immediateLogout')
+    def immediateLogout(self):
+        """ Log the current user out immediately.  Used by logout.py so that
+            we do not have to do a redirect to show the logged out status. """
+        noSecurityManager()
 
 MembershipTool.__doc__ = BaseTool.__doc__
 

@@ -6,8 +6,6 @@
  *  your own plone.css only makes sense for very heavy 
  *  customizations. Useful variables from Plone are 
  *  documented at the bottom of this file.
- *
- *  -- Alexander Limi, http://www.plonesolutions.com
  */
  
 /* <dtml-var "enableHTTPCompression(request=REQUEST, debug=1, css=1)"> (this is for http compression) */

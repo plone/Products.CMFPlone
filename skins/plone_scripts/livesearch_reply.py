@@ -8,12 +8,21 @@
 ##title=Determine whether to show an id in an edit form
 
 from Products.CMFCore.utils import getToolByName
+
 ploneUtils = getToolByName(context, 'plone_utils')
+pretty_title_or_id = ploneUtils.pretty_title_or_id
+
+portalProperties = getToolByName(context, 'portal_properties')
+siteProperties = getattr(portalProperties, 'site_properties', None)
+useViewAction = []
+if siteProperties is not None:
+    useViewAction = siteProperties.getProperty('typesUseViewActionInListings', [])
 
 # SIMPLE CONFIGURATION
 USE_ICON = True
 USE_RANKING = False
-MAX_DESC = 55
+MAX_TITLE = 29
+MAX_DESCRIPTION = 93
 
 # generate a result set for the query
 catalog = context.portal_catalog
@@ -52,20 +61,36 @@ if not results:
 else:
     print '''<fieldset class="livesearchContainer">'''
     print '''<legend id="livesearchLegend">LiveSearch &darr;</legend>'''
+    print '''<div class="LSIEFix">'''
     print '''<ul class="LSTable">'''
     for result in results[:limit]:
+
+        itemUrl = result.getURL()
+        if result.portal_type in useViewAction:
+            itemUrl += '/view'
+
         print '''<li class="LSRow">''',
         print '''<img src="/%s"/>''' % result.getIcon,
-        print '''<a href="%s">%s</a>''' % (result.getURL(), result.Title)
+        full_title = pretty_title_or_id(result)
+        if len(full_title) >= MAX_TITLE:
+            display_title = ''.join((full_title[:MAX_TITLE],'...'))
+        else:
+            display_title = full_title
+        print '''<a href="%s" title="%s">%s</a>''' % (itemUrl, full_title, display_title)
         print '''<span class="discreet">[%s%%]</span>''' % result.data_record_normalized_score_
-        print '''<div class="discreet" style="margin-left: 2.5em;">%s</div>''' % (result.Description)
+        display_description = result.Description
+        if len(display_description) >= MAX_DESCRIPTION:
+            display_description = ''.join((display_description[:MAX_DESCRIPTION],'...'))
+        print '''<div class="discreet" style="margin-left: 2.5em;">%s</div>''' % (display_description)
         print '''</li>'''
+        full_title, display_title, display_description = None, None, None
     if len(results)>limit:
         # add a more... row
         print '''<li class="LSRow">'''
-        print '<a href="%s" style="font-weight:normal">More...</a>' % ('search?SearchableText=' + searchterms)
+        print '<a href="%s" style="font-weight:normal">Show all&hellip;</a>' % ('search?SearchableText=' + searchterms)
         print '''</li>'''
     print '''</ul>'''
+    print '''</div>'''
     print '''</fieldset>'''
 
 return printed

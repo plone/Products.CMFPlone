@@ -6,14 +6,13 @@
 <!-- THE SECTION TABS DEFINITION -->
 <div metal:define-macro="portal_tabs"
      tal:omit-tag=""
-     tal:define="selected_tabs python:here.selectedTabs(template_id, here, portal_tabs);
+     tal:define="selected_tabs python:here.selectedTabs('index_html', here, portal_tabs);
                  selected_portal_tab selected_tabs/portal;"
      tal:condition="portal_tabs">
     <h5 class="hiddenStructure" i18n:translate="heading_sections">Sections</h5>
 
     <ul id="portal-globalnav">
-        <tal:tabs tal:repeat="tab portal_tabs">
-        <li tal:attributes="id string:portaltab-${tab/id};
+        <tal:tabs tal:repeat="tab portal_tabs"><li tal:attributes="id string:portaltab-${tab/id};
                             class python:test(selected_portal_tab==tab['id'], 'selected', 'plain');">
             <a href="" 
                tal:content="tab/name"
@@ -21,9 +20,7 @@
                                title tab/description|nothing"
                i18n:translate="">
             Tab Name
-            </a>
-        </li>
-        </tal:tabs>
+            </a></li></tal:tabs>
     </ul>
 </div>
 

@@ -1,4 +1,6 @@
 from __future__ import nested_scopes
+import os, sys, re
+
 from ComputedAttribute import ComputedAttribute
 from Products.CMFPlone import cmfplone_globals
 from Products.CMFPlone import custom_policies
@@ -25,46 +27,27 @@ from Products.CMFCore.TypesTool import FactoryTypeInformation
 from Products.CMFCore.DirectoryView import addDirectoryViews
 from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault import Portal, DublinCore
+from Products.CMFDynamicViewFTI.browserdefault import BrowserDefaultMixin
 from Products.CMFPlone.PloneFolder import OrderedContainer
 import Globals
-import os, sys, re
 
 from AccessControl import ClassSecurityInfo
 from Acquisition import aq_inner, aq_parent, aq_base
 from ComputedAttribute import ComputedAttribute
 from webdav.NullResource import NullResource
 from Products.CMFPlone.PloneFolder import ReplaceableWrapper
+from Products.CMFPlone.utils import log_exc
 
-from Products.CMFPlone.PropertyManagedBrowserDefault import PropertyManagedBrowserDefault
-
-__version__='1.1'
-
-default_frontpage=r"""
-You can customize this frontpage by clicking the edit tab on this document if you
-have the correct permissions. Create folders and put content in those folders.
-Folders will show up in the navigation box if they are published. It's a very
-simple and powerful system.
-
-For more information:
-
-"Plone website":http://www.plone.org
-
-"Zope community":http://www.zope.org
-
-"CMF website":http://www.zope.org/Products/CMF/index.html
-
-There are "mailing lists":http://plone.org/development/lists and
-"recipe websites":http://www.zopelabs.com
-available to provide assistance to you and your new-found Content Management System.
-"Online chat":http://plone.org/development/chat is also a nice way
-of getting advice and help.
-
-Please contribute your experiences at the "Plone website":http://www.plone.org
-
-Thanks for using our product.
-
-"The Plone Team":http://plone.org/about/team
-"""
+default_frontpage="Unable to load front-page skeleton file"
+WWW_DIR = os.path.join(os.path.dirname(__file__), 'www')
+try:
+    f = open(os.path.join(WWW_DIR, 'default_frontpage.html'), 'r')
+except IOError:
+    log_exc('Unable to open frontpage skeleton')
+else:
+    default_frontpage = f.read()
+    f.close()
+    del f
 
 member_indexhtml="""\
 member_search=context.restrictedTraverse('member_search_form')
@@ -84,18 +67,34 @@ factory_type_information = { 'id'             : 'Plone Root'
                          , 'name'          : 'View'
                          , 'action': 'string:${object_url}'
                          , 'permissions'   : (CMFCorePermissions.View,)
-                         , 'category'      : 'folder'
+                         , 'category'      : 'object'
                          }
                        , { 'id'            : 'edit'
                          , 'name'          : 'Edit'
-                         , 'action': 'string:${object_url}/folder_edit_form'
+                         , 'action': 'string:${object_url}/edit'
                          , 'permissions'   : (CMFCorePermissions.ManageProperties,)
-                         , 'category'      : 'folder'
+                         , 'category'      : 'object'
+                         }
+                       , { 'id'            : 'sharing'
+                         , 'name'          : 'Sharing'
+                         , 'action': 'string:${object_url}/sharing'
+                         , 'permissions'   : (CMFCorePermissions.ManageProperties,)
+                         , 'category'      : 'object'
                          }
                        )
+  , 'aliases'        : {
+                        '(Default)'  : '(dynamic view)',
+                        'view'       : '(selected layout)',
+                        'index.html' : '(dynamic view)',
+                        'edit'       : 'folder_edit_form',
+                        'properties' : '',
+                        'sharing'    : 'folder_localrole_form',
+                        'gethtml'    : '',
+                        'mkdir'      : '',
+                       }
   }
 
-class PloneSite(CMFSite, OrderedContainer, PropertyManagedBrowserDefault):
+class PloneSite(CMFSite, OrderedContainer, BrowserDefaultMixin):
     """
     Make PloneSite subclass CMFSite and add some methods.
     This will be useful for adding more things later on.
@@ -104,9 +103,22 @@ class PloneSite(CMFSite, OrderedContainer, PropertyManagedBrowserDefault):
     meta_type = portal_type = 'Plone Site'
     __implements__ = DublinCore.DefaultDublinCoreImpl.__implements__ + \
                      OrderedContainer.__implements__ + \
-                    PropertyManagedBrowserDefault.__implements__
+                     BrowserDefaultMixin.__implements__
 
     manage_renameObject = OrderedContainer.manage_renameObject
+
+    moveObject = OrderedContainer.moveObject
+    moveObjectsByDelta = OrderedContainer.moveObjectsByDelta
+
+    # Switch off ZMI ordering interface as it assumes a slightly
+    # different functionality
+    has_order_support = 0
+    manage_main = Globals.DTMLFile('www/main', globals())
+
+    def __browser_default__(self, request):
+        """ Set default so we can return whatever we want instead
+        of index_html """
+        return getToolByName(self, 'plone_utils').browserDefault(self)
 
     def index_html(self):
         """ Acquire if not present. """
@@ -150,7 +162,7 @@ class PloneSite(CMFSite, OrderedContainer, PropertyManagedBrowserDefault):
 
     def view(self):
         """ Ensure that we get a plain view of the object, via a delegation to
-        __call__(), which is defined in PropertyManagedBrowserDefault
+        __call__(), which is defined in BrowserDefaultMixin
         """
         return self()
 
@@ -205,12 +217,12 @@ class PloneGenerator(Portal.PortalGenerator):
         p.invokeFactory('Document', 'front-page')
         idx = getattr(p, 'front-page')
         idx.setTitle('Welcome to Plone')
-        idx.setDescription('This welcome page is used to introduce you'+\
-                         ' to the Plone Content Management System.')
-        idx.setFormat('structured-text')
+        idx.setDescription('Congratulations! You have successfully'+\
+                         ' installed Plone.')
+        idx.setFormat('html')
         if idx.meta_type == 'Document':
             # CMFDefault document
-            idx.edit('structured-text', default_frontpage)
+            idx.edit('html', default_frontpage)
         else:
             idx.edit(text=default_frontpage)
         idx.reindexObject()
@@ -306,7 +318,22 @@ class PloneGenerator(Portal.PortalGenerator):
         prop_tool.manage_addPropertySheet('navtree_properties', 'NavigationTree properties')
 
         ntp=prop_tool.navtree_properties
-        ntp._setProperty('typesToList', ['Folder','Large Plone Folder'], 'lines')
+        navtree_bl=['ATBooleanCriterion',
+                    'ATCurrentAuthorCriterion',
+                    'ATPathCriterion',
+                    'ATDateCriteria',
+                    'ATDateRangeCriterion',
+                    'ATListCriterion',
+                    'ATPortalTypeCriterion',
+                    'ATReferenceCriterion',
+                    'ATSelectionCriterion',
+                    'ATSimpleIntCriterion',
+                    'ATSimpleStringCriterion',
+                    'ATSortCriterion',
+                    'Discussion Item',
+                    'Plone Site',
+                    'TempFolder']
+        ntp._setProperty('typesNotToList', navtree_bl, 'lines')
         ntp._setProperty('sortAttribute', 'getObjPositionInParent', 'string')
         ntp._setProperty('sortOrder', 'asc', 'string')
         ntp._setProperty('sitemapDepth', 3, 'int')

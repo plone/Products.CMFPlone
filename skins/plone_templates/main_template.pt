@@ -49,8 +49,14 @@
 
         <div id="portal-header">
           <a class="hiddenStructure"
-              tal:attributes="href string:${request/ACTUAL_URL}#documentContent"
+             accesskey="2"
+             tal:attributes="href string:${request/ACTUAL_URL}#documentContent"
              i18n:translate="label_skiptocontent">Skip to content</a>
+
+          <a class="hiddenStructure"
+             accesskey="6"
+             tal:attributes="href string:${request/ACTUAL_URL}#portlet-navigation-tree"
+             i18n:translate="label_skiptonavigation">Skip to navigation</a>
   
              <div metal:use-macro="here/global_siteactions/macros/site_actions">
                Site-wide actions (Contact, Sitemap, Help, Style Switcher etc)
@@ -83,7 +89,7 @@
            </div>
       </div>
 
-      <div class="visualClear"></div>
+      <div class="visualClear"><!-- --></div>
 
       <!-- The wrapper table. It contains the three columns. There's a table-less
            alternative in the plone_tableless skin layer that you can use if you
@@ -94,7 +100,7 @@
             <!-- start of the left (by default at least) column -->
             <td id="portal-column-one"
                 metal:define-slot="column_one_slot"
-                tal:condition="slots_mapping/left">
+                tal:condition="sl">
               <div class="visualPadding">
                 <metal:portlets define-slot="portlets_one_slot">
                   <metal:leftportlets use-macro="here/portlets_fetcher/macros/left_column">
@@ -157,7 +163,7 @@
             <!-- start of right (by default at least) column -->
             <td id="portal-column-two"
                 metal:define-slot="column_two_slot"
-                tal:condition="slots_mapping/right">
+                tal:condition="sr">
               <div class="visualPadding">
                 <metal:portlets define-slot="portlets_two_slot">
                   <metal:rightportlets use-macro="here/portlets_fetcher/macros/right_column">
@@ -173,20 +179,21 @@
       </table>
       <!-- end column wrapper -->
 
-      <div class="visualClear"></div>
+      <div class="visualClear"><!-- --></div>
 
 
       <hr class="netscape4" />
 
       <metal:block i18n:domain="plone">
-	<div id="portal-footer" metal:use-macro="here/footer/macros/portal_footer">
-	  Footer
-	</div>
 
-	<div id="portal-colophon" metal:use-macro="here/colophon/macros/colophon">
-	  The colophon area - contains details about the production of
-	  the site. Typically "powered by" buttons, standards, tools used.
-	</div>
+        <metal:footer use-macro="here/footer/macros/portal_footer">
+          Footer
+        </metal:footer>
+
+        <metal:colophon use-macro="here/colophon/macros/colophon">
+          The colophon area - contains details about the production of
+          the site. Typically "powered by" buttons, standards, tools used.
+        </metal:colophon>
       </metal:block>
 
     </div>

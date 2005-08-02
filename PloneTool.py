@@ -4,8 +4,9 @@ import traceback
 from types import TupleType, UnicodeType, StringType
 import urlparse
 
-from zLOG import LOG, INFO, WARNING
 from Products.CMFPlone.utils import safe_callable
+from Products.CMFPlone.utils import log
+from Products.CMFPlone.utils import log_exc
 from Products.CMFPlone import transaction
 
 from AccessControl import getSecurityManager
@@ -34,17 +35,19 @@ from AccessControl import ClassSecurityInfo, Unauthorized
 from ZODB.POSException import ConflictError
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from DateTime import DateTime
+DateTime.SyntaxError
 from Products.CMFPlone.UnicodeNormalizer import normalizeUnicode
 from Products.CMFPlone.PloneFolder import ReplaceableWrapper
+
+AllowSendto = "Allow sendto"
+CMFCorePermissions.setDefaultRoles(AllowSendto, 
+                                   ('Anonymous', 'Manager',))
 
 _marker = ()
 _icons = {}
 
 CEILING_DATE = DefaultDublinCoreImpl._DefaultDublinCoreImpl__CEILING_DATE
 FLOOR_DATE = DefaultDublinCoreImpl._DefaultDublinCoreImpl__FLOOR_DATE
-
-def log(summary='', text='', log_level=INFO):
-    LOG('Plone Debug', log_level, summary, text)
 
 from Products.SecureMailHost.SecureMailHost import EMAIL_RE
 from Products.SecureMailHost.SecureMailHost import EMAIL_CUTOFF_RE
@@ -92,7 +95,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     __implements__ = (PloneBaseTool.__implements__,
                       SimpleItem.__implements__, )
 
-    security.declareProtected(CMFCorePermissions.ManagePortal,
+    security.declareProtected(CMFCorePermissions.ManageUsers,
                               'setMemberProperties')
     def setMemberProperties(self, member, **properties):
         membership = getToolByName(self, 'portal_membership')
@@ -139,7 +142,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         """Gets the MailHost."""
         return getattr(aq_parent(self), 'MailHost')
 
-    security.declarePublic('sendto')
+    security.declareProtected(AllowSendto, 'sendto')
     def sendto(self, send_to_address, send_from_address, comment,
                subject='Plone', **kwargs ):
         """Sends a link of a page to someone."""
@@ -488,10 +491,8 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     # Provide a way of dumping an exception to the log even if we
     # catch it and otherwise ignore it
     def logException(self):
-        """Dumps an exception to the log."""
-        log(summary=self.exceptionString(),
-            text='\n'.join(traceback.format_exception(*sys.exc_info())),
-            log_level=WARNING)
+        """Dumps most recent exception to the log."""
+        log_exc()
 
     security.declarePublic('createSitemap')
     def createSitemap(self, context):
@@ -512,6 +513,17 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         if result.has_key(path):
             data['children'] = result[path]['children']
         result[path] = data
+
+    def typesToList(self):
+        ntp = getToolByName(self, 'portal_properties').navtree_properties
+        ttool = getToolByName(self, 'portal_types')
+        bl = ntp.getProperty('metaTypesNotToList', ())
+        bl_dict = {}
+        for t in bl:
+            bl_dict[t] = 1
+        all_types = ttool.listContentTypes()
+        wl = [t for t in all_types if not bl_dict.has_key(t)]
+        return wl
 
     # XXX Please, refactor me! :-)
     security.declarePublic('createNavTree')
@@ -534,22 +546,30 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
         if context == self or sitemap:
             currentPath = getToolByName(self, 'portal_url').getPortalPath()
-            query['path'] = {'query':currentPath, 'depth':ntp.sitemapDepth}
+            query['path'] = {'query':currentPath, 
+                             'depth':ntp.getProperty('sitemapDepth', 2)}
         else:
             currentPath = '/'.join(context.getPhysicalPath())
             query['path'] = {'query':currentPath, 'navtree':1}
 
-        if ntp.typesToList:
-            query['portal_type'] = ntp.typesToList
+        query['portal_type'] = self.typesToList()
 
-        if ntp.sortAttribute:
+        if ntp.getProperty('sortAttribute', False):
             query['sort_on'] = ntp.sortAttribute
 
-        if ntp.sortAttribute and ntp.sortOrder:
+        if (ntp.getProperty('sortAttribute', False) and 
+            ntp.getProperty('sortOrder', False)):
             query['sort_order'] = ntp.sortOrder
 
+        if ntp.getProperty('enable_wf_state_filtering', False):
+            query['review_state'] = ntp.wf_states_to_show
+
+        query['is_default_page'] = False
+
+        parentTypesNQ = ntp.getProperty('parentMetaTypesNotToQuery', ())
+
         # Get ids not to list and make a dict to make the search fast
-        ids_not_to_list = ntp.idsNotToList
+        ids_not_to_list = ntp.getProperty('idsNotToList', ())
         excluded_ids = {}
         for exc_id in ids_not_to_list:
             excluded_ids[exc_id] = 1
@@ -567,7 +587,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             currentItem = path == currentPath
             if currentItem:
                 foundcurrent = path
-            data = {'Title':item.Title or self.utf8_portal('\xe2\x80\xa6', 'ignore'),
+            data = {'Title':self.pretty_title_or_id(item),
                     'currentItem':currentItem,
                     'absolute_url': item_url,
                     'getURL':item_url,
@@ -577,13 +597,14 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                     'portal_type': item.portal_type,
                     'review_state': item.review_state,
                     'Description':item.Description,
+                    'show_children':item.portal_type not in parentTypesNQ,
                     'children':[],
                     'no_display': excluded_ids.has_key(item.getId) or not not item.exclude_from_nav}
             self._addToNavTreeResult(result, data)
 
         portalpath = getToolByName(self, 'portal_url').getPortalPath()
 
-        if ntp.showAllParents:
+        if ntp.getProperty('showAllParents', False):
             portal = getToolByName(self, 'portal_url').getPortalObject()
             parent = context
             parents = [parent]
@@ -593,6 +614,12 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
             wf_tool = getToolByName(self, 'portal_workflow')
             for item in parents:
+                if getattr(item, 'getPhysicalPath', None) is None:
+                    # when Z3-style views are used, the view class will be in
+                    # the 'parents' list, but will not support 'getPhysicalPath'
+                    # we can just skip it b/c it's not an object in the content
+                    # tree that should be showing up in the nav tree (ra)
+                    continue
                 path = '/'.join(item.getPhysicalPath())
                 if not result.has_key(path) or \
                    not result[path].has_key('path'):
@@ -614,7 +641,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                     # Some types may require the 'view' action, respect this
                     item_url = (item.portal_type in view_action_types and
                          item.absolute_url() + '/view') or item.absolute_url()
-                    data = {'Title': item.Title() or self.utf8_portal('\xe2\x80\xa6', 'ignore'),
+                    data = {'Title': self.pretty_title_or_id(item),
                             'currentItem': currentItem,
                             'absolute_url': item_url,
                             'getURL': item_url,
@@ -662,17 +689,23 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         portal_path = getToolByName(self, 'portal_url').getPortalPath()
         query['path'] = {'query':portal_path, 'navtree':1}
 
-        if ntp.typesToList:
-            query['portal_type'] = ntp.typesToList
+        query['portal_type'] = self.typesToList()
 
-        if ntp.sortAttribute:
+        if ntp.getProperty('sortAttribute', False):
             query['sort_on'] = ntp.sortAttribute
 
-        if ntp.sortAttribute and ntp.sortOrder:
+        if (ntp.getProperty('sortAttribute', False) and 
+            ntp.getProperty('sortOrder', False)):
             query['sort_order'] = ntp.sortOrder
 
+        if ntp.getProperty('enable_wf_state_filtering', False):
+            query['review_state'] = ntp.wf_states_to_show
+
+        query['is_default_page'] = False
+        query['is_folderish'] = True
+
         # Get ids not to list and make a dict to make the search fast
-        ids_not_to_list = ntp.idsNotToList
+        ids_not_to_list = ntp.getProperty('idsNotToList', ())
         excluded_ids = {}
         for exc_id in ids_not_to_list:
             excluded_ids[exc_id]=1
@@ -685,7 +718,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             if not (excluded_ids.has_key(item.getId) or item.exclude_from_nav):
                 item_url = (item.portal_type in view_action_types and
                          item.getURL() + '/view') or item.getURL()
-                data = {'name':item.Title or self.utf8_portal('\xe2\x80\xa6', 'ignore'),
+                data = {'name': self.pretty_title_or_id(item),
                         'id':item.getId, 'url': item_url, 'description':item.Description}
                 result.append(data)
         return result
@@ -718,7 +751,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             item = r_tuple[1]
             item_url = (item.portal_type in view_action_types and
                          item.getURL() + '/view') or item.getURL()
-            data = {'Title':item.Title or self.utf8_portal('\xe2\x80\xa6', 'ignore'),
+            data = {'Title': self.pretty_title_or_id(item),
                     'absolute_url': item_url}
             result.append(data)
         return result
@@ -754,7 +787,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                             # Check which roles must be added to roles2
                             for role in roles:
                                 if not role in roles2:
-                                    roles2 = roles2.append(role)
+                                    roles2.append(role)
                             found = 1
                             break
                     if found == 0:
@@ -776,39 +809,150 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
         return tuple(result)
 
+    #
+    # The three methods used in determining what the default-page of a folder
+    # is. These are:
+    #
+    #   - getDefaultPage(folder)
+    #       : get id of contentish object that is default-page in the folder
+    #   - isDefaultPage(object)   
+    #       : determine if an object is the default-page in its parent folder
+    #   - browserDefault(object)  
+    #       : lookup rules for old-style content types
+    #
+
+    security.declarePublic('isDefaultPage')
+    def isDefaultPage(self, obj):
+        """Finds out if the given obj is the default page in its parent folder.
+
+        Only considers explicitly contained objects, either set as index_html,
+        with the default_page property, or using IBrowserDefault.
+        """
+
+        parent = obj.aq_inner.aq_parent
+        if not parent:
+            return False
+
+        parentDefaultPage = self.getDefaultPage(parent)
+        if parentDefaultPage is None or '/' in parentDefaultPage:
+            return False
+        else:
+            return (parentDefaultPage == obj.getId())
+
+    security.declarePublic('getDefaultPage')
+    def getDefaultPage(self, obj):
+        """Given a folderish item, find out if it has a defaul-page using
+        the following lookup rules:
+        
+            1. A content object called 'index_html' wins
+            2. If the folder implements IBrowserDefault, query this
+            3. Else, look up the property default_page on the object
+                - Note that in this case, the returned id may *not* be of an
+                  object in the folder, since it could be acquired from a
+                  parent folder or skin layer
+            4. Else, look up the property default_page in site_properties for
+                magic ids and test these
+            
+        The id of the first matching item is returned. If no default page is
+        set, None is returned. If a non-folderish item is passed in, return
+        None always.
+        """
+
+        # XXX: This method is called by CMFDynamicViewFTI directly, as well
+        # as by browserDefault() below. browserDefault() contains logic for
+        # looking up ITranslatable (LinguaPlone), which browserDefault() retains.
+        # However, browserDefault() is no longer called with CMF 1.5 and the new
+        # CMFDynamicViewFTI. Because the lookup method is quite different, there
+        # is no obvious way to make CMFDynamicViewFTI ITranslatable aware. Thus,
+        # if/when LinguaPlone tries to use the new FTI to get CMF 1.5 / Plone 2.1
+        # goodness, it will likely break. The simple workaround is to set the
+        # (Default) method alias to an empty string, thus falling back on
+        # __browser_default__(), but this reduces flexibility. Instead, tesdal
+        # & co need to look at CMFDynamicViewFTI to make it ITranslatable aware.
+        #   [~optilude]
+
+        # Short circuit if we are not looking at a Folder
+        if not obj.isPrincipiaFolderish:
+            return None
+
+        # The list of ids where we look for default
+        ids = {}
+
+        portal = getToolByName(self, 'portal_url').getPortalObject()
+        wftool = getToolByName(self, 'portal_workflow')
+
+        # For BTreeFolders we just use the has_key, otherwise build a dict
+        if hasattr(aq_base(obj), 'has_key'):
+            ids = obj
+        else:
+            for id in obj.objectIds():
+                ids[id] = 1
+
+        # 1. test for contentish index_html
+        if ids.has_key('index_html'):
+            return 'index_html'
+
+        # 2. Test for IBrowserDefault
+        if IBrowserDefault.isImplementedBy(obj):
+            page = obj.getDefaultPage()
+            if page is not None and ids.has_key(page):
+                return page
+
+        # 3. Test for default_page property in folder, then skins
+        pages = getattr(aq_base(obj), 'default_page', [])
+        if type(pages) in (StringType, UnicodeType):
+            pages = [pages]
+        for page in pages:
+            if page and ids.has_key(page):
+                return page
+        for page in pages:
+            if portal.unrestrictedTraverse(page, None):
+                return page
+
+        # 4. Test for default sitewide default_page setting
+        for page in portal.portal_properties.site_properties.getProperty('default_page', []):
+            if ids.has_key(page):
+                return page
+
+        return None
+
     security.declarePublic('browserDefault')
     def browserDefault(self, obj):
         """Sets default so we can return whatever we want instead of index_html.
 
         This method is complex, and interacts with mechanisms such as
-        IBrowserDefault (implemented in ATContentTypes), LinguaPlone and
+        IBrowserDefault (implemented in CMFDynamicViewFTI), LinguaPlone and
         various mechanisms for setting the default page.
 
         The method returns a tuple (obj, [path]) where path is a path to
         a template or other object to be acquired and displayed on the object.
         The path is determined as follows:
 
-        1. If we're coming from WebDAV, make sure we don't return a contained
+        0. If we're coming from WebDAV, make sure we don't return a contained
             object "default page" ever
-        2. If there is an index_html attribute (either a contained object or
+        1. If there is an index_html attribute (either a contained object or
             an explicit attribute) on the object, return that as the
             "default page". Note that this may be used by things like
             File and Image to return the contents of the file, for example,
             not just content-space objects created by the user.
+        2. If the object implements IBrowserDefault, query this for the
+            default page.
         3. If the object has a property default_page set and this gives a list
             of, or single, object id, and that object is is found in the
             folder or is the name of a skin template, return that id
         4. If the property default_page is set in site_properties and that
             property contains a list of ids of which one id is found in the
             folder, return that id
-        5. If the type has a 'folderlisting' action and no default page is
+        5. If the object implements IBrowserDefault, try to get the selected
+            layout.
+        6. If the type has a 'folderlisting' action and no default page is
             set, use this action. This permits folders to have the default
             'view' action be 'string:${object_url}/' and hence default to
             a default page when clicking the 'view' tab, whilst allowing the
             fallback action to be specified TTW in portal_types (this action
             is typically hidden)
-        6. If nothing else is found, fall back on the object's 'view' action.
-        7. If this is not found, raise an AttributeError
+        7. If nothing else is found, fall back on the object's 'view' action.
+        8. If this is not found, raise an AttributeError
 
         If the returned path is an object, it is checked for ITranslatable. An
         object which supports translation will then be translated before return.
@@ -820,7 +964,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         # its all very odd and WebDAV'y
         request = getattr(self, 'REQUEST', None)
         if request and request.has_key('REQUEST_METHOD'):
-            if request['REQUEST_METHOD'] not in  ['GET', 'HEAD', 'POST']:
+            if request['REQUEST_METHOD'] not in  ['GET', 'POST']:
                 return obj, [request['REQUEST_METHOD']]
         # Now back to normal
 
@@ -835,7 +979,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             # in the correct language.
             implemented = ITranslatable.isImplementedBy(obj)
             if not implemented or implemented and not obj.isTranslation():
-                pageobj = getattr(obj,page,None)
+                pageobj = getattr(obj, page, None)
                 if pageobj is not None and ITranslatable.isImplementedBy(pageobj):
                     translation = pageobj.getTranslation()
                     if translation is not None and \
@@ -870,66 +1014,44 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         # use this index_html(), nor the ComputedAttribute which defines it.
 
         if not isinstance(getattr(obj, 'index_html', None), ReplaceableWrapper):
-            if getattr(aq_base(obj), 'index_html', None) is not None:
+            index_obj = getattr(aq_base(obj), 'index_html', None)
+            if index_obj is not None and not isinstance(index_obj, ComputedAttribute):
                 return returnPage(obj, 'index_html')
 
         #
         # 2. Look for a default_page managed by an IBrowserDefault-implementing
         #    object
         #
-
-        # Note: the behaviour is the same as setting default_page manually
-        # on the object, and the current BrowserDefaultMixin implementation
-        # actually stores it as the default_page property, but it's nicer to
-        # explicit about getting it from IBrowserDefault
-
-        if obj.isPrincipiaFolderish and IBrowserDefault.isImplementedBy(obj):
-            page = obj.getDefaultPage()
-            # Be totally anal and triple-check...
-            if page and ids.has_key(page):
-                return returnPage(obj, page)
-            # IBrowserDefault only manages explicitly contained
-            # default_page's, so don't look for the id in the skin layers
-
-        #
         # 3. Look for a default_page property on the object
-        #
-
-        pages = getattr(aq_base(obj), 'default_page', [])
-        # Make sure we don't break if default_page is a
-        # string property instead of a sequence
-        if type(pages) in (StringType, UnicodeType):
-            pages = [pages]
-        # And also filter out empty strings
-        pages = filter(None, pages)
-        if obj.isPrincipiaFolderish:
-            for page in pages:
-                if ids.has_key(page):
-                    return returnPage(obj, page)
-
-        # we look for the default_page in the portal and/or skins aswell.
-        # Use path/to/template to reference an object or a skin.
-        for page in pages:
-            if portal.unrestrictedTraverse(page, None):
-                return obj, page.split('/')
-
         #
         # 4. Try the default sitewide default_page setting
         #
 
         if obj.isPrincipiaFolderish:
-            for page in portal.portal_properties.site_properties.getProperty('default_page', []):
-                if ids.has_key(page):
-                    return returnPage(obj, page)
+            defaultPage = self.getDefaultPage(obj)
+            if defaultPage is not None:
+                if ids.has_key(defaultPage):
+                    return returnPage(obj, defaultPage)
+                else:
+                    # For the default_page property, we may get things in the
+                    # skin layers or with an explicit path - split this path
+                    # to comply with the __browser_default__() spec
+                    return obj, defaultPage.split('/')
+
+        # 5. If there is no default page, try IBrowserDefault.getLayout()
+
+        if IBrowserDefault.isImplementedBy(obj):
+            return obj, [obj.getLayout()]
 
         #
-        # 5. If the object has a 'folderlisting' action, use this
+        # 6. If the object has a 'folderlisting' action, use this
         #
 
         # This allows folders to determine in a flexible manner how they are
         # displayed when there is no default page, whilst still using
         # browserDefault() to show contained objects by default on the 'view'
-        # action
+        # action (this applies to old-style folders only, IBrowserDefault is
+        # managed explicitly above)
 
         try:
             act = obj.getTypeInfo().getActionById('folderlisting')
@@ -940,7 +1062,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             pass
 
         #
-        # 6. Fall back on the 'view' action
+        # 7. Fall back on the 'view' action
         #
 
         try:
@@ -952,87 +1074,10 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             pass
 
         #
-        # 7. If we can't find this either, raise an exception
+        # 8. If we can't find this either, raise an exception
         #
 
         raise AttributeError, "Failed to get a default page or view_action for %s" %s (obj.absolute_url,)
-
-    security.declarePublic('isDefaultPage')
-    def isDefaultPage(self, obj):
-        """Finds out if the given obj is the default page in its parent folder.
-
-        Only considers explicitly contained objects, either set as index_html,
-        with the default_page property, or using IBrowserDefault.
-        """
-
-        parent = obj.aq_inner.aq_parent
-
-        if not parent:
-            return False
-
-        # The list of ids where we look for default
-        ids = {}
-
-        # For BTreeFolders we just use the has_key, otherwise build a dict
-        if hasattr(aq_base(parent), 'has_key'):
-            ids = parent
-        else:
-            for id in parent.objectIds():
-                ids[id] = 1
-
-        #
-        # 1. Get an attribute or contained object index_html
-        #
-
-        if not isinstance(getattr(parent, 'index_html', None), ReplaceableWrapper):
-            index_html = getattr(aq_base(parent), 'index_html', None)
-            if not index_html is not None:
-                if type(index_html) == type(obj) and index_html == obj:
-                    return True
-                else:
-                    return False
-
-        #
-        # 2. Look for a default_page managed by an IBrowserDefault-implementing
-        #    object
-        #
-
-        if IBrowserDefault.isImplementedBy(parent):
-            page = parent.getDefaultPage()
-            if page and ids.has_key(page):
-                if page == obj.getId():
-                    return True
-                else:
-                    return False
-
-        #
-        # 3. Look for a default_page property on the object
-        #
-
-        pages = getattr(aq_base(parent), 'default_page', [])
-        if type(pages) in (StringType, UnicodeType):
-            pages = [pages]
-        pages = filter(None, pages)
-        for page in pages:
-            if ids.has_key(page):
-                if page == obj.getId():
-                    return True
-                else:
-                    return False
-
-        #
-        # 4. Try the default sitewide default_page setting
-        #
-
-        portal = getToolByName(self, 'portal_url').getPortalObject()
-        for page in portal.portal_properties.site_properties.getProperty('default_page', []):
-            if ids.has_key(page):
-                if page == obj.getId():
-                    return True
-                else:
-                    return False
-
-        return False
 
     security.declarePublic('isTranslatable')
     def isTranslatable(self, obj):
@@ -1134,6 +1179,12 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         """
         # Make sure we are dealing with a stringish type
         if not isinstance(text, basestring):
+            # Catch the special None case or we would return 'none' evaluating
+            # to True, which is totally unexpected
+            # XXX This seems to break the autogenerated ids, reverting
+            #if text is None:
+            #    return None
+
             # This most surely ends up in something the user does not expect
             # to see. But at least it does not break.
             text = repr(text)
@@ -1270,5 +1321,87 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
         return friendlyTypes
 
+    security.declarePublic('reindexOnReorder')
+    def reindexOnReorder(self, parent):
+        """ Catalog ordering support """
+
+        # For now we will just reindex all objects in the folder. Later we may
+        # optimize to only reindex the objs that got moved. Ordering is more
+        # for humans than machines, therefore the fact that this won't scale
+        # well for btrees isn't a huge issue, since btrees are more for
+        # machines than humans.
+        mtool = getToolByName(self, 'portal_membership')
+        if not mtool.checkPermission(CMFCorePermissions.ModifyPortalContent,
+                                                                    parent):
+            return
+        cat = getToolByName(self, 'portal_catalog')
+        cataloged_objs = cat(path = {'query':'/'.join(parent.getPhysicalPath()), 'depth': 1})
+        for brain in cataloged_objs:
+            obj = brain.getObject()
+            cat.reindexObject(obj,['getObjPositionInParent'],
+                                                    update_metadata=0)
+
+    security.declarePublic('isIDAutoGenerated')
+    def isIDAutoGenerated(self, id):
+        """Determine if an id is autogenerated"""
+        autogenerated=False
+
+        # In 2.1 non-autogenerated is the common case, caught exceptions are
+        # expensive, so let's make a cheap check first
+        if id.count('.') != 2:
+            return autogenerated
+
+        try:
+            pt = getToolByName(self, 'portal_types')
+            obj_type, date_created, random_number = id.split('.')
+            type=' '.join(obj_type.split('_'))
+            portaltypes=pt.objectIds()
+            # new autogenerated ids may have a lower case portal type
+            if (type in portaltypes or type in [pt.lower() for pt in portaltypes] ) \
+            and DateTime(date_created) and float(random_number):
+                autogenerated=True
+        except (ValueError, AttributeError, IndexError, DateTime.DateTimeError):
+            pass
+
+        return autogenerated
+
+    security.declarePublic('getEmptyTitle')
+    def getEmptyTitle(self, translated=True):
+        """Returns string to be used for objects with no title or id"""
+        empty = self.utf8_portal('\x5b\xc2\xb7\xc2\xb7\xc2\xb7\x5d', 'ignore')
+        if translated:
+            trans = getToolByName(self, 'translation_service')
+            empty = trans.utranslate(domain='plone', msgid='title_unset', default=empty)
+        return empty
+
+    def pretty_title_or_id(self, obj, empty_value=_marker):
+        """Return the best possible title or id of an item, regardless
+        of whether obj is a catalog brain or an object, but returning an
+        empty title marker if the id is not set (i.e. it's auto-generated).
+        """
+        obj = aq_base(obj)
+        title = getattr(obj, 'Title', None)
+        if safe_callable(title):
+            title = title()
+        if title:
+            return title
+        item_id = getattr(obj, 'getId', None)
+        if safe_callable(item_id):
+            item_id = item_id()
+        if item_id and not self.isIDAutoGenerated(item_id):
+            return item_id
+        if empty_value is _marker:
+            empty_value = self.getEmptyTitle()
+        return empty_value
+
+    def getMethodAliases(self, typeInfo):
+        """Given an FTI, return the dict of method aliases defined on that
+        FTI. If there are no method aliases (i.e. this FTI doesn't support it), 
+        return None"""
+        getMethodAliases = getattr(typeInfo, 'getMethodAliases', None)
+        if getMethodAliases is not None and safe_callable(getMethodAliases):
+            return getMethodAliases()
+        else:
+            return None
 
 InitializeClass(PloneTool)

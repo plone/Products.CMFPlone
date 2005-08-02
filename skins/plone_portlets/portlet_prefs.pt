@@ -1,55 +1,48 @@
 <html xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:metal="http://xml.zope.org/namespaces/metal"
       i18n:domain="plone">
-
 <body>
-
-<!-- The Prefs portlet -->
-
 <metal:portlet define-macro="portlet"
    tal:define="controlPanel python:modules['Products.CMFCore.utils'].getToolByName(here, 'portal_controlpanel');
                groups python:controlPanel.getGroups('site');
                getIconFor nocall:putils/getIconFor">
 
-    <div class="portlet"
-         id="portlet-prefs">
-        <h5 i18n:translate="heading_control_panel">Site Setup</h5>
-        <div class="portletBody">
+<dl class="portlet"
+    id="portlet-prefs">
+    <dt class="portletHeader"
+        i18n:translate="heading_control_panel">Site Setup</dt>
 
-            <div class="portletContent odd"
-                 tal:repeat="group groups">
+        <dd class="portletItemSingle"
+            tal:repeat="group groups">
 
-                <strong tal:content="group/title"
-                        i18n:translate="">Plone Configlet Group Title</strong>
-                <ul class="configlets" tal:define="configlets python:controlPanel.enumConfiglets(group=group['id'])">
-        
-                    <li tal:repeat="configlet configlets">
-                        <a href=""
-                           style="display: block;"
-                           tal:attributes="href configlet/url"
-                           tal:condition="configlet/visible">
-                            <img src="" alt="" tal:attributes="src python:getIconFor('controlpanel',configlet['id']);
-                                                 alt configlet/name"
-                                 i18n:attributes="alt"
-                                 tal:on-error="string:" />
-                        <tal:configletname tal:content="configlet/name"
-                                           i18n:translate=""></tal:configletname>
-                        </a>
-                    </li>
-        
-                    <li tal:condition="not:configlets" i18n:translate="label_no_panels_available">
-                        No Preference Panels available.
-                    </li>
-        
-                </ul>
+            <strong tal:content="group/title"
+                    i18n:translate="">Plone Configlet Group Title</strong>
+            <ul class="configlets" tal:define="configlets python:controlPanel.enumConfiglets(group=group['id'])">
+    
+                <li tal:repeat="configlet configlets">
+                    <a href=""
+                       style="display: block;"
+                       tal:attributes="href configlet/url"
+                       tal:condition="configlet/visible">
+                        <img src="" alt="" tal:attributes="src python:getIconFor('controlpanel',configlet['id']);
+                                             alt configlet/description"
+                             i18n:attributes="alt"
+                             tal:on-error="string:" />
+                    <tal:configletname tal:content="configlet/name"
+                                       i18n:translate=""></tal:configletname>
+                    </a>
+                </li>
+    
+                <li tal:condition="not:configlets" i18n:translate="label_no_panels_available">
+                    No Preference Panels available.
+                </li>
+    
+            </ul>
 
-            </div>
+        </dd>
 
-        </div>
-    </div>
+</dl>
 
 </metal:portlet>
-
 </body>
-
 </html>

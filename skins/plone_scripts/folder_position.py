@@ -26,6 +26,8 @@ if position.lower()=='bottom':
 if position.lower()=='ordered':
     context.orderObjects(id)
 
+context.plone_utils.reindexOnReorder(context)
+
 msg="Item's position has changed."
 response=context.REQUEST.RESPONSE
 return response.redirect('%s/%s?portal_status_message=%s' % (context.absolute_url(),

@@ -1,0 +1,176 @@
+/*
+** Plone style sheet - Portlets
+**
+** Style sheet documentation can be found at http://plone.org/documentation
+**
+** You should preferrably use ploneCustom.css to add your own CSS classes and to
+** customize your portal, as these are the base fundaments of Plone, and will
+** change and be refined in newer versions. Keeping your changes in
+** ploneCustom.css will make it easier to upgrade.
+**
+** Feel free to use whole or parts of this for your own designs, but give credit
+** where credit is due.
+**
+*/
+
+/* <dtml-var "enableHTTPCompression(request=REQUEST, debug=1, css=1)"> (this is for http compression) */
+/* <dtml-with base_properties> (do not remove this :) */
+/* <dtml-call "REQUEST.set('portal_url', portal_url())"> (not this either :) */
+
+/* The new portlet CSS - these will be switched to non-qualified classes
+   (ie. .portlet, not dl.portlet) once the old portlet layout is removed in
+   Plone 2.2. ~limi */
+
+/* Main portlet elements */
+
+dl.portlet {
+    margin: 0 0 2em 0;
+}
+
+dl.portlet a{
+    text-decoration: none;
+}
+
+.portletHeader {
+    background-color: &dtml-globalBackgroundColor;;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    padding: 0em 1em;
+    text-transform: &dtml-textTransform;;
+    font-weight: normal;
+}
+
+.portletHeader a {
+    color: &dtml-fontColor;;
+}
+
+.portletItem {
+    margin: 0;
+    padding: 1em;
+    border-left: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    border-right: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+}
+
+.portletItemSingle {
+    margin: 0;
+    padding: 1em;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    border-top: none;
+}
+
+dd.portletItemLast {
+    margin: 0;
+    padding: 0.25em 1em;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    border-top-style: none;
+}
+
+
+.portletItem a {
+    display: block;
+}
+
+.portletItemDetails {
+    text-align: right;
+    display: block;
+    color: &dtml-fontColor;;
+}
+
+dd.portletFooter {
+    margin: 0;
+    padding: 0.25em 1em;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    border-top-style: dotted;
+    text-align: right;
+}
+
+
+/* Elements that enable layout with rounded corners */
+
+.portletTopLeft {}
+.portletTopRight {}
+.portletBottomLeft {}
+.portletBottomRight {}
+
+
+
+/* New navtree styles */
+
+.portletNavigationTree {
+    margin: 0 0 0 0.75em; 
+    padding: 0; 
+    list-style: none; 
+    list-style-image: none; 
+    line-height: 1em;
+}
+
+
+
+.navTree {
+    list-style: none; 
+    list-style-image: none; 
+    margin-top: 1px;
+}
+
+.navTree li {
+    margin-bottom: 1px;
+}
+
+.navTreeItem {
+    display: block;
+    padding: 0;
+    margin: 0;
+}
+
+.navTreeItem a {
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-backgroundColor;;
+    display: block;
+    text-decoration: none;
+    padding-top: 0.2em;
+    padding-bottom: 0.25em;
+}
+
+.navTreeItem a:hover {
+    background-color: &dtml-globalBackgroundColor;;
+    color: &dtml-globalFontColor;;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+}
+
+.navTreeCurrentItem {
+    background-color: &dtml-globalBackgroundColor;;
+    color: &dtml-globalFontColor;;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor; !important;
+}
+
+li.navTreeCurrentItem {
+    display: block;
+    padding: 0 0 0 1px;
+    margin: 0 0 2px -1px;
+}
+
+li.navTreeCurrentItem a,
+li.navTreeCurrentItem a:hover {
+    display: block;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBackgroundColor; !important;
+    min-height: 1.6em;
+    line-height: 1.6em;
+    height: auto;
+}
+
+/* Another workaround for broken Internet Explorer */
+
+* html li.navTreeCurrentItem a,
+* html li.navTreeCurrentItem a:hover {
+    height: 1.6em;
+}
+
+
+.navTreeLevel0 {
+    margin: 0;
+}
+
+/*
+style string:background-image: url($portal_url/site_icon.gif);
+*/
+
+
+/* </dtml-with> */

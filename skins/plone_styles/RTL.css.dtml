@@ -1,0 +1,311 @@
+/*  Style sheet for RTL (right-to-left) languages  */
+
+/* <dtml-var "enableHTTPCompression(request=REQUEST, debug=1, css=1)"> (this is for http compression) */
+/* <dtml-with base_properties> (do not remove this :) */
+/* <dtml-call "REQUEST.set('portal_url', portal_url())"> (not this either :) */
+
+<dtml-in "portal_types.listTypeInfo()">
+.contenttype-<dtml-var "plone_utils.normalizeString(id)"> { background-position: 100% 3px;}
+.contenttype-<dtml-var "plone_utils.normalizeString(id)"> a:hover { background-position: 100% 2px; margin-right: -1px; margin-left: 0;}
+</dtml-in>
+
+<dtml-in "getActionIconList()">
+.actionicon-<dtml-var category>-<dtml-var action> { background-position: 100% 50%;}
+</dtml-in>
+
+/* Extra padding class for the generated icons - we have to do it
+   this way because of the IE flicker bug on hovering. */
+
+.visualIconPadding {
+    padding-right: 18px;
+    padding-left: 0;
+    margin-right: -1px;
+    margin-left: 0;
+    margin-bottom: 1px;
+    min-height: 1.6em;
+    height: auto;
+    line-height: 1.6em;
+}
+
+
+h1 {
+    padding-left: 4em;
+    padding-right: 0;
+}
+
+ol {
+    margin: 0.5em 1.5em 0 0;
+}
+
+#portal-logo {
+    background: url(&dtml-portal_url;/&dtml-logoName;) no-repeat top right;
+    margin: 0.75em 1.5em 0.75em 0em;
+}
+
+#portal-skinswitcher a {
+    float: right;
+}
+
+/* start goofy horizontal scroll problem
+
+Ok, the rtl horizontal-scroll problem happens here. Removing the following
+two rules removes the problem. However, the item that actually gets pushed out
+in space is #portal-logo a. To make this clear enable the following rule.
+
+I thought it might have something to do with floats and clearing on the h1, but
+that seems not to be it. It doesn't appear to be the LIR on portal-logo either,
+since we are padding-top, not -left.
+
+Anyway, didn't get it fixed but at least we know what it is. :-/
+
+  -- Chad Whitacre (whit537)
+
+#portal-logo a {
+    background: orange;
+    }
+
+*/
+
+#portal-siteactions {
+    float: left;
+    padding: 3px 0 3px 2em;
+}
+#portal-searchbox {
+    padding: 0 0 0 2em;
+    float: left;
+    clear: left;
+}
+/* end goofy horizontal scroll problem */
+
+
+#portal-globalnav {
+    padding: 0em 2em 0em 0em !important;
+}
+
+#portal-globalnav li a {
+    margin-left: 0.5em !important;
+}
+
+#portal-personaltools {
+    text-align: left;
+}
+
+#portal-personaltools .portalUser {
+    background: transparent url(&dtml-portal_url;/user.gif) center right no-repeat;
+    padding-right: 15px;
+}
+
+#portal-personaltools li {
+    background: transparent url(&dtml-portal_url;/rtl-linkOpaque.gif) center right no-repeat;
+    padding-right: 5px;
+    margin-left: 1em;
+}
+
+.contentViews {
+    padding-right: 1em;
+    margin-right: 0;
+}
+
+.contentViews li a {
+    margin-left: 0.5em;
+}
+
+.contentActions {
+    text-align: left;
+    padding: 0 1em 0 0;
+}
+
+.contentActions ul,
+.contentActions li {
+    text-align: right;
+}
+
+.contentActions li {
+    float: left;
+    background-position: center left;
+    padding: 0 1em 0 0;
+    margin: 0 0 0 1em;
+}
+
+.contentActions .actionMenu {
+    left: -1px;
+}
+
+.documentActions ul {
+    float: left;
+    clear: left;
+}
+
+.newsAbout {
+    float: left;
+    text-align: left;
+}
+
+.newsFooter li {
+     display: inline;
+    margin: 0 0 0 1em;
+}
+
+.documentActions {
+    float: left;
+}
+
+.documentByLine {
+    text-align: left;
+}
+
+.productCredits {
+    text-align: left;
+}
+
+/* .system-message and #error-handling are reST error indicators */
+.portalMessage,
+.system-message,
+#error-handling {
+    padding: 0.5em 3em 0.5em 1em;
+    background-position: 98% center ;
+
+}
+
+
+.standalone,
+.documentEditable * .standalone {
+    padding: 1px 15px 1px 1px;
+    background: &dtml-globalBackgroundColor; url(&dtml-portal_url;/rtl-linkOpaque.gif) 90% 1px no-repeat;
+}
+
+.context,
+.documentEditable * .context {
+    padding: 1px 15px 1px 1px;
+    background: transparent url(&dtml-portal_url;/rtl-linkTransparent.gif) 90% 1px no-repeat;
+}
+
+.destructive,
+.documentEditable * .destructive {
+    background: &dtml-notifyBackgroundColor; url(&dtml-portal_url;/rtl-linkTransparent.gif) 90% 1px no-repeat;
+    padding: 1px 15px 1px 1px;
+}
+
+input.searchButton {
+    padding: 1px 15px 1px 1px;
+    background-position: 90% 1px;
+ }
+
+.field {
+    right: 0;
+    margin: 0 0 1em 1em;
+}
+
+.fieldRequired {
+    background: url(&dtml-portal_url;/required.gif) center right no-repeat;
+    padding: 0 8px 0 0;
+}
+
+.card {
+    float: right;
+}
+
+.listing th,
+.stx table th {
+    border-left: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+}
+
+.listing .top {
+    border-right: &dtml-borderWidth; &dtml-borderStyle; &dtml-backgroundColor;;
+    border-left: &dtml-borderWidth; &dtml-borderStyle; &dtml-backgroundColor; ! important;
+    text-align: left ! important;
+}
+
+.listing td,
+.stx table td {
+    border-left: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    text-align: right;
+}
+
+ul.configletDetails {
+    margin: 0em 4em 1em 1em;
+}
+
+.portletDetails {
+    text-align: left;
+}
+
+.portletMore {
+    text-align: left;
+}
+
+.portletClose {
+    float: left;
+    border-right: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+}
+
+.listingBar span.previous,
+.listingPrevious {
+    text-align: right;
+    float: right;
+    margin-left: 1em;
+}
+
+.listingBar span.next,
+.listingNext {
+    text-align: left;
+    float: left;
+    margin-right: 1em;
+}
+
+.link-parent {
+    padding: 1px 16px 1px 0;
+    background: transparent url(&dtml-portal_url;/arrowUp.gif) 100% 5px no-repeat;
+}
+
+.link-user {
+    padding: 1px 16px 1px 0;
+}
+
+/* No way to get these to work with IE, it seems - suggestions welcome --limi */
+.link-external,
+.link-https,
+.link-mailto,
+.link-news,
+.link-ftp,
+.link-irc,
+.link-callto {
+    padding: 0;
+    background: none;
+}
+
+.link-comment {
+    background: transparent url(&dtml-portal_url;/discussionitem_icon.gif) center right no-repeat;
+    padding: 1px 16px 1px 0 !important;
+}
+
+.hiddenStructure {
+    margin: -1px -1px 0 0;
+}
+
+#portal-column-one .visualPadding {
+    padding: 2em 2em 1em 0em;
+}
+
+#portal-column-two .visualPadding {
+    padding: 2em 0em 1em 2em;
+}
+
+
+.contentActions .hiddenStructure {
+    right: -200px;
+}
+
+.visualClear {
+    margin: -1px -1px 0 0;
+}
+
+.label {
+    padding-left: 0.5em;
+}
+
+.ploneCalendar td {
+    text-align: left;
+}
+
+/* </dtml-with> */

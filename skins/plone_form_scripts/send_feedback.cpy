@@ -63,7 +63,8 @@ variables = {'send_from_address' : send_from_address,
              'sender_id'         : sender_id,
              'url'               : referer,
              'subject'           : subject,
-             'message'           : message
+             'message'           : message,
+	     'encoding'          : encoding,
              }
 
 try:

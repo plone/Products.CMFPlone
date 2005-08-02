@@ -4,11 +4,15 @@ from Acquisition import aq_base
 from zExceptions import BadRequest
 from Products.CMFCore import CMFCorePermissions
 from Products.CMFCore.utils import getToolByName
+from Products.CMFDynamicViewFTI.migrate import migrateFTI
+from Products.CMFDynamicViewFTI.fti import DynamicViewTypeInformation
 from Products.CMFPlone.utils import _createObjectByType
 from Products.CMFPlone.migrations.migration_util import installOrReinstallProduct, \
      safeGetMemberDataTool
 from Products.CMFCore.Expression import Expression
 from Products.CMFPlone import transaction
+
+fti_meta_type = DynamicViewTypeInformation.meta_type
 
 
 def two05_alpha1(portal):
@@ -16,6 +20,24 @@ def two05_alpha1(portal):
     """
     out = []
 
+
+    # Convert Plone Site FTI to CMFDynamicViewFTI this must be done before
+    # any reindexing, we'll also do it later so that we don't force people to
+    # migrate from alpha
+    convertPloneFTIToCMFDynamicViewFTI(portal, out)
+
+    # We do this earlier to avoid reindexing twice
+    migrated = migrateCatalogIndexes(portal, out)
+    reindex = tweakIndexes(portal, out)
+
+    # Tweak Properties And CSS. This needs to happen earlier so that
+    # ATCT migration doesn't fail
+    tweakPropertiesAndCSS(portal, out)
+
+    if not migrated and reindex:
+        refreshSkinData(portal, out)
+        reindexCatalog(portal, out)
+    
     # FIXME: Must get rid of this!
     # ATCT is not installed when SUPPRESS_ATCT_INSTALLATION is set to YES
     # It's required for some unit tests in ATCT [tiran]
@@ -44,28 +66,30 @@ def two05_alpha1(portal):
         #migrateToATCT(portal, out)
         migrateToATCT10(portal, out)
 
+    transaction.commit(1)
+    
     return out
 
+def tweakPropertiesAndCSS(portal, out):
+    # Install CSS and Javascript registries
+    # also install default CSS and JS in the registry tools
+    installCSSandJSRegistries(portal, out)
+    
+    # Add translation service tool to portal root
+    addTranslationServiceTool(portal, out)
 
-def alpha1_alpha2(portal):
-    """2.1-alpha1 -> 2.1-alpha2
-    """
-    out = []
+    # Add new memberdata properties
+    addMemberdataHome_Page(portal, out)
+    addMemberdataLocation(portal, out)
+    addMemberdataDescription(portal, out)
+    addMemberdataLanguage(portal, out)
+    addMemberdataExtEditor(portal,out)
+
+    # Update navtree_properties
+    updateNavTreeProperties(portal, out)
+
+def tweakIndexes(portal, out):
     reindex = 0
-
-    # Add full_screen action
-    addFullScreenAction(portal, out)
-    addFullScreenActionIcon(portal, out)
-
-    # Make visible_ids a site-wide property
-    addVisibleIdsSiteProperty(portal, out)
-    deleteVisibleIdsMemberProperty(portal, out)
-
-    # Remove obsolete formtooltips property
-    deleteFormToolTipsMemberProperty(portal, out)
-
-    # Make a new property exposeDCMetaTags
-    addExposeDCMetaTagsProperty(portal, out)
 
     # Switch path index to ExtendedPathIndex
     reindex += switchPathIndex(portal, out)
@@ -76,15 +100,49 @@ def alpha1_alpha2(portal):
     # Add getObjSize support to catalog
     reindex += addGetObjSizeMetadata(portal, out)
 
-    # Update navtree_properties
-    updateNavTreeProperties(portal, out)
+    # Add exclude_from_nav metadata
+    reindex += addExclude_from_navMetadata(portal, out)
+
+    # Install DateIndexes and DateRangeIndexes
+    reindex += migrateDateIndexes(portal, out)
+    reindex += migrateDateRangeIndexes(portal, out)
+
+    # Add sortable_title index
+    reindex += addSortable_TitleIndex(portal, out)
+
+    # add is_folderish metadata
+    reindex += addIs_FolderishMetadata(portal, out)
+
+    # Get rid of CMF typo 'ExpiresDate' metadata in favor of proper DC
+    # 'ExpirationDate' metadata
+    reindex += switchToExpirationDateMetadata(portal, out) 
+
+    return reindex
+
+def alpha1_alpha2(portal):
+    """2.1-alpha1 -> 2.1-alpha2
+    """
+    out = []
+
+    reindex = 0
+
+    # Add full_screen action
+    addFullScreenAction(portal, out)
+    addFullScreenActionIcon(portal, out)
+
+    # Make visible_ids a site-wide property
+    addVisibleIdsSiteProperty(portal, out)
+    # No longer delete this, as we don't want to loose custom settings.
+    # deleteVisibleIdsMemberProperty(portal, out)
+
+    # Remove obsolete formtooltips property
+    deleteFormToolTipsMemberProperty(portal, out)
+
+    # Make a new property exposeDCMetaTags
+    addExposeDCMetaTagsProperty(portal, out)
 
     # Add sitemap action
     addSitemapAction(portal, out)
-
-    # Install CSS and Javascript registries
-    # also install default CSS and JS in the registry tools
-    installCSSandJSRegistries(portal, out)
 
     # Add types_not_searched site property
     addUnfriendlyTypesSiteProperty(portal, out)
@@ -107,21 +165,8 @@ def alpha1_alpha2(portal):
     # Add events topic
     addEventsTopic(portal, out)
 
-    # Add exclude_from_nav metadata
-    reindex += addExclude_from_navMetadata(portal, out)
-
     # Add objec cut/copy/paste/delete + batch buttons
     addEditContentActions(portal, out)
-
-    # Install DateIndexes and DateRangeIndexes
-    reindex += migrateDateIndexes(portal, out)
-    reindex += migrateDateRangeIndexes(portal, out)
-
-    # Add sortable_title index
-    reindex += addSortable_TitleIndex(portal, out)
-
-    # add is_folderish metadata
-    reindex += addIs_FolderishMetadata(portal, out)
 
     # Add groups 'administrators' and 'reviewers'
     addDefaultGroups(portal, out)
@@ -134,20 +179,6 @@ def alpha1_alpha2(portal):
 
     # Add selectable_views to portal root
     addSiteRootViewTemplates(portal, out)
-
-    # Get rid of CMF typo 'ExpiresDate' metadata in favor of proper DC
-    # 'ExpirationDate' metadata
-    reindex += switchToExpirationDateMetadata(portal, out) 
-
-    # Add translation service tool to portal root
-    addTranslationServiceTool(portal, out)
-
-    # Add new memberdata properties
-    addMemberdataHome_Page(portal, out)
-    addMemberdataLocation(portal, out)
-    addMemberdataDescription(portal, out)
-    addMemberdataLanguage(portal, out)
-    addMemberdataExtEditor(portal,out)
 
     # Fix the conditions and permissions on the folder_buttons actions
     fixFolderButtonsActions(portal, out)
@@ -175,18 +206,6 @@ def alpha1_alpha2(portal):
     if reindex:
         refreshSkinData(portal, out)
         reindexCatalog(portal, out)
-
-    # FIXME: *Must* be called after reindexCatalog.
-    # In tests, reindexing loses the folders for some reason...
-
-    # Make sure the Members folder is cataloged
-    indexMembersFolder(portal, out)
-
-    # Make sure the News folder is cataloged
-    indexNewsFolder(portal, out)
-
-    # Make sure the Events folder is cataloged
-    indexEventsFolder(portal, out)
     
     return out
 
@@ -413,8 +432,11 @@ def updateNavTreeProperties(portal, out):
         if propSheet is not None:
             if not propSheet.hasProperty('typesToList'):
                 propSheet._setProperty('typesToList', ['Folder', 'Large Plone Folder', 'Topic'], 'lines')
+            if not propSheet.hasProperty('sortAttribute'):
                 propSheet._setProperty('sortAttribute', 'getObjPositionInParent', 'string')
+            if not propSheet.hasProperty('sortOrder'):
                 propSheet._setProperty('sortOrder', 'asc', 'string')
+            if not propSheet.hasProperty('sitemapDepth'):
                 propSheet._setProperty('sitemapDepth', 3, 'int')
             if not propSheet.hasProperty('showAllParents'):
                 propSheet._setProperty('showAllParents', 1, 'boolean')
@@ -475,10 +497,11 @@ def refreshSkinData(portal, out=None):
     """Refreshes skins to make new scripts available in the
     current transaction.
     """
-    if hasattr(portal, '_v_skindata'):
+    if hasattr(aq_base(portal), 'clearCurrentSkin'):
+        portal.clearCurrentSkin()
+    else: # CMF 1.4
         portal._v_skindata = None
-    if hasattr(portal, 'setupCurrentSkin'):
-        portal.setupCurrentSkin()
+    portal.setupCurrentSkin()
 
 
 def reindexCatalog(portal, out):
@@ -487,9 +510,12 @@ def reindexCatalog(portal, out):
     if catalog is not None:
         # Reduce threshold for the reindex run
         old_threshold = catalog.threshold
+        pg_threshold = getattr(catalog, 'pgthreshold', 0)
+        catalog.pgthreshold = 300
         catalog.threshold = 2000
         catalog.refreshCatalog(clear=1)
         catalog.threshold = old_threshold
+        catalog.pgthreshold = pg_threshold
         out.append("Reindexed portal_catalog.")
 
 
@@ -504,7 +530,7 @@ def installCSSandJSRegistries(portal, out):
 
         cssreg = getToolByName(portal, 'portal_css', None)
         if cssreg is not None:
-            cssreg.clearResources()
+            cssreg.clearStylesheets()
             # add the bottom ones and the ones with special expressions first.
             # since registering a stylesheet adds it to the top of the stack
             cssreg.registerStylesheet('ploneRTL.css', expression="python:object.isRightToLeft(domain='plone')")
@@ -521,7 +547,7 @@ def installCSSandJSRegistries(portal, out):
 
         jsreg = getToolByName(portal, 'portal_javascripts', None)
         if jsreg is not None:
-            jsreg.clearResources()
+            jsreg.clearScripts()
             jsreg.registerScript('register_function.js')
             jsreg.registerScript('plone_javascript_variables.js')
             jsreg.registerScript('nodeutilities.js')
@@ -724,8 +750,7 @@ def addEditContentActions(portal, out):
         for newaction in ACTIONS:
             for action in actionsTool.listActions():
                 if action.getId() == newaction['id'] \
-                        and action.getCategory() == newaction.get('category', CATEGORY) \
-                    and action.getCondition() == newaction['condition']:
+                        and action.getCategory() == newaction.get('category', CATEGORY):
                     break # We already have the action
             else:
                 actionsTool.addAction(newaction['id'],
@@ -874,7 +899,7 @@ def addDefaultTypesToPortalFactory(portal, out):
     if factory is not None:
         types = factory.getFactoryTypes().keys()
         for metaType in ('Document', 'Event', 'File', 'Folder', 'Image', 
-                         'Folder', 'Large Plone Folder', 'Link', 'News Item',
+                         'Large Plone Folder', 'Link', 'News Item',
                          'Topic'):
             if metaType not in types:
                 types.append(metaType)
@@ -1158,4 +1183,56 @@ def changePloneSiteIcon(portal, out):
         if plone_FTI is not None and plone_FTI.content_icon == 'folder_icon.gif':
             plone_FTI.content_icon = 'site_icon.gif'
             out.append("Changed Plone Site icon")
-                        
+
+def migrateCatalogIndexes(portal, out):
+    """Migrate catalog indexes if running under Zope 2.8"""
+    from Products.ZCatalog.ZCatalog import ZCatalog
+    migrated = False
+    if not hasattr(ZCatalog, 'manage_convertIndexes'):
+        return migrated
+    FLAG = '_migrated_280'
+    for obj in portal.objectValues():
+        if not isinstance(obj, ZCatalog):
+            continue
+        if getattr(aq_base(obj), FLAG, False):
+            continue
+        out.append("Running manage_convertIndexes on "
+                   "ZCatalog instance '%s'" % obj.getId())
+        p_threshold = getattr(obj, 'pgthreshold', 0)
+        obj.pgthreshold = 300
+        obj.manage_convertIndexes()
+        obj.pgthreshold = p_threshold
+        out.append("Finished migrating catalog indexes "
+                   "for ZCatalog instance '%s'" % obj.getId())
+        migrated = True
+    return migrated
+
+
+def convertPloneFTIToCMFDynamicViewFTI(portal, out):
+    FTI='Plone Site'
+    views = ('folder_listing','news_listing')
+    ttool = getToolByName(portal, 'portal_types', None)
+    if ttool is not None:
+        fti = getattr(ttool, 'Plone Site', None)
+        if fti is not None:
+            if fti.meta_type != fti_meta_type:
+                # Get full type name
+                name = [t[0] for t in ttool.listDefaultTypeInformation()
+                                    if t[1].get('id','')=='Plone Root']
+                if name:
+                    name = name[0]
+                    migrateFTI(portal, 'Plone Site', name, fti_meta_type)
+                    out.append("Converted Plone Site to CMFDynamicViewFTI")
+
+                    # limi says don't bother transferring old views
+                    # Transfer old default page
+                    old_default = getattr(portal, '_selected_default_page', ())
+                    if old_default is not ():
+                        del portal._selected_default_page
+                        portal.setDefaultPage(old_default)
+                        out.append("Transferred portal default page")
+            # add sensible default methods
+            new_fti = portal.getTypeInfo()
+            if 'folder_listing' not in portal.getAvailableLayouts():
+                new_fti.manage_changeProperties(view_methods=views, default_view=views and views[0])
+                out.append("Updated portal selectable views")

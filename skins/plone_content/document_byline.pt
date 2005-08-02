@@ -1,92 +1,74 @@
-<div class="documentByLine"
-     metal:define-macro="byline"
+<div metal:define-macro="byline"
      i18n:domain="plone"
      tal:condition="python: site_properties.allowAnonymousViewAbout or not isAnon"
      tal:define="creator here/Creator;
                  creator_home python:mtool.getHomeUrl(creator);">
 
-    <img src="" alt=""
-       title="This document is locked."
-       tal:define="locked portal_object/lock_icon.gif;
-                   lockable python:hasattr(here, 'wl_isLocked');"
-       tal:condition="python:lockable and here.wl_isLocked()"
-       tal:replace="structure python:locked.tag(title='Locked')"
-       i18n:attributes="title label_document_locked;"
-       />
+    <div class="documentByLine">
+        <img src="" alt=""
+           title="This document is locked."
+           tal:define="locked portal_object/lock_icon.gif;
+                       lockable python:hasattr(here, 'wl_isLocked');"
+           tal:condition="python:lockable and here.wl_isLocked()"
+           tal:replace="structure python:locked.tag(title='Locked')"
+           i18n:attributes="title label_document_locked;"
+           />
 
-    <tal:name tal:condition="creator"
-        tal:define="author python:mtool.getMemberInfo(creator)">
-      <span i18n:translate="label_by_author">
-        by
-      <a href="#"
-         tal:attributes="href string:${portal_url}/author/${creator}"
-         tal:content="author/fullname | here/Creator"
-         tal:omit-tag="not:author"
-         i18n:name="author">
-        Bob Dobalina
-      </a>
-      </span>
-      <tal:ownership condition="python: isEditable and checkPermission('Manage portal', here)">
-        <a href="" 
-           title="Change ownership"
-           i18n:attributes="title label_change_ownership;"
-           i18n:translate="label_change_author"
-           tal:attributes="href string:${here/absolute_url}/ownership_form;">[Change ownership]</a>
-      </tal:ownership>
+        <tal:name tal:condition="creator"
+            tal:define="author python:mtool.getMemberInfo(creator)">
+          <span i18n:translate="label_by_author">
+            by
+          <a href="#"
+             tal:attributes="href string:${portal_url}/author/${creator}"
+             tal:content="python:author and author['fullname'] or creator"
+             tal:omit-tag="not:author"
+             i18n:name="author">
+            Bob Dobalina
+          </a>
+          </span>
 
-      &mdash;
+          &mdash;
 
-    </tal:name>
+        </tal:name>
 
-    <tal:contrib condition="here/Contributors">
-    <span i18n:translate="label_contributors">
-      Contributors
-    </span>:
-    <span tal:replace="python: ', '.join(here.Contributors())">
-      Mary
-    </span>
-    <a href="" 
-       title="Change contributers"
-       tal:condition="python: isEditable and checkPermission('Manage properties', here)" 
-       i18n:attributes="title label_change_contributers;"
-       tal:attributes="href string:${here/absolute_url}/base_metadata;">
-      <img src="" tal:attributes="src string:${portal_url}/edit.gif"
-           alt="Change contributers"
-           i18n:attributes="alt label_change_contributers;"/>
-      </a>
+        <span i18n:translate="box_last_modified">
+        last modified
+        </span>
+        <span tal:replace="python:here.toLocalizedTime(here.ModificationDate(),long_format=1)">
+        August 16, 2001 at 23:35:59
+        </span>
 
-    <br />
-    </tal:contrib>
+        <span class="state-expired"
+            tal:condition="python:portal.isExpired(here)"
+            i18n:translate="time_expired">
+        &mdash; expired
+        </span>
 
+        <span tal:define="locked portal_object/lock_icon.gif"
+              tal:condition="isLocked">
+            <img src=""
+                 tal:replace="structure python:locked.tag(title='This item is locked')"
+                 alt="Object locked"
+                 i18n:attributes="alt label_object_locked;" />
+        </span>
 
+        <div tal:condition="here/Contributors">
+            <span i18n:translate="label_contributors">
+              Contributors:
+            </span>
+            <span tal:replace="python: ', '.join(here.Contributors())">
+              Mary
+            </span>
+        </div>
 
-    <span i18n:translate="box_last_modified">
-    last modified
-    </span>
-    <span tal:replace="python:here.toLocalizedTime(here.ModificationDate(),long_format=1)">
-    August 16, 2001 at 23:35:59
-    </span>
+        <tal:rights condition="here/Rights">
+        <div tal:replace="here/Rights">
+          Copyleft NiceCorp Inc.
+        </div>
+        </tal:rights>
 
-    <span class="state-expired"
-        tal:condition="python:portal.isExpired(here)"
-        i18n:translate="time_expired">
-    &mdash; expired
-    </span>
-
-    <span tal:define="locked portal_object/lock_icon.gif"
-          tal:condition="isLocked">
-        <img src=""
-             tal:replace="structure python:locked.tag(title='This item is locked')"
-             alt="Object locked"
-             i18n:attributes="alt label_object_locked;" />
-    </span>
-
-    <tal:rights condition="here/Rights">
-    <div tal:replace="here/Rights">
-      Copyleft NiceCorp Inc.
     </div>
-    </tal:rights>
-
-    <span metal:use-macro="here/review_history/macros/review_history" />
     
+    <span metal:use-macro="here/review_history/macros/review_history" />
+
 </div>

@@ -2,7 +2,635 @@ Changelog for Plone
 
    (name of developer listed in brackets)
 
-Plone 2.1 - Plaid - (Unreleased)
+Plone 2.1 - Plaid - RC2 - unreleased
+
+    - Removed reindex method from CatalogTool.py since it is redundant and
+      as of CMF 1.5.3 differs in signature from the base type's method.
+      [geoffd]
+
+    - Made language selector visible even if no document actions are defined
+      for the current user
+      [jok2]
+    
+    - Don't require a full name for the site feedback in the contact-info page,
+      as the full name is not required for members.
+      [jok2]
+
+Plone 2.1 - Plaid - RC1 - Released August 1, 2005
+
+    - Added log.py module and made Plone use only one style of logging (zLOG).
+      There is no logger named 'Plone' configured anywhere, so we better not
+      pretend there was.
+      [stefan]
+
+    - Made history table use transition titles instead of ids (requires new
+      portal_workflow method).  Also localized dates in that table, and
+      removed duplication of history from content_status_history.
+      [alecm]
+
+    - Commented out markup code for rounded corners in the portlets. The
+      tags like <span class="portletTopLeft" /> inside the <dl> were
+      destroying the XHTML validation because only <dd> and <dt> are
+      allowed in a definition list.
+      [tiran]
+
+    - Fixed issue with dashed borders in IE, and applied IEFixes which was
+      going unused.
+      [alecm]
+
+    - Simplified creator checking in folder_listing, as the usage of creators
+      made no sense.  Let's just use Creator and be dones with it.
+      [alecm]
+
+    - Making the "display" menu display the default-page if you are looking
+      directly at a folder that has a default-page (e.g. its contents view)
+      [optilude]
+
+    - Fixing content-type icon display in folder listing, recent portlet etc.
+      [spliter]
+
+    - Fixed bottom of selected tab in IE.
+      [spliter]
+
+    - Added new permission Allow Sendto to Plone. The sendto method, script
+      and action are protected by the new permission. Change the permission
+      in the portal root to prevent certain users like Anonymous to use or
+      abuse the feature.
+      [tiran]
+
+    - Fixed issue that caused Plone/AT Folders contained in a BaseBTreeFolder
+      subclass to inheirt the parent index_html ComputedAttribute and attempt
+      to use that as the default view resulting in a 404. Thanks to tim2p
+      for finding this.
+      [alecm]
+
+    - Fixed http://members.plone.org/collector/4351 by not relying on
+      getTypeInfo() being available on the object.
+      [optilude]
+
+    - Fixed http://plone.org/collector/3906 - header now shows correct mouse
+      pointer cursor when table is sortable.
+      [hannosch]
+
+    - Added migration to add new view templates to folderish types (including
+      Smart Folders).
+      [alecm, limi]
+
+    - Made folder_listing and folder_contents suitable for use as Smart Folder
+      views.
+      [alecm]
+
+    - Fixed http://members.plone.org/collector/2771 (4350) using the new
+      isURLInPortal method, which now also returns true on relative URLs.
+      [alecm]
+
+    - Added default_page_types and removed non_default_page_types.  This means
+      That third party-content types that want to be used as default pages
+      need to be added to the list, but it also means that folderish types
+      which generally don't make any sense as default pages are not allowed by
+      default.  Also, made the default page selection form show the currently
+      selected item.
+      [alecm]
+
+    - Added CMF types to types_not_searched.
+      [alecm]
+
+    - Made portlet_recent use types_not_searched to limit returned types.
+      [alecm]
+
+    - Made search form use workflow state titles, and multiple columns for
+      types list.
+      [alecm]
+
+    - Fixed http://members.plone.org/collector/4345 by checking the flag.
+      [alecm]
+
+    - .personal folders will no longer be created.  Fixed unit tests which
+      assumed that .personal would be around.
+      [alecm]
+
+    - Closed bug http://members.plone.org/collector/4344 by limiting the
+      number of items that can be added to the portal status message string
+      when deleting items. This is really more of a usability fix, since 
+      we don't actually check the length of the titles; the full fix for the
+      issue will appear when we merge the improved status message handling.
+      [optilude]
+
+    - Fixed http://members.plone.org/collector/4346 by using the suggested
+      fix.  Thanks Tim Hicks.
+      [alecm]
+
+    - Fixed plone_javascript_variables.dtml and plone_scripts/translate.py to 
+      cope with i18n strings including the ' char.
+      [gotcha]
+
+    - Added language to personalize form and put prefs_user_details back in
+      sync with personalize.
+      [alecm]
+
+    - Fixed http://members.plone.org/collector/1490 by ensuring that sendto
+      only works when the action is visible.
+      [alecm]
+
+    - Added an immediateLogout method to MembershipTool.py that resets the
+      current security context and logs the current user out immediately.
+      Used in logout.py
+      [geoffd]
+
+    - Added main macros to templates which may be used as default content
+      views so that they play nicely with discussion_reply_form.
+      [alecm]
+
+    - Fixed http://members.plone.org/collector/4333 prefs_user_manage now uses
+      portal_membership.deleteMembers instead of acting directly on acl_users.
+      On deletion local roles are now removed, but the member area is
+      preserved.
+      [alecm]
+
+    - Added the last missing accesskey to search_form and put in a link below
+      the search box.
+      [hannosch]
+
+    - Reenabled visible_ids memberdata property.  This field will determine
+      the visiblity of ids on a member by member basis, only if the sitewide
+      property is enabled.
+      [alecm]
+
+    - Fixed author home page link in author.pt
+      [panjunyong]
+
+    - Change order of folderlisting/view default action determination to fix
+      discussion visibility on folderish AT types.
+      [alecm]
+
+    - Added javascript handler to form submit buttons which warns when the
+      button gets clicked more than once.
+      [fschulze]
+
+    - Fleshed out the contact-info page as a form controller page, making it
+      possible to send feedback as anonymous user and as member (without 
+      filling e-mail address and fullname). Also displays the portal 
+      description.
+      [jok2]
+
+    - Fixed http://members.plone.org/collector/4335 added a method to URLTool
+      to determine whther a URL is local to the portal.  This will be moved
+      into CMFCore ASAP, pending write access.
+      [alecm]
+
+    - Hooked up navtree wf config to the configlet, needs serious UI tweaking.
+      Added a method to the WorkflowTool to list all wf states in the
+      portal.  Added a python script that converts a list into a list of
+      sublists for making columns.
+      [alecm]
+
+    - Added properties wf_states_to_show, and enable_wf_state_filtering to
+      navtree_properties.  These filter the navtree/sitemap/portal tabs
+      results by workflow state.
+      [alecm]
+
+    - Adding navigation control panel, and fixing a possible Search control
+      panel migration problem in the process.
+      [optilude, limi]
+
+    - Making the livesearch result truncate title and id, as offered by jeffk
+      in http://members.plone.org/collector/4329. Thanks for the patch!
+      [optilude]
+
+    - Fixed http://members.plone.org/collector/4324 need to ensure we are
+      passing strings to utranslate.
+      [alecm]
+
+    - Added CMFUid tools. CMF 1.5 has a new core product CMFUid which is 
+      used to assign and query uids mostly like Archetypes. Products designed
+      for CMF 1.5 might depend on the tools.
+      [tiran]
+
+    - Fixed HEAD requests for folders. The browserDefault code mustn't look up
+      the template for HEAD requests. Instead it should invoke the HEAD() api
+      method defined in webdav.Collection. This fixes an ATCT bug and
+      http://plone.org/collector/4290. 
+      [tiran]
+
+    - Made check_id.py prevent method aliases like 'sharing' and 'edit' as
+      object ids. This fixes http://members.plone.org/collector/4331.
+      [optilude]
+
+    - Implemented accesskeys as per accessibility-info page definition.
+      [hannosch]
+
+    - Made the portal root use the /edit and /sharing method aliases for its
+      'edit' and 'sharing' tabs/actions.
+      [optilude]
+
+    - Made the 'view' method aliases point to '(selected layout)' instead of
+      '(default view)'. This assures consistency with previous behaviour,
+      so that /view at the end of a URL always gets the item itself, ignoring
+      any default-page that may be set. Note that the 'view' *action* still
+      points to 'string:${object_url}', so that the 'view' tab, as well as
+      the '(Default)' target, still get '(dynamic view)' (and thus default
+      pages) for types other than File and Image.
+      [optilude]
+
+    - Fixed http://members.plone.org/collector/4327. The live search now
+      honours typeUseViewActionInListings.
+      [optilude]
+
+    - Fixed issue http://members.plone.org/collector/2669. Also made
+      the group prefs suck a bit less. These pages really have to
+      be taken care of in the next release. I also disabled the
+      group search feature in prefs_groups_overview because it 
+      made things much worse. It's no use to have a search box
+      that doesn't search. 
+      So, now groups are shown using their title and descriptions
+      for tooltips. folder_localrole_form also uses this info.
+      This requires a GRUF update!!
+      [ender]
+
+    - Changed add to favorites icon in document actions to the 
+      appropriate icon. Before it used the site icon while the
+      portal_type uses a heart. They must match and now they do.
+      [ender]
+
+    - Applied patch from http://plone.org/collector/4205. Better check
+      for existance of member folders. Thanks to Tiran.
+      [ender]
+
+    - Made the blacklisting control in the search control panel act as a
+      whitelist. That is, new types appear as selected by default and the
+      backing store is a blacklist, but the user selects which type to be
+      searched, not which types not to be searched, which is easier on the
+      mind.
+      [optilude]
+
+    - Created an Actions drop-down menu with cut, copy, paste
+      and delete in there. I know the label is not optimal
+      but I think this is nicer and cleaner.
+      [ender]
+
+    - Fixed http://plone.org/collector/4083. 
+      <div class="visualClear"><!-- --></div> to remove whitespace
+      in IE.
+      [ender]
+
+    - Fixing http://members.plone.org/collector/4300 by disabling the content
+      menu when the object is in the factory. PLIP 24 form unload protection
+      takes care of the other cases.
+      [optilude]
+
+    - Added link to ownership_form on the sharing page. Changed
+      warning text a bit for when you visit this page for non-contentish
+      items so it shows the title of the portal_type and not the id.
+      The sharing page really needs to be refactored in the next release.
+      [ender]
+
+    - Making prefs_group_members a form controller template, which should be
+      somewhat safer from reported navigation and persistence problems, and
+      makes it possible to replicate the no-search-on-page-load behaviour
+      already added to prefs_users_overview. Group overview pages still not
+      converted, mainly because these templates are a mess. :-(
+      [optilude]
+
+    - Making the images in document_actions.pt have their height and width
+      set with CSS instead of attributes on the image tag. This closes
+      http://members.plone.org/collector/3823, which advocated using the
+      image's own height and width. This approach was deemed unnecessary,
+      since we probably want them all to be consistent, and having to traverse
+      to each image is an unnecessary performance hit for something that'll stay
+      16x16 almost always. :)
+      [optilude]
+
+    - Fixed http://members.plone.org/collector/4302 using jenner's template
+      with a few simplifications, and some changes to folder_contents to make
+      reusability even easier.
+      [alecm]
+
+    - Finished http://plone.org/collector/1805 without any catalog metadata
+      even.  Added a method to WorkflowTool that retrieves a state title given
+      a state id and a portal_type.  As a result it can be used for brains and
+      objects alike.
+      [alecm]
+
+    - Making member overview preference page not perform a full member search
+      by default, but adding a "Find all" button to find all members if you
+      need this listing. This fixes http://members.plone.org/collector/2530.
+      The bug also mentions that we could have "Find all" the default behaviour 
+      when there are sufficiently few members. However, there has been no
+      followup on how we can efficiently count the number of members, so this
+      is still an open feature request.
+      [optilude]
+
+    - Adding display of currently selected default-page to "display" menu and
+      cleaning up markup a bit. Still some CSS work to be done before this is 
+      fully OK.
+      [optilude]
+
+    - All icons for content types are now displayed using CSS - this closes
+      http://members.plone.org/collector/3138
+
+    - Removed all references to getStateClassName() as this was just a
+      makeshift solution that was used before we got the normalizeString()
+      method in PloneTool.
+      [limi]
+
+    - Hooked up the new HTML-formatted and improved start page
+      [limi]
+
+    - Reverted change to normalizeString as Archetypes relied on it in the
+      title to id autogeneration code.
+      [hannosch]
+
+    - Fixed http://members.plone.org/collector/3242 added And/Or search option
+      to Subject field on search_form.
+      [alecm]
+
+    - Fixed http://members.plone.org/collector/3211 by updating the permission
+      on PloneTool.setMemberProperties, the other permissions are fixed in
+      CMF 1.5.
+      [alecm]
+
+    - Fixed http://members.plone.org/collector/4242 by updating test.
+      [alecm]
+
+    - Fixed inappropriate condition on folder_constraintypes_form.
+      [alecm]
+
+    - Made tableless skin use showEditableBorder, fixed
+      http://members.plone.org/collector/4291.
+      [alecm]
+
+    - Fixed failing unit tests due to cleanupFilename removal. atct's base.py
+      _setATCTFileContent method relied on getting a false value back from
+      normalizeString when called with None.
+      [hannosch]
+
+    - Removed text size actions, moved Site Setup action to site_actions, and
+      added contact and accessibility site_actions.
+      [alecm]
+
+    - Added in some more character mappings to UnicodeNormalizer that were
+      definied in ATCT's now removed cleanupFilename method
+      [hannosch]
+
+    - Remove accesskeys as they are interfering with screen reader shortcuts
+      This fixes http://plone.org/collector/3535
+      [hannosch]
+
+    - Migrated to some nicer workflow state titles.
+      [alecm]
+
+    - Fixed issues related to External Editor action (2939, 3008, 4176), using
+      a script from glenfant.  The icon appears only when both 'Modify portal
+      contents' and 'Use external editor' are available, the user has the a
+      member property set, and the object supports WebDAV editing/locking, and
+      isn't locked.
+      [alecm]
+
+    - Partial fix for http://plone.org/collector/4272 some missing i18n markup
+      [hannosch]
+
+    - Added 'Large Plone Folder' to parentMetaTypesNotToQuey navtree_property.
+      This ensures that large folders will not display their contents in the
+      navtree.
+      [alecm]
+
+    - Fixed http://plone.org/collector/4251. ulocalized_time() fetches
+      all DateTime errors and logs them.
+      [tiran]
+
+    - Took care of http://plone.org/collector/4224 by disabling the ZMI
+      ordering interface for the Plone Site object.
+      [stefan]
+
+    - Removed PropertyManagedBrowserDefault, and mane the portal root support
+      BrowserDefaultMixin as implemented by CMFDynamicViewFTI.
+      [alecm]
+
+    - Fixed http://plone.org/collector/4216 - migration would add
+      'contents' action more than once.
+      [stefan]
+
+    - Changed category of 'view' and 'edit' actions on 'Plone Site' to
+      'object'.
+      [alecm]
+
+    - Implemented limi's suggestion for contents tab.
+      [alecm]
+
+    - Fixed discussion_reply_form to work with CMFDynamicViewFTI stuff.
+      [alecm]
+
+    - Added dummy savepoint method to transaction_.py
+      [tiran]
+
+    - Resurrection of old edit template for CMF content types. It is possible
+      to edit and view old style content types again. These templates should be
+      removed in 2.2.
+      [tiran]
+
+    - Added pretty_title_or_id method to PloneTool which returns the Title
+      or non-autogenerated id, otherwise it returns a translatable default
+      string (or a given default parameter).  Made plone use this method
+      (or the helper python script that points to it) everywhere.  Currently
+      this incurrs a skin lookup and script call for nearly every content item
+      listed (portlets, listings, etc.).  This method could easily be added to
+      catalog metadata if the penalty is too large, with no need to change the
+      templates.  However, doing so would loose the translatability of the
+      default string.  Something like 'here/pretty_title_or_id|empty_title'
+      won't work as '|' only triggers on an exception, so a python expression
+      would be needed to maintain translatability.
+      [alecm]
+
+    - Added isIDAutogenerated method to PloneTool and deprecated the python
+      script.  This method is normally used from FS code and so it belongs in
+      FS code.
+      [alecm]
+
+   Beta1 - Released July 7, 2005
+
+    - PloneFolderBase (and hence LargePloneFolder) no longer inherits
+      SkinnedFolder, as SkinnedFolder has OrderSupport in CMF 1.5.
+      [alecm]
+
+    - Moved reindexOnReorder stuff into PloneTool, and use it from the
+      folder_position script.  This way non-ATCT/PloneFolder types get proper
+      reordering in the GUI.  Order reindex on rename is still not available
+      for custom types.
+      [alecm]
+
+    - Added the phrase "Open Source" to the colophon to keep google happy
+      [geoffd]
+
+    - Fixed method alias handling in portal_factory 
+      (http://plone.org/collector/4263)
+      [geoffd]
+
+    - Added support for parentMetaTypesNotToQuery to the navtree. Fixed
+      http://members.plone.org/collector/4258
+      [alecm]
+
+    - Use the old fashioned (but badly named) metaTypesNotToList for the
+      navtree blacklist, instead of reinventing the wheel, appending the
+      necessary new values to that list in migration.
+      [alecm]
+
+    - Use a global define for visible_ids so that it is automatically used for
+      custom types.
+      [alecm]
+
+    - Ceiling date patch is obsolete for CMF 1.5 - removed it.
+      [hannosch]
+
+    - Fixed http://plone.org/collector/4247 remove unused group_submit variable
+      [hannosch]
+
+    - Made it possible to show action icons in personal-bar.
+      [fschulze]
+
+    - Fixed http://plone.org/collector/4229 Error in sharing tab, roles.append
+      changes a list inplace
+      [hannosch]
+
+    - Fixed http://plone.org/collector/4241 MembershipTool.py used
+      _checkPermission without importing it
+      [hannosch]
+
+    - Added is_default_page index to catalog, and made navtree no longer show
+      objects which are the default page in a folder.
+      [alecm]
+
+    - Fixed a number of security related issues.  We cannot assume that we can
+      access attributes of the parent object (this includes using 'folder' in
+      actions and 'aq_parent' in skins).  This fixes viewing visible objects
+      in private folders, and also some PLIP 16 issues.  There are still
+      issues due to the fact that restrictedTraverse() will not work for
+      objects which have an ancestor with 'Access contents information'
+      disabled.
+      [alecm]
+
+    - Made NavTree use a black list of portal_types not a white list.
+      [alecm]
+
+    - Removed data/navigation_properties that was deprecated in Plone 2.0, as
+      well as the data/ directory. Migrations to remove the property sheet
+      from ZODB has been added before.
+      [vinsci]
+
+    - Refactoring use of __browser_default__() to use CMF 1.5-style aliases
+      and FTIs, with __browser_default__() still being the fallback for old
+      classes. Some tests had to be fixed for this, too.
+      
+      Adding aliases for view, edit, properties, sharing. Fixing up some uses
+      of getActionById() which were failing because of these aliases.
+      
+      Note that we now depend on fixes to CMFFormController, ATContentTypes and
+      CMFDynamicViewFTI checked in alongside this commit.
+      [optilude]
+
+    - CMF 1.5 Cookie Crumbler distinguishes between login attempt and
+      authorization failure, making require_login obsolete.
+      [stefan]
+
+    - Added a configlet for setting search options, to enable/disable LiveSearch
+      and to set the types_not_searched property. This is requested in
+      http://plone.org/collector/4032
+      [jok2]
+
+    - Moved some interfaces to CMFDynamicViewFTI
+      [tiran]
+
+    - Changed unload protection, so only forms with
+      class="enableUnloadProtection" are checked.
+      [fschulze]
+
+    - Slight change to navigationParent script so that it won't fail
+      when a Z3 view is in the acquisition tree
+      [rafrombrc]
+
+    - Added recently_modified page to link to from the recent changes
+      portlet.
+      [ender]
+
+    - Added state coloring in recent changes portlet and search results.
+      [ender]
+
+    - Total rewrite of portlet HTML and CSS. Will keep backwards compatibility
+      until Plone 2.2 is released, though. The old div-based layout is 
+      deprecated in favor of a more light-weight markup using definition lists 
+      and allowing interesting skinning variations - round corners using CSS,
+      for example. It also has bigger click areas, making it easier to navigate
+      the portlets.
+      [limi]
+
+    - Changed dropdowns slightly, now the activated/deactivated class is set
+      on the dl, not on the dd. When javascript is disabled, the dropdowns
+      don't have an arrow anymore.
+      [fschulze]
+
+    - Simplified collapsibles, this involves new markup.
+      This fixes http://plone.org/collector/4035 - "Collapsible fieldsets take
+      up too much space".
+      [fschulze]
+
+    - Fixed PloneFolder.manage_delObjects() so it returns to the ZMI.
+      Thanks to George Geller.
+      [stefan]
+
+    - Moved some interfaces to CMFDynamicViewFTI
+      [tiran]
+
+    - Removed plone prefix from stylesheets, only ploneCustom.css is kept.
+      [fschulze]
+
+    - Refactored the dropdown menu. It's using css classes for styling of
+      visibility. This involves new markup for the menus.
+      Fixes http://plone.org/collector/2793 - ADD ITEM MENU cuts some entries
+      [fschulze]
+
+    - Tiny change to the nav tree code in PloneTool.py so the nav tree won't
+      barf when there is a Z3-style view class in the acquisition hierarchy
+      [rafrombrc]
+
+    - Some i18n markup corrections after loginageddon and one metadata file
+      in the wrong place, fixed http://plone.org/collector/4197
+      [hannosch]
+
+    - Loginageddon!  Moved login, logout, and registration-related forms
+      and scripts to the new plone_login skin.  Converted login forms and
+      scripts to formcontroller forms and scripts.  Moved cookie testing
+      and related javascript from login_form into login.js.  Made the
+      cookie test messages internationalizable.  Made login sequence fail
+      more gracefully when cookies are disabled.  Added nice error 
+      messages that explain why a login failed (e.g. no login name, no
+      password, and (optionally) login name not found).  The login name
+      not found test can be enabled/disabled via a new site_property,
+      verify_login_name.  Fixes 2408, 2458, 2250, and 3335.
+     [geoffd]
+ 
+    - Fixed http://plone.org/collector/3018 no duplicate id="portal-footer"
+      [hannosch]
+
+    - Added filtering of tests to ECMAScript Unit Tests.
+      [fschulze]
+
+    - Add cssQuery.js to portal_javascripts when installing or migrating.
+      [fschulze]
+
+    - Moved 3rd party ecma scripts like sarissa, livesearch, ecmaunit and
+      vcXMLRPC to plone_3rdParty. 3rd party code will be included by an
+      svn:external rule soon.
+      [tiran]
+
+    - Reactivated alternate font size stylesheets.
+      [fschulze]
+
+    - Added some missing i18n markup. Fixed ZChecker error regarding '>'
+      [hannosch]
+
+    - Fixed migrations of older instances caused by the ResourceRegistries
+      refactoring. If you updated and migrated while this was still broken,
+      then you might have to force a migration from alpha2 or even alpha1.
+      [fschulze]
 
     - Added framework for ECMAScript Unit Tests.
       [fschulze]

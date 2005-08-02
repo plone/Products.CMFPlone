@@ -1,4 +1,4 @@
-## Script (Python) "getFolderListingFolderContents"
+## Script (Python) "batchedFolderContents"
 ##bind container=container
 ##bind context=context
 ##bind namespace=
@@ -7,11 +7,9 @@
 ##parameters=contentFilter=None,suppressHiddenFiles=1
 ##title=wrapper method around listFolderContents
 ##
-from zLOG import LOG, WARNING
+from Products.CMFPlone.utils import log_deprecated
 # XXX DEPRECATION ahead!
-LOG('Plone Debug', WARNING, 'The batchedFolderContents script is DEPRECATED, '
-                            'and will be removed in plone 2.3. Please use '
-                            'getFolderContents with the parameter batch=True')
-
-batch = context.getFolderContents(contentFilter, batch=True, full_objects=True)
-return batch
+log_deprecated('The batchedFolderContents script is deprecated '
+               'and will be removed in Plone 2.2. Please use '
+               'getFolderContents with the parameter batch=True.')
+return context.getFolderContents(contentFilter, batch=True, full_objects=True)

@@ -14,9 +14,7 @@ from Products.CMFPlone import transaction
 class TestOrderSupport(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
-        # Get rid of the .personal subfolder
         membership = self.portal.portal_membership
-        self.folder._delObject(membership.personal_id)
         # Add a bunch of subobjects we can order later on
         self.folder.invokeFactory('Document', id='foo')
         self.folder.invokeFactory('Document', id='bar')
