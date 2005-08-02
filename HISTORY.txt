@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - RC2 - unreleased
 
+    - document_relateditems are sense of typesUseViewActionInListings now.
+      [panjunyong]
+
     - Fixed bug: setting local role acquization works wrong with non-folderish
       content. 
       [panjunyong]
