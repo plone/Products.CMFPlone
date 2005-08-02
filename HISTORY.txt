@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - RC2 - unreleased
 
+    - Fixed bug: setting local role acquization works wrong with non-folderish
+      content. 
+      [panjunyong]
+
     - Removed reindex method from CatalogTool.py since it is redundant and
       as of CMF 1.5.3 differs in signature from the base type's method.
       [geoffd]
