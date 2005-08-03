@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - RC2 - unreleased
 
+    - Fixed bug trigerred when reindexing order in a folder with improperly
+      deleted content (i.e. when brain.getObject() returns None in
+      plone_utils.reindexOnReorder(folder)).
+      [alecm]
+
     - Readded current_page_url to global_defines for backwards compatibility.
       [alecm]
 
