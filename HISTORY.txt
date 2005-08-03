@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - RC2 - unreleased
 
+    - Fixed bug: can't view a page with unauthoried related items.
+      [panjunyong]
+
     - document_relateditems are sense of typesUseViewActionInListings now.
       [panjunyong]
 

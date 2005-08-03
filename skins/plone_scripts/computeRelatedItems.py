@@ -8,6 +8,8 @@
 ##title=find related items for an object
 ##
 
+from AccessControl import Unauthorized
+
 if hasattr(context, 'getRelatedItems'):
     outgoing = context.getRelatedItems()
     incoming = []
@@ -17,10 +19,15 @@ if hasattr(context, 'getRelatedItems'):
     res = []
     mtool = context.portal_membership
     
-    for d in outgoing+incoming:
-        if d not in res:
-            if mtool.checkPermission('View', d):
-                res.append(d)
+    in_out = outgoing+incoming
+    for d in range(len(in_out)):
+        try:
+            obj = in_out[d]
+	except Unauthorized:
+            continue
+        if obj not in res:
+            if mtool.checkPermission('View', obj):
+                res.append(obj)
     
     return res
 
