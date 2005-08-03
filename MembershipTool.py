@@ -458,7 +458,7 @@ class MembershipTool(PloneBaseTool, BaseTool):
         for member in members:
             #user = md.wrapUser(u)
             u = member.getUser()
-            if not (member.listed or is_manager):
+            if not (member.getProperty('listed', None) or is_manager):
                 continue
             if name and not names_checked:
                 if (u.getUserName().lower().find(name) == -1 and
@@ -477,7 +477,7 @@ class MembershipTool(PloneBaseTool, BaseTool):
                 if not found:
                     continue
             if last_login_time:
-                if type(member.last_login_time) == type(''):
+                if type(member.getProperty('last_login_time','')) == type(''):
                     # value is a string when mem hasn't yet logged in
                     mem_last_login_time = DateTime(member.last_login_time)
                 else:

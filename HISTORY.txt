@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - RC2 - unreleased
 
+    - Fixed http://members.plone.org/collector/4381 by using getProperty to
+      access listed and last_login_time properties in searchForMembers.
+      [alecm]
+
     - Fixed bug trigerred when reindexing order in a folder with improperly
       deleted content (i.e. when brain.getObject() returns None in
       plone_utils.reindexOnReorder(folder)).
