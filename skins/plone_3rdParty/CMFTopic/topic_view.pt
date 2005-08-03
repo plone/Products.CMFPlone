@@ -19,7 +19,7 @@
                      b_start string:0;b_start request/b_start | b_start;
                      results here/queryCatalog;
                      Batch python:modules['Products.CMFPlone'].Batch;
-                     global batch python:Batch(results, 20, int(b_start), orphan=1)">
+                     batch python:Batch(results, 20, int(b_start), orphan=1)">
     
     
         <!-- Navigation -->
