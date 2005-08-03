@@ -15,7 +15,7 @@
      tal:define="auth nocall:here/cookie_authentication|nothing;
                  came_from request/came_from|request/HTTP_REFERER|nothing;
                  came_from python:test(utool.isURLInPortal(came_from), came_from, None);
-                 global ztutils modules/ZTUtils;
+                 ztutils modules/ZTUtils;
                  errors options/state/getErrors;">
 
 <h1 i18n:translate="heading_sign_in">Please log in</h1>

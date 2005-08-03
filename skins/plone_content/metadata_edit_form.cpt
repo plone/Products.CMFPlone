@@ -119,10 +119,10 @@
                   Don't select too many categories.
                 </div>
 
-                <div tal:define="global contentSubjects here/Subject;
-                                 global allowedSubjects python:here.portal_metadata.listAllowedSubjects(here);
-                                 global catalogSubjects python:here.portal_catalog.uniqueValuesFor('Subject');
-                                 global allowedSubjects python:list(here.unique(allowedSubjects+catalogSubjects));
+                <div tal:define="contentSubjects here/Subject;
+                                 allowedSubjects python:here.portal_metadata.listAllowedSubjects(here);
+                                 catalogSubjects python:here.portal_catalog.uniqueValuesFor('Subject');
+                                 allowedSubjects python:list(here.unique(allowedSubjects+catalogSubjects));
                                  dummy python:allowedSubjects.sort( lambda x,y: cmp(x,y) );">
 
                 <tal:block define="allowRolesToAddKeywords site_properties/allowRolesToAddKeywords"
