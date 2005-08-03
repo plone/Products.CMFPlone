@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - RC2 - unreleased
 
+    - Fixed http://members.plone.org/collector/4382 by removing unnecessary
+      getUser call.
+      [alecm]
+
     - Fixed http://members.plone.org/collector/4381 by using getProperty to
       access listed and last_login_time properties in searchForMembers.
       [alecm]

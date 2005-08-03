@@ -457,11 +457,10 @@ class MembershipTool(PloneBaseTool, BaseTool):
 
         for member in members:
             #user = md.wrapUser(u)
-            u = member.getUser()
             if not (member.getProperty('listed', None) or is_manager):
                 continue
             if name and not names_checked:
-                if (u.getUserName().lower().find(name) == -1 and
+                if (member.getUserName().lower().find(name) == -1 and
                     member.getProperty('fullname').lower().find(name) == -1):
                     continue
             if email:
