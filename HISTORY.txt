@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - RC2 - unreleased
 
+    - Readded current_page_url to global_defines for backwards compatibility.
+      [alecm]
+
     - Removed unnecessary and lazy uses of global in tal expressions.
       [alecm]
 
