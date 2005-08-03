@@ -40,7 +40,7 @@ from Products.CMFPlone.UnicodeNormalizer import normalizeUnicode
 from Products.CMFPlone.PloneFolder import ReplaceableWrapper
 
 AllowSendto = "Allow sendto"
-CMFCorePermissions.setDefaultRoles(AllowSendto, 
+CMFCorePermissions.setDefaultRoles(AllowSendto,
                                    ('Anonymous', 'Manager',))
 
 _marker = ()
@@ -546,7 +546,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
         if context == self or sitemap:
             currentPath = getToolByName(self, 'portal_url').getPortalPath()
-            query['path'] = {'query':currentPath, 
+            query['path'] = {'query':currentPath,
                              'depth':ntp.getProperty('sitemapDepth', 2)}
         else:
             currentPath = '/'.join(context.getPhysicalPath())
@@ -557,7 +557,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         if ntp.getProperty('sortAttribute', False):
             query['sort_on'] = ntp.sortAttribute
 
-        if (ntp.getProperty('sortAttribute', False) and 
+        if (ntp.getProperty('sortAttribute', False) and
             ntp.getProperty('sortOrder', False)):
             query['sort_order'] = ntp.sortOrder
 
@@ -694,7 +694,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         if ntp.getProperty('sortAttribute', False):
             query['sort_on'] = ntp.sortAttribute
 
-        if (ntp.getProperty('sortAttribute', False) and 
+        if (ntp.getProperty('sortAttribute', False) and
             ntp.getProperty('sortOrder', False)):
             query['sort_order'] = ntp.sortOrder
 
@@ -815,9 +815,9 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     #
     #   - getDefaultPage(folder)
     #       : get id of contentish object that is default-page in the folder
-    #   - isDefaultPage(object)   
+    #   - isDefaultPage(object)
     #       : determine if an object is the default-page in its parent folder
-    #   - browserDefault(object)  
+    #   - browserDefault(object)
     #       : lookup rules for old-style content types
     #
 
@@ -841,9 +841,9 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     security.declarePublic('getDefaultPage')
     def getDefaultPage(self, obj):
-        """Given a folderish item, find out if it has a defaul-page using
+        """Given a folderish item, find out if it has a default-page using
         the following lookup rules:
-        
+
             1. A content object called 'index_html' wins
             2. If the folder implements IBrowserDefault, query this
             3. Else, look up the property default_page on the object
@@ -852,24 +852,22 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                   parent folder or skin layer
             4. Else, look up the property default_page in site_properties for
                 magic ids and test these
-            
-        The id of the first matching item is returned. If no default page is
-        set, None is returned. If a non-folderish item is passed in, return
-        None always.
+
+        The id of the first matching item is then used to lookup a translation
+        and if found, its id is returned. If no default page is set, None is
+        returned. If a non-folderish item is passed in, return None always.
         """
 
-        # XXX: This method is called by CMFDynamicViewFTI directly, as well
-        # as by browserDefault() below. browserDefault() contains logic for
-        # looking up ITranslatable (LinguaPlone), which browserDefault() retains.
-        # However, browserDefault() is no longer called with CMF 1.5 and the new
-        # CMFDynamicViewFTI. Because the lookup method is quite different, there
-        # is no obvious way to make CMFDynamicViewFTI ITranslatable aware. Thus,
-        # if/when LinguaPlone tries to use the new FTI to get CMF 1.5 / Plone 2.1
-        # goodness, it will likely break. The simple workaround is to set the
-        # (Default) method alias to an empty string, thus falling back on
-        # __browser_default__(), but this reduces flexibility. Instead, tesdal
-        # & co need to look at CMFDynamicViewFTI to make it ITranslatable aware.
-        #   [~optilude]
+        def lookupTranslationId(obj, page):
+            implemented = ITranslatable.isImplementedBy(obj)
+            if not implemented or implemented and not obj.isTranslation():
+                pageobj = getattr(obj, page, None)
+                if pageobj is not None and ITranslatable.isImplementedBy(pageobj):
+                    translation = pageobj.getTranslation()
+                    if translation is not None and \
+                       ids.has_key(translation.getId()):
+                        page = translation.getId()
+            return page
 
         # Short circuit if we are not looking at a Folder
         if not obj.isPrincipiaFolderish:
@@ -890,13 +888,15 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
         # 1. test for contentish index_html
         if ids.has_key('index_html'):
-            return 'index_html'
+            return lookupTranslationId(obj, 'index_html')
 
         # 2. Test for IBrowserDefault
         if IBrowserDefault.isImplementedBy(obj):
-            page = obj.getDefaultPage()
-            if page is not None and ids.has_key(page):
-                return page
+            fti = obj.getTypeInfo()
+            if fti is not None:
+                page = fti.getDefaultPage(obj, check_exists=True)
+                if page is not None:
+                    return lookupTranslationId(obj, page)
 
         # 3. Test for default_page property in folder, then skins
         pages = getattr(aq_base(obj), 'default_page', [])
@@ -904,15 +904,16 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             pages = [pages]
         for page in pages:
             if page and ids.has_key(page):
-                return page
+                return lookupTranslationId(obj, page)
         for page in pages:
             if portal.unrestrictedTraverse(page, None):
-                return page
+                return lookupTranslationId(obj, page)
 
         # 4. Test for default sitewide default_page setting
-        for page in portal.portal_properties.site_properties.getProperty('default_page', []):
+        site_properties = portal.portal_properties.site_properties
+        for page in site_properties.getProperty('default_page', []):
             if ids.has_key(page):
-                return page
+                return lookupTranslationId(obj, page)
 
         return None
 
@@ -1402,7 +1403,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     def getMethodAliases(self, typeInfo):
         """Given an FTI, return the dict of method aliases defined on that
-        FTI. If there are no method aliases (i.e. this FTI doesn't support it), 
+        FTI. If there are no method aliases (i.e. this FTI doesn't support it),
         return None"""
         getMethodAliases = getattr(typeInfo, 'getMethodAliases', None)
         if getMethodAliases is not None and safe_callable(getMethodAliases):

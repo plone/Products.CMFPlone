@@ -11,6 +11,7 @@ from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFCore.Expression import Expression
 from Products.CMFCore import CMFCorePermissions
 from Products.CMFPlone.PloneTool import AllowSendto
+from Products.CMFPlone.utils import _createObjectByType
 
 from Products.CMFPlone.migrations.v2.two04_two05 import replaceFolderPropertiesWithEdit
 from Products.CMFPlone.migrations.v2.two04_two05 import interchangeEditAndSharing
@@ -886,13 +887,13 @@ class TestMigrations_v2_1(MigrationTest):
         # Should not fail if portal_catalog is missing
         self.portal._delObject('portal_catalog')
         addSortable_TitleIndex(self.portal, [])
-        
+
     def testAddDefaultTypesToPortalFactory(self):
         # Should add user-visible ATContentTypes types to portal_factory
         self.factory.manage_setPortalFactoryTypes(listOfTypeIds = [])
         addDefaultTypesToPortalFactory(self.portal, [])
         types = self.factory.getFactoryTypes().keys()
-        for metaType in ('Document', 'Event', 'File', 'Folder', 'Image', 
+        for metaType in ('Document', 'Event', 'File', 'Folder', 'Image',
                          'Folder', 'Large Plone Folder', 'Link', 'News Item',
                          'Topic'):
             self.failUnless(metaType in types)
@@ -903,7 +904,7 @@ class TestMigrations_v2_1(MigrationTest):
         addDefaultTypesToPortalFactory(self.portal, [])
         addDefaultTypesToPortalFactory(self.portal, [])
         types = self.factory.getFactoryTypes().keys()
-        for metaType in ('Document', 'Event', 'File', 'Folder', 'Image', 
+        for metaType in ('Document', 'Event', 'File', 'Folder', 'Image',
                          'Folder', 'Large Plone Folder', 'Link', 'News Item',
                          'Topic'):
             self.failUnless(metaType in types)
@@ -937,7 +938,7 @@ class TestMigrations_v2_1(MigrationTest):
         # Should not fail if site_properties is missing
         self.properties._delObject('site_properties')
         addDisableFolderSectionsSiteProperty(self.portal, [])
-        
+
     def testAddSiteRootViewTemplates(self):
         self.portal.manage_delProperties(['selectable_views'])
         addSiteRootViewTemplates(self.portal, [])
@@ -945,7 +946,7 @@ class TestMigrations_v2_1(MigrationTest):
         self.failUnless(type(views) in (types.ListType, types.TupleType,))
         self.failUnless('folder_listing' in views)
         self.failUnless('news_listing' in views)
-        
+
     def testAddSiteRootViewTemplatesTwice(self):
         self.portal.manage_delProperties(['selectable_views'])
         addSiteRootViewTemplates(self.portal, [])
@@ -954,7 +955,7 @@ class TestMigrations_v2_1(MigrationTest):
         self.failUnless(type(views) in (types.ListType, types.TupleType,))
         self.failUnless('folder_listing' in views)
         self.failUnless('news_listing' in views)
-        
+
     def testAddSiteRootViewTemplatesPropertyExists(self):
         self.portal.manage_changeProperties(selectable_views = ['one', 'two'])
         addSiteRootViewTemplates(self.portal, [])
@@ -1732,12 +1733,12 @@ class TestMigrations_v2_1(MigrationTest):
     def testFixFolderlistingAction(self):
         fixFolderlistingAction(self.portal, [])
         self.assertEqual(self.portal.portal_types['Plone Site'].getActionById('folderlisting'), 'view')
-        
+
     def testFixFolderlistingActionTwice(self):
         fixFolderlistingAction(self.portal, [])
         fixFolderlistingAction(self.portal, [])
         self.assertEqual(self.portal.portal_types['Plone Site'].getActionById('folderlisting'), 'view')
-        
+
     def testFixFolderlistingActionNoTool(self):
         self.portal._delObject('portal_types')
         fixFolderlistingAction(self.portal, [])
@@ -1861,6 +1862,8 @@ class TestMigrations_v2_1(MigrationTest):
         self.portal._selected_default_page = 'blah'
         # Convert back
         convertPloneFTIToCMFDynamicViewFTI(self.portal, [])
+        # Make sure content exists
+        _createObjectByType('Document', self.portal, 'blah')
         # check layout transfer
         self.assertEqual(self.portal.getDefaultPage(), 'blah')
         self.assertEqual(self.portal.getAvailableLayouts(), [('folder_listing', 'Standard listing'), ('news_listing', 'News')])
@@ -2281,7 +2284,7 @@ class TestMigrations_v2_1(MigrationTest):
                    'portal_uidhandler')
         for id in tool_ids:
             self.failUnless(id in portal_ids, id)
-            
+
     def testaddCMFUidTools(self):
         tool_ids = ('portal_uidgenerator', 'portal_uidannotation',
                    'portal_uidhandler')
@@ -2297,7 +2300,7 @@ class TestMigrations_v2_1(MigrationTest):
             self.failUnless(tool.title) # has it a title?
         # a second add shouldn't break
         addCMFUidTools(self.portal, [])
-    
+
     def testfixCSSMediaTypes(self):
         cssmediatypes = [
             ('member.css', 'screen'),
@@ -2386,14 +2389,14 @@ class TestMigrations_v2_1(MigrationTest):
         # Should not fail if tool is missing
         self.portal._delObject('portal_controlpanel')
         addSearchAndNavigationConfiglets(self.portal, [])
-        
+
     def testSendtoActionAllowSendtoPermission(self):
         atool = self.portal.portal_actions
         for action in atool._cloneActions():
             if action.getId() == "sendto":
                 self.failUnlessEqual(action.permissions,
                                      (AllowSendto,))
- 
+
     def testSendtoActionAllowSendtoPermissionNA(self):
         atool = self.portal.portal_actions
         # should not break if action is not available
