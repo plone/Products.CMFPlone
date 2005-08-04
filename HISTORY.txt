@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - RC2 - unreleased
 
+    - Made search.pt respect typesUseViewActionInListings.  Fixes part of
+      http://members.plone.org/collector/4373
+      [alecm]
+
     - Made syndication use the max_items property of the instance if set, not
       the tool.
       [alecm]
