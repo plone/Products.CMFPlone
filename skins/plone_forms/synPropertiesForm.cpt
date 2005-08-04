@@ -164,7 +164,7 @@
                     <div tal:content="error">Validation error output</div>
 
                     <input type="text"
-                           name="max_items"
+                           name="max_items:int"
                            value="#"
                            size="3"
                            tabindex=""
