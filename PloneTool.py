@@ -375,7 +375,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         if wfs:
             for w in wfs:
                 if w.states.has_key(objstate):
-                    return w.states[objstate].title
+                    return w.states[objstate].title or objstate
         return None
 
     security.declareProtected(CMFCorePermissions.View, 'getDiscussionThread')
