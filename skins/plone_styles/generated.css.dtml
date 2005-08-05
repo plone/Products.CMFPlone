@@ -24,7 +24,8 @@
    http://plone.org/documentation/how-to/flickering-background-images-internet-explorer */
 
 <dtml-in "portal_types.listTypeInfo()">
-    .contenttype-<dtml-var "plone_utils.normalizeString(id)"> { 
+    .contenttype-<dtml-var "plone_utils.normalizeString(id)">,
+    #objectMenu .contenttype-<dtml-var "plone_utils.normalizeString(id)"> a:hover { 
         background-image: url(<dtml-var portal_url>/<dtml-var getIcon>); 
         background-repeat: no-repeat; 
         background-position: 0% 1px;
