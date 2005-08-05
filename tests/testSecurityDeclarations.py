@@ -478,12 +478,22 @@ class TestAllowSendtoSecurity(PloneTestCase.PloneTestCase):
         errormsg = "You%20are%20not%20allowed%20to%20send%20this%20link"
         self.failIf(str(msg).find(errormsg) != -1, str(msg))
 
+
+class TestSkinSecurity(PloneTestCase.PloneTestCase):
+
+    def test_OwnerCanViewConstrainTypesForm(self):
+        try:
+            self.folder.restrictedTraverse('folder_constraintypes_form')
+        except Unauthorized:
+            self.fail("Owner could not access folder_constraintypes_form")
+
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
     suite.addTest(makeSuite(TestSecurityDeclarations))
     suite.addTest(makeSuite(TestAcquisitionMethods))
     suite.addTest(makeSuite(TestAllowSendtoSecurity))
+    suite.addTest(makeSuite(TestSkinSecurity))
     return suite
 
 if __name__ == '__main__':

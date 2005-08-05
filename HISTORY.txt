@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - RC2 - unreleased
 
+    - Changed View permission restrictions on folder_constraintypes_form and
+      ownership_form.  Requiring Owner restricts access to users with Owner
+      role on the template itself, not the context it is called in.
+      [alecm]
+
     - Made search.pt respect typesUseViewActionInListings.  Fixes part of
       http://members.plone.org/collector/4373
       [alecm]

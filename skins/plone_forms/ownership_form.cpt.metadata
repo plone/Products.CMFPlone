@@ -2,7 +2,7 @@
 title=Change Ownership
 
 [security]
-View=0:Owner,Manager
+View=0:Authenticated
 
 [validators]
 validators=
