@@ -530,7 +530,26 @@ def installCSSandJSRegistries(portal, out):
 
         cssreg = getToolByName(portal, 'portal_css', None)
         if cssreg is not None:
-            cssreg.clearStylesheets()
+            stylesheet_ids = cssreg.getResourceIds()
+            removable_ids = (
+                'ploneColumns.css',
+                'plone.css',
+                'plonePrint.css',
+                'plonePresentation.css',
+                'ploneTextSmall.css',
+                'ploneTextLarge.css',
+                'ploneRTL.css',
+                'ploneMobile.css',
+                'ploneGenerated.css',
+                'ploneMember.css',
+                'ploneAuthoring.css',
+                'plonePublic.css',
+                'ploneBase.css',
+                'ploneCustom.css',
+            )
+            for sid in removable_ids:
+                if sid in stylesheet_ids:
+                    cssreg.unregisterResource(sid)
             # add the bottom ones and the ones with special expressions first.
             # since registering a stylesheet adds it to the top of the stack
             cssreg.registerStylesheet('ploneRTL.css', expression="python:object.isRightToLeft(domain='plone')")
@@ -547,7 +566,37 @@ def installCSSandJSRegistries(portal, out):
 
         jsreg = getToolByName(portal, 'portal_javascripts', None)
         if jsreg is not None:
-            jsreg.clearScripts()
+            script_ids = jsreg.getResourceIds()
+            removable_ids = (
+                'plone_javascript_variables.js',
+                'plone_javascripts.js',
+                'plone_menu.js',
+                'register_function.js',
+                'nodeutilities.js',
+                'cookie_functions.js',
+                'livesearch.js',
+                'fullscreenmode.js',
+                'select_all.js',
+                'mark_special_links.js',
+                'collapsiblesections.js',
+                'highlightsearchterms.js',
+                'first_input_focus.js',
+                'folder_contents_filter.js',
+                'folder_contents_hideAddItems.js',
+                'styleswitcher.js',
+                'table_sorter.js',
+                'calendar_formfield.js',
+                'calendarpopup.js',
+                'ie5fixes.js',
+                'formUnload.js',
+                'sarissa.js',
+                'plone_minwidth.js',
+                'correctPREformatting.js',
+                'vcXMLRPC.js',
+            )
+            for sid in removable_ids:
+                if sid in script_ids:
+                    jsreg.unregisterResource(sid)
             jsreg.registerScript('register_function.js')
             jsreg.registerScript('plone_javascript_variables.js')
             jsreg.registerScript('nodeutilities.js')
