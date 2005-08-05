@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - RC2 - unreleased
 
+    - Addresses http://members.plone.org/collector/2029. Now support through
+      UI for grouping groups. UI does not allow a group to be added to itself,
+      or for a member (group or user) of a subgroup to be added to a group. Some
+      text changed to reflect changes.
+      [gerry_kirk]
+
     - Changed View permission restrictions on folder_constraintypes_form and
       ownership_form.  Requiring Owner restricts access to users with Owner
       role on the template itself, not the context it is called in.
