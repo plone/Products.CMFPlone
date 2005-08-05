@@ -14,17 +14,20 @@
                 <fieldset id="relatedItemBox">
                     <legend i18n:translate="label_related_items">Related content</legend>
                     <ul class="visualNoMarker">
-                    <tal:related tal:repeat="item related">
+                    <tal:related tal:repeat="item related"
+		                 tal:define="use_view_action site_properties/typesUseViewActionInListings;">
                         <li tal:define="
                                 desc                item/Description;
                                 item_type item/portal_type;
                                 item_type_class python: 'contenttype-' + putils.normalizeString(item_type);
                                 item_wf_state       item/review_state|python: getInfoFor(item, 'review_state', '');
-                                item_wf_state_class python: 'state-' + putils.normalizeString(item_wf_state);">
+                                item_wf_state_class python: 'state-' + putils.normalizeString(item_wf_state);
+				item_url           item/absolute_url;
+				item_url           python:test((item_type in use_view_action), item_url+'/view', item_url)">
 
                             <span tal:attributes="class item_type_class">
                             <a href="" class=""
-                                tal:attributes="href  item/absolute_url;
+                                tal:attributes="href  item_url;
                                                 title item/Description;
                                                 class string: $item_wf_state_class visualIconPadding"
                                 tal:content="item/pretty_title_or_id">

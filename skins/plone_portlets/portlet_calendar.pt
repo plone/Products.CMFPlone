@@ -39,7 +39,7 @@
                     <span i18n:translate="" tal:omit-tag="">
                         <span i18n:name="monthname">
                             <span tal:define="month_id python:translation_service.month_msgid(date.month());
-                                              month_english python:here.utranslate(month_id, target_language='en');"
+                                              month_english python:date.Month();"
                                   tal:attributes="id string:calendar-month-$month_english"
                                   tal:content="python: here.utranslate(month_id, default=month_english)"
                                   id="calendar-month-month">&nbsp;</span>

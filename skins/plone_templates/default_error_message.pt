@@ -7,11 +7,11 @@
              tal:define="dummy python:request.set('disable_border',1)" />
 
 <div metal:fill-slot="main"
-     tal:define="global err_type options/error_type|nothing;
-                 global err_message options/error_message|nothing;
-                 global err_tb options/error_tb|nothing;
-                 global err_value options/error_value|nothing;
-                 global err_traceback options/error_traceback|nothing;">
+     tal:define="err_type options/error_type|nothing;
+                 err_message options/error_message|nothing;
+                 err_tb options/error_tb|nothing;
+                 err_value options/error_value|nothing;
+                 err_traceback options/error_traceback|nothing;">
 
         <div tal:condition="python:err_type=='NotFound'">
 

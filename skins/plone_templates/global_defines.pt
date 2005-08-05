@@ -44,9 +44,10 @@
         global default_language site_properties/default_language|nothing;
         global language python:here.Language() or default_language;
         global is_editable python: checkPermission('Modify portal content', context);
-        global isEditable python: checkPermission('Modify portal content', context);
+        global isEditable is_editable;
         global lockable python:hasattr(here.aq_inner.aq_explicit, 'wl_isLocked');
         global isLocked python:lockable and here.wl_isLocked();
         global isRTL python:here.isRightToLeft(domain='plone');
         global visible_ids here/visibleIdsEnabled|nothing;
+        global current_page_url here/getCurrentUrl|nothing;
         " />

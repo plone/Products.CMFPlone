@@ -147,7 +147,7 @@ def beta1_beta2(portal):
 
     # Make portal root use /edit and /sharing URLs on actions
     fixPortalEditAndSharingActions(portal, out)
-    
+
     # Add CMFUid tools
     addCMFUidTools(portal, out)
 
@@ -178,6 +178,9 @@ def beta1_beta2(portal):
     # Change available views for folders
     changeAvailableViewsForFolders(portal, out)
 
+    # setup new Allow Sendto permission
+    setupAllowSendtoPermission(portal, out)
+
     # FIXME: *Must* be called after reindexCatalog.
     # In tests, reindexing loses the folders for some reason...
 
@@ -189,12 +192,6 @@ def beta1_beta2(portal):
 
     # Make sure the Events folder is cataloged
     indexEventsFolder(portal, out)
-
-    # add formsubmithelpers.js to ResourceRegistries
-    addFormSubmitHelpersJS(portal, out)
-    
-    # setup new Allow Sendto permission
-    setupAllowSendtoPermission(portal, out)
 
     return out
 

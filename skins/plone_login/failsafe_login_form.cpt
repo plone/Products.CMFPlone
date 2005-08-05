@@ -6,14 +6,14 @@
 
 <body>
 
-<div tal:define="global checkPermission nocall:here/portal_membership/checkPermission;
-                 global actions python:context.portal_actions.listFilteredActionsFor(context);
-		 global Iterator python:modules['Products.CMFPlone'].IndexIterator;
-		 global tabindex python:Iterator(pos=30000);
+<div tal:define="checkPermission nocall:here/portal_membership/checkPermission;
+                 actions python:context.portal_actions.listFilteredActionsFor(context);
+                 Iterator python:modules['Products.CMFPlone'].IndexIterator;
+                 tabindex python:Iterator(pos=30000);
                  auth nocall:here/cookie_authentication|nothing;
                  came_from request/came_from|request/HTTP_REFERER|nothing;
                  came_from python:test(here.portal_url.isURLInPortal(came_from), came_from, None);
-                 global ztutils modules/ZTUtils;
+                 ztutils modules/ZTUtils;
                  errors options/state/getErrors;">
 
 <h1 i18n:translate="heading_sign_in">Please log in</h1>

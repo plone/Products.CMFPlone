@@ -13,13 +13,15 @@
              tal:define="dummy python:request.set('disable_border',1)" />
 
 <div metal:fill-slot="main"
-     tal:define="results python:here.queryCatalog(REQUEST=request,use_types_blacklist=True);
+     tal:define="use_types_blacklist request/use_types_blacklist | python:True;
+                 results python:here.queryCatalog(REQUEST=request,use_types_blacklist=use_types_blacklist);
                  Batch python:modules['Products.CMFPlone'].Batch;
                  DateTime python:modules['DateTime'].DateTime;
                  b_size python:30;b_start python:0;b_start request/b_start | b_start;
                  desc_length site_properties/search_results_description_length;
                  desc_ellipsis site_properties/ellipsis;
-                 searchterm request/SearchableText|nothing">
+                 searchterm request/SearchableText|nothing;
+                 use_view_action site_properties/typesUseViewActionInListings;">
 
     <h1 i18n:translate="heading_search_results">Search results</h1>
 
@@ -57,7 +59,8 @@
         <dl>
         <tal:results repeat="result batch">
         <tal:entry define="result_url result/getURL;
-                           url string:$result_url/view?searchterm=${searchterm};">
+                           result_type result/portal_type;
+                           url python:'%s?searchterm=%s'%(test(result_type in use_view_action, result_url+'/view', result_url+'/'), searchterm);">
             <dt tal:define="item_wf_state result/review_state;
                             item_wf_state_class python:'state-' + putils.normalizeString(item_wf_state);">
                 <span tal:attributes="class python: 'contenttype-' + putils.normalizeString(result.portal_type)">

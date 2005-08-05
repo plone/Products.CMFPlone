@@ -8,7 +8,7 @@
 <div metal:fill-slot="main">
   <div metal:define-macro="login_failed"
        tal:define="login_name python:request.get('login_name', '');
-                   global ztutils modules/ZTUtils;">
+                   ztutils modules/ZTUtils;">
 
     <h1 i18n:translate="heading_sign_in_failure_auth">Sign-in failure</h1>
 

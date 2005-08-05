@@ -2,7 +2,7 @@
   <tal:block metal:use-macro="here/main_template/macros/master">
 
     <metal:block fill-slot="top_slot"
-                 tal:define="global dummy python:request.set('disable_border',1)" />
+                 tal:define="dummy python:request.set('disable_border',1)" />
 
     <metal:override fill-slot="portlets_one_slot">
       <metal:prefs use-macro="here/portlet_prefs/macros/portlet" />

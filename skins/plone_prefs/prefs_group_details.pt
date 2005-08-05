@@ -122,12 +122,12 @@
         
                 <tal:properties repeat="property targetobject/propertyMap">
                     <span tal:condition="python:property['id'] != 'listed'" tal:omit-tag="">
-                        <div class="field">
+                        <div class="field"
+                             tal:define="id property/id;
+                                         type property/type;
+                                         propertyvalue python:targetGetProperty(id, None);">
         
                         <label for="value"
-                                tal:define="global id property/id;
-                                            global type property/type;
-                                            global propertyvalue python:targetGetProperty(id, None);"
                                 tal:attributes="for id"
                                 i18n:translate=""
                                 tal:content="python:targetobject.propertyLabel(id)">Property Value</label>
@@ -181,10 +181,8 @@
         
         
                         <tal:selections tal:condition="python:type in ('selection', 'multiple selection')"
-                                        tal:define="select_variable python:property.get('select_variable','')">
-    
-                        <tal:define condition="select_variable"
-                                    define="global select_value python:path('here/%s' %select_variable);" />
+                                        tal:define="select_variable python:property.get('select_variable','');
+                                        select_value python:select_variable and path('here/%s' %select_variable) or [];">
     
                         <select name="selection" tal:condition="python:type in ('selection',)"
                             tal:attributes="name string:$id:${request/management_page_charset_tag}text">

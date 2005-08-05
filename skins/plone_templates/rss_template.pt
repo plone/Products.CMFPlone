@@ -13,7 +13,7 @@
     define-macro="master" 
     tal:define="
                     syn context/portal_syndication; 
-                    max max_items|syn/getMaxItems;
+                    max max_items|python:syn.getMaxItems(here);
                     objects python: objectList[:max]"
     >
 

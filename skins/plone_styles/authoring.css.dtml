@@ -707,7 +707,7 @@ ol.visualNoMarker {
 
 #objectMenu.actionMenu .actionMenuContent li {
     display: block;
-    width: 10em;
+    width: 20em;
 }
 
 #objectMenu.actionMenu .actionMenuContent li,
@@ -717,12 +717,12 @@ ol.visualNoMarker {
 }
 
 #objectMenu.actionMenu .actionMenuContent li a:hover {
-    width: 75%;
+    width: 89%;
 }
 
 #objectMenu.actionMenu .actionMenuContent li a {
     padding-left: 22px;
-    width: 75%;
+    width: 89%;
 }
 
 /*

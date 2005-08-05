@@ -530,7 +530,8 @@
 
     <form method="post"
           name="setacquisition"
-          action="folder_localrole_set">
+          action="folder_localrole_set"
+	  tal:attributes="action string:$here_url/folder_localrole_set">
 
       <fieldset>
 

@@ -390,6 +390,12 @@ class TestPortalBrowserDefault(PloneTestCase.PloneTestCase):
         views = [v[0] for v in self.portal.getAvailableLayouts()]
         self.failUnless(views == ['folder_listing'])
 
+    def testMissingPageIgnored(self):
+        self.portal.setDefaultPage('inexistent')
+        self.assertEqual(self.portal.getDefaultPage(), None)
+        self.assertEqual(self.portal.defaultView(), 'folder_listing')
+        self.assertEqual(self.portal.__browser_default__(None), (self.portal, ['folder_listing',]))
+
     def testTemplateTitles(self):
         views = [v for v in self.portal.getAvailableLayouts() if v[0] == 'folder_listing']
         self.assertEqual(views[0][1], 'Standard listing')

@@ -4,6 +4,55 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - RC2 - unreleased
 
+    - Changed View permission restrictions on folder_constraintypes_form and
+      ownership_form.  Requiring Owner restricts access to users with Owner
+      role on the template itself, not the context it is called in.
+      [alecm]
+
+    - Made search.pt respect typesUseViewActionInListings.  Fixes part of
+      http://members.plone.org/collector/4373
+      [alecm]
+
+    - Made syndication use the max_items property of the instance if set, not
+      the tool.
+      [alecm]
+
+    - Added ITranslatable support to getDefaultPage.
+      [deo]
+
+    . Added testMissingPageIgnored to verify inexistent ids in default_page.
+      Fixed a missing object in testFixFolderlistingActionNoTool.
+      [deo]
+
+    - Fixed http://plone.org/collector/4382 by removing unnecessary
+      getUser call.
+      [alecm]
+
+    - Fixed http://plone.org/collector/4381 by using getProperty to
+      access listed and last_login_time properties in searchForMembers.
+      [alecm]
+
+    - Fixed bug trigerred when reindexing order in a folder with improperly
+      deleted content (i.e. when brain.getObject() returns None in
+      plone_utils.reindexOnReorder(folder)).
+      [alecm]
+
+    - Readded current_page_url to global_defines for backwards compatibility.
+      [alecm]
+
+    - Removed unnecessary and lazy uses of global in tal expressions.
+      [alecm]
+
+    - Fixed bug: can't view a page with unauthoried related items.
+      [panjunyong]
+
+    - document_relateditems are sense of typesUseViewActionInListings now.
+      [panjunyong]
+
+    - Fixed bug: setting local role acquization works wrong with non-folderish
+      content.
+      [panjunyong]
+
     - Removed reindex method from CatalogTool.py since it is redundant and
       as of CMF 1.5.3 differs in signature from the base type's method.
       [geoffd]
@@ -11,7 +60,7 @@ Plone 2.1 - Plaid - RC2 - unreleased
     - Made language selector visible even if no document actions are defined
       for the current user
       [jok2]
-    
+
     - Don't require a full name for the site feedback in the contact-info page,
       as the full name is not required for members.
       [jok2]
@@ -64,7 +113,7 @@ Plone 2.1 - Plaid - RC1 - Released August 1, 2005
       for finding this.
       [alecm]
 
-    - Fixed http://members.plone.org/collector/4351 by not relying on
+    - Fixed http://plone.org/collector/4351 by not relying on
       getTypeInfo() being available on the object.
       [optilude]
 
@@ -80,7 +129,7 @@ Plone 2.1 - Plaid - RC1 - Released August 1, 2005
       views.
       [alecm]
 
-    - Fixed http://members.plone.org/collector/2771 (4350) using the new
+    - Fixed http://plone.org/collector/2771 (4350) using the new
       isURLInPortal method, which now also returns true on relative URLs.
       [alecm]
 
@@ -102,25 +151,25 @@ Plone 2.1 - Plaid - RC1 - Released August 1, 2005
       types list.
       [alecm]
 
-    - Fixed http://members.plone.org/collector/4345 by checking the flag.
+    - Fixed http://plone.org/collector/4345 by checking the flag.
       [alecm]
 
     - .personal folders will no longer be created.  Fixed unit tests which
       assumed that .personal would be around.
       [alecm]
 
-    - Closed bug http://members.plone.org/collector/4344 by limiting the
+    - Closed bug http://plone.org/collector/4344 by limiting the
       number of items that can be added to the portal status message string
-      when deleting items. This is really more of a usability fix, since 
+      when deleting items. This is really more of a usability fix, since
       we don't actually check the length of the titles; the full fix for the
       issue will appear when we merge the improved status message handling.
       [optilude]
 
-    - Fixed http://members.plone.org/collector/4346 by using the suggested
+    - Fixed http://plone.org/collector/4346 by using the suggested
       fix.  Thanks Tim Hicks.
       [alecm]
 
-    - Fixed plone_javascript_variables.dtml and plone_scripts/translate.py to 
+    - Fixed plone_javascript_variables.dtml and plone_scripts/translate.py to
       cope with i18n strings including the ' char.
       [gotcha]
 
@@ -128,7 +177,7 @@ Plone 2.1 - Plaid - RC1 - Released August 1, 2005
       sync with personalize.
       [alecm]
 
-    - Fixed http://members.plone.org/collector/1490 by ensuring that sendto
+    - Fixed http://plone.org/collector/1490 by ensuring that sendto
       only works when the action is visible.
       [alecm]
 
@@ -141,7 +190,7 @@ Plone 2.1 - Plaid - RC1 - Released August 1, 2005
       views so that they play nicely with discussion_reply_form.
       [alecm]
 
-    - Fixed http://members.plone.org/collector/4333 prefs_user_manage now uses
+    - Fixed http://plone.org/collector/4333 prefs_user_manage now uses
       portal_membership.deleteMembers instead of acting directly on acl_users.
       On deletion local roles are now removed, but the member area is
       preserved.
@@ -168,12 +217,12 @@ Plone 2.1 - Plaid - RC1 - Released August 1, 2005
       [fschulze]
 
     - Fleshed out the contact-info page as a form controller page, making it
-      possible to send feedback as anonymous user and as member (without 
-      filling e-mail address and fullname). Also displays the portal 
+      possible to send feedback as anonymous user and as member (without
+      filling e-mail address and fullname). Also displays the portal
       description.
       [jok2]
 
-    - Fixed http://members.plone.org/collector/4335 added a method to URLTool
+    - Fixed http://plone.org/collector/4335 added a method to URLTool
       to determine whther a URL is local to the portal.  This will be moved
       into CMFCore ASAP, pending write access.
       [alecm]
@@ -194,14 +243,14 @@ Plone 2.1 - Plaid - RC1 - Released August 1, 2005
       [optilude, limi]
 
     - Making the livesearch result truncate title and id, as offered by jeffk
-      in http://members.plone.org/collector/4329. Thanks for the patch!
+      in http://plone.org/collector/4329. Thanks for the patch!
       [optilude]
 
-    - Fixed http://members.plone.org/collector/4324 need to ensure we are
+    - Fixed http://plone.org/collector/4324 need to ensure we are
       passing strings to utranslate.
       [alecm]
 
-    - Added CMFUid tools. CMF 1.5 has a new core product CMFUid which is 
+    - Added CMFUid tools. CMF 1.5 has a new core product CMFUid which is
       used to assign and query uids mostly like Archetypes. Products designed
       for CMF 1.5 might depend on the tools.
       [tiran]
@@ -209,11 +258,11 @@ Plone 2.1 - Plaid - RC1 - Released August 1, 2005
     - Fixed HEAD requests for folders. The browserDefault code mustn't look up
       the template for HEAD requests. Instead it should invoke the HEAD() api
       method defined in webdav.Collection. This fixes an ATCT bug and
-      http://plone.org/collector/4290. 
+      http://plone.org/collector/4290.
       [tiran]
 
     - Made check_id.py prevent method aliases like 'sharing' and 'edit' as
-      object ids. This fixes http://members.plone.org/collector/4331.
+      object ids. This fixes http://plone.org/collector/4331.
       [optilude]
 
     - Implemented accesskeys as per accessibility-info page definition.
@@ -232,22 +281,22 @@ Plone 2.1 - Plaid - RC1 - Released August 1, 2005
       pages) for types other than File and Image.
       [optilude]
 
-    - Fixed http://members.plone.org/collector/4327. The live search now
+    - Fixed http://plone.org/collector/4327. The live search now
       honours typeUseViewActionInListings.
       [optilude]
 
-    - Fixed issue http://members.plone.org/collector/2669. Also made
+    - Fixed issue http://plone.org/collector/2669. Also made
       the group prefs suck a bit less. These pages really have to
       be taken care of in the next release. I also disabled the
-      group search feature in prefs_groups_overview because it 
+      group search feature in prefs_groups_overview because it
       made things much worse. It's no use to have a search box
-      that doesn't search. 
+      that doesn't search.
       So, now groups are shown using their title and descriptions
       for tooltips. folder_localrole_form also uses this info.
       This requires a GRUF update!!
       [ender]
 
-    - Changed add to favorites icon in document actions to the 
+    - Changed add to favorites icon in document actions to the
       appropriate icon. Before it used the site icon while the
       portal_type uses a heart. They must match and now they do.
       [ender]
@@ -268,12 +317,12 @@ Plone 2.1 - Plaid - RC1 - Released August 1, 2005
       but I think this is nicer and cleaner.
       [ender]
 
-    - Fixed http://plone.org/collector/4083. 
+    - Fixed http://plone.org/collector/4083.
       <div class="visualClear"><!-- --></div> to remove whitespace
       in IE.
       [ender]
 
-    - Fixing http://members.plone.org/collector/4300 by disabling the content
+    - Fixing http://plone.org/collector/4300 by disabling the content
       menu when the object is in the factory. PLIP 24 form unload protection
       takes care of the other cases.
       [optilude]
@@ -293,14 +342,14 @@ Plone 2.1 - Plaid - RC1 - Released August 1, 2005
 
     - Making the images in document_actions.pt have their height and width
       set with CSS instead of attributes on the image tag. This closes
-      http://members.plone.org/collector/3823, which advocated using the
+      http://plone.org/collector/3823, which advocated using the
       image's own height and width. This approach was deemed unnecessary,
       since we probably want them all to be consistent, and having to traverse
       to each image is an unnecessary performance hit for something that'll stay
       16x16 almost always. :)
       [optilude]
 
-    - Fixed http://members.plone.org/collector/4302 using jenner's template
+    - Fixed http://plone.org/collector/4302 using jenner's template
       with a few simplifications, and some changes to folder_contents to make
       reusability even easier.
       [alecm]
@@ -313,20 +362,20 @@ Plone 2.1 - Plaid - RC1 - Released August 1, 2005
 
     - Making member overview preference page not perform a full member search
       by default, but adding a "Find all" button to find all members if you
-      need this listing. This fixes http://members.plone.org/collector/2530.
-      The bug also mentions that we could have "Find all" the default behaviour 
+      need this listing. This fixes http://plone.org/collector/2530.
+      The bug also mentions that we could have "Find all" the default behaviour
       when there are sufficiently few members. However, there has been no
       followup on how we can efficiently count the number of members, so this
       is still an open feature request.
       [optilude]
 
     - Adding display of currently selected default-page to "display" menu and
-      cleaning up markup a bit. Still some CSS work to be done before this is 
+      cleaning up markup a bit. Still some CSS work to be done before this is
       fully OK.
       [optilude]
 
     - All icons for content types are now displayed using CSS - this closes
-      http://members.plone.org/collector/3138
+      http://plone.org/collector/3138
 
     - Removed all references to getStateClassName() as this was just a
       makeshift solution that was used before we got the normalizeString()
@@ -340,23 +389,23 @@ Plone 2.1 - Plaid - RC1 - Released August 1, 2005
       title to id autogeneration code.
       [hannosch]
 
-    - Fixed http://members.plone.org/collector/3242 added And/Or search option
+    - Fixed http://plone.org/collector/3242 added And/Or search option
       to Subject field on search_form.
       [alecm]
 
-    - Fixed http://members.plone.org/collector/3211 by updating the permission
+    - Fixed http://plone.org/collector/3211 by updating the permission
       on PloneTool.setMemberProperties, the other permissions are fixed in
       CMF 1.5.
       [alecm]
 
-    - Fixed http://members.plone.org/collector/4242 by updating test.
+    - Fixed http://plone.org/collector/4242 by updating test.
       [alecm]
 
     - Fixed inappropriate condition on folder_constraintypes_form.
       [alecm]
 
     - Made tableless skin use showEditableBorder, fixed
-      http://members.plone.org/collector/4291.
+      http://plone.org/collector/4291.
       [alecm]
 
     - Fixed failing unit tests due to cleanupFilename removal. atct's base.py
@@ -461,12 +510,12 @@ Plone 2.1 - Plaid - RC1 - Released August 1, 2005
     - Added the phrase "Open Source" to the colophon to keep google happy
       [geoffd]
 
-    - Fixed method alias handling in portal_factory 
+    - Fixed method alias handling in portal_factory
       (http://plone.org/collector/4263)
       [geoffd]
 
     - Added support for parentMetaTypesNotToQuery to the navtree. Fixed
-      http://members.plone.org/collector/4258
+      http://plone.org/collector/4258
       [alecm]
 
     - Use the old fashioned (but badly named) metaTypesNotToList for the
@@ -519,10 +568,10 @@ Plone 2.1 - Plaid - RC1 - Released August 1, 2005
     - Refactoring use of __browser_default__() to use CMF 1.5-style aliases
       and FTIs, with __browser_default__() still being the fallback for old
       classes. Some tests had to be fixed for this, too.
-      
+
       Adding aliases for view, edit, properties, sharing. Fixing up some uses
       of getActionById() which were failing because of these aliases.
-      
+
       Note that we now depend on fixes to CMFFormController, ATContentTypes and
       CMFDynamicViewFTI checked in alongside this commit.
       [optilude]
@@ -555,8 +604,8 @@ Plone 2.1 - Plaid - RC1 - Released August 1, 2005
       [ender]
 
     - Total rewrite of portlet HTML and CSS. Will keep backwards compatibility
-      until Plone 2.2 is released, though. The old div-based layout is 
-      deprecated in favor of a more light-weight markup using definition lists 
+      until Plone 2.2 is released, though. The old div-based layout is
+      deprecated in favor of a more light-weight markup using definition lists
       and allowing interesting skinning variations - round corners using CSS,
       for example. It also has bigger click areas, making it easier to navigate
       the portlets.
@@ -600,13 +649,13 @@ Plone 2.1 - Plaid - RC1 - Released August 1, 2005
       scripts to formcontroller forms and scripts.  Moved cookie testing
       and related javascript from login_form into login.js.  Made the
       cookie test messages internationalizable.  Made login sequence fail
-      more gracefully when cookies are disabled.  Added nice error 
+      more gracefully when cookies are disabled.  Added nice error
       messages that explain why a login failed (e.g. no login name, no
       password, and (optionally) login name not found).  The login name
       not found test can be enabled/disabled via a new site_property,
       verify_login_name.  Fixes 2408, 2458, 2250, and 3335.
      [geoffd]
- 
+
     - Fixed http://plone.org/collector/3018 no duplicate id="portal-footer"
       [hannosch]
 
@@ -666,25 +715,25 @@ Plone 2.1 - Plaid - RC1 - Released August 1, 2005
       reflected changes in the tests
       [hannosch]
 
-    - Fixed http://members.plone.org/collector/3256
+    - Fixed http://plone.org/collector/3256
       Plone Config -> Add/Remove Products:
       Added "product filesystem version" in the message displayed for
       products that need updating.
       [briang]
 
-    - Fixed http://members.plone.org/collector/4164 the getIcon and
+    - Fixed http://plone.org/collector/4164 the getIcon and
       getTypeInfo calls were no longer needed.
       [alecm]
 
-    - Fixed http://members.plone.org/collector/4055 by returning an empty list
+    - Fixed http://plone.org/collector/4055 by returning an empty list
       in getAddableTypesInMenu if the View permission is not available.
       [alecm]
 
-    - Fixed http://members.plone.org/collector/4114 by adding new criteria
+    - Fixed http://plone.org/collector/4114 by adding new criteria
       to the news and events topics.
       [alecm]
 
-    - Fixed http://members.plone.org/collector/4149 - incorrect tal:define for
+    - Fixed http://plone.org/collector/4149 - incorrect tal:define for
       locked items in the byline. Thanks to Raphael Ritz for the fix
       [optilude]
 
@@ -696,7 +745,7 @@ Plone 2.1 - Plaid - RC1 - Released August 1, 2005
     - Fixed http://plone.org/collector/3714. Use ACTUAL_URL to skip to content.
       [ender, neaj]
 
-    - Fixed http://members.plone.org/collector/4137 by introducing a keyword
+    - Fixed http://plone.org/collector/4137 by introducing a keyword
       argument 'show_inactive'to CatalogTool.searchResults and queryCatalog
       which disables expiry filtering.  Also granted the 'Access inactive
       portal contents' permission to Owner in migration, and made
@@ -723,7 +772,7 @@ Plone 2.1 - Plaid - RC1 - Released August 1, 2005
       (PUT, HEAD, GET, POST).
       [dreamcatcher]
 
-    - Updated "my folder" action to point straight to folder, not to 
+    - Updated "my folder" action to point straight to folder, not to
       folder_contents
       [optilude]
 
@@ -733,7 +782,7 @@ Plone 2.1 - Plaid - RC1 - Released August 1, 2005
       is much more sensible than having to click the 'view' tab to get back.
       [optilude]
 
-    - Fixed http://plone.org/collector/3688 and added a test.  Also added a 
+    - Fixed http://plone.org/collector/3688 and added a test.  Also added a
       test to ensure that portal_factory respects PLIP 16 local role inheritance.
       [geoffd]
 
@@ -750,7 +799,7 @@ Plone 2.1 - Plaid - RC1 - Released August 1, 2005
     - Fix http://plone.org/collector/4089 fix some i18n markup
       [hannosch]
 
-    - Fixed http://members.plone.org/collector/2659 using patch by fschulze.
+    - Fixed http://plone.org/collector/2659 using patch by fschulze.
       [alecm]
 
     - Fix http://plone.org/collector/4049 - the template showing the discussion
@@ -775,17 +824,17 @@ Plone 2.1 - Plaid - RC1 - Released August 1, 2005
       [alecm]
 
     - Fix browserDefault() in PloneTool so that images and files work, and there
-      are less wtf moments. Look at 
-      
-      http://members.plone.org/documentation/manual/plone-developer-reference/
+      are less wtf moments. Look at
+
+      http://plone.org/documentation/manual/plone-developer-reference/
         specific-areas/content-types/zope-to-browser
-      
+
       for details on how the implementation works.
 
     - Make object paste button act on parent folder for folderish default
       pages.
       [alecm]
-      
+
     - Fixed folder_contents listing table in RTL stylesheet (http://plone.org/collector/4155)
       [andrewb]
 
@@ -806,7 +855,7 @@ Plone 2.1 - Plaid - RC1 - Released August 1, 2005
       portal_syndication.
       [alecm]
 
-    - Fixed http://members.plone.org/collector/4081 changed 'Plone Setup'
+    - Fixed http://plone.org/collector/4081 changed 'Plone Setup'
       to 'Site Setup'.
       [limi] [alecm]
 
@@ -815,7 +864,7 @@ Plone 2.1 - Plaid - RC1 - Released August 1, 2005
       accessible from untrusted code.
       [alecm]
 
-    - Fixed http://members.plone.org/collector/2586 changed
+    - Fixed http://plone.org/collector/2586 changed
       MembershipTool.getCandidateLocalRoles() to use
       member.getRolesInContext(obj) instead of member.getRoles(), and to use
       obj.valid_roles() instead of MembershipTool.getPortalRoles().  This
@@ -840,7 +889,7 @@ Plone 2.1 - Plaid - RC1 - Released August 1, 2005
       characters. It is possible to define custom normalizations in UnicodeNormalizer.py
       [naro]
 
-    - Added styles that make the editing widgets look more like their view 
+    - Added styles that make the editing widgets look more like their view
       counterparts.
       [limi]
 

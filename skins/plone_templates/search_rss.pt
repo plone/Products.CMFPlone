@@ -11,9 +11,9 @@
 <tal:block 
     define="
         syn context/portal_syndication;
+        max_items syn/max_items;
         start python: int(request.get('b_start', 0));
-        end python: int(request.get('b_end', start+syn.max_items));
-        max_items python: syn.max_items;
+        end python: int(request.get('b_end', start+max_items));
         order python: request.get('sort_on', None) and request.set('sort_order', 'reverse');
         dummy python: request.set('sort_on', request.get('sort_on', 'effective'));
         objectList python:context.queryCatalog(use_types_blacklist=True)[start:end]">

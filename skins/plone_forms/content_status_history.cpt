@@ -220,7 +220,7 @@
                      >Transition Name</label>
                      <br />
 
-                     <tal:block define="global transitions python:wtool.getTransitionsFor(target, here)"
+                     <tal:block define="transitions python:wtool.getTransitionsFor(target, here)"
                                 repeat="transition transitions">
                        <input class="noborder"
                               id=""
