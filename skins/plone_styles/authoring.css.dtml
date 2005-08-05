@@ -604,6 +604,8 @@ ol.visualNoMarker {
     padding: 0;
     font-weight: normal;
     cursor: pointer;
+    position: relative;
+    z-index: 10;
 }
 
 .actionMenu.activated .actionMenuHeader a,
