@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - RC2 - unreleased
 
+    - Added workaround for http://plone.org/collector/4372 which is due to a
+      strange behavior in the Firefox alpha.  Thanks to jenner for hunting
+      this down and contributing the fix.
+      [alecm]
+
     - Addresses http://members.plone.org/collector/2029. Now support through
       UI for grouping groups. UI does not allow a group to be added to itself,
       or for a member (group or user) of a subgroup to be added to a group. Some
