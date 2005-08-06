@@ -169,8 +169,93 @@ li.navTreeCurrentItem a:hover {
 }
 
 /*
-style string:background-image: url($portal_url/site_icon.gif);
+** Calendar elements - used in the calendar rendering
 */
+
+.dayPopup {
+    background-color: &dtml-helpBackgroundColor;;
+    border: &dtml-borderWidth; &dtml-borderStyle; Black;
+    padding: 0.2em;
+    position: absolute;
+    visibility: hidden;
+    width: 12em;
+    z-index: 2;
+}
+.date {
+    font-weight: bold;
+}
+
+.ploneCalendar {
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    margin: 0 auto 1em;
+    border-collapse: collapse;
+}
+.ploneCalendar a {
+    text-decoration: none;
+}
+.ploneCalendar a:hover {
+    text-decoration: none;
+}
+.ploneCalendar th {
+    background-color: &dtml-globalBackgroundColor;;
+    font-weight: bold;
+    text-align: center;
+    padding: 2px;
+}
+.ploneCalendar td {
+    background-color: transparent;
+    width: 1.5em;
+    text-align: right;
+    padding: 2px;
+}
+.ploneCalendar .weekdays td {
+    background-color: &dtml-globalBackgroundColor;;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    border-style: &dtml-borderStyle; none;
+    text-align: center;
+    padding: 2px;
+}
+.ploneCalendar .event {
+    background-color: &dtml-globalBackgroundColor;;
+    font-weight: bold;
+}
+.ploneCalendar .todayevent {
+    background-color: &dtml-globalBackgroundColor;;
+    border: 2px &dtml-borderStyle; #ffa500;
+    font-weight: bold;
+}
+.ploneCalendar .todaynoevent {
+    border-collapse: collapse;
+    border: 2px &dtml-borderStyle; #ffa500;
+}
+.ploneCalendar #calendar-previous {
+    background-image: url(&dtml-portal_url;/arrowLeft.gif);
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+}
+.ploneCalendar #calendar-next {
+    background-image: url(&dtml-portal_url;/arrowRight.gif);
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+}
+.ploneCalendar #calendar-previous a,
+.ploneCalendar #calendar-next a {
+    display: block;
+    text-decoration: none;
+    overflow: hidden;
+    border: 0;
+    margin: 0;
+    padding: 0;
+    padding-top: <dtml-var "_['arrowLeft.gif'].height">px;
+    height: 0px !important;
+    height /**/: <dtml-var "_['arrowLeft.gif'].height">px;
+    cursor: pointer;
+}
+.ploneCalendar #calendar-next a {
+    padding-top: <dtml-var "_['arrowRight.gif'].height">px;
+    height: 0px !important;
+    height /**/: <dtml-var "_['arrowRight.gif'].height">px;
+}
 
 
 /* </dtml-with> */

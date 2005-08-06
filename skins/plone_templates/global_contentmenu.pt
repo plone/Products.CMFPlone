@@ -5,7 +5,8 @@
 
 <metal:menubarmacro define-macro="contentMenu">
 
-<ul tal:define="folder python:test(getattr(here.aq_explicit, 'isPrincipiaFolderish', 0), here, here.getParentNode());
+<ul class="testClass"
+    tal:define="folder python:test(getattr(here.aq_explicit, 'isPrincipiaFolderish', 0), here, here.getParentNode());
                 isContextDefaultPage here/isDefaultPageInFolder;
                 parent_folder python: isContextDefaultPage and here.getParentNode() or folder;
                 disableMenu python:here.portal_factory.isTemporary(here);"
