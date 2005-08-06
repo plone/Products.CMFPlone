@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - RC2 - unreleased
 
+    - Evaluate queryCatalog in the catalog context in getFolderContents, so
+      that Smart Folders (which override queryCatalog for some silly reason)
+      can still use it.
+      [alecm]
+
     - Added workaround for http://plone.org/collector/4372 which is due to a
       strange behavior in the Firefox alpha.  Thanks to jenner for hunting
       this down and contributing the fix.
