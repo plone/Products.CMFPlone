@@ -332,49 +332,6 @@
 .addFavorite {
     vertical-align: bottom;
 }
-.contentViews {
-    background-color: transparent;
-    padding-left: 1em;
-    line-height: normal;
-    margin-top: 2.1em;
-    margin-left: 0;
-    list-style: none;
-    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
-    border-top-width: 0px;
-    border-left-width: 0px;
-    border-right-width: 0px;
-}
-.contentViews li {
-    display: inline;
-    padding-top: 0.5em;
-}
-.contentViews li a {
-    background-color: transparent;
-    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
-    border-style: &dtml-borderStyle;;
-    color: &dtml-contentViewFontColor;;
-    height: auto;
-    margin-right: 0.5em;
-    padding: 0em 1em;
-    line-height: normal;
-    text-decoration: none;
-    text-transform: &dtml-textTransform;;
-    z-index: 1;
-}
-.contentViews .selected a {
-    background-color: &dtml-contentViewBackgroundColor;;
-    border-bottom: &dtml-contentViewBackgroundColor; &dtml-borderWidth; &dtml-borderStyle;;
-    color: &dtml-contentViewFontColor;;
-}
-.contentViews li a:hover {
-    background-color: &dtml-contentViewBackgroundColor;;
-    color: &dtml-contentViewFontColor;;
-}
-
-
-.configlet .contentViews {
-    font-size: 90%;
-}
 
 #content {
     padding: 0.139em 1em 0 1em;
@@ -435,26 +392,6 @@
     display: inline;
     margin: 0 1em 0 0;
 }
-
-.documentEditable {
-    padding: 0em 2em 1em 2em !important;
-}
-
-.configlet .documentEditable {
-    padding: 0em !important;
-}
-
-.documentContent {
-    font-size: 110%;
-    padding: 1em 1em 2em 1em !important;
-    background: &dtml-backgroundColor;;
-}
-
-.documentEditable .documentContent {
-    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
-    padding: 0;
-}
-
 
 
 .documentActions {
@@ -518,6 +455,58 @@
     margin: 0;    
     display: inline;
 }
+
+/* Batch selector */
+
+.even {
+    background-color: &dtml-evenRowBackgroundColor;;
+}
+.odd {
+    background-color: &dtml-oddRowBackgroundColor;;
+}
+.visualHighlight {
+    background-color: &dtml-evenRowBackgroundColor;;
+}
+
+.discreet {
+    color: &dtml-discreetColor;;
+    font-size: &dtml-fontSmallSize;;
+    font-weight: normal;
+}
+
+.listingBar {
+    background-color: &dtml-globalBackgroundColor;;
+    border-color: &dtml-globalBorderColor;;
+    border-style: &dtml-borderStyle;;
+    border-width: &dtml-borderWidth;;
+    padding: 0em 1em;
+    text-align: center;
+    text-transform: &dtml-textTransform;;
+    vertical-align: top;
+    margin: 1em 0em;
+    font-size: 94%;
+    clear: both;
+}
+.listingBar span.previous,
+.listingPrevious {
+    text-align: left;
+    float: left;
+    margin-right: 1em;
+}
+.listingBar span.next,
+.listingNext {
+    text-align: right;
+    float: right;
+    margin-left: 1em;
+}
+.listingBar img {
+    vertical-align: middle;
+}
+.listingBar a {
+    text-decoration: none;
+}
+
+
 
 /* Useful deviations from regular style on elements */
 
@@ -628,9 +617,6 @@ textarea.proportional {
 .netscape4 {
     display: none;
 }
-
-
-
 
 
 /* Collapsible elements */
