@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - RC2 - unreleased
 
+    - Fixed http://plone.org/collector/4376 untranslated 'add type' buttons
+      [hannosch]
+
     - Don't clear css and javascript registries on migration from 2.0.5.
       [fschulze]
 
