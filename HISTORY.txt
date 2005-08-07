@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - RC2 - unreleased
 
+    - Don't clear css and javascript registries on migration from 2.0.5.
+      [fschulze]
+
     - Evaluate queryCatalog in the catalog context in getFolderContents, so
       that Smart Folders (which override queryCatalog for some silly reason)
       can still use it.
