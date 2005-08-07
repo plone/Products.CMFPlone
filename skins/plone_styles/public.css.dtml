@@ -334,7 +334,7 @@
 }
 
 #content {
-    padding: 0.139em 1em 0 1em;
+    padding: 1em 1em 0 1em !important;
     margin: 0em 0em 2em 0em;
 }
 
@@ -401,11 +401,11 @@
 }
 
 .documentActions ul {
-    margin: 0 0 0.3em 0;
+    margin: 0 0 0 0;
+    display: block;
 }
 
 
-.documentActions ul,
 .documentActions li {
     display: inline;
     list-style: none;
@@ -414,11 +414,6 @@
 .documentActions a {
     border: 0;
     text-decoration: none;
-}
-
-.documentActions img {
-    height: 16px;
-    width: 16px;
 }
 
 /* .system-message and #error-handling are reST error indicators */

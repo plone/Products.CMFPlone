@@ -287,35 +287,11 @@ ol.visualNoMarker {
     margin: 1em;
 }
 
-
-
-.role-Member {
-
-}
-.role-Reviewer {
-
-}
-.role-Manager {
-
-}
-.role-Translator {
-
-}
-.location-frontpage {
-
-}
-.location-news {
-
-}
-.location-members {
-
-}
-
 .contentViews {
     background-color: transparent;
     padding-left: 1em;
     line-height: normal;
-    margin: 2.1em 0 0 0;
+    margin: 0;
     list-style: none;
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
     border-top-width: 0px;
@@ -353,6 +329,191 @@ ol.visualNoMarker {
 .configlet .contentViews {
     font-size: 90%;
 }
+
+/*
+** begin ECMAScript Content Action Menus
+*/
+
+.contentActions {
+    background-color: &dtml-contentViewBackgroundColor;;
+    border-left: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
+    border-right: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
+    color: &dtml-contentViewFontColor;;
+    text-align: right;
+    text-transform: &dtml-textTransform;;
+    padding: 0 0 0 1em;
+    z-index: 2;
+    height: 1.6em;
+}
+
+.contentActions ul,
+.contentActions li {
+    margin: 0;
+    list-style: none;
+    list-style-image: none;
+    display: inline;
+    color: &dtml-fontColor;;
+    text-align: left;
+}
+
+.contentActions ul {
+    line-height: 1.6em;
+    padding: 0;
+    margin: 0;
+}
+.contentActions li {
+    float: right;
+    z-index: 4;
+    border-left: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
+    line-height: 1.6em;
+}
+
+.actionItems li {
+    background-image: none;
+}
+
+.contentActions a {
+    text-decoration: none;
+    color: &dtml-contentViewFontColor;;
+    padding: 0 0.5em;
+}
+
+.actionMenu {
+    /*  The spec says we can't put this on an element with a float (although
+        Opera is the only one that cares) and we need it in order to catch
+        the position:absolute bubbling up */
+
+    position: relative;
+    margin: 0;
+    padding: 0;
+}
+
+.actionMenu .actionMenuHeader {
+    margin: 0;
+    padding: 0;
+    font-weight: normal;
+    cursor: pointer;
+    position: relative;
+    z-index: 10;
+}
+
+.actionMenu.activated .actionMenuHeader a,
+.actionMenu.deactivated .actionMenuHeader a {
+    background-image: url(<dtml-var portal_url>/arrowDownAlternative.gif);
+    background-repeat: no-repeat;
+    background-position: 95% 60%;
+    padding: 0 1.6em 0 0.5em !important;
+    cursor: pointer;
+}
+
+.contentActions .actionMenu .actionMenuContent {
+    display: none;
+    z-index: 5;
+    position: absolute;
+    top: 0;
+    right: -1px;
+    height: auto;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+}
+
+.contentActions .actionMenu .actionMenuContent ul {
+    display: block;
+    background: &dtml-contentViewBackgroundColor;;
+    border: &dtml-borderWidth; &dtml-contentViewBorderColor;;
+    border-style: none &dtml-borderStyle; &dtml-borderStyle; &dtml-borderStyle;;
+    margin: 1.6em 0 0 0;
+    padding: 0;
+    cursor: pointer;
+}
+
+.actionMenu.activated .actionMenuContent {
+    display: block !important;
+}
+.actionMenu.activated .actionMenuContent {
+    /* this one will be ignored by IE, it is here to fix the cut-off error in
+       Firefox */
+    display: table !important;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+.actionMenu.deactivated .actionMenuContent {
+    display: none !important;
+}
+
+.actionMenu .actionMenuContent li {
+    float: none;
+    background-color: transparent;
+    display: inline;
+    padding: 0;
+    margin: 0;
+    border: 0;
+}
+
+.actionMenu .actionMenuContent li a {
+    display: block;
+    white-space: nowrap;
+    padding: 0 0.5em;
+    margin: 0.2em 0;
+}
+
+.actionMenu .actionMenuContent .selected {
+    display: block;
+    white-space: nowrap;
+    padding: 0 0.5em;
+    margin: 0.2em 0;
+}
+
+.actionMenu .actionMenuContent li a:hover {
+    background-color: &dtml-contentViewBorderColor;;
+    color: White;
+}
+
+.actionMenu .actionMenuContent .actionSeperator a {
+    margin-top: 0.2em;
+    padding-top: 0.2em;
+    border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
+}
+
+.actionMenu .actionMenuContent .actionSeperator div.currentDefaultPage {
+    margin-top: 0.2em;
+    padding: 0.2em 0.5em 0em 0.5em;
+    white-space: nowrap;
+    border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
+}
+
+.contentBatchAction {
+    float: left !important;
+    padding: 0 0.5em;
+    border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
+    border-right: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
+    border-left: none !important;
+    border-collapse: collapse;
+    position: relative;
+    top: -1px;
+    margin-left: -0.5em !important;
+}
+
+#objectMenu.actionMenu .actionMenuContent li {
+    display: block;
+}
+
+#objectMenu.actionMenu .actionMenuContent li,
+#objectMenu.actionMenu .actionMenuContent li a:hover {
+    background-position: 3px 50%;
+    margin-left: 0;
+}
+
+#objectMenu.actionMenu .actionMenuContent li a {
+    padding-left: 22px;
+}
+
+/*
+** end ECMAScript Content Action Menus
+*/
+
 
 .documentEditable {
     padding: 0em 2em 1em 2em !important;
@@ -470,190 +631,6 @@ ol.visualNoMarker {
     border: 2px &dtml-borderStyle; &dtml-notifyBorderColor;;
     padding: 1px;
 }
-
-/*
-** begin ECMAScript Content Action Menus
-*/
-
-.contentActions {
-    background-color: &dtml-contentViewBackgroundColor;;
-    border-left: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
-    border-right: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
-    color: &dtml-contentViewFontColor;;
-    text-align: right;
-    text-transform: &dtml-textTransform;;
-    padding: 0 0 0 1em;
-    z-index: 2;
-    height: 1.2em;
-}
-
-.contentActions ul,
-.contentActions li {
-    margin: 0;
-    list-style: none;
-    list-style-image: none;
-    display: inline;
-    color: &dtml-fontColor;;
-    text-align: left;
-}
-
-.contentActions ul {
-    line-height: 1.2em;
-    padding: 0;
-    margin: 0;
-}
-.contentActions li {
-    float: right;
-    z-index: 4;
-    border-left: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
-}
-
-.actionItems li {
-    background-image: none;
-}
-
-.contentActions a {
-    text-decoration: none;
-    color: &dtml-contentViewFontColor;;
-    padding: 0 0.5em;
-}
-
-.actionMenu {
-    /*  The spec says we can't put this on an element with a float (although
-        Opera is the only one that cares) and we need it in order to catch
-        the position:absolute bubbling up */
-
-    position: relative;
-    margin: 0;
-    padding: 0;
-}
-
-.actionMenu .actionMenuHeader {
-    margin: 0;
-    padding: 0;
-    font-weight: normal;
-    cursor: pointer;
-    position: relative;
-    z-index: 10;
-}
-
-.actionMenu.activated .actionMenuHeader a,
-.actionMenu.deactivated .actionMenuHeader a {
-    background-image: url(<dtml-var portal_url>/arrowDownAlternative.gif);
-    background-repeat: no-repeat;
-    background-position: 95% 60%;
-    padding: 0 1.5em 0 0.5em !important;
-    cursor: pointer;
-}
-
-.contentActions .actionMenu .actionMenuContent {
-    display: none;
-    z-index: 5;
-    position: absolute;
-    top: 0;
-    right: -1px;
-    height: auto;
-    padding: 0;
-    margin: 0;
-    cursor: pointer;
-}
-
-.contentActions .actionMenu .actionMenuContent ul {
-    display: block;
-    background: &dtml-contentViewBackgroundColor;;
-    border: &dtml-borderWidth; &dtml-contentViewBorderColor;;
-    border-style: none &dtml-borderStyle; &dtml-borderStyle; &dtml-borderStyle;;
-    margin: 1.2em 0 0 0;
-    padding: 0;
-    cursor: pointer;
-}
-
-.actionMenu.activated .actionMenuContent {
-    display: block !important;
-}
-.actionMenu.activated .actionMenuContent {
-    /* this one will be ignored by IE, it is here to fix the cut-off error in
-       Firefox */
-    display: table !important;
-    border-collapse: collapse;
-    border-spacing: 0;
-}
-
-.actionMenu.deactivated .actionMenuContent {
-    display: none !important;
-}
-
-.actionMenu .actionMenuContent li {
-    float: none;
-    background-color: transparent;
-    display: inline;
-    padding: 0;
-    margin: 0;
-    border: 0;
-}
-
-.actionMenu .actionMenuContent li a {
-    display: block;
-    white-space: nowrap;
-    padding: 0 0.5em;
-    margin: 0.2em 0;
-}
-
-.actionMenu .actionMenuContent .selected {
-    display: block;
-    white-space: nowrap;
-    padding: 0 0.5em;
-    margin: 0.2em 0;
-}
-
-.actionMenu .actionMenuContent li a:hover {
-    background-color: &dtml-contentViewBorderColor;;
-    color: White;
-}
-
-.actionMenu .actionMenuContent .actionSeperator a {
-    margin-top: 0.2em;
-    padding-top: 0.2em;
-    border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
-}
-
-.actionMenu .actionMenuContent .actionSeperator div.currentDefaultPage {
-    margin-top: 0.2em;
-    padding: 0.2em 0.5em 0em 0.5em;
-    white-space: nowrap;
-    border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
-}
-
-.contentBatchAction {
-    float: left !important;
-    padding: 0 0.5em;
-    border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
-    border-right: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
-    border-left: none !important;
-    border-collapse: collapse;
-    position: relative;
-    top: -1px;
-    margin-left: -0.5em !important;
-}
-
-#objectMenu.actionMenu .actionMenuContent li {
-    display: block;
-}
-
-#objectMenu.actionMenu .actionMenuContent li,
-#objectMenu.actionMenu .actionMenuContent li a:hover {
-    background-position: 3px 50%;
-    margin-left: 0;
-}
-
-#objectMenu.actionMenu .actionMenuContent li a {
-    padding-left: 22px;
-}
-
-/*
-** end ECMAScript Content Action Menus
-*/
-
 
 /* Styles to make the editing widgets look more like their view counterparts */
 

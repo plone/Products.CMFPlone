@@ -18,7 +18,7 @@
                tal:define="title daction/name;
                            icon python:getIconFor('plone', daction['id'], None)"
                tal:condition="icon">
-            
+
                 <img i18n:attributes="title" src="" alt="" title=""
                      tal:attributes="src    string:$portal_url/$icon;
                                      title  title;

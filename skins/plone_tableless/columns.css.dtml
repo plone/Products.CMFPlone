@@ -1,8 +1,6 @@
 /*
 ** Tableless Column Layout for CSS2 capable Browsers
 ** Based on http://www.positioniseverything.net/ordered-floats.html by Big John.
-** Fixed width modifications by Tonico Strasser (http://www.webproducer.at) and
-** Michael Zeltner (http://niij.org).
 */
 
 /* <dtml-var "enableHTTPCompression(request=REQUEST, debug=1, css=1)"> (this is for http compression) */
@@ -48,10 +46,10 @@ body {
     padding: 1em 2em 1em 2em;
 }
 #portal-column-one .visualPadding {
-    padding: 2em 0em 1em 2em;
+    padding: 1em 0em 1em 2em;
 }
 #portal-column-two .visualPadding {
-    padding: 2em 2em 1em 0em;
+    padding: 1em 2em 1em 0em;
 }
 
 /* hide columns */

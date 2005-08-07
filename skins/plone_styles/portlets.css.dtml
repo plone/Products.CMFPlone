@@ -24,10 +24,10 @@
 /* Main portlet elements */
 
 dl.portlet {
-    margin: 0 0 2em 0;
+    margin: 0 0 1em 0;
 }
 
-dl.portlet a{
+dl.portlet a {
     text-decoration: none;
 }
 
@@ -37,6 +37,7 @@ dl.portlet a{
     padding: 0em 1em;
     text-transform: &dtml-textTransform;;
     font-weight: normal;
+    line-height: 1.6em;
 }
 
 .portletHeader a {
