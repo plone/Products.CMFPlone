@@ -165,9 +165,11 @@ li.navTreeCurrentItem a:hover {
 }
 
 
-.navTreeLevel0 {
-    margin: 0;
-}
+.navTreeLevel0 { margin: 0; }
+.navTreeLevel1 { margin-left: 1em;}
+.navTreeLevel2 { margin-left: 0.75em; }
+.navTreeLevel3 { margin-left: 0.75em; }
+
 
 /*
 ** Calendar elements - used in the calendar rendering
