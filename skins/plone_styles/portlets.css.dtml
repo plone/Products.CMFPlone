@@ -169,6 +169,8 @@ li.navTreeCurrentItem a:hover {
 .navTreeLevel1 { margin-left: 1em;}
 .navTreeLevel2 { margin-left: 0.75em; }
 .navTreeLevel3 { margin-left: 0.75em; }
+.navTreeLevel4 { margin-left: 0.75em; }
+.navTreeLevel5 { margin-left: 0.75em; }
 
 
 /*
