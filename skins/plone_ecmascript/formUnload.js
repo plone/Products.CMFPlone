@@ -22,15 +22,7 @@ if (!window.beforeunload) (function() {
             }
             if (message===true) message = self.message;
             if (message===false) message = undefined;
-            if (event) {
-                if (!message) {
-                    // Buggy firefox alpha interprets null and undefined
-                    // very diferently, we must send null.
-                    event.returnValue = null;
-                } else {
-                    event.returnValue = message;
-                }
-            }
+            if (event && message) { event.returnValue = message; }
             return message;
         }
         this.execute.tool = this;
