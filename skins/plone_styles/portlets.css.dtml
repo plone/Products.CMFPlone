@@ -187,7 +187,7 @@ li.navTreeCurrentItem a:hover {
 
 .ploneCalendar {
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
-    margin: 0 auto 1em;
+    margin: 1em auto;
     border-collapse: collapse;
 }
 .ploneCalendar a {
@@ -198,7 +198,7 @@ li.navTreeCurrentItem a:hover {
 }
 .ploneCalendar th {
     background-color: &dtml-globalBackgroundColor;;
-    font-weight: bold;
+    font-weight: normal;
     text-align: center;
     padding: 2px;
 }
