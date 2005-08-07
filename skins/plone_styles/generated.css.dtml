@@ -30,7 +30,7 @@
         background-repeat: no-repeat; 
         background-position: 0% 1px;
     }
-    /* Holy hack to prevent items from shifting to the left in IE*/
+    /* Holly hack to prevent items from shifting to the left in IE*/
     * html .contenttype-<dtml-var "plone_utils.normalizeString(id)"> { 
         height: 1%;
     }
@@ -46,7 +46,7 @@
     * html #portlet-navigation-tree .contenttype-<dtml-var "plone_utils.normalizeString(id)"> a:hover {
         position: relative;
     }
-    td .contenttype-<dtml-var "plone_utils.normalizeString(id)"> { 
+    .listing .contenttype-<dtml-var "plone_utils.normalizeString(id)"> { 
         display: block; 
     }
 </dtml-in>
