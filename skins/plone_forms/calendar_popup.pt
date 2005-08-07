@@ -21,15 +21,9 @@
     <script type="text/javascript" language="javascript"
             tal:content="python:here.getPopupScript(input_id=input_id)"></script>
 
-    <!-- Style sheets for CSS2 capable browsers (Mozilla, Opera,
-         IE, Netscape6+, Konqueror etc. -->
-    <style type="text/css" media="all"
-           tal:content="string:@import url(${utool}/plone.css);"></style>
-
-    <!-- Custom style sheet if available -->
-    <style type="text/css" media="all"
-           tal:condition="exists: here/ploneCustom.css"
-           tal:content="string:@import url(${utool}/ploneCustom.css);"></style>
+    <metal:css metal:use-macro="here/renderAllTheStylesheets/macros/cssrenderer">
+        <!-- Fetch stylesheets from the CSS Registry -->
+    </metal:css>
 
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"
           tal:define="charset site_properties/default_charset|string:utf-8"
