@@ -15,7 +15,7 @@
     <tal:items repeat="o results">
     <dd class="portletItem"
         tal:define="oddrow repeat/o/odd"
-        tal:attributes="class python:test(oddrow, 'portletItem odd','portletItem even')">
+        tal:attributes="class python:test(oddrow, 'portletItem even','portletItem odd')">
 
         <span tal:attributes="class python:'contenttype-' + putils.normalizeString(o.portal_type)">
         <a href="#"
