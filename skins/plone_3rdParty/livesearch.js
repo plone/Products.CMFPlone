@@ -70,7 +70,7 @@ function getElementDimensions(elemID) {
 
 function liveSearchInit() {
     searchInput = document.getElementById('searchGadget');
-    if (searchInput == null || searchInput == undefined) retu
+    if (searchInput == null || searchInput == undefined) return
 //  Only keypress catches repeats in moz/FF but keydown is needed for
 //  khtml based browsers.
     if (navigator.userAgent.indexOf("KHTML") > 0) {
