@@ -208,6 +208,7 @@
 .LSIEFix {
     background-color: &dtml-backgroundColor;;
     padding: 0.5em !important;
+    z-index: 20;
 }
 
 .LSBox {
@@ -271,7 +272,7 @@
     border-bottom-color: &dtml-globalBorderColor;;
     border-bottom-style: &dtml-borderStyle;;
     border-bottom-width: &dtml-borderWidth;;
-    line-height: 1.3em;
+    line-height: 1.6em;
     color: &dtml-fontColor;;
     padding: 0em 3em 0em 3em;
     margin: 0;
