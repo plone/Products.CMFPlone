@@ -188,7 +188,8 @@
                                    hasGetUrl            python:hasattr(item.aq_explicit, 'getURL');
                                    item_rel_url         python:hasGetUrl and item.getURL(relative=1) or getRelativeContentURL(item);
                                    browserDefaultResult here/browserDefault;
-                                   isBrowserDefault     python:len(browserDefaultResult[1]) == 1 and item.id == here.browserDefault()[1][0]"
+                                   isBrowserDefault     python:len(browserDefaultResult[1]) == 1 and item.id == here.browserDefault()[1][0];
+                                   item_folderish item/is_folderish|item/isPrincipiaFolderish|nothing"
                        tal:attributes="class python:test(oddrow, 'even', 'odd')" >
 
                        <tal:comment replace="nothing">
@@ -210,9 +211,9 @@
                              tal:attributes="value item_rel_url" />
 
                     </td>
-                    <td tal:define="url python:test(item_type in use_view_action,
+                    <td tal:define="url python:(not item_folderish and test(item_type in use_view_action,
                                     item_url+'/view',
-                                    item_url+'/');">
+                                    item_url+'/')) or item_url+'/folder_contents';">
                         <span tal:attributes="class item_type_class">
                         <a href="#" tal:attributes="href  url;
                                                   title string: $item_type: $item_description;

@@ -96,6 +96,10 @@ class TestCatalogSetup(PloneTestCase.PloneTestCase):
         # exclude_from_nav column should be in catalog schema
         self.failUnless('exclude_from_nav' in self.catalog.schema())
 
+    def testIs_folderishInSchema(self):
+        # is_folderish should be in catalog schema
+        self.failUnless('is_folderish' in self.catalog.schema())
+
     def testIs_folderishIsFieldIndex(self):
         # is_folderish should be a FieldIndex
         self.failUnless(self.catalog.Indexes['is_folderish'].__class__.__name__,

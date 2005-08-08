@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - RC2 - unreleased
 
+    - Fixed http://plone.org/collector/4407 by making folder_contents link to
+      folder_contents for all folderish types.
+      [alecm]
+
     - Fixed http://plone.org/collector/4376 untranslated 'add type' buttons
       [hannosch]
 

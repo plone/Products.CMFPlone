@@ -1687,7 +1687,6 @@ class TestMigrations_v2_1(MigrationTest):
     def testAddIsFolderishIndex(self):
         # Should add IsDefaultPage index
         self.catalog.delIndex('is_folderish')
-        self.catalog.addColumn('is_folderish')
         addIsFolderishIndex(self.portal, [])
         index = self.catalog._catalog.getIndex('is_folderish')
         self.assertEqual(index.__class__.__name__, 'FieldIndex')
@@ -1696,7 +1695,6 @@ class TestMigrations_v2_1(MigrationTest):
     def testAddIsFolderishIndexTwice(self):
         # Should not fail if migrated again
         self.catalog.delIndex('is_folderish')
-        self.catalog.addColumn('is_folderish')
         addIsFolderishIndex(self.portal, [])
         addIsFolderishIndex(self.portal, [])
         index = self.catalog._catalog.getIndex('is_folderish')
