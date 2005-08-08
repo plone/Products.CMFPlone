@@ -6,6 +6,7 @@
                        item_type_class     python: 'contenttype-' + here.plone_utils.normalizeString(item['portal_type']);
                        item_wf_state_class python: 'state-' + here.plone_utils.normalizeString(item['review_state']);
                        parent_shows_children options/show_children|nothing;
+		       isNaviTree          options/isNaviTree | nothing;
                        children item/children|nothing;">
 
     <div tal:attributes="class item_type_class">
@@ -26,9 +27,9 @@
     </div>
         
     <ul tal:attributes="class python:'navTree navTreeLevel'+str(level)"
-        tal:define="show_children item/show_children|nothing;"
-        tal:condition="children"
-        tal:content="structure python:here.portlet_navtree_macro(children=children, level=level+1, show_children=show_children)">
+        tal:define="show_children item/show_children| python:True;"
+        tal:condition="python: (show_children or isNaviTree) and children"
+        tal:content="structure python:here.portlet_navtree_macro(children=children, level=level+1, show_children=show_children, isNaviTree=isNaviTree)">
           Get subtree, if available.
     </ul>
     </tal:level>

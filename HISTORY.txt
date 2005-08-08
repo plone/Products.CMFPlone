@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - RC2 - unreleased
 
+    - Don't expand parentMetaTypesNotToQuery item in sitemap. Need more tuning.
+      [panjunyong]
+
     - Enable syndication in new instances by default.
       [alecm]
 
@@ -49,7 +52,7 @@ Plone 2.1 - Plaid - RC2 - unreleased
     - Added ITranslatable support to getDefaultPage.
       [deo]
 
-    . Added testMissingPageIgnored to verify inexistent ids in default_page.
+    - Added testMissingPageIgnored to verify inexistent ids in default_page.
       Fixed a missing object in testFixFolderlistingActionNoTool.
       [deo]
 
