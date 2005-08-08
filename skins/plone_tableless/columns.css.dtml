@@ -3,7 +3,6 @@
 ** Based on http://www.positioniseverything.net/ordered-floats.html by Big John.
 */
 
-/* <dtml-var "enableHTTPCompression(request=REQUEST, debug=1, css=1)"> (this is for http compression) */
 /* <dtml-with base_properties> */
 
 body {
