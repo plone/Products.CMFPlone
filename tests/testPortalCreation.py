@@ -582,6 +582,10 @@ class TestManagementPageCharset(PloneTestCase.PloneTestCase):
                             CMFCorePermissions.AccessInactivePortalContent)[0]
         self.failUnless(cur_perms['acquire'])
 
+    def testSyndicationEnabledByDefault(self):
+        syn = self.portal.portal_syndication
+        self.failUnless(syn.isSiteSyndicationAllowed())
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite

@@ -300,6 +300,9 @@ def setPortalDefaultPermissions(self, portal):
     portal.manage_permission(CMFCorePermissions.AccessInactivePortalContent,
                                                 ('Owner',), acquire=1)
 
+def enableSiteSyndication(self, portal):
+    portal.portal_syndication.editProperties(isAllowed=True)
+
 
 functions = {
     'addSiteProperties': addSiteProperties,
@@ -315,6 +318,7 @@ functions = {
     'modifyActionProviders': modifyActionProviders,
     'addErrorLog':addErrorLog,
     'setPortalDefaultPermissions':setPortalDefaultPermissions,
+    'enableSiteSyndication':enableSiteSyndication,
     }
 
 class GeneralSetup(SetupWidget):

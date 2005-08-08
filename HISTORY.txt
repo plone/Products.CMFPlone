@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - RC2 - unreleased
 
+    - Enable syndication in new instances by default.
+      [alecm]
+
     - Fixed http://plone.org/collector/4407 by making folder_contents link to
       folder_contents for all folderish types.
       [alecm]
