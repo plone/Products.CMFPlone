@@ -478,9 +478,9 @@ class MembershipTool(PloneBaseTool, BaseTool):
             if last_login_time:
                 if type(member.getProperty('last_login_time','')) == type(''):
                     # value is a string when mem hasn't yet logged in
-                    mem_last_login_time = DateTime(member.getProperty('last_login_time',None))
+                    mem_last_login_time = DateTime(member.getProperty('last_login_time','2000/01/01'))
                 else:
-                    mem_last_login_time = member.last_login_time
+                    mem_last_login_time = member.getProperty('last_login_time')
                 if before_specified_time:
                     if mem_last_login_time >= last_login_time:
                         continue
