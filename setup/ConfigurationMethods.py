@@ -301,7 +301,12 @@ def setPortalDefaultPermissions(self, portal):
                                                 ('Owner',), acquire=1)
 
 def enableSiteSyndication(self, portal):
-    portal.portal_syndication.editProperties(isAllowed=True)
+    syn_tool = getToolByName(portal, 'portal_syndication')
+    syn_tool.editProperties(isAllowed=True)
+    # Enable syndication for news and events topics which are created before
+    # site syndication is enabled
+    syn_tool.enableSyndication(portal.news.news_topic)
+    syn_tool.enableSyndication(portal.events.events_topic)
 
 
 functions = {

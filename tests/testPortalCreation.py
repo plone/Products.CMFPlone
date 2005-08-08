@@ -586,6 +586,11 @@ class TestManagementPageCharset(PloneTestCase.PloneTestCase):
         syn = self.portal.portal_syndication
         self.failUnless(syn.isSiteSyndicationAllowed())
 
+    def testSyndicationEnabledOnNewsAndEvents(self):
+        syn = self.portal.portal_syndication
+        self.failUnless(syn.isSyndicationAllowed(self.portal.news.news_topic))
+        self.failUnless(syn.isSyndicationAllowed(self.portal.events.events_topic))
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite
