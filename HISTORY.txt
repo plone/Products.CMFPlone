@@ -3,7 +3,10 @@ Changelog for Plone
    (name of developer listed in brackets)
 
 Plone 2.1 - Plaid - RC2 - unreleased
-      
+
+    - Optimize the portlet_calendar again for some speed.
+      [hannosch]
+
     - Don't expand parentMetaTypesNotToQuery item in sitemap. Need more tuning.
       [panjunyong]
 

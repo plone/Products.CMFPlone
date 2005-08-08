@@ -134,7 +134,7 @@ def monthname_english(number, format=''):
     return _numbertoenglishname(number, format=format, attr='_months')
 
 def weekdayname_english(number, format=''):
-    # returns the english name of month with number
+    # returns the english name of week with number
     return _numbertoenglishname(number, format=format, attr='_days')
 
 def monthname_msgid(number):
