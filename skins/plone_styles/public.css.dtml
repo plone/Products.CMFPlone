@@ -317,6 +317,7 @@
     padding-left: 2em;
     padding-right: 2em;
     text-transform: &dtml-textTransform;;
+    line-height: 1.6em;
 }
 
 #portal-breadcrumbs a {
