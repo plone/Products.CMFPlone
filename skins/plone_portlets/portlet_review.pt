@@ -35,7 +35,8 @@
     </tal:items>
 
     <dd class="portletFooter">
-        <a href="#" tal:attributes="href string:${portal_url}/full_review_list">Full review list&hellip;</a>
+        <a href="#" tal:attributes="href string:${portal_url}/full_review_list"
+	            i18n:translate="box_full_review_list">Full review list&hellip;</a>
     </dd>
 </dl>
 
