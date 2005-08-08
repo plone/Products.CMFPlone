@@ -100,7 +100,8 @@ from Products.CMFPlone.migrations.v2_1.betas import setupAllowSendtoPermission
 from Products.CMFPlone.migrations.v2_1.betas import readdVisibleIdsMemberProperty
 from Products.CMFPlone.migrations.v2_1.betas import addCMFTypesToSearchBlackList
 from Products.CMFPlone.migrations.v2_1.betas import convertDefaultPageTypesToWhitelist
-from Products.CMFPlone.migrations.v2_1.betas import changeAvailableViewsForFolders
+from Products.CMFPlone.migrations.v2_1.rcs import changeAvailableViewsForFolders
+from Products.CMFPlone.migrations.v2_1.rcs import enableSyndicationOnTopics
 
 from Products.CMFDynamicViewFTI.migrate import migrateFTI
 
@@ -2518,6 +2519,56 @@ class TestMigrations_v2_1(MigrationTest):
         # Should not fail if site_properties is missing
         self.portal.portal_types._delObject('Topic')
         changeAvailableViewsForFolders(self.portal, [])
+
+    def testEnableSyndicationOnTopics(self):
+        # Test that we enable syndication on all existing topics
+        syn = self.portal.portal_syndication
+        news = self.portal.news.news_topic
+        events = self.portal.events.events_topic
+        syn.disableSyndication(news)
+        syn.disableSyndication(events)
+        self.failIf(syn.isSyndicationAllowed(news))
+        self.failIf(syn.isSyndicationAllowed(events))
+        enableSyndicationOnTopics(self.portal,[])
+        self.failUnless(syn.isSyndicationAllowed(news))
+        self.failUnless(syn.isSyndicationAllowed(events))
+        self.failUnless(syn.isSiteSyndicationAllowed())
+
+    def testEnableSyndicationOnTopicsTwice(self):
+        # Should not fail if migrated again
+        syn = self.portal.portal_syndication
+        news = self.portal.news.news_topic
+        events = self.portal.events.events_topic
+        syn.disableSyndication(news)
+        syn.disableSyndication(events)
+        enableSyndicationOnTopics(self.portal,[])
+        enableSyndicationOnTopics(self.portal,[])
+        self.failUnless(syn.isSyndicationAllowed(news))
+        self.failUnless(syn.isSyndicationAllowed(events))
+
+    def testEnableSyndicationOnTopicsWithSiteSyndicationDisabled(self):
+        # Should preserve site syndication state but still enable
+        syn = self.portal.portal_syndication
+        news = self.portal.news.news_topic
+        events = self.portal.events.events_topic
+        syn.disableSyndication(news)
+        syn.disableSyndication(events)
+        syn.editProperties(isAllowed=False)
+        self.failIf(syn.isSiteSyndicationAllowed())
+        enableSyndicationOnTopics(self.portal,[])
+        self.failIf(syn.isSiteSyndicationAllowed())
+        syn.editProperties(isAllowed=True)
+        self.failUnless(syn.isSyndicationAllowed(news))
+
+    def testEnableSyndicationOnTopicsNoTool(self):
+        # Should not fail if portal_syndication is missing
+        self.portal._delObject('portal_syndication')
+        enableSyndicationOnTopics(self.portal,[])
+
+    def testEnableSyndicationOnTopicsNoCatalog(self):
+        # Should not fail if portal_catalog is missing
+        self.portal._delObject('portal_catalog')
+        enableSyndicationOnTopics(self.portal,[])
 
 
 def test_suite():

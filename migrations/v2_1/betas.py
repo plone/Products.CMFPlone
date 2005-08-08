@@ -175,9 +175,6 @@ def beta1_beta2(portal):
     # Convert default page types to whitelist
     convertDefaultPageTypesToWhitelist(portal, out)
 
-    # Change available views for folders
-    changeAvailableViewsForFolders(portal, out)
-
     # setup new Allow Sendto permission
     setupAllowSendtoPermission(portal, out)
 
@@ -1322,20 +1319,3 @@ def convertDefaultPageTypesToWhitelist(portal, out):
             propSheet.manage_addProperty('default_page_types',
                                          DEFAULT_PAGE_TYPES, 'lines')
             out.append("Added 'default_page_types' property to site_properties.")
-
-def changeAvailableViewsForFolders(portal, out):
-    """Add view templates to the folderish types"""
-    FOLDER_TYPES = ['Folder','Large Plone Folder', 'Topic']
-    FOLDER_VIEWS = ['folder_listing', 'atct_album_view']
-
-    types_tool = getToolByName(portal, 'portal_types', None)
-    if types_tool is not None:
-        for type_name in FOLDER_TYPES:
-            fti = getattr(types_tool, type_name, None)
-            if fti is not None:
-                views = FOLDER_VIEWS
-                if type_name == 'Topic':
-                    views = ['atct_topic_view']+views
-                fti.manage_changeProperties(view_methods=views)
-                out.append("Added new view templates to %s FTI."%type_name)
-
