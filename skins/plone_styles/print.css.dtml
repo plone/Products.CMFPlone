@@ -14,7 +14,7 @@
 **
 */
 
-/* <dtml-var "enableHTTPCompression(request=REQUEST, debug=1, css=1)"> (this is for http compression) */
+
 /* Thanks to A List Apart (http://alistapart.com/) for useful extras */
 
 body {

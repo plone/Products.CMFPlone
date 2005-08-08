@@ -5,7 +5,6 @@
 ** skin layer, if you prefer layouts without tables.
 */
 
-/* <dtml-var "enableHTTPCompression(request=REQUEST, debug=1, css=1)"> (this is for http compression) */
 /* <dtml-with base_properties> */
 
 #portal-columns {

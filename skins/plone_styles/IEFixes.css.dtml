@@ -1,7 +1,7 @@
 /*
 ** Stylesheet with Internet Explorer-specific workarounds.
 */
-/* <dtml-var "enableHTTPCompression(request=REQUEST, debug=1, css=1)"> (this is for http compression) */
+
 /* <dtml-with base_properties> */
 
 * html #portal-columns {
