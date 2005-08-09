@@ -74,14 +74,14 @@
             ><tal:block repeat="day week"
             ><tal:block define="daynumber day/day;
                                 int_daynumber python: int(daynumber);
-                                datestring python: '%d%0.2d%0.2d' % (year, month, daynumber);
                                 day_event day/event;
                                 is_today python: current_day==int_daynumber and current.month()==month and current.year()==year">
                <td class="event" tal:condition="day_event"
                       tal:attributes="class python:test(is_today, 'todayevent', 'event')"
                    ><tal:data tal:define="cur_date python:DateTime(year,month,int_daynumber);
                                           begin python:url_quote((cur_date.latestTime()).ISO());
-                                          end python:url_quote(cur_date.earliestTime().ISO());" tal:omit-tag=""
+                                          end python:url_quote(cur_date.earliestTime().ISO());"
+                              tal:omit-tag=""
                      ><a href=""
                          tal:attributes="href string:${here/portal_url}/search?review_state=published&amp;start.query:record:list:date=${begin}&amp;start.range:record=max&amp;end.query:record:list:date=${end}&amp;end.range:record=min;
                                          title python:'\n'.join([here.toLocalizedTime(cur_date)]+[here.getEventString(e) for e in day['eventslist']]);"
