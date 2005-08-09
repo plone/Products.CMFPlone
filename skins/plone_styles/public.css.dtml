@@ -790,6 +790,13 @@ dl.collapsedInlineCollapsible dt.collapsibleHeader {
     font-weight: normal;
 }
 
+/* for ghosted elements */
+.visualGhosted {
+    opacity: 0.4; 
+    -moz-opacity: 0.4; 
+    -khtml-opacity: 0.4; 
+}
+
 /* fullscreen */
 
 body.fullscreen #portal-logo,
@@ -806,6 +813,7 @@ body.fullscreen #portal-searchbox {
     padding: 0; 
     position: relative;
 }
+
 
 
 

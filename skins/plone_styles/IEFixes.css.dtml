@@ -38,6 +38,10 @@ textarea {
     width: 88%;
 }
 
+.visualGhosted {
+    filter:alpha(opacity=40); 
+}
+
 /* Fix bottom margin on tabs in IE */
 #portal-globalnav li.selected a {
 position: relative;
