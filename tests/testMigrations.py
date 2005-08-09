@@ -102,6 +102,7 @@ from Products.CMFPlone.migrations.v2_1.betas import addCMFTypesToSearchBlackList
 from Products.CMFPlone.migrations.v2_1.betas import convertDefaultPageTypesToWhitelist
 from Products.CMFPlone.migrations.v2_1.rcs import changeAvailableViewsForFolders
 from Products.CMFPlone.migrations.v2_1.rcs import enableSyndicationOnTopics
+from Products.CMFPlone.migrations.v2_1.rcs import disableSyndicationAction
 
 from Products.CMFDynamicViewFTI.migrate import migrateFTI
 
@@ -119,7 +120,7 @@ class MigrationTest(PloneTestCase.PloneTestCase):
         typeob._actions = tuple(actions)
 
     def addActionToType(self, type_name, action_id, category):
-        # Removes an action from a portal type
+        # Adds an action to a portal type
         tool = getattr(self.portal, 'portal_types')
         info = tool.getTypeInfo(type_name)
         typeob = getattr(tool, info.getId())
@@ -612,7 +613,7 @@ class TestMigrations_v2_1(MigrationTest):
         removePortalTabsActions(self.portal, [])
 
     def testRemovePortalTabsActionsTwice(self):
-        # Should not fail if portal_actions is missing
+        # Should not fail if migrated twice
         removePortalTabsActions(self.portal, [])
         removePortalTabsActions(self.portal, [])
         live_actions = self.actions.listActions()
@@ -2569,6 +2570,46 @@ class TestMigrations_v2_1(MigrationTest):
         # Should not fail if portal_catalog is missing
         self.portal._delObject('portal_catalog')
         enableSyndicationOnTopics(self.portal,[])
+
+    def testDisableSyndicationAction(self):
+        # Should disable the syndication
+        syn = self.portal.portal_syndication
+        new_actions = syn._cloneActions()
+        for action in new_actions:
+            if action.getId() == 'syndication':
+                action.visible = True
+        syn._actions = new_actions
+        disableSyndicationAction(self.portal, [])
+        actions = syn.listActions()
+        syn_actions = [x for x in actions if x.id == 'syndication']
+        self.assertEqual(len(syn_actions), 1)
+        self.failIf(syn_actions[0].visible)
+
+    def testDisableSyndicationActionTwice(self):
+        # Should not fail if migrated twice
+        syn = self.portal.portal_syndication
+        new_actions = syn._cloneActions()
+        for action in new_actions:
+            if action.getId() == 'syndication':
+                action.visible = True
+        syn._actions = new_actions
+        disableSyndicationAction(self.portal, [])
+        disableSyndicationAction(self.portal, [])
+        actions = syn.listActions()
+        syn_actions = [x for x in actions if x.id == 'syndication']
+        self.assertEqual(len(syn_actions), 1)
+        self.failIf(syn_actions[0].visible)
+
+    def testDisableSyndicationActionNoAction(self):
+        # Should not fail if the action is already gone
+        self.removeActionFromTool('syndication')
+        disableSyndicationAction(self.portal, [])
+
+    def testDisableSyndicationActionNoTool(self):
+        # Should not fail if portal_syndication is missing
+        self.portal._delObject('portal_syndication')
+        disableSyndicationAction(self.portal, [])
+
 
 
 def test_suite():

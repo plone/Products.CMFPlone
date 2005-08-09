@@ -15,6 +15,12 @@ def rc1_rc2(portal):
     # Change views available on foderish objects
     changeAvailableViewsForFolders(portal, out)
 
+    # Enable syndication on all topics during migraiton
+    enableSyndicationOnTopics(portal, out)
+
+    # Disable syndication object action
+    disableSyndicationAction(portal, out)
+
     # FIXME: *Must* be called after reindexCatalog.
     # In tests, reindexing loses the folders for some reason...
 
@@ -69,3 +75,16 @@ def enableSyndicationOnTopics(portal, out):
                     out.append('Enabled syndication on %s'%b.getPath())
         # Reset site syndication to default state
         syn.editProperties(isAllowed=enabled)
+
+def disableSyndicationAction(portal, out):
+    """ Disable the syndication action
+    """
+    syn = getToolByName(portal, 'portal_syndication', None)
+    if syn is not None:
+        new_actions = syn._cloneActions()
+        for action in new_actions:
+            if action.getId() == 'syndication' and \
+                                     action.category in ['folder', 'object']:
+                action.visible = 0
+        syn._actions = new_actions
+        out.append("Disabled 'syndication' object action.")

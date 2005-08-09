@@ -591,6 +591,12 @@ class TestManagementPageCharset(PloneTestCase.PloneTestCase):
         self.failUnless(syn.isSyndicationAllowed(self.portal.news.news_topic))
         self.failUnless(syn.isSyndicationAllowed(self.portal.events.events_topic))
 
+    def testSyndicationTabDisabled(self):
+        # Syndication tab should be disabled by default
+        for action in self.portal.portal_syndication.listActions():
+            if action.getId() == 'syndication' and action.visible:
+                self.fail("Actions tool still has visible 'syndication' action")
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite
