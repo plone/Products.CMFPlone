@@ -2,7 +2,7 @@ Changelog for Plone
 
    (name of developer listed in brackets)
 
-Plone 2.1 - Plaid - RC2 - unreleased
+Plone 2.1 - Plaid - RC2 - Releases August 10, 2005
 
     - Renamed PloneTool.getOwnerId() to .getOwnerName, and made it return the
       username instead of the userid, which is importand for user sources
@@ -112,7 +112,7 @@ Plone 2.1 - Plaid - RC2 - unreleased
       as the full name is not required for members.
       [jok2]
 
-Plone 2.1 - Plaid - RC1 - Released August 1, 2005
+   RC1 - Released August 1, 2005
 
     - Added log.py module and made Plone use only one style of logging (zLOG).
       There is no logger named 'Plone' configured anywhere, so we better not
