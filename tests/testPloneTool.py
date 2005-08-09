@@ -232,11 +232,11 @@ class TestOwnershipStuff(PloneTestCase.PloneTestCase):
         self.assertList(self.folder3.get_local_roles_for_userid('new_owner'), ['Owner'])
         self.assertList(self.folder3.get_local_roles_for_userid(default_user), [])
 
-    def testGetOwnerId(self):
-        # Test that getOwnerId gets the Owner Id
-        self.assertEqual(self.utils.getOwnerId(self.folder1), default_user)
+    def testGetOwnerName(self):
+        # Test that getOwnerName gets the Owner name
+        self.assertEqual(self.utils.getOwnerName(self.folder1), default_user)
         self.utils.changeOwnershipOf(self.folder1, 'new_owner')
-        self.assertEqual(self.utils.getOwnerId(self.folder1), 'new_owner')
+        self.assertEqual(self.utils.getOwnerName(self.folder1), 'new_owner')
 
     def testGetInheritedLocalRoles(self):
         # Test basic local roles acquisition is dealt with by

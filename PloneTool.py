@@ -1113,13 +1113,13 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         gruf = getToolByName( self, 'portal_url' ).getPortalObject().acl_users
         return gruf.isLocalRoleAcquired(obj, )
 
-    security.declarePublic('getOwnerId')
-    def getOwnerId(self, obj):
+    security.declarePublic('getOwnerName')
+    def getOwnerName(self, obj):
         """Returns the userid of the owner of an object."""
         mt = getToolByName(self, 'portal_membership')
         if not mt.checkPermission(CMFCorePermissions.View, obj):
             raise Unauthorized
-        return obj.owner_info()['id']
+        return obj.getOwner().getUserName()
 
     security.declarePublic('normalizeString')
     def normalizeString(self, text):
