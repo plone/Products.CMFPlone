@@ -46,6 +46,7 @@
         <span i18n:translate="batch_x_items_matching_your_criteria"><span i18n:name="number" tal:content="python:len(results)">234</span> items matching your criteria.</span>
         </strong>
 
+        <tal:syndicate condition="portal/portal_syndication/isSiteSyndicationAllowed">
         <a href="" tal:attributes="href string:$here_url/search_rss?${request/QUERY_STRING}">
         <img i18n:attributes="title title_rss_feed; alt label_rss_feed;"
              tal:attributes="src string:$portal_url/rss.gif"
@@ -53,6 +54,7 @@
              alt="RSS Feed"
              title="RSS feed of these search results" />
         </a>
+        </tal:syndicate>
 
         <!-- Search results -->
 
