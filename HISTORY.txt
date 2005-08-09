@@ -14,7 +14,7 @@ Plone 2.1 - Plaid - RC2 - unreleased
       [panjunyong]
 
     - Enable syndication in new plone instances and all topics by default.
-      Turn off syndication tab.
+      Turn off syndication tab.  Rename rss action.
       [alecm]
 
     - Fixed http://plone.org/collector/4407 by making folder_contents link to

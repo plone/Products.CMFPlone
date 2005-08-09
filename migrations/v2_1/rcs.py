@@ -1,6 +1,7 @@
 from alphas import reindexCatalog, indexMembersFolder, indexNewsFolder, \
                     indexEventsFolder, addIs_FolderishMetadata
 from Products.CMFCore.utils import getToolByName
+from Products.CMFCore import CMFCorePermissions
 
 
 def rc1_rc2(portal):
@@ -20,6 +21,9 @@ def rc1_rc2(portal):
 
     # Disable syndication object action
     disableSyndicationAction(portal, out)
+
+    # Change RSS action title to be more accurate
+    alterRSSActionTitle(portal, out)
 
     # FIXME: *Must* be called after reindexCatalog.
     # In tests, reindexing loses the folders for some reason...
@@ -88,3 +92,35 @@ def disableSyndicationAction(portal, out):
                 action.visible = 0
         syn._actions = new_actions
         out.append("Disabled 'syndication' object action.")
+
+def alterRSSActionTitle(portal, out):
+    """ Change the RSS action to give it a more appropriate title
+    """
+    newaction = {'id'        : 'rss',
+                  'name'      : 'RSS feed of this listing',
+                  'action'    : 'string:$object_url/RSS',
+                  'condition' : 'python:portal.portal_syndication.isSyndicationAllowed(object)',
+                  'permission': CMFCorePermissions.View,
+                  'category': 'document_actions',
+                }
+    exists = False
+    actionsTool = getToolByName(portal, 'portal_actions', None)
+    if actionsTool is not None:
+        new_actions = actionsTool._cloneActions()
+        for action in new_actions:
+            if action.getId() == 'rss' and action.category == newaction['category']:
+                exists = True
+                if 'contents' in action.title:
+                    action.title = newaction['name']
+        if exists:
+            actionsTool._actions = new_actions
+            out.append("Changed RSS action title")
+        else:
+            actionsTool.addAction(newaction['id'],
+                    name=newaction['name'],
+                    action=newaction['action'],
+                    condition=newaction['condition'],
+                    permission=newaction['permission'],
+                    category=newaction['category'],
+                    visible=1)
+            out.append("Added missing RSS action")

@@ -103,6 +103,7 @@ from Products.CMFPlone.migrations.v2_1.betas import convertDefaultPageTypesToWhi
 from Products.CMFPlone.migrations.v2_1.rcs import changeAvailableViewsForFolders
 from Products.CMFPlone.migrations.v2_1.rcs import enableSyndicationOnTopics
 from Products.CMFPlone.migrations.v2_1.rcs import disableSyndicationAction
+from Products.CMFPlone.migrations.v2_1.rcs import alterRSSActionTitle
 
 from Products.CMFDynamicViewFTI.migrate import migrateFTI
 
@@ -2602,13 +2603,51 @@ class TestMigrations_v2_1(MigrationTest):
 
     def testDisableSyndicationActionNoAction(self):
         # Should not fail if the action is already gone
-        self.removeActionFromTool('syndication')
+        self.removeActionFromTool('syndication',
+                                        action_provider='portal_syndication')
         disableSyndicationAction(self.portal, [])
 
     def testDisableSyndicationActionNoTool(self):
         # Should not fail if portal_syndication is missing
         self.portal._delObject('portal_syndication')
         disableSyndicationAction(self.portal, [])
+
+    def testAlterRSSActionTitleAction(self):
+        # Should change the RSS action title
+        new_actions = self.actions._cloneActions()
+        for action in new_actions:
+            if action.getId() == 'rss':
+                action.title = 'A bad title with contents in it'
+        self.actions._actions = new_actions
+        alterRSSActionTitle(self.portal, [])
+        actions = self.actions.listActions()
+        rss_actions = [x for x in actions if x.id == 'rss']
+        self.assertEqual(len(rss_actions), 1)
+        self.failUnless(rss_actions[0].title == 'RSS feed of this listing')
+
+    def testAlterRSSActionTitleTwice(self):
+        # Should not fail if migrated twice
+        new_actions = self.actions._cloneActions()
+        for action in new_actions:
+            if action.getId() == 'rss':
+                action.title = 'A bad title with contents in it'
+        self.actions._actions = new_actions
+        alterRSSActionTitle(self.portal, [])
+        alterRSSActionTitle(self.portal, [])
+        actions = self.actions.listActions()
+        rss_actions = [x for x in actions if x.id == 'rss']
+        self.assertEqual(len(rss_actions), 1)
+        self.failUnless(rss_actions[0].title == 'RSS feed of this listing')
+
+    def testAlterRSSActionTitleNoAction(self):
+        # Should not fail if the action is already gone
+        self.removeActionFromTool('rss')
+        alterRSSActionTitle(self.portal, [])
+
+    def testAlterRSSActionTitleNoTool(self):
+        # Should not fail if portal_actions is missing
+        self.portal._delObject('portal_actions')
+        alterRSSActionTitle(self.portal, [])
 
 
 
