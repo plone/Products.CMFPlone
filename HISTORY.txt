@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - RC2 - unreleased
 
+    - Removed empty div/li in navigation tree caused by parentMetaTypesNotToQuery
+      [panjunyong]
+
     - Only show search syndication when site syndication is enabled.
       [alecm]
 
