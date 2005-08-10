@@ -15,7 +15,7 @@
   
     <!-- span class="portletTopLeft" /-->
     <dt class="portletHeader">
-        <a href="#"
+        <a href="#" tal:attributes="href string:${utool}/events"
            i18n:translate="box_events">Upcoming Events</a>
     </dt>
     <!-- span class="portletTopRight" /-->
