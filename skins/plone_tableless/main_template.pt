@@ -4,9 +4,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xml:lang="en"
       lang="en"
-      tal:attributes="lang default_language|default;
-                      xml:lang default_language|default;">
-
+      tal:attributes="lang language;
+                      xml:lang language">
 
 <head metal:use-macro="here/header/macros/html_header">
 
@@ -17,8 +16,7 @@
     </metal:fillbase>
 
     <metal:headslot fill-slot="head_slot"
-               tal:define="language here/Language;
-                           lang language | default_language;
+               tal:define="lang language;
                            charset site_properties/default_charset|string:utf-8">
 
     <!-- min-width support for IE via Javascript, required for tableless -->
@@ -204,5 +202,3 @@
 </metal:fillbodytag></body>
 </html>
 </metal:page>
-
-

@@ -5,9 +5,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xml:lang="en"
       lang="en"
-      tal:attributes="lang language|default;
-                      xml:lang language|default;">
-
+      tal:attributes="lang language;
+                      xml:lang language">
 
   <head metal:use-macro="here/header/macros/html_header">
 
@@ -18,8 +17,7 @@
     </metal:fillbase>
 
     <metal:headslot fill-slot="head_slot"
-                    tal:define="language here/Language;
-                                lang language | default_language;
+                    tal:define="lang language;
                                 charset site_properties/default_charset|string:utf-8">
 
       <metal:cache use-macro="here/global_cache_settings/macros/cacheheaders">
@@ -57,33 +55,33 @@
              accesskey="6"
              tal:attributes="href string:${request/ACTUAL_URL}#portlet-navigation-tree"
              i18n:translate="label_skiptonavigation">Skip to navigation</a>
-  
+
              <div metal:use-macro="here/global_siteactions/macros/site_actions">
                Site-wide actions (Contact, Sitemap, Help, Style Switcher etc)
              </div>
-  
+
              <div metal:use-macro="here/global_searchbox/macros/quick_search">
                The quicksearch box, normally placed at the top right
              </div>
-  
+
              <a metal:use-macro="here/global_logo/macros/portal_logo">
                The portal logo, linked to the portal root
              </a>
-  
+
              <div metal:use-macro="here/global_skinswitcher/macros/skin_tabs">
                The skin switcher tabs. Based on which role you have, you
                get a selection of skins that you can switch between.
              </div>
-  
+
              <div metal:use-macro="here/global_sections/macros/portal_tabs">
                The global sections tabs. (Welcome, News etc)
              </div>
           </div>
-  
+
           <div metal:use-macro="here/global_personalbar/macros/personal_bar">
              The personal bar. (log in, logout etc...)
            </div>
-  
+
            <div metal:use-macro="here/global_pathbar/macros/path_bar">
              The breadcrumb navigation ("you are here")
            </div>
@@ -91,12 +89,12 @@
 
       <div class="visualClear"><!-- --></div>
 
-      <tal:comment replace="nothing"> 
+      <tal:comment replace="nothing">
       The wrapper table. It contains the three columns. There's a table-less
       alternative in the plone_tableless skin layer that you can use if you
       prefer layouts that don't use tables.
       </tal:comment>
-      
+
       <table id="portal-columns">
         <tbody>
           <tr>
@@ -204,5 +202,3 @@
 </body>
 </html>
 </metal:page>
-
-
