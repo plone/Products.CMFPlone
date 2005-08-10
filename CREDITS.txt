@@ -103,6 +103,8 @@ contributed code.
   Danny Bloemendaal (_ender_) -- Usability and user interface design, bug fixes 
   and add-ons.
 
+  Leonardo Rochael Almeida (L-Array) -- Username/UserId separation work.
+
 Companies (in randomized order):
 
   "Ingeniweb":http://www.ingeniweb.com -- 
@@ -115,21 +117,18 @@ Companies (in randomized order):
   "Plone Solutions":http://www.plonesolutions.com --
   Time and constant dedication of Alexander Limi, Helge Tesdal, Geir Bækholt.
 
-    
   "4teamwork":http://www.4teamwork.com --
   Sponsorship, UI work, and testing.  Bernard Buehlman and Pascal Habegger.
 
   "RedCor":http://www.redcor.ch --
   Sponsorship, testing, and contributions.  Robert Rotterman.
     
-
   "BlueDynamics":http://www.bluedynamics.com --
   Purity of heart and soul in the open source.  Hosting the
   best sprint we've attended in Goldegg Castle.  Philipp Auersperg is a core
   member of the Plone team.  Robert Boulanger for practing eXtreme
   Organization as well as pushing the community forward.  Gogo for comic
   relief.
-
 
   "Project01":http://www.project01.ch -- 
   Bug fixes.  
