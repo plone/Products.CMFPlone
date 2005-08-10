@@ -24,9 +24,10 @@ if membership_tool.isAnonymousUser():
 member = membership_tool.getAuthenticatedMember()
 login_time = member.getProperty('login_time', context.ZopeTime())
 if  str(login_time) == '2000/01/01':
+    login_time = context.ZopeTime()
     state.set(status='initial_login')
-member.setProperties(last_login_time = login_time,
-                     login_time = context.ZopeTime())
+member.setProperties(last_login_time = context.ZopeTime(),
+                     login_time = login_time)
 
 if hasattr(membership_tool, 'createMemberArea'):
     # This is acutally a capablities test.  For non-mgmt users, the
