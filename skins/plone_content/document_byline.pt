@@ -67,8 +67,8 @@
         </div>
         </tal:rights>
 
+        <span metal:use-macro="here/review_history/macros/review_history" />
+
     </div>
-    
-    <span metal:use-macro="here/review_history/macros/review_history" />
 
 </div>
