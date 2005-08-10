@@ -62,15 +62,7 @@
             </span>
         </a>
 
-        <br />
-        <a href=""
-           tal:condition="python:'events' in portal.contentIds()"
-           tal:attributes="href string:${utool}/events">
-            <img tal:replace="structure here/undo_icon.gif" />
-            <span i18n:translate="box_previous_events">
-                Previous events&hellip;
-            </span>
-        </a>
+
     </dd>
   
     <!-- span class="portletBottomLeft" /-->
