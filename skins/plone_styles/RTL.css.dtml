@@ -4,8 +4,12 @@
 /* <dtml-call "REQUEST.set('portal_url', portal_url())"> (not this either :) */
 
 <dtml-in "portal_types.listTypeInfo()">
-.contenttype-<dtml-var "plone_utils.normalizeString(id)"> { background-position: 100% 3px;}
-.contenttype-<dtml-var "plone_utils.normalizeString(id)"> a:hover { background-position: 100% 2px; margin-right: -1px; margin-left: 0;}
+.contenttype-<dtml-var "plone_utils.normalizeString(id)">,
+#objectMenu .contenttype-<dtml-var "plone_utils.normalizeString(id)"> a:hover { 
+    background-position: 100% 1px;
+}
+#portlet-navigation-tree .contenttype-<dtml-var "plone_utils.normalizeString(id)"> { background-position: 100% 3px;}
+#portlet-navigation-tree .contenttype-<dtml-var "plone_utils.normalizeString(id)"> a:hover { background-position: 100% 2px; margin-right: -1px; margin-left: 0;}
 </dtml-in>
 
 <dtml-in "getActionIconList()">
