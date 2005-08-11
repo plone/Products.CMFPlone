@@ -104,6 +104,9 @@ from Products.CMFPlone.migrations.v2_1.rcs import changeAvailableViewsForFolders
 from Products.CMFPlone.migrations.v2_1.rcs import enableSyndicationOnTopics
 from Products.CMFPlone.migrations.v2_1.rcs import disableSyndicationAction
 from Products.CMFPlone.migrations.v2_1.rcs import alterRSSActionTitle
+from Products.CMFPlone.migrations.v2_1.rcs import addPastEventsTopic
+from Products.CMFPlone.migrations.v2_1.rcs import addDateCriterionToEventsTopic
+
 
 from Products.CMFDynamicViewFTI.migrate import migrateFTI
 
@@ -2648,6 +2651,68 @@ class TestMigrations_v2_1(MigrationTest):
         # Should not fail if portal_actions is missing
         self.portal._delObject('portal_actions')
         alterRSSActionTitle(self.portal, [])
+
+    def testAddPastEventsTopic(self):
+        #Should add a subtopic to the events_topic for past events
+        events_topic = self.portal.events.events_topic
+        events_topic._delObject('previous')
+        self.failIf('previous' in events_topic.objectIds())
+        addPastEventsTopic(self.portal, [])
+        self.failUnless('previous' in events_topic.objectIds())
+        topic = getattr(events_topic.aq_base, 'previous')
+        self.assertEqual(topic._getPortalTypeName(), 'Topic')
+
+    def testAddPastEventsTopicTwice(self):
+        #Should not fail if done twice
+        events_topic = self.portal.events.events_topic
+        events_topic._delObject('previous')
+        self.failIf('previous' in events_topic.objectIds())
+        addPastEventsTopic(self.portal, [])
+        addPastEventsTopic(self.portal, [])
+        self.failUnless('previous' in events_topic.objectIds())
+        topic = getattr(events_topic.aq_base, 'previous')
+        self.assertEqual(topic._getPortalTypeName(), 'Topic')
+
+    def testAddPastEventsTopicNoATCT(self):
+        #Should not do anything unless ATCT is installed
+        events_topic = self.portal.events.events_topic
+        events_topic._delObject('previous')
+        self.portal._delObject('portal_atct')
+        addPastEventsTopic(self.portal, [])
+        self.failUnless('previous' not in events_topic.objectIds())
+
+    def testAddPastEventsTopicNoEvents(self):
+        #Should not do anything unless the events folder exists
+        self.portal._delObject('events')
+        addPastEventsTopic(self.portal, [])
+
+    def testAddPastEventsTopicNoParent(self):
+        #Should not do anything unless the events_topic exists
+        self.portal.events._delObject('events_topic')
+        addPastEventsTopic(self.portal, [])
+
+    def testAddDateCriterionToEventsTopicTopic(self):
+        #Should add a subtopic to the events_topic for past events
+        events_topic = self.portal.events.events_topic
+        events_topic.deleteCriterion('crit__start_ATFriendlyDateCriteria')
+        self.failIf('crit__start_ATFriendlyDateCriteria' in events_topic.objectIds())
+        addDateCriterionToEventsTopic(self.portal, [])
+        self.failUnless('crit__start_ATFriendlyDateCriteria' in events_topic.objectIds())
+
+    def testAddDateCriterionToEventsTopicTwice(self):
+        #Should not fail if done twice
+        events_topic = self.portal.events.events_topic
+        events_topic.deleteCriterion('crit__start_ATFriendlyDateCriteria')
+        self.failIf('crit__start_ATFriendlyDateCriteria' in events_topic.objectIds())
+        addDateCriterionToEventsTopic(self.portal, [])
+        addDateCriterionToEventsTopic(self.portal, [])
+        self.failUnless('crit__start_ATFriendlyDateCriteria' in events_topic.objectIds())
+
+    def testAddDateCriterionToEventsTopicNoATCT(self):
+        #Should not fail if ATCT is not installed
+        events_topic = self.portal.events.events_topic
+        self.portal._delObject('portal_atct')
+        addDateCriterionToEventsTopic(self.portal, [])
 
 
 

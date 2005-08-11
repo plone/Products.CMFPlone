@@ -25,6 +25,9 @@ default_user  = PloneTestCase.default_user
 user2  = 'u2'
 group2 = 'g2'
 
+base_content = ['Members', 'events', 'events_topic', 'news', 'news_topic',
+                'previous', default_user, 'doc']
+
 try:
     import Products.TextIndexNG2
     txng_version = 2
@@ -759,39 +762,39 @@ class TestCatalogExpirationFiltering(PloneTestCase.PloneTestCase):
 
     def testSearchResults(self):
         res = self.catalog.searchResults()
-        self.assertResults(res, ['Members', 'events', 'events_topic', 'news', 'news_topic', default_user, 'doc'])
+        self.assertResults(res, base_content)
 
     def testCall(self):
         res = self.catalog()
-        self.assertResults(res, ['Members', 'events', 'events_topic', 'news', 'news_topic', default_user, 'doc'])
+        self.assertResults(res, base_content)
 
     def testSearchResultsExpired(self):
         self.folder.doc.setExpirationDate(DateTime(2000, 12, 31))
         self.folder.doc.reindexObject()
         self.nofx()
         res = self.catalog.searchResults()
-        self.assertResults(res, ['Members', 'events', 'events_topic', 'news', 'news_topic', default_user])
+        self.assertResults(res, base_content[:-1])
 
     def testCallExpired(self):
         self.folder.doc.setExpirationDate(DateTime(2000, 12, 31))
         self.folder.doc.reindexObject()
         self.nofx()
         res = self.catalog()
-        self.assertResults(res, ['Members', 'events', 'events_topic', 'news', 'news_topic', default_user])
+        self.assertResults(res, base_content[:-1])
 
     def testSearchResultsExpiredWithExpiredDisabled(self):
         self.folder.doc.setExpirationDate(DateTime(2000, 12, 31))
         self.folder.doc.reindexObject()
         self.nofx()
         res = self.catalog.searchResults(show_inactive=True)
-        self.assertResults(res, ['Members', 'events', 'events_topic', 'news', 'news_topic', default_user, 'doc'])
+        self.assertResults(res, base_content)
 
     def testCallExpiredWithExpiredDisabled(self):
         self.folder.doc.setExpirationDate(DateTime(2000, 12, 31))
         self.folder.doc.reindexObject()
         self.nofx()
         res = self.catalog(show_inactive=True)
-        self.assertResults(res, ['Members', 'events', 'events_topic', 'news', 'news_topic', default_user, 'doc'])
+        self.assertResults(res, base_content)
 
     def testSearchResultsExpiredWithPermission(self):
         self.folder.doc.setExpirationDate(DateTime(2000, 12, 31))
@@ -799,7 +802,7 @@ class TestCatalogExpirationFiltering(PloneTestCase.PloneTestCase):
         self.nofx()
         self.setPermissions([AccessInactivePortalContent])
         res = self.catalog.searchResults()
-        self.assertResults(res, ['Members', 'events', 'events_topic', 'news', 'news_topic', default_user, 'doc'])
+        self.assertResults(res, base_content)
 
     def testCallExpiredWithPermission(self):
         self.folder.doc.setExpirationDate(DateTime(2000, 12, 31))
@@ -807,7 +810,7 @@ class TestCatalogExpirationFiltering(PloneTestCase.PloneTestCase):
         self.nofx()
         self.setPermissions([AccessInactivePortalContent])
         res = self.catalog()
-        self.assertResults(res, ['Members', 'events', 'events_topic', 'news', 'news_topic', default_user, 'doc'])
+        self.assertResults(res, base_content)
 
 
 def dummyMethod(obj, **kwargs):

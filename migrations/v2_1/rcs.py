@@ -2,10 +2,11 @@ from alphas import reindexCatalog, indexMembersFolder, indexNewsFolder, \
                     indexEventsFolder, addIs_FolderishMetadata
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore import CMFCorePermissions
+from Products.CMFPlone.utils import _createObjectByType
 
 
 def rc1_rc2(portal):
-    """2.1-beta1 -> 2.1-beta2
+    """2.1-rc1 -> 2.1-rc2
     """
     out = []
     reindex = 0
@@ -40,6 +41,20 @@ def rc1_rc2(portal):
 
     # Make sure the Events folder is cataloged
     indexEventsFolder(portal, out)
+
+    return out
+
+
+def rc2_final(portal):
+    """2.1-rc2 -> 2.1-final
+    """
+    out = []
+
+    # Add an events subtopic for past events
+    addPastEventsTopic(portal, out)
+
+    # Add date criteria to limit the events_topic to current events
+    addDateCriterionToEventsTopic(portal, out)
 
     return out
 
@@ -124,3 +139,41 @@ def alterRSSActionTitle(portal, out):
                     category=newaction['category'],
                     visible=1)
             out.append("Added missing RSS action")
+
+def addPastEventsTopic(portal, out):
+    """Add past events subtopic the events topic"""
+    events = getattr(portal ,'events', None)
+    events_topic = getattr(events, 'events_topic', None)
+    if events_topic is not None and \
+                'previous' not in events_topic.objectIds() and \
+                getattr(portal,'portal_atct', None) is not None:
+        _createObjectByType('Topic', events_topic, id='previous',
+                            title='Past Events',
+                            description="Events which have already happened.")
+        topic = events_topic.previous
+        topic.setAcquireCriteria(True)
+        sort_crit = topic.addCriterion('start','ATSortCriterion')
+        sort_crit.setReversed(True)
+        date_crit = topic.addCriterion('start','ATFriendlyDateCriteria')
+        # Set date reference to now
+        date_crit.setValue(0)
+        # Only take events in the past
+        date_crit.setDateRange('-') # This is irrelevant when the date is now
+        date_crit.setOperation('less')
+        out.append('Added Topic for previous events.')
+
+def addDateCriterionToEventsTopic(portal, out):
+    """Add past events subtopic the events topic"""
+    events = getattr(portal ,'events', None)
+    topic = getattr(events, 'events_topic', None)
+    if topic is not None and \
+                            getattr(portal,'portal_atct', None) is not None:
+        if 'crit__start_ATFriendlyDateCriteria' not in topic.objectIds():
+            date_crit = topic.addCriterion('start',
+                                           'ATFriendlyDateCriteria')
+            # Set date reference to now
+            date_crit.setValue(0)
+            # Only take events in the future
+            date_crit.setDateRange('+') # This is irrelevant when the date is now
+            date_crit.setOperation('more')
+            out.append('Added criterion to limit to current events.')

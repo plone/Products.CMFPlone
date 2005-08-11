@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - unreleased
 
+    - Added past events sub-topic events_topic/previous, and restricted the
+      primary events topic to show only upcoming events.
+      [alecm]
+
     - re-added javascript_head_slot and css_head_slot to prefs_main_template, 
       so that preference templates can add javascript and css like other templates can again.
       [elvix]

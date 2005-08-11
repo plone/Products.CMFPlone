@@ -14,6 +14,7 @@ from Products.CMFPlone.tests import dummy
 from Products.PageTemplates.ZopePageTemplate import ZopePageTemplate
 from OFS.SimpleItem import SimpleItem
 from Acquisition import aq_base
+from DateTime import DateTime
 
 
 class TestPortalCreation(PloneTestCase.PloneTestCase):
@@ -305,14 +306,30 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.assertEqual(res[0].Description, 'Site Events')
 
     def testEventsTopic(self):
-        # Events topic is in place as default view and has a criterion to show
-        # only Events Items.
+        # Events topic is in place as default view and has criterion to show
+        # only future Events Items.
         events = self.portal.events
         self.failUnless('events_topic' in events.objectIds())
         topic = getattr(events.aq_base, 'events_topic')
         self.assertEqual(topic._getPortalTypeName(), 'Topic')
-        self.assertEqual(topic.buildQuery()['Type'], ('Event',))
-        self.assertEqual(topic.buildQuery()['review_state'], 'published')
+        query = topic.buildQuery()
+        self.assertEqual(query['Type'], ('Event',))
+        self.assertEqual(query['review_state'], 'published')
+        self.assertEqual(query['start']['query'].Date(), DateTime().Date())
+        self.assertEqual(query['start']['range'], 'min')
+
+    def testEventsSubTopic(self):
+        # past Events sub-topic is in place and has criteria to show
+        # only past Events Items.
+        events_topic = self.portal.events.events_topic
+        self.failUnless('previous' in events_topic.objectIds())
+        topic = getattr(events_topic.aq_base, 'previous')
+        self.assertEqual(topic._getPortalTypeName(), 'Topic')
+        query = topic.buildQuery()
+        self.assertEqual(query['Type'], ('Event',))
+        self.assertEqual(query['review_state'], 'published')
+        self.assertEqual(query['start']['query'].Date(), DateTime().Date())
+        self.assertEqual(query['start']['range'], 'max')
 
     def testObjectButtonActions(self):
         installed = [(a.getId(), a.getCategory()) for a in self.actions.listActions()]
