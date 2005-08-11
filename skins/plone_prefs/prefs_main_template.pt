@@ -1,6 +1,30 @@
 <metal:page define-macro="master">
   <tal:block metal:use-macro="here/main_template/macros/master">
 
+ 
+ 
+  <head metal:use-macro="here/header/macros/html_header">
+
+    <metal:fillbase fill-slot="base">
+      <metal:baseslot define-slot="base">
+      </metal:baseslot>
+    </metal:fillbase>
+
+    <metal:headslot fill-slot="head_slot">
+      <metal:headslot define-slot="head_slot" />
+    </metal:headslot>
+
+    <metal:cssslot fill-slot="css_slot">
+      <metal:cssslot define-slot="css_slot" />
+    </metal:cssslot>
+
+    <metal:javascriptslot fill-slot="javascript_head_slot">
+      <metal:javascriptslot define-slot="javascript_head_slot" />
+    </metal:javascriptslot>
+
+  </head>
+
+
     <metal:block fill-slot="top_slot"
                  tal:define="dummy python:request.set('disable_border',1)" />
 
