@@ -161,7 +161,6 @@ Installing Plone manually, step by step instructions.
    CMFTopic
    CMFUid
    DCWorkflow
-   Epoz
    ExternalEditor
    ExtendedPathIndex
    GroupUserFolder
