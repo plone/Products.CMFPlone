@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - unreleased
 
+    - Fix http://plone.org/collector/4433 Changing workflow state in
+      review_history gives KeyError: 'comments'
+      [hannosch]
+
     - Fix http://plone.org/collector/4456 wrong title on columns.css
       [hannosch]
 
