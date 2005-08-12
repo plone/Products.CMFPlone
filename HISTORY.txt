@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - unreleased
 
+    - Fix http://plone.org/collector/4456 wrong title on columns.css
+      [hannosch]
+
     - Added past events sub-topic events_topic/previous, and restricted the
       primary events topic to show only upcoming events.
       [alecm]
