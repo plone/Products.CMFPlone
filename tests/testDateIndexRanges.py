@@ -1,5 +1,5 @@
 #
-# Skeleton PloneTestCase
+# DateIndex range tests
 #
 
 import os, sys
