@@ -326,8 +326,6 @@
 
 .breadcrumbSeparator {
     font-size: 120%;
-    position: relative;
-    top: 0.15em;
 }
 
 .addFavorite {
