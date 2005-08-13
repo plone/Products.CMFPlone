@@ -318,4 +318,11 @@ ul.configletDetails {
     background-image: url(&dtml-portal_url;/arrowLeft.gif);
 }
 
+.navTreeLevel0 { margin: 0; }
+.navTreeLevel1 { margin-left: 0em; margin-right: 1em;}
+.navTreeLevel2 { margin-left: 0em; margin-right: 0.75em; }
+.navTreeLevel3 { margin-left: 0em; margin-right: 0.75em; }
+.navTreeLevel4 { margin-left: 0em; margin-right: 0.75em; }
+.navTreeLevel5 { margin-left: 0em; margin-right: 0.75em; }
+
 /* </dtml-with> */
