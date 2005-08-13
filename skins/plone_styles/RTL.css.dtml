@@ -311,4 +311,11 @@ ul.configletDetails {
     text-align: left;
 }
 
+.ploneCalendar #calendar-previous {
+    background-image: url(&dtml-portal_url;/arrowRight.gif);
+}
+.ploneCalendar #calendar-next {
+    background-image: url(&dtml-portal_url;/arrowLeft.gif);
+}
+
 /* </dtml-with> */
