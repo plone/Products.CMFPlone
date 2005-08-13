@@ -342,14 +342,14 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         for a in self.actions.listActions():
             if a.getId() == 'folderContents':
                 self.failUnless(a.visible)
-                
+
     def testDefaultGroupsAdded(self):
         self.failUnless('Administrators' in self.groups.listGroupIds())
         self.failUnless('Reviewers' in self.groups.listGroupIds())
 
     def testDefaultTypesInPortalFactory(self):
         types = self.factory.getFactoryTypes().keys()
-        for metaType in ('Document', 'Event', 'File', 'Folder', 'Image', 
+        for metaType in ('Document', 'Event', 'File', 'Folder', 'Image',
                          'Folder', 'Large Plone Folder', 'Link', 'News Item',
                          'Topic'):
             self.failUnless(metaType in types)
@@ -502,6 +502,18 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
             elif panel.getId() == 'NavigationSettings':
                 haveNavigation = True
         self.failUnless(haveSearch and haveNavigation)
+
+    def testPortalSharingActionIsLocalRoles(self):
+        fti = getattr(self.types, 'Plone Site')
+        haveSharing = False
+        haveLocalRoles = False
+        for a in fti.listActions():
+            if a.getId() == 'sharing':
+                haveSharing = True
+            elif a.getId() == 'local_roles':
+                haveLocalRoles = True
+        self.failIf(haveSharing)
+        self.failUnless(haveLocalRoles)
 
 class TestPortalBugs(PloneTestCase.PloneTestCase):
 

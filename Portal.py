@@ -75,7 +75,7 @@ factory_type_information = { 'id'             : 'Plone Root'
                          , 'permissions'   : (CMFCorePermissions.ManageProperties,)
                          , 'category'      : 'object'
                          }
-                       , { 'id'            : 'sharing'
+                       , { 'id'            : 'local_roles'
                          , 'name'          : 'Sharing'
                          , 'action': 'string:${object_url}/sharing'
                          , 'permissions'   : (CMFCorePermissions.ManageProperties,)

@@ -56,6 +56,9 @@ def rc2_final(portal):
     # Add date criteria to limit the events_topic to current events
     addDateCriterionToEventsTopic(portal, out)
 
+    # Make sure we don't get two 'sharing' tabs on the portal root
+    fixDuplicatePortalRootSharingAction(portal, out)
+
     return out
 
 
@@ -177,3 +180,34 @@ def addDateCriterionToEventsTopic(portal, out):
             date_crit.setDateRange('+') # This is irrelevant when the date is now
             date_crit.setOperation('more')
             out.append('Added criterion to limit to current events.')
+
+
+def fixDuplicatePortalRootSharingAction(portal, out):
+    """The 'sharing' action at portal root must be called local_roles"""
+    ttool = getToolByName(portal, 'portal_types', None)
+    if ttool is not None:
+        fti = getattr(ttool, 'Plone Site', None)
+        if fti is not None:
+            idx = 0
+            oldAction = None
+            oldIdx = -1
+            haveLocalRoles = False
+            for action in fti.listActions():
+                if action.getId() == 'sharing':
+                    oldAction = action
+                    oldIdx = idx
+                elif action.getId() == 'local_roles':
+                    haveLocalRoles = True
+                idx += 1
+            if oldAction is not None:
+                fti.deleteActions((oldIdx,))
+                out.append('Deleted sharing action with id "sharing"')
+                if not haveLocalRoles:
+                    fti.addAction('local_roles',
+                                    name=oldAction.Title(),
+                                    action=oldAction.getActionExpression(),
+                                    condition=oldAction.getCondition(),
+                                    permission=oldAction.getPermissions(),
+                                    category=oldAction.getCategory(),
+                                    visible=oldAction.getVisibility())
+                    out.append('Renamed the sharing action to "local_roles"')

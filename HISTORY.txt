@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - unreleased
 
+    - Fixed http://plone.org/collector/4370 - duplicate 'sharing' tab on
+      portal root.
+
     - Several fixes and workarounds for right to left rendering.
       [fschulze]
 
@@ -25,7 +28,7 @@ Plone 2.1 - Plaid - unreleased
     - Uncluttered the 'language' mess in the templates define.
       [deo]
 
-   RC2 - Releases August 10, 2005
+   RC2 - Released August 10, 2005
 
     - Renamed PloneTool.getOwnerId() to .getOwnerName, and made it return the
       username instead of the userid, which is importand for user sources

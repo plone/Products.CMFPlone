@@ -106,6 +106,7 @@ from Products.CMFPlone.migrations.v2_1.rcs import disableSyndicationAction
 from Products.CMFPlone.migrations.v2_1.rcs import alterRSSActionTitle
 from Products.CMFPlone.migrations.v2_1.rcs import addPastEventsTopic
 from Products.CMFPlone.migrations.v2_1.rcs import addDateCriterionToEventsTopic
+from Products.CMFPlone.migrations.v2_1.rcs import fixDuplicatePortalRootSharingAction
 
 
 from Products.CMFDynamicViewFTI.migrate import migrateFTI
@@ -2714,7 +2715,107 @@ class TestMigrations_v2_1(MigrationTest):
         self.portal._delObject('portal_atct')
         addDateCriterionToEventsTopic(self.portal, [])
 
+    def testFixDuplicatePortalRootSharingAction(self):
+        # Portal should use 'local_roles' as id of sharing action
+        fti = self.portal.getTypeInfo()
+        idx = 0
+        oldAction = None
+        for action in fti.listActions():
+            if action.getId() == 'local_roles':
+                oldAction = action
+                break
+            idx += 1
+        fti.deleteActions((idx,))
+        fti.addAction('sharing',
+                        name=oldAction.Title(),
+                        action=oldAction.getActionExpression(),
+                        condition=oldAction.getCondition(),
+                        permission=oldAction.getPermissions(),
+                        category=oldAction.getCategory(),
+                        visible=oldAction.getVisibility())
 
+        fixDuplicatePortalRootSharingAction(self.portal, [])
+
+        haveSharing = False
+        haveLocalRoles = False
+        for a in fti.listActions():
+            if a.getId() == 'sharing':
+                haveSharing = True
+            elif a.getId() == 'local_roles':
+                haveLocalRoles = True
+        self.failIf(haveSharing)
+        self.failUnless(haveLocalRoles)
+
+    def testFixDuplicatePortalRootSharingActionTwice(self):
+        # Should not fail if called twice
+        fti = self.portal.getTypeInfo()
+        idx = 0
+        oldAction = None
+        for action in fti.listActions():
+            if action.getId() == 'local_roles':
+                oldAction = action
+                break
+            idx += 1
+        fti.deleteActions((idx,))
+        fti.addAction('sharing',
+                        name=oldAction.Title(),
+                        action=oldAction.getActionExpression(),
+                        condition=oldAction.getCondition(),
+                        permission=oldAction.getPermissions(),
+                        category=oldAction.getCategory(),
+                        visible=oldAction.getVisibility())
+
+        fixDuplicatePortalRootSharingAction(self.portal, [])
+        fixDuplicatePortalRootSharingAction(self.portal, [])
+
+        haveSharing = False
+        haveLocalRoles = False
+        for a in fti.listActions():
+            if a.getId() == 'sharing':
+                haveSharing = True
+            elif a.getId() == 'local_roles':
+                haveLocalRoles = True
+        self.failIf(haveSharing)
+        self.failUnless(haveLocalRoles)
+
+    def testFixDuplicatePortalRootSharingActionWithCorrectLocalRolesAction(self):
+        # Should not add local_roles again if it already exists
+
+        fti = self.portal.getTypeInfo()
+        fti.addAction('sharing',
+                        name='Sharing',
+                        action='string:${object_url}/sharing',
+                        condition='',
+                        permission=('Manage properties',),
+                        category='object',
+                        visible=1)
+
+        fixDuplicatePortalRootSharingAction(self.portal, [])
+
+        haveSharing = False
+        haveLocalRoles = False
+        haveLocalRolesTwice = False
+
+        for a in fti.listActions():
+            if a.getId() == 'sharing':
+                haveSharing = True
+            elif a.getId() == 'local_roles':
+                if haveLocalRoles:
+                    haveLocalRolesTwice = True
+                haveLocalRoles = True
+        self.failIf(haveSharing)
+        self.failUnless(haveLocalRoles)
+        self.failIf(haveLocalRolesTwice)
+
+    def testFixDuplicatePortalRootSharingActionNoTool(self):
+        # Should not fail if tool is missing
+        self.portal._delObject('portal_types')
+        fixDuplicatePortalRootSharingAction(self.portal, [])
+
+    def testFixDuplicatePortalRootSharingActionNoFTI(self):
+        # Should not fail if FTI is missing
+        self.portal.portal_types._delObject('Plone Site')
+        fixDuplicatePortalRootSharingAction(self.portal, [])
 
 def test_suite():
     from unittest import TestSuite, makeSuite
