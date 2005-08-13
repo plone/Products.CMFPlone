@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - unreleased
 
+    - Fixed http://plone.org/collector/4366 - The envelope-from for send-to
+      and comments is now set to the site admin's email ID rather than
+      the apparent From ID entered on the form.
+      [bitranch]
+
     - Fixed http://plone.org/collector/4370 - duplicate 'sharing' tab on
       portal root.
 

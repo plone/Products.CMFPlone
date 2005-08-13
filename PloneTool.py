@@ -149,15 +149,19 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         host = self.getMailHost()
         template = getattr(self, 'sendto_template')
         encoding = self.getSiteEncoding()
+        if 'envelope_from' in kwargs:
+            envelope_from = kwargs['envelope_from']
+        else:
+            envelope_from = send_from_address
         # Cook from template
         message = template(self, send_to_address=send_to_address,
                            send_from_address=send_from_address,
                            comment=comment, subject=subject, **kwargs
                           )
         result = host.secureSend(message, send_to_address,
-                                 send_from_address, subject=subject,
+                                 envelope_from, subject=subject,
                                  subtype='plain', charset=encoding,
-                                 debug=False
+                                 debug=False, From=send_from_address
                                 )
 
     security.declarePublic('validateSingleNormalizedEmailAddress')
