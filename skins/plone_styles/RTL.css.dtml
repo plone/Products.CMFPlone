@@ -137,9 +137,8 @@ Anyway, didn't get it fixed but at least we know what it is. :-/
 
 .contentActions li {
     float: left;
-    background-position: center left;
-    padding: 0 1em 0 0;
-    margin: 0 0 0 1em;
+    border-left: none;
+    border-right: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
 }
 
 .contentActions .actionMenu {
@@ -149,6 +148,19 @@ Anyway, didn't get it fixed but at least we know what it is. :-/
 .documentActions ul {
     float: left;
     clear: left;
+}
+
+* html .actionMenu .actionMenuHeader a {
+    float: left;
+}
+
+.actionMenu.activated .actionMenuHeader a,
+.actionMenu.deactivated .actionMenuHeader a {
+    background-image: url(<dtml-var portal_url>/arrowDownAlternative.gif);
+    background-repeat: no-repeat;
+    background-position: 5% 60%;
+    padding: 0 0.5em 0 1.6em !important;
+    cursor: pointer;
 }
 
 .newsAbout {

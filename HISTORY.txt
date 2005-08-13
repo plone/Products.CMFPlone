@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - unreleased
 
+    - Several fixes and workarounds for right to left rendering.
+      [fschulze]
+
     - Fix http://plone.org/collector/4433 Changing workflow state in
       review_history gives KeyError: 'comments'
       [hannosch]

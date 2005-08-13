@@ -47,6 +47,10 @@ textarea {
 position: relative;
 }
 
+.actionMenu .actionMenuHeader a {
+    display: inline;
+}
+
 /* Calendar fixes */
 .ploneCalendar .todaynoevent,
 .ploneCalendar .todayevent {
