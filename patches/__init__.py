@@ -4,3 +4,5 @@ import imagePatch               # WAII and 508 we need more properties on image
 
 import zserverPatch             # Identify Plone in HTTP Headers - netcraft
                                 # here we come!
+
+import dateIndexPatch           # Avoid OverflowErrors in Date*Indexes
