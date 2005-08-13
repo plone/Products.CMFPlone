@@ -86,10 +86,17 @@ Anyway, didn't get it fixed but at least we know what it is. :-/
 }
 
 #portal-globalnav li a {
+    float: right;
     margin-left: 0.5em !important;
+    margin-bottom: -1px;
+}
+
+* html #portal-globalnav {
+    height: 0.1%;
 }
 
 #portal-personaltools {
+    clear: both;
     text-align: left;
 }
 
