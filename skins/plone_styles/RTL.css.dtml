@@ -114,13 +114,18 @@ Anyway, didn't get it fixed but at least we know what it is. :-/
 .contentViews {
     padding-right: 1em;
     margin-right: 0;
+    height: 1.4em;
 }
 
 .contentViews li a {
     margin-left: 0.5em;
+    margin-bottom: -1px;
+    float: right;
+    display: block;
 }
 
 .contentActions {
+    clear: both;
     text-align: left;
     padding: 0 1em 0 0;
 }
