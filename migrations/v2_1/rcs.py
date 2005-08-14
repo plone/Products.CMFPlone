@@ -69,7 +69,7 @@ def rc2_final(portal):
 def changeAvailableViewsForFolders(portal, out):
     """Add view templates to the folderish types"""
     FOLDER_TYPES = ['Folder','Large Plone Folder', 'Topic']
-    FOLDER_VIEWS = ['folder_listing', 'atct_album_view']
+    FOLDER_VIEWS = ['folder_listing', 'folder_tile_view', 'folder_tabular_view', 'atct_album_view']
 
     types_tool = getToolByName(portal, 'portal_types', None)
     if types_tool is not None:
