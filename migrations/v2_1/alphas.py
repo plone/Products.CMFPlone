@@ -6,7 +6,7 @@ from Products.CMFCore import CMFCorePermissions
 from Products.CMFCore.utils import getToolByName
 from Products.CMFDynamicViewFTI.migrate import migrateFTI
 from Products.CMFDynamicViewFTI.fti import DynamicViewTypeInformation
-from Products.CMFPlone.utils import _createObjectByType
+from Products.CMFPlone.utils import _createObjectByType, base_hasattr
 from Products.CMFPlone.migrations.migration_util import installOrReinstallProduct, \
      safeGetMemberDataTool
 from Products.CMFCore.Expression import Expression
@@ -71,7 +71,10 @@ def two05_alpha1(portal):
     return out
 
 def tweakPropertiesAndCSS(portal, out):
-    # Install CSS and Javascript registries
+    # Migrate ResourceRegistries if it's already installed
+    migrateResourceRegistries(portal, out)
+
+    # Install CSS and Javascript registries if they aren't installed already
     # also install default CSS and JS in the registry tools
     installCSSandJSRegistries(portal, out)
     
@@ -1265,3 +1268,51 @@ def convertPloneFTIToCMFDynamicViewFTI(portal, out):
             if 'folder_listing' not in portal.getAvailableLayouts():
                 new_fti.manage_changeProperties(view_methods=views, default_view=views and views[0])
                 out.append("Updated portal selectable views")
+
+
+def migrateResourceRegistries(portal, out):
+    """Migrate ResourceRegistries
+    
+    ResourceRegistries got refactored to use one base class, that needs a
+    migration.
+    """
+    out.append("Migrating CSSRegistry.")
+    cssreg = getToolByName(portal, 'portal_css', None)
+    if cssreg is not None:
+        if base_hasattr(cssreg, 'stylesheets'):
+            stylesheets = list(cssreg.stylesheets)
+            stylesheets.reverse() # the order was reversed
+            cssreg.resources = tuple(stylesheets)
+            del cssreg.stylesheets
+    
+        if base_hasattr(cssreg, 'cookedstylesheets'):
+            cssreg.cookedresources = cssreg.cookedstylesheets
+            del cssreg.cookedstylesheets
+    
+        if base_hasattr(cssreg, 'concatenatedstylesheets'):
+            cssreg.concatenatedresources = cssreg.concatenatedstylesheets
+            del cssreg.concatenatedstylesheets
+        cssreg.cookResources()
+        out.append("Done migrating CSSRegistry.")
+    else:
+        out.append("No CSSRegistry found.")
+
+    out.append("Migrating JSRegistry.")
+    jsreg = getToolByName(portal, 'portal_javascripts', None)
+    if jsreg is not None:
+        if base_hasattr(jsreg, 'scripts'):
+            jsreg.resources = jsreg.scripts
+            del jsreg.scripts
+    
+        if base_hasattr(jsreg, 'cookedscripts'):
+            jsreg.cookedresources = jsreg.cookedscripts
+            del jsreg.cookedscripts
+    
+        if base_hasattr(jsreg, 'concatenatedscripts'):
+            jsreg.concatenatedresources = jsreg.concatenatedscripts
+            del jsreg.concatenatedscripts
+        jsreg.cookResources()
+        out.append("Done migrating JSRegistry.")
+    else:
+        out.append("No JSRegistry found.")
+

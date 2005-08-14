@@ -6,14 +6,13 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.Expression import Expression
 from Products.CMFPlone.migrations.migration_util import installOrReinstallProduct, \
      safeGetMemberDataTool, safeEditProperty
-from Products.CMFPlone.utils import base_hasattr
 from Products.CMFCore.DirectoryView import createDirectoryView
 from Products.CMFPlone.migrations.migration_util import cleanupSkinPath
 from Products.CMFPlone.migrations.migration_util import safeEditProperty
 from alphas import reindexCatalog, indexMembersFolder, indexNewsFolder, \
                     indexEventsFolder, convertPloneFTIToCMFDynamicViewFTI
 from Products.CMFPlone.PloneTool import AllowSendto
-
+from Products.CMFPlone.migrations.v2_1.alphas import migrateResourceRegistries
 
 def alpha2_beta1(portal):
     """2.1-alpha2 -> 2.1-beta1
@@ -31,6 +30,8 @@ def alpha2_beta1(portal):
     fixMyFolderAction(portal, out)
 
     # Migrate ResourceRegistries
+    # This is also done in alpha migrations, but that was introduced later, so
+    # it has to be called here as well or migrations from alphas might break.
     migrateResourceRegistries(portal, out)
 
     # Bring ploneRTL back to the nearly-top of the stack
@@ -311,53 +312,6 @@ def fixMyFolderAction(portal, out):
                 action.setActionExpression(Expression('string:${portal/portal_membership/getHomeUrl}'))
                 out.append("Made the 'mystuff' action point to folder listing instead of folder_contents")
                 break
-
-
-def migrateResourceRegistries(portal, out):
-    """Migrate ResourceRegistries
-    
-    ResourceRegistries got refactored to use one base class, that needs a
-    migration.
-    """
-    out.append("Migrating CSSRegistry.")
-    cssreg = getToolByName(portal, 'portal_css')
-    if cssreg is not None:
-        if base_hasattr(cssreg, 'stylesheets'):
-            stylesheets = list(cssreg.stylesheets)
-            stylesheets.reverse() # the order was reversed
-            cssreg.resources = tuple(stylesheets)
-            del cssreg.stylesheets
-    
-        if base_hasattr(cssreg, 'cookedstylesheets'):
-            cssreg.cookedresources = cssreg.cookedstylesheets
-            del cssreg.cookedstylesheets
-    
-        if base_hasattr(cssreg, 'concatenatedstylesheets'):
-            cssreg.concatenatedresources = cssreg.concatenatedstylesheets
-            del cssreg.concatenatedstylesheets
-        cssreg.cookResources()
-        out.append("Done migrating CSSRegistry.")
-    else:
-        out.append("No CSSRegistry found.")
-
-    out.append("Migrating JSSRegistry.")
-    jsreg = getToolByName(portal, 'portal_css')
-    if jsreg is not None:
-        if base_hasattr(jsreg, 'scripts'):
-            jsreg.resources = jsreg.scripts
-            del jsreg.scripts
-    
-        if base_hasattr(jsreg, 'cookedscripts'):
-            jsreg.cookedresources = jsreg.cookedscripts
-            del jsreg.cookedscripts
-    
-        if base_hasattr(jsreg, 'concatenatedscripts'):
-            jsreg.concatenatedresources = jsreg.concatenatedscripts
-            del jsreg.concatenatedscripts
-        jsreg.cookResources()
-        out.append("Done migrating JSSRegistry.")
-    else:
-        out.append("No JSRegistry found.")
 
 
 def reorderStylesheets(portal, out):

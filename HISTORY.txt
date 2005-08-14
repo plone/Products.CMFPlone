@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - unreleased
 
+    - Fixed several problems in migration of ResourceRegistries.
+      [fschulze]
+
     - Made news topic sort on effective date, reversed.
       [alecm]
 
