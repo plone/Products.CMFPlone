@@ -203,6 +203,12 @@
               </dt>
               <dd class="actionMenuContent" tal:condition="not:dimMenu">
                 <ul>
+                    <!-- Separator - we have both parent views and context views -->
+                    <li class="actionSeparator" tal:condition="python:parentVocab and isContextDefaultPage and contextVocab">
+                        <div class="actionLabel" i18n:translate="label_current_item_views">
+                            Folder
+                        </div>
+                    </li>
                     <!-- Parent views menu: context is the default-page of a parent, so show parent's selectable views -->
                     <tal:parentViewsSelection
                                     define="vocab parentVocab;
@@ -216,7 +222,7 @@
                                       tal:condition="python:value==selectedLayout"
                                       tal:attributes="title display"
                                       i18n:translate=""
-                                      class="selected"
+                                      class="actionMenuSelected"
                                       tal:content="display">Template id</span>
                                 <a href="#"
                                    tal:condition="python:value!=selectedLayout"
@@ -237,22 +243,22 @@
                                        tal:attributes="href string:${parent_folder/absolute_url}/select_default_page;"
                                        i18n:attributes="title title_select_default_view_item;"
                                        i18n:translate="label_choose_item">
-                                         Choose item&hellip;
+                                         Choose content item as default&hellip;
                                     </a>
                                 </li>
                             </tal:haveSelectedLayout>
                             <tal:haveDefaultPage condition="python:selectedLayout == ''">
                                 <li class="actionSeparator">
-                                    <div class="currentDefaultPage selected">
+                                    <span class="currentDefaultPage actionMenuSelected">
                                         <span tal:replace="here/title_or_id"/>
-                                    </div>
+                                    </span>
                                 </li>
                                 <li>
                                     <a title="Change the item used as default view in this folder" href="#"
                                        tal:attributes="href string:${parent_folder/absolute_url}/select_default_page;"
                                        i18n:attributes="title title_change_default_view_item;"
                                        i18n:translate="label_change_item">
-                                         Change item&hellip;
+                                         Change content item as default&hellip;
                                     </a>
                                 </li>
                             </tal:haveDefaultPage>
@@ -263,7 +269,7 @@
                     <!-- Separator - we have both parent views and context views -->
                     <li class="actionSeparator" tal:condition="python:parentVocab and isContextDefaultPage and contextVocab">
                         <div class="actionLabel" i18n:translate="label_current_item_views">
-                            Views of this item:
+                            Item
                         </div>
                     </li>
 
@@ -286,7 +292,7 @@
                                       tal:condition="python:value==selectedLayout"
                                       tal:attributes="title display"
                                       i18n:attributes="title"
-                                      class="selected"
+                                      class="actionMenuSelected"
                                       > 
                                       <span i18n:translate="" 
                                             tal:omit-tag="" 
@@ -316,12 +322,12 @@
                             </tal:haveSelectedLayout>
                             <tal:haveDefaultPage condition="python:selectedLayout == ''">
                                 <li class="actionSeparator">
-                                    <div class="currentDefaultPage selected">
+                                    <span class="currentDefaultPage actionMenuSelected">
                                         <span tal:replace="defaultPage/title_or_id"/>
-                                    </div>
+                                    </span>
                                 </li>
                                 <li>
-                                    <a title="Change default page" href="#" class="selected"
+                                    <a title="Change default page" href="#"
                                        tal:attributes="href string:${here/absolute_url}/select_default_page;"
                                        i18n:attributes="title title_change_default_page;"
                                        i18n:translate="label_change_item">
@@ -349,12 +355,12 @@
                         </tal:haveSelectedLayout>
                         <tal:haveDefaultPage condition="python:selectedLayout == ''">
                             <li class="actionSeparator">
-                                <div class="currentDefaultPage selected">
+                                <span class="currentDefaultPage actionMenuSelected">
                                     <span tal:replace="here/title_or_id"/>
-                                </div>
+                                </span>
                             </li>
                             <li>
-                                <a title="Change default page" href="#" class="selected"
+                                <a title="Change default page" href="#"
                                    tal:attributes="href string:${parent_folder/absolute_url}/select_default_page;"
                                    i18n:attributes="title title_change_default_page;"
                                    i18n:translate="label_change_item">

@@ -492,7 +492,9 @@ ol.visualNoMarker {
     padding: 0.2em 0.5em 0em 0.5em;
     white-space: nowrap;
     border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
-    font-style: italic;
+    background-color: &dtml-contentViewBorderColor;;
+    color: &dtml-contentViewBackgroundColor;;
+    cursor: default;
 }
 
 
@@ -521,6 +523,16 @@ ol.visualNoMarker {
 #objectMenu.actionMenu .actionMenuContent li a {
     padding-left: 22px;
 }
+
+.actionMenuSelected {
+    display: block;
+    cursor: default;
+    background-image: url(<dtml-var portal_url>/confirm_icon.gif);
+    background-repeat: no-repeat;
+    background-position: 0% 3px;
+    padding-left: 16px !important;
+}
+
 
 /*
 ** end ECMAScript Content Action Menus
