@@ -412,11 +412,11 @@ ol.visualNoMarker {
     cursor: pointer;
 }
 
-.contentActions .actionMenu .actionMenuContent {
+.actionMenu .actionMenuContent {
     display: none;
     z-index: 5;
     position: absolute;
-    top: 0;
+    top: 1.6em;
     right: -1px;
     height: auto;
     padding: 0;
@@ -424,12 +424,12 @@ ol.visualNoMarker {
     cursor: pointer;
 }
 
-.contentActions .actionMenu .actionMenuContent ul {
+.actionMenu .actionMenuContent ul {
     display: block;
     background: &dtml-contentViewBackgroundColor;;
     border: &dtml-borderWidth; &dtml-contentViewBorderColor;;
     border-style: none &dtml-borderStyle; &dtml-borderStyle; &dtml-borderStyle;;
-    margin: 1.6em 0 0 0;
+    margin: -2px 0 0 0;
     padding: 0;
     cursor: pointer;
 }

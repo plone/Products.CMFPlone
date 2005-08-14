@@ -51,6 +51,10 @@ position: relative;
     display: inline;
 }
 
+.actionMenu .actionMenuContent {
+    top: 1.4em;
+}
+
 /* Calendar fixes */
 .ploneCalendar .todaynoevent,
 .ploneCalendar .todayevent {
