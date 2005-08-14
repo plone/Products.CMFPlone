@@ -105,6 +105,8 @@ contributed code.
 
   Leonardo Rochael Almeida (L-Array) -- Username/UserId separation work.
 
+  Ofer Weisglass (oferw) -- RTL support vigilance and restless testing.
+
 Companies (in randomized order):
 
   "Ingeniweb":http://www.ingeniweb.com -- 
