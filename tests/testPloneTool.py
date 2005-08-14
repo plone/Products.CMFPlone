@@ -854,6 +854,18 @@ class TestPortalTabs(PloneTestCase.PloneTestCase):
         self.failUnless(tabs)
         self.assertEqual(len(tabs),orig_len)
 
+    def testIsStructuralFolderWithNonFolder(self):
+        i = dummy.Item()
+        self.failIf(self.utils.isStructuralFolder(i))
+
+    def testIsStructuralFolderWithFolder(self):
+        f = dummy.Folder()
+        self.failUnless(self.utils.isStructuralFolder(f))
+
+    def testIsStructuralFolderWithNonStructuralFolder(self):
+        f = dummy.NonStructuralFolder()
+        self.failIf(self.utils.isStructuralFolder(f))
+
 
 class TestBreadCrumbs(PloneTestCase.PloneTestCase):
     '''Tests for the portal tabs query'''

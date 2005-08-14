@@ -69,33 +69,36 @@
     
     </tal:states>
 
-    <tal:add define="allowedTypes parent_folder/getAllowedTypes;
+    <tal:add define="isStructuralFolder python:here.is_folderish();
+                     addContext   python:here.is_folderish() and here or here.getParentNode();
+                     allowedTypes addContext/getAllowedTypes;
                      menuTypes    python:here.getAddableTypesInMenu(allowedTypes);
                      numAllowed   python:len(allowedTypes);
                      numMenu      python:len(menuTypes);    
-                     showSettings parent_folder/canConstrainTypes;
+                     showSettings addContext/canConstrainTypes;
                      showAdd      python:numAllowed >= 1 or showSettings;
                      showMore     python:numAllowed > numMenu;
-                     showMenu     python:showMore or showSettings or numMenu > 1"
+                     showMenu     python:showMore or showSettings or numMenu > 1;
+                     "
              condition="showAdd">
 
     <tal:dropdown tal:condition="showMenu">
     <li>
         <dl class="actionMenu" id="objectMenu">
           <dt class="actionMenuHeader">
-            <a tal:condition="python: here.isPrincipiaFolderish and not isContextDefaultPage"
+            <a tal:condition="isStructuralFolder"
                href="folder_factories"
                title="Add new items inside this item"
                i18n:attributes="title title_add_new_items_inside_item;"
                i18n:translate="label_add_new_item"
-               tal:attributes="href string:${here_url}/folder_factories;">Add item</a>
+               tal:attributes="href string:${addContext/absolute_url}/folder_factories;">Add item</a>
 
-            <a tal:condition="not: python: here.isPrincipiaFolderish and not isContextDefaultPage"
+            <a tal:condition="not:isStructuralFolder"
                href="folder_factories"
                title="Add new items in the same folder as this item"
                i18n:attributes="title title_add_new_items_inside_folder;"
                i18n:translate="label_add_new_item_in_folder"
-               tal:attributes="href string:${parent_folder/absolute_url}/folder_factories;">Add to folder</a>
+               tal:attributes="href string:${addContext/absolute_url}/folder_factories;">Add to folder</a>
           </dt>
           <dd class="actionMenuContent">
             <ul>
@@ -105,7 +108,7 @@
                         tal:attributes="class string:${item_type_class}">
                         <a href="#" 
                            i18n:attributes="title"
-                           tal:attributes="href string:${parent_folder/absolute_url}/createObject?type_name=${Id};
+                           tal:attributes="href string:${addContext/absolute_url}/createObject?type_name=${Id};
                                            title Description">
                           <tal:title i18n:translate=""
                                      tal:content="Title">Title</tal:title>
@@ -115,7 +118,7 @@
                 <li style="text-align: right;" tal:condition="showMore">
                     <a href="#" class="folderAddMore" title="Show all available content types"
                            i18n:attributes="title title_show_all_content_types;"
-                           tal:attributes="href string:${parent_folder/absolute_url}/folder_factories;">
+                           tal:attributes="href string:${addContext/absolute_url}/folder_factories;">
                           <tal:title i18n:translate="folder_add_more">
                             More&hellip;
                           </tal:title>
@@ -124,7 +127,7 @@
                 <li class="actionSeperator" tal:condition="showSettings">
                     <a href="#" class="folderAddSettings" title="Configure which content types can be added here"
                            i18n:attributes="title title_configure_addable_content_types;"
-                           tal:attributes="href string:${parent_folder/absolute_url}/folder_constraintypes_form;">
+                           tal:attributes="href string:${addContext/absolute_url}/folder_constraintypes_form;">
                           <tal:title i18n:translate="folder_add_settings">
                             Settings&hellip;
                           </tal:title>

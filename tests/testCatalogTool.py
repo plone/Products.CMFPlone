@@ -19,6 +19,9 @@ from Products.CMFPlone.CatalogTool import ExtensibleIndexableObjectRegistry
 from Products.CMFPlone.CatalogTool import ExtensibleIndexableObjectWrapper
 from Products.CMFPlone.CatalogTool import _eioRegistry
 
+from Products.CMFPlone.CatalogTool import is_folderish
+from Products.CMFPlone.tests import dummy
+
 portal_name = PloneTestCase.portal_name
 default_user  = PloneTestCase.default_user
 
@@ -841,6 +844,18 @@ class TestExtensibleIndexableObjectWrapper(PloneTestCase.PloneTestCase):
         
     def beforeTearDown(self):
         _eioRegistry.unregister('dummy')
+
+    def test_is_folderishWithNonFolder(self):
+        i = dummy.Item()
+        self.failIf(is_folderish(i))
+
+    def test_is_folderishWithFolder(self):
+        f = dummy.Folder()
+        self.failUnless(is_folderish(f))
+
+    def test_is_folderishWithNonStructuralFolder(self):
+        f = dummy.NonStructuralFolder()
+        self.failIf(is_folderish(f))
 
 
 def test_suite():

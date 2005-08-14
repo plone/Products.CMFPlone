@@ -24,6 +24,7 @@ from Products.CMFCore.interfaces.Discussions import Discussable
 from Products.CMFCore.WorkflowCore import WorkflowException
 from Products.CMFDefault.DublinCore import DefaultDublinCoreImpl
 from Products.CMFPlone.interfaces.Translatable import ITranslatable
+from Products.CMFPlone.interfaces.NonStructuralFolder import INonStructuralFolder
 from Products.CMFPlone import ToolNames
 from Products.CMFPlone.utils import transaction_note
 from Products.CMFPlone.interfaces.BrowserDefault import IBrowserDefault
@@ -1088,6 +1089,20 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     def isTranslatable(self, obj):
         """Checks if a given object implements the ITranslatable interface."""
         return ITranslatable.isImplementedBy(obj)
+
+    security.declarePublic('isStructuralFolder')
+    def isStructuralFolder(self, obj):
+        """Checks if a given object is a "structural folder", that is, a 
+        folderish item which does not explicitly implement INonStructuralFolder
+        to declare that it doesn't wish to be treated as a folder by the navtree,
+        the tab generation etc.
+        """
+        if not obj.isPrincipiaFolderish:
+            return False
+        elif INonStructuralFolder.isImplementedBy(obj):
+            return False
+        else:
+            return True
 
     security.declarePublic('acquireLocalRoles')
     def acquireLocalRoles(self, obj, status = 1):

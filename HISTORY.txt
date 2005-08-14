@@ -4,6 +4,15 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - unreleased
 
+    - Added marker interface INonStructuralFolder which allows a type to
+      declare that it is a folder for implementation purposes only and should
+      not be treated as such by Plone's tab generation and other is_folderish
+      metadata. This is necessary to permit folderish-as-implementation types
+      to not generate portal tabs at the portal root or link to folder_contents
+      from a parent folder folder_contents, as well as ensure the
+      correct functioning of the contents tab (displayContentsTab.py)
+      [optilude]
+
     - Fixed http://plone.org/collector/4361 - OverflowError when converting to
       Date(Range)Indexes.
       [stefan]

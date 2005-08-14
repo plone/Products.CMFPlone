@@ -6,6 +6,8 @@
 
 import os
 
+from Products.CMFPlone.interfaces.NonStructuralFolder import INonStructuralFolder
+
 from ComputedAttribute import ComputedAttribute
 from OFS.SimpleItem import SimpleItem
 from ZPublisher.HTTPRequest import FileUpload
@@ -153,3 +155,11 @@ class ImageComputedProps(Item):
         return getattr(self, '_longdesc', '')
 
     longdesc = ComputedAttribute(get_longdesc, 1)
+
+class Folder(Item):
+    '''Item that is a folder'''
+    isPrincipiaFolderish = True
+
+class NonStructuralFolder(Folder):
+    '''Folder implementing the INonStructuralFolder interface'''
+    __implements__ = (INonStructuralFolder,)

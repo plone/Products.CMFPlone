@@ -27,7 +27,10 @@ if contents_object.isDefaultPageInFolder():
     except Unauthorized:
         return 0
 
-if not contents_object.isPrincipiaFolderish:
+# If this is not a structural folder, that is a folderish item which should be
+# treated as such for navigation purposes (not just as an implementation detail)
+# stop.
+if not contents_object.is_folderish():
     return 0
 
 show = 0

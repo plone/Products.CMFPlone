@@ -20,6 +20,7 @@ from Products.CMFCore.CatalogTool import _mergedLocalRoles
 from Products.CMFCore.interfaces.portal_catalog \
         import IndexableObjectWrapper as IIndexableObjectWrapper
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
+from Products.CMFPlone.interfaces.NonStructuralFolder import INonStructuralFolder
 from Products.CMFPlone.utils import base_hasattr
 from Products.CMFPlone.utils import safe_callable
 from OFS.IOrderSupport import IOrderedContainer
@@ -209,9 +210,15 @@ registerIndexableAttribute('getObjSize', getObjSize)
 
 
 def is_folderish(obj, **kwargs):
-    """Get boolean value of isPrincipiaFolderish flag
+    """Should this item be treated as a folder? Checks isPrincipiaFolderish,
+    as well as the INonStructuralFolder interface.
     """
-    return bool(getattr(aq_base(obj), 'isPrincipiaFolderish', False))
+    # If the object explicitly states it doesn't want to be treated as a
+    # structural folder, don't argue with it.
+    if INonStructuralFolder.isImplementedBy(obj):
+        return False
+    else:
+        return bool(getattr(aq_base(obj), 'isPrincipiaFolderish', False))
 
 registerIndexableAttribute('is_folderish', is_folderish)
 
