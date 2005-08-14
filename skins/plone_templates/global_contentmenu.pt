@@ -9,7 +9,8 @@
                 folder python:test(isStructuralFolder, here, here.getParentNode());
                 isContextDefaultPage here/isDefaultPageInFolder;
                 parent_folder python: isContextDefaultPage and here.getParentNode() or folder;
-                disableMenu python:here.portal_factory.isTemporary(here);"
+                disableMenu python:here.portal_factory.isTemporary(here);
+                useParent python:isStructuralFolder and not isContextDefaultPage;"
     tal:condition="not:disableMenu">
 
 
@@ -70,7 +71,7 @@
     
     </tal:states>
 
-    <tal:add define="addContext   nocall:folder;
+    <tal:add define="addContext   nocall:parent_folder;
                      allowedTypes addContext/getAllowedTypes;
                      menuTypes    python:here.getAddableTypesInMenu(allowedTypes);
                      numAllowed   python:len(allowedTypes);
@@ -86,14 +87,14 @@
     <li>
         <dl class="actionMenu" id="objectMenu">
           <dt class="actionMenuHeader">
-            <a tal:condition="isStructuralFolder"
+            <a tal:condition="useParent"
                href="folder_factories"
                title="Add new items inside this item"
                i18n:attributes="title title_add_new_items_inside_item;"
                i18n:translate="label_add_new_item"
                tal:attributes="href string:${addContext/absolute_url}/folder_factories;">Add item</a>
 
-            <a tal:condition="not:isStructuralFolder"
+            <a tal:condition="not:useParent"
                href="folder_factories"
                title="Add new items in the same folder as this item"
                i18n:attributes="title title_add_new_items_inside_folder;"
