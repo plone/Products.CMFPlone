@@ -4,6 +4,8 @@ from betas import fixContentActionConditions
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore import CMFCorePermissions
 from Products.CMFPlone.utils import _createObjectByType
+from Acquisition import aq_base, aq_inner, aq_parent
+from Products.CMFPlone import transaction
 
 
 def rc1_rc2(portal):
@@ -62,6 +64,9 @@ def rc2_final(portal):
 
     # Change views available on foderish objects
     changeAvailableViewsForFolders(portal, out)
+
+    # Move News and Events topics to portal root
+    moveDefaultTopicsToPortalRoot(portal, out)
 
     return out
 
@@ -215,3 +220,44 @@ def fixDuplicatePortalRootSharingAction(portal, out):
                                     category=oldAction.getCategory(),
                                     visible=oldAction.getVisibility())
                     out.append('Renamed the sharing action to "local_roles"')
+
+
+def moveDefaultTopicsToPortalRoot(portal, out):
+    """Move news_topic and events_topic to portal root, remove the folders if
+       empty otherwise rename to site_news and site_events."""
+    topics=({'old_id':'news_topic',
+             'new_id':'news'},
+             {'old_id':'events_topic',
+             'new_id':'events'})
+    types = getattr(portal, 'portal_types', None)
+    lpf_fti = getattr(types, 'Large Plone Folder', None)
+    if lpf_fti is not None:
+        # Enable adding/copying of Large Plone Folders
+        orig = lpf_fti.global_allow
+        lpf_fti.global_allow = True
+        for topic in topics:
+            folder = getattr(portal, topic['new_id'], None)
+            obj = getattr(folder, topic['old_id'], None)
+            if obj is not None:
+                old_pos = portal.getObjectPosition(topic['new_id'])
+                portal._setObject(topic['old_id'], aq_base(obj))
+                folder.manage_delObjects([topic['old_id']])
+                transaction.commit(1)
+                if not folder.objectIds():
+                    # Delete empty folders
+                    portal.manage_delObjects([topic['new_id']])
+                else:
+                    # Rename non-empty folders
+                    portal.manage_renameObjects([topic['new_id']],['old_'+topic['new_id']])
+                    # Exclude the renamed folder from navigation
+                    old_fold = getattr(portal, 'old_'+topic['new_id'])
+                    old_fold.setExcludeFromNav(True)
+                    old_fold.setTitle('Old ' + old_fold.Title())
+                    old_fold.reindexObject()
+                portal.manage_renameObjects([topic['old_id']],[topic['new_id']])
+                portal.moveObject(topic['new_id'], old_pos)
+                putils = getattr(portal, 'plone_utils', None)
+                if putils is not None:
+                    putils.reindexOnReorder(portal)
+        # Reset adding of Large plone folder
+        lpf_fti.global_allow = orig

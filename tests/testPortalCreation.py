@@ -255,18 +255,6 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
             if action.getId() == 'news':
                 self.fail("Actions tool still has 'News' action")
 
-    def testNewsFolder(self):
-        # The portal should contain news folder
-        self.failUnless('news' in self.portal.objectIds())
-        news = getattr(self.portal.aq_base, 'news')
-        self.assertEqual(news._getPortalTypeName(), 'Large Plone Folder')
-        self.assertEqual(news.Title(), 'News')
-        self.assertEqual(news.Description(), 'Site News')
-        self.assertEqual(list(news.getProperty('default_page')), ['news_topic','news_listing','index_html'])
-        self.assertEqual(list(news.getImmediatelyAddableTypes()),['News Item'])
-        self.assertEqual(list(news.getLocallyAllowedTypes()),['News Item'])
-        self.assertEqual(news.getConstrainTypesMode(), 1)
-
     def testNewsFolderIsIndexed(self):
         # News folder should be cataloged
         res = self.catalog(id='news')
@@ -278,39 +266,17 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
     def testNewsTopic(self):
         # News topic is in place as default view and has a criterion to show
         # only News Items.
-        news = self.portal.news
-        self.failUnless('news_topic' in news.objectIds())
-        topic = getattr(news.aq_base, 'news_topic')
+        self.failUnless('news' in self.portal.objectIds())
+        topic = getattr(self.portal.aq_base, 'news')
         self.assertEqual(topic._getPortalTypeName(), 'Topic')
         self.assertEqual(topic.buildQuery()['Type'], ('News Item',))
         self.assertEqual(topic.buildQuery()['review_state'], 'published')
 
-    def testEventsFolder(self):
-        # The portal should contain events folder
-        self.failUnless('events' in self.portal.objectIds())
-        events = getattr(self.portal.aq_base, 'events')
-        self.assertEqual(events._getPortalTypeName(), 'Large Plone Folder')
-        self.assertEqual(events.Title(), 'Events')
-        self.assertEqual(events.Description(), 'Site Events')
-        self.assertEqual(list(events.getProperty('default_page')), ['events_topic','events_listing','index_html'])
-        self.assertEqual(list(events.getImmediatelyAddableTypes()),['Event'])
-        self.assertEqual(list(events.getLocallyAllowedTypes()),['Event'])
-        self.assertEqual(events.getConstrainTypesMode(), 1)
-
-    def testEventsFolderIsIndexed(self):
-        # Events folder should be cataloged
-        res = self.catalog(id='events')
-        self.assertEqual(len(res), 1)
-        self.assertEqual(res[0].getId, 'events')
-        self.assertEqual(res[0].Title, 'Events')
-        self.assertEqual(res[0].Description, 'Site Events')
-
     def testEventsTopic(self):
         # Events topic is in place as default view and has criterion to show
         # only future Events Items.
-        events = self.portal.events
-        self.failUnless('events_topic' in events.objectIds())
-        topic = getattr(events.aq_base, 'events_topic')
+        self.failUnless('events' in self.portal.objectIds())
+        topic = self.portal.events
         self.assertEqual(topic._getPortalTypeName(), 'Topic')
         query = topic.buildQuery()
         self.assertEqual(query['Type'], ('Event',))
@@ -321,7 +287,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
     def testEventsSubTopic(self):
         # past Events sub-topic is in place and has criteria to show
         # only past Events Items.
-        events_topic = self.portal.events.events_topic
+        events_topic = self.portal.events
         self.failUnless('previous' in events_topic.objectIds())
         topic = getattr(events_topic.aq_base, 'previous')
         self.assertEqual(topic._getPortalTypeName(), 'Topic')
@@ -517,8 +483,8 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
 
     def testSyndicationEnabledOnNewsAndEvents(self):
         syn = self.portal.portal_syndication
-        self.failUnless(syn.isSyndicationAllowed(self.portal.news.news_topic))
-        self.failUnless(syn.isSyndicationAllowed(self.portal.events.events_topic))
+        self.failUnless(syn.isSyndicationAllowed(self.portal.news))
+        self.failUnless(syn.isSyndicationAllowed(self.portal.events))
 
     def testSyndicationTabDisabled(self):
         # Syndication tab should be disabled by default

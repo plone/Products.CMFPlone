@@ -107,6 +107,7 @@ from Products.CMFPlone.migrations.v2_1.rcs import alterRSSActionTitle
 from Products.CMFPlone.migrations.v2_1.rcs import addPastEventsTopic
 from Products.CMFPlone.migrations.v2_1.rcs import addDateCriterionToEventsTopic
 from Products.CMFPlone.migrations.v2_1.rcs import fixDuplicatePortalRootSharingAction
+from Products.CMFPlone.migrations.v2_1.rcs import moveDefaultTopicsToPortalRoot
 
 
 from Products.CMFDynamicViewFTI.migrate import migrateFTI
@@ -648,8 +649,9 @@ class TestMigrations_v2_1(MigrationTest):
 
     def testAddNewsTopic(self):
         #Should add the default view for the news folder, a topic
+        self.portal._delObject('news')
+        addNewsFolder(self.portal, [])
         news = self.portal.news
-        news._delObject('news_topic')
         self.failIf('news_topic' in news.objectIds())
         addNewsTopic(self.portal, [])
         self.failUnless('news_topic' in news.objectIds())
@@ -658,8 +660,9 @@ class TestMigrations_v2_1(MigrationTest):
 
     def testAddNewsTopicTwice(self):
         #Should not fail if done twice
+        self.portal._delObject('news')
+        addNewsFolder(self.portal, [])
         news = self.portal.news
-        news._delObject('news_topic')
         self.failIf('news_topic' in news.objectIds())
         addNewsTopic(self.portal, [])
         addNewsTopic(self.portal, [])
@@ -667,8 +670,9 @@ class TestMigrations_v2_1(MigrationTest):
 
     def testAddNewsTopicNoATCT(self):
         #Should not do anything unless ATCT is installed
+        self.portal._delObject('news')
+        addNewsFolder(self.portal, [])
         news = self.portal.news
-        news._delObject('news_topic')
         self.portal._delObject('portal_atct')
         addNewsTopic(self.portal, [])
         self.failUnless('news_topic' not in news.objectIds())
@@ -696,8 +700,9 @@ class TestMigrations_v2_1(MigrationTest):
 
     def testAddEventsTopic(self):
         #Should add the default view for the events folder, a topic
+        self.portal._delObject('events')
+        addEventsFolder(self.portal, [])
         events = self.portal.events
-        events._delObject('events_topic')
         self.failIf('events_topic' in events.objectIds())
         addEventsTopic(self.portal, [])
         self.failUnless('events_topic' in events.objectIds())
@@ -706,8 +711,9 @@ class TestMigrations_v2_1(MigrationTest):
 
     def testAddEventsTopicTwice(self):
         #Should not fail if done twice
+        self.portal._delObject('events')
+        addEventsFolder(self.portal, [])
         events = self.portal.events
-        events._delObject('events_topic')
         self.failIf('events_topic' in events.objectIds())
         addEventsTopic(self.portal, [])
         addEventsTopic(self.portal, [])
@@ -715,8 +721,9 @@ class TestMigrations_v2_1(MigrationTest):
 
     def testAddEventsTopicNoATCT(self):
         #Should not do anything unless ATCT is installed
+        self.portal._delObject('events')
+        addEventsFolder(self.portal, [])
         events = self.portal.events
-        events._delObject('events_topic')
         self.portal._delObject('portal_atct')
         addEventsTopic(self.portal, [])
         self.failUnless('events_topic' not in events.objectIds())
@@ -1522,8 +1529,10 @@ class TestMigrations_v2_1(MigrationTest):
 
     def testRestrictNewsTopicToPublished(self):
         # Should add a new 'published' criterion to the News topic
+        self.portal._delObject('news')
+        addNewsFolder(self.portal, [])
+        addNewsTopic(self.portal, [])
         topic = self.portal.news.news_topic
-        topic.deleteCriterion('crit__review_state_ATSimpleStringCriterion')
         self.assertRaises(AttributeError, topic.getCriterion,
                             'crit__review_state_ATSimpleStringCriterion')
         restrictNewsTopicToPublished(self.portal, [])
@@ -1531,22 +1540,26 @@ class TestMigrations_v2_1(MigrationTest):
 
     def testRestrictNewsTopicToPublishedTwice(self):
         # Should not fail if done twice
+        self.portal._delObject('news')
+        addNewsFolder(self.portal, [])
+        addNewsTopic(self.portal, [])
         topic = self.portal.news.news_topic
-        topic.deleteCriterion('crit__review_state_ATSimpleStringCriterion')
         restrictNewsTopicToPublished(self.portal, [])
         restrictNewsTopicToPublished(self.portal, [])
         self.failUnless(topic.getCriterion('crit__review_state_ATSimpleStringCriterion'))
 
     def testRestrictNewsTopicToPublishedNoTopic(self):
         # Should not do anything unless ATCT is installed
-        news = self.portal.news
-        news._delObject('news_topic')
+        self.portal._delObject('news')
+        addNewsFolder(self.portal, [])
         restrictNewsTopicToPublished(self.portal, [])
 
     def testRestrictEventsTopicToPublished(self):
         # Should add a new 'published' criterion to the News topic
+        self.portal._delObject('events')
+        addEventsFolder(self.portal, [])
+        addEventsTopic(self.portal, [])
         topic = self.portal.events.events_topic
-        topic.deleteCriterion('crit__review_state_ATSimpleStringCriterion')
         self.assertRaises(AttributeError, topic.getCriterion,
                             'crit__review_state_ATSimpleStringCriterion')
         restrictEventsTopicToPublished(self.portal, [])
@@ -1554,16 +1567,18 @@ class TestMigrations_v2_1(MigrationTest):
 
     def testRestrictEventsTopicToPublishedTwice(self):
         # Should not fail if done twice
+        self.portal._delObject('events')
+        addEventsFolder(self.portal, [])
+        addEventsTopic(self.portal, [])
         topic = self.portal.events.events_topic
-        topic.deleteCriterion('crit__review_state_ATSimpleStringCriterion')
         restrictEventsTopicToPublished(self.portal, [])
         restrictEventsTopicToPublished(self.portal, [])
         self.failUnless(topic.getCriterion('crit__review_state_ATSimpleStringCriterion'))
 
     def testRestrictEventsTopicToPublishedNoTopic(self):
         # Should not do anything unless ATCT is installed
-        news = self.portal.events
-        news._delObject('events_topic')
+        self.portal._delObject('events')
+        addEventsFolder(self.portal, [])
         restrictEventsTopicToPublished(self.portal, [])
 
     def testAddEnableLivesearchProperty(self):
@@ -1871,7 +1886,7 @@ class TestMigrations_v2_1(MigrationTest):
         _createObjectByType('Document', self.portal, 'blah')
         # check layout transfer
         self.assertEqual(self.portal.getDefaultPage(), 'blah')
-        self.assertEqual(self.portal.getAvailableLayouts(), [('folder_listing', 'Standard listing'), ('news_listing', 'News')])
+        self.assertEqual(self.portal.getAvailableLayouts(), [('folder_listing', 'Standard view'), ('news_listing', 'News')])
         self.assertEqual(self.portal.getLayout(), 'folder_listing')
 
     def testConvertPloneFTIToCMFDynamicViewFTITwice(self):
@@ -2529,8 +2544,8 @@ class TestMigrations_v2_1(MigrationTest):
     def testEnableSyndicationOnTopics(self):
         # Test that we enable syndication on all existing topics
         syn = self.portal.portal_syndication
-        news = self.portal.news.news_topic
-        events = self.portal.events.events_topic
+        news = self.portal.news
+        events = self.portal.events
         syn.disableSyndication(news)
         syn.disableSyndication(events)
         self.failIf(syn.isSyndicationAllowed(news))
@@ -2543,8 +2558,8 @@ class TestMigrations_v2_1(MigrationTest):
     def testEnableSyndicationOnTopicsTwice(self):
         # Should not fail if migrated again
         syn = self.portal.portal_syndication
-        news = self.portal.news.news_topic
-        events = self.portal.events.events_topic
+        news = self.portal.news
+        events = self.portal.events
         syn.disableSyndication(news)
         syn.disableSyndication(events)
         enableSyndicationOnTopics(self.portal,[])
@@ -2555,8 +2570,8 @@ class TestMigrations_v2_1(MigrationTest):
     def testEnableSyndicationOnTopicsWithSiteSyndicationDisabled(self):
         # Should preserve site syndication state but still enable
         syn = self.portal.portal_syndication
-        news = self.portal.news.news_topic
-        events = self.portal.events.events_topic
+        news = self.portal.news
+        events = self.portal.events
         syn.disableSyndication(news)
         syn.disableSyndication(events)
         syn.editProperties(isAllowed=False)
@@ -2655,8 +2670,10 @@ class TestMigrations_v2_1(MigrationTest):
 
     def testAddPastEventsTopic(self):
         #Should add a subtopic to the events_topic for past events
+        self.portal._delObject('events')
+        addEventsFolder(self.portal, [])
+        addEventsTopic(self.portal, [])
         events_topic = self.portal.events.events_topic
-        events_topic._delObject('previous')
         self.failIf('previous' in events_topic.objectIds())
         addPastEventsTopic(self.portal, [])
         self.failUnless('previous' in events_topic.objectIds())
@@ -2665,8 +2682,10 @@ class TestMigrations_v2_1(MigrationTest):
 
     def testAddPastEventsTopicTwice(self):
         #Should not fail if done twice
+        self.portal._delObject('events')
+        addEventsFolder(self.portal, [])
+        addEventsTopic(self.portal, [])
         events_topic = self.portal.events.events_topic
-        events_topic._delObject('previous')
         self.failIf('previous' in events_topic.objectIds())
         addPastEventsTopic(self.portal, [])
         addPastEventsTopic(self.portal, [])
@@ -2676,8 +2695,10 @@ class TestMigrations_v2_1(MigrationTest):
 
     def testAddPastEventsTopicNoATCT(self):
         #Should not do anything unless ATCT is installed
+        self.portal._delObject('events')
+        addEventsFolder(self.portal, [])
+        addEventsTopic(self.portal, [])
         events_topic = self.portal.events.events_topic
-        events_topic._delObject('previous')
         self.portal._delObject('portal_atct')
         addPastEventsTopic(self.portal, [])
         self.failUnless('previous' not in events_topic.objectIds())
@@ -2689,21 +2710,26 @@ class TestMigrations_v2_1(MigrationTest):
 
     def testAddPastEventsTopicNoParent(self):
         #Should not do anything unless the events_topic exists
-        self.portal.events._delObject('events_topic')
+        self.portal._delObject('events')
+        addEventsFolder(self.portal, [])
         addPastEventsTopic(self.portal, [])
 
     def testAddDateCriterionToEventsTopicTopic(self):
         #Should add a subtopic to the events_topic for past events
+        self.portal._delObject('events')
+        addEventsFolder(self.portal, [])
+        addEventsTopic(self.portal, [])
         events_topic = self.portal.events.events_topic
-        events_topic.deleteCriterion('crit__start_ATFriendlyDateCriteria')
         self.failIf('crit__start_ATFriendlyDateCriteria' in events_topic.objectIds())
         addDateCriterionToEventsTopic(self.portal, [])
         self.failUnless('crit__start_ATFriendlyDateCriteria' in events_topic.objectIds())
 
     def testAddDateCriterionToEventsTopicTwice(self):
         #Should not fail if done twice
+        self.portal._delObject('events')
+        addEventsFolder(self.portal, [])
+        addEventsTopic(self.portal, [])
         events_topic = self.portal.events.events_topic
-        events_topic.deleteCriterion('crit__start_ATFriendlyDateCriteria')
         self.failIf('crit__start_ATFriendlyDateCriteria' in events_topic.objectIds())
         addDateCriterionToEventsTopic(self.portal, [])
         addDateCriterionToEventsTopic(self.portal, [])
@@ -2711,7 +2737,6 @@ class TestMigrations_v2_1(MigrationTest):
 
     def testAddDateCriterionToEventsTopicNoATCT(self):
         #Should not fail if ATCT is not installed
-        events_topic = self.portal.events.events_topic
         self.portal._delObject('portal_atct')
         addDateCriterionToEventsTopic(self.portal, [])
 
@@ -2816,6 +2841,84 @@ class TestMigrations_v2_1(MigrationTest):
         # Should not fail if FTI is missing
         self.portal.portal_types._delObject('Plone Site')
         fixDuplicatePortalRootSharingAction(self.portal, [])
+
+    def testMoveDefaultTopicsToPortalRoot(self):
+        # Should move the news and events topics to the portal root
+        self.setRoles(['Manager','Member'])
+        self.portal.manage_delObjects(['news','events'])
+        addNewsFolder(self.portal, [])
+        addNewsTopic(self.portal, [])
+        addEventsFolder(self.portal, [])
+        addEventsTopic(self.portal, [])
+        moveDefaultTopicsToPortalRoot(self.portal,[])
+        self.assertEqual(self.portal.news.portal_type, 'Topic')
+        self.assertEqual(self.portal.events.portal_type, 'Topic')
+        self.failIf('site_news' in self.portal.objectIds())
+
+    def testMoveDefaultTopicsToPortalRootTwice(self):
+        # Shouldn't fail if migrated twice
+        self.setRoles(['Manager','Member'])
+        self.portal.manage_delObjects(['news','events'])
+        addNewsFolder(self.portal, [])
+        addNewsTopic(self.portal, [])
+        addEventsFolder(self.portal, [])
+        addEventsTopic(self.portal, [])
+        moveDefaultTopicsToPortalRoot(self.portal,[])
+        moveDefaultTopicsToPortalRoot(self.portal,[])
+        self.assertEqual(self.portal.news.portal_type, 'Topic')
+        self.assertEqual(self.portal.events.portal_type, 'Topic')
+
+    def testMoveDefaultTopicsToPortalRootWithContent(self):
+        # Should move the old news folder to site_news if there are any items
+        # in it
+        self.setRoles(['Manager','Member'])
+        self.portal.manage_delObjects(['news','events'])
+        addNewsFolder(self.portal, [])
+        addNewsTopic(self.portal, [])
+        addEventsFolder(self.portal, [])
+        addEventsTopic(self.portal, [])
+        # Add news to folder
+        self.portal.news.invokeFactory('News Item', 'news1')
+        moveDefaultTopicsToPortalRoot(self.portal,[])
+        self.assertEqual(self.portal.news.portal_type, 'Topic')
+        self.assertEqual(self.portal.events.portal_type, 'Topic')
+        self.failUnless('old_news' in self.portal.objectIds())
+        self.assertEqual(self.portal.old_news.portal_type, 'Large Plone Folder')
+        # Title changed
+        self.assertEqual(self.portal.old_news.Title(), 'Old News')
+        # Excluded from navigation
+        self.failUnless(self.portal.old_news.exclude_from_nav())
+        # Sub-objects in place
+        self.failUnless('news1' in self.portal.old_news.objectIds())
+        self.failIf('old_events' in self.portal.objectIds())
+
+    def testMoveDefaultTopicsToPortalRootPreservesOrder(self):
+        # Should move the old news folder to site_news if there are any items
+        # in it
+        self.setRoles(['Manager','Member'])
+        self.portal.manage_delObjects(['news','events'])
+        addNewsFolder(self.portal, [])
+        addNewsTopic(self.portal, [])
+        addEventsFolder(self.portal, [])
+        addEventsTopic(self.portal, [])
+        self.portal.moveObject('news', 15)
+        moveDefaultTopicsToPortalRoot(self.portal,[])
+        self.assertEqual(self.portal.news.portal_type, 'Topic')
+        self.assertEqual(self.portal.events.portal_type, 'Topic')
+        self.assertEqual(self.portal.getObjectPosition('news'), 15)
+
+    def testMoveDefaultTopicsToPortalRootNoTopics(self):
+        # Should not fail if topics are missing
+        self.setRoles(['Manager','Member'])
+        self.portal.manage_delObjects(['news','events'])
+        addNewsFolder(self.portal, [])
+        addEventsFolder(self.portal, [])
+        moveDefaultTopicsToPortalRoot(self.portal,[])
+
+    def testMoveDefaultTopicsToPortalRootNoFolders(self):
+        # Should not fail if folders are missing
+        self.portal.manage_delObjects(['news','events'])
+        moveDefaultTopicsToPortalRoot(self.portal,[])
 
 def test_suite():
     from unittest import TestSuite, makeSuite

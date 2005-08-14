@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - unreleased
 
+    - Moved the news and events topics to the toplevel and removed the
+      folders.  If the folders had content they were renamed to
+      old_news/events.
+      [alecm]
+
     - Made all object_buttons act on parent folder when the current object is
       the default page.  Made paste target respect the NonStructuralFolder
       declaration.  Made the delete alert message stronger for folders and

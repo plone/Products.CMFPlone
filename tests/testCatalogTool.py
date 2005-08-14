@@ -28,8 +28,7 @@ default_user  = PloneTestCase.default_user
 user2  = 'u2'
 group2 = 'g2'
 
-base_content = ['Members', 'events', 'events_topic', 'news', 'news_topic',
-                'previous', default_user, 'doc']
+base_content = ['Members', 'events', 'news', 'previous', default_user, 'doc']
 
 try:
     import Products.TextIndexNG2
