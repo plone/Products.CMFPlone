@@ -354,6 +354,16 @@
     border-bottom: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
 }
 
+.newsImage {
+    border: 1px solid black;
+}
+
+.newsImageContainer {
+    float:right; 
+    margin: 0 0 0.5em 1em; 
+    width: 202px;
+}
+
 .newsContent {
     padding: 0 1em 1em 1em;
 }
@@ -521,6 +531,8 @@
 
 .tileImage {
     float: right;
+    margin: 0 0 0.5em 0.5em;
+    border: 1px solid black;
 }
 
 /* Useful deviations from regular style on elements */

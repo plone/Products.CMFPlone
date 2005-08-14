@@ -63,38 +63,47 @@
                                        item_object item/getObject;
                                    ">
 
-                    <img src="" alt=""
-                         tal:condition="item_object/image_thumb|nothing"
-                         tal:replace="structure python: item_object.tag(scale='thumb', css_class='tileImage')" />
-
                     <h2 class="tileHeadline"
                         metal:define-macro="listitem">
 
-                        <span tal:condition="python:item_type != 'Link'">
                         <a href="#" 
+                           tal:condition="python:item_type != 'Link'"
                            tal:attributes="href python:test(item_type in use_view_action, item_url+'/view', item_url+'/');"
                            tal:content="item_title_or_id">
                             Item Title
                         </a>
-                        </span>
 
-                        <tal:to_external condition="python:item_type == 'Link'">
-                            <a href="#"
-                               tal:content="item_title_or_id"
-                               tal:attributes="href item/getRemoteUrl;">
-                                External Link
-                            </a>
-                        </tal:to_external>
+                        <a href="#"
+                           tal:condition="python:item_type == 'Link'"
+                           tal:content="item_title_or_id"
+                           tal:attributes="href item/getRemoteUrl;">
+                            External Link
+                        </a>
 
-                        <span tal:condition="python: item_type == 'Event'">
-                            <span class="documentByLine">
-                            (<span tal:replace="string:${item/location}">Oslo</span>, from
-                             <span tal:replace="python:toLocalizedTime(item_start,long_format=1)">from date</span> to
-                             <span tal:replace="python:toLocalizedTime(item_end,long_format=1)">to date</span>)
-                             </span>
-                        </span>
+                        <span class="documentByLine"
+                              tal:condition="python: item_type == 'Event'">
+                        (<span tal:replace="string:${item/location}">Oslo</span>, from
+                         <span tal:replace="python:toLocalizedTime(item_start,long_format=1)">from date</span> to
+                         <span tal:replace="python:toLocalizedTime(item_end,long_format=1)">to date</span>)
+                         </span>
 
                     </h2>
+
+                    <a href="#"
+                       tal:condition="python:item_type != 'Link'"
+                       tal:attributes="href python:test(item_type in use_view_action, item_url+'/view', item_url+'/');">
+                        <img src="" alt=""
+                             tal:condition="item_object/image_thumb|nothing"
+                             tal:replace="structure python: item_object.tag(scale='thumb', css_class='tileImage')" />
+                    </a>
+
+                    <a href="#"
+                       tal:condition="python:item_type == 'Link'"
+                       tal:attributes="href python:test(item_type in use_view_action, item_url+'/view', item_url+'/');">
+                        <img src="" alt=""
+                             tal:condition="item_object/image_thumb|nothing"
+                             tal:replace="structure python: item_object.tag(scale='thumb', css_class='tileImage')" />
+                    </a>
 
                     <p class="tileBody">
                         <span tal:omit-tag="" tal:condition="not:item_description"> 
