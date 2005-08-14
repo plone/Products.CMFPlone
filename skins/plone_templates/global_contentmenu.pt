@@ -205,7 +205,7 @@
                 <ul>
                     <!-- Separator - we have both parent views and context views -->
                     <li class="actionSeparator" tal:condition="python:parentVocab and isContextDefaultPage and contextVocab">
-                        <div class="actionLabel" i18n:translate="label_current_item_views">
+                        <div class="actionLabel" i18n:translate="label_current_folder_views">
                             Folder display
                         </div>
                     </li>
