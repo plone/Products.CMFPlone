@@ -113,7 +113,8 @@
                                 </tal:name>
                             </td>
                             
-                            <td tal:content="item_type_title">
+                            <td tal:content="item_type_title"
+			        i18n:translate="">
                                 Page
                             </td>
 
