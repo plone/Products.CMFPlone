@@ -503,6 +503,53 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
                 haveNavigation = True
         self.failUnless(haveSearch and haveNavigation)
 
+    def testOwnerHasAccessInactivePermission(self):
+        permission_on_role = [p for p in self.portal.permissionsOfRole('Owner')
+            if p['name'] == CMFCorePermissions.AccessInactivePortalContent][0]
+        self.failUnless(permission_on_role['selected'])
+        cur_perms = self.portal.permission_settings(
+                            CMFCorePermissions.AccessInactivePortalContent)[0]
+        self.failUnless(cur_perms['acquire'])
+
+    def testSyndicationEnabledByDefault(self):
+        syn = self.portal.portal_syndication
+        self.failUnless(syn.isSiteSyndicationAllowed())
+
+    def testSyndicationEnabledOnNewsAndEvents(self):
+        syn = self.portal.portal_syndication
+        self.failUnless(syn.isSyndicationAllowed(self.portal.news.news_topic))
+        self.failUnless(syn.isSyndicationAllowed(self.portal.events.events_topic))
+
+    def testSyndicationTabDisabled(self):
+        # Syndication tab should be disabled by default
+        for action in self.portal.portal_syndication.listActions():
+            if action.getId() == 'syndication' and action.visible:
+                self.fail("Actions tool still has visible 'syndication' action")
+
+    def testObjectButtonActionsInvisibleOnPortalRoot(self):
+        # only a manager would have proper permissions
+        self.setRoles(['Manager', 'Member'])
+        acts = self.actions.listFilteredActionsFor(self.portal)
+        self.failIf(acts.has_key('object_buttons'))
+
+    def testObjectButtonActionsInvisibleOnPortalDefaultDocument(self):
+        # only a manager would have proper permissions
+        self.setRoles(['Manager', 'Member'])
+        self.portal.invokeFactory('Document','index_html')
+        acts = self.actions.listFilteredActionsFor(self.portal.index_html)
+        self.failIf(acts.has_key('object_buttons'))
+
+    def testObjectButtonActionsOnDefaultDocumentApplyToParent(self):
+        # only a manager would have proper permissions
+        self.setRoles(['Manager', 'Member'])
+        self.folder.invokeFactory('Document','index_html')
+        acts = self.actions.listFilteredActionsFor(self.folder.index_html)
+        buttons = acts['object_buttons']
+        self.failUnless(len(buttons), 3)
+        urls = [a['url'] for a in buttons]
+        for url in urls:
+            self.failIf('index_html' in url, 'Action wrongly applied to default page object %s'%url)
+
     def testPortalSharingActionIsLocalRoles(self):
         fti = getattr(self.types, 'Plone Site')
         haveSharing = False
@@ -514,6 +561,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
                 haveLocalRoles = True
         self.failIf(haveSharing)
         self.failUnless(haveLocalRoles)
+
 
 class TestPortalBugs(PloneTestCase.PloneTestCase):
 
@@ -602,29 +650,6 @@ class TestManagementPageCharset(PloneTestCase.PloneTestCase):
         self.portal._delObject('portal_properties')
         manage_charset = getattr(self.portal, 'management_page_charset', None)
         self.assertEqual(manage_charset, 'utf-8')
-
-    def testOwnerHasAccessInactivePermission(self):
-        permission_on_role = [p for p in self.portal.permissionsOfRole('Owner')
-            if p['name'] == CMFCorePermissions.AccessInactivePortalContent][0]
-        self.failUnless(permission_on_role['selected'])
-        cur_perms = self.portal.permission_settings(
-                            CMFCorePermissions.AccessInactivePortalContent)[0]
-        self.failUnless(cur_perms['acquire'])
-
-    def testSyndicationEnabledByDefault(self):
-        syn = self.portal.portal_syndication
-        self.failUnless(syn.isSiteSyndicationAllowed())
-
-    def testSyndicationEnabledOnNewsAndEvents(self):
-        syn = self.portal.portal_syndication
-        self.failUnless(syn.isSyndicationAllowed(self.portal.news.news_topic))
-        self.failUnless(syn.isSyndicationAllowed(self.portal.events.events_topic))
-
-    def testSyndicationTabDisabled(self):
-        # Syndication tab should be disabled by default
-        for action in self.portal.portal_syndication.listActions():
-            if action.getId() == 'syndication' and action.visible:
-                self.fail("Actions tool still has visible 'syndication' action")
 
 
 def test_suite():

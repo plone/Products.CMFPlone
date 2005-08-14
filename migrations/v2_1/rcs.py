@@ -1,5 +1,6 @@
 from alphas import reindexCatalog, indexMembersFolder, indexNewsFolder, \
                     indexEventsFolder, addIs_FolderishMetadata
+from betas import fixContentActionConditions
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore import CMFCorePermissions
 from Products.CMFPlone.utils import _createObjectByType
@@ -13,9 +14,6 @@ def rc1_rc2(portal):
 
     # Re-add metadata column to indicate whether an object is folderish
     reindex += addIs_FolderishMetadata(portal, out)
-
-    # Change views available on foderish objects
-    changeAvailableViewsForFolders(portal, out)
 
     # Enable syndication on all topics during migraiton
     enableSyndicationOnTopics(portal, out)
@@ -58,6 +56,12 @@ def rc2_final(portal):
 
     # Make sure we don't get two 'sharing' tabs on the portal root
     fixDuplicatePortalRootSharingAction(portal, out)
+
+    # Redo action changes due to bad override
+    fixContentActionConditions(portal, out)
+
+    # Change views available on foderish objects
+    changeAvailableViewsForFolders(portal, out)
 
     return out
 

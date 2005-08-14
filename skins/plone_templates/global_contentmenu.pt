@@ -5,7 +5,8 @@
 
 <metal:menubarmacro define-macro="contentMenu">
 
-<ul tal:define="folder python:test(getattr(here.aq_explicit, 'isPrincipiaFolderish', 0), here, here.getParentNode());
+<ul tal:define="isStructuralFolder here/is_folderish;
+                folder python:test(isStructuralFolder, here, here.getParentNode());
                 isContextDefaultPage here/isDefaultPageInFolder;
                 parent_folder python: isContextDefaultPage and here.getParentNode() or folder;
                 disableMenu python:here.portal_factory.isTemporary(here);"
@@ -69,8 +70,7 @@
     
     </tal:states>
 
-    <tal:add define="isStructuralFolder python:here.is_folderish();
-                     addContext   python:here.is_folderish() and here or here.getParentNode();
+    <tal:add define="addContext   nocall:folder;
                      allowedTypes addContext/getAllowedTypes;
                      menuTypes    python:here.getAddableTypesInMenu(allowedTypes);
                      numAllowed   python:len(allowedTypes);
@@ -173,7 +173,7 @@
                                canSelectDefaultContextPage python:here.canSelectDefaultPage() and not isContextDefaultPage;
                                parentHasActions python:parentVocab or canSelectDefaultFolderPage;
                                contextHasActions python:contextVocab or canSelectDefaultContextPage;
-                               dimMenu python:(context.isPrincipiaFolderish and contextHasIndexHtml) or
+                               dimMenu python:(isStructuralFolder and contextHasIndexHtml) or
                                               (isContextDefaultPage and folderHasIndexHtml);"
                         condition="python:(isContextDefaultPage and parentHasActions) or contextHasActions">
 
@@ -405,7 +405,7 @@
                                     tal:attributes="class class_name">
                                     <a onclick="#"
                                        tal:define="ptype here/portal_type;
-                                                   alert_msg python:here.translate('alert_really_delete', default='Do you really want to delete the item?');
+                                                   alert_msg python:((isContextDefaultPage or (isStructuralFolder and not here.portal_type == 'Topic')) and here.translate('alert_really_delete_folder', default='Do you really want to delete this folder and all its contents?')) or here.translate('alert_really_delete', default='Do you really want to delete this item?');
                                                    ptype_translated python:here.translate(ptype);"
                                        tal:attributes="href editAction/url;
                                                        title editAction/name;

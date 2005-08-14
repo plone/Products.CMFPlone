@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - unreleased
 
+    - Made all object_buttons act on parent folder when the current object is
+      the default page.  Made paste target respect the NonStructuralFolder
+      declaration.  Made the delete alert message stronger for folders and
+      default pages in folders.
+      [alecm]
+
     - Added marker interface INonStructuralFolder which allows a type to
       declare that it is a folder for implementation purposes only and should
       not be treated as such by Plone's tab generation and other is_folderish

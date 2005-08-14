@@ -70,9 +70,6 @@ def alpha2_beta1(portal):
     # Add Index for is_foldersh and remove corresponding metadata
     reindex += addIsFolderishIndex(portal, out)
 
-    # Change conditions on content actions to be respectful of parent permissions
-    fixContentActionConditions(portal, out)
-
     # Add the plone_3rdParty to the skin layers
     add3rdPartySkinPath(portal, out)
 
@@ -122,9 +119,6 @@ def beta1_beta2(portal):
     # Add 'Large Plone Folder' to the list of types not to query for the
     # navtree
     updateParentMetaTypesNotToQuery(portal, out)
-
-    # Fix cut action permissions to use something saner than 'Copy or Move'
-    fixCutActionPermission(portal, out)
 
     # Fix condition on External Editor action
     fixExtEditAction(portal, out)
@@ -263,7 +257,7 @@ def fixObjectPasteActionForDefaultPages(portal, out):
                     category=newaction['category'],
                     visible=1)
             out.append("Added missing object paste action")
-            
+
 def fixBatchActionToggle(portal, out):
     """Fix batch actions so as to function as a toggle
     """
@@ -706,32 +700,39 @@ def addIsDefaultPageIndex(portal, out):
         return 1 # Ask for reindexing
     return 0
 
-
+# now used in rcs
 def fixContentActionConditions(portal,out):
     """Don't use aq_parent in action conditions directly, as it will fail if
        we don't have permissions on the parent"""
     ACTIONS = (
         {'id'        : 'cut',
          'name'      : 'Cut',
-         'action'    : 'string:${object_url}/object_cut',
-         'condition' : 'python:portal.portal_membership.checkPermission("Delete objects", object.aq_inner.getParentNode()) and object is not portal',
-         'permission': CMFCorePermissions.Permissions.copy_or_move,
+         'action'    : 'python:"%s/object_cut"%(object.isDefaultPageInFolder() and object.getParentNode().absolute_url() or object_url)',
+         'condition' : 'python:portal.portal_membership.checkPermission("Delete objects", object.aq_inner.getParentNode()) and portal.portal_membership.checkPermission("Copy or Move", object) and object is not portal and not (object.isDefaultPageInFolder() and object.getParentNode() is portal)',
+         'permission': CMFCorePermissions.DeleteObjects,
          'category'  : 'object_buttons',
         },
         {'id'        : 'paste',
          'name'      : 'Paste',
-         'action'    : 'string:${object_url}/object_paste',
+         'action'    : 'python:"%s/object_paste"%((object.isDefaultPageInFolder() or not object.is_folderish()) and object.getParentNode().absolute_url() or object_url)',
          'condition' : 'folder/cb_dataValid|nothing',
          'permission': CMFCorePermissions.View,
          'category'  : 'object_buttons',
         },
         {'id'        : 'delete',
          'name'      : 'Delete',
-         'action'    : 'string:${object_url}/object_delete',
-         'condition' : 'python:portal.portal_membership.checkPermission("Delete objects", object.aq_inner.getParentNode()) and object is not portal',
+         'action'    : 'python:"%s/object_delete"%(object.isDefaultPageInFolder() and object.getParentNode().absolute_url() or object_url)',
+         'condition' : 'python:portal.portal_membership.checkPermission("Delete objects", object.aq_inner.getParentNode()) and object is not portal and not (object.isDefaultPageInFolder() and object.getParentNode() is portal)',
          'permission': CMFCorePermissions.DeleteObjects,
          'category'  : 'object_buttons',
-        })
+        },
+        {'id'        : 'copy',
+         'name'      : 'Copy',
+         'action'    : 'python:"%s/object_delete"%(object.isDefaultPageInFolder() and object.getParentNode().absolute_url() or object_url)',
+         'condition' : 'python:object is not portal and not (object.isDefaultPageInFolder() and object.getParentNode() is portal)',
+         'permission': CMFCorePermissions.Permissions.copy_or_move,
+         'category'  : 'object_buttons',
+        },)
 
     actionsTool = getToolByName(portal, 'portal_actions', None)
     if actionsTool is not None:
@@ -916,11 +917,11 @@ def fixCutActionPermission(portal,out):
     ACTIONS = (
         {'id'        : 'cut',
          'name'      : 'Cut',
-         'action'    : 'string:${object_url}/object_cut',
-         'condition' : 'python:portal.portal_membership.checkPermission("Delete objects", object.aq_inner.getParentNode()) and portal.portal_membership.checkPermission("Copy or Move", object) and object is not portal.portal_url.getPortalObject()',
+         'action'    : 'python:"%s/object_cut"%(object.isDefaultPageInFolder() and object.getParentNode().absolute_url() or object_url)',
+         'condition' : 'python:portal.portal_membership.checkPermission("Delete objects", object.aq_inner.getParentNode()) and portal.portal_membership.checkPermission("Copy or Move", object) and object is not portal and not (object.getParentNode() is portal and object.isDefaultPageInFolder())',
          'permission': CMFCorePermissions.DeleteObjects,
          'category'  : 'object_buttons',
-         },
+        },
         )
 
     actionsTool = getToolByName(portal, 'portal_actions', None)

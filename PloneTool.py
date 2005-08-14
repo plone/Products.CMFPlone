@@ -834,7 +834,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         with the default_page property, or using IBrowserDefault.
         """
 
-        parent = obj.aq_inner.aq_parent
+        parent = aq_parent(aq_inner(obj))
         if not parent:
             return False
 
