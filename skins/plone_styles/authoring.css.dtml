@@ -392,6 +392,9 @@ ol.visualNoMarker {
     padding: 0;
     font-weight: normal;
     cursor: pointer;
+}
+
+.actionMenu.activated .actionMenuHeader {
     position: relative;
     z-index: 10;
 }
