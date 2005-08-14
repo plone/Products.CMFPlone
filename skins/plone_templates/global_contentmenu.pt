@@ -206,7 +206,7 @@
                     <!-- Separator - we have both parent views and context views -->
                     <li class="actionSeparator" tal:condition="python:parentVocab and isContextDefaultPage and contextVocab">
                         <div class="actionLabel" i18n:translate="label_current_item_views">
-                            Folder
+                            Folder display
                         </div>
                     </li>
                     <!-- Parent views menu: context is the default-page of a parent, so show parent's selectable views -->
@@ -271,7 +271,7 @@
                     <!-- Separator - we have both parent views and context views -->
                     <li class="actionSeparator" tal:condition="python:parentVocab and isContextDefaultPage and contextVocab">
                         <div class="actionLabel" i18n:translate="label_current_item_views">
-                            Item
+                            Item display
                         </div>
                     </li>
 
