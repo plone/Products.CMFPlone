@@ -499,7 +499,25 @@
     text-decoration: none;
 }
 
+.tileItem {
+    border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    padding-top: 1em;
+    margin-top: 1em;
+}
 
+.tileHeadline {
+    border: none;
+    font-size: 110%;
+    font-weight: bold;
+}
+
+.tileHeadline a {
+    text-decoration: none;
+}
+
+.tileBody {
+    margin-bottom: 0.5em;
+}
 
 /* Useful deviations from regular style on elements */
 
