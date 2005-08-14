@@ -503,6 +503,7 @@
     border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
     padding-top: 1em;
     margin-top: 1em;
+    clear: both;
 }
 
 .tileHeadline {
@@ -517,6 +518,10 @@
 
 .tileBody {
     margin-bottom: 0.5em;
+}
+
+.tileImage {
+    float: right;
 }
 
 /* Useful deviations from regular style on elements */

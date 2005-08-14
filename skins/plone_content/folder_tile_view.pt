@@ -60,7 +60,12 @@
                                        item_creator item/Creator;
                                        item_start item/start/ISO|item/StartDate|nothing;
                                        item_end item/end/ISO|item/EndDate|nothing;
+                                       item_object item/getObject;
                                    ">
+
+                    <img src=""
+                         tal:condition="item_object/image_thumb|nothing"
+                         tal:replace="structure python: item_object.tag(scale='thumb', css_class='tileImage')" />
 
                     <h2 class="tileHeadline"
                         metal:define-macro="listitem">
@@ -81,14 +86,13 @@
                             </a>
                         </tal:to_external>
 
-                    <span class="documentByLine">
-
                         <span tal:condition="python: item_type == 'Event'">
+                            <span class="documentByLine">
                             (<span tal:replace="string:${item/location}">Oslo</span>, from
                              <span tal:replace="python:toLocalizedTime(item_start,long_format=1)">from date</span> to
                              <span tal:replace="python:toLocalizedTime(item_end,long_format=1)">to date</span>)
+                             </span>
                         </span>
-                    </span>
 
                     </h2>
 
@@ -108,6 +112,8 @@
                         Read more&hellip;
                         </a>
                     </p>
+                    
+                    <div class="visualClear"><!-- --></div>
 
                 </tal:block>
             </div>
