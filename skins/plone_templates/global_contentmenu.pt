@@ -10,7 +10,7 @@
                 isContextDefaultPage here/isDefaultPageInFolder;
                 parent_folder python: isContextDefaultPage and here.getParentNode() or folder;
                 disableMenu python:here.portal_factory.isTemporary(here);
-                useParent python:isStructuralFolder and not isContextDefaultPage;"
+                useSelf python:isStructuralFolder and not isContextDefaultPage;"
     tal:condition="not:disableMenu">
 
 
@@ -87,14 +87,14 @@
     <li>
         <dl class="actionMenu" id="objectMenu">
           <dt class="actionMenuHeader">
-            <a tal:condition="useParent"
+            <a tal:condition="useSelf"
                href="folder_factories"
                title="Add new items inside this item"
                i18n:attributes="title title_add_new_items_inside_item;"
                i18n:translate="label_add_new_item"
                tal:attributes="href string:${addContext/absolute_url}/folder_factories;">Add item</a>
 
-            <a tal:condition="not:useParent"
+            <a tal:condition="not:useSelf"
                href="folder_factories"
                title="Add new items in the same folder as this item"
                i18n:attributes="title title_add_new_items_inside_folder;"
