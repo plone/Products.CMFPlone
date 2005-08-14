@@ -63,7 +63,7 @@
                                        item_object item/getObject;
                                    ">
 
-                    <img src=""
+                    <img src="" alt=""
                          tal:condition="item_object/image_thumb|nothing"
                          tal:replace="structure python: item_object.tag(scale='thumb', css_class='tileImage')" />
 
