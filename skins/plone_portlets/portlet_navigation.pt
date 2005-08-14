@@ -17,7 +17,7 @@
 
             <li class="navTreeItem"
                 tal:condition="portal_properties/navtree_properties/includeTop"
-                tal:attributes="class python:test(portal == here or (portal == here.getParentNode() and here.plone_utils.isDefaultPage(here)), 'navTreeCurrentItem', 'navTreeItem');">
+                tal:attributes="class python:test(portal == here or (portal == here.getParentNode() and here.plone_utils.isDefaultPage(here)), 'navTreeItem navTreeCurrentItem', 'navTreeItem');">
                 <div class="contenttype-plone-site">
                     <a class="visualIconPadding"
                        tal:attributes="href string:$portal_url;
