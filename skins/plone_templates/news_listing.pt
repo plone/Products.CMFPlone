@@ -5,6 +5,12 @@
 
 <head>
 
+    <tal:comment replace="nothing">
+    This template is deprecated, and will disappear in the next version of
+    Plone. We use Smart Folders with Tile View instead now.
+    -- Alexander Limi
+    </tal:comment>
+
 </head>
 
 <body>
