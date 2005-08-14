@@ -243,14 +243,16 @@
                                        tal:attributes="href string:${parent_folder/absolute_url}/select_default_page;"
                                        i18n:attributes="title title_select_default_view_item;"
                                        i18n:translate="label_choose_item">
-                                         Choose content item as default&hellip;
+                                         Choose content item<br />&nbsp;&nbsp;as default view&hellip;
                                     </a>
                                 </li>
                             </tal:haveSelectedLayout>
                             <tal:haveDefaultPage condition="python:selectedLayout == ''">
                                 <li class="actionSeparator">
-                                    <span class="currentDefaultPage actionMenuSelected">
-                                        <span tal:replace="here/title_or_id"/>
+                                    <span class="currentDefaultPage actionMenuSelected"
+                                          i18n:translate="label_item_selected">
+                                        Item: <span tal:replace="here/title_or_id"
+                                                    i18n:name="contentitem" />
                                     </span>
                                 </li>
                                 <li>
@@ -258,7 +260,7 @@
                                        tal:attributes="href string:${parent_folder/absolute_url}/select_default_page;"
                                        i18n:attributes="title title_change_default_view_item;"
                                        i18n:translate="label_change_item">
-                                         Change content item as default&hellip;
+                                         Change content item<br />&nbsp;&nbsp;as default view&hellip;
                                     </a>
                                 </li>
                             </tal:haveDefaultPage>
@@ -316,14 +318,16 @@
                                        tal:attributes="href string:${here/absolute_url}/select_default_page;"
                                        i18n:attributes="title title_select_default_page;"
                                        i18n:translate="label_choose_item">
-                                         Choose item&hellip;
+                                         Choose content item<br />&nbsp;&nbsp;as default view&hellip;
                                     </a>
                                 </li>
                             </tal:haveSelectedLayout>
                             <tal:haveDefaultPage condition="python:selectedLayout == ''">
                                 <li class="actionSeparator">
-                                    <span class="currentDefaultPage actionMenuSelected">
-                                        <span tal:replace="defaultPage/title_or_id"/>
+                                    <span class="currentDefaultPage actionMenuSelected"
+                                          i18n:translate="label_item_selected">
+                                        Item: <span tal:replace="defaultPage/title_or_id"
+                                              i18n:name="contentitem" />
                                     </span>
                                 </li>
                                 <li>
@@ -331,7 +335,7 @@
                                        tal:attributes="href string:${here/absolute_url}/select_default_page;"
                                        i18n:attributes="title title_change_default_page;"
                                        i18n:translate="label_change_item">
-                                         Change item&hellip;
+                                         Change content item<br />&nbsp;&nbsp;as default view&hellip;
                                     </a>
                                 </li>
                             </tal:haveDefaultPage>
@@ -349,14 +353,16 @@
                                    tal:attributes="href string:${parent_folder/absolute_url}/select_default_page;"
                                    i18n:attributes="title title_select_default_page;"
                                    i18n:translate="label_choose_item">
-                                     Choose item&hellip;
+                                     Choose content item<br />&nbsp;&nbsp;as default view&hellip;
                                 </a>
                             </li>
                         </tal:haveSelectedLayout>
                         <tal:haveDefaultPage condition="python:selectedLayout == ''">
                             <li class="actionSeparator">
-                                <span class="currentDefaultPage actionMenuSelected">
-                                    <span tal:replace="here/title_or_id"/>
+                                <span class="currentDefaultPage actionMenuSelected"
+                                          i18n:translate="label_item_selected">
+                                    Item: <span tal:replace="here/title_or_id"
+                                                i18n:name="contentitem" />
                                 </span>
                             </li>
                             <li>
@@ -364,7 +370,7 @@
                                    tal:attributes="href string:${parent_folder/absolute_url}/select_default_page;"
                                    i18n:attributes="title title_change_default_page;"
                                    i18n:translate="label_change_item">
-                                     Change item&hellip;
+                                     Change content item<br />&nbsp;&nbsp;as default view&hellip;
                                 </a>
                             </li>
                         </tal:haveDefaultPage>
