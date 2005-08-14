@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - unreleased
 
+    - Made news topic sort on effective date, reversed.
+      [alecm]
+
     - Moved the news and events topics to the toplevel and removed the
       folders.  If the folders had content they were renamed to
       old_news/events.

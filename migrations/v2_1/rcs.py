@@ -68,6 +68,9 @@ def rc2_final(portal):
     # Move News and Events topics to portal root
     moveDefaultTopicsToPortalRoot(portal, out)
 
+    # Sort news topic on effective date
+    alterSortCriterionOnNewsTopic(portal, out)
+
     return out
 
 
@@ -242,16 +245,19 @@ def moveDefaultTopicsToPortalRoot(portal, out):
                 old_pos = portal.getObjectPosition(topic['new_id'])
                 portal._setObject(topic['old_id'], aq_base(obj))
                 folder.manage_delObjects([topic['old_id']])
+                out.append("Moved %s topic to portal root"%topic['new_id'])
                 transaction.commit(1)
                 if not folder.objectIds():
                     # Delete empty folders
                     portal.manage_delObjects([topic['new_id']])
+                    out.append("Deleted empty %s folder"%topic['new_id'])
                 else:
                     # Rename non-empty folders
                     portal.manage_renameObjects([topic['new_id']],['old_'+topic['new_id']])
-                    # Exclude the renamed folder from navigation
+                    out.append("Moved old %s folder to old_%s"%(topic['new_id'],topic['new_id']))
                     old_fold = getattr(portal, 'old_'+topic['new_id'])
-                    old_fold.setExcludeFromNav(True)
+                    # Exclude the renamed folder from navigation
+                    # old_fold.setExcludeFromNav(True)
                     old_fold.setTitle('Old ' + old_fold.Title())
                     old_fold.reindexObject()
                 portal.manage_renameObjects([topic['old_id']],[topic['new_id']])
@@ -261,3 +267,12 @@ def moveDefaultTopicsToPortalRoot(portal, out):
                     putils.reindexOnReorder(portal)
         # Reset adding of Large plone folder
         lpf_fti.global_allow = orig
+
+def alterSortCriterionOnNewsTopic(portal, out):
+    """Add past events subtopic the events topic"""
+    topic = getattr(portal ,'news', None)
+    if topic is not None and \
+                            getattr(portal,'portal_atct', None) is not None:
+        if 'crit__effective_ATSortCriterion' not in topic.objectIds():
+            topic.setSortCriterion('effective', True)
+            out.append('Added sort on effective to news topic.')

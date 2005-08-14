@@ -108,6 +108,7 @@ from Products.CMFPlone.migrations.v2_1.rcs import addPastEventsTopic
 from Products.CMFPlone.migrations.v2_1.rcs import addDateCriterionToEventsTopic
 from Products.CMFPlone.migrations.v2_1.rcs import fixDuplicatePortalRootSharingAction
 from Products.CMFPlone.migrations.v2_1.rcs import moveDefaultTopicsToPortalRoot
+from Products.CMFPlone.migrations.v2_1.rcs import alterSortCriterionOnNewsTopic
 
 
 from Products.CMFDynamicViewFTI.migrate import migrateFTI
@@ -2715,7 +2716,7 @@ class TestMigrations_v2_1(MigrationTest):
         addPastEventsTopic(self.portal, [])
 
     def testAddDateCriterionToEventsTopicTopic(self):
-        #Should add a subtopic to the events_topic for past events
+        #Should add a date crierion to events topic to limit to future events
         self.portal._delObject('events')
         addEventsFolder(self.portal, [])
         addEventsTopic(self.portal, [])
@@ -2886,8 +2887,8 @@ class TestMigrations_v2_1(MigrationTest):
         self.assertEqual(self.portal.old_news.portal_type, 'Large Plone Folder')
         # Title changed
         self.assertEqual(self.portal.old_news.Title(), 'Old News')
-        # Excluded from navigation
-        self.failUnless(self.portal.old_news.exclude_from_nav())
+        # not Excluded from navigation
+        # self.failUnless(self.portal.old_news.exclude_from_nav())
         # Sub-objects in place
         self.failUnless('news1' in self.portal.old_news.objectIds())
         self.failIf('old_events' in self.portal.objectIds())
@@ -2919,6 +2920,39 @@ class TestMigrations_v2_1(MigrationTest):
         # Should not fail if folders are missing
         self.portal.manage_delObjects(['news','events'])
         moveDefaultTopicsToPortalRoot(self.portal,[])
+
+    def testAlterSortCriterionOnNewsTopic(self):
+        #Should change sorting on the news topic to use effective
+        topic = self.portal.news
+        topic.setSortCriterion('created', False)
+        self.failUnless('crit__created_ATSortCriterion' in topic.objectIds())
+        alterSortCriterionOnNewsTopic(self.portal, [])
+        sorter = topic.getSortCriterion()
+        self.assertEqual(sorter.Field(), 'effective')
+        self.failUnless(sorter.getReversed())
+
+    def testAlterSortCriterionOnNewsTopicTwice(self):
+        #Should not fail if done twice
+        topic = self.portal.news
+        topic.setSortCriterion('created', False)
+        alterSortCriterionOnNewsTopic(self.portal, [])
+        alterSortCriterionOnNewsTopic(self.portal, [])
+        sorter = topic.getSortCriterion()
+        self.assertEqual(sorter.Field(), 'effective')
+        self.failUnless(sorter.getReversed())
+
+    def testAlterSortCriterionOnNewsTopicNoTopic(self):
+        #Should not fail if the topic is missing
+        self.portal._delObject('events')
+        alterSortCriterionOnNewsTopic(self.portal, [])
+
+    def testAlterSortCriterionOnNewsTopicNoATCT(self):
+        #Should not fail if ATCT is not installed
+        topic = self.portal.news
+        topic.setSortCriterion('created', False)
+        self.portal._delObject('portal_atct')
+        alterSortCriterionOnNewsTopic(self.portal, [])
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite
