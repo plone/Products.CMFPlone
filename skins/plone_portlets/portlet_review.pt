@@ -17,7 +17,7 @@
         tal:define="oddrow repeat/o/odd"
         tal:attributes="class python:test(oddrow, 'portletItem even','portletItem odd')">
 
-        <span tal:attributes="class python:'contenttype-' + putils.normalizeString(o.portal_type)">
+        <div tal:attributes="class python:'contenttype-' + putils.normalizeString(o.portal_type)">
         <a href="#"
            class="visualIconPadding"
            tal:attributes="href string:${o/absolute_url}/view;
@@ -29,7 +29,7 @@
                   tal:define="moddate o/ModificationDate;"
                   tal:content="python:here.toLocalizedTime(moddate)">May 5</span>
         </a>
-        </span>
+        </div>
 
     </dd>
     </tal:items>

@@ -27,20 +27,24 @@
     #objectMenu .contenttype-<dtml-var "plone_utils.normalizeString(id)"> a:hover { 
         background-image: url(<dtml-var portal_url>/<dtml-var getIcon>); 
         background-repeat: no-repeat; 
-        background-position: 0% 50%;
+        background-position: 0% 0%;
     }
     /* Holly hack to prevent items from shifting to the left in IE*/
     * html .contenttype-<dtml-var "plone_utils.normalizeString(id)"> { 
         height: 1%;
     }
-    #portlet-navigation-tree .contenttype-<dtml-var "plone_utils.normalizeString(id)"> a:hover { 
-        background-image: url(<dtml-var portal_url>/<dtml-var getIcon>); 
-        background-repeat: no-repeat; 
+    #portlet-navigation-tree .contenttype-<dtml-var "plone_utils.normalizeString(id)"> a:hover,
+    #portlet-navigation-tree .contenttype-<dtml-var "plone_utils.normalizeString(id)"> a.navTreeCurrentItem {
+        background-image: url(<dtml-var portal_url>/<dtml-var getIcon>);
+        background-repeat: no-repeat;
         background-position: 0% 3px;
     }
-    * html #portlet-navigation-tree .contenttype-<dtml-var "plone_utils.normalizeString(id)"> a:hover {
-        position: relative;
+    #portlet-navigation-tree .contenttype-<dtml-var "plone_utils.normalizeString(id)"> {
         background-position: 0% 4px;
+    }
+    * html #portlet-navigation-tree .contenttype-<dtml-var "plone_utils.normalizeString(id)"> a:hover,
+    * html #portlet-navigation-tree .contenttype-<dtml-var "plone_utils.normalizeString(id)"> a.navTreeCurrentItem    {
+        position: relative;
     }
     .listing .contenttype-<dtml-var "plone_utils.normalizeString(id)"> { 
         display: block; 

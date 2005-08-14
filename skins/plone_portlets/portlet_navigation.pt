@@ -16,12 +16,12 @@
         <ul class="portletNavigationTree navTreeLevel0">
 
             <li class="navTreeItem"
-                tal:condition="portal_properties/navtree_properties/includeTop"
-                tal:attributes="class python:test(portal == here or (portal == here.getParentNode() and here.plone_utils.isDefaultPage(here)), 'navTreeItem navTreeCurrentItem', 'navTreeItem');">
+                tal:condition="portal_properties/navtree_properties/includeTop">
                 <div class="contenttype-plone-site">
                     <a class="visualIconPadding"
                        tal:attributes="href string:$portal_url;
-                       title portal/Description;">
+                                       title portal/Description;
+                                       class python:test(portal == here or (portal == here.getParentNode() and here.plone_utils.isDefaultPage(here)), 'navTreeCurrentItem visualIconPadding', 'visualIconPadding');">
                     <span tal:omit-tag=""
                           i18n:translate="tabs_home">Home</span>
                     </a>

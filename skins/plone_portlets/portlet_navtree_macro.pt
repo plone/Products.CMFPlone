@@ -2,8 +2,7 @@
 <li class="navTreeItem"
     tal:define="parent_shows_children options/show_children|nothing;
                 children item/children|nothing;"
-    tal:condition="python: (not item['no_display']) and (item['currentItem'] or parent_shows_children or children)"
-    tal:attributes="class python:test(item['currentItem'], 'navTreeItem navTreeCurrentItem', 'navTreeItem')">
+    tal:condition="python: (not item['no_display']) and (item['currentItem'] or parent_shows_children or children)">
     
     <tal:level define="level               options/level|python:0;
                        item_type_class     python: 'contenttype-' + here.plone_utils.normalizeString(item['portal_type']);
@@ -15,7 +14,7 @@
         <a tal:condition="item/currentItem"
            tal:attributes="href item/absolute_url;
                            title item/Description|nothing;
-                           class string: $item_wf_state_class visualIconPadding"
+                           class string: $item_wf_state_class navTreeCurrentItem visualIconPadding"
             tal:content="item/Title|nothing">
             Selected Item Title</a>
         <tal:children condition="python: parent_shows_children or children">
