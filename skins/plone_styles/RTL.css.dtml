@@ -6,10 +6,15 @@
 <dtml-in "portal_types.listTypeInfo()">
 .contenttype-<dtml-var "plone_utils.normalizeString(id)">,
 #objectMenu .contenttype-<dtml-var "plone_utils.normalizeString(id)"> a:hover { 
-    background-position: 100% 1px;
+    background-position: 100% 0%;
 }
-#portlet-navigation-tree .contenttype-<dtml-var "plone_utils.normalizeString(id)"> { background-position: 100% 3px;}
-#portlet-navigation-tree .contenttype-<dtml-var "plone_utils.normalizeString(id)"> a:hover { background-position: 100% 2px; margin-right: -1px; margin-left: 0;}
+#portlet-navigation-tree .contenttype-<dtml-var "plone_utils.normalizeString(id)"> a:hover,
+#portlet-navigation-tree .contenttype-<dtml-var "plone_utils.normalizeString(id)"> a.navTreeCurrentItem {
+    background-position: 100% 3px; margin-right: -1px; margin-left: 0;
+}
+#portlet-navigation-tree .contenttype-<dtml-var "plone_utils.normalizeString(id)"> {
+    background-position: 100% 4px;
+}
 </dtml-in>
 
 <dtml-in "getActionIconList()">
