@@ -34,12 +34,16 @@
                             limit_display limit_display|request/limit_display|nothing;
                             more_url more_url|request/more_url|string:folder_contents;
                             contentsMethod python:test(here.portal_type=='Topic', here.queryCatalog, here.getFolderContents);
-                            folderContents folderContents|python:contentsMethod(contentFilter);
+                            folderContents folderContents|python:contentsMethod(contentFilter, batch=True);
                             use_view_action site_properties/typesUseViewActionInListings;
                             over_limit python: limit_display and len(folderContents) > limit_display;
-                            folderContents python: (over_limit and folderContents[:limit_display]) or folderContents;">
+                            folderContents python: (over_limit and folderContents[:limit_display]) or folderContents;
+                            batch folderContents">
         <tal:listing condition="folderContents"
                      define="toLocalizedTime nocall:here/toLocalizedTime;">
+
+            <!-- Navigation -->
+            <div metal:use-macro="here/batch_macros/macros/navigation" />
 
             <table class="listing">
                 <thead>
@@ -112,9 +116,9 @@
                                 </a>
                                 </tal:name>
                             </td>
-                            
+
                             <td tal:content="item_type_title"
-			        i18n:translate="">
+                                i18n:translate="">
                                 Page
                             </td>
 
@@ -126,7 +130,12 @@
                     </tr>
                     </tal:items>
             </table>
+
+            <!-- Navigation -->
+            <div metal:use-macro="here/batch_macros/macros/navigation" />
+
         </tal:listing>
+
         <metal:empty metal:define-slot="no_items_in_listing">
             <p class="discreet"
                tal:condition="not: folderContents"
