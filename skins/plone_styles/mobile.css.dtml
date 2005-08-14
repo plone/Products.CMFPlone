@@ -293,7 +293,7 @@ label {
     margin: 0.2em 0;
 }
 
-.actionMenu .actionMenuContent .actionSeperator a {
+.actionMenu .actionMenuContent .actionSeparator a {
     margin-top: 0.2em;
     padding-top: 0.2em;
     border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;

@@ -56,7 +56,7 @@
                                        title transition/name">File Menu Item 1</a>
                 </li>
                 </tal:block>
-                <li class="actionSeperator">
+                <li class="actionSeparator">
                     <a href="#" 
                        tal:attributes="href string:$here_url/content_status_history"
                        i18n:translate="label_advanced">Advanced&hellip;</a>
@@ -115,7 +115,7 @@
                         </a>
                     </li>
                 </tal:types>
-                <li style="text-align: right;" tal:condition="showMore">
+                <li tal:condition="showMore">
                     <a href="#" class="folderAddMore" title="Show all available content types"
                            i18n:attributes="title title_show_all_content_types;"
                            tal:attributes="href string:${addContext/absolute_url}/folder_factories;">
@@ -124,7 +124,7 @@
                           </tal:title>
                     </a>
                 </li>
-                <li class="actionSeperator" tal:condition="showSettings">
+                <li class="actionSeparator" tal:condition="showSettings">
                     <a href="#" class="folderAddSettings" title="Configure which content types can be added here"
                            i18n:attributes="title title_configure_addable_content_types;"
                            tal:attributes="href string:${addContext/absolute_url}/folder_constraintypes_form;">
@@ -231,7 +231,7 @@
 
                         <tal:parentDefaultPage condition="canSelectDefaultFolderPage">
                             <tal:haveSelectedLayout condition="python:selectedLayout != ''">
-                                <li class="actionSeperator">
+                                <li class="actionSeparator">
                                     <a title="Select an item to be used as default view in this folder" href="#"
                                        tal:attributes="href string:${parent_folder/absolute_url}/select_default_page;"
                                        i18n:attributes="title title_select_default_view_item;"
@@ -241,7 +241,7 @@
                                 </li>
                             </tal:haveSelectedLayout>
                             <tal:haveDefaultPage condition="python:selectedLayout == ''">
-                                <li class="actionSeperator">
+                                <li class="actionSeparator">
                                     <div class="currentDefaultPage selected">
                                         <span tal:replace="here/title_or_id"/>
                                     </div>
@@ -258,6 +258,13 @@
                         </tal:parentDefaultPage>
                     
                     </tal:parentViewsSelection>
+
+                    <!-- Separator - we have both parent views and context views -->
+                    <li class="actionSeparator" tal:condition="python:parentVocab and isContextDefaultPage and contextVocab">
+                        <div class="actionLabel" i18n:translate="label_current_item_views">
+                            Views of this item:
+                        </div>
+                    </li>
 
                     <!-- Context views menu: A document with selectable views, or a folder with no default-page selected.
                             Note: We turn off selection of a default-page regardless of the capabilities of the folder
@@ -297,7 +304,7 @@
 
                         <tal:contextDefaultPage condition="canSelectDefaultContextPage">
                             <tal:haveSelectedLayout condition="python:selectedLayout != ''">
-                                <li class="actionSeperator">
+                                <li class="actionSeparator">
                                     <a title="Select an item to be used as default view in this folder" href="#"
                                        tal:attributes="href string:${here/absolute_url}/select_default_page;"
                                        i18n:attributes="title title_select_default_page;"
@@ -307,7 +314,7 @@
                                 </li>
                             </tal:haveSelectedLayout>
                             <tal:haveDefaultPage condition="python:selectedLayout == ''">
-                                <li class="actionSeperator">
+                                <li class="actionSeparator">
                                     <div class="currentDefaultPage selected">
                                         <span tal:replace="defaultPage/title_or_id"/>
                                     </div>
@@ -330,7 +337,7 @@
                                 condition="python: canSelectDefaultFolderPage and not (parentVocab or contextVocab)"
                                 define="selectedLayout context/getLayout|nothing;">
                         <tal:haveSelectedLayout condition="python:selectedLayout != ''">
-                            <li class="actionSeperator">
+                            <li class="actionSeparator">
                                 <a title="Select an item to be used as default view in this folder" href="#"
                                    tal:attributes="href string:${parent_folder/absolute_url}/select_default_page;"
                                    i18n:attributes="title title_select_default_page;"
@@ -340,7 +347,7 @@
                             </li>
                         </tal:haveSelectedLayout>
                         <tal:haveDefaultPage condition="python:selectedLayout == ''">
-                            <li class="actionSeperator">
+                            <li class="actionSeparator">
                                 <div class="currentDefaultPage selected">
                                     <span tal:replace="here/title_or_id"/>
                                 </div>

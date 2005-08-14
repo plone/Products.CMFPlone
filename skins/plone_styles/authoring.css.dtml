@@ -474,18 +474,27 @@ ol.visualNoMarker {
     color: White;
 }
 
-.actionMenu .actionMenuContent .actionSeperator a {
+.actionMenu .actionMenuContent .actionSeparator a {
     margin-top: 0.2em;
     padding-top: 0.2em;
     border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
 }
 
-.actionMenu .actionMenuContent .actionSeperator div.currentDefaultPage {
+.actionMenu .actionMenuContent .actionSeparator div.currentDefaultPage {
     margin-top: 0.2em;
     padding: 0.2em 0.5em 0em 0.5em;
     white-space: nowrap;
     border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
 }
+
+.actionMenu .actionMenuContent .actionSeparator div.actionLabel {
+    margin-top: 0.2em;
+    padding: 0.2em 0.5em 0em 0.5em;
+    white-space: nowrap;
+    border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
+    font-style: italic;
+}
+
 
 .contentBatchAction {
     float: left !important;
