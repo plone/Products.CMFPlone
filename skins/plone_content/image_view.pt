@@ -17,6 +17,10 @@
             Title or id
         </h1>
     
+        <div metal:use-macro="here/document_byline/macros/byline">
+            Get the byline - contains details about author and modification date.
+        </div>
+
         <p class="documentDescription"
            tal:content="here/Description"
            tal:condition="here/Description">
@@ -24,36 +28,35 @@
         </p>
 
         <a href=""
+           class="discreet"
            tal:attributes="href string:${here/absolute_url}/image_view_fullscreen">
-            <tal:block condition="size" replace="structure here/tag" />
+            <tal:block condition="size" replace="structure python: here.tag(scale='preview')" />
+            <br />
+            <img src="" alt="" tal:replace="structure here/search_icon.gif" />
+            <span i18n:translate="label_click_to_view_full_image">
+            Click to view full-size image&hellip;
+            </span>
         </a>
 
+        <span class="discreet">
+        &mdash;
+            <span i18n:translate="label_size">Size</span>:
 
-        <div>    
-            <small>
-        
-                <span i18n:translate="label_size">Size</span>:
-        
-                <span tal:define="size python:here.getObjSize(here)"
-                      tal:content="size">
-                    File size
-                </span>
-        
-                <span tal:condition="python:test(size, 0, 1)"
-                      i18n:translate="no_image_uploaded">
-                    (No image has been uploaded yet)
-                </span>
-        
-            </small>
-        </div>
+            <span tal:define="size python:here.getObjSize(here)"
+                  tal:content="size">
+                File size
+            </span>
+
+            <span tal:condition="python:test(size, 0, 1)"
+                  i18n:translate="no_image_uploaded">
+                (No image has been uploaded yet)
+            </span>
+        </span>
 
         <div metal:use-macro="here/document_relateditems/macros/relatedItems">
             show related items if they exist
         </div>
         
-        <div metal:use-macro="here/document_byline/macros/byline">
-            Get the byline - contains details about author and modification date.
-        </div>
     </tal:main-macro>
 </div>
 
