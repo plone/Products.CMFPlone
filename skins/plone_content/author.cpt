@@ -15,7 +15,7 @@
     <tal:main-macro metal:define-macro="main"
                     tal:define="author python:(len(request.traverse_subpath) > 0 and request.traverse_subpath[0]) or request.get('author', None);
                                 portrait python: mtool.getPersonalPortrait(author);
-				portal_types portal/portal_types;
+                                portal_types portal/portal_types;
                                 authorinfo python: mtool.getMemberInfo(author);">
 
         <tal:noAuthor condition="not: authorinfo">
@@ -28,9 +28,14 @@
         <tal:haveAuthor condition="authorinfo">
         
         <!-- Author information -->
-        <h1 class="documentFirstHeading" tal:content="authorinfo/fullname">
+        <h1 class="documentFirstHeading" tal:condition="authorinfo/fullname" tal:content="authorinfo/fullname">
             Author name
         </h1>
+
+        <h1 class="documentFirstHeading" tal:condition="not: authorinfo/fullname" tal:content="author">
+            Author ID
+        </h1>
+
         
         <div class="discreet">
             <tal:location condition="authorinfo/location">
@@ -70,6 +75,18 @@
            i18n:translate="label_author_external_home_page">Author's external home page&hellip;</a>
         </p>
 
+        <div class="formControls" tal:condition="isAnon">
+        <form 
+          tal:define="pss modules/Products/PythonScripts/standard"
+          tal:attributes="action string:$portal_url/login_form">
+           <input class="standalone"
+               type="submit"
+               value="Log in to send feedback"
+               i18n:attributes="value label_login_to_send_feedback;"
+               />
+        </form>
+        </div>
+
         <!-- feedback form -->        
         <tal:feedbackForm condition="not:isAnon">
         
@@ -95,6 +112,11 @@
                 Subject
               </label>
 
+              <span class="fieldRequired" title="Required"
+                      i18n:attributes="title title_required;"
+                      i18n:translate="label_required">(Required)</span>
+
+              <br />
               <input type="text" 
                      id="subject" 
                      name="subject" 
@@ -111,6 +133,10 @@
                 Message
               </label>
         
+              <span class="fieldRequired" title="Required"
+                      i18n:attributes="title title_required;"
+                      i18n:translate="label_required">(Required)</span>
+
               <textarea name="message"
                         id="message"
                         rows="5"
@@ -118,7 +144,7 @@
                         tabindex=""
                         tal:attributes="tabindex tabindex/next;"
                         tal:content="request/message|nothing"
-                        > </textarea>
+                        ></textarea>
             </div>
         
             <div class="formControls">
@@ -156,7 +182,7 @@
                 <tal:repeat repeat="content_by_type author_content">
                     <tr>
                         <th colspan="2"
-			    i18n:translate=""
+                            i18n:translate=""
                             tal:content="python: portal_types.getTypeInfo(content_by_type['portal_type']).Title()">
                             Type
                         </th>
@@ -188,15 +214,6 @@
     </tal:haveAuthor>
 
     </tal:main-macro>
-    <form tal:condition="isAnon"
-      tal:define="pss modules/Products/PythonScripts/standard"
-      tal:attributes="action string:$portal_url/login_form">
-       <input class="standalone"
-           type="submit"
-           value="Log in to send feedback"
-           i18n:attributes="value label_login_to_send_feedback;"
-           />
-    </form>
 
 </metal:main>
 

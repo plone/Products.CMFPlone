@@ -151,7 +151,7 @@ li.navTreeCurrentItem {
 li.navTreeCurrentItem a,
 li.navTreeCurrentItem a:hover {
     display: block;
-    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBackgroundColor; !important;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBackgroundColor;;
     min-height: 1.6em;
     line-height: 1.6em;
     height: auto;

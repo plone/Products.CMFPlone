@@ -37,10 +37,11 @@
               <label for="sender_fullname" i18n:translate="label_sender_fullname">
                 Name
               </label>
+
               <div class="formHelp" i18n:translate="help_sender_fullname">
                 Please enter your full name
               </div>
-   
+
               <div tal:content="error">Validation error output</div>            
 
               <input type="text" 
