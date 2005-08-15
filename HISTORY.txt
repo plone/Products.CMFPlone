@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - unreleased
 
+    - Fixed http://plone.org/collector/4449 by removing direct attribute
+      access from file_view template.
+      [alecm]
+
     - Made the navtree respect the new NonStructuralFolderInterface by
       checking is_folderish to determine if children should be shown.
       [alecm]

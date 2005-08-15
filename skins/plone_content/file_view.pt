@@ -8,7 +8,7 @@
 <div metal:fill-slot="main">
     <tal:main-macro metal:define-macro="main" 
            tal:define="size python:here.getObjSize(here);
-                       content_type here/content_type;
+                       content_type here/get_content_type;
                       ">
         <div metal:use-macro="here/document_actions/macros/document_actions">
             Document actions (print, sendto etc)
@@ -54,7 +54,7 @@
             File type
             </span>
     
-            <span tal:content="here/content_type">
+            <span tal:content="content_type">
             Content type
             </span>
         </small>
