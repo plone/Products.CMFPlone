@@ -113,12 +113,7 @@ dd.portletFooter {
 /* fixes for the drop down menus */
 
 * html #objectMenu.actionMenu .actionMenuContent li {
-    width: 20em;
-}
-
-* html #objectMenu.actionMenu .actionMenuContent li a,
-* html #objectMenu.actionMenu .actionMenuContent li a:hover {
-    position: relative;
+    height: auto;
 }
 
 /* </dtml-with> */
