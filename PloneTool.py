@@ -40,7 +40,7 @@ DateTime.SyntaxError
 from Products.CMFPlone.UnicodeNormalizer import normalizeUnicode
 from Products.CMFPlone.PloneFolder import ReplaceableWrapper
 
-AllowSendto = "Allow sendto"
+AllowSendto = 'Allow sendto'
 CMFCorePermissions.setDefaultRoles(AllowSendto,
                                    ('Anonymous', 'Manager',))
 
@@ -145,7 +145,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     security.declareProtected(AllowSendto, 'sendto')
     def sendto(self, send_to_address, send_from_address, comment,
-               subject='Plone', **kwargs ):
+               subject='Plone', **kwargs):
         """Sends a link of a page to someone."""
         host = self.getMailHost()
         template = getattr(self, 'sendto_template')
@@ -157,13 +157,11 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         # Cook from template
         message = template(self, send_to_address=send_to_address,
                            send_from_address=send_from_address,
-                           comment=comment, subject=subject, **kwargs
-                          )
+                           comment=comment, subject=subject, **kwargs)
         result = host.secureSend(message, send_to_address,
                                  envelope_from, subject=subject,
                                  subtype='plain', charset=encoding,
-                                 debug=False, From=send_from_address
-                                )
+                                 debug=False, From=send_from_address)
 
     security.declarePublic('validateSingleNormalizedEmailAddress')
     def validateSingleNormalizedEmailAddress(self, address):
@@ -352,7 +350,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         try:
             actionicons = getToolByName(self, 'portal_actionicons')
             iconinfo = actionicons.getActionIcon(category, id)
-            icon = _icons.setdefault( (category, id), iconinfo )
+            icon = _icons.setdefault((category, id), iconinfo)
         except KeyError:
             if default is not _marker:
                 icon = default
@@ -1092,10 +1090,11 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     security.declarePublic('isStructuralFolder')
     def isStructuralFolder(self, obj):
-        """Checks if a given object is a "structural folder", that is, a 
-        folderish item which does not explicitly implement INonStructuralFolder
-        to declare that it doesn't wish to be treated as a folder by the navtree,
-        the tab generation etc.
+        """Checks if a given object is a "structural folder".
+
+        That is, a folderish item which does not explicitly implement
+        INonStructuralFolder to declare that it doesn't wish to be treated
+        as a folder by the navtree, the tab generation etc.
         """
         if not obj.isPrincipiaFolderish:
             return False
@@ -1114,11 +1113,10 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         mt = getToolByName(self, 'portal_membership')
         if not mt.checkPermission(CMFCorePermissions.ModifyPortalContent, obj):
             raise Unauthorized
-
         # Set local role status
-        gruf = getToolByName( self, 'portal_url' ).getPortalObject().acl_users
-        gruf._acquireLocalRoles(obj, status)   # We perform our own security check
-
+        gruf = getToolByName(self, 'portal_url').getPortalObject().acl_users
+        # We perform our own security check
+        gruf._acquireLocalRoles(obj, status)
         # Reindex the whole stuff.
         obj.reindexObjectSecurity()
 
@@ -1129,8 +1127,8 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         True if normal, false if blocked.
         GRUF IS REQUIRED FOR THIS TO WORK.
         """
-        gruf = getToolByName( self, 'portal_url' ).getPortalObject().acl_users
-        return gruf.isLocalRoleAcquired(obj, )
+        gruf = getToolByName(self, 'portal_url').getPortalObject().acl_users
+        return gruf.isLocalRoleAcquired(obj)
 
     security.declarePublic('getOwnerName')
     def getOwnerName(self, obj):
@@ -1300,7 +1298,9 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                 expires = None
 
             # Filter out DWIMish artifacts on effective / expiration dates
-            if effective is not None and effective > FLOOR_DATE and effective != created:
+            if effective is not None and \
+               effective > FLOOR_DATE and \
+               effective != created:
                 eff_str = effective.Date()
             else:
                 eff_str = ''
@@ -1355,7 +1355,8 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                                                                     parent):
             return
         cat = getToolByName(self, 'portal_catalog')
-        cataloged_objs = cat(path = {'query':'/'.join(parent.getPhysicalPath()), 'depth': 1})
+        cataloged_objs = cat(path = {'query':'/'.join(parent.getPhysicalPath()),
+                                     'depth': 1})
         for brain in cataloged_objs:
             obj = brain.getObject()
             # Don't crash when the catalog has contains a stale entry
@@ -1370,7 +1371,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     security.declarePublic('isIDAutoGenerated')
     def isIDAutoGenerated(self, id):
         """Determine if an id is autogenerated"""
-        autogenerated=False
+        autogenerated = False
 
         # In 2.1 non-autogenerated is the common case, caught exceptions are
         # expensive, so let's make a cheap check first
@@ -1380,12 +1381,14 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         try:
             pt = getToolByName(self, 'portal_types')
             obj_type, date_created, random_number = id.split('.')
-            type=' '.join(obj_type.split('_'))
-            portaltypes=pt.objectIds()
-            # new autogenerated ids may have a lower case portal type
-            if (type in portaltypes or type in [pt.lower() for pt in portaltypes] ) \
-            and DateTime(date_created) and float(random_number):
-                autogenerated=True
+            type = ' '.join(obj_type.split('_'))
+            portaltypes = pt.objectIds()
+            # New autogenerated ids may have a lower case portal type
+            if (type in portaltypes or \
+               type in [pt.lower() for pt in portaltypes]) \
+               and DateTime(date_created) \
+               and float(random_number):
+                autogenerated = True
         except (ValueError, AttributeError, IndexError, DateTime.DateTimeError):
             pass
 
@@ -1397,7 +1400,8 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         empty = self.utf8_portal('\x5b\xc2\xb7\xc2\xb7\xc2\xb7\x5d', 'ignore')
         if translated:
             trans = getToolByName(self, 'translation_service')
-            empty = trans.utranslate(domain='plone', msgid='title_unset', default=empty)
+            empty = trans.utranslate(domain='plone', msgid='title_unset',
+                                     default=empty)
         return empty
 
     def pretty_title_or_id(self, obj, empty_value=_marker):
