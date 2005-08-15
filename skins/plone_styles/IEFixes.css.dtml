@@ -55,6 +55,10 @@ position: relative;
     top: 1.4em;
 }
 
+.documentActions {
+    margin-bottom: -2em;
+}
+
 /* Calendar fixes */
 .ploneCalendar .todaynoevent,
 .ploneCalendar .todayevent {

@@ -406,12 +406,14 @@
 .documentActions {
     float: right;
     margin: 0.4em 0 0 0.5em;
-    clear: none;
+    padding: 0;
+    text-align: right;
 }
 
 .documentActions ul {
-    margin: 0 0 0 0;
-    display: block;
+    margin: 0;
+    padding: 0;
+    display: inline;
 }
 
 
@@ -419,6 +421,8 @@
     display: inline;
     list-style: none;
     list-style-image: none;
+    margin: 0;
+    padding: 0;
 }
 .documentActions a {
     border: 0;
