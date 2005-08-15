@@ -24,7 +24,7 @@
 
 <dtml-in "portal_types.listTypeInfo()">
     .contenttype-<dtml-var "plone_utils.normalizeString(id)">,
-    #objectMenu .contenttype-<dtml-var "plone_utils.normalizeString(id)"> a:hover { 
+    .actionMenu .contenttype-<dtml-var "plone_utils.normalizeString(id)"> a:hover { 
         background-image: url(<dtml-var portal_url>/<dtml-var getIcon>); 
         background-repeat: no-repeat; 
         background-position: 0% 0%;
@@ -33,17 +33,22 @@
     * html .contenttype-<dtml-var "plone_utils.normalizeString(id)"> { 
         height: 1%;
     }
+    #portal-sitemap .contenttype-<dtml-var "plone_utils.normalizeString(id)"> a:hover,
+    #portal-sitemap .contenttype-<dtml-var "plone_utils.normalizeString(id)"> a.navTreeCurrentItem,
     #portlet-navigation-tree .contenttype-<dtml-var "plone_utils.normalizeString(id)"> a:hover,
     #portlet-navigation-tree .contenttype-<dtml-var "plone_utils.normalizeString(id)"> a.navTreeCurrentItem {
         background-image: url(<dtml-var portal_url>/<dtml-var getIcon>);
         background-repeat: no-repeat;
         background-position: 0% 3px;
     }
+    #portal-sitemap .contenttype-<dtml-var "plone_utils.normalizeString(id)">,
     #portlet-navigation-tree .contenttype-<dtml-var "plone_utils.normalizeString(id)"> {
         background-position: 0% 4px;
     }
+    * html #portal-sitemap .contenttype-<dtml-var "plone_utils.normalizeString(id)"> a:hover,
+    * html #portal-sitemap .contenttype-<dtml-var "plone_utils.normalizeString(id)"> a.navTreeCurrentItem,
     * html #portlet-navigation-tree .contenttype-<dtml-var "plone_utils.normalizeString(id)"> a:hover,
-    * html #portlet-navigation-tree .contenttype-<dtml-var "plone_utils.normalizeString(id)"> a.navTreeCurrentItem    {
+    * html #portlet-navigation-tree .contenttype-<dtml-var "plone_utils.normalizeString(id)"> a.navTreeCurrentItem {
         position: relative;
     }
     .listing .contenttype-<dtml-var "plone_utils.normalizeString(id)"> { 
