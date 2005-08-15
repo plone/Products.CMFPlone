@@ -617,6 +617,18 @@ class TestNavTree(PloneTestCase.PloneTestCase):
         tree = self.utils.createNavTree(self.portal.folder2.file21)
         self.assertEqual(tree['children'][-1]['show_children'],False)
 
+    def testNonStructuralFolderHidesChildren(self):
+        # Make sure NonStructuralFolders act as if parentMetaTypesNotToQuery
+        # is set.
+        f = dummy.NonStructuralFolder('ns_folder')
+        self.folder._setObject('ns_folder', f)
+        self.portal.portal_catalog.reindexObject(self.folder.ns_folder)
+        self.portal.portal_catalog.reindexObject(self.folder)
+        tree = self.utils.createNavTree(self.folder.ns_folder)
+        self.assertEqual(tree['children'][0]['children'][0]['children'][0]['path'],
+                                '/portal/Members/test_user_1_/ns_folder')
+        self.assertEqual(tree['children'][0]['children'][0]['children'][0]['show_children'],False)
+
     def testCreateSitemap(self):
         # Internally createSitemap is the same as createNavTree
         tree = self.utils.createSitemap(self.portal)
@@ -859,11 +871,11 @@ class TestPortalTabs(PloneTestCase.PloneTestCase):
         self.failIf(self.utils.isStructuralFolder(i))
 
     def testIsStructuralFolderWithFolder(self):
-        f = dummy.Folder()
+        f = dummy.ATFolder('struct_folder')
         self.failUnless(self.utils.isStructuralFolder(f))
 
     def testIsStructuralFolderWithNonStructuralFolder(self):
-        f = dummy.NonStructuralFolder()
+        f = dummy.NonStructuralFolder('ns_folder')
         self.failIf(self.utils.isStructuralFolder(f))
 
 

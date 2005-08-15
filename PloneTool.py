@@ -600,7 +600,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                     'portal_type': item.portal_type,
                     'review_state': item.review_state,
                     'Description':item.Description,
-                    'show_children':item.portal_type not in parentTypesNQ,
+                    'show_children':item.is_folderish and item.portal_type not in parentTypesNQ,
                     'children':[],
                     'no_display': excluded_ids.has_key(item.getId) or not not item.exclude_from_nav}
             self._addToNavTreeResult(result, data)

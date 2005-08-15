@@ -849,11 +849,11 @@ class TestExtensibleIndexableObjectWrapper(PloneTestCase.PloneTestCase):
         self.failIf(is_folderish(i))
 
     def test_is_folderishWithFolder(self):
-        f = dummy.Folder()
+        f = dummy.ATFolder('struct_folder')
         self.failUnless(is_folderish(f))
 
     def test_is_folderishWithNonStructuralFolder(self):
-        f = dummy.NonStructuralFolder()
+        f = dummy.NonStructuralFolder('ns_folder')
         self.failIf(is_folderish(f))
 
 
