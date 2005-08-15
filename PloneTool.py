@@ -694,7 +694,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                                           default=data['name'])
                 result.append(data)
 
-        # we only want actions
+        # check whether we only want actions
         if stp.getProperty('disable_folder_sections', None):
             return result
 
