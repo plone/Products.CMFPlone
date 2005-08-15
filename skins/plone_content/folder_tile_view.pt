@@ -45,7 +45,7 @@
             <!-- Navigation -->
             <div metal:use-macro="here/batch_macros/macros/navigation" />
 
-            <div class="tileItem" tal:repeat="item folderContents">
+            <div class="tileItem visualIEFloatFix" tal:repeat="item folderContents">
                 <tal:block tal:define="item_url item/getURL|item/absolute_url;
                                        item_id item/getId|item/id;
                                        item_title_or_id item/pretty_title_or_id;
