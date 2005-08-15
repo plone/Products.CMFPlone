@@ -673,15 +673,30 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             return {}
 
     security.declarePublic('createTopLevelTabs')
-    def createTopLevelTabs(self):
+    def createTopLevelTabs(self, actions=None):
         """Returns a structure for the top level tabs."""
         ct = getToolByName(self, 'portal_catalog')
         ntp = getToolByName(self, 'portal_properties').navtree_properties
         stp = getToolByName(self, 'portal_properties').site_properties
         view_action_types = stp.getProperty('typesUseViewActionInListings')
 
+        # Build result dict
+        result = []
+        # first the actions
+        if actions is not None:
+            trans = getToolByName(self, 'translation_service')
+            utranslate = trans.utranslate
+            for action_info in actions.get('portal_tabs', []):
+                data = action_info.copy()
+                data['name'] = utranslate('plone',
+                                          data['name'],
+                                          context=self,
+                                          default=data['name'])
+                result.append(data)
+
+        # we only want actions
         if stp.getProperty('disable_folder_sections', None):
-            return []
+            return result
 
         custom_query = getattr(self, 'getCustomNavQuery', None)
         if custom_query is not None and safe_callable(custom_query):
@@ -715,8 +730,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
         rawresult = ct(**query)
 
-        # Build result dict
-        result = []
+        # now add the content to results
         for item in rawresult:
             if not (excluded_ids.has_key(item.getId) or item.exclude_from_nav):
                 item_url = (item.portal_type in view_action_types and

@@ -25,7 +25,7 @@
         global workflow_actions actions/workflow;
         global folder_actions actions/folder;
         global global_actions actions/global;
-        global portal_tabs python:actions.get('portal_tabs', []) + putils.createTopLevelTabs();
+        global portal_tabs python:putils.createTopLevelTabs(actions);
         global wf_state python:wtool.getInfoFor(here,'review_state',None);
         global portal_properties portal/portal_properties;
         global site_properties portal_properties/site_properties;

@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - unreleased
 
+    - Moved concatenation of actions and content to createTopLevelTabs. The
+      translation of action titles is done there as well now.
+      [fschulze]
+
     - Fixed several problems in migration of ResourceRegistries.
       [fschulze]
 
