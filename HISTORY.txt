@@ -4,6 +4,17 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - unreleased
 
+    - Added explicit permission checks to prefs_users_overview and
+      prefs_groups_overview to prevent unnecessary exposure of sensitive
+      roles and groups security information.
+      (see http://members.plone.org/collector/4491)
+      [rafrombrc]
+
+    - Added 'raiseUnauthorized' python script to plone_scripts as a
+      convenience for Unauthorized exceptions to be raised from within
+      page templates.
+      [rafrombrc]
+
     - Fixed http://plone.org/collector/4449 by removing direct attribute
       access from file_view template.
       [alecm]

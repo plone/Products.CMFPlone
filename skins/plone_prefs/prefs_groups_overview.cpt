@@ -15,7 +15,8 @@
                 b_size python:20;
                 portal_roles here/getGlobalPortalRoles;">
 
-      <div id="content" class="documentEditable">
+      <div id="content" class="documentEditable"
+           tal:condition="python:checkPermission('Manage groups', here)">
 	<!-- simulating views on the groups/user pages until we have real objects. -->
 	<ul class="contentViews">
 	  <li class="">
@@ -35,8 +36,7 @@
 	</div>        
 
 	<div class="documentContent">
-	  <a name="documentContent"></a>
-	  
+
 	  <div metal:use-macro="here/global_statusmessage/macros/portal_message">
 	    Portal status message
 	  </div>
@@ -207,6 +207,11 @@
 </div>
 
 </div>
+
+      <div id="content" class="documentEditable"
+           tal:condition="python:not checkPermission('Manage groups', here)">
+        <tal:block replace="here/raiseUnauthorized" />
+      </div>
 
 </div>
 
