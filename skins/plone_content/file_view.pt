@@ -8,7 +8,7 @@
 <div metal:fill-slot="main">
     <tal:main-macro metal:define-macro="main" 
            tal:define="size python:here.getObjSize(here);
-                       content_type here/get_content_type;
+                       content_type here/get_content_type|here/Format;
                       ">
         <div metal:use-macro="here/document_actions/macros/document_actions">
             Document actions (print, sendto etc)
