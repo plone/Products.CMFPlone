@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - unreleased
 
+    - At the request of the i18n team I renamed Tile View to Summary View,
+      since this is easier to translate.
+      If you are running an SVN checkout between RC2 and RC3, please re-run
+      migrations from RC2 to get the right template name and reference.
+      [limi]
+
     - Added explicit permission checks to prefs_users_overview and
       prefs_groups_overview to prevent unnecessary exposure of sensitive
       roles and groups security information.
