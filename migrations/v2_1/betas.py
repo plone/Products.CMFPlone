@@ -682,9 +682,9 @@ def fixContentActionConditions(portal,out):
         },
         {'id'        : 'copy',
          'name'      : 'Copy',
-         'action'    : 'python:"%s/object_delete"%(object.isDefaultPageInFolder() and object.getParentNode().absolute_url() or object_url)',
-         'condition' : 'python:object is not portal and not (object.isDefaultPageInFolder() and object.getParentNode() is portal)',
-         'permission': CMFCorePermissions.Permissions.copy_or_move,
+         'action'    : 'python:"%s/object_copy"%(object.isDefaultPageInFolder() and object.getParentNode().absolute_url() or object_url)',
+         'condition' : 'python: portal.portal_membership.checkPermission("Copy or Move", object) and object is not portal and not (object.isDefaultPageInFolder() and object.getParentNode() is portal)',
+         'permission': CMFCorePermissions.View,
          'category'  : 'object_buttons',
         },)
 

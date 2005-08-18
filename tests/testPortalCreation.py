@@ -516,6 +516,18 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         for url in urls:
             self.failIf('index_html' in url, 'Action wrongly applied to default page object %s'%url)
 
+    def testObjectButtonActionsPerformCorrectAction(self):
+        # only a manager would have proper permissions
+        self.setRoles(['Manager', 'Member'])
+        self.folder.invokeFactory('Document','index_html')
+        acts = self.actions.listFilteredActionsFor(self.folder.index_html)
+        buttons = acts['object_buttons']
+        self.failUnless(len(buttons), 3)
+        urls = [(a['id'],a['url']) for a in buttons]
+        for url in urls:
+            # ensure that e.g. the 'copy' url contains object_copy
+            self.failUnless('object_'+url[0] in url[1], "%s does not perform the expected object_%s action"%(url[0],url[0]))
+
     def testPortalSharingActionIsLocalRoles(self):
         fti = getattr(self.types, 'Plone Site')
         haveSharing = False
