@@ -4,6 +4,13 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - unreleased
 
+    - Fixed http://members.plone.org/collector/4502 by reverting to the old
+      nasty deprecated _usage method of doing things.  This should be cleaned
+      up once zope 2.7.8/2.8.2 comes out and make_query is fixed.
+      queryCatalog automatically converts the _usage style queries into proper
+      dict based queries, but it's still bad form.
+      [alecm]
+
     - At the request of the i18n team I renamed Tile View to Summary View,
       since this is easier to translate.
       If you are running an SVN checkout between RC2 and RC3, please re-run

@@ -73,7 +73,7 @@
                 keywords.
                 </div>
 
-                <select name="Subject.query:record:list"
+                <select name="Subject:list"
                         id="Subject"
                         size="7"
                         multiple="multiple"
@@ -93,7 +93,7 @@
                 <br />
 
                 <input type="radio"
-                       name="Subject.operator:record:ignore_empty"
+                       name="Subject_usage:ignore_empty"
                        id="Subject_or"
                        value=""
                        class="noborder"
@@ -106,9 +106,9 @@
                     <br />
 
                 <input type="radio"
-                        name="Subject.operator:record:ignore_empty"
+                        name="Subject_usage:ignore_empty"
                         id="Subject_and"
-                        value="and"
+                        value="operator:and"
                         class="noborder"
                         tabindex=""
                         tal:attributes="tabindex tabindex/next;
@@ -144,14 +144,14 @@
                 </div>
     
                 <tal:datetime define="today python:DateTime().earliestTime()">
-                <select name="created.query:list:record:date"
+                <select name="created:list:date"
                         id="created"
                         tabindex=""
                         tal:attributes="tabindex tabindex/next;"
                         tal:define="yesterday python:(today-1).Date();
                                     lastweek python:(today-7).Date();
                                     lastmonth python:(today-31).Date();
-                                    ever string:1970/02/01 00:00:00 GMT;">
+                                    ever string:1970/02/01;">
                     <option value="#"
                             tal:condition="not: isAnon"
                             tal:attributes="value python:member.getProperty('last_login_time')"
@@ -163,7 +163,7 @@
                 </select>
                 </tal:datetime>
 
-                <input type="hidden" name="created.range:record" value="min" />
+                <input type="hidden" name="created_usage" value="range:min" />
             </div>
     
             <div class="field" tal:define="portal_types portal/portal_types;">
