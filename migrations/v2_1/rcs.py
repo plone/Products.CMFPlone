@@ -45,8 +45,8 @@ def rc1_rc2(portal):
     return out
 
 
-def rc2_final(portal):
-    """2.1-rc2 -> 2.1-final
+def rc2_rc3(portal):
+    """2.1-rc2 -> 2.1-rc3
     """
     out = []
 
