@@ -2,7 +2,7 @@ Changelog for Plone
 
    (name of developer listed in brackets)
 
-Plone 2.1 - Plaid - unreleased
+Plone 2.1 - Plaid - RC3 - Released August 18, 2005
 
     - Changed the copy action to be restricted by 'View' as 'Copy or Move' is
       generally available to anonymous even when 'View' is not.
