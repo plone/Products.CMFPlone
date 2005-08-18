@@ -81,12 +81,15 @@ Installing Plone manually, step by step instructions.
      Note: You have to build PIL with jpeg and png support. See the README
      of PIL for more information.
  
-  - Placeless Translation Service 1.2.0
+  - Placeless Translation Service 1.2.1 or newer
      Included in the Plone tarball 
 
   - PloneTranslations 2.1
      Included in the Plone tarball 
-     
+
+  - PloneLanguageTool 0.6 or newer
+     Included in the Plone tarball
+
 =============================================================================== 
  
  
@@ -167,6 +170,7 @@ Installing Plone manually, step by step instructions.
    MimetypesRegistry
    PlacelessTranslationService
    PloneErrorReporting
+   PloneLanguageTool
    PloneTranslations
    PortalTransforms
    ResourceRegistries
