@@ -2,7 +2,13 @@ Changelog for Plone
 
    (name of developer listed in brackets)
 
-Plone 2.1 - Plaid - RC3 - Released August 18, 2005
+Plone 2.1 - Plaid - after RC3 - unreleased
+
+    - Fixed http://plone.org/collector/4484 - 'My Preferences' action title
+      is 'Preferences' in 2.1
+      [hannosch]
+
+   RC3 - Released August 18, 2005
 
     - Changed the copy action to be restricted by 'View' as 'Copy or Move' is
       generally available to anonymous even when 'View' is not.

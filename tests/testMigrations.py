@@ -109,7 +109,7 @@ from Products.CMFPlone.migrations.v2_1.rcs import addDateCriterionToEventsTopic
 from Products.CMFPlone.migrations.v2_1.rcs import fixDuplicatePortalRootSharingAction
 from Products.CMFPlone.migrations.v2_1.rcs import moveDefaultTopicsToPortalRoot
 from Products.CMFPlone.migrations.v2_1.rcs import alterSortCriterionOnNewsTopic
-
+from Products.CMFPlone.migrations.v2_1.rcs import fixPreferenceActionTitle
 
 from Products.CMFDynamicViewFTI.migrate import migrateFTI
 
@@ -2952,6 +2952,41 @@ class TestMigrations_v2_1(MigrationTest):
         topic.setSortCriterion('created', False)
         self.portal._delObject('portal_atct')
         alterSortCriterionOnNewsTopic(self.portal, [])
+        
+    def testFixPreferenceActionTitle(self):
+        # Should change the preferences action title
+        new_actions = self.membership._cloneActions()
+        for action in new_actions:
+            if action.getId() == 'preferences':
+                action.title = 'My Preferences'
+        self.membership._actions = new_actions
+        fixPreferenceActionTitle(self.portal, [])
+        actions = self.membership.listActions()
+        pref_actions = [x for x in actions if x.id == 'preferences']
+        self.failUnless(pref_actions[0].title == 'Preferences')
+
+    def testFixPreferenceActionTitleTwice(self):
+        # Should not fail if migrated twice
+        new_actions = self.membership._cloneActions()
+        for action in new_actions:
+            if action.getId() == 'preferences':
+                action.title = 'My Preferences'
+        self.membership._actions = new_actions
+        fixPreferenceActionTitle(self.portal, [])
+        fixPreferenceActionTitle(self.portal, [])
+        actions = self.membership.listActions()
+        pref_actions = [x for x in actions if x.id == 'preferences']
+        self.failUnless(pref_actions[0].title == 'Preferences')
+
+    def testFixPreferenceActionTitleNoAction(self):
+        # Should not fail if the action is already gone
+        self.removeActionFromTool('preferences', action_provider='portal_membership')
+        fixPreferenceActionTitle(self.portal, [])
+
+    def testFixPreferenceActionTitleNoTool(self):
+        # Should not fail if portal_membership is missing
+        self.portal._delObject('portal_membership')
+        fixPreferenceActionTitle(self.portal, [])
 
 
 def test_suite():

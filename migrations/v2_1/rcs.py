@@ -62,7 +62,7 @@ def rc2_rc3(portal):
     # Redo action changes due to bad override
     fixContentActionConditions(portal, out)
 
-    # Change views available on foderish objects
+    # Change views available on folderish objects
     changeAvailableViewsForFolders(portal, out)
 
     # Move News and Events topics to portal root
@@ -70,6 +70,11 @@ def rc2_rc3(portal):
 
     # Sort news topic on effective date
     alterSortCriterionOnNewsTopic(portal, out)
+
+    # After RC3:
+
+    # Fix preference action title
+    fixPreferenceActionTitle(portal, out)
 
     return out
 
@@ -276,3 +281,15 @@ def alterSortCriterionOnNewsTopic(portal, out):
         if 'crit__effective_ATSortCriterion' not in topic.objectIds():
             topic.setSortCriterion('effective', True)
             out.append('Added sort on effective to news topic.')
+
+def fixPreferenceActionTitle(portal, out):
+    """ Change the My Preferences action title to Preferences"""
+    membershipTool = getToolByName(portal, 'portal_membership', None)
+    if membershipTool is not None:
+        new_actions = membershipTool._cloneActions()
+        for action in new_actions:
+            if action.getId() == 'preferences' and action.title == 'My Preferences':
+                action.title = 'Preferences'
+        membershipTool._actions = new_actions
+        out.append("Fixed preferences action title")
+
