@@ -44,7 +44,6 @@ def rc1_rc2(portal):
 
     return out
 
-
 def rc2_rc3(portal):
     """2.1-rc2 -> 2.1-rc3
     """
@@ -82,6 +81,8 @@ def rc3_final(portal):
 
     # Change News topic to use summary view as default
     changeNewsTopicDefaultView(portal, out)
+
+    return out
 
 
 def changeAvailableViewsForFolders(portal, out):
