@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - after RC3 - unreleased
 
+    - Made Summary View the default view for the news topic.
+      [alecm]
+
     - Fixed http://plone.org/collector/4499 - removed vestigial
       failsafe_login.pt.metadata
       [hannosch]

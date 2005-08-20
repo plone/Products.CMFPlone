@@ -110,6 +110,7 @@ from Products.CMFPlone.migrations.v2_1.rcs import fixDuplicatePortalRootSharingA
 from Products.CMFPlone.migrations.v2_1.rcs import moveDefaultTopicsToPortalRoot
 from Products.CMFPlone.migrations.v2_1.rcs import alterSortCriterionOnNewsTopic
 from Products.CMFPlone.migrations.v2_1.rcs import fixPreferenceActionTitle
+from Products.CMFPlone.migrations.v2_1.rcs import changeNewsTopicDefaultView
 
 from Products.CMFDynamicViewFTI.migrate import migrateFTI
 
@@ -2988,6 +2989,27 @@ class TestMigrations_v2_1(MigrationTest):
         self.portal._delObject('portal_membership')
         fixPreferenceActionTitle(self.portal, [])
 
+    def testChangeNewsTopicDefaultView(self):
+        # Should change the news topic default view to folder_summary_view
+        news = self.portal.news
+        news.setLayout('folder_listing')
+        self.assertEqual(news.getLayout(), 'folder_listing')
+        changeNewsTopicDefaultView(self.portal, [])
+        self.assertEqual(news.getLayout(), 'folder_summary_view')
+
+    def testChangeNewsTopicDefaultViewTwice(self):
+        # Should not fail if migrated twice
+        news = self.portal.news
+        news.setLayout('folder_listing')
+        self.assertEqual(news.getLayout(), 'folder_listing')
+        changeNewsTopicDefaultView(self.portal, [])
+        changeNewsTopicDefaultView(self.portal, [])
+        self.assertEqual(news.getLayout(), 'folder_summary_view')
+
+    def testChangeNewsTopicDefaultViewNoTopic(self):
+        # Should not fail if the topic is missing
+        self.portal._delObject('news')
+        changeNewsTopicDefaultView(self.portal, [])
 
 def test_suite():
     from unittest import TestSuite, makeSuite

@@ -71,12 +71,17 @@ def rc2_rc3(portal):
     # Sort news topic on effective date
     alterSortCriterionOnNewsTopic(portal, out)
 
-    # After RC3:
+    return out
+
+def rc3_final(portal):
+    """2.1-rc3->2.1-final"""
+    out = []
 
     # Fix preference action title
     fixPreferenceActionTitle(portal, out)
 
-    return out
+    # Change News topic to use summary view as default
+    changeNewsTopicDefaultView(portal, out)
 
 
 def changeAvailableViewsForFolders(portal, out):
@@ -273,6 +278,7 @@ def moveDefaultTopicsToPortalRoot(portal, out):
         # Reset adding of Large plone folder
         lpf_fti.global_allow = orig
 
+
 def alterSortCriterionOnNewsTopic(portal, out):
     """Add past events subtopic the events topic"""
     topic = getattr(portal ,'news', None)
@@ -281,6 +287,7 @@ def alterSortCriterionOnNewsTopic(portal, out):
         if 'crit__effective_ATSortCriterion' not in topic.objectIds():
             topic.setSortCriterion('effective', True)
             out.append('Added sort on effective to news topic.')
+
 
 def fixPreferenceActionTitle(portal, out):
     """ Change the My Preferences action title to Preferences"""
@@ -293,3 +300,10 @@ def fixPreferenceActionTitle(portal, out):
         membershipTool._actions = new_actions
         out.append("Fixed preferences action title")
 
+
+def changeNewsTopicDefaultView(portal, out):
+    """Use summary view for news topic"""
+    topic = getattr(portal, 'news', None)
+    if topic is not None:
+        topic.setLayout('folder_summary_view')
+        out.append("Changed News Topic default view to folder_summary_view.")

@@ -265,12 +265,13 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
 
     def testNewsTopic(self):
         # News topic is in place as default view and has a criterion to show
-        # only News Items.
+        # only News Items, and uses the folder_summary_view.
         self.failUnless('news' in self.portal.objectIds())
         topic = getattr(self.portal.aq_base, 'news')
         self.assertEqual(topic._getPortalTypeName(), 'Topic')
         self.assertEqual(topic.buildQuery()['Type'], ('News Item',))
         self.assertEqual(topic.buildQuery()['review_state'], 'published')
+        self.assertEqual(topic.getLayout(), 'folder_summary_view')
 
     def testEventsTopic(self):
         # Events topic is in place as default view and has criterion to show
