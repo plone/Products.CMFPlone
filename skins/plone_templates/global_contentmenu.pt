@@ -172,8 +172,8 @@
                                contextVocab here/getSelectableViews;
                                canSelectDefaultFolderPage parent_folder/canSelectDefaultPage;
                                canSelectDefaultContextPage python:here.canSelectDefaultPage() and not isContextDefaultPage;
-                               parentHasActions python:parentVocab or canSelectDefaultFolderPage;
-                               contextHasActions python:contextVocab or canSelectDefaultContextPage;
+                               parentHasActions python:(parentVocab and len(parentVocab) > 1) or canSelectDefaultFolderPage;
+                               contextHasActions python:(contextVocab and len(contextVocab) > 1) or canSelectDefaultContextPage;
                                dimMenu python:(isStructuralFolder and contextHasIndexHtml) or
                                               (isContextDefaultPage and folderHasIndexHtml);"
                         condition="python:(isContextDefaultPage and parentHasActions) or contextHasActions">
