@@ -28,7 +28,7 @@
     color: &dtml-linkColor;;
 }
 .state-pending {
-    color: &dtml-notifyBorderColor;;
+    color: #FFA500;
 }
 .state-expired {
     color: Red;
