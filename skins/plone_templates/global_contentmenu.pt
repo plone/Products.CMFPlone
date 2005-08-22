@@ -156,11 +156,11 @@
                  i18n:attributes="alt" />
             <span i18n:translate="label_add_type"
                   tal:condition="python:folder == parent_folder">
-                Add <span tal:replace="typetitle" i18n:name="type" />
+                Add <span i18n:name="type"><tal:title content="typetitle" i18n:translate="">Title</tal:title></span>
             </span>
             <span i18n:translate="label_add_type_to_folder"
                   tal:condition="python:folder != parent_folder">
-                Add <span tal:replace="typetitle" i18n:name="type" /> to folder
+                Add <span i18n:name="type"><tal:title content="typetitle" i18n:translate="">Title</tal:title></span> to folder
             </span>
         </a>
     </li>

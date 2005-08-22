@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - after RC3 - unreleased
 
+    - Fixed http://plone.org/collector/4530 - type name not translated if only
+      one type is shown in global_contentmenu.
+      [hannosch]
+
     - Adding some padding to the "display" menu header if the menu is disabled
       because of an index_html document. Closes
       http://members.plone.org/collector/4534
