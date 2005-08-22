@@ -412,7 +412,7 @@ ol.visualNoMarker {
     cursor: pointer;
 }
 
-.actionMenu .actionMenuHeader .actionMenuDisabled {
+.actionMenuDisabled {
     padding: 0 0.5em 0 0.5em !important;
     cursor: pointer;
 }
