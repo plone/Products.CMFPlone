@@ -73,11 +73,10 @@
 
   <p>
   <strong>NOTE:</strong>
-  Do not use non-ASCII characters in <code>Id</code>, <code>Title</code> or 
-  <code>Description</code> when adding a Plone
-  site. You can change it afterwards from Plone itself,
-  but during the initial creation of a site, please don't use any special 
-  characters outside the A-Z and numbers range.
+  You may only use ASCII characters for <code>Id</code>, <code>Title</code>, 
+  and <code>Description</code> in this form!
+  You can change the values later from the Plone UI, but during creation of a
+  Plone site characters outside the A-Z and numbers range are not allowed.
   </p>
 
   </body>
