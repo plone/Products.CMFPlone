@@ -50,5 +50,5 @@ for wlist_map_sequence in wf_wlist_map.values():
                         avail_objs[absurl] = o
 
 avail_objs = avail_objs.values()
-avail_objs.sort(lambda x, y: cmp(y.modified(), x.modified()))
+avail_objs.sort(lambda x, y: cmp(x.modified(), y.modified()))
 return avail_objs

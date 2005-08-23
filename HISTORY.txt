@@ -4,10 +4,6 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - after RC3 - unreleased
 
-    - Reversed sort order in review portlet to show the most recent item on top,
-      just like in all the other portlets.
-      [stefan]
-
     - In skins/plone_login/logout.cpy, $-quoted a string that was being taken from
       REQUEST and inserted into a TALES 'string:' expression. This REQUEST string
       could be manipulated by the browser.
