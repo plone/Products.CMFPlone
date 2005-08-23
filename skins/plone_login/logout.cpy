@@ -36,4 +36,4 @@ transaction_note('Logged out')
 # that you end up on a logged_out page with a context that you can't view...
 # context.portal_membership.immediateLogout()
 
-return state.set(next_action='redirect_to:string:'+REQUEST.URL1+'/logged_out')
+return state.set(next_action='redirect_to:string:'+REQUEST.URL1.replace('$','$$')+'/logged_out')

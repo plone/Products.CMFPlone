@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - after RC3 - unreleased
 
+    - in skins/plone_login/logout.cpy, $-quoted a string that was being taken from
+      REQUEST and inserted into a TALES 'string:' expression. This REQUEST string
+      could be manipulated by the browser.
+      [rochael]
+
     - Fixed http://plone.org/collector/4530 - type name not translated if only
       one type is shown in global_contentmenu.
       [hannosch]
