@@ -42,7 +42,8 @@ p {
     line-height: 1.5em;
 }
 
-p a {
+p a,
+li a {
     text-decoration: none;
     border-bottom: 1px #cccccc solid;
 }

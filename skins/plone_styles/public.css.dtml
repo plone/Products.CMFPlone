@@ -589,6 +589,10 @@ textarea.proportional {
     border: none;
 }
 
+#portal-footer a:visited {
+    color: &dtml-linkColor;;
+}
+
 #portal-footer a:hover {
     text-decoration: underline;
 }
