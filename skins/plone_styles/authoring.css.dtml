@@ -264,7 +264,7 @@ ol.visualNoMarker {
 .comment {
     background: &dtml-evenRowBackgroundColor;; 
     border: &dtml-borderWidth; &dtml-borderStyleAnnotations; &dtml-globalBorderColor;; 
-    padding: 0 1em 0.5em 1em;
+    padding: 0.25em 1em 0.5em 1em;
     margin-bottom: 1em;
 }
 

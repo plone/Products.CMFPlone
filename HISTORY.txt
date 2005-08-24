@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - after RC3 - unreleased
 
+    - Fixed various spacing issues in discussions rendering.
+      [stefan]
+
     - In skins/plone_login/logout.cpy, $-quoted a string that was being taken from
       REQUEST and inserted into a TALES 'string:' expression. This REQUEST string
       could be manipulated by the browser.

@@ -20,6 +20,7 @@
                   tal:attributes="action string:$here_url/discussion_reply_form">
     
                   <input class="standalone"
+                         style="margin-bottom: 1.25em;"
                          type="submit"
                          value="Add Comment"
                          i18n:attributes="value label_add_comment;"
@@ -31,12 +32,13 @@
                                                 (here.portal_url(),
                                                 pss.url_quote(request['URL']))">
                 <input class="standalone"
+                       style="margin-bottom: 1.25em;"
                        type="submit"
                        value="Log in to add comments"
                        i18n:attributes="value label_login_to_add_comments;"
                        />
             </form>
-            
+
             <tal:getreplies repeat="reply_dict python:here.getReplyReplies(here)">
                 <div class="comment" style=""
                     tal:define="indent python:reply_dict['depth']*2;
