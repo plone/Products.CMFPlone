@@ -859,11 +859,6 @@ body.fullscreen #portal-searchbox {
 
 /* Kupu image alignment classes */
 
-div.image-caption {
-  background: #e0e0e0;
-  border: 0 none black;
-  overflow: hidden;
-}
 .image-left {
    float: left;
    clear: both;
