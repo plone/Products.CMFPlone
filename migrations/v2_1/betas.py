@@ -212,7 +212,10 @@ def installLogin(portal, out):
         path = st.getSkinPath(s)
         path = map(string.strip, string.split(path,','))
         if not 'plone_login' in path:
-            path.append('plone_login')
+            if 'cmf_legacy' in path:
+                path.insert(path.index('cmf_legacy'), 'plone_login')
+            else:
+                path.append('plone_login')
             st.addSkinSelection(s, ','.join(path))
             out.append('Added plone_login to %s' % s)
 
@@ -528,19 +531,23 @@ def addFontSizeStylesheets(portal, out):
 
 def add3rdPartySkinPath(portal, out):
     """Add the plone_3rdParty to the skin layers."""
-    st = getToolByName(portal, 'portal_skins')
-    skins = ['Plone Default', 'Plone Tableless']
-    selections = st._getSelections()
-    for s in skins:
-        if not selections.has_key(s):
-           continue
-        cleanupSkinPath(portal, s)
-        path = st.getSkinPath(s)
-        path = map(string.strip, string.split(path,','))
-        if not 'plone_3rdParty' in path:
-            path.append('plone_3rdParty')
-            st.addSkinSelection(s, ','.join(path))
-            out.append('Added plone_3rdParty to %s' % s)
+    skinsTool = getToolByName(portal, 'portal_skins', None)
+    if skinsTool is not None:
+        skins = ['Plone Default', 'Plone Tableless']
+        selections = skinsTool._getSelections()
+        for skin in skins:
+            if not selections.has_key(skin):
+               continue
+            cleanupSkinPath(portal, skin)
+            path = skinsTool.getSkinPath(skin)
+            path = map(string.strip, string.split(path,','))
+            if not 'plone_3rdParty' in path:
+                if 'cmf_legacy' in path:
+                    path.insert(path.index('cmf_legacy'), 'plone_3rdParty')
+                else:
+                    path.append('plone_3rdParty')
+                skinsTool.addSkinSelection(skin, ','.join(path))
+                out.append('Added plone_3rdParty to %s.' % skin)S
 
 
 def addEnableLivesearchProperty(portal, out):

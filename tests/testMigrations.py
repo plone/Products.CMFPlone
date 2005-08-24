@@ -59,6 +59,7 @@ from Products.CMFPlone.migrations.v2_1.alphas import addTypesUseViewActionInList
 from Products.CMFPlone.migrations.v2_1.alphas import switchToExpirationDateMetadata
 from Products.CMFPlone.migrations.v2_1.alphas import changePloneSetupActionToSiteSetup
 from Products.CMFPlone.migrations.v2_1.alphas import changePloneSiteIcon
+from Products.CMFPlone.migrations.v2_1.alphas import convertPloneFTIToCMFDynamicViewFTI
 
 from Products.CMFPlone.migrations.v2_1.betas import fixObjectPasteActionForDefaultPages
 from Products.CMFPlone.migrations.v2_1.betas import fixBatchActionToggle
@@ -70,6 +71,7 @@ from Products.CMFPlone.migrations.v2_1.betas import restrictEventsTopicToPublish
 from Products.CMFPlone.migrations.v2_1.betas import addCssQueryJS
 from Products.CMFPlone.migrations.v2_1.betas import exchangePloneMenuWithDropDown
 from Products.CMFPlone.migrations.v2_1.betas import removePlonePrefixFromStylesheets
+from Products.CMFPlone.migrations.v2_1.betas import add3rdPartySkinPath
 from Products.CMFPlone.migrations.v2_1.betas import addEnableLivesearchProperty
 from Products.CMFPlone.migrations.v2_1.betas import addIconForSearchSettingsConfiglet
 from Products.CMFPlone.migrations.v2_1.betas import sanitizeCookieCrumbler
@@ -80,7 +82,6 @@ from Products.CMFPlone.migrations.v2_1.betas import fixContentActionConditions
 from Products.CMFPlone.migrations.v2_1.betas import fixFolderlistingAction
 from Products.CMFPlone.migrations.v2_1.betas import fixFolderContentsActionAgain
 from Products.CMFPlone.migrations.v2_1.betas import changePortalActionCategory
-from Products.CMFPlone.migrations.v2_1.alphas import convertPloneFTIToCMFDynamicViewFTI
 from Products.CMFPlone.migrations.v2_1.betas import addMethodAliasesForPloneSite
 from Products.CMFPlone.migrations.v2_1.betas import updateParentMetaTypesNotToQuery
 from Products.CMFPlone.migrations.v2_1.betas import fixCutActionPermission
@@ -100,6 +101,7 @@ from Products.CMFPlone.migrations.v2_1.betas import setupAllowSendtoPermission
 from Products.CMFPlone.migrations.v2_1.betas import readdVisibleIdsMemberProperty
 from Products.CMFPlone.migrations.v2_1.betas import addCMFTypesToSearchBlackList
 from Products.CMFPlone.migrations.v2_1.betas import convertDefaultPageTypesToWhitelist
+
 from Products.CMFPlone.migrations.v2_1.rcs import changeAvailableViewsForFolders
 from Products.CMFPlone.migrations.v2_1.rcs import enableSyndicationOnTopics
 from Products.CMFPlone.migrations.v2_1.rcs import disableSyndicationAction
@@ -111,6 +113,7 @@ from Products.CMFPlone.migrations.v2_1.rcs import moveDefaultTopicsToPortalRoot
 from Products.CMFPlone.migrations.v2_1.rcs import alterSortCriterionOnNewsTopic
 from Products.CMFPlone.migrations.v2_1.rcs import fixPreferenceActionTitle
 from Products.CMFPlone.migrations.v2_1.rcs import changeNewsTopicDefaultView
+from Products.CMFPlone.migrations.v2_1.rcs import fixCMFLegacyLayer
 
 from Products.CMFDynamicViewFTI.migrate import migrateFTI
 
@@ -134,8 +137,7 @@ class MigrationTest(PloneTestCase.PloneTestCase):
         typeob = getattr(tool, info.getId())
         typeob.addAction(action_id, action_id, '', '', '', category)
 
-    def removeActionFromTool(self, action_id,
-                                            action_provider='portal_actions'):
+    def removeActionFromTool(self, action_id, action_provider='portal_actions'):
         # Removes an action from portal_actions
         tool = getattr(self.portal, action_provider)
         actions = tool.listActions()
@@ -150,8 +152,7 @@ class MigrationTest(PloneTestCase.PloneTestCase):
         except KeyError:
             pass # No icon associated
 
-    def addActionToTool(self, action_id, category,
-                                            action_provider='portal_actions'):
+    def addActionToTool(self, action_id, category, action_provider='portal_actions'):
         # Adds an action to portal_actions
         tool = getattr(self.portal, action_provider)
         tool.addAction(action_id, action_id, '', '', '', category)
@@ -195,6 +196,26 @@ class MigrationTest(PloneTestCase.PloneTestCase):
         tool = getattr(self.portal, 'portal_quickinstaller')
         if tool.isProductInstalled(product_name):
             tool.uninstallProducts([product_name])
+
+    def addSkinLayer(self, layer, skin='Plone Default', pos=None):
+        # Adds a skin layer at pos. If pos is None, the layer is appended
+        path = self.skins.getSkinPath(skin)
+        path = [x.strip() for x in path.split(',')]
+        if layer in path:
+            path.remove(layer)
+        if pos is None:
+            path.append(layer)
+        else:
+            path.insert(pos, layer)
+        self.skins.addSkinSelection(skin, ','.join(path))
+
+    def removeSkinLayer(self, layer, skin='Plone Default'):
+        # Removes a skin layer from skin
+        path = self.skins.getSkinPath(skin)
+        path = [x.strip() for x in path.split(',')]
+        if layer in path:
+            path.remove(layer)
+            self.skins.addSkinSelection(skin, ','.join(path))
 
 
 class TestMigrations_v2(MigrationTest):
@@ -247,6 +268,7 @@ class TestMigrations_v2_1(MigrationTest):
         self.portal_memberdata = self.portal.portal_memberdata
         self.cc = self.portal.cookie_authentication
         self.cp = self.portal.portal_controlpanel
+        self.skins = self.portal.portal_skins
 
     def testAddFullScreenAction(self):
         # Should add the full_screen action
@@ -1600,6 +1622,41 @@ class TestMigrations_v2_1(MigrationTest):
         # Should not fail if portal_properties is missing
         self.portal._delObject('portal_properties')
         addEnableLivesearchProperty(self.portal, [])
+
+    def testAdd3rdPartySkinPathInDefault(self):
+        # Should add plone_3rdParty to skin paths
+        self.removeSkinLayer('plone_3rdParty')
+        add3rdPartySkinPath(self.portal, [])
+        path = self.skins.getSkinPath('Plone Default')
+        self.assertEqual(path[-26:], ',plone_3rdParty,cmf_legacy')
+
+    def testAdd3rdPartySkinPathInTableless(self):
+        # Should add plone_3rdParty to skin paths
+        self.removeSkinLayer('plone_3rdParty', skin='Plone Tableless')
+        add3rdPartySkinPath(self.portal, [])
+        path = self.skins.getSkinPath('Plone Tableless')
+        self.assertEqual(path[-26:], ',plone_3rdParty,cmf_legacy')
+
+    def testAdd3rdPartySkinPathTwice(self):
+        # Should not fail if migrated again
+        self.removeSkinLayer('plone_3rdParty')
+        add3rdPartySkinPath(self.portal, [])
+        add3rdPartySkinPath(self.portal, [])
+        path = self.skins.getSkinPath('Plone Default')
+        self.assertEqual(path[-26:], ',plone_3rdParty,cmf_legacy')
+
+    def testAdd3rdPartySkinPathNoTool(self):
+        # Should not fail if tool is missing
+        self.portal._delObject('portal_skins')
+        add3rdPartySkinPath(self.portal, [])
+
+    def testAdd3rdPartySkinPathNoLayer(self):
+        # Should not fail if cmf_legacy layer is missing
+        self.removeSkinLayer('cmf_legacy')
+        self.removeSkinLayer('plone_3rdParty')
+        add3rdPartySkinPath(self.portal, [])
+        path = self.skins.getSkinPath('Plone Default')
+        self.assertEqual(path[-15:], ',plone_3rdParty')
 
     def testAddIconForSearchSettingsConfiglet(self):
         # Should add the full_screen action icon
@@ -3010,6 +3067,42 @@ class TestMigrations_v2_1(MigrationTest):
         # Should not fail if the topic is missing
         self.portal._delObject('news')
         changeNewsTopicDefaultView(self.portal, [])
+
+    def testFixCMFLegacyLayerInDefault(self):
+        # Should move cmf_legacy to end of skin path
+        self.addSkinLayer('cmf_legacy', pos=0)
+        fixCMFLegacyLayer(self.portal, [])
+        path = self.skins.getSkinPath('Plone Default')
+        self.assertEqual(path[-11:], ',cmf_legacy')
+
+    def testFixCMFLegacyLayerInTableless(self):
+        # Should move cmf_legacy to end of skin path
+        self.addSkinLayer('cmf_legacy', skin='Plone Tableless', pos=0)
+        fixCMFLegacyLayer(self.portal, [])
+        path = self.skins.getSkinPath('Plone Tableless')
+        self.assertEqual(path[-11:], ',cmf_legacy')
+
+    def testFixCMFLegacyLayerTwice(self):
+        # Should not fail if migrated again
+        self.addSkinLayer('cmf_legacy', pos=0)
+        fixCMFLegacyLayer(self.portal, [])
+        fixCMFLegacyLayer(self.portal, [])
+        path = self.skins.getSkinPath('Plone Default')
+        self.assertEqual(path[-11:], ',cmf_legacy')
+
+    def testFixCMFLegacyLayerNoTool(self):
+        # Should not fail if skins tool is missing
+        self.portal._delObject('portal_skins')
+        fixCMFLegacyLayer(self.portal, [])
+
+    def testFixCMFLegacyLayerNoLayer(self):
+        # Should not fail if cmf_legacy layer is missing
+        self.removeSkinLayer('cmf_legacy')
+        fixCMFLegacyLayer(self.portal, [])
+        # The missing layer is *not* added by the migration
+        path = self.skins.getSkinPath('Plone Default')
+        self.failIf('cmf_legacy' in path)
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite

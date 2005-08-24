@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - after RC3 - unreleased
 
+    - Made sure the cmf_legacy skin layer comes last, after all the Plone
+      layers.
+      [stefan]
+
     - Added Kupu image alignment classes. Thanks, Nate.
       [limi]
 

@@ -32,6 +32,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.groups = self.portal.portal_groups
         self.factory = self.portal.portal_factory
         self.cc = self.portal.cookie_authentication
+        self.skins = self.portal.portal_skins
 
     def testPloneSkins(self):
         # Plone skins should have been set up
@@ -540,6 +541,38 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
                 haveLocalRoles = True
         self.failIf(haveSharing)
         self.failUnless(haveLocalRoles)
+
+    def testPlone3rdPartyLayerInDefault(self):
+        # plone_3rdParty layer should exist
+        path = self.skins.getSkinPath('Plone Default')
+        self.failUnless('plone_3rdParty' in path)
+
+    def testPlone3rdPartyLayerInTableless(self):
+        # plone_3rdParty layer should exist
+        path = self.skins.getSkinPath('Plone Tableless')
+        self.failUnless('plone_3rdParty' in path)
+
+    def testPloneLoginLayerInDefault(self):
+        # plone_login layer should exist
+        path = self.skins.getSkinPath('Plone Default')
+        self.failUnless('plone_login' in path)
+
+    def testPloneLoginLayerInTableless(self):
+        # plone_login layer should exist
+        path = self.skins.getSkinPath('Plone Tableless')
+        self.failUnless('plone_login' in path)
+
+    def testCMFLegacySkinComesLastInDefault(self):
+        # cmf_legacy should be the last skin layer
+        path = self.skins.getSkinPath('Plone Default')
+        path = [x.strip() for x in path.split(',')]
+        self.assertEqual(path[-1], 'cmf_legacy')
+
+    def testCMFLegacySkinComesLastInTableless(self):
+        # cmf_legacy should be the last skin layer
+        path = self.skins.getSkinPath('Plone Tableless')
+        path = [x.strip() for x in path.split(',')]
+        self.assertEqual(path[-1], 'cmf_legacy')
 
 
 class TestPortalBugs(PloneTestCase.PloneTestCase):

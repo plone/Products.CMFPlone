@@ -4,6 +4,7 @@ from betas import fixContentActionConditions
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore import CMFCorePermissions
 from Products.CMFPlone.utils import _createObjectByType
+from Products.CMFPlone.migrations.migration_util import cleanupSkinPath
 from Acquisition import aq_base, aq_inner, aq_parent
 from Products.CMFPlone import transaction
 
@@ -81,6 +82,9 @@ def rc3_final(portal):
 
     # Change News topic to use summary view as default
     changeNewsTopicDefaultView(portal, out)
+
+    # Make sure cmf_legacy is the last skin layer
+    fixCMFLegacyLayer(portal, out)
 
     return out
 
@@ -308,3 +312,23 @@ def changeNewsTopicDefaultView(portal, out):
     if topic is not None:
         topic.setLayout('folder_summary_view')
         out.append("Changed News Topic default view to folder_summary_view.")
+
+
+def fixCMFLegacyLayer(portal, out):
+    """Make sure cmf_legacy is last skin layer."""
+    skinsTool = getToolByName(portal, 'portal_skins', None)
+    if skinsTool is not None:
+        skins = ['Plone Default', 'Plone Tableless']
+        selections = skinsTool._getSelections()
+        for skin in skins:
+            if not selections.has_key(skin):
+               continue
+            cleanupSkinPath(portal, skin)
+            path = skinsTool.getSkinPath(skin)
+            path = [x.strip() for x in path.split(',')]
+            if 'cmf_legacy' in path and path[-1] != 'cmf_legacy':
+                path.remove('cmf_legacy')
+                path.append('cmf_legacy')
+                skinsTool.addSkinSelection(skin, ','.join(path))
+                out.append('Moved cmf_legacy layer to end of %s.' % skin)
+
