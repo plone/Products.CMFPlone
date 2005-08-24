@@ -7,6 +7,7 @@
 
 <ul tal:define="isStructuralFolder here/is_folderish;
                 folder python:test(isStructuralFolder, here, here.getParentNode());
+                isParentStructuralFolder folder/is_folderish;
                 isContextDefaultPage here/isDefaultPageInFolder;
                 parent_folder python: isContextDefaultPage and here.getParentNode() or folder;
                 disableMenu python:here.portal_factory.isTemporary(here);
@@ -71,6 +72,7 @@
     
     </tal:states>
 
+    <tal:structuralFolder condition="python:isStructuralFolder or isParentStructuralFolder">
     <tal:add define="addContext   nocall:parent_folder;
                      allowedTypes addContext/getAllowedTypes;
                      menuTypes    python:here.getAddableTypesInMenu(allowedTypes);
@@ -165,6 +167,7 @@
         </a>
     </li>
     </tal:add>
+    </tal:structuralFolder>
 
     <tal:displayMenu define="contextHasIndexHtml context/hasIndexHtml;
                                folderHasIndexHtml parent_folder/hasIndexHtml;
