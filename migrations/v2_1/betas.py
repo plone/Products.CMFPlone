@@ -547,7 +547,7 @@ def add3rdPartySkinPath(portal, out):
                 else:
                     path.append('plone_3rdParty')
                 skinsTool.addSkinSelection(skin, ','.join(path))
-                out.append('Added plone_3rdParty to %s.' % skin)S
+                out.append('Added plone_3rdParty to %s.' % skin)
 
 
 def addEnableLivesearchProperty(portal, out):
