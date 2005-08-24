@@ -857,7 +857,28 @@ body.fullscreen #portal-searchbox {
     position: relative;
 }
 
+/* Kupu image alignment classes */
 
+div.image-caption {
+  background: #e0e0e0;
+  border: 0 none black;
+  overflow: hidden;
+}
+.image-left {
+   float: left;
+   clear: both;
+   margin: 0.5em 1em 0.5em 0;
+   border: 1px solid Black;
+}
+.image-inline {
+   float: none;
+}
+.image-right {
+   float: right;
+   clear: both;
+   margin: 0.5em;
+   border: 1px solid Black;
+}
 
 
 /* </dtml-with> */
