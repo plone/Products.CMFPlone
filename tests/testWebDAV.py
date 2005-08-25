@@ -300,14 +300,6 @@ class TestDAVOperations(PloneTestCase.FunctionalTestCase):
         self.portal_path = self.portal.absolute_url(1)
         self.folder_path = self.folder.absolute_url(1)
 
-    def _defuseRecursivePropfind(self):
-        # Clears out the portal to save time in PROPFIND tests.
-        # PROPFIND on the portal is recursive! OMG!
-        keep = ['plone_utils', 'portal_types', 'portal_url', 'portal_discussion',
-                'reference_catalog', 'uid_catalog', 'mimetypes_registry']
-        self.portal.manage_delObjects([x for x in self.portal.objectIds()
-                                       if x not in keep])
-
     def test_document_propfind_index_html_exist_folder(self):
         self.folder.invokeFactory('Folder', 'sub')
         self.folder.sub.invokeFactory('Document', 'index_html')
@@ -316,6 +308,7 @@ class TestDAVOperations(PloneTestCase.FunctionalTestCase):
         # Do a PROPFIND on folder/index_html, this needs to result in a 207
         response = self.publish(self.folder_path + '/sub/index_html',
                                 request_method='PROPFIND',
+                                env={'HTTP_DEPTH': '0'},
                                 stdin=StringIO(),
                                 basic=self.basic_auth)
 
@@ -328,6 +321,7 @@ class TestDAVOperations(PloneTestCase.FunctionalTestCase):
         # Do a PROPFIND on folder/index_html, this needs to result in a NotFound.
         response = self.publish(self.folder_path + '/sub/index_html',
                                 request_method='PROPFIND',
+                                env={'HTTP_DEPTH': '0'},
                                 stdin=StringIO(),
                                 basic=self.basic_auth)
 
@@ -342,6 +336,7 @@ class TestDAVOperations(PloneTestCase.FunctionalTestCase):
         # Do a PROPFIND on folder/index_html, this needs to result in a 207
         response = self.publish(self.portal_path + '/index_html',
                                 request_method='PROPFIND',
+                                env={'HTTP_DEPTH': '0'},
                                 stdin=StringIO(),
                                 basic=self.basic_auth)
 
@@ -356,14 +351,13 @@ class TestDAVOperations(PloneTestCase.FunctionalTestCase):
         # Do a PROPFIND on portal/index_html, this needs to result in a NotFound.
         response = self.publish(self.portal_path + '/index_html',
                                 request_method='PROPFIND',
+                                env={'HTTP_DEPTH': '0'},
                                 stdin=StringIO(),
                                 basic=self.basic_auth)
 
         self.assertEqual(response.getStatus(), 404, response.getBody())
 
     def test_propfind_portal_root_index_html_exists(self):
-        self._defuseRecursivePropfind()
-
         if 'index_html' not in self.portal.objectIds():
             self.portal.invokeFactory('Document', 'index_html')
 
@@ -372,14 +366,13 @@ class TestDAVOperations(PloneTestCase.FunctionalTestCase):
         # Do a PROPFIND on portal, this needs to result in a 207
         response = self.publish(self.portal_path,
                                 request_method='PROPFIND',
+                                env={'HTTP_DEPTH': '0'},
                                 stdin=StringIO(),
                                 basic=self.basic_auth)
 
         self.assertEqual(response.getStatus(), 207, response.getBody())
 
     def test_propfind_portal_root_index_html_not_exists(self):
-        self._defuseRecursivePropfind()
-
         if 'index_html' in self.portal.objectIds():
             self.portal.manage_delObjects('index_html')
 
@@ -388,6 +381,7 @@ class TestDAVOperations(PloneTestCase.FunctionalTestCase):
         # Do a PROPFIND on portal, this needs to result in a 207
         response = self.publish(self.portal_path,
                                 request_method='PROPFIND',
+                                env={'HTTP_DEPTH': '0'},
                                 stdin=StringIO(),
                                 basic=self.basic_auth)
 
@@ -402,6 +396,7 @@ class TestDAVOperations(PloneTestCase.FunctionalTestCase):
         # Do a PROPFIND on folder, this needs to result in a 207
         response = self.publish(self.folder_path,
                                 request_method='PROPFIND',
+                                env={'HTTP_DEPTH': '0'},
                                 stdin=StringIO(),
                                 basic=self.basic_auth)
 
@@ -416,6 +411,7 @@ class TestDAVOperations(PloneTestCase.FunctionalTestCase):
         # Do a PROPFIND on folder, this needs to result in a 207
         response = self.publish(self.folder_path,
                                 request_method='PROPFIND',
+                                env={'HTTP_DEPTH': '0'},
                                 stdin=StringIO(),
                                 basic=self.basic_auth)
 
