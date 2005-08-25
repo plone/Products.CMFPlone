@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - after RC3 - unreleased
 
+    - Login and saving of login times now also works if members do not have
+      the "Set own properties" permission.
+      [stefan]
+
     - Made sure that if you have an INonStructuralFolder inside another, you
       don't get an add menu for the parent non-structural folder.
       [optilude]

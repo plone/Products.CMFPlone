@@ -568,6 +568,19 @@ class MembershipTool(PloneBaseTool, BaseTool):
             we do not have to do a redirect to show the logged out status. """
         noSecurityManager()
 
+    security.declarePublic('setLoginTimes')
+    def setLoginTimes(self):
+        """ Called by logged_in to set the login time properties
+            even if members lack the "Set own properties" permission.
+        """
+        if not self.isAnonymousUser():
+            member = self.getAuthenticatedMember()
+            login_time = member.getProperty('login_time', '2000/01/01')
+            if  str(login_time) == '2000/01/01':
+                login_time = self.ZopeTime()
+            member.setProperties(login_time=login_time,
+                                 last_login_time=self.ZopeTime())
+
 MembershipTool.__doc__ = BaseTool.__doc__
 
 InitializeClass(MembershipTool)
