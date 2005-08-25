@@ -57,10 +57,22 @@ p a:visited {
     color: &dtml-linkVisitedColor;;
     background-color: transparent;
 }
+
+#region-content li a:visited {
+    color: &dtml-linkVisitedColor;;
+    background-color: transparent;
+}
+
 p a:active {
     color: &dtml-linkActiveColor;;
     background-color: transparent;
 }
+
+#region-content li a:active {
+    color: &dtml-linkActiveColor;;
+    background-color: transparent;
+}
+
 p img {
     border: 0;
     margin: 0;
