@@ -66,7 +66,7 @@
                     <h2 class="tileHeadline"
                         metal:define-macro="listitem">
 
-                        <a href="#" 
+                        <a href="#"
                            tal:condition="python:item_type != 'Link'"
                            tal:attributes="href python:test(item_type in use_view_action, item_url+'/view', item_url+'/');"
                            tal:content="item_title_or_id">
@@ -106,22 +106,22 @@
                     </a>
 
                     <p class="tileBody">
-                        <span tal:omit-tag="" tal:condition="not:item_description"> 
-                            &nbsp; 
-                        </span> 
-                        <span tal:omit-tag="" tal:content="item_description"> 
-                            description 
-                        </span> 
+                        <span tal:omit-tag="" tal:condition="not:item_description">
+                            &nbsp;
+                        </span>
+                        <span tal:omit-tag="" tal:content="item_description">
+                            description
+                        </span>
                     </p>
-                    
+
                     <p class="tileFooter">
-                        <a href="" 
+                        <a href=""
                            tal:attributes="href python:test(item_type in use_view_action, item_url+'/view', item_url+'/');"
                            i18n:translate="read_more">
                         Read more&hellip;
                         </a>
                     </p>
-                    
+
                     <div class="visualClear"><!-- --></div>
 
                 </tal:block>
