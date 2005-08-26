@@ -20,4 +20,6 @@ if not itool.objectImplements(context, INTERFACE):
 
 context.setLayout(templateId)
 
-return state.set(portal_status_message = 'View changed')
+message = context.translate(msgid="message_view_changed",
+                            default="View changed.")
+return state.set(portal_status_message=message)
