@@ -122,6 +122,9 @@ def assignTitles(self, portal):
      'portal_actionicons':'Associates actions with icons',
      'portal_groupdata':'Handles properties on groups',
      'portal_groups':'Handles group related functionality',
+     'translation_service': 'Provides access to the translation machinery',
+     'mimetypes_registry': 'MIME types recognized by Plone',
+     'portal_transforms': 'Handles data conversion between MIME types',
      }
 
     for oid in portal.objectIds():

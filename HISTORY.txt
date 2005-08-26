@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - after RC3 - unreleased
 
+    - Provided descriptive titles for translation_service, mimetypes_registry,
+      and portal_transforms tools.
+      [stefan]
+
     - Login and saving of login times now also works if members do not have
       the "Set own properties" permission.
       [stefan]
