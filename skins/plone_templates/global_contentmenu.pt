@@ -79,11 +79,10 @@
                      numAllowed   python:len(allowedTypes);
                      numMenu      python:len(menuTypes);    
                      showSettings addContext/canConstrainTypes;
-                     showAdd      python:numAllowed >= 1 or showSettings;
                      showMore     python:numAllowed > numMenu;
                      showMenu     python:showMore or showSettings or numMenu > 1;
                      "
-             condition="showAdd">
+             condition="python:numAllowed >= 1 or showSettings">
 
     <tal:dropdown tal:condition="showMenu">
     <li>
