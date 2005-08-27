@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - after RC3 - unreleased
 
+    - Provide compatibility with Five 1.1 regarding i18n. Five's
+      TranslationService has no unicode aware utranslate method, so we have to
+      force a fallback to PTS or everything using utranslate including
+      ulocalized_time won't get translated.
+      [hannosch]
+
     - Provided descriptive titles for translation_service, mimetypes_registry,
       and portal_transforms tools.
       [stefan]
