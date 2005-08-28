@@ -409,8 +409,9 @@ class TestMemberareaSetup(PloneTestCase.PloneTestCase):
         self.assertEqual(self.home.get_local_roles_for_userid('user2'), ('Owner',))
 
     def testMemberareaHasDescription(self):
-        # Memberarea should have a description
-        self.failUnless(self.home.Description())
+        # Memberarea should have a description - not in 2.1 ~limi
+        #self.failUnless(self.home.Description())
+        pass
 
     def testMemberareaIsCataloged(self):
         # Memberarea should be cataloged

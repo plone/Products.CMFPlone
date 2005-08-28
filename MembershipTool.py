@@ -257,8 +257,7 @@ class MembershipTool(PloneBaseTool, BaseTool):
         member_folder_description = utranslate(
             'plone', 'description_member_folder',
             {'member': umember_id}, self,
-            default = 'Home page area that contains the items created ' \
-            'and collected by %s' % umember_id)
+            default = '')
 
         member_folder_index_html_title = utranslate(
             'plone', 'title_member_folder_index_html',
