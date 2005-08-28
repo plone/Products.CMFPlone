@@ -39,7 +39,7 @@ textarea {
 }
 
 .visualGhosted {
-    filter:alpha(opacity=40); 
+    filter:alpha(opacity=20); 
 }
 
 /* Fix bottom margin on tabs in IE */

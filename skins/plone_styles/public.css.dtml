@@ -852,9 +852,9 @@ dl.collapsedInlineCollapsible dt.collapsibleHeader {
 
 /* For ghosted elements */
 .visualGhosted {
-    opacity: 0.4;
-    -moz-opacity: 0.4;
-    -khtml-opacity: 0.4;
+    opacity: 0.2;
+    -moz-opacity: 0.2;
+    -khtml-opacity: 0.2;
 }
 
 /* Fullscreen */
