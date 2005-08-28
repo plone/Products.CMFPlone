@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - after RC3 - unreleased
 
+    - Removed the printing of link addresses along with the link text since
+      it triggers a lot of display-related bugs when printing certain types
+      of documents. Left the code in there, so just uncomment it if you want
+      the feature back. Too painful for the generic use case, though.
+      [limi]
+
     - Removed the "blah's Home" title for the member folder default title.
       It doesn't make sense in multilingual sites, and doesn't add any
       useful information. The home folder now has a title that is simply
