@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - after RC3 - unreleased
 
+    - Removed the "blah's Home" title for the member folder default title.
+      It doesn't make sense in multilingual sites, and doesn't add any
+      useful information. The home folder now has a title that is simply
+      the username.
+      [limi]
+
     - Enabled editable border for the Members folder.
       [limi]
 

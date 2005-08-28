@@ -38,7 +38,7 @@ class MembershipTool(PloneBaseTool, BaseTool):
     default_portrait = 'defaultUser.gif'
     memberarea_type = 'Folder'
     security = ClassSecurityInfo()
-    
+
     __implements__ = (PloneBaseTool.__implements__, BaseTool.__implements__, )
 
     #XXX I'm not quite sure why getPortalRoles is declared 'Managed'
@@ -79,7 +79,7 @@ class MembershipTool(PloneBaseTool, BaseTool):
     #        _user = BaseTool.getAuthenticatedMember(self)
     #        self.REQUEST.set('_portaluser', _user)
     #    return _user
-    
+
     security.declarePublic('getMemberInfo')
     def getMemberInfo(self, memberId=None):
         """
@@ -90,7 +90,7 @@ class MembershipTool(PloneBaseTool, BaseTool):
             member = self.getAuthenticatedMember()
         else:
             member = self.getMemberById(memberId)
-        
+
         if member is None:
             return None
 
@@ -213,12 +213,12 @@ class MembershipTool(PloneBaseTool, BaseTool):
 
         if hasattr(members, 'aq_explicit'):
             members=members.aq_explicit
-        
+
         if hasattr(members, member_id):
             # has already this member
             # XXX exception
             return
-        
+
         _createObjectByType(self.memberarea_type, members, id=member_id)
 
         # get the user object from acl_users
@@ -242,18 +242,18 @@ class MembershipTool(PloneBaseTool, BaseTool):
         if translation_service is _marker:
             # test environ, some other aberent sitch
             return
-        
+
         utranslate = translation_service.utranslate
         encode = translation_service.encode
-        
+
         # convert the member_id to unicode type
         umember_id = translation_service.asunicodetype(member_id, errors='replace')
 
         member_folder_title = utranslate(
             'plone', 'title_member_folder',
             {'member': umember_id}, self,
-            default = "%s's Home" % umember_id)
-       
+            default = "%s" % umember_id)
+
         member_folder_description = utranslate(
             'plone', 'description_member_folder',
             {'member': umember_id}, self,
@@ -264,7 +264,7 @@ class MembershipTool(PloneBaseTool, BaseTool):
             'plone', 'title_member_folder_index_html',
             {'member': umember_id}, self,
             default = "Home page for %s" % umember_id)
- 
+
         # encode strings to site encoding as we dont like to store type unicode atm
         member_folder_title = encode(member_folder_title, errors='replace')
         member_folder_description = encode(member_folder_description, errors='replace')
@@ -350,7 +350,7 @@ class MembershipTool(PloneBaseTool, BaseTool):
     def searchForMembers( self, REQUEST=None, **kw ):
         """
         searchForMembers(self, REQUEST=None, **kw) => normal or fast search method.
-        
+
         The following properties can be provided:
         - name
         - email
@@ -412,7 +412,7 @@ class MembershipTool(PloneBaseTool, BaseTool):
         # This is possible only if both lists are filled (or we may miss users else).
         members = []
         g_userids, g_members = [], []
-        
+
         if groupname:
             groups = groups_tool.searchForGroups(title=groupname) + \
                      groups_tool.searchForGroups(name=groupname)
