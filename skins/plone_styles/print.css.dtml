@@ -14,14 +14,6 @@
 **
 */
 
-
-/* Thanks to A List Apart (http://alistapart.com/) for useful extras */
-
-body {
-    font-family: Baskerville, Georgia, Garamond, Times, serif;
-    font-size: 11pt !important;
-}
-
 div.top,
 #portal-logo,
 #portal-siteactions,
@@ -49,22 +41,28 @@ input,
     display: none;
 }
 
-ul { 
-    list-style-type: square;
+body {
+    font-family: Baskerville, Georgia, Garamond, Times, serif;
+    font-size: 11pt !important;
 }
 
 h1, h2, h3, h4, h5, h6
 {
     border: none;
-    font-family: Helvetica, Arial, sans-serif;
+    font-family: Baskerville, Georgia, Garamond, Times, serif;
 }
+
+ul { 
+    list-style-type: square;
+}
+
 
 .documentDescription {
     font-weight: bold;
 }
 
 pre {
-    border: 1pt dashed black;
+    border: 1pt dotted black;
     white-space: pre;
     font-size: 8pt;
     overflow: auto;
@@ -79,7 +77,8 @@ table.listing td {
 
 a {
     color: Black !important;
-    padding: 0 !important
+    padding: 0 !important;
+    text-decoration: none !important;
 }
 
 a:link, a:visited {
