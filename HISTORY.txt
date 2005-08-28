@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - after RC3 - unreleased
 
+    - Enabled editable border for the Members folder.
+      [limi]
+
     - Provide compatibility with Five 1.1 regarding i18n. Five's
       TranslationService has no unicode aware utranslate method, so we have to
       force a fallback to PTS or everything using utranslate including
