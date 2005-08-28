@@ -29,7 +29,10 @@ if contentFilter.get('path', None) is None:
 
 show_inactive = mtool.checkPermission('Access inactive portal content', context)
 
-contents = context.queryCatalog(contentFilter, show_all=1, show_inactive=show_inactive)
+# Evaluate in catalog context because some containers override queryCatalog
+# with their own unrelated method (Topics)
+contents = context.portal_catalog.queryCatalog(contentFilter, show_all=1,
+                                                  show_inactive=show_inactive)
 
 if full_objects:
     contents = [b.getObject() for b in contents]

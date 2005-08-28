@@ -143,7 +143,7 @@ value = [
     ('ur', 'Urdu'),
     ('uz', 'Uzbek'),
     ('vi', 'Vietnamese'),
-    ('vo', 'Volap&uuml;k'),
+    ('vo', 'Volapuk'),
     ('wo', 'Wolof'),
     ('xh', 'Xhosa'),
     ('yi', 'Yiddish'),
@@ -154,6 +154,6 @@ value = [
 ]
 
 value.sort(lambda x,y:cmp(x[1], y[1]))
-# Put 'Not specified' at the top.
-value.insert(0,('',context.translate('Not specified')))
+# Put language neutral at the top.
+value.insert(0,('',context.translate('Language neutral (site default)')))
 return value

@@ -8,6 +8,7 @@
      tal:omit-tag=""
      tal:define="DateTime python:modules['DateTime'].DateTime;
                  current python:DateTime();
+                 current_day current/day;
                  yearmonth here/getYearAndMonthToDisplay;
                  nextYearMax python: current+365;
                  prevYearMin python: current-365;
@@ -34,18 +35,15 @@
                        tal:condition="python: yearmonth > (prevYearMin.year(), prevYearMin.month())"
                        i18n:attributes="title title_previous_month;">&laquo;</a>
                 </th>
-                <th colspan="5"
-                    tal:define="date python:DateTime(year, month, 1);">
+                <th colspan="5">
                     <span i18n:translate="" tal:omit-tag="">
                         <span i18n:name="monthname">
-                            <span tal:define="month_id python:translation_service.month_msgid(date.month());
-                                              month_english python:date.Month();"
+                            <span tal:define="month_english python:translation_service.month_english(month);"
                                   tal:attributes="id string:calendar-month-$month_english"
-                                  tal:content="python: here.utranslate(month_id, default=month_english)"
+                                  tal:content="python: here.utranslate(translation_service.month_msgid(month), default=month_english)"
                                   id="calendar-month-month">&nbsp;</span>
                         </span>
                         <span i18n:name="year"
-                              tal:define="year python:date.year()"
                               tal:content="string:$year"
                               tal:attributes="id string:calendar-year-$year;"
                               id="calendar-year">&nbsp;</span>
@@ -61,9 +59,8 @@
             </tr>
             <tr tal:define="weekdaynumbers here/portal_calendar/getDayNumbers" class="weekdays">
                 <tal:data tal:repeat="daynumber weekdaynumbers">
-                    <td tal:define="day_id python:translation_service.day_msgid(daynumber, format='s');
-                                    day_english python:here.utranslate(day_id, target_language='en');"
-                        tal:content="python: here.utranslate(day_id, default=day_english)">Su</td>
+                    <td tal:define="weekday_english python:translation_service.weekday_english(daynumber);"
+                        tal:content="python: here.utranslate(translation_service.day_msgid(daynumber, format='s'), default=weekday_english)">Su</td>
                 </tal:data>
             </tr>
         </thead>
@@ -76,14 +73,15 @@
             <tr tal:repeat="week weeks"
             ><tal:block repeat="day week"
             ><tal:block define="daynumber day/day;
-                                datestring python: '%d%0.2d%0.2d' % (year, month, daynumber);
+                                int_daynumber python: int(daynumber);
                                 day_event day/event;
-                                is_today python: current.day()==int(daynumber) and current.month()==month and current.year()==year">
+                                is_today python: current_day==int_daynumber and current.month()==month and current.year()==year">
                <td class="event" tal:condition="day_event"
                       tal:attributes="class python:test(is_today, 'todayevent', 'event')"
-                   ><tal:data tal:define="cur_date python:DateTime(year,month,int(daynumber));
+                   ><tal:data tal:define="cur_date python:DateTime(year,month,int_daynumber);
                                           begin python:url_quote((cur_date.latestTime()).ISO());
-                                          end python:url_quote(cur_date.earliestTime().ISO());" tal:omit-tag=""
+                                          end python:url_quote(cur_date.earliestTime().ISO());"
+                              tal:omit-tag=""
                      ><a href=""
                          tal:attributes="href string:${here/portal_url}/search?review_state=published&amp;start.query:record:list:date=${begin}&amp;start.range:record=max&amp;end.query:record:list:date=${end}&amp;end.range:record=min;
                                          title python:'\n'.join([here.toLocalizedTime(cur_date)]+[here.getEventString(e) for e in day['eventslist']]);"

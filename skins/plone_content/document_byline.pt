@@ -1,8 +1,7 @@
 <div metal:define-macro="byline"
      i18n:domain="plone"
      tal:condition="python: site_properties.allowAnonymousViewAbout or not isAnon"
-     tal:define="creator here/Creator;
-                 creator_home python:mtool.getHomeUrl(creator);">
+     tal:define="creator here/Creator;">
 
     <div class="documentByLine">
         <img src="" alt=""
@@ -67,8 +66,8 @@
         </div>
         </tal:rights>
 
+        <span metal:use-macro="here/review_history/macros/review_history" />
+
     </div>
-    
-    <span metal:use-macro="here/review_history/macros/review_history" />
 
 </div>

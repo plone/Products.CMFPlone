@@ -35,7 +35,7 @@
                    <tal:block tal:repeat="uid mtool/listMemberIds">
                      <option value=""
                              tal:attributes="value uid;
-                                             selected python:test(uid==putils.getOwnerId(here), 'selected', None);"
+                                             selected python:test(uid==putils.getOwnerName(here), 'selected', None);"
                              tal:content="uid">username</option>
                    </tal:block>
                 </select>

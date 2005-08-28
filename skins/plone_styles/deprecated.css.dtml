@@ -1,7 +1,6 @@
 /* Deprecated CSS elements - do not depend on these, they will disappear in
    the next version of Plone. They are here for backwards compatibility only. */
 
-/* <dtml-var "enableHTTPCompression(request=REQUEST, debug=1, css=1)"> (this is for http compression) */
 /* <dtml-with base_properties> (do not remove this :) */
 /* <dtml-call "REQUEST.set('portal_url', portal_url())"> (not this either :) */
 

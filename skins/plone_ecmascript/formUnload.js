@@ -22,7 +22,7 @@ if (!window.beforeunload) (function() {
             }
             if (message===true) message = self.message;
             if (message===false) message = undefined;
-            if (event) event.returnValue = message;
+            if (event && message) { event.returnValue = message; }
             return message;
         }
         this.execute.tool = this;

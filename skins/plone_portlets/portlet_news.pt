@@ -43,7 +43,6 @@
         <dd class="portletFooter">
 
             <a href=""
-               class="portletMore"
                tal:condition="python:'news' in portal.contentIds()"
                tal:attributes="href string:${utool}/news"
                i18n:translate="box_more_news_link"
@@ -52,7 +51,6 @@
             </a>
 
             <a href=""
-               class="portletMore"
                tal:condition="python:'news' not in portal.contentIds()"
                tal:attributes="href string:${utool}/news_listing"
                i18n:translate="box_more_news_link"

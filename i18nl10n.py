@@ -12,12 +12,26 @@ from Products.PageTemplates.GlobalTranslationService import \
 # make a dummy translation service
 dummy_service = DummyTranslationService()
 
+# check if Five 1.1 or higher is installed
+# it registers its own FiveTranslationsService which has no utranslate method
+HAS_FIVE_TS = True
+try:
+    from Products.Five.i18n import FiveTranslationService
+    from Products import PlacelessTranslationService
+except ImportError:
+    HAS_FIVE_TS = False
+
 # unicode aware translate method (i18n)
 def utranslate(*args, **kw):
     # python useable unicode aware translate method
 
     # get the global translation service
     service = getGlobalTranslationService()
+
+    if HAS_FIVE_TS:
+        # The TranslationService provided by Five 1.1 has no
+        # unicode aware utranslate method, force fallback to PTS
+        service = PlacelessTranslationService.getTranslationService()
 
     # check for a translation method for unicode translations
     translate = getattr(service, 'utranslate', None)
@@ -134,7 +148,7 @@ def monthname_english(number, format=''):
     return _numbertoenglishname(number, format=format, attr='_months')
 
 def weekdayname_english(number, format=''):
-    # returns the english name of month with number
+    # returns the english name of week with number
     return _numbertoenglishname(number, format=format, attr='_days')
 
 def monthname_msgid(number):

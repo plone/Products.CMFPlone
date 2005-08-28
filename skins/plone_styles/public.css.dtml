@@ -13,7 +13,6 @@
 **
 */
 
-/* <dtml-var "enableHTTPCompression(request=REQUEST, debug=1, css=1)"> (this is for http compression) */
 /* <dtml-with base_properties> (do not remove this :) */
 /* <dtml-call "REQUEST.set('portal_url', portal_url())"> (not this either :) */
 
@@ -31,6 +30,7 @@
     margin: 0.75em 0em 0.75em 1.5em;
     padding: 0;
 }
+
 #portal-logo a {
     display: block;
     text-decoration: none;
@@ -45,9 +45,9 @@
     cursor: pointer;
 }
 
-#portal-skinswitcher {
-    /* The skin switcher at the top, only shows up if you have multiple skins available */
+/* The skin switcher at the top, only shows up if you have multiple skins available */
 
+#portal-skinswitcher {
 }
 
 #portal-skinswitcher a {
@@ -62,8 +62,8 @@
     background-color: transparent;
 }
 
-
 /* Site-wide action menu - font size, contact, index, sitemap etc */
+
 #portal-siteactions {
     background-color: transparent;
     white-space: nowrap;
@@ -75,9 +75,11 @@
     float: right;
     padding: 3px 2em 3px 0;
 }
+
 #portal-siteactions li {
     display: inline;
 }
+
 #portal-siteactions li a {
     background-color: transparent;
     border: 1px solid &dtml-backgroundColor;;
@@ -88,20 +90,21 @@
     text-decoration: none;
     text-transform: &dtml-textTransform;;
 }
+
 #portal-siteactions li.selected a {
     background-color: &dtml-globalBackgroundColor;;
     color: &dtml-globalFontColor;;
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
 }
+
 #portal-siteactions li a:hover {
     background-color: &dtml-globalBackgroundColor;;
     color: &dtml-globalFontColor;;
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
 }
 
+/* Searchbox style and positioning */
 
-
-/* searchbox style and positioning */
 #portal-searchbox {
     float: right;
     clear: right;
@@ -126,6 +129,7 @@
 }
 
 /* LiveSearch styles */
+
 .LSRes {
     font-family:  <dtml-var fontFamily>;
     visibility: visible;
@@ -140,7 +144,7 @@
     text-transform: none;
     margin-left: 0;
     line-height: 1.1em;
-  }
+}
 
 #LSHighlight {
     background-color: &dtml-globalBackgroundColor;;
@@ -148,11 +152,10 @@
     color: &dtml-globalFontColor;;
 }
 
-
 .LSRow {
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-backgroundColor;;
     white-space: normal;
-    padding:0; 
+    padding:0;
     margin: 0;
     list-style-image: none;
     list-style-type: none;
@@ -185,6 +188,7 @@
     position:relative;
     text-align:right;
 }
+
 .livesearchContainer {
     background-color: &dtml-backgroundColor;;
     margin-top: 0;
@@ -208,6 +212,7 @@
 .LSIEFix {
     background-color: &dtml-backgroundColor;;
     padding: 0.5em !important;
+    z-index: 20;
 }
 
 .LSBox {
@@ -224,6 +229,7 @@
 }
 
 /* The global section tabs. */
+
 #portal-globalnav {
     background-color: transparent;
     padding: 0em 0em 0em 2em;
@@ -233,9 +239,11 @@
     height: auto;
     line-height: normal;
 }
+
 #portal-globalnav li {
     display: inline;
 }
+
 #portal-globalnav li a {
     /* The normal, unselected tabs. They are all links */
     background-color: transparent;
@@ -249,6 +257,7 @@
     text-decoration: none;
     text-transform: &dtml-textTransform;;
 }
+
 #portal-globalnav li.selected a {
     /* The selected tab. There's only one of this */
     background-color: &dtml-globalBackgroundColor;;
@@ -256,12 +265,14 @@
     border-bottom: &dtml-globalBackgroundColor; &dtml-borderWidth; &dtml-borderStyle;;
     color: &dtml-globalFontColor;;
 }
+
 #portal-globalnav li a:hover {
     background-color: &dtml-globalBackgroundColor;;
     border-color: &dtml-globalBorderColor;;
     border-bottom-color: &dtml-globalBackgroundColor;;
     color: &dtml-globalFontColor;;
 }
+
 #portal-personaltools {
     /* Bar with personalized menu (user preferences, favorites etc) */
     background-color: &dtml-globalBackgroundColor;;
@@ -271,7 +282,7 @@
     border-bottom-color: &dtml-globalBorderColor;;
     border-bottom-style: &dtml-borderStyle;;
     border-bottom-width: &dtml-borderWidth;;
-    line-height: 1.3em;
+    line-height: 1.6em;
     color: &dtml-fontColor;;
     padding: 0em 3em 0em 3em;
     margin: 0;
@@ -279,17 +290,19 @@
     text-transform: &dtml-textTransform;;
     list-style: none;
 }
+
 #portal-personaltools .portalUser {
     background: transparent url(&dtml-portal_url;/user.gif) center left no-repeat;
     padding-left: 15px;
 }
 
 #portal-personaltools .portalNotLoggedIn {
+    /* Used on all descriptions relevant to those not logged in */
     color: &dtml-fontColor;;
     padding: 0;
     background: transparent;
     background-image: none;
-} /* Used on all descriptions relevant to those not logged in */
+}
 
 #portal-personaltools li {
     background: transparent url(&dtml-portal_url;/linkOpaque.gif) center left no-repeat;
@@ -298,16 +311,20 @@
     margin-left: 1em;
     display: inline;
 }
+
 #portal-personaltools li a {
     text-decoration: none;
     color: &dtml-globalFontColor;;
 }
+
 #portal-personaltools .visualIconPadding {
     padding-left: 10px;
 }
+
 .visualCaseSensitive {
     text-transform: none;
 }
+
 #portal-breadcrumbs {
     /* The path bar, including breadcrumbs and add to favorites */
     border-bottom-color: &dtml-globalBorderColor;;
@@ -316,68 +333,23 @@
     padding-left: 2em;
     padding-right: 2em;
     text-transform: &dtml-textTransform;;
+    line-height: 1.6em;
 }
 
 #portal-breadcrumbs a {
     text-decoration: none;
 }
 
-
 .breadcrumbSeparator {
     font-size: 120%;
-    position: relative;
-    top: 0.15em;
 }
 
 .addFavorite {
     vertical-align: bottom;
 }
-.contentViews {
-    background-color: transparent;
-    padding-left: 1em;
-    line-height: normal;
-    margin-top: 2.1em;
-    margin-left: 0;
-    list-style: none;
-    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
-    border-top-width: 0px;
-    border-left-width: 0px;
-    border-right-width: 0px;
-}
-.contentViews li {
-    display: inline;
-    padding-top: 0.5em;
-}
-.contentViews li a {
-    background-color: transparent;
-    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
-    border-style: &dtml-borderStyle;;
-    color: &dtml-contentViewFontColor;;
-    height: auto;
-    margin-right: 0.5em;
-    padding: 0em 1em;
-    line-height: normal;
-    text-decoration: none;
-    text-transform: &dtml-textTransform;;
-    z-index: 1;
-}
-.contentViews .selected a {
-    background-color: &dtml-contentViewBackgroundColor;;
-    border-bottom: &dtml-contentViewBackgroundColor; &dtml-borderWidth; &dtml-borderStyle;;
-    color: &dtml-contentViewFontColor;;
-}
-.contentViews li a:hover {
-    background-color: &dtml-contentViewBackgroundColor;;
-    color: &dtml-contentViewFontColor;;
-}
-
-
-.configlet .contentViews {
-    font-size: 90%;
-}
 
 #content {
-    padding: 0.139em 1em 0 1em;
+    padding: 1em 1em 0 1em !important;
     margin: 0em 0em 2em 0em;
 }
 
@@ -385,17 +357,26 @@
     margin-bottom: 1em;
 }
 
-/* only h5/h6 headlines in the content area should have the discreet color */
+/* Only h5/h6 headlines in the content area should have the discreet color */
 
 #content h5,
 #content h6 {
     color: &dtml-discreetColor;;
 }
 
-
 .newsItem {
     margin-bottom: 1em;
     border-bottom: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+}
+
+.newsImage {
+    border: 1px solid black;
+}
+
+.newsImageContainer {
+    float:right;
+    margin: 0 0 0.5em 1em;
+    width: 202px;
 }
 
 .newsContent {
@@ -436,55 +417,34 @@
     margin: 0 1em 0 0;
 }
 
-.documentEditable {
-    padding: 0em 2em 1em 2em !important;
-}
-
-.configlet .documentEditable {
-    padding: 0em !important;
-}
-
-.documentContent {
-    font-size: 110%;
-    padding: 1em 1em 2em 1em !important;
-    background: &dtml-backgroundColor;;
-}
-
-.documentEditable .documentContent {
-    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
-    padding: 0;
-}
-
-
-
 .documentActions {
     float: right;
     margin: 0.4em 0 0 0.5em;
-    clear: none;
+    padding: 0;
+    text-align: right;
 }
 
 .documentActions ul {
-    margin: 0 0 0.3em 0;
+    margin: 1px 0 2px 0;
+    padding: 0;
+    display: block;
 }
 
-
-.documentActions ul,
 .documentActions li {
     display: inline;
     list-style: none;
     list-style-image: none;
+    margin: 0;
+    padding: 0;
 }
+
 .documentActions a {
-    border: 0;
+    border: none !important;
     text-decoration: none;
 }
 
-.documentActions img {
-    height: 16px;
-    width: 16px;
-}
-
 /* .system-message and #error-handling are reST error indicators */
+
 .portalMessage,
 .system-message,
 #error-handling {
@@ -499,24 +459,111 @@
     background-image: url(&dtml-portal_url;/info_icon.gif);
     background-repeat: no-repeat;
     background-position: 5px 50%;
-
 }
+
 .portalMessage a {
     color: &dtml-fontColor;;
 }
+
 .documentDescription {
     /* The summary text describing the document */
     font-weight: bold;
     display: block;
-    margin: 0.5em 0em;
+    margin: 0em 0em 0.5em 0em;
     line-height: 1.5em;
 }
+
 .documentByLine {
     font-size: &dtml-fontSmallSize;;
     font-weight: normal;
     color: &dtml-discreetColor;;
-    margin: 0;    
-    display: inline;
+    margin: 0em 0em 0.5em 0em;
+}
+
+.discussion {
+    margin-top: 1em;
+}
+
+/* Batch selector */
+
+.even {
+    background-color: &dtml-evenRowBackgroundColor;;
+}
+
+.odd {
+    background-color: &dtml-oddRowBackgroundColor;;
+}
+
+.visualHighlight {
+    background-color: &dtml-evenRowBackgroundColor;;
+}
+
+.discreet {
+    color: &dtml-discreetColor;;
+    font-size: &dtml-fontSmallSize;;
+    font-weight: normal;
+}
+
+.listingBar {
+    background-color: &dtml-globalBackgroundColor;;
+    border-color: &dtml-globalBorderColor;;
+    border-style: &dtml-borderStyle;;
+    border-width: &dtml-borderWidth;;
+    padding: 0em 1em;
+    text-align: center;
+    text-transform: &dtml-textTransform;;
+    vertical-align: top;
+    margin: 1em 0em;
+    font-size: 94%;
+    clear: both;
+}
+
+.listingBar span.previous,
+.listingPrevious {
+    text-align: left;
+    float: left;
+    margin-right: 1em;
+}
+
+.listingBar span.next,
+.listingNext {
+    text-align: right;
+    float: right;
+    margin-left: 1em;
+}
+
+.listingBar img {
+    vertical-align: middle;
+}
+
+.listingBar a {
+    text-decoration: none;
+}
+
+.tileItem {
+    border-bottom: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    padding-bottom: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+.tileHeadline {
+    border: none;
+    font-size: 110%;
+    font-weight: bold;
+}
+
+.tileHeadline a {
+    text-decoration: none;
+}
+
+.tileBody {
+    margin-bottom: 0.5em;
+}
+
+.tileImage {
+    float: right;
+    margin: 0 0 0.5em 0.5em;
+    border: 1px solid black;
 }
 
 /* Useful deviations from regular style on elements */
@@ -534,7 +581,6 @@ ol.visualNoMarker {
 textarea.proportional {
     font: 100% <dtml-var fontFamily>;
 }
-
 
 .productCredits {
     text-align: right;
@@ -563,6 +609,10 @@ textarea.proportional {
     text-decoration: none;
     color: &dtml-linkColor;;
     border: none;
+}
+
+#portal-footer a:visited {
+    color: &dtml-linkColor;;
 }
 
 #portal-footer a:hover {
@@ -629,10 +679,6 @@ textarea.proportional {
     display: none;
 }
 
-
-
-
-
 /* Collapsible elements */
 
 dl.collapsible {
@@ -680,7 +726,7 @@ dl.collapsedBlockCollapsible {
 }
 
 dl.collapsedBlockCollapsible dt.collapsibleHeader {
-    padding: 0 0 0 22px; 
+    padding: 0 0 0 22px;
     background: transparent url(treeCollapsed.gif) no-repeat 6px 50%;
     cursor: pointer;
 }
@@ -698,14 +744,13 @@ dl.collapsedInlineCollapsible {
 }
 
 dl.collapsedInlineCollapsible dt.collapsibleHeader {
-    padding: 0 0 0 22px; 
+    padding: 0 0 0 22px;
     background: transparent url(treeCollapsed.gif) no-repeat 6px 50%;
     cursor: pointer;
     display: inline;
     top: 0;
     left: 0;
 }
-
 
 /* Sitemap styles */
 
@@ -729,10 +774,7 @@ dl.collapsedInlineCollapsible dt.collapsibleHeader {
     margin: 0 0 0 0.6em;
 }
 
-
-/*
-** Accessibility and visual enhancement elements
-*/
+/* Accessibility and visual enhancement elements */
 
 .link-plain {
     background-image: none;
@@ -808,18 +850,48 @@ dl.collapsedInlineCollapsible dt.collapsibleHeader {
     font-weight: normal;
 }
 
-/* fullscreen */
+/* For ghosted elements */
+.visualGhosted {
+    opacity: 0.2;
+    -moz-opacity: 0.2;
+    -khtml-opacity: 0.2;
+}
+
+/* Fullscreen */
 
 body.fullscreen #portal-logo,
 body.fullscreen #portal-siteactions {
     display: none;
 }
 
+body.fullscreen #portal-globalnav {
+    margin-top: 4em;
+}
+
 body.fullscreen #portal-searchbox {
-    margin: 1.1em 0.5em 0 0.5em; 
-    padding: 0; 
+    margin: 0.5em 2em 0 0.5em;
+    padding: 0;
     position: relative;
 }
 
+/* Kupu image alignment classes */
+
+.image-left {
+   float: left;
+   clear: both;
+   margin: 0.5em 1em 0.5em 0;
+   border: 1px solid Black;
+}
+
+.image-inline {
+   float: none;
+}
+
+.image-right {
+   float: right;
+   clear: both;
+   margin: 0.5em;
+   border: 1px solid Black;
+}
 
 /* </dtml-with> */

@@ -21,40 +21,40 @@
     </tal:conditional>
 
       <div id="content" class="documentEditable">
-	<!-- simulating views on the groups/user pages until we have real objects. -->
-	<ul class="contentViews">
-	  <li class="">
+    <!-- simulating views on the groups/user pages until we have real objects. -->
+    <ul class="contentViews">
+      <li class="">
             <a href=""
                tal:attributes="href string:${here/absolute_url}/prefs_group_members?groupname=${groupname}"
                i18n:translate="label_group_members">Group Members</a>
-	  </li>
-	  <li class="selected">
-	    <a href=""
-	       tal:attributes="href string:${here/absolute_url}/${template/id}?groupname=${groupname}"
-	       i18n:translate="label_group_properties">Group Properties</a>
-	  </li>
-	</ul>
-    
-	<div class="contentActions">
-	  &nbsp;
-	</div>        
+      </li>
+      <li class="selected">
+        <a href=""
+           tal:attributes="href string:${here/absolute_url}/${template/id}?groupname=${groupname}"
+           i18n:translate="label_group_properties">Group Properties</a>
+      </li>
+    </ul>
 
-	<div class="documentContent" id="region-content">
-	  <a name="documentContent"></a>
+    <div class="contentActions">
+      &nbsp;
+    </div>
 
-	  <div metal:use-macro="here/global_statusmessage/macros/portal_message">
-	    Portal status message
-	  </div>
+    <div id="region-content">
+      <a name="documentContent"></a>
 
-	  <!-- When no group is specified, this gets used as the add group page page -->
-	  <div class="configlet" tal:condition="not:group | nothing">
-	    <metal:block metal:use-macro="template/macros/props">
-	      <metal:title metal:fill-slot="title">
-		<h1 i18n:translate="heading_create_group">Create a Group</h1>
-	      </metal:title>
-    
-	      <metal:name metal:fill-slot="name">
-		<div class="field">
+      <div metal:use-macro="here/global_statusmessage/macros/portal_message">
+        Portal status message
+      </div>
+
+      <!-- When no group is specified, this gets used as the add group page page -->
+      <div class="configlet" tal:condition="not:group | nothing">
+        <metal:block metal:use-macro="template/macros/props">
+          <metal:title metal:fill-slot="title">
+        <h1 i18n:translate="heading_create_group">Create a Group</h1>
+          </metal:title>
+
+          <metal:name metal:fill-slot="name">
+        <div class="field">
                <label for="addname" i18n:translate="label_name">Short Name</label>
 
                <span class="fieldRequired" title="Required"
@@ -68,18 +68,18 @@
                <input type="text" name="addname" value="groupname"
                       id="addname"
                       tal:attributes="value group/getGroupName | string:"/>
-		</div>
-	      </metal:name>
-	    </metal:block>
-	  </div>
-    
-	  <div class="configlet" tal:condition="group | nothing">
+        </div>
+          </metal:name>
+        </metal:block>
+      </div>
+
+      <div class="configlet" tal:condition="group | nothing">
             <metal:block metal:define-macro="props" tal:omit-tag="">
-    
+
         <h1 i18n:translate="heading_edit_groupproperties" metal:define-slot="title">
                Edit Group Properties for <span tal:replace="grouptitle | default" i18n:name="groupname">#unavailable#</span>
         </h1>
-    
+
         <a href=""
            class="link-parent"
            tal:attributes="href string: $portal_url/prefs_groups_overview"
@@ -92,7 +92,7 @@
         They are not directly related to permissions on a global level, you normally
         use Roles for that - and let certain Groups have a particular role.
         </p>
-    
+
         <form action=""
               name="groups"
               method="post"
@@ -100,56 +100,56 @@
               tal:attributes="action string:${gtool/absolute_url}"
               tal:define="targetobject gdtool;
                           targetGetProperty nocall:group/getProperty | nocall:here/returnNone;">
-    
+
             <fieldset>
                 <legend i18n:translate="link_group_properties">Group Properties</legend>
-        
+
                 <div class="field" metal:define-slot="name">
                    <label for="addname" i18n:translate="label_name">Short Name</label>
-                   
+
                    <div tal:content="group/getGroupName | string:" />
                    <input type="hidden" name="groupname" value="groupname" id="groupname"
                                  tal:attributes="value group/getGroupName | string: "/>
                 </div>
-        
+
                  <tal:set tal:condition="targetobject/management_page_charset|nothing"
                           tal:define="dummy python:request.set('management_page_charset_tag','')" />
-        
+
                  <tal:set tal:condition="not:targetobject/management_page_charset|nothing">
                     <tal:defines define="dummy python:request.set('management_page_charset','UTF-8');
                                          dummy python:request.set('management_page_charset_tag','UTF-8:');" />
                  </tal:set>
-        
+
                 <tal:properties repeat="property targetobject/propertyMap">
                     <span tal:condition="python:property['id'] != 'listed'" tal:omit-tag="">
                         <div class="field"
                              tal:define="id property/id;
                                          type property/type;
                                          propertyvalue python:targetGetProperty(id, None);">
-        
+
                         <label for="value"
                                 tal:attributes="for id"
                                 i18n:translate=""
                                 tal:content="python:targetobject.propertyLabel(id)">Property Value</label>
-        
+
                         <div tal:define="propertyitem python:targetobject.getProperty(id)"
                         tal:condition="python:'w' in property.get('mode', 'awd')">
-        
+
                         <input type="text" name="id" size="35"
                                 tal:condition="python:type in ('int', 'long')"
                                 tal:attributes="name string:$id:$type;
                                                 value python:test(propertyvalue, propertyvalue, '')" />
-        
+
                         <input type="text" name="id" size="35"
                                 tal:condition="python:type in ('float','date')"
                                 tal:attributes="name string:$id:${request/management_page_charset_tag}$type;
                                                 value python:test(propertyvalue, propertyvalue, '')" />
-        
+
                         <input type="text" name="string and ustring" size="35"
                                 tal:condition="python:type in ('string','ustring')"
                                 tal:attributes="name string:$id:${request/management_page_charset_tag}$type;
                                                 value python:test(propertyvalue, propertyvalue, '')" />
-        
+
                         <input type="checkbox"
                                 class="noborder"
                                 name="id"
@@ -158,19 +158,19 @@
                                 tal:attributes="name string:$id:$type;
                                                 id string:cb-$id;
                                                 checked python:test(propertyvalue, 'checked', '')" />
-        
+
                         <input name="tokens and utokens" value="" type="text" size="35"
                                 tal:condition="python:type in ('tokens', 'utokens')"
                                 tal:attributes="name string:$id:${request/management_page_charset_tag}$type;
                                                 value python:test(propertyvalue, propertyvalue, '')" />
-        
+
                         <textarea name="text and utext"
                                 rows="6"
                                 cols="35"
                                 tal:condition="python: type in ('text', 'utext')"
                                 tal:attributes="name string:$id:${request/management_page_charset_tag}$type"
                                 tal:content="propertyvalue">some data</textarea>
-        
+
                         <textarea name="lines and ulines"
                                 rows="6"
                                 cols="35"
@@ -178,12 +178,12 @@
                                 tal:attributes="name string:$id:${request/management_page_charset_tag}$type;"
                                 tal:content="python: '\n'.join(propertyvalue)">
                         </textarea>
-        
-        
+
+
                         <tal:selections tal:condition="python:type in ('selection', 'multiple selection')"
                                         tal:define="select_variable python:property.get('select_variable','');
                                         select_value python:select_variable and path('here/%s' %select_variable) or [];">
-    
+
                         <select name="selection" tal:condition="python:type in ('selection',)"
                             tal:attributes="name string:$id:${request/management_page_charset_tag}text">
                             <tal:values repeat="option select_value">
@@ -191,7 +191,7 @@
                                     tal:content="option">value</option>
                             </tal:values>
                         </select>
-    
+
                         <select name="multiple selection" multiple="multiple" tal:condition="python:type in ('multiple selection',)"
                                 tal:attributes="name string:$id:${request/management_page_charset_tag}list:string;
                                                 size python:min(7, len(select_value));">
@@ -201,15 +201,15 @@
                                         tal:content="option">value</option>
                             </tal:values>
                         </select>
-    
+
                         </tal:selections>
-        
+
                         </div>
-        
+
                         </div>
                     </span>
                 </tal:properties>
-        
+
                 <div class="formControls">
                     <input class="context"
                            type="submit"
@@ -219,10 +219,10 @@
                 </div>
             </fieldset>
         </form>
-    
+
         </metal:block>
-    
-    
+
+
     </div>
 
 </div>

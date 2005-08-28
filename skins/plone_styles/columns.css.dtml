@@ -5,7 +5,6 @@
 ** skin layer, if you prefer layouts without tables.
 */
 
-/* <dtml-var "enableHTTPCompression(request=REQUEST, debug=1, css=1)"> (this is for http compression) */
 /* <dtml-with base_properties> */
 
 #portal-columns {
@@ -35,9 +34,7 @@
 #portal-column-one .visualPadding {
     padding: 2em 0em 1em 2em;
 }
-#portal-column-content .visualPadding {
-    padding: 0em 2em 1em 2em;
-}
+
 #portal-column-two .visualPadding {
     padding: 2em 2em 1em 0em;
 }

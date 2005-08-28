@@ -59,6 +59,7 @@ from Products.CMFPlone.migrations.v2_1.alphas import addTypesUseViewActionInList
 from Products.CMFPlone.migrations.v2_1.alphas import switchToExpirationDateMetadata
 from Products.CMFPlone.migrations.v2_1.alphas import changePloneSetupActionToSiteSetup
 from Products.CMFPlone.migrations.v2_1.alphas import changePloneSiteIcon
+from Products.CMFPlone.migrations.v2_1.alphas import convertPloneFTIToCMFDynamicViewFTI
 
 from Products.CMFPlone.migrations.v2_1.betas import fixObjectPasteActionForDefaultPages
 from Products.CMFPlone.migrations.v2_1.betas import fixBatchActionToggle
@@ -70,6 +71,7 @@ from Products.CMFPlone.migrations.v2_1.betas import restrictEventsTopicToPublish
 from Products.CMFPlone.migrations.v2_1.betas import addCssQueryJS
 from Products.CMFPlone.migrations.v2_1.betas import exchangePloneMenuWithDropDown
 from Products.CMFPlone.migrations.v2_1.betas import removePlonePrefixFromStylesheets
+from Products.CMFPlone.migrations.v2_1.betas import add3rdPartySkinPath
 from Products.CMFPlone.migrations.v2_1.betas import addEnableLivesearchProperty
 from Products.CMFPlone.migrations.v2_1.betas import addIconForSearchSettingsConfiglet
 from Products.CMFPlone.migrations.v2_1.betas import sanitizeCookieCrumbler
@@ -80,7 +82,6 @@ from Products.CMFPlone.migrations.v2_1.betas import fixContentActionConditions
 from Products.CMFPlone.migrations.v2_1.betas import fixFolderlistingAction
 from Products.CMFPlone.migrations.v2_1.betas import fixFolderContentsActionAgain
 from Products.CMFPlone.migrations.v2_1.betas import changePortalActionCategory
-from Products.CMFPlone.migrations.v2_1.alphas import convertPloneFTIToCMFDynamicViewFTI
 from Products.CMFPlone.migrations.v2_1.betas import addMethodAliasesForPloneSite
 from Products.CMFPlone.migrations.v2_1.betas import updateParentMetaTypesNotToQuery
 from Products.CMFPlone.migrations.v2_1.betas import fixCutActionPermission
@@ -100,7 +101,19 @@ from Products.CMFPlone.migrations.v2_1.betas import setupAllowSendtoPermission
 from Products.CMFPlone.migrations.v2_1.betas import readdVisibleIdsMemberProperty
 from Products.CMFPlone.migrations.v2_1.betas import addCMFTypesToSearchBlackList
 from Products.CMFPlone.migrations.v2_1.betas import convertDefaultPageTypesToWhitelist
-from Products.CMFPlone.migrations.v2_1.betas import changeAvailableViewsForFolders
+
+from Products.CMFPlone.migrations.v2_1.rcs import changeAvailableViewsForFolders
+from Products.CMFPlone.migrations.v2_1.rcs import enableSyndicationOnTopics
+from Products.CMFPlone.migrations.v2_1.rcs import disableSyndicationAction
+from Products.CMFPlone.migrations.v2_1.rcs import alterRSSActionTitle
+from Products.CMFPlone.migrations.v2_1.rcs import addPastEventsTopic
+from Products.CMFPlone.migrations.v2_1.rcs import addDateCriterionToEventsTopic
+from Products.CMFPlone.migrations.v2_1.rcs import fixDuplicatePortalRootSharingAction
+from Products.CMFPlone.migrations.v2_1.rcs import moveDefaultTopicsToPortalRoot
+from Products.CMFPlone.migrations.v2_1.rcs import alterSortCriterionOnNewsTopic
+from Products.CMFPlone.migrations.v2_1.rcs import fixPreferenceActionTitle
+from Products.CMFPlone.migrations.v2_1.rcs import changeNewsTopicDefaultView
+from Products.CMFPlone.migrations.v2_1.rcs import fixCMFLegacyLayer
 
 from Products.CMFDynamicViewFTI.migrate import migrateFTI
 
@@ -118,14 +131,13 @@ class MigrationTest(PloneTestCase.PloneTestCase):
         typeob._actions = tuple(actions)
 
     def addActionToType(self, type_name, action_id, category):
-        # Removes an action from a portal type
+        # Adds an action to a portal type
         tool = getattr(self.portal, 'portal_types')
         info = tool.getTypeInfo(type_name)
         typeob = getattr(tool, info.getId())
         typeob.addAction(action_id, action_id, '', '', '', category)
 
-    def removeActionFromTool(self, action_id,
-                                            action_provider='portal_actions'):
+    def removeActionFromTool(self, action_id, action_provider='portal_actions'):
         # Removes an action from portal_actions
         tool = getattr(self.portal, action_provider)
         actions = tool.listActions()
@@ -140,8 +152,7 @@ class MigrationTest(PloneTestCase.PloneTestCase):
         except KeyError:
             pass # No icon associated
 
-    def addActionToTool(self, action_id, category,
-                                            action_provider='portal_actions'):
+    def addActionToTool(self, action_id, category, action_provider='portal_actions'):
         # Adds an action to portal_actions
         tool = getattr(self.portal, action_provider)
         tool.addAction(action_id, action_id, '', '', '', category)
@@ -185,6 +196,26 @@ class MigrationTest(PloneTestCase.PloneTestCase):
         tool = getattr(self.portal, 'portal_quickinstaller')
         if tool.isProductInstalled(product_name):
             tool.uninstallProducts([product_name])
+
+    def addSkinLayer(self, layer, skin='Plone Default', pos=None):
+        # Adds a skin layer at pos. If pos is None, the layer is appended
+        path = self.skins.getSkinPath(skin)
+        path = [x.strip() for x in path.split(',')]
+        if layer in path:
+            path.remove(layer)
+        if pos is None:
+            path.append(layer)
+        else:
+            path.insert(pos, layer)
+        self.skins.addSkinSelection(skin, ','.join(path))
+
+    def removeSkinLayer(self, layer, skin='Plone Default'):
+        # Removes a skin layer from skin
+        path = self.skins.getSkinPath(skin)
+        path = [x.strip() for x in path.split(',')]
+        if layer in path:
+            path.remove(layer)
+            self.skins.addSkinSelection(skin, ','.join(path))
 
 
 class TestMigrations_v2(MigrationTest):
@@ -237,6 +268,7 @@ class TestMigrations_v2_1(MigrationTest):
         self.portal_memberdata = self.portal.portal_memberdata
         self.cc = self.portal.cookie_authentication
         self.cp = self.portal.portal_controlpanel
+        self.skins = self.portal.portal_skins
 
     def testAddFullScreenAction(self):
         # Should add the full_screen action
@@ -611,7 +643,7 @@ class TestMigrations_v2_1(MigrationTest):
         removePortalTabsActions(self.portal, [])
 
     def testRemovePortalTabsActionsTwice(self):
-        # Should not fail if portal_actions is missing
+        # Should not fail if migrated twice
         removePortalTabsActions(self.portal, [])
         removePortalTabsActions(self.portal, [])
         live_actions = self.actions.listActions()
@@ -641,8 +673,9 @@ class TestMigrations_v2_1(MigrationTest):
 
     def testAddNewsTopic(self):
         #Should add the default view for the news folder, a topic
+        self.portal._delObject('news')
+        addNewsFolder(self.portal, [])
         news = self.portal.news
-        news._delObject('news_topic')
         self.failIf('news_topic' in news.objectIds())
         addNewsTopic(self.portal, [])
         self.failUnless('news_topic' in news.objectIds())
@@ -651,8 +684,9 @@ class TestMigrations_v2_1(MigrationTest):
 
     def testAddNewsTopicTwice(self):
         #Should not fail if done twice
+        self.portal._delObject('news')
+        addNewsFolder(self.portal, [])
         news = self.portal.news
-        news._delObject('news_topic')
         self.failIf('news_topic' in news.objectIds())
         addNewsTopic(self.portal, [])
         addNewsTopic(self.portal, [])
@@ -660,8 +694,9 @@ class TestMigrations_v2_1(MigrationTest):
 
     def testAddNewsTopicNoATCT(self):
         #Should not do anything unless ATCT is installed
+        self.portal._delObject('news')
+        addNewsFolder(self.portal, [])
         news = self.portal.news
-        news._delObject('news_topic')
         self.portal._delObject('portal_atct')
         addNewsTopic(self.portal, [])
         self.failUnless('news_topic' not in news.objectIds())
@@ -689,8 +724,9 @@ class TestMigrations_v2_1(MigrationTest):
 
     def testAddEventsTopic(self):
         #Should add the default view for the events folder, a topic
+        self.portal._delObject('events')
+        addEventsFolder(self.portal, [])
         events = self.portal.events
-        events._delObject('events_topic')
         self.failIf('events_topic' in events.objectIds())
         addEventsTopic(self.portal, [])
         self.failUnless('events_topic' in events.objectIds())
@@ -699,8 +735,9 @@ class TestMigrations_v2_1(MigrationTest):
 
     def testAddEventsTopicTwice(self):
         #Should not fail if done twice
+        self.portal._delObject('events')
+        addEventsFolder(self.portal, [])
         events = self.portal.events
-        events._delObject('events_topic')
         self.failIf('events_topic' in events.objectIds())
         addEventsTopic(self.portal, [])
         addEventsTopic(self.portal, [])
@@ -708,8 +745,9 @@ class TestMigrations_v2_1(MigrationTest):
 
     def testAddEventsTopicNoATCT(self):
         #Should not do anything unless ATCT is installed
+        self.portal._delObject('events')
+        addEventsFolder(self.portal, [])
         events = self.portal.events
-        events._delObject('events_topic')
         self.portal._delObject('portal_atct')
         addEventsTopic(self.portal, [])
         self.failUnless('events_topic' not in events.objectIds())
@@ -1515,8 +1553,10 @@ class TestMigrations_v2_1(MigrationTest):
 
     def testRestrictNewsTopicToPublished(self):
         # Should add a new 'published' criterion to the News topic
+        self.portal._delObject('news')
+        addNewsFolder(self.portal, [])
+        addNewsTopic(self.portal, [])
         topic = self.portal.news.news_topic
-        topic.deleteCriterion('crit__review_state_ATSimpleStringCriterion')
         self.assertRaises(AttributeError, topic.getCriterion,
                             'crit__review_state_ATSimpleStringCriterion')
         restrictNewsTopicToPublished(self.portal, [])
@@ -1524,22 +1564,26 @@ class TestMigrations_v2_1(MigrationTest):
 
     def testRestrictNewsTopicToPublishedTwice(self):
         # Should not fail if done twice
+        self.portal._delObject('news')
+        addNewsFolder(self.portal, [])
+        addNewsTopic(self.portal, [])
         topic = self.portal.news.news_topic
-        topic.deleteCriterion('crit__review_state_ATSimpleStringCriterion')
         restrictNewsTopicToPublished(self.portal, [])
         restrictNewsTopicToPublished(self.portal, [])
         self.failUnless(topic.getCriterion('crit__review_state_ATSimpleStringCriterion'))
 
     def testRestrictNewsTopicToPublishedNoTopic(self):
         # Should not do anything unless ATCT is installed
-        news = self.portal.news
-        news._delObject('news_topic')
+        self.portal._delObject('news')
+        addNewsFolder(self.portal, [])
         restrictNewsTopicToPublished(self.portal, [])
 
     def testRestrictEventsTopicToPublished(self):
         # Should add a new 'published' criterion to the News topic
+        self.portal._delObject('events')
+        addEventsFolder(self.portal, [])
+        addEventsTopic(self.portal, [])
         topic = self.portal.events.events_topic
-        topic.deleteCriterion('crit__review_state_ATSimpleStringCriterion')
         self.assertRaises(AttributeError, topic.getCriterion,
                             'crit__review_state_ATSimpleStringCriterion')
         restrictEventsTopicToPublished(self.portal, [])
@@ -1547,16 +1591,18 @@ class TestMigrations_v2_1(MigrationTest):
 
     def testRestrictEventsTopicToPublishedTwice(self):
         # Should not fail if done twice
+        self.portal._delObject('events')
+        addEventsFolder(self.portal, [])
+        addEventsTopic(self.portal, [])
         topic = self.portal.events.events_topic
-        topic.deleteCriterion('crit__review_state_ATSimpleStringCriterion')
         restrictEventsTopicToPublished(self.portal, [])
         restrictEventsTopicToPublished(self.portal, [])
         self.failUnless(topic.getCriterion('crit__review_state_ATSimpleStringCriterion'))
 
     def testRestrictEventsTopicToPublishedNoTopic(self):
         # Should not do anything unless ATCT is installed
-        news = self.portal.events
-        news._delObject('events_topic')
+        self.portal._delObject('events')
+        addEventsFolder(self.portal, [])
         restrictEventsTopicToPublished(self.portal, [])
 
     def testAddEnableLivesearchProperty(self):
@@ -1576,6 +1622,41 @@ class TestMigrations_v2_1(MigrationTest):
         # Should not fail if portal_properties is missing
         self.portal._delObject('portal_properties')
         addEnableLivesearchProperty(self.portal, [])
+
+    def testAdd3rdPartySkinPathInDefault(self):
+        # Should add plone_3rdParty to skin paths
+        self.removeSkinLayer('plone_3rdParty')
+        add3rdPartySkinPath(self.portal, [])
+        path = self.skins.getSkinPath('Plone Default')
+        self.assertEqual(path[-26:], ',plone_3rdParty,cmf_legacy')
+
+    def testAdd3rdPartySkinPathInTableless(self):
+        # Should add plone_3rdParty to skin paths
+        self.removeSkinLayer('plone_3rdParty', skin='Plone Tableless')
+        add3rdPartySkinPath(self.portal, [])
+        path = self.skins.getSkinPath('Plone Tableless')
+        self.assertEqual(path[-26:], ',plone_3rdParty,cmf_legacy')
+
+    def testAdd3rdPartySkinPathTwice(self):
+        # Should not fail if migrated again
+        self.removeSkinLayer('plone_3rdParty')
+        add3rdPartySkinPath(self.portal, [])
+        add3rdPartySkinPath(self.portal, [])
+        path = self.skins.getSkinPath('Plone Default')
+        self.assertEqual(path[-26:], ',plone_3rdParty,cmf_legacy')
+
+    def testAdd3rdPartySkinPathNoTool(self):
+        # Should not fail if tool is missing
+        self.portal._delObject('portal_skins')
+        add3rdPartySkinPath(self.portal, [])
+
+    def testAdd3rdPartySkinPathNoLayer(self):
+        # Should not fail if cmf_legacy layer is missing
+        self.removeSkinLayer('cmf_legacy')
+        self.removeSkinLayer('plone_3rdParty')
+        add3rdPartySkinPath(self.portal, [])
+        path = self.skins.getSkinPath('Plone Default')
+        self.assertEqual(path[-15:], ',plone_3rdParty')
 
     def testAddIconForSearchSettingsConfiglet(self):
         # Should add the full_screen action icon
@@ -1687,7 +1768,6 @@ class TestMigrations_v2_1(MigrationTest):
     def testAddIsFolderishIndex(self):
         # Should add IsDefaultPage index
         self.catalog.delIndex('is_folderish')
-        self.catalog.addColumn('is_folderish')
         addIsFolderishIndex(self.portal, [])
         index = self.catalog._catalog.getIndex('is_folderish')
         self.assertEqual(index.__class__.__name__, 'FieldIndex')
@@ -1696,7 +1776,6 @@ class TestMigrations_v2_1(MigrationTest):
     def testAddIsFolderishIndexTwice(self):
         # Should not fail if migrated again
         self.catalog.delIndex('is_folderish')
-        self.catalog.addColumn('is_folderish')
         addIsFolderishIndex(self.portal, [])
         addIsFolderishIndex(self.portal, [])
         index = self.catalog._catalog.getIndex('is_folderish')
@@ -1866,7 +1945,7 @@ class TestMigrations_v2_1(MigrationTest):
         _createObjectByType('Document', self.portal, 'blah')
         # check layout transfer
         self.assertEqual(self.portal.getDefaultPage(), 'blah')
-        self.assertEqual(self.portal.getAvailableLayouts(), [('folder_listing', 'Standard listing'), ('news_listing', 'News')])
+        self.assertEqual(self.portal.getAvailableLayouts(), [('folder_listing', 'Standard view'), ('news_listing', 'News')])
         self.assertEqual(self.portal.getLayout(), 'folder_listing')
 
     def testConvertPloneFTIToCMFDynamicViewFTITwice(self):
@@ -2520,6 +2599,509 @@ class TestMigrations_v2_1(MigrationTest):
         # Should not fail if site_properties is missing
         self.portal.portal_types._delObject('Topic')
         changeAvailableViewsForFolders(self.portal, [])
+
+    def testEnableSyndicationOnTopics(self):
+        # Test that we enable syndication on all existing topics
+        syn = self.portal.portal_syndication
+        news = self.portal.news
+        events = self.portal.events
+        syn.disableSyndication(news)
+        syn.disableSyndication(events)
+        self.failIf(syn.isSyndicationAllowed(news))
+        self.failIf(syn.isSyndicationAllowed(events))
+        enableSyndicationOnTopics(self.portal,[])
+        self.failUnless(syn.isSyndicationAllowed(news))
+        self.failUnless(syn.isSyndicationAllowed(events))
+        self.failUnless(syn.isSiteSyndicationAllowed())
+
+    def testEnableSyndicationOnTopicsTwice(self):
+        # Should not fail if migrated again
+        syn = self.portal.portal_syndication
+        news = self.portal.news
+        events = self.portal.events
+        syn.disableSyndication(news)
+        syn.disableSyndication(events)
+        enableSyndicationOnTopics(self.portal,[])
+        enableSyndicationOnTopics(self.portal,[])
+        self.failUnless(syn.isSyndicationAllowed(news))
+        self.failUnless(syn.isSyndicationAllowed(events))
+
+    def testEnableSyndicationOnTopicsWithSiteSyndicationDisabled(self):
+        # Should preserve site syndication state but still enable
+        syn = self.portal.portal_syndication
+        news = self.portal.news
+        events = self.portal.events
+        syn.disableSyndication(news)
+        syn.disableSyndication(events)
+        syn.editProperties(isAllowed=False)
+        self.failIf(syn.isSiteSyndicationAllowed())
+        enableSyndicationOnTopics(self.portal,[])
+        self.failIf(syn.isSiteSyndicationAllowed())
+        syn.editProperties(isAllowed=True)
+        self.failUnless(syn.isSyndicationAllowed(news))
+
+    def testEnableSyndicationOnTopicsNoTool(self):
+        # Should not fail if portal_syndication is missing
+        self.portal._delObject('portal_syndication')
+        enableSyndicationOnTopics(self.portal,[])
+
+    def testEnableSyndicationOnTopicsNoCatalog(self):
+        # Should not fail if portal_catalog is missing
+        self.portal._delObject('portal_catalog')
+        enableSyndicationOnTopics(self.portal,[])
+
+    def testDisableSyndicationAction(self):
+        # Should disable the syndication
+        syn = self.portal.portal_syndication
+        new_actions = syn._cloneActions()
+        for action in new_actions:
+            if action.getId() == 'syndication':
+                action.visible = True
+        syn._actions = new_actions
+        disableSyndicationAction(self.portal, [])
+        actions = syn.listActions()
+        syn_actions = [x for x in actions if x.id == 'syndication']
+        self.assertEqual(len(syn_actions), 1)
+        self.failIf(syn_actions[0].visible)
+
+    def testDisableSyndicationActionTwice(self):
+        # Should not fail if migrated twice
+        syn = self.portal.portal_syndication
+        new_actions = syn._cloneActions()
+        for action in new_actions:
+            if action.getId() == 'syndication':
+                action.visible = True
+        syn._actions = new_actions
+        disableSyndicationAction(self.portal, [])
+        disableSyndicationAction(self.portal, [])
+        actions = syn.listActions()
+        syn_actions = [x for x in actions if x.id == 'syndication']
+        self.assertEqual(len(syn_actions), 1)
+        self.failIf(syn_actions[0].visible)
+
+    def testDisableSyndicationActionNoAction(self):
+        # Should not fail if the action is already gone
+        self.removeActionFromTool('syndication',
+                                        action_provider='portal_syndication')
+        disableSyndicationAction(self.portal, [])
+
+    def testDisableSyndicationActionNoTool(self):
+        # Should not fail if portal_syndication is missing
+        self.portal._delObject('portal_syndication')
+        disableSyndicationAction(self.portal, [])
+
+    def testAlterRSSActionTitleAction(self):
+        # Should change the RSS action title
+        new_actions = self.actions._cloneActions()
+        for action in new_actions:
+            if action.getId() == 'rss':
+                action.title = 'A bad title with contents in it'
+        self.actions._actions = new_actions
+        alterRSSActionTitle(self.portal, [])
+        actions = self.actions.listActions()
+        rss_actions = [x for x in actions if x.id == 'rss']
+        self.assertEqual(len(rss_actions), 1)
+        self.failUnless(rss_actions[0].title == 'RSS feed of this listing')
+
+    def testAlterRSSActionTitleTwice(self):
+        # Should not fail if migrated twice
+        new_actions = self.actions._cloneActions()
+        for action in new_actions:
+            if action.getId() == 'rss':
+                action.title = 'A bad title with contents in it'
+        self.actions._actions = new_actions
+        alterRSSActionTitle(self.portal, [])
+        alterRSSActionTitle(self.portal, [])
+        actions = self.actions.listActions()
+        rss_actions = [x for x in actions if x.id == 'rss']
+        self.assertEqual(len(rss_actions), 1)
+        self.failUnless(rss_actions[0].title == 'RSS feed of this listing')
+
+    def testAlterRSSActionTitleNoAction(self):
+        # Should not fail if the action is already gone
+        self.removeActionFromTool('rss')
+        alterRSSActionTitle(self.portal, [])
+
+    def testAlterRSSActionTitleNoTool(self):
+        # Should not fail if portal_actions is missing
+        self.portal._delObject('portal_actions')
+        alterRSSActionTitle(self.portal, [])
+
+    def testAddPastEventsTopic(self):
+        #Should add a subtopic to the events_topic for past events
+        self.portal._delObject('events')
+        addEventsFolder(self.portal, [])
+        addEventsTopic(self.portal, [])
+        events_topic = self.portal.events.events_topic
+        self.failIf('previous' in events_topic.objectIds())
+        addPastEventsTopic(self.portal, [])
+        self.failUnless('previous' in events_topic.objectIds())
+        topic = getattr(events_topic.aq_base, 'previous')
+        self.assertEqual(topic._getPortalTypeName(), 'Topic')
+
+    def testAddPastEventsTopicTwice(self):
+        #Should not fail if done twice
+        self.portal._delObject('events')
+        addEventsFolder(self.portal, [])
+        addEventsTopic(self.portal, [])
+        events_topic = self.portal.events.events_topic
+        self.failIf('previous' in events_topic.objectIds())
+        addPastEventsTopic(self.portal, [])
+        addPastEventsTopic(self.portal, [])
+        self.failUnless('previous' in events_topic.objectIds())
+        topic = getattr(events_topic.aq_base, 'previous')
+        self.assertEqual(topic._getPortalTypeName(), 'Topic')
+
+    def testAddPastEventsTopicNoATCT(self):
+        #Should not do anything unless ATCT is installed
+        self.portal._delObject('events')
+        addEventsFolder(self.portal, [])
+        addEventsTopic(self.portal, [])
+        events_topic = self.portal.events.events_topic
+        self.portal._delObject('portal_atct')
+        addPastEventsTopic(self.portal, [])
+        self.failUnless('previous' not in events_topic.objectIds())
+
+    def testAddPastEventsTopicNoEvents(self):
+        #Should not do anything unless the events folder exists
+        self.portal._delObject('events')
+        addPastEventsTopic(self.portal, [])
+
+    def testAddPastEventsTopicNoParent(self):
+        #Should not do anything unless the events_topic exists
+        self.portal._delObject('events')
+        addEventsFolder(self.portal, [])
+        addPastEventsTopic(self.portal, [])
+
+    def testAddDateCriterionToEventsTopicTopic(self):
+        #Should add a date crierion to events topic to limit to future events
+        self.portal._delObject('events')
+        addEventsFolder(self.portal, [])
+        addEventsTopic(self.portal, [])
+        events_topic = self.portal.events.events_topic
+        self.failIf('crit__start_ATFriendlyDateCriteria' in events_topic.objectIds())
+        addDateCriterionToEventsTopic(self.portal, [])
+        self.failUnless('crit__start_ATFriendlyDateCriteria' in events_topic.objectIds())
+
+    def testAddDateCriterionToEventsTopicTwice(self):
+        #Should not fail if done twice
+        self.portal._delObject('events')
+        addEventsFolder(self.portal, [])
+        addEventsTopic(self.portal, [])
+        events_topic = self.portal.events.events_topic
+        self.failIf('crit__start_ATFriendlyDateCriteria' in events_topic.objectIds())
+        addDateCriterionToEventsTopic(self.portal, [])
+        addDateCriterionToEventsTopic(self.portal, [])
+        self.failUnless('crit__start_ATFriendlyDateCriteria' in events_topic.objectIds())
+
+    def testAddDateCriterionToEventsTopicNoATCT(self):
+        #Should not fail if ATCT is not installed
+        self.portal._delObject('portal_atct')
+        addDateCriterionToEventsTopic(self.portal, [])
+
+    def testFixDuplicatePortalRootSharingAction(self):
+        # Portal should use 'local_roles' as id of sharing action
+        fti = self.portal.getTypeInfo()
+        idx = 0
+        oldAction = None
+        for action in fti.listActions():
+            if action.getId() == 'local_roles':
+                oldAction = action
+                break
+            idx += 1
+        fti.deleteActions((idx,))
+        fti.addAction('sharing',
+                        name=oldAction.Title(),
+                        action=oldAction.getActionExpression(),
+                        condition=oldAction.getCondition(),
+                        permission=oldAction.getPermissions(),
+                        category=oldAction.getCategory(),
+                        visible=oldAction.getVisibility())
+
+        fixDuplicatePortalRootSharingAction(self.portal, [])
+
+        haveSharing = False
+        haveLocalRoles = False
+        for a in fti.listActions():
+            if a.getId() == 'sharing':
+                haveSharing = True
+            elif a.getId() == 'local_roles':
+                haveLocalRoles = True
+        self.failIf(haveSharing)
+        self.failUnless(haveLocalRoles)
+
+    def testFixDuplicatePortalRootSharingActionTwice(self):
+        # Should not fail if called twice
+        fti = self.portal.getTypeInfo()
+        idx = 0
+        oldAction = None
+        for action in fti.listActions():
+            if action.getId() == 'local_roles':
+                oldAction = action
+                break
+            idx += 1
+        fti.deleteActions((idx,))
+        fti.addAction('sharing',
+                        name=oldAction.Title(),
+                        action=oldAction.getActionExpression(),
+                        condition=oldAction.getCondition(),
+                        permission=oldAction.getPermissions(),
+                        category=oldAction.getCategory(),
+                        visible=oldAction.getVisibility())
+
+        fixDuplicatePortalRootSharingAction(self.portal, [])
+        fixDuplicatePortalRootSharingAction(self.portal, [])
+
+        haveSharing = False
+        haveLocalRoles = False
+        for a in fti.listActions():
+            if a.getId() == 'sharing':
+                haveSharing = True
+            elif a.getId() == 'local_roles':
+                haveLocalRoles = True
+        self.failIf(haveSharing)
+        self.failUnless(haveLocalRoles)
+
+    def testFixDuplicatePortalRootSharingActionWithCorrectLocalRolesAction(self):
+        # Should not add local_roles again if it already exists
+
+        fti = self.portal.getTypeInfo()
+        fti.addAction('sharing',
+                        name='Sharing',
+                        action='string:${object_url}/sharing',
+                        condition='',
+                        permission=('Manage properties',),
+                        category='object',
+                        visible=1)
+
+        fixDuplicatePortalRootSharingAction(self.portal, [])
+
+        haveSharing = False
+        haveLocalRoles = False
+        haveLocalRolesTwice = False
+
+        for a in fti.listActions():
+            if a.getId() == 'sharing':
+                haveSharing = True
+            elif a.getId() == 'local_roles':
+                if haveLocalRoles:
+                    haveLocalRolesTwice = True
+                haveLocalRoles = True
+        self.failIf(haveSharing)
+        self.failUnless(haveLocalRoles)
+        self.failIf(haveLocalRolesTwice)
+
+    def testFixDuplicatePortalRootSharingActionNoTool(self):
+        # Should not fail if tool is missing
+        self.portal._delObject('portal_types')
+        fixDuplicatePortalRootSharingAction(self.portal, [])
+
+    def testFixDuplicatePortalRootSharingActionNoFTI(self):
+        # Should not fail if FTI is missing
+        self.portal.portal_types._delObject('Plone Site')
+        fixDuplicatePortalRootSharingAction(self.portal, [])
+
+    def testMoveDefaultTopicsToPortalRoot(self):
+        # Should move the news and events topics to the portal root
+        self.setRoles(['Manager','Member'])
+        self.portal.manage_delObjects(['news','events'])
+        addNewsFolder(self.portal, [])
+        addNewsTopic(self.portal, [])
+        addEventsFolder(self.portal, [])
+        addEventsTopic(self.portal, [])
+        moveDefaultTopicsToPortalRoot(self.portal,[])
+        self.assertEqual(self.portal.news.portal_type, 'Topic')
+        self.assertEqual(self.portal.events.portal_type, 'Topic')
+        self.failIf('site_news' in self.portal.objectIds())
+
+    def testMoveDefaultTopicsToPortalRootTwice(self):
+        # Shouldn't fail if migrated twice
+        self.setRoles(['Manager','Member'])
+        self.portal.manage_delObjects(['news','events'])
+        addNewsFolder(self.portal, [])
+        addNewsTopic(self.portal, [])
+        addEventsFolder(self.portal, [])
+        addEventsTopic(self.portal, [])
+        moveDefaultTopicsToPortalRoot(self.portal,[])
+        moveDefaultTopicsToPortalRoot(self.portal,[])
+        self.assertEqual(self.portal.news.portal_type, 'Topic')
+        self.assertEqual(self.portal.events.portal_type, 'Topic')
+
+    def testMoveDefaultTopicsToPortalRootWithContent(self):
+        # Should move the old news folder to site_news if there are any items
+        # in it
+        self.setRoles(['Manager','Member'])
+        self.portal.manage_delObjects(['news','events'])
+        addNewsFolder(self.portal, [])
+        addNewsTopic(self.portal, [])
+        addEventsFolder(self.portal, [])
+        addEventsTopic(self.portal, [])
+        # Add news to folder
+        self.portal.news.invokeFactory('News Item', 'news1')
+        moveDefaultTopicsToPortalRoot(self.portal,[])
+        self.assertEqual(self.portal.news.portal_type, 'Topic')
+        self.assertEqual(self.portal.events.portal_type, 'Topic')
+        self.failUnless('old_news' in self.portal.objectIds())
+        self.assertEqual(self.portal.old_news.portal_type, 'Large Plone Folder')
+        # Title changed
+        self.assertEqual(self.portal.old_news.Title(), 'Old News')
+        # not Excluded from navigation
+        # self.failUnless(self.portal.old_news.exclude_from_nav())
+        # Sub-objects in place
+        self.failUnless('news1' in self.portal.old_news.objectIds())
+        self.failIf('old_events' in self.portal.objectIds())
+
+    def testMoveDefaultTopicsToPortalRootPreservesOrder(self):
+        # Should move the old news folder to site_news if there are any items
+        # in it
+        self.setRoles(['Manager','Member'])
+        self.portal.manage_delObjects(['news','events'])
+        addNewsFolder(self.portal, [])
+        addNewsTopic(self.portal, [])
+        addEventsFolder(self.portal, [])
+        addEventsTopic(self.portal, [])
+        self.portal.moveObject('news', 15)
+        moveDefaultTopicsToPortalRoot(self.portal,[])
+        self.assertEqual(self.portal.news.portal_type, 'Topic')
+        self.assertEqual(self.portal.events.portal_type, 'Topic')
+        self.assertEqual(self.portal.getObjectPosition('news'), 15)
+
+    def testMoveDefaultTopicsToPortalRootNoTopics(self):
+        # Should not fail if topics are missing
+        self.setRoles(['Manager','Member'])
+        self.portal.manage_delObjects(['news','events'])
+        addNewsFolder(self.portal, [])
+        addEventsFolder(self.portal, [])
+        moveDefaultTopicsToPortalRoot(self.portal,[])
+
+    def testMoveDefaultTopicsToPortalRootNoFolders(self):
+        # Should not fail if folders are missing
+        self.portal.manage_delObjects(['news','events'])
+        moveDefaultTopicsToPortalRoot(self.portal,[])
+
+    def testAlterSortCriterionOnNewsTopic(self):
+        #Should change sorting on the news topic to use effective
+        topic = self.portal.news
+        topic.setSortCriterion('created', False)
+        self.failUnless('crit__created_ATSortCriterion' in topic.objectIds())
+        alterSortCriterionOnNewsTopic(self.portal, [])
+        sorter = topic.getSortCriterion()
+        self.assertEqual(sorter.Field(), 'effective')
+        self.failUnless(sorter.getReversed())
+
+    def testAlterSortCriterionOnNewsTopicTwice(self):
+        #Should not fail if done twice
+        topic = self.portal.news
+        topic.setSortCriterion('created', False)
+        alterSortCriterionOnNewsTopic(self.portal, [])
+        alterSortCriterionOnNewsTopic(self.portal, [])
+        sorter = topic.getSortCriterion()
+        self.assertEqual(sorter.Field(), 'effective')
+        self.failUnless(sorter.getReversed())
+
+    def testAlterSortCriterionOnNewsTopicNoTopic(self):
+        #Should not fail if the topic is missing
+        self.portal._delObject('events')
+        alterSortCriterionOnNewsTopic(self.portal, [])
+
+    def testAlterSortCriterionOnNewsTopicNoATCT(self):
+        #Should not fail if ATCT is not installed
+        topic = self.portal.news
+        topic.setSortCriterion('created', False)
+        self.portal._delObject('portal_atct')
+        alterSortCriterionOnNewsTopic(self.portal, [])
+        
+    def testFixPreferenceActionTitle(self):
+        # Should change the preferences action title
+        new_actions = self.membership._cloneActions()
+        for action in new_actions:
+            if action.getId() == 'preferences':
+                action.title = 'My Preferences'
+        self.membership._actions = new_actions
+        fixPreferenceActionTitle(self.portal, [])
+        actions = self.membership.listActions()
+        pref_actions = [x for x in actions if x.id == 'preferences']
+        self.failUnless(pref_actions[0].title == 'Preferences')
+
+    def testFixPreferenceActionTitleTwice(self):
+        # Should not fail if migrated twice
+        new_actions = self.membership._cloneActions()
+        for action in new_actions:
+            if action.getId() == 'preferences':
+                action.title = 'My Preferences'
+        self.membership._actions = new_actions
+        fixPreferenceActionTitle(self.portal, [])
+        fixPreferenceActionTitle(self.portal, [])
+        actions = self.membership.listActions()
+        pref_actions = [x for x in actions if x.id == 'preferences']
+        self.failUnless(pref_actions[0].title == 'Preferences')
+
+    def testFixPreferenceActionTitleNoAction(self):
+        # Should not fail if the action is already gone
+        self.removeActionFromTool('preferences', action_provider='portal_membership')
+        fixPreferenceActionTitle(self.portal, [])
+
+    def testFixPreferenceActionTitleNoTool(self):
+        # Should not fail if portal_membership is missing
+        self.portal._delObject('portal_membership')
+        fixPreferenceActionTitle(self.portal, [])
+
+    def testChangeNewsTopicDefaultView(self):
+        # Should change the news topic default view to folder_summary_view
+        news = self.portal.news
+        news.setLayout('folder_listing')
+        self.assertEqual(news.getLayout(), 'folder_listing')
+        changeNewsTopicDefaultView(self.portal, [])
+        self.assertEqual(news.getLayout(), 'folder_summary_view')
+
+    def testChangeNewsTopicDefaultViewTwice(self):
+        # Should not fail if migrated twice
+        news = self.portal.news
+        news.setLayout('folder_listing')
+        self.assertEqual(news.getLayout(), 'folder_listing')
+        changeNewsTopicDefaultView(self.portal, [])
+        changeNewsTopicDefaultView(self.portal, [])
+        self.assertEqual(news.getLayout(), 'folder_summary_view')
+
+    def testChangeNewsTopicDefaultViewNoTopic(self):
+        # Should not fail if the topic is missing
+        self.portal._delObject('news')
+        changeNewsTopicDefaultView(self.portal, [])
+
+    def testFixCMFLegacyLayerInDefault(self):
+        # Should move cmf_legacy to end of skin path
+        self.addSkinLayer('cmf_legacy', pos=0)
+        fixCMFLegacyLayer(self.portal, [])
+        path = self.skins.getSkinPath('Plone Default')
+        self.assertEqual(path[-11:], ',cmf_legacy')
+
+    def testFixCMFLegacyLayerInTableless(self):
+        # Should move cmf_legacy to end of skin path
+        self.addSkinLayer('cmf_legacy', skin='Plone Tableless', pos=0)
+        fixCMFLegacyLayer(self.portal, [])
+        path = self.skins.getSkinPath('Plone Tableless')
+        self.assertEqual(path[-11:], ',cmf_legacy')
+
+    def testFixCMFLegacyLayerTwice(self):
+        # Should not fail if migrated again
+        self.addSkinLayer('cmf_legacy', pos=0)
+        fixCMFLegacyLayer(self.portal, [])
+        fixCMFLegacyLayer(self.portal, [])
+        path = self.skins.getSkinPath('Plone Default')
+        self.assertEqual(path[-11:], ',cmf_legacy')
+
+    def testFixCMFLegacyLayerNoTool(self):
+        # Should not fail if skins tool is missing
+        self.portal._delObject('portal_skins')
+        fixCMFLegacyLayer(self.portal, [])
+
+    def testFixCMFLegacyLayerNoLayer(self):
+        # Should not fail if cmf_legacy layer is missing
+        self.removeSkinLayer('cmf_legacy')
+        fixCMFLegacyLayer(self.portal, [])
+        # The missing layer is *not* added by the migration
+        path = self.skins.getSkinPath('Plone Default')
+        self.failIf('cmf_legacy' in path)
 
 
 def test_suite():

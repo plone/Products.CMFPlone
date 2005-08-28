@@ -14,7 +14,8 @@
                 b_size request/b_size | python:20;
                 portal_roles here/getGlobalPortalRoles;">
 
-      <div id="content" class="documentEditable">
+      <div id="content" class="documentEditable"
+           tal:condition="python:checkPermission('Manage users', here)">
     <!-- simulating views on the groups/user pages until we have real objects. -->
     <ul class="contentViews">
       <li class="selected">
@@ -32,7 +33,7 @@
       &nbsp;
     </div>
 
-    <div class="documentContent" id="region-content">
+    <div id="region-content">
       <a name="documentContent"></a>
 
       <div metal:use-macro="here/global_statusmessage/macros/portal_message">
@@ -216,6 +217,11 @@
 
       </div>
     </div>
+      </div>
+
+      <div id="content" class="documentEditable"
+           tal:condition="python:not checkPermission('Manage users', here)">
+        <tal:block replace="here/raiseUnauthorized" />
       </div>
     </div>
 

@@ -90,12 +90,25 @@
                                  <span tal:replace="python:toLocalizedTime(item_end,long_format=1)">to date</span>)
                             &mdash;
                             </span>
-                            <tal:creators tal:condition="item_creator">
-                                <span i18n:translate="box_created_by">
-                                    by
-                                </span>
-                                <span tal:replace="item_creator"/>
-                            </tal:creators>
+
+
+
+                            <tal:name tal:condition="item_creator"
+                                tal:define="author python:mtool.getMemberInfo(item_creator)">
+                              <span i18n:translate="label_by_author">
+                                by
+                              <a href="#"
+                                 tal:attributes="href string:${portal_url}/author/${item_creator}"
+                                 tal:content="python:author and author['fullname'] or item_creator"
+                                 tal:omit-tag="not:author"
+                                 i18n:name="author">
+                                Bob Dobalina
+                              </a>
+                              </span>
+
+                            </tal:name>
+
+
                             <tal:modified condition="python: item_type != 'Event'">
                                 &mdash;
                                 <tal:mod i18n:translate="box_last_modified">

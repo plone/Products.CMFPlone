@@ -5,10 +5,13 @@
 
 <metal:menubarmacro define-macro="contentMenu">
 
-<ul tal:define="folder python:test(getattr(here.aq_explicit, 'isPrincipiaFolderish', 0), here, here.getParentNode());
+<ul tal:define="isStructuralFolder here/is_folderish;
+                folder python:test(isStructuralFolder, here, here.getParentNode());
+                isParentStructuralFolder folder/is_folderish;
                 isContextDefaultPage here/isDefaultPageInFolder;
                 parent_folder python: isContextDefaultPage and here.getParentNode() or folder;
-                disableMenu python:here.portal_factory.isTemporary(here);"
+                disableMenu python:here.portal_factory.isTemporary(here);
+                useSelf python:isStructuralFolder and not isContextDefaultPage;"
     tal:condition="not:disableMenu">
 
 
@@ -16,7 +19,7 @@
                         transitions workflow_actions;"
                 condition="python:review_state">
 
-    <li tal:condition="not: transitions">
+    <li tal:condition="not: transitions" class="actionMenuDisabled">
         <tal:state i18n:translate="label_state">State:</tal:state>
         <span tal:content="python:putils.getReviewStateTitleFor(here)"
               tal:attributes="class string:state-${review_state}"
@@ -56,7 +59,7 @@
                                        title transition/name">File Menu Item 1</a>
                 </li>
                 </tal:block>
-                <li class="actionSeperator">
+                <li class="actionSeparator">
                     <a href="#" 
                        tal:attributes="href string:$here_url/content_status_history"
                        i18n:translate="label_advanced">Advanced&hellip;</a>
@@ -69,33 +72,35 @@
     
     </tal:states>
 
-    <tal:add define="allowedTypes parent_folder/getAllowedTypes;
+    <tal:structuralFolder condition="python:isStructuralFolder or isParentStructuralFolder">
+    <tal:add define="addContext   nocall:parent_folder;
+                     allowedTypes addContext/getAllowedTypes;
                      menuTypes    python:here.getAddableTypesInMenu(allowedTypes);
                      numAllowed   python:len(allowedTypes);
                      numMenu      python:len(menuTypes);    
-                     showSettings parent_folder/canConstrainTypes;
-                     showAdd      python:numAllowed >= 1 or showSettings;
+                     showSettings addContext/canConstrainTypes;
                      showMore     python:numAllowed > numMenu;
-                     showMenu     python:showMore or showSettings or numMenu > 1"
-             condition="showAdd">
+                     showMenu     python:showMore or showSettings or numMenu > 1;
+                     "
+             condition="python:numAllowed >= 1 or showSettings">
 
     <tal:dropdown tal:condition="showMenu">
     <li>
         <dl class="actionMenu" id="objectMenu">
           <dt class="actionMenuHeader">
-            <a tal:condition="python: here.isPrincipiaFolderish and not isContextDefaultPage"
+            <a tal:condition="useSelf"
                href="folder_factories"
                title="Add new items inside this item"
                i18n:attributes="title title_add_new_items_inside_item;"
                i18n:translate="label_add_new_item"
-               tal:attributes="href string:${here_url}/folder_factories;">Add item</a>
+               tal:attributes="href string:${addContext/absolute_url}/folder_factories;">Add item</a>
 
-            <a tal:condition="not: python: here.isPrincipiaFolderish and not isContextDefaultPage"
+            <a tal:condition="not:useSelf"
                href="folder_factories"
                title="Add new items in the same folder as this item"
                i18n:attributes="title title_add_new_items_inside_folder;"
                i18n:translate="label_add_new_item_in_folder"
-               tal:attributes="href string:${parent_folder/absolute_url}/folder_factories;">Add to folder</a>
+               tal:attributes="href string:${addContext/absolute_url}/folder_factories;">Add to folder</a>
           </dt>
           <dd class="actionMenuContent">
             <ul>
@@ -105,26 +110,26 @@
                         tal:attributes="class string:${item_type_class}">
                         <a href="#" 
                            i18n:attributes="title"
-                           tal:attributes="href string:${parent_folder/absolute_url}/createObject?type_name=${Id};
+                           tal:attributes="href string:${addContext/absolute_url}/createObject?type_name=${Id};
                                            title Description">
                           <tal:title i18n:translate=""
                                      tal:content="Title">Title</tal:title>
                         </a>
                     </li>
                 </tal:types>
-                <li style="text-align: right;" tal:condition="showMore">
+                <li tal:condition="showMore">
                     <a href="#" class="folderAddMore" title="Show all available content types"
                            i18n:attributes="title title_show_all_content_types;"
-                           tal:attributes="href string:${parent_folder/absolute_url}/folder_factories;">
+                           tal:attributes="href string:${addContext/absolute_url}/folder_factories;">
                           <tal:title i18n:translate="folder_add_more">
                             More&hellip;
                           </tal:title>
                     </a>
                 </li>
-                <li class="actionSeperator" tal:condition="showSettings">
+                <li class="actionSeparator" tal:condition="showSettings">
                     <a href="#" class="folderAddSettings" title="Configure which content types can be added here"
                            i18n:attributes="title title_configure_addable_content_types;"
-                           tal:attributes="href string:${parent_folder/absolute_url}/folder_constraintypes_form;">
+                           tal:attributes="href string:${addContext/absolute_url}/folder_constraintypes_form;">
                           <tal:title i18n:translate="folder_add_settings">
                             Settings&hellip;
                           </tal:title>
@@ -152,15 +157,16 @@
                  i18n:attributes="alt" />
             <span i18n:translate="label_add_type"
                   tal:condition="python:folder == parent_folder">
-                Add <span tal:replace="typetitle" i18n:name="type" />
+                Add <span i18n:name="type"><tal:title content="typetitle" i18n:translate="">Title</tal:title></span>
             </span>
             <span i18n:translate="label_add_type_to_folder"
                   tal:condition="python:folder != parent_folder">
-                Add <span tal:replace="typetitle" i18n:name="type" /> to folder
+                Add <span i18n:name="type"><tal:title content="typetitle" i18n:translate="">Title</tal:title></span> to folder
             </span>
         </a>
     </li>
     </tal:add>
+    </tal:structuralFolder>
 
     <tal:displayMenu define="contextHasIndexHtml context/hasIndexHtml;
                                folderHasIndexHtml parent_folder/hasIndexHtml;
@@ -168,9 +174,9 @@
                                contextVocab here/getSelectableViews;
                                canSelectDefaultFolderPage parent_folder/canSelectDefaultPage;
                                canSelectDefaultContextPage python:here.canSelectDefaultPage() and not isContextDefaultPage;
-                               parentHasActions python:parentVocab or canSelectDefaultFolderPage;
-                               contextHasActions python:contextVocab or canSelectDefaultContextPage;
-                               dimMenu python:(context.isPrincipiaFolderish and contextHasIndexHtml) or
+                               parentHasActions python:(parentVocab and len(parentVocab) > 1) or canSelectDefaultFolderPage;
+                               contextHasActions python:(contextVocab and len(contextVocab) > 1) or canSelectDefaultContextPage;
+                               dimMenu python:(isStructuralFolder and contextHasIndexHtml) or
                                               (isContextDefaultPage and folderHasIndexHtml);"
                         condition="python:(isContextDefaultPage and parentHasActions) or contextHasActions">
 
@@ -180,7 +186,8 @@
               <dt class="actionMenuHeader"
                   tal:attributes="class python:test(dimMenu, 'actionMenuHeader disabled', 'actionMenuHeader')">
                 
-                <span title="Delete or rename the index_html item to gain full control over how this folder is displayed."
+                <span class="actionMenuDisabled"
+                      title="Delete or rename the index_html item to gain full control over how this folder is displayed."
                    i18n:attributes="title title_remove_index_html_for_display_control;"
                    tal:condition="dimMenu"
                    i18n:translate="label_disabled_display_menu">
@@ -199,6 +206,12 @@
               </dt>
               <dd class="actionMenuContent" tal:condition="not:dimMenu">
                 <ul>
+                    <!-- Separator - we have both parent views and context views -->
+                    <li class="actionSeparator" tal:condition="python:parentVocab and isContextDefaultPage and contextVocab">
+                        <div class="actionLabel" i18n:translate="label_current_folder_views">
+                            Folder display
+                        </div>
+                    </li>
                     <!-- Parent views menu: context is the default-page of a parent, so show parent's selectable views -->
                     <tal:parentViewsSelection
                                     define="vocab parentVocab;
@@ -212,7 +225,7 @@
                                       tal:condition="python:value==selectedLayout"
                                       tal:attributes="title display"
                                       i18n:translate=""
-                                      class="selected"
+                                      class="actionMenuSelected"
                                       tal:content="display">Template id</span>
                                 <a href="#"
                                    tal:condition="python:value!=selectedLayout"
@@ -228,33 +241,42 @@
 
                         <tal:parentDefaultPage condition="canSelectDefaultFolderPage">
                             <tal:haveSelectedLayout condition="python:selectedLayout != ''">
-                                <li class="actionSeperator">
+                                <li class="actionSeparator">
                                     <a title="Select an item to be used as default view in this folder" href="#"
                                        tal:attributes="href string:${parent_folder/absolute_url}/select_default_page;"
                                        i18n:attributes="title title_select_default_view_item;"
                                        i18n:translate="label_choose_item">
-                                         Choose item&hellip;
+                                         Choose content item<br />&nbsp;&nbsp;as default view&hellip;
                                     </a>
                                 </li>
                             </tal:haveSelectedLayout>
                             <tal:haveDefaultPage condition="python:selectedLayout == ''">
-                                <li class="actionSeperator">
-                                    <div class="currentDefaultPage selected">
-                                        <span tal:replace="here/title_or_id"/>
-                                    </div>
+                                <li class="actionSeparator">
+                                    <span class="currentDefaultPage actionMenuSelected"
+                                          i18n:translate="label_item_selected">
+                                        Item: <span tal:replace="here/title_or_id"
+                                                    i18n:name="contentitem" />
+                                    </span>
                                 </li>
                                 <li>
                                     <a title="Change the item used as default view in this folder" href="#"
                                        tal:attributes="href string:${parent_folder/absolute_url}/select_default_page;"
                                        i18n:attributes="title title_change_default_view_item;"
                                        i18n:translate="label_change_item">
-                                         Change item&hellip;
+                                         Change content item<br />&nbsp;&nbsp;as default view&hellip;
                                     </a>
                                 </li>
                             </tal:haveDefaultPage>
                         </tal:parentDefaultPage>
                     
                     </tal:parentViewsSelection>
+
+                    <!-- Separator - we have both parent views and context views -->
+                    <li class="actionSeparator" tal:condition="python:parentVocab and isContextDefaultPage and contextVocab">
+                        <div class="actionLabel" i18n:translate="label_current_item_views">
+                            Item display
+                        </div>
+                    </li>
 
                     <!-- Context views menu: A document with selectable views, or a folder with no default-page selected.
                             Note: We turn off selection of a default-page regardless of the capabilities of the folder
@@ -275,7 +297,7 @@
                                       tal:condition="python:value==selectedLayout"
                                       tal:attributes="title display"
                                       i18n:attributes="title"
-                                      class="selected"
+                                      class="actionMenuSelected"
                                       > 
                                       <span i18n:translate="" 
                                             tal:omit-tag="" 
@@ -294,27 +316,29 @@
 
                         <tal:contextDefaultPage condition="canSelectDefaultContextPage">
                             <tal:haveSelectedLayout condition="python:selectedLayout != ''">
-                                <li class="actionSeperator">
+                                <li class="actionSeparator">
                                     <a title="Select an item to be used as default view in this folder" href="#"
                                        tal:attributes="href string:${here/absolute_url}/select_default_page;"
                                        i18n:attributes="title title_select_default_page;"
                                        i18n:translate="label_choose_item">
-                                         Choose item&hellip;
+                                         Choose content item<br />&nbsp;&nbsp;as default view&hellip;
                                     </a>
                                 </li>
                             </tal:haveSelectedLayout>
                             <tal:haveDefaultPage condition="python:selectedLayout == ''">
-                                <li class="actionSeperator">
-                                    <div class="currentDefaultPage selected">
-                                        <span tal:replace="defaultPage/title_or_id"/>
-                                    </div>
+                                <li class="actionSeparator">
+                                    <span class="currentDefaultPage actionMenuSelected"
+                                          i18n:translate="label_item_selected">
+                                        Item: <span tal:replace="defaultPage/title_or_id"
+                                              i18n:name="contentitem" />
+                                    </span>
                                 </li>
                                 <li>
-                                    <a title="Change default page" href="#" class="selected"
+                                    <a title="Change default page" href="#"
                                        tal:attributes="href string:${here/absolute_url}/select_default_page;"
                                        i18n:attributes="title title_change_default_page;"
                                        i18n:translate="label_change_item">
-                                         Change item&hellip;
+                                         Change content item<br />&nbsp;&nbsp;as default view&hellip;
                                     </a>
                                 </li>
                             </tal:haveDefaultPage>
@@ -327,27 +351,29 @@
                                 condition="python: canSelectDefaultFolderPage and not (parentVocab or contextVocab)"
                                 define="selectedLayout context/getLayout|nothing;">
                         <tal:haveSelectedLayout condition="python:selectedLayout != ''">
-                            <li class="actionSeperator">
+                            <li class="actionSeparator">
                                 <a title="Select an item to be used as default view in this folder" href="#"
                                    tal:attributes="href string:${parent_folder/absolute_url}/select_default_page;"
                                    i18n:attributes="title title_select_default_page;"
                                    i18n:translate="label_choose_item">
-                                     Choose item&hellip;
+                                     Choose content item<br />&nbsp;&nbsp;as default view&hellip;
                                 </a>
                             </li>
                         </tal:haveSelectedLayout>
                         <tal:haveDefaultPage condition="python:selectedLayout == ''">
-                            <li class="actionSeperator">
-                                <div class="currentDefaultPage selected">
-                                    <span tal:replace="here/title_or_id"/>
-                                </div>
+                            <li class="actionSeparator">
+                                <span class="currentDefaultPage actionMenuSelected"
+                                          i18n:translate="label_item_selected">
+                                    Item: <span tal:replace="here/title_or_id"
+                                                i18n:name="contentitem" />
+                                </span>
                             </li>
                             <li>
-                                <a title="Change default page" href="#" class="selected"
+                                <a title="Change default page" href="#"
                                    tal:attributes="href string:${parent_folder/absolute_url}/select_default_page;"
                                    i18n:attributes="title title_change_default_page;"
                                    i18n:translate="label_change_item">
-                                     Change item&hellip;
+                                     Change content item<br />&nbsp;&nbsp;as default view&hellip;
                                 </a>
                             </li>
                         </tal:haveDefaultPage>
@@ -395,7 +421,7 @@
                                     tal:attributes="class class_name">
                                     <a onclick="#"
                                        tal:define="ptype here/portal_type;
-                                                   alert_msg python:here.translate('alert_really_delete', default='Do you really want to delete the item?');
+                                                   alert_msg python:((isContextDefaultPage or (isStructuralFolder and not here.portal_type == 'Topic')) and here.translate('alert_really_delete_folder', default='Do you really want to delete this folder and all its contents?')) or here.translate('alert_really_delete', default='Do you really want to delete this item?');
                                                    ptype_translated python:here.translate(ptype);"
                                        tal:attributes="href editAction/url;
                                                        title editAction/name;

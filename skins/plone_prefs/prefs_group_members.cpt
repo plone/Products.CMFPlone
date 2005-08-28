@@ -18,7 +18,7 @@
                 grouproles python:request.set('grouproles', []);
                 group python:gtool.getGroupById(groupname);
                 grouptitle group/getGroupTitleOrName|groupname;
-                groupMembers group/getGroupMembers;">
+                groupMembers group/getGroupMembers|nothing;">
 
     <tal:conditional condition="group">
         <tal:defines define="dummy python:request.set('grouproles', group.getRoles())" />
@@ -44,8 +44,7 @@
       &nbsp;
     </div>
 
-    <div class="documentContent" id="region-content">
-      <a name="documentContent"></a>
+    <div id="region-content">
 
       <div metal:use-macro="here/global_statusmessage/macros/portal_message">
         Portal status message
@@ -78,8 +77,8 @@
           </a>
 
           <p i18n:translate="description_group_members_of">
-            You can add or remove users from this particular group here. Note that this
-            doesn't actually delete the user, it is only removed from this group.
+            You can add or remove groups and users from this particular group here. Note that this
+            doesn't actually delete the group or user, it is only removed from this group.
           </p>
 
 
@@ -89,9 +88,9 @@
                     tal:attributes="action string:${here/absolute_url}/${template/getId}"
                     tal:define="searchstring request/searchstring | nothing;
                                 findAll python:'form.button.FindAll' in request.keys();
-                                results python:(searchstring or findAll) and here.prefs_user_group_search(searchstring, 'users', ignore=groupMembers) or [];
+                                ignoreUsersGroups python: group.getAllGroupMembers() + [group,];
+                                results python:(searchstring or findAll) and here.prefs_user_group_search(searchstring, 'all', ignore=ignoreUsersGroups) or [];
                                 batch python:Batch(results, b_size, int(b_start), orphan=1)">
-
             <h2 i18n:translate="heading_groupmembers_current">Current group members</h2>
               <table class="listing" summary="Group Members Listing"
                  tal:condition="groupMembers">
@@ -109,7 +108,7 @@
                                  i18n:attributes="title label_select_all_items; alt label_select_all_items;"/>
                                  <!--Remove user from this group-->
                       </th>
-                      <th i18n:translate="listingheader_user_name">User name</th>
+                      <th i18n:translate="listingheader_group_user_name">Group/User name</th>
                       <th i18n:translate="listingheader_email_address">E-mail Address</th>
                   </tr>
 
@@ -127,7 +126,7 @@
                           <td>
                             <img src="group.gif" alt="" />
                             <a href="" tal:attributes="href string:prefs_group_details?groupname=${this_user/getGroupName}"
-                                         tal:content="this_user/getGroupName | default">
+                                         tal:content="this_user/getGroupTitleOrName | default">
                               <span i18n:translate="link_groupname_not_available">
                               groupname not available</span>
                             </a>
@@ -159,12 +158,12 @@
               </table>
 
 
-              <p tal:condition="not:groupMembers" i18n:translate="decription_no_members_assigned">There is no user attached to this group.</p>
+              <p tal:condition="not:groupMembers" i18n:translate="decription_no_members_assigned">There is no group or user attached to this group.</p>
 
               <input class="destructive"
                      type="submit"
                      name="form.button.Edit"
-                     value="Remove selected users"
+                     value="Remove selected groups / users"
                      i18n:attributes="value label_remove_selected_users;"
                      tal:condition="groupMembers" />
 
@@ -186,7 +185,6 @@
                                tabindex tabindex/next;"
                            />
 
-                    <input type="hidden" name="searchonly" value="groups" />
                     <input type="submit"
                            class="searchButton"
                            name="form.button.Search"
@@ -219,8 +217,8 @@
                 <th i18n:translate="listingheader_group_user_name">Group/User name</th>
               </tr>
 
-              <tal:block repeat="obj batch">
-                <tr tal:define="oddrow repeat/obj/odd"
+              <tal:block repeat="this_user batch">
+                <tr tal:define="oddrow repeat/this_user/odd"
                     tal:attributes="class python:test(oddrow,'odd','even')">
 
                   <td class="listingCheckbox">
@@ -228,15 +226,25 @@
                            class="noborder"
                            name="add:list"
                            value="value"
-                             tal:attributes="value obj/getGroupId | obj/getId" />
+                             tal:attributes="value this_user/getGroupId | this_user/getId" />
                   </td>
 
                   <td>
-                      <img src="user.gif" alt="" />
-                      <a href="" tal:attributes="href string:prefs_user_details?userid=${obj/getId}"
-                               tal:content="obj/getUserName | default">
-                      <span i18n:translate="link_username_not_available">username not available</span>
-                    </a>
+                      <tal:block tal:condition="python:not context.portal_groups.isGroup(this_user)">
+                          <img src="user.gif" alt="" />
+                          <a href="" tal:attributes="href string:prefs_user_details?userid=${this_user/getId}"
+                                   tal:content="this_user/getUserName | default">
+                                   <span i18n:translate="link_username_not_available">username not available</span>
+                          </a>
+                      </tal:block>
+                      <tal:block tal:condition="python:context.portal_groups.isGroup(this_user)">
+                          <img src="group.gif" alt="" />
+                          <a href="" tal:attributes="href string:prefs_group_details?groupname=${this_user/getGroupName}"
+                                     tal:content="this_user/getGroupTitleOrName | default">
+                                     <span i18n:translate="link_groupname_not_available">
+                                     groupname not available</span>
+                          </a>
+                      </tal:block>
                   </td>
                 </tr>
               </tal:block>
@@ -247,7 +255,7 @@
                         i18n:translate="text_nomatches">No matches</p>
                   <p tal:condition="not:searchstring"
                      class="discreet"
-                     i18n:translate="text_no_searchstring">Enter a username to search for, or click 'Show All'.</p>
+                     i18n:translate="text_no_searchstring">Enter a group or user name to search for, or click 'Show All'.</p>
             </tal:block>
 
             <input type="hidden" value="b_start" name="b_start"
@@ -259,7 +267,7 @@
                     tabindex=""
                     type="submit"
                     name="form.button.Add"
-                    value="Add selected users to this group"
+                    value="Add selected groups and users to this group"
                     tal:condition="batch"
                     tal:attributes="tabindex tabindex/next;"
                     i18n:attributes="value label_add_users_to_group;" />

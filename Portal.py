@@ -37,9 +37,10 @@ from ComputedAttribute import ComputedAttribute
 from webdav.NullResource import NullResource
 from Products.CMFPlone.PloneFolder import ReplaceableWrapper
 from Products.CMFPlone.utils import log_exc
+from Products.CMFPlone.utils import PACKAGE_HOME
 
 default_frontpage="Unable to load front-page skeleton file"
-WWW_DIR = os.path.join(os.path.dirname(__file__), 'www')
+WWW_DIR = os.path.join(PACKAGE_HOME, 'www')
 try:
     f = open(os.path.join(WWW_DIR, 'default_frontpage.html'), 'r')
 except IOError:
@@ -75,7 +76,7 @@ factory_type_information = { 'id'             : 'Plone Root'
                          , 'permissions'   : (CMFCorePermissions.ManageProperties,)
                          , 'category'      : 'object'
                          }
-                       , { 'id'            : 'sharing'
+                       , { 'id'            : 'local_roles'
                          , 'name'          : 'Sharing'
                          , 'action': 'string:${object_url}/sharing'
                          , 'permissions'   : (CMFCorePermissions.ManageProperties,)

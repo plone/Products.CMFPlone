@@ -13,7 +13,6 @@
 **
 */
 
-/* <dtml-var "enableHTTPCompression(request=REQUEST, debug=1, css=1)"> (this is for http compression) */
 /* <dtml-with base_properties> (do not remove this :) */
 /* <dtml-call "REQUEST.set('portal_url', portal_url())"> (not this either :) */
 
@@ -39,7 +38,7 @@ img {
     vertical-align: middle;
 }
 p {
-    margin: 0 0 0.5em 0;
+    margin: 0 0 0.75em 0;
     line-height: 1.5em;
 }
 
@@ -52,12 +51,30 @@ p a:visited {
     color: &dtml-linkVisitedColor;;
     background-color: transparent;
 }
+
 p a:active {
     color: &dtml-linkActiveColor;;
     background-color: transparent;
 }
+
+.documentContent li a {
+    text-decoration: none;
+    border-bottom: 1px #cccccc solid;
+}
+
+.documentContent li a:visited {
+    color: &dtml-linkVisitedColor;;
+    background-color: transparent;
+}
+
+
+.documentContent li a:active {
+    color: &dtml-linkActiveColor;;
+    background-color: transparent;
+}
+
 p img {
-    border: 0;
+    border: none;
     margin: 0;
 }
 
@@ -130,7 +147,7 @@ ul {
 
 ol {
     line-height: 1.5em;
-    margin: 0.5em 0 0 1.5em;
+    margin: 0.5em 0 0 2.5em;
     padding: 0;
     list-style-image: none;
 }

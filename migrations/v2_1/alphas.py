@@ -6,7 +6,7 @@ from Products.CMFCore import CMFCorePermissions
 from Products.CMFCore.utils import getToolByName
 from Products.CMFDynamicViewFTI.migrate import migrateFTI
 from Products.CMFDynamicViewFTI.fti import DynamicViewTypeInformation
-from Products.CMFPlone.utils import _createObjectByType
+from Products.CMFPlone.utils import _createObjectByType, base_hasattr
 from Products.CMFPlone.migrations.migration_util import installOrReinstallProduct, \
      safeGetMemberDataTool
 from Products.CMFCore.Expression import Expression
@@ -71,7 +71,10 @@ def two05_alpha1(portal):
     return out
 
 def tweakPropertiesAndCSS(portal, out):
-    # Install CSS and Javascript registries
+    # Migrate ResourceRegistries if it's already installed
+    migrateResourceRegistries(portal, out)
+
+    # Install CSS and Javascript registries if they aren't installed already
     # also install default CSS and JS in the registry tools
     installCSSandJSRegistries(portal, out)
     
@@ -530,49 +533,78 @@ def installCSSandJSRegistries(portal, out):
 
         cssreg = getToolByName(portal, 'portal_css', None)
         if cssreg is not None:
-            cssreg.clearStylesheets()
-            # add the bottom ones and the ones with special expressions first.
-            # since registering a stylesheet adds it to the top of the stack
-            cssreg.registerStylesheet('ploneRTL.css', expression="python:object.isRightToLeft(domain='plone')")
-            cssreg.registerStylesheet('plonePresentation.css', media='presentation')
-            cssreg.registerStylesheet('plonePrint.css', media='print')
-            cssreg.registerStylesheet('ploneMobile.css', media='handheld')
-            cssreg.registerStylesheet('ploneGenerated.css', media="screen")
-            cssreg.registerStylesheet('ploneMember.css', expression='not: portal/portal_membership/isAnonymousUser')
-            cssreg.registerStylesheet('ploneColumns.css', media="screen")
-            cssreg.registerStylesheet('ploneAuthoring.css', media="screen")
-            cssreg.registerStylesheet('plonePublic.css', media="screen")
-            cssreg.registerStylesheet('ploneBase.css', media="screen")
-            cssreg.registerStylesheet('ploneCustom.css')
+            stylesheet_ids = cssreg.getResourceIds()
+            new_styles = [
+                ('ploneRTL.css', {'expression': "python:object.isRightToLeft(domain='plone')"}),
+                ('plonePresentation.css', {'media': 'presentation'}),
+                ('plonePrint.css', {'media': 'print'}),
+                ('ploneMobile.css', {'media': 'handheld'}),
+                ('ploneGenerated.css', {'media': 'screen'}),
+                ('ploneMember.css', {'expression': "not: portal/portal_membership/isAnonymousUser"}),
+                ('ploneColumns.css', {'media': 'screen'}),
+                ('ploneAuthoring.css', {'media': 'screen'}),
+                ('plonePublic.css', {'media': 'screen'}),
+                ('ploneBase.css', {'media': 'screen'}),
+                ('ploneCustom.css', {}),
+            ]
+            removable_ids = [
+                'plone.css',
+                'ploneTextSmall.css',
+                'ploneTextLarge.css',
+            ] + [x[0] for x in new_styles] # also remove new styles
+            for sid in removable_ids:
+                if sid in stylesheet_ids:
+                    cssreg.unregisterResource(sid)
+            # reverse the list, so the order is correct when we add a style and
+            # move it to the top
+            new_styles.reverse()
+            for style_id, style_kwargs in new_styles:
+                cssreg.registerStylesheet(style_id, **style_kwargs)
+                cssreg.moveResourceToTop(style_id)
+            # ploneCustom.css needs to be the last one
+            cssreg.moveResourceToBottom('ploneCustom.css')
 
         jsreg = getToolByName(portal, 'portal_javascripts', None)
         if jsreg is not None:
-            jsreg.clearScripts()
-            jsreg.registerScript('register_function.js')
-            jsreg.registerScript('plone_javascript_variables.js')
-            jsreg.registerScript('nodeutilities.js')
-            jsreg.registerScript('cookie_functions.js')
-            jsreg.registerScript('livesearch.js')
-            jsreg.registerScript('fullscreenmode.js')
-            jsreg.registerScript('select_all.js')
-            jsreg.registerScript('plone_menu.js')
-            jsreg.registerScript('mark_special_links.js')
-            jsreg.registerScript('collapsiblesections.js')
-            jsreg.registerScript('highlightsearchterms.js')
-            jsreg.registerScript('first_input_focus.js')
-            jsreg.registerScript('folder_contents_filter.js')
-            jsreg.registerScript('folder_contents_hideAddItems.js')
-            jsreg.registerScript('styleswitcher.js')
-            jsreg.registerScript('table_sorter.js')
-            jsreg.registerScript('calendar_formfield.js')
-            jsreg.registerScript('calendarpopup.js')
-            jsreg.registerScript('ie5fixes.js')
-            jsreg.registerScript('formUnload.js')
-            jsreg.registerScript('sarissa.js')
-            jsreg.registerScript('plone_minwidth.js' , enabled=False)
-            jsreg.registerScript('correctPREformatting.js', enabled=False)
-            jsreg.registerScript('vcXMLRPC.js', enabled=False)
-
+            script_ids = jsreg.getResourceIds()
+            new_scripts = [
+                ('register_function.js', {}),
+                ('plone_javascript_variables.js', {}),
+                ('nodeutilities.js', {}),
+                ('cookie_functions.js', {}),
+                ('livesearch.js', {}),
+                ('fullscreenmode.js', {}),
+                ('select_all.js', {}),
+                ('plone_menu.js', {}),
+                ('mark_special_links.js', {}),
+                ('collapsiblesections.js', {}),
+                ('highlightsearchterms.js', {}),
+                ('first_input_focus.js', {}),
+                ('folder_contents_filter.js', {}),
+                ('folder_contents_hideAddItems.js', {}),
+                ('styleswitcher.js', {}),
+                ('table_sorter.js', {}),
+                ('calendar_formfield.js', {}),
+                ('calendarpopup.js', {}),
+                ('ie5fixes.js', {}),
+                ('formUnload.js', {}),
+                ('sarissa.js', {}),
+                ('plone_minwidth.js', {'enabled': False}),
+                ('correctPREformatting.js', {'enabled': False}),
+                ('vcXMLRPC.js', {'enabled': False}),
+            ]
+            removable_ids = [
+                'plone_javascripts.js',
+            ] + [x[0] for x in new_scripts] # also remove new scripts
+            for sid in removable_ids:
+                if sid in script_ids:
+                    jsreg.unregisterResource(sid)
+            # reverse the list, so the order is correct when we add a script and
+            # move it to the top
+            new_scripts.reverse()
+            for script_id, script_kwargs in new_scripts:
+                jsreg.registerScript(script_id, **script_kwargs)
+                jsreg.moveResourceToTop(script_id)
 
         out.append('Installed CSSRegistry and JSRegistry.')
 
@@ -1236,3 +1268,51 @@ def convertPloneFTIToCMFDynamicViewFTI(portal, out):
             if 'folder_listing' not in portal.getAvailableLayouts():
                 new_fti.manage_changeProperties(view_methods=views, default_view=views and views[0])
                 out.append("Updated portal selectable views")
+
+
+def migrateResourceRegistries(portal, out):
+    """Migrate ResourceRegistries
+    
+    ResourceRegistries got refactored to use one base class, that needs a
+    migration.
+    """
+    out.append("Migrating CSSRegistry.")
+    cssreg = getToolByName(portal, 'portal_css', None)
+    if cssreg is not None:
+        if base_hasattr(cssreg, 'stylesheets'):
+            stylesheets = list(cssreg.stylesheets)
+            stylesheets.reverse() # the order was reversed
+            cssreg.resources = tuple(stylesheets)
+            del cssreg.stylesheets
+    
+        if base_hasattr(cssreg, 'cookedstylesheets'):
+            cssreg.cookedresources = cssreg.cookedstylesheets
+            del cssreg.cookedstylesheets
+    
+        if base_hasattr(cssreg, 'concatenatedstylesheets'):
+            cssreg.concatenatedresources = cssreg.concatenatedstylesheets
+            del cssreg.concatenatedstylesheets
+        cssreg.cookResources()
+        out.append("Done migrating CSSRegistry.")
+    else:
+        out.append("No CSSRegistry found.")
+
+    out.append("Migrating JSRegistry.")
+    jsreg = getToolByName(portal, 'portal_javascripts', None)
+    if jsreg is not None:
+        if base_hasattr(jsreg, 'scripts'):
+            jsreg.resources = jsreg.scripts
+            del jsreg.scripts
+    
+        if base_hasattr(jsreg, 'cookedscripts'):
+            jsreg.cookedresources = jsreg.cookedscripts
+            del jsreg.cookedscripts
+    
+        if base_hasattr(jsreg, 'concatenatedscripts'):
+            jsreg.concatenatedresources = jsreg.concatenatedscripts
+            del jsreg.concatenatedscripts
+        jsreg.cookResources()
+        out.append("Done migrating JSRegistry.")
+    else:
+        out.append("No JSRegistry found.")
+

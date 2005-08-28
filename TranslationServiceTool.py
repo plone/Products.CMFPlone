@@ -15,7 +15,8 @@ from Products.CMFCore.utils import getToolByName
 from i18nl10n import utranslate, ulocalized_time, \
                      monthname_msgid, monthname_msgid_abbr, \
                      weekdayname_msgid, weekdayname_msgid_abbr, \
-                     weekdayname_msgid_short
+                     weekdayname_msgid_short, \
+                     monthname_english, weekdayname_english
 
 class TranslationServiceTool(PloneBaseTool, UniqueObject, SimpleItem):
     """ Utility methods to access the translation machinery """
@@ -93,5 +94,15 @@ class TranslationServiceTool(PloneBaseTool, UniqueObject, SimpleItem):
         # for l10n of month names
         # format is either '' or 'a' (long or abbreviation)
         return 'a' == format and monthname_msgid_abbr(number) or monthname_msgid(number)
+
+    security.declarePublic('monthname_english')
+    def month_english(self, number, format=''):
+        # returns the english name of month with number
+        return monthname_english(number, format=format)
+
+    security.declarePublic('weekdayname_english')
+    def weekday_english(self, number, format=''):
+        # returns the english name of week with number
+        return weekdayname_english(number, format=format)
 
 InitializeClass(TranslationServiceTool)

@@ -8,7 +8,6 @@
  *  documented at the bottom of this file.
  */
  
-/* <dtml-var "enableHTTPCompression(request=REQUEST, debug=1, css=1)"> (this is for http compression) */
 /* <dtml-with base_properties> (do not remove this :) */
 /* <dtml-call "REQUEST.set('portal_url', portal_url())"> (not this either :) */
 
@@ -39,7 +38,7 @@
  
    These are the available properties:
    
-   logoName - the file name of the portal logo. 
+   logoName - the file name of the portal logo
    
    fontFamily - the font family used for all text that is not headers
    
@@ -49,6 +48,8 @@
    
    fontSmallSize - used for various elements like buttons and discreet text
    
+   discreetColor - the font color of discreet text
+
    backgroundColor - the background color 
    
    linkColor - the color used on normal links
@@ -69,7 +70,7 @@
    
    globalFontColor - the color of the font in the tabs and in portlet headings
    
-   headingFontFamily - font family for h1/h2/h3/h4/h5/h6 headlines.
+   headingFontFamily - font family for h1/h2/h3/h4/h5/h6 headlines
    
    contentViewBorderColor - the content view tabs border color
    
@@ -89,9 +90,8 @@
    
    notifyBackgroundColor - background color of notification elements like the status message, the calendar focus
    
-   discreetColor:string=#999999
-   helpBackgroundColor:string=#ffffe1
- 
+   helpBackgroundColor - background color of information pop-ups (currently not used)
+          
  */
 
 

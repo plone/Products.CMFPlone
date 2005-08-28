@@ -6,14 +6,13 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.Expression import Expression
 from Products.CMFPlone.migrations.migration_util import installOrReinstallProduct, \
      safeGetMemberDataTool, safeEditProperty
-from Products.CMFPlone.utils import base_hasattr
 from Products.CMFCore.DirectoryView import createDirectoryView
 from Products.CMFPlone.migrations.migration_util import cleanupSkinPath
 from Products.CMFPlone.migrations.migration_util import safeEditProperty
 from alphas import reindexCatalog, indexMembersFolder, indexNewsFolder, \
                     indexEventsFolder, convertPloneFTIToCMFDynamicViewFTI
 from Products.CMFPlone.PloneTool import AllowSendto
-
+from Products.CMFPlone.migrations.v2_1.alphas import migrateResourceRegistries
 
 def alpha2_beta1(portal):
     """2.1-alpha2 -> 2.1-beta1
@@ -31,6 +30,8 @@ def alpha2_beta1(portal):
     fixMyFolderAction(portal, out)
 
     # Migrate ResourceRegistries
+    # This is also done in alpha migrations, but that was introduced later, so
+    # it has to be called here as well or migrations from alphas might break.
     migrateResourceRegistries(portal, out)
 
     # Bring ploneRTL back to the nearly-top of the stack
@@ -69,9 +70,6 @@ def alpha2_beta1(portal):
 
     # Add Index for is_foldersh and remove corresponding metadata
     reindex += addIsFolderishIndex(portal, out)
-
-    # Change conditions on content actions to be respectful of parent permissions
-    fixContentActionConditions(portal, out)
 
     # Add the plone_3rdParty to the skin layers
     add3rdPartySkinPath(portal, out)
@@ -123,9 +121,6 @@ def beta1_beta2(portal):
     # navtree
     updateParentMetaTypesNotToQuery(portal, out)
 
-    # Fix cut action permissions to use something saner than 'Copy or Move'
-    fixCutActionPermission(portal, out)
-
     # Fix condition on External Editor action
     fixExtEditAction(portal, out)
 
@@ -175,9 +170,6 @@ def beta1_beta2(portal):
     # Convert default page types to whitelist
     convertDefaultPageTypesToWhitelist(portal, out)
 
-    # Change available views for folders
-    changeAvailableViewsForFolders(portal, out)
-
     # setup new Allow Sendto permission
     setupAllowSendtoPermission(portal, out)
 
@@ -220,7 +212,10 @@ def installLogin(portal, out):
         path = st.getSkinPath(s)
         path = map(string.strip, string.split(path,','))
         if not 'plone_login' in path:
-            path.append('plone_login')
+            if 'cmf_legacy' in path:
+                path.insert(path.index('cmf_legacy'), 'plone_login')
+            else:
+                path.append('plone_login')
             st.addSkinSelection(s, ','.join(path))
             out.append('Added plone_login to %s' % s)
 
@@ -266,7 +261,7 @@ def fixObjectPasteActionForDefaultPages(portal, out):
                     category=newaction['category'],
                     visible=1)
             out.append("Added missing object paste action")
-            
+
 def fixBatchActionToggle(portal, out):
     """Fix batch actions so as to function as a toggle
     """
@@ -320,53 +315,6 @@ def fixMyFolderAction(portal, out):
                 action.setActionExpression(Expression('string:${portal/portal_membership/getHomeUrl}'))
                 out.append("Made the 'mystuff' action point to folder listing instead of folder_contents")
                 break
-
-
-def migrateResourceRegistries(portal, out):
-    """Migrate ResourceRegistries
-    
-    ResourceRegistries got refactored to use one base class, that needs a
-    migration.
-    """
-    out.append("Migrating CSSRegistry.")
-    cssreg = getToolByName(portal, 'portal_css')
-    if cssreg is not None:
-        if base_hasattr(cssreg, 'stylesheets'):
-            stylesheets = list(cssreg.stylesheets)
-            stylesheets.reverse() # the order was reversed
-            cssreg.resources = tuple(stylesheets)
-            del cssreg.stylesheets
-    
-        if base_hasattr(cssreg, 'cookedstylesheets'):
-            cssreg.cookedresources = cssreg.cookedstylesheets
-            del cssreg.cookedstylesheets
-    
-        if base_hasattr(cssreg, 'concatenatedstylesheets'):
-            cssreg.concatenatedresources = cssreg.concatenatedstylesheets
-            del cssreg.concatenatedstylesheets
-        cssreg.cookResources()
-        out.append("Done migrating CSSRegistry.")
-    else:
-        out.append("No CSSRegistry found.")
-
-    out.append("Migrating JSSRegistry.")
-    jsreg = getToolByName(portal, 'portal_css')
-    if jsreg is not None:
-        if base_hasattr(jsreg, 'scripts'):
-            jsreg.resources = jsreg.scripts
-            del jsreg.scripts
-    
-        if base_hasattr(jsreg, 'cookedscripts'):
-            jsreg.cookedresources = jsreg.cookedscripts
-            del jsreg.cookedscripts
-    
-        if base_hasattr(jsreg, 'concatenatedscripts'):
-            jsreg.concatenatedresources = jsreg.concatenatedscripts
-            del jsreg.concatenatedscripts
-        jsreg.cookResources()
-        out.append("Done migrating JSSRegistry.")
-    else:
-        out.append("No JSRegistry found.")
 
 
 def reorderStylesheets(portal, out):
@@ -583,19 +531,23 @@ def addFontSizeStylesheets(portal, out):
 
 def add3rdPartySkinPath(portal, out):
     """Add the plone_3rdParty to the skin layers."""
-    st = getToolByName(portal, 'portal_skins')
-    skins = ['Plone Default', 'Plone Tableless']
-    selections = st._getSelections()
-    for s in skins:
-        if not selections.has_key(s):
-           continue
-        cleanupSkinPath(portal, s)
-        path = st.getSkinPath(s)
-        path = map(string.strip, string.split(path,','))
-        if not 'plone_3rdParty' in path:
-            path.append('plone_3rdParty')
-            st.addSkinSelection(s, ','.join(path))
-            out.append('Added plone_3rdParty to %s' % s)
+    skinsTool = getToolByName(portal, 'portal_skins', None)
+    if skinsTool is not None:
+        skins = ['Plone Default', 'Plone Tableless']
+        selections = skinsTool._getSelections()
+        for skin in skins:
+            if not selections.has_key(skin):
+               continue
+            cleanupSkinPath(portal, skin)
+            path = skinsTool.getSkinPath(skin)
+            path = map(string.strip, string.split(path,','))
+            if not 'plone_3rdParty' in path:
+                if 'cmf_legacy' in path:
+                    path.insert(path.index('cmf_legacy'), 'plone_3rdParty')
+                else:
+                    path.append('plone_3rdParty')
+                skinsTool.addSkinSelection(skin, ','.join(path))
+                out.append('Added plone_3rdParty to %s.' % skin)
 
 
 def addEnableLivesearchProperty(portal, out):
@@ -709,32 +661,39 @@ def addIsDefaultPageIndex(portal, out):
         return 1 # Ask for reindexing
     return 0
 
-
+# now used in rcs
 def fixContentActionConditions(portal,out):
     """Don't use aq_parent in action conditions directly, as it will fail if
        we don't have permissions on the parent"""
     ACTIONS = (
         {'id'        : 'cut',
          'name'      : 'Cut',
-         'action'    : 'string:${object_url}/object_cut',
-         'condition' : 'python:portal.portal_membership.checkPermission("Delete objects", object.aq_inner.getParentNode()) and object is not portal',
-         'permission': CMFCorePermissions.Permissions.copy_or_move,
+         'action'    : 'python:"%s/object_cut"%(object.isDefaultPageInFolder() and object.getParentNode().absolute_url() or object_url)',
+         'condition' : 'python:portal.portal_membership.checkPermission("Delete objects", object.aq_inner.getParentNode()) and portal.portal_membership.checkPermission("Copy or Move", object) and object is not portal and not (object.isDefaultPageInFolder() and object.getParentNode() is portal)',
+         'permission': CMFCorePermissions.DeleteObjects,
          'category'  : 'object_buttons',
         },
         {'id'        : 'paste',
          'name'      : 'Paste',
-         'action'    : 'string:${object_url}/object_paste',
+         'action'    : 'python:"%s/object_paste"%((object.isDefaultPageInFolder() or not object.is_folderish()) and object.getParentNode().absolute_url() or object_url)',
          'condition' : 'folder/cb_dataValid|nothing',
          'permission': CMFCorePermissions.View,
          'category'  : 'object_buttons',
         },
         {'id'        : 'delete',
          'name'      : 'Delete',
-         'action'    : 'string:${object_url}/object_delete',
-         'condition' : 'python:portal.portal_membership.checkPermission("Delete objects", object.aq_inner.getParentNode()) and object is not portal',
+         'action'    : 'python:"%s/object_delete"%(object.isDefaultPageInFolder() and object.getParentNode().absolute_url() or object_url)',
+         'condition' : 'python:portal.portal_membership.checkPermission("Delete objects", object.aq_inner.getParentNode()) and object is not portal and not (object.isDefaultPageInFolder() and object.getParentNode() is portal)',
          'permission': CMFCorePermissions.DeleteObjects,
          'category'  : 'object_buttons',
-        })
+        },
+        {'id'        : 'copy',
+         'name'      : 'Copy',
+         'action'    : 'python:"%s/object_copy"%(object.isDefaultPageInFolder() and object.getParentNode().absolute_url() or object_url)',
+         'condition' : 'python: portal.portal_membership.checkPermission("Copy or Move", object) and object is not portal and not (object.isDefaultPageInFolder() and object.getParentNode() is portal)',
+         'permission': CMFCorePermissions.View,
+         'category'  : 'object_buttons',
+        },)
 
     actionsTool = getToolByName(portal, 'portal_actions', None)
     if actionsTool is not None:
@@ -919,11 +878,11 @@ def fixCutActionPermission(portal,out):
     ACTIONS = (
         {'id'        : 'cut',
          'name'      : 'Cut',
-         'action'    : 'string:${object_url}/object_cut',
-         'condition' : 'python:portal.portal_membership.checkPermission("Delete objects", object.aq_inner.getParentNode()) and portal.portal_membership.checkPermission("Copy or Move", object) and object is not portal.portal_url.getPortalObject()',
+         'action'    : 'python:"%s/object_cut"%(object.isDefaultPageInFolder() and object.getParentNode().absolute_url() or object_url)',
+         'condition' : 'python:portal.portal_membership.checkPermission("Delete objects", object.aq_inner.getParentNode()) and portal.portal_membership.checkPermission("Copy or Move", object) and object is not portal and not (object.getParentNode() is portal and object.isDefaultPageInFolder())',
          'permission': CMFCorePermissions.DeleteObjects,
          'category'  : 'object_buttons',
-         },
+        },
         )
 
     actionsTool = getToolByName(portal, 'portal_actions', None)
@@ -1322,20 +1281,3 @@ def convertDefaultPageTypesToWhitelist(portal, out):
             propSheet.manage_addProperty('default_page_types',
                                          DEFAULT_PAGE_TYPES, 'lines')
             out.append("Added 'default_page_types' property to site_properties.")
-
-def changeAvailableViewsForFolders(portal, out):
-    """Add view templates to the folderish types"""
-    FOLDER_TYPES = ['Folder','Large Plone Folder', 'Topic']
-    FOLDER_VIEWS = ['folder_listing', 'atct_album_view']
-
-    types_tool = getToolByName(portal, 'portal_types', None)
-    if types_tool is not None:
-        for type_name in FOLDER_TYPES:
-            fti = getattr(types_tool, type_name, None)
-            if fti is not None:
-                views = FOLDER_VIEWS
-                if type_name == 'Topic':
-                    views = ['atct_topic_view']+views
-                fti.manage_changeProperties(view_methods=views)
-                out.append("Added new view templates to %s FTI."%type_name)
-

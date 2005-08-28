@@ -1,7 +1,7 @@
 /*
 ** Stylesheet with Internet Explorer-specific workarounds.
 */
-/* <dtml-var "enableHTTPCompression(request=REQUEST, debug=1, css=1)"> (this is for http compression) */
+
 /* <dtml-with base_properties> */
 
 * html #portal-columns {
@@ -38,9 +38,25 @@ textarea {
     width: 88%;
 }
 
+.visualGhosted {
+    filter:alpha(opacity=20); 
+}
+
 /* Fix bottom margin on tabs in IE */
 #portal-globalnav li.selected a {
 position: relative;
+}
+
+.actionMenu .actionMenuHeader a {
+    display: inline;
+}
+
+.actionMenu .actionMenuContent {
+    top: 1.4em;
+}
+
+.documentActions {
+    margin-bottom: -2em;
 }
 
 /* Calendar fixes */
@@ -96,6 +112,12 @@ body { /* These work in IE only, changes the look of the scrollbar + textareas *
 
 dd.portletFooter {
     border-top-style: solid;
+}
+
+/* fixes for the drop down menus */
+
+* html #objectMenu.actionMenu .actionMenuContent li {
+    height: auto;
 }
 
 /* </dtml-with> */

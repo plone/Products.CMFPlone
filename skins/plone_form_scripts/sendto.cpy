@@ -52,7 +52,8 @@ variables = {'send_from_address' : REQUEST.send_from_address,
              'url'               : url,
              'title'             : pretty_title_or_id(context),
              'description'       : context.Description(),
-             'comment'           : REQUEST.get('comment', None)
+             'comment'           : REQUEST.get('comment', None),
+             'envelope_from'     : site_properties.email_from_address
              }
 
 try:

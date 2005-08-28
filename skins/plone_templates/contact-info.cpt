@@ -15,9 +15,9 @@
 	<p tal:content="site_properties/description">Site Description</p>
         <!-- feedback form -->        
         
-            <p class="discreet"
+            <p class="documentDescription"
                i18n:translate="description_contact_info_feedback">
-                If you want to contact the portal administrator, fill in the form
+                If you want to contact the site administration, fill in the form
                 below.
             </p>
             
@@ -28,20 +28,20 @@
                 tal:attributes="action string:${here/absolute_url}/${template/getId}">
 
             <fieldset>
-            <tal:feedbackForm condition="isAnon">
-            
-            <legend i18n:translate="legend_feedback_for_contact_info">Feedback for contact page</legend>
+                <legend i18n:translate="legend_feedback_for_contact_info">Feedback details</legend>
 
+            <tal:feedbackForm condition="isAnon">
               <div class="field"
               tal:define="error errors/sender_fullname|nothing"
               tal:attributes="class python:test(error, 'field error', 'field')">
               <label for="sender_fullname" i18n:translate="label_sender_fullname">
                 Name
               </label>
+
               <div class="formHelp" i18n:translate="help_sender_fullname">
                 Please enter your full name
               </div>
-   
+
               <div tal:content="error">Validation error output</div>            
 
               <input type="text" 

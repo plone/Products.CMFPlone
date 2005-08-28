@@ -26,12 +26,12 @@ if js_enabled and not cookies_enabled:
 mt=context.portal_membership
 if mt.isAnonymousUser():
     if js_enabled: # javascript is enabled - we can diagnose the failure
-	auth = getattr(context, 'cookie_authentication', None) # using cookie authentication?
+        auth = getattr(context, 'cookie_authentication', None) # using cookie authentication?
         if auth:
             user_name = request.get('login_name', None)
             password_empty = request.get('pwd_empty', None)=='1'
             ac_name = auth.name_cookie
-	    ac_password = auth.pw_cookie
+            ac_password = auth.pw_cookie
 
             if not user_name:
                 # no user name
@@ -42,10 +42,10 @@ if mt.isAnonymousUser():
             if user_name and verify_login_name:
                 if mt.getMemberById(user_name) is None:
                     state.setError(ac_name, 'Login name not found.', 'login_name_not_found')
-	        elif not password_empty:
+                elif not password_empty:
                     state.setError(ac_password, 'Password incorrect.', 'password_incorrect')
-	state.set(status='failure', portal_status_message=LOGIN_FAILED_MESSAGE)
+        state.set(status='failure', portal_status_message=LOGIN_FAILED_MESSAGE)
     else: # no javascript - do low tech login failure
-	state.set(status='failure_page', portal_status_message=LOGIN_FAILED_MESSAGE)
+        state.set(status='failure_page', portal_status_message=LOGIN_FAILED_MESSAGE)
 
 return state

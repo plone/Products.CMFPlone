@@ -122,6 +122,9 @@ def assignTitles(self, portal):
      'portal_actionicons':'Associates actions with icons',
      'portal_groupdata':'Handles properties on groups',
      'portal_groups':'Handles group related functionality',
+     'translation_service': 'Provides access to the translation machinery',
+     'mimetypes_registry': 'MIME types recognized by Plone',
+     'portal_transforms': 'Handles data conversion between MIME types',
      }
 
     for oid in portal.objectIds():
@@ -300,6 +303,10 @@ def setPortalDefaultPermissions(self, portal):
     portal.manage_permission(CMFCorePermissions.AccessInactivePortalContent,
                                                 ('Owner',), acquire=1)
 
+def enableSiteSyndication(self, portal):
+    syn_tool = getToolByName(portal, 'portal_syndication')
+    syn_tool.editProperties(isAllowed=True)
+
 
 functions = {
     'addSiteProperties': addSiteProperties,
@@ -315,6 +322,7 @@ functions = {
     'modifyActionProviders': modifyActionProviders,
     'addErrorLog':addErrorLog,
     'setPortalDefaultPermissions':setPortalDefaultPermissions,
+    'enableSiteSyndication':enableSiteSyndication,
     }
 
 class GeneralSetup(SetupWidget):

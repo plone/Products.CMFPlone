@@ -41,7 +41,7 @@ we eventually might want to merge this form with personalize_form
       &nbsp;
     </div>        
     
-    <div class="documentContent" id="region-content">
+    <div id="region-content">
       <a name="documentContent"></a>
       
       <div metal:use-macro="here/global_statusmessage/macros/portal_message">

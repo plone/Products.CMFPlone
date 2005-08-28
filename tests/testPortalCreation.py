@@ -14,6 +14,7 @@ from Products.CMFPlone.tests import dummy
 from Products.PageTemplates.ZopePageTemplate import ZopePageTemplate
 from OFS.SimpleItem import SimpleItem
 from Acquisition import aq_base
+from DateTime import DateTime
 
 
 class TestPortalCreation(PloneTestCase.PloneTestCase):
@@ -31,6 +32,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.groups = self.portal.portal_groups
         self.factory = self.portal.portal_factory
         self.cc = self.portal.cookie_authentication
+        self.skins = self.portal.portal_skins
 
     def testPloneSkins(self):
         # Plone skins should have been set up
@@ -254,18 +256,6 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
             if action.getId() == 'news':
                 self.fail("Actions tool still has 'News' action")
 
-    def testNewsFolder(self):
-        # The portal should contain news folder
-        self.failUnless('news' in self.portal.objectIds())
-        news = getattr(self.portal.aq_base, 'news')
-        self.assertEqual(news._getPortalTypeName(), 'Large Plone Folder')
-        self.assertEqual(news.Title(), 'News')
-        self.assertEqual(news.Description(), 'Site News')
-        self.assertEqual(list(news.getProperty('default_page')), ['news_topic','news_listing','index_html'])
-        self.assertEqual(list(news.getImmediatelyAddableTypes()),['News Item'])
-        self.assertEqual(list(news.getLocallyAllowedTypes()),['News Item'])
-        self.assertEqual(news.getConstrainTypesMode(), 1)
-
     def testNewsFolderIsIndexed(self):
         # News folder should be cataloged
         res = self.catalog(id='news')
@@ -276,43 +266,38 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
 
     def testNewsTopic(self):
         # News topic is in place as default view and has a criterion to show
-        # only News Items.
-        news = self.portal.news
-        self.failUnless('news_topic' in news.objectIds())
-        topic = getattr(news.aq_base, 'news_topic')
+        # only News Items, and uses the folder_summary_view.
+        self.failUnless('news' in self.portal.objectIds())
+        topic = getattr(self.portal.aq_base, 'news')
         self.assertEqual(topic._getPortalTypeName(), 'Topic')
         self.assertEqual(topic.buildQuery()['Type'], ('News Item',))
         self.assertEqual(topic.buildQuery()['review_state'], 'published')
-
-    def testEventsFolder(self):
-        # The portal should contain events folder
-        self.failUnless('events' in self.portal.objectIds())
-        events = getattr(self.portal.aq_base, 'events')
-        self.assertEqual(events._getPortalTypeName(), 'Large Plone Folder')
-        self.assertEqual(events.Title(), 'Events')
-        self.assertEqual(events.Description(), 'Site Events')
-        self.assertEqual(list(events.getProperty('default_page')), ['events_topic','events_listing','index_html'])
-        self.assertEqual(list(events.getImmediatelyAddableTypes()),['Event'])
-        self.assertEqual(list(events.getLocallyAllowedTypes()),['Event'])
-        self.assertEqual(events.getConstrainTypesMode(), 1)
-
-    def testEventsFolderIsIndexed(self):
-        # Events folder should be cataloged
-        res = self.catalog(id='events')
-        self.assertEqual(len(res), 1)
-        self.assertEqual(res[0].getId, 'events')
-        self.assertEqual(res[0].Title, 'Events')
-        self.assertEqual(res[0].Description, 'Site Events')
+        self.assertEqual(topic.getLayout(), 'folder_summary_view')
 
     def testEventsTopic(self):
-        # Events topic is in place as default view and has a criterion to show
-        # only Events Items.
-        events = self.portal.events
-        self.failUnless('events_topic' in events.objectIds())
-        topic = getattr(events.aq_base, 'events_topic')
+        # Events topic is in place as default view and has criterion to show
+        # only future Events Items.
+        self.failUnless('events' in self.portal.objectIds())
+        topic = self.portal.events
         self.assertEqual(topic._getPortalTypeName(), 'Topic')
-        self.assertEqual(topic.buildQuery()['Type'], ('Event',))
-        self.assertEqual(topic.buildQuery()['review_state'], 'published')
+        query = topic.buildQuery()
+        self.assertEqual(query['Type'], ('Event',))
+        self.assertEqual(query['review_state'], 'published')
+        self.assertEqual(query['start']['query'].Date(), DateTime().Date())
+        self.assertEqual(query['start']['range'], 'min')
+
+    def testEventsSubTopic(self):
+        # past Events sub-topic is in place and has criteria to show
+        # only past Events Items.
+        events_topic = self.portal.events
+        self.failUnless('previous' in events_topic.objectIds())
+        topic = getattr(events_topic.aq_base, 'previous')
+        self.assertEqual(topic._getPortalTypeName(), 'Topic')
+        query = topic.buildQuery()
+        self.assertEqual(query['Type'], ('Event',))
+        self.assertEqual(query['review_state'], 'published')
+        self.assertEqual(query['start']['query'].Date(), DateTime().Date())
+        self.assertEqual(query['start']['range'], 'max')
 
     def testObjectButtonActions(self):
         installed = [(a.getId(), a.getCategory()) for a in self.actions.listActions()]
@@ -325,14 +310,14 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         for a in self.actions.listActions():
             if a.getId() == 'folderContents':
                 self.failUnless(a.visible)
-                
+
     def testDefaultGroupsAdded(self):
         self.failUnless('Administrators' in self.groups.listGroupIds())
         self.failUnless('Reviewers' in self.groups.listGroupIds())
 
     def testDefaultTypesInPortalFactory(self):
         types = self.factory.getFactoryTypes().keys()
-        for metaType in ('Document', 'Event', 'File', 'Folder', 'Image', 
+        for metaType in ('Document', 'Event', 'File', 'Folder', 'Image',
                          'Folder', 'Large Plone Folder', 'Link', 'News Item',
                          'Topic'):
             self.failUnless(metaType in types)
@@ -486,6 +471,110 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
                 haveNavigation = True
         self.failUnless(haveSearch and haveNavigation)
 
+    def testOwnerHasAccessInactivePermission(self):
+        permission_on_role = [p for p in self.portal.permissionsOfRole('Owner')
+            if p['name'] == CMFCorePermissions.AccessInactivePortalContent][0]
+        self.failUnless(permission_on_role['selected'])
+        cur_perms = self.portal.permission_settings(
+                            CMFCorePermissions.AccessInactivePortalContent)[0]
+        self.failUnless(cur_perms['acquire'])
+
+    def testSyndicationEnabledByDefault(self):
+        syn = self.portal.portal_syndication
+        self.failUnless(syn.isSiteSyndicationAllowed())
+
+    def testSyndicationEnabledOnNewsAndEvents(self):
+        syn = self.portal.portal_syndication
+        self.failUnless(syn.isSyndicationAllowed(self.portal.news))
+        self.failUnless(syn.isSyndicationAllowed(self.portal.events))
+
+    def testSyndicationTabDisabled(self):
+        # Syndication tab should be disabled by default
+        for action in self.portal.portal_syndication.listActions():
+            if action.getId() == 'syndication' and action.visible:
+                self.fail("Actions tool still has visible 'syndication' action")
+
+    def testObjectButtonActionsInvisibleOnPortalRoot(self):
+        # only a manager would have proper permissions
+        self.setRoles(['Manager', 'Member'])
+        acts = self.actions.listFilteredActionsFor(self.portal)
+        self.failIf(acts.has_key('object_buttons'))
+
+    def testObjectButtonActionsInvisibleOnPortalDefaultDocument(self):
+        # only a manager would have proper permissions
+        self.setRoles(['Manager', 'Member'])
+        self.portal.invokeFactory('Document','index_html')
+        acts = self.actions.listFilteredActionsFor(self.portal.index_html)
+        self.failIf(acts.has_key('object_buttons'))
+
+    def testObjectButtonActionsOnDefaultDocumentApplyToParent(self):
+        # only a manager would have proper permissions
+        self.setRoles(['Manager', 'Member'])
+        self.folder.invokeFactory('Document','index_html')
+        acts = self.actions.listFilteredActionsFor(self.folder.index_html)
+        buttons = acts['object_buttons']
+        self.failUnless(len(buttons), 3)
+        urls = [a['url'] for a in buttons]
+        for url in urls:
+            self.failIf('index_html' in url, 'Action wrongly applied to default page object %s'%url)
+
+    def testObjectButtonActionsPerformCorrectAction(self):
+        # only a manager would have proper permissions
+        self.setRoles(['Manager', 'Member'])
+        self.folder.invokeFactory('Document','index_html')
+        acts = self.actions.listFilteredActionsFor(self.folder.index_html)
+        buttons = acts['object_buttons']
+        self.failUnless(len(buttons), 3)
+        urls = [(a['id'],a['url']) for a in buttons]
+        for url in urls:
+            # ensure that e.g. the 'copy' url contains object_copy
+            self.failUnless('object_'+url[0] in url[1], "%s does not perform the expected object_%s action"%(url[0],url[0]))
+
+    def testPortalSharingActionIsLocalRoles(self):
+        fti = getattr(self.types, 'Plone Site')
+        haveSharing = False
+        haveLocalRoles = False
+        for a in fti.listActions():
+            if a.getId() == 'sharing':
+                haveSharing = True
+            elif a.getId() == 'local_roles':
+                haveLocalRoles = True
+        self.failIf(haveSharing)
+        self.failUnless(haveLocalRoles)
+
+    def testPlone3rdPartyLayerInDefault(self):
+        # plone_3rdParty layer should exist
+        path = self.skins.getSkinPath('Plone Default')
+        self.failUnless('plone_3rdParty' in path)
+
+    def testPlone3rdPartyLayerInTableless(self):
+        # plone_3rdParty layer should exist
+        path = self.skins.getSkinPath('Plone Tableless')
+        self.failUnless('plone_3rdParty' in path)
+
+    def testPloneLoginLayerInDefault(self):
+        # plone_login layer should exist
+        path = self.skins.getSkinPath('Plone Default')
+        self.failUnless('plone_login' in path)
+
+    def testPloneLoginLayerInTableless(self):
+        # plone_login layer should exist
+        path = self.skins.getSkinPath('Plone Tableless')
+        self.failUnless('plone_login' in path)
+
+    def testCMFLegacySkinComesLastInDefault(self):
+        # cmf_legacy should be the last skin layer
+        path = self.skins.getSkinPath('Plone Default')
+        path = [x.strip() for x in path.split(',')]
+        self.assertEqual(path[-1], 'cmf_legacy')
+
+    def testCMFLegacySkinComesLastInTableless(self):
+        # cmf_legacy should be the last skin layer
+        path = self.skins.getSkinPath('Plone Tableless')
+        path = [x.strip() for x in path.split(',')]
+        self.assertEqual(path[-1], 'cmf_legacy')
+
+
 class TestPortalBugs(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
@@ -573,14 +662,6 @@ class TestManagementPageCharset(PloneTestCase.PloneTestCase):
         self.portal._delObject('portal_properties')
         manage_charset = getattr(self.portal, 'management_page_charset', None)
         self.assertEqual(manage_charset, 'utf-8')
-
-    def testOwnerHasAccessInactivePermission(self):
-        permission_on_role = [p for p in self.portal.permissionsOfRole('Owner')
-            if p['name'] == CMFCorePermissions.AccessInactivePortalContent][0]
-        self.failUnless(permission_on_role['selected'])
-        cur_perms = self.portal.permission_settings(
-                            CMFCorePermissions.AccessInactivePortalContent)[0]
-        self.failUnless(cur_perms['acquire'])
 
 
 def test_suite():

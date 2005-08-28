@@ -19,11 +19,16 @@ from Products.CMFPlone.CatalogTool import ExtensibleIndexableObjectRegistry
 from Products.CMFPlone.CatalogTool import ExtensibleIndexableObjectWrapper
 from Products.CMFPlone.CatalogTool import _eioRegistry
 
+from Products.CMFPlone.CatalogTool import is_folderish
+from Products.CMFPlone.tests import dummy
+
 portal_name = PloneTestCase.portal_name
 default_user  = PloneTestCase.default_user
 
 user2  = 'u2'
 group2 = 'g2'
+
+base_content = ['Members', 'events', 'news', 'previous', default_user, 'doc']
 
 try:
     import Products.TextIndexNG2
@@ -95,6 +100,10 @@ class TestCatalogSetup(PloneTestCase.PloneTestCase):
     def testExclude_from_navInSchema(self):
         # exclude_from_nav column should be in catalog schema
         self.failUnless('exclude_from_nav' in self.catalog.schema())
+
+    def testIs_folderishInSchema(self):
+        # is_folderish should be in catalog schema
+        self.failUnless('is_folderish' in self.catalog.schema())
 
     def testIs_folderishIsFieldIndex(self):
         # is_folderish should be a FieldIndex
@@ -755,39 +764,39 @@ class TestCatalogExpirationFiltering(PloneTestCase.PloneTestCase):
 
     def testSearchResults(self):
         res = self.catalog.searchResults()
-        self.assertResults(res, ['Members', 'events', 'events_topic', 'news', 'news_topic', default_user, 'doc'])
+        self.assertResults(res, base_content)
 
     def testCall(self):
         res = self.catalog()
-        self.assertResults(res, ['Members', 'events', 'events_topic', 'news', 'news_topic', default_user, 'doc'])
+        self.assertResults(res, base_content)
 
     def testSearchResultsExpired(self):
         self.folder.doc.setExpirationDate(DateTime(2000, 12, 31))
         self.folder.doc.reindexObject()
         self.nofx()
         res = self.catalog.searchResults()
-        self.assertResults(res, ['Members', 'events', 'events_topic', 'news', 'news_topic', default_user])
+        self.assertResults(res, base_content[:-1])
 
     def testCallExpired(self):
         self.folder.doc.setExpirationDate(DateTime(2000, 12, 31))
         self.folder.doc.reindexObject()
         self.nofx()
         res = self.catalog()
-        self.assertResults(res, ['Members', 'events', 'events_topic', 'news', 'news_topic', default_user])
+        self.assertResults(res, base_content[:-1])
 
     def testSearchResultsExpiredWithExpiredDisabled(self):
         self.folder.doc.setExpirationDate(DateTime(2000, 12, 31))
         self.folder.doc.reindexObject()
         self.nofx()
         res = self.catalog.searchResults(show_inactive=True)
-        self.assertResults(res, ['Members', 'events', 'events_topic', 'news', 'news_topic', default_user, 'doc'])
+        self.assertResults(res, base_content)
 
     def testCallExpiredWithExpiredDisabled(self):
         self.folder.doc.setExpirationDate(DateTime(2000, 12, 31))
         self.folder.doc.reindexObject()
         self.nofx()
         res = self.catalog(show_inactive=True)
-        self.assertResults(res, ['Members', 'events', 'events_topic', 'news', 'news_topic', default_user, 'doc'])
+        self.assertResults(res, base_content)
 
     def testSearchResultsExpiredWithPermission(self):
         self.folder.doc.setExpirationDate(DateTime(2000, 12, 31))
@@ -795,7 +804,7 @@ class TestCatalogExpirationFiltering(PloneTestCase.PloneTestCase):
         self.nofx()
         self.setPermissions([AccessInactivePortalContent])
         res = self.catalog.searchResults()
-        self.assertResults(res, ['Members', 'events', 'events_topic', 'news', 'news_topic', default_user, 'doc'])
+        self.assertResults(res, base_content)
 
     def testCallExpiredWithPermission(self):
         self.folder.doc.setExpirationDate(DateTime(2000, 12, 31))
@@ -803,7 +812,7 @@ class TestCatalogExpirationFiltering(PloneTestCase.PloneTestCase):
         self.nofx()
         self.setPermissions([AccessInactivePortalContent])
         res = self.catalog()
-        self.assertResults(res, ['Members', 'events', 'events_topic', 'news', 'news_topic', default_user, 'doc'])
+        self.assertResults(res, base_content)
 
 
 def dummyMethod(obj, **kwargs):
@@ -834,6 +843,18 @@ class TestExtensibleIndexableObjectWrapper(PloneTestCase.PloneTestCase):
         
     def beforeTearDown(self):
         _eioRegistry.unregister('dummy')
+
+    def test_is_folderishWithNonFolder(self):
+        i = dummy.Item()
+        self.failIf(is_folderish(i))
+
+    def test_is_folderishWithFolder(self):
+        f = dummy.ATFolder('struct_folder')
+        self.failUnless(is_folderish(f))
+
+    def test_is_folderishWithNonStructuralFolder(self):
+        f = dummy.NonStructuralFolder('ns_folder')
+        self.failIf(is_folderish(f))
 
 
 def test_suite():

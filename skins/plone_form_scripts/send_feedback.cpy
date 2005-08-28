@@ -33,8 +33,10 @@ author = REQUEST.get('author', None) # None means portal administrator
 
 sender = mtool.getAuthenticatedMember()
 
+site_properties = getToolByName(context, 'portal_properties').site_properties
+envelope_from = site_properties.email_from_address
+
 if author is None:
-    site_properties = getToolByName(context, 'portal_properties').site_properties
     send_to_address = site_properties.email_from_address
 else:
     send_to_address = mtool.getMemberById(author).getProperty('email')
@@ -69,7 +71,7 @@ variables = {'send_from_address' : send_from_address,
 
 try:
     message = context.author_feedback_template(context, **variables)
-    result = host.secureSend(message, send_to_address, send_from_address, subject=subject, subtype='plain', charset=encoding, debug=False)
+    result = host.secureSend(message, send_to_address, envelope_from, subject=subject, subtype='plain', charset=encoding, debug=False, From=send_from_address)
 except ConflictError:
     raise
 except: #XXX Too many things could possibly go wrong. So we catch all.

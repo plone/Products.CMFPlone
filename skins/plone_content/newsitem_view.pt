@@ -26,12 +26,11 @@
             News summary
         </p>
 
-        <div style="float:right; margin: 0 0 0.5em 1em; width: 202px;"
-             tal:define="image here/image_mini|nothing"
-             tal:condition="image">
+        <div class="newsImageContainer"
+             tal:condition="here/image_mini|nothing">
             <a href="#"
                tal:attributes="href string:${here/absolute_url}/image/image_view_fullscreen">
-               <img tal:replace="structure image" src="" alt="" />
+               <img tal:replace="structure python: here.tag(scale='mini', css_class='newsImage')" src="" alt="" />
             </a>
             <p class="discreet"
                   tal:content="here/getImageCaption">Image Caption</p>
@@ -50,7 +49,7 @@
         </div>
 
         <div metal:use-macro="here/document_relateditems/macros/relatedItems">
-            show related items if they exist
+            Show related items if they exist
         </div>
         
         <div class="visualClear"></div>

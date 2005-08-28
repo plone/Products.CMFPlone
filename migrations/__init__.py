@@ -118,5 +118,13 @@ def registerMigrations():
                                       null)
 
     MigrationTool.registerUpgradePath('2.1-rc1',
+                                      '2.1-rc2',
+                                      v2_1.rcs.rc1_rc2)
+
+    MigrationTool.registerUpgradePath('2.1-rc2',
+                                      '2.1-rc3',
+                                      v2_1.rcs.rc2_rc3)
+
+    MigrationTool.registerUpgradePath('2.1-rc3',
                                       'trunk (SVN/UNRELEASED)',
-                                      null)
+                                      v2_1.rcs.rc3_final)

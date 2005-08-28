@@ -6,12 +6,15 @@
 
 import os
 
+from Products.CMFPlone.interfaces.NonStructuralFolder import INonStructuralFolder
+
 from ComputedAttribute import ComputedAttribute
 from OFS.SimpleItem import SimpleItem
 from ZPublisher.HTTPRequest import FileUpload
 
 from Globals import package_home
 from Products.CMFPlone.tests import GLOBALS
+from Products.ATContentTypes.content.folder import ATFolder
 PACKAGE_HOME = package_home(GLOBALS)
 
 TEXT = 'file data'
@@ -153,3 +156,7 @@ class ImageComputedProps(Item):
         return getattr(self, '_longdesc', '')
 
     longdesc = ComputedAttribute(get_longdesc, 1)
+
+class NonStructuralFolder(ATFolder):
+    '''Folder implementing the INonStructuralFolder interface'''
+    __implements__ = (INonStructuralFolder,)

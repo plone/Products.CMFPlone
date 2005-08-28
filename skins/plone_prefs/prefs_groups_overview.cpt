@@ -15,50 +15,48 @@
                 b_size python:20;
                 portal_roles here/getGlobalPortalRoles;">
 
-      <div id="content" class="documentEditable">
-	<!-- simulating views on the groups/user pages until we have real objects. -->
-	<ul class="contentViews">
-	  <li class="">
+      <div id="content" class="documentEditable"
+           tal:condition="python:checkPermission('Manage groups', here)">
+    <!-- simulating views on the groups/user pages until we have real objects. -->
+    <ul class="contentViews">
+      <li class="">
             <a href=""
-	       tal:attributes="href string:${here/absolute_url}/prefs_users_overview"
+           tal:attributes="href string:${here/absolute_url}/prefs_users_overview"
                i18n:translate="label_users">Users</a>
-	  </li>
-	  <li class="selected">
+      </li>
+      <li class="selected">
             <a href=""
                tal:attributes="href string:${here/absolute_url}/${template/id}"
                i18n:translate="label_groups">Groups</a>
-	  </li>
-	</ul>
-    
-	<div class="contentActions">
-	  &nbsp;
-	</div>        
+      </li>
+    </ul>
 
-	<div class="documentContent">
-	  <a name="documentContent"></a>
-	  
-	  <div metal:use-macro="here/global_statusmessage/macros/portal_message">
-	    Portal status message
-	  </div>
+    <div class="contentActions">
+      &nbsp;
+    </div>
 
-	  <div class="configlet">
-	    <h1 i18n:translate="heading_groups_overview">Groups Overview</h1>
-    
-	    <a href=""
-	       class="link-parent"
-	       tal:attributes="href string: $portal_url/plone_control_panel"
-	       i18n:translate="label_up_to_plone_setup">
-	      Up to Site Setup
-	    </a>
+      <div metal:use-macro="here/global_statusmessage/macros/portal_message">
+        Portal status message
+      </div>
 
-	    <p i18n:translate="description_groups_management">
-	      Groups are logical collections of users, such as
-	      departments and business units. Groups are not directly
-	      related to permissions on a global level, you normally
-	      use Roles for that - and let certain Groups have a
-	      particular role.
-	    </p>
-    
+      <div class="configlet">
+        <h1 i18n:translate="heading_groups_overview">Groups Overview</h1>
+
+        <a href=""
+           class="link-parent"
+           tal:attributes="href string: $portal_url/plone_control_panel"
+           i18n:translate="label_up_to_plone_setup">
+          Up to Site Setup
+        </a>
+
+        <p i18n:translate="description_groups_management">
+          Groups are logical collections of users, such as
+          departments and business units. Groups are not directly
+          related to permissions on a global level, you normally
+          use Roles for that - and let certain Groups have a
+          particular role.
+        </p>
+
         <form action=""
               name="groups_add"
               method="post"
@@ -78,11 +76,11 @@
                      i18n:attributes="value label_add_new_group;"
                      />
 
-            <input type="hidden" value="b_start" name="b_start" 
+            <input type="hidden" value="b_start" name="b_start"
                  tal:attributes="value b_start"/>
-                 
+
             <table class="listing" summary="Select roles for each group" i18n:attributes="summary summary_roles_for_groups;">
-                <!-- commented this part until it is really integrated in the page, right now it isn't -->   
+                <!-- commented this part until it is really integrated in the page, right now it isn't -->
                 <!-- <tr> -->
                     <!-- <th colspan="6" -->
                         <!-- tal:attributes="colspan python:len(portal_roles)+2"> -->
@@ -121,14 +119,14 @@
                         </tal:header>
                     </tr>
                 </tal:block>
-    
-    
+
+
                 <tal:block repeat="this_group batch">
                     <tr tal:define="oddrow repeat/this_group/odd"
                         tal:attributes="class python:test(oddrow,'odd','even')">
-    
+
                     <tal:block define="roles python:['this']">
-    
+
                     <td>
                         <input type="hidden" name="" tal:attributes="name string:group_${this_group/getGroupName}:list" value=""/>
                         <a href="#"
@@ -140,11 +138,11 @@
                         </a>
 
                     </td>
-    
+
                     <td class="listingCheckbox"
                         tal:define="group_roles python:this_group.getRoles();"
                         tal:repeat="portal_role portal_roles">
-    
+
                         <input type="checkbox"
                                class="noborder"
                                name="name"
@@ -153,7 +151,7 @@
                                                value portal_role;
                                                checked python:test(portal_role in group_roles, 'checked' ,'');" />
                     </td>
-    
+
                     <td class="listingCheckbox">
                         <input type="checkbox"
                                class="noborder notify"
@@ -161,11 +159,11 @@
                                value="value"
                                tal:attributes="value this_group/getGroupName" />
                     </td>
-    
+
                 </tal:block>
             </tr>
             </tal:block>
-    
+
             <tal:block tal:condition="not:batch">
                 <tr>
                     <td i18n:translate="text_nomatches" style="text-align:center;">No matches</td>
@@ -173,8 +171,8 @@
             </tal:block>
             </table>
 
-    	  <div metal:use-macro="here/batch_macros/macros/navigation" />
-    
+          <div metal:use-macro="here/batch_macros/macros/navigation" />
+
             <input class="context"
                    tabindex=""
                    type="submit"
@@ -185,9 +183,9 @@
                    tal:condition="groups"
                    />
         </form>
-    
+
         <h1 i18n:translate="heading_roles_management">Roles Management</h1>
-    
+
         <p i18n:translate="description_roles_management">
           Roles are collections of permissions. The most common role is
           the Member role, which is any member of the portal. You can
@@ -195,18 +193,22 @@
           need to create a new discrete unit of permissions that you can
           combine to make up a Group.
         </p>
-        
+
         <p i18n:translate="description_roles_zmi">
-        Currently, if you want to add a new role, you must use the 
+        Currently, if you want to add a new role, you must use the
         Zope Management Interface, as adding roles is considered a
         development task.
         </p>
-    
-    </div>
+
 
 </div>
 
 </div>
+
+      <div id="content" class="documentEditable"
+           tal:condition="python:not checkPermission('Manage groups', here)">
+        <tal:block replace="here/raiseUnauthorized" />
+      </div>
 
 </div>
 

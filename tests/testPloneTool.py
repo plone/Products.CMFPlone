@@ -232,11 +232,11 @@ class TestOwnershipStuff(PloneTestCase.PloneTestCase):
         self.assertList(self.folder3.get_local_roles_for_userid('new_owner'), ['Owner'])
         self.assertList(self.folder3.get_local_roles_for_userid(default_user), [])
 
-    def testGetOwnerId(self):
-        # Test that getOwnerId gets the Owner Id
-        self.assertEqual(self.utils.getOwnerId(self.folder1), default_user)
+    def testGetOwnerName(self):
+        # Test that getOwnerName gets the Owner name
+        self.assertEqual(self.utils.getOwnerName(self.folder1), default_user)
         self.utils.changeOwnershipOf(self.folder1, 'new_owner')
-        self.assertEqual(self.utils.getOwnerId(self.folder1), 'new_owner')
+        self.assertEqual(self.utils.getOwnerName(self.folder1), 'new_owner')
 
     def testGetInheritedLocalRoles(self):
         # Test basic local roles acquisition is dealt with by
@@ -617,6 +617,18 @@ class TestNavTree(PloneTestCase.PloneTestCase):
         tree = self.utils.createNavTree(self.portal.folder2.file21)
         self.assertEqual(tree['children'][-1]['show_children'],False)
 
+    def testNonStructuralFolderHidesChildren(self):
+        # Make sure NonStructuralFolders act as if parentMetaTypesNotToQuery
+        # is set.
+        f = dummy.NonStructuralFolder('ns_folder')
+        self.folder._setObject('ns_folder', f)
+        self.portal.portal_catalog.reindexObject(self.folder.ns_folder)
+        self.portal.portal_catalog.reindexObject(self.folder)
+        tree = self.utils.createNavTree(self.folder.ns_folder)
+        self.assertEqual(tree['children'][0]['children'][0]['children'][0]['path'],
+                                '/portal/Members/test_user_1_/ns_folder')
+        self.assertEqual(tree['children'][0]['children'][0]['children'][0]['show_children'],False)
+
     def testCreateSitemap(self):
         # Internally createSitemap is the same as createNavTree
         tree = self.utils.createSitemap(self.portal)
@@ -853,6 +865,18 @@ class TestPortalTabs(PloneTestCase.PloneTestCase):
         tabs = self.utils.createTopLevelTabs()
         self.failUnless(tabs)
         self.assertEqual(len(tabs),orig_len)
+
+    def testIsStructuralFolderWithNonFolder(self):
+        i = dummy.Item()
+        self.failIf(self.utils.isStructuralFolder(i))
+
+    def testIsStructuralFolderWithFolder(self):
+        f = dummy.ATFolder('struct_folder')
+        self.failUnless(self.utils.isStructuralFolder(f))
+
+    def testIsStructuralFolderWithNonStructuralFolder(self):
+        f = dummy.NonStructuralFolder('ns_folder')
+        self.failIf(self.utils.isStructuralFolder(f))
 
 
 class TestBreadCrumbs(PloneTestCase.PloneTestCase):
