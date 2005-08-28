@@ -47,18 +47,7 @@ p a {
     border-bottom: 1px #cccccc solid;
 }
 
-#region-content li a {
-    text-decoration: none;
-    border-bottom: 1px #cccccc solid;
-}
-
-
 p a:visited {
-    color: &dtml-linkVisitedColor;;
-    background-color: transparent;
-}
-
-#region-content li a:visited {
     color: &dtml-linkVisitedColor;;
     background-color: transparent;
 }
@@ -68,13 +57,24 @@ p a:active {
     background-color: transparent;
 }
 
-#region-content li a:active {
+.documentContent li a {
+    text-decoration: none;
+    border-bottom: 1px #cccccc solid;
+}
+
+.documentContent li a:visited {
+    color: &dtml-linkVisitedColor;;
+    background-color: transparent;
+}
+
+
+.documentContent li a:active {
     color: &dtml-linkActiveColor;;
     background-color: transparent;
 }
 
 p img {
-    border: 0;
+    border: none;
     margin: 0;
 }
 
