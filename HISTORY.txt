@@ -4,7 +4,7 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - after RC3 - unreleased
 
-    - Fixed http://members.plone.org/collector/4511 by adding some
+    - Fixed http://members.plone.org/collector/4589 by adding some
       tal:conditions in a few templates.
       [alecm]
 
