@@ -38,7 +38,8 @@
                             use_view_action site_properties/typesUseViewActionInListings;
                             over_limit python: limit_display and len(folderContents) > limit_display;
                             folderContents python: (over_limit and folderContents[:limit_display]) or folderContents;
-                            batch folderContents">
+                            batch folderContents;
+                            show_about python:not isAnon or site_properties.allowAnonymousViewAbout">
         <tal:listing condition="folderContents"
                      define="toLocalizedTime nocall:here/toLocalizedTime;">
 
@@ -52,11 +53,13 @@
                     <tr>
                         <th class="nosort">&nbsp;<tal:title i18n:translate="listingheader_title"
                           >Title</tal:title>&nbsp;</th>
-                        <th class="nosort">&nbsp;<tal:title i18n:translate="listingheader_author"
+                        <th class="nosort"
+                            tal:condition="show_about">&nbsp;<tal:title i18n:translate="listingheader_author"
                           >Author</tal:title>&nbsp;</th>
                         <th class="nosort">&nbsp;<tal:title i18n:translate="listingheader_type"
                           >Type</tal:title>&nbsp;</th>
-                        <th class="nosort">&nbsp;<tal:modified i18n:translate="listingheader_modified"
+                        <th class="nosort"
+                            tal:condition="show_about">&nbsp;<tal:modified i18n:translate="listingheader_modified"
                           >Modified</tal:modified>&nbsp;</th>
                     </tr>
                 </thead>
@@ -107,7 +110,7 @@
                                 </tal:to_external>
                             </td>
                         
-                            <td>
+                            <td tal:condition="show_about">
                                 <tal:name tal:condition="item_creator"
                                   tal:define="author python:mtool.getMemberInfo(item_creator)">
                                 <a href="#"
@@ -124,7 +127,8 @@
                                 Page
                             </td>
 
-                        <td tal:content="python:toLocalizedTime(item_modified,long_format=1)">
+                        <td tal:condition="show_about"
+                            tal:content="python:toLocalizedTime(item_modified,long_format=1)">
                           August 16, 2001 at 23:35:59
                         </td>
 
