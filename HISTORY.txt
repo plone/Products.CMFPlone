@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - after RC3 - unreleased
 
+    - Reordered the object button actions.
+      [alecm]
+
     - Removed the printing of link addresses along with the link text since
       it triggers a lot of display-related bugs when printing certain types
       of documents. Left the code in there, so just uncomment it if you want

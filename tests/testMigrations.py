@@ -114,6 +114,7 @@ from Products.CMFPlone.migrations.v2_1.rcs import alterSortCriterionOnNewsTopic
 from Products.CMFPlone.migrations.v2_1.rcs import fixPreferenceActionTitle
 from Products.CMFPlone.migrations.v2_1.rcs import changeNewsTopicDefaultView
 from Products.CMFPlone.migrations.v2_1.rcs import fixCMFLegacyLayer
+from Products.CMFPlone.migrations.v2_1.rcs import reorderObjectButtons
 
 from Products.CMFDynamicViewFTI.migrate import migrateFTI
 
@@ -3102,6 +3103,48 @@ class TestMigrations_v2_1(MigrationTest):
         # The missing layer is *not* added by the migration
         path = self.skins.getSkinPath('Plone Default')
         self.failIf('cmf_legacy' in path)
+
+    def testReorderObjectButtons(self):
+        # Should reorder the edit-content actions
+        editActions = ('cut', 'copy', 'paste', 'delete')
+        for a in editActions:
+            self.removeActionFromTool(a)
+        bad_actions = list(editActions)
+        bad_actions.reverse()
+        for a in bad_actions:
+            self.addActionToTool(a, 'object_buttons')
+        reorderObjectButtons(self.portal, [])
+        actions = [x.id for x in self.actions.listActions() if x.category ==
+                                    'object_buttons']
+        self.assertEqual(actions, list(editActions))
+
+    def testReorderObjectButtonsTwice(self):
+        # Should not fail if performed twice
+        editActions = ('cut', 'copy', 'paste', 'delete')
+        for a in editActions:
+            self.removeActionFromTool(a)
+        bad_actions = list(editActions)
+        bad_actions.reverse()
+        for a in bad_actions:
+            self.addActionToTool(a, 'object_buttons')
+        reorderObjectButtons(self.portal, [])
+        reorderObjectButtons(self.portal, [])
+        actions = [x.id for x in self.actions.listActions() if x.category ==
+                                    'object_buttons']
+        self.assertEqual(actions, list(editActions))
+
+    def testReorderObjectButtonsNoTool(self):
+        # Should not fail if portal_actions is missing
+        self.portal._delObject('portal_actions')
+        reorderObjectButtons(self.portal, [])
+
+    def testReorderObjectButtonsNoActions(self):
+        # Should not fail if the actions are missing
+        editActions = ('cut', 'copy', 'paste', 'delete')
+        for a in editActions:
+            self.removeActionFromTool(a)
+        reorderObjectButtons(self.portal, [])
+
 
 
 def test_suite():

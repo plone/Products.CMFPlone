@@ -86,6 +86,9 @@ def rc3_final(portal):
     # Make sure cmf_legacy is the last skin layer
     fixCMFLegacyLayer(portal, out)
 
+    # Reorder object buttons
+    reorderObjectButtons(portal, out)
+
     return out
 
 
@@ -332,3 +335,28 @@ def fixCMFLegacyLayer(portal, out):
                 skinsTool.addSkinSelection(skin, ','.join(path))
                 out.append('Moved cmf_legacy layer to end of %s.' % skin)
 
+
+def reorderObjectButtons(portal, out):
+    category = 'object_buttons'
+    ordered_actions = ('cut','copy','paste','delete')
+    actionsTool = getToolByName(portal, 'portal_actions', None)
+    action_dict = {}
+    remove_actions = []
+    if actionsTool is not None:
+        orig_actions = actionsTool._cloneActions()
+        i = 0
+        for action in orig_actions:
+            if action.getId() in ordered_actions and \
+                                    action.category == category:
+                action_dict[action.getId()]=action
+                remove_actions.append(i)
+            i = i + 1
+        actionsTool.deleteActions(remove_actions)
+        new_actions = actionsTool._cloneActions()
+        for action_id in ordered_actions:
+            try:
+                new_actions.append(action_dict[action_id])
+            except KeyError:
+                pass
+        actionsTool._actions = new_actions
+        out.append("Object buttons reordered as cut, copy, paste, delete")
