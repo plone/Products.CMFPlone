@@ -585,6 +585,13 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         path = [x.strip() for x in path.split(',')]
         self.assertEqual(path[-1], 'cmf_legacy')
 
+    def testMemberHasViewGroupsPermission(self):
+        # Member should be granted the 'View Groups' permission
+        member_has_permission = [p for p in
+                self.portal.permissionsOfRole('Member')
+                                        if p['name'] == 'View Groups'][0]
+        self.failUnless(member_has_permission['selected'])
+
 
 class TestPortalBugs(PloneTestCase.PloneTestCase):
 

@@ -115,6 +115,7 @@ from Products.CMFPlone.migrations.v2_1.rcs import fixPreferenceActionTitle
 from Products.CMFPlone.migrations.v2_1.rcs import changeNewsTopicDefaultView
 from Products.CMFPlone.migrations.v2_1.rcs import fixCMFLegacyLayer
 from Products.CMFPlone.migrations.v2_1.rcs import reorderObjectButtons
+from Products.CMFPlone.migrations.v2_1.rcs import allowMembersToViewGroups
 
 from Products.CMFDynamicViewFTI.migrate import migrateFTI
 
@@ -3145,6 +3146,19 @@ class TestMigrations_v2_1(MigrationTest):
             self.removeActionFromTool(a)
         reorderObjectButtons(self.portal, [])
 
+    def testAllowMembersToViewGroups(self):
+        # Should add Member to the list of roles for 'View Groups' permission
+        self.portal.manage_permission('View Groups',('Manager',),0)
+        member_has_permission = [p for p in
+                                    self.portal.permissionsOfRole('Member')
+                                            if p['name'] == 'View Groups'][0]
+        print [p['name'] for p in self.portal.permissionsOfRole('Member')]
+        self.failIf(member_has_permission['selected'])
+        allowMembersToViewGroups(self.portal, [])
+        member_has_permission = [p for p in
+                                    self.portal.permissionsOfRole('Member')
+                                            if p['name'] == 'View Groups'][0]
+        self.failUnless(member_has_permission['selected'])
 
 
 def test_suite():

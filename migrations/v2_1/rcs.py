@@ -7,6 +7,7 @@ from Products.CMFPlone.utils import _createObjectByType
 from Products.CMFPlone.migrations.migration_util import cleanupSkinPath
 from Acquisition import aq_base, aq_inner, aq_parent
 from Products.CMFPlone import transaction
+from Products.GroupUserFolder.GroupsToolPermissions import ViewGroups
 
 
 def rc1_rc2(portal):
@@ -88,6 +89,9 @@ def rc3_final(portal):
 
     # Reorder object buttons
     reorderObjectButtons(portal, out)
+
+    # Lighten restrictions on 'View Groups' permission
+    allowMembersToViewGroups(portal, out)
 
     return out
 
@@ -360,3 +364,12 @@ def reorderObjectButtons(portal, out):
                 pass
         actionsTool._actions = new_actions
         out.append("Object buttons reordered as cut, copy, paste, delete")
+
+def allowMembersToViewGroups(portal, out):
+    has_permission = [p for p in portal.permissionsOfRole('Member')
+            if p['name'] == ViewGroups]
+    # Only change if permission exists
+    if has_permission and not has_permission[0]['selected']:
+        portal.manage_permission(ViewGroups, ('Manager', 'Owner', 'Member'),
+                                                            acquire=1)
+        out.append('Granted "View Groups" to all Members')
