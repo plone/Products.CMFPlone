@@ -517,6 +517,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             data['children'] = result[path]['children']
         result[path] = data
 
+    security.declarePublic('typesToList')
     def typesToList(self):
         ntp = getToolByName(self, 'portal_properties').navtree_properties
         ttool = getToolByName(self, 'portal_types')
