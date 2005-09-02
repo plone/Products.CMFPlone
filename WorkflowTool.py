@@ -244,7 +244,7 @@ class WorkflowTool(PloneBaseTool, BaseTool):
         """Returns the workflow state title for a given state name,
            uses a portal_type to determine which workflow to use
         """
-        if p_type is not None:
+        if state_name and p_type is not None:
             chain = self.getChainForPortalType(p_type)
             for wf_id in chain:
                 wf = self.getWorkflowById(wf_id)
@@ -260,7 +260,7 @@ class WorkflowTool(PloneBaseTool, BaseTool):
         """Returns the workflow transition title for a given transition name,
            uses a portal_type to determine which workflow to use
         """
-        if p_type is not None:
+        if trans_name and p_type is not None:
             chain = self.getChainForPortalType(p_type)
             for wf_id in chain:
                 wf = self.getWorkflowById(wf_id)

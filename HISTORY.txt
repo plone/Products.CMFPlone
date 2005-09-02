@@ -4,10 +4,17 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - after RC3 - unreleased
 
+<<<<<<< .mine
+    - Fixed  http://members.plone.org/collector/4638 by making the workflow
+      title methods more fault tolerant.
+      [alecm]
+
+=======
     - Fixed http://plone.org/collector/4624 - document byline on events were
       not translated
       [hannosch]
 
+>>>>>>> .r8026
     - Fixed http://members.plone.org/collector/4635 - LiveSearch background
       did not apply the IE fix if there was no result set. Thanks Wichert.
       [limi]

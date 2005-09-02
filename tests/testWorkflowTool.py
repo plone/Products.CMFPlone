@@ -48,6 +48,13 @@ class TestWorkflowTool(PloneTestCase.PloneTestCase):
         state_title = self.workflow.getTitleForStateOnType(state_id, self.doc.portal_type)
         self.assertEqual(state_title, 'nonsense')
 
+    def testGetTitleForStateOnTypeSucceedsWithNonString(self):
+        # Related to http://members.plone.org/collector/4638
+        # Non content objects can pass None or MissingValue.
+        state_id = None
+        state_title = self.workflow.getTitleForStateOnType(state_id, self.doc.portal_type)
+        self.assertEqual(state_title, state_id)
+
     def testGetTitleForTransitionOnType(self):
         state_id = 'hide'
         state_title = self.workflow.getTitleForTransitionOnType(state_id, self.doc.portal_type)
@@ -57,6 +64,13 @@ class TestWorkflowTool(PloneTestCase.PloneTestCase):
         state_id = 'nonsense'
         state_title = self.workflow.getTitleForTransitionOnType(state_id, self.doc.portal_type)
         self.assertEqual(state_title, 'nonsense')
+
+    def testGetTitleForTransitionOnTypeSucceedsWithNonString(self):
+        # Related to http://members.plone.org/collector/4638
+        # Non content objects can pass None or MissingValue.
+        state_id = None
+        state_title = self.workflow.getTitleForTransitionOnType(state_id, self.doc.portal_type)
+        self.assertEqual(state_title, state_id)
 
     def testListWFStatesByTitle(self):
         states = self.workflow.listWFStatesByTitle()
