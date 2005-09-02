@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - after RC3 - unreleased
 
+    - Fixed http://members.plone.org/collector/4635 - LiveSearch background
+      did not apply the IE fix if there was no result set. Thanks Wichert.
+      [limi]
+
     - Fixed http://members.plone.org/collector/4612 by granting the
       'View Groups' permission to all Members at the portal root.
       [alecm]
