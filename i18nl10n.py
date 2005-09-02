@@ -99,8 +99,8 @@ def ulocalized_time(time, long_format = None, context = None, domain='plone'):
     monthday = int(time.strftime('%m')) # month, january = 1
     mapping['A']=weekdayname_msgid(weekday)
     mapping['a']=weekdayname_msgid_abbr(weekday)
-    mapping['B']=monthname_msgid(weekday)
-    mapping['b']=monthname_msgid_abbr(weekday)
+    mapping['B']=monthname_msgid(monthday)
+    mapping['b']=monthname_msgid_abbr(monthday)
     
     # feed translateable elements to translation service
     for key in ('A', 'a', 'B', 'b',):
