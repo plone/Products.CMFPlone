@@ -39,8 +39,7 @@
 
                 <form name="quickAdd" action="createObject" method="post">
     
-                    <label i18n:translate="" 
-                           tal:attributes="class python: 'contenttype-' + putils.normalizeString(Id) + ' visualIconPadding';
+                    <label tal:attributes="class python: 'contenttype-' + putils.normalizeString(Id) + ' visualIconPadding';
                                            for Title;">
                     &nbsp;
                     </label>
