@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - after RC3 - unreleased
 
+    - A bug that caused the month display to use the day number was fixed. 
+      Thanks to Mohsen Moeeni for finding this bug.
+      [longsleep]
+
     - Fixed  http://members.plone.org/collector/4638 by making the workflow
       title methods more fault tolerant.
       [alecm]
