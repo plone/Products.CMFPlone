@@ -67,7 +67,7 @@
                             tal:attributes="class python:test(oddrow, 'even', 'odd')"
                             tal:condition="python: test(entry['time'] > updatetime,1,0)">
                         
-                            <td tal:content="python: DateTime(entry['time'])">13:04:41</td>
+                            <td tal:content="python: here.toLocalizedTime(DateTime(entry['time']), long_format=True)">13:04:41</td>
                             <td tal:content="string: ${entry/username} (${entry/userid})">joe</td>
                             <td>
                                 <a href="showEntry" tal:attributes="href string:prefs_error_log_showEntry?id=${entry/id}">
