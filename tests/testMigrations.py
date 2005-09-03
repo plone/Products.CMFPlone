@@ -116,6 +116,7 @@ from Products.CMFPlone.migrations.v2_1.rcs import changeNewsTopicDefaultView
 from Products.CMFPlone.migrations.v2_1.rcs import fixCMFLegacyLayer
 from Products.CMFPlone.migrations.v2_1.rcs import reorderObjectButtons
 from Products.CMFPlone.migrations.v2_1.rcs import allowMembersToViewGroups
+from Products.CMFPlone.migrations.v2_1.rcs import reorderStylesheets as reorderStylesheets_rc3_final
 
 from Products.CMFDynamicViewFTI.migrate import migrateFTI
 
@@ -1428,18 +1429,6 @@ class TestMigrations_v2_1(MigrationTest):
         self.failUnless(hasattr(jsreg, 'resources'))
         self.failUnless(hasattr(jsreg, 'cookedresources'))
         self.failUnless(hasattr(jsreg, 'concatenatedresources'))
-
-    def testReorderStylesheets(self):
-        # ploneRTL should be right above ploneCustom.css
-        #
-        # By default, ploneCustom.css is the bottom one, so ploneRTL.css
-        # should be in spot number 2. Also, member.css must be at the
-        # top of the list
-        cssreg = self.portal.portal_css
-        stylesheet_ids = cssreg.getResourceIds()
-        self.assertEquals(stylesheet_ids[-1], 'ploneCustom.css')
-        self.assertEquals(stylesheet_ids[-2], 'RTL.css')
-        self.assertEquals(stylesheet_ids[0], 'member.css')
 
     def testAddedFontSizeStylesheets(self):
         cssreg = self.portal.portal_css
@@ -3159,6 +3148,38 @@ class TestMigrations_v2_1(MigrationTest):
                                     self.portal.permissionsOfRole('Member')
                                             if p['name'] == 'View Groups'][0]
         self.failUnless(member_has_permission['selected'])
+
+    def testReorderStylesheets_rc3_final(self):
+        cssreg = self.portal.portal_css
+
+        desired_order = [
+            'base.css',
+            'public.css',
+            'columns.css',
+            'authoring.css',
+            'portlets.css',
+            'presentation.css',
+            'print.css',
+            'mobile.css',
+            'deprecated.css',
+            'generated.css',
+            'member.css',
+            'RTL.css',
+            'textSmall.css',
+            'textLarge.css',
+            # ploneCustom.css is at the bottom by default
+        ]
+
+        stylesheet_ids = cssreg.getResourceIds()
+        for index, value in enumerate(desired_order):
+            self.assertEqual(value, stylesheet_ids[index])
+
+        # do migration again
+        reorderStylesheets_rc3_final(self.portal, [])
+
+        stylesheet_ids = cssreg.getResourceIds()
+        for index, value in enumerate(desired_order):
+            self.assertEqual(value, stylesheet_ids[index])
 
 
 def test_suite():

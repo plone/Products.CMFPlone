@@ -93,6 +93,9 @@ def rc3_final(portal):
     # Lighten restrictions on 'View Groups' permission
     allowMembersToViewGroups(portal, out)
 
+    # reorder stylesheets so the rules are applied in the correct order
+    reorderStylesheets(portal, out)
+
     return out
 
 
@@ -377,3 +380,45 @@ def allowMembersToViewGroups(portal, out):
         portal.manage_permission(ViewGroups, ('Manager', 'Owner', 'Member'),
                                                             acquire=1)
         out.append('Granted "View Groups" to all Members')
+
+def reorderStylesheets(portal, out):
+    """Reorder stylesheets so the rules are applied in the correct order."""
+
+    cssreg = getToolByName(portal, 'portal_css', None)
+    if cssreg is None:
+        return
+
+    desired_order = [
+        'base.css',
+        'public.css',
+        'columns.css',
+        'authoring.css',
+        'portlets.css',
+        'presentation.css',
+        'print.css',
+        'mobile.css',
+        'deprecated.css',
+        'generated.css',
+        'member.css',
+        'RTL.css',
+        'textSmall.css',
+        'textLarge.css',
+        # ploneCustom.css is at the bottom by default
+    ]
+
+    # filter the list to only existing stylesheets
+    stylesheet_ids = cssreg.getResourceIds()
+    desired_order = [sid for sid in desired_order if sid in stylesheet_ids]
+
+    if len(desired_order) == 0:
+        # list is empty
+        return
+
+    # move first item to top
+    cssreg.moveResourceToTop(desired_order[0])
+    previous_id = desired_order[0]
+    for sid in desired_order[1:]:
+        cssreg.moveResourceAfter(sid, previous_id)
+        previous_id = sid
+
+    out.append('Reorder stylesheets')
