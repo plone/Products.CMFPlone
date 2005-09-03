@@ -20,6 +20,7 @@ from Products.CMFCore.utils import _checkPermission, \
      _getAuthenticatedUser, limitGrantedRoles
 from Products.CMFCore.utils import getToolByName, _dtmldir
 from Products.CMFCore import CMFCorePermissions
+from Products.CMFCore.permissions import AccessContentsInformation
 from Products.CMFCore.interfaces.DublinCore import DublinCore, MutableDublinCore
 from Products.CMFCore.interfaces.Discussions import Discussable
 from Products.CMFCore.WorkflowCore import WorkflowException
@@ -518,7 +519,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             data['children'] = result[path]['children']
         result[path] = data
 
-    security.declarePublic('typesToList')
+    security.declareProtected(AccessContentsInformation, 'typesToList')
     def typesToList(self):
         ntp = getToolByName(self, 'portal_properties').navtree_properties
         ttool = getToolByName(self, 'portal_types')
