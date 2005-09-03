@@ -5,6 +5,7 @@ from types import TupleType, UnicodeType, StringType
 import urlparse
 
 from Products.CMFPlone.utils import safe_callable
+from Products.CMFPlone.utils import safe_hasattr
 from Products.CMFPlone.utils import log
 from Products.CMFPlone.utils import log_exc
 from Products.CMFPlone import transaction
@@ -1424,7 +1425,8 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         of whether obj is a catalog brain or an object, but returning an
         empty title marker if the id is not set (i.e. it's auto-generated).
         """
-        obj = aq_base(obj)
+        if safe_hasattr(obj, 'aq_explicit'):
+            obj = obj.aq_explicit
         title = getattr(obj, 'Title', None)
         if safe_callable(title):
             title = title()
