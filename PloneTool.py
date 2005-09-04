@@ -1375,7 +1375,11 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         cataloged_objs = cat(path = {'query':'/'.join(parent.getPhysicalPath()),
                                      'depth': 1})
         for brain in cataloged_objs:
-            obj = brain.getObject()
+	    try:
+                obj = brain.getObject()
+            except AttributeError:
+                obj = None
+
             # Don't crash when the catalog has contains a stale entry
             if obj is not None:
                 cat.reindexObject(obj,['getObjPositionInParent'],
