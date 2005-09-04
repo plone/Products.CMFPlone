@@ -1375,7 +1375,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         cataloged_objs = cat(path = {'query':'/'.join(parent.getPhysicalPath()),
                                      'depth': 1})
         for brain in cataloged_objs:
-	    try:
+            try:
                 obj = brain.getObject()
             except AttributeError:
                 obj = None
