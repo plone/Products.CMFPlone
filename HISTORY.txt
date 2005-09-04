@@ -804,10 +804,7 @@ Plone 2.1 - Plaid - after RC3 - unreleased
     - Fixed a number of security related issues.  We cannot assume that we can
       access attributes of the parent object (this includes using 'folder' in
       actions and 'aq_parent' in skins).  This fixes viewing visible objects
-      in private folders, and also some PLIP 16 issues.  There are still
-      issues due to the fact that restrictedTraverse() will not work for
-      objects which have an ancestor with 'Access contents information'
-      disabled.
+      in private folders, and also some PLIP 16 issues.
       [alecm]
 
     - Made NavTree use a black list of portal_types not a white list.
