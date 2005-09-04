@@ -3141,7 +3141,6 @@ class TestMigrations_v2_1(MigrationTest):
         member_has_permission = [p for p in
                                     self.portal.permissionsOfRole('Member')
                                             if p['name'] == 'View Groups'][0]
-        print [p['name'] for p in self.portal.permissionsOfRole('Member')]
         self.failIf(member_has_permission['selected'])
         allowMembersToViewGroups(self.portal, [])
         member_has_permission = [p for p in
