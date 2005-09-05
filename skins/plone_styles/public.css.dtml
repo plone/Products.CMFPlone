@@ -763,7 +763,11 @@ dl.collapsedInlineCollapsible dt.collapsibleHeader {
 }
 
 #portal-sitemap a {
-    border: 1px solid White;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-backgroundColor;;
+}
+
+#portal-sitemap a:hover {
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
 }
 
 #portal-sitemap .navTreeLevel1 {
