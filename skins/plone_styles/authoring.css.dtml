@@ -210,7 +210,8 @@ ul.configlets li {
 }
 
 ul.configlets li a {
-	text-decoration: none;
+    text-decoration: none;
+    border: none;
 }
 
 ul.configlets li label {

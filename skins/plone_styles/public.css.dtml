@@ -762,6 +762,10 @@ dl.collapsedInlineCollapsible dt.collapsibleHeader {
     border: none;
 }
 
+#portal-sitemap a {
+    border: 1px solid White;
+}
+
 #portal-sitemap .navTreeLevel1 {
     padding-left: 1em;
     border-left: 0.5em solid &dtml-globalBorderColor;;

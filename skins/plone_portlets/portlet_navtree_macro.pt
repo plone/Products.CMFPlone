@@ -1,13 +1,13 @@
 <tal:navitem repeat="item options/children">
-<li class="navTreeItem"
+<li class="navTreeItem visualNoMarker"
     tal:define="parent_shows_children options/show_children|nothing;
                 children item/children|nothing;"
     tal:condition="python: (not item['no_display']) and (item['currentItem'] or parent_shows_children or children)">
-    
+
     <tal:level define="level               options/level|python:0;
                        item_type_class     python: 'contenttype-' + here.plone_utils.normalizeString(item['portal_type']);
                        item_wf_state_class python: 'state-' + here.plone_utils.normalizeString(item['review_state']);
-		       isNaviTree          options/isNaviTree | nothing;
+                       isNaviTree          options/isNaviTree | nothing;
                        ">
 
     <div tal:attributes="class item_type_class">
