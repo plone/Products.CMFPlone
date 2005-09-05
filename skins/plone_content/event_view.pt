@@ -14,7 +14,7 @@
             Title or id
         </h1>
 
-        <table class="vertical listing" style="float: right; width: 20em;"
+        <table class="vertical listing" style="float: right; width: 20em; clear: right;"
                summary="Event details" i18n:attributes="summary summary_event_details;">
 
             <tbody>
