@@ -542,6 +542,10 @@ ol.visualNoMarker {
     padding-left: 16px !important;
 }
 
+#templateMenu li a {
+    padding-left: 16px;
+}
+
 
 /*
 ** end ECMAScript Content Action Menus
