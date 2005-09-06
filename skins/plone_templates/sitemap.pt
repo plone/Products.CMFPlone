@@ -20,7 +20,7 @@
     </p>
 
     <ul id="portal-sitemap"
-        class="navTreeLevel0"
+        class="navTreeLevel0 visualNoMarker"
         tal:define="data python:here.plone_utils.createSitemap(here)"
         tal:content="structure python:here.portlet_navtree_macro(children=data.get('children', []), level=1, show_children=True)">
         SUBTREE

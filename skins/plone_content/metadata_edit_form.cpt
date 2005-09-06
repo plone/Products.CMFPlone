@@ -320,7 +320,7 @@
                    tal:attributes="value request/rights | here/Rights;
                                    tabindex tabindex/next;"
                    i18n:domain="plone-metadata"
-                   i18n:translate=""
+                   i18n:attributes="value"
                    />
           </div>
 

@@ -7,6 +7,7 @@ from Acquisition import aq_get
 from AccessControl import Permissions
 from Products.SiteErrorLog.SiteErrorLog import manage_addErrorLog
 from DateTime import DateTime
+from Products.GroupUserFolder.GroupsToolPermissions import ViewGroups
 
 from zLOG import INFO, ERROR
 from SetupBase import SetupWidget
@@ -302,6 +303,8 @@ def addNewActions(self, portal):
 def setPortalDefaultPermissions(self, portal):
     portal.manage_permission(CMFCorePermissions.AccessInactivePortalContent,
                                                 ('Owner',), acquire=1)
+    portal.manage_permission(ViewGroups, ('Manager', 'Owner', 'Member'),
+                                                            acquire=1)
 
 def enableSiteSyndication(self, portal):
     syn_tool = getToolByName(portal, 'portal_syndication')

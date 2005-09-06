@@ -513,7 +513,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.folder.invokeFactory('Document','index_html')
         acts = self.actions.listFilteredActionsFor(self.folder.index_html)
         buttons = acts['object_buttons']
-        self.failUnless(len(buttons), 3)
+        self.assertEqual(len(buttons), 3)
         urls = [a['url'] for a in buttons]
         for url in urls:
             self.failIf('index_html' in url, 'Action wrongly applied to default page object %s'%url)
@@ -524,11 +524,22 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.folder.invokeFactory('Document','index_html')
         acts = self.actions.listFilteredActionsFor(self.folder.index_html)
         buttons = acts['object_buttons']
-        self.failUnless(len(buttons), 3)
+        self.assertEqual(len(buttons), 3)
         urls = [(a['id'],a['url']) for a in buttons]
         for url in urls:
             # ensure that e.g. the 'copy' url contains object_copy
             self.failUnless('object_'+url[0] in url[1], "%s does not perform the expected object_%s action"%(url[0],url[0]))
+
+    def testObjectButtonActionsInExpectedOrder(self):
+        # The object buttons need to be in a standardized order
+        self.setRoles(['Manager', 'Member'])
+        # fill the copy buffer so we see all actions
+        self.folder.cb_dataValid = True
+        acts = self.actions.listFilteredActionsFor(self.folder)
+        buttons = acts['object_buttons']
+        self.assertEqual(len(buttons),4)
+        ids = [(a['id']) for a in buttons]
+        self.assertEqual(ids, ['cut','copy','paste','delete'])
 
     def testPortalSharingActionIsLocalRoles(self):
         fti = getattr(self.types, 'Plone Site')
@@ -573,6 +584,13 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         path = self.skins.getSkinPath('Plone Tableless')
         path = [x.strip() for x in path.split(',')]
         self.assertEqual(path[-1], 'cmf_legacy')
+
+    def testMemberHasViewGroupsPermission(self):
+        # Member should be granted the 'View Groups' permission
+        member_has_permission = [p for p in
+                self.portal.permissionsOfRole('Member')
+                                        if p['name'] == 'View Groups'][0]
+        self.failUnless(member_has_permission['selected'])
 
 
 class TestPortalBugs(PloneTestCase.PloneTestCase):

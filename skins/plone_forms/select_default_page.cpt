@@ -32,7 +32,7 @@
             <dl>
                 <tal:item repeat="item items">
                     <dt tal:define="item_typeinfo python: here.portal_types.getTypeInfo(item.portal_type);
-                                    item_icon string:${utool}/${item_typeinfo/getIcon};">
+                                    item_icon string:$portal_url/${item_typeinfo/getIcon};">
                         <input type="radio" name="objectId" value="" 
                             tal:attributes="value item/getId;
                                             id item/getId;

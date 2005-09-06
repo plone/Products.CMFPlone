@@ -16,11 +16,59 @@
 /* <dtml-with base_properties> (do not remove this :) */
 /* <dtml-call "REQUEST.set('portal_url', portal_url())"> (not this either :) */
 
+/* Links with differently colored link underlines - only for content */
+
+.documentContent p a {
+    text-decoration: none;
+    border-bottom: 1px #cccccc solid;
+}
+
+.documentContent p a:visited {
+    color: &dtml-linkVisitedColor;;
+    background-color: transparent;
+}
+
+.documentContent p a:active {
+    color: &dtml-linkActiveColor;;
+    background-color: transparent;
+}
+
+.documentContent li a {
+    text-decoration: none;
+    border-bottom: 1px #cccccc solid;
+}
+
+.documentContent li a:visited {
+    color: &dtml-linkVisitedColor;;
+    background-color: transparent;
+}
+
+.documentContent li a:active {
+    color: &dtml-linkActiveColor;;
+    background-color: transparent;
+}
+
+.documentContent dd a {
+    text-decoration: none;
+    border-bottom: 1px #cccccc solid;
+}
+
+.documentContent dd a:visited {
+    color: &dtml-linkVisitedColor;;
+    background-color: transparent;
+}
+
+.documentContent dd a:active {
+    color: &dtml-linkActiveColor;;
+    background-color: transparent;
+}
+
+/* End links */
+
 #visual-portal-wrapper {
     margin: 0;
     padding: 0;
 }
-
 
 /* Logo properties */
 
@@ -760,6 +808,14 @@ dl.collapsedInlineCollapsible dt.collapsibleHeader {
     margin: 0;
     font-size: 90%;
     border: none;
+}
+
+#portal-sitemap a {
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-backgroundColor;;
+}
+
+#portal-sitemap a:hover {
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
 }
 
 #portal-sitemap .navTreeLevel1 {

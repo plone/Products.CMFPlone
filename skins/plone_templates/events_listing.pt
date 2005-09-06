@@ -22,7 +22,8 @@
                  portal_discussion nocall:here/portal_discussion;
                  isDiscussionAllowedFor nocall:portal_discussion/isDiscussionAllowedFor;
                  getDiscussionFor nocall:portal_discussion/getDiscussionFor;
-                 home_url python: mtool.getHomeUrl;">
+                 home_url python: mtool.getHomeUrl;
+                 show_about python:not isAnon or site_properties.allowAnonymousViewAbout">
 
 
     <form name="searchresults" action="" method="post" tal:condition="results"
@@ -60,6 +61,7 @@
                         <span i18n:translate="event_and">to</span>
                         <span tal:replace="python:resultObject.toLocalizedTime(resultObject.end(), long_format=1)">End Date Time</span>.
                         </li>
+                        <tal:about-info condition="show_about">
                         <li>
                             <span tal:omit-tag="" i18n:translate="posted_by">Posted by</span>
     
@@ -75,6 +77,7 @@
                             <span tal:omit-tag="" i18n:translate="label_published">Published</span>:
                             <span tal:replace="python:here.toLocalizedTime(result.Date)" />
                         </li>
+                        </tal:about-info>
                     </ul>
 
                     <ul class="newsFooter" tal:define="is_discussable python: isDiscussionAllowedFor(resultObject);">
@@ -107,8 +110,8 @@
 
         </form>
 
-    <p tal:condition="not: results" i18n:translate="no_new_news">
-        No news has been posted.
+    <p tal:condition="not: results" i18n:translate="no_new_events">
+        No events have been posted.
     </p>
 
     <div tal:define="contentTypes here/getAllowedTypes" tal:omit-tag="python:1"

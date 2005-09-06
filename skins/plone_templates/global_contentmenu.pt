@@ -246,7 +246,7 @@
                                        tal:attributes="href string:${parent_folder/absolute_url}/select_default_page;"
                                        i18n:attributes="title title_select_default_view_item;"
                                        i18n:translate="label_choose_item">
-                                         Choose content item<br />&nbsp;&nbsp;as default view&hellip;
+                                         Choose content item<br />as default view&hellip;
                                     </a>
                                 </li>
                             </tal:haveSelectedLayout>
@@ -263,7 +263,7 @@
                                        tal:attributes="href string:${parent_folder/absolute_url}/select_default_page;"
                                        i18n:attributes="title title_change_default_view_item;"
                                        i18n:translate="label_change_item">
-                                         Change content item<br />&nbsp;&nbsp;as default view&hellip;
+                                         Change content item<br />as default view&hellip;
                                     </a>
                                 </li>
                             </tal:haveDefaultPage>
@@ -321,7 +321,7 @@
                                        tal:attributes="href string:${here/absolute_url}/select_default_page;"
                                        i18n:attributes="title title_select_default_page;"
                                        i18n:translate="label_choose_item">
-                                         Choose content item<br />&nbsp;&nbsp;as default view&hellip;
+                                         Choose content item<br />as default view&hellip;
                                     </a>
                                 </li>
                             </tal:haveSelectedLayout>
@@ -338,7 +338,7 @@
                                        tal:attributes="href string:${here/absolute_url}/select_default_page;"
                                        i18n:attributes="title title_change_default_page;"
                                        i18n:translate="label_change_item">
-                                         Change content item<br />&nbsp;&nbsp;as default view&hellip;
+                                         Change content item<br />as default view&hellip;
                                     </a>
                                 </li>
                             </tal:haveDefaultPage>
@@ -356,7 +356,7 @@
                                    tal:attributes="href string:${parent_folder/absolute_url}/select_default_page;"
                                    i18n:attributes="title title_select_default_page;"
                                    i18n:translate="label_choose_item">
-                                     Choose content item<br />&nbsp;&nbsp;as default view&hellip;
+                                     Choose content item<br />as default view&hellip;
                                 </a>
                             </li>
                         </tal:haveSelectedLayout>
@@ -373,7 +373,7 @@
                                    tal:attributes="href string:${parent_folder/absolute_url}/select_default_page;"
                                    i18n:attributes="title title_change_default_page;"
                                    i18n:translate="label_change_item">
-                                     Change content item<br />&nbsp;&nbsp;as default view&hellip;
+                                     Change content item<br />as default view&hellip;
                                 </a>
                             </li>
                         </tal:haveDefaultPage>

@@ -32,7 +32,7 @@
 
                 <dl>
                     <dt i18n:translate="label_time">Time</dt>
-                    <dd tal:content="python: DateTime(entry['time'])"></dd>
+                    <dd tal:content="python: here.toLocalizedTime(DateTime(entry['time']), long_format=True)"></dd>
 
                     <dt align="left" valign="top"
                         i18n:translate="label_user_name">User Name (User Id)</dt>

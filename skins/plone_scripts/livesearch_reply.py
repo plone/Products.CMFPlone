@@ -55,7 +55,9 @@ RESPONSE.setHeader('Content-Type', 'text/xml')
 if not results:
     print '''<fieldset class="livesearchContainer">'''
     print '''<legend id="livesearchLegend">LiveSearch &darr;</legend>'''
-    print '<div id="LSNothingFound">No matching results found.</div>'
+    print '''<div class="LSIEFix>'''
+    print '''<div id="LSNothingFound">No matching results found.</div>'''
+    print '''</div>'''
     print '''</fieldset>'''
 
 else:

@@ -7,6 +7,7 @@ from Products.CMFPlone.utils import _createObjectByType
 from Products.CMFPlone.migrations.migration_util import cleanupSkinPath
 from Acquisition import aq_base, aq_inner, aq_parent
 from Products.CMFPlone import transaction
+from Products.GroupUserFolder.GroupsToolPermissions import ViewGroups
 
 
 def rc1_rc2(portal):
@@ -85,6 +86,15 @@ def rc3_final(portal):
 
     # Make sure cmf_legacy is the last skin layer
     fixCMFLegacyLayer(portal, out)
+
+    # Reorder object buttons
+    reorderObjectButtons(portal, out)
+
+    # Lighten restrictions on 'View Groups' permission
+    allowMembersToViewGroups(portal, out)
+
+    # reorder stylesheets so the rules are applied in the correct order
+    reorderStylesheets(portal, out)
 
     return out
 
@@ -254,32 +264,36 @@ def moveDefaultTopicsToPortalRoot(portal, out):
         orig = lpf_fti.global_allow
         lpf_fti.global_allow = True
         for topic in topics:
-            folder = getattr(portal, topic['new_id'], None)
-            obj = getattr(folder, topic['old_id'], None)
-            if obj is not None:
-                old_pos = portal.getObjectPosition(topic['new_id'])
-                portal._setObject(topic['old_id'], aq_base(obj))
-                folder.manage_delObjects([topic['old_id']])
-                out.append("Moved %s topic to portal root"%topic['new_id'])
-                transaction.commit(1)
-                if not folder.objectIds():
-                    # Delete empty folders
-                    portal.manage_delObjects([topic['new_id']])
-                    out.append("Deleted empty %s folder"%topic['new_id'])
-                else:
-                    # Rename non-empty folders
-                    portal.manage_renameObjects([topic['new_id']],['old_'+topic['new_id']])
-                    out.append("Moved old %s folder to old_%s"%(topic['new_id'],topic['new_id']))
-                    old_fold = getattr(portal, 'old_'+topic['new_id'])
-                    # Exclude the renamed folder from navigation
-                    # old_fold.setExcludeFromNav(True)
-                    old_fold.setTitle('Old ' + old_fold.Title())
-                    old_fold.reindexObject()
-                portal.manage_renameObjects([topic['old_id']],[topic['new_id']])
-                portal.moveObject(topic['new_id'], old_pos)
-                putils = getattr(portal, 'plone_utils', None)
-                if putils is not None:
-                    putils.reindexOnReorder(portal)
+            folder = getattr(portal.aq_explicit, topic['new_id'], None)
+            if folder is not None:
+                obj = getattr(folder.aq_explicit, topic['old_id'], None)
+                if obj is not None:
+                    old_pos = portal.getObjectPosition(topic['new_id'])
+                    portal._setObject(topic['old_id'], aq_base(obj))
+                    folder.manage_delObjects([topic['old_id']])
+                    out.append(
+                              "Moved %s topic to portal root"%topic['new_id'])
+                    transaction.commit(1)
+                    if not folder.objectIds():
+                        # Delete empty folders
+                        portal.manage_delObjects([topic['new_id']])
+                        out.append("Deleted empty %s folder"%topic['new_id'])
+                    else:
+                        # Rename non-empty folders
+                        portal.manage_renameObjects([topic['new_id']],
+                                                     ['old_'+topic['new_id']])
+                        out.append("Moved old %s folder to old_%s"%(topic['new_id'],topic['new_id']))
+                        old_fold = getattr(portal, 'old_'+topic['new_id'])
+                        # Exclude the renamed folder from navigation
+                        # old_fold.setExcludeFromNav(True)
+                        old_fold.setTitle('Old ' + old_fold.Title())
+                        old_fold.reindexObject()
+                    portal.manage_renameObjects([topic['old_id']],
+                                                        [topic['new_id']])
+                    portal.moveObject(topic['new_id'], old_pos)
+                    putils = getattr(portal, 'plone_utils', None)
+                    if putils is not None:
+                        putils.reindexOnReorder(portal)
         # Reset adding of Large plone folder
         lpf_fti.global_allow = orig
 
@@ -332,3 +346,79 @@ def fixCMFLegacyLayer(portal, out):
                 skinsTool.addSkinSelection(skin, ','.join(path))
                 out.append('Moved cmf_legacy layer to end of %s.' % skin)
 
+
+def reorderObjectButtons(portal, out):
+    category = 'object_buttons'
+    ordered_actions = ('cut','copy','paste','delete')
+    actionsTool = getToolByName(portal, 'portal_actions', None)
+    action_dict = {}
+    remove_actions = []
+    if actionsTool is not None:
+        orig_actions = actionsTool._cloneActions()
+        i = 0
+        for action in orig_actions:
+            if action.getId() in ordered_actions and \
+                                    action.category == category:
+                action_dict[action.getId()]=action
+                remove_actions.append(i)
+            i = i + 1
+        actionsTool.deleteActions(remove_actions)
+        new_actions = actionsTool._cloneActions()
+        for action_id in ordered_actions:
+            try:
+                new_actions.append(action_dict[action_id])
+            except KeyError:
+                pass
+        actionsTool._actions = new_actions
+        out.append("Object buttons reordered as cut, copy, paste, delete")
+
+def allowMembersToViewGroups(portal, out):
+    has_permission = [p for p in portal.permissionsOfRole('Member')
+            if p['name'] == ViewGroups]
+    # Only change if permission exists
+    if has_permission and not has_permission[0]['selected']:
+        portal.manage_permission(ViewGroups, ('Manager', 'Owner', 'Member'),
+                                                            acquire=1)
+        out.append('Granted "View Groups" to all Members')
+
+def reorderStylesheets(portal, out):
+    """Reorder stylesheets so the rules are applied in the correct order."""
+
+    cssreg = getToolByName(portal, 'portal_css', None)
+    if cssreg is None:
+        return
+
+    desired_order = [
+        'base.css',
+        'public.css',
+        'columns.css',
+        'authoring.css',
+        'portlets.css',
+        'presentation.css',
+        'print.css',
+        'mobile.css',
+        'deprecated.css',
+        'generated.css',
+        'member.css',
+        'RTL.css',
+        'textSmall.css',
+        'textLarge.css',
+        # ploneCustom.css is at the bottom by default
+    ]
+
+    # filter the list to only existing stylesheets
+    stylesheet_ids = cssreg.getResourceIds()
+    desired_order = [sid for sid in desired_order if sid in stylesheet_ids]
+
+    if len(desired_order) == 0:
+        # list is empty
+        return
+
+    # move first item to top
+    cssreg.moveResourceToTop(desired_order[0])
+    previous_id = desired_order[0]
+    for sid in desired_order[1:]:
+        cssreg.moveResourceAfter(sid, previous_id)
+        previous_id = sid
+
+    out.append('Reorder stylesheets')

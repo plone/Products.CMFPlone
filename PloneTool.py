@@ -5,6 +5,7 @@ from types import TupleType, UnicodeType, StringType
 import urlparse
 
 from Products.CMFPlone.utils import safe_callable
+from Products.CMFPlone.utils import safe_hasattr
 from Products.CMFPlone.utils import log
 from Products.CMFPlone.utils import log_exc
 from Products.CMFPlone import transaction
@@ -19,6 +20,7 @@ from Products.CMFCore.utils import _checkPermission, \
      _getAuthenticatedUser, limitGrantedRoles
 from Products.CMFCore.utils import getToolByName, _dtmldir
 from Products.CMFCore import CMFCorePermissions
+from Products.CMFCore.permissions import AccessContentsInformation
 from Products.CMFCore.interfaces.DublinCore import DublinCore, MutableDublinCore
 from Products.CMFCore.interfaces.Discussions import Discussable
 from Products.CMFCore.WorkflowCore import WorkflowException
@@ -517,6 +519,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             data['children'] = result[path]['children']
         result[path] = data
 
+    security.declareProtected(AccessContentsInformation, 'typesToList')
     def typesToList(self):
         ntp = getToolByName(self, 'portal_properties').navtree_properties
         ttool = getToolByName(self, 'portal_types')
@@ -1423,7 +1426,8 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         of whether obj is a catalog brain or an object, but returning an
         empty title marker if the id is not set (i.e. it's auto-generated).
         """
-        obj = aq_base(obj)
+        if safe_hasattr(obj, 'aq_explicit'):
+            obj = obj.aq_explicit
         title = getattr(obj, 'Title', None)
         if safe_callable(title):
             title = title()

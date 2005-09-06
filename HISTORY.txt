@@ -2,7 +2,46 @@ Changelog for Plone
 
    (name of developer listed in brackets)
 
-Plone 2.1 - Plaid - after RC3 - unreleased
+Plone 2.1 - Plaid - Released September 6, 2005
+
+    - Added deprecation warning for DTML in CSS. We will most likely get rid 
+      of this in Plone 2.2 or 2.3 to reduce complexity. If we are going to
+      support variables in CSS, ResourceRegistries should handle it, not DTML.
+      [limi]
+
+    - Fixed http://members.plone.org/collector/4544/ by using aq_explicit
+      instead of aq_base when getting Title for pretty_title_or_id.  This
+      means that objects which rely on acquisition in their Title() methods
+      will need to do so explicitly, though getToolByName and aq_parent will
+      work without issue.
+      [alecm]
+
+    - A bug that caused the month display to use the day number was fixed. 
+      Thanks to Mohsen Moeeni for finding this bug.
+      [longsleep]
+
+    - Fixed http://members.plone.org/collector/4638 by making the workflow
+      title methods more fault tolerant.
+      [alecm]
+
+    - Fixed http://plone.org/collector/4624 - document byline on events were
+      not translated
+      [hannosch]
+
+    - Fixed http://members.plone.org/collector/4635 - LiveSearch background
+      did not apply the IE fix if there was no result set. Thanks Wichert.
+      [limi]
+
+    - Fixed http://members.plone.org/collector/4612 by granting the
+      'View Groups' permission to all Members at the portal root.
+      [alecm]
+
+    - Fixed http://members.plone.org/collector/4589 by adding some
+      tal:conditions in a few templates.
+      [alecm]
+
+    - Reordered the object button actions.
+      [alecm]
 
     - Removed the printing of link addresses along with the link text since
       it triggers a lot of display-related bugs when printing certain types
@@ -770,10 +809,7 @@ Plone 2.1 - Plaid - after RC3 - unreleased
     - Fixed a number of security related issues.  We cannot assume that we can
       access attributes of the parent object (this includes using 'folder' in
       actions and 'aq_parent' in skins).  This fixes viewing visible objects
-      in private folders, and also some PLIP 16 issues.  There are still
-      issues due to the fact that restrictedTraverse() will not work for
-      objects which have an ancestor with 'Access contents information'
-      disabled.
+      in private folders, and also some PLIP 16 issues.
       [alecm]
 
     - Made NavTree use a black list of portal_types not a white list.
@@ -3025,7 +3061,7 @@ Plone 2.0 - Fyuti - Released March 23, 2004
       the old use_folder_contents.
       [pupq]
 
-    - Diet Plone® - an initial page load of Plone was reduced from
+    - Diet Plone - an initial page load of Plone was reduced from
       150K to 75K, and HTTP requests from 30 to 15 by performing
       the following tweaks:
       [limi]
@@ -3913,7 +3949,7 @@ Plone 1.0.4 - Zita Swoon - Released August 14, 2003
       Content Accessibility Guidelines (WAI-A) and US Government
       Section 508 compliant.  The law applies to all US Federal agencies
       when they develop, procure, maintain, or use electronic and
-      information technology. Under Section 508 (29 U.S.C. § 794d),
+      information technology. Under Section 508 (29 U.S.C.  794d),
       agencies must give disabled employees and members of the public
       access to information that is comparable to the access available
       to others. Plone is now able to be used in these agencies.

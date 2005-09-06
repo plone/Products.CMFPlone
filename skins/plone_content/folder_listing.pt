@@ -37,7 +37,8 @@
                             folderContents folderContents|python:contentsMethod(contentFilter);
                             use_view_action site_properties/typesUseViewActionInListings;
                             over_limit python: limit_display and len(folderContents) > limit_display;
-                            folderContents python: (over_limit and folderContents[:limit_display]) or folderContents;">
+                            folderContents python: (over_limit and folderContents[:limit_display]) or folderContents;
+                            show_about python:not isAnon or site_properties.allowAnonymousViewAbout">
         <tal:listing condition="folderContents"
                      define="toLocalizedTime nocall:here/toLocalizedTime;">
 
@@ -82,16 +83,16 @@
                             </span>
                         </tal:to_external>
 
-                        <span class="documentByLine">
+                        <span class="documentByLine"
+                              tal:condition="show_about">
 
-                            <span tal:condition="python: item_type == 'Event'">
-                                (<span tal:replace="string:${item/location}">Oslo</span>, from
-                                 <span tal:replace="python:toLocalizedTime(item_start,long_format=1)">from date</span> to
-                                 <span tal:replace="python:toLocalizedTime(item_end,long_format=1)">to date</span>)
+                            <span tal:condition="python: item_type == 'Event'"
+                                  i18n:translate="label_event_byline">
+                                (<span tal:omit-tag="" tal:content="string:${item/location}" i18n:name="location">Oslo</span>, from
+                                 <span tal:omit-tag="" tal:content="python:toLocalizedTime(item_start,long_format=1)" i18n:name="start">from date</span> to
+                                 <span tal:omit-tag="" tal:content="python:toLocalizedTime(item_end,long_format=1)" i18n:name="end">to date</span>)
                             &mdash;
                             </span>
-
-
 
                             <tal:name tal:condition="item_creator"
                                 tal:define="author python:mtool.getMemberInfo(item_creator)">
@@ -107,7 +108,6 @@
                               </span>
 
                             </tal:name>
-
 
                             <tal:modified condition="python: item_type != 'Event'">
                                 &mdash;
@@ -127,7 +127,6 @@
                         </span>
 
                     </dt>
-
 
                     <dd>
                         <span tal:omit-tag="" tal:condition="not:item_description"> 

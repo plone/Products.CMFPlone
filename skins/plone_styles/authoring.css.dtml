@@ -210,7 +210,18 @@ ul.configlets li {
 }
 
 ul.configlets li a {
-	text-decoration: none;
+    text-decoration: none;
+    border: none;
+}
+
+ul.configlets li a:visited {
+    color: &dtml-linkColor;;
+    background-color: transparent;
+}
+
+ul.configlets li a:active {
+    color: &dtml-linkColor;;
+    background-color: transparent;
 }
 
 ul.configlets li label {
@@ -539,6 +550,10 @@ ol.visualNoMarker {
     background-repeat: no-repeat;
     background-position: 0% 3px;
     padding-left: 16px !important;
+}
+
+#templateMenu li a {
+    padding-left: 16px;
 }
 
 

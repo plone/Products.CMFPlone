@@ -114,6 +114,9 @@ from Products.CMFPlone.migrations.v2_1.rcs import alterSortCriterionOnNewsTopic
 from Products.CMFPlone.migrations.v2_1.rcs import fixPreferenceActionTitle
 from Products.CMFPlone.migrations.v2_1.rcs import changeNewsTopicDefaultView
 from Products.CMFPlone.migrations.v2_1.rcs import fixCMFLegacyLayer
+from Products.CMFPlone.migrations.v2_1.rcs import reorderObjectButtons
+from Products.CMFPlone.migrations.v2_1.rcs import allowMembersToViewGroups
+from Products.CMFPlone.migrations.v2_1.rcs import reorderStylesheets as reorderStylesheets_rc3_final
 
 from Products.CMFDynamicViewFTI.migrate import migrateFTI
 
@@ -1426,18 +1429,6 @@ class TestMigrations_v2_1(MigrationTest):
         self.failUnless(hasattr(jsreg, 'resources'))
         self.failUnless(hasattr(jsreg, 'cookedresources'))
         self.failUnless(hasattr(jsreg, 'concatenatedresources'))
-
-    def testReorderStylesheets(self):
-        # ploneRTL should be right above ploneCustom.css
-        #
-        # By default, ploneCustom.css is the bottom one, so ploneRTL.css
-        # should be in spot number 2. Also, member.css must be at the
-        # top of the list
-        cssreg = self.portal.portal_css
-        stylesheet_ids = cssreg.getResourceIds()
-        self.assertEquals(stylesheet_ids[-1], 'ploneCustom.css')
-        self.assertEquals(stylesheet_ids[-2], 'RTL.css')
-        self.assertEquals(stylesheet_ids[0], 'member.css')
 
     def testAddedFontSizeStylesheets(self):
         cssreg = self.portal.portal_css
@@ -3102,6 +3093,92 @@ class TestMigrations_v2_1(MigrationTest):
         # The missing layer is *not* added by the migration
         path = self.skins.getSkinPath('Plone Default')
         self.failIf('cmf_legacy' in path)
+
+    def testReorderObjectButtons(self):
+        # Should reorder the edit-content actions
+        editActions = ('cut', 'copy', 'paste', 'delete')
+        for a in editActions:
+            self.removeActionFromTool(a)
+        bad_actions = list(editActions)
+        bad_actions.reverse()
+        for a in bad_actions:
+            self.addActionToTool(a, 'object_buttons')
+        reorderObjectButtons(self.portal, [])
+        actions = [x.id for x in self.actions.listActions() if x.category ==
+                                    'object_buttons']
+        self.assertEqual(actions, list(editActions))
+
+    def testReorderObjectButtonsTwice(self):
+        # Should not fail if performed twice
+        editActions = ('cut', 'copy', 'paste', 'delete')
+        for a in editActions:
+            self.removeActionFromTool(a)
+        bad_actions = list(editActions)
+        bad_actions.reverse()
+        for a in bad_actions:
+            self.addActionToTool(a, 'object_buttons')
+        reorderObjectButtons(self.portal, [])
+        reorderObjectButtons(self.portal, [])
+        actions = [x.id for x in self.actions.listActions() if x.category ==
+                                    'object_buttons']
+        self.assertEqual(actions, list(editActions))
+
+    def testReorderObjectButtonsNoTool(self):
+        # Should not fail if portal_actions is missing
+        self.portal._delObject('portal_actions')
+        reorderObjectButtons(self.portal, [])
+
+    def testReorderObjectButtonsNoActions(self):
+        # Should not fail if the actions are missing
+        editActions = ('cut', 'copy', 'paste', 'delete')
+        for a in editActions:
+            self.removeActionFromTool(a)
+        reorderObjectButtons(self.portal, [])
+
+    def testAllowMembersToViewGroups(self):
+        # Should add Member to the list of roles for 'View Groups' permission
+        self.portal.manage_permission('View Groups',('Manager',),0)
+        member_has_permission = [p for p in
+                                    self.portal.permissionsOfRole('Member')
+                                            if p['name'] == 'View Groups'][0]
+        self.failIf(member_has_permission['selected'])
+        allowMembersToViewGroups(self.portal, [])
+        member_has_permission = [p for p in
+                                    self.portal.permissionsOfRole('Member')
+                                            if p['name'] == 'View Groups'][0]
+        self.failUnless(member_has_permission['selected'])
+
+    def testReorderStylesheets_rc3_final(self):
+        cssreg = self.portal.portal_css
+
+        desired_order = [
+            'base.css',
+            'public.css',
+            'columns.css',
+            'authoring.css',
+            'portlets.css',
+            'presentation.css',
+            'print.css',
+            'mobile.css',
+            'deprecated.css',
+            'generated.css',
+            'member.css',
+            'RTL.css',
+            'textSmall.css',
+            'textLarge.css',
+            # ploneCustom.css is at the bottom by default
+        ]
+
+        stylesheet_ids = cssreg.getResourceIds()
+        for index, value in enumerate(desired_order):
+            self.assertEqual(value, stylesheet_ids[index])
+
+        # do migration again
+        reorderStylesheets_rc3_final(self.portal, [])
+
+        stylesheet_ids = cssreg.getResourceIds()
+        for index, value in enumerate(desired_order):
+            self.assertEqual(value, stylesheet_ids[index])
 
 
 def test_suite():
