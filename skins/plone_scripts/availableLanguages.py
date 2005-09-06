@@ -109,7 +109,7 @@ value = [
     ('rw', 'Kiyarwanda'),
     ('sa', 'Sanskrit'),
     ('sd', 'Sindhi'),
-    ('se', 'Northern S&aacute;mi'),
+    ('se', 'Northern Sami'),
     ('sg', 'Sangho'),
     ('sh', 'Serbo-Croatian'),
     ('si', 'Singhalese'),
