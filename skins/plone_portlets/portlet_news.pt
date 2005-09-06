@@ -7,7 +7,8 @@
                    here.portal_catalog.searchResults(portal_type='News Item',
                                                      sort_on='Date',
                                                      sort_order='reverse',
-                                                     review_state='published')[:5]);"
+                                                     sort_limit=5,
+                                                     review_state='published'));"
      tal:condition="python:test(template.getId()!='news' and results, 1, 0)">
 
     <dl class="portlet" id="portlet-news">

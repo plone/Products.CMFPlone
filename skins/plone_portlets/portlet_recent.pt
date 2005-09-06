@@ -11,7 +11,8 @@
                  results python:request.get('items',
                                             here.portal_catalog.searchResults(sort_on='modified',
                                             portal_type=typesToShow,
-                                            sort_order='reverse')[:5]);">
+                                            sort_limit=5,
+                                            sort_order='reverse'));">
 
 <dl class="portlet" id="portlet-recent">
   
