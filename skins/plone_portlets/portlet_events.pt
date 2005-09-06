@@ -8,8 +8,7 @@
                  end={'query': here.ZopeTime(),
                       'range': 'min'},
                  sort_on='start',
-                 sort_limit=5,
-                 review_state='published');"
+                 review_state='published')[:5];"
      tal:condition="results">
 
 <dl class="portlet" id="portlet-events">
