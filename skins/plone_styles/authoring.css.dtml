@@ -214,6 +214,16 @@ ul.configlets li a {
     border: none;
 }
 
+ul.configlets li a:visited {
+    color: &dtml-linkColor;;
+    background-color: transparent;
+}
+
+ul.configlets li a:active {
+    color: &dtml-linkColor;;
+    background-color: transparent;
+}
+
 ul.configlets li label {
     font-weight: bold;
 }
