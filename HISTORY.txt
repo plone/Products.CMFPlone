@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - after RC3 - unreleased
 
+    - Added deprecation warning for DTML in CSS. We will most likely get rid 
+      of this in Plone 2.2 or 2.3 to reduce complexity. If we are going to
+      support variables in CSS, ResourceRegistries should handle it, not DTML.
+      [limi]
+
     - Fixed http://members.plone.org/collector/4544/ by using aq_explicit
       instead of aq_base when getting Title for pretty_title_or_id.  This
       means that objects which rely on acquisition in their Title() methods
