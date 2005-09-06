@@ -2,7 +2,7 @@ Changelog for Plone
 
    (name of developer listed in brackets)
 
-Plone 2.1 - Plaid - after RC3 - unreleased
+Plone 2.1 - Plaid - Released September 6, 2005
 
     - Added deprecation warning for DTML in CSS. We will most likely get rid 
       of this in Plone 2.2 or 2.3 to reduce complexity. If we are going to
