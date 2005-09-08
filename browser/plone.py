@@ -4,6 +4,9 @@ from Products.Five import BrowserView
 from Products import CMFPlone
 import ZTUtils
 
+from AccessControl import ClassSecurityInfo
+from Globals import InitializeClass
+
 class Plone(BrowserView):
    implements(IPlone)
 

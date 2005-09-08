@@ -1,12 +1,32 @@
 <configure xmlns="http://namespaces.zope.org/zope"
            xmlns:browser="http://namespaces.zope.org/browser">
 
-<browser:page
-    for="..interfaces.Plone.IPlone"
-    name="plone"
-    class=".plone.Plone"
-    permission="zope.Public"
-    allowed_interface="..interfaces.Plone.IPlone"
-    />
+<!-- There's more than one way to do it, in XML! Please Kill Me. -->
+
+<!-- <browser:page -->
+<!--     for="..interfaces.Plone.IPlone" -->
+<!--     name="plone" -->
+<!--     class=".plone.Plone" -->
+<!--     permission="zope.Public" -->
+<!--     allowed_interface="..interfaces.Plone.IPlone" -->
+<!--     /> -->
+
+
+  <view
+      for="..interfaces.Plone.IPlone"
+      factory=".plone.Plone"
+      name="plone"
+      type="zope.publisher.interfaces.http.IHTTPRequest"
+      permission="zope.Public"
+      provides="..interfaces.Plone.IPlone"
+      />
+
+
+<!--   <browser:view -->
+<!--       for="..interfaces.Plone.IPlone" -->
+<!--       name="plone" -->
+<!--       class=".plone.Plone" -->
+<!--       permission="zope2.Public" -->
+<!--       /> -->
 
 </configure>

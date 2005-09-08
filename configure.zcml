@@ -6,12 +6,22 @@
   <include package=".browser" />
 
 <five:implements
-    class="Products.CMFCore.PortalContent.PortalContent"
+    class="Products.Archetypes.public.BaseObject"
     interface=".interfaces.Plone.IPlone"
     />
 
 <five:traversable
-    class="Products.CMFCore.PortalContent.PortalContent"
+    class="Products.Archetypes.public.BaseObject"
+    />
+
+
+<five:implements
+    class="Products.CMFCore.PortalObject.PortalObjectBase"
+    interface=".interfaces.Plone.IPlone"
+    />
+
+<five:traversable
+    class="Products.CMFCore.PortalObject.PortalObjectBase"
     />
 
 </configure>
