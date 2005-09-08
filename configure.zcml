@@ -7,7 +7,7 @@
 
 <five:implements
     class="Products.CMFCore.PortalContent.PortalContent"
-    interface=".interfaces.Global.IGlobal"
+    interface=".interfaces.Plone.IPlone"
     />
 
 <five:traversable

@@ -2,11 +2,11 @@
            xmlns:browser="http://namespaces.zope.org/browser">
 
 <browser:page
-    for=".interfaces.Globals.IGlobal"
-    name="globals"
-    class=".globals.Globals"
+    for=".interfaces.Plone.IPlone"
+    name="plone"
+    class=".plone.Plone"
     permission="zope.Public"
-    allowed_interface="..interfaces.Globals.IGlobal"
+    allowed_interface="..interfaces.Plone.IPlone"
     />
 
 </configure>
