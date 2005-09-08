@@ -1,0 +1,17 @@
+<configure xmlns="http://namespaces.zope.org/zope"
+           xmlns:browser="http://namespaces.zope.org/browser"
+           xmlns:five="http://namespaces.zope.org/five">
+
+  <include package=".interfaces" />
+  <include package=".browser" />
+
+<five:implements
+    class="Products.CMFCore.PortalContent.PortalContent"
+    interface=".interfaces.Global.IGlobal"
+    />
+
+<five:traversable
+    class="Products.CMFCore.PortalContent.PortalContent"
+    />
+
+</configure>
