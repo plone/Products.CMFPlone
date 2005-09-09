@@ -10,12 +10,15 @@ from Globals import InitializeClass
 class Plone(BrowserView):
    implements(IPlone)
 
+   security = ClassSecurityInfo()
+   security.declareObjectPublic()
+
    def __init__(self, context, request):
       self.context = context
       self.request = request
 
    def utool(self):
-       return self.context.portal_url
+       return self.context.portal_url.__of__(self.context)
 
    def portal(self):
        return self.utool().getPortalObject()
@@ -167,3 +170,4 @@ class Plone(BrowserView):
    def current_page_url(self):
        return self.context.getCurrentUrl() or None
 
+InitializeClass(Plone)
