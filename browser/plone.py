@@ -1,169 +1,186 @@
-from Products.CMFPlone.interfaces.Plone import IPlone
+from Products.CMFPlone.browser.interfaces import IPloneGlobals
+
 from zope.interface import implements
 from Products.Five import BrowserView
 from Products import CMFPlone
-import ZTUtils
+import ZTUtils, sys
 
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
 
-class Plone(BrowserView):
-   implements(IPlone)
-   
-   def __init__(self, context, request):
-      self.context = context
-      self.request = request
+from Products.PageTemplates.Expressions import getEngine
+from ZPublisher.BeforeTraverse import registerBeforeTraverse
 
-   def utool(self):
-       return self.context.portal_url
+class PloneGlobals(BrowserView):
+    implements(IPloneGlobals)
 
-   def portal(self):
-       return self.utool().getPortalObject()
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
 
-   def portal_object(self):
-       return self.portal()
+    _globals = ('utool', 'portal', 'portal_object', 'portal_url',
+                'mtool', 'gtool', 'gdtool', 'atool', 'aitool', 'putils',
+                'wtool', 'ifacetool', 'syntool', 'portal_title', 'object_title',
+                'member', 'checkPermission', 'membersfolder', 'isAnon', 'actions',
+                'keyed_actions', 'user_actions', 'workflow_actions', 'folder_actions',
+                'global_actions', 'portal_tabs', 'wf_state', 'portal_properties',
+                'site_properties', 'ztu', 'wf_actions', 'isFolderish', 'template_id',
+                'slots_mapping', 'Iterator', 'tabindex', 'here_url', 'sl', 'sr', 'hidecolumns',
+                'default_language', 'language', 'is_editable', 'isEditable', 'lockable',
+                'isLocked', 'isRTL', 'visible_ids', 'current_page_url')
 
-   def portal_url(self):
-       return self.utool()()
+    def globals(self):
+        """
+        Pure optimization hack, globalizes entire view for speed.
+        """
+        context = sys._getframe(2).f_locals['econtext']
+        for name in self._globals:
+            context.setGlobal(name, getattr(self, name)())
 
-   def mtool(self):
-       return self.portal().portal_membership
+    def utool(self):
+        return self.context.portal_url
 
-   def gtool(self):
-       return self.portal().portal_groups or None
+    def portal(self):
+        return self.utool().getPortalObject()
 
-   def gdtool(self):
-       return self.portal().portal_groupdata or None
+    def portal_object(self):
+        return self.portal()
 
-   def atool(self):
-       return self.portal().portal_actions
+    def portal_url(self):
+        return self.utool()()
 
-   def aitool(self):
-       return self.portal().portal_actionicons or None
+    def mtool(self):
+        return self.portal().portal_membership
 
-   def putils(self):
-       return self.portal().plone_utils
+    def gtool(self):
+        return self.portal().portal_groups or None
 
-   def wtool(self):
-       return self.portal().portal_workflow
+    def gdtool(self):
+        return self.portal().portal_groupdata or None
 
-   def ifacetool(self):
-       return self.portal().portal_interface or None
+    def atool(self):
+        return self.portal().portal_actions
 
-   def syntool(self):
-       return self.portal().portal_syndication
+    def aitool(self):
+        return self.portal().portal_actionicons or None
 
-   def portal_title(self):
-       self.portal_object().Title()
+    def putils(self):
+        return self.portal().plone_utils
 
-   def object_title(self):
-       self.context.Title()
+    def wtool(self):
+        return self.portal().portal_workflow
 
-   def member(self):
-       self.mtool().getAuthenticatedMember()
+    def ifacetool(self):
+        return self.portal().portal_interface or None
 
-   def checkPermission(self):
-       return self.mtool().checkPermission
+    def syntool(self):
+        return self.portal().portal_syndication
 
-   def membersfolder(self):
-       return self.mtool().getMembersFolder()
+    def portal_title(self):
+        self.portal_object().Title()
 
-   def isAnon(self):
-       return self.mtool().isAnonymousUser()
+    def object_title(self):
+        self.context.Title()
 
-   def actions(self):
-       return self.portal().portal_actions.listFilteredActionsFor(self.context)
+    def member(self):
+        self.mtool().getAuthenticatedMember()
 
-   def keyed_actions(self):
-       return self.portal().keyFilteredActions(self.actions())
+    def checkPermission(self):
+        return self.mtool().checkPermission
 
-   def user_actions(self):
-       return self.actions().user()
+    def membersfolder(self):
+        return self.mtool().getMembersFolder()
 
-   def workflow_actions(self):
-       return self.actions().workflow()
+    def isAnon(self):
+        return self.mtool().isAnonymousUser()
 
-   def folder_actions(self):
-       return self.actions().folder()
+    def actions(self):
+        return self.portal().portal_actions.listFilteredActionsFor(self.context)
 
-   def global_actions(self):
-       return getattr('global', self.actions())()
+    def keyed_actions(self):
+        return self.portal().keyFilteredActions(self.actions())
 
-   def portal_tabs(self):
-       return putils.createTopLevelTabs(actions)
+    def user_actions(self):
+        return self.actions()['user']
 
-   def wf_state(self):
-       return wtool.getInfoFor(here,'review_state',None)
+    def workflow_actions(self):
+        return self.actions()['workflow']
 
-   def portal_properties(self):
-       return self.portal().portal_properties
+    def folder_actions(self):
+        return self.actions()['folder']
 
-   def site_properties(self):
-       return self.portal_properties().site_properties
+    def global_actions(self):
+        return self.actions()['global']
 
-   def ztu(self):
-       return ZTUtils
+    def portal_tabs(self):
+        return self.putils().createTopLevelTabs(self.actions())
 
-   def actions(self):
-       return self.request.get('actions', None) or self.actions()
+    def wf_state(self):
+        return self.wtool().getInfoFor(self.context,'review_state', None)
 
-   def wf_actions(self):
-       return self.workflow_actions()
+    def portal_properties(self):
+        return self.portal().portal_properties
 
-   def isFolderish(self):
-       return self.context.isPrincipiaFolderish
+    def site_properties(self):
+        return self.portal_properties().site_properties
 
-   def template_id(self):
-       return self.request.get('template_id', None) or self.congext.getId() or None # ?
+    def ztu(self):
+        return ZTUtils
 
-   def slots_mapping(self):
-       return self.request.get('slots_mapping', None) or self.context.prepare_slots() or None
+    def wf_actions(self):
+        return self.workflow_actions()
 
-   def Iterator(self):
-       return CMFPlone.IndexIterator
+    def isFolderish(self):
+        return self.context.isPrincipiaFolderish
 
-   def tabindex(self):
-       return Iterator(pos=30000)
+    def template_id(self):
+        return self.request.get('template_id', None) or self.context.getId() or None # ?
 
-   def here_url(self):
-       return self.context.absolute_url()
+    def slots_mapping(self):
+        return self.request.get('slots_mapping', None) or self.context.prepare_slots() or None
 
-   def sl(self):
-       return self.slots_mapping().left()
+    def Iterator(self):
+        return CMFPlone.IndexIterator
 
-   def sr(self):
-       return self.slots_mapping().right()
+    def tabindex(self):
+        return self.Iterator()(pos=30000)
 
-   def hidecolumns(self):
-       return self.context.hide_columns(sl,sr)
+    def here_url(self):
+        return self.context.absolute_url()
 
-   def default_language(self):
-       return self.site_properties().default_language or None
+    def sl(self):
+        return self.slots_mapping()['left']
 
-   def language(self):
-       return self.request.get('language', None)
+    def sr(self):
+        return self.slots_mapping()['right']
 
-   def language(self):
-       return self.language() or self.context.Language() or self.default_language()
+    def hidecolumns(self):
+        return self.context.hide_columns(self.sl(),self.sr())
 
-   def is_editable(self):
-       return self.checkPermission('Modify portal content', self.context)
+    def default_language(self):
+        return self.site_properties().default_language or None
 
-   def isEditable(self):
-       return self.is_editable()
+    def language(self):
+        return self.request.get('language', None) or self.context.Language() or self.default_language()
 
-   def lockable(self):
-       return hasattr(self.context.aq_inner.aq_explicit, 'wl_isLocked')
+    def is_editable(self):
+        return self.checkPermission()('Modify portal content', self.context)
 
-   def isLocked(self):
-       return self.lockable() and self.context.wl_isLocked()
+    def isEditable(self):
+        return self.is_editable()
 
-   def isRTL(self):
-       return self.context.isRightToLeft(domain='plone')
+    def lockable(self):
+        return hasattr(self.context.aq_inner.aq_explicit, 'wl_isLocked')
 
-   def visible_ids(self):
-       return self.context.visibleIdsEnabled() or None
+    def isLocked(self):
+        return self.lockable() and self.context.wl_isLocked()
 
-   def current_page_url(self):
-       return self.context.getCurrentUrl() or None
+    def isRTL(self):
+        return self.context.isRightToLeft(domain='plone')
+
+    def visible_ids(self):
+        return self.context.visibleIdsEnabled() or None
+
+    def current_page_url(self):
+        return self.context.getCurrentUrl() or None
 

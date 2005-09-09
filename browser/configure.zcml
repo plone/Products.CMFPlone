@@ -5,28 +5,10 @@
 
 <browser:page
     for="*"
-    name="plone"
-    class=".plone.Plone"
+    name="plone_globals"
+    class=".plone.PloneGlobals"
     permission="zope.Public"
     allowed_interface=".interfaces.IPloneGlobals"
     />
-
-
-<!--   <view -->
-<!--       for="..interfaces.Plone.IPlone" -->
-<!--       factory=".plone.Plone" -->
-<!--       name="plone" -->
-<!--       type="zope.publisher.interfaces.http.IHTTPRequest" -->
-<!--       permission="zope.Public" -->
-<!--       provides="..interfaces.Plone.IPlone" -->
-<!--       /> -->
-
-
-<!--   <browser:view -->
-<!--       for="..interfaces.Plone.IPlone" -->
-<!--       name="plone" -->
-<!--       class=".plone.Plone" -->
-<!--       permission="zope2.Public" -->
-<!--       /> -->
 
 </configure>

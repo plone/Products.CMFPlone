@@ -1,61 +1,7 @@
 
-<!-- Use of these globals is deprecated and they are are provided
- here for backwards compatibility.  Where you used to use a 
-global by name, you should now use context/@@plone/name.  
+<!-- 
+The expressions that used to generate these globals have been 
+moved to (much faster) Python code in CMFPlone/browser/plone_globals.py
 -->
 
-<metal:globaldefine define-macro="defines"
-      tal:define="
-	view context/@@plone;
-        global utool view/utool;
-        global portal view/portal;
-        global portal_object view/portal_object;
-        global portal_url view/portal_url;
-        global mtool view/mtool;
-        global gtool view/gtool;
-        global gdtool view/gdtool;
-        global atool view/atool;
-        global aitool view/aitool;
-        global putils view/putils;
-        global wtool view/wtool;
-        global ifacetool view/ifacetool;
-        global syntool view/syntool;
-        global portal_title view/portal_title;
-        global object_title view/object_title;
-        global member view/member;
-        global checkPermission view/checkPermission;
-        global membersfolder view/membersfolder;
-        global isAnon view/isAnon;
-        global actions view/actions;
-        global keyed_actions view/keyed_actions;
-        global user_actions view/user_actions;
-        global workflow_actions view/workflow_actions;
-        global folder_actions view/folder_actions;
-        global global_actions view/global_actions;
-        global portal_tabs view/portal_tabs;
-        global wf_state view/wf_state;
-        global portal_properties view/portal_properties;
-        global site_properties view/site_properties;
-        global ztu view/ztu;
-        global actions view/actions;
-        global wf_actions view/wf_actions;
-        global isFolderish view/isFolderish;
-        global template_id view/template_id;
-        global slots_mapping view/slots_mapping;
-        global Iterator view/Iterator;
-        global tabindex view/tabindex;
-        global here_url view/here_url;
-        global sl view/sl;
-        global sr view/sr;
-        global hidecolumns view/hidecolumns;
-        global default_language view/default_language;
-        global language view/languge;
-        global language view/language;
-        global is_editable view/is_editable;
-        global isEditable view/isEditable;
-        global lockable view/lockable;
-        global isLocked view/isLocked;
-        global isRTL view/isRTL;
-        global visible_ids view/visible_ids;
-        global current_page_url view/current_page_url;
-        " />
+<metal:globaldefine define-macro="defines" tal:define="foo context/@@plone_globals/globals" />

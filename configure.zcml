@@ -7,7 +7,7 @@
 
 <five:implements
     class="Products.Archetypes.public.BaseObject"
-    interface=".interfaces.Plone.IPlone"
+    interface=".browser.interfaces.IPloneGlobals"
     />
 
 <five:traversable
@@ -17,7 +17,7 @@
 
 <five:implements
     class="Products.CMFCore.PortalObject.PortalObjectBase"
-    interface=".interfaces.Plone.IPlone"
+    interface=".browser.interfaces.IPloneGlobals"
     />
 
 <five:traversable

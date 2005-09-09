@@ -2,6 +2,8 @@ from zope.interface import Interface
 
 class IPloneGlobals(Interface):
 
+    def globals():
+        """ """
     def utool():
         """ """
     def portal():
@@ -58,8 +60,6 @@ class IPloneGlobals(Interface):
         """ """
     def ztu(self):
         """ """
-    def actions(self):
-        """ """
     def wf_actions(self):
         """ """
     def isFolderish(self):
@@ -81,8 +81,6 @@ class IPloneGlobals(Interface):
     def hidecolumns(self):
         """ """
     def default_language(self):
-        """ """
-    def language(self):
         """ """
     def language(self):
         """ """
