@@ -5,10 +5,26 @@
 
 <browser:page
     for="*"
-    name="plone_globals"
+    name="globals_view"
     class=".plone.PloneGlobals"
     permission="zope.Public"
     allowed_interface=".interfaces.IPloneGlobals"
+    />
+
+<browser:page
+    for="*"
+    name="news_view"
+    class=".portlets.news.NewsPortlet"
+    permission="zope.Public"
+    allowed_interface=".interfaces.INewsPortlet"
+    />
+
+<browser:page
+    for="*"
+    name="navigation_view"
+    class=".portlets.navigation.NavigationPortlet"
+    permission="zope.Public"
+    allowed_interface=".interfaces.INavigationPortlet"
     />
 
 </configure>

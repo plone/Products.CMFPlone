@@ -10,6 +10,16 @@
     interface=".browser.interfaces.IPloneGlobals"
     />
 
+<five:implements
+    class="Products.Archetypes.public.BaseObject"
+    interface=".browser.interfaces.INavigationPortlet"
+    />
+
+<five:implements
+    class="Products.Archetypes.public.BaseObject"
+    interface=".browser.interfaces.INewsPortlet"
+    />
+
 <five:traversable
     class="Products.Archetypes.public.BaseObject"
     />

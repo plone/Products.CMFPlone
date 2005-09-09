@@ -1,6 +1,32 @@
 from zope.interface import Interface
 
+class INewsPortlet(Interface):
+    """ """
+
+    def news():
+        """ """
+
+    def news_listing():
+        """ """
+    
+
+class INavigationPortlet(Interface):
+    """ """
+
+    def includeTop():
+        """ """
+
+    def sitemap():
+        """ """
+
+    def createNavTree():
+        """ """
+
+    def isDefaultorPortalorPortalChild(self):
+        """ """
+
 class IPloneGlobals(Interface):
+    """ """
 
     def globals():
         """ """
@@ -28,74 +54,74 @@ class IPloneGlobals(Interface):
         """ """
     def portal_title():
         """ """
-    def object_title(self):
+    def object_title():
         """ """
-    def member(self):
+    def member():
         """ """
-    def checkPermission(self):
+    def checkPermission():
         """ """
-    def membersfolder(self):
+    def membersfolder():
         """ """       
-    def isAnon(self):
+    def isAnon():
         """ """       
-    def actions(self):
+    def actions():
         """ """       
-    def keyed_actions(self):
+    def keyed_actions():
         """ """
-    def user_actions(self):
+    def user_actions():
         """ """
-    def workflow_actions(self):
+    def workflow_actions():
         """ """
-    def folder_actions(self):
+    def folder_actions():
         """ """
-    def global_actions(self):
+    def global_actions():
         """ """
-    def portal_tabs(self):
+    def portal_tabs():
         """ """
-    def wf_state(self):
+    def wf_state():
         """ """
-    def portal_properties(self):
+    def portal_properties():
         """ """
-    def site_properties(self):
+    def site_properties():
         """ """
-    def ztu(self):
+    def ztu():
         """ """
-    def wf_actions(self):
+    def wf_actions():
         """ """
-    def isFolderish(self):
+    def isFolderish():
         """ """
-    def template_id(self):
+    def template_id():
         """ """
-    def slots_mapping(self):
+    def slots_mapping():
         """ """
-    def Iterator(self):
+    def Iterator():
         """ """
-    def tabindex(self):
+    def tabindex():
         """ """
-    def here_url(self):
+    def here_url():
         """ """
-    def sl(self):
+    def sl():
         """ """
-    def sr(self):
+    def sr():
         """ """
-    def hidecolumns(self):
+    def hidecolumns():
         """ """
-    def default_language(self):
+    def default_language():
         """ """
-    def language(self):
+    def language():
         """ """
-    def is_editable(self):
+    def is_editable():
         """ """
-    def isEditable(self):
+    def isEditable():
         """ """
-    def lockable(self):
+    def lockable():
         """ """
-    def isLocked(self):
+    def isLocked():
         """ """
-    def isRTL(self):
+    def isRTL():
         """ """
-    def visible_ids(self):
+    def visible_ids():
         """ """
-    def current_page_url(self):
+    def current_page_url():
         """ """
 

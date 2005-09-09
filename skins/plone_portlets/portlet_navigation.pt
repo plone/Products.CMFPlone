@@ -5,7 +5,7 @@
 <div metal:define-macro="portlet"
        i18n:domain="plone"
        tal:omit-tag=""
-       tal:define="data python:here.plone_utils.createNavTree(here, sitemap=None);">
+       tal:define="view context/@@navigation_view">
        
 <dl class="portlet" id="portlet-navigation-tree">
     <dt class="portletHeader">
@@ -16,18 +16,19 @@
         <ul class="portletNavigationTree navTreeLevel0">
 
             <li class="navTreeItem"
-                tal:condition="portal_properties/navtree_properties/includeTop">
+                tal:condition="view/includeTop">
                 <div class="contenttype-plone-site">
                     <a class="visualIconPadding"
                        tal:attributes="href string:$portal_url;
                                        title portal/Description;
-                                       class python:test(portal == here or (portal == here.getParentNode() and here.plone_utils.isDefaultPage(here)), 'navTreeCurrentItem visualIconPadding', 'visualIconPadding');">
+                                       class python:test(path('view/isDefaultorPortalorPortalChild'),
+				                         'navTreeCurrentItem visualIconPadding', 'visualIconPadding');">
                     <span tal:omit-tag=""
                           i18n:translate="tabs_home">Home</span>
                     </a>
                 </div>
             </li>
-            <li tal:replace="structure python:here.portlet_navtree_macro(children=data.get('children', []), level=1, show_children=True, isNaviTree=True)">
+            <li tal:replace="structure view/createNavTree">
                 SUBTREE
             </li>
         </ul>
