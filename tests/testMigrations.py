@@ -2913,8 +2913,12 @@ class TestMigrations_v2_1(MigrationTest):
         addNewsTopic(self.portal, [])
         addEventsFolder(self.portal, [])
         addEventsTopic(self.portal, [])
+        # add a news item so that the old_news gets created
+        self.setRoles(['Manager', 'Member'])
+        self.portal.news.invokeFactory('News Item', 'my_news')
         moveDefaultTopicsToPortalRoot(self.portal,[])
         moveDefaultTopicsToPortalRoot(self.portal,[])
+        self.failUnless('old_news' in self.portal.objectIds())
         self.assertEqual(self.portal.news.portal_type, 'Topic')
         self.assertEqual(self.portal.events.portal_type, 'Topic')
 
