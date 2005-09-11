@@ -8,7 +8,6 @@ class INewsPortlet(Interface):
 
     def news_listing():
         """ """
-    
 
 class INavigationPortlet(Interface):
     """ """
@@ -16,14 +15,53 @@ class INavigationPortlet(Interface):
     def includeTop():
         """ """
 
-    def sitemap():
-        """ """
-
     def createNavTree():
         """ """
 
-    def isDefaultorPortalorPortalChild(self):
+    def isPortalOrDefaultChild():
         """ """
+
+class ICalendarPortlet(Interface):
+
+    def DateTime():
+        """ """
+
+    def current():
+        """ """
+
+    def current_day():
+        """ """
+
+    def nextYearMax():
+        """ """
+
+    def prevYearMin():
+        """ """
+
+    def year():
+        """ """
+
+    def month():
+        """ """
+
+    def prevMonthTime():
+        """ """
+
+    def nextMonthTime():
+        """ """
+
+    def weeks():
+        """ """
+
+    def getYearAndMonthToDisplay():
+        """ """
+    
+    def getPreviousMonth(month, year):
+        """ """
+
+    def getNextMonth(month, year):
+        """ """
+
 
 class IPloneGlobals(Interface):
     """ """
@@ -124,4 +162,4 @@ class IPloneGlobals(Interface):
         """ """
     def current_page_url():
         """ """
-
+    

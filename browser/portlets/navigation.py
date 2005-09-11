@@ -4,7 +4,6 @@ from Products.CMFPlone.browser.interfaces import INavigationPortlet
 from zope.interface import implements
 from zope.component import getView
 from Products.Five import BrowserView
-from Products import CMFPlone
 
 class NavigationPortlet(BrowserView):
     implements(INavigationPortlet)
@@ -22,7 +21,7 @@ class NavigationPortlet(BrowserView):
         return self.context.portlet_navtree_macro(children=data.get('children', []),
                                                   level=1, show_children=True, isNaviTree=True)
 
-    def isDefaultorPortalorPortalChild(self):
+    def isPortalOrDefaultChild(self):
         """ feel the hacking love """
         g = getView(self.context, 'globals_view', self.request)
         portal = g.portal()

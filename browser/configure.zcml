@@ -1,7 +1,31 @@
 <configure xmlns="http://namespaces.zope.org/zope"
-           xmlns:browser="http://namespaces.zope.org/browser">
+           xmlns:browser="http://namespaces.zope.org/browser"
+           xmlns:five="http://namespaces.zope.org/five">
 
-<!-- There's more than one way to do it, in XML! Please Kill Me. -->
+<five:implements
+    class="Products.Archetypes.public.BaseObject"
+    interface=".interfaces.IPloneGlobals"
+    />
+
+<five:implements
+    class="Products.Archetypes.public.BaseObject"
+    interface=".interfaces.INavigationPortlet"
+    />
+
+<five:implements
+    class="Products.Archetypes.public.BaseObject"
+    interface=".interfaces.INewsPortlet"
+    />
+
+<five:implements
+    class="Products.Archetypes.public.BaseObject"
+    interface=".interfaces.ICalendarPortlet"
+    />
+
+<five:implements
+    class="Products.CMFCore.PortalObject.PortalObjectBase"
+    interface=".interfaces.IPloneGlobals"
+    />
 
 <browser:page
     for="*"
@@ -25,6 +49,14 @@
     class=".portlets.navigation.NavigationPortlet"
     permission="zope.Public"
     allowed_interface=".interfaces.INavigationPortlet"
+    />
+
+<browser:page
+    for="*"
+    name="calendar_view"
+    class=".portlets.calendar.CalendarPortlet"
+    permission="zope.Public"
+    allowed_interface=".interfaces.ICalendarPortlet"
     />
 
 </configure>

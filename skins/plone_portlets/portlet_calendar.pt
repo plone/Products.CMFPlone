@@ -6,17 +6,19 @@
 
 <div metal:define-macro="portlet"
      tal:omit-tag=""
-     tal:define="DateTime python:modules['DateTime'].DateTime;
-                 current python:DateTime();
-                 current_day current/day;
-                 yearmonth here/getYearAndMonthToDisplay;
-                 nextYearMax python: current+365;
-                 prevYearMin python: current-365;
-                 year python:yearmonth[0];
-                 month python:yearmonth[1];
-                 prevMonthTime python:here.getPreviousMonth(month, year);
-                 nextMonthTime python:here.getNextMonth(month, year);
-                 weeks python:here.portal_calendar.getEventsForCalendar(month, year);
+     tal:define="view context/@@calendar_view;
+		 DateTime view/DateTime;
+                 current view/current;
+                 current_day view/current_day;
+                 yearmonth view/getYearAndMonthToDisplay;
+                 nextYearMax view/nextYearMax;
+                 prevYearMin view/prevYearMin;
+                 year view/year;
+                 month view/month;
+                 prevMonthTime view/prevMonthTime;
+                 nextMonthTime view/nextMonthTime;
+                 weeks view/weeks;
+
                  anchor_url request/anchor_url | here_url;
                  query_string python:request.get('orig_query', None);
                  query_string python: (query_string is None and request.get('QUERY_STRING', None)) or query_string;

@@ -5,30 +5,10 @@
   <include package=".interfaces" />
   <include package=".browser" />
 
-<five:implements
-    class="Products.Archetypes.public.BaseObject"
-    interface=".browser.interfaces.IPloneGlobals"
-    />
-
-<five:implements
-    class="Products.Archetypes.public.BaseObject"
-    interface=".browser.interfaces.INavigationPortlet"
-    />
-
-<five:implements
-    class="Products.Archetypes.public.BaseObject"
-    interface=".browser.interfaces.INewsPortlet"
-    />
-
 <five:traversable
     class="Products.Archetypes.public.BaseObject"
     />
 
-
-<five:implements
-    class="Products.CMFCore.PortalObject.PortalObjectBase"
-    interface=".browser.interfaces.IPloneGlobals"
-    />
 
 <five:traversable
     class="Products.CMFCore.PortalObject.PortalObjectBase"

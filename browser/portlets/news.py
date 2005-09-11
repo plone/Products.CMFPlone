@@ -4,7 +4,6 @@ from Products.CMFPlone.browser.interfaces import INewsPortlet
 from zope.interface import implements
 from zope.component import getView
 from Products.Five import BrowserView
-from Products import CMFPlone
 
 class NewsPortlet(BrowserView):
     implements(INewsPortlet)
