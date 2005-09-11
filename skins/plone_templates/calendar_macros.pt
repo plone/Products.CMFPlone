@@ -218,13 +218,15 @@
 
     <div metal:define-macro="calendarDatePickerBoxPopup"
 	 class="container"
-	 tal:define="DateTime python:modules['DateTime'].DateTime;
-	 current python:DateTime();
-	 month python:request.get('month', DateTime().month());
-	 year python:request.get('year', DateTime().year());
-	 prevMonthTime python:here.getPreviousMonth(month, year);
-	 nextMonthTime python:here.getNextMonth(month, year);
-	 weeks python:here.portal_calendar.getWeeksList(month=month, year=year);">
+	 tal:define="
+		     view context/@@calendar_view;
+		     DateTime view/DateTime;
+		     current view/current;
+		     month view/month;
+		     year view/year;
+		     prevMonthTime view/prevMonthTime;
+		     nextMonthTime view/nextMonthTime;
+		     weeks view/weeks">
 
       <table cellpadding="2" cellspacing="0" border="0" class="ploneCalendar" id="thePloneCalendar" summary="A calendar date picker box.">
         <thead>
