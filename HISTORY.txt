@@ -2,6 +2,15 @@ Changelog for Plone
 
    (name of developer listed in brackets)
 
+Plone 2.2 - unreleased
+
+    - Added first bunch of tests showing the FiveTranslationService is actually
+      working (PLIP 108)
+      [hannosch]
+
+    - Added overwrite.zcml to use PTS for language negotiation
+      [hannosch]
+
 Plone 2.1 - Plaid - Released September 6, 2005
 
     - Added deprecation warning for DTML in CSS. We will most likely get rid 
