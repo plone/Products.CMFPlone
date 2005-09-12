@@ -59,7 +59,7 @@
             </tr>
             <tr tal:define="weekdaynumbers here/portal_calendar/getDayNumbers" class="weekdays">
                 <tal:data tal:repeat="daynumber weekdaynumbers">
-                    <td tal:define="weekday_english python:translation_service.weekday_english(daynumber);"
+                    <td tal:define="weekday_english python:translation_service.weekday_english(daynumber,format='a');"
                         tal:content="python: here.utranslate(translation_service.day_msgid(daynumber, format='s'), default=weekday_english)">Su</td>
                 </tal:data>
             </tr>

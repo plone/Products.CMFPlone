@@ -2,6 +2,10 @@ Changelog for Plone
 
    (name of developer listed in brackets)
 
+    - Fixed calendar portlet to show abbreviated weekday names when no
+      translation service is available.
+      [alecm]
+
 Plone 2.1 - Plaid - Released September 6, 2005
 
     - Added deprecation warning for DTML in CSS. We will most likely get rid 
