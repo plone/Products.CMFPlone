@@ -41,6 +41,7 @@ from DateTime import DateTime
 DateTime.SyntaxError
 from Products.CMFPlone.UnicodeNormalizer import normalizeUnicode
 from Products.CMFPlone.PloneFolder import ReplaceableWrapper
+from Products.CMFPlone import PloneMessageIDFactory as _
 
 AllowSendto = 'Allow sendto'
 CMFCorePermissions.setDefaultRoles(AllowSendto,
@@ -1414,11 +1415,9 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     security.declarePublic('getEmptyTitle')
     def getEmptyTitle(self, translated=True):
         """Returns string to be used for objects with no title or id"""
-        empty = self.utf8_portal('\x5b\xc2\xb7\xc2\xb7\xc2\xb7\x5d', 'ignore')
+        empty = u'\x5b\xc2\xb7\xc2\xb7\xc2\xb7\x5d'
         if translated:
-            trans = getToolByName(self, 'translation_service')
-            empty = trans.utranslate(domain='plone', msgid='title_unset',
-                                     default=empty)
+            empty = _('title_unset', default=empty)
         return empty
 
     def pretty_title_or_id(self, obj, empty_value=_marker):

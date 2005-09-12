@@ -63,13 +63,12 @@ class Z3I18NCornerTestCase(PloneTestCase.PloneTestCase):
     def tearDown(self):
         tearDown()
 
+def test_suite():
+    from unittest import TestSuite, makeSuite
+    suite = TestSuite()
+    suite.addTest(makeSuite(Z3I18NCornerTestCase))
+    return suite
+
 if __name__ == '__main__':
     framework()
-else:
-    import unittest
-    def test_suite():
-        suite = unittest.TestSuite()
-        for test in tests:
-            suite.addTest(unittest.makeSuite(Z3I18NCornerTestCase))
-        return suite
 

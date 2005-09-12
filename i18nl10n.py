@@ -7,19 +7,7 @@ from log import log_exc
 
 # get the registered translation service and the dummy
 from Products.PageTemplates.GlobalTranslationService import \
-     getGlobalTranslationService, DummyTranslationService
-
-# make a dummy translation service
-dummy_service = DummyTranslationService()
-
-# check if Five 1.1 or higher is installed
-# it registers its own FiveTranslationsService which has no utranslate method
-HAS_FIVE_TS = True
-try:
-    from Products.Five.i18n import FiveTranslationService
-    from Products import PlacelessTranslationService
-except ImportError:
-    HAS_FIVE_TS = False
+     getGlobalTranslationService
 
 # unicode aware translate method (i18n)
 def utranslate(*args, **kw):
@@ -28,21 +16,9 @@ def utranslate(*args, **kw):
     # get the global translation service
     service = getGlobalTranslationService()
 
-    if HAS_FIVE_TS:
-        # The TranslationService provided by Five 1.1 has no
-        # unicode aware utranslate method, force fallback to PTS
-        service = PlacelessTranslationService.getTranslationService()
-
-    # check for a translation method for unicode translations
-    translate = getattr(service, 'utranslate', None)
-    if translate is None:
-        # fallback code when the translation service does not
-        # support unicode. The dummy service will do 
-        # interpolation but nothing more.
-        return dummy_service.translate(*args, **kw)
-
+    # As we now require Five which has a unicode aware translate method
     # this returns the translation as type unicode
-    return service.utranslate(*args, **kw)
+    return service.translate(*args, **kw)
 
 # unicode aware localized time method (l10n)
 def ulocalized_time(time, long_format = None, context = None, domain='plone'):

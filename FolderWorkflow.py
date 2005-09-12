@@ -2,6 +2,7 @@ from Products.CMFCore.WorkflowTool import addWorkflowFactory
 from Products.DCWorkflow.DCWorkflow import DCWorkflowDefinition
 from Products.CMFCore import CMFCorePermissions
 from Products.DCWorkflow.Default import setupDefaultWorkflowRev2
+from Products.CMFPlone import PloneMessageIDFactory as _
 
 def setupFolderWorkflow(wf):
     setupDefaultWorkflowRev2(wf)
@@ -25,11 +26,11 @@ def setupFolderWorkflow(wf):
 def createFolderWorkflow(id):
     ob=DCWorkflowDefinition(id)
     setupFolderWorkflow(ob)
-    ob.setProperties(title='Folder Workflow [Plone]')
+    ob.setProperties(title=_('Folder Workflow [Plone]'))
     return ob
 
 addWorkflowFactory( createFolderWorkflow, id='folder_workflow'
-                  , title='Folder Workflow [Plone]')
+                  , title=_('Folder Workflow [Plone]'))
 
 
 def setupPrivateFolderWorkflow(wf):
@@ -41,7 +42,7 @@ def setupPrivateFolderWorkflow(wf):
 
     wf.states.addState('public')
     sdef=wf.states.public
-    sdef.setProperties( title='Publicly available'
+    sdef.setProperties( title=_('Publicly available')
                       , transitions=('reject', 'retract', 'hide') )
     sdef.setPermission( CMFCorePermissions.View, 1, ('Anonymous', 'Authenticated') )
     sdef.setPermission( CMFCorePermissions.AccessContentsInformation, 1, ('Anonymous', 'Authenticated') )
@@ -49,7 +50,7 @@ def setupPrivateFolderWorkflow(wf):
     sdef.setPermission( CMFCorePermissions.ModifyPortalContent, 1, ('Manager', ) )
     wf.transitions.addTransition('publicize')
     tdef=wf.transitions.publicize
-    tdef.setProperties( title='Publicize content'
+    tdef.setProperties( title=_('Publicize content')
                       , new_state_id='public'
                       , actbox_name='Publicize'
                       , actbox_url='%(content_url)s/content_history_form'

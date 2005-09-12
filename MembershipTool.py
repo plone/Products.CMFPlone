@@ -14,6 +14,8 @@ from Products.CMFCore.CMFCorePermissions import View
 from Products.CMFCore.CMFCorePermissions import ManagePortal
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 
+from Products.CMFPlone import PloneMessageIDFactory as _
+
 default_portrait = 'defaultUser.gif'
 
 DEFAULT_MEMBER_CONTENT = """\
@@ -234,35 +236,27 @@ class MembershipTool(PloneBaseTool, BaseTool):
                 raise NotImplementedError, \
                     'cannot get user for member area creation'
 
-        ## translate the default content
-
         # get some translation interfaces
-
         translation_service = getToolByName(self, 'translation_service', _marker)
         if translation_service is _marker:
             # test environ, some other aberent sitch
             return
 
-        utranslate = translation_service.utranslate
         encode = translation_service.encode
 
         # convert the member_id to unicode type
         umember_id = translation_service.asunicodetype(member_id, errors='replace')
 
-        member_folder_title = utranslate(
-            'plone', 'title_member_folder',
-            {'member': umember_id}, self,
-            default = "%s" % umember_id)
+        member_folder_title = _('title_member_folder', 
+                                 default = "%s" % umember_id)
+        member_folder_title.mapping = {'member': umember_id}
 
-        member_folder_description = utranslate(
-            'plone', 'description_member_folder',
-            {'member': umember_id}, self,
-            default = '')
+        member_folder_description = _('description_member_folder', default='')
+        member_folder_description.mapping = {'member': umember_id}
 
-        member_folder_index_html_title = utranslate(
-            'plone', 'title_member_folder_index_html',
-            {'member': umember_id}, self,
-            default = "Home page for %s" % umember_id)
+        member_folder_index_html_title = _('title_member_folder_index_html',
+                                         default = "Home page for %s" % umember_id)
+        member_folder_index_html_title.mapping = {'member': umember_id}
 
         # encode strings to site encoding as we dont like to store type unicode atm
         member_folder_title = encode(member_folder_title, errors='replace')

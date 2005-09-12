@@ -5,6 +5,7 @@ from Products.CMFCalendar.EventPermissions import ChangeEvents
 from Products.CMFCore.WorkflowTool import addWorkflowFactory
 from Products.DCWorkflow.DCWorkflow import DCWorkflowDefinition
 from Products.DCWorkflow.Default import setupDefaultWorkflowRev2
+from Products.CMFPlone import PloneMessageIDFactory as _
 
 def setupDefaultPloneWorkflow(wf):
     # nothing but a default DCWorkflow Rev 2 worflow
@@ -42,7 +43,7 @@ def setupPrivatePloneWorkflow(wf):
 
     wf.states.addState('public')
     sdef=wf.states.public
-    sdef.setProperties( title='Publicly available'
+    sdef.setProperties( title=_('Publicly available')
                         , transitions=('publish', 'reject', 'retract', 'hide') )
     sdef.setPermission(View, 1, ('Anonymous', 'Authenticated'))
     sdef.setPermission(AccessContentsInformation, 1, \
@@ -50,7 +51,7 @@ def setupPrivatePloneWorkflow(wf):
     sdef.setPermission(ModifyPortalContent, 1, ('Manager', ) )
     wf.transitions.addTransition('publicize')
     tdef = wf.transitions.publicize
-    tdef.setProperties( title='Publicize content'
+    tdef.setProperties( title=_('Publicize content')
                         , new_state_id='public'
                         , actbox_name='Publicize'
                         , actbox_url='%(content_url)s/content_history_form'

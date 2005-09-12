@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.2 - unreleased
 
+    - Added a few MessageID's to PloneTools and rewrote utranslate method
+      [hannosch]
+
     - Added first bunch of tests showing the FiveTranslationService is actually
       working (PLIP 108)
       [hannosch]
