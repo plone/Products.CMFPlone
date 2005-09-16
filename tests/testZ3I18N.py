@@ -9,9 +9,8 @@ from zope.app.tests.placelesssetup import setUp, tearDown
 from zope.i18nmessageid import MessageIDFactory
 from Products.Five import zcml
 from Products.PageTemplates import GlobalTranslationService as GTS
-from Products.PloneTestCase import PloneTestCase
 
-class Z3I18NCornerTestCase(PloneTestCase.PloneTestCase):
+class Z3I18NCornerTestCase(ZopeTestCase.ZopeTestCase):
 
     def setUp(self):
         self.TS = GTS.getGlobalTranslationService()
