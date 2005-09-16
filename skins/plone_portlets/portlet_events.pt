@@ -27,7 +27,7 @@
         <a href="#"
            tal:attributes="href obj/getURL;
                            title obj/Description">
-            <img tal:replace="structure here/event_icon.gif" />
+            <img src="#" alt="" tal:replace="structure here/event_icon.gif" />
             <span tal:replace="obj/pretty_title_or_id">
              Some Event 
             </span>

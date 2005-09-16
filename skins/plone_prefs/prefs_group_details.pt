@@ -77,7 +77,7 @@
             <metal:block metal:define-macro="props" tal:omit-tag="">
 
         <h1 i18n:translate="heading_edit_groupproperties" metal:define-slot="title">
-               Edit Group Properties for <span tal:replace="grouptitle | default" i18n:name="groupname">#unavailable#</span>
+            Edit Group Properties for <span tal:content="grouptitle | default" tal:omit-tag="" i18n:name="groupname">unavailable</span>
         </h1>
 
         <a href=""

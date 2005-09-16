@@ -37,16 +37,17 @@
                 </th>
                 <th colspan="5">
                     <span i18n:translate="" tal:omit-tag="">
-                        <span i18n:name="monthname">
-                            <span tal:define="month_english python:translation_service.month_english(month);"
-                                  tal:attributes="id string:calendar-month-$month_english"
-                                  tal:content="python: here.utranslate(translation_service.month_msgid(month), default=month_english)"
-                                  id="calendar-month-month">&nbsp;</span>
-                        </span>
+                        <span i18n:name="monthname"
+                              tal:define="month_english python:translation_service.month_english(month);"
+                              tal:attributes="id string:calendar-month-$month_english"
+                              tal:content="python: here.utranslate(translation_service.month_msgid(month), default=month_english)"
+                              tal:omit-tag=""
+                              id="calendar-month-month">monthname</span>
                         <span i18n:name="year"
                               tal:content="string:$year"
                               tal:attributes="id string:calendar-year-$year;"
-                              id="calendar-year">&nbsp;</span>
+                              tal:omit-tag=""
+                              id="calendar-year">year</span>
                     </span>
                 </th>
                 <th id="calendar-next">

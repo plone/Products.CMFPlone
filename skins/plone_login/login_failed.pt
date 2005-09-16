@@ -40,7 +40,7 @@
         You may be running web filtering software that
         disables cookies.  If so, you will need to configure the
         software so that it enables you to accept cookies from
-        <span tal:replace="utool" i18n:name="url"/>
+        <span tal:content="utool" tal:omit-tag="" i18n:name="url">url</span>
       </li>
       <li i18n:translate="description_still_failure_reason2">
         Your computer may be behind a firewall or proxy server

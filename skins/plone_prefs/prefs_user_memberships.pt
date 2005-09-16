@@ -45,7 +45,13 @@
       </div>
 
       <div class="configlet">
-        <h1 i18n:translate="heading_group_memberships_for">Group Memberships for <span tal:replace="string:${member/getUserName}" i18n:name="username"/></h1>
+
+        <h1 i18n:translate="heading_group_memberships_for">
+          Group Memberships for
+          <span tal:content="string:${member/getUserName}"
+                tal:omit-tag=""
+                i18n:name="username">username</span>
+        </h1>
 
         <a href=""
            class="link-parent"

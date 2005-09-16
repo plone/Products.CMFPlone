@@ -42,8 +42,8 @@
     <div tal:condition="results"
           tal:define="batch python:Batch(results, b_size, int(b_start), orphan=1);">
 
-        <strong>
-        <span i18n:translate="batch_x_items_matching_your_criteria"><span i18n:name="number" tal:content="python:len(results)">234</span> items matching your criteria.</span>
+        <strong i18n:translate="batch_x_items_matching_your_criteria">
+            <span i18n:name="number" tal:omit-tag="" tal:content="python:len(results)">234</span> items matching your criteria.
         </strong>
 
         <tal:syndicate condition="portal/portal_syndication/isSiteSyndicationAllowed">
@@ -77,8 +77,9 @@
                      tal:condition="result/data_record_normalized_score_"
                      i18n:translate="label_relevance_percentage"
                      i18n:attributes="title title_relevance;">
-                    [<span tal:replace="result/data_record_normalized_score_"
-                                      i18n:name="percentage">23%</span>%]
+                    [<span tal:content="result/data_record_normalized_score_"
+                           tal:omit-tag=""
+                           i18n:name="percentage">23%</span>%]
                </span>
 
                 <span class="discreet" i18n:translate="results_by_author">

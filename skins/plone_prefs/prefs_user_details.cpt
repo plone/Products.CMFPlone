@@ -51,8 +51,9 @@ we eventually might want to merge this form with personalize_form
       <div class="configlet">
         <h1 i18n:translate="heading_prefs_user_details">
           User Properties for
-          <tal:username replace="member/getId | default"
-                        i18n:name="username">username</tal:username>
+          <span tal:content="member/getId | default"
+                tal:omit-tag=""
+                i18n:name="username">username</span>
         </h1>
     
         <a href=""

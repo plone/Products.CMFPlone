@@ -2,6 +2,10 @@ Changelog for Plone
 
    (name of developer listed in brackets)
 
+    - Cleaning up markup around i18n:name with tal:omit-tag="" to prevent
+      double span tags and some general markup improvements.
+      [hannosch]
+
     - Fixed calendar portlet to show abbreviated weekday names when no
       translation service is available.
       [alecm]
