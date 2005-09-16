@@ -2,6 +2,10 @@ Changelog for Plone
 
    (name of developer listed in brackets)
 
+    - Converted plone_javascript_variables.js from DTML to PageTemplate to
+      make it better suited for i18n.
+      [fschulze]
+
     - Cleaning up markup around i18n:name with tal:omit-tag="" to prevent
       double span tags and some general markup improvements.
       [hannosch]
