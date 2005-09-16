@@ -1234,6 +1234,8 @@ def migrateCatalogIndexes(portal, out):
         obj.pgthreshold = 300
         obj.manage_convertIndexes()
         obj.pgthreshold = p_threshold
+        # migrate the catalog length by calling len(catalog)
+        len(obj)
         out.append("Finished migrating catalog indexes "
                    "for ZCatalog instance '%s'" % obj.getId())
         migrated = True
