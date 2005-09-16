@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.2 - unreleased
 
+    - Added some Zope3 placelesssetup magic to some tests as advised by
+      philiKON. All tests are passing now.
+      [hannosch]
+
     - Added a few MessageID's to PloneTools and rewrote utranslate method
       [hannosch]
 

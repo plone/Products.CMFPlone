@@ -12,7 +12,7 @@ from Products.PageTemplates import GlobalTranslationService as GTS
 
 class Z3I18NCornerTestCase(ZopeTestCase.ZopeTestCase):
 
-    def setUp(self):
+    def afterSetUp(self):
         self.TS = GTS.getGlobalTranslationService()
         setUp()
         zcml.load_config('meta.zcml', zope.app.i18n)
@@ -59,7 +59,7 @@ class Z3I18NCornerTestCase(ZopeTestCase.ZopeTestCase):
         self.assertEquals(u'value', translated,
                           'translation is not working. Got: %s' % translated)
 
-    def tearDown(self):
+    def beforeTearDown(self):
         tearDown()
 
 def test_suite():

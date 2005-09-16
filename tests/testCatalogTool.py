@@ -21,6 +21,7 @@ from Products.CMFPlone.CatalogTool import _eioRegistry
 
 from Products.CMFPlone.CatalogTool import is_folderish
 from Products.CMFPlone.tests import dummy
+from zope.app.tests.placelesssetup import setUp, tearDown
 
 portal_name = PloneTestCase.portal_name
 default_user  = PloneTestCase.default_user
@@ -667,6 +668,7 @@ class TestCatalogUnindexing(PloneTestCase.PloneTestCase):
     # Published objects are not unindexed on delete?
 
     def afterSetUp(self):
+        setUp()
         self.catalog = self.portal.portal_catalog
         self.workflow = self.portal.portal_workflow
         self.folder.invokeFactory('Document', id='doc')
@@ -737,6 +739,9 @@ class TestCatalogUnindexing(PloneTestCase.PloneTestCase):
         self.setRoles(['Member'])
         self.folder.aq_parent._delObject(self.folder.getId())
         self.failIf(self.catalog(id='doc'))
+
+    def beforeTearDown(self):
+        tearDown()
 
 
 class TestCatalogExpirationFiltering(PloneTestCase.PloneTestCase):

@@ -12,10 +12,12 @@ from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
 
 from DateTime.DateTime import DateTime
+from zope.app.tests.placelesssetup import setUp, tearDown
 
 class TestToLocalizedTime(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
+        setUp()
         self.script = self.portal.toLocalizedTime
 
     def testDateTimeArg(self):
@@ -31,10 +33,14 @@ class TestToLocalizedTime(PloneTestCase.PloneTestCase):
         # because PTS isn't installed
         self.assertEquals(value, '1997-03-09 13:45')
 
+    def beforeTearDown(self):
+        tearDown()
+
 
 class TestTranslationServiceTool(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
+        setUp()
         self.tool = self.portal.translation_service
 
     def testLocalized_time(self):
@@ -49,6 +55,9 @@ class TestTranslationServiceTool(PloneTestCase.PloneTestCase):
         error = "(Missing.Value,), {}"
 	value = self.tool.ulocalized_time(error)
 	self.failUnlessEqual(value, None)
+
+    def beforeTearDown(self):
+        tearDown()
 
 
 def test_suite():

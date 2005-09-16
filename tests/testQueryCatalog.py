@@ -12,6 +12,7 @@ from Products.CMFPlone.tests import PloneTestCase
 from Acquisition import aq_base
 from Products.ZCTextIndex.ParseTree import ParseError
 
+from zope.app.tests.placelesssetup import setUp, tearDown
 import types
 
 try:
@@ -256,6 +257,9 @@ AddPortalTopics = 'Add portal topics'
 class TestSearchForms(PloneTestCase.PloneTestCase):
     """Render all forms related to queryCatalog"""
 
+    def afterSetUp(self):
+        setUp()
+
     def testRenderSearchForm(self):
         self.portal.search_form()
 
@@ -269,7 +273,10 @@ class TestSearchForms(PloneTestCase.PloneTestCase):
         self.setPermissions([AddPortalTopics])
         self.folder.invokeFactory('Topic', id='topic')
         self.folder.topic.topic_view()
-        
+
+    def beforeTearDown(self):
+        tearDown()
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite

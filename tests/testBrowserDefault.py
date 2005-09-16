@@ -15,6 +15,7 @@ from Products.CMFPlone.tests.PloneTestCase import default_password
 from Products.CMFPlone.tests import dummy
 import difflib
 import re
+from zope.app.tests.placelesssetup import setUp, tearDown
 
 from Products.CMFPlone.utils import _createObjectByType
 from Products.CMFPlone.PloneFolder import ReplaceableWrapper
@@ -30,6 +31,7 @@ class TestPloneToolBrowserDefault(FunctionalTestCase):
     """
 
     def afterSetUp(self):
+        setUp()
         self.setRoles(['Manager'])
         self.basic_auth = '%s:%s' % (default_user, default_password)
 
@@ -223,11 +225,16 @@ class TestPloneToolBrowserDefault(FunctionalTestCase):
         self.assertEqual(self.portal.atctfolder.getDefaultPage(), None)
         self.assertEqual(self.portal.atctfolder.defaultView(), defaultLayout)
 
+    def beforeTearDown(self):
+        tearDown()
+
+
 class TestDefaultPage(PloneTestCase.PloneTestCase):
     """Test the default_page functionality in more detail
     """
 
     def afterSetUp(self):
+        setUp()
         self.ob = dummy.DefaultPage()
         sp = self.portal.portal_properties.site_properties
         self.default = sp.getProperty('default_page', [])
@@ -273,11 +280,15 @@ class TestDefaultPage(PloneTestCase.PloneTestCase):
         self.assertEquals(self.portal.plone_utils.browserDefault(self.folder),
                             (self.folder, ['d1']))
 
+    def beforeTearDown(self):
+        tearDown()
+
 class TestPortalBrowserDefault(PloneTestCase.PloneTestCase):
     """Test the BrowserDefaultMixin as implemented by the root portal object
     """
     
     def afterSetUp(self):
+        setUp()
         self.setRoles(['Manager'])
         
         # Make sure we have the front page; the portal generator should take 
@@ -408,6 +419,8 @@ class TestPortalBrowserDefault(PloneTestCase.PloneTestCase):
             # Restore title to avoid side-effects
             folderListing.title = 'Standard view'
 
+    def beforeTearDown(self):
+        tearDown()
 
 def test_suite():
     from unittest import TestSuite, makeSuite

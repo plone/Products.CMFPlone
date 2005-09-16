@@ -9,6 +9,8 @@ if __name__ == '__main__':
 from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
 
+from zope.app.tests.placelesssetup import setUp, tearDown
+
 def sortTuple(t):
     l = list(t)
     l.sort()
@@ -18,6 +20,7 @@ def sortTuple(t):
 class TestFolderLocalRole(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
+        setUp()
         self.membership = self.portal.portal_membership
         self.membership.addMember('user2', 'secret', ['Member'], [])
         self.portal._addRole('Foo')
@@ -104,6 +107,9 @@ class TestFolderLocalRole(PloneTestCase.PloneTestCase):
         # check if inheritance is blocked
         self.assertEqual(sortTuple(member.getRolesInContext(self.folder.A)),
                          ('Authenticated', 'Member'))
+
+    def beforeTearDown(self):
+        tearDown()
 
 
 def test_suite():

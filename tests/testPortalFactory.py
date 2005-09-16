@@ -11,6 +11,8 @@ from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFCore import CMFCorePermissions
 
 from AccessControl import Unauthorized
+from zope.app.tests.placelesssetup import setUp, tearDown
+
 default_user = PloneTestCase.default_user
 
 def sortTuple(t):
@@ -229,6 +231,7 @@ class TestCreateObjectByURL(PloneTestCase.FunctionalTestCase):
     '''Weeee, functional tests'''
 
     def afterSetUp(self):
+        setUp()
         self.folder_url = self.folder.absolute_url()
         self.folder_path = '/%s' % self.folder.absolute_url(1)
         self.basic_auth = '%s:secret' % default_user
@@ -314,6 +317,9 @@ class TestCreateObjectByURL(PloneTestCase.FunctionalTestCase):
             ) # No basic auth info
 
         self.assertEqual(response.getStatus(), 401) # Unauthorized
+
+    def beforeTearDown(self):
+        tearDown()
 
 
 def test_suite():

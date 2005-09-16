@@ -16,6 +16,8 @@ from Products.CMFPlone import LargePloneFolder
 from Products.CMFPlone import transaction
 from OFS.CopySupport import CopyError
 
+from zope.app.tests.placelesssetup import setUp, tearDown
+
 #XXX NOTE
 #    document, link, and newsitem edit's are now validated
 #    so we must pass in fields that the validators need
@@ -24,6 +26,7 @@ from OFS.CopySupport import CopyError
 class TestContentTypeScripts(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
+        setUp()
         perms = self.getPermissionsOfRole('Member')
         self.setPermissions(perms + [AddPortalTopics], 'Member')
         self.discussion = self.portal.portal_discussion
@@ -208,6 +211,9 @@ class TestContentTypeScripts(PloneTestCase.PloneTestCase):
         doc.setTitle('title')
         metatypes = tool.listMetaTags(doc)
         # TODO: atm it checks only of the script can be called w/o an error
+
+    def beforeTearDown(self):
+        tearDown()
 
 
 class TestEditShortName(PloneTestCase.PloneTestCase):

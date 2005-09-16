@@ -11,6 +11,7 @@ from Products.CMFPlone.tests import PloneTestCase
 from Products.ResourceRegistries.config import CSSTOOLNAME, JSTOOLNAME
 from Products.CMFCore.utils import getToolByName
 
+from zope.app.tests.placelesssetup import setUp, tearDown
 
 class TestCSSRegistry(PloneTestCase.PloneTestCase):
 
@@ -43,6 +44,7 @@ class TestCSSRegistry(PloneTestCase.PloneTestCase):
 class TestJSRegistry(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
+        setUp()
         self.tool = getToolByName(self.portal, JSTOOLNAME)
 
     def testToolExists(self):
@@ -80,6 +82,9 @@ class TestJSRegistry(PloneTestCase.PloneTestCase):
     def testJSIsInsertedInPage(self):
         page = self.portal.index_html()
         self.failUnless("" in page)
+
+    def beforeTearDown(self):
+        tearDown()
 
 
 def test_suite():

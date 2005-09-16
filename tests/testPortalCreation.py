@@ -16,10 +16,12 @@ from OFS.SimpleItem import SimpleItem
 from Acquisition import aq_base
 from DateTime import DateTime
 
+from zope.app.tests.placelesssetup import setUp, tearDown
 
 class TestPortalCreation(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
+        setUp()
         self.membership = self.portal.portal_membership
         self.workflow = self.portal.portal_workflow
         self.types = self.portal.portal_types
@@ -634,6 +636,9 @@ class TestPortalBugs(PloneTestCase.PloneTestCase):
         self.foo = self.folder.foo
         self.app._delObject(PloneTestCase.portal_name)
         self.failUnless(self.foo.before_delete_called())
+
+    def beforeTearDown(self):
+        tearDown()
 
 
 class TestManagementPageCharset(PloneTestCase.PloneTestCase):
