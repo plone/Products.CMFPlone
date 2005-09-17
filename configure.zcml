@@ -2,16 +2,14 @@
            xmlns:browser="http://namespaces.zope.org/browser"
            xmlns:five="http://namespaces.zope.org/five">
 
-  <include package=".interfaces" />
   <include package=".browser" />
 
-<five:traversable
-    class="Products.Archetypes.public.BaseObject"
-    />
+  <five:traversable
+      class="Products.Archetypes.public.BaseObject"
+      />
 
-
-<five:traversable
-    class="Products.CMFCore.PortalObject.PortalObjectBase"
-    />
+  <five:traversable
+      class="Products.CMFCore.PortalObject.PortalObjectBase"
+      />
 
 </configure>
