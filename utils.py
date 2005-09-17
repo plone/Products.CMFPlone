@@ -1,20 +1,19 @@
 import re
-import Globals
-import OFS
+from types import ClassType
 from os.path import join, abspath, dirname, split
+
+import zope.interface
+from zope.interface import providedBy
+from zope.interface import implementedBy
+
+import OFS
+import Globals
+from Acquisition import aq_base
+from Products.Five.bridge import fromZ2Interface
 from Products.CMFCore.utils import ToolInit as CMFCoreToolInit
 from Products.CMFCore.utils import getToolByName
-from types import ClassType
-from Acquisition import aq_base
 
-# Duplicated here to avoid import loop
-# BBB: Zope 2.7
-try:
-    import Zope2
-except ImportError:
-    import transaction_ as transaction
-else:
-    import transaction
+import transaction
 
 # Canonical way to get at CMFPlone directory
 PACKAGE_HOME = Globals.package_home(globals())
@@ -206,3 +205,48 @@ def safe_callable(obj):
             return isinstance(obj, ClassType)
     else:
         return callable(obj)
+
+def tuplize(value):
+    if isinstance(value, tuple):
+        return value
+    if isinstance(value, list):
+        return tuple(value)
+    return (value,)
+
+def _detuplize(interfaces, append):
+    if isinstance(interfaces, (tuple, list)):
+        for sub in interfaces:
+            _detuplize(sub, append)
+    else:
+        append(interfaces)
+
+def flatten(interfaces):
+    flattened = []
+    _detuplize(interfaces, flattened.append)
+    return tuple(flattened)
+
+def directlyProvides(obj, *interfaces):
+    # convert any Zope 2 interfaces to Zope 3 using fromZ2Interface
+    interfaces = flatten(interfaces)
+    normalized_interfaces = []
+    for i in interfaces:
+        try:
+            i = fromZ2Interface(i)
+        except ValueError: # already a Zope 3 interface
+            pass
+        assert issubclass(i, zope.interface.Interface)
+        normalized_interfaces.append(i)
+    return zope.interface.directlyProvides(obj, *normalized_interfaces)
+
+def classImplements(class_, *interfaces):
+    # convert any Zope 2 interfaces to Zope 3 using fromZ2Interface
+    interfaces = flatten(interfaces)
+    normalized_interfaces = []
+    for i in interfaces:
+        try:
+            i = fromZ2Interface(i)
+        except ValueError: # already a Zope 3 interface
+            pass
+        assert issubclass(i, zope.interface.Interface)
+        normalized_interfaces.append(i)
+    return zope.interface.classImplements(class_, *normalized_interfaces)

@@ -12,6 +12,7 @@ from Products.CMFCore import CMFCorePermissions
 from Products.CMFCore.utils import UniqueObject, getToolByName, format_stx
 from Products.CMFPlone.PloneFolder import PloneFolder as TempFolderBase
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
+from Products.CMFPlone.utils import classImplements
 from ZODB.POSException import ConflictError
 
 ListType=type([])
@@ -420,4 +421,5 @@ class FactoryTool(PloneBaseTool, UniqueObject, SimpleItem):
         self.REQUEST.set(FACTORY_INFO, factory_info)
         return tempFolder
 
+classImplements(FactoryTool, FactoryTool.__implements__)
 Globals.InitializeClass(FactoryTool)

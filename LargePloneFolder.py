@@ -1,3 +1,4 @@
+from utils import classImplements
 from Acquisition import aq_base, aq_inner, aq_parent
 from ComputedAttribute import ComputedAttribute
 from Globals import InitializeClass
@@ -56,6 +57,8 @@ class LargePloneFolder(BTreeFolder2Base, BasePloneFolder):
 
     index_html = ComputedAttribute(index_html, 1)
 
+classImplements(LargePloneFolder,
+                LargePloneFolder.__implements__)
 InitializeClass(LargePloneFolder)
 
 def addLargePloneFolder(self, id, title='', description='', REQUEST=None):

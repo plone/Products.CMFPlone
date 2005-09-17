@@ -15,6 +15,8 @@ from ZPublisher.HTTPRequest import FileUpload
 from Globals import package_home
 from Products.CMFPlone.tests import GLOBALS
 from Products.ATContentTypes.content.folder import ATFolder
+from Products.CMFPlone.utils import classImplements
+
 PACKAGE_HOME = package_home(GLOBALS)
 
 TEXT = 'file data'
@@ -160,3 +162,4 @@ class ImageComputedProps(Item):
 class NonStructuralFolder(ATFolder):
     '''Folder implementing the INonStructuralFolder interface'''
     __implements__ = (INonStructuralFolder,)
+classImplements(NonStructuralFolder, NonStructuralFolder.__implements__)

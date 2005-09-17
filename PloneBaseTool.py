@@ -1,6 +1,7 @@
 from Globals import InitializeClass
 from AccessControl import ClassSecurityInfo
 from Products.CMFPlone.interfaces.PloneBaseTool import IPloneBaseTool
+from Products.CMFPlone.utils import classImplements
 from Acquisition import aq_base
 from Acquisition import aq_parent
 from Acquisition import aq_inner
@@ -95,17 +96,18 @@ def getExprContext(context, object=None):
 class PloneBaseTool:
     """Base class of all tools used in CMFPlone and Plone Core
     """
-    
+
     security = ClassSecurityInfo()
-    
+
     __implements__ = IPloneBaseTool
-    
+
     # overwrite getOAI and getExprContext to use our variants that understand the
     # temp folder of portal factory
     def _getOAI(self, object):
         return getOAI(self, object)
-        
+
     def _getExprContext(self, object):
         return getExprContext(self, object)
 
+classImplements(PloneBaseTool, PloneBaseTool.__implements__)
 InitializeClass(PloneBaseTool)

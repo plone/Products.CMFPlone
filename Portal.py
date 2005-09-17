@@ -29,6 +29,7 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault import Portal, DublinCore
 from Products.CMFDynamicViewFTI.browserdefault import BrowserDefaultMixin
 from Products.CMFPlone.PloneFolder import OrderedContainer
+from Products.CMFPlone.utils import classImplements
 import Globals
 
 from AccessControl import ClassSecurityInfo
@@ -167,6 +168,7 @@ class PloneSite(CMFSite, OrderedContainer, BrowserDefaultMixin):
         """
         return self()
 
+classImplements(PloneSite, PloneSite.__implements__)
 Globals.InitializeClass(PloneSite)
 
 class PloneGenerator(Portal.PortalGenerator):

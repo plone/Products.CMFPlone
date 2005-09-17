@@ -1,6 +1,7 @@
 import sys
 import os
 import Globals
+import transaction
 
 cmfplone_globals = globals()
 this_module = sys.modules[ __name__ ]
@@ -204,14 +205,4 @@ def initialize(context):
     CustomizationPolicy.register(context, cmfplone_globals)
 
     ModuleSecurityInfo('Products.CMFPlone').declarePrivate('transaction')
-
-
-# Zope 2.8-style transaction module
-# BBB: Zope 2.7
-try:
-    import Zope2
-except ImportError:
-    import transaction_ as transaction
-else:
-    import transaction
 

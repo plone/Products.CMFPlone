@@ -55,13 +55,12 @@ class ICalendarPortlet(Interface):
 
     def getYearAndMonthToDisplay():
         """ """
-    
+
     def getPreviousMonth(month, year):
         """ """
 
     def getNextMonth(month, year):
         """ """
-
 
 class IPloneGlobals(Interface):
     """ """
@@ -99,11 +98,11 @@ class IPloneGlobals(Interface):
     def checkPermission():
         """ """
     def membersfolder():
-        """ """       
+        """ """
     def isAnon():
-        """ """       
+        """ """
     def actions():
-        """ """       
+        """ """
     def keyed_actions():
         """ """
     def user_actions():
@@ -162,4 +161,4 @@ class IPloneGlobals(Interface):
         """ """
     def current_page_url():
         """ """
-    
+

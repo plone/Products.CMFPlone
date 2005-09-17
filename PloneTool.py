@@ -30,6 +30,7 @@ from Products.CMFPlone.interfaces.NonStructuralFolder import INonStructuralFolde
 from Products.CMFPlone import ToolNames
 from Products.CMFPlone.utils import transaction_note
 from Products.CMFPlone.interfaces.BrowserDefault import IBrowserDefault
+from Products.CMFPlone.utils import classImplements
 
 from OFS.SimpleItem import SimpleItem
 from OFS.ObjectManager import bad_id
@@ -1452,4 +1453,5 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         else:
             return None
 
+classImplements(PloneTool, PloneTool.__implements__)
 InitializeClass(PloneTool)

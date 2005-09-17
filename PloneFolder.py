@@ -22,6 +22,7 @@ from Products.CMFCore.CMFCatalogAware import CMFCatalogAware
 from Products.CMFCore.PortalFolder import PortalFolderBase
 from Products.CMFCore import permissions as CMFCorePermissions
 from Products.CMFDefault.DublinCore import DefaultDublinCoreImpl
+from Products.CMFPlone.utils import classImplements
 
 # ATM it's safer to define our own
 from interfaces.OrderedContainer import IOrderedContainer
@@ -255,6 +256,7 @@ class OrderedContainer(Folder):
         putils.reindexOnReorder(self)
         return result
 
+classImplements(OrderedContainer, OrderedContainer.__implements__)
 InitializeClass(OrderedContainer)
 
 class BasePloneFolder(CMFCatalogAware, PortalFolderBase, DefaultDublinCoreImpl):
@@ -400,6 +402,7 @@ class BasePloneFolder(CMFCatalogAware, PortalFolderBase, DefaultDublinCoreImpl):
             new_id = id
         return new_id
 
+classImplements(BasePloneFolder, BasePloneFolder.__implements__)
 InitializeClass(BasePloneFolder)
 
 class PloneFolder(BasePloneFolder, OrderedContainer):
@@ -412,6 +415,7 @@ class PloneFolder(BasePloneFolder, OrderedContainer):
     manage_renameObject = OrderedContainer.manage_renameObject
     security.declareProtected(Permissions.copy_or_move, 'manage_copyObjects')
 
+classImplements(PloneFolder, PloneFolder.__implements__)
 InitializeClass(PloneFolder)
 
 def safe_cmp(x, y):

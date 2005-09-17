@@ -19,18 +19,19 @@ from Products.CMFDefault.Document import Document
 from Products.CMFPlone.InterfaceTool import resolveInterface, getDottedName
 from Products.CMFPlone.InterfaceTool import InterfaceTool, InterfaceFinder
 from Products.CMFPlone.interfaces import PloneBaseTool
-
+from Products.CMFPlone.utils import classImplements
 
 class MyPortalContent(Contentish): pass
 
 class A(PortalContent, DefaultDublinCoreImpl):
     __implements__ = PortalContent.__implements__, \
                      DefaultDublinCoreImpl.__implements__
+classImplements(A, A.__implements__)
 
 class B(PortalContent, DefaultDublinCoreImpl):
     __implements__ = MyPortalContent, \
                      DefaultDublinCoreImpl.__implements__
-
+classImplements(B, B.__implements__)
 
 class TestInterfaceResolution(ZopeTestCase.ZopeTestCase):
 

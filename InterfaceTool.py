@@ -9,6 +9,7 @@ from OFS.SimpleItem import SimpleItem
 from Globals import InitializeClass
 from AccessControl import ClassSecurityInfo
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
+from Products.CMFPlone.utils import classImplements
 
 from Interface.Implements import getImplements, flattenInterfaces
 from Interface import Interface
@@ -182,4 +183,5 @@ class InterfaceFinder:
     def found(self, iface):
         self._found[getDottedName(iface)] = iface
 
+classImplements(InterfaceTool, InterfaceTool.__implements__)
 InitializeClass(InterfaceTool)

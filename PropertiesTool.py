@@ -14,6 +14,7 @@ from OFS.SimpleItem import SimpleItem
 from AccessControl import ClassSecurityInfo
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFPlone.interfaces.PropertiesTool import IPropertiesTool
+from Products.CMFPlone.utils import classImplements
 
 class PropertiesTool(PloneBaseTool, Folder, BaseTool):
 
@@ -96,6 +97,7 @@ class PropertiesTool(PloneBaseTool, Folder, BaseTool):
 
 PropertiesTool.__doc__ = BaseTool.__doc__
 
+classImplements(PropertiesTool, PropertiesTool.__implements__)
 InitializeClass(PropertiesTool)
 
 

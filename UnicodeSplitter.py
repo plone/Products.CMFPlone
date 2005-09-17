@@ -28,13 +28,14 @@
 ## NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ## SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+from utils import classImplements
 from Products.ZCTextIndex.ISplitter import ISplitter
 from Products.ZCTextIndex.PipelineFactory import element_factory
 
 import re
 
 class Splitter:
-    
+
     __implements__ = ISplitter
 
     rx = re.compile(r"\w+", re.UNICODE)
@@ -51,6 +52,9 @@ class Splitter:
         for s in lst:
             result += self.rxGlob.findall(s)
         return result
+
+classImplements(Splitter, Splitter.__implements__)
+
 try:
     element_factory.registerFactory('Word Splitter',
         'Unicode Whitespace splitter', Splitter)

@@ -4,6 +4,7 @@ from Products.CMFPlone import ToolNames
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
+from Products.CMFPlone.utils import classImplements
 
 class GroupsTool(PloneBaseTool, BaseTool):
 
@@ -23,7 +24,7 @@ class GroupsTool(PloneBaseTool, BaseTool):
         Return default group info of any group
         """
         group = self.getGroupById(groupId)
-        
+
         if group is None:
             return None
 
@@ -35,4 +36,5 @@ class GroupsTool(PloneBaseTool, BaseTool):
 
 GroupsTool.__doc__ = BaseTool.__doc__
 
+classImplements(GroupsTool, GroupsTool.__implements__)
 InitializeClass(GroupsTool)
