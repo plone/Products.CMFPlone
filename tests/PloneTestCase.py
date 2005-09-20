@@ -40,6 +40,7 @@ ZopeTestCase.installProduct('MimetypesRegistry', quiet=1)
 ZopeTestCase.installProduct('PortalTransforms', quiet=1)
 ZopeTestCase.installProduct('ATContentTypes')
 ZopeTestCase.installProduct('ATReferenceBrowserWidget')
+ZopeTestCase.installProduct('Five')
 
 # Install sessions and error_log
 ZopeTestCase.utils.setupCoreSessions()

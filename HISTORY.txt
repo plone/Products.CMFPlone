@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone (unknown) - (unnamed) - (unreleased)
 
+    - Factored out most of the 'functions' in PloneTool.py into real
+      functions that take a 'context' in utils.py. Later one, those
+      will be used by the new adapters code.
+      [dreamcatcher]
+
     - Added helper functions for making 'zope.interface'-style
       declarations from Zope 2 interface declarations. Removed some
       BBB code. Make sure that for all interfaces declared, they are
