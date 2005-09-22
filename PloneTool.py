@@ -725,37 +725,12 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         return result
 
     security.declarePublic('createBreadCrumbs')
-    def createBreadCrumbs(self, context):
-        """Returns a structure for the portal breadcumbs."""
-        ct = getToolByName(self, 'portal_catalog')
-        stp = getToolByName(self, 'portal_properties').site_properties
-        view_action_types = stp.getProperty('typesUseViewActionInListings')
-        query = {}
-
-        # Check to see if the current page is a folder default view, if so
-        # get breadcrumbs from the parent folder
-        if self.isDefaultPage(context):
-            currentPath = '/'.join(context.aq_inner.aq_parent.getPhysicalPath())
-        else:
-            currentPath = '/'.join(context.getPhysicalPath())
-        query['path'] = {'query':currentPath, 'navtree':1, 'depth': 0}
-
-        rawresult = ct(**query)
-
-        # Sort items on path length
-        dec_result = [(len(r.getPath()),r) for r in rawresult]
-        dec_result.sort()
-
-        # Build result dict
-        result = []
-        for r_tuple in dec_result:
-            item = r_tuple[1]
-            item_url = (item.portal_type in view_action_types and
-                         item.getURL() + '/view') or item.getURL()
-            data = {'Title': self.pretty_title_or_id(item),
-                    'absolute_url': item_url}
-            result.append(data)
-        return result
+    def createBreadCrumbs(self, context, request=None):
+        """Returns a structure for the portal breadcumbs.
+        """
+        if request is None:
+            request = self.REQUEST
+        return utils.createBreadCrumbs(context, request)
 
     security.declarePublic('good_id')
     def good_id(self, id):
@@ -823,25 +798,18 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     #
 
     security.declarePublic('isDefaultPage')
-    def isDefaultPage(self, obj):
+    def isDefaultPage(self, obj, request=None):
         """Finds out if the given obj is the default page in its parent folder.
 
         Only considers explicitly contained objects, either set as index_html,
         with the default_page property, or using IBrowserDefault.
         """
-
-        parent = aq_parent(aq_inner(obj))
-        if not parent:
-            return False
-
-        parentDefaultPage = self.getDefaultPage(parent)
-        if parentDefaultPage is None or '/' in parentDefaultPage:
-            return False
-        else:
-            return (parentDefaultPage == obj.getId())
+        if request is None:
+            request = self.REQUEST
+        return utils.isDefaultPage(obj, request, context=self)
 
     security.declarePublic('getDefaultPage')
-    def getDefaultPage(self, obj):
+    def getDefaultPage(self, obj, request=None):
         """Given a folderish item, find out if it has a default-page using
         the following lookup rules:
 
@@ -858,65 +826,9 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         and if found, its id is returned. If no default page is set, None is
         returned. If a non-folderish item is passed in, return None always.
         """
-
-        def lookupTranslationId(obj, page):
-            implemented = ITranslatable.isImplementedBy(obj)
-            if not implemented or implemented and not obj.isTranslation():
-                pageobj = getattr(obj, page, None)
-                if pageobj is not None and ITranslatable.isImplementedBy(pageobj):
-                    translation = pageobj.getTranslation()
-                    if translation is not None and \
-                       ids.has_key(translation.getId()):
-                        page = translation.getId()
-            return page
-
-        # Short circuit if we are not looking at a Folder
-        if not obj.isPrincipiaFolderish:
-            return None
-
-        # The list of ids where we look for default
-        ids = {}
-
-        portal = getToolByName(self, 'portal_url').getPortalObject()
-        wftool = getToolByName(self, 'portal_workflow')
-
-        # For BTreeFolders we just use the has_key, otherwise build a dict
-        if hasattr(aq_base(obj), 'has_key'):
-            ids = obj
-        else:
-            for id in obj.objectIds():
-                ids[id] = 1
-
-        # 1. test for contentish index_html
-        if ids.has_key('index_html'):
-            return lookupTranslationId(obj, 'index_html')
-
-        # 2. Test for IBrowserDefault
-        if IBrowserDefault.isImplementedBy(obj):
-            fti = obj.getTypeInfo()
-            if fti is not None:
-                page = fti.getDefaultPage(obj, check_exists=True)
-                if page is not None:
-                    return lookupTranslationId(obj, page)
-
-        # 3. Test for default_page property in folder, then skins
-        pages = getattr(aq_base(obj), 'default_page', [])
-        if type(pages) in (StringType, UnicodeType):
-            pages = [pages]
-        for page in pages:
-            if page and ids.has_key(page):
-                return lookupTranslationId(obj, page)
-        for page in pages:
-            if portal.unrestrictedTraverse(page, None):
-                return lookupTranslationId(obj, page)
-
-        # 4. Test for default sitewide default_page setting
-        site_properties = portal.portal_properties.site_properties
-        for page in site_properties.getProperty('default_page', []):
-            if ids.has_key(page):
-                return lookupTranslationId(obj, page)
-
-        return None
+        if request is None:
+            request = self.REQUEST
+        return utils.getDefaultPage(obj, request, context=self)
 
     security.declarePublic('browserDefault')
     def browserDefault(self, obj):

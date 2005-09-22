@@ -1,5 +1,26 @@
 from zope.interface import Interface
 
+class IDefaultPage(Interface):
+
+    def isDefaultPage(obj):
+        """Finds out if the given obj is the default page for the
+        adapted object.
+        """
+
+    def getDefaultPage():
+        """Return the id of the default page for the adapted object
+        """
+
+class INavigationStructure(Interface):
+
+    def breadcrumbs():
+        """Breadcrumbs for Navigation
+        """
+
+class INavigationRoot(Interface):
+    """A marker interface for signaling the navigation root
+    """
+
 class INewsPortlet(Interface):
     """ """
 

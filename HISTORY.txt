@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone (unknown) - (unnamed) - (unreleased)
 
+    - Factored out 'default page'-related functionality into a view
+      that provides IDefaultPage. Factored out createBreadCrumbs into
+      a view that provides INavigationStructure. Started implementing
+      soon-to-be-written PLIP for configurable navigation root.
+      [dreamcatcher]
+
     - Factored out most of the 'functions' in PloneTool.py into real
       functions that take a 'context' in utils.py. Later one, those
       will be used by the new adapters code.
