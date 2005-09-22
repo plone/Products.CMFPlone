@@ -30,6 +30,7 @@
       permission="zope.Public"
       allowed_interface=".interfaces.INavigationStructure"
       />
+  -->
 
   <browser:view
       for=".interfaces.INavigationRoot"
@@ -38,7 +39,6 @@
       permission="zope.Public"
       allowed_interface=".interfaces.INavigationStructure"
       />
-  -->
 
   <browser:page
       for="*"
