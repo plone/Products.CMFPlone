@@ -14,36 +14,15 @@ class CalendarPortlet(BrowserView):
         self.request = request
         self.current = self.DateTime()()
         self.yearmonth = self.getYearAndMonthToDisplay()
-
-    def DateTime(self):
-        return DateTime
-
-    def current(self):
-        return self.current
-
-    def current_day(self):
-        return self.current.day()
-
-    def nextYearMax(self):
-        return self.current + 365
-
-    def prevYearMin(self):
-        return self.current - 365
-
-    def year(self):
-        return self.yearmonth[0]
-
-    def month(self):
-        return self.yearmonth[1]
-
-    def prevMonthTime(self):
-        return self.getPreviousMonth(self.month(), self.year())
-
-    def nextMonthTime(self):
-        return self.getNextMonth(self.month(), self.year())
-
-    def weeks(self):
-        return self.context.portal_calendar.getEventsForCalendar(self.month(), self.year())
+        self.DateTime = DateTime
+        self.current_day = self.current.day()
+        self.nextYearMax = self.current + 365
+        self.prevYearMin = self.current - 365
+        self.year = self.yearmonth[0]
+        self.month = self.yearmonth[1]
+        self.prevMonthTime = self.getPreviousMonth(self.month(), self.year())
+        self.nextMonthTime = self.getNextMonth(self.month(), self.year())
+        self.weeks = self.context.portal_calendar.getEventsForCalendar(self.month(), self.year())
 
     def getYearAndMonthToDisplay(self):
         """ from skins/plone_scripts/getYearAndMonthToDisplay.py """
