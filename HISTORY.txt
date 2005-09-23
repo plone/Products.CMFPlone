@@ -2,6 +2,12 @@ Changelog for Plone
 
    (name of developer listed in brackets)
 
+Plone 2.1.1 - Unreleased
+
+    - Removed unnecessary use of 'SESSION' in 'folder_contents' and 
+      'logout_form'
+      [dreamcatcher, alecm]
+
     - Converted plone_javascript_variables.js from DTML to PageTemplate to
       make it better suited for i18n.
       [fschulze]
