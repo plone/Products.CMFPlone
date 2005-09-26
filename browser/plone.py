@@ -1,4 +1,5 @@
 from Products.CMFPlone.browser.interfaces import IPloneGlobals
+from Products.CMFPlone import utils
 
 from zope.interface import implements
 from Products.Five import BrowserView
@@ -11,12 +12,8 @@ from Globals import InitializeClass
 from Products.PageTemplates.Expressions import getEngine
 from ZPublisher.BeforeTraverse import registerBeforeTraverse
 
-class PloneGlobals(BrowserView):
+class PloneGlobals(utils.BrowserView):
     implements(IPloneGlobals)
-
-    def __init__(self, context, request):
-        self.context = context
-        self.request = request
 
     _globals = ('utool', 'portal', 'portal_object', 'portal_url',
                 'mtool', 'gtool', 'gdtool', 'atool', 'aitool', 'putils',
@@ -31,14 +28,16 @@ class PloneGlobals(BrowserView):
 
     def globals(self):
         """
-        Pure optimization hack, globalizes entire view for speed.
+        Pure optimization hack, globalizes entire view for speed. Yes
+        it's evil, but this hack will eventually be removed after
+        globals are officially deprecated.
         """
         context = sys._getframe(2).f_locals['econtext']
         for name in self._globals:
             context.setGlobal(name, getattr(self, name)())
 
     def utool(self):
-        return self.context.portal_url
+        return utils.context(self).portal_url
 
     def portal(self):
         return self.utool().getPortalObject()
@@ -80,7 +79,7 @@ class PloneGlobals(BrowserView):
         self.portal_object().Title()
 
     def object_title(self):
-        self.context.Title()
+        utils.context(self).Title()
 
     def member(self):
         self.mtool().getAuthenticatedMember()
@@ -95,7 +94,7 @@ class PloneGlobals(BrowserView):
         return self.mtool().isAnonymousUser()
 
     def actions(self):
-        return self.portal().portal_actions.listFilteredActionsFor(self.context)
+        return self.portal().portal_actions.listFilteredActionsFor(utils.context(self))
 
     def keyed_actions(self):
         return self.portal().keyFilteredActions(self.actions())
@@ -116,7 +115,7 @@ class PloneGlobals(BrowserView):
         return self.putils().createTopLevelTabs(self.actions())
 
     def wf_state(self):
-        return self.wtool().getInfoFor(self.context,'review_state', None)
+        return self.wtool().getInfoFor(utils.context(self),'review_state', None)
 
     def portal_properties(self):
         return self.portal().portal_properties
@@ -131,13 +130,13 @@ class PloneGlobals(BrowserView):
         return self.workflow_actions()
 
     def isFolderish(self):
-        return self.context.isPrincipiaFolderish
+        return utils.context(self).isPrincipiaFolderish
 
     def template_id(self):
-        return self.request.get('template_id', None) or self.context.getId() or None # ?
+        return self.request.get('template_id', None) or utils.context(self).getId() or None # ?
 
     def slots_mapping(self):
-        return self.request.get('slots_mapping', None) or self.context.prepare_slots() or None
+        return self.request.get('slots_mapping', None) or utils.context(self).prepare_slots() or None
 
     def Iterator(self):
         return CMFPlone.IndexIterator
@@ -146,7 +145,7 @@ class PloneGlobals(BrowserView):
         return self.Iterator()(pos=30000)
 
     def here_url(self):
-        return self.context.absolute_url()
+        return utils.context(self).absolute_url()
 
     def sl(self):
         return self.slots_mapping()['left']
@@ -155,32 +154,32 @@ class PloneGlobals(BrowserView):
         return self.slots_mapping()['right']
 
     def hidecolumns(self):
-        return self.context.hide_columns(self.sl(),self.sr())
+        return utils.context(self).hide_columns(self.sl(),self.sr())
 
     def default_language(self):
         return self.site_properties().default_language or None
 
     def language(self):
-        return self.request.get('language', None) or self.context.Language() or self.default_language()
+        return self.request.get('language', None) or utils.context(self).Language() or self.default_language()
 
     def is_editable(self):
-        return self.checkPermission()('Modify portal content', self.context)
+        return self.checkPermission()('Modify portal content', utils.context(self))
 
     def isEditable(self):
         return self.is_editable()
 
     def lockable(self):
-        return hasattr(self.context.aq_inner.aq_explicit, 'wl_isLocked')
+        return hasattr(utils.context(self).aq_inner.aq_explicit, 'wl_isLocked')
 
     def isLocked(self):
-        return self.lockable() and self.context.wl_isLocked()
+        return self.lockable() and utils.context(self).wl_isLocked()
 
     def isRTL(self):
-        return self.context.isRightToLeft(domain='plone')
+        return utils.context(self).isRightToLeft(domain='plone')
 
     def visible_ids(self):
-        return self.context.visibleIdsEnabled() or None
+        return utils.context(self).visibleIdsEnabled() or None
 
     def current_page_url(self):
-        return self.context.getCurrentUrl() or None
+        return utils.context(self).getCurrentUrl() or None
 
