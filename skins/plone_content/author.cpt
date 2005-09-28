@@ -38,9 +38,14 @@
 
         
         <div class="discreet">
-            <tal:location condition="authorinfo/location">
-            <span i18n:translate="label_location">Location:</span>
-            <span tal:replace="authorinfo/location">Some location</span>
+            <tal:location condition="authorinfo/location"
+                          i18n:translate="text_location">
+                Location:
+                <span tal:content="authorinfo/location"
+                      tal:omit-tag=""
+                      i18n:name="location">
+                    Some location
+                </span>
             </tal:location>
 
             <tal:language condition="authorinfo/language">

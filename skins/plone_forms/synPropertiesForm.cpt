@@ -48,7 +48,7 @@
 
         <input class="standalone"
                type="submit"
-               value="Enable syndication"
+               value="Enable Syndication"
                tabindex=""
                i18n:attributes="value label_enable_syndication;"
                name="form.button.enableSyndication"

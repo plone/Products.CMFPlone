@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1.1 - Unreleased
 
+    - Corrected lots of conflicting (swallowed) default texts for i18n
+      msgids. Found by new i18ndude feature
+      [hannosch]
+
     - Removed unnecessary use of 'SESSION' in 'folder_contents' and 
       'logout_form'
       [dreamcatcher, alecm]

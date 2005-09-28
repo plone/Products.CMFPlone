@@ -55,7 +55,7 @@
 
           <metal:name metal:fill-slot="name">
         <div class="field">
-               <label for="addname" i18n:translate="label_name">Short Name</label>
+               <label for="addname" i18n:translate="label_name">Name</label>
 
                <span class="fieldRequired" title="Required"
                      i18n:attributes="title title_required;"
@@ -105,7 +105,7 @@
                 <legend i18n:translate="link_group_properties">Group Properties</legend>
 
                 <div class="field" metal:define-slot="name">
-                   <label for="addname" i18n:translate="label_name">Short Name</label>
+                   <label for="addname" i18n:translate="label_name">Name</label>
 
                    <div tal:content="group/getGroupName | string:" />
                    <input type="hidden" name="groupname" value="groupname" id="groupname"

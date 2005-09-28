@@ -16,7 +16,9 @@
 <ul id="contentTabs">
   <li class="selected">
     <a href="prefs_workflow_basic"
-       i18n:translate="label_workflow_default">Default workflow configuration</a>
+       i18n:translate="label_workflow_default">
+        Default Workflow Configuration
+    </a>
   </li>
   <li class="">
     <a href="prefs_workflow_advanced"

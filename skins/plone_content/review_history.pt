@@ -15,8 +15,8 @@
 
           <tr>
             <th i18n:translate="listingheader_action">Action</th>
-            <th i18n:translate="listingheader_performed_by">Performed&nbsp;by</th>
-            <th i18n:translate="listingheader_date_and_time">Date&nbsp;and&nbsp;Time</th>
+            <th i18n:translate="listingheader_performed_by">Performed by</th>
+            <th i18n:translate="listingheader_date_and_time">Date and Time</th>
             <th i18n:translate="listingheader_comment">Comment</th>
           </tr>
 

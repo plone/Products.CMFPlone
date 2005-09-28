@@ -196,8 +196,10 @@
                         style="text-align:center;">No matches</td>
                     <td tal:condition="not:searchstring"
                         class="discreet"
-                        i18n:translate="text_no_searchstring"
-                        style="text-align:center; font-size: 100%;">Enter a username to search for, or click 'Show All'</td>
+                        i18n:translate="text_no_user_searchstring"
+                        style="text-align:center; font-size: 100%;">
+                        Enter a username to search for, or click 'Show All'
+                    </td>
                 </tr>
           </table>
 

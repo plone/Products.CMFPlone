@@ -42,7 +42,7 @@
                              fullname python:request.get('fullname', member.getProperty('fullname', ''));"
                  tal:attributes="class python:test(error, 'field error', 'field')">
 
-                <label for="fullname" i18n:translate="label_full_name">Full name</label>
+                <label for="fullname" i18n:translate="label_full_name">Full Name</label>
 
                 <div tal:content="error">Validation error output</div>
 

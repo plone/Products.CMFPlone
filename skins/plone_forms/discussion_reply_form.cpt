@@ -170,7 +170,7 @@
                 <input class="context"
                        tabindex=""
                        type="submit"
-                       value="Add Comment"
+                       value="Save"
                        name="form.button.Save"
                        i18n:attributes="value label_save;"
                        tal:attributes="tabindex tabindex/next;

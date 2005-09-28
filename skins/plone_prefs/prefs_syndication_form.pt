@@ -31,7 +31,7 @@
             <legend i18n:translate="legend_syndication_details">Syndication Details</legend>
     
             <div class="field">
-                <label i18n:translate="label_syndication_updateperiod">Update period</label>
+                <label i18n:translate="label_syndication_updateperiod">Update Period</label>
     
                 <select name="updatePeriod" 
                         size="1"
