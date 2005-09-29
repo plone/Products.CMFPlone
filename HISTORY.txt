@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 2.1.1 - Unreleased
 
+    - Significantly speed up toLocalizedTime calls. We try to get the needed
+      format identifiers first and only calculate the real values for those
+      instead of calculating all values on every call. This safes a lot of
+      quite expensive DateTime.strftime() calls.
+      [hannosch]
+
     - Corrected lots of conflicting (swallowed) default texts for i18n
       msgids. Found by new i18ndude feature
       [hannosch]

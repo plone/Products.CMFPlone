@@ -2,6 +2,7 @@
 Collection of i18n and l10n utility methods.
 All methods here may return unicode type.
 """
+import re
 from DateTime import DateTime
 from log import log_exc
 
@@ -20,6 +21,13 @@ try:
     from Products import PlacelessTranslationService
 except ImportError:
     HAS_FIVE_TS = False
+
+# these are taken from PTS, used for format interpolation
+NAME_RE = r"[a-zA-Z][a-zA-Z0-9_]*"
+_interp_regex = re.compile(r'(?<!\$)(\$(?:%(n)s|{%(n)s}))' %({'n': NAME_RE}))
+
+datetime_formatvariables = ('H', 'I', 'm', 'd', 'M', 'p', 'S', 'Y', 'y', 'Z')
+name_formatvariables = ('a', 'A', 'b', 'B')
 
 # unicode aware translate method (i18n)
 def utranslate(*args, **kw):
@@ -90,20 +98,49 @@ def ulocalized_time(time, long_format = None, context = None, domain='plone'):
         # when without context, we cannot do very much.
         return time.ISO()
     
-    # add elements to mapping
-    for key in ('H', 'I', 'm', 'd', 'M', 'p', 'S', 'Y', 'y', 'Z'):
+    # get the formatstring
+    formatstring = utranslate(domain, msgid, mapping, context)
+    formatelements = []
+    elements = datetime_formatvariables
+    name_elements = name_formatvariables
+    week_included = True
+    month_included = True
+
+    # can we optimize or not?
+    if formatstring is not None and not formatstring.startswith('date_'):
+        # get the format elements used in the formatstring
+        formatelements = _interp_regex.findall(formatstring)
+        # reformat the ${foo} to foo
+        formatelements = [el[2:-1] for el in formatelements]
+
+        # add used elements to mapping
+        elements = [e for e in datetime_formatvariables if e in formatelements]
+
+        # add weekday name, abbr. weekday name, month name, abbr month name
+        name_elements = [e for e in name_formatvariables if e in formatelements]
+        if not ('a' in name_elements or 'A' in name_elements):
+            week_included = False
+        if not ('b' in name_elements or 'B' in name_elements):
+            month_included = False
+
+    for key in elements:
         mapping[key]=time.strftime('%'+key)
-    
-    # add weekday name, abbr. weekday name, month name, abbr month name
-    weekday = int(time.strftime('%w')) # weekday, sunday = 0
-    monthday = int(time.strftime('%m')) # month, january = 1
-    mapping['A']=weekdayname_msgid(weekday)
-    mapping['a']=weekdayname_msgid_abbr(weekday)
-    mapping['B']=monthname_msgid(monthday)
-    mapping['b']=monthname_msgid_abbr(monthday)
+
+    if week_included:
+        weekday = int(time.strftime('%w')) # weekday, sunday = 0
+        if 'a' in name_elements:
+            mapping['a']=weekdayname_msgid_abbr(weekday)
+        if 'A' in name_elements:
+            mapping['A']=weekdayname_msgid(weekday)
+    if month_included:
+        monthday = int(time.strftime('%m')) # month, january = 1
+        if 'b' in name_elements:
+            mapping['b']=monthname_msgid_abbr(monthday)
+        if 'B' in name_elements:
+            mapping['B']=monthname_msgid(monthday)
     
     # feed translateable elements to translation service
-    for key in ('A', 'a', 'B', 'b',):
+    for key in name_elements:
         mapping[key]=utranslate(domain, mapping[key], context=context, default=mapping[key])
 
     # feed numbers for formatting to translation service
