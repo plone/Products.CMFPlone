@@ -1228,8 +1228,8 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         if not isinstance(text, unicode):
             text = unicode(text, self.getSiteEncoding())
 
-        text = text.lower()
         text = text.strip()
+        text = text.lower()
         text = normalizeUnicode(text)
 
         base = text

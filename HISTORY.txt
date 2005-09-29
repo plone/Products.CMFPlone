@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1.1 - Unreleased
 
+    - Optimizing normalizeString slightly by moving a list concatenation out of
+      the methods scope.
+      [hannosch]
+
     - Significantly speed up toLocalizedTime calls. We try to get the needed
       format identifiers first and only calculate the real values for those
       instead of calculating all values on every call. This safes a lot of
