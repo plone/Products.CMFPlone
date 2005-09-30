@@ -52,7 +52,7 @@
               <div tal:condition="error"
                    tal:content="error">Validation error output</div>
 
-              <div tal:define="canRenameItem python:mtool.checkPermission('Delete objects', obj) and mtool.checkPermission('Copy objects', obj);"
+              <div tal:define="canRenameItem python:mtool.checkPermission('Delete objects', obj) and mtool.checkPermission('Copy or Move', obj);"
                    tal:attributes="class python:test(canRenameItem, nothing, 'error')">
 
                 <label i18n:translate="label_new_short_name">
