@@ -100,28 +100,36 @@ def ulocalized_time(time, long_format = None, context = None, domain='plone'):
     
     # get the formatstring
     formatstring = utranslate(domain, msgid, mapping, context)
-    formatelements = []
-    elements = datetime_formatvariables
-    name_elements = name_formatvariables
+    
+    if formatstring is None or formatstring.startswith('date_'):
+        # msg catalog was not able to translate this msgids
+        # use default setting
+
+        properties=context.portal_properties.site_properties
+        if long_format:
+            format=properties.localLongTimeFormat
+        else:
+            format=properties.localTimeFormat
+
+        return time.strftime(format)
+    
+    # get the format elements used in the formatstring
+    formatelements = _interp_regex.findall(formatstring)
+    # reformat the ${foo} to foo
+    formatelements = [el[2:-1] for el in formatelements]
+
+    # add used elements to mapping
+    elements = [e for e in formatelements if e in datetime_formatvariables]
+
+    # add weekday name, abbr. weekday name, month name, abbr month name
     week_included = True
     month_included = True
 
-    # can we optimize or not?
-    if formatstring is not None and not formatstring.startswith('date_'):
-        # get the format elements used in the formatstring
-        formatelements = _interp_regex.findall(formatstring)
-        # reformat the ${foo} to foo
-        formatelements = [el[2:-1] for el in formatelements]
-
-        # add used elements to mapping
-        elements = [e for e in datetime_formatvariables if e in formatelements]
-
-        # add weekday name, abbr. weekday name, month name, abbr month name
-        name_elements = [e for e in name_formatvariables if e in formatelements]
-        if not ('a' in name_elements or 'A' in name_elements):
-            week_included = False
-        if not ('b' in name_elements or 'B' in name_elements):
-            month_included = False
+    name_elements = [e for e in formatelements if e in name_formatvariables]
+    if not ('a' in name_elements or 'A' in name_elements):
+        week_included = False
+    if not ('b' in name_elements or 'B' in name_elements):
+        month_included = False
 
     for key in elements:
         mapping[key]=time.strftime('%'+key)
@@ -147,21 +155,7 @@ def ulocalized_time(time, long_format = None, context = None, domain='plone'):
     # XXX: implement me
     
     # translate the time string
-    localized_time = utranslate(domain, msgid, mapping, context)
-    if localized_time is None or localized_time.startswith('date_'):
-        # msg catalog was not able to translate this msgids
-        # use default setting
-
-        properties=context.portal_properties.site_properties
-        if long_format:
-            format=properties.localLongTimeFormat
-        else:
-            format=properties.localTimeFormat
-
-        return time.strftime(format)
-
-    # return localized_time string
-    return localized_time
+    return utranslate(domain, msgid, mapping, context)
 
 def _numbertoenglishname(number, format='', attr='_days'):
     # returns the english name of day or month number
