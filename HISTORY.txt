@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.1.1 - Unreleased
 
+    - Reverted some non-literal msgids introduced in Python code to literal
+      msgids as i18ndude is not capable of handling these right now. We'll
+      have to wait for Zope3-style MessageID's
+      [hannosch]
+
     - A number of micro-optimizations.  The biggest winners are precompiling
       the regexes used in normalizeString at startup, and switching the
       navtree to use a recursive macro rather than recursively calling a
