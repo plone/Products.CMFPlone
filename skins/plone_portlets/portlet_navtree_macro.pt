@@ -31,7 +31,7 @@
         tal:define="show_children item/show_children| python:True;
                     level python:level+1;"
         tal:condition="python: (show_children or isNaviTree) and children">
-        <metal:recurse use-macro="here/portlet_navtree_macro_opt/macros/nav_main"/>
+        <metal:recurse use-macro="here/portlet_navtree_macro/macros/nav_main"/>
     </ul>
     </tal:level>
 </li>
