@@ -22,7 +22,7 @@ we eventually might want to merge this form with personalize_form
     <ul class="contentViews">
       <li class="selected">
             <a href=""
-               tal:attributes="href string:${template/id}?userid=${userid}"
+               tal:attributes="href string:${template_id}?userid=${userid}"
                i18n:translate="label_user_properties">
               User Properties
             </a>
@@ -73,7 +73,7 @@ we eventually might want to merge this form with personalize_form
                   enctype="multipart/form-data"
                   class="enableUnloadProtection"
                   tal:condition="user | nothing"
-              tal:attributes="action template/getId">
+              tal:attributes="action template_id">
 
           <fieldset>
             <legend i18n:translate="legend_member_details">Member Details</legend>

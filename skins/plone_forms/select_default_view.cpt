@@ -20,7 +20,7 @@
       <form name="default_view_form"
             action="."
             method="post"
-            tal:attributes="action string:${here/absolute_url}/${template/getId}"
+            tal:attributes="action string:${here_url}/${template_id}"
             tal:define="folder python:test(getattr(here.aq_explicit, 'isPrincipiaFolderish', 0), here, here.getParentNode());
                         isContextDefaultPage here/isDefaultPageInFolder;
                         parent_folder python: isContextDefaultPage and here.getParentNode() or folder;

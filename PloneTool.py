@@ -55,6 +55,11 @@ FLOOR_DATE = DefaultDublinCoreImpl._DefaultDublinCoreImpl__FLOOR_DATE
 from Products.SecureMailHost.SecureMailHost import EMAIL_RE
 from Products.SecureMailHost.SecureMailHost import EMAIL_CUTOFF_RE
 BAD_CHARS = re.compile(r'[^a-zA-Z0-9-_~,.$\(\)# ]').findall
+# Define and compile static regexes
+FILENAME_REGEX = re.compile(r"^(.+)\.(\w{,4})$")
+NON_WORD_REGEX = re.compile(r"[\W\-]+")
+EXTRA_DASHES_REGEX = re.compile(r"(^\-+)|(\-+$)")
+
 
 # XXX Remove this when we don't depend on python2.1 any longer,
 # use email.Utils.getaddresses instead
@@ -1235,14 +1240,13 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         base = text
         ext  = ""
 
-        m = re.match(r"^(.+)\.(\w{,4})$", text)
+        m = FILENAME_REGEX.match(text)
         if m is not None:
             base = m.groups()[0]
             ext  = m.groups()[1]
 
-        base = re.sub(r"[\W\-]+", "-", base)
-        base = re.sub(r"^\-+",    "",  base)
-        base = re.sub(r"\-+$",    "",  base)
+        base = NON_WORD_REGEX.sub("-", base)
+        base = EXTRA_DASHES_REGEX.sub("", base)
 
         if ext != "":
             base = base + "." + ext
@@ -1421,6 +1425,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                                      default=empty)
         return empty
 
+    security.declarePublic('pretty_title_or_id')
     def pretty_title_or_id(self, obj, empty_value=_marker):
         """Return the best possible title or id of an item, regardless
         of whether obj is a catalog brain or an object, but returning an
@@ -1442,6 +1447,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             empty_value = self.getEmptyTitle()
         return empty_value
 
+    security.declarePublic('getMethodAliases')
     def getMethodAliases(self, typeInfo):
         """Given an FTI, return the dict of method aliases defined on that
         FTI. If there are no method aliases (i.e. this FTI doesn't support it),

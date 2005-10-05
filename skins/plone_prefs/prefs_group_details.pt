@@ -25,12 +25,12 @@
     <ul class="contentViews">
       <li class="">
             <a href=""
-               tal:attributes="href string:${here/absolute_url}/prefs_group_members?groupname=${groupname}"
+               tal:attributes="href string:$here_url/prefs_group_members?groupname=${groupname}"
                i18n:translate="label_group_members">Group Members</a>
       </li>
       <li class="selected">
         <a href=""
-           tal:attributes="href string:${here/absolute_url}/${template/id}?groupname=${groupname}"
+           tal:attributes="href string:$here_url/${template_id}?groupname=${groupname}"
            i18n:translate="label_group_properties">Group Properties</a>
       </li>
     </ul>

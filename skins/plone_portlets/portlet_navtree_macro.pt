@@ -1,24 +1,24 @@
-<tal:navitem repeat="item options/children">
+<metal:main define-macro="nav_main">
+<tal:navitem repeat="item children">
 <li class="navTreeItem visualNoMarker"
-    tal:define="parent_shows_children options/show_children|nothing;
-                children item/children|nothing;"
-    tal:condition="python: (not item['no_display']) and (item['currentItem'] or parent_shows_children or children)">
+    tal:define="parent_shows_children show_children|nothing;
+                children item/children|nothing;
+                cur_item item/currentItem;"
+    tal:condition="python: (not item['no_display']) and (cur_item or parent_shows_children or children)">
 
-    <tal:level define="level               options/level|python:0;
-                       item_type_class     python: 'contenttype-' + here.plone_utils.normalizeString(item['portal_type']);
-                       item_wf_state_class python: 'state-' + here.plone_utils.normalizeString(item['review_state']);
-                       isNaviTree          options/isNaviTree | nothing;
+    <tal:level define="item_type_class     python: 'contenttype-' + normalizeString(item['portal_type']);
+                       item_wf_state_class python: 'state-' + normalizeString(item['review_state']);
                        ">
 
     <div tal:attributes="class item_type_class">
-        <a tal:condition="item/currentItem"
+        <a tal:condition="cur_item"
            tal:attributes="href item/absolute_url;
                            title item/Description|nothing;
                            class string: $item_wf_state_class navTreeCurrentItem visualIconPadding"
             tal:content="item/Title|nothing">
             Selected Item Title</a>
         <tal:children condition="python: parent_shows_children or children">
-        <a tal:condition="not: item/currentItem"
+        <a tal:condition="not: cur_item"
            tal:attributes="href item/absolute_url;
                            title item/Description|nothing;
                            class string: $item_wf_state_class visualIconPadding;"
@@ -26,13 +26,14 @@
             Unselected Item Title</a>
         </tal:children>
     </div>
-        
+
     <ul tal:attributes="class python:'navTree navTreeLevel'+str(level)"
-        tal:define="show_children item/show_children| python:True;"
-        tal:condition="python: (show_children or isNaviTree) and children"
-        tal:content="structure python:here.portlet_navtree_macro(children=children, level=level+1, show_children=show_children, isNaviTree=isNaviTree)">
-          Get subtree, if available.
+        tal:define="show_children item/show_children| python:True;
+                    level python:level+1;"
+        tal:condition="python: (show_children or isNaviTree) and children">
+        <metal:recurse use-macro="here/portlet_navtree_macro_opt/macros/nav_main"/>
     </ul>
     </tal:level>
 </li>
 </tal:navitem>
+</metal:main>

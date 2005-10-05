@@ -105,7 +105,7 @@
             <ul>
                 <tal:types repeat="ctype menuTypes"> 
                     <li tal:define="Title ctype/Title; Id ctype/getId; Description ctype/Description;
-                                    item_type_class python: 'contenttype-' + here.plone_utils.normalizeString(Id);"
+                                    item_type_class python: 'contenttype-' + normalizeString(Id);"
                         tal:attributes="class string:${item_type_class}">
                         <a href="#" 
                            i18n:attributes="title"

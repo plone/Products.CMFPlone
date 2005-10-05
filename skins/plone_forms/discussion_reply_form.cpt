@@ -11,7 +11,7 @@
 
 <div metal:fill-slot="main"
      tal:define="errors options/state/getErrors;
-                 thread python:here.plone_utils.getDiscussionThread(here);
+                 thread python:putils.getDiscussionThread(here);
                  discussable python:thread[0];
                  replies python:thread[1:]">
 
@@ -22,7 +22,7 @@
                              macros template/macros | nothing;
                              main_macro macros/main | nothing;
                              showDiscussable python:main_macro;
-                             template template/id"
+                             template template_id"
                      >
 
         <div class="comment" 
@@ -63,7 +63,7 @@
     <form name="edit_form"
           method="post"
           action="talkback"
-          tal:attributes="action string:${here/getId}/${template/getId}">
+          tal:attributes="action string:$here_url/$template_id">
 
         <fieldset>
 

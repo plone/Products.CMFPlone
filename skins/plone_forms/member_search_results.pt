@@ -7,7 +7,7 @@
              tal:define="dummy python:request.set('disable_border',1)" />
 
 <div metal:fill-slot="main"
-       tal:define="results python:here.portal_membership.searchForMembers(request);
+       tal:define="results python:mtool.searchForMembers(request);
                    Batch python:modules['Products.CMFPlone'].Batch;
                    DateTime python:modules['DateTime'].DateTime;
                    b_size python:12;b_start python:0;b_start request/b_start | b_start;">

@@ -26,7 +26,7 @@
       <form name="folder_rename"
             action="folder_rename"
             method="post"
-            tal:attributes="action template/getId"
+            tal:attributes="action template_id"
             tal:condition="items">
 
         <input type="hidden" name="form.submitted" value="1" />
@@ -52,7 +52,7 @@
               <div tal:condition="error"
                    tal:content="error">Validation error output</div>
 
-              <div tal:define="canRenameItem python:mtool.checkPermission('Delete objects', obj) and mtool.checkPermission('Copy or Move', obj);"
+              <div tal:define="canRenameItem python:checkPermission('Delete objects', obj) and checkPermission('Copy or Move', obj);"
                    tal:attributes="class python:test(canRenameItem, nothing, 'error')">
 
                 <label i18n:translate="label_new_short_name">
@@ -81,7 +81,7 @@
 
               </div>
 
-              <div tal:define="canModifyItem python:mtool.checkPermission('Modify portal content', obj);"
+              <div tal:define="canModifyItem python:checkPermission('Modify portal content', obj);"
                    tal:attributes="class python:test(canModifyItem, nothing, 'error')">
 
                 <label i18n:translate="label_new_title">

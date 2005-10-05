@@ -111,7 +111,7 @@
             <div class="field" 
                  tal:condition="is_manager"
                  tal:define="memberRoles request/roles|nothing;
-                             portalRoles python:here.portal_membership.getPortalRoles()">
+                             portalRoles python:mtool.getPortalRoles()">
     
                 <label i18n:translate="label_roles">Role(s)</label>
     

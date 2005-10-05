@@ -66,15 +66,14 @@
         </metal:override>
         <metal:listing define-macro="folder_listing"
                        tal:define="contentFilter contentFilter|python:{'path':'/'};
-                                   iface_tool portal/portal_interface;
                                    use_folder_contents site_properties/typesLinkToFolderContentsInFC|nothing;
                                    use_view_action site_properties/typesUseViewActionInListings;
                                    query_path python:path('contentFilter/path|nothing') or request.get('path',None);
                                    orderable_iface string:OFS.IOrderSupport.IOrderedContainer;
                                    preSorted python:query_path or ((contentFilter and contentFilter.get('sort_on', 'getObjPositionInParent')!='getObjPositionInParent') or (not contentFilter and request.get('sort_on', 'getObjPositionInParent')!='getObjPositionInParent'));
-                                   isOrderable python:iface_tool.objectImplements(here, orderable_iface);
+                                   isOrderable python:ifacetool.objectImplements(here, orderable_iface);
                                    nosortclass python:test(isOrderable, 'nosort', '');
-                                   canModifyFolderContent python:checkPermission('Modify portal content', here);">
+                                   canModifyFolderContent is_editable;">
           <div tal:condition="standalone|nothing">
           <metal:add_button define-macro="add_button"
                             tal:define="num_types python:len(contentTypes);">
@@ -181,10 +180,10 @@
                                    item_type            item/portal_type;
                                    item_size            item/getObjSize;
                                    item_modified        item/ModificationDate;
-                                   item_type_class      python:'contenttype-' + putils.normalizeString(item_type);
+                                   item_type_class      python:'contenttype-' + normalizeString(item_type);
                                    item_wf_state        item/review_state|python: wtool.getInfoFor(item, 'review_state', '');
                                    item_state_title     python:wtool.getTitleForStateOnType(item_wf_state, item_type);
-                                   item_wf_state_class  python:'state-' + putils.normalizeString(item_wf_state);
+                                   item_wf_state_class  python:'state-' + normalizeString(item_wf_state);
                                    hasGetUrl            python:hasattr(item.aq_explicit, 'getURL');
                                    item_rel_url         python:hasGetUrl and item.getURL(relative=1) or getRelativeContentURL(item);
                                    browserDefaultResult here/browserDefault;
@@ -253,14 +252,14 @@
                       <a href=""
                          title="Move item up"
                          i18n:attributes="title title_move_item_up;"
-                         tal:attributes="href string:$here_url/folder_position?position=up&amp;id=$item_id&amp;template_id=${template/getId}">
+                         tal:attributes="href string:$here_url/folder_position?position=up&amp;id=$item_id&amp;template_id=${template_id}">
                          <img tal:replace="structure arrowUp" />
                       </a>
                       &nbsp;
                       <a href=""
                          title="Move item down"
                          i18n:attributes="title title_move_item_down;"
-                         tal:attributes="href string:$here_url/folder_position?position=down&amp;id=$item_id&amp;template_id=${template/getId}">
+                         tal:attributes="href string:$here_url/folder_position?position=down&amp;id=$item_id&amp;template_id=${template_id}">
                          <img tal:replace="structure arrowDown" />
                       </a>
                     </td>
@@ -276,7 +275,7 @@
 
         <metal:buttons define-macro="folder_buttons">
         <input type="hidden" name="orig_template"
-               tal:attributes="value template/getId"/>
+               tal:attributes="value template_id"/>
         <tal:buttons tal:repeat="button actions/folder_buttons|nothing"
                      tal:define="contentFilter contentFilter|python:{'path':'/'};
                                  query_path python:path('contentFilter/path|nothing') or request.get('path',None) or context.portal_type == 'Topic';">

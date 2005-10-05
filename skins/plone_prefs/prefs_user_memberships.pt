@@ -28,7 +28,7 @@
 
       <li class="selected">
             <a href=""
-           tal:attributes="href string:${template/id}?userid=${userid}"
+           tal:attributes="href string:${template_id}?userid=${userid}"
            i18n:translate="label_group_memberships">Group Memberships</a>
       </li>
     </ul>

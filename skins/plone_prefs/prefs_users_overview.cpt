@@ -20,7 +20,7 @@
     <ul class="contentViews">
       <li class="selected">
         <a href=""
-           tal:attributes="href template/getId"
+           tal:attributes="href template_id"
            i18n:translate="label_users">Users</a>
       </li>
       <li class="">
@@ -65,7 +65,7 @@
         <form action=""
               name="users_add"
               method="post"
-              tal:attributes="action template/getId">
+              tal:attributes="action template_id">
 
           <input class="standalone add"
                      tabindex=""
@@ -81,7 +81,7 @@
         <form action=""
               name="users_search"
               method="post"
-              tal:attributes="action template/getId"
+              tal:attributes="action template_id"
               tal:define="searchstring request/searchstring | nothing;
                           findAll python:'form.button.FindAll' in request.keys();
                           portal_users python:(searchstring or findAll) and mtool.searchForMembers(name=searchstring) or [];

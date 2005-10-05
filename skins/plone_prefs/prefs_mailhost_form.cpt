@@ -28,8 +28,8 @@
           name="mailhost"
           method="post"
           class="enableUnloadProtection"
-          tal:attributes="action string:${here/absolute_url}/${template/getId}"
-          tal:define="props python:here.portal_properties;">
+          tal:attributes="action string:${here_url}/${template_id}"
+          tal:define="props python:portal_properties;">
 
         <fieldset>
             <legend i18n:translate="legend_mailhost_details">Outgoing Mail Server (SMTP) Details</legend>

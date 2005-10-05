@@ -18,7 +18,8 @@
                 grouproles python:request.set('grouproles', []);
                 group python:gtool.getGroupById(groupname);
                 grouptitle group/getGroupTitleOrName|groupname;
-                groupMembers group/getGroupMembers|nothing;">
+                groupMembers group/getGroupMembers|nothing;
+                isGroup nocall:gtool/isGroup;">
 
     <tal:conditional condition="group">
         <tal:defines define="dummy python:request.set('grouproles', group.getRoles())" />
@@ -30,12 +31,12 @@
     <ul class="contentViews">
       <li class="selected">
             <a href=""
-           tal:attributes="href string:${here/absolute_url}/${template/id}?groupname=${groupname}"
+           tal:attributes="href string:$here_url/${template_id}?groupname=${groupname}"
            i18n:translate="label_group_members">Group Members</a>
       </li>
       <li class="">
             <a href=""
-           tal:attributes="href string:${here/absolute_url}/prefs_group_details?groupname=${groupname}"
+           tal:attributes="href string:${here_url}/prefs_group_details?groupname=${groupname}"
                i18n:translate="label_group_properties">Group Properties</a>
       </li>
     </ul>
@@ -88,7 +89,7 @@
           <form action=""
                     name="groups"
                     method="post"
-                    tal:attributes="action string:${here/absolute_url}/${template/getId}"
+                    tal:attributes="action string:$here_url/$template_id"
                     tal:define="searchstring request/searchstring | nothing;
                                 findAll python:'form.button.FindAll' in request.keys();
                                 ignoreUsersGroups python: group.getAllGroupMembers() + [group,];
@@ -125,7 +126,7 @@
                                    name="delete:list" tal:attributes="value this_user/getId" />
                         </td>
 
-                        <tal:block tal:condition="python: context.portal_groups.isGroup(this_user)">
+                        <tal:block tal:condition="python: isGroup(this_user)">
                           <td>
                             <img src="group.gif" alt="" />
                             <a href="" tal:attributes="href string:prefs_group_details?groupname=${this_user/getGroupName}"
@@ -136,7 +137,7 @@
                           </td>
                         </tal:block>
 
-                        <tal:block tal:condition="python: not context.portal_groups.isGroup(this_user)">
+                        <tal:block tal:condition="python: not isGroup(this_user)">
                           <td>
                             <img src="user.gif" alt="" />
                             <a href="" tal:attributes="href string:prefs_user_details?userid=${this_user/getId}"
@@ -233,14 +234,14 @@
                   </td>
 
                   <td>
-                      <tal:block tal:condition="python:not context.portal_groups.isGroup(this_user)">
+                      <tal:block tal:condition="python:not isGroup(this_user)">
                           <img src="user.gif" alt="" />
                           <a href="" tal:attributes="href string:prefs_user_details?userid=${this_user/getId}"
                                    tal:content="this_user/getUserName | default">
                                    <span i18n:translate="link_username_not_available">username not available</span>
                           </a>
                       </tal:block>
-                      <tal:block tal:condition="python:context.portal_groups.isGroup(this_user)">
+                      <tal:block tal:condition="python: isGroup(this_user)">
                           <img src="group.gif" alt="" />
                           <a href="" tal:attributes="href string:prefs_group_details?groupname=${this_user/getGroupName}"
                                      tal:content="this_user/getGroupTitleOrName | default">

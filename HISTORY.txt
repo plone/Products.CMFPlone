@@ -4,6 +4,18 @@ Changelog for Plone
 
 Plone 2.1.1 - Unreleased
 
+    - A number of micro-optimizations.  The biggest winners are precompiling
+      the regexes used in normalizeString at startup, and switching the
+      navtree to use a recursive macro rather than recursively calling a
+      page_template.  The rest of the changes involve making sure that the
+      global_defines are used rather than being re-executed/acquired, and
+      removing repeated attempts to acquire the same object in a tal:repeat.
+      Added two new global defines, one for the normalizeString method, which
+      is used very frequently (usually in loops) so that the method lookup is
+      avoided, and another for isViewTemplate which uses an expensive script
+      which was being called twice per page.
+      [alecm]
+
     - Optimizing normalizeString slightly by moving a list concatenation out of
       the methods scope.
       [hannosch]

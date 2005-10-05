@@ -7,7 +7,7 @@
 
     <div metal:fill-slot="main"
          tal:define="errors options/state/getErrors;
-                     syndicateInfo python:container.portal_syndication.isSyndicationAllowed(here);">
+                     syndicateInfo python:syntool.isSyndicationAllowed(here);">
 
       <h1 i18n:translate="heading_syndication_properties">Syndication Properties</h1>
 
@@ -18,7 +18,7 @@
 
 
       <form action="disableSyndication"
-            tal:attributes="action string:${template/getId}"
+            tal:attributes="action template_id"
             name="disable"
             method="post"
             tal:condition="syndicateInfo">
@@ -39,7 +39,7 @@
       </form>
 
       <form action="enableSyndication"
-            tal:attributes="action string:${template/getId}"
+            tal:attributes="action template_id"
             name="enable"
             method="post"
             tal:condition="python:not syndicateInfo">
@@ -63,13 +63,13 @@
       <tal:block condition="syndicateInfo">
         <form id="edit_form"
               action="editSynProperties"
-              tal:attributes="action string:${here/getId}/${template/getId}"
+              tal:attributes="action string:$here_url/$template_id"
               name="syndication"
               method="post">
 
           <dl>
             <dt i18n:translate="label_syndication_channel_title">Channel Title</dt>
-            <dd tal:content="here/pretty_title_or_id">title</dd>
+            <dd tal:content="object_title">title</dd>
             
             <dt i18n:translate="label_syndication_channel_description">Channel Description</dt>
             <dd tal:content="here/Description">description</dd>
@@ -90,9 +90,9 @@
                       tal:attributes="tabindex tabindex/next;"
                       >
                 <option value=""
-                        tal:repeat="period python:container.portal_syndication.buildUpdatePeriods()"
+                        tal:repeat="period python:syntool.buildUpdatePeriods()"
                         tal:attributes="value python:period[0];
-                                        selected python:test(period[0]==container.portal_syndication.getUpdatePeriod(here), 'selected', None);"
+                                        selected python:test(period[0]==syntool.getUpdatePeriod(here), 'selected', None);"
                         tal:content="python:period[1]">
                   update interval
                 </option>
@@ -100,7 +100,7 @@
             </div>
 
             <div class="field"
-                 tal:define="updateFrequency python:request.get('updateFrequency', container.portal_syndication.getUpdateFrequency(here));
+                 tal:define="updateFrequency python:request.get('updateFrequency', syntool.getUpdateFrequency(here));
                              error errors/updateFrequency|nothing"
                  tal:attributes="class python:test(error, 'field error', 'field')">
 
@@ -124,7 +124,7 @@
             </div>
 
             <div class="field" 
-                 tal:define="updateBase python:request.get('updateBase', container.portal_syndication.getUpdateBase(here));
+                 tal:define="updateBase python:request.get('updateBase', syntool.getUpdateBase(here));
                              error errors/updateBase|nothing;
                              inputname  string:updateBase;
                              formname   string:edit_form;
@@ -147,7 +147,7 @@
             </div>
 
             <div class="field" 
-                 tal:define="max_items python:request.get('max_items', container.portal_syndication.getMaxItems(here));
+                 tal:define="max_items python:request.get('max_items', syntool.getMaxItems(here));
                              error errors/max_items|nothing"
                  tal:attributes="class python:test(error, 'field error', 'field')">
 
@@ -191,7 +191,7 @@
 
       </tal:block>
 
-      <div tal:condition="python:not container.portal_syndication.isSiteSyndicationAllowed()"
+      <div tal:condition="python:not syntool.isSiteSyndicationAllowed()"
            i18n:translate="description_syndication_disabled">
         Syndication has been disabled by site administrator.
       </div>

@@ -27,9 +27,12 @@
                     </a>
                 </div>
             </li>
-            <li tal:replace="structure python:here.portlet_navtree_macro(children=data.get('children', []), level=1, show_children=True, isNaviTree=True)">
-                SUBTREE
-            </li>
+            <tal:navtree define="children python:data.get('children', []);
+                                 level python:1;
+                                 show_children python:True;
+                                 isNaviTree python:True;">
+                <metal:main metal:use-macro="here/portlet_navtree_macro/macros/nav_main" />
+            </tal:navtree>
         </ul>
     </dd>
 </dl>

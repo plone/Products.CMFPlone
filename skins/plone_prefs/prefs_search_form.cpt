@@ -42,7 +42,7 @@ registerPloneFunction(
     <form action=""
           name="search"
           method="post"
-          tal:attributes="action string:${here/absolute_url}/${template/getId}">
+          tal:attributes="action string:${here_url}/${template_id}">
 
         <fieldset>
             <legend i18n:translate="legend_search_details">Search details</legend>
@@ -96,11 +96,11 @@ registerPloneFunction(
                            type="checkbox"
                            name="portaltypes:list"
                            tal:attributes="value ptypeInfo/getId;
-                                           id python:putils.normalizeString(ptypeInfo.getId());
+                                           id python:normalizeString(ptypeInfo.getId());
                                            checked python:test(ptypeInfo.getId() in searchTypes,'checked','');" />
                        <label for=""
                            i18n:translate=""
-                           tal:attributes="for python:putils.normalizeString(ptypeInfo.getId())"
+                           tal:attributes="for python:normalizeString(ptypeInfo.getId())"
                            tal:content="ptypeInfo/Title"
                            />
                     </li>

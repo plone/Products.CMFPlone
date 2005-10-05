@@ -11,10 +11,10 @@
   <div metal:fill-slot="main"
        tal:define="Batch python:modules['Products.CMFPlone'].Batch;
                    username member/getUserName;
-                   avail_roles python:[role for role in container.portal_membership.getCandidateLocalRoles(here) if role!='Owner'];
+                   avail_roles python:[role for role in mtool.getCandidateLocalRoles(here) if role!='Owner'];
                    b_size python:12;b_start python:0;b_start request/b_start | b_start;
                    tabindex python:Iterator();
-                   iscontainer here/isPrincipiaFolderish|nothing;
+                   iscontainer isFolderish|nothing;
                    itemPortalTypeTitle python:here.getTypeInfo().Title();
                    inheritanceActive python:putils.isLocalRoleAcquired(here);
                    search_submitted request/role_submit|nothing;
@@ -28,7 +28,7 @@
 
     <h1 i18n:translate="heading_currently_assigned_shares">
         Current sharing permissions for
-        <span tal:content="here/pretty_title_or_id" tal:omit-tag="" i18n:name="folder">title</span>
+        <span tal:content="object_title" tal:omit-tag="" i18n:name="folder">title</span>
     </h1>
 
     <tal:warning tal:condition="not:iscontainer">
@@ -73,7 +73,7 @@
 
         <legend i18n:translate="legend_assigned_roles">
             Assigned Roles for
-            <span tal:content="here/pretty_title_or_id" tal:omit-tag="" i18n:name="folder">title</span>
+            <span tal:content="object_title" tal:omit-tag="" i18n:name="folder">title</span>
         </legend>
 
         <input type="hidden" name="change_type" value="delete" />
@@ -362,7 +362,7 @@
         <form method="post"
               name="localrole"
               action="folder_localrole_form"
-              tal:attributes="action string:$here_url/${template/getId}" >
+              tal:attributes="action string:$here_url/$template_id" >
 
             <fieldset>
 
@@ -579,7 +579,7 @@
                 <span tal:content="itemPortalTypeTitle" tal:omit-tag="" i18n:translate="">type</span>
             </span>, click 
             <span i18n:name="link_to_ownership_form">
-            <a href="" tal:attributes="href string:${here/absolute_url}/ownership_form"
+            <a href="" tal:attributes="href string:$here_url/ownership_form"
                i18n:translate="label_here">here</a>
             </span>
         </p>
