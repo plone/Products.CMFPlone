@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1.1 - Unreleased
 
+    - Fix broken discussion_reply_form.cpt.
+      [hannosch]
+
     - Reverted some non-literal msgids introduced in Python code to literal
       msgids as i18ndude is not capable of handling these right now. We'll
       have to wait for Zope3-style MessageID's

@@ -15,8 +15,6 @@
                  discussable python:thread[0];
                  replies python:thread[1:]">
 
-    
-
     <tal:discussable define="viewAction python:discussable.getTypeInfo().getActionById('view');
                              template python:getattr(here, discussable.getLayout(), None);
                              macros template/macros | nothing;
@@ -28,7 +26,7 @@
         <div class="comment" 
              tal:condition="showDiscussable"
              tal:define="here python:discussable">
-            <div metal:use-macro="discussable/?template/macros/main"/>
+            <div metal:use-macro="main_macro"/>
         </div>
     </tal:discussable>
 
