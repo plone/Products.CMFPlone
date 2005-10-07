@@ -41,7 +41,10 @@ mapping.update(mapping_greek)
 mapping.update(mapping_two_chars)
 mapping.update(mapping_latin_chars)
 
-allowed = string.ascii_letters + string.digits + string.punctuation + string.whitespace
+# On OpenBSD string.whitespace has a non-standard implementation
+# See http://plone.org/collector/4704 for details
+whitespace = ''.join([c for c in string.whitespace if ord(c) < 128])
+allowed = string.ascii_letters + string.digits + string.punctuation + whitespace
 
 def normalizeUnicode(text):
     """

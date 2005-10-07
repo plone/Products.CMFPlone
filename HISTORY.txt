@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1.1 - Unreleased
 
+    - Fixed http://plone.org/collector/4704 - string.whitespace is not ASCII
+      only on OpenBSD, which resulted in problems in UnicodeNormalizer
+      [hannosch]
+
     - Fixed http://plone.org/collector/4708 - portlet_events "upcoming events"
       link broke if events folder was renamed or deleted
       [hannosch]
