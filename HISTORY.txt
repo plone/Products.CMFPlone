@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1.1 - Unreleased
 
+    - Fixed http://plone.org/collector/4766 - RSS feed in Firefox did not work
+      properly.
+      [naro]
+
     - MimetypesRegistry wasn't correctly handling 'globs' from
       shared-mime-info database, resulting in failure from detect
       correct mimetype based on extension on Windows platform. A
