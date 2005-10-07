@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1.1 - Unreleased
 
+    - Fixed http://plone.org/collector/4755 - folder_factories does not link
+      to folder_constraintypes_form like add item menu does
+      [hannosch]
+
     - Removed out-of-the-box TextIndexNG2 support from Plone.
       TextIndexNG V2 and V3 has explicit migration code to convert
       ZCTextIndexes to TextIndexNG V2|3 instances on request.
