@@ -1,5 +1,4 @@
 from DateTime import DateTime
-from Products.CMFCore.CMFCorePermissions import SetOwnPassword
 from Products.CMFCore.utils import getToolByName, _checkPermission
 from Products.CMFDefault.MembershipTool import MembershipTool as BaseTool
 from Products.CMFPlone import ToolNames
@@ -10,8 +9,9 @@ from Globals import InitializeClass, DTMLFile
 from zExceptions import BadRequest
 from AccessControl.SecurityManagement import noSecurityManager
 from Acquisition import aq_base, aq_parent, aq_inner
-from Products.CMFCore.CMFCorePermissions import View
-from Products.CMFCore.CMFCorePermissions import ManagePortal
+from Products.CMFCore.permissions import ManagePortal
+from Products.CMFCore.permissions import SetOwnPassword
+from Products.CMFCore.permissions import View
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 
 default_portrait = 'defaultUser.gif'

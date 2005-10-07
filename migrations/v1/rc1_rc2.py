@@ -1,7 +1,6 @@
 from Products.CMFPlone import MigrationTool
 from Products.CMFPlone.Portal import PloneGenerator
 from Products.CMFPlone.CustomizationPolicy import DefaultCustomizationPolicy
-from Products.CMFCore import CMFCorePermissions
 from Products.CMFCore.utils import getToolByName
 from ZODB.POSException import ConflictError
 
@@ -14,22 +13,6 @@ def rc1rc2(portal):
              'default.personalize.success':'personalize_form'}
     nav_props.manage_changeProperties(changes)
 
-# XXX Assuming these can be removed, since they are no longer shipping with Plone. These are now in PloneSkins in Collective.
-#
-#    pg=PloneGenerator()
-#    sk_tool=getToolByName(portal, 'portal_skins')
-#    setup_skins=pg.setupSecondarySkin
-#    setup_skins(sk_tool, 'Plone Core',          'plone_styles/core')
-#    setup_skins(sk_tool, 'Plone Corporate',     'plone_styles/corporate')
-#    #new for 1.0/RC2
-#    setup_skins(sk_tool, 'Plone Autumn',        'plone_styles/autumn')
-#    setup_skins(sk_tool, 'Plone Core Inverted', 'plone_styles/core_inverted')
-#    setup_skins(sk_tool, 'Plone Greensleeves',  'plone_styles/greensleeves')
-#    setup_skins(sk_tool, 'Plone Kitty',         'plone_styles/kitty')
-#    setup_skins(sk_tool, 'Plone Mozilla New',   'plone_styles/mozilla_new')
-#    setup_skins(sk_tool, 'Plone Prime',         'plone_styles/prime')
-#    setup_skins(sk_tool, 'Plone Zed',           'plone_styles/zed')
-
     #prematurely put some properties in.. which was very naughty
     try:
         s_props=portal.portal_properties.site_properties
@@ -40,8 +23,6 @@ def rc1rc2(portal):
         raise
     except:
         pass #XXX its easier
-
-
 
 def registerMigrations():
     # so the basic concepts is you put a bunch of migrations is here

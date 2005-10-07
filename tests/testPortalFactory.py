@@ -8,7 +8,7 @@ if __name__ == '__main__':
 
 from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
-from Products.CMFCore import CMFCorePermissions
+from Products.CMFCore.permissions import AddPortalContent
 
 from AccessControl import Unauthorized
 default_user = PloneTestCase.default_user
@@ -177,8 +177,6 @@ class TestPortalFactory(PloneTestCase.PloneTestCase):
 
     def testTempFolderPermissions(self):
         # TempFolder should "inherit" permission mappings from container
-        from Products.CMFCore.CMFCorePermissions import AddPortalContent
-
         previous_roles = [r for r in self.folder.rolesOfPermission(AddPortalContent) if r['name'] == 'Anonymous']
         self.folder.manage_permission(AddPortalContent, ['Anonymous'], 1)
         new_roles = [r for r in self.folder.rolesOfPermission(AddPortalContent) if r['name'] == 'Anonymous']

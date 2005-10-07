@@ -2,7 +2,7 @@ import os
 
 from Acquisition import aq_base
 from zExceptions import BadRequest
-from Products.CMFCore import CMFCorePermissions
+from Products.CMFCore import permissions as CMFCorePermissions
 from Products.CMFCore.utils import getToolByName
 from Products.CMFDynamicViewFTI.migrate import migrateFTI
 from Products.CMFDynamicViewFTI.fti import DynamicViewTypeInformation

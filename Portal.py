@@ -22,7 +22,7 @@ def listPolicies(creation=1):
 def addPolicy(label, klass):
     custom_policies[label]=klass
 
-from Products.CMFCore import CMFCorePermissions
+from Products.CMFCore.permissions import ListFolderContents, ManageProperties, View
 from Products.CMFCore.TypesTool import FactoryTypeInformation
 from Products.CMFCore.DirectoryView import addDirectoryViews
 from Products.CMFCore.utils import getToolByName
@@ -67,19 +67,19 @@ factory_type_information = { 'id'             : 'Plone Root'
   , 'actions'        : ( { 'id'            : 'view'
                          , 'name'          : 'View'
                          , 'action': 'string:${object_url}'
-                         , 'permissions'   : (CMFCorePermissions.View,)
+                         , 'permissions'   : (View,)
                          , 'category'      : 'object'
                          }
                        , { 'id'            : 'edit'
                          , 'name'          : 'Edit'
                          , 'action': 'string:${object_url}/edit'
-                         , 'permissions'   : (CMFCorePermissions.ManageProperties,)
+                         , 'permissions'   : (ManageProperties,)
                          , 'category'      : 'object'
                          }
                        , { 'id'            : 'local_roles'
                          , 'name'          : 'Sharing'
                          , 'action': 'string:${object_url}/sharing'
-                         , 'permissions'   : (CMFCorePermissions.ManageProperties,)
+                         , 'permissions'   : (ManageProperties,)
                          , 'category'      : 'object'
                          }
                        )
@@ -195,7 +195,7 @@ class PloneGenerator(Portal.PortalGenerator):
                 typeObj._setPropValue('immediate_view', view)
 
     def customizePortalOptions(self, p):
-        p.manage_permission( CMFCorePermissions.ListFolderContents, \
+        p.manage_permission( ListFolderContents, \
                              ('Manager', 'Member', 'Owner',), acquire=1 )
         p.portal_skins.default_skin='Plone Default'
         p.portal_skins.allow_any=0 # Skin changing for users is turned off by default

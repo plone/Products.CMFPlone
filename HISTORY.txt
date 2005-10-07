@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1.1 - Unreleased
 
+    - Fix DeprecationWarnings resulting from CMFCorePermissions imports by
+      importing from new permissions modules instead
+      [hannosch]
+
     - Fixed http://plone.org/collector/4766 - RSS feed in Firefox did not work
       properly.
       [naro]

@@ -1,6 +1,6 @@
-from Products.CMFCore.CMFCorePermissions import ModifyPortalContent, View, \
+from Products.CMFCore.permissions import ModifyPortalContent, View, \
      AccessContentsInformation
-from Products.CMFCalendar.EventPermissions import ChangeEvents
+from Products.CMFCalendar.permissions import ChangeEvents
 
 from Products.CMFCore.WorkflowTool import addWorkflowFactory
 from Products.DCWorkflow.DCWorkflow import DCWorkflowDefinition
