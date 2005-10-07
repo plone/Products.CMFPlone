@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 2.1.1 - Unreleased
 
+    - Removed out-of-the-box TextIndexNG2 support from Plone.
+      TextIndexNG V2 and V3 has explicit migration code to convert
+      ZCTextIndexes to TextIndexNG V2|3 instances on request.
+      This fix should resolve bug http://plone.org/collector/4713
+      [ajung]
+
     - Fix broken discussion_reply_form.cpt.
       [hannosch]
 
