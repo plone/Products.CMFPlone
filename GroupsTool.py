@@ -44,7 +44,6 @@ class GroupsTool(PloneBaseTool, BaseTool):
         if workspaces is None:
             workspaces = self.getGroupWorkspacesFolder()
             if base_hasattr(workspaces, 'reindexObject'):
-                print "reindexing groups"
                 workspaces.reindexObject()
 
 GroupsTool.__doc__ = BaseTool.__doc__
