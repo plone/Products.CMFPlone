@@ -117,6 +117,7 @@ from Products.CMFPlone.migrations.v2_1.rcs import fixCMFLegacyLayer
 from Products.CMFPlone.migrations.v2_1.rcs import reorderObjectButtons
 from Products.CMFPlone.migrations.v2_1.rcs import allowMembersToViewGroups
 from Products.CMFPlone.migrations.v2_1.rcs import reorderStylesheets as reorderStylesheets_rc3_final
+from Products.CMFPlone.migrations.v2_1.final_two11 import reindexPathIndex
 
 from Products.CMFDynamicViewFTI.migrate import migrateFTI
 
@@ -3185,11 +3186,74 @@ class TestMigrations_v2_1(MigrationTest):
             self.assertEqual(value, stylesheet_ids[index])
 
 
+class TestMigrations_v2_1_1(MigrationTest):
+
+    def afterSetUp(self):
+        self.actions = self.portal.portal_actions
+        self.icons = self.portal.portal_actionicons
+        self.properties = self.portal.portal_properties
+        self.memberdata = self.portal.portal_memberdata
+        self.membership = self.portal.portal_membership
+        self.catalog = self.portal.portal_catalog
+        self.groups = self.portal.portal_groups
+        self.factory = self.portal.portal_factory
+        self.portal_memberdata = self.portal.portal_memberdata
+        self.cc = self.portal.cookie_authentication
+        self.cp = self.portal.portal_controlpanel
+        self.skins = self.portal.portal_skins
+
+    def testReindexPathIndex(self):
+        # Should reindex the path index to create new index structures
+        orig_results = self.catalog(path={'query':'news', 'level':1})
+        orig_len = len(orig_results)
+        self.failUnless(orig_len)
+        # Simulate the old EPI
+        delattr(self.catalog.Indexes['path'], '_index_parents')
+        self.assertRaises(AttributeError, self.catalog,
+                                        {'path':{'query':'/','navtree':1}})
+        reindexPathIndex(self.portal, [])
+        results = self.catalog(path={'query':'news', 'level':1})
+        self.assertEqual(len(results), orig_len)
+
+    def testReindexPathIndexTwice(self):
+        # Should not fail when migrated twice, should do nothing if already
+        # migrated
+        orig_results = self.catalog(path={'query':'news', 'level':1})
+        orig_len = len(orig_results)
+        self.failUnless(orig_len)
+        # Simulate the old EPI
+        delattr(self.catalog.Indexes['path'], '_index_parents')
+        self.assertRaises(AttributeError, self.catalog,
+                                        {'path':{'query':'/','navtree':1}})
+        out = []
+        reindexPathIndex(self.portal, out)
+        # Should return a message on the first iteration
+        self.failUnless(out)
+        out = []
+        reindexPathIndex(self.portal, out)
+        results = self.catalog(path={'query':'news', 'level':1})
+        self.assertEqual(len(results), orig_len)
+        # should return an empty list on the second iteration because nothing
+        # was done
+        self.failIf(out)
+
+    def testReindexPathIndexNoIndex(self):
+        # Should not fail when index is missing
+        self.catalog.delIndex('path')
+        reindexPathIndex(self.portal, [])
+
+    def testReindexPathIndexNoCatalog(self):
+        # Should not fail when index is missing
+        self.portal._delObject('portal_catalog')
+        reindexPathIndex(self.portal, [])
+
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
     suite.addTest(makeSuite(TestMigrations_v2))
     suite.addTest(makeSuite(TestMigrations_v2_1))
+    suite.addTest(makeSuite(TestMigrations_v2_1_1))
+    
     return suite
 
 if __name__ == '__main__':

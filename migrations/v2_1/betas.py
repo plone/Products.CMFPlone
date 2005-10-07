@@ -95,6 +95,7 @@ def alpha2_beta1(portal):
     if reindex:
         reindexCatalog(portal, out)
 
+    return out
 
 
 def beta1_beta2(portal):
