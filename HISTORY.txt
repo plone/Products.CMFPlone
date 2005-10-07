@@ -4,6 +4,15 @@ Changelog for Plone
 
 Plone 2.1.1 - Unreleased
 
+    - MimetypesRegistry wasn't correctly handling 'globs' from
+      shared-mime-info database, resulting in failure from detect
+      correct mimetype based on extension on Windows platform. A
+      migration was added to fix existing MimetypesRegistry instances.
+      [sidnei]
+
+    - Added first migration to 2.1.1.
+      [sidnei]
+
     - Fixed http://plone.org/collector/4704 - string.whitespace is not ASCII
       only on OpenBSD, which resulted in problems in UnicodeNormalizer
       [hannosch]
