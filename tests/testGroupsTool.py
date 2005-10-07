@@ -215,6 +215,19 @@ class TestGroupWorkspacesFolder(PloneTestCase.PloneTestCase):
         self.groups.createGrouparea('foo')
         self.failUnless(hasattr(aq_base(self.groups.getGroupWorkspacesFolder()), 'foo'))
 
+    def testCreateGroupareaIndexesGroupWorkspacesFolder(self):
+        self.groups.addGroup('foo', [], [])
+        self.groups.toggleGroupWorkspacesCreation()
+        self.portal._delObject(self.groups.getGroupWorkspacesFolderId())
+        # XXX: Members cannot create folders in the portal root
+        self.setRoles(['Manager'])
+        self.groups.createGrouparea('foo')
+        cat_results = self.portal.portal_catalog(getId =
+                                     self.groups.getGroupWorkspacesFolderId())
+        self.assertEqual(len(cat_results), 1)
+        self.assertEqual(cat_results[0].getObject(),
+                                       self.groups.getGroupWorkspacesFolder())
+
     def testAddGroupCreatesGrouparea(self):
         self.groups.toggleGroupWorkspacesCreation()
         self.groups.addGroup('foo', [], [])

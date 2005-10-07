@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1.1 - Unreleased
 
+    - Fixed http://members.plone.org/collector/4760 by making our GroupsTool
+      reindex the group folder when it is newly created.
+      [alecm]
+
     - Fix DeprecationWarnings resulting from CMFCorePermissions imports by
       importing from new permissions modules instead
       [hannosch]
@@ -47,6 +51,7 @@ Plone 2.1.1 - Unreleased
       have to wait for Zope3-style MessageID's
       [hannosch]
 
+>>>>>>> .r8149
     - A number of micro-optimizations.  The biggest winners are precompiling
       the regexes used in normalizeString at startup, and switching the
       navtree to use a recursive macro rather than recursively calling a
