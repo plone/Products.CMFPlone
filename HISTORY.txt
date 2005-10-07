@@ -51,7 +51,6 @@ Plone 2.1.1 - Unreleased
       have to wait for Zope3-style MessageID's
       [hannosch]
 
->>>>>>> .r8149
     - A number of micro-optimizations.  The biggest winners are precompiling
       the regexes used in normalizeString at startup, and switching the
       navtree to use a recursive macro rather than recursively calling a
