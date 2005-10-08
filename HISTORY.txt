@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1.1 - Unreleased
 
+    - Fixed http://plone.org/collector/4690 - user can't change password after 
+      initial login (with 'validate email' set)
+      [naro]
+
     - Fixed http://plone.org/collector/4777 - 'portlet_navtree_macro_opt' call
       in sitemap.pt
       [hannosch]
