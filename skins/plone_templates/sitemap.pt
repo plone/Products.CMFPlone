@@ -26,7 +26,7 @@
                     level python:1;
                     show_children python:True;
                     isNaviTree python:True;">
-            <metal:main use-macro="here/portlet_navtree_macro_opt/macros/nav_main" />
+            <metal:main use-macro="here/portlet_navtree_macro/macros/nav_main" />
     </ul>
 
 </metal:main>

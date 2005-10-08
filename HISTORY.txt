@@ -4,11 +4,15 @@ Changelog for Plone
 
 Plone 2.1.1 - Unreleased
 
-    - Fixed http://members.plone.org/collector/4722 the SecureMailHost
+    - Fixed http://plone.org/collector/4777 - 'portlet_navtree_macro_opt' call
+      in sitemap.pt
+      [hannosch]
+
+    - Fixed http://plone.org/collector/4722 the SecureMailHost
       migration was test-free and not very cautious.
       [alecm]
 
-    - Refixed http://members.plone.org/collector/4639 by checking the presence
+    - Refixed http://plone.org/collector/4639 by checking the presence
       of the property without acquisition and then using it only if it exists
       on the object, but allowing full acquisition if the property is there.
       [alecm]
@@ -16,7 +20,7 @@ Plone 2.1.1 - Unreleased
     - Added migration to the new ExtendedPathIndex structures.
       [alecm]
 
-    - Fixed http://members.plone.org/collector/4760 by making our GroupsTool
+    - Fixed http://plone.org/collector/4760 by making our GroupsTool
       reindex the group folder when it is newly created.
       [alecm]
 
