@@ -7,6 +7,7 @@ if __name__ == '__main__':
     execfile(os.path.join(sys.path[0], 'framework.py'))
 
 from Testing import ZopeTestCase
+from OFS.SimpleItem import SimpleItem
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFCore.Expression import Expression
 from Products.CMFCore.permissions import AccessInactivePortalContent
@@ -118,10 +119,18 @@ from Products.CMFPlone.migrations.v2_1.rcs import reorderObjectButtons
 from Products.CMFPlone.migrations.v2_1.rcs import allowMembersToViewGroups
 from Products.CMFPlone.migrations.v2_1.rcs import reorderStylesheets as reorderStylesheets_rc3_final
 from Products.CMFPlone.migrations.v2_1.final_two11 import reindexPathIndex
+from Products.CMFPlone.migrations.v2_1.alphas import replaceMailHost
 
 from Products.CMFDynamicViewFTI.migrate import migrateFTI
 
 import types
+
+class BogusMailHost(SimpleItem):
+    meta_type = 'Bad Mailer'
+    title = 'Mailer'
+    smtp_port = 37
+    smtp_host = 'my.badhost.com'
+
 
 class MigrationTest(PloneTestCase.PloneTestCase):
 
@@ -3184,6 +3193,28 @@ class TestMigrations_v2_1(MigrationTest):
         stylesheet_ids = cssreg.getResourceIds()
         for index, value in enumerate(desired_order):
             self.assertEqual(value, stylesheet_ids[index])
+
+    def testReplaceMailHost(self):
+        # Make sure it converts the  mail host and its settings
+        self.portal._delObject('MailHost')
+        self.portal._setObject('MailHost', BogusMailHost())
+        mailer = self.portal.MailHost
+        self.assertEqual(mailer.meta_type, 'Bad Mailer')
+        replaceMailHost(self.portal, [])
+        mailer = getattr(self.portal, 'MailHost', None)
+        self.failUnless(mailer is not None)
+        self.assertEqual(mailer.meta_type, 'Secure Mail Host')
+        self.assertEqual(mailer.title, 'Mailer')
+        self.assertEqual(mailer.smtp_port, 37)
+        self.assertEqual(mailer.smtp_host, 'my.badhost.com')
+
+    def testReplaceMailHostWhenMissing(self):
+        # Make sure it adds a new one if the original is missing
+        self.portal._delObject('MailHost')
+        replaceMailHost(self.portal, [])
+        mailer = getattr(self.portal, 'MailHost', None)
+        self.failUnless(mailer is not None)
+        self.assertEqual(mailer.meta_type, 'Secure Mail Host')
 
 
 class TestMigrations_v2_1_1(MigrationTest):

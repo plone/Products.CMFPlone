@@ -225,15 +225,19 @@ def addTranslationServiceTool(portal, out):
 def replaceMailHost(portal, out):
     """Replaces the mailhost with a secure mail host."""
     id = 'MailHost'
-    oldmh = getattr(aq_base(portal), id)
-    if oldmh.meta_type == 'Secure Mail Host':
-        out.append('Secure Mail Host already installed')
-        return
-    title = oldmh.title
-    smtp_host = oldmh.smtp_host
-    smtp_port = oldmh.smtp_port
-    portal.manage_delObjects([id])
-    out.append('Removed old MailHost')
+    smtp_port = 25
+    smtp_host = ''
+    title = ''
+    oldmh = getattr(aq_base(portal), id, None)
+    if oldmh is not None:
+        if oldmh.meta_type == 'Secure Mail Host':
+            out.append('Secure Mail Host already installed')
+            return
+        title = oldmh.title
+        smtp_host = oldmh.smtp_host
+        smtp_port = oldmh.smtp_port
+        portal.manage_delObjects([id])
+        out.append('Removed old MailHost')
 
     addMailhost = portal.manage_addProduct['SecureMailHost'].manage_addMailHost
     addMailhost(id, title=title, smtp_host=smtp_host, smtp_port=smtp_port)

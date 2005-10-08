@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1.1 - Unreleased
 
+    - Fixed http://members.plone.org/collector/4722 the SecureMailHost
+      migration was test-free and not very cautious.
+      [alecm]
+
     - Refixed http://members.plone.org/collector/4639 by checking the presence
       of the property without acquisition and then using it only if it exists
       on the object, but allowing full acquisition if the property is there.
