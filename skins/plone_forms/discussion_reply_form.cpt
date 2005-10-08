@@ -15,8 +15,7 @@
                  discussable python:thread[0];
                  replies python:thread[1:]">
 
-    <tal:discussable define="viewAction python:discussable.getTypeInfo().getActionById('view');
-                             template python:getattr(here, discussable.getLayout(), None);
+    <tal:discussable define="template python:getattr(here, discussable.getLayout(), None);
                              macros template/macros | nothing;
                              main_macro macros/main | nothing;
                              showDiscussable python:main_macro;
