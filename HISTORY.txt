@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 2.1.1 - Unreleased
 
+    - Fixed http://plone.org/collector/4587 - workflow history displays author's 
+      full name instead of author's id and link to author page instead of
+      home folder (to be in sync with document byline). Added colored transition 
+      names as a free bonus.
+      [naro]
+
     - Fixed http://plone.org/collector/4690 - user can't change password after 
       initial login (with 'validate email' set)
       [naro]
