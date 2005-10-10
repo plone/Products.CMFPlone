@@ -163,10 +163,10 @@ class TestContentTypeScripts(PloneTestCase.PloneTestCase):
         self.folder.invokeFactory('Topic', id='topic', title='Foo')
         self.assertEqual(self.folder.topic.Title(), 'Foo')
 
-#    def testTopicEditTopic(self):
-#        self.folder.invokeFactory('Topic', id='topic')
-#        self.folder.topic.topic_editTopic(1, 'topic', title='Foo')
-#        self.assertEqual(self.folder.topic.Title(), 'Foo')
+    def testTopicEditTopic(self):
+        self.folder.invokeFactory('Topic', id='topic')
+        self.folder.topic.topic_editTopic(1, 'topic', title='Foo')
+        self.assertEqual(self.folder.topic.Title(), 'Foo')
 
     #def testTopicEditCriteria(self):
     #    self.folder.invokeFactory('Topic', id='topic')
