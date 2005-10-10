@@ -1,0 +1,128 @@
+<html xmlns:tal="http://xml.zope.org/namespaces/tal"
+    xmlns:metal="http://xml.zope.org/namespaces/metal"
+    metal:use-macro="container/main_template/macros/master"
+    i18n:domain="plone">
+
+<body>
+
+<div metal:fill-slot="main">
+
+    <h1>
+        <span i18n:translate="heading_criteria_for" tal:omit-tag="">
+            Criteria for
+            <span i18n:name="title" tal:content="here/getId" tal:omit-tag="" />
+        </span>
+    </h1>
+
+    <form action=""
+          method="post"
+          tal:attributes="action here/absolute_url"
+          tal:condition="here/listCriteria">
+
+        <fieldset>
+
+            <legend i18n:translate="legend_criteria_details">Criteria Details</legend>
+
+            <metal:block tal:define="criteria here/listCriteria;">
+                <metal:block tal:repeat="criterion criteria">
+                    <metal:block tal:define="editform string:criterion/${criterion/getEditForm}/macros/${criterion/getEditForm};">
+                          <span metal:use-macro="python:path(editform)" />
+                    </metal:block>
+                </metal:block>
+            </metal:block>
+
+            <div class="formControls">
+                <input class="context"
+                       type="submit"
+                       name="topic_editCriteria:action"
+                       value="Save"
+                       tabindex=""
+                       tal:attributes="tabindex tabindex/next;"
+                       i18n:attributes="value label_save;"
+                       />
+
+                <input class="context"
+                       type="submit"
+                       name="topic_deleteCriteria:action"
+                       value="Remove"
+                       tabindex=""
+                       tal:attributes="tabindex tabindex/next;"
+                       i18n:attributes="value label_remove;"
+                       />
+
+                <input type="hidden" name=":default_action" value="editCriteria" />
+
+            </div>
+
+        </fieldset>
+
+    </form>
+
+    <form action="" 
+          method="post" 
+          tal:attributes="action string:${here/absolute_url}/topic_addCriterion">
+
+        <fieldset>
+    
+            <legend i18n:translate="legend_add_new_topic_criteria">Add New Topic Criteria</legend>
+
+            <div class="field" style="float:left">
+        
+                <label for="field" i18n:translate="label_criteria_field_name">Field name</label>
+        
+                <div class="formHelp" i18n:translate="help_criteria_field_name">
+		List Available Fields
+                </div>		
+        
+        <select name="field"
+                    id="field"
+                    tabindex=""
+                    tal:define="fields here/listAvailableFields;"
+                    tal:attributes="tabindex tabindex/next;">
+		
+                    <option value="" tal:repeat="field fields" tal:attributes="value field" tal:content="field">Field</option>
+
+                </select>
+
+            </div>
+        
+            <div class="field" style="float:left">
+
+                <label for="criterion_type" i18n:translate="label_criteria_type">Criteria type</label>
+
+                <div class="formHelp" i18n:translate="help_criteria_type">
+                List Criteria Types
+                </div>		
+        
+                <select name="criterion_type"
+                    id="criterion_type"
+                    tabindex=""
+                    tal:define="types here/listCriteriaTypes;"
+                    tal:attributes="tabindex tabindex/next;">
+
+                    <option value="" tal:repeat="type types" tal:attributes="value type/name" tal:content="type/name">Type</option>
+
+                </select>
+        
+            </div>
+            
+            <div class="formControls">
+
+                <input class="context"
+                       type="submit"
+                       value="Add"
+                       tabindex=""
+                       tal:attributes="tabindex tabindex/next;"
+                       i18n:attributes="value label_add;"
+                       />
+            </div>
+        
+        </fieldset>
+    
+    </form>
+
+</div>
+
+</body>
+</html>
+

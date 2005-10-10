@@ -1,0 +1,14 @@
+[security]
+View=0:Authenticated
+
+[default]
+title=Edit Topic
+
+[validators]
+validators=validate_id,validate_title,validate_topic_edit
+validators..Cancel=
+
+[actions]
+action.success=traverse_to:string:topic_editTopic
+action.success..Cancel=redirect_to_action:string:view
+action.failure=traverse_to:string:topic_edit_form

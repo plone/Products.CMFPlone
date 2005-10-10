@@ -1,0 +1,2 @@
+[actions]
+action.success=redirect_to_action:string:criteria

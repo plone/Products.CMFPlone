@@ -1,0 +1,92 @@
+<html xmlns:tal="http://xml.zope.org/namespaces/tal"
+    xmlns:metal="http://xml.zope.org/namespaces/metal"
+    metal:use-macro="container/main_template/macros/master"
+    i18n:domain="plone">
+
+<body>
+
+<div metal:fill-slot="main">
+    <tal:main-macro metal:define-macro="main">
+        <h1 tal:content="structure here/title_or_id" class="documentFirstHeading">
+            Title or id
+        </h1>
+    
+        <div class="documentDescription" tal:content="here/Description">
+            description
+        </div>
+    
+        <metal:block tal:define="
+                     b_start string:0;b_start request/b_start | b_start;
+                     results here/queryCatalog;
+                     Batch python:modules['Products.CMFPlone'].Batch;
+                     batch python:Batch(results, 20, int(b_start), orphan=1)">
+    
+    
+        <!-- Navigation -->
+        <div metal:use-macro="here/batch_macros/macros/navigation" />
+    
+        <table class="listing"
+               id="sortable"
+               tal:condition="batch">
+    
+            <thead>
+                <tr>
+                    <th>&nbsp;<tal:block i18n:translate="heading_title">Title</tal:block>&nbsp;</th>
+                    <th>&nbsp;<tal:block i18n:translate="heading_type">Type</tal:block>&nbsp;</th>
+                    <th>&nbsp;<tal:block i18n:translate="heading_last_modified">Last Modified</tal:block>&nbsp;</th>
+                    <th>&nbsp;<tal:block i18n:translate="heading_description">Description</tal:block>&nbsp;</th>
+                </tr>
+            </thead>
+    
+            <tbody>
+            <metal:block tal:repeat="match batch">
+            <tr class="even"
+                tal:define="oddrow repeat/match/odd"
+                tal:attributes="class python:test(oddrow, 'even', 'odd')" >
+            <td>
+            <a href="#"
+               tal:attributes="href string:${match/getURL}/view" >
+               <img src="#" tal:attributes="src string:${utool}/${match/getIcon}" />
+               <span tal:replace="match/Title|match/id">Title or id</span>
+            </a>
+            </td>
+            <td tal:content="match/Type">Type</td>
+            <td tal:content="match/ModificationDate">Modification Date</td>
+            <td tal:content="match/Description">Description</td>
+            </tr>
+            </metal:block>
+            </tbody>
+        </table>
+    
+        <!-- Navigation -->
+        <div metal:use-macro="here/batch_macros/macros/navigation" />
+    
+        <metal:block tal:define="topics python:here.objectValues( [ 'Portal Topic' ] )" tal:condition="topics">
+    
+        <h2 i18n:translate="heading_sub_topics">Sub-topics</h2>
+    
+        <ul>
+            <li tal:repeat="topic topics">
+                <p>
+                    <a href=""
+                        tal:define="topictitle python:topic.Title() or topic.getId()"
+                        tal:attributes="href topic/absolute_url"
+                        tal:content="topictitle">
+                            Topic Title
+                    </a>
+                </p>
+            </li>
+        </ul>
+    
+        </metal:block>
+    
+        <div tal:condition="not: results">
+            <p><strong i18n:translate="no_results_found"> No results match your criteria. </strong></p>
+        </div>
+    
+        </metal:block>
+    </tal:main-macro>
+</div>
+
+</body>
+</html>
