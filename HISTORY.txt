@@ -4,11 +4,6 @@ Changelog for Plone
 
 Plone 2.1.1 - Unreleased
 
-    - Plone's MemberData class is now actually used; in previous versions, it
-      was always CMF class that was used. (r5069 tried to fix it, but commented by
-      r5070)
-      [panjunyong]
-
     - Fixed http://plone.org/collector/4587 - workflow history displays author's 
       full name instead of author's id and link to author page instead of
       home folder (to be in sync with document byline). Added colored transition 
