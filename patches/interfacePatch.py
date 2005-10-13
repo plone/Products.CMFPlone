@@ -7,18 +7,18 @@
 
 from Products.CMFCore.WorkflowTool import WorkflowTool
 
-orig_all_meta_types = WorkflowTool.all_meta_types
+orig_all_meta_types = WorkflowTool.all_meta_types.im_func
 def all_meta_types(self, interfaces=None):
-    return orig_all_meta_types
+    return orig_all_meta_types(self)
 WorkflowTool.all_meta_types = all_meta_types
 
 # 2. Same as above, but now for TypesTool.
 
 from Products.CMFCore.TypesTool import TypesTool
 
-orig_all_meta_types = TypesTool.all_meta_types
+orig_all_meta_types = TypesTool.all_meta_types.im_func
 def all_meta_types(self, interfaces=None):
-    return orig_all_meta_types
+    return orig_all_meta_types(self)
 TypesTool.all_meta_types = all_meta_types
 
 # 3. Provide some methods to ObjectManager to silent warnings from
