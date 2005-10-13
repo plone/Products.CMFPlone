@@ -2,7 +2,7 @@ Changelog for Plone
 
    (name of developer listed in brackets)
 
-Plone 2.1.1 - Unreleased
+Plone 2.1.1 - Coloma - Released October 13, 2005
 
     - Made the ExtendedPathIndex migration apply to all EPI from any ZCatalog
       instance in the portal root.  Should fix issues with migrating CMFMember
