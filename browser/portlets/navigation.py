@@ -18,15 +18,15 @@ class NavigationPortlet(BrowserView):
 
     def createNavTree(self):
         data = self.context.plone_utils.createNavTree(self.context, sitemap=None)
-        return self.context.portlet_navtree_macro(children=data.get('children', []),
-                                                  level=1, show_children=True, isNaviTree=True)
+        return self.context.portlet_navtree_macro(
+            children=data.get('children', []),
+            level=1, show_children=True, isNaviTree=True)
 
     def isPortalOrDefaultChild(self):
         """ feel the hacking love """
         g = getView(self.context, 'globals_view', self.request)
         portal = g.portal()
-        return portal == self.context or (portal == self.context.getParentNode() and
-                                          self.context.plone_utils.isDefaultPage(self.context))        
-
-
+        return (portal == self.context or
+                (portal == self.context.getParentNode() and
+                 self.context.plone_utils.isDefaultPage(self.context)))
 
