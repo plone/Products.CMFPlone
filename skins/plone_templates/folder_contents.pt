@@ -184,6 +184,7 @@
                                    item_wf_state        item/review_state|python: wtool.getInfoFor(item, 'review_state', '');
                                    item_state_title     python:wtool.getTitleForStateOnType(item_wf_state, item_type);
                                    item_wf_state_class  python:'state-' + normalizeString(item_wf_state);
+                                   item_use_view        python:item_type in use_view_action;
                                    hasGetUrl            python:hasattr(item.aq_explicit, 'getURL');
                                    item_rel_url         python:hasGetUrl and item.getURL(relative=1) or getRelativeContentURL(item);
                                    browserDefaultResult here/browserDefault;
@@ -210,9 +211,8 @@
                              tal:attributes="value item_rel_url" />
 
                     </td>
-                    <td tal:define="url python:(not item_folderish and test(item_type in use_view_action,
-                                    item_url+'/view',
-                                    item_url+'/')) or item_url+'/folder_contents';">
+                    <td tal:define="url python:test(item_use_view, item_url+'/view',
+                                    test(item_folderish, item_url+'/folder_contents', item_url+'/'));">
                         <span tal:attributes="class item_type_class">
                         <a href="#" tal:attributes="href  url;
                                                   title string: $item_type: $item_description;

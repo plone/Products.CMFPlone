@@ -2,6 +2,13 @@ Changelog for Plone
 
    (name of developer listed in brackets)
 
+Plone 2.1.2 (unreleased)
+
+    - Changed folder_contents.pt so that it honors the
+      'typesUseViewActionInListings' setting in site_properties for ALL
+      types (was only working for non-folderish types before)
+      [rafrombrc]
+
 Plone 2.1.1 - Coloma - Released October 13, 2005
 
     - Made the ExtendedPathIndex migration apply to all EPI from any ZCatalog
