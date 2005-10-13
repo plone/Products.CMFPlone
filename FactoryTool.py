@@ -158,7 +158,7 @@ class TempFolder(TempFolderBase):
             return (aq_base(obj).__of__(temp_folder)).__of__(intended_parent)
 
     # ignore rename requests since they don't do anything
-    def manage_renameObject(self, id1, id2):
+    def manage_renameObject(self, id, new_id, REQUEST=None):
         pass
 
 

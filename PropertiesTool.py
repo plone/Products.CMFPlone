@@ -2,6 +2,8 @@ from ComputedAttribute import ComputedAttribute
 from Acquisition import aq_parent, aq_inner
 from Products.CMFCore.ActionProviderBase import ActionProviderBase
 from Products.CMFCore.CMFCorePermissions import ManagePortal
+from Products.CMFCore.interfaces.portal_properties \
+     import portal_properties as IBasePortalProperties
 from Products.CMFDefault.PropertiesTool import PropertiesTool as BaseTool
 from Products.CMFPlone import ToolNames
 
@@ -14,7 +16,7 @@ from OFS.SimpleItem import SimpleItem
 from AccessControl import ClassSecurityInfo
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFPlone.interfaces.PropertiesTool import IPropertiesTool
-from Products.CMFPlone.utils import classImplements
+from Products.CMFPlone.utils import classImplements, classDoesNotImplement
 
 class PropertiesTool(PloneBaseTool, Folder, BaseTool):
 
@@ -22,15 +24,14 @@ class PropertiesTool(PloneBaseTool, Folder, BaseTool):
     toolicon = 'skins/plone_images/topic_icon.gif'
 
     meta_type = ToolNames.PropertiesTool
-    meta_types = all_meta_types =  ((
+    meta_types = ((
         {'name' : 'Plone Property Sheet',
          'action' : 'manage_addPropertySheetForm'
          },
         ))
 
     __implements__ = ((IPropertiesTool,) +
-                      (PloneBaseTool.__implements__,
-                      ActionProviderBase.__implements__,
+                      (ActionProviderBase.__implements__,
                       Folder.__implements__, ))
 
     manage_options = ((Folder.manage_options[0],) +
@@ -40,6 +41,9 @@ class PropertiesTool(PloneBaseTool, Folder, BaseTool):
                                                    globals())
 
     security = ClassSecurityInfo()
+
+    def all_meta_types(self, interfaces=None):
+        return self.meta_types
 
     def title(self):
         """ Return BaseTool title
@@ -98,6 +102,7 @@ class PropertiesTool(PloneBaseTool, Folder, BaseTool):
 PropertiesTool.__doc__ = BaseTool.__doc__
 
 classImplements(PropertiesTool, PropertiesTool.__implements__)
+classDoesNotImplement(PropertiesTool, IBasePortalProperties)
 InitializeClass(PropertiesTool)
 
 

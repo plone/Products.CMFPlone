@@ -11,12 +11,15 @@ from Products.CMFPlone.tests import PloneTestCase
 
 import traceback
 
-from Interface.Implements import getImplementsOfInstances, getImplements, flattenInterfaces
+from types import TupleType, TypeType, ClassType
+from zope.interface.interface import InterfaceClass
+from ExtensionClass import ExtensionClass
+
+from Interface.Implements import getImplementsOfInstances
+from Interface.Implements import getImplements, flattenInterfaces
 from Interface.Verify import verifyClass, verifyObject
 from Interface.Exceptions import BrokenImplementation, DoesNotImplement
 from Interface.Exceptions import BrokenMethodImplementation
-
-from types import TupleType
 
 ###############################################################################
 ###               import classes and interfaces for testing                 ###
@@ -55,9 +58,15 @@ from Products.CMFPlone.WorkflowTool import WorkflowTool
 
 def className(klass):
     """ get the short class name """
-    if hasattr(klass, '__class__'):
-        klass = klass.__class__
+    if not isinstance(klass, (TypeType, ClassType,
+                              ExtensionClass, InterfaceClass)):
+        # Looks like an instance, get it's class.
+        if hasattr(klass, '__class__'):
+            klass = klass.__class__
     return klass.__name__
+
+def dottedName(klass):
+    return "%s.%s" % (klass.__module__, klass.__name__)
 
 # list of tests
 tests = []
@@ -91,19 +100,19 @@ class InterfaceTest(ZopeTestCase.ZopeTestCase):
 
         # is the class really implemented by the given interface?
         self.failUnless(interface.isImplementedByInstancesOf(klass),
-            'The class %s does not implement %s' % (className(klass),
-                                                    className(interface)))
+            'The class %s does not implement %s' % (dottedName(klass),
+                                                    dottedName(interface)))
         # verify if the implementation is correct
         try:
             verifyClass(interface, klass)
         except (BrokenImplementation, DoesNotImplement,
                 BrokenMethodImplementation), errmsg:
             self.fail('The class %s does not implement %s correctly: \n%s'
-                      % (className(klass), className(interface), errmsg))
+                      % (dottedName(klass), dottedName(interface), errmsg))
 	except AttributeError, errmsg:
 	    self.fail('There was a problem while checking the implementation of '
 	              'class %s and interface %s: \nAttributeError %s\n%s'
-		      % (className(klass), className(interface), errmsg,
+		      % (dottedName(klass), dottedName(interface), errmsg,
                          ''.join(traceback.format_tb(sys.exc_traceback))))
 
     def interfaceImplementedBy(self, instance, interface):
@@ -114,15 +123,15 @@ class InterfaceTest(ZopeTestCase.ZopeTestCase):
 
         # is the class really implemented by the given interface?
         self.failUnless(interface.isImplementedBy(instance),
-            'The instance of %s does not implement %s' % (className(instance),
-                                                          className(interface)))
+            'The instance of %s does not implement %s' % (dottedName(instance),
+                                                          dottedName(interface)))
         # verify if the implementation is correct
         try:
             verifyObject(interface, instance)
         except (BrokenImplementation, DoesNotImplement,
           BrokenMethodImplementation), errmsg:
             self.fail('The instance of %s does not implement %s correctly: \n%s'
-                % (className(instance), className(interface), errmsg))
+                % (dottedName(instance), dottedName(interface), errmsg))
 
     def getImplementsOfInstanceOf(self, klass):
         """ returns the interfaces implemented by the klass (flat)"""
@@ -152,8 +161,8 @@ class InterfaceTest(ZopeTestCase.ZopeTestCase):
         for interface in interfaces:
             self.failUnless(
                 interface in impl,
-                'The class %s does not implement %s' % (className(klass),
-                                                        className(interface)))
+                'The class %s does not implement %s' % (dottedName(klass),
+                                                        dottedName(interface)))
 
     def doesImplementBy(self, instance, interfaces):
         """ make sure that the klass implements at least these interfaces"""
@@ -163,8 +172,8 @@ class InterfaceTest(ZopeTestCase.ZopeTestCase):
         for interface in interfaces:
             self.failUnless(
                 interface in impl,
-                'The instance of %s does not implement %s' % (className(instance),
-                                                              className(interface)))
+                'The instance of %s does not implement %s' % (dottedName(instance),
+                                                              dottedName(interface)))
 
     def _testStuff(self):
         """ test self.klass and self.instance """
@@ -210,19 +219,19 @@ class zope_interface_test(ZopeTestCase.ZopeTestCase):
 
         # is the class really implemented by the given interface?
         self.failUnless(interface.implementedBy(klass),
-            'The class %s does not implement %s' % (className(klass),
-                                                    className(interface)))
+            'The class %s does not implement %s' % (dottedName(klass),
+                                                    dottedName(interface)))
         # verify if the implementation is correct
         try:
             verifyClass(interface, klass)
         except (BrokenImplementation, DoesNotImplement,
                 BrokenMethodImplementation), errmsg:
             self.fail('The class %s does not implement %s correctly: \n%s'
-                      % (className(klass), className(interface), errmsg))
+                      % (dottedName(klass), dottedName(interface), errmsg))
 	except AttributeError, errmsg:
 	    self.fail('There was a problem while checking the implementation of '
 	              'class %s and interface %s: \nAttributeError %s\n%s'
-		      % (className(klass), className(interface), errmsg,
+		      % (dottedName(klass), dottedName(interface), errmsg,
                          ''.join(traceback.format_tb(sys.exc_traceback))))
 
     def interfaceProvidedBy(self, instance, interface):
@@ -233,15 +242,15 @@ class zope_interface_test(ZopeTestCase.ZopeTestCase):
 
         # is the class really implemented by the given interface?
         self.failUnless(interface.providedBy(instance),
-            'The instance of %s does not provide %s' % (className(instance),
-                                                        className(interface)))
+            'The instance of %s does not provide %s' % (dottedName(instance),
+                                                        dottedName(interface)))
         # verify if the implementation is correct
         try:
             verifyObject(interface, instance)
         except (BrokenImplementation, DoesNotImplement,
                 BrokenMethodImplementation), errmsg:
             self.fail('The instance of %s does not provide %s correctly: \n%s'
-                      % (className(instance), className(interface), errmsg))
+                      % (dottedName(instance), dottedName(interface), errmsg))
 
     def getImplementedBy(self, klass):
         """ returns the interfaces implemented by the klass (flat)"""
@@ -259,8 +268,8 @@ class zope_interface_test(ZopeTestCase.ZopeTestCase):
         for interface in interfaces:
             self.failUnless(
                 interface in impl,
-                'The class %s does not implement %s' % (className(klass),
-                                                        className(interface)))
+                'The class %s does not implement %s' % (dottedName(klass),
+                                                        dottedName(interface)))
 
     def doesProvidedBy(self, instance, interfaces):
         """ make sure that the klass implements at least these interfaces"""
@@ -268,8 +277,8 @@ class zope_interface_test(ZopeTestCase.ZopeTestCase):
         for interface in interfaces:
             self.failUnless(
                 interface in impl,
-                'The instance of %s does not provide %s' % (className(instance),
-                                                            className(interface)))
+                'The instance of %s does not provide %s' % (dottedName(instance),
+                                                            dottedName(interface)))
 
     def _testStuff(self):
         """ test self.klass and self.instance """

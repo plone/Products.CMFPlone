@@ -423,3 +423,19 @@ def classImplements(class_, *interfaces):
         assert issubclass(i, zope.interface.Interface)
         normalized_interfaces.append(i)
     return zope.interface.classImplements(class_, *normalized_interfaces)
+
+def classDoesNotImplement(class_, *interfaces):
+    # convert any Zope 2 interfaces to Zope 3 using fromZ2Interface
+    interfaces = flatten(interfaces)
+    normalized_interfaces = []
+    for i in interfaces:
+        try:
+            i = fromZ2Interface(i)
+        except ValueError: # already a Zope 3 interface
+            pass
+        assert issubclass(i, zope.interface.Interface)
+        normalized_interfaces.append(i)
+    implemented = implementedBy(class_)
+    for iface in normalized_interfaces:
+        implemented = implemented - iface
+    return zope.interface.classImplementsOnly(class_, implemented)
