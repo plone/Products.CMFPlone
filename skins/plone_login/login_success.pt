@@ -21,7 +21,7 @@
     <div tal:define="came_from request/came_from|nothing;
                      DateTime python:modules['DateTime'].DateTime;
                      Batch python:modules['Products.CMFPlone'].Batch;
-                     login_time python:member.getProperty('login_time', DateTime());
+                     login_time python:member is not None and member.getProperty('login_time', DateTime()) or DateTime();
                      begin_time python:here.ZopeTime('2000/01/01');
                      validate_email portal_object/validate_email;">
 
