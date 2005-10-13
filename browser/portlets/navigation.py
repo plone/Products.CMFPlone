@@ -15,7 +15,7 @@ class NavigationPortlet(utils.BrowserView):
 
     def createNavTree(self):
         context = utils.context(self)
-        data = context.plone_utils.createNavTree(self.context, sitemap=None)
+        data = context.plone_utils.createNavTree(context, sitemap=None)
         return context.portlet_navtree_macro(
             children=data.get('children', []),
             level=1, show_children=True, isNaviTree=True)

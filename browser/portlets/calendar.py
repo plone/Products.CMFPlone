@@ -12,21 +12,21 @@ class CalendarPortlet(utils.BrowserView):
     def __init__(self, context, request):
         self.context = [context]
         self.request = request
-        self.current = self.DateTime()()
         self.yearmonth = self.getYearAndMonthToDisplay()
         self.DateTime = DateTime
+        self.current = DateTime()
         self.current_day = self.current.day()
         self.nextYearMax = self.current + 365
         self.prevYearMin = self.current - 365
         self.year = self.yearmonth[0]
         self.month = self.yearmonth[1]
-        self.prevMonthTime = self.getPreviousMonth(self.month(), self.year())
-        self.nextMonthTime = self.getNextMonth(self.month(), self.year())
-        self.weeks = self.context.portal_calendar.getEventsForCalendar(self.month(), self.year())
+        self.prevMonthTime = self.getPreviousMonth(self.month, self.year)
+        self.nextMonthTime = self.getNextMonth(self.month, self.year)
+        self.weeks = context.portal_calendar.getEventsForCalendar(
+            self.month, self.year)
 
     def getYearAndMonthToDisplay(self):
         """ from skins/plone_scripts/getYearAndMonthToDisplay.py """
-
         ##parameters=
         ##title=Calendar Presentation Helper
 
@@ -34,6 +34,7 @@ class CalendarPortlet(utils.BrowserView):
         # If uses_session is true stores the values in the session.
 
         current = DateTime()
+        context = utils.context(self)
         request = self.request
         session = None
 
@@ -42,7 +43,7 @@ class CalendarPortlet(utils.BrowserView):
         month = request.get('month', None)
 
         # Next get the data from the SESSION
-        if self.context.portal_calendar.getUseSession():  # XXX GoldEgg changed from 'container' to 'context'
+        if context.portal_calendar.getUseSession():  # XXX GoldEgg changed from 'container' to 'context'
             session = request.get('SESSION', None)
             if session:
                 if not year:

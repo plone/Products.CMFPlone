@@ -7,7 +7,7 @@
 <div metal:define-macro="portlet"
      tal:omit-tag=""
      tal:define="view context/@@calendar_view;
-		         DateTime view/DateTime;
+                 DateTime view/DateTime;
                  current view/current;
                  current_day view/current_day;
                  yearmonth view/getYearAndMonthToDisplay;

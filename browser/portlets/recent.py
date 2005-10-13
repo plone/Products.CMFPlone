@@ -10,10 +10,12 @@ class RecentPortlet(utils.BrowserView):
 
     def results(self):
         """ """
-        g = getView(self.context, 'globals_view', self.request)
+        context = utils.context(self)
+        g = getView(context, 'globals_view', self.request)
         portal_catalog = g.portal().portal_catalog
         typesToShow = g.putils().getUserFriendlyTypes()
-        return self.request.get('items',
-                                portal_catalog.searchResults(sort_on='modified',
-                                                             portal_type=typesToShow,
-                                                             sort_order='reverse')[:5])
+        return self.request.get(
+            'items',
+            portal_catalog.searchResults(sort_on='modified',
+                                         portal_type=typesToShow,
+                                         sort_order='reverse')[:5])
