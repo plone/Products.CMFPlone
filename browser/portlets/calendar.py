@@ -1,16 +1,16 @@
+from DateTime import DateTime
+from zope.component import getView
+from zope.interface import implements
 
+from Products.CMFPlone import utils
 from Products.CMFPlone.browser.interfaces import ICalendarPortlet
 
-from zope.interface import implements
-from zope.component import getView
-from Products.Five import BrowserView
-from DateTime import DateTime
 
-class CalendarPortlet(BrowserView):
+class CalendarPortlet(utils.BrowserView):
     implements(ICalendarPortlet)
 
     def __init__(self, context, request):
-        self.context = context
+        self.context = [context]
         self.request = request
         self.current = self.DateTime()()
         self.yearmonth = self.getYearAndMonthToDisplay()
@@ -47,13 +47,13 @@ class CalendarPortlet(BrowserView):
             if session:
                 if not year:
                     year = session.get('calendar_year', None)
-                if not month:  
+                if not month:
                     month = session.get('calendar_month', None)
 
         # Last resort to today
-        if not year:   
+        if not year:
             year = current.year()
-        if not month:  
+        if not month:
             month = current.month()
 
         year, month = int(year), int(month)
@@ -65,7 +65,7 @@ class CalendarPortlet(BrowserView):
 
         # Finally return the results
         return year, month
-    
+
     def getPreviousMonth(self, month, year):
         """ from skins/plone_scripts/getYearAndMonthToDisplay.py """
         ## Script (Python) "getPreviousMonth"
@@ -109,4 +109,3 @@ class CalendarPortlet(BrowserView):
             month+=1
 
         return DateTime(year, month, 1)
-

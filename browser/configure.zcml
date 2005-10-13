@@ -72,4 +72,12 @@
       allowed_interface=".interfaces.ICalendarPortlet"
       />
 
+  <browser:page
+      for="*"
+      name="recent_view"
+      class=".portlets.recent.RecentPortlet"
+      permission="zope.Public"
+      allowed_interface=".interfaces.IRecentPortlet"
+      />
+
 </configure>

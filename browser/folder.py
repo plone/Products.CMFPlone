@@ -1,4 +1,3 @@
-
 class FolderView:
 
     def __init__(self, context):
@@ -12,4 +11,3 @@ class FolderView:
         self.contentsMethod = test(here.portal_type==Topic here.queryCatalog here.getFolderContents)
         self.batch = batch or contentsMethod(contentFilterbatch=True b_size=b_size)
         self.full_view = full_view or request.full_view or True
-        

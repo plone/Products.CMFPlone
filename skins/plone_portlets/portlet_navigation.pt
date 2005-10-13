@@ -6,12 +6,12 @@
        i18n:domain="plone"
        tal:omit-tag=""
        tal:define="view context/@@navigation_view">
-       
+
 <dl class="portlet" id="portlet-navigation-tree">
     <dt class="portletHeader">
         <a href="#" tal:attributes="href string:$portal_url/sitemap" i18n:translate="box_navigation">Navigation</a>
     </dt>
-    
+
     <dd class="portletItemSingle">
         <ul class="portletNavigationTree navTreeLevel0">
 
