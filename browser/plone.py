@@ -15,16 +15,18 @@ from ZPublisher.BeforeTraverse import registerBeforeTraverse
 class PloneGlobals(utils.BrowserView):
     implements(IPloneGlobals)
 
-    _globals = ('utool', 'portal', 'portal_object', 'portal_url',
-                'mtool', 'gtool', 'gdtool', 'atool', 'aitool', 'putils',
-                'wtool', 'ifacetool', 'syntool', 'portal_title', 'object_title',
-                'member', 'checkPermission', 'membersfolder', 'isAnon', 'actions',
-                'keyed_actions', 'user_actions', 'workflow_actions', 'folder_actions',
-                'global_actions', 'portal_tabs', 'wf_state', 'portal_properties',
-                'site_properties', 'ztu', 'wf_actions', 'isFolderish', 'template_id',
-                'slots_mapping', 'Iterator', 'tabindex', 'here_url', 'sl', 'sr', 'hidecolumns',
-                'default_language', 'language', 'is_editable', 'isEditable', 'lockable',
-                'isLocked', 'isRTL', 'visible_ids', 'current_page_url')
+    _globals = (
+        'utool', 'portal', 'portal_object', 'portal_url',
+        'mtool', 'gtool', 'gdtool', 'atool', 'aitool', 'putils',
+        'wtool', 'ifacetool', 'syntool', 'portal_title', 'object_title',
+        'member', 'checkPermission', 'membersfolder', 'isAnon', 'actions',
+        'keyed_actions', 'user_actions', 'workflow_actions', 'folder_actions',
+        'global_actions', 'portal_tabs', 'wf_state', 'portal_properties',
+        'site_properties', 'ztu', 'wf_actions', 'isFolderish', 'template_id',
+        'slots_mapping', 'Iterator', 'tabindex', 'here_url', 'sl', 'sr',
+        'hidecolumns', 'default_language', 'language', 'is_editable',
+        'isEditable', 'lockable', 'isLocked', 'isRTL', 'visible_ids',
+        'current_page_url')
 
     def globals(self):
         """

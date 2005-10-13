@@ -154,7 +154,7 @@
                                     ever string:1970/02/01;">
                     <option value="#"
                             tal:condition="not: isAnon"
-                            tal:attributes="value python:member.getProperty('last_login_time')"
+                            tal:attributes="value python:member is not None and member.getProperty('last_login_time') or today"
                             i18n:translate="last_login">Last log-in</option>
                     <option value="#" tal:attributes="value yesterday" i18n:translate="time_yesterday"> Yesterday </option>
                     <option value="#" tal:attributes="value lastweek" i18n:translate="time_last_week"> Last week </option>
