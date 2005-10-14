@@ -114,7 +114,8 @@ class PloneGlobals(utils.BrowserView):
         return self.actions()['global']
 
     def portal_tabs(self):
-        return self.putils().createTopLevelTabs(self.actions())
+        context = utils.context(self)
+        return self.putils().createTopLevelTabs(context, actions=self.actions())
 
     def wf_state(self):
         return self.wtool().getInfoFor(utils.context(self),'review_state', None)

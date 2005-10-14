@@ -9,17 +9,29 @@ class IDefaultPage(Interface):
         """
 
     def getDefaultPage():
-        """Returns the id of the default page for the adapted object."""
+        """Returns the id of the default page for the adapted object.
+        """
 
 
-class INavigationStructure(Interface):
+class INavigationBreadcrumbs(Interface):
 
     def breadcrumbs():
-        """Breadcrumbs for Navigation."""
+        """Breadcrumbs for Navigation.
+        """
 
+class INavigationTabs(Interface):
+
+    def topLevelTabs(actions=None):
+        """Top level tabs
+        """
+
+class INavigationStructure(INavigationBreadcrumbs, INavigationTabs):
+    """Navigation Structure
+    """
 
 class INavigationRoot(Interface):
-    """A marker interface for signaling the navigation root."""
+    """A marker interface for signaling the navigation root.
+    """
 
 
 class INavigationPortlet(Interface):

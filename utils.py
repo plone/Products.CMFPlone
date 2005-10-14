@@ -16,7 +16,8 @@ from Products.Five.bridge import fromZ2Interface
 from Products.CMFCore.utils import ToolInit as CMFCoreToolInit
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.browser.interfaces import IDefaultPage
-from Products.CMFPlone.browser.interfaces import INavigationStructure
+from Products.CMFPlone.browser.interfaces import INavigationBreadcrumbs
+from Products.CMFPlone.browser.interfaces import INavigationTabs
 from Products.CMFPlone.UnicodeNormalizer import normalizeUnicode
 from Products.CMFPlone.interfaces.Translatable import ITranslatable
 
@@ -51,8 +52,12 @@ def context(view):
     return view.context[0]
 
 def createBreadCrumbs(context, request):
-    view = getViewProviding(context, INavigationStructure, request)
+    view = getViewProviding(context, INavigationBreadcrumbs, request)
     return view.breadcrumbs()
+
+def createTopLevelTabs(context, request, actions=None):
+    view = getViewProviding(context, INavigationTabs, request)
+    return view.topLevelTabs(actions=actions)
 
 def isDefaultPage(obj, request, context=None):
     container = parent(obj)
@@ -106,7 +111,6 @@ def lookupTranslationId(obj, page, ids):
                 ids.has_key(translation.getId())):
                 page = translation.getId()
     return page
-
 
 def pretty_title_or_id(context, obj, empty_value=_marker):
     """Return the best possible title or id of an item, regardless
@@ -162,6 +166,17 @@ def getEmptyTitle(context, translated=True):
         empty = trans.utranslate(domain='plone', msgid='title_unset',
                                  default=empty)
     return empty
+
+def typesToList(context):
+    ntp = getToolByName(context, 'portal_properties').navtree_properties
+    ttool = getToolByName(context, 'portal_types')
+    bl = ntp.getProperty('metaTypesNotToList', ())
+    bl_dict = {}
+    for t in bl:
+        bl_dict[t] = 1
+    all_types = ttool.listContentTypes()
+    wl = [t for t in all_types if not bl_dict.has_key(t)]
+    return wl
 
 def normalizeString(text, context=None, encoding=None):
     assert context or encoding, 'Either context or encoding must be provided'

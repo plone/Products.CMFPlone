@@ -502,15 +502,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     security.declareProtected(AccessContentsInformation, 'typesToList')
     def typesToList(self):
-        ntp = getToolByName(self, 'portal_properties').navtree_properties
-        ttool = getToolByName(self, 'portal_types')
-        bl = ntp.getProperty('metaTypesNotToList', ())
-        bl_dict = {}
-        for t in bl:
-            bl_dict[t] = 1
-        all_types = ttool.listContentTypes()
-        wl = [t for t in all_types if not bl_dict.has_key(t)]
-        return wl
+        return utils.typesToList(self)
 
     # XXX Please, refactor me! :-)
     security.declarePublic('createNavTree')
@@ -657,72 +649,12 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             return {}
 
     security.declarePublic('createTopLevelTabs')
-    def createTopLevelTabs(self, actions=None):
-        """Returns a structure for the top level tabs."""
-        ct = getToolByName(self, 'portal_catalog')
-        ntp = getToolByName(self, 'portal_properties').navtree_properties
-        stp = getToolByName(self, 'portal_properties').site_properties
-        view_action_types = stp.getProperty('typesUseViewActionInListings')
-
-        # Build result dict
-        result = []
-        # first the actions
-        if actions is not None:
-            trans = getToolByName(self, 'translation_service')
-            utranslate = trans.utranslate
-            for action_info in actions.get('portal_tabs', []):
-                data = action_info.copy()
-                data['name'] = utranslate('plone',
-                                          data['name'],
-                                          context=self,
-                                          default=data['name'])
-                result.append(data)
-
-        # check whether we only want actions
-        if stp.getProperty('disable_folder_sections', None):
-            return result
-
-        custom_query = getattr(self, 'getCustomNavQuery', None)
-        if custom_query is not None and utils.safe_callable(custom_query):
-            query = custom_query()
-        else:
-            query = {}
-
-        portal_path = getToolByName(self, 'portal_url').getPortalPath()
-        query['path'] = {'query':portal_path, 'navtree':1}
-
-        query['portal_type'] = self.typesToList()
-
-        if ntp.getProperty('sortAttribute', False):
-            query['sort_on'] = ntp.sortAttribute
-
-        if (ntp.getProperty('sortAttribute', False) and
-            ntp.getProperty('sortOrder', False)):
-            query['sort_order'] = ntp.sortOrder
-
-        if ntp.getProperty('enable_wf_state_filtering', False):
-            query['review_state'] = ntp.wf_states_to_show
-
-        query['is_default_page'] = False
-        query['is_folderish'] = True
-
-        # Get ids not to list and make a dict to make the search fast
-        ids_not_to_list = ntp.getProperty('idsNotToList', ())
-        excluded_ids = {}
-        for exc_id in ids_not_to_list:
-            excluded_ids[exc_id]=1
-
-        rawresult = ct(**query)
-
-        # now add the content to results
-        for item in rawresult:
-            if not (excluded_ids.has_key(item.getId) or item.exclude_from_nav):
-                item_url = (item.portal_type in view_action_types and
-                         item.getURL() + '/view') or item.getURL()
-                data = {'name': self.pretty_title_or_id(item),
-                        'id':item.getId, 'url': item_url, 'description':item.Description}
-                result.append(data)
-        return result
+    def createTopLevelTabs(self, context, actions=None, request=None):
+        """Returns a structure for the top level tabs.
+        """
+        if request is None:
+            request = self.REQUEST
+        return utils.createTopLevelTabs(context, request, actions=actions)
 
     security.declarePublic('createBreadCrumbs')
     def createBreadCrumbs(self, context, request=None):

@@ -787,18 +787,18 @@ class TestPortalTabs(PloneTestCase.PloneTestCase):
 
     def testCreateTopLevelTabs(self):
         # See if we can create one at all
-        tabs = self.utils.createTopLevelTabs()
+        tabs = self.utils.createTopLevelTabs(self.portal)
         self.failUnless(tabs)
         #Only the folders show up (Members, news, events, folder1, folder2)
         self.assertEqual(len(tabs), 5)
 
     def testTabsRespectFolderOrder(self):
         # See if reordering causes a change in the tab order
-        tabs1 = self.utils.createTopLevelTabs()
+        tabs1 = self.utils.createTopLevelTabs(self.portal)
         # Must be manager to change order on portal itself
         self.setRoles(['Manager','Member'])
         self.portal.folder_position('up', 'folder2')
-        tabs2 = self.utils.createTopLevelTabs()
+        tabs2 = self.utils.createTopLevelTabs(self.portal)
         #Same number of objects
         self.failUnlessEqual(len(tabs1), len(tabs2))
         #Different order
@@ -814,13 +814,13 @@ class TestPortalTabs(PloneTestCase.PloneTestCase):
         script.ZPythonScript_edit('', 'return {"review_state":"published"}')
         self.assertEqual(
             self.portal.getCustomNavQuery(), {"review_state":"published"})
-        tabs = self.utils.createTopLevelTabs()
+        tabs = self.utils.createTopLevelTabs(self.portal)
         #Should contain no folders
         self.assertEqual(len(tabs), 0)
         #change workflow for folder1
         workflow.doActionFor(self.portal.folder1, 'publish')
         self.portal.folder1.reindexObject()
-        tabs = self.utils.createTopLevelTabs()
+        tabs = self.utils.createTopLevelTabs(self.portal)
         #Should only contain the published folder
         self.assertEqual(len(tabs), 1)
 
@@ -830,13 +830,13 @@ class TestPortalTabs(PloneTestCase.PloneTestCase):
         ntp=self.portal.portal_properties.navtree_properties
         ntp.manage_changeProperties(wf_states_to_show=['published'])
         ntp.manage_changeProperties(enable_wf_state_filtering=True)
-        tabs = self.utils.createTopLevelTabs()
+        tabs = self.utils.createTopLevelTabs(self.portal)
         #Should contain no folders
         self.assertEqual(len(tabs), 0)
         #change workflow for folder1
         workflow.doActionFor(self.portal.folder1, 'publish')
         self.portal.folder1.reindexObject()
-        tabs = self.utils.createTopLevelTabs()
+        tabs = self.utils.createTopLevelTabs(self.portal)
         #Should only contain the published folder
         self.assertEqual(len(tabs), 1)
 
@@ -845,16 +845,16 @@ class TestPortalTabs(PloneTestCase.PloneTestCase):
         # all folder based tabs
         props = self.portal.portal_properties.site_properties
         props.manage_changeProperties(disable_folder_sections=True)
-        tabs = self.utils.createTopLevelTabs()
+        tabs = self.utils.createTopLevelTabs(self.portal)
         self.assertEqual(tabs, [])
 
     def testTabsExcludeItemsWithExcludeProperty(self):
         # Make sure that items witht he exclude_from_nav property are purged
-        tabs = self.utils.createTopLevelTabs()
+        tabs = self.utils.createTopLevelTabs(self.portal)
         orig_len = len(tabs)
         self.portal.folder2.setExcludeFromNav(True)
         self.portal.folder2.reindexObject()
-        tabs = self.utils.createTopLevelTabs()
+        tabs = self.utils.createTopLevelTabs(self.portal)
         self.failUnless(tabs)
         self.assertEqual(len(tabs), orig_len - 1)
         tab_names = [t['id'] for t in tabs]
@@ -863,7 +863,7 @@ class TestPortalTabs(PloneTestCase.PloneTestCase):
     def testTabsRespectsTypesWithViewAction(self):
         # With a type in typesUseViewActionInListings as current action it
         # should return a tab which has '/view' appended to the url
-        tabs = self.utils.createTopLevelTabs()
+        tabs = self.utils.createTopLevelTabs(self.portal)
         self.failUnless(tabs)
         # Fail if 'view' is used for folder
         self.failIf(tabs[-1]['url'][-5:]=='/view')
@@ -872,18 +872,18 @@ class TestPortalTabs(PloneTestCase.PloneTestCase):
         props.manage_changeProperties(
             typesUseViewActionInListings=['Image','File','Folder'])
         # Verify that we have '/view'
-        tabs = self.utils.createTopLevelTabs()
+        tabs = self.utils.createTopLevelTabs(self.portal)
         self.failUnless(tabs)
         self.assertEqual(tabs[-1]['url'][-5:],'/view')
 
     def testTabsExcludeItemsInIdsNotToList(self):
         # Make sure that items whose ids are in the idsNotToList navTree
         # property get purged
-        tabs = self.utils.createTopLevelTabs()
+        tabs = self.utils.createTopLevelTabs(self.portal)
         orig_len = len(tabs)
         ntp=self.portal.portal_properties.navtree_properties
         ntp.manage_changeProperties(idsNotToList=['folder2'])
-        tabs = self.utils.createTopLevelTabs()
+        tabs = self.utils.createTopLevelTabs(self.portal)
         self.failUnless(tabs)
         self.assertEqual(len(tabs), orig_len - 1)
         tab_names = [t['id'] for t in tabs]
@@ -891,12 +891,12 @@ class TestPortalTabs(PloneTestCase.PloneTestCase):
 
     def testTabsExcludeNonFolderishItems(self):
         # Make sure that items witht he exclude_from_nav property are purged
-        tabs = self.utils.createTopLevelTabs()
+        tabs = self.utils.createTopLevelTabs(self.portal)
         orig_len = len(tabs)
         self.setRoles(['Manager','Member'])
         self.portal.invokeFactory('Document','foo')
         self.portal.foo.reindexObject()
-        tabs = self.utils.createTopLevelTabs()
+        tabs = self.utils.createTopLevelTabs(self.portal)
         self.failUnless(tabs)
         self.assertEqual(len(tabs),orig_len)
 
