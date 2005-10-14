@@ -477,28 +477,20 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     # Provide a way of dumping an exception to the log even if we
     # catch it and otherwise ignore it
     def logException(self):
-        """Dumps most recent exception to the log."""
+        """Dumps most recent exception to the log.
+        """
         log_exc()
 
     security.declarePublic('createSitemap')
     def createSitemap(self, context):
-        """Returns a sitemap navtree structure."""
-        return self.createNavTree(context, sitemap=1)
+        """Returns a sitemap navtree structure.
+        """
+        return self.createNavTree(context, sitemap=True)
 
     def _addToNavTreeResult(self, result, data):
-        """Adds a piece of content to the result tree."""
-        path = data['path']
-        parentpath = '/'.join(path.split('/')[:-1])
-        # Tell parent about self
-        if result.has_key(parentpath):
-            result[parentpath]['children'].append(data)
-        else:
-            result[parentpath] = {'children':[data]}
-        # If we have processed a child already, make sure we register it
-        # as a child
-        if result.has_key(path):
-            data['children'] = result[path]['children']
-        result[path] = data
+        """Adds a piece of content to the result tree.
+        """
+        return utils.addToNavTreeResult(result, data)
 
     security.declareProtected(AccessContentsInformation, 'typesToList')
     def typesToList(self):
@@ -506,147 +498,12 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     # XXX Please, refactor me! :-)
     security.declarePublic('createNavTree')
-    def createNavTree(self, context, sitemap=None):
-        """Returns a structure that can be used by navigation_tree_slot."""
-        ct = getToolByName(self, 'portal_catalog')
-        ntp = getToolByName(self, 'portal_properties').navtree_properties
-        stp = getToolByName(self, 'portal_properties').site_properties
-        view_action_types = stp.getProperty('typesUseViewActionInListings')
-        currentPath = None
-
-        custom_query = getattr(self, 'getCustomNavQuery', None)
-        if custom_query is not None and utils.safe_callable(custom_query):
-            query = custom_query()
-        else:
-            query = {}
-
-        # XXX check if isDefaultPage is in the catalogs
-        #query['isDefaultPage'] = 0
-
-        if context == self or sitemap:
-            currentPath = getToolByName(self, 'portal_url').getPortalPath()
-            query['path'] = {'query':currentPath,
-                             'depth':ntp.getProperty('sitemapDepth', 2)}
-        else:
-            currentPath = '/'.join(context.getPhysicalPath())
-            query['path'] = {'query':currentPath, 'navtree':1}
-
-        query['portal_type'] = self.typesToList()
-
-        if ntp.getProperty('sortAttribute', False):
-            query['sort_on'] = ntp.sortAttribute
-
-        if (ntp.getProperty('sortAttribute', False) and
-            ntp.getProperty('sortOrder', False)):
-            query['sort_order'] = ntp.sortOrder
-
-        if ntp.getProperty('enable_wf_state_filtering', False):
-            query['review_state'] = ntp.wf_states_to_show
-
-        query['is_default_page'] = False
-
-        parentTypesNQ = ntp.getProperty('parentMetaTypesNotToQuery', ())
-
-        # Get ids not to list and make a dict to make the search fast
-        ids_not_to_list = ntp.getProperty('idsNotToList', ())
-        excluded_ids = {}
-        for exc_id in ids_not_to_list:
-            excluded_ids[exc_id] = 1
-
-        rawresult = ct(**query)
-
-        # Build result dict
-        result = {}
-        foundcurrent = False
-        for item in rawresult:
-            path = item.getPath()
-            # Some types may require the 'view' action, respect this
-            item_url = (item.portal_type in view_action_types and
-                                    item.getURL() + '/view') or item.getURL()
-            currentItem = path == currentPath
-            if currentItem:
-                foundcurrent = path
-            data = {'Title':self.pretty_title_or_id(item),
-                    'currentItem':currentItem,
-                    'absolute_url': item_url,
-                    'getURL':item_url,
-                    'path': path,
-                    'icon':item.getIcon,
-                    'creation_date': item.CreationDate,
-                    'portal_type': item.portal_type,
-                    'review_state': item.review_state,
-                    'Description':item.Description,
-                    'show_children':item.is_folderish and item.portal_type not in parentTypesNQ,
-                    'children':[],
-                    'no_display': excluded_ids.has_key(item.getId) or not not item.exclude_from_nav}
-            self._addToNavTreeResult(result, data)
-
-        portalpath = getToolByName(self, 'portal_url').getPortalPath()
-
-        if ntp.getProperty('showAllParents', False):
-            portal = getToolByName(self, 'portal_url').getPortalObject()
-            parent = context
-            parents = [parent]
-            while not parent is portal:
-                parent = parent.aq_parent
-                parents.append(parent)
-
-            wf_tool = getToolByName(self, 'portal_workflow')
-            for item in parents:
-                if getattr(item, 'getPhysicalPath', None) is None:
-                    # when Z3-style views are used, the view class will be in
-                    # the 'parents' list, but will not support 'getPhysicalPath'
-                    # we can just skip it b/c it's not an object in the content
-                    # tree that should be showing up in the nav tree (ra)
-                    continue
-                path = '/'.join(item.getPhysicalPath())
-                if not result.has_key(path) or \
-                   not result[path].has_key('path'):
-                    # item was not returned in catalog search
-                    if foundcurrent:
-                        currentItem = False
-                    else:
-                        currentItem = path == currentPath
-                        if currentItem:
-                            if self.isDefaultPage(item):
-                                # don't list folder default page
-                                continue
-                            else:
-                                foundcurrent = path
-                    try:
-                        review_state = wf_tool.getInfoFor(item, 'review_state')
-                    except WorkflowException:
-                        review_state = ''
-                    # Some types may require the 'view' action, respect this
-                    item_url = (item.portal_type in view_action_types and
-                         item.absolute_url() + '/view') or item.absolute_url()
-                    data = {'Title': self.pretty_title_or_id(item),
-                            'currentItem': currentItem,
-                            'absolute_url': item_url,
-                            'getURL': item_url,
-                            'path': path,
-                            'icon': item.getIcon(),
-                            'creation_date': item.CreationDate(),
-                            'review_state': review_state,
-                            'Description':item.Description(),
-                            'children':[],
-                            'portal_type':item.portal_type,
-                            'no_display': 0}
-                    self._addToNavTreeResult(result, data)
-
-        if not foundcurrent:
-            #    result['/'.join(currentPath.split('/')[:-1])]['currentItem'] = True
-            for i in range(1, len(currentPath.split('/')) - len(portalpath.split('/')) + 1):
-                p = '/'.join(currentPath.split('/')[:-i])
-                if result.has_key(p):
-                    foundcurrent = p
-                    result[p]['currentItem'] = True
-                    break
-
-        if result.has_key(portalpath):
-            return result[portalpath]
-        else:
-            return {}
+    def createNavTree(self, context, sitemap=None, request=None):
+        """Returns a structure that can be used by navigation_tree_slot.
+        """
+        if request is None:
+            request = self.REQUEST
+        return utils.createNavTree(context, request, sitemap=sitemap)
 
     security.declarePublic('createTopLevelTabs')
     def createTopLevelTabs(self, context, actions=None, request=None):

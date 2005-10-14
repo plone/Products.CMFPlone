@@ -18,6 +18,7 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.browser.interfaces import IDefaultPage
 from Products.CMFPlone.browser.interfaces import INavigationBreadcrumbs
 from Products.CMFPlone.browser.interfaces import INavigationTabs
+from Products.CMFPlone.browser.interfaces import INavigationTree
 from Products.CMFPlone.UnicodeNormalizer import normalizeUnicode
 from Products.CMFPlone.interfaces.Translatable import ITranslatable
 
@@ -58,6 +59,24 @@ def createBreadCrumbs(context, request):
 def createTopLevelTabs(context, request, actions=None):
     view = getViewProviding(context, INavigationTabs, request)
     return view.topLevelTabs(actions=actions)
+
+def createNavTree(context, request, sitemap=False):
+    view = getViewProviding(context, INavigationTree, request)
+    return view.navigationTree(sitemap=sitemap)
+
+def addToNavTreeResult(result, data):
+    path = data['path']
+    parentpath = '/'.join(path.split('/')[:-1])
+    # Tell parent about self
+    if result.has_key(parentpath):
+        result[parentpath]['children'].append(data)
+    else:
+        result[parentpath] = {'children':[data]}
+    # If we have processed a child already, make sure we register it
+    # as a child
+    if result.has_key(path):
+        data['children'] = result[path]['children']
+    result[path] = data
 
 def isDefaultPage(obj, request, context=None):
     container = parent(obj)

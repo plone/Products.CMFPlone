@@ -1,13 +1,14 @@
 from zope.interface import implements
 from zope.component import getViewProviding
 
-from Acquisition import aq_base
+from Acquisition import aq_base, aq_inner
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import utils
 from Products.CMFPlone.browser.interfaces import IDefaultPage
 from Products.CMFPlone.browser.interfaces import INavigationRoot
 from Products.CMFPlone.browser.interfaces import INavigationBreadcrumbs
 from Products.CMFPlone.browser.interfaces import INavigationTabs
+from Products.CMFPlone.browser.interfaces import INavigationTree
 from Products.CMFPlone.browser.interfaces import INavigationStructure
 from Products.CMFPlone.interfaces.BrowserDefault import IBrowserDefault
 
@@ -117,6 +118,143 @@ class DefaultPage(utils.BrowserView):
 
         return None
 
+class CatalogNavigationTree(utils.BrowserView):
+    implements(INavigationTree)
+
+    def navigationTree(self, sitemap=False):
+        from Products.CMFCore.WorkflowCore import WorkflowException
+        context = utils.context(self)
+
+        ct = getToolByName(context, 'portal_catalog')
+        purl = getToolByName(context, 'portal_url')
+        ntp = getToolByName(context, 'portal_properties').navtree_properties
+        currentPath = None
+
+        custom_query = getattr(context, 'getCustomNavQuery', None)
+        if custom_query is not None and utils.safe_callable(custom_query):
+            query = custom_query()
+        else:
+            query = {}
+
+        if sitemap:
+            currentPath = purl.getPortalPath()
+            query['path'] = {'query':currentPath,
+                             'depth':ntp.getProperty('sitemapDepth', 2)}
+        else:
+            currentPath = '/'.join(context.getPhysicalPath())
+            query['path'] = {'query':currentPath, 'navtree':1}
+
+        query['portal_type'] = utils.typesToList(context)
+
+        if ntp.getProperty('sortAttribute', False):
+            query['sort_on'] = ntp.sortAttribute
+
+        if (ntp.getProperty('sortAttribute', False) and
+            ntp.getProperty('sortOrder', False)):
+            query['sort_order'] = ntp.sortOrder
+
+        if ntp.getProperty('enable_wf_state_filtering', False):
+            query['review_state'] = ntp.wf_states_to_show
+
+        query['is_default_page'] = False
+
+        parentTypesNQ = ntp.getProperty('parentMetaTypesNotToQuery', ())
+
+        # Get ids not to list and make a dict to make the search fast
+        ids_not_to_list = ntp.getProperty('idsNotToList', ())
+        excluded_ids = {}
+        for exc_id in ids_not_to_list:
+            excluded_ids[exc_id] = 1
+
+        rawresult = ct(**query)
+
+        # Build result dict
+        result = {}
+        foundcurrent = False
+        for item in rawresult:
+            path = item.getPath()
+            # Some types may require the 'view' action, respect this
+            id, item_url = get_view_url(item)
+            currentItem = path == currentPath
+            if currentItem:
+                foundcurrent = path
+            data = {'Title':utils.pretty_title_or_id(context, item),
+                    'currentItem':currentItem,
+                    'absolute_url': item_url,
+                    'getURL':item_url,
+                    'path': path,
+                    'icon':item.getIcon,
+                    'creation_date': item.CreationDate,
+                    'portal_type': item.portal_type,
+                    'review_state': item.review_state,
+                    'Description':item.Description,
+                    'show_children': (item.is_folderish and
+                                      item.portal_type not in parentTypesNQ),
+                    'children':[],
+                    'no_display': (excluded_ids.has_key(id) or
+                                   not not item.exclude_from_nav)}
+            utils.addToNavTreeResult(result, data)
+
+        portalpath = purl.getPortalPath()
+
+        if ntp.getProperty('showAllParents', False):
+            portal = purl.getPortalObject()
+            parent = context
+            parents = [parent]
+            while not parent is portal:
+                parent = aq_inner(parent).aq_parent
+                parents.append(parent)
+
+            wf_tool = getToolByName(context, 'portal_workflow')
+            for item in parents:
+                path = '/'.join(item.getPhysicalPath())
+                entry = result.get(path)
+                if entry is not None and entry.has_key('path'):
+                    continue
+                # Item was not returned in catalog search
+                if foundcurrent:
+                    currentItem = False
+                else:
+                    currentItem = path == currentPath
+                    if currentItem:
+                        if utils.isDefaultPage(item, self.request, context):
+                            # don't list folder default page
+                            continue
+                        else:
+                            foundcurrent = path
+                try:
+                    review_state = wf_tool.getInfoFor(item, 'review_state')
+                except WorkflowException:
+                    review_state = ''
+                # Some types may require the 'view' action, respect this
+                id, item_url = get_view_url(item)
+                data = {'Title': utils.pretty_title_or_id(context, item),
+                        'currentItem': currentItem,
+                        'absolute_url': item_url,
+                        'getURL': item_url,
+                        'path': path,
+                        'icon': item.getIcon(),
+                        'creation_date': item.CreationDate(),
+                        'review_state': review_state,
+                        'Description':item.Description(),
+                        'children':[],
+                        'portal_type':item.portal_type,
+                        'no_display': 0}
+                utils.addToNavTreeResult(result, data)
+
+        if not foundcurrent:
+            depth = len(currentPath.split('/')) - len(portalpath.split('/')) + 1
+            for i in range(1, depth):
+                p = '/'.join(currentPath.split('/')[:-i])
+                if result.has_key(p):
+                    foundcurrent = p
+                    result[p]['currentItem'] = True
+                    break
+
+        if result.has_key(portalpath):
+            return result[portalpath]
+        else:
+            return {}
 
 class CatalogNavigationTabs(utils.BrowserView):
     implements(INavigationTabs)
@@ -125,10 +263,9 @@ class CatalogNavigationTabs(utils.BrowserView):
         context = utils.context(self)
 
         ct = getToolByName(context, 'portal_catalog')
+        purl = getToolByName(context, 'portal_url')
         ntp = getToolByName(context, 'portal_properties').navtree_properties
         stp = getToolByName(context, 'portal_properties').site_properties
-        pt = getToolByName(context, 'plone_utils')
-        view_action_types = stp.getProperty('typesUseViewActionInListings')
 
         # Build result dict
         result = []
@@ -154,7 +291,7 @@ class CatalogNavigationTabs(utils.BrowserView):
         else:
             query = {}
 
-        portal_path = getToolByName(context, 'portal_url').getPortalPath()
+        portal_path = purl.getPortalPath()
         query['path'] = {'query':portal_path, 'navtree':1}
 
         query['portal_type'] = utils.typesToList(context)
@@ -197,8 +334,6 @@ class CatalogNavigationBreadcrumbs(utils.BrowserView):
         context = utils.context(self)
         request = self.request
         ct = getToolByName(context, 'portal_catalog')
-        stp = getToolByName(context, 'portal_properties').site_properties
-        view_action_types = stp.getProperty('typesUseViewActionInListings')
         query = {}
 
         # Check to see if the current page is a folder default view, if so
@@ -219,20 +354,20 @@ class CatalogNavigationBreadcrumbs(utils.BrowserView):
         result = []
         for r_tuple in dec_result:
             item = r_tuple[1]
-            item_url = (item.portal_type in view_action_types and
-                         item.getURL() + '/view') or item.getURL()
+            id, item_url = get_view_url(item)
             data = {'Title': utils.pretty_title_or_id(context, item),
                     'absolute_url': item_url}
             result.append(data)
         return result
 
 class CatalogNavigationStructure(CatalogNavigationTabs,
-                                 CatalogNavigationBreadcrumbs):
+                                 CatalogNavigationBreadcrumbs,
+                                 CatalogNavigationTree):
     implements(INavigationStructure)
 
-
 class PhysicalNavigationStructure(utils.BrowserView,
-                                  CatalogNavigationTabs):
+                                  CatalogNavigationTabs,
+                                  CatalogNavigationTree):
     implements(INavigationStructure)
 
     def breadcrumbs(self):
@@ -264,7 +399,8 @@ class PhysicalNavigationStructure(utils.BrowserView,
         return base
 
 class RootPhysicalNavigationStructure(utils.BrowserView,
-                                      CatalogNavigationTabs):
+                                      CatalogNavigationTabs,
+                                      CatalogNavigationTree):
     implements(INavigationStructure)
 
     def breadcrumbs(self):

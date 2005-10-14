@@ -25,7 +25,15 @@ class INavigationTabs(Interface):
         """Top level tabs
         """
 
-class INavigationStructure(INavigationBreadcrumbs, INavigationTabs):
+class INavigationTree(Interface):
+
+    def navigationTree():
+        """Navigation Tree
+        """
+
+class INavigationStructure(INavigationBreadcrumbs,
+                           INavigationTabs,
+                           INavigationTree):
     """Navigation Structure
     """
 
