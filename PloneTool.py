@@ -301,7 +301,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     def availableMIMETypes(self):
         """Returns a map of mimetypes.
 
-        Requires mimetype registry from Archetypes 1.3.
+        Requires mimetype registry from Archetypes >= 1.3.
         """
         mtr = getToolByName(self, 'mimetypes_registry')
         return mtr.list_mimetypes()
@@ -397,7 +397,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     def setCurrentSkin(self, skin_name):
         """Sets the current skin."""
         portal = getToolByName(self, 'portal_url').getPortalObject()
-        portal._v_skindata = (self.REQUEST, self.getSkinByName(skin_name), {})
+        portal.changeSkin(skin_name)
 
     security.declareProtected(CMFCorePermissions.ManagePortal,
                               'changeOwnershipOf')
