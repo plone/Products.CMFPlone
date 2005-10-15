@@ -600,7 +600,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                 foundcurrent = path
             no_display = (
                 excluded_ids.has_key(item.getId) or
-                not not getattr(item, 'exclude_from_nav', False))
+                not not getattr(item, 'exclude_from_nav', True))
             data = {'Title':self.pretty_title_or_id(item),
                     'currentItem':currentItem,
                     'absolute_url': item_url,
@@ -746,7 +746,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         for item in rawresult:
             no_display = (
                 excluded_ids.has_key(item.getId) or
-                not not getattr(item, 'exclude_from_nav', False))
+                not not getattr(item, 'exclude_from_nav', True))
             if not no_display:
                 item_url = (item.portal_type in view_action_types and
                          item.getURL() + '/view') or item.getURL()
@@ -775,7 +775,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
         # Sort items on path length
         dec_result = [(len(r.getPath()),r) for r in rawresult]
-        dec_result.sort()
+        dec_result.sort(lambda x, y: cmp(x[0], y[0]))
 
         # Build result dict
         result = []

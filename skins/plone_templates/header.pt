@@ -32,18 +32,18 @@
                           content python:keyval[1];" />
 
     <!-- Plone ECMAScripts -->
-    <metal:js tal:define="scripts nocall:here/renderAllTheScripts|nothing">
-      <tal:block condition="scripts"
-                 metal:use-macro="scripts/macros/jsrenderer">
+    <metal:js tal:define="scripts nocall:here/renderAllTheScripts|nothing"
+	      tal:condition="nocall:scripts">
+      <metal:block metal:use-macro="scripts/macros/jsrenderer">
         <!-- Fetch scripts from the Javascript Registry -->
-      </tal:block>
+      </metal:block>
     </metal:js>
 
-    <metal:css tal:define="css nocall:here/renderAllTheStylesheets|nothing">
-      <tal:block condition="scripts"
-                 metal:use-macro="css/macros/cssrenderer">
+    <metal:css tal:define="css nocall:here/renderAllTheStylesheets|nothing"
+	       tal:condition="nocall:css">
+      <metal:block metal:use-macro="css/macros/cssrenderer">
         <!-- Fetch stylesheets from the CSS Registry -->
-      </tal:block>
+      </metal:block>
     </metal:css>
 
     <!-- Internet Explorer CSS Fixes + IE7 for compliance fixes (limited set) -->
