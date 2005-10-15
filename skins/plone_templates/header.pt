@@ -32,14 +32,20 @@
                           content python:keyval[1];" />
 
     <!-- Plone ECMAScripts -->
-    <metal:js metal:use-macro="here/renderAllTheScripts/macros/jsrenderer">
+    <metal:js tal:define="scripts nocall:here/renderAllTheScripts|nothing">
+      <tal:block condition="scripts"
+                 metal:use-macro="scripts/macros/jsrenderer">
         <!-- Fetch scripts from the Javascript Registry -->
+      </tal:block>
     </metal:js>
 
-    <metal:css metal:use-macro="here/renderAllTheStylesheets/macros/cssrenderer">
+    <metal:css tal:define="css nocall:here/renderAllTheStylesheets|nothing">
+      <tal:block condition="scripts"
+                 metal:use-macro="css/macros/cssrenderer">
         <!-- Fetch stylesheets from the CSS Registry -->
+      </tal:block>
     </metal:css>
-    
+
     <!-- Internet Explorer CSS Fixes + IE7 for compliance fixes (limited set) -->
     <tal:iefixstart replace="structure string:&lt;!--[if lt IE 7]&gt;" />
         <style type="text/css" media="all" tal:condition="exists: portal/IEFixes.css"
@@ -59,13 +65,13 @@
     <link rel="search" title="Search this site" tal:attributes="href string:$portal_url/search_form" />
     <link rel="author" title="Author information" tal:attributes="href string:${portal_url}/author/${here/Creator}" />
     <link rel="contents" href="" title="Site Map" tal:attributes="href string:$portal_url/sitemap" />
-    
+
     <tal:fixme tal:replace="nothing">
       <link rel="help" href="" title="Help" tal:attributes="href string:$portal_url/help" />
       <link rel="copyright" href="" title="Copyright information" tal:attributes="href string:copyright" />
     </tal:fixme>
 
-    <link rel="alternate" href="" title="RSS 1.0" type="application/rss+xml"  
+    <link rel="alternate" href="" title="RSS 1.0" type="application/rss+xml"
           tal:condition="python: syntool.isSyndicationAllowed(here)"
           tal:attributes="href string:$here_url/RSS" />
 

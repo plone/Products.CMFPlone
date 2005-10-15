@@ -543,7 +543,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         ct = getToolByName(self, 'portal_catalog')
         ntp = getToolByName(self, 'portal_properties').navtree_properties
         stp = getToolByName(self, 'portal_properties').site_properties
-        view_action_types = stp.getProperty('typesUseViewActionInListings')
+        view_action_types = stp.getProperty('typesUseViewActionInListings', ())
         currentPath = None
 
         custom_query = getattr(self, 'getCustomNavQuery', None)
@@ -598,6 +598,9 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             currentItem = path == currentPath
             if currentItem:
                 foundcurrent = path
+            no_display = (
+                excluded_ids.has_key(item.getId) or
+                not not getattr(item, 'exclude_from_nav', False))
             data = {'Title':self.pretty_title_or_id(item),
                     'currentItem':currentItem,
                     'absolute_url': item_url,
@@ -610,7 +613,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                     'Description':item.Description,
                     'show_children':item.is_folderish and item.portal_type not in parentTypesNQ,
                     'children':[],
-                    'no_display': excluded_ids.has_key(item.getId) or not not item.exclude_from_nav}
+                    'no_display': no_display}
             self._addToNavTreeResult(result, data)
 
         portalpath = getToolByName(self, 'portal_url').getPortalPath()
@@ -686,21 +689,22 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         ct = getToolByName(self, 'portal_catalog')
         ntp = getToolByName(self, 'portal_properties').navtree_properties
         stp = getToolByName(self, 'portal_properties').site_properties
-        view_action_types = stp.getProperty('typesUseViewActionInListings')
+        view_action_types = stp.getProperty('typesUseViewActionInListings', ())
 
         # Build result dict
         result = []
         # first the actions
         if actions is not None:
-            trans = getToolByName(self, 'translation_service')
-            utranslate = trans.utranslate
-            for action_info in actions.get('portal_tabs', []):
-                data = action_info.copy()
-                data['name'] = utranslate('plone',
-                                          data['name'],
-                                          context=self,
-                                          default=data['name'])
-                result.append(data)
+            trans = getToolByName(self, 'translation_service', None)
+            if trans is not None:
+                utranslate = trans.utranslate
+                for action_info in actions.get('portal_tabs', []):
+                    data = action_info.copy()
+                    data['name'] = utranslate('plone',
+                                              data['name'],
+                                              context=self,
+                                              default=data['name'])
+                    result.append(data)
 
         # check whether we only want actions
         if stp.getProperty('disable_folder_sections', None):
@@ -740,7 +744,10 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
         # now add the content to results
         for item in rawresult:
-            if not (excluded_ids.has_key(item.getId) or item.exclude_from_nav):
+            no_display = (
+                excluded_ids.has_key(item.getId) or
+                not not getattr(item, 'exclude_from_nav', False))
+            if not no_display:
                 item_url = (item.portal_type in view_action_types and
                          item.getURL() + '/view') or item.getURL()
                 data = {'name': self.pretty_title_or_id(item),
@@ -753,7 +760,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         """Returns a structure for the portal breadcumbs."""
         ct = getToolByName(self, 'portal_catalog')
         stp = getToolByName(self, 'portal_properties').site_properties
-        view_action_types = stp.getProperty('typesUseViewActionInListings')
+        view_action_types = stp.getProperty('typesUseViewActionInListings', ())
         query = {}
 
         # Check to see if the current page is a folder default view, if so
@@ -1420,9 +1427,10 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         """Returns string to be used for objects with no title or id"""
         empty = self.utf8_portal('\x5b\xc2\xb7\xc2\xb7\xc2\xb7\x5d', 'ignore')
         if translated:
-            trans = getToolByName(self, 'translation_service')
-            empty = trans.utranslate(domain='plone', msgid='title_unset',
-                                     default=empty)
+            trans = getToolByName(self, 'translation_service', None)
+            if trans is not None:
+                empty = trans.utranslate(domain='plone', msgid='title_unset',
+                                         default=empty)
         return empty
 
     security.declarePublic('pretty_title_or_id')
