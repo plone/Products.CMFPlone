@@ -707,7 +707,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                     result.append(data)
 
         # check whether we only want actions
-        if stp.getProperty('disable_folder_sections', None):
+        if stp.getProperty('disable_folder_sections', True):
             return result
 
         custom_query = getattr(self, 'getCustomNavQuery', None)
