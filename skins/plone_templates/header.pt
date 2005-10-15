@@ -39,11 +39,26 @@
       </metal:block>
     </metal:js>
 
-    <metal:css tal:define="css nocall:here/renderAllTheStylesheets|nothing"
-	       tal:condition="nocall:css">
-      <metal:block metal:use-macro="css/macros/cssrenderer">
-        <!-- Fetch stylesheets from the CSS Registry -->
-      </metal:block>
+    <metal:css tal:define="css nocall:here/renderAllTheStylesheets|nothing">
+	<tal:block condition="nocall:css">
+          <metal:block metal:use-macro="css/macros/cssrenderer">
+            <!-- Fetch stylesheets from the CSS Registry -->
+          </metal:block>
+        </tal:block>
+        <tal:block condition="not:nocall:css">
+        <style type="text/css" media="all" tal:condition="exists:portal/base.css"
+               tal:content="string:@import url($portal_url/base.css);">
+        </style>
+        <style type="text/css" media="all" tal:condition="exists:portal/columns.css"
+               tal:content="string:@import url($portal_url/columns.css);">
+        </style>
+        <style type="text/css" media="all" tal:condition="exists:portal/public.css"
+               tal:content="string:@import url($portal_url/public.css);">
+        </style>
+        <style type="text/css" media="all" tal:condition="exists:portal/portlets.css"
+               tal:content="string:@import url($portal_url/portlets.css);">
+        </style>
+        </tal:block>
     </metal:css>
 
     <!-- Internet Explorer CSS Fixes + IE7 for compliance fixes (limited set) -->
