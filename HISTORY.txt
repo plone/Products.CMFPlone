@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.1.2 (unreleased)
 
+    - Fixed small bug in searching users from prefs_users_overview
+      In case of searchstring field contained something, click to 'Find all' does not 
+      find all users, but only users specified by the search string.
+      [naro]
+
     - Changed folder_contents.pt so that it honors the
       'typesUseViewActionInListings' setting in site_properties for ALL
       types (was only working for non-folderish types before)

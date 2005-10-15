@@ -82,8 +82,8 @@
               name="users_search"
               method="post"
               tal:attributes="action template_id"
-              tal:define="searchstring request/searchstring | nothing;
-                          findAll python:'form.button.FindAll' in request.keys();
+              tal:define="findAll python:'form.button.FindAll' in request.keys();
+                          searchstring python:test(findAll, None, request.get('searchstring', None))
                           portal_users python:(searchstring or findAll) and mtool.searchForMembers(name=searchstring) or [];
                           batch python:Batch(portal_users, b_size, int(b_start), orphan=1)">
           <input type="hidden" name="form.submitted" value="1" />
