@@ -21,7 +21,7 @@
                  desc_length site_properties/search_results_description_length;
                  desc_ellipsis site_properties/ellipsis;
                  searchterm request/SearchableText|nothing;
-                 use_view_action site_properties/typesUseViewActionInListings;">
+                 use_view_action site_properties/typesUseViewActionInListings|python:();">
 
     <h1 i18n:translate="heading_search_results">Search results</h1>
 
