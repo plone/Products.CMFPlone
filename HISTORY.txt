@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1.2 (unreleased)
 
+    - Fixed http://plone.org/collector/4788 - Missing i18n for livesearch
+      'no matching results found'
+      [hannosch]
+
     - Fixed small bug in searching users from prefs_users_overview
       In case of searchstring field contained something, click to 'Find all' does not 
       find all users, but only users specified by the search string.
