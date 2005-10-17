@@ -25,7 +25,7 @@
     </p>
 
     <dl>
-        <tal:block repeat="obj python:here.portal_properties.objectValues()">
+        <tal:block repeat="obj python:portal_properties.objectValues()">
 
             <dt><a tal:content="obj/title" 
                    i18n:translate=""

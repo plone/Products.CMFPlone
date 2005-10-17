@@ -13,7 +13,7 @@
             Document actions (print, sendto etc)
         </div>
 
-        <h1 tal:content="here/pretty_title_or_id" class="documentFirstHeading">
+        <h1 tal:content="object_title" class="documentFirstHeading">
             Title or id
         </h1>
     
@@ -29,7 +29,7 @@
 
         <a href=""
            class="discreet"
-           tal:attributes="href string:${here/absolute_url}/image_view_fullscreen">
+           tal:attributes="href string:$here_url/image_view_fullscreen">
             <tal:block condition="size" replace="structure python: here.tag(scale='preview')" />
             <br />
             <img src="" alt="" tal:replace="structure here/search_icon.gif" />

@@ -19,7 +19,7 @@
         method="post"
         class="enableUnloadProtection"
         tal:define="allowEnterPassword site_properties/validate_email|nothing;"
-        tal:attributes="action template/getId" >
+        tal:attributes="action template_id" >
 
     <fieldset>
 

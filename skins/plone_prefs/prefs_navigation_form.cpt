@@ -27,7 +27,7 @@
     <form action=""
           name=""
           method="post"
-          tal:attributes="action string:${here/absolute_url}/${template/getId}">
+          tal:attributes="action string:${here_url}/${template_id}">
 
         <fieldset>
             <legend i18n:translate="legend_navigation_details">Navigation details</legend>
@@ -58,7 +58,7 @@
             <div class="field" id="navigationtypes-field"
                  tal:define="
                        portal_types     portal/portal_types;
-                       navtree_props    portal/portal_properties/navtree_properties; 
+                       navtree_props    portal_properties/navtree_properties;
                        allTypes         python:[portal_types.getTypeInfo(t) for t in here.getPortalTypes()];
                        typeLists        python:here.createMultiColumnList(allTypes, numCols=3, sort_on='title_or_id');
                        blacklisted      navtree_props/metaTypesNotToList;
@@ -78,11 +78,11 @@
                            type="checkbox"
                            name="portaltypes:list"
                            tal:attributes="value ptypeInfo/getId;
-                                           id python:putils.normalizeString(ptypeInfo.getId());
+                                           id python:normalizeString(ptypeInfo.getId());
                                            checked python:test(ptypeInfo.getId() in searchTypes,'checked','');" />
                        <label for=""
                            i18n:translate=""
-                           tal:attributes="for python:putils.normalizeString(ptypeInfo.getId())"
+                           tal:attributes="for python:normalizeString(ptypeInfo.getId())"
                            tal:content="ptypeInfo/Title"
                            />
                     </li>
@@ -94,7 +94,7 @@
 
             <div class="field" id="navigationstates-field"
                  tal:define="
-                       navtree_props    portal/portal_properties/navtree_properties;
+                       navtree_props   portal_properties/navtree_properties;
                        states          python:wtool.listWFStatesByTitle(filter_similar=1);
                        state_lists     python: here.createMultiColumnList(states, numCols=1, sort_on='self');
                        cur_list      navtree_props/wf_states_to_show;">
@@ -123,11 +123,11 @@
                                    type="checkbox"
                                    name="wf_states_to_show:list"
                                    tal:attributes="value python:state[1];
-                                                   id python:putils.normalizeString(state[1]);
+                                                   id python:normalizeString(state[1]);
                                                    checked python:test(state[1] in cur_list,'checked','');" />
                             <label for=""
                                    i18n:translate=""
-                                   tal:attributes="for python:putils.normalizeString(state[1])"
+                                   tal:attributes="for python:normalizeString(state[1])"
                                    tal:content="python:state[0] or state[1]"
                                    />
                         </li>

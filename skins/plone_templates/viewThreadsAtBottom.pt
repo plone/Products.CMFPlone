@@ -8,8 +8,6 @@
      tal:define="userHasReplyPermission python:checkPermission('Reply to item', here);
                  portal_discussion portal/portal_discussion;
                  isDiscussionAllowed python:portal_discussion.isDiscussionAllowedFor(here);
-                 viewTemplate here/getViewTemplateId;
-                 isViewTemplate python:template_id==viewTemplate;
                  ">
     <tal:allowed condition="isViewTemplate">
         <tal:comments>

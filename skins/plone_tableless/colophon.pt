@@ -22,7 +22,7 @@
 
       <a href="http://plone.org"
          class="colophonIcon"
-         title="This Plone site was built using the Plone Content Management System. Click for more information."
+         title="This Plone site was built using Plone, the Open Source Content Management System. Click for more information."
          tal:attributes="style string:background-image: url(${portal_url}/plone_powered.gif);;"
          i18n:attributes="title title_built_with_plone;"
          i18n:translate="label_powered_by_plone">
@@ -52,7 +52,7 @@
          class="colophonIcon"
          title="This Plone site conforms to the W3C-WAI Web Content Accessibility Guidelines."
          tal:attributes="style string:background-image: url(${portal_url}/colophon_wai-aa.gif);;"
-         i18n:attributes="title title_wcag;"
+         i18n:attributes="title title_wcag_conformance;"
          i18n:translate="label_wcag">
         WCAG
       </a>
@@ -62,7 +62,7 @@
          class="colophonIcon"
          title="This Plone site is valid XHTML."
          tal:attributes="style string:background-image: url(${portal_url}/colophon_xhtml.png);;"
-         i18n:attributes="title title_xhtml;"
+         i18n:attributes="title title_valid_xhtml;"
          i18n:translate="label_xhtml">
         Valid XHTML
       </a>

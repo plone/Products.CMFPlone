@@ -14,7 +14,7 @@ except ImportError:
     return 0
 else:
     try:
-        return isRTL(context.REQUEST, domain)
+        return isRTL(context, domain)
     except AttributeError:
         # This may mean that PTS is present but not installed.
         # Can effectively only happen in unit tests.

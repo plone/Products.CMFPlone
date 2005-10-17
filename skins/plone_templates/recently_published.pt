@@ -14,8 +14,9 @@
                  DateTime python:modules['DateTime'].DateTime;
                  b_start python:request.get('b_start',0);">
 
-
-    <h1 i18n:translate="heading_recently_published">Published items</h1>
+    <h1 i18n:translate="heading_recently_published">
+        Published items
+    </h1>
 
     <div i18n:translate="description_recently_published" class="documentDescription">
         All published items, latest first.
@@ -39,12 +40,17 @@
                     </a>
 
                     <span class="discreet" i18n:translate="text_creator_date">
-                        by <span tal:replace="result/Creator" i18n:name="creator" />,
-                        last updated: <span tal:replace="python:here.toLocalizedTime(result.ModificationDate, long_format=1)" i18n:name="date" />
+                        by
+                        <span tal:content="result/Creator"
+                              tal:omit-tag=""
+                              i18n:name="creator">creator</span>,
+                        last updated:
+                        <span tal:content="python:here.toLocalizedTime(result.ModificationDate, long_format=1)"
+                              tal:omit-tag=""
+                              i18n:name="date">date</span>
                     </span>
                 </dt>
 
-                
                 <dd class="link">
                     <a href="/view"
                        tal:content="result/Description"

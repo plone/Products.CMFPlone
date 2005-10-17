@@ -12,7 +12,7 @@
             Document actions (print, sendto etc)
         </div>
 
-        <h1 tal:content="here/pretty_title_or_id" class="documentFirstHeading">
+        <h1 tal:content="object_title" class="documentFirstHeading">
             Title or id
         </h1>
 
@@ -54,9 +54,9 @@
                                        item_type_title item/Type;
                                        item_modified item/ModificationDate;
                                        item_created item/CreationDate;
-                                       item_type_class python: 'contenttype-' + putils.normalizeString(item_type);
+                                       item_type_class python: 'contenttype-' + normalizeString(item_type);
                                        item_wf_state        item/review_state|python: wtool.getInfoFor(item, 'review_state', '');
-                                       item_wf_state_class python:'state-' + putils.normalizeString(item_wf_state);
+                                       item_wf_state_class python:'state-' + normalizeString(item_wf_state);
                                        item_creator item/Creator;
                                        item_start item/start/ISO|item/StartDate|nothing;
                                        item_end item/end/ISO|item/EndDate|nothing;
@@ -118,7 +118,7 @@
                         <a href=""
                            tal:attributes="href python:test(item_type in use_view_action, item_url+'/view', item_url+'/');"
                            i18n:translate="read_more">
-                        Read more&hellip;
+                        Read More&hellip;
                         </a>
                     </p>
 
