@@ -61,7 +61,7 @@
         </tal:block>
     </metal:css>
 
-    <!-- Internet Explorer CSS Fixes + IE7 for compliance fixes (limited set) -->
+    <!-- Internet Explorer CSS Fixes -->
     <tal:iefixstart replace="structure string:&lt;!--[if lt IE 7]&gt;" />
         <style type="text/css" media="all" tal:condition="exists: portal/IEFixes.css"
                tal:content="string:@import url($portal_url/IEFixes.css);">
@@ -69,12 +69,6 @@
     <tal:iefixend replace="structure string:&lt;![endif]--&gt;" />
 
     <link rel="shortcut icon" type="image/x-icon" tal:attributes="href string:$portal_url/favicon.ico" />
-
-    <!-- Put this inside iefixstart to apply the IE7 script. It will be very slow, and currently
-         breaks with plonePrint.css and plonePresentation.css for unknown reasons.
-        <script src="ie7-standard.js" type="text/javascript" tal:attributes="src string:$portal_url/ie7/ie7-standard.js"></script>
-    -->
-
 
     <link rel="home" href="" title="Front page" tal:attributes="href string:$portal_url" />
     <link rel="search" title="Search this site" tal:attributes="href string:$portal_url/search_form" />

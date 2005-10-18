@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1.2 (unreleased)
 
+    - Remove so called 'ie7' from third party skins and all references to it
+      [limi, hannosch]
+
     - Make Plone 2.1 degrade more gracefully on a non-migrated 2.0 site (special
       fixes for plone.org)
       [sidnei]
