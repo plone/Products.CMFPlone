@@ -7,7 +7,7 @@
 <div id="portal-searchbox" metal:define-macro="quick_search">
     <form name="searchform"
           action="search"
-          tal:define="livesearch site_properties/enable_livesearch"
+          tal:define="livesearch site_properties/enable_livesearch|nothing"
           tal:attributes="action string:${portal_url}/search;
                           onsubmit python:test(livesearch==True,'return liveSearchSubmit()','')"
           style="white-space:nowrap">

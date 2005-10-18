@@ -13,7 +13,7 @@
                     <legend i18n:translate="label_related_items">Related content</legend>
                     <ul class="visualNoMarker">
                     <tal:related tal:repeat="item related"
-		                 tal:define="use_view_action site_properties/typesUseViewActionInListings;">
+		                 tal:define="use_view_action site_properties/typesUseViewActionInListings|python:();">
                         <li tal:define="
                                 desc                item/Description;
                                 item_type item/portal_type;
