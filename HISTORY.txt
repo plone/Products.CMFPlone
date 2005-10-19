@@ -4515,7 +4515,7 @@ Plone 1.0 beta3
 
     - file_view uses a href now instead of a input button
 
-Plone Beta 2
+Plone 1.0 Beta 2
 
 
     - navigation slot/tree was made more resilient to exceptions thrown while traversing child nodes
@@ -4568,7 +4568,7 @@ Plone Beta 2
 
     - zwork and limi have worked out quite a few issues regarding the new tree maker
 
-Plone Beta 1
+Plone 1.0 Beta 1
 
 
     - Added tree navigation from Philipp Auersperg and made it the default
@@ -4955,7 +4955,7 @@ Plone 1.0alpha - Boards of Canada Release:
 
     - issue #51 resolved
 
-Plone 0.9.9 - Bola - Released May 25, 2002:
+Plone 0.9.9 - Bola - Released May 25, 2002
 
     - Replaced all references to TextColor with FontColor, added
       headingFontColor property
@@ -5145,7 +5145,7 @@ Plone 0.9.9 - Bola - Released May 25, 2002:
 
     - many more changes and cleanups
 
-Plone 0.9.8 - Ulrich Schnauss - Released March 19, 2002:
+Plone 0.9.8 - Ulrich Schnauss - Released March 19, 2002
 
 
     - renaming of objects
@@ -5161,7 +5161,7 @@ Plone 0.9.8 - Ulrich Schnauss - Released March 19, 2002:
 
     - other things I forgot ;'(
 
-Plone 0.9.5 - Released January 31, 2002:
+Plone 0.9.5 - Released January 31, 2002
 
 
     - enormous overhaul of entire UI.  UI now works with Mozilla.
@@ -5213,12 +5213,11 @@ Plone 0.9.5 - Released January 31, 2002:
     - BSD license added (not final license, as will require some non-visual (?)
       attribution)
 
-Plone 0.9:
-
+Plone 0.9 - Released January 20th, 2002
 
     - load of fixes, too many to even attempt to keep track of ;)
 
-Plone 0.7:
+Plone 0.7 - Released December 12th, 2001
 
 
     - folder_edit_form id is editable (not so if its your own member folder id ;)
@@ -5229,20 +5228,23 @@ Plone 0.7:
 
     - new look (content tabs)
 
-Plone 0.6:
+Plone 0.6
 
 
     - so fast didnt have time to catch 'em
 
-Plone 0.5:
+Plone 0.5 - Released December 3rd, 2001
 
 
     - fixed search form up
 
-    - fixed folder_contents (not have an extended_edit, since we muck w/ metadata
-      alot)
+    - fixed folder_contents (not have an extended_edit, since we muck w/
+      metadata alot)
 
- Plone 0.1
+Plone 0.4 - Released October 23rd, 2001
+
+    - Various improvements
+
+Plone 0.1 - Released October 4th, 2001
 
     - Initial release
-
