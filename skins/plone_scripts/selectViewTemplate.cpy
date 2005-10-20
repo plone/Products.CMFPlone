@@ -9,6 +9,7 @@
 ##parameters=templateId
 
 from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone import PloneMessageFactory as _
 
 INTERFACE = 'Products.CMFPlone.interfaces.BrowserDefault.ISelectableBrowserDefault'
 
@@ -20,5 +21,5 @@ if not itool.objectImplements(context, INTERFACE):
 
 context.setLayout(templateId)
 
-message = context.translate("View changed.")
+message = _(u'View changed.')
 return state.set(portal_status_message=message)

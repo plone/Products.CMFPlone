@@ -7,9 +7,12 @@
 ##parameters=
 ##title=Modify groups
 ##
+
+from Products.CMFPlone import PloneMessageFactory as _
+
 REQUEST=context.REQUEST
 groupstool=context.portal_groups
-portal_status_message = 'No changes done.'
+message = _(u'No changes done.')
 
 groups=[group[len('group_'):]
         for group in REQUEST.keys()
@@ -18,7 +21,7 @@ groups=[group[len('group_'):]
 for group in groups:
     roles=[r for r in REQUEST['group_' + group] if r]
     groupstool.editGroup(group, roles=roles, groups=())
-    portal_status_message = 'Changes saved.'
+    message = _(u'Changes saved.')
 
 delete=REQUEST.get('delete',[])
 
@@ -26,12 +29,10 @@ if delete:
     groupstool.removeGroups(delete)
 
     if (1 < len(delete)):
-        portal_status_message=context.translate(
-            "Groups ${names} have been deleted.",
-            {'names': ', '.join(delete)})
+        message=_(u'Groups ${names} have been deleted.',
+                  mapping={u'names': ', '.join(delete)})
     else:
-        portal_status_message=context.translate(
-            "Group ${name} has been deleted.",
-            {'name': ''.join(delete)})
+        message=_(u'Group ${name} has been deleted.',
+                  mapping={u'name': ''.join(delete)})
 
-return state.set(portal_status_message=portal_status_message)
+return state.set(portal_status_message=message)

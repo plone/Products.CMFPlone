@@ -8,6 +8,8 @@
 ##title=Edit users
 ##
 
+from Products.CMFPlone import PloneMessageFactory as _
+
 acl_users = context.acl_users
 mtool = context.portal_membership
 getMemberById = mtool.getMemberById
@@ -40,4 +42,4 @@ if delete:
     # deletion
     mtool.deleteMembers(delete, delete_memberareas=0, delete_localroles=1)
 
-return state.set(portal_status_message=context.translate('Changes applied.'))
+return state.set(portal_status_message=_(u'Changes applied.'))

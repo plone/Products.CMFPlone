@@ -10,6 +10,7 @@
 ##
 
 from Products.CMFPlone import transaction_note
+from Products.CMFPlone import PloneMessageFactory as _
 from ZODB.POSException import ConflictError
 paths=context.REQUEST.get('paths', [])
 titles=[]
@@ -39,14 +40,14 @@ for path in paths:
 if titles:
     status='success'
     if len(titles) == 1:
-        message = context.translate("${title} has been deleted.",
-                                    {'title': titles[0]})
+        message = _(u'${title} has been deleted.',
+                    mapping={u'title': titles[0]})
     elif len(titles) <= MAX_TITLES_TO_REPORT:
-        message = context.translate("${titles} have been deleted.",
-                                    {'titles': ', '.join(titles)})
+        message = _(u'${titles} have been deleted.',
+                    mapping={u'titles': ', '.join(titles)})
     else:
-        message = context.translate("${itemCount} items have been deleted.",
-                                    {'itemCount': str(len(titles))})
+        message = _(u'${itemCount} items have been deleted.',
+                    mapping={u'itemCount': str(len(titles))})
 
     transaction_note('Deleted %s' % (', '.join(titles_and_paths)))
 

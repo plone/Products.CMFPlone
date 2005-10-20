@@ -688,14 +688,9 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         result = []
         # first the actions
         if actions is not None:
-            trans = getToolByName(self, 'translation_service')
-            utranslate = trans.utranslate
             for action_info in actions.get('portal_tabs', []):
                 data = action_info.copy()
-                data['name'] = utranslate('plone',
-                                          data['name'],
-                                          context=self,
-                                          default=data['name'])
+                data['name'] = _(data['name'], default=data['name'])
                 result.append(data)
 
         # check whether we only want actions

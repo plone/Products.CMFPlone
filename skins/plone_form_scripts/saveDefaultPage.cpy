@@ -9,9 +9,10 @@
 ##parameters=objectId=None
 
 INTERFACE = 'Products.CMFPlone.interfaces.BrowserDefault.ISelectableBrowserDefault'
+from Products.CMFPlone import PloneMessageFactory as _
 
 if not objectId:
-    message = context.translate("Please select an item to use.")
+    message = _(u'Please select an item to use.')
     return state.set(status='missing', portal_status_message=message)    
 
 from Products.CMFCore.utils import getToolByName
@@ -23,12 +24,11 @@ if not itool.objectImplements(context, INTERFACE):
 
 # Also should never happen
 if not objectId in context.objectIds():
-    message = context.translate("There is no object with short name "
-                                        "${name} in this folder.",
-                                {'name': objectId})
+    message = _(u'There is no object with short name ${name} in this folder.',
+                mapping={u'name': objectId})
     return state.set(status='failure', portal_status_message=message)
 
 context.setDefaultPage(objectId)
 
-message = context.translate("View changed.")
+message = _('View changed.')
 return state.set(portal_status_message=message)

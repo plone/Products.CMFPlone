@@ -6,7 +6,9 @@
 ##bind script=script
 ##bind subpath=traverse_subpath
 ##parameters=
+
 from Products.CMFPlone.utils import base_hasattr
+from Products.CMFPlone import PloneMessageFactory as _
 
 RESPONSE = context.REQUEST.RESPONSE
 homeFolder=context.portal_membership.getHomeFolder()
@@ -32,7 +34,7 @@ new_id='fav_' + str(int( context.ZopeTime()))
 myPath=context.portal_url.getRelativeUrl(context)
 targetFolder.invokeFactory('Favorite', id=new_id, title=context.TitleOrId(), remote_url=myPath)
 
-msg = context.translate("${title} has been added to your Favorites.",
-                        {'title': context.title_or_id()})
+msg = _(u'${title} has been added to your Favorites.',
+        mapping={u'title': context.title_or_id()})
 
 return RESPONSE.redirect('%s?portal_status_message=%s' % (view_url, msg))
