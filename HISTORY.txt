@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1.2 (unreleased)
 
+    - Added accessibility instructions for Konqueror.
+      [limi]
+
     - Remove so called 'ie7' from third party skins and all references to it
       [limi, hannosch]
 

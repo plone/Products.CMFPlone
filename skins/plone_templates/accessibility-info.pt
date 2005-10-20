@@ -101,6 +101,12 @@
         the access key.
         </dd>
 
+        <dt i18n:translate="label_konqueror_linux">Konqueror (Linux)</dt>
+        <dd i18n:translate="description_accesskey_konqueror_linux">
+        Hold down the <code>Ctrl</code> key and press the number or letter of 
+        the access key.
+        </dd>
+
         <dt i18n:translate="label_ie4_win">Internet Explorer 4 (Windows)</dt>
         <dd i18n:translate="description_accesskey_ie4_win">
         Hold down the <code>Alt</code> key and press the number or letter of 
