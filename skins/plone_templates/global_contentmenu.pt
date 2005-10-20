@@ -14,7 +14,6 @@
                 useSelf python:isStructuralFolder and not isContextDefaultPage;"
     tal:condition="not:disableMenu">
 
-
     <tal:states define="review_state wf_state;
                         transitions workflow_actions;"
                 condition="python:review_state">
@@ -106,7 +105,7 @@
             <ul>
                 <tal:types repeat="ctype menuTypes"> 
                     <li tal:define="Title ctype/Title; Id ctype/getId; Description ctype/Description;
-                                    item_type_class python: 'contenttype-' + here.plone_utils.normalizeString(Id);"
+                                    item_type_class python: 'contenttype-' + normalizeString(Id);"
                         tal:attributes="class string:${item_type_class}">
                         <a href="#" 
                            i18n:attributes="title"
@@ -157,11 +156,11 @@
                  i18n:attributes="alt" />
             <span i18n:translate="label_add_type"
                   tal:condition="python:folder == parent_folder">
-                Add <span i18n:name="type"><tal:title content="typetitle" i18n:translate="">Title</tal:title></span>
+                Add <span i18n:name="type"><span tal:content="typetitle" tal:omit-tag="" i18n:translate="">Title</span></span>
             </span>
             <span i18n:translate="label_add_type_to_folder"
                   tal:condition="python:folder != parent_folder">
-                Add <span i18n:name="type"><tal:title content="typetitle" i18n:translate="">Title</tal:title></span> to folder
+                Add <span i18n:name="type"><span tal:content="typetitle" tal:omit-tag="" i18n:translate="">Title</span></span> to folder
             </span>
         </a>
     </li>
@@ -254,8 +253,9 @@
                                 <li class="actionSeparator">
                                     <span class="currentDefaultPage actionMenuSelected"
                                           i18n:translate="label_item_selected">
-                                        Item: <span tal:replace="here/title_or_id"
-                                                    i18n:name="contentitem" />
+                                        Item: <span tal:content="here/title_or_id"
+                                                    tal:omit-tag=""
+                                                    i18n:name="contentitem">title</span>
                                     </span>
                                 </li>
                                 <li>
@@ -329,8 +329,9 @@
                                 <li class="actionSeparator">
                                     <span class="currentDefaultPage actionMenuSelected"
                                           i18n:translate="label_item_selected">
-                                        Item: <span tal:replace="defaultPage/title_or_id"
-                                              i18n:name="contentitem" />
+                                        Item: <span tal:content="defaultPage/title_or_id"
+                                                    tal:omit-tag=""
+                                                    i18n:name="contentitem">title</span>
                                     </span>
                                 </li>
                                 <li>
@@ -364,8 +365,9 @@
                             <li class="actionSeparator">
                                 <span class="currentDefaultPage actionMenuSelected"
                                           i18n:translate="label_item_selected">
-                                    Item: <span tal:replace="here/title_or_id"
-                                                i18n:name="contentitem" />
+                                    Item: <span tal:content="here/title_or_id"
+                                                tal:omit-tag=""
+                                                i18n:name="contentitem">title</span>
                                 </span>
                             </li>
                             <li>

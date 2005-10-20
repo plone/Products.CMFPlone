@@ -21,12 +21,12 @@
     <ul class="contentViews">
       <li class="">
             <a href=""
-           tal:attributes="href string:${here/absolute_url}/prefs_users_overview"
+           tal:attributes="href string:$here_url/prefs_users_overview"
                i18n:translate="label_users">Users</a>
       </li>
       <li class="selected">
             <a href=""
-               tal:attributes="href string:${here/absolute_url}/${template/id}"
+               tal:attributes="href string:$here_url/$template_id"
                i18n:translate="label_groups">Groups</a>
       </li>
     </ul>
@@ -60,7 +60,7 @@
         <form action=""
               name="groups_add"
               method="post"
-              tal:attributes="action template/getId"
+              tal:attributes="action template_id"
               tal:define="searchstring request/searchstring | nothing;
                           groups python:here.prefs_user_group_search(searchstring, 'groups');
                           batch python:Batch(groups, b_size, int(b_start), orphan=1)">

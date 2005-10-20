@@ -14,7 +14,7 @@
         global ifacetool nocall:portal/portal_interface | nothing;
         global syntool nocall:portal/portal_syndication;
         global portal_title portal_object/Title;
-        global object_title here/Title;
+        global object_title here/pretty_title_or_id;
         global member mtool/getAuthenticatedMember;
         global checkPermission nocall:mtool/checkPermission;
         global membersfolder mtool/getMembersFolder;
@@ -42,7 +42,7 @@
         global sr slots_mapping/right;
         global hidecolumns python:here.hide_columns(sl,sr);
         global default_language site_properties/default_language|nothing;
-        global language request/language | nothing;
+        language request/language | nothing;
         global language python:language or here.Language() or default_language;
         global is_editable python:checkPermission('Modify portal content', context);
         global isEditable is_editable;
@@ -51,4 +51,7 @@
         global isRTL python:here.isRightToLeft(domain='plone');
         global visible_ids here/visibleIdsEnabled|nothing;
         global current_page_url here/getCurrentUrl|nothing;
+        view_template_id here/getViewTemplateId|nothing;
+        global isViewTemplate python:template_id==view_template_id;
+        global normalizeString nocall:putils/normalizeString;
         " />

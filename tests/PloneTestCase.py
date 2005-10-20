@@ -22,8 +22,6 @@ ZopeTestCase.installProduct('CMFFormController')
 ZopeTestCase.installProduct('ResourceRegistries')
 ZopeTestCase.installProduct('GroupUserFolder')
 ZopeTestCase.installProduct('ZCTextIndex')
-if ZopeTestCase.hasProduct('TextIndexNG2'):
-    ZopeTestCase.installProduct('TextIndexNG2')
 ZopeTestCase.installProduct('ExtendedPathIndex')
 ZopeTestCase.installProduct('SecureMailHost')
 if ZopeTestCase.hasProduct('ExternalEditor'):

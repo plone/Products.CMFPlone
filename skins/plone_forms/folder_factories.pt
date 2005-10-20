@@ -7,18 +7,33 @@
 
 <div metal:fill-slot="main">
 
-     <metal:block tal:condition="python:test(request.get('type_name', 'Select')!='Select', 1, 0)">
+    <metal:block tal:condition="python:test(request.get('type_name', 'Select')!='Select', 1, 0)">
         <tal:block tal:define="pps python:modules['Products.PythonScripts.standard'];
                                type_name python:pps.url_quote(request.get('type_name'));
                                creation_url string:$here_url/createObject?type_name=$type_name;
                                dummy python:request.response.redirect(creation_url); " />
-     </metal:block>
+    </metal:block>
 
-	<h1 i18n:translate="heading_add_new_item">Add new item</h1>
+    <h1 i18n:translate="heading_add_new_item">Add new item</h1>
 
-	<p i18n:translate="description_add_new_item">
-	Select the type of item you want to add to your folder.
-	</p>
+    <p i18n:translate="description_add_new_item">
+        Select the type of item you want to add to your folder.
+    </p>
+
+    <p tal:define="isStructuralFolder here/is_folderish;
+                   isContextDefaultPage here/isDefaultPageInFolder;
+                   folder python:test(isStructuralFolder, here, here.getParentNode());
+                   parent_folder python: isContextDefaultPage and here.getParentNode() or folder;
+                   addContext nocall:parent_folder;
+                   showSettings addContext/canConstrainTypes;">
+        <a href="#" tal:condition="showSettings"
+                    title="Configure which content types can be added here"
+                    i18n:attributes="title title_configure_addable_content_types;"
+                    tal:attributes="href string:${addContext/absolute_url}/folder_constraintypes_form;"
+                    i18n:translate="folder_add_settings_long">
+            Click to configure what type of items can be added here&hellip;
+        </a>
+    </p>
 
     <div metal:define-macro="addlist"
          tal:define="filterOut here/getNotAddableTypes;
@@ -39,7 +54,7 @@
 
                 <form name="quickAdd" action="createObject" method="post">
     
-                    <label tal:attributes="class python: 'contenttype-' + putils.normalizeString(Id) + ' visualIconPadding';
+                    <label tal:attributes="class python: 'contenttype-' + normalizeString(Id) + ' visualIconPadding';
                                            for Title;">
                     &nbsp;
                     </label>

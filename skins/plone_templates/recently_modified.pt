@@ -14,8 +14,9 @@
                  DateTime python:modules['DateTime'].DateTime;
                  b_start python:request.get('b_start',0);">
 
-
-    <h1 i18n:translate="heading_recently_modified">Modified items</h1>
+    <h1 i18n:translate="heading_recently_modified">
+        Modified items
+    </h1>
 
     <div i18n:translate="description_recently_modified" class="documentDescription">
         All recently modified items, latest first.
@@ -28,8 +29,8 @@
 
             <dl>
                 <dt tal:define="item_wf_state result/review_state;
-                                item_wf_state_class python:'state-' + putils.normalizeString(item_wf_state);">
-                    <span tal:attributes="class python: 'contenttype-' + putils.normalizeString(result.portal_type) + ' visualIconPadding'">
+                                item_wf_state_class python:'state-' + normalizeString(item_wf_state);">
+                    <span tal:attributes="class python: 'contenttype-' + normalizeString(result.portal_type) + ' visualIconPadding'">
                     <a href="/view"
                        tal:content="result/pretty_title_or_id"
                        tal:attributes="href result/getURL;
@@ -39,11 +40,16 @@
                     </span>
 
                     <span class="discreet" i18n:translate="text_creator_date">
-                        by <span tal:replace="result/Creator" i18n:name="creator" />,
-                        last updated: <span tal:replace="python:here.toLocalizedTime(result.ModificationDate, long_format=1)" i18n:name="date" />
+                        by
+                        <span tal:content="result/Creator"
+                              tal:omit-tag=""
+                              i18n:name="creator">creator</span>,
+                        last updated:
+                        <span tal:content="python:here.toLocalizedTime(result.ModificationDate, long_format=1)"
+                              tal:omit-tag=""
+                              i18n:name="date">date</span>
                     </span>
                 </dt>
-
                 
                 <dd class="link">
                     <a href="/view"

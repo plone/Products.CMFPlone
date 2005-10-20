@@ -28,7 +28,7 @@
           name="reconfig"
           method="post"
           class="enableUnloadProtection"
-          tal:attributes="action string:${here/absolute_url}/${template/getId}">
+          tal:attributes="action string:${here_url}/${template_id}">
         
         <fieldset>
             <legend i18n:translate="legend_plone_details">Plone Details</legend>
@@ -136,9 +136,8 @@
                 <select name="default_language"
                         tabindex=""
                         value=""
-                        tal:attributes="value site_properties/default_language;
-                                        tabindex tabindex/next;"
-                        tal:define="default_language request/default_language | site_properties/default_language;">
+                        tal:attributes="value default_language;
+                                        tabindex tabindex/next;">
                    <option value="" i18n:translate="label_choose_language">Choose Language</option>
                    <option tal:repeat="language here/availableLanguages"
                            tal:attributes="value python:language[0];

@@ -49,7 +49,7 @@
           <a class="hiddenStructure"
              accesskey="2"
              tal:attributes="href string:${request/ACTUAL_URL}#documentContent"
-             i18n:translate="label_skiptocontent">Skip to content</a>
+             i18n:translate="label_skiptocontent">Skip to content.</a>
 
           <a class="hiddenStructure"
              accesskey="6"

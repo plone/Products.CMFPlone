@@ -51,11 +51,12 @@
                  i18n:attributes="alt label_object_locked;" />
         </span>
 
-        <div tal:condition="here/Contributors">
-            <span i18n:translate="label_contributors">
-              Contributors:
-            </span>
-            <span tal:replace="python: ', '.join(here.Contributors())">
+        <div tal:condition="here/Contributors"
+             i18n:translate="text_contributors">
+            Contributors:
+            <span i18n:name="name"
+                  tal:omit-tag=""
+                  tal:content="python: ', '.join(here.Contributors())">
               Mary
             </span>
         </div>

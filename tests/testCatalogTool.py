@@ -31,57 +31,32 @@ group2 = 'g2'
 
 base_content = ['Members', 'events', 'news', 'previous', default_user, 'doc']
 
-try:
-    import Products.TextIndexNG2
-    txng_version = 2
-except:
-    txng_version = 0
-
 
 class TestCatalogSetup(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
         self.catalog = self.portal.portal_catalog
 
-    if txng_version == 2:
+    def testSearchableTextIsZCTextIndex(self):
+        # SearchableText index should be a ZCTextIndex
+        itype = self.catalog.Indexes['SearchableText'].__class__.__name__
+        self.assertEqual(itype, 'ZCTextIndex')
 
-        def testSearchableTextIsTextIndexNG(self):
-            # SearchableText index should be a TextIndexNG
-            itype = self.catalog.Indexes['SearchableText'].__class__.__name__
-            self.assertEqual(itype, 'TextIndexNG')
+    def testDescriptionIsZCTextIndex(self):
+        # Description index should be a ZCTextIndex
+        itype = self.catalog.Indexes['Description'].__class__.__name__
+        self.assertEqual(itype, 'ZCTextIndex')
 
-        def testDescriptionIsTextIndexNG(self):
-            # Description index should be a TextIndexNG
-            itype = self.catalog.Indexes['Description'].__class__.__name__
-            self.assertEqual(itype, 'TextIndexNG')
+    def testTitleIsZCTextIndex(self):
+        # Title index should be a ZCTextIndex
+        itype = self.catalog.Indexes['Title'].__class__.__name__
+        self.assertEqual(itype, 'ZCTextIndex')
 
-        def testTitleIsTextIndexNG(self):
-            # Title index should be a TextIndexNG
-            itype = self.catalog.Indexes['Title'].__class__.__name__
-            self.assertEqual(itype, 'TextIndexNG')
-
-    else:
-
-        def testSearchableTextIsZCTextIndex(self):
-            # SearchableText index should be a ZCTextIndex
-            itype = self.catalog.Indexes['SearchableText'].__class__.__name__
-            self.assertEqual(itype, 'ZCTextIndex')
-
-        def testDescriptionIsZCTextIndex(self):
-            # Description index should be a ZCTextIndex
-            itype = self.catalog.Indexes['Description'].__class__.__name__
-            self.assertEqual(itype, 'ZCTextIndex')
-
-        def testTitleIsZCTextIndex(self):
-            # Title index should be a ZCTextIndex
-            itype = self.catalog.Indexes['Title'].__class__.__name__
-            self.assertEqual(itype, 'ZCTextIndex')
-
-        def testPloneLexiconIsZCTextLexicon(self):
-            # Lexicon should be a ZCTextIndex lexicon
-            self.failUnless(hasattr(aq_base(self.catalog), 'plone_lexicon'))
-            self.assertEqual(self.catalog.plone_lexicon.meta_type,\
-                             'ZCTextIndex Lexicon')
+    def testPloneLexiconIsZCTextLexicon(self):
+        # Lexicon should be a ZCTextIndex lexicon
+        self.failUnless(hasattr(aq_base(self.catalog), 'plone_lexicon'))
+        self.assertEqual(self.catalog.plone_lexicon.meta_type,\
+                         'ZCTextIndex Lexicon')
 
     def testPathIsExtendedPathIndex(self):
         # path index should be an ExtendedPathIndex

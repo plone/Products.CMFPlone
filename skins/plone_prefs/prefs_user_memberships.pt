@@ -28,7 +28,7 @@
 
       <li class="selected">
             <a href=""
-           tal:attributes="href string:${template/id}?userid=${userid}"
+           tal:attributes="href string:${template_id}?userid=${userid}"
            i18n:translate="label_group_memberships">Group Memberships</a>
       </li>
     </ul>
@@ -45,7 +45,13 @@
       </div>
 
       <div class="configlet">
-        <h1 i18n:translate="heading_group_memberships_for">Group Memberships for <span tal:replace="string:${member/getUserName}" i18n:name="username"/></h1>
+
+        <h1 i18n:translate="heading_group_memberships_for">
+          Group Memberships for
+          <span tal:content="string:${member/getUserName}"
+                tal:omit-tag=""
+                i18n:name="username">username</span>
+        </h1>
 
         <a href=""
            class="link-parent"
@@ -88,7 +94,7 @@
                     <a href="prefs_group_details"
                        tal:attributes="href string:prefs_group_details?groupname=$groupname">
                     <tal:block replace="structure portal/group.gif"/>&nbsp;<span
-                                 tal:replace="groupname">group name</span>
+                                 tal:replace="group/getGroupTitleOrName | groupname">group name</span>
                     </a>
                 </td>
 
@@ -103,7 +109,7 @@
             </tr>
 
             </table>
-            <p tal:condition="not:groups">This user does not belong to any group.</p>
+            <p tal:condition="not:groups" i18n:translate="text_user_not_in_any_group">This user does not belong to any group.</p>
             <input class="destructive"
                    type="submit"
                    name="prefs_user_membership_edit:method"

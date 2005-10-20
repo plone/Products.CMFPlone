@@ -7,8 +7,7 @@
 
 <div metal:fill-slot="main">
   <div metal:define-macro="login_failed"
-       tal:define="login_name python:request.get('login_name', '');
-                   ztutils modules/ZTUtils;">
+       tal:define="login_name python:request.get('login_name', '');">
 
     <h1 i18n:translate="heading_sign_in_failure_auth">Sign-in failure</h1>
 
@@ -17,7 +16,7 @@
       may be incorrect.
     </p>
 
-    <p><a tal:attributes="href python:'mail_password_form?'+ztutils.make_query(userid=login_name)" i18n:translate="description_failed_login_link">
+    <p><a tal:attributes="href python:'mail_password_form?'+ztu.make_query(userid=login_name)" i18n:translate="description_failed_login_link">
       Click here to have your password mailed to you if you have forgotten it.</a>
     </p>
 
@@ -40,7 +39,7 @@
         You may be running web filtering software that
         disables cookies.  If so, you will need to configure the
         software so that it enables you to accept cookies from
-        <span tal:replace="utool" i18n:name="url"/>
+        <span tal:content="utool" tal:omit-tag="" i18n:name="url">url</span>
       </li>
       <li i18n:translate="description_still_failure_reason2">
         Your computer may be behind a firewall or proxy server

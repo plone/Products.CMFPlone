@@ -11,10 +11,10 @@
   <div metal:fill-slot="main"
        tal:define="Batch python:modules['Products.CMFPlone'].Batch;
                    username member/getUserName;
-                   avail_roles python:[role for role in container.portal_membership.getCandidateLocalRoles(here) if role!='Owner'];
+                   avail_roles python:[role for role in mtool.getCandidateLocalRoles(here) if role!='Owner'];
                    b_size python:12;b_start python:0;b_start request/b_start | b_start;
                    tabindex python:Iterator();
-                   iscontainer here/isPrincipiaFolderish|nothing;
+                   iscontainer isFolderish|nothing;
                    itemPortalTypeTitle python:here.getTypeInfo().Title();
                    inheritanceActive python:putils.isLocalRoleAcquired(here);
                    search_submitted request/role_submit|nothing;
@@ -28,7 +28,7 @@
 
     <h1 i18n:translate="heading_currently_assigned_shares">
         Current sharing permissions for
-        <span tal:content="here/pretty_title_or_id" i18n:name="folder">title</span>
+        <span tal:content="object_title" tal:omit-tag="" i18n:name="folder">title</span>
     </h1>
 
     <tal:warning tal:condition="not:iscontainer">
@@ -37,7 +37,7 @@
                   i18n:translate="local_role_warning_type">
                 <strong>Attention!</strong> 
                 You are setting the sharing permissions for a 
-                <strong i18n:name="type"><tal:translate content="itemPortalTypeTitle" i18n:translate="">type</tal:translate></strong>.
+                <strong i18n:name="type"><span tal:content="itemPortalTypeTitle" tal:omit-tag="" i18n:translate="">type</span></strong>.
                 If you want to set the permissions for its container, 
                 click 
                 <span i18n:name="link">
@@ -73,7 +73,7 @@
 
         <legend i18n:translate="legend_assigned_roles">
             Assigned Roles for
-            <span tal:content="here/pretty_title_or_id" i18n:name="folder">title</span>
+            <span tal:content="object_title" tal:omit-tag="" i18n:name="folder">title</span>
         </legend>
 
         <input type="hidden" name="change_type" value="delete" />
@@ -112,7 +112,7 @@
                 <td valign="top" class="field">
                     <label class="hiddenLabel" for="member_ids:list"
                            i18n:translate="label_select_usergroup">
-                        select user/group <span tal:content="entry/id" i18n:name="role"/>
+                        select user/group <span tal:content="entry/id" tal:omit-tag="" i18n:name="role">userid/groupid</span>
                     </label>
                     <input class="formSelection"
                            type="checkbox"
@@ -279,7 +279,7 @@
                                                       member_id member/getId">
                             <label class="hiddenLabel" for="member_ids:list"
                                    i18n:translate="label_select_user">
-                                select user <span tal:content="member_name" i18n:name="user" />
+                                select user <span tal:content="member_name" tal:omit-tag="" i18n:name="user">username</span>
                             </label>
                             <input class="formSelection"
                                    type="checkbox"
@@ -362,7 +362,7 @@
         <form method="post"
               name="localrole"
               action="folder_localrole_form"
-              tal:attributes="action string:$here_url/${template/getId}" >
+              tal:attributes="action string:$here_url/$template_id" >
 
             <fieldset>
 
@@ -470,7 +470,7 @@
                             <td>
                                 <label class="hiddenLabel" for="member_ids:list"
                                        i18n:translate="label_select_group">
-                                    select group <span tal:content="group_name" i18n:name="name"/>
+                                    select group <span tal:content="group_name" tal:omit-tag="" i18n:name="name">groupname</span>
                                 </label>
                                 <input class="formSelection"
                                     type="checkbox"
@@ -576,10 +576,10 @@
         <p i18n:translate="description_change_ownership_of_article">
             To change the ownership for this
             <span i18n:name="type">
-                <tal:translate content="itemPortalTypeTitle" i18n:translate="">type</tal:translate>
+                <span tal:content="itemPortalTypeTitle" tal:omit-tag="" i18n:translate="">type</span>
             </span>, click 
             <span i18n:name="link_to_ownership_form">
-            <a href="" tal:attributes="href string:${here/absolute_url}/ownership_form"
+            <a href="" tal:attributes="href string:$here_url/ownership_form"
                i18n:translate="label_here">here</a>
             </span>
         </p>

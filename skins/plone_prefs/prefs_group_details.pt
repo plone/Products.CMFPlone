@@ -25,12 +25,12 @@
     <ul class="contentViews">
       <li class="">
             <a href=""
-               tal:attributes="href string:${here/absolute_url}/prefs_group_members?groupname=${groupname}"
+               tal:attributes="href string:$here_url/prefs_group_members?groupname=${groupname}"
                i18n:translate="label_group_members">Group Members</a>
       </li>
       <li class="selected">
         <a href=""
-           tal:attributes="href string:${here/absolute_url}/${template/id}?groupname=${groupname}"
+           tal:attributes="href string:$here_url/${template_id}?groupname=${groupname}"
            i18n:translate="label_group_properties">Group Properties</a>
       </li>
     </ul>
@@ -55,7 +55,7 @@
 
           <metal:name metal:fill-slot="name">
         <div class="field">
-               <label for="addname" i18n:translate="label_name">Short Name</label>
+               <label for="addname" i18n:translate="label_name">Name</label>
 
                <span class="fieldRequired" title="Required"
                      i18n:attributes="title title_required;"
@@ -77,7 +77,7 @@
             <metal:block metal:define-macro="props" tal:omit-tag="">
 
         <h1 i18n:translate="heading_edit_groupproperties" metal:define-slot="title">
-               Edit Group Properties for <span tal:replace="grouptitle | default" i18n:name="groupname">#unavailable#</span>
+            Edit Group Properties for <span tal:content="grouptitle | default" tal:omit-tag="" i18n:name="groupname">unavailable</span>
         </h1>
 
         <a href=""
@@ -105,7 +105,7 @@
                 <legend i18n:translate="link_group_properties">Group Properties</legend>
 
                 <div class="field" metal:define-slot="name">
-                   <label for="addname" i18n:translate="label_name">Short Name</label>
+                   <label for="addname" i18n:translate="label_name">Name</label>
 
                    <div tal:content="group/getGroupName | string:" />
                    <input type="hidden" name="groupname" value="groupname" id="groupname"

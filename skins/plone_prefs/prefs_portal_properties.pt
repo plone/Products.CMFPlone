@@ -10,7 +10,7 @@
 
 <div metal:fill-slot="prefs_configlet_main"
      tal:define="errors python:request.get('errors', {});
-                 obj python:getattr(here.portal_properties, request.get('attr',''))">
+                 obj python:getattr(portal_properties, request.get('attr',''))">
 
     <h1 tal:define="heading_title string:heading_${request/attr}"
         i18n:translate=""
@@ -30,7 +30,7 @@
           name="reconfig"
           method="post"
 	  tal:attributes="action string:prefs_portal_properties_set"
-          tal:define="props python:here.portal_properties;">
+          tal:define="props python:portal_properties;">
 
         <fieldset>
 

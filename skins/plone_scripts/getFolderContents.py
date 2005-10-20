@@ -13,9 +13,9 @@ cur_path = '/'.join(context.getPhysicalPath())
 path = {}
 
 if not contentFilter:
-    contentFilter=dict(context.REQUEST)
-    # The form is what really matters
-    contentFilter.update(dict(getattr(context.REQUEST, 'form',{})))
+    # The form and other are what really matters
+    contentFilter = dict(getattr(context.REQUEST, 'form',{}))
+    contentFilter.update(dict(getattr(context.REQUEST, 'other',{})))
 else:
     contentFilter = dict(contentFilter)
 
