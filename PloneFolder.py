@@ -23,7 +23,7 @@ from Products.CMFCore.PortalFolder import PortalFolderBase
 from Products.CMFCore import permissions as CMFCorePermissions
 from Products.CMFDefault.DublinCore import DefaultDublinCoreImpl
 
-from Products.CMFPlone import PloneMessageIDFactory as _
+from Products.CMFPlone import PloneMessageFactory as _
 
 # ATM it's safer to define our own
 from interfaces.OrderedContainer import IOrderedContainer
@@ -49,8 +49,8 @@ class ReplaceableWrapper:
 factory_type_information = {
     'id': 'Folder',
     'meta_type': 'Plone Folder',
-    'description': (_("Plone folders can define custom 'view' actions, or will "
-                    "behave like directory " "listings without one defined.")),
+    'description': (_(u"Plone folders can define custom 'view' actions, or will "
+                    "behave like directory listings without one defined.")),
     'icon': 'folder_icon.gif',
     'product': 'CMFPlone',
     'factory': 'addPloneFolder',
@@ -59,28 +59,28 @@ factory_type_information = {
     'actions': (
         {
             'id': 'view',
-            'name': _('View'),
+            'name': _(u'View'),
             'action': 'string:${folder_url}/',
             'permissions': (CMFCorePermissions.View,),
             'category': 'folder',
         },
         {
             'id': 'local_roles',
-            'name': _('Local Roles'),
+            'name': _(u'Local Roles'),
             'action': 'string:${folder_url}/folder_localrole_form',
             'permissions': (CMFCorePermissions.ManageProperties,),
             'category': 'folder',
         },
         {
             'id': 'edit',
-            'name': _('Edit'),
+            'name': _(u'Edit'),
             'action': 'string:${folder_url}/folder_edit_form',
             'permissions': (CMFCorePermissions.ModifyPortalContent,),
             'category': 'folder',
         },
         {
             'id': 'folderlisting',
-            'name': _('Folder Listing'),
+            'name': _(u'Folder Listing'),
             'action': 'string:${folder_url}/folder_listing',
             'permissions': (CMFCorePermissions.View,),
             'category': 'folder',

@@ -206,8 +206,8 @@ def initialize(context):
     ModuleSecurityInfo('Products.CMFPlone').declarePrivate('transaction')
 
 from zope.i18n.messageid import MessageIDFactory
-# Import _ to use to create message ids in the plone domain
-PloneMessageIDFactory = MessageIDFactory('plone')
+# Import _ to create message ids in the plone domain
+PloneMessageFactory = MessageIDFactory('plone')
 
 # Zope 2.8-style transaction module
 # BBB: Zope 2.7

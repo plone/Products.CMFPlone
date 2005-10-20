@@ -14,7 +14,7 @@ from Products.CMFCore.utils import _checkPermission, getToolByName, UniqueObject
 import ToolNames
 from interfaces.PloneControlPanel import IControlPanel
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
-from Products.CMFPlone import PloneMessageIDFactory as _
+from Products.CMFPlone import PloneMessageFactory as _
 
 class PloneConfiglet(ActionInformation):
 
@@ -39,7 +39,7 @@ class PloneConfiglet(ActionInformation):
 default_configlets = (
     {'id':'QuickInstaller',
      'appId':'QuickInstaller',
-     'name':_('Add/Remove Products'),
+     'name':_(u'Add/Remove Products'),
      'action':'string:${portal_url}/prefs_install_products_form',
      'category':'Plone',
      'permission': ManagePortal,
@@ -47,7 +47,7 @@ default_configlets = (
 
     {'id':'PloneReconfig',
      'appId':'Plone',
-     'name':_('Portal Settings'),
+     'name':_(u'Portal Settings'),
      'action':'string:${portal_url}/reconfig_form',
      'category':'Plone',
      'permission': ManagePortal,
@@ -55,7 +55,7 @@ default_configlets = (
 
     {'id':'UsersGroups',
      'appId':'UsersGroups',
-     'name':_('Users and Groups Administration'),
+     'name':_(u'Users and Groups Administration'),
      'action':'string:${portal_url}/prefs_users_overview',
      'category':'Plone',
      'permission': ManagePortal,
@@ -63,7 +63,7 @@ default_configlets = (
 
     {'id':'UsersGroups2',
      'appId':'UsersGroups',
-     'name':_('Users and Groups Administration'),
+     'name':_(u'Users and Groups Administration'),
      'action':'string:${portal_url}/prefs_groups_overview',
      'category':'Plone',
      'permission': ManagePortal,
@@ -72,7 +72,7 @@ default_configlets = (
 
     {'id':'MemberPrefs',
      'appId':'Plone',
-     'name':_('Personal Preferences'),
+     'name':_(u'Personal Preferences'),
      'action':'string:${portal_url}/personalize_form',
      'category':'Member',
      'permission': SetOwnProperties,
@@ -80,7 +80,7 @@ default_configlets = (
 
     {'id':'MemberPassword',
      'appId':'Plone',
-     'name':_('Change Password'),
+     'name':_(u'Change Password'),
      'action':'string:${portal_url}/password_form',
      'category':'Member',
      'permission': SetOwnPassword,
@@ -88,7 +88,7 @@ default_configlets = (
 
 #    {'id':'WorkflowPrefs',
 #     'appId':'Plone',
-#     'name':_('Manage Workflow'),
+#     'name':_(u'Manage Workflow'),
 #     'action':'string:${portal_url}/prefs_workflow_basic',
 #     'category':'Plone',
 #     'permission': ManagePortal,
@@ -96,7 +96,7 @@ default_configlets = (
 
     {'id':'MailHost',
      'appId':'MailHost',
-     'name':_('Mail Settings'),
+     'name':_(u'Mail Settings'),
      'action':'string:${portal_url}/prefs_mailhost_form',
      'category':'Plone',
      'permission': ManagePortal,
@@ -104,7 +104,7 @@ default_configlets = (
 
     {'id':'PortalSkin',
      'appId':'PortalSkin',
-     'name':_('Skins'),
+     'name':_(u'Skins'),
      'action':'string:${portal_url}/prefs_portalskin_form',
      'category':'Plone',
      'permission': ManagePortal,
@@ -112,7 +112,7 @@ default_configlets = (
 
 #    {'id':'Syndication',
 #     'appId':'Syndication',
-#     'name':_('Syndication'),
+#     'name':_(u'Syndication'),
 #     'action':'string:${portal_url}/prefs_syndication_form',
 #     'category':'Plone',
 #     'permission': ManagePortal,
@@ -120,7 +120,7 @@ default_configlets = (
 
     {'id':'errorLog',
      'appId':'ErrorLog',
-     'name':_('Error Log'),
+     'name':_(u'Error Log'),
      'action':'string:${portal_url}/prefs_error_log_form',
      'category':'Plone',
      'permission': ManagePortal,
@@ -128,7 +128,7 @@ default_configlets = (
 
 #   {'id':'PortalProperties',
 #     'appId':'PortalProperties',
-#     'name':_('Properties'),
+#     'name':_(u'Properties'),
 #     'action':'string:${portal_url}/prefs_portal_properties_list',
 #     'category':'Plone',
 #     'permission': ManagePortal,
@@ -136,7 +136,7 @@ default_configlets = (
 
     {'id':'ZMI',
      'appId':'ZMI',
-     'name':_('Zope Management Interface'),
+     'name':_(u'Zope Management Interface'),
      'action':'string:${portal_url}/manage_main',
      'category':'Plone',
      'permission': ManagePortal,
@@ -144,7 +144,7 @@ default_configlets = (
 
     {'id':'SearchSettings',
      'appId':'Plone',
-     'name':_('Search Settings'),
+     'name':_(u'Search Settings'),
      'action':'string:${portal_url}/prefs_search_form',
      'category':'Plone',
      'permission': ManagePortal,
@@ -152,7 +152,7 @@ default_configlets = (
 
      {'id':'NavigationSettings',
      'appId':'Plone',
-     'name':_('Navigation Settings'),
+     'name':_(u'Navigation Settings'),
      'action':'string:${portal_url}/prefs_navigation_form',
      'category':'Plone',
      'permission': ManagePortal,
@@ -176,7 +176,7 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
     security = ClassSecurityInfo()
 
     id = 'portal_controlpanel'
-    title = _('Control Panel')
+    title = _(u'Control Panel')
     toolicon = 'skins/plone_images/site_icon.gif'
     meta_type = ToolNames.ControlPanelTool
     _actions_form = DTMLFile( 'www/editPloneConfiglets', globals() )

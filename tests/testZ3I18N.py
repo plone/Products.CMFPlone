@@ -6,7 +6,7 @@ from Testing import ZopeTestCase
 
 import zope.app.i18n
 from zope.app.tests.placelesssetup import setUp, tearDown
-from zope.i18nmessageid import MessageIDFactory
+from zope.i18nmessageid import MessageIDFactory as MessageFactory
 from Products.Five import zcml
 from Products.PageTemplates import GlobalTranslationService as GTS
 
@@ -37,14 +37,14 @@ class Z3I18NCornerTestCase(ZopeTestCase.ZopeTestCase):
                           'translation is not working. Got: %s' % translated)
 
     def test_message_id(self):
-        _ = MessageIDFactory('testing')
+        _ = MessageFactory('testing')
         msg = _(u'explicit-msg', u'This is an explicit message')
         self.assertEquals(u'This is an explicit message',
                           self.TS.translate('testing', msg),
                           'Basic MessageID translation is not working')
 
     def test_messageid_within_other_domain(self):
-        _ = MessageIDFactory('test')
+        _ = MessageFactory('test')
         msg = _(u'foo', u'foovalue ${testid1}')
         msg.mapping={u'testid1' : 'barvalue'}
         translated = self.TS.translate('other', msg)
@@ -52,7 +52,7 @@ class Z3I18NCornerTestCase(ZopeTestCase.ZopeTestCase):
                           'translation is not working. Got: %s' % translated)
 
     def test_translate_messageid_with_domain_overridden(self):
-        _ = MessageIDFactory('testing')
+        _ = MessageFactory('testing')
         msg = _(u'id', u'value')
         msg.domain='test'
         translated = self.TS.translate('testing', msg)
