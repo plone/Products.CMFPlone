@@ -50,7 +50,7 @@ searchterms = r.replace(' ','+')
 results = catalog(SearchableText=r, portal_type=friendly_types)
 
 RESPONSE = context.REQUEST.RESPONSE
-RESPONSE.setHeader('Content-Type', 'text/xml')
+RESPONSE.setHeader('Content-Type', 'text/xml;charset=%s' % context.plone_utils.getSiteEncoding())
 
 _ = context.translate
 legend_livesearch = _('legend_livesearch', default='LiveSearch &darr;')
