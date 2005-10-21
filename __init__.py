@@ -205,8 +205,12 @@ def initialize(context):
 
     ModuleSecurityInfo('Products.CMFPlone').declarePrivate('transaction')
 
+    # XXX This isn't sufficient. In for example testFolderButtons.py I still get
+    # Unauthorized: You are not allowed to access 'mapping' in this context
+    ModuleSecurityInfo('Products.CMFPlone').declarePublic('PloneMessageFactory')
+
+# Import "PloneMessageFactory as _" to create message ids in the plone domain
 from zope.i18n.messageid import MessageIDFactory
-# Import _ to create message ids in the plone domain
 PloneMessageFactory = MessageIDFactory('plone')
 
 # Zope 2.8-style transaction module
