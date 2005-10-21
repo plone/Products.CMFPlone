@@ -8,6 +8,8 @@
 ##title=set syndication prefs
 ##
 
+from Products.CMFPlone import PloneMessageFactory as _
+from Products.PythonScripts.standard import url_quote_plus
 REQUEST=context.REQUEST
 
 ps = context.portal_syndication
@@ -19,7 +21,7 @@ ps.editProperties( updatePeriod=updatePeriod,
                    max_items=max_items,
                    )
 
-msg = 'Syndication properties updated'
-RESPONSE.redirect('prefs_syndication_form?portal_status_message=' + msg)
+msg = _(u'Syndication properties updated')
+RESPONSE.redirect('prefs_syndication_form?portal_status_message=' + url_quote_plus(msg))
 
 return

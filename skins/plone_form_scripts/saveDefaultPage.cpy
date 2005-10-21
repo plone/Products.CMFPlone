@@ -30,4 +30,4 @@ if not objectId in context.objectIds():
 
 context.setDefaultPage(objectId)
 
-return state.set(portal_status_message=_('View changed.'))
+return state.set(portal_status_message=_(u'View changed.'))

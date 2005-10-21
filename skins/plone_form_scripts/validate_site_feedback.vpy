@@ -23,7 +23,7 @@ if not (subject and subject.strip()):
     state.setError('subject', _(u'Please enter a subject.'), 'subject_required')
 
 if not (message and message.strip()):
-    state.setError('message', _('Please enter a message'), 'message_required')
+    state.setError('message', _(u'Please enter a message'), 'message_required')
 
 if state.getErrors():
     return state.set(status='failure', portal_status_message=_(u'Please correct the indicated errors.'))

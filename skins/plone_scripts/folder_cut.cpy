@@ -22,7 +22,7 @@ if REQUEST.has_key('paths'):
         message = _(u'One or more items not moveable.')
         return state.set(status = 'failure', portal_status_message = message)
     except AttributeError:
-        message = _('One or more selected items is no longer available.')
+        message = _(u'One or more selected items is no longer available.')
         return state.set(status = 'failure', portal_status_message = message)
 
     from Products.CMFPlone import transaction_note
@@ -30,4 +30,4 @@ if REQUEST.has_key('paths'):
 
     return state.set(portal_status_message='%s Item(s) cut.'%len(ids) )
                                                 
-return state.set(status='failure', portal_status_message='Please select one or more items to cut.')
+return state.set(status='failure', portal_status_message=_(u'Please select one or more items to cut.'))

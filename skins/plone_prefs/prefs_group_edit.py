@@ -12,7 +12,7 @@ from Products.PythonScripts.standard import url_quote
 from Products.CMFPlone import PloneMessageFactory as _
 
 REQUEST=context.REQUEST
-msg = 'No change has been done.'
+msg = _(u'No change has been done.')
 
 if addname:
     context.portal_groups.addGroup(addname,(),())

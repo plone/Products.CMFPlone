@@ -9,12 +9,11 @@
 ##title=Set Mailhost Prefs
 ##
 
+from Products.CMFPlone import PloneMessageFactory as _
 REQUEST=context.REQUEST
 
 mh = context.MailHost
 
 mh.manage_makeChanges('Plone Mail Host', smtp_server, smtp_port, smtp_userid, smtp_pass)
 
-msg = 'Mail Host Updated'
-
-return state.set(portal_status_message=msg)
+return state.set(portal_status_message=_(u'Mail Host Updated'))

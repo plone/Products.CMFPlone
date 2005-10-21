@@ -9,6 +9,7 @@
 ##title=Set Navigation Prefs
 ##
 
+from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFCore.utils import getToolByName
 
 REQUEST=context.REQUEST
@@ -29,6 +30,4 @@ portal_properties.navtree_properties.manage_changeProperties(
                         enable_wf_state_filtering=enable_wf_state_filtering,
                         wf_states_to_show=wf_states_to_show)
 
-msg = 'Navigation settings updated.'
-
-return state.set(portal_status_message=msg)
+return state.set(portal_status_message=_(u'Navigation settings updated.'))
