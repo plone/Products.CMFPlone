@@ -17,7 +17,8 @@ msg = 'No change has been done.'
 if addname:
     context.portal_groups.addGroup(addname,(),())
     group=context.portal_groups.getGroupById(addname)
-    msg = _(u'Group ${name} has been added.', mapping={u'name': addname})
+    msg = _(u'Group ${name} has been added.')
+    msg.mapping[u'name'] = addname
 else:
     group=context.portal_groups.getGroupById(groupname)
     msg = _(u'Changes saved.')

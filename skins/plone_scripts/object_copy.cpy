@@ -19,19 +19,20 @@ REQUEST = context.REQUEST
 
 mtool = getToolByName(context, 'portal_membership')
 if not mtool.checkPermission('Copy or Move', context):
-    raise Unauthorized, _(u'Permission denied to copy ${title}.',
-                          mapping={u'title': context.title_or_id()})
+    msg = _(u'Permission denied to copy ${title}.')
+    msg.mapping[u'title'] = context.title_or_id()
+    raise Unauthorized, msg
 
 parent = context.aq_inner.aq_parent
 try:
     parent.manage_copyObjects(context.getId(), REQUEST)
 except CopyError:
-    message = _(u'${title} is not copyable.',
-                mapping={u'title': context.title_or_id()})
+    message = _(u'${title} is not copyable.')
+    message.mapping[u'title'] = context.title_or_id()
     return state.set(status = 'failure', portal_status_message = message)
 
-message = _(u'${title} copied.',
-            mapping={u'title': context.title_or_id()})
+message = _(u'${title} copied.')
+message.mapping[u'title'] = context.title_or_id()
 transaction_note('Copied object %s' % context.absolute_url())
 
 return state.set(status = 'success', portal_status_message = message)

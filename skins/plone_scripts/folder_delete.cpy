@@ -40,20 +40,20 @@ for path in paths:
 if titles:
     status='success'
     if len(titles) == 1:
-        message = _(u'${title} has been deleted.',
-                    mapping={u'title': titles[0]})
+        message = _(u'${title} has been deleted.')
+        message.mapping[u'title'] = titles[0]
     elif len(titles) <= MAX_TITLES_TO_REPORT:
-        message = _(u'${titles} have been deleted.',
-                    mapping={u'titles': ', '.join(titles)})
+        message = _(u'${titles} have been deleted.')
+        message.mapping[u'titles'] = ', '.join(titles)
     else:
-        message = _(u'${itemCount} items have been deleted.',
-                    mapping={u'itemCount': str(len(titles))})
+        message = _(u'${itemCount} items have been deleted.')
+        message.mapping[u'itemCount'] = str(len(titles))
 
     transaction_note('Deleted %s' % (', '.join(titles_and_paths)))
 
-if failed:
-    if message: message = message + '  '
-    message = message + "%s could not be deleted."%(', '.join(failed.keys()))
+#if failed:
+#    if message: message = message + '  '
+#    message = message + "%s could not be deleted."%(', '.join(failed.keys()))
 
 return state.set(status=status, portal_status_message=message)
 
