@@ -17,8 +17,8 @@ REQUEST = context.REQUEST
 parent = context.aq_inner.aq_parent
 parent.manage_delObjects(context.getId())
 
-message = _(u'${title} has been deleted.')
-message.mapping[u'title'] = context.title_or_id()
+message = _(u'${title} has been deleted.',
+            mapping={u'title' : context.title_or_id()})
 transaction_note('Deleted %s' % context.absolute_url())
 
 return state.set(status = 'success', portal_status_message = message)

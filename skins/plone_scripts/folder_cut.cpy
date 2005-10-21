@@ -28,8 +28,7 @@ if REQUEST.has_key('paths'):
 
     transaction_note('Cut %s from %s' % ((str(ids)), context.absolute_url()))
 
-    message = _(u'${count} item(s) cut.')
-    message.mapping[u'count'] = len(ids)
+    message = _(u'${count} item(s) cut.', mapping={u'count' : len(ids)})
 
     return state.set(portal_status_message=message)
 

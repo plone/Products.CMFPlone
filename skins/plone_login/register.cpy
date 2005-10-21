@@ -43,8 +43,8 @@ if site_properties.validate_email or REQUEST.get('mail_me', 0):
         #    Should not fail.  They cant CHANGE their password ;-)  We should notify them.
         #
         # (MSL 12/28/03) We also need to delete the just made member and return to the join_form.
-        msg = _(u'We were unable to send your password to your email address: ${address}')
-        msg.mapping[u'address'] = str(err)
+        msg = _(u'We were unable to send your password to your email address: ${address}',
+                mapping={u'address' : str(err)})
         state.setError('email', msg)
         state.set(came_from='logged_in')
         context.acl_users.userFolderDelUsers([username,])

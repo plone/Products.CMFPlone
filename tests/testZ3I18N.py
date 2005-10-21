@@ -43,14 +43,6 @@ class Z3I18NCornerTestCase(ZopeTestCase.ZopeTestCase):
                           self.TS.translate('testing', msg),
                           'Basic MessageID translation is not working')
 
-    def test_messageid_within_other_domain(self):
-        _ = MessageFactory('test')
-        msg = _(u'foo', u'foovalue ${testid1}')
-        msg.mapping[u'testid1'] = 'barvalue'
-        translated = self.TS.translate('other', msg)
-        self.assertEquals(u'foovalue barvalue', translated,
-                          'translation is not working. Got: %s' % translated)
-
     def test_translate_messageid_with_domain_overridden(self):
         _ = MessageFactory('testing')
         msg = _(u'id', u'value')

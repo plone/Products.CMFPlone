@@ -30,8 +30,7 @@ else:
        new_id = id
     o=getattr(context, new_id, None)
     tname = o.getTypeInfo().Title()
-    message = _(u'${tname} has been created.')
-    message.mapping[u'tname'] = tname
+    message = _(u'${tname} has been created.', mapping={u'tname' : tname})
     transaction_note('Created %s with id %s in %s' % (o.getTypeInfo().getId(), new_id, context.absolute_url()))
 
 if o is None:
@@ -43,6 +42,6 @@ if o.getTypeInfo().getActionById('edit', None) is None:
 if script_id:
     state.setId(script_id)
 
-if portal_status_message:
+if message:
     state.set(portal_status_message=message)
 return state.set(context=o)

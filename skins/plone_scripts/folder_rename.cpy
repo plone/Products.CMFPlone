@@ -38,10 +38,9 @@ for x in range(0, len(new_ids)):
     except Exception,e:
         failed[path]=e
 
-message = _(u'${count} item(s) renamed.')
-message.mapping[u'count'] = str(len(success))
+message = _(u'${count} item(s) renamed.', mapping={u'count' : str(len(success))})
 if failed:
-    message = _(u'The following item(s) could not be renamed: ${items}.')
-    message.mapping[u'items'] = ', '.join(failed.keys())
+    message = _(u'The following item(s) could not be renamed: ${items}.', 
+                mapping={u'items' : ', '.join(failed.keys())})
 transaction_note('Renamed %s' % str(success.keys))
 return state.set(portal_status_message=message)
