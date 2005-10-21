@@ -10,6 +10,7 @@
 ##
 
 from ZODB.POSException import ConflictError
+from Products.CMFPlone import PloneMessageFactory as _
 
 # if there is no id specified, keep the current one
 if not id:
@@ -49,9 +50,9 @@ try:
 except ConflictError:
     raise
 except: #XXX DateTime and contentEdit() has many things that could go wrong - catch all.
-    return state.set(portal_status_message='Error saving event.', new_status='failure')
+    return state.set(portal_status_message=_(u'Error saving event.'), new_status='failure')
 
 from Products.CMFPlone import transaction_note
 transaction_note('Edited event %s at %s' % (str(new_context.title_or_id()), new_context.absolute_url()))
 
-return state.set(context=new_context, portal_status_message='Event changes saved.')
+return state.set(context=new_context, portal_status_message=_(u'Event changes saved.'))

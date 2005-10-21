@@ -52,7 +52,7 @@ if send_from_address == '':
     # happens if you don't exist as user in the portal (but at a higher level)
     # or if your memberdata is incomplete.
     # Would be nicer to check in the feedback form, but that's hard to do securely
-    return state.set(status=state_failure, portal_status_message="Could not find a valid email address")
+    return state.set(status=state_failure, portal_status_message=_(u'Could not find a valid email address'))
     
 sender_id = "%s (%s), %s" % (sender.getProperty('fullname'), sender.getId(), send_from_address)
 
@@ -88,5 +88,5 @@ transaction_note(tmsg)
 REQUEST.set('message', None)
 REQUEST.set('subject', None)
 
-state.set(portal_status_message='Mail sent.')
+return state.set(portal_status_message=_(u'Mail sent.'))
 return state

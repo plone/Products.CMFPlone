@@ -9,7 +9,9 @@
 ##title=Validates an event edit_form contents
 ##
 
+from Products.CMFPlone import PloneMessageFactory as _
+
 if state.getErrors():
-    return state.set(status='failure', portal_status_message='Please correct the indicated errors.')
+    return state.set(status='failure', portal_status_message=_(u'Please correct the indicated errors.'))
 else:
     return state

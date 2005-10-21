@@ -8,8 +8,10 @@
 ##parameters=email=''
 ##title=validates folder edit
 
+from Products.CMFPlone import PloneMessageFactory as _
+
 if state.getErrors():
     return state.set(status='failure',
-                     portal_status_message='Please correct the indicated errors.')
+                     portal_status_message=_(u'Please correct the indicated errors.'))
 
-return state.set(portal_status_message='You have been registered.')
+return state.set(portal_status_message=_(u'You have been registered.'))

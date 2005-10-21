@@ -8,15 +8,16 @@
 ##title=Disable Syndication for a resource
 ##parameters=
 
+from Products.CMFPlone import PloneMessageFactory as _
+
 if context.portal_syndication.isSyndicationAllowed(context):
     context.portal_syndication.disableSyndication(context)
-    portal_status_message="Syndication disabled"
+    message=_(u'Syndication disabled')
 else:
-    portal_status_message="Syndication not allowed"
+    message=_(u'Syndication not allowed')
 
 from Products.CMFPlone import transaction_note
-transaction_note('%s for %s at %s' % (portal_status_message, context.title_or_id(), context.absolute_url()))
+transaction_note('%s for %s at %s' % (message, context.title_or_id(), context.absolute_url()))
 
-return state.set(portal_status_message=portal_status_message)
-
+return state.set(portal_status_message=message)
 

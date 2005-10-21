@@ -25,7 +25,7 @@ empty_title = plone_utils.getEmptyTitle()
 if not mtool.checkPermission(AllowSendto, context):
     return state.set(
             status='failure',
-            portal_status_message='You are not allowed to send this link.')
+            portal_status_message=_(u'You are not allowed to send this link.'))
 
 at = getToolByName(context, 'portal_actions')
 show = False
@@ -37,7 +37,7 @@ for action in actions:
 if not show:
     return state.set(
         status='failure',
-        portal_status_message='You are not allowed to send this link.')
+        portal_status_message=_(u'You are not allowed to send this link.'))
 
 # Try to find the view action. If not found, use absolute_url()
 url = context.absolute_url()
@@ -70,4 +70,4 @@ except: #XXX To many things could possibly go wrong. So we catch all.
 tmsg='Sent page %s to %s' % (url, REQUEST.send_to_address)
 transaction_note(tmsg)
 
-return state.set(portal_status_message='Mail sent.')
+return state.set(portal_status_message=_(u'Mail sent.'))

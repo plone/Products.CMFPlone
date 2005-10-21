@@ -10,6 +10,7 @@
 
 from Products.PythonScripts.standard import url_quote_plus
 from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone import PloneMessageFactory as _
 mtool = getToolByName(context, 'portal_membership')
 dtool = getToolByName(context, 'portal_discussion')
 req = context.REQUEST
@@ -60,6 +61,8 @@ anchor = reply.id
 from Products.CMFPlone import transaction_note
 transaction_note('Added comment to %s at %s' % (parent.title_or_id(), reply.absolute_url()))
 
-target = '%s/%s?portal_status_message=Comment+added#%s' % (redirect_target.absolute_url(), view, anchor)
+msg = _(u'Comment added')
+
+target = '%s/%s?portal_status_message=%s#%s' % (redirect_target.absolute_url(), view, url_quote_plus(msg), anchor)
 
 return req.RESPONSE.redirect(target)

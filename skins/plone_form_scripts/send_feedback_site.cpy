@@ -20,7 +20,6 @@ from ZODB.POSException import ConflictError
 state_success = "success"
 state_failure = "failure"
 
-
 plone_utils = getToolByName(context, 'plone_utils')
 mtool = getToolByName(context, 'portal_membership')
 
@@ -32,7 +31,7 @@ message = REQUEST.get('message', '')
 sender_from_address = REQUEST.get('sender_from_address', '')
 sender_fullname = REQUEST.get('sender_fullname', '')
 
-url     = context.portal_url
+url = context.portal_url
 
 site_properties = getToolByName(context, 'portal_properties').site_properties
 send_to_address = site_properties.email_from_address
@@ -48,7 +47,7 @@ variables = {'sender_from_address' : sender_from_address,
              'url'                 : url,
              'subject'             : subject,
              'message'             : message
-             }
+            }
 
 try:
     message = context.site_feedback_template(context, **variables)
@@ -68,5 +67,5 @@ REQUEST.set('subject', None)
 REQUEST.set('sender_from_address', None)
 REQUEST.set('sender_fullname', None)
 
-state.set(portal_status_message='Mail sent.')
-return state
+return state.set(portal_status_message=_(u'Mail sent.'))
+

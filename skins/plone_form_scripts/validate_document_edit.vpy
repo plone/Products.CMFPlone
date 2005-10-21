@@ -8,12 +8,15 @@
 ##parameters=id='',file=''
 ##title=Validates a document edit_form contents
 ##
+
+from Products.CMFPlone import PloneMessageFactory as _
+
 filename = getattr(file, 'filename' ,'')
 if file and filename:
     file.seek(0)
     headers = file.headers
     if headers.get('Content-Type', 'text/plain').find('text')==-1:
-        state.setError('file', 'This file is not text. To upload binary files create File content.')
+        state.setError('file', _(u'This file is not text. To upload binary files create File content.'))
 
 if context.CreationDate() == context.ModificationDate() and filename:
     alternative_id = filename[max( string.rfind(filename, '/')
@@ -28,6 +31,6 @@ if id_err:
     state.setError('id', id_err)
 
 if state.getErrors():
-    return state.set(status='failure', portal_status_message='Please correct the indicated errors.')
+    return state.set(status='failure', portal_status_message=_(u'Please correct the indicated errors.'))
 else:
     return state

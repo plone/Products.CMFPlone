@@ -8,18 +8,17 @@
 ##parameters=start_date='',end_date=''
 ##title=Validates an event edit_form contents
 ##
-try:
-    from DateTime.DateTime import DateTimeError
-except ImportError:
-    DateTimeError = 'DateTimeError'
+
+from Products.CMFPlone import PloneMessageFactory as _
+from DateTime.DateTime import DateTimeError
 
 REQUEST=context.REQUEST
 
 if not start_date:
-     state.setError('start_date', 'Input is required but not given.', 'input_required')
+     state.setError('start_date', _(u'Input is required but not given.'), 'input_required')
 
 if not end_date:
-     state.setError('end_date', 'Input is required but not given.', 'input_required')
+     state.setError('end_date', _(u'Input is required but not given.'), 'input_required')
 
 if not state.getError('start_date') and not state.getError('end_date'):
     tmp_start_date = None
@@ -28,22 +27,22 @@ if not state.getError('start_date') and not state.getError('end_date'):
     try:
         tmp_start_date = DateTime(start_date)
     except (TypeError, DateTimeError):
-        state.setError('start_date', 'Please enter a valid date and time.')
+        state.setError('start_date', _(u'Please enter a valid date and time.'))
         REQUEST.set('start_date', '')   # Remove bad date from request
 
     try:
         tmp_end_date = DateTime(end_date)
     except (TypeError, DateTimeError):
-        state.setError('end_date', 'Please enter a valid date and time.')
+        state.setError('end_date', _(u'Please enter a valid date and time.'))
         REQUEST.set('end_date', '')     # Remove bad date from request
 
     if tmp_start_date and tmp_end_date:
         if tmp_start_date.greaterThan(tmp_end_date):
-            state.setError('end_date', 'An event must end after it starts.')
-            state.setError('start_date', 'An event must start before it ends.')
+            state.setError('end_date', _(u'An event must end after it starts.'))
+            state.setError('start_date', _(u'An event must start before it ends.'))
 
 if state.getErrors():
-    return state.set(status='failure', portal_status_message='Please correct the indicated errors.')
+    return state.set(status='failure', portal_status_message=_(u'Please correct the indicated errors.'))
 else:
     REQUEST.set('start_date',start_date)
     REQUEST.set('end_date',end_date)

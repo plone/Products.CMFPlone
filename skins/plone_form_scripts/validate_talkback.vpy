@@ -8,6 +8,8 @@
 ##parameters=subject='',body_text=''
 ##title=validates a discussion entry
 
+from Products.CMFPlone import PloneMessageFactory as _
+
 dtool = context.portal_discussion
 try:
     content = context.parentsInThread()[0]
@@ -17,12 +19,12 @@ if not dtool.isDiscussionAllowedFor(content):
     raise Exception, "Discussion not allowed."
 
 if not subject:
-    state.setError('subject', 'Please submit a subject.', 'subject_required')
+    state.setError('subject', _(u'Please submit a subject.'), 'subject_required')
 
 if not body_text:
-    state.setError('body_text', 'Please submit a body.', 'body_required')
+    state.setError('body_text', _(u'Please submit a body.'), 'body_required')
 
 if state.getErrors():
-    return state.set(status='failure', portal_status_message='Please correct the indicated errors.')
+    return state.set(status='failure', portal_status_message=_(u'Please correct the indicated errors.'))
 else:
     return state

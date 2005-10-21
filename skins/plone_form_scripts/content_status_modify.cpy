@@ -11,6 +11,7 @@
 from ZODB.POSException import ConflictError
 from DateTime import DateTime
 from Products.CMFPlone import transaction_note
+from Products.CMFPlone import PloneMessageFactory as _
 from AccessControl import Unauthorized
 from Products.CMFCore.utils import getToolByName
 
@@ -77,5 +78,5 @@ if plone_utils.isDefaultPage(new_context):
         pass
 
 return state.set(context=wfcontext,
-                 portal_status_message='Your content\'s status has been modified.')
+                 portal_status_message=_('Your content\'s status has been modified.'))
 

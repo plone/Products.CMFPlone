@@ -9,7 +9,7 @@
 ##title=Personalization Handler.
 
 from Products.CMFPlone import transaction_note
-#portrait_id='MyPortrait'
+from Products.CMFPlone import PloneMessageFactory as _
 
 member=context.portal_membership.getAuthenticatedMember()
 member.setProperties(context.REQUEST)
@@ -49,4 +49,4 @@ member.setProperties(listed=listed, ext_editor=ext_editor, visible_ids=visible_i
 tmsg='Edited personal settings for %s' % member.getUserName()
 transaction_note(tmsg)
 
-return state.set(portal_status_message='Your personal settings have been saved.')
+return state.set(portal_status_message=_(u'Your personal settings have been saved.'))
