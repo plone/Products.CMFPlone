@@ -16,13 +16,12 @@ paths=context.REQUEST.get('paths', [])
 titles=[]
 titles_and_paths=[]
 failed = {}
-message = ''
 
 MAX_TITLES_TO_REPORT = 10
 
 portal = context.portal_url.getPortalObject()
 status='failure'
-message='Please select one or more items to delete.'
+message=_(u'Please select one or more items to delete.')
 
 for path in paths:
     # Skip and note any errors
@@ -51,9 +50,9 @@ if titles:
 
     transaction_note('Deleted %s' % (', '.join(titles_and_paths)))
 
-#if failed:
-#    if message: message = message + '  '
-#    message = message + "%s could not be deleted."%(', '.join(failed.keys()))
+if failed:
+    message = _(u'${items} could not be deleted.')
+    message.mapping[u'items'] = ', '.join(failed.keys())
 
 return state.set(status=status, portal_status_message=message)
 

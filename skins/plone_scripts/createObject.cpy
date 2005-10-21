@@ -11,6 +11,7 @@
 
 from DateTime import DateTime
 from Products.CMFPlone import transaction_note
+from Products.CMFPlone import PloneMessageFactory as _
 REQUEST=context.REQUEST
 
 if id is None:
@@ -21,7 +22,7 @@ if type_name is None:
 
 if context.portal_factory.getFactoryTypes().has_key(type_name):
     o = context.restrictedTraverse('portal_factory/' + type_name + '/' + id)
-    portal_status_message = None
+    message = None
     transaction_note('Initiated creation of %s with id %s in %s' % (o.getTypeInfo().getId(), id, context.absolute_url()))
 else:
     new_id = context.invokeFactory(id=id, type_name=type_name)
@@ -29,7 +30,8 @@ else:
        new_id = id
     o=getattr(context, new_id, None)
     tname = o.getTypeInfo().Title()
-    portal_status_message = tname + ' has been created.'
+    message = _(u'${tname} has been created.')
+    message.mapping[u'tname'] = tname
     transaction_note('Created %s with id %s in %s' % (o.getTypeInfo().getId(), new_id, context.absolute_url()))
 
 if o is None:
@@ -42,5 +44,5 @@ if script_id:
     state.setId(script_id)
 
 if portal_status_message:
-    state.set(portal_status_message=portal_status_message)
+    state.set(portal_status_message=message)
 return state.set(context=o)

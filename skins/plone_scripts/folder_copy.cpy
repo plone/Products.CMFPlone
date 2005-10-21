@@ -10,6 +10,7 @@
 ##
 
 from OFS.CopySupport import CopyError
+from Products.CMFPlone import transaction_note
 from Products.CMFPlone import PloneMessageFactory as _
 
 REQUEST=context.REQUEST
@@ -25,9 +26,11 @@ if REQUEST.has_key('paths'):
         message = _(u'One or more selected items is no longer available.')
         return state.set(status = 'failure', portal_status_message = message)
 
-    from Products.CMFPlone import transaction_note
     transaction_note('Copied %s from %s' % (str(ids), context.absolute_url()))
 
-    return state.set(portal_status_message='%s Item(s) copied.'%len(ids))
+    message = _(u'${count} item(s) copied.')
+    message.mapping[u'count'] = len(ids)
 
-return state.set(status='failure', portal_status_message='Please select one or more items to copy.')
+    return state.set(portal_status_message=message)
+
+return state.set(status='failure', portal_status_message=_(u'Please select one or more items to copy.'))

@@ -13,7 +13,6 @@ parentPages = {
   'Member':'plone_memberprefs_panel',
   }
 
-
 tool = context.portal_controlpanel
 
 parent = None

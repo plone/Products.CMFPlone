@@ -10,6 +10,7 @@
 ##
 
 from Products.CMFPlone import transaction_note
+from Products.CMFPlone import PloneMessageFactory as _
 from ZODB.POSException import ConflictError
 
 portal = context.portal_url.getPortalObject()
@@ -37,8 +38,10 @@ for x in range(0, len(new_ids)):
     except Exception,e:
         failed[path]=e
 
-message = '%s Item(s) renamed.' % str(len(success))
+message = _(u'${count} item(s) renamed.')
+message.mapping[u'count'] = str(len(success))
 if failed:
-    message = message + '  The following item(s) could not be renamed: %s' % ', '.join(failed.keys())
+    message = _(u'The following item(s) could not be renamed: ${items}.')
+    message.mapping[u'items'] = ', '.join(failed.keys())
 transaction_note('Renamed %s' % str(success.keys))
 return state.set(portal_status_message=message)

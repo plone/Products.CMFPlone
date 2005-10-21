@@ -7,6 +7,8 @@
 ##parameters=position, id, template_id='folder_contents'
 ##title=Move objects in a ordered folder
 ##
+
+from Products.CMFPlone import PloneMessageFactory as _
 from Products.PythonScripts.standard import url_quote
 
 if position.lower()=='up':
@@ -28,7 +30,7 @@ if position.lower()=='ordered':
 
 context.plone_utils.reindexOnReorder(context)
 
-msg="Item's position has changed."
+msg=_(u'Item\'s position has changed.')
 response=context.REQUEST.RESPONSE
 return response.redirect('%s/%s?portal_status_message=%s' % (context.absolute_url(),
                                                              template_id,
