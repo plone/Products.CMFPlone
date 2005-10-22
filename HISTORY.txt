@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1.2 (unreleased)
 
+    - Removed some BBB code for Zope 2.6 (try/except on DateTimeError).
+      [hannosch]
+
     - Added accessibility instructions for Konqueror.
       [limi]
 
