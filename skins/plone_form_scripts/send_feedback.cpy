@@ -74,7 +74,7 @@ try:
     result = host.secureSend(message, send_to_address, envelope_from, subject=subject, subtype='plain', charset=encoding, debug=False, From=send_from_address)
 except ConflictError:
     raise
-except: #XXX Too many things could possibly go wrong. So we catch all.
+except: # TODO Too many things could possibly go wrong. So we catch all.
     exception = context.plone_utils.exceptionString()
     message = context.translate("Unable to send mail: ${exception}",
                                 {'exception': exception})

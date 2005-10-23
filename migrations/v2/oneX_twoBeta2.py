@@ -182,18 +182,18 @@ def migrateTools(portal):
     _migrate(portal, 'portal_discussion', ToolNames.DiscussionTool, ['_actions'])
     _migrate(portal, 'portal_groups', ToolNames.GroupsTool, ['_actions',
         'groupworkspaces_id', 'groupWorkspacesCreationFlag',
-        'groupWorkspaceType', ]) # XXX 'groupworkspaces_title', 'groupWorkspaceContainerType'
+        'groupWorkspaceType', ])
     _migrate(portal, 'portal_groupdata', ToolNames.GroupDataTool, ['_actions',
-        '_members']) # XXX properties
+        '_members'])
 
-    orig=_migrate(portal, 'portal_types', ToolNames.TypesTool, ['_actions', 'meta_types']) #XXX
+    orig=_migrate(portal, 'portal_types', ToolNames.TypesTool, ['_actions', 'meta_types'])
     tt = getToolByName(portal, 'portal_types')
     for info in orig._objects:
         obj = aq_base(getattr(orig, info['id']))
         tt._setObject(info['id'], obj)
 
     avail_paths=manage_listAvailableDirectories()
-    orig = _migrate(portal, 'portal_skins', ToolNames.SkinsTool, ['selections', '_actions']) #XXX
+    orig = _migrate(portal, 'portal_skins', ToolNames.SkinsTool, ['selections', '_actions'])
     st = getToolByName(portal, 'portal_skins')
     for info in orig._objects:
         obj = aq_base(getattr(orig, info['id']))

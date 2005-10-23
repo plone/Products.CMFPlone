@@ -15,7 +15,7 @@ def rc2Final(portal):
         p._updateProperty('available_editors', elist)
 
     #update State action in portal_actions so that DTML Documents work.
-    #XXX We really need to put the 'State' action on individual portal_type definitions
+    #TODO We really need to put the 'State' action on individual portal_type definitions
     #    The reason being is that its really *lazy* and hackish to define it as a global
     #    across all types.  Things like CMFCollector dont work w/ this workflow.
     at = portal.portal_actions

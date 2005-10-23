@@ -170,13 +170,13 @@ class TestDefaultWorkflow(PloneTestCase.PloneTestCase):
         self.workflow.doActionFor(self.doc, 'submit')
         # Owner is allowed
         self.failUnless(checkPerm(View, self.doc))
-        # Member is allowed (XXX:?)
+        # Member is allowed (TODO:?)
         self.login('member')
         self.failUnless(checkPerm(View, self.doc))
         # Reviewer is allowed
         self.login('reviewer')
         self.failUnless(checkPerm(View, self.doc))
-        # Anonymous is allowed (XXX:?)
+        # Anonymous is allowed (TODO:?)
         self.logout()
         self.failUnless(checkPerm(View, self.doc))
 
@@ -245,13 +245,13 @@ class TestDefaultWorkflow(PloneTestCase.PloneTestCase):
         self.workflow.doActionFor(self.doc, 'submit')
         # Owner is allowed
         self.failUnless(checkPerm(AccessContentsInformation, self.doc))
-        # Member is allowed (XXX:?)
+        # Member is allowed (TODO:?)
         self.login('member')
         self.failUnless(checkPerm(AccessContentsInformation, self.doc))
         # Reviewer is allowed
         self.login('reviewer')
         self.failUnless(checkPerm(AccessContentsInformation, self.doc))
-        # Anonymous is allowed (XXX:?)
+        # Anonymous is allowed (TODO:?)
         self.logout()
         self.failUnless(checkPerm(AccessContentsInformation, self.doc))
 
@@ -463,13 +463,13 @@ class TestDefaultWorkflow(PloneTestCase.PloneTestCase):
         self.workflow.doActionFor(self.doc, 'submit')
         # Owner is allowed
         self.failUnless(self.catalog(id='doc'))
-        # Member is allowed (XXX:?)
+        # Member is allowed (TODO:?)
         self.login('member')
         self.failUnless(self.catalog(id='doc'))
         # Reviewer is allowed
         self.login('reviewer')
         self.failUnless(self.catalog(id='doc'))
-        # Anonymous is allowed (XXX:?)
+        # Anonymous is allowed (TODO:?)
         self.logout()
         self.failUnless(self.catalog(id='doc'))
 

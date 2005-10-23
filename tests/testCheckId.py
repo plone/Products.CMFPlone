@@ -65,7 +65,7 @@ class TestCheckId(PloneTestCase.PloneTestCase):
         self.assertEqual(r, "'=' is not a legal name. The following characters are invalid: =")
 
     def testCatalogIndex(self):
-        # XXX: Tripwire
+        # TODO: Tripwire
         have_permission = self.portal.portal_membership.checkPermission
         self.failUnless(have_permission('Search ZCatalog', self.portal.portal_catalog),
                         'Expected permission "Search ZCatalog"')

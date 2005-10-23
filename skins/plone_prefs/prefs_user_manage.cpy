@@ -36,7 +36,7 @@ for user in users:
         mailPassword(user.id, context.REQUEST)
 
 if delete:
-    # BBB We should eventually have a global switch to determine member area
+    # TODO We should eventually have a global switch to determine member area
     # deletion
     mtool.deleteMembers(delete, delete_memberareas=0, delete_localroles=1)
 

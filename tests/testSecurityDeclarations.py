@@ -217,7 +217,7 @@ class TestSecurityDeclarations(RestrictedPythonTest):
                    'print AccessControl.Unauthorized')
 
     def testImport_zExceptionsUnauthorized(self):
-        # XXX: Note that this is not allowed
+        # TODO: Note that this is not allowed
         self.checkUnauthorized('from zExceptions import Unauthorized')
 
     def testImport_ConflictError(self):
@@ -385,7 +385,7 @@ except DiscussionNotAllowed: pass
         self.check('from Products.CMFCore.utils import getToolByName')
 
     def testAccess_getToolByName(self):
-        # XXX: Note that this is NOT allowed!
+        # TODO: Note that this is NOT allowed!
         self.checkUnauthorized('from Products.CMFCore import utils;'
                                'print utils.getToolByName')
 
@@ -408,10 +408,9 @@ except DiscussionNotAllowed: pass
         self.check('from Products.CMFPlone.PloneTool import AllowSendto')
 
     def testAccess_AllowSendto(self):
-        # XXX: Note that this is NOT allowed!
+        # TODO: Note that this is NOT allowed!
         self.checkUnauthorized('from Products.CMFPlone import PloneTool;'
                                'print PloneTool.AllowSendto')
-    
 
 
 class TestAcquisitionMethods(RestrictedPythonTest):
