@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1.2 (unreleased)
 
+    - Removed unused errorMessages.py script
+      [hannosch]
+
     - Removed some BBB code for Zope 2.6 (try/except on DateTimeError).
       [hannosch]
 
