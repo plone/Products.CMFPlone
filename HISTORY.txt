@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1.2 (unreleased)
 
+    - Removed skins/plone_3rdParty/CMFTopic from filesystem and written
+      migration to remove it from all skins
+      [hannosch, limi]
+
     - Removed unused errorMessages.py script
       [hannosch]
 
