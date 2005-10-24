@@ -13,7 +13,7 @@ from Products.CMFPlone.tests import dummy
 AddPortalTopics = 'Add portal topics'
 from DateTime import DateTime
 from Products.CMFPlone import LargePloneFolder
-from Products.CMFPlone import transaction
+import transaction
 from OFS.CopySupport import CopyError
 
 #    NOTE

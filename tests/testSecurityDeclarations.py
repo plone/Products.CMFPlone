@@ -397,10 +397,10 @@ except DiscussionNotAllowed: pass
     # transaction
 
     def testImport_transaction(self):
-        self.checkUnauthorized('from Products.CMFPlone import transaction')
+        self.checkUnauthorized('import transaction')
 
     def testUse_transaction(self):
-        self.checkUnauthorized('from Products.CMFPlone import transaction;'
+        self.checkUnauthorized('import transaction;'
                                'transaction.get()')
 
     # allow sendto

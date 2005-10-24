@@ -8,7 +8,7 @@ from Products.CMFPlone.utils import safe_callable
 from Products.CMFPlone.utils import safe_hasattr
 from Products.CMFPlone.utils import log
 from Products.CMFPlone.utils import log_exc
-from Products.CMFPlone import transaction
+import transaction
 
 from AccessControl import getSecurityManager
 from Acquisition import aq_base, aq_inner, aq_parent

@@ -13,7 +13,7 @@ from Acquisition import aq_base
 from Globals import REPLACEABLE
 from DateTime import DateTime
 from Products.CMFCore.CMFCorePermissions import AccessInactivePortalContent
-from Products.CMFPlone import transaction
+import transaction
 
 from Products.CMFPlone.CatalogTool import ExtensibleIndexableObjectRegistry
 from Products.CMFPlone.CatalogTool import ExtensibleIndexableObjectWrapper

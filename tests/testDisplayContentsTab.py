@@ -20,7 +20,7 @@ from AccessControl.Permissions import delete_objects
 
 from AccessControl import getSecurityManager
 from Products.CMFCore.utils import _checkPermission
-from Products.CMFPlone import transaction
+import transaction
 
 
 class TestDisplayContentsTab(PloneTestCase.PloneTestCase):
