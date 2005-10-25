@@ -10,7 +10,7 @@
 
 <div metal:fill-slot="prefs_configlet_main"
      tal:define="errors options/state/getErrors;
-                 isSynAllowed here/portal_syndication/isSiteSyndicationAllowed">
+                 isSynAllowed syntool/isSiteSyndicationAllowed">
 
     <h1 i18n:translate="heading_syndication_setup">Sitewide Syndication Setup</h1>
 
@@ -24,21 +24,21 @@
                 name="reconfig"
                 method="post"
                 tal:attributes="action string:prefs_syndication_set"
-                tal:define="props python:here.portal_properties;">
+                tal:define="props python:portal_properties;">
     
             <fieldset>
         
             <legend i18n:translate="legend_syndication_details">Syndication Details</legend>
     
             <div class="field">
-                <label i18n:translate="label_syndication_updateperiod">Update period</label>
+                <label i18n:translate="label_syndication_updateperiod">Update Period</label>
     
                 <select name="updatePeriod" 
                         size="1"
                         tal:attributes="tabindex tabindex/next"
-                        tal:define="upperiod here/portal_syndication/getUpdatePeriod">
+                        tal:define="upperiod syntool/getUpdatePeriod">
     
-                    <option tal:repeat="period here/portal_syndication/buildUpdatePeriods" 
+                    <option tal:repeat="period syntoool/buildUpdatePeriods"
                             tal:content="python:period[1]" 
                             tal:attributes="value python:period[0];
                                             selected python:test( upperiod==period[0],'selected' ,'')" />
@@ -47,7 +47,7 @@
             </div>
     
             <div class="field"
-                 tal:define="syndication_frequency request/updateFrequency | here/portal_syndication/getUpdateFrequency;
+                 tal:define="syndication_frequency request/updateFrequency | syntool/getUpdateFrequency;
                              error_syndication_frequency nothing;"
                  tal:attributes="class python:test(error, 'field error', 'field')">
     
@@ -69,7 +69,7 @@
               </div>
     
             <div class="field"
-                 tal:define="syndication_base request/updateFrequency | here/portal_syndication/getUpdateBase;
+                 tal:define="syndication_base request/updateFrequency | syntool/getUpdateBase;
                              error_syndication_base nothing;"
                  tal:attributes="class python:test(error, 'field error', 'field')">
     
@@ -90,7 +90,7 @@
             </div>
     
             <div class="field"
-                 tal:define="syndication_maxitems request/max_items | here/portal_syndication/getMaxItems;
+                 tal:define="syndication_maxitems request/max_items | syntool/getMaxItems;
                              error_syndication_maxitems nothing;"
                  tal:attributes="class python:test(error, 'field error', 'field')">
     
@@ -119,7 +119,7 @@
                        i18n:attributes="value label_save;"
                        tal:attributes="tabindex tabindex/next;"
                        />
-                <input type="hidden" name="form_submitted" value="1" tal:attributes="value template/id" />
+                <input type="hidden" name="form_submitted" value="1" tal:attributes="value template_id" />
             </div>
           </fieldset>
         </form>

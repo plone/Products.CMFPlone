@@ -7,34 +7,32 @@
 <div metal:fill-slot="prefs_configlet_main" i18n:domain="plone">
 
     <h1 i18n:translate="heading_install_log_for">
-     Install log for 
-     <span tal:content="here/id" i18n:name="productname">
-     Product Name
-     </span>
+        Install log for 
+        <span tal:content="here/id" tal:omit-tag="" i18n:name="productname">
+            Product Name
+        </span>
     </h1>
 
     <a href=""
        class="link-parent"
        tal:attributes="href string: $portal_url/prefs_install_products_form"
        i18n:translate="back_to_addremove_products">
-    Back to Add/Remove Products
+        Back to Add/Remove Products
     </a>
 
     <dl>
-        
         <dt i18n:translate="label_status">Status</dt>
         <dd tal:content="here/getStatus">Some status</dd>
         
         <dt tal:condition="here/hasError" 
-         i18n:translate="label_error">Error</dt>
+            i18n:translate="label_error">Error</dt>
         <dd tal:condition="here/hasError">
             <tal:block replace="structure here/error_icon.gif"/>
             
             <tal:errormsg i18n:translate="error_installed_product">
-            There were Errors during install, check Transcript
+                There were Errors during install, check Transcript
             </tal:errormsg>
         </dd>
-     
 
         <tal:exists condition="here/getTypes">
         <dt i18n:translate="label_types">Types</dt>
@@ -113,7 +111,7 @@
     <h2 i18n:translate="heading_installed_transcript">Transcript</h2>
     
     <pre tal:content="structure python:here.getTranscriptAsText().replace('\n','&lt;br/&gt;')">
-    Issue transcript.
+        Issue transcript.
     </pre>
 
 </div>

@@ -12,7 +12,7 @@
             Document actions (print, sendto etc)
         </div>
 
-        <h1 tal:content="here/pretty_title_or_id" class="documentFirstHeading">
+        <h1 tal:content="object_title" class="documentFirstHeading">
             Title or id
         </h1>
 
@@ -35,7 +35,7 @@
                             more_url more_url|request/more_url|string:folder_contents;
                             contentsMethod python:test(here.portal_type=='Topic', here.queryCatalog, here.getFolderContents);
                             folderContents folderContents|python:contentsMethod(contentFilter, batch=True);
-                            use_view_action site_properties/typesUseViewActionInListings;
+                            use_view_action site_properties/typesUseViewActionInListings|python:();
                             over_limit python: limit_display and len(folderContents) > limit_display;
                             folderContents python: (over_limit and folderContents[:limit_display]) or folderContents;
                             batch folderContents;
@@ -78,9 +78,9 @@
                                           item_type_title item/Type;
                                           item_modified item/ModificationDate;
                                           item_created item/CreationDate;
-                                          item_type_class python: 'contenttype-' + putils.normalizeString(item_type);
+                                          item_type_class python: 'contenttype-' + normalizeString(item_type);
                                           item_wf_state        item/review_state|python: wtool.getInfoFor(item, 'review_state', '');
-                                          item_wf_state_class python:'state-' + putils.normalizeString(item_wf_state);
+                                          item_wf_state_class python:'state-' + normalizeString(item_wf_state);
                                           item_creator item/Creator;
                                           item_start item/start/ISO|item/StartDate|nothing;
                                           item_end item/end/ISO|item/EndDate|nothing;

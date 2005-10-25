@@ -14,13 +14,6 @@ from Products.ZCTextIndex.ParseTree import ParseError
 
 import types
 
-try:
-    import Products.TextIndexNG2
-    txng_version = 2
-except:
-    txng_version = 0
-
-
 class TestQueryCatalog(PloneTestCase.PloneTestCase):
     """Test queryCatalog script.
 
@@ -215,41 +208,6 @@ class TestQueryCatalogParseError(PloneTestCase.PloneTestCase):
         self.assertEqual(self.portal.queryCatalog(request), expected)
 
 
-# FIXME: This does currently not actually test for TXNG parse errors.
-class TestTextIndexNGParseError(PloneTestCase.PloneTestCase):
-    """Checks that the queryCatalog script returns an empty result set
-       in case of TextIndexNG ParseErrors.
-
-       This testcase uses the real catalog, not a stub.
-    """
-
-    def afterSetUp(self):
-        self.folder.invokeFactory('Document', id='doc', text='foo bar baz')
-
-    def testSearchableText(self):
-        request = {'SearchableText':'foo'}
-        # We expect a non-empty result set
-        self.failUnless(self.portal.queryCatalog(request))
-
-    def testParseError(self):
-        # ZCTextIndex raises ParseError
-        res = self.portal.portal_catalog(SearchableText='-foo')
-        # -foo means NOT foo in TXNG2
-        self.assertEqual(len(res), 6, [b.getPath() for b in res])
-
-    def testQueryCatalogParseError(self):
-        request = {'SearchableText':'-foo'}
-        # ZCTextIndex raises ParseError which translates to empty result
-        res = self.portal.queryCatalog(request)
-        # -foo means NOT foo in TXNG2
-        self.assertEqual(len(res), 6, [b.getPath() for b in res])
-
-    def testQueryCatalogParseError3050(self):
-        # http://plone.org/collector/3050
-        request = {'SearchableText':'foo AND bar'}
-        res = self.portal.queryCatalog(request)
-        self.failUnlessEqual(len(res), 1)
-
 
 AddPortalTopics = 'Add portal topics'
 
@@ -268,7 +226,7 @@ class TestSearchForms(PloneTestCase.PloneTestCase):
     def testRenderTopicView(self):
         self.setPermissions([AddPortalTopics])
         self.folder.invokeFactory('Topic', id='topic')
-        self.folder.topic.topic_view()
+        self.folder.topic.atct_topic_view()
         
 
 def test_suite():
@@ -276,12 +234,7 @@ def test_suite():
     suite = TestSuite()
     suite.addTest(makeSuite(TestQueryCatalog))
     suite.addTest(makeSuite(TestQueryCatalogQuoting))
-
-    if not txng_version:
-        suite.addTest(makeSuite(TestQueryCatalogParseError))
-    else:
-        suite.addTest(makeSuite(TestTextIndexNGParseError))
-
+    suite.addTest(makeSuite(TestQueryCatalogParseError))
     suite.addTest(makeSuite(TestSearchForms))
     return suite
 

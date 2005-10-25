@@ -26,7 +26,8 @@ class PloneGlobals(utils.BrowserView):
         'slots_mapping', 'Iterator', 'tabindex', 'here_url', 'sl', 'sr',
         'hidecolumns', 'default_language', 'language', 'is_editable',
         'isEditable', 'lockable', 'isLocked', 'isRTL', 'visible_ids',
-        'current_page_url')
+        'current_page_url', 'view_template_id', 'isViewTemplate',
+        'normalizeString')
 
     def globals(self):
         """
@@ -81,7 +82,7 @@ class PloneGlobals(utils.BrowserView):
         self.portal_object().Title()
 
     def object_title(self):
-        utils.context(self).Title()
+        utils.context(self).pretty_title_or_id()
 
     def member(self):
         self.mtool().getAuthenticatedMember()
@@ -185,4 +186,13 @@ class PloneGlobals(utils.BrowserView):
 
     def current_page_url(self):
         return utils.context(self).getCurrentUrl() or None
+
+    def view_template_id(self):
+        return utils.context(self).getViewTemplateId() or None
+
+    def isViewTemplate(self):
+        return template_id()==view_template_id()
+
+    def normalizeString(self):
+        return putils.normalizeString
 

@@ -274,7 +274,7 @@
                 </span>
 
                 <tal:states define="
-                                navtree_props    portal/portal_properties/navtree_properties;
+                                navtree_props portal_properties/navtree_properties;
                                 states          python:wtool.listWFStatesByTitle(filter_similar=1);
                                 state_lists     python: here.createMultiColumnList(states, numCols=1, sort_on='self');"
                             repeat="sublist state_lists">
@@ -284,7 +284,7 @@
                            name="review_state:list"
                            checked="checked"
                            tal:attributes="value python:state[1];
-                                           id python:putils.normalizeString(state[1]);" />
+                                           id python:normalizeString(state[1]);" />
                     <label for="review_state:list"
                            i18n:translate=""
                            tal:content="python:state[0] or state[1]"

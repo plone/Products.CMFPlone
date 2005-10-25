@@ -7,6 +7,8 @@
 ##title=Logout handler
 ##parameters=
 
+from Products.CMFCore.utils import getToolByName
+
 REQUEST = context.REQUEST
 
 # if REQUEST.has_key('portal_skin'):
@@ -27,7 +29,12 @@ if cookie_auth is not None:
 # this throws an exception ;-(.  You can not try/except
 # around calling invalidate.  It will throw excpetion
 # regardless.  No idea how chrism managed that one *wink*
-REQUEST.SESSION.invalidate()
+sdm = getToolByName(context, 'session_data_manager', None)
+if sdm is not None:
+    session = sdm.getSessionData(create=0)
+    if session is not None:
+        session.invalidate()
+
 from Products.CMFPlone import transaction_note
 transaction_note('Logged out')
 

@@ -38,9 +38,14 @@
 
         
         <div class="discreet">
-            <tal:location condition="authorinfo/location">
-            <span i18n:translate="label_location">Location:</span>
-            <span tal:replace="authorinfo/location">Some location</span>
+            <tal:location condition="authorinfo/location"
+                          i18n:translate="text_location">
+                Location:
+                <span tal:content="authorinfo/location"
+                      tal:omit-tag=""
+                      i18n:name="location">
+                    Some location
+                </span>
             </tal:location>
 
             <tal:language condition="authorinfo/language">
@@ -99,7 +104,7 @@
             <form name="feedback_form"
                 action=""
                 method="post"
-                tal:attributes="action string:${here/absolute_url}/${template/getId}">
+                tal:attributes="action string:$here_url/$template_id">
 
             <fieldset>
             
@@ -203,7 +208,7 @@
             </div>
 
             <a href=""
-               tal:attributes="href string:${here/absolute_url}/search?Creator=${author}&amp;sort_on=Date&amp;sort_order=reverse"
+               tal:attributes="href string:$here_url/search?Creator=${author}&amp;sort_on=Date&amp;sort_order=reverse"
                i18n:translate="go_to_search_author_content">
                 All content created by 
                 <span i18n:name="user" tal:omit-tag="" tal:content="python:authorinfo['fullname'] or author"/>&hellip;

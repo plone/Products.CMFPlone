@@ -25,7 +25,7 @@
                 action=""
                 method="post"
                 tal:define="errors options/state/getErrors"
-                tal:attributes="action string:${here/absolute_url}/${template/getId}">
+                tal:attributes="action string:$here_url/$template_id">
 
             <fieldset>
                 <legend i18n:translate="legend_feedback_for_contact_info">Feedback details</legend>

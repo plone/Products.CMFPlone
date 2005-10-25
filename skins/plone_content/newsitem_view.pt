@@ -12,7 +12,7 @@
             Document actions (print, sendto etc)
         </div>
 
-        <h1 tal:content="here/pretty_title_or_id" class="documentFirstHeading">
+        <h1 tal:content="object_title" class="documentFirstHeading">
             Title or id
         </h1>
 
@@ -29,7 +29,7 @@
         <div class="newsImageContainer"
              tal:condition="here/image_mini|nothing">
             <a href="#"
-               tal:attributes="href string:${here/absolute_url}/image/image_view_fullscreen">
+               tal:attributes="href string:$here_url/image/image_view_fullscreen">
                <img tal:replace="structure python: here.tag(scale='mini', css_class='newsImage')" src="" alt="" />
             </a>
             <p class="discreet"

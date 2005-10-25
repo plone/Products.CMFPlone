@@ -11,7 +11,7 @@
           tal:attributes="content string:text/html;;charset=${charset}" />
 
     <title tal:define="portal_title portal_properties/title;
-                       page_title here/pretty_title_or_id">
+                       page_title object_title">
         <tal:pagetitle replace="page_title">
             Inserts page title
         </tal:pagetitle>
@@ -25,22 +25,43 @@
 
     <meta name="generator" content="Plone - http://plone.org" />
 
-    <meta tal:define="metatags here/listMetaTags|nothing"
+    <meta tal:define="metatags python:putils.listMetaTags(here)"
           tal:condition="metatags"
           tal:repeat="keyval metatags"
           tal:attributes="name python:keyval[0];
                           content python:keyval[1];" />
 
     <!-- Plone ECMAScripts -->
-    <metal:js metal:use-macro="here/renderAllTheScripts/macros/jsrenderer">
+    <metal:js tal:define="scripts nocall:here/renderAllTheScripts|nothing"
+	      tal:condition="nocall:scripts">
+      <metal:block metal:use-macro="scripts/macros/jsrenderer">
         <!-- Fetch scripts from the Javascript Registry -->
+      </metal:block>
     </metal:js>
 
-    <metal:css metal:use-macro="here/renderAllTheStylesheets/macros/cssrenderer">
-        <!-- Fetch stylesheets from the CSS Registry -->
+    <metal:css tal:define="css nocall:here/renderAllTheStylesheets|nothing">
+	<tal:block condition="nocall:css">
+          <metal:block metal:use-macro="css/macros/cssrenderer">
+            <!-- Fetch stylesheets from the CSS Registry -->
+          </metal:block>
+        </tal:block>
+        <tal:block condition="not:nocall:css">
+        <style type="text/css" media="all" tal:condition="exists:portal/base.css"
+               tal:content="string:@import url($portal_url/base.css);">
+        </style>
+        <style type="text/css" media="all" tal:condition="exists:portal/columns.css"
+               tal:content="string:@import url($portal_url/columns.css);">
+        </style>
+        <style type="text/css" media="all" tal:condition="exists:portal/public.css"
+               tal:content="string:@import url($portal_url/public.css);">
+        </style>
+        <style type="text/css" media="all" tal:condition="exists:portal/portlets.css"
+               tal:content="string:@import url($portal_url/portlets.css);">
+        </style>
+        </tal:block>
     </metal:css>
-    
-    <!-- Internet Explorer CSS Fixes + IE7 for compliance fixes (limited set) -->
+
+    <!-- Internet Explorer CSS Fixes -->
     <tal:iefixstart replace="structure string:&lt;!--[if lt IE 7]&gt;" />
         <style type="text/css" media="all" tal:condition="exists: portal/IEFixes.css"
                tal:content="string:@import url($portal_url/IEFixes.css);">
@@ -49,23 +70,17 @@
 
     <link rel="shortcut icon" type="image/x-icon" tal:attributes="href string:$portal_url/favicon.ico" />
 
-    <!-- Put this inside iefixstart to apply the IE7 script. It will be very slow, and currently
-         breaks with plonePrint.css and plonePresentation.css for unknown reasons.
-        <script src="ie7-standard.js" type="text/javascript" tal:attributes="src string:$portal_url/ie7/ie7-standard.js"></script>
-    -->
-
-
     <link rel="home" href="" title="Front page" tal:attributes="href string:$portal_url" />
     <link rel="search" title="Search this site" tal:attributes="href string:$portal_url/search_form" />
     <link rel="author" title="Author information" tal:attributes="href string:${portal_url}/author/${here/Creator}" />
     <link rel="contents" href="" title="Site Map" tal:attributes="href string:$portal_url/sitemap" />
-    
+
     <tal:fixme tal:replace="nothing">
       <link rel="help" href="" title="Help" tal:attributes="href string:$portal_url/help" />
       <link rel="copyright" href="" title="Copyright information" tal:attributes="href string:copyright" />
     </tal:fixme>
 
-    <link rel="alternate" href="" title="RSS 1.0" type="application/rss+xml"  
+    <link rel="alternate" href="" title="RSS 1.0" type="application/rss+xml"
           tal:condition="python: syntool.isSyndicationAllowed(here)"
           tal:attributes="href string:$here_url/RSS" />
 

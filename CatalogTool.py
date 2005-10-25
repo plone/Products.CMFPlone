@@ -33,13 +33,6 @@ from AccessControl.Permissions import manage_zcatalog_entries as ManageZCatalogE
 from AccessControl.Permissions import search_zcatalog as SearchZCatalog
 from AccessControl.PermissionRole import rolesForPermissionOn
 
-# Use TextIndexNG2 if installed
-try:
-    import Products.TextIndexNG2
-    txng_version = 2
-except ImportError:
-    txng_version = 0
-
 _marker = object()
 
 
@@ -329,8 +322,7 @@ class CatalogTool(PloneBaseTool, BaseTool):
 
     def _createTextIndexes(self, item, container):
         """In addition to the standard indexes we need to create
-        'SearchableText', 'Title' and 'Description' either as
-        TextIndexNG2 or ZCTextIndex instance.
+           'SearchableText', 'Title' and 'Description' as ZCTextIndex instance.
         """
 
         class args:
@@ -343,42 +335,32 @@ class CatalogTool(PloneBaseTool, BaseTool):
         for idx in ('SearchableText', 'Title', 'Description'):
             self._removeIndex(idx)
 
-        if txng_version == 2:
-            # Prefer TextIndexNG V2 if available instead of ZCTextIndex
-            extra = args(default_encoding='utf-8')
-            self.manage_addIndex('SearchableText', 'TextIndexNG2',
-                                  extra=args(default_encoding='utf-8',
-                                             use_converters=1, autoexpand=1))
-            self.manage_addIndex('Title', 'TextIndexNG2', extra=extra)
-            self.manage_addIndex('Description', 'TextIndexNG2', extra=extra)
+        # This if-clause still looks somewhat scary
+        if item is self and not hasattr(aq_base(self), 'plone_lexicon'):
 
-        else:
-            # ZCTextIndex as fallback
-            if item is self and not hasattr(aq_base(self), 'plone_lexicon'):
+            self.manage_addProduct['ZCTextIndex'].manage_addLexicon(
+                'plone_lexicon',
+                elements=[
+                    args(group='Case Normalizer', name='Case Normalizer'),
+                    args(group='Stop Words', name=" Don't remove stop words"),
+                    args(group='Word Splitter', name="Unicode Whitespace splitter"),
+                ]
+                )
 
-                self.manage_addProduct['ZCTextIndex'].manage_addLexicon(
-                    'plone_lexicon',
-                    elements=[
-                        args(group='Case Normalizer', name='Case Normalizer'),
-                        args(group='Stop Words', name=" Don't remove stop words"),
-                        args(group='Word Splitter', name="Unicode Whitespace splitter"),
-                    ]
-                    )
+            extra = args(doc_attr='SearchableText',
+                         lexicon_id='plone_lexicon',
+                         index_type='Okapi BM25 Rank')
+            self.manage_addIndex('SearchableText', 'ZCTextIndex', extra=extra)
 
-                extra = args(doc_attr='SearchableText',
-                             lexicon_id='plone_lexicon',
-                             index_type='Okapi BM25 Rank')
-                self.manage_addIndex('SearchableText', 'ZCTextIndex', extra=extra)
+            extra = args(doc_attr='Description',
+                         lexicon_id='plone_lexicon',
+                         index_type='Okapi BM25 Rank')
+            self.manage_addIndex('Description', 'ZCTextIndex', extra=extra)
 
-                extra = args(doc_attr='Description',
-                             lexicon_id='plone_lexicon',
-                             index_type='Okapi BM25 Rank')
-                self.manage_addIndex('Description', 'ZCTextIndex', extra=extra)
-
-                extra = args(doc_attr='Title',
-                             lexicon_id='plone_lexicon',
-                             index_type='Okapi BM25 Rank')
-                self.manage_addIndex('Title', 'ZCTextIndex', extra=extra)
+            extra = args(doc_attr='Title',
+                         lexicon_id='plone_lexicon',
+                         index_type='Okapi BM25 Rank')
+            self.manage_addIndex('Title', 'ZCTextIndex', extra=extra)
 
     security.declareProtected(ManagePortal, 'migrateIndexes')
     def migrateIndexes(self):

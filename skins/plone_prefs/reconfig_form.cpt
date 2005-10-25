@@ -28,29 +28,29 @@
           name="reconfig"
           method="post"
           class="enableUnloadProtection"
-          tal:attributes="action string:${here/absolute_url}/${template/getId}">
-        
+          tal:attributes="action string:${here_url}/${template_id}">
+
         <fieldset>
             <legend i18n:translate="legend_plone_details">Plone Details</legend>
-    
+
             <div class="field"
                  tal:define="title request/title | portal_properties/title;
                              error errors/title | nothing;"
                  tal:attributes="class python:test(error, 'field error', 'field')">
-    
-    
+
+
                 <label i18n:translate="label_portal_title">Portal title</label>
-    
+
                 <span class="fieldRequired" title="Required"
                       i18n:attributes="title title_required;"
                       i18n:translate="label_required">(Required)</span>
-    
+
                 <div class="formHelp" i18n:translate="help_portal_title">
                 The title of your Plone portal.
                 </div>
-    
+
                 <div tal:content="error">Validation error output</div>
-    
+
                 <input name="title"
                        size="30"
                        value=""
@@ -58,18 +58,18 @@
                        tal:attributes="value title;
                                        tabindex tabindex/next;" />
             </div>
-    
+
             <div class="field"
                  tal:define="description request/description | site_properties/description;
                              error errors/description | nothing;">
-    
+
                 <label i18n:translate="label_portal_description">Portal description</label>
-    
+
                 <div class="formHelp" i18n:translate="help_portal_description">
                 The portal description is available in syndicated
                 content and elsewhere. Keep it brief.
                 </div>
-    
+
                 <textarea cols="30"
                           rows="6"
                           name="description"
@@ -77,20 +77,20 @@
                           tal:attributes="tabindex tabindex/next"
                           tal:content="description">Description</textarea>
             </div>
-    
+
             <div class="field"
                  tal:define="email_from_name request/email_from_name|site_properties/email_from_name;
                              error errors/email_from_name | nothing;">
-    
+
                 <label i18n:translate="label_portal_from_name">Portal 'From' name</label>
-    
+
                 <div class="formHelp" i18n:translate="help_portal_from_name">
                 Plone generates e-mail using this name
                 as the e-mail sender.
                 </div>
-    
+
                 <div tal:content="error">Validation error output</div>
-    
+
                 <input name="email_from_name"
                        size="30"
                        value=""
@@ -98,25 +98,27 @@
                        tal:attributes="value email_from_name;
                                        tabindex tabindex/next;" />
             </div>
-    
+
             <div class="field"
                  tal:define="email_from_address request/email_from_address|site_properties/email_from_address;
                              error errors/email_from_address | nothing;"
                  tal:attributes="class python:test(error, 'field error', 'field')">
-    
+
                 <label i18n:translate="label_portal_from_address">Portal 'From' address</label>
-    
+
                 <span class="fieldRequired" title="Required"
                       i18n:attributes="title title_required;"
                       i18n:translate="label_required">(Required)</span>
-    
+
                 <div class="formHelp" i18n:translate="help_portal_from_address">
                 Plone generates e-mail using this address
                 as the e-mail return address.
+                It is also used as the destination address
+                on the site-wide contact form.
                 </div>
-    
+
                 <div tal:content="error">Validation error output</div>
-    
+
                 <input name="email_from_address"
                        size="30"
                        value=""
@@ -124,21 +126,20 @@
                        tal:attributes="value email_from_address;
                                        tabindex tabindex/next;" />
             </div>
-    
+
             <div class="field">
                 <label i18n:translate="label_default_language">Default Language</label>
-    
+
                 <div class="formHelp" i18n:translate="help_default_language">
                 Specify the default language setting for newly created items.
                 </div>
-    
+
                 <!-- ISO-639-2 language selector for Plone -->
                 <select name="default_language"
                         tabindex=""
                         value=""
-                        tal:attributes="value site_properties/default_language;
-                                        tabindex tabindex/next;"
-                        tal:define="default_language request/default_language | site_properties/default_language;">
+                        tal:attributes="value default_language;
+                                        tabindex tabindex/next;">
                    <option value="" i18n:translate="label_choose_language">Choose Language</option>
                    <option tal:repeat="language here/availableLanguages"
                            tal:attributes="value python:language[0];
@@ -146,20 +147,20 @@
                            tal:content="structure python:language[1]" />
                 </select>
             </div>
-    
+
             <div class="field"
                  tal:define="validateChecked python:site_properties.validate_email;
                              allowEnterChecked python:not site_properties.validate_email;
                              tabindex tabindex/next;">
-                             
+
                 <label i18n:translate="label_password_policy">Password policy</label>
-    
+
                 <div class="formHelp" i18n:translate="help_password_policy">
                 Determines if users can choose their initial password. If the password
                 is selected by the user, it's easier for the user to create
                 a bogus account. If this is a concern, choose "Generate".
                 </div>
-    
+
                 <input class="noborder"
                        type="radio"
                        name="validate_email:int"
@@ -168,11 +169,11 @@
                        tabindex=""
                        tal:attributes="checked validateChecked;
                                        tabindex tabindex;" />
-    
+
                 <label for="validate_email_on" i18n:translate="label_generate_and_email_passwords">Generate and e-mail member's initial password</label>
-    
+
                 <br />
-    
+
                 <input class="noborder"
                        type="radio"
                        name="validate_email:int"
@@ -181,22 +182,23 @@
                        tabindex=""
                        tal:attributes="checked allowEnterChecked;
                                        tabindex tabindex;" />
-    
+
                 <label for="validate_email_off" i18n:translate="label_allow_members_to_create_password">Allow members to select their initial password</label>
             </div>
-    
+
             <div class="field"
                  tal:condition="exists:site_properties/ext_editor"
                  tal:define="ext_editor request/ext_editor | site_properties/ext_editor;
                              tabindex tabindex/next;">
-    
+
                 <label i18n:translate="label_setup_ext_editor">Enable External Editor Feature</label>
-    
+
                 <div class="formHelp" i18n:translate="help_setup_ext_editor">
-                Determines if the external editor feature is enabled. 
+                Determines if the external editor feature is enabled.
                 This feature requires a special client-side application installed.
+                The users also have to enable this in their preferences.
                 </div>
-    
+
                 <input type="radio"
                        class="noborder"
                        name="ext_editor"
@@ -206,11 +208,11 @@
                        tal:attributes="tabindex tabindex;
                                        checked ext_editor"
                        />
-    
+
                 <label for="cb_ext_editor" i18n:translate="yes">Yes</label>
-    
+
                 <br />
-    
+
                 <input type="radio"
                        class="noborder"
                        name="ext_editor"
@@ -220,21 +222,25 @@
                        tal:attributes="tabindex tabindex;
                                        checked not:ext_editor;"
                        />
-    
+
                 <label for="cb_noext_editor" i18n:translate="no">No</label>
             </div>
-    
+
             <div class="field"
                  tal:condition="exists:site_properties/visible_ids"
                  tal:define="visible_ids request/visible_ids | site_properties/visible_ids;
                              tabindex tabindex/next;">
-    
-                <label i18n:translate="label_setup_visible_ids">Show "Short Name" on Content?</label>
-    
+
+                <label i18n:translate="label_setup_visible_ids">
+                Show "Short Name" on Content?
+                </label>
+
                 <div class="formHelp" i18n:translate="help_setup_visible_ids">
-                Display and allow users to edit the "Short name" content identifiers, which form the URL of content.
+                Display and allow users to edit the "Short name" content identifiers, 
+                which form the URL part of a content item's address. Users also have to
+                enable this option in their preferences.
                 </div>
-    
+
                 <input type="radio"
                        class="noborder"
                        name="visible_ids"
@@ -244,11 +250,11 @@
                        tal:attributes="tabindex tabindex;
                                        checked visible_ids"
                        />
-    
+
                 <label for="cb_visible_ids" i18n:translate="yes">Yes</label>
-    
+
                 <br />
-    
+
                 <input type="radio"
                        class="noborder"
                        name="visible_ids"
@@ -258,7 +264,7 @@
                        tal:attributes="tabindex tabindex;
                                        checked not:visible_ids;"
                        />
-    
+
                 <label for="cb_novisible_ids" i18n:translate="no">No</label>
             </div>
 
@@ -273,9 +279,9 @@
                        />
 
             </div>
-        
+
         </fieldset>
-        
+
         <input type="hidden" name="form.submitted" value="1" />
 
     </form>

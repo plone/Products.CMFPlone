@@ -15,8 +15,8 @@
 
           <tr>
             <th i18n:translate="listingheader_action">Action</th>
-            <th i18n:translate="listingheader_performed_by">Performed&nbsp;by</th>
-            <th i18n:translate="listingheader_date_and_time">Date&nbsp;and&nbsp;Time</th>
+            <th i18n:translate="listingheader_performed_by">Performed by</th>
+            <th i18n:translate="listingheader_date_and_time">Date and Time</th>
             <th i18n:translate="listingheader_comment">Comment</th>
           </tr>
 
@@ -26,14 +26,18 @@
                             rhComments items/comments|nothing;"
                 tal:attributes="class python:test(odd, 'even', 'odd')"
                 tal:condition="items/action">
-              <td i18n:translate="" tal:content="python:wtool.getTitleForTransitionOnType(items['action'],context.portal_type)">
+              <td i18n:translate="" tal:content="python:wtool.getTitleForTransitionOnType(items['action'],context.portal_type)"
+                  tal:attributes="class string:state-${items/review_state}">
                 action
               </td>
 
               <td>
                 <a href="/Members/runyaga"
-                   tal:attributes="href python: mtool.getHomeUrl(items.get('actor'), '')"
-                   tal:content="items/actor">
+                   tal:define="actorid python:items.get('actor');
+                               actor python:mtool.getMemberInfo(actorid);
+                               fullname actor/fullname|nothing"
+                   tal:attributes="href string:${portal_url}/author/${actorid}"
+                   tal:content="python:fullname or actorid">
                   runyaga
                 </a>
               </td>

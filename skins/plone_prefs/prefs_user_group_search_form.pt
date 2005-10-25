@@ -128,7 +128,7 @@
             tal:attributes="value request/takeaction" />
 
         <input type="hidden" name="return_form" value=""
-               tal:attributes="value template/getId"/>
+               tal:attributes="value template_id"/>
 
         <input class="context"
             tabindex=""

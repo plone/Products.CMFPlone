@@ -21,7 +21,7 @@
                  desc_length site_properties/search_results_description_length;
                  desc_ellipsis site_properties/ellipsis;
                  searchterm request/SearchableText|nothing;
-                 use_view_action site_properties/typesUseViewActionInListings;">
+                 use_view_action site_properties/typesUseViewActionInListings|python:();">
 
     <h1 i18n:translate="heading_search_results">Search results</h1>
 
@@ -42,11 +42,11 @@
     <div tal:condition="results"
           tal:define="batch python:Batch(results, b_size, int(b_start), orphan=1);">
 
-        <strong>
-        <span i18n:translate="batch_x_items_matching_your_criteria"><span i18n:name="number" tal:content="python:len(results)">234</span> items matching your criteria.</span>
+        <strong i18n:translate="batch_x_items_matching_your_criteria">
+            <span i18n:name="number" tal:omit-tag="" tal:content="python:len(results)">234</span> items matching your criteria.
         </strong>
 
-        <tal:syndicate condition="portal/portal_syndication/isSiteSyndicationAllowed">
+        <tal:syndicate condition="syntool/isSiteSyndicationAllowed">
         <a href="" tal:attributes="href string:$here_url/search_rss?${request/QUERY_STRING}">
         <img i18n:attributes="title title_rss_feed; alt label_rss_feed;"
              tal:attributes="src string:$portal_url/rss.gif"
@@ -64,8 +64,8 @@
                            result_type result/portal_type;
                            url python:'%s?searchterm=%s'%(test(result_type in use_view_action, result_url+'/view', result_url+'/'), searchterm);">
             <dt tal:define="item_wf_state result/review_state;
-                            item_wf_state_class python:'state-' + putils.normalizeString(item_wf_state);">
-                <span tal:attributes="class python: 'contenttype-' + putils.normalizeString(result.portal_type)">
+                            item_wf_state_class python:'state-' + normalizeString(item_wf_state);">
+                <span tal:attributes="class python: 'contenttype-' + normalizeString(result.portal_type)">
                     <a
                      href="#" 
                      tal:attributes="href url;
@@ -77,8 +77,9 @@
                      tal:condition="result/data_record_normalized_score_"
                      i18n:translate="label_relevance_percentage"
                      i18n:attributes="title title_relevance;">
-                    [<span tal:replace="result/data_record_normalized_score_"
-                                      i18n:name="percentage">23%</span>%]
+                    [<span tal:content="result/data_record_normalized_score_"
+                           tal:omit-tag=""
+                           i18n:name="percentage">23%</span>%]
                </span>
 
                 <span class="discreet" i18n:translate="results_by_author">

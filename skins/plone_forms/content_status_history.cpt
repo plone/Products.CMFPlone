@@ -68,7 +68,7 @@
             name="edit_form"
             method="post"
             action="content_status_modify"
-            tal:attributes="action string:${here/absolute_url}/${template/getId}"
+            tal:attributes="action string:$here_url/$template_id"
             tal:condition="not:python:paths and not batch">
 
         <fieldset>

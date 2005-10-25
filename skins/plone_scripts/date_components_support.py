@@ -8,10 +8,7 @@
 ##title=
 ##
 
-try:
-    from DateTime.DateTime import DateTimeError
-except ImportError:
-    DateTimeError = 'DateTimeError'
+from DateTime.DateTime import DateTimeError
 
 # 'id' is what shows up.  December for month 12. 
 # 'value' is the value for the form.

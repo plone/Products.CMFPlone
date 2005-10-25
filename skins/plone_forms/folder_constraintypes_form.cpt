@@ -27,7 +27,7 @@
       <form name="constraintypes_form"
             action="."
             method="post"
-            tal:attributes="action string:${here/absolute_url}/${template/getId}"
+            tal:attributes="action string:$here_url/$template_id"
             tal:define="errors options/state/getErrors;">
 
         <input type="hidden" name="form.submitted" value="1"/>

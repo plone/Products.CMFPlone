@@ -9,10 +9,7 @@
 ##title=Validates syndication form
 ##
 
-try:
-    from DateTime.DateTime import DateTimeError
-except ImportError:
-    DateTimeError = 'DateTimeError'
+from DateTime.DateTime import DateTimeError
 
 if updateBase and updateBase!='None':
     try:

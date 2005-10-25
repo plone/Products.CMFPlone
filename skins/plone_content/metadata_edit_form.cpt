@@ -271,9 +271,7 @@
           </div>
 
           <div class="field"
-               tal:define="def_language site_properties/default_language;
-                           sel_language python:test(here.Language(), here.Language(), def_language);
-                           sel_language python:request.get('language',sel_language)">
+               tal:define="sel_language language;">
 
             <label for="language"
                    i18n:translate="label_language">

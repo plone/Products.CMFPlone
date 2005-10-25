@@ -21,7 +21,7 @@ if membership_tool.isAnonymousUser():
 member = membership_tool.getAuthenticatedMember()
 login_time = member.getProperty('login_time', '2000/01/01')
 if  str(login_time) == '2000/01/01':
-    state.set(status='initial_login')
+    state.set(status='initial_login', initial_login=True)
 
 membership_tool.setLoginTimes()
 membership_tool.createMemberArea()

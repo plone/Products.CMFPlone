@@ -11,24 +11,21 @@
 
 <div metal:fill-slot="main"
      tal:define="errors options/state/getErrors;
-                 thread python:here.plone_utils.getDiscussionThread(here);
+                 thread python:putils.getDiscussionThread(here);
                  discussable python:thread[0];
                  replies python:thread[1:]">
 
-    
-
-    <tal:discussable define="viewAction python:discussable.getTypeInfo().getActionById('view');
-                             template python:getattr(here, discussable.getLayout(), None);
+    <tal:discussable define="template python:getattr(here, discussable.getLayout(), None);
                              macros template/macros | nothing;
                              main_macro macros/main | nothing;
                              showDiscussable python:main_macro;
-                             template template/id"
+                             template template_id"
                      >
 
         <div class="comment" 
              tal:condition="showDiscussable"
              tal:define="here python:discussable">
-            <div metal:use-macro="discussable/?template/macros/main"/>
+            <div metal:use-macro="main_macro"/>
         </div>
     </tal:discussable>
 
@@ -63,7 +60,7 @@
     <form name="edit_form"
           method="post"
           action="talkback"
-          tal:attributes="action string:${here/getId}/${template/getId}">
+          tal:attributes="action string:$here_url/$template_id">
 
         <fieldset>
 
@@ -170,7 +167,7 @@
                 <input class="context"
                        tabindex=""
                        type="submit"
-                       value="Add Comment"
+                       value="Save"
                        name="form.button.Save"
                        i18n:attributes="value label_save;"
                        tal:attributes="tabindex tabindex/next;

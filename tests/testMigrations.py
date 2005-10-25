@@ -117,6 +117,9 @@ from Products.CMFPlone.migrations.v2_1.rcs import fixCMFLegacyLayer
 from Products.CMFPlone.migrations.v2_1.rcs import reorderObjectButtons
 from Products.CMFPlone.migrations.v2_1.rcs import allowMembersToViewGroups
 from Products.CMFPlone.migrations.v2_1.rcs import reorderStylesheets as reorderStylesheets_rc3_final
+from Products.CMFPlone.migrations.v2_1.final_two11 import reindexPathIndex
+from Products.CMFPlone.migrations.v2_1.two11_two12 import removeCMFTopicSkinLayer
+from Products.CMFPlone.migrations.v2_1.alphas import replaceMailHost
 
 from Products.CMFDynamicViewFTI.migrate import migrateFTI
 
@@ -3181,11 +3184,55 @@ class TestMigrations_v2_1(MigrationTest):
             self.assertEqual(value, stylesheet_ids[index])
 
 
+
+class TestMigrations_v2_1_2(MigrationTest):
+
+    def afterSetUp(self):
+        self.skins = self.portal.portal_skins
+
+    def testRemoveCMFTopicSkinPathFromDefault(self):
+        # Should remove plone_3rdParty/CMFTopic from skin paths
+        self.addSkinLayer('plone_3rdParty/CMFTopic')
+        removeCMFTopicSkinLayer(self.portal, [])
+        path = self.skins.getSkinPath('Plone Default')
+        self.failIf('plone_3rdParty/CMFTopic' in path)
+
+    def testRemoveCMFTopicSkinPathFromTableless(self):
+        # Should remove plone_3rdParty/CMFTopic from skin paths
+        self.addSkinLayer('plone_3rdParty/CMFTopic', skin='Plone Tableless')
+        removeCMFTopicSkinLayer(self.portal, [])
+        path = self.skins.getSkinPath('Plone Tableless')
+        self.failIf('plone_3rdParty/CMFTopic' in path)
+
+    def testRemoveCMFTopicSkinTwice(self):
+        # Should not fail if migrated again
+        self.addSkinLayer('plone_3rdParty/CMFTopic')
+        removeCMFTopicSkinLayer(self.portal, [])
+        removeCMFTopicSkinLayer(self.portal, [])
+        path = self.skins.getSkinPath('Plone Default')
+        self.failIf('plone_3rdParty/CMFTopic' in path)
+
+    def testRemoveCMFTopicSkinNoTool(self):
+        # Should not fail if tool is missing
+        self.portal._delObject('portal_skins')
+        removeCMFTopicSkinLayer(self.portal, [])
+
+    def testRemoveCMFTopicSkinPathNoLayer(self):
+        # Should not fail if plone_3rdParty layer is missing
+        self.removeSkinLayer('plone_3rdParty')
+        removeCMFTopicSkinLayer(self.portal, [])
+        path = self.skins.getSkinPath('Plone Default')
+        self.failIf('plone_3rdParty/CMFTopic' in path)
+
+
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
     suite.addTest(makeSuite(TestMigrations_v2))
     suite.addTest(makeSuite(TestMigrations_v2_1))
+    suite.addTest(makeSuite(TestMigrations_v2_1_1))
+    suite.addTest(makeSuite(TestMigrations_v2_1_2))
+        
     return suite
 
 if __name__ == '__main__':
