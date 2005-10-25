@@ -12,10 +12,10 @@ from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFCore.WorkflowCore import WorkflowException
 
 from Products.CMFCore.utils import _checkPermission as checkPerm
-from Products.CMFCore.CMFCorePermissions import AccessContentsInformation
-from Products.CMFCore.CMFCorePermissions import View
-from Products.CMFCore.CMFCorePermissions import ListFolderContents
-from Products.CMFCore.CMFCorePermissions import ModifyPortalContent
+from Products.CMFCore.permissions import AccessContentsInformation
+from Products.CMFCore.permissions import View
+from Products.CMFCore.permissions import ListFolderContents
+from Products.CMFCore.permissions import ModifyPortalContent
 
 
 class TestFolderWorkflow(PloneTestCase.PloneTestCase):

@@ -20,6 +20,8 @@ class DummyTitle(Implicit):
     def Title(self):
         # Should just return 'portal_catalog'
         tool = getToolByName(self, 'portal_catalog')
+        # Use implicit acquisition even, the horror
+        tool = self.portal_catalog
         return tool.getId()
     def getId(self):
         return 'foobar'

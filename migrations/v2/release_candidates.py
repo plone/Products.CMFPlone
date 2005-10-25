@@ -1,4 +1,4 @@
-from Products.CMFCore import CMFCorePermissions
+from Products.CMFCore.permissions import AddPortalContent, ModifyPortalContent
 from AccessControl import Permissions
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.setup.ConfigurationMethods import correctFolderContentsAction
@@ -10,9 +10,9 @@ from Products.CMFPlone.migrations.migration_util import saveCloneActions, cleanu
 import zLOG
 
 _permMap = {
-    'rename' : CMFCorePermissions.AddPortalContent,
+    'rename' : AddPortalContent,
     'copy' : Permissions.view_management_screens,
-    'paste' : CMFCorePermissions.AddPortalContent,
+    'paste' : AddPortalContent,
     'delete' : Permissions.delete_objects,
     }
 
@@ -177,7 +177,7 @@ def changeCopyPermission(portal):
     for action in _actions:
         if action.id=='copy':
             expr='python:portal.portal_membership.checkPermission("%s", object)' % \
-                 CMFCorePermissions.ModifyPortalContent
+                 ModifyPortalContent
             action.condition=Expression(expr)
     portal.portal_actions._actions=_actions
 

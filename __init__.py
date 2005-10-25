@@ -15,7 +15,6 @@ misc_ = {'plone_icon': Globals.ImageFile(
                        os.path.join('skins', 'plone_images', 'logoIcon.gif'),
                        cmfplone_globals)}
 
-
 def initialize(context):
 
     # Stuff has been moved from module level to this method for a

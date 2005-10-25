@@ -2,6 +2,7 @@
 Collection of i18n and l10n utility methods.
 All methods here may return unicode type.
 """
+import re
 from DateTime import DateTime
 from log import log_exc
 
@@ -20,6 +21,13 @@ try:
     from Products import PlacelessTranslationService
 except ImportError:
     HAS_FIVE_TS = False
+
+# these are taken from PTS, used for format interpolation
+NAME_RE = r"[a-zA-Z][a-zA-Z0-9_]*"
+_interp_regex = re.compile(r'(?<!\$)(\$(?:%(n)s|{%(n)s}))' %({'n': NAME_RE}))
+
+datetime_formatvariables = ('H', 'I', 'm', 'd', 'M', 'p', 'S', 'Y', 'y', 'Z')
+name_formatvariables = ('a', 'A', 'b', 'B')
 
 # unicode aware translate method (i18n)
 def utranslate(*args, **kw):
@@ -90,28 +98,10 @@ def ulocalized_time(time, long_format = None, context = None, domain='plone'):
         # when without context, we cannot do very much.
         return time.ISO()
     
-    # add elements to mapping
-    for key in ('H', 'I', 'm', 'd', 'M', 'p', 'S', 'Y', 'y', 'Z'):
-        mapping[key]=time.strftime('%'+key)
+    # get the formatstring
+    formatstring = utranslate(domain, msgid, mapping, context)
     
-    # add weekday name, abbr. weekday name, month name, abbr month name
-    weekday = int(time.strftime('%w')) # weekday, sunday = 0
-    monthday = int(time.strftime('%m')) # month, january = 1
-    mapping['A']=weekdayname_msgid(weekday)
-    mapping['a']=weekdayname_msgid_abbr(weekday)
-    mapping['B']=monthname_msgid(monthday)
-    mapping['b']=monthname_msgid_abbr(monthday)
-    
-    # feed translateable elements to translation service
-    for key in ('A', 'a', 'B', 'b',):
-        mapping[key]=utranslate(domain, mapping[key], context=context, default=mapping[key])
-
-    # feed numbers for formatting to translation service
-    # XXX: implement me
-    
-    # translate the time string
-    localized_time = utranslate(domain, msgid, mapping, context)
-    if localized_time is None or localized_time.startswith('date_'):
+    if formatstring is None or formatstring.startswith('date_'):
         # msg catalog was not able to translate this msgids
         # use default setting
 
@@ -122,9 +112,50 @@ def ulocalized_time(time, long_format = None, context = None, domain='plone'):
             format=properties.localTimeFormat
 
         return time.strftime(format)
+    
+    # get the format elements used in the formatstring
+    formatelements = _interp_regex.findall(formatstring)
+    # reformat the ${foo} to foo
+    formatelements = [el[2:-1] for el in formatelements]
 
-    # return localized_time string
-    return localized_time
+    # add used elements to mapping
+    elements = [e for e in formatelements if e in datetime_formatvariables]
+
+    # add weekday name, abbr. weekday name, month name, abbr month name
+    week_included = True
+    month_included = True
+
+    name_elements = [e for e in formatelements if e in name_formatvariables]
+    if not ('a' in name_elements or 'A' in name_elements):
+        week_included = False
+    if not ('b' in name_elements or 'B' in name_elements):
+        month_included = False
+
+    for key in elements:
+        mapping[key]=time.strftime('%'+key)
+
+    if week_included:
+        weekday = int(time.strftime('%w')) # weekday, sunday = 0
+        if 'a' in name_elements:
+            mapping['a']=weekdayname_msgid_abbr(weekday)
+        if 'A' in name_elements:
+            mapping['A']=weekdayname_msgid(weekday)
+    if month_included:
+        monthday = int(time.strftime('%m')) # month, january = 1
+        if 'b' in name_elements:
+            mapping['b']=monthname_msgid_abbr(monthday)
+        if 'B' in name_elements:
+            mapping['B']=monthname_msgid(monthday)
+    
+    # feed translateable elements to translation service
+    for key in name_elements:
+        mapping[key]=utranslate(domain, mapping[key], context=context, default=mapping[key])
+
+    # feed numbers for formatting to translation service
+    # XXX: implement me
+    
+    # translate the time string
+    return utranslate(domain, msgid, mapping, context)
 
 def _numbertoenglishname(number, format='', attr='_days'):
     # returns the english name of day or month number

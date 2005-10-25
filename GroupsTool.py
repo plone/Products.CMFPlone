@@ -4,6 +4,7 @@ from Products.CMFPlone import ToolNames
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
+from utils import base_hasattr
 
 class GroupsTool(PloneBaseTool, BaseTool):
 
@@ -32,6 +33,18 @@ class GroupsTool(PloneBaseTool, BaseTool):
                     }
 
         return groupinfo
+
+    def createGrouparea(self, id):
+        """
+        Override the method to make sure the groups folder gets indexed,
+        GRUF makes a policy decision to unindex the groups folder.
+        """
+        workspaces = self.getGroupWorkspacesFolder()
+        BaseTool.createGrouparea(self, id)
+        if workspaces is None:
+            workspaces = self.getGroupWorkspacesFolder()
+            if base_hasattr(workspaces, 'reindexObject'):
+                workspaces.reindexObject()
 
 GroupsTool.__doc__ = BaseTool.__doc__
 
