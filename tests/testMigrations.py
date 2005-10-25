@@ -3183,6 +3183,89 @@ class TestMigrations_v2_1(MigrationTest):
         for index, value in enumerate(desired_order):
             self.assertEqual(value, stylesheet_ids[index])
 
+    def testReplaceMailHost(self):
+        # Make sure it converts the  mail host and its settings
+        self.portal._delObject('MailHost')
+        self.portal._setObject('MailHost', BogusMailHost())
+        mailer = self.portal.MailHost
+        self.assertEqual(mailer.meta_type, 'Bad Mailer')
+        replaceMailHost(self.portal, [])
+        mailer = getattr(self.portal, 'MailHost', None)
+        self.failUnless(mailer is not None)
+        self.assertEqual(mailer.meta_type, 'Secure Mail Host')
+        self.assertEqual(mailer.title, 'Mailer')
+        self.assertEqual(mailer.smtp_port, 37)
+        self.assertEqual(mailer.smtp_host, 'my.badhost.com')
+
+    def testReplaceMailHostWhenMissing(self):
+        # Make sure it adds a new one if the original is missing
+        self.portal._delObject('MailHost')
+        replaceMailHost(self.portal, [])
+        mailer = getattr(self.portal, 'MailHost', None)
+        self.failUnless(mailer is not None)
+        self.assertEqual(mailer.meta_type, 'Secure Mail Host')
+
+
+class TestMigrations_v2_1_1(MigrationTest):
+
+    def afterSetUp(self):
+        self.actions = self.portal.portal_actions
+        self.icons = self.portal.portal_actionicons
+        self.properties = self.portal.portal_properties
+        self.memberdata = self.portal.portal_memberdata
+        self.membership = self.portal.portal_membership
+        self.catalog = self.portal.portal_catalog
+        self.groups = self.portal.portal_groups
+        self.factory = self.portal.portal_factory
+        self.portal_memberdata = self.portal.portal_memberdata
+        self.cc = self.portal.cookie_authentication
+        self.cp = self.portal.portal_controlpanel
+        self.skins = self.portal.portal_skins
+
+    def testReindexPathIndex(self):
+        # Should reindex the path index to create new index structures
+        orig_results = self.catalog(path={'query':'news', 'level':1})
+        orig_len = len(orig_results)
+        self.failUnless(orig_len)
+        # Simulate the old EPI
+        delattr(self.catalog.Indexes['path'], '_index_parents')
+        self.assertRaises(AttributeError, self.catalog,
+                                        {'path':{'query':'/','navtree':1}})
+        reindexPathIndex(self.portal, [])
+        results = self.catalog(path={'query':'news', 'level':1})
+        self.assertEqual(len(results), orig_len)
+
+    def testReindexPathIndexTwice(self):
+        # Should not fail when migrated twice, should do nothing if already
+        # migrated
+        orig_results = self.catalog(path={'query':'news', 'level':1})
+        orig_len = len(orig_results)
+        self.failUnless(orig_len)
+        # Simulate the old EPI
+        delattr(self.catalog.Indexes['path'], '_index_parents')
+        self.assertRaises(AttributeError, self.catalog,
+                                        {'path':{'query':'/','navtree':1}})
+        out = []
+        reindexPathIndex(self.portal, out)
+        # Should return a message on the first iteration
+        self.failUnless(out)
+        out = []
+        reindexPathIndex(self.portal, out)
+        results = self.catalog(path={'query':'news', 'level':1})
+        self.assertEqual(len(results), orig_len)
+        # should return an empty list on the second iteration because nothing
+        # was done
+        self.failIf(out)
+
+    def testReindexPathIndexNoIndex(self):
+        # Should not fail when index is missing
+        self.catalog.delIndex('path')
+        reindexPathIndex(self.portal, [])
+
+    def testReindexPathIndexNoCatalog(self):
+        # Should not fail when index is missing
+        self.portal._delObject('portal_catalog')
+        reindexPathIndex(self.portal, [])
 
 
 class TestMigrations_v2_1_2(MigrationTest):
