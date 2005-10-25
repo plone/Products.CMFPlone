@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1.2 (unreleased)
 
+    - Send new generated plain password via email directly when reset password, but not 
+      the one stored in userfolder since it could be encypted.
+      [panjunyong]
+
     - Removed skins/plone_3rdParty/CMFTopic from filesystem and written
       migration to remove it from all skins
       [hannosch, limi]
