@@ -9,7 +9,8 @@ from ZPublisher.mapply import mapply
 from Products.CMFPlone import cmfplone_globals
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Products.CMFCore import CMFCorePermissions
-from Products.CMFCore.utils import UniqueObject, getToolByName, format_stx
+from Products.CMFCore.utils import UniqueObject, getToolByName
+from StructuredText.StructuredText import HTML
 from Products.CMFPlone.PloneFolder import PloneFolder as TempFolderBase
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFPlone.utils import classImplements
@@ -198,7 +199,7 @@ class FactoryTool(PloneBaseTool, UniqueObject, SimpleItem):
     f = open(os.path.join(wwwpath, 'portal_factory_docs.stx'), 'r')
     _docs = f.read()
     f.close()
-    _docs = format_stx(_docs)
+    _docs = HTML(_docs)
 
     security.declarePublic('docs')
     def docs(self):

@@ -7,7 +7,7 @@ from Acquisition import aq_base
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFPlone.utils import classImplements
 
-from Products.CMFCore.utils import format_stx
+from StructuredText.StructuredText import HTML
 from DocumentTemplate.DT_Util import html_quote
 
 class DiscussionTool(PloneBaseTool, BaseTool):
@@ -45,7 +45,7 @@ class DiscussionTool(PloneBaseTool, BaseTool):
             reply.text = text
             reply.cooked_text = html_quote(text).replace('\n','<br>')
         else:
-            reply.cooked_text = format_stx(text=text, level=level)
+            reply.cooked_text = HTML(text=text, level=level)
             reply.text = text
 
 DiscussionTool.__doc__ = BaseTool.__doc__

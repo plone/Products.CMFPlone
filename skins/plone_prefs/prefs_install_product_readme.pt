@@ -23,7 +23,7 @@
     Back to Add/Remove Products
     </a>
 
-    <div class="stx" tal:content="structure python:modules['Products.CMFCore.utils'].format_stx(container.portal_quickinstaller.getProductFile(request['filereadme']))" />
+    <div class="stx" tal:content="structure python:modules['StructuredText.StructuredText'].HTML(container.portal_quickinstaller.getProductFile(request['filereadme']))" />
 
     <a href=""
        class="link-parent"
