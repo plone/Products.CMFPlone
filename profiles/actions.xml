@@ -1,0 +1,245 @@
+<?xml version="1.0"?>
+<actions-tool>
+ <action-provider id="portal_membership">
+  <action action_id="mystuff" title="My Folder"
+          condition_expr="python: member and portal.portal_membership.getHomeFolder()"
+          url_expr="string:${portal/portal_membership/getHomeUrl}"
+          category="user" visible="True">
+   <permission>View</permission>
+  </action>
+  <action action_id="myworkspace" title="Workspace"
+          condition_expr="python: member and portal.portal_membership.getHomeFolder() is not None"
+          url_expr="python: portal.portal_membership.getHomeUrl()+&quot;/workspace&quot;"
+          category="user" visible="False">
+   <permission>View</permission>
+  </action>
+  <action action_id="favorites" title="My favorites"
+          condition_expr="python: member and hasattr(portal.portal_membership.getHomeFolder(), &quot;Favorites&quot;)"
+          url_expr="string:${portal/portal_membership/getHomeUrl}/Favorites/folder_contents"
+          category="user" visible="False">
+   <permission>View</permission>
+  </action>
+  <action action_id="preferences" title="Preferences"
+          condition_expr="member"
+          url_expr="string:${portal_url}/plone_memberprefs_panel"
+          category="user" visible="True">
+   <permission>View</permission>
+  </action>
+  <action action_id="addFavorite" title="Add to favorites"
+          condition_expr="portal/portal_membership/getHomeFolder"
+          url_expr="string:${object_url}/addtoFavorites"
+          category="user" visible="False">
+   <permission>View</permission>
+  </action>
+  <action action_id="login" title="Log in"
+          condition_expr="not: member"
+          url_expr="string:${portal_url}/login_form"
+          category="user" visible="True">
+   <permission>View</permission>
+  </action>
+  <action action_id="manage_members" title="Manage members"
+          condition_expr=""
+          url_expr="string:${portal_url}/members_manage_form"
+          category="global" visible="True">
+   <permission>Manage users</permission>
+  </action>
+  <action action_id="logged_in" title="Logged in"
+          condition_expr=""
+          url_expr="string:${portal_url}/logged_in"
+          category="user" visible="False">
+   <permission>View</permission>
+  </action>
+  <action action_id="logout" title="Log out"
+          condition_expr="member"
+          url_expr="string:${portal_url}/logout"
+          category="user" visible="True">
+   <permission>View</permission>
+  </action>
+ </action-provider>
+ <action-provider id="portal_actions">
+  <action action_id="rss" title="RSS feed of this listing"
+          condition_expr="python:portal.portal_syndication.isSyndicationAllowed(object)"
+          url_expr="string:$object_url/RSS"
+          category="document_actions" visible="True">
+   <permission>View</permission>
+  </action>
+  <action action_id="sendto"
+          title="Send this page to somebody"
+          condition_expr=""
+          url_expr="string:$object_url/sendto_form"
+          category="document_actions" visible="True">
+   <permission>Allow sendto</permission>
+  </action>
+  <action action_id="print" title="Print this page"
+          condition_expr=""
+          url_expr="string:javascript:this.print();"
+          category="document_actions" visible="True">
+   <permission>View</permission>
+  </action>
+  <action action_id="addtofavorites"
+          title="Add to Favorites"
+          condition_expr="python: member and portal.portal_membership.getHomeFolder() is not None"
+          url_expr="string:${object_url}/addtoFavorites"
+          category="document_actions" visible="False">
+   <permission>View</permission>
+  </action>
+  <action action_id="full_screen"
+          title="Toggle full screen mode"
+          condition_expr="member"
+          url_expr="string:javascript:toggleFullScreenMode();"
+          category="document_actions" visible="True">
+   <permission>View</permission>
+  </action>
+  <action action_id="sitemap" title="Site Map"
+          condition_expr=""
+          url_expr="string:$portal_url/sitemap"
+          category="site_actions" visible="True">
+   <permission>View</permission>
+  </action>
+  <action action_id="copy" title="Copy" condition_expr=""
+          url_expr="string:folder_copy:method"
+          category="folder_buttons" visible="True">
+   <permission>Copy or Move</permission>
+  </action>
+  <action action_id="cut" title="Cut"
+          condition_expr="python:portal.portal_membership.checkPermission(&quot;Delete objects&quot;, object)"
+          url_expr="string:folder_cut:method"
+          category="folder_buttons" visible="True">
+   <permission>Copy or Move</permission>
+  </action>
+  <action action_id="folderContents" title="Contents"
+          condition_expr="object/displayContentsTab"
+          url_expr="python:((object.isDefaultPageInFolder() and object.getParentNode().absolute_url()) or folder_url)+'/folder_contents'"
+          category="object" visible="True">
+   <permission>List folder contents</permission>
+  </action>
+  <action action_id="extedit"
+          title="Edit this file in an external application (Requires Zope ExternalEditor installed)"
+          condition_expr="object/externalEditorEnabled"
+          url_expr="string:$object_url/external_edit"
+          category="document_actions" visible="True">
+   <permission>Modify portal content</permission>
+  </action>
+  <action action_id="accessibility" title="Accessibility"
+          condition_expr=""
+          url_expr="string: ${portal_url}/accessibility-info"
+          category="site_actions" visible="True">
+   <permission>View</permission>
+  </action>
+  <action action_id="contact" title="Contact"
+          condition_expr=""
+          url_expr="string: ${portal_url}/contact-info"
+          category="site_actions" visible="True">
+   <permission>View</permission>
+  </action>
+  <action action_id="plone_setup" title="Site Setup"
+          condition_expr=""
+          url_expr="string: ${portal_url}/plone_control_panel"
+          category="site_actions" visible="True">
+   <permission>Manage portal</permission>
+  </action>
+  <action action_id="cut" title="Cut"
+          condition_expr="python:portal.portal_membership.checkPermission(&quot;Delete objects&quot;, object.aq_inner.getParentNode()) and portal.portal_membership.checkPermission(&quot;Copy or Move&quot;, object) and object is not portal and not (object.isDefaultPageInFolder() and object.getParentNode() is portal)"
+          url_expr="python:&quot;%s/object_cut&quot;%(object.isDefaultPageInFolder() and object.getParentNode().absolute_url() or object_url)"
+          category="object_buttons" visible="True">
+   <permission>Delete objects</permission>
+  </action>
+  <action action_id="copy" title="Copy"
+          condition_expr="python: portal.portal_membership.checkPermission(&quot;Copy or Move&quot;, object) and object is not portal and not (object.isDefaultPageInFolder() and object.getParentNode() is portal)"
+          url_expr="python:&quot;%s/object_copy&quot;%(object.isDefaultPageInFolder() and object.getParentNode().absolute_url() or object_url)"
+          category="object_buttons" visible="True">
+   <permission>View</permission>
+  </action>
+  <action action_id="paste" title="Paste"
+          condition_expr="folder/cb_dataValid|nothing"
+          url_expr="python:&quot;%s/object_paste&quot;%((object.isDefaultPageInFolder() or not object.is_folderish()) and object.getParentNode().absolute_url() or object_url)"
+          category="object_buttons" visible="True">
+   <permission>View</permission>
+  </action>
+  <action action_id="delete" title="Delete"
+          condition_expr="python:portal.portal_membership.checkPermission(&quot;Delete objects&quot;, object.aq_inner.getParentNode()) and object is not portal and not (object.isDefaultPageInFolder() and object.getParentNode() is portal)"
+          url_expr="python:&quot;%s/object_delete&quot;%(object.isDefaultPageInFolder() and object.getParentNode().absolute_url() or object_url)"
+          category="object_buttons" visible="True">
+   <permission>Delete objects</permission>
+  </action>
+  <action action_id="index_html" title="Home"
+          condition_expr="" url_expr="string:$portal_url"
+          category="portal_tabs" visible="True">
+   <permission>View</permission>
+  </action>
+  <action action_id="change_ownership" title="Ownership"
+          condition_expr=""
+          url_expr="string:${object_url}/ownership_form"
+          category="object_tabs" visible="False">
+   <permission>Manage portal</permission>
+  </action>
+  <action action_id="rename" title="Rename"
+          condition_expr=""
+          url_expr="string:folder_rename_form:method"
+          category="folder_buttons" visible="True">
+   <permission>Add portal content</permission>
+  </action>
+  <action action_id="paste" title="Paste"
+          condition_expr="folder/cb_dataValid"
+          url_expr="string:folder_paste:method"
+          category="folder_buttons" visible="True">
+   <permission>Add portal content</permission>
+  </action>
+  <action action_id="delete" title="Delete"
+          condition_expr=""
+          url_expr="string:folder_delete:method"
+          category="folder_buttons" visible="True">
+   <permission>Delete objects</permission>
+  </action>
+  <action action_id="change_state" title="Change State"
+          condition_expr="python:portal.portal_membership.checkPermission(&quot;Modify portal content&quot;, object) or portal.portal_membership.checkPermission(&quot;Review portal content&quot;, object)"
+          url_expr="string:content_status_history:method"
+          category="folder_buttons" visible="True">
+   <permission>View</permission>
+  </action>
+ </action-provider>
+ <action-provider id="portal_registration">
+  <action action_id="join" title="Join"
+          condition_expr="not: member"
+          url_expr="string:${portal_url}/join_form"
+          category="user" visible="True">
+   <permission>Add portal member</permission>
+  </action>
+ </action-provider>
+ <action-provider id="portal_types">
+ </action-provider>
+ <action-provider id="portal_discussion">
+  <action action_id="reply" title="Reply"
+          condition_expr="python: object is not None and portal.portal_discussion.isDiscussionAllowedFor(object)"
+          url_expr="string:${object_url}/discussion_reply_form"
+          category="object" visible="False">
+   <permission>Reply to item</permission>
+  </action>
+ </action-provider>
+ <action-provider id="portal_undo">
+  <action action_id="undo" title="Undo"
+          condition_expr="member"
+          url_expr="string:${portal_url}/undo_form"
+          category="user" visible="True">
+   <permission>List undoable changes</permission>
+  </action>
+ </action-provider>
+ <action-provider id="portal_syndication">
+  <action action_id="syndication" title="Syndication"
+          condition_expr="python: folder is object and portal.portal_syndication.isSiteSyndicationAllowed()"
+          url_expr="string:${folder_url}/synPropertiesForm"
+          category="object" visible="False">
+   <permission>Manage properties</permission>
+  </action>
+ </action-provider>
+ <action-provider id="portal_workflow">
+ </action-provider>
+ <action-provider id="portal_properties">
+  <action action_id="configPortal"
+          title="Reconfigure Portal" condition_expr=""
+          url_expr="string:${portal_url}/reconfig_form"
+          category="global" visible="False">
+   <permission>Manage portal</permission>
+  </action>
+ </action-provider>
+</actions-tool>

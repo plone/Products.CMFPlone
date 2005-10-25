@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<cookiecrumbler auth_cookie="__ac"
+                cache_header_value="private"
+                name_cookie="__ac_name" log_username="1"
+                persist_cookie="__ac_persistent"
+                pw_cookie="__ac_password"
+                local_cookie_path="0"
+                auto_login_page="login_form"
+                unauth_page="insufficient_privileges"
+                logout_page="logged_out"/>

@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<type-info id="ATSelectionCriterion"
+           kind="Factory-based Type Information">
+  <property name="title">Selection Criterion</property>
+  <property name="description">A selection criterion</property>
+  <property name="content_icon">document_icon.gif</property>
+  <property name="content_meta_type">ATSelectionCriterion</property>
+  <property name="product">ATContentTypes</property>
+  <property name="factory">addATSelectionCriterion</property>
+  <property name="immediate_view">base_edit</property>
+  <property name="global_allow">0</property>
+  <property name="filter_content_types">False</property>
+  <property name="allowed_content_types"></property>
+  <property name="allow_discussion">False</property>
+  <aliases>
+   <alias from="edit" to="base_edit"/>
+  </aliases>
+  <action action_id="view" title="View" condition_expr=""
+          url_expr="string:${object_url}/base_view"
+          category="object" visible="True">
+   <permission>View</permission>
+  </action>
+  <action action_id="edit" title="Edit" condition_expr=""
+          url_expr="string:${object_url}/base_edit"
+          category="object" visible="True">
+   <permission>Modify portal content</permission>
+  </action>
+  <action action_id="metadata" title="Properties"
+          condition_expr=""
+          url_expr="string:${object_url}/base_metadata"
+          category="object" visible="False">
+   <permission>Manage users</permission>
+  </action>
+  <action action_id="references" title="References"
+          condition_expr="object/archetype_tool/has_graphviz"
+          url_expr="string:${object_url}/reference_graph"
+          category="object" visible="False">
+   <permission>Modify portal content</permission>
+   <permission>Review portal content</permission>
+  </action>
+  <action action_id="external_edit" title="External Edit"
+          condition_expr=""
+          url_expr="string:$object_url/external_edit"
+          category="object" visible="False">
+   <permission>Modify portal content</permission>
+  </action>
+</type-info>

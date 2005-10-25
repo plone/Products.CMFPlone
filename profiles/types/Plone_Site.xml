@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<type-info id="Plone Site"
+           kind="Factory-based Type Information with dynamic views">
+  <property name="title"></property>
+  <property name="description"> The portal_type for the root object in a Plone system.</property>
+  <property name="content_icon">site_icon.gif</property>
+  <property name="content_meta_type">Plone Site</property>
+  <property name="product">CMFPlone</property>
+  <property name="factory">manage_addSite</property>
+  <property name="immediate_view">folder_edit_form</property>
+  <property name="global_allow">0</property>
+  <property name="filter_content_types">0</property>
+  <property name="allowed_content_types"></property>
+  <property name="allow_discussion">False</property>
+  <property name="default_view">folder_listing</property>
+  <property name="view_methods">
+   <element value="folder_listing" />
+   <element value="folder_summary_view" />
+   <element value="folder_tabular_view" />
+   <element value="atct_album_view" /></property>
+  <aliases>
+   <alias from="sharing" to="folder_localrole_form"/>
+   <alias from="(Default)" to="(dynamic view)"/>
+   <alias from="edit" to="folder_edit_form"/>
+   <alias from="index.html" to="(dynamic view)"/>
+   <alias from="view" to="(selected layout)"/>
+  </aliases>
+  <action action_id="view" title="View" condition_expr=""
+          url_expr="string:${object_url}" category="object"
+          visible="True">
+   <permission>View</permission>
+  </action>
+  <action action_id="edit" title="Edit" condition_expr=""
+          url_expr="string:${object_url}/edit"
+          category="object" visible="True">
+   <permission>Manage properties</permission>
+  </action>
+  <action action_id="local_roles" title="Sharing"
+          condition_expr=""
+          url_expr="string:${object_url}/sharing"
+          category="object" visible="True">
+   <permission>Manage properties</permission>
+  </action>
+  <action action_id="folderlisting" title="Folder view"
+          condition_expr=""
+          url_expr="string:${folder_url}/view"
+          category="folder" visible="False">
+   <permission>View</permission>
+  </action>
+  <action action_id="external_edit" title="External Edit"
+          condition_expr=""
+          url_expr="string:$object_url/external_edit"
+          category="object" visible="False">
+   <permission>Modify portal content</permission>
+  </action>
+</type-info>
