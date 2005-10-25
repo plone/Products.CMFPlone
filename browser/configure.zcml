@@ -22,6 +22,15 @@
       allowed_interface=".interfaces.INavigationStructure"
       />
 
+  <browser:page
+      for="*"
+      name="nav_view"
+      class=".navigation.CatalogNavigationStructure"
+      permission="zope.Public"
+      allowed_interface=".interfaces.INavigationStructure"
+      />
+
+
   <!--
   <browser:view
       for="*"

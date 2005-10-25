@@ -56,13 +56,13 @@ class INavigationPortlet(Interface):
 
 
 class INewsPortlet(Interface):
-    """ """
+    """Interface for portlet to display recent news items"""
 
-    def news():
-        """ """
+    def published_news_items():
+        """Returns 5 most recently published News Items in reverse chronological order"""
 
-    def news_listing():
-        """ """
+    def all_news_link():
+        """Returns URL, relative to the portal, of a page that display all published News Items"""
 
 
 class IRecentPortlet(Interface):

@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone (unknown) - (unnamed) - (unreleased)
 
+    - Implemented NewsPortlet view
+      [bmh]
+
     - Factored out 'default page'-related functionality into a view
       that provides IDefaultPage. Factored out createBreadCrumbs into
       a view that provides INavigationStructure. Started implementing
