@@ -17,7 +17,6 @@ from webdav.WriteLockInterface import WriteLockInterface
 
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.utils import getActionContext
-from Products.CMFCore.utils import _verifyActionPermissions
 from Products.CMFCore.CMFCatalogAware import CMFCatalogAware
 from Products.CMFCore.PortalFolder import PortalFolderBase
 from Products.CMFCore import permissions as CMFCorePermissions
@@ -288,11 +287,17 @@ class BasePloneFolder(CMFCatalogAware, PortalFolderBase, DefaultDublinCoreImpl):
 
     def __call__(self):
         """Invokes the default view."""
-        view = _getViewFor(self, 'view', 'folderlisting')
-        if getattr(aq_base(view), 'isDocTemp', 0):
-            return view(*(self, self.REQUEST))
+        ti = self.getTypeInfo()
+        method_id = ti and ti.queryMethodId('(Default)', context=self)
+        if method_id:
+            method = getattr(self, method_id)
+            if getattr(aq_base(view), 'isDocTemp', 0):
+                return method(self, self.REQUEST, self.REQUEST['RESPONSE'])
+            else:
+                return method()
         else:
-            return view()
+            raise NotFound( 'Cannot find default view for "%s"' %
+                            '/'.join( self.getPhysicalPath() ) )
 
     security.declareProtected(Permissions.view, 'view')
     view = __call__
@@ -430,47 +435,3 @@ def addPloneFolder(self, id, title='', description='', REQUEST=None):
     self._setObject(id, sf)
     if REQUEST is not None:
         REQUEST['RESPONSE'].redirect(sf.absolute_url() + '/manage_main')
-
-#
-# Helper function that can figure out what 'view' action to return
-#
-
-def _getViewFor(obj, view='view', default=None):
-
-    ti = obj.getTypeInfo()
-    context = getActionContext(obj)
-    if ti is not None:
-        actions = ti.listActions()
-        for action in actions:
-            _action = action.getAction(context)
-            if _action.get('id', None) == default:
-                default=action
-            if _action.get('id', None) == view:
-                target=_action['url']
-                if target.startswith('/'):
-                    target = target[1:]
-                if _verifyActionPermissions(obj, action) and target!='':
-                    __traceback_info__ = (ti.getId(), target)
-                    computed_action = obj.restrictedTraverse(target)
-                    if computed_action is not None:
-                        return computed_action
-
-        if default is not None:
-            _action = default.getAction(context)
-            if _verifyActionPermissions(obj, default):
-                target=_action['url']
-                if target.startswith('/'):
-                    target = target[1:]
-                __traceback_info__ = (ti.getId(), target)
-                return obj.restrictedTraverse(target)
-
-        # "view" action is not present or not allowed.
-        # Find something that's allowed.
-        #for action in actions:
-        #    if _verifyActionPermissions(obj, action)  and action.get('action','')!='':
-        #        return obj.restrictedTraverse(action['action'])
-        raise Unauthorized, ('No accessible views available for %s' %
-                               '/'.join(obj.getPhysicalPath()))
-    else:
-        raise NotFound, ('Cannot find default view for "%s"' %
-                            '/'.join(obj.getPhysicalPath()))
