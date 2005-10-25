@@ -8,7 +8,7 @@ from ZPublisher.Publish import call_object, missing_name, dont_publish_class
 from ZPublisher.mapply import mapply
 from Products.CMFPlone import cmfplone_globals
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
-from Products.CMFCore import CMFCorePermissions
+from Products.CMFCore.permissions import ManagePortal
 from Products.CMFCore.utils import UniqueObject, getToolByName
 from StructuredText.StructuredText import HTML
 from Products.CMFPlone.PloneFolder import PloneFolder as TempFolderBase
@@ -179,19 +179,19 @@ class FactoryTool(PloneBaseTool, UniqueObject, SimpleItem):
                         {'label':'Factory Types', 'action':'manage_portal_factory_types'},) +
                        SimpleItem.manage_options)
 
-    security.declareProtected(CMFCorePermissions.ManagePortal, 'manage_overview')
+    security.declareProtected(ManagePortal, 'manage_overview')
     manage_overview = PageTemplateFile('www/portal_factory_manage_overview', globals())
     manage_overview.__name__ = 'manage_overview'
     manage_overview._need__name__ = 0
 
-    security.declareProtected(CMFCorePermissions.ManagePortal, 'manage_portal_factory_types')
+    security.declareProtected(ManagePortal, 'manage_portal_factory_types')
     manage_portal_factory_types = PageTemplateFile(os.path.join('www', 'portal_factory_manage_types'), globals())
     manage_portal_factory_types.__name__ = 'manage_portal_factory_types'
     manage_portal_factory_types._need__name__ = 0
 
     manage_main = manage_overview
 
-    security.declareProtected(CMFCorePermissions.ManagePortal, 'manage_docs')
+    security.declareProtected(ManagePortal, 'manage_docs')
     manage_docs = PageTemplateFile(os.path.join('www','portal_factory_manage_docs'), globals())
     manage_docs.__name__ = 'manage_docs'
 
@@ -211,7 +211,7 @@ class FactoryTool(PloneBaseTool, UniqueObject, SimpleItem):
             self._factory_types = {}
         return self._factory_types
 
-    security.declareProtected(CMFCorePermissions.ManagePortal, 'manage_setPortalFactoryTypes')
+    security.declareProtected(ManagePortal, 'manage_setPortalFactoryTypes')
     def manage_setPortalFactoryTypes(self, REQUEST=None, listOfTypeIds=None):
         """Set the portal types that should use the factory."""
         if listOfTypeIds is not None:
@@ -361,9 +361,7 @@ class FactoryTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     index_html = None  # call __call__, not index_html
 
-
     def _getTempFolder(self, type_name):
-        AP = CMFCorePermissions.AddPortalContent
         
         factory_info = self.REQUEST.get(FACTORY_INFO, {})
         tempFolder = factory_info.get(type_name, None)

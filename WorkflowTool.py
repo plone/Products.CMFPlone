@@ -9,7 +9,7 @@ from Acquisition import aq_base
 
 from Globals import InitializeClass
 from AccessControl import ClassSecurityInfo
-from Products.CMFCore import CMFCorePermissions
+from Products.CMFCore.permissions import ManagePortal
 from Products.DCWorkflow.Transitions import TRIGGER_USER_ACTION
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFPlone.utils import classImplements
@@ -176,7 +176,7 @@ class WorkflowTool(PloneBaseTool, BaseTool):
 
         return wf_with_wlists
 
-    security.declareProtected(CMFCorePermissions.ManagePortal, 'getChainForPortalType')
+    security.declareProtected(ManagePortal, 'getChainForPortalType')
     def getChainForPortalType(self, pt_name, managescreen=0):
 
         """ Get a chain for a specific portal type.
@@ -192,7 +192,7 @@ class WorkflowTool(PloneBaseTool, BaseTool):
                 return self._default_chain
 
 
-    security.declareProtected(CMFCorePermissions.ManagePortal, 'listWorkflows')
+    security.declareProtected(ManagePortal, 'listWorkflows')
     def listWorkflows(self):
 
         """ Return the list of workflows

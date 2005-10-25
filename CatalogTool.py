@@ -4,8 +4,8 @@
 import re
 
 from Products.CMFCore.CatalogTool import CatalogTool as BaseTool
-from Products.CMFCore.CMFCorePermissions import ManagePortal
-from Products.CMFCore.CMFCorePermissions import AccessInactivePortalContent
+from Products.CMFCore.permissions import ManagePortal
+from Products.CMFCore.permissions import AccessInactivePortalContent
 from Products.CMFPlone import ToolNames
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass

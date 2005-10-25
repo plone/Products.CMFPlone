@@ -28,7 +28,7 @@ from Products.CMFPlone.migrations.migration_util import safeEditProperty
 from Products.CMFPlone import ToolNames, transaction
 
 from Products.CMFCore import CachingPolicyManager
-from Products.CMFCore.CMFCorePermissions import ListFolderContents, SetOwnProperties, SetOwnPassword
+from Products.CMFCore.permissions import ListFolderContents, SetOwnProperties, SetOwnPassword
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.TypesTool import FactoryTypeInformation
 from ZODB.POSException import ConflictError

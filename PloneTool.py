@@ -18,7 +18,7 @@ from Products.CMFCore.utils import UniqueObject
 from Products.CMFCore.utils import _checkPermission, \
      _getAuthenticatedUser, limitGrantedRoles
 from Products.CMFCore.utils import getToolByName, _dtmldir
-from Products.CMFCore import CMFCorePermissions
+from Products.CMFCore import permissions as CMFCorePermissions
 from Products.CMFCore.permissions import AccessContentsInformation
 from Products.CMFCore.interfaces.DublinCore import DublinCore, MutableDublinCore
 from Products.CMFCore.interfaces.Discussions import Discussable
@@ -54,6 +54,11 @@ FLOOR_DATE = DefaultDublinCoreImpl._DefaultDublinCoreImpl__FLOOR_DATE
 from Products.SecureMailHost.SecureMailHost import EMAIL_RE
 from Products.SecureMailHost.SecureMailHost import EMAIL_CUTOFF_RE
 BAD_CHARS = re.compile(r'[^a-zA-Z0-9-_~,.$\(\)# ]').findall
+# Define and compile static regexes
+FILENAME_REGEX = re.compile(r"^(.+)\.(\w{,4})$")
+NON_WORD_REGEX = re.compile(r"[\W\-]+")
+EXTRA_DASHES_REGEX = re.compile(r"(^\-+)|(\-+$)")
+
 
 # XXX Remove this when we don't depend on python2.1 any longer,
 # use email.Utils.getaddresses instead
@@ -1043,6 +1048,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         """Returns string to be used for objects with no title or id"""
         return utils.getEmptyTitle(self, translated)
 
+    security.declarePublic('pretty_title_or_id')
     def pretty_title_or_id(self, obj, empty_value=_marker):
         """Return the best possible title or id of an item, regardless
         of whether obj is a catalog brain or an object, but returning an
@@ -1050,6 +1056,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         """
         return utils.pretty_title_or_id(self, obj, empty_value=empty_value)
 
+    security.declarePublic('getMethodAliases')
     def getMethodAliases(self, typeInfo):
         """Given an FTI, return the dict of method aliases defined on that
         FTI. If there are no method aliases (i.e. this FTI doesn't support it),

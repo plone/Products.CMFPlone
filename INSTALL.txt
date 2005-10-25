@@ -87,7 +87,7 @@ Installing Plone manually, step by step instructions.
   - PloneTranslations 2.1
      Included in the Plone tarball 
 
-  - PloneLanguageTool 0.6 or newer
+  - PloneLanguageTool 0.7 or newer
      Included in the Plone tarball
 
 =============================================================================== 
@@ -231,5 +231,4 @@ Have fun, and don't forget to report any bugs or inconsistencies in the
 Plone Collector (use the ErrorReporting product!): http://plone.org/collector 
  
 Thank you for using Plone!
-
 

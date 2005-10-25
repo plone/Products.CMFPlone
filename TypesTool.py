@@ -1,6 +1,6 @@
 from Products.CMFCore.TypesTool import TypesTool as BaseTool
 from Products.CMFCore.interfaces.portal_types import ContentTypeInformation
-from Products.CMFCore.CMFCorePermissions import AccessContentsInformation
+from Products.CMFCore.permissions import AccessContentsInformation
 from Products.CMFPlone import ToolNames
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
