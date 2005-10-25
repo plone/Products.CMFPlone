@@ -32,4 +32,22 @@
            class="Products.CMFPlone.URLTool.URLTool"/>
  <required tool_id="portal_workflow"
            class="Products.CMFPlone.WorkflowTool.WorkflowTool"/>
+
+ <required tool_id="plone_utils"
+           class="Products.CMFPlone.PloneTool.PloneTool"/>
+ <required tool_id="portal_factory"
+           class="Products.CMFPlone.FactoryTool.FactoryTool"/>
+ <required tool_id="portal_migrations"
+           class="Products.CMFPlone.MigrationTool.MigrationTool"/>
+ <required tool_id="portal_actionicons"
+           class="Products.CMFPlone.ActionIconsTool.ActionIconsTool"/>
+ <required tool_id="portal_calendar"
+           class="Products.CMFPlone.CalendarTool.CalendarTool"/>
+ <required tool_id="portal_quickinstaller"
+           class="Products.CMFPlone.QuickInstallerTool.QuickInstallerTool"/>
+ <required tool_id="portal_groups"
+           class="Products.CMFPlone.GroupsTool.GroupsTool"/>
+ <required tool_id="portal_groupdata"
+           class="Products.CMFPlone.GroupDataTool.GroupDataTool"/>
+
 </tool-setup>
