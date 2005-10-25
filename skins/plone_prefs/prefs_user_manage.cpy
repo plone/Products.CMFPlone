@@ -33,6 +33,7 @@ for user in users:
         
     acl_users.userFolderEditUser(user.id, pw, user.get('roles',[]), member.getDomains())
     if pw:
+        context.REQUEST.form['new_password'] = pw
         mailPassword(user.id, context.REQUEST)
 
 if delete:

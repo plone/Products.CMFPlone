@@ -50,19 +50,23 @@ searchterms = r.replace(' ','+')
 results = catalog(SearchableText=r, portal_type=friendly_types)
 
 RESPONSE = context.REQUEST.RESPONSE
-RESPONSE.setHeader('Content-Type', 'text/xml')
+RESPONSE.setHeader('Content-Type', 'text/xml;charset=%s' % context.plone_utils.getSiteEncoding())
+
+_ = context.translate
+legend_livesearch = _('legend_livesearch', default='LiveSearch &darr;')
+label_no_results_found = _('label_no_results_found', default='No matching results found.')
 
 if not results:
     print '''<fieldset class="livesearchContainer">'''
-    print '''<legend id="livesearchLegend">LiveSearch &darr;</legend>'''
+    print '''<legend id="livesearchLegend">%s</legend>''' % legend_livesearch
     print '''<div class="LSIEFix>'''
-    print '''<div id="LSNothingFound">No matching results found.</div>'''
+    print '''<div id="LSNothingFound">%s</div>''' % label_no_results_found
     print '''</div>'''
     print '''</fieldset>'''
 
 else:
     print '''<fieldset class="livesearchContainer">'''
-    print '''<legend id="livesearchLegend">LiveSearch &darr;</legend>'''
+    print '''<legend id="livesearchLegend">%s</legend>''' % legend_livesearch
     print '''<div class="LSIEFix">'''
     print '''<ul class="LSTable">'''
     for result in results[:limit]:

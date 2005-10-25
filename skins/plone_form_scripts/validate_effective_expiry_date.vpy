@@ -8,10 +8,8 @@
 ##parameters=effective_date=None,expiration_date=None
 ##title=Validates effective,expiration date
 ##
-try:
-    from DateTime.DateTime import DateTimeError
-except ImportError:
-    DateTimeError = 'DateTimeError'
+
+from DateTime.DateTime import DateTimeError
 
 REQUEST=context.REQUEST
 
