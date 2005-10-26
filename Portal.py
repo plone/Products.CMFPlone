@@ -38,10 +38,9 @@ from ComputedAttribute import ComputedAttribute
 from webdav.NullResource import NullResource
 from Products.CMFPlone.PloneFolder import ReplaceableWrapper
 from Products.CMFPlone.utils import log_exc
-from Products.CMFPlone.utils import PACKAGE_HOME
+from Products.CMFPlone.utils import PACKAGE_HOME, WWW_DIR
 
 default_frontpage="Unable to load front-page skeleton file"
-WWW_DIR = os.path.join(PACKAGE_HOME, 'www')
 try:
     f = open(os.path.join(WWW_DIR, 'default_frontpage.html'), 'r')
 except IOError:
