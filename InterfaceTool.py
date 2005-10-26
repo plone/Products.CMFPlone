@@ -4,7 +4,7 @@ from Products.CMFPlone.interfaces.InterfaceTool import IInterfaceTool
 from Acquisition import aq_base
 from Products.CMFCore.utils import UniqueObject
 from Products.CMFCore.utils import _checkPermission, \
-     _getAuthenticatedUser, limitGrantedRoles
+     _getAuthenticatedUser
 from OFS.SimpleItem import SimpleItem
 from Globals import InitializeClass
 from AccessControl import ClassSecurityInfo

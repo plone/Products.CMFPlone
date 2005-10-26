@@ -3,6 +3,9 @@ import os
 import Globals
 import transaction
 
+from Products.GenericSetup import BASE
+from Products.GenericSetup import profile_registry
+
 cmfplone_globals = globals()
 this_module = sys.modules[ __name__ ]
 _marker = []
@@ -122,8 +125,6 @@ def initialize(context):
 
     contentClasses = ( PloneFolder.PloneFolder , )
     contentConstructors = ( PloneFolder.addPloneFolder, )
-    ftis = ( PloneFolder.factory_type_information,
-             Portal.factory_type_information, )
 
     try:
         import LargePloneFolder
@@ -132,7 +133,6 @@ def initialize(context):
     else:
         contentClasses += ( LargePloneFolder.LargePloneFolder, )
         contentConstructors += ( LargePloneFolder.addLargePloneFolder,)
-        ftis += (LargePloneFolder.factory_type_information, )
 
     # CMFCore and CMFDefault tools
     from Products.CMFCore import CachingPolicyManager
@@ -195,10 +195,18 @@ def initialize(context):
                 , content_types=contentClasses
                 , permission=ADD_CONTENT_PERMISSION
                 , extra_constructors=contentConstructors
-                , fti=ftis
                 ).initialize( context )
 
-    Portal.register(context, cmfplone_globals)
+    profile_registry.registerProfile('plone',
+                                     'Plone Site',
+                                     'Profile for a default Plone.',
+                                     'profiles/default',
+                                     'CMFPlone',
+                                     BASE)
+
+    # XXX Add this back, registering a custom factory form
+    #     that only exposes the Plone-related setup profiles
+    #Portal.register(context, cmfplone_globals)
 
     import CustomizationPolicy
     CustomizationPolicy.register(context, cmfplone_globals)

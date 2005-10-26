@@ -17,7 +17,7 @@ from cStringIO import StringIO
 from Acquisition import aq_base
 
 from Products.StandardCacheManagers import AcceleratedHTTPCacheManager, RAMCacheManager
-from Products.CMFCore.TypesTool import ContentFactoryMetadata, FactoryTypeInformation
+from Products.CMFCore.TypesTool import FactoryTypeInformation
 
 from Products.CMFDefault.Document import addDocument
 from Globals import package_home
@@ -313,7 +313,6 @@ def setupCalendar(portal):
     """ Copied directly from CMFCalendar/Extensions/Install.py """
     self=portal
     from Products.CMFCalendar import Event
-    from Products.CMFCore.TypesTool import ContentFactoryMetadata
 
     out = StringIO()
     typestool = getToolByName(self, 'portal_types')
@@ -362,7 +361,7 @@ def setupCalendar(portal):
     # and configure it in the types tool if it doesn't already exist
     for t in Event.factory_type_information:
         if t['id'] not in typestool.objectIds():
-            cfm = apply(ContentFactoryMetadata, (), t)
+            cfm = apply(FactoryTypeInformation, (), t)
             typestool._setObject(t['id'], cfm)
             out.write('Registered with the types tool\n')
         else:

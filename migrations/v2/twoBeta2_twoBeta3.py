@@ -3,7 +3,6 @@ from Products.CMFCore.permissions import ManagePortal
 from Products.CMFCore.Expression import Expression
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.TypesTool import FactoryTypeInformation as fti_klass
-from Products.CMFPlone.Portal import factory_type_information
 
 def twoBeta2_twoBeta3(portal):
     """ Migrations from to 2.0 beta 2 to 2.0 beta 3 """

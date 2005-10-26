@@ -1,5 +1,5 @@
 from Products.CMFCore.utils import _checkPermission, \
-     _getAuthenticatedUser, limitGrantedRoles
+     _getAuthenticatedUser
 from Products.CMFCore.utils import getToolByName, _dtmldir
 from Products.CMFCore.WorkflowTool import WorkflowTool as BaseTool
 from Products.CMFCore.WorkflowTool import WorkflowInformation

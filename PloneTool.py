@@ -16,7 +16,7 @@ from ComputedAttribute import ComputedAttribute
 
 from Products.CMFCore.utils import UniqueObject
 from Products.CMFCore.utils import _checkPermission, \
-     _getAuthenticatedUser, limitGrantedRoles
+     _getAuthenticatedUser
 from Products.CMFCore.utils import getToolByName, _dtmldir
 from Products.CMFCore import permissions as CMFCorePermissions
 from Products.CMFCore.permissions import AccessContentsInformation
