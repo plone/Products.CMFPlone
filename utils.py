@@ -26,6 +26,7 @@ import transaction
 
 # Canonical way to get at CMFPlone directory
 PACKAGE_HOME = Globals.package_home(globals())
+WWW_DIR = join(PACKAGE_HOME, 'www')
 
 # Log methods
 from log import log
