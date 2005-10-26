@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <tool-setup>
  <required tool_id="MailHost"
-           class="Products.SecureMailHost.SecureMailHost.SecureMailHost"/>
+           class="Products.MailHost.MailHost.MailHost"/>
  <required tool_id="cookie_authentication"
            class="Products.CMFCore.CookieCrumbler.CookieCrumbler"/>
  <required tool_id="portal_actions"
