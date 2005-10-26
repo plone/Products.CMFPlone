@@ -9,11 +9,6 @@
     <role name="Reviewer"/>
   </roles>
   <permissions>
-    <permission name="Access future portal content"
-                acquire="True">
-      <role name="Reviewer"/>
-      <role name="Manager"/>
-    </permission>
     <permission name="Access inactive portal content"
                 acquire="True">
       <role name="Owner"/>
