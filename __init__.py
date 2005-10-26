@@ -205,4 +205,6 @@ def initialize(context):
 
     ModuleSecurityInfo('Products.CMFPlone').declarePrivate('transaction')
 
+# Provide backward compatibility for products relying on this import location
+# BBB: Remove in Plone 2.3
 import transaction

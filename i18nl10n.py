@@ -107,7 +107,7 @@ def ulocalized_time(time, long_format = None, context = None, domain='plone'):
         mapping[key]=utranslate(domain, mapping[key], context=context, default=mapping[key])
 
     # feed numbers for formatting to translation service
-    # TODO: implement me
+    # XXX: implement me
     
     # translate the time string
     localized_time = utranslate(domain, msgid, mapping, context)
