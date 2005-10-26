@@ -204,9 +204,11 @@ def initialize(context):
                                      'CMFPlone',
                                      BASE)
 
-    # XXX Add this back, registering a custom factory form
-    #     that only exposes the Plone-related setup profiles
-    #Portal.register(context, cmfplone_globals)
+    import factory
+    context.registerClass(Portal.PloneSite,
+                          constructors=(factory.addPloneSiteForm,
+                                        factory.addPloneSite),
+                          icon='skins/plone_images/logoIcon.gif')
 
     import CustomizationPolicy
     CustomizationPolicy.register(context, cmfplone_globals)
