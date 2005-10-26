@@ -5,7 +5,6 @@ CMFPlone setup handlers.
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore import permissions as cmfpermissions
 
-
 class PloneGenerator:
     def customizePortalOptions(self, p):
         p.manage_permission( cmfpermissions.ListFolderContents, \
