@@ -251,7 +251,6 @@ class CatalogTool(PloneBaseTool, BaseTool):
 
     def __init__(self):
         ZCatalog.__init__(self, self.getId())
-        self._initIndexes()
 
     security.declarePublic('enumerateIndexes')
     def enumerateIndexes(self):
