@@ -11,7 +11,7 @@ from Products.CMFPlone.tests import PloneTestCase
 
 from Acquisition import aq_base
 from AccessControl import Unauthorized
-from Products.CMFCore.CMFCorePermissions import AddPortalMember
+from Products.CMFCore.permissions import AddPortalMember
 
 member_id = 'new_member'
 

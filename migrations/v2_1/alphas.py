@@ -2,7 +2,7 @@ import os
 
 from Acquisition import aq_base
 from zExceptions import BadRequest
-from Products.CMFCore import CMFCorePermissions
+from Products.CMFCore import permissions as CMFCorePermissions
 from Products.CMFCore.utils import getToolByName
 from Products.CMFDynamicViewFTI.migrate import migrateFTI
 from Products.CMFDynamicViewFTI.fti import DynamicViewTypeInformation
@@ -225,15 +225,19 @@ def addTranslationServiceTool(portal, out):
 def replaceMailHost(portal, out):
     """Replaces the mailhost with a secure mail host."""
     id = 'MailHost'
-    oldmh = getattr(aq_base(portal), id)
-    if oldmh.meta_type == 'Secure Mail Host':
-        out.append('Secure Mail Host already installed')
-        return
-    title = oldmh.title
-    smtp_host = oldmh.smtp_host
-    smtp_port = oldmh.smtp_port
-    portal.manage_delObjects([id])
-    out.append('Removed old MailHost')
+    smtp_port = 25
+    smtp_host = ''
+    title = ''
+    oldmh = getattr(aq_base(portal), id, None)
+    if oldmh is not None:
+        if oldmh.meta_type == 'Secure Mail Host':
+            out.append('Secure Mail Host already installed')
+            return
+        title = oldmh.title
+        smtp_host = oldmh.smtp_host
+        smtp_port = oldmh.smtp_port
+        portal.manage_delObjects([id])
+        out.append('Removed old MailHost')
 
     addMailhost = portal.manage_addProduct['SecureMailHost'].manage_addMailHost
     addMailhost(id, title=title, smtp_host=smtp_host, smtp_port=smtp_port)
@@ -1234,6 +1238,8 @@ def migrateCatalogIndexes(portal, out):
         obj.pgthreshold = 300
         obj.manage_convertIndexes()
         obj.pgthreshold = p_threshold
+        # migrate the catalog length by calling len(catalog)
+        len(obj)
         out.append("Finished migrating catalog indexes "
                    "for ZCatalog instance '%s'" % obj.getId())
         migrated = True

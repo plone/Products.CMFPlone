@@ -230,7 +230,7 @@ class TestSearchForms(PloneTestCase.PloneTestCase):
     def testRenderTopicView(self):
         self.setPermissions([AddPortalTopics])
         self.folder.invokeFactory('Topic', id='topic')
-        self.folder.topic.topic_view()
+        self.folder.topic.atct_topic_view()
 
     def beforeTearDown(self):
         tearDown()

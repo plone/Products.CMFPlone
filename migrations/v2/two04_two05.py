@@ -1,4 +1,3 @@
-from Products.CMFCore import CMFCorePermissions
 from AccessControl import Permissions
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.Expression import Expression

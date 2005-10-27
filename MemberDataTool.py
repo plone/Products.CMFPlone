@@ -11,7 +11,7 @@ from Acquisition import aq_base
 from Products.BTreeFolder2.BTreeFolder2 import BTreeFolder2
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
-from Products.CMFCore.CMFCorePermissions import SetOwnProperties, ManagePortal
+from Products.CMFCore.permissions import SetOwnProperties, ManagePortal
 from ZODB.POSException import ConflictError
 
 

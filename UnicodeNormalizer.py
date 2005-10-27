@@ -1,3 +1,6 @@
+from unicodedata import normalize, decomposition
+import string
+
 # Hand-made table from PloneTool.py
 mapping_custom_1 =  {
 138: 's', 142: 'z', 154: 's', 158: 'z', 159: 'Y' }
@@ -38,10 +41,10 @@ mapping.update(mapping_greek)
 mapping.update(mapping_two_chars)
 mapping.update(mapping_latin_chars)
 
-
-from unicodedata import normalize, decomposition
-import string
-
+# On OpenBSD string.whitespace has a non-standard implementation
+# See http://plone.org/collector/4704 for details
+whitespace = ''.join([c for c in string.whitespace if ord(c) < 128])
+allowed = string.ascii_letters + string.digits + string.punctuation + whitespace
 
 def normalizeUnicode(text):
     """
@@ -52,21 +55,23 @@ def normalizeUnicode(text):
     if not isinstance(text, unicode):
         raise TypeError('must pass Unicode argument to normalizeUnicode()')
 
-    allowed = string.ascii_letters + string.digits + string.punctuation + string.whitespace
     res = ''
     for ch in text:
         if ch in allowed:
             # ASCII chars, digits etc. stay untouched
             res += ch
-        elif mapping.has_key(ord(ch)):
-            # try to apply custom mappings
-            res += mapping.get(ord(ch))
-        elif decomposition(ch):
-            normalized = normalize('NFKD', ch).strip()
-            # normalized string may contain non-letter chars too. Remove them
-            # normalized string may result to  more than one char
-            res += ''.join([c for c in normalized if c in allowed])
         else:
-            # hex string instead of unknown char
-            res += "%x" % ord(ch)
+            ordinal = ord(ch)
+            if mapping.has_key(ordinal):
+                # try to apply custom mappings
+                res += mapping.get(ordinal)
+            elif decomposition(ch):
+                normalized = normalize('NFKD', ch).strip()
+                # normalized string may contain non-letter chars too. Remove them
+                # normalized string may result to  more than one char
+                res += ''.join([c for c in normalized if c in allowed])
+            else:
+                # hex string instead of unknown char
+                res += "%x" % ordinal
     return res.encode('ascii')
+

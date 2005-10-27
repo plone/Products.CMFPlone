@@ -2,7 +2,7 @@ from alphas import reindexCatalog, indexMembersFolder, indexNewsFolder, \
                     indexEventsFolder, addIs_FolderishMetadata
 from betas import fixContentActionConditions
 from Products.CMFCore.utils import getToolByName
-from Products.CMFCore import CMFCorePermissions
+from Products.CMFCore.permissions import View
 from Products.CMFPlone.utils import _createObjectByType
 from Products.CMFPlone.migrations.migration_util import cleanupSkinPath
 from Acquisition import aq_base, aq_inner, aq_parent
@@ -155,7 +155,7 @@ def alterRSSActionTitle(portal, out):
                   'name'      : 'RSS feed of this listing',
                   'action'    : 'string:$object_url/RSS',
                   'condition' : 'python:portal.portal_syndication.isSyndicationAllowed(object)',
-                  'permission': CMFCorePermissions.View,
+                  'permission': View,
                   'category': 'document_actions',
                 }
     exists = False

@@ -14,7 +14,11 @@ itool = getToolByName(context, 'portal_interface')
 
 # If we have IBrowserDefault, get the selected layout
 if itool.objectImplements(context, INTERFACE):
-    return context.getLayout()
+    try:
+        return context.getLayout()
+    except AttributeError:
+        # Might happen if FTI didn't migrate yet.
+        pass
 
 # Else, if there is a 'folderlisting' action, this will take precedence for
 # folders, so try this, else use the 'view' action.

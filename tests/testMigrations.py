@@ -7,9 +7,10 @@ if __name__ == '__main__':
     execfile(os.path.join(sys.path[0], 'framework.py'))
 
 from Testing import ZopeTestCase
+from OFS.SimpleItem import SimpleItem
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFCore.Expression import Expression
-from Products.CMFCore import CMFCorePermissions
+from Products.CMFCore.permissions import AccessInactivePortalContent
 from Products.CMFPlone.PloneTool import AllowSendto
 from Products.CMFPlone.utils import _createObjectByType
 
@@ -117,10 +118,20 @@ from Products.CMFPlone.migrations.v2_1.rcs import fixCMFLegacyLayer
 from Products.CMFPlone.migrations.v2_1.rcs import reorderObjectButtons
 from Products.CMFPlone.migrations.v2_1.rcs import allowMembersToViewGroups
 from Products.CMFPlone.migrations.v2_1.rcs import reorderStylesheets as reorderStylesheets_rc3_final
+from Products.CMFPlone.migrations.v2_1.final_two11 import reindexPathIndex
+from Products.CMFPlone.migrations.v2_1.two11_two12 import removeCMFTopicSkinLayer
+from Products.CMFPlone.migrations.v2_1.alphas import replaceMailHost
 
 from Products.CMFDynamicViewFTI.migrate import migrateFTI
 
 import types
+
+class BogusMailHost(SimpleItem):
+    meta_type = 'Bad Mailer'
+    title = 'Mailer'
+    smtp_port = 37
+    smtp_host = 'my.badhost.com'
+
 
 class MigrationTest(PloneTestCase.PloneTestCase):
 
@@ -1486,60 +1497,60 @@ class TestMigrations_v2_1(MigrationTest):
     def testAllowOwnerToAccessInactiveContent(self):
         # Should grant the "Access inactive ..." permission to owner
         self.portal.manage_permission(
-                            CMFCorePermissions.AccessInactivePortalContent,
+                            AccessInactivePortalContent,
                             (), acquire=1)
         permission_on_role = [p for p in self.portal.permissionsOfRole('Owner')
-            if p['name'] == CMFCorePermissions.AccessInactivePortalContent][0]
+            if p['name'] == AccessInactivePortalContent][0]
         self.failIf(permission_on_role['selected'])
         allowOwnerToAccessInactiveContent(self.portal,[])
         permission_on_role = [p for p in self.portal.permissionsOfRole('Owner')
-            if p['name'] == CMFCorePermissions.AccessInactivePortalContent][0]
+            if p['name'] == AccessInactivePortalContent][0]
         self.failUnless(permission_on_role['selected'])
 
     def testAllowOwnerToAccessInactiveContentPreservesExisting(self):
         # Should not remove customized permissions
         self.portal.manage_permission(
-                            CMFCorePermissions.AccessInactivePortalContent,
+                            AccessInactivePortalContent,
                             ('Member',), acquire=1)
         allowOwnerToAccessInactiveContent(self.portal,[])
         # Make sure Owner was added
         permission_on_role = [p for p in self.portal.permissionsOfRole('Owner')
-            if p['name'] == CMFCorePermissions.AccessInactivePortalContent][0]
+            if p['name'] == AccessInactivePortalContent][0]
         self.failUnless(permission_on_role['selected'])
         # Make sure original permission was preserved
         permission_on_role = [p for p in self.portal.permissionsOfRole('Member')
-            if p['name'] == CMFCorePermissions.AccessInactivePortalContent][0]
+            if p['name'] == AccessInactivePortalContent][0]
         self.failUnless(permission_on_role['selected'])
 
     def testAllowOwnerToAccessInactiveContentPreservesAcquire(self):
         # Should preserve custom acquire settings
         self.portal.manage_permission(
-                            CMFCorePermissions.AccessInactivePortalContent,
+                            AccessInactivePortalContent,
                             ('Manager'), acquire=0)
         allowOwnerToAccessInactiveContent(self.portal,[])
         cur_perms = self.portal.permission_settings(
-                            CMFCorePermissions.AccessInactivePortalContent)[0]
+                            AccessInactivePortalContent)[0]
         self.failIf(cur_perms['acquire'])
         # Try again with explicitly enabled acquire
         self.portal.manage_permission(
-                            CMFCorePermissions.AccessInactivePortalContent,
+                            AccessInactivePortalContent,
                             ('Manager'), acquire=1)
         allowOwnerToAccessInactiveContent(self.portal,[])
         cur_perms = self.portal.permission_settings(
-                            CMFCorePermissions.AccessInactivePortalContent)[0]
+                            AccessInactivePortalContent)[0]
         self.failUnless(cur_perms['acquire'])
 
     def testAllowOwnerToAccessInactiveContentTwice(self):
         # Should not fail if performed twice
         self.portal.manage_permission(
-                            CMFCorePermissions.AccessInactivePortalContent,
+                            AccessInactivePortalContent,
                             ('Manager'), acquire=0)
         allowOwnerToAccessInactiveContent(self.portal,[])
         cur_perms1 = self.portal.permission_settings(
-                            CMFCorePermissions.AccessInactivePortalContent)[0]
+                            AccessInactivePortalContent)[0]
         allowOwnerToAccessInactiveContent(self.portal,[])
         cur_perms2 = self.portal.permission_settings(
-                            CMFCorePermissions.AccessInactivePortalContent)[0]
+                            AccessInactivePortalContent)[0]
         self.assertEqual(cur_perms1,cur_perms2)
 
     def testRestrictNewsTopicToPublished(self):
@@ -2913,8 +2924,12 @@ class TestMigrations_v2_1(MigrationTest):
         addNewsTopic(self.portal, [])
         addEventsFolder(self.portal, [])
         addEventsTopic(self.portal, [])
+        # add a news item so that the old_news gets created
+        self.setRoles(['Manager', 'Member'])
+        self.portal.news.invokeFactory('News Item', 'my_news')
         moveDefaultTopicsToPortalRoot(self.portal,[])
         moveDefaultTopicsToPortalRoot(self.portal,[])
+        self.failUnless('old_news' in self.portal.objectIds())
         self.assertEqual(self.portal.news.portal_type, 'Topic')
         self.assertEqual(self.portal.events.portal_type, 'Topic')
 
@@ -3180,12 +3195,139 @@ class TestMigrations_v2_1(MigrationTest):
         for index, value in enumerate(desired_order):
             self.assertEqual(value, stylesheet_ids[index])
 
+    def testReplaceMailHost(self):
+        # Make sure it converts the  mail host and its settings
+        self.portal._delObject('MailHost')
+        self.portal._setObject('MailHost', BogusMailHost())
+        mailer = self.portal.MailHost
+        self.assertEqual(mailer.meta_type, 'Bad Mailer')
+        replaceMailHost(self.portal, [])
+        mailer = getattr(self.portal, 'MailHost', None)
+        self.failUnless(mailer is not None)
+        self.assertEqual(mailer.meta_type, 'Secure Mail Host')
+        self.assertEqual(mailer.title, 'Mailer')
+        self.assertEqual(mailer.smtp_port, 37)
+        self.assertEqual(mailer.smtp_host, 'my.badhost.com')
+
+    def testReplaceMailHostWhenMissing(self):
+        # Make sure it adds a new one if the original is missing
+        self.portal._delObject('MailHost')
+        replaceMailHost(self.portal, [])
+        mailer = getattr(self.portal, 'MailHost', None)
+        self.failUnless(mailer is not None)
+        self.assertEqual(mailer.meta_type, 'Secure Mail Host')
+
+
+class TestMigrations_v2_1_1(MigrationTest):
+
+    def afterSetUp(self):
+        self.actions = self.portal.portal_actions
+        self.icons = self.portal.portal_actionicons
+        self.properties = self.portal.portal_properties
+        self.memberdata = self.portal.portal_memberdata
+        self.membership = self.portal.portal_membership
+        self.catalog = self.portal.portal_catalog
+        self.groups = self.portal.portal_groups
+        self.factory = self.portal.portal_factory
+        self.portal_memberdata = self.portal.portal_memberdata
+        self.cc = self.portal.cookie_authentication
+        self.cp = self.portal.portal_controlpanel
+        self.skins = self.portal.portal_skins
+
+    def testReindexPathIndex(self):
+        # Should reindex the path index to create new index structures
+        orig_results = self.catalog(path={'query':'news', 'level':1})
+        orig_len = len(orig_results)
+        self.failUnless(orig_len)
+        # Simulate the old EPI
+        delattr(self.catalog.Indexes['path'], '_index_parents')
+        self.assertRaises(AttributeError, self.catalog,
+                                        {'path':{'query':'/','navtree':1}})
+        reindexPathIndex(self.portal, [])
+        results = self.catalog(path={'query':'news', 'level':1})
+        self.assertEqual(len(results), orig_len)
+
+    def testReindexPathIndexTwice(self):
+        # Should not fail when migrated twice, should do nothing if already
+        # migrated
+        orig_results = self.catalog(path={'query':'news', 'level':1})
+        orig_len = len(orig_results)
+        self.failUnless(orig_len)
+        # Simulate the old EPI
+        delattr(self.catalog.Indexes['path'], '_index_parents')
+        self.assertRaises(AttributeError, self.catalog,
+                                        {'path':{'query':'/','navtree':1}})
+        out = []
+        reindexPathIndex(self.portal, out)
+        # Should return a message on the first iteration
+        self.failUnless(out)
+        out = []
+        reindexPathIndex(self.portal, out)
+        results = self.catalog(path={'query':'news', 'level':1})
+        self.assertEqual(len(results), orig_len)
+        # should return an empty list on the second iteration because nothing
+        # was done
+        self.failIf(out)
+
+    def testReindexPathIndexNoIndex(self):
+        # Should not fail when index is missing
+        self.catalog.delIndex('path')
+        reindexPathIndex(self.portal, [])
+
+    def testReindexPathIndexNoCatalog(self):
+        # Should not fail when index is missing
+        self.portal._delObject('portal_catalog')
+        reindexPathIndex(self.portal, [])
+
+
+class TestMigrations_v2_1_2(MigrationTest):
+
+    def afterSetUp(self):
+        self.skins = self.portal.portal_skins
+
+    def testRemoveCMFTopicSkinPathFromDefault(self):
+        # Should remove plone_3rdParty/CMFTopic from skin paths
+        self.addSkinLayer('plone_3rdParty/CMFTopic')
+        removeCMFTopicSkinLayer(self.portal, [])
+        path = self.skins.getSkinPath('Plone Default')
+        self.failIf('plone_3rdParty/CMFTopic' in path)
+
+    def testRemoveCMFTopicSkinPathFromTableless(self):
+        # Should remove plone_3rdParty/CMFTopic from skin paths
+        self.addSkinLayer('plone_3rdParty/CMFTopic', skin='Plone Tableless')
+        removeCMFTopicSkinLayer(self.portal, [])
+        path = self.skins.getSkinPath('Plone Tableless')
+        self.failIf('plone_3rdParty/CMFTopic' in path)
+
+    def testRemoveCMFTopicSkinTwice(self):
+        # Should not fail if migrated again
+        self.addSkinLayer('plone_3rdParty/CMFTopic')
+        removeCMFTopicSkinLayer(self.portal, [])
+        removeCMFTopicSkinLayer(self.portal, [])
+        path = self.skins.getSkinPath('Plone Default')
+        self.failIf('plone_3rdParty/CMFTopic' in path)
+
+    def testRemoveCMFTopicSkinNoTool(self):
+        # Should not fail if tool is missing
+        self.portal._delObject('portal_skins')
+        removeCMFTopicSkinLayer(self.portal, [])
+
+    def testRemoveCMFTopicSkinPathNoLayer(self):
+        # Should not fail if plone_3rdParty layer is missing
+        self.removeSkinLayer('plone_3rdParty')
+        removeCMFTopicSkinLayer(self.portal, [])
+        path = self.skins.getSkinPath('Plone Default')
+        self.failIf('plone_3rdParty/CMFTopic' in path)
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
     suite.addTest(makeSuite(TestMigrations_v2))
     suite.addTest(makeSuite(TestMigrations_v2_1))
+    suite.addTest(makeSuite(TestMigrations_v2_1_1))
+    suite.addTest(makeSuite(TestMigrations_v2_1_2))
+        
     return suite
 
 if __name__ == '__main__':

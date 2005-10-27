@@ -162,19 +162,6 @@ class TestContentTypeScripts(PloneTestCase.PloneTestCase):
         self.assertEqual(self.folder.newsitem.EditableBody(), 'data')
         self.assertEqual(self.folder.newsitem.Title(), 'Foo')
 
-    def testTopicCreate(self):
-        self.folder.invokeFactory('Topic', id='topic', title='Foo')
-        self.assertEqual(self.folder.topic.Title(), 'Foo')
-
-    def testTopicEditTopic(self):
-        self.folder.invokeFactory('Topic', id='topic')
-        self.folder.topic.topic_editTopic(1, 'topic', title='Foo')
-        self.assertEqual(self.folder.topic.Title(), 'Foo')
-
-    #def testTopicEditCriteria(self):
-    #    self.folder.invokeFactory('Topic', id='topic')
-    #    # TODO: Analyze that funky data structure
-
     # Bug tests
 
     def testClearImageTitle(self):

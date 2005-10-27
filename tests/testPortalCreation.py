@@ -7,7 +7,7 @@ if __name__ == '__main__':
     execfile(os.path.join(sys.path[0], 'framework.py'))
 
 from Testing import ZopeTestCase
-from Products.CMFCore import CMFCorePermissions
+from Products.CMFCore.permissions import AccessInactivePortalContent
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
 
@@ -475,10 +475,10 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
 
     def testOwnerHasAccessInactivePermission(self):
         permission_on_role = [p for p in self.portal.permissionsOfRole('Owner')
-            if p['name'] == CMFCorePermissions.AccessInactivePortalContent][0]
+            if p['name'] == AccessInactivePortalContent][0]
         self.failUnless(permission_on_role['selected'])
         cur_perms = self.portal.permission_settings(
-                            CMFCorePermissions.AccessInactivePortalContent)[0]
+                            AccessInactivePortalContent)[0]
         self.failUnless(cur_perms['acquire'])
 
     def testSyndicationEnabledByDefault(self):

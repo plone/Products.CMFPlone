@@ -1,6 +1,6 @@
 from Products.CMFCore.WorkflowTool import addWorkflowFactory
 from Products.DCWorkflow.DCWorkflow import DCWorkflowDefinition
-from Products.CMFCore import CMFCorePermissions
+from Products.CMFCore import permissions as CMFCorePermissions
 from Products.DCWorkflow.Default import setupDefaultWorkflowRev2
 from Products.CMFPlone import PloneMessageFactory as _
 
