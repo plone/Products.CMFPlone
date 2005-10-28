@@ -428,6 +428,7 @@ class TestFolderCataloging(PloneTestCase.PloneTestCase):
     # folder_edit must recatalog. folder_rename must recatalog.
 
     def afterSetUp(self):
+        setUp()
         self.catalog = self.portal.portal_catalog
         self.folder.invokeFactory('Folder', id='foo')
 
@@ -485,10 +486,14 @@ class TestFolderCataloging(PloneTestCase.PloneTestCase):
         #Title is a TextIndex
         self.failIf(self.catalog(Title='Snooze'))
 
+    def beforeTearDown(self):
+        tearDown()
+
 
 class TestCatalogOrdering(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
+        setUp()
         self.catalog = self.portal.portal_catalog
         self.folder.invokeFactory('Document', id='doc1', text='foo')
         self.folder.invokeFactory('Document', id='doc2', text='bar')
@@ -604,6 +609,9 @@ class TestCatalogOrdering(PloneTestCase.PloneTestCase):
         members_sorted = self.catalog(path=members_path, sort_on = 'getObjPositionInParent')
         self.failUnless(len(members_query))
         self.failUnlessEqual(len(members_query),len(members_sorted))
+
+    def beforeTearDown(self):
+        tearDown()
 
 
 class TestCatalogBugs(PloneTestCase.PloneTestCase):

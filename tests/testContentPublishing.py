@@ -10,6 +10,7 @@ if __name__ == '__main__':
 from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
+from zope.app.tests.placelesssetup import setUp, tearDown
 
 from AccessControl import Unauthorized, getSecurityManager
 from Acquisition import aq_base
@@ -61,6 +62,7 @@ class TestContentPublishing(PloneTestCase.PloneTestCase):
     """
 
     def afterSetUp(self):
+        setUp()
         self.portal.acl_users._doAddUser('user1', 'secret', ['Member'], [])
         self.membership = self.portal.portal_membership
         self.createMemberarea('user1')
@@ -208,6 +210,9 @@ class TestContentPublishing(PloneTestCase.PloneTestCase):
         self.folder.invokeFactory('Document', id = 'd1', title = 'Doc 1')
         self.folder.d1.content_status_modify(workflow_action = 'publish')
         self.failIf(self.folder.d1.isExpired())
+
+    def beforeTearDown(self):
+        tearDown()
 
 
 def test_suite():

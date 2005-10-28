@@ -193,6 +193,9 @@ class TestPortalFactory(PloneTestCase.PloneTestCase):
 
 class TestCreateObject(PloneTestCase.PloneTestCase):
 
+    def afterSetUp(self):
+        setUp()
+
     def testCreateObjectByDoCreate(self):
         # doCreate should create the real object
         temp_object = self.folder.restrictedTraverse('portal_factory/Document/tmp_id')
@@ -223,6 +226,9 @@ class TestCreateObject(PloneTestCase.PloneTestCase):
         self.logout()
         self.assertRaises(Unauthorized, temp_object.document_edit,
                           id='foo', title='Foo', text_format='plain', text='')
+
+    def beforeTearDown(self):
+        tearDown()
 
 
 class TestCreateObjectByURL(PloneTestCase.FunctionalTestCase):
