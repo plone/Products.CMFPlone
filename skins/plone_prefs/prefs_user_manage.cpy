@@ -43,4 +43,6 @@ if delete:
     # deletion
     mtool.deleteMembers(delete, delete_memberareas=0, delete_localroles=1)
 
-return state.set(portal_status_message=_(u'Changes applied.'))
+context.plone_utils.addPortalMessage(_(u'Changes applied.'))
+context.REQUEST.stripFormData() # fix issue 3835
+return state

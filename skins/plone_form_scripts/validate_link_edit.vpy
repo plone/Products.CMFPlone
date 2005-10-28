@@ -15,6 +15,8 @@ if not remote_url:
     state.setError('remote_url', _(u'This field is required, please provide some information'), 'invalid_url')
 
 if state.getErrors():
-    return state.set(status='failure', portal_status_message=_(u'Please correct the indicated errors.'))
+    context.plone_utils.addPortalMessage(_(u'Please correct the indicated errors.'))
+    return state.set(status='failure')
 else:
-    return state.set(portal_status_message=_(u'Your link changes have been saved.'))
+    context.plone_utils.addPortalMessage(_(u'Your link changes have been saved.'))
+    return state

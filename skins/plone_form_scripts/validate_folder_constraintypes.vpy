@@ -22,7 +22,8 @@ if notFound:
                     'validation_immediately_addable_types_too_big')
                     
 if state.getErrors():
-    return state.set(status='failure', portal_status_message=_(u'Please correct the indicated errors.'))
+    context.plone_utils.addPortalMessage(_(u'Please correct the indicated errors.'))
+    return state.set(status='failure')
 else:
     return state
 

@@ -11,6 +11,4 @@
 from Products.CMFPlone import PloneMessageFactory as _
 
 # nothing to check?
-#if state.getErrors():
-#    return state.set(status='failure', portal_status_message=_(u'Please correct the indicated errors.'))
 return state

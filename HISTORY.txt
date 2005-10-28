@@ -2,6 +2,36 @@ Changelog for Plone
 
    (name of developer listed in brackets)
 
+Plone 2.2 (unreleased)
+
+    - Fix the previously worked around issue #3835 'The Apply Changes
+      button performs like search button in User & Groups
+      administrator'. Previously this was worked around by changing
+      the .metadata from 'traverse_to' to 'redirect_to'. The real fix
+      is to use REQUEST.stripFormData() and then traverse.
+      [vinsci]
+
+    - Monkey patch ZPublisher.HTTPRequest to add a new method stripFormData(). That
+      is to be called in form scripts before traversing, to make sure the target
+      template doesn't get misleading information in the request. Call like this:
+      context.REQUEST.stripFormData()
+      [vinsci]
+
+    - Make first batch of portal messages be displayed using addPortalMessage rather
+      than the old URL hack of adding ...?portal_status_message=message to the URL.
+      [vinsci]
+
+    - New infrastructure for showing portal messages! You can now show
+      more than one message per web page (this also allows independent
+      products to show messages that will all be shown), as well as
+      messages of different types ('info', 'warn', 'stop' and
+      'structure' are predefined types). See PloneTool.addPortalMessage().
+      [vinsci]
+
+    - New function to allow page templates to determine if Zope is being
+      run in development/debug mode. See PloneTool.getDevelopmentMode().
+      [vinsci]
+
 Plone 2.1.2 (unreleased)
 
     - Send new generated plain password via email directly when reset password, but not 

@@ -74,9 +74,8 @@ if plone_utils.isDefaultPage(new_context):
                                       expiration_date=expiration_date )
     except ConflictError:
         raise
-    except Exception:
+    except Exception: # XXX
         pass
 
-return state.set(context=wfcontext,
-                 portal_status_message=_(u'Your content\'s status has been modified.'))
-
+context.plone_utils.addPortalMessage(_(u'Your content\'s status has been modified.'))
+return state.set(context=wfcontext)

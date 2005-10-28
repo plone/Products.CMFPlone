@@ -39,4 +39,5 @@ new_context.plone_utils.contentEdit( new_context
                                    , title=title
                                    , description=description )
 
-return state.set(context=new_context, portal_status_message=_(u'Document changes saved.'))
+context.plone_utils.addPortalMessage(_(u'Document changes saved.'))
+return state.set(context=new_context)

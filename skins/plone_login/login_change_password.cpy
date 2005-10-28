@@ -15,7 +15,8 @@ member=mt.getAuthenticatedMember()
 try:
     mt.setPassword(password)
 except AttributeError:
-    return state.set(status='failure', portal_status_message=_(u'While changing your password an AttributeError occurred. This is usually caused by your user being defined outside the portal.'))
+    context.plone_utils.addPortalMessage(_(u'While changing your password an AttributeError occurred. This is usually caused by your user being defined outside the portal.'))
+    return state.set(status='failure')
 
 from Products.CMFPlone import transaction_note
 transaction_note('Changed password for %s' % (member.getUserName()))

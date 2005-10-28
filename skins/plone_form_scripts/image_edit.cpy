@@ -43,5 +43,5 @@ if file or precondition:
 
 transaction_note('Edited image %s at %s' % (new_context.title_or_id(), new_context.absolute_url()))
 
-return state.set(context=new_context,
-                 portal_status_message=_(u'Image changes saved.'))
+context.plone_utils.addPortalMessage(_(u'Image changes saved.'))
+return state.set(context=new_context)

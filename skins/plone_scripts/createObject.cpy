@@ -43,5 +43,5 @@ if script_id:
     state.setId(script_id)
 
 if message:
-    state.set(portal_status_message=message)
+    context.plone_utils.addPortalMessage(message)
 return state.set(context=o)

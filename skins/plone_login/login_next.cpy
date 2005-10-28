@@ -17,7 +17,8 @@ REQUEST=context.REQUEST
 membership_tool=context.portal_membership
 if membership_tool.isAnonymousUser():
     REQUEST.RESPONSE.expireCookie('__ac', path='/')
-    return state.set(status='failure', portal_status_message=_(u'Login failed'))
+    context.plone_utils.addPortalMessage(_(u'Login failed'))
+    return state.set(status='failure')
 
 came_from = REQUEST.get('came_from', None)
 # if we weren't called from something that set 'came_from' or if HTTP_REFERER

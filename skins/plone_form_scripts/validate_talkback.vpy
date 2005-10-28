@@ -25,6 +25,7 @@ if not body_text:
     state.setError('body_text', _(u'Please submit a body.'), 'body_required')
 
 if state.getErrors():
-    return state.set(status='failure', portal_status_message=_(u'Please correct the indicated errors.'))
+    context.plone_utils.addPortalMessage(_(u'Please correct the indicated errors.'))
+    return state.set(status='failure')
 else:
     return state

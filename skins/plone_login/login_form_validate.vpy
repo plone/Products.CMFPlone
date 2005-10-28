@@ -20,9 +20,8 @@ cookies_enabled = request.get('cookies_enabled',0) # are cookies enabled?
 cookies_enabled = cookies_enabled=='1' or cookies_enabled==1
 
 if js_enabled and not cookies_enabled:
-    # auth cookie won't persist -- erase it so users aren't confused
-    context.portal_membership.immediateLogout()
-    state.set(status='enable_cookies', portal_status_message=_(u'You must enable cookies before you can log in'))
+    context.plone_utils.addPortalMessage(_(u'You must enable cookies before you can log in'))
+    state.set(status='enable_cookies')
     return state
 
 mt=context.portal_membership
@@ -44,10 +43,12 @@ if mt.isAnonymousUser():
             if user_name and verify_login_name:
                 if mt.getMemberById(user_name) is None:
                     state.setError(ac_name, _(u'Login name not found.'), 'login_name_not_found')
-                elif not password_empty:
+	        elif not password_empty:
                     state.setError(ac_password, _(u'Password incorrect.'), 'password_incorrect')
-        state.set(status='failure', portal_status_message=LOGIN_FAILED_MESSAGE)
+	context.plone_utils.addPortalMessage(LOGIN_FAILED_MESSAGE)
+	state.set(status='failure')
     else: # no javascript - do low tech login failure
-        state.set(status='failure_page', portal_status_message=LOGIN_FAILED_MESSAGE)
+	context.plone_utils.addPortalMessage(LOGIN_FAILED_MESSAGE)
+	state.set(status='failure_page')
 
 return state

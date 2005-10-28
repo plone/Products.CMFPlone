@@ -50,5 +50,6 @@ if titles:
 if failed:
     message = _(u'${items} could not be deleted.', mapping={u'items' : ', '.join(failed.keys())})
 
-return state.set(status=status, portal_status_message=message)
+context.plone_utils.addPortalMessage(message)
+return state.set(status=status)
 

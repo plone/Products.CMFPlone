@@ -21,4 +21,5 @@ message = _(u'${title} has been deleted.',
             mapping={u'title' : context.title_or_id()})
 transaction_note('Deleted %s' % context.absolute_url())
 
-return state.set(status = 'success', portal_status_message = message)
+context.plone_utils.addPortalMessage(message)
+return state.set(status = 'success')

@@ -39,4 +39,5 @@ if not processed.get('visible_ids'):
 
 context.plone_utils.setMemberProperties(member, **processed)
 
-return state.set(portal_status_message=_(u'Changes made.'))
+context.plone_utils.addPortalMessage(_(u'Changes made.'))
+return state

@@ -21,9 +21,11 @@ failed = {}
 success = {}
 
 if workflow_action is None:
-    return state.set(status='failure', portal_status_message=_(u'You must select a publishing action.'))
+    context.plone_utils.addPortalMessage(_(u'You must select a publishing action.'))
+    return state.set(status='failure')
 if not paths:
-    return state.set(status='failure', portal_status_message=_(u'You must select content to change.'))
+    context.plone_utils.addPortalMessage(_(u'You must select content to change.'))
+    return state.set(status='failure')
 
 objs = context.getObjectsFromPathList(paths)
 
@@ -71,4 +73,5 @@ for o in objs:
 transaction_note( str(paths) + ' transitioned ' + workflow_action )
 
 # It is necessary to set the context to override context from content_status_modify
-return state.set(context=context, portal_status_message=_(u'Content has been changed.'))
+context.plone_utils.addPortalMessage(_(u'Content has been changed.'))
+return state.set(context=context)

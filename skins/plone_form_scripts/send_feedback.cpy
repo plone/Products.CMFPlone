@@ -52,7 +52,8 @@ if send_from_address == '':
     # happens if you don't exist as user in the portal (but at a higher level)
     # or if your memberdata is incomplete.
     # Would be nicer to check in the feedback form, but that's hard to do securely
-    return state.set(status=state_failure, portal_status_message=_(u'Could not find a valid email address'))
+    context.plone_utils.addPortalMessage(_(u'Could not find a valid email address'))
+    return state.set(status=state_failure)
     
 sender_id = "%s (%s), %s" % (sender.getProperty('fullname'), sender.getId(), send_from_address)
 
@@ -79,7 +80,8 @@ except: #XXX Too many things could possibly go wrong. So we catch all.
     exception = context.plone_utils.exceptionString()
     message = _(u'Unable to send mail: ${exception}',
                 mapping={u'exception' : exception})
-    return state.set(status=state_failure, portal_status_message=message)
+    context.plone_utils.addPortalMessage(message)
+    return state.set(status=state_failure)
 
 tmsg='Sent feedback from %s to %s' % ('x', 'y')
 transaction_note(tmsg)
@@ -88,5 +90,5 @@ transaction_note(tmsg)
 REQUEST.set('message', None)
 REQUEST.set('subject', None)
 
-return state.set(portal_status_message=_(u'Mail sent.'))
+context.plone_utils.addPortalMessage(_(u'Mail sent.'))
 return state

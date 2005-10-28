@@ -19,5 +19,6 @@ else:
 from Products.CMFPlone import transaction_note
 transaction_note('%s for %s at %s' % (message, context.title_or_id(), context.absolute_url()))
 
-return state.set(portal_status_message=message)
+context.plone_utils.addPortalMessage(message)
+return state
 

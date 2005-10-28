@@ -19,4 +19,5 @@ context.portal_url.getPortalObject().manage_changeProperties(REQUEST)
 from Products.CMFPlone import transaction_note
 transaction_note('Reconfigured portal')
 
-return state.set(portal_status_message=_(u'Portal reconfigured.'))
+context.plone_utils.addPortalMessage(_(u'Portal reconfigured.'))
+return state

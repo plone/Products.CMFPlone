@@ -35,4 +35,5 @@ if delete:
         message=_(u'Group ${name} has been deleted.',
                   mapping={u'name' : ''.join(delete)})
 
-return state.set(portal_status_message=message)
+context.plone_utils.addPortalMessage(message)
+return state

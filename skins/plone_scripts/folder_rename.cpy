@@ -43,4 +43,6 @@ if failed:
     message = _(u'The following item(s) could not be renamed: ${items}.', 
                 mapping={u'items' : ', '.join(failed.keys())})
 transaction_note('Renamed %s' % str(success.keys))
-return state.set(portal_status_message=message)
+
+context.plone_utils.addPortalMessage(message)
+return state

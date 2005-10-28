@@ -26,4 +26,5 @@ ps.manage_properties(default_skin=default_skin,
                      cookie_persistence=cookie_persistence,
                      request_varname=rv)
 
-return state.set(portal_status_message=_(u'Portal skin updated'))
+context.plone_utils.addPortalMessage(_(u'Portal skin updated'))
+return state
