@@ -1,4 +1,4 @@
-## Script (Python) "translate (for unicode ignorants)"
+## Script (Python) "translate (alias for utranslate)"
 ##bind container=container
 ##bind context=context
 ##bind namespace=
@@ -6,29 +6,26 @@
 ##bind subpath=traverse_subpath
 ##parameters=msgid, mapping={}, default=None, domain='plone', target_language=None, escape_for_js=False
 
-# NOTE: using this script means you ignore unicode and hope
-#       that the system will handle that for you. Use the
-#       utranslate script and use unicode type instead of string type.
+# handle the possible "nothing" condition in folder_contents.pt ln 21 gracefully
+if msgid == None:
+    return None
 
 # get tool
 tool = context.translation_service
-asunicodetype = tool.asunicodetype
-encode = tool.encode
 
-# make sure the mapping contains unicode type strings
-# as the caller does not care about encoding we dont care about errors
-# we also assume that passed strings are encoded with the site encoding
-for k, v in mapping.items():
-    if isinstance(v, str):
-        mapping[k]=asunicodetype(v, errors='replace')
+# this returns type unicode 
+value = tool.utranslate(domain,
+                        msgid,
+                        mapping,
+                        context=context,
+                        target_language=target_language,
+                        default=default)
 
-# translate using unicode type
-value = context.utranslate(msgid, mapping, default, domain, target_language)
+if not value and default is None:
+    value = msgid
 
-# encode using site encoding
-result=encode(value)
+    for k, v in mapping.items():
+        value = value.replace('${%s}' % k, v)
 
-if escape_for_js:
-    return result.replace("'", "\\'")
-else:
-    return result
+return value
+
