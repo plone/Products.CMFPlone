@@ -16,9 +16,12 @@ ZopeTestCase.installProduct('CMFCalendar')
 ZopeTestCase.installProduct('CMFTopic')
 ZopeTestCase.installProduct('DCWorkflow')
 ZopeTestCase.installProduct('CMFUid', quiet=1)
+ZopeTestCase.installProduct('CMFSetup')
+ZopeTestCase.installProduct('GenericSetup')
 ZopeTestCase.installProduct('CMFActionIcons')
 ZopeTestCase.installProduct('CMFQuickInstallerTool')
 ZopeTestCase.installProduct('CMFFormController')
+ZopeTestCase.installProduct('CMFDynamicViewFTI')
 ZopeTestCase.installProduct('ResourceRegistries')
 ZopeTestCase.installProduct('GroupUserFolder')
 ZopeTestCase.installProduct('ZCTextIndex')
@@ -26,6 +29,8 @@ ZopeTestCase.installProduct('ExtendedPathIndex')
 ZopeTestCase.installProduct('SecureMailHost')
 if ZopeTestCase.hasProduct('ExternalEditor'):
     ZopeTestCase.installProduct('ExternalEditor')
+if ZopeTestCase.hasProduct('kupu'):
+    ZopeTestCase.installProduct('kupu')
 ZopeTestCase.installProduct('CMFPlone')
 ZopeTestCase.installProduct('MailHost', quiet=1)
 ZopeTestCase.installProduct('PageTemplates', quiet=1)
@@ -113,8 +118,12 @@ def setupPloneSite(app=None, id=portal_name, quiet=0, with_default_memberarea=1)
         user = app.acl_users.getUserById(portal_owner).__of__(app.acl_users)
         newSecurityManager(None, user)
         # Add Plone Site
-        factory = app.manage_addProduct['CMFPlone']
-        factory.manage_addSite(id, '', create_userfolder=1)
+        factory = app.manage_addProduct['CMFPlone'].addPloneSite
+        factory(id, profile_id='CMFPlone:plone')
+
+        # XXX: This should be done as part of setup profile
+        getattr(app, id).portal_quickinstaller.installProduct('Archetypes')
+
         # Precreate default memberarea for performance reasons
         if with_default_memberarea:
             _createHomeFolder(app[id], default_user, 0)
@@ -164,16 +173,16 @@ def optimize():
         ps = getToolByName(p, 'portal_skins')
         ps.manage_addFolder(id='custom')
         ps.addSkinSelection('Basic', 'custom')
-    from Products.CMFPlone.Portal import PloneGenerator
-    PloneGenerator.setupDefaultSkins = setupDefaultSkins
-    # Don't setup default Members folder
-    def setupMembersFolder(self, p):
-        pass
-    PloneGenerator.setupMembersFolder = setupMembersFolder
-    # Don't setup Plone content (besides Members folder)
-    def setupPortalContent(self, p):
-        _createObjectByType('Large Plone Folder', p, id='Members', title='Members')
-    PloneGenerator.setupPortalContent = setupPortalContent
+##     from Products.CMFPlone.Portal import PloneGenerator
+##     PloneGenerator.setupDefaultSkins = setupDefaultSkins
+##     # Don't setup default Members folder
+##     def setupMembersFolder(self, p):
+##         pass
+##     PloneGenerator.setupMembersFolder = setupMembersFolder
+##     # Don't setup Plone content (besides Members folder)
+##     def setupPortalContent(self, p):
+##         _createObjectByType('Large Plone Folder', p, id='Members', title='Members')
+##     PloneGenerator.setupPortalContent = setupPortalContent
     # Don't populate type fields in the ConstrainTypesMixin schema, FFS!
     def _ct_defaultAddableTypeIds(self):
         return []
