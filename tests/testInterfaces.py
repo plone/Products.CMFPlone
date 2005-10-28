@@ -45,7 +45,7 @@ from Products.CMFPlone.PloneContent import PloneContent
 from Products.CMFPlone.PloneControlPanel import PloneControlPanel, PloneConfiglet
 from Products.CMFPlone.PloneFolder import OrderedContainer, BasePloneFolder, PloneFolder
 from Products.CMFPlone.PloneTool import PloneTool
-from Products.CMFPlone.Portal import PloneSite, PloneGenerator
+from Products.CMFPlone.Portal import PloneSite
 from Products.CMFPlone.PropertiesTool import PropertiesTool, SimpleItemWithProperties
 from Products.CMFPlone.QuickInstallerTool import QuickInstallerTool
 from Products.CMFPlone.RegistrationTool import RegistrationTool
