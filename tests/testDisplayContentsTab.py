@@ -17,6 +17,7 @@ from Products.CMFCore.permissions import AddPortalContent
 from Products.CMFCore.permissions import ReviewPortalContent
 from AccessControl.Permissions import copy_or_move
 from AccessControl.Permissions import delete_objects
+from zope.app.tests.placelesssetup import setUp, tearDown
 
 from AccessControl import getSecurityManager
 from Products.CMFCore.utils import _checkPermission
@@ -32,6 +33,7 @@ class TestDisplayContentsTab(PloneTestCase.PloneTestCase):
     '''
 
     def afterSetUp(self):
+        setUp()
         self.parent = self.folder.aq_parent
         self.folder.invokeFactory('Folder', id='foo')
         self.folder.foo.invokeFactory('Document', id='doc1')
@@ -115,6 +117,8 @@ class TestDisplayContentsTab(PloneTestCase.PloneTestCase):
         self.folder.foo.manage_permission(ListFolderContents, ['Manager'], acquire=0)
         self.failIf(def_page.displayContentsTab())
 
+    def beforeTearDown(self):
+        tearDown()
 
 def test_suite():
     from unittest import TestSuite, makeSuite

@@ -3,4 +3,4 @@ validators =
 
 [actions]
 action.failure=traverse_to:string:prefs_navigation_form
-action.success=redirect_to:string:plone_control_panel
+action.success=traverse_to:string:plone_control_panel

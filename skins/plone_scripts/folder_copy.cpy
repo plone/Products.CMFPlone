@@ -32,7 +32,8 @@ if REQUEST.has_key('paths'):
 
     message = _(u'${count} item(s) copied.', mapping={u'count' : len(ids)})
 
-    return state.set(portal_status_message=message)
+    context.plone_utils.addPortalMessage(message)
+    return state
 
 context.plone_utils.addPortalMessage(_(u'Please select one or more items to copy.'))
 return state.set(status='failure')

@@ -23,9 +23,8 @@ pretty_title_or_id = plone_utils.pretty_title_or_id
 empty_title = plone_utils.getEmptyTitle()
 
 if not mtool.checkPermission(AllowSendto, context):
-    return state.set(
-            status='failure',
-            portal_status_message=_(u'You are not allowed to send this link.'))
+    context.plone_utils.addPortalMessage(_(u'You are not allowed to send this link.'))
+    return state.set(status='failure')
 
 at = getToolByName(context, 'portal_actions')
 show = False

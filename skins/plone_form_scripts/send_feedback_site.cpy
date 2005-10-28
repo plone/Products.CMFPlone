@@ -58,7 +58,8 @@ except: #XXX Too many things could possibly go wrong. So we catch all.
     exception = context.plone_utils.exceptionString()
     message = _(u'Unable to send mail: ${exception}',
                 mapping={u'exception' : exception})
-    return state.set(status=state_failure, portal_status_message=message)
+    context.plone_utils.addPortalMessage(message)
+    return state.set(status=state_failure)
 
 ## clear request variables so form is cleared as well
 REQUEST.set('message', None)
@@ -66,5 +67,5 @@ REQUEST.set('subject', None)
 REQUEST.set('sender_from_address', None)
 REQUEST.set('sender_fullname', None)
 
-return state.set(portal_status_message=_(u'Mail sent.'))
-
+context.plone_utils.addPortalMessage(_(u'Mail sent.'))
+return state

@@ -33,4 +33,5 @@ blacklistedTypes = [t for t in allTypes if t not in portaltypes]
 
 portal_properties.site_properties.manage_changeProperties(types_not_searched=blacklistedTypes)
 
-return state.set(portal_status_message=_(u'Search settings updated.'))
+context.plone_utils.addPortalMessage(_(u'Search settings updated.'))
+return state

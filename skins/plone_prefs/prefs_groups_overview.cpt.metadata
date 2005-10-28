@@ -5,7 +5,7 @@ title=Groups Management
 View=0:Authenticated
 
 [actions]
-action.success..AddGroup = redirect_to:string:prefs_group_details
+action.success..AddGroup = traverse_to:string:prefs_group_details
 action.success..Search   = traverse_to:string:prefs_user_group_search_form
 action.success..Modify   = traverse_to:string:prefs_group_modify
 action.success           = traverse_to:string:prefs_group_modify

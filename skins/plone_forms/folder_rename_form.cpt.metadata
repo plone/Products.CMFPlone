@@ -7,5 +7,5 @@ validators..Cancel=
 
 [actions]
 action.success=traverse_to:string:folder_rename
-action.success..Cancel=redirect_to:request/orig_template|string:folder_contents
+action.success..Cancel=traverse_to:request/orig_template|string:folder_contents
 action.failure=traverse_to:string:folder_rename_form

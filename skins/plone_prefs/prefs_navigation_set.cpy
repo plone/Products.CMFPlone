@@ -30,4 +30,5 @@ portal_properties.navtree_properties.manage_changeProperties(
                         enable_wf_state_filtering=enable_wf_state_filtering,
                         wf_states_to_show=wf_states_to_show)
 
-return state.set(portal_status_message=_(u'Navigation settings updated.'))
+context.plone_utils.addPortalMessage(_(u'Navigation settings updated.'))
+return state
