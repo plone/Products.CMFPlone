@@ -36,6 +36,8 @@
            class="Products.CMFCore.ContentTypeRegistry.ContentTypeRegistry"/>
  <required tool_id="plone_utils"
            class="Products.CMFPlone.PloneTool.PloneTool"/>
+ <required tool_id="portal_interface"
+           class="Products.CMFPlone.InterfaceTool.InterfaceTool"/>
  <required tool_id="portal_factory"
            class="Products.CMFPlone.FactoryTool.FactoryTool"/>
  <required tool_id="portal_migrations"
