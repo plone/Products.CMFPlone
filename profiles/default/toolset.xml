@@ -32,7 +32,8 @@
            class="Products.CMFPlone.URLTool.URLTool"/>
  <required tool_id="portal_workflow"
            class="Products.CMFPlone.WorkflowTool.WorkflowTool"/>
-
+ <required tool_id="content_type_registry"
+           class="Products.CMFCore.ContentTypeRegistry.ContentTypeRegistry"/>
  <required tool_id="plone_utils"
            class="Products.CMFPlone.PloneTool.PloneTool"/>
  <required tool_id="portal_factory"
