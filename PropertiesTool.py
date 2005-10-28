@@ -1,4 +1,3 @@
-from ComputedAttribute import ComputedAttribute
 from Acquisition import aq_parent, aq_inner
 from Products.CMFCore.ActionProviderBase import ActionProviderBase
 from Products.CMFCore.permissions import ManagePortal
@@ -49,8 +48,6 @@ class PropertiesTool(PloneBaseTool, Folder, BaseTool):
         """ Return BaseTool title
         """
         return BaseTool.title(self)
-
-    title = ComputedAttribute(title, 1)
 
     def addPropertySheet(self, id, title='', propertysheet=None):
         """ Add a new PropertySheet
