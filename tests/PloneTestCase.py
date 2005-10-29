@@ -121,9 +121,6 @@ def setupPloneSite(app=None, id=portal_name, quiet=0, with_default_memberarea=1)
         factory = app.manage_addProduct['CMFPlone'].addPloneSite
         factory(id, profile_id='CMFPlone:plone')
 
-        # XXX: This should be done as part of setup profile
-        getattr(app, id).portal_quickinstaller.installProduct('Archetypes')
-
         # Precreate default memberarea for performance reasons
         if with_default_memberarea:
             _createHomeFolder(app[id], default_user, 0)
