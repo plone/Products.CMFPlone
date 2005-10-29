@@ -145,6 +145,15 @@
  
  
  </import-step>
+ <import-step id="plone_various" version="20041118-01"
+              handler="Products.CMFPlone.setuphandlers.importVarious"
+              title="Various Plone Settings">
+  <dependency step="toolset"/>
+  <dependency step="typeinfo"/>
+    Plone specific settings
+ </import-step>
+
+
  <import-step id="workflow" version="20040630-01"
               handler="Products.CMFSetup.workflow.importWorkflowTool"
               title="Workflow Tool">
