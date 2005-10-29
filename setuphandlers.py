@@ -105,8 +105,9 @@ def importVarious(context):
     Provisional handler that does initialization that is not yet taken
     care of by other handlers.
     """
+    site = context.getSite()
+
     gen = PloneGenerator()
-    p = getToolByName(context, 'portal_url').getPortalObject()
-    gen.customizePortalOptions(p)
-    gen.setupPortalContent(p)
-    gen.setupNavTree(p)
+    gen.customizePortalOptions(site)
+    #gen.setupPortalContent(site)
+    #gen.setupNavTree(site)
