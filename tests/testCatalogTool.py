@@ -155,36 +155,36 @@ class TestCatalogIndexing(PloneTestCase.PloneTestCase):
         self.assertEqual(self.folder.doc.getId(), 'doc')
         self.assertEqual(self.folder.doc.Title(), 'Foo')
         self.assertEqual(self.folder.doc.Description(), 'Bar')
-        self.assertEqual(len(self.catalog(id='doc')), 0)
+        self.assertEqual(len(self.catalog(getId='doc')), 0)
         self.assertEqual(len(self.catalog(Title='Foo')), 0)
         self.assertEqual(len(self.catalog(Description='Bar')), 0)
 
     def testIndexObject(self):
         # Object should be indexed
         self.catalog.indexObject(self.folder.doc)
-        self.assertEqual(len(self.catalog(id='doc')), 1)
+        self.assertEqual(len(self.catalog(getId='doc')), 1)
         self.assertEqual(len(self.catalog(Title='Foo')), 1)
         self.assertEqual(len(self.catalog(Description='Bar')), 1)
 
     def testReindexObject(self):
         # Object should be indexed
         self.catalog.reindexObject(self.folder.doc)
-        self.assertEqual(len(self.catalog(id='doc')), 1)
+        self.assertEqual(len(self.catalog(getId='doc')), 1)
         self.assertEqual(len(self.catalog(Title='Foo')), 1)
         self.assertEqual(len(self.catalog(Description='Bar')), 1)
 
     def testUnindexObject(self):
         # Object should be unindexed
         self.catalog.indexObject(self.folder.doc)
-        self.assertEqual(len(self.catalog(id='doc')), 1)
+        self.assertEqual(len(self.catalog(getId='doc')), 1)
         self.catalog.unindexObject(self.folder.doc)
-        self.assertEqual(len(self.catalog(id='doc')), 0)
+        self.assertEqual(len(self.catalog(getId='doc')), 0)
 
     def testIndexObjectUpdatesMetadata(self):
         # Indexing should update metadata
         self.catalog.indexObject(self.folder.doc)
-        brain = self.catalog(id='doc')[0]
-        self.assertEqual(brain.id, 'doc')
+        brain = self.catalog(getId='doc')[0]
+        self.assertEqual(brain.getId, 'doc')
         self.assertEqual(brain.Title, 'Foo')
         self.assertEqual(brain.Description, 'Bar')
 
@@ -194,8 +194,8 @@ class TestCatalogIndexing(PloneTestCase.PloneTestCase):
         self.folder.doc.setTitle('Fred')
         self.folder.doc.setDescription('BamBam')
         self.catalog.reindexObject(self.folder.doc)
-        brain = self.catalog(id='doc')[0]
-        self.assertEqual(brain.id, 'doc')
+        brain = self.catalog(getId='doc')[0]
+        self.assertEqual(brain.getId, 'doc')
         self.assertEqual(brain.Title, 'Fred')
         self.assertEqual(brain.Description, 'BamBam')
 
@@ -205,9 +205,9 @@ class TestCatalogIndexing(PloneTestCase.PloneTestCase):
         self.folder.doc.setTitle('Fred')
         self.folder.doc.setDescription('BamBam')
         self.catalog.reindexObject(self.folder.doc, update_metadata=0)
-        brain = self.catalog(id='doc')[0]
+        brain = self.catalog(getId='doc')[0]
         # Metadata did not change
-        self.assertEqual(brain.id, 'doc')
+        self.assertEqual(brain.getId, 'doc')
         self.assertEqual(brain.Title, 'Foo')
         self.assertEqual(brain.Description, 'Bar')
 
@@ -217,7 +217,7 @@ class TestCatalogIndexing(PloneTestCase.PloneTestCase):
         self.folder.doc.setTitle('Fred')
         self.folder.doc.setDescription('BamBam')
         self.catalog.reindexObject(self.folder.doc, idxs=['Title'])
-        self.assertEqual(len(self.catalog(id='doc')), 1)
+        self.assertEqual(len(self.catalog(getId='doc')), 1)
         self.assertEqual(len(self.catalog(Title='Fred')), 1)
         # Description index did not change
         self.assertEqual(len(self.catalog(Description='Bar')), 1)
@@ -229,8 +229,8 @@ class TestCatalogIndexing(PloneTestCase.PloneTestCase):
         self.folder.doc.setTitle('Fred')
         self.folder.doc.setDescription('BamBam')
         self.catalog.reindexObject(self.folder.doc, idxs=['Title'])
-        brain = self.catalog(id='doc')[0]
-        self.assertEqual(brain.id, 'doc')
+        brain = self.catalog(getId='doc')[0]
+        self.assertEqual(brain.getId, 'doc')
         self.assertEqual(brain.Title, 'Fred')
         self.assertEqual(brain.Description, 'BamBam')
 
@@ -240,9 +240,9 @@ class TestCatalogIndexing(PloneTestCase.PloneTestCase):
         self.folder.doc.setTitle('Fred')
         self.folder.doc.setDescription('BamBam')
         self.catalog.reindexObject(self.folder.doc, idxs=['Title'], update_metadata=0)
-        brain = self.catalog(id='doc')[0]
+        brain = self.catalog(getId='doc')[0]
         # Metadata did not change
-        self.assertEqual(brain.id, 'doc')
+        self.assertEqual(brain.getId, 'doc')
         self.assertEqual(brain.Title, 'Foo')
         self.assertEqual(brain.Description, 'Bar')
 
@@ -258,7 +258,7 @@ class TestCatalogIndexing(PloneTestCase.PloneTestCase):
         path = self.catalog._CatalogTool__url(self.folder.doc)
         self.failUnless(path in self.catalog._catalog.paths.values())
         # But it is not returned when searching...
-        self.assertEqual(len(self.catalog(id='doc')), 0)
+        self.assertEqual(len(self.catalog(getId='doc')), 0)
         self.assertEqual(len(self.catalog(Title='Foo')), 0) # <-- Should be 1
         self.assertEqual(len(self.catalog(Description='Bar')), 0)
 
@@ -268,12 +268,12 @@ class TestCatalogIndexing(PloneTestCase.PloneTestCase):
         # XXX: Demonstrate that the behavior is independent
         # of index type.
         #
-        self.catalog.indexObject(self.folder.doc, idxs=['id'])
+        self.catalog.indexObject(self.folder.doc, idxs=['getId'])
         # The document is cataloged
         path = self.catalog._CatalogTool__url(self.folder.doc)
         self.failUnless(path in self.catalog._catalog.paths.values())
         # But it is not returned when searching...
-        self.assertEqual(len(self.catalog(id='doc')), 0) # <-- Should be 1
+        self.assertEqual(len(self.catalog(getId='doc')), 0) # <-- Should be 1
         self.assertEqual(len(self.catalog(Title='Foo')), 0)
         self.assertEqual(len(self.catalog(Description='Bar')), 0)
 
@@ -315,7 +315,7 @@ class TestCatalogSearching(PloneTestCase.PloneTestCase):
 
     def testSearchReturnsDocument(self):
         # Document should be found when owner does a search
-        self.assertEqual(self.catalog(SearchableText='foo')[0].id, 'doc')
+        self.assertEqual(self.catalog(SearchableText='foo')[0].getId, 'doc')
 
     def testSearchDoesNotReturnDocument(self):
         # Document should not be found when user2 does a search
@@ -343,7 +343,7 @@ class TestCatalogSearching(PloneTestCase.PloneTestCase):
         groupname = self.addUser2ToGroup()
         self.folder.folder_localrole_edit('add', [groupname], 'Owner')
         self.login(user2)
-        self.assertEqual(self.catalog(SearchableText='foo')[0].id, 'doc')
+        self.assertEqual(self.catalog(SearchableText='foo')[0].getId, 'doc')
 
     def testSearchRespectsLocalRoleAcquisition(self):
         # After adding a group with access rights and containing user2,
@@ -352,7 +352,7 @@ class TestCatalogSearching(PloneTestCase.PloneTestCase):
         self.folder.folder_localrole_edit('add', [groupname], 'Owner')
         self.login(user2)
         # Local Role works in subfolder
-        self.assertEqual(self.catalog(SearchableText='bar')[0].id, 'doc2')
+        self.assertEqual(self.catalog(SearchableText='bar')[0].getId, 'doc2')
 
     def testSearchRespectsLocalRoleAcquisitionDisabled(self):
         # After adding a group with access rights and containing user2,
@@ -439,7 +439,7 @@ class TestFolderCataloging(PloneTestCase.PloneTestCase):
         self.failUnless(results)
         for result in results:
             self.assertEqual(result.Title, title)
-            self.assertEqual(result.id, 'foo')
+            self.assertEqual(result.getId, 'foo')
 
     def testFolderTitleIsUpdatedOnRename(self):
         # Test for catalog that searches to ensure folder titles are 
@@ -451,7 +451,7 @@ class TestFolderCataloging(PloneTestCase.PloneTestCase):
         self.failUnless(results)
         for result in results:
             self.assertEqual(result.Title, title)
-            self.assertEqual(result.id, 'bar')
+            self.assertEqual(result.getId, 'bar')
 
     def testFolderTitleIsUpdatedOnFolderTitleChange(self):
         # The bug in fact talks about folder_rename
@@ -462,7 +462,7 @@ class TestFolderCataloging(PloneTestCase.PloneTestCase):
         self.failUnless(results)
         for result in results:
             self.assertEqual(result.Title, title)
-            self.assertEqual(result.id, 'foo')
+            self.assertEqual(result.getId, 'foo')
 
     def testFolderTitleIsUpdatedOnFolderRename(self):
         # The bug in fact talks about folder_rename
@@ -474,12 +474,12 @@ class TestFolderCataloging(PloneTestCase.PloneTestCase):
         self.failUnless(results)
         for result in results:
             self.assertEqual(result.Title, title)
-            self.assertEqual(result.id, 'bar')
+            self.assertEqual(result.getId, 'bar')
 
     def testSetTitleDoesNotUpdateCatalog(self):
         # setTitle() should not update the catalog
         title = 'Test Folder - Snooze!'
-        self.failUnless(self.catalog(id='foo'))
+        self.failUnless(self.catalog(getId='foo'))
         self.folder.foo.setTitle(title)
         #Title is a TextIndex
         self.failIf(self.catalog(Title='Snooze'))
@@ -651,41 +651,41 @@ class TestCatalogUnindexing(PloneTestCase.PloneTestCase):
         self.assertEqual(state, 'visible')
 
     def testVisibleCanBeFound(self):
-        self.failUnless(self.catalog(id='doc'))
+        self.failUnless(self.catalog(getId='doc'))
 
     def testVisibleIsUnindexed(self):
         self.folder._delObject('doc')
-        self.failIf(self.catalog(id='doc'))
+        self.failIf(self.catalog(getId='doc'))
 
     def testPrivateCanBeFound(self):
         self.workflow.doActionFor(self.folder.doc, 'hide')
-        self.failUnless(self.catalog(id='doc'))
+        self.failUnless(self.catalog(getId='doc'))
 
     def testPrivateIsUnindexed(self):
         self.workflow.doActionFor(self.folder.doc, 'hide')
         self.folder._delObject('doc')
-        self.failIf(self.catalog(id='doc'))
+        self.failIf(self.catalog(getId='doc'))
 
     def testPendingCanBeFound(self):
         self.workflow.doActionFor(self.folder.doc, 'submit')
-        self.failUnless(self.catalog(id='doc'))
+        self.failUnless(self.catalog(getId='doc'))
 
     def testPendingIsUnindexed(self):
         self.workflow.doActionFor(self.folder.doc, 'submit')
         self.folder._delObject('doc')
-        self.failIf(self.catalog(id='doc'))
+        self.failIf(self.catalog(getId='doc'))
 
     def testPublishedCanBeFound(self):
         self.setRoles(['Manager'])
         self.workflow.doActionFor(self.folder.doc, 'publish')
-        self.failUnless(self.catalog(id='doc'))
+        self.failUnless(self.catalog(getId='doc'))
 
     def testPublishedIsUnindexed(self):
         # Works here!
         self.setRoles(['Manager'])
         self.workflow.doActionFor(self.folder.doc, 'publish')
         self.folder._delObject('doc')
-        self.failIf(self.catalog(id='doc'))
+        self.failIf(self.catalog(getId='doc'))
 
     def testPublishedIsUnindexedIfOwnerDeletes(self):
         # Works here!
@@ -693,7 +693,7 @@ class TestCatalogUnindexing(PloneTestCase.PloneTestCase):
         self.workflow.doActionFor(self.folder.doc, 'publish')
         self.setRoles(['Member'])
         self.folder._delObject('doc')
-        self.failIf(self.catalog(id='doc'))
+        self.failIf(self.catalog(getId='doc'))
 
     def testPublishedIsUnindexedByFolderDeleteScript(self):
         # Works here too!
@@ -703,7 +703,7 @@ class TestCatalogUnindexing(PloneTestCase.PloneTestCase):
         doc_path = '/'.join(self.folder.doc.getPhysicalPath())
         self.app.REQUEST.set('paths', [doc_path])
         self.folder.folder_delete()
-        self.failIf(self.catalog(id='doc'))
+        self.failIf(self.catalog(getId='doc'))
 
     def testPublishedIsUnindexedWhenDeletingParentFolder(self):
         # Works here too!
@@ -711,7 +711,7 @@ class TestCatalogUnindexing(PloneTestCase.PloneTestCase):
         self.workflow.doActionFor(self.folder.doc, 'publish')
         self.setRoles(['Member'])
         self.folder.aq_parent._delObject(self.folder.getId())
-        self.failIf(self.catalog(id='doc'))
+        self.failIf(self.catalog(getId='doc'))
 
 
 class TestCatalogExpirationFiltering(PloneTestCase.PloneTestCase):
