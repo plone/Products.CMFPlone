@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 2.1.2 (unreleased)
 
+    - Changed selectedTabs.py to use full URL instead of content path
+      when computing whether or not a portal_tab action is being viewed.
+      This causes portal tabs to behave correctly when the action refers
+      to a specific template.
+      [rafrombrc]
+
     - Send new generated plain password via email directly when reset password, but not 
       the one stored in userfolder since it could be encypted.
       [panjunyong]

@@ -10,29 +10,24 @@
 
 from AccessControl import Unauthorized
 
-# we want to centalize where all tab selection is done
-# for now e will start off with the top tabs, 'portal_tabs'
+# we want to centralize where all tab selection is done
+# for now we will start off with the top tabs, 'portal_tabs'
 url_tool = context.portal_url
 plone_url = url_tool()
+request = context.REQUEST
 valid_actions = []
-if obj is None:
-    obj = context
 
-try:
-    contentpath=url_tool.getRelativeContentPath(obj)
-except (Unauthorized, IndexError):
-    pass
+url = request['ACTUAL_URL']
+path = url[len(plone_url):]
 
-if contentpath:
-    path = '/' + '/'.join(contentpath)
-    for action in portal_tabs:
-        action_path = action['url'].replace(plone_url,'')
-        if not action_path.startswith('/'):
-            action_path = '/' + action_path
-        if path.startswith(action_path):
-            # Make a list of the action ids, along with the path length for
-            # choosing the longest (most relevant) path.
-            valid_actions.append((len(action_path), action['id']))
+for action in portal_tabs:
+    action_path = action['url'][len(plone_url):]
+    if not action_path.startswith('/'):
+        action_path = '/' + action_path
+    if path.startswith(action_path):
+        # Make a list of the action ids, along with the path length for
+        # choosing the longest (most relevant) path.
+        valid_actions.append((len(action_path), action['id']))
 
 # Sort by path length, the longest matching path wins
 valid_actions.sort()
