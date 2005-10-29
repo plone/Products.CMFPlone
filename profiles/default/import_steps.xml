@@ -16,6 +16,12 @@
  
  
  </import-step>
+ <import-step id="catalog" version="20050929-01"
+              handler="Products.CMFSetup.catalog.importCatalogTool"
+              title="Catalog Tool">
+  <dependency step="toolset"/>
+  Import catalog tool's sub-objects, indexes and columns.
+ </import-step>
  <import-step id="cookie_authentication"
               version="20050903-01"
               handler="Products.CMFSetup.cookieauth.importCookieCrumbler"
