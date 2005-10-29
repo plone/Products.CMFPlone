@@ -6,6 +6,17 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFCore import permissions as cmfpermissions
 
 class PloneGenerator:
+
+    def installProducts(self, p):
+        """QuickInstaller install of required Products"""
+        # XXX These should all be done via a CMFSetup handler
+        qi = getToolByName(p, 'portal_quickinstaller')
+        qi.installProduct('Archetypes', locked=1)
+        qi.installProduct('CMFFormController', locked=1)
+        qi.installProduct('GroupUserFolder', locked=1)
+        #qi.installProduct('ATContentTypes', locked=1)
+
+
     def customizePortalOptions(self, p):
         p.manage_permission( cmfpermissions.ListFolderContents, \
                              ('Manager', 'Member', 'Owner',), acquire=1 )
@@ -108,6 +119,8 @@ def importVarious(context):
     site = context.getSite()
 
     gen = PloneGenerator()
+
+    gen.installProducts(site)
     gen.customizePortalOptions(site)
     #gen.setupPortalContent(site)
     #gen.setupNavTree(site)
