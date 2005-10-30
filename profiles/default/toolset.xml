@@ -54,5 +54,7 @@
            class="Products.CMFPlone.GroupDataTool.GroupDataTool"/>
  <required tool_id="translation_service"
            class="Products.CMFPlone.TranslationServiceTool.TranslationServiceTool"/>
+ <required tool_id="portal_controlpanel"
+           class="Products.CMFPlone.PloneControlPanel.PloneControlPanel"/>
 
 </tool-setup>
