@@ -191,8 +191,8 @@ class PloneGlobals(utils.BrowserView):
         return utils.context(self).getViewTemplateId() or None
 
     def isViewTemplate(self):
-        return template_id()==view_template_id()
+        return self.template_id()==self.view_template_id()
 
     def normalizeString(self):
-        return putils.normalizeString
+        return self.putils().normalizeString
 
