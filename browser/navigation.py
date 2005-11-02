@@ -275,10 +275,10 @@ class CatalogNavigationTabs(utils.BrowserView):
             utranslate = trans.utranslate
             for action_info in actions.get('portal_tabs', []):
                 data = action_info.copy()
-                data['name'] = utranslate('plone',
-                                          data['name'],
+                data['title'] = utranslate('plone',
+                                          data['title'],
                                           context=context,
-                                          default=data['name'])
+                                          default=data['title'])
                 result.append(data)
 
         # check whether we only want actions
