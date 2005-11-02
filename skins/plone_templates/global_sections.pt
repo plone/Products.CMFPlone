@@ -15,7 +15,7 @@
         <tal:tabs tal:repeat="tab portal_tabs"><li tal:attributes="id string:portaltab-${tab/id};
                             class python:test(selected_portal_tab==tab['id'], 'selected', 'plain');">
             <a href="" 
-               tal:content="tab/name"
+               tal:content="tab/title"
                tal:attributes="href tab/url;
                                title tab/description|nothing">
             Tab Name
