@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 2.1.2 (unreleased)
 
+    - Send new generated plain password via email directly when reset password,
+      but not the one stored in userfolder since it could be encypted.
+      Also use getProperty to retrieve email address for better LDAP 
+      integration.
+      [panjunyong]
+
     - Made plonifyAction be called with an existing default_tab parameter.
       [deo]
 
@@ -12,10 +18,6 @@ Plone 2.1.2 (unreleased)
       This causes portal tabs to behave correctly when the action refers
       to a specific template.
       [rafrombrc]
-
-    - Send new generated plain password via email directly when reset password,
-      but not the one stored in userfolder since it could be encypted.
-      [panjunyong]
 
     - Removed skins/plone_3rdParty/CMFTopic from filesystem and written
       migration to remove it from all skins.
