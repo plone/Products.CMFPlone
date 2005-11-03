@@ -10,9 +10,7 @@ from Products.CMFPlone.utils import base_hasattr
 
 RESPONSE = context.REQUEST.RESPONSE
 homeFolder=context.portal_membership.getHomeFolder()
-view_url = '%s/%s' % (context.absolute_url(),
-                      context.getTypeInfo().getActionById('view')
-                     )
+view_url = context.getTypeInfo().getActionInfo('object/view')['url']
 
 if not homeFolder:
     msg = "Can't access home folder. Favorite is not added"
