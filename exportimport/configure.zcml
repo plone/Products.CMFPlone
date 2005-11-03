@@ -1,0 +1,31 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:five="http://namespaces.zope.org/five"
+    i18n_domain="cmf"
+    >
+
+  <adapter
+      factory=".propertiestool.PlonePropertiesToolNodeAdapter"
+      provides="Products.GenericSetup.interfaces.INodeExporter"
+      for="Products.CMFPlone.interfaces.IPropertiesTool"
+      />
+
+  <adapter
+      factory=".propertiestool.PlonePropertiesToolNodeAdapter"
+      provides="Products.GenericSetup.interfaces.INodeImporter"
+      for="Products.CMFPlone.interfaces.IPropertiesTool"
+      />
+
+  <adapter
+      factory=".propertiestool.SimpleItemWithPropertiesNodeAdapter"
+      provides="Products.GenericSetup.interfaces.INodeExporter"
+      for="Products.CMFPlone.interfaces.ISimpleItemWithProperties"
+      />
+
+  <adapter
+      factory=".propertiestool.SimpleItemWithPropertiesNodeAdapter"
+      provides="Products.GenericSetup.interfaces.INodeImporter"
+      for="Products.CMFPlone.interfaces.ISimpleItemWithProperties"
+      />
+
+</configure>

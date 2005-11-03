@@ -3,6 +3,7 @@
            xmlns:five="http://namespaces.zope.org/five">
 
   <include package=".browser" />
+  <include package=".exportimport" />
 
   <five:traversable
       class="Products.Archetypes.public.BaseObject"

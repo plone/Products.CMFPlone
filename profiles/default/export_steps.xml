@@ -130,4 +130,18 @@
  
  
  </export-step>
+ <export-step id="propertiestool"
+              handler="Products.CMFPlone.exportimport.propertiestool.exportPloneProperties"
+              title="Plone Properties">
+  
+  
+  
+  
+  Export plone properties tool and subobjects.
+ 
+ 
+ 
+ 
+ </export-step>
+
 </export-steps>

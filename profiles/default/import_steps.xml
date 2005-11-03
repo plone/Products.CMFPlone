@@ -172,4 +172,17 @@
  
  
  </import-step>
+ <import-step id="propertiestool" version="20051101-01"
+              handler="Products.CMFPlone.exportimport.propertiestool.importPloneProperties"
+              title="Plone Properties">
+    <dependency step="toolset"/>
+  
+  
+  
+  Export plone properties tool and subobjects.
+ 
+ 
+ 
+ 
+ </import-step>
 </import-steps>
