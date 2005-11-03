@@ -9,12 +9,14 @@ from Products.CMFPlone import ToolNames
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from OFS.Folder import Folder
 from Globals import InitializeClass
+from zope.interface import implements
 
 from OFS.PropertyManager import PropertyManager
 from OFS.SimpleItem import SimpleItem
 from AccessControl import ClassSecurityInfo
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
-from Products.CMFPlone.interfaces.PropertiesTool import IPropertiesTool
+from Products.CMFPlone.interfaces import IPropertiesTool, ISimpleItemWithProperties
+from Products.CMFPlone.interfaces.PropertiesTool import IPropertiesTool as z2IPropertiesTool
 from Products.CMFPlone.utils import classImplements, classDoesNotImplement
 
 class PropertiesTool(PloneBaseTool, Folder, BaseTool):
@@ -29,7 +31,8 @@ class PropertiesTool(PloneBaseTool, Folder, BaseTool):
          },
         ))
 
-    __implements__ = ((IPropertiesTool,) +
+    implements(IPropertiesTool)
+    __implements__ = ((z2IPropertiesTool,) +
                       (ActionProviderBase.__implements__,
                       Folder.__implements__, ))
 
@@ -98,8 +101,6 @@ class PropertiesTool(PloneBaseTool, Folder, BaseTool):
 
 PropertiesTool.__doc__ = BaseTool.__doc__
 
-classImplements(PropertiesTool, PropertiesTool.__implements__)
-classDoesNotImplement(PropertiesTool, IBasePortalProperties)
 InitializeClass(PropertiesTool)
 
 
@@ -108,6 +109,8 @@ class SimpleItemWithProperties (PropertyManager, SimpleItem):
     A common base class for objects with configurable
     properties in a fixed schema.
     """
+
+    implements(ISimpleItemWithProperties)
 
     def __init__(self, id, title=''):
         self.id = id

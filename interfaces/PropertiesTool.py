@@ -1,23 +1,9 @@
-from interface import Interface, Attribute
-#from Products.CMFCore.interfaces.portal_properties import portal_properties
+""" Properties tool interface.
 
-#class IPropertiesTool(portal_properties):
-class IPropertiesTool(Interface):
+$Id$
+"""
 
-    id = Attribute('id', 'Must be set to "portal_properties"')
-
-    # XXX Interface doesn't know how to deal with ComputedAttribute :(
-    # title = Attribute('title', 'A (read-only) property representing the portal title.')
-
-    def editProperties(props):
-        """ Change portal settings.
-
-        Permission -- ManagePortal
-        """
-
-    def smtp_server():
-        """ Get local SMTP server.
-
-        Returns -- String
-        """
-
+# BBB: module will be removed in Plone 2.3
+#      zope2 interfaces created on runtime:
+#      - IPortalProperties
+#      - ISimpleItemWithProperties
