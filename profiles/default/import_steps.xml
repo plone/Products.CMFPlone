@@ -200,4 +200,10 @@
  
  
  </import-step>
+ <import-step id="action-icons" version="20051015-01"
+              handler="Products.CMFActionIcons.exportimport.importActionIconsTool"
+              title="Action Icons">
+  <dependency step="toolset"/>
+  Import action icon definitions
+ </import-step>
 </import-steps>

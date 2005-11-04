@@ -1,0 +1,94 @@
+<?xml version="1.0"?>
+<action-icons>
+ <action-icon category="plone" action_id="sendto"
+              title="Send-to" priority="0"
+              icon_expr="mail_icon.gif"/>
+ <action-icon category="plone" action_id="print"
+              title="Print" priority="0"
+              icon_expr="print_icon.gif"/>
+ <action-icon category="plone" action_id="rss"
+              title="Syndication" priority="0"
+              icon_expr="rss.gif"/>
+ <action-icon category="plone" action_id="extedit"
+              title="ExternalEdit" priority="0"
+              icon_expr="extedit_icon.gif"/>
+ <action-icon category="plone" action_id="addtofavorites"
+              title="AddToFavorites" priority="0"
+              icon_expr="favorite_icon.gif"/>
+ <action-icon category="controlpanel"
+              action_id="QuickInstaller"
+              title="Add/Remove Products" priority="0"
+              icon_expr="product_icon.gif"/>
+ <action-icon category="controlpanel"
+              action_id="PloneReconfig"
+              title="Portal Settings" priority="0"
+              icon_expr="logoIcon.gif"/>
+ <action-icon category="controlpanel"
+              action_id="UsersGroups"
+              title="Users and Groups Administration"
+              priority="0" icon_expr="group.gif"/>
+ <action-icon category="controlpanel"
+              action_id="UsersGroups2"
+              title="Users and Groups Administration"
+              priority="0" icon_expr="group.gif"/>
+ <action-icon category="controlpanel"
+              action_id="MemberPrefs"
+              title="Personal Preferences" priority="0"
+              icon_expr="user.gif"/>
+ <action-icon category="controlpanel"
+              action_id="MemberPassword"
+              title="Change Password" priority="0"
+              icon_expr="lock_icon.gif"/>
+ <action-icon category="controlpanel" action_id="MailHost"
+              title="Mail Settings" priority="0"
+              icon_expr="mail_icon.gif"/>
+ <action-icon category="controlpanel" action_id="PortalSkin"
+              title="Skins" priority="0"
+              icon_expr="skins_icon.gif"/>
+ <action-icon category="controlpanel" action_id="errorLog"
+              title="Error Log" priority="0"
+              icon_expr="error_log_icon.gif"/>
+ <action-icon category="controlpanel" action_id="ZMI"
+              title="Zope Management Interface" priority="0"
+              icon_expr="zope_icon.gif"/>
+ <action-icon category="controlpanel"
+              action_id="SearchSettings"
+              title="Search Settings" priority="0"
+              icon_expr="search_icon.gif"/>
+ <action-icon category="controlpanel"
+              action_id="NavigationSettings"
+              title="Navigation Settings" priority="0"
+              icon_expr="navigation_icon.gif"/>
+ <action-icon category="plone" action_id="ics"
+              title="iCalendar export" priority="0"
+              icon_expr="icon_export_ical.png"/>
+ <action-icon category="plone" action_id="vcs"
+              title="vCalendar export" priority="0"
+              icon_expr="icon_export_vcal.png"/>
+ <action-icon category="plone" action_id="rotate_clockwise"
+              title="Rotate clockwise" priority="0"
+              icon_expr="icon_rotate_clockwise.png"/>
+ <action-icon category="plone"
+              action_id="rotate_counter_clockwise"
+              title="Rotate clockwise" priority="0"
+              icon_expr="icon_rotate_counter_clockwise.png"/>
+ <action-icon category="plone" action_id="rotate_180"
+              title="Rotate 180" priority="0"
+              icon_expr="icon_rotate_180.png"/>
+ <action-icon category="plone" action_id="flip_horizontal"
+              title="Flip horizontal" priority="0"
+              icon_expr="icon_flip_horizontal.png"/>
+ <action-icon category="plone" action_id="flip_vertical"
+              title="Flip vertical" priority="0"
+              icon_expr="icon_flip_vertical.png"/>
+ <action-icon category="controlpanel"
+              action_id="portal_atct"
+              title="Smart Folder Settings" priority="0"
+              icon_expr="topic_icon.gif"/>
+ <action-icon category="plone" action_id="full_screen"
+              title="Toggle full screen mode" priority="0"
+              icon_expr="fullscreenexpand_icon.gif"/>
+ <action-icon category="controlpanel" action_id="kupu"
+              title="Kupu visual editor" priority="0"
+              icon_expr="kupuimages/kupu_icon.gif"/>
+</action-icons>

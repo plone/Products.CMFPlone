@@ -154,5 +154,17 @@
  
  
  </export-step>
+ <export-step id="action-icons"
+              handler="Products.CMFActionIcons.exportimport.exportActionIconsTool"
+              title="Action Icons">
+  
+  
+  
+  Export action icon definitions
+ 
+ 
+ 
+ </export-step>
+
 
 </export-steps>
