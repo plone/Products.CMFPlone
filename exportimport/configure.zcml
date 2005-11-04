@@ -28,4 +28,23 @@
       for="Products.CMFPlone.interfaces.ISimpleItemWithProperties"
       />
 
+  <!-- Mark ATCT objects as IDAVAware so CMFSetup can export/import them -->
+  <five:implements
+    class="Products.ATContentTypes.content.document.ATDocument"
+    interface="Products.CMFCore.interfaces.IDAVAware"
+    />
+
+  <!-- XXX: Temporarily disable ATTopic exporting until we have an
+       actual exporter or Marshaller -->
+  <five:implements
+    class="Products.ATContentTypes.content.topic.ATTopic"
+    interface="Products.CMFPlone.exportimport.content.IDisabledExport"
+    />
+
+  <adapter
+    factory=".content.NullExporterAdapter"
+    provides="Products.CMFCore.interfaces.IFilesystemExporter"
+    for="Products.CMFPlone.exportimport.content.IDisabledExport"
+    />
+  
 </configure>
