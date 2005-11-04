@@ -66,14 +66,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
 
     def testReplyTabIsOff(self):
         # Ensure 'reply' tab is turned off
-        # XXX NOTE: ActionProviderBAse should have a 'getActionById'
-        # that does this for x in: if x == id
-        dt_actions = self.portal.portal_discussion.listActions()
-        reply_visible=1
-        for action in dt_actions:
-            if action.id=='reply':
-                reply_visible=action.visible
-        self.assertEqual(reply_visible, 0)
+        self.assertEqual(self.actions.getActionInfo('object/reply')['visible'], False)
 
     def testLargePloneFolderWorkflow(self):
         # Large Plone Folder should use folder_workflow
@@ -172,11 +165,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
 
     def testFullScreenAction(self):
         # There should be a full_screen action
-        for action in self.actions.listActions():
-            if action.getId() == 'full_screen':
-                break
-        else:
-            self.fail("Actions tool has no 'full_screen' action")
+        self.actions.getActionInfo('document_actions/full_screen')
 
     def testFullScreenActionIcon(self):
         # There should be a full_screen action icon
