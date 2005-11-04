@@ -367,7 +367,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
     def testChangeStateIsLastFolderButton(self):
         # Change state button should be the last
         actions = [x for x in self.actions.listActions() if
-                    x.category == 'folder_buttons']
+                    x.getInfoData()[0]['category'] == 'folder_buttons']
         self.assertEqual(actions[-1].id, 'change_state', [x.id for x in actions])
 
     def testTypesUseViewActionInListingsProperty(self):
