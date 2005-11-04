@@ -23,7 +23,7 @@ def addPloneSiteForm(dispatcher):
 def addPloneSite(dispatcher, id, title='', description='',
                  create_userfolder=1, email_from_address='',
                  email_from_name='', validate_email=0,
-                 profile_id='CMFPlone:plone', snapshot=True,
+                 profile_id='CMFPlone:plone', snapshot=False,
                  RESPONSE=None, extension_ids=()):
     """ Add a PloneSite to 'dispatcher', configured according to 'profile_id'.
     """
