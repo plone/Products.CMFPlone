@@ -138,15 +138,6 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
             count += 1
         self.failUnless(j < i)
 
-    def testFolderHasFolderListingAction(self):
-        # Folders should have a 'folderlisting' action
-        topic = self.types.getTypeInfo('Folder')
-        for action in topic._cloneActions():
-            if action.id == 'folderlisting':
-                break
-        else:
-            self.fail("Folder has no 'folderlisting' action")
-
     def testTopicHasFolderListingAction(self):
         # Topics should have a 'folderlisting' action
         topic = self.types.getTypeInfo('Topic')
@@ -300,11 +291,11 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.assertEqual(query['start']['range'], 'max')
 
     def testObjectButtonActions(self):
-        installed = [(a.getId(), a.getCategory()) for a in self.actions.listActions()]
-        self.failUnless(('cut', 'object_buttons') in installed)
-        self.failUnless(('copy', 'object_buttons') in installed)
-        self.failUnless(('paste', 'object_buttons') in installed)
-        self.failUnless(('delete', 'object_buttons') in installed)
+        self.setRoles(['Manager', 'Member'])
+        self.actions.getActionInfo('object_buttons/cut')
+        self.actions.getActionInfo('object_buttons/copy')
+        self.actions.getActionInfo('object_buttons/paste')
+        self.actions.getActionInfo('object_buttons/delete')
 
     def testContentsTabVisible(self):
         for a in self.actions.listActions():
@@ -386,8 +377,8 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
     def testFolderlistingAction(self):
         # Make sure the folderlisting action of a Folder is /view, to ensure
         # that the layout template will be resolved (see PloneTool.browserDefault)
-        self.assertEqual(self.types['Folder'].getActionById('folderlisting'), 'view')
-        self.assertEqual(self.types['Plone Site'].getActionById('folderlisting'), 'view')
+        self.assertEqual(self.types['Folder'].getActionInfo('folder/folderlisting')['url'].split('/')[-1], 'view')
+        self.assertEqual(self.types['Plone Site'].getActionInfo('folder/folderlisting')['url'].split('/')[-1], 'view')
 
     def testEnableLivesearchProperty(self):
         # site_properties should have enable_livesearch property
@@ -426,15 +417,14 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.assertEqual(aliases, expected_aliases)
 
     def testSiteActions(self):
-        installed = [(a.getId(), a.getCategory()) for a in self.actions.listActions()]
-        self.failUnless(('sitemap', 'site_actions') in installed)
-        self.failUnless(('contact', 'site_actions') in installed)
-        self.failUnless(('accessibility', 'site_actions') in installed)
-        self.failUnless(('plone_setup', 'site_actions') in installed)
+        self.setRoles(['Manager', 'Member'])
+        self.actions.getActionInfo('site_actions/sitemap')
+        self.actions.getActionInfo('site_actions/contact')
+        self.actions.getActionInfo('site_actions/accessibility')
+        self.actions.getActionInfo('site_actions/plone_setup')
 
     def testNoMembershipToolPloneSetupAction(self):
-        installed = [a.getId() for a in self.membership.listActions()]
-        self.failIf('plone_setup' in installed)
+        self.assertRaises(ValueError, self.actions.getActionInfo, 'user/plone_setup')
 
     def testTypesHaveSelectedLayoutViewAction(self):
         # Should add method aliases to the Plone Site FTI
