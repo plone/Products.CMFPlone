@@ -1813,12 +1813,14 @@ class TestMigrations_v2_1(MigrationTest):
 
     def testFixFolderlistingAction(self):
         fixFolderlistingAction(self.portal, [])
-        self.assertEqual(self.portal.portal_types['Plone Site'].getActionById('folderlisting'), 'view')
+        self.assertEqual(self.portal.getTypeInfo().getActionObject('folder/folderlisting').getActionExpression(),
+                         'string:${folder_url}/view')
 
     def testFixFolderlistingActionTwice(self):
         fixFolderlistingAction(self.portal, [])
         fixFolderlistingAction(self.portal, [])
-        self.assertEqual(self.portal.portal_types['Plone Site'].getActionById('folderlisting'), 'view')
+        self.assertEqual(self.portal.getTypeInfo().getActionObject('folder/folderlisting').getActionExpression(),
+                         'string:${folder_url}/view')
 
     def testFixFolderlistingActionNoTool(self):
         self.portal._delObject('portal_types')

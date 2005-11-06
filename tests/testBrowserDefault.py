@@ -47,7 +47,7 @@ class TestPloneToolBrowserDefault(FunctionalTestCase):
             if hasattr(aq_base(obj), 'getLayout'):
                 viewaction = obj.getLayout()
             else:
-                viewaction = obj.getTypeInfo().getActionById('view')
+                viewaction = obj.getTypeInfo().getActionInfo('object/view')['url'].split('/')[-1]
 
         resolved = getattr(obj, viewaction)()
         base_path = obj.absolute_url(1)
@@ -75,7 +75,7 @@ class TestPloneToolBrowserDefault(FunctionalTestCase):
         if hasattr(aq_base(obj), 'getLayout'):
             viewaction = obj.getLayout()
         else:
-            viewaction = obj.getTypeInfo().getActionById('view')
+            viewaction = obj.getTypeInfo().getActionInfo('object/view')['url'].split('/')[-1]
 
         base_path = obj.absolute_url(1)
         viewed = getattr(obj, viewaction)()
@@ -140,7 +140,7 @@ class TestPloneToolBrowserDefault(FunctionalTestCase):
     # folderlisting action resolution (for folders without default pages)
 
     def testNonBrowserDefaultMixinFolderFolderlistingAction(self):
-        viewAction = self.portal.portal_types['CMF Folder'].getActionById('folderlisting')
+        viewAction = self.portal.portal_types['CMF Folder'].getActionInfo('folder/folderlisting')['url'].split('/')[-1]
         self.assertEqual(self.putils.browserDefault(self.portal.cmffolder),
                          (self.portal.cmffolder, [viewAction]))
 
@@ -150,7 +150,7 @@ class TestPloneToolBrowserDefault(FunctionalTestCase):
         self.compareLayoutVsView(self.portal.atctdocument, path="/view")
 
     def testViewMethodWithoutBrowserDefaultMixinGetsViewAction(self):
-        viewAction = self.portal.portal_types['CMF Document'].getActionById('view')
+        viewAction = self.portal.portal_types['CMF Document'].getActionInfo('object/view')['url'].split('/')[-1]
         obj = self.portal.cmfdocument
         self.compareLayoutVsView(self.portal.cmfdocument, path="/view",
                                  viewaction=viewAction)
@@ -159,7 +159,7 @@ class TestPloneToolBrowserDefault(FunctionalTestCase):
         self.compareLayoutVsView(self.portal.atctdocument, path="")
 
     def testCallWithoutBrowserDefaultMixinGetsViewAction(self):
-        viewAction = self.portal.portal_types['CMF Document'].getActionById('view')
+        viewAction = self.portal.portal_types['CMF Document'].getActionInfo('object/view')['url'].split('/')[-1]
         obj = self.portal.cmfdocument
         self.compareLayoutVsView(self.portal.cmfdocument, path="",
                                  viewaction=viewAction)
