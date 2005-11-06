@@ -23,12 +23,12 @@ if same_type(actions, {}):
 plone_actions=[]
 use_default=1
 for action in actionlist:
-    item={'name':'',
+    item={'title':'',
           'id':'',
           'url':'',
           'selected':''}
 
-    item['name']=action['title']
+    item['title']=action['title']
     item['id']=actionid=action['id']
 
     aurl=action['url'].strip()
