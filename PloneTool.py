@@ -762,9 +762,10 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         # managed explicitly above)
 
         try:
-            act = obj.getTypeInfo().getActionById('folderlisting')
-            if act.startswith('/'):
-                act = act[1:]
+            # XXX: This isn't quite right since it assumes the action
+            # starts with ${object_url}.  Should we raise an error if
+            # it doesn't?
+            act = obj.getTypeInfo().getActionInfo('folder/folderlisting')['url'].split('/')[-1]
             return obj, [act]
         except ValueError:
             pass
@@ -774,9 +775,10 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         #
 
         try:
-            act = obj.getTypeInfo().getActionById('view')
-            if act.startswith('/'):
-                act = act[1:]
+            # XXX: This isn't quite right since it assumes the action
+            # starts with ${object_url}.  Should we raise an error if
+            # it doesn't?
+            act = obj.getTypeInfo().getActionInfo('object/view')['url'].split('/')[-1]
             return obj, [act]
         except ValueError:
             pass
