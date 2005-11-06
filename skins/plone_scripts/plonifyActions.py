@@ -28,7 +28,7 @@ for action in actionlist:
           'url':'',
           'selected':''}
 
-    item['name']=action['name']
+    item['name']=action['title']
     item['id']=actionid=action['id']
 
     aurl=action['url'].strip()
