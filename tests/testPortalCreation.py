@@ -418,7 +418,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.actions.getActionObject('site_actions/plone_setup')
 
     def testNoMembershipToolPloneSetupAction(self):
-        self.assertRaises(ValueError, self.actions.getActionObject, 'user/plone_setup')
+        self.assertEqual(self.actions.getActionObject('user/plone_setup'), None)
 
     def testTypesHaveSelectedLayoutViewAction(self):
         # Should add method aliases to the Plone Site FTI
