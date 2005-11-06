@@ -23,9 +23,9 @@ if itool.objectImplements(context, INTERFACE):
 # Else, if there is a 'folderlisting' action, this will take precedence for
 # folders, so try this, else use the 'view' action.
 
-action = context.lookupTypeAction('view')
+action = context.lookupTypeAction('object/view')
 
 if not action:
-    action = context.lookupTypeAction('folderlisting')
+    action = context.lookupTypeAction('folder/folderlisting')
 
 return action

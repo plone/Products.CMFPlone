@@ -11,7 +11,8 @@ action = None
 fti = context.getTypeInfo()
 
 try:
-    action = fti.getActionById(actionId)
+    # XXX: This isn't quite right since it assumeCs the action starts with ${object_url}
+    action = fti.getActionInfo(actionId)['url'].split('/')[-1]
 except ValueError:
     # If the action doesn't exist, stop
     return None
