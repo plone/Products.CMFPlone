@@ -752,7 +752,7 @@ dl.collapsible dt.collapsibleHeader {
 dl.collapsible dd.collapsibleContent {
     margin: 0;
     padding: 0 1em;
-    clear: both;
+    clear: left;
 }
 
 /* for IE the following isn't needed, that's why the css2 selector is used */
