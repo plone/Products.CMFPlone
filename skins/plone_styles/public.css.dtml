@@ -614,6 +614,12 @@
     border: 1px solid black;
 }
 
+.eventDetails {
+    float: right;
+    width: 20em;
+    clear: right;
+}
+
 /* Useful deviations from regular style on elements */
 
 /* List classes without markers */
