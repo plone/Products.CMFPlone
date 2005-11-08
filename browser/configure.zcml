@@ -6,6 +6,15 @@
     <implements interface=".interfaces.INavigationRoot" />
   </content>
 
+  <browser:layer 
+      name="plone"
+      />
+
+  <browser:skin
+      name="plone"
+      layers="plone cmf default"
+      />
+
   <browser:view
       for="*"
       class=".navigation.DefaultPage"
