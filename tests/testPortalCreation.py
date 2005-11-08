@@ -165,8 +165,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
 
     def testFullScreenAction(self):
         # There should be a full_screen action
-        # XXX: Currently fails due to possible bug in CMFCore
-        self.actions.getActionObject('document_actions/full_screen')
+        self.failUnless(self.actions.document_actions.full_screen is not None)
 
     def testFullScreenActionIcon(self):
         # There should be a full_screen action icon
@@ -282,11 +281,11 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
 
     def testObjectButtonActions(self):
         self.setRoles(['Manager', 'Member'])
-        # XXX: Currently fails due to possible bug in CMFCore
-        self.actions.getActionObject('object_buttons/cut')
-        self.actions.getActionObject('object_buttons/copy')
-        self.actions.getActionObject('object_buttons/paste')
-        self.actions.getActionObject('object_buttons/delete')
+        self.failUnless(self.actions.object_buttons.cut is not None)
+        self.failUnless(self.actions.object_buttons.cut is not None)
+        self.failUnless(self.actions.object_buttons.copy is not None)
+        self.failUnless(self.actions.object_buttons.paste is not None)
+        self.failUnless(self.actions.object_buttons.delete is not None)
 
     def testContentsTabVisible(self):
         for a in self.actions.listActions():
@@ -412,13 +411,13 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
     def testSiteActions(self):
         self.setRoles(['Manager', 'Member'])
         # XXX: Currently fails due to possible bug in CMFCore
-        self.actions.getActionObject('site_actions/sitemap')
-        self.actions.getActionObject('site_actions/contact')
-        self.actions.getActionObject('site_actions/accessibility')
-        self.actions.getActionObject('site_actions/plone_setup')
-
+        self.failUnless(self.actions.site_actions.sitemap is not None)
+        self.failUnless(self.actions.site_actions.contact is not None)
+        self.failUnless(self.actions.site_actions.accessibility is not None)
+        self.failUnless(self.actions.site_actions.plone_setup is not None)
+        
     def testNoMembershipToolPloneSetupAction(self):
-        self.assertEqual(self.actions.getActionObject('user/plone_setup'), None)
+        self.assertRaises(AttributeError, self.actions.user.plone_setup)
 
     def testTypesHaveSelectedLayoutViewAction(self):
         # Should add method aliases to the Plone Site FTI
