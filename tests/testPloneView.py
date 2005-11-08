@@ -17,13 +17,10 @@ from Products.CMFPlone.utils import _createObjectByType
 from Products.CMFPlone.URLTool import URLTool
 
 class TestNavigationView(PloneTestCase.PloneTestCase):
-    """Tests the ... """
-
-    def afterSetUp(self):
-        self.view = getView(self.portal, 'globals_view', self.app.REQUEST)
+    """Tests the global plone view.  """
 
     def testView(self):
-        view = self.view
+        view =  getView(self.portal, 'plone', self.app.REQUEST)
         assert isinstance(view.utool(), URLTool)
         assert view.portal() is self.portal
         assert view.portal_object() is self.portal

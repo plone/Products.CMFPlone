@@ -11,7 +11,7 @@ class RecentPortlet(utils.BrowserView):
     def results(self):
         """ """
         context = utils.context(self)
-        g = getView(context, 'globals_view', self.request)
+        g = getView(context, 'plone', self.request)
         portal_catalog = g.portal().portal_catalog
         typesToShow = g.putils().getUserFriendlyTypes()
         return self.request.get(

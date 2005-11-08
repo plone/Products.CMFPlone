@@ -114,7 +114,7 @@ class ICalendarPortlet(Interface):
         """ """
 
 
-class IPloneGlobals(Interface):
+class IPlone(Interface):
     """ """
 
     def globals():

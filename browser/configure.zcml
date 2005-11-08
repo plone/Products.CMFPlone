@@ -51,10 +51,10 @@
 
   <browser:page
       for="*"
-      name="globals_view"
-      class=".plone.PloneGlobals"
+      name="plone"
+      class=".plone.Plone"
       permission="zope.Public"
-      allowed_interface=".interfaces.IPloneGlobals"
+      allowed_interface=".interfaces.IPlone"
       />
 
   <browser:page

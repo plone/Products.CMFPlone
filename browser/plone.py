@@ -1,4 +1,4 @@
-from Products.CMFPlone.browser.interfaces import IPloneGlobals
+from Products.CMFPlone.browser.interfaces import IPlone
 from Products.CMFPlone import utils
 
 from zope.interface import implements
@@ -12,8 +12,8 @@ from Globals import InitializeClass
 from Products.PageTemplates.Expressions import getEngine
 from ZPublisher.BeforeTraverse import registerBeforeTraverse
 
-class PloneGlobals(utils.BrowserView):
-    implements(IPloneGlobals)
+class Plone(utils.BrowserView):
+    implements(IPlone)
 
     _globals = (
         'utool', 'portal', 'portal_object', 'portal_url',

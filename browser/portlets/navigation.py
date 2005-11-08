@@ -10,7 +10,7 @@ class NavigationPortlet(utils.BrowserView):
 
     def includeTop(self):
         context = utils.context(self)
-        g = getView(context, 'globals_view', self.request)
+        g = getView(context, 'plone', self.request)
         return g.portal_properties().navtree_properties.includeTop
 
     def createNavTree(self):
@@ -23,7 +23,7 @@ class NavigationPortlet(utils.BrowserView):
     def isPortalOrDefaultChild(self):
         """ feel the hacking love """
         context = utils.context(self)
-        g = getView(context, 'globals_view', self.request)
+        g = getView(context, 'plone', self.request)
         portal = g.portal()
         return (portal == context or
                 (portal == context.getParentNode() and

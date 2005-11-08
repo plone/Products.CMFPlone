@@ -4,4 +4,4 @@ The expressions that used to generate these globals have been
 moved to (much faster) Python code in CMFPlone/browser/plone_globals.py
 -->
 
-<metal:globaldefine define-macro="defines" tal:define="foo context/@@globals_view/globals" />
+<metal:globaldefine define-macro="defines" tal:define="foo context/@@plone/globals" />

@@ -10,7 +10,7 @@ class NewsPortlet(utils.BrowserView):
 
     def published_news_items(self):
         context = utils.context(self)
-        g = getView(context, 'globals_view', self.request)
+        g = getView(context, 'plone', self.request)
         portal_catalog = g.portal().portal_catalog
 
         return self.request.get('news', 
@@ -20,7 +20,7 @@ class NewsPortlet(utils.BrowserView):
                                                              review_state='published'))
     def all_news_link(self):
         context = utils.context(self)
-        g = getView(context, 'globals_view', self.request)
+        g = getView(context, 'plone', self.request)
         portal = g.portal()
         portal_url = g.portal_url()
         
