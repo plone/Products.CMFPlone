@@ -34,6 +34,19 @@
       for="Products.CMFCore.interfaces.ISiteRoot"
       />
 
+  <adapter
+      factory=".propertiestool.SimpleItemWithPropertiesNodeAdapter"
+      provides="Products.GenericSetup.interfaces.INodeImporter"
+      for="Products.CMFCore.interfaces.IMemberDataTool"
+      />
+
+  <adapter
+      factory=".propertiestool.SimpleItemWithPropertiesNodeAdapter"
+      provides="Products.GenericSetup.interfaces.INodeExporter"
+      for="Products.CMFCore.interfaces.IMemberDataTool"
+      />
+
+
   <!-- Mark ATCT objects as IDAVAware so CMFSetup can export/import them -->
   <five:implements
     class="Products.ATContentTypes.content.document.ATDocument"

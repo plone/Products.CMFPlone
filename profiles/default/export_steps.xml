@@ -173,5 +173,11 @@
 
  </export-step>
 
+ <export-step id="memberdata-properties"
+              handler="Products.CMFPlone.exportimport.memberdata_properties.exportMemberDataProperties"
+              title="MemberData properties">
 
+   Export MemberData properties
+
+ </export-step>
 </export-steps>

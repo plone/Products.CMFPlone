@@ -206,4 +206,10 @@
   <dependency step="toolset"/>
   Import action icon definitions
  </import-step>
+ <import-step id="memberdata-properties" version="20051108-01"
+              handler="Products.CMFPlone.exportimport.memberdata_properties.importMemberDataProperties"
+              title="MemberData Properties">
+  <dependency step="toolset"/>
+  Import MemberData properties
+ </import-step>
 </import-steps>
