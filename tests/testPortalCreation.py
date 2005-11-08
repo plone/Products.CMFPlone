@@ -417,7 +417,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.failUnless(self.actions.site_actions.plone_setup is not None)
         
     def testNoMembershipToolPloneSetupAction(self):
-        self.assertRaises(AttributeError, self.actions.user.plone_setup)
+        self.assertRaises(AttributeError, getattr, self.actions.user, 'plone_setup')
 
     def testTypesHaveSelectedLayoutViewAction(self):
         # Should add method aliases to the Plone Site FTI
