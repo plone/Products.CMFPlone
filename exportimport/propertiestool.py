@@ -1,6 +1,6 @@
 """Plone Properties tool setup handlers.
 
-$Id: actions.py 39025 2005-10-09 19:59:31Z yuppie $
+$Id:$
 """
 
 from xml.dom.minidom import parseString
@@ -148,5 +148,3 @@ class PlonePropertiesToolNodeAdapter(NodeAdapterBase, ObjectManagerHelpers):
 
             obj = getattr(self.context, obj_id)
             INodeImporter(obj).importNode(child, mode)
-
-

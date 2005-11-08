@@ -28,6 +28,12 @@
       for="Products.CMFPlone.interfaces.ISimpleItemWithProperties"
       />
 
+  <adapter
+      factory="Products.CMFCore.exportimport.content.StructureFolderWalkingAdapter"
+      provides="Products.CMFCore.interfaces.IFilesystemImporter"
+      for="Products.CMFCore.interfaces.ISiteRoot"
+      />
+
   <!-- Mark ATCT objects as IDAVAware so CMFSetup can export/import them -->
   <five:implements
     class="Products.ATContentTypes.content.document.ATDocument"

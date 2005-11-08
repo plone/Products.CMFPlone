@@ -165,6 +165,13 @@
  
  
  </export-step>
+ <export-step id="jsregistry"
+              handler="Products.ResourceRegistries.exportimport.jsregistry.exportJSRegistry"
+              title="Javascript registry">
+
+   Export javascript registry
+
+ </export-step>
 
 
 </export-steps>

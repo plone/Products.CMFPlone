@@ -89,7 +89,7 @@ class PloneTestCase(ZopeTestCase.PortalTestCase):
         _createHomeFolder(self.portal, member_id)
 
     def setGroups(self, groups, name=default_user):
-        '''Changes the specified user's groups. Assumes GRUF.'''
+        """Changes the specified user's groups. Assumes GRUF."""
         uf = self.portal.acl_users
         uf._updateUser(name, groups=makelist(groups), domains=[])
         if name == getSecurityManager().getUser().getId():

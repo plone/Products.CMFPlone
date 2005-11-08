@@ -26,6 +26,7 @@ from Products.CMFCore.permissions import ListFolderContents, ManageProperties, V
 from Products.CMFCore.TypesTool import FactoryTypeInformation
 from Products.CMFCore.DirectoryView import addDirectoryViews
 from Products.CMFCore.utils import getToolByName
+from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFDefault import Portal, DublinCore
 from Products.CMFDynamicViewFTI.browserdefault import BrowserDefaultMixin
 from Products.CMFPlone.PloneFolder import OrderedContainer
@@ -127,5 +128,5 @@ class PloneSite(CMFSite, OrderedContainer, BrowserDefaultMixin):
         """
         return self()
 
-classImplements(PloneSite, PloneSite.__implements__)
+classImplements(PloneSite, PloneSite.__implements__, ISiteRoot)
 Globals.InitializeClass(PloneSite)
