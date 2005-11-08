@@ -3,4 +3,4 @@ validators = validate_content_status_modify
  
 [actions]
 action.failure=traverse_to:string:content_status_history
-action.success=traverse_to_action:string:view
+action.success=redirect_to_action:string:view

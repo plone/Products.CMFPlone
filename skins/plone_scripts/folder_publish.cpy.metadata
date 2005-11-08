@@ -1,4 +1,4 @@
 [actions]
-action.success=traverse_to:request/orig_template|string:view
-action.success_no_edit=traverse_to:request/orig_template|string:view
-action.failure=traverse_to:request/orig_template|string:view
+action.success=redirect_to:request/orig_template|string:view
+action.success_no_edit=redirect_to:request/orig_template|string:view
+action.failure=redirect_to:request/orig_template|string:view

@@ -33,5 +33,4 @@ context.plone_utils.reindexOnReorder(context)
 msg=_(u'Item\'s position has changed.')
 context.plone_utils.addPortalMessage(msg)
 
-context.REQUEST.stripFormData()
 return state

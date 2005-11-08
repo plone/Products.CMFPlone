@@ -3,4 +3,4 @@ validators = validate_title
 
 [actions]
 action.failure=traverse_to:string:reconfig_form
-action.success=traverse_to:string:plone_control_panel
+action.success=redirect_to:string:plone_control_panel

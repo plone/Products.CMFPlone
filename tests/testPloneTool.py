@@ -9,7 +9,6 @@ if __name__ == '__main__':
 from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
-from zope.app.tests.placelesssetup import setUp, tearDown
 from DateTime import DateTime
 from Products.CMFCore.utils import getToolByName
 from Acquisition import Implicit
@@ -753,7 +752,6 @@ class TestPortalTabs(PloneTestCase.PloneTestCase):
     '''Tests for the portal tabs query'''
 
     def afterSetUp(self):
-        setUp()
         self.utils = self.portal.plone_utils
         self.populateSite()
 
@@ -892,9 +890,6 @@ class TestPortalTabs(PloneTestCase.PloneTestCase):
     def testIsStructuralFolderWithNonStructuralFolder(self):
         f = dummy.NonStructuralFolder('ns_folder')
         self.failIf(self.utils.isStructuralFolder(f))
-
-    def beforeTearDown(self):
-        tearDown()
 
 
 class TestBreadCrumbs(PloneTestCase.PloneTestCase):

@@ -11,7 +11,6 @@ from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
 from Products.CMFPlone.utils import _createObjectByType
 from Products.CMFPlone import transaction
-from zope.app.tests.placelesssetup import setUp, tearDown
 from Acquisition import aq_base
 
 from OFS.IOrderSupport import IOrderedContainer
@@ -24,7 +23,6 @@ from zExceptions import BadRequest
 class TestPloneFolder(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
-        setUp()
         membership = self.portal.portal_membership
         # Create a bunch of subfolders
         self.folder.invokeFactory('Folder', id='sub1')
@@ -66,9 +64,6 @@ class TestPloneFolder(PloneTestCase.PloneTestCase):
         _createObjectByType('Large Plone Folder', self.folder, 'lpf')
         lpf = self.folder.lpf
         self.failIf(IOrderedContainer.isImplementedBy(lpf))
-
-    def beforeTearDown(self):
-        tearDown()
 
 
 class TestCheckIdAvailable(PloneTestCase.PloneTestCase):

@@ -30,24 +30,20 @@
         </div>
     </tal:block>
 
-    <tal:block tal:repeat="message python: putils.getPortalMessages()">
+    <tal:block tal:define="messages python: putils.showPortalMessages()"
+               tal:repeat="message messages">
         <tal:block
              tal:define="type_css_map python: {'info':'portalMessage',
                                                'warn':'portalWarningMessage',
-                                               'stop':'portalStopMessage',
-                                               'structure':'__structure'
-                                              };">
+                                               'stop':'portalStopMessage'
+                                              };
+                         mtype message/type | nothing;">
             <div class=""
-                 tal:define="cssclass python:type_css_map[message['type']];"
-                 tal:condition="python:cssclass != '__structure'"
-                 tal:attributes="class cssclass"
-                 tal:content="message/message">
-                     Message
+                 tal:attributes="class python:mtype and type_css_map[mtype] or 'info';"
+                 tal:content="message/message | nothing"
+                 i18n:translate="">
+                Message
             </div>
-
-            <tal:block
-                 tal:condition="python: message['type']=='structure'"
-                 tal:replace="structure message/message" />
 
         </tal:block>
     </tal:block>

@@ -12,12 +12,10 @@ from Products.CMFPlone.tests import PloneTestCase
 from AccessControl import Unauthorized
 from Acquisition import aq_base
 
-from zope.app.tests.placelesssetup import setUp, tearDown
 
 class TestContentSecurity(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
-        setUp()
         self.portal.acl_users._doAddUser('user1', 'secret', ['Member'], [])
         self.portal.acl_users._doAddUser('user2', 'secret', ['Member'], [])
         #_ender_'s member who's not a Member usecase
@@ -166,9 +164,6 @@ class TestContentSecurity(PloneTestCase.PloneTestCase):
             subfolder.new.getAddableTypesInMenu(('Page','Smart Folder'))
         except Unauthorized:
             self.fail("Could not access getAddableTypesInMenu on 'new'")
-
-    def beforeTearDown(self):
-        tearDown()
 
 
 def test_suite():

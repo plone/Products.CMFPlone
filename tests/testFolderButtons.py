@@ -10,13 +10,11 @@ from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone import transaction
 
-from zope.app.tests.placelesssetup import setUp, tearDown
 
 class TestFolderRename(PloneTestCase.PloneTestCase):
     # Tests for folder_rename and folder_rename_form
 
     def afterSetUp(self):
-        setUp()
         self.catalog = self.portal.portal_catalog
         self.folder.invokeFactory('Folder', id='foo')
         self.folder.invokeFactory('Folder', id='bar')
@@ -83,15 +81,11 @@ class TestFolderRename(PloneTestCase.PloneTestCase):
         self.app.REQUEST.set('paths', ['/garbage/path'])
         self.folder.folder_rename_form()
 
-    def beforeTearDown(self):
-        tearDown()
-
 
 class TestFolderDelete(PloneTestCase.PloneTestCase):
     # Tests for folder_delete.py
 
     def afterSetUp(self):
-        setUp()
         self.catalog = self.portal.portal_catalog
         self.folder.invokeFactory('Folder', id='foo')
         self.folder.invokeFactory('Folder', id='bar')
@@ -127,16 +121,12 @@ class TestFolderDelete(PloneTestCase.PloneTestCase):
         self.app.REQUEST.set('paths', ['/garbage/path'])
         self.folder.folder_delete()
 
-    def beforeTearDown(self):
-        tearDown()
-
 
 class TestFolderPublish(PloneTestCase.PloneTestCase):
     # Tests for folder_publish and content_status_history and
     # content_status_modify
 
     def afterSetUp(self):
-        setUp()
         self.catalog = self.portal.portal_catalog
         self.wtool = self.portal.portal_workflow
         self.folder.invokeFactory('Folder', id='foo')
@@ -175,15 +165,9 @@ class TestFolderPublish(PloneTestCase.PloneTestCase):
         self.app.REQUEST.set('paths', ['/garbage/path'])
         self.folder.content_status_history()
 
-    def beforeTearDown(self):
-        tearDown()
-
 
 class TestFolderCutCopy(PloneTestCase.PloneTestCase):
     # Tests for folder_cut.py and folder_copy.py
-
-    def afterSetUp(self):
-        setUp()
 
     def testCutNoErrorOnBadPaths(self):
         # Ensure we don't fail on a bad path
@@ -194,9 +178,6 @@ class TestFolderCutCopy(PloneTestCase.PloneTestCase):
         # Ensure we don't fail on a bad path
         self.app.REQUEST.set('paths', ['/garbage/path'])
         self.folder.folder_copy()
-
-    def beforeTearDown(self):
-        tearDown()
 
 
 def test_suite():

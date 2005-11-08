@@ -10,5 +10,5 @@ validators..Cancel=
 
 [actions]
 action.success=traverse_to:string:metadata_edit
-action.success..Cancel=traverse_to:string:view
+action.success..Cancel=redirect_to:string:view
 action.failure=traverse_to:string:metadata_edit_form

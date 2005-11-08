@@ -11,12 +11,11 @@ from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
 
 from DateTime import DateTime
-from zope.app.tests.placelesssetup import setUp, tearDown
+
 
 class TestPrefsUserManage(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
-        setUp()
         self.membership = self.portal.portal_membership
         self.membership.memberareaCreationFlag = 0
 
@@ -48,9 +47,6 @@ class TestPrefsUserManage(PloneTestCase.PloneTestCase):
         barney = self.membership.getMemberById('barney')
         self.failIfEqual(barney.fullname, 'Barney Rubble')
         self.failIfEqual(barney.email, 'barney@bedrock.com')
-
-    def beforeTearDown(self):
-        tearDown()
 
 
 def test_suite():

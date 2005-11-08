@@ -39,6 +39,9 @@ ZopeTestCase.installProduct('PortalTransforms', quiet=1)
 ZopeTestCase.installProduct('ATContentTypes')
 ZopeTestCase.installProduct('ATReferenceBrowserWidget')
 
+ZopeTestCase.installProduct('statusmessages')
+ZopeTestCase.installProduct('Five')
+
 # Install sessions and error_log
 ZopeTestCase.utils.setupCoreSessions()
 ZopeTestCase.utils.setupSiteErrorLog()
@@ -52,6 +55,11 @@ from AccessControl.SecurityManagement import noSecurityManager
 from Acquisition import aq_base
 import time
 
+from zope.app.tests.placelesssetup import setUp, tearDown
+from Products.Five import zcml
+import Products.Five
+import Products.statusmessages
+
 portal_name = 'portal'
 portal_owner = 'portal_owner'
 default_user = ZopeTestCase.user_name
@@ -60,6 +68,11 @@ default_password = ZopeTestCase.user_password
 
 class PloneTestCase(ZopeTestCase.PortalTestCase):
     '''TestCase for Plone testing'''
+
+    def beforeSetUp(self):
+        setUp()
+        zcml.load_config('meta.zcml', Products.Five)
+        zcml.load_config('configure.zcml', Products.statusmessages)
 
     def _setup(self):
         ZopeTestCase.PortalTestCase._setup(self)
@@ -96,6 +109,9 @@ class PloneTestCase(ZopeTestCase.PortalTestCase):
         uf = self.app.acl_users
         user = uf.getUserById(portal_owner).__of__(uf)
         newSecurityManager(None, user)
+
+    def beforeTearDown(self):
+        tearDown()
 
 
 class FunctionalTestCase(ZopeTestCase.Functional, PloneTestCase):

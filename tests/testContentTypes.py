@@ -10,8 +10,6 @@ from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
 from Products.CMFPlone import LargePloneFolder
-from zope.app.tests.placelesssetup import setUp, tearDown
-
 from Acquisition import aq_base
 
 # BBB
@@ -85,7 +83,6 @@ class TestContentTypes(PloneTestCase.PloneTestCase):
     # not the skin scripts.
 
     def afterSetUp(self):
-        setUp()
         perms = self.getPermissionsOfRole('Member')
         self.setPermissions(perms + [AddPortalTopics], 'Member')
 
@@ -161,8 +158,6 @@ class TestContentTypes(PloneTestCase.PloneTestCase):
         self.folder.topic.edit(title='Foo')
         self.assertEqual(self.folder.topic.Title(), 'Foo')
 
-    def beforeTearDown(self):
-        tearDown()
 
 def test_suite():
     from unittest import TestSuite, makeSuite

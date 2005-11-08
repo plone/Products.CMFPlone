@@ -11,13 +11,9 @@ from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
 
 from Products.CMFPlone.utils import _createObjectByType
-from zope.app.tests.placelesssetup import setUp, tearDown
 
 class TestBrowserDefaultScripts(PloneTestCase.PloneTestCase):
     """Tests the browser default and folder-default page scripts"""
-
-    def afterSetUp(self):
-        setUp()
 
     def testNoIndexHtml(self):
         # A folder shouldn't have an index_html object at instantiation time
@@ -64,9 +60,6 @@ class TestBrowserDefaultScripts(PloneTestCase.PloneTestCase):
         _createObjectByType('CMF Document', self.folder, 'cmfdocument')
         self.assertEqual(self.folder.cmffolder.getViewTemplateId(), 'folder_listing')
         self.assertEqual(self.folder.cmfdocument.getViewTemplateId(), 'document_view')
-
-    def beforeTearDown(self):
-        tearDown()
 
 
 def test_suite():

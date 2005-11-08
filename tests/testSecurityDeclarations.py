@@ -10,7 +10,6 @@ if __name__ == '__main__':
 from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
-from zope.app.tests.placelesssetup import setUp, tearDown
 
 from OFS.SimpleItem import SimpleItem
 from AccessControl import Unauthorized
@@ -439,9 +438,6 @@ class TestAcquisitionMethods(RestrictedPythonTest):
         self.checkUnauthorized('print context.aq_acquire')
 
 class TestAllowSendtoSecurity(PloneTestCase.PloneTestCase):
-
-    def afterSetUp(self):
-        setUp()
         
     def test_AllowSendto(self):
         portal = self.portal
@@ -481,10 +477,6 @@ class TestAllowSendtoSecurity(PloneTestCase.PloneTestCase):
         msg = sendto()
         errormsg = "You%20are%20not%20allowed%20to%20send%20this%20link"
         self.failIf(str(msg).find(errormsg) != -1, str(msg))
-
-    def beforeTearDown(self):
-        tearDown()
-
 
 
 class TestSkinSecurity(PloneTestCase.PloneTestCase):

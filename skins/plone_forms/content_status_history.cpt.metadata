@@ -12,5 +12,5 @@ validators..Cancel=
 action.success=traverse_to:string:content_status_modify
 action.success..Publish=traverse_to:string:content_status_modify
 action.success..FolderPublish=traverse_to:string:folder_publish
-action.success..Cancel=traverse_to_action:string:view
+action.success..Cancel=redirect_to_action:string:view
 action.failure=traverse_to:string:content_status_history

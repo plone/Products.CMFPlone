@@ -15,8 +15,6 @@ from Acquisition import aq_base
 from DateTime import DateTime
 from zExceptions import BadRequest
 
-from zope.app.tests.placelesssetup import setUp, tearDown
-
 default_user = PloneTestCase.default_user
 
 
@@ -316,7 +314,6 @@ class TestMembershipTool(PloneTestCase.PloneTestCase):
 class TestCreateMemberarea(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
-        setUp()
         self.membership = self.portal.portal_membership
         self.membership.addMember('user2', 'secret', ['Member'], [])
 
@@ -387,14 +384,10 @@ class TestCreateMemberarea(PloneTestCase.PloneTestCase):
         memberfolder = self.membership.getHomeFolder('user2')
         self.failIf(memberfolder, 'createMemberarea created memberarea despite flag')
 
-    def beforeTearDown(self):
-        tearDown()
-
 
 class TestMemberareaSetup(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
-        setUp()
         self.membership = self.portal.portal_membership
         self.membership.addMember('user2', 'secret', ['Member'], [])
         self.membership.createMemberarea('user2')
@@ -429,9 +422,6 @@ class TestMemberareaSetup(PloneTestCase.PloneTestCase):
     def testHomePageNotExists(self):
         # Should not have an index_html document anymore
         self.failIf('index_html' in self.home.objectIds())
-
-    def beforeTearDown(self):
-        tearDown()
 
 
 class TestSearchForMembers(PloneTestCase.PloneTestCase):

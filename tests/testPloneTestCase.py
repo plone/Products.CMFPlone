@@ -9,14 +9,12 @@ if __name__ == '__main__':
 from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
 
-from zope.app.tests.placelesssetup import setUp, tearDown
 from Acquisition import aq_base
 
 
 class TestPloneTestCase(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
-        setUp()
         self.catalog = self.portal.portal_catalog
         self.workflow = self.portal.portal_workflow
 
@@ -57,9 +55,6 @@ class TestPloneTestCase(PloneTestCase.PloneTestCase):
         self.assertEqual(self.folder.new.EditableBody(), '')
         self.folder.new.document_edit('plain', 'data', title='Foo')
         self.assertEqual(self.folder.new.EditableBody(), 'data')
-
-    def beforeTearDown(self):
-        tearDown()
 
 
 def test_suite():

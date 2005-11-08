@@ -16,8 +16,6 @@ from Products.CMFPlone import LargePloneFolder
 from Products.CMFPlone import transaction
 from OFS.CopySupport import CopyError
 
-from zope.app.tests.placelesssetup import setUp, tearDown
-
 #XXX NOTE
 #    document, link, and newsitem edit's are now validated
 #    so we must pass in fields that the validators need
@@ -26,7 +24,6 @@ from zope.app.tests.placelesssetup import setUp, tearDown
 class TestContentTypeScripts(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
-        setUp()
         perms = self.getPermissionsOfRole('Member')
         self.setPermissions(perms + [AddPortalTopics], 'Member')
         self.discussion = self.portal.portal_discussion
@@ -199,16 +196,12 @@ class TestContentTypeScripts(PloneTestCase.PloneTestCase):
         metatypes = tool.listMetaTags(doc)
         # TODO: atm it checks only of the script can be called w/o an error
 
-    def beforeTearDown(self):
-        tearDown()
-
 
 class TestEditShortName(PloneTestCase.PloneTestCase):
     # Test fix for http://plone.org/collector/2246
     # Short name should be editable without specifying a file.
 
     def afterSetUp(self):
-        setUp()
         self.folder.invokeFactory('File', id='file', file=dummy.File())
         self.folder.invokeFactory('Image', id='image', file=dummy.Image())
 
@@ -258,16 +251,12 @@ class TestEditShortName(PloneTestCase.PloneTestCase):
         self.folder.image.image_edit(id='fred')
         self.failUnless('fred' in self.folder.objectIds())
 
-    def beforeTearDown(self):
-        tearDown()
-
 
 class TestEditFileKeepsMimeType(PloneTestCase.PloneTestCase):
     # Tests covering http://plone.org/collector/2792
     # Editing a file should not change MIME type
 
     def afterSetUp(self):
-        setUp()
         self.folder.invokeFactory('File', id='file')
         self.folder.file.file_edit(file=dummy.File('foo.pdf'))
         self.folder.invokeFactory('Image', id='image')
@@ -313,9 +302,6 @@ class TestEditFileKeepsMimeType(PloneTestCase.PloneTestCase):
         self.assertEqual(self.folder.foo.Format(), 'image/gif')
         self.assertEqual(self.folder.foo.content_type, 'image/gif')
 
-    def beforeTearDown(self):
-        tearDown()
-
 
 class TestFileURL(PloneTestCase.PloneTestCase):
     # Tests covering http://plone.org/collector/3296
@@ -352,7 +338,6 @@ class TestFileExtensions(PloneTestCase.PloneTestCase):
     image_id = 'Image.2001-01-01.12345'
 
     def afterSetUp(self):
-        setUp()
         self.folder.invokeFactory('File', id=self.file_id)
         self.folder.invokeFactory('Image', id=self.image_id)
         transaction.commit(1) # make rename work
@@ -375,9 +360,6 @@ class TestFileExtensions(PloneTestCase.PloneTestCase):
         self.folder[self.image_id].image_edit(id='barney')
         self.failUnless('barney.gif' in self.folder.objectIds())
 
-    def beforeTearDown(self):
-        tearDown()
-
 
 class TestBadFileIds(PloneTestCase.PloneTestCase):
 
@@ -385,7 +367,6 @@ class TestBadFileIds(PloneTestCase.PloneTestCase):
     image_id = 'Image.2001-01-01.12345'
 
     def afterSetUp(self):
-        setUp()
         self.folder.invokeFactory('File', id=self.file_id)
         self.folder.invokeFactory('Image', id=self.image_id)
         transaction.commit(1) # make rename work
@@ -411,9 +392,6 @@ class TestBadFileIds(PloneTestCase.PloneTestCase):
         self.failIf('fred%.gif' in self.folder.objectIds())
 
     # XXX: Dang! No easy way to get at the validator state...
-
-    def beforeTearDown(self):
-        tearDown()
 
 
 class TestImagePatch(PloneTestCase.PloneTestCase):

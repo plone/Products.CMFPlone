@@ -2,5 +2,5 @@
 title = Select layout
 
 [actions]
-action.failure=traverse_to_action:string:view
-action.success=traverse_to_action:string:view
+action.failure=redirect_to_action:string:view
+action.success=redirect_to_action:string:view

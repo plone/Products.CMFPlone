@@ -3,4 +3,4 @@ validators = validate_effective_expiry_date
 
 [actions]
 action.failure=traverse_to_action:string:metadata
-action.success=traverse_to_action:string:view
+action.success=redirect_to_action:string:view

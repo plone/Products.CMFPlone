@@ -21,7 +21,6 @@ from Products.CMFPlone.CatalogTool import _eioRegistry
 
 from Products.CMFPlone.CatalogTool import is_folderish
 from Products.CMFPlone.tests import dummy
-from zope.app.tests.placelesssetup import setUp, tearDown
 
 portal_name = PloneTestCase.portal_name
 default_user  = PloneTestCase.default_user
@@ -428,7 +427,6 @@ class TestFolderCataloging(PloneTestCase.PloneTestCase):
     # folder_edit must recatalog. folder_rename must recatalog.
 
     def afterSetUp(self):
-        setUp()
         self.catalog = self.portal.portal_catalog
         self.folder.invokeFactory('Folder', id='foo')
 
@@ -486,14 +484,10 @@ class TestFolderCataloging(PloneTestCase.PloneTestCase):
         #Title is a TextIndex
         self.failIf(self.catalog(Title='Snooze'))
 
-    def beforeTearDown(self):
-        tearDown()
-
 
 class TestCatalogOrdering(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
-        setUp()
         self.catalog = self.portal.portal_catalog
         self.folder.invokeFactory('Document', id='doc1', text='foo')
         self.folder.invokeFactory('Document', id='doc2', text='bar')
@@ -610,9 +604,6 @@ class TestCatalogOrdering(PloneTestCase.PloneTestCase):
         self.failUnless(len(members_query))
         self.failUnlessEqual(len(members_query),len(members_sorted))
 
-    def beforeTearDown(self):
-        tearDown()
-
 
 class TestCatalogBugs(PloneTestCase.PloneTestCase):
 
@@ -651,7 +642,6 @@ class TestCatalogUnindexing(PloneTestCase.PloneTestCase):
     # Published objects are not unindexed on delete?
 
     def afterSetUp(self):
-        setUp()
         self.catalog = self.portal.portal_catalog
         self.workflow = self.portal.portal_workflow
         self.folder.invokeFactory('Document', id='doc')
@@ -722,9 +712,6 @@ class TestCatalogUnindexing(PloneTestCase.PloneTestCase):
         self.setRoles(['Member'])
         self.folder.aq_parent._delObject(self.folder.getId())
         self.failIf(self.catalog(id='doc'))
-
-    def beforeTearDown(self):
-        tearDown()
 
 
 class TestCatalogExpirationFiltering(PloneTestCase.PloneTestCase):

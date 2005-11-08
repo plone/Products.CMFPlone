@@ -3,4 +3,4 @@ validators=validate_id,validate_title,validate_link_edit
 
 [actions]
 action.failure=traverse_to_action:string:edit
-action.success=traverse_to_action:string:view
+action.success=redirect_to_action:string:view

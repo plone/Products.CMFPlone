@@ -13,12 +13,10 @@ from Products.CMFCore.permissions import SetOwnProperties
 from DateTime import DateTime
 from time import sleep
 
-from zope.app.tests.placelesssetup import setUp, tearDown
 
 class TestLogin(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
-        setUp()
         self.membership = self.portal.portal_membership
         self.membership.addMember('member', 'secret', ['Member'], [])
         self.login('member')
@@ -64,9 +62,6 @@ class TestLogin(PloneTestCase.PloneTestCase):
         # login_time did not change
         member = self.membership.getAuthenticatedMember()
         self.assertEqual(DateTime(member.getProperty('login_time')), login_time)
-
-    def beforeTearDown(self):
-        tearDown()
 
 
 def test_suite():
