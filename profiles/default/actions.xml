@@ -175,7 +175,13 @@
    <permission>View</permission>
   </action>
  </action-provider>
- <action-provider name="portal_registration"/>
+ <action-provider name="portal_registration">
+    <action title="Join" action_id="join" category="user"
+     condition_expr="not:member"
+     url_expr="string:${portal_url}/join_form" visible="True">
+   <permission>Add portal member</permission>
+  </action>
+  </action-provider>
  <action-provider name="portal_discussion">
   <action title="Reply" action_id="reply" category="object"
      condition_expr="python: object is not None and portal.portal_discussion.isDiscussionAllowedFor(object)"
