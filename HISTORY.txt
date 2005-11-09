@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1.2 (unreleased)
 
+    - Fixed http://plone.org/collector/4894 - Missing closing quote in 
+      LiveSearch pop-up.
+      [stefan]
+
     - Send new generated plain password via email directly when reset password,
       but not the one stored in userfolder since it could be encypted.
       Also use getProperty to retrieve email address for better LDAP 
