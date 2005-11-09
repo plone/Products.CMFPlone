@@ -172,11 +172,16 @@
    Export javascript registry
 
  </export-step>
+ <export-step id="cssregistry"
+              handler="Products.ResourceRegistries.exportimport.cssregistry.exportCSSRegistry"
+              title="Stylesheet registry">
 
+   Export stylesheet registry
+ 
+</export-step>
  <export-step id="memberdata-properties"
               handler="Products.CMFPlone.exportimport.memberdata_properties.exportMemberDataProperties"
               title="MemberData properties">
-
    Export MemberData properties
 
  </export-step>

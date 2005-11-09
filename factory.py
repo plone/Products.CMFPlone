@@ -1,8 +1,6 @@
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 
 from Products.CMFCore.utils import getToolByName
-from Products.GenericSetup import EXTENSION
-from Products.GenericSetup import profile_registry
 from Products.GenericSetup.tool import SetupTool
 
 from Portal import PloneSite
