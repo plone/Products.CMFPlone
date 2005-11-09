@@ -11,7 +11,7 @@ class NavigationPortlet(utils.BrowserView):
     def includeTop(self):
         context = utils.context(self)
         g = getView(context, 'plone', self.request)
-        return g.portal_properties().navtree_properties.includeTop
+        return g.portal_properties.navtree_properties.includeTop
 
     def createNavTree(self):
         context = utils.context(self)
@@ -24,7 +24,7 @@ class NavigationPortlet(utils.BrowserView):
         """ feel the hacking love """
         context = utils.context(self)
         g = getView(context, 'plone', self.request)
-        portal = g.portal()
+        portal = g.portal
         return (portal == context or
                 (portal == context.getParentNode() and
                  context.plone_utils.isDefaultPage(context)))

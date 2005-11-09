@@ -12,8 +12,8 @@ class RecentPortlet(utils.BrowserView):
         """ """
         context = utils.context(self)
         g = getView(context, 'plone', self.request)
-        portal_catalog = g.portal().portal_catalog
-        typesToShow = g.putils().getUserFriendlyTypes()
+        portal_catalog = g.portal.portal_catalog
+        typesToShow = g.putils.getUserFriendlyTypes()
         return self.request.get(
             'items',
             portal_catalog.searchResults(sort_on='modified',
