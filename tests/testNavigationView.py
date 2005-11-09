@@ -20,7 +20,7 @@ class TestNavigationView(PloneTestCase.PloneTestCase):
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
-    suite.addTest(makeSuite(TestBrowserDefaultScripts))
+    suite.addTest(makeSuite(TestNavigationView))
     return suite
 
 if __name__ == '__main__':

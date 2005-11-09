@@ -33,43 +33,43 @@ class TestPloneView(PloneTestCase.PloneTestCase):
         self.view = getView(self.portal, 'plone', self.app.REQUEST)
 
     def testUTool(self):
-        assert isinstance(self.view.utool(), URLTool)
+        assert isinstance(self.view.utool, URLTool)
 
     def testPortal(self):
-        assert self.view.portal() is self.portal
+        assert self.view.portal == self.portal
         
     def testPortalObject(self):
-        assert self.view.portal_object() is self.portal
+        assert self.view.portal_object == self.portal
 
     def testPortalURL(self):
-        assert isinstance(self.view.portal_url(), type(''))
+        assert isinstance(self.view.portal_url, type(''))
 
     def testMTool(self):
-        assert isinstance(self.view.mtool(), MembershipTool)
+        assert isinstance(self.view.mtool, MembershipTool)
 
     def testGTool(self):
-        assert isinstance(self.view.gtool(), GroupsTool)
+        assert isinstance(self.view.gtool, GroupsTool)
 
     def testGDTool(self):
-        assert isinstance(self.view.gdtool(), GroupDataTool)
+        assert isinstance(self.view.gdtool, GroupDataTool)
 
     def testATool(self):
-        assert isinstance(self.view.atool(), ActionsTool)
+        assert isinstance(self.view.atool, ActionsTool)
 
     def testAITool(self):
-        assert isinstance(self.view.aitool(), ActionIconsTool)
+        assert isinstance(self.view.aitool, ActionIconsTool)
 
     def testPUtils(self):
         pass
 
     def testWTool(self):
-        assert isinstance(self.view.wtool(), WorkflowTool)
+        assert isinstance(self.view.wtool, WorkflowTool)
 
     def testIFaceTool(self):
-        assert isinstance(self.view.ifacetool(), InterfaceTool)
+        assert isinstance(self.view.ifacetool, InterfaceTool)
 
     def testSynTool(self):
-        assert isinstance(self.view.syntool(), SyndicationTool)
+        assert isinstance(self.view.syntool, SyndicationTool)
 
     def testPortalTitle(self):
         pass
