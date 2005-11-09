@@ -66,23 +66,27 @@ def ensureFriendlyTypes(query):
         friendlyTypes = ploneUtils.getUserFriendlyTypes(typesList)
         query['portal_type'] = friendlyTypes
 
-for k, v in REQUEST.items():
+# Avoid creating a session implicitly.
+for k in REQUEST.keys():
+    if k in ('SESSION',):
+        continue
+    v = REQUEST.get(k)
     if v and k in indexes:
         if k in quote_logic_indexes:
             v = quote_bad_chars(v)
             if quote_logic:
                 v = quotequery(v)
-        query.update({k:v})
-        show_query=1
+        query[k] = v
+        show_query = 1
     elif k.endswith('_usage'):
         key = k[:-6]
         param, value = v.split(':')
         second_pass[key] = {param:value}
-    elif k=='sort_on' or k=='sort_order' or k=='sort_limit':
-        if k=='sort_limit' and not same_type(v, 0):
-            query.update({k:int(v)})
+    elif k in ('sort_on', 'sort_order', 'sort_limit'):
+        if k == 'sort_limit' and not same_type(v, 0):
+            query[k] = int(v)
         else:
-            query.update({k:v})
+            query[k] = v
 
 for k, v in second_pass.items():
     qs = query.get(k)
@@ -94,12 +98,11 @@ for k, v in second_pass.items():
 # doesn't normal call catalog unless some field has been queried
 # against. if you want to call the catalog _regardless_ of whether
 # any items were found, then you can pass show_all=1.
-
 if show_query:
     try:
         if use_types_blacklist:
             ensureFriendlyTypes(query)
-        results=catalog(query,show_inactive=show_inactive)
+        results = catalog(query, show_inactive=show_inactive)
     except ParseError:
         pass
 
