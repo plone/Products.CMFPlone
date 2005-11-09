@@ -34,165 +34,78 @@ class Plone(utils.BrowserView):
         Pure optimization hack, globalizes entire view for speed. Yes
         it's evil, but this hack will eventually be removed after
         globals are officially deprecated.
+
+        YOU CAN ONLY CALL THIS METHOD FROM A PAGE TEMPLATE AND EVEN
+        THEN IT MIGHT DESTROY YOU!
         """
+
+        state = self.request.other.get('__PloneViewOptimizationRequestCache', None)
         context = sys._getframe(2).f_locals['econtext']
-        for name in self._globals:
-            context.setGlobal(name, getattr(self, name)())
+        
+        if state is None:
+            state = {}
+            for name in self._globals:
+                v = getattr(self, name)
+                state[name] = v
+                context.setGlobal(name, v)
+            self.request.other['__PloneViewOptimizationRequestCache'] = state
+        else:
+            for k, v in state.items():
+                context.setGlobal(k, v)
 
-    def utool(self):
-        return utils.context(self).portal_url
+    def __init__(self, context, request):
+        super(Plone, self).__init__(context, request)
 
-    def portal(self):
-        return self.utool().getPortalObject()
-
-    def portal_object(self):
-        return self.portal()
-
-    def portal_url(self):
-        return self.utool()()
-
-    def mtool(self):
-        return self.portal().portal_membership
-
-    def gtool(self):
-        return self.portal().portal_groups or None
-
-    def gdtool(self):
-        return self.portal().portal_groupdata or None
-
-    def atool(self):
-        return self.portal().portal_actions
-
-    def aitool(self):
-        return self.portal().portal_actionicons or None
-
-    def putils(self):
-        return self.portal().plone_utils
-
-    def wtool(self):
-        return self.portal().portal_workflow
-
-    def ifacetool(self):
-        return self.portal().portal_interface or None
-
-    def syntool(self):
-        return self.portal().portal_syndication
-
-    def portal_title(self):
-        self.portal_object().Title()
-
-    def object_title(self):
-        utils.context(self).pretty_title_or_id()
-
-    def member(self):
-        self.mtool().getAuthenticatedMember()
-
-    def checkPermission(self):
-        return self.mtool().checkPermission
-
-    def membersfolder(self):
-        return self.mtool().getMembersFolder()
-
-    def isAnon(self):
-        return self.mtool().isAnonymousUser()
-
-    def actions(self):
-        return self.portal().portal_actions.listFilteredActionsFor(utils.context(self))
-
-    def keyed_actions(self):
-        return self.portal().keyFilteredActions(self.actions())
-
-    def user_actions(self):
-        return self.actions()['user']
-
-    def workflow_actions(self):
-        return self.actions()['workflow']
-
-    def folder_actions(self):
-        return self.actions()['folder']
-
-    def global_actions(self):
-        return self.actions()['global']
-
-    def portal_tabs(self):
-        context = utils.context(self)
-        return self.putils().createTopLevelTabs(context, actions=self.actions())
-
-    def wf_state(self):
-        return self.wtool().getInfoFor(utils.context(self),'review_state', None)
-
-    def portal_properties(self):
-        return self.portal().portal_properties
-
-    def site_properties(self):
-        return self.portal_properties().site_properties
-
-    def ztu(self):
-        return ZTUtils
-
-    def wf_actions(self):
-        return self.workflow_actions()
-
-    def isFolderish(self):
-        return utils.context(self).isPrincipiaFolderish
-
-    def template_id(self):
-        return self.request.get('template_id', None) or utils.context(self).getId() or None # ?
-
-    def slots_mapping(self):
-        return self.request.get('slots_mapping', None) or utils.context(self).prepare_slots() or None
-
-    def Iterator(self):
-        return CMFPlone.IndexIterator
-
-    def tabindex(self):
-        return self.Iterator()(pos=30000)
-
-    def here_url(self):
-        return utils.context(self).absolute_url()
-
-    def sl(self):
-        return self.slots_mapping()['left']
-
-    def sr(self):
-        return self.slots_mapping()['right']
-
-    def hidecolumns(self):
-        return utils.context(self).hide_columns(self.sl(),self.sr())
-
-    def default_language(self):
-        return self.site_properties().default_language or None
-
-    def language(self):
-        return self.request.get('language', None) or utils.context(self).Language() or self.default_language()
-
-    def is_editable(self):
-        return self.checkPermission()('Modify portal content', utils.context(self))
-
-    def isEditable(self):
-        return self.is_editable()
-
-    def lockable(self):
-        return hasattr(utils.context(self).aq_inner.aq_explicit, 'wl_isLocked')
-
-    def isLocked(self):
-        return self.lockable() and utils.context(self).wl_isLocked()
-
-    def isRTL(self):
-        return utils.context(self).isRightToLeft(domain='plone')
-
-    def visible_ids(self):
-        return utils.context(self).visibleIdsEnabled() or None
-
-    def current_page_url(self):
-        return utils.context(self).getCurrentUrl() or None
-
-    def view_template_id(self):
-        return utils.context(self).getViewTemplateId() or None
-
-    def isViewTemplate(self):
-        return self.template_id()==self.view_template_id()
-
-    def normalizeString(self):
-        return self.putils().normalizeString
+        self.utool = utool = utils.context(self).portal_url
+        self.portal = portal = utool.getPortalObject()
+        self.portal_object =  portal
+        self.portal_url =  utool()
+        self.mtool = mtool = portal.portal_membership
+        self.gtool =  portal.portal_groups or None
+        self.gdtool = portal.portal_groupdata or None
+        self.atool =  portal.portal_actions
+        self.aitool = portal.portal_actionicons or None
+        self.putils = putils = portal.plone_utils
+        self.wtool =  portal.portal_workflow
+        self.ifacetool =  portal.portal_interface or None
+        self.syntool =  portal.portal_syndication
+        self.portal_title = self.portal_object.Title()
+        self.object_title = utils.context(self).pretty_title_or_id()
+        self.member = mtool.getAuthenticatedMember()
+        self.checkPermission =  mtool.checkPermission
+        self.membersfolder =  mtool.getMembersFolder()
+        self.isAnon =  mtool.isAnonymousUser()
+        self.actions = actions = portal.portal_actions.listFilteredActionsFor(utils.context(self))
+        self.keyed_actions =  portal.keyFilteredActions(actions)
+        self.user_actions =  actions['user']
+        self.workflow_actions =  actions['workflow']
+        self.folder_actions =  actions['folder']
+        self.global_actions =  actions['global']
+        self.portal_tabs =  putils.createTopLevelTabs(utils.context(self), actions=actions)
+        self.wf_state =  self.wtool.getInfoFor(utils.context(self),'review_state', None)
+        self.portal_properties =  portal.portal_properties
+        self.site_properties =  self.portal_properties.site_properties
+        self.ztu =  ZTUtils
+        self.wf_actions =  self.workflow_actions
+        self.isFolderish =  utils.context(self).isPrincipiaFolderish
+        self.template_id =  self.request.get('template_id', None) or utils.context(self).getId() or None # ?
+        self.slots_mapping =  self.request.get('slots_mapping', None) or utils.context(self).prepare_slots() or None
+        self.Iterator =  CMFPlone.IndexIterator
+        self.tabindex =  self.Iterator(pos=30000)
+        self.here_url =  utils.context(self).absolute_url()
+        self.sl =  self.slots_mapping['left']
+        self.sr =  self.slots_mapping['right']
+        self.hidecolumns =  utils.context(self).hide_columns(self.sl,self.sr)
+        self.default_language =  self.site_properties.default_language or None
+        self.language =  self.request.get('language', None) or utils.context(self).Language or self.default_language()
+        self.is_editable =  self.checkPermission('Modify portal content', utils.context(self))
+        self.isEditable =  self.is_editable
+        self.lockable =  hasattr(utils.context(self).aq_inner.aq_explicit, 'wl_isLocked')
+        self.isLocked =  self.lockable and utils.context(self).wl_isLocked()
+        self.isRTL =  utils.context(self).isRightToLeft(domain='plone')
+        self.visible_ids =  utils.context(self).visibleIdsEnabled() or None
+        self.current_page_url =  utils.context(self).getCurrentUrl() or None
+        self.view_template_id =  utils.context(self).getViewTemplateId() or None
+        self.isViewTemplate =  self.template_id==self.view_template_id
+        self.normalizeString = putils.normalizeString
 
