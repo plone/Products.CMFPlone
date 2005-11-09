@@ -784,11 +784,11 @@ def addEditContentActions(portal, out):
         actionsTool._actions = new_actions
         # then we add new actions
         for newaction in ACTIONS:
-            for action in actionsTool.listActions():
-                if action.getId() == newaction['id'] \
-                        and action.getCategory() == newaction.get('category', CATEGORY):
-                    break # We already have the action
-            else:
+            category = newaction.get('category', CATEGORY)
+            try:
+                actionsTool.unrestrictedTraverse('/'.join([category, newaction['id']]))
+            except KeyError:
+                # This is a new action
                 actionsTool.addAction(newaction['id'],
                     name=newaction['name'],
                     action=newaction['action'],
@@ -1124,19 +1124,11 @@ def fixFolderButtonsActions(portal, out):
     actionsTool = getToolByName(portal, 'portal_actions', None)
     if actionsTool is not None:
         for newaction in ACTIONS:
-            current_actions = actionsTool._cloneActions()
-            exists = False
-            for action in current_actions:
-                if action.getId() == newaction['id'] and action.category == newaction['category']:
-                    exists = True
-                    if action.permissions != (
-                            CMFCorePermissions.Permissions.copy_or_move,):
-                        action.permissions = (newaction['permission'],)
-                        action.condition = Expression(text=newaction['condition']) or ''
-                        out.append('Modified existing %s action'%newaction['id'])
-            if exists:
-                actionsTool._actions = current_actions
-            else:
+            category = newaction.get('category', CATEGORY)
+            try:
+                action = actionsTool.unrestrictedTraverse('/'.join([category, newaction['id']]))
+            except KeyError:
+                # Action doesn't exist: add it
                 actionsTool.addAction(newaction['id'],
                     name=newaction['name'],
                     action=newaction['action'],
@@ -1145,6 +1137,11 @@ def fixFolderButtonsActions(portal, out):
                     category=newaction['category'],
                     visible=1)
                 out.append("Added missing %s action"%newaction['id'])
+            else:
+                if action.permissions != (CMFCorePermissions.Permissions.copy_or_move,):
+                    action.permissions = (newaction['permission'],)
+                    action.condition = Expression(text=newaction['condition']) or ''
+                    out.append('Modified existing %s action'%newaction['id'])
 
 
 def addTypesUseViewActionInListingsProperty(portal, out):
