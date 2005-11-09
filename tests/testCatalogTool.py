@@ -28,7 +28,9 @@ default_user  = PloneTestCase.default_user
 user2  = 'u2'
 group2 = 'g2'
 
-base_content = ['Members', 'events', 'news', 'previous', default_user, 'doc']
+# XXX: Update this when 'news' and 'events' importers are finished
+# base_content = ['Members', 'events', 'news', 'previous', default_user, 'doc']
+base_content = ['Members', default_user, 'doc', 'front-page']
 
 
 class TestCatalogSetup(PloneTestCase.PloneTestCase):
@@ -505,7 +507,7 @@ class TestCatalogOrdering(PloneTestCase.PloneTestCase):
         folder_docs = self.catalog(portal_type = 'Document',
                                    path = self.folder.getPhysicalPath(),
                                    sort_on = 'getObjPositionInParent')
-        expected = ['doc2','doc1','doc3','doc4']
+        expected = ['doc2','doc1','doc3','doc4', 'front-page']
         self.failUnlessEqual([b.getId for b in folder_docs], expected)
 
     def testOrderIsUpdatedOnMoveUp(self):
@@ -513,7 +515,7 @@ class TestCatalogOrdering(PloneTestCase.PloneTestCase):
         folder_docs = self.catalog(portal_type = 'Document',
                                    path = self.folder.getPhysicalPath(),
                                    sort_on = 'getObjPositionInParent')
-        expected = ['doc1','doc3','doc2','doc4']
+        expected = ['doc1','doc3','doc2','doc4', 'front-page']
         self.failUnlessEqual([b.getId for b in folder_docs], expected)
 
     def testOrderIsUpdatedOnMoveTop(self):
@@ -521,7 +523,7 @@ class TestCatalogOrdering(PloneTestCase.PloneTestCase):
         folder_docs = self.catalog(portal_type = 'Document',
                                    path = self.folder.getPhysicalPath(),
                                    sort_on = 'getObjPositionInParent')
-        expected = ['doc3','doc1','doc2','doc4']
+        expected = ['doc3','doc1','doc2','doc4', 'front-page']
         self.failUnlessEqual([b.getId for b in folder_docs], expected)
 
     def testOrderIsUpdatedOnMoveBottom(self):
@@ -529,7 +531,7 @@ class TestCatalogOrdering(PloneTestCase.PloneTestCase):
         folder_docs = self.catalog(portal_type = 'Document',
                                    path = self.folder.getPhysicalPath(),
                                    sort_on = 'getObjPositionInParent')
-        expected = ['doc1','doc2','doc4','doc3']
+        expected = ['doc1','doc2','doc4','doc3', 'front-page']
         self.failUnlessEqual([b.getId for b in folder_docs], expected)
 
     def testOrderIsFineWithObjectCreation(self):
@@ -537,7 +539,7 @@ class TestCatalogOrdering(PloneTestCase.PloneTestCase):
         folder_docs = self.catalog(portal_type = 'Document',
                                    path = self.folder.getPhysicalPath(),
                                    sort_on = 'getObjPositionInParent')
-        expected = ['doc1','doc2','doc3','doc4','doc5']
+        expected = ['doc1','doc2','doc3','doc4','doc5', 'front-page']
         self.failUnlessEqual([b.getId for b in folder_docs], expected)
 
     def testOrderIsFineWithObjectDeletion(self):
@@ -545,7 +547,7 @@ class TestCatalogOrdering(PloneTestCase.PloneTestCase):
         folder_docs = self.catalog(portal_type = 'Document',
                                    path = self.folder.getPhysicalPath(),
                                    sort_on = 'getObjPositionInParent')
-        expected = ['doc1','doc2','doc4']
+        expected = ['doc1','doc2','doc4', 'front-page']
         self.failUnlessEqual([b.getId for b in folder_docs], expected)
 
     def testOrderIsFineWithObjectRenaming(self):
@@ -560,7 +562,7 @@ class TestCatalogOrdering(PloneTestCase.PloneTestCase):
         folder_docs = self.catalog(portal_type = 'Document',
                                    path = self.folder.getPhysicalPath(),
                                    sort_on = 'getObjPositionInParent')
-        expected = ['doc1','buzz','doc3','doc4']
+        expected = ['doc1','buzz','doc3','doc4', 'front-page']
         self.failUnlessEqual([b.getId for b in folder_docs], expected)
 
     def testOrderAfterALotOfChanges(self):
@@ -582,7 +584,7 @@ class TestCatalogOrdering(PloneTestCase.PloneTestCase):
         #self.folder.manage_renameObjects('Document', id='doc5', text='blam')
 
         self.folder.manage_delObjects(['doc3','doc4','doc5','doc7'])
-        expected = ['doc2','doc1','doc6','doc8']
+        expected = ['doc2','doc1','doc6','doc8', 'front-page']
 
         folder_docs = self.catalog(portal_type = 'Document',
                                    path = self.folder.getPhysicalPath(),
