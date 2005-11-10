@@ -41,6 +41,8 @@ class PloneGenerator:
         sort_crit = topic.addCriterion('created','ATSortCriterion')
         state_crit = topic.addCriterion('review_state', 'ATSimpleStringCriterion')
         state_crit.setValue('published')
+        topic.setSortCriterion('effective', True)
+        topic.setLayout('folder_summary_view')
 
         # Events topic
         _createObjectByType('Topic', p, id='events', title='Events', description='Site Events')
