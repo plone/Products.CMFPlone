@@ -224,4 +224,10 @@
   <dependency step="toolset"/>
   Import MemberData properties
  </import-step>
+  <import-step id="plone-final" version="20051110-01"
+               handler="Products.CMFPlone.setuphandlers.importFinalSteps"
+              title="Final Plone Config">
+    <dependency step="content" />
+  Final Plone configuration
+ </import-step>
 </import-steps>

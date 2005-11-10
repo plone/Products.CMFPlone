@@ -4,6 +4,7 @@ CMFPlone setup handlers.
 
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore import permissions as cmfpermissions
+from Products.CMFPlone.utils import _createObjectByType
 
 class PloneGenerator:
 
@@ -24,28 +25,59 @@ class PloneGenerator:
         stool.allow_any=0 # Skin changing for users is turned off by default
         #p.icon = 'misc_/CMFPlone/plone_icon'
 
+
+    # XXX: This should all be done by custom setuphandlers, possibly
+    # using Kapil's XMLIO
     def setupPortalContent(self, p):
+        """
+        Import default plone content
+        """
+
+        # News topic
+        _createObjectByType('Topic', p, id='news', title='News', description='Site News')
+        topic = p.news
+        type_crit = topic.addCriterion('Type','ATPortalTypeCriterion')
+        type_crit.setValue('News Item')
+        sort_crit = topic.addCriterion('created','ATSortCriterion')
+        state_crit = topic.addCriterion('review_state', 'ATSimpleStringCriterion')
+        state_crit.setValue('published')
+
+        # Events topic
+        _createObjectByType('Topic', p, id='events', title='Events', description='Site Events')
+        topic = p.events
+        type_crit = topic.addCriterion('Type','ATPortalTypeCriterion')
+        type_crit.setValue('Event')
+        sort_crit = topic.addCriterion('start','ATSortCriterion')
+        state_crit = topic.addCriterion('review_state', 'ATSimpleStringCriterion')
+        state_crit.setValue('published')
+        date_crit = topic.addCriterion('start', 'ATFriendlyDateCriteria')
+        # Set date reference to now
+        date_crit.setValue(0)
+        # Only take events in the future
+        date_crit.setDateRange('+') # This is irrelevant when the date is now
+        date_crit.setOperation('more')
+
+        # Previous events subtopic
+        _createObjectByType('Topic', topic, id='previous', title='Past Events',
+                            description="Events which have already happened.")
+        topic = topic.previous
+        topic.setAcquireCriteria(True)
+        sort_crit = topic.addCriterion('start','ATSortCriterion')
+        sort_crit.setReversed(True)
+        date_crit = topic.addCriterion('start','ATFriendlyDateCriteria')
+        # Set date reference to now
+        date_crit.setValue(0)
+        # Only take events in the past
+        date_crit.setDateRange('-') # This is irrelevant when the date is now
+        date_crit.setOperation('less')
+
+        return
+    
         # add Members folder
         p.invokeFactory('Large Plone Folder', 'Members')
         members = getattr(p , 'Members')
         members.setTitle('Members')
         members.setDescription("Container for portal members' home directories")
-
-        # add front page to portal root
-        p.invokeFactory('Document', 'front-page')
-        idx = getattr(p, 'front-page')
-        idx.setTitle('Welcome to Plone')
-        idx.setDescription('Congratulations! You have successfully'+\
-                         ' installed Plone.')
-        idx.setFormat('html')
-        if idx.meta_type == 'Document':
-            # CMFDefault document
-            idx.edit('html', default_frontpage)
-        else:
-            idx.edit(text=default_frontpage)
-        idx.reindexObject()
-
-        p.setDefaultPage('front-page')
 
         # add index_html to Members area
         addPy = members.manage_addProduct['PythonScripts'].manage_addPythonScript
@@ -67,4 +99,14 @@ def importVarious(context):
 
     gen.installProducts(site)
     gen.customizePortalOptions(site)
-    #gen.setupPortalContent(site)
+
+
+def importFinalSteps(context):
+    """
+    Final plone import steps.
+    """
+
+    site = context.getSite()
+
+    gen = PloneGenerator()
+    gen.setupPortalContent(site)
