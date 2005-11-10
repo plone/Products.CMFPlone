@@ -94,7 +94,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
 
     def testMembersFolderIsIndexed(self):
         # Members folder should be cataloged
-        res = self.catalog(id='Members')
+        res = self.catalog(getId='Members')
         self.assertEqual(len(res), 1)
         self.assertEqual(res[0].getId, 'Members')
         self.assertEqual(res[0].Title, 'Members')
@@ -238,7 +238,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
 
     def testNewsFolderIsIndexed(self):
         # News folder should be cataloged
-        res = self.catalog(id='news')
+        res = self.catalog(getId='news')
         self.assertEqual(len(res), 1)
         self.assertEqual(res[0].getId, 'news')
         self.assertEqual(res[0].Title, 'News')
