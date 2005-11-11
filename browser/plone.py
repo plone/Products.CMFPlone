@@ -15,20 +15,6 @@ from ZPublisher.BeforeTraverse import registerBeforeTraverse
 class Plone(utils.BrowserView):
     implements(IPlone)
 
-    _globals = (
-        'utool', 'portal', 'portal_object', 'portal_url',
-        'mtool', 'gtool', 'gdtool', 'atool', 'aitool', 'putils',
-        'wtool', 'ifacetool', 'syntool', 'portal_title', 'object_title',
-        'member', 'checkPermission', 'membersfolder', 'isAnon', 'actions',
-        'keyed_actions', 'user_actions', 'workflow_actions', 'folder_actions',
-        'global_actions', 'portal_tabs', 'wf_state', 'portal_properties',
-        'site_properties', 'ztu', 'wf_actions', 'isFolderish', 'template_id',
-        'slots_mapping', 'Iterator', 'tabindex', 'here_url', 'sl', 'sr',
-        'hidecolumns', 'default_language', 'language', 'is_editable',
-        'isEditable', 'lockable', 'isLocked', 'isRTL', 'visible_ids',
-        'current_page_url', 'view_template_id', 'isViewTemplate',
-        'normalizeString')
-
     def globals(self):
         """
         Pure optimization hack, globalizes entire view for speed. Yes
@@ -44,8 +30,7 @@ class Plone(utils.BrowserView):
         
         if state is None:
             state = {}
-            for name in self._globals:
-                v = getattr(self, name)
+            for name, v in self._data.items():
                 state[name] = v
                 context.setGlobal(name, v)
             self.request.other['__PloneViewOptimizationRequestCache'] = state
@@ -56,56 +41,73 @@ class Plone(utils.BrowserView):
     def __init__(self, context, request):
         super(Plone, self).__init__(context, request)
 
-        self.utool = utool = utils.context(self).portal_url
-        self.portal = portal = utool.getPortalObject()
-        self.portal_object =  portal
-        self.portal_url =  utool()
-        self.mtool = mtool = portal.portal_membership
-        self.gtool =  portal.portal_groups or None
-        self.gdtool = portal.portal_groupdata or None
-        self.atool =  portal.portal_actions
-        self.aitool = portal.portal_actionicons or None
-        self.putils = putils = portal.plone_utils
-        self.wtool =  portal.portal_workflow
-        self.ifacetool =  portal.portal_interface or None
-        self.syntool =  portal.portal_syndication
-        self.portal_title = self.portal_object.Title()
-        self.object_title = utils.context(self).pretty_title_or_id()
-        self.member = mtool.getAuthenticatedMember()
-        self.checkPermission =  mtool.checkPermission
-        self.membersfolder =  mtool.getMembersFolder()
-        self.isAnon =  mtool.isAnonymousUser()
-        self.actions = actions = portal.portal_actions.listFilteredActionsFor(utils.context(self))
-        self.keyed_actions =  portal.keyFilteredActions(actions)
-        self.user_actions =  actions['user']
-        self.workflow_actions =  actions['workflow']
-        self.folder_actions =  actions['folder']
-        self.global_actions =  actions['global']
-        self.portal_tabs =  putils.createTopLevelTabs(utils.context(self), actions=actions)
-        self.wf_state =  self.wtool.getInfoFor(utils.context(self),'review_state', None)
-        self.portal_properties =  portal.portal_properties
-        self.site_properties =  self.portal_properties.site_properties
-        self.ztu =  ZTUtils
-        self.wf_actions =  self.workflow_actions
-        self.isFolderish =  utils.context(self).isPrincipiaFolderish
-        self.template_id =  self.request.get('template_id', None) or utils.context(self).getId() or None # ?
-        self.slots_mapping =  self.request.get('slots_mapping', None) or utils.context(self).prepare_slots() or None
-        self.Iterator =  CMFPlone.IndexIterator
-        self.tabindex =  self.Iterator(pos=30000)
-        self.here_url =  utils.context(self).absolute_url()
-        self.sl =  self.slots_mapping['left']
-        self.sr =  self.slots_mapping['right']
-        self.hidecolumns =  utils.context(self).hide_columns(self.sl,self.sr)
-        self.default_language =  self.site_properties.default_language or None
-        self.language =  self.request.get('language', None) or utils.context(self).Language or self.default_language()
-        self.is_editable =  self.checkPermission('Modify portal content', utils.context(self))
-        self.isEditable =  self.is_editable
-        self.lockable =  hasattr(utils.context(self).aq_inner.aq_explicit, 'wl_isLocked')
-        self.isLocked =  self.lockable and utils.context(self).wl_isLocked()
-        self.isRTL =  utils.context(self).isRightToLeft(domain='plone')
-        self.visible_ids =  utils.context(self).visibleIdsEnabled() or None
-        self.current_page_url =  utils.context(self).getCurrentUrl() or None
-        self.view_template_id =  utils.context(self).getViewTemplateId() or None
-        self.isViewTemplate =  self.template_id==self.view_template_id
-        self.normalizeString = putils.normalizeString
+        self._data = {}
 
+        # XXX: Can't store data as attributes directly because it will
+        # insert the view into the acquisition chain. Someone should
+        # come up with a way to prevent this or get rid of the globals
+        # view altogether
+        self._data['utool'] = utool = utils.context(self).portal_url
+        self._data['portal'] = portal = utool.getPortalObject()
+        self._data['portal_object'] =  portal
+        self._data['portal_url'] =  utool()
+        self._data['mtool'] = mtool = portal.portal_membership
+        self._data['gtool'] =  portal.portal_groups or None
+        self._data['gdtool'] = portal.portal_groupdata or None
+        self._data['atool'] =  portal.portal_actions
+        self._data['aitool'] = portal.portal_actionicons or None
+        self._data['putils'] = putils = portal.plone_utils
+        self._data['wtool'] =  portal.portal_workflow
+        self._data['ifacetool'] =  portal.portal_interface or None
+        self._data['syntool'] =  portal.portal_syndication
+        self._data['portal_title'] = self._data['portal_object'].Title()
+        self._data['object_title'] = utils.context(self).pretty_title_or_id()
+        self._data['checkPermission'] =  mtool.checkPermission
+        self._data['member'] = mtool.getAuthenticatedMember()
+        self._data['membersfolder'] =  mtool.getMembersFolder()
+        self._data['isAnon'] =  mtool.isAnonymousUser()
+        self._data['actions'] = actions = portal.portal_actions.listFilteredActionsFor(utils.context(self))
+        self._data['keyed_actions'] =  portal.keyFilteredActions(actions)
+        self._data['user_actions'] =  actions['user']
+        self._data['workflow_actions'] =  actions['workflow']
+        self._data['folder_actions'] =  actions['folder']
+        self._data['global_actions'] =  actions['global']
+        self._data['portal_tabs'] =  putils.createTopLevelTabs(utils.context(self), actions=actions)
+        self._data['wf_state'] =  self._data['wtool'].getInfoFor(utils.context(self),'review_state', None)
+        self._data['portal_properties'] =  portal.portal_properties
+        self._data['site_properties'] =  self._data['portal_properties'].site_properties
+        self._data['ztu'] =  ZTUtils
+        self._data['wf_actions'] =  self._data['workflow_actions']
+        self._data['isFolderish'] =  utils.context(self).isPrincipiaFolderish
+        self._data['template_id'] =  self.request.get('template_id', None) or utils.context(self).getId() or None # ?
+        self._data['slots_mapping'] =  self.request.get('slots_mapping', None) or utils.context(self).prepare_slots() or None
+        self._data['Iterator'] =  CMFPlone.IndexIterator
+        self._data['tabindex'] =  self._data['Iterator'](pos=30000)
+        self._data['here_url'] =  utils.context(self).absolute_url()
+        self._data['sl'] =  self._data['slots_mapping']['left']
+        self._data['sr'] =  self._data['slots_mapping']['right']
+        self._data['hidecolumns'] =  utils.context(self).hide_columns(self._data['sl'],self._data['sr'])
+        self._data['default_language'] =  self._data['site_properties'].default_language or None
+        self._data['language'] =  self.request.get('language', None) or utils.context(self).Language or self.default_language()
+        self._data['is_editable'] =  self._data['checkPermission']('Modify portal content', utils.context(self))
+        self._data['isEditable'] =  self._data['is_editable']
+        self._data['lockable'] =  hasattr(utils.context(self).aq_inner.aq_explicit, 'wl_isLocked')
+        self._data['isLocked'] =  self._data['lockable'] and utils.context(self).wl_isLocked()
+        self._data['isRTL'] =  utils.context(self).isRightToLeft(domain='plone')
+        self._data['visible_ids'] =  utils.context(self).visibleIdsEnabled() or None
+        self._data['current_page_url'] =  utils.context(self).getCurrentUrl() or None
+        self._data['view_template_id'] =  utils.context(self).getViewTemplateId() or None
+        self._data['isViewTemplate'] =  self._data['template_id']==self._data['view_template_id']
+        self._data['normalizeString'] = putils.normalizeString
+
+    def __getattr__(self, key):
+        """Override to look in _data first"""
+
+        _marker = []
+        value = self.__dict__['_data'].get(key, _marker)
+        if value is _marker:
+            try:
+                value = super(Plone, self).__getattr__(key)
+            except AttributeError:
+                raise AttributeError, key
+        return value
