@@ -126,11 +126,11 @@
                     </a>
                 </li>
                 <li class="actionSeparator" tal:condition="showSettings">
-                    <a href="#" class="folderAddSettings" title="Configure which content types can be added here"
+                    <a href="#" class="folderAddSettings" title="Restrict which content types can be added"
                            i18n:attributes="title title_configure_addable_content_types;"
                            tal:attributes="href string:${addContext/absolute_url}/folder_constraintypes_form;">
                           <tal:title i18n:translate="folder_add_settings">
-                            Settings&hellip;
+                            Restrict&hellip;
                           </tal:title>
                     </a>
                 </li>
@@ -195,7 +195,7 @@
                 
                 
                 <a href="#"
-                   title="Choose default view"
+                   title="Select the view mode for this folder, or set a content item as its default view."
                    i18n:attributes="title title_choose_default_view;"
                    tal:condition="not:dimMenu"
                    tal:attributes="href string:$here_url/select_default_view;"
@@ -245,7 +245,7 @@
                                        tal:attributes="href string:${parent_folder/absolute_url}/select_default_page;"
                                        i18n:attributes="title title_select_default_view_item;"
                                        i18n:translate="label_choose_item">
-                                         Choose content item<br />as default view&hellip;
+                                         Select a content item<br />as default view&hellip;
                                     </a>
                                 </li>
                             </tal:haveSelectedLayout>
@@ -258,7 +258,7 @@
                                                     i18n:name="contentitem">title</span>
                                     </span>
                                 </li>
-                                <li>
+                                <li class="actionSeparator">
                                     <a title="Change the item used as default view in this folder" href="#"
                                        tal:attributes="href string:${parent_folder/absolute_url}/select_default_page;"
                                        i18n:attributes="title title_change_default_view_item;"
@@ -321,7 +321,7 @@
                                        tal:attributes="href string:${here/absolute_url}/select_default_page;"
                                        i18n:attributes="title title_select_default_page;"
                                        i18n:translate="label_choose_item">
-                                         Choose content item<br />as default view&hellip;
+                                         Select a content item<br />as default view&hellip;
                                     </a>
                                 </li>
                             </tal:haveSelectedLayout>
@@ -346,7 +346,7 @@
                         </tal:contextDefaultPage>
                     
                     </tal:contextViewsSelection>                    
-                
+
                     <!-- Folder default page selection: No selectable layouts (not supported), but can select default-page in folder -->
                     <tal:folderDefaultPageSelection
                                 condition="python: canSelectDefaultFolderPage and not (parentVocab or contextVocab)"
@@ -357,7 +357,7 @@
                                    tal:attributes="href string:${parent_folder/absolute_url}/select_default_page;"
                                    i18n:attributes="title title_select_default_page;"
                                    i18n:translate="label_choose_item">
-                                     Choose content item<br />as default view&hellip;
+                                     Select a content item<br />as default view&hellip;
                                 </a>
                             </li>
                         </tal:haveSelectedLayout>
@@ -394,7 +394,7 @@
             <dl class="actionMenu" id="actionDropDownMenu">
                 <dt class="actionMenuHeader">
                     <a href="#"
-                       title="Actions"
+                       title="Actions for the current content item"
                        i18n:attributes="title title_actions_menu;"
                        tal:attributes="href string:${parent_folder/absolute_url}/folder_contents;"
                        i18n:translate="label_actions_menu">
