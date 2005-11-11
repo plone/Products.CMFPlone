@@ -137,9 +137,12 @@ def pretty_title_or_id(context, obj, empty_value=_marker):
     of whether obj is a catalog brain or an object, but returning an
     empty title marker if the id is not set (i.e. it's auto-generated).
     """
-    if safe_hasattr(obj, 'aq_explicit'):
-        obj = obj.aq_explicit
-    title = getattr(obj, 'Title', None)
+    #if safe_hasattr(obj, 'aq_explicit'):
+    #    obj = obj.aq_explicit
+    #title = getattr(obj, 'Title', None)
+    title = None
+    if base_hasattr(obj, 'Title'):
+        title = getattr(obj, 'Title', None)
     if safe_callable(title):
         title = title()
     if title:
