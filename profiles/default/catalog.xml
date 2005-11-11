@@ -1,16 +1,24 @@
 <?xml version="1.0"?>
 <object name="portal_catalog" meta_type="Plone Catalog Tool">
- <property name="title"></property>
-
- <object name="plone_lexicon" meta_type="ZCTextIndex Lexicon">
+ <property name="title">Indexes all content in the site</property>
+ <property name="unwrapobjects" type="boolean">True</property>
+ <object name="plaintext_lexicon" meta_type="ZCTextIndex Lexicon">
+  <element name="Whitespace splitter" group="Word Splitter"/>
   <element name="Case Normalizer" group="Case Normalizer"/>
   <element name="Remove listed stop words only" group="Stop Words"/>
-  <!-- XXX: Couldn't get this to work 
-    <element name=" Don't remove stop words" group="Stop Words"/>
-    -->
-  <element name="Unicode Whitespace splitter" group="Word Splitter"/>
  </object>
-
+ <object name="htmltext_lexicon" meta_type="ZCTextIndex Lexicon">
+  <element name="HTML aware splitter" group="Word Splitter"/>
+  <element name="Case Normalizer" group="Case Normalizer"/>
+  <element name="Remove listed stop words only" group="Stop Words"/>
+ </object>
+ <object name="plone_lexicon" meta_type="ZCTextIndex Lexicon">
+  <element name="Unicode Whitespace splitter" group="Word Splitter"/>
+  <element name="Case Normalizer" group="Case Normalizer"/>
+ </object>
+ <index name="Creator" meta_type="FieldIndex">
+  <indexed_attr value="Creator"/>
+ </index>
  <index name="Date" meta_type="DateIndex">
   <property name="index_naive_time_as_local">True</property>
  </index>
@@ -44,38 +52,28 @@
  <index name="effective" meta_type="DateIndex">
   <property name="index_naive_time_as_local">True</property>
  </index>
+ <index name="effectiveRange" meta_type="DateRangeIndex"
+    since_field="effective" until_field="expires"/>
+ <index name="end" meta_type="DateIndex">
+  <property name="index_naive_time_as_local">True</property>
+ </index>
  <index name="expires" meta_type="DateIndex">
   <property name="index_naive_time_as_local">True</property>
  </index>
  <index name="getId" meta_type="FieldIndex">
   <indexed_attr value="getId"/>
  </index>
- <index name="in_reply_to" meta_type="FieldIndex">
-  <indexed_attr value="in_reply_to"/>
- </index>
- <index name="listCreators" meta_type="KeywordIndex">
-  <indexed_attr value="listCreators"/>
- </index>
- <index name="modified" meta_type="DateIndex">
-  <property name="index_naive_time_as_local">True</property>
- </index>
- <index name="portal_type" meta_type="FieldIndex">
-  <indexed_attr value="portal_type"/>
- </index>
- <index name="review_state" meta_type="FieldIndex">
-  <indexed_attr value="review_state"/>
- </index>
- <index name="start" meta_type="DateIndex">
-  <property name="index_naive_time_as_local">True</property>
- </index>
- <index name="end" meta_type="DateIndex">
-  <property name="index_naive_time_as_local">True</property>
- </index>
  <index name="getObjPositionInParent" meta_type="FieldIndex">
   <indexed_attr value="getObjPositionInParent"/>
  </index>
- <index name="sortable_title" meta_type="FieldIndex">
-  <indexed_attr value="sortable_title"/>
+ <index name="getRawRelatedItems" meta_type="KeywordIndex">
+  <indexed_attr value="getRawRelatedItems"/>
+ </index>
+ <index name="id" meta_type="FieldIndex">
+  <indexed_attr value="id"/>
+ </index>
+ <index name="in_reply_to" meta_type="FieldIndex">
+  <indexed_attr value="in_reply_to"/>
  </index>
  <index name="is_default_page" meta_type="FieldIndex">
   <indexed_attr value="is_default_page"/>
@@ -83,14 +81,27 @@
  <index name="is_folderish" meta_type="FieldIndex">
   <indexed_attr value="is_folderish"/>
  </index>
- <index name="path" meta_type="ExtendedPathIndex">
-  <indexed_attr value="path"/>
+ <index name="meta_type" meta_type="FieldIndex">
+  <indexed_attr value="meta_type"/>
  </index>
- <index name="effectiveRange" meta_type="DateRangeIndex">
-    <extra name="since_field" value="effective" />
-    <extra name="until_field" value="expires" />
+ <index name="modified" meta_type="DateIndex">
+  <property name="index_naive_time_as_local">True</property>
+ </index>
+ <index name="path" meta_type="ExtendedPathIndex"/>
+ <index name="portal_type" meta_type="FieldIndex">
+  <indexed_attr value="portal_type"/>
+ </index>
+ <index name="review_state" meta_type="FieldIndex">
+  <indexed_attr value="review_state"/>
+ </index>
+ <index name="sortable_title" meta_type="FieldIndex">
+  <indexed_attr value="sortable_title"/>
+ </index>
+ <index name="start" meta_type="DateIndex">
+  <property name="index_naive_time_as_local">True</property>
  </index>
  <column value="CreationDate"/>
+ <column value="Creator"/>
  <column value="Date"/>
  <column value="Description"/>
  <column value="EffectiveDate"/>
@@ -108,6 +119,7 @@
  <column value="getId"/>
  <column value="getObjSize"/>
  <column value="getRemoteUrl"/>
+ <column value="id"/>
  <column value="is_folderish"/>
  <column value="listCreators"/>
  <column value="location"/>
