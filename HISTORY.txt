@@ -2,6 +2,13 @@ Changelog for Plone
 
    (name of developer listed in brackets)
 
+Plone 2.2 (unreleased)
+
+    - Merged hannosch-cleanup branch. This removes a lot of unused files and
+      moves some files to /portal_skins/plone_deprecated which will be removed
+      in the next release.
+      [hannosch]
+
 Plone 2.1.2 (unreleased)
 
     - Fixed http://plone.org/collector/4894 - Missing closing quote in 
@@ -3418,7 +3425,7 @@ Plone 2.0 - Fyuti - Released March 23, 2004
       condition on 'cut', python:portal.portal_membership.checkPermission(
       'Delete objects', object)
 
-      - XXX We should wipe out all actions and reinstall them that are
+      - We should wipe out all actions and reinstall them that are
       regarding the 'folder_buttons' category
 
       - This is in regards to issue, #1985
@@ -3432,8 +3439,8 @@ Plone 2.0 - Fyuti - Released March 23, 2004
 
     - allowedContentTypes is a expensive call.  made this global inside of
       plone_templates/global_contentviews.pt and its reused throughout the
-      global_contentXXXX and folder_contents.  This should make the experience
-      a tad snappier
+      global_contentmenu, global_contentviews and folder_contents. This
+      should make the experience a tad snappier
 
    RC2
 
@@ -3600,7 +3607,7 @@ Plone 2.0 - Fyuti - Released March 23, 2004
 
 
     - personalBar (mystuff, preferences, undo, logout) now no longer uses
-      'global' actions.  This was causing worklist 'pending XXX (N)' in
+      'global' actions.  This was causing worklist 'pending <foo> (N)' in
       the personalBar.  Which is not i18nable and breaks semantics of
       the personalBar (which are user-centric actions).  Two things were
       introduced:
@@ -4241,7 +4248,7 @@ Plone 1.0.1 - Mira Calix - Released February 19, 2003
 
     - validation of expiration_date and effective_date in content_status_history was broken
 
-    - checkPermission was being traversed to in breadcrumbs, navigationXXX, and
+    - checkPermission was being traversed to in breadcrumbs, navigation*, and
       my_worklist.
 
     - file/image_edit_form had unexpected behavior.  If you had uploaded
@@ -4596,7 +4603,7 @@ Plone 1.0 Beta 2
 
     - Topics use folder_workflow now
 
-    - added titles for xxx_edit_forms (breadcrumbs seemingly have changed)
+    - added titles for *_edit_forms (breadcrumbs seemingly have changed)
 
     - Issue 300 - Standardized batch navigation. Batching now uses PloneBatch and its macro.
 
@@ -4690,7 +4697,7 @@ Plone 1.0 Beta 1
 
     - moved edit_forms in with content
 
-    - moved event_xxxx into plone_3rdParty/CMFCalendar for consitency
+    - moved event_* into plone_3rdParty/CMFCalendar for consitency
 
     - Issue 204 fixed
 
@@ -4761,8 +4768,8 @@ Plone 1.0 alpha4
     - when you changed password it was forwarding rather than redirecting to
       personalize_form and losing the portal_form proxy
 
-    - portal_status_messages have been added for all the validate_xxx and
-      xxx_edit forms
+    - portal_status_messages have been added for all the validate_* and
+      *_edit forms
 
     - news form now has links to Creators homepage
 
@@ -4880,9 +4887,11 @@ Plone 1.0alpha2
     - the way forms interacted with editing scripts has changed:
 
     - form validation has been refactored (basiclly the only thing you need
-          in validate_xxx.py)
-    - the actual editing scripts call plone_utils.getNextXXXXFor() to get the
+      in validate_*.py)
+
+    - the actual editing scripts call plone_utils.getNext???For() to get the
       next screen to goto
+
     - look at plone_scripts/form_scripts/navigation_properties.props if you want
       to change this.
 
@@ -4979,7 +4988,7 @@ Plone 1.0alpha - Boards of Canada Release:
 
     - renamed recent_news to news
 
-    - removed duplicate content_xxxx_forms (publishing forms)
+    - removed duplicate content_*_forms (publishing forms)
 
     - consolidated the content_status_history and content_publishing_history
       into content_status_history (bad name)
@@ -5027,8 +5036,8 @@ Plone 0.9.9 - Bola - Released May 25, 2002
     - in CSS we have: class="label required" now, and "field error" if a error
       has occurred.
 
-    - added validation for all xxx_edit_forms, look in
-      plone_scripts/validate_xxxxxx
+    - added validation for all *_edit_forms, look in
+      plone_scripts/validate_*
 
     - removed plone_images/img, all images are now in plone_images
         WARNING: you should always specify the full url to the image or caching
@@ -5036,7 +5045,7 @@ Plone 0.9.9 - Bola - Released May 25, 2002
         You want to cache as many images on the client side (or in caches in
         front of your ZOPE) as possible.
 
-    - navigateXXXX scripts were fixed (thanks to AndyD) which were causing some
+    - navigate* scripts were fixed (thanks to AndyD) which were causing some
       authentication errors
 
     - seperated form specific scripts into plone_form_scripts (this includes
@@ -5237,9 +5246,9 @@ Plone 0.9.5 - Released January 31, 2002
       NOTE: you will need to have copies of all the images in your /img folder
 
     - system should never prompt someone for Username/password if they are
-      logged in all xxx_edit scripts return back to objects view
+      logged in all *_edit scripts return back to objects view
 
-    - changing ID works in xxx_edit_form
+    - changing ID works in *_edit_form
 
     - you can now customize your 'portrait' in /Members/roster by doing the
       following:
@@ -5248,7 +5257,7 @@ Plone 0.9.5 - Released January 31, 2002
 
     - create a image in .personal called MyPortrait
 
-    - publishing your /Members/xxx/.personal/MyPortrait image
+    - publishing your /Members/*/.personal/MyPortrait image
 
     - folder_contents now sort (case insensitive) alphabetically by default,
       no more 'pagination' in batches of 10

@@ -30,7 +30,6 @@ if len(member_role_ids)>0:
     members={}
     for s in member_role_ids:
         member_role = parseMemberRoleString(s)
-        # XXX: should not happen actually
         if member_role is None: 
             continue
         member,role=member_role

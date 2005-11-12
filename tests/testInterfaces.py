@@ -249,21 +249,12 @@ for testInstance in testInstances:
     tests.append(InstanceInterfaceTest)
 
 
-# XXX: Don't run interface tests in Zope < 2.7 as older
-#      interface packages are borked.
-try:
-    import App.config
-    ok = 1
-except ImportError:
-    ok = 0
-
 import unittest
 
 def test_suite():
     suite = unittest.TestSuite()
-    if ok:
-        for test in tests:
-            suite.addTest(unittest.makeSuite(test))
+    for test in tests:
+        suite.addTest(unittest.makeSuite(test))
     return suite
 
 if __name__ == '__main__':
