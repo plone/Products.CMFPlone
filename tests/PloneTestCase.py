@@ -83,6 +83,9 @@ class PloneTestCase(ZopeTestCase.PortalTestCase):
         self.app.REQUEST.set('PARENTS', [self.app])
         # Disable the constraintypes performance hog
         self.folder.setConstrainTypesMode(0)
+        # Put SESSION object into REQUEST
+        sdm = self.app.session_data_manager
+        self.app.REQUEST.set('SESSION', sdm.getSessionData())
 
     def getPortal(self):
         '''Returns the portal object to the bootstrap code.
