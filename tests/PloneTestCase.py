@@ -46,7 +46,7 @@ ZopeTestCase.installProduct('Five')
 ZopeTestCase.utils.setupCoreSessions()
 ZopeTestCase.utils.setupSiteErrorLog()
 
-from Products.CMFPlone import transaction
+import transaction
 from Testing.ZopeTestCase.utils import makelist
 from Products.CMFPlone.utils import _createObjectByType
 

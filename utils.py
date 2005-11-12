@@ -6,15 +6,7 @@ from Products.CMFCore.utils import ToolInit as CMFCoreToolInit
 from Products.CMFCore.utils import getToolByName
 from types import ClassType
 from Acquisition import aq_base
-
-# Duplicated here to avoid import loop
-# BBB: Zope 2.7
-try:
-    import Zope2
-except ImportError:
-    import transaction_ as transaction
-else:
-    import transaction
+import transaction
 
 # Canonical way to get at CMFPlone directory
 PACKAGE_HOME = Globals.package_home(globals())

@@ -117,25 +117,6 @@ class TestGroupsTool(PloneTestCase.PloneTestCase):
         self.assertEqual(gs[0].aq_parent.__class__.__name__, 'GRUFGroup')
         self.assertEqual(gs[0].aq_parent.aq_parent.__class__.__name__, 'GroupUserFolder')
 
-    # This should not be in a groups tool!
-    ##def testGetPureUserNames(self):
-    ##    self.groups.addGroup('foo', [], [])
-    ##    self.assertEqual(len(self.acl_users.getUserNames()), 2)
-    ##    self.assertEqual(len(self.groups.getPureUserNames()), 1)
-
-    # This should not be in a groups tool!
-    ##def testGetPureUsers(self):
-    ##    self.groups.addGroup('foo', [], [])
-    ##    self.assertEqual(len(self.acl_users.getUsers()), 2)
-    ##    self.assertEqual(len(self.groups.getPureUsers()), 1)
-
-    # This should not be in a groups tool!
-    ##def testPureUsersAreNotWrapped(self):
-    ##    self.groups.addGroup('foo', [], [])
-    ##    us = self.groups.getPureUsers()
-    ##    self.assertEqual(us[0].__class__.__name__, 'GRUFGroup')
-    ##    self.assertEqual(us[0].aq_parent.__class__.__name__, 'GroupUserFolder')
-
     def testSetGroupOwnership(self):
         self.groups.addGroup('foo', [], [])
         self.folder.invokeFactory('Document', 'doc')
@@ -144,7 +125,7 @@ class TestGroupsTool(PloneTestCase.PloneTestCase):
         self.groups.setGroupOwnership(g, doc)
         self.assertEqual(doc.getOwnerTuple()[1], self.prefix + 'foo')
         self.assertEqual(doc.get_local_roles_for_userid(self.prefix + 'foo'), ('Owner',))
-        # XXX: Initial creator still has Owner role. Is this a bug?
+        # TODO: Initial creator still has Owner role. Is this a bug?
         self.assertEqual(doc.get_local_roles_for_userid(default_user), ('Owner',))
 
     def testWrapGroup(self):
@@ -196,7 +177,7 @@ class TestGroupWorkspacesFolder(PloneTestCase.PloneTestCase):
     def testCreateGrouparea(self):
         self.groups.addGroup('foo', [], [])
         self.groups.toggleGroupWorkspacesCreation()
-        # XXX: Requires typestool
+        # TODO: Requires typestool
         self.groups.createGrouparea('foo')
         self.failUnless(hasattr(aq_base(self.groups.getGroupWorkspacesFolder()), 'foo'))
 
@@ -210,7 +191,7 @@ class TestGroupWorkspacesFolder(PloneTestCase.PloneTestCase):
         self.groups.addGroup('foo', [], [])
         self.groups.toggleGroupWorkspacesCreation()
         self.portal._delObject(self.groups.getGroupWorkspacesFolderId())
-        # XXX: Members cannot create folders in the portal root
+        # TODO: Members cannot create folders in the portal root
         self.setRoles(['Manager'])
         self.groups.createGrouparea('foo')
         self.failUnless(hasattr(aq_base(self.groups.getGroupWorkspacesFolder()), 'foo'))

@@ -2,7 +2,7 @@ from Products.ExternalMethod.ExternalMethod import manage_addExternalMethod
 from Products.CMFPlone.Portal import manage_addSite
 from Products.SiteAccess.SiteRoot import manage_addSiteRoot
 from Products.SiteAccess.AccessRule import manage_addAccessRule
-from Products.CMFPlone import transaction
+import transaction
 
 from AccessControl.SecurityManagement import newSecurityManager
 from AccessControl.SecurityManagement import noSecurityManager

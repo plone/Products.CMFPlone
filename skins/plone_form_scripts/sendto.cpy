@@ -59,7 +59,7 @@ try:
     plone_utils.sendto( **variables )
 except ConflictError:
     raise
-except: #XXX To many things could possibly go wrong. So we catch all.
+except: # TODO To many things could possibly go wrong. So we catch all.
     exception = context.plone_utils.exceptionString()
     message = _(u'Unable to send mail: ${exception}',
                 mapping={u'exception' : exception})

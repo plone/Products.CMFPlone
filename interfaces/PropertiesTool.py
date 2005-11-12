@@ -6,7 +6,7 @@ class IPropertiesTool(Interface):
 
     id = Attribute('id', 'Must be set to "portal_properties"')
 
-    # XXX Interface doesn't know how to deal with ComputedAttribute :(
+    # TODO Interface doesn't know how to deal with ComputedAttribute :(
     # title = Attribute('title', 'A (read-only) property representing the portal title.')
 
     def editProperties(props):

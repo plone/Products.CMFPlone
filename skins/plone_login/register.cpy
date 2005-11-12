@@ -40,7 +40,7 @@ if site_properties.validate_email or REQUEST.get('mail_me', 0):
         raise
     except Exception, err: 
 
-        #XXX registerdNotify calls into various levels.  Lets catch all exceptions.
+        # TODO registerdNotify calls into various levels.  Lets catch all exceptions.
         #    Should not fail.  They cant CHANGE their password ;-)  We should notify them.
         #
         # (MSL 12/28/03) We also need to delete the just made member and return to the join_form.

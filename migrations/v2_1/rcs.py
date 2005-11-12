@@ -6,9 +6,8 @@ from Products.CMFCore.permissions import View
 from Products.CMFPlone.utils import _createObjectByType
 from Products.CMFPlone.migrations.migration_util import cleanupSkinPath
 from Acquisition import aq_base, aq_inner, aq_parent
-from Products.CMFPlone import transaction
 from Products.GroupUserFolder.GroupsToolPermissions import ViewGroups
-
+import transaction
 
 def rc1_rc2(portal):
     """2.1-rc1 -> 2.1-rc2

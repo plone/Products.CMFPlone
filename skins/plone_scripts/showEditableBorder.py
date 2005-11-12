@@ -8,7 +8,7 @@
 ##title=returns whether or not current template displays *editable* border
 ##
 
-#XXX This is an ugly hack.  So it might as well
+#    TODO: This is an ugly hack.  So it might as well
 #    be explained.  Traditionally in CMF actions
 #    are lumped in by categories.  workflow/object/folder and more.
 #    well.  to show a green border means that the user can

@@ -12,18 +12,13 @@ from Products.CMFPlone.tests import dummy
 from Products.CMFPlone import LargePloneFolder
 from Acquisition import aq_base
 
-# BBB
-try:
-    from Products.ATContentTypes.interfaces.IATContentType import IATContentType
-except ImportError:
-    from Products.ATContentTypes.interfaces import IATContentType
+from Products.ATContentTypes.interfaces import IATContentType
 
 AddPortalTopics = 'Add portal topics'
 
 atct_types = ('Document', 'Event', 'Favorite', 'File', 'Folder',
               'Large Plone Folder', 'Image', 'Link', 'News Item',
              )
-
 
 class TestATContentTypes(PloneTestCase.PloneTestCase):
 
@@ -55,27 +50,6 @@ class TestATContentTypes(PloneTestCase.PloneTestCase):
             self.failUnlessEqual(ob._getPortalTypeName(), pt)
             self.failUnlessEqual(ob.portal_type, pt)
             self.failUnless(IATContentType.isImplementedBy(ob))
-
-    # XXX: disabling as dead Xicken
-    def DISABLED_testPortalTypeNameWithoutConstruction(self):
-        # Check portal type without using the full constructor
-        #
-        # Make sure that the portal type is correct inside of mananger_afterAdd
-        # and initializeArchetype. There were some problems with LinguaPlone
-        # because the portal type name was set *after* object creation and so was
-        # wrong inside initializeArchetypes. This has caused some hard to debug
-        # errors with workflow states inside of LinguaPlone
-        for pt in atct_types:
-            ob = self.createWithoutConstruction(pt, pt, self.portal)
-            self.failUnlessEqual(ob._getPortalTypeName(), pt)
-            # portal_name is different!
-            self.failIfEqual(ob.portal_type, pt)
-            self.failUnless(ob.portal_type.startswith('AT'))
-
-    def DISABLED_testIndexHtmlIsATCT(self):
-        portal = self.portal
-        index_html = getattr(aq_base(self), 'index_html', None)
-        self.failUnless(IATContentType.isImplementedBy(index_html), index_html.__class__)
 
 
 class TestContentTypes(PloneTestCase.PloneTestCase):

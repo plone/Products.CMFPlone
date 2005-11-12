@@ -49,7 +49,7 @@ try:
                                        , description=description )
 except ConflictError:
     raise
-except: #XXX DateTime and contentEdit() has many things that could go wrong - catch all.
+except: # TODO DateTime and contentEdit() has many things that could go wrong - catch all.
     context.plone_utils.addPortalMessage(_(u'Error saving event.'))
     return state.set(new_status='failure')
 

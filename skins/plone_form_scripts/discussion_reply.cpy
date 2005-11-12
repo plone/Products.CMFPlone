@@ -47,7 +47,7 @@ tb = dtool.getDiscussionFor(context)
 id = tb.createReply(title=subject, text=body_text, Creator=creator)
 reply = tb.getReply(id)
 
-#XXX THIS NEEDS TO GO AWAY!
+# TODO THIS NEEDS TO GO AWAY!
 if hasattr(dtool.aq_explicit, 'cookReply'):
     dtool.cookReply(reply, text_format='plain')
 
