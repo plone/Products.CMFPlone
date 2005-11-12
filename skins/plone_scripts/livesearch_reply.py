@@ -59,7 +59,7 @@ label_no_results_found = _('label_no_results_found', default='No matching result
 if not results:
     print '''<fieldset class="livesearchContainer">'''
     print '''<legend id="livesearchLegend">%s</legend>''' % legend_livesearch
-    print '''<div class="LSIEFix>'''
+    print '''<div class="LSIEFix">'''
     print '''<div id="LSNothingFound">%s</div>''' % label_no_results_found
     print '''</div>'''
     print '''</fieldset>'''

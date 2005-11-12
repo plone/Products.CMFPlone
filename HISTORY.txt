@@ -4,15 +4,30 @@ Changelog for Plone
 
 Plone 2.1.2 (unreleased)
 
-    - Send new generated plain password via email directly when reset password, but not 
-      the one stored in userfolder since it could be encypted.
+    - Fixed http://plone.org/collector/4894 - Missing closing quote in 
+      LiveSearch pop-up.
+      [stefan]
+
+    - Send new generated plain password via email directly when reset password,
+      but not the one stored in userfolder since it could be encypted.
+      Also use getProperty to retrieve email address for better LDAP 
+      integration.
       [panjunyong]
 
-    - Removed skins/plone_3rdParty/CMFTopic from filesystem and written
-      migration to remove it from all skins
-      [hannosch, limi]
+    - Made plonifyAction be called with an existing default_tab parameter.
+      [deo]
 
-    - Removed unused errorMessages.py script
+    - Changed selectedTabs.py to use full URL instead of content path
+      when computing whether or not a portal_tab action is being viewed.
+      This causes portal tabs to behave correctly when the action refers
+      to a specific template.
+      [rafrombrc]
+
+    - Removed skins/plone_3rdParty/CMFTopic from filesystem and written
+      migration to remove it from all skins.
+      [hannosch] [limi]
+
+    - Removed unused errorMessages.py script.
       [hannosch]
 
     - Removed some BBB code for Zope 2.6 (try/except on DateTimeError).
@@ -21,15 +36,15 @@ Plone 2.1.2 (unreleased)
     - Added accessibility instructions for Konqueror.
       [limi]
 
-    - Remove so called 'ie7' from third party skins and all references to it
-      [limi, hannosch]
+    - Remove so called 'ie7' from third party skins and all references to it.
+      [limi] [hannosch]
 
     - Make Plone 2.1 degrade more gracefully on a non-migrated 2.0 site (special
-      fixes for plone.org)
+      fixes for plone.org).
       [sidnei]
 
     - Fixed http://plone.org/collector/4788 - Missing i18n for livesearch
-      'no matching results found'
+      'no matching results found'.
       [hannosch]
 
     - Fixed small bug in searching users from prefs_users_overview
@@ -39,8 +54,9 @@ Plone 2.1.2 (unreleased)
 
     - Changed folder_contents.pt so that it honors the
       'typesUseViewActionInListings' setting in site_properties for ALL
-      types (was only working for non-folderish types before)
+      types (was only working for non-folderish types before).
       [rafrombrc]
+
 
 Plone 2.1.1 - Coloma - Released October 13, 2005
 
@@ -49,13 +65,13 @@ Plone 2.1.1 - Coloma - Released October 13, 2005
       instances.
       [alecm]
 
-    - Fixed http://plone.org/collector/4587 - workflow history displays author's 
+    - Fixed http://plone.org/collector/4587 - workflow history displays author's
       full name instead of author's id and link to author page instead of
-      home folder (to be in sync with document byline). Added colored transition 
+      home folder (to be in sync with document byline). Added colored transition
       names as a free bonus.
       [naro]
 
-    - Fixed http://plone.org/collector/4690 - user can't change password after 
+    - Fixed http://plone.org/collector/4690 - user can't change password after
       initial login (with 'validate email' set)
       [naro]
 
@@ -80,7 +96,7 @@ Plone 2.1.1 - Coloma - Released October 13, 2005
       [alecm]
 
     - Fix DeprecationWarnings resulting from CMFCorePermissions imports by
-      importing from new permissions modules instead
+      importing from new permissions modules instead.
       [hannosch]
 
     - Fixed http://plone.org/collector/4766 - RSS feed in Firefox did not work
@@ -97,21 +113,21 @@ Plone 2.1.1 - Coloma - Released October 13, 2005
       [sidnei]
 
     - Fixed http://plone.org/collector/4704 - string.whitespace is not ASCII
-      only on OpenBSD, which resulted in problems in UnicodeNormalizer
+      only on OpenBSD, which resulted in problems in UnicodeNormalizer.
       [hannosch]
 
     - Fixed http://plone.org/collector/4708 - portlet_events "upcoming events"
-      link broke if events folder was renamed or deleted
+      link broke if events folder was renamed or deleted.
       [hannosch]
 
     - Fixed http://plone.org/collector/4755 - folder_factories does not link
-      to folder_constraintypes_form like add item menu does
+      to folder_constraintypes_form like add item menu does.
       [hannosch]
 
     - Removed out-of-the-box TextIndexNG2 support from Plone.
       TextIndexNG V2 and V3 has explicit migration code to convert
       ZCTextIndexes to TextIndexNG V2|3 instances on request.
-      This fix should resolve bug http://plone.org/collector/4713
+      This fix should resolve bug http://plone.org/collector/4713.
       [ajung]
 
     - Fix broken discussion_reply_form.cpt.
@@ -119,7 +135,7 @@ Plone 2.1.1 - Coloma - Released October 13, 2005
 
     - Reverted some non-literal msgids introduced in Python code to literal
       msgids as i18ndude is not capable of handling these right now. We'll
-      have to wait for Zope3-style MessageID's
+      have to wait for Zope3-style MessageID's.
       [hannosch]
 
     - A number of micro-optimizations.  The biggest winners are precompiling
@@ -145,12 +161,12 @@ Plone 2.1.1 - Coloma - Released October 13, 2005
       [hannosch]
 
     - Corrected lots of conflicting (swallowed) default texts for i18n
-      msgids. Found by new i18ndude feature
+      msgids. Found by new i18ndude feature.
       [hannosch]
 
-    - Removed unnecessary use of 'SESSION' in 'folder_contents' and 
-      'logout_form'
-      [dreamcatcher, alecm]
+    - Removed unnecessary use of 'SESSION' in 'folder_contents' and
+      'logout_form'.
+      [sidneii] [alecm]
 
     - Converted plone_javascript_variables.js from DTML to PageTemplate to
       make it better suited for i18n.
@@ -164,41 +180,42 @@ Plone 2.1.1 - Coloma - Released October 13, 2005
       translation service is available.
       [alecm]
 
+
 Plone 2.1 - Plaid - Released September 6, 2005
 
-    - Added deprecation warning for DTML in CSS. We will most likely get rid 
+    - Added deprecation warning for DTML in CSS. We will most likely get rid
       of this in Plone 2.2 or 2.3 to reduce complexity. If we are going to
       support variables in CSS, ResourceRegistries should handle it, not DTML.
       [limi]
 
-    - Fixed http://members.plone.org/collector/4639/ by using aq_explicit
+    - Fixed http://plone.org/collector/4639/ by using aq_explicit
       instead of aq_base when getting Title for pretty_title_or_id.  This
       means that objects which rely on acquisition in their Title() methods
       will need to do so explicitly, though getToolByName and aq_parent will
       work without issue.
       [alecm]
 
-    - A bug that caused the month display to use the day number was fixed. 
+    - A bug that caused the month display to use the day number was fixed.
       Thanks to Mohsen Moeeni for finding this bug.
       [longsleep]
 
-    - Fixed http://members.plone.org/collector/4638 by making the workflow
+    - Fixed http://plone.org/collector/4638 by making the workflow
       title methods more fault tolerant.
       [alecm]
 
     - Fixed http://plone.org/collector/4624 - document byline on events were
-      not translated
+      not translated.
       [hannosch]
 
-    - Fixed http://members.plone.org/collector/4635 - LiveSearch background
+    - Fixed http://plone.org/collector/4635 - LiveSearch background
       did not apply the IE fix if there was no result set. Thanks Wichert.
       [limi]
 
-    - Fixed http://members.plone.org/collector/4612 by granting the
+    - Fixed http://plone.org/collector/4612 by granting the
       'View Groups' permission to all Members at the portal root.
       [alecm]
 
-    - Fixed http://members.plone.org/collector/4589 by adding some
+    - Fixed http://plone.org/collector/4589 by adding some
       tal:conditions in a few templates.
       [alecm]
 
@@ -258,7 +275,7 @@ Plone 2.1 - Plaid - Released September 6, 2005
       [hannosch]
 
     - Adding some padding to the "display" menu header if the menu is disabled
-      because of an index_html document. Closes http://plone.org/collector/4534
+      because of an index_html document. Closes http://plone.org/collector/4534.
       [optilude]
 
     - Made Summary View the default view for the news topic.
@@ -269,7 +286,7 @@ Plone 2.1 - Plaid - Released September 6, 2005
       [hannosch]
 
     - Fixed http://plone.org/collector/4484 - 'My Preferences' action title
-      is 'Preferences' in 2.1
+      is 'Preferences' in 2.1.
       [hannosch]
 
    RC3 - Released August 18, 2005
@@ -278,11 +295,11 @@ Plone 2.1 - Plaid - Released September 6, 2005
       generally available to anonymous even when 'View' is not.
       [alecm]
 
-    - Fixed http://plone.org/collector/4502 by reverting to the old
-      nasty deprecated _usage method of doing things.  This should be cleaned
-      up once zope 2.7.8/2.8.2 comes out and make_query is fixed.
-      queryCatalog automatically converts the _usage style queries into proper
-      dict based queries, but it's still bad form.
+    - Fixed http://plone.org/collector/4502 by reverting to the old nasty
+      deprecated _usage method of doing things.  This should be cleaned up
+      once zope 2.7.8/2.8.2 comes out and make_query is fixed. queryCatalog
+      automatically converts the _usage style queries into proper dict based
+      queries, but it's still bad form.
       [alecm]
 
     - At the request of the i18n team I renamed Tile View to Summary View,
@@ -320,14 +337,13 @@ Plone 2.1 - Plaid - Released September 6, 2005
     - Made news topic sort on effective date, reversed.
       [alecm]
 
-    - Moved the news and events topics to the toplevel and removed the
-      folders.  If the folders had content they were renamed to
-      old_news/events.
+    - Moved the news and events topics to the toplevel and removed the folders.
+      If the folders had content they were renamed to old_news/events.
       [alecm]
 
     - Made all object_buttons act on parent folder when the current object is
-      the default page.  Made paste target respect the NonStructuralFolder
-      declaration.  Made the delete alert message stronger for folders and
+      the default page. Made paste target respect the NonStructuralFolder
+      declaration. Made the delete alert message stronger for folders and
       default pages in folders.
       [alecm]
 
@@ -336,8 +352,8 @@ Plone 2.1 - Plaid - Released September 6, 2005
       not be treated as such by Plone's tab generation and other is_folderish
       metadata. This is necessary to permit folderish-as-implementation types
       to not generate portal tabs at the portal root or link to folder_contents
-      from a parent folder folder_contents, as well as ensure the
-      correct functioning of the contents tab (displayContentsTab.py)
+      from a parent folder folder_contents, as well as ensure the correct
+      functioning of the contents tab (displayContentsTab.py).
       [optilude]
 
     - Fixed http://plone.org/collector/4361 - OverflowError when converting to
@@ -357,17 +373,17 @@ Plone 2.1 - Plaid - Released September 6, 2005
       [fschulze]
 
     - Fix http://plone.org/collector/4433 Changing workflow state in
-      review_history gives KeyError: 'comments'
+      review_history gives KeyError: 'comments'.
       [hannosch]
 
-    - Fix http://plone.org/collector/4456 wrong title on columns.css
+    - Fix http://plone.org/collector/4456 wrong title on columns.css.
       [hannosch]
 
     - Added past events sub-topic events_topic/previous, and restricted the
       primary events topic to show only upcoming events.
       [alecm]
 
-    - re-added javascript_head_slot and css_head_slot to prefs_main_template, 
+    - re-added javascript_head_slot and css_head_slot to prefs_main_template,
       so that preference templates can add javascript and css like other
       templates can again.
       [elvix]
@@ -543,7 +559,7 @@ Plone 2.1 - Plaid - Released September 6, 2005
 
     - Added migration to add new view templates to folderish types (including
       Smart Folders).
-      [alecm, limi]
+      [alecm] [limi]
 
     - Made folder_listing and folder_contents suitable for use as Smart Folder
       views.
@@ -660,7 +676,7 @@ Plone 2.1 - Plaid - Released September 6, 2005
 
     - Adding navigation control panel, and fixing a possible Search control
       panel migration problem in the process.
-      [optilude, limi]
+      [optilude] [limi]
 
     - Making the livesearch result truncate title and id, as offered by jeffk
       in http://plone.org/collector/4329. Thanks for the patch!
@@ -1160,7 +1176,7 @@ Plone 2.1 - Plaid - Released September 6, 2005
       [ender]
 
     - Fixed http://plone.org/collector/3714. Use ACTUAL_URL to skip to content.
-      [ender, neaj]
+      [ender] [neaj]
 
     - Fixed http://plone.org/collector/4137 by introducing a keyword
       argument 'show_inactive'to CatalogTool.searchResults and queryCatalog
@@ -1187,7 +1203,7 @@ Plone 2.1 - Plaid - Released September 6, 2005
 
     - Fixed index_html hack to return 404 for requests other than
       (PUT, HEAD, GET, POST).
-      [dreamcatcher]
+      [sidnei]
 
     - Updated "my folder" action to point straight to folder, not to
       folder_contents
@@ -1745,7 +1761,7 @@ Plone 2.1 - Plaid - Released September 6, 2005
 
     - Add support for the 'pghandler' argument added in Zope 2.8
       (though we don't officially support Zope 2.8 yet).
-      [dreamcatcher]
+      [sidnei]
 
     - Changed the order of the documentActions in the default view templates.
       If you have customized your view templates, you need to move these
@@ -1821,7 +1837,7 @@ Plone 2.1 - Plaid - Released September 6, 2005
 
     - Added RTL support (separate CSS is included for this, is only activated
       when the language is an RTL language).
-      [limi, mohsen]
+      [limi] [mohsen]
 
     - Added Mobile device support (handheld CSS profile).
       [limi]
@@ -2273,7 +2289,7 @@ Plone 2.1 - Plaid - Released September 6, 2005
       folder because we were using 'self' instead of 'intended_parent'
       for looking up permission roles, thus looking them in the factory
       tool instead of the target container.
-      [dreamcatcher]
+      [sidnei]
 
     - Fixed a long-standing visual styling bug of the 'hr' element, it used
       to only work properly with regards to colors/size in IE, now it works
@@ -2321,7 +2337,7 @@ Plone 2.1 - Plaid - Released September 6, 2005
 
     - It was impossible to create an item named 'index_html' in the portal
       root or inside a folder via WebDAV. Added a functional doctest for it.
-      [dreamcatcher]
+      [sidnei]
 
     - Removed headingFontBaseSize from base_properties and plone.css.dtml
       because it doesn't actually work and cost/benefit of implementation is too
@@ -2371,6 +2387,7 @@ Plone 2.1 - Plaid - Released September 6, 2005
     - getObjSize() now accepts second (optional) size argument to
       allow formatting of arbitrary sizes.
       [andym]
+
 
 Plone 2.0.5 - Backed Up Willie - Released December 1, 2004
 
@@ -2430,7 +2447,7 @@ Plone 2.0.5 - Backed Up Willie - Released December 1, 2004
     - Fixed http://plone.org/collector/2960 - The "Send this page to somebody"
       feature now uses the URL of the object including the view template. This
       avoids nasty login interactions when sending links to protected content.
-      [stefan] [dreamcatcher]
+      [stefan] [sidnei]
 
     - Made the column style sheet only apply to Screen, not Print/Presentation/
       Handheld.
@@ -2480,7 +2497,7 @@ Plone 2.0.5 - Backed Up Willie - Released December 1, 2004
       ImageField which have a ComputedAttribute for
       title/alt. ComputedAttributes don't get computed on the
       absence of an acquisition wrapper.
-      [dreamcatcher]
+      [sidnei]
 
     - Fixed http://plone.org/collector/3542 - queryCatalog script ignored
       'sort_limit' argument. Thanks to kaib for the patch!
@@ -2702,6 +2719,7 @@ Plone 2.0.5 - Backed Up Willie - Released December 1, 2004
       which would cause FileStorage to fail on _notify
       [runyaga]
 
+
 Plone 2.0.4 - Warp - Released August 16, 2004
 
     - Fixed http://plone.org/collector/3329. Results of breadcrumbs.py
@@ -2827,6 +2845,7 @@ Plone 2.0.4 - Warp - Released August 16, 2004
       switchers.
       [limi]
 
+
 Plone 2.0.3 - Noname - Released May 20, 2004
 
     - Login portlet wasn't using the 'label' tag, corrected.
@@ -2844,6 +2863,7 @@ Plone 2.0.3 - Noname - Released May 20, 2004
       of the search term in simple searchs.
       [azy]
 
+
 Plone 2.0.2 - Hicks - Released May 13, 2004
 
     - Added the 'listingNext' and 'listingPrevious' class for the batch
@@ -2858,7 +2878,7 @@ Plone 2.0.2 - Hicks - Released May 13, 2004
     - Some templates were broken with Zope 2.6. Fixed by adding a
       surrounding metal:block with i18n:domain='plone' around colophon
       and footer.
-      [dreamcatcher]
+      [sidnei]
 
     - Moving definitions (webdav-locking) from edit-templates to
       global_defines, where they belong.
@@ -2903,6 +2923,7 @@ Plone 2.0.2 - Hicks - Released May 13, 2004
       There are too many places that causes a lot of trouble by moving focus away from
       a field in which the user is actually typing.
       [elvix]
+
 
 Plone 2.0.1 - Jello - Released May 4, 2004
 
@@ -2990,15 +3011,15 @@ Plone 2.0.1 - Jello - Released May 4, 2004
       calendar_popup template.
       [tiran]
 
-    - Fixed https://plone.org/collector/2749. 'groups' wasn't
+    - Fixed http://plone.org/collector/2749. 'groups' wasn't
       initialized as an instance variable, so any changes to it would
       vanish on restart.
-      [dreamcatcher]
+      [sidnei]
 
-    - Fixed https://plone.org/collector/2671. default_page as a string
+    - Fixed http://plone.org/collector/2671. default_page as a string
       property would not work. Fixed this and added tests for basic
       behavior. More tests are needed IMHO.
-      [dreamcatcher]
+      [sidnei]
 
     - Fixes for http://plone.org/collector/2914.  Although I could
       not reproduce.  We now have a unit test showing that this
@@ -3009,14 +3030,14 @@ Plone 2.0.1 - Jello - Released May 4, 2004
       checked against a list of FactoryTypeInformation, which would
       never work. Changed to check against the list of portal_types
       generated by '<FTI>.getId()'
-      [dreamcatcher]
+      [sidnei]
 
-    - Fixed https://plone.org/collector/2907. 'get_size' can return
+    - Fixed http://plone.org/collector/2907. 'get_size' can return
       long. Also, improved the script a bit to be more correct with
       regard to sizes, include GB, use 'kB' instead of 'K' (which
       stands for Kelvin), return '0 kb' if size is null or 0, and add
       tests for all of this.
-      [dreamcatcher]
+      [sidnei]
 
     - Fixed http://plone.org/collector/2998. The types tool has a getTypeInfo
       method, but with different signature.
@@ -3026,14 +3047,14 @@ Plone 2.0.1 - Jello - Released May 4, 2004
       inheriting from a Plone tool, so the icon path (which defaults
       to relative to CMFPlone's dir) is invalid. We fallback to
       resolving the CMFPlone dir and join the path.
-      [dreamcatcher]
+      [sidnei]
 
     - added a PloneBaseTool that all other tools inherit
       from. Currently this does absolutely nothing, just a placeholder.
       [tiran]
 
     - changed the registration of tools to provide different images in the ZMI
-      [tesdal,limi]
+      [tesdal] [limi]
 
     - validate_document_edit assumed the Content-Type header is always
       present. This is not the case.
@@ -3109,6 +3130,7 @@ Plone 2.0.1 - Jello - Released May 4, 2004
       The folder listing of the current folder
       </div>'
 
+
 Plone 2.0 - Fyuti - Released March 23, 2004
 
    Final
@@ -3117,7 +3139,8 @@ Plone 2.0 - Fyuti - Released March 23, 2004
 
     - Added cleanupSkinPath method to migration_util, used to remove
       bad skin layers when adding the Plone Tableless skin in the RC5-RC6
-      migration. [geoffd, tiran]
+      migration.
+      [geoffd] [tiran]
 
     - Updated link in footer.pt to Alan's new company.
       [andym]
@@ -3136,7 +3159,7 @@ Plone 2.0 - Fyuti - Released March 23, 2004
     - Fix WebDAV for the nth time. browserDefault was using the
       portal_utils tool as the context for all DAV requests, instead
       of the real object.
-      [dreamcatcher]
+      [sidnei]
 
     - fixed #2808
       metadata_edit form was broken when the date format was set to
@@ -3696,10 +3719,10 @@ Plone 2.0 - Fyuti - Released March 23, 2004
       checked for the Delete Object permission instead of the folder. This means
       that the workflow can restrict the Owner from deleting an object (for example
       in a published state).
-      [dreamcatcher]
+      [sidnei]
 
     - Subclassed all CMFCore and CMFDefault tools for easier extension in the future.
-      [dreamcatcher]
+      [sidnei]
 
     - generateUniqueId and isIDUnique now are a bit more unique (with regards to
       randomness) and we now suffix generated ID's with .html - issue #1343
@@ -3771,7 +3794,7 @@ Plone 2.0 - Fyuti - Released March 23, 2004
       - if not found, use index_html
 
       - if not found, use default action
-        [andym] [dreamcatcher] [limi] [philikon]
+        [andym] [sidnei] [limi] [philikon]
 
     - Added support for FrontPage as a default page in a folder via
       browserDefault.
@@ -3859,7 +3882,6 @@ Plone 2.0 - Fyuti - Released March 23, 2004
       Note: **Requires**
       "GroupUserFolder from Collective":http://sf.net/projects/collective
 
-
     - PloneTool.editMetadata made a really bad asssumption.  We now use
       interface packages to assert that a object implements the interfaces
       before attempting to set DublinCore attributes *or* Discussable
@@ -3944,7 +3966,7 @@ Plone 2.0 - Fyuti - Released March 23, 2004
           [limi] [elvix]
 
     - Added link rel tags for better accessibility, Plone now outputs rel links
-      for:   [limi]
+      for:
 
         - Home
 
@@ -3957,6 +3979,8 @@ Plone 2.0 - Fyuti - Released March 23, 2004
         - Copyright
 
         - Author
+
+      [limi]
 
     - Plone doesn't use *any* tables for layout anymore. And it works perfectly
       in Netscape 4 too. Amazing, but true ;)
@@ -4098,11 +4122,13 @@ Plone 2.0 - Fyuti - Released March 23, 2004
       script which can be customized to filter out types based on user
       or context. [philikon]
 
+
 Plone 1.0.5 - Breakbeat Era - Released September 9, 2003
 
     - Security fix in CMF made us issue a new release with the updated CMF 1.3.2.
 
     - Workaround for the disappearing text bug in Internet Explorer 6 on Windows.
+
 
 Plone 1.0.4 - Zita Swoon - Released August 14, 2003
 
@@ -4135,6 +4161,7 @@ Plone 1.0.4 - Zita Swoon - Released August 14, 2003
       reverse is 0 by default
       [runyaga]
 
+
 Plone 1.0.3 - Brazil - Released June 19, 2003
 
     - Fixed ERRATA in 1.0.2
@@ -4147,6 +4174,7 @@ Plone 1.0.3 - Brazil - Released June 19, 2003
 
     - added a property in portal_properties/site_properties called invalid_ids
     which will not be allowed to be used in the CMF/Plone site.
+
 
 Plone 1.0.2 - Vert - Released June 3, 2003
 
@@ -4202,6 +4230,7 @@ Plone 1.0.2 - Vert - Released June 3, 2003
 
     - removed the setHeader() in header
 
+
 Plone 1.0.1 - Mira Calix - Released February 19, 2003
 
     - Added "Dry run" option to portal_migration
@@ -4225,6 +4254,7 @@ Plone 1.0.1 - Mira Calix - Released February 19, 2003
       compatability
 
     - fixed Collector bug in new issue formPlone 1.0
+
 
 Plone 1.0 - Released February 6, 2003
 
@@ -4250,8 +4280,8 @@ Plone 1.0 - Released February 6, 2003
       content_status_history instead of old action:publishing thanks to Robert
       Rotterman. NOTE: please do not submit bugs to sourceforge tracker.
 
-Plone 1.0 rc2
 
+Plone 1.0 rc2
 
     - removed the properties in site_properties that belong in the root
       validate_email, email_from_name/addr
@@ -4326,8 +4356,8 @@ Plone 1.0 rc2
 
     - Lots and lots of i18n updates
 
-Plone 1.0 rc1
 
+Plone 1.0 rc1
 
     - added 'fullname' to portal_memberdata
 
@@ -4381,8 +4411,8 @@ Plone 1.0 rc1
       lookup references to objects and then use them instead of repeating lookups.  its pretty
       obvious looking at the table tag what has been defined before being used.  Just Good Practice(tm)
 
-Plone 1.0 beta3
 
+Plone 1.0 beta3
 
     - Added all missing i18n strings, merged some strings to better facilitate translations to
       Japanese, Chinese and Korean.
@@ -4532,8 +4562,8 @@ Plone 1.0 beta3
 
     - file_view uses a href now instead of a input button
 
-Plone 1.0 Beta 2
 
+Plone 1.0 Beta 2
 
     - navigation slot/tree was made more resilient to exceptions thrown while traversing child nodes
 
@@ -4585,8 +4615,8 @@ Plone 1.0 Beta 2
 
     - zwork and limi have worked out quite a few issues regarding the new tree maker
 
-Plone 1.0 Beta 1
 
+Plone 1.0 Beta 1
 
     - Added tree navigation from Philipp Auersperg and made it the default
       navigation device. Thanks!
@@ -4694,8 +4724,8 @@ Plone 1.0 Beta 1
 
     - You can now delete discussions (need to put security check)
 
-Plone 1.0 alpha4
 
+Plone 1.0 alpha4
 
     - publishing now works without javascript. #202
 
@@ -4756,8 +4786,8 @@ Plone 1.0 alpha4
       Folder properties, left_slots and right_slots to put the Path expressions to
       the slots.  These properties are acquired but Membes.right_slots is empty.
 
-Plone 1.0 alpha3
 
+Plone 1.0 alpha3
 
     - removed tabs, request.set('disable_border',1) from: news, roster, search,
       and search_form
@@ -4823,8 +4853,8 @@ Plone 1.0 alpha3
 
     - you can now specify a Default Language for the Portal
 
-Plone 1.0alpha2
 
+Plone 1.0alpha2
 
     - Added localLongTimeFormat, set to '%Y-%m-%d %I:%M %p' by default. Used by
       Events.
@@ -4917,8 +4947,8 @@ Plone 1.0alpha2
 
     - added XSDHTMLEditor to document form for trial before 1.0
 
-Plone 1.0alpha - Boards of Canada Release:
 
+Plone 1.0alpha - Boards of Canada Release:
 
     - refactored how edit scripts work.  lots of heavy lifting is now done in
       plone_utils.editContent()
@@ -4971,6 +5001,7 @@ Plone 1.0alpha - Boards of Canada Release:
     - issue #47 resolved
 
     - issue #51 resolved
+
 
 Plone 0.9.9 - Bola - Released May 25, 2002
 
@@ -5162,8 +5193,8 @@ Plone 0.9.9 - Bola - Released May 25, 2002
 
     - many more changes and cleanups
 
-Plone 0.9.8 - Ulrich Schnauss - Released March 19, 2002
 
+Plone 0.9.8 - Ulrich Schnauss - Released March 19, 2002
 
     - renaming of objects
 
@@ -5178,8 +5209,8 @@ Plone 0.9.8 - Ulrich Schnauss - Released March 19, 2002
 
     - other things I forgot ;'(
 
-Plone 0.9.5 - Released January 31, 2002
 
+Plone 0.9.5 - Released January 31, 2002
 
     - enormous overhaul of entire UI.  UI now works with Mozilla.
       Install script installs skins
@@ -5230,12 +5261,13 @@ Plone 0.9.5 - Released January 31, 2002
     - BSD license added (not final license, as will require some non-visual (?)
       attribution)
 
+
 Plone 0.9 - Released January 20th, 2002
 
     - load of fixes, too many to even attempt to keep track of ;)
 
-Plone 0.7 - Released December 12th, 2001
 
+Plone 0.7 - Released December 12th, 2001
 
     - folder_edit_form id is editable (not so if its your own member folder id ;)
 
@@ -5245,22 +5277,24 @@ Plone 0.7 - Released December 12th, 2001
 
     - new look (content tabs)
 
-Plone 0.6
 
+Plone 0.6
 
     - so fast didnt have time to catch 'em
 
-Plone 0.5 - Released December 3rd, 2001
 
+Plone 0.5 - Released December 3rd, 2001
 
     - fixed search form up
 
     - fixed folder_contents (not have an extended_edit, since we muck w/
       metadata alot)
 
+
 Plone 0.4 - Released October 23rd, 2001
 
     - Various improvements
+
 
 Plone 0.1 - Released October 4th, 2001
 
