@@ -2,5 +2,5 @@
 validators= validate_id,validate_title
 
 [actions]
-action.failure=traverse_to_action:string:edit
+action.failure=redirect_to_action:string:edit
 action.success=redirect_to:string:folder_contents

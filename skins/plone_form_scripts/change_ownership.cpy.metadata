@@ -2,5 +2,5 @@
 validators=
  
 [actions]
-action.failure=traverse_to_action:string:ownership_form
+action.failure=redirect_to_action:string:ownership_form
 action.success=redirect_to_action:string:view
