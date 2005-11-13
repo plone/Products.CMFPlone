@@ -992,7 +992,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         rendered by the global_statusmessage.pt page template. They will be
         removed after they have been shown.
         """
-        IStatusMessage(self.REQUEST).showStatusMessages()
+        return IStatusMessage(self.REQUEST).showStatusMessages()
 
     security.declarePublic('browserDefault')
     def browserDefault(self, obj):
