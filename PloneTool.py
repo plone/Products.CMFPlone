@@ -1,7 +1,6 @@
 import re
 import sys
-import traceback
-from types import TupleType, UnicodeType, StringType
+from types import UnicodeType, StringType
 import urlparse
 
 from Products.CMFPlone.utils import safe_callable
@@ -16,9 +15,7 @@ from Acquisition import aq_base, aq_inner, aq_parent
 from ComputedAttribute import ComputedAttribute
 
 from Products.CMFCore.utils import UniqueObject
-from Products.CMFCore.utils import _checkPermission, \
-     _getAuthenticatedUser, limitGrantedRoles
-from Products.CMFCore.utils import getToolByName, _dtmldir
+from Products.CMFCore.utils import getToolByName
 from Products.CMFCore import permissions as CMFCorePermissions
 from Products.CMFCore.permissions import AccessContentsInformation
 from Products.CMFCore.interfaces.DublinCore import DublinCore, MutableDublinCore
@@ -1110,7 +1107,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         # 8. If we can't find this either, raise an exception
         #
 
-        raise AttributeError, "Failed to get a default page or view_action for %s" %s (obj.absolute_url,)
+        raise AttributeError, "Failed to get a default page or view_action for %s" % (obj.absolute_url,)
 
     security.declarePublic('isTranslatable')
     def isTranslatable(self, obj):

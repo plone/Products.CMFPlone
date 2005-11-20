@@ -1,7 +1,7 @@
 import re
 import Globals
 import OFS
-from os.path import join, abspath, dirname, split
+from os.path import join, abspath, split
 from Products.CMFCore.utils import ToolInit as CMFCoreToolInit
 from Products.CMFCore.utils import getToolByName
 from types import ClassType
