@@ -126,7 +126,7 @@
                     </a>
                 </li>
                 <li class="actionSeparator" tal:condition="showSettings">
-                    <a href="#" class="folderAddSettings" title="Restrict which content types can be added"
+                    <a href="#" class="folderAddSettings" title="Restrict which content types can be added here"
                            i18n:attributes="title title_configure_addable_content_types;"
                            tal:attributes="href string:${addContext/absolute_url}/folder_constraintypes_form;">
                           <tal:title i18n:translate="folder_add_settings">
