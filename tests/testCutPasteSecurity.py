@@ -14,8 +14,6 @@ from OFS.CopySupport import CopyError
 from Acquisition import aq_base
 from Products.CMFPlone import transaction
 
-from Products.CMFCore.utils import getToolByName
-
 
 class TestCutPasteSecurity(PloneTestCase.PloneTestCase):
 

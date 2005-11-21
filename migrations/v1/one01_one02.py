@@ -1,6 +1,5 @@
 from Products.CMFPlone import MigrationTool
 from Products.CMFCore.utils import getToolByName
-from Products.CMFCore.Expression import Expression
 
 def onezerotwo(portal):
     """ Upgrade from Plone 1.0.1 to Plone 1.0.2"""

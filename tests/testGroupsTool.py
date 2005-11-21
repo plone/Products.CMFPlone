@@ -10,11 +10,6 @@ from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
 from Acquisition import aq_base
 
-from Products.GroupUserFolder.GroupUserFolder import GroupUserFolder
-from Products.GroupUserFolder.GroupUserFolder import manage_addGroupUserFolder
-from Products.GroupUserFolder.GroupDataTool import GroupDataTool
-from Products.GroupUserFolder.GroupsTool import GroupsTool
-
 default_user = PloneTestCase.default_user
 
 def sortTuple(t):
@@ -116,25 +111,6 @@ class TestGroupsTool(PloneTestCase.PloneTestCase):
         self.assertEqual(gs[0].__class__.__name__, 'GroupData')
         self.assertEqual(gs[0].aq_parent.__class__.__name__, 'GRUFGroup')
         self.assertEqual(gs[0].aq_parent.aq_parent.__class__.__name__, 'GroupUserFolder')
-
-    # This should not be in a groups tool!
-    ##def testGetPureUserNames(self):
-    ##    self.groups.addGroup('foo', [], [])
-    ##    self.assertEqual(len(self.acl_users.getUserNames()), 2)
-    ##    self.assertEqual(len(self.groups.getPureUserNames()), 1)
-
-    # This should not be in a groups tool!
-    ##def testGetPureUsers(self):
-    ##    self.groups.addGroup('foo', [], [])
-    ##    self.assertEqual(len(self.acl_users.getUsers()), 2)
-    ##    self.assertEqual(len(self.groups.getPureUsers()), 1)
-
-    # This should not be in a groups tool!
-    ##def testPureUsersAreNotWrapped(self):
-    ##    self.groups.addGroup('foo', [], [])
-    ##    us = self.groups.getPureUsers()
-    ##    self.assertEqual(us[0].__class__.__name__, 'GRUFGroup')
-    ##    self.assertEqual(us[0].aq_parent.__class__.__name__, 'GroupUserFolder')
 
     def testSetGroupOwnership(self):
         self.groups.addGroup('foo', [], [])

@@ -17,12 +17,10 @@ from cStringIO import StringIO
 from Acquisition import aq_base
 
 from Products.StandardCacheManagers import AcceleratedHTTPCacheManager, RAMCacheManager
-from Products.CMFCore.TypesTool import ContentFactoryMetadata, FactoryTypeInformation
 
 from Products.CMFDefault.Document import addDocument
 from Globals import package_home
 from Products.CMFPlone import cmfplone_globals
-from Products.CMFQuickInstallerTool import QuickInstallerTool, AlreadyInstalled
 from Products.CMFPlone.setup.ConfigurationMethods import addSiteProperties
 from Products.CMFPlone.migrations.migration_util import safeEditProperty
 from Products.CMFPlone import ToolNames, transaction
@@ -176,23 +174,6 @@ def extendMemberdata(portal):
 def addDefaultPloneSkins(portal):
     pass
 
-# XXX I assume these can be removed, since they no longer ship with Plone.
-#
-#    from Products.CMFPlone.Portal import PloneGenerator
-#    pg=PloneGenerator()
-#    sk_tool=getToolByName(portal, 'portal_skins')
-#
-#    setup_skins=pg.setupSecondarySkin
-#    setup_skins(sk_tool, 'Plone Core',          'plone_styles/core')
-#    setup_skins(sk_tool, 'Plone Corporate',     'plone_styles/corporate')
-#    setup_skins(sk_tool, 'Plone Autumn',        'plone_styles/autumn')
-#    setup_skins(sk_tool, 'Plone Core Inverted', 'plone_styles/core_inverted')
-#    setup_skins(sk_tool, 'Plone Greensleeves',  'plone_styles/greensleeves')
-#    setup_skins(sk_tool, 'Plone Kitty',         'plone_styles/kitty')
-#    setup_skins(sk_tool, 'Plone Mozilla New',   'plone_styles/mozilla_new')
-#    setup_skins(sk_tool, 'Plone Prime',         'plone_styles/prime')
-#    setup_skins(sk_tool, 'Plone Zed',           'plone_styles/zed')
-
 def setupDefaultEditor(portal):
     pass
 
@@ -293,21 +274,6 @@ def addCacheAccelerators(portal):
         RAMCacheManager.manage_addRAMCacheManager(portal, 'RAMCache')
     if 'caching_policy_manager' not in portal.objectIds():
         CachingPolicyManager.manage_addCachingPolicyManager(portal)
-
-def setupHelpSection(portal):
-    # create and populate the 'plone_help' folder in the root of the plone
-    # the contents are STX files in CMFPlone/docs
-    if 'plone_help' not in portal.objectIds():
-        portal.invokeFactory(type_name='Folder', id='plone_help')
-        plone_help=portal.plone_help
-        docs_path=os.path.join(package_home(cmfplone_globals), 'help')
-        for filename in os.listdir(docs_path):
-            _path=os.path.join(docs_path, filename)
-            if not os.path.isdir(_path):
-                doc=open(_path, 'r')
-                addDocument(plone_help, filename, filename, '',
-                            'structured-text', doc.read())
-                getattr(plone_help,filename)._setPortalTypeName('Document')
 
 def setupCalendar(portal):
     """ Copied directly from CMFCalendar/Extensions/Install.py """

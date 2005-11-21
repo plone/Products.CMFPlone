@@ -11,12 +11,10 @@ from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
 from Products.CMFPlone.utils import _createObjectByType
 from Products.CMFPlone import transaction
-from Acquisition import aq_base
 
 from OFS.IOrderSupport import IOrderedContainer
 
-try: from zExceptions import NotFound
-except ImportError: NotFound = 'NotFound'
+from zExceptions import NotFound
 from zExceptions import BadRequest
 
 

@@ -9,8 +9,6 @@ if __name__ == '__main__':
 from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
 
-from Acquisition import aq_base
-
 
 class InstanceHomeFixup:
     '''Sigh, in Zope versions < 2.7.1 the Testing package changes

@@ -9,7 +9,6 @@ if __name__ == '__main__':
 from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
-from DateTime import DateTime
 from Products.CMFCore.utils import getToolByName
 from Acquisition import Implicit
 

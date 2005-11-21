@@ -36,7 +36,7 @@ Installing Plone manually, step by step instructions.
  
   - Zope 2.7.8 (or 2.8.4)
      http://www.zope.org/Products/Zope/2.7.8
-     Note: Zope 2.7 requires Python 2.3.5 (not 2.4)
+     Note: Zope 2.7 and 2.8 require Python 2.3.5 (not 2.4)
  
   - CMF 1.5.5 (not 1.4)
      Included in the Plone tarball 
