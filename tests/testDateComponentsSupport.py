@@ -447,24 +447,18 @@ class TestSpecialCases(PloneTestCase.PloneTestCase):
         # default == 0
         self.failUnless(hours[1]['selected'])   # 0th hour
 
-    # Require Zope 2.7
-    try:
-        from DateTime.DateTime import DateTimeError
-    except ImportError:
-        pass
-    else:
-        def testInvalidDateWithGMT(self):
-            # Any GMT suffix gets truncated
-            d = self.portal.date_components_support('2004/02/31 00:30:00 GMT+2')
-            hours = d.get('hours')
-            # default == 1
-            self.failUnless(hours[0]['selected'])
+    def testInvalidDateWithGMT(self):
+        # Any GMT suffix gets truncated
+        d = self.portal.date_components_support('2004/02/31 00:30:00 GMT+2')
+        hours = d.get('hours')
+        # default == 1
+        self.failUnless(hours[0]['selected'])
 
-        def testInvalidDateOnly(self):
-            d = self.portal.date_components_support('2004/02/31')
-            hours = d.get('hours')
-            # default == 1
-            self.failUnless(hours[0]['selected'])
+    def testInvalidDateOnly(self):
+        d = self.portal.date_components_support('2004/02/31')
+        hours = d.get('hours')
+        # default == 1
+        self.failUnless(hours[0]['selected'])
 
 
 def test_suite():

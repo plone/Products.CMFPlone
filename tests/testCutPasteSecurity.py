@@ -9,7 +9,7 @@ if __name__ == '__main__':
 from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
 
-from AccessControl import Unauthorized, getSecurityManager
+from AccessControl import Unauthorized
 from OFS.CopySupport import CopyError
 from Acquisition import aq_base
 from Products.CMFPlone import transaction

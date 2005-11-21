@@ -10,7 +10,6 @@ from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
 
-from AccessControl import getSecurityManager
 from AccessControl import Unauthorized
 from ZODB.POSException import ConflictError
 
