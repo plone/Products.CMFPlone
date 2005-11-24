@@ -15,7 +15,6 @@ from DateTime import DateTime
 from Products.CMFCore.permissions import AccessInactivePortalContent
 import transaction
 
-from Products.CMFPlone.CatalogTool import ExtensibleIndexableObjectRegistry
 from Products.CMFPlone.CatalogTool import ExtensibleIndexableObjectWrapper
 from Products.CMFPlone.CatalogTool import _eioRegistry
 

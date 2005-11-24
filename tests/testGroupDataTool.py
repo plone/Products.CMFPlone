@@ -8,12 +8,6 @@ if __name__ == '__main__':
 
 from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
-from Acquisition import aq_base
-
-from Products.GroupUserFolder.GroupUserFolder import GroupUserFolder
-from Products.GroupUserFolder.GroupUserFolder import manage_addGroupUserFolder
-from Products.GroupUserFolder.GroupDataTool import GroupDataTool
-from Products.GroupUserFolder.GroupsTool import GroupsTool
 
 default_user = PloneTestCase.default_user
 

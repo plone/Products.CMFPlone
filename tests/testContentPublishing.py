@@ -11,11 +11,6 @@ from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
 
-from AccessControl import Unauthorized, getSecurityManager
-from Acquisition import aq_base
-from DateTime import DateTime
-from StringIO import StringIO
-
 text="""I lick my brain in silence
 Rather squeeze my head instead
 Midget man provoking violence

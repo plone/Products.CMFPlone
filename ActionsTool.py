@@ -1,16 +1,11 @@
 from Globals import InitializeClass
 from AccessControl import ClassSecurityInfo
-from Acquisition import aq_base, aq_inner, aq_parent
+from Acquisition import aq_base
 from Products.CMFCore.ActionsTool import ActionsTool as BaseTool
-from Products.CMFCore.ActionInformation import oai
-from Products.CMFCore.Expression import createExprContext
-from Products.CMFCore.utils import _checkPermission
-from Products.CMFPlone import ToolNames, FactoryTool
+from Products.CMFPlone import ToolNames
 from setup.ConfigurationMethods import correctFolderContentsAction
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFCore.interfaces.portal_actions import ActionProvider as IActionProvider
-
-
 
 _marker = object()
 

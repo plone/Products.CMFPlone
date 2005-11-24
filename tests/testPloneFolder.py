@@ -11,7 +11,6 @@ from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
 from Products.CMFPlone.utils import _createObjectByType
 import transaction
-from Acquisition import aq_base
 
 from OFS.IOrderSupport import IOrderedContainer
 

@@ -1,4 +1,4 @@
-from interface import Interface
+from Interface import Interface
 from PloneBaseTool import IPloneBaseTool
 
 class ITempFolder(Interface):

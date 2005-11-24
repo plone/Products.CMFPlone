@@ -5,10 +5,8 @@ from Products.CMFCore import permissions as CMFCorePermissions
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.Expression import Expression
 from Products.CMFPlone.migrations.migration_util import installOrReinstallProduct, \
-     safeGetMemberDataTool, safeEditProperty
+     safeGetMemberDataTool, safeEditProperty, cleanupSkinPath
 from Products.CMFCore.DirectoryView import createDirectoryView
-from Products.CMFPlone.migrations.migration_util import cleanupSkinPath
-from Products.CMFPlone.migrations.migration_util import safeEditProperty
 from alphas import reindexCatalog, indexMembersFolder, indexNewsFolder, \
                     indexEventsFolder, convertPloneFTIToCMFDynamicViewFTI
 from Products.CMFPlone.PloneTool import AllowSendto

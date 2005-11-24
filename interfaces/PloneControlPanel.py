@@ -1,4 +1,4 @@
-from interface import Interface, Attribute
+from Interface import Interface
 from PloneBaseTool import IPloneBaseTool
 
 class IControlPanel(IPloneBaseTool):

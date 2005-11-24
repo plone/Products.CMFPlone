@@ -9,7 +9,6 @@
 ##
 #
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.utils import base_hasattr
 
 portal = getToolByName(context, 'portal_url').getPortalObject()
 mtool = getToolByName(portal, 'portal_membership')
