@@ -30,7 +30,7 @@
 
   <adapter
       factory="Products.CMFCore.exportimport.content.StructureFolderWalkingAdapter"
-      provides="Products.CMFCore.interfaces.IFilesystemImporter"
+      provides="Products.GenericSetup.interfaces.IFilesystemImporter"
       for="Products.CMFCore.interfaces.ISiteRoot"
       />
 
@@ -50,7 +50,7 @@
   <!-- Mark ATCT objects as IDAVAware so CMFSetup can export/import them -->
   <five:implements
     class="Products.ATContentTypes.content.document.ATDocument"
-    interface="Products.CMFCore.interfaces.IDAVAware"
+    interface="Products.GenericSetup.interfaces.IDAVAware"
     />
 
   <!-- XXX: Temporarily disable ATTopic exporting until we have an
@@ -62,7 +62,7 @@
 
   <adapter
     factory=".content.NullExporterAdapter"
-    provides="Products.CMFCore.interfaces.IFilesystemExporter"
+    provides="Products.GenericSetup.interfaces.IFilesystemExporter"
     for="Products.CMFPlone.exportimport.content.IDisabledExport"
     />
   

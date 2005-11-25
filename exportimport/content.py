@@ -1,7 +1,7 @@
 from zope.interface import implements
 from zope.interface import Interface
 
-from Products.CMFCore.interfaces import IFilesystemExporter
+from Products.GenericSetup.interfaces import IFilesystemExporter
 
 # XXX: This is a temporary hack to allow disabling exporting of some
 # content types until all of them support proper exporting

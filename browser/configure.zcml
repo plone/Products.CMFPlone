@@ -12,7 +12,7 @@
 
   <browser:skin
       name="plone"
-      layers="plone cmf default"
+      layers="plone default"
       />
 
   <browser:view
