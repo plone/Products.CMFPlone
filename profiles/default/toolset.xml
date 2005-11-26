@@ -72,4 +72,6 @@
            class="Products.CMFUid.UniqueIdGeneratorTool.UniqueIdGeneratorTool"/>
  <required tool_id="portal_uidhandler"
            class="Products.CMFUid.UniqueIdHandlerTool.UniqueIdHandlerTool"/>
+ <required tool_id="error_log"
+           class="Products.SiteErrorLog.SiteErrorLog.SiteErrorLog"/>
 </tool-setup>
