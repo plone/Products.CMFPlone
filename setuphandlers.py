@@ -88,6 +88,14 @@ class PloneGenerator:
         index_html.write(member_indexhtml)
         index_html.ZPythonScript_setTitle('Member Search')
 
+    def setupGroups(self, p):
+        """
+        Create Plone's default set of groups.
+        """
+        gtool = getToolByName(p, 'portal_groups')
+        gtool.addGroup('Administrators', roles=['Manager'])
+        gtool.addGroup('Reviewers', roles=['Reviewer'])
+
 def importVarious(context):
     """
     Import various settings.
@@ -112,3 +120,4 @@ def importFinalSteps(context):
 
     gen = PloneGenerator()
     gen.setupPortalContent(site)
+    gen.setupGroups(site)
