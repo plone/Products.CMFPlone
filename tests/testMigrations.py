@@ -566,7 +566,7 @@ class TestMigrations_v2_1(MigrationTest):
     def testInstallCSSandJSRegistries(self):
         # Should install ResourceRegistries
         self.uninstallProduct('ResourceRegistries')
-        self.failIf(hasattr(self.portal, 'portal_css'))
+        self.portal.manage_delObjects(['portal_css', 'portal_javascripts'])
         installCSSandJSRegistries(self.portal, [])
         self.failUnless('portal_css' in self.portal.objectIds())
         self.failUnless('portal_javascripts' in self.portal.objectIds())
@@ -574,7 +574,7 @@ class TestMigrations_v2_1(MigrationTest):
     def testInstallCSSandJSRegistriesTwice(self):
         # Should not fail if migrated again
         self.uninstallProduct('ResourceRegistries')
-        self.failIf(hasattr(self.portal, 'portal_css'))
+        self.portal.manage_delObjects(['portal_css', 'portal_javascripts'])
         installCSSandJSRegistries(self.portal, [])
         installCSSandJSRegistries(self.portal, [])
         self.failUnless('portal_css' in self.portal.objectIds())
