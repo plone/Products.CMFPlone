@@ -1125,9 +1125,8 @@ def fixFolderButtonsActions(portal, out):
     if actionsTool is not None:
         for newaction in ACTIONS:
             category = newaction.get('category', CATEGORY)
-            try:
-                action = actionsTool.unrestrictedTraverse('/'.join([category, newaction['id']]))
-            except KeyError:
+            action = actionsTool.getActionObject('/'.join([category, newaction['id']]))
+            if action is None:
                 # Action doesn't exist: add it
                 actionsTool.addAction(newaction['id'],
                     name=newaction['name'],
