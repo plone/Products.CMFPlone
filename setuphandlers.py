@@ -5,7 +5,8 @@ CMFPlone setup handlers.
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore import permissions as cmfpermissions
 from Products.CMFPlone.utils import _createObjectByType
-from Products.CMFPlone.migrations.v2_1.rcs import enableSyndicationOnTopics
+from Products.CMFPlone import migrations as migs
+
 
 class PloneGenerator:
 
@@ -105,7 +106,11 @@ class PloneGenerator:
         Perform any necessary migration steps.
         """
         out = []
-        enableSyndicationOnTopics(p, out)
+        migs.v2_1.alphas.addDefaultTypesToPortalFactory(p, out)
+        migs.v2_1.rcs.enableSyndicationOnTopics(p, out)
+        migs.v2_1.betas.addSearchAndNavigationConfiglets(p, out)
+        migs.v2_1.betas.addIconForNavigationSettingsConfiglet(p, out)
+        migs.v2_1.betas.addIconForSearchSettingsConfiglet(p, out)
         
 def importVarious(context):
     """
