@@ -5,6 +5,7 @@ CMFPlone setup handlers.
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore import permissions as cmfpermissions
 from Products.CMFPlone.utils import _createObjectByType
+from Products.CMFPlone.migrations.v2_1.rcs import enableSyndicationOnTopics
 
 class PloneGenerator:
 
@@ -23,6 +24,9 @@ class PloneGenerator:
                              ('Manager', 'Member', 'Owner',), acquire=1 )
         stool = getToolByName(p, 'portal_skins')
         stool.allow_any=0 # Skin changing for users is turned off by default
+
+        syntool = getToolByName(p, 'portal_syndication')
+        syntool.editProperties(isAllowed=1)
         #p.icon = 'misc_/CMFPlone/plone_icon'
 
 
@@ -96,6 +100,13 @@ class PloneGenerator:
         gtool.addGroup('Administrators', roles=['Manager'])
         gtool.addGroup('Reviewers', roles=['Reviewer'])
 
+    def performMigrationActions(self, p):
+        """
+        Perform any necessary migration steps.
+        """
+        out = []
+        enableSyndicationOnTopics(p, out)
+        
 def importVarious(context):
     """
     Import various settings.
@@ -121,3 +132,4 @@ def importFinalSteps(context):
     gen = PloneGenerator()
     gen.setupPortalContent(site)
     gen.setupGroups(site)
+    gen.performMigrationActions(site)
