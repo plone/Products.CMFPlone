@@ -66,4 +66,10 @@
            class="Products.ResourceRegistries.tools.CSSRegistry.CSSRegistryTool"/>
  <required tool_id="portal_atct"
            class="Products.ATContentTypes.tool.atct.ATCTTool"/>
+ <required tool_id="portal_uidannotation"
+           class="Products.CMFUid.UniqueIdAnnotationTool.UniqueIdAnnotationTool"/>
+ <required tool_id="portal_uidgenerator"
+           class="Products.CMFUid.UniqueIdGeneratorTool.UniqueIdGeneratorTool"/>
+ <required tool_id="portal_uidhandler"
+           class="Products.CMFUid.UniqueIdHandlerTool.UniqueIdHandlerTool"/>
 </tool-setup>
