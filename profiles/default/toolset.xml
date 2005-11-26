@@ -64,5 +64,6 @@
            class="Products.ResourceRegistries.tools.JSRegistry.JSRegistryTool"/>
  <required tool_id="portal_css"
            class="Products.ResourceRegistries.tools.CSSRegistry.CSSRegistryTool"/>
-
+ <required tool_id="portal_atct"
+           class="Products.ATContentTypes.tool.atct.ATCTTool"/>
 </tool-setup>
