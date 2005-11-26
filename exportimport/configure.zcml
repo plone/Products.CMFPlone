@@ -35,6 +35,12 @@
       />
 
   <adapter
+     factory="Products.CMFCore.exportimport.content.StructureFolderWalkingAdapter"
+      provides="Products.GenericSetup.interfaces.IFilesystemImporter"
+      for="Products.ATContentTypes.z3.interfaces.IATContentType"
+     />
+
+  <adapter
       factory=".propertiestool.SimpleItemWithPropertiesNodeAdapter"
       provides="Products.GenericSetup.interfaces.INodeImporter"
       for="Products.CMFCore.interfaces.IMemberDataTool"
