@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.1.2 (unreleased)
 
+    - Fix unit test relying on user folder storing passwords in plain
+      text. This isn't anymore the default for Zope 2.9. Changed to test
+      authenticate.
+      [hannosch]
+
     - Some code cleanup, mainly removal of unused imports.
       [hannosch]
 
