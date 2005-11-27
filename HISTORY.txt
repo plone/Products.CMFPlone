@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1.2 (unreleased)
 
+    - Send correct password in the registry notification mail even if 
+      the stored password are encrypted.
+      [panjunyong]
+
     - Updated externalEditorEnabled.py to comply with WebDAV changes in
       Archetypes 1.3.6.
       [hannosch]
