@@ -9,6 +9,7 @@
 ##
 #
 from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.utils import webdav_enabled
 
 portal = getToolByName(context, 'portal_url').getPortalObject()
 mtool = getToolByName(portal, 'portal_membership')
@@ -21,8 +22,7 @@ member = mtool.getAuthenticatedMember()
 if not member.getProperty('ext_editor', False):
     return False
 
-# Object implements lock interface
-if not portal.portal_interface.objectImplements(context, 'webdav.WriteLockInterface.WriteLockInterface'):
+if not webdav_enabled(context, container):
     return False
 
 # Object not locked ?
