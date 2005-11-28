@@ -28,9 +28,8 @@ default_user  = PloneTestCase.default_user
 user2  = 'u2'
 group2 = 'g2'
 
-# XXX: Update this when 'news' and 'events' importers are finished
-# base_content = ['Members', 'events', 'news', 'previous', default_user, 'doc']
-base_content = ['Members', default_user, 'doc', 'front-page']
+base_content = ['Members', 'events', 'news', 'previous',
+                default_user, 'front-page', 'doc']
 
 
 class TestCatalogSetup(PloneTestCase.PloneTestCase):
