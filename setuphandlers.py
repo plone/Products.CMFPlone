@@ -6,7 +6,7 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFCore import permissions as cmfpermissions
 from Products.CMFPlone.utils import _createObjectByType
 from Products.CMFPlone import migrations as migs
-
+from Products.CMFPlone.Portal import member_indexhtml
 
 class PloneGenerator:
 
@@ -78,13 +78,11 @@ class PloneGenerator:
         date_crit.setDateRange('-') # This is irrelevant when the date is now
         date_crit.setOperation('less')
 
-        return
-    
-        # add Members folder
-        p.invokeFactory('Large Plone Folder', 'Members')
+        # configure Members folder (already added by the content import)
         members = getattr(p , 'Members')
         members.setTitle('Members')
         members.setDescription("Container for portal members' home directories")
+        members.manage_addProperty('right_slots', [], 'lines')
 
         # add index_html to Members area
         addPy = members.manage_addProduct['PythonScripts'].manage_addPythonScript
