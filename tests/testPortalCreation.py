@@ -583,8 +583,7 @@ class TestPortalBugs(PloneTestCase.PloneTestCase):
     def afterSetUp(self):
         self.membership = self.portal.portal_membership
         self.members = self.membership.getMembersFolder()
-        # Fake the Members folder contents
-        self.members._setObject('index_html', ZopePageTemplate('index_html'))
+        self.mem_index_type = "Script (Python)"
 
     def testMembersIndexHtml(self):
         # index_html for Members folder should be a Page Template
@@ -593,14 +592,14 @@ class TestPortalBugs(PloneTestCase.PloneTestCase):
         self.assertEqual(aq_base(members).meta_type, 'ATBTreeFolder')
         self.failUnless(hasattr(aq_base(members), 'index_html'))
         # getitem works
-        self.assertEqual(aq_base(members)['index_html'].meta_type, 'Page Template')
-        self.assertEqual(members['index_html'].meta_type, 'Page Template')
+        self.assertEqual(aq_base(members)['index_html'].meta_type, self.mem_index_type)
+        self.assertEqual(members['index_html'].meta_type, self.mem_index_type)
         # _getOb works
-        self.assertEqual(aq_base(members)._getOb('index_html').meta_type, 'Page Template')
-        self.assertEqual(members._getOb('index_html').meta_type, 'Page Template')
+        self.assertEqual(aq_base(members)._getOb('index_html').meta_type, self.mem_index_type)
+        self.assertEqual(members._getOb('index_html').meta_type, self.mem_index_type)
         # getattr works when called explicitly
-        self.assertEqual(aq_base(members).__getattr__('index_html').meta_type, 'Page Template')
-        self.assertEqual(members.__getattr__('index_html').meta_type, 'Page Template')
+        self.assertEqual(aq_base(members).__getattr__('index_html').meta_type, self.mem_index_type)
+        self.assertEqual(members.__getattr__('index_html').meta_type, self.mem_index_type)
 
     def testLargePloneFolderHickup(self):
         # Attribute access for 'index_html' acquired the Document from the
@@ -610,7 +609,7 @@ class TestPortalBugs(PloneTestCase.PloneTestCase):
         members = self.members
         self.assertEqual(aq_base(members).meta_type, 'ATBTreeFolder')
         #self.assertEqual(members.index_html.meta_type, 'Document')
-        self.assertEqual(members.index_html.meta_type, 'Page Template')
+        self.assertEqual(members.index_html.meta_type, self.mem_index_type)
 
     def testManageBeforeDeleteIsCalledRecursively(self):
         # When the portal is deleted, all subobject should have
