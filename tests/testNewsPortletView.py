@@ -16,7 +16,7 @@ class TestNewsPortletView(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
         self.url = self.portal.portal_url
-        self.news = self.portal.news
+        #self.news = self.portal.news
         self.workflow = self.portal.portal_workflow
 
     def testImplementsINewsPortlet(self):
