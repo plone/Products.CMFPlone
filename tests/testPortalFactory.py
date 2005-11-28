@@ -247,7 +247,7 @@ class TestCreateObjectByURL(PloneTestCase.FunctionalTestCase):
         # The redirect URL should contain the factory parts
         location = response.getHeader('Location')
         self.failUnless(location.startswith(self.folder_url+'/portal_factory/Document/'))
-        self.failUnless(location.endswith('/atct_edit'))
+        self.failUnless(location.endswith('/edit'))
 
         # Perform the redirect
         edit_form_path = location[len(self.app.REQUEST.SERVER_URL):]
@@ -266,7 +266,7 @@ class TestCreateObjectByURL(PloneTestCase.FunctionalTestCase):
         # The redirect URL should contain the factory parts
         location = response.getHeader('Location')
         self.failUnless(location.startswith(self.folder_url+'/portal_factory/Document/'))
-        self.failUnless(location.endswith('/atct_edit'))
+        self.failUnless(location.endswith('/edit'))
 
         # Perform the redirect
         edit_form_path = location[len(self.app.REQUEST.SERVER_URL):]
