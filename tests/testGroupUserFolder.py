@@ -309,8 +309,9 @@ class TestUsersAndGroups(PloneTestCase.PloneTestCase):
     def testUserGetName(self):
         self.assertEqual(self.user.getUserName(), default_user)
 
-    def testUserGetPassword(self):
-        self.assertEqual(self.user._getPassword(), 'secret')
+    def testUserAuthenticate(self):
+        result = self.user.authenticate('secret', self.app.REQUEST)
+        self.assertEqual(result, True)
 
     def testUserGetRoles(self):
         self.assertEqual(self.user.getRoles(), ('Member', 'Authenticated'))
