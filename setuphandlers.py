@@ -83,6 +83,8 @@ class PloneGenerator:
         members.setTitle('Members')
         members.setDescription("Container for portal members' home directories")
         members.manage_addProperty('right_slots', [], 'lines')
+        # XXX: Not sure why reindex is needed, but it doesn't seem to happen otherwise
+        members.reindexObject()
 
         # add index_html to Members area
         addPy = members.manage_addProduct['PythonScripts'].manage_addPythonScript
