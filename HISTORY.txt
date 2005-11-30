@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 2.1.2 (unreleased)
 
+    - Combined the support for publishing subobjects in
+      content_status_history.cpt with the support for bulk publishing. The old
+      behaviour showed, but didn't use, the checkbox for publishing subobjects
+      when you published a folder directly.
+      [ctheune]
+
     - Send correct password in the registry notification mail even if 
       the stored password are encrypted.
       [panjunyong]
