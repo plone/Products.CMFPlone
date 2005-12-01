@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.1.2 (unreleased)
 
+    - Fixed http://plone.org/collector/4938 - member portraits were referenced
+      using the username instead of the member id in a few places in the
+      membership tool.
+      [wichert]
+
     - Combined the support for publishing subobjects in
       content_status_history.cpt with the support for bulk publishing. The old
       behaviour showed, but didn't use, the checkbox for publishing subobjects
