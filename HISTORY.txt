@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1.2 (unreleased)
 
+    - Fixed http://plone.org/collector/4800 - hardcoded review_state variable
+      breaks custom workflows.
+      [hannosch]
+
     - Fixed http://plone.org/collector/4938 - member portraits were referenced
       using the username instead of the member id in a few places in the
       membership tool.
