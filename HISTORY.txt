@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1.2 (unreleased)
 
+    - Added PIL version to control panel version overview as suggested in
+      http://plone.org/collector/4775.
+      [hannosch]
+
     - Fixed http://plone.org/collector/4803 and
       http://plone.org/collector/4943 by only deleting existing text indexes
       when the lexicon is missing (e.g. when we actually have a new catalog

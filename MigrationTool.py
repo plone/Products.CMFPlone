@@ -164,6 +164,15 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
             products[p.id] = product_info
         return products
 
+    security.declareProtected(ManagePortal,'getPILVersion')
+    def getPILVersion(self):
+        """The version of the installed Python Imaging Library."""
+        try:
+            from PIL.Image import VERSION
+        except ImportError:
+            VERSION = None
+        return VERSION
+
     ##############################################################
     # the setup widget registry
     # this is a whole bunch of wrappers
