@@ -225,7 +225,7 @@ def installLogin(portal, out):
         propSheet = getattr(propTool, 'site_properties', None)
         if propSheet is not None:
             if not propSheet.hasProperty('verify_login_name'):
-                propSheet.manage_addProperty('verify_login_name', 1, 'boolean')
+                propSheet.manage_addProperty('verify_login_name', 0, 'boolean')
             out.append("Added 'verify_login_name' property to site_properties.")
 
 
