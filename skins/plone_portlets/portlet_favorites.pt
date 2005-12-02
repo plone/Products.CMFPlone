@@ -7,46 +7,43 @@
 <!-- The Favorites Box -->
 
 <div metal:define-macro="portlet"
-     tal:omit-tag=""
      tal:define="folder python:getattr(here.portal_membership.getHomeFolder(), 'Favorites', None);"
      tal:condition="python: folder is not None">
 
-    <div class="portlet"
+<dl class="portlet" id="portlet-favorites"
          tal:define="favorites python:folder.getFolderContents({'portal_type': 'Favorite'});
                      limit python:10;
                      over_limit python:len(favorites)>limit;
-                     favorites python: favorites[:limit]" id="portlet-favorites">
+                     favorites python: favorites[:limit]">
 
-        <h5 i18n:translate="box_my_favorites">My Favorites</h5>
+    <dt class="portletHeader">
+        <a href=""
+           tal:attributes="href string:${folder/absolute_url}/folder_contents"
+           i18n:translate="box_my_favorites"
+           >My Favorites
+         </a>
+    </dt>
 
-        <div class="portletBody">
-
-            <div class="portletContent odd" tal:condition="favorites">
-
-                <tal:notag tal:repeat="o favorites">
-                    <a class="marker"
-                       href=""
-                       tal:attributes="href o/getRemoteUrl"
-                       tal:content="o/pretty_title_or_id">Favorite title</a>
-                    <br />
-                </tal:notag>
-
-            </div>
-            
-
-            <div class="portletContent odd">
+    <dd class="portletItemSingle odd" tal:condition="favorites">
+        <ul class="visualNoMarker">
+            <li tal:repeat="o favorites">
                 <a href=""
-                   class="portletMore"
-                   tal:attributes="href string:${folder/absolute_url}/folder_contents"
-                   i18n:translate="box_morelink"
-                   >
-                    More...
+                    tal:attributes="href o/getRemoteUrl"
+                    tal:content="o/pretty_title_or_id">Favorite title
                 </a>
-            </div>
+            </li>
+        </ul>
+    </dd>
 
-        </div>
+    <dd class="portletFooter">
+        <a href=""
+           tal:attributes="href string:${folder/absolute_url}/folder_contents"
+           i18n:translate="box_morelink">
+            More...
+        </a>
+    </dd>
 
-    </div>
+</dl>
 
 </div>
 
