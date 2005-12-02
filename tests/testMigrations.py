@@ -283,6 +283,7 @@ class TestMigrations_v2_1(MigrationTest):
         self.cc = self.portal.cookie_authentication
         self.cp = self.portal.portal_controlpanel
         self.skins = self.portal.portal_skins
+        self.types = self.portal.portal_types
 
     def testAddFullScreenAction(self):
         # Should add the full_screen action
@@ -2934,8 +2935,7 @@ class TestMigrations_v2_1(MigrationTest):
         self.assertEqual(self.portal.events.portal_type, 'Topic')
 
     def testMoveDefaultTopicsToPortalRootWithContent(self):
-        # Should move the old news folder to site_news if there are any items
-        # in it
+        # Should move the old news folder to site_news if there are any items in it
         self.setRoles(['Manager','Member'])
         self.portal.manage_delObjects(['news','events'])
         addNewsFolder(self.portal, [])
@@ -2958,8 +2958,7 @@ class TestMigrations_v2_1(MigrationTest):
         self.failIf('old_events' in self.portal.objectIds())
 
     def testMoveDefaultTopicsToPortalRootPreservesOrder(self):
-        # Should move the old news folder to site_news if there are any items
-        # in it
+        # Move should preserve position
         self.setRoles(['Manager','Member'])
         self.portal.manage_delObjects(['news','events'])
         addNewsFolder(self.portal, [])
@@ -2984,6 +2983,23 @@ class TestMigrations_v2_1(MigrationTest):
         # Should not fail if folders are missing
         self.portal.manage_delObjects(['news','events'])
         moveDefaultTopicsToPortalRoot(self.portal,[])
+
+    def testMoveDefaultTopicsToPortalRootIfTopicIsDisallowedContentType(self):
+        # Should move the news and events topics to the portal root
+        self.setRoles(['Manager', 'Member'])
+        self.portal.manage_delObjects(['news', 'events'])
+        addNewsFolder(self.portal, [])
+        addNewsTopic(self.portal, [])
+        addEventsFolder(self.portal, [])
+        addEventsTopic(self.portal, [])
+        # Disallow Topic in Plone Site
+        fti = self.types['Plone Site']
+        fti.manage_changeProperties(filter_content_types=True,
+                                    allowed_content_types=('Document',))
+        # Move Topics
+        moveDefaultTopicsToPortalRoot(self.portal,[])
+        self.assertEqual(self.portal.news.portal_type, 'Topic')
+        self.assertEqual(self.portal.events.portal_type, 'Topic')
 
     def testAlterSortCriterionOnNewsTopic(self):
         #Should change sorting on the news topic to use effective

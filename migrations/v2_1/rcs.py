@@ -8,6 +8,7 @@ from Products.CMFPlone.migrations.migration_util import cleanupSkinPath
 from Acquisition import aq_base
 from Products.CMFPlone import transaction
 from Products.GroupUserFolder.GroupsToolPermissions import ViewGroups
+from Products.ATContentTypes.migration.common import unrestricted_rename
 
 
 def rc1_rc2(portal):
@@ -280,16 +281,16 @@ def moveDefaultTopicsToPortalRoot(portal, out):
                         out.append("Deleted empty %s folder"%topic['new_id'])
                     else:
                         # Rename non-empty folders
-                        portal.manage_renameObjects([topic['new_id']],
-                                                     ['old_'+topic['new_id']])
+                        unrestricted_rename(portal, topic['new_id'],
+                                                    'old_'+topic['new_id'])
                         out.append("Moved old %s folder to old_%s"%(topic['new_id'],topic['new_id']))
                         old_fold = getattr(portal, 'old_'+topic['new_id'])
                         # Exclude the renamed folder from navigation
                         # old_fold.setExcludeFromNav(True)
                         old_fold.setTitle('Old ' + old_fold.Title())
                         old_fold.reindexObject()
-                    portal.manage_renameObjects([topic['old_id']],
-                                                        [topic['new_id']])
+                    unrestricted_rename(portal, topic['old_id'],
+                                                topic['new_id'])
                     portal.moveObject(topic['new_id'], old_pos)
                     putils = getattr(portal, 'plone_utils', None)
                     if putils is not None:

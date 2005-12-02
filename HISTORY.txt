@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1.2 (unreleased)
 
+    - Fixed http://plone.org/collector/4898 - migrations would break if the
+      Plone Site was configured to not allow all content types.
+      [stefan]
+
     - Fixed http://plone.org/collector/4951 by overriding the 'sl' global
       define in prefs_main_template.pt.
       [alecm]
