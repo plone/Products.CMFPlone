@@ -3127,7 +3127,7 @@ class TestMigrations_v2_1(MigrationTest):
 
     def testReorderObjectButtons(self):
         # Should reorder the edit-content actions
-        editActions = ('cut', 'copy', 'paste', 'delete')
+        editActions = ('rename', 'cut', 'copy', 'paste', 'delete')
         for a in editActions:
             self.removeActionFromTool(a)
         bad_actions = list(editActions)
@@ -3141,7 +3141,7 @@ class TestMigrations_v2_1(MigrationTest):
 
     def testReorderObjectButtonsTwice(self):
         # Should not fail if performed twice
-        editActions = ('cut', 'copy', 'paste', 'delete')
+        editActions = ('rename', 'cut', 'copy', 'paste', 'delete')
         for a in editActions:
             self.removeActionFromTool(a)
         bad_actions = list(editActions)
