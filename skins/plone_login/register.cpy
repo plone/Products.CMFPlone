@@ -21,6 +21,10 @@ username = REQUEST['username']
 
 password=REQUEST.get('password') or portal_registration.generatePassword()
 
+# store the password in REQUEST to use in the future
+# we need this because when the password is encrypted, we can't retrieve it from database
+REQUEST.form['password'] = password
+
 # This is a temporary work-around for an issue with CMF not properly
 # reserving some existing ids (FSDV skin elements, for example). Until 
 # this is fixed in the CMF we can at least fail nicely. See

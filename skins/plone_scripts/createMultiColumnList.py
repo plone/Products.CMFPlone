@@ -14,8 +14,6 @@
     function.
 """
 
-from Products.CMFPlone.utils import safe_callable
-
 list_len = len(input_list)
 
 if sort_on and sort_on != 'self':

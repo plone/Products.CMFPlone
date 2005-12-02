@@ -11,29 +11,10 @@ from Products.CMFPlone.tests import PloneTestCase
 
 import traceback
 
-# import Interface for interface testing
-try:
-    import Interface
-except ImportError:
-    # set dummy functions and exceptions for older zope versions
-    def verifyClass(iface, candidate, tentative=0):
-        return True
-    def verifyObject(iface, candidate, tentative=0):
-        return True
-    def getImplementsOfInstances(object):
-        return ()
-    def getImplements(object):
-        return ()
-    def flattenInterfaces(interfaces, remove_duplicates=1):
-        return ()
-    class BrokenImplementation(Execption): pass
-    class DoesNotImplement(Execption): pass
-    class BrokenMethodImplementation(Execption): pass
-else:
-    from Interface.Implements import getImplementsOfInstances, getImplements, flattenInterfaces
-    from Interface.Verify import verifyClass, verifyObject
-    from Interface.Exceptions import BrokenImplementation, DoesNotImplement
-    from Interface.Exceptions import BrokenMethodImplementation
+from Interface.Implements import getImplementsOfInstances, getImplements, flattenInterfaces
+from Interface.Verify import verifyClass, verifyObject
+from Interface.Exceptions import BrokenImplementation, DoesNotImplement
+from Interface.Exceptions import BrokenMethodImplementation
 
 from types import TupleType
 
@@ -56,12 +37,11 @@ from Products.CMFPlone.MemberDataTool import MemberDataTool, MemberData
 from Products.CMFPlone.MembershipTool import MembershipTool
 from Products.CMFPlone.MetadataTool import MetadataTool
 from Products.CMFPlone.MigrationTool import MigrationTool
-from Products.CMFPlone.PloneBatch import Batch
 from Products.CMFPlone.PloneContent import PloneContent
 from Products.CMFPlone.PloneControlPanel import PloneControlPanel, PloneConfiglet
 from Products.CMFPlone.PloneFolder import OrderedContainer, BasePloneFolder, PloneFolder
 from Products.CMFPlone.PloneTool import PloneTool
-from Products.CMFPlone.Portal import PloneSite, PloneGenerator
+from Products.CMFPlone.Portal import PloneSite
 from Products.CMFPlone.PropertiesTool import PropertiesTool, SimpleItemWithProperties
 from Products.CMFPlone.QuickInstallerTool import QuickInstallerTool
 from Products.CMFPlone.RegistrationTool import RegistrationTool
@@ -197,12 +177,11 @@ testClasses = [
     (MembershipTool, ()),
     (MetadataTool, ()),
     (MigrationTool, ()),
-    # (Batch, ()), # has no __implements__
     (PloneContent, ()),
     (PloneControlPanel, ()), (PloneConfiglet, ()),
     (OrderedContainer, ()), (BasePloneFolder, ()), (PloneFolder, ()),
     (PloneTool, ()),
-    (PloneSite, ()), # (PloneGenerator, ()), # PloneGenerator has no __implements__
+    (PloneSite, ()),
     (PropertiesTool, ()), (SimpleItemWithProperties, ()),
     (QuickInstallerTool, ()),
     (RegistrationTool, ()),

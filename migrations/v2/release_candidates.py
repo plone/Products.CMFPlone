@@ -4,10 +4,8 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.setup.ConfigurationMethods import correctFolderContentsAction
 from Products.CMFCore.Expression import Expression
 from Acquisition import aq_base
-from oneX_twoBeta2 import addPloneTableless
 from plone2_base import addCatalogIndexes
 from Products.CMFPlone.migrations.migration_util import saveCloneActions, cleanupSkinPath
-import zLOG
 
 _permMap = {
     'rename' : AddPortalContent,
@@ -183,7 +181,7 @@ def changeCopyPermission(portal):
 
 def removeTypesForcedFolderContents(portal):
     pp=getToolByName(portal,'portal_properties')
-    p = getattr(pp , 'navtree_properties', None)
+    props = getattr(pp , 'navtree_properties', None)
 
     if props.hasProperty('removeTypesForcedFolderContents(portal)'):
         props._delProperty('removeTypesForcedFolderContents(portal)')

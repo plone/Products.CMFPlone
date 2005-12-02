@@ -88,14 +88,12 @@ class TestUserFolder(PloneTestCase.PloneTestCase):
         user = self.uf.getUser(default_user)
         self.failUnless(user.has_permission('View', self.folder))
         self.folder.manage_role(user_role, ['Add Folders'])
-        #self.login()   # !!! Fixed in Zope 2.6.2
         self.failUnless(user.has_permission('Add Folders', self.folder))
 
     def testHasLocalRolePermission(self):
         user = self.uf.getUser(default_user)
         self.folder.manage_role('Owner', ['Add Folders'])
         self.folder.manage_addLocalRoles(default_user, ['Owner'])
-        #self.login()   # !!! Fixed in Zope 2.6.2
         self.failUnless(user.has_permission('Add Folders', self.folder))
 
     def testAuthenticate(self):

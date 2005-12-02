@@ -24,7 +24,7 @@ def initialize(context):
     # it does speed up import *significantly*.
 
     from AccessControl import ModuleSecurityInfo
-    from AccessControl import allow_module, allow_class, allow_type
+    from AccessControl import allow_module, allow_class
 
     # zLOG is deprecated in Zope > 2.7.0, use logger instead
     ModuleSecurityInfo('logging').declarePublic('getLogger')

@@ -9,7 +9,7 @@ from Products.SiteErrorLog.SiteErrorLog import manage_addErrorLog
 from DateTime import DateTime
 from Products.GroupUserFolder.GroupsToolPermissions import ViewGroups
 
-from zLOG import INFO, ERROR
+from zLOG import INFO
 from SetupBase import SetupWidget
 
 def addErrorLog(self, portal):

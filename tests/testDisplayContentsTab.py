@@ -9,8 +9,6 @@ if __name__ == '__main__':
 from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
 
-from Products.CMFCore.permissions import View
-from Products.CMFCore.permissions import AccessContentsInformation
 from Products.CMFCore.permissions import ListFolderContents
 from Products.CMFCore.permissions import ModifyPortalContent
 from Products.CMFCore.permissions import AddPortalContent
@@ -18,8 +16,6 @@ from Products.CMFCore.permissions import ReviewPortalContent
 from AccessControl.Permissions import copy_or_move
 from AccessControl.Permissions import delete_objects
 
-from AccessControl import getSecurityManager
-from Products.CMFCore.utils import _checkPermission
 import transaction
 
 

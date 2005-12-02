@@ -12,7 +12,6 @@ from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
 
 from Products.PageTemplates.ZopePageTemplate import ZopePageTemplate
-from OFS.SimpleItem import SimpleItem
 from Acquisition import aq_base
 from DateTime import DateTime
 

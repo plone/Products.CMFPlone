@@ -8,8 +8,6 @@ if __name__ == '__main__':
 
 from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
-
-from Acquisition import aq_base
 from Products.ZCTextIndex.ParseTree import ParseError
 
 import types
@@ -41,8 +39,6 @@ class TestQueryCatalog(PloneTestCase.PloneTestCase):
     def testEmptyRequest(self):
         request = {}
         self.assertEqual(self.stripTypes(self.folder.queryCatalog(request)), [])
-        #self.failUnless(hasattr(aq_base(self.catalog), 'plone_lexicon'))
-        #self.assertEqual(self.catalog.plone_lexicon.meta_type, 'ZCTextIndex Lexicon')
 
     def testNonexistantIndex(self):
         request = {'foo':'bar'}

@@ -1,4 +1,4 @@
-from interface import Interface, Attribute
+from Interface import Interface, Attribute
 from PloneBaseTool import IPloneBaseTool
 
 class IInterfaceTool(IPloneBaseTool):

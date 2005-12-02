@@ -10,8 +10,6 @@ from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
 
-from Acquisition import aq_base
-
 
 class TestGetObjSize(PloneTestCase.PloneTestCase):
 
