@@ -63,9 +63,6 @@ Plone 2.1.2 (unreleased)
     - Some code cleanup, mainly removal of unused imports.
       [hannosch]
 
-    - Added convertToUTF8 script to convert a non-utf-8 site into a utf8 site.
-      [hannosch]
-
     - Fixed http://plone.org/collector/4894 - Missing closing quote in 
       LiveSearch pop-up.
       [stefan]
