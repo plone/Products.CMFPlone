@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.1.2 (unreleased)
 
+    - Added CMFPlone.utils._unrestricted_rename() by copying from ATCT
+      migrations. _unrestricted_rename() allows to rename objects without
+      going through _verifyObjectPaste().
+      [stefan]
+
     - Fixed https://trac.plone.org/plone/ticket/4657 and
       https://trac.plone.org/plone/ticket/4829 - wrong icon path in livesearch.
       [hannosch]
