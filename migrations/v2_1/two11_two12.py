@@ -9,7 +9,7 @@ def two11_two12(portal):
 
     # Remove plone_3rdParty\CMFTopic from skin layers
     removeCMFTopicSkinLayer(portal, out)
-    fixContentActions(portal, out)
+    addRenameObjectButton(portal, out)
 
     return out
 
@@ -29,7 +29,8 @@ def removeCMFTopicSkinLayer(portal, out):
             st.addSkinSelection(skin, ','.join(path))
         out.append("Removed plone_3rdParty\CMFTopic layer from all skins.")
 
-def fixContentActions(portal,out):
+
+def addRenameObjectButton(portal,out):
     """Add the missing rename action for renaming single content items.
     """
     

@@ -61,6 +61,7 @@ from Products.CMFPlone.migrations.v2_1.alphas import switchToExpirationDateMetad
 from Products.CMFPlone.migrations.v2_1.alphas import changePloneSetupActionToSiteSetup
 from Products.CMFPlone.migrations.v2_1.alphas import changePloneSiteIcon
 from Products.CMFPlone.migrations.v2_1.alphas import convertPloneFTIToCMFDynamicViewFTI
+from Products.CMFPlone.migrations.v2_1.alphas import replaceMailHost
 
 from Products.CMFPlone.migrations.v2_1.betas import fixObjectPasteActionForDefaultPages
 from Products.CMFPlone.migrations.v2_1.betas import fixBatchActionToggle
@@ -118,9 +119,10 @@ from Products.CMFPlone.migrations.v2_1.rcs import fixCMFLegacyLayer
 from Products.CMFPlone.migrations.v2_1.rcs import reorderObjectButtons
 from Products.CMFPlone.migrations.v2_1.rcs import allowMembersToViewGroups
 from Products.CMFPlone.migrations.v2_1.rcs import reorderStylesheets as reorderStylesheets_rc3_final
+
 from Products.CMFPlone.migrations.v2_1.final_two11 import reindexPathIndex
 from Products.CMFPlone.migrations.v2_1.two11_two12 import removeCMFTopicSkinLayer
-from Products.CMFPlone.migrations.v2_1.alphas import replaceMailHost
+from Products.CMFPlone.migrations.v2_1.two11_two12 import addRenameObjectButton
 
 from Products.CMFDynamicViewFTI.migrate import migrateFTI
 
@@ -151,12 +153,18 @@ class MigrationTest(PloneTestCase.PloneTestCase):
         typeob = getattr(tool, info.getId())
         typeob.addAction(action_id, action_id, '', '', '', category)
 
-    def removeActionFromTool(self, action_id, action_provider='portal_actions'):
+    def removeActionFromTool(self, action_id, category=None, action_provider='portal_actions'):
         # Removes an action from portal_actions
         tool = getattr(self.portal, action_provider)
         actions = tool.listActions()
-        actions = [x for x in actions if x.id != action_id]
+        actions = [x for x in actions if not (x.id == action_id and
+                   (category is None or x.category == category))]
         tool._actions = tuple(actions)
+
+    def addActionToTool(self, action_id, category, action_provider='portal_actions'):
+        # Adds an action to portal_actions
+        tool = getattr(self.portal, action_provider)
+        tool.addAction(action_id, action_id, '', '', '', category)
 
     def removeActionIconFromTool(self, action_id):
         # Removes an action icon from portal_actionicons
@@ -165,11 +173,6 @@ class MigrationTest(PloneTestCase.PloneTestCase):
             tool.removeActionIcon('plone', action_id)
         except KeyError:
             pass # No icon associated
-
-    def addActionToTool(self, action_id, category, action_provider='portal_actions'):
-        # Adds an action to portal_actions
-        tool = getattr(self.portal, action_provider)
-        tool.addAction(action_id, action_id, '', '', '', category)
 
     def removeSiteProperty(self, property_id):
         # Removes a site property from portal_properties
@@ -1404,7 +1407,7 @@ class TestMigrations_v2_1(MigrationTest):
         fixBatchActionToggle(self.portal, [])
 
     def testFixMyFolderAction(self):
-        self.removeActionFromTool('mystuff', 'portal_membership')
+        self.removeActionFromTool('mystuff', action_provider='portal_membership')
         fixMyFolderAction(self.portal, [])
         actions = [(x.id, x.getActionExpression()) for x in self.membership.listActions()]
         for a in actions:
@@ -1412,7 +1415,7 @@ class TestMigrations_v2_1(MigrationTest):
                 self.failIf('folder_contents' in a[1])
 
     def testFixMyFolderActionTwice(self):
-        self.removeActionFromTool('mystuff', 'portal_membership')
+        self.removeActionFromTool('mystuff', action_provider='portal_membership')
         fixMyFolderAction(self.portal, [])
         fixMyFolderAction(self.portal, [])
         actions = [(x.id, x.getActionExpression()) for x in self.membership.listActions()]
@@ -2452,16 +2455,16 @@ class TestMigrations_v2_1(MigrationTest):
 
     def testAddSearchAndNavigationConfiglets(self):
         # Should add the full_screen action icon
-        self.removeActionFromTool('NavigationSettings', 'portal_controlpanel')
-        self.removeActionFromTool('SearchSettings', 'portal_controlpanel')
+        self.removeActionFromTool('NavigationSettings', action_provider='portal_controlpanel')
+        self.removeActionFromTool('SearchSettings', action_provider='portal_controlpanel')
         addSearchAndNavigationConfiglets(self.portal, [])
         self.failUnless('NavigationSettings' in [x.getId() for x in self.cp.listActions()])
         self.failUnless('SearchSettings' in [x.getId() for x in self.cp.listActions()])
 
     def testAddSearchAndNavigationConfigletsTwice(self):
         # Should not fail if done twice
-        self.removeActionFromTool('NavigationSettings', 'portal_controlpanel')
-        self.removeActionFromTool('SearchSettings', 'portal_controlpanel')
+        self.removeActionFromTool('NavigationSettings', action_provider='portal_controlpanel')
+        self.removeActionFromTool('SearchSettings', action_provider='portal_controlpanel')
         addSearchAndNavigationConfiglets(self.portal, [])
         addSearchAndNavigationConfiglets(self.portal, [])
         self.failUnless('NavigationSettings' in [x.getId() for x in self.cp.listActions()])
@@ -3300,6 +3303,7 @@ class TestMigrations_v2_1_2(MigrationTest):
 
     def afterSetUp(self):
         self.skins = self.portal.portal_skins
+        self.actions = self.portal.portal_actions
 
     def testRemoveCMFTopicSkinPathFromDefault(self):
         # Should remove plone_3rdParty/CMFTopic from skin paths
@@ -3334,6 +3338,38 @@ class TestMigrations_v2_1_2(MigrationTest):
         removeCMFTopicSkinLayer(self.portal, [])
         path = self.skins.getSkinPath('Plone Default')
         self.failIf('plone_3rdParty/CMFTopic' in path)
+
+    def testAddRenameObjectButton(self):
+        # Should add 'rename' object_button action
+        editActions = ('cut', 'copy', 'paste', 'delete', 'rename')
+        self.removeActionFromTool('rename', 'object_buttons')
+        addRenameObjectButton(self.portal, [])
+        actions = [x.id for x in self.actions.listActions()
+                   if x.category == 'object_buttons']
+        self.assertEqual(actions, list(editActions))
+
+    def testAddRenameObjectButtonTwice(self):
+        # Should not fail if migrated again
+        editActions = ('cut', 'copy', 'paste', 'delete', 'rename')
+        self.removeActionFromTool('rename', 'object_buttons')
+        addRenameObjectButton(self.portal, [])
+        addRenameObjectButton(self.portal, [])
+        actions = [x.id for x in self.actions.listActions()
+                   if x.category == 'object_buttons']
+        self.assertEqual(actions, list(editActions))
+
+    def testAddRenameObjectButtonActionExists(self):
+        # Should add 'rename' object_button action
+        editActions = ('cut', 'copy', 'paste', 'delete', 'rename')
+        addRenameObjectButton(self.portal, [])
+        actions = [x.id for x in self.actions.listActions()
+                   if x.category == 'object_buttons']
+        self.assertEqual(actions, list(editActions))
+
+    def testAddRenameObjectButtonNoTool(self):
+        # Should not fail if tool is missing
+        self.portal._delObject('portal_actions')
+        addRenameObjectButton(self.portal, [])
 
 
 def test_suite():
