@@ -10,11 +10,11 @@ from Products.CMFPlone.interfaces.NonStructuralFolder import INonStructuralFolde
 
 from ComputedAttribute import ComputedAttribute
 from OFS.SimpleItem import SimpleItem
+from OFS.Folder import Folder as SimpleFolder
 from ZPublisher.HTTPRequest import FileUpload
 
 from Globals import package_home
 from Products.CMFPlone.tests import GLOBALS
-from Products.ATContentTypes.content.folder import ATFolder
 PACKAGE_HOME = package_home(GLOBALS)
 
 TEXT = 'file data'
@@ -101,6 +101,27 @@ class Image(File):
     data = GIF
 
 
+class Folder(SimpleFolder):
+    '''Dummy Folder
+       First-class Zope object. Can be _setObject'ed.
+    '''
+
+    id = 'dummy_folder'
+    meta_type = 'Dummy Folder'
+
+    def __init__(self, id=None, title=None, **kw):
+        self.__dict__.update(kw)
+        if id is not None:
+            self.id = id
+        if title is not None:
+            self.title = title
+
+
+class NonStructuralFolder(Folder):
+    '''Folder implementing the INonStructuralFolder interface'''
+    __implements__ = (INonStructuralFolder,)
+
+
 class Error(Exception):
     '''Dummy exception'''
 
@@ -156,7 +177,3 @@ class ImageComputedProps(Item):
         return getattr(self, '_longdesc', '')
 
     longdesc = ComputedAttribute(get_longdesc, 1)
-
-class NonStructuralFolder(ATFolder):
-    '''Folder implementing the INonStructuralFolder interface'''
-    __implements__ = (INonStructuralFolder,)
