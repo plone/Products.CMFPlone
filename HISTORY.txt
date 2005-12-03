@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1.2 (unreleased)
 
+    - Fixed https://trac.plone.org/plone/ticket/4657 and
+      https://trac.plone.org/plone/ticket/4829 - wrong icon path in livesearch.
+      [hannosch]
+
     - Added PIL version to control panel version overview as suggested in
       http://plone.org/collector/4775.
       [hannosch]
