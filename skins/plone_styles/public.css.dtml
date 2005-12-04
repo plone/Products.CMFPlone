@@ -589,9 +589,9 @@
 }
 
 .tileItem {
-    border-bottom: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
-    padding-bottom: 0.5em;
-    margin-bottom: 0.5em;
+    border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    padding-top: 0.5em;
+    margin-top: 0.5em;
 }
 
 .tileHeadline {
