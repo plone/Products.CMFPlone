@@ -14,7 +14,7 @@
 
       <h1 i18n:translate="heading_rename_item">Rename item</h1>
 
-      <p i18n:translate="description_rename_item">Each item has a Name and a Title, which you can change by entering the new details below.</p>
+      <p i18n:translate="description_rename_item">Each item has a Short Name and a Title, which you can change by entering the new details below.</p>
 
       <tal:defines tal:define="paths request/paths|python:[];
                         items python:here.getObjectsFromPathList(paths);
