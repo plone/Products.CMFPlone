@@ -17,19 +17,19 @@
                       getHomeUrl nocall:mtool/getHomeUrl;
                       getPersonalPortrait nocall:mtool/getPersonalPortrait;">
 
-        <h1 i18n:translate="heading_member_listing">Member Listing</h1>
+        <h1 i18n:translate="heading_member_listing">User Listing</h1>
 
-		<p i18n:translate="description_member_listing">
-        A list of the visible members.
+        <p i18n:translate="description_member_listing">
+        A list of the visible users.
         </p>
 
-		<form name="search_results" action="#" method="post"
+        <form name="search_results" action="#" method="post"
               tal:condition="members"
               tal:define="batch python:Batch(members, 20, int(b_start), orphan=1)">
 
-		<p>
-        <span i18n:translate="label_visible_members">Visible Members</span>:
-        <strong tal:content="python:len(members)">number of members</strong>
+        <p>
+        <span i18n:translate="label_visible_members">Visible Users</span>:
+        <strong tal:content="python:len(members)">number of users</strong>
         </p>
 
         <!-- Navigation -->
@@ -53,7 +53,7 @@
         <div metal:use-macro="here/batch_macros/macros/navigation" />
 
         </form>
-	<div class="spacer">&nbsp;</div>
+    <div class="spacer">&nbsp;</div>
     </div>
 </body>
 </html>

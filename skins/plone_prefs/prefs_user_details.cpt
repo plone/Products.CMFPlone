@@ -64,7 +64,7 @@ we eventually might want to merge this form with personalize_form
         </a>
 
         <p i18n:translate="label_change_member_properties">
-          Change member properties.
+          Change user properties.
         </p>
     
         <form action=""
@@ -76,7 +76,7 @@ we eventually might want to merge this form with personalize_form
               tal:attributes="action template_id">
 
           <fieldset>
-            <legend i18n:translate="legend_member_details">Member Details</legend>
+            <legend i18n:translate="legend_member_details">User Details</legend>
     
             <input type="hidden" name="userid" value="username"
                    tal:attributes="value member/getId" />

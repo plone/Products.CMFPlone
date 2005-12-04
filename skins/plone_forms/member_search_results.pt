@@ -39,7 +39,7 @@
                          height="100"
                          tal:attributes="src portrait/absolute_url" />
                     <br />
-                    <span tal:content="name"> member id</span>
+                    <span tal:content="name">user id</span>
                 </a>
                 <br />
             </div>

@@ -50,7 +50,7 @@
         can see it.  A <strong>private</strong> item can only be
         viewed by its Owner and by the site management. Only
         <strong>published</strong> items are available to the general
-        member base and anonymous visitors. To make an item published,
+        user base and anonymous visitors. To make an item published,
         it has to be reviewed by one of the site's Reviewers. You can
         request that an item be reviewed by <strong>submitting it for
         review</strong>.

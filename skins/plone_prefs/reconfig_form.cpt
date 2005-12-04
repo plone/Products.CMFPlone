@@ -170,7 +170,7 @@
                        tal:attributes="checked validateChecked;
                                        tabindex tabindex;" />
 
-                <label for="validate_email_on" i18n:translate="label_generate_and_email_passwords">Generate and e-mail member's initial password</label>
+                <label for="validate_email_on" i18n:translate="label_generate_and_email_passwords">Generate and e-mail user's initial password</label>
 
                 <br />
 
@@ -183,7 +183,7 @@
                        tal:attributes="checked allowEnterChecked;
                                        tabindex tabindex;" />
 
-                <label for="validate_email_off" i18n:translate="label_allow_members_to_create_password">Allow members to select their initial password</label>
+                <label for="validate_email_off" i18n:translate="label_allow_members_to_create_password">Allow users to select their initial password</label>
             </div>
 
             <div class="field"
