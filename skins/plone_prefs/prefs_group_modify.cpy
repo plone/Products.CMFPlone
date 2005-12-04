@@ -24,14 +24,6 @@ delete=REQUEST.get('delete',[])
 
 if delete:
     groupstool.removeGroups(delete)
-
-    if (1 < len(delete)):
-        portal_status_message=context.translate(
-            "Groups ${names} have been deleted.",
-            {'names': ', '.join(delete)})
-    else:
-        portal_status_message=context.translate(
-            "Group ${name} has been deleted.",
-            {'name': ''.join(delete)})
+    portal_status_message=context.translate('Group(s) deleted.')
 
 return state.set(portal_status_message=portal_status_message)

@@ -4,8 +4,13 @@ Changelog for Plone
 
 Plone 2.1.2 (unreleased)
 
+    - Fixed #3268 and #3746 - some status messages included all changed objects
+      which could break IE as it supports only a limited URL length.
+      [hannosch]
+
     - Replacing all references to "portal" in the UI with "site" with same 
       consequences as outlined below.
+      [limi]
 
     - Replacing "Member" with "User" everywhere in the UI (except in words like
       "membership"). Hanno has been notified, and this should not have any impact
