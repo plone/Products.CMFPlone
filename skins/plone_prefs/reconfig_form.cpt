@@ -11,7 +11,7 @@
 <div metal:fill-slot="prefs_configlet_main"
      tal:define="errors options/state/getErrors;">
 
-    <h1 i18n:translate="heading_portal_setup">Portal Setup</h1>
+    <h1 i18n:translate="heading_portal_setup">Site Setup</h1>
 
     <a href=""
        class="link-parent"
@@ -21,7 +21,7 @@
     </a>
 
     <p i18n:translate="description_plone_setup">
-        Portal-wide settings.
+        Site-wide settings.
     </p>
 
     <form action=""
@@ -39,14 +39,14 @@
                  tal:attributes="class python:test(error, 'field error', 'field')">
 
 
-                <label i18n:translate="label_portal_title">Portal title</label>
+                <label i18n:translate="label_portal_title">Site title</label>
 
                 <span class="fieldRequired" title="Required"
                       i18n:attributes="title title_required;"
                       i18n:translate="label_required">(Required)</span>
 
                 <div class="formHelp" i18n:translate="help_portal_title">
-                The title of your Plone portal.
+                The title of your Plone site.
                 </div>
 
                 <div tal:content="error">Validation error output</div>
@@ -66,7 +66,7 @@
                 <label i18n:translate="label_portal_description">Portal description</label>
 
                 <div class="formHelp" i18n:translate="help_portal_description">
-                The portal description is available in syndicated
+                The site description is available in syndicated
                 content and elsewhere. Keep it brief.
                 </div>
 
@@ -82,7 +82,7 @@
                  tal:define="email_from_name request/email_from_name|site_properties/email_from_name;
                              error errors/email_from_name | nothing;">
 
-                <label i18n:translate="label_portal_from_name">Portal 'From' name</label>
+                <label i18n:translate="label_portal_from_name">Site 'From' name</label>
 
                 <div class="formHelp" i18n:translate="help_portal_from_name">
                 Plone generates e-mail using this name
@@ -104,7 +104,7 @@
                              error errors/email_from_address | nothing;"
                  tal:attributes="class python:test(error, 'field error', 'field')">
 
-                <label i18n:translate="label_portal_from_address">Portal 'From' address</label>
+                <label i18n:translate="label_portal_from_address">Site 'From' address</label>
 
                 <span class="fieldRequired" title="Required"
                       i18n:attributes="title title_required;"

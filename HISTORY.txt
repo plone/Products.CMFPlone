@@ -4,10 +4,14 @@ Changelog for Plone
 
 Plone 2.1.2 (unreleased)
 
-    - Replacing "Member" with "User" everywhere (except in words like "membership").
-      Hanno has been notified, and this should not have any impact for i18n people,
-      but they should be notified in case they made a distinction between member and
-      user in their translations. I know most translations I have seen didn't.
+    - Replacing all references to "portal" in the UI with "site" with same 
+      consequences as outlined below.
+
+    - Replacing "Member" with "User" everywhere in the UI (except in words like
+      "membership"). Hanno has been notified, and this should not have any impact
+      for i18n people, but they should be notified in case they made a
+      distinction between member and user in their translations. I know most
+      translations I have seen didn't.
       [limi]
 
     - Added CMFPlone.utils._unrestricted_rename() by copying from ATCT
