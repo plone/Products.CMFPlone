@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1.2 (unreleased)
 
+    - Fixed #4859 - strftime error in calendar_macros.pt.
+      [hannosch]
+
     - Fixed #3268 and #3746 - some status messages included all changed objects
       which could break IE as it supports only a limited URL length.
       [hannosch]
