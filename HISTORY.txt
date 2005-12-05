@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1.2 (unreleased)
 
+    - Fixed #2295 - text on printing was cropped on the right in all browsers
+      when the tableless layout is used.
+      [spliter]
+
     - 'external_edit' link wouldn't work for files with spaces in name
       due to use of 'url_quote_plus'. The correct function to use is
       'url_quote'.
