@@ -105,7 +105,7 @@ class MembershipTool(PloneBaseTool, BaseTool):
 
     def getPersonalPortrait(self, member_id = None, verifyPermission=0):
         """
-        returns the Portait for a member_id
+        returns the Portrait for a member_id
         """
         membertool   = getToolByName(self, 'portal_memberdata')
 
@@ -127,7 +127,7 @@ class MembershipTool(PloneBaseTool, BaseTool):
 
     def deletePersonalPortrait(self, member_id = None):
         """
-        deletes the Portait of member_id
+        deletes the Portrait of member_id
         """
         membertool   = getToolByName(self, 'portal_memberdata')
 

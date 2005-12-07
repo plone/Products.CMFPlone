@@ -17,5 +17,5 @@ portal_membership.deletePersonalPortrait(userid)
 REFERER=REQUEST.HTTP_REFERER
 if REFERER.find('portal_status_message')!=-1:
     REFERER=REFERER[:REFERER.find('portal_status_message')]
-url='%s&%s' % (REFERER, 'portal_status_message=Portait deleted.')
+url='%s&%s' % (REFERER, 'portal_status_message=Portrait deleted.')
 return REQUEST.RESPONSE.redirect(url)
