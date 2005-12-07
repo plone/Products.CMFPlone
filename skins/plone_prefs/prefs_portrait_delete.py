@@ -22,7 +22,7 @@ REFERER=REQUEST.HTTP_REFERER
 if REFERER.find('portal_status_message')!=-1:
     REFERER=REFERER[:REFERER.find('portal_status_message')]
 
-msg = _(u'Portait deleted.')
+msg = _(u'Portrait deleted.')
 
 url='%s&portal_status_message=%s' % (REFERER, url_quote_plus(msg))
 return REQUEST.RESPONSE.redirect(url)

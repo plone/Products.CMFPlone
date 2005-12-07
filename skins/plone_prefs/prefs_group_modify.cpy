@@ -27,13 +27,7 @@ delete=REQUEST.get('delete',[])
 
 if delete:
     groupstool.removeGroups(delete)
-
-    if (1 < len(delete)):
-        message=_(u'Groups ${names} have been deleted.',
-                  mapping={u'names' : ', '.join(delete)})
-    else:
-        message=_(u'Group ${name} has been deleted.',
-                  mapping={u'name' : ''.join(delete)})
+    message=_(u'Group(s) deleted.')
 
 context.plone_utils.addPortalMessage(message)
 return state

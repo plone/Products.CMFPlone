@@ -15,7 +15,7 @@
 
       <p i18n:translate="description_set_folder_type_restrictions">
         You may restrict which content types are available in this folder, either
-        by manually selecting them from the list below, by relying on the portal
+        by manually selecting them from the list below, by relying on the site
         default, or by using the settings from the parent folder. You can also
         select a subset of the available types to be immediately available in
         the "Add" menu. Any additional allowed types will be available from
@@ -80,7 +80,7 @@
                            tal:attributes="tabindex tabindex/next;
                                            checked python:test('0' == str(currentMode), 'checked', None)"/>
                     <label for="mode_disable" i18n:translate="constraintypes_mode_disable">
-                        Use portal default
+                        Use site default
                     </label>
                     <br />
                     

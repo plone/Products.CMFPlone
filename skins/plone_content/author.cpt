@@ -185,10 +185,17 @@
             <div metal:define-macro="user_content_listing">
             <table class="listing" summary="Lists content written by an author grouped by content type" i18n:attributes="summary summary_author_content_list;">
                 <tal:repeat repeat="content_by_type author_content">
+                  <tal:grouping define="getTypeInfo nocall:portal_types/getTypeInfo;
+                                        content_type_ content_by_type/portal_type;
+                                        type_title python: getTypeInfo(content_type_) or None"
+				condition="type_title">		
                     <tr>
                         <th colspan="2"
                             i18n:translate=""
-                            tal:content="python: portal_types.getTypeInfo(content_by_type['portal_type']).Title()">
+                            tal:define="getTypeInfo nocall:portal_types/getTypeInfo;
+                                        content_type_ content_by_type/portal_type;
+                                        type_title python: getTypeInfo(content_type_) or None"
+                            tal:content="python:type_title and type_title.Title() or content_type_ + ' is not available'">
                             Type
                         </th>
                     </tr>
@@ -203,6 +210,7 @@
                             </td>
                         </tr>
                     </tal:repeat>
+		  </tal:grouping>
                 </tal:repeat>
             </table>
             </div>

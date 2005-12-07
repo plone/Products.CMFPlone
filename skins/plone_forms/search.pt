@@ -16,7 +16,6 @@
      tal:define="use_types_blacklist request/use_types_blacklist | python:True;
                  results python:here.queryCatalog(REQUEST=request,use_types_blacklist=use_types_blacklist);
                  Batch python:modules['Products.CMFPlone'].Batch;
-                 DateTime python:modules['DateTime'].DateTime;
                  b_size python:30;b_start python:0;b_start request/b_start | b_start;
                  desc_length site_properties/search_results_description_length;
                  desc_ellipsis site_properties/ellipsis;

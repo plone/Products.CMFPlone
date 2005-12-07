@@ -30,6 +30,16 @@ dl.portlet a {
     text-decoration: none;
 }
 
+/* XXX: The two below rules should really be in the rule above, but that makes the items grow/shrink on :hover (navtree) - need to investigate how to make it not do that. ~limi, Dec 2005 */
+dd.portletItem a,
+dd.portletFooter a {
+    border-bottom: none;
+}
+dd.portletItem a:visited,
+dd.portletFooter a:visited {
+    color: &dtml-linkColor;;
+}
+
 .portletHeader {
     background-color: &dtml-globalBackgroundColor;;
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;

@@ -91,7 +91,7 @@ class MembershipTool(PloneBaseTool, BaseTool):
 
     def getPersonalPortrait(self, member_id = None, verifyPermission=0):
         """
-        returns the Portait for a member_id
+        returns the Portrait for a member_id
         """
         membertool   = getToolByName(self, 'portal_memberdata')
 
@@ -99,7 +99,7 @@ class MembershipTool(PloneBaseTool, BaseTool):
         #if verifyPermission and not _checkPermission('View', portrait):
         #    return None
         if not member_id:
-            member_id = self.getAuthenticatedMember().getUserName()
+            member_id = self.getAuthenticatedMember().getId()
 
         portrait = membertool._getPortrait(member_id)
         if type(portrait) == type(''):
@@ -113,12 +113,12 @@ class MembershipTool(PloneBaseTool, BaseTool):
 
     def deletePersonalPortrait(self, member_id = None):
         """
-        deletes the Portait of member_id
+        deletes the Portrait of member_id
         """
         membertool   = getToolByName(self, 'portal_memberdata')
 
         if not member_id:
-            member_id = self.getAuthenticatedMember().getUserName()
+            member_id = self.getAuthenticatedMember().getId()
 
         membertool._deletePortrait(member_id)
 
@@ -164,7 +164,7 @@ class MembershipTool(PloneBaseTool, BaseTool):
         .personal or portrait in the catalog
         """
         if not member_id:
-            member_id = self.getAuthenticatedMember().getUserName()
+            member_id = self.getAuthenticatedMember().getId()
 
         if portrait and portrait.filename:
             portrait = Image(id=member_id, file=portrait, title='')

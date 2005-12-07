@@ -45,16 +45,16 @@
             </li>                       
                                         
         </ul>                           
-                                        
-                                        
+
     </tal:block>                        
     <div class="discreet"               
-        tal:define="sys here/getZopeInfo;                     
-                    mt  here/portal_migration">
+        tal:define="sys here/getZopeInfo;
+                    mt here/portal_migration">
         <strong i18n:translate="heading_plone_version_overview">Plone version overview</strong><br />
         Plone <span tal:replace="mt/getInstanceVersion" />, <br />
         Zope <span tal:replace="python:sys[0]" />, <br />
-        Python <span tal:replace="python:sys[1]" />
+        Python <span tal:replace="python:sys[1]" />, <br />
+        PIL <span tal:replace="mt/getPILVersion" />
     </div>
     </div>
 

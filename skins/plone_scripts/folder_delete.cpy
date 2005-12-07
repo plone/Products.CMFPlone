@@ -17,8 +17,6 @@ titles=[]
 titles_and_paths=[]
 failed = {}
 
-MAX_TITLES_TO_REPORT = 10
-
 portal = context.portal_url.getPortalObject()
 status='failure'
 message=_(u'Please select one or more items to delete.')
@@ -38,12 +36,7 @@ for path in paths:
 
 if titles:
     status='success'
-    if len(titles) == 1:
-        message = _(u'${title} has been deleted.', mapping={u'title' : titles[0]})
-    elif len(titles) <= MAX_TITLES_TO_REPORT:
-        message = _(u'${titles} have been deleted.', mapping={u'titles' : ', '.join(titles)})
-    else:
-        message = _(u'${itemCount} items have been deleted.', mapping={u'itemCount' : str(len(titles))})
+    message = _(u'Item(s) deleted.')
 
     transaction_note('Deleted %s' % (', '.join(titles_and_paths)))
 

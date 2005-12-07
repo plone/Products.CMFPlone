@@ -328,12 +328,12 @@ class CatalogTool(PloneBaseTool, BaseTool):
             def keys(self):
                 return self.__dict__.keys()
 
-        # We need to remove the indexes to keep the tests working...baaah
-        for idx in ('SearchableText', 'Title', 'Description'):
-            self._removeIndex(idx)
-
         # This if-clause still looks somewhat scary
         if item is self and not hasattr(aq_base(self), 'plone_lexicon'):
+
+            # We need to remove the indexes to keep the tests working...baaah
+            for idx in ('SearchableText', 'Title', 'Description'):
+                self._removeIndex(idx)
 
             self.manage_addProduct['ZCTextIndex'].manage_addLexicon(
                 'plone_lexicon',

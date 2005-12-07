@@ -874,7 +874,7 @@ class TestPortalTabs(PloneTestCase.PloneTestCase):
         self.failIf(self.utils.isStructuralFolder(i))
 
     def testIsStructuralFolderWithFolder(self):
-        f = dummy.ATFolder('struct_folder')
+        f = dummy.Folder('struct_folder')
         self.failUnless(self.utils.isStructuralFolder(f))
 
     def testIsStructuralFolderWithNonStructuralFolder(self):

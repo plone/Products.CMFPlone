@@ -34,3 +34,7 @@ def accessRule(self, *args):
     if self.REQUEST.get('SERVER_PORT', '') != HTTP_MANAGE and self.REQUEST['URL'].find(siteObj) < 0:
         self.REQUEST['TraversalRequestNameStack'].append(siteObj)
         self.REQUEST.set('SiteRootPATH', '/')
+        # a useful little addition to the HTTP headers to allow proxies
+        # and other tools to tell that this access rule has been activated
+        # the fact that this rule gets run confuses a lot of people and this may help
+        self.REQUEST.RESPONSE.addHeader('X-Access-Rule', 'accessRule.py')

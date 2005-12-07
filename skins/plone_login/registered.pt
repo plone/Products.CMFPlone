@@ -16,11 +16,11 @@
 
 <h1 i18n:translate="heading_welcome">Welcome!</h1>
 
-<p i18n:translate="description_you_are_registered"> You have been registered as a member. </p>
+<p i18n:translate="description_you_are_registered">You have been registered.</p>
 
 <p tal:condition="ve" i18n:translate="description_you_will_get_password">
-You will receive an email shortly containing your password
-    and instructions on how to activate your membership.
+You will receive an e-mail shortly containing your password
+    and instructions on how to activate your user.
 </p>
 
 <tal:block condition="python:not(ve)">

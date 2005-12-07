@@ -134,11 +134,6 @@ dd {
     margin-bottom: 1em;
 }
 
-dd.link a {
-    text-decoration: none;
-    color: &dtml-fontColor;;
-}
-
 fieldset {
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
     margin: 1em 0em 1em 0em;

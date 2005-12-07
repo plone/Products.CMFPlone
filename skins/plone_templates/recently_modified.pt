@@ -51,12 +51,8 @@
                     </span>
                 </dt>
                 
-                <dd class="link">
-                    <a href="/view"
-                       tal:content="result/Description"
-                       tal:attributes="href result/getURL">
+                <dd tal:content="result/Description">
                     Description
-                    </a>
                 </dd>
             </dl>
 

@@ -14,7 +14,6 @@ checkPermission=pm.checkPermission
 list_permission = 'List folder contents'
 modification_permissions = ('Modify portal content',
                             'Add portal content',
-                            'Copy or Move',
                             'Delete objects',
                             'Review portal content')
 

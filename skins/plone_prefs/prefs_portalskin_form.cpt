@@ -32,14 +32,14 @@
           tal:define="props python:portal_properties;">
 
         <fieldset>
-            <legend i18n:translate="legend_portalskin_details">PortalSkin Details</legend>
+            <legend i18n:translate="legend_portalskin_details">Site Skin Details</legend>
 
             
             <div class="field">
                 <label i18n:translate="label_default_skin">Default skin</label>
     
                 <div class="formHelp" i18n:translate="help_default_skin">
-                    Select the default skin for the Plone portal.
+                    Select the default skin for the Plone site.
                 </div>
     
                 <select name="default_skin" 
