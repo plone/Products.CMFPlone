@@ -729,6 +729,13 @@ textarea.proportional {
     cursor: pointer;
 }
 
+.poweredBy {
+    font-size: &dtml-fontSmallSize;;
+    font-weight: normal;
+    color: &dtml-discreetColor;;
+    text-align: right;
+}
+
 .netscape4 {
     display: none;
 }
