@@ -76,11 +76,12 @@ class TestDisplayContentsTab(PloneTestCase.PloneTestCase):
         self.failUnless(self.folder.displayContentsTab())
 
     def testOnlyCopyPermission(self):
-        # We should see the tab with only copy_or_move
+        # We should NOT see the tab with only copy_or_move (r8620)
+        # Otherwise Members always get the green border.
         perms = self.getModificationPermissions()
         perms.remove(copy_or_move)
         self.removePermissionsFromObject(perms, self.folder)
-        self.failUnless(self.folder.displayContentsTab())
+        self.failIf(self.folder.displayContentsTab())
 
     def testOnlyDeletePermission(self):
         # We should see the tab with only copy_or_move
