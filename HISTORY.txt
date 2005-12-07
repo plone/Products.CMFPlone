@@ -5,6 +5,7 @@ Changelog for Plone
 Plone 2.1.2 (unreleased)
 
     - Fixed #4996 - favorites_view.pt had duplicated calls for 'document_actions' macros
+      [spliter]
 
     - Plone was showing the editable border on all content items when you were logged in as a
       Member. This was fixed by removing the check for 'Copy or Move' in the code that determines
