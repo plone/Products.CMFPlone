@@ -1,5 +1,5 @@
 [default]
-title=Portal setup
+title=Site setup
 
 [security]
 View=0:Authenticated

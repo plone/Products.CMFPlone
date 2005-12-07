@@ -12,6 +12,7 @@
 
     <metal:headslot fill-slot="head_slot">
       <metal:headslot define-slot="head_slot" />
+      <tal:override-slot define="global sl python:True" />
     </metal:headslot>
 
     <metal:cssslot fill-slot="css_slot">

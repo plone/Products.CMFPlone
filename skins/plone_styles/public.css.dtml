@@ -589,9 +589,9 @@
 }
 
 .tileItem {
-    border-bottom: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
-    padding-bottom: 0.5em;
-    margin-bottom: 0.5em;
+    border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    padding-top: 0.5em;
+    margin-top: 0.5em;
 }
 
 .tileHeadline {
@@ -727,6 +727,13 @@ textarea.proportional {
 
 #portal-colophon a.colophonIcon {
     cursor: pointer;
+}
+
+.poweredBy {
+    font-size: &dtml-fontSmallSize;;
+    font-weight: normal;
+    color: &dtml-discreetColor;;
+    text-align: right;
 }
 
 .netscape4 {

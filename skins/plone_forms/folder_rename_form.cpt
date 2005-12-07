@@ -14,7 +14,7 @@
 
       <h1 i18n:translate="heading_rename_item">Rename item</h1>
 
-      <p i18n:translate="description_rename_item">Each item has a Name and a Title, which you can change by entering the new details below.</p>
+      <p i18n:translate="description_rename_item">Each item has a Short Name and a Title, which you can change by entering the new details below.</p>
 
       <tal:defines tal:define="paths request/paths|python:[];
                         items python:here.getObjectsFromPathList(paths);
@@ -41,9 +41,9 @@
                              error python:errors and errors.get(item, None);">
 
             <legend>
-              <span tal:replace="item" />
               <span tal:condition="obj/Title|nothing"
-                    tal:replace="string:(${obj/Title})" />
+                    tal:replace="obj/Title" />
+              <span class="discreet" tal:content="string:(${item})" />
             </legend>
 
             <div class="field"
@@ -59,6 +59,10 @@
                   New Short Name
                 </label><div></div>
 
+                <div class="formHelp"
+                     i18n:translate="help_short_name_url">
+                Short name is the part that shows up in the URL of the item.
+                </div>
                     <span tal:condition="not:canRenameItem"
                           i18n:translate="rename_item_not_allowed">
                         You are not allowed to modify the id of this item.
@@ -73,7 +77,7 @@
                     <input type="text"
                            name="new_ids:list"
                            value=""
-                           size="60"
+                           size="40"
                            tabindex=""
                            tal:condition="canRenameItem"
                            tal:attributes="value item;
@@ -96,7 +100,7 @@
                     <input type="text"
                            name="new_titles:list"
                            value="title"
-                           size="60"
+                           size="40"
                            tabindex=""
                            tal:condition="canModifyItem"
                            tal:attributes="value obj/Title;

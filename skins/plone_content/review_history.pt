@@ -23,11 +23,12 @@
           <metal:block tal:define="review_history python: portal.reverseList(review_history);"
                        tal:repeat="items review_history">
             <tr tal:define="odd repeat/items/odd;
-                            rhComments items/comments|nothing;"
+                            rhComments items/comments|nothing;
+                            state items/review_state|nothing"
                 tal:attributes="class python:test(odd, 'even', 'odd')"
                 tal:condition="items/action">
               <td i18n:translate="" tal:content="python:wtool.getTitleForTransitionOnType(items['action'],context.portal_type)"
-                  tal:attributes="class string:state-${items/review_state}">
+                  tal:attributes="class string:state-${state}">
                 action
               </td>
 
