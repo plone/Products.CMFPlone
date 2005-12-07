@@ -63,13 +63,6 @@ Plone 2.1.2 (unreleased)
     - Updated favorites portlet to the new portlet style.
       [ctheune]
 
-    - Changed default of verify_login_name to 0. This is a more sensible
-      default as the feature of displaying 'login name not found' is a
-      security risk in general. Should be turned on by administrators
-      explicitly if wished. (The previous default of 1 was introduced with
-      changeset 7213)
-      [ctheune]
-
     - Fixed http://plone.org/collector/4800 - hardcoded review_state variable
       breaks custom workflows.
       [hannosch]
