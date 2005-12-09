@@ -41,6 +41,15 @@ class TestNormalizer(PloneTestCase.PloneTestCase):
         input = u'\u039d\u03af\u03ba\u03bf\u03c2 \u03a4\u03b6\u03ac\u03bd\u03bf\u03c2'
         self.assertEqual(normalizeUnicode(input), 'Nikos Tzanos')
 
+    def testNormalizeRussion(self):
+        # Russian letters (not supported by UnicodeData)
+        input = u'\u041f\u043e\u043b\u0438\u0442\u0438\u043a\u0430'
+        self.assertEqual(normalizeUnicode(input), 'Politika')
+        input = u'\u042d\u043a\u043e\u043d\u043e\u043c\u0438\u043a\u0430'
+        self.assertEqual(normalizeUnicode(input), 'Ekonomika')
+        input = u'\u041f\u041e\u0421\u041b\u0415\u0414\u041d\u0418\u0415 \u041d\u041e\u0412\u041e\u0421\u0422\u0418'
+        self.assertEqual(normalizeUnicode(input), 'POSLEDNIE NOVOSTI')
+
     def testNormalizeNonUnicode(self):
         # Non-unicode input raises a TypeError
         self.assertRaises(TypeError, normalizeUnicode, 'foo')

@@ -4,9 +4,14 @@ Changelog for Plone
 
 Plone 2.1.2 (unreleased)
 
+    - Fixed https://trac.plone.org/plone/ticket/4998 - Russian characters were
+      not supported by normalizeUnicode. Thanks to Xenru.
+      [stefan]
+
     - Fixed the Internet Explorer visual bug where portlets would gradually 
       lose their left margin and move further and further to the left the more
       elements were contained inside the portlet.
+      [limi]
 
     - Fixed #4996 - favorites_view.pt had duplicated calls for 'document_actions' macros
       [spliter]
