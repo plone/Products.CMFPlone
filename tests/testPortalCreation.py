@@ -591,6 +591,22 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
                                         if p['name'] == 'View Groups'][0]
         self.failUnless(member_has_permission['selected'])
 
+    def testEnableMemberAreasFlagOn(self):
+        # manage_addSite now takes an enable_memberareas flag
+        # which controls memberdata.memberareaCreationFlag
+        self.loginPortalOwner()
+        factory = self.app.manage_addProduct['CMFPlone']
+        factory.manage_addSite('foosite', enable_memberareas='1')
+        self.assertEqual(self.app.foosite.portal_membership.getMemberareaCreationFlag(), 1)
+
+    def testEnableMemberAreasFlagOff(self):
+        # manage_addSite now takes an enable_memberareas flag
+        # which controls memberdata.memberareaCreationFlag
+        self.loginPortalOwner()
+        factory = self.app.manage_addProduct['CMFPlone']
+        factory.manage_addSite('foosite', enable_memberareas='0')
+        self.assertEqual(self.app.foosite.portal_membership.getMemberareaCreationFlag(), 0)
+
 
 class TestPortalBugs(PloneTestCase.PloneTestCase):
 
