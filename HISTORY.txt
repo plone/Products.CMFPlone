@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1.2 (unreleased)
 
+    - Fixed http://trac.plone.org/plone/ticket/4695 - Comments were connected
+      to the wrong object.  Return of the ninjas.
+      [morphex]
+
     - Fixed https://trac.plone.org/plone/ticket/4998 - Russian characters were
       not supported by normalizeUnicode. Thanks to Xenru.
       [stefan]
