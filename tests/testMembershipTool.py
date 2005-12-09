@@ -22,7 +22,7 @@ class TestMembershipTool(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
         self.membership = self.portal.portal_membership
-        
+
         # Nuke Administators and Reviewers groups added in 2.1a2 migrations
         # (and any other migrated-in groups) to avoid test confusion
         self.portal.portal_groups.removeGroups(self.portal.portal_groups.listGroupIds())
@@ -34,6 +34,7 @@ class TestMembershipTool(PloneTestCase.PloneTestCase):
                                     'last_login_time': DateTime(last_login_time),})
 
     def testNoMorePersonalFolder(self):
+        # .personal folders are history
         personal = getattr(self.folder, self.membership.personal_id, None)
         self.assertEqual(personal, None)
         self.assertEqual(self.membership.getPersonalFolder(default_user), None)

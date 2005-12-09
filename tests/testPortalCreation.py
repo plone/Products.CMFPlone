@@ -82,7 +82,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.failIf('plone_workflow' in lpf_chain)
 
     def testMembersFolderMetaType(self):
-        # Members folder should have meta_type 'Large Plone Folder'
+        # Members folder should have meta_type 'ATBTreeFolder'
         members = self.membership.getMembersFolder()
         #self.assertEqual(members.meta_type, 'Large Plone Folder')
         self.assertEqual(members.meta_type, 'ATBTreeFolder')
