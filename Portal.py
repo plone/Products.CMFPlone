@@ -434,13 +434,12 @@ def manage_addSite(self, id, title='Portal', description='',
                    email_from_name='Portal Administrator',
                    validate_email=0,
                    custom_policy='Default Plone',
-                   enable_memberareas=1,
                    RESPONSE=None):
     """ Plone Site factory """
 
     customization_policy=None
     gen=None
-
+    
     if listPolicies() and custom_policy:
         customization_policy=custom_policies[custom_policy]
 
@@ -460,15 +459,6 @@ def manage_addSite(self, id, title='Portal', description='',
         if result:
             p.invokeFactory(type_name='Document', id='CustomizationLog')
             p.CustomizationLog.edit(text_format='plain', text=result)
-
-    # If there is a RESPONSE, but no enable_memberareas in the REQUEST,
-    # assume an unchecked enable_memberareas checkbox. Then go and thank
-    # the asshats who invented HTML forms.
-    if RESPONSE is not None and not self.REQUEST.has_key('enable_memberareas'):
-        enable_memberareas = 0
-
-    # No API here :-(
-    p.portal_membership.memberareaCreationFlag = int(enable_memberareas)
 
     # reindex catalog and workflow settings
     p.portal_catalog.refreshCatalog()
