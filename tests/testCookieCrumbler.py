@@ -10,14 +10,20 @@ from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
 
 import base64
+import urllib
+
+default_user = PloneTestCase.default_user
+default_password = PloneTestCase.default_password
 
 
 class TestCookieCrumbler(PloneTestCase.FunctionalTestCase):
 
     def afterSetUp(self):
         self.portal_url = self.portal.absolute_url()
+        self.portal_path = '/%s' % self.portal.absolute_url(1)
         self.folder_path = '/%s' % self.folder.absolute_url(1)
-        self.cookie = base64.encodestring('%s:secret' % PloneTestCase.default_user)
+        self.auth_info = '%s:%s' % (default_user, default_password)
+        self.cookie = base64.encodestring(self.auth_info)[:-1]
         self.folder.manage_permission('View', ['Manager'], acquire=0)
 
     def testAutoLoginPage(self):
@@ -35,6 +41,31 @@ class TestCookieCrumbler(PloneTestCase.FunctionalTestCase):
 
         location = response.getHeader('Location')
         self.failUnless(location.startswith(self.portal_url + '/insufficient_privileges'))
+
+    def testSetSessionCookie(self):
+        # The __ac cookie should be set for the session only
+        form = {'__ac_name': default_user, '__ac_password': default_password}
+
+        response = self.publish(self.portal_path + '/logged_in', extra=form)
+        self.assertEqual(response.getStatus(), 200)
+
+        cookie = response.getCookie('__ac')
+        self.assertEqual(cookie.get('path'), '/')
+        self.assertEqual(cookie.get('value'), urllib.quote(self.cookie))
+        self.assertEqual(cookie.get('expires'), None)
+
+    def testSetPersistentCookie(self):
+        # The __ac cookie should be set for 7 days
+        self.portal.portal_properties.site_properties.auth_cookie_length = 7
+        form = {'__ac_name': default_user, '__ac_password': default_password}
+
+        response = self.publish(self.portal_path + '/logged_in', extra=form)
+        self.assertEqual(response.getStatus(), 200)
+
+        cookie = response.getCookie('__ac')
+        self.assertEqual(cookie.get('path'), '/')
+        self.assertEqual(cookie.get('value'), urllib.quote(self.cookie))
+        self.failIfEqual(cookie.get('expires'), None)
 
 
 def test_suite():
