@@ -100,6 +100,15 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
             count += 1
         self.failUnless(j < i)
 
+    def testFolderHasFolderListingAction(self):
+        # Folders should have a 'folderlisting' action
+        folder = self.types.getTypeInfo('Folder')
+        for action in folder._cloneActions():
+            if action.id == 'folderlisting':
+                break
+        else:
+            self.fail("Folder has no 'folderlisting' action")
+
     def testTopicHasFolderListingAction(self):
         # Topics should have a 'folderlisting' action
         topic = self.types.getTypeInfo('Topic')
