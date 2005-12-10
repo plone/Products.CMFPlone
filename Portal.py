@@ -22,7 +22,6 @@ def addPolicy(label, klass):
     custom_policies[label]=klass
 
 from Products.CMFCore.permissions import ListFolderContents, ManageProperties, View
-from Products.CMFCore.permissions import DeleteObjects
 from Products.CMFCore.TypesTool import FactoryTypeInformation
 from Products.CMFCore.DirectoryView import addDirectoryViews
 from Products.CMFCore.utils import getToolByName
@@ -32,7 +31,6 @@ from Products.CMFPlone.PloneFolder import OrderedContainer
 import Globals
 
 from AccessControl import ClassSecurityInfo
-from AccessControl import Unauthorized
 from Acquisition import aq_base
 from ComputedAttribute import ComputedAttribute
 from webdav.NullResource import NullResource
@@ -167,20 +165,6 @@ class PloneSite(CMFSite, OrderedContainer, BrowserDefaultMixin):
         __call__(), which is defined in BrowserDefaultMixin
         """
         return self()
-
-    # Also see https://trac.plone.org/plone/ticket/2925
-    security.declareProtected(DeleteObjects, 'manage_delObjects')
-    def manage_delObjects(self, ids=[], REQUEST=None):
-        """ We need to enforce security. """
-        mt=getToolByName(self, 'portal_membership')
-        if isinstance(ids, basestring):
-            ids = [ids]
-        for id in ids:
-            item = self._getOb(id)
-            if not mt.checkPermission(DeleteObjects, item):
-                raise Unauthorized, (
-                    "Do not have permissions to remove this object")
-        return CMFSite.manage_delObjects(self, ids, REQUEST=REQUEST)
 
 Globals.InitializeClass(PloneSite)
 
