@@ -139,8 +139,8 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
 
     def testFolderHasFolderListingAction(self):
         # Folders should have a 'folderlisting' action
-        topic = self.types.getTypeInfo('Folder')
-        for action in topic._cloneActions():
+        folder = self.types.getTypeInfo('Folder')
+        for action in folder._cloneActions():
             if action.id == 'folderlisting':
                 break
         else:

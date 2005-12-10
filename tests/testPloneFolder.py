@@ -21,7 +21,6 @@ from zExceptions import BadRequest
 class TestPloneFolder(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
-        membership = self.portal.portal_membership
         # Create a bunch of subfolders
         self.folder.invokeFactory('Folder', id='sub1')
         self.folder.invokeFactory('Folder', id='sub2')
@@ -125,7 +124,6 @@ class TestFolderListing(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
         self.workflow = self.portal.portal_workflow
-        membership = self.portal.portal_membership
         # Create some objects to list
         self.folder.invokeFactory('Folder', id='sub1')
         self.folder.invokeFactory('Folder', id='sub2')
