@@ -42,7 +42,8 @@ from Products.CMFPlone.UnicodeNormalizer import normalizeUnicode
 from Products.CMFPlone.PloneFolder import ReplaceableWrapper
 from Products.CMFPlone import PloneMessageFactory as _
 
-from Products.statusmessages.interfaces import IStatusMessage
+from zope.app import zapi
+from Products.statusmessages.interfaces import IStatusMessageUtility
 
 AllowSendto = 'Allow sendto'
 CMFCorePermissions.setDefaultRoles(AllowSendto,
@@ -982,7 +983,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
           <tal:block tal:define="temp python:putils.addPortalMessage('A random info message')" />
         """
-        IStatusMessage(self.REQUEST).addStatusMessage(message, type)
+        zapi.getUtility(IStatusMessageUtility).addStatusMessage(self.REQUEST, message, type=type)
 
     security.declarePublic('showPortalMessages')
     def showPortalMessages(self):
@@ -992,7 +993,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         rendered by the global_statusmessage.pt page template. They will be
         removed after they have been shown.
         """
-        return IStatusMessage(self.REQUEST).showStatusMessages()
+        return zapi.getUtility(IStatusMessageUtility).showStatusMessages(self.REQUEST)
 
     security.declarePublic('browserDefault')
     def browserDefault(self, obj):
