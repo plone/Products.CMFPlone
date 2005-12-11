@@ -10,7 +10,7 @@ MINIMUM_PYTHON_VER = (2, 3, 4)
 PREFERRED_PYTHON_VER = "2.3.5 or newer"
 
 MINIMUM_ZOPE_VER = (2, 7, 5)
-PREFERRED_ZOPE_VER = "2.7.6 or newer"
+PREFERRED_ZOPE_VER = "2.7.8 or newer"
 
 MINIMUM_CMF_VER = (1, 5, 2)
 
@@ -133,7 +133,7 @@ except ImportError:
     log(("Placeless Translation Service not found. Plone "
          "runs without this, but if you want multilingual "
          "interface or access keys, you must download it from "
-         "http://www.sourceforge.net/projects/collective"),
+         "http://plone.org/products/pts/"),
         severity=zLOG.INFO, optional=1)
 
 try:
@@ -166,7 +166,7 @@ else:
 if (i18nPath and os.path.isfile(os.path.join(i18nPath, 'plone-en.po')) ):
     log(("Plone i18n files found at CMFPlone/i18/. Plone's "
          "i18n files have been moved to the PloneTranslation product. "
-	 "Please remove the CMFPlone/i18n/ folder to avoid conflicts."),
+         "Please remove the CMFPlone/i18n/ folder to avoid conflicts."),
         severity=zLOG.INFO, optional=1)
 
 try:
@@ -175,7 +175,7 @@ except ImportError:
     log(("PloneTranslation product with i18n files not found. Plone "
          "runs without this, but if you want multilingual "
          "interface or access keys, you must download it from "
-         "http://www.sourceforge.net/projects/plone-i18n"),
+         "http://plone.org/products/plonetranslations"),
         severity=zLOG.INFO, optional=1)
 
 try:
@@ -188,7 +188,7 @@ try:
     import Products.GroupUserFolder
 except ImportError:
     log(("GroupUserFolder not found. Please "
-         "download it from http://sf.net/projects/collective"))
+         "http://plone.org/products/plonetranslations"))
 
 try:
     import Products.CallProfiler
@@ -213,26 +213,26 @@ try:
     import Products.SecureMailHost
 except ImportError:
     log(("SecureMailHost not found. Please "
-         "download it from http://sf.net/projects/collective"))
+         "http://plone.org/products/securemailhost"))
 
 try:
     import Products.MimetypesRegistry
 except ImportError:
     log(("MimetypesRegistry not found. Please "
-         "download it from http://sf.net/projects/archetypes"))
+         "download it from http://plone.org/products/archetypes"))
 
 try:
     import Products.PortalTransforms
 except ImportError:
     log(("PortalTransforms not found. Please "
-         "download it from http://sf.net/projects/archetypes"))
+         "download it from http://plone.org/products/archetypes"))
 
 try:
     import Products.Archetypes
 except ImportError:
     # TODO we might want to check the AT version
     log(("Archetypes not found. Please "
-         "download it from http://sf.net/projects/archetypes"))
+         "download it from http://plone.org/products/archetypes"))
 
 try:
     import Products.ATContentTypes.content.document
