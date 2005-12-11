@@ -98,8 +98,8 @@ if cmfcore:
 try:
     import Products.CMFQuickInstallerTool
 except ImportError:
-    log(("CMFQuickInstallerTool not found. "
-         "Please download it from http://sf.net/projects/collective"))
+    log(("CMFQuickInstallerTool not found. Please download it from "
+         "http://plone.org/products/cmfquickinstallertool"))
 
 try:
     # TODO: we might want to check if the user has jpeg and zlib support, too
@@ -182,13 +182,13 @@ try:
     import Products.CMFFormController
 except ImportError:
     log(("CMFFormController not found. Please "
-         "download if from http://sf.net/projects/collective"))
+         "download it from http://plone.org/products/cmfformcontroller"))
 
 try:
     import Products.GroupUserFolder
 except ImportError:
     log(("GroupUserFolder not found. Please "
-         "http://plone.org/products/plonetranslations"))
+         "http://plone.org/products/groupuserfolder"))
 
 try:
     import Products.CallProfiler
