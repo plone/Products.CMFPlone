@@ -42,8 +42,10 @@ ZopeTestCase.installProduct('ATReferenceBrowserWidget')
 ZopeTestCase.installProduct('statusmessages')
 ZopeTestCase.installProduct('Five')
 
-# Install sessions and error_log
-ZopeTestCase.utils.setupCoreSessions()
+# Install BrowserIdManager and error_log
+from Products.CMFPlone.tests.utils import setupBrowserIdManager
+app = ZopeTestCase.app()
+setupBrowserIdManager(app)
 ZopeTestCase.utils.setupSiteErrorLog()
 
 import transaction
@@ -83,9 +85,6 @@ class PloneTestCase(ZopeTestCase.PortalTestCase):
         self.app.REQUEST.set('PARENTS', [self.app])
         # Disable the constraintypes performance hog
         self.folder.setConstrainTypesMode(0)
-        # Put SESSION object into REQUEST
-        sdm = self.app.session_data_manager
-        self.app.REQUEST.set('SESSION', sdm.getSessionData())
 
     def getPortal(self):
         '''Returns the portal object to the bootstrap code.

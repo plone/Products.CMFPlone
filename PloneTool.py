@@ -983,7 +983,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
           <tal:block tal:define="temp python:putils.addPortalMessage('A random info message')" />
         """
-        zapi.getUtility(IStatusMessageUtility).addStatusMessage(self.REQUEST, message, type=type)
+        zapi.getUtility(IStatusMessageUtility).addStatusMessage(self, message, type=type)
 
     security.declarePublic('showPortalMessages')
     def showPortalMessages(self):
@@ -993,7 +993,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         rendered by the global_statusmessage.pt page template. They will be
         removed after they have been shown.
         """
-        return zapi.getUtility(IStatusMessageUtility).showStatusMessages(self.REQUEST)
+        return zapi.getUtility(IStatusMessageUtility).showStatusMessages(self)
 
     security.declarePublic('browserDefault')
     def browserDefault(self, obj):
