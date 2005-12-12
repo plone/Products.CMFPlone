@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1.2 (unreleased)
 
+    - Made the "click here to see full size image" and size text on images
+      invisible when printing the image. This fixes #4698.
+      https://trac.plone.org/plone/ticket/4698
+
     - Harmonized table-less and table-based skin, the former was using a special
       getBodyTagClass which has an existing equvalent in the normal skin anyway.
       Deprecated the special file used for this, it will disappear in Plone 2.5.
