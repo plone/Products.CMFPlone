@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1.2 (unreleased)
 
+    - Inserted missing conditional check for the location of an event - no
+      longer shows the location field if it has no value.
+      [limi]
+
     - Fixed #4695 - Comments were connected to the wrong object.
       [morphex]
 
