@@ -65,6 +65,11 @@
 
 /* End links */
 
+.visualClear {
+    display: block;
+    clear: both;
+}
+
 #visual-portal-wrapper {
     margin: 0;
     padding: 0;
@@ -730,6 +735,8 @@ textarea.proportional {
 }
 
 .poweredBy {
+    display: block;
+    clear: both;
     font-size: &dtml-fontSmallSize;;
     font-weight: normal;
     color: &dtml-discreetColor;;

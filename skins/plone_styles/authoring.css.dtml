@@ -610,10 +610,6 @@ ol.visualNoMarker {
     left: -200px;
 }
 
-.visualClear {
-    display: block;
-    clear: both;
-}
 .hiddenLabel {
     display: block;
     background: transparent;
