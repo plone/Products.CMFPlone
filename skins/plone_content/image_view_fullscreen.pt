@@ -47,7 +47,7 @@
     <a href=""
        tal:attributes="href here/portal_url"
        tal:condition="not: request/HTTP_REFERER"
-       ><span i18n:translate="label_home">Home</span><br/><tal:block replace="structure here/tag" /></a>
+       ><span i18n:translate="label_home">Home</span><br /><tal:block replace="structure here/tag" /></a>
 </div>    
 
 </body>
