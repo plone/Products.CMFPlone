@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1.2 (unreleased)
 
+    - Fixed weak-ass tests that failed to catch broken action providers.
+      Also fixed ActionsTool so it ignores broken providers.
+      [stefan]
+
     - Icon for links was missing padding in folder_listing. Fixes #4721.
       https://trac.plone.org/plone/ticket/4721
       [limi]

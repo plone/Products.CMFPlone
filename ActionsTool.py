@@ -28,10 +28,10 @@ class ActionsTool(PloneBaseTool, BaseTool):
 
         if provider is None:
             return
-        
+
         if IActionProvider.isImplementedBy(provider):
             actions.extend( provider.listActionInfos(object=object) )
-        else:
+        elif hasattr(aq_base(provider), 'listActions'):
             # for Action Providers written for CMF versions before 1.5
             actions.extend( self._listActionInfos(provider, object) )
 
