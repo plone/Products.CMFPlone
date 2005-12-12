@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.1.2 (unreleased)
 
+    - Changed all calls to getParentNode() to be aq_inner.getParentNode() to
+      make it work better with Five. This fixes #4705.
+      https://trac.plone.org/plone/ticket/4705
+      [limi]
+
     - Review history was not valid XHTML, a block-level element was nested 
       inside an inline element. This fixes #4926 and #4586 (hopefully, seems
       to work in my local testing).
