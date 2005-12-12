@@ -129,8 +129,7 @@ div.portletFooter {
     margin: 1px 0;
 }
 
-.currentNavItem,
-#portlet-navigation-tree a:hover {
+.currentNavItem {
     background-color: &dtml-globalBackgroundColor;;
     color: &dtml-globalFontColor;;
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
