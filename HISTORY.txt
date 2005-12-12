@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1.2 (unreleased)
 
+    - Meta tags were not being emitted correctly. This fixes #4810.
+      https://trac.plone.org/plone/ticket/4810
+
     - Changed all calls to getParentNode() to be aq_inner.getParentNode() to
       make it work better with Five. This fixes #4705.
       https://trac.plone.org/plone/ticket/4705

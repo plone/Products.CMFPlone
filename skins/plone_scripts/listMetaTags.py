@@ -5,7 +5,7 @@
 ##bind script=script
 ##bind subpath=traverse_subpath
 ##parameters=
-##title=List Dublin Core for '<meta>' tags
+##title=(Deprecated, method in PloneTool.py now) List Dublin Core for '<meta>' tags
 ##
 from Products.CMFCore.utils import getToolByName
 plone_utils = getToolByName(context, 'plone_utils', None)
