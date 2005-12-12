@@ -77,7 +77,7 @@
                             <a href="#"
                                tal:content="item_title_or_id"
                                tal:attributes="href item/getRemoteUrl;
-                                               class item_wf_state_class">
+                                               class string:${item_wf_state_class} visualIconPadding">
                                 External Link
                             </a>
                             </span>

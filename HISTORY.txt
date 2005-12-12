@@ -4,8 +4,13 @@ Changelog for Plone
 
 Plone 2.1.2 (unreleased)
 
+    - Icon for links was missing padding in folder_listing. Fixes #4721.
+      https://trac.plone.org/plone/ticket/4721
+      [limi]
+
     - Meta tags were not being emitted correctly. This fixes #4810.
       https://trac.plone.org/plone/ticket/4810
+      [limi]
 
     - Changed all calls to getParentNode() to be aq_inner.getParentNode() to
       make it work better with Five. This fixes #4705.
