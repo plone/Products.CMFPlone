@@ -4,6 +4,13 @@ Changelog for Plone
 
 Plone 2.1.2 (unreleased)
 
+    - Harmonized table-less and table-based skin, the former was using a special
+      getBodyTagClass which has an existing equvalent in the normal skin anyway.
+      Deprecated the special file used for this, it will disappear in Plone 2.5.
+      This fixes #3915.
+      https://trac.plone.org/plone/ticket/3915
+      [limi]      
+
     - Inserted missing conditional check for the location of an event - no
       longer shows the location field if it has no value.
       [limi]
