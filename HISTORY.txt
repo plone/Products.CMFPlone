@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1.2 (unreleased)
 
+    - Group is confused with identical user when trying to add as a subgroup.
+      https://trac.plone.org/plone/ticket/4947
+      [hannosch] [csenger]
+
     - Fixed weak-ass tests that failed to catch broken action providers.
       Also fixed ActionsTool so it ignores broken providers.
       [stefan]
