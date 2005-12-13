@@ -4,6 +4,13 @@ Changelog for Plone
 
 Plone 2.1.2 (unreleased)
 
+    - Fixed two problems with delete action in global_contentmenu.
+      'Cannot cancel deletes in IE 6' (#4772) and 'JS pop-up shows wrong type
+      when deleting default view' (#4990).
+      https://trac.plone.org/plone/ticket/4772
+      https://trac.plone.org/plone/ticket/4990
+      [hannosch]
+
     - Bug in portlet_navigation - navTreeLevel1 was never set.
       https://trac.plone.org/plone/ticket/4950
       [hannosch]

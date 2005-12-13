@@ -422,13 +422,11 @@
                                 <li tal:condition="python:editAction['id']=='delete'"
                                     tal:attributes="class class_name">
                                     <a onclick="#"
-                                       tal:define="ptype here/portal_type;
-                                                   alert_msg python:((isContextDefaultPage or (isStructuralFolder and not here.portal_type == 'Topic')) and here.translate('alert_really_delete_folder', default='Do you really want to delete this folder and all its contents?')) or here.translate('alert_really_delete', default='Do you really want to delete this item?');
-                                                   ptype_translated python:here.translate(ptype);"
+                                       tal:define="alert_msg python:((isContextDefaultPage or (isStructuralFolder and not here.portal_type == 'Topic')) and here.translate('alert_really_delete_folder', default='Do you really want to delete this folder and all its contents?')) or here.translate('alert_really_delete', default='Do you really want to delete this item?');"
                                        tal:attributes="href editAction/url;
                                                        title editAction/name;
                                                        class python:test(icon, 'visualIconReplace', nothing);
-                                                       onclick string:return confirm('$ptype_translated\n${alert_msg}');;"
+                                                       onclick string: confirmDelete = confirm('${alert_msg}');; event.returnValue = confirmDelete;; return confirmDelete;;"
                                        tal:content="editAction/name"
                                        i18n:attributes="title"
                                        i18n:translate="">
