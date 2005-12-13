@@ -237,6 +237,13 @@ function liveSearchDoSearch() {
 		return false;
 	}
 
+	// Do nothing as long as we have less then three characters
+	// as we could easily kill the server otherwise
+	if ( searchInput.value.length < 3) {
+		liveSearchHide();
+		return false;
+	}
+
 	// Do we have cached results
 	var result = _cache[searchInput.value];
 	if (result) {

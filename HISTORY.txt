@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.1.2 (unreleased)
 
+    - Fixed 'Livesearch can kill a server' problem by enabling livesearch only
+      for three or more characters long search strings.
+      https://trac.plone.org/plone/ticket/4890
+      [hannosch]
+
     - Fixed two problems with delete action in global_contentmenu.
       'Cannot cancel deletes in IE 6' (#4772) and 'JS pop-up shows wrong type
       when deleting default view' (#4990).
