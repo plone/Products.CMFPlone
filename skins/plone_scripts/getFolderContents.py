@@ -8,13 +8,7 @@
 ##title=wrapper method around to use catalog to get folder contents
 ##
 
-from AccessControl import Unauthorized
-
 mtool = context.portal_membership
-
-if not mtool.checkPermission('List folder contents', context):
-    raise Unauthorized("Current user does not have permission to list folder contents")
-
 cur_path = '/'.join(context.getPhysicalPath())
 path = {}
 

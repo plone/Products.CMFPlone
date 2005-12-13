@@ -187,26 +187,21 @@ class TestFolderListing(PloneTestCase.PloneTestCase):
         # -> For folders you also have to remove 'Access contents information'
         # -> Never click around in the ZMI security screens, use the workflow!
 
-    def testGetFolderContents(self):
-        # These days most plone folder content listing stuff actually uses
-        # the catalog via the python script, getFolderContents.
-        
+    def test_folder_contents(self):
         self.folder.sub1.invokeFactory('Document', id='sub1doc1')
         
         contents = self.folder.sub1.getFolderContents()
         self.assertEqual(len(contents), 1)
         self.assertEqual(contents[0].getId, 'sub1doc1')
 
-        # There is/was a bug where even if a member doesn't have the 'List
-        # folder contents' permission, he can still view the contents of a
-        # folder.
+        self.failUnless(self.folder.sub1.folder_contents())
+
         self.folder.sub1.manage_permission('List folder contents', ['Manager'], acquire=0)
         self.logout()
-        # before the bug was fixed, getFolderContents() incorrectly returned
-        # back actual contents, but it should have raised an exception instead
-        self.assertRaises(Unauthorized, self.folder.sub1.getFolderContents)
-        
 
+        self.assertRaises(Unauthorized, self.folder.sub1.folder_contents)
+        
+        
 
 class TestManageDelObjects(PloneTestCase.PloneTestCase):
     # manage_delObjects should check 'Delete objects'
