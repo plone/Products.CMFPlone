@@ -115,7 +115,7 @@
         <a href="#" i18n:translate="box_sign_in">Log in</a>
     </dt>
 
-    <dd class="portletItem"
+    <dd class="portletItemSingle"
         tal:condition="python: not auth"
         i18n:translate="login_portlet_disabled">
         Cookie authentication is disabled. 
