@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1.2 (unreleased)
 
+    - Bug in portlet_navigation - navTreeLevel1 was never set.
+      https://trac.plone.org/plone/ticket/4950
+      [hannosch]
+
     - Group is confused with identical user when trying to add as a subgroup.
       https://trac.plone.org/plone/ticket/4947
       [hannosch] [csenger]

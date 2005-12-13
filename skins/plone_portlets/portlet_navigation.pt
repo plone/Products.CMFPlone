@@ -28,7 +28,7 @@
                 </div>
             </li>
             <tal:navtree define="children python:data.get('children', []);
-                                 level python:1;
+                                 level python:0;
                                  show_children python:True;
                                  isNaviTree python:True;">
                 <metal:main metal:use-macro="here/portlet_navtree_macro/macros/nav_main" />
