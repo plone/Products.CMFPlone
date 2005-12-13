@@ -5,10 +5,9 @@ $Id:$
 
 from xml.dom.minidom import parseString
 
+from zope.app import zapi
 from Products.CMFCore.utils import getToolByName
-from Products.GenericSetup.interfaces import INodeExporter
-from Products.GenericSetup.interfaces import INodeImporter
-from Products.GenericSetup.interfaces import PURGE, UPDATE
+from Products.GenericSetup.interfaces import IBody
 from Products.GenericSetup.utils import PrettyDocument
 
 _FILENAME = 'memberdata_properties.xml'
@@ -17,35 +16,37 @@ def importMemberDataProperties(context):
     """ Import MemberData tool properties.
     """
     site = context.getSite()
-    mode = context.shouldPurge() and PURGE or UPDATE
+    logger = context.getLogger('memberdata properties')
     ptool = getToolByName(site, 'portal_memberdata')
 
     body = context.readDataFile(_FILENAME)
     if body is None:
-        return 'MemberData tool: Nothing to import.'
+        logger.info('MemberData tool: Nothing to import.')
+        return
 
-    importer = INodeImporter(ptool, None)
+    importer = zapi.queryMultiAdapter((ptool, context), IBody)
     if importer is None:
-        return 'MemberData tool: Import adapter misssing.'
+        logger.warning('MemberData tool: Import adapter misssing.')
+        return
 
-    importer.importNode(parseString(body).documentElement, mode=mode)
-    return 'MemberData tool imported.'
+    importer.body = body
+    logger.info('MemberData tool imported.')
 
 def exportMemberDataProperties(context):
     """ Export MemberData tool properties .
     """
     site = context.getSite()
-
+    logger = context.getLogger('memberdata properties')
     ptool = getToolByName(site, 'portal_memberdata', None)
     if ptool is None:
-        return 'MemberData tool: Nothing to export.'
+        logger.info('MemberData tool: Nothing to export.')
+        return
 
-    exporter = INodeExporter(ptool)
+    exporter = zapi.queryMultiAdapter((ptool, context), IBody)
     if exporter is None:
-        return 'MemberData tool: Export adapter misssing.'
+        logger.warning('MemberData tool: Export adapter misssing.')
+        return
 
-    doc = PrettyDocument()
-    doc.appendChild(exporter.exportNode(doc))
-    context.writeDataFile(_FILENAME, doc.toprettyxml(' '), 'text/xml')
-    return 'MemberData tool exported.'
+    context.writeDataFile(_FILENAME, exporter.body, exporter.mime_type)
+    logger.info('MemberData tool exported.')
 

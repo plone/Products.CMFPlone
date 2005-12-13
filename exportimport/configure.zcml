@@ -6,26 +6,16 @@
 
   <adapter
       factory=".propertiestool.PlonePropertiesToolNodeAdapter"
-      provides="Products.GenericSetup.interfaces.INodeExporter"
-      for="Products.CMFPlone.interfaces.IPropertiesTool"
-      />
-
-  <adapter
-      factory=".propertiestool.PlonePropertiesToolNodeAdapter"
-      provides="Products.GenericSetup.interfaces.INodeImporter"
-      for="Products.CMFPlone.interfaces.IPropertiesTool"
+      provides="Products.GenericSetup.interfaces.IBody"
+      for="Products.CMFPlone.interfaces.IPropertiesTool
+           Products.GenericSetup.interfaces.ISetupEnviron"
       />
 
   <adapter
       factory=".propertiestool.SimpleItemWithPropertiesNodeAdapter"
-      provides="Products.GenericSetup.interfaces.INodeExporter"
-      for="Products.CMFPlone.interfaces.ISimpleItemWithProperties"
-      />
-
-  <adapter
-      factory=".propertiestool.SimpleItemWithPropertiesNodeAdapter"
-      provides="Products.GenericSetup.interfaces.INodeImporter"
-      for="Products.CMFPlone.interfaces.ISimpleItemWithProperties"
+      provides="Products.GenericSetup.interfaces.INode"
+      for="Products.CMFPlone.interfaces.ISimpleItemWithProperties
+           Products.GenericSetup.interfaces.ISetupEnviron"
       />
 
   <adapter
@@ -42,16 +32,10 @@
 
   <adapter
       factory=".propertiestool.SimpleItemWithPropertiesNodeAdapter"
-      provides="Products.GenericSetup.interfaces.INodeImporter"
-      for="Products.CMFCore.interfaces.IMemberDataTool"
+      provides="Products.GenericSetup.interfaces.IBody"
+      for="Products.CMFCore.interfaces.IMemberDataTool
+           Products.GenericSetup.interfaces.ISetupEnviron"
       />
-
-  <adapter
-      factory=".propertiestool.SimpleItemWithPropertiesNodeAdapter"
-      provides="Products.GenericSetup.interfaces.INodeExporter"
-      for="Products.CMFCore.interfaces.IMemberDataTool"
-      />
-
 
   <!-- Mark ATCT objects as IDAVAware so CMFSetup can export/import them -->
   <five:implements

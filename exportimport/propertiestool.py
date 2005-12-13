@@ -5,11 +5,11 @@ $Id:$
 
 from xml.dom.minidom import parseString
 
+from zope.app import zapi
 from Products.CMFCore.utils import getToolByName
-from Products.GenericSetup.interfaces import INodeExporter
-from Products.GenericSetup.interfaces import INodeImporter
-from Products.GenericSetup.interfaces import PURGE, UPDATE
-from Products.GenericSetup.utils import PrettyDocument
+from Products.GenericSetup.interfaces import IBody
+from Products.GenericSetup.interfaces import INode
+from Products.GenericSetup.utils import XMLAdapterBase
 from Products.GenericSetup.utils import NodeAdapterBase
 from Products.GenericSetup.utils import ObjectManagerHelpers
 from Products.GenericSetup.utils import PropertyManagerHelpers
@@ -23,46 +23,47 @@ def importPloneProperties(context):
     """ Import plone properties tool.
     """
     site = context.getSite()
-    mode = context.shouldPurge() and PURGE or UPDATE
+    logger = context.getLogger('plone properties')
     ptool = getToolByName(site, 'portal_properties')
 
     body = context.readDataFile(_FILENAME)
     if body is None:
-        return 'Properties tool: Nothing to import.'
+        logger.info('Properties tool: Nothing to import.')
+        return
 
-    importer = INodeImporter(ptool, None)
+    importer = zapi.queryMultiAdapter((ptool, context), IBody)
     if importer is None:
-        return 'Properties tool: Import adapter misssing.'
+        logger.warning('Properties tool: Import adapter misssing.')
+        return
 
-    importer.importNode(parseString(body).documentElement, mode=mode)
-    return 'Properties tool imported.'
+    importer.body = body
+    logger.info('Properties tool imported.')
 
 def exportPloneProperties(context):
     """ Export plone properties tool.
     """
     site = context.getSite()
-
+    logger = context.getLogger('plone properties')
     ptool = getToolByName(site, 'portal_properties', None)
     if ptool is None:
-        return 'Properties tool: Nothing to export.'
+        logger.info('Properties tool: Nothing to export.')
+        return
 
-    exporter = INodeExporter(ptool)
+    exporter = INode(ptool)
     if exporter is None:
         return 'Properties tool: Export adapter misssing.'
 
-    doc = PrettyDocument()
-    doc.appendChild(exporter.exportNode(doc))
-    context.writeDataFile(_FILENAME, doc.toprettyxml(' '), 'text/xml')
-    return 'Plone properties tool exported.'
+    context.writeDataFile(_FILENAME, exporter.body, exporter.mime_type)
+    logger.info('Plone properties tool exported.')
 
-class SimpleItemWithPropertiesNodeAdapter(NodeAdapterBase, PropertyManagerHelpers):
+class SimpleItemWithPropertiesNodeAdapter(XMLAdapterBase, PropertyManagerHelpers):
 
     """Node im- and exporter for SimpleItemWithProperties.
     """
 
     __used_for__ = ISimpleItemWithProperties
 
-    def exportNode(self, doc):
+    def _exportNode(self, doc):
         """Export the object as a DOM node.
         """
         self._doc = doc
@@ -70,37 +71,38 @@ class SimpleItemWithPropertiesNodeAdapter(NodeAdapterBase, PropertyManagerHelper
         node.appendChild(self._extractProperties())
         return node
 
-    def importNode(self, node, mode=PURGE):
+    def _importNode(self, node):
         """Import the object from the DOM node.
         """
-        self._initProperties(node, mode)
+        self._initProperties(node)
 
+    node = property(_exportNode, _importNode)
 
-class PlonePropertiesToolNodeAdapter(NodeAdapterBase, ObjectManagerHelpers):
+class PlonePropertiesToolNodeAdapter(XMLAdapterBase, ObjectManagerHelpers):
 
     """Node im- and exporter for Plone PropertiesTool.
     """
 
     __used_for__ = IPropertiesTool
 
-    def exportNode(self, doc):
+    def _exportNode(self, doc):
         """Export the object as a DOM node.
         """
         self._doc = doc
         node = self._getObjectNode('object')
-        node.setAttribute('xmlns:i18n', I18NURI)
+        #node.setAttribute('xmlns:i18n', I18NURI)
         node.appendChild(self._extractObjects())
         return node
 
-    def importNode(self, node, mode=PURGE):
+    def _importNode(self, node):
         """Import the object from the DOM node.
         """
-        if mode == PURGE:
+        if self.environ.shouldPurge():
             self._purgeObjects()
 
-        self._initObjects(node, mode)
+        self._initObjects(node)
 
-    def _initObjects(self, node, mode):
+    def _initObjects(self, node):
         """Import subobjects"""
         ## XXX: We could just use the _initObjects() from
         ## ObjectManagerHelpers except that it looks up the object
@@ -147,4 +149,6 @@ class PlonePropertiesToolNodeAdapter(NodeAdapterBase, ObjectManagerHelpers):
                         pass
 
             obj = getattr(self.context, obj_id)
-            INodeImporter(obj).importNode(child, mode)
+            importer = zapi.queryMultiAdapter((obj, self.environ), INode)
+            if importer:
+                importer.node = child
