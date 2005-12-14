@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 2.1.2 (unreleased)
 
+    - Fixed #5013 - accessibility-page had a problem in CSS validation due to
+      doubled #portal-siteactions. Now it is the class because we have more than
+      one place for siteactions on the pages.
+      https://trac.plone.org/plone/ticket/5013
+      [spliter]
+
     - Fixed #5017 - Unnecessary style in IEFixes.css that ruined NewsItem view
       in IE when having paragraph in text.
       https://trac.plone.org/plone/ticket/5017

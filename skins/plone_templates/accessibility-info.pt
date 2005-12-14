@@ -11,7 +11,7 @@
 <body>
 <div metal:fill-slot="main">
 
-    <ul id="portal-siteactions">
+    <ul class="portal-siteactions">
         <li i18n:translate="text_size">Text size:</li>
         <li id="siteaction-small_text"><a href="javascript:setActiveStyleSheet('Small Text',1);"
                                           title="Small Text"
