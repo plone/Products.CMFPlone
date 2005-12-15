@@ -252,7 +252,7 @@ function liveSearchDoSearch() {
 	}
 	liveSearchReq = new XMLHttpRequest();
 	liveSearchReq.onreadystatechange= liveSearchProcessReqChange;
-	liveSearchReq.open("GET", liveSearchRoot + queryTarget + searchInput.value );
+	liveSearchReq.open("GET", liveSearchRoot + queryTarget + encodeURI(searchInput.value) );
 	liveSearchLast = searchInput.value;
 	liveSearchReq.send(null);
 	}

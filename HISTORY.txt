@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1.2 (unreleased)
 
+    - LiveSearch did not match 8-bit search strings correctly.
+      https://trac.plone.org/plone/ticket/4643
+
     - Added a customised testPropertiesValidity method to the RegistrationTool
       in preparation of PAS. This version only verifies the email property if
       it is writable.
