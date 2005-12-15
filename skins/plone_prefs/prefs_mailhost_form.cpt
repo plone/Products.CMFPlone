@@ -81,9 +81,10 @@
             </div>
     
             <div class="field"
-                 tal:define="smtp_userid request/smtp_userid | here/MailHost/smtp_userid;
+                 tal:define="smtp_userid request/smtp_userid | here/MailHost/smtp_userid | here/MailHost/smtp_uid | nothing;
                              error errors/smtp_userid | nothing;"
-                 tal:attributes="class python:test(error, 'field error', 'field')">
+                 tal:attributes="class python:test(error, 'field error', 'field')"
+                 tal:condition="python: hasattr(here.MailHost, 'smtp_userid') or hasattr(here.MailHost, 'smtp_uid')">
     
                 <label i18n:translate="label_smtp_userid">ESMTP username</label>
 
@@ -102,9 +103,10 @@
                                        tabindex tabindex/next;" />
             </div>
             <div class="field"
-                 tal:define="smtp_pass request/smtp_pass | here/MailHost/smtp_pass;
+                 tal:define="smtp_pass request/smtp_pass | here/MailHost/smtp_pass | here/MailHost/smtp_pwd | nothing;
                              error errors/smtp_pass | nothing;"
-                 tal:attributes="class python:test(error, 'field error', 'field')">
+                 tal:attributes="class python:test(error, 'field error', 'field')"
+                 tal:condition="python: hasattr(here.MailHost, 'smtp_pass') or hasattr(here.MailHost, 'smtp_pwd')">
     
                 <label i18n:translate="label_smtp_pass">ESMTP password</label>
 

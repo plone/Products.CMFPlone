@@ -4,8 +4,15 @@ Changelog for Plone
 
 Plone 2.1.2 (unreleased)
 
+    - Made prefs_mailhost_form compatible with regular mailhost objects from
+      both Zope 2.7 and 2.8. Starting with 2.8 MailHost has user/pwd attributes
+      as has SecureMailHost but named slightly different
+      https://trac.plone.org/plone/ticket/5000
+      [hannosch]
+
     - LiveSearch did not match 8-bit search strings correctly.
       https://trac.plone.org/plone/ticket/4643
+      [hannosch]
 
     - Added a customised testPropertiesValidity method to the RegistrationTool
       in preparation of PAS. This version only verifies the email property if
