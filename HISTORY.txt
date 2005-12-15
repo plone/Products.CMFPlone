@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.1.2 (unreleased)
 
+    - Added a customised testPropertiesValidity method to the RegistrationTool
+      in preparation of PAS. This version only verifies the email property if
+      it is writable.
+      [wichert]
+
     - Fixed #5013 - accessibility-page had a problem in CSS validation due to
       doubled #portal-siteactions. Now it is the class because we have more than
       one place for siteactions on the pages.
