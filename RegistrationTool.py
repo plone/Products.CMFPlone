@@ -140,6 +140,7 @@ class RegistrationTool(PloneBaseTool, BaseTool):
                     return 'You must enter a valid email address.'
 
         return None
+
     security.declarePublic('generatePassword')
     def generatePassword(self):
         """Generates a password which is guaranteed to comply
