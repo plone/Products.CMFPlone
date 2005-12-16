@@ -120,7 +120,7 @@ class TestGroupsTool(PloneTestCase.PloneTestCase):
         self.groups.setGroupOwnership(g, doc)
         self.assertEqual(doc.getOwnerTuple()[1], self.prefix + 'foo')
         self.assertEqual(doc.get_local_roles_for_userid(self.prefix + 'foo'), ('Owner',))
-        # XXX: Initial creator still has Owner role. Is this a bug?
+        # TODO: Initial creator still has Owner role. Is this a bug?
         self.assertEqual(doc.get_local_roles_for_userid(default_user), ('Owner',))
 
     def testWrapGroup(self):
@@ -172,7 +172,7 @@ class TestGroupWorkspacesFolder(PloneTestCase.PloneTestCase):
     def testCreateGrouparea(self):
         self.groups.addGroup('foo', [], [])
         self.groups.toggleGroupWorkspacesCreation()
-        # XXX: Requires typestool
+        # TODO: Requires typestool
         self.groups.createGrouparea('foo')
         self.failUnless(hasattr(aq_base(self.groups.getGroupWorkspacesFolder()), 'foo'))
 
@@ -186,7 +186,7 @@ class TestGroupWorkspacesFolder(PloneTestCase.PloneTestCase):
         self.groups.addGroup('foo', [], [])
         self.groups.toggleGroupWorkspacesCreation()
         self.portal._delObject(self.groups.getGroupWorkspacesFolderId())
-        # XXX: Members cannot create folders in the portal root
+        # TODO: Members cannot create folders in the portal root
         self.setRoles(['Manager'])
         self.groups.createGrouparea('foo')
         self.failUnless(hasattr(aq_base(self.groups.getGroupWorkspacesFolder()), 'foo'))

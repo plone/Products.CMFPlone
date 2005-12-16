@@ -132,8 +132,6 @@ class OrderedContainer(Folder):
         min_position = 0
         objects = list(self._objects)
         if subset_ids == None:
-            # XXX: Plone
-            # OLD: subset_ids = [ obj['id'] for obj in objects ]
             subset_ids = self.getCMFObjectsSubsetIds(objects)
         else:
             subset_ids = list(subset_ids)
@@ -322,7 +320,7 @@ class BasePloneFolder(CMFCatalogAware, PortalFolderBase, DefaultDublinCoreImpl):
         ob = PloneFolder(id, title)
         self._setObject(id, ob)
         if REQUEST is not None:
-            # XXX HARDCODED FIXME!
+            # TODO HARDCODED FIXME!
             return self.folder_contents(self, REQUEST,
                                         portal_status_message='Folder added')
 

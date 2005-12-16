@@ -56,7 +56,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.failUnless(self.cp.__dict__.has_key('groups'))
 
     def testWorkflowIsActionProvider(self):
-        # XXX: This change has been backed out and the test inverted!
+        # This change has been backed out and the test inverted!
         # Remove portal_workflow by default.  We are falling back to
         # our use of the 'review_slot'.  There are no places using
         # the worklist ui anymore directly from the listFilteredActionsFor
@@ -65,7 +65,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
 
     def testReplyTabIsOff(self):
         # Ensure 'reply' tab is turned off
-        # XXX NOTE: ActionProviderBAse should have a 'getActionById'
+        # NOTE: ActionProviderBAse should have a 'getActionById'
         # that does this for x in: if x == id
         dt_actions = self.portal.portal_discussion.listActions()
         reply_visible=1

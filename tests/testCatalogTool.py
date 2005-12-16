@@ -248,7 +248,7 @@ class TestCatalogIndexing(PloneTestCase.PloneTestCase):
     def testIndexTitleOnly(self):
         # Indexing should only index the Title
         #
-        # XXX: This does not work as expected. The object
+        # TODO: This does not work as expected. The object
         # appears to be in the catalog but is not returned
         # by searchResults()!?
         #
@@ -264,7 +264,7 @@ class TestCatalogIndexing(PloneTestCase.PloneTestCase):
     def testIndexIdOnly(self):
         # Indexing should only index the id
         #
-        # XXX: Demonstrate that the behavior is independent
+        # TODO: Demonstrate that the behavior is independent
         # of index type.
         #
         self.catalog.indexObject(self.folder.doc, idxs=['id'])

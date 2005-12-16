@@ -75,7 +75,6 @@ def make_plone(portal):
     addDocumentActions(portal)
     addActionIcons(portal)
     addCacheAccelerators(portal)
-    #XXX TODO:migrate to add simple workflow
     # change the action in portal_types for viewing a folder
     if 'portal_interface' not in portal.objectIds():
         manage_addTool=portal.manage_addProduct['CMFPlone'].manage_addTool

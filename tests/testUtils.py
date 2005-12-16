@@ -20,7 +20,7 @@ class TestUtils(PloneTestCase.PloneTestCase):
                        'foo': None,
                        '2.0a3': (2, 0, 0, 'alpha', 3),
                        '1.2 final': (1, 2, 0, 'final', 0)}
-        # XXX note that '2.0a3' will currently return (2, 0, 0, 'final', 0),
+        # TODO note that '2.0a3' will currently return (2, 0, 0, 'final', 0),
         #     when really it should return None.  my regex foo is tapped. (ra)
         for v_str, v_tpl in version_map.items():
             self.failUnless(v_tpl == utils.versionTupleFromString(v_str))

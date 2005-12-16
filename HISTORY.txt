@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1.2 (unreleased)
 
+    - Backported some general code cleanup from the trunk.
+      [hannosch]
+
     - Implemented new feature: Automatically highlight keywords when arriving
       from search engines.
       https://trac.plone.org/plone/ticket/2599

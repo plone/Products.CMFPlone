@@ -48,7 +48,7 @@ try:
                                        , description=description )
 except ConflictError:
     raise
-except: #XXX DateTime and contentEdit() has many things that could go wrong - catch all.
+except: # TODO DateTime and contentEdit() has many things that could go wrong - catch all.
     return state.set(portal_status_message='Error saving event.', new_status='failure')
 
 from Products.CMFPlone import transaction_note

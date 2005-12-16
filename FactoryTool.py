@@ -276,7 +276,7 @@ class FactoryTool(PloneBaseTool, UniqueObject, SimpleItem):
         while m < n:
             self.REQUEST.set('BASE%d' % m, '/'.join(url_list[0:len(url_list)-n+1+m]))
             m = m + 1
-        # XXX fix URLPATHn, BASEPATHn here too
+        # TODO fix URLPATHn, BASEPATHn here too
 
     def isTemporary(self, obj):
         """Check to see if an object is temporary"""

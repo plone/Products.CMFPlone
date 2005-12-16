@@ -62,7 +62,7 @@ class RegistrationTool(PloneBaseTool, BaseTool):
     # For s!=None, generates a deterministic password using a hash of s
     #   (length must be <= 16 for s != None)
     #
-    # XXX: Could this be made private?
+    # TODO: Could this be made private?
     def getPassword(self, length=5, s=None):
         global password_chars, md5base
 

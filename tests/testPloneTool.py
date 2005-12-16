@@ -35,24 +35,16 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
         # Any RFC 822 email address allowed, but address list must fail
         val = self.utils.validateSingleEmailAddress
         validInputs = (
-            #'user',
-            #'user@foo',
             'user@example.org',
             'user@host.example.org',
             'm@t.nu',
             'USER@EXAMPLE.ORG',
             'USER@HOST.EXAMPLE.ORG',
             'USER@hoST.Example.Org',
-
-            ## Some trickier ones, from RFC 822
-            #'"A Name" user @ example',
-            #'"A Name" user\n @ example',
-            #'nn@[1.2.3.4]'
         )
         invalidInputs = (
             'user@example.org, user2@example.org',   # only single address allowed
             'user@example.org,user2@example.org',
-            #'user@example.org;user2@example.org',
             'user@example.org\n\nfoo', # double new lines
             'user@example.org\n\rfoo',
             'user@example.org\r\nfoo',
@@ -68,7 +60,6 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
             'Subject: Spam me plenty\n'
             'Spam Spam Spam\n'
             'I hate spam',
-            
         )
         for address in validInputs:
             self.failUnless(val(address), '%s should validate' % address)
@@ -404,7 +395,7 @@ class TestEditMetadata(PloneTestCase.PloneTestCase):
 
     def DISABLED_testTuplifySubject_3(self):
         self.utils.editMetadata(self.doc, subject='Foo, Bar, Baz')
-        # XXX: Wishful thinking
+        # TODO: Wishful thinking
         self.assertEqual(self.doc.Subject(), ('Foo', 'Bar', 'Baz'))
         
     def testTuplifyContributors_1(self):
@@ -418,7 +409,7 @@ class TestEditMetadata(PloneTestCase.PloneTestCase):
 
     def DISABLED_testTuplifyContributors_3(self):
         self.utils.editMetadata(self.doc, contributors='Foo; Bar; Baz')
-        # XXX: Wishful thinking
+        # TODO: Wishful thinking
         self.assertEqual(self.doc.Contributors(), ('Foo', 'Bar', 'Baz'))
         
 
@@ -524,7 +515,7 @@ class TestFormulatorFields(PloneTestCase.PloneTestCase):
     def testLanguageField(self):
         self.setField('language', 'de')
         self.utils.editMetadata(self.doc)
-        # XXX: Note that language, format, and rights do not 
+        # TODO: Note that language, format, and rights do not 
         #      receive the Formulator treatment.
         self.assertEqual(self.doc.Language(), '')
 

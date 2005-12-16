@@ -15,7 +15,7 @@ from Products.CMFPlone import LargePloneFolder
 from Products.CMFPlone import transaction
 from OFS.CopySupport import CopyError
 
-#XXX NOTE
+#    NOTE
 #    document, link, and newsitem edit's are now validated
 #    so we must pass in fields that the validators need
 #    such as title on a favorite's link_edit
@@ -390,7 +390,7 @@ class TestBadFileIds(PloneTestCase.PloneTestCase):
             pass
         self.failIf('fred%.gif' in self.folder.objectIds())
 
-    # XXX: Dang! No easy way to get at the validator state...
+    # TODO: Dang! No easy way to get at the validator state...
 
 
 class TestImagePatch(PloneTestCase.PloneTestCase):

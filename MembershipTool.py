@@ -41,7 +41,7 @@ class MembershipTool(PloneBaseTool, BaseTool):
 
     __implements__ = (PloneBaseTool.__implements__, BaseTool.__implements__, )
 
-    #XXX I'm not quite sure why getPortalRoles is declared 'Managed'
+    # TODO I'm not quite sure why getPortalRoles is declared 'Managed'
     #    in CMFCore.MembershipTool - but in Plone we are not so anal ;-)
     security.declareProtected(View, 'getPortalRoles')
 
@@ -65,20 +65,6 @@ class MembershipTool(PloneBaseTool, BaseTool):
         # No check for folderish since someone somewhere may actually want
         # members to have objects instead of folders as home "directory".
         self.memberarea_type = str(type_name).strip()
-
-    # XXX: Comment this out to see if we still need it.
-    # We don't want to set wrapped users into the request!
-    #def getAuthenticatedMember(self):
-    #    """ """
-    #    _user=self.REQUEST.get('_portaluser', None)
-    #    if _user: # sanity check the cached user against the current user
-    #        user_id = getSecurityManager().getUser().getId()
-    #        if not user_id == _user.getId():
-    #            _user = None
-    #    if _user is None:
-    #        _user = BaseTool.getAuthenticatedMember(self)
-    #        self.REQUEST.set('_portaluser', _user)
-    #    return _user
 
     security.declarePublic('getMemberInfo')
     def getMemberInfo(self, memberId=None):
@@ -216,13 +202,13 @@ class MembershipTool(PloneBaseTool, BaseTool):
 
         if hasattr(members, member_id):
             # has already this member
-            # XXX exception
+            # TODO exception
             return
 
         _createObjectByType(self.memberarea_type, members, id=member_id)
 
         # get the user object from acl_users
-        # XXX what about portal_membership.getAuthenticatedMember()?
+        # TODO what about portal_membership.getAuthenticatedMember()?
         acl_users = self.__getPUS()
         user = acl_users.getUser(member_id)
         if user is not None:
@@ -275,9 +261,6 @@ class MembershipTool(PloneBaseTool, BaseTool):
         member_folder.changeOwnership(user)
         member_folder.__ac_local_roles__ = None
         member_folder.manage_setLocalRoles(member_id, ['Owner'])
-        # XXX set title and description (edit invokes reindexObject)
-        #member_folder.edit(title=member_folder_title,
-        #                   description=member_folder_description)
         # We use ATCT now use the mutators
         member_folder.setTitle(member_folder_title)
         member_folder.setDescription(member_folder_description)
@@ -297,7 +280,7 @@ class MembershipTool(PloneBaseTool, BaseTool):
                 _createObjectByType('Document', member_folder, id='index_html')
                 hpt = getattr(member_folder, 'index_html')
                 # edit title, text and format
-                # XXX
+                # TODO
                 hpt.setTitle(member_folder_index_html_title)
                 if hpt.meta_type == 'Document':
                     # CMFDefault Document

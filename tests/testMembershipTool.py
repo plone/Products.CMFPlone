@@ -176,7 +176,7 @@ class TestMembershipTool(PloneTestCase.PloneTestCase):
 
     def testWrapUserWrapsBareUser(self):
         user = self.portal.acl_users.getUserById(default_user)
-        # XXX: GRUF users are wrapped
+        # TODO: GRUF users are wrapped
         self.failUnless(hasattr(user, 'aq_base'))
         user = aq_base(user)
         user = self.membership.wrapUser(user)
@@ -186,7 +186,7 @@ class TestMembershipTool(PloneTestCase.PloneTestCase):
 
     def testWrapUserWrapsWrappedUser(self):
         user = self.portal.acl_users.getUserById(default_user)
-        # XXX: GRUF users are wrapped
+        # TODO: GRUF users are wrapped
         self.failUnless(hasattr(user, 'aq_base'))
         user = self.membership.wrapUser(user)
         self.assertEqual(user.__class__.__name__, 'MemberData')

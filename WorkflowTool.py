@@ -20,24 +20,14 @@ class WorkflowTool(PloneBaseTool, BaseTool):
     
     __implements__ = (PloneBaseTool.__implements__, BaseTool.__implements__, )
 
-## reindexObjectSecurity() is called over _invokeWithNotification()+ _reindexWorkflowVariables()
-#    security.declarePublic('doActionFor')
-#    def doActionFor(self, ob, action, wf_id=None, *args, **kw):
-#        """ it appears that objects are reindexed after they
-#            are transitioned in DCWorkflow.  """
-#        result=BaseTool.doActionFor(self, ob, action, wf_id, *args, **kw)
-#        if result:
-#            result.reindexObjectSecurity()
-#            return result
-
-    #XXX this should not make it into 1.0
+    # TODO this should not make it into 1.0
     # Refactor me, my maker was tired
     def flattenTransitions(self, objs, container=None):
         """ this is really hokey - hold on!!"""
         if hasattr(objs, 'startswith'):
             return ()
 
-        #XXX Need to behave differently for paths
+        # TODO Need to behave differently for paths
         if len(objs) and '/' in objs[0]:
             return self.flattenTransitionsForPaths(objs)
         transitions=[]
