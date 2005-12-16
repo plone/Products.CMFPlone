@@ -191,6 +191,9 @@ text-decoration: none;
 
 /* Vertical addition class */
 
+.vertical {
+    background-color: &dtml-backgroundColor;;	
+}
 .vertical th {
     padding: 0.5em;
 }

@@ -19,8 +19,7 @@
         i18n:translate="box_related">Related</dt>
 
     <dd class="portletItem odd" tal:condition="relatedLocal">
-        <strong i18n:translate="box_local_resources">Local resources</strong>
-        <br />
+        <h5 i18n:translate="box_local_resources">Local resources</h5>
         <ul class="visualNoMarker">
             <li tal:repeat="related relatedLocal">
                 <a href=""
