@@ -12,7 +12,7 @@
     <dt class="portletHeader"
         i18n:translate="heading_control_panel">Site Setup</dt>
 
-        <dd class="portletItemSingle"
+        <dd class="portletItem"
             tal:repeat="group groups">
 
             <strong tal:content="group/title"

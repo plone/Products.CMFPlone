@@ -26,7 +26,8 @@
            i18n:translate="box_sign_in">Log in</a>
     </dt>
 
-    <dd class="portletItem odd" tal:attributes="class python: test(canRegister or canRequestPassword, 'portletItem odd', 'portletItemLast odd')">
+    <!--<dd class="portletItem odd" tal:attributes="class python: test(canRegister or canRequestPassword, 'portletItem odd', 'portletItemLast odd')">-->
+	 <dd class="portletItem odd">
         <form action="login_form"
               name="loginform"
               method="post"
@@ -86,8 +87,9 @@
         </form>
     </dd>
     
-    <dd class="portletItem even"
-        tal:condition="canRequestPassword" tal:attributes="class python: test(canRegister, 'portletItem even', 'portletItemLast even')">
+    <!--<dd class="portletItem even"
+        tal:condition="canRequestPassword" tal:attributes="class python: test(canRegister, 'portletItem even', 'portletItemLast even')">-->
+	 <dd class="portletItem even" tal:condition="canRequestPassword">
         <a href="mail_password_form"
            tal:attributes="href string:${portal_url}/mail_password_form">
            <tal:block replace="structure portal_object/info_icon.gif"/>
@@ -95,8 +97,9 @@
         </a>
     </dd>
     
-    <dd class="portletItemLast"
-        tal:condition="canRegister" tal:attributes="class python: test(canRequestPassword, 'portletItemLast', 'portletItemLast even')">
+    <!--<dd class="portletItemLast"
+        tal:condition="canRegister" tal:attributes="class python: test(canRequestPassword, 'portletItemLast', 'portletItemLast even')">-->
+	 <dd class="portletItem" tal:condition="canRegister">
         <a href="" tal:attributes="href python:join.pop()">
             <tal:block replace="structure portal_object/user.gif"/>
             <span tal:omit-tag="" i18n:translate="box_new_user_option">New user?</span>
@@ -115,7 +118,7 @@
         <a href="#" i18n:translate="box_sign_in">Log in</a>
     </dt>
 
-    <dd class="portletItemSingle"
+    <dd class="portletItem"
         tal:condition="python: not auth"
         i18n:translate="login_portlet_disabled">
         Cookie authentication is disabled. 

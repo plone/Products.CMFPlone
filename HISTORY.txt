@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 2.1.2 (unreleased)
 
+    - Fixed #4430 - now portlets have much more simple and straightforward
+      structure and styles. From now we use only three classes for them -
+      portletHeader, portletItem and portletFooter. Thanks to mroch for idea.
+      https://trac.plone.org/plone/ticket/4430
+      [spliter]
+
     - Backported some general code cleanup from the trunk.
       [hannosch]
 
