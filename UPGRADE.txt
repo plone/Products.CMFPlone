@@ -29,7 +29,8 @@ Running a migration may:
 
 If you have issues please search for an update of your python, zope, plone and 
 third-party products and read http://plone.org/documentation/faq/upgrade-plone.
-If you still have issues please the use the bug tracker at http://plone.org/collector
-and include: your Zope, CMF and Python versions, the platform, the CMFPlone 
-versions you are migrating to and from and *important* the full traceback and
-migration log. Try to provide as much informations as possible.
+If you still have issues please the use the bug tracker at
+http://trac.plone.org/plone and include: your Zope, CMF and Python versions, the
+platform, the CMFPlone versions you are migrating to and from and *important*
+the full traceback and migration log. Try to provide as much informations as
+possible.

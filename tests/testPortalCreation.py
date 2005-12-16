@@ -82,7 +82,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.failIf('plone_workflow' in lpf_chain)
 
     def testMembersFolderMetaType(self):
-        # Members folder should have meta_type 'Large Plone Folder'
+        # Members folder should have meta_type 'ATBTreeFolder'
         members = self.membership.getMembersFolder()
         #self.assertEqual(members.meta_type, 'Large Plone Folder')
         self.assertEqual(members.meta_type, 'ATBTreeFolder')
@@ -139,8 +139,8 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
 
     def testFolderHasFolderListingAction(self):
         # Folders should have a 'folderlisting' action
-        topic = self.types.getTypeInfo('Folder')
-        for action in topic._cloneActions():
+        folder = self.types.getTypeInfo('Folder')
+        for action in folder._cloneActions():
             if action.id == 'folderlisting':
                 break
         else:

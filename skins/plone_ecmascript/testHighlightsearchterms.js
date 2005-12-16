@@ -87,3 +87,29 @@ function GetSearchTermsFromURITestCase() {
 }
 GetSearchTermsFromURITestCase.prototype = new TestCase;
 testcase_registry.registerTestCase(GetSearchTermsFromURITestCase, 'highlightsearchterms');
+
+if (window.decodeReferrer) {
+    function GetSearchTermsFromReferrerTestCase() {
+        this.name = 'GetSearchTermsFromReferrerTestCase';
+
+        this.setUp = function() {
+            this.sandbox = document.getElementById("testSandbox");
+            clearChildNodes(this.sandbox);
+        }
+
+        this.testGoogleDecoding = function() {
+            var ref = 'http://google.de/search?hl=de&q=google+referrer+string&btnG=Google-Suche&meta='
+            var terms = decodeReferrer(ref);
+            this.assertEquals(terms.length, 3, 'number of searchterms in '+ref);
+            this.assertEquals(terms[0], 'google');
+            this.assertEquals(terms[1], 'referrer');
+            this.assertEquals(terms[2], 'string');
+        }
+
+        this.tearDown = function() {
+            clearChildNodes(this.sandbox);
+        }
+    }
+    GetSearchTermsFromReferrerTestCase.prototype = new TestCase;
+    testcase_registry.registerTestCase(GetSearchTermsFromReferrerTestCase, 'highlightsearchterms');
+}

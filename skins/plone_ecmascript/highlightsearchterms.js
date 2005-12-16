@@ -44,10 +44,16 @@ function getSearchTermsFromURI(uri) {
     } else {
         // we just try to be lucky, for single words this will still work
     }
+    var result = new Array();
+    if (window.decodeReferrer) {
+        var referrerSearch = decodeReferrer();
+        if (null != referrerSearch && referrerSearch.length > 0) {
+            result = referrerSearch;
+        }
+    }
     var qfinder = new RegExp("searchterm=([^&]*)", "gi");
     var qq = qfinder.exec(query);
     if (qq && qq[1]) {
-        var result = new Array();
         var terms = qq[1].replace(/\+/g,' ').split(/\s+/);
         for (var i=0; i < terms.length; i++) {
             if (terms[i] != '') {
@@ -56,7 +62,7 @@ function getSearchTermsFromURI(uri) {
         }
         return result;
     }
-    return false;
+    return result.length == 0 ? false : result;
 }
 
 function highlightSearchTermsFromURI() {

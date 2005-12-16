@@ -289,7 +289,7 @@
                            i18n:translate=""
                            tal:content="python:state[0] or state[1]"
                            />
-                    <br/>
+                    <br />
                     </tal:items>
                 </tal:states>
             </div>

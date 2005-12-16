@@ -92,6 +92,55 @@ class RegistrationTool(PloneBaseTool, BaseTool):
             return 0
         return 1
 
+    security.declarePublic( 'testPropertiesValidity' )
+    def testPropertiesValidity(self, props, member=None):
+
+        """ Verify that the properties supplied satisfy portal's requirements.
+
+        o If the properties are valid, return None.
+        o If not, return a string explaining why.
+
+        This is a customized version of the CMFDefault version: we also
+        check if the email property is writable before verifying it.
+        """
+        if member is None: # New member.
+
+            username = props.get('username', '')
+            if not username:
+                return 'You must enter a valid name.'
+
+            if not self.isMemberIdAllowed(username):
+                return ('The login name you selected is already '
+                        'in use or is not valid. Please choose another.')
+
+            email = props.get('email')
+            if email is None:
+                return 'You must enter an email address.'
+
+            ok, message =  _checkEmail( email )
+            if not ok:
+                return 'You must enter a valid email address.'
+
+        else: # Existing member.
+            if not hasattr(member, 'canWriteProperty') or \
+                    member.canWriteProperty('email'):
+
+                email = props.get('email')
+
+                if email is not None:
+
+                    ok, message =  _checkEmail( email )
+                    if not ok:
+                        return 'You must enter a valid email address.'
+
+                # Not allowed to clear an existing non-empty email.
+                existing = member.getProperty('email')
+                
+                if existing and email == '':
+                    return 'You must enter a valid email address.'
+
+        return None
+
     security.declarePublic('generatePassword')
     def generatePassword(self):
         """Generates a password which is guaranteed to comply

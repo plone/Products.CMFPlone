@@ -275,7 +275,7 @@ we eventually might want to merge this form with personalize_form
                 <label for="cb_listed" i18n:translate="label_listed_status">Listed in searches</label>
 
                 <div class="formHelp" i18n:translate="help_listed_search">
-                Determines if your user name is listed in member searches done on this site.
+                Determines if your user name is listed in user searches done on this site.
                 </div>
 
             </div>

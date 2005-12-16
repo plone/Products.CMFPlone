@@ -53,10 +53,10 @@ will have their own folder created upon first login or not.</p>
 <form method="post" action="setMemberareaCreationFlag">
 
 <dtml-if expr="getMemberareaCreationFlag() == 1">
-  <p><b>Folders are created upon first login.</b>
+  <p><b>Member areas are created upon first login.</b>
   <input type="submit" value=" Turn folder creation off ">
 <dtml-else>
-  <p><b>No Folders are created.</b>
+  <p><b>No member areas are created.</b>
   <input type="submit" value=" Turn folder creation on ">
 </dtml-if>
 

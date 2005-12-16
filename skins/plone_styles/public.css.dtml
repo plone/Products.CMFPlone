@@ -65,6 +65,11 @@
 
 /* End links */
 
+.visualClear {
+    display: block;
+    clear: both;
+}
+
 #visual-portal-wrapper {
     margin: 0;
     padding: 0;
@@ -112,7 +117,7 @@
 
 /* Site-wide action menu - font size, contact, index, sitemap etc */
 
-#portal-siteactions {
+.portal-siteactions {
     background-color: transparent;
     white-space: nowrap;
     list-style-image: none;
@@ -124,11 +129,11 @@
     padding: 3px 2em 3px 0;
 }
 
-#portal-siteactions li {
+.portal-siteactions li {
     display: inline;
 }
 
-#portal-siteactions li a {
+.portal-siteactions li a {
     background-color: transparent;
     border: 1px solid &dtml-backgroundColor;;
     color: &dtml-discreetColor;;
@@ -139,13 +144,13 @@
     text-transform: &dtml-textTransform;;
 }
 
-#portal-siteactions li.selected a {
+.portal-siteactions li.selected a {
     background-color: &dtml-globalBackgroundColor;;
     color: &dtml-globalFontColor;;
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
 }
 
-#portal-siteactions li a:hover {
+.portal-siteactions li a:hover {
     background-color: &dtml-globalBackgroundColor;;
     color: &dtml-globalFontColor;;
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
@@ -730,6 +735,8 @@ textarea.proportional {
 }
 
 .poweredBy {
+    display: block;
+    clear: both;
     font-size: &dtml-fontSmallSize;;
     font-weight: normal;
     color: &dtml-discreetColor;;

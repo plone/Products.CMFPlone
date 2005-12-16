@@ -9,7 +9,6 @@
 ##title=Personalization Handler.
 
 from Products.CMFPlone import transaction_note
-#portrait_id='MyPortrait'
 
 member=context.portal_membership.getAuthenticatedMember()
 member.setProperties(context.REQUEST)

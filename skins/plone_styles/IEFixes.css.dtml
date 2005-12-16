@@ -98,7 +98,8 @@ body { /* These work in IE only, changes the look of the scrollbar + textareas *
 * html h4,
 * html h5,
 * html h6,
-* html p,
+/* html p,*/
+* html dd,
 * html .documentDescription,
 * html .visualClear
   {

@@ -123,6 +123,7 @@ from Products.CMFPlone.migrations.v2_1.rcs import reorderStylesheets as reorderS
 from Products.CMFPlone.migrations.v2_1.final_two11 import reindexPathIndex
 from Products.CMFPlone.migrations.v2_1.two11_two12 import removeCMFTopicSkinLayer
 from Products.CMFPlone.migrations.v2_1.two11_two12 import addRenameObjectButton
+from Products.CMFPlone.migrations.v2_1.two11_two12 import addSEHighLightJS
 
 from Products.CMFDynamicViewFTI.migrate import migrateFTI
 
@@ -3371,6 +3372,16 @@ class TestMigrations_v2_1_2(MigrationTest):
         self.portal._delObject('portal_actions')
         addRenameObjectButton(self.portal, [])
 
+    def testAddSEHighLightJS(self):
+        jsreg = self.portal.portal_javascripts
+        script_ids = jsreg.getResourceIds()
+        self.failUnless('se-highlight.js' in script_ids)
+        # if highlightsearchterms.js is available se-highlight.js
+        # should be positioned right underneath it
+        if 'highlightsearchterms.js' in script_ids:
+            posSE = jsreg.getResourcePosition('se-highlight.js')
+            posHST = jsreg.getResourcePosition('highlightsearchterms.js')
+            self.failUnless((posSE - 1) == posHST)
 
 def test_suite():
     from unittest import TestSuite, makeSuite

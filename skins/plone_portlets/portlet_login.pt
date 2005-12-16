@@ -20,14 +20,12 @@
                 canRequestPassword python:checkPermission('Mail forgotten password', here)"
     tal:condition="python: auth">
 
-    <!-- span class="portletTopLeft" /-->
     <dt class="portletHeader">
         <a href="#" 
            tal:attributes="href string:$portal_url/login_form"
            i18n:translate="box_sign_in">Log in</a>
     </dt>
-    <!-- span class="portletTopRight" /-->
-  
+
     <dd class="portletItem odd" tal:attributes="class python: test(canRegister or canRequestPassword, 'portletItem odd', 'portletItemLast odd')">
         <form action="login_form"
               name="loginform"
@@ -49,7 +47,7 @@
                 <input type="text"
                        size="10"
                        alt="Login Name"
-		       onclick="showCookieMessage('cookies_message')"
+                       onclick="showCookieMessage('cookies_message')"
                        tal:attributes="name ac_name; id ac_name;
                                        value python:request.get(ac_name, '');
                                        tabindex tabindex/next"
@@ -63,7 +61,7 @@
                 <input type="password"
                        size="10"
                        alt="Password"
-		       onclick="showCookieMessage('cookies_message')"
+                       onclick="showCookieMessage('cookies_message')"
                        tal:attributes="name ac_password; id ac_password;
                                        tabindex tabindex/next;"
                        i18n:attributes="alt label_password;"/>
@@ -104,9 +102,6 @@
             <span tal:omit-tag="" i18n:translate="box_new_user_option">New user?</span>
         </a>
     </dd>
-      
-    <!-- span class="portletBottomLeft" /-->
-    <!-- span class="portletBottomRight" /-->
 </dl>
 
 
@@ -116,21 +111,17 @@
     id="portlet-login"
     tal:condition="python: not auth">
 
-    <!-- span class="portletTopLeft" /-->
     <dt class="portletHeader">
         <a href="#" i18n:translate="box_sign_in">Log in</a>
     </dt>
-    <!-- span class="portletTopRight" /-->
 
-    <dd class="portletItem"
+    <dd class="portletItemSingle"
         tal:condition="python: not auth"
         i18n:translate="login_portlet_disabled">
         Cookie authentication is disabled. 
         Login portlet not available.
     </dd>
 
-    <!-- span class="portletBottomLeft" /-->
-    <!-- span class="portletBottomRight" /-->
 </dl>
 
 

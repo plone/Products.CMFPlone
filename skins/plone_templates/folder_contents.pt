@@ -13,6 +13,7 @@
   <body>
 
     <div metal:fill-slot="main">
+      <tal:protect tal:condition="python: not checkPermission('List folder contents', here)" tal:replace="here/raiseUnauthorized" />
     <metal:main-macro define-macro="main">
     <metal:contentsmacro define-macro="contents"
          tal:define="standalone python:1;

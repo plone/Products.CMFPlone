@@ -14,8 +14,6 @@
 <dl class="portlet" id="portlet-events"
     tal:define="eventsfolder python:'events' in portal.contentIds()">
   
-    <!-- span class="portletTopLeft" /-->
-
     <dt class="portletHeader">
         <a href=""
            tal:condition="eventsfolder"
@@ -31,8 +29,7 @@
             Upcoming Events
         </a>
     </dt>
-    <!-- span class="portletTopRight" /-->
-  
+
     <tal:events tal:repeat="obj results">
     <dd class="portletItem"
         tal:define="oddrow repeat/obj/odd"
@@ -72,10 +69,6 @@
         </a>
 
     </dd>
-  
-    <!-- span class="portletBottomLeft" /-->
-    <!-- span class="portletBottomRight" /-->
-  
 </dl>
 
 

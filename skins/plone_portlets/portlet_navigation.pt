@@ -21,14 +21,14 @@
                     <a class="visualIconPadding"
                        tal:attributes="href string:$portal_url;
                                        title portal/Description;
-                                       class python:test(portal == here or (portal == here.getParentNode() and here.plone_utils.isDefaultPage(here)), 'navTreeCurrentItem visualIconPadding', 'visualIconPadding');">
+                                       class python:test(portal == here or (portal == here.aq_inner.getParentNode() and here.plone_utils.isDefaultPage(here)), 'navTreeCurrentItem visualIconPadding', 'visualIconPadding');">
                     <span tal:omit-tag=""
                           i18n:translate="tabs_home">Home</span>
                     </a>
                 </div>
             </li>
             <tal:navtree define="children python:data.get('children', []);
-                                 level python:1;
+                                 level python:0;
                                  show_children python:True;
                                  isNaviTree python:True;">
                 <metal:main metal:use-macro="here/portlet_navtree_macro/macros/nav_main" />
