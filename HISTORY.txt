@@ -4,9 +4,14 @@ Changelog for Plone
 
 Plone 2.1.2 (unreleased)
 
+    - Implemented new feature: Automatically highlight keywords when arriving
+      from search engines.
+      https://trac.plone.org/plone/ticket/2599
+      [jenner] [hannosch]
+
     - Made prefs_mailhost_form compatible with regular mailhost objects from
       both Zope 2.7 and 2.8. Starting with 2.8 MailHost has user/pwd attributes
-      as has SecureMailHost but named slightly different
+      as has SecureMailHost but named slightly different.
       https://trac.plone.org/plone/ticket/5000
       [hannosch]
 
