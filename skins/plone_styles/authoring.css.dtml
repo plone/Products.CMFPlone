@@ -123,8 +123,9 @@ input.searchButton {
     width: 110px;
     padding: 1em 0;
 }
+
 .card a {
-text-decoration: none;
+    text-decoration: none;
 }
 
 .portrait {
