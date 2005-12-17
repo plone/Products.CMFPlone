@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1.2 (unreleased)
 
+    - Extended tests to ensure publishing of included folders is working.
+      https://trac.plone.org/plone/ticket/4933
+      [hannosch]
+
     - Fixed #5021 - 'History' beeing expanded was visible through the vertical
       table, containig event's summary
       https://trac.plone.org/plone/ticket/5021
