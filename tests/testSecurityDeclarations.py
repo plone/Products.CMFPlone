@@ -405,6 +405,10 @@ except DiscussionNotAllowed: pass
         self.checkUnauthorized('from Products.CMFPlone import PloneTool;'
                                'print PloneTool.AllowSendto')
 
+    # ZCatalog
+    
+    def testImport_mergeResults(self):
+        self.check('from Products.ZCatalog.Catalog import mergeResults')
 
 class TestAcquisitionMethods(RestrictedPythonTest):
 

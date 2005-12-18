@@ -91,6 +91,9 @@ def initialize(context):
     # Make AllowSendto importable TTW
     ModuleSecurityInfo('Products.CMFPlone.PloneTool').declarePublic('AllowSendto')
 
+    # Make ZCatalog's mergeResults importable TTW
+    ModuleSecurityInfo('Products.ZCatalog.Catalog').declarePublic('mergeResults')
+
     # Backward compatibility only, please import from utils directly
     from Products.CMFPlone.utils import transaction_note, base_hasattr
     this_module.transaction_note = transaction_note

@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1.2 (unreleased)
 
+    - Making mergeResults() available TTW to allow python scripts to merge
+      search results. Fixes http://trac.plone.org/plone/ticket/3905.
+
     - All-new look for the photo album / thumbnail view.
       [limi]
 
