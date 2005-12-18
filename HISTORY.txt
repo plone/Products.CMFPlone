@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1.2 (unreleased)
 
+    - All-new look for the photo album / thumbnail view.
+      [limi]
+
     - Extended tests to ensure publishing of included folders is working.
       https://trac.plone.org/plone/ticket/4933
       [hannosch]
