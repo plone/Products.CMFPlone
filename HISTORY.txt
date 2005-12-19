@@ -4,8 +4,13 @@ Changelog for Plone
 
 Plone 2.1.2 (unreleased)
 
+    - Making Discussion Item not have a workflow, so that you won't get strange
+      permission inconsistencies. Fixes https://trac.plone.org/plone/ticket/4876
+      [optilude]
+
     - Making mergeResults() available TTW to allow python scripts to merge
       search results. Fixes http://trac.plone.org/plone/ticket/3905.
+      [optilude]
 
     - All-new look for the photo album / thumbnail view.
       [limi]
