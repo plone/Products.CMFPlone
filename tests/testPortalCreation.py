@@ -591,6 +591,8 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
                                         if p['name'] == 'View Groups'][0]
         self.failUnless(member_has_permission['selected'])
 
+    def testDiscussionItemHasNoWorkflow(self):
+        self.assertEqual(self.workflow.getChainForPortalType('Discussion Item'), ())
 
 class TestPortalBugs(PloneTestCase.PloneTestCase):
 
