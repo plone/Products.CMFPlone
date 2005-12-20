@@ -594,6 +594,23 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
     def testDiscussionItemHasNoWorkflow(self):
         self.assertEqual(self.workflow.getChainForPortalType('Discussion Item'), ())
 
+    def testFolderHasFolderListingView(self):
+        # Folder type should allow 'folder_listing'
+        self.failUnless('folder_listing' in self.types.Folder.view_methods)
+
+    def testFolderHasSummaryView(self):
+        # Folder type should allow 'folder_summary_view'
+        self.failUnless('folder_summary_view' in self.types.Folder.view_methods)
+
+    def testFolderHasTabularView(self):
+        # Folder type should allow 'folder_tabular_view'
+        self.failUnless('folder_tabular_view' in self.types.Folder.view_methods)
+
+    def testFolderHasAlbumView(self):
+        # Folder type should allow 'atct_album_view'
+        self.failUnless('atct_album_view' in self.types.Folder.view_methods)
+
+
 class TestPortalBugs(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
