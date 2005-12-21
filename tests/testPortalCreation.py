@@ -14,6 +14,7 @@ from Products.CMFPlone.tests import dummy
 from Products.PageTemplates.ZopePageTemplate import ZopePageTemplate
 from Acquisition import aq_base
 from DateTime import DateTime
+from tempfile import mkstemp
 
 
 class TestPortalCreation(PloneTestCase.PloneTestCase):
@@ -616,6 +617,7 @@ class TestPortalBugs(PloneTestCase.PloneTestCase):
     def afterSetUp(self):
         self.membership = self.portal.portal_membership
         self.members = self.membership.getMembersFolder()
+        self.catalog = self.portal.portal_catalog
         # Fake the Members folder contents
         self.members._setObject('index_html', ZopePageTemplate('index_html'))
 
@@ -652,6 +654,26 @@ class TestPortalBugs(PloneTestCase.PloneTestCase):
         self.foo = self.folder.foo
         self.app._delObject(PloneTestCase.portal_name)
         self.failUnless(self.foo.before_delete_called())
+
+    def testExportImportLosesTextIndexes(self):
+        # Importing a portal .zexp loses text indexes? (#4803)
+        self.loginPortalOwner()
+        tempname = mkstemp('.zexp')[1]
+        try:
+            # Export the portal
+            self.portal._p_jar.exportFile(self.portal._p_oid, tempname)
+            # Nuke it
+            self.app._delObject(PloneTestCase.portal_name)
+            # Import the portal
+            self.app._importObjectFromFile(tempname, set_owner=0)
+            # Now check the indexes are still present
+            for index in ('Description', 'Title', 'SearchableText'):
+                try:
+                    self.catalog.Indexes[index]
+                except KeyError:
+                    self.fail('Index %s missing after export/import!' % index)
+        finally:
+            os.remove(tempname)
 
 
 class TestManagementPageCharset(PloneTestCase.PloneTestCase):
