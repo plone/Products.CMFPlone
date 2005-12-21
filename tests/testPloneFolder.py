@@ -189,7 +189,7 @@ class TestFolderListing(PloneTestCase.PloneTestCase):
 
     def test_folder_contents(self):
         self.folder.sub1.invokeFactory('Document', id='sub1doc1')
-        
+
         contents = self.folder.sub1.getFolderContents()
         self.assertEqual(len(contents), 1)
         self.assertEqual(contents[0].getId, 'sub1doc1')
@@ -197,11 +197,9 @@ class TestFolderListing(PloneTestCase.PloneTestCase):
         self.failUnless(self.folder.sub1.folder_contents())
 
         self.folder.sub1.manage_permission('List folder contents', ['Manager'], acquire=0)
-        self.logout()
 
         self.assertRaises(Unauthorized, self.folder.sub1.folder_contents)
-        
-        
+
 
 class TestManageDelObjects(PloneTestCase.PloneTestCase):
     # manage_delObjects should check 'Delete objects'
