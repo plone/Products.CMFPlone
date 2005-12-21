@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1.2 (unreleased)
 
+    - Fixed author.pt to respect search type blacklisting.
+      https://trac.plone.org/plone/ticket/5034
+      [hannosch]
+
     - Making Discussion Item not have a workflow, so that you won't get strange
       permission inconsistencies. Fixes https://trac.plone.org/plone/ticket/4876
       [optilude]
