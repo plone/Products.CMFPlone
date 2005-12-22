@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1.2 (unreleased)
 
+    - Quote id in "Move item up" and "Move item down" links.
+      http://trac.plone.org/plone/ticket/5014
+      [nouri]
+
     - Removed leading whitespace in portlet_navtree_macro css class definitions.
       https://trac.plone.org/plone/ticket/5038
       [hannosch]
