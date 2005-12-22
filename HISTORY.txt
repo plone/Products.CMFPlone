@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1.2 (unreleased)
 
+    - Removed leading whitespace in portlet_navtree_macro css class definitions.
+      https://trac.plone.org/plone/ticket/5038
+      [hannosch]
+
     - Fixed author.pt to respect search type blacklisting.
       https://trac.plone.org/plone/ticket/5034
       [hannosch]
