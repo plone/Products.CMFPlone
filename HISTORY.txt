@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.1.2 (unreleased)
 
+    - Fixed #5020 - added wrapping SPAN's in portlets' portletHeaders to allow
+      css designers to use rounded corners techniques.
+      https://trac.plone.org/plone/ticket/5020
+      [spliter]
+
     - Quote id in "Move item up" and "Move item down" links.
       http://trac.plone.org/plone/ticket/5014
       [nouri]
