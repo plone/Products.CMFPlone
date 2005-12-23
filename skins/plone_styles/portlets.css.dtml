@@ -18,7 +18,7 @@
 
 /* The new portlet CSS - these will be switched to non-qualified classes
    (ie. .portlet, not dl.portlet) once the old portlet layout is removed in
-   Plone 2.2. ~limi */
+   Plone 2.5. ~limi */
 
 /* Main portlet elements */
 
