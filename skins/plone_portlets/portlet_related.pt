@@ -15,8 +15,7 @@
 <dl class="portlet"
     id="portlet-related">
 
-    <dt class="portletHeader"
-        i18n:translate="box_related"><span>Related</span></dt>
+    <dt class="portletHeader"><span i18n:translate="box_related">Related</span></dt>
 
     <dd class="portletItem odd" tal:condition="relatedLocal">
         <h5 i18n:translate="box_local_resources">Local resources</h5>
