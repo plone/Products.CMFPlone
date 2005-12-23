@@ -96,8 +96,10 @@ body { /* These work in IE only, changes the look of the scrollbar + textareas *
 * html h6,
 * html dd,
 * html .documentDescription,
-* html .visualClear
-  {
+* html .visualClear,
+* html .portalMessage,
+* html .system-message,
+* html #error-handling {
     height: 0.1%;
 }
 

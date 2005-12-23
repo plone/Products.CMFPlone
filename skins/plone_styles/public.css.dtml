@@ -512,7 +512,6 @@
     background-image: url(&dtml-portal_url;/info_icon.gif);
     background-repeat: no-repeat;
     background-position: 5px 50%;
-    position: relative;
 }
 
 .portalMessage a {
