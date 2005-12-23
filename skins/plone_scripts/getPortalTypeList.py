@@ -18,7 +18,6 @@ type_info = pt_tool.listTypeInfo()
 
 excluded_ids = {
     'TempFolder': None,
-    'Plone Site': None,
     'CMF Document': None,
     'CMF Event': None,
     'CMF Favorite': None,

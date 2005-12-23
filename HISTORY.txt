@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1.2 (unreleased)
 
+    - Fixed #5041 - plone-ste icon is generated again. Thanks, optilude ;)
+      https://trac.plone.org/plone/ticket/5041
+      [spliter]
+
     - Fixed #4961 - long Titles have been overlapping documentActions in IE.
       https://trac.plone.org/plone/ticket/4961
       [spliter]
