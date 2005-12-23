@@ -4,6 +4,13 @@ Changelog for Plone
 
 Plone 2.1.2 (unreleased)
 
+    - Portlet CSS simplification - portletItemSingle and portletItemLast are
+      no longer needed. They are still supported via the deprecated.css file,
+      but we urge people to adopt the new style (which is much simpler and
+      more flexible) - as the inclusion of the two above classes in the 2.1
+      release was not intentional.
+      [spliter, limi]
+
     - Fixed #5041 - plone-ste icon is generated again. Thanks, optilude ;)
       https://trac.plone.org/plone/ticket/5041
       [spliter]
