@@ -55,10 +55,6 @@ position: relative;
     top: 1.4em;
 }
 
-.documentActions {
-    margin-bottom: -2em;
-}
-
 /* Calendar fixes */
 .ploneCalendar .todaynoevent,
 .ploneCalendar .todayevent {
@@ -103,6 +99,10 @@ body { /* These work in IE only, changes the look of the scrollbar + textareas *
 * html .visualClear
   {
     height: 0.1%;
+}
+
+* html h1.documentFirstHeading {
+    height: auto;
 }
 
 /* There appears to be a bug in some IE 6 versions that causes dashed borders

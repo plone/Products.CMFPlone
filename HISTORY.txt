@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1.2 (unreleased)
 
+    - Fixed #4961 - long Titles have been overlapping documentActions in IE.
+      https://trac.plone.org/plone/ticket/4961
+      [spliter]
+
     - Fixed #5020 - added wrapping SPAN's in portlets' portletHeaders to allow
       css designers to use rounded corners techniques.
       https://trac.plone.org/plone/ticket/5020
