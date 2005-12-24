@@ -19,16 +19,23 @@
 <p i18n:translate="description_you_are_registered">You have been registered.</p>
 
 <p tal:condition="ve" i18n:translate="description_you_will_get_password">
-You will receive an e-mail shortly containing your password.  When you
-receive your password, you can <a href="#" tal:attributes="href
-string:$portal_url/login_form?login_name=${request/username}">log in here</a>.
+    You will receive an e-mail shortly containing your password. When you
+    receive your password, you can
+    <span i18n:name="log_in_here" tal:omit-tag="">
+        <a href="#"
+           tal:attributes="href string:$portal_url/login_form?login_name=${request/username}"
+           i18n:translate="label_log_in_here">
+            log in here
+        </a>
+    </span>.
 </p>
 
 <tal:block condition="python:not(ve)">
     <p i18n:translate="description_you_can_log_on_now">Click the button to log in immediately.</p>
 
-    <div id="enable_cookies_message" class="portalMessage" style="display:none">
-       Cookies are not enabled. You must <a href="enabling_cookies">enable cookies</a> before you can log in.
+    <div id="enable_cookies_message" i18n:translate="enable_cookies_message" class="portalMessage" style="display:none">
+      Cookies are not enabled. You must <span i18n:name="enable_cookies" tal:omit-tag="">
+      <a href="enabling_cookies" i18n:translate="label_enable_cookies">enable cookies</a></span> before you can log in.
     </div>
 
     <form action=""

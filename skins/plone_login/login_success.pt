@@ -35,7 +35,7 @@
 
         <p i18n:translate="description_newbie_pointers">
           You might want to head over to
-          <span i18n:name="your_folder">
+          <span i18n:name="your_folder" tal:omit-tag="">
              <a href=""
                 i18n:translate="description_newbie_pointers_yourfolder_link"
                 tal:define="mystuff python:[a['url'] for a in actions['user'] if a['id']=='mystuff']"
@@ -43,7 +43,7 @@
              >your folder</a>
           </span>
           and add some content, or
-          <span i18n:name="set_up_your_preferences">
+          <span i18n:name="set_up_your_preferences" tal:omit-tag="">
              <a href=""
                 i18n:translate="description_newbie_pointers_preferences_link"
                 tal:define="prefs python:[a['url'] for a in actions['user'] if a['id']=='preferences']"
@@ -57,26 +57,40 @@
       </div>
 
       <p tal:condition="came_from">
-        <a href="" tal:attributes="href came_from" i18n:translate="login_came_from">
+        <a href=""
+           tal:attributes="href came_from"
+           i18n:translate="label_login_continue">
           &raquo; Continue</a>
       </p>
 
       <p tal:condition="python:not came_from">
-        <a href="" tal:attributes="href came_from" i18n:translate="login_came_from">
-          &raquo; Continue to the <span tal:content="portal/title" /> home page</a>
+        <a href=""
+           tal:attributes="href came_from"
+           i18n:translate="label_login_continue_to_home_page">
+          &raquo; Continue to the
+          <span tal:content="portal/title" i18n:name="portal_title">
+              portal title
+          </span>
+          home page
+          </a>
       </p>
 
       <div tal:condition="not:js_enabled">
-         <p>
+         <p i18n:translate="description_javascript_advantage">
             You can take fuller advantage of the features of this site
             if you enable javascript in your browser. 
          </p>
 
-         <p>
+         <p i18n:translate="description_enable_cookies_for_login">
             Note: If you do not remain logged in after leaving this
-            page, it is because you need to <a
-            href="enabling_cookies">enable cookies</a> in your
-            browser.
+            page, it is because you need to
+            <span i18n:name="enable_cookies" tal:omit-tag="">
+                <a href="enabling_cookies"
+                   i18n:translate="label_enable_cookies">
+                    enable cookies
+                </a>
+            </span>
+            in your browser.
          </p>
       </div>
 

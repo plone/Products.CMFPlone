@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1.2 (unreleased)
 
+    - Fixed various minor i18n problems.
+      [hannosch]
+
     - Fixed #4976 - Added a must_change_password property to the
       member data (set to 0 for existing members)
       [plonista]
@@ -32,7 +35,7 @@ Plone 2.1.2 (unreleased)
       release was not intentional.
       [spliter, limi]
 
-    - Fixed #5041 - plone-ste icon is generated again. Thanks, optilude ;)
+    - Fixed #5041 - plone-site icon is generated again. Thanks, optilude ;)
       https://trac.plone.org/plone/ticket/5041
       [spliter]
 
