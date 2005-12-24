@@ -9,7 +9,7 @@
 ##title=Rename Objects
 ##
 
-from Products.CMFPlone import transaction_note
+from Products.CMFPlone.utils import transaction_note
 from ZODB.POSException import ConflictError
 
 portal = context.portal_url.getPortalObject()

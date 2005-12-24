@@ -9,7 +9,7 @@
 ##title=Cut a object to the clipboard
 ##
 
-from Products.CMFPlone import transaction_note
+from Products.CMFPlone.utils import transaction_note
 from Products.CMFCore.utils import getToolByName
 from OFS.CopySupport import CopyError
 from AccessControl import Unauthorized

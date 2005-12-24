@@ -10,7 +10,7 @@
 ##
 REQUEST=context.REQUEST
 
-from Products.CMFPlone import transaction_note
+from Products.CMFPlone.utils import transaction_note
 from Products.CMFPlone.PloneTool import AllowSendto
 from Products.CMFCore.utils import getToolByName
 from ZODB.POSException import ConflictError

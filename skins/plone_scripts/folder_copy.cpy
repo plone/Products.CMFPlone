@@ -23,7 +23,7 @@ if REQUEST.has_key('paths'):
         message = context.translate("One or more selected items is no longer available.")
         return state.set(status = 'failure', portal_status_message = message)
 
-    from Products.CMFPlone import transaction_note
+    from Products.CMFPlone.utils import transaction_note
     transaction_note('Copied %s from %s' % (str(ids), context.absolute_url()))
 
     return state.set(portal_status_message='%s Item(s) copied.'%len(ids))

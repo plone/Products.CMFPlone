@@ -20,7 +20,7 @@ new_context.plone_utils.contentEdit(new_context,
                                     title=title,
                                     description=description)
 
-from Products.CMFPlone import transaction_note
+from Products.CMFPlone.utils import transaction_note
 transaction_note('Edited link %s at %s' % (new_context.title_or_id(), new_context.absolute_url()))
 
 return state.set(context=new_context, portal_status_message='Link changes saved.')

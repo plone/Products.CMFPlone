@@ -10,7 +10,7 @@
 ##
 from ZODB.POSException import ConflictError
 from DateTime import DateTime
-from Products.CMFPlone import transaction_note
+from Products.CMFPlone.utils import transaction_note
 from AccessControl import Unauthorized
 from Products.CMFCore.utils import getToolByName
 

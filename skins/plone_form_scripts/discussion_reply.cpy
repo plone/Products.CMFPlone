@@ -57,7 +57,7 @@ redirect_target = context.plone_utils.getDiscussionThread(tb)[0]
 view = redirect_target.getTypeInfo().getActionById('view')
 anchor = reply.getId()
 
-from Products.CMFPlone import transaction_note
+from Products.CMFPlone.utils import transaction_note
 transaction_note('Added comment to %s at %s' % (parent.title_or_id(), reply.absolute_url()))
 
 target = '%s/%s?portal_status_message=Comment+added#%s' % (redirect_target.absolute_url(), view, anchor)

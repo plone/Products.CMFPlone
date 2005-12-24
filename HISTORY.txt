@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1.2 (unreleased)
 
+    - Update all skin form scripts to fetch transaction_note from the correct
+      location (Products.CMFPlone.utils)
+      [wichert]
+
     - Portlet CSS simplification - portletItemSingle and portletItemLast are
       no longer needed. They are still supported via the deprecated.css file,
       but we urge people to adopt the new style (which is much simpler and

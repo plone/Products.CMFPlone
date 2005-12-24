@@ -20,7 +20,7 @@ context.REQUEST.RESPONSE.setCookie('usePortraits',use_portraits,path="/")
 
 qst='?portal_status_message=%s%s.' %(msg1,msg2)
 
-from Products.CMFPlone import transaction_note
+from Products.CMFPlone.utils import transaction_note
 transaction_note('Modified acquisition settings for folder %s at %s' % (context.title_or_id(), context.absolute_url()))
 
 context.REQUEST.RESPONSE.redirect( context.absolute_url() + '/folder_localrole_form' + qst )

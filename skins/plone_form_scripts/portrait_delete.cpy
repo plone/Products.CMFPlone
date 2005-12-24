@@ -8,7 +8,7 @@
 ##parameters=
 ##title=Personalization Handler.
 
-from Products.CMFPlone import transaction_note
+from Products.CMFPlone.utils import transaction_note
 
 member=context.portal_membership.getAuthenticatedMember()
 
