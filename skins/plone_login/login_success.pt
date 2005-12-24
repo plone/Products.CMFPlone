@@ -19,48 +19,65 @@
 <div metal:fill-slot="main">
   <div tal:condition="not:isAnon">
     <div tal:define="came_from request/came_from|nothing;
-                     DateTime python:modules['DateTime'].DateTime;
-                     Batch python:modules['Products.CMFPlone'].Batch;
-                     login_time python:member.getProperty('login_time', DateTime());
-                     begin_time python:here.ZopeTime('2000/01/01');
-                     validate_email portal_object/validate_email;">
+                     initial_login request/initial_login|nothing;
+		     js_enabled python:request.get('js_enabled','1')!='0';">
 
       <h1 i18n:translate="heading_you_are_now_logged_in">You are now logged in</h1>
 
+
+      <div tal:condition="initial_login">
+        <p i18n:translate="description_logged_in_explain">
+           Notice that the top right bar has changed. It now
+           contains several personalized items. Use these items
+           to control your settings and your personal area.
+           They will remain as long as you are logged in.
+        </p>
+
+        <p i18n:translate="description_newbie_pointers">
+          You might want to head over to
+          <span i18n:name="your_folder">
+             <a href=""
+                i18n:translate="description_newbie_pointers_yourfolder_link"
+                tal:define="mystuff python:[a['url'] for a in actions['user'] if a['id']=='mystuff']"
+                tal:condition="mystuff" tal:attributes="href python:mystuff.pop()"
+             >your folder</a>
+          </span>
+          and add some content, or
+          <span i18n:name="set_up_your_preferences">
+             <a href=""
+                i18n:translate="description_newbie_pointers_preferences_link"
+                tal:define="prefs python:[a['url'] for a in actions['user'] if a['id']=='preferences']"
+                tal:condition="prefs" tal:attributes="href python:prefs.pop()"
+             >set up your Preferences</a></span>.
+        </p>
+      </div>
+
+      <div tal:condition="not:initial_login">
+        <br />
+      </div>
+
       <p tal:condition="came_from">
         <a href="" tal:attributes="href came_from" i18n:translate="login_came_from">
-          Click here to continue to the page from which you came.</a>
+          &raquo; Continue</a>
       </p>
 
-      <p i18n:translate="description_logged_in_explain">
-         Notice that the top right bar has changed. It now
-         contains several personalized items. Use these items
-         to control your settings and your personal area.
-         They will remain as long as you are logged in.
+      <p tal:condition="python:not came_from">
+        <a href="" tal:attributes="href came_from" i18n:translate="login_came_from">
+          &raquo; Continue to the <span tal:content="portal/title" /> home page</a>
       </p>
 
-      <p i18n:translate="description_newbie_pointers">
-        You might want to head over to
-        <span i18n:name="your_folder">
-           <a href=""
-              i18n:translate="description_newbie_pointers_yourfolder_link"
-              tal:define="mystuff python:[a['url'] for a in actions['user'] if a['id']=='mystuff']"
-              tal:condition="mystuff" tal:attributes="href python:mystuff.pop()"
-           >your folder</a>
-        </span>
-        and add some content, or
-        <span i18n:name="set_up_your_preferences">
-           <a href=""
-              i18n:translate="description_newbie_pointers_preferences_link"
-              tal:define="prefs python:[a['url'] for a in actions['user'] if a['id']=='preferences']"
-              tal:condition="prefs" tal:attributes="href python:prefs.pop()"
-           >set up your Preferences</a></span>.
-      </p>
+      <div tal:condition="not:js_enabled">
+         <p>
+            You can take fuller advantage of the features of this site
+            if you enable javascript in your browser. 
+         </p>
 
-      <div tal:condition="python:request.get('js_enabled','1')=='0'">
-         <br />
-         <p>Note: If you do not remain logged in after leaving this page, it is because
-         you need to <a href="enabling_cookies">enable cookies</a> in your browser.</p>
+         <p>
+            Note: If you do not remain logged in after leaving this
+            page, it is because you need to <a
+            href="enabling_cookies">enable cookies</a> in your
+            browser.
+         </p>
       </div>
 
     </div>

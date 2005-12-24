@@ -4,6 +4,23 @@ Changelog for Plone
 
 Plone 2.1.2 (unreleased)
 
+    - Fixed #4976 - Added a must_change_password property to the
+      member data (set to 0 for existing members)
+      [plonista]
+
+    - Fixed #4545, 4975, 4942, added workaround that should prevent
+      problems in #4482 and #4688.
+      [plonista]
+
+    - Login UI cleanup.  Now redirect directly to came_from page after
+      login if we can verify that the user has cookies enabled via
+      javascript.  Added login_name to query string in a few places to
+      save some typing.  Only show the newbie text the first time
+      somebody logs in.  Add a login shortcut link to the new user
+      email.  Tell people to enable javascript if they don't have it
+      enabled.
+      [plonista]
+
     - Update all skin form scripts to fetch transaction_note from the correct
       location (Products.CMFPlone.utils)
       [wichert]

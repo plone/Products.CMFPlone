@@ -23,6 +23,10 @@ password=REQUEST.get('password') or portal_registration.generatePassword()
 # we need this because when the password is encrypted, we can't retrieve it from database
 REQUEST.form['password'] = password
 
+if site_properties.validate_email:
+    # force the member to change his/her password upon initial login
+    REQUEST.form['must_change_password'] = 1
+
 # This is a temporary work-around for an issue with CMF not properly
 # reserving some existing ids (FSDV skin elements, for example). Until 
 # this is fixed in the CMF we can at least fail nicely. See
@@ -50,7 +54,7 @@ if site_properties.validate_email or REQUEST.get('mail_me', 0):
         state.set(came_from='logged_in')
         context.acl_users.userFolderDelUsers([username,])
         return state.set(status='failure', portal_status_message='Please enter a valid email address.')
-        
+
 state.set(portal_status_message=REQUEST.get('portal_status_message', 'Registered.'))
 state.set(came_from=REQUEST.get('came_from','logged_in'))
 

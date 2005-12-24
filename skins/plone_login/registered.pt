@@ -19,8 +19,9 @@
 <p i18n:translate="description_you_are_registered">You have been registered.</p>
 
 <p tal:condition="ve" i18n:translate="description_you_will_get_password">
-You will receive an e-mail shortly containing your password
-    and instructions on how to activate your user.
+You will receive an e-mail shortly containing your password.  When you
+receive your password, you can <a href="#" tal:attributes="href
+string:$portal_url/login_form?login_name=${request/username}">log in here</a>.
 </p>
 
 <tal:block condition="python:not(ve)">
