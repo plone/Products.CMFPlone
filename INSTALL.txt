@@ -65,7 +65,7 @@ Installing Plone manually, step by step instructions.
   - ATReferenceBrowserWidget 1.1 or newer
      Included in the Plone tarball
      
-  - ResourceRegistries 1.0.5 or newer
+  - ResourceRegistries 1.1 or newer
      Included in the Plone tarball
      
   - ExtendedPathIndex 2.2 or newer
