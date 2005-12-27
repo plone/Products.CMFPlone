@@ -153,12 +153,6 @@ li.navTreeCurrentItem a:hover {
     height: auto;
 }
 
-.portletFeedButton {
-    display: block; 
-    float: right; 
-    margin-top: 1px;
-}
-
 /* Another workaround for broken Internet Explorer */
 
 * html li.navTreeCurrentItem a,

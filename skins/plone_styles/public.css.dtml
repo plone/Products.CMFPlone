@@ -734,6 +734,12 @@ textarea.proportional {
     cursor: pointer;
 }
 
+.feedButton {
+    display: block; 
+    float: right; 
+    margin-top: 1px;
+}
+
 .poweredBy {
     display: block;
     clear: both;
