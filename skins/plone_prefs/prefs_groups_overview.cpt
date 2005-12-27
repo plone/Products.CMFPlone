@@ -130,7 +130,7 @@
                     <td>
                         <input type="hidden" name="" tal:attributes="name string:group_${this_group/getGroupName}:list" value=""/>
                         <a href="#"
-                           tal:attributes="href string:${here_url}/prefs_group_members?groupname=${this_group/getGroupName};
+                           tal:attributes="href python:here_url+'/prefs_group_members?'+ztu.make_query(groupname=this_group.getGroupName());
                                            title python:this_group.getProperty('description','')">
 
                             <tal:block replace="structure portal/group.gif"/>&nbsp;
