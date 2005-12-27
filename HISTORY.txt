@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1.2 (unreleased)
 
+    - Added some classes for the RTL versions of the summary view. Thanks,
+      mohsen.
+      [limi]
+
     - Fixed various minor i18n problems.
       [hannosch]
 
