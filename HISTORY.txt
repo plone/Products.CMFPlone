@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1.2 (unreleased)
 
+    - Escape the group name URLs generated in the group preferences screen.
+      [wichert]
+
     - Added some classes for the RTL versions of the summary view. Thanks,
       mohsen.
       [limi]
