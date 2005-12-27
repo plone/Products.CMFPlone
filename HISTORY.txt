@@ -11,8 +11,8 @@ Plone 2.1.2 (unreleased)
       member data (set to 0 for existing members)
       [plonista]
 
-    - Fixed #4545, 4975, 4942, added workaround that should prevent
-      problems in #4482 and #4688.
+    - Fixed various log-in problems, issues #4545, 4975, 4942, added workaround
+      that should prevent problems in #4482 and #4688.
       [plonista]
 
     - Login UI cleanup.  Now redirect directly to came_from page after
