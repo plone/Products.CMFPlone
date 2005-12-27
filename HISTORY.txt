@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1.2 (unreleased)
 
+    - Added portletFeedButton class for portlets with rss feeds. This will be
+      used for e.g. the news portlet once limi bothers to put them back in.
+      [optilude]
+
     - Escape the group name URLs generated in the group preferences screen.
       https://trac.plone.org/plone/ticket/5015
       [wichert]
