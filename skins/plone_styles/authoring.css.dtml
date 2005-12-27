@@ -124,6 +124,10 @@ input.searchButton {
     padding: 1em 0;
 }
 
+.card a {
+    text-decoration: none;
+}
+
 .portrait {
     background-color: &dtml-globalBackgroundColor;;
     border-color: &dtml-globalBorderColor;;
@@ -188,6 +192,9 @@ input.searchButton {
 
 /* Vertical addition class */
 
+.vertical {
+    background-color: &dtml-backgroundColor;;	
+}
 .vertical th {
     padding: 0.5em;
 }

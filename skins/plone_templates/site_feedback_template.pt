@@ -6,7 +6,7 @@
 ><div i18n:translate="site_feedback_mailtemplate_body" tal:omit-tag="">
 You are receiving this mail because <span i18n:name="fullname" tal:omit-tag="" tal:content="options/sender_fullname|nothing" />
 <span i18n:name="from_address" tal:omit-tag="" tal:content="options/sender_from_address"/>
-is sending feedback about the plone portal administrated by you at <span i18n:name="url" tal:replace="options/url" />.
+is sending feedback about the site administrated by you at <span i18n:name="url" tal:replace="options/url" />.
 The message sent was:
 
 <span i18n:name="message" tal:omit-tag="" tal:content="options/message | nothing" />

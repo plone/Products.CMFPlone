@@ -10,7 +10,7 @@
 ##
 
 from ZODB.POSException import ConflictError
-from Products.CMFPlone import transaction_note
+from Products.CMFPlone.utils import transaction_note
 plone_utils=context.plone_utils
 REQUEST=context.REQUEST
 workflow = context.portal_workflow

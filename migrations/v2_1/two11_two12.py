@@ -13,6 +13,12 @@ def two11_two12(portal):
 
     # add se-highlight.js (plone_3rdParty) to ResourceRegistries
     addSEHighLightJS(portal, out)
+    
+    # Don't let Discussion item have a workflow
+    removeDiscussionItemWorkflow(portal, out)
+
+    # Add new member data item
+    addMemberData(portal, out)
 
     return out
 
@@ -86,3 +92,20 @@ def addSEHighLightJS(portal, out):
                 # put it at the bottom of the stack
                 jsreg.moveResourceToBottom(script)
             out.append("Added " + script + " to portal_javascipt")
+
+def removeDiscussionItemWorkflow(portal, out):
+    """Discussion Item should not have a workflow associated with it, since
+    it may then have permissions out-of-sync with the parent.
+    """
+    wftool = getToolByName(portal, 'portal_workflow', None)
+    if wftool is not None:
+        wftool.setChainForPortalTypes(('Discussion Item',), ())
+        out.append("Removing workflow from Discussion Item")
+
+
+def addMemberData(portal, out):
+    """Add the must_change_password property to member data"""
+    mt = getToolByName(portal, 'portal_memberdata')
+    mt._setProperty('must_change_password', 0, 'boolean')
+    out.append('Added must_change_password property to member data')
+    

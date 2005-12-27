@@ -9,7 +9,7 @@
 ##title=Paste objects into the parent/this folder
 ##
 
-from Products.CMFPlone import transaction_note
+from Products.CMFPlone.utils import transaction_note
 from AccessControl import Unauthorized
 from ZODB.POSException import ConflictError
 

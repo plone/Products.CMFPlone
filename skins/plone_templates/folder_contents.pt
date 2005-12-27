@@ -249,18 +249,20 @@
                               tal:attributes="class item_wf_state_class" />
                         <span tal:condition="not: item_state_title">&nbsp;</span>
                     </td>
-                    <td tal:condition="python:isOrderable and canModifyFolderContent and not preSorted">
+                    <td tal:define="pps python:modules['Products.PythonScripts.standard'];
+                                    quoted_item_id python:pps.url_quote(item_id)"
+                        tal:condition="python:isOrderable and canModifyFolderContent and not preSorted">
                       <a href=""
                          title="Move item up"
                          i18n:attributes="title title_move_item_up;"
-                         tal:attributes="href string:$here_url/folder_position?position=up&amp;id=$item_id&amp;template_id=${template_id}">
+                         tal:attributes="href string:$here_url/folder_position?position=up&amp;id=$quoted_item_id&amp;template_id=${template_id}">
                          <img tal:replace="structure arrowUp" />
                       </a>
                       &nbsp;
                       <a href=""
                          title="Move item down"
                          i18n:attributes="title title_move_item_down;"
-                         tal:attributes="href string:$here_url/folder_position?position=down&amp;id=$item_id&amp;template_id=${template_id}">
+                         tal:attributes="href string:$here_url/folder_position?position=down&amp;id=$quoted_item_id&amp;template_id=${template_id}">
                          <img tal:replace="structure arrowDown" />
                       </a>
                     </td>

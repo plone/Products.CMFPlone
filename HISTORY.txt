@@ -11,6 +11,88 @@ Plone 2.2 (unreleased)
 
 Plone 2.1.2 (unreleased)
 
+    - Fixed various minor i18n problems.
+      [hannosch]
+
+    - Fixed #4976 - Added a must_change_password property to the
+      member data (set to 0 for existing members)
+      [plonista]
+
+    - Fixed #4545, 4975, 4942, added workaround that should prevent
+      problems in #4482 and #4688.
+      [plonista]
+
+    - Login UI cleanup.  Now redirect directly to came_from page after
+      login if we can verify that the user has cookies enabled via
+      javascript.  Added login_name to query string in a few places to
+      save some typing.  Only show the newbie text the first time
+      somebody logs in.  Add a login shortcut link to the new user
+      email.  Tell people to enable javascript if they don't have it
+      enabled.
+      [plonista]
+
+    - Update all skin form scripts to fetch transaction_note from the correct
+      location (Products.CMFPlone.utils)
+      [wichert]
+
+    - Portlet CSS simplification - portletItemSingle and portletItemLast are
+      no longer needed. They are still supported via the deprecated.css file,
+      but we urge people to adopt the new style (which is much simpler and
+      more flexible) - as the inclusion of the two above classes in the 2.1
+      release was not intentional.
+      [spliter, limi]
+
+    - Fixed #5041 - plone-site icon is generated again. Thanks, optilude ;)
+      https://trac.plone.org/plone/ticket/5041
+      [spliter]
+
+    - Fixed #4961 - long Titles have been overlapping documentActions in IE.
+      https://trac.plone.org/plone/ticket/4961
+      [spliter]
+
+    - Fixed #5020 - added wrapping SPAN's in portlets' portletHeaders to allow
+      css designers to use rounded corners techniques.
+      https://trac.plone.org/plone/ticket/5020
+      [spliter]
+
+    - Quote id in "Move item up" and "Move item down" links.
+      http://trac.plone.org/plone/ticket/5014
+      [nouri]
+
+    - Removed leading whitespace in portlet_navtree_macro css class definitions.
+      https://trac.plone.org/plone/ticket/5038
+      [hannosch]
+
+    - Fixed author.pt to respect search type blacklisting.
+      https://trac.plone.org/plone/ticket/5034
+      [hannosch]
+
+    - Making Discussion Item not have a workflow, so that you won't get strange
+      permission inconsistencies. Fixes https://trac.plone.org/plone/ticket/4876
+      [optilude]
+
+    - Making mergeResults() available TTW to allow python scripts to merge
+      search results. Fixes http://trac.plone.org/plone/ticket/3905.
+      [optilude]
+
+    - All-new look for the photo album / thumbnail view.
+      [limi]
+
+    - Extended tests to ensure publishing of included folders is working.
+      https://trac.plone.org/plone/ticket/4933
+      [hannosch]
+
+    - Fixed #5021 - 'History' beeing expanded was visible through the vertical
+      table, containig event's summary
+      https://trac.plone.org/plone/ticket/5021
+      [spliter]
+
+    - Fixed #4430 - now portlets have much more simple and straightforward
+      structure and styles. From now we use only three classes for them -
+      portletHeader, portletItem and portletFooter. Thanks to mroch for idea.
+      https://trac.plone.org/plone/ticket/4430
+      [spliter]
+
     - Backported some general code cleanup from the trunk.
       [hannosch]
 

@@ -12,7 +12,7 @@
         <a href="#" tal:attributes="href string:$portal_url/sitemap" i18n:translate="box_navigation">Navigation</a>
     </dt>
     
-    <dd class="portletItemSingle">
+    <dd class="portletItem">
         <ul class="portletNavigationTree navTreeLevel0">
 
             <li class="navTreeItem"

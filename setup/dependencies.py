@@ -12,7 +12,7 @@ PREFERRED_PYTHON_VER = "2.3.5 or newer"
 MINIMUM_ZOPE_VER = (2, 7, 5)
 PREFERRED_ZOPE_VER = "2.7.8 or newer"
 
-MINIMUM_CMF_VER = (1, 5, 2)
+MINIMUM_CMF_VER = (1, 5, 5)
 
 messages = []
 

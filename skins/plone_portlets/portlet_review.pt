@@ -9,8 +9,7 @@
 
 <dl class="portlet" id="portlet-workflow-review">
 
-    <dt class="portletHeader"
-        i18n:translate="box_review_list">Review List</dt>
+    <dt class="portletHeader"><span i18n:translate="box_review_list">Review List</span></dt>
 
     <tal:items repeat="o results">
     <dd class="portletItem"

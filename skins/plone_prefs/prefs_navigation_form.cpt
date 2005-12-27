@@ -71,7 +71,7 @@
                      The content types that should be shown in the navigation tree and the site map.
                 </div>
 
-                <div style="float:left; margin-right: 2em;" tal:repeat="sublist typeLists">
+                <div style="float:left; margin-right: 2em; width: 29%" tal:repeat="sublist typeLists">
                    <ul class="configlets">
                      <li tal:repeat="ptypeInfo sublist">
                        <input class="noborder"

@@ -14,7 +14,7 @@ if context.portal_syndication.isSyndicationAllowed(context):
 else:
     portal_status_message="Syndication not allowed"
 
-from Products.CMFPlone import transaction_note
+from Products.CMFPlone.utils import transaction_note
 transaction_note('%s for %s at %s' % (portal_status_message, context.title_or_id(), context.absolute_url()))
 
 return state.set(portal_status_message=portal_status_message)

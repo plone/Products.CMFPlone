@@ -34,7 +34,7 @@ Installing Plone manually, step by step instructions.
  
   **MANDATORY** 
  
-  - Zope 2.7.8 (or 2.8.4)
+  - Zope 2.7.8 (or 2.8.5)
      http://www.zope.org/Products/Zope/2.7.8
      Note: Zope 2.7 and 2.8 require Python 2.3.5 (not 2.4)
  
@@ -44,7 +44,7 @@ Installing Plone manually, step by step instructions.
   - CMFQuickInstallerTool 1.5.5 or newer
      Included in the Plone tarball 
  
-  - GroupUserFolder 3.4 or newer
+  - GroupUserFolder 3.5 or newer
      Included in the Plone tarball 
  
   - BTreeFolder2 1.0.2 or newer
@@ -65,7 +65,7 @@ Installing Plone manually, step by step instructions.
   - ATReferenceBrowserWidget 1.1 or newer
      Included in the Plone tarball
      
-  - ResourceRegistries 1.0.5 or newer
+  - ResourceRegistries 1.1 or newer
      Included in the Plone tarball
      
   - ExtendedPathIndex 2.2 or newer

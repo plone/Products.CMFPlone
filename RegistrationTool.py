@@ -157,13 +157,16 @@ class RegistrationTool(PloneBaseTool, BaseTool):
     def mailPassword(self, forgotten_userid, REQUEST):
         """ Wrapper around mailPassword """
         membership = getToolByName(self, 'portal_membership')
-        utils = getToolByName(self, 'plone_utils')
-        member = membership.getMemberById(forgotten_userid)
-
         if not membership.checkPermission('Mail forgotten password', self):
             raise Unauthorized, "Mailing forgotten passwords has been disabled"
 
-        if member and member.getProperty('email'):
+        utils = getToolByName(self, 'plone_utils')
+        member = membership.getMemberById(forgotten_userid)
+
+        if member is None:
+            raise ValueError, 'The username you entered could not be found'
+
+        if member.getProperty('email'):
             # add the single email address
             if not utils.validateSingleEmailAddress(member.getProperty('email')):
                 raise ValueError, 'The email address did not validate'
