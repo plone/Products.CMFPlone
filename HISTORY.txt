@@ -5,30 +5,29 @@ Changelog for Plone
 Plone 2.1.2 (unreleased)
 
     - Escape the group name URLs generated in the group preferences screen.
+      https://trac.plone.org/plone/ticket/5015
       [wichert]
 
     - Added some classes for the RTL versions of the summary view. Thanks,
       mohsen.
+      https://trac.plone.org/plone/ticket/5047
       [limi]
 
-    - Fixed various minor i18n problems.
-      [hannosch]
-
     - Fixed #4976 - Added a must_change_password property to the
-      member data (set to 0 for existing members)
+      member data (set to 0 for existing members).
+      https://trac.plone.org/plone/ticket/4976
       [plonista]
 
     - Fixed various log-in problems, issues #4545, 4975, 4942, added workaround
       that should prevent problems in #4482 and #4688.
       [plonista]
 
-    - Login UI cleanup.  Now redirect directly to came_from page after
-      login if we can verify that the user has cookies enabled via
-      javascript.  Added login_name to query string in a few places to
-      save some typing.  Only show the newbie text the first time
-      somebody logs in.  Add a login shortcut link to the new user
-      email.  Tell people to enable javascript if they don't have it
-      enabled.
+    - Login UI cleanup. Now redirect directly to came_from page after login if
+      we can verify that the user has cookies enabled via javascript. Added
+      login_name to query string in a few places to save some typing. Only show
+      the newbie text the first time somebody logs in.  Add a login shortcut
+      link to the new user email. Tell people to enable javascript if they don't
+      have it enabled.
       [plonista]
 
     - Update all skin form scripts to fetch transaction_note from the correct
@@ -40,6 +39,7 @@ Plone 2.1.2 (unreleased)
       but we urge people to adopt the new style (which is much simpler and
       more flexible) - as the inclusion of the two above classes in the 2.1
       release was not intentional.
+      https://trac.plone.org/plone/ticket/4430
       [spliter, limi]
 
     - Fixed #5041 - plone-site icon is generated again. Thanks, optilude ;)
