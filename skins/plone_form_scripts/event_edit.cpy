@@ -53,7 +53,7 @@ except: # TODO DateTime and contentEdit() has many things that could go wrong - 
     context.plone_utils.addPortalMessage(_(u'Error saving event.'))
     return state.set(new_status='failure')
 
-from Products.CMFPlone import transaction_note
+from Products.CMFPlone.utils import transaction_note
 transaction_note('Edited event %s at %s' % (str(new_context.title_or_id()), new_context.absolute_url()))
 
 context.plone_utils.addPortalMessage(_(u'Event changes saved.'))

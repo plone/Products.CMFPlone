@@ -19,7 +19,7 @@ pSyn.editSyInformationProperties(context,
                                  REQUEST['updateBase'],
                                  REQUEST['max_items'],
                                  REQUEST)
-from Products.CMFPlone import transaction_note
+from Products.CMFPlone.utils import transaction_note
 transaction_note('Updated syndication properties for %s at %s' % (context.title_or_id(), context.absolute_url()))
 
 context.plone_utils.addPortalMessage(_(u'Syndication properties updated.'))

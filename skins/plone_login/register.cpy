@@ -25,6 +25,10 @@ password=REQUEST.get('password') or portal_registration.generatePassword()
 # we need this because when the password is encrypted, we can't retrieve it from database
 REQUEST.form['password'] = password
 
+if site_properties.validate_email:
+    # force the member to change his/her password upon initial login
+    REQUEST.form['must_change_password'] = 1
+
 # This is a temporary work-around for an issue with CMF not properly
 # reserving some existing ids (FSDV skin elements, for example). Until 
 # this is fixed in the CMF we can at least fail nicely. See

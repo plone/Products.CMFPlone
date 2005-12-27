@@ -14,19 +14,38 @@ import ZTUtils
 
 REQUEST=context.REQUEST
 
+util = context.plone_utils
 membership_tool=context.portal_membership
 if membership_tool.isAnonymousUser():
     REQUEST.RESPONSE.expireCookie('__ac', path='/')
-    context.plone_utils.addPortalMessage(_(u'Login failed'))
+    util.addPortalMessage(_(u'Login failed'))
     return state.set(status='failure')
 
 came_from = REQUEST.get('came_from', None)
+
 # if we weren't called from something that set 'came_from' or if HTTP_REFERER
 # is the 'logged_out' page, return the default 'login_success' form
 if came_from is not None:
-    template_id = came_from.split('?')[0].split('/')[-1]
+    scheme, location, path, parameters, query, fragment = util.urlparse(came_from)
+    template_id = path.split('/')[-1]
     if template_id in ['login', 'login_success', 'login_password', 'login_failed', 'login_form', 'logged_in', 'logged_out', 'registered', 'mail_password', 'mail_password_form', 'join_form', 'require_login', 'member_search_results']:
         came_from = ''
+    # It is probably a good idea in general to filter out urls outside the portal.
+    # An added bonus: this fixes some problems with a Zope bug that doesn't
+    # properly unmangle the VirtualHostMonster stuff when setting ACTUAL_URL
+    if not context.portal_url.isURLInPortal(came_from):
+        came_from = ''
 
+js_enabled = REQUEST.get('js_enabled','1') != '0'
+if came_from and js_enabled:
+    # If javascript is not enabled, it is possible that cookies are not enabled.
+    # If cookies aren't enabled, the redirect will log the user out, and confusion
+    # may arise.  Redirect only if we know for sure that cookies are enabled.
+
+    util.addPortalMessage(_(u'Welcome! You are now logged in.'))
+    came_from = util.urlunparse((scheme, location, path, parameters, query, fragment))
+
+    REQUEST.RESPONSE.redirect(came_from)
+    
 state.set(came_from=came_from)
 return state

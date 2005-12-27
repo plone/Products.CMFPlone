@@ -11,7 +11,7 @@ from Products.CMFPlone import PloneMessageFactory as _
 REQUEST=context.REQUEST
 try:
     response = context.portal_registration.mailPassword(REQUEST['userid'], REQUEST)
-except 'NotFound':
-    context.plone_utils.addPortalMessage(_(u'The User ID you entered could not be found.'))
+except ValueError, e:
+    context.plone_utils.addPortalMessage(str(e))
     response = context.mail_password_form()
 return response

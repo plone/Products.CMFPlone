@@ -230,7 +230,7 @@
                            class="noborder"
                            name="add:list"
                            value="value"
-                             tal:attributes="value this_user/getGroupId | this_user/getId" />
+                             tal:attributes="value this_user/getId" />
                   </td>
 
                   <td>

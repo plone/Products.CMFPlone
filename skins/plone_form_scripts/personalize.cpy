@@ -8,7 +8,7 @@
 ##parameters=visible_ids=None, portrait=None, listed=None, REQUEST=None, ext_editor=None
 ##title=Personalization Handler.
 
-from Products.CMFPlone import transaction_note
+from Products.CMFPlone.utils import transaction_note
 from Products.CMFPlone import PloneMessageFactory as _
 
 member=context.portal_membership.getAuthenticatedMember()

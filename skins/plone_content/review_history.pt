@@ -1,4 +1,4 @@
-<span class="reviewHistory" 
+<div class="reviewHistory"
       metal:define-macro="review_history" 
       i18n:domain="plone"
       tal:define="history here/getWorkflowHistory;">
@@ -67,4 +67,4 @@
         </dd>
       </dl>
     </tal:history>
-</span>
+</div>

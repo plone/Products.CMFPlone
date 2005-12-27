@@ -1,5 +1,5 @@
 /*
-** Plone style sheet - Public-facing Elements
+** Plone style sheet - Authoring Elements
 **
 ** Style sheet documentation can be found at http://plone.org/documentation
 **
@@ -124,6 +124,10 @@ input.searchButton {
     padding: 1em 0;
 }
 
+.card a {
+    text-decoration: none;
+}
+
 .portrait {
     background-color: &dtml-globalBackgroundColor;;
     border-color: &dtml-globalBorderColor;;
@@ -188,6 +192,9 @@ input.searchButton {
 
 /* Vertical addition class */
 
+.vertical {
+    background-color: &dtml-backgroundColor;;	
+}
 .vertical th {
     padding: 0.5em;
 }
@@ -270,6 +277,12 @@ ol.visualNoMarker {
 }
 .stx table td {
     border-bottom: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+}
+
+.reviewHistory {
+    display: inline;
+    font-size: 110% !important; 
+    color: Black;
 }
 
 .comment {
@@ -604,10 +617,6 @@ ol.visualNoMarker {
     left: -200px;
 }
 
-.visualClear {
-    display: block;
-    clear: both;
-}
 .hiddenLabel {
     display: block;
     background: transparent;

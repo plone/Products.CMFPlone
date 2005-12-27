@@ -22,7 +22,7 @@ new_context.plone_utils.contentEdit( new_context
                                    , title=title
                                    , description=description)
 
-from Products.CMFPlone import transaction_note
+from Products.CMFPlone.utils import transaction_note
 transaction_note('Edited news item %s at %s' % (new_context.title_or_id(), new_context.absolute_url()))
 
 context.plone_utils.addPortalMessage(_(u'News item changes saved.'))

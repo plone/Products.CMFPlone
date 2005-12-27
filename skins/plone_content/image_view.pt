@@ -32,13 +32,13 @@
            tal:attributes="href string:$here_url/image_view_fullscreen">
             <tal:block condition="size" replace="structure python: here.tag(scale='preview')" />
             <br />
-            <img src="" alt="" tal:replace="structure here/search_icon.gif" />
-            <span i18n:translate="label_click_to_view_full_image">
-            Click to view full-size image&hellip;
+            <span class="visualNoPrint">
+                <img src="" alt="" tal:replace="structure here/search_icon.gif" />
+                <span i18n:translate="label_click_to_view_full_image">Click to view full-size image&hellip;</span>
             </span>
         </a>
 
-        <span class="discreet">
+        <span class="discreet visualNoPrint">
         &mdash;
             <span i18n:translate="label_size">Size</span>:
 

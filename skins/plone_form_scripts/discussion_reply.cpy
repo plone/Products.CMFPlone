@@ -56,13 +56,12 @@ parent = tb.aq_parent
 # return to the discussable object.
 redirect_target = context.plone_utils.getDiscussionThread(tb)[0]
 view = redirect_target.getTypeInfo().getActionById('view')
-anchor = reply.id
+anchor = reply.getId()
 
-from Products.CMFPlone import transaction_note
+from Products.CMFPlone.utils import transaction_note
 transaction_note('Added comment to %s at %s' % (parent.title_or_id(), reply.absolute_url()))
 
 msg = _(u'Comment added')
-
 target = '%s/%s?portal_status_message=%s#%s' % (redirect_target.absolute_url(), view, url_quote_plus(msg), anchor)
 
 return req.RESPONSE.redirect(target)

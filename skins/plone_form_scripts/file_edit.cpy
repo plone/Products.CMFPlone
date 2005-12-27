@@ -43,7 +43,7 @@ if file or file_data or precondition:
         file = StringIO(file_data)
     new_context.edit(precondition=precondition, file=file)
 
-from Products.CMFPlone import transaction_note
+from Products.CMFPlone.utils import transaction_note
 transaction_note('Edited file %s at %s' % (new_context.title_or_id(), new_context.absolute_url()))
 
 context.plone_utils.addPortalMessage(_(u'File changes saved.'))

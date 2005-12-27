@@ -22,38 +22,42 @@
    Full explanation can be found at 
    http://plone.org/documentation/how-to/flickering-background-images-internet-explorer */
 
-<dtml-in "portal_types.listTypeInfo()">
-    .contenttype-<dtml-var "plone_utils.normalizeString(id)">,
-    .actionMenu .contenttype-<dtml-var "plone_utils.normalizeString(id)"> a:hover { 
-        background-image: url(<dtml-var portal_url>/<dtml-var getIcon>); 
+<dtml-in "getPortalTypeList()">
+  <dtml-let item=sequence-item
+            type_id="item['id']"
+            type_icon="item['icon']">
+    .contenttype-&dtml-type_id;,
+    .actionMenu .contenttype-&dtml-type_id; a:hover { 
+        background-image: url(&dtml-portal_url;/&dtml-type_icon;); 
         background-repeat: no-repeat; 
         background-position: 0% 0%;
     }
     /* Holly hack to prevent items from shifting to the left in IE*/
-    * html .contenttype-<dtml-var "plone_utils.normalizeString(id)"> { 
+    * html .contenttype-&dtml-type_id; { 
         height: 1%;
     }
-    #portal-sitemap .contenttype-<dtml-var "plone_utils.normalizeString(id)"> a:hover,
-    #portal-sitemap .contenttype-<dtml-var "plone_utils.normalizeString(id)"> a.navTreeCurrentItem,
-    #portlet-navigation-tree .contenttype-<dtml-var "plone_utils.normalizeString(id)"> a:hover,
-    #portlet-navigation-tree .contenttype-<dtml-var "plone_utils.normalizeString(id)"> a.navTreeCurrentItem {
-        background-image: url(<dtml-var portal_url>/<dtml-var getIcon>);
+    #portal-sitemap .contenttype-&dtml-type_id; a:hover,
+    #portal-sitemap .contenttype-&dtml-type_id; a.navTreeCurrentItem,
+    #portlet-navigation-tree .contenttype-&dtml-type_id; a:hover,
+    #portlet-navigation-tree .contenttype-&dtml-type_id; a.navTreeCurrentItem {
+        background-image: url(&dtml-portal_url;/&dtml-type_icon;);
         background-repeat: no-repeat;
         background-position: 0% 3px;
     }
-    #portal-sitemap .contenttype-<dtml-var "plone_utils.normalizeString(id)">,
-    #portlet-navigation-tree .contenttype-<dtml-var "plone_utils.normalizeString(id)"> {
+    #portal-sitemap .contenttype-&dtml-type_id;,
+    #portlet-navigation-tree .contenttype-&dtml-type_id; {
         background-position: 0% 4px;
     }
-    * html #portal-sitemap .contenttype-<dtml-var "plone_utils.normalizeString(id)"> a:hover,
-    * html #portal-sitemap .contenttype-<dtml-var "plone_utils.normalizeString(id)"> a.navTreeCurrentItem,
-    * html #portlet-navigation-tree .contenttype-<dtml-var "plone_utils.normalizeString(id)"> a:hover,
-    * html #portlet-navigation-tree .contenttype-<dtml-var "plone_utils.normalizeString(id)"> a.navTreeCurrentItem {
+    * html #portal-sitemap .contenttype-&dtml-type_id; a:hover,
+    * html #portal-sitemap .contenttype-&dtml-type_id; a.navTreeCurrentItem,
+    * html #portlet-navigation-tree .contenttype-&dtml-type_id; a:hover,
+    * html #portlet-navigation-tree .contenttype-&dtml-type_id; a.navTreeCurrentItem {
         position: relative;
     }
-    .listing .contenttype-<dtml-var "plone_utils.normalizeString(id)"> { 
+    .listing .contenttype-&dtml-type_id; { 
         display: block; 
     }
+  </dtml-let>
 </dtml-in>
 
 <dtml-in "getActionIconList()">

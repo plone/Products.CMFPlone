@@ -20,6 +20,12 @@ Your login name and password are:
 
 Login name : <span i18n:name="username" tal:omit-tag="" tal:content="options/member/getUserName" />
 Password   : <span i18n:name="password" tal:omit-tag="" tal:content="request/password | options/password" />
+
+Log in here:
+
+<span i18n:name="log_in_here" tal:omit-tag="">
+<span tal:omit-tag="" tal:content="here/portal_url" />/login_form?login_name=<span tal:omit-tag="" tal:content="options/member/getUserName" />
+</span>
 </div>
 -- 
 <span tal:replace="here/email_from_name" /></tal:root>

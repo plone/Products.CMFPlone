@@ -11,10 +11,14 @@
 from Products.CMFCore.utils import getToolByName
 
 catalog = getToolByName(context, 'portal_catalog')
+utils = getToolByName(context, 'plone_utils')
+
+friendly_types = utils.getUserFriendlyTypes()
 
 found   = {}
-content = catalog.searchResults(Creator      = author, 
-                                sort_on      = 'modified', 
+content = catalog.searchResults(Creator      = author,
+                                portal_type  = friendly_types,
+                                sort_on      = 'modified',
                                 sort_order   = 'reverse')
 
 for item in content:

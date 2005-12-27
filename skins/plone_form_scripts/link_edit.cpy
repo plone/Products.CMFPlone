@@ -9,7 +9,7 @@
 ##title=Edit a link
 ##
 
-from Products.CMFPlone import transaction_note
+from Products.CMFPlone.utils import transaction_note
 from Products.CMFPlone import PloneMessageFactory as _
 
 # if there is no id specified, keep the current one

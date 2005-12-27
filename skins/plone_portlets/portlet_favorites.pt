@@ -24,7 +24,7 @@
          </a>
     </dt>
 
-    <dd class="portletItemSingle odd" tal:condition="favorites">
+    <dd class="portletItem odd" tal:condition="favorites">
         <ul class="visualNoMarker">
             <li tal:repeat="o favorites">
                 <a href=""

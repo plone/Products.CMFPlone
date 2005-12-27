@@ -20,15 +20,13 @@
                 canRequestPassword python:checkPermission('Mail forgotten password', here)"
     tal:condition="python: auth">
 
-    <!-- span class="portletTopLeft" /-->
     <dt class="portletHeader">
         <a href="#" 
            tal:attributes="href string:$portal_url/login_form"
            i18n:translate="box_sign_in">Log in</a>
     </dt>
-    <!-- span class="portletTopRight" /-->
-  
-    <dd class="portletItem odd" tal:attributes="class python: test(canRegister or canRequestPassword, 'portletItem odd', 'portletItemLast odd')">
+
+    <dd class="portletItem odd">
         <form action="login_form"
               name="loginform"
               method="post"
@@ -49,7 +47,7 @@
                 <input type="text"
                        size="10"
                        alt="Login Name"
-		       onclick="showCookieMessage('cookies_message')"
+                       onclick="showCookieMessage('cookies_message')"
                        tal:attributes="name ac_name; id ac_name;
                                        value python:request.get(ac_name, '');
                                        tabindex tabindex/next"
@@ -63,14 +61,14 @@
                 <input type="password"
                        size="10"
                        alt="Password"
-		       onclick="showCookieMessage('cookies_message')"
+                       onclick="showCookieMessage('cookies_message')"
                        tal:attributes="name ac_password; id ac_password;
                                        tabindex tabindex/next;"
                        i18n:attributes="alt label_password;"/>
             </div>
 
             <div id="cookies_message" i18n:translate="enable_cookies_message" class="portalMessage" style="display:none">
-                Cookies are not enabled. You must <span i18n:name="enable_cookies">
+                Cookies are not enabled. You must <span i18n:name="enable_cookies" tal:omit-tag="">
                 <a href="enabling_cookies" i18n:translate="label_enable_cookies">enable cookies</a></span> before you can log in.
             </div>
             
@@ -88,8 +86,7 @@
         </form>
     </dd>
     
-    <dd class="portletItem even"
-        tal:condition="canRequestPassword" tal:attributes="class python: test(canRegister, 'portletItem even', 'portletItemLast even')">
+    <dd class="portletItem even" tal:condition="canRequestPassword">
         <a href="mail_password_form"
            tal:attributes="href string:${portal_url}/mail_password_form">
            <tal:block replace="structure portal_object/info_icon.gif"/>
@@ -97,16 +94,12 @@
         </a>
     </dd>
     
-    <dd class="portletItemLast"
-        tal:condition="canRegister" tal:attributes="class python: test(canRequestPassword, 'portletItemLast', 'portletItemLast even')">
+    <dd class="portletItem" tal:condition="canRegister">
         <a href="" tal:attributes="href python:join.pop()">
             <tal:block replace="structure portal_object/user.gif"/>
             <span tal:omit-tag="" i18n:translate="box_new_user_option">New user?</span>
         </a>
     </dd>
-      
-    <!-- span class="portletBottomLeft" /-->
-    <!-- span class="portletBottomRight" /-->
 </dl>
 
 
@@ -116,11 +109,9 @@
     id="portlet-login"
     tal:condition="python: not auth">
 
-    <!-- span class="portletTopLeft" /-->
     <dt class="portletHeader">
         <a href="#" i18n:translate="box_sign_in">Log in</a>
     </dt>
-    <!-- span class="portletTopRight" /-->
 
     <dd class="portletItem"
         tal:condition="python: not auth"
@@ -129,8 +120,6 @@
         Login portlet not available.
     </dd>
 
-    <!-- span class="portletBottomLeft" /-->
-    <!-- span class="portletBottomRight" /-->
 </dl>
 
 

@@ -44,8 +44,8 @@
     </metal:javascriptslot>
 </head>
 
-<body metal:use-macro="here/global_bodytag/macros/body_tag"
-      tal:attributes="class here/getSectionFromURL"><metal:fillbodytag fill-slot="bodytag_body">
+<body tal:attributes="class here/getSectionFromURL;
+                      dir python:test(isRTL, 'rtl', 'ltr')">
 
 
 <div id="visual-portal-wrapper">
@@ -199,6 +199,6 @@
 
 </div>
 
-</metal:fillbodytag></body>
+</body>
 </html>
 </metal:page>

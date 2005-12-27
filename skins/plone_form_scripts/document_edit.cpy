@@ -31,7 +31,7 @@ new_context.edit( text_format
                 , file
                 , safety_belt=SafetyBelt )
 
-from Products.CMFPlone import transaction_note
+from Products.CMFPlone.utils import transaction_note
 transaction_note('Edited document %s at %s' % (new_context.title_or_id(), new_context.absolute_url()))
 
 new_context.plone_utils.contentEdit( new_context

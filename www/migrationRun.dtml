@@ -32,7 +32,7 @@ Your Plone instance is up to date.
 </dtml-if>
 </p>
 
-<hr/>
+<hr />
 
 <form action="upgrade">
 <p>

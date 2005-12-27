@@ -9,6 +9,7 @@
 ##title=Edit a folder (Plonized)
 ##
 
+from Products.CMFPlone.utils import transaction_note
 from Products.CMFPlone import PloneMessageFactory as _
 
 # if there is no id specified, keep the current one
@@ -21,7 +22,6 @@ new_context.plone_utils.contentEdit( new_context
                                    , id=id
                                    , description=description)
 
-from Products.CMFPlone import transaction_note
 transaction_note('Edited folder %s at %s' % (new_context.title_or_id(), new_context.absolute_url()))
 
 context.plone_utils.addPortalMessage(_(u'Folder changes saved.'))

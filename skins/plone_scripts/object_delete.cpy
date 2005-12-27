@@ -9,7 +9,7 @@
 ##title=Delete objects from a folder
 ##
 
-from Products.CMFPlone import transaction_note
+from Products.CMFPlone.utils import transaction_note
 from Products.CMFPlone import PloneMessageFactory as _
 
 REQUEST = context.REQUEST

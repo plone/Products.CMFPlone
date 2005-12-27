@@ -8,7 +8,7 @@
 ##title=Update Content Metadata
 ##parameters=allowDiscussion=None,title=None,subject=None,description=None,contributors=None,effective_date=None,expiration_date=None,format=None,language=None,rights=None,predefined_subjects=None
 
-from Products.CMFPlone import transaction_note
+from Products.CMFPlone.utils import transaction_note
 from Products.CMFPlone import PloneMessageFactory as _
 
 if subject is None:
