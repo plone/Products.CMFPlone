@@ -10,8 +10,6 @@
 
 # do anything that must be done during a user's initial login here
 
-context.plone_log('login_initial')
-
 # afterwards, change the password if necessary
 if state.getKwargs().get('must_change_password',0):
     state.set(status='login_change_password')
