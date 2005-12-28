@@ -12,6 +12,7 @@ from Products.CMFCore import CMFCorePermissions
 from Products.CMFCore.utils import UniqueObject, getToolByName, format_stx
 from Products.CMFPlone.PloneFolder import PloneFolder as TempFolderBase
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
+from Products.CMFPlone.utils import base_hasattr
 from ZODB.POSException import ConflictError
 
 ListType=type([])
@@ -148,7 +149,15 @@ class TempFolder(TempFolderBase):
                 getToolByName(self, 'plone_utils').logException()
                 raise
             obj = self._getOb(id)
-            obj.unindexObject()  # keep obj out of the catalog
+            
+            # keep obj out of the catalog
+            obj.unindexObject()
+
+            # additionally keep it out of Archetypes UID and refs catalogs
+            if base_hasattr(obj, '_uncatalogUID'):
+                obj._uncatalogUID(obj)
+            if base_hasattr(obj, '_uncatalogRefs'):
+                obj._uncatalogRefs(obj)
 
             return (aq_base(obj).__of__(temp_folder)).__of__(intended_parent)
 
