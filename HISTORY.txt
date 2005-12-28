@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1.2 (unreleased)
 
+    - Fixed a bug in FactoryTool were objects weren't removed from the UID and
+      refs catalogs after changes introduced in Archetypes 1.3.6.
+      [hannosch]
+
     - Permission check had wrong spelling in prefs_groups_overview, this fixes
       #5055. Thanks to Bertrand Mathieu for the patch.
       http://trac.plone.org/plone/ticket/5055
