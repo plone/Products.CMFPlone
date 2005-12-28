@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.1.2 (unreleased)
 
+    - Permission check had wrong spelling in prefs_groups_overview, this fixes
+      #5055. Thanks to Bertrand Mathieu for the patch.
+      http://trac.plone.org/plone/ticket/5055
+      [limi]
+
     - Added feedButton class for RSS feed buttons. This will be used for e.g.
       the news portlet once limi bothers to put them back in.
       [optilude]
