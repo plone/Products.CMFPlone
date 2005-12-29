@@ -12,7 +12,7 @@ from Products.CMFCore import CMFCorePermissions
 from Products.CMFCore.utils import UniqueObject, getToolByName, format_stx
 from Products.CMFPlone.PloneFolder import PloneFolder as TempFolderBase
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
-from Products.CMFPlone.utils import base_hasattr
+from Products.CMFPlone import base_hasattr
 from ZODB.POSException import ConflictError
 
 ListType=type([])
