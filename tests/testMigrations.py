@@ -1920,27 +1920,23 @@ class TestMigrations_v2_1(MigrationTest):
 
     def testConvertPloneFTIToCMFDynamicViewFTI(self):
         ttool = self.portal.portal_types
-        name = [t[0] for t in ttool.listDefaultTypeInformation()
-                                if t[1].get('id','')=='Plone Root'][0]
         # Convert to old-school FTI
-        migrateFTI(self.portal, 'Plone Site', name,
-                                            'Factory-based Type Information')
+        migrateFTI(self.portal, 'Plone Site', None,
+                   'Factory-based Type Information')
         self.assertEqual(getattr(ttool, 'Plone Site').meta_type,
-                                            'Factory-based Type Information')
+                         'Factory-based Type Information')
         # Convert back
         convertPloneFTIToCMFDynamicViewFTI(self.portal, [])
         self.assertEqual(self.portal.getTypeInfo().meta_type,
-                        'Factory-based Type Information with dynamic views')
+                         'Factory-based Type Information with dynamic views')
 
     def testConvertPloneFTIToCMFDynamicViewFTIConvertsViews(self):
         ttool = self.portal.portal_types
-        name = [t[0] for t in ttool.listDefaultTypeInformation()
-                                if t[1].get('id','')=='Plone Root'][0]
         # Convert to old-school FTI
-        migrateFTI(self.portal, 'Plone Site', name,
-                                            'Factory-based Type Information')
+        migrateFTI(self.portal, 'Plone Site', None,
+                   'Factory-based Type Information')
         self.assertEqual(getattr(ttool, 'Plone Site').meta_type,
-                                            'Factory-based Type Information')
+                         'Factory-based Type Information')
         # Set old style PropertyManaged default page/layout
         self.portal._selected_default_page = 'blah'
         # Convert back
@@ -1949,16 +1945,16 @@ class TestMigrations_v2_1(MigrationTest):
         _createObjectByType('Document', self.portal, 'blah')
         # check layout transfer
         self.assertEqual(self.portal.getDefaultPage(), 'blah')
-        self.assertEqual(self.portal.getAvailableLayouts(), [('folder_listing', 'Standard view'), ('news_listing', 'News')])
+        self.assertEqual(self.portal.getAvailableLayouts(),
+                         [('folder_listing', 'Standard view'),
+                          ('news_listing', 'News')])
         self.assertEqual(self.portal.getLayout(), 'folder_listing')
 
     def testConvertPloneFTIToCMFDynamicViewFTITwice(self):
         ttool = self.portal.portal_types
-        name = [t[0] for t in ttool.listDefaultTypeInformation()
-                                if t[1].get('id','')=='Plone Root'][0]
         # Convert to old-school FTI
-        migrateFTI(self.portal, 'Plone Site', name,
-                                            'Factory-based Type Information')
+        migrateFTI(self.portal, 'Plone Site', None,
+                   'Factory-based Type Information')
         # Convert back
         convertPloneFTIToCMFDynamicViewFTI(self.portal, [])
         convertPloneFTIToCMFDynamicViewFTI(self.portal, [])

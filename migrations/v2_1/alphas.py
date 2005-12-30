@@ -1255,16 +1255,19 @@ def convertPloneFTIToCMFDynamicViewFTI(portal, out):
                                     if t[1].get('id','')=='Plone Root']
                 if name:
                     name = name[0]
-                    migrateFTI(portal, 'Plone Site', name, fti_meta_type)
-                    out.append("Converted Plone Site to CMFDynamicViewFTI")
+                else:
+                    name = None
 
-                    # limi says don't bother transferring old views
-                    # Transfer old default page
-                    old_default = getattr(portal, '_selected_default_page', ())
-                    if old_default is not ():
-                        del portal._selected_default_page
-                        portal.setDefaultPage(old_default)
-                        out.append("Transferred portal default page")
+                migrateFTI(portal, 'Plone Site', name, fti_meta_type)
+                out.append("Converted Plone Site to CMFDynamicViewFTI")
+
+                # limi says don't bother transferring old views
+                # Transfer old default page
+                old_default = getattr(portal, '_selected_default_page', ())
+                if old_default is not ():
+                    del portal._selected_default_page
+                    portal.setDefaultPage(old_default)
+                    out.append("Transferred portal default page")
             # add sensible default methods
             new_fti = portal.getTypeInfo()
             if 'folder_listing' not in portal.getAvailableLayouts():
