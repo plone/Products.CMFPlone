@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1.2 (unreleased)
 
+    - Added background tint to inputs and textareas.
+      [limi]
+
     - Fixed a bug in FactoryTool were objects weren't removed from the UID and
       refs catalogs after changes introduced in Archetypes 1.3.6.
       [hannosch]
