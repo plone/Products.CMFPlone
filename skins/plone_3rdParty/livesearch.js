@@ -54,18 +54,18 @@ function getElementDimensions(elemID) {
     }
 
     if(!isIE){
-	width =  searchInput.offsetWidth-widthOffset*2;
+    width =  searchInput.offsetWidth-widthOffset*2;
     }
     else {
-	width = searchInput.offsetWidth;
+    width = searchInput.offsetWidth;
     }
 
     return { left:offsetLeft, 
-	     top:offsetTop, 
-	     width: width, 
+         top:offsetTop, 
+         width: width, 
              height: base.offsetHeight,
-	     bottom: offsetTop + base.offsetHeight, 
-	     right : offsetLeft + width};
+         bottom: offsetTop + base.offsetHeight, 
+         right : offsetLeft + width};
 }
 
 function liveSearchInit() {
@@ -91,23 +91,23 @@ function liveSearchInit() {
 //  Why doesn't this work in konq, setting it inline does.
     searchInput.setAttribute("autocomplete","off");
 
-	var pos = getElementDimensions('searchGadget');	
-	result = document.getElementById('LSResult');
-	pos.left = pos.left - result.offsetParent.offsetLeft + pos.width;
-	result.style.display='none';
+    var pos = getElementDimensions('searchGadget'); 
+    result = document.getElementById('LSResult');
+    pos.left = pos.left - result.offsetParent.offsetLeft + pos.width;
+    result.style.display='none';
 }
 
 
 function liveSearchHideDelayed() {
-	window.setTimeout("liveSearchHide()",400);
+    window.setTimeout("liveSearchHide()",400);
 }
-	
+    
 function liveSearchHide() { 
-	document.getElementById("LSResult").style.display = "none";
-	var highlight = document.getElementById("LSHighlight");
-	if (highlight) {
-		highlight.removeAttribute("id");
-	}
+    document.getElementById("LSResult").style.display = "none";
+    var highlight = document.getElementById("LSHighlight");
+    if (highlight) {
+        highlight.removeAttribute("id");
+    }
 }
 
 function getFirstHighlight() {
@@ -129,10 +129,10 @@ function getHits() {
 function findChild(object, specifier) {
     var cur = object.firstChild;
     try {
-	while (cur != undefined) {
-	    cur = cur.nextSibling;
-	    if (specifier(cur) == true) return cur;
-	}
+    while (cur != undefined) {
+        cur = cur.nextSibling;
+        if (specifier(cur) == true) return cur;
+    }
     } catch(e) {};
     return null;
     
@@ -143,11 +143,11 @@ function findNext(object, specifier) {
  try {
  while (cur != undefined) {
 
-	cur = cur.nextSibling;
-	if (cur.nodeType==3) cur=cur.nextSibling;
-	
-	if (cur != undefined) {
-	    if (specifier(cur) == true) return cur;
+    cur = cur.nextSibling;
+    if (cur.nodeType==3) cur=cur.nextSibling;
+    
+    if (cur != undefined) {
+        if (specifier(cur) == true) return cur;
     } else { break }
  }
  } catch(e) {};
@@ -169,93 +169,93 @@ function findPrev(object, specifier) {
 
 
 function liveSearchKeyPress(event) {
-	if (event.keyCode == 40 )
-	//KEY DOWN
-	{
-		highlight = document.getElementById("LSHighlight");
-		if (!highlight) {
-		    highlight = getFirstHighlight();
-		} else {
-			highlight.removeAttribute("id");
-			highlight = findNext(highlight, function (o) {return o.className =="LSRow";});
+    if (event.keyCode == 40 )
+    //KEY DOWN
+    {
+        highlight = document.getElementById("LSHighlight");
+        if (!highlight) {
+            highlight = getFirstHighlight();
+        } else {
+            highlight.removeAttribute("id");
+            highlight = findNext(highlight, function (o) {return o.className =="LSRow";});
 
-		}
-		if (highlight) {
-			highlight.setAttribute("id","LSHighlight");
-		} 
-		if (!isIE) { event.preventDefault(); }
-	} 
-	//KEY UP
-	else if (event.keyCode == 38 ) {
-		highlight = document.getElementById("LSHighlight");
-		if (!highlight) {
-		    highlight = getLastHighlight();
-		} 
-		else {
-			highlight.removeAttribute("id");
-			highlight = findPrev(highlight, function (o) {return o.className=='LSRow';});
-		}
-		if (highlight) {
-				highlight.setAttribute("id","LSHighlight");
-		}
-		if (!isIE) { event.preventDefault(); }
-	} 
-	//ESC
-	else if (event.keyCode == 27) {
-		highlight = document.getElementById("LSHighlight");
-		if (highlight) {
-			highlight.removeAttribute("id");
-		}
-		document.getElementById("LSResult").style.display = "none";
-	} 
+        }
+        if (highlight) {
+            highlight.setAttribute("id","LSHighlight");
+        } 
+        if (!isIE) { event.preventDefault(); }
+    } 
+    //KEY UP
+    else if (event.keyCode == 38 ) {
+        highlight = document.getElementById("LSHighlight");
+        if (!highlight) {
+            highlight = getLastHighlight();
+        } 
+        else {
+            highlight.removeAttribute("id");
+            highlight = findPrev(highlight, function (o) {return o.className=='LSRow';});
+        }
+        if (highlight) {
+                highlight.setAttribute("id","LSHighlight");
+        }
+        if (!isIE) { event.preventDefault(); }
+    } 
+    //ESC
+    else if (event.keyCode == 27) {
+        highlight = document.getElementById("LSHighlight");
+        if (highlight) {
+            highlight.removeAttribute("id");
+        }
+        document.getElementById("LSResult").style.display = "none";
+    } 
 }
 function liveSearchStart(event) {
-	if (t) {
-		window.clearTimeout(t);
-	}
-	code = event.keyCode;
-	if (code!=40 && code!=38 && code!=27 && code!=37 && code!=39) {
-		t = window.setTimeout("liveSearchDoSearch()",200);
-	} 
+    if (t) {
+        window.clearTimeout(t);
+    }
+    code = event.keyCode;
+    if (code!=40 && code!=38 && code!=27 && code!=37 && code!=39) {
+        t = window.setTimeout("liveSearchDoSearch()",200);
+    } 
 }
 
 function liveSearchDoSearch() {
 
-	if (typeof liveSearchRoot == "undefined") {
-		liveSearchRoot = "";
-	}
-	if (typeof liveSearchRootSubDir == "undefined") {
-		liveSearchRootSubDir = "";
-	}
+    if (typeof liveSearchRoot == "undefined") {
+        liveSearchRoot = "";
+    }
+    if (typeof liveSearchRootSubDir == "undefined") {
+        liveSearchRootSubDir = "";
+    }
 
-	if (liveSearchLast != searchInput.value) {
-	if (liveSearchReq && liveSearchReq.readyState < 4) {
-		liveSearchReq.abort();
-	}
-	if ( searchInput.value == "") {
-		liveSearchHide();
-		return false;
-	}
+    if (liveSearchLast != searchInput.value) {
+    if (liveSearchReq && liveSearchReq.readyState < 4) {
+        liveSearchReq.abort();
+    }
+    if ( searchInput.value == "") {
+        liveSearchHide();
+        return false;
+    }
 
-	// Do nothing as long as we have less then three characters
-	// as we could easily kill the server otherwise
-	if ( searchInput.value.length < 3) {
-		liveSearchHide();
-		return false;
-	}
+    // Do nothing as long as we have less then two characters - 
+    // the search results makes no sense, and it's harder on the server.
+    if ( searchInput.value.length < 2) {
+        liveSearchHide();
+        return false;
+    }
 
-	// Do we have cached results
-	var result = _cache[searchInput.value];
-	if (result) {
-		showResult(result);	
-		return;
-	}
-	liveSearchReq = new XMLHttpRequest();
-	liveSearchReq.onreadystatechange= liveSearchProcessReqChange;
-	liveSearchReq.open("GET", liveSearchRoot + queryTarget + encodeURI(searchInput.value) );
-	liveSearchLast = searchInput.value;
-	liveSearchReq.send(null);
-	}
+    // Do we have cached results
+    var result = _cache[searchInput.value];
+    if (result) {
+        showResult(result); 
+        return;
+    }
+    liveSearchReq = new XMLHttpRequest();
+    liveSearchReq.onreadystatechange= liveSearchProcessReqChange;
+    liveSearchReq.open("GET", liveSearchRoot + queryTarget + encodeURI(searchInput.value) );
+    liveSearchLast = searchInput.value;
+    liveSearchReq.send(null);
+    }
 }
 
 function showResult(result) {
@@ -266,25 +266,25 @@ function showResult(result) {
 }
 
 function liveSearchProcessReqChange() {
-	if (liveSearchReq.readyState == 4) {
-		if (liveSearchReq.status > 299 || liveSearchReq.status < 200  ||
-			liveSearchReq.responseText.length < 10) return;	
-	showResult(liveSearchReq.responseText);
-	_cache[liveSearchLast] = liveSearchReq.responseText;
-	}
+    if (liveSearchReq.readyState == 4) {
+        if (liveSearchReq.status > 299 || liveSearchReq.status < 200  ||
+            liveSearchReq.responseText.length < 10) return; 
+    showResult(liveSearchReq.responseText);
+    _cache[liveSearchLast] = liveSearchReq.responseText;
+    }
 }
 
 function liveSearchSubmit() {
-	var highlight = document.getElementById("LSHighlight");
-	
-	if (highlight){
-		target = highlight.getElementsByTagName('a')[0];
-		window.location = liveSearchRoot + liveSearchRootSubDir + target;
-		return false;
-	} 
-	else {
-		return true;
-	}
+    var highlight = document.getElementById("LSHighlight");
+    
+    if (highlight){
+        target = highlight.getElementsByTagName('a')[0];
+        window.location = liveSearchRoot + liveSearchRootSubDir + target;
+        return false;
+    } 
+    else {
+        return true;
+    }
 }
 
 
