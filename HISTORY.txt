@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1.2 (unreleased)
 
+    - More CSS grouping fixes: the form elements are visible in the public
+      view, and were moved to 'public.css' (were previously in 'authoring.css')
+      [limi]
+
     - Moved the accessibility CSS classes from 'authoring.css' to 'public.css'
       (the hiddenStructure classes).
       [limi]

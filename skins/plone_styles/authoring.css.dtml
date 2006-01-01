@@ -66,52 +66,6 @@ input.searchButton {
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-notifyBorderColor;;
 }
 
-/* The edit form elements */
-
-.field {
-    top: 0;
-    left: 0;
-    margin: 0 1em 1em 0;
-}
-
-.field .field {
-    margin: 1em 0 0 0;
-}
-
-.fieldRequired {
-    background: url(&dtml-portal_url;/required.gif) center left no-repeat;
-    padding: 0 0 0 8px;
-    color: &dtml-backgroundColor;;
-}
-
-.formHelp {
-    font-size: 90%;
-    color: &dtml-discreetColor;;
-    margin: 0 0 0.2em 0;
-}
-
-.formHelp:hover {
-    color: &dtml-fontColor;;
-    cursor: default;
-}
-
-.formControls {
-   margin: 1em 0;
-}
-
-.error {
-    /* Class for error indication in forms */
-    background-color: &dtml-notifyBackgroundColor;;
-    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-notifyBorderColor;;
-    padding: 1em;
-    margin: 0 0 1em 0;
-    width: 95% !important;
-}
-
-.error .fieldRequired {
-   color: &dtml-notifyBackgroundColor;;
-}
-
 .card {
     background-color: &dtml-globalBackgroundColor;;
     border-color: &dtml-globalBorderColor;;
@@ -661,12 +615,6 @@ dl.collapsedInlineCollapsible dt.collapsibleHeader {
 
 .configlet .documentEditable {
     padding: 0em !important;
-}
-
-.documentContent {
-    font-size: 110%;
-    padding: 1em 1em 2em 1em !important;
-    background: &dtml-backgroundColor;;
 }
 
 .documentEditable .documentContent {
