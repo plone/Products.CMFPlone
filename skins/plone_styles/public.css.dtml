@@ -838,8 +838,6 @@ textarea.proportional {
 
 /* Accessibility and visual enhancement elements */
 
-/* Accessibility elements */
-
 .hiddenStructure {
     display: block;
     background: transparent;
@@ -870,6 +868,8 @@ textarea.proportional {
     margin: -1px 0 0 -1px;
     width: 1px;
 }
+
+/* Link types */
 
 .link-plain {
     background-image: none;
