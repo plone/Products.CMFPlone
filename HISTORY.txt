@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1.2 (unreleased)
 
+    - Moved .documentContent to 'public.css', this fixes #5061.
+      http://trac.plone.org/plone/ticket/5061
+      [limi]
+
     - More CSS grouping fixes: the form elements are visible in the public
       view, and were moved to 'public.css' (were previously in 'authoring.css')
       [limi]
