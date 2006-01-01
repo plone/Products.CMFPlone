@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1.2 (unreleased)
 
+    - Moved the accessibility CSS classes from 'authoring.css' to 'public.css'
+      (the hiddenStructure classes).
+      [limi]
+
     - Moved the collapsible CSS class from 'public.css' to 'authoring.css',
       where it belongs.
       [limi]

@@ -674,40 +674,6 @@ dl.collapsedInlineCollapsible dt.collapsibleHeader {
     padding: 0;
 }
 
-
-
-/* Accessibility elements */
-
-.hiddenStructure {
-    display: block;
-    background: transparent;
-    background-image: none; /* safari bug */
-    border: none;
-    height: 1px;
-    overflow: hidden;
-    padding: 0;
-    margin: -1px 0 0 -1px;
-    width: 1px;
-}
-
-.contentViews .hiddenStructure,
-.contentActions .hiddenStructure {
-    position: absolute;
-    top: -200px;
-    left: -200px;
-}
-
-.hiddenLabel {
-    display: block;
-    background: transparent;
-    background-image: none; /* safari bug */
-    border: none;
-    height: 1px;
-    overflow: hidden;
-    padding: 0;
-    margin: -1px 0 0 -1px;
-    width: 1px;
-}
 .label {
     font-weight: bold;
     display: inline;
