@@ -590,8 +590,6 @@
     margin-top: 1em;
 }
 
-/* Batch selector */
-
 .even {
     background-color: &dtml-evenRowBackgroundColor;;
 }
@@ -609,6 +607,8 @@
     font-size: &dtml-fontSmallSize;;
     font-weight: normal;
 }
+
+/* Batch selector */
 
 .listingBar {
     background-color: &dtml-globalBackgroundColor;;
