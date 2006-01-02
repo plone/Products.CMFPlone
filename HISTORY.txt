@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1.2 (unreleased)
 
+    - Moved .visualClear to the base.css - even though it's not an actual tag,
+      all layouts break without this present, so makes sense to have it as a
+      base-level element.
+
     - Added link to "Advanced Search" in the LiveSearch pulldown.
       [limi]
 

@@ -120,11 +120,6 @@
 
 /* End edit form elements */
 
-.visualClear {
-    display: block;
-    clear: both;
-}
-
 #visual-portal-wrapper {
     margin: 0;
     padding: 0;
