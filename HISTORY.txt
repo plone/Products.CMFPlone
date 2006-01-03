@@ -4,9 +4,15 @@ Changelog for Plone
 
 Plone 2.1.2 (unreleased)
 
+    - Changed the 'expired' color to be the same as the discreet/ghosted
+      elements, since this is a marker to show content that is no longer
+      active, not content that needs some sort of action.
+      [limi]
+
     - Moved .visualClear to the base.css - even though it's not an actual tag,
       all layouts break without this present, so makes sense to have it as a
       base-level element.
+      [limi]
 
     - Added link to "Advanced Search" in the LiveSearch pulldown.
       [limi]
