@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1.2 (unreleased)
 
+    - Home page edit field was missing from the author edit screen, added.
+      [limi]
+
     - Added missing class="documentContent" declarations in the user management
       screens.
       [limi]

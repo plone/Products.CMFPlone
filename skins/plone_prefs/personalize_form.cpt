@@ -189,6 +189,31 @@
                         </div>
 
                         <div class="field"
+                             tal:define="error errors/home_page | nothing;
+                                         home_page python:request.get('home_page', member.getProperty('home_page', ''));"
+                             tal:attributes="class python:test(error, 'field error', 'field')">
+
+                            <label for="home_page" i18n:translate="label_homepage">Home page</label>
+
+                            <div class="formHelp" i18n:translate="help_homepage">
+                            The URL for your external home page, if you have one.
+                            </div>
+
+                            <div tal:content="error">Validation error output</div>
+
+                            <input type="text"
+                                   id="home_page"
+                                   name="home_page"
+                                   size="25"
+                                   tabindex=""
+                                   value="member.home_page html_quote"
+                                   tal:attributes="value home_page;
+                                                   tabindex tabindex/next;"
+                                   />
+
+                        </div>
+
+                        <div class="field"
                                  tal:define="wysiwyg_editor python:request.get('wysiwyg_editor',
                                                             member.getProperty('wysiwyg_editor',''))">
                             <label for="wysiwyg_editor" i18n:translate="label_content_editor">Content editor</label>
