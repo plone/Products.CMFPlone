@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1.2 (unreleased)
 
+    - Added View/Edit tabs to the author profile screen to make it easier to
+      change your own details.
+      [limi]
+
     - Changed the 'expired' color to be the same as the discreet/ghosted
       elements, since this is a marker to show content that is no longer
       active, not content that needs some sort of action.
