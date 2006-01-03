@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1.2 (unreleased)
 
+    - Added missing class="documentContent" declarations in the user management
+      screens.
+      [limi]
+
     - Added View/Edit tabs to the author profile screen to make it easier to
       change your own details.
       [limi]

@@ -35,6 +35,9 @@
       &nbsp;
     </div>
 
+    <div class="documentContent" id="region-content">
+        <a name="documentContent"></a>
+
       <div metal:use-macro="here/global_statusmessage/macros/portal_message">
         Portal status message
       </div>
@@ -49,7 +52,8 @@
           Up to Site Setup
         </a>
 
-        <p i18n:translate="description_groups_management">
+        <p i18n:translate="description_groups_management"
+           class="discreet">
           Groups are logical collections of users, such as
           departments and business units. Groups are not directly
           related to permissions on a global level, you normally
@@ -173,6 +177,7 @@
 
           <div metal:use-macro="here/batch_macros/macros/navigation" />
 
+          <div class="formControls">
             <input class="context"
                    tabindex=""
                    type="submit"
@@ -182,11 +187,13 @@
                    i18n:attributes="value label_apply_changes;"
                    tal:condition="groups"
                    />
+          </div>
         </form>
 
         <h1 i18n:translate="heading_roles_management">Roles Management</h1>
 
-        <p i18n:translate="description_roles_management">
+        <p i18n:translate="description_roles_management"
+           class="discreet">
           Roles are collections of permissions. The most common role is
           the Member role, which is any member of the portal. You can
           define additional roles, but you normally only do that when you
@@ -194,13 +201,15 @@
           combine to make up a Group.
         </p>
 
-        <p i18n:translate="description_roles_zmi">
+        <p i18n:translate="description_roles_zmi"
+           class="discreet">
         Currently, if you want to add a new role, you must use the
         Zope Management Interface, as adding roles is considered a
         development task.
         </p>
 
 
+    </div>
 </div>
 
 </div>
