@@ -3423,7 +3423,7 @@ class TestMigrations_v2_1_2(MigrationTest):
         addMemberData(self.portal, [])
         self.failUnless(self.memberdata.hasProperty('must_change_password'))
 
-    def testAddMemberdataLocationNoTool(self):
+    def testAddMustChangePasswordNoTool(self):
         # Should not fail if portal_memberdata is missing
         self.portal._delObject('portal_memberdata')
         addMemberData(self.portal, [])
