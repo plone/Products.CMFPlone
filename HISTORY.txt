@@ -2,7 +2,7 @@ Changelog for Plone
 
    (name of developer listed in brackets)
 
-Plone 2.1.2 (unreleased)
+Plone 2.1.2 - Saint Etienne - RC1 - Released January 4, 2006
 
     - Home page edit field was missing from the author edit screen, added.
       [limi]
