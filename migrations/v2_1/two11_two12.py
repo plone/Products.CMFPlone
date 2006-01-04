@@ -1,6 +1,8 @@
 import string
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore import permissions as CMFCorePermissions
+from Products.CMFPlone.migrations.migration_util import safeGetMemberDataTool, \
+     safeEditProperty
 
 def two11_two12(portal):
     """2.1.1 -> 2.1.2
@@ -102,10 +104,10 @@ def removeDiscussionItemWorkflow(portal, out):
         wftool.setChainForPortalTypes(('Discussion Item',), ())
         out.append("Removing workflow from Discussion Item")
 
-
 def addMemberData(portal, out):
     """Add the must_change_password property to member data"""
-    mt = getToolByName(portal, 'portal_memberdata')
-    mt._setProperty('must_change_password', 0, 'boolean')
-    out.append('Added must_change_password property to member data')
-    
+    mt = safeGetMemberDataTool(portal)
+    if mt is not None:
+        safeEditProperty(mt, 'must_change_password', 0, 'boolean')
+        out.append('Added must_change_password property to member data')
+

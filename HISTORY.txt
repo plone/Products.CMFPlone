@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.1.2 - Saint Etienne - RC1 - Released January 4, 2006
 
+    - Error when trying to force migrate to 2.1.2 from 2.1.1 due to non-failsafe
+      addition of memberdata property.
+      https://trac.plone.org/plone/ticket/5064
+      [hannosch]
+
     - Home page edit field was missing from the author edit screen, added.
       [limi]
 
