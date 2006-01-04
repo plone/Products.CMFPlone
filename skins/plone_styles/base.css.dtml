@@ -230,5 +230,11 @@ del {
     clear: both;
 }
 
+/* Hiding helper elements for old browsers */
+
+.netscape4 {
+    display: none;
+}
+
 
 /* </dtml-with> */

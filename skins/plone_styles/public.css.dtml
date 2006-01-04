@@ -797,10 +797,6 @@ textarea.proportional {
     text-align: right;
 }
 
-.netscape4 {
-    display: none;
-}
-
 /* Sitemap styles */
 
 #portal-sitemap {
