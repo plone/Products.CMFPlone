@@ -140,3 +140,7 @@ def registerMigrations():
     MigrationTool.registerUpgradePath('2.1.2-rc1',
                                       '2.1.2-rc2',
                                       null)
+
+    MigrationTool.registerUpgradePath('2.1.2-rc2',
+                                      '2.1.2 (SVN/UNRELEASED)',
+                                      null)
