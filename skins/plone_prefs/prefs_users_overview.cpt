@@ -16,25 +16,27 @@
 
       <div id="content" class="documentEditable"
            tal:condition="python:checkPermission('Manage users', here)">
-    <!-- simulating views on the groups/user pages until we have real objects. -->
-    <ul class="contentViews">
-      <li class="selected">
-        <a href=""
-           tal:attributes="href template_id"
-           i18n:translate="label_users">Users</a>
-      </li>
-      <li class="">
-        <a href="prefs_groups_overview"
-           i18n:translate="label_groups">Groups</a>
-      </li>
-    </ul>
 
-    <div class="contentActions">
-      &nbsp;
-    </div>
+            <h5 class="hiddenStructure">Views</h5>
+        
+            <ul class="contentViews">
+              <li class="selected">
+                <a href=""
+                   tal:attributes="href template_id"
+                   i18n:translate="label_users">Users</a>
+              </li>
+              <li>
+                <a href="prefs_groups_overview"
+                   i18n:translate="label_groups">Groups</a>
+              </li>
+            </ul>
 
-    <div id="region-content">
-      <a name="documentContent"></a>
+            <div class="contentActions">
+              &nbsp;
+            </div>
+
+            <div class="documentContent" id="region-content">
+                <a name="documentContent"></a>
 
       <div metal:use-macro="here/global_statusmessage/macros/portal_message">
         Portal status message

@@ -23,8 +23,12 @@ login_time = member.getProperty('login_time', '2000/01/01')
 initial_login = int(str(login_time) == '2000/01/01')
 state.set(initial_login=initial_login)
 
-password_prompt = member.getProperty('must_change_password', 0)
-if  password_prompt:
+must_change_password = member.getProperty('must_change_password', 0)
+state.set(must_change_password=must_change_password)
+
+if initial_login:
+    state.set(status='initial_login')
+elif  must_change_password:
     state.set(status='change_password')
 
 membership_tool.setLoginTimes()

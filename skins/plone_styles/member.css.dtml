@@ -31,7 +31,7 @@
     color: #FFA500;
 }
 .state-expired {
-    color: Red;
+    color: &dtml-discreetColor;;
 }
 .syndicated {
     color: #008000;

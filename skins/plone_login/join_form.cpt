@@ -143,8 +143,7 @@
                      size="10"
                      value=""
                      tabindex=""
-                     tal:attributes="value password;
-                                     tabindex tabindex/next;"
+                     tal:attributes="tabindex tabindex/next;"
                      />
       </div>
 
@@ -172,8 +171,7 @@
                      size="10"
                      value=""
                      tabindex=""
-                     tal:attributes="value password_confirm;
-                                     tabindex tabindex/next;"
+                     tal:attributes="tabindex tabindex/next;"
                      />
       </div>
 

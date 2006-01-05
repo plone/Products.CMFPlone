@@ -161,7 +161,7 @@ textarea {
     font: 100% Monaco, "Courier New", Courier, monospace;
     border: &dtml-borderWidth; solid &dtml-globalBorderColor;;
     color: &dtml-inputFontColor;;
-    background-color: white;
+    background: White url(&dtml-portal_url;/input_background.gif) repeat-x;
     width: 100%;
 }
 
@@ -170,8 +170,8 @@ input {
     visibility: visible;
     border: &dtml-borderWidth; solid &dtml-globalBorderColor;;
     color: &dtml-inputFontColor;;
-    background-color: white;
     vertical-align: middle;
+    background: White url(&dtml-portal_url;/input_background.gif) repeat-x;
 }
 select {
     border: &dtml-borderWidth; solid &dtml-globalBorderColor;;
@@ -222,5 +222,19 @@ del {
     color: red;
     text-decoration: line-through;
 }
+
+/* Helper element to work with CSS floats */
+
+.visualClear {
+    display: block;
+    clear: both;
+}
+
+/* Hiding helper elements for old browsers */
+
+.netscape4 {
+    display: none;
+}
+
 
 /* </dtml-with> */

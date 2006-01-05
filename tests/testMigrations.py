@@ -125,6 +125,7 @@ from Products.CMFPlone.migrations.v2_1.two11_two12 import removeCMFTopicSkinLaye
 from Products.CMFPlone.migrations.v2_1.two11_two12 import addRenameObjectButton
 from Products.CMFPlone.migrations.v2_1.two11_two12 import addSEHighLightJS
 from Products.CMFPlone.migrations.v2_1.two11_two12 import removeDiscussionItemWorkflow
+from Products.CMFPlone.migrations.v2_1.two11_two12 import addMemberData
 
 from Products.CMFDynamicViewFTI.migrate import migrateFTI
 
@@ -3304,10 +3305,11 @@ class TestMigrations_v2_1_1(MigrationTest):
 class TestMigrations_v2_1_2(MigrationTest):
 
     def afterSetUp(self):
-        self.skins = self.portal.portal_skins
         self.actions = self.portal.portal_actions
-        self.workflow = self.portal.portal_workflow
+        self.memberdata = self.portal.portal_memberdata
+        self.skins = self.portal.portal_skins
         self.types = self.portal.portal_types
+        self.workflow = self.portal.portal_workflow
 
     def testRemoveCMFTopicSkinPathFromDefault(self):
         # Should remove plone_3rdParty/CMFTopic from skin paths
@@ -3405,6 +3407,26 @@ class TestMigrations_v2_1_2(MigrationTest):
         self.assertEqual(self.workflow.getChainForPortalType('Discussion Item'), ())
         removeDiscussionItemWorkflow(self.portal, [])
         self.assertEqual(self.workflow.getChainForPortalType('Discussion Item'), ())
+
+    def testAddMustChangePassword(self):
+        # Should add the 'must change password' property
+        self.removeMemberdataProperty('must_change_password')
+        self.failIf(self.memberdata.hasProperty('must_change_password'))
+        addMemberData(self.portal, [])
+        self.failUnless(self.memberdata.hasProperty('must_change_password'))
+
+    def testAddMustChangePasswordTwice(self):
+        # Should not fail if migrated again
+        self.removeMemberdataProperty('must_change_password')
+        self.failIf(self.memberdata.hasProperty('must_change_password'))
+        addMemberData(self.portal, [])
+        addMemberData(self.portal, [])
+        self.failUnless(self.memberdata.hasProperty('must_change_password'))
+
+    def testAddMustChangePasswordNoTool(self):
+        # Should not fail if portal_memberdata is missing
+        self.portal._delObject('portal_memberdata')
+        addMemberData(self.portal, [])
 
 
 def test_suite():
