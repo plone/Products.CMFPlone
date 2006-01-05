@@ -23,7 +23,7 @@ Password   : <span i18n:name="password" tal:omit-tag="" tal:content="request/pas
 
 Log in here:
 
-<span i18n:name="log_in_here" tal:omit-tag="">
+<span i18n:name="log_in_here">
 <span tal:omit-tag="" tal:content="here/portal_url" />/login_form?login_name=<span tal:omit-tag="" tal:content="options/member/getUserName" />
 </span>
 </div>

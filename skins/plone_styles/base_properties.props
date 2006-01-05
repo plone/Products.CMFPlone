@@ -22,7 +22,7 @@ linkVisitedColor:string=Purple
 
 borderWidth:string=1px
 borderStyle:string=solid
-borderStyleAnnotations:string=dashed
+borderStyleAnnotations:string=solid
 
 globalBorderColor:string=#8cacbb
 globalBackgroundColor:string=#dee7ec

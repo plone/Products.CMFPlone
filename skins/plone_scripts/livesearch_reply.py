@@ -61,6 +61,9 @@ if not results:
     print '''<legend id="livesearchLegend">%s</legend>''' % legend_livesearch
     print '''<div class="LSIEFix">'''
     print '''<div id="LSNothingFound">%s</div>''' % label_no_results_found
+    print '''<li class="LSRow">'''
+    print '<a href="search_form" style="font-weight:normal">Advanced Search&hellip;</a>'
+    print '''</li>'''
     print '''</div>'''
     print '''</fieldset>'''
 
@@ -90,6 +93,11 @@ else:
         print '''<div class="discreet" style="margin-left: 2.5em;">%s</div>''' % (display_description)
         print '''</li>'''
         full_title, display_title, display_description = None, None, None
+
+    print '''<li class="LSRow">'''
+    print '<a href="search_form" style="font-weight:normal">Advanced Search&hellip;</a>'
+    print '''</li>'''
+
     if len(results)>limit:
         # add a more... row
         print '''<li class="LSRow">'''

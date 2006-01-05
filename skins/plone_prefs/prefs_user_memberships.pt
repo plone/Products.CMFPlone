@@ -37,7 +37,7 @@
       &nbsp;
     </div>
 
-    <div id="region-content">
+    <div id="region-content" class="documentContent">
       <a name="documentContent"></a>
 
       <div metal:use-macro="here/global_statusmessage/macros/portal_message">

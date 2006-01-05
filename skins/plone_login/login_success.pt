@@ -35,7 +35,7 @@
 
         <p i18n:translate="description_newbie_pointers">
           You might want to head over to
-          <span i18n:name="your_folder" tal:omit-tag="">
+          <span i18n:name="your_folder">
              <a href=""
                 i18n:translate="description_newbie_pointers_yourfolder_link"
                 tal:define="mystuff python:[a['url'] for a in actions['user'] if a['id']=='mystuff']"
@@ -43,7 +43,7 @@
              >your folder</a>
           </span>
           and add some content, or
-          <span i18n:name="set_up_your_preferences" tal:omit-tag="">
+          <span i18n:name="set_up_your_preferences">
              <a href=""
                 i18n:translate="description_newbie_pointers_preferences_link"
                 tal:define="prefs python:[a['url'] for a in actions['user'] if a['id']=='preferences']"
@@ -84,7 +84,7 @@
          <p i18n:translate="description_enable_cookies_for_login">
             Note: If you do not remain logged in after leaving this
             page, it is because you need to
-            <span i18n:name="enable_cookies" tal:omit-tag="">
+            <span i18n:name="enable_cookies">
                 <a href="enabling_cookies"
                    i18n:translate="label_enable_cookies">
                     enable cookies

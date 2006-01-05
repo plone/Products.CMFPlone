@@ -66,52 +66,6 @@ input.searchButton {
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-notifyBorderColor;;
 }
 
-/* The edit form elements */
-
-.field {
-    top: 0;
-    left: 0;
-    margin: 0 1em 1em 0;
-}
-
-.field .field {
-    margin: 1em 0 0 0;
-}
-
-.fieldRequired {
-    background: url(&dtml-portal_url;/required.gif) center left no-repeat;
-    padding: 0 0 0 8px;
-    color: &dtml-backgroundColor;;
-}
-
-.formHelp {
-    font-size: 90%;
-    color: &dtml-discreetColor;;
-    margin: 0 0 0.2em 0;
-}
-
-.formHelp:hover {
-    color: &dtml-fontColor;;
-    cursor: default;
-}
-
-.formControls {
-   margin: 1em 0;
-}
-
-.error {
-    /* Class for error indication in forms */
-    background-color: &dtml-notifyBackgroundColor;;
-    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-notifyBorderColor;;
-    padding: 1em;
-    margin: 0 0 1em 0;
-    width: 95% !important;
-}
-
-.error .fieldRequired {
-   color: &dtml-notifyBackgroundColor;;
-}
-
 .card {
     background-color: &dtml-globalBackgroundColor;;
     border-color: &dtml-globalBorderColor;;
@@ -575,6 +529,86 @@ ol.visualNoMarker {
 */
 
 
+/* Collapsible elements */
+
+dl.collapsible {
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor; !important;
+    margin: 1em 0 0 0;
+    padding: 0;
+}
+
+dl.collapsible dt.collapsibleHeader {
+    display: block;
+    float: left;
+    background: &dtml-backgroundColor;;
+    line-height: 1.2em;
+    vertical-align: middle;
+    font-size: 90%;
+    position: relative;
+    top: -0.6em;
+    width: auto;
+    margin: 0 0 -0.6em 1em;
+    padding: 0 0.5em;
+}
+
+dl.collapsible dd.collapsibleContent {
+    margin: 0;
+    padding: 0 1em;
+    clear: left;
+}
+
+/* for IE the following isn't needed, that's why the css2 selector is used */
+dl.collapsible dd.collapsibleContent > dl {
+    margin: 0;
+    padding: 0;
+}
+
+dl.expandedInlineCollapsible dt.collapsibleHeader,
+dl.expandedBlockCollapsible dt.collapsibleHeader {
+    padding: 0 6px 0 22px;
+    background: &dtml-backgroundColor; url(treeExpanded.gif) no-repeat 6px 50%;
+    cursor: pointer;
+}
+
+dl.collapsedBlockCollapsible {
+    border: none !important;
+    height: 1em;
+    width: auto;
+}
+
+dl.collapsedBlockCollapsible dt.collapsibleHeader {
+    float: none;
+    position: static;
+    margin: 0;
+    padding: 0 0 0 22px;
+    line-height: 1em;
+    background: transparent url(treeCollapsed.gif) no-repeat 6px 50%;
+    cursor: pointer;
+}
+
+dl.collapsedInlineCollapsible dd.collapsibleContent,
+dl.collapsedBlockCollapsible dd.collapsibleContent {
+    display: none;
+}
+
+dl.collapsedInlineCollapsible {
+    border: none !important;
+    height: 1em;
+    width: auto;
+    display: inline;
+}
+
+dl.collapsedInlineCollapsible dt.collapsibleHeader {
+    position: static;
+    float: none;
+    margin: 0;
+    padding: 0 0 0 22px;
+    line-height: 1em;
+    background: transparent url(treeCollapsed.gif) no-repeat 6px 50%;
+    cursor: pointer;
+    display: inline;
+}
+
 .documentEditable {
     padding: 0em 2em 1em 2em !important;
 }
@@ -583,51 +617,11 @@ ol.visualNoMarker {
     padding: 0em !important;
 }
 
-.documentContent {
-    font-size: 110%;
-    padding: 1em 1em 2em 1em !important;
-    background: &dtml-backgroundColor;;
-}
-
 .documentEditable .documentContent {
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
     padding: 0;
 }
 
-
-
-/* Accessibility elements */
-
-.hiddenStructure {
-    display: block;
-    background: transparent;
-    background-image: none; /* safari bug */
-    border: none;
-    height: 1px;
-    overflow: hidden;
-    padding: 0;
-    margin: -1px 0 0 -1px;
-    width: 1px;
-}
-
-.contentViews .hiddenStructure,
-.contentActions .hiddenStructure {
-    position: absolute;
-    top: -200px;
-    left: -200px;
-}
-
-.hiddenLabel {
-    display: block;
-    background: transparent;
-    background-image: none; /* safari bug */
-    border: none;
-    height: 1px;
-    overflow: hidden;
-    padding: 0;
-    margin: -1px 0 0 -1px;
-    width: 1px;
-}
 .label {
     font-weight: bold;
     display: inline;

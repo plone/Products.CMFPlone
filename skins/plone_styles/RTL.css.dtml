@@ -176,8 +176,17 @@ Anyway, didn't get it fixed but at least we know what it is. :-/
 }
 
 .newsFooter li {
-     display: inline;
+    display: inline;
     margin: 0 0 0 1em;
+}
+
+.tileImage {
+    float: left;
+} 
+
+.newsImageContainer {
+    float: left; 
+    margin: 0 1em 0.5em 0;
 }
 
 .documentActions {
