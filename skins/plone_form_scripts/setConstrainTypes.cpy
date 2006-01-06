@@ -19,4 +19,3 @@ context.setImmediatelyAddableTypes(immediatelyAddableTypes)
 
 context.plone_utils.addPortalMessage(_(u'Changes made'))
 return state
-

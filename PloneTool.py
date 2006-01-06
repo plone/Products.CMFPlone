@@ -31,8 +31,7 @@ from Products.CMFPlone.interfaces.BrowserDefault import IDynamicViewTypeInformat
 
 from OFS.SimpleItem import SimpleItem
 from OFS.ObjectManager import bad_id
-from Globals import InitializeClass, DevelopmentMode
-
+from Globals import InitializeClass
 from AccessControl import ClassSecurityInfo, Unauthorized
 from ZODB.POSException import ConflictError
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
@@ -944,13 +943,6 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                 return lookupTranslationId(obj, page)
 
         return None
-
-    security.declarePublic('getDevelopmentMode')
-    def getDevelopmentMode(self):
-        """\
-        If Zope is running in development mode (debug mode), return True, otherwise False.
-        """
-        return DevelopmentMode
 
     security.declarePublic('addPortalMessage')
     def addPortalMessage(self, message, type='info'):

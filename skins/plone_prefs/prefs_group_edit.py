@@ -8,7 +8,6 @@
 ##title=Edit user
 ##
 
-from Products.PythonScripts.standard import url_quote
 from Products.CMFPlone import PloneMessageFactory as _
 
 REQUEST=context.REQUEST
@@ -31,8 +30,6 @@ if group:
     # for what reason ever, the very first group created does not exist
     group.setGroupProperties(processed)
 
-url='%s?%s=%s' % (context.prefs_groups_overview.absolute_url(),
-    url_quote('portal_status_message'),
-    url_quote(msg))
+context.plone_utils.addPortalMessage(msg)
 
-return REQUEST.RESPONSE.redirect(url)
+return REQUEST.RESPONSE.redirect(context.prefs_groups_overview.absolute_url())

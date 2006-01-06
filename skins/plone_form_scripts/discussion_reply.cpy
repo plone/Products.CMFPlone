@@ -61,7 +61,7 @@ anchor = reply.getId()
 from Products.CMFPlone.utils import transaction_note
 transaction_note('Added comment to %s at %s' % (parent.title_or_id(), reply.absolute_url()))
 
-msg = _(u'Comment added')
-target = '%s/%s?portal_status_message=%s#%s' % (redirect_target.absolute_url(), view, url_quote_plus(msg), anchor)
+context.plone_utils.addPortalMessage(_(u'Comment added'))
+target = '%s/%s#%s' % (redirect_target.absolute_url(), view, anchor)
 
 return req.RESPONSE.redirect(target)

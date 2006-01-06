@@ -5,7 +5,6 @@
 
 from Products.CMFPlone.utils import transaction_note
 from Products.CMFPlone import PloneMessageFactory as _
-from Products.PythonScripts.standard import url_quote_plus
 
 putils = context.plone_utils
 putils.acquireLocalRoles(context, use_acquisition)
@@ -22,9 +21,8 @@ else:
 # set the portrait cookie
 context.REQUEST.RESPONSE.setCookie('usePortraits',use_portraits,path="/")
 
-msg='%s+%s.' % (url_quote_plus(msg1), url_quote_plus(msg2))
-
 transaction_note('Modified acquisition settings for folder %s at %s' % (context.title_or_id(), context.absolute_url()))
+context.plone_utils.addPortalMessage(msg1)
+context.plone_utils.addPortalMessage(msg2)
 
-context.REQUEST.RESPONSE.redirect(context.absolute_url() + '/folder_localrole_form?portal_status_message=' + msg)
-
+context.REQUEST.RESPONSE.redirect(context.absolute_url() + '/folder_localrole_form')

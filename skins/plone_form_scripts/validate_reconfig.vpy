@@ -8,7 +8,4 @@
 ##parameters=
 ##title=validates the portal config
 
-from Products.CMFPlone import PloneMessageFactory as _
-
-# nothing to check?
 return state

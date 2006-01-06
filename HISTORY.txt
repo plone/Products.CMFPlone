@@ -4,20 +4,12 @@ Changelog for Plone
 
 Plone 2.2 (unreleased)
 
-    - Make first batch of portal messages be displayed using addPortalMessage rather
-      than the old URL hack of adding ...?portal_status_message=message to the URL.
-      [vinsci]
-
     - New infrastructure for showing portal messages! You can now show
       more than one message per web page (this also allows independent
       products to show messages that will all be shown), as well as
       messages of different types ('info', 'warn' and 'stop' are predefined
       types). See PloneTool.addPortalMessage().
-      [vinsci]
-
-    - New function to allow page templates to determine if Zope is being
-      run in development/debug mode. See PloneTool.getDevelopmentMode().
-      [vinsci]
+      [vinsci] [hannosch]
 
     - Merged hannosch-cleanup branch. This removes a lot of unused files and
       moves some files to /portal_skins/plone_deprecated which will be removed

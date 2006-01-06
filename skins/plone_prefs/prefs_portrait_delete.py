@@ -9,7 +9,6 @@
 ##
 
 from Products.CMFPlone import PloneMessageFactory as _
-from Products.PythonScripts.standard import url_quote_plus
 
 #update portrait
 REQUEST=context.REQUEST
@@ -17,12 +16,6 @@ portal_membership = context.portal_membership
 member=portal_membership.getMemberById(userid)
 
 portal_membership.deletePersonalPortrait(userid)
+context.plone_utils.addPortalMessage(_(u'Portrait deleted.'))
 
-REFERER=REQUEST.HTTP_REFERER
-if REFERER.find('portal_status_message')!=-1:
-    REFERER=REFERER[:REFERER.find('portal_status_message')]
-
-msg = _(u'Portrait deleted.')
-
-url='%s&portal_status_message=%s' % (REFERER, url_quote_plus(msg))
-return REQUEST.RESPONSE.redirect(url)
+return REQUEST.RESPONSE.redirect(REQUEST.HTTP_REFERER)

@@ -8,7 +8,6 @@
 ##parameters=password, password_confirm, current, domains=None
 
 from Products.CMFPlone import PloneMessageFactory as _
-from Products.PythonScripts.standard import url_quote_plus
 
 REQUEST=context.REQUEST
 if REQUEST.form.has_key('cancel'):
@@ -41,12 +40,9 @@ except AttributeError:
                                  REQUEST,
                                  error=failMessage)
 
-#mt.credentialsChanged(password) now in setPassword
-
 from Products.CMFPlone.utils import transaction_note
 transaction_note('Changed password for %s' % (member.getUserName()))
 
-msg = _(u'Password changed.')
-url='%s/plone_memberprefs_panel?portal_status_message=%s' % ( context.absolute_url(), url_quote_plus(msg) )
+context.plone_utils.addPortalMessage(_(u'Password changed.'))
 
-return context.REQUEST.RESPONSE.redirect(url)
+return context.REQUEST.RESPONSE.redirect('%s/plone_memberprefs_panel' % context.absolute_url())

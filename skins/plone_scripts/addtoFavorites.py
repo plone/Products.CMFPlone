@@ -9,7 +9,6 @@
 
 from Products.CMFPlone.utils import base_hasattr
 from Products.CMFPlone import PloneMessageFactory as _
-from Products.PythonScripts.standard import url_quote_plus
 
 RESPONSE = context.REQUEST.RESPONSE
 homeFolder=context.portal_membership.getHomeFolder()
@@ -18,8 +17,8 @@ view_url = '%s/%s' % (context.absolute_url(),
                      )
 
 if not homeFolder:
-    msg = _(u'Can\'t access home folder. Favorite is not added.')
-    return RESPONSE.redirect('%s?portal_status_message=%s' % (view_url, url_quote_plus(msg)))
+    context.plone_utils.addPortalMessage(_(u'Can\'t access home folder. Favorite is not added.'))
+    return RESPONSE.redirect(view_url)
 
 if not base_hasattr(homeFolder, 'Favorites'):
     homeFolder.invokeFactory('Folder', id='Favorites', title='Favorites')
@@ -37,5 +36,6 @@ targetFolder.invokeFactory('Favorite', id=new_id, title=context.TitleOrId(), rem
 
 msg = _(u'${title} has been added to your Favorites.',
         mapping={u'title' : context.title_or_id()})
+context.plone_utils.addPortalMessage(msg)
 
-return RESPONSE.redirect('%s?portal_status_message=%s' % (view_url, url_quote_plus(msg)))
+return RESPONSE.redirect(view_url)

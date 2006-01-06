@@ -5,7 +5,6 @@
 
 from Products.CMFPlone.utils import transaction_note
 from Products.CMFPlone import PloneMessageFactory as _
-from Products.PythonScripts.standard import url_quote_plus
 
 pm = context.portal_membership
 pu = context.plone_utils
@@ -60,9 +59,7 @@ if len(member_role_ids)>0:
                           member_ids=(member_id,),
                           member_role=role )
 
-msg = _(u'Local roles deleted.')
-
 transaction_note('Modified sharing for folder %s at %s' % (context.title_or_id(), context.absolute_url()))
+context.plone_utils.addPortalMessage(_(u'Local roles deleted.'))
 
-context.REQUEST.RESPONSE.redirect(context.absolute_url() + '/folder_localrole_form?portal_status_message=' + url_quote_plus(msg))
-
+context.REQUEST.RESPONSE.redirect(context.absolute_url() + '/folder_localrole_form')

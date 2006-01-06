@@ -9,12 +9,10 @@
 ##
 
 from Products.CMFPlone import PloneMessageFactory as _
-from Products.PythonScripts.standard import url_quote_plus
 
 request=context.REQUEST
 
 context.error_log.setProperties(keep_entries,copy_to_zlog,ignored_exceptions)
+context.plone_utils.addPortalMessage(_(u'Data updated.'))
 
-msg = _(u'Data updated.'')
-return request.RESPONSE.redirect(context.absolute_url() +
-            '/prefs_error_log_form?portal_status_message=%s' % url_quote_plus(msg))
+return request.RESPONSE.redirect(context.absolute_url() + '/prefs_error_log_form')
