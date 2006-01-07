@@ -4,8 +4,8 @@ from Products.CMFCore import permissions as CMFCorePermissions
 from Products.CMFPlone.migrations.migration_util import safeGetMemberDataTool, \
      safeEditProperty
 
-def two11_two12(portal):
-    """2.1.1 -> 2.1.2
+def two11_two12rc1(portal):
+    """2.1.1 -> 2.1.2-rc1
     """
     out = []
 
@@ -21,6 +21,18 @@ def two11_two12(portal):
 
     # Add new member data item
     addMemberData(portal, out)
+
+    return out
+
+
+def two12rc2_two12(portal):
+    """2.1.2-rc2 -> 2.1.2
+    """
+    out = []
+
+    # Reinstall PortalTransforms to activate the
+    # configurable safe_html transformation.
+    reinstallPortalTransforms(portal, out)
 
     return out
 
@@ -78,6 +90,7 @@ def addRenameObjectButton(portal,out):
 
             out.append("Added '%s' contentmenu action to actions tool." % newaction['name'])
 
+
 def addSEHighLightJS(portal, out):
     """Add se-highlight.js (plone_3rdParty) to ResourceRegistries.
     """
@@ -95,6 +108,7 @@ def addSEHighLightJS(portal, out):
                 jsreg.moveResourceToBottom(script)
             out.append("Added " + script + " to portal_javascipt")
 
+
 def removeDiscussionItemWorkflow(portal, out):
     """Discussion Item should not have a workflow associated with it, since
     it may then have permissions out-of-sync with the parent.
@@ -104,10 +118,23 @@ def removeDiscussionItemWorkflow(portal, out):
         wftool.setChainForPortalTypes(('Discussion Item',), ())
         out.append("Removing workflow from Discussion Item")
 
+
 def addMemberData(portal, out):
     """Add the must_change_password property to member data"""
     mt = safeGetMemberDataTool(portal)
     if mt is not None:
         safeEditProperty(mt, 'must_change_password', 0, 'boolean')
         out.append('Added must_change_password property to member data')
+
+
+def reinstallPortalTransforms(portal, out):
+    """Reinstalls PortalTransforms."""
+    transforms = getToolByName(portal, 'portal_transforms', None)
+    try:
+        transforms.safe_html.get_parameter_value('disable_transform')
+    except (AttributeError, KeyError):
+        qi = getToolByName(portal, 'portal_quickinstaller', None)
+        if qi is not None:
+            qi.reinstallProducts(['PortalTransforms'])
+            out.append('Reinstalled PortalTransforms.')
 

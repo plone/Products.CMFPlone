@@ -33,6 +33,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.factory = self.portal.portal_factory
         self.cc = self.portal.cookie_authentication
         self.skins = self.portal.portal_skins
+        self.transforms = self.portal.portal_transforms
 
     def testPloneSkins(self):
         # Plone skins should have been set up
@@ -610,6 +611,13 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
     def testFolderHasAlbumView(self):
         # Folder type should allow 'atct_album_view'
         self.failUnless('atct_album_view' in self.types.Folder.view_methods)
+
+    def testConfigurableSafeHtmlTransform(self):
+        # The safe_html transformation should be configurable
+        try:
+            self.transforms.safe_html.get_parameter_value('disable_transform')
+        except (AttrbuteError, KeyError):
+            self.fail('safe_html transformation not updated')
 
 
 class TestPortalBugs(PloneTestCase.PloneTestCase):
