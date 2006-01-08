@@ -39,18 +39,10 @@ ZopeTestCase.installProduct('PortalTransforms', quiet=1)
 ZopeTestCase.installProduct('ATContentTypes')
 ZopeTestCase.installProduct('ATReferenceBrowserWidget')
 
-ZopeTestCase.installProduct('statusmessages')
-ZopeTestCase.installProduct('Five')
-
-# Install BrowserIdManager and error_log
-from Products.CMFPlone.tests.utils import setupBrowserIdManager
-app = ZopeTestCase.app()
-setupBrowserIdManager(app)
-ZopeTestCase.utils.setupSiteErrorLog()
-
 import transaction
 from Testing.ZopeTestCase.utils import makelist
 from Products.CMFPlone.utils import _createObjectByType
+from Products.CMFPlone.tests.utils import setupBrowserIdManager
 
 from AccessControl.SecurityManagement import newSecurityManager
 from AccessControl.SecurityManagement import noSecurityManager
@@ -59,7 +51,6 @@ import time
 
 from zope.app.tests.placelesssetup import setUp, tearDown
 from Products.Five import zcml
-import Products.Five
 import Products.statusmessages
 
 portal_name = 'portal'
@@ -130,11 +121,13 @@ def setupPloneSite(app=None, id=portal_name, quiet=0, with_default_memberarea=1)
         user = app.acl_users.getUserById(portal_owner).__of__(app.acl_users)
         newSecurityManager(None, user)
         # Add Plone Site
+        setUp() # we need the component architecture for site generation
         factory = app.manage_addProduct['CMFPlone']
         factory.manage_addSite(id, '', create_userfolder=1)
         # Precreate default memberarea for performance reasons
         if with_default_memberarea:
             _createHomeFolder(app[id], default_user, 0)
+        tearDown() # clean up again
         # Log out
         noSecurityManager()
         transaction.commit()
@@ -202,5 +195,7 @@ optimize()
 
 # Create a Plone site in the test (demo-) storage
 app = ZopeTestCase.app()
+ZopeTestCase.utils.setupSiteErrorLog()
+setupBrowserIdManager(app)
 setupPloneSite(app)
 ZopeTestCase.close(app)
