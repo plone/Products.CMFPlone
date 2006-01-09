@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1.2 - Saint Etienne - (unreleased)
 
+    - Updated deprecation warnings to reflect new version numberings.
+      [hannosch]
+
     - Fixed some minor spelling mistakes and i18n / xhtml format issues.
       [hannosch]
 
@@ -565,7 +568,7 @@ Plone 2.1.1 - Coloma - Released October 13, 2005
 Plone 2.1 - Plaid - Released September 6, 2005
 
     - Added deprecation warning for DTML in CSS. We will most likely get rid
-      of this in Plone 2.2 or 2.3 to reduce complexity. If we are going to
+      of this in Plone 3.0 or 3.5 to reduce complexity. If we are going to
       support variables in CSS, ResourceRegistries should handle it, not DTML.
       [limi]
 

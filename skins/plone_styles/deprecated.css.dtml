@@ -20,7 +20,7 @@ dd.portletItemLast {
     border-style: none &dtml-borderStyle;;
 }
 
-/* Old div-based portlet syntax - this is deprecated and will be removed in plone 2.2, please use the new
+/* Old div-based portlet syntax - this is deprecated and will be removed in plone 2.5, please use the new
    definition list-based portlets above in your products. */
 
 div.portlet {

@@ -10,6 +10,6 @@
 from Products.CMFPlone.utils import log_deprecated
 # XXX DEPRECATION ahead!
 log_deprecated('The batchedFolderContents script is deprecated '
-               'and will be removed in Plone 2.2. Please use '
+               'and will be removed in Plone 2.5. Please use '
                'getFolderContents with the parameter batch=True.')
 return context.getFolderContents(contentFilter, batch=True, full_objects=True)

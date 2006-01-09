@@ -8,7 +8,7 @@
 ##title=
 ##
 from Products.CMFPlone.utils import log_deprecated
-# XXX: Remove in 2.2.
+# BBB: Remove in 2.5.
 log_deprecated('The getPageTitle script is deprecated and will '
-               'be removed in Plone 2.2.')
+               'be removed in Plone 2.5.')
 return obj.title_or_id()

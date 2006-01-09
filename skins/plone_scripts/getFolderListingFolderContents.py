@@ -10,7 +10,7 @@
 from Products.CMFPlone.utils import log_deprecated
 # XXX DEPRECATION ahead!
 log_deprecated('The getFolderListingFolderContents script is '
-               'deprecated and will be removed in Plone 2.2. '
+               'deprecated and will be removed in Plone 2.5. '
                'Please use getFolderContents with the parameter '
                'batch=True.')
 return context.getFolderContents(contentFilter, full_objects=True)
