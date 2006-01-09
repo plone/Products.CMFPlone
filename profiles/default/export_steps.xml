@@ -191,4 +191,9 @@
    Export Catalog subobjects, indexes and columns
 
  </export-step>
+ <export-step id="content_type_registry"
+              handler="Products.CMFCore.exportimport.contenttyperegistry.exportContentTypeRegistry"
+              title="Content Type Registry">
+  Export content type registry's predicates / bindings.
+ </export-step>
 </export-steps>

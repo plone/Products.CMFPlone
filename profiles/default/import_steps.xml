@@ -22,6 +22,13 @@
   <dependency step="toolset"/>
   Import catalog tool's sub-objects, indexes and columns.
  </import-step>
+ <import-step id="content_type_registry"
+              version="20051013-01"
+              handler="Products.CMFCore.exportimport.contenttyperegistry.importContentTypeRegistry"
+              title="Content Type Registry">
+  <dependency step="toolset"/>
+  Import content type registry's predicates and bindings.
+ </import-step>
  <import-step id="cookie_authentication"
               version="20050903-01"
               handler="Products.CMFSetup.cookieauth.importCookieCrumbler"
