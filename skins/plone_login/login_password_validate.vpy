@@ -12,7 +12,7 @@
 mt=context.portal_membership
 if mt.isAnonymousUser():
     # not logged in -- most likely because cookies not enabled
-    state.set(status='failure_anonymous', portal_status_message='You must enable cookies before you can log in')
+    state.set(status='failure_anonymous', portal_status_message='You must enable cookies before you can log in.')
     return state
 
 request = context.REQUEST
@@ -27,7 +27,7 @@ if failMessage:
 
 if password != password_confirm:
     state.setError('confirm', 'Passwords must match')
-    state.set(status='failure', portal_status_message='Please make sure you confirm your password')
+    state.set(status='failure', portal_status_message='Please make sure you confirm your password.')
     return state
 
 return state

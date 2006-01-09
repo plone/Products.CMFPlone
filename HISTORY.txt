@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1.2 - Saint Etienne - (unreleased)
 
+    - Fixed some minor spelling mistakes and i18n / xhtml format issues.
+      [hannosch]
+
     - Added missing migration of PortalTransforms to activate the
       new, configurable safe_html transformation.
       [stefan]

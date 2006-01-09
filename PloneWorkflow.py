@@ -42,7 +42,7 @@ def setupPrivatePloneWorkflow(wf):
 
     wf.states.addState('public')
     sdef=wf.states.public
-    sdef.setProperties( title='Publicly available'
+    sdef.setProperties( title='Published'
                         , transitions=('publish', 'reject', 'retract', 'hide') )
     sdef.setPermission(View, 1, ('Anonymous', 'Authenticated'))
     sdef.setPermission(AccessContentsInformation, 1, \
@@ -50,7 +50,7 @@ def setupPrivatePloneWorkflow(wf):
     sdef.setPermission(ModifyPortalContent, 1, ('Manager', ) )
     wf.transitions.addTransition('publicize')
     tdef = wf.transitions.publicize
-    tdef.setProperties( title='Publicize content'
+    tdef.setProperties( title='Publish'
                         , new_state_id='public'
                         , actbox_name='Publicize'
                         , actbox_url='%(content_url)s/content_history_form'

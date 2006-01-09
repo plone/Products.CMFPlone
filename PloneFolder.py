@@ -322,7 +322,7 @@ class BasePloneFolder(CMFCatalogAware, PortalFolderBase, DefaultDublinCoreImpl):
         if REQUEST is not None:
             # TODO HARDCODED FIXME!
             return self.folder_contents(self, REQUEST,
-                                        portal_status_message='Folder added')
+                                        portal_status_message='Folder added.')
 
     manage_addFolder = manage_addPloneFolder
     manage_renameObject = PortalFolderBase.manage_renameObject

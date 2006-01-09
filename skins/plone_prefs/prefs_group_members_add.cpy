@@ -15,4 +15,4 @@ group=context.portal_groups.getGroupById(groupname)
 for u in add:
     group.addMember(u)
 
-return state.set(portal_status_message = 'Changes saved.')
+return state.set(portal_status_message = 'Changes made.')
