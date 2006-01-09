@@ -12,6 +12,7 @@ REQUEST=context.REQUEST
 
 from Products.CMFPlone.utils import transaction_note
 from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone import PloneMessageFactory as _
 from ZODB.POSException import ConflictError
 
 ##
@@ -56,10 +57,10 @@ except ConflictError:
     raise
 except: # TODO Too many things could possibly go wrong. So we catch all.
     exception = context.plone_utils.exceptionString()
-    message = context.translate("Unable to send mail: ${exception}",
-                                {'exception': exception})
-    return state.set(status=state_failure, portal_status_message=message)
-
+    message = _(u'Unable to send mail: ${exception}',
+                mapping={u'exception' : exception})
+    context.plone_utils.addPortalMessage(message)
+    return state.set(status=state_failure)
 
 ## clear request variables so form is cleared as well
 REQUEST.set('message', None)
@@ -67,5 +68,5 @@ REQUEST.set('subject', None)
 REQUEST.set('sender_from_address', None)
 REQUEST.set('sender_fullname', None)
 
-state.set(portal_status_message='Mail sent.')
+context.plone_utils.addPortalMessage(_(u'Mail sent.'))
 return state

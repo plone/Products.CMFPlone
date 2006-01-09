@@ -8,6 +8,9 @@
 ##parameters=id='',file=None
 ##title=Validates file_edit_form contents
 ##
+
+from Products.CMFPlone import PloneMessageFactory as _
+
 size = 0
 id_from_file = 0
 id = id.strip()
@@ -21,7 +24,7 @@ if hasattr(context, 'get_size'):  # make sure things work with portal_factory
     size=context.get_size()
 
 if not filename and not size:
-    state.setError('file', 'You must upload a file')
+    state.setError('file', _(u'You must upload a file'))
 
 if context.CreationDate() == context.ModificationDate() and filename:
     alternative_id = filename[max( string.rfind(filename, '/')
@@ -37,6 +40,7 @@ if id_err:
     state.setError(id_from_file and 'file' or 'id', id_err)
 
 if state.getErrors():
-    return state.set(status='failure', portal_status_message='Please correct the indicated errors.')
+    context.plone_utils.addPortalMessage(_(u'Please correct the indicated errors.'))
+    return state.set(status='failure')
 else:
     return state

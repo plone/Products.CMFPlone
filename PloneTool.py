@@ -39,6 +39,10 @@ from DateTime import DateTime
 DateTime.SyntaxError
 from Products.CMFPlone.UnicodeNormalizer import normalizeUnicode
 from Products.CMFPlone.PloneFolder import ReplaceableWrapper
+from Products.CMFPlone import PloneMessageFactory as _
+
+from zope.app import zapi
+from Products.statusmessages.interfaces import IStatusMessageUtility
 
 AllowSendto = 'Allow sendto'
 CMFCorePermissions.setDefaultRoles(AllowSendto,
@@ -690,16 +694,10 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         result = []
         # first the actions
         if actions is not None:
-            trans = getToolByName(self, 'translation_service', None)
-            if trans is not None:
-                utranslate = trans.utranslate
-                for action_info in actions.get('portal_tabs', []):
-                    data = action_info.copy()
-                    data['name'] = utranslate('plone',
-                                              data['name'],
-                                              context=self,
-                                              default=data['name'])
-                    result.append(data)
+            for action_info in actions.get('portal_tabs', []):
+                data = action_info.copy()
+                data['name'] = _(data['name'], default=data['name'])
+                result.append(data)
 
         # check whether we only want actions
         if stp.getProperty('disable_folder_sections', True):
@@ -945,6 +943,49 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                 return lookupTranslationId(obj, page)
 
         return None
+
+    security.declarePublic('addPortalMessage')
+    def addPortalMessage(self, message, type='info'):
+        """\
+        Call this once or more to add messages to be displayed at the
+        top of the web page.
+
+        Examples:
+
+           putils=context.plone_utils
+           putils.addPortalMessage('A random warning message', 'warn')
+           putils.addPortalMessage('A random info message')
+
+        The arguments are:
+            message:   a string, with the text message you want to show,
+                       or a HTML fragment (see type='structure' below)
+            type:      optional, defaults to 'info'. The type determines how
+                       the message will be rendered, as it is used to select
+                       the CSS class for the message. Predefined types are:
+                       'info' - for informational messages
+                       'warn' - for warning messages
+                       'stop' - for messages about restricted access or errors.
+
+        Portal messages are by default rendered by the global_statusmessage.pt
+        page template.
+
+        It is also possible to add messages from page templates, as
+        long as they are processed before the portal_message macro is
+        called by the main template. Example:
+
+          <tal:block tal:define="temp python:putils.addPortalMessage('A random info message')" />
+        """
+        zapi.getUtility(IStatusMessageUtility).addStatusMessage(self, message, type=type)
+
+    security.declarePublic('showPortalMessages')
+    def showPortalMessages(self):
+        """\
+        Return portal status messages that will be displayed when the
+        response web page is rendered. Portal status messages are by default
+        rendered by the global_statusmessage.pt page template. They will be
+        removed after they have been shown.
+        """
+        return zapi.getUtility(IStatusMessageUtility).showStatusMessages(self)
 
     security.declarePublic('browserDefault')
     def browserDefault(self, obj):
@@ -1416,12 +1457,9 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     security.declarePublic('getEmptyTitle')
     def getEmptyTitle(self, translated=True):
         """Returns string to be used for objects with no title or id"""
-        empty = self.utf8_portal('\x5b\xc2\xb7\xc2\xb7\xc2\xb7\x5d', 'ignore')
+        empty = u'\x5b\xc2\xb7\xc2\xb7\xc2\xb7\x5d'
         if translated:
-            trans = getToolByName(self, 'translation_service', None)
-            if trans is not None:
-                empty = trans.utranslate(domain='plone', msgid='title_unset',
-                                         default=empty)
+            empty = _(u'title_unset', default=empty)
         return empty
 
     security.declarePublic('pretty_title_or_id')

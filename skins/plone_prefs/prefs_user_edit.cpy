@@ -7,6 +7,9 @@
 ##parameters=userid, portrait='',delete_portrait=''
 ##title=Edit user
 ##
+
+from Products.CMFPlone import PloneMessageFactory as _
+
 #update portrait
 REQUEST=context.REQUEST
 portal_membership = context.portal_membership
@@ -36,4 +39,5 @@ if not processed.get('visible_ids'):
 
 context.plone_utils.setMemberProperties(member, **processed)
 
-return state.set(portal_status_message='Changes made.')
+context.plone_utils.addPortalMessage(_(u'Changes made.'))
+return state

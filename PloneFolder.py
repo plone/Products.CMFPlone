@@ -23,6 +23,8 @@ from Products.CMFCore.PortalFolder import PortalFolderBase
 from Products.CMFCore import permissions as CMFCorePermissions
 from Products.CMFDefault.DublinCore import DefaultDublinCoreImpl
 
+from Products.CMFPlone import PloneMessageFactory as _
+
 # ATM it's safer to define our own
 from interfaces.OrderedContainer import IOrderedContainer
 
@@ -47,8 +49,8 @@ class ReplaceableWrapper:
 factory_type_information = {
     'id': 'Folder',
     'meta_type': 'Plone Folder',
-    'description': ("Plone folders can define custom 'view' actions, or will "
-                    "behave like directory " "listings without one defined."),
+    'description': (_(u"Plone folders can define custom 'view' actions, or will "
+                    "behave like directory listings without one defined.")),
     'icon': 'folder_icon.gif',
     'product': 'CMFPlone',
     'factory': 'addPloneFolder',
@@ -57,28 +59,28 @@ factory_type_information = {
     'actions': (
         {
             'id': 'view',
-            'name': 'View',
+            'name': _(u'View'),
             'action': 'string:${folder_url}/',
             'permissions': (CMFCorePermissions.View,),
             'category': 'folder',
         },
         {
             'id': 'local_roles',
-            'name': 'Local Roles',
+            'name': _(u'Local Roles'),
             'action': 'string:${folder_url}/folder_localrole_form',
             'permissions': (CMFCorePermissions.ManageProperties,),
             'category': 'folder',
         },
         {
             'id': 'edit',
-            'name': 'Edit',
+            'name': _(u'Edit'),
             'action': 'string:${folder_url}/folder_edit_form',
             'permissions': (CMFCorePermissions.ModifyPortalContent,),
             'category': 'folder',
         },
         {
             'id': 'folderlisting',
-            'name': 'Folder Listing',
+            'name': _(u'Folder Listing'),
             'action': 'string:${folder_url}/folder_listing',
             'permissions': (CMFCorePermissions.View,),
             'category': 'folder',
@@ -322,7 +324,7 @@ class BasePloneFolder(CMFCatalogAware, PortalFolderBase, DefaultDublinCoreImpl):
         if REQUEST is not None:
             # TODO HARDCODED FIXME!
             return self.folder_contents(self, REQUEST,
-                                        portal_status_message='Folder added')
+                                        portal_status_message=_(u'Folder added'))
 
     manage_addFolder = manage_addPloneFolder
     manage_renameObject = PortalFolderBase.manage_renameObject

@@ -7,6 +7,8 @@
 ##parameters=
 ##title=Return a dict with all names
 
+from Products.CMFPlone import PloneMessageFactory as _
+
 value = [
     ('aa', 'Afar'),
     ('ab', 'Abkhazian'),
@@ -155,5 +157,5 @@ value = [
 
 value.sort(lambda x,y:cmp(x[1], y[1]))
 # Put language neutral at the top.
-value.insert(0,('',context.translate('Language neutral (site default)')))
+value.insert(0,('',_(u'Language neutral (site default)')))
 return value

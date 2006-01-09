@@ -8,18 +8,17 @@
 ##parameters=referer,subject,message,author=None
 ##title=validates the form for sending feedback
 
+from Products.CMFPlone import PloneMessageFactory as _
 plone_utils=context.plone_utils
 
-#if not author:
-#    state.setError('author', 'Please submit an email address.', 'email_required')
-
 if not (subject and subject.strip()):
-    state.setError('subject', 'Please enter a subject.', 'email_required')
+    state.setError('subject', _(u'Please enter a subject.'), 'email_required')
 
 if not (message and message.strip()):
-    state.setError('message', 'Please enter a message', 'email_required')
+    state.setError('message', _(u'Please enter a message'), 'email_required')
 
 if state.getErrors():
-    return state.set(status='failure', portal_status_message='Please correct the indicated errors.')
+    context.plone_utils.addPortalMessage(_(u'Please correct the indicated errors.'))
+    return state.set(status='failure')
 else:
     return state

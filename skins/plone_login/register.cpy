@@ -8,6 +8,8 @@
 ##parameters=password='password', password_confirm='password_confirm', came_from_prefs=None
 ##title=Register a User
 ##
+
+from Products.CMFPlone import PloneMessageFactory as _
 from ZODB.POSException import ConflictError
 
 REQUEST=context.REQUEST
@@ -35,8 +37,9 @@ if site_properties.validate_email:
 try:
     portal_registration.addMember(username, password, properties=REQUEST)
 except AttributeError:
-    state.setError('username', 'The login name you selected is already in use or is not valid. Please choose another.')
-    return state.set(status='failure', portal_status_message='Please correct the indicated errors.')
+    state.setError('username', _(u'The login name you selected is already in use or is not valid. Please choose another.'))
+    context.plone_utils.addPortalMessage(_(u'Please correct the indicated errors.'))
+    return state.set(status='failure')
 
 if site_properties.validate_email or REQUEST.get('mail_me', 0):
     try:
@@ -49,17 +52,20 @@ if site_properties.validate_email or REQUEST.get('mail_me', 0):
         #    Should not fail.  They cant CHANGE their password ;-)  We should notify them.
         #
         # (MSL 12/28/03) We also need to delete the just made member and return to the join_form.
-               
-        state.setError('email', 'We were unable to send your password to your email address: '+str(err))
+        msg = _(u'We were unable to send your password to your email address: ${address}',
+                mapping={u'address' : str(err)})
+        state.setError('email', msg)
         state.set(came_from='logged_in')
         context.acl_users.userFolderDelUsers([username,])
-        return state.set(status='failure', portal_status_message='Please enter a valid email address.')
+        context.plone_utils.addPortalMessage(_(u'Please enter a valid email address.'))
+        return state.set(status='failure')
 
-state.set(portal_status_message=REQUEST.get('portal_status_message', 'Registered.'))
+context.plone_utils.addPortalMessage(_(u'Registered.'))
 state.set(came_from=REQUEST.get('came_from','logged_in'))
 
 if came_from_prefs:
-    state.set(status='prefs', portal_status_message='User added.')
+    context.plone_utils.addPortalMessage(_(u'User added.'))
+    state.set(status='prefs')
 
 from Products.CMFPlone import transaction_note
 transaction_note('%s registered' % username)

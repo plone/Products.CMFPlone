@@ -7,15 +7,15 @@
 ##parameters=userid, portrait=''
 ##title=Edit user
 ##
+
+from Products.CMFPlone import PloneMessageFactory as _
+
 #update portrait
 REQUEST=context.REQUEST
 portal_membership = context.portal_membership
 member=portal_membership.getMemberById(userid)
 
 portal_membership.deletePersonalPortrait(userid)
+context.plone_utils.addPortalMessage(_(u'Portrait deleted.'))
 
-REFERER=REQUEST.HTTP_REFERER
-if REFERER.find('portal_status_message')!=-1:
-    REFERER=REFERER[:REFERER.find('portal_status_message')]
-url='%s&%s' % (REFERER, 'portal_status_message=Portrait deleted.')
-return REQUEST.RESPONSE.redirect(url)
+return REQUEST.RESPONSE.redirect(REQUEST.HTTP_REFERER)

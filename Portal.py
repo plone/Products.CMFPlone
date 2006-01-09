@@ -37,6 +37,7 @@ from webdav.NullResource import NullResource
 from Products.CMFPlone.PloneFolder import ReplaceableWrapper
 from Products.CMFPlone.utils import log_exc
 from Products.CMFPlone.utils import PACKAGE_HOME
+from Products.CMFPlone import PloneMessageFactory as _
 
 default_frontpage="Unable to load front-page skeleton file"
 WWW_DIR = os.path.join(PACKAGE_HOME, 'www')
@@ -64,19 +65,19 @@ factory_type_information = { 'id'             : 'Plone Root'
   , 'global_allow'   : 0
   , 'immediate_view' : 'folder_edit_form'
   , 'actions'        : ( { 'id'            : 'view'
-                         , 'name'          : 'View'
+                         , 'name'          : _(u'View')
                          , 'action': 'string:${object_url}'
                          , 'permissions'   : (View,)
                          , 'category'      : 'object'
                          }
                        , { 'id'            : 'edit'
-                         , 'name'          : 'Edit'
+                         , 'name'          : _(u'Edit')
                          , 'action': 'string:${object_url}/edit'
                          , 'permissions'   : (ManageProperties,)
                          , 'category'      : 'object'
                          }
                        , { 'id'            : 'local_roles'
-                         , 'name'          : 'Sharing'
+                         , 'name'          : _(u'Sharing')
                          , 'action': 'string:${object_url}/sharing'
                          , 'permissions'   : (ManageProperties,)
                          , 'category'      : 'object'

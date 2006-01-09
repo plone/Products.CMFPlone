@@ -9,13 +9,14 @@
 ##title=Personalization Handler.
 
 from Products.CMFPlone.utils import transaction_note
+from Products.CMFPlone import PloneMessageFactory as _
 
 member=context.portal_membership.getAuthenticatedMember()
 
 context.portal_membership.deletePersonalPortrait(member.getId())
 
-
 tmsg='Deleted portrait for %s' % (member.getUserName())
 transaction_note(tmsg)
 
-return state.set(portal_status_message='Your portrait has been deleted.')
+context.plone_utils.addPortalMessage(_(u'Your portrait has been deleted.'))
+return state

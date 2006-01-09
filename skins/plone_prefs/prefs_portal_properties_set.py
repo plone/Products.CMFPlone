@@ -9,10 +9,13 @@
 ##title=prefs_portal_properties_set
 ##
 
+from Products.CMFPlone import PloneMessageFactory as _
+
 REQUEST=context.REQUEST
 attr = REQUEST.get('attr','')
 mh = getattr(context.portal_properties, attr)
 mh.manage_editProperties(REQUEST.form)
-msg = 'Updated.'
-REQUEST.RESPONSE.redirect('prefs_portal_properties?attr=' + attr + '&portal_status_message=' + msg)
+context.plone_utils.addPortalMessage(_(u'Updated.'))
+
+REQUEST.RESPONSE.redirect('prefs_portal_properties?attr=' + attr)
 return 0

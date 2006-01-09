@@ -8,7 +8,11 @@
 ##parameters=
 ##title=validates metadata screen
 
+from Products.CMFPlone import PloneMessageFactory as _
+
 if state.getErrors():
-    return state.set(status='failure', portal_status_message='Please correct the indicated errors.')
+    context.plone_utils.addPortalMessage(_(u'Please correct the indicated errors.'))
+    return state.set(status='failure')
 else:
-    return state.set(portal_status_message='You have been registered.')
+    context.plone_utils.addPortalMessage(_(u'You have been registered.'))
+    return state

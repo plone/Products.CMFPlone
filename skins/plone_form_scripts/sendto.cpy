@@ -13,6 +13,7 @@ REQUEST=context.REQUEST
 from Products.CMFPlone.utils import transaction_note
 from Products.CMFPlone.PloneTool import AllowSendto
 from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone import PloneMessageFactory as _
 from ZODB.POSException import ConflictError
 
 plone_utils = getToolByName(context, 'plone_utils')
@@ -22,9 +23,8 @@ pretty_title_or_id = plone_utils.pretty_title_or_id
 empty_title = plone_utils.getEmptyTitle()
 
 if not mtool.checkPermission(AllowSendto, context):
-    return state.set(
-            status='failure',
-            portal_status_message='You are not allowed to send this link.')
+    context.plone_utils.addPortalMessage(_(u'You are not allowed to send this link.'))
+    return state.set(status='failure')
 
 at = getToolByName(context, 'portal_actions')
 show = False
@@ -34,9 +34,8 @@ for action in actions:
     if action['id'] == 'sendto' and action['category'] == 'document_actions':
         show = True
 if not show:
-    return state.set(
-        status='failure',
-        portal_status_message='You are not allowed to send this link.')
+    context.plone_utils.addPortalMessage(_(u'You are not allowed to send this link.'))
+    return state.set(status='failure')
 
 # Try to find the view action. If not found, use absolute_url()
 url = context.absolute_url()
@@ -62,11 +61,13 @@ except ConflictError:
     raise
 except: # TODO To many things could possibly go wrong. So we catch all.
     exception = context.plone_utils.exceptionString()
-    message = context.translate("Unable to send mail: ${exception}",
-                                {'exception': exception})
-    return state.set(status='failure', portal_status_message=message)
+    message = _(u'Unable to send mail: ${exception}',
+                mapping={u'exception' : exception})
+    context.plone_utils.addPortalMessage(message)
+    return state.set(status='failure')
 
 tmsg='Sent page %s to %s' % (url, REQUEST.send_to_address)
 transaction_note(tmsg)
 
-return state.set(portal_status_message='Mail sent.')
+context.plone_utils.addPortalMessage(_(u'Mail sent.'))
+return state

@@ -7,6 +7,8 @@
 ##parameters=
 ##title=Initial post-login actions
 ##
+
+from Products.CMFPlone import PloneMessageFactory as _
 REQUEST=context.REQUEST
 
 # If someone has something on their clipboard, expire it.
@@ -16,7 +18,8 @@ if REQUEST.get('__cp', None) is not None:
 membership_tool=context.portal_membership
 if membership_tool.isAnonymousUser():
     REQUEST.RESPONSE.expireCookie('__ac', path='/')
-    return state.set(status='failure', portal_status_message='Login failed')
+    context.plone_utils.addPortalMessage(_(u'Login failed'))
+    return state.set(status='failure')
 
 member = membership_tool.getAuthenticatedMember()
 login_time = member.getProperty('login_time', '2000/01/01')

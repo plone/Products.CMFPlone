@@ -9,6 +9,8 @@
 ##title=Validates an object id
 ##
 
+from Products.CMFPlone import PloneMessageFactory as _
+
 # do basic id validation
 if id is not None:
     # PloneTool.contentEdit strips the id, so make sure we test the stripped version
@@ -19,7 +21,8 @@ if id_error:
     state.setError('id', id_error, new_status='failure')
 
 if state.getErrors():
-    return state.set(status='failure', portal_status_message='Please correct the indicated errors.')
+    context.plone_utils.addPortalMessage(_(u'Please correct the indicated errors.'))
+    return state.set(status='failure')
 else:
     return state
 

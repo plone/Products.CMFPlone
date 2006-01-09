@@ -1,13 +1,15 @@
-## Python Script "folder_position"
+## Controller Python Script "folder_position"
+##title=Move objects in a ordered folder
 ##bind container=container
 ##bind context=context
 ##bind namespace=
 ##bind script=script
+##bind state=state
 ##bind subpath=traverse_subpath
 ##parameters=position, id, template_id='folder_contents'
-##title=Move objects in a ordered folder
 ##
-from Products.PythonScripts.standard import url_quote
+
+from Products.CMFPlone import PloneMessageFactory as _
 
 if position.lower()=='up':
     context.moveObjectsUp(id)
@@ -28,8 +30,7 @@ if position.lower()=='ordered':
 
 context.plone_utils.reindexOnReorder(context)
 
-msg="Item's position has changed."
-response=context.REQUEST.RESPONSE
-return response.redirect('%s/%s?portal_status_message=%s' % (context.absolute_url(),
-                                                             template_id,
-                                                             url_quote(msg)) )
+msg=_(u'Item\'s position has changed.')
+context.plone_utils.addPortalMessage(msg)
+
+return state
