@@ -17,5 +17,5 @@ group=context.portal_groups.getGroupById(groupname)
 for u in add:
     group.addMember(u)
 
-context.plone_utils.addPortalMessage(_(u'Changes saved.'))
+context.plone_utils.addPortalMessage(_(u'Changes made.'))
 return state

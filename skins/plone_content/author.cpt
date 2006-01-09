@@ -47,12 +47,12 @@
           <li class="selected">
             <a href=""
                tal:attributes="href string: ${portal_url}/author/${member}"
-               i18n:translate="">View</a>
+               i18n:translate="label_view">View</a>
           </li>
           <li>
             <a href=""
                tal:attributes="href string:${portal_url}/personalize_form"
-               i18n:translate="label_groups">Edit</a>
+               i18n:translate="label_edit">Edit</a>
           </li>
         </ul>
 

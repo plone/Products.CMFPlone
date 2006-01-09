@@ -14,7 +14,16 @@ Plone 2.5 (unreleased)
       in the next release.
       [hannosch]
 
-Plone 2.1.2 - Saint Etienne - RC2 - Released January 5, 2006
+Plone 2.1.2 - Saint Etienne - (unreleased)
+
+    - Fixed some minor spelling mistakes and i18n / xhtml format issues.
+      [hannosch]
+
+    - Added missing migration of PortalTransforms to activate the
+      new, configurable safe_html transformation.
+      [stefan]
+
+   RC2 - Released January 5, 2006
 
     - Error when trying to force migrate to 2.1.2 from 2.1.1 due to non-failsafe
       addition of memberdata property. https://trac.plone.org/plone/ticket/5064

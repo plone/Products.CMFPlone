@@ -14,7 +14,7 @@ from Products.CMFPlone import PloneMessageFactory as _
 mt=context.portal_membership
 if mt.isAnonymousUser():
     # not logged in -- most likely because cookies not enabled
-    context.plone_utils.addPortalMessage(_(u'You must enable cookies before you can log in'))
+    context.plone_utils.addPortalMessage(_(u'You must enable cookies before you can log in.'))
     state.set(status='failure_anonymous')
     return state
 
@@ -30,7 +30,7 @@ if failMessage:
     return state
 
 if password != password_confirm:
-    context.plone_utils.addPortalMessage(_(u'Please make sure you confirm your password'))
+    context.plone_utils.addPortalMessage(_(u'Please make sure you confirm your password.'))
     state.setError('confirm', _(u'Passwords must match'))
     state.set(status='failure')
     return state
