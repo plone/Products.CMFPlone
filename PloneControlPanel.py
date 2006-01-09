@@ -176,7 +176,7 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
     security = ClassSecurityInfo()
 
     id = 'portal_controlpanel'
-    title = _(u'Control Panel')
+    title = 'Control Panel'
     toolicon = 'skins/plone_images/site_icon.gif'
     meta_type = ToolNames.ControlPanelTool
     _actions_form = DTMLFile( 'www/editPloneConfiglets', globals() )

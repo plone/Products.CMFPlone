@@ -17,10 +17,10 @@
                       getHomeUrl nocall:mtool/getHomeUrl;
                       getPersonalPortrait nocall:mtool/getPersonalPortrait;">
 
-        <h1 i18n:translate="heading_member_listing">Member Listing</h1>
+        <h1 i18n:translate="heading_member_listing">User Listing</h1>
 
 		<p i18n:translate="description_member_listing">
-        A list of the visible members.
+        A list of the visible users.
         </p>
 
 		<form name="search_results" action="#" method="post"
@@ -28,8 +28,8 @@
               tal:define="batch python:Batch(members, 20, int(b_start), orphan=1)">
 
 		<p>
-        <span i18n:translate="label_visible_members">Visible Members</span>:
-        <strong tal:content="python:len(members)">number of members</strong>
+        <span i18n:translate="label_visible_members">Visible Users</span>:
+        <strong tal:content="python:len(members)">number of users</strong>
         </p>
 
         <!-- Navigation -->

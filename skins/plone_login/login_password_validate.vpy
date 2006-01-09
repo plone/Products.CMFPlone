@@ -31,7 +31,7 @@ if failMessage:
 
 if password != password_confirm:
     context.plone_utils.addPortalMessage(_(u'Please make sure you confirm your password.'))
-    state.setError('confirm', _(u'Passwords must match'))
+    state.setError('confirm', _(u'Passwords must match.'))
     state.set(status='failure')
     return state
 

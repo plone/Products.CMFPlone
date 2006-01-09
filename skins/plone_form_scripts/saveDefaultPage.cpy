@@ -32,5 +32,5 @@ if not objectId in context.objectIds():
 
 context.setDefaultPage(objectId)
 
-context.plone_utils.addPortalMessage(_(u'View changed'))
+context.plone_utils.addPortalMessage(_(u'View changed.'))
 return state
