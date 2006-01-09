@@ -2,7 +2,12 @@ Changelog for Plone
 
    (name of developer listed in brackets)
 
-Plone 2.2 (unreleased)
+Plone 2.5 (unreleased)
+
+    - Merged plip108-five-translationservice r8093:8841 into trunk.
+      This implements PLIP 108 Zope3 MessageID's and PLIP 111 new portal status
+      message infrastructure.
+      [hannosch]
 
     - Merged hannosch-cleanup branch. This removes a lot of unused files and
       moves some files to /portal_skins/plone_deprecated which will be removed
