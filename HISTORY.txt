@@ -4,13 +4,6 @@ Changelog for Plone
 
 Plone 2.2 (unreleased)
 
-    - New infrastructure for showing portal messages! You can now show
-      more than one message per web page (this also allows independent
-      products to show messages that will all be shown), as well as
-      messages of different types ('info', 'warn' and 'stop' are predefined
-      types). See PloneTool.addPortalMessage().
-      [vinsci] [hannosch]
-
     - Merged hannosch-cleanup branch. This removes a lot of unused files and
       moves some files to /portal_skins/plone_deprecated which will be removed
       in the next release.
