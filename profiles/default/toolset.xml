@@ -60,8 +60,6 @@
            class="Products.CMFPlone.PloneControlPanel.PloneControlPanel"/>
  <required tool_id="portal_migration"
            class="Products.CMFPlone.MigrationTool.MigrationTool"/>
- <required tool_id="marshaller_registry"
-           class="Products.Marshall.registry.Registry"/>
  <required tool_id="portal_javascripts"
            class="Products.ResourceRegistries.tools.JSRegistry.JSRegistryTool"/>
  <required tool_id="portal_css"
