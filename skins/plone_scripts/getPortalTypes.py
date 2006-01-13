@@ -7,8 +7,6 @@
 ##parameters=
 ##title=Return a list of the content types installed in the portal
 
-### XXX pointless utility method DWM
-
 from Products.CMFCore.utils import getToolByName
 
 portal_types_tool=getToolByName(context,'portal_types')
