@@ -1,5 +1,5 @@
 #
-# Tests the security declarations Plone makes on resources 
+# Tests the security declarations Plone makes on resources
 # for access by restricted code (aka PythonScripts)
 #
 
@@ -28,7 +28,7 @@ class RestrictedPythonTest(ZopeTestCase.ZopeTestCase):
 
     def check(self, psbody):
         self.addPS('ps', body=psbody)
-        try: 
+        try:
             self.folder.ps()
         except (ImportError, Unauthorized), e:
             self.fail(e)
@@ -52,7 +52,7 @@ class TestSecurityDeclarations(RestrictedPythonTest):
         self.check('from zLOG import LOG')
 
     def testAccess_LOG(self):
-        self.check('import zLOG;' 
+        self.check('import zLOG;'
                    'print zLOG.LOG')
 
     def testImport_INFO(self):
@@ -227,7 +227,7 @@ class TestSecurityDeclarations(RestrictedPythonTest):
                    'print ZODB.POSException.ConflictError')
 
     def testRaise_ConflictError(self):
-        self.assertRaises(ConflictError, 
+        self.assertRaises(ConflictError,
             self.check, 'from ZODB.POSException import ConflictError;'
                         'raise ConflictError')
 
@@ -397,6 +397,7 @@ except DiscussionNotAllowed: pass
                                'transaction.get()')
 
     # allow sendto
+
     def testImport_AllowSendto(self):
         self.check('from Products.CMFPlone.PloneTool import AllowSendto')
 
@@ -406,9 +407,10 @@ except DiscussionNotAllowed: pass
                                'print PloneTool.AllowSendto')
 
     # ZCatalog
-    
+
     def testImport_mergeResults(self):
         self.check('from Products.ZCatalog.Catalog import mergeResults')
+
 
 class TestAcquisitionMethods(RestrictedPythonTest):
 
@@ -433,13 +435,14 @@ class TestAcquisitionMethods(RestrictedPythonTest):
     def test_aq_acquire(self):
         self.checkUnauthorized('print context.aq_acquire')
 
+
 class TestAllowSendtoSecurity(PloneTestCase.PloneTestCase):
-        
+
     def test_AllowSendto(self):
         portal = self.portal
         mtool = self.portal.portal_membership
         checkPermission = mtool.checkPermission
-        
+
         # should be allowed as Member
         self.failUnless(checkPermission(AllowSendto, portal))
         # should be allowed as Manager
@@ -448,18 +451,18 @@ class TestAllowSendtoSecurity(PloneTestCase.PloneTestCase):
         # should be allowed as anonymous
         self.logout()
         self.failUnless(checkPermission(AllowSendto, portal))
-        
+
     def test_allowsendto_changed(self):
         mtool = self.portal.portal_membership
         checkPermission = mtool.checkPermission
-        
+
         self.setRoles(['Manager'])
         self.portal.manage_permission(AllowSendto, roles=('Manager',),
                                       acquire=False)
         self.setRoles(['Member'])
-        
+
         self.failIf(checkPermission(AllowSendto, self.portal))
-        
+
     def test_sendto_script_failes(self):
         # set permission to Manager only
         self.setRoles(['Manager'])
@@ -468,7 +471,7 @@ class TestAllowSendtoSecurity(PloneTestCase.PloneTestCase):
         self.setRoles(['Member'])
         # get sendto script in context of folder
         sendto = self.folder.sendto
-        # should faile with the not allowed msg check if the msg 
+        # should faile with the not allowed msg check if the msg
         # contains the string
         msg = sendto()
         errormsg = "You%20are%20not%20allowed%20to%20send%20this%20link"
@@ -482,6 +485,7 @@ class TestSkinSecurity(PloneTestCase.PloneTestCase):
             self.folder.restrictedTraverse('folder_constraintypes_form')
         except Unauthorized:
             self.fail("Owner could not access folder_constraintypes_form")
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite
