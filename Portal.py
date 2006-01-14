@@ -21,7 +21,7 @@ def listPolicies(creation=1):
 def addPolicy(label, klass):
     custom_policies[label]=klass
 
-from Products.CMFCore.permissions import ListFolderContents, ManageProperties, View
+from Products.CMFCore.permissions import AccessContentsInformation, ListFolderContents, ManageProperties, View
 from Products.CMFCore.TypesTool import FactoryTypeInformation
 from Products.CMFCore.DirectoryView import addDirectoryViews
 from Products.CMFCore.utils import getToolByName
@@ -165,6 +165,19 @@ class PloneSite(CMFSite, OrderedContainer, BrowserDefaultMixin):
         __call__(), which is defined in BrowserDefaultMixin
         """
         return self()
+
+    security.declareProtected(AccessContentsInformation,
+			     'folderlistingFolderContents')
+    def folderlistingFolderContents(self, spec=None, contentFilter=None):
+        """Calls listFolderContents in protected only by ACI so that
+        folder_listing can work without the List folder contents permission,
+        as in CMFDefault.
+
+        This is copied from Archetypes Basefolder and is needed by the
+        reference browser.
+        """
+        return self.listFolderContents(spec, contentFilter)
+
 
 Globals.InitializeClass(PloneSite)
 

@@ -14,6 +14,12 @@ Plone 2.1.2 - Saint Etienne - (unreleased)
       new, configurable safe_html transformation.
       [stefan]
 
+    - Add a folderlistingFolderContents method to the PloneSite type. This
+      allows getting folder contents with the AccessContentsInformation
+      permission and is required by ATReferenceBrowserWidget since its
+      changeset 5440. Fixes http://trac.plone.org/plone/ticket/5115
+      [wichert]
+
    RC2 - Released January 5, 2006
 
     - Error when trying to force migrate to 2.1.2 from 2.1.1 due to non-failsafe
