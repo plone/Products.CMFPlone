@@ -111,6 +111,17 @@ class PloneGenerator:
         migs.v2_1.betas.addSearchAndNavigationConfiglets(p, out)
         migs.v2_1.betas.addIconForNavigationSettingsConfiglet(p, out)
         migs.v2_1.betas.addIconForSearchSettingsConfiglet(p, out)
+
+    def setATCTToolVersion(self, p):
+        """
+        Have to specify the portal_atct version number by hand since
+        we no longer call it's installer.
+
+        XXX This should really be handled w/ a specific import handler
+        for the tool.
+        """
+        atcttool = getToolByName(p, 'portal_atct')
+        atcttool.setVersionFromFS()
         
 def importVarious(context):
     """
@@ -138,3 +149,4 @@ def importFinalSteps(context):
     gen.setupPortalContent(site)
     gen.setupGroups(site)
     gen.performMigrationActions(site)
+    gen.setATCTToolVersion(site)
