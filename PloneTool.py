@@ -16,8 +16,9 @@ from ComputedAttribute import ComputedAttribute
 
 from Products.CMFCore.utils import UniqueObject
 from Products.CMFCore.utils import getToolByName
-from Products.CMFCore import permissions as CMFCorePermissions
-from Products.CMFCore.permissions import AccessContentsInformation
+from Products.CMFCore import permissions
+from Products.CMFCore.permissions import AccessContentsInformation, \
+                        ManagePortal, ManageUsers, ModifyPortalContent, View
 from Products.CMFCore.interfaces.DublinCore import DublinCore, MutableDublinCore
 from Products.CMFCore.interfaces.Discussions import Discussable
 from Products.CMFCore.WorkflowCore import WorkflowException
@@ -41,7 +42,7 @@ from Products.CMFPlone.UnicodeNormalizer import normalizeUnicode
 from Products.CMFPlone.PloneFolder import ReplaceableWrapper
 
 AllowSendto = 'Allow sendto'
-CMFCorePermissions.setDefaultRoles(AllowSendto,
+permissions.setDefaultRoles(AllowSendto,
                                    ('Anonymous', 'Manager',))
 
 _marker = ()
@@ -101,8 +102,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     __implements__ = (PloneBaseTool.__implements__,
                       SimpleItem.__implements__, )
 
-    security.declareProtected(CMFCorePermissions.ManageUsers,
-                              'setMemberProperties')
+    security.declareProtected(ManageUsers, 'setMemberProperties')
     def setMemberProperties(self, member, **properties):
         membership = getToolByName(self, 'portal_membership')
         if hasattr(member, 'getId'):
@@ -209,7 +209,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         We assume the obj implements IDublinCoreMetadata.
         """
         mt = getToolByName(self, 'portal_membership')
-        if not mt.checkPermission(CMFCorePermissions.ModifyPortalContent, obj):
+        if not mt.checkPermission(ModifyPortalContent, obj):
             # FIXME: Some scripts rely on this being string?
             raise Unauthorized
 
@@ -328,7 +328,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         mtr = getToolByName(self, 'mimetypes_registry')
         return mtr.list_mimetypes()
 
-    security.declareProtected(CMFCorePermissions.View, 'getWorkflowChainFor')
+    security.declareProtected(View, 'getWorkflowChainFor')
     def getWorkflowChainFor(self, object):
         """Proxy the request for the chain to the workflow tool, as
         this method is private there.
@@ -343,7 +343,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             pass
         return wfs
 
-    security.declareProtected(CMFCorePermissions.View, 'getIconFor')
+    security.declareProtected(View, 'getIconFor')
     def getIconFor(self, category, id, default=_marker):
         """Cache point for actionicons.getActionIcon call.
 
@@ -364,7 +364,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         # We want to return the actual object
         return icon
 
-    security.declareProtected(CMFCorePermissions.View, 'getReviewStateTitleFor')
+    security.declareProtected(View, 'getReviewStateTitleFor')
     def getReviewStateTitleFor(self, obj):
         """Utility method that gets the workflow state title for the
         object's review_state.
@@ -386,7 +386,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                     return w.states[objstate].title or objstate
         return None
 
-    security.declareProtected(CMFCorePermissions.View, 'getDiscussionThread')
+    security.declareProtected(View, 'getDiscussionThread')
     def getDiscussionThread(self, discussionContainer):
         """Given a discussionContainer, return the thread it is in, upwards,
         including the parent object that is being discussed.
@@ -404,7 +404,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     # Convenience method since skinstool requires loads of acrobatics.
     # We use this for the reconfig form
-    security.declareProtected(CMFCorePermissions.ManagePortal, 'setDefaultSkin')
+    security.declareProtected(ManagePortal, 'setDefaultSkin')
     def setDefaultSkin(self, default_skin):
         """Sets the default skin."""
         st = getToolByName(self, 'portal_skins')
@@ -421,7 +421,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         portal = getToolByName(self, 'portal_url').getPortalObject()
         portal._v_skindata = (self.REQUEST, self.getSkinByName(skin_name), {})
 
-    security.declareProtected(CMFCorePermissions.ManagePortal,
+    security.declareProtected(ManagePortal,
                               'changeOwnershipOf')
     def changeOwnershipOf(self, object, owner, recursive=0):
         """Changes the ownership of an object."""
@@ -1137,7 +1137,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         GRUF IS REQUIRED FOR THIS TO WORK.
         """
         mt = getToolByName(self, 'portal_membership')
-        if not mt.checkPermission(CMFCorePermissions.ModifyPortalContent, obj):
+        if not mt.checkPermission(ModifyPortalContent, obj):
             raise Unauthorized
         # Set local role status
         gruf = getToolByName(self, 'portal_url').getPortalObject().acl_users
@@ -1160,7 +1160,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     def getOwnerName(self, obj):
         """Returns the userid of the owner of an object."""
         mt = getToolByName(self, 'portal_membership')
-        if not mt.checkPermission(CMFCorePermissions.View, obj):
+        if not mt.checkPermission(View, obj):
             raise Unauthorized
         return obj.getOwner().getUserName()
 
@@ -1370,8 +1370,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         # well for btrees isn't a huge issue, since btrees are more for
         # machines than humans.
         mtool = getToolByName(self, 'portal_membership')
-        if not mtool.checkPermission(CMFCorePermissions.ModifyPortalContent,
-                                                                    parent):
+        if not mtool.checkPermission(ModifyPortalContent, parent):
             return
         cat = getToolByName(self, 'portal_catalog')
         cataloged_objs = cat(path = {'query':'/'.join(parent.getPhysicalPath()),

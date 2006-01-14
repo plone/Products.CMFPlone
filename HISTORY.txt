@@ -20,6 +20,10 @@ Plone 2.1.2 - Saint Etienne - (unreleased)
       changeset 5440. Fixes http://trac.plone.org/plone/ticket/5115
       [wichert]
 
+    - Remove more uses of the name CMFCorePermissions by using
+      CMFCore.permissions throughout the code.
+      [wichert]
+
    RC2 - Released January 5, 2006
 
     - Error when trying to force migrate to 2.1.2 from 2.1.1 due to non-failsafe

@@ -1,6 +1,8 @@
 from OFS.PropertyManager import PropertyManager
 from Products.CMFCore.utils import getToolByName
-from Products.CMFCore import permissions as CMFCorePermissions
+from Products.CMFCore.permissions import AccessInactivePortalContent, \
+        AddPortalContent, ListFolderContents, ManagePortal, \
+        ModifyPortalContent, View
 from Products.CMFCore.Expression import Expression
 from Products.CMFPlone.migrations.migration_util import safeEditProperty
 from Acquisition import aq_get
@@ -94,7 +96,7 @@ def installExternalEditor(self, portal):
                                 name='External Edit',
                                 action='string:$object_url/external_edit',
                                 condition='',
-                                permission=CMFCorePermissions.ModifyPortalContent,
+                                permission=ModifyPortalContent,
                                 category='object',
                                 visible=0 )
         portal.manage_permission(ExternalEditorPermission,
@@ -184,7 +186,7 @@ def correctFolderContentsAction(actionTool):
         if action.id=='folderContents':
             action.name=action.title='Contents'
             action.condition=Expression('object/displayContentsTab')
-            action.permissions=(CMFCorePermissions.ListFolderContents,)
+            action.permissions=(ListFolderContents,)
     actionTool._actions=_actions
 
 
@@ -194,7 +196,7 @@ def modifyMembershipTool(self, portal):
                 ,'Workspace'
                 ,'python: portal.portal_membership.getHomeUrl()+"/workspace"'
                 ,'python: member and portal.portal_membership.getHomeFolder() is not None'
-                ,'View'
+                ,View
                 ,'user'
                 , visible=0)
     new_actions=[]
@@ -260,26 +262,26 @@ def addNewActions(self, portal):
                  name='Home',
                  action='string:$portal_url',
                  condition='',
-                 permission='View',
+                 permission=View,
                  category='portal_tabs')
     at.addAction('change_ownership',
                  name='Ownership',
                  action='string:${object_url}/ownership_form',
                  condition='',
-                 permission=CMFCorePermissions.ManagePortal,
+                 permission=ManagePortal,
                  category='object_tabs',
                  visible=0)
     at.addAction('rename',
                  name='Rename',
                  action='string:folder_rename_form:method',
                  condition='',
-                 permission=CMFCorePermissions.AddPortalContent,
+                 permission=AddPortalContent,
                  category='folder_buttons')
     at.addAction('paste',
                  name='Paste',
                  action='string:folder_paste:method',
                  condition='folder/cb_dataValid',
-                 permission=CMFCorePermissions.AddPortalContent,
+                 permission=AddPortalContent,
                  category='folder_buttons')
     at.addAction('delete',
                  name='Delete',
@@ -301,7 +303,7 @@ def addNewActions(self, portal):
     at._actions = cloned_actions
 
 def setPortalDefaultPermissions(self, portal):
-    portal.manage_permission(CMFCorePermissions.AccessInactivePortalContent,
+    portal.manage_permission(AccessInactivePortalContent,
                                                 ('Owner',), acquire=1)
     portal.manage_permission(ViewGroups, ('Manager', 'Owner', 'Member'),
                                                             acquire=1)
