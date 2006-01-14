@@ -42,7 +42,7 @@
            class="Products.CMFPlone.InterfaceTool.InterfaceTool"/>
  <required tool_id="portal_factory"
            class="Products.CMFPlone.FactoryTool.FactoryTool"/>
- <required tool_id="portal_migrations"
+ <required tool_id="portal_migration"
            class="Products.CMFPlone.MigrationTool.MigrationTool"/>
  <required tool_id="portal_actionicons"
            class="Products.CMFPlone.ActionIconsTool.ActionIconsTool"/>
@@ -58,8 +58,6 @@
            class="Products.CMFPlone.TranslationServiceTool.TranslationServiceTool"/>
  <required tool_id="portal_controlpanel"
            class="Products.CMFPlone.PloneControlPanel.PloneControlPanel"/>
- <required tool_id="portal_migration"
-           class="Products.CMFPlone.MigrationTool.MigrationTool"/>
  <required tool_id="portal_javascripts"
            class="Products.ResourceRegistries.tools.JSRegistry.JSRegistryTool"/>
  <required tool_id="portal_css"
