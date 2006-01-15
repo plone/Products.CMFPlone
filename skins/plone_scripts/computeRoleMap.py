@@ -34,7 +34,7 @@ for name, roles, type, id in local_roles:
 	    'local'		: roles 
 	}
 
-# XXX: process global roles
+# TODO: process global roles
 
 # now sort the list: first Owner role, then groups, then users, and then alphabetically
 

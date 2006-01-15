@@ -14,7 +14,8 @@
             Title or id
         </h1>
 
-        <table class="vertical listing" style="float: right; width: 20em; clear: right;"
+        <div class="eventDetails">
+        <table class="vertical listing"
                summary="Event details" i18n:attributes="summary summary_event_details;">
 
             <tbody>
@@ -84,6 +85,7 @@
                 </tr>
             </tbody>
         </table>
+        </div>
 
         <div metal:use-macro="here/document_byline/macros/byline">
             Get the byline - contains details about author and modification date.

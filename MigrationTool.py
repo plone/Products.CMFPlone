@@ -9,7 +9,7 @@ from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFPlone.utils import versionTupleFromString
 from Products.CMFPlone.utils import log
 from Products.CMFPlone.utils import classImplements
-from Products.CMFPlone import transaction
+import transaction
 
 import zLOG
 import traceback

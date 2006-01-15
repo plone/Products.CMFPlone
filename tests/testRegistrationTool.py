@@ -75,7 +75,7 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
         # http://plone.org/collector/3000
         self.portal.manage_permission(AddPortalMember, ['Manager'], acquire=0)
         self.app.REQUEST['username'] = member_id
-        # XXX: register has a proxy role but we trip over
+        # TODO: register has a proxy role but we trip over
         # validate_registration... (2.0.5)
         self.assertRaises(Unauthorized, self.portal.register)
 

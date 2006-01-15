@@ -31,7 +31,7 @@ class PythonChecker(BaseChecker):
         """Returns false if text is found in data"""
         if super(PythonChecker, self).check(data):
             # Python Scripts should never make it
-            # XXX We need a better check here
+            # TODO We need a better check here
             if data.split('\n')[0].startswith('## '):
                 return False
             if data.find('##parameters=') > -1:

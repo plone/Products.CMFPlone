@@ -381,10 +381,6 @@ for testInstance in testInstances:
         instance   = instance
         forcedImpl = forcedImpl
 
-    # add the testing method to the class to get a nice name
-    setattr(InstanceInterfaceTest, funcName, lambda self: self._testStuff())
-    tests.append(InstanceInterfaceTest)
-
 import unittest
 
 def test_suite():

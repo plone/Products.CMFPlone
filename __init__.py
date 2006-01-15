@@ -1,7 +1,6 @@
 import sys
 import os
 import Globals
-import transaction
 
 from Products.GenericSetup import BASE
 from Products.GenericSetup import profile_registry
@@ -215,3 +214,6 @@ def initialize(context):
 
     ModuleSecurityInfo('Products.CMFPlone').declarePrivate('transaction')
 
+# Provide backward compatibility for products relying on this import location
+# BBB: Remove in Plone 2.3
+import transaction

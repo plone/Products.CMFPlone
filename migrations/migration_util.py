@@ -4,12 +4,6 @@ from Products.CMFCore.utils import getToolByName
 import zLOG
 from Products.CMFPlone.MemberDataTool import MemberDataTool
 
-try:
-    True
-except NameError:
-    True =1
-    False=0
-
 def safeEditProperty(obj, key, value, data_type='string'):
     """ An add or edit function, surprisingly useful :) """
     if obj.hasProperty(key):
@@ -44,7 +38,6 @@ def saveCloneActions(actionprovider):
     except AttributeError:
         # Stumbled across ancient dictionary actions
         if not hasattr(aq_base(actionprovider), '_convertActions'):
-            # XXX that's bad :[
             return False, ('Can\'t convert actions of %s! Jumping to next action.' % actionprovider.getId(), zLOG.ERROR)
         else:
             actionprovider._convertActions()

@@ -6,7 +6,7 @@ import urlparse
 
 from Products.CMFPlone.utils import log
 from Products.CMFPlone.utils import log_exc
-from Products.CMFPlone import transaction
+import transaction
 from Products.CMFPlone import utils
 
 from AccessControl import getSecurityManager
@@ -277,7 +277,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             parent.manage_renameObject(obj.getId(), id)
 
     def _makeTransactionNote(self, obj, msg=''):
-        #XXX Why not aq_parent()?
+        #TODO Why not aq_parent()?
         relative_path = '/'.join(getToolByName(self, 'portal_url').getRelativeContentPath(obj)[:-1])
         charset = self.getSiteEncoding()
         if not msg:
@@ -396,7 +396,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     # Set the skin on the page to the specified value
     # Can be called from a page template, but it must be called before
     # anything anything on the skin path is resolved (e.g. main_template).
-    # XXX Note: This method will eventually be replaced by the setCurrentSkin
+    # TODO Note: This method will eventually be replaced by the setCurrentSkin
     # method that is slated for CMF 1.4
     security.declarePublic('setCurrentSkin')
     def setCurrentSkin(self, skin_name):
@@ -501,7 +501,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     def typesToList(self):
         return utils.typesToList(self)
 
-    # XXX Please, refactor me! :-)
+    # TODO Please, refactor me! :-)
     security.declarePublic('createNavTree')
     def createNavTree(self, context, sitemap=None, request=None):
         """Returns a structure that can be used by navigation_tree_slot.
@@ -933,7 +933,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                 # No data
                 continue
             if accessor == 'Publisher' and value == 'No publisher':
-                # No publisher is hardcoded (XXX: still?)
+                # No publisher is hardcoded (TODO: still?)
                 continue
             if isinstance(value, (list, tuple)):
                 # convert a list to a string

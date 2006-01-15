@@ -9,7 +9,7 @@
 ##title=Validate login
 ##
 
-LOGIN_FAILED_MESSAGE = 'Login failed'  # XXX need a friendlier message here
+LOGIN_FAILED_MESSAGE = 'Login failed'  # TODO need a friendlier message here
 
 request = context.REQUEST
 js_enabled = request.get('js_enabled',0) # is javascript enabled?

@@ -22,7 +22,7 @@ def reindexPathIndex(portal, out):
             continue
         for name,index in catalog.Indexes.objectItems():
             if (index.meta_type == "ExtendedPathIndex" and
-            getattr(catalog.Indexes['path'], '_index_parents', None) is None):
+            getattr(catalog.Indexes._getOb('path', None), '_index_parents', None) is None):
                 # Reduce threshold for the reindex run
                 old_threshold = catalog.threshold
                 pg_threshold = getattr(catalog, 'pgthreshold', 0)

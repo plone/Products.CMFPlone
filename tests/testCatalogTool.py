@@ -13,7 +13,7 @@ from Acquisition import aq_base
 from Globals import REPLACEABLE
 from DateTime import DateTime
 from Products.CMFCore.permissions import AccessInactivePortalContent
-from Products.CMFPlone import transaction
+import transaction
 
 from Products.CMFPlone.CatalogTool import ExtensibleIndexableObjectRegistry
 from Products.CMFPlone.CatalogTool import ExtensibleIndexableObjectWrapper
@@ -250,7 +250,7 @@ class TestCatalogIndexing(PloneTestCase.PloneTestCase):
     def testIndexTitleOnly(self):
         # Indexing should only index the Title
         #
-        # XXX: This does not work as expected. The object
+        # TODO: This does not work as expected. The object
         # appears to be in the catalog but is not returned
         # by searchResults()!?
         #
@@ -266,7 +266,7 @@ class TestCatalogIndexing(PloneTestCase.PloneTestCase):
     def testIndexIdOnly(self):
         # Indexing should only index the id
         #
-        # XXX: Demonstrate that the behavior is independent
+        # TODO: Demonstrate that the behavior is independent
         # of index type.
         #
         self.catalog.indexObject(self.folder.doc, idxs=['getId'])

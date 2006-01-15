@@ -546,7 +546,7 @@ ol.visualNoMarker {
 .actionMenuSelected {
     display: block;
     cursor: default;
-    background-image: url(<dtml-var portal_url>/confirm_icon.gif);
+    background-image: url(<dtml-var portal_url>/bullet_icon.gif);
     background-repeat: no-repeat;
     background-position: 0% 3px;
     padding-left: 16px !important;

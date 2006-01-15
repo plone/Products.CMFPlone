@@ -10,7 +10,7 @@ from Products.CMFPlone.utils import _createObjectByType, base_hasattr
 from Products.CMFPlone.migrations.migration_util import installOrReinstallProduct, \
      safeGetMemberDataTool
 from Products.CMFCore.Expression import Expression
-from Products.CMFPlone import transaction
+import transaction
 
 fti_meta_type = DynamicViewTypeInformation.meta_type
 
