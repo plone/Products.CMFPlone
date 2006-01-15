@@ -1,16 +1,17 @@
 from Products.CMFCore.WorkflowTool import addWorkflowFactory
 from Products.DCWorkflow.DCWorkflow import DCWorkflowDefinition
-from Products.CMFCore import permissions as CMFCorePermissions
+from Products.CMFCore.permissions import AccessContentsInformation, \
+        ListFolderContents, ModifyPortalContent, View
 from Products.DCWorkflow.Default import setupDefaultWorkflowRev2
 
 def setupFolderWorkflow(wf):
     setupDefaultWorkflowRev2(wf)
     #Published folders means that anonymous should be able to 'list the folder contents'
-    wf.permissions+=(CMFCorePermissions.ListFolderContents, )
-    wf.states.published.permission_roles[CMFCorePermissions.ListFolderContents]=['Anonymous',]
-    wf.states.published.permission_roles[CMFCorePermissions.ModifyPortalContent]=('Manager', 'Owner')
-    wf.states.visible.permission_roles[CMFCorePermissions.ListFolderContents]=('Manager', 'Owner', 'Member')
-    wf.states.private.permission_roles[CMFCorePermissions.ListFolderContents]=('Manager', 'Owner')
+    wf.permissions+=(ListFolderContents, )
+    wf.states.published.permission_roles[ListFolderContents]=['Anonymous',]
+    wf.states.published.permission_roles[ModifyPortalContent]=('Manager', 'Owner')
+    wf.states.visible.permission_roles[ListFolderContents]=('Manager', 'Owner', 'Member')
+    wf.states.private.permission_roles[ListFolderContents]=('Manager', 'Owner')
     wf.states.deleteStates( ('pending', ) )
     state_priv=wf.states['private']
     state_priv.transitions = ('publish', 'show')
@@ -19,7 +20,7 @@ def setupFolderWorkflow(wf):
     wf.transitions.deleteTransitions( ('submit', 'reject') )
     trans_publish=wf.transitions['publish']
     trans_publish_guard=trans_publish.getGuard()
-    trans_publish_guard.permissions=(CMFCorePermissions.ModifyPortalContent, )
+    trans_publish_guard.permissions=(ModifyPortalContent, )
     trans_publish_guard.roles=('Owner', 'Manager')
 
 def createFolderWorkflow(id):
@@ -34,26 +35,26 @@ addWorkflowFactory( createFolderWorkflow, id='folder_workflow'
 
 def setupPrivateFolderWorkflow(wf):
     setupFolderWorkflow(wf)
-    wf.states.visible.permission_roles[CMFCorePermissions.View] = ('Member', 'Reviewer', 'Manager')
-    wf.states.published.permission_roles[CMFCorePermissions.ListFolderContents] = ('Authenticated', 'Manager')
-    wf.states.published.permission_roles[CMFCorePermissions.View] = ('Member', 'Reviewer', 'Manager')
+    wf.states.visible.permission_roles[View] = ('Member', 'Reviewer', 'Manager')
+    wf.states.published.permission_roles[ListFolderContents] = ('Authenticated', 'Manager')
+    wf.states.published.permission_roles[permissions.View] = ('Member', 'Reviewer', 'Manager')
     wf.states.setInitialState(id='private')
 
     wf.states.addState('public')
     sdef=wf.states.public
     sdef.setProperties( title='Publicly available'
                       , transitions=('reject', 'retract', 'hide') )
-    sdef.setPermission( CMFCorePermissions.View, 1, ('Anonymous', 'Authenticated') )
-    sdef.setPermission( CMFCorePermissions.AccessContentsInformation, 1, ('Anonymous', 'Authenticated') )
-    sdef.setPermission( CMFCorePermissions.ListFolderContents, 1, ('Anonymous', 'Authenticated') )
-    sdef.setPermission( CMFCorePermissions.ModifyPortalContent, 1, ('Manager', ) )
+    sdef.setPermission( View, 1, ('Anonymous', 'Authenticated') )
+    sdef.setPermission( AccessContentsInformation, 1, ('Anonymous', 'Authenticated') )
+    sdef.setPermission( ListFolderContents, 1, ('Anonymous', 'Authenticated') )
+    sdef.setPermission( ModifyPortalContent, 1, ('Manager', ) )
     wf.transitions.addTransition('publicize')
     tdef=wf.transitions.publicize
     tdef.setProperties( title='Publicize content'
                       , new_state_id='public'
                       , actbox_name='Publicize'
                       , actbox_url='%(content_url)s/content_history_form'
-                      , props={'guard_permissions':CMFCorePermissions.ModifyPortalContent
+                      , props={'guard_permissions':ModifyPortalContent
                               ,'guard_roles':'Owner;Manager'} )
     for sdef in wf.states.objectValues():
         sdef.setProperties( transitions=tuple(sdef.transitions)+('publicize',) )

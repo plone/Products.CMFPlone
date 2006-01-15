@@ -1,7 +1,7 @@
 # Please note that this approach will gradually be phased out, probably in
-# Plone 2.2 or 2.3. Using DTML in CSS is something we want to stop doing.
+# Plone 3.0 or 3.5. Using DTML in CSS is something we want to stop doing.
 
-DEPRECATED:string=This approach is deprecated and will be phased out in Plone 2.2 or 2.3
+DEPRECATED:string=This approach is deprecated and will be phased out in Plone 3.0 or 3.5
 
 title:string=Plone's color, font, logo and border defaults
 
