@@ -21,9 +21,9 @@
             action="."
             method="post"
             tal:attributes="action string:${here_url}/${template_id}"
-            tal:define="folder python:test(getattr(here.aq_explicit, 'isPrincipiaFolderish', 0), here, here.getParentNode());
+            tal:define="folder python:test(getattr(here.aq_explicit, 'isPrincipiaFolderish', 0), here, here.aq_inner.getParentNode());
                         isContextDefaultPage here/isDefaultPageInFolder;
-                        parent_folder python: isContextDefaultPage and here.getParentNode() or folder;
+                        parent_folder python: isContextDefaultPage and here.aq_inner.getParentNode() or folder;
                         contextHasIndexHtml context/hasIndexHtml;
                         folderHasIndexHtml parent_folder/hasIndexHtml;
                         parentVocab parent_folder/getSelectableViews;

@@ -26,5 +26,5 @@ class NavigationPortlet(utils.BrowserView):
         g = getView(context, 'plone', self.request)
         portal = g.portal
         return (portal == context or
-                (portal == context.getParentNode() and
+                (portal == context.aq_inner.getParentNode() and
                  context.plone_utils.isDefaultPage(context)))

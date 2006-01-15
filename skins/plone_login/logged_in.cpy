@@ -20,8 +20,16 @@ if membership_tool.isAnonymousUser():
 
 member = membership_tool.getAuthenticatedMember()
 login_time = member.getProperty('login_time', '2000/01/01')
-if  str(login_time) == '2000/01/01':
-    state.set(status='initial_login', initial_login=True)
+initial_login = int(str(login_time) == '2000/01/01')
+state.set(initial_login=initial_login)
+
+must_change_password = member.getProperty('must_change_password', 0)
+state.set(must_change_password=must_change_password)
+
+if initial_login:
+    state.set(status='initial_login')
+elif  must_change_password:
+    state.set(status='change_password')
 
 membership_tool.setLoginTimes()
 membership_tool.createMemberArea()

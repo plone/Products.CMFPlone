@@ -18,12 +18,13 @@
 
 /* The new portlet CSS - these will be switched to non-qualified classes
    (ie. .portlet, not dl.portlet) once the old portlet layout is removed in
-   Plone 2.2. ~limi */
+   Plone 2.5. ~limi */
 
 /* Main portlet elements */
 
 dl.portlet {
     margin: 1px 0 1em 0;
+    border-bottom: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
 }
 
 dl.portlet a {
@@ -60,21 +61,6 @@ dd.portletFooter a:visited {
     border-right: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
 }
 
-.portletItemSingle {
-    margin: 0;
-    padding: 1em;
-    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
-    border-top: none;
-}
-
-dd.portletItemLast {
-    margin: 0;
-    padding: 0.25em 1em;
-    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
-    border-top-style: none;
-}
-
-
 .portletItem a {
     display: block;
 }
@@ -90,7 +76,7 @@ dd.portletFooter {
     margin: 0;
     padding: 0.25em 1em;
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
-    border-top-style: dotted;
+    border-style: dotted &dtml-borderStyle; none &dtml-borderStyle;;
     text-align: right;
 }
 
@@ -132,7 +118,7 @@ dd.portletFooter {
     margin: 0;
 }
 
-.navTreeItem a {
+dd.portletItem .navTreeItem a {
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-backgroundColor;;
     display: block;
     text-decoration: none;
@@ -140,7 +126,7 @@ dd.portletFooter {
     padding-bottom: 0.25em;
 }
 
-.navTreeItem a:hover {
+dd.portletItem .navTreeItem a:hover {
     background-color: &dtml-globalBackgroundColor;;
     color: &dtml-globalFontColor;;
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;

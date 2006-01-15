@@ -15,6 +15,8 @@ try:
 except AttributeError:
     return state.set(status='failure', portal_status_message='While changing your password an AttributeError occurred.  This is usually caused by your user being defined outside the portal.')
 
+member.setProperties(must_change_password=0)
+
 from Products.CMFPlone import transaction_note
 transaction_note('Changed password for %s' % (member.getUserName()))
 

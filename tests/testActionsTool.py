@@ -8,11 +8,20 @@ if __name__ == '__main__':
 
 from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
-from cStringIO import StringIO
-import traceback
+from OFS.SimpleItem import Item
+from Acquisition import Explicit
+from traceback import format_exception
 from sets import Set
 
-expected_filtered_actions=Set(['site_actions', 'object', 'workflow', 'portal_tabs', 'global', 'object_buttons', 'document_actions', 'user', 'folder_buttons', 'folder'])
+class ExplicitItem(Item, Explicit):
+    '''Item without implicit acquisition'''
+    id = 'dummy'
+    meta_type = 'Dummy Item'
+
+expected_filtered_actions=Set(['site_actions', 'object', 'workflow', 'portal_tabs',
+                               'global', 'object_buttons', 'document_actions',
+                               'user', 'folder_buttons', 'folder'])
+
 
 class TestActionsTool(PloneTestCase.PloneTestCase):
 
@@ -22,10 +31,9 @@ class TestActionsTool(PloneTestCase.PloneTestCase):
 
     def fail_tb(self, msg):
         """ special fail for capturing errors """
-        out = StringIO()
-        t, e, tb = sys.exc_info()
-        traceback.print_exc(tb, out)
-        self.fail("%s\n %s\n %s\n %s\n" %( msg, t, e,  out.getvalue()) )
+        e, v, tb = sys.exc_info()
+        tb = ''.join(format_exception(e, v, tb))
+        self.fail("%s\n%s\n" % (msg, tb))
 
     def testAddAction(self):
         # addAction should work even though PloneTestCase patches _cloneActions
@@ -51,18 +59,28 @@ class TestActionsTool(PloneTestCase.PloneTestCase):
         self.assertEqual(Set(self.actions.listFilteredActionsFor(self.folder).keys()),
                          expected_filtered_actions)
 
+    def testPortalRegistrationIsActionProvider(self):
+        self.failUnless('portal_registration' in self.actions.listActionProviders())
+
     def testMissingActionProvider(self):
         self.portal._delObject('portal_registration')
         try:
-            self.actions.listFilteredActionsFor(self.folder)
-        except :
+            self.actions.listFilteredActionsFor(self.portal)
+        except:
             self.fail_tb('Should not bomb out if a provider is missing')
 
     def testBrokenActionProvider(self):
         self.portal.portal_registration = None
         try:
-            self.actions.listFilteredActionsFor(self.folder)
-        except :
+            self.actions.listFilteredActionsFor(self.portal)
+        except:
+            self.fail_tb('Should not bomb out if a provider is broken')
+
+    def testMissingListActions(self):
+        self.portal.portal_registration = ExplicitItem()
+        try:
+            self.actions.listFilteredActionsFor(self.portal)
+        except:
             self.fail_tb('Should not bomb out if a provider is broken')
 
     def testDocumentActionsPermissionBug(self):

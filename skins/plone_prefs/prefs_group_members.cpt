@@ -45,7 +45,7 @@
       &nbsp;
     </div>
 
-    <div id="region-content">
+    <div id="region-content" class="documentContent">
 
       <div metal:use-macro="here/global_statusmessage/macros/portal_message">
         Portal status message
@@ -230,7 +230,7 @@
                            class="noborder"
                            name="add:list"
                            value="value"
-                             tal:attributes="value this_user/getGroupId | this_user/getId" />
+                             tal:attributes="value this_user/getId" />
                   </td>
 
                   <td>

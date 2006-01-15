@@ -123,6 +123,9 @@ from Products.CMFPlone.migrations.v2_1.rcs import reorderStylesheets as reorderS
 from Products.CMFPlone.migrations.v2_1.final_two11 import reindexPathIndex
 from Products.CMFPlone.migrations.v2_1.two11_two12 import removeCMFTopicSkinLayer
 from Products.CMFPlone.migrations.v2_1.two11_two12 import addRenameObjectButton
+from Products.CMFPlone.migrations.v2_1.two11_two12 import addSEHighLightJS
+from Products.CMFPlone.migrations.v2_1.two11_two12 import removeDiscussionItemWorkflow
+from Products.CMFPlone.migrations.v2_1.two11_two12 import addMemberData
 
 from Products.CMFDynamicViewFTI.migrate import migrateFTI
 
@@ -3300,8 +3303,11 @@ class TestMigrations_v2_1_1(MigrationTest):
 class TestMigrations_v2_1_2(MigrationTest):
 
     def afterSetUp(self):
-        self.skins = self.portal.portal_skins
         self.actions = self.portal.portal_actions
+        self.memberdata = self.portal.portal_memberdata
+        self.skins = self.portal.portal_skins
+        self.types = self.portal.portal_types
+        self.workflow = self.portal.portal_workflow
 
     def testRemoveCMFTopicSkinPathFromDefault(self):
         # Should remove plone_3rdParty/CMFTopic from skin paths
@@ -3368,6 +3374,57 @@ class TestMigrations_v2_1_2(MigrationTest):
         # Should not fail if tool is missing
         self.portal._delObject('portal_actions')
         addRenameObjectButton(self.portal, [])
+
+    def testAddSEHighLightJS(self):
+        jsreg = self.portal.portal_javascripts
+        script_ids = jsreg.getResourceIds()
+        self.failUnless('se-highlight.js' in script_ids)
+        # if highlightsearchterms.js is available se-highlight.js
+        # should be positioned right underneath it
+        if 'highlightsearchterms.js' in script_ids:
+            posSE = jsreg.getResourcePosition('se-highlight.js')
+            posHST = jsreg.getResourcePosition('highlightsearchterms.js')
+            self.failUnless((posSE - 1) == posHST)
+
+    def testRemoveDiscussionItemWorkflow(self):
+        self.workflow.setChainForPortalTypes(('Discussion Item',), ('(Default)',))
+        removeDiscussionItemWorkflow(self.portal, [])
+        self.assertEqual(self.workflow.getChainForPortalType('Discussion Item'), ())
+
+    def testRemoveDiscussionItemWorkflowNoTool(self):
+        self.portal._delObject('portal_workflow')
+        removeDiscussionItemWorkflow(self.portal, [])
+        
+    def testRemoveDiscussionItemWorkflowNoType(self):
+        self.types._delObject('Discussion Item')
+        removeDiscussionItemWorkflow(self.portal, [])
+
+    def testRemoveDiscussionItemWorkflowTwice(self):
+        self.workflow.setChainForPortalTypes(('Discussion Item',), ('(Default)',))
+        removeDiscussionItemWorkflow(self.portal, [])
+        self.assertEqual(self.workflow.getChainForPortalType('Discussion Item'), ())
+        removeDiscussionItemWorkflow(self.portal, [])
+        self.assertEqual(self.workflow.getChainForPortalType('Discussion Item'), ())
+
+    def testAddMustChangePassword(self):
+        # Should add the 'must change password' property
+        self.removeMemberdataProperty('must_change_password')
+        self.failIf(self.memberdata.hasProperty('must_change_password'))
+        addMemberData(self.portal, [])
+        self.failUnless(self.memberdata.hasProperty('must_change_password'))
+
+    def testAddMustChangePasswordTwice(self):
+        # Should not fail if migrated again
+        self.removeMemberdataProperty('must_change_password')
+        self.failIf(self.memberdata.hasProperty('must_change_password'))
+        addMemberData(self.portal, [])
+        addMemberData(self.portal, [])
+        self.failUnless(self.memberdata.hasProperty('must_change_password'))
+
+    def testAddMustChangePasswordNoTool(self):
+        # Should not fail if portal_memberdata is missing
+        self.portal._delObject('portal_memberdata')
+        addMemberData(self.portal, [])
 
 
 def test_suite():

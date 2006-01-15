@@ -103,7 +103,7 @@ class TestContentPublishing(PloneTestCase.PloneTestCase):
         self._checkMD(lyrics)
         lyrics.content_status_modify(workflow_action='retract')
         self._checkMD(lyrics)
-        
+
     def testInstaPublishingWordFile(self):
         self.folder.invokeFactory('File', id='lyrics.doc')
         lyrics = self.folder['lyrics.doc']
@@ -115,28 +115,48 @@ class TestContentPublishing(PloneTestCase.PloneTestCase):
         self.failUnless(lyrics.Format()=='application/msword')
         lyrics.content_status_modify(workflow_action='retract')
         self.failUnless(lyrics.Format()=='application/msword')
-        
+
     # Test the recursive behaviour of content_status_modify and folder_publish:
-        
+
     def testPublishingSubobjects(self):
         self.setRoles(['Manager']) # Make sure we can publish directly
         self.folder.invokeFactory('Document', id = 'd1', title = 'Doc 1')
         self.folder.invokeFactory('Folder', id = 'f1', title = 'Folder 1')
         self.folder.f1.invokeFactory('Document', id = 'd2', title = 'Doc 2')
+        self.folder.f1.invokeFactory('Folder', id = 'f2', title = 'Folder 2')
         paths = []
         for o in (self.folder.d1, self.folder.f1):
             paths.append('/'.join(o.getPhysicalPath()))
         self.folder.folder_publish(workflow_action = 'publish', 
                                    paths = paths, 
                                    include_children = True)
-        for o in (self.folder.d1, self.folder.f1, self.folder.f1.d2):
+        for o in (self.folder.d1, self.folder.f1, self.folder.f1.d2, self.folder.f1.f2):
             self.assertEqual(self.workflow.getInfoFor(o, 'review_state'),'published')
-        
+
+    def testPublishingSubobjectsAndExpireThem(self):
+        self.setRoles(['Manager']) # Make sure we can publish directly
+        self.folder.invokeFactory('Document', id = 'd1', title = 'Doc 1')
+        self.folder.invokeFactory('Folder', id = 'f1', title = 'Folder 1')
+        self.folder.f1.invokeFactory('Document', id = 'd2', title = 'Doc 2')
+        self.folder.f1.invokeFactory('Folder', id = 'f2', title = 'Folder 2')
+        paths = []
+        for o in (self.folder.d1, self.folder.f1):
+            paths.append('/'.join(o.getPhysicalPath()))
+        self.folder.folder_publish(workflow_action = 'publish', 
+                                   paths = paths, 
+                                   effective_date = '1/1/2001',
+                                   expiration_date = '1/2/2001',
+                                   include_children = True)
+        for o in (self.folder.d1, self.folder.f1, self.folder.f1.d2, self.folder.f1.f2):
+            self.assertEqual(self.workflow.getInfoFor(o, 'review_state'),'published')
+            self.failUnless(self.portal.isExpired(o))
+
     def testPublishingWithoutSubobjects(self):
         self.setRoles(['Manager']) # Make sure we can publish directly
         self.folder.invokeFactory('Document', id = 'd1', title = 'Doc 1')
         self.folder.invokeFactory('Folder', id = 'f1', title = 'Folder 1')
         self.folder.f1.invokeFactory('Document', id = 'd2', title = 'Doc 2')
+        self.folder.f1.invokeFactory('Folder', id = 'f2', title = 'Folder 2')
         paths = []
         for o in (self.folder.d1, self.folder.f1):
             paths.append('/'.join(o.getPhysicalPath()))
@@ -145,7 +165,8 @@ class TestContentPublishing(PloneTestCase.PloneTestCase):
                                    include_children = False)
         for o in (self.folder.d1, self.folder.f1):
             self.assertEqual( self.workflow.getInfoFor(o, 'review_state'), 'published')
-        self.assertEqual(self.workflow.getInfoFor(self.folder.f1.d2, 'review_state'), 'visible')
+        for o in (self.folder.f1.d2, self.folder.f1.f2):
+            self.assertEqual( self.workflow.getInfoFor(o, 'review_state'), 'visible')
 
     def testPublishingNonDefaultPageLeavesFolderAlone(self):
         self.setRoles(['Manager']) # Make sure we can publish directly
@@ -153,7 +174,7 @@ class TestContentPublishing(PloneTestCase.PloneTestCase):
         self.folder.d1.content_status_modify('publish')
         self.assertEqual(self.workflow.getInfoFor(self.folder, 'review_state'), 'visible')
         self.assertEqual(self.workflow.getInfoFor(self.folder.d1, 'review_state'), 'published')
-        
+
     def testPublishingDefaultPagePublishesFolder(self):
         self.setRoles(['Manager']) # Make sure we can publish directly
         self.folder.invokeFactory('Document', id = 'd1', title = 'Doc 1')
@@ -161,7 +182,7 @@ class TestContentPublishing(PloneTestCase.PloneTestCase):
         self.folder.d1.content_status_modify('publish')
         self.assertEqual(self.workflow.getInfoFor(self.folder, 'review_state'), 'published')
         self.assertEqual(self.workflow.getInfoFor(self.folder.d1, 'review_state'), 'published')
-        
+
     def testPublishingDefaultPageWhenFolderCannotBePublished(self):
         self.setRoles(['Manager']) # Make sure we can publish directly
         self.folder.invokeFactory('Document', id = 'd1', title = 'Doc 1')
@@ -175,7 +196,7 @@ class TestContentPublishing(PloneTestCase.PloneTestCase):
         self.assertEqual(self.workflow.getInfoFor(self.folder.d1, 'review_state'), 'published')
 
     # test setting effective/expiration date and isExpired script
-    
+
     def testIsExpiredWithExplicitExpiredContent(self):
         self.setRoles(['Manager'])
         self.folder.invokeFactory('Document', id = 'd1', title = 'Doc 1')
@@ -183,7 +204,7 @@ class TestContentPublishing(PloneTestCase.PloneTestCase):
                                              effective_date = '1/1/2001',
                                              expiration_date = '1/2/2001')
         self.failUnless(self.portal.isExpired(self.folder.d1))
-        
+
     def testIsExpiredWithImplicitExpiredContent(self):
         self.setRoles(['Manager'])
         self.folder.invokeFactory('Document', id = 'd1', title = 'Doc 1')
@@ -191,13 +212,13 @@ class TestContentPublishing(PloneTestCase.PloneTestCase):
                                              effective_date = '1/1/2001',
                                              expiration_date = '1/2/2001')
         self.failUnless(self.folder.d1.isExpired())
-    
+
     def testIsExpiredWithExplicitNonExpiredContent(self):
         self.setRoles(['Manager'])
         self.folder.invokeFactory('Document', id = 'd1', title = 'Doc 1')
         self.folder.d1.content_status_modify(workflow_action = 'publish')
         self.failIf(self.portal.isExpired(self.folder.d1))
-        
+
     def testIsExpiredWithImplicitNonExpiredContent(self):
         self.setRoles(['Manager'])
         self.folder.invokeFactory('Document', id = 'd1', title = 'Doc 1')

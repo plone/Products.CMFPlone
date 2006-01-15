@@ -8,8 +8,7 @@
 ##parameters=visible_ids=None, portrait=None, listed=None, REQUEST=None, ext_editor=None
 ##title=Personalization Handler.
 
-from Products.CMFPlone import transaction_note
-#portrait_id='MyPortrait'
+from Products.CMFPlone.utils import transaction_note
 
 member=context.portal_membership.getAuthenticatedMember()
 member.setProperties(context.REQUEST)

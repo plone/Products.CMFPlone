@@ -3,18 +3,20 @@
 /* <dtml-with base_properties> (do not remove this :) */
 /* <dtml-call "REQUEST.set('portal_url', portal_url())"> (not this either :) */
 
-<dtml-in "portal_types.listTypeInfo()">
-.contenttype-<dtml-var "plone_utils.normalizeString(id)">,
-#objectMenu .contenttype-<dtml-var "plone_utils.normalizeString(id)"> a:hover { 
+<dtml-in "getPortalTypeList()">
+  <dtml-let type_id="_['sequence-item']['id']">
+.contenttype-&dtml-type_id;,
+#objectMenu .contenttype-&dtml-type_id; a:hover { 
     background-position: 100% 0%;
 }
-#portlet-navigation-tree .contenttype-<dtml-var "plone_utils.normalizeString(id)"> a:hover,
-#portlet-navigation-tree .contenttype-<dtml-var "plone_utils.normalizeString(id)"> a.navTreeCurrentItem {
+#portlet-navigation-tree .contenttype-&dtml-type_id; a:hover,
+#portlet-navigation-tree .contenttype-&dtml-type_id; a.navTreeCurrentItem {
     background-position: 100% 3px; margin-right: -1px; margin-left: 0;
 }
-#portlet-navigation-tree .contenttype-<dtml-var "plone_utils.normalizeString(id)"> {
+#portlet-navigation-tree .contenttype-&dtml-type_id; {
     background-position: 100% 4px;
 }
+  </dtml-let>
 </dtml-in>
 
 <dtml-in "getActionIconList()">
@@ -174,8 +176,17 @@ Anyway, didn't get it fixed but at least we know what it is. :-/
 }
 
 .newsFooter li {
-     display: inline;
+    display: inline;
     margin: 0 0 0 1em;
+}
+
+.tileImage {
+    float: left;
+} 
+
+.newsImageContainer {
+    float: left; 
+    margin: 0 1em 0.5em 0;
 }
 
 .documentActions {

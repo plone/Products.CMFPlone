@@ -22,8 +22,8 @@
 
     <p tal:define="isStructuralFolder here/is_folderish;
                    isContextDefaultPage here/isDefaultPageInFolder;
-                   folder python:test(isStructuralFolder, here, here.getParentNode());
-                   parent_folder python: isContextDefaultPage and here.getParentNode() or folder;
+                   folder python:test(isStructuralFolder, here, here.aq_inner.getParentNode());
+                   parent_folder python: isContextDefaultPage and here.aq_inner.getParentNode() or folder;
                    addContext nocall:parent_folder;
                    showSettings addContext/canConstrainTypes;">
         <a href="#" tal:condition="showSettings"

@@ -67,8 +67,7 @@ def setupDefaultLeftRightSlots(self, portal):
                , 'here/portlet_related/macros/portlet' )
     right_slots=( 'here/portlet_review/macros/portlet'
                 , 'here/portlet_news/macros/portlet'
-                , 'here/portlet_events/macros/portlet'
-                , 'here/portlet_calendar/macros/portlet' )
+                , 'here/portlet_events/macros/portlet' )
     safeEditProperty(portal, 'left_slots', left_slots, 'lines')
     safeEditProperty(portal, 'right_slots', right_slots, 'lines')
     safeEditProperty(portal.Members, 'right_slots', (), 'lines')

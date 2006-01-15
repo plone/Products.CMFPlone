@@ -10,7 +10,7 @@
 ##
 
 from DateTime import DateTime
-from Products.CMFPlone import transaction_note
+from Products.CMFPlone.utils import transaction_note
 REQUEST=context.REQUEST
 
 if id is None:

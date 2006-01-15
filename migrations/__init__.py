@@ -134,5 +134,13 @@ def registerMigrations():
                                       v2_1.final_two11.final_two11)
 
     MigrationTool.registerUpgradePath('2.1.1',
-                                      'trunk (SVN/UNRELEASED)',
+                                      '2.1.2-rc1',
                                       v2_1.two11_two12.two11_two12)
+
+    MigrationTool.registerUpgradePath('2.1.2-rc1',
+                                      '2.1.2-rc2',
+                                      null)
+
+    MigrationTool.registerUpgradePath('2.1.2-rc2',
+                                      'trunk (SVN/UNRELEASED)',
+                                      null)

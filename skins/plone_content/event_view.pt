@@ -43,7 +43,7 @@
 
                     </td>
                 </tr>
-                <tr>
+                <tr tal:condition="here/location">
                     <th i18n:translate="event_where">Where</th>
                     <td tal:content="here/location">Oslo, Norway</td>
                 </tr>

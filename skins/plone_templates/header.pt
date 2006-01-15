@@ -25,7 +25,7 @@
 
     <meta name="generator" content="Plone - http://plone.org" />
 
-    <meta tal:define="metatags python:putils.listMetaTags(here)"
+    <meta tal:define="metatags python:putils.listMetaTags(here).items()"
           tal:condition="metatags"
           tal:repeat="keyval metatags"
           tal:attributes="name python:keyval[0];

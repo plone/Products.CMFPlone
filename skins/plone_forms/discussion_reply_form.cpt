@@ -77,13 +77,11 @@
 
                 <tal:block replace="structure here/info.gif"/>
 
-                <span i18n:translate="legend_note_reply_anonymous">
+                <p i18n:translate="legend_note_reply_anonymous">
                     Note: you are not logged in.  You may optionally enter your username
                     and password below.  If you don't enter your username and
                     password below, this comment will be posted as the 'Anonymous User'.
-                </span>
-
-                <br/><br/>
+                </p>
 
                 <div class="field">
 

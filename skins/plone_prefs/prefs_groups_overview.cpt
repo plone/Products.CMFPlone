@@ -16,7 +16,7 @@
                 portal_roles here/getGlobalPortalRoles;">
 
       <div id="content" class="documentEditable"
-           tal:condition="python:checkPermission('Manage groups', here)">
+           tal:condition="python:checkPermission('Manage Groups', here)">
     <!-- simulating views on the groups/user pages until we have real objects. -->
     <ul class="contentViews">
       <li class="">
@@ -35,6 +35,9 @@
       &nbsp;
     </div>
 
+    <div class="documentContent" id="region-content">
+        <a name="documentContent"></a>
+
       <div metal:use-macro="here/global_statusmessage/macros/portal_message">
         Portal status message
       </div>
@@ -49,7 +52,8 @@
           Up to Site Setup
         </a>
 
-        <p i18n:translate="description_groups_management">
+        <p i18n:translate="description_groups_management"
+           class="discreet">
           Groups are logical collections of users, such as
           departments and business units. Groups are not directly
           related to permissions on a global level, you normally
@@ -130,7 +134,7 @@
                     <td>
                         <input type="hidden" name="" tal:attributes="name string:group_${this_group/getGroupName}:list" value=""/>
                         <a href="#"
-                           tal:attributes="href string:${here_url}/prefs_group_members?groupname=${this_group/getGroupName};
+                           tal:attributes="href python:here_url+'/prefs_group_members?'+ztu.make_query(groupname=this_group.getGroupName());
                                            title python:this_group.getProperty('description','')">
 
                             <tal:block replace="structure portal/group.gif"/>&nbsp;
@@ -173,6 +177,7 @@
 
           <div metal:use-macro="here/batch_macros/macros/navigation" />
 
+          <div class="formControls">
             <input class="context"
                    tabindex=""
                    type="submit"
@@ -182,11 +187,13 @@
                    i18n:attributes="value label_apply_changes;"
                    tal:condition="groups"
                    />
+          </div>
         </form>
 
         <h1 i18n:translate="heading_roles_management">Roles Management</h1>
 
-        <p i18n:translate="description_roles_management">
+        <p i18n:translate="description_roles_management"
+           class="discreet">
           Roles are collections of permissions. The most common role is
           the Member role, which is any member of the portal. You can
           define additional roles, but you normally only do that when you
@@ -194,19 +201,21 @@
           combine to make up a Group.
         </p>
 
-        <p i18n:translate="description_roles_zmi">
+        <p i18n:translate="description_roles_zmi"
+           class="discreet">
         Currently, if you want to add a new role, you must use the
         Zope Management Interface, as adding roles is considered a
         development task.
         </p>
 
 
+    </div>
 </div>
 
 </div>
 
       <div id="content" class="documentEditable"
-           tal:condition="python:not checkPermission('Manage groups', here)">
+           tal:condition="python:not checkPermission('Manage Groups', here)">
         <tal:block replace="here/raiseUnauthorized" />
       </div>
 

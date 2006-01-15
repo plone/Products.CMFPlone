@@ -8,6 +8,10 @@ from Products.CMFPlone.utils import classImplements
 from StructuredText.StructuredText import HTML
 from DocumentTemplate.DT_Util import html_quote
 
+from Acquisition import aq_base
+from Products.CMFCore.interfaces.Discussions \
+        import DiscussionResponse as IDiscussionResponse
+
 class DiscussionTool(PloneBaseTool, BaseTool):
 
     meta_type = ToolNames.DiscussionTool
@@ -20,10 +24,13 @@ class DiscussionTool(PloneBaseTool, BaseTool):
     def getDiscussionFor(self, content):
         """Same as CMFDefault.DiscussionTool.getDiscussionFor, but never raises
         DiscussionNotAllowed."""
-        talkback = getattr( content, 'talkback', None )
-        if talkback is None:
-            talkback = self._createDiscussionFor( content )
-        return talkback
+        if not IDiscussionResponse.isImplementedBy(content) and \
+                getattr( aq_base(content), 'talkback', None ) is None:
+            # Discussion Items use the DiscussionItemContainer object of the
+            # related content item, so only create one for other content items
+            self._createDiscussionFor(content)
+
+        return content.talkback # Return wrapped talkback
 
     security.declareProtected('Modify portal content', 'cookReply')
     def cookReply(self, reply, text_format=None):
