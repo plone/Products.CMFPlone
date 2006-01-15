@@ -96,9 +96,9 @@ class DefaultPage(utils.BrowserView):
             if fti is not None:
                 # Also check that the fti is really IDynamicViewTypeInformation
                 if IDynamicViewTypeInformation.isImplementedBy(fti):
-                    page = fti.getDefaultPage(obj, check_exists=True)
+                    page = fti.getDefaultPage(context, check_exists=True)
                     if page is not None:
-                        return lookupTranslationId(obj, page)
+                        return lookupTranslationId(context, page)
 
         # 3. Test for default_page property in folder, then skins
         pages = getattr(aq_base(context), 'default_page', [])
