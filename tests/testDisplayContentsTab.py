@@ -9,8 +9,6 @@ if __name__ == '__main__':
 from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
 
-from Products.CMFCore.permissions import View
-from Products.CMFCore.permissions import AccessContentsInformation
 from Products.CMFCore.permissions import ListFolderContents
 from Products.CMFCore.permissions import ModifyPortalContent
 from Products.CMFCore.permissions import AddPortalContent
@@ -18,8 +16,6 @@ from Products.CMFCore.permissions import ReviewPortalContent
 from AccessControl.Permissions import copy_or_move
 from AccessControl.Permissions import delete_objects
 
-from AccessControl import getSecurityManager
-from Products.CMFCore.utils import _checkPermission
 import transaction
 
 
@@ -80,11 +76,12 @@ class TestDisplayContentsTab(PloneTestCase.PloneTestCase):
         self.failUnless(self.folder.displayContentsTab())
 
     def testOnlyCopyPermission(self):
-        # We should see the tab with only copy_or_move
+        # We should NOT see the tab with only copy_or_move (r8620)
+        # Otherwise Members always get the green border.
         perms = self.getModificationPermissions()
         perms.remove(copy_or_move)
         self.removePermissionsFromObject(perms, self.folder)
-        self.failUnless(self.folder.displayContentsTab())
+        self.failIf(self.folder.displayContentsTab())
 
     def testOnlyDeletePermission(self):
         # We should see the tab with only copy_or_move

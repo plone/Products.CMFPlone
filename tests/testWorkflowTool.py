@@ -9,9 +9,6 @@ if __name__ == '__main__':
 from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
 
-from Products.CMFCore.WorkflowCore import WorkflowException
-
-
 default_user = PloneTestCase.default_user
 
 

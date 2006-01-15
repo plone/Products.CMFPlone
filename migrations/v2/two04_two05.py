@@ -1,10 +1,4 @@
-from AccessControl import Permissions
 from Products.CMFCore.utils import getToolByName
-from Products.CMFCore.Expression import Expression
-from Acquisition import aq_base
-
-import zLOG
-
 
 def two04_two05(portal):
     """2.0.4 -> 2.0.5
@@ -14,7 +8,6 @@ def two04_two05(portal):
     addFolderListingActionToTopic(portal, out)
     interchangeEditAndSharing(portal, out)
     return out
-
 
 # Ok, so let's change strategy here. Assume a hostile environment with
 # Plone sites misconfigured beyond recognition.

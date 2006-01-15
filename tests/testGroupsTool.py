@@ -10,11 +10,6 @@ from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
 from Acquisition import aq_base
 
-from Products.GroupUserFolder.GroupUserFolder import GroupUserFolder
-from Products.GroupUserFolder.GroupUserFolder import manage_addGroupUserFolder
-from Products.GroupUserFolder.GroupDataTool import GroupDataTool
-from Products.GroupUserFolder.GroupsTool import GroupsTool
-
 default_user = PloneTestCase.default_user
 
 def sortTuple(t):
@@ -229,7 +224,6 @@ class TestGroupWorkspacesFolder(PloneTestCase.PloneTestCase):
         self.groups.addGroup('foo', [], [])
         self.acl_users._updateUser(default_user, groups=['foo'])
         user = self.acl_users.getUser(default_user)
-        self.login()   # !!! Fixed in Zope 2.6.2
         self.failUnless(user.has_permission('View Groups', self.groups.getGroupWorkspacesFolder()))
 
     #def testGetGroupareaFolderForAuthenticated(self):

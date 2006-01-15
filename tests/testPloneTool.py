@@ -9,7 +9,6 @@ if __name__ == '__main__':
 from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
-from DateTime import DateTime
 from Products.CMFCore.utils import getToolByName
 from Acquisition import Implicit
 
@@ -898,7 +897,7 @@ class TestPortalTabs(PloneTestCase.PloneTestCase):
         self.failIf(self.utils.isStructuralFolder(i))
 
     def testIsStructuralFolderWithFolder(self):
-        f = dummy.ATFolder('struct_folder')
+        f = dummy.Folder('struct_folder')
         self.failUnless(self.utils.isStructuralFolder(f))
 
     def testIsStructuralFolderWithNonStructuralFolder(self):

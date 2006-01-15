@@ -1,7 +1,6 @@
 from Products.CMFCore import MemberDataTool
 from Products.CMFCore.MemberDataTool import MemberDataTool as BaseTool
 from Products.CMFCore.MemberDataTool import MemberData as BaseData
-from Products.CMFCore.MemberDataTool import CleanupTemp
 from Products.CMFPlone import ToolNames
 from Globals import InitializeClass
 from ZPublisher.Converters import type_converters
@@ -170,37 +169,6 @@ class MemberDataTool(PloneBaseTool, BaseTool):
                 or member.getProperty('email').lower().find(s) != -1:
                     res.append(member)
         return res
-
-##    security.declarePrivate('wrapUser')
-##    def wrapUser(self, u):
-##        '''
-##        If possible, returns the Member object that corresponds
-##        to the given User object.
-##        We override this to ensure OUR MemberData class is used
-##        '''
-##        id = u.getId()
-##        members = self._members
-##        if not members.has_key(id):
-##            # Get a temporary member that might be
-##            # registered later via registerMemberData().
-##            temps = self._v_temps
-##            if temps is not None and temps.has_key(id):
-##                m = temps[id]
-##            else:
-##                base = aq_base(self)
-##                m = MemberData(base, id)
-##                if temps is None:
-##                    self._v_temps = {id:m}
-##                    if hasattr(self, 'REQUEST'):
-##                        # No REQUEST during tests.
-##                        self.REQUEST._hold(CleanupTemp(self))
-##                else:
-##                    temps[id] = m
-##        else:
-##            m = members[id]
-##        # Return a wrapper with self as containment and
-##        # the user as context.
-##        return m.__of__(self).__of__(u)
 
 MemberDataTool.__doc__ = BaseTool.__doc__
 

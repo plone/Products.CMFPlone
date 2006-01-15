@@ -1,6 +1,4 @@
 from Products.CMFPlone import MigrationTool
-from Products.CMFPlone.CustomizationPolicy import DefaultCustomizationPolicy
-from Products.CMFCore.utils import getToolByName
 from ZODB.POSException import ConflictError
 
 def rc1rc2(portal):

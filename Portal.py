@@ -1,7 +1,6 @@
 from __future__ import nested_scopes
-import os, sys, re
+import os
 
-from ComputedAttribute import ComputedAttribute
 from Products.CMFPlone import cmfplone_globals
 from Products.CMFPlone import custom_policies
 from Products.CMFPlone import ToolNames
@@ -34,7 +33,7 @@ from Products.CMFPlone.utils import classImplements
 import Globals
 
 from AccessControl import ClassSecurityInfo
-from Acquisition import aq_inner, aq_parent, aq_base
+from Acquisition import aq_base
 from ComputedAttribute import ComputedAttribute
 from webdav.NullResource import NullResource
 from Products.CMFPlone.PloneFolder import ReplaceableWrapper

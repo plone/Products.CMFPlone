@@ -1,5 +1,3 @@
-from Products.CMFCore.utils import getToolByName
-from Products.CMFCore.Expression import Expression
 from Acquisition import aq_base
 
 __author__ = 'DannyB (ender)'

@@ -15,7 +15,6 @@ from DateTime import DateTime
 from Products.CMFCore.permissions import AccessInactivePortalContent
 import transaction
 
-from Products.CMFPlone.CatalogTool import ExtensibleIndexableObjectRegistry
 from Products.CMFPlone.CatalogTool import ExtensibleIndexableObjectWrapper
 from Products.CMFPlone.CatalogTool import _eioRegistry
 
@@ -629,6 +628,18 @@ class TestCatalogBugs(PloneTestCase.PloneTestCase):
         self.folder.manage_pasteObjects(cb)
         self.failUnless(hasattr(aq_base(self.folder), 'portal_catalog'))
 
+    def testPastingCatalogPreservesTextIndexes(self):
+        # Pasting the catalog should not cause indexes to be removed.
+        self.setRoles(['Manager'])
+        self.catalog.__replaceable__ = REPLACEABLE
+        cb = self.portal.manage_copyObjects(['portal_catalog'])
+        self.folder.manage_pasteObjects(cb)
+        self.failUnless(hasattr(aq_base(self.folder), 'portal_catalog'))
+        cat = self.folder.portal_catalog
+        self.failUnless('SearchableText' in cat.indexes())
+        # CMF added lexicons should stick around too
+        self.failUnless(hasattr(aq_base(cat), 'plaintext_lexicon'))
+
     def testCanRenamePortalIfLexiconExists(self):
         # Should be able to rename a Plone portal
         # This test is to demonstrate that http://plone.org/collector/1745
@@ -825,7 +836,7 @@ class TestExtensibleIndexableObjectWrapper(PloneTestCase.PloneTestCase):
         self.failIf(is_folderish(i))
 
     def test_is_folderishWithFolder(self):
-        f = dummy.ATFolder('struct_folder')
+        f = dummy.Folder('struct_folder')
         self.failUnless(is_folderish(f))
 
     def test_is_folderishWithNonStructuralFolder(self):

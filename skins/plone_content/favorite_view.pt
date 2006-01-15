@@ -17,10 +17,6 @@
                tal:content="object_title">zope.org</a>
         </h1>
     
-        <div metal:use-macro="here/document_actions/macros/document_actions">
-            Document actions (print, sendto etc)
-        </div>
-    
         <div metal:use-macro="here/document_byline/macros/byline">
           Get the byline - contains details about author and modification date.
         </div>
@@ -30,4 +26,3 @@
 </body>
 
 </html>
-

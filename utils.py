@@ -470,3 +470,69 @@ def classDoesNotImplement(class_, *interfaces):
     for iface in normalized_interfaces:
         implemented = implemented - iface
     return zope.interface.classImplementsOnly(class_, implemented)
+
+def webdav_enabled(obj, container):
+    """WebDAV check used in externalEditorEnabled.py"""
+
+    # Object implements lock interface
+    interface_tool = getToolByName(container, 'portal_interface')
+    if not interface_tool.objectImplements(obj, 'webdav.WriteLockInterface.WriteLockInterface'):
+        return False
+
+    # Backwards compatibility code for AT < 1.3.6
+    if safe_hasattr(obj, '__dav_marshall__'):
+        if obj.__dav_marshall__ == False:
+            return False
+    return True
+
+
+# Copied 'unrestricted_rename' from ATCT migrations to avoid
+# a dependency.
+
+from App.Dialogs import MessageDialog
+from OFS.CopySupport import CopyContainer
+from OFS.CopySupport import CopyError
+from OFS.CopySupport import eNotSupported
+from cgi import escape
+import sys
+
+def _unrestricted_rename(container, id, new_id):
+    """Rename a particular sub-object
+
+    Copied from OFS.CopySupport
+
+    Less strict version of manage_renameObject:
+        * no write lock check
+        * no verify object check from PortalFolder so it's allowed to rename
+          even unallowed portal types inside a folder
+    """
+    try: container._checkId(new_id)
+    except: raise CopyError, MessageDialog(
+                  title='Invalid Id',
+                  message=sys.exc_info()[1],
+                  action ='manage_main')
+    ob=container._getOb(id)
+    #!#if ob.wl_isLocked():
+    #!#    raise ResourceLockedError, 'Object "%s" is locked via WebDAV' % ob.getId()
+    if not ob.cb_isMoveable():
+        raise CopyError, eNotSupported % escape(id)
+    #!#container._verifyObjectPaste(ob)
+    #!#CopyContainer._verifyObjectPaste(container, ob)
+    try:    ob._notifyOfCopyTo(container, op=1)
+    except: raise CopyError, MessageDialog(
+                  title='Rename Error',
+                  message=sys.exc_info()[1],
+                  action ='manage_main')
+    container._delObject(id)
+    ob = aq_base(ob)
+    ob._setId(new_id)
+
+    # Note - because a rename always keeps the same context, we
+    # can just leave the ownership info unchanged.
+    container._setObject(new_id, ob, set_owner=0)
+    ob = container._getOb(new_id)
+    ob._postCopy(container, op=1)
+
+    #!#if REQUEST is not None:
+    #!#    return container.manage_main(container, REQUEST, update_menu=1)
+    return None

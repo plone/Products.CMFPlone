@@ -1,5 +1,3 @@
-from Products.CMFCore.utils import getToolByName
-
 def final_two11(portal):
     """2.1-final -> 2.1.1
     """
@@ -11,7 +9,6 @@ def final_two11(portal):
     reindexPathIndex(portal, out)
 
     return out
-
 
 def reindexPathIndex(portal, out):
     """Rebuilds the path index."""

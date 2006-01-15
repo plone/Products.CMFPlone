@@ -316,6 +316,58 @@ class CatalogTool(PloneBaseTool, BaseTool):
         except:
             pass
 
+    def manage_afterAdd(self, item, container):
+        self._createTextIndexes(item, container)
+
+    def _createTextIndexes(self, item, container):
+        """In addition to the standard indexes we need to create
+           'SearchableText', 'Title' and 'Description' as ZCTextIndex instance.
+        """
+
+        class args:
+            def __init__(self, **kw):
+                self.__dict__.update(kw)
+            def keys(self):
+                return self.__dict__.keys()
+
+        # This if-clause still looks somewhat scary
+        if item is self and not hasattr(aq_base(self), 'plone_lexicon'):
+
+            # We need to remove the indexes to keep the tests working...baaah
+            for idx in ('SearchableText', 'Title', 'Description'):
+                self._removeIndex(idx)
+
+            self.manage_addProduct['ZCTextIndex'].manage_addLexicon(
+                'plone_lexicon',
+                elements=[
+                    args(group='Case Normalizer', name='Case Normalizer'),
+                    args(group='Stop Words', name=" Don't remove stop words"),
+                    args(group='Word Splitter', name="Unicode Whitespace splitter"),
+                ]
+                )
+
+            extra = args(doc_attr='SearchableText',
+                         lexicon_id='plone_lexicon',
+                         index_type='Okapi BM25 Rank')
+            self.manage_addIndex('SearchableText', 'ZCTextIndex', extra=extra)
+
+            extra = args(doc_attr='Description',
+                         lexicon_id='plone_lexicon',
+                         index_type='Okapi BM25 Rank')
+            self.manage_addIndex('Description', 'ZCTextIndex', extra=extra)
+
+            extra = args(doc_attr='Title',
+                         lexicon_id='plone_lexicon',
+                         index_type='Okapi BM25 Rank')
+            self.manage_addIndex('Title', 'ZCTextIndex', extra=extra)
+
+    security.declareProtected(ManagePortal, 'migrateIndexes')
+    def migrateIndexes(self):
+        """Recreate all indexes.
+        """
+        self._initIndexes()
+        self._createTextIndexes()
+
     def _listAllowedRolesAndUsers(self, user):
         """Makes sure the list includes the user's groups.
         """

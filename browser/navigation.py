@@ -11,6 +11,7 @@ from Products.CMFPlone.browser.interfaces import INavigationTabs
 from Products.CMFPlone.browser.interfaces import INavigationTree
 from Products.CMFPlone.browser.interfaces import INavigationStructure
 from Products.CMFPlone.interfaces.BrowserDefault import IBrowserDefault
+from Products.CMFPlone.interfaces.BrowserDefault import IDynamicViewTypeInformation
 
 def get_url(item):
     if hasattr(aq_base(item), 'getURL'):
@@ -93,9 +94,11 @@ class DefaultPage(utils.BrowserView):
         if IBrowserDefault.isImplementedBy(context):
             fti = context.getTypeInfo()
             if fti is not None:
-                page = fti.getDefaultPage(context, check_exists=True)
-                if page is not None:
-                    return lookupTranslationId(context, page)
+                # Also check that the fti is really IDynamicViewTypeInformation
+                if IDynamicViewTypeInformation.isImplementedBy(fti):
+                    page = fti.getDefaultPage(obj, check_exists=True)
+                    if page is not None:
+                        return lookupTranslationId(obj, page)
 
         # 3. Test for default_page property in folder, then skins
         pages = getattr(aq_base(context), 'default_page', [])

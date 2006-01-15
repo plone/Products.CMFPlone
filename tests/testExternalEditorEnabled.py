@@ -8,11 +8,6 @@ if __name__ == '__main__':
 
 from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
-from Products.CMFPlone.tests import dummy
-
-from AccessControl import getSecurityManager
-from AccessControl import Unauthorized
-from ZODB.POSException import ConflictError
 
 
 class TestExternalEditorEnabled(PloneTestCase.PloneTestCase):
@@ -52,11 +47,15 @@ class TestExternalEditorEnabled(PloneTestCase.PloneTestCase):
         self.failIf(self.doc.externalEditorEnabled())
 
     def testFailOnUnSupportedObjects(self):
-        # Folders shouldn't be editable in this manner
+        # ATCT Folders are editable by default now
+        self.failUnless(self.folder.externalEditorEnabled())
+        # But if __dav_marshall__ is set to False then they aren't.
+        self.folder.__dav_marshall__ = False
         self.failIf(self.folder.externalEditorEnabled())
 
     def testFailWithoutUseExtEditPermission(self):
-        self.portal.manage_permission('Use external editor', ('Owner','Manager'), 0)
+        self.portal.manage_permission('Use external editor',
+                                      ('Owner','Manager'), 0)
         self.login('user1')
         self.failIf(self.doc.externalEditorEnabled())
 

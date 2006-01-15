@@ -7,10 +7,10 @@
 <div metal:fill-slot="main"
      tal:define="is_manager python: checkPermission('Manage portal', here)">
 
-    <h1 i18n:translate="heading_member_search">Search for members</h1>
+    <h1 i18n:translate="heading_member_search">Search for users</h1>
 
     <p i18n:translate="description_member_search">
-    This search form enables you to find members by specifying one or more
+    This search form enables you to find users by specifying one or more
     search criteria.
     </p>
 
@@ -20,13 +20,13 @@
           tal:define="DateTime python:modules['DateTime'].DateTime">
 
         <fieldset>
-            <legend i18n:translate="legend_member_search_criteria">Member Search Criteria</legend>
+            <legend i18n:translate="legend_member_search_criteria">User Search Criteria</legend>
     
             <div class="field">
                 <label i18n:translate="label_name">Name</label>
                 
                 <div class="formHelp" i18n:translate="help_search_name">
-                Return members with login names containing this value.
+                Return users with login names containing this value.
                 </div>
     
                 <input type="text"
@@ -41,7 +41,7 @@
                 <label i18n:translate="label_email">E-mail</label>
                 
                 <div class="formHelp" i18n:translate="help_search_email">
-                Return members with email addresses containing this value.
+                Return users with email addresses containing this value.
                 </div>
                 
                 <input type="text"
@@ -57,7 +57,7 @@
                 <label i18n:translate="label_last_logged_in">Last logged in</label>
                 
                 <div class="formHelp" i18n:translate="help_search_last_logged_in">
-                Return members who have logged in since yesterday, last week, etc.
+                Return users who have logged in since yesterday, last week, etc.
                 </div>
     
                 <tal:datetime define="today python:DateTime().earliestTime()">
@@ -85,7 +85,7 @@
               <label i18n:translate="label_before_specified_time">Not logged in since specified time</label>
 
               <div class="formHelp" i18n:translate="help_search_before_specified_time">
-                Return members who have NOT logged in since the time specified above.
+                Return users who have NOT logged in since the time specified above.
               </div>
             </div>
     
@@ -96,7 +96,7 @@
                  <label i18n:translate="legend_group"> Group </label>
 
                  <div class="formHelp" i18n:translate="help_search_group"> 
-                 Return members in the selected group.
+                 Return users in the selected group.
                  </div>
 
                  <select name="groupname">
@@ -116,7 +116,7 @@
                 <label i18n:translate="label_roles">Role(s)</label>
     
                 <div class="formHelp" i18n:translate="help_search_roles">
-                Return members with all of the selected roles.
+                Return users with all of the selected roles.
                 </div>
     
                 <metal:role tal:repeat="role portalRoles">

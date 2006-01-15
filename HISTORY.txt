@@ -33,13 +33,111 @@ Plone 2.2 (unreleased)
 
 Plone 2.1.2 (unreleased)
 
-    - Fixed http://plone.org/collector/4894 - Missing closing quote in 
+    - Fixed #4996 - favorites_view.pt had duplicated calls for 'document_actions' macros
+      [spliter]
+
+    - Plone was showing the editable border on all content items when you were logged in as a
+      Member. This was fixed by removing the check for 'Copy or Move' in the code that determines
+      whether the editable border should be rendered.
+      [limi]
+
+    - Fixed #2295 - text on printing was cropped on the right in all browsers
+      when the tableless layout is used.
+      [spliter]
+
+    - 'external_edit' link wouldn't work for files with spaces in name
+      due to use of 'url_quote_plus'. The correct function to use is
+      'url_quote'.
+      [sidnei]
+
+    - Fixed #4859 - strftime error in calendar_macros.pt.
+      [hannosch]
+
+    - Fixed #3268 and #3746 - some status messages included all
+      changed objects which could break IE as it supports only a
+      limited URL length.
+      [hannosch]
+
+    - Replacing all references to "portal" in the UI with "site" with
+      same consequences as outlined below.
+      [limi]
+
+    - Replacing "Member" with "User" everywhere in the UI (except in
+      words like "membership"). Hanno has been notified, and this
+      should not have any impact for i18n people, but they should be
+      notified in case they made a distinction between member and user
+      in their translations. I know most translations I have seen
+      didn't.
+      [limi]
+
+    - Added CMFPlone.utils._unrestricted_rename() by copying from ATCT
+      migrations. _unrestricted_rename() allows to rename objects without
+      going through _verifyObjectPaste().
+      [stefan]
+
+    - Fixed https://trac.plone.org/plone/ticket/4657 and
+      https://trac.plone.org/plone/ticket/4829 - wrong icon path in livesearch.
+      [hannosch]
+
+    - Added PIL version to control panel version overview as suggested in
+      http://plone.org/collector/4775.
+      [hannosch]
+
+    - Fixed http://plone.org/collector/4803 and
+      http://plone.org/collector/4943 by only deleting existing text indexes
+      when the lexicon is missing (e.g. when we actually have a new catalog
+      being created).
+      [alecm]
+
+    - Fixed http://plone.org/collector/4898 - migrations would break if the
+      Plone Site was configured to not allow all content types.
+      [stefan]
+
+    - Fixed http://plone.org/collector/4951 by overriding the 'sl' global
+      define in prefs_main_template.pt.
+      [alecm]
+
+    - Updated favorites portlet to the new portlet style.
+      [ctheune]
+
+    - Fixed http://plone.org/collector/4800 - hardcoded review_state variable
+      breaks custom workflows.
+      [hannosch]
+
+    - Fixed http://plone.org/collector/4938 - member portraits were referenced
+      using the username instead of the member id in a few places in the
+      membership tool.
+      [wichert]
+
+    - Combined the support for publishing subobjects in
+      content_status_history.cpt with the support for bulk publishing. The old
+      behaviour showed, but didn't use, the checkbox for publishing subobjects
+      when you published a folder directly.
+      [ctheune]
+
+    - Send correct password in the registry notification mail even if
+      the stored password are encrypted.
+      [panjunyong]
+
+    - Updated externalEditorEnabled.py to comply with WebDAV changes in
+      Archetypes 1.3.6.
+      [hannosch]
+
+    - Fix unit test relying on user folder storing passwords in plain
+      text. This isn't anymore the default for Zope 2.9. Changed to test
+      authenticate.
+      [hannosch]
+
+    - Some code cleanup, mainly removal of unused imports.
+      [hannosch]
+
+    - Fixed http://plone.org/collector/4894 - Missing closing quote in
       LiveSearch pop-up.
       [stefan]
 
     - Send new generated plain password via email directly when reset password,
       but not the one stored in userfolder since it could be encypted.
-      Also use getProperty to retrieve email address for better LDAP 
+      Also use getProperty to retrieve email address for better LDAP
       integration.
       [panjunyong]
 
@@ -68,8 +166,8 @@ Plone 2.1.2 (unreleased)
     - Remove so called 'ie7' from third party skins and all references to it.
       [limi] [hannosch]
 
-    - Make Plone 2.1 degrade more gracefully on a non-migrated 2.0 site (special
-      fixes for plone.org).
+    - Make Plone 2.1 degrade more gracefully on a non-migrated 2.0
+      site (special fixes for plone.org).
       [sidnei]
 
     - Fixed http://plone.org/collector/4788 - Missing i18n for livesearch
@@ -94,10 +192,10 @@ Plone 2.1.1 - Coloma - Released October 13, 2005
       instances.
       [alecm]
 
-    - Fixed http://plone.org/collector/4587 - workflow history displays author's
-      full name instead of author's id and link to author page instead of
-      home folder (to be in sync with document byline). Added colored transition
-      names as a free bonus.
+    - Fixed http://plone.org/collector/4587 - workflow history
+      displays author's full name instead of author's id and link to
+      author page instead of home folder (to be in sync with document
+      byline). Added colored transition names as a free bonus.
       [naro]
 
     - Fixed http://plone.org/collector/4690 - user can't change password after

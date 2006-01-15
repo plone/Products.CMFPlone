@@ -9,8 +9,6 @@ from Products.CMFPlone.tests.PloneTestCase import default_user
 from Products.CMFPlone.tests.PloneTestCase import default_password
 from Products.CMFCore.utils import getToolByName
 
-from webdav.NullResource import NullResource
-from Acquisition import aq_base
 from StringIO import StringIO
 
 html = """\

@@ -10,9 +10,8 @@ from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
 from Products.CMFPlone import LargePloneFolder
-from Acquisition import aq_base
-
 from Products.ATContentTypes.interfaces import IATContentType
+from Acquisition import aq_base
 
 AddPortalTopics = 'Add portal topics'
 

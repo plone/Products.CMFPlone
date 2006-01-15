@@ -38,7 +38,7 @@ if mt.isAnonymousUser():
                 state.setError(ac_name, 'Please enter your login name.', 'login_name_required')
             if password_empty:
                 state.setError(ac_password, 'Please enter your password.', 'password_required')
-            verify_login_name = context.portal_properties.site_properties.getProperty('verify_login_name',0)
+            verify_login_name = context.portal_properties.site_properties.getProperty('verify_login_name', 0)
             if user_name and verify_login_name:
                 if mt.getMemberById(user_name) is None:
                     state.setError(ac_name, 'Login name not found.', 'login_name_not_found')

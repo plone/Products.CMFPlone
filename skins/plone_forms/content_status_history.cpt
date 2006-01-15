@@ -50,7 +50,7 @@
         can see it.  A <strong>private</strong> item can only be
         viewed by its Owner and by the site management. Only
         <strong>published</strong> items are available to the general
-        member base and anonymous visitors. To make an item published,
+        user base and anonymous visitors. To make an item published,
         it has to be reviewed by one of the site's Reviewers. You can
         request that an item be reviewed by <strong>submitting it for
         review</strong>.
@@ -252,14 +252,14 @@
                    value="Save"
                    i18n:attributes="value label_save;"
                    tal:attributes="tabindex tabindex/next;"
-                   tal:condition="not:request/paths|nothing"/>
+                   tal:condition="not:request/paths|folders_in_publishing|nothing"/>
             <input class="context"
                    type="submit"
                    name="form.button.FolderPublish"
                    value="Save"
                    i18n:attributes="value label_save;"
                    tal:attributes="tabindex tabindex/next;"
-                   tal:condition="request/paths|nothing"/>
+                   tal:condition="request/paths|folders_in_publishing|nothing"/>
             <input class="standalone"
                    type="submit"
                    name="form.button.Cancel"

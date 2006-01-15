@@ -1,4 +1,3 @@
-import zLOG
 from Products.CMFCore.permissions import ManagePortal
 from Products.CMFCore.Expression import Expression
 from Products.CMFCore.utils import getToolByName

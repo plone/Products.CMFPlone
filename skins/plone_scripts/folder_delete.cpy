@@ -17,8 +17,6 @@ titles_and_paths=[]
 failed = {}
 message = ''
 
-MAX_TITLES_TO_REPORT = 10
-
 portal = context.portal_url.getPortalObject()
 status='failure'
 message='Please select one or more items to delete.'
@@ -38,15 +36,7 @@ for path in paths:
 
 if titles:
     status='success'
-    if len(titles) == 1:
-        message = context.translate("${title} has been deleted.",
-                                    {'title': titles[0]})
-    elif len(titles) <= MAX_TITLES_TO_REPORT:
-        message = context.translate("${titles} have been deleted.",
-                                    {'titles': ', '.join(titles)})
-    else:
-        message = context.translate("${itemCount} items have been deleted.",
-                                    {'itemCount': str(len(titles))})
+    message = context.translate('Item(s) deleted.')
 
     transaction_note('Deleted %s' % (', '.join(titles_and_paths)))
 

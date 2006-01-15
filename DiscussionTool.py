@@ -1,9 +1,7 @@
 from Products.CMFDefault.DiscussionTool import DiscussionTool as BaseTool
-from Products.CMFDefault.DiscussionTool import DiscussionNotAllowed
 from Products.CMFPlone import ToolNames
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
-from Acquisition import aq_base
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFPlone.utils import classImplements
 

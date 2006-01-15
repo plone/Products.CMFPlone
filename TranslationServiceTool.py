@@ -6,7 +6,6 @@ By time of writing this code, that is only valid for PTS.
 
 from Globals import InitializeClass
 from OFS.SimpleItem import SimpleItem
-from DateTime import DateTime
 from Products.CMFCore.utils import UniqueObject
 from Products.CMFPlone import ToolNames
 from AccessControl import ClassSecurityInfo

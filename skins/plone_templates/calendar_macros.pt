@@ -6,14 +6,14 @@
     
     <!-- The calendar date picker. -->
     <div metal:define-macro="calendarDatePickerBox" tal:define="
-	 tabindex tabindex/next|tabindex|nothing;
+         tabindex tabindex/next|tabindex|nothing;
          show_hm show_hm | python:1;
          starting_year starting_year | nothing;
          ending_year ending_year | nothing;
          future_years future_years | nothing;
          show_single_year show_single_year | python: 1;
          show_jscal show_jscal | python: 1;
-	 input_id string:${formname}_${inputname}_${tabindex};
+         input_id string:${formname}_${inputname}_${tabindex};
          use_ampm python: '%p' in site_properties.getProperty('localLongTimeFormat');
          values   python:here.date_components_support(inputvalue, use_ampm, starting_year, ending_year, future_years);
          years values/years;
@@ -28,7 +28,7 @@
 
       <input type="hidden" tal:attributes="name string:$inputname;
 	     id input_id;
-	     value python:not show_hm and inputvalue and inputvalue.strftime('%Y/%m/%d') or inputvalue"/>
+	     value python:not show_hm and inputvalue and hasattr(inputvalue, 'strftime') and inputvalue.strftime('%Y/%m/%d') or inputvalue"/>
 
       <span tal:condition="python:len(years)!=1">
 	<select name="ic_year"

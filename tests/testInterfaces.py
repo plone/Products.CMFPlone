@@ -40,7 +40,6 @@ from Products.CMFPlone.MemberDataTool import MemberDataTool, MemberData
 from Products.CMFPlone.MembershipTool import MembershipTool
 from Products.CMFPlone.MetadataTool import MetadataTool
 from Products.CMFPlone.MigrationTool import MigrationTool
-from Products.CMFPlone.PloneBatch import Batch
 from Products.CMFPlone.PloneContent import PloneContent
 from Products.CMFPlone.PloneControlPanel import PloneControlPanel, PloneConfiglet
 from Products.CMFPlone.PloneFolder import OrderedContainer, BasePloneFolder, PloneFolder
@@ -315,12 +314,11 @@ testClasses = [
     (MembershipTool, ()),
     (MetadataTool, ()),
     (MigrationTool, ()),
-    # (Batch, ()), # has no __implements__
     (PloneContent, ()),
     (PloneControlPanel, ()), (PloneConfiglet, ()),
     (OrderedContainer, ()), (BasePloneFolder, ()), (PloneFolder, ()),
     (PloneTool, ()),
-    (PloneSite, ()), # (PloneGenerator, ()), # PloneGenerator has no __implements__
+    (PloneSite, ()),
     (PropertiesTool, ()), (SimpleItemWithProperties, ()),
     (QuickInstallerTool, ()),
     (RegistrationTool, ()),

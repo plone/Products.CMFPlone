@@ -17,7 +17,7 @@ from Products.CMFDefault.DublinCore import DefaultDublinCoreImpl
 from Products.CMFDefault.Document import Document
 
 from Products.CMFPlone.InterfaceTool import resolveInterface, getDottedName
-from Products.CMFPlone.InterfaceTool import InterfaceTool, InterfaceFinder
+from Products.CMFPlone.InterfaceTool import InterfaceFinder
 from Products.CMFPlone.interfaces import PloneBaseTool
 from Products.CMFPlone.utils import classImplements
 
