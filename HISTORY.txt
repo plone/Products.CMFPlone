@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1.2 - Saint Etienne - (unreleased)
 
+    - Removed the last remaining occurrences of CMFCorePermissions.
+      [hannosch]
+
     - Updated deprecation warnings to reflect new version numberings.
       [hannosch]
 

@@ -1,7 +1,8 @@
 import os, string
 from Acquisition import aq_base
 from zExceptions import BadRequest
-from Products.CMFCore import permissions as CMFCorePermissions
+from Products.CMFCore.permissions import AccessInactivePortalContent, \
+     DeleteObjects, ListFolderContents, ManagePortal, ModifyPortalContent, View
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.Expression import Expression
 from Products.CMFPlone.migrations.migration_util import installOrReinstallProduct, \
@@ -237,7 +238,7 @@ def fixObjectPasteActionForDefaultPages(portal, out):
                   'name'      : 'Paste',
                   'action'    : 'python:"%s/object_paste"%(object.isDefaultPageInFolder() and object.getParentNode().absolute_url() or object_url)',
                   'condition' : 'folder/cb_dataValid',
-                  'permission': CMFCorePermissions.View,
+                  'permission': View,
                   'category': 'object_buttons',
                  }
     exists = False
@@ -269,14 +270,14 @@ def fixBatchActionToggle(portal, out):
          'name'      : 'Contents',
          'action'    : "python:((object.isDefaultPageInFolder() and object.getParentNode().absolute_url()) or folder_url)+'/folder_contents'",
          'condition' : "python:portal.portal_membership.checkPermission('View',folder) and folder.displayContentsTab() and object.REQUEST['ACTUAL_URL'] != object.absolute_url() + '/folder_contents'",
-         'permission': CMFCorePermissions.View,
+         'permission': View,
          'category'  : 'batch',
         },
         {'id'        : 'nobatch',
          'name'      : 'Default view',
          'action'    : "string:${folder_url}/view",
          'condition' : "python:portal.portal_membership.checkPermission('View',folder) and folder.displayContentsTab() and object.REQUEST['ACTUAL_URL'] == object.absolute_url() + '/folder_contents'",
-         'permission': CMFCorePermissions.View,
+         'permission': View,
          'category'  : 'batch',
         },
     )
@@ -439,7 +440,7 @@ def addDeprecatedAndPortletStylesheets(portal, out):
     out.append("Finished adding Portlet and Deprecated stylesheets.")
 
 def allowOwnerToAccessInactiveContent(portal, out):
-    permission = CMFCorePermissions.AccessInactivePortalContent
+    permission = AccessInactivePortalContent
     cur_perms=portal.permission_settings(permission)[0]
     roles = portal.valid_roles()
     if 'Owner' in roles:
@@ -669,28 +670,28 @@ def fixContentActionConditions(portal,out):
          'name'      : 'Cut',
          'action'    : 'python:"%s/object_cut"%(object.isDefaultPageInFolder() and object.getParentNode().absolute_url() or object_url)',
          'condition' : 'python:portal.portal_membership.checkPermission("Delete objects", object.aq_inner.getParentNode()) and portal.portal_membership.checkPermission("Copy or Move", object) and object is not portal and not (object.isDefaultPageInFolder() and object.getParentNode() is portal)',
-         'permission': CMFCorePermissions.DeleteObjects,
+         'permission': DeleteObjects,
          'category'  : 'object_buttons',
         },
         {'id'        : 'paste',
          'name'      : 'Paste',
          'action'    : 'python:"%s/object_paste"%((object.isDefaultPageInFolder() or not object.is_folderish()) and object.getParentNode().absolute_url() or object_url)',
          'condition' : 'folder/cb_dataValid|nothing',
-         'permission': CMFCorePermissions.View,
+         'permission': View,
          'category'  : 'object_buttons',
         },
         {'id'        : 'delete',
          'name'      : 'Delete',
          'action'    : 'python:"%s/object_delete"%(object.isDefaultPageInFolder() and object.getParentNode().absolute_url() or object_url)',
          'condition' : 'python:portal.portal_membership.checkPermission("Delete objects", object.aq_inner.getParentNode()) and object is not portal and not (object.isDefaultPageInFolder() and object.getParentNode() is portal)',
-         'permission': CMFCorePermissions.DeleteObjects,
+         'permission': DeleteObjects,
          'category'  : 'object_buttons',
         },
         {'id'        : 'copy',
          'name'      : 'Copy',
          'action'    : 'python:"%s/object_copy"%(object.isDefaultPageInFolder() and object.getParentNode().absolute_url() or object_url)',
          'condition' : 'python: portal.portal_membership.checkPermission("Copy or Move", object) and object is not portal and not (object.isDefaultPageInFolder() and object.getParentNode() is portal)',
-         'permission': CMFCorePermissions.View,
+         'permission': View,
          'category'  : 'object_buttons',
         },)
 
@@ -777,7 +778,7 @@ def fixFolderContentsActionAgain(portal, out):
          'name'      : 'Contents',
          'action'    : "python:((object.isDefaultPageInFolder() and object.getParentNode().absolute_url()) or folder_url)+'/folder_contents'",
          'condition' : "object/displayContentsTab",
-         'permission': CMFCorePermissions.ListFolderContents,
+         'permission': ListFolderContents,
          'category'  : 'object',
         },
     )
@@ -879,7 +880,7 @@ def fixCutActionPermission(portal,out):
          'name'      : 'Cut',
          'action'    : 'python:"%s/object_cut"%(object.isDefaultPageInFolder() and object.getParentNode().absolute_url() or object_url)',
          'condition' : 'python:portal.portal_membership.checkPermission("Delete objects", object.aq_inner.getParentNode()) and portal.portal_membership.checkPermission("Copy or Move", object) and object is not portal and not (object.getParentNode() is portal and object.isDefaultPageInFolder())',
-         'permission': CMFCorePermissions.DeleteObjects,
+         'permission': DeleteObjects,
          'category'  : 'object_buttons',
         },
         )
@@ -915,7 +916,7 @@ def fixExtEditAction(portal,out):
              'name'      : 'Edit this file in an external application (Requires Zope ExternalEditor installed)',
              'action'    : 'string:$object_url/external_edit',
              'condition' : 'object/externalEditorEnabled',
-             'permission': CMFCorePermissions.ModifyPortalContent,
+             'permission': ModifyPortalContent,
              'category'  : 'document_actions'
             },)
 
@@ -979,21 +980,21 @@ def changeSiteActions(portal, out):
                   'name': 'Accessibility',
                   'action': 'string: ${portal_url}/accessibility-info',
                   'condition': '',
-                  'permission': CMFCorePermissions.View,
+                  'permission': View,
                   'category': 'site_actions',
                   'visible': 1},
                  {'id': 'contact',
                   'name': 'Contact',
                   'action': 'string: ${portal_url}/contact-info',
                   'condition': '',
-                  'permission': CMFCorePermissions.View,
+                  'permission': View,
                   'category': 'site_actions',
                   'visible': 1},
                  {'id': 'plone_setup',
                   'name': 'Site Setup',
                   'action': 'string: ${portal_url}/plone_control_panel',
                   'condition': '',
-                  'permission': CMFCorePermissions.ManagePortal,
+                  'permission': ManagePortal,
                   'category': 'site_actions',
                   'visible': 1}
             )
@@ -1178,7 +1179,7 @@ def addSearchAndNavigationConfiglets(portal, out):
                                            name       = 'Search Settings',
                                            action     = 'string:${portal_url}/prefs_search_form',
                                            category   = 'Plone',
-                                           permission = CMFCorePermissions.ManagePortal,)
+                                           permission = ManagePortal,)
             out.append("Added search settings to the control panel")
         if not haveNavigation:
             controlPanel.registerConfiglet(id         = 'NavigationSettings',
@@ -1186,7 +1187,7 @@ def addSearchAndNavigationConfiglets(portal, out):
                                            name       = 'Navigation Settings',
                                            action     = 'string:${portal_url}/prefs_navigation_form',
                                            category   = 'Plone',
-                                           permission = CMFCorePermissions.ManagePortal,)
+                                           permission = ManagePortal,)
             out.append("Added navigation settings to the control panel")
 
 def addFormSubmitHelpersJS(portal, out):

@@ -1,6 +1,6 @@
 import string
 from Products.CMFCore.utils import getToolByName
-from Products.CMFCore import permissions as CMFCorePermissions
+from Products.CMFCore.permissions import AddPortalContent
 from Products.CMFPlone.migrations.migration_util import safeGetMemberDataTool, \
      safeEditProperty
 
@@ -62,7 +62,7 @@ def addRenameObjectButton(portal,out):
          'name'      : 'Rename',
          'action'    : 'python:"%s/object_rename"%(object.isDefaultPageInFolder() and object.getParentNode().absolute_url() or object_url)',
          'condition' : 'python:portal.portal_membership.checkPermission("Delete objects", object.aq_inner.getParentNode()) and portal.portal_membership.checkPermission("Copy or Move", object) and portal.portal_membership.checkPermission("Add portal content", object) and object is not portal and not (object.isDefaultPageInFolder() and object.getParentNode() is portal)',
-         'permission': CMFCorePermissions.AddPortalContent,
+         'permission': AddPortalContent,
          'category'  : 'object_buttons',
         },)
 
