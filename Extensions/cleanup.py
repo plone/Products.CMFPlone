@@ -3,6 +3,7 @@ $Id$
 """
 
 from sets import Set
+from Products.CMFPlone import transaction
 
 def cleanUpCatalog(catalog, out):
     _cat = catalog._catalog
@@ -71,4 +72,4 @@ if __name__ == "__main__":
     cleanUpCatalog(catalog, sys.stdout)
     if remove_unreachable:
         removeUnreachable(catalog, sys.stdout)
-    get_transaction().commit()
+    transaction.commit()

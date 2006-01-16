@@ -68,7 +68,7 @@ def two05_alpha1(portal):
         #migrateToATCT(portal, out)
         migrateToATCT10(portal, out)
 
-    transaction.commit(1)
+    transaction.savepoint(optimistic=True)
     
     return out
 
@@ -276,7 +276,7 @@ def installATContentTypes(portal, out):
 def migrateToATCT(portal, out):
     """Switches portal to ATContentTypes.
     """
-    transaction.commit(1)
+    transaction.savepoint(optimistic=True)
     migrateFromCMFtoATCT = portal.migrateFromCMFtoATCT
     switchCMF2ATCT = portal.switchCMF2ATCT
     #out.append('Migrating and switching to ATContentTypes ...')
@@ -286,17 +286,17 @@ def migrateToATCT(portal, out):
         switchCMF2ATCT(skip_rename=False)
     except IndexError:
         switchCMF2ATCT(skip_rename=True)
-    transaction.commit(1)
+    transaction.savepoint(optimistic=True)
     #out.append('Switched portal to ATContentTypes.')
 
 
 def migrateToATCT10(portal, out):
     """Switches portal to ATCT 1.0
     """
-    transaction.commit(1)
+    transaction.savepoint(optimistic=True)
     tool = portal.portal_atct
     tool.migrateToATCT()
-    transaction.commit(1)
+    transaction.savepoint(optimistic=True)
 
 
 def addFullScreenAction(portal, out):

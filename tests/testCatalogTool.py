@@ -444,7 +444,7 @@ class TestFolderCataloging(PloneTestCase.PloneTestCase):
         # Test for catalog that searches to ensure folder titles are 
         # updated in the catalog. 
         title = 'Test Folder - Snooze!'
-        transaction.commit(1) # make rename work
+        transaction.savepoint(optimistic=True) # make rename work
         self.folder.foo.folder_edit(title, '', id='bar')
         results = self.catalog(Title='Snooze')
         self.failUnless(results)
@@ -466,7 +466,7 @@ class TestFolderCataloging(PloneTestCase.PloneTestCase):
     def testFolderTitleIsUpdatedOnFolderRename(self):
         # The bug in fact talks about folder_rename
         title = 'Test Folder - Snooze!'
-        transaction.commit(1) # make rename work
+        transaction.savepoint(optimistic=True) # make rename work
         foo_path = '/'.join(self.folder.foo.getPhysicalPath())
         self.folder.folder_rename(paths=[foo_path], new_ids=['bar'], new_titles=[title])
         results = self.catalog(Title='Snooze')
@@ -553,7 +553,7 @@ class TestCatalogOrdering(PloneTestCase.PloneTestCase):
         # that blames permissions or lack of support by the obj. The obj is a
         # Plone Document, and the owner of doc2 is portal_owner. Harumph.
 
-        transaction.commit(1)
+        transaction.savepoint(optimistic=True)
 
         self.folder.manage_renameObjects(['doc2'], ['buzz'])
         folder_docs = self.catalog(portal_type = 'Document',

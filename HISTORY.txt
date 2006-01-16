@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1.2 - Saint Etienne - (unreleased)
 
+    - Changed the last occurrences of transaction.commit(1) to new style
+      transaction.savepoint(optimistic=True) calls.
+      [hannosch]
+
     - Removed the last remaining occurrences of CMFCorePermissions.
       [hannosch]
 

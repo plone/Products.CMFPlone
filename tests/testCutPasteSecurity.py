@@ -31,7 +31,7 @@ class TestCutPasteSecurity(PloneTestCase.PloneTestCase):
 
         # We need to commit here so that _p_jar isn't None and move
         # will work
-        transaction.commit(1)
+        transaction.savepoint(optimistic=True)
         folder.manage_renameObject('testrename', 'new')
         self.failIf(hasattr(aq_base(folder), 'testrename'))
         self.failUnless(hasattr(aq_base(folder), 'new'))
@@ -76,7 +76,7 @@ class TestCutPasteSecurity(PloneTestCase.PloneTestCase):
 
         # We need to commit here so that _p_jar isn't None and move
         # will work
-        transaction.commit(1)
+        transaction.savepoint(optimistic=True)
 
         src.invokeFactory('Folder', id='dest')
         dest = src.dest
@@ -93,7 +93,7 @@ class TestCutPasteSecurity(PloneTestCase.PloneTestCase):
 
         # We need to commit here so that _p_jar isn't None and move
         # will work
-        transaction.commit(1)
+        transaction.savepoint(optimistic=True)
 
         self.login('user2')
         self.assertRaises(Unauthorized, src.restrictedTraverse, 'manage_cutObjects')

@@ -274,7 +274,7 @@ def moveDefaultTopicsToPortalRoot(portal, out):
                     folder.manage_delObjects([topic['old_id']])
                     out.append(
                               "Moved %s topic to portal root"%topic['new_id'])
-                    transaction.commit(1)
+                    transaction.savepoint(optimistic=True)
                     if not folder.objectIds():
                         # Delete empty folders
                         portal.manage_delObjects([topic['new_id']])
