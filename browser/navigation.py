@@ -199,12 +199,12 @@ class CatalogNavigationTree(utils.BrowserView):
             utils.addToNavTreeResult(result, data)
 
         portalpath = purl.getPortalPath()
-
+        
         if ntp.getProperty('showAllParents', False):
             portal = purl.getPortalObject()
             parent = context
             parents = [parent]
-            while not parent is portal:
+            while parent != portal:
                 parent = aq_inner(parent).aq_parent
                 parents.append(parent)
 
