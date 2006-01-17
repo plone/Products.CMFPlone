@@ -26,6 +26,8 @@
  <javascript cookable="True" enabled="True" expression=""
     id="highlightsearchterms.js" inline="False"/>
  <javascript cookable="True" enabled="True" expression=""
+    id="se-highlight.js" inline="False"/>
+ <javascript cookable="True" enabled="True" expression=""
     id="first_input_focus.js" inline="False"/>
  <javascript cookable="True" enabled="True" expression=""
     id="folder_contents_filter.js" inline="False"/>
