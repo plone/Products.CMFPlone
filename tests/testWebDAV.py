@@ -18,22 +18,16 @@ html = """\
 </html>
 """
 
-def mkdict(items):
-    '''Constructs a dict from a sequence of (key, value) pairs.'''
-    d = {}
-    for k, v in items:
-        d[k] = v
-    return d
-
 
 class TestDAVProperties(PloneTestCase.PloneTestCase):
 
     def testPropertiesToolTitle(self):
+        import pdb; pdb.set_trace()
         ptool = getToolByName(self.portal, 'portal_properties')
-        psets = mkdict(ptool.propertysheets.items())
+        psets = dict(ptool.propertysheets.items())
         self.failUnless('default' in psets.keys())
         default = psets['default']
-        items = mkdict(default.propertyItems())
+        items = dict(default.propertyItems())
         self.failUnless('title' in items.keys())
         self.assertEquals(items['title'], self.portal.title)
 
