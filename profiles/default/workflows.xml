@@ -33,6 +33,8 @@
   </type>
   <type type_id="ATSortCriterion">
   </type>
+  <type type_id="Discussion Item">
+  </type>
   <type type_id="Folder">
    <bound-workflow workflow_id="folder_workflow"/>
   </type>

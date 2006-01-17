@@ -96,6 +96,12 @@
      visible="True">
    <permission>Delete objects</permission>
   </action>
+  <action title="Rename" action_id="rename" category="object_buttons"
+     condition_expr="python:portal.portal_membership.checkPermission('Delete objects', object.aq_inner.getParentNode()) and portal.portal_membership.checkPermission('Copy or Move', object) and portal.portal_membership.checkPermission('Add portal content', object) and object is not portal and not (object.isDefaultPageInFolder() and object.getParentNode() is portal)"
+     url_expr="python:'%s/object_rename'%(object.isDefaultPageInFolder() and object.getParentNode().absolute_url() or object_url)"
+     visible="True">
+   <permission>Add Portal Content</permission>
+  </action>
   <action title="Home" action_id="index_html" category="portal_tabs"
      condition_expr="" url_expr="string:$portal_url" visible="True">
    <permission>View</permission>
