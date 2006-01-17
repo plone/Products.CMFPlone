@@ -79,7 +79,8 @@ class Plone(utils.BrowserView):
         self._data['ztu'] =  ZTUtils
         self._data['wf_actions'] =  self._data['workflow_actions']
         self._data['isFolderish'] =  utils.context(self).isPrincipiaFolderish
-        self._data['template_id'] =  self.request.get('template_id', None) or utils.context(self).getId() or None # ?
+        # i don't know if this is right for 'template_id', but it's more right than what was there before...
+        self._data['template_id'] =  self.request.get('template_id', None) or self.request.PUBLISHED.getId() or None
         self._data['slots_mapping'] =  self.request.get('slots_mapping', None) or utils.context(self).prepare_slots() or None
         self._data['Iterator'] =  CMFPlone.IndexIterator
         self._data['tabindex'] =  self._data['Iterator'](pos=30000)
