@@ -79,11 +79,7 @@ class Plone(utils.BrowserView):
         self._data['ztu'] =  ZTUtils
         self._data['wf_actions'] =  self._data['workflow_actions']
         self._data['isFolderish'] =  utils.context(self).isPrincipiaFolderish
-        # i don't know if this is right for 'template_id', but it's more right than what was there before...
-        self._data['template_id'] =  self.request.get('template_id', None) or self.request.PUBLISHED.getId() or None
         self._data['slots_mapping'] =  self.request.get('slots_mapping', None) or utils.context(self).prepare_slots() or None
-        self._data['Iterator'] =  CMFPlone.IndexIterator
-        self._data['tabindex'] =  self._data['Iterator'](pos=30000)
         self._data['here_url'] =  utils.context(self).absolute_url()
         self._data['sl'] =  self._data['slots_mapping']['left']
         self._data['sr'] =  self._data['slots_mapping']['right']
@@ -97,8 +93,6 @@ class Plone(utils.BrowserView):
         self._data['isRTL'] =  utils.context(self).isRightToLeft(domain='plone')
         self._data['visible_ids'] =  utils.context(self).visibleIdsEnabled() or None
         self._data['current_page_url'] =  utils.context(self).getCurrentUrl() or None
-        self._data['view_template_id'] =  utils.context(self).getViewTemplateId() or None
-        self._data['isViewTemplate'] =  self._data['template_id']==self._data['view_template_id']
         self._data['normalizeString'] = putils.normalizeString
 
     def __getattr__(self, key):

@@ -4,4 +4,12 @@ The expressions that used to generate these globals have been
 moved to (much faster) Python code in CMFPlone/browser/plone_globals.py
 -->
 
-<metal:globaldefine define-macro="defines" tal:define="foo context/@@plone/globals" />
+<metal:globaldefine define-macro="defines" 
+      tal:define="
+        foo context/@@plone/globals;
+        global Iterator python:modules['Products.CMFPlone'].IndexIterator;
+        global tabindex python:Iterator(pos=30000);
+        global template_id options/template_id | template/getId | nothing;
+        view_template_id here/getViewTemplateId|nothing;
+        global isViewTemplate python:template_id==view_template_id;
+        " />

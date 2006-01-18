@@ -22,7 +22,6 @@ html = """\
 class TestDAVProperties(PloneTestCase.PloneTestCase):
 
     def testPropertiesToolTitle(self):
-        import pdb; pdb.set_trace()
         ptool = getToolByName(self.portal, 'portal_properties')
         psets = dict(ptool.propertysheets.items())
         self.failUnless('default' in psets.keys())
