@@ -35,6 +35,7 @@ ZopeTestCase.installProduct('ExternalMethod', quiet=1)
 # PAS
 ZopeTestCase.installProduct('PluggableAuthService')
 ZopeTestCase.installProduct('PluginRegistry')
+ZopeTestCase.installProduct('PasswordResetTool')
 ZopeTestCase.installProduct('PlonePAS')
 
 # Archetypes/ATContentTypes dependencies
