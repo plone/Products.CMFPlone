@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1.2 - Saint Etienne - (unreleased)
 
+    - Fixed the non-workflow-state-dependend coloring of items in the
+      navigation portlet. Closes https://trac.plone.org/plone/ticket/5136.
+      [hannosch]
+
     - Changed the last occurrences of transaction.commit(1) to new style
       transaction.savepoint(optimistic=True) calls.
       [hannosch]
