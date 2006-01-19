@@ -32,12 +32,6 @@ ZopeTestCase.installProduct('PageTemplates', quiet=1)
 ZopeTestCase.installProduct('PythonScripts', quiet=1)
 ZopeTestCase.installProduct('ExternalMethod', quiet=1)
 
-# PAS
-ZopeTestCase.installProduct('PluggableAuthService')
-ZopeTestCase.installProduct('PluginRegistry')
-ZopeTestCase.installProduct('PasswordResetTool')
-ZopeTestCase.installProduct('PlonePAS')
-
 # Archetypes/ATContentTypes dependencies
 ZopeTestCase.installProduct('Archetypes')
 ZopeTestCase.installProduct('MimetypesRegistry', quiet=1)

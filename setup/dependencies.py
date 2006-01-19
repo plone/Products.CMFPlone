@@ -257,10 +257,3 @@ try:
 except ImportError:
     log(("CMFDynamicViewFTI not found. "
          "Please download it from http://plone.org/products/cmfdynamicviewfti"))
-
-try:
-    import Products.PlonePAS
-except ImportError:
-    log(("PlonePAS not found."
-         "Please download it from http://plone.org/products/plonepas"))
-

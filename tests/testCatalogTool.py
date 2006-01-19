@@ -284,7 +284,7 @@ class TestCatalogSearching(PloneTestCase.PloneTestCase):
         self.workflow = self.portal.portal_workflow
         self.groups = self.portal.portal_groups
 
-        self.portal.acl_users._doAddUser(user2, 'secret', [], [])
+        self.portal.acl_users._doAddUser(user2, 'secret', [], [], [])
 
         self.folder.invokeFactory('Document', id='doc', text='foo')
         self.folder.invokeFactory('Folder', id='folder2')
