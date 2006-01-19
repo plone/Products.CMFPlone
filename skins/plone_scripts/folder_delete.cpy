@@ -10,16 +10,16 @@
 ##
 
 from Products.CMFPlone.utils import transaction_note
+from Products.CMFPlone import PloneMessageFactory as _
 from ZODB.POSException import ConflictError
 paths=context.REQUEST.get('paths', [])
 titles=[]
 titles_and_paths=[]
 failed = {}
-message = ''
 
 portal = context.portal_url.getPortalObject()
 status='failure'
-message='Please select one or more items to delete.'
+message=_(u'Please select one or more items to delete.')
 
 for path in paths:
     # Skip and note any errors
@@ -36,13 +36,13 @@ for path in paths:
 
 if titles:
     status='success'
-    message = context.translate('Item(s) deleted.')
+    message = _(u'Item(s) deleted.')
 
     transaction_note('Deleted %s' % (', '.join(titles_and_paths)))
 
 if failed:
-    if message: message = message + '  '
-    message = message + "%s could not be deleted."%(', '.join(failed.keys()))
+    message = _(u'${items} could not be deleted.', mapping={u'items' : ', '.join(failed.keys())})
 
-return state.set(status=status, portal_status_message=message)
+context.plone_utils.addPortalMessage(message)
+return state.set(status=status)
 

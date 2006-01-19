@@ -303,7 +303,7 @@ class CatalogTool(PloneBaseTool, BaseTool):
                , 'getId'
                , 'portal_type'
                # plone metadata
-               , 'id', # BBB to be removed in Plone 2.2
+               , 'id', # BBB to be removed in Plone 2.5
                'getObjSize',
                'exclude_from_nav',
                )

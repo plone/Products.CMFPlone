@@ -1042,6 +1042,37 @@ class TestIDGenerationMethods(PloneTestCase.PloneTestCase):
         for k, v in aliases.items():
             self.assertEqual(expectedAliases[k], v)
 
+class TestPortalStatusMessages(PloneTestCase.PloneTestCase):
+    '''Tests the portal status messages methods'''
+
+    def afterSetUp(self):
+        self.utils = self.portal.plone_utils
+
+    def testPortalMessages(self):
+        # make sure there's no stored message
+        self.assertEqual(len(self.utils.showPortalMessages()), 0)
+        # add one message
+        self.utils.addPortalMessage(u'message', type=u'info')
+        msgs = self.utils.showPortalMessages()
+        self.assertEqual(len(msgs), 1)
+        self.assertEqual(msgs[0].message, u'message')
+        self.assertEqual(msgs[0].type, u'info')
+        # make sure messages are removed
+        msgs = self.utils.showPortalMessages()
+        self.assertEqual(len(msgs), 0)
+        # add two messages
+        self.utils.addPortalMessage(u'message1', type=u'info')
+        self.utils.addPortalMessage(u'message2', type=u'warn')
+        msgs = self.utils.showPortalMessages()
+        self.assertEqual(len(msgs), 2)
+        self.assertEqual(msgs[0].message, u'message1')
+        self.assertEqual(msgs[0].type, u'info')
+        self.assertEqual(msgs[1].message, u'message2')
+        self.assertEqual(msgs[1].type, u'warn')
+        # make sure there's no stored message
+        self.assertEqual(len(self.utils.showPortalMessages()), 0)
+
+
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
@@ -1054,6 +1085,7 @@ def test_suite():
     suite.addTest(makeSuite(TestPortalTabs))
     suite.addTest(makeSuite(TestBreadCrumbs))
     suite.addTest(makeSuite(TestIDGenerationMethods))
+    suite.addTest(makeSuite(TestPortalStatusMessages))
     return suite
 
 if __name__ == '__main__':

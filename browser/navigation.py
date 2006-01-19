@@ -4,6 +4,7 @@ from zope.component import getViewProviding
 from Acquisition import aq_base, aq_inner
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import utils
+from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.browser.interfaces import IDefaultPage
 from Products.CMFPlone.browser.interfaces import INavigationRoot
 from Products.CMFPlone.browser.interfaces import INavigationBreadcrumbs
@@ -274,14 +275,9 @@ class CatalogNavigationTabs(utils.BrowserView):
         result = []
         # first the actions
         if actions is not None:
-            trans = getToolByName(context, 'translation_service')
-            utranslate = trans.utranslate
             for action_info in actions.get('portal_tabs', []):
                 data = action_info.copy()
-                data['title'] = utranslate('plone',
-                                          data['title'],
-                                          context=context,
-                                          default=data['title'])
+                data['title'] = _(data['title'], default=data['title'])
                 result.append(data)
 
         # check whether we only want actions

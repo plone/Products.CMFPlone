@@ -21,6 +21,7 @@ from Products.CMFPlone.browser.interfaces import INavigationTabs
 from Products.CMFPlone.browser.interfaces import INavigationTree
 from Products.CMFPlone.UnicodeNormalizer import normalizeUnicode
 from Products.CMFPlone.interfaces.Translatable import ITranslatable
+from Products.CMFPlone import PloneMessageFactory as _
 import transaction
 
 # Canonical way to get at CMFPlone directory
@@ -182,11 +183,10 @@ def utf8_portal(context, str, errors='strict'):
         return unicode(str, 'utf-8', errors).encode(charset, errors)
 
 def getEmptyTitle(context, translated=True):
-    empty = utf8_portal(context, '\x5b\xc2\xb7\xc2\xb7\xc2\xb7\x5d', 'ignore')
+    """Returns string to be used for objects with no title or id"""
+    empty = u'\x5b\xc2\xb7\xc2\xb7\xc2\xb7\x5d'
     if translated:
-        trans = getToolByName(context, 'translation_service')
-        empty = trans.utranslate(domain='plone', msgid='title_unset',
-                                 default=empty)
+        empty = _(u'title_unset', default=empty)
     return empty
 
 def typesToList(context):

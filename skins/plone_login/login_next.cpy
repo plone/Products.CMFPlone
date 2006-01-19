@@ -7,18 +7,21 @@
 ##parameters=
 ##title=login
 ##
+
+from Products.CMFPlone import PloneMessageFactory as _
 from DateTime import DateTime
 import ZTUtils
 
 REQUEST=context.REQUEST
 
+util = context.plone_utils
 membership_tool=context.portal_membership
 if membership_tool.isAnonymousUser():
     REQUEST.RESPONSE.expireCookie('__ac', path='/')
-    return state.set(status='failure', portal_status_message='Login failed')
+    util.addPortalMessage(_(u'Login failed'))
+    return state.set(status='failure')
 
 came_from = REQUEST.get('came_from', None)
-util = context.plone_utils
 
 # if we weren't called from something that set 'came_from' or if HTTP_REFERER
 # is the 'logged_out' page, return the default 'login_success' form
@@ -39,8 +42,7 @@ if came_from and js_enabled:
     # If cookies aren't enabled, the redirect will log the user out, and confusion
     # may arise.  Redirect only if we know for sure that cookies are enabled.
 
-    # Add portal_status_message to the query string of the url we came from
-    query = context.create_query_string(query, portal_status_message='Welcome! You are now logged in.')
+    util.addPortalMessage(_(u'Welcome! You are now logged in.'))
     came_from = util.urlunparse((scheme, location, path, parameters, query, fragment))
 
     REQUEST.RESPONSE.redirect(came_from)

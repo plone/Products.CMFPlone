@@ -4,14 +4,35 @@
 <body>
 
 <!-- THE STATUS MESSAGE DEFINITION -->
-<div class="portalMessage"
-         i18n:domain="plone"
-         metal:define-macro="portal_message"
-         tal:define="portal_message request/portal_status_message | nothing"
-         tal:condition="portal_message">
-        <tal:msg tal:content="portal_message" i18n:translate="">Portal Message</tal:msg>
-</div>
+<tal:block i18n:domain="plone"
+           metal:define-macro="portal_message">
 
+    <tal:block tal:define="portal_message request/portal_status_message | nothing"
+               tal:condition="portal_message">
 
+        <div class="portalMessage">
+            <tal:msg tal:content="portal_message" i18n:translate="">Portal Message</tal:msg>
+        </div>
+
+    </tal:block>
+
+    <tal:block tal:define="messages python: putils.showPortalMessages()"
+               tal:repeat="message messages">
+        <tal:block
+             tal:define="type_css_map python: {'info':'portalMessage',
+                                               'warn':'portalWarningMessage',
+                                               'stop':'portalStopMessage'
+                                              };
+                         mtype message/type | nothing;">
+            <div class=""
+                 tal:attributes="class python:mtype and type_css_map[mtype] or 'info';"
+                 tal:content="message/message | nothing"
+                 i18n:translate="">
+                Message
+            </div>
+
+        </tal:block>
+    </tal:block>
+</tal:block>
 </body>
 </html>

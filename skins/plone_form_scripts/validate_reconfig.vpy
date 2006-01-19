@@ -8,7 +8,4 @@
 ##parameters=
 ##title=validates the portal config
 
-# nothing to check?
-#if state.getErrors():
-#    return state.set(status='failure', portal_status_message='Please correct the indicated errors.')
 return state

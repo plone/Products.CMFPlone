@@ -9,6 +9,7 @@
 ##title=Set Mailhost Prefs
 ##
 
+from Products.CMFPlone import PloneMessageFactory as _
 REQUEST=context.REQUEST
 
 mh = context.MailHost
@@ -19,6 +20,5 @@ try:
 except TypeError:
     mh.manage_makeChanges('Plone Mail Host', smtp_server, smtp_port)
 
-msg = 'Mail Host Updated'
-
-return state.set(portal_status_message=msg)
+context.plone_utils.addPortalMessage(_(u'Mail Host Updated'))
+return state

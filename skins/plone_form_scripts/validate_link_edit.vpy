@@ -9,10 +9,14 @@
 ##title=Validate link_edit_form contents
 ##
 
+from Products.CMFPlone import PloneMessageFactory as _
+
 if not remote_url:
-    state.setError('remote_url', 'This field is required, please provide some information', 'invalid_url')
+    state.setError('remote_url', _(u'This field is required, please provide some information'), 'invalid_url')
 
 if state.getErrors():
-    return state.set(status='failure', portal_status_message='Please correct the indicated errors.')
+    context.plone_utils.addPortalMessage(_(u'Please correct the indicated errors.'))
+    return state.set(status='failure')
 else:
-    return state.set(portal_status_message='Your link changes have been saved.')
+    context.plone_utils.addPortalMessage(_(u'Your link changes have been saved.'))
+    return state

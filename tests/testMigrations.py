@@ -126,6 +126,7 @@ from Products.CMFPlone.migrations.v2_1.two11_two12 import addRenameObjectButton
 from Products.CMFPlone.migrations.v2_1.two11_two12 import addSEHighLightJS
 from Products.CMFPlone.migrations.v2_1.two11_two12 import removeDiscussionItemWorkflow
 from Products.CMFPlone.migrations.v2_1.two11_two12 import addMemberData
+from Products.CMFPlone.migrations.v2_1.two11_two12 import reinstallPortalTransforms
 
 from Products.CMFDynamicViewFTI.migrate import migrateFTI
 
@@ -3425,6 +3426,21 @@ class TestMigrations_v2_1_2(MigrationTest):
         # Should not fail if portal_memberdata is missing
         self.portal._delObject('portal_memberdata')
         addMemberData(self.portal, [])
+
+    def testReinstallPortalTransforms(self):
+        self.portal._delObject('portal_transforms')
+        reinstallPortalTransforms(self.portal, [])
+        self.failUnless(hasattr(self.portal.aq_base, 'portal_transforms'))
+
+    def testReinstallPortalTransformsTwice(self):
+        self.portal._delObject('portal_transforms')
+        reinstallPortalTransforms(self.portal, [])
+        reinstallPortalTransforms(self.portal, [])
+        self.failUnless(hasattr(self.portal.aq_base, 'portal_transforms'))
+
+    def testReinstallPortalTransformsNoTool(self):
+        self.portal._delObject('portal_quickinstaller')
+        reinstallPortalTransforms(self.portal, [])
 
 
 def test_suite():

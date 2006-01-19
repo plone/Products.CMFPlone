@@ -7,6 +7,9 @@
 ##parameters=obj=None
 ##title=Delete discussion item
 ##
+
+from Products.CMFPlone import PloneMessageFactory as _
+
 if obj is None:
     obj=context
 
@@ -23,5 +26,6 @@ talkback.deleteReply( obj.getId() )
 redirect_target = context.plone_utils.getDiscussionThread(talkback)[0]
 view = redirect_target.getTypeInfo().getActionById('view')
 
-context.REQUEST['RESPONSE'].redirect( redirect_target.absolute_url()
-         + '/%s?portal_status_message=Reply+deleted' % view )
+context.plone_utils.addPortalMessage(_(u'Reply deleted.'))
+
+context.REQUEST['RESPONSE'].redirect( redirect_target.absolute_url() + '/%s' % view )

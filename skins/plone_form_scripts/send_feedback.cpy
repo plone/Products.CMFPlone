@@ -12,6 +12,7 @@ REQUEST=context.REQUEST
 
 from Products.CMFPlone.utils import transaction_note
 from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone import PloneMessageFactory as _
 from ZODB.POSException import ConflictError
 
 ##
@@ -51,7 +52,8 @@ if send_from_address == '':
     # happens if you don't exist as user in the portal (but at a higher level)
     # or if your memberdata is incomplete.
     # Would be nicer to check in the feedback form, but that's hard to do securely
-    return state.set(status=state_failure, portal_status_message="Could not find a valid email address")
+    context.plone_utils.addPortalMessage(_(u'Could not find a valid email address'))
+    return state.set(status=state_failure)
     
 sender_id = "%s (%s), %s" % (sender.getProperty('fullname'), sender.getId(), send_from_address)
 
@@ -66,7 +68,7 @@ variables = {'send_from_address' : send_from_address,
              'url'               : referer,
              'subject'           : subject,
              'message'           : message,
-	     'encoding'          : encoding,
+             'encoding'          : encoding,
              }
 
 try:
@@ -76,9 +78,10 @@ except ConflictError:
     raise
 except: # TODO Too many things could possibly go wrong. So we catch all.
     exception = context.plone_utils.exceptionString()
-    message = context.translate("Unable to send mail: ${exception}",
-                                {'exception': exception})
-    return state.set(status=state_failure, portal_status_message=message)
+    message = _(u'Unable to send mail: ${exception}',
+                mapping={u'exception' : exception})
+    context.plone_utils.addPortalMessage(message)
+    return state.set(status=state_failure)
 
 tmsg='Sent feedback from %s to %s' % ('x', 'y')
 transaction_note(tmsg)
@@ -87,5 +90,5 @@ transaction_note(tmsg)
 REQUEST.set('message', None)
 REQUEST.set('subject', None)
 
-state.set(portal_status_message='Mail sent.')
+context.plone_utils.addPortalMessage(_(u'Mail sent.'))
 return state

@@ -18,8 +18,8 @@ REQUEST = context.REQUEST
 
 mtool = getToolByName(context, 'portal_membership')
 if not mtool.checkPermission('Copy or Move', context):
-    raise Unauthorized, context.translate("Permission denied to rename ${title}.",
-                                          {'title': context.title_or_id()})
+    raise Unauthorized, _(u'Permission denied to rename ${title}.',
+                          mapping={u'title': context.title_or_id()})
 
 pathName = url_quote_plus('paths:list')
 safePath = url_quote_plus('/'.join(context.getPhysicalPath()))

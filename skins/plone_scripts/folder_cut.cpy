@@ -8,7 +8,10 @@
 ##parameters=
 ##title=Cut objects from a folder and copy to the clipboard
 ##
+
 from OFS.CopySupport import CopyError
+from Products.CMFPlone.utils import transaction_note
+from Products.CMFPlone import PloneMessageFactory as _
 
 REQUEST=context.REQUEST
 if REQUEST.has_key('paths'):
@@ -17,15 +20,19 @@ if REQUEST.has_key('paths'):
     try:
         context.manage_cutObjects(ids, REQUEST)
     except CopyError:
-        message = context.translate("One or more items not moveable.")
-        return state.set(status = 'failure', portal_status_message = message)
+        message = _(u'One or more items not moveable.')
+	context.plone_utils.addPortalMessage(message)
+        return state.set(status = 'failure')
     except AttributeError:
-        message = context.translate("One or more selected items is no longer available.")
-        return state.set(status = 'failure', portal_status_message = message)
+        message = _(u'One or more selected items is no longer available.')
+	context.plone_utils.addPortalMessage(message)
+        return state.set(status = 'failure')
 
-    from Products.CMFPlone.utils import transaction_note
     transaction_note('Cut %s from %s' % ((str(ids)), context.absolute_url()))
+    message = _(u'${count} item(s) cut.', mapping={u'count' : len(ids)})
 
-    return state.set(portal_status_message='%s Item(s) cut.'%len(ids) )
-                                                
-return state.set(status='failure', portal_status_message='Please select one or more items to cut.')
+    context.plone_utils.addPortalMessage(message)
+    return state
+                                 
+context.plone_utils.addPortalMessage(_(u'Please select one or more items to cut.'))
+return state.set(status='failure')

@@ -8,6 +8,7 @@
 ##title=Determine whether to show an id in an edit form
 
 from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone import PloneMessageFactory as _
 
 ploneUtils = getToolByName(context, 'plone_utils')
 pretty_title_or_id = ploneUtils.pretty_title_or_id
@@ -52,7 +53,6 @@ results = catalog(SearchableText=r, portal_type=friendly_types)
 RESPONSE = context.REQUEST.RESPONSE
 RESPONSE.setHeader('Content-Type', 'text/xml;charset=%s' % context.plone_utils.getSiteEncoding())
 
-_ = context.translate
 legend_livesearch = _('legend_livesearch', default='LiveSearch &darr;')
 label_no_results_found = _('label_no_results_found', default='No matching results found.')
 

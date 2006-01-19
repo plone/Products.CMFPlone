@@ -45,13 +45,10 @@ ZopeTestCase.installProduct('ATContentTypes')
 ZopeTestCase.installProduct('ATReferenceBrowserWidget')
 ZopeTestCase.installProduct('Five')
 
-# Install sessions and error_log
-ZopeTestCase.utils.setupCoreSessions()
-ZopeTestCase.utils.setupSiteErrorLog()
-
 import transaction
 from Testing.ZopeTestCase.utils import makelist
 from Products.CMFPlone.utils import _createObjectByType
+from Products.CMFPlone.tests.utils import setupBrowserIdManager
 
 from AccessControl.SecurityManagement import newSecurityManager
 from AccessControl.SecurityManagement import noSecurityManager
@@ -191,5 +188,7 @@ optimize()
 
 # Create a Plone site in the test (demo-) storage
 app = ZopeTestCase.app()
+ZopeTestCase.utils.setupSiteErrorLog()
+setupBrowserIdManager(app)
 setupPloneSite(app)
 ZopeTestCase.close(app)

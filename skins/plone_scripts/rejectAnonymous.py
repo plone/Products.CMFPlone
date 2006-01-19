@@ -8,12 +8,13 @@
 ##title=
 ##
 
+from Products.CMFPlone import PloneMessageFactory as _
+
 if context.portal_membership.isAnonymousUser():
-    portal_url=context.portal_url()
+
+    url = '%s/login_form' % context.portal_url()
+    context.plone_utils.addPortalMessage(_(u'You must sign in first.'))
+
     RESPONSE=context.REQUEST.RESPONSE
-    url = '%s/%s?%s'
-    msg = 'portal_status_message=You+must+sign+in+first.'
-    return RESPONSE.redirect( url % ( portal_url
-                                    , 'login_form'
-                                    , msg ) )
+    return RESPONSE.redirect(url)
 return 1

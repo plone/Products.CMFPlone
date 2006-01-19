@@ -9,11 +9,11 @@
 ##title=Set Search Prefs
 ##
 
+from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFCore.utils import getToolByName
 
 REQUEST=context.REQUEST
 portal_properties=getToolByName(context, 'portal_properties')
-
 
 jstool=getToolByName(context, 'portal_javascripts')
 
@@ -33,6 +33,5 @@ blacklistedTypes = [t for t in allTypes if t not in portaltypes]
 
 portal_properties.site_properties.manage_changeProperties(types_not_searched=blacklistedTypes)
 
-msg = 'Search settings updated.'
-
-return state.set(portal_status_message=msg)
+context.plone_utils.addPortalMessage(_(u'Search settings updated.'))
+return state

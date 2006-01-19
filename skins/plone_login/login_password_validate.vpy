@@ -9,10 +9,13 @@
 ##title=Validate password change during login
 ##
 
+from Products.CMFPlone import PloneMessageFactory as _
+
 mt=context.portal_membership
 if mt.isAnonymousUser():
     # not logged in -- most likely because cookies not enabled
-    state.set(status='failure_anonymous', portal_status_message='You must enable cookies before you can log in')
+    context.plone_utils.addPortalMessage(_(u'You must enable cookies before you can log in.'))
+    state.set(status='failure_anonymous')
     return state
 
 request = context.REQUEST
@@ -21,13 +24,15 @@ password_confirm = request.get('confirm', None)
 
 failMessage=context.portal_registration.testPasswordValidity(password, password_confirm)
 if failMessage:
+    context.plone_utils.addPortalMessage(failMessage)
     state.setError('password', failMessage)
-    state.set(status='failure', portal_status_message=failMessage)
+    state.set(status='failure')
     return state
 
 if password != password_confirm:
-    state.setError('confirm', 'Passwords must match')
-    state.set(status='failure', portal_status_message='Please make sure you confirm your password')
+    context.plone_utils.addPortalMessage(_(u'Please make sure you confirm your password.'))
+    state.setError('confirm', _(u'Passwords must match.'))
+    state.set(status='failure')
     return state
 
 return state

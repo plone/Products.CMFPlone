@@ -6,7 +6,7 @@
       tal:attributes="content string:text/html;;charset=$charset;"/>
 
 <title>Zope</title>
-<link rel="stylesheet" type="text/css" href="/manage_page_style.css">
+<link rel="stylesheet" type="text/css" href="/manage_page_style.css" />
 
 </head>
 <body bgcolor="#ffffff" link="#000099" alink="#000099" vlink="#000099">

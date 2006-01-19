@@ -6,10 +6,12 @@
 ##bind subpath=traverse_subpath
 ##title=Mail a user's password
 ##parameters=
+
+from Products.CMFPlone import PloneMessageFactory as _
 REQUEST=context.REQUEST
 try:
     response = context.portal_registration.mailPassword(REQUEST['userid'], REQUEST)
 except ValueError, e:
-    REQUEST.set('portal_status_message', str(e))
+    context.plone_utils.addPortalMessage(str(e))
     response = context.mail_password_form()
 return response
