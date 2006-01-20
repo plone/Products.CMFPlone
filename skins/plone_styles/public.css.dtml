@@ -111,7 +111,7 @@
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-notifyBorderColor;;
     padding: 1em;
     margin: 0 0 1em 0;
-    width: 95% !important;
+    width: 95%;
 }
 
 .error .fieldRequired {
