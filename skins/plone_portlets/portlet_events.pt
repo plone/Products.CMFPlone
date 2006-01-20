@@ -52,7 +52,17 @@
         </a>
     </dd>
     </tal:events>
-  
+
+    <dd class="portletFooter"
+           tal:condition="python:'previous' in portal.events.contentIds()">
+        <a href=""
+           tal:attributes="href string:${utool}/events/previous">
+            <span i18n:translate="box_previous_events">
+                Previous events&hellip;
+            </span>
+        </a>
+    </dd>
+
     <dd class="portletFooter">
         <a href=""
            tal:condition="eventsfolder"
@@ -67,7 +77,6 @@
            i18n:translate="box_upcoming_events">
                 Upcoming events&hellip;
         </a>
-
     </dd>
 </dl>
 

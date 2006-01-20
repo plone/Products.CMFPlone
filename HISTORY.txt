@@ -4,9 +4,14 @@ Changelog for Plone
 
 Plone 2.1.2 - Saint Etienne - (unreleased)
 
+    - Reinstating the "Previous Events" link in the events portlet (was
+      removed in r7864)
+      [limi]
+
     - Removing hardcoded style attributes in folder_localrole_form.
       This fixes #5070.
       http://trac.plone.org/plone/ticket/5070
+      [limi]
 
     - Removed useless CSS declaration in generated.css - the site map
       will never have a current item by its very nature. This fixes #5079.
