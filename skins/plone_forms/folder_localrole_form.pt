@@ -32,9 +32,8 @@
     </h1>
 
     <tal:warning tal:condition="not:iscontainer">
-        <div class="portalMessage" style="background-color:rgb(255,191,191)">
-            <span style="font-weight:normal" 
-                  i18n:translate="local_role_warning_type">
+        <div class="portalMessage">
+            <span i18n:translate="local_role_warning_type">
                 <strong>Attention!</strong> 
                 You are setting the sharing permissions for a 
                 <strong i18n:name="type"><span tal:content="itemPortalTypeTitle" tal:omit-tag="" i18n:translate="">type</span></strong>.
@@ -55,8 +54,9 @@
     </p>
 
     <tal:warning tal:condition="python:iscontainer and here.isDefaultPageInFolder()">
-        <div class="portalMessage" style="background-color:rgb(255,191,191)">
-            <span style="font-weight:normal" i18n:translate="local_role_warning_default_page"><strong>Attention!</strong> You are setting the sharing permissions for this folder's default page.
+        <div class="portalMessage">
+            <span i18n:translate="local_role_warning_default_page">
+            <strong>Attention!</strong> You are setting the sharing permissions for this folder's default page.
             If you want to set the permissions for its containing folder, click <span i18n:name="link">
             <a href="" i18n:translate="local_role_warning_link" tal:attributes="href python:here.absolute_url()+'/../'+ template.id">here</a></span>
             </span>

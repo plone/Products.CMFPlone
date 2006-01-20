@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1.2 - Saint Etienne - (unreleased)
 
+    - Removing hardcoded style attributes in folder_localrole_form.
+      This fixes #5070.
+      http://trac.plone.org/plone/ticket/5070
+
     - Removed useless CSS declaration in generated.css - the site map
       will never have a current item by its very nature. This fixes #5079.
       http://trac.plone.org/plone/ticket/5079
