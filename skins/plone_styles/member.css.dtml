@@ -18,28 +18,22 @@
 
 /* workflow state colors */
 
-.state-private,
-.state-private a:visited {
+.state-private {
     color: Red !important;
 }
-.state-visible,
-.state-visible a:visited {
+.state-visible {
     color: #74AE0B !important;
 }
-.state-published, 
-.state-published a:visited {
+.state-published {
     color: &dtml-linkColor; !important;
 }
-.state-pending,
-.state-pending a:visited {
+.state-pending {
     color: #FFA500 !important;
 }
-.state-expired,
-.state-expired a:visited {
+.state-expired {
     color: &dtml-discreetColor; !important;
 }
-.syndicated,
-.syndicated a:visited {
+.syndicated {
     color: #008000 !important;
 }
 
