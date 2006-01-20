@@ -20,7 +20,7 @@
   <div tal:condition="not:isAnon">
     <div tal:define="came_from request/came_from|nothing;
                      initial_login request/initial_login|nothing;
-		     js_enabled python:request.get('js_enabled','1')!='0';">
+             js_enabled python:request.get('js_enabled','1')!='0';">
 
       <h1 i18n:translate="heading_you_are_now_logged_in">You are now logged in</h1>
 
@@ -60,14 +60,14 @@
         <a href=""
            tal:attributes="href came_from"
            i18n:translate="label_login_continue">
-          &raquo; Continue</a>
+          Continue</a>
       </p>
 
       <p tal:condition="python:not came_from">
         <a href=""
            tal:attributes="href came_from"
            i18n:translate="label_login_continue_to_home_page">
-          &raquo; Continue to the
+          Continue to the
           <span tal:content="portal/title" i18n:name="portal_title">
               portal title
           </span>
