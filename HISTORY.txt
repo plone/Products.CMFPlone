@@ -2,7 +2,7 @@ Changelog for Plone
 
    (name of developer listed in brackets)
 
-Plone 2.1.2 - Saint Etienne - (unreleased)
+Plone 2.1.2 - Saint Etienne - Released January 20, 2006
 
     - Reinstating the "Previous Events" link in the events portlet (was
       removed in r7864)
