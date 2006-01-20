@@ -6,16 +6,17 @@ Plone 2.1.2 - Saint Etienne - (unreleased)
 
     - Removed useless CSS declaration in generated.css - the site map
       will never have a current item by its very nature. This fixes #5079.
+      http://trac.plone.org/plone/ticket/5079
       [limi]
 
     - Made Plone notify you when you are trying to log out while being
       logged in via HTTP (you need to close your browser to log out when
       using HTTP auth). This also fixes #5083.
-      https://trac.plone.org/plone/ticket/5083
+      http://trac.plone.org/plone/ticket/5083
       [limi]
 
     - Fixed the non-workflow-state-dependend coloring of items in the
-      navigation portlet. Closes https://trac.plone.org/plone/ticket/5136.
+      navigation portlet. Closes http://trac.plone.org/plone/ticket/5136.
       [hannosch]
 
     - Changed the last occurrences of transaction.commit(1) to new style
