@@ -5,7 +5,7 @@
 
 <body>
 <ul metal:define-macro="site_actions"
-    class="portal-siteactions"
+    id="portal-siteactions"
     tal:define="site_actions actions/site_actions|nothing;
                 getIconFor nocall:putils/getIconFor;
                 accesskeys python: {'sitemap' : '3', 'accessibility' : '0', 'contact' : '9'};"
