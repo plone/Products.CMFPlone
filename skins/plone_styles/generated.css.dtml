@@ -37,7 +37,6 @@
         height: 1%;
     }
     #portal-sitemap .contenttype-&dtml-type_id; a:hover,
-    #portal-sitemap .contenttype-&dtml-type_id; a.navTreeCurrentItem,
     #portlet-navigation-tree .contenttype-&dtml-type_id; a:hover,
     #portlet-navigation-tree .contenttype-&dtml-type_id; a.navTreeCurrentItem {
         background-image: url(&dtml-portal_url;/&dtml-type_icon;);
@@ -49,7 +48,6 @@
         background-position: 0% 4px;
     }
     * html #portal-sitemap .contenttype-&dtml-type_id; a:hover,
-    * html #portal-sitemap .contenttype-&dtml-type_id; a.navTreeCurrentItem,
     * html #portlet-navigation-tree .contenttype-&dtml-type_id; a:hover,
     * html #portlet-navigation-tree .contenttype-&dtml-type_id; a.navTreeCurrentItem {
         position: relative;
