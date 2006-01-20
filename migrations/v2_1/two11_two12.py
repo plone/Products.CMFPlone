@@ -137,4 +137,3 @@ def reinstallPortalTransforms(portal, out):
         if qi is not None:
             qi.reinstallProducts(['PortalTransforms'])
             out.append('Reinstalled PortalTransforms.')
-

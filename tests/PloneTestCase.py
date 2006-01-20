@@ -38,6 +38,7 @@ ZopeTestCase.installProduct('MimetypesRegistry', quiet=1)
 ZopeTestCase.installProduct('PortalTransforms', quiet=1)
 ZopeTestCase.installProduct('ATContentTypes')
 ZopeTestCase.installProduct('ATReferenceBrowserWidget')
+ZopeTestCase.installProduct('CMFPlacefulWorkflow')
 
 import transaction
 from Testing.ZopeTestCase.utils import makelist
