@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.1.2 - Saint Etienne - (unreleased)
 
+    - Made Plone notify you when you are trying to log out while being
+      logged in via HTTP (you need to close your browser to log out when
+      using HTTP auth). This also fixes #5083.
+      https://trac.plone.org/plone/ticket/5083
+
     - Fixed the non-workflow-state-dependend coloring of items in the
       navigation portlet. Closes https://trac.plone.org/plone/ticket/5136.
       [hannosch]
