@@ -22,9 +22,9 @@
 </tal:reallyloggedout>
 
 <tal:notloggedoutafterall tal:condition="not: isAnon">
-    <h1>Quit your web browser to log out</h1>
+    <h1 i18n:translate="heading_quit_to_log_out">Quit your web browser to log out</h1>
     
-    <p>
+    <p i18n:translate="description_quit_to_log_out">
     Because you are logged in via HTTP authentication, the only
     way to log out is to quit your web browser.
     </p>
