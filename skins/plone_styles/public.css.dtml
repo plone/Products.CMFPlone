@@ -47,12 +47,10 @@
 
 .documentContent li a:visited {
     color: &dtml-linkVisitedColor;;
-    background-color: transparent;
 }
 
 .documentContent li a:active {
     color: &dtml-linkActiveColor;;
-    background-color: transparent;
 }
 
 .documentContent dd a {
