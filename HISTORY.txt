@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1.2 - Saint Etienne - Released January 20, 2006
 
+    - Events portlet was not displayed when /events had been deleted.
+      Closes https://trac.plone.org/plone/ticket/5143.
+      [hannosch]
+
     - Reinstating the "Previous Events" link in the events portlet (was
       removed in r7864)
       [limi]
