@@ -54,7 +54,7 @@
     </tal:events>
 
     <dd class="portletFooter"
-           tal:condition="python:'previous' in portal.events.contentIds()">
+           tal:condition="python:eventsfolder and 'previous' in portal.events.contentIds()">
         <a href=""
            tal:attributes="href string:${utool}/events/previous">
             <span i18n:translate="box_previous_events">
