@@ -2,6 +2,15 @@ Changelog for Plone
 
    (name of developer listed in brackets)
 
+Plone 2.1.3 - Tomahawk - Unreleased
+
+    - Introduced a new class "tile" to use in the portlets. The previous
+      portlet code implicitly assumed that all links would be block-level,
+      which is not a good thing. This should have minimal impact on old
+      portlets, but if you want the block-level behaviour and stay compatible
+      with older portlet code too, just add class="tile" to your links.
+      [limi]
+
 Plone 2.1.2 - Saint Etienne - Released January 20, 2006
 
     - Events portlet was not displayed when /events had been deleted.

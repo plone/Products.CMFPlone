@@ -16,6 +16,7 @@
   
     <dt class="portletHeader">
         <a href=""
+           class="tile"
            tal:condition="eventsfolder"
            tal:attributes="href string:${utool}/events"
            i18n:translate="box_events">
@@ -23,6 +24,7 @@
         </a>
 
         <a href=""
+           class="tile"
            tal:condition="not: eventsfolder"
            tal:attributes="href string:${utool}/events_listing"
            i18n:translate="box_events">
@@ -35,6 +37,7 @@
         tal:define="oddrow repeat/obj/odd"
         tal:attributes="class python:test(oddrow, 'portletItem even', 'portletItem odd')">
         <a href="#"
+           class="tile"
            tal:attributes="href obj/getURL;
                            title obj/Description">
             <img src="#" alt="" tal:replace="structure here/event_icon.gif" />
@@ -56,6 +59,7 @@
     <dd class="portletFooter"
            tal:condition="python:eventsfolder and 'previous' in portal.events.contentIds()">
         <a href=""
+           class="tile"
            tal:attributes="href string:${utool}/events/previous">
             <span i18n:translate="box_previous_events">
                 Previous events&hellip;
@@ -65,6 +69,7 @@
 
     <dd class="portletFooter">
         <a href=""
+           class="tile"
            tal:condition="eventsfolder"
            tal:attributes="href string:${utool}/events"
            i18n:translate="box_upcoming_events">
@@ -72,6 +77,7 @@
         </a>
 
         <a href=""
+           class="tile"
            tal:condition="not: eventsfolder"
            tal:attributes="href string:${utool}/events_listing"
            i18n:translate="box_upcoming_events">
