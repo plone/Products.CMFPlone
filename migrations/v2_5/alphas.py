@@ -3,7 +3,7 @@ from Products.CMFPlone.migrations.migration_util import installOrReinstallProduc
 def two5_alpha1(portal):
     """2.1.2 -> 2.5-alpha1
     """
-    out = [ ]
+    out = []
 
     # Install CMFPlacefulWorkflow
     installPlacefulWorkflow(portal, out)
