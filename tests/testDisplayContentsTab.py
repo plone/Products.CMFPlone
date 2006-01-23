@@ -33,7 +33,7 @@ class TestDisplayContentsTab(PloneTestCase.PloneTestCase):
         self.folder.foo.invokeFactory('Document', id='doc1')
         self.folder.foo.invokeFactory('Folder', id='folder1')
         folder_path = '/'.join(self.folder.foo.folder1.getPhysicalPath())
-        transaction.commit(1) # make rename work
+        transaction.savepoint(optimistic=True) # make rename work
         # Make the folder the default page
         self.folder.folder_rename(paths=[folder_path], new_ids=['index_html'], new_titles=['Default Folderish Document'])
 

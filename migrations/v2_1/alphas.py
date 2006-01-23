@@ -1,8 +1,10 @@
 import os
 
 from Acquisition import aq_base
+from AccessControl.Permissions import copy_or_move
 from zExceptions import BadRequest
-from Products.CMFCore import permissions as CMFCorePermissions
+from Products.CMFCore.permissions import DeleteObjects, ModifyPortalContent, \
+     ManagePortal, View
 from Products.CMFCore.utils import getToolByName
 from Products.CMFDynamicViewFTI.migrate import migrateFTI
 from Products.CMFDynamicViewFTI.fti import DynamicViewTypeInformation
@@ -66,7 +68,7 @@ def two05_alpha1(portal):
         #migrateToATCT(portal, out)
         migrateToATCT10(portal, out)
 
-    transaction.commit(1)
+    transaction.savepoint(optimistic=True)
     
     return out
 
@@ -274,7 +276,7 @@ def installATContentTypes(portal, out):
 def migrateToATCT(portal, out):
     """Switches portal to ATContentTypes.
     """
-    transaction.commit(1)
+    transaction.savepoint(optimistic=True)
     migrateFromCMFtoATCT = portal.migrateFromCMFtoATCT
     switchCMF2ATCT = portal.switchCMF2ATCT
     #out.append('Migrating and switching to ATContentTypes ...')
@@ -284,17 +286,17 @@ def migrateToATCT(portal, out):
         switchCMF2ATCT(skip_rename=False)
     except IndexError:
         switchCMF2ATCT(skip_rename=True)
-    transaction.commit(1)
+    transaction.savepoint(optimistic=True)
     #out.append('Switched portal to ATContentTypes.')
 
 
 def migrateToATCT10(portal, out):
     """Switches portal to ATCT 1.0
     """
-    transaction.commit(1)
+    transaction.savepoint(optimistic=True)
     tool = portal.portal_atct
     tool.migrateToATCT()
-    transaction.commit(1)
+    transaction.savepoint(optimistic=True)
 
 
 def addFullScreenAction(portal, out):
@@ -309,7 +311,7 @@ def addFullScreenAction(portal, out):
                 name='Toggle full screen mode',
                 action='string:javascript:toggleFullScreenMode();',
                 condition='member',
-                permission=CMFCorePermissions.View,
+                permission=View,
                 category='document_actions',
                 visible=1,
                 )
@@ -462,7 +464,7 @@ def addSitemapAction(portal, out):
                 name='Site Map',
                 action='string:$portal_url/sitemap',
                 condition='',
-                permission=CMFCorePermissions.View,
+                permission=View,
                 category='site_actions',
                 visible=1,
                 )
@@ -745,31 +747,31 @@ def addEditContentActions(portal, out):
          'name'      : 'Delete',
          'action'    : 'string:${object_url}/object_delete',
          'condition' : 'python:portal.portal_membership.checkPermission("Delete objects", object.aq_inner.aq_parent) and object is not portal.portal_url.getPortalObject()',
-         'permission': CMFCorePermissions.DeleteObjects,
+         'permission': DeleteObjects,
         },
         {'id'        : 'paste',
          'name'      : 'Paste',
          'action'    : 'string:${object_url}/object_paste',
          'condition' : 'folder/cb_dataValid',
-         'permission': CMFCorePermissions.View,
+         'permission': View,
         },
         {'id'        : 'copy',
          'name'      : 'Copy',
          'action'    : 'string:${object_url}/object_copy',
          'condition' : 'python:object is not portal.portal_url.getPortalObject()',
-         'permission': CMFCorePermissions.Permissions.copy_or_move,
+         'permission': copy_or_move,
         },
         {'id'        : 'cut',
          'name'      : 'Cut',
          'action'    : 'string:${object_url}/object_cut',
          'condition' : 'python:portal.portal_membership.checkPermission("Delete objects", object.aq_inner.aq_parent) and object is not portal.portal_url.getPortalObject()',
-         'permission': CMFCorePermissions.Permissions.copy_or_move,
+         'permission': copy_or_move,
         },
         {'id'        : 'batch',
          'name'      : 'Contents',
          'action'    : "python:((object.isDefaultPageInFolder() and object.getParentNode().absolute_url()) or folder_url)+'/folder_contents'",
          'condition' : 'python:folder.displayContentsTab()',
-         'permission': CMFCorePermissions.View,
+         'permission': View,
          'category'  : 'batch',
         },
     )
@@ -1040,7 +1042,7 @@ def alterChangeStateActionCondition(portal, out):
                   'name'      : 'Change State',
                   'action'    : 'string:content_status_history:method',
                   'condition' : 'python:portal.portal_membership.checkPermission("Modify portal content", object) or portal.portal_membership.checkPermission("Review portal content", object)',
-                  'permission': CMFCorePermissions.View,
+                  'permission': View,
                   'category': 'folder_buttons',
                 }
     exists = False
@@ -1075,7 +1077,7 @@ def alterExtEditorActionCondition(portal, out):
                   'name'      : 'Change State',
                   'action'    : 'string:$object_url/external_edit',
                   'condition' : 'python: member and hasattr(member, "ext_editor") and member.ext_editor and object.absolute_url() != portal_url',
-                  'permission': CMFCorePermissions.ModifyPortalContent,
+                  'permission': ModifyPortalContent,
                   'category': 'document_actions',
                 }
     exists = False
@@ -1110,14 +1112,14 @@ def fixFolderButtonsActions(portal, out):
          'name'      : 'Copy',
          'action'    : 'string:folder_copy:method',
          'condition' : '',
-         'permission': CMFCorePermissions.Permissions.copy_or_move,
+         'permission': copy_or_move,
          'category' : 'folder_buttons',
         },
         {'id'        : 'cut',
          'name'      : 'Cut',
          'action'    : 'string:folder_cut:method',
          'condition': 'python:portal.portal_membership.checkPermission("Delete objects", object)',
-         'permission': CMFCorePermissions.Permissions.copy_or_move,
+         'permission': copy_or_move,
          'category' : 'folder_buttons',
         },
     )
@@ -1137,7 +1139,7 @@ def fixFolderButtonsActions(portal, out):
                     visible=1)
                 out.append("Added missing %s action"%newaction['id'])
             else:
-                if action.permissions != (CMFCorePermissions.Permissions.copy_or_move,):
+                if action.permissions != (copy_or_move,):
                     action.permissions = (newaction['permission'],)
                     action.condition = Expression(text=newaction['condition']) or ''
                     out.append('Modified existing %s action'%newaction['id'])
@@ -1182,7 +1184,7 @@ def changePloneSetupActionToSiteSetup(portal, out):
                 'name': 'Site Setup',
                 'action': 'string: ${portal_url}/plone_control_panel',
                 'condition': '', # condition
-                'permission': CMFCorePermissions.ManagePortal,
+                'permission': ManagePortal,
                 'category': 'user',
                 'visible': 1}
     exists = False

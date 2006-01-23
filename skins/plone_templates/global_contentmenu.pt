@@ -6,6 +6,7 @@
 <metal:menubarmacro define-macro="contentMenu">
 
 <ul tal:define="isStructuralFolder here/is_folderish;
+                manage_portal python:checkPermission('Manage portal', here);
                 folder python:test(isStructuralFolder, here, here.aq_inner.getParentNode());
                 isParentStructuralFolder folder/is_folderish;
                 isContextDefaultPage here/isDefaultPageInFolder;
@@ -18,7 +19,8 @@
                         transitions workflow_actions;"
                 condition="python:review_state">
 
-    <li tal:condition="not: transitions" class="actionMenuDisabled">
+    <li tal:condition="not:python: transitions or manage_portal"
+        class="actionMenuDisabled">
         <tal:state i18n:translate="label_state">State:</tal:state>
         <span tal:content="python:putils.getReviewStateTitleFor(here)"
               tal:attributes="class string:state-${review_state}"
@@ -28,7 +30,7 @@
     </li>
 
 
-    <li tal:condition="transitions">
+    <li tal:condition="python:transitions or manage_portal">
 
         <dl class="actionMenu" id="statusMenu">
           <dt class="actionMenuHeader">
@@ -36,9 +38,9 @@
                title="Change the state of this item"
                i18n:attributes="title title_change_state_of_item;"
                tal:attributes="href string:$here_url/content_status_history;">
-    
+
                 <span i18n:translate="label_state">State:</span>
-        
+
                 <span tal:content="python:putils.getReviewStateTitleFor(here)"
                          tal:attributes="class string:state-${review_state}"
                          i18n:translate="">
@@ -59,16 +61,22 @@
                 </li>
                 </tal:block>
                 <li class="actionSeparator">
-                    <a href="#" 
+                    <a href="#"
                        tal:attributes="href string:$here_url/content_status_history"
                        i18n:translate="label_advanced">Advanced&hellip;</a>
+                </li>
+                <li class="actionSeperator"
+                    tal:condition="manage_portal">
+                    <a href="#"
+                       tal:attributes="href string:$here_url/placeful_workflow_configuration"
+                       i18n:translate="workflow_policy">Policy</a>
                 </li>
             </ul>
           </dd>
         </dl>
 
     </li>
-    
+
     </tal:states>
 
     <tal:structuralFolder condition="python:isStructuralFolder or isParentStructuralFolder">
@@ -76,7 +84,7 @@
                      allowedTypes addContext/getAllowedTypes;
                      menuTypes    python:here.getAddableTypesInMenu(allowedTypes);
                      numAllowed   python:len(allowedTypes);
-                     numMenu      python:len(menuTypes);    
+                     numMenu      python:len(menuTypes);
                      showSettings addContext/canConstrainTypes;
                      showMore     python:numAllowed > numMenu;
                      showMenu     python:showMore or showSettings or numMenu > 1;
@@ -103,11 +111,11 @@
           </dt>
           <dd class="actionMenuContent">
             <ul>
-                <tal:types repeat="ctype menuTypes"> 
+                <tal:types repeat="ctype menuTypes">
                     <li tal:define="Title ctype/Title; Id ctype/getId; Description ctype/Description;
                                     item_type_class python: 'contenttype-' + normalizeString(Id);"
                         tal:attributes="class string:${item_type_class}">
-                        <a href="#" 
+                        <a href="#"
                            i18n:attributes="title"
                            tal:attributes="href string:${addContext/absolute_url}/createObject?type_name=${Id};
                                            title Description">
@@ -141,13 +149,13 @@
     </tal:dropdown>
 
     <li tal:condition="not:showMenu">
-        <a href="#" 
+        <a href="#"
            tal:define="portaltype python: allowedTypes[0];
                        typetitle portaltype/Title;"
            tal:attributes="href string:${parent_folder/absolute_url}/createObject?type_name=${portaltype/getId};
                            title portaltype/Description"
            i18n:attributes="title">
-            <img src="folder.gif" 
+            <img src="folder.gif"
                  alt=""
                  width="16"
                  height="16"
@@ -180,11 +188,11 @@
                         condition="python:(isContextDefaultPage and parentHasActions) or contextHasActions">
 
         <li>
-        
+
             <dl class="actionMenu" id="templateMenu">
               <dt class="actionMenuHeader"
                   tal:attributes="class python:test(dimMenu, 'actionMenuHeader disabled', 'actionMenuHeader')">
-                
+
                 <span class="actionMenuDisabled"
                       title="Delete or rename the index_html item to gain full control over how this folder is displayed."
                    i18n:attributes="title title_remove_index_html_for_display_control;"
@@ -192,8 +200,8 @@
                    i18n:translate="label_disabled_display_menu">
                     Display
                 </span>
-                
-                
+
+
                 <a href="#"
                    title="Select the view mode for this folder, or set a content item as its default view."
                    i18n:attributes="title title_choose_default_view;"
@@ -268,7 +276,7 @@
                                 </li>
                             </tal:haveDefaultPage>
                         </tal:parentDefaultPage>
-                    
+
                     </tal:parentViewsSelection>
 
                     <!-- Separator - we have both parent views and context views -->
@@ -283,13 +291,13 @@
                                   if we're looking at a default-page of a folderish item that is itself the default-page
                                   of a folder. Transitive default-pages are just too confusing.
                       -->
-                    <tal:contextViewsSelection 
+                    <tal:contextViewsSelection
                                     define="vocab          contextVocab;
                                             defaultPageId  context/getDefaultPage;
                                             defaultPage    python:defaultPageId is not None and getattr(here, defaultPageId, None) or None;
                                             selectedLayout python:defaultPage is None and context.getLayout() or ''"
                                     condition="python:vocab">
-                                     
+
                         <tal:layouts repeat="layout vocab">
                             <li tal:define="value python:layout[0];
                                             display python:layout[1];">
@@ -298,9 +306,9 @@
                                       tal:attributes="title display"
                                       i18n:attributes="title"
                                       class="actionMenuSelected"
-                                      > 
-                                      <span i18n:translate="" 
-                                            tal:omit-tag="" 
+                                      >
+                                      <span i18n:translate=""
+                                            tal:omit-tag=""
                                             tal:content="display">Template id</span>
                                 </span>
                                 <a href="#"
@@ -344,8 +352,8 @@
                                 </li>
                             </tal:haveDefaultPage>
                         </tal:contextDefaultPage>
-                    
-                    </tal:contextViewsSelection>                    
+
+                    </tal:contextViewsSelection>
 
                     <!-- Folder default page selection: No selectable layouts (not supported), but can select default-page in folder -->
                     <tal:folderDefaultPageSelection
@@ -386,7 +394,7 @@
             </dl>
     </li>
     </tal:displayMenu>
-    
+
     <tal:edit define="editActions actions/object_buttons | nothing;
                       getIconFor nocall:putils/getIconFor;"
               condition="python:editActions">
@@ -418,7 +426,7 @@
                                         Action name
                                     </a>
                                 </li>
-    
+
                                 <li tal:condition="python:editAction['id']=='delete'"
                                     tal:attributes="class class_name">
                                     <a onclick="#"

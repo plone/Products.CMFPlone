@@ -43,6 +43,7 @@ ZopeTestCase.installProduct('MimetypesRegistry', quiet=1)
 ZopeTestCase.installProduct('PortalTransforms', quiet=1)
 ZopeTestCase.installProduct('ATContentTypes')
 ZopeTestCase.installProduct('ATReferenceBrowserWidget')
+ZopeTestCase.installProduct('CMFPlacefulWorkflow')
 ZopeTestCase.installProduct('Five')
 
 import transaction

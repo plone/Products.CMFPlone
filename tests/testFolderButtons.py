@@ -43,7 +43,7 @@ class TestFolderRename(PloneTestCase.PloneTestCase):
     def testTitleAndIdAreUpdatedOnFolderRename(self):
         # Make sure rename updates both title and id
         title = 'Test Folder - Snooze!'
-        transaction.commit(1) # make rename work
+        transaction.savepoint(optimistic=True) # make rename work
         doc_path = '/'.join(self.folder.foo.doc1.getPhysicalPath())
         self.folder.folder_rename(paths=[doc_path], new_ids=['baz'], new_titles=[title])
         self.assertEqual(getattr(self.folder.foo, 'doc1', None), None)
@@ -53,7 +53,7 @@ class TestFolderRename(PloneTestCase.PloneTestCase):
     def testCatalogTitleAndIdAreUpdatedOnFolderRename(self):
         # Make sure catalog updates title on rename
         title = 'Test Folder - Snooze!'
-        transaction.commit(1) # make rename work
+        transaction.savepoint(optimistic=True) # make rename work
         doc_path = '/'.join(self.folder.foo.doc1.getPhysicalPath())
         self.folder.folder_rename(paths=[doc_path], new_ids=['baz'], new_titles=[title])
         results = self.catalog(Title='Snooze')
@@ -65,7 +65,7 @@ class TestFolderRename(PloneTestCase.PloneTestCase):
     def testUpdateMultiplePaths(self):
         # Ensure this works for multiple paths
         title = 'Test Folder - Snooze!'
-        transaction.commit(1) # make rename work
+        transaction.savepoint(optimistic=True) # make rename work
         doc1_path = '/'.join(self.folder.foo.doc1.getPhysicalPath())
         doc2_path = '/'.join(self.folder.bar.doc2.getPhysicalPath())
         self.folder.folder_rename(paths=[doc1_path,doc2_path], new_ids=['baz','blah'], new_titles=[title,title])

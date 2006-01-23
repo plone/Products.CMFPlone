@@ -113,7 +113,7 @@ class TestOrderSupport(PloneTestCase.PloneTestCase):
 
     def testRenameObject(self):
         # Renaming should not change position
-        transaction.commit(1) # make rename work
+        transaction.savepoint(optimistic=True) # make rename work
         self.folder.manage_renameObjects(['bar'], ['barney'])
         self.assertEqual(self.folder.getObjectPosition('foo'), 0)
         self.assertEqual(self.folder.getObjectPosition('barney'), 1)
@@ -121,7 +121,7 @@ class TestOrderSupport(PloneTestCase.PloneTestCase):
 
     def testRenameFirstObject(self):
         # Renaming should not change position
-        transaction.commit(1) # make rename work
+        transaction.savepoint(optimistic=True) # make rename work
         self.folder.manage_renameObjects(['foo'], ['flintstone'])
         self.assertEqual(self.folder.getObjectPosition('flintstone'), 0)
         self.assertEqual(self.folder.getObjectPosition('bar'), 1)
@@ -129,7 +129,7 @@ class TestOrderSupport(PloneTestCase.PloneTestCase):
 
     def testRenameLastObject(self):
         # Renaming should not change position
-        transaction.commit(1) # make rename work
+        transaction.savepoint(optimistic=True) # make rename work
         self.folder.manage_renameObjects(['baz'], ['bedrock'])
         self.assertEqual(self.folder.getObjectPosition('foo'), 0)
         self.assertEqual(self.folder.getObjectPosition('bar'), 1)
@@ -227,7 +227,7 @@ class TestOrderSupportInPortal(PloneTestCase.PloneTestCase):
 
     def testRenameObject(self):
         # Renaming should not change position
-        transaction.commit(1) # make rename work
+        transaction.savepoint(optimistic=True) # make rename work
         self.portal.manage_renameObjects(['bar'], ['barney'])
         self.assertEqual(self.portal.getObjectPosition('foo'), 0)
         self.assertEqual(self.portal.getObjectPosition('barney'), 1)

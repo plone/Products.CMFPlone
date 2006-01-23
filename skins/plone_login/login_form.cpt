@@ -55,16 +55,16 @@ If you do not have an account here, head over to the
       tal:condition="python:auth">
 
     <fieldset tal:define="ac_name auth/name_cookie;
-	                  ac_password auth/pw_cookie;
-	                  ac_persist auth/persist_cookie;
-			  login_name python:request.get('login_name', request.get(ac_name, ''));">
+                      ac_password auth/pw_cookie;
+                      ac_persist auth/persist_cookie;
+              login_name python:request.get('login_name', request.get(ac_name, ''));">
 
         <legend i18n:translate="legend_account_details">Account details</legend>
 
         <input type="hidden"
             name="came_from"
             value=""
-	    tal:attributes="value came_from" />
+        tal:attributes="value came_from" />
 
         <input type="hidden" name="form.submitted" value="1" />
         <input type="hidden" name="js_enabled" id="js_enabled" value="0" />
@@ -81,7 +81,7 @@ If you do not have an account here, head over to the
 
             <div i18n:translate="help_login_name_caps"
                  class="formHelp">
-    		Login names are case sensitive, make sure the caps lock key is not enabled.
+            Login names are case sensitive, make sure the caps lock key is not enabled.
             </div>
 
             <div tal:content="error">Validation error output</div>
@@ -95,9 +95,9 @@ If you do not have an account here, head over to the
                                    tabindex tabindex/next;"
                    />
 
-	</div>
+    </div>
 
-	<div class="field"
+    <div class="field"
              tal:define="error python:errors.get(ac_password, None);"
              tal:attributes="class python:test(error, 'field error', 'field')">
 
@@ -127,7 +127,7 @@ If you do not have an account here, head over to the
                                    id ac_password;
                                    tabindex tabindex/next;"
                    />
-	</div>
+    </div>
 
         <div class="field">
 
@@ -160,7 +160,7 @@ If you do not have an account here, head over to the
                    value="Log in"
                    i18n:attributes="value label_log_in;"
                    tal:attributes="tabindex tabindex/next;
-	                           onclick string:javascript:return setLoginVars('$ac_name','login_name','$ac_password','pwd_empty','js_enabled','cookies_enabled');"
+                               onclick string:javascript:return setLoginVars('$ac_name','login_name','$ac_password','pwd_empty','js_enabled','cookies_enabled');"
                    />
 
         </div>
