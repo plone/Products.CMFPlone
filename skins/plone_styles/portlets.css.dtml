@@ -118,6 +118,7 @@ dd.portletFooter {
     margin: 0;
 }
 
+.navTreeItem a,
 dd.portletItem .navTreeItem a {
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-backgroundColor;;
     display: block;
@@ -126,6 +127,7 @@ dd.portletItem .navTreeItem a {
     padding-bottom: 0.25em;
 }
 
+.navTreeItem a:hover,
 dd.portletItem .navTreeItem a:hover {
     background-color: &dtml-globalBackgroundColor;;
     color: &dtml-globalFontColor;;

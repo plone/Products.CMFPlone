@@ -62,4 +62,5 @@ Gotchas
 
       You commit a subtransaction by doing:: 
 
-         get_transaction().commit(1)
+         import transaction
+         transaction.savepoint(optimistic=True)

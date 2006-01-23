@@ -184,7 +184,7 @@ def addGroupUserFolder(portal):
         NOTE: In the Install routine for GRUF it does a subtransaction commit()
         so that you can manipulate the acl_users folders.
     """
-    transaction.commit(1)
+    transaction.savepoint(optimistic=True)
     out=[]
     out.append('Adding GroupUserFolder to portal')
     qi=getToolByName(portal, 'portal_quickinstaller')
@@ -358,8 +358,8 @@ def setupCalendar(portal):
 
 
 def addActionIcons(portal):
-    """ After installing QuickInstaller.  We must commit(1) a subtrnx
-        so that we will be able to addActionIcons() to the tool
+    """ After installing QuickInstaller.  We must savepoint(optimistic=True) a
+        subtrnx so that we will be able to addActionIcons() to the tool
     """
 
     ai=getToolByName(portal, 'portal_actionicons')

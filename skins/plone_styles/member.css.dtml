@@ -19,23 +19,22 @@
 /* workflow state colors */
 
 .state-private {
-    color: Red;
+    color: Red !important;
 }
 .state-visible {
-    color: #74AE0B;
+    color: #74AE0B !important;
 }
 .state-published {
-    color: &dtml-linkColor;;
+    color: &dtml-linkColor; !important;
 }
 .state-pending {
-    color: #FFA500;
+    color: #FFA500 !important;
 }
 .state-expired {
-    color: &dtml-discreetColor;;
+    color: &dtml-discreetColor; !important;
 }
 .syndicated {
-    color: #008000;
+    color: #008000 !important;
 }
-
 
 /* </dtml-with> */

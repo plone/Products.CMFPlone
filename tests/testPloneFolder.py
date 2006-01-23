@@ -49,7 +49,7 @@ class TestPloneFolder(PloneTestCase.PloneTestCase):
 
     def testRenameFolderKeepsPosition(self):
         # Cover http://plone.org/collector/2796
-        transaction.commit(1) # make rename work
+        transaction.savepoint(optimistic=True) # make rename work
         self.folder.sub2.folder_edit('Foo', 'Description', id='foo')
         self.assertEqual(self.folder.foo.Title(), 'Foo')
         # Order should remain the same

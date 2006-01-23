@@ -19,7 +19,8 @@
                         transitions workflow_actions;"
                 condition="python:review_state">
 
-    <li tal:condition="not:python: transitions or manage_portal">
+    <li tal:condition="not:python: transitions or manage_portal"
+        class="actionMenuDisabled">
         <tal:state i18n:translate="label_state">State:</tal:state>
         <span tal:content="python:putils.getReviewStateTitleFor(here)"
               tal:attributes="class string:state-${review_state}"

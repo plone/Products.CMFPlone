@@ -352,7 +352,7 @@ def addGroupUserFolder(portal):
         NOTE: In the Install routine for GRUF it does a subtransaction commit()
         so that you can manipulate the acl_users folders.
     """
-    transaction.commit(1)
+    transaction.savepoint(optimistic=True)
 
     qi=getToolByName(portal, 'portal_quickinstaller')
     addGRUFTool=portal.manage_addProduct['GroupUserFolder'].manage_addTool
@@ -385,8 +385,8 @@ def addFormController(portal):
         qi.notifyInstalled('CMFFormController') #Portal.py got to it first
 
 def addActionIcons(portal):
-    """ After installing QuickInstaller.  We must commit(1) a subtrnx
-        so that we will be able to addActionIcons() to the tool
+    """ After installing QuickInstaller.  We must savepoint(optimistic=True) a
+        subtrnx so that we will be able to addActionIcons() to the tool
     """
     try:
         qi=getToolByName(portal, 'portal_quickinstaller')

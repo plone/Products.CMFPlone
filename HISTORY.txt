@@ -14,7 +14,42 @@ Plone 2.5 (unreleased)
       in the next release.
       [hannosch]
 
-Plone 2.1.2 - Saint Etienne - (unreleased)
+Plone 2.1.2 - Saint Etienne - Released January 20, 2006
+
+    - Events portlet was not displayed when /events had been deleted.
+      Closes https://trac.plone.org/plone/ticket/5143.
+      [hannosch]
+
+    - Reinstating the "Previous Events" link in the events portlet (was
+      removed in r7864)
+      [limi]
+
+    - Removing hardcoded style attributes in folder_localrole_form.
+      This fixes #5070.
+      http://trac.plone.org/plone/ticket/5070
+      [limi]
+
+    - Removed useless CSS declaration in generated.css - the site map
+      will never have a current item by its very nature. This fixes #5079.
+      http://trac.plone.org/plone/ticket/5079
+      [limi]
+
+    - Made Plone notify you when you are trying to log out while being
+      logged in via HTTP (you need to close your browser to log out when
+      using HTTP auth). This also fixes #5083.
+      http://trac.plone.org/plone/ticket/5083
+      [limi]
+
+    - Fixed the non-workflow-state-dependend coloring of items in the
+      navigation portlet. Closes http://trac.plone.org/plone/ticket/5136.
+      [hannosch]
+
+    - Changed the last occurrences of transaction.commit(1) to new style
+      transaction.savepoint(optimistic=True) calls.
+      [hannosch]
+
+    - Removed the last remaining occurrences of CMFCorePermissions.
+      [hannosch]
 
     - Updated deprecation warnings to reflect new version numberings.
       [hannosch]

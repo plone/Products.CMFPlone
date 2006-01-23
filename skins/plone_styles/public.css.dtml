@@ -47,12 +47,10 @@
 
 .documentContent li a:visited {
     color: &dtml-linkVisitedColor;;
-    background-color: transparent;
 }
 
 .documentContent li a:active {
     color: &dtml-linkActiveColor;;
-    background-color: transparent;
 }
 
 .documentContent dd a {
@@ -111,7 +109,7 @@
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-notifyBorderColor;;
     padding: 1em;
     margin: 0 0 1em 0;
-    width: 95% !important;
+    width: 95%;
 }
 
 .error .fieldRequired {
@@ -167,7 +165,7 @@
 
 /* Site-wide action menu - font size, contact, index, sitemap etc */
 
-.portal-siteactions {
+#portal-siteactions {
     background-color: transparent;
     white-space: nowrap;
     list-style-image: none;
@@ -179,11 +177,11 @@
     padding: 3px 2em 3px 0;
 }
 
-.portal-siteactions li {
+#portal-siteactions li {
     display: inline;
 }
 
-.portal-siteactions li a {
+#portal-siteactions li a {
     background-color: transparent;
     border: 1px solid &dtml-backgroundColor;;
     color: &dtml-discreetColor;;
@@ -194,13 +192,13 @@
     text-transform: &dtml-textTransform;;
 }
 
-.portal-siteactions li.selected a {
+#portal-siteactions li.selected a {
     background-color: &dtml-globalBackgroundColor;;
     color: &dtml-globalFontColor;;
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
 }
 
-.portal-siteactions li a:hover {
+#portal-siteactions li a:hover {
     background-color: &dtml-globalBackgroundColor;;
     color: &dtml-globalFontColor;;
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
