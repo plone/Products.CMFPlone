@@ -14,10 +14,12 @@
 
         <dt class="portletHeader">
             <a href="#" 
+               class="tile"
                tal:condition="python:'news' in portal.contentIds()"
                tal:attributes="href string:${utool}/news"
                i18n:translate="box_news">News</a>
             <a href="#" 
+               class="tile"
                tal:condition="python:'news' not in portal.contentIds()"
                tal:attributes="href string:${utool}/news_listing"
                i18n:translate="box_news">News</a>
@@ -28,6 +30,7 @@
              tal:attributes="class python:test(oddrow, 'portletItem even', 'portletItem odd')">
 
             <a href=""
+               class="tile"
                tal:attributes="href obj/getURL;
                                title obj/Description">
                 <tal:block replace="structure here/newsitem_icon.gif"/>
@@ -43,6 +46,7 @@
         <dd class="portletFooter">
 
             <a href=""
+               class="tile"
                tal:condition="python:'news' in portal.contentIds()"
                tal:attributes="href string:${utool}/news"
                i18n:translate="box_more_news_link"
@@ -51,6 +55,7 @@
             </a>
 
             <a href=""
+               class="tile"
                tal:condition="python:'news' not in portal.contentIds()"
                tal:attributes="href string:${utool}/news_listing"
                i18n:translate="box_more_news_link"

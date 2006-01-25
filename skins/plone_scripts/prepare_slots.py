@@ -14,13 +14,27 @@
 #1 for use-macro
 #0 for render path expression
 
+from AccessControl import Unauthorized
+
 slots={ 'left':[],
         'right':[],
         'document_actions':[] }
 
-left_slots=getattr(context,'left_slots', [])
-right_slots=getattr(context,'right_slots', [])
-document_action_slots=getattr(context,'document_action_slots', [])
+try:
+    left_slots=getattr(context,'left_slots', [])
+except Unauthorized:
+    # maybe not authorized when acquired from parent folders
+    left_slots=[]
+
+try:
+    right_slots=getattr(context,'right_slots', [])
+except Unauthorized:
+    right_slots=[]
+
+try:
+    document_action_slots=getattr(context,'document_action_slots', [])
+except Unauthorized:
+    document_action_slots=[]
 
 #check if the *_slots attributes are callable so that they can be overridden
 #by methods or python scripts

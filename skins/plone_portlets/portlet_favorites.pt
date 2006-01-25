@@ -18,6 +18,7 @@
 
     <dt class="portletHeader">
         <a href=""
+           class="tile"
            tal:attributes="href string:${folder/absolute_url}/folder_contents"
            i18n:translate="box_my_favorites"
            >My Favorites
@@ -28,8 +29,9 @@
         <ul class="visualNoMarker">
             <li tal:repeat="o favorites">
                 <a href=""
-                    tal:attributes="href o/getRemoteUrl"
-                    tal:content="o/pretty_title_or_id">Favorite title
+                   class="tile"
+                   tal:attributes="href o/getRemoteUrl"
+                   tal:content="o/pretty_title_or_id">Favorite title
                 </a>
             </li>
         </ul>
@@ -37,9 +39,10 @@
 
     <dd class="portletFooter">
         <a href=""
+           class="tile"
            tal:attributes="href string:${folder/absolute_url}/folder_contents"
            i18n:translate="box_morelink">
-            More...
+            More&hellip;
         </a>
     </dd>
 
