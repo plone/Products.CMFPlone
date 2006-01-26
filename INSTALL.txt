@@ -89,6 +89,9 @@ Installing Plone manually, step by step instructions.
   - PloneLanguageTool 0.9 or newer
      Included in the Plone tarball
 
+  - CMFPlacefulWorkflow 0.5alpha1 or newer
+     Included in the Plone tarball
+
 =============================================================================== 
  
  
@@ -149,23 +152,25 @@ Installing Plone manually, step by step instructions.
    ATContentTypes
    ATReferenceBrowserWidget
    Archetypes
-   BTreeFolder2
    CMFActionIcons
    CMFCalendar
    CMFCore
    CMFDefault
    CMFDynamicViewFTI
    CMFFormController
+   CMFPlacefulWorkflow
    CMFPlone
    CMFQuickInstallerTool
    CMFSetup
    CMFTopic
    CMFUid
    DCWorkflow
-   ExternalEditor
    ExtendedPathIndex
+   ExternalEditor
+   Five
    GroupUserFolder
    MimetypesRegistry
+   Marshall
    PlacelessTranslationService
    PloneErrorReporting
    PloneLanguageTool
@@ -175,7 +180,8 @@ Installing Plone manually, step by step instructions.
    SecureMailHost
    generator
    kupu
-   validation 
+   validation
+   statusmessages
 
    Move (or symlink) each of these subdirectories into your 
    $INSTANCE_HOME/Products 

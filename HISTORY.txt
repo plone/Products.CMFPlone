@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.5 (unreleased)
 
+    - Installed CMFPlacefulWorkflow during migrations.
+      [encolpe]
+
     - Merged plip108-five-translationservice r8093:8841 into trunk.
       This implements PLIP 108 Zope3 MessageID's and PLIP 111 new portal status
       message infrastructure.
