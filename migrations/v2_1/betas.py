@@ -665,6 +665,9 @@ def addIsDefaultPageIndex(portal, out):
 def fixContentActionConditions(portal,out):
     """Don't use aq_parent in action conditions directly, as it will fail if
        we don't have permissions on the parent"""
+    # XXX 'View management screens' may seem like an odd guard for the
+    #     'copy' action, but it is the actual permission protecting that
+    #     method in OFS.CopySupport.CopyContainer.
     ACTIONS = (
         {'id'        : 'cut',
          'name'      : 'Cut',
@@ -690,7 +693,7 @@ def fixContentActionConditions(portal,out):
         {'id'        : 'copy',
          'name'      : 'Copy',
          'action'    : 'python:"%s/object_copy"%(object.isDefaultPageInFolder() and object.getParentNode().absolute_url() or object_url)',
-         'condition' : 'python: portal.portal_membership.checkPermission("Copy or Move", object) and object is not portal and not (object.isDefaultPageInFolder() and object.getParentNode() is portal)',
+         'condition' : 'python: portal.portal_membership.checkPermission("View management screens", object.aq_inner.getParentNode()) and object is not portal and not (object.isDefaultPageInFolder() and object.getParentNode() is portal)',
          'permission': View,
          'category'  : 'object_buttons',
         },)
