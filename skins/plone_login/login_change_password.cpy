@@ -1,8 +1,9 @@
-## Script (Python) "login_change_password"
+## Controller Python Script "login_change_password"
 ##bind container=container
 ##bind context=context
 ##bind namespace=
 ##bind script=script
+##bind state=state
 ##bind subpath=traverse_subpath
 ##parameters=password
 ##title=Change a user's password upon initial login

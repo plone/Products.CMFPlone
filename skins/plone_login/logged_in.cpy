@@ -1,8 +1,9 @@
-## Script (Python) "logged_in"
+## Controller Python Script "logged_in"
 ##bind container=container
 ##bind context=context
 ##bind namespace=
 ##bind script=script
+##bind state=state
 ##bind subpath=traverse_subpath
 ##parameters=
 ##title=Initial post-login actions
@@ -28,7 +29,7 @@ state.set(must_change_password=must_change_password)
 
 if initial_login:
     state.set(status='initial_login')
-elif  must_change_password:
+elif must_change_password:
     state.set(status='change_password')
 
 membership_tool.setLoginTimes()

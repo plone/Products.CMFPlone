@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1.3 - Tomahawk - Unreleased
 
+    - Fixed inconsistencies where some 'Controller Python Script' were being
+      declared as normal 'Script (Python)' and were missing the state variable.
+      [deo]
+
     - Fix confusion between user names and user ids in the membership tool.
       Fixes http://dev.plone.org/plone/ticket/5098
       [wichert]
@@ -18,6 +22,7 @@ Plone 2.1.3 - Tomahawk - Unreleased
       portlets, but if you want the block-level behaviour and stay compatible
       with older portlet code too, just add class="tile" to your links.
       [limi]
+
 
 Plone 2.1.2 - Saint Etienne - Released January 20, 2006
 
@@ -302,7 +307,7 @@ Plone 2.1.2 - Saint Etienne - Released January 20, 2006
       https://trac.plone.org/plone/ticket/4705
       [limi]
 
-    - Review history was not valid XHTML, a block-level element was nested 
+    - Review history was not valid XHTML, a block-level element was nested
       inside an inline element. This fixes #4926 and #4586 (hopefully, seems
       to work in my local testing).
       https://trac.plone.org/plone/ticket/4926
@@ -319,7 +324,7 @@ Plone 2.1.2 - Saint Etienne - Released January 20, 2006
       Deprecated the special file used for this, it will disappear in Plone 2.5.
       This fixes #3915.
       https://trac.plone.org/plone/ticket/3915
-      [limi]      
+      [limi]
 
     - Inserted missing conditional check for the location of an event - no
       longer shows the location field if it has no value.
@@ -334,7 +339,7 @@ Plone 2.1.2 - Saint Etienne - Released January 20, 2006
       https://trac.plone.org/plone/ticket/4998
       [stefan]
 
-    - Fixed the Internet Explorer visual bug where portlets would gradually 
+    - Fixed the Internet Explorer visual bug where portlets would gradually
       lose their left margin and move further and further to the left the more
       elements were contained inside the portlet.
       https://trac.plone.org/plone/ticket/4874
@@ -612,7 +617,7 @@ Plone 2.1.1 - Coloma - Released October 13, 2005
 
     - Removed unnecessary use of 'SESSION' in 'folder_contents' and
       'logout_form'.
-      [sidneii] [alecm]
+      [sidnei] [alecm]
 
     - Converted plone_javascript_variables.js from DTML to PageTemplate to make
       it better suited for i18n.

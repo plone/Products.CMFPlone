@@ -1,18 +1,21 @@
-## Script (Python) "logged_in"
+## Controller Python Script "login_next"
 ##bind container=container
 ##bind context=context
 ##bind namespace=
 ##bind script=script
+##bind state=state
 ##bind subpath=traverse_subpath
 ##parameters=
-##title=login
+##title=Login next actions
 ##
 from DateTime import DateTime
 import ZTUtils
 
-REQUEST=context.REQUEST
+raise 'bla', 'ble'
 
-membership_tool=context.portal_membership
+REQUEST = context.REQUEST
+
+membership_tool = context.portal_membership
 if membership_tool.isAnonymousUser():
     REQUEST.RESPONSE.expireCookie('__ac', path='/')
     return state.set(status='failure', portal_status_message='Login failed')
@@ -25,7 +28,10 @@ util = context.plone_utils
 if came_from is not None:
     scheme, location, path, parameters, query, fragment = util.urlparse(came_from)
     template_id = path.split('/')[-1]
-    if template_id in ['login', 'login_success', 'login_password', 'login_failed', 'login_form', 'logged_in', 'logged_out', 'registered', 'mail_password', 'mail_password_form', 'join_form', 'require_login', 'member_search_results']:
+    if template_id in ['login', 'login_success', 'login_password', 'login_failed',
+                       'login_form', 'logged_in', 'logged_out', 'registered',
+                       'mail_password', 'mail_password_form', 'join_form',
+                       'require_login', 'member_search_results']:
         came_from = ''
     # It is probably a good idea in general to filter out urls outside the portal.
     # An added bonus: this fixes some problems with a Zope bug that doesn't
@@ -42,8 +48,8 @@ if came_from and js_enabled:
     # Add portal_status_message to the query string of the url we came from
     query = context.create_query_string(query, portal_status_message='Welcome! You are now logged in.')
     came_from = util.urlunparse((scheme, location, path, parameters, query, fragment))
-
     REQUEST.RESPONSE.redirect(came_from)
-    
+
 state.set(came_from=came_from)
+
 return state
