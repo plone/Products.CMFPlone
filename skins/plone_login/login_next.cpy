@@ -11,8 +11,6 @@
 from DateTime import DateTime
 import ZTUtils
 
-raise 'bla', 'ble'
-
 REQUEST = context.REQUEST
 
 membership_tool = context.portal_membership
