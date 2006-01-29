@@ -1,1 +1,1 @@
-2.5-alpha2 (SVN/UNRELEASED)
+2.5-alpha1

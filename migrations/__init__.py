@@ -148,7 +148,3 @@ def registerMigrations():
     MigrationTool.registerUpgradePath('2.1.2',
                                       '2.5-alpha1',
                                       v2_5.alphas.two5_alpha1)
-
-    MigrationTool.registerUpgradePath('2.5-alpha1',
-                                      '2.5-alpha2 (SVN/UNRELEASED)',
-                                      null)
