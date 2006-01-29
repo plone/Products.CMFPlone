@@ -247,7 +247,12 @@ class TestCreateObjectByURL(PloneTestCase.FunctionalTestCase):
         # The redirect URL should contain the factory parts
         location = response.getHeader('Location')
         self.failUnless(location.startswith(self.folder_url+'/portal_factory/Document/'))
-        self.failUnless(location.endswith('/edit'))
+        # CMFFormController is unclear about whether a redirect to an action using an 
+        # alias (e.g. 'edit') should go to the true target of the alias (e.g. 
+        # 'atct_edit') or just the alias name.  Different versions behave differently
+        # but the code indicates that the latter is the expected behavior.  This test
+        # will accept either.
+        self.failUnless(location.endswith('edit'))
 
         # Perform the redirect
         edit_form_path = location[len(self.app.REQUEST.SERVER_URL):]
@@ -266,7 +271,12 @@ class TestCreateObjectByURL(PloneTestCase.FunctionalTestCase):
         # The redirect URL should contain the factory parts
         location = response.getHeader('Location')
         self.failUnless(location.startswith(self.folder_url+'/portal_factory/Document/'))
-        self.failUnless(location.endswith('/edit'))
+        # CMFFormController is unclear about whether a redirect to an action using an 
+        # alias (e.g. 'edit') should go to the true target of the alias (e.g. 
+        # 'atct_edit') or just the alias name.  Different versions behave differently
+        # but the code indicates that the latter is the expected behavior.  This test
+        # will accept either.
+        self.failUnless(location.endswith('edit'))
 
         # Perform the redirect
         edit_form_path = location[len(self.app.REQUEST.SERVER_URL):]
