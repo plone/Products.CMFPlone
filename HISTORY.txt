@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1.3 - Tomahawk - Unreleased
 
+    - Checkboxes got background in IE, this was fixed. Also moved the
+      'noborder' class to public.css.
+      [limi]
+
     - prefs_mailhost_form looked up "smtp_server" in a strange location.
       Removed some backwards compatibility code from PropertiesTool as well.
       Fixes https://trac.plone.org/plone/ticket/5174.
