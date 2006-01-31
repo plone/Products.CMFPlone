@@ -54,7 +54,7 @@
 
             <div class="field">
             <label i18n:translate="label_allow_discussion">
-              Allow Comments on this item?
+              Allow comments on this item?
             </label>
 
             <div class="formHelp" i18n:translate="help_allow_discussion">
