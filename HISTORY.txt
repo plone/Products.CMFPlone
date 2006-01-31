@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.1.3 - Tomahawk - Unreleased
 
+    - prefs_mailhost_form looked up "smtp_server" in a strange location.
+      Removed some backwards compatibility code from PropertiesTool as well.
+      Fixes https://trac.plone.org/plone/ticket/5174.
+      [hannosch]
+
     - Clarify description for 'show short name' feature in the prefs panel.
       Closes https://trac.plone.org/plone/ticket/5112.
       [hannosch]

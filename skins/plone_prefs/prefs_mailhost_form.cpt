@@ -28,24 +28,23 @@
           name="mailhost"
           method="post"
           class="enableUnloadProtection"
-          tal:attributes="action string:${here_url}/${template_id}"
-          tal:define="props python:portal_properties;">
+          tal:attributes="action string:${here_url}/${template_id}">
 
         <fieldset>
             <legend i18n:translate="legend_mailhost_details">Outgoing Mail Server (SMTP) Details</legend>
     
             <div class="field"
-                 tal:define="smtp_server request/smtp_server | site_properties/smtp_server;
-                             error errors/smtp_servers | nothing;"
+                 tal:define="smtp_server request/smtp_server | here/MailHost/smtp_host;
+                             error errors/smtp_server | nothing;"
                  tal:attributes="class python:test(error, 'field error', 'field')">
     
                 <label i18n:translate="label_smtp_server">SMTP server</label>
     
                 <div class="formHelp" id="smtp_server_help"
                      i18n:translate="help_smtp_server">
-                The address of your local SMTP (outgoing
-                e-mail) server. Usually "localhost", unless you use an
-                external server to send e-mail.
+                    The address of your local SMTP (outgoing e-mail) server.
+                    Usually "localhost", unless you use an external server to
+                    send e-mail.
                 </div>
     
                 <div tal:content="error">Validation error output</div>
@@ -60,14 +59,14 @@
     
             <div class="field"
                  tal:define="smtp_port request/smtp_port | here/MailHost/smtp_port;
-                             error errors/smtp_ports | nothing;"
+                             error errors/smtp_port | nothing;"
                  tal:attributes="class python:test(error, 'field error', 'field')">
     
                 <label i18n:translate="label_smtp_port">SMTP port</label>
 
                 <div class="formHelp" i18n:translate="help_smtp_port">
-                The port of your local SMTP (outgoing
-                e-mail) server. Usually "25".
+                    The port of your local SMTP (outgoing e-mail) server.
+                    Usually "25".
                 </div>
 
                 <div tal:content="error">Validation error output</div>
@@ -89,8 +88,8 @@
                 <label i18n:translate="label_smtp_userid">ESMTP username</label>
 
                 <div class="formHelp" i18n:translate="help_smtp_userid">
-                Username for authentication to your e-mail server.
-                Not required unless you are using ESMTP.
+                    Username for authentication to your e-mail server.
+                    Not required unless you are using ESMTP.
                 </div>
 
                 <div tal:content="error">Validation error output</div>
@@ -111,7 +110,7 @@
                 <label i18n:translate="label_smtp_pass">ESMTP password</label>
 
                 <div class="formHelp" i18n:translate="help_smtp_pass">
-                The password for the ESMTP user account.
+                    The password for the ESMTP user account.
                 </div>
 
                 <div tal:content="error">Validation error output</div>
@@ -132,8 +131,7 @@
                        name="form.button.Save"
                        value="Save"
                        i18n:attributes="value label_save;"
-                       tal:attributes="tabindex tabindex/next;"
-                       />
+                       tal:attributes="tabindex tabindex/next;" />
             </div>
     
         </fieldset>

@@ -85,9 +85,6 @@ class PropertiesTool(PloneBaseTool, Folder, BaseTool):
         """Change portal settings
         """
         aq_parent(aq_inner(self)).manage_changeProperties(props)
-        # keep this bit of hackery for backwards compatibility
-        if props.has_key('smtp_server'):
-            self.MailHost.smtp_host = props['smtp_server']
         if hasattr(self, 'propertysheets'):
             ps = self.propertysheets
             if hasattr(ps, 'props'):
