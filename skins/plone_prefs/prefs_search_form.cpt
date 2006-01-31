@@ -67,8 +67,8 @@ registerPloneFunction(
     
                 <div class="formHelp" id="livesearch_help"
                      i18n:translate="help_livesearch">
-                     Enable the LiveSearch feature to see live
-                     results if the Browser supports the JavaScript.
+                     Enables the LiveSearch feature, which shows live
+                     results if the browser supports Javascript.
                 </div>
     
                 <div tal:content="error">Validation error output</div>
