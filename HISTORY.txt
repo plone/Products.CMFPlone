@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1.3 - Tomahawk - Unreleased
 
+    - Renamed "discussion" to "comments" in the UI, made the labels more
+      explicit about what they actually do.
+      [limi]
+
     - Checkboxes got background in IE, this was fixed. Also moved the
       'noborder' class to public.css.
       [limi]

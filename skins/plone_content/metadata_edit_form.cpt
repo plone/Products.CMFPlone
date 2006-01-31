@@ -54,11 +54,11 @@
 
             <div class="field">
             <label i18n:translate="label_allow_discussion">
-              Allow Discussion on this item
+              Allow Comments on this item?
             </label>
 
             <div class="formHelp" i18n:translate="help_allow_discussion">
-              'Default' will use the site-wide setting for discussions.
+              'Default' will use the site-wide setting for comments.
             </div>
 
             <metal:block tal:define="val request/allowDiscussion | python: here.portal_discussion.isDiscussionAllowedFor(here);
@@ -77,7 +77,7 @@
                      />
               <label for="discussion_default"
                      i18n:translate="label_discussion_default">
-                Default
+                Use default setting for comments
               </label>
               <br />
 
@@ -92,7 +92,7 @@
                      />
               <label for="discussion_on"
                      i18n:translate="label_discussion_enabled">
-                Enabled
+                Always allow comments
               </label>
               <br />
 
@@ -105,7 +105,7 @@
                      tal:attributes="checked python:test(val == 0, '1', None);
                                      tabindex tabindex;"
                      />
-              <label for="discussion_off" i18n:translate="label_discussion_disabled">Disabled</label>
+              <label for="discussion_off" i18n:translate="label_discussion_disabled">Never allow comments</label>
 
 
             </metal:block>
