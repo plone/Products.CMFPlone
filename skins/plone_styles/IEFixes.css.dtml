@@ -42,9 +42,19 @@ textarea {
     filter:alpha(opacity=20); 
 }
 
+#portal-logo a {
+    height: 0px !important;
+    height /**/: <dtml-var "_[logoName].height">px;
+}
+
 /* Fix bottom margin on tabs in IE */
 #portal-globalnav li.selected a {
 position: relative;
+}
+
+#portal-colophon .colophonIcon {
+    height: 0px !important;
+    height /**/: 15px;
 }
 
 .actionMenu .actionMenuHeader a {

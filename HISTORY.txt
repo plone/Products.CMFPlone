@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1.3 - Tomahawk - Unreleased
 
+    - Move two IE hacks to IEFixes.css.dtml where there belong, as these had
+      ugly side-effects when viewing a site with IE 7 beta2.
+      [hannosch]
+
     - Renamed "discussion" to "comments" in the UI, made the labels more
       explicit about what they actually do.
       [limi]
