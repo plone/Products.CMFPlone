@@ -236,9 +236,10 @@
                 </label>
 
                 <div class="formHelp" i18n:translate="help_setup_visible_ids">
-                Display and allow users to edit the "Short name" content identifiers, 
-                which form the URL part of a content item's address. Users also have to
-                enable this option in their preferences.
+                Display and allow users to edit the "Short name" content
+                identifiers, which form the URL part of a content item's
+                address. Once enabled, users will then be able to enable this
+                option in their preferences.
                 </div>
 
                 <input type="radio"

@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1.3 - Tomahawk - Unreleased
 
+    - Clarify description for 'show short name' feature in the prefs panel.
+      Closes https://trac.plone.org/plone/ticket/5112.
+      [hannosch]
+
     - Added warning message to version overview in the control panel if PIL
       is not installed. Closes https://trac.plone.org/plone/ticket/5134.
       [hannosch]
