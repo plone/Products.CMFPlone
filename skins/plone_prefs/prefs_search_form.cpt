@@ -67,7 +67,7 @@ registerPloneFunction(
     
                 <div class="formHelp" id="livesearch_help"
                      i18n:translate="help_livesearch">
-                     Enable the LiveSearch feature (like Google) to see live
+                     Enable the LiveSearch feature to see live
                      results if the Browser supports the JavaScript.
                 </div>
     
