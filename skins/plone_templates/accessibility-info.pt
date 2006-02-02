@@ -106,7 +106,7 @@
 
         <dt i18n:translate="label_konqueror_linux">Konqueror (Linux)</dt>
         <dd i18n:translate="description_accesskey_konqueror_linux">
-        Hold down the <code>Ctrl</code> key and press the number or letter of 
+        Press and release the <code>Ctrl</code> key, then press the number or letter of 
         the access key.
         </dd>
 
