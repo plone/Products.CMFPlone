@@ -6,7 +6,7 @@ Plone 2.1.3 - Tomahawk - Unreleased
 
     - The Sharing page was showing mail addresses to easier be able to discern
       between users with similar user names; now it uses full name instead.
-      This closes https://trac.plone.org/plone/ticket/5196
+      This closes http://dev.plone.org/plone/ticket/5196
       [limi]
 
     - Move two IE hacks to IEFixes.css.dtml where there belong, as these had
@@ -23,15 +23,15 @@ Plone 2.1.3 - Tomahawk - Unreleased
 
     - prefs_mailhost_form looked up "smtp_server" in a strange location.
       Removed some backwards compatibility code from PropertiesTool as well.
-      Fixes https://trac.plone.org/plone/ticket/5174.
+      Fixes http://dev.plone.org/plone/ticket/5174.
       [hannosch]
 
     - Clarify description for 'show short name' feature in the prefs panel.
-      Closes https://trac.plone.org/plone/ticket/5112.
+      Closes http://dev.plone.org/plone/ticket/5112.
       [hannosch]
 
     - Added warning message to version overview in the control panel if PIL
-      is not installed. Closes https://trac.plone.org/plone/ticket/5134.
+      is not installed. Closes http://dev.plone.org/plone/ticket/5134.
       [hannosch]
 
     - Fixed inconsistencies where some 'Controller Python Script' were being
@@ -57,7 +57,7 @@ Plone 2.1.3 - Tomahawk - Unreleased
 Plone 2.1.2 - Saint Etienne - Released January 20, 2006
 
     - Events portlet was not displayed when /events had been deleted.
-      Closes https://trac.plone.org/plone/ticket/5143.
+      Closes http://dev.plone.org/plone/ticket/5143.
       [hannosch]
 
     - Reinstating the "Previous Events" link in the events portlet (was
@@ -66,22 +66,22 @@ Plone 2.1.2 - Saint Etienne - Released January 20, 2006
 
     - Removing hardcoded style attributes in folder_localrole_form.
       This fixes #5070.
-      http://trac.plone.org/plone/ticket/5070
+      http://dev.plone.org/plone/ticket/5070
       [limi]
 
     - Removed useless CSS declaration in generated.css - the site map
       will never have a current item by its very nature. This fixes #5079.
-      http://trac.plone.org/plone/ticket/5079
+      http://dev.plone.org/plone/ticket/5079
       [limi]
 
     - Made Plone notify you when you are trying to log out while being
       logged in via HTTP (you need to close your browser to log out when
       using HTTP auth). This also fixes #5083.
-      http://trac.plone.org/plone/ticket/5083
+      http://dev.plone.org/plone/ticket/5083
       [limi]
 
     - Fixed the non-workflow-state-dependend coloring of items in the
-      navigation portlet. Closes http://trac.plone.org/plone/ticket/5136.
+      navigation portlet. Closes http://dev.plone.org/plone/ticket/5136.
       [hannosch]
 
     - Changed the last occurrences of transaction.commit(1) to new style
@@ -104,7 +104,7 @@ Plone 2.1.2 - Saint Etienne - Released January 20, 2006
     - Add a folderlistingFolderContents method to the PloneSite type. This
       allows getting folder contents with the AccessContentsInformation
       permission and is required by ATReferenceBrowserWidget since its
-      changeset 5440. Fixes http://trac.plone.org/plone/ticket/5115
+      changeset 5440. Fixes http://dev.plone.org/plone/ticket/5115
       [wichert]
 
     - Remove more uses of the name CMFCorePermissions by using
@@ -114,7 +114,7 @@ Plone 2.1.2 - Saint Etienne - Released January 20, 2006
    RC2 - Released January 5, 2006
 
     - Error when trying to force migrate to 2.1.2 from 2.1.1 due to non-failsafe
-      addition of memberdata property. https://trac.plone.org/plone/ticket/5064
+      addition of memberdata property. http://dev.plone.org/plone/ticket/5064
       [hannosch]
 
    RC1 - Released January 4, 2006
@@ -144,7 +144,7 @@ Plone 2.1.2 - Saint Etienne - Released January 20, 2006
       [limi]
 
     - Moved .documentContent to 'public.css', this fixes #5061.
-      http://trac.plone.org/plone/ticket/5061
+      http://dev.plone.org/plone/ticket/5061
       [limi]
 
     - More CSS grouping fixes: the form elements are visible in the public
@@ -168,7 +168,7 @@ Plone 2.1.2 - Saint Etienne - Released January 20, 2006
 
     - Permission check had wrong spelling in prefs_groups_overview, this fixes
       #5055. Thanks to Bertrand Mathieu for the patch.
-      http://trac.plone.org/plone/ticket/5055
+      http://dev.plone.org/plone/ticket/5055
       [limi]
 
     - Added feedButton class for RSS feed buttons. This will be used for e.g.
@@ -176,17 +176,17 @@ Plone 2.1.2 - Saint Etienne - Released January 20, 2006
       [optilude]
 
     - Escape the group name URLs generated in the group preferences screen.
-      https://trac.plone.org/plone/ticket/5015
+      http://dev.plone.org/plone/ticket/5015
       [wichert]
 
     - Added some classes for the RTL versions of the summary view. Thanks,
       mohsen.
-      https://trac.plone.org/plone/ticket/5047
+      http://dev.plone.org/plone/ticket/5047
       [limi]
 
     - Fixed #4976 - Added a must_change_password property to the
       member data (set to 0 for existing members).
-      https://trac.plone.org/plone/ticket/4976
+      http://dev.plone.org/plone/ticket/4976
       [plonista]
 
     - Fixed various log-in problems, issues #4545, 4975, 4942, added workaround
@@ -210,60 +210,60 @@ Plone 2.1.2 - Saint Etienne - Released January 20, 2006
       but we urge people to adopt the new style (which is much simpler and
       more flexible) - as the inclusion of the two above classes in the 2.1
       release was not intentional.
-      https://trac.plone.org/plone/ticket/4430
+      http://dev.plone.org/plone/ticket/4430
       [spliter, limi]
 
     - Fixed #5041 - plone-site icon is generated again. Thanks, optilude ;)
-      https://trac.plone.org/plone/ticket/5041
+      http://dev.plone.org/plone/ticket/5041
       [spliter]
 
     - Fixed #4961 - long Titles have been overlapping documentActions in IE.
-      https://trac.plone.org/plone/ticket/4961
+      http://dev.plone.org/plone/ticket/4961
       [spliter]
 
     - Fixed #5020 - added wrapping SPAN's in portlets' portletHeaders to allow
       css designers to use rounded corners techniques.
-      https://trac.plone.org/plone/ticket/5020
+      http://dev.plone.org/plone/ticket/5020
       [spliter]
 
     - Quote id in "Move item up" and "Move item down" links.
-      http://trac.plone.org/plone/ticket/5014
+      http://dev.plone.org/plone/ticket/5014
       [nouri]
 
     - Removed leading whitespace in portlet_navtree_macro css class definitions.
-      https://trac.plone.org/plone/ticket/5038
+      http://dev.plone.org/plone/ticket/5038
       [hannosch]
 
     - Fixed author.pt to respect search type blacklisting.
-      https://trac.plone.org/plone/ticket/5034
+      http://dev.plone.org/plone/ticket/5034
       [hannosch]
 
     - Fixed 4876 by making Discussion Item not have a workflow, so that you
       won't get strange permission inconsistencies.
-      https://trac.plone.org/plone/ticket/4876
+      http://dev.plone.org/plone/ticket/4876
       [optilude]
 
     - Fixed 3905 by making mergeResults() available TTW to allow python scripts
       to merge search results.
-      https://trac.plone.org/plone/ticket/3905.
+      http://dev.plone.org/plone/ticket/3905.
       [optilude]
 
     - All-new look for the photo album / thumbnail view.
       [limi]
 
     - Extended tests to ensure publishing of included folders is working.
-      https://trac.plone.org/plone/ticket/4933
+      http://dev.plone.org/plone/ticket/4933
       [hannosch]
 
     - Fixed #5021 - 'History' beeing expanded was visible through the vertical
       table, containig event's summary
-      https://trac.plone.org/plone/ticket/5021
+      http://dev.plone.org/plone/ticket/5021
       [spliter]
 
     - Fixed #4430 - now portlets have much more simple and straightforward
       structure and styles. From now we use only three classes for them -
       portletHeader, portletItem and portletFooter. Thanks to mroch for idea.
-      https://trac.plone.org/plone/ticket/4430
+      http://dev.plone.org/plone/ticket/4430
       [spliter]
 
     - Backported some general code cleanup from the trunk.
@@ -271,17 +271,17 @@ Plone 2.1.2 - Saint Etienne - Released January 20, 2006
 
     - Implemented new feature: Automatically highlight keywords when arriving
       from search engines.
-      https://trac.plone.org/plone/ticket/2599
+      http://dev.plone.org/plone/ticket/2599
       [jenner] [hannosch]
 
     - Made prefs_mailhost_form compatible with regular mailhost objects from
       both Zope 2.7 and 2.8. Starting with 2.8 MailHost has user/pwd attributes
       as has SecureMailHost but named slightly different.
-      https://trac.plone.org/plone/ticket/5000
+      http://dev.plone.org/plone/ticket/5000
       [hannosch]
 
     - LiveSearch did not match 8-bit search strings correctly.
-      https://trac.plone.org/plone/ticket/4643
+      http://dev.plone.org/plone/ticket/4643
       [hannosch]
 
     - Added a customised testPropertiesValidity method to the RegistrationTool
@@ -292,32 +292,32 @@ Plone 2.1.2 - Saint Etienne - Released January 20, 2006
     - Fixed #5013 - accessibility-page had a problem in CSS validation due to
       doubled #portal-siteactions. Now it is the class because we have more than
       one place for siteactions on the pages.
-      https://trac.plone.org/plone/ticket/5013
+      http://dev.plone.org/plone/ticket/5013
       [spliter]
 
     - Fixed #5017 - Unnecessary style in IEFixes.css that ruined NewsItem view
       in IE when having paragraph in text.
-      https://trac.plone.org/plone/ticket/5017
+      http://dev.plone.org/plone/ticket/5017
       [spliter]
 
     - Fixed 'Livesearch can kill a server' problem by enabling livesearch only
       for two or more characters long search strings.
-      https://trac.plone.org/plone/ticket/4890
+      http://dev.plone.org/plone/ticket/4890
       [hannosch]
 
     - Fixed two problems with delete action in global_contentmenu.
       'Cannot cancel deletes in IE 6' (#4772) and 'JS pop-up shows wrong type
       when deleting default view' (#4990).
-      https://trac.plone.org/plone/ticket/4772
-      https://trac.plone.org/plone/ticket/4990
+      http://dev.plone.org/plone/ticket/4772
+      http://dev.plone.org/plone/ticket/4990
       [hannosch]
 
     - Bug in portlet_navigation - navTreeLevel1 was never set.
-      https://trac.plone.org/plone/ticket/4950
+      http://dev.plone.org/plone/ticket/4950
       [hannosch]
 
     - Group is confused with identical user when trying to add as a subgroup.
-      https://trac.plone.org/plone/ticket/4947
+      http://dev.plone.org/plone/ticket/4947
       [hannosch] [csenger]
 
     - Fixed weak-ass tests that failed to catch broken action providers.
@@ -325,35 +325,35 @@ Plone 2.1.2 - Saint Etienne - Released January 20, 2006
       [stefan]
 
     - Icon for links was missing padding in folder_listing. Fixes #4721.
-      https://trac.plone.org/plone/ticket/4721
+      http://dev.plone.org/plone/ticket/4721
       [limi]
 
     - Meta tags were not being emitted correctly. This fixes #4810.
-      https://trac.plone.org/plone/ticket/4810
+      http://dev.plone.org/plone/ticket/4810
       [limi]
 
     - Changed all calls to getParentNode() to be aq_inner.getParentNode() to
       make it work better with Five. This fixes #4705.
-      https://trac.plone.org/plone/ticket/4705
+      http://dev.plone.org/plone/ticket/4705
       [limi]
 
     - Review history was not valid XHTML, a block-level element was nested
       inside an inline element. This fixes #4926 and #4586 (hopefully, seems
       to work in my local testing).
-      https://trac.plone.org/plone/ticket/4926
-      https://trac.plone.org/plone/ticket/4586
+      http://dev.plone.org/plone/ticket/4926
+      http://dev.plone.org/plone/ticket/4586
       [limi]
 
     - Made the "click here to see full size image" and size text on images
       invisible when printing the image. This fixes #4698.
-      https://trac.plone.org/plone/ticket/4698
+      http://dev.plone.org/plone/ticket/4698
       [limi]
 
     - Harmonized table-less and table-based skin, the former was using a special
       getBodyTagClass which has an existing equvalent in the normal skin anyway.
       Deprecated the special file used for this, it will disappear in Plone 2.5.
       This fixes #3915.
-      https://trac.plone.org/plone/ticket/3915
+      http://dev.plone.org/plone/ticket/3915
       [limi]
 
     - Inserted missing conditional check for the location of an event - no
@@ -361,23 +361,23 @@ Plone 2.1.2 - Saint Etienne - Released January 20, 2006
       [limi]
 
     - Fixed #4695 - Comments were connected to the wrong object.
-      https://trac.plone.org/plone/ticket/4695
+      http://dev.plone.org/plone/ticket/4695
       [morphex]
 
     - Fixed #4998 - Russian characters were not supported by normalizeUnicode.
       Thanks to Xenru.
-      https://trac.plone.org/plone/ticket/4998
+      http://dev.plone.org/plone/ticket/4998
       [stefan]
 
     - Fixed the Internet Explorer visual bug where portlets would gradually
       lose their left margin and move further and further to the left the more
       elements were contained inside the portlet.
-      https://trac.plone.org/plone/ticket/4874
+      http://dev.plone.org/plone/ticket/4874
       [limi]
 
     - Fixed #4996 - favorites_view.pt had duplicated calls for
       'document_actions' macros.
-      https://trac.plone.org/plone/ticket/4996
+      http://dev.plone.org/plone/ticket/4996
       [spliter]
 
     - Plone was showing the editable border on all content items when you were
@@ -388,7 +388,7 @@ Plone 2.1.2 - Saint Etienne - Released January 20, 2006
 
     - Fixed #2295 - text on printing was cropped on the right in all browsers
       when the tableless layout is used.
-      https://trac.plone.org/plone/ticket/2295
+      http://dev.plone.org/plone/ticket/2295
       [spliter]
 
     - 'external_edit' link wouldn't work for files with spaces in name due to
@@ -396,13 +396,13 @@ Plone 2.1.2 - Saint Etienne - Released January 20, 2006
       [sidnei]
 
     - Fixed #4859 - strftime error in calendar_macros.pt.
-      https://trac.plone.org/plone/ticket/4859
+      http://dev.plone.org/plone/ticket/4859
       [hannosch]
 
     - Fixed #3268 and #3746 - some status messages included all changed objects
       which could break IE as it supports only a limited URL length.
-      https://trac.plone.org/plone/ticket/3268
-      https://trac.plone.org/plone/ticket/3746
+      http://dev.plone.org/plone/ticket/3268
+      http://dev.plone.org/plone/ticket/3746
       [hannosch]
 
     - Replacing all references to "portal" in the UI with "site" with same
@@ -422,40 +422,40 @@ Plone 2.1.2 - Saint Etienne - Released January 20, 2006
       [stefan]
 
     - Fixed #4657 and #4829 - wrong icon path in livesearch.
-      https://trac.plone.org/plone/ticket/4657
-      https://trac.plone.org/plone/ticket/4829
+      http://dev.plone.org/plone/ticket/4657
+      http://dev.plone.org/plone/ticket/4829
       [hannosch]
 
     - Added PIL version to control panel version overview as suggested in #4775.
-      https://trac.plone.org/plone/ticket/4775
+      http://dev.plone.org/plone/ticket/4775
       [hannosch]
 
     - Fixed #4803 and #4943 by only deleting existing text indexes when the
       lexicon is missing (e.g. when we actually have a new catalog being
       created).
-      https://trac.plone.org/plone/ticket/4803
-      https://trac.plone.org/plone/ticket/4943
+      http://dev.plone.org/plone/ticket/4803
+      http://dev.plone.org/plone/ticket/4943
       [alecm]
 
     - Fixed #4898 - migrations would break if the Plone Site was configured to
       not allow all content types.
-      https://trac.plone.org/plone/ticket/4898
+      http://dev.plone.org/plone/ticket/4898
       [stefan]
 
     - Fixed #4951 by overriding the 'sl' global define in prefs_main_template.pt
-      https://trac.plone.org/plone/ticket/4951
+      http://dev.plone.org/plone/ticket/4951
       [alecm]
 
     - Updated favorites portlet to the new portlet style.
       [ctheune]
 
     - Fixed #4800 - hardcoded review_state variable breaks custom workflows.
-      https://trac.plone.org/plone/ticket/4800
+      http://dev.plone.org/plone/ticket/4800
       [hannosch]
 
     - Fixed #4938 - member portraits were referenced using the username instead
       of the member id in a few places in the membership tool.
-      https://trac.plone.org/plone/ticket/4938
+      http://dev.plone.org/plone/ticket/4938
       [wichert]
 
     - Combined the support for publishing subobjects in
@@ -480,7 +480,7 @@ Plone 2.1.2 - Saint Etienne - Released January 20, 2006
       [hannosch]
 
     - Fixed #4894 - Missing closing quote in LiveSearch pop-up.
-      https://trac.plone.org/plone/ticket/4894
+      http://dev.plone.org/plone/ticket/4894
       [stefan]
 
     - Send new generated plain password via email directly when reset password,
@@ -518,7 +518,7 @@ Plone 2.1.2 - Saint Etienne - Released January 20, 2006
       [sidnei]
 
     - Fixed #4788 - Missing i18n for livesearch 'no matching results found'.
-      https://trac.plone.org/plone/ticket/4788
+      http://dev.plone.org/plone/ticket/4788
       [hannosch]
 
     - Fixed small bug in searching users from prefs_users_overview. In case of
@@ -542,27 +542,27 @@ Plone 2.1.1 - Coloma - Released October 13, 2005
     - Fixed #4587 - workflow history displays author's full name instead of
       author's id and link to author page instead of home folder (to be in sync
       with document byline). Added colored transition names as a free bonus.
-      https://trac.plone.org/plone/ticket/4587
+      http://dev.plone.org/plone/ticket/4587
       [naro]
 
     - Fixed #4690 - user can't change password after initial login
       (with 'validate email' set).
-      https://trac.plone.org/plone/ticket/4690
+      http://dev.plone.org/plone/ticket/4690
       [naro]
 
     - Fixed #4777 - 'portlet_navtree_macro_opt' call in sitemap.pt.
-      https://trac.plone.org/plone/ticket/4777
+      http://dev.plone.org/plone/ticket/4777
       [hannosch]
 
     - Fixed #4722 the SecureMailHost migration was test-free and not very
       cautious.
-      https://trac.plone.org/plone/ticket/4722
+      http://dev.plone.org/plone/ticket/4722
       [alecm]
 
     - Refixed #4639 by checking the presence of the property without acquisition
       and then using it only if it exists on the object, but allowing full
       acquisition if the property is there.
-      https://trac.plone.org/plone/ticket/4639
+      http://dev.plone.org/plone/ticket/4639
       [alecm]
 
     - Added migration to the new ExtendedPathIndex structures.
@@ -570,7 +570,7 @@ Plone 2.1.1 - Coloma - Released October 13, 2005
 
     - Fixed #4760 by making our GroupsTool reindex the group folder when it is
       newly created.
-      https://trac.plone.org/plone/ticket/4760
+      http://dev.plone.org/plone/ticket/4760
       [alecm]
 
     - Fix DeprecationWarnings resulting from CMFCorePermissions imports by
@@ -578,7 +578,7 @@ Plone 2.1.1 - Coloma - Released October 13, 2005
       [hannosch]
 
     - Fixed #4766 - RSS feed in Firefox did not work properly.
-      https://trac.plone.org/plone/ticket/4766
+      http://dev.plone.org/plone/ticket/4766
       [naro]
 
     - MimetypesRegistry wasn't correctly handling 'globs' from shared-mime-info
@@ -592,23 +592,23 @@ Plone 2.1.1 - Coloma - Released October 13, 2005
 
     - Fixed #4704 - string.whitespace is not ASCII only on OpenBSD, which
       resulted in problems in UnicodeNormalizer.
-      https://trac.plone.org/plone/ticket/4704
+      http://dev.plone.org/plone/ticket/4704
       [hannosch]
 
     - Fixed #4708 - portlet_events "upcoming events" link broke if events folder
       was renamed or deleted.
-      https://trac.plone.org/plone/ticket/4708
+      http://dev.plone.org/plone/ticket/4708
       [hannosch]
 
     - Fixed #4755 - folder_factories does not link to folder_constraintypes_form
       like add item menu does.
-      https://trac.plone.org/plone/ticket/4755
+      http://dev.plone.org/plone/ticket/4755
       [hannosch]
 
     - Removed out-of-the-box TextIndexNG2 support from Plone. TextIndexNG V2 and
       V3 has explicit migration code to convert ZCTextIndexes to TextIndexNG
       V2|3 instances on request. This fix should resolve bug #4713.
-      https://trac.plone.org/plone/ticket/4713
+      http://dev.plone.org/plone/ticket/4713
       [ajung]
 
     - Fix broken discussion_reply_form.cpt.
@@ -673,7 +673,7 @@ Plone 2.1 - Plaid - Released September 6, 2005
       pretty_title_or_id. This means that objects which rely on acquisition in
       their Title() methods will need to do so explicitly, though getToolByName
       and aq_parent will work without issue.
-      https://trac.plone.org/plone/ticket/4639
+      http://dev.plone.org/plone/ticket/4639
       [alecm]
 
     - A bug that caused the month display to use the day number was fixed.
@@ -681,25 +681,25 @@ Plone 2.1 - Plaid - Released September 6, 2005
       [longsleep]
 
     - Fixed #4638 by making the workflow title methods more fault tolerant.
-      https://trac.plone.org/plone/ticket/4638
+      http://dev.plone.org/plone/ticket/4638
       [alecm]
 
     - Fixed #4624 - document byline on events were not translated.
-      https://trac.plone.org/plone/ticket/4624
+      http://dev.plone.org/plone/ticket/4624
       [hannosch]
 
     - Fixed #4635 - LiveSearch background did not apply the IE fix if there was
       no result set. Thanks Wichert.
-      https://trac.plone.org/plone/ticket/4635
+      http://dev.plone.org/plone/ticket/4635
       [limi]
 
     - Fixed #4612 by granting the 'View Groups' permission to all Members at the
       portal root.
-      https://trac.plone.org/plone/ticket/4612
+      http://dev.plone.org/plone/ticket/4612
       [alecm]
 
     - Fixed #4589 by adding some tal:conditions in a few templates.
-      https://trac.plone.org/plone/ticket/4589
+      http://dev.plone.org/plone/ticket/4589
       [alecm]
 
     - Reordered the object button actions.
@@ -754,23 +754,23 @@ Plone 2.1 - Plaid - Released September 6, 2005
 
     - Fixed #4530 - type name not translated if only one type is shown in
       global_contentmenu.
-      https://trac.plone.org/plone/ticket/4530
+      http://dev.plone.org/plone/ticket/4530
       [hannosch]
 
     - Adding some padding to the "display" menu header if the menu is disabled
       because of an index_html document. Closes #4534.
-      https://trac.plone.org/plone/ticket/4534
+      http://dev.plone.org/plone/ticket/4534
       [optilude]
 
     - Made Summary View the default view for the news topic.
       [alecm]
 
     - Fixed #4499 - removed vestigial failsafe_login.pt.metadata.
-      https://trac.plone.org/plone/ticket/4499
+      http://dev.plone.org/plone/ticket/4499
       [hannosch]
 
     - Fixed #4484 - 'My Preferences' action title is 'Preferences' in 2.1.
-      https://trac.plone.org/plone/ticket/4484
+      http://dev.plone.org/plone/ticket/4484
       [hannosch]
 
    RC3 - Released August 18, 2005
@@ -783,7 +783,7 @@ Plone 2.1 - Plaid - Released September 6, 2005
       doing things.  This should be cleaned up once zope 2.7.8/2.8.2 comes out
       and make_query is fixed. queryCatalog automatically converts the _usage
       style queries into proper dict based queries, but it's still bad form.
-      https://trac.plone.org/plone/ticket/4502
+      http://dev.plone.org/plone/ticket/4502
       [alecm]
 
     - At the request of the i18n team I renamed Tile View to Summary View,
@@ -795,7 +795,7 @@ Plone 2.1 - Plaid - Released September 6, 2005
     - Added explicit permission checks to prefs_users_overview and
       prefs_groups_overview to prevent unnecessary exposure of sensitive
       roles and groups security information (see #4491).
-      https://trac.plone.org/plone/ticket/4491
+      http://dev.plone.org/plone/ticket/4491
       [rafrombrc]
 
     - Added 'raiseUnauthorized' python script to plone_scripts as a
@@ -804,7 +804,7 @@ Plone 2.1 - Plaid - Released September 6, 2005
       [rafrombrc]
 
     - Fixed #4449 by removing direct attribute access from file_view template.
-      https://trac.plone.org/plone/ticket/4449
+      http://dev.plone.org/plone/ticket/4449
       [alecm]
 
     - Made the navtree respect the new NonStructuralFolderInterface by
@@ -841,16 +841,16 @@ Plone 2.1 - Plaid - Released September 6, 2005
       [optilude]
 
     - Fixed #4361 - OverflowError when converting to Date(Range)Indexes.
-      https://trac.plone.org/plone/ticket/4361
+      http://dev.plone.org/plone/ticket/4361
       [stefan]
 
     - Fixed #4366 - The envelope-from for send-to and comments is now set to the
       site admin's email ID rather than the apparent From ID entered on the form
-      https://trac.plone.org/plone/ticket/4366
+      http://dev.plone.org/plone/ticket/4366
       [bitranch]
 
     - Fixed #4370 - duplicate 'sharing' tab on portal root.
-      https://trac.plone.org/plone/ticket/4370
+      http://dev.plone.org/plone/ticket/4370
       [optilude]
 
     - Several fixes and workarounds for right to left rendering.
@@ -858,11 +858,11 @@ Plone 2.1 - Plaid - Released September 6, 2005
 
     - Fix #4433 Changing workflow state in review_history gives KeyError:
       'comments'.
-      https://trac.plone.org/plone/ticket/4433
+      http://dev.plone.org/plone/ticket/4433
       [hannosch]
 
     - Fix #4456 wrong title on columns.css.
-      https://trac.plone.org/plone/ticket/4456
+      http://dev.plone.org/plone/ticket/4456
       [hannosch]
 
     - Added past events sub-topic events_topic/previous, and restricted the
@@ -902,11 +902,11 @@ Plone 2.1 - Plaid - Released September 6, 2005
 
     - Fixed #4407 by making folder_contents link to folder_contents for all
       folderish types.
-      https://trac.plone.org/plone/ticket/4407
+      http://dev.plone.org/plone/ticket/4407
       [alecm]
 
     - Fixed #4376 untranslated 'add type' buttons.
-      https://trac.plone.org/plone/ticket/4376
+      http://dev.plone.org/plone/ticket/4376
       [hannosch]
 
     - Don't clear css and javascript registries on migration from 2.0.5.
@@ -920,13 +920,13 @@ Plone 2.1 - Plaid - Released September 6, 2005
     - Added workaround for #4372 which is due to a strange behavior in the
       Firefox alpha. Thanks to jenner for hunting this down and contributing the
       fix.
-      https://trac.plone.org/plone/ticket/4372
+      http://dev.plone.org/plone/ticket/4372
       [alecm]
 
     - Addresses #2029. Now support through UI for grouping groups. UI does not
       allow a group to be added to itself or for a member (group or user) of a
       subgroup to be added to a group. Some text changed to reflect changes.
-      https://trac.plone.org/plone/ticket/2029
+      http://dev.plone.org/plone/ticket/2029
       [gerry_kirk]
 
     - Changed View permission restrictions on folder_constraintypes_form and
@@ -935,7 +935,7 @@ Plone 2.1 - Plaid - Released September 6, 2005
       [alecm]
 
     - Made search.pt respect typesUseViewActionInListings. Fixes part of #4373.
-      https://trac.plone.org/plone/ticket/4373
+      http://dev.plone.org/plone/ticket/4373
       [alecm]
 
     - Made syndication use the max_items property of the instance if set, not
@@ -950,12 +950,12 @@ Plone 2.1 - Plaid - Released September 6, 2005
       [deo]
 
     - Fixed #4382 by removing unnecessary getUser call.
-      https://trac.plone.org/plone/ticket/4382
+      http://dev.plone.org/plone/ticket/4382
       [alecm]
 
     - Fixed #4381 by using getProperty to access listed and last_login_time
       properties in searchForMembers.
-      https://trac.plone.org/plone/ticket/4381
+      http://dev.plone.org/plone/ticket/4381
       [alecm]
 
     - Fixed bug trigerred when reindexing order in a folder with improperly
@@ -1040,12 +1040,12 @@ Plone 2.1 - Plaid - Released September 6, 2005
       [alecm]
 
     - Fixed #4351 by not relying on getTypeInfo() being available on the object.
-      https://trac.plone.org/plone/ticket/4351
+      http://dev.plone.org/plone/ticket/4351
       [optilude]
 
     - Fixed #3906 - header now shows correct mouse pointer cursor when table is
       sortable.
-      https://trac.plone.org/plone/ticket/3906
+      http://dev.plone.org/plone/ticket/3906
       [hannosch]
 
     - Added migration to add new view templates to folderish types (including
@@ -1058,8 +1058,8 @@ Plone 2.1 - Plaid - Released September 6, 2005
 
     - Fixed #2771 (#4350) using the new isURLInPortal method, which now also
       returns true on relative URLs.
-      https://trac.plone.org/plone/ticket/2771
-      https://trac.plone.org/plone/ticket/4350
+      http://dev.plone.org/plone/ticket/2771
+      http://dev.plone.org/plone/ticket/4350
       [alecm]
 
     - Added default_page_types and removed non_default_page_types.  This means
@@ -1081,7 +1081,7 @@ Plone 2.1 - Plaid - Released September 6, 2005
       [alecm]
 
     - Fixed #4345 by checking the flag.
-      https://trac.plone.org/plone/ticket/4345
+      http://dev.plone.org/plone/ticket/4345
       [alecm]
 
     - .personal folders will no longer be created.  Fixed unit tests which
@@ -1093,11 +1093,11 @@ Plone 2.1 - Plaid - Released September 6, 2005
       usability fix, since we don't actually check the length of the titles; the
       full fix for the issue will appear when we merge the improved status
       message handling.
-      https://trac.plone.org/plone/ticket/4344
+      http://dev.plone.org/plone/ticket/4344
       [optilude]
 
     - Fixed #4346 by using the suggested fix. Thanks Tim Hicks.
-      https://trac.plone.org/plone/ticket/4346
+      http://dev.plone.org/plone/ticket/4346
       [alecm]
 
     - Fixed plone_javascript_variables.dtml and plone_scripts/translate.py to
@@ -1109,7 +1109,7 @@ Plone 2.1 - Plaid - Released September 6, 2005
       [alecm]
 
     - Fixed #1490 by ensuring that sendto only works when the action is visible.
-      https://trac.plone.org/plone/ticket/1490
+      http://dev.plone.org/plone/ticket/1490
       [alecm]
 
     - Added an immediateLogout method to MembershipTool.py that resets the
@@ -1124,7 +1124,7 @@ Plone 2.1 - Plaid - Released September 6, 2005
     - Fixed #4333 prefs_user_manage now uses portal_membership.deleteMembers
       instead of acting directly on acl_users. On deletion local roles are now
       removed, but the member area is preserved.
-      https://trac.plone.org/plone/ticket/4333
+      http://dev.plone.org/plone/ticket/4333
       [alecm]
 
     - Added the last missing accesskey to search_form and put in a link below
@@ -1155,7 +1155,7 @@ Plone 2.1 - Plaid - Released September 6, 2005
 
     - Fixed #4335 added a method to URLTool to determine whther a URL is local
       to the portal. This will be moved into CMFCore ASAP, pending write access.
-      https://trac.plone.org/plone/ticket/4335
+      http://dev.plone.org/plone/ticket/4335
       [alecm]
 
     - Hooked up navtree wf config to the configlet, needs serious UI tweaking.
@@ -1175,11 +1175,11 @@ Plone 2.1 - Plaid - Released September 6, 2005
 
     - Making the livesearch result truncate title and id, as offered by jeffk
       in #4329. Thanks for the patch!
-      https://trac.plone.org/plone/ticket/4329
+      http://dev.plone.org/plone/ticket/4329
       [optilude]
 
     - Fixed #4324 need to ensure we are passing strings to utranslate.
-      https://trac.plone.org/plone/ticket/4324
+      http://dev.plone.org/plone/ticket/4324
       [alecm]
 
     - Added CMFUid tools. CMF 1.5 has a new core product CMFUid which is
@@ -1190,12 +1190,12 @@ Plone 2.1 - Plaid - Released September 6, 2005
     - Fixed HEAD requests for folders. The browserDefault code mustn't look up
       the template for HEAD requests. Instead it should invoke the HEAD() api
       method defined in webdav.Collection. This fixes an ATCT bug and #4290.
-      https://trac.plone.org/plone/ticket/4290
+      http://dev.plone.org/plone/ticket/4290
       [tiran]
 
     - Made check_id.py prevent method aliases like 'sharing' and 'edit' as
       object ids. This fixes #4331.
-      https://trac.plone.org/plone/ticket/4331
+      http://dev.plone.org/plone/ticket/4331
       [optilude]
 
     - Implemented accesskeys as per accessibility-info page definition.
@@ -1215,7 +1215,7 @@ Plone 2.1 - Plaid - Released September 6, 2005
       [optilude]
 
     - Fixed #4327. The live search now honours typeUseViewActionInListings.
-      https://trac.plone.org/plone/ticket/4327
+      http://dev.plone.org/plone/ticket/4327
       [optilude]
 
     - Fixed issue #2669. Also made the group prefs suck a bit less. These pages
@@ -1224,7 +1224,7 @@ Plone 2.1 - Plaid - Released September 6, 2005
       worse. It's no use to have a search box that doesn't search. So, now
       groups are shown using their title and descriptions for tooltips.
       folder_localrole_form also uses this info. This requires a GRUF update!!
-      https://trac.plone.org/plone/ticket/2669
+      http://dev.plone.org/plone/ticket/2669
       [ender]
 
     - Changed add to favorites icon in document actions to the appropriate icon.
@@ -1234,7 +1234,7 @@ Plone 2.1 - Plaid - Released September 6, 2005
 
     - Applied patch from #4205. Better check for existance of member folders.
       Thanks to Tiran.
-      https://trac.plone.org/plone/ticket/4205
+      http://dev.plone.org/plone/ticket/4205
       [ender]
 
     - Made the blacklisting control in the search control panel act as a
@@ -1250,12 +1250,12 @@ Plone 2.1 - Plaid - Released September 6, 2005
 
     - Fixed #4083. <div class="visualClear"><!-- --></div> to remove whitespace
       in IE.
-      https://trac.plone.org/plone/ticket/4083
+      http://dev.plone.org/plone/ticket/4083
       [ender]
 
     - Fixing #4300 by disabling the content menu when the object is in the
       factory. PLIP 24 form unload protection takes care of the other cases.
-      https://trac.plone.org/plone/ticket/4300
+      http://dev.plone.org/plone/ticket/4300
       [optilude]
 
     - Added link to ownership_form on the sharing page. Changed
@@ -1277,18 +1277,18 @@ Plone 2.1 - Plaid - Released September 6, 2005
       unnecessary, since we probably want them all to be consistent, and having
       to traverse to each image is an unnecessary performance hit for something
       that'll stay 16x16 almost always. :)
-      https://trac.plone.org/plone/ticket/3823
+      http://dev.plone.org/plone/ticket/3823
       [optilude]
 
     - Fixed #4302 using jenner's template with a few simplifications, and some
       changes to folder_contents to make reusability even easier.
-      https://trac.plone.org/plone/ticket/4302
+      http://dev.plone.org/plone/ticket/4302
       [alecm]
 
     - Finished #1805 without any catalog metadata even. Added a method to
       WorkflowTool that retrieves a state title given a state id and a
       portal_type. As a result it can be used for brains and objects alike.
-      https://trac.plone.org/plone/ticket/1805
+      http://dev.plone.org/plone/ticket/1805
       [alecm]
 
     - Making member overview preference page not perform a full member search
@@ -1297,7 +1297,7 @@ Plone 2.1 - Plaid - Released September 6, 2005
       have "Find all" the default behaviour when there are sufficiently few
       members. However, there has been no followup on how we can efficiently
       count the number of members, so this is still an open feature request.
-      https://trac.plone.org/plone/ticket/2530
+      http://dev.plone.org/plone/ticket/2530
       [optilude]
 
     - Adding display of currently selected default-page to "display" menu and
@@ -1306,7 +1306,7 @@ Plone 2.1 - Plaid - Released September 6, 2005
       [optilude]
 
     - All icons for content types are now displayed using CSS - closes #3138.
-      https://trac.plone.org/plone/ticket/3138
+      http://dev.plone.org/plone/ticket/3138
 
     - Removed all references to getStateClassName() as this was just a
       makeshift solution that was used before we got the normalizeString()
@@ -1321,23 +1321,23 @@ Plone 2.1 - Plaid - Released September 6, 2005
       [hannosch]
 
     - Fixed #3242 added And/Or search option to Subject field on search_form.
-      https://trac.plone.org/plone/ticket/3242
+      http://dev.plone.org/plone/ticket/3242
       [alecm]
 
     - Fixed #3211 by updating the permission on PloneTool.setMemberProperties,
       the other permissions are fixed in CMF 1.5.
-      https://trac.plone.org/plone/ticket/3211
+      http://dev.plone.org/plone/ticket/3211
       [alecm]
 
     - Fixed #4242 by updating test.
-      https://trac.plone.org/plone/ticket/4242
+      http://dev.plone.org/plone/ticket/4242
       [alecm]
 
     - Fixed inappropriate condition on folder_constraintypes_form.
       [alecm]
 
     - Made tableless skin use showEditableBorder, fixed #4291.
-      https://trac.plone.org/plone/ticket/4291
+      http://dev.plone.org/plone/ticket/4291
       [alecm]
 
     - Fixed failing unit tests due to cleanupFilename removal. atct's base.py
@@ -1355,7 +1355,7 @@ Plone 2.1 - Plaid - Released September 6, 2005
 
     - Remove accesskeys as they are interfering with screen reader shortcuts.
       This fixes #3535.
-      https://trac.plone.org/plone/ticket/3535
+      http://dev.plone.org/plone/ticket/3535
       [hannosch]
 
     - Migrated to some nicer workflow state titles.
@@ -1366,13 +1366,13 @@ Plone 2.1 - Plaid - Released September 6, 2005
       contents' and 'Use external editor' are available, the user has the a
       member property set, and the object supports WebDAV editing/locking, and
       isn't locked.
-      https://trac.plone.org/plone/ticket/2939
-      https://trac.plone.org/plone/ticket/3008
-      https://trac.plone.org/plone/ticket/4176
+      http://dev.plone.org/plone/ticket/2939
+      http://dev.plone.org/plone/ticket/3008
+      http://dev.plone.org/plone/ticket/4176
       [alecm]
 
     - Partial fix for #4272 some missing i18n markup.
-      https://trac.plone.org/plone/ticket/4272
+      http://dev.plone.org/plone/ticket/4272
       [hannosch]
 
     - Added 'Large Plone Folder' to parentMetaTypesNotToQuey navtree_property.
@@ -1381,12 +1381,12 @@ Plone 2.1 - Plaid - Released September 6, 2005
       [alecm]
 
     - Fixed #4251. ulocalized_time() fetches all DateTime errors and logs them.
-      https://trac.plone.org/plone/ticket/4251
+      http://dev.plone.org/plone/ticket/4251
       [tiran]
 
     - Took care of #4224 by disabling the ZMI ordering interface for the
       Plone Site object.
-      https://trac.plone.org/plone/ticket/4224
+      http://dev.plone.org/plone/ticket/4224
       [stefan]
 
     - Removed PropertyManagedBrowserDefault, and mane the portal root support
@@ -1394,7 +1394,7 @@ Plone 2.1 - Plaid - Released September 6, 2005
       [alecm]
 
     - Fixed #4216 - migration would add 'contents' action more than once.
-      https://trac.plone.org/plone/ticket/4216
+      http://dev.plone.org/plone/ticket/4216
       [stefan]
 
     - Changed category of 'view' and 'edit' actions on 'Plone Site' to
@@ -1449,11 +1449,11 @@ Plone 2.1 - Plaid - Released September 6, 2005
       [geoffd]
 
     - Fixed #4263 - method alias handling in portal_factory.
-      https://trac.plone.org/plone/ticket/4263
+      http://dev.plone.org/plone/ticket/4263
       [geoffd]
 
     - Fixed #4258 - Added support for parentMetaTypesNotToQuery to the navtree.
-      https://trac.plone.org/plone/ticket/4258
+      http://dev.plone.org/plone/ticket/4258
       [alecm]
 
     - Use the old fashioned (but badly named) metaTypesNotToList for the
@@ -1469,18 +1469,18 @@ Plone 2.1 - Plaid - Released September 6, 2005
       [hannosch]
 
     - Fixed #4247 - remove unused group_submit variable.
-      https://trac.plone.org/plone/ticket/4247
+      http://dev.plone.org/plone/ticket/4247
       [hannosch]
 
     - Made it possible to show action icons in personal-bar.
       [fschulze]
 
     - Fixed #4229 - Error in sharing tab, roles.append changes a list inplace.
-      https://trac.plone.org/plone/ticket/4229
+      http://dev.plone.org/plone/ticket/4229
       [hannosch]
 
     - Fixed #4241 - MembershipTool.py used _checkPermission without importing it
-      https://trac.plone.org/plone/ticket/4241
+      http://dev.plone.org/plone/ticket/4241
       [hannosch]
 
     - Added is_default_page index to catalog, and made navtree no longer show
@@ -1518,7 +1518,7 @@ Plone 2.1 - Plaid - Released September 6, 2005
 
     - Added a configlet for setting search options, to enable/disable LiveSearch
       and to set the types_not_searched property. This is requested in #4032.
-      https://trac.plone.org/plone/ticket/4032
+      http://dev.plone.org/plone/ticket/4032
       [jok2]
 
     - Moved some interfaces to CMFDynamicViewFTI
@@ -1554,7 +1554,7 @@ Plone 2.1 - Plaid - Released September 6, 2005
 
     - Simplified collapsibles, this involves new markup. This fixes #4035 -
       "Collapsible fieldsets take up too much space".
-      https://trac.plone.org/plone/ticket/4035
+      http://dev.plone.org/plone/ticket/4035
       [fschulze]
 
     - Fixed PloneFolder.manage_delObjects() so it returns to the ZMI.
@@ -1570,7 +1570,7 @@ Plone 2.1 - Plaid - Released September 6, 2005
     - Refactored the dropdown menu. It's using css classes for styling of
       visibility. This involves new markup for the menus.
       Fixes #2793 - ADD ITEM MENU cuts some entries.
-      https://trac.plone.org/plone/ticket/2793
+      http://dev.plone.org/plone/ticket/2793
       [fschulze]
 
     - Tiny change to the nav tree code in PloneTool.py so the nav tree won't
@@ -1579,7 +1579,7 @@ Plone 2.1 - Plaid - Released September 6, 2005
 
     - Some i18n markup corrections after loginageddon and one metadata file
       in the wrong place, fixed #4197.
-      https://trac.plone.org/plone/ticket/4197
+      http://dev.plone.org/plone/ticket/4197
       [hannosch]
 
     - Loginageddon!  Moved login, logout, and registration-related forms
@@ -1592,14 +1592,14 @@ Plone 2.1 - Plaid - Released September 6, 2005
       password, and (optionally) login name not found).  The login name
       not found test can be enabled/disabled via a new site_property,
       verify_login_name. Fixes 2408, 2458, 2250, and 3335.
-      https://trac.plone.org/plone/ticket/2250
-      https://trac.plone.org/plone/ticket/2408
-      https://trac.plone.org/plone/ticket/2458
-      https://trac.plone.org/plone/ticket/3335
+      http://dev.plone.org/plone/ticket/2250
+      http://dev.plone.org/plone/ticket/2408
+      http://dev.plone.org/plone/ticket/2458
+      http://dev.plone.org/plone/ticket/3335
       [geoffd]
 
     - Fixed #3018 - no duplicate id="portal-footer".
-      https://trac.plone.org/plone/ticket/3018
+      http://dev.plone.org/plone/ticket/3018
       [hannosch]
 
     - Added filtering of tests to ECMAScript Unit Tests.
@@ -1629,12 +1629,12 @@ Plone 2.1 - Plaid - Released September 6, 2005
 
     - Partially fixed #4077 and #3535 accesskeys are properly definied now, but
       still need to be changed to numeric values.
-      https://trac.plone.org/plone/ticket/3535
-      https://trac.plone.org/plone/ticket/4077
+      http://dev.plone.org/plone/ticket/3535
+      http://dev.plone.org/plone/ticket/4077
       [hannosch]
 
     - Fixed #2414 all literal msgid's converted to non-literal.
-      https://trac.plone.org/plone/ticket/2414
+      http://dev.plone.org/plone/ticket/2414
       [hannosch]
 
     - Merged plip83-kupu-integration r7083:7084 into 2.1 branch.
@@ -1644,55 +1644,55 @@ Plone 2.1 - Plaid - Released September 6, 2005
       is to strip any query string passed before redirecting. Now, if query
       string exists (such as when coming from discussion_reply_form.pt), don't
       strip it off.
-      https://trac.plone.org/plone/ticket/1382
+      http://dev.plone.org/plone/ticket/1382
       [briang]
 
     - Fixed #2756 - portlet_calendar localization is working now. had to
       introduce a new method on the calendar_tool to get the correct daynumbers.
-      https://trac.plone.org/plone/ticket/2756
+      http://dev.plone.org/plone/ticket/2756
       [hannosch]
 
     - Fixed #3365 calendar_slot.pt has been moved to
       plone_templates/calendar_macros.pt and cleaned up.
-      https://trac.plone.org/plone/ticket/3365
+      http://dev.plone.org/plone/ticket/3365
       [hannosch]
 
     - Fixed #4136 - you couldn't pick january or the first of a month with the
       js date picker, reflected changes in the tests.
-      https://trac.plone.org/plone/ticket/4136
+      http://dev.plone.org/plone/ticket/4136
       [hannosch]
 
     - Fixed #3256 - Plone Config -> Add/Remove Products: Added
       "product filesystem version" in the message displayed for products that
       need updating.
-      https://trac.plone.org/plone/ticket/3256
+      http://dev.plone.org/plone/ticket/3256
       [briang]
 
     - Fixed #4164 the getIcon and getTypeInfo calls were no longer needed.
-      https://trac.plone.org/plone/ticket/4164
+      http://dev.plone.org/plone/ticket/4164
       [alecm]
 
     - Fixed #4055 by returning an empty list in getAddableTypesInMenu if the
       View permission is not available.
-      https://trac.plone.org/plone/ticket/4055
+      http://dev.plone.org/plone/ticket/4055
       [alecm]
 
     - Fixed #4114 by adding new criteria to the news and events topics.
-      https://trac.plone.org/plone/ticket/4114
+      http://dev.plone.org/plone/ticket/4114
       [alecm]
 
     - Fixed #4149 - incorrect tal:define for locked items in the byline.
       Thanks to Raphael Ritz for the fix.
-      https://trac.plone.org/plone/ticket/4149
+      http://dev.plone.org/plone/ticket/4149
       [optilude]
 
     - Removed review_state='published' from the query for author page and
       navigationLocalRelated. Catalog deals with permissions already.
-      https://trac.plone.org/plone/ticket/2304
+      http://dev.plone.org/plone/ticket/2304
       [ender]
 
     - Fixed #3714. Use ACTUAL_URL to skip to content.
-      https://trac.plone.org/plone/ticket/3714
+      http://dev.plone.org/plone/ticket/3714
       [ender] [neaj]
 
     - Fixed #4137 by introducing a keyword argument 'show_inactive'to
@@ -1701,7 +1701,7 @@ Plone 2.1 - Plaid - Released September 6, 2005
       to Owner in migration, and made getFolderContents to pass the
       'show_inactive' parameter when the current user has that permission on the
       relevant folder.
-      https://trac.plone.org/plone/ticket/4137
+      http://dev.plone.org/plone/ticket/4137
       [alecm]
 
     - Introduced a Zope 2.8-style transaction module. Plone code should now use
@@ -1716,7 +1716,7 @@ Plone 2.1 - Plaid - Released September 6, 2005
 
     - Fixed #3410 by declaring enumConfliglets public. The method does its own
       security checks for each configlet action.
-      https://trac.plone.org/plone/ticket/3410
+      http://dev.plone.org/plone/ticket/3410
       [alecm]
 
     - Fixed index_html hack to return 404 for requests other than
@@ -1735,7 +1735,7 @@ Plone 2.1 - Plaid - Released September 6, 2005
 
     - Fixed #3688 and added a test. Also added a test to ensure that
       portal_factory respects PLIP 16 local role inheritance.
-      https://trac.plone.org/plone/ticket/3688
+      http://dev.plone.org/plone/ticket/3688
       [geoffd]
 
     - Fixing markup to make zchecker happy and changed table summaries to use
@@ -1745,25 +1745,25 @@ Plone 2.1 - Plaid - Released September 6, 2005
     - Fixing #4106 - arrow is in wrong direction in breadcrumbs when using RTL
       sites. When using mixed RTL and LTR content, the order is jumbled, though
       - not sure if this is common in those languages.
-      https://trac.plone.org/plone/ticket/4106
+      http://dev.plone.org/plone/ticket/4106
       [limi]
 
     - Fixed #4089 - fix some i18n markup.
-      https://trac.plone.org/plone/ticket/4089
+      http://dev.plone.org/plone/ticket/4089
       [hannosch]
 
     - Fixed #2659 - using patch by fschulze.
-      https://trac.plone.org/plone/ticket/2659
+      http://dev.plone.org/plone/ticket/2659
       [alecm]
 
     - Fixed #4049 - the template showing the discussion threads at the bottom of
       an item's view template now has a more sensible check to make sure it
       picks the correct view template.
-      https://trac.plone.org/plone/ticket/4049
+      http://dev.plone.org/plone/ticket/4049
       [optilude]
 
     - Fixed #3279 integrate new jscalendar 1.0.
-      https://trac.plone.org/plone/ticket/3279
+      http://dev.plone.org/plone/ticket/3279
       [hannosch]
 
     - Overrode listTypeInfo from CMFCore.TypesTool.  The original method was
@@ -1792,7 +1792,7 @@ Plone 2.1 - Plaid - Released September 6, 2005
       [alecm]
 
     - Fixed folder_contents listing table in RTL stylesheet (#4155).
-      https://trac.plone.org/plone/ticket/4155
+      http://dev.plone.org/plone/ticket/4155
       [andrewb]
 
    Alpha2 - Released May 25, 2005
@@ -1813,12 +1813,12 @@ Plone 2.1 - Plaid - Released September 6, 2005
       [alecm]
 
     - Fixed #4081 changed 'Plone Setup' to 'Site Setup'.
-      https://trac.plone.org/plone/ticket/4081
+      http://dev.plone.org/plone/ticket/4081
       [limi] [alecm]
 
     - Fixed #2850 added on-error handler to portlet_fetcher, currently provides
       no traceback as tracebacks are not accessible from untrusted code.
-      https://trac.plone.org/plone/ticket/2850
+      http://dev.plone.org/plone/ticket/2850
       [alecm]
 
     - Fixed #2586 changed MembershipTool.getCandidateLocalRoles() to use
@@ -1828,7 +1828,7 @@ Plone 2.1 - Plaid - Released September 6, 2005
       assign roles that exist only locally and not at the plone root. A side-
       effect is that roles defined in the zope root and other folders beneath
       the portal root will be available as well, just as they are in the ZMI.
-      https://trac.plone.org/plone/ticket/2586
+      http://dev.plone.org/plone/ticket/2586
       [alecm]
 
     - Merged PLIP 98 - Scripted Translation Service Interface. This adds a
@@ -1839,13 +1839,13 @@ Plone 2.1 - Plaid - Released September 6, 2005
 
     - Fixed #3267 removed invalid transition validity test using the fix by
       blueszhao in the issue.
-      https://trac.plone.org/plone/ticket/3267
+      http://dev.plone.org/plone/ticket/3267
       [alecm]
 
     - Applied #4052 titleToNormalizedId (normalizeString) improvement. Object
       id from title generation should now work with most accented characters.
       It is possible to define custom normalizations in UnicodeNormalizer.py.
-      https://trac.plone.org/plone/ticket/4052
+      http://dev.plone.org/plone/ticket/4052
       [naro]
 
     - Added styles that make the editing widgets look more like their view
@@ -1893,7 +1893,7 @@ Plone 2.1 - Plaid - Released September 6, 2005
 
     - Fixed #4062 - made history_form show true causes for an empty page, rather
       than always assuming that the error is due to missing Historical interface
-      https://trac.plone.org/plone/ticket/4062
+      http://dev.plone.org/plone/ticket/4062
       [alecm]
 
     - Added automatically generated classes for content types. You can now
@@ -1903,7 +1903,7 @@ Plone 2.1 - Plaid - Released September 6, 2005
 
     - Replaced registered_notify_template and mail_password_template
       DTMLs with page templates. See #3483.
-      https://trac.plone.org/plone/ticket/3483
+      http://dev.plone.org/plone/ticket/3483
       [dpunktnpunkt]
 
     - More spring cleaning: Removed the implicit removal of underlining links -
@@ -1925,7 +1925,7 @@ Plone 2.1 - Plaid - Released September 6, 2005
     - The tag rendering the description attribute is left out if there's no
       description, it also uses a paragraph tag instead of a div now.
       Resolves #3841.
-      https://trac.plone.org/plone/ticket/3841
+      http://dev.plone.org/plone/ticket/3841
       [limi]
 
     - Added icons for feed:// and webcal:// links.
@@ -1935,12 +1935,12 @@ Plone 2.1 - Plaid - Released September 6, 2005
       This is not currently used for the content menu, but it does allow
       developers to access this information for tighter control over transitions
       for custom workflows. Added new testWorkflowToool.py with one lonely test.
-      https://trac.plone.org/plone/ticket/2844
+      http://dev.plone.org/plone/ticket/2844
       [alecm]
 
     - Fixed #2867 put the list reversal in content_status_history in the proper
       place.
-      https://trac.plone.org/plone/ticket/2867
+      http://dev.plone.org/plone/ticket/2867
       [alecm]
 
     - Fixed #2416 by updating document_byline to use the portal script. Changed
@@ -1948,7 +1948,7 @@ Plone 2.1 - Plaid - Released September 6, 2005
       but fall back on 'expires'. Also, it now uses safe_callable to determine
       whether we have an accessor or catalog metadata, rather than strange
       looking exception handling.
-      https://trac.plone.org/plone/ticket/2416
+      http://dev.plone.org/plone/ticket/2416
       [alecm]
 
     - Changed the bogus 'ExipresDate' metadata from CMFCore to the DC
@@ -1972,7 +1972,7 @@ Plone 2.1 - Plaid - Released September 6, 2005
       from the Silva bug report don't appear to cause problems.  Also, apply
       quote_logic if enabled to Title and Description text searches, not just
       SearchableText by default.
-      https://trac.plone.org/plone/ticket/3067
+      http://dev.plone.org/plone/ticket/3067
       [alecm]
 
     - Made the livesearch_reply query a little less strange.  It used to turn
@@ -1990,7 +1990,7 @@ Plone 2.1 - Plaid - Released September 6, 2005
       review_state seraches to users that are not granted 'Review portal
       contents' on the portal root.  The catalog enforces 'View' security
       just fine. Resolves #2175.
-      https://trac.plone.org/plone/ticket/2175
+      http://dev.plone.org/plone/ticket/2175
       [alecm]
 
     - PloneTool._makeTransactionNote() now uses the site encoding not UTF-8.
@@ -2010,7 +2010,7 @@ Plone 2.1 - Plaid - Released September 6, 2005
       portal_discussion.isDiscussionAllowedFor in validate_talkback
       because, funnily enough, DiscussionNotAllowed isn't raised on
       createReply in DiscussionItem when it's turned off.
-      https://trac.plone.org/plone/ticket/850
+      http://dev.plone.org/plone/ticket/850
       [dpunktnpunkt]
 
     - Added a getGroupInfo() public method to the portal_groups tool, like
@@ -2021,8 +2021,8 @@ Plone 2.1 - Plaid - Released September 6, 2005
       typesUseViewActionInListings property to determine the appropriate url.
       Also, added some extra unit tests for the above PloneTool methods.
       This and the previous entry should resolve issues #928 and #2373.
-      https://trac.plone.org/plone/ticket/928
-      https://trac.plone.org/plone/ticket/2373
+      http://dev.plone.org/plone/ticket/928
+      http://dev.plone.org/plone/ticket/2373
       [alecm]
 
     - Added a new typesUseViewActionInListings property in site_properties
@@ -2050,12 +2050,12 @@ Plone 2.1 - Plaid - Released September 6, 2005
 
     - Added [duncanb]'s update for bug #3294. Tables no longer need an id
       attribute to be sorted.
-      https://trac.plone.org/plone/ticket/3294
+      http://dev.plone.org/plone/ticket/3294
       [elvix]
 
     - Added fix for bug #4027. feed:// and webcal:// links now get special
       css-classes so that they may be styled appropriately.
-      https://trac.plone.org/plone/ticket/4027
+      http://dev.plone.org/plone/ticket/4027
       [elvix]
 
     - Changed the 2.1 migrations so that they make sure the MemberDataTool is
@@ -2098,7 +2098,7 @@ Plone 2.1 - Plaid - Released September 6, 2005
 
     - Fixed #2836 - Review portal contents or Modify portal contents is
       sufficient to show the change_state action.
-      https://trac.plone.org/plone/ticket/2836
+      http://dev.plone.org/plone/ticket/2836
       [alecm]
 
     - Changed member_search_form.pt so that it submits last_login_time as
@@ -2127,15 +2127,15 @@ Plone 2.1 - Plaid - Released September 6, 2005
       the portal root and the tab highlighting will work correctly. This is done
       by comparing the current object path to the actions url (i.e. the id of
       the action no longer has to be related to the resulting url).
-      https://trac.plone.org/plone/ticket/3095
+      http://dev.plone.org/plone/ticket/3095
       [alecm]
 
     - Fixed #3681 - No longer allow to add content with ids of skin scripts.
-      https://trac.plone.org/plone/ticket/3681
+      http://dev.plone.org/plone/ticket/3681
       [whit537]
 
     - Fixed #3999 - check_id now gives better error messages.
-      https://trac.plone.org/plone/ticket/3999
+      http://dev.plone.org/plone/ticket/3999
       [whit537]
 
     - Fixed #1987 - 'batch' mode now enabled whenever the List folder contents
@@ -2143,16 +2143,16 @@ Plone 2.1 - Plaid - Released September 6, 2005
       available (Delete, Copy, Add, Modify). These checks apply to the current
       object if it is folderish and not set as the Default Page for its parent;
       otherwise, the checks are made on the parent.
-      https://trac.plone.org/plone/ticket/1987
+      http://dev.plone.org/plone/ticket/1987
       [alecm]
 
     - Fixed #2912 - "Format" renamed to "MIME type" in metadata form to avoid
       confusion with the text format selector.
-      https://trac.plone.org/plone/ticket/2912
+      http://dev.plone.org/plone/ticket/2912
       [limi]
 
     - Fixed #3938 - duplicate class definitions for .even and .odd.
-      https://trac.plone.org/plone/ticket/3938
+      http://dev.plone.org/plone/ticket/3938
       [limi]
 
     - Manually merged Duncan's plip24-form-unload-branch.
@@ -2184,12 +2184,12 @@ Plone 2.1 - Plaid - Released September 6, 2005
 
     - Fixed #3931 - add 'more ...' link to events portlet, also added new events
       tab/folder and topic to match the news folder/tab and topic.
-      https://trac.plone.org/plone/ticket/3931
+      http://dev.plone.org/plone/ticket/3931
       [lucas]
 
     - Fixed #3752 - return rss search results in effective date order
       (reversed), unless another order is explicitly given.
-      https://trac.plone.org/plone/ticket/3752
+      http://dev.plone.org/plone/ticket/3752
       [alecm]
 
     - Changed portlet_news.pt and news_listing.pt to do the right
@@ -2208,11 +2208,11 @@ Plone 2.1 - Plaid - Released September 6, 2005
 
     - Fixed #3901 - applied the PloneTool.py patch by F Bennett (bierce), which
       shows full listing of inherited roles.
-      https://trac.plone.org/plone/ticket/3901
+      http://dev.plone.org/plone/ticket/3901
       [alecm]
 
     - Fixed #3819/ - applied the utils.py patch provided by gkirk.
-      https://trac.plone.org/plone/ticket/3819
+      http://dev.plone.org/plone/ticket/3819
       [rafrombrc]
 
     - Fixed prefs_user_details to only display user roles and not
@@ -2222,12 +2222,12 @@ Plone 2.1 - Plaid - Released September 6, 2005
 
     - Fixed #3848/ - changed prefs_error_log_update.py to match the button
       submit values on prefs_error_log_form.
-      https://trac.plone.org/plone/ticket/3848
+      http://dev.plone.org/plone/ticket/3848
       [rafrombrc]
 
     - Minimally reworked user/group control panel pages to plone2.X
       style fixing #2204 and possibly others.
-      https://trac.plone.org/plone/ticket/2204
+      http://dev.plone.org/plone/ticket/2204
       [bmh]
 
     - Updated all references to CSSRegistry to the new, renamed,
@@ -2238,28 +2238,28 @@ Plone 2.1 - Plaid - Released September 6, 2005
 
     - Fixed #3835 - Changed .metadata file of prefs_user_manage.cpy script to
       redirect instead of traverse on success.
-      https://trac.plone.org/plone/ticket/3835
+      http://dev.plone.org/plone/ticket/3835
       [gkirk]
 
     - Fixed #3903 - Removed hardcoded references to logo.jpg in favor of the
       logoName variable defined in base_properties.
-      https://trac.plone.org/plone/ticket/3903
+      http://dev.plone.org/plone/ticket/3903
       [bmh]
 
     - Fixed #3544 - Use password_confirm as the name of the password
       confirmation field so it doesn't show up in error logs.
-      https://trac.plone.org/plone/ticket/3544
+      http://dev.plone.org/plone/ticket/3544
       [bmh]
 
     - Fixed #3811 - Start and end times of same-day events now respect AM/PM
       settings (event_view).
-      https://trac.plone.org/plone/ticket/3811
+      http://dev.plone.org/plone/ticket/3811
       [naro]
 
     - Made folder actions (cut, copy, rename, delete, publish) give nice
       message instead of error when the selected item is no longer available.
       Fixes issue #3911.
-      https://trac.plone.org/plone/ticket/3911
+      http://dev.plone.org/plone/ticket/3911
       [alecm]
 
     - Made sortable_title use the site-encoding to store the final value (not
@@ -2268,12 +2268,12 @@ Plone 2.1 - Plaid - Released September 6, 2005
 
     - Fixed #3866 - Improved performance of sortObjects helper script by a
       factor of 3.
-      https://trac.plone.org/plone/ticket/3866
+      http://dev.plone.org/plone/ticket/3866
       [axa]
 
     - Fixed #2791 - Timestamps in recently_published and folder_contents now use
       the configured long format.
-      https://trac.plone.org/plone/ticket/2791
+      http://dev.plone.org/plone/ticket/2791
       [naro]
 
     - Add a hook to call a method or script 'getCustomNavQuery' to createNavTree
@@ -2340,7 +2340,7 @@ Plone 2.1 - Plaid - Released September 6, 2005
       [bmh]
 
     - Fixed #3384 by catching CopyError so users don't get dumped into the ZMI.
-      https://trac.plone.org/plone/ticket/3384
+      http://dev.plone.org/plone/ticket/3384
       [bmh]
 
     - Made sortable_title do useful numerical sorting, and truncate values
@@ -2365,7 +2365,7 @@ Plone 2.1 - Plaid - Released September 6, 2005
       can probably be implemented, but will need to use some OFS internals).
       Added tests for folder_delete, folder_publish, and folder_rename. These
       changes fix issue #216.
-      https://trac.plone.org/plone/ticket/216
+      http://dev.plone.org/plone/ticket/216
       [alecm]
 
     - Added Topics to the default NavTree listing.
@@ -2385,7 +2385,7 @@ Plone 2.1 - Plaid - Released September 6, 2005
     - Fixed #2959 with a minor change to check_id to account for portal_factory
       weirdness. Also required an update to ATCT to do proper id checking on
       auto-rename.
-      https://trac.plone.org/plone/ticket/2959
+      http://dev.plone.org/plone/ticket/2959
       [alecm]
 
     - Re-did the fix for disappearing text in Internet Explorer, added special
@@ -2406,7 +2406,7 @@ Plone 2.1 - Plaid - Released September 6, 2005
 
     - Made 'title' attribute on add-new-item drop down items display item
       description, as per bug #2938.
-      https://trac.plone.org/plone/ticket/2938
+      http://dev.plone.org/plone/ticket/2938
       [optilude]
 
     - Introduced the ExtensibleIndexableObjectWrapper. It's a wrapper based on
@@ -2419,23 +2419,23 @@ Plone 2.1 - Plaid - Released September 6, 2005
       [stefan]
 
     - Fixed bug #3647 to allow removing all roles from a group.
-      https://trac.plone.org/plone/ticket/3647
+      http://dev.plone.org/plone/ticket/3647
       [optilude]
 
     - Fixed bug #3386. Modified folder_rename_form.pt to reflect user
       authorisations on each item.
-      https://trac.plone.org/plone/ticket/3386
+      http://dev.plone.org/plone/ticket/3386
       [davconvent]
 
     - Implemented fix for #3522 to add default groups "Reviewers" and
       "Administrators" to Plone, with the appropriate roles.
-      https://trac.plone.org/plone/ticket/3522
+      http://dev.plone.org/plone/ticket/3522
       [dpunktnpunkt] [optilude]
 
     - Made PloneFolder.moveObjectsByDelta not throw an error when passed a non
       contentish object id (apparently this happens during some migrations).
       Fixes #3959. Requires a small fix in AT done on 1.3 branch.
-      https://trac.plone.org/plone/ticket/3959
+      http://dev.plone.org/plone/ticket/3959
       [alecm]
 
     - Fixed computeRoleMap.py so that it stores the role information by
@@ -2443,12 +2443,12 @@ Plone 2.1 - Plaid - Released September 6, 2005
       it would be wrong to combine them.  This is related to issue #3711 which
       is itself a GRUF issue fixed in GRUF svn. Also implemented a faster sort
       algorithm in the above script.
-      https://trac.plone.org/plone/ticket/3711
+      http://dev.plone.org/plone/ticket/3711
       [alecm]
 
     - Made prev/next links in calendar portlet respect current query parameters.
       Fixes bug #3949.
-      https://trac.plone.org/plone/ticket/3949
+      http://dev.plone.org/plone/ticket/3949
       [alecm]
 
     - Added id="breadcrumbs-you-are-here" to the <span> tag where "you are
@@ -2460,7 +2460,7 @@ Plone 2.1 - Plaid - Released September 6, 2005
       [stefan]
 
     - Made all portal_status_messages with dynamic parts translatable.
-      https://trac.plone.org/plone/ticket/2532
+      http://dev.plone.org/plone/ticket/2532
       [dpunktnpunkt]
 
     - Included code from the CatalogOptimizer product, i.e. PLIP 89. This
@@ -2541,7 +2541,7 @@ Plone 2.1 - Plaid - Released September 6, 2005
     - Do not display "Forgot your password?" when user doesn't have
       "Mail forgotten password" permission.  Added a security check to
       RegistrationTool.mailPassword().
-      https://trac.plone.org/plone/ticket/3338
+      http://dev.plone.org/plone/ticket/3338
       [dpunktnpunkt]
 
     - Merged PLIP 75 - blacklisting of types. The types_not_searched property in
@@ -2554,7 +2554,7 @@ Plone 2.1 - Plaid - Released September 6, 2005
       of an object.  It's protected by the view permission on the object, and
       used in ownership_form in place of Creator, which may no be the same as
       owner for AT types.  Also modified ownership_form to use form controller.
-      https://trac.plone.org/plone/ticket/3662
+      http://dev.plone.org/plone/ticket/3662
       [alecm]
 
     - Set Title and description on member folders and personal folder.  Was
@@ -2565,7 +2565,7 @@ Plone 2.1 - Plaid - Released September 6, 2005
       [stefan]
 
     - Fixed #3779 - Removed worklist query from listFilteredActionsFor.
-      https://trac.plone.org/plone/ticket/3779
+      http://dev.plone.org/plone/ticket/3779
       [alecm]
 
     - Removed useless check for duplicate actions from listFilteredActionsFor.
@@ -2589,18 +2589,18 @@ Plone 2.1 - Plaid - Released September 6, 2005
       [limi]
 
     - Fixed #3924 - eradicated all string exceptions.
-      https://trac.plone.org/plone/ticket/3924
+      http://dev.plone.org/plone/ticket/3924
       [alecm]
 
     - Fixed #3910 isValidEmail now uses the _checkEmail function from CMFDefault
       to avoid ValueErrors.
-      https://trac.plone.org/plone/ticket/3910
+      http://dev.plone.org/plone/ticket/3910
       [alecm]
 
     - Added empty fill-slot="sub" to discussion_reply_form to get rid of
       the second, broken 'add comment' button showing up on that form
       for top level comments, fixed #3845.
-      https://trac.plone.org/plone/ticket/3845
+      http://dev.plone.org/plone/ticket/3845
       [rafrombrc]
 
     - Moved retrieval of Zope system information out of
@@ -2875,7 +2875,7 @@ Plone 2.1 - Plaid - Released September 6, 2005
 
     - Fixed #3641 - validate_start_end_date chopped off the AM/PM value when
       saving Events.
-      https://trac.plone.org/plone/ticket/3641
+      http://dev.plone.org/plone/ticket/3641
       [stefan]
 
     - Removed the dependency on Formulator as well as FormTool and NavigationTool.
@@ -2928,7 +2928,7 @@ Plone 2.1 - Plaid - Released September 6, 2005
 
     - toLocalizedTime() replaced toPortalTime(). However this is NOT the way it
       should be and will be revised.
-      https://trac.plone.org/plone/ticket/2461
+      http://dev.plone.org/plone/ticket/2461
       [db] [batlogg]
 
     - getObjSize() now accepts second (optional) size argument to
@@ -2944,24 +2944,24 @@ Plone 2.0.5 - Backed Up Willie - Released December 1, 2004
 
     - Fixed #3629 - Migration failed if 'Topic' portal type was missing or
       otherwise broken.
-      https://trac.plone.org/plone/ticket/3629
+      http://dev.plone.org/plone/ticket/3629
       [stefan]
 
    RC2 - Released November 26, 2004
 
     - Fixed #3612 - listFilteredActionsFor of ActionsTool now ignores missing or
       broken action providers.
-      https://trac.plone.org/plone/ticket/3612
+      http://dev.plone.org/plone/ticket/3612
       [stefan]
 
     - Fixed #3611 - Migration failed if the 'Folder' portal type did not have
       both 'edit' and 'local_roles' actions.
-      https://trac.plone.org/plone/ticket/3611
+      http://dev.plone.org/plone/ticket/3611
       [stefan]
 
     - Restored overridablity of left_slots/right_slots in folders by reverting
       the patch applied to fix #3472.
-      https://trac.plone.org/plone/ticket/3472
+      http://dev.plone.org/plone/ticket/3472
       [stefan]
 
    RC1 - Released November 22, 2004
@@ -2972,22 +2972,22 @@ Plone 2.0.5 - Backed Up Willie - Released December 1, 2004
 
     - Fixed #3601 - Cancel in password_form redirected to the wrong page.
       Thanks to Varun for the patch.
-      https://trac.plone.org/plone/ticket/3601
+      http://dev.plone.org/plone/ticket/3601
       [stefan]
 
     - Fixed #3599 - Cancel in personalize_form redirected to the wrong page.
       Thanks to Varun for the patch.
-      https://trac.plone.org/plone/ticket/3599
+      http://dev.plone.org/plone/ticket/3599
       [stefan]
 
     - Fixed #3577 - Interchanged 'Edit' and 'Sharing' tab on folder. Thanks to
       Vamsi for the patch.
-      https://trac.plone.org/plone/ticket/3577
+      http://dev.plone.org/plone/ticket/3577
       [jladage]
 
     - Made prefs_error_log_form a tad safer in the face of weird upgrade issues.
       Also see #3435.
-      https://trac.plone.org/plone/ticket/3435
+      http://dev.plone.org/plone/ticket/3435
       [stefan]
 
     - Changed localLongTimeFormat to '%Y-%m-%d %H:%M'. Note: there is no migration,
@@ -2997,13 +2997,13 @@ Plone 2.0.5 - Backed Up Willie - Released December 1, 2004
     - Fixed #3557 - Lines properties may still be lists if an old ZODB is
       upraded to newer Zopes. Catching such a case in migrations. Thanks to
       Xenru for the patch.
-      https://trac.plone.org/plone/ticket/3557
+      http://dev.plone.org/plone/ticket/3557
       [stefan]
 
     - Fixed #2960 - The "Send this page to somebody" feature now uses the URL of
       the object including the view template. This avoids nasty login
       interactions when sending links to protected content.
-      https://trac.plone.org/plone/ticket/2960
+      http://dev.plone.org/plone/ticket/2960
       [stefan] [sidnei]
 
     - Made the column style sheet only apply to Screen, not Print/Presentation/
@@ -3058,12 +3058,12 @@ Plone 2.0.5 - Backed Up Willie - Released December 1, 2004
 
     - Fixed #3542 - queryCatalog script ignored 'sort_limit' argument. Thanks to
       kaib for the patch!
-      https://trac.plone.org/plone/ticket/3542
+      http://dev.plone.org/plone/ticket/3542
       [stefan]
 
     - Fixed #3541 - folder rename gave wrong error message. Thanks to Varun for
       the patch!
-      https://trac.plone.org/plone/ticket/3541
+      http://dev.plone.org/plone/ticket/3541
       [stefan]
 
     - Greatly improved the handling of DateTimeErrors in event_edit_form
@@ -3073,55 +3073,55 @@ Plone 2.0.5 - Backed Up Willie - Released December 1, 2004
     - Fixed #2982 - the CMF does not allow to register with a user name that
       equals the name of a content object on the acquisition path. Provide a
       sane error message until this is resolved in CMF.
-      https://trac.plone.org/plone/ticket/2982
+      http://dev.plone.org/plone/ticket/2982
       [rohrer]
 
     - Fixed #3091 - new SetupWidgets can now work without cut/pasting the
       existing code, and use inheritance instead. Thanks to jccooper!
-      https://trac.plone.org/plone/ticket/3091
+      http://dev.plone.org/plone/ticket/3091
       [limi]
 
     - Implemented AM/PM support for the datetime-picker widget. Now, if
       your site_properties/localLongTimeFormat property contains the '%p'
       format specifier, the widget will display 12 hours and an additional
       AM/PM dropdown. Resolves #3264. Thanks to alecm for the patch.
-      https://trac.plone.org/plone/ticket/3264
+      http://dev.plone.org/plone/ticket/3264
       [stefan]
 
     - Fixed #3417 - because of acquisition, a user's name can not be the same as
       the portal name - this is now caught in the user registration validation
       instead of giving an error message. Thanks to kuru for the patch!
-      https://trac.plone.org/plone/ticket/3417
+      http://dev.plone.org/plone/ticket/3417
       [limi]
 
     - Fixed #2855 - Folders have "Properties" instead of "Edit" as title for
       the edit form.
-      https://trac.plone.org/plone/ticket/2855
+      http://dev.plone.org/plone/ticket/2855
       [jladage]
 
     - Fixed #2512 - folder_localrole_form role assignment pulldowns should be
       multiple select. Thanks to teix.
-      https://trac.plone.org/plone/ticket/2512
+      http://dev.plone.org/plone/ticket/2512
       [deo]
 
     - Fixed #2386 - Misc political incorrectness for msgid
       'help_search_keywords'.
-      https://trac.plone.org/plone/ticket/2386
+      http://dev.plone.org/plone/ticket/2386
       [deo]
 
     - Fixed #3142 - Swedish translation in search page translates "by" into
       "efter".
-      https://trac.plone.org/plone/ticket/3142
+      http://dev.plone.org/plone/ticket/3142
       [deo]
 
     - Fixed issues #3495, #3508 and #3509 - french translation errors.
-      https://trac.plone.org/plone/ticket/3495
-      https://trac.plone.org/plone/ticket/3508
-      https://trac.plone.org/plone/ticket/3509
+      http://dev.plone.org/plone/ticket/3495
+      http://dev.plone.org/plone/ticket/3508
+      http://dev.plone.org/plone/ticket/3509
       [deo]
 
     - Fixed #2171 - accessibility headers for the document actions were missing.
-      https://trac.plone.org/plone/ticket/2171
+      http://dev.plone.org/plone/ticket/2171
       [limi]
 
     - Removed the Add to Favorites icon from the breadcrumbs, since it is
@@ -3138,29 +3138,29 @@ Plone 2.0.5 - Backed Up Willie - Released December 1, 2004
       causing the site actions to be positioned wrongly. This is an update to
       main_template for the people using tableless, please update your sites
       accordingly. Full explanation in the URL above.
-      https://trac.plone.org/plone/ticket/3385
+      http://dev.plone.org/plone/ticket/3385
       [limi]
 
     - Fixed #3429 - the section class was missing from the tableless skin.
-      https://trac.plone.org/plone/ticket/3429
+      http://dev.plone.org/plone/ticket/3429
       [limi]
 
     - Fixed #3086 - there is now an unRegisterPloneFunction in the
       plone_javascripts that allows you to unregister an onload event. Thanks to
       acamargo for the patch!
-      https://trac.plone.org/plone/ticket/3086
+      http://dev.plone.org/plone/ticket/3086
       [limi]
 
     - Fixed #3518 - Same issue as before, but for Images this time. Thanks to
       Varun for the patch.
-      https://trac.plone.org/plone/ticket/3518
+      http://dev.plone.org/plone/ticket/3518
       [stefan]
 
     - Fixed #3416 - Uploading a File with a bad name, without specifying an id
       in the form, caused validators to complain about 'id' instead of 'file'.
       This was especially bad as the current file_edit form does not show the
       'id' field at all :-P
-      https://trac.plone.org/plone/ticket/3416
+      http://dev.plone.org/plone/ticket/3416
       [stefan]
 
     - Fixed a usability bug where clicking the "Add default document"
@@ -3170,7 +3170,7 @@ Plone 2.0.5 - Backed Up Willie - Released December 1, 2004
 
     - Fixed #3500 - Modified .metadata files to make FormController do something
       appropriate when someone submits a for using the return key in IE.
-      https://trac.plone.org/plone/ticket/3500
+      http://dev.plone.org/plone/ticket/3500
       [geoffd]
 
     - Fixed #3406 - Did a big makeover of FactoryTool.py that fixes a lot of
@@ -3183,61 +3183,61 @@ Plone 2.0.5 - Backed Up Willie - Released December 1, 2004
       now checks for and calls if present an object method called
       'manage_afterPortalFactoryCreate' so any extra post-instantiation
       initialization can take place.
-      https://trac.plone.org/plone/ticket/3406
+      http://dev.plone.org/plone/ticket/3406
       [geoffd]
 
     - Fixed #3458 - Images in folder_contents and navtree have wrong paths in
       VirtualHosted sites. It worked anyway because of acquisition, but is
       correct now. Thanks to mjm for the patch.
-      https://trac.plone.org/plone/ticket/3458
+      http://dev.plone.org/plone/ticket/3458
       [limi]
 
     - Fixed #3472 - you can now declare portlets on a template. Thanks to
       acamargo for the patch.
-      https://trac.plone.org/plone/ticket/3472
+      http://dev.plone.org/plone/ticket/3472
       [limi]
 
     - Fixed #3030 - content_status_modify.py now assembles the transaction note
       before performing the transaction. Thanks to raphael (Ritz?).
-      https://trac.plone.org/plone/ticket/3030
+      http://dev.plone.org/plone/ticket/3030
       [stefan]
 
     - Fixed #3457 - review portlet was not showing ID for items without Title.
       Thanks to Sjors for the patch.
-      https://trac.plone.org/plone/ticket/3457
+      http://dev.plone.org/plone/ticket/3457
       [limi]
 
     - Fixed #2857 - changed show_id.py to accomodate postback of a submitted id
       in the case where validation fails on the first edit of a newly created
       content object. Thanks to zenwryly.
-      https://trac.plone.org/plone/ticket/2857
+      http://dev.plone.org/plone/ticket/2857
       [stefan]
 
     - Fixed #3457 - review portlet was not showing ID for items without Title.
       Thanks to Sjors for the patch.
-      https://trac.plone.org/plone/ticket/3457
+      http://dev.plone.org/plone/ticket/3457
       [limi]
 
     - Fixed #3494. Description was used with 'structure' in some templates,
       notably news.pt and folder_listing. Note that Dublin Core defines this
       element as plain text. If your site relies on the old behavior refer to
       the patch in the issue. Patch by mathie, thanks.
-      https://trac.plone.org/plone/ticket/3494
+      http://dev.plone.org/plone/ticket/3494
       [stefan]
 
     - Fixed #2931. News items displayed "Read More" link even if there was
       nothing more to read. Thanks to mathie for the patch.
-      https://trac.plone.org/plone/ticket/2931
+      http://dev.plone.org/plone/ticket/2931
       [stefan]
 
     - Fixed #3457 - review portlet was not showing ID for items without Title.
       Thanks to Sjors for the patch.
-      https://trac.plone.org/plone/ticket/3457
+      http://dev.plone.org/plone/ticket/3457
       [limi]
 
     - Fixed #3038. Search terms "and", "or", and "not" are no longer highlighted
       in documents.
-      https://trac.plone.org/plone/ticket/3038
+      http://dev.plone.org/plone/ticket/3038
       [rohrer]
 
     - Made RegistrationTool reuse the EMAIL_RE regex from PloneTool instead of
@@ -3245,25 +3245,25 @@ Plone 2.0.5 - Backed Up Willie - Released December 1, 2004
       [stefan]
 
     - Fixed #3447. Email address validation failed for upper-case characters.
-      https://trac.plone.org/plone/ticket/3447
+      http://dev.plone.org/plone/ticket/3447
       [rohrer]
 
     - Added border-collapse to the columns, so pixel/bitmap layouts that
       depend on the columns having 0 margin will work automatically. This
       is cleaner than the cellspacing="0" cellpadding="0" HTML approach
       that people seem to use. Fixes #3511.
-      https://trac.plone.org/plone/ticket/3511
+      http://dev.plone.org/plone/ticket/3511
       [limi]
 
     - Fixed HTML escape codes in password for special characters in
       registered_notify_template (#3499).
-      https://trac.plone.org/plone/ticket/3499
+      http://dev.plone.org/plone/ticket/3499
       [jladage]
 
     - Polished up the datetime-picker widget.  Now provides default values
       for month ('01') and day ('01').  Also new is the option to unset a
       date by deselecting the year ('----'). Fixes #2291.
-      https://trac.plone.org/plone/ticket/2291
+      http://dev.plone.org/plone/ticket/2291
       [stefan]
 
     - Made it so that headlines can't be obscured by the document action
@@ -3301,21 +3301,21 @@ Plone 2.0.4 - Warp - Released August 16, 2004
 
     - Fixed #3329. Results of breadcrumbs.py are no longer translated in
       global_pathbar.pt.
-      https://trac.plone.org/plone/ticket/3329
+      http://dev.plone.org/plone/ticket/3329
       [stefan]
 
     - Fixed #3332: hide the portal_siteactions from the print stylesheet.
-      https://trac.plone.org/plone/ticket/3332
+      http://dev.plone.org/plone/ticket/3332
       [bmh]
 
     - Fixed #3334. Added a break statement to the javascript for checking link
       protocols.
-      https://trac.plone.org/plone/ticket/3334
+      http://dev.plone.org/plone/ticket/3334
       [bmh]
 
     - Fixed #3325 and related. Plone calendar got confused when "datetime-format
       international" was set in zope.conf.
-      https://trac.plone.org/plone/ticket/3325
+      http://dev.plone.org/plone/ticket/3325
       [stefan]
 
     - login_form broke with Zope 2.7.2 because of stricter XHMTL parsing.
@@ -3335,8 +3335,8 @@ Plone 2.0.4 - Warp - Released August 16, 2004
     - Fixed portal_factory passthrough problem reported in #3243. Also
       portal_factory now logs exceptions during object creation (some were being
       swallowed higher up) (fix for #3148).
-      https://trac.plone.org/plone/ticket/3148
-      https://trac.plone.org/plone/ticket/3243
+      http://dev.plone.org/plone/ticket/3148
+      http://dev.plone.org/plone/ticket/3243
       [geoffd]
 
     - Added enableHTTPCompression script and enabled HTTP compression for
@@ -3345,7 +3345,7 @@ Plone 2.0.4 - Warp - Released August 16, 2004
 
     - Fixed #3240 and related issues. Metadata elements like description and
       keywords (subject) could not be cleared.
-      https://trac.plone.org/plone/ticket/3240
+      http://dev.plone.org/plone/ticket/3240
       [stefan]
 
     - Merged fixes from tiran-plip30 branch. Changed PloneGenerator and
@@ -3415,7 +3415,7 @@ Plone 2.0.4 - Warp - Released August 16, 2004
 
     - Applied patch from #3159. Missing form fields should not cause user prefs
       to be set to None.
-      https://trac.plone.org/plone/ticket/3159
+      http://dev.plone.org/plone/ticket/3159
       [stefan]
 
     - Added a simple check for the existence of the template
@@ -3455,7 +3455,7 @@ Plone 2.0.2 - Hicks - Released May 13, 2004
 
     - Added a email address validator to the Plone tool and validate the email
       addresses for the send to feature, fix for #2975.
-      https://trac.plone.org/plone/ticket/2975
+      http://dev.plone.org/plone/ticket/2975
       [tiran]
 
     - Some templates were broken with Zope 2.6. Fixed by adding a
@@ -3512,7 +3512,7 @@ Plone 2.0.1 - Jello - Released May 4, 2004
 
     - Backported fix for #2183 from HEAD. _verifyObjectPaste() should deny
       pasting if the content type is not allowed in the target container.
-      https://trac.plone.org/plone/ticket/2183
+      http://dev.plone.org/plone/ticket/2183
       [stefan]
 
     - Improvement to Customization policy:
@@ -3524,16 +3524,16 @@ Plone 2.0.1 - Jello - Released May 4, 2004
       [zwork]
 
     - Fixed #2973. Try to avoid brain.getObject() to speed up plone.
-      https://trac.plone.org/plone/ticket/2973
+      http://dev.plone.org/plone/ticket/2973
       [tiran]
 
     - Fixed #2795. Replaced aq_explicit by aq_inner in batchedFolderContents.py.
-      https://trac.plone.org/plone/ticket/2795
+      http://dev.plone.org/plone/ticket/2795
       [tiran]
 
     - Fixed #472. Discussion now uses CMFFormController and subject/body are
       required fields now.
-      https://trac.plone.org/plone/ticket/472
+      http://dev.plone.org/plone/ticket/472
       [mrtopf]
 
     - Portal.py/SkinsTool.py: Removed monkey patch that renamed the skin request var to
@@ -3542,98 +3542,98 @@ Plone 2.0.1 - Jello - Released May 4, 2004
 
     - Fixed #2583. Disable submit button when item is locked and add a locked
       icon next to the disabled submit button.
-      https://trac.plone.org/plone/ticket/2583
+      http://dev.plone.org/plone/ticket/2583
       [tiran]
 
     - Fixed #2826. searchterm-highlighting now functions correctly, it
       highlights text in the fuill content-area, but only highlights the parts
       it is supposed to highlight.
-      https://trac.plone.org/plone/ticket/2826
+      http://dev.plone.org/plone/ticket/2826
       [elvix]
 
     - Fixed #2691 - External-link-detector javascript is now case-insensitive.
-      https://trac.plone.org/plone/ticket/2691
+      http://dev.plone.org/plone/ticket/2691
       [elvix]
 
     - Fixed #3001 - Fallback handling to avoid javascript-error-messages in IE5.
-      https://trac.plone.org/plone/ticket/3001
+      http://dev.plone.org/plone/ticket/3001
       [elvix]
 
     - Fixed #2859 - plonifyActions accepts javascript urls.
-      https://trac.plone.org/plone/ticket/2859
+      http://dev.plone.org/plone/ticket/2859
       [tiran]
 
     - Fixed #2948 - Auto generated ids are now lower case and the number is more
       random.
-      https://trac.plone.org/plone/ticket/2948
+      http://dev.plone.org/plone/ticket/2948
       [tiran]
 
     - Fixed #2990 - Nested groups don't break the prefs_group_members template
       any more.
-      https://trac.plone.org/plone/ticket/2990
+      http://dev.plone.org/plone/ticket/2990
       [tiran]
 
     - Fixed #3005 by catching non existing home folder.
-      https://trac.plone.org/plone/ticket/3005
+      http://dev.plone.org/plone/ticket/3005
       [tiran]
 
     - Fixed #2963 - Allow access to Products.ZCTextIndex.ParseTree.ParseError
       and catch it in the queryCatalog script.
-      https://trac.plone.org/plone/ticket/2963
+      http://dev.plone.org/plone/ticket/2963
       [tiran]
 
     - Fixed #2862 - Added a listMetaTags script to skins/plone_scripts to add
       automagically generated meta tags in the '<head>' tag.
-      https://trac.plone.org/plone/ticket/2862
+      http://dev.plone.org/plone/ticket/2862
       [tiran]
 
     - Fixed #2821 - The user doesn't show up as a member of that group after
       adding because the template was returned in the same transaction. Now the
       add/delete script is using a redirect.
-      https://trac.plone.org/plone/ticket/2821
+      http://dev.plone.org/plone/ticket/2821
       [tiran]
 
     - Fixed #2876 - Folder rename does not reindex title. Added a explict
       reindex if only the title has been changed.
-      https://trac.plone.org/plone/ticket/2876
+      http://dev.plone.org/plone/ticket/2876
       [tiran]
 
     - Fixed #2892 by using global_defines in the calendar_popup template.
-      https://trac.plone.org/plone/ticket/2892
+      http://dev.plone.org/plone/ticket/2892
       [tiran]
 
     - Fixed #2749 - 'groups' wasn't initialized as an instance variable, so any
       changes to it would vanish on restart.
-      https://trac.plone.org/plone/ticket/2749
+      http://dev.plone.org/plone/ticket/2749
       [sidnei]
 
     - Fixed #2671 - default_page as a string property would not work. Fixed this
       and added tests for basic behavior. More tests are needed IMHO.
-      https://trac.plone.org/plone/ticket/2671
+      http://dev.plone.org/plone/ticket/2671
       [sidnei]
 
     - Fixes for #2914. Although I could not reproduce. We now have a unit test
       showing that this behavior should not regress. Some logic in PloneTool
       was changed.
-      https://trac.plone.org/plone/ticket/2914
+      http://dev.plone.org/plone/ticket/2914
       [runyaga]
 
     - Fixed #2814 - 'Document' was being checked against a list of
       FactoryTypeInformation, which would never work. Changed to check against
       the list of portal_types generated by '<FTI>.getId()'.
-      https://trac.plone.org/plone/ticket/2814
+      http://dev.plone.org/plone/ticket/2814
       [sidnei]
 
     - Fixed #2907 - 'get_size' can return long. Also, improved the script a bit
       to be more correct with regard to sizes, include GB, use 'kB' instead of
       'K' (which stands for Kelvin), return '0 kb' if size is null or 0, and add
       tests for all of this.
-      https://trac.plone.org/plone/ticket/2907
+      http://dev.plone.org/plone/ticket/2907
       [sidnei]
 
     - Fixed #2998 - The types tool has a getTypeInfo method, but with different
       signature.
-      https://trac.plone.org/plone/ticket/2998
+      http://dev.plone.org/plone/ticket/2998
       [stefan]
 
     - If toolicon can't be found, it may be because a tool is
@@ -3654,7 +3654,7 @@ Plone 2.0.1 - Jello - Released May 4, 2004
       [stefan]
 
     - Fixed #2980 - Handle dates between PLONE_CEILING and CMF_CEILING.
-      https://trac.plone.org/plone/ticket/2980
+      http://dev.plone.org/plone/ticket/2980
       [tesdal]
 
     - Added two classes to allow list without markers:
@@ -3667,7 +3667,7 @@ Plone 2.0.1 - Jello - Released May 4, 2004
     - Implemented 'management_page_charset' as ComputedAttribute returning the
       value of portal_properties/site_properties/default_charset. Also see #2778
       This means Unicode characters are shown correctly in the ZMI too.
-      https://trac.plone.org/plone/ticket/2778
+      http://dev.plone.org/plone/ticket/2778
       [stefan]
 
     - Added years range properties in site_properties:
@@ -3729,7 +3729,7 @@ Plone 2.0 - Fyuti - Released March 23, 2004
    Final
 
     - Fixed #2852.
-      https://trac.plone.org/plone/ticket/2852
+      http://dev.plone.org/plone/ticket/2852
       [geoffd]
 
     - Added cleanupSkinPath method to migration_util, used to remove
@@ -3758,12 +3758,12 @@ Plone 2.0 - Fyuti - Released March 23, 2004
 
     - Fixed #2808 - metadata_edit form was broken when the date format was set
       to international (zope 2.7). Fixed date_components_support.py
-      https://trac.plone.org/plone/ticket/2808
+      http://dev.plone.org/plone/ticket/2808
       [tiran]
 
     - Fixed #2804 - plone_memberprefs_panel.pt ignored the 'visible' of
       configlet actions. thats corrected now.
-      https://trac.plone.org/plone/ticket/2804
+      http://dev.plone.org/plone/ticket/2804
       [zworkb]
 
     - breadcrumbs.py had bugs in which (1) a terminal object was sometimes
@@ -3793,22 +3793,22 @@ Plone 2.0 - Fyuti - Released March 23, 2004
       before global_defines. *All third-party products will have to fill
       'top_slot' instead of the 'head_slot' to disable the borders, the syntax
       apart from that is identical.*
-      https://trac.plone.org/plone/ticket/2769
+      http://dev.plone.org/plone/ticket/2769
       [runyaga]
 
     - Fixed #2744 - Large Plone Folders should use folder_workflow. Fixed
       PortalGenerator and added migration and tests.
-      https://trac.plone.org/plone/ticket/2744
+      http://dev.plone.org/plone/ticket/2744
       [stefan]
 
     - Fixed and re-fixed #2246 - Short name should be editable without
       specifying a file.
-      https://trac.plone.org/plone/ticket/2246
+      http://dev.plone.org/plone/ticket/2246
       [achilles] [stefan]
 
     - Added a monkey-patch workaround for #1323. This *may* be considered a CMF
       bug. See setFormatPatch.py.
-      https://trac.plone.org/plone/ticket/1323
+      http://dev.plone.org/plone/ticket/1323
       [stefan]
 
     - Moved 'document_byline' and 'document_actions' to the
@@ -3927,7 +3927,7 @@ Plone 2.0 - Fyuti - Released March 23, 2004
       to
       def get_field(self, id, include_disabled=0):
       FormTool is deprecated or will be deprecated in 2.0. Bug #2498
-      https://trac.plone.org/plone/ticket/2498
+      http://dev.plone.org/plone/ticket/2498
 
     - For those of you who were running tableless designs in the RC3
       and earlier releases and want to keep it that way - simply add
@@ -4284,7 +4284,7 @@ Plone 2.0 - Fyuti - Released March 23, 2004
       [limi]
 
     - Bug fix for #1154 - SearchableText should be ZCTextIndex.
-      https://trac.plone.org/plone/ticket/1154
+      http://dev.plone.org/plone/ticket/1154
       [kapil]
 
     - Added unicode splitter for zctextindex element pipeline from silva
@@ -4325,7 +4325,7 @@ Plone 2.0 - Fyuti - Released March 23, 2004
 
     - generateUniqueId and isIDUnique now are a bit more unique (with regards to
       randomness) and we now suffix generated ID's with .html - issue #1343
-      https://trac.plone.org/plone/ticket/1343
+      http://dev.plone.org/plone/ticket/1343
       [runyaga]
 
     - Added Recently Published slot, and a complimentary Archive page.
@@ -4615,7 +4615,7 @@ Plone 2.0 - Fyuti - Released March 23, 2004
 
     - Content now gets an effective date of "now" if it doesn't have one on a
       state change. Also news now get sorted by effective date. Fixes #1051.
-      https://trac.plone.org/plone/ticket/1051
+      http://dev.plone.org/plone/ticket/1051
       [ronnix]
 
     - Removed the About slot from site generation. This is not in migrations, as
@@ -4896,7 +4896,7 @@ Plone 1.0 rc2
       this is already done since we are using DCWorkflow! Specifically this was
       addressed by vlado Issue #442. When a folder has changed its permissions
       and should affect the security for its children.
-      https://trac.plone.org/plone/ticket/442
+      http://dev.plone.org/plone/ticket/442
 
     - migration machinery to add skins, change personalize_form to go back to
       personalize_form
