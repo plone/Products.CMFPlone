@@ -269,8 +269,8 @@
                                tabindex=""
                                tal:attributes="tabindex tabindex/next;"/>
                         </th>
+                        <th i18n:translate="label_full_name">Full name</th>
                         <th i18n:translate="label_user_name">User Name</th>
-                        <th i18n:translate="label_email_address">Email Address</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -279,7 +279,7 @@
                                                       member_id member/getId">
                             <label class="hiddenLabel" for="member_ids:list"
                                    i18n:translate="label_select_user">
-                                select user <span tal:content="member_name" tal:omit-tag="" i18n:name="user">username</span>
+                                Select user <span tal:content="member_name" tal:omit-tag="" i18n:name="user">username</span>
                             </label>
                             <input class="formSelection"
                                    type="checkbox"
@@ -293,8 +293,12 @@
                             />
                         </td>
 
-                        <td tal:content="member/getUserName">username</td>
-                        <td tal:content="member/email">email</td>
+                        <tal:user define="username member/getUserName;
+                                        authorinfo python:mtool.getMemberInfo(username);">
+                        <td tal:content="authorinfo/fullname">Full name</td>
+                        <td tal:content="username">Username</td>
+                        
+                        </tal:user>
                     </tr>
                     </tbody>
                 </table>
