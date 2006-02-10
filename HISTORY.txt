@@ -21,6 +21,9 @@ Plone 2.5 (unreleased)
       declared for both Zope 2 and 'zope.interface'-style.
       [dreamcatcher]
 
+    - Installed CMFPlacefulWorkflow during migrations.
+      [encolpe]
+
     - Merged plip108-five-translationservice r8093:8841 into trunk.
       This implements PLIP 108 Zope3 MessageID's and PLIP 111 new portal status
       message infrastructure.
@@ -30,6 +33,19 @@ Plone 2.5 (unreleased)
       moves some files to /portal_skins/plone_deprecated which will be removed
       in the next release.
       [hannosch]
+
+Plone 2.1.3 - Tomahawk - Unreleased
+
+    - Fixed bug: can't access content when the user have no permission to access
+      the acquired left_slots/right_slots properties.
+      [panjunyong]
+
+    - Introduced a new class "tile" to use in the portlets. The previous
+      portlet code implicitly assumed that all links would be block-level,
+      which is not a good thing. This should have minimal impact on old
+      portlets, but if you want the block-level behaviour and stay compatible
+      with older portlet code too, just add class="tile" to your links.
+      [limi]
 
 Plone 2.1.2 - Saint Etienne - Released January 20, 2006
 

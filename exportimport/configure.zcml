@@ -27,7 +27,7 @@
   <adapter
      factory="Products.CMFCore.exportimport.content.StructureFolderWalkingAdapter"
       provides="Products.GenericSetup.interfaces.IFilesystemImporter"
-      for="Products.ATContentTypes.z3.interfaces.IATContentType"
+      for="Products.ATContentTypes.interface.IATContentType"
      />
 
   <adapter

@@ -22,6 +22,7 @@
 
     <dt class="portletHeader">
         <a href="#" 
+           class="tile"
            tal:attributes="href string:$portal_url/login_form"
            i18n:translate="box_sign_in">Log in</a>
     </dt>
@@ -88,6 +89,7 @@
     
     <dd class="portletItem even" tal:condition="canRequestPassword">
         <a href="mail_password_form"
+           class="tile"
            tal:attributes="href string:${portal_url}/mail_password_form">
            <tal:block replace="structure portal_object/info_icon.gif"/>
            <span tal:omit-tag="" i18n:translate="box_forgot_password_option">Forgot your password?</span>
@@ -95,7 +97,9 @@
     </dd>
     
     <dd class="portletItem" tal:condition="canRegister">
-        <a href="" tal:attributes="href python:join.pop()">
+        <a href="" 
+           class="tile"
+           tal:attributes="href python:join.pop()">
             <tal:block replace="structure portal_object/user.gif"/>
             <span tal:omit-tag="" i18n:translate="box_new_user_option">New user?</span>
         </a>
@@ -110,7 +114,9 @@
     tal:condition="python: not auth">
 
     <dt class="portletHeader">
-        <a href="#" i18n:translate="box_sign_in">Log in</a>
+        <a href="#" 
+           class="tile"
+           i18n:translate="box_sign_in">Log in</a>
     </dt>
 
     <dd class="portletItem"

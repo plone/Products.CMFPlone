@@ -167,6 +167,9 @@ Companies (in randomized order):
   "Informaat":http://www.informaat.com --
   Sponsoring Danny Bloemendaal's time (_ender_).
 
+  "The Open Planning Project":http://www.openplans.org --
+  Sponsoring some of Alec Mitchell's time (alecm).
+
   #plone and #zope on irc.openprojects.net for insight and soapbox to preach from.
 
   "ZopeLabs":http://zopelabs.com/ for useful scripts

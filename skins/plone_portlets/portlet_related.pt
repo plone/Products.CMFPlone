@@ -22,6 +22,7 @@
         <ul class="visualNoMarker">
             <li tal:repeat="related relatedLocal">
                 <a href=""
+                   class="tile"
                    tal:attributes="href string:${related/url}/view">
                    <img src="" alt=""
                         tal:attributes="src string:$portal_url/${related/icon};alt here/Title" />
@@ -36,6 +37,7 @@
         <ul class="visualNoMarker">
             <li tal:repeat="related relatedRemote">
                 <a href=""
+                   class="tile"
                    tal:attributes="href string:${related/url}/view">
                    <img src="" alt=""
                         tal:attributes="src string:$portal_url/${related/icon};alt here/Title" />
