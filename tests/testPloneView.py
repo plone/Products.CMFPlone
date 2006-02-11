@@ -9,8 +9,9 @@ if __name__ == '__main__':
 from zope.component import getView
 
 from Testing import ZopeTestCase
-from Products.CMFPlone.tests import PloneTestCase
-from Products.CMFPlone.tests import dummy
+from Products.PloneTestCase import PloneTestCase
+from Products.PloneTestCase import dummy
+PloneTestCase.setupPloneSite()
 
 from Products.CMFPlone.utils import _createObjectByType
 

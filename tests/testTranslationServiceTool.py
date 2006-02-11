@@ -9,7 +9,8 @@ if __name__ == '__main__':
     execfile(os.path.join(sys.path[0], 'framework.py'))
 
 from Testing import ZopeTestCase
-from Products.CMFPlone.tests import PloneTestCase
+from Products.PloneTestCase import PloneTestCase
+PloneTestCase.setupPloneSite()
 
 from DateTime.DateTime import DateTime
 
