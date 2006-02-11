@@ -26,7 +26,7 @@
             </span>
             <span class="portletItemDetails"
                   tal:define="moddate o/ModificationDate;"
-                  tal:content="python:here.toLocalizedTime(moddate)">May 5</span>
+                  tal:content="python:toLocalizedTime(moddate)">May 5</span>
         </a>
         </div>
 

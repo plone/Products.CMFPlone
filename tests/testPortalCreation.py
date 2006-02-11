@@ -69,14 +69,8 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
 
     def testReplyTabIsOff(self):
         # Ensure 'reply' tab is turned off
-        # NOTE: ActionProviderBAse should have a 'getActionById'
-        # that does this for x in: if x == id
-        dt_actions = self.portal.portal_discussion.listActions()
-        reply_visible=1
-        for action in dt_actions:
-            if action.id=='reply':
-                reply_visible=action.visible
-        self.assertEqual(reply_visible, 0)
+        dtool = self.portal.portal_discussion
+        self.assertEqual(dtool.getActionInfo('object/reply')['visible'], False)
 
     def testLargePloneFolderWorkflow(self):
         # Large Plone Folder should use folder_workflow
@@ -104,7 +98,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
 
     def testMembersFolderIsIndexed(self):
         # Members folder should be cataloged
-        res = self.catalog(id='Members')
+        res = self.catalog(getId='Members')
         self.assertEqual(len(res), 1)
         self.assertEqual(res[0].getId, 'Members')
         self.assertEqual(res[0].Title, 'Members')
@@ -184,11 +178,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
 
     def testFullScreenAction(self):
         # There should be a full_screen action
-        for action in self.actions.listActions():
-            if action.getId() == 'full_screen':
-                break
-        else:
-            self.fail("Actions tool has no 'full_screen' action")
+        self.failUnless(self.actions.getActionObject('document_actions/full_screen') is not None)
 
     def testFullScreenActionIcon(self):
         # There should be a full_screen action icon
@@ -261,7 +251,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
 
     def testNewsFolderIsIndexed(self):
         # News folder should be cataloged
-        res = self.catalog(id='news')
+        res = self.catalog(getId='news')
         self.assertEqual(len(res), 1)
         self.assertEqual(res[0].getId, 'news')
         self.assertEqual(res[0].Title, 'News')
@@ -303,11 +293,12 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.assertEqual(query['start']['range'], 'max')
 
     def testObjectButtonActions(self):
-        installed = [(a.getId(), a.getCategory()) for a in self.actions.listActions()]
-        self.failUnless(('cut', 'object_buttons') in installed)
-        self.failUnless(('copy', 'object_buttons') in installed)
-        self.failUnless(('paste', 'object_buttons') in installed)
-        self.failUnless(('delete', 'object_buttons') in installed)
+        self.setRoles(['Manager', 'Member'])
+        atool = self.actions
+        self.failIf(atool.getActionObject('object_buttons/cut') is None)
+        self.failIf(atool.getActionObject('object_buttons/copy') is None)
+        self.failIf(atool.getActionObject('object_buttons/paste') is None)
+        self.failIf(atool.getActionObject('object_buttons/delete') is None)
 
     def testContentsTabVisible(self):
         for a in self.actions.listActions():
@@ -389,8 +380,10 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
     def testFolderlistingAction(self):
         # Make sure the folderlisting action of a Folder is /view, to ensure
         # that the layout template will be resolved (see PloneTool.browserDefault)
-        self.assertEqual(self.types['Folder'].getActionById('folderlisting'), 'view')
-        self.assertEqual(self.types['Plone Site'].getActionById('folderlisting'), 'view')
+        self.assertEqual(self.types['Folder'].getActionObject('folder/folderlisting').getActionExpression(),
+                         'string:${folder_url}/view')
+        self.assertEqual(self.types['Plone Site'].getActionObject('folder/folderlisting').getActionExpression(),
+                         'string:${folder_url}/view')
 
     def testEnableLivesearchProperty(self):
         # site_properties should have enable_livesearch property
@@ -429,15 +422,16 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.assertEqual(aliases, expected_aliases)
 
     def testSiteActions(self):
-        installed = [(a.getId(), a.getCategory()) for a in self.actions.listActions()]
-        self.failUnless(('sitemap', 'site_actions') in installed)
-        self.failUnless(('contact', 'site_actions') in installed)
-        self.failUnless(('accessibility', 'site_actions') in installed)
-        self.failUnless(('plone_setup', 'site_actions') in installed)
-
+        self.setRoles(['Manager', 'Member'])
+        # XXX: Currently fails due to possible bug in CMFCore
+        atool = self.actions
+        self.failIf(atool.getActionObject('site_actions/sitemap') is None)
+        self.failIf(atool.getActionObject('site_actions/contact') is None)
+        self.failIf(atool.getActionObject('site_actions/accessibility') is None)
+        self.failIf(atool.getActionObject('site_actions/plone_setup') is None)
+        
     def testNoMembershipToolPloneSetupAction(self):
-        installed = [a.getId() for a in self.membership.listActions()]
-        self.failIf('plone_setup' in installed)
+        self.failUnless(self.actions.getActionObject('user/plone_setup') is None)
 
     def testTypesHaveSelectedLayoutViewAction(self):
         # Should add method aliases to the Plone Site FTI
@@ -628,8 +622,7 @@ class TestPortalBugs(PloneTestCase.PloneTestCase):
         self.membership = self.portal.portal_membership
         self.members = self.membership.getMembersFolder()
         self.catalog = self.portal.portal_catalog
-        # Fake the Members folder contents
-        self.members._setObject('index_html', ZopePageTemplate('index_html'))
+        self.mem_index_type = "Script (Python)"
 
     def testMembersIndexHtml(self):
         # index_html for Members folder should be a Page Template
@@ -638,14 +631,14 @@ class TestPortalBugs(PloneTestCase.PloneTestCase):
         self.assertEqual(aq_base(members).meta_type, 'ATBTreeFolder')
         self.failUnless(hasattr(aq_base(members), 'index_html'))
         # getitem works
-        self.assertEqual(aq_base(members)['index_html'].meta_type, 'Page Template')
-        self.assertEqual(members['index_html'].meta_type, 'Page Template')
+        self.assertEqual(aq_base(members)['index_html'].meta_type, self.mem_index_type)
+        self.assertEqual(members['index_html'].meta_type, self.mem_index_type)
         # _getOb works
-        self.assertEqual(aq_base(members)._getOb('index_html').meta_type, 'Page Template')
-        self.assertEqual(members._getOb('index_html').meta_type, 'Page Template')
+        self.assertEqual(aq_base(members)._getOb('index_html').meta_type, self.mem_index_type)
+        self.assertEqual(members._getOb('index_html').meta_type, self.mem_index_type)
         # getattr works when called explicitly
-        self.assertEqual(aq_base(members).__getattr__('index_html').meta_type, 'Page Template')
-        self.assertEqual(members.__getattr__('index_html').meta_type, 'Page Template')
+        self.assertEqual(aq_base(members).__getattr__('index_html').meta_type, self.mem_index_type)
+        self.assertEqual(members.__getattr__('index_html').meta_type, self.mem_index_type)
 
     def testLargePloneFolderHickup(self):
         # Attribute access for 'index_html' acquired the Document from the
@@ -655,7 +648,7 @@ class TestPortalBugs(PloneTestCase.PloneTestCase):
         members = self.members
         self.assertEqual(aq_base(members).meta_type, 'ATBTreeFolder')
         #self.assertEqual(members.index_html.meta_type, 'Document')
-        self.assertEqual(members.index_html.meta_type, 'Page Template')
+        self.assertEqual(members.index_html.meta_type, self.mem_index_type)
 
     def testManageBeforeDeleteIsCalledRecursively(self):
         # When the portal is deleted, all subobject should have

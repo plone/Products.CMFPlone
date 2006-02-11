@@ -8,6 +8,7 @@ from Products.CMFCore.permissions import ManagePortal, View
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFPlone.utils import versionTupleFromString
 from Products.CMFPlone.utils import log
+from Products.CMFPlone.utils import classImplements
 import transaction
 
 import zLOG
@@ -46,7 +47,7 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
     manage_overview = DTMLFile('www/migrationTool', globals())
     manage_results = DTMLFile('www/migrationResults', globals())
     manage_setup = DTMLFile('www/migrationSetup', globals())
-    
+
     # Add a visual note
     def om_icons(self):
         icons = ({
@@ -379,4 +380,5 @@ def registerSetupWidget(widget):
     """ Basic register things """
     _widgetRegistry[widget.type] = widget
 
+classImplements(MigrationTool, MigrationTool.__implements__)
 InitializeClass(MigrationTool)

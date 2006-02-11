@@ -3,6 +3,7 @@ from Products.CMFPlone import ToolNames
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
+from Products.CMFPlone.utils import classImplements
 
 _skincache = {}
 
@@ -18,7 +19,7 @@ class SkinsTool(PloneBaseTool, BaseTool):
 
     default_skin = ''
     request_varname = 'plone_skin'
-    
+
     __implements__ = (PloneBaseTool.__implements__, BaseTool.__implements__, )
 
     security.declarePrivate('getSkinByName')
@@ -36,4 +37,5 @@ class SkinsTool(PloneBaseTool, BaseTool):
 
 SkinsTool.__doc__ = BaseTool.__doc__
 
+classImplements(SkinsTool, SkinsTool.__implements__)
 InitializeClass(SkinsTool)

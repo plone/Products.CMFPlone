@@ -14,7 +14,7 @@
     <li tal:repeat="saction site_actions"
         tal:attributes="id string:siteaction-${saction/id}"><a
            href=""
-           tal:define="title saction/name;
+           tal:define="title saction/title;
                        id saction/id;
                        accesskey python: accesskeys.get(id, '');"
            i18n:attributes="title"

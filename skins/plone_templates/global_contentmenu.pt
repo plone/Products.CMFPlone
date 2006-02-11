@@ -5,11 +5,9 @@
 
 <metal:menubarmacro define-macro="contentMenu">
 
-<ul tal:define="isStructuralFolder here/is_folderish;
-                manage_portal python:checkPermission('Manage portal', here);
+<ul tal:define="manage_portal python:checkPermission('Manage portal', here);
                 folder python:test(isStructuralFolder, here, here.aq_inner.getParentNode());
                 isParentStructuralFolder folder/is_folderish;
-                isContextDefaultPage here/isDefaultPageInFolder;
                 parent_folder python: isContextDefaultPage and here.aq_inner.getParentNode() or folder;
                 disableMenu python:here.portal_factory.isTemporary(here);
                 useSelf python:isStructuralFolder and not isContextDefaultPage;"
@@ -54,10 +52,10 @@
                 <li>
                     <a href="#"
                        i18n:translate=""
-                       tal:content="transition/name"
+                       tal:content="transition/title"
                        i18n:attributes="title"
                        tal:attributes="href string:$here_url/content_status_modify?workflow_action=${transition/id};
-                                       title transition/name">File Menu Item 1</a>
+                                       title transition/title">File Menu Item 1</a>
                 </li>
                 </tal:block>
                 <li class="actionSeparator">
@@ -417,9 +415,9 @@
                                   class_name python:test(icon, class_name, nothing);">
                                 <li tal:condition="python:editAction['id'] not in ('delete', 'batch')"
                                     tal:attributes="class class_name">
-                                    <a tal:content="editAction/name"
+                                    <a tal:content="editAction/title"
                                        tal:attributes="href editAction/url;
-                                       title editAction/name;
+                                       title editAction/title;
                                        class python:test(icon, 'visualIconReplace', nothing);"
                                        i18n:attributes="title"
                                        i18n:translate="">
@@ -432,10 +430,10 @@
                                     <a onclick="#"
                                        tal:define="alert_msg python:((isContextDefaultPage or (isStructuralFolder and not here.portal_type == 'Topic')) and here.translate('alert_really_delete_folder', default='Do you really want to delete this folder and all its contents?')) or here.translate('alert_really_delete', default='Do you really want to delete this item?');"
                                        tal:attributes="href editAction/url;
-                                                       title editAction/name;
+                                                       title editAction/title;
                                                        class python:test(icon, 'visualIconReplace', nothing);
                                                        onclick string: confirmDelete = confirm('${alert_msg}');; event.returnValue = confirmDelete;; return confirmDelete;;"
-                                       tal:content="editAction/name"
+                                       tal:content="editAction/title"
                                        i18n:attributes="title"
                                        i18n:translate="">
                                         Action name
@@ -450,10 +448,10 @@
     </tal:edit>
 
     <tal:batch define="batchActions actions/batch | nothing"
-         condition="python: batchActions">
+               condition="python: batchActions">
         <tal:batchAction repeat="batchAction batchActions">
             <li class="contentBatchAction">
-                <a tal:content="batchAction/name"
+                <a tal:content="batchAction/title"
                    tal:attributes="href batchAction/url"
                    i18n:translate="">
                     Action name

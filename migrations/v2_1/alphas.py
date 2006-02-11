@@ -786,11 +786,11 @@ def addEditContentActions(portal, out):
         actionsTool._actions = new_actions
         # then we add new actions
         for newaction in ACTIONS:
-            for action in actionsTool.listActions():
-                if action.getId() == newaction['id'] \
-                        and action.getCategory() == newaction.get('category', CATEGORY):
-                    break # We already have the action
-            else:
+            category = newaction.get('category', CATEGORY)
+            try:
+                actionsTool.unrestrictedTraverse('/'.join([category, newaction['id']]))
+            except KeyError:
+                # This is a new action
                 actionsTool.addAction(newaction['id'],
                     name=newaction['name'],
                     action=newaction['action'],
@@ -1126,19 +1126,10 @@ def fixFolderButtonsActions(portal, out):
     actionsTool = getToolByName(portal, 'portal_actions', None)
     if actionsTool is not None:
         for newaction in ACTIONS:
-            current_actions = actionsTool._cloneActions()
-            exists = False
-            for action in current_actions:
-                if action.getId() == newaction['id'] and action.category == newaction['category']:
-                    exists = True
-                    if action.permissions != (
-                            copy_or_move,):
-                        action.permissions = (newaction['permission'],)
-                        action.condition = Expression(text=newaction['condition']) or ''
-                        out.append('Modified existing %s action'%newaction['id'])
-            if exists:
-                actionsTool._actions = current_actions
-            else:
+            category = newaction.get('category', CATEGORY)
+            action = actionsTool.getActionObject('/'.join([category, newaction['id']]))
+            if action is None:
+                # Action doesn't exist: add it
                 actionsTool.addAction(newaction['id'],
                     name=newaction['name'],
                     action=newaction['action'],
@@ -1147,6 +1138,11 @@ def fixFolderButtonsActions(portal, out):
                     category=newaction['category'],
                     visible=1)
                 out.append("Added missing %s action"%newaction['id'])
+            else:
+                if action.permissions != (copy_or_move,):
+                    action.permissions = (newaction['permission'],)
+                    action.condition = Expression(text=newaction['condition']) or ''
+                    out.append('Modified existing %s action'%newaction['id'])
 
 
 def addTypesUseViewActionInListingsProperty(portal, out):
@@ -1261,16 +1257,19 @@ def convertPloneFTIToCMFDynamicViewFTI(portal, out):
                                     if t[1].get('id','')=='Plone Root']
                 if name:
                     name = name[0]
-                    migrateFTI(portal, 'Plone Site', name, fti_meta_type)
-                    out.append("Converted Plone Site to CMFDynamicViewFTI")
+                else:
+                    name = None
 
-                    # limi says don't bother transferring old views
-                    # Transfer old default page
-                    old_default = getattr(portal, '_selected_default_page', ())
-                    if old_default is not ():
-                        del portal._selected_default_page
-                        portal.setDefaultPage(old_default)
-                        out.append("Transferred portal default page")
+                migrateFTI(portal, 'Plone Site', name, fti_meta_type)
+                out.append("Converted Plone Site to CMFDynamicViewFTI")
+
+                # limi says don't bother transferring old views
+                # Transfer old default page
+                old_default = getattr(portal, '_selected_default_page', ())
+                if old_default is not ():
+                    del portal._selected_default_page
+                    portal.setDefaultPage(old_default)
+                    out.append("Transferred portal default page")
             # add sensible default methods
             new_fti = portal.getTypeInfo()
             if 'folder_listing' not in portal.getAvailableLayouts():

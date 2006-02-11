@@ -4,19 +4,14 @@
 <body>
 <div metal:define-macro="portlet"
      tal:condition="python:not isAnon and template.getId()!='recently_published'">
-     
 
-<tal:recentlist tal:define="last_login_time python:member.getProperty('last_login_time', DateTime());
-                 typesToShow  python:putils.getUserFriendlyTypes();
-                 results python:request.get('items',
-                                            here.portal_catalog.searchResults(sort_on='modified',
-                                            portal_type=typesToShow,
-                                            sort_order='reverse')[:5]);">
+<tal:recentlist tal:define="view context/@@recent_view;
+                            results view/results;">
 
 <dl class="portlet" id="portlet-recent">
-  
+
     <dt class="portletHeader">
-        <a href="#" 
+        <a href="#"
             tal:attributes="href string:${portal_url}/recently_modified"
             i18n:translate="box_recent_changes">Recent Changes</a>
     </dt>
@@ -24,12 +19,12 @@
     <dd class="portletItem"
         tal:define="oddrow repeat/obj/odd;
                     item_wf_state obj/review_state;
-                    item_wf_state_class python:'state-' + here.plone_utils.normalizeString(item_wf_state);
+                    item_wf_state_class python:'state-' + normalizeString(item_wf_state);
                     item_type_class python: 'contenttype-' + normalizeString(obj.portal_type);"
-        tal:attributes="class python:test(oddrow, 
-                                         'portletItem even', 
+        tal:attributes="class python:test(oddrow,
+                                         'portletItem even',
                                          'portletItem odd')">
-        <div tal:attributes="class item_type_class">                
+        <div tal:attributes="class item_type_class">
         <a href=""
            tal:attributes="href string:${obj/getURL}/view;
                            title obj/Description;
@@ -38,14 +33,14 @@
             Plone 2.1 released!
             </tal:title>
             <span class="portletItemDetails"
-                  tal:content="python:here.toLocalizedTime(obj.ModificationDate)"
+                  tal:content="python:toLocalizedTime(obj.ModificationDate)"
                   >May 5</span>
         </a>
         </div>
     </dd>
     </tal:items>
 
-    <dd class="portletItem" 
+    <dd class="portletItem"
         tal:condition="not: results"
         i18n:translate="box_recent_no_items">
         No items changed yet.
@@ -62,7 +57,7 @@
 </dl>
 
 </tal:recentlist>
-    
+
 </div>
 </body>
 </html>

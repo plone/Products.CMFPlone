@@ -32,7 +32,7 @@
             <a href=""
                tal:attributes="href action/url;
                                class python:test(icon, 'visualIconPadding', nothing);">
-               <tal:actionname i18n:translate="" tal:content="action/name">dummy</tal:actionname>
+               <tal:actionname i18n:translate="" tal:content="action/title">dummy</tal:actionname>
             </a>
         </li>
     </tal:actions>

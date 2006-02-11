@@ -1,19 +1,23 @@
-from ComputedAttribute import ComputedAttribute
 from Acquisition import aq_parent, aq_inner
 from Products.CMFCore.ActionProviderBase import ActionProviderBase
 from Products.CMFCore.permissions import ManagePortal
+from Products.CMFCore.interfaces.portal_properties \
+     import portal_properties as IBasePortalProperties
 from Products.CMFDefault.PropertiesTool import PropertiesTool as BaseTool
 from Products.CMFPlone import ToolNames
 
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from OFS.Folder import Folder
 from Globals import InitializeClass
+from zope.interface import implements
 
 from OFS.PropertyManager import PropertyManager
 from OFS.SimpleItem import SimpleItem
 from AccessControl import ClassSecurityInfo
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
-from Products.CMFPlone.interfaces.PropertiesTool import IPropertiesTool
+from Products.CMFPlone.interfaces import IPropertiesTool, ISimpleItemWithProperties
+from Products.CMFPlone.interfaces.PropertiesTool import IPropertiesTool as z2IPropertiesTool
+from Products.CMFPlone.utils import classImplements, classDoesNotImplement
 
 class PropertiesTool(PloneBaseTool, Folder, BaseTool):
 
@@ -21,15 +25,15 @@ class PropertiesTool(PloneBaseTool, Folder, BaseTool):
     toolicon = 'skins/plone_images/topic_icon.gif'
 
     meta_type = ToolNames.PropertiesTool
-    meta_types = all_meta_types =  ((
+    meta_types = ((
         {'name' : 'Plone Property Sheet',
          'action' : 'manage_addPropertySheetForm'
          },
         ))
 
-    __implements__ = ((IPropertiesTool,) +
-                      (PloneBaseTool.__implements__,
-                      ActionProviderBase.__implements__,
+    implements(IPropertiesTool)
+    __implements__ = ((z2IPropertiesTool,) +
+                      (ActionProviderBase.__implements__,
                       Folder.__implements__, ))
 
     manage_options = ((Folder.manage_options[0],) +
@@ -40,12 +44,13 @@ class PropertiesTool(PloneBaseTool, Folder, BaseTool):
 
     security = ClassSecurityInfo()
 
+    def all_meta_types(self, interfaces=None):
+        return self.meta_types
+
     def title(self):
         """ Return BaseTool title
         """
         return BaseTool.title(self)
-
-    title = ComputedAttribute(title, 1)
 
     def addPropertySheet(self, id, title='', propertysheet=None):
         """ Add a new PropertySheet
@@ -104,6 +109,8 @@ class SimpleItemWithProperties (PropertyManager, SimpleItem):
     A common base class for objects with configurable
     properties in a fixed schema.
     """
+
+    implements(ISimpleItemWithProperties)
 
     def __init__(self, id, title=''):
         self.id = id

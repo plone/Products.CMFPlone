@@ -15,7 +15,7 @@
   Add Plone Site
   </div>
   
-<form action="manage_addSite" method="post"
+<form action="addPloneSite" method="post"
       tal:define="policies python:modules['Products.CMFPlone.Portal'].listPolicies()">
     <div class="form-help">
     Enter an ID and click the button below to create a new Plone site.
@@ -39,14 +39,14 @@
     <textarea name="description" cols="60" rows="10"
      style="width: 95%"></textarea>
 
-    <input type="hidden" name="custom_policy" value="Default Plone"
-           tal:condition="python:len(policies)==1" />
+    <!--input type="hidden" name="custom_policy" value="Default Plone"
+           tal:condition="python:len(policies)==1" /-->
 
   <!--
     If you want to have your customization policy to show up, the class needs
     an boolean attribute: availableAtConstruction
    -->
-<tal:custpolicy condition="python:len(policies)>1">
+<!--tal:custpolicy condition="python:len(policies)>1">
     <div class="form-label">
     Customisation policy setup
     </div>
@@ -62,7 +62,7 @@
      not revert this to a Default Plone site without a lot of work, so make sure
      the policy you select is the correct one.) 
     </p>
-</tal:custpolicy>
+</tal:custpolicy-->
     
     <div class="form-element">
     <input class="form-element" type="submit" name="submit" 

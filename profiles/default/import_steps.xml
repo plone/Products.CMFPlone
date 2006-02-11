@@ -1,0 +1,240 @@
+<?xml version="1.0"?>
+<import-steps>
+ <import-step id="actions" version="20040630-01"
+              handler="Products.CMFSetup.actions.importActionProviders"
+              title="Action Providers">
+  <dependency step="toolset"/>
+  
+  
+  
+  
+  
+  Import actions tool's action providers and their actions.
+ 
+ 
+  
+ 
+ 
+ </import-step>
+ <import-step id="catalog" version="20050929-01"
+              handler="Products.CMFSetup.catalog.importCatalogTool"
+              title="Catalog Tool">
+  <dependency step="toolset"/>
+  Import catalog tool's sub-objects, indexes and columns.
+ </import-step>
+ <import-step id="content_type_registry"
+              version="20051013-01"
+              handler="Products.CMFCore.exportimport.contenttyperegistry.importContentTypeRegistry"
+              title="Content Type Registry">
+  <dependency step="toolset"/>
+  Import content type registry's predicates and bindings.
+ </import-step>
+ <import-step id="cookie_authentication"
+              version="20050903-01"
+              handler="Products.CMFSetup.cookieauth.importCookieCrumbler"
+              title="Cookie Authentication">
+  <dependency step="toolset"/>
+  
+  
+  
+  
+  
+  Import cookie crumbler settings
+ 
+ 
+  
+ 
+ 
+ </import-step>
+ <import-step id="mailhost" version="20050803-01"
+              handler="Products.CMFSetup.mailhost.importMailHost"
+              title="MailHost">
+  <dependency step="toolset"/>
+  
+  
+  
+  
+  
+  Import mailhost settings
+ 
+ 
+  
+ 
+ 
+ </import-step>
+ <import-step id="properties" version="20041215-01"
+              handler="Products.CMFSetup.properties.importSiteProperties"
+              title="Site Properties">
+  
+  
+  
+  
+  Import site properties.
+ 
+ 
+  
+ 
+ 
+ </import-step>
+ <import-step id="rolemap" version="20040523-01"
+              handler="Products.CMFSetup.rolemap.importRolemap"
+              title="Role / Permission Map">
+  
+
+  
+  
+  
+  Import custom roles and non-default role-permission mappings.
+ 
+ 
+ 
+ 
+ </import-step>
+ <import-step id="skins" version="20040630-01"
+              handler="Products.CMFSetup.skins.importSkinsTool"
+              title="Skins Tool">
+  <dependency step="toolset"/>
+  
+  
+  
+  
+  
+  Import skins tool's filesystem directory views and skin path definitions.
+ 
+ 
+  
+ 
+ 
+ </import-step>
+ <import-step id="toolset" version="20040630-01"
+              handler="Products.CMFSetup.tool.importToolset"
+              title="Required tools">
+  
+
+  
+  
+  
+  Create required tools, replacing any of the wrong class, and remove
+  forbidden ones.
+ 
+ 
+ 
+ </import-step>
+ <import-step id="typeinfo" version="20040630-01"
+              handler="Products.CMFSetup.typeinfo.importTypesTool"
+              title="Types Tool">
+  <dependency step="toolset"/>
+  
+  
+  
+  
+  
+  Import types tool's type information objects.
+ 
+ 
+  
+ 
+ 
+ </import-step>
+ <import-step id="various" version="20041118-01"
+              handler="Products.CMFDefault.setuphandlers.importVarious"
+              title="Various Settings">
+  <dependency step="toolset"/>
+  
+  
+  
+  
+  
+  Import various settings from PortalGenerator.
+ 
+ 
+  
+ 
+ 
+ </import-step>
+ <import-step id="plone_various" version="20041118-01"
+              handler="Products.CMFPlone.setuphandlers.importVarious"
+              title="Various Plone Settings">
+  <dependency step="toolset"/>
+  <dependency step="typeinfo"/>
+    Plone specific settings
+ </import-step>
+
+
+ <import-step id="workflow" version="20040630-01"
+              handler="Products.CMFSetup.workflow.importWorkflowTool"
+              title="Workflow Tool">
+  <dependency step="toolset"/>
+  <dependency step="typeinfo"/>
+  
+  
+  
+  
+  
+  
+  Import workflow tool's workflow definitions and supporting scripts.
+ 
+ 
+  
+ 
+ 
+ </import-step>
+ <import-step id="propertiestool" version="20051101-01"
+              handler="Products.CMFPlone.exportimport.propertiestool.importPloneProperties"
+              title="Plone Properties">
+    <dependency step="toolset"/>
+  
+  
+  
+  Export plone properties tool and subobjects.
+ 
+ 
+ 
+ 
+ </import-step>
+ <import-step id="content" version="20050927-01"
+              handler="Products.CMFCore.exportimport.importSiteStructure"
+              title="Content">
+  <dependency step="toolset"/>
+  <dependency step="catalog"/>
+  <dependency step="typeinfo"/>
+  <dependency step="workflow"/>
+  
+  
+  
+  Import the site's structure and content.
+ 
+ 
+ 
+ </import-step>
+ <import-step id="action-icons" version="20051015-01"
+              handler="Products.CMFActionIcons.exportimport.importActionIconsTool"
+              title="Action Icons">
+  <dependency step="toolset"/>
+  Import action icon definitions
+ </import-step>
+ <import-step id="jsregistry" version="20051015-01"
+              handler="Products.ResourceRegistries.exportimport.jsregistry.importJSRegistry"
+              title="Javascript registry">
+  <dependency step="toolset"/>
+  Import javascript registry
+ </import-step>
+ <import-step id="cssregistry" version="20051015-01"
+              handler="Products.ResourceRegistries.exportimport.cssregistry.importCSSRegistry"
+              title="Stylesheet registry">
+  <dependency step="toolset"/>
+  Import stylesheet registry
+ </import-step>
+ <import-step id="memberdata-properties" version="20051108-01"
+              handler="Products.CMFPlone.exportimport.memberdata_properties.importMemberDataProperties"
+              title="MemberData Properties">
+  <dependency step="toolset"/>
+  Import MemberData properties
+ </import-step>
+  <import-step id="plone-final" version="20051110-01"
+               handler="Products.CMFPlone.setuphandlers.importFinalSteps"
+              title="Final Plone Config">
+    <dependency step="content" />
+  Final Plone configuration
+ </import-step>
+</import-steps>

@@ -67,7 +67,7 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
             self.failUnless(val(address), '%s should validate' % address)
         for address in invalidInputs:
             self.failIf(val(address), '%s should fail' % address)
-    
+
     def testvalidateEmailAddresses(self):
         # Any RFC 822 email address allowed and address list allowed
         val = self.utils.validateEmailAddresses
@@ -135,8 +135,9 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
                          'a-string')
         self.assertEqual(self.utils.normalizeString(">here's another!"),
                          'here-s-another')
-        self.assertEqual(self.utils.normalizeString("one with !@#$!@#$ stuff in the middle"),
-                         'one-with-stuff-in-the-middle')
+        self.assertEqual(
+            self.utils.normalizeString("one with !@#$!@#$ stuff in the middle"),
+            'one-with-stuff-in-the-middle')
 
     def testNormalizeStringFileExtensions(self):
         # If there is something that looks like a file extensions
@@ -147,7 +148,8 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
                          'this-is-also-a-file.html')
 
     def testNormalizeStringAccents(self):
-        # European accented chars will be transliterated to rough ASCII equivalents
+        # European accented chars will be transliterated to rough
+        # ASCII equivalents
         input = u"Eksempel \xe6\xf8\xe5 norsk \xc6\xd8\xc5"
         self.assertEqual(self.utils.normalizeString(input),
                          'eksempel-eoa-norsk-eoa')
@@ -160,20 +162,24 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
 
     def testNormalizeGreek(self):
         # Greek letters (not supported by UnicodeData)
-        input = u'\u039d\u03af\u03ba\u03bf\u03c2 \u03a4\u03b6\u03ac\u03bd\u03bf\u03c2'
+        input = (u'\u039d\u03af\u03ba\u03bf\u03c2 '
+                 u'\u03a4\u03b6\u03ac\u03bd\u03bf\u03c2')
         self.assertEqual(self.utils.normalizeString(input), 'nikos-tzanos')
- 
+
     def testNormalizeGreekUTF8(self):
         # Greek letters (not supported by UnicodeData)
-        input = u'\u039d\u03af\u03ba\u03bf\u03c2 \u03a4\u03b6\u03ac\u03bd\u03bf\u03c2'.encode('utf-8')
+        input = (u'\u039d\u03af\u03ba\u03bf\u03c2 '
+                 u'\u03a4\u03b6\u03ac\u03bd\u03bf\u03c2').encode('utf-8')
         self.assertEqual(self.utils.normalizeString(input), 'nikos-tzanos')
- 
+
     def testNormalizeStringHex(self):
         # Everything that can't be transliterated will be hex'd
-        self.assertEqual(self.utils.normalizeString(u"\u9ad8\u8054\u5408 Chinese"),
-                         '9ad880545408-chinese')
-        self.assertEqual(self.utils.normalizeString(u"\uc774\ubbf8\uc9f1 Korean"),
-                         'c774bbf8c9f1-korean')
+        self.assertEqual(
+            self.utils.normalizeString(u"\u9ad8\u8054\u5408 Chinese"),
+            '9ad880545408-chinese')
+        self.assertEqual(
+            self.utils.normalizeString(u"\uc774\ubbf8\uc9f1 Korean"),
+            'c774bbf8c9f1-korean')
 
     def testNormalizeStringObject(self):
         # Objects should be converted to strings using repr()
@@ -206,11 +212,13 @@ class TestOwnershipStuff(PloneTestCase.PloneTestCase):
     def testChangeOwnershipOf(self):
         # Should take ownership
         self.assertEqual(self.folder1.getOwnerTuple()[1], default_user)
-        self.assertList(self.folder1.get_local_roles_for_userid(default_user), ['Owner'])
+        self.assertList(self.folder1.get_local_roles_for_userid(default_user),
+                        ['Owner'])
 
         self.utils.changeOwnershipOf(self.folder1, 'new_owner')
         self.assertEqual(self.folder1.getOwnerTuple()[1], 'new_owner')
-        self.assertList(self.folder1.get_local_roles_for_userid('new_owner'), ['Owner'])
+        self.assertList(self.folder1.get_local_roles_for_userid('new_owner'),
+                        ['Owner'])
 
         # Initial creator no longer has Owner role.
         self.assertList(self.folder1.get_local_roles_for_userid(default_user), [])
@@ -218,23 +226,28 @@ class TestOwnershipStuff(PloneTestCase.PloneTestCase):
     def testChangeOwnershipOfKeepsOtherRoles(self):
         # Should preserve roles other than Owner
         self.folder1.manage_addLocalRoles('new_owner', ('Reviewer',))
-        self.assertList(self.folder1.get_local_roles_for_userid('new_owner'), ['Reviewer'])
+        self.assertList(self.folder1.get_local_roles_for_userid('new_owner'),
+                        ['Reviewer'])
         self.utils.changeOwnershipOf(self.folder1, 'new_owner')
         self.assertEqual(self.folder1.getOwnerTuple()[1], 'new_owner')
-        self.assertList(self.folder1.get_local_roles_for_userid('new_owner'), ['Owner', 'Reviewer'])
+        self.assertList(self.folder1.get_local_roles_for_userid('new_owner'),
+                        ['Owner', 'Reviewer'])
         self.assertList(self.folder1.get_local_roles_for_userid(default_user), [])
 
     def testChangeOwnershipOfRecursive(self):
         # Should take ownership of subobjects as well
         self.utils.changeOwnershipOf(self.folder1, 'new_owner', recursive=1)
         self.assertEqual(self.folder1.getOwnerTuple()[1], 'new_owner')
-        self.assertList(self.folder1.get_local_roles_for_userid('new_owner'), ['Owner'])
+        self.assertList(self.folder1.get_local_roles_for_userid('new_owner'),
+                        ['Owner'])
         self.assertList(self.folder1.get_local_roles_for_userid(default_user), [])
         self.assertEqual(self.folder2.getOwnerTuple()[1], 'new_owner')
-        self.assertList(self.folder2.get_local_roles_for_userid('new_owner'), ['Owner'])
+        self.assertList(self.folder2.get_local_roles_for_userid('new_owner'),
+                        ['Owner'])
         self.assertList(self.folder2.get_local_roles_for_userid(default_user), [])
         self.assertEqual(self.folder3.getOwnerTuple()[1], 'new_owner')
-        self.assertList(self.folder3.get_local_roles_for_userid('new_owner'), ['Owner'])
+        self.assertList(self.folder3.get_local_roles_for_userid('new_owner'),
+                        ['Owner'])
         self.assertList(self.folder3.get_local_roles_for_userid(default_user), [])
 
     def testGetOwnerName(self):
@@ -389,7 +402,7 @@ class TestEditMetadata(PloneTestCase.PloneTestCase):
     def testTuplifySubject_1(self):
         self.utils.editMetadata(self.doc, subject=['Foo', 'Bar', 'Baz'])
         self.assertEqual(self.doc.Subject(), ('Foo', 'Bar', 'Baz'))
-        
+
     def testTuplifySubject_2(self):
         self.utils.editMetadata(self.doc, subject=['Foo', '', 'Bar', 'Baz'])
         # Note that empty entries are filtered
@@ -399,11 +412,11 @@ class TestEditMetadata(PloneTestCase.PloneTestCase):
         self.utils.editMetadata(self.doc, subject='Foo, Bar, Baz')
         # TODO: Wishful thinking
         self.assertEqual(self.doc.Subject(), ('Foo', 'Bar', 'Baz'))
-        
+
     def testTuplifyContributors_1(self):
         self.utils.editMetadata(self.doc, contributors=['Foo', 'Bar', 'Baz'])
         self.assertEqual(self.doc.Contributors(), ('Foo', 'Bar', 'Baz'))
-        
+
     def testTuplifyContributors_2(self):
         self.utils.editMetadata(self.doc, contributors=['Foo', '', 'Bar', 'Baz'])
         # Note that empty entries are filtered
@@ -413,7 +426,7 @@ class TestEditMetadata(PloneTestCase.PloneTestCase):
         self.utils.editMetadata(self.doc, contributors='Foo; Bar; Baz')
         # TODO: Wishful thinking
         self.assertEqual(self.doc.Contributors(), ('Foo', 'Bar', 'Baz'))
-        
+
 
 class TestEditMetadataIndependence(PloneTestCase.PloneTestCase):
 
@@ -421,7 +434,7 @@ class TestEditMetadataIndependence(PloneTestCase.PloneTestCase):
         self.utils = self.portal.plone_utils
         self.folder.invokeFactory('Document', id='doc')
         self.doc = self.folder.doc
-        self.utils.editMetadata(self.doc, 
+        self.utils.editMetadata(self.doc,
                                 title='Foo',
                                 subject=('Bar',),
                                 description='Baz',
@@ -487,7 +500,8 @@ class TestEditMetadataIndependence(PloneTestCase.PloneTestCase):
 
 
 class TestFormulatorFields(PloneTestCase.PloneTestCase):
-    '''This feature should probably go away entirely.'''
+    """This feature should probably go away entirely.
+    """
 
     def afterSetUp(self):
         self.utils = self.portal.plone_utils
@@ -523,7 +537,8 @@ class TestFormulatorFields(PloneTestCase.PloneTestCase):
 
 
 class TestNavTree(PloneTestCase.PloneTestCase):
-    '''Tests for the new navigation tree and sitemap'''
+    """Tests for the new navigation tree and sitemap
+    """
 
     def afterSetUp(self):
         self.utils = self.portal.plone_utils
@@ -576,10 +591,11 @@ class TestNavTree(PloneTestCase.PloneTestCase):
         # Fail if 'view' is used for parent folder; it should only be on the File
         self.failIf(tree['children'][-1]['absolute_url'][-5:]=='/view')
         # Verify we have the correct object and it is the current item
-        self.assertEqual(tree['children'][-1]['children'][-1]['currentItem'],True)
-        self.assertEqual(tree['children'][-1]['children'][-1]['path'].split('/')[-1],'file21')
+        entry = tree['children'][-1]['children'][-1]
+        self.assertEqual(entry['currentItem'], True)
+        self.assertEqual(entry['path'].split('/')[-1],'file21')
         # Verify that we have '/view'
-        self.assertEqual(tree['children'][-1]['children'][-1]['absolute_url'][-5:],'/view')
+        self.assertEqual(entry['absolute_url'][-5:],'/view')
 
     def testNavTreeExcludesItemsWithExcludeProperty(self):
         # Make sure that items witht he exclude_from_nav property set get
@@ -610,7 +626,7 @@ class TestNavTree(PloneTestCase.PloneTestCase):
         self.failUnless(tree)
         # Ensure that our 'doc21' default page is not in the tree.
         self.assertEqual([c for c in tree['children'][-1]['children']
-                                            if c['path'][-5:]=='doc21'],[])
+                          if c['path'][-5:]=='doc21'], [])
 
     def testNavTreeMarksParentMetaTypesNotToQuery(self):
         # Make sure that items whose ids are in the idsNotToList navTree
@@ -630,9 +646,12 @@ class TestNavTree(PloneTestCase.PloneTestCase):
         self.portal.portal_catalog.reindexObject(self.folder.ns_folder)
         self.portal.portal_catalog.reindexObject(self.folder)
         tree = self.utils.createNavTree(self.folder.ns_folder)
-        self.assertEqual(tree['children'][0]['children'][0]['children'][0]['path'],
-                                '/%s/Members/test_user_1_/ns_folder' % portal_name)
-        self.assertEqual(tree['children'][0]['children'][0]['children'][0]['show_children'],False)
+        self.assertEqual(
+            tree['children'][0]['children'][0]['children'][0]['path'],
+            '/%s/Members/test_user_1_/ns_folder' % portal_name)
+        self.assertEqual(
+            tree['children'][0]['children'][0]['children'][0]['show_children'],
+            False)
 
     def testCreateSitemap(self):
         # Internally createSitemap is the same as createNavTree
@@ -646,8 +665,9 @@ class TestNavTree(PloneTestCase.PloneTestCase):
         factory = self.portal.manage_addProduct['PythonScripts']
         factory.manage_addPythonScript('getCustomNavQuery')
         script = self.portal.getCustomNavQuery
-        script.ZPythonScript_edit('','return {"review_state":"published"}')
-        self.assertEqual(self.portal.getCustomNavQuery(),{"review_state":"published"})
+        script.ZPythonScript_edit('', 'return {"review_state":"published"}')
+        self.assertEqual(
+            self.portal.getCustomNavQuery(), {"review_state":"published"})
         tree = self.utils.createNavTree(self.portal.folder2)
         self.failUnless(tree)
         self.failUnless(tree.has_key('children'))
@@ -741,7 +761,8 @@ class TestNavTree(PloneTestCase.PloneTestCase):
 
 
 class TestPortalTabs(PloneTestCase.PloneTestCase):
-    '''Tests for the portal tabs query'''
+    """Tests for the portal tabs query
+    """
 
     def afterSetUp(self):
         self.utils = self.portal.plone_utils
@@ -760,18 +781,18 @@ class TestPortalTabs(PloneTestCase.PloneTestCase):
 
     def testCreateTopLevelTabs(self):
         # See if we can create one at all
-        tabs = self.utils.createTopLevelTabs()
+        tabs = self.utils.createTopLevelTabs(self.portal)
         self.failUnless(tabs)
         #Only the folders show up (Members, news, events, folder1, folder2)
         self.assertEqual(len(tabs), 5)
 
     def testTabsRespectFolderOrder(self):
         # See if reordering causes a change in the tab order
-        tabs1 = self.utils.createTopLevelTabs()
+        tabs1 = self.utils.createTopLevelTabs(self.portal)
         # Must be manager to change order on portal itself
         self.setRoles(['Manager','Member'])
         self.portal.folder_position('up', 'folder2')
-        tabs2 = self.utils.createTopLevelTabs()
+        tabs2 = self.utils.createTopLevelTabs(self.portal)
         #Same number of objects
         self.failUnlessEqual(len(tabs1), len(tabs2))
         #Different order
@@ -784,15 +805,16 @@ class TestPortalTabs(PloneTestCase.PloneTestCase):
         factory = self.portal.manage_addProduct['PythonScripts']
         factory.manage_addPythonScript('getCustomNavQuery')
         script = self.portal.getCustomNavQuery
-        script.ZPythonScript_edit('','return {"review_state":"published"}')
-        self.assertEqual(self.portal.getCustomNavQuery(),{"review_state":"published"})
-        tabs = self.utils.createTopLevelTabs()
+        script.ZPythonScript_edit('', 'return {"review_state":"published"}')
+        self.assertEqual(
+            self.portal.getCustomNavQuery(), {"review_state":"published"})
+        tabs = self.utils.createTopLevelTabs(self.portal)
         #Should contain no folders
         self.assertEqual(len(tabs), 0)
         #change workflow for folder1
         workflow.doActionFor(self.portal.folder1, 'publish')
         self.portal.folder1.reindexObject()
-        tabs = self.utils.createTopLevelTabs()
+        tabs = self.utils.createTopLevelTabs(self.portal)
         #Should only contain the published folder
         self.assertEqual(len(tabs), 1)
 
@@ -802,13 +824,13 @@ class TestPortalTabs(PloneTestCase.PloneTestCase):
         ntp=self.portal.portal_properties.navtree_properties
         ntp.manage_changeProperties(wf_states_to_show=['published'])
         ntp.manage_changeProperties(enable_wf_state_filtering=True)
-        tabs = self.utils.createTopLevelTabs()
+        tabs = self.utils.createTopLevelTabs(self.portal)
         #Should contain no folders
         self.assertEqual(len(tabs), 0)
         #change workflow for folder1
         workflow.doActionFor(self.portal.folder1, 'publish')
         self.portal.folder1.reindexObject()
-        tabs = self.utils.createTopLevelTabs()
+        tabs = self.utils.createTopLevelTabs(self.portal)
         #Should only contain the published folder
         self.assertEqual(len(tabs), 1)
 
@@ -817,16 +839,16 @@ class TestPortalTabs(PloneTestCase.PloneTestCase):
         # all folder based tabs
         props = self.portal.portal_properties.site_properties
         props.manage_changeProperties(disable_folder_sections=True)
-        tabs = self.utils.createTopLevelTabs()
+        tabs = self.utils.createTopLevelTabs(self.portal)
         self.assertEqual(tabs, [])
 
     def testTabsExcludeItemsWithExcludeProperty(self):
         # Make sure that items witht he exclude_from_nav property are purged
-        tabs = self.utils.createTopLevelTabs()
+        tabs = self.utils.createTopLevelTabs(self.portal)
         orig_len = len(tabs)
         self.portal.folder2.setExcludeFromNav(True)
         self.portal.folder2.reindexObject()
-        tabs = self.utils.createTopLevelTabs()
+        tabs = self.utils.createTopLevelTabs(self.portal)
         self.failUnless(tabs)
         self.assertEqual(len(tabs), orig_len - 1)
         tab_names = [t['id'] for t in tabs]
@@ -835,26 +857,27 @@ class TestPortalTabs(PloneTestCase.PloneTestCase):
     def testTabsRespectsTypesWithViewAction(self):
         # With a type in typesUseViewActionInListings as current action it
         # should return a tab which has '/view' appended to the url
-        tabs = self.utils.createTopLevelTabs()
+        tabs = self.utils.createTopLevelTabs(self.portal)
         self.failUnless(tabs)
         # Fail if 'view' is used for folder
         self.failIf(tabs[-1]['url'][-5:]=='/view')
         # Add Folder to site_property
         props = self.portal.portal_properties.site_properties
-        props.manage_changeProperties(typesUseViewActionInListings=['Image','File','Folder'])
+        props.manage_changeProperties(
+            typesUseViewActionInListings=['Image','File','Folder'])
         # Verify that we have '/view'
-        tabs = self.utils.createTopLevelTabs()
+        tabs = self.utils.createTopLevelTabs(self.portal)
         self.failUnless(tabs)
         self.assertEqual(tabs[-1]['url'][-5:],'/view')
 
     def testTabsExcludeItemsInIdsNotToList(self):
         # Make sure that items whose ids are in the idsNotToList navTree
         # property get purged
-        tabs = self.utils.createTopLevelTabs()
+        tabs = self.utils.createTopLevelTabs(self.portal)
         orig_len = len(tabs)
         ntp=self.portal.portal_properties.navtree_properties
         ntp.manage_changeProperties(idsNotToList=['folder2'])
-        tabs = self.utils.createTopLevelTabs()
+        tabs = self.utils.createTopLevelTabs(self.portal)
         self.failUnless(tabs)
         self.assertEqual(len(tabs), orig_len - 1)
         tab_names = [t['id'] for t in tabs]
@@ -862,12 +885,12 @@ class TestPortalTabs(PloneTestCase.PloneTestCase):
 
     def testTabsExcludeNonFolderishItems(self):
         # Make sure that items witht he exclude_from_nav property are purged
-        tabs = self.utils.createTopLevelTabs()
+        tabs = self.utils.createTopLevelTabs(self.portal)
         orig_len = len(tabs)
         self.setRoles(['Manager','Member'])
         self.portal.invokeFactory('Document','foo')
         self.portal.foo.reindexObject()
-        tabs = self.utils.createTopLevelTabs()
+        tabs = self.utils.createTopLevelTabs(self.portal)
         self.failUnless(tabs)
         self.assertEqual(len(tabs),orig_len)
 
@@ -885,7 +908,8 @@ class TestPortalTabs(PloneTestCase.PloneTestCase):
 
 
 class TestBreadCrumbs(PloneTestCase.PloneTestCase):
-    '''Tests for the portal tabs query'''
+    """Tests for the portal tabs query
+    """
 
     def afterSetUp(self):
         self.utils = self.portal.plone_utils
@@ -918,7 +942,8 @@ class TestBreadCrumbs(PloneTestCase.PloneTestCase):
 
 
 class TestIDGenerationMethods(PloneTestCase.PloneTestCase):
-    '''Tests the isIDAutoGenerated method and pretty_title_or_id'''
+    """Tests the isIDAutoGenerated method and pretty_title_or_id
+    """
 
     def afterSetUp(self):
         self.utils = self.portal.plone_utils
@@ -940,11 +965,13 @@ class TestIDGenerationMethods(PloneTestCase.PloneTestCase):
 
     def test_pretty_title_or_id_returns_title(self):
         self.folder.setTitle('My pretty title')
-        self.assertEqual(self.utils.pretty_title_or_id(self.folder), 'My pretty title')
+        self.assertEqual(self.utils.pretty_title_or_id(self.folder),
+                         'My pretty title')
 
     def test_pretty_title_or_id_returns_id(self):
         self.folder.setTitle('')
-        self.assertEqual(self.utils.pretty_title_or_id(self.folder), self.folder.getId())
+        self.assertEqual(self.utils.pretty_title_or_id(self.folder),
+                         self.folder.getId())
 
     def test_pretty_title_or_id_when_autogenerated(self):
         self.setRoles(['Manager','Member'])
@@ -987,8 +1014,8 @@ class TestIDGenerationMethods(PloneTestCase.PloneTestCase):
     def test_pretty_title_or_id_on_catalog_brain_autogenerated(self):
         cat = self.portal.portal_catalog
         self.setRoles(['Manager','Member'])
-        self.folder.edit(id='folder.2004-11-09.0123456789', title='',
-                                                            subject='foobar')
+        self.folder.edit(id='folder.2004-11-09.0123456789',
+                         title='', subject='foobar')
         results = cat(Subject='foobar')
         self.assertEqual(len(results), 1)
         self.assertEqual(self.utils.pretty_title_or_id(results[0], 'Marker'),

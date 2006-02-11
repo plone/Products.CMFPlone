@@ -1,0 +1,124 @@
+<configure xmlns="http://namespaces.zope.org/zope"
+           xmlns:browser="http://namespaces.zope.org/browser"
+           xmlns:five="http://namespaces.zope.org/five">
+
+  <content class="Products.CMFPlone.Portal.PloneSite">
+    <implements interface=".interfaces.INavigationRoot" />
+  </content>
+
+  <browser:layer 
+      name="plone"
+      />
+
+  <browser:skin
+      name="plone"
+      layers="plone default"
+      />
+
+  <browser:view
+      for="*"
+      class=".navigation.DefaultPage"
+      provides=".interfaces.IDefaultPage"
+      permission="zope.Public"
+      allowed_interface=".interfaces.IDefaultPage"
+      />
+
+<!--
+  <browser:view
+      for="*"
+      class=".navigation.CatalogNavigationStructure"
+      provides=".interfaces.INavigationStructure"
+      permission="zope.Public"
+      allowed_interface=".interfaces.INavigationStructure"
+      />
+
+  <browser:page
+      for="*"
+      name="nav_view"
+      class=".navigation.CatalogNavigationStructure"
+      permission="zope.Public"
+      allowed_interface=".interfaces.INavigationStructure"
+      />
+-->
+
+  <browser:view
+      for="*"
+      class=".navigation.PhysicalNavigationStructure"
+      provides=".interfaces.INavigationStructure"
+      permission="zope.Public"
+      allowed_interface=".interfaces.INavigationStructure"
+      />
+
+  <browser:page
+      for="*"
+      name="nav_view"
+      class=".navigation.PhysicalNavigationStructure"
+      permission="zope.Public"
+      allowed_interface=".interfaces.INavigationStructure"
+      />
+
+  <browser:view
+      for=".interfaces.INavigationRoot"
+      class=".navigation.RootPhysicalNavigationStructure"
+      provides=".interfaces.INavigationStructure"
+      permission="zope.Public"
+      allowed_interface=".interfaces.INavigationStructure"
+      />
+
+  <browser:page
+      for=".interfaces.INavigationRoot"
+      name="nav_view"
+      class=".navigation.RootPhysicalNavigationStructure"
+      permission="zope.Public"
+      allowed_interface=".interfaces.INavigationStructure"
+      />
+
+  <browser:page
+      for="*"
+      name="plone"
+      class=".plone.Plone"
+      permission="zope.Public"
+      allowed_interface=".interfaces.IPlone"
+      />
+
+  <browser:page
+      for="*"
+      name="news_view"
+      class=".portlets.news.NewsPortlet"
+      permission="zope.Public"
+      allowed_interface=".interfaces.INewsPortlet"
+      />
+
+  <browser:page
+      for="*"
+      name="events_view"
+      class=".portlets.events.EventsPortlet"
+      permission="zope.Public"
+      allowed_interface=".interfaces.IEventsPortlet"
+      />
+
+  <browser:page
+      for="*"
+      name="navigation_view"
+      class=".portlets.navigation.NavigationPortlet"
+      permission="zope.Public"
+      allowed_interface=".interfaces.INavigationPortlet"
+      />
+
+  <browser:page
+      for="*"
+      name="calendar_view"
+      class=".portlets.calendar.CalendarPortlet"
+      permission="zope.Public"
+      allowed_interface=".interfaces.ICalendarPortlet"
+      />
+
+  <browser:page
+      for="*"
+      name="recent_view"
+      class=".portlets.recent.RecentPortlet"
+      permission="zope.Public"
+      allowed_interface=".interfaces.IRecentPortlet"
+      />
+
+</configure>

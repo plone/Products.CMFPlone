@@ -44,10 +44,10 @@
               </td>
 
               <td>
-                <span tal:replace="python:context.toLocalizedTime(items['time'],long_format=True)" />
+                <span tal:replace="python:toLocalizedTime(items['time'],long_format=True)" />
                 <span tal:condition="items/effective_date|nothing">
                   (<span i18n:translate="label_publishing_effective" tal:omit-tag="">effective</span>:
-                  <span tal:replace="python: context.toLocalizedTime(items['effective_date'],long_format=True)"></span>)
+                  <span tal:replace="python: toLocalizedTime(items['effective_date'],long_format=True)"></span>)
                 </span>
               </td>
 

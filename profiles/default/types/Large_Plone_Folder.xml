@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<type-info id="Large Plone Folder"
+           kind="Factory-based Type Information with dynamic views">
+  <property name="title">Large Folder</property>
+  <property name="description">A folder suitable for holding a very large number of items</property>
+  <property name="content_icon">folder_icon.gif</property>
+  <property name="content_meta_type">ATBTreeFolder</property>
+  <property name="product">ATContentTypes</property>
+  <property name="factory">addATBTreeFolder</property>
+  <property name="immediate_view">folder_listing</property>
+  <property name="global_allow">False</property>
+  <property name="filter_content_types">0</property>
+  <property name="allowed_content_types"></property>
+  <property name="allow_discussion">False</property>
+  <property name="default_view">folder_listing</property>
+  <property name="view_methods">
+   <element value="folder_listing" />
+   <element value="folder_summary_view" />
+   <element value="folder_tabular_view" />
+   <element value="atct_album_view" /></property>
+  <aliases>
+   <alias from="sharing" to="folder_localrole_form"/>
+   <alias from="(Default)" to="(dynamic view)"/>
+   <alias from="edit" to="atct_edit"/>
+   <alias from="index.html" to="(dynamic view)"/>
+   <alias from="properties" to="base_metadata"/>
+   <alias from="view" to="(selected layout)"/>
+  </aliases>
+  <action action_id="view" title="View" condition_expr=""
+          url_expr="string:${folder_url}/" category="object"
+          visible="True">
+   <permission>View</permission>
+  </action>
+  <action action_id="edit" title="Edit" condition_expr=""
+          url_expr="string:${object_url}/edit"
+          category="object" visible="True">
+   <permission>Modify portal content</permission>
+  </action>
+  <action action_id="metadata" title="Properties"
+          condition_expr=""
+          url_expr="string:${object_url}/properties"
+          category="object" visible="True">
+   <permission>Modify portal content</permission>
+  </action>
+  <action action_id="references" title="References"
+          condition_expr="object/archetype_tool/has_graphviz"
+          url_expr="string:${object_url}/reference_graph"
+          category="object" visible="True">
+   <permission>Modify portal content</permission>
+   <permission>Review portal content</permission>
+  </action>
+  <action action_id="folderlisting" title="Folder Listing"
+          condition_expr=""
+          url_expr="string:${folder_url}/view"
+          category="folder" visible="False">
+   <permission>View</permission>
+  </action>
+  <action action_id="local_roles" title="Sharing"
+          condition_expr=""
+          url_expr="string:${object_url}/sharing"
+          category="object" visible="True">
+   <permission>Manage properties</permission>
+  </action>
+  <action action_id="content_status_history" title="State"
+          condition_expr="python:object and portal.portal_workflow.getTransitionsFor(object, object.getParentNode())"
+          url_expr="string:$object_url/content_status_history"
+          category="object_tabs" visible="False">
+   <permission>View</permission>
+  </action>
+  <action action_id="external_edit" title="External Edit"
+          condition_expr=""
+          url_expr="string:$object_url/external_edit"
+          category="object" visible="False">
+   <permission>Modify portal content</permission>
+  </action>
+</type-info>

@@ -23,6 +23,7 @@ from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFPlone.interfaces.NonStructuralFolder import INonStructuralFolder
 from Products.CMFPlone.utils import base_hasattr
 from Products.CMFPlone.utils import safe_callable
+from Products.CMFPlone.utils import classImplements
 from OFS.IOrderSupport import IOrderedContainer
 from ZODB.POSException import ConflictError
 
@@ -90,6 +91,8 @@ class ExtensibleIndexableObjectWrapper(object):
             return vars[name]
         return getattr(obj, name)
 
+classImplements(ExtensibleIndexableObjectWrapper,
+                ExtensibleIndexableObjectWrapper.__implements__)
 
 def allowedRolesAndUsers(obj, portal, **kwargs):
     """Return a list of roles and users with View permission.
@@ -248,7 +251,6 @@ class CatalogTool(PloneBaseTool, BaseTool):
 
     def __init__(self):
         ZCatalog.__init__(self, self.getId())
-        self._initIndexes()
 
     security.declarePublic('enumerateIndexes')
     def enumerateIndexes(self):
@@ -443,4 +445,5 @@ class CatalogTool(PloneBaseTool, BaseTool):
 
 CatalogTool.__doc__ = BaseTool.__doc__
 
+classImplements(CatalogTool, CatalogTool.__implements__)
 InitializeClass(CatalogTool)

@@ -27,14 +27,14 @@
                     <th i18n:translate="event_when">When</th>
                     <td>
                         <tal:differentday tal:condition="python:not here.start().Date() == here.end().Date()">
-                            <span tal:replace="python:here.toLocalizedTime(here.start(), long_format=1)">Start Date Time</span>
+                            <span tal:replace="python:toLocalizedTime(here.start(), long_format=1)">Start Date Time</span>
                             <span i18n:translate="event_to">to</span> <br />
-                            <span tal:replace="python:here.toLocalizedTime(here.end(), long_format=1)">End Date Time</span>
+                            <span tal:replace="python:toLocalizedTime(here.end(), long_format=1)">End Date Time</span>
                         </tal:differentday>
 
                         <tal:sameday tal:condition="python:here.start().Date() == here.end().Date()"
                                      tal:define="ampm python:site_properties.getProperty('localLongTimeFormat').find('%p') >= 0">
-                            <span tal:replace="python:here.toLocalizedTime(here.start())">Start Date Time</span> <br />
+                            <span tal:replace="python:toLocalizedTime(here.start())">Start Date Time</span> <br />
                             <span i18n:translate="event_from">from</span>
                             <span tal:replace="python:test(ampm, here.start().AMPMMinutes(), here.start().TimeMinutes())">Start Time</span>
                             <span i18n:translate="event_to">to</span>

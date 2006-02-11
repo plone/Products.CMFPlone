@@ -39,6 +39,7 @@ class TestActionsTool(PloneTestCase.PloneTestCase):
 
     def testAddAction(self):
         # addAction should work even though PloneTestCase patches _cloneActions
+        # XXX Is this still true? [bmh]
         action_infos = self.actions.listActions()
         length = len(action_infos)
         self.actions.addAction(id='foo',
@@ -50,10 +51,11 @@ class TestActionsTool(PloneTestCase.PloneTestCase):
                                visible=1)
         action_infos = self.actions.listActions()
         self.assertEqual(len(action_infos), length + 1)
-        self.assertEqual(action_infos[-1].id, 'foo')
-        self.assertEqual(action_infos[-1].title, 'foo_name')
-        self.assertEqual(action_infos[-1].permissions, ('foo_permission',))
-        self.assertEqual(action_infos[-1].category, 'foo_category')
+        foo_action = self.actions.getActionObject('foo_category/foo')
+        self.assertEqual(foo_action.id, 'foo')
+        self.assertEqual(foo_action.title, 'foo_name')
+        self.assertEqual(foo_action.permissions, ('foo_permission',))
+        self.assertEqual(foo_action.category, 'foo_category')
 
     def testListFilteredActionsFor(self):
         self.assertEqual(Set(self.actions.listFilteredActionsFor(self.folder).keys()),

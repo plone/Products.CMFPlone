@@ -1,6 +1,7 @@
 #These CustomizationPolicies *are not* persisted!!
-from Products.CMFPlone.Portal import addPolicy, PloneGenerator
+from Products.CMFPlone.Portal import addPolicy
 from Products.CMFPlone.interfaces.CustomizationPolicy import ICustomizationPolicy
+from Products.CMFPlone.utils import classImplements
 
 class DefaultCustomizationPolicy:
     """ Customizes various actions on CMF tools """
@@ -15,10 +16,8 @@ class DefaultCustomizationPolicy:
         gs = mi_tool._getWidget('General Setup')
         gs.addItems(gs.available())
 
-    def getPloneGenerator(self):
-        ''' returns a PloneGenerator, can be overloaded '''
-        return PloneGenerator()
-        
+classImplements(DefaultCustomizationPolicy,
+                DefaultCustomizationPolicy.__implements__)
 
 def register(context, app_state):
     addPolicy('Default Plone', DefaultCustomizationPolicy())

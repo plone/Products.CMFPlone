@@ -5,6 +5,7 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault.RegistrationTool import RegistrationTool as BaseTool
 from Products.CMFDefault.RegistrationTool import _checkEmail
 from Products.CMFPlone import ToolNames
+from Products.CMFPlone.utils import classImplements
 
 from Globals import InitializeClass
 from AccessControl import ClassSecurityInfo, Unauthorized
@@ -184,10 +185,12 @@ class RegistrationTool(PloneBaseTool, BaseTool):
             # add the single email address
             if not utils.validateSingleEmailAddress(member.getProperty('email')):
                 raise ValueError, 'The email address did not validate'
-        
+
         return BaseTool.registeredNotify(self, new_member_id)
-        
-        
+
+
 RegistrationTool.__doc__ = BaseTool.__doc__
 
+classImplements(RegistrationTool,
+                RegistrationTool.__implements__)
 InitializeClass(RegistrationTool)

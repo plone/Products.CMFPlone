@@ -83,7 +83,7 @@
 
                 <span class="discreet" i18n:translate="results_by_author">
                 by <span tal:omit-tag="" tal:content="result/Creator" i18n:name="author">Author</span>,
-                <span tal:omit-tag="" tal:content="python:here.toLocalizedTime(result.ModificationDate, long_format=1)" i18n:name="date">Modification Date</span>
+                <span tal:omit-tag="" tal:content="python:toLocalizedTime(result.ModificationDate, long_format=1)" i18n:name="date">Modification Date</span>
                 </span>
 
             </dt>

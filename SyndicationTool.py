@@ -4,6 +4,7 @@ from Products.CMFCore.Expression import Expression
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
+from Products.CMFPlone.utils import classImplements
 
 actions = tuple(BaseTool._actions)
 for a in actions:
@@ -16,13 +17,13 @@ class SyndicationTool(PloneBaseTool, BaseTool):
     security = ClassSecurityInfo()
     toolicon = 'skins/plone_images/rss.gif'
     _actions = actions
-    
+
     __implements__ = (PloneBaseTool.__implements__, BaseTool.__implements__, )
 
     security.declarePublic('getSyndicatableContent')
     def getSyndicatableContent(self, obj):
         """ Use the getFolderContents script, unless
-        an object (like Topic) overrides it 
+        an object (like Topic) overrides it
         """
         # should we be doing aq_base here?
         if hasattr(obj, 'synContentValues'):
@@ -34,4 +35,5 @@ class SyndicationTool(PloneBaseTool, BaseTool):
 
 SyndicationTool.__doc__ = BaseTool.__doc__
 
+classImplements(SyndicationTool, SyndicationTool.__implements__)
 InitializeClass(SyndicationTool)

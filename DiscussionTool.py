@@ -3,8 +3,9 @@ from Products.CMFPlone import ToolNames
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
+from Products.CMFPlone.utils import classImplements
 
-from Products.CMFCore.utils import format_stx
+from StructuredText.StructuredText import HTML
 from DocumentTemplate.DT_Util import html_quote
 
 from Acquisition import aq_base
@@ -16,7 +17,7 @@ class DiscussionTool(PloneBaseTool, BaseTool):
     meta_type = ToolNames.DiscussionTool
     security = ClassSecurityInfo()
     toolicon = 'skins/plone_images/discussionitem_icon.gif'
-    
+
     __implements__ = (PloneBaseTool.__implements__, BaseTool.__implements__, )
 
     security.declarePublic('getDiscussionFor')
@@ -49,9 +50,10 @@ class DiscussionTool(PloneBaseTool, BaseTool):
             reply.text = text
             reply.cooked_text = html_quote(text).replace('\n','<br>')
         else:
-            reply.cooked_text = format_stx(text=text, level=level)
+            reply.cooked_text = HTML(text=text, level=level)
             reply.text = text
 
 DiscussionTool.__doc__ = BaseTool.__doc__
 
+classImplements(DiscussionTool, DiscussionTool.__implements__)
 InitializeClass(DiscussionTool)

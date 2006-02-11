@@ -6,9 +6,8 @@
     <div class="documentByLine">
         <img src="" alt=""
            title="This document is locked."
-           tal:define="locked portal_object/lock_icon.gif;
-                       lockable python:hasattr(here, 'wl_isLocked');"
-           tal:condition="python:lockable and here.wl_isLocked()"
+           tal:define="locked portal_object/lock_icon.gif;"
+           tal:condition="isLocked"
            tal:replace="structure python:locked.tag(title='Locked')"
            i18n:attributes="title label_document_locked;"
            />
@@ -33,7 +32,7 @@
         <span i18n:translate="box_last_modified">
         last modified
         </span>
-        <span tal:replace="python:here.toLocalizedTime(here.ModificationDate(),long_format=1)">
+        <span tal:replace="python:toLocalizedTime(here.ModificationDate(),long_format=1)">
         August 16, 2001 at 23:35:59
         </span>
 

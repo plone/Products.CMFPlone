@@ -96,7 +96,9 @@
 <div class="visualClear"><!-- --></div>
 
 <!-- The wrapper div. It contains the three columns. -->
-<div id="portal-columns" tal:attributes="class string:${hidecolumns}">
+<div id="portal-columns"
+     tal:define="plone_view context/@@plone"
+     tal:attributes="class python:plone_view.hide_columns(sl,sr)">
 
     <!-- start of the main and left columns -->
     <div id="visual-column-wrapper">

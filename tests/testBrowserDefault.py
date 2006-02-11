@@ -49,7 +49,7 @@ class TestPloneToolBrowserDefault(FunctionalTestCase):
             if hasattr(aq_base(obj), 'getLayout'):
                 viewaction = obj.getLayout()
             else:
-                viewaction = obj.getTypeInfo().getActionById('view')
+                viewaction = obj.getTypeInfo().getActionInfo('object/view')['url'].split('/')[-1]
 
         resolved = getattr(obj, viewaction)()
         base_path = obj.absolute_url(1)
@@ -77,7 +77,7 @@ class TestPloneToolBrowserDefault(FunctionalTestCase):
         if hasattr(aq_base(obj), 'getLayout'):
             viewaction = obj.getLayout()
         else:
-            viewaction = obj.getTypeInfo().getActionById('view')
+            viewaction = obj.getTypeInfo().getActionInfo('object/view')['url'].split('/')[-1]
 
         base_path = obj.absolute_url(1)
         viewed = getattr(obj, viewaction)()
@@ -142,7 +142,7 @@ class TestPloneToolBrowserDefault(FunctionalTestCase):
     # folderlisting action resolution (for folders without default pages)
 
     def testNonBrowserDefaultMixinFolderFolderlistingAction(self):
-        viewAction = self.portal.portal_types['CMF Folder'].getActionById('folderlisting')
+        viewAction = self.portal.portal_types['CMF Folder'].getActionInfo('folder/folderlisting')['url'].split('/')[-1]
         self.assertEqual(self.putils.browserDefault(self.portal.cmffolder),
                          (self.portal.cmffolder, [viewAction]))
 
@@ -152,7 +152,7 @@ class TestPloneToolBrowserDefault(FunctionalTestCase):
         self.compareLayoutVsView(self.portal.atctdocument, path="/view")
 
     def testViewMethodWithoutBrowserDefaultMixinGetsViewAction(self):
-        viewAction = self.portal.portal_types['CMF Document'].getActionById('view')
+        viewAction = self.portal.portal_types['CMF Document'].getActionInfo('object/view')['url'].split('/')[-1]
         obj = self.portal.cmfdocument
         self.compareLayoutVsView(self.portal.cmfdocument, path="/view",
                                  viewaction=viewAction)
@@ -161,7 +161,7 @@ class TestPloneToolBrowserDefault(FunctionalTestCase):
         self.compareLayoutVsView(self.portal.atctdocument, path="")
 
     def testCallWithoutBrowserDefaultMixinGetsViewAction(self):
-        viewAction = self.portal.portal_types['CMF Document'].getActionById('view')
+        viewAction = self.portal.portal_types['CMF Document'].getActionInfo('object/view')['url'].split('/')[-1]
         obj = self.portal.cmfdocument
         self.compareLayoutVsView(self.portal.cmfdocument, path="",
                                  viewaction=viewAction)
@@ -294,11 +294,20 @@ class TestPortalBrowserDefault(PloneTestCase.PloneTestCase):
                                         ['folder_listing', 'news_listing'],
                                         default_view = 'folder_listing')
             
+    def failIfDiff(self, text1, text2):
+        """
+        Compare two bodies of text.  If they are not the same, fail and output the diff
+        """
+        if text1 != text2:
+            diff = difflib.unified_diff(text1.split("\n"), text2.split("\n"))
+            self.fail("\n".join([line for line in diff]))
+
+
     def testCall(self):
         self.portal.setLayout('news_listing')
         resolved = self.portal()
         target = self.portal.unrestrictedTraverse('news_listing')()
-        self.assertEqual(resolved, target)
+        self.failIfDiff(resolved, target)
             
     def testDefaultViews(self):
         self.assertEqual(self.portal.getLayout(), 'folder_listing')
@@ -331,8 +340,9 @@ class TestPortalBrowserDefault(PloneTestCase.PloneTestCase):
         template = self.portal.defaultView()
         templateResolved = self.portal.unrestrictedTraverse(template)()
         
-        self.assertEqual(view, browserDefaultResolved)
-        self.assertEqual(view, templateResolved)
+        self.failIfDiff(view, browserDefaultResolved)
+        self.failIfDiff(view, templateResolved)
+
         
     def testCanSetDefaultPage(self):
         self.failUnless(self.portal.canSetDefaultPage())
@@ -375,8 +385,9 @@ class TestPortalBrowserDefault(PloneTestCase.PloneTestCase):
         self.assertEqual(self.portal.getDefaultPage(), 'ad')
         self.assertEqual(self.portal.defaultView(), 'ad')
         self.portal.setLayout('folder_listing')
-        self.assertEqual(self.portal.getDefaultPage(), None)
-        self.assertEqual(self.portal.defaultView(), 'folder_listing')
+
+        self.failIfDiff(self.portal.getDefaultPage(), None)
+        self.failIfDiff(self.portal.defaultView(), 'folder_listing')
 
         view = self.portal.view()
         browserDefault = self.portal.__browser_default__(None)[1][0]
@@ -384,8 +395,8 @@ class TestPortalBrowserDefault(PloneTestCase.PloneTestCase):
         template = self.portal.defaultView()
         templateResolved = self.portal.unrestrictedTraverse(template)()
 
-        self.assertEqual(view, browserDefaultResolved)
-        self.assertEqual(view, templateResolved)
+        self.failIfDiff(view, browserDefaultResolved)
+        self.failIfDiff(view, templateResolved)
 
     def testMissingTemplatesIgnored(self):
         self.portal.getTypeInfo().manage_changeProperties(view_methods = ['folder_listing', 'foo'])

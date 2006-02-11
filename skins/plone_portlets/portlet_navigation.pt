@@ -5,8 +5,8 @@
 <div metal:define-macro="portlet"
        i18n:domain="plone"
        tal:omit-tag=""
-       tal:define="data python:here.plone_utils.createNavTree(here, sitemap=None);">
-       
+       tal:define="view context/@@navigation_view">
+
 <dl class="portlet" id="portlet-navigation-tree">
     <dt class="portletHeader">
         <a href="#" 
@@ -14,28 +14,26 @@
            tal:attributes="href string:$portal_url/sitemap" 
            i18n:translate="box_navigation">Navigation</a>
     </dt>
-    
+
     <dd class="portletItem">
         <ul class="portletNavigationTree navTreeLevel0">
 
             <li class="navTreeItem"
-                tal:condition="portal_properties/navtree_properties/includeTop">
+                tal:condition="view/includeTop">
                 <div class="contenttype-plone-site">
                     <a class="visualIconPadding"
                        tal:attributes="href string:$portal_url;
                                        title portal/Description;
-                                       class python:test(portal == here or (portal == here.aq_inner.getParentNode() and here.plone_utils.isDefaultPage(here)), 'navTreeCurrentItem visualIconPadding', 'visualIconPadding');">
+                                       class python:test(path('view/isPortalOrDefaultChild'),
+				                         'navTreeCurrentItem visualIconPadding', 'visualIconPadding');">
                     <span tal:omit-tag=""
                           i18n:translate="tabs_home">Home</span>
                     </a>
                 </div>
             </li>
-            <tal:navtree define="children python:data.get('children', []);
-                                 level python:0;
-                                 show_children python:True;
-                                 isNaviTree python:True;">
-                <metal:main metal:use-macro="here/portlet_navtree_macro/macros/nav_main" />
-            </tal:navtree>
+            <li tal:replace="structure view/createNavTree">
+                SUBTREE
+            </li>
         </ul>
     </dd>
 </dl>

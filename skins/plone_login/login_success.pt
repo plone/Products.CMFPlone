@@ -20,7 +20,7 @@
   <div tal:condition="not:isAnon">
     <div tal:define="came_from request/came_from|nothing;
                      initial_login request/initial_login|nothing;
-             js_enabled python:request.get('js_enabled','1')!='0';">
+                     js_enabled python:request.get('js_enabled','1')!='0';">
 
       <h1 i18n:translate="heading_you_are_now_logged_in">You are now logged in</h1>
 

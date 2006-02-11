@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<object name="cookie_authentication" meta_type="Cookie Crumbler">
+ <property name="auth_cookie">__ac</property>
+ <property name="name_cookie">__ac_name</property>
+ <property name="pw_cookie">__ac_password</property>
+ <property name="persist_cookie">__ac_persistent</property>
+ <property name="auto_login_page">login_form</property>
+ <property name="logout_page">logged_out</property>
+ <property name="unauth_page">insufficient_privileges</property>
+ <property name="local_cookie_path">False</property>
+ <property name="cache_header_value">private</property>
+ <property name="log_username">True</property>
+</object>

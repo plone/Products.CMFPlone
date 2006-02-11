@@ -45,7 +45,7 @@
                    <span i18n:translate="label_anonymous_user"
                          tal:condition="anonymous_creator">Anonymous User</span>
                    <span i18n:translate="label_commented_at">at</span> 
-                   <span tal:replace="python:portal.toLocalizedTime(reply.ModificationDate(),
+                   <span tal:replace="python:toLocalizedTime(reply.ModificationDate(),
                                       long_format=1)">8/23/2001 12:40:44 PM</span>
                </div>
                <div class="commentBody"

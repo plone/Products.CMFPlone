@@ -1,0 +1,88 @@
+<?xml version="1.0"?>
+<rolemap>
+  <roles>
+    <role name="Anonymous"/>
+    <role name="Authenticated"/>
+    <role name="Manager"/>
+    <role name="Member"/>
+    <role name="Owner"/>
+    <role name="Reviewer"/>
+  </roles>
+  <permissions>
+    <permission name="Access inactive portal content"
+                acquire="True">
+      <role name="Owner"/>
+    </permission>
+    <permission name="Add portal content" acquire="True">
+      <role name="Owner"/>
+      <role name="Manager"/>
+    </permission>
+    <permission name="Add portal folders" acquire="True">
+      <role name="Owner"/>
+      <role name="Manager"/>
+    </permission>
+    <permission name="Allow sendto" acquire="True">
+      <role name="Anonymous"/>
+      <role name="Manager"/>
+      <role name="Member"/>
+    </permission>
+    <permission name="Delete objects" acquire="True">
+      <role name="Owner"/>
+      <role name="Manager"/>
+    </permission>
+    <permission name="FTP access" acquire="True">
+      <role name="Owner"/>
+      <role name="Manager"/>
+    </permission>
+    <permission name="List folder contents" acquire="True">
+      <role name="Manager"/>
+      <role name="Owner"/>
+    </permission>
+    <permission name="List portal members" acquire="True">
+      <role name="Member"/>
+      <role name="Manager"/>
+    </permission>
+    <permission name="List undoable changes" acquire="True">
+      <role name="Member"/>
+      <role name="Manager"/>
+    </permission>
+    <permission name="Manage properties" acquire="True">
+      <role name="Owner"/>
+      <role name="Manager"/>
+    </permission>
+    <permission name="Reply to item" acquire="True">
+      <role name="Member"/>
+      <role name="Manager"/>
+    </permission>
+    <permission name="Review portal content" acquire="True">
+      <role name="Reviewer"/>
+      <role name="Manager"/>
+    </permission>
+    <permission name="Set own password" acquire="False">
+      <role name="Manager"/>
+      <role name="Authenticated"/>
+    </permission>
+    <permission name="Set own properties" acquire="False">
+      <role name="Manager"/>
+      <role name="Authenticated"/>
+    </permission>
+    <permission name="Undo changes" acquire="True">
+      <role name="Owner"/>
+      <role name="Manager"/>
+    </permission>
+    <permission name="Use external editor" acquire="False">
+      <role name="Manager"/>
+      <role name="Authenticated"/>
+    </permission>
+    <permission name="View Groups" acquire="True">
+      <role name="Manager"/>
+      <role name="Owner"/>
+      <role name="Member"/>
+    </permission>
+    <permission name="View management screens"
+                acquire="True">
+      <role name="Owner"/>
+      <role name="Manager"/>
+    </permission>
+  </permissions>
+</rolemap>

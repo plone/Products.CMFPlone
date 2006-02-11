@@ -3,30 +3,19 @@
       i18n:domain="plone">
 <body>
 <div metal:define-macro="portlet"
-     tal:define="results python:here.portal_catalog.searchResults(
-                 portal_type='Event',
-                 end={'query': here.ZopeTime(),
-                      'range': 'min'},
-                 sort_on='start',
-                 review_state='published')[:5];"
+     tal:define="view context/@@events_view;
+                 results view/published_events;
+                 events_link view/all_events_link;
+                 prev_events_link view/prev_events_link"
      tal:condition="results">
 
 <dl class="portlet" id="portlet-events"
     tal:define="eventsfolder python:'events' in portal.contentIds()">
-  
+
     <dt class="portletHeader">
         <a href=""
+           tal:attributes="href events_link"
            class="tile"
-           tal:condition="eventsfolder"
-           tal:attributes="href string:${utool}/events"
-           i18n:translate="box_events">
-            Upcoming Events
-        </a>
-
-        <a href=""
-           class="tile"
-           tal:condition="not: eventsfolder"
-           tal:attributes="href string:${utool}/events_listing"
            i18n:translate="box_events">
             Upcoming Events
         </a>
@@ -48,7 +37,7 @@
                 <tal:condition condition="obj/location">
                     <tal:location content="obj/location">Location</tal:location>, <br />
                 </tal:condition>
-                <tal:date content="python:here.toLocalizedTime(obj.start)">
+                <tal:date content="python:toLocalizedTime(obj.start)">
                 May 5
                 </tal:date>
             </span>
@@ -57,10 +46,10 @@
     </tal:events>
 
     <dd class="portletFooter"
-           tal:condition="python:eventsfolder and 'previous' in portal.events.contentIds()">
+           tal:condition="prev_events_link">
         <a href=""
+           tal:attributes="href prev_events_link">
            class="tile"
-           tal:attributes="href string:${utool}/events/previous">
             <span i18n:translate="box_previous_events">
                 Previous events&hellip;
             </span>
@@ -71,15 +60,7 @@
         <a href=""
            class="tile"
            tal:condition="eventsfolder"
-           tal:attributes="href string:${utool}/events"
-           i18n:translate="box_upcoming_events">
-                Upcoming events&hellip;
-        </a>
-
-        <a href=""
-           class="tile"
-           tal:condition="not: eventsfolder"
-           tal:attributes="href string:${utool}/events_listing"
+           tal:attributes="href events_link"
            i18n:translate="box_upcoming_events">
                 Upcoming events&hellip;
         </a>

@@ -20,7 +20,8 @@ modification_permissions = ('Modify portal content',
 contents_object = context
 # If this object is not folderish or is the parent folder's default page,
 # then the folder_contents action is for the parent, check permissions there.
-if contents_object.isDefaultPageInFolder():
+putils = context.plone_utils
+if putils.isDefaultPage(contents_object):
     try:
         contents_object = contents_object.getParentNode()
     except Unauthorized:

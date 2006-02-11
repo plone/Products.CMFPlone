@@ -40,8 +40,7 @@
                             folderContents python: (over_limit and folderContents[:limit_display]) or folderContents;
                             batch folderContents;
                             show_about python:not isAnon or site_properties.allowAnonymousViewAbout">
-        <tal:listing condition="folderContents"
-                     define="toLocalizedTime nocall:here/toLocalizedTime;">
+        <tal:listing condition="folderContents">
 
             <!-- Navigation -->
             <div metal:use-macro="here/batch_macros/macros/navigation" />

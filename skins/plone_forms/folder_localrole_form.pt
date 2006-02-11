@@ -10,11 +10,10 @@
 
   <div metal:fill-slot="main"
        tal:define="Batch python:modules['Products.CMFPlone'].Batch;
-                   username member/getUserName;
+                   username member/getUserName|nothing;
                    avail_roles python:[role for role in mtool.getCandidateLocalRoles(here) if role!='Owner'];
                    b_size python:12;b_start python:0;b_start request/b_start | b_start;
                    tabindex python:Iterator();
-                   iscontainer isFolderish|nothing;
                    itemPortalTypeTitle python:here.getTypeInfo().Title();
                    inheritanceActive python:putils.isLocalRoleAcquired(here);
                    search_submitted request/role_submit|nothing;
@@ -31,7 +30,7 @@
         <span tal:content="object_title" tal:omit-tag="" i18n:name="folder">title</span>
     </h1>
 
-    <tal:warning tal:condition="not:iscontainer">
+    <tal:warning tal:condition="not:isFolderish">
         <div class="portalMessage">
             <span i18n:translate="local_role_warning_type">
                 <strong>Attention!</strong> 
@@ -53,7 +52,7 @@
         These users have privileges here:
     </p>
 
-    <tal:warning tal:condition="python:iscontainer and here.isDefaultPageInFolder()">
+    <tal:warning tal:condition="python:isFolderish and isContextDefaultPage">
         <div class="portalMessage">
             <span i18n:translate="local_role_warning_default_page">
             <strong>Attention!</strong> You are setting the sharing permissions for this folder's default page.

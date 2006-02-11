@@ -1,56 +1,17 @@
-<metal:globaldefine define-macro="defines"
+
+<!-- 
+The expressions that used to generate these globals have been 
+moved to (much faster) Python code in CMFPlone/browser/plone.py
+-->
+
+<metal:globaldefine define-macro="defines" 
       tal:define="
-        global utool nocall:here/portal_url;
-        global portal utool/getPortalObject;
-        global portal_object nocall:portal;
-        global portal_url utool;
-        global mtool nocall:portal/portal_membership;
-        global gtool nocall:portal/portal_groups | nothing;
-        global gdtool nocall:portal/portal_groupdata | nothing;
-        global atool nocall:portal/portal_actions;
-        global aitool nocall:portal/portal_actionicons | nothing;
-        global putils nocall:portal/plone_utils;
-        global wtool nocall:portal/portal_workflow;
-        global ifacetool nocall:portal/portal_interface | nothing;
-        global syntool nocall:portal/portal_syndication;
-        global portal_title portal_object/Title;
-        global object_title here/pretty_title_or_id;
-        global member mtool/getAuthenticatedMember;
-        global checkPermission nocall:mtool/checkPermission;
-        global membersfolder mtool/getMembersFolder;
-        global isAnon mtool/isAnonymousUser;
-        global actions python:portal.portal_actions.listFilteredActionsFor(here);
-        global keyed_actions python:portal.keyFilteredActions(actions);
-        global user_actions actions/user;
-        global workflow_actions actions/workflow;
-        global folder_actions actions/folder;
-        global global_actions actions/global;
-        global portal_tabs python:putils.createTopLevelTabs(actions);
-        global wf_state python:wtool.getInfoFor(here,'review_state',None);
-        global portal_properties portal/portal_properties;
-        global site_properties portal_properties/site_properties;
-        global ztu modules/ZTUtils;
-        global actions options/actions | actions;
-        global wf_actions workflow_actions;
-        global isFolderish here/isPrincipiaFolderish;
-        global template_id options/template_id | template/getId | nothing;
-        global slots_mapping options/slots_mapping|here/prepare_slots|nothing;
+        foo context/@@plone/globalize;
         global Iterator python:modules['Products.CMFPlone'].IndexIterator;
         global tabindex python:Iterator(pos=30000);
-        global here_url here/absolute_url;
-        global sl slots_mapping/left;
-        global sr slots_mapping/right;
-        global hidecolumns python:here.hide_columns(sl,sr);
-        global default_language site_properties/default_language|nothing;
-        language request/language | nothing;
-        global language python:language or here.Language() or default_language;
-        global is_editable python:checkPermission('Modify portal content', context);
-        global isEditable is_editable;
-        global lockable python:hasattr(here.aq_inner.aq_explicit, 'wl_isLocked');
-        global isLocked python:lockable and here.wl_isLocked();
-        global isRTL python:here.isRightToLeft(domain='plone');
-        global visible_ids here/visibleIdsEnabled|nothing;
-        global current_page_url here/getCurrentUrl|nothing;
+        global template_id options/template_id | template/getId | nothing;
+        view_template_id here/getViewTemplateId|nothing;
+        global isViewTemplate python:template_id==view_template_id;
         view_template_id here/getViewTemplateId|nothing;
         global isViewTemplate python:template_id==view_template_id;
         global normalizeString nocall:putils/normalizeString;

@@ -1,0 +1,149 @@
+<?xml version="1.0"?>
+<object name="portal_properties" meta_type="Plone Properties Tool"
+   xmlns:i18n="http://xml.zope.org/namespaces/i18n">
+ <object name="navtree_properties" meta_type="Plone Property Sheet">
+  <property name="title">NavigationTree properties</property>
+  <property name="sortAttribute"
+     type="string">getObjPositionInParent</property>
+  <property name="sortOrder" type="string">asc</property>
+  <property name="sitemapDepth" type="int">3</property>
+  <property name="includeTop" type="boolean">True</property>
+  <property name="topLevel" type="int">0</property>
+  <property name="idsNotToList" type="lines"/>
+  <property name="skipIndex_html" type="boolean">True</property>
+  <property name="showAllParents" type="boolean">True</property>
+  <property name="showMyUserFolderOnly" type="boolean">True</property>
+  <property name="showFolderishSiblingsOnly" type="boolean">True</property>
+  <property name="showFolderishChildrenOnly" type="boolean">True</property>
+  <property name="showNonFolderishObject" type="boolean">False</property>
+  <property name="showTopicResults" type="boolean">True</property>
+  <property name="rolesSeeUnpublishedContent" type="lines">
+   <element value="Manager"/>
+   <element value="Reviewer"/>
+   <element value="Owner"/>
+  </property>
+  <property name="sortCriteria" type="lines">
+   <element value="isPrincipiaFolderish,desc"/>
+  </property>
+  <property name="parentMetaTypesNotToQuery" type="lines">
+   <element value="TempFolder"/>
+   <element value="Large Plone Folder"/>
+  </property>
+  <property name="batchSize" type="int">30</property>
+  <property name="croppingLength" type="int">256</property>
+  <property name="forceParentsInBatch" type="boolean">False</property>
+  <property name="rolesSeeContentsView" type="lines">
+   <element value="Manager"/>
+   <element value="Reviewer"/>
+   <element value="Owner"/>
+  </property>
+  <property name="rolesSeeHiddenContent" type="lines">
+   <element value="Manager"/>
+  </property>
+  <property name="bottomLevel" type="int">65535</property>
+  <property name="typesLinkToFolderContents" type="lines"/>
+  <property name="metaTypesNotToList" type="lines">
+   <element value="ATBooleanCriterion"/>
+   <element value="ATDateCriteria"/>
+   <element value="ATDateRangeCriterion"/>
+   <element value="ATListCriterion"/>
+   <element value="ATPortalTypeCriterion"/>
+   <element value="ATReferenceCriterion"/>
+   <element value="ATSelectionCriterion"/>
+   <element value="ATSimpleIntCriterion"/>
+   <element value="ATSimpleStringCriterion"/>
+   <element value="ATSortCriterion"/>
+   <element value="Discussion Item"/>
+   <element value="Plone Site"/>
+   <element value="TempFolder"/>
+   <element value="ATCurrentAuthorCriterion"/>
+   <element value="ATPathCriterion"/>
+  </property>
+  <property name="enable_wf_state_filtering" type="boolean">False</property>
+  <property name="wf_states_to_show" type="lines"/>
+ </object>
+ <object name="site_properties" meta_type="Plone Property Sheet">
+  <property name="title">Site wide properties</property>
+  <property name="allowAnonymousViewAbout" type="boolean">True</property>
+  <property name="localTimeFormat" type="string">%Y-%m-%d</property>
+  <property name="localLongTimeFormat" type="string">%Y-%m-%d %H:%M</property>
+  <property name="default_language" type="string">en</property>
+  <property name="default_charset" type="string">utf-8</property>
+  <property name="use_folder_tabs" type="lines">
+   <element value="Large Plone Folder"/>
+   <element value="Folder"/>
+   <element value="Plone Site"/>
+  </property>
+  <property name="ext_editor" type="boolean">False</property>
+  <property name="available_editors" type="lines">
+   <element value="None"/>
+   <element value="Kupu"/>
+  </property>
+  <property name="allowRolesToAddKeywords" type="lines">
+   <element value="Manager"/>
+   <element value="Reviewer"/>
+  </property>
+  <property name="auth_cookie_length" type="int">0</property>
+  <property name="calendar_starting_year" type="int">1999</property>
+  <property name="calendar_future_years_available" type="int">5</property>
+  <property name="invalid_ids" type="lines">
+   <element value="actions"/>
+  </property>
+  <property name="default_page" type="lines">
+   <element value="index_html"/>
+   <element value="index.html"/>
+   <element value="index.htm"/>
+   <element value="FrontPage"/>
+  </property>
+  <property name="search_results_description_length" type="int">160</property>
+  <property name="ellipsis" type="string">...</property>
+  <property name="typesLinkToFolderContentsInFC" type="lines">
+   <element value="Large Plone Folder"/>
+   <element value="Folder"/>
+  </property>
+  <property name="visible_ids" type="boolean">False</property>
+  <property name="exposeDCMetaTags" type="boolean">False</property>
+  <property name="types_not_searched" type="lines">
+   <element value="ATBooleanCriterion"/>
+   <element value="ATDateCriteria"/>
+   <element value="ATDateRangeCriterion"/>
+   <element value="ATListCriterion"/>
+   <element value="ATPortalTypeCriterion"/>
+   <element value="ATReferenceCriterion"/>
+   <element value="ATSelectionCriterion"/>
+   <element value="ATSimpleIntCriterion"/>
+   <element value="ATSimpleStringCriterion"/>
+   <element value="ATSortCriterion"/>
+   <element value="Discussion Item"/>
+   <element value="Plone Site"/>
+   <element value="TempFolder"/>
+   <element value="ATCurrentAuthorCriterion"/>
+   <element value="ATPathCriterion"/>
+   <element value="CMF Document"/>
+   <element value="CMF Event"/>
+   <element value="CMF Favorite"/>
+   <element value="CMF File"/>
+   <element value="CMF Folder"/>
+   <element value="CMF Image"/>
+   <element value="CMF Large Plone Folder"/>
+   <element value="CMF Link"/>
+   <element value="CMF News Item"/>
+   <element value="CMF Topic"/>
+  </property>
+  <property name="disable_folder_sections" type="boolean">False</property>
+  <property name="typesUseViewActionInListings" type="lines">
+   <element value="Image"/>
+   <element value="File"/>
+  </property>
+  <property name="verify_login_name" type="boolean">True</property>
+  <property name="enable_livesearch" type="boolean">True</property>
+  <property name="default_page_types" type="lines">
+   <element value="Document"/>
+   <element value="Event"/>
+   <element value="Link"/>
+   <element value="News Item"/>
+   <element value="Topic"/>
+  </property>
+  <property name="use_folder_contents" type="lines"/>
+ </object>
+</object>

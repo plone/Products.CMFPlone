@@ -6,8 +6,7 @@
 <!-- THE PATHBAR (breadcrumbs) DEFINITION -->
 <div metal:define-macro="path_bar"
      id="portal-breadcrumbs"
-     tal:define="breadcrumbs python:putils.createBreadCrumbs(here);
-                     portal_url portal_url|utool">
+     tal:define="breadcrumbs here/@@nav_view/breadcrumbs">
 
     <span id="breadcrumbs-you-are-here" i18n:translate="you_are_here">You 
 are here:</span>

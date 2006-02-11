@@ -11,8 +11,10 @@ from Products.CMFPlone import cmfplone_globals
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Products.CMFCore.permissions import ManagePortal
 from Products.CMFCore.utils import UniqueObject, getToolByName
+from StructuredText.StructuredText import HTML
 from Products.CMFPlone.PloneFolder import PloneFolder as TempFolderBase
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
+from Products.CMFPlone.utils import classImplements
 from Products.CMFPlone.utils import base_hasattr
 from ZODB.POSException import ConflictError
 
@@ -167,7 +169,7 @@ class TempFolder(TempFolderBase):
             return (aq_base(obj).__of__(temp_folder)).__of__(intended_parent)
 
     # ignore rename requests since they don't do anything
-    def manage_renameObject(self, id1, id2):
+    def manage_renameObject(self, id, new_id, REQUEST=None):
         pass
 
 
@@ -429,4 +431,5 @@ class FactoryTool(PloneBaseTool, UniqueObject, SimpleItem):
         self.REQUEST.set(FACTORY_INFO, factory_info)
         return tempFolder
 
+classImplements(FactoryTool, FactoryTool.__implements__)
 Globals.InitializeClass(FactoryTool)

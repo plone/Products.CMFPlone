@@ -224,7 +224,12 @@ class TestSearchForms(PloneTestCase.PloneTestCase):
     def testRenderTopicView(self):
         self.setPermissions([AddPortalTopics])
         self.folder.invokeFactory('Topic', id='topic')
-        self.folder.topic.atct_topic_view()
+        try:
+            self.folder.topic.atct_topic_view()
+        except:
+            import sys, pdb
+            e,m,tb = sys.exc_info()
+            pdb.post_mortem(tb)
         
 
 def test_suite():

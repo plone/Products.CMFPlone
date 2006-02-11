@@ -6,6 +6,7 @@ from OFS.SimpleItem import SimpleItem
 from Globals import InitializeClass
 from AccessControl import ClassSecurityInfo
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
+from Products.CMFPlone.utils import classImplements
 
 from Interface.Implements import getImplements, flattenInterfaces
 from Interface import Interface
@@ -46,7 +47,7 @@ class InterfaceTool(PloneBaseTool, UniqueObject, SimpleItem):
         iface = resolveInterface(dotted_name)
         nd = iface.namesAndDescriptions(all=all)
         return [(n, d.getDoc()) for n, d in nd]
-    
+
     security.declarePublic('getInterfacesOf')
     def getInterfacesOf(self, object):
         """Returns the list of interfaces which are implemented by the object
@@ -61,7 +62,7 @@ class InterfaceTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     def getBaseInterfacesOf(self, object):
         """Returns all base interfaces of an object but no direct interfaces
-        
+
         Base interfaces are the interfaces which are the super interfaces of the
         direct interfaces
         """
@@ -73,7 +74,7 @@ class InterfaceTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     def getInterfaceInformations(self, iface):
         """Gets all useful informations from an iface
-        
+
         * name
         * dotted name
         * trimmed doc string
@@ -179,4 +180,5 @@ class InterfaceFinder:
     def found(self, iface):
         self._found[getDottedName(iface)] = iface
 
+classImplements(InterfaceTool, InterfaceTool.__implements__)
 InitializeClass(InterfaceTool)

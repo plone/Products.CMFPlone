@@ -1,4 +1,5 @@
 from Globals import DTMLFile
+from Globals import InitializeClass
 from AccessControl import ClassSecurityInfo
 from OFS.Folder import Folder
 from OFS.SimpleItem import SimpleItem
@@ -15,6 +16,7 @@ import ToolNames
 from interfaces.PloneControlPanel import IControlPanel
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFPlone import PloneMessageFactory as _
+from Products.CMFPlone.utils import classImplements
 
 class PloneConfiglet(ActionInformation):
 
@@ -395,3 +397,6 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
                                  , management_view='Actions'
                                  , manage_tabs_message=manage_tabs_message
                                  )
+
+classImplements(PloneControlPanel, PloneControlPanel.__implements__)
+InitializeClass(PloneControlPanel)

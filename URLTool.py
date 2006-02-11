@@ -3,6 +3,7 @@ from Products.CMFPlone import ToolNames
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
+from Products.CMFPlone.utils import classImplements
 
 from urlparse import urlparse
 
@@ -11,7 +12,7 @@ class URLTool(PloneBaseTool, BaseTool):
     meta_type = ToolNames.URLTool
     security = ClassSecurityInfo()
     toolicon = 'skins/plone_images/link_icon.gif'
-    
+
     __implements__ = (PloneBaseTool.__implements__, BaseTool.__implements__, )
 
     security.declarePublic('isURLInPortal')
@@ -33,4 +34,5 @@ class URLTool(PloneBaseTool, BaseTool):
 
 URLTool.__doc__ = BaseTool.__doc__
 
+classImplements(URLTool, URLTool.__implements__)
 InitializeClass(URLTool)

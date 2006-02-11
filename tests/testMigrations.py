@@ -130,6 +130,9 @@ from Products.CMFPlone.migrations.v2_1.two11_two12 import removeDiscussionItemWo
 from Products.CMFPlone.migrations.v2_1.two11_two12 import addMemberData
 from Products.CMFPlone.migrations.v2_1.two11_two12 import reinstallPortalTransforms
 
+from Products.CMFPlone.migrations.v2_5.alphas import installPlacefulWorkflow
+from Products.CMFPlone.migrations.v2_5.alphas import installDeprecated
+
 from Products.CMFDynamicViewFTI.migrate import migrateFTI
 
 import types
@@ -576,7 +579,7 @@ class TestMigrations_v2_1(MigrationTest):
     def testInstallCSSandJSRegistries(self):
         # Should install ResourceRegistries
         self.uninstallProduct('ResourceRegistries')
-        self.failIf(hasattr(self.portal, 'portal_css'))
+        self.portal.manage_delObjects(['portal_css', 'portal_javascripts'])
         installCSSandJSRegistries(self.portal, [])
         self.failUnless('portal_css' in self.portal.objectIds())
         self.failUnless('portal_javascripts' in self.portal.objectIds())
@@ -584,7 +587,7 @@ class TestMigrations_v2_1(MigrationTest):
     def testInstallCSSandJSRegistriesTwice(self):
         # Should not fail if migrated again
         self.uninstallProduct('ResourceRegistries')
-        self.failIf(hasattr(self.portal, 'portal_css'))
+        self.portal.manage_delObjects(['portal_css', 'portal_javascripts'])
         installCSSandJSRegistries(self.portal, [])
         installCSSandJSRegistries(self.portal, [])
         self.failUnless('portal_css' in self.portal.objectIds())
@@ -1823,12 +1826,14 @@ class TestMigrations_v2_1(MigrationTest):
 
     def testFixFolderlistingAction(self):
         fixFolderlistingAction(self.portal, [])
-        self.assertEqual(self.portal.portal_types['Plone Site'].getActionById('folderlisting'), 'view')
+        self.assertEqual(self.portal.getTypeInfo().getActionObject('folder/folderlisting').getActionExpression(),
+                         'string:${folder_url}/view')
 
     def testFixFolderlistingActionTwice(self):
         fixFolderlistingAction(self.portal, [])
         fixFolderlistingAction(self.portal, [])
-        self.assertEqual(self.portal.portal_types['Plone Site'].getActionById('folderlisting'), 'view')
+        self.assertEqual(self.portal.getTypeInfo().getActionObject('folder/folderlisting').getActionExpression(),
+                         'string:${folder_url}/view')
 
     def testFixFolderlistingActionNoTool(self):
         self.portal._delObject('portal_types')
@@ -1928,27 +1933,23 @@ class TestMigrations_v2_1(MigrationTest):
 
     def testConvertPloneFTIToCMFDynamicViewFTI(self):
         ttool = self.portal.portal_types
-        name = [t[0] for t in ttool.listDefaultTypeInformation()
-                                if t[1].get('id','')=='Plone Root'][0]
         # Convert to old-school FTI
-        migrateFTI(self.portal, 'Plone Site', name,
-                                            'Factory-based Type Information')
+        migrateFTI(self.portal, 'Plone Site', None,
+                   'Factory-based Type Information')
         self.assertEqual(getattr(ttool, 'Plone Site').meta_type,
-                                            'Factory-based Type Information')
+                         'Factory-based Type Information')
         # Convert back
         convertPloneFTIToCMFDynamicViewFTI(self.portal, [])
         self.assertEqual(self.portal.getTypeInfo().meta_type,
-                        'Factory-based Type Information with dynamic views')
+                         'Factory-based Type Information with dynamic views')
 
     def testConvertPloneFTIToCMFDynamicViewFTIConvertsViews(self):
         ttool = self.portal.portal_types
-        name = [t[0] for t in ttool.listDefaultTypeInformation()
-                                if t[1].get('id','')=='Plone Root'][0]
         # Convert to old-school FTI
-        migrateFTI(self.portal, 'Plone Site', name,
-                                            'Factory-based Type Information')
+        migrateFTI(self.portal, 'Plone Site', None,
+                   'Factory-based Type Information')
         self.assertEqual(getattr(ttool, 'Plone Site').meta_type,
-                                            'Factory-based Type Information')
+                         'Factory-based Type Information')
         # Set old style PropertyManaged default page/layout
         self.portal._selected_default_page = 'blah'
         # Convert back
@@ -1957,16 +1958,16 @@ class TestMigrations_v2_1(MigrationTest):
         _createObjectByType('Document', self.portal, 'blah')
         # check layout transfer
         self.assertEqual(self.portal.getDefaultPage(), 'blah')
-        self.assertEqual(self.portal.getAvailableLayouts(), [('folder_listing', 'Standard view'), ('news_listing', 'News')])
+        self.assertEqual(self.portal.getAvailableLayouts(),
+                         [('folder_listing', 'Standard view'),
+                          ('news_listing', 'News')])
         self.assertEqual(self.portal.getLayout(), 'folder_listing')
 
     def testConvertPloneFTIToCMFDynamicViewFTITwice(self):
         ttool = self.portal.portal_types
-        name = [t[0] for t in ttool.listDefaultTypeInformation()
-                                if t[1].get('id','')=='Plone Root'][0]
         # Convert to old-school FTI
-        migrateFTI(self.portal, 'Plone Site', name,
-                                            'Factory-based Type Information')
+        migrateFTI(self.portal, 'Plone Site', None,
+                   'Factory-based Type Information')
         # Convert back
         convertPloneFTIToCMFDynamicViewFTI(self.portal, [])
         convertPloneFTIToCMFDynamicViewFTI(self.portal, [])
@@ -3446,6 +3447,69 @@ class TestMigrations_v2_1_2(MigrationTest):
         self.portal._delObject('portal_quickinstaller')
         reinstallPortalTransforms(self.portal, [])
 
+class TestMigrations_v2_5(MigrationTest):
+
+    def afterSetUp(self):
+        self.actions = self.portal.portal_actions
+        self.memberdata = self.portal.portal_memberdata
+        self.skins = self.portal.portal_skins
+        self.types = self.portal.portal_types
+        self.workflow = self.portal.portal_workflow
+
+    def testInstallPlacefulWorkflow(self):
+        if 'portal_placefulworkflow' in self.portal.objectIds():
+            self.portal._delObject('portal_placeful_workflow')
+        installPlacefulWorkflow(self.portal, [])
+        self.failUnless('portal_placeful_workflow' in self.portal.objectIds())
+
+    def testInstallPlacefulWorkflowTwice(self):
+        if 'portal_placefulworkflow' in self.portal.objectIds():
+            self.portal._delObject('portal_placeful_workflow')
+        installPlacefulWorkflow(self.portal, [])
+        installPlacefulWorkflow(self.portal, [])
+        self.failUnless('portal_placeful_workflow' in self.portal.objectIds())
+
+    def testInstallDeprecated(self):
+        # Remove skin
+        self.skins._delObject('plone_deprecated')
+        selections = self.skins._getSelections()
+        skins = ['Plone Default', 'Plone Tableless']
+        for s in skins:
+            path = self.skins.getSkinPath(s)
+            path = [s.strip() for s in  path.split(',')]
+            path.remove('plone_deprecated')
+            self.skins.addSkinSelection(s, ','.join(path))
+        installDeprecated(self.portal, [])
+        self.failUnless('plone_deprecated' in self.skins.objectIds())
+        # it should be the last element in the skin
+        self.assertEqual(self.skins.getSkinPath('Plone Default').split(',')[-3],
+                         'plone_deprecated')
+        self.assertEqual(self.skins.getSkinPath('Plone Tableless').split(',')[-3],
+                         'plone_deprecated')
+
+    def testInstallDeprecatedTwice(self):
+        # Remove skin
+        self.skins._delObject('plone_deprecated')
+        selections = self.skins._getSelections()
+        skins = ['Plone Default', 'Plone Tableless']
+        for s in skins:
+            path = self.skins.getSkinPath(s)
+            path = [s.strip() for s in  path.split(',')]
+            path.remove('plone_deprecated')
+            self.skins.addSkinSelection(s, ','.join(path))
+        installDeprecated(self.portal, [])
+        installDeprecated(self.portal, [])
+        self.failUnless('plone_deprecated' in self.skins.objectIds())
+        # it should be the last element in the skin
+        self.assertEqual(self.skins.getSkinPath('Plone Default').split(',')[-3],
+                         'plone_deprecated')
+        self.assertEqual(self.skins.getSkinPath('Plone Tableless').split(',')[-3],
+                         'plone_deprecated')
+
+    def testInstallDeprecatedNoTool(self):
+        # Remove skin
+        self.portal._delObject('portal_skins')
+        installDeprecated(self.portal, [])
 
 def test_suite():
     from unittest import TestSuite, makeSuite
@@ -3454,6 +3518,7 @@ def test_suite():
     suite.addTest(makeSuite(TestMigrations_v2_1))
     suite.addTest(makeSuite(TestMigrations_v2_1_1))
     suite.addTest(makeSuite(TestMigrations_v2_1_2))
+    suite.addTest(makeSuite(TestMigrations_v2_5))
         
     return suite
 

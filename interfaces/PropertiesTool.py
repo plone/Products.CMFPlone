@@ -1,18 +1,9 @@
-from Interface import Interface, Attribute
+""" Properties tool interface.
 
-class IPropertiesTool(Interface):
+$Id$
+"""
 
-    id = Attribute('id', 'Must be set to "portal_properties"')
-
-    def editProperties(props):
-        """ Change portal settings.
-
-        Permission -- ManagePortal
-        """
-
-    def smtp_server():
-        """ Get local SMTP server.
-
-        Returns -- String
-        """
-
+# BBB: module will be removed in Plone 3.0
+#      zope2 interfaces created on runtime:
+#      - IPortalProperties
+#      - ISimpleItemWithProperties

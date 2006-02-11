@@ -9,6 +9,7 @@ from AccessControl import ClassSecurityInfo
 from Acquisition import aq_base
 from Products.BTreeFolder2.BTreeFolder2 import BTreeFolder2
 from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.utils import classImplements
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFCore.permissions import SetOwnProperties, ManagePortal
 from ZODB.POSException import ConflictError
@@ -19,7 +20,7 @@ class MemberDataTool(PloneBaseTool, BaseTool):
     meta_type = ToolNames.MemberDataTool
     security = ClassSecurityInfo()
     toolicon = 'skins/plone_images/user.gif'
-    
+
     __implements__ = (PloneBaseTool.__implements__, BaseTool.__implements__, )
 
 
@@ -111,7 +112,7 @@ class MemberDataTool(PloneBaseTool, BaseTool):
             count += 1
 
         return count
-                
+
 
     security.declarePrivate( 'searchMemberDataContents' )
     def searchMemberDataContents( self, search_param, search_term ):
@@ -122,7 +123,7 @@ class MemberDataTool(PloneBaseTool, BaseTool):
         res = []
 
         search_term = search_term.strip().lower()
-        
+
         if search_param == 'username':
             search_param = 'id'
 
@@ -147,7 +148,7 @@ class MemberDataTool(PloneBaseTool, BaseTool):
 
     security.declarePublic( 'searchFulltextForMembers' )
     def searchFulltextForMembers(self, s):
-        """search for members which do have string 's' in name, email or full name (if defined) 
+        """search for members which do have string 's' in name, email or full name (if defined)
 
         this is mainly used for the localrole form
         """
@@ -171,6 +172,8 @@ class MemberDataTool(PloneBaseTool, BaseTool):
 
 MemberDataTool.__doc__ = BaseTool.__doc__
 
+classImplements(MemberDataTool,
+                MemberDataTool.__implements__)
 InitializeClass(MemberDataTool)
 
 
@@ -246,7 +249,7 @@ class MemberData(BaseData):
 
         # Otherwise return the tool value
         return tool_value
-        
+
 
     security.declarePrivate('setMemberProperties')
     def setMemberProperties(self, mapping, force_local = 0):
@@ -268,7 +271,7 @@ class MemberData(BaseData):
                     try:
                         if force_local:
                             raise RuntimeError, "Force storing in the MemberData object"
-                            
+
                         # If it works, add a marker to retreive the data from the user object
                         self.setProperty(id, value)             # This is GRUF's method
                         setattr(self, "%s_USER" % id, 1)
@@ -278,7 +281,7 @@ class MemberData(BaseData):
                         # It didn't work... use the regular way, then - and remove the marker
                         setattr(self, id, value)
                         setattr(self, "%s_USER" % id, 0)        # Remove the marker
-                    
+
         # Hopefully we can later make notifyModified() implicit.
         self.notifyModified()
 

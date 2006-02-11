@@ -10,6 +10,7 @@ from AccessControl import ClassSecurityInfo
 from Products.CMFCore.permissions import ManagePortal
 from Products.DCWorkflow.Transitions import TRIGGER_USER_ACTION
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
+from Products.CMFPlone.utils import classImplements
 
 class WorkflowTool(PloneBaseTool, BaseTool):
 
@@ -17,7 +18,7 @@ class WorkflowTool(PloneBaseTool, BaseTool):
     security = ClassSecurityInfo()
     plone_tool = 1
     toolicon = 'skins/plone_images/workflow_icon.gif'
-    
+
     __implements__ = (PloneBaseTool.__implements__, BaseTool.__implements__, )
 
     # TODO this should not make it into 1.0
@@ -192,12 +193,12 @@ class WorkflowTool(PloneBaseTool, BaseTool):
 #        """ Returns a list of actions to be displayed to the user.
 #
 #        o Invoked by the portal_actions tool.
-#        
+#
 #        o Allows workflows to include actions to be displayed in the
 #          actions box.
 #
 #        o Object actions are supplied by workflows that apply to the object.
-#        
+#
 #        o Global actions are supplied by all workflows.
 #        """
 #        show_globals = False
@@ -280,4 +281,5 @@ class WorkflowTool(PloneBaseTool, BaseTool):
 
 WorkflowTool.__doc__ = BaseTool.__doc__
 
+classImplements(WorkflowTool, WorkflowTool.__implements__)
 InitializeClass(WorkflowTool)

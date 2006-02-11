@@ -13,6 +13,7 @@ from Products.CMFCore.permissions import ManagePortal
 from Products.CMFCore.permissions import SetOwnPassword
 from Products.CMFCore.permissions import View
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
+from Products.CMFPlone.utils import classImplements
 
 default_portrait = 'defaultUser.gif'
 
@@ -565,4 +566,5 @@ class MembershipTool(PloneBaseTool, BaseTool):
 
 MembershipTool.__doc__ = BaseTool.__doc__
 
+classImplements(MembershipTool, MembershipTool.__implements__)
 InitializeClass(MembershipTool)

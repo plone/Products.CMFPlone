@@ -5,7 +5,9 @@ from Products.CMFCore.ActionsTool import ActionsTool as BaseTool
 from Products.CMFPlone import ToolNames
 from setup.ConfigurationMethods import correctFolderContentsAction
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
-from Products.CMFCore.interfaces.portal_actions import ActionProvider as IActionProvider
+from Products.CMFPlone.utils import classImplements
+from Products.CMFCore.interfaces.portal_actions \
+     import ActionProvider as IActionProvider
 
 _marker = object()
 
@@ -14,7 +16,7 @@ class ActionsTool(PloneBaseTool, BaseTool):
     meta_type = ToolNames.ActionsTool
     security = ClassSecurityInfo()
     toolicon = 'skins/plone_images/confirm_icon.gif'
-    
+
     __implements__ = (PloneBaseTool.__implements__, BaseTool.__implements__, )
 
     def __init__(self):
@@ -70,4 +72,5 @@ class ActionsTool(PloneBaseTool, BaseTool):
 
 ActionsTool.__doc__ = BaseTool.__doc__
 
+classImplements(ActionsTool, ActionsTool.__implements__)
 InitializeClass(ActionsTool)
