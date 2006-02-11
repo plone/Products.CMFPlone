@@ -113,6 +113,12 @@ body { /* These work in IE only, changes the look of the scrollbar + textareas *
     height: 0.1%;
 }
 
+/* Fix for IE float bug - have to use the Limi Hack here, since the paragraph
+   tag doesn't take nicely to the height hack above in IE. */
+* html p {
+    position: relative;
+}
+
 * html h1.documentFirstHeading {
     height: auto;
 }
