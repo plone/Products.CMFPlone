@@ -18,6 +18,10 @@
             Title or id
         </h1>
     
+        <div metal:use-macro="here/document_byline/macros/byline">
+          Get the byline - contains details about author and modification date.
+        </div>
+
         <p class="documentDescription"
            tal:content="here/Description"
            tal:condition="here/Description">
@@ -26,7 +30,7 @@
     
         <p>
             <a href=""
-               tal:attributes="href string:$here_url/download">
+               tal:attributes="href here_url">
                 <img src="" tal:attributes="src string:${portal_url}/file_icon.gif" alt="" />
                 <tal:block i18n:translate="label_click_to_get_file">
                 Click here to get the file
@@ -73,9 +77,6 @@
             show related items if they exist
         </div>
     
-        <div metal:use-macro="here/document_byline/macros/byline">
-          Get the byline - contains details about author and modification date.
-        </div>
     </tal:main-macro>
 </div>
 

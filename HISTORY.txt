@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1.3 - Tomahawk - Unreleased
 
+    - Made the file_view link directly to the file.
+      This closes http://dev.plone.org/plone/ticket/5196
+      [limi]
+
     - The Sharing page was showing mail addresses to easier be able to discern
       between users with similar user names; now it uses full name instead.
       This closes http://dev.plone.org/plone/ticket/5196
