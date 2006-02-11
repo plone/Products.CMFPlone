@@ -19,7 +19,7 @@
     <dd class="portletItem"
         tal:define="oddrow repeat/obj/odd;
                     item_wf_state obj/review_state;
-                    item_wf_state_class python:'state-' + here.plone_utils.normalizeString(item_wf_state);
+                    item_wf_state_class python:'state-' + normalizeString(item_wf_state);
                     item_type_class python: 'contenttype-' + normalizeString(obj.portal_type);"
         tal:attributes="class python:test(oddrow,
                                          'portletItem even',
@@ -33,7 +33,7 @@
             Plone 2.1 released!
             </tal:title>
             <span class="portletItemDetails"
-                  tal:content="python:here.toLocalizedTime(obj.ModificationDate)"
+                  tal:content="python:toLocalizedTime(obj.ModificationDate)"
                   >May 5</span>
         </a>
         </div>

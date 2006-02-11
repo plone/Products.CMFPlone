@@ -66,7 +66,7 @@
                         </li>
                         <li>
                             <span tal:omit-tag="" i18n:translate="label_published">Published</span>:
-                            <span tal:replace="python:here.toLocalizedTime(result.Date)" />
+                            <span tal:replace="python:toLocalizedTime(result.Date)" />
                         </li>
                     </ul>
 

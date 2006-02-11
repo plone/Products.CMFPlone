@@ -11,6 +11,10 @@
 #If action does not have an ID it will not
 #show up in the keyedActions.
 
+context.plone_log("The keyFilteredActions script is deprecated and will be "
+                  "removed in plone 3.0.  Use the keyFilteredActions method "
+                  "of the @@plone view instead.")
+
 if actions is None:
     actions=context.portal_actions.listFilteredActionsFor()
 

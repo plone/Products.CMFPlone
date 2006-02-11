@@ -23,6 +23,7 @@
       allowed_interface=".interfaces.IDefaultPage"
       />
 
+<!--
   <browser:view
       for="*"
       class=".navigation.CatalogNavigationStructure"
@@ -38,9 +39,8 @@
       permission="zope.Public"
       allowed_interface=".interfaces.INavigationStructure"
       />
+-->
 
-
-  <!--
   <browser:view
       for="*"
       class=".navigation.PhysicalNavigationStructure"
@@ -48,12 +48,27 @@
       permission="zope.Public"
       allowed_interface=".interfaces.INavigationStructure"
       />
-  -->
+
+  <browser:page
+      for="*"
+      name="nav_view"
+      class=".navigation.PhysicalNavigationStructure"
+      permission="zope.Public"
+      allowed_interface=".interfaces.INavigationStructure"
+      />
 
   <browser:view
       for=".interfaces.INavigationRoot"
       class=".navigation.RootPhysicalNavigationStructure"
       provides=".interfaces.INavigationStructure"
+      permission="zope.Public"
+      allowed_interface=".interfaces.INavigationStructure"
+      />
+
+  <browser:page
+      for=".interfaces.INavigationRoot"
+      name="nav_view"
+      class=".navigation.RootPhysicalNavigationStructure"
       permission="zope.Public"
       allowed_interface=".interfaces.INavigationStructure"
       />
@@ -72,6 +87,14 @@
       class=".portlets.news.NewsPortlet"
       permission="zope.Public"
       allowed_interface=".interfaces.INewsPortlet"
+      />
+
+  <browser:page
+      for="*"
+      name="events_view"
+      class=".portlets.events.EventsPortlet"
+      permission="zope.Public"
+      allowed_interface=".interfaces.IEventsPortlet"
       />
 
   <browser:page

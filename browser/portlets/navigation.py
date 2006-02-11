@@ -1,8 +1,12 @@
-from zope.component import getView
+from zope.component import getViewProviding
 from zope.interface import implements
 
+from Acquisition import aq_base, aq_inner, aq_parent
+
+from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import utils
 from Products.CMFPlone.browser.interfaces import INavigationPortlet
+from Products.CMFPlone.browser.interfaces import INavigationStructure
 
 
 class NavigationPortlet(utils.BrowserView):
@@ -10,21 +14,22 @@ class NavigationPortlet(utils.BrowserView):
 
     def includeTop(self):
         context = utils.context(self)
-        g = getView(context, 'plone', self.request)
-        return g.portal_properties.navtree_properties.includeTop
+        portal_properties = getToolByName(context, 'portal_properties')
+        return portal_properties.navtree_properties.includeTop
 
     def createNavTree(self):
         context = utils.context(self)
-        data = context.plone_utils.createNavTree(context, sitemap=None)
+        view = getViewProviding(context, INavigationStructure, self.request)
+        data = view.navigationTree(sitemap=False)
+        # XXX: The recursion should probably be done in python code
         return context.portlet_navtree_macro(
             children=data.get('children', []),
             level=1, show_children=True, isNaviTree=True)
 
     def isPortalOrDefaultChild(self):
-        """ feel the hacking love """
         context = utils.context(self)
-        g = getView(context, 'plone', self.request)
-        portal = g.portal
-        return (portal == context or
-                (portal == context.aq_inner.getParentNode() and
-                 context.plone_utils.isDefaultPage(context)))
+        utool = getToolByName(context, 'portal_url')
+        portal = utool.getPortalObject()
+        return (aq_base(portal) == aq_base(context) or
+                (aq_base(portal) == aq_base(aq_parent(aq_inner(context))) and
+                utils.isDefaultPage(context, self.request, context)))

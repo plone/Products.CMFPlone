@@ -46,7 +46,7 @@ AllowSendto = 'Allow sendto'
 permissions.setDefaultRoles(AllowSendto,
                                    ('Anonymous', 'Manager',))
 
-_marker = ()
+_marker = utils._marker
 _icons = {}
 
 CEILING_DATE = DefaultDublinCoreImpl._DefaultDublinCoreImpl__CEILING_DATE
@@ -598,6 +598,11 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         Only considers explicitly contained objects, either set as index_html,
         with the default_page property, or using IBrowserDefault.
         """
+        #XXX: Does this deserve deprecation?
+        # utils.log_deprecated("plone_utils.isDefaultPage is deprecated and "
+        #                      "will be removed in plone 3.5, please use the "
+        #                      "isDefaultPage method of the IDefaultPage view "
+        #                      "on the container.")
         if request is None:
             request = self.REQUEST
         return utils.isDefaultPage(obj, request, context=self)
@@ -620,6 +625,11 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         and if found, its id is returned. If no default page is set, None is
         returned. If a non-folderish item is passed in, return None always.
         """
+        #XXX: Does this deserve deprecation?
+        # utils.log_deprecated("plone_utils.getDefaultPage is deprecated and "
+        #                      "will be removed in plone 3.5, please use the "
+        #                      "getDefaultPage method of the IDefaultPage view "
+        #                      "on the container.")
         if request is None:
             request = self.REQUEST
         return utils.getDefaultPage(obj, request, context=self)

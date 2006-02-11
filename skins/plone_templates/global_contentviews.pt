@@ -52,7 +52,7 @@
                 
                     <img alt="" src=""
                          tal:define="actionid action/id;
-                                     icon python:aitool.renderActionIcon('content_actions', actionid, None);"
+                                     icon python:portal.portal_actionicons.renderActionIcon('content_actions', actionid, None);"
                          tal:condition="icon"
                          tal:replace="structure icon" />
                     

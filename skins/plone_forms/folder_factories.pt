@@ -20,9 +20,7 @@
         Select the type of item you want to add to your folder.
     </p>
 
-    <p tal:define="isStructuralFolder here/is_folderish;
-                   isContextDefaultPage here/isDefaultPageInFolder;
-                   folder python:test(isStructuralFolder, here, here.aq_inner.getParentNode());
+    <p tal:define="folder python:test(isStructuralFolder, here, here.aq_inner.getParentNode());
                    parent_folder python: isContextDefaultPage and here.aq_inner.getParentNode() or folder;
                    addContext nocall:parent_folder;
                    showSettings addContext/canConstrainTypes;">
@@ -40,7 +38,7 @@
                      create_id id | nothing;
                      id_query string:&amp;id=$create_id;
                      query python:test(create_id, id_query, '');">
-                   
+
         <fieldset tal:define="allowedContentTypes python:here.sortObjects(here.allowedContentTypes())">
 
             <legend i18n:translate="legend_items_available">Items Available</legend>

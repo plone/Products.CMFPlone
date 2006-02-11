@@ -6,7 +6,7 @@ moved to (much faster) Python code in CMFPlone/browser/plone_globals.py
 
 <metal:globaldefine define-macro="defines" 
       tal:define="
-        foo context/@@plone/globals;
+        foo context/@@plone/globalize;
         global Iterator python:modules['Products.CMFPlone'].IndexIterator;
         global tabindex python:Iterator(pos=30000);
         global template_id options/template_id | template/getId | nothing;

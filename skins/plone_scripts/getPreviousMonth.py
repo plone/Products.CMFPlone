@@ -7,6 +7,9 @@
 ##parameters=month, year
 ##title=Calendar Presentation Helper
 ##
+context.plone_log("The getPreviousMonth script is deprecated and will be "
+                  "removed in plone 3.5.  Use the getPreviousMonth method "
+                  "of the @@calendar_view view instead.")
 
 month=int(month)
 year=int(year)

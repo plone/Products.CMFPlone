@@ -1,4 +1,5 @@
 from Products.CMFPlone.browser.interfaces import IRecentPortlet
+from Products.CMFCore.utils import getToolByName
 
 from zope.interface import implements
 from zope.component import getView
@@ -11,9 +12,9 @@ class RecentPortlet(utils.BrowserView):
     def results(self):
         """ """
         context = utils.context(self)
-        g = getView(context, 'plone', self.request)
-        portal_catalog = g.portal.portal_catalog
-        typesToShow = g.putils.getUserFriendlyTypes()
+        putils = getToolByName(context, 'plone_utils')
+        portal_catalog = getToolByName(context, 'portal_catalog')
+        typesToShow = putils.getUserFriendlyTypes()
         return self.request.get(
             'items',
             portal_catalog.searchResults(sort_on='modified',

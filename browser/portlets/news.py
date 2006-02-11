@@ -1,6 +1,6 @@
-from zope.component import getView
 from zope.interface import implements
 
+from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import utils
 from Products.CMFPlone.browser.interfaces import INewsPortlet
 
@@ -10,8 +10,7 @@ class NewsPortlet(utils.BrowserView):
 
     def published_news_items(self):
         context = utils.context(self)
-        g = getView(context, 'plone', self.request)
-        portal_catalog = g.portal.portal_catalog
+        portal_catalog = getToolByName(context, 'portal_catalog')
 
         return self.request.get('news', 
                                 portal_catalog.searchResults(portal_type='News Item',
@@ -20,10 +19,10 @@ class NewsPortlet(utils.BrowserView):
                                                              review_state='published'))
     def all_news_link(self):
         context = utils.context(self)
-        g = getView(context, 'plone', self.request)
-        portal = g.portal
-        portal_url = g.portal_url
-        
+        utool = getToolByName(context, 'portal_url')
+        portal_url = utool()
+        portal = utool.getPortalObject()
+
         if 'news' in portal.contentIds():
             return '%s/news' % portal_url
         else:

@@ -24,11 +24,11 @@ class TestDAVProperties(PloneTestCase.PloneTestCase):
     def testPropertiesToolTitle(self):
         ptool = getToolByName(self.portal, 'portal_properties')
         psets = dict(ptool.propertysheets.items())
-        self.failUnless('default' in psets.keys())
-        default = psets['default']
+        self.failUnless('webdav' in psets.keys())
+        default = psets['webdav']
         items = dict(default.propertyItems())
-        self.failUnless('title' in items.keys())
-        self.assertEquals(items['title'], self.portal.title)
+        self.failUnless('displayname' in items.keys())
+        self.assertEquals(items['displayname'], self.portal.title)
 
 
 class TestDAVMetadata(PloneTestCase.FunctionalTestCase):

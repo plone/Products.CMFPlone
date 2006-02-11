@@ -28,7 +28,8 @@ def get_id(item):
     return getId()
 
 def get_view_url(context):
-    stp = getToolByName(context, 'portal_properties').site_properties
+    props = getToolByName(context, 'portal_properties')
+    stp = props.site_properties
     view_action_types = stp.getProperty('typesUseViewActionInListings', ())
 
     item_url = get_url(context)
@@ -43,18 +44,21 @@ def get_view_url(context):
 class DefaultPage(utils.BrowserView):
     implements(IDefaultPage)
 
-    def isDefaultPage(self, obj, context_):
+    def isDefaultPage(self, obj, context_=None):
         """Finds out if the given obj is the default page in its parent folder.
 
         Only considers explicitly contained objects, either set as index_html,
         with the default_page property, or using IBrowserDefault.
         """
+        #XXX: What is this context/obj confusion all about?
+        if context_ is None:
+            context_ = obj
         parentDefaultPage = self.getDefaultPage(context_)
         if parentDefaultPage is None or '/' in parentDefaultPage:
             return False
         return (parentDefaultPage == obj.getId())
 
-    def getDefaultPage(self, context_):
+    def getDefaultPage(self, context_=None):
         """Given a folderish item, find out if it has a default-page using
         the following lookup rules:
 
@@ -72,6 +76,8 @@ class DefaultPage(utils.BrowserView):
         returned. If a non-folderish item is passed in, return None always.
         """
         context = utils.context(self)
+        if context_ is None:
+            context_ = context
 
         # The list of ids where we look for default
         ids = {}
@@ -200,7 +206,7 @@ class CatalogNavigationTree(utils.BrowserView):
             utils.addToNavTreeResult(result, data)
 
         portalpath = purl.getPortalPath()
-        
+
         if ntp.getProperty('showAllParents', False):
             portal = purl.getPortalObject()
             parent = context
@@ -371,10 +377,14 @@ class PhysicalNavigationStructure(utils.BrowserView,
 
     def breadcrumbs(self):
         context = utils.context(self)
-        container = utils.parent(context)
         request = self.request
+        container = utils.parent(context)
 
-        name, item_url = get_view_url(context)
+        try:
+            name, item_url = get_view_url(context)
+        except AttributeError:
+            print context
+            raise
 
         if container is None:
             return (
@@ -389,11 +399,13 @@ class PhysicalNavigationStructure(utils.BrowserView,
         if base:
             item_url = '%s/%s' % (base[-1]['absolute_url'], name)
 
-        base += (
-            {'absolute_url': item_url,
-             'Title': utils.pretty_title_or_id(context, context),
-             },
-            )
+        # don't show default pages in breadcrumbs
+        if not utils.isDefaultPage(context, request):
+            base += (
+                     {'absolute_url': item_url,
+                      'Title': utils.pretty_title_or_id(context, context),
+                     },
+                    )
 
         return base
 

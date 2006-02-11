@@ -39,7 +39,7 @@ from i18nl10n import utranslate
 from i18nl10n import ulocalized_time
 from i18nl10n import getGlobalTranslationService
 
-_marker = ()
+_marker = []
 
 class BrowserView(BaseView):
 
@@ -184,7 +184,8 @@ def utf8_portal(context, str, errors='strict'):
 
 def getEmptyTitle(context, translated=True):
     """Returns string to be used for objects with no title or id"""
-    empty = u'\x5b\xc2\xb7\xc2\xb7\xc2\xb7\x5d'
+    # The default is an extra fancy unicode elipsis
+    empty = unicode('\x5b\xc2\xb7\xc2\xb7\xc2\xb7\x5d', 'utf-8', 'ignore')
     if translated:
         empty = _(u'title_unset', default=empty)
     return empty

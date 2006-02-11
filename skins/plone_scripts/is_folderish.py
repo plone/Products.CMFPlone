@@ -7,6 +7,9 @@
 ##parameters=
 ##title=Is the context a structural folder
 ##
+context.plone_log("The is_folderish script is deprecated and will be "
+                  "removed in plone 3.5.  Use the isStructuralFolder method "
+                  "of the @@plone view instead.")
 
 from Products.CMFCore.utils import getToolByName
 

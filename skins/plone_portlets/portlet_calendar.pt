@@ -28,7 +28,6 @@
                  day_msgid nocall:translation_service/day_msgid;
                  weekday_english nocall:translation_service/weekday_english;
                  utranslate nocall:here/utranslate;
-                 toLocalizedTime nocall:here/toLocalizedTime;
                  getEventString nocall:here/getEventString;">
 
     <!-- The calendar, rendered as a table -->

@@ -57,9 +57,9 @@
                         <span tal:replace="python:modules['string'].join(resultObject.Subject(), ' ')"> Conference </span>
                         </li>
                         <li>
-                        <span tal:replace="python:resultObject.toLocalizedTime(resultObject.start(), long_format=1)">Start Date Time</span>
+                        <span tal:replace="python:toLocalizedTime(resultObject.start(), long_format=1)">Start Date Time</span>
                         <span i18n:translate="event_and">to</span>
-                        <span tal:replace="python:resultObject.toLocalizedTime(resultObject.end(), long_format=1)">End Date Time</span>.
+                        <span tal:replace="python:toLocalizedTime(resultObject.end(), long_format=1)">End Date Time</span>.
                         </li>
                         <tal:about-info condition="show_about">
                         <li>
@@ -75,7 +75,7 @@
                         </li>
                         <li>
                             <span tal:omit-tag="" i18n:translate="label_published">Published</span>:
-                            <span tal:replace="python:here.toLocalizedTime(result.Date)" />
+                            <span tal:replace="python:toLocalizedTime(result.Date)" />
                         </li>
                         </tal:about-info>
                     </ul>

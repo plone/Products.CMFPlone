@@ -31,6 +31,7 @@ class TestPloneView(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
         self.view = getView(self.portal, 'plone', self.app.REQUEST)
+        self.view._initializeData()
 
     def testUTool(self):
         assert isinstance(self.view.utool, URLTool)

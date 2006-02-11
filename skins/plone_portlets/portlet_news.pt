@@ -28,7 +28,7 @@
                 Plone 2.1 announced!
                 </span>
                 <span class="portletItemDetails"
-                      tal:content="python:here.toLocalizedTime(obj.Date)">May 5</span>
+                      tal:content="python:toLocalizedTime(obj.Date)">May 5</span>
             </a>
         </dd>
         </tal:newsitems>

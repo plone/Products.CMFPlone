@@ -7,6 +7,9 @@
 ##parameters=
 ##title=
 ##
+context.plone_log("The visibleIdsEnabled script is deprecated and will be "
+                  "removed in plone 3.5.  Use the visibleIdsEnabled method "
+                  "of the @@plone view instead.")
 props = context.portal_properties.site_properties
 
 if not props.getProperty('visible_ids', False):

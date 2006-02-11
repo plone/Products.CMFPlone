@@ -5,11 +5,9 @@
 
 <metal:menubarmacro define-macro="contentMenu">
 
-<ul tal:define="isStructuralFolder here/is_folderish;
-                manage_portal python:checkPermission('Manage portal', here);
+<ul tal:define="manage_portal python:checkPermission('Manage portal', here);
                 folder python:test(isStructuralFolder, here, here.aq_inner.getParentNode());
                 isParentStructuralFolder folder/is_folderish;
-                isContextDefaultPage here/isDefaultPageInFolder;
                 parent_folder python: isContextDefaultPage and here.aq_inner.getParentNode() or folder;
                 disableMenu python:here.portal_factory.isTemporary(here);
                 useSelf python:isStructuralFolder and not isContextDefaultPage;"

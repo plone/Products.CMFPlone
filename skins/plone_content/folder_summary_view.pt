@@ -39,8 +39,7 @@
                             over_limit python: limit_display and len(folderContents) > limit_display;
                             folderContents python: (over_limit and folderContents[:limit_display]) or folderContents;
                             batch folderContents">
-        <tal:listing condition="folderContents"
-                     define="toLocalizedTime nocall:here/toLocalizedTime;">
+        <tal:listing condition="folderContents">
 
             <div class="tileItem visualIEFloatFix" tal:repeat="item folderContents">
                 <tal:block tal:define="item_url item/getURL|item/absolute_url;

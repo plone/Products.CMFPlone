@@ -1,7 +1,7 @@
 from DateTime import DateTime
-from zope.component import getView
 from zope.interface import implements
 
+from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import utils
 from Products.CMFPlone.browser.interfaces import ICalendarPortlet
 
@@ -22,16 +22,11 @@ class CalendarPortlet(utils.BrowserView):
         self.month = self.yearmonth[1]
         self.prevMonthTime = self.getPreviousMonth(self.month, self.year)
         self.nextMonthTime = self.getNextMonth(self.month, self.year)
-        self.weeks = context.portal_calendar.getEventsForCalendar(
-            self.month, self.year)
+        calendar = getToolByName(context, 'portal_calendar')
+        self.weeks = calendar.getEventsForCalendar(self.month, self.year)
 
     def getYearAndMonthToDisplay(self):
         """ from skins/plone_scripts/getYearAndMonthToDisplay.py """
-        ##parameters=
-        ##title=Calendar Presentation Helper
-
-        # Returns the year and month that the calendar portlet should display.
-        # If uses_session is true stores the values in the session.
 
         current = DateTime()
         context = utils.context(self)
@@ -68,16 +63,6 @@ class CalendarPortlet(utils.BrowserView):
         return year, month
 
     def getPreviousMonth(self, month, year):
-        """ from skins/plone_scripts/getYearAndMonthToDisplay.py """
-        ## Script (Python) "getPreviousMonth"
-        ##bind container=container
-        ##bind context=context
-        ##bind namespace=
-        ##bind script=script
-        ##bind subpath=traverse_subpath
-        ##parameters=month, year
-        ##title=Calendar Presentation Helper
-        ##
 
         month=int(month)
         year=int(year)
@@ -90,16 +75,6 @@ class CalendarPortlet(utils.BrowserView):
         return DateTime(year, month, 1)
 
     def getNextMonth(self, month, year):
-        """ from skins/plone_scripts/getYearAndMonthToDisplay.py """
-        ## Script (Python) "getNextMonth"
-        ##bind container=container
-        ##bind context=context
-        ##bind namespace=
-        ##bind script=script
-        ##bind subpath=traverse_subpath
-        ##parameters=month, year
-        ##title=Calendar Presentation Helper
-        ##
 
         month=int(month)
         year=int(year)
