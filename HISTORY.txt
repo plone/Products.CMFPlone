@@ -7,6 +7,7 @@ Plone 2.5 (unreleased)
     - Converted unit tests to use the external PloneTestCase product instead of
       a local modified copy.
       [hannosch]
+
     - Factored out 'default page'-related functionality into a view
       that provides IDefaultPage. Factored out createBreadCrumbs into
       a view that provides INavigationStructure. Started implementing
