@@ -7,13 +7,15 @@ if __name__ == '__main__':
     execfile(os.path.join(sys.path[0], 'framework.py'))
 
 from Testing import ZopeTestCase
-from Products.CMFPlone.tests import PloneTestCase
-from Products.CMFPlone.tests import dummy
+from Products.PloneTestCase import PloneTestCase
+from Products.PloneTestCase import dummy
+PloneTestCase.setupPloneSite()
+
 from Products.CMFCore.utils import getToolByName
 from Acquisition import Implicit
 
 default_user = PloneTestCase.default_user
-
+portal_name = PloneTestCase.portal_name
 
 class DummyTitle(Implicit):
     def Title(self):
@@ -629,7 +631,7 @@ class TestNavTree(PloneTestCase.PloneTestCase):
         self.portal.portal_catalog.reindexObject(self.folder)
         tree = self.utils.createNavTree(self.folder.ns_folder)
         self.assertEqual(tree['children'][0]['children'][0]['children'][0]['path'],
-                                '/portal/Members/test_user_1_/ns_folder')
+                                '/%s/Members/test_user_1_/ns_folder' % portal_name)
         self.assertEqual(tree['children'][0]['children'][0]['children'][0]['show_children'],False)
 
     def testCreateSitemap(self):

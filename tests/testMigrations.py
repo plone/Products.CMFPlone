@@ -7,8 +7,10 @@ if __name__ == '__main__':
     execfile(os.path.join(sys.path[0], 'framework.py'))
 
 from Testing import ZopeTestCase
+from Products.PloneTestCase import PloneTestCase
+PloneTestCase.setupPloneSite()
+
 from OFS.SimpleItem import SimpleItem
-from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFCore.Expression import Expression
 from Products.CMFCore.permissions import AccessInactivePortalContent
 from Products.CMFPlone.PloneTool import AllowSendto

@@ -7,8 +7,10 @@ if __name__ == '__main__':
     execfile(os.path.join(sys.path[0], 'framework.py'))
 
 from Testing import ZopeTestCase
-from Products.CMFPlone.tests import PloneTestCase
+from Products.PloneTestCase import PloneTestCase
+PloneTestCase.setupPloneSite()
 
+portal_name = PloneTestCase.portal_name
 
 
 class TestURLTool(PloneTestCase.PloneTestCase):
@@ -19,15 +21,15 @@ class TestURLTool(PloneTestCase.PloneTestCase):
     def test_isURLInPortal(self):
         url_tool = self.url
         self.failUnless(url_tool.isURLInPortal(
-                                        'http://nohost/portal/foo'))
+                                        'http://nohost/%s/foo' % portal_name))
         self.failUnless(url_tool.isURLInPortal(
-                                        'http://nohost/portal'))
+                                        'http://nohost/%s' % portal_name))
         self.failIf(url_tool.isURLInPortal(
-                                        'http://nohost2/portal/foo'))
+                                        'http://nohost2/%s/foo' % portal_name))
         self.failUnless(url_tool.isURLInPortal(
-                                        'https://nohost/portal/bar'))
+                                        'https://nohost/%s/bar' % portal_name))
         self.failIf(url_tool.isURLInPortal(
-                                   'http://nohost:8080/portal/baz'))
+                                   'http://nohost:8080/%s/baz' % portal_name))
         self.failIf(url_tool.isURLInPortal(
                                    'http://nohost/'))
         # Relative urls always succeed

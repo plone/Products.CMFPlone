@@ -11,9 +11,11 @@ if __name__ == '__main__':
     execfile(os.path.join(sys.path[0], 'framework.py'))
 
 from Testing import ZopeTestCase
-from Products.CMFPlone.tests import PloneTestCase
+from Products.PloneTestCase import PloneTestCase
 
 ZopeTestCase.installProduct('ZChecker')
+PloneTestCase.setupPloneSite()
+
 from Testing.ZopeTestCase import _print
 
 ignoredObjectIds = ['rssBody', 'RSS', 'rss_template', 'search_rss',

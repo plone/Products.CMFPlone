@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.5 (unreleased)
 
+    - Converted unit tests to use the external PloneTestCase product instead of
+      a local modified copy.
+      [hannosch]
+
     - Installed CMFPlacefulWorkflow during migrations.
       [encolpe]
 

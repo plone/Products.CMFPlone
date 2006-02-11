@@ -6,13 +6,15 @@ import os, sys
 if __name__ == '__main__':
     execfile(os.path.join(sys.path[0], 'framework.py'))
 
-from Acquisition import aq_base
 from Testing import ZopeTestCase
-from Products.CMFPlone.tests import PloneTestCase
-from Products.CMFPlone.tests.PloneTestCase import FunctionalTestCase
-from Products.CMFPlone.tests.PloneTestCase import default_user
-from Products.CMFPlone.tests.PloneTestCase import default_password
-from Products.CMFPlone.tests import dummy
+from Products.PloneTestCase import PloneTestCase
+PloneTestCase.setupPloneSite()
+
+from Acquisition import aq_base
+from Products.PloneTestCase.PloneTestCase import FunctionalTestCase
+from Products.PloneTestCase.PloneTestCase import default_user
+from Products.PloneTestCase.PloneTestCase import default_password
+from Products.PloneTestCase import dummy
 import difflib
 import re
 

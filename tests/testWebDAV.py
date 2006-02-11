@@ -3,10 +3,13 @@ if __name__ == '__main__':
     execfile(os.path.join(sys.path[0], 'framework.py'))
 
 from Testing import ZopeTestCase
-from Products.CMFPlone.tests import PloneTestCase
-from Products.CMFPlone.tests import dummy
-from Products.CMFPlone.tests.PloneTestCase import default_user
-from Products.CMFPlone.tests.PloneTestCase import default_password
+from Products.PloneTestCase import PloneTestCase
+PloneTestCase.setupPloneSite()
+
+from Products.PloneTestCase import dummy
+from Products.PloneTestCase.PloneTestCase import default_user
+from Products.PloneTestCase.PloneTestCase import default_password
+
 from Products.CMFCore.utils import getToolByName
 
 from StringIO import StringIO
@@ -293,8 +296,8 @@ class TestPUTObjects(PloneTestCase.FunctionalTestCase):
 class TestDAVOperations(PloneTestCase.FunctionalTestCase):
 
     def afterSetUp(self):
-        self.loginPortalOwner()
-        self.basic_auth = '%s:%s' % (PloneTestCase.portal_owner, '')
+        self.loginAsPortalOwner()
+        self.basic_auth = '%s:%s' % (PloneTestCase.portal_owner, PloneTestCase.default_password)
         self.portal_path = self.portal.absolute_url(1)
         self.folder_path = self.folder.absolute_url(1)
 
