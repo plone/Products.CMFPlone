@@ -49,6 +49,8 @@
                  directory="CMFPlone/skins/plone_templates"/>
  <skin-directory id="plone_wysiwyg"
                  directory="CMFPlone/skins/plone_wysiwyg"/>
+ <skin-directory id="plone_deprecated"
+                 directory="CMFPlone/skins/plone_deprecated"/>
  <skin-path id="Plone Default">
   <layer name="custom"/>
   <layer name="kupu_plone"/>
@@ -72,6 +74,7 @@
   <layer name="plone_images"/>
   <layer name="plone_content"/>
   <layer name="plone_login"/>
+  <layer name="plone_deprecated"/>
   <layer name="plone_3rdParty"/>
   <layer name="cmf_legacy"/>
  </skin-path>
@@ -99,6 +102,7 @@
   <layer name="plone_images"/>
   <layer name="plone_content"/>
   <layer name="plone_login"/>
+  <layer name="plone_deprecated"/>
   <layer name="plone_3rdParty"/>
   <layer name="cmf_legacy"/>
  </skin-path>

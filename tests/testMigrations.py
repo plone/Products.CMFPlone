@@ -128,6 +128,9 @@ from Products.CMFPlone.migrations.v2_1.two11_two12 import removeDiscussionItemWo
 from Products.CMFPlone.migrations.v2_1.two11_two12 import addMemberData
 from Products.CMFPlone.migrations.v2_1.two11_two12 import reinstallPortalTransforms
 
+from Products.CMFPlone.migrations.v2_5.alphas import installPlacefulWorkflow
+from Products.CMFPlone.migrations.v2_5.alphas import installDeprecated
+
 from Products.CMFDynamicViewFTI.migrate import migrateFTI
 
 import types
@@ -3442,6 +3445,70 @@ class TestMigrations_v2_1_2(MigrationTest):
         self.portal._delObject('portal_quickinstaller')
         reinstallPortalTransforms(self.portal, [])
 
+class TestMigrations_v2_5(MigrationTest):
+
+    def afterSetUp(self):
+        self.actions = self.portal.portal_actions
+        self.memberdata = self.portal.portal_memberdata
+        self.skins = self.portal.portal_skins
+        self.types = self.portal.portal_types
+        self.workflow = self.portal.portal_workflow
+
+    def testInstallPlacefulWorkflow(self):
+        if 'portal_placefulworkflow' in self.portal.objectIds():
+            self.portal._delObject('portal_placeful_workflow')
+        installPlacefulWorkflow(self.portal, [])
+        self.failUnless('portal_placeful_workflow' in self.portal.objectIds())
+
+    def testInstallPlacefulWorkflowTwice(self):
+        if 'portal_placefulworkflow' in self.portal.objectIds():
+            self.portal._delObject('portal_placeful_workflow')
+        installPlacefulWorkflow(self.portal, [])
+        installPlacefulWorkflow(self.portal, [])
+        self.failUnless('portal_placeful_workflow' in self.portal.objectIds())
+
+    def testInstallDeprecated(self):
+        # Remove skin
+        self.skins._delObject('plone_deprecated')
+        selections = self.skins._getSelections()
+        skins = ['Plone Default', 'Plone Tableless']
+        for s in skins:
+            path = self.skins.getSkinPath(s)
+            path = [s.strip() for s in  path.split(',')]
+            path.remove('plone_deprecated')
+            self.skins.addSkinSelection(s, ','.join(path))
+        installDeprecated(self.portal, [])
+        self.failUnless('plone_deprecated' in self.skins.objectIds())
+        # it should be the last element in the skin
+        self.assertEqual(self.skins.getSkinPath('Plone Default').split(',')[-3],
+                         'plone_deprecated')
+        self.assertEqual(self.skins.getSkinPath('Plone Tableless').split(',')[-3],
+                         'plone_deprecated')
+
+    def testInstallDeprecatedTwice(self):
+        # Remove skin
+        self.skins._delObject('plone_deprecated')
+        selections = self.skins._getSelections()
+        skins = ['Plone Default', 'Plone Tableless']
+        for s in skins:
+            path = self.skins.getSkinPath(s)
+            path = [s.strip() for s in  path.split(',')]
+            path.remove('plone_deprecated')
+            self.skins.addSkinSelection(s, ','.join(path))
+        installDeprecated(self.portal, [])
+        installDeprecated(self.portal, [])
+        self.failUnless('plone_deprecated' in self.skins.objectIds())
+        # it should be the last element in the skin
+        print self.skins.getSkinPath('Plone Default')
+        self.assertEqual(self.skins.getSkinPath('Plone Default').split(',')[-3],
+                         'plone_deprecated')
+        self.assertEqual(self.skins.getSkinPath('Plone Tableless').split(',')[-3],
+                         'plone_deprecated')
+
+    def testInstallDeprecatedNoTool(self):
+        # Remove skin
+        self.portal._delObject('portal_skins')
+        installDeprecated(self.portal, [])
 
 def test_suite():
     from unittest import TestSuite, makeSuite
@@ -3450,6 +3517,7 @@ def test_suite():
     suite.addTest(makeSuite(TestMigrations_v2_1))
     suite.addTest(makeSuite(TestMigrations_v2_1_1))
     suite.addTest(makeSuite(TestMigrations_v2_1_2))
+    suite.addTest(makeSuite(TestMigrations_v2_5))
         
     return suite
 
