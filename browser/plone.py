@@ -5,7 +5,7 @@ from Products.CMFPlone import utils
 from Products.CMFCore.utils import getToolByName
 
 from zope.interface import implements
-from zope.component import getViewProviding
+from zope.component import queryView
 from Products.Five import BrowserView
 from Products import CMFPlone
 import ZTUtils
@@ -281,10 +281,12 @@ class Plone(utils.BrowserView):
     def isDefaultPageInFolder(self):
         """ See interface """
         context = utils.context(self)
+        request = context.REQUEST
         container = aq_parent(aq_inner((context)))
         if not container:
             return False
-        view = getViewProviding(container, IDefaultPage, self.request)
+        view = queryView(container, 'default_page', request,
+                         providing=IDefaultPage)
         return view.isDefaultPage(context)
 
     def isStructuralFolder(self):
