@@ -107,6 +107,9 @@ contributed code.
 
   Ofer Weisglass (oferw) -- RTL support vigilance and restless testing.
 
+  Wichert Akkerman (wiggy) -- various things all over
+  - "Amaze":http://www.amaze.nl
+
 Companies (in randomized order):
 
   "Ingeniweb":http://www.ingeniweb.com --
