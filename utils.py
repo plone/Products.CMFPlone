@@ -5,7 +5,7 @@ from os.path import join, abspath, dirname, split
 import zope.interface
 from zope.interface import providedBy
 from zope.interface import implementedBy
-from zope.component import getViewProviding
+from zope.component import getViewProviding, queryView
 
 import OFS
 import Globals
@@ -84,7 +84,8 @@ def isDefaultPage(obj, request, context=None):
     container = parent(obj)
     if not container:
         return False
-    view = getViewProviding(container, IDefaultPage, request)
+    view = queryView(container, 'default_page', request,
+                     providing=IDefaultPage)
     if context is None:
         context = obj
     return view.isDefaultPage(obj, context)
@@ -93,7 +94,8 @@ def getDefaultPage(obj, request, context=None):
     # Short circuit if we are not looking at a Folder
     if not obj.isPrincipiaFolderish:
         return None
-    view = getViewProviding(obj, IDefaultPage, request)
+    view = queryView(obj, 'default_page', request,
+                     providing=IDefaultPage)
     if context is None:
         context = obj
     return view.getDefaultPage(context)

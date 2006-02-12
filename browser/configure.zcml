@@ -17,6 +17,7 @@
 
   <browser:view
       for="*"
+      name="default_page"
       class=".navigation.DefaultPage"
       provides=".interfaces.IDefaultPage"
       permission="zope.Public"
