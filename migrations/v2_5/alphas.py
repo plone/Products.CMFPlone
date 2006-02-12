@@ -38,6 +38,7 @@ def installPlacefulWorkflow(portal, out):
 
 def installPlonePAS(portal, out):
     """Quickinstalls PlonePAS if not installed yet."""
+    installOrReinstallProduct(portal, 'PasswordResetTool', out)
     installOrReinstallProduct(portal, 'PlonePAS', out)
 
 def installDeprecated(portal, out):
