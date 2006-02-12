@@ -14,15 +14,15 @@ def two5_alpha1(portal):
     # Install CMFPlacefulWorkflow
     installPlacefulWorkflow(portal, out)
 
-    # Install PlonePAS
-    installPlonePAS(portal, out)
-
     return out
 
 def alpha1_alpha2(portal):
     """2.1.2 -> 2.5-alpha1
     """
     out = []
+
+    # Install PlonePAS
+    installPlonePAS(portal, out)
 
     # Install plone_deprecated skin
     installDeprecated(portal, out)
