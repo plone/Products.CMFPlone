@@ -16,7 +16,7 @@ class PloneGenerator:
         qi = getToolByName(p, 'portal_quickinstaller')
         qi.installProduct('Archetypes', locked=0)
         qi.installProduct('CMFFormController', locked=1)
-	qi.installProduct('GroupUserFolder', locked=1)
+        qi.installProduct('GroupUserFolder', locked=1)
         qi.installProduct('PasswordResetTool', locked=1)
         qi.installProduct('PlonePAS', locked=1)
         qi.installProduct('CMFPlacefulWorkflow', locked=0)
