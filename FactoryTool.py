@@ -4,7 +4,6 @@ from AccessControl import Owned, ClassSecurityInfo, getSecurityManager
 from AccessControl.Permission import Permission
 from Acquisition import aq_parent, aq_base, aq_inner, aq_get
 from OFS.SimpleItem import SimpleItem
-from StructuredText.StructuredText import HTML
 from ZPublisher.Publish import call_object, missing_name, dont_publish_class
 from ZPublisher.mapply import mapply
 from Products.CMFPlone import cmfplone_globals

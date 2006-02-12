@@ -12,7 +12,5 @@ moved to (much faster) Python code in CMFPlone/browser/plone.py
         global template_id options/template_id | template/getId | nothing;
         view_template_id here/getViewTemplateId|nothing;
         global isViewTemplate python:template_id==view_template_id;
-        view_template_id here/getViewTemplateId|nothing;
-        global isViewTemplate python:template_id==view_template_id;
         global normalizeString nocall:putils/normalizeString;
         " />

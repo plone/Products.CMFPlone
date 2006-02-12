@@ -23,7 +23,6 @@ from Products.CMFPlone.UnicodeNormalizer import normalizeUnicode
 from Products.CMFPlone.interfaces.Translatable import ITranslatable
 from Products.CMFPlone import PloneMessageFactory as _
 import transaction
-import transaction
 
 # Canonical way to get at CMFPlone directory
 PACKAGE_HOME = Globals.package_home(globals())
