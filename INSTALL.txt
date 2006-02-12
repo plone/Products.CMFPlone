@@ -232,7 +232,7 @@ Installing Plone manually, step by step instructions.
  
 =============================================================================== 
 Have fun, and don't forget to report any bugs or inconsistencies in the 
-Plone bug tracker: http://trac.plone.org/plone/
+Plone bug tracker: http://dev.plone.org/plone/
  
 Thank you for using Plone!
 
