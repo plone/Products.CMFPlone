@@ -11,6 +11,7 @@ from Products.PloneTestCase import PloneTestCase
 PloneTestCase.setupPloneSite()
 
 from Products.CMFCore.permissions import AddPortalContent
+from Products.PluggableAuthService.interfaces.plugins import IChallengePlugin
 
 from AccessControl import Unauthorized
 default_user = PloneTestCase.default_user
@@ -46,7 +47,7 @@ class TestPortalFactory(PloneTestCase.PloneTestCase):
     def testTempFolderLocalRoles(self):
         # Temporary objects should "inherit" local roles from container
         member = self.membership.getMemberById('member')
-        self.portal._addRole('Foo')
+        self.portal.acl_users.addRole('Foo')
 
         self.folder.manage_addLocalRoles('member', ('Foo',))
         self.folder.invokeFactory('Folder', id='folder2')
@@ -67,7 +68,7 @@ class TestPortalFactory(PloneTestCase.PloneTestCase):
         # Temporary objects should "inherit" local roles from container,
         # but also need to respect PLIP 16 local role blocking
         member = self.membership.getMemberById('member')
-        self.portal._addRole('Foo')
+        self.portal.acl_users.addRole('Foo')
 
         self.folder.manage_addLocalRoles('member', ('Foo',))
         self.folder.invokeFactory('Folder', id='folder2')
@@ -233,7 +234,9 @@ class TestCreateObjectByURL(PloneTestCase.FunctionalTestCase):
         self.folder_path = '/%s' % self.folder.absolute_url(1)
         self.basic_auth = '%s:secret' % default_user
         # We want 401 responses, not redirects to a login page
-        self.portal._delObject('cookie_authentication')
+	plugins = self.portal.acl_users.plugins
+        plugins.deactivatePlugin( IChallengePlugin, 'credentials_cookie_auth')
+
         # Enable portal_factory for Document type
         self.factory = self.portal.portal_factory
         self.factory.manage_setPortalFactoryTypes(listOfTypeIds=['Document'])

@@ -4,6 +4,18 @@ Changelog for Plone
 
 Plone 2.5 (unreleased)
 
+    - Merged PlonePAS bundle. This implements the start of step 2 for PLIP 102.
+      [wichert]
+
+    - Do no list all groups in the sharing screen, but make it possible to
+      search for them. Fixes (last) part of
+      http://trac.plone.org/plone/ticket/2530
+      [wichert]
+
+    - Fix confusion between user names and user ids in the membership tool.
+      Fixes http://dev.plone.org/plone/ticket/5098
+      [wichert]
+
     - Converted unit tests to use the external PloneTestCase product instead of
       a local modified copy.
       [hannosch]

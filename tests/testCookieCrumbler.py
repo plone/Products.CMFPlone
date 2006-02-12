@@ -11,7 +11,7 @@ from Products.PloneTestCase import PloneTestCase
 PloneTestCase.setupPloneSite()
 
 import base64
-import urllib
+from urlparse import urlparse
 
 default_user = PloneTestCase.default_user
 default_password = PloneTestCase.default_password
@@ -33,7 +33,8 @@ class TestCookieCrumbler(PloneTestCase.FunctionalTestCase):
         self.assertEqual(response.getStatus(), 302)
 
         location = response.getHeader('Location')
-        self.failUnless(location.startswith(self.portal_url + '/login_form'))
+        self.failUnless(location.startswith(self.portal_url))
+        self.failUnless(urlparse(location)[2].endswith('/login_form'))
 
     def testInsufficientPrivileges(self):
         # Should send us to insufficient_privileges
@@ -41,7 +42,10 @@ class TestCookieCrumbler(PloneTestCase.FunctionalTestCase):
         self.assertEqual(response.getStatus(), 302)
 
         location = response.getHeader('Location')
-        self.failUnless(location.startswith(self.portal_url + '/insufficient_privileges'))
+        self.failUnless(location.startswith(self.portal_url))
+        urlpath=urlparse(location)[2]
+        self.failUnless(urlpath.endswith('/insufficient_privileges') or
+            urlpath.endswith('/login_form'))
 
     def testSetSessionCookie(self):
         # The __ac cookie should be set for the session only
@@ -52,7 +56,7 @@ class TestCookieCrumbler(PloneTestCase.FunctionalTestCase):
 
         cookie = response.getCookie('__ac')
         self.assertEqual(cookie.get('path'), '/')
-        self.assertEqual(cookie.get('value'), urllib.quote(self.cookie))
+        self.assertEqual(cookie.get('value'), self.cookie)
         self.assertEqual(cookie.get('expires'), None)
 
     def testSetPersistentCookie(self):
@@ -65,7 +69,7 @@ class TestCookieCrumbler(PloneTestCase.FunctionalTestCase):
 
         cookie = response.getCookie('__ac')
         self.assertEqual(cookie.get('path'), '/')
-        self.assertEqual(cookie.get('value'), urllib.quote(self.cookie))
+        self.assertEqual(cookie.get('value'), self.cookie)
         self.failIfEqual(cookie.get('expires'), None)
 
 

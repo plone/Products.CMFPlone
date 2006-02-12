@@ -33,7 +33,6 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.catalog = self.portal.portal_catalog
         self.groups = self.portal.portal_groups
         self.factory = self.portal.portal_factory
-        self.cc = self.portal.cookie_authentication
         self.skins = self.portal.portal_skins
         self.transforms = self.portal.portal_transforms
 
@@ -396,12 +395,6 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
                 break
         else:
             self.fail("Action icons tool has no 'SearchSettings' icon")
-
-    def testCookieCrumblerProperties(self):
-        # Cookie Crumbler should have unauth_page set to insufficient privileges
-        # and the auto login page restored to login_form
-        self.assertEqual(self.cc.getProperty('unauth_page'), 'insufficient_privileges')
-        self.assertEqual(self.cc.getProperty('auto_login_page'), 'login_form')
 
     def testPortalFTIIsDynamicFTI(self):
         # Plone Site FTI should be a DynamicView FTI

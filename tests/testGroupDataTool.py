@@ -24,19 +24,18 @@ class TestGroupDataTool(PloneTestCase.PloneTestCase):
         self.acl_users = self.portal.acl_users
         self.groups = self.portal.portal_groups
         self.groupdata = self.portal.portal_groupdata
-        self.prefix = self.acl_users.getGroupPrefix()
         self.groups.groupWorkspacesCreationFlag = 0
         self.groups.addGroup('foo')
         # MUST reset _v_ attributes!
         self.groupdata._v_temps = None
 
     def testWrapGroup(self):
-        g = self.acl_users.getGroup(self.prefix+'foo')
-        self.assertEqual(g.__class__.__name__, 'GRUFGroup')
+        g = self.acl_users.getGroup('foo')
+        self.assertEqual(g.__class__.__name__, 'PloneGroup')
         g = self.groupdata.wrapGroup(g)
         self.assertEqual(g.__class__.__name__, 'GroupData')
-        self.assertEqual(g.aq_parent.__class__.__name__, 'GRUFGroup')
-        self.assertEqual(g.aq_parent.aq_parent.__class__.__name__, 'GroupUserFolder')
+        self.assertEqual(g.aq_parent.__class__.__name__, 'PloneGroup')
+        self.assertEqual(g.aq_parent.aq_parent.__class__.__name__, 'GroupManager')
 
 
 class TestGroupData(PloneTestCase.PloneTestCase):
@@ -47,7 +46,6 @@ class TestGroupData(PloneTestCase.PloneTestCase):
         self.acl_users = self.portal.acl_users
         self.groups = self.portal.portal_groups
         self.groupdata = self.portal.portal_groupdata
-        self.prefix = self.acl_users.getGroupPrefix()
         self.groups.groupWorkspacesCreationFlag = 0
         self.groups.addGroup('foo')
         # MUST reset _v_ attributes!
@@ -58,7 +56,7 @@ class TestGroupData(PloneTestCase.PloneTestCase):
         g = self.groups.getGroupById('foo')
         self.assertEqual(g.__class__.__name__, 'GroupData')
         g = g.getGroup()
-        self.assertEqual(g.__class__.__name__, 'GRUFGroup')
+        self.assertEqual(g.__class__.__name__, 'PloneGroup')
 
     def testGetTool(self):
         g = self.groups.getGroupById('foo')
@@ -66,16 +64,16 @@ class TestGroupData(PloneTestCase.PloneTestCase):
 
     def testGetGroupMembers(self):
         g = self.groups.getGroupById('foo')
-        self.acl_users._updateUser(default_user, groups=['foo'])
+        self.acl_users.userSetGroups(default_user, groupnames=['foo'])
         self.assertEqual(g.getGroupMembers()[0].getId(), default_user)
 
     def testGroupMembersAreWrapped(self):
         g = self.groups.getGroupById('foo')
-        self.acl_users._updateUser(default_user, groups=['foo'])
+        self.acl_users.userSetGroups(default_user, groupnames=['foo'])
         ms = g.getGroupMembers()
         self.assertEqual(ms[0].__class__.__name__, 'MemberData')
-        self.assertEqual(ms[0].aq_parent.__class__.__name__, 'GRUFUser')
-        self.assertEqual(ms[0].aq_parent.aq_parent.__class__.__name__, 'GroupUserFolder')
+        self.assertEqual(ms[0].aq_parent.__class__.__name__, 'PloneUser')
+        self.assertEqual(ms[0].aq_parent.aq_parent.__class__.__name__, 'PluggableAuthService')
 
     def testAddMember(self):
         g = self.groups.getGroupById('foo')
@@ -92,27 +90,27 @@ class TestGroupData(PloneTestCase.PloneTestCase):
     #    # XXX: ERROR!
     #    g = self.groups.getGroupById('foo')
     #    g.setProperties(email='foo@bar.com')
-    #    gd = self.groupdata._members[self.prefix+'foo']
+    #    gd = self.groupdata._members['foo']
     #    self.assertEqual(gd.email, 'foo@bar.com')
 
     def testSetGroupProperties(self):
         g = self.groups.getGroupById('foo')
         g.setGroupProperties({'email': 'foo@bar.com'})
-        gd = self.groupdata._members[g.getId()]
-        self.assertEqual(gd.email, 'foo@bar.com')
+        gd = self.groups.getGroupById('foo')
+        self.assertEqual(gd.getProperty('email'), 'foo@bar.com')
 
     def testSetMemberProperties(self):
         # For reference
         m = self.membership.getMemberById(default_user)
         m.setMemberProperties({'email': 'foo@bar.com'})
-        md = self.memberdata._members[m.getId()]
-        self.assertEqual(md.email, 'foo@bar.com')
+        md = self.membership.getMemberById(default_user)
+        self.assertEqual(md.getProperty('email'), 'foo@bar.com')
 
     def testGetProperty(self):
         g = self.groups.getGroupById('foo')
         g.setGroupProperties({'email': 'foo@bar.com'})
         self.assertEqual(g.getProperty('email'), 'foo@bar.com')
-        self.assertEqual(g.getProperty('id'), self.prefix+'foo')
+        self.assertEqual(g.getProperty('id'), 'foo')
 
     def testGetGroupName(self):
         g = self.groups.getGroupById('foo')
@@ -121,21 +119,25 @@ class TestGroupData(PloneTestCase.PloneTestCase):
     def testGetGroupId(self):
         g = self.groups.getGroupById('foo')
         # This changed in GRUF3
-        #self.assertEqual(g.getGroupId(), self.prefix+'foo')
+        #self.assertEqual(g.getGroupId(), 'foo')
         self.assertEqual(g.getGroupId(), 'foo')
 
     def testGetRoles(self):
         g = self.groups.getGroupById('foo')
-        self.assertEqual(g.getRoles(), ('Authenticated',))
-        self.acl_users._updateGroup(g.getId(), roles=['Member'])
+        self.assertEqual(tuple(g.getRoles()), ('Authenticated',))
+        self.groups.editGroup(g.getId(), roles=['Member'])
         g = self.groups.getGroupById('foo')
-        self.assertEqual(sortTuple(g.getRoles()), ('Authenticated', 'Member'))
+        self.assertEqual(sortTuple(tuple(g.getRoles())), ('Authenticated', 'Member'))
 
     def testGetRolesInContext(self):
         g = self.groups.getGroupById('foo')
-        self.assertEqual(g.getRolesInContext(self.folder), ('Authenticated',))
-        self.folder.manage_setLocalRoles(g.getId(), ['Owner'])
-        self.assertEqual(sortTuple(g.getRolesInContext(self.folder)), ('Authenticated', 'Owner'))
+        self.acl_users.userSetGroups(default_user, groupnames=['foo'])
+        user = self.acl_users.getUser(default_user)
+        self.assertEqual(user.getRolesInContext(self.folder).sort(),
+                        ['Member', 'Authenticated', 'Owner'].sort())
+        self.folder.manage_setLocalRoles(g.getId(), ['NewRole'])
+        self.assertEqual(user.getRolesInContext(self.folder).sort(), 
+                        ['Member', 'Authenticated', 'Owner', 'NewRole'].sort())
 
     def testGetDomains(self):
         g = self.groups.getGroupById('foo')
@@ -143,7 +145,7 @@ class TestGroupData(PloneTestCase.PloneTestCase):
 
     def testHasRole(self):
         g = self.groups.getGroupById('foo')
-        self.acl_users._updateGroup(g.getId(), roles=['Member'])
+        self.groups.editGroup(g.getId(), roles=['Member'])
         g = self.groups.getGroupById('foo')
         self.failUnless(g.has_role('Member'))
 

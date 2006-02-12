@@ -12,7 +12,12 @@ PloneTestCase.setupPloneSite()
 
 default_user = PloneTestCase.default_user
 default_group = 'test_group_1_'
-PREFIX = 'group_'
+try:
+    import Products.PlonePAS
+except ImportError:
+    PREFIX = 'group_'
+else:
+    PREFIX = ''
 
 
 class TestGroupUserFolder(PloneTestCase.PloneTestCase):
@@ -25,7 +30,7 @@ class TestGroupUserFolder(PloneTestCase.PloneTestCase):
         self.portal.portal_groups.removeGroups(self.portal.portal_groups.listGroupIds())
         
         self.uf.userFolderAddGroup(default_group, [])
-        self.uf._updateUser(default_user, groups=[default_group])
+        self.uf.userSetGroups(default_user, groupnames=[default_group])
 
     def testGetUser(self):
         self.failIfEqual(self.uf.getUser(default_user), None)
@@ -38,12 +43,6 @@ class TestGroupUserFolder(PloneTestCase.PloneTestCase):
 
     def testGetBadUserById(self):
         self.assertEqual(self.uf.getUserById('user2'), None)
-
-    def testGetUserByName(self):
-        self.failIfEqual(self.uf.getUserByName(default_user), None)
-
-    def testGetBadUserByName(self):
-        self.assertEqual(self.uf.getUserByName('user2'), None)
 
     def testGetGroup(self):
         self.failIfEqual(self.uf.getGroup(default_group), None)
@@ -67,26 +66,26 @@ class TestGroupUserFolder(PloneTestCase.PloneTestCase):
         # Returns users and groups
         users = self.uf.getUsers()
         self.failUnless(users)
-        self.assertEqual(len(users), 2)
+        self.assertEqual(len(users), 1)
         userids = [x.getId() for x in users]
         self.failUnless(default_user in userids)
-        self.failUnless(PREFIX+default_group in userids)
+        self.failIf(PREFIX+default_group in userids)
 
     def testGetUserIds(self):
         # Returns user and group ids
         userids = self.uf.getUserIds()
         self.failUnless(userids)
-        self.assertEqual(len(userids), 2)
+        self.assertEqual(len(userids), 1)
         self.failUnless(default_user in userids)
-        self.failUnless(PREFIX+default_group in userids)
+        self.failIf(PREFIX+default_group in userids)
 
     def testGetUserNames(self):
         # Returns user and group names
         usernames = self.uf.getUserNames()
         self.failUnless(usernames)
-        self.assertEqual(len(usernames), 2)
+        self.assertEqual(len(usernames), 1)
         self.failUnless(default_user in usernames)
-        self.failUnless(default_group in usernames)
+        self.failIf(default_group in usernames)
 
     def testGetGroups(self):
         # Returns groups
@@ -116,14 +115,14 @@ class TestUserManagement(PloneTestCase.PloneTestCase):
     def afterSetUp(self):
         self.uf = self.portal.acl_users
         self.uf.userFolderAddGroup(default_group, [])
-        self.uf._updateUser(default_user, groups=[default_group])
+        self.uf.userSetGroups(default_user, groupnames=[default_group])
 
     # Classic UF interface
 
     def test_doAddUser(self):
         self.uf._doAddUser('user2', 'secret', ['Member'], [])
         user = self.uf.getUser('user2')
-        self.assertEqual(user.getRoles(), ('Member', 'Authenticated'))
+        self.assertEqual(tuple(user.getRoles()), ('Member', 'Authenticated'))
         self.assertEqual(user.getGroups(), [])  # XXX: Should be tuple
         self.assertEqual(user.getGroupIds(), [])
         self.assertEqual(user.getGroupNames(), [])
@@ -131,7 +130,7 @@ class TestUserManagement(PloneTestCase.PloneTestCase):
     def test_doAddUser_WithGroups(self):
         self.uf._doAddUser('user2', 'secret', ['Member'], [], [default_group])
         user = self.uf.getUser('user2')
-        self.assertEqual(user.getRoles(), ('Member', 'Authenticated'))
+        self.assertEqual(tuple(user.getRoles()), ('Member', 'Authenticated'))
         self.assertEqual(user.getGroups(), [PREFIX+default_group])  # XXX: WTF?
         self.assertEqual(user.getGroupIds(), [PREFIX+default_group])
         self.assertEqual(user.getGroupNames(), [default_group])
@@ -139,7 +138,7 @@ class TestUserManagement(PloneTestCase.PloneTestCase):
     def test_doChangeUser(self):
         self.uf._doChangeUser(default_user, None, ['Reviewer'], [])
         user = self.uf.getUser(default_user)
-        self.assertEqual(user.getRoles(), ('Reviewer', 'Authenticated'))
+        self.assertEqual(tuple(user.getRoles()), ('Reviewer', 'Authenticated'))
         self.assertEqual(user.getGroups(), [PREFIX+default_group])
 
     def test_doChangeUser_WithGroups(self):
@@ -147,7 +146,7 @@ class TestUserManagement(PloneTestCase.PloneTestCase):
         self.uf._doChangeUser(default_user, None, ['Reviewer'], [], ['group2'])
 
         user = self.uf.getUser(default_user)
-        self.assertEqual(user.getRoles(), ('Reviewer', 'Authenticated'))
+        self.assertEqual(tuple(user.getRoles()), ('Reviewer', 'Authenticated'))
         self.assertEqual(user.getGroups(), [PREFIX+'group2'])
 
     def test_doDelUsers(self):
@@ -160,7 +159,7 @@ class TestUserManagement(PloneTestCase.PloneTestCase):
     def testUserFolderAddUser(self):
         self.uf.userFolderAddUser('user2', 'secret', ['Member'], [])
         user = self.uf.getUser('user2')
-        self.assertEqual(user.getRoles(), ('Member', 'Authenticated'))
+        self.assertEqual(tuple(user.getRoles()), ('Member', 'Authenticated'))
         self.assertEqual(user.getGroups(), [])
         self.assertEqual(user.getGroupIds(), [])
         self.assertEqual(user.getGroupNames(), [])
@@ -168,7 +167,7 @@ class TestUserManagement(PloneTestCase.PloneTestCase):
     def testUserFolderAddUser_WithGroups(self):
         self.uf.userFolderAddUser('user2', 'secret', ['Member'], [], [default_group])
         user = self.uf.getUser('user2')
-        self.assertEqual(user.getRoles(), ('Member', 'Authenticated'))
+        self.assertEqual(tuple(user.getRoles()), ('Member', 'Authenticated'))
         self.assertEqual(user.getGroups(), [PREFIX+default_group])
         self.assertEqual(user.getGroupIds(), [PREFIX+default_group])
         self.assertEqual(user.getGroupNames(), [default_group])
@@ -176,14 +175,14 @@ class TestUserManagement(PloneTestCase.PloneTestCase):
     def testUserFolderEditUser(self):
         self.uf.userFolderEditUser(default_user, None, ['Reviewer'], [])
         user = self.uf.getUser(default_user)
-        self.assertEqual(user.getRoles(), ('Reviewer', 'Authenticated'))
+        self.assertEqual(tuple(user.getRoles()), ('Reviewer', 'Authenticated'))
         self.assertEqual(user.getGroups(), [PREFIX+default_group])
 
     def testUserFolderEditUser_WithGroups(self):
         self.uf.userFolderAddGroup('group2', [])
         self.uf.userFolderEditUser(default_user, None, ['Reviewer'], [], ['group2'])
         user = self.uf.getUser(default_user)
-        self.assertEqual(user.getRoles(), ('Reviewer', 'Authenticated'))
+        self.assertEqual(tuple(user.getRoles()), ('Reviewer', 'Authenticated'))
         self.assertEqual(user.getGroups(), [PREFIX+'group2'])
 
     def testUserFolderDelUsers(self):
@@ -192,17 +191,11 @@ class TestUserManagement(PloneTestCase.PloneTestCase):
 
     # GRUF update interface
 
-    def test_updateUser_Roles(self):
-        self.uf._updateUser(default_user, roles=['Reviewer'])
-        user = self.uf.getUser(default_user)
-        self.assertEqual(user.getRoles(), ('Reviewer', 'Authenticated'))
-        self.assertEqual(user.getGroups(), [PREFIX+default_group])
-
     def test_updateUser_Groups(self):
         self.uf.userFolderAddGroup('group2', [])
-        self.uf._updateUser(default_user, groups=['group2'])
+        self.uf.userSetGroups(default_user, groupnames=['group2'])
         user = self.uf.getUser(default_user)
-        self.assertEqual(user.getRoles(), ('Member', 'Authenticated'))
+        self.assertEqual(tuple(user.getRoles()), ('Member', 'Authenticated'))
         self.assertEqual(user.getGroups(), [PREFIX+'group2'])
 
 
@@ -212,34 +205,27 @@ class TestGroupManagement(PloneTestCase.PloneTestCase):
         self.uf = self.portal.acl_users
         self.uf.userFolderAddGroup(default_group, [])
         self.uf.userFolderAddGroup('group2', [])
-        self.uf._updateGroup(default_group, groups=['group2'])
+#        self.uf._updateGroup(default_group, groups=['group2'])
 
     # Classic-style interface
 
     def test_doAddGroup(self):
         self.uf._doAddGroup('group3', ['Reviewer'])
         group = self.uf.getGroup('group3')
-        self.assertEqual(group.getRoles(), ('Reviewer', 'Authenticated'))
+        self.assertEqual(tuple(group.getRoles()), ('Reviewer', 'Authenticated'))
         self.assertEqual(group.getGroups(), [])  # XXX: Should be tuple
 
-    def test_doAddGroup_WithGroups(self):
-        self.uf._doAddGroup('group3', ['Reviewer'], ['group2'])
-        group = self.uf.getGroup('group3')
-        self.assertEqual(group.getRoles(), ('Reviewer', 'Authenticated'))
-        self.assertEqual(group.getGroups(), [PREFIX+'group2'])
+#    def test_doAddGroup_WithGroups(self):
+#        self.uf._doAddGroup('group3', ['Reviewer'], ['group2'])
+#        group = self.uf.getGroup('group3')
+#        self.assertEqual(tuple(group.getRoles()), ('Reviewer', 'Authenticated'))
+#        self.assertEqual(group.getGroups(), [PREFIX+'group2'])
 
     def test_doChangeGroup(self):
         self.uf._doChangeGroup(default_group, ['Reviewer'])
         group = self.uf.getGroup(default_group)
-        self.assertEqual(group.getRoles(), ('Reviewer', 'Authenticated'))
-        self.assertEqual(group.getGroups(), [PREFIX+'group2'])
-
-    def test_doChangeGroup_WithGroups(self):
-        self.uf.userFolderAddGroup('group3', [])
-        self.uf._doChangeGroup(default_group, ['Reviewer'], ['group3'])
-        group = self.uf.getGroup(default_group)
-        self.assertEqual(group.getRoles(), ('Reviewer', 'Authenticated'))
-        self.assertEqual(group.getGroups(), [PREFIX+'group3'])
+        self.assertEqual(tuple(group.getRoles()), ('Reviewer', 'Authenticated'))
+#        self.assertEqual(group.getGroups(), [PREFIX+'group2'])
 
     def test_doDelGroups(self):
         self.uf._doDelGroups([default_group])
@@ -250,27 +236,14 @@ class TestGroupManagement(PloneTestCase.PloneTestCase):
     def testUserFolderAddGroup(self):
         self.uf.userFolderAddGroup('group3', ['Reviewer'])
         group = self.uf.getGroup('group3')
-        self.assertEqual(group.getRoles(), ('Reviewer', 'Authenticated'))
+        self.assertEqual(tuple(group.getRoles()), ('Reviewer', 'Authenticated'))
         self.assertEqual(group.getGroups(), [])
-
-    def testUserFolderAddGroup_WithGroups(self):
-        self.uf.userFolderAddGroup('group3', ['Reviewer'], ['group2'])
-        group = self.uf.getGroup('group3')
-        self.assertEqual(group.getRoles(), ('Reviewer', 'Authenticated'))
-        self.assertEqual(group.getGroups(), [PREFIX+'group2'])
 
     def testUserFolderEditGroup(self):
         self.uf.userFolderEditGroup(default_group, ['Reviewer'], [])
         group = self.uf.getGroup(default_group)
-        self.assertEqual(group.getRoles(), ('Reviewer', 'Authenticated'))
-        self.assertEqual(group.getGroups(), [PREFIX+'group2'])
-
-    def testUserFolderEditGroup_WithGroups(self):
-        self.uf.userFolderAddGroup('group3', [])
-        self.uf.userFolderEditGroup(default_group, ['Reviewer'], ['group3'])
-        group = self.uf.getGroup(default_group)
-        self.assertEqual(group.getRoles(), ('Reviewer', 'Authenticated'))
-        self.assertEqual(group.getGroups(), [PREFIX+'group3'])
+        self.assertEqual(tuple(group.getRoles()), ('Reviewer', 'Authenticated'))
+#        self.assertEqual(group.getGroups(), [PREFIX+'group2'])
 
     def testUserFolderDelGroups(self):
         self.uf.userFolderDelGroups([default_group])
@@ -281,15 +254,8 @@ class TestGroupManagement(PloneTestCase.PloneTestCase):
     def test_updateGroup_Roles(self):
         self.uf._updateGroup(default_group, roles=['Reviewer'])
         group = self.uf.getGroup(default_group)
-        self.assertEqual(group.getRoles(), ('Reviewer', 'Authenticated'))
-        self.assertEqual(group.getGroups(), [PREFIX+'group2'])
-
-    def test_updateGroup_Groups(self):
-        self.uf.userFolderAddGroup('group3', ['Manager'])
-        self.uf._updateGroup(default_group, groups=['group3'])
-        group = self.uf.getGroup(default_group)
-        self.assertEqual(group.getRoles(), ('Manager', 'Authenticated',))
-        self.assertEqual(group.getGroups(), [PREFIX+'group3'])
+        self.assertEqual(tuple(group.getRoles()), ('Reviewer', 'Authenticated'))
+#        self.assertEqual(group.getGroups(), [PREFIX+'group2'])
 
 
 class TestUsersAndGroups(PloneTestCase.PloneTestCase):
@@ -297,7 +263,7 @@ class TestUsersAndGroups(PloneTestCase.PloneTestCase):
     def afterSetUp(self):
         self.uf = self.portal.acl_users
         self.uf.userFolderAddGroup(default_group, [])
-        self.uf._updateUser(default_user, groups=[default_group])
+        self.uf.userSetGroups(default_user, groupnames=[default_group])
 
         self.user = self.uf.getUser(default_user)
         self.group = self.uf.getGroup(default_group)
@@ -310,12 +276,13 @@ class TestUsersAndGroups(PloneTestCase.PloneTestCase):
     def testUserGetName(self):
         self.assertEqual(self.user.getUserName(), default_user)
 
-    def testUserAuthenticate(self):
-        result = self.user.authenticate('secret', self.app.REQUEST)
-        self.assertEqual(result, True)
+#    # internal to basic UserFolder; see also tests/testUserFolderBasics.py
+#    def testUserAuthenticate(self):
+#        result = self.user.authenticate('secret', self.app.REQUEST)
+#        self.assertEqual(result, True)
 
     def testUserGetRoles(self):
-        self.assertEqual(self.user.getRoles(), ('Member', 'Authenticated'))
+        self.assertEqual(tuple(self.user.getRoles()), ('Member', 'Authenticated'))
 
     def testUserGetGroups(self):
         # XXX: This should return a tuple!
@@ -336,7 +303,7 @@ class TestUsersAndGroups(PloneTestCase.PloneTestCase):
         self.assertEqual(self.group.getName(), default_group)
 
     def testGroupGetRoles(self):
-        self.assertEqual(self.group.getRoles(), ('Authenticated',))
+        self.assertEqual(tuple(self.group.getRoles()), ('Authenticated',))
 
     def testGroupGetGroups(self):
         self.assertEqual(self.group.getGroups(), []) # XXX: Should be tuple
@@ -349,7 +316,7 @@ class TestUsersAndGroups(PloneTestCase.PloneTestCase):
         pass
 
     def testGroupGetMemberIds(self):
-        self.assertEqual(self.group.getMemberIds(), [default_user]) # XXX: Should be tuple
+        self.assertEqual(self.group.getMemberIds(), (default_user,))
 
 
 def test_suite():

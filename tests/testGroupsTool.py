@@ -26,7 +26,6 @@ class TestGroupsTool(PloneTestCase.PloneTestCase):
         self.membership = self.portal.portal_membership
         self.acl_users = self.portal.acl_users
         self.groups = self.portal.portal_groups
-        self.prefix = self.acl_users.getGroupPrefix()
         self.groups.groupWorkspacesCreationFlag = 0
 
         # Nuke Administators and Reviewers groups added in 2.1a2 migrations
@@ -52,8 +51,8 @@ class TestGroupsTool(PloneTestCase.PloneTestCase):
         self.groups.addGroup('foo', [], [])
         g = self.groups.getGroupById('foo')
         self.assertEqual(g.__class__.__name__, 'GroupData')
-        self.assertEqual(g.aq_parent.__class__.__name__, 'GRUFGroup')
-        self.assertEqual(g.aq_parent.aq_parent.__class__.__name__, 'GroupUserFolder')
+        self.assertEqual(g.aq_parent.__class__.__name__, 'PloneGroup')
+        self.assertEqual(g.aq_parent.aq_parent.__class__.__name__, 'GroupManager')
 
     def testEditGroup(self):
         self.groups.addGroup('foo', )
@@ -88,31 +87,31 @@ class TestGroupsTool(PloneTestCase.PloneTestCase):
 
     def testGetGroupsByUserId(self):
         self.groups.addGroup('foo', [], [])
-        self.acl_users._updateUser(default_user, groups=['foo'])
+        self.acl_users.userSetGroups(default_user, groupnames=['foo'])
         gs = self.groups.getGroupsByUserId(default_user)
-        self.assertEqual(gs[0].getId(), self.prefix + 'foo')
+        self.assertEqual(gs[0].getId(), 'foo')
 
     def testGroupsByUserIdAreWrapped(self):
         self.groups.addGroup('foo', [], [])
-        self.acl_users._updateUser(default_user, groups=['foo'])
+        self.acl_users.userSetGroups(default_user, groupnames=['foo'])
         gs = self.groups.getGroupsByUserId(default_user)
         self.assertEqual(gs[0].__class__.__name__, 'GroupData')
-        self.assertEqual(gs[0].aq_parent.__class__.__name__, 'GRUFGroup')
-        self.assertEqual(gs[0].aq_parent.aq_parent.__class__.__name__, 'GroupUserFolder')
+        self.assertEqual(gs[0].aq_parent.__class__.__name__, 'PloneGroup')
+        self.assertEqual(gs[0].aq_parent.aq_parent.__class__.__name__, 'GroupManager')
 
     def testListGroups(self):
         self.groups.addGroup('foo', [], [])
         self.groups.addGroup('bar', [], [])
         gs = self.groups.listGroups()
-        self.assertEqual(gs[0].getId(), self.prefix + 'bar')
-        self.assertEqual(gs[1].getId(), self.prefix + 'foo')
+        self.assertEqual(gs[0].getId(), 'bar')
+        self.assertEqual(gs[1].getId(), 'foo')
 
     def testListedGroupsAreWrapped(self):
         self.groups.addGroup('foo', [], [])
         gs = self.groups.listGroups()
         self.assertEqual(gs[0].__class__.__name__, 'GroupData')
-        self.assertEqual(gs[0].aq_parent.__class__.__name__, 'GRUFGroup')
-        self.assertEqual(gs[0].aq_parent.aq_parent.__class__.__name__, 'GroupUserFolder')
+        self.assertEqual(gs[0].aq_parent.__class__.__name__, 'PloneGroup')
+        self.assertEqual(gs[0].aq_parent.aq_parent.__class__.__name__, 'GroupManager')
 
     def testSetGroupOwnership(self):
         self.groups.addGroup('foo', [], [])
@@ -120,19 +119,19 @@ class TestGroupsTool(PloneTestCase.PloneTestCase):
         doc = self.folder.doc
         g = self.groups.getGroupById('foo')
         self.groups.setGroupOwnership(g, doc)
-        self.assertEqual(doc.getOwnerTuple()[1], self.prefix + 'foo')
-        self.assertEqual(doc.get_local_roles_for_userid(self.prefix + 'foo'), ('Owner',))
+        self.assertEqual(doc.getOwnerTuple()[1], 'foo')
+        self.assertEqual(doc.get_local_roles_for_userid('foo'), ('Owner',))
         # TODO: Initial creator still has Owner role. Is this a bug?
         self.assertEqual(doc.get_local_roles_for_userid(default_user), ('Owner',))
 
     def testWrapGroup(self):
         self.groups.addGroup('foo', [], [])
-        g = self.acl_users.getGroup(self.prefix + 'foo')
-        self.assertEqual(g.__class__.__name__, 'GRUFGroup')
+        g = self.acl_users.getGroup('foo')
+        self.assertEqual(g.__class__.__name__, 'PloneGroup')
         g = self.groups.wrapGroup(g)
         self.assertEqual(g.__class__.__name__, 'GroupData')
-        self.assertEqual(g.aq_parent.__class__.__name__, 'GRUFGroup')
-        self.assertEqual(g.aq_parent.aq_parent.__class__.__name__, 'GroupUserFolder')
+        self.assertEqual(g.aq_parent.__class__.__name__, 'PloneGroup')
+        self.assertEqual(g.aq_parent.aq_parent.__class__.__name__, 'GroupManager')
 
     def testGetGroupInfo(self):
         self.groups.addGroup('foo', title='Foo', description='Bar', email='foo@foo.com')
@@ -159,7 +158,6 @@ class TestGroupWorkspacesFolder(PloneTestCase.PloneTestCase):
         self.membership = self.portal.portal_membership
         self.acl_users = self.portal.acl_users
         self.groups = self.portal.portal_groups
-        self.prefix = self.acl_users.getGroupPrefix()
         self.groups.groupWorkspacesCreationFlag = 0
         # Note that this is not a proper portal type (anymore) but we don't care
         self.portal.manage_addPortalFolder(self.groups.getGroupWorkspacesFolderId())
@@ -224,7 +222,7 @@ class TestGroupWorkspacesFolder(PloneTestCase.PloneTestCase):
     def testGetGroupareaFolderPermission(self):
         self.groups.toggleGroupWorkspacesCreation()
         self.groups.addGroup('foo', [], [])
-        self.acl_users._updateUser(default_user, groups=['foo'])
+        self.acl_users.userSetGroups(default_user, groupnames=['foo'])
         user = self.acl_users.getUser(default_user)
         self.failUnless(user.has_permission('View Groups', self.groups.getGroupWorkspacesFolder()))
 
@@ -232,7 +230,7 @@ class TestGroupWorkspacesFolder(PloneTestCase.PloneTestCase):
     #    # XXX: ERROR!
     #    self.groups.toggleGroupWorkspacesCreation()
     #    self.groups.addGroup('foo', [], [])
-    #    self.acl_users._updateUser(default_user, groups=['foo'])
+    #    self.acl_users.userSetGroups(default_user, groupnames=['foo'])
     #    self.login(default_user)
     #    self.failIfEqual(self.groups.getGroupareaFolder(), None)
 

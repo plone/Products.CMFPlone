@@ -3,6 +3,8 @@ from Acquisition import aq_base
 from Products.CMFCore.utils import getToolByName
 import zLOG
 from Products.CMFPlone.MemberDataTool import MemberDataTool
+from Products.PlonePAS.tools.memberdata \
+        import MemberDataTool as PASMemberDataTool
 
 def safeEditProperty(obj, key, value, data_type='string'):
     """ An add or edit function, surprisingly useful :) """
@@ -14,7 +16,8 @@ def safeEditProperty(obj, key, value, data_type='string'):
 def safeGetMemberDataTool(portal):
     memberdata = getToolByName(portal, 'portal_memberdata', None)
     if memberdata is not None:
-        if memberdata.__class__ == MemberDataTool:
+        if memberdata.__class__ == MemberDataTool or \
+                memberdata.__class__ == PASMemberDataTool:
             return memberdata
 
 def addLinesToProperty(obj, key, values):

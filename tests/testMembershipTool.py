@@ -23,6 +23,7 @@ class TestMembershipTool(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
         self.membership = self.portal.portal_membership
+        self.groups = self.portal.portal_groups
 
         # Nuke Administators and Reviewers groups added in 2.1a2 migrations
         # (and any other migrated-in groups) to avoid test confusion
@@ -78,8 +79,9 @@ class TestMembershipTool(PloneTestCase.PloneTestCase):
     def testListMembersSkipsGroups(self):
         # Should only return real members, not groups
         uf = self.portal.acl_users
-        uf.changeOrCreateGroups(new_groups=['Foo', 'Bar'])
-        self.assertEqual(len(uf.getUserNames()), 3)
+        self.groups.addGroup('Foo')
+        self.groups.addGroup('Bar')
+        self.assertEqual(len(uf.getUserNames()), 1)
         members = self.membership.listMembers()
         self.assertEqual(len(members), 1)
         self.assertEqual(members[0].getId(), default_user)
@@ -93,8 +95,9 @@ class TestMembershipTool(PloneTestCase.PloneTestCase):
     def testListMemberIdsSkipsGroups(self):
         # Should only return real members, not groups
         uf = self.portal.acl_users
-        uf.changeOrCreateGroups(new_groups=['Foo', 'Bar'])
-        self.assertEqual(len(uf.getUserNames()), 3)
+        self.groups.addGroup('Foo')
+        self.groups.addGroup('Bar')
+        self.assertEqual(len(uf.getUserNames()), 1)
         memberids = self.membership.listMemberIds()
         self.assertEqual(len(memberids), 1)
         self.assertEqual(memberids[0], default_user)
@@ -124,7 +127,7 @@ class TestMembershipTool(PloneTestCase.PloneTestCase):
     def testSetPasswordAndKeepGroups(self):
         # Password should be changed and user must not change group membership
         group2 = 'g2'
-        groups = self.portal.portal_groups
+        groups = self.groups
         groups.addGroup(group2, None, [], [])
         group = groups.getGroupById(group2)
         group.addMember(default_user)
@@ -146,7 +149,7 @@ class TestMembershipTool(PloneTestCase.PloneTestCase):
         member = self.membership.getMemberById(default_user)
         self.failIfEqual(member, None)
         self.assertEqual(member.__class__.__name__, 'MemberData')
-        self.assertEqual(member.aq_parent.__class__.__name__, 'GRUFUser')
+        self.assertEqual(member.aq_parent.__class__.__name__, 'PloneUser')
 
     def testGetAuthenticatedMember(self):
         member = self.membership.getAuthenticatedMember()
@@ -156,7 +159,7 @@ class TestMembershipTool(PloneTestCase.PloneTestCase):
         member = self.membership.getAuthenticatedMember()
         self.assertEqual(member.getUserName(), default_user)
         self.assertEqual(member.__class__.__name__, 'MemberData')
-        self.assertEqual(member.aq_parent.__class__.__name__, 'GRUFUser')
+        self.assertEqual(member.aq_parent.__class__.__name__, 'PloneUser')
 
     def testGetAuthenticatedMemberIfAnonymous(self):
         self.logout()
@@ -182,8 +185,8 @@ class TestMembershipTool(PloneTestCase.PloneTestCase):
         user = aq_base(user)
         user = self.membership.wrapUser(user)
         self.assertEqual(user.__class__.__name__, 'MemberData')
-        self.assertEqual(user.aq_parent.__class__.__name__, 'GRUFUser')
-        self.assertEqual(user.aq_parent.aq_parent.__class__.__name__, 'GroupUserFolder')
+        self.assertEqual(user.aq_parent.__class__.__name__, 'PloneUser')
+        self.assertEqual(user.aq_parent.aq_parent.__class__.__name__, 'PluggableAuthService')
 
     def testWrapUserWrapsWrappedUser(self):
         user = self.portal.acl_users.getUserById(default_user)
@@ -191,14 +194,14 @@ class TestMembershipTool(PloneTestCase.PloneTestCase):
         self.failUnless(hasattr(user, 'aq_base'))
         user = self.membership.wrapUser(user)
         self.assertEqual(user.__class__.__name__, 'MemberData')
-        self.assertEqual(user.aq_parent.__class__.__name__, 'GRUFUser')
-        self.assertEqual(user.aq_parent.aq_parent.__class__.__name__, 'GroupUserFolder')
+        self.assertEqual(user.aq_parent.__class__.__name__, 'PloneUser')
+        self.assertEqual(user.aq_parent.aq_parent.__class__.__name__, 'PluggableAuthService')
 
     def testWrapUserDoesntWrapMemberData(self):
         user = self.portal.acl_users.getUserById(default_user)
         user.getMemberId = lambda x: 1
         user = self.membership.wrapUser(user)
-        self.assertEqual(user.__class__.__name__, 'GRUFUser')
+        self.assertEqual(user.__class__.__name__, 'PloneUser')
 
     def testWrapUserDoesntWrapAnonymous(self):
         user = self.membership.wrapUser(nobody)
@@ -209,7 +212,7 @@ class TestMembershipTool(PloneTestCase.PloneTestCase):
         user = self.membership.wrapUser(nobody, wrap_anon=1)
         self.assertEqual(user.__class__.__name__, 'MemberData')
         self.assertEqual(user.aq_parent.__class__.__name__, 'SpecialUser')
-        self.assertEqual(user.aq_parent.aq_parent.__class__.__name__, 'GroupUserFolder')
+        self.assertEqual(user.aq_parent.aq_parent.__class__.__name__, 'PluggableAuthService')
 
     def testGetCandidateLocalRoles(self):
         self.assertEqual(self.membership.getCandidateLocalRoles(self.folder), ('Owner',))
@@ -293,7 +296,7 @@ class TestMembershipTool(PloneTestCase.PloneTestCase):
         self.setRoles(['Manager'])
         self.addMember('barney', 'Barney Rubble', 'barney@bedrock.com', ['Member'], '2002-01-01')
         barney = self.membership.getMemberById('barney')
-        self.failUnlessEqual(barney.email, 'barney@bedrock.com')
+        self.failUnlessEqual(barney.getProperty('email'), 'barney@bedrock.com')
         del barney
 
         self.membership.deleteMembers(['barney'])

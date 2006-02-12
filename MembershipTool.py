@@ -323,10 +323,10 @@ class MembershipTool(PloneBaseTool, BaseTool):
         list rather than the entire list at once.
         '''
         uf = self.acl_users
-        if hasattr(aq_base(uf), 'getPureUserNames'): # GRUF
-            return uf.getPureUserNames()
+        if hasattr(aq_base(uf), 'getPureUserIds'): # GRUF
+            return uf.getPureUserIds()
         else:
-            return self.__getPUS().getUserNames()
+            return self.__getPUS().getUserIds()
 
     # this should probably be in MemberDataTool.py
     #security.declarePublic( 'searchForMembers' )
@@ -472,16 +472,16 @@ class MembershipTool(PloneBaseTool, BaseTool):
             res.append(member)
         return res
 
-    def testCurrentPassword(self, password, username=None):
+    def testCurrentPassword(self, password, userid=None):
         """ test to see if password is current """
         portal=getToolByName(self, 'portal_url').getPortalObject()
         REQUEST=getattr(self, 'REQUEST', {})
-        if username is None:
-            username=self.getAuthenticatedMember().getUserName()
-        acl_users = self._findUsersAclHome(username)
+        if userid is None:
+            userid=self.getAuthenticatedMember().getUserId()
+        acl_users = self._findUsersAclHome(userid)
         if not acl_users:
             return 0
-        return acl_users.authenticate(username, password, REQUEST)
+        return acl_users.authenticate(userid, password, REQUEST)
 
     def _findUsersAclHome(self, userid):
         portal = getToolByName(self, 'portal_url').getPortalObject()
@@ -504,7 +504,7 @@ class MembershipTool(PloneBaseTool, BaseTool):
         registration = getToolByName(self, 'portal_registration', None)
         if not self.isAnonymousUser():
             member = self.getAuthenticatedMember()
-            acl_users = self._findUsersAclHome(member.getUserName())#self.acl_users
+            acl_users = self._findUsersAclHome(member.getUserId())#self.acl_users
             if not acl_users:
                 # should not possibly ever happen
                 raise BadRequest, 'did not find current user in any user folder'
@@ -515,13 +515,13 @@ class MembershipTool(PloneBaseTool, BaseTool):
 
             if domains is None:
                 domains = []
-            user = acl_users.getUserById(member.getUserName(), None)
+            user = acl_users.getUserById(member.getUserId(), None)
             # we must change the users password trough grufs changepassword
             # to keep her  group settings
             if hasattr(user, 'changePassword'):
                 user.changePassword(password)
             else:
-                acl_users._doChangeUser(member.getUserName(), password, member.getRoles(), domains)
+                acl_users._doChangeUser(member.getUserId(), password, member.getRoles(), domains)
             self.credentialsChanged(password)
         else:
             raise BadRequest, 'Not logged in.'

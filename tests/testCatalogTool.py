@@ -301,11 +301,15 @@ class TestCatalogSearching(PloneTestCase.PloneTestCase):
 
     def addUser2ToGroup(self):
         self.groups.groupWorkspacesCreationFlag = 0
-        self.groups.addGroup(group2, None, [], [])
+	try:
+            self.groups.addGroup(group2, None, [], [])
+        except KeyError:
+            # A KeyError can happen if addUser2ToGroup is invoked a second
+            # time and the group already exists.
+            pass
         group = self.groups.getGroupById(group2)
         group.addMember(user2)
-        prefix = self.portal.acl_users.getGroupPrefix()
-        return '%s%s' % (prefix, group2)
+	return group2
 
     def testListAllowedRolesAndUsers(self):
         # Should include the group in list of allowed users

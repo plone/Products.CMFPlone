@@ -14,6 +14,9 @@ def two5_alpha1(portal):
     # Install CMFPlacefulWorkflow
     installPlacefulWorkflow(portal, out)
 
+    # Install PlonePAS
+    installPlonePAS(portal, out)
+
     return out
 
 def alpha1_alpha2(portal):
@@ -32,6 +35,10 @@ def installPlacefulWorkflow(portal, out):
     # CMFPlacefulWorkflow is not installed by e.g. tests
     if 'CMFPlacefulWorkflow' in portal.Control_Panel.Products.objectIds():
         installOrReinstallProduct(portal, 'CMFPlacefulWorkflow', out)
+
+def installPlonePAS(portal, out):
+    """Quickinstalls PlonePAS if not installed yet."""
+    installOrReinstallProduct(portal, 'PlonePAS', out)
 
 def installDeprecated(portal, out):
     # register login skin
@@ -57,3 +64,4 @@ def installDeprecated(portal, out):
                 path.append('plone_deprecated')
             st.addSkinSelection(s, ','.join(path))
             out.append('Added plone_deprecated to %s' % s)
+

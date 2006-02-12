@@ -21,9 +21,9 @@ class TestFolderLocalRole(PloneTestCase.PloneTestCase):
     def afterSetUp(self):
         self.membership = self.portal.portal_membership
         self.membership.addMember('user2', 'secret', ['Member'], [])
-        self.portal._addRole('Foo')
-        self.portal._addRole('Bar')
-        self.portal._addRole('Baz')
+        self.portal.acl_users.addRole('Foo')
+        self.portal.acl_users.addRole('Bar')
+        self.portal.acl_users.addRole('Baz')
         # Cannot assign a role I do not have myself...
         self.setRoles(['Member', 'Foo', 'Bar', 'Baz'])
 

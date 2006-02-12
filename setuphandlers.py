@@ -24,6 +24,7 @@ class PloneGenerator:
         #qi.notifyInstalled('ATReferenceBrowserWidget', locked=0)
         qi.notifyInstalled('CMFCalendar', locked=1)
         qi.notifyInstalled('CMFActionIcons', locked=1)
+        qi.notifyInstalled('PlonePAS', locked=1)
 
 
     def customizePortalOptions(self, p):

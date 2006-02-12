@@ -60,10 +60,11 @@ class TestUserFolder(PloneTestCase.PloneTestCase):
         self.failUnless(names)
         self.assertEqual(names[0], default_user)
 
-    def testIdentify(self):
-        name, password = self.uf.identify(self.basic)
-        self.assertEqual(name, default_user)
-        self.assertEqual(password, 'secret')
+#    # internal to basic user folder, not present in PAS
+#    def testIdentify(self):
+#        name, password = self.uf.identify(self.basic)
+#        self.assertEqual(name, default_user)
+#        self.assertEqual(password, 'secret')
 
     def testGetRoles(self):
         user = self.uf.getUser(default_user)
@@ -97,29 +98,35 @@ class TestUserFolder(PloneTestCase.PloneTestCase):
         self.folder.manage_addLocalRoles(default_user, ['Owner'])
         self.failUnless(user.has_permission('Add Folders', self.folder))
 
-    def testAuthenticate(self):
-        user = self.uf.getUser(default_user)
-        self.failUnless(user.authenticate('secret', self.app.REQUEST))
+#    # internal to basic user folder, not present in PAS
+#    def testAuthenticate(self):
+#        user = self.uf.getUser(default_user)
+#        self.failUnless(user.authenticate('secret', self.app.REQUEST))
 
     def testValidate(self):
+        self.app.REQUEST._auth = self.basic
         user = self.uf.validate(self.app.REQUEST, self.basic, [user_role])
         self.failIfEqual(user, None)
         self.assertEqual(user.getUserName(), default_user)
 
     def testNotValidateWithoutAuth(self):
+        self.app.REQUEST._auth = ''
         user = self.uf.validate(self.app.REQUEST, '', ['role1'])
         self.assertEqual(user, None)
 
     def testValidateWithoutRoles(self):
+        self.app.REQUEST._auth = self.basic
         # Roles will be determined by looking at 'doc' itself
         user = self.uf.validate(self.app.REQUEST, self.basic)
         self.assertEqual(user.getUserName(), default_user)
 
     def testNotValidateWithEmptyRoles(self):
+        self.app.REQUEST._auth = self.basic
         user = self.uf.validate(self.app.REQUEST, self.basic, [])
         self.assertEqual(user, None)
 
     def testNotValidateWithWrongRoles(self):
+        self.app.REQUEST._auth = self.basic
         user = self.uf.validate(self.app.REQUEST, self.basic, ['Manager'])
         self.assertEqual(user, None)
 
