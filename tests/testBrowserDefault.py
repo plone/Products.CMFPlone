@@ -242,23 +242,23 @@ class TestDefaultPage(PloneTestCase.PloneTestCase):
                                          'index.htm', 'FrontPage'))
 
     def testDefaultPageStringExist(self):
-        # Test for https://plone.org/collector/2671
+        # Test for http://dev.plone.org/plone/ticket/2671
         self.ob.keys = [] # Make sure 'index_html' fake key doesn't win
         self.ob.set_default('test', 1)
         self.assertEquals(self.getDefault(), (self.ob, ['test']))
 
     def testDefaultPageStringNotExist(self):
-        # Test for https://plone.org/collector/2671
+        # Test for http://dev.plone.org/plone/ticket/2671
         self.ob.set_default('test', 0)
         self.assertEquals(self.getDefault(), (self.ob, ['index_html']))
 
     def testDefaultPageSequenceExist(self):
-        # Test for https://plone.org/collector/2671
+        # Test for http://dev.plone.org/plone/ticket/2671
         self.ob.set_default(['test'], 1)
         self.assertEquals(self.getDefault(), (self.ob, ['test']))
 
     def testDefaultPageSequenceNotExist(self):
-        # Test for https://plone.org/collector/2671
+        # Test for http://dev.plone.org/plone/ticket/2671
         self.ob.set_default(['test'], 0)
         self.assertEquals(self.getDefault(), (self.ob, ['index_html']))
         self.ob.keys = ['index.html']

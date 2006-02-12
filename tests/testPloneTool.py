@@ -95,7 +95,7 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
             self.failIf(val(address), '%s should fail' % address)
 
     def testEditFormatMetadataOfFile(self):
-        # Test fix for http://plone.org/collector/1323
+        # Test fix for http://dev.plone.org/plone/ticket/1323
         # Fixed in CMFDefault.File, not Plone.
         self.folder.invokeFactory('File', id='file')
         self.folder.file.edit(file=dummy.File('foo.zip'))
@@ -107,7 +107,7 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
         self.assertEqual(self.folder.file.getFile().content_type, 'image/gif')
 
     def testEditFormatMetadataOfImage(self):
-        # Test fix for http://plone.org/collector/1323
+        # Test fix for http://dev.plone.org/plone/ticket/1323
         # Fixed in CMFDefault.Image, not Plone.
         self.folder.invokeFactory('Image', id='image')
         self.folder.image.edit(file=dummy.Image('foo.zip'))
@@ -268,7 +268,7 @@ class TestOwnershipStuff(PloneTestCase.PloneTestCase):
         self.assertList(filtered_roles[1], ['Reviewer'])
 
     def testGetInheritedLocalRolesMultiLevel(self):
-        # Test for http://members.plone.org/collector/3901
+        # Test for http://dev.plone.org/plone/ticket/3901
         # make sure local roles are picked up from all folders in tree.
         gILR = self.utils.getInheritedLocalRoles
         self.folder1.manage_addLocalRoles('new_owner', ('Reviewer',))

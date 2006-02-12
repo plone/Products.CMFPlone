@@ -46,7 +46,7 @@ class TestTranslationServiceTool(PloneTestCase.PloneTestCase):
         self.assertEquals(value, '1997-03-09 13:45')
 
     def test_ulocalized_time_fetch_error(self):
-        # http://plone.org/collector/4251
+        # http://dev.plone.org/plone/ticket/4251
         error = "(Missing.Value,), {}"
 	value = self.tool.ulocalized_time(error)
 	self.failUnlessEqual(value, None)

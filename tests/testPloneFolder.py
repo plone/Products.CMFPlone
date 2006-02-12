@@ -42,7 +42,7 @@ class TestPloneFolder(PloneTestCase.PloneTestCase):
             ['sub1', 'sub2', 'sub3'])
 
     def testEditFolderKeepsPosition(self):
-        # Cover http://plone.org/collector/2796
+        # Cover http://dev.plone.org/plone/ticket/2796
         self.folder.sub2.folder_edit('Foo', 'Description')
         self.assertEqual(self.folder.sub2.Title(), 'Foo')
         # Order should remain the same
@@ -50,7 +50,7 @@ class TestPloneFolder(PloneTestCase.PloneTestCase):
             ['sub1', 'sub2', 'sub3'])
 
     def testRenameFolderKeepsPosition(self):
-        # Cover http://plone.org/collector/2796
+        # Cover http://dev.plone.org/plone/ticket/2796
         transaction.savepoint(optimistic=True) # make rename work
         self.folder.sub2.folder_edit('Foo', 'Description', id='foo')
         self.assertEqual(self.folder.foo.Title(), 'Foo')
@@ -125,7 +125,7 @@ class TestCheckIdAvailable(PloneTestCase.PloneTestCase):
 
 
 class TestFolderListing(PloneTestCase.PloneTestCase):
-    # Tests for http://plone.org/collector/3512
+    # Tests for http://dev.plone.org/plone/ticket/3512
 
     def afterSetUp(self):
         self.workflow = self.portal.portal_workflow

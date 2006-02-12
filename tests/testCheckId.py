@@ -197,7 +197,7 @@ class TestCheckId(PloneTestCase.PloneTestCase):
             self.assertEqual(r, "'%s' is reserved." % alias)   # success
 
     def testCheckingMethodAliasesOnPortalRoot(self):
-        # Test for bug http://members.plone.org/collector/4351
+        # Test for bug http://dev.plone.org/plone/ticket/4351
         self.setRoles(['Manager'])
         self.portal.manage_permission('Add portal content', ['Manager'], acquire=0)
 

@@ -424,7 +424,7 @@ class TestCatalogSorting(PloneTestCase.PloneTestCase):
 
 
 class TestFolderCataloging(PloneTestCase.PloneTestCase):
-    # Tests for http://plone.org/collector/2876
+    # Tests for http://dev.plone.org/plone/ticket/2876
     # folder_edit must recatalog. folder_rename must recatalog.
 
     def afterSetUp(self):
@@ -643,7 +643,7 @@ class TestCatalogBugs(PloneTestCase.PloneTestCase):
 
     def testCanRenamePortalIfLexiconExists(self):
         # Should be able to rename a Plone portal
-        # This test is to demonstrate that http://plone.org/collector/1745
+        # This test is to demonstrate that http://dev.plone.org/plone/ticket/1745
         # is fixed and can be closed.
         self.loginPortalOwner()
         self.app.manage_renameObjects([portal_name], ['foo'])
@@ -651,7 +651,7 @@ class TestCatalogBugs(PloneTestCase.PloneTestCase):
 
 
 class TestCatalogUnindexing(PloneTestCase.PloneTestCase):
-    # Tests for http://plone.org/collector/3547
+    # Tests for http://dev.plone.org/plone/ticket/3547
     # Published objects are not unindexed on delete?
 
     def afterSetUp(self):

@@ -54,7 +54,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.portal.manage_main()
 
     def testControlPanelGroups(self):
-        # Test for https://plone.org/collector/2749
+        # Test for http://dev.plone.org/plone/ticket/2749
         # Wake up object, in the case it was deactivated.
         dir(self.cp); dir(self.cp)
         self.failUnless(self.cp.__dict__.has_key('groups'))
@@ -74,7 +74,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
 
     def testLargePloneFolderWorkflow(self):
         # Large Plone Folder should use folder_workflow
-        # http://plone.org/collector/2744
+        # http://dev.plone.org/plone/ticket/2744
         lpf_chain = self.workflow.getChainFor('Large Plone Folder')
         self.failUnless('folder_workflow' in lpf_chain)
         self.failIf('plone_workflow' in lpf_chain)

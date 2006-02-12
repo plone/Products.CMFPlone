@@ -35,7 +35,7 @@ class TestDAVProperties(PloneTestCase.PloneTestCase):
 
 
 class TestDAVMetadata(PloneTestCase.FunctionalTestCase):
-    # Confirms fix for http://plone.org/collector/3217
+    # Confirms fix for http://dev.plone.org/plone/ticket/3217
     # The fix itself is in CMFDefault.Document, not Plone.
 
     def afterSetUp(self):
@@ -65,7 +65,7 @@ class TestDAVMetadata(PloneTestCase.FunctionalTestCase):
 
 class TestPUTObjects(PloneTestCase.FunctionalTestCase):
     # PUT objects into Plone including special cases like index_html.
-    # Confirms fix for http://plone.org/collector/1375
+    # Confirms fix for http://dev.plone.org/plone/ticket/1375
 
     def afterSetUp(self):
         self.basic_auth = '%s:%s' % (default_user, default_password)

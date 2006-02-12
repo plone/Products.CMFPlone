@@ -94,7 +94,7 @@ class TestContentSecurity(PloneTestCase.PloneTestCase):
         subfolder.subsubfolder.invokeFactory('Document', id='new')
 
     def testViewAllowedOnContentInAcquisitionBlockedFolder(self):
-        # Test for http://members.plone.org/collector/4055 which seems to be
+        # Test for http://dev.plone.org/plone/ticket/4055 which seems to be
         # invalid
         self.login('user1')
         folder = self.membership.getHomeFolder('user1')
@@ -126,7 +126,7 @@ class TestContentSecurity(PloneTestCase.PloneTestCase):
         doc.base_view()
 
     def testViewAllowedOnContentInAcquisitionBlockedFolderWithCustomWorkflow(self):
-        # Another test for http://members.plone.org/collector/4055
+        # Another test for http://dev.plone.org/plone/ticket/4055
         # using a paired down version of the custom workflow described therein
         # 'Access contents information' must be enabled for Authenticated/
         # Anonymous on folders for even simple actions to evaluate properly.

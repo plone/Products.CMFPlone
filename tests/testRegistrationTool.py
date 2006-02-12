@@ -52,7 +52,7 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
                           properties={'username': 'Dr FooBar', 'email': 'foo@bar.com'})
 
     def testJoinAsExistingNonMemberUserRaisesValueError(self):
-        # http://plone.org/collector/3221
+        # http://dev.plone.org/plone/ticket/3221
         self.portal.acl_users._doAddUser(member_id, 'secret', [], [])
         self.assertRaises(ValueError,
                           self.registration.addMember,
@@ -66,13 +66,13 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
                           properties={'username': 'Dr FooBar', 'email': 'foo@bar.com'})
 
     def testJoinWithoutPermissionRaisesUnauthorized(self):
-        # http://plone.org/collector/3000
+        # http://dev.plone.org/plone/ticket/3000
         self.portal.manage_permission(AddPortalMember, ['Manager'], acquire=0)
         self.assertRaises(Unauthorized,
                           self.registration.restrictedTraverse, 'addMember')
 
     def testJoinWithoutPermissionRaisesUnauthorizedFormScript(self):
-        # http://plone.org/collector/3000
+        # http://dev.plone.org/plone/ticket/3000
         self.portal.manage_permission(AddPortalMember, ['Manager'], acquire=0)
         self.app.REQUEST['username'] = member_id
         # TODO: register has a proxy role but we trip over
@@ -80,7 +80,7 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
         self.assertRaises(Unauthorized, self.portal.register)
 
     def testInvalidCMFDefaultEmailFailsValidation(self):
-        # http://plone.org/collector/3910
+        # http://dev.plone.org/plone/ticket/3910
         self.failIf(self.registration.isValidEmail('bogus@127.0.0.1'))
     
 

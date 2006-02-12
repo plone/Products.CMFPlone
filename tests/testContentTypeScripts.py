@@ -162,7 +162,7 @@ class TestContentTypeScripts(PloneTestCase.PloneTestCase):
     # Bug tests
 
     def testClearImageTitle(self):
-        # Test for http://plone.org/collector/3303
+        # Test for http://dev.plone.org/plone/ticket/3303
         # Should be able to clear Image title
         self.folder.invokeFactory('Image', id='image', title='Foo', file=dummy.Image())
         self.assertEqual(self.folder.image.Title(), 'Foo')
@@ -198,7 +198,7 @@ class TestContentTypeScripts(PloneTestCase.PloneTestCase):
 
 
 class TestEditShortName(PloneTestCase.PloneTestCase):
-    # Test fix for http://plone.org/collector/2246
+    # Test fix for http://dev.plone.org/plone/ticket/2246
     # Short name should be editable without specifying a file.
 
     def afterSetUp(self):
@@ -253,7 +253,7 @@ class TestEditShortName(PloneTestCase.PloneTestCase):
 
 
 class TestEditFileKeepsMimeType(PloneTestCase.PloneTestCase):
-    # Tests covering http://plone.org/collector/2792
+    # Tests covering http://dev.plone.org/plone/ticket/2792
     # Editing a file should not change MIME type
 
     def afterSetUp(self):
@@ -304,7 +304,7 @@ class TestEditFileKeepsMimeType(PloneTestCase.PloneTestCase):
 
 
 class TestFileURL(PloneTestCase.PloneTestCase):
-    # Tests covering http://plone.org/collector/3296
+    # Tests covering http://dev.plone.org/plone/ticket/3296
     # file:// URLs should contain correct number of slashes
     # NOTABUG: This is how urlparse.urlparse() works.
 
@@ -372,7 +372,7 @@ class TestBadFileIds(PloneTestCase.PloneTestCase):
         transaction.savepoint(optimistic=True) # make rename work
 
     def testUploadBadFile(self):
-        # http://plone.org/collector/3416
+        # http://dev.plone.org/plone/ticket/3416
         try:
             self.folder[self.file_id].file_edit(file=dummy.File('fred%.txt'))
         except CopyError:
@@ -383,7 +383,7 @@ class TestBadFileIds(PloneTestCase.PloneTestCase):
         self.failIf('fred%.txt' in self.folder.objectIds())
 
     def testUploadBadImage(self):
-        # http://plone.org/collector/3518
+        # http://dev.plone.org/plone/ticket/3518
         try:
             self.folder[self.image_id].image_edit(file=dummy.File('fred%.gif'))
         except CopyError:

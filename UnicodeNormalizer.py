@@ -64,7 +64,7 @@ mapping.update(mapping_two_chars)
 mapping.update(mapping_latin_chars)
 
 # On OpenBSD string.whitespace has a non-standard implementation
-# See http://plone.org/collector/4704 for details
+# See http://dev.plone.org/plone/ticket/4704 for details
 whitespace = ''.join([c for c in string.whitespace if ord(c) < 128])
 allowed = string.ascii_letters + string.digits + string.punctuation + whitespace
 

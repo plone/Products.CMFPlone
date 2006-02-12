@@ -199,7 +199,7 @@ class TestQueryCatalogParseError(PloneTestCase.PloneTestCase):
         self.assertEqual(self.portal.queryCatalog(request), expected)
 
     def testQueryCatalogParseError3050(self):
-        # http://plone.org/collector/3050
+        # http://dev.plone.org/plone/ticket/3050
         request = {'SearchableText':'AND'}
         # ZCTextIndex raises ParseError which translates to empty result
         expected = []

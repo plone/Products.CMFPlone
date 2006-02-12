@@ -100,7 +100,7 @@ class TestCutPasteSecurity(PloneTestCase.PloneTestCase):
         self.assertRaises(Unauthorized, src.restrictedTraverse, 'manage_cutObjects')
 
     def test_Bug2183_PastingIntoFolderFailsForNotAllowedContentTypes(self):
-        # Test fix for http://plone.org/collector/2183
+        # Test fix for http://dev.plone.org/plone/ticket/2183
         # The fix itself is in CMFCore.PortalFolder, not Plone
 
         # add the document to be copy and pasted later
@@ -123,7 +123,7 @@ class TestCutPasteSecurity(PloneTestCase.PloneTestCase):
         )
 
     def test_Bug2183_PastingIntoPortalFailsForNotAllowedContentTypes(self):
-        # Test fix for http://plone.org/collector/2183
+        # Test fix for http://dev.plone.org/plone/ticket/2183
         # The fix itself is in CMFCore.PortalFolder, not Plone
 
         # add the document to be copy and pasted later

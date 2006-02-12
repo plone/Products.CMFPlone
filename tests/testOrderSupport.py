@@ -184,7 +184,7 @@ class TestOrderSupport(PloneTestCase.PloneTestCase):
         self.assertEqual(self.folder.getObjectPosition('foo'), 2)
 
     def testIgnoreNonObjects(self):
-        #Fix for (http://plone.org/collector/3959) non contentish objects
+        #Fix for (http://dev.plone.org/plone/ticket/3959) non contentish objects
         #cause errors, we should just ignore them
         self.folder.moveObjectsByDelta(['bar','blah'], -1)
         self.assertEqual(self.folder.getObjectPosition('bar'), 0)

@@ -164,7 +164,7 @@ class TestMembershipTool(PloneTestCase.PloneTestCase):
         self.assertEqual(member.getUserName(), 'Anonymous User')
 
     def testAnonymousMemberIsNotWrapped(self):
-        # Also see http://plone.org/collector/1851
+        # Also see http://dev.plone.org/plone/ticket/1851
         self.logout()
         member = self.membership.getAuthenticatedMember()
         self.failIfEqual(member.__class__.__name__, 'MemberData')
@@ -330,7 +330,7 @@ class TestCreateMemberarea(PloneTestCase.PloneTestCase):
 
 ##     def testWrapUserCreatesMemberarea(self):
 ##         # This test serves to trip us up should this ever change
-##         # Also see http://plone.org/collector/1697
+##         # Also see http://dev.plone.org/plone/ticket/1697
 ##         members = self.membership.getMembersFolder()
 ##         user = self.portal.acl_users.getUserById('user2')
 ##         self.membership.memberareaCreationFlag = 1

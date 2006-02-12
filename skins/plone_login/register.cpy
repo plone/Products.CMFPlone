@@ -32,7 +32,7 @@ if site_properties.validate_email:
 # This is a temporary work-around for an issue with CMF not properly
 # reserving some existing ids (FSDV skin elements, for example). Until 
 # this is fixed in the CMF we can at least fail nicely. See
-# http://plone.org/collector/2982 and http://plone.org/collector/3028
+# http://dev.plone.org/plone/ticket/2982 and http://plone.org/collector/3028
 # for more info. (rohrer 2004-10-24)
 try:
     portal_registration.addMember(username, password, properties=REQUEST)
