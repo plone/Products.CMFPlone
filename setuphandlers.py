@@ -16,7 +16,9 @@ class PloneGenerator:
         qi = getToolByName(p, 'portal_quickinstaller')
         qi.installProduct('Archetypes', locked=0)
         qi.installProduct('CMFFormController', locked=1)
-        qi.installProduct('GroupUserFolder', locked=1)
+	qi.installProduct('GroupUserFolder', locked=1)
+        qi.installProduct('PasswordResetTool', locked=1)
+        qi.installProduct('PlonePAS', locked=1)
         qi.installProduct('CMFPlacefulWorkflow', locked=0)
         qi.installProduct('kupu', locked=0)
         #qi.notifyInstalled('ResourceRegistries', locked=0)
@@ -24,8 +26,6 @@ class PloneGenerator:
         #qi.notifyInstalled('ATReferenceBrowserWidget', locked=0)
         qi.notifyInstalled('CMFCalendar', locked=1)
         qi.notifyInstalled('CMFActionIcons', locked=1)
-        qi.notifyInstalled('PasswordResetTool', locked=1)
-        qi.notifyInstalled('PlonePAS', locked=1)
 
 
     def customizePortalOptions(self, p):
