@@ -22,6 +22,9 @@ ignoredObjectIds = ['rssBody', 'RSS', 'rss_template', 'search_rss',
                     # There is no DTD for the pdf topic stuff
                     'atct_topic_pdf', 'atct_topic_pdf_template']
 
+ignoredSkinLayers = ['portal_skins/kupu_plone']
+
+
 class TestSkins(PloneTestCase.PloneTestCase):
     # Note: This looks like a unit test but isn't
 
@@ -35,9 +38,11 @@ class TestSkins(PloneTestCase.PloneTestCase):
         '''Runs the ZChecker on skins'''
         dirs = self.portal.portal_skins.objectValues()
         for dir in dirs:
-            results = self.portal.zchecker.checkObjects(dir.objectValues())
-            for result in results:
-                self._report(result)
+            # filter out certain skin layers
+            if self._skinpath(dir) not in ignoredSkinLayers:
+                results = self.portal.zchecker.checkObjects(dir.objectValues())
+                for result in results:
+                    self._report(result)
         if self.verbose:
             _print('\n')
 

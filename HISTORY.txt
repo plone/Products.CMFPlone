@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.5 (unreleased)
 
+    - Added ignoredSkinLayers option to zcheck.py to filter out certain folders.
+      [hannosch]
+
     - Removed default front-page from ./www. New location is:
       ./profiles/default/structure
       [hannosch]
