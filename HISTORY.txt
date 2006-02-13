@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.5 (unreleased)
 
+    - Removed default front-page from ./www. New location is:
+      ./profiles/default/structure
+      [hannosch]
+
     - Merged PlonePAS bundle. This implements the start of step 2 for PLIP 102.
       [wichert]
 
