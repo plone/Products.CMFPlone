@@ -212,31 +212,29 @@ class TestCheckId(PloneTestCase.PloneTestCase):
 class TestVisibleIdsEnabled(PloneTestCase.PloneTestCase):
     '''Tests the visibleIdsEnabled script'''
 
-    def testVisibleIdsEnabledFailsWithSitePropertyDisabled(self):
-        member = self.portal.portal_membership.getAuthenticatedMember()
-        props = self.portal.portal_properties.site_properties
+    def afterSetUp(self):
+        self.member = self.portal.portal_membership.getAuthenticatedMember()
+        self.props = self.portal.portal_properties.site_properties
+
+    def testFailsWithSitePropertyDisabled(self):
         # Set baseline
-        member.manage_changeProperties(visible_ids=False)
-        props.manage_changeProperties(visible_ids=False)
+        self.member.setProperties(visible_ids=False)
+        self.props.manage_changeProperties(visible_ids=False)
         # Should fail when site property is set false
         self.failIf(self.portal.visibleIdsEnabled())
-        member.manage_changeProperties(visible_ids=True)
+        self.member.setProperties(visible_ids=True)
         self.failIf(self.portal.visibleIdsEnabled())
 
-    def testVisibleIdsEnabledFailsWithMemberPropertyDisabled(self):
-        member = self.portal.portal_membership.getAuthenticatedMember()
-        props = self.portal.portal_properties.site_properties
+    def testFailsWithMemberPropertyDisabled(self):
         # Should fail when member property is false
-        member.manage_changeProperties(visible_ids=False)
-        props.manage_changeProperties(visible_ids=True)
+        self.member.setProperties(visible_ids=False)
+        self.props.manage_changeProperties(visible_ids=True)
         self.failIf(self.portal.visibleIdsEnabled())
 
-    def testVisibleIdsEnabledFailsWithMemberPropertyDisabled(self):
-        member = self.portal.portal_membership.getAuthenticatedMember()
-        props = self.portal.portal_properties.site_properties
+    def testSucceedsWithMemberAndSitePropertyEnabled(self):
         # Should succeed only when site property and member property are true
-        props.manage_changeProperties(visible_ids=True)
-        member.manage_changeProperties(visible_ids=True)
+        self.props.manage_changeProperties(visible_ids=True)
+        self.member.setProperties(visible_ids=True)
         self.failUnless(self.portal.visibleIdsEnabled())
 
 def test_suite():
