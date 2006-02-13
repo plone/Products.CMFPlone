@@ -14,9 +14,10 @@ PloneTestCase.setupPloneSite()
 import base64
 from AccessControl import Unauthorized
 
-default_user = ZopeTestCase.user_name
-user_perms   = ZopeTestCase.standard_permissions
-user_role    = 'Member'
+default_user     = PloneTestCase.default_user
+default_password = PloneTestCase.default_password
+user_perms       = ZopeTestCase.standard_permissions
+user_role        = 'Member'
 
 
 class TestUserFolder(PloneTestCase.PloneTestCase):
@@ -24,7 +25,7 @@ class TestUserFolder(PloneTestCase.PloneTestCase):
     def afterSetUp(self):
         self.logout()
         self.uf = self.portal.acl_users
-        self.basic = 'Basic %s' % base64.encodestring('%s:secret' % default_user)
+        self.basic = 'Basic %s' % base64.encodestring('%s:%s' % (default_user, default_password))
         # Set up a published object accessible to the default user
         self.folder.addDTMLMethod('doc', file='')
         self.folder.doc.manage_permission('View', [user_role], acquire=0)
@@ -60,12 +61,6 @@ class TestUserFolder(PloneTestCase.PloneTestCase):
         self.failUnless(names)
         self.assertEqual(names[0], default_user)
 
-#    # internal to basic user folder, not present in PAS
-#    def testIdentify(self):
-#        name, password = self.uf.identify(self.basic)
-#        self.assertEqual(name, default_user)
-#        self.assertEqual(password, 'secret')
-
     def testGetRoles(self):
         user = self.uf.getUser(default_user)
         self.failUnless(user_role in user.getRoles())
@@ -97,11 +92,6 @@ class TestUserFolder(PloneTestCase.PloneTestCase):
         self.folder.manage_role('Owner', ['Add Folders'])
         self.folder.manage_addLocalRoles(default_user, ['Owner'])
         self.failUnless(user.has_permission('Add Folders', self.folder))
-
-#    # internal to basic user folder, not present in PAS
-#    def testAuthenticate(self):
-#        user = self.uf.getUser(default_user)
-#        self.failUnless(user.authenticate('secret', self.app.REQUEST))
 
     def testValidate(self):
         self.app.REQUEST._auth = self.basic

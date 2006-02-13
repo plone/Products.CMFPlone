@@ -8,7 +8,8 @@ no index_html Document on the portal root.
 However, this ComputedAttribute didn't handle WebDAV 'PUT' request
 correctly. This test ensures that the fix doesn't regress.
 
-  >>> from Testing.ZopeTestCase import user_name, user_password
+  >>> from Products.PloneTestCase.PloneTestCase import default_user
+  >>> from Products.PloneTestCase.PloneTestCase import default_password
 
 Get path of our home folder:
 
@@ -30,7 +31,7 @@ PUT index_html into a Plone Folder. Should work just fine.
   ... <BLANKLINE>
   ... %s
   ... """ % (folder_path, length,
-  ...        user_name, user_password, body),
+  ...        default_user, default_password, body),
   ...        handle_errors=False)
   HTTP/1.1 201 Created...
 
@@ -69,7 +70,7 @@ PUT index_html into Plone root. Should work just fine.
   ... <BLANKLINE>
   ... %s
   ... """ % (portal_path, length,
-  ...        user_name, user_password, body),
+  ...        default_user, default_password, body),
   ...        handle_errors=False)
   HTTP/1.1 201 Created...
 
