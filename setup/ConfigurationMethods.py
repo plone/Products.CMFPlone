@@ -250,9 +250,6 @@ def modifySkins(self, portal):
                 a.title = 'Sharing'
             if a.id == 'content_status_history':
                 a.visible = 0
-        #in 2.0 the Sharing tab is on portal_actions ActionProvider
-        #this was reverted - yay!
-        #t._actions=[a for a in _actions if a.id!='local_roles']
 
 def addNewActions(self, portal):
     at=getToolByName(portal, 'portal_actions')

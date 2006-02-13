@@ -34,44 +34,46 @@ Installing Plone manually, step by step instructions.
  
   **MANDATORY** 
  
-  - Zope 2.7.8 (or 2.8.5)
-     http://www.zope.org/Products/Zope/2.7.8
-     Note: Zope 2.7 and 2.8 require Python 2.3.5 (not 2.4)
+  - Zope 2.8.5 (or 2.9.0, does not run natively on Zope 3)
+     http://www.zope.org/Products/Zope/2.8.5
+     Note: Zope 2.8 requires Python 2.3.5, Zope 2.9 requires Python 2.4
  
-  - CMF 1.5.5 (not 1.4)
+  - Five 1.2 or newer
+     If you run Zope 2.8 you have to install Five 1.2. On Zope 2.9 Five 1.3
+     is already included in Zope itself.
+     http://codespeak.net/z3/five/
+ 
+  - CMF 1.6.0 (neither 1.5 nor 2.0)
      Included in the Plone tarball 
  
-  - CMFQuickInstallerTool 1.5.5 or newer
+  - CMFQuickInstallerTool 1.5.8 or newer
      Included in the Plone tarball 
  
   - GroupUserFolder 3.5 or newer
      Included in the Plone tarball 
  
-  - BTreeFolder2 1.0.2 or newer
-     Included in the Plone tarball 
-
-  - CMFFormController 1.0.6 or newer
+  - CMFFormController 2.0 or newer
      Included in the Plone tarball 
  
-  - SecureMailHost 1.0.1 or newer
+  - SecureMailHost 1.0.3 or newer
      Included in the Plone tarball
  
-  - Archetypes 1.3.6 or newer
+  - Archetypes 1.4.0 or newer
      Included in the Plone tarball 
 
-  - ATContentTypes 1.0.2 or newer
+  - ATContentTypes 1.1 or newer
      Included in the Plone tarball
 
-  - ATReferenceBrowserWidget 1.1 or newer
+  - ATReferenceBrowserWidget 1.2 or newer
      Included in the Plone tarball
      
-  - ResourceRegistries 1.1 or newer
+  - ResourceRegistries 1.2 or newer
      Included in the Plone tarball
      
-  - ExtendedPathIndex 2.2 or newer
+  - ExtendedPathIndex 2.3 or newer
      Included in the Plone tarball
      
-  - CMFDynamicViewFTI 1.0.1 or newer
+  - CMFDynamicViewFTI 1.0.2 or newer
      Included in the Plone tarball
 
   - Python Imaging Library 1.1.5 or newer
@@ -80,10 +82,10 @@ Installing Plone manually, step by step instructions.
      Note: You have to build PIL with jpeg and png support. See the README
      of PIL for more information.
  
-  - Placeless Translation Service 1.2.5 or newer
+  - Placeless Translation Service 1.2.6 or newer
      Included in the Plone tarball 
 
-  - PloneTranslations 2.1.2
+  - PloneTranslations 2.5
      Included in the Plone tarball 
 
   - PloneLanguageTool 0.9 or newer
@@ -149,9 +151,9 @@ Installing Plone manually, step by step instructions.
    The results will be a directory named CMFPlone-xxxx where 
    xxxx is the version. This should contain the following subdirectories: 
  
+   Archetypes
    ATContentTypes
    ATReferenceBrowserWidget
-   Archetypes
    CMFActionIcons
    CMFCalendar
    CMFCore
@@ -167,21 +169,23 @@ Installing Plone manually, step by step instructions.
    DCWorkflow
    ExtendedPathIndex
    ExternalEditor
-   Five
+   GenericSetup
    GroupUserFolder
+   kupu
    MimetypesRegistry
-   Marshall
+   PasswordResetTool
    PlacelessTranslationService
    PloneErrorReporting
    PloneLanguageTool
+   PlonePAS
    PloneTranslations
+   PluggableAuthService
+   PluginRegistry
    PortalTransforms
    ResourceRegistries
    SecureMailHost
-   generator
-   kupu
-   validation
    statusmessages
+   validation
 
    Move (or symlink) each of these subdirectories into your 
    $INSTANCE_HOME/Products 

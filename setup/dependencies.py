@@ -9,10 +9,10 @@ import sys
 MINIMUM_PYTHON_VER = (2, 3, 4)
 PREFERRED_PYTHON_VER = "2.3.5 or newer"
 
-MINIMUM_ZOPE_VER = (2, 7, 5)
-PREFERRED_ZOPE_VER = "2.7.8 or newer"
+MINIMUM_ZOPE_VER = (2, 8, 4)
+PREFERRED_ZOPE_VER = "2.8.5 or newer"
 
-MINIMUM_CMF_VER = (1, 5, 5)
+MINIMUM_CMF_VER = (1, 6, 0)
 
 messages = []
 
@@ -137,39 +137,6 @@ except ImportError:
         severity=zLOG.INFO, optional=1)
 
 try:
-    import Products.Localizer
-except ImportError:
-    pass
-else:
-    log(("Localizer found. Plone 2 is using the PlacelessTranslationService "
-         "for translation. Please deinstall the Localizer after you have saved "
-         "your po catalogs."),
-        severity=zLOG.WARNING, optional=1)
-
-try:
-    import Products.TranslationService
-except ImportError:
-    pass
-else:
-    log(("TranslationService found. Plone 2 is using the PlacelessTranslationService "
-         "for translation. Please deinstall the TranslationService."),
-        severity=zLOG.WARNING, optional=1)
-
-try:
-    import Products.CMFPlone
-    plonePath = Products.CMFPlone.__path__[0]
-except ImportError, AttributeError:
-    i18nPath = None
-else:
-    i18nPath = os.path.join(plonePath, 'i18n')
-
-if (i18nPath and os.path.isfile(os.path.join(i18nPath, 'plone-en.po')) ):
-    log(("Plone i18n files found at CMFPlone/i18/. Plone's "
-         "i18n files have been moved to the PloneTranslation product. "
-         "Please remove the CMFPlone/i18n/ folder to avoid conflicts."),
-        severity=zLOG.INFO, optional=1)
-
-try:
     import Products.PloneTranslations
 except ImportError:
     log(("PloneTranslation product with i18n files not found. Plone "
@@ -189,25 +156,6 @@ try:
 except ImportError:
     log(("GroupUserFolder not found. Please "
          "http://plone.org/products/groupuserfolder"))
-
-try:
-    import Products.CallProfiler
-    try:
-        import Products.CMFFormControllerPatch
-    except ImportError:
-        log(("CMFFormControllerPatch not found. This is "
-             "only required for using Call Profiler with Plone, "
-             "you can download it from "
-             "http://sf.net/projects/collective"),
-            severity=zLOG.INFO, optional=1)
-except ImportError:
-    pass
-
-try:
-    import Products.BTreeFolder2
-except ImportError:
-    log(("BTreeFolder2 not found. Please download it "
-         "from http://hathawaymix.org/Software/BTreeFolder2"))
 
 try:
     import Products.SecureMailHost
