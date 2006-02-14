@@ -23,9 +23,9 @@
                         
         <h2 tal:content="group/title"
             i18n:translate="">Plone Configlet Group Title</h2>
-                        
+
         <ul class="configlets" tal:define="configlets python:controlPanel.enumConfiglets(group=group['id'])">
-                        
+
             <tal:configlet repeat="configlet configlets">
                 <li tal:condition="configlet/visible">
                     <a href=""          
