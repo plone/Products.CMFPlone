@@ -43,7 +43,7 @@ class ControlPanelXMLAdapter(XMLAdapterBase):
         """
         Export the object as a DOM node.
         """
-        node = self._getObjectNod('object')
+        node = self._getObjectNode('object')
         node.appendChild(self._extractConfiglets())
         self._logger.info('Control panel exported')
         return node
@@ -96,7 +96,7 @@ class ControlPanelXMLAdapter(XMLAdapterBase):
             child.setAttribute('title', mapping['title'])
             child.setAttribute('url_expr', mapping['action'])
             child.setAttribute('visible', str(mapping['visible']))
-            child.setAttribute('appId', mapping['appId'])
+            child.setAttribute('appId', ai.getAppId())
             for permission in mapping['permissions']:
                 sub = self._doc.createElement('permission')
                 sub.appendChild(self._doc.createTextNode(permission))
