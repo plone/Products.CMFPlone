@@ -27,7 +27,6 @@ class PloneGenerator:
         qi.notifyInstalled('CMFCalendar', locked=1)
         qi.notifyInstalled('CMFActionIcons', locked=1)
 
-
     def customizePortalOptions(self, p):
         p.manage_permission( cmfpermissions.ListFolderContents, \
                              ('Manager', 'Member', 'Owner',), acquire=1 )
@@ -37,7 +36,6 @@ class PloneGenerator:
         syntool = getToolByName(p, 'portal_syndication')
         syntool.editProperties(isAllowed=1)
         #p.icon = 'misc_/CMFPlone/plone_icon'
-
 
     # XXX: This should all be done by custom setuphandlers, possibly
     # using Kapil's XMLIO
@@ -116,9 +114,6 @@ class PloneGenerator:
         out = []
         migs.v2_1.alphas.addDefaultTypesToPortalFactory(p, out)
         migs.v2_1.rcs.enableSyndicationOnTopics(p, out)
-        migs.v2_1.betas.addSearchAndNavigationConfiglets(p, out)
-        migs.v2_1.betas.addIconForNavigationSettingsConfiglet(p, out)
-        migs.v2_1.betas.addIconForSearchSettingsConfiglet(p, out)
 
     def setATCTToolVersion(self, p):
         """
@@ -150,7 +145,6 @@ def importFinalSteps(context):
     """
     Final plone import steps.
     """
-
     site = context.getSite()
 
     gen = PloneGenerator()

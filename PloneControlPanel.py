@@ -5,6 +5,8 @@ from OFS.Folder import Folder
 from OFS.SimpleItem import SimpleItem
 from OFS.PropertyManager import PropertyManager
 
+from zope.interface import implements
+
 from Products.CMFCore.Expression import Expression, createExprContext
 from Products.CMFCore.ActionInformation import ActionInformation
 from Products.CMFCore.ActionProviderBase import ActionProviderBase
@@ -13,7 +15,8 @@ from Products.CMFCore.permissions import ManagePortal, SetOwnProperties, \
 from Products.CMFCore.utils import _checkPermission, getToolByName, UniqueObject
 
 import ToolNames
-from interfaces.PloneControlPanel import IControlPanel
+from interfaces.PloneControlPanel import IControlPanel as z2IControlPanel
+from interfaces import IControlPanel
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.utils import classImplements
@@ -171,9 +174,11 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
     """
 
     __implements__ = (PloneBaseTool.__implements__,
-                      IControlPanel,
+                      z2IControlPanel,
                       ActionProviderBase.__implements__,
                       SimpleItem.__implements__, )
+
+    implements(IControlPanel)
 
     security = ClassSecurityInfo()
 

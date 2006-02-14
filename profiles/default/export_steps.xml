@@ -13,6 +13,19 @@
  
  
  </export-step>
+ <export-step id="controlpanel"
+              handler="Products.CMFPlone.exportimport.controlpanel.exportControlPanel"
+              title="Control Panel">
+  
+  
+  
+  
+  Export Plone control panel actions.
+ 
+ 
+ 
+ 
+ </export-step>
  <export-step id="cookieauth"
               handler="Products.CMFSetup.cookieauth.exportCookieCrumbler"
               title="Cookie Authentication">

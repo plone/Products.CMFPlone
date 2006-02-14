@@ -8,8 +8,22 @@
   
   
   
-  
   Import actions tool's action providers and their actions.
+ 
+ 
+  
+ 
+ 
+ </import-step>
+ <import-step id="controlpanel" version="20060213-01"
+              handler="Products.CMFPlone.exportimport.controlpanel.importControlPanel"
+              title="Control Panel">
+  <dependency step="actions" />
+  
+  
+  
+  
+  Import Plone control panel actions.
  
  
   
@@ -210,7 +224,7 @@
  <import-step id="action-icons" version="20051015-01"
               handler="Products.CMFActionIcons.exportimport.importActionIconsTool"
               title="Action Icons">
-  <dependency step="toolset"/>
+  <dependency step="controlpanel"/>
   Import action icon definitions
  </import-step>
  <import-step id="jsregistry" version="20051015-01"
