@@ -1,5 +1,7 @@
-from Interface import Interface
+"""
+Plone tool marker interface.
+"""
 
-class IPloneBaseTool(Interface):
-    """Marker interface for plone tools
-    """
+# BBB module will be removed in Plone 3.0
+#     zope 2 interfaces created at runtime:
+#     - IPloneBaseTool
