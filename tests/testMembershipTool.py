@@ -308,8 +308,8 @@ class TestMembershipTool(PloneTestCase.PloneTestCase):
 
         self.membership.addMember('barney', 'secret', ['Members'], [])
         barney = self.membership.getMemberById('barney')
-        self.failIfEqual(barney.fullname, 'Barney Rubble')
-        self.failIfEqual(barney.email, 'barney@bedrock.com')
+        self.failIfEqual(barney.getProperty('fullname'), 'Barney Rubble')
+        self.failIfEqual(barney.getProperty('email'), 'barney@bedrock.com')
 
 
 class TestCreateMemberarea(PloneTestCase.PloneTestCase):

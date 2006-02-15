@@ -31,7 +31,7 @@ class TestPrefsUserManage(PloneTestCase.PloneTestCase):
         self.setRoles(['Manager'])
         self.addMember('barney', 'Barney Rubble', 'barney@bedrock.com', ['Member'], '2002-01-01')
         barney = self.membership.getMemberById('barney')
-        self.failUnlessEqual(barney.email, 'barney@bedrock.com')
+        self.failUnlessEqual(barney.getProperty('email'), 'barney@bedrock.com')
         del barney
 
         self.portal.prefs_user_manage(delete=['barney'])
@@ -45,8 +45,8 @@ class TestPrefsUserManage(PloneTestCase.PloneTestCase):
 
         self.membership.addMember('barney', 'secret', ['Members'], [])
         barney = self.membership.getMemberById('barney')
-        self.failIfEqual(barney.fullname, 'Barney Rubble')
-        self.failIfEqual(barney.email, 'barney@bedrock.com')
+        self.failIfEqual(barney.getProperty('fullname'), 'Barney Rubble')
+        self.failIfEqual(barney.getProperty('email'), 'barney@bedrock.com')
 
 
 def test_suite():
