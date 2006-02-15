@@ -301,15 +301,10 @@ class TestCatalogSearching(PloneTestCase.PloneTestCase):
 
     def addUser2ToGroup(self):
         self.groups.groupWorkspacesCreationFlag = 0
-	try:
-            self.groups.addGroup(group2, None, [], [])
-        except KeyError:
-            # A KeyError can happen if addUser2ToGroup is invoked a second
-            # time and the group already exists.
-            pass
+        self.groups.addGroup(group2, None, [], [])
         group = self.groups.getGroupById(group2)
         group.addMember(user2)
-	return group2
+        return group2
 
     def testListAllowedRolesAndUsers(self):
         # Should include the group in list of allowed users
@@ -415,7 +410,7 @@ class TestCatalogSorting(PloneTestCase.PloneTestCase):
     def testSortableTitleOutput(self):
         doc = self.folder.doc
         wrapped = ExtensibleIndexableObjectWrapper(vars, doc, self.portal)
-        
+
         self.assertEqual(wrapped.sortable_title, u'00000012 document 00000025')
 
     def testSortableNonASCIITitles(self):
@@ -813,17 +808,17 @@ def dummyMethod(obj, **kwargs):
 class TestExtensibleIndexableObjectWrapper(PloneTestCase.PloneTestCase):
     """Tests for the wrapper
     """
-    
+
     def afterSetUp(self):
         self.folder.invokeFactory('Document', 'doc', title='document')
         self.doc = self.folder.doc
         _eioRegistry.register('dummy', dummyMethod)
-        
+
     def testSetup(self):
         doc = self.doc
         self.failUnlessEqual(doc.getId(), 'doc')
         self.failUnlessEqual(doc.Title(), 'document')
-        
+
     def testWrapper(self):
         doc = self.doc
         vars = {'var' : 'a var'}
@@ -832,7 +827,7 @@ class TestExtensibleIndexableObjectWrapper(PloneTestCase.PloneTestCase):
         self.failUnlessEqual(wrapped.getId(), 'doc')
         self.failUnlessEqual(wrapped.Title(), 'document')
         self.failUnlessEqual(wrapped.dummy, 'a dummy')
-        
+
     def beforeTearDown(self):
         _eioRegistry.unregister('dummy')
 

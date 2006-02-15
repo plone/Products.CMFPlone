@@ -15,7 +15,7 @@ from Products.PluggableAuthService.interfaces.plugins import IChallengePlugin
 
 from AccessControl import Unauthorized
 default_user = PloneTestCase.default_user
-default_user = PloneTestCase.default_password
+default_password = PloneTestCase.default_password
 
 def sortTuple(t):
     l = list(t)

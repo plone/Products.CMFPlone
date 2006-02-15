@@ -558,6 +558,7 @@ class TestSearchForMembers(PloneTestCase.PloneTestCase):
 
 
 class TestDefaultUserAndPasswordNotChanged(PloneTestCase.PloneTestCase):
+    # A test for a silly transaction/persistency bug in PlonePAS
 
     def afterSetUp(self):
         self.membership = self.portal.portal_membership
