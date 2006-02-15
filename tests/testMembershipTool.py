@@ -17,7 +17,7 @@ from DateTime import DateTime
 from zExceptions import BadRequest
 
 default_user = PloneTestCase.default_user
-
+default_password = PloneTestCase.default_password
 
 class TestMembershipTool(PloneTestCase.PloneTestCase):
 
@@ -556,14 +556,28 @@ class TestSearchForMembers(PloneTestCase.PloneTestCase):
                                     last_login_time=DateTime('2004-01-01'),
                                     before_specified_time=True)), 1)
 
+
+class TestDefaultUserAndPasswordNotChanged(PloneTestCase.PloneTestCase):
+
+    def afterSetUp(self):
+        self.membership = self.portal.portal_membership
+
+    def testDefaultUserAndPasswordUnchanged(self):
+        member = self.membership.getAuthenticatedMember()
+        self.assertEqual(member.getUserName(), default_user)
+        self.failUnless(self.membership.testCurrentPassword(default_password))
+        self.failIf(self.membership.testCurrentPassword('geheim'))
+
+
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
     # XXX This suite does something nasty so that other tests fail for no reason
-    #suite.addTest(makeSuite(TestMembershipTool))
+    suite.addTest(makeSuite(TestMembershipTool))
     suite.addTest(makeSuite(TestCreateMemberarea))
     suite.addTest(makeSuite(TestMemberareaSetup))
     suite.addTest(makeSuite(TestSearchForMembers))
+    suite.addTest(makeSuite(TestDefaultUserAndPasswordNotChanged))
     return suite
 
 if __name__ == '__main__':

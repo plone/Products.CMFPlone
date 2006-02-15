@@ -15,6 +15,7 @@ from Products.PluggableAuthService.interfaces.plugins import IChallengePlugin
 
 from AccessControl import Unauthorized
 default_user = PloneTestCase.default_user
+default_user = PloneTestCase.default_password
 
 def sortTuple(t):
     l = list(t)
@@ -232,9 +233,9 @@ class TestCreateObjectByURL(PloneTestCase.FunctionalTestCase):
     def afterSetUp(self):
         self.folder_url = self.folder.absolute_url()
         self.folder_path = '/%s' % self.folder.absolute_url(1)
-        self.basic_auth = '%s:secret' % default_user
+        self.basic_auth = '%s:%s' % (default_user, default_password)
         # We want 401 responses, not redirects to a login page
-	plugins = self.portal.acl_users.plugins
+        plugins = self.portal.acl_users.plugins
         plugins.deactivatePlugin( IChallengePlugin, 'credentials_cookie_auth')
 
         # Enable portal_factory for Document type
