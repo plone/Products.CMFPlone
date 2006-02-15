@@ -49,24 +49,25 @@ def exportPloneProperties(context):
         logger.info('Properties tool: Nothing to export.')
         return
 
-    exporter = INode(ptool)
+    exporter = zapi.queryMultiAdapter((ptool, context), IBody)
+    #IBody(ptool)
     if exporter is None:
         return 'Properties tool: Export adapter misssing.'
 
     context.writeDataFile(_FILENAME, exporter.body, exporter.mime_type)
     logger.info('Plone properties tool exported.')
 
-class SimpleItemWithPropertiesNodeAdapter(XMLAdapterBase, PropertyManagerHelpers):
+class SimpleItemWithPropertiesXMLAdapter(XMLAdapterBase, PropertyManagerHelpers):
 
     """Node im- and exporter for SimpleItemWithProperties.
     """
 
     __used_for__ = ISimpleItemWithProperties
 
-    def _exportNode(self, doc):
+    def _exportNode(self):
         """Export the object as a DOM node.
         """
-        self._doc = doc
+        #self._doc = doc
         node = self._getObjectNode('object')
         node.appendChild(self._extractProperties())
         return node
@@ -78,17 +79,17 @@ class SimpleItemWithPropertiesNodeAdapter(XMLAdapterBase, PropertyManagerHelpers
 
     node = property(_exportNode, _importNode)
 
-class PlonePropertiesToolNodeAdapter(XMLAdapterBase, ObjectManagerHelpers):
+class PlonePropertiesToolXMLAdapter(XMLAdapterBase, ObjectManagerHelpers):
 
     """Node im- and exporter for Plone PropertiesTool.
     """
 
     __used_for__ = IPropertiesTool
 
-    def _exportNode(self, doc):
+    def _exportNode(self):
         """Export the object as a DOM node.
         """
-        self._doc = doc
+        #self._doc = doc
         node = self._getObjectNode('object')
         #node.setAttribute('xmlns:i18n', I18NURI)
         node.appendChild(self._extractObjects())
