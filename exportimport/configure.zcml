@@ -5,15 +5,15 @@
    >
 
   <adapter
-     factory=".propertiestool.PlonePropertiesToolNodeAdapter"
+     factory=".propertiestool.PlonePropertiesToolXMLAdapter"
      provides="Products.GenericSetup.interfaces.IBody"
      for="Products.CMFPlone.interfaces.IPropertiesTool
           Products.GenericSetup.interfaces.ISetupEnviron"
      />
 
   <adapter
-     factory=".propertiestool.SimpleItemWithPropertiesNodeAdapter"
-     provides="Products.GenericSetup.interfaces.INode"
+     factory=".propertiestool.SimpleItemWithPropertiesXMLAdapter"
+     provides="Products.GenericSetup.interfaces.IBody"
      for="Products.CMFPlone.interfaces.ISimpleItemWithProperties
           Products.GenericSetup.interfaces.ISetupEnviron"
      />
@@ -31,7 +31,7 @@
      />
 
   <adapter
-     factory=".propertiestool.SimpleItemWithPropertiesNodeAdapter"
+     factory=".propertiestool.SimpleItemWithPropertiesXMLAdapter"
      provides="Products.GenericSetup.interfaces.IBody"
      for="Products.CMFCore.interfaces.IMemberDataTool
           Products.GenericSetup.interfaces.ISetupEnviron"
