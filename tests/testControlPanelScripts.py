@@ -12,6 +12,9 @@ PloneTestCase.setupPloneSite()
 
 from DateTime import DateTime
 
+default_user = PloneTestCase.default_user
+default_password = PloneTestCase.default_password
+
 
 class TestPrefsUserManage(PloneTestCase.PloneTestCase):
 
@@ -49,10 +52,31 @@ class TestPrefsUserManage(PloneTestCase.PloneTestCase):
         self.failIfEqual(barney.getProperty('email'), 'barney@bedrock.com')
 
 
+class TestAccessControlPanelScripts(PloneTestCase.FunctionalTestCase):
+    '''Yipee, functional tests'''
+
+    def afterSetUp(self):
+        self.portal_path = self.portal.absolute_url(1)
+        self.basic_auth = '%s:%s' % (default_user, default_password)
+
+    def testPrefsUserDetails(self):
+        '''Test access to user details.'''
+        self.setRoles(['Manager'])
+        
+        response = self.publish('%s/portal_memberdata/prefs_user_details?userid=%s' %
+                                (self.portal_path, default_user),
+                                self.basic_auth)
+
+        # this was failing in early Plone 2.5 due to missing five:traversable
+        # declaration for tools
+        self.assertEquals(response.getStatus(), 200)
+
+
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
     suite.addTest(makeSuite(TestPrefsUserManage))
+    suite.addTest(makeSuite(TestAccessControlPanelScripts))
     return suite
 
 if __name__ == '__main__':
