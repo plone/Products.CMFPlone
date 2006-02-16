@@ -789,7 +789,7 @@ def addEditContentActions(portal, out):
             category = newaction.get('category', CATEGORY)
             try:
                 actionsTool.unrestrictedTraverse('/'.join([category, newaction['id']]))
-            except KeyError:
+            except (KeyError, AttributeError):
                 # This is a new action
                 actionsTool.addAction(newaction['id'],
                     name=newaction['name'],
