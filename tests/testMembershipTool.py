@@ -306,7 +306,7 @@ class TestMembershipTool(PloneTestCase.PloneTestCase):
         # using the tool.
         memberdata._v_temps = None
 
-        self.membership.addMember('barney', 'secret', ['Members'], [])
+        self.membership.addMember('barney', 'secret', ['Member'], [])
         barney = self.membership.getMemberById('barney')
         self.failIfEqual(barney.getProperty('fullname'), 'Barney Rubble')
         self.failIfEqual(barney.getProperty('email'), 'barney@bedrock.com')
