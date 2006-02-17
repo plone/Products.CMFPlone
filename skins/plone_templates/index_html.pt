@@ -11,7 +11,7 @@
         <span i18n:name="sitename" tal:omit-tag="" tal:content="here/Title">Portal title</span>
     </h1>
 
-    <p tal:content="utool/description">
+    <p tal:content="portal/description">
         Portal description
     </p>
 
