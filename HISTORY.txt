@@ -4,20 +4,20 @@ Changelog for Plone
 
 Plone 2.1.3 - Tomahawk - Unreleased
 
-    - Lots of improvements to the visual editor (Kupu):
-    
-      - Added "pullquote" and "callout" layout classes, renamed "formatted" to 
-        "literal"
-        
+    - Lots of improvements to the visual editor [limi]:
+
+      - Added "pullquote" and "callout" layout classes, renamed "formatted"
+        label to "literal"
+
       - Updating icons to better match the Plone style
-      
+
       - Improved tool ordering (growing elements like the text format selector 
-        should be at the end, since they displaceall the other icons when they 
+        should be at the end, since they displace all the other icons when they 
         change if not)
-        
+
       - Fixed stupid bug in Mozilla by explicitly setting the link styling
         inside Kupu
-        
+
       - Made all images load from an absolute URL to improve caching
 
     - Fixed CSS regression: the p tag would sometimes be a victim of the
