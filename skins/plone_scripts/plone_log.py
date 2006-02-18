@@ -7,5 +7,5 @@
 ##parameters=summary='',text=''
 ##title=
 ##
-from zLOG import LOG, INFO
-LOG('Plone Debug', INFO, summary, text)
+#from zLOG import LOG, INFO
+#LOG('Plone Debug', INFO, summary, text)

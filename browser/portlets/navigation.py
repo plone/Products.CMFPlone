@@ -1,4 +1,4 @@
-from zope.component import getViewProviding
+from zope.component import getView
 from zope.interface import implements
 
 from Acquisition import aq_base, aq_inner, aq_parent
@@ -19,7 +19,7 @@ class NavigationPortlet(utils.BrowserView):
 
     def createNavTree(self):
         context = utils.context(self)
-        view = getViewProviding(context, INavigationStructure, self.request)
+        view = getView(context, 'nav_view', self.request)
         data = view.navigationTree(sitemap=False)
         # XXX: The recursion should probably be done in python code
         return context.portlet_navtree_macro(

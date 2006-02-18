@@ -1,5 +1,5 @@
 from zope.interface import implements
-from zope.component import getViewProviding
+from zope.component import getView
 
 from Acquisition import aq_base, aq_inner
 from Products.CMFCore.utils import getToolByName
@@ -393,7 +393,7 @@ class PhysicalNavigationStructure(utils.BrowserView,
                  }
                 )
 
-        view = getViewProviding(container, INavigationStructure, request)
+        view = getView(container, 'nav_view', request)
         base = tuple(view.breadcrumbs())
 
         if base:

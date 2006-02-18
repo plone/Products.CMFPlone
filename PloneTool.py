@@ -665,7 +665,8 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
           <tal:block tal:define="temp python:putils.addPortalMessage('A random info message')" />
         """
-        zapi.getUtility(IStatusMessageUtility).addStatusMessage(self, message, type=type)
+        zapi.getUtility(IStatusMessageUtility).addStatusMessage(self, message,
+                                                                type=type)
 
     security.declarePublic('showPortalMessages')
     def showPortalMessages(self):

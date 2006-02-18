@@ -6,7 +6,7 @@
     <implements interface=".interfaces.INavigationRoot" />
   </content>
 
-  <browser:layer 
+  <browser:layer
       name="plone"
       />
 
@@ -15,23 +15,15 @@
       layers="plone default"
       />
 
-  <browser:view
+  <browser:page
       for="*"
       name="default_page"
       class=".navigation.DefaultPage"
-      provides=".interfaces.IDefaultPage"
       permission="zope.Public"
       allowed_interface=".interfaces.IDefaultPage"
       />
 
 <!--
-  <browser:view
-      for="*"
-      class=".navigation.CatalogNavigationStructure"
-      provides=".interfaces.INavigationStructure"
-      permission="zope.Public"
-      allowed_interface=".interfaces.INavigationStructure"
-      />
 
   <browser:page
       for="*"
@@ -42,28 +34,12 @@
       />
 -->
 
-  <browser:view
-      for="*"
-      class=".navigation.PhysicalNavigationStructure"
-      provides=".interfaces.INavigationStructure"
-      permission="zope.Public"
-      allowed_interface=".interfaces.INavigationStructure"
-      />
-
   <browser:page
       for="*"
       name="nav_view"
       class=".navigation.PhysicalNavigationStructure"
       permission="zope.Public"
-      allowed_interface=".interfaces.INavigationStructure"
-      />
-
-  <browser:view
-      for=".interfaces.INavigationRoot"
-      class=".navigation.RootPhysicalNavigationStructure"
-      provides=".interfaces.INavigationStructure"
-      permission="zope.Public"
-      allowed_interface=".interfaces.INavigationStructure"
+      allowed_attributes="breadcrumbs navigationTree topLevelTabs"
       />
 
   <browser:page
@@ -71,7 +47,7 @@
       name="nav_view"
       class=".navigation.RootPhysicalNavigationStructure"
       permission="zope.Public"
-      allowed_interface=".interfaces.INavigationStructure"
+      allowed_attributes="breadcrumbs navigationTree topLevelTabs"
       />
 
   <browser:page

@@ -5,7 +5,14 @@ from os.path import join, abspath, dirname, split
 import zope.interface
 from zope.interface import providedBy
 from zope.interface import implementedBy
-from zope.component import getViewProviding, queryView
+from zope.component import getView
+from zope.component.interfaces import ComponentLookupError
+try:
+    # un-BBB: zope 2.9 stuff
+    from zope.publisher.interfaces.browser import IDefaultBrowserLayer
+    ZOPE28 = False
+except ImportError:
+    ZOPE28 = True
 
 import OFS
 import Globals
@@ -54,15 +61,15 @@ def context(view):
     return view.context[0]
 
 def createBreadCrumbs(context, request):
-    view = getViewProviding(context, INavigationBreadcrumbs, request)
+    view = getView(context, 'nav_view', request)
     return view.breadcrumbs()
 
 def createTopLevelTabs(context, request, actions=None):
-    view = getViewProviding(context, INavigationTabs, request)
+    view = getView(context, 'nav_view', request)
     return view.topLevelTabs(actions=actions)
 
 def createNavTree(context, request, sitemap=False):
-    view = getViewProviding(context, INavigationTree, request)
+    view = getView(context, 'nav_view', request)
     return view.navigationTree(sitemap=sitemap)
 
 def addToNavTreeResult(result, data):
@@ -79,12 +86,25 @@ def addToNavTreeResult(result, data):
         data['children'] = result[path]['children']
     result[path] = data
 
+def _getDefaultPageView(obj, request):
+    """This is a nasty hack because the view lookup fails when it occurs too
+       early in the publishing process because the request isn't marked with
+       the default skin.  Explicitly marking the request appears to cause
+       connection errors, so we just instantiate the view manually.
+    """
+    try:
+        view = getView(obj, 'default_page', request)
+    except ComponentLookupError:
+        # XXX: import here to avoid a circular dependency
+        from browser.navigation import DefaultPage
+        view = DefaultPage(obj, request)
+    return view
+
 def isDefaultPage(obj, request, context=None):
     container = parent(obj)
     if not container:
         return False
-    view = queryView(container, 'default_page', request,
-                     providing=IDefaultPage)
+    view = _getDefaultPageView(container, request)
     if context is None:
         context = obj
     return view.isDefaultPage(obj, context)
@@ -93,8 +113,7 @@ def getDefaultPage(obj, request, context=None):
     # Short circuit if we are not looking at a Folder
     if not obj.isPrincipiaFolderish:
         return None
-    view = queryView(obj, 'default_page', request,
-                     providing=IDefaultPage)
+    view = _getDefaultPageView(obj, request)
     if context is None:
         context = obj
     return view.getDefaultPage(context)

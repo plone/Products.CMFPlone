@@ -5,7 +5,7 @@ from Products.CMFPlone import utils
 from Products.CMFCore.utils import getToolByName
 
 from zope.interface import implements
-from zope.component import queryView
+from zope.component import getView
 from Products.Five import BrowserView
 from Products import CMFPlone
 import ZTUtils
@@ -34,19 +34,13 @@ class Plone(utils.BrowserView):
         THEN IT MIGHT DESTROY YOU!
         """
 
-        state = self.request.other.get('__PloneViewOptimizationRequestCache', None)
         context = sys._getframe(2).f_locals['econtext']
 
-        if state is None:
-            state = {}
-            self._initializeData()
-            for name, v in self._data.items():
-                state[name] = v
-                context.setGlobal(name, v)
-            self.request.other['__PloneViewOptimizationRequestCache'] = state
-        else:
-            for k, v in state.items():
-                context.setGlobal(k, v)
+        state = {}
+        self._initializeData()
+        for name, v in self._data.items():
+            state[name] = v
+            context.setGlobal(name, v)
 
     def __init__(self, context, request):
         super(Plone, self).__init__(context, request)
@@ -285,8 +279,7 @@ class Plone(utils.BrowserView):
         container = aq_parent(aq_inner((context)))
         if not container:
             return False
-        view = queryView(container, 'default_page', request,
-                         providing=IDefaultPage)
+        view = getView(container, 'default_page', request)
         return view.isDefaultPage(context)
 
     def isStructuralFolder(self):

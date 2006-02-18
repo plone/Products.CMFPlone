@@ -17,9 +17,9 @@
       class="Products.CMFCore.PortalContent.PortalContent"
       />
 
-  <!-- Make all CMF style tools traversable via UniqueObject -->
+  <!-- Make all CMF style tools traversable via SimpleItem !danger! -->
   <five:traversable
-      class="Products.CMFCore.utils.UniqueObject"
+      class="OFS.SimpleItem.SimpleItem"
       />
 
 </configure>
