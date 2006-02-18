@@ -36,7 +36,7 @@ div.documentActions,
 #portal-colophon,
 .skipnav,
 .visualNoPrint {
-    /* Hides all the elements irrelevant for presentations */
+    /* Hides all the elements irrelevant for printing */
     display: none;
 }
 
