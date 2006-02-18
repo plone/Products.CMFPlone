@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1.3 - Tomahawk - Unreleased
 
+    - Removed 'input' from the print CSS blacklist; forms print properly now.
+      [limi]
+
     - Moved the colophon icons into classes instead of using inline styles.
       [limi]
 

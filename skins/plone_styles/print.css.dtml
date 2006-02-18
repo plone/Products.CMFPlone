@@ -34,7 +34,6 @@ div.documentActions,
 .netscape4,
 #portal-footer,
 #portal-colophon,
-input,
 .skipnav,
 .visualNoPrint {
     /* Hides all the elements irrelevant for presentations */
