@@ -7,12 +7,6 @@ from zope.interface import providedBy
 from zope.interface import implementedBy
 from zope.component import getView
 from zope.component.interfaces import ComponentLookupError
-try:
-    # un-BBB: zope 2.9 stuff
-    from zope.publisher.interfaces.browser import IDefaultBrowserLayer
-    ZOPE28 = False
-except ImportError:
-    ZOPE28 = True
 
 import OFS
 import Globals
