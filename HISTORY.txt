@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1.3 - Tomahawk - Unreleased
 
+    - Moved the colophon icons into classes instead of using inline styles.
+      [limi]
+
     - Lots of improvements to the visual editor [limi]:
 
       - Added "pullquote" and "callout" layout classes, renamed "formatted"

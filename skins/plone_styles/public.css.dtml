@@ -804,6 +804,31 @@ textarea.proportional {
     cursor: pointer;
 }
 
+#portal-colophon .colophonIconPlone {
+    background-image: url(&dtml-portal_url;/plone_powered.gif);
+}
+
+#portal-colophon .colophonIcon508 {
+    background-image: url(&dtml-portal_url;/colophon_sec508.gif);
+}
+
+#portal-colophon .colophonIconWAI {
+    background-image: url(&dtml-portal_url;/colophon_wai-aa.gif);
+}
+
+#portal-colophon .colophonIconXHTML {
+    background-image: url(&dtml-portal_url;/colophon_xhtml.png);
+}
+
+#portal-colophon .colophonIconCSS {
+    background-image: url(&dtml-portal_url;/colophon_css.png);
+}
+
+#portal-colophon .colophonIconAnyBrowser {
+    background-image: url(&dtml-portal_url;/colophon_anybrowser.png);
+}
+
+
 .feedButton {
     display: block; 
     float: right; 
