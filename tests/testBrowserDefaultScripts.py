@@ -54,7 +54,7 @@ class TestBrowserDefaultScripts(PloneTestCase.PloneTestCase):
     def testGetViewTemplateId(self):
         self.folder.setLayout('atct_album_view')
         self.assertEqual(self.folder.getViewTemplateId(), 'atct_album_view')
-        
+
     def testGetViewTemplateIdNonBrowserDefault(self):
         _createObjectByType('CMF Folder', self.folder, 'cmffolder')
         _createObjectByType('CMF Document', self.folder, 'cmfdocument')

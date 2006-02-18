@@ -370,10 +370,9 @@ class CatalogNavigationStructure(CatalogNavigationTabs,
                                  CatalogNavigationTree):
     implements(INavigationStructure)
 
-class PhysicalNavigationStructure(utils.BrowserView,
-                                  CatalogNavigationTabs,
-                                  CatalogNavigationTree):
-    implements(INavigationStructure)
+
+class PhysicalNavigationBreadcrumbs(utils.BrowserView):
+    implements(INavigationBreadcrumbs)
 
     def breadcrumbs(self):
         context = utils.context(self)
@@ -408,6 +407,11 @@ class PhysicalNavigationStructure(utils.BrowserView,
                     )
 
         return base
+
+class PhysicalNavigationStructure(PhysicalNavigationBreadcrumbs,
+                                  CatalogNavigationTabs,
+                                  CatalogNavigationTree):
+    implements(INavigationStructure)
 
 class RootPhysicalNavigationStructure(utils.BrowserView,
                                       CatalogNavigationTabs,
