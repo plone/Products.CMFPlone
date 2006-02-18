@@ -610,6 +610,22 @@
     font-weight: normal;
 }
 
+.pullquote {
+    padding: 0 0 0 1em;
+    margin: 0 1em 1em 1em;
+    font-weight: bold;
+    color: #CC9933;
+    float: right;
+    width: 35%;
+    text-align: justify;
+    clear: right;
+}
+.callout {
+    font-weight: bold;
+    color: #CC9933;
+    padding: 0px 1em;
+}
+
 /* Batch selector */
 
 .listingBar {
