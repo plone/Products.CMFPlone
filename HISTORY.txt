@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1.3 - Tomahawk - Unreleased
 
+    - Making the user-name link in the personal-bar link to the author profile.
+      [optilude]
+
     - Added more insane TAL logic to portlets_fetcher.pt to actually show the
       error to the user, as opposed to simply logging it. If anyone has an issue
       with this, please just remove the tal:on-error. Fixes

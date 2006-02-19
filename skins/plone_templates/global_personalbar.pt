@@ -16,8 +16,7 @@
     <li class="portalUser" 
         tal:condition="not: isAnon"><a 
         id="user-name"
-        tal:omit-tag="not: mtool/getHomeFolder"
-        tal:attributes="href string:${mtool/getHomeUrl}">
+        tal:attributes="href string:${portal_url}/author/${user/getId}">
         <span class="visualCaseSensitive"
               tal:replace="user/getUserName">
              John
