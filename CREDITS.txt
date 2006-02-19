@@ -177,6 +177,9 @@ Companies (in randomized order):
 
   "ZopeLabs":http://zopelabs.com/ for useful scripts
 
+  "Amaze":http://www.amaze.nl/ --
+  Hosting for plone.org and some of Wichert Akkerman's time. 
+
   Please help out the Plone and CMF communities by becoming involved.
   Check out "The Plone Website":http://www.plone.org for more information.
 
