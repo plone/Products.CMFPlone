@@ -403,7 +403,7 @@
 
 #portal-personaltools .portalUser {
     background: transparent url(&dtml-portal_url;/user.gif) center left no-repeat;
-    padding-left: 15px;
+    padding-left: 18px;
 }
 
 #portal-personaltools .portalNotLoggedIn {
