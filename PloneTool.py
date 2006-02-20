@@ -603,6 +603,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                     'getURL':item_url,
                     'path': path,
                     'icon':item.getIcon,
+                    'Creator':item.Creator,
                     'creation_date': item.CreationDate,
                     'portal_type': item.portal_type,
                     'review_state': item.review_state,
