@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.1.3 - Tomahawk - Unreleased
 
+    - Adding relaxed mode to PloneTool.normalizeString(). This will be used in
+      ATContentTypes to avoid stripping too much from valid filenames being
+      uploaded.
+      [optilude]
+
     - Making links link directly to the target in the navtree. Fixes
       http://dev.plone.org/plone/ticket/5264.
       [optilude]

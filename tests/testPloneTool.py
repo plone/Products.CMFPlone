@@ -179,6 +179,26 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
         self.assertEqual(self.utils.normalizeString(True), 'true')
         self.assertEqual(self.utils.normalizeString(False), 'false')
 
+    def testNormalizeStringDangerousCharsInExtension(self):
+        # Punctuation and spacing is removed and replaced by '-'
+        self.assertEqual(self.utils.normalizeString("A String.a#b"),
+                         'a-string-a-b')
+
+    def testNormalizeStringRelaxedKeepsUppercaseAndSpaces(self):
+        # Punctuation and spacing is removed and replaced by '-'
+        self.assertEqual(self.utils.normalizeString("Capital Letters and Spaces", relaxed=True),
+                         'Capital Letters and Spaces')
+
+    def testNormalizeStringRelaxedStripsDangerousChars(self):
+        # Punctuation and spacing is removed and replaced by '-'
+        self.assertEqual(self.utils.normalizeString("A ?String&/\\foo.x#x", relaxed=True),
+                         'A -String-foo.x-x')
+
+    def testNormalizeStringRelaxedKeepsOtherSymbols(self):
+        # Punctuation and spacing is removed and replaced by '-'
+        self.assertEqual(self.utils.normalizeString("A ?String&/\\.foo_!$#xx", relaxed=True),
+                         'A -String-.foo_!$-xx')
+
 
 class TestOwnershipStuff(PloneTestCase.PloneTestCase):
 

@@ -57,6 +57,7 @@ BAD_CHARS = re.compile(r'[^a-zA-Z0-9-_~,.$\(\)# ]').findall
 # Define and compile static regexes
 FILENAME_REGEX = re.compile(r"^(.+)\.(\w{,4})$")
 NON_WORD_REGEX = re.compile(r"[\W\-]+")
+DANGEROUS_CHARS_REGEX = re.compile(r"[?&/:\\#]+")
 EXTRA_DASHES_REGEX = re.compile(r"(^\-+)|(\-+$)")
 
 
@@ -1166,11 +1167,20 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         return obj.getOwner().getUserName()
 
     security.declarePublic('normalizeString')
-    def normalizeString(self, text):
+    def normalizeString(self, text, relaxed=False):
         """Normalizes a title to an id.
 
         normalizeString() converts a whole string to a normalized form that
         should be safe to use as in a url, as a css id, etc.
+        
+        If relaxed=True, only those characters that are illegal as URLs and
+        leading or trailing whitespace is stripped.
+
+        >>> normalizeString("Foo bar", relaxed=False)
+        'Foo bar'
+        
+        >>> normalizeString("Some!_are allowed, others&?:are not")
+        'Some are allowed, others-are not'
 
         all punctuation and spacing is removed and replaced with a '-':
 
@@ -1233,7 +1243,8 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             text = unicode(text, self.getSiteEncoding())
 
         text = text.strip()
-        text = text.lower()
+        if not relaxed:
+            text = text.lower()
         text = normalizeUnicode(text)
 
         base = text
@@ -1244,7 +1255,11 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             base = m.groups()[0]
             ext  = m.groups()[1]
 
-        base = NON_WORD_REGEX.sub("-", base)
+        if not relaxed:
+            base = NON_WORD_REGEX.sub("-", base)
+        else:
+            base = DANGEROUS_CHARS_REGEX.sub("-", base)
+            
         base = EXTRA_DASHES_REGEX.sub("", base)
 
         if ext != "":
