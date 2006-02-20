@@ -12,14 +12,14 @@
 
     <div tal:attributes="class item_type_class">
         <a tal:condition="cur_item"
-           tal:attributes="href item/absolute_url;
+           tal:attributes="href item/getRemoteUrl | item/absolute_url;
                            title item/Description|nothing;
                            class string:$item_wf_state_class navTreeCurrentItem visualIconPadding"
             tal:content="item/Title|nothing">
             Selected Item Title</a>
         <tal:children condition="python: parent_shows_children or children">
         <a tal:condition="not: cur_item"
-           tal:attributes="href item/absolute_url;
+           tal:attributes="href item/getRemoteUrl | item/absolute_url;
                            title item/Description|nothing;
                            class string:$item_wf_state_class visualIconPadding;"
             tal:content="item/Title|nothing">

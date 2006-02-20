@@ -533,6 +533,9 @@ class TestNavTree(PloneTestCase.PloneTestCase):
         self.portal.invokeFactory('Document', 'doc2')
         self.portal.invokeFactory('Document', 'doc3')
         self.portal.invokeFactory('Folder', 'folder1')
+        self.portal.invokeFactory('Link', 'link1')
+        self.portal.link1.setRemoteUrl('http://plone.org')
+        self.portal.link1.reindexObject()
         folder1 = getattr(self.portal, 'folder1')
         folder1.invokeFactory('Document', 'doc11')
         folder1.invokeFactory('Document', 'doc12')
@@ -619,6 +622,15 @@ class TestNavTree(PloneTestCase.PloneTestCase):
         ntp.manage_changeProperties(parentMetaTypesNotToQuery=['Folder'])
         tree = self.utils.createNavTree(self.portal.folder2.file21)
         self.assertEqual(tree['children'][-1]['show_children'],False)
+
+    def testCreateNavTreeWithLink(self):
+        tree = self.utils.createNavTree(self.portal)
+        for child in tree['children']:
+            if child['portal_type'] != 'Link':
+                self.failIf(child['getRemoteUrl'])
+            if child['Title'] == 'link1':
+                self.failUnlessEqual(child['getRemoteUrl'], 'http://plone.org')
+                
 
     def testNonStructuralFolderHidesChildren(self):
         # Make sure NonStructuralFolders act as if parentMetaTypesNotToQuery
