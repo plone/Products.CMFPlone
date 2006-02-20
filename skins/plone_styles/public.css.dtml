@@ -611,14 +611,14 @@
 }
 
 .pullquote {
-    padding: 0 0 0 1em;
-    margin: 0 1em 1em 1em;
+    padding: 0 1em 0 1em;
+    margin: 0 0 1em 1em;
     font-weight: bold;
     color: #CC9933;
     float: right;
     width: 35%;
-    text-align: justify;
     clear: right;
+    background-color: &dtml-backgroundColor;;
 }
 .callout {
     font-weight: bold;
