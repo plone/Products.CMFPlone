@@ -52,21 +52,10 @@ class ControlPanelXMLAdapter(XMLAdapterBase):
         """
         Import the object from the DOM node.
         """
-        if self.environ.shouldPurge():
-            self._purgeProvider()
         self._initProvider(node)
         self._logger.info('Control panel imported')
 
-    def _purgeProvider(self):
-        atool = getToolByName(self.context, 'portal_actions')
-        atool.deleteActionProvider(self.context.getId())
-
     def _initProvider(self, node):
-        atool = getToolByName(self.context, 'portal_actions')
-        provider_id = str(self.context.getId())
-        if provider_id not in atool.listActionProviders():
-            atool.addActionProvider(provider_id)
-
         if self.environ.shouldPurge():
             actions = self.context.listActions()
             for action in actions:
