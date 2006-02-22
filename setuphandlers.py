@@ -2,6 +2,11 @@
 CMFPlone setup handlers.
 """
 
+from Products.StandardCacheManagers.AcceleratedHTTPCacheManager import \
+     AcceleratedHTTPCacheManager
+from Products.StandardCacheManagers.RAMCacheManager import \
+     RAMCacheManager
+
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore import permissions as cmfpermissions
 from Products.CMFPlone.utils import _createObjectByType
@@ -36,6 +41,21 @@ class PloneGenerator:
         syntool = getToolByName(p, 'portal_syndication')
         syntool.editProperties(isAllowed=1)
         #p.icon = 'misc_/CMFPlone/plone_icon'
+
+    def addCacheHandlers(self, p):
+        """ Add RAM and AcceleratedHTTP cache handlers """
+        mgrs = [(AcceleratedHTTPCacheManager, 'HTTPCache'),
+                (RAMCacheManager, 'RAMCache'),
+                ]
+        for mgr_class, mgr_id in mgrs:
+            existing = p._getOb(mgr_id, None)
+            if existing is None:
+                p._setObject(mgr_id, mgr_class(mgr_id))
+            else:
+                unwrapped = aq_base(existing)
+                if not isinstance(unwrapped, tool_class):
+                    p._delObject(mgr_id)
+                    p._setObject(mgr_id, mgr_class(mgr_id))
 
     # XXX: This should all be done by custom setuphandlers, possibly
     # using Kapil's XMLIO
@@ -134,19 +154,16 @@ def importVarious(context):
     care of by other handlers.
     """
     site = context.getSite()
-
     gen = PloneGenerator()
-
     gen.installProducts(site)
     gen.customizePortalOptions(site)
-
+    gen.addCacheHandlers(site)
 
 def importFinalSteps(context):
     """
     Final plone import steps.
     """
     site = context.getSite()
-
     gen = PloneGenerator()
     gen.setupPortalContent(site)
     gen.setupGroups(site)

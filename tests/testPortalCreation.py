@@ -18,6 +18,12 @@ from Acquisition import aq_base
 from DateTime import DateTime
 from tempfile import mkstemp
 
+from Products.StandardCacheManagers.AcceleratedHTTPCacheManager import \
+     AcceleratedHTTPCacheManager
+from Products.StandardCacheManagers.RAMCacheManager import \
+     RAMCacheManager
+from Products.CMFCore.CachingPolicyManager import CachingPolicyManager
+
 
 class TestPortalCreation(PloneTestCase.PloneTestCase):
 
@@ -608,6 +614,14 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         except (AttrbuteError, KeyError):
             self.fail('safe_html transformation not updated')
 
+    def testCacheManagers(self):
+        # The cache and caching policy managers should exist
+        httpcache = self.portal._getOb('HTTPCache', None)
+        ramcache = self.portal._getOb('RAMCache', None)
+        cpm = self.portal._getOb('caching_policy_manager', None)
+        self.failUnless(isinstance(httpcache, AcceleratedHTTPCacheManager))
+        self.failUnless(isinstance(ramcache, RAMCacheManager))
+        self.failUnless(isinstance(cpm, CachingPolicyManager))
 
 class TestPortalBugs(PloneTestCase.PloneTestCase):
 
