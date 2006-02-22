@@ -48,8 +48,8 @@
                 <label i18n:translate="label_generated_tabs_enable">Automatically generate tabs</label>
 
                 <div class="formHelp" i18n:translate="help_generated_tabs">
-                By default, all folders created at the root level will have global section
-                navigation generated. You can turn this off if you prefer manually constructing
+                By default, all items created at the root level will add to the global section
+                navigation. You can turn this off if you prefer manually constructing
                 this part of the navigation.
                 </div>
             </div>

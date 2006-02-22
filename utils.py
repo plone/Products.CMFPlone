@@ -40,6 +40,12 @@ from i18nl10n import utranslate
 from i18nl10n import ulocalized_time
 from i18nl10n import getGlobalTranslationService
 
+# Define and compile static regexes
+FILENAME_REGEX = re.compile(r"^(.+)\.(\w{,4})$")
+NON_WORD_REGEX = re.compile(r"[\W\-]+")
+DANGEROUS_CHARS_REGEX = re.compile(r"[?&/:\\#]+")
+EXTRA_DASHES_REGEX = re.compile(r"(^\-+)|(\-+$)")
+
 _marker = []
 
 class BrowserView(BaseView):
@@ -216,7 +222,7 @@ def typesToList(context):
     wl = [t for t in all_types if not bl_dict.has_key(t)]
     return wl
 
-def normalizeString(text, context=None, encoding=None):
+def normalizeString(text, context=None, encoding=None, relaxed=False):
     assert context or encoding, 'Either context or encoding must be provided'
     # Make sure we are dealing with a stringish type
     if not isinstance(text, basestring):
@@ -230,21 +236,25 @@ def normalizeString(text, context=None, encoding=None):
             encoding = getSiteEncoding(context)
         text = unicode(text, encoding)
 
-    text = text.lower()
     text = text.strip()
+    if not relaxed:
+        text = text.lower()
     text = normalizeUnicode(text)
 
     base = text
     ext  = ""
 
-    m = re.match(r"^(.+)\.(\w{,4})$", text)
+    m = FILENAME_REGEX.match(text)
     if m is not None:
         base = m.groups()[0]
         ext  = m.groups()[1]
 
-    base = re.sub(r"[\W\-]+", "-", base)
-    base = re.sub(r"^\-+",    "",  base)
-    base = re.sub(r"\-+$",    "",  base)
+    if not relaxed:
+        base = NON_WORD_REGEX.sub("-", base)
+    else:
+        base = DANGEROUS_CHARS_REGEX.sub("-", base)
+
+    base = EXTRA_DASHES_REGEX.sub("", base)
 
     if ext != "":
         base = base + "." + ext

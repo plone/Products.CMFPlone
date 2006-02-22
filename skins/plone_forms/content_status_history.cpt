@@ -93,7 +93,7 @@
 
             <div class="formHelp"
                  i18n:translate="help_include_contained_objects">
-              If checked, Plone will attempt to modify the status of all content 
+              If checked, this will attempt to modify the status of all content 
               in any selected folders and their subfolders.
             </div>
 

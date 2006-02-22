@@ -50,12 +50,6 @@ input.searchButton {
     text-transform: &dtml-textTransform;;
 
 }
-.noborder,
-.documentEditable * .noborder {
-    border: none;
-    margin: 0;
-    background-color: transparent;
-}
 .add,
 .documentEditable * .add {
 }

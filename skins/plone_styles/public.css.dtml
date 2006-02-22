@@ -116,6 +116,16 @@
    color: &dtml-notifyBackgroundColor;;
 }
 
+/* Code to work around IE's lacking support of sub-elements of the input element */
+.noborder,
+.documentEditable * .noborder {
+    border: none;
+    margin: 0;
+    background: none;
+    background-color: transparent;
+}
+
+
 /* End edit form elements */
 
 #visual-portal-wrapper {
@@ -141,7 +151,6 @@
     padding: 0;
     padding-top: <dtml-var "_[logoName].height">px;
     height: 0px !important;
-    height /**/: <dtml-var "_[logoName].height">px;
     width: <dtml-var "_[logoName].width">px;
     cursor: pointer;
 }
@@ -394,7 +403,7 @@
 
 #portal-personaltools .portalUser {
     background: transparent url(&dtml-portal_url;/user.gif) center left no-repeat;
-    padding-left: 15px;
+    padding-left: 18px;
 }
 
 #portal-personaltools .portalNotLoggedIn {
@@ -601,6 +610,22 @@
     font-weight: normal;
 }
 
+.pullquote {
+    padding: 0 1em 0 1em;
+    margin: 0 0 1em 1em;
+    font-weight: bold;
+    color: #CC9933;
+    float: right;
+    width: 35%;
+    clear: right;
+    background-color: &dtml-backgroundColor;;
+}
+.callout {
+    font-weight: bold;
+    color: #CC9933;
+    padding: 0px 1em;
+}
+
 /* Batch selector */
 
 .listingBar {
@@ -772,13 +797,37 @@ textarea.proportional {
     padding: 0;
     padding-top: 15px;
     height: 0px !important;
-    height /**/: 15px;
     width: 80px;
 }
 
 #portal-colophon a.colophonIcon {
     cursor: pointer;
 }
+
+#portal-colophon .colophonIconPlone {
+    background-image: url(&dtml-portal_url;/plone_powered.gif);
+}
+
+#portal-colophon .colophonIcon508 {
+    background-image: url(&dtml-portal_url;/colophon_sec508.gif);
+}
+
+#portal-colophon .colophonIconWAI {
+    background-image: url(&dtml-portal_url;/colophon_wai-aa.gif);
+}
+
+#portal-colophon .colophonIconXHTML {
+    background-image: url(&dtml-portal_url;/colophon_xhtml.png);
+}
+
+#portal-colophon .colophonIconCSS {
+    background-image: url(&dtml-portal_url;/colophon_css.png);
+}
+
+#portal-colophon .colophonIconAnyBrowser {
+    background-image: url(&dtml-portal_url;/colophon_anybrowser.png);
+}
+
 
 .feedButton {
     display: block; 

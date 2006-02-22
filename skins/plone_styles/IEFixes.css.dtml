@@ -42,9 +42,19 @@ textarea {
     filter:alpha(opacity=20); 
 }
 
+#portal-logo a {
+    height: 0px !important;
+    height /**/: <dtml-var "_[logoName].height">px;
+}
+
 /* Fix bottom margin on tabs in IE */
 #portal-globalnav li.selected a {
 position: relative;
+}
+
+#portal-colophon .colophonIcon {
+    height: 0px !important;
+    height /**/: 15px;
 }
 
 .actionMenu .actionMenuHeader a {
@@ -101,6 +111,12 @@ body { /* These work in IE only, changes the look of the scrollbar + textareas *
 * html .system-message,
 * html #error-handling {
     height: 0.1%;
+}
+
+/* Fix for IE float bug - have to use the Limi Hack here, since the paragraph
+   tag doesn't take nicely to the height hack above in IE. */
+* html p {
+    position: relative;
 }
 
 * html h1.documentFirstHeading {

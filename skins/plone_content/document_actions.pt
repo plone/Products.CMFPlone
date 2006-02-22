@@ -21,6 +21,7 @@
 
                 <img i18n:attributes="title" src="" alt="" title=""
                      tal:attributes="src    string:$portal_url/$icon;
+                                     id     string:icon-${daction/id};
                                      title  title;
                                      alt    title;" />
             </a>

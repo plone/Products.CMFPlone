@@ -12,10 +12,10 @@
 from Products.CMFPlone import PloneMessageFactory as _
 from ZODB.POSException import ConflictError
 
-REQUEST=context.REQUEST
+REQUEST = context.REQUEST
 
-portal_registration=context.portal_registration
-site_properties=context.portal_properties.site_properties
+portal_registration = context.portal_registration
+site_properties = context.portal_properties.site_properties
 
 username = REQUEST['username']
 
@@ -30,7 +30,7 @@ if site_properties.validate_email:
     REQUEST.form['must_change_password'] = 1
 
 # This is a temporary work-around for an issue with CMF not properly
-# reserving some existing ids (FSDV skin elements, for example). Until 
+# reserving some existing ids (FSDV skin elements, for example). Until
 # this is fixed in the CMF we can at least fail nicely. See
 # http://dev.plone.org/plone/ticket/2982 and http://plone.org/collector/3028
 # for more info. (rohrer 2004-10-24)
@@ -46,7 +46,7 @@ if site_properties.validate_email or REQUEST.get('mail_me', 0):
         portal_registration.registeredNotify(username)
     except ConflictError:
         raise
-    except Exception, err: 
+    except Exception, err:
 
         # TODO registerdNotify calls into various levels.  Lets catch all exceptions.
         #    Should not fail.  They cant CHANGE their password ;-)  We should notify them.

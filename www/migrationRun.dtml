@@ -11,6 +11,10 @@
 Please ensure you have a backup of your Plone site before performing migration.</span> 
 Migrations perform a catalog and security update, this may take a long time on large sites. Be patient.</p>
 
+<span style="background-color:red; color: white; font-weight: bold">
+Also make sure you are not doing this migration as an Emergency user.</span> 
+
+
 <hr />
 
 <p>

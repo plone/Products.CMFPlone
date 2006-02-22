@@ -194,10 +194,12 @@ class CatalogNavigationTree(utils.BrowserView):
                     'getURL':item_url,
                     'path': path,
                     'icon':item.getIcon,
+                    'Creator':item.Creator,
                     'creation_date': item.CreationDate,
                     'portal_type': item.portal_type,
                     'review_state': item.review_state,
                     'Description':item.Description,
+                    'getRemoteUrl':item.getRemoteUrl,
                     'show_children': (item.is_folderish and
                                       item.portal_type not in parentTypesNQ),
                     'children':[],

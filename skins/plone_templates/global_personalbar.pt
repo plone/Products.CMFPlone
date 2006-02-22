@@ -14,12 +14,12 @@
 
 <ul id="portal-personaltools">
     <li class="portalUser" 
+        tal:define="author python:mtool.getMemberInfo(user.getId())"
         tal:condition="not: isAnon"><a 
         id="user-name"
-        tal:omit-tag="not: mtool/getHomeFolder"
-        tal:attributes="href string:${mtool/getHomeUrl}">
+        tal:attributes="href string:${portal_url}/author/${user/getId}">
         <span class="visualCaseSensitive"
-              tal:replace="user/getUserName">
+              tal:content="python:author and author['fullname'] or user.getId()">
              John
         </span>
     </a></li>

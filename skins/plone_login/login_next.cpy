@@ -1,18 +1,19 @@
-## Script (Python) "logged_in"
+## Controller Python Script "login_next"
 ##bind container=container
 ##bind context=context
 ##bind namespace=
 ##bind script=script
+##bind state=state
 ##bind subpath=traverse_subpath
 ##parameters=
-##title=login
+##title=Login next actions
 ##
 
 from Products.CMFPlone import PloneMessageFactory as _
 from DateTime import DateTime
 import ZTUtils
 
-REQUEST=context.REQUEST
+REQUEST = context.REQUEST
 
 util = context.plone_utils
 membership_tool=context.portal_membership
@@ -28,7 +29,10 @@ came_from = REQUEST.get('came_from', None)
 if came_from is not None:
     scheme, location, path, parameters, query, fragment = util.urlparse(came_from)
     template_id = path.split('/')[-1]
-    if template_id in ['login', 'login_success', 'login_password', 'login_failed', 'login_form', 'logged_in', 'logged_out', 'registered', 'mail_password', 'mail_password_form', 'join_form', 'require_login', 'member_search_results']:
+    if template_id in ['login', 'login_success', 'login_password', 'login_failed',
+                       'login_form', 'logged_in', 'logged_out', 'registered',
+                       'mail_password', 'mail_password_form', 'join_form',
+                       'require_login', 'member_search_results']:
         came_from = ''
     # It is probably a good idea in general to filter out urls outside the portal.
     # An added bonus: this fixes some problems with a Zope bug that doesn't
@@ -44,8 +48,8 @@ if came_from and js_enabled:
 
     util.addPortalMessage(_(u'Welcome! You are now logged in.'))
     came_from = util.urlunparse((scheme, location, path, parameters, query, fragment))
-
     REQUEST.RESPONSE.redirect(came_from)
-    
+
 state.set(came_from=came_from)
+
 return state

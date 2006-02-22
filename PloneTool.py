@@ -55,10 +55,6 @@ FLOOR_DATE = DefaultDublinCoreImpl._DefaultDublinCoreImpl__FLOOR_DATE
 from Products.SecureMailHost.SecureMailHost import EMAIL_RE
 from Products.SecureMailHost.SecureMailHost import EMAIL_CUTOFF_RE
 BAD_CHARS = re.compile(r'[^a-zA-Z0-9-_~,.$\(\)# ]').findall
-# Define and compile static regexes
-FILENAME_REGEX = re.compile(r"^(.+)\.(\w{,4})$")
-NON_WORD_REGEX = re.compile(r"[\W\-]+")
-EXTRA_DASHES_REGEX = re.compile(r"(^\-+)|(\-+$)")
 
 
 # XXX Remove this when we don't depend on python2.1 any longer,
@@ -899,11 +895,20 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         return obj.getOwner().getUserName()
 
     security.declarePublic('normalizeString')
-    def normalizeString(self, text):
+    def normalizeString(self, text, relaxed=False):
         """Normalizes a title to an id.
 
         normalizeString() converts a whole string to a normalized form that
         should be safe to use as in a url, as a css id, etc.
+        
+        If relaxed=True, only those characters that are illegal as URLs and
+        leading or trailing whitespace is stripped.
+
+        >>> normalizeString("Foo bar", relaxed=False)
+        'Foo bar'
+        
+        >>> normalizeString("Some!_are allowed, others&?:are not")
+        'Some are allowed, others-are not'
 
         all punctuation and spacing is removed and replaced with a '-':
 
@@ -955,7 +960,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         >>> normalizeString(u"\uc774\ubbf8\uc9f1 Korean")
         'c774bbf8c9f1-korean'
         """
-        return utils.normalizeString(text, context=self)
+        return utils.normalizeString(text, context=self, relaxed=relaxed)
 
     security.declarePublic('listMetaTags')
     def listMetaTags(self, context):
