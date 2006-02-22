@@ -1,0 +1,97 @@
+Test for Messages
+=================
+
+  >>> from Products.CMFPlone import PloneMessageFactory as _
+
+Messages without translation service set up
+-------------------------------------------
+
+Very simple message:
+
+  >>> _(u'hello')
+  u'hello'
+
+The domain is predefinied through the factory:
+
+  >>> _(u'hello').domain
+  'plone'
+
+You can also define a default text:
+
+  >>> msg = _(u'id', default=u'This is the text.')
+  >>> msg
+  u'id'
+
+  >>> msg.default
+  u'This is the text.'
+
+And at last there is the possibility of variable substition:
+
+  >>> project = u'Plone'
+  >>> msg = _(u'id', default=u'Hello ${name}', mapping={u'name' : project})
+
+  >>> msg
+  u'id'
+
+  >>> msg.default
+  u'Hello ${name}'
+
+  >>> msg.mapping
+  {u'name': u'Plone'}
+  
+Messages with translation service set up
+----------------------------------------
+
+Now we fake a translation domain. Usually you will have translations stored in
+a po file and automatically translated by PTS or the Z3 translation service.
+
+  >>> from zope.i18n.simpletranslationdomain import SimpleTranslationDomain
+  >>> from zope.i18n.interfaces import ITranslationDomain
+
+  >>> messages = {
+  ...     ('de', u'This is a message.'): u'Dieses ist eine Nachricht.',
+  ...     ('de', u'mail-notification'): u'Sie haben ${number} neue E-Mails.'}
+  >>> mails = SimpleTranslationDomain('plone', messages)
+
+  >>> from zope.app.tests import ztapi
+  >>> ztapi.provideUtility(ITranslationDomain, mails, 'plone')
+
+Define the simple message:
+
+  >>> msg = _(u'This is a message.')
+  >>> msg
+  u'This is a message.'
+
+We are still using the plone domain:
+
+  >>> msg.domain
+  'plone'
+
+Verify that the translation succeeds:
+
+  >>> from zope.i18n import translate
+  >>> translate(msg, target_language='de')
+  u'Dieses ist eine Nachricht.'
+
+Now try a message with variable substitution:
+
+  >>> num = 42
+  >>> note = _(u'mail-notification', default=u'You have ${number} new mails.',
+  ...          mapping={u'number': num})
+
+  >>> note
+  u'mail-notification'
+
+  >>> note.default
+  u'You have ${number} new mails.'
+
+Try simple interpolation:
+
+  >>> translate(note, target_language='en')
+  u'You have 42 new mails.'
+
+And now try the real translation:
+  
+  >>> translate(note, target_language='de')
+  u'Sie haben 42 neue E-Mails.'
+
