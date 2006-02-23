@@ -90,8 +90,7 @@
               method="post"
               tal:attributes="action template/getId"
               tal:define="searchstring request/searchstring | nothing;
-                          findAll python:'form.button.FindAll' in request.keys();
-                          portal_users python:(searchstring or findAll) and mtool.searchForMembers(name=searchstring) or [];
+                          portal_users python:searchstring and mtool.searchForMembers(name=searchstring) or [];
                           batch python:Batch(portal_users, b_size, int(b_start), orphan=1)">
           <input type="hidden" name="form.submitted" value="1" />
 
@@ -115,16 +114,6 @@
                            tabindex=""
                            i18n:attributes="value label_search;"
                            tal:attributes="tabindex tabindex/next;" />
-
-            <!-- comment for now
-            <input type="submit"
-                           class="searchButton"
-                           name="form.button.FindAll"
-                           value="Show all"
-                           tabindex=""
-                           i18n:attributes="value label_showall;"
-                           tal:attributes="tabindex tabindex/next;" />
-            -->
 
                     </th>
                 </tr>
