@@ -31,7 +31,7 @@
         <p>
             <a href=""
                tal:attributes="href here_url">
-                <img src="" tal:attributes="src string:${portal_url}/file_icon.gif" alt="" />
+                <img src="" tal:define="icon python:here.getIcon(1)" tal:attributes="src string:${portal_url}/${icon}" alt="" />
                 <tal:block i18n:translate="label_click_to_get_file">
                 Click here to get the file
                 </tal:block>
