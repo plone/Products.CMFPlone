@@ -1,4 +1,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       lang="en"
       metal:use-macro="here/prefs_main_template/macros/master"
       i18n:domain="plone">
@@ -13,10 +16,11 @@
                 Batch python:modules['Products.CMFPlone'].Batch;
                 b_start request/b_start | python:0;
                 b_size python:20;
-                portal_roles here/getGlobalPortalRoles;">
-
-      <div id="content" class="documentEditable"
-           tal:condition="python:checkPermission('Manage Groups', here)">
+                portal_roles here/getGlobalPortalRoles;
+		searchstring request/searchstring | nothing;
+		search_results python:searchstring and here.prefs_user_group_search(searchstring, 'groups') or None;
+		batch python:search_results and Batch(search_results, b_size, int(b_start), orphan=1) or None;">
+      <div id="content" class="documentEditable">
     <!-- simulating views on the groups/user pages until we have real objects. -->
     <ul class="contentViews">
       <li class="">
@@ -61,13 +65,18 @@
           particular role.
         </p>
 
+            <p i18n:translate="description_pas_listing"
+               tal:condition="python:not searchstring and not context.acl_users.canListAllGroups()">
+              <strong>Note:</strong> Some or all of your PAS groups
+              source plugins do not allow listing of groups, so you
+              may not see the groups defined by those plugins unless
+              doing a specific search.
+            </p>
+
         <form action=""
               name="groups_add"
               method="post"
-              tal:attributes="action template_id"
-              tal:define="searchstring request/searchstring | nothing;
-                          groups python:here.prefs_user_group_search(searchstring, 'groups');
-                          batch python:Batch(groups, b_size, int(b_start), orphan=1)">
+	      tal:attributes="action template/getId">
 
             <input type="hidden" name="form.submitted" value="1" />
 
@@ -83,33 +92,36 @@
             <input type="hidden" value="b_start" name="b_start"
                  tal:attributes="value b_start"/>
 
-            <table class="listing" summary="Select roles for each group" i18n:attributes="summary summary_roles_for_groups;">
-                <!-- commented this part until it is really integrated in the page, right now it isn't -->
-                <!-- <tr> -->
-                    <!-- <th colspan="6" -->
-                        <!-- tal:attributes="colspan python:len(portal_roles)+2"> -->
-                        <!-- <span tal:omit-tag="" i18n:translate="label_group_search">Group Search</span>: -->
-                        <!-- <input class="quickSearch" -->
-                               <!-- tabindex="" -->
-                               <!-- type="text" -->
-                               <!-- name="searchstring" -->
-                               <!-- value="" -->
-                               <!-- tal:attributes="value searchstring; -->
-                                               <!-- tabindex tabindex/next;" -->
-                               <!-- /> -->
+            <table class="listing" summary="Select roles for each group"
+                   i18n:attributes="summary summary_roles_for_groups;">
+                <tr>
+                    <th colspan="6"
+                        tal:attributes="colspan python:len(portal_roles)+2">
+                        <span tal:omit-tag="" i18n:translate="label_group_search">Group Search</span>:
+                        <input class="quickSearch"
+                               tabindex=""
+                               type="text"
+                               name="searchstring"
+                               value=""
+                               tal:attributes="value searchstring;
+                                               tabindex tabindex/next;"
+                               />
 
-                        <!-- <input type="hidden" name="searchonly" value="groups" /> -->
-                        <!-- <input type="submit" -->
-                               <!-- class="searchButton" -->
-                               <!-- name="form.button.Search" -->
-                               <!-- value="Search" -->
-                               <!-- tabindex="" -->
-                               <!-- i18n:attributes="value label_search;" -->
-                               <!-- tal:attributes="tabindex tabindex/next;" /> -->
+			<input type="submit"
+				       class="searchButton"
+				       name="form.button.Search"
+				       value="Search"
+				       tabindex=""
+				       i18n:attributes="value label_search;"
+				       tal:attributes="tabindex tabindex/next;" />
 
-                    <!-- </th> -->
-                <!-- </tr> -->
-                <tal:block tal:condition="groups">
+
+			<input type="hidden" name="searchonly" value="groups" />
+
+                    </th>
+                </tr>
+
+		<tal:block tal:condition="python:(searchstring and search_results)">
                     <tr>
                         <th rowspan="2" i18n:translate="listingheader_group_name">Group name</th>
                         <th colspan="3"
@@ -122,15 +134,12 @@
                         <th tal:content="portal_role" i18n:translate="">Role</th>
                         </tal:header>
                     </tr>
-                </tal:block>
 
 
                 <tal:block repeat="this_group batch">
-                    <tr tal:define="oddrow repeat/this_group/odd"
+			<tr tal:define="oddrow repeat/this_group/odd;
+					roles python:['this'];"
                         tal:attributes="class python:test(oddrow,'odd','even')">
-
-                    <tal:block define="roles python:['this']">
-
                     <td>
                         <input type="hidden" name="" tal:attributes="name string:group_${this_group/getGroupName}:list" value=""/>
                         <a href="#"
@@ -153,7 +162,8 @@
                                value="Manager"
                                tal:attributes="name string:group_${this_group/getGroupName}:list;
                                                value portal_role;
-                                               checked python:test(portal_role in group_roles, 'checked' ,'');" />
+							   checked python:test(portal_role in group_roles, 'checked' ,'');
+							   disabled python:this_group.canAssignRole(portal_role) and default or 'disabled'" />
                     </td>
 
                     <td class="listingCheckbox">
@@ -161,23 +171,23 @@
                                class="noborder notify"
                                name="delete:list"
                                value="value"
-                               tal:attributes="value this_group/getGroupName" />
+					   tal:attributes="value this_group/getGroupName;
+							   disabled python:this_group.canDelete() and default or 'disabled'" />
                     </td>
-
-                </tal:block>
             </tr>
             </tal:block>
+		</tal:block>
 
-            <tal:block tal:condition="not:batch">
+		<tal:block tal:condition="python:(searchstring and not search_results)">
                 <tr>
                     <td i18n:translate="text_nomatches" style="text-align:center;">No matches</td>
                 </tr>
             </tal:block>
             </table>
 
+	  <tal:block tal:condition="python:(searchstring and search_results)">
           <div metal:use-macro="here/batch_macros/macros/navigation" />
 
-          <div class="formControls">
             <input class="context"
                    tabindex=""
                    type="submit"
@@ -185,15 +195,13 @@
                    value="Apply Changes"
                    tal:attributes="tabindex tabindex/next;"
                    i18n:attributes="value label_apply_changes;"
-                   tal:condition="groups"
                    />
-          </div>
+	   </tal:block>
         </form>
 
         <h1 i18n:translate="heading_roles_management">Roles Management</h1>
 
-        <p i18n:translate="description_roles_management"
-           class="discreet">
+        <p i18n:translate="description_roles_management">
           Roles are collections of permissions. The most common role is
           the Member role, which is any member of the portal. You can
           define additional roles, but you normally only do that when you
@@ -201,22 +209,16 @@
           combine to make up a Group.
         </p>
 
-        <p i18n:translate="description_roles_zmi"
-           class="discreet">
+        <p i18n:translate="description_roles_zmi">
         Currently, if you want to add a new role, you must use the
         Zope Management Interface, as adding roles is considered a
         development task.
         </p>
 
-
-    </div>
 </div>
 
 </div>
 
-      <div id="content" class="documentEditable"
-           tal:condition="python:not checkPermission('Manage Groups', here)">
-        <tal:block replace="here/raiseUnauthorized" />
       </div>
 
 </div>

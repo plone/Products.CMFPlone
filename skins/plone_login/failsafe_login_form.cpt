@@ -10,7 +10,7 @@
                  actions python:context.portal_actions.listFilteredActionsFor(context);
                  Iterator python:modules['Products.CMFPlone'].IndexIterator;
                  tabindex python:Iterator(pos=30000);
-                 auth nocall:here/cookie_authentication|nothing;
+                 auth nocall:here/acl_users/credentials_cookie_auth|nothing;
                  came_from request/came_from|request/HTTP_REFERER|nothing;
                  came_from python:test(here.portal_url.isURLInPortal(came_from), came_from, None);
                  ztutils modules/ZTUtils;
@@ -35,7 +35,11 @@ If you do not have an account here, head over to the
                    join python:join+test(join.find('?')==-1, '?', '&amp;')+ztutils.make_query(came_from=came_from);"
        tal:attributes="href join"
        i18n:translate="description_no_account_registration_linktext">
-        registration form</a></span>.
+        registration form
+    </a>
+</span>
+
+to become a member.
 
 </p>
 
@@ -53,9 +57,9 @@ If you do not have an account here, head over to the
       id="login_form"
       tal:condition="python:auth">
 
-    <fieldset tal:define="ac_name auth/name_cookie;
-	                  ac_password auth/pw_cookie;
-	                  ac_persist auth/persist_cookie">
+    <fieldset tal:define="ac_name auth/name_cookie|string:__ac_name;
+	                  ac_password auth/pw_cookie|string:__ac_password;
+	                  ac_persist auth/persist_cookie|nothing">
 
         <legend i18n:translate="legend_account_details">Account details</legend>
 
@@ -128,7 +132,7 @@ If you do not have an account here, head over to the
                    />
 	</div>
 
-        <div class="field">
+        <div class="field" tal:condition="ac_persist">
 
             <input type="checkbox"
                    class="noborder formRememberName"

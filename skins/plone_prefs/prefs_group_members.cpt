@@ -123,7 +123,9 @@
                             <input
                                    type="checkbox"
                                    class="noborder notify"
-                                   name="delete:list" tal:attributes="value this_user/getId" />
+                                   name="delete:list"
+                                   tal:attributes="value this_user/getId;
+                                                   disabled python:this_user.canRemoveFromGroup(groupname) and default or 'disabled'" />
                         </td>
 
                         <tal:block tal:condition="python: isGroup(this_user)">

@@ -132,23 +132,27 @@
                                 i18n:translate=""
                                 tal:content="python:targetobject.propertyLabel(id)">Property Value</label>
 
-                        <div tal:define="propertyitem python:targetobject.getProperty(id)"
+                        <div tal:define="propertyitem python:targetobject.getProperty(id);
+                                         disabled python:(not group or group.canWriteProperty(id)) and default or 'disabled';"
                         tal:condition="python:'w' in property.get('mode', 'awd')">
 
                         <input type="text" name="id" size="35"
                                 tal:condition="python:type in ('int', 'long')"
                                 tal:attributes="name string:$id:$type;
-                                                value python:test(propertyvalue, propertyvalue, '')" />
+                                                value python:test(propertyvalue, propertyvalue, '');
+                                                disabled disabled;" />
 
                         <input type="text" name="id" size="35"
                                 tal:condition="python:type in ('float','date')"
                                 tal:attributes="name string:$id:${request/management_page_charset_tag}$type;
-                                                value python:test(propertyvalue, propertyvalue, '')" />
+                                                value python:test(propertyvalue, propertyvalue, '');
+                                                disabled disabled;" />
 
                         <input type="text" name="string and ustring" size="35"
                                 tal:condition="python:type in ('string','ustring')"
                                 tal:attributes="name string:$id:${request/management_page_charset_tag}$type;
-                                                value python:test(propertyvalue, propertyvalue, '')" />
+                                                value python:test(propertyvalue, propertyvalue, '');
+                                                disabled disabled;" />
 
                         <input type="checkbox"
                                 class="noborder"
@@ -157,26 +161,30 @@
                                 tal:condition="python: type in ('boolean',)"
                                 tal:attributes="name string:$id:$type;
                                                 id string:cb-$id;
-                                                checked python:test(propertyvalue, 'checked', '')" />
+                                                checked python:test(propertyvalue, 'checked', '');
+                                                disabled disabled;" />
 
                         <input name="tokens and utokens" value="" type="text" size="35"
                                 tal:condition="python:type in ('tokens', 'utokens')"
                                 tal:attributes="name string:$id:${request/management_page_charset_tag}$type;
-                                                value python:test(propertyvalue, propertyvalue, '')" />
+                                                value python:test(propertyvalue, propertyvalue, '');
+                                                disabled disabled;" />
 
                         <textarea name="text and utext"
                                 rows="6"
                                 cols="35"
                                 tal:condition="python: type in ('text', 'utext')"
-                                tal:attributes="name string:$id:${request/management_page_charset_tag}$type"
+                                tal:attributes="name string:$id:${request/management_page_charset_tag}$type;
+                                                disabled disabled;"
                                 tal:content="propertyvalue">some data</textarea>
 
                         <textarea name="lines and ulines"
                                 rows="6"
                                 cols="35"
                                 tal:condition="python: type in ('lines', 'ulines')"
-                                tal:attributes="name string:$id:${request/management_page_charset_tag}$type;"
-                                tal:content="python:test(propertyvalue, '\n'.join(propertyvalue), '')">
+                                tal:attributes="name string:$id:${request/management_page_charset_tag}$type;;
+                                                disabled disabled;"
+                                tal:content="python: '\n'.join(propertyvalue)">
                         </textarea>
 
 
@@ -185,7 +193,8 @@
                                         select_value python:select_variable and path('here/%s' %select_variable) or [];">
 
                         <select name="selection" tal:condition="python:type in ('selection',)"
-                            tal:attributes="name string:$id:${request/management_page_charset_tag}text">
+                            tal:attributes="name string:$id:${request/management_page_charset_tag}text;
+                                            disabled disabled;">
                             <tal:values repeat="option select_value">
                                 <option tal:attributes="SELECTED python:test(propertyvalue==option,'SELECTED','')"
                                     tal:content="option">value</option>
@@ -194,7 +203,8 @@
 
                         <select name="multiple selection" multiple="multiple" tal:condition="python:type in ('multiple selection',)"
                                 tal:attributes="name string:$id:${request/management_page_charset_tag}list:string;
-                                                size python:min(7, len(select_value));">
+                                                size python:min(7, len(select_value));
+                                                disabled disabled;">
                             <tal:values repeat="option select_value">
                                 <option tal:attributes="SELECTED python:test(propertyvalue and option in propertyvalue,
                                                                             'selected', '')"
