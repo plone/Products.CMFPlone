@@ -4,6 +4,13 @@ Changelog for Plone
 
 Plone 2.5 (unreleased)
 	
+    - Remove options to list all members and groups from the preference pages;
+      this does not scale and may not be possible in PAS environments.
+      [wichert]
+
+    - Merge PlonePAS skin layer into CMFPlone skin
+      [wichert]
+
 	Alpha 2 - released February 23, 2006
 
     - Added ignoredSkinLayers option to zcheck.py to filter out certain folders.
