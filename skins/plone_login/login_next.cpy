@@ -15,6 +15,8 @@ import ZTUtils
 
 REQUEST = context.REQUEST
 
+context.acl_users.credentials_cookie_auth.login()
+
 util = context.plone_utils
 membership_tool=context.portal_membership
 if membership_tool.isAnonymousUser():

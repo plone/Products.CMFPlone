@@ -21,14 +21,6 @@ username = REQUEST['username']
 
 password=REQUEST.get('password') or portal_registration.generatePassword()
 
-# store the password in REQUEST to use in the future
-# we need this because when the password is encrypted, we can't retrieve it from database
-REQUEST.form['password'] = password
-
-if site_properties.validate_email:
-    # force the member to change his/her password upon initial login
-    REQUEST.form['must_change_password'] = 1
-
 # This is a temporary work-around for an issue with CMF not properly
 # reserving some existing ids (FSDV skin elements, for example). Until
 # this is fixed in the CMF we can at least fail nicely. See
@@ -48,20 +40,21 @@ if site_properties.validate_email or REQUEST.get('mail_me', 0):
         raise
     except Exception, err:
 
-        # TODO registerdNotify calls into various levels.  Lets catch all exceptions.
-        #    Should not fail.  They cant CHANGE their password ;-)  We should notify them.
+	# TODO registerdNotify calls into various levels.  Lets catch all
+	# exceptions.  Should not fail.  They cant CHANGE their password ;-)
+	# We should notify them.
         #
         # (MSL 12/28/03) We also need to delete the just made member and return to the join_form.
         msg = _(u'We were unable to send your password to your email address: ${address}',
                 mapping={u'address' : str(err)})
         state.setError('email', msg)
-        state.set(came_from='logged_in')
+        state.set(came_from='login_success')
         context.acl_users.userFolderDelUsers([username,])
         context.plone_utils.addPortalMessage(_(u'Please enter a valid email address.'))
         return state.set(status='failure')
 
 context.plone_utils.addPortalMessage(_(u'Registered.'))
-state.set(came_from=REQUEST.get('came_from','logged_in'))
+state.set(came_from=REQUEST.get('came_from','login_success'))
 
 if came_from_prefs:
     context.plone_utils.addPortalMessage(_(u'User added.'))

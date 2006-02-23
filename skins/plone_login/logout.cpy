@@ -10,19 +10,13 @@
 
 from Products.CMFCore.utils import getToolByName
 
+try:
+    context.acl_users.logout(context.REQUEST)
+except:
+    pass  # we expect Unauthorized
+
 REQUEST = context.REQUEST
 
-skinvar = context.portal_skins.getRequestVarname()
-path = '/' + context.absolute_url(1)
-
-if (REQUEST.has_key(skinvar) and
-    not context.portal_skins.getCookiePersistence()):
-    REQUEST.RESPONSE.expireCookie(skinvar, path=path)
-
-cookie_auth = getToolByName(context, 'cookie_authentication', None)
-if cookie_auth is not None:
-    cookie_name = cookie_auth.getProperty('auth_cookie')
-    REQUEST.RESPONSE.expireCookie(cookie_name, path='/')
 
 # Invalidate existing sessions, but only if they exist.
 sdm = getToolByName(context, 'session_data_manager', None)

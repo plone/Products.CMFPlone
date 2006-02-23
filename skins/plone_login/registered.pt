@@ -1,3 +1,8 @@
+<tal:changes replace="nothing">
+  default 'ac_name' and 'ac_password' to expected values
+  set 'auth' to plugin instead of cookie crumbler
+</tal:changes>
+
 <html xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:metal="http://xml.zope.org/namespaces/metal"
       metal:use-macro="here/main_template/macros/master"
@@ -5,7 +10,7 @@
 <body>
 
 <div metal:fill-slot="main"
-     tal:define="auth nocall:here/cookie_authentication|nothing">
+     tal:define="auth nocall:here/acl_users/credentials_cookie_auth|nothing">
 
 <div tal:condition="python: not auth" i18n:translate="registered_disabled">
    Cookie authentication has been disabled.
@@ -16,35 +21,27 @@
 
 <h1 i18n:translate="heading_welcome">Welcome!</h1>
 
-<p i18n:translate="description_you_are_registered">You have been registered.</p>
+<p i18n:translate="description_you_are_registered"> You have been registered as a member. </p>
 
 <p tal:condition="ve" i18n:translate="description_you_will_get_password">
-    You will receive an e-mail shortly containing your password. When you
-    receive your password, you can
-    <span i18n:name="log_in_here">
-        <a href="#"
-           tal:attributes="href string:$portal_url/login_form?login_name=${request/username}"
-           i18n:translate="label_log_in_here">
-            log in here
-        </a>
-    </span>.
+You will receive an email shortly containing your password
+    and instructions on how to activate your membership.
 </p>
 
 <tal:block condition="python:not(ve)">
     <p i18n:translate="description_you_can_log_on_now">Click the button to log in immediately.</p>
 
-    <div id="enable_cookies_message" i18n:translate="enable_cookies_message" class="portalMessage" style="display:none">
-      Cookies are not enabled. You must <span i18n:name="enable_cookies">
-      <a href="enabling_cookies" i18n:translate="label_enable_cookies">enable cookies</a></span> before you can log in.
+    <div id="enable_cookies_message" class="portalMessage" style="display:none">
+       Cookies are not enabled. You must <a href="enabling_cookies">enable cookies</a> before you can log in.
     </div>
 
     <form action=""
           method="post"
           tal:define="username request/username;
                       password request/password;
-                      ac_name auth/name_cookie;
-                      ac_password auth/pw_cookie;
-                      ac_persist auth/persist_cookie;"
+                      ac_name auth/name_cookie|string:__ac_name;
+                      ac_password auth/pw_cookie|string:__ac_password;
+                      ac_persist auth/persist_cookie|nothing;"
           tal:attributes="action python:'%s/login_form' % portal_url">
 
          <input type="hidden" name="form.submitted" value="1" />
