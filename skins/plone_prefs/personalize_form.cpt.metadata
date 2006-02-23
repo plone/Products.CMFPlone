@@ -5,7 +5,7 @@ title=Personal Preferences
 View=0:Authenticated
 
 [validators]
-validators=validate_emailaddr,validate_personalize
+validators=validate_pas_emailaddr,validate_personalize
 validators..Cancel=
 
 [actions]

@@ -17,8 +17,8 @@
                       b_size python:20;
                       searchstring request/searchstring | nothing;
 	              searchonly searchonly | nothing;
-                      results python:here.prefs_user_group_search(searchstring, searchonly);
-                      batch python:Batch(results, b_size, int(b_start), orphan=1)">
+                      results python:searchstring and here.prefs_user_group_search(searchstring, searchonly) or None;
+                      batch python:results and Batch(results, b_size, int(b_start), orphan=1) or None">
 
 	<span metal:define-slot="hiddens" />
 	
@@ -47,6 +47,7 @@
 
 	    </th>
 	  </tr>
+          <tal:block condition="python:searchstring and results">
 	  <tr>
 	    <th tal:condition="takeaction | nothing">
             <input class="noborder"
@@ -73,14 +74,20 @@
                        class="noborder"
                        name="add:list"
                        value="value"
-		       tal:attributes="value obj/getGroupId | obj/getId" />
+                           tal:define="calcId obj/getGroupId | obj/getId;
+                                       userid userid | nothing;
+                                       groupname groupname | nothing;
+                                       m python:userid and member or here.portal_membership.getMemberById(calcId);
+                                       g python:groupname and groupname or calcId;"
+                           tal:attributes="value calcId;
+                                           disabled python:m.canAddToGroup(g) and default or 'disabled'" />
 	      </td>
 
 	      <td>
 		<tal:block tal:condition="obj/getGroupName | nothing">
 		  <img src="group.gif" alt="" />
 		  <a href="" tal:attributes="href string:prefs_group_details?groupname=${obj/getGroupName}"
-                        tal:content="obj/getGroupTitleOrName | obj/getGroupName | default">
+                            tal:content="obj/getGroupName | default">
                         <span i18n:translate="link_groupname_not_available">
                         groupname not available</span>
                 </a>
@@ -96,9 +103,12 @@
 	      </td>
 	    </tr>
 	  </tal:block>
+          </tal:block>
         </table>
 
-	<p tal:condition="not:batch" i18n:translate="text_nomatches">No matches</p>
+        <p tal:condition="python:searchstring and not results" i18n:translate="text_nomatches">No matches</p>
+
+        <tal:block condition="python:searchstring and results">
 
     <input type="hidden" value="b_start" name="b_start" 
            tal:attributes="value b_start"/>
@@ -115,6 +125,8 @@
                tal:attributes="tabindex tabindex/next;"
                i18n:attributes="value label_use_selected;" />
 	</metal:block>
+
+        </tal:block>
 
 	<metal:block metal:define-slot="removables" />
     </form>

@@ -41,7 +41,7 @@ we eventually might want to merge this form with personalize_form
       &nbsp;
     </div>        
     
-    <div id="region-content" class="documentContent">
+    <div class="documentContent" id="region-content">
       <a name="documentContent"></a>
       
       <div metal:use-macro="here/global_statusmessage/macros/portal_message">
@@ -96,7 +96,8 @@ we eventually might want to merge this form with personalize_form
                    value="fullname"
                    tabindex=""
                    tal:attributes="value fullname;
-                                   tabindex tabindex/next;"
+                                   tabindex tabindex/next;
+                                   disabled python:member.canWriteProperty('fullname') and default or 'disabled'"
                    />
           </div>
 
@@ -123,7 +124,8 @@ we eventually might want to merge this form with personalize_form
                          size="30"
                          tabindex=""
                          tal:attributes="value email;
-                                         tabindex tabindex/next;"
+                                         tabindex tabindex/next;
+                                         readonly python:member.canWriteProperty('email') and default or 'readonly'"
                          />
           </div>
 
@@ -148,7 +150,8 @@ we eventually might want to merge this form with personalize_form
                        tabindex=""
                        value="member.location html_quote"
                        tal:attributes="value location;
-                                       tabindex tabindex/next;"
+                                       tabindex tabindex/next;
+                                       disabled python:member.canWriteProperty('location') and default or 'disabled'"
                        />
 
             </div>
@@ -170,7 +173,8 @@ we eventually might want to merge this form with personalize_form
                 <select name="language"
                         id="language"
                         tabindex=""
-                        tal:attributes="tabindex tabindex/next;">
+                        tal:attributes="tabindex tabindex/next;
+                                        disabled python:member.canWriteProperty('language') and default or 'disabled'">
                     <tal:block tal:repeat="lang here/availableLanguages">
                         <option value="None"
                             tal:content="python:lang[1]"
@@ -201,6 +205,7 @@ we eventually might want to merge this form with personalize_form
                        name="description"
                        tal:content="description"
                        rows="5"
+                       tal:attributes="disabled python:member.canWriteProperty('description') and default or 'disabled'"
                        />
 
             </div>
@@ -220,7 +225,8 @@ we eventually might want to merge this form with personalize_form
                 <select name="wysiwyg_editor"
                         id="wysiwyg_editor"
                         tabindex=""
-                        tal:attributes="tabindex tabindex/next;">
+                        tal:attributes="tabindex tabindex/next;
+                                        disabled python:member.canWriteProperty('wysiwyg_editor') and default or 'disabled'">
                         <tal:block tal:repeat="editor site_properties/available_editors">
                         <option tal:condition="python:editor != 'None'"
                                 value="None"
@@ -249,17 +255,16 @@ we eventually might want to merge this form with personalize_form
                        name="ext_editor"
                        id="cb_ext_editor"
                        tal:attributes="tabindex tabindex/next;
-                                       checked python:test(ext_editor, 'checked', None);"
+                                       checked python:test(ext_editor, 'checked', None);
+                                       disabled python:member.canWriteProperty('ext_editor') and default or 'disabled'"
                        />
 
                 <label for="cb_ext_editor" i18n:translate="label_ext_editor">Enable external editing</label>
      
                  <div class="formHelp" i18n:translate="help_content_ext_editor">
-                    When checked, an icon will be made visible on each page which
-                    allows you to edit content with your favorite editor instead
-                    of using browser-based editors. This requires an additional
-                    application called ExternalEditor installed client-side.
-                    Ask your administrator for more information if needed.
+                 When checked, an icon will be made visible on each page which allows
+                 you to edit content locally. Ask your administrator for more information
+                 when needed.
                  </div>
             </div>    
             <div class="field"
@@ -269,13 +274,14 @@ we eventually might want to merge this form with personalize_form
                        name="listed"
                        id="cb_listed"
                        tal:attributes="tabindex tabindex/next;
-                                       checked python:test(listed, 'checked', None);"
+                                       checked python:test(listed, 'checked', None);
+                                       disabled python:member.canWriteProperty('listed') and default or 'disabled'"
                        />
 
                 <label for="cb_listed" i18n:translate="label_listed_status">Listed in searches</label>
 
                 <div class="formHelp" i18n:translate="help_listed_search">
-                Determines if your user name is listed in user searches done on this site.
+                Determines if your user name is listed in member searches done on this site.
                 </div>
 
             </div>
@@ -289,7 +295,8 @@ we eventually might want to merge this form with personalize_form
                        name="visible_ids"
                        id="cb_invisible_ids"
                        tal:attributes="tabindex tabindex/next;
-                                       checked python:test(visible_ids, 'checked', None);"
+                                       checked python:test(visible_ids, 'checked', None);
+                                       disabled python:member.canWriteProperty('visible_ids') and default or 'disabled'"
                        />
 
                 <label for="cb_invisible_ids" 

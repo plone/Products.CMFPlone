@@ -12,20 +12,18 @@
     tal:define="Batch python:modules['Products.CMFPlone'].Batch;
                 b_start request/b_start | python:0;
                 b_size request/b_size | python:20;
-                portal_roles here/getGlobalPortalRoles;">
-
-      <div id="content" class="documentEditable"
-           tal:condition="python:checkPermission('Manage users', here)">
-
-            <h5 class="hiddenStructure">Views</h5>
+                portal_roles here/getGlobalPortalRoles;
+                searchstring request/searchstring | nothing;">
         
+      <div id="content" class="documentEditable">
+    <!-- simulating views on the groups/user pages until we have real objects. -->
             <ul class="contentViews">
               <li class="selected">
                 <a href=""
                    tal:attributes="href template_id"
                    i18n:translate="label_users">Users</a>
               </li>
-              <li>
+      <li class="">
                 <a href="prefs_groups_overview"
                    i18n:translate="label_groups">Groups</a>
               </li>
@@ -63,6 +61,13 @@
           They do not reflect additional roles users may have due
           to group memberships.
         </p>
+        <p i18n:translate="description_pas_listing"
+           tal:condition="nothing | python:not searchstring and not context.acl_users.canListAllUsers()">
+          <strong>Note:</strong> Some or all of your PAS user source
+          plugins do not allow listing of users, so you may not see
+          the users defined by those plugins unless doing a specific
+          search.
+        </p>
 
         <form action=""
               name="users_add"
@@ -83,9 +88,9 @@
         <form action=""
               name="users_search"
               method="post"
-              tal:attributes="action template_id"
-              tal:define="findAll python:'form.button.FindAll' in request.keys();
-                          searchstring python:test(findAll, None, request.get('searchstring', None));
+              tal:attributes="action template/getId"
+              tal:define="searchstring request/searchstring | nothing;
+                          findAll python:'form.button.FindAll' in request.keys();
                           portal_users python:(searchstring or findAll) and mtool.searchForMembers(name=searchstring) or [];
                           batch python:Batch(portal_users, b_size, int(b_start), orphan=1)">
           <input type="hidden" name="form.submitted" value="1" />
@@ -95,6 +100,7 @@
           <th colspan="6" tal:attributes="colspan python:len(portal_roles)+4">
             <span tal:omit-tag="" i18n:translate="label_user_search">User Search</span>:
             <input tabindex=""
+                   class="quickSearch"
                            type="text"
                            name="searchstring"
                            value=""
@@ -110,6 +116,7 @@
                            i18n:attributes="value label_search;"
                            tal:attributes="tabindex tabindex/next;" />
 
+            <!-- comment for now
             <input type="submit"
                            class="searchButton"
                            name="form.button.FindAll"
@@ -117,6 +124,7 @@
                            tabindex=""
                            i18n:attributes="value label_showall;"
                            tal:attributes="tabindex tabindex/next;" />
+            -->
 
                     </th>
                 </tr>
@@ -161,18 +169,20 @@
                  size="15"
                  name="users.email:records"
                  value=""
-                 tal:attributes="value email" />
+                 tal:attributes="value email;
+                                 disabled python:this_user.canWriteProperty('email') and default or 'disabled'" />
             </td>
 
             <td class="listingCheckbox"
-            tal:define="user_roles this_user/getUserRoles"
+            tal:define="user_roles this_user/getRoles"
             tal:repeat="portal_role portal_roles">
               <input type="checkbox"
                  class="noborder"
                  name="users.roles:list:records"
                  value="Manager"
                              tal:attributes="value portal_role;
-                                             checked python:test(portal_role in user_roles, 'checked', nothing);" />
+                                 checked python:test(portal_role in user_roles, 'checked', nothing);
+                                 disabled python:this_user.canAssignRole(portal_role) and default or 'disabled'" />
             </td>
 
             <td class="listingCheckbox">
@@ -180,7 +190,8 @@
                  class="noborder"
                  name="users.resetpassword:records"
                              value=""
-                             tal:attributes="value userid" />
+                             tal:attributes="value userid;
+                                             disabled python:this_user.canPasswordSet() and default or 'disabled'" />
             </td>
 
             <td class="listingCheckbox">
@@ -188,7 +199,8 @@
                              class="noborder notify"
                              name="delete:list"
                              value=""
-                             tal:attributes="value userid" />
+                             tal:attributes="value userid;
+                                             disabled python:this_user.canDelete() and default or 'disabled'" />
             </td>
           </tr>
         </tal:block>
@@ -199,9 +211,7 @@
                     <td tal:condition="not:searchstring"
                         class="discreet"
                         i18n:translate="text_no_user_searchstring"
-                        style="text-align:center; font-size: 100%;">
-                        Enter a username to search for, or click 'Show All'
-                    </td>
+                        style="text-align:center; font-size: 100%;">Enter a username to search for</td>
                 </tr>
           </table>
 

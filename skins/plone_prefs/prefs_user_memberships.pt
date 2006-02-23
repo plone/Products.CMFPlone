@@ -94,7 +94,7 @@
                     <a href="prefs_group_details"
                        tal:attributes="href string:prefs_group_details?groupname=$groupname">
                     <tal:block replace="structure portal/group.gif"/>&nbsp;<span
-                                 tal:replace="group/getGroupTitleOrName | groupname">group name</span>
+                                 tal:replace="groupname">group name</span>
                     </a>
                 </td>
 
@@ -103,7 +103,8 @@
                     <input type="checkbox"
                            class="noborder notify"
                            name="delete:list"
-                           tal:attributes="value groupname" />
+                           tal:attributes="value groupname;
+                                           disabled python:member.canRemoveFromGroup(groupname) and default or 'disabled'" />
                 </td>
                 </tal:block>
             </tr>

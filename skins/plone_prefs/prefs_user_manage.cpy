@@ -23,9 +23,12 @@ for user in users:
         continue
 
     member = getMemberById(user.id)
-    # If email address was changed, set the new one
-    if user.email != member.getProperty('email'):
-        setMemberProperties(member, email=user.email)
+   # If email address was changed, set the new one
+    if hasattr(user, 'email'):
+	# If the email field was disabled (ie: non-writeable), the
+        # property might not exist.
+        if user.email != member.getProperty('email'):
+            setMemberProperties(member, email=user.email)
 
     # If reset password has been checked email user a new password
     if hasattr(user, 'resetpassword'):
