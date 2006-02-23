@@ -3,6 +3,8 @@ Changelog for Plone
    (name of developer listed in brackets)
 
 Plone 2.5 (unreleased)
+	
+	Alpha 2 - released February 23, 2006
 
     - Added ignoredSkinLayers option to zcheck.py to filter out certain folders.
       [hannosch]
@@ -43,7 +45,9 @@ Plone 2.5 (unreleased)
       BBB code. Make sure that for all interfaces declared, they are
       declared for both Zope 2 and 'zope.interface'-style.
       [dreamcatcher]
-
+	
+	Alpha 1 - released January 29, 2006
+	
     - Installed CMFPlacefulWorkflow during migrations.
       [encolpe]
 

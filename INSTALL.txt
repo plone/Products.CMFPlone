@@ -1,78 +1,78 @@
 Installing Plone manually, step by step instructions.
 
-============================================================================== 
+==============================================================================
 
 
-**SUMMARY** 
- 
+**SUMMARY**
+
   1) Download and install Zope
   2) Find your instance's Products directory
-  3) Download and install CMFPlone 
+  3) Download and install CMFPlone
   4) Download and install optional products
- 
-  For alternative install docs, try http://plone.org/documentation. They may be 
-  more up to date, and have useful illustrations to go with them. 
- 
- 
-=============================================================================== 
- 
- 
-**ASSUMPTIONS** 
- 
-  1) You are running a *nix server 
-  2) You are comfortable with standard Unix commands, including 
-     * wget or cvs 
-     * tar 
-     * symlinking 
-  3) You are familiar with logging into the Zope Management Interface 
- 
- 
-=============================================================================== 
- 
- 
-**REQUIREMENTS** 
- 
-  **MANDATORY** 
- 
+
+  For alternative install docs, try http://plone.org/documentation. They may be
+  more up to date, and have useful illustrations to go with them.
+
+
+===============================================================================
+
+
+**ASSUMPTIONS**
+
+  1) You are running a *nix server
+  2) You are comfortable with standard Unix commands, including
+     * wget or cvs
+     * tar
+     * symlinking
+  3) You are familiar with logging into the Zope Management Interface
+
+
+===============================================================================
+
+
+**REQUIREMENTS**
+
+  **MANDATORY**
+
   - Zope 2.8.5 (or 2.9.0, does not run natively on Zope 3)
      http://www.zope.org/Products/Zope/2.8.5
      Note: Zope 2.8 requires Python 2.3.5, Zope 2.9 requires Python 2.4
- 
+
   - Five 1.2 or newer
-     If you run Zope 2.8 you have to install Five 1.2. On Zope 2.9 Five 1.3
-     is already included in Zope itself.
-     http://codespeak.net/z3/five/
- 
-  - CMF 1.6.0 (neither 1.5 nor 2.0)
-     Included in the Plone tarball 
- 
+     Included in the Plone tarball for Zope 2.8.x
+     (If you run Zope 2.9 or newer, you will need to remove Five from your
+      Products directory, as a newer version is included with Zope)
+
+  - CMF 1.6.0 or newer (neither 1.5 nor 2.0)
+     Included in the Plone tarball
+
   - CMFQuickInstallerTool 1.5.8 or newer
-     Included in the Plone tarball 
- 
+     Included in the Plone tarball
+
   - GroupUserFolder 3.5 or newer
-     Included in the Plone tarball 
- 
+     Included in the Plone tarball
+
   - CMFFormController 2.0 or newer
-     Included in the Plone tarball 
- 
+     Included in the Plone tarball
+
   - SecureMailHost 1.0.3 or newer
      Included in the Plone tarball
- 
+
   - Archetypes 1.4.0 or newer
-     Included in the Plone tarball 
+     Included in the Plone tarball
 
   - ATContentTypes 1.1 or newer
      Included in the Plone tarball
 
   - ATReferenceBrowserWidget 1.2 or newer
      Included in the Plone tarball
-     
+
   - ResourceRegistries 1.2 or newer
      Included in the Plone tarball
-     
+
   - ExtendedPathIndex 2.3 or newer
      Included in the Plone tarball
-     
+
   - CMFDynamicViewFTI 1.0.2 or newer
      Included in the Plone tarball
 
@@ -81,12 +81,12 @@ Installing Plone manually, step by step instructions.
      http://effbot.org/downloads/#Imaging
      Note: You have to build PIL with jpeg and png support. See the README
      of PIL for more information.
- 
+
   - Placeless Translation Service 1.2.6 or newer
-     Included in the Plone tarball 
+     Included in the Plone tarball
 
   - PloneTranslations 2.5
-     Included in the Plone tarball 
+     Included in the Plone tarball
 
   - PloneLanguageTool 0.9 or newer
      Included in the Plone tarball
@@ -94,63 +94,81 @@ Installing Plone manually, step by step instructions.
   - CMFPlacefulWorkflow 0.5alpha1 or newer
      Included in the Plone tarball
 
-=============================================================================== 
- 
- 
+  - GenericSetup 1.0 or newer
+     Included in the Plone tarball
+     
+  - PlonePAS 1.2 or newer
+     Included in the Plone tarball
+     
+  - PasswordResetTool 0.3 or newer
+     Included in the Plone tarball
+     
+  - PluggableAuthService 1.1b2 or newer
+     Included in the Plone tarball
+     
+  - PluginRegistry 1.0 or newer
+     Included in the Plone tarball
+     
+  - ExternalEditor 0.9.1 or newer
+     Included in the Plone tarball
+
+===============================================================================
+
+
 **INSTALLATION PROCEDURE:**
- 
-------------------------------------------------------------------------------- 
- 
-1. Download and install Zope 
- 
+
+-------------------------------------------------------------------------------
+
+1. Download and install Zope
+
   Install Zope and start it. Check that it's running.
- 
-  ***************************************************************************** 
+
+  *****************************************************************************
   * If you want to run Plone on FreeBSD, you'll need to up the thread stack   *
   * size of your python interpreter or else Zope will repeatedly crash!       *
   * Compile python with 'make WANT_HUGE_STACK_SIZE=yes' or use the compiler   *
   * option CFLAG: -DTHREAD_STACK_SIZE=0x100000                                *
-  ***************************************************************************** 
-------------------------------------------------------------------------------- 
- 
+  *****************************************************************************
+-------------------------------------------------------------------------------
+
 2. Find your instance's Products directory
- 
-   The location of this varies from system to system, so to avoid hunting for it, 
-   go to the Zope Management Interface (ZMI) Control Panel in your Zope's root, 
-   which will likely be at one of the following URLs: 
- 
-   http://yourhost:8080/Control_Panel/manage_main 
-   http://yourhost:9673/Control_Panel/manage_main (if you're using Debian) 
-   http://yourhost/Control_Panel/manage_main (if you're proxying through a front 
-   end webserver) 
- 
-   This page will tell you your INSTANCE_HOME. There is a Products folder in each  
-   site's INSTANCE_HOME folder. This is the best place to install add-on Products  
-   for a site. 
- 
-      $SOFTWARE_HOME/Products folder 
- 
-   Sometimes a Product's documentation will instruct you to install it in  
-   SOFTWARE_HOME/Products.  SOFTWARE_HOME refers to the lib/python sub-folder of  
-   the Zope folder. We strongly discourage installing packages in these places for  
-   two reasons: 
- 
-    * These folders affect all Plone 2 sites using that version of Zope. 
-    * If you reinstall Plone 2 or a newer version of Plone 2, Zope will 
-      be replaced. 
- 
-   Any time you're asked to place packages into a Products folder, choose 
-   the INSTANCE_HOME/Products folder instead. Thank you! 
- 
-------------------------------------------------------------------------------- 
- 
+
+   The location of this varies from system to system, so to avoid hunting for it,
+   go to the Zope Management Interface (ZMI) Control Panel in your Zope's root,
+   which will likely be at one of the following URLs:
+
+   http://yourhost:8080/Control_Panel/manage_main
+   http://yourhost:9673/Control_Panel/manage_main (if you're using Debian)
+   http://yourhost/Control_Panel/manage_main (if you're proxying through a front
+   end webserver)
+
+   This page will tell you your INSTANCE_HOME. There is a Products folder in each
+   site's INSTANCE_HOME folder. This is the best place to install add-on Products
+   for a site.
+
+      $SOFTWARE_HOME/Products folder
+
+   Sometimes a Product's documentation will instruct you to install it in
+   SOFTWARE_HOME/Products.  SOFTWARE_HOME refers to the lib/python sub-folder of
+   the Zope folder. We strongly discourage installing packages in these places for
+   two reasons:
+
+    * These folders affect all Plone 2 sites using that version of Zope.
+    * If you reinstall Plone 2 or a newer version of Plone 2, Zope will
+      be replaced.
+
+   Any time you're asked to place packages into a Products folder, choose
+   the INSTANCE_HOME/Products folder instead. Thank you!
+
+-------------------------------------------------------------------------------
+
 3. Download and install CMFPlone
- 
-   Unpack the Plone tarball 
- 
-   The results will be a directory named CMFPlone-xxxx where 
-   xxxx is the version. This should contain the following subdirectories: 
- 
+
+   Unpack the Plone tarball
+
+   The results will be a directory named CMFPlone-xxxx where
+   xxxx is the version. This should contain the following subdirectories:
+
    Archetypes
    ATContentTypes
    ATReferenceBrowserWidget
@@ -187,56 +205,56 @@ Installing Plone manually, step by step instructions.
    statusmessages
    validation
 
-   Move (or symlink) each of these subdirectories into your 
-   $INSTANCE_HOME/Products 
+   Move (or symlink) each of these subdirectories into your
+   $INSTANCE_HOME/Products
    directory. If it does not exist, create it.
- 
-  ***************************************************************************** 
-  * Note that each of these is a Product in its own right and *must* be       * 
-  * directly within $INSTANCE_HOME/Products. If you just move the entire CMF  * 
-  * directory into $INSTANCE_HOME/Products, your Zope Instance will *not* be  * 
-  * able to find these required products, and you will not be able to run     * 
-  * Plone.                                                                    * 
-  ***************************************************************************** 
- 
-  It's probably A Good Idea at this point to restart your Zope to load these 
-  Products, then test that they have installed correctly. You can do this by 
-  logging into the ZMI - you should have  
- 
-    1) The Plone Products (BTreeFolder2 etc.) listed in the Products section of  
-       the Control_Panel 
-    2) "Plone Site" as one of the options in the "Add" dropdown in the ZMI Root 
-       Folder 
- 
+
+  *****************************************************************************
+  * Note that each of these is a Product in its own right and *must* be       *
+  * directly within $INSTANCE_HOME/Products. If you just move the entire CMF  *
+  * directory into $INSTANCE_HOME/Products, your Zope Instance will *not* be  *
+  * able to find these required products, and you will not be able to run     *
+  * Plone.                                                                    *
+  *****************************************************************************
+
+  It's probably A Good Idea at this point to restart your Zope to load these
+  Products, then test that they have installed correctly. You can do this by
+  logging into the ZMI - you should have
+
+    1) The Plone Products (BTreeFolder2 etc.) listed in the Products section of
+       the Control_Panel
+    2) "Plone Site" as one of the options in the "Add" dropdown in the ZMI Root
+       Folder
+
   Complete the install test by adding a Plone Site from the pulldown in the root
-  folder. 
-  
+  folder.
+
   *****************************************************************************
   * Make sure this is not done inside the Control Panel, but in the root of   *
   * the Zope site.                                                            *
   *****************************************************************************
-  
+
   When you do this, it asks you to complete a form, specifying the site's Id,
-  Title, Description and where your members' user folder should be. Complete 
+  Title, Description and where your members' user folder should be. Complete
   these fields and hit the "Add Plone Site" button. After a short while, you
-  should be looking at a basic Plone site containing the details you entered. 
- 
-------------------------------------------------------------------------------- 
- 
+  should be looking at a basic Plone site containing the details you entered.
+
+-------------------------------------------------------------------------------
+
 4. Download and install optional products
- 
+
   The above steps install the "mandatory" products.
- 
-  Use Plone Setup's "Add/Remove Products" to install optional products bundled 
-  with Plone: PloneErrorReporting  
- 
-  For optional products not bundled with Plone:  Download the product, unpack the 
-  product into your instance's Products directory, restart Zope, and install them 
+
+  Use Plone Setup's "Add/Remove Products" to install optional products bundled
+  with Plone: PloneErrorReporting
+
+  For optional products not bundled with Plone:  Download the product, unpack the
+  product into your instance's Products directory, restart Zope, and install them
   in Plone using Plone Setup's "Add/Remove Products."
- 
-=============================================================================== 
-Have fun, and don't forget to report any bugs or inconsistencies in the 
+
+===============================================================================
+Have fun, and don't forget to report any bugs or inconsistencies in the
 Plone bug tracker: http://dev.plone.org/plone/
- 
+
 Thank you for using Plone!
 
