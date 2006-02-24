@@ -429,6 +429,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             object.manage_setLocalRoles(user_id, roles)
 
         fixOwnerRole(object, user.getId())
+        catalog_tool = getToolByName(self, 'portal_catalog')
         catalog_tool.reindexObject(object)
 
         if recursive:
