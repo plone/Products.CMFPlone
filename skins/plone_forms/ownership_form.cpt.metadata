@@ -8,4 +8,6 @@ View=0:Authenticated
 validators=
 
 [actions]
+action.success..Search=traverse_to:string:ownership_form
+action.success..Save=traverse_to:string:ownership_form
 action.success=traverse_to:string:change_ownership

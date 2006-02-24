@@ -15,6 +15,10 @@ Plone 2.5 (unreleased)
     - Merge PlonePAS skin layer into CMFPlone skin
       [wichert]
 
+    - Rewrite ownership_form to not list all users, but allow searching for
+      possible new owners instead.
+      [wichert]
+
 	Alpha 2 - released February 23, 2006
 
     - Added ignoredSkinLayers option to zcheck.py to filter out certain folders.
