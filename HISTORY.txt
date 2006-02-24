@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.5 (unreleased)
 	
+    - Fix PloneTool.changeOwnershipOf to not test for user existance by
+      trying to find a user id in listMemberIds().
+      [wichert]
+
     - Remove options to list all members and groups from the preference pages;
       this does not scale and may not be possible in PAS environments.
       [wichert]

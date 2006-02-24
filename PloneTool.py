@@ -405,16 +405,12 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     def changeOwnershipOf(self, object, owner, recursive=0):
         """Changes the ownership of an object."""
         membership = getToolByName(self, 'portal_membership')
-        if owner not in membership.listMemberIds():
-            raise KeyError, 'Only users in this site can be made owners.'
         acl_users = getattr(self, 'acl_users')
         user = acl_users.getUser(owner)
-        if user is not None:
-            user = user.__of__(acl_users)
-        else:
-            user = getSecurityManager().getUser()
+        if user is None:
+            raise KeyError, 'Only retrievable users in this site can be made owners.'
+        user = user.__of__(acl_users)
 
-        catalog_tool = getToolByName(self, 'portal_catalog')
         object.changeOwnership(user, recursive)
 
         def fixOwnerRole(object, user_id):
