@@ -1,0 +1,52 @@
+This is a test suite to make sure the Plone site always renders in
+the correct way, so we can browse it, add content and do general
+CMS tasks through the Plone Management Interface (PMI).
+
+Import the user's name and password:
+
+  >>> from Products.PloneTestCase.PloneTestCase import default_user
+  >>> from Products.PloneTestCase.PloneTestCase import default_password
+
+Get the portal and the home paths:
+
+  >>> portal_path = '/'.join(self.portal.getPhysicalPath())
+  >>> folder_path = '/'.join(self.folder.getPhysicalPath())
+
+The first thing to check is the front-page. It must be rendered correctly:
+
+  >>> print http(r"""
+  ... GET %s HTTP/1.1
+  ... Authorization: Basic %s:%s
+  ... """ % (portal_path, default_user, default_password),
+  ...        handle_errors=False)
+  HTTP/1.1 200 OK...
+  <h1 class="documentFirstHeading">Welcome to Plone</h1>...
+  <h2>Quick Start</h2>...
+  <h2>More information</h2>...
+
+So, the user wants to add a new page inside the home folder. When he click
+in the 'Page' item from the drop down menu, he is redirected to the page
+edit form, inside portal_factory:
+
+  >>> add_path = folder_path + '/createObject?type_name=Document'
+  >>> print http(r"""
+  ... GET %s HTTP/1.1
+  ... Authorization: Basic %s:%s
+  ... """ % (add_path, default_user, default_password),
+  ...        handle_errors=False)
+  HTTP/1.1 302 Moved Temporarily...
+  http://.../portal_factory/Document/document.../edit
+
+This new location, the page edit form, should be rendered correctly,
+presenting a title, some fields and a submit button:
+
+  >>> edit_path = folder_path + '/portal_factory/Document/document.1/edit'
+  >>> print http(r"""
+  ... GET %s HTTP/1.1
+  ... Authorization: Basic %s:%s
+  ... """ % (edit_path, default_user, default_password),
+  ...        handle_errors=False)
+  HTTP/1.1 200 OK...
+  <h1> Edit Page </h1>...
+  <input...type="text"...name="title"...value="".../>...
+  <input...type="submit"...name="form_submit"...value="Save".../>...
