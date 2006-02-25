@@ -20,211 +20,245 @@
                 searchstring request/searchstring | nothing;
                 search_results python:searchstring and here.prefs_user_group_search(searchstring, 'groups') or None;
                 batch python:search_results and Batch(search_results, b_size, int(b_start), orphan=1) or None;">
-      <div id="content" class="documentEditable"
-           tal:condition="python:checkPermission('Manage Groups', here)">
-    <!-- simulating views on the groups/user pages until we have real objects. -->
-    <ul class="contentViews">
-      <li class="">
-            <a href=""
-           tal:attributes="href string:$here_url/prefs_users_overview"
-               i18n:translate="label_users">Users</a>
-      </li>
-      <li class="selected">
-            <a href=""
-               tal:attributes="href string:$here_url/$template_id"
-               i18n:translate="label_groups">Groups</a>
-      </li>
-    </ul>
+    <div id="content" class="documentEditable"
+         tal:condition="python:checkPermission('Manage Groups', here)">
 
-    <div class="contentActions">
-      &nbsp;
+        <ul class="contentViews">
+            <li class="">
+                <a href=""
+                   tal:attributes="href string:$here_url/prefs_users_overview"
+                   i18n:translate="label_users">Users</a>
+            </li>
+            <li class="selected">
+                <a href=""
+                   tal:attributes="href string:$here_url/$template_id"
+                   i18n:translate="label_groups">Groups</a>
+            </li>
+        </ul>
+
+        <div class="contentActions">
+          &nbsp;
+        </div>
+
+        <div class="documentContent" id="region-content">
+            <a name="documentContent"></a>
+
+            <div metal:use-macro="here/global_statusmessage/macros/portal_message">
+                Portal status message
+            </div>
+
+            <div class="configlet">
+                <h1 i18n:translate="heading_groups_overview">Groups Overview</h1>
+
+                <a href=""
+                   class="link-parent"
+                   tal:attributes="href string: $portal_url/plone_control_panel"
+                   i18n:translate="label_up_to_plone_setup">
+                  Up to Site Setup
+                </a>
+
+                <p i18n:translate="description_groups_management"
+                   class="discreet">
+                    Groups are logical collections of users, such as
+                    departments and business units. Groups are not directly
+                    related to permissions on a global level, you normally
+                    use Roles for that - and let certain Groups have a
+                    particular role.
+                </p>
+
+                <p i18n:translate="description_pas_listing"
+                   tal:condition="python:not searchstring and not context.acl_users.canListAllGroups()">
+                    Note: Some or all of your PAS groups
+                    source plugins do not allow listing of groups, so you
+                    may not see the groups defined by those plugins unless
+                    doing a specific search.
+                </p>
+
+                <form action=""
+                      name="groups_add"
+                      method="post"
+                      tal:attributes="action template/getId">
+
+                    <input type="hidden" name="form.submitted" value="1" />
+
+                    <input class="standalone add"
+                           tabindex=""
+                           type="submit"
+                           name="form.button.AddGroup"
+                           value="Add New Group"
+                           tal:attributes="tabindex tabindex/next;"
+                           i18n:attributes="value label_add_new_group;"
+                           />
+
+                    <input type="hidden" value="b_start" name="b_start"
+                           tal:attributes="value b_start"/>
+
+                    <table class="listing"
+                           summary="Select roles for each group"
+                           i18n:attributes="summary summary_roles_for_groups;">
+                        <tr>
+                            <th colspan="6"
+                                tal:attributes="colspan python:len(portal_roles)+2">
+
+                                <span tal:omit-tag=""
+                                      i18n:translate="label_group_search">
+                                    Group Search
+                                </span>
+
+                                <input class="quickSearch"
+                                       tabindex=""
+                                       type="text"
+                                       name="searchstring"
+                                       value=""
+                                       tal:attributes="value searchstring;
+                                                       tabindex tabindex/next;"
+                                       />
+
+                                <input type="submit"
+                                       class="searchButton"
+                                       name="form.button.Search"
+                                       value="Search"
+                                       tabindex=""
+                                       i18n:attributes="value label_search;"
+                                       tal:attributes="tabindex tabindex/next;"
+                                       />
+
+                                <input type="hidden"
+                                       name="searchonly"
+                                       value="groups"
+                                       />
+
+                            </th>
+                        </tr>
+
+                        <tal:block tal:condition="python:(searchstring and search_results)">
+                        <tr>
+                            <th rowspan="2"
+                                i18n:translate="listingheader_group_name">
+                                Group name
+                            </th>
+
+                            <th colspan="3"
+                                tal:attributes="colspan python:len(portal_roles)"
+                                i18n:translate="listingheader_roles">
+                                Roles
+                            </th>
+
+                            <th rowspan="2"
+                                i18n:translate="listingheader_remove_group">
+                                Remove Group
+                            </th>
+                        </tr>
+
+                        <tr>
+                            <tal:header repeat="portal_role portal_roles">
+                                <th tal:content="portal_role"
+                                    i18n:translate="">
+                                    Role
+                                </th>
+                            </tal:header>
+                        </tr>
+
+                        <tal:block repeat="this_group batch">
+                        <tr tal:define="oddrow repeat/this_group/odd;
+                                        roles python:['this'];"
+                            tal:attributes="class python:test(oddrow,'odd','even')">
+
+                            <td>
+                                <input type="hidden"
+                                       name=""
+                                       tal:attributes="name string:group_${this_group/getGroupName}:list"
+                                       value=""
+                                       />
+
+                                <a href="#"
+                                   tal:attributes="href python:here_url+'/prefs_group_members?'+ztu.make_query(groupname=this_group.getGroupName());
+                                                   title python:this_group.getProperty('description','')">
+
+                                   <tal:block replace="structure portal/group.gif" />&nbsp;
+                                   <tal:group tal:replace="this_group/getGroupTitleOrName|this_group/getGroupName" />
+                               </a>
+                            </td>
+
+                            <td class="listingCheckbox"
+                                tal:define="group_roles python:this_group.getRoles();"
+                                tal:repeat="portal_role portal_roles">
+
+                                <input type="checkbox"
+                                       class="noborder"
+                                       name="name"
+                                       value="Manager"
+                                       tal:attributes="name string:group_${this_group/getGroupName}:list;
+                                                       value portal_role;
+                                                       checked python:test(portal_role in group_roles, 'checked' ,'');
+                                                       disabled python:this_group.canAssignRole(portal_role) and default or 'disabled'"
+                                       />
+                            </td>
+
+                            <td class="listingCheckbox">
+                                <input type="checkbox"
+                                       class="noborder notify"
+                                       name="delete:list"
+                                       value="value"
+                                       tal:attributes="value this_group/getGroupName;
+                                                       disabled python:this_group.canDelete() and default or 'disabled'"
+                                       />
+                            </td>
+                        </tr>
+                        </tal:block>
+                        </tal:block>
+
+                        <tal:block tal:condition="python:(searchstring and not search_results)">
+                        <tr>
+                            <td i18n:translate="text_nomatches"
+                                style="text-align:center;">
+                                No matches
+                            </td>
+                        </tr>
+                        </tal:block>
+                    </table>
+
+                    <tal:block tal:condition="python:(searchstring and search_results)">
+
+                        <div metal:use-macro="here/batch_macros/macros/navigation" />
+
+                        <input class="context"
+                               tabindex=""
+                               type="submit"
+                               name="form.button.Modify"
+                               value="Apply Changes"
+                               tal:attributes="tabindex tabindex/next;"
+                               i18n:attributes="value label_apply_changes;"
+                               />
+                    </tal:block>
+                </form>
+
+                <h1 i18n:translate="heading_roles_management">Roles Management</h1>
+
+                <p i18n:translate="description_roles_management"
+                   class="discreet">
+                    Roles are collections of permissions. The most common role is
+                    the Member role, which is any member of the portal. You can
+                    define additional roles, but you normally only do that when you
+                    need to create a new discrete unit of permissions that you can
+                    combine to make up a Group.
+                </p>
+
+                <p i18n:translate="description_roles_zmi"
+                   class="discreet">
+                    Currently, if you want to add a new role, you must use the
+                    Zope Management Interface, as adding roles is considered a
+                    development task.
+                </p>
+
+            </div>
+        </div>
     </div>
 
-    <div class="documentContent" id="region-content">
-        <a name="documentContent"></a>
-
-      <div metal:use-macro="here/global_statusmessage/macros/portal_message">
-        Portal status message
-      </div>
-
-      <div class="configlet">
-        <h1 i18n:translate="heading_groups_overview">Groups Overview</h1>
-
-        <a href=""
-           class="link-parent"
-           tal:attributes="href string: $portal_url/plone_control_panel"
-           i18n:translate="label_up_to_plone_setup">
-          Up to Site Setup
-        </a>
-
-        <p i18n:translate="description_groups_management"
-           class="discreet">
-          Groups are logical collections of users, such as
-          departments and business units. Groups are not directly
-          related to permissions on a global level, you normally
-          use Roles for that - and let certain Groups have a
-          particular role.
-        </p>
-
-        <p i18n:translate="description_pas_listing"
-           tal:condition="python:not searchstring and not context.acl_users.canListAllGroups()">
-            Note: Some or all of your PAS groups
-            source plugins do not allow listing of groups, so you
-            may not see the groups defined by those plugins unless
-            doing a specific search.
-        </p>
-
-        <form action=""
-              name="groups_add"
-              method="post"
-              tal:attributes="action template/getId">
-
-            <input type="hidden" name="form.submitted" value="1" />
-
-            <input class="standalone add"
-                     tabindex=""
-                     type="submit"
-                     name="form.button.AddGroup"
-                     value="Add New Group"
-                     tal:attributes="tabindex tabindex/next;"
-                     i18n:attributes="value label_add_new_group;"
-                     />
-
-            <input type="hidden" value="b_start" name="b_start"
-                 tal:attributes="value b_start"/>
-
-            <table class="listing" summary="Select roles for each group"
-                   i18n:attributes="summary summary_roles_for_groups;">
-                <tr>
-                    <th colspan="6"
-                        tal:attributes="colspan python:len(portal_roles)+2">
-                        <span tal:omit-tag="" i18n:translate="label_group_search">Group Search</span>:
-                        <input class="quickSearch"
-                               tabindex=""
-                               type="text"
-                               name="searchstring"
-                               value=""
-                               tal:attributes="value searchstring;
-                                               tabindex tabindex/next;"
-                               />
-
-                        <input type="submit"
-                               class="searchButton"
-                                      name="form.button.Search"
-                                      value="Search"
-                                      tabindex=""
-                                      i18n:attributes="value label_search;"
-                                      tal:attributes="tabindex tabindex/next;" />
-
-                        <input type="hidden" name="searchonly" value="groups" />
-
-                    </th>
-                </tr>
-
-                <tal:block tal:condition="python:(searchstring and search_results)">
-                    <tr>
-                        <th rowspan="2" i18n:translate="listingheader_group_name">Group name</th>
-                        <th colspan="3"
-                            tal:attributes="colspan python:len(portal_roles)"
-                            i18n:translate="listingheader_roles">Roles</th>
-                        <th rowspan="2" i18n:translate="listingheader_remove_group">Remove Group</th>
-                    </tr>
-                    <tr>
-                        <tal:header repeat="portal_role portal_roles">
-                        <th tal:content="portal_role" i18n:translate="">Role</th>
-                        </tal:header>
-                    </tr>
-
-
-                <tal:block repeat="this_group batch">
-                    <tr tal:define="oddrow repeat/this_group/odd;
-                                    roles python:['this'];"
-                        tal:attributes="class python:test(oddrow,'odd','even')">
-                    <td>
-                        <input type="hidden" name="" tal:attributes="name string:group_${this_group/getGroupName}:list" value=""/>
-                        <a href="#"
-                           tal:attributes="href python:here_url+'/prefs_group_members?'+ztu.make_query(groupname=this_group.getGroupName());
-                                           title python:this_group.getProperty('description','')">
-
-                            <tal:block replace="structure portal/group.gif"/>&nbsp;
-                            <tal:group tal:replace="this_group/getGroupTitleOrName|this_group/getGroupName" />
-                        </a>
-
-                    </td>
-
-                    <td class="listingCheckbox"
-                        tal:define="group_roles python:this_group.getRoles();"
-                        tal:repeat="portal_role portal_roles">
-
-                        <input type="checkbox"
-                               class="noborder"
-                               name="name"
-                               value="Manager"
-                               tal:attributes="name string:group_${this_group/getGroupName}:list;
-                                               value portal_role;
-                                               checked python:test(portal_role in group_roles, 'checked' ,'');
-                                               disabled python:this_group.canAssignRole(portal_role) and default or 'disabled'" />
-                    </td>
-
-                    <td class="listingCheckbox">
-                        <input type="checkbox"
-                               class="noborder notify"
-                               name="delete:list"
-                               value="value"
-                               tal:attributes="value this_group/getGroupName;
-                                               disabled python:this_group.canDelete() and default or 'disabled'" />
-                    </td>
-            </tr>
-            </tal:block>
-            </tal:block>
-
-            <tal:block tal:condition="python:(searchstring and not search_results)">
-                <tr>
-                    <td i18n:translate="text_nomatches" style="text-align:center;">No matches</td>
-                </tr>
-            </tal:block>
-            </table>
-
-          <tal:block tal:condition="python:(searchstring and search_results)">
-          <div metal:use-macro="here/batch_macros/macros/navigation" />
-
-            <input class="context"
-                   tabindex=""
-                   type="submit"
-                   name="form.button.Modify"
-                   value="Apply Changes"
-                   tal:attributes="tabindex tabindex/next;"
-                   i18n:attributes="value label_apply_changes;"
-                   />
-          </tal:block>
-        </form>
-
-        <h1 i18n:translate="heading_roles_management">Roles Management</h1>
-
-        <p i18n:translate="description_roles_management"
-           class="discreet">
-          Roles are collections of permissions. The most common role is
-          the Member role, which is any member of the portal. You can
-          define additional roles, but you normally only do that when you
-          need to create a new discrete unit of permissions that you can
-          combine to make up a Group.
-        </p>
-
-        <p i18n:translate="description_roles_zmi"
-           class="discreet">
-        Currently, if you want to add a new role, you must use the
-        Zope Management Interface, as adding roles is considered a
-        development task.
-        </p>
-
-</div>
-
-</div>
-
-      <div id="content" class="documentEditable"
-           tal:condition="python:not checkPermission('Manage Groups', here)">
+    <div id="content" class="documentEditable"
+         tal:condition="python:not checkPermission('Manage Groups', here)">
         <tal:block replace="here/raiseUnauthorized" />
-      </div>
+    </div>
 
 </div>
 

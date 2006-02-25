@@ -15,7 +15,7 @@
                 portal_roles here/getGlobalPortalRoles;
                 searchstring request/searchstring | nothing;">
 
-      <div id="content" class="documentEditable">
+      <div id="content" class="documentEditable"
            tal:condition="python:checkPermission('Manage users', here)">
 
             <h5 class="hiddenStructure">Views</h5>
