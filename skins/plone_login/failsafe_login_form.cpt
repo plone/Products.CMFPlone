@@ -35,11 +35,7 @@ If you do not have an account here, head over to the
                    join python:join+test(join.find('?')==-1, '?', '&amp;')+ztutils.make_query(came_from=came_from);"
        tal:attributes="href join"
        i18n:translate="description_no_account_registration_linktext">
-        registration form
-    </a>
-</span>
-
-to become a member.
+        registration form</a></span>.
 
 </p>
 
@@ -58,8 +54,8 @@ to become a member.
       tal:condition="python:auth">
 
     <fieldset tal:define="ac_name auth/name_cookie|string:__ac_name;
-	                  ac_password auth/pw_cookie|string:__ac_password;
-	                  ac_persist auth/persist_cookie|nothing">
+                          ac_password auth/pw_cookie|string:__ac_password;
+                          ac_persist auth/persist_cookie|nothing">
 
         <legend i18n:translate="legend_account_details">Account details</legend>
 
@@ -84,7 +80,7 @@ to become a member.
 
             <div i18n:translate="help_login_name_caps"
                  class="formHelp">
-    		Login names are case sensitive, make sure the caps lock key is not enabled.
+                Login names are case sensitive, make sure the caps lock key is not enabled.
             </div>
 
             <div tal:content="error">Validation error output</div>
@@ -98,9 +94,9 @@ to become a member.
                                    tabindex tabindex/next;"
                    />
 
-	</div>
+        </div>
 
-	<div class="field"
+        <div class="field"
              tal:define="error python:errors.get(ac_password, None);"
              tal:attributes="class python:test(error, 'field error', 'field')">
 
@@ -130,7 +126,7 @@ to become a member.
                                    id ac_password;
                                    tabindex tabindex/next;"
                    />
-	</div>
+        </div>
 
         <div class="field" tal:condition="ac_persist">
 
@@ -163,7 +159,7 @@ to become a member.
                    value="Log in"
                    i18n:attributes="value label_log_in;"
                    tal:attributes="tabindex tabindex/next;
-	                           onclick string:javascript:return setLoginVars('$ac_name','login_name','$ac_password','pwd_empty','js_enabled','cookies_enabled');"
+                                   onclick string:javascript:return setLoginVars('$ac_name','login_name','$ac_password','pwd_empty','js_enabled','cookies_enabled');"
                    />
 
         </div>

@@ -20,14 +20,14 @@
 
     <p i18n:translate="description_current_owner">
       The current owner is
-      <b tal:content="python:putils.getOwnerName(here)">admin</b>.
+      <b tal:content="python:putils.getOwnerName(here)" i18n:name="name">admin</b>.
     </p>
 
     <fieldset tal:condition="python:test(search_submitted and search_results, True, False)">
         <legend i18n:translate="legend_change_ownership">Change Ownership</legend>
 
-        <tal:block >
-    <form action="change_ownership"
+    <tal:block >
+      <form action="change_ownership"
           name="ownership_form"
           method="post"
           tal:attributes="action string:$here_url/$template_id">
@@ -38,11 +38,11 @@
                 <span class="fieldRequired" title="Required"
                       i18n:attributes="title title_required;"
                       i18n:translate="label_required">(Required)</span>
-        
+
                 <div class="formHelp" i18n:translate="help_change_ownership">
                 Changes the ownership of the current object.
                 </div>
-        
+
               <b i18n:translate="heading_new_owner">New owner</b>
                 <select name="userid">
                 <tal:block tal:repeat="member search_results">
@@ -53,15 +53,15 @@
                    </tal:block>
                 </select>
             </div>
-    
+
             <div class="field" tal:condition="isFolderish">
-    
+
                 <label i18n:translate="label_subobjects">Subobjects</label>
                 
                 <div class="formHelp" i18n:translate="help_subobjects">
                 Changes all the contained objects if selected.
                 </div>
-    
+
                 <div class="field">
                     <input type="checkbox"
                            name="subobjects"
@@ -70,28 +70,26 @@
             </div>
 
             <input type="hidden" name="form.submitted" value="1" />
-    
+
             <div class="formControls">
                     <input class="context"
                            type="submit"
-                           name="save"
-                     name="form.button.Save"
+                           name="form.button.Save"
                            value="Save"
                            i18n:attributes="value label_save;"
                            />
             </div>
-    </form>
-        </tal:block>
-      </fieldset>
+      </form>
+    </tal:block>
+    </fieldset>
 
-      <fieldset>
+    <fieldset>
         <legend i18n:translate="legend_search_owners">Search for possible new owner</legend>
 
         <tal:block tal:condition="python:test(search_submitted and not search_results, True, False)">
           <p i18n:translate="no_members_found">
-            No members were found using your <strong>Search Criteria</strong>
+            No members were found using your search criteria.
           </p>
-          <hr />
         </tal:block>
 
         <form action="change_ownership"
@@ -109,7 +107,7 @@
               i18n:translate="label_required">(Required)</span>
 
             <div class="formHelp" i18n:translate="help_search_new_owner">
-              Search for members.
+              Search for users.
             </div>
             <input type="text"
                    id="search_term"

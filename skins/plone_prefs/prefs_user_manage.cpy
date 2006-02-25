@@ -25,7 +25,7 @@ for user in users:
     member = getMemberById(user.id)
    # If email address was changed, set the new one
     if hasattr(user, 'email'):
-	# If the email field was disabled (ie: non-writeable), the
+        # If the email field was disabled (ie: non-writeable), the
         # property might not exist.
         if user.email != member.getProperty('email'):
             setMemberProperties(member, email=user.email)

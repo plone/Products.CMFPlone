@@ -155,7 +155,7 @@
                             <select name="language"
                                     id="language"
                                     tabindex=""
-                        tal:attributes="tabindex tabindex/next;
+                                    tal:attributes="tabindex tabindex/next;
                                         disabled python:member.canWriteProperty('language') and default or 'disabled'">
                                 <tal:block tal:repeat="lang here/availableLanguages">
                                     <option value="None"
@@ -187,9 +187,8 @@
                                    name="description"
                                    tal:content="description"
                                    rows="5"
-				   tal:attributes="tabindex tabindex/next;
-				   disabled python:member.canWriteProperty('description') and default or 'disabled'
-				   "
+                                   tal:attributes="tabindex tabindex/next;
+                                       disabled python:member.canWriteProperty('description') and default or 'disabled'"
                                    />
 
                         </div>
@@ -214,8 +213,8 @@
                                    tabindex=""
                                    value="member.home_page html_quote"
                                    tal:attributes="value home_page;
-				   tabindex tabindex/next;
-				   disabled python:member.canWriteProperty('home_page') and default or 'disabled'"
+                                   tabindex tabindex/next;
+                                       disabled python:member.canWriteProperty('home_page') and default or 'disabled'"
                                    />
 
                         </div>
@@ -294,7 +293,7 @@
                             <label for="cb_listed" i18n:translate="label_listed_status">Listed in searches</label>
 
                             <div class="formHelp" i18n:translate="help_listed_search">
-                Determines if your user name is listed in member searches done on this site.
+                            Determines if your user name is listed in user searches done on this site.
                             </div>
 
                         </div>
@@ -339,7 +338,7 @@
                             <select name="portal_skin"
                                     id="portal_skin"
                                     tabindex=""
-                        tal:attributes="tabindex tabindex/next;
+                                    tal:attributes="tabindex tabindex/next;
                                         disabled python:member.canWriteProperty('portal_skin') and default or 'disabled'"
                                     >
                             <option value="#"

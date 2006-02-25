@@ -13,7 +13,7 @@ from Products.CMFCore.utils import getToolByName
 try:
     context.acl_users.logout(context.REQUEST)
 except:
-    pass  # we expect Unauthorized
+    pass  # XXX we expect Unauthorized, but why do we do a bare except then?
 
 REQUEST = context.REQUEST
 

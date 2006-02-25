@@ -55,9 +55,9 @@ If you do not have an account here, head over to the
       tal:condition="python:auth">
 
     <fieldset tal:define="ac_name auth/name_cookie|string:__ac_name;
-	                  ac_password auth/pw_cookie|string:__ac_password;
-	                  ac_persist auth/persist_cookie|nothing;
-			  login_name python:request.get('login_name', request.get(ac_name, ''));">
+                          ac_password auth/pw_cookie|string:__ac_password;
+                          ac_persist auth/persist_cookie|nothing;
+                          login_name python:request.get('login_name', request.get(ac_name, ''));">
 
         <legend i18n:translate="legend_account_details">Account details</legend>
 

@@ -14,16 +14,19 @@
                 b_size request/b_size | python:20;
                 portal_roles here/getGlobalPortalRoles;
                 searchstring request/searchstring | nothing;">
-        
+
       <div id="content" class="documentEditable">
-    <!-- simulating views on the groups/user pages until we have real objects. -->
+           tal:condition="python:checkPermission('Manage users', here)">
+
+            <h5 class="hiddenStructure">Views</h5>
+
             <ul class="contentViews">
               <li class="selected">
                 <a href=""
                    tal:attributes="href template_id"
                    i18n:translate="label_users">Users</a>
               </li>
-      <li class="">
+              <li>
                 <a href="prefs_groups_overview"
                    i18n:translate="label_groups">Groups</a>
               </li>
@@ -63,7 +66,7 @@
         </p>
         <p i18n:translate="description_pas_listing"
            tal:condition="nothing | python:not searchstring and not context.acl_users.canListAllUsers()">
-          <strong>Note:</strong> Some or all of your PAS user source
+          Note: Some or all of your PAS user source
           plugins do not allow listing of users, so you may not see
           the users defined by those plugins unless doing a specific
           search.
@@ -98,14 +101,14 @@
                 <tr>
           <th colspan="6" tal:attributes="colspan python:len(portal_roles)+4">
             <span tal:omit-tag="" i18n:translate="label_user_search">User Search</span>:
-            <input tabindex=""
-                   class="quickSearch"
-                           type="text"
-                           name="searchstring"
-                           value=""
-                           tal:attributes="value searchstring;
-                                           tabindex tabindex/next;"
-              />
+                <input tabindex=""
+                       class="quickSearch"
+                       type="text"
+                       name="searchstring"
+                       value=""
+                       tal:attributes="value searchstring;
+                                       tabindex tabindex/next;"
+                  />
 
             <input type="submit"
                            class="searchButton"
@@ -200,7 +203,9 @@
                     <td tal:condition="not:searchstring"
                         class="discreet"
                         i18n:translate="text_no_user_searchstring"
-                        style="text-align:center; font-size: 100%;">Enter a username to search for</td>
+                        style="text-align:center; font-size: 100%;">
+                        Enter a username to search for
+                    </td>
                 </tr>
           </table>
 
