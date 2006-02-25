@@ -19,6 +19,9 @@ def test_suite():
         FunctionalDocFileSuite('webdav_index_html_put.txt',
                                 package='Products.CMFPlone.tests',
                                 test_class=PloneTestCase.FunctionalTestCase),
+        FunctionalDocFileSuite('rendering.txt',
+                                package='Products.CMFPlone.tests',
+                                test_class=PloneTestCase.FunctionalTestCase),
         FunctionalDocFileSuite('messages.txt',
                                 package='Products.CMFPlone.tests'),
         ))
