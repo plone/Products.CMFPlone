@@ -15,7 +15,7 @@
      real objects. -->
 
 <ul id="contentTabs">
-  <li class="">
+  <li>
     <a href="prefs_workflow_basic"
        i18n:translate="label_workflow_default">Default Workflow Configuration</a>
   </li>

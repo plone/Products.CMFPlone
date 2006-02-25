@@ -20,7 +20,7 @@
       <div id="content" class="documentEditable">
     <!-- simulating views on the groups/user pages until we have real objects. -->
     <ul class="contentViews">
-      <li class="">
+      <li>
             <a href=""
            tal:attributes="href string: prefs_user_details?userid=${userid}"
            i18n:translate="label_user_properties">User Properties</a>

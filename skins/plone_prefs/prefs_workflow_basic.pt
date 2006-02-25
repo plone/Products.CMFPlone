@@ -20,7 +20,7 @@
         Default Workflow Configuration
     </a>
   </li>
-  <li class="">
+  <li>
     <a href="prefs_workflow_advanced"
        i18n:translate="label_workflow_advanced">Advanced</a>
   </li>

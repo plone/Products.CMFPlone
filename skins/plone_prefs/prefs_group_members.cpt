@@ -34,7 +34,7 @@
            tal:attributes="href string:$here_url/${template_id}?groupname=${groupname}"
            i18n:translate="label_group_members">Group Members</a>
       </li>
-      <li class="">
+      <li>
             <a href=""
            tal:attributes="href string:${here_url}/prefs_group_details?groupname=${groupname}"
                i18n:translate="label_group_properties">Group Properties</a>

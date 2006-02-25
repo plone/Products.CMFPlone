@@ -24,7 +24,7 @@
          tal:condition="python:checkPermission('Manage Groups', here)">
 
         <ul class="contentViews">
-            <li class="">
+            <li>
                 <a href=""
                    tal:attributes="href string:$here_url/prefs_users_overview"
                    i18n:translate="label_users">Users</a>

@@ -23,7 +23,7 @@
       <div id="content" class="documentEditable">
     <!-- simulating views on the groups/user pages until we have real objects. -->
     <ul class="contentViews">
-      <li class="">
+      <li>
             <a href=""
                tal:attributes="href string:$here_url/prefs_group_members?groupname=${groupname}"
                i18n:translate="label_group_members">Group Members</a>
