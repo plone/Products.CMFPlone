@@ -667,7 +667,8 @@ class TestPortalBugs(PloneTestCase.PloneTestCase):
     def testExportImportLosesTextIndexes(self):
         # Importing a portal .zexp loses text indexes? (#4803)
         self.loginPortalOwner()
-        tempname = mkstemp('.zexp')[1]
+        tempfile = mkstemp('.zexp')
+        tempname = tempfile[1]
         try:
             # Export the portal
             self.portal._p_jar.exportFile(self.portal._p_oid, tempname)
@@ -682,6 +683,7 @@ class TestPortalBugs(PloneTestCase.PloneTestCase):
                 except KeyError:
                     self.fail('Index %s missing after export/import!' % index)
         finally:
+            os.close(tempfile[0])
             os.remove(tempname)
 
 
