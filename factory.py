@@ -11,9 +11,6 @@ _TOOL_ID = 'portal_setup'
 def addPloneSiteForm(dispatcher):
     """
     Wrap the PTF in 'dispatcher'.
-
-    XXX improve addSite.zpt to handle alternate base and extension policies,
-        provided by this method.  (need to only show Plone-specific ones.)
     """
     wrapped = PageTemplateFile('addSite', WWW_DIR).__of__(dispatcher)
     return wrapped()

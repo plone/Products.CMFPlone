@@ -10,7 +10,7 @@ import os, sys
 if __name__ == '__main__':
     execfile(os.path.join(sys.path[0], 'framework.py'))
 
-# XXX: Suppress DeprecationWarnings
+# Suppress DeprecationWarnings, we really don't want any in these tests
 import warnings
 warnings.simplefilter('ignore', DeprecationWarning, append=1)
 

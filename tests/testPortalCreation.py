@@ -422,7 +422,6 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
 
     def testSiteActions(self):
         self.setRoles(['Manager', 'Member'])
-        # XXX: Currently fails due to possible bug in CMFCore
         atool = self.actions
         self.failIf(atool.getActionObject('site_actions/sitemap') is None)
         self.failIf(atool.getActionObject('site_actions/contact') is None)

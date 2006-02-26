@@ -573,7 +573,6 @@ class TestDefaultUserAndPasswordNotChanged(PloneTestCase.PloneTestCase):
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
-    # XXX This suite does something nasty so that other tests fail for no reason
     suite.addTest(makeSuite(TestMembershipTool))
     suite.addTest(makeSuite(TestCreateMemberarea))
     suite.addTest(makeSuite(TestMemberareaSetup))

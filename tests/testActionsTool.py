@@ -39,7 +39,6 @@ class TestActionsTool(PloneTestCase.PloneTestCase):
 
     def testAddAction(self):
         # addAction should work even though PloneTestCase patches _cloneActions
-        # XXX Is this still true? [bmh]
         action_infos = self.actions.listActions()
         length = len(action_infos)
         self.actions.addAction(id='foo',
