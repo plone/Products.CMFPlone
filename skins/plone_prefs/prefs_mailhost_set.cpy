@@ -13,12 +13,7 @@ from Products.CMFPlone import PloneMessageFactory as _
 REQUEST=context.REQUEST
 
 mh = context.MailHost
-
-# BBB: Zope 2.7 MailHost objects have no user/password
-try:
-    mh.manage_makeChanges('Plone Mail Host', smtp_server, smtp_port, smtp_userid, smtp_pass)
-except TypeError:
-    mh.manage_makeChanges('Plone Mail Host', smtp_server, smtp_port)
+mh.manage_makeChanges('Plone Mail Host', smtp_server, smtp_port, smtp_userid, smtp_pass)
 
 context.plone_utils.addPortalMessage(_(u'Mail Host Updated'))
 return state

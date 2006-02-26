@@ -280,8 +280,6 @@ class CatalogTool(PloneBaseTool, BaseTool):
     security.declarePublic('enumerateColumns')
     def enumerateColumns(self):
         """Return a sequence of schema names to be cached.
-
-        Creator is deprecated and may go away, use listCreators!
         """
         return ( 'Subject'
                , 'Title'
@@ -303,7 +301,7 @@ class CatalogTool(PloneBaseTool, BaseTool):
                , 'getId'
                , 'portal_type'
                # plone metadata
-               , 'id', # BBB to be removed in Plone 2.5
+               , 'id', # BBB to be removed in Plone 3.0
                'getObjSize',
                'exclude_from_nav',
                )
@@ -403,17 +401,8 @@ class CatalogTool(PloneBaseTool, BaseTool):
             vars = {}
         portal = aq_parent(aq_inner(self))
         w = ExtensibleIndexableObjectWrapper(vars, object, portal=portal)
-        try:
-            # pghandler argument got added in Zope 2.8
-            ZCatalog.catalog_object(self, w, uid, idxs,
-                                    update_metadata, pghandler=pghandler)
-        except TypeError:
-            try:
-                # update_metadata argument got added somewhere into
-                # the Zope 2.6 line (?)
-                ZCatalog.catalog_object(self, w, uid, idxs, update_metadata)
-            except TypeError:
-                ZCatalog.catalog_object(self, w, uid, idxs)
+        ZCatalog.catalog_object(self, w, uid, idxs,
+                                update_metadata, pghandler=pghandler)
 
     security.declareProtected(SearchZCatalog, 'searchResults')
     def searchResults(self, REQUEST=None, **kw):
