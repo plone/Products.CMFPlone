@@ -6,7 +6,6 @@ from Acquisition import aq_base, aq_inner, aq_parent
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import utils
 from Products.CMFPlone.browser.interfaces import INavigationPortlet
-from Products.CMFPlone.browser.interfaces import INavigationStructure
 
 
 class NavigationPortlet(utils.BrowserView):

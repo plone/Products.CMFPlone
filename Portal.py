@@ -1,9 +1,6 @@
-from __future__ import nested_scopes
 import os
 
-from Products.CMFPlone import cmfplone_globals
 from Products.CMFPlone import custom_policies
-from Products.CMFPlone import ToolNames
 from Products.CMFDefault.Portal import CMFSite
 
 def listPolicies(creation=1):
@@ -21,12 +18,10 @@ def listPolicies(creation=1):
 def addPolicy(label, klass):
     custom_policies[label]=klass
 
-from Products.CMFCore.permissions import AccessContentsInformation, ListFolderContents, ManageProperties, View
-from Products.CMFCore.TypesTool import FactoryTypeInformation
-from Products.CMFCore.DirectoryView import addDirectoryViews
+from Products.CMFCore.permissions import AccessContentsInformation
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.interfaces import ISiteRoot
-from Products.CMFDefault import Portal, DublinCore
+from Products.CMFDefault import DublinCore
 from Products.CMFDynamicViewFTI.browserdefault import BrowserDefaultMixin
 from Products.CMFPlone.PloneFolder import OrderedContainer
 from Products.CMFPlone.utils import classImplements
@@ -38,7 +33,7 @@ from ComputedAttribute import ComputedAttribute
 from webdav.NullResource import NullResource
 from Products.CMFPlone.PloneFolder import ReplaceableWrapper
 from Products.CMFPlone.utils import log_exc
-from Products.CMFPlone.utils import PACKAGE_HOME, WWW_DIR
+from Products.CMFPlone.utils import WWW_DIR
 
 default_frontpage="Unable to load front-page skeleton file"
 try:

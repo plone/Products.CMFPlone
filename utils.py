@@ -1,9 +1,8 @@
 import re
 from types import ClassType
-from os.path import join, abspath, dirname, split
+from os.path import join, abspath, split
 
 import zope.interface
-from zope.interface import providedBy
 from zope.interface import implementedBy
 from zope.component import getView
 from zope.component.interfaces import ComponentLookupError
@@ -16,10 +15,6 @@ from Products.Five import BrowserView as BaseView
 from Products.Five.bridge import fromZ2Interface
 from Products.CMFCore.utils import ToolInit as CMFCoreToolInit
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.browser.interfaces import IDefaultPage
-from Products.CMFPlone.browser.interfaces import INavigationBreadcrumbs
-from Products.CMFPlone.browser.interfaces import INavigationTabs
-from Products.CMFPlone.browser.interfaces import INavigationTree
 from Products.CMFPlone.UnicodeNormalizer import normalizeUnicode
 from Products.CMFPlone.interfaces.Translatable import ITranslatable
 from Products.CMFPlone import PloneMessageFactory as _

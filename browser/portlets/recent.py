@@ -2,7 +2,6 @@ from Products.CMFPlone.browser.interfaces import IRecentPortlet
 from Products.CMFCore.utils import getToolByName
 
 from zope.interface import implements
-from zope.component import getView
 from Products.CMFPlone import utils
 
 

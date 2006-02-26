@@ -8,7 +8,6 @@ from Products.CMFPlone.utils import log_exc
 import transaction
 from Products.CMFPlone import utils
 
-from AccessControl import getSecurityManager
 from Acquisition import aq_base, aq_inner, aq_parent
 
 from ComputedAttribute import ComputedAttribute

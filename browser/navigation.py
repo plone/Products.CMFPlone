@@ -6,7 +6,6 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import utils
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.browser.interfaces import IDefaultPage
-from Products.CMFPlone.browser.interfaces import INavigationRoot
 from Products.CMFPlone.browser.interfaces import INavigationBreadcrumbs
 from Products.CMFPlone.browser.interfaces import INavigationTabs
 from Products.CMFPlone.browser.interfaces import INavigationTree

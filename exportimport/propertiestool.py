@@ -3,14 +3,11 @@
 $Id:$
 """
 
-from xml.dom.minidom import parseString
-
 from zope.app import zapi
 from Products.CMFCore.utils import getToolByName
 from Products.GenericSetup.interfaces import IBody
 from Products.GenericSetup.interfaces import INode
 from Products.GenericSetup.utils import XMLAdapterBase
-from Products.GenericSetup.utils import NodeAdapterBase
 from Products.GenericSetup.utils import ObjectManagerHelpers
 from Products.GenericSetup.utils import PropertyManagerHelpers
 from Products.GenericSetup.utils import I18NURI

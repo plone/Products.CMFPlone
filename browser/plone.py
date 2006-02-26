@@ -1,23 +1,15 @@
 from Products.CMFPlone.browser.interfaces import IPlone
-from Products.CMFPlone.browser.interfaces import IDefaultPage
 from Products.CMFPlone.interfaces.NonStructuralFolder import INonStructuralFolder
 from Products.CMFPlone import utils
 from Products.CMFCore.utils import getToolByName
 
 from zope.interface import implements
 from zope.component import getView
-from Products.Five import BrowserView
 from Products import CMFPlone
 import ZTUtils
 import sys
 
-from Acquisition import aq_base, aq_inner, aq_parent
-
-from AccessControl import ClassSecurityInfo
-from Globals import InitializeClass
-
-from Products.PageTemplates.Expressions import getEngine
-from ZPublisher.BeforeTraverse import registerBeforeTraverse
+from Acquisition import aq_inner, aq_parent
 
 _marker = []
 

@@ -37,7 +37,7 @@ def setupPrivateFolderWorkflow(wf):
     setupFolderWorkflow(wf)
     wf.states.visible.permission_roles[View] = ('Member', 'Reviewer', 'Manager')
     wf.states.published.permission_roles[ListFolderContents] = ('Authenticated', 'Manager')
-    wf.states.published.permission_roles[permissions.View] = ('Member', 'Reviewer', 'Manager')
+    wf.states.published.permission_roles[View] = ('Member', 'Reviewer', 'Manager')
     wf.states.setInitialState(id='private')
 
     wf.states.addState('public')

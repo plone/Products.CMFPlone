@@ -3,12 +3,9 @@
 $Id:$
 """
 
-from xml.dom.minidom import parseString
-
 from zope.app import zapi
 from Products.CMFCore.utils import getToolByName
 from Products.GenericSetup.interfaces import IBody
-from Products.GenericSetup.utils import PrettyDocument
 
 _FILENAME = 'memberdata_properties.xml'
 

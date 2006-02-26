@@ -16,7 +16,6 @@ from webdav.NullResource import NullResource
 from webdav.WriteLockInterface import WriteLockInterface
 
 from Products.CMFCore.utils import getToolByName
-from Products.CMFCore.utils import getActionContext
 from Products.CMFCore.CMFCatalogAware import CMFCatalogAware
 from Products.CMFCore.PortalFolder import PortalFolderBase
 from Products.CMFCore.permissions import AccessContentsInformation, \
@@ -285,6 +284,7 @@ class BasePloneFolder(CMFCatalogAware, PortalFolderBase, DefaultDublinCoreImpl):
         method_id = ti and ti.queryMethodId('(Default)', context=self)
         if method_id:
             method = getattr(self, method_id)
+            # XXX view is not defined!
             if getattr(aq_base(view), 'isDocTemp', 0):
                 return method(self, self.REQUEST, self.REQUEST['RESPONSE'])
             else:

@@ -1,8 +1,6 @@
 from Acquisition import aq_parent, aq_inner
 from Products.CMFCore.ActionProviderBase import ActionProviderBase
 from Products.CMFCore.permissions import ManagePortal
-from Products.CMFCore.interfaces.portal_properties \
-     import portal_properties as IBasePortalProperties
 from Products.CMFDefault.PropertiesTool import PropertiesTool as BaseTool
 from Products.CMFPlone import ToolNames
 
@@ -17,7 +15,6 @@ from AccessControl import ClassSecurityInfo
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFPlone.interfaces import IPropertiesTool, ISimpleItemWithProperties
 from Products.CMFPlone.interfaces.PropertiesTool import IPropertiesTool as z2IPropertiesTool
-from Products.CMFPlone.utils import classImplements, classDoesNotImplement
 
 class PropertiesTool(PloneBaseTool, Folder, BaseTool):
 

@@ -3,7 +3,6 @@
 #in the config file
 
 import zLOG
-import os
 import sys
 
 MINIMUM_PYTHON_VER = (2, 3, 4)

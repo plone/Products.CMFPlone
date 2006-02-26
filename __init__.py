@@ -189,7 +189,6 @@ def initialize(context):
 
     ToolInit('Plone Tool'
              , tools=tools
-             , product_name='CMFPlone'
              , icon='tool.gif'
              ).initialize( context )
 

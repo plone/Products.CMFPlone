@@ -1,5 +1,4 @@
 import os
-import string
 from Acquisition import aq_base
 
 from Products.CMFPlone.migrations.migration_util import installOrReinstallProduct

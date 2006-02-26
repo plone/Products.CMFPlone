@@ -2,6 +2,7 @@
 CMFPlone setup handlers.
 """
 
+from Acquisition import aq_base
 from Products.StandardCacheManagers.AcceleratedHTTPCacheManager import \
      AcceleratedHTTPCacheManager
 from Products.StandardCacheManagers.RAMCacheManager import \
@@ -53,6 +54,7 @@ class PloneGenerator:
                 p._setObject(mgr_id, mgr_class(mgr_id))
             else:
                 unwrapped = aq_base(existing)
+                # XXX tool_class is undefined
                 if not isinstance(unwrapped, tool_class):
                     p._delObject(mgr_id)
                     p._setObject(mgr_id, mgr_class(mgr_id))
