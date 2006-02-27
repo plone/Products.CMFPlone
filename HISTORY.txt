@@ -21,6 +21,12 @@ Plone 2.5 (unreleased)
 
 	Alpha 2 - released February 23, 2006
 
+    - Major refactoring of the entire PloneGenerator / portal creation
+      framework; now using GenericSetup with XML-based setup profile to
+      specify the initial site configuration state. (see
+      CMFPlone/profiles/default directory)
+      [rafrombrc]
+
     - Added ignoredSkinLayers option to zcheck.py to filter out certain folders.
       [hannosch]
 
