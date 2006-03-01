@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1.3 - Tomahawk - Unreleased
 
+    - Use fullname but not username in viewThreadsAtBottom.
+      [panjunyong]
+
     - Adding relaxed mode to PloneTool.normalizeString(). This will be used in
       ATContentTypes to avoid stripping too much from valid filenames being
       uploaded.

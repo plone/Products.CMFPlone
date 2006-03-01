@@ -50,9 +50,12 @@
                         </a>
                     </h3>
                     <div class="documentByLine"
-                         tal:define="anonymous_creator python:reply.Creator()=='Anonymous User'">
+                         tal:define="creator reply/Creator;
+                                     anonymous_creator python:creator=='Anonymous User';
+                                     mi python:not anonymous_creator and mtool.getMemberInfo(creator);
+                                     fullname python: mi and mi['fullname'] or creator;" >
                         <span i18n:translate="label_comment_by">Posted by</span>
-                        <span tal:content="reply/Creator"
+                        <span tal:content="fullname"
                               tal:condition="not:anonymous_creator">Poster Name</span>
                         <span i18n:translate="label_anonymous_user"
                               tal:condition="anonymous_creator">Anonymous User</span>
