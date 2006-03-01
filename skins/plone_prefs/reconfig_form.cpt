@@ -60,7 +60,7 @@
             </div>
 
             <div class="field"
-                 tal:define="description request/description | site_properties/description;
+                 tal:define="description request/description | portal/description;
                              error errors/description | nothing;">
 
                 <label i18n:translate="label_portal_description">Portal description</label>
@@ -79,7 +79,7 @@
             </div>
 
             <div class="field"
-                 tal:define="email_from_name request/email_from_name|site_properties/email_from_name;
+                 tal:define="email_from_name request/email_from_name|portal/email_from_name;
                              error errors/email_from_name | nothing;">
 
                 <label i18n:translate="label_portal_from_name">Site 'From' name</label>
@@ -100,7 +100,7 @@
             </div>
 
             <div class="field"
-                 tal:define="email_from_address request/email_from_address|site_properties/email_from_address;
+                 tal:define="email_from_address request/email_from_address|portal/email_from_address;
                              error errors/email_from_address | nothing;"
                  tal:attributes="class python:test(error, 'field error', 'field')">
 
@@ -149,8 +149,8 @@
             </div>
 
             <div class="field"
-                 tal:define="validateChecked python:site_properties.validate_email;
-                             allowEnterChecked python:not site_properties.validate_email;
+                 tal:define="validateChecked portal/validate_email;
+                             allowEnterChecked not:validateChecked;
                              tabindex tabindex/next;">
 
                 <label i18n:translate="label_password_policy">Password policy</label>

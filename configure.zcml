@@ -22,4 +22,8 @@
       class="OFS.SimpleItem.SimpleItem"
       />
 
+  <five:traversable
+      class="OFS.Folder.Folder"
+      />
+
 </configure>
