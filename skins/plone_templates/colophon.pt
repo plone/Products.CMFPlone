@@ -22,10 +22,10 @@
 
       <a href="http://plone.org"
          class="colophonIcon colophonIconPlone"
-         title="This Plone site was built using Plone, the Open Source Content Management System. Click for more information."
+         title="This Plone site was built using Plone CMS, the Open Source Content Management System. Click for more information."
          i18n:attributes="title title_built_with_plone;"
          i18n:translate="label_powered_by_plone">
-        Powered by Plone, the Open Source Content Management System
+        Powered by Plone CMS, the Open Source Content Management System
       </a>
 
       <metal:slot define-slot="colophon" />

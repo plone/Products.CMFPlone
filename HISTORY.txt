@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1.3 - Tomahawk - Unreleased
 
+    - Removed colophon.pt from the tableless skin - there's no need for it
+      to have a separate file for this.
+      [limi]
+
     - Use fullname but not username in viewThreadsAtBottom.
       [panjunyong]
 
