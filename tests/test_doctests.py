@@ -17,6 +17,8 @@ def test_suite():
                                 test_class=PloneTestCase.FunctionalTestCase),
         FunctionalDocTestSuite('Products.CMFPlone.TranslationServiceTool',
                                 test_class=PloneTestCase.FunctionalTestCase),
+        FunctionalDocTestSuite('Products.CMFPlone.CalendarTool',
+                                test_class=PloneTestCase.FunctionalTestCase),
         FunctionalDocFileSuite('webdav_index_html_put.txt',
                                 package='Products.CMFPlone.tests',
                                 test_class=PloneTestCase.FunctionalTestCase),
