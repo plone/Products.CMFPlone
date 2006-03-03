@@ -13,6 +13,8 @@ from Products.CMFPlone.tests import PloneTestCase
 
 def test_suite():
     return unittest.TestSuite((
+        FunctionalDocTestSuite('Products.CMFPlone.CatalogTool',
+                                test_class=PloneTestCase.FunctionalTestCase),
         FunctionalDocTestSuite('Products.CMFPlone.PloneTool',
                                 test_class=PloneTestCase.FunctionalTestCase),
         FunctionalDocTestSuite('Products.CMFPlone.TranslationServiceTool',

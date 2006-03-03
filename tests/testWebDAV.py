@@ -426,11 +426,6 @@ def test_suite():
     ##suite.addTest(makeSuite(TestDAVMetadata))
     suite.addTest(makeSuite(TestPUTObjects))
     suite.addTest(makeSuite(TestDAVOperations))
-
-    # This, ladies and gentlemen, is a functional *doctest*:
-    suite.addTest(FunctionalDocFileSuite('dav/index_html_put.txt',
-                                package='Products.CMFPlone.tests',
-                                test_class=PloneTestCase.FunctionalTestCase))
     return suite
 
 if __name__ == '__main__':
