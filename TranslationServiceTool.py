@@ -73,9 +73,24 @@ class TranslationServiceTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     security.declarePublic('day_msgid')
     def day_msgid(self, number, format=''):
-        # return the msgid which can be passed to translation service
-        # for l10n of weekday names
-        # format is either '', 'a', 's'
+        """ Returns the msgid which can be passed to the translation service for
+        l10n of weekday names. Format is either '', 'a' or 's'.
+
+        >>> ttool = self.portal.translation_service
+
+        >>> ttool.day_msgid(0)
+        'weekday_sun'
+
+        >>> ttool.day_msgid(6)
+        'weekday_sat'
+
+        >>> ttool.day_msgid(0, format='a')
+        'weekday_sun_abbr'
+
+        >>> ttool.day_msgid(3, format='s')
+        'weekday_wed_short'
+        """
+        # 
         if format == 's':
             # short format
             method = weekdayname_msgid_short
@@ -89,19 +104,56 @@ class TranslationServiceTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     security.declarePublic('month_msgid')
     def month_msgid(self, number, format=''):
-        # return the msgid which can be passed to translation service
-        # for l10n of month names
-        # format is either '' or 'a' (long or abbreviation)
+        """ Returns the msgid which can be passed to the translation service for
+        l10n of month names. Format is either '' or 'a' (long or abbreviation).
+
+        >>> ttool = self.portal.translation_service
+
+        >>> ttool.month_msgid(1)
+        'month_jan'
+
+        >>> ttool.month_msgid(12)
+        'month_dec'
+
+        >>> ttool.month_msgid(6, format='a')
+        'month_jun_abbr'
+        """
         return 'a' == format and monthname_msgid_abbr(number) or monthname_msgid(number)
 
     security.declarePublic('monthname_english')
     def month_english(self, number, format=''):
-        # returns the english name of month with number
+        """ Returns the english name of month by number. Format is either '' or
+        'a' (long or abbreviation).
+
+        >>> ttool = self.portal.translation_service
+
+        >>> ttool.month_english(1)
+        'January'
+
+        >>> ttool.month_english(1, 'a')
+        'Jan'
+        """
         return monthname_english(number, format=format)
 
     security.declarePublic('weekdayname_english')
     def weekday_english(self, number, format=''):
-        # returns the english name of week with number
+        """ Returns the english name of a week by number. Format is either '',
+        'a' or 'p'.
+
+        >>> ttool = self.portal.translation_service
+
+        >>> ttool.weekday_english(0)
+        'Sunday'
+
+        >>> ttool.weekday_english(6)
+        'Saturday'
+
+        >>> ttool.weekday_english(0, format='a')
+        'Sun'
+
+        >>> ttool.weekday_english(3, format='p')
+        'Wed.'
+        """
         return weekdayname_english(number, format=format)
 
 InitializeClass(TranslationServiceTool)

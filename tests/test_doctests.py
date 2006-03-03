@@ -15,6 +15,8 @@ def test_suite():
     return unittest.TestSuite((
         FunctionalDocTestSuite('Products.CMFPlone.PloneTool',
                                 test_class=PloneTestCase.FunctionalTestCase),
+        FunctionalDocTestSuite('Products.CMFPlone.TranslationServiceTool',
+                                test_class=PloneTestCase.FunctionalTestCase),
         FunctionalDocFileSuite('webdav_index_html_put.txt',
                                 package='Products.CMFPlone.tests',
                                 test_class=PloneTestCase.FunctionalTestCase),
