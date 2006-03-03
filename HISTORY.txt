@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1.3 - Tomahawk - Unreleased
 
+    - Fixed exception in getDefaultPage when the LinguaPlone-aware content
+      type is not associated with a workflow chain.
+      [panjunyong]
+
     - Added Turkish map for UnicodeNormalizer and consolidated the mappings.
       This fixes http://dev.plone.org/plone/ticket/5292.
       [hannosch]

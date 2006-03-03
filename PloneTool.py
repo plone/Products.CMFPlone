@@ -900,7 +900,8 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                 if pageobj is not None and ITranslatable.isImplementedBy(pageobj):
                     translation = pageobj.getTranslation()
                     if translation is not None and \
-                       wftool.getInfoFor(pageobj, 'review_state') == wftool.getInfoFor(translation, 'review_state'):
+                       (not wftool.getChainFor(pageobj) or\
+                           wftool.getInfoFor(pageobj, 'review_state') == wftool.getInfoFor(translation, 'review_state')):
                         if ids.has_key(translation.getId()):
                             return obj, [translation.getId()]
                         else:
