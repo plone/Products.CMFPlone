@@ -418,7 +418,6 @@ class TestDAVOperations(PloneTestCase.FunctionalTestCase):
 
 def test_suite():
     from unittest import TestSuite, makeSuite
-    from Testing.ZopeTestCase import FunctionalDocFileSuite
 
     suite = TestSuite()
     suite.addTest(makeSuite(TestDAVProperties))
