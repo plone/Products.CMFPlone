@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 2.1.3 - Tomahawk - Unreleased
 
+    - Standardized how description fields are rendered in html among the 
+      various templates. document_view used a <p> while folder_listing
+      used a <div> etc. They all use <p> now and omit the field completely
+      when there is no description (all similar to document_view).
+      [ender]
+
     - Re-added support for topLevel and bottomLevel navtree propreties, as well
       as the new name (of the navtree portlet) and root (of site navigation)
       properties, and added the Sprout navtree preference panel to let users

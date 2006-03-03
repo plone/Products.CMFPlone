@@ -25,10 +25,12 @@
         Up one level
         </a>
 
-        <div class="documentDescription" tal:content="here/Description">
-            description
-        </div>
-
+        <p class="documentDescription"
+           tal:content="here/Description"
+           tal:condition="here/Description">
+            Description
+        </p>
+        
         <metal:listingmacro define-macro="listing">
         <tal:foldercontents define="contentFilter contentFilter|request/contentFilter|nothing;
                             limit_display limit_display|request/limit_display|nothing;
