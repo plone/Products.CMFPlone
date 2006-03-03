@@ -84,6 +84,16 @@ Plone 2.5 (unreleased)
 
 Plone 2.1.3 - Tomahawk - Unreleased
 
+    - Added some missing .metadata file for images.
+      [panjunyong]
+
+    - Removed colophon.pt from the tableless skin - there's no need for it
+      to have a separate file for this.
+      [limi]
+
+    - Use fullname but not username in viewThreadsAtBottom.
+      [panjunyong]
+
     - Adding relaxed mode to PloneTool.normalizeString(). This will be used in
       ATContentTypes to avoid stripping too much from valid filenames being
       uploaded.
