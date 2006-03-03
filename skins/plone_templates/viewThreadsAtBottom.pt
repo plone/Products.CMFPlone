@@ -4,13 +4,15 @@
 <body>
 
 <div metal:define-macro="discussionView"
-     class="discussion"
+     tal:omit-tag=""
      tal:define="userHasReplyPermission python:checkPermission('Reply to item', here);
                  portal_discussion portal/portal_discussion;
                  isDiscussionAllowed python:portal_discussion.isDiscussionAllowedFor(here);
                  ">
-    <tal:allowed condition="isViewTemplate">
-        <tal:comments>
+                 
+    <tal:allowed condition="isViewTemplate" tal:define="replies python:here.getReplyReplies(here)">
+        <div class="discussion"
+             tal:condition="python:replies or (userHasReplyPermission and isDiscussionAllowed) or (isAnon and not userHasReplyPermission and isDiscussionAllowed)">
             <form name="reply"
                   action=""
                   method="post"
@@ -37,7 +39,7 @@
                        />
             </form>
 
-            <tal:getreplies repeat="reply_dict python:here.getReplyReplies(here)">
+            <tal:getreplies repeat="reply_dict replies">
                 <div class="comment" style=""
                     tal:define="indent python:reply_dict['depth']*2;
                                 reply python:reply_dict['object']"
@@ -45,7 +47,6 @@
                     
                     <h3>
                         <a name="comments" tal:attributes="name reply/id">
-                        <tal:block replace="structure portal/discussionitem_icon.gif"/>
                         <span tal:replace="reply/pretty_title_or_id">Comment title</span>
                         </a>
                     </h3>
@@ -64,7 +65,7 @@
                                            long_format=1)">8/23/2001 12:40:44 PM</span>
                     </div>
                     <div class="commentBody"
-                         tal:content="structure reply/CookedBody">
+                        tal:content="structure reply/CookedBody">
                          This is the body text of the comment.
                     </div>
                     <form name="reply"
@@ -93,7 +94,7 @@
                     </form>
                 </div>
             </tal:getreplies>
-        </tal:comments>
+        </div>
     </tal:allowed>
 </div>
 </body>

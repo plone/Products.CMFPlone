@@ -250,6 +250,17 @@ ol.visualNoMarker {
     font-weight: normal;
 }
 
+.comment h3 a {
+    background-image: url(&dtml-portal_url;/discussionitem_icon.gif);
+    background-repeat: no-repeat;
+    padding-left: 18px;
+    margin-left: -1px;
+    margin-bottom: 1px;
+    min-height: 1.6em;
+    height: auto;
+    line-height: 1.6em;	
+}
+
 .commentBody {
     margin: 0 1em 1em 1em;
 }

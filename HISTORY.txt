@@ -3,6 +3,12 @@ Changelog for Plone
    (name of developer listed in brackets)
 
 Plone 2.1.3 - Tomahawk - Unreleased
+    - Modified viewThreadsAtBottom to make it better work with css:
+      div is not shown when no discussions exist or no discussions
+      are allowed. Image icons in front of each reply is now a background
+      image so that can also be styled by css alone. Added the style in
+      authoring.css
+      [ender]
 
     - Standardized how description fields are rendered in html among the 
       various templates. document_view used a <p> while folder_listing
