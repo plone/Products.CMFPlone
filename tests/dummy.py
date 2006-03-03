@@ -7,6 +7,7 @@
 import os
 
 from Products.CMFPlone.interfaces.NonStructuralFolder import INonStructuralFolder
+from Products.CMFPlone.PloneFolder import PloneFolder
 
 from ComputedAttribute import ComputedAttribute
 from OFS.SimpleItem import SimpleItem
@@ -121,6 +122,9 @@ class NonStructuralFolder(Folder):
     '''Folder implementing the INonStructuralFolder interface'''
     __implements__ = (INonStructuralFolder,)
 
+class FullNonStructuralFolder(PloneFolder):
+    '''A real folder implementing the INonStructuralFolder interface'''
+    __implements__ = (PloneFolder.__implements__,) + (INonStructuralFolder,)
 
 class Error(Exception):
     '''Dummy exception'''

@@ -147,4 +147,4 @@ def registerMigrations():
 
     MigrationTool.registerUpgradePath('2.1.2',
                                       '2.1.3 (SVN/UNRELEASED)',
-                                      null)
+                                      v2_1.two12_two13.two12_two13)

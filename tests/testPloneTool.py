@@ -198,8 +198,7 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
         # Punctuation and spacing is removed and replaced by '-'
         self.assertEqual(self.utils.normalizeString("A ?String&/\\.foo_!$#xx", relaxed=True),
                          'A -String-.foo_!$-xx')
-
-
+        
 class TestOwnershipStuff(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
@@ -539,237 +538,6 @@ class TestFormulatorFields(PloneTestCase.PloneTestCase):
         #      receive the Formulator treatment.
         self.assertEqual(self.doc.Language(), '')
 
-
-class TestNavTree(PloneTestCase.PloneTestCase):
-    '''Tests for the new navigation tree and sitemap'''
-
-    def afterSetUp(self):
-        self.utils = self.portal.plone_utils
-        self.populateSite()
-
-    def populateSite(self):
-        self.setRoles(['Manager'])
-        self.portal.invokeFactory('Document', 'doc1')
-        self.portal.invokeFactory('Document', 'doc2')
-        self.portal.invokeFactory('Document', 'doc3')
-        self.portal.invokeFactory('Folder', 'folder1')
-        self.portal.invokeFactory('Link', 'link1')
-        self.portal.link1.setRemoteUrl('http://plone.org')
-        self.portal.link1.reindexObject()
-        folder1 = getattr(self.portal, 'folder1')
-        folder1.invokeFactory('Document', 'doc11')
-        folder1.invokeFactory('Document', 'doc12')
-        folder1.invokeFactory('Document', 'doc13')
-        self.portal.invokeFactory('Folder', 'folder2')
-        folder2 = getattr(self.portal, 'folder2')
-        folder2.invokeFactory('Document', 'doc21')
-        folder2.invokeFactory('Document', 'doc22')
-        folder2.invokeFactory('Document', 'doc23')
-        folder2.invokeFactory('File', 'file21')
-        self.setRoles(['Member'])
-
-    def testTypesToList(self):
-        # Make sure typesToList() returns the expected types
-        wl = self.utils.typesToList()
-        self.failUnless('Folder' in wl)
-        self.failUnless('Large Plone Folder' in wl)
-        self.failUnless('Topic' in wl)
-        self.failIf('ATReferenceCriterion' in wl)
-
-    def testCreateNavTree(self):
-        # See if we can create one at all
-        tree = self.utils.createNavTree(self.portal)
-        self.failUnless(tree)
-        self.failUnless(tree.has_key('children'))
-
-    def testCreateNavTreeCurrentItem(self):
-        # With the context set to folder2 it should return a dict with
-        # currentItem set to True
-        tree = self.utils.createNavTree(self.portal.folder2)
-        self.failUnless(tree)
-        self.assertEqual(tree['children'][-1]['currentItem'], True)
-
-    def testCreateNavTreeRespectsTypesWithViewAction(self):
-        # With a File or Image as current action it should return a
-        # currentItem which has '/view' appended to the url
-        tree = self.utils.createNavTree(self.portal.folder2.file21)
-        self.failUnless(tree)
-        # Fail if 'view' is used for parent folder; it should only be on the File
-        self.failIf(tree['children'][-1]['absolute_url'][-5:]=='/view')
-        # Verify we have the correct object and it is the current item
-        self.assertEqual(tree['children'][-1]['children'][-1]['currentItem'],True)
-        self.assertEqual(tree['children'][-1]['children'][-1]['path'].split('/')[-1],'file21')
-        # Verify that we have '/view'
-        self.assertEqual(tree['children'][-1]['children'][-1]['absolute_url'][-5:],'/view')
-
-    def testNavTreeExcludesItemsWithExcludeProperty(self):
-        # Make sure that items witht he exclude_from_nav property set get
-        # no_display set to True
-        self.portal.folder2.setExcludeFromNav(True)
-        self.portal.folder2.reindexObject()
-        tree = self.utils.createNavTree(self.portal.folder2.file21)
-        self.failUnless(tree)
-        self.assertEqual(tree['children'][-1]['no_display'],True)
-        # Shouldn't exlude anything else
-        self.assertEqual(tree['children'][0]['no_display'],False)
-
-    def testNavTreeExcludesItemsInIdsNotToList(self):
-        # Make sure that items whose ids are in the idsNotToList navTree
-        # property get no_display set to True
-        ntp=self.portal.portal_properties.navtree_properties
-        ntp.manage_changeProperties(idsNotToList=['folder2'])
-        tree = self.utils.createNavTree(self.portal.folder2.file21)
-        self.failUnless(tree)
-        self.assertEqual(tree['children'][-1]['no_display'],True)
-        # Shouldn't exlude anything else
-        self.assertEqual(tree['children'][0]['no_display'],False)
-
-    def testNavTreeExcludesDefaultPage(self):
-        # Make sure that items which are the default page are excluded
-        self.portal.folder2.setDefaultPage('doc21')
-        tree = self.utils.createNavTree(self.portal.folder2.file21)
-        self.failUnless(tree)
-        # Ensure that our 'doc21' default page is not in the tree.
-        self.assertEqual([c for c in tree['children'][-1]['children']
-                                            if c['path'][-5:]=='doc21'],[])
-
-    def testNavTreeMarksParentMetaTypesNotToQuery(self):
-        # Make sure that items whose ids are in the idsNotToList navTree
-        # property get no_display set to True
-        tree = self.utils.createNavTree(self.portal.folder2.file21)
-        self.assertEqual(tree['children'][-1]['show_children'],True)
-        ntp=self.portal.portal_properties.navtree_properties
-        ntp.manage_changeProperties(parentMetaTypesNotToQuery=['Folder'])
-        tree = self.utils.createNavTree(self.portal.folder2.file21)
-        self.assertEqual(tree['children'][-1]['show_children'],False)
-
-    def testCreateNavTreeWithLink(self):
-        tree = self.utils.createNavTree(self.portal)
-        for child in tree['children']:
-            if child['portal_type'] != 'Link':
-                self.failIf(child['getRemoteUrl'])
-            if child['Title'] == 'link1':
-                self.failUnlessEqual(child['getRemoteUrl'], 'http://plone.org')
-                
-
-    def testNonStructuralFolderHidesChildren(self):
-        # Make sure NonStructuralFolders act as if parentMetaTypesNotToQuery
-        # is set.
-        f = dummy.NonStructuralFolder('ns_folder')
-        self.folder._setObject('ns_folder', f)
-        self.portal.portal_catalog.reindexObject(self.folder.ns_folder)
-        self.portal.portal_catalog.reindexObject(self.folder)
-        tree = self.utils.createNavTree(self.folder.ns_folder)
-        self.assertEqual(tree['children'][0]['children'][0]['children'][0]['path'],
-                                '/portal/Members/test_user_1_/ns_folder')
-        self.assertEqual(tree['children'][0]['children'][0]['children'][0]['show_children'],False)
-
-    def testCreateSitemap(self):
-        # Internally createSitemap is the same as createNavTree
-        tree = self.utils.createSitemap(self.portal)
-        self.failUnless(tree)
-
-    def testCustomQuery(self):
-        # Try a custom query script for the navtree that returns only published
-        # objects
-        workflow = self.portal.portal_workflow
-        factory = self.portal.manage_addProduct['PythonScripts']
-        factory.manage_addPythonScript('getCustomNavQuery')
-        script = self.portal.getCustomNavQuery
-        script.ZPythonScript_edit('','return {"review_state":"published"}')
-        self.assertEqual(self.portal.getCustomNavQuery(),{"review_state":"published"})
-        tree = self.utils.createNavTree(self.portal.folder2)
-        self.failUnless(tree)
-        self.failUnless(tree.has_key('children'))
-        #Should only contain current object
-        self.assertEqual(len(tree['children']), 1)
-        #change workflow for folder1
-        workflow.doActionFor(self.portal.folder1, 'publish')
-        self.portal.folder1.reindexObject()
-        tree = self.utils.createNavTree(self.portal.folder2)
-        #Should only contain current object and published folder
-        self.assertEqual(len(tree['children']), 2)
-
-    def testStateFiltering(self):
-        # Test Navtree workflow state filtering
-        workflow = self.portal.portal_workflow
-        ntp=self.portal.portal_properties.navtree_properties
-        ntp.manage_changeProperties(wf_states_to_show=['published'])
-        ntp.manage_changeProperties(enable_wf_state_filtering=True)
-        tree = self.utils.createNavTree(self.portal.folder2)
-        self.failUnless(tree)
-        self.failUnless(tree.has_key('children'))
-        #Should only contain current object
-        self.assertEqual(len(tree['children']), 1)
-        #change workflow for folder1
-        workflow.doActionFor(self.portal.folder1, 'publish')
-        self.portal.folder1.reindexObject()
-        tree = self.utils.createNavTree(self.portal.folder2)
-        #Should only contain current object and published folder
-        self.assertEqual(len(tree['children']), 2)
-
-    def testComplexSitemap(self):
-        # create and test a reasonabley complex sitemap
-        path = lambda x: '/'.join(x.getPhysicalPath())
-        # We do this in a strange order in order to maximally demonstrate the bug
-        folder1 = self.portal.folder1
-        folder1.invokeFactory('Folder','subfolder1')
-        subfolder1 = folder1.subfolder1
-        folder1.invokeFactory('Folder','subfolder2')
-        subfolder2 = folder1.subfolder2
-        subfolder1.invokeFactory('Folder','subfolder11')
-        subfolder11 = subfolder1.subfolder11
-        subfolder1.invokeFactory('Folder','subfolder12')
-        subfolder12 = subfolder1.subfolder12
-        subfolder2.invokeFactory('Folder','subfolder21')
-        subfolder21 = subfolder2.subfolder21
-        folder1.invokeFactory('Folder','subfolder3')
-        subfolder3 = folder1.subfolder3
-        subfolder2.invokeFactory('Folder','subfolder22')
-        subfolder22 = subfolder2.subfolder22
-        subfolder22.invokeFactory('Folder','subfolder221')
-        subfolder221 = subfolder22.subfolder221
-
-        # Increase depth
-        ntp=self.portal.portal_properties.navtree_properties
-        ntp.manage_changeProperties(sitemapDepth=5)
-
-        sitemap = self.utils.createSitemap(self.portal)
-
-        folder1map = sitemap['children'][6]
-        self.assertEqual(len(folder1map['children']), 6)
-        self.assertEqual(folder1map['path'], path(folder1))
-
-        subfolder1map = folder1map['children'][3]
-        self.assertEqual(subfolder1map['path'], path(subfolder1))
-        self.assertEqual(len(subfolder1map['children']), 2)
-
-        subfolder2map = folder1map['children'][4]
-        self.assertEqual(subfolder2map['path'], path(subfolder2))
-        self.assertEqual(len(subfolder2map['children']), 2)
-
-        subfolder3map = folder1map['children'][5]
-        self.assertEqual(subfolder3map['path'], path(subfolder3))
-        self.assertEqual(len(subfolder3map['children']), 0)
-
-        subfolder11map = subfolder1map['children'][0]
-        self.assertEqual(subfolder11map['path'], path(subfolder11))
-        self.assertEqual(len(subfolder11map['children']), 0)
-
-        subfolder21map = subfolder2map['children'][0]
-        self.assertEqual(subfolder21map['path'], path(subfolder21))
-        self.assertEqual(len(subfolder21map['children']), 0)
-
-        subfolder22map = subfolder2map['children'][1]
-        self.assertEqual(subfolder22map['path'], path(subfolder22))
-        self.assertEqual(len(subfolder22map['children']), 1)
-
-        # Why isn't this showing up in the sitemap
-        subfolder221map = subfolder22map['children'][0]
-        self.assertEqual(subfolder221map['path'], path(subfolder221))
-        self.assertEqual(len(subfolder221map['children']), 0)
-
-
 class TestPortalTabs(PloneTestCase.PloneTestCase):
     '''Tests for the portal tabs query'''
 
@@ -1047,6 +815,7 @@ class TestIDGenerationMethods(PloneTestCase.PloneTestCase):
         for k, v in aliases.items():
             self.assertEqual(expectedAliases[k], v)
 
+
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
@@ -1055,7 +824,6 @@ def test_suite():
     suite.addTest(makeSuite(TestEditMetadata))
     suite.addTest(makeSuite(TestEditMetadataIndependence))
     suite.addTest(makeSuite(TestFormulatorFields))
-    suite.addTest(makeSuite(TestNavTree))
     suite.addTest(makeSuite(TestPortalTabs))
     suite.addTest(makeSuite(TestBreadCrumbs))
     suite.addTest(makeSuite(TestIDGenerationMethods))

@@ -5,32 +5,54 @@
 <div metal:define-macro="portlet"
        i18n:domain="plone"
        tal:omit-tag=""
-       tal:define="data python:here.plone_utils.createNavTree(here, sitemap=None);">
+       tal:define="props nocall:portal_properties/navtree_properties;
+                   data python:putils.createNavTree(here, sitemap=None);
+                   getRoot python:modules['Products.CMFPlone.browser.navtree'].getNavigationRoot;
+                   topLevel python:props.getProperty('topLevel', 0);
+                   navRoot python:getRoot(portal, here, topLevel);
+                   portalPath utool/getPortalPath">
        
-<dl class="portlet" id="portlet-navigation-tree">
+<dl class="portlet" id="portlet-navigation-tree" tal:condition="python:len(data['children']) > 0">
     <dt class="portletHeader">
         <a href="#" 
            class="tile"
+           tal:content="props/name | default"
            tal:attributes="href string:$portal_url/sitemap" 
            i18n:translate="box_navigation">Navigation</a>
     </dt>
     
     <dd class="portletItem">
         <ul class="portletNavigationTree navTreeLevel0">
-
-            <li class="navTreeItem"
-                tal:condition="portal_properties/navtree_properties/includeTop">
-                <div class="contenttype-plone-site">
-                    <a class="visualIconPadding"
-                       tal:attributes="href string:$portal_url;
-                                       title portal/Description;
-                                       class python:test(portal == here or (portal == here.aq_inner.getParentNode() and here.plone_utils.isDefaultPage(here)), 'navTreeCurrentItem visualIconPadding', 'visualIconPadding');">
-                    <span tal:omit-tag=""
-                          i18n:translate="tabs_home">Home</span>
-                    </a>
-                </div>
-            </li>
+           <tal:block condition="props/includeTop"> 
+              <li class="navTreeItem" tal:condition="python:navRoot == portalPath">
+                   <div class="contenttype-plone-site">
+                       <a class="visualIconPadding"
+                          tal:attributes="href string:$portal_url;
+                                          title portal/Description;
+                                          class python:test(portal == here or (portal == here.aq_inner.getParentNode() and here.plone_utils.isDefaultPage(here)), 'navTreeCurrentItem visualIconPadding', 'visualIconPadding');">
+                       <span tal:omit-tag=""
+                             i18n:translate="tabs_home">Home</span>
+                       </a>
+                   </div>
+               </li>
+               <li class="navTreeItem" tal:condition="python:navRoot != portalPath">
+                   <tal:block define="rootObject python:portal.restrictedTraverse(navRoot, None);"
+                              condition="nocall:rootObject">
+                      <div tal:define="stateClass python:'state-' + normalizeString(wtool.getInfoFor(rootObject, 'review_state'));
+                                       typeClass python:'contenttype-' + normalizeString(rootObject.portal_type);
+                                       selectedClass python:test(rootObject == here or (rootObject == here.aq_inner.getParentNode() and here.plone_utils.isDefaultPage(here)), 'navTreeCurrentItem', '');">
+                          <a class="visualIconPadding"
+                             tal:content="rootObject/Title"
+                             tal:attributes="href rootObject/absolute_url;
+                                             title rootObject/Description;
+                                             class string:visualIconPadding $selectedClass $stateClass $typeClass;">
+                          </a>
+                      </div>
+                  </tal:block>
+               </li>
+            </tal:block>
             <tal:navtree define="children python:data.get('children', []);
+                                 bottomLevel props/bottomLevel | python:0;
                                  level python:0;
                                  show_children python:True;
                                  isNaviTree python:True;">

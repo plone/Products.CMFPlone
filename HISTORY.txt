@@ -4,6 +4,16 @@ Changelog for Plone
 
 Plone 2.1.3 - Tomahawk - Unreleased
 
+    - Re-added support for topLevel and bottomLevel navtree propreties, as well
+      as the new name (of the navtree portlet) and root (of site navigation)
+      properties, and added the Sprout navtree preference panel to let users
+      manage these settings. Factored the navtree code out to .browser.navtree,
+      which is TTW importable and contains a re-usable buildFolderTree() 
+      function that can be used to build navtree-like structures in custom code.
+      See the docstrings in that module for more details.
+      Fixes https://dev.plone.org/plone/ticket/5265.
+      [optilude]
+
     - Added some missing .metadata file for images.
       [panjunyong]
 

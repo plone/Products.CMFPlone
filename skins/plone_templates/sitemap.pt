@@ -22,6 +22,7 @@
     <ul id="portal-sitemap"
         class="navTreeLevel0 visualNoMarker"
         tal:define="data python:putils.createSitemap(here);
+                    bottomLevel python:0;
                     children python:data.get('children', []);
                     level python:1;
                     show_children python:True;

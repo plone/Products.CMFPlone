@@ -619,6 +619,19 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         except (AttrbuteError, KeyError):
             self.fail('safe_html transformation not updated')
 
+    def testNavtreePropertiesNormalized(self):
+        ntp = self.portal.portal_properties.navtree_properties
+        toRemove = ['skipIndex_html', 'showMyUserFolderOnly', 'showFolderishSiblingsOnly',
+                    'showFolderishChildrenOnly', 'showNonFolderishObject', 'showTopicResults',
+                    'rolesSeeContentView', 'rolesSeeUnpublishedContent', 'rolesSeeContentsView ',
+                    'batchSize', 'sortCriteria', 'croppingLength', 'forceParentsInBatch', 
+                    'rolesSeeHiddenContent', 'typesLinkToFolderContents']
+        toAdd = {'name' : 'Navigation', 'root' : '/'}
+        for property in toRemove:
+            self.assertEqual(ntp.getProperty(property, None), None)
+        for property, value in toAdd.items():
+            self.assertEqual(ntp.getProperty(property), value)
+        self.assertEqual(ntp.getProperty('bottomLevel'), 0)
 
 class TestPortalBugs(PloneTestCase.PloneTestCase):
 

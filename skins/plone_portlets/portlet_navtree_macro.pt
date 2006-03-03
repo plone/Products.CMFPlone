@@ -4,7 +4,7 @@
     tal:define="parent_shows_children show_children|nothing;
                 children item/children|nothing;
                 cur_item item/currentItem;"
-    tal:condition="python: (not item['no_display']) and (cur_item or parent_shows_children or children)">
+    tal:condition="python: (not item['no_display']) and (cur_item or parent_shows_children or children) and (bottomLevel <= 0 or level < bottomLevel-1)">
 
     <tal:level define="item_type_class     python: 'contenttype-' + normalizeString(item['portal_type']);
                        item_wf_state_class python: 'state-' + normalizeString(item['review_state']);
