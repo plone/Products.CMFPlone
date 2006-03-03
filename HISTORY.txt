@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1.3 - Tomahawk - Unreleased
 
+    - Added some missing i18n statements for link related tags in the headed.
+      This fixes http://dev.plone.org/plone/ticket/5289.
+      [hannosch]
+
     - Fixed exception in getDefaultPage when the LinguaPlone-aware content
       type is not associated with a workflow chain.
       [panjunyong]
