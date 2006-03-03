@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1.3 - Tomahawk - Unreleased
 
+    - Added Turkish map for UnicodeNormalizer and consolidated the mappings.
+      This fixes http://dev.plone.org/plone/ticket/5292.
+      [hannosch]
+
     - Included e-mail address in mail_password_form into the i18n message.
       Fixes http://dev.plone.org/plone/ticket/5045.
       [hannosch]
