@@ -1062,60 +1062,65 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         If relaxed=True, only those characters that are illegal as URLs and
         leading or trailing whitespace is stripped.
 
-        >>> normalizeString("Foo bar", relaxed=False)
+        >>> ptool = self.portal.plone_utils
+
+        >>> ptool.normalizeString("Foo bar")
+        'foo-bar'
+
+        >>> ptool.normalizeString("Foo bar", relaxed=True)
         'Foo bar'
         
-        >>> normalizeString("Some!_are allowed, others&?:are not")
-        'Some are allowed, others-are not'
+        >>> ptool.normalizeString("Some!_are allowed, others&?:are not")
+        'some-_are-allowed-others-are-not'
 
         all punctuation and spacing is removed and replaced with a '-':
 
-        >>> normalizeString("a string with spaces")
+        >>> ptool.normalizeString("a string with spaces")
         'a-string-with-spaces'
 
-        >>> normalizeString("p.u,n;c(t)u!a@t#i$o%n")
+        >>> ptool.normalizeString("p.u,n;c(t)u!a@t#i$o%n")
         'p-u-n-c-t-u-a-t-i-o-n'
 
         strings are lowercased:
 
-        >>> normalizeString("UppERcaSE")
+        >>> ptool.normalizeString("UppERcaSE")
         'uppercase'
 
         punctuation, spaces, etc. are trimmed and multiples are reduced to just
         one:
 
-        >>> normalizeString(" a string    ")
+        >>> ptool.normalizeString(" a string    ")
         'a-string'
 
-        >>> normalizeString(">here's another!")
+        >>> ptool.normalizeString(">here's another!")
         'here-s-another'
 
-        >>> normalizeString("one with !@#$!@#$ stuff in the middle")
+        >>> ptool.normalizeString("one with !@#$!@#$ stuff in the middle")
         'one-with-stuff-in-the-middle'
 
         the exception to all this is that if there is something that looks like a
         filename with an extension at the end, it will preserve the last period.
 
-        >>> normalizeString("this is a file.gif")
+        >>> ptool.normalizeString("this is a file.gif")
         'this-is-a-file.gif'
 
-        >>> normalizeString("this is. also. a file.html")
+        >>> ptool.normalizeString("this is. also. a file.html")
         'this-is-also-a-file.html'
 
         normalizeString() uses normalizeUnicode() to convert stray unicode
         characters. it will attempt to transliterate many of the accented
         letters to rough ASCII equivalents:
 
-        >>> normalizeString(u"Eksempel \xe6\xf8\xe5 norsk \xc6\xd8\xc5")
+        >>> ptool.normalizeString(u"Eksempel \xe6\xf8\xe5 norsk \xc6\xd8\xc5")
         'eksempel-eoa-norsk-eoa'
 
         for characters that we can't transliterate, we just return the hex codes of
         the byte(s) in the character. not pretty, but about the best we can do.
 
-        >>> normalizeString(u"\u9ad8\u8054\u5408 Chinese")
+        >>> ptool.normalizeString(u"\u9ad8\u8054\u5408 Chinese")
         '9ad880545408-chinese'
 
-        >>> normalizeString(u"\uc774\ubbf8\uc9f1 Korean")
+        >>> ptool.normalizeString(u"\uc774\ubbf8\uc9f1 Korean")
         'c774bbf8c9f1-korean'
         """
         # Make sure we are dealing with a stringish type
