@@ -1,50 +1,48 @@
 <?xml version="1.0"?>
-<workflow-tool>
- <workflow workflow_id="plone_workflow" meta_type="Workflow"
-           filename="workflows/plone_workflow/definition.xml"/>
- <workflow workflow_id="folder_workflow"
-           meta_type="Workflow"
-           filename="workflows/folder_workflow/definition.xml"/>
- <bindings>
-  <default>
-   <bound-workflow workflow_id="plone_workflow"/>
-  </default>
-  <type type_id="ATBooleanCriterion">
-  </type>
-  <type type_id="ATCurrentAuthorCriterion">
-  </type>
-  <type type_id="ATDateCriteria">
-  </type>
-  <type type_id="ATDateRangeCriterion">
-  </type>
-  <type type_id="ATListCriterion">
-  </type>
-  <type type_id="ATPathCriterion">
-  </type>
-  <type type_id="ATPortalTypeCriterion">
-  </type>
-  <type type_id="ATReferenceCriterion">
-  </type>
-  <type type_id="ATSelectionCriterion">
-  </type>
-  <type type_id="ATSimpleIntCriterion">
-  </type>
-  <type type_id="ATSimpleStringCriterion">
-  </type>
-  <type type_id="ATSortCriterion">
-  </type>
-  <type type_id="Discussion Item">
-  </type>
-  <type type_id="Folder">
-   <bound-workflow workflow_id="folder_workflow"/>
-  </type>
-  <type type_id="Large Plone Folder">
-   <bound-workflow workflow_id="folder_workflow"/>
-  </type>
-  <type type_id="Plone Site">
-  </type>
-  <type type_id="Topic">
-   <bound-workflow workflow_id="folder_workflow"/>
-  </type>
- </bindings>
-</workflow-tool>
+<object name="portal_workflow" meta_type="Plone Workflow Tool">
+  <property name="title">Contains workflow definitions for your portal</property>
+  <object name="plone_workflow" meta_type="Workflow"/>
+  <object name="folder_workflow" meta_type="Workflow"/>
+  <bindings>
+    <default>
+      <bound-workflow workflow_id="plone_workflow"/>
+    </default>
+    <type type_id="ATBooleanCriterion">
+    </type>
+    <type type_id="ATCurrentAuthorCriterion">
+    </type>
+    <type type_id="ATDateCriteria">
+    </type>
+    <type type_id="ATDateRangeCriterion">
+    </type>
+    <type type_id="ATListCriterion">
+    </type>
+    <type type_id="ATPathCriterion">
+    </type>
+    <type type_id="ATPortalTypeCriterion">
+    </type>
+    <type type_id="ATReferenceCriterion">
+    </type>
+    <type type_id="ATSelectionCriterion">
+    </type>
+    <type type_id="ATSimpleIntCriterion">
+    </type>
+    <type type_id="ATSimpleStringCriterion">
+    </type>
+    <type type_id="ATSortCriterion">
+    </type>
+    <type type_id="Discussion Item">
+    </type>
+    <type type_id="Folder">
+      <bound-workflow workflow_id="folder_workflow"/>
+    </type>
+    <type type_id="Large Plone Folder">
+      <bound-workflow workflow_id="folder_workflow"/>
+    </type>
+    <type type_id="Plone Site">
+    </type>
+    <type type_id="Topic">
+      <bound-workflow workflow_id="folder_workflow"/>
+    </type>
+  </bindings>
+</object>
