@@ -8,8 +8,8 @@ no index_html Document on the portal root.
 However, this ComputedAttribute didn't handle WebDAV 'PUT' request
 correctly. This test ensures that the fix doesn't regress.
 
-  >>> from Products.PloneTestCase.PloneTestCase import default_user
-  >>> from Products.PloneTestCase.PloneTestCase import default_password
+  >>> from Products.CMFPlone.tests.PloneTestCase import default_user
+  >>> from Products.CMFPlone.tests.PloneTestCase import default_password
 
 Get path of our home folder:
 
