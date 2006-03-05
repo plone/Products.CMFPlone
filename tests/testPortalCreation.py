@@ -580,6 +580,10 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         path = [x.strip() for x in path.split(',')]
         self.assertEqual(path[-1], 'cmf_legacy')
 
+    def testCustomSkinFolderExists(self):
+        # the custom skin needs to be created
+        self.failUnless('custom' in self.skins.objectIds())
+
     def testMemberHasViewGroupsPermission(self):
         # Member should be granted the 'View Groups' permission
         member_has_permission = [p for p in
