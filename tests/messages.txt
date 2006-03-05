@@ -95,3 +95,49 @@ And now try the real translation:
   >>> translate(note, target_language='de')
   u'Sie haben 42 neue E-Mails.'
 
+Messages inside page templates / tal
+------------------------------------
+
+We need a simple tal engine for the tests. The DummyEngine automatically
+upper-cases all text.
+
+  >>> from zope.tal.dummyengine import DummyEngine
+  >>> engine = DummyEngine()
+
+We use the Messages defined earlier.
+
+  >>> msg
+  u'This is a message.'
+  
+  >>> note
+  u'mail-notification'
+
+Inform the engine of our variables.
+
+  >>> engine.setLocal('msg', msg)
+  >>> engine.setLocal('note', note)
+
+We also need a HTMLParser and TALInterpreter and add a simple convience function
+to get the parsed and interpreted text.
+
+  >>> from zope.tal.htmltalparser import HTMLTALParser
+  >>> from zope.tal.talinterpreter import TALInterpreter
+  >>> from StringIO import StringIO
+
+  >>> def compile(source):
+  ...     parser = HTMLTALParser()
+  ...     parser.parseString(source)
+  ...     program, macros = parser.getCode()
+  ...     result = StringIO()
+  ...     interpreter = TALInterpreter(program, {}, engine, stream=result)
+  ...     interpreter()
+  ...     return result.getvalue()
+
+  >>> text = compile('<span i18n:translate="" tal:content="msg"/>')
+  >>> text
+  u'<span>THIS IS A MESSAGE.</span>\n'
+
+  >>> text = compile('<span i18n:translate="" tal:content="note"/>')
+  >>> text
+  u'<span>MAIL-NOTIFICATION</span>\n'
+
