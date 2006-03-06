@@ -13,7 +13,6 @@
                    username member/getUserName;
                    avail_roles python:[role for role in mtool.getCandidateLocalRoles(here) if role!='Owner'];
                    b_size python:12;b_start python:0;b_start request/b_start | b_start;
-                   tabindex python:Iterator();
                    iscontainer isFolderish|nothing;
                    itemPortalTypeTitle python:here.getTypeInfo().Title();
                    inheritanceActive python:putils.isLocalRoleAcquired(here);
