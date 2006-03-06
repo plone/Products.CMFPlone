@@ -36,7 +36,8 @@
         global template_id options/template_id | template/getId | nothing;
         global slots_mapping options/slots_mapping|here/prepare_slots|nothing;
         global Iterator python:modules['Products.CMFPlone'].IndexIterator;
-        global tabindex python:Iterator(pos=30000);
+        global tabindex python:Iterator(pos=30000, mainSlot=False);
+        global uniqueItemIndex python:Iterator(pos=0);
         global here_url here/absolute_url;
         global sl slots_mapping/left;
         global sr slots_mapping/right;

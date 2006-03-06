@@ -2,7 +2,7 @@
       xmlns:metal="http://xml.zope.org/namespaces/metal"
       i18n:domain="plone">
 <body tal:define="Iterator python:modules['Products.CMFPlone'].IndexIterator;
-                  tabindex python:Iterator()">
+                  tabindex python:Iterator(mainSlot=False)">
 <div metal:define-macro="portlet"
      tal:omit-tag=""
      tal:define="pageloc python: request.URL.split('/')[-1];

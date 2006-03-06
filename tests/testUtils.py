@@ -25,6 +25,17 @@ class TestUtils(PloneTestCase.PloneTestCase):
         for v_str, v_tpl in version_map.items():
             self.failUnless(v_tpl == utils.versionTupleFromString(v_str))
 
+    def testIndexIteratorInMainSlot(self):
+        i = utils.IndexIterator(pos=10, mainSlot=True)
+        self.assertEqual(i.next(), 10)
+        self.assertEqual(i.next(), None)
+
+    def testIndexIteratorOutsideMainSlot(self):
+        i = utils.IndexIterator(pos=10, mainSlot=False)
+        self.assertEqual(i.next(), None)
+        self.assertEqual(i.next(), None)
+
+
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
