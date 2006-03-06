@@ -19,6 +19,8 @@
     inline="False"/>
  <javascript cookable="True" enabled="True" expression="" id="dropdown.js"
     inline="False"/>
+ <javascript cookable="True" enabled="True" expression="" id="dragdropreorder.js"
+    inline="False"/>
  <javascript cookable="True" enabled="True" expression=""
     id="mark_special_links.js" inline="False"/>
  <javascript cookable="True" enabled="True" expression=""

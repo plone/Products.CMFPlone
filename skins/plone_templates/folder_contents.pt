@@ -191,7 +191,8 @@
                                    browserDefaultResult here/browserDefault;
                                    isBrowserDefault     python:len(browserDefaultResult[1]) == 1 and item.id == here.browserDefault()[1][0];
                                    item_folderish item/is_folderish|item/isPrincipiaFolderish|nothing"
-                       tal:attributes="class python:test(oddrow, 'even', 'odd')" >
+                       tal:attributes="class python:test(oddrow, 'draggable even', 'draggable odd');
+                                       id item_id;" >
 
                        <tal:comment replace="nothing">
                             * We have to check if the browserDefault stuff is really necessary

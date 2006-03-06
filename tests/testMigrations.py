@@ -3511,6 +3511,17 @@ class TestMigrations_v2_5(MigrationTest):
         self.portal._delObject('portal_skins')
         installDeprecated(self.portal, [])
 
+    def testAddDragDropReorderJS(self):
+        jsreg = self.portal.portal_javascripts
+        script_ids = jsreg.getResourceIds()
+        self.failUnless('dragdropreorder.js' in script_ids)
+        # if dropdown.js is available dragdropreorder.js
+        # should be positioned right underneath it
+        if 'dropdown.js' in script_ids:
+            posSE = jsreg.getResourcePosition('dragdropreorder.js')
+            posHST = jsreg.getResourcePosition('dropdown.js')
+            self.failUnless((posSE - 1) == posHST)
+
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()

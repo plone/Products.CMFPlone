@@ -16,7 +16,7 @@ def two5_alpha1(portal):
     return out
 
 def alpha1_alpha2(portal):
-    """2.1.2 -> 2.5-alpha1
+    """2.5-alpha1 -> 2.5-alpha2
     """
     out = []
 

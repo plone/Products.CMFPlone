@@ -3,7 +3,10 @@ Changelog for Plone
    (name of developer listed in brackets)
 
 Plone 2.5 (unreleased)
-	
+
+    - Added drag'n'drop reordering of folder contents.
+      [fschulze, alecm]
+
     - Fix PloneTool.changeOwnershipOf to not test for user existance by
       trying to find a user id in listMemberIds().
       [wichert]
@@ -19,7 +22,7 @@ Plone 2.5 (unreleased)
       possible new owners instead.
       [wichert]
 
-	Alpha 2 - released February 23, 2006
+    Alpha 2 - released February 23, 2006
 
     - Major refactoring of the entire PloneGenerator / portal creation
       framework; now using GenericSetup with XML-based setup profile to
@@ -66,9 +69,9 @@ Plone 2.5 (unreleased)
       BBB code. Make sure that for all interfaces declared, they are
       declared for both Zope 2 and 'zope.interface'-style.
       [dreamcatcher]
-	
-	Alpha 1 - released January 29, 2006
-	
+    
+    Alpha 1 - released January 29, 2006
+    
     - Installed CMFPlacefulWorkflow during migrations.
       [encolpe]
 
