@@ -12,7 +12,7 @@
 
         <dt class="portletHeader">
             <a href="#" tal:attributes="href news_link"
-                        i18n:translate="box_news">The News</a>
+                        i18n:translate="box_news">News</a>
         </dt>
 
         <tal:newsitems tal:repeat="obj results">

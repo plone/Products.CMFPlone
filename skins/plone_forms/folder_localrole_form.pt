@@ -240,7 +240,7 @@
         </h1>
 
         <p i18n:translate="no_members_found">
-            No members were found using your search criteria.
+            No users were found using your search criteria.
         </p>
         <hr />
     </metal:block>
@@ -263,7 +263,7 @@
 
             <fieldset>
 
-                <legend i18n:translate="legend_available_members">Available Members</legend>
+                <legend i18n:translate="legend_available_users">Available Users</legend>
 
                 <input type="hidden" name="change_type" value="add" />
 
@@ -438,16 +438,19 @@
     <h1 i18n:translate="heading_group_shares">Add sharing permissions to groups</h1>
 
     <p i18n:translate="description_group_shares">
-      Groups are a convenient way to share items to a common set of
-      users. Select one or more groups, and a role to assign.
+        Groups are a convenient way to share items to a common set of users.
+        Select one or more groups, and a role to assign.
     </p>
 
     <tal:block tal:condition="python:test(group_search_submitted and not group_search_results, 1, 0)">
-      <h1 i18n:translate="heading_search_results">Search results</h1>
+        <h1 i18n:translate="heading_search_results">
+            Search results
+        </h1>
+
         <p i18n:translate="no_groups_found">
-          No groups were found using your <strong>Search Criteria</strong>
+            No groups were found using your search criteria.
         </p>
-      <hr />
+        <hr />
     </tal:block>
 
 
