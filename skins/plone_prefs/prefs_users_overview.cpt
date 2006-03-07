@@ -64,7 +64,7 @@
           They do not reflect additional roles users may have due
           to group memberships.
         </p>
-        <p i18n:translate="description_pas_listing"
+        <p i18n:translate="description_pas_users_listing"
            tal:condition="nothing | python:not searchstring and not context.acl_users.canListAllUsers()">
           Note: Some or all of your PAS user source
           plugins do not allow listing of users, so you may not see

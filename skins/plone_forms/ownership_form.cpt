@@ -14,8 +14,8 @@
     <h1 i18n:translate="heading_change_ownership">Change ownership</h1>
 
     <p i18n:translate="description_change_ownership">
-    You can transfer the current item's ownership to
-    somebody else using this form.
+        You can transfer the current item's ownership to somebody else using
+        this form.
     </p>
 
     <p i18n:translate="description_current_owner">
@@ -24,7 +24,9 @@
     </p>
 
     <fieldset tal:condition="python:test(search_submitted and search_results, True, False)">
-        <legend i18n:translate="legend_change_ownership">Change Ownership</legend>
+        <legend i18n:translate="legend_change_ownership">
+            Change Ownership
+        </legend>
 
     <tal:block >
       <form action="change_ownership"
@@ -40,26 +42,28 @@
                       i18n:translate="label_required">(Required)</span>
 
                 <div class="formHelp" i18n:translate="help_change_ownership">
-                Changes the ownership of the current object.
+                    Changes the ownership of the current object.
                 </div>
 
               <b i18n:translate="heading_new_owner">New owner</b>
                 <select name="userid">
                 <tal:block tal:repeat="member search_results">
                      <option value=""
-                tal:attributes="value member/getId;
-                selected python:test(member.getId()==putils.getOwnerName(here), 'selected', None);"
-                tal:content="member/getUserName">username</option>
+                             tal:attributes="value member/getId;
+                                             selected python:test(member.getId()==putils.getOwnerName(here), 'selected', None);"
+                             tal:content="member/getUserName">username</option>
                    </tal:block>
                 </select>
             </div>
 
             <div class="field" tal:condition="isFolderish">
 
-                <label i18n:translate="label_subobjects">Subobjects</label>
+                <label i18n:translate="label_subobjects">
+                    Subobjects
+                </label>
                 
                 <div class="formHelp" i18n:translate="help_subobjects">
-                Changes all the contained objects if selected.
+                    Changes all the contained objects if selected.
                 </div>
 
                 <div class="field">
@@ -84,12 +88,14 @@
     </fieldset>
 
     <fieldset>
-        <legend i18n:translate="legend_search_owners">Search for possible new owner</legend>
+        <legend i18n:translate="legend_search_owners">
+            Search for possible new owner
+        </legend>
 
         <tal:block tal:condition="python:test(search_submitted and not search_results, True, False)">
-          <p i18n:translate="no_members_found">
-            No members were found using your search criteria.
-          </p>
+            <p i18n:translate="no_members_found">
+                No members were found using your search criteria.
+            </p>
         </tal:block>
 
         <form action="change_ownership"

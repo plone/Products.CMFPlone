@@ -184,7 +184,10 @@
             </tbody>
         </table>
 
-        <div class="label" i18n:translate="label_localroles_to_assign_to_selected_users">Roles to assign to selected user(s)/group(s)</div>
+        <div class="label"
+             i18n:translate="label_localroles_to_assign_to_selected_users">
+            Roles to assign to selected user(s)/group(s)
+        </div>
 
         <div class="field"
              tal:define="data python:here.formatColumns(avail_roles);">
@@ -228,13 +231,16 @@
     </form>
 
     <h1 i18n:translate="heading_add_sharing_permissions">
-      Add sharing permissions to users
+        Add sharing permissions to users
     </h1>
 
     <metal:block tal:condition="python:test(search_submitted and not search_results, 1, 0)">
-        <h1 i18n:translate="heading_search_results">Search results</h1>
+        <h1 i18n:translate="heading_search_results">
+            Search results
+        </h1>
+
         <p i18n:translate="no_members_found">
-            No members were found using your <strong>Search Criteria</strong>
+            No members were found using your search criteria.
         </p>
         <hr />
     </metal:block>
