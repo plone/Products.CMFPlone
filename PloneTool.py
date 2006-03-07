@@ -175,7 +175,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         >>> ptool = self.portal.plone_utils
 
         >>> ptool.getMailHost()
-        <SecureMailHost at .../MailHost>
+        <SecureMailHost ...>
         """
         return getattr(aq_parent(self), 'MailHost')
 
