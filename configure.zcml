@@ -6,7 +6,7 @@
   <include package=".exportimport" />
 
   <five:traversable
-      class="Products.Archetypes.public.BaseObject"
+      class="Products.Archetypes.atapi.BaseObject"
       />
 
   <five:traversable
@@ -23,7 +23,7 @@
       />
 
   <five:traversable
-      class="OFS.Folder.Folder"
+      class="Products.CMFCore.DirectoryView.DirectoryViewSurrogate"
       />
 
 </configure>
