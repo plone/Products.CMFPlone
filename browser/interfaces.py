@@ -137,6 +137,13 @@ class ICalendarPortlet(Interface):
         """ """
 
 
+class ISitemapView(Interface):
+    """ """
+
+    def createSitemap():
+        """ """
+
+
 class IPlone(Interface):
     """ """
 

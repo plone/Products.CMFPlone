@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.5 (unreleased)
 
+    - Added view for sitemap, and made navtree use a recursive macro call,
+      rather than recursively calling the template, as it should be faster.
+      Fixes http://dev.plone.org/plone/ticket/5240
+      [alecm]
+
     - Added drag'n'drop reordering of folder contents.
       [fschulze, alecm]
 
@@ -69,9 +74,9 @@ Plone 2.5 (unreleased)
       BBB code. Make sure that for all interfaces declared, they are
       declared for both Zope 2 and 'zope.interface'-style.
       [dreamcatcher]
-    
+
     Alpha 1 - released January 29, 2006
-    
+
     - Installed CMFPlacefulWorkflow during migrations.
       [encolpe]
 
@@ -134,8 +139,8 @@ Plone 2.1.3 - Tomahawk - Unreleased
 
       - Updating icons to better match the Plone style
 
-      - Improved tool ordering (growing elements like the text format selector 
-        should be at the end, since they displace all the other icons when they 
+      - Improved tool ordering (growing elements like the text format selector
+        should be at the end, since they displace all the other icons when they
         change if not)
 
       - Fixed stupid bug in Mozilla by explicitly setting the link styling

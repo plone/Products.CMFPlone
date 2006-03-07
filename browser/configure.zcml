@@ -98,4 +98,12 @@
       allowed_interface=".interfaces.IRecentPortlet"
       />
 
+  <browser:page
+      for="*"
+      name="sitemap_view"
+      class=".sitemap.SitemapView"
+      permission="zope.Public"
+      allowed_interface=".interfaces.ISitemapView"
+      />
+
 </configure>
