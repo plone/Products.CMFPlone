@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.5 (unreleased)
 
+    - check_id error messages were not translated. This fixed
+      http://dev.plone.org/plone/ticket/5012
+      [hannosch]
+
     - Added view for sitemap, and made navtree use a recursive macro call,
       rather than recursively calling the template, as it should be faster.
       Fixes http://dev.plone.org/plone/ticket/5240
