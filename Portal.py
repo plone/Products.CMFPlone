@@ -35,16 +35,6 @@ from Products.CMFPlone.PloneFolder import ReplaceableWrapper
 from Products.CMFPlone.utils import log_exc
 from Products.CMFPlone.utils import WWW_DIR
 
-default_frontpage="Unable to load front-page skeleton file"
-try:
-    f = open(os.path.join(WWW_DIR, 'default_frontpage.html'), 'r')
-except IOError:
-    log_exc('Unable to open frontpage skeleton')
-else:
-    default_frontpage = f.read()
-    f.close()
-    del f
-
 member_indexhtml="""\
 member_search=context.restrictedTraverse('member_search_form')
 return member_search()

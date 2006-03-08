@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.5 (unreleased)
 
+    - Removed code from Portal.py for default_frontpage. This is now handled by
+      the GenericSetup driven site creation. This fixes
+      http://dev.plone.org/plone/ticket/5332
+      [hannosch]
+
     - check_id error messages were not translated. This fixed
       http://dev.plone.org/plone/ticket/5012
       [hannosch]
