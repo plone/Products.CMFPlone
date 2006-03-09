@@ -323,7 +323,10 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
 
     def testAllDependenciesMet(self):
         from Products.CMFPlone.setup import dependencies
-        msgs = [x for x in dependencies.messages if not x['optional']]
+        # filter out the unknown Zope version message
+        msgs = [x for x in dependencies.messages if
+                  not x['message'].startswith('Unable to detect Zope version.')]
+        msgs = [x for x in msgs if not x['optional']]
         self.failUnlessEqual(msgs, [])
 
     def testDisableFolderSectionsSiteProperty(self):
