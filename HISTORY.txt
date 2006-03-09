@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1.3 - Tomahawk - Unreleased
 
+    - Fixed erroneous form actions in prefs_error_log_form. Made it work even
+      if the button labels were translated.
+      [hannosch]
+
     - Tabindexes aren't as good for usability/accessibility as we once thought,
       and they wreak havoc with JavaScript/AJAX type code that dynamically 
       inserts form elements. Instead, we should have the first element in the

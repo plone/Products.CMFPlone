@@ -33,15 +33,15 @@
                 <legend i18n:translate="legend_logexception">Exception Log (most recent first)</legend>
         
                 <div class="field" tal:condition="not:entries" i18n:translate="legend_lognoexceptions">
-                No exceptions logged.
+                    No exceptions logged.
                 </div>
 
                 <div class="formControls">
-                    <input class="standalone" type="submit" name="submit"
+                    <input class="standalone" type="submit" name="form.button.refresh"
                            value="Refresh" i18n:attributes="value label_refresh;" />
-                    <input class="standalone" type="submit" name="submit"
+                    <input class="standalone" type="submit" name="form.button.clear"
                            value="Clear Displayed Entries" i18n:attributes="value label_clear_displayed_entries;" />
-                    <input class="standalone" type="submit" name="submit"
+                    <input class="standalone" type="submit" name="form.button.showall"
                            value="Show all entries" i18n:attributes="value label_show_all_entries;" />
                 </div>
 
