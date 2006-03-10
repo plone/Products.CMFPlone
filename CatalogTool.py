@@ -9,6 +9,7 @@ from Products.CMFCore.permissions import AccessInactivePortalContent
 from Products.CMFPlone import ToolNames
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
+from Globals import DTMLFile
 from Acquisition import aq_inner
 from Acquisition import aq_parent
 from Acquisition import aq_base
@@ -247,6 +248,8 @@ class CatalogTool(PloneBaseTool, BaseTool):
     security = ClassSecurityInfo()
     toolicon = 'skins/plone_images/book_icon.gif'
 
+    manage_catalogAdvanced = DTMLFile('www/catalogAdvanced', globals())
+
     __implements__ = (PloneBaseTool.__implements__, BaseTool.__implements__)
 
     def __init__(self):
@@ -429,6 +432,23 @@ class CatalogTool(PloneBaseTool, BaseTool):
                 del kw['expires']
 
         return ZCatalog.searchResults(self, REQUEST, **kw)
+
+    security.declareProtected(ManageZCatalogEntries, 'clearFindAndRebuild')
+    def clearFindAndRebuild(self):
+        """Empties catalog, then finds all contentish objects (i.e. objects
+           with a reindexObject method), and reindexes them.
+           This may take a long time."""
+        self.manage_catalogClear()
+        portal = aq_parent(aq_inner(self))
+        for path, obj in portal.ZopeFind(portal, search_sub=True):
+            if base_hasattr(obj, 'reindexObject') and \
+                    safe_callable(obj.reindexObject):
+                try:
+                    obj.reindexObject()
+                except TypeError:
+                    # Catalogs have this method as well, but they take
+                    # different args, and will fail
+                    pass
 
     __call__ = searchResults
 

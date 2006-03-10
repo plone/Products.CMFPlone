@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.5 (unreleased)
 
+    - Added method to Catalog Tool to fully rebuild the catalog by walking the
+      tree and looking for content, as well as a ZMI button.
+      Fixes http://dev.plone.org/plone/ticket/4438
+      [alecm]
+
     - Removed code from Portal.py for default_frontpage. This is now handled by
       the GenericSetup driven site creation. This fixes
       http://dev.plone.org/plone/ticket/5332
