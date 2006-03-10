@@ -35,6 +35,9 @@
  <index name="Subject" meta_type="KeywordIndex">
   <indexed_attr value="Subject"/>
  </index>
+ <index name="getEventType" meta_type="KeywordIndex">
+  <indexed_attr value="getEventType"/>
+ </index>
  <index name="Title" meta_type="ZCTextIndex">
   <indexed_attr value="Title"/>
   <extra name="index_type" value="Okapi BM25 Rank"/>

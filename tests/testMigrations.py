@@ -133,6 +133,8 @@ from Products.CMFPlone.migrations.v2_1.two11_two12 import reinstallPortalTransfo
 from Products.CMFPlone.migrations.v2_5.alphas import installPlacefulWorkflow
 from Products.CMFPlone.migrations.v2_5.alphas import installDeprecated
 
+from Products.CMFPlone.migrations.v2_5.betas import addGetEventTypeIndex
+
 from Products.CMFDynamicViewFTI.migrate import migrateFTI
 
 import types
@@ -3452,6 +3454,7 @@ class TestMigrations_v2_5(MigrationTest):
     def afterSetUp(self):
         self.actions = self.portal.portal_actions
         self.memberdata = self.portal.portal_memberdata
+        self.catalog = self.portal.portal_catalog
         self.skins = self.portal.portal_skins
         self.types = self.portal.portal_types
         self.workflow = self.portal.portal_workflow
@@ -3521,6 +3524,26 @@ class TestMigrations_v2_5(MigrationTest):
             posSE = jsreg.getResourcePosition('dragdropreorder.js')
             posHST = jsreg.getResourcePosition('dropdown.js')
             self.failUnless((posSE - 1) == posHST)
+
+    def testAddGetEventTypeIndex(self):
+        # Should add getEventType index
+        self.catalog.delIndex('getEventType')
+        addGetEventTypeIndex(self.portal, [])
+        index = self.catalog._catalog.getIndex('getEventType')
+        self.assertEqual(index.__class__.__name__, 'KeywordIndex')
+
+    def testAddGetEventTypeIndexTwice(self):
+        # Should not fail if migrated again
+        self.catalog.delIndex('getEventType')
+        addGetEventTypeIndex(self.portal, [])
+        addGetEventTypeIndex(self.portal, [])
+        index = self.catalog._catalog.getIndex('getEventType')
+        self.assertEqual(index.__class__.__name__, 'KeywordIndex')
+
+    def testAddGetEventTypeIndexNoCatalog(self):
+        # Should not fail if portal_catalog is missing
+        self.portal._delObject('portal_catalog')
+        addGetEventTypeIndex(self.portal, [])
 
 def test_suite():
     from unittest import TestSuite, makeSuite

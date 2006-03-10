@@ -13,6 +13,9 @@ def alpha2_beta1(portal):
     # Add dragdropreorder.js to ResourceRegistries.
     addDragDropReorderJS(portal, out)
 
+    # Add getEventTypes KeywordIndex to portal_catalog
+    addGetEventTypeIndex(portal, out)
+
     return out
 
 def addDragDropReorderJS(portal, out):
@@ -31,3 +34,23 @@ def addDragDropReorderJS(portal, out):
                 # put it at the bottom of the stack
                 jsreg.moveResourceToBottom(script)
             out.append("Added " + script + " to portal_javascipt")
+
+def addGetEventTypeIndex(portal, out):
+    """Adds the getEventType KeywordIndex."""
+    catalog = getToolByName(portal, 'portal_catalog', None)
+    if catalog is not None:
+        try:
+            index = catalog._catalog.getIndex('getEventType')
+        except KeyError:
+            pass
+        else:
+            indextype = index.__class__.__name__
+            if indextype == 'KeywordIndex':
+                return 0
+            catalog.delIndex('getEventType')
+            out.append("Deleted %s 'getEventType' from portal_catalog." % indextype)
+
+        catalog.addIndex('getEventType', 'KeywordIndex')
+        out.append("Added KeywordIndex 'getEventType' to portal_catalog.")
+        return 1 # Ask for reindexing
+    return 0

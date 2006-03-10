@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.5 (unreleased)
 
+    - Added getEventType index for KeywordWidget in the ATCT event type.
+      [fschulze]
+
     - Added method to Catalog Tool to fully rebuild the catalog by walking the
       tree and looking for content, as well as a ZMI button.
       Fixes http://dev.plone.org/plone/ticket/4438
