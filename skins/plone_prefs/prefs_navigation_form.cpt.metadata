@@ -5,7 +5,7 @@ title=Navigation Setup
 View=0:Authenticated
 
 [validators]
-validators=
+validators=prefs_navigation_form_validate
 
 [actions]
 action.success=traverse_to:string:prefs_navigation_set

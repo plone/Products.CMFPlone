@@ -12,6 +12,27 @@ class IDefaultPage(Interface):
         """Returns the id of the default page for the adapted object.
         """
 
+class INavtreeStrategy(Interface):
+    
+    rootPath = Attribute("The path to the root of the navtree (None means use portal root)")
+    
+    showAllParents = Attribute("Whether or not to show all parents of the current context always")
+    
+    def nodeFilter(node):
+        """Return True or False to determine whether to include the given node 
+        in the tree. Nodes are dicts with at least one key - 'item', the 
+        catalog brain of the object the node represents.
+        """
+        
+    def subtreeFilter(node):
+        """Return True or False to determine whether to expand the given 
+        (folderish) node
+        """
+        
+    def decoratorFactory(node):
+        """Inject any additional keys in the node that are needed and return
+        the new node.
+        """
 
 class INavigationBreadcrumbs(Interface):
 

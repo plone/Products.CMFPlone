@@ -65,21 +65,11 @@ def createTopLevelTabs(context, request, actions=None):
 
 def createNavTree(context, request, sitemap=False):
     view = getView(context, 'nav_view', request)
-    return view.navigationTree(sitemap=sitemap)
+    return view.navigationTree()
 
-def addToNavTreeResult(result, data):
-    path = data['path']
-    parentpath = '/'.join(path.split('/')[:-1])
-    # Tell parent about self
-    if result.has_key(parentpath):
-        result[parentpath]['children'].append(data)
-    else:
-        result[parentpath] = {'children':[data]}
-    # If we have processed a child already, make sure we register it
-    # as a child
-    if result.has_key(path):
-        data['children'] = result[path]['children']
-    result[path] = data
+def createSiteMap(context, request, sitemap=False):
+    view = getView(context, 'nav_view', request)
+    return view.siteMap()
 
 def _getDefaultPageView(obj, request):
     """This is a nasty hack because the view lookup fails when it occurs too

@@ -7,41 +7,17 @@
      type="string">getObjPositionInParent</property>
   <property name="sortOrder" type="string">asc</property>
   <property name="sitemapDepth" type="int">3</property>
+  <property name="name" type="string"/>
+  <property name="root" type="string">/</property>
   <property name="includeTop" type="boolean">True</property>
   <property name="topLevel" type="int">0</property>
-  <property name="idsNotToList" type="lines"/>
-  <property name="skipIndex_html" type="boolean">True</property>
+  <property name="bottomLevel" type="int">0</property>
   <property name="showAllParents" type="boolean">True</property>
-  <property name="showMyUserFolderOnly" type="boolean">True</property>
-  <property name="showFolderishSiblingsOnly" type="boolean">True</property>
-  <property name="showFolderishChildrenOnly" type="boolean">True</property>
-  <property name="showNonFolderishObject" type="boolean">False</property>
-  <property name="showTopicResults" type="boolean">True</property>
-  <property name="rolesSeeUnpublishedContent" type="lines">
-   <element value="Manager"/>
-   <element value="Reviewer"/>
-   <element value="Owner"/>
-  </property>
-  <property name="sortCriteria" type="lines">
-   <element value="isPrincipiaFolderish,desc"/>
-  </property>
+  <property name="idsNotToList" type="lines"/>
   <property name="parentMetaTypesNotToQuery" type="lines">
    <element value="TempFolder"/>
    <element value="Large Plone Folder"/>
   </property>
-  <property name="batchSize" type="int">30</property>
-  <property name="croppingLength" type="int">256</property>
-  <property name="forceParentsInBatch" type="boolean">False</property>
-  <property name="rolesSeeContentsView" type="lines">
-   <element value="Manager"/>
-   <element value="Reviewer"/>
-   <element value="Owner"/>
-  </property>
-  <property name="rolesSeeHiddenContent" type="lines">
-   <element value="Manager"/>
-  </property>
-  <property name="bottomLevel" type="int">65535</property>
-  <property name="typesLinkToFolderContents" type="lines"/>
   <property name="metaTypesNotToList" type="lines">
    <element value="ATBooleanCriterion"/>
    <element value="ATDateCriteria"/>
@@ -62,6 +38,7 @@
   <property name="enable_wf_state_filtering" type="boolean">False</property>
   <property name="wf_states_to_show" type="lines"/>
  </object>
+ 
  <object name="site_properties" meta_type="Plone Property Sheet">
   <property name="title">Site wide properties</property>
   <property name="allowAnonymousViewAbout" type="boolean">True</property>

@@ -19,11 +19,14 @@ class NavigationPortlet(utils.BrowserView):
     def createNavTree(self):
         context = utils.context(self)
         view = getView(context, 'nav_view', self.request)
-        data = view.navigationTree(sitemap=False)
+        data = view.navigationTree()
+        properties = getToolByName(context, 'portal_properties')
+        navtree_properties = getattr(properties, 'navtree_properties')
+        bottomLevel = navtree_properties.getProperty('bottomLevel', 0)
         # XXX: The recursion should probably be done in python code
         return context.portlet_navtree_macro(
             children=data.get('children', []),
-            level=1, show_children=True, isNaviTree=True)
+            level=1, show_children=True, isNaviTree=True, bottomLevel=bottomLevel)
 
     def isPortalOrDefaultChild(self):
         context = utils.context(self)

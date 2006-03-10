@@ -9,7 +9,8 @@
 <body>
 
 <div metal:fill-slot="prefs_configlet_main"
-     tal:define="errors options/state/getErrors;">
+     tal:define="errors options/state/getErrors;
+                 navtree_props portal_properties/navtree_properties;">
 
     <h1 i18n:translate="heading_navigation_setup">Navigation Settings</h1>
 
@@ -53,12 +54,101 @@
                 this part of the navigation.
                 </div>
             </div>
+            
+            <div class="field"
+                tal:define="value python:navtree_props.getProperty('name', None);
+                            value request/name|value;
+                            error errors/name|nothing"
+                tal:attributes="class python:error and 'field error' or 'field';">
+                <label>Navigation tree portlet title</label>
+                <span class="fieldRequired" title="Required"
+                  i18n:attributes="title title_required;"
+                  i18n:translate="label_required">(Required)
+                </span>
+                <div class="formHelp">
+                  Change the English title of the navigation tree portlet. Note
+                  that this won't affect the title in other languages.
+                </div>
+                <input name="name"
+                       type="text"
+                       size="30"
+                       tal:attributes="value value;"/>
+                <div tal:content="error">Validation error output</div>
+              </div>
+              
+              <div class="field"
+                tal:define="value python:navtree_props.getProperty('root', None);
+                            value request/root|value;
+                            error errors/root|nothing"
+                tal:attributes="class python:error and 'field error' or 'field';">
+                <label>Navigation tree root</label>
+                <div class="formHelp">
+                    A path that specifies the base folder where the
+                    navigation tree will be rooted. Use <strong>'/'</strong> for the
+                    portal root, and <strong>'/folder1'</strong> to start at 'folder1'.
+                    Use <strong>'.'</strong> to start at the current folder.
+                </div>
+                <input name="root"
+                       type="text"
+                       size="30"
+                       tal:attributes="value value;"/>
+                <div tal:content="error">Validation error output</div>
+              </div>
+              
+              <div class="field"
+                tal:define="
+                  value python:navtree_props.getProperty('topLevel');
+                  value request/topLevel|value;
+                  error errors/topLevel|nothing"
+                tal:attributes="class python:error and 'field error' or 'field';">
+                <label>Navigation tree start level</label>
+                <span class="fieldRequired" title="Required"
+                  i18n:attributes="title title_required;"
+                  i18n:translate="label_required">(Required)
+                </span>
+                <div class="formHelp">
+                  An integer value that specifies the number of folder levels 
+                  below the site root that must be exceeded before the
+                  navigation tree will display. 0 means that the navigation
+                  tree should be displayed everywhere including pages in the
+                  root of the site. 1 means the tree should be displayed 
+                  with content contained inside folders in the site root and 
+                  below.
+                </div>
+                <input name="topLevel"
+                       type="text"
+                       size="4"
+                       tal:attributes="value value;"/>
+                <div tal:content="error">Validation error output</div>
+              </div>
+              <div class="field"
+                tal:define="
+                  value python:navtree_props.getProperty('bottomLevel');
+                  value request/bottomLevel|value;
+                  error errors/bottomLevel|nothing"
+                tal:attributes="class python:error and 'field error' or 'field';">
+                <label>Navigation tree depth</label>
+                <span class="fieldRequired" title="Required"
+                  i18n:attributes="title title_required;"
+                  i18n:translate="label_required">(Required)
+                </span>
+                <div class="formHelp">
+                  An integer value that specifies the number of folder levels
+                  below the root that should be included in the tree structure 
+                  of the navigation tree.  0 means no limit.  1 means only 
+                  include the root folder.
+                </div>
+                <input name="bottomLevel"
+                       type="text"
+                       size="30"
+                       tal:attributes="value value;"/>
+                <div tal:content="error">Validation error output</div>
+              </div>
 
 
             <div class="field" id="navigationtypes-field"
                  tal:define="
                        portal_types     portal/portal_types;
-                       navtree_props    portal_properties/navtree_properties;
                        allTypes         python:[portal_types.getTypeInfo(t) for t in here.getPortalTypes()];
                        typeLists        python:here.createMultiColumnList(allTypes, numCols=3, sort_on='title_or_id');
                        blacklisted      navtree_props/metaTypesNotToList;
@@ -94,10 +184,9 @@
 
             <div class="field" id="navigationstates-field"
                  tal:define="
-                       navtree_props   portal_properties/navtree_properties;
                        states          python:wtool.listWFStatesByTitle(filter_similar=1);
                        state_lists     python: here.createMultiColumnList(states, numCols=1, sort_on='self');
-                       cur_list      navtree_props/wf_states_to_show;">
+                       cur_list        navtree_props/wf_states_to_show;">
 
                 <fieldset id="navtree_wf_filter">
                     <legend>
