@@ -440,15 +440,8 @@ class CatalogTool(PloneBaseTool, BaseTool):
            This may take a long time."""
         self.manage_catalogClear()
         portal = aq_parent(aq_inner(self))
-        for path, obj in portal.ZopeFind(portal, search_sub=True):
-            if base_hasattr(obj, 'reindexObject') and \
-                    safe_callable(obj.reindexObject):
-                try:
-                    obj.reindexObject()
-                except TypeError:
-                    # Catalogs have this method as well, but they take
-                    # different args, and will fail
-                    pass
+        portal.ZopeFindAndApply(portal, search_sub=True,
+                                apply_func=reindexContentObject)
 
     __call__ = searchResults
 
@@ -456,3 +449,17 @@ CatalogTool.__doc__ = BaseTool.__doc__
 
 classImplements(CatalogTool, CatalogTool.__implements__)
 InitializeClass(CatalogTool)
+
+# Utility function for calling reindexObject from ZopeFindAndApply
+def reindexContentObject(obj, *args):
+    """A method which reindexes an object if it is content.
+       The ZopeFindAndApply method expects a function that takes both an
+       object and a path as positional parameters."""
+    if base_hasattr(obj, 'reindexObject') and \
+            safe_callable(obj.reindexObject):
+        try:
+            obj.reindexObject()
+        except TypeError:
+            # Catalogs have this method as well, but they take
+            # different args, and will fail
+            pass
