@@ -4,7 +4,7 @@ from Products.CMFPlone import utils
 from Products.CMFCore.utils import getToolByName
 
 from zope.interface import implements
-from zope.component import getView
+from zope.component import getMultiAdapter
 from Products import CMFPlone
 import ZTUtils
 import sys
@@ -271,7 +271,7 @@ class Plone(utils.BrowserView):
         container = aq_parent(aq_inner((context)))
         if not container:
             return False
-        view = getView(container, 'default_page', request)
+        view = getMultiAdapter((container, request), name='default_page')
         return view.isDefaultPage(context)
 
     def isStructuralFolder(self):

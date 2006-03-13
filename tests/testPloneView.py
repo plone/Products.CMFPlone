@@ -6,8 +6,6 @@ import os, sys
 if __name__ == '__main__':
     execfile(os.path.join(sys.path[0], 'framework.py'))
 
-from zope.component import getView
-
 from Testing import ZopeTestCase
 from Products.PloneTestCase import PloneTestCase
 from Products.PloneTestCase import dummy
@@ -97,7 +95,7 @@ class TestPloneView(PloneTestCase.PloneTestCase):
         except ImportError:
             # BBB: zope 2.8
             pass
-        self.folder.invokeFactory('Document', 'test', 
+        self.folder.invokeFactory('Document', 'test',
                                   title='Test default page')
         view = Plone(self.folder.test, self.app.REQUEST)
         self.failIf(view.isDefaultPageInFolder())

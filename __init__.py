@@ -5,6 +5,8 @@ import Globals
 from Products.GenericSetup import BASE
 from Products.GenericSetup import profile_registry
 
+import bbb
+
 cmfplone_globals = globals()
 this_module = sys.modules[ __name__ ]
 _marker = []
@@ -90,7 +92,7 @@ def initialize(context):
 
     # Make DiscussionNotAllowed importable TTW
     ModuleSecurityInfo('Products.CMFDefault.DiscussionTool').declarePublic('DiscussionNotAllowed')
-    
+
     # Make AllowSendto importable TTW
     ModuleSecurityInfo('Products.CMFPlone.PloneTool').declarePublic('AllowSendto')
 
@@ -107,7 +109,7 @@ def initialize(context):
     migrations.executeMigrations()
     migrations.registerMigrations()
 
-    # Inititalize configuration machinery 
+    # Inititalize configuration machinery
     import setup
 
     # Apply monkey patches

@@ -1,5 +1,5 @@
 from zope.interface import implements
-from zope.component import getView
+from zope.component import getMultiAdapter
 
 from Acquisition import aq_base, aq_inner
 from Products.CMFCore.utils import getToolByName
@@ -393,7 +393,7 @@ class PhysicalNavigationBreadcrumbs(utils.BrowserView):
                  }
                 )
 
-        view = getView(container, 'nav_view', request)
+        view = getMultiAdapter((container, request), name='nav_view')
         base = tuple(view.breadcrumbs())
 
         if base:

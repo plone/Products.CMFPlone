@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.5 (unreleased)
 
+    - Added a BBB getMultiAdapter to lookup views for zope 2.8, which means
+      fewer deprecation warnings and an easier migration path to zope 2.10.
+      [alecm]
+
     - Added getEventType index for KeywordWidget in the ATCT event type.
       [fschulze]
 

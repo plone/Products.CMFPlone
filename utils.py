@@ -4,7 +4,7 @@ from os.path import join, abspath, split
 
 import zope.interface
 from zope.interface import implementedBy
-from zope.component import getView
+from zope.component import getMultiAdapter
 from zope.component.interfaces import ComponentLookupError
 
 import OFS
@@ -56,15 +56,15 @@ def context(view):
     return view.context[0]
 
 def createBreadCrumbs(context, request):
-    view = getView(context, 'nav_view', request)
+    view = getMultiAdapter((context, request), name='nav_view')
     return view.breadcrumbs()
 
 def createTopLevelTabs(context, request, actions=None):
-    view = getView(context, 'nav_view', request)
+    view = getMultiAdapter((context, request), name='nav_view')
     return view.topLevelTabs(actions=actions)
 
 def createNavTree(context, request, sitemap=False):
-    view = getView(context, 'nav_view', request)
+    view = getMultiAdapter((context, request), name='nav_view')
     return view.navigationTree(sitemap=sitemap)
 
 def addToNavTreeResult(result, data):
@@ -88,7 +88,7 @@ def _getDefaultPageView(obj, request):
        connection errors, so we just instantiate the view manually.
     """
     try:
-        view = getView(obj, 'default_page', request)
+        view = getMultiAdapter((obj, request), name='default_page')
     except ComponentLookupError:
         # XXX: import here to avoid a circular dependency
         from browser.navigation import DefaultPage

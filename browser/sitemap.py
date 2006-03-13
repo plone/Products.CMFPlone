@@ -1,4 +1,4 @@
-from zope.component import getView
+from zope.component import getMultiAdapter
 from zope.interface import implements
 
 from Products.CMFPlone import utils
@@ -10,7 +10,7 @@ class SitemapView(utils.BrowserView):
 
     def createSitemap(self):
         context = utils.context(self)
-        view = getView(context, 'nav_view', self.request)
+        view = getMultiAdapter((context, self.request), name='nav_view')
         data = view.navigationTree(sitemap=True)
         # XXX: The recursion should probably be done in python code
         return context.portlet_navtree_macro(
