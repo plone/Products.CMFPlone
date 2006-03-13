@@ -86,6 +86,7 @@ class Plone(utils.BrowserView):
         self._data['workflow_actions'] =  actions['workflow']
         self._data['folder_actions'] =  actions['folder']
         self._data['global_actions'] =  actions['global']
+        # XXX: This should use the view!
         self._data['portal_tabs'] =  putils.createTopLevelTabs(context,
                                                               actions=actions)
         self._data['wf_state'] =  wtool.getInfoFor(context,'review_state', None)

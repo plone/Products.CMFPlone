@@ -56,11 +56,11 @@ def context(view):
     return view.context[0]
 
 def createBreadCrumbs(context, request):
-    view = getView(context, 'nav_view', request)
+    view = getView(context, 'breadcrumbs_view', request)
     return view.breadcrumbs()
 
 def createTopLevelTabs(context, request, actions=None):
-    view = getView(context, 'nav_view', request)
+    view = getView(context, 'portal_tabs_view', request)
     return view.topLevelTabs(actions=actions)
 
 def createNavTree(context, request, sitemap=False):

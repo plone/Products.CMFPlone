@@ -484,7 +484,6 @@ class TestCatalogBreadCrumbs(TestBaseBreadCrumbs):
 
 
 class TestPhysicalBreadCrumbs(TestBaseBreadCrumbs):
-        # This effectively tests the RootPhysicalNavigationStructure as well
         view_class = PhysicalNavigationBreadcrumbs
 
 

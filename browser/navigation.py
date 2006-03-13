@@ -9,7 +9,6 @@ from Products.CMFPlone.browser.interfaces import IDefaultPage
 from Products.CMFPlone.browser.interfaces import INavigationBreadcrumbs
 from Products.CMFPlone.browser.interfaces import INavigationTabs
 from Products.CMFPlone.browser.interfaces import INavigationTree
-from Products.CMFPlone.browser.interfaces import INavigationStructure
 from Products.CMFPlone.interfaces.BrowserDefault import IBrowserDefault
 from Products.CMFPlone.interfaces.BrowserDefault import IDynamicViewTypeInformation
 
@@ -138,33 +137,34 @@ class CatalogNavigationTree(utils.BrowserView):
 
     def navigationTree(self):
         context = utils.context(self)
-        
+
         portal_url = getToolByName(context, 'portal_url')
         portal = portal_url.getPortalObject()
-        
+
         # XXX: Should use muliti-adapter lookups to get strategies
-        
+
         queryBuilder = NavtreeQueryBuilder(portal, context)
         strategy = DefaultNavtreeStrategy(portal, context)
-        
+
         query = queryBuilder()
-        
+
         return buildFolderTree(portal, context=context, query=query, strategy=strategy)
 
     def siteMap(self):
         context = utils.context(self)
-        
+
         portal_url = getToolByName(context, 'portal_url')
         portal = portal_url.getPortalObject()
-        
+
         # XXX: Should use muliti-adapter lookups to get strategies
-        
+
         queryBuilder = SitemapQueryBuilder(portal, context)
         strategy = SitemapNavtreeStrategy(portal, context)
-        
+
         query = queryBuilder()
-        
+
         return buildFolderTree(portal, context=context, query=query, strategy=strategy)
+
 
 class CatalogNavigationTabs(utils.BrowserView):
     implements(INavigationTabs)
@@ -232,6 +232,7 @@ class CatalogNavigationTabs(utils.BrowserView):
                 result.append(data)
         return result
 
+
 class CatalogNavigationBreadcrumbs(utils.BrowserView):
     implements(INavigationBreadcrumbs)
 
@@ -265,11 +266,6 @@ class CatalogNavigationBreadcrumbs(utils.BrowserView):
             result.append(data)
         return result
 
-class CatalogNavigationStructure(CatalogNavigationTabs,
-                                 CatalogNavigationBreadcrumbs,
-                                 CatalogNavigationTree):
-    implements(INavigationStructure)
-
 
 class PhysicalNavigationBreadcrumbs(utils.BrowserView):
     implements(INavigationBreadcrumbs)
@@ -292,7 +288,7 @@ class PhysicalNavigationBreadcrumbs(utils.BrowserView):
                  }
                 )
 
-        view = getView(container, 'nav_view', request)
+        view = getView(container, 'breadcrumbs_view', request)
         base = tuple(view.breadcrumbs())
 
         if base:
@@ -308,15 +304,9 @@ class PhysicalNavigationBreadcrumbs(utils.BrowserView):
 
         return base
 
-class PhysicalNavigationStructure(PhysicalNavigationBreadcrumbs,
-                                  CatalogNavigationTabs,
-                                  CatalogNavigationTree):
-    implements(INavigationStructure)
 
-class RootPhysicalNavigationStructure(utils.BrowserView,
-                                      CatalogNavigationTabs,
-                                      CatalogNavigationTree):
-    implements(INavigationStructure)
+class RootPhysicalNavigationBreadcrumbs(utils.BrowserView):
+    implements(INavigationBreadcrumbs)
 
     def breadcrumbs(self):
         # XXX Root never gets included, it's hardcoded as 'Home' in

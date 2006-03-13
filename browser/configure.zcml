@@ -28,26 +28,42 @@
   <browser:page
       for="*"
       name="nav_view"
-      class=".navigation.CatalogNavigationStructure"
+      class=".navigation.CatalogNavigationBreadcrumbs"
       permission="zope.Public"
-      allowed_interface=".interfaces.INavigationStructure"
+      allowed_attributes="breadcrumbs"
       />
 -->
 
   <browser:page
       for="*"
-      name="nav_view"
-      class=".navigation.PhysicalNavigationStructure"
+      name="breadcrumbs_view"
+      class=".navigation.PhysicalNavigationBreadcrumbs"
       permission="zope.Public"
-      allowed_attributes="breadcrumbs navigationTree topLevelTabs"
+      allowed_attributes="breadcrumbs"
       />
 
   <browser:page
       for=".interfaces.INavigationRoot"
-      name="nav_view"
-      class=".navigation.RootPhysicalNavigationStructure"
+      name="breadcrumbs_view"
+      class=".navigation.RootPhysicalNavigationBreadcrumbs"
       permission="zope.Public"
-      allowed_attributes="breadcrumbs navigationTree topLevelTabs"
+      allowed_attributes="breadcrumbs"
+      />
+
+  <browser:page
+      for="*"
+      name="nav_view"
+      class=".navigation.CatalogNavigationTree"
+      permission="zope.Public"
+      allowed_attributes="navigationTree siteMap"
+      />
+
+  <browser:page
+      for="*"
+      name="portal_tabs_view"
+      class=".navigation.CatalogNavigationTabs"
+      permission="zope.Public"
+      allowed_attributes="topLevelTabs"
       />
 
   <browser:page
