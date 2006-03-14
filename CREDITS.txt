@@ -93,7 +93,8 @@ contributed code.
   Alec Mitchell (alecm) -- Bug fixes in all corners, new features here and there.
 
   Martin Aspeli (optilude) -- Bits hanging off the "display" menu and various
-  other bits that hang off these bits, and many bug fixes here and there.
+  other bits that hang off these bits, and many bug fixes here and there, some
+  navtree refactoring, a few features and a lot of grinding of teeth.
 
   Florian Schulze (fschulze) -- Javascript, CSS, bug fixing, bug categorization
   and usability without javascript.

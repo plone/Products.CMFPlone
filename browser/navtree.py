@@ -425,9 +425,13 @@ class SitemapNavtreeStrategy(NavtreeStrategyBase):
     """The navtree building strategy used by the sitemap, based on 
     navtree_properties
     """
+    implements(INavtreeStrategy)
+    #adapts(*, ISiteMap)
     
-    def __init__(self, portal, context):
-        portal_properties = getToolByName(portal, 'portal_properties')
+    def __init__(self, context, view=None):
+        portal_url = getToolByName(context, 'portal_url')
+        self.portal = portal_url.getPortalObject()
+        portal_properties = getToolByName(context, 'portal_properties')
         navtree_properties = getattr(portal_properties, 'navtree_properties')
         site_properties = getattr(portal_properties, 'site_properties')
         self.excludedIds = {}
@@ -435,10 +439,10 @@ class SitemapNavtreeStrategy(NavtreeStrategyBase):
             self.excludedIds[id] = True
         self.parentTypesNQ = navtree_properties.getProperty('parentMetaTypesNotToQuery', ())
         self.viewActionTypes = site_properties.getProperty('typesUseViewActionInListings', ())
-        self.plone_utils = getToolByName(portal, 'plone_utils')
+        self.plone_utils = getToolByName(context, 'plone_utils')
         
         self.showAllParents = navtree_properties.getProperty('showAllParents', True)
-        self.rootPath = getNavigationRoot(portal, context)
+        self.rootPath = getNavigationRoot(self.portal, context)
         
             
     def nodeFilter(self, node):
@@ -490,15 +494,17 @@ class SitemapNavtreeStrategy(NavtreeStrategyBase):
 class DefaultNavtreeStrategy(SitemapNavtreeStrategy):
     """The navtree strategy used for the default navigation portlet
     """
+    implements(INavtreeStrategy)
+    #adapts(*, INavigationTree)
 
-    def __init__(self, portal, context):
-        SitemapNavtreeStrategy.__init__(self, portal, context)
-        portal_properties = getToolByName(portal, 'portal_properties')
+    def __init__(self, context, view=None):
+        SitemapNavtreeStrategy.__init__(self, context, view)
+        portal_properties = getToolByName(context, 'portal_properties')
         navtree_properties = getattr(portal_properties, 'navtree_properties')
         # XXX: We can't do this with a 'depth' query to EPI...
         self.bottomLevel = navtree_properties.getProperty('bottomLevel', 0)
         topLevel = navtree_properties.getProperty('topLevel', 0)
-        self.rootPath = getNavigationRoot(portal, context, topLevel = topLevel)
+        self.rootPath = getNavigationRoot(self.portal, context, topLevel = topLevel)
         
     def subtreeFilter(self, node):
         sitemapDecision = SitemapNavtreeStrategy.subtreeFilter(self, node)

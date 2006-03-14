@@ -23,17 +23,6 @@
       allowed_interface=".interfaces.IDefaultPage"
       />
 
-<!--
-
-  <browser:page
-      for="*"
-      name="nav_view"
-      class=".navigation.CatalogNavigationBreadcrumbs"
-      permission="zope.Public"
-      allowed_attributes="breadcrumbs"
-      />
--->
-
   <browser:page
       for="*"
       name="breadcrumbs_view"
@@ -52,10 +41,18 @@
 
   <browser:page
       for="*"
-      name="nav_view"
+      name="navtree_builder_view"
       class=".navigation.CatalogNavigationTree"
       permission="zope.Public"
-      allowed_attributes="navigationTree siteMap"
+      allowed_attributes="navigationTree"
+      />
+   
+  <browser:page
+      for="*"
+      name="sitemap_builder_view"
+      class=".navigation.CatalogSiteMap"
+      permission="zope.Public"
+      allowed_attributes="siteMap"
       />
 
   <browser:page
@@ -121,5 +118,16 @@
       permission="zope.Public"
       allowed_interface=".interfaces.ISitemapView"
       />
+      
+   <adapter for="*
+                .interfaces.INavigationTree"
+            factory=".navtree.DefaultNavtreeStrategy"
+            provides=".interfaces.INavtreeStrategy" />
+
+   <adapter for="*
+                .interfaces.ISiteMap"
+            factory=".navtree.SitemapNavtreeStrategy"
+            provides=".interfaces.INavtreeStrategy" />
+
 
 </configure>

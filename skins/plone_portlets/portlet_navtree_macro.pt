@@ -1,42 +1,39 @@
-<tal:master define="show_children options/show_children|nothing;
-                    level options/level|python:0;
-                    isNaviTree options/isNaviTree | nothing;
+<tal:master define="level options/level|python:0;
                     children options/children | nothing;
                     bottomLevel options/bottomLevel | nothing;
-                    normalizeString nocall:context/plone_utils/normalizeString">
+                    normalizeString nocall:context/plone_utils/normalizeString;
+                    viewActions site_properties/typesUseViewActionInListings|python:()">
 
 <metal:main define-macro="nav_main">
-<tal:navitem repeat="item children">
+<tal:navitem repeat="node children">
 <li class="navTreeItem visualNoMarker"
-    tal:define="parent_shows_children show_children|nothing;
-                children item/children|nothing;
-                cur_item item/currentItem;"
-    tal:condition="python: (not item['no_display']) and (cur_item or parent_shows_children or children) and (bottomLevel <= 0 or level < bottomLevel-1)">
+    tal:define="children   node/children;
+                item       node/item;
+                useView    python:item.portal_type in viewActions;
+                itemUrl    python:test(useView, item.getURL() + '/view', item.getURL());
+                linkRemote python:item.getRemoteUrl and item.Creator != member.getId();
+                isCurrent  node/currentItem;"
+    tal:condition="python: bottomLevel <= 0 or level < bottomLevel-1">
 
-    <tal:level define="item_type_class     python: 'contenttype-' + normalizeString(item['portal_type']);
-                       item_wf_state_class python: 'state-' + normalizeString(item['review_state']);">
+    <tal:level define="item_type_class     python: 'contenttype-' + normalizeString(item.portal_type);
+                       item_wf_state_class python: 'state-' + normalizeString(item.review_state);">
 
-    <div tal:attributes="class item_type_class">
-        <a tal:condition="cur_item"
-           tal:attributes="href python:test(item.get('getRemoteUrl') and item.get('Creator') != member.getId(), item.get('getRemoteUrl'), item.get('getURL'));
-                           title item/Description|nothing;
-                           class string:$item_wf_state_class navTreeCurrentItem visualIconPadding"
-            tal:content="item/Title|nothing">
-            Selected Item Title </a>
-        <tal:children condition="python: parent_shows_children or children">
-        <a tal:condition="not: cur_item"
-           tal:attributes="href python:test(item.get('getRemoteUrl') and item.get('Creator') != member.getId(), item.get('getRemoteUrl'), item.get('getURL'));
-                           title item/Description|nothing;
-                           class string:$item_wf_state_class visualIconPadding;"
-            tal:content="item/Title|nothing">
-            Unselected Item Title </a>
-        </tal:children>
+    <div tal:attributes="class item_type_class"
+         tal:define="itemClass string:$item_wf_state_class visualIconPadding;
+                     itemClass python:test(isCurrent, itemClass + ' navTreeCurrentItem', itemClass);">
+        
+        <a tal:attributes="href python:test(linkRemote, item.getRemoteUrl, itemUrl);
+                           title item/Description;
+                           class string:$itemClass"
+            tal:content="item/Title">
+            Selected Item Title 
+        </a>
+        
     </div>
 
     <ul tal:attributes="class python:'navTree navTreeLevel'+str(level)"
-        tal:define="show_children item/show_children| python:True;
-                    level python:level+1;"
-        tal:condition="python: (show_children or isNaviTree) and children">
+        tal:define="level python:level+1;"
+        tal:condition="nocall:children">
         <metal:recurse use-macro="here/portlet_navtree_macro/macros/nav_main"/>
     </ul>
     </tal:level>

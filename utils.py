@@ -64,11 +64,11 @@ def createTopLevelTabs(context, request, actions=None):
     return view.topLevelTabs(actions=actions)
 
 def createNavTree(context, request, sitemap=False):
-    view = getView(context, 'nav_view', request)
+    view = getView(context, 'navtree_builder_view', request)
     return view.navigationTree()
 
 def createSiteMap(context, request, sitemap=False):
-    view = getView(context, 'nav_view', request)
+    view = getView(context, 'sitemap_builder_view', request)
     return view.siteMap()
 
 def _getDefaultPageView(obj, request):

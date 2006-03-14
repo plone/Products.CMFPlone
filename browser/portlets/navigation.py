@@ -18,7 +18,7 @@ class NavigationPortlet(utils.BrowserView):
 
     def createNavTree(self):
         context = utils.context(self)
-        view = getView(context, 'nav_view', self.request)
+        view = getView(context, 'navtree_builder_view', self.request)
         data = view.navigationTree()
         properties = getToolByName(context, 'portal_properties')
         navtree_properties = getattr(properties, 'navtree_properties')

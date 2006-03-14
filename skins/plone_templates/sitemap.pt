@@ -22,7 +22,7 @@
     <ul id="portal-sitemap"
         class="navTreeLevel0 visualNoMarker"
         tal:define="view context/@@sitemap_view;">
-        <tal:sitemap replace="structure view/createSitemap" />
+        <tal:sitemap replace="structure view/createSiteMap" />
     </ul>
 
 </metal:main>

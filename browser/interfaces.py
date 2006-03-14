@@ -49,7 +49,13 @@ class INavigationTabs(Interface):
 class INavigationTree(Interface):
 
     def navigationTree():
-        """Navigation Tree
+        """Navigation tree
+        """
+
+class ISiteMap(Interface):
+
+    def siteMap():
+        """Site map
         """
 
 class INavigationRoot(Interface):
@@ -58,17 +64,16 @@ class INavigationRoot(Interface):
 
 
 class INavigationPortlet(Interface):
-    """ """
+    """Interface for portlet to display navigation tree"""
 
     def includeTop():
-        """ """
+        """Whether or not to include the root element in the tree"""
 
     def createNavTree():
-        """ """
+        """Build the actual tree"""
 
     def isPortalOrDefaultChild():
-        """ """
-
+        """Determine if the context is the portal or a default-document"""
 
 class INewsPortlet(Interface):
     """Interface for portlet to display recent news items"""
@@ -104,10 +109,10 @@ class IEventsPortlet(Interface):
 
 
 class IRecentPortlet(Interface):
-    """ """
+    """Interface for portlet to display recently modified items"""
 
     def results():
-        """ """
+        """Get the list of recently modified items"""
 
 
 class ICalendarPortlet(Interface):
@@ -153,10 +158,10 @@ class ICalendarPortlet(Interface):
 
 
 class ISitemapView(Interface):
-    """ """
+    """Interface to the view that creates a site map"""
 
-    def createSitemap():
-        """ """
+    def createSiteMap():
+        """Create the site map data structure"""
 
 
 class IPlone(Interface):

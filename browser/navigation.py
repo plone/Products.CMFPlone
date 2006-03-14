@@ -1,5 +1,6 @@
 from zope.interface import implements
 from zope.component import getView
+from zope.component import getMultiAdapter
 
 from Acquisition import aq_base, aq_inner
 from Products.CMFCore.utils import getToolByName
@@ -8,7 +9,9 @@ from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.browser.interfaces import IDefaultPage
 from Products.CMFPlone.browser.interfaces import INavigationBreadcrumbs
 from Products.CMFPlone.browser.interfaces import INavigationTabs
+from Products.CMFPlone.browser.interfaces import INavtreeStrategy
 from Products.CMFPlone.browser.interfaces import INavigationTree
+from Products.CMFPlone.browser.interfaces import ISiteMap
 from Products.CMFPlone.interfaces.BrowserDefault import IBrowserDefault
 from Products.CMFPlone.interfaces.BrowserDefault import IDynamicViewTypeInformation
 
@@ -141,14 +144,15 @@ class CatalogNavigationTree(utils.BrowserView):
         portal_url = getToolByName(context, 'portal_url')
         portal = portal_url.getPortalObject()
 
-        # XXX: Should use muliti-adapter lookups to get strategies
-
         queryBuilder = NavtreeQueryBuilder(portal, context)
-        strategy = DefaultNavtreeStrategy(portal, context)
-
         query = queryBuilder()
+        
+        strategy = getMultiAdapter((context, self), INavtreeStrategy)
 
         return buildFolderTree(portal, context=context, query=query, strategy=strategy)
+
+class CatalogSiteMap(utils.BrowserView):
+    implements(ISiteMap)
 
     def siteMap(self):
         context = utils.context(self)
@@ -156,12 +160,10 @@ class CatalogNavigationTree(utils.BrowserView):
         portal_url = getToolByName(context, 'portal_url')
         portal = portal_url.getPortalObject()
 
-        # XXX: Should use muliti-adapter lookups to get strategies
-
         queryBuilder = SitemapQueryBuilder(portal, context)
-        strategy = SitemapNavtreeStrategy(portal, context)
-
         query = queryBuilder()
+
+        strategy = getMultiAdapter((context, self), INavtreeStrategy)
 
         return buildFolderTree(portal, context=context, query=query, strategy=strategy)
 
