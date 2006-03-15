@@ -1,7 +1,7 @@
 
 request = context.REQUEST
 
-required = ('name', 'topLevel', 'bottomLevel')
+required = ('topLevel', 'bottomLevel')
 intvals = ('topLevel', 'bottomLevel')
 
 for k in required:

@@ -61,10 +61,6 @@
                             error errors/name|nothing"
                 tal:attributes="class python:error and 'field error' or 'field';">
                 <label>Navigation tree portlet title</label>
-                <span class="fieldRequired" title="Required"
-                  i18n:attributes="title title_required;"
-                  i18n:translate="label_required">(Required)
-                </span>
                 <div class="formHelp">
                   Change the English title of the navigation tree portlet. Note
                   that this won't affect the title in other languages.

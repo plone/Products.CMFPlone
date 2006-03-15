@@ -445,12 +445,12 @@ class TestNavigationRoot(PloneTestCase.PloneTestCase):
     
     def testGetNavigationRootPropertyNotSet(self):
         self.portal.portal_properties.navtree_properties._delProperty('root')
-        root = getNavigationRoot(self.portal, self.portal)
+        root = getNavigationRoot(self.portal)
         self.assertEqual(root, '/'.join(self.portal.getPhysicalPath()))
         
     def testGetNavigationRootPropertyEmptyNoVirtualHost(self):
         self.portal.portal_properties.navtree_properties.manage_changeProperties(root='')
-        root = getNavigationRoot(self.portal, self.portal)
+        root = getNavigationRoot(self.portal)
         self.assertEqual(root, '/'.join(self.portal.getPhysicalPath()))
 
     # XXX: If we re-enable this in PloneTool, we should fix up this test
@@ -459,7 +459,7 @@ class TestNavigationRoot(PloneTestCase.PloneTestCase):
 
     def testGetNavigationRootPropertyIsRoot(self):
         self.portal.portal_properties.navtree_properties.manage_changeProperties(root='/')
-        root = getNavigationRoot(self.portal, self.portal)
+        root = getNavigationRoot(self.portal)
         self.assertEqual(root, '/'.join(self.portal.getPhysicalPath()))
 
     def testGetNavigationRootPropertyIsFolder(self):
@@ -467,34 +467,34 @@ class TestNavigationRoot(PloneTestCase.PloneTestCase):
         portalPath = '/'.join(self.portal.getPhysicalPath())
         relativePath = folderPath[len(portalPath):]
         self.portal.portal_properties.navtree_properties.manage_changeProperties(root=relativePath)
-        root = getNavigationRoot(self.portal, self.portal)
+        root = getNavigationRoot(self.portal)
         self.assertEqual(root, folderPath)
 
     def testGetNavigationRootPropertyIsCurrentFolderish(self):
         folderPath = '/'.join(self.folder.getPhysicalPath())
         self.portal.portal_properties.navtree_properties.manage_changeProperties(root='.')
-        root = getNavigationRoot(self.portal, self.folder)
+        root = getNavigationRoot(self.folder)
         self.assertEqual(root, folderPath)
 
     def testGetNavigationRootPropertyIsCurrentNonFolderish(self):
         self.folder.invokeFactory('Document', 'foo')
         folderPath = '/'.join(self.folder.getPhysicalPath())
         self.portal.portal_properties.navtree_properties.manage_changeProperties(root='.')
-        root = getNavigationRoot(self.portal, self.folder.foo)
+        root = getNavigationRoot(self.folder.foo)
         self.assertEqual(root, folderPath)
         
     def testGetNavigationRootWithTopLevel(self):
         self.folder.invokeFactory('Document', 'foo')
         folderPath = '/'.join(self.folder.getPhysicalPath())
         self.portal.portal_properties.navtree_properties.manage_changeProperties(topLevel=2)
-        root = getNavigationRoot(self.portal, self.folder.foo, topLevel=2)
+        root = getNavigationRoot(self.folder.foo, topLevel=2)
         self.assertEqual(root, folderPath)
 
     def testGetNavigationRootWithTopLevelAndEmptyRoot(self):
         self.folder.invokeFactory('Document', 'foo')
         folderPath = '/'.join(self.folder.getPhysicalPath())
         self.portal.portal_properties.navtree_properties.manage_changeProperties(topLevel=2, root='')
-        root = getNavigationRoot(self.portal, self.folder.foo, topLevel=2)
+        root = getNavigationRoot(self.folder.foo, topLevel=2)
         self.assertEqual(root, folderPath)
 
     def testGetNavigationRootWithTopLevelAndRoot(self):
@@ -505,7 +505,7 @@ class TestNavigationRoot(PloneTestCase.PloneTestCase):
         self.folder.foo.invokeFactory('Document', 'bar')
         folderPath = '/'.join(self.folder.getPhysicalPath())
         self.portal.portal_properties.navtree_properties.manage_changeProperties(topLevel=1, root=relativePath)
-        root = getNavigationRoot(self.portal, self.folder.foo.bar, topLevel=1)
+        root = getNavigationRoot(self.folder.foo.bar, topLevel=1)
         self.assertEqual(root, folderPath + '/foo')
     
     def testGetNavigationRootWithTopLevelAndContextOutsideRoot(self):
@@ -513,7 +513,7 @@ class TestNavigationRoot(PloneTestCase.PloneTestCase):
         self.portal.invokeFactory('Folder', 'foo')
         self.setRoles(['Member'])
         self.portal.portal_properties.navtree_properties.manage_changeProperties(topLevel=1, root='/foo')
-        root = getNavigationRoot(self.portal, self.folder, topLevel=1)
+        root = getNavigationRoot(self.folder, topLevel=1)
         self.assertEqual(root, None)
 
 def test_suite():

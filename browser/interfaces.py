@@ -62,12 +62,23 @@ class INavigationRoot(Interface):
     """A marker interface for signaling the navigation root.
     """
 
-
 class INavigationPortlet(Interface):
     """Interface for portlet to display navigation tree"""
 
+    def title():
+        """The title of the navigation portlet (may be '' to fall back on default)"""
+
+    def display():
+        """Whether or not the navtree should be displayed"""
+
     def includeTop():
         """Whether or not to include the root element in the tree"""
+
+    def navigationRoot():
+        """Get the root object"""
+
+    def rootTypeName():
+        """Get a normalized content type name for the root object"""
 
     def createNavTree():
         """Build the actual tree"""

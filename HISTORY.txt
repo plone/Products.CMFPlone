@@ -4,9 +4,12 @@ Changelog for Plone
 
 Plone 2.5 (unreleased)
 
-	- Split the various navigation views into their respective parts, no more
-	  meta-navigation interface.
-	  [alecm]
+    - Merged navtree code from Plone 2.1.3 and adapterised a bit.
+      [optilude]
+
+    - Split the various navigation views into their respective parts, no more
+      meta-navigation interface.
+      [alecm]
 
     - Removed code from Portal.py for default_frontpage. This is now handled by
       the GenericSetup driven site creation. This fixes

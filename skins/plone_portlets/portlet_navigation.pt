@@ -5,14 +5,22 @@
 <div metal:define-macro="portlet"
        i18n:domain="plone"
        tal:omit-tag=""
-       tal:define="view context/@@navigation_view">
+       tal:define="view context/@@navigation_view;
+                   root view/navigationRoot;">
 
-<dl class="portlet" id="portlet-navigation-tree">
+<dl class="portlet" id="portlet-navigation-tree" tal:condition="view/display">
     <dt class="portletHeader">
+        
         <a href="#" 
            class="tile"
-           tal:attributes="href string:$portal_url/sitemap" 
+           tal:condition="not:view/title"
+           tal:attributes="href string:${root/absolute_url}/sitemap" 
            i18n:translate="box_navigation">Navigation</a>
+       <a href="#" 
+           class="tile"
+           tal:condition="view/title"
+           tal:attributes="href string:${root/absolute_url}/sitemap"
+           tal:content="view/title">Navigation</a>
     </dt>
 
     <dd class="portletItem">
@@ -20,16 +28,22 @@
 
             <li class="navTreeItem"
                 tal:condition="view/includeTop">
-                <div class="contenttype-plone-site">
-                    <a class="visualIconPadding"
-                       tal:attributes="href string:$portal_url;
-                                       title portal/Description;
-                                       class python:test(path('view/isPortalOrDefaultChild'),
-				                         'navTreeCurrentItem visualIconPadding', 'visualIconPadding');">
-                    <span tal:omit-tag=""
-                          i18n:translate="tabs_home">Home</span>
-                    </a>
-                </div>
+                <tal:block define="typeClass string:contenttype-${view/rootTypeName};
+                                   selectedClass python:test(path('view/isPortalOrDefaultChild'), 'navTreeCurrentItem', '');
+                                  ">
+                   <div class="contenttype-plone-site" tal:attributes="class typeClass">
+                       <a class="visualIconPadding"
+                          tal:attributes="href root/absolute_url;
+                                          title portal/Description;
+                                          class string:$selectedClass visualIconPadding;">
+                       <span tal:omit-tag=""
+                             tal:condition="python:root == portal"
+                             i18n:translate="tabs_home">Home</span>
+                       <span tal:condition="python:root != portal"
+                             tal:replace="root/Title">Home</span>
+                       </a>
+                   </div>
+                </tal:block>
             </li>
             <li tal:replace="structure view/createNavTree">
                 SUBTREE

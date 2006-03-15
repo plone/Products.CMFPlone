@@ -291,7 +291,7 @@ def buildFolderTree(portal, context=None, query={}, strategy=NavtreeStrategyBase
     # root path does not exist, we return a dummy parent node with no children.
     return itemPaths.get(rootPath, {'children' : []})
 
-def getNavigationRoot(portal, context, topLevel=None):
+def getNavigationRoot(context, topLevel=None):
     """Get the path to the root of the navigation tree. If an explicit
     root is set in navtree_properties, use this. If the 'root' property
     is set to an empty string, try to find the root of any virtual host.
@@ -300,8 +300,8 @@ def getNavigationRoot(portal, context, topLevel=None):
     the path to 'context'. If topLevel is given and context is not below
     the calculated root, return None.
     """
-    portal_url = getToolByName(portal, 'portal_url')
-    portal_properties = getToolByName(portal, 'portal_properties')
+    portal_url = getToolByName(context, 'portal_url')
+    portal_properties = getToolByName(context, 'portal_properties')
     navtree_properties = getattr(portal_properties, 'navtree_properties')
     
     rootPath = navtree_properties.getProperty('root', None)
@@ -442,7 +442,7 @@ class SitemapNavtreeStrategy(NavtreeStrategyBase):
         self.plone_utils = getToolByName(context, 'plone_utils')
         
         self.showAllParents = navtree_properties.getProperty('showAllParents', True)
-        self.rootPath = getNavigationRoot(self.portal, context)
+        self.rootPath = getNavigationRoot(context)
         
             
     def nodeFilter(self, node):
@@ -504,7 +504,7 @@ class DefaultNavtreeStrategy(SitemapNavtreeStrategy):
         # XXX: We can't do this with a 'depth' query to EPI...
         self.bottomLevel = navtree_properties.getProperty('bottomLevel', 0)
         topLevel = navtree_properties.getProperty('topLevel', 0)
-        self.rootPath = getNavigationRoot(self.portal, context, topLevel = topLevel)
+        self.rootPath = getNavigationRoot(context, topLevel = topLevel)
         
     def subtreeFilter(self, node):
         sitemapDecision = SitemapNavtreeStrategy.subtreeFilter(self, node)

@@ -18,7 +18,6 @@ from Products.CMFPlone.interfaces.BrowserDefault import IDynamicViewTypeInformat
 from Products.CMFPlone.browser.navtree import buildFolderTree
 from Products.CMFPlone.browser.navtree import NavtreeQueryBuilder, SitemapQueryBuilder
 
-# XXX: Should move these to use multi-adapters on the INavtreeStrategy interface
 from Products.CMFPlone.browser.navtree import DefaultNavtreeStrategy, SitemapNavtreeStrategy
 
 def get_url(item):
