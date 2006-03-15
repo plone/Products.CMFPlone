@@ -2,7 +2,7 @@
 #you should be able to define Product dependencies and error messages
 #in the config file
 
-import zLOG
+import logging
 import sys
 
 MINIMUM_PYTHON_VER = (2, 3, 4)
@@ -15,23 +15,24 @@ MINIMUM_CMF_VER = (1, 6, 0)
 
 messages = []
 
-def log(message, summary='', severity=zLOG.ERROR, optional=0):
+def log(message, summary='', severity=logging.ERROR, optional=0):
     if optional:
         subsys = 'Plone Option'
     else:
         subsys = 'Plone Dependency'
     messages.append({'message' : message, 'summary' : summary,
                      'severity' : severity, 'optional' : optional
-		    })
-    zLOG.LOG(subsys, severity, summary, message + "\n")
+            })
+    logger = logging.getLogger(subsys)
+    logger.log(severity, '%s \n%s', summary, message)
 
 # test python version
 PYTHON_VER = sys.version_info[:3]
 if PYTHON_VER < MINIMUM_PYTHON_VER:
     log(("Python version %s found but Plone needs at least "
          "Python %s. Please download and install Python %s "
-	 "from http://python.org/" % (PYTHON_VER, 
-	 MINIMUM_PYTHON_VER, PREFERRED_PYTHON_VER) ))
+     "from http://python.org/" % (PYTHON_VER,
+     MINIMUM_PYTHON_VER, PREFERRED_PYTHON_VER) ))
 
 # test zope version
 ZOPE_VER = "unknown"
@@ -51,8 +52,8 @@ if ZOPE_VER in ('unknown', (-1, -1, -1)): # -1, -1, 1 is developer release
 elif ZOPE_VER < MINIMUM_ZOPE_VER:
     log(("Zope version %s found but Plone needs at least "
          "Zope %s Please download and install Zope %s "
-	 "from http://zope.org/" % 
-	 (ZOPE_VER, MINIMUM_ZOPE_VER, PREFERRED_ZOPE_VER) ))
+     "from http://zope.org/" %
+     (ZOPE_VER, MINIMUM_ZOPE_VER, PREFERRED_ZOPE_VER) ))
 
 # make sure CMF is installed
 cmfcore = 0
@@ -68,7 +69,7 @@ if cmfcore:
     from Products.CMFCore import cmfcore_globals
     from App.Common import package_home
     from os.path import join
-    
+
     x = []
     CMF_VERSION = 'Unknown'
     try:
@@ -106,8 +107,8 @@ try:
 except ImportError:
     log(("PIL not found. Plone needs PIL 1.1.5 or newer to scale images. "
          "Please download it from http://www.pythonware.com/products/pil/ or "
-         "http://effbot.org/downloads/#Imaging"), 
-         severity=zLOG.INFO, optional=1)
+         "http://effbot.org/downloads/#Imaging"),
+         severity=logging.INFO, optional=1)
 
 try:
     import Products.ExternalEditor
@@ -116,7 +117,7 @@ except ImportError:
          "the external edit functionality, please "
          "download it from "
          "http://plope.com/software/ExternalEditor"),
-        severity=zLOG.INFO, optional=1)
+        severity=logging.INFO, optional=1)
 
 try:
     import Products.kupu
@@ -124,7 +125,7 @@ except ImportError:
     log(("Kupu not found. If you want WYSIWYG capabilities "
         "in Plone, you can download it from "
         "http://kupu.oscom.org/"),
-        severity=zLOG.INFO, optional=1)
+        severity=logging.INFO, optional=1)
 
 try:
     import Products.PlacelessTranslationService
@@ -142,7 +143,7 @@ except ImportError:
          "runs without this, but if you want multilingual "
          "interface or access keys, you must download it from "
          "http://plone.org/products/plonetranslations"),
-        severity=zLOG.INFO, optional=1)
+        severity=logging.INFO, optional=1)
 
 try:
     import Products.CMFFormController

@@ -7,5 +7,6 @@
 ##parameters=summary='',text=''
 ##title=
 ##
-#from zLOG import LOG, INFO
-#LOG('Plone Debug', INFO, summary, text)
+from logging import getLogger
+log = getLogger('Plone')
+log.info('Debug: %s \n%s', summary, text)

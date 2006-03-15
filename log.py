@@ -3,18 +3,19 @@ This module resolves an import order dependency.
 Don't import from here, import from utils.
 """
 
-import zLOG
+import logging
+
+logger = logging.getLogger('Plone')
 
 # generic log method
-def log(message, summary='', severity=zLOG.INFO):
-    zLOG.LOG('Plone', severity, summary, message)
+def log(message, summary='', severity=logging.INFO):
+    logger.log(severity, '%s \n%s', summary, message)
 
 # log message + exception info
-def log_exc(message='', summary='', severity=zLOG.ERROR):
-    zLOG.LOG('Plone', severity, summary, message, error=True)
+def log_exc(message='', summary='', severity=logging.ERROR):
+    logger.log(severity, '%s \n%s', summary, message)
 
 # deprecration warning
 def log_deprecated(message, summary='Deprecation Warning',
-                   severity=zLOG.WARNING):
-    zLOG.LOG('Plone', severity, summary, message)
-
+                   severity=logging.WARNING):
+    logger.log(severity, '%s \n%s', summary, message)

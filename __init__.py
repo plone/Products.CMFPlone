@@ -36,6 +36,7 @@ def initialize(context):
     from logging import Logger
     allow_class(Logger)
 
+    # BBB: Deprecated do not use, will be removed in Plone 3.0
     ModuleSecurityInfo('zLOG').declarePublic('LOG')
     ModuleSecurityInfo('zLOG').declarePublic('INFO')
     ModuleSecurityInfo('zLOG').declarePublic('WARNING')

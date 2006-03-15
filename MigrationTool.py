@@ -11,7 +11,7 @@ from Products.CMFPlone.utils import log
 from Products.CMFPlone.utils import classImplements
 import transaction
 
-import zLOG
+import logging
 import traceback
 import sys
 
@@ -261,16 +261,16 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
         self._check()
 
         if dry_run:
-            out.append(("Dry run selected.", zLOG.INFO))
+            out.append(("Dry run selected.", logging.INFO))
 
         # either get the forced upgrade instance or the current instance
         newv = getattr(REQUEST, "force_instance_version",
                        self.getInstanceVersion())
 
         out.append(("Starting the migration from "
-                    "version: %s" % newv, zLOG.INFO))
+                    "version: %s" % newv, logging.INFO))
         while newv is not None:
-            out.append(("Attempting to upgrade from: %s" % newv, zLOG.INFO))
+            out.append(("Attempting to upgrade from: %s" % newv, logging.INFO))
             try:
                 newv, msgs = self._upgrade(newv)
                 if msgs:
@@ -280,20 +280,20 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
                             msg = [msg,]
                         # if no status, add one
                         if len(msg) == 1:
-                            msg.append(zLOG.INFO)
+                            msg.append(logging.INFO)
                         out.append(msg)
                 if newv is not None:
-                    out.append(("Upgrade to: %s, completed" % newv, zLOG.INFO))
+                    out.append(("Upgrade to: %s, completed" % newv, logging.INFO))
                     self.setInstanceVersion(newv)
 
             except ConflictError:
                 raise
             except:
-                out.append(("Upgrade aborted", zLOG.ERROR))
-                out.append(("Error type: %s" % sys.exc_type, zLOG.ERROR))
-                out.append(("Error value: %s" % sys.exc_value, zLOG.ERROR))
+                out.append(("Upgrade aborted", logging.ERROR))
+                out.append(("Error type: %s" % sys.exc_type, logging.ERROR))
+                out.append(("Error value: %s" % sys.exc_value, logging.ERROR))
                 for line in traceback.format_tb(sys.exc_traceback):
-                    out.append((line, zLOG.ERROR))
+                    out.append((line, logging.ERROR))
 
                 # set newv to None
                 # to break the loop
@@ -305,15 +305,15 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
                     # abort transaction to safe the zodb
                     transaction.abort()
 
-        out.append(("End of upgrade path, migration has finished", zLOG.INFO))
+        out.append(("End of upgrade path, migration has finished", logging.INFO))
 
         if self.needUpgrading():
             out.append((("The upgrade path did NOT reach "
-                        "current version"), zLOG.PROBLEM))
-            out.append(("Migration has failed", zLOG.PROBLEM))
+                        "current version"), logging.PROBLEM))
+            out.append(("Migration has failed", logging.PROBLEM))
         else:
             out.append((("Your ZODB and Filesystem Plone "
-                         "instances are now up-to-date."), zLOG.INFO))
+                         "instances are now up-to-date."), logging.INFO))
 
         # do this once all the changes have been done
         if self.needRecatalog():
@@ -324,7 +324,7 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
                 raise
             except:
                 out.append(("Exception was thrown while cataloging",
-                            zLOG.ERROR))
+                            logging.ERROR))
                 out += traceback.format_tb(sys.exc_traceback)
                 if not swallow_errors:
                     for msg, sev in out: log(msg, severity=sev)
@@ -338,17 +338,17 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
                 raise
             except:
                 out.append((("Exception was thrown while updating "
-                             "role mappings"), zLOG.ERROR))
+                             "role mappings"), logging.ERROR))
                 out += traceback.format_tb(sys.exc_traceback)
                 if not swallow_errors:
                     for msg, sev in out: log(msg, severity=sev)
                     raise
 
         if dry_run:
-            out.append(("Dry run selected, transaction aborted", zLOG.INFO))
+            out.append(("Dry run selected, transaction aborted", logging.INFO))
             transaction.abort()
 
-        # log all this to the ZLOG
+        # log all this
         for msg, sev in out: log(msg, severity=sev)
         try:
             return self.manage_results(self, out=out)

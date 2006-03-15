@@ -1,7 +1,7 @@
 from types import ListType, TupleType
 from Acquisition import aq_base
 from Products.CMFCore.utils import getToolByName
-import zLOG
+import logging
 from Products.CMFPlone.MemberDataTool import MemberDataTool
 from Products.PlonePAS.tools.memberdata \
         import MemberDataTool as PASMemberDataTool
@@ -41,7 +41,7 @@ def saveCloneActions(actionprovider):
     except AttributeError:
         # Stumbled across ancient dictionary actions
         if not hasattr(aq_base(actionprovider), '_convertActions'):
-            return False, ('Can\'t convert actions of %s! Jumping to next action.' % actionprovider.getId(), zLOG.ERROR)
+            return False, ('Can\'t convert actions of %s! Jumping to next action.' % actionprovider.getId(), logging.ERROR)
         else:
             actionprovider._convertActions()
             return True, actionprovider._cloneActions()

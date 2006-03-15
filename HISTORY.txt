@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.5 (unreleased)
 
+    - Remove use of zLOG in favor of the python logger, add some content
+      classes to five:deprecatedManageAddDelete to avoid some warinings.
+      [alecm]
+
     - Added a BBB getMultiAdapter to lookup views for zope 2.8, which means
       fewer deprecation warnings and an easier migration path to zope 2.10.
       [alecm]
@@ -4799,7 +4803,7 @@ Plone 2.0 - Fyuti - Released March 23, 2004
 
     - removed all .properties files and made them .metadata files
       tal:define="here/rejectAnonymous" and made [ 'security' ] assertions in
-      .metadata	[runyaga]
+      .metadata    [runyaga]
 
     - there is now a folder in the root of the Plone site called 'help' which is
       bootstrapped with 'Document' objects located in CMFPlone/docs. Thus, we
