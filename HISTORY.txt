@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.5 (unreleased)
 
+    - Do no use javascript in failsafe_login_form - it is not safe
+      [wichert]
+
     - Remove use of zLOG in favor of the python logger, add some content
       classes to five:deprecatedManageAddDelete to avoid some warinings.
       [alecm]

@@ -1,7 +1,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
       i18n:domain="plone">
 <head>
-    <script type="text/javascript" tal:attributes="src python:context.portal_url()+'/login.js'" />
+  <title i18n:translate="heading_sign_in">Please log in</title>
 </head>
 
 <body>
@@ -158,9 +158,7 @@ If you do not have an account here, head over to the
                    name="submit"
                    value="Log in"
                    i18n:attributes="value label_log_in;"
-                   tal:attributes="tabindex tabindex/next;
-                                   onclick string:javascript:return setLoginVars('$ac_name','login_name','$ac_password','pwd_empty','js_enabled','cookies_enabled');"
-                   />
+                   tal:attributes="tabindex tabindex/next;" />
 
         </div>
 
