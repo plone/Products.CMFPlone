@@ -6,9 +6,9 @@
 <!-- THE PERSONAL BAR DEFINITION -->
 
 <div metal:define-macro="personal_bar"
+      id="portal-personaltools-wrapper"
       tal:define="display_actions python:user_actions[:-1]+global_actions+user_actions[-1:];
-                  getIconFor nocall:putils/getIconFor;"
-      tal:omit-tag="">
+                  getIconFor nocall:putils/getIconFor;">
 
 <h5 class="hiddenStructure" i18n:translate="heading_personal_tools">Personal tools</h5>
 
