@@ -9,36 +9,40 @@
 
 <dl class="portlet"
     id="portlet-prefs">
-    <dt class="portletHeader"><span i18n:translate="heading_control_panel">Site Setup</span></dt>
+    <dt class="portletHeader">
+        <span class="portletTopLeft"></span>
+        <span i18n:translate="heading_control_panel">Site Setup</span>
+        <span class="portletTopRight"></span>
+    </dt>
 
-        <dd class="portletItem"
-            tal:repeat="group groups">
+    <dd class="portletItem lastItem"
+        tal:repeat="group groups">
 
-            <strong tal:content="group/title"
-                    i18n:translate="">Plone Configlet Group Title</strong>
-            <ul class="configlets" tal:define="configlets python:controlPanel.enumConfiglets(group=group['id'])">
-    
-                <li tal:repeat="configlet configlets">
-                    <a href=""
-                       style="display: block;"
-                       tal:attributes="href configlet/url"
-                       tal:condition="configlet/visible">
-                        <img src="" alt="" tal:attributes="src python:getIconFor('controlpanel',configlet['id']);
-                                             alt configlet/description"
-                             i18n:attributes="alt"
-                             tal:on-error="string:" />
-                    <tal:configletname tal:content="configlet/name"
-                                       i18n:translate=""></tal:configletname>
-                    </a>
-                </li>
-    
-                <li tal:condition="not:configlets" i18n:translate="label_no_panels_available">
-                    No Preference Panels available.
-                </li>
-    
-            </ul>
+        <strong tal:content="group/title"
+                i18n:translate="">Plone Configlet Group Title</strong>
+        <ul class="configlets" tal:define="configlets python:controlPanel.enumConfiglets(group=group['id'])">
 
-        </dd>
+            <li tal:repeat="configlet configlets">
+                <a href=""
+                   style="display: block;"
+                   tal:attributes="href configlet/url"
+                   tal:condition="configlet/visible">
+                    <img src="" alt="" tal:attributes="src python:getIconFor('controlpanel',configlet['id']);
+                                         alt configlet/description"
+                         i18n:attributes="alt"
+                         tal:on-error="string:" />
+                <tal:configletname tal:content="configlet/name"
+                                   i18n:translate=""></tal:configletname>
+                </a>
+            </li>
+
+            <li tal:condition="not:configlets" i18n:translate="label_no_panels_available">
+                No Preference Panels available.
+            </li>
+        </ul>
+        <span class="portletBottomLeft"></span>
+        <span class="portletBottomRight"></span>
+    </dd>
 
 </dl>
 

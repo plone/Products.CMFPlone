@@ -15,6 +15,7 @@
     tal:define="eventsfolder python:'events' in portal.contentIds()">
   
     <dt class="portletHeader">
+        <span class="portletTopLeft"></span>
         <a href=""
            class="tile"
            tal:condition="eventsfolder"
@@ -30,6 +31,7 @@
            i18n:translate="box_events">
             Upcoming Events
         </a>
+        <span class="portletTopRight"></span>
     </dt>
 
     <tal:events tal:repeat="obj results">
@@ -83,6 +85,8 @@
            i18n:translate="box_upcoming_events">
                 Upcoming events&hellip;
         </a>
+        <span class="portletBottomLeft"></span>
+        <span class="portletBottomRight"></span>
     </dd>
 </dl>
 

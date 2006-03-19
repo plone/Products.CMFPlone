@@ -13,6 +13,7 @@
     <dl class="portlet" id="portlet-news">
 
         <dt class="portletHeader">
+            <span class="portletTopLeft"></span>
             <a href="#" 
                class="tile"
                tal:condition="python:'news' in portal.contentIds()"
@@ -23,6 +24,7 @@
                tal:condition="python:'news' not in portal.contentIds()"
                tal:attributes="href string:${utool}/news_listing"
                i18n:translate="box_news">News</a>
+            <span class="portletTopRight"></span>
         </dt>
 
         <tal:newsitems tal:repeat="obj results">
@@ -62,6 +64,8 @@
                >
               More news&hellip;
             </a>
+            <span class="portletBottomLeft"></span>
+            <span class="portletBottomRight"></span>
         </dd>
     </dl>
 

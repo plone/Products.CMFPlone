@@ -15,7 +15,11 @@
 <dl class="portlet"
     id="portlet-related">
 
-    <dt class="portletHeader"><span i18n:translate="box_related">Related</span></dt>
+    <dt class="portletHeader">
+        <span class="portletTopLeft"></span>
+        <span i18n:translate="box_related">Related</span>
+        <span class="portletTopRight"></span>
+    </dt>
 
     <dd class="portletItem odd" tal:condition="relatedLocal">
         <h5 i18n:translate="box_local_resources">Local resources</h5>
@@ -32,7 +36,7 @@
         </ul>
     </dd>
 
-    <dd class="portletItem even" tal:condition="relatedRemote">
+    <dd class="portletItem even lastItem" tal:condition="relatedRemote">
         <h5 i18n:translate="box_external_links">External links</h5>
         <ul class="visualNoMarker">
             <li tal:repeat="related relatedRemote">
@@ -45,6 +49,8 @@
                 </a>
             </li>
         </ul>
+        <span class="portletBottomLeft"></span>
+        <span class="portletBottomRight"></span>
     </dd>
 
 </dl>

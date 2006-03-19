@@ -14,14 +14,16 @@
        
 <dl class="portlet" id="portlet-navigation-tree" tal:condition="python:len(data['children']) > 0">
     <dt class="portletHeader">
+        <span class="portletTopLeft"></span>
         <a href="#" 
            class="tile"
            tal:content="props/name | default"
            tal:attributes="href string:$portal_url/sitemap" 
            i18n:translate="box_navigation">Navigation</a>
+        <span class="portletTopRight"></span>
     </dt>
     
-    <dd class="portletItem">
+    <dd class="portletItem lastItem">
         <ul class="portletNavigationTree navTreeLevel0">
            <tal:block condition="props/includeTop"> 
               <li class="navTreeItem" tal:condition="python:navRoot == portalPath">
@@ -59,6 +61,8 @@
                 <metal:main metal:use-macro="here/portlet_navtree_macro/macros/nav_main" />
             </tal:navtree>
         </ul>
+        <span class="portletBottomLeft"></span>
+        <span class="portletBottomRight"></span>
     </dd>
 </dl>
 
