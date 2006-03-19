@@ -312,7 +312,6 @@
     visibility: visible;
     text-align:left;
     color: &dtml-globalFontColor;;
-    background-color: transparent;
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
     width:300px;
     text-transform: none;
