@@ -9,13 +9,20 @@
 #objectMenu .contenttype-&dtml-type_id; a:hover { 
     background-position: 100% 0%;
 }
+
+#portal-sitemap .contenttype-&dtml-type_id; a:hover,
+#portal-sitemap .contenttype-&dtml-type_id; a.navTreeCurrentItem,
 #portlet-navigation-tree .contenttype-&dtml-type_id; a:hover,
 #portlet-navigation-tree .contenttype-&dtml-type_id; a.navTreeCurrentItem {
     background-position: 100% 3px; margin-right: -1px; margin-left: 0;
 }
+
+#portal-sitemap .contenttype-&dtml-type_id;,
 #portlet-navigation-tree .contenttype-&dtml-type_id; {
     background-position: 100% 4px;
 }
+
+dt span.contenttype-&dtml-type_id; { display : block; float: right; margin-top: -2px; }
   </dtml-let>
 </dtml-in>
 
@@ -50,6 +57,7 @@ ol {
 #portal-logo {
     background: url(&dtml-portal_url;/&dtml-logoName;) no-repeat top right;
     margin: 0.75em 1.5em 0.75em 0em;
+    width: <dtml-var "_[logoName].width">px; /* Fix for wide logo problem - smoothify */
 }
 
 #portal-skinswitcher a {
@@ -103,19 +111,46 @@ Anyway, didn't get it fixed but at least we know what it is. :-/
 }
 
 #portal-personaltools {
+    /* empty personaltools background and border and set on newly added portal-personaltools-wrapper instead */
+    background: none;
+    border: none;
+    /* other hacks / fixes - smoothift */
+    display: table;
+    padding: 0;
+    margin: 0;
+    float: left;
+
+}
+
+#portal-personaltools-wrapper{
+    /* settings from #portal-personaltools */
+    background-color: &dtml-globalBackgroundColor;;
+    border-top-color: &dtml-globalBorderColor;;
+    border-top-style: &dtml-borderStyle;;
+    border-top-width: &dtml-borderWidth;;
+    border-bottom-color: &dtml-globalBorderColor;;
+    border-bottom-style: &dtml-borderStyle;;
+    border-bottom-width: &dtml-borderWidth;;
+    /* new settings */
+    display: block;
+    height : 2em;
     clear: both;
-    text-align: left;
 }
 
 #portal-personaltools .portalUser {
-    background: transparent url(&dtml-portal_url;/user.gif) center right no-repeat;
-    padding-right: 15px;
+    background: transparent url(&dtml-portal_url;/user.gif) 100% 50% no-repeat;
+    margin: 0;
+    padding-right: 18px; /* fix for overlapping icon - smoothify */
+    padding-left: 1em; /* fix for overlapping icon - smoothify */
+    display: table-cell;
 }
 
 #portal-personaltools li {
-    background: transparent url(&dtml-portal_url;/rtl-linkOpaque.gif) center right no-repeat;
-    padding-right: 5px;
-    margin-left: 1em;
+    background: transparent url(&dtml-portal_url;/rtl-linkOpaque.gif) 100% 50% no-repeat;
+    margin: 0;
+    padding-right: 10px; /* fix for overlapping icon - smoothify */
+    padding-left: 1em; /* fix for overlapping icon - smoothify */
+    display: table-cell;
 }
 
 .contentViews {
@@ -364,5 +399,36 @@ ul.configletDetails {
 .navTreeLevel3 { margin-left: 0em; margin-right: 0.75em; }
 .navTreeLevel4 { margin-left: 0em; margin-right: 0.75em; }
 .navTreeLevel5 { margin-left: 0em; margin-right: 0.75em; }
+
+/* set sitemap borders and margins for right alignment  - smoothify */
+#portal-sitemap .navTreeLevel1,
+#portal-sitemap .navTreeLevel2 {
+    padding-left: 0;
+    padding-right: 1em;
+    border-left: none;
+    border-right: 0.5em solid &dtml-globalBorderColor;;
+    margin: 0 0.5em 0 0;
+}
+
+/* set sitemap borders and margins for right alignment  - smoothify */
+#portal-sitemap .navTreeLevel2 {
+    border-right: 0.5em solid &dtml-globalBackgroundColor;;
+    margin: 0 0.6em 0 0;
+}
+
+/* Hacks to set fix overlapping icons in folder listing - smoothify */
+dt span.documentByLine {
+    padding-top: 4px;
+    padding-right: 4px;
+}
+
+#content dl dd {
+    clear: both;
+}
+
+/* Fix to big header which causes a horizontal scrollbar to appear */
+#portal-top {
+    margin-right: 1px;
+}
 
 /* </dtml-with> */

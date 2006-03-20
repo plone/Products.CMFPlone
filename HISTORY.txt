@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1.3 - Tomahawk - Unreleased
 
+    - Incorporated various fixes for RTL support.
+      http://dev.plone.org/plone/ticket/5299
+      [fschulze]
+
     - Moved the hidden accessibility items from public.css to base.css.
       [limi]
 
