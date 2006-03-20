@@ -27,7 +27,7 @@
                    style="display: block;"
                    tal:attributes="href configlet/url"
                    tal:condition="configlet/visible">
-                    <img src="" alt="" tal:attributes="src python:getIconFor('controlpanel',configlet['id']);
+                    <img src="" alt="" tal:attributes="src python:'%s/%s' % (portal_url, getIconFor('controlpanel',configlet['id']));
                                          alt configlet/description"
                          i18n:attributes="alt"
                          tal:on-error="string:" />
