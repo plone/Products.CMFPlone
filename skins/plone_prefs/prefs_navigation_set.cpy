@@ -5,7 +5,7 @@
 ##bind script=script
 ##bind state=state
 ##bind subpath=traverse_subpath
-##parameters=generated_tabs=False, portaltypes=[], enable_wf_state_filtering=False, wf_states_to_show=[], bottomLevel=0, name='Navigation', root='/', topLevel=0, RESPONSE=None
+##parameters=generated_tabs=False, portaltypes=[], enable_wf_state_filtering=False, wf_states_to_show=[], bottomLevel=0, name='Navigation', root='/', currentFolderOnlyInNavtree=False, topLevel=0, RESPONSE=None
 ##title=Set Navigation Prefs
 ##
 
@@ -33,6 +33,7 @@ portal_properties.navtree_properties.manage_changeProperties(
                         wf_states_to_show=wf_states_to_show,
                         name=name,
                         root=root,
+                        currentFolderOnlyInNavtree=currentFolderOnlyInNavtree,
                         topLevel=topLevel,
                         bottomLevel=bottomLevel)
 

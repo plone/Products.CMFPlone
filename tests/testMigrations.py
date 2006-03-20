@@ -3457,7 +3457,7 @@ class TestMigrations_v2_1_3(MigrationTest):
                     'showFolderishChildrenOnly', 'showNonFolderishObject', 'showTopicResults',
                     'rolesSeeContentView', 'rolesSeeUnpublishedContent', 'batchSize', 
                     'croppingLength', 'forceParentsInBatch', 'rolesSeeHiddenContent', 'typesLinkToFolderContents']
-        toAdd = {'name' : '', 'root' : '/'}
+        toAdd = {'name' : '', 'root' : '/', 'currentFolderOnlyInNavtree' : False}
         for property in toRemove:
             ntp._setProperty(property, 'X', 'string')
         for property, value in toAdd.items():
@@ -3477,7 +3477,7 @@ class TestMigrations_v2_1_3(MigrationTest):
                     'rolesSeeContentView', 'rolesSeeUnpublishedContent', 'rolesSeeContentsView',
                     'batchSize', 'sortCriteria', 'croppingLength', 'forceParentsInBatch', 
                     'rolesSeeHiddenContent', 'typesLinkToFolderContents']
-        toAdd = {'name' : '', 'root' : '/'}
+        toAdd = {'name' : '', 'root' : '/', 'currentFolderOnlyInNavtree' : False}
         for property in toRemove:
             ntp._setProperty(property, 'X', 'string')
         for property, value in toAdd.items():

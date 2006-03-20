@@ -627,7 +627,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
                     'rolesSeeContentView', 'rolesSeeUnpublishedContent', 'rolesSeeContentsView ',
                     'batchSize', 'sortCriteria', 'croppingLength', 'forceParentsInBatch', 
                     'rolesSeeHiddenContent', 'typesLinkToFolderContents']
-        toAdd = {'name' : '', 'root' : '/'}
+        toAdd = {'name' : '', 'root' : '/', 'currentFolderOnlyInNavtree' : False}
         for property in toRemove:
             self.assertEqual(ntp.getProperty(property, None), None)
         for property, value in toAdd.items():

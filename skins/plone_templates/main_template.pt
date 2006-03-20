@@ -6,7 +6,8 @@
       xml:lang="en"
       lang="en"
       tal:attributes="lang language;
-                      xml:lang language">
+                      xml:lang language"
+      tal:define="plone_view context/@@plone">
 
   <head metal:use-macro="here/header/macros/html_header">
 

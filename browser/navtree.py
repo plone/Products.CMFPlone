@@ -29,7 +29,7 @@ class NavtreeStrategyBase:
     def decoratorFactory(self, node):
         return node
 
-def buildFolderTree(portal, context=None, query={}, strategy=NavtreeStrategyBase()):
+def buildFolderTree(context, obj=None, query={}, strategy=NavtreeStrategyBase()):
     """Create a tree structure representing a navigation tree. By default,
     it will create a full "sitemap" tree, rooted at the portal, ordered
     by explicit folder order. If the 'query' parameter contains a 'path'
@@ -41,22 +41,45 @@ def buildFolderTree(portal, context=None, query={}, strategy=NavtreeStrategyBase
     
     to start this 1 level below the portal root, set query['path'] to:
     
-        {'query' : '/'.join(context.getPhysicalPath()),
+        {'query' : '/'.join(obj.getPhysicalPath()),
          'navtree' : 1,
          'navtree_start' : 1}
     
     to create a sitemap with depth limit 3, rooted in the portal:
     
-        {'query' : '/'.join(portal.getPhysicalPath()),
+        {'query' : '/'.join(obj.getPhysicalPath()),
          'depth' : 3}
     
     The parameters:
     
-    - 'portal' is the portal root, from which tools will be acquired
-    - 'context' is the current object being displayed.
+    - 'context' is the acquisition context, from which tools will be acquired
+    - 'obj' is the current object being displayed.
     - 'query' is a catalog query to apply to find nodes in the tree.
-    - 'strategy' is an object implementing INavtreeStrategy, which can affect 
-        how the generation works
+    - 'strategy' is an object that can affect how the generation works. It
+        should be derived from NavtreeStrategyBase, if given, and contain:
+        
+            rootPath -- a string property; the physical path to the root node.
+            
+            If not given, it will default to any path set in the query, or the
+            portal root. Note that in a navtree query, the root path will 
+            default to the portal only, possibly adjusted for any navtree_start
+            set. If rootPath points to something not returned by the query by
+            the query, a dummy node containing only an empty 'children' list 
+            will be returned.
+        
+            showAllParents -- a boolean property; if true and obj is given,
+                ensure that all parents of the object, including any that would
+                normally be filtered out are included in the tree.
+        
+            nodeFilter(node) -- a method returning a boolean; if this returns
+                False, the given node will not be inserted in the tree
+            
+            subtreeFilter(node) -- a method returning a boolean; if this returns
+                False, the given (folderish) node will not be expanded (its 
+                children will be pruned off)
+            
+            decoratorFactory(node) -- a method returning a dict; this can inject
+                additional keys in a node being inserted.
                 
     Returns tree where each node is represented by a dict:
 
@@ -66,32 +89,32 @@ def buildFolderTree(portal, context=None, query={}, strategy=NavtreeStrategyBase
         currentParent   -   True if this is a direct parent of the current item
         children        -   A list of children nodes of this node
         
-    Note: A 'decoratorFactory' in a navtree strategy may modify this list, but
+    Note: Any 'decoratorFactory' specified may modify this list, but
     the 'children' property is guaranteed to be there. 
     
     Note: If the query does not return the root node itself, the root 
     element of the tree may contain *only* the 'children' list.
     
     Note: Folder default-pages are not included in the returned result. 
-    If the 'context' passed in is a default-page, its parent folder will be
+    If the 'obj' passed in is a default-page, its parent folder will be
     used for the purposes of selecting the 'currentItem'.
     """
     
-    portal_url = getToolByName(portal, 'portal_url')
-    plone_utils = getToolByName(portal, 'plone_utils')
-    portal_catalog = getToolByName(portal, 'portal_catalog')
+    portal_url = getToolByName(context, 'portal_url')
+    plone_utils = getToolByName(context, 'plone_utils')
+    portal_catalog = getToolByName(context, 'portal_catalog')
     
     showAllParents = strategy.showAllParents
     rootPath = strategy.rootPath
     
-    # Find the context's path. Use parent folder if context is a default-page
+    # Find the object's path. Use parent folder if context is a default-page
     
-    contextPath = None
-    if context is not None:
-        if plone_utils.isDefaultPage(context):
-            contextPath = '/'.join(context.getPhysicalPath()[:-1])
+    objPath = None
+    if obj is not None:
+        if plone_utils.isDefaultPage(obj):
+            objPath = '/'.join(obj.getPhysicalPath()[:-1])
         else:
-            contextPath = '/'.join(context.getPhysicalPath())
+            objPath = '/'.join(obj.getPhysicalPath())
     
     portalPath = portal_url.getPortalPath()
     
@@ -181,10 +204,10 @@ def buildFolderTree(portal, context=None, query={}, strategy=NavtreeStrategyBase
             return
         
         isCurrent = isCurrentParent = False
-        if contextPath is not None:
-            if contextPath == itemPath:
+        if objPath is not None:
+            if objPath == itemPath:
                 isCurrent = True
-            elif contextPath.startswith(itemPath):
+            elif objPath.startswith(itemPath):
                 isCurrentParent = True
             
         relativeDepth = len(itemPhysicalPath) - rootDepth
@@ -249,8 +272,8 @@ def buildFolderTree(portal, context=None, query={}, strategy=NavtreeStrategyBase
     # If needed, inject additional nodes for the direct parents of the 
     # context. Note that we use an unrestricted query: things we don't normally
     # have permission to see will be included in the tree.
-    if strategy.showAllParents and contextPath is not None:
-        contextSubPathElements = contextPath[len(rootPath)+1:].split('/')
+    if strategy.showAllParents and objPath is not None:
+        objSubPathElements = objPath[len(rootPath)+1:].split('/')
         parentPaths = []
         
         haveNode = (itemPaths.get(rootPath, {}).get('item', None) is None)
@@ -258,8 +281,8 @@ def buildFolderTree(portal, context=None, query={}, strategy=NavtreeStrategyBase
             parentPaths.append(rootPath)
         
         parentPath = rootPath
-        for i in range(len(contextSubPathElements)):
-            nodePath = rootPath + '/' + '/'.join(contextSubPathElements[:i+1])
+        for i in range(len(objSubPathElements)):
+            nodePath = rootPath + '/' + '/'.join(objSubPathElements[:i+1])
             node = itemPaths.get(nodePath, None)
             
             # If we don't have this node, we'll have to get it, if we have it
@@ -291,14 +314,11 @@ def buildFolderTree(portal, context=None, query={}, strategy=NavtreeStrategyBase
     # root path does not exist, we return a dummy parent node with no children.
     return itemPaths.get(rootPath, {'children' : []})
 
-def getNavigationRoot(context, topLevel=None):
+
+def getNavigationRoot(context):
     """Get the path to the root of the navigation tree. If an explicit
-    root is set in navtree_properties, use this. If the 'root' property
-    is set to an empty string, try to find the root of any virtual host.
-    If the property is not set or is set to '/', use the portal root. If
-    'topLevel' is given, start this many levels below the given root on
-    the path to 'context'. If topLevel is given and context is not below
-    the calculated root, return None.
+    root is set in navtree_properties, use this. If the property is not set or 
+    is set to '/', use the portal root. 
     """
     portal_url = getToolByName(context, 'portal_url')
     portal_properties = getToolByName(context, 'portal_properties')
@@ -309,12 +329,7 @@ def getNavigationRoot(context, topLevel=None):
     contextPath = '/'.join(context.getPhysicalPath())
     
     if rootPath:
-        if rootPath == '.':
-            if context.is_folderish():
-                rootPath = '/'.join(context.getPhysicalPath())
-            else:
-                rootPath = '/'.join(context.getPhysicalPath()[:-1])
-        elif rootPath == '/':
+        if rootPath == '/':
             rootPath = portalPath
         else:
             if len(rootPath) > 1 and rootPath[0] == '/':
@@ -344,15 +359,6 @@ def getNavigationRoot(context, topLevel=None):
     if not rootPath:
         rootPath = portalPath
         
-    # Adjust for topLevel
-    if topLevel is not None and topLevel > 0:
-        if not contextPath.startswith(rootPath):
-            return None
-        contextSubPathElements = contextPath[len(rootPath)+1:].split('/')
-        if len(contextSubPathElements) < topLevel:
-            return None
-        rootPath = rootPath + '/' + '/'.join(contextSubPathElements[:topLevel])
-    
     return rootPath
 
 # Strategy objects for the navtree creation code. You can subclass these
@@ -363,23 +369,33 @@ class NavtreeQueryBuilder:
     """Build a navtree query based on the settings in navtree_properties
     """
     
-    def __init__(self, portal, context):
-        portal_properties = getToolByName(portal, 'portal_properties')
-        portal_url = getToolByName(portal, 'portal_url')
-        plone_utils = getToolByName(portal, 'plone_utils')
+    def __init__(self, context):
+        portal_properties = getToolByName(context, 'portal_properties')
+        portal_url = getToolByName(context, 'portal_url')
+        plone_utils = getToolByName(context, 'plone_utils')
         
         navtree_properties = getattr(portal_properties, 'navtree_properties')
         
         # Acquire a custom nav query if available
-        customQuery = getattr(portal, 'getCustomNavQuery', None)
+        customQuery = getattr(context, 'getCustomNavQuery', None)
         if customQuery is not None and safe_callable(customQuery):
             query = customQuery()
         else:
             query = {}
 
         # Construct the path query
+        
+        rootPath = getNavigationRoot(context)
         currentPath = '/'.join(context.getPhysicalPath())
-        query['path'] = {'query' : currentPath, 'navtree' : 1}
+        
+        # If we are above the navigation root, a navtree query would return
+        # nothing (since we explicitly start from the root always). Hence,
+        # use a regular depth-1 query in this case.
+        
+        if rootPath.startswith(currentPath):
+            query['path'] = {'query' : rootPath, 'depth' : 1}
+        else:
+            query['path'] = {'query' : currentPath, 'navtree' : 1}
 
         topLevel = navtree_properties.getProperty('topLevel', 0)
         if topLevel and topLevel > 0:
@@ -412,10 +428,10 @@ class SitemapQueryBuilder(NavtreeQueryBuilder):
     """Build a folder tree query suitable for a sitemap
     """
     
-    def __init__(self, portal, context):
-        NavtreeQueryBuilder.__init__(self, portal, context)
-        portal_url = getToolByName(portal, 'portal_url')
-        portal_properties = getToolByName(portal, 'portal_properties')
+    def __init__(self, context):
+        NavtreeQueryBuilder.__init__(self, context)
+        portal_url = getToolByName(context, 'portal_url')
+        portal_properties = getToolByName(context, 'portal_properties')
         navtree_properties = getattr(portal_properties, 'navtree_properties')
         sitemapDepth = navtree_properties.getProperty('sitemapDepth', 2)
         self.query['path'] = {'query' : portal_url.getPortalPath(),
@@ -504,7 +520,7 @@ class DefaultNavtreeStrategy(SitemapNavtreeStrategy):
         # XXX: We can't do this with a 'depth' query to EPI...
         self.bottomLevel = navtree_properties.getProperty('bottomLevel', 0)
         topLevel = navtree_properties.getProperty('topLevel', 0)
-        self.rootPath = getNavigationRoot(context, topLevel = topLevel)
+        self.rootPath = view.navigationTreeRootPath()
         
     def subtreeFilter(self, node):
         sitemapDecision = SitemapNavtreeStrategy.subtreeFilter(self, node)

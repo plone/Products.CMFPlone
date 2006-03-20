@@ -8,7 +8,8 @@
        tal:define="view context/@@navigation_view;
                    root view/navigationRoot;">
 
-<dl class="portlet" id="portlet-navigation-tree" tal:condition="view/display">
+<dl class="portlet" id="portlet-navigation-tree" 
+    tal:condition="view/display">
     <dt class="portletHeader">
         
         <a href="#" 

@@ -48,6 +48,10 @@ class INavigationTabs(Interface):
 
 class INavigationTree(Interface):
 
+    def navigationTreeRootPath():
+        """Get the path to the root of the navigation tree
+        """
+
     def navigationTree():
         """Navigation tree
         """
@@ -329,4 +333,12 @@ class IPlone(Interface):
     def hide_columns(self, column_left, column_right):
         """ Returns the CSS class used by the page layout hide empty
             portlet columns.
+        """
+        
+    def navigationRootPath():
+        """Get the current navigation root path
+        """
+
+    def navigationRootUrl():
+        """Get the url to the current navigation root
         """

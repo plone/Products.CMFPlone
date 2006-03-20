@@ -279,7 +279,7 @@ class TestBaseNavTree(PloneTestCase.PloneTestCase):
 
     def testRootIsCurrent(self):
         ntp=self.portal.portal_properties.navtree_properties
-        ntp.manage_changeProperties(root='.')
+        ntp.manage_changeProperties(currentFolderOnlyInNavtree=True)
         view = self.view_class(self.portal.folder2, self.request)
         tree = view.navigationTree()
         self.failUnless(tree)
@@ -480,9 +480,7 @@ class TestBasePortalTabs(PloneTestCase.PloneTestCase):
         self.portal.invokeFactory('Document', 'doc2')
         self.portal.invokeFactory('Document', 'doc3')
         self.portal.invokeFactory('Folder', 'folder1')
-        folder1 = getattr(self.portal, 'folder1')
         self.portal.invokeFactory('Folder', 'folder2')
-        folder2 = getattr(self.portal, 'folder2')
         self.setRoles(['Member'])
 
     def testCreateTopLevelTabs(self):
@@ -616,6 +614,26 @@ class TestBasePortalTabs(PloneTestCase.PloneTestCase):
         self.failUnless(tabs)
         self.assertEqual(len(tabs),orig_len)
 
+    def testRootBelowPortalRoot(self):
+        
+        self.setRoles(['Manager'])
+        self.portal.folder1.invokeFactory('Document', 'doc1')
+        self.portal.folder1.invokeFactory('Document', 'doc2')
+        self.portal.folder1.invokeFactory('Document', 'doc3')
+        self.portal.folder1.invokeFactory('Folder', 'folder1')
+        self.portal.folder1.invokeFactory('Folder', 'folder2')
+        self.setRoles(['Member'])
+        
+        rootPath = '/'.join(self.portal.getPhysicalPath()) + '/folder1'
+        self.portal.portal_properties.navtree_properties.root = '/folder1'
+        
+        view = self.view_class(self.portal, self.request)
+        tabs = view.topLevelTabs()
+        self.failUnless(tabs)
+        self.assertEqual(len(tabs), 2)
+        self.assertEqual(tabs[0]['id'], 'folder1')
+        self.assertEqual(tabs[1]['id'], 'folder2')
+        
 
 class TestCatalogPortalTabs(TestBasePortalTabs):
         view_class = CatalogNavigationTabs

@@ -1,4 +1,5 @@
 from Products.CMFPlone.browser.interfaces import IPlone
+from Products.CMFPlone.browser.navtree import getNavigationRoot
 from Products.CMFPlone.interfaces.NonStructuralFolder import INonStructuralFolder
 from Products.CMFPlone import utils
 from Products.CMFCore.utils import getToolByName
@@ -10,6 +11,7 @@ import ZTUtils
 import sys
 
 from Acquisition import aq_inner, aq_parent
+
 
 _marker = []
 
@@ -285,3 +287,19 @@ class Plone(utils.BrowserView):
             return False
         else:
             return True
+            
+    def navigationRootPath(self):
+        context = utils.context(self)
+        return getNavigationRoot(context)
+        
+    def navigationRootUrl(self):
+        context = utils.context(self)
+        portal_url = getToolByName(context, 'portal_url')
+        
+        portal = portal_url.getPortalObject()
+        portalPath = portal_url.getPortalPath()
+        
+        rootPath = getNavigationRoot(context)
+        rootSubPath = rootPath[len(portalPath):]
+        
+        return portal.absolute_url() + rootSubPath

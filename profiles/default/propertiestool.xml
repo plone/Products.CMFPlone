@@ -9,6 +9,7 @@
   <property name="sitemapDepth" type="int">3</property>
   <property name="name" type="string"/>
   <property name="root" type="string">/</property>
+  <property name="currentFolderOnlyInNavtree" type="boolean">False</property>
   <property name="includeTop" type="boolean">True</property>
   <property name="topLevel" type="int">0</property>
   <property name="bottomLevel" type="int">0</property>

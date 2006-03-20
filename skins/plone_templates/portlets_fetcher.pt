@@ -9,9 +9,7 @@
    tal:condition="sl|nothing">
 
     <metal:block tal:repeat="slot sl">
-        <tal:dontcrash tal:on-error="structure python:context.plone_log('Error %s on %s while rendering portlet %s'%(error.type, error.value, slot[0])) or
-                                            '<div class=\'error\'>Error %s on %s: %s</div>' % (error.type, slot[0], error.value)"
-                       tal:define="pathexpr python:slot[0];
+        <tal:dontcrash tal:define="pathexpr python:slot[0];
                                    usemacro python:slot[1];">
 
         <tal:block tal:condition="usemacro">

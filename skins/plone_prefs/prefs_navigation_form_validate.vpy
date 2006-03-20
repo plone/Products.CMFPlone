@@ -1,3 +1,4 @@
+from Products.CMFCore.utils import getToolByName
 
 request = context.REQUEST
 
@@ -15,6 +16,14 @@ for k in intvals:
             int(v)
         except ValueError:
             state.setError(k, 'Input must be an integer.')
+
+root = request.form.get('root', None)
+if root and root != '/':
+    purl = getToolByName(context, 'portal_url')
+    rootPath = purl.getPortalPath() + root
+    rootObject = purl.getPortalObject().restrictedTraverse(rootPath)
+    if rootObject is None:
+        state.setError('root', 'Could not find %s' % root)
 
 if state.getErrors():
     return state.set(status='failure',
