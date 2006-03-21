@@ -19,7 +19,7 @@ class NavigationPortlet(utils.BrowserView):
 
     def display(self):
         tree = self.getNavTree()
-        root = self.navigationRoot()
+        root = self.getNavRoot()
         return (root is not None and len(tree['children']) > 0)
         
     def includeTop(self):
@@ -28,20 +28,11 @@ class NavigationPortlet(utils.BrowserView):
         return portal_properties.navtree_properties.includeTop
 
     def navigationRoot(self):
-        context = utils.context(self)
-        rootPath = self.getNavRoot()
+        return self.getNavRoot()
         
-        portal_url = getToolByName(context, 'portal_url')
-        portal = portal_url.getPortalObject()
-        
-        if rootPath == portal_url.getPortalPath():
-            return portal
-        else:
-            return portal.unrestrictedTraverse(rootPath)
-
     def rootTypeName(self):
         context = utils.context(self)
-        root = self.navigationRoot()
+        root = self.getNavRoot()
         return utils.normalizeString(root.portal_type, context=context)
 
     def createNavTree(self):
@@ -57,18 +48,34 @@ class NavigationPortlet(utils.BrowserView):
 
     def isPortalOrDefaultChild(self):
         context = utils.context(self)
-        root = self.navigationRoot()
+        root = self.getNavRoot()
         return (aq_base(root) == aq_base(context) or
                 (aq_base(root) == aq_base(aq_parent(aq_inner(context))) and
                 utils.isDefaultPage(context, self.request, context)))
 
+    # Cached lookups
+
     def getNavRoot(self):
         """Get and cache the navigation root"""
-        if not utils.base_hasattr(self, '_rootPath'):
+        if not utils.base_hasattr(self, '_root'):
             context = utils.context(self)
+            portal_url = getToolByName(context, 'portal_url')
+            portal = portal_url.getPortalObject()
+            
             view = getView(context, 'navtree_builder_view', self.request)
-            self._rootPath = view.navigationTreeRootPath()
-        return self._rootPath
+            rootPath = view.navigationTreeRootPath()
+            
+            if rootPath == portal_url.getPortalPath():
+                root = portal
+            else:
+                try:
+                    root = portal.unrestrictedTraverse(rootPath)
+                except (AttributeError, KeyError,):
+                    root = portal
+                    
+            self._root = [root]
+    
+        return self._root[0]
 
     def getNavTree(self):
         """Calculate the navtree"""
