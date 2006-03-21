@@ -6,6 +6,7 @@ import os, sys
 if __name__ == '__main__':
     execfile(os.path.join(sys.path[0], 'framework.py'))
 
+import transaction
 from Testing import ZopeTestCase
 from Products.PloneTestCase import PloneTestCase
 PloneTestCase.setupPloneSite()
@@ -17,9 +18,16 @@ from Products.CMFPlone.browser.navtree import *
 
 default_user = PloneTestCase.default_user
 
+from Products.CMFPlone.PloneFolder import PloneFolder
+from Products.CMFPlone.interfaces.NonStructuralFolder import INonStructuralFolder
+
+class DummyNonStructuralFolder(PloneFolder):
+    __implements__ = (PloneFolder.__implements__,) + (INonStructuralFolder,)
+
+
 class TestFolderTree(PloneTestCase.PloneTestCase):
     '''Test the basic buildFolderTree method'''
-    
+
     def afterSetUp(self):
         self.populateSite()
 
@@ -44,10 +52,10 @@ class TestFolderTree(PloneTestCase.PloneTestCase):
                 +-doc212
         """
         self.setRoles(['Manager'])
-        
+
         for item in self.portal.getFolderContents():
             self.portal._delObject(item.getId)
-        
+
         self.portal.invokeFactory('Document', 'doc1')
         self.portal.invokeFactory('Document', 'doc2')
         self.portal.invokeFactory('Document', 'doc3')
@@ -96,7 +104,7 @@ class TestFolderTree(PloneTestCase.PloneTestCase):
         self.assertEqual(len(tree[5]['children'][4]['children']), 2)
         self.assertEqual(tree[5]['children'][4]['children'][0]['item'].getPath(), rootPath + '/folder2/folder21/doc211')
         self.assertEqual(tree[5]['children'][4]['children'][1]['item'].getPath(), rootPath + '/folder2/folder21/doc212')
-        
+
     def testGetFromRootWithSpecifiedRoot(self):
         rootPath = '/'.join(self.portal.getPhysicalPath())
         strategy = NavtreeStrategyBase()
@@ -106,7 +114,7 @@ class TestFolderTree(PloneTestCase.PloneTestCase):
         self.assertEqual(tree[0]['item'].getPath(), rootPath + '/folder1/doc11')
         self.assertEqual(tree[1]['item'].getPath(), rootPath + '/folder1/doc12')
         self.assertEqual(tree[2]['item'].getPath(), rootPath + '/folder1/doc13')
-        
+
     def testGetFromRootWithNodeFilter(self):
         class Strategy(NavtreeStrategyBase):
             def nodeFilter(self, node):
@@ -156,11 +164,11 @@ class TestFolderTree(PloneTestCase.PloneTestCase):
 
     def testNonFolderishObjectNotExpanded(self):
         self.setRoles(['Manager'])
-        f = dummy.FullNonStructuralFolder('ns_folder')
+        f = DummyNonStructuralFolder('ns_folder')
         self.portal._setObject('ns_folder', f)
-        self.portal.portal_catalog.reindexObject(self.portal.ns_folder)
-        self.portal.portal_catalog.reindexObject(self.portal)
-        self.portal.ns_folder.invokeFactory('Document', 'doc')
+        ns_folder = self.portal.ns_folder
+        self.portal.portal_catalog.indexObject(self.portal.ns_folder)
+        ns_folder.invokeFactory('Document', 'doc')
         self.setRoles(['Member'])
         tree = buildFolderTree(self.portal, self.portal.ns_folder)['children']
         rootPath = '/'.join(self.portal.getPhysicalPath())
@@ -171,11 +179,11 @@ class TestFolderTree(PloneTestCase.PloneTestCase):
         strategy = NavtreeStrategyBase()
         strategy.showAllParents = True
         self.setRoles(['Manager'])
-        f = dummy.FullNonStructuralFolder('ns_folder')
+        f = DummyNonStructuralFolder('ns_folder')
         self.portal._setObject('ns_folder', f)
-        self.portal.portal_catalog.reindexObject(self.portal.ns_folder)
-        self.portal.portal_catalog.reindexObject(self.portal)
-        self.portal.ns_folder.invokeFactory('Document', 'doc')
+        ns_folder = self.portal.ns_folder
+        self.portal.portal_catalog.indexObject(self.portal.ns_folder)
+        ns_folder.invokeFactory('Document', 'doc')
         self.setRoles(['Member'])
         tree = buildFolderTree(self.portal, self.portal.ns_folder.doc, strategy=strategy)['children']
         rootPath = '/'.join(self.portal.getPhysicalPath())
@@ -269,7 +277,7 @@ class TestFolderTree(PloneTestCase.PloneTestCase):
         self.assertEqual(len(tree[5]['children'][3]['children']), 2)
         self.assertEqual(tree[5]['children'][3]['children'][0]['item'].getPath(), rootPath + '/folder2/folder21/doc211')
         self.assertEqual(tree[5]['children'][3]['children'][1]['item'].getPath(), rootPath + '/folder2/folder21/doc212')
-                
+
     def testGetFromRootWithCurrentIsDefaultPage(self):
         self.portal.folder2.setDefaultPage('doc21')
         context = self.portal.folder2.doc21
@@ -393,14 +401,14 @@ class TestFolderTree(PloneTestCase.PloneTestCase):
         self.assertEqual(tree[0]['item'].getPath(), rootPath + '/folder1/doc11')
         self.assertEqual(tree[1]['item'].getPath(), rootPath + '/folder1/doc12')
         self.assertEqual(tree[2]['item'].getPath(), rootPath + '/folder1/doc13')
-        
+
     def testGetFromRootWithCurrentNavtreePruned(self):
         context = self.portal.folder1.doc11
         class Strategy(NavtreeStrategyBase):
             def subtreeFilter(self, node):
                 return (node['item'].getId != 'folder1')
             showAllParents = True
-            
+
         query = {'path' : {'query' : '/'.join(context.getPhysicalPath()),
                            'navtree' : 1}}
         rootPath = '/'.join(self.portal.getPhysicalPath())
@@ -415,14 +423,14 @@ class TestFolderTree(PloneTestCase.PloneTestCase):
         self.assertEqual(tree[4]['item'].getPath(), rootPath + '/link1')
         self.assertEqual(tree[5]['item'].getPath(), rootPath + '/folder2')
         self.assertEqual(len(tree[5]['children']), 0)
-        
+
     def testGetFromRootWithCurrentFolderishNavtreePruned(self):
         context = self.portal.folder2.folder21
         class Strategy(NavtreeStrategyBase):
             def subtreeFilter(self, node):
                 return (node['item'].getId != 'folder2')
             showAllParents=True
-            
+
         query = {'path' : {'query' : '/'.join(context.getPhysicalPath()),
                            'navtree' : 1}}
         rootPath = '/'.join(self.portal.getPhysicalPath())
@@ -442,12 +450,12 @@ class TestFolderTree(PloneTestCase.PloneTestCase):
         self.assertEqual(tree[5]['children'][0]['children'][1]['item'].getPath(), rootPath + '/folder2/folder21/doc212')
 
 class TestNavigationRoot(PloneTestCase.PloneTestCase):
-    
+
     def testGetNavigationRootPropertyNotSet(self):
         self.portal.portal_properties.navtree_properties._delProperty('root')
         root = getNavigationRoot(self.portal)
         self.assertEqual(root, '/'.join(self.portal.getPhysicalPath()))
-        
+
     def testGetNavigationRootPropertyEmptyNoVirtualHost(self):
         self.portal.portal_properties.navtree_properties.manage_changeProperties(root='')
         root = getNavigationRoot(self.portal)
