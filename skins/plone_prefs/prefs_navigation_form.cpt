@@ -92,16 +92,17 @@
               </div>
               
               <div class="field"
-                 tal:define="currentFolderOnlyInNavtree python:navtree_props.get('currentFolderOnlyInNavtree', False);
+                 tal:define="value python:navtree_props.getProperty('currentFolderOnlyInNavtree', False);
+                             value request/currentFolderOnlyInNavtree | value;
                              error errors/currentFolderOnlyInNavtree | nothing;"
                  tal:attributes="class python:test(error, 'field error', 'field')">
-
+                 
                 <input type="checkbox"
                        class="noborder"
                        id="cb_current_folder_only"
                        name="currentFolderOnlyInNavtree"
                        value="0"
-                       tal:attributes="checked python:test(currentFolderOnlyInNavtree, 'checked', None)" />
+                       tal:attributes="checked python:test(value, 'checked', None)" />
 
                 <label i18n:translate="label_current_folder_only">Root navigation tree in current folder</label>
 

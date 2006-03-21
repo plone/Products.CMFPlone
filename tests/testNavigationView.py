@@ -277,6 +277,24 @@ class TestBaseNavTree(PloneTestCase.PloneTestCase):
         self.assertEqual(tree.get('item', None), None)
         self.assertEqual(len(tree['children']), 0)
 
+    def testAboveRoot(self):
+        ntp=self.portal.portal_properties.navtree_properties
+        ntp.manage_changeProperties(root='/folder2')
+        view = self.view_class(self.portal, self.request)
+        tree = view.navigationTree()
+        self.failUnless(tree)
+        self.failUnless(tree)
+        self.assertEqual(tree['children'][0]['item'].getPath(), '/plone/folder2/doc21')
+
+    def testOutsideRoot(self):
+        ntp=self.portal.portal_properties.navtree_properties
+        ntp.manage_changeProperties(root='/folder2')
+        view = self.view_class(self.portal.folder1, self.request)
+        tree = view.navigationTree()
+        self.failUnless(tree)
+        self.failUnless(tree)
+        self.assertEqual(tree['children'][0]['item'].getPath(), '/plone/folder2/doc21')
+
     def testRootIsCurrent(self):
         ntp=self.portal.portal_properties.navtree_properties
         ntp.manage_changeProperties(currentFolderOnlyInNavtree=True)
@@ -677,6 +695,14 @@ class TestBaseBreadCrumbs(PloneTestCase.PloneTestCase):
         crumbs = view.breadcrumbs()
         self.failUnless(crumbs)
         self.assertEqual(crumbs[-1]['absolute_url'][-5:],'/view')
+        
+    def testBreadcrumbsStopAtNavigationRoot(self):
+        ntp=self.portal.portal_properties.navtree_properties
+        ntp.manage_changeProperties(topLevel=1, root='/folder1')
+        view = self.view_class(self.portal.folder1.doc11, self.request)
+        crumbs = view.breadcrumbs()
+        self.failUnless(crumbs)
+        self.assertEqual(crumbs[0]['absolute_url'], self.portal.folder1.doc11.absolute_url())
 
 
 class TestCatalogBreadCrumbs(TestBaseBreadCrumbs):

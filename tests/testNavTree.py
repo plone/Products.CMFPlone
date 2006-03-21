@@ -13,8 +13,11 @@ PloneTestCase.setupPloneSite()
 
 from Products.PloneTestCase import dummy
 from Products.CMFCore.utils import getToolByName
-
 from Products.CMFPlone.browser.navtree import *
+
+from Products.CMFPlone.browser.interfaces import INavigationRoot
+
+from zope.interface import directlyProvides
 
 default_user = PloneTestCase.default_user
 
@@ -477,6 +480,15 @@ class TestNavigationRoot(PloneTestCase.PloneTestCase):
         self.portal.portal_properties.navtree_properties.manage_changeProperties(root=relativePath)
         root = getNavigationRoot(self.portal)
         self.assertEqual(root, folderPath)
+        
+    def testGetNavigationRootWithINavigationRoot(self):
+        folderPath = '/'.join(self.folder.getPhysicalPath())
+        self.folder.invokeFactory('Folder', 'folder1')
+        self.folder.folder1.invokeFactory('Document', 'doc1')
+        directlyProvides(self.folder, INavigationRoot)
+        root = getNavigationRoot(self.folder.folder1.doc1)
+        self.assertEqual(root, folderPath)
+        
 
 def test_suite():
     from unittest import TestSuite, makeSuite

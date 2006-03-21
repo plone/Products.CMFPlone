@@ -643,6 +643,10 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.failUnless(isinstance(ramcache, RAMCacheManager))
         self.failUnless(isinstance(cpm, CachingPolicyManager))
 
+    def testHomeActionUsesView(self):
+        actions = self.portal.portal_actions.listActions()
+        homeAction = [x for x in actions if x.id == 'index_html'][0]
+        self.assertEquals(homeAction.getActionExpression(), 'string:${here/@@plone/navigationRootUrl}')
 
 class TestPortalBugs(PloneTestCase.PloneTestCase):
 

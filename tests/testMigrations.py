@@ -135,6 +135,8 @@ from Products.CMFPlone.migrations.v2_1.two12_two13 import normalizeNavtreeProper
 from Products.CMFPlone.migrations.v2_5.alphas import installPlacefulWorkflow
 from Products.CMFPlone.migrations.v2_5.alphas import installDeprecated
 
+from Products.CMFPlone.migrations.v2_5.betas import fixHomeAction
+
 from Products.CMFDynamicViewFTI.migrate import migrateFTI
 
 import types
@@ -3586,6 +3588,29 @@ class TestMigrations_v2_5(MigrationTest):
             posSE = jsreg.getResourcePosition('dragdropreorder.js')
             posHST = jsreg.getResourcePosition('dropdown.js')
             self.failUnless((posSE - 1) == posHST)
+
+    def testFixHomeAction(self):
+        editActions = ('index_html',)
+        for a in editActions:
+            self.removeActionFromTool(a)
+        fixHomeAction(self.portal, [])
+        actions = [x.id for x in self.actions.listActions()]
+        for a in editActions:
+            self.failUnless(a in actions)
+
+    def testFixHomeActionTwice(self):
+        editActions = ('index_html',)
+        for a in editActions:
+            self.removeActionFromTool(a)
+        fixHomeAction(self.portal, [])
+        fixHomeAction(self.portal, [])
+        actions = [x.id for x in self.actions.listActions()]
+        for a in editActions:
+            self.failUnless(a in actions)
+
+    def testFixHomeActionNoTool(self):
+        self.portal._delObject('portal_actions')
+        fixHomeAction(self.portal, [])
 
 def test_suite():
     from unittest import TestSuite, makeSuite

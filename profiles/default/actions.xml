@@ -106,7 +106,7 @@
    <permission>Add Portal Content</permission>
   </action>
   <action title="Home" action_id="index_html" category="portal_tabs"
-     condition_expr="" url_expr="string:$portal_url" visible="True">
+     condition_expr="" url_expr="string:${here/@@plone/navigationRootUrl}" visible="True">
    <permission>View</permission>
   </action>
   <action title="Ownership" action_id="change_ownership"
