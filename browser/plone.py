@@ -129,6 +129,8 @@ class Plone(utils.BrowserView):
         self._data['isStructuralFolder'] = self.isStructuralFolder()
         self._data['isContextDefaultPage'] = self.isDefaultPageInFolder()
 
+        self._data['navigation_root_url'] = self.navigationRootUrl()
+
     def __getattr__(self, key):
         """Override to look in _data first"""
 

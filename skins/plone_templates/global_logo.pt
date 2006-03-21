@@ -6,7 +6,7 @@
 <!-- THE PORTAL LOGO DEFINITION -->
 <h1 id="portal-logo" metal:define-macro="portal_logo">
     <a href="/"
-       tal:attributes="href plone_view/navigationRootUrl"
+       tal:attributes="href navigation_root_url"
        tal:define="portal_title portal_properties/title;"
        tal:content="string:$portal_title"
        accesskey="1">

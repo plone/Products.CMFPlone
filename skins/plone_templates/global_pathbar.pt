@@ -10,7 +10,7 @@
 
     <span id="breadcrumbs-you-are-here" i18n:translate="you_are_here">You
 are here:</span>
-    <a i18n:translate="tabs_home" tal:attributes="href plone_view/navigationRootUrl">Home</a>
+    <a i18n:translate="tabs_home" tal:attributes="href navigation_root_url">Home</a>
     <span tal:condition="breadcrumbs" class="breadcrumbSeparator">
         <tal:ltr condition="not: isRTL">&rarr;</tal:ltr>
         <tal:rtl condition="isRTL">&larr;</tal:rtl>

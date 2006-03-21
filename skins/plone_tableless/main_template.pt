@@ -5,8 +5,7 @@
       xml:lang="en"
       lang="en"
       tal:attributes="lang language;
-                      xml:lang language"
-      tal:define="plone_view context/@@plone">
+                      xml:lang language">
 
 <head metal:use-macro="here/header/macros/html_header">
 
@@ -98,6 +97,7 @@
 
 <!-- The wrapper div. It contains the three columns. -->
 <div id="portal-columns"
+     tal:define="plone_view context/@@plone"
      tal:attributes="class python:plone_view.hide_columns(sl,sr)">
 
     <!-- start of the main and left columns -->

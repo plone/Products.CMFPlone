@@ -105,6 +105,13 @@ class TestPloneView(PloneTestCase.PloneTestCase):
         self.folder.saveDefaultPage('test')
         self.failUnless(view.isDefaultPageInFolder())
 
+    def testNavigationRootPath(self):
+        view = Plone(self.folder, self.app.REQUEST)
+        self.assertEqual(view.navigationRootPath(), self.portal.portal_url.getPortalPath())
+        
+    def testNavigationRootUrl(self):
+        view = Plone(self.folder, self.app.REQUEST)
+        self.assertEqual(view.navigationRootUrl(), self.portal.absolute_url())
 
 class TestVisibleIdsEnabled(PloneTestCase.PloneTestCase):
     '''Tests the visibleIdsEnabled method'''

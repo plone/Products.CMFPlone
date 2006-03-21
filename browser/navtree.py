@@ -5,9 +5,11 @@
 
 from zope.interface import implements
 
+from Acquisition import aq_base
+
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.utils import safe_callable, safe_hasattr
-from Products.CMFPlone.browser.interfaces import INavtreeStrategy
+from Products.CMFPlone.utils import safe_callable, safe_hasattr, parent
+from Products.CMFPlone.browser.interfaces import INavtreeStrategy, INavigationRoot
 
 from types import StringType
 
@@ -316,13 +318,24 @@ def buildFolderTree(context, obj=None, query={}, strategy=NavtreeStrategyBase())
 
 
 def getNavigationRoot(context):
-    """Get the path to the root of the navigation tree. If an explicit
-    root is set in navtree_properties, use this. If the property is not set or 
-    is set to '/', use the portal root. 
+    """Get the path to the root of the navigation tree. If context or one of
+    its parents until (but not including) the portal root implements 
+    INavigationRoot, return this. 
+    
+    Otherwise, if an explicit root is set in navtree_properties, use this. If 
+    the property is not set or is set to '/', use the portal root. 
     """
+        
     portal_url = getToolByName(context, 'portal_url')
     portal_properties = getToolByName(context, 'portal_properties')
     navtree_properties = getattr(portal_properties, 'navtree_properties')
+    
+    portal = portal_url.getPortalObject()
+    obj = context
+    while not INavigationRoot.isImplementedBy(obj) and aq_base(obj) is not aq_base(portal):
+        obj = parent(obj)
+    if INavigationRoot.isImplementedBy(obj) and aq_base(obj) is not aq_base(portal):
+        return '/'.join(obj.getPhysicalPath())
     
     rootPath = navtree_properties.getProperty('root', None)
     portalPath = portal_url.getPortalPath()
@@ -330,12 +343,12 @@ def getNavigationRoot(context):
     
     if rootPath:
         if rootPath == '/':
-            rootPath = portalPath
+            return portalPath
         else:
             if len(rootPath) > 1 and rootPath[0] == '/':
-                rootPath = portalPath + rootPath
+                return portalPath + rootPath
             else:
-                rootPath = portalPath
+                return portalPath
 
     # This code is stolen from Sprout, but it's unclear exactly how it 
     # should work and the test from Sprout isn't directly transferable
@@ -348,18 +361,16 @@ def getNavigationRoot(context):
     #
     # Attempt to get use the virtual host root as root if an explicit
     # root is not set
-    # if not rootPath:
+    # if rootPath == '':
     #    request = getattr(context, 'REQUEST', None)
     #    if request is not None:
     #        vroot = request.get('VirtualRootPhysicalPath', None)
     #        if vroot is not None:
-    #            rootPath = '/'.join(('',) + vroot[len(portalPath):])
+    #            return '/'.join(('',) + vroot[len(portalPath):])
 
     # Fall back on the portal root
     if not rootPath:
-        rootPath = portalPath
-        
-    return rootPath
+        return portalPath
 
 # Strategy objects for the navtree creation code. You can subclass these
 # to expand the default navtree behaviour, and pass instances of your subclasses
@@ -392,7 +403,7 @@ class NavtreeQueryBuilder:
         # nothing (since we explicitly start from the root always). Hence,
         # use a regular depth-1 query in this case.
         
-        if rootPath.startswith(currentPath):
+        if not currentPath.startswith(rootPath):
             query['path'] = {'query' : rootPath, 'depth' : 1}
         else:
             query['path'] = {'query' : currentPath, 'navtree' : 1}

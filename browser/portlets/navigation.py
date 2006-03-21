@@ -57,10 +57,9 @@ class NavigationPortlet(utils.BrowserView):
 
     def isPortalOrDefaultChild(self):
         context = utils.context(self)
-        utool = getToolByName(context, 'portal_url')
-        portal = utool.getPortalObject()
-        return (aq_base(portal) == aq_base(context) or
-                (aq_base(portal) == aq_base(aq_parent(aq_inner(context))) and
+        root = self.navigationRoot()
+        return (aq_base(root) == aq_base(context) or
+                (aq_base(root) == aq_base(aq_parent(aq_inner(context))) and
                 utils.isDefaultPage(context, self.request, context)))
 
     def getNavRoot(self):
