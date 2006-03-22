@@ -8,7 +8,7 @@ from zope.interface import implements
 from Acquisition import aq_base
 
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.utils import safe_callable, safe_hasattr, parent
+from Products.CMFPlone import utils
 from Products.CMFPlone.browser.interfaces import INavtreeStrategy, INavigationRoot
 
 from types import StringType
@@ -19,6 +19,8 @@ class NavtreeStrategyBase:
 
     implements(INavtreeStrategy)
 
+    __allow_access_to_unprotected_subobjects__ = 1
+    
     rootPath = None
     showAllParents = False
 
@@ -103,17 +105,18 @@ def buildFolderTree(context, obj=None, query={}, strategy=NavtreeStrategyBase())
     """
 
     portal_url = getToolByName(context, 'portal_url')
-    plone_utils = getToolByName(context, 'plone_utils')
     portal_catalog = getToolByName(context, 'portal_catalog')
 
     showAllParents = strategy.showAllParents
     rootPath = strategy.rootPath
 
+    request = getattr(context, 'REQUEST', {})
+    
     # Find the object's path. Use parent folder if context is a default-page
 
     objPath = None
     if obj is not None:
-        if plone_utils.isDefaultPage(obj):
+        if utils.isDefaultPage(obj, request):
             objPath = '/'.join(obj.getPhysicalPath()[:-1])
         else:
             objPath = '/'.join(obj.getPhysicalPath())
@@ -333,7 +336,7 @@ def getNavigationRoot(context):
     portal = portal_url.getPortalObject()
     obj = context
     while not INavigationRoot.providedBy(obj) and aq_base(obj) is not aq_base(portal):
-        obj = parent(obj)
+        obj = utils.parent(obj)
     if INavigationRoot.providedBy(obj) and aq_base(obj) is not aq_base(portal):
         return '/'.join(obj.getPhysicalPath())
 
@@ -383,13 +386,11 @@ class NavtreeQueryBuilder:
     def __init__(self, context):
         portal_properties = getToolByName(context, 'portal_properties')
         portal_url = getToolByName(context, 'portal_url')
-        plone_utils = getToolByName(context, 'plone_utils')
-
         navtree_properties = getattr(portal_properties, 'navtree_properties')
 
         # Acquire a custom nav query if available
         customQuery = getattr(context, 'getCustomNavQuery', None)
-        if customQuery is not None and safe_callable(customQuery):
+        if customQuery is not None and utils.safe_callable(customQuery):
             query = customQuery()
         else:
             query = {}
@@ -416,7 +417,7 @@ class NavtreeQueryBuilder:
         # seem to work with EPI.
 
         # Only list the applicable types
-        query['portal_type'] = plone_utils.typesToList()
+        query['portal_type'] = utils.typesToList(context)
 
         # Apply the desired sort
         sortAttribute = navtree_properties.getProperty('sortAttribute', None)
@@ -456,6 +457,8 @@ class SitemapNavtreeStrategy(NavtreeStrategyBase):
     #adapts(*, ISiteMap)
 
     def __init__(self, context, view=None):
+        self.context = [context]
+        
         portal_url = getToolByName(context, 'portal_url')
         self.portal = portal_url.getPortalObject()
         portal_properties = getToolByName(context, 'portal_properties')
@@ -466,7 +469,6 @@ class SitemapNavtreeStrategy(NavtreeStrategyBase):
             self.excludedIds[id] = True
         self.parentTypesNQ = navtree_properties.getProperty('parentMetaTypesNotToQuery', ())
         self.viewActionTypes = site_properties.getProperty('typesUseViewActionInListings', ())
-        self.plone_utils = getToolByName(context, 'plone_utils')
 
         self.showAllParents = navtree_properties.getProperty('showAllParents', True)
         self.rootPath = getNavigationRoot(context)
@@ -489,6 +491,8 @@ class SitemapNavtreeStrategy(NavtreeStrategyBase):
             return True
 
     def decoratorFactory(self, node):
+        context = utils.context(self)
+        
         newNode = node.copy()
         item = node['item']
 
@@ -502,7 +506,7 @@ class SitemapNavtreeStrategy(NavtreeStrategyBase):
         if isFolderish and (portalType is None or portalType not in self.parentTypesNQ):
             showChildren = True
 
-        newNode['Title'] = self.plone_utils.pretty_title_or_id(item)
+        newNode['Title'] = utils.pretty_title_or_id(context, item)
         newNode['absolute_url'] = itemUrl
         newNode['getURL'] = itemUrl
         newNode['path'] = item.getPath()
@@ -530,7 +534,6 @@ class DefaultNavtreeStrategy(SitemapNavtreeStrategy):
         navtree_properties = getattr(portal_properties, 'navtree_properties')
         # XXX: We can't do this with a 'depth' query to EPI...
         self.bottomLevel = navtree_properties.getProperty('bottomLevel', 0)
-        topLevel = navtree_properties.getProperty('topLevel', 0)
         self.rootPath = view.navigationTreeRootPath()
 
     def subtreeFilter(self, node):

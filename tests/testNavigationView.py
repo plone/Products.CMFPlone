@@ -283,7 +283,6 @@ class TestBaseNavTree(PloneTestCase.PloneTestCase):
         view = self.view_class(self.portal, self.request)
         tree = view.navigationTree()
         self.failUnless(tree)
-        self.failUnless(tree)
         self.assertEqual(tree['children'][0]['item'].getPath(), '/plone/folder2/doc21')
 
     def testOutsideRoot(self):
@@ -291,7 +290,6 @@ class TestBaseNavTree(PloneTestCase.PloneTestCase):
         ntp.manage_changeProperties(root='/folder2')
         view = self.view_class(self.portal.folder1, self.request)
         tree = view.navigationTree()
-        self.failUnless(tree)
         self.failUnless(tree)
         self.assertEqual(tree['children'][0]['item'].getPath(), '/plone/folder2/doc21')
 
