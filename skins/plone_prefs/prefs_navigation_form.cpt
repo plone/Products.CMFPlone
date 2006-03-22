@@ -61,10 +61,6 @@
                             error errors/name|nothing"
                 tal:attributes="class python:error and 'field error' or 'field';">
                 <label>Navigation tree portlet title</label>
-                <span class="fieldRequired" title="Required"
-                  i18n:attributes="title title_required;"
-                  i18n:translate="label_required">(Required)
-                </span>
                 <div class="formHelp">
                   Change the English title of the navigation tree portlet. Note
                   that this won't affect the title in other languages.
@@ -84,9 +80,9 @@
                 <label>Navigation tree root</label>
                 <div class="formHelp">
                     A path that specifies the base folder where the
-                    navigation tree will be rooted. Use <strong>'/'</strong> for the
-                    portal root, and <strong>'/folder1'</strong> to start at 'folder1'.
-                    Use <strong>'.'</strong> to start at the current folder.
+                    navigation tree, sitemap, breadcrumbs and tabs will be rooted. 
+                    Use <strong>'/'</strong> for the portal root, and 
+                    <strong>'/folder1'</strong> to start at 'folder1'.
                 </div>
                 <input name="root"
                        type="text"
@@ -94,6 +90,27 @@
                        tal:attributes="value value;"/>
                 <div tal:content="error">Validation error output</div>
               </div>
+              
+              <div class="field"
+                 tal:define="value python:navtree_props.getProperty('currentFolderOnlyInNavtree', False);
+                             value request/currentFolderOnlyInNavtree | value;
+                             error errors/currentFolderOnlyInNavtree | nothing;"
+                 tal:attributes="class python:test(error, 'field error', 'field')">
+                 
+                <input type="checkbox"
+                       class="noborder"
+                       id="cb_current_folder_only"
+                       name="currentFolderOnlyInNavtree"
+                       value="0"
+                       tal:attributes="checked python:test(value, 'checked', None)" />
+
+                <label i18n:translate="label_current_folder_only">Root navigation tree in current folder</label>
+
+                <div class="formHelp" i18n:translate="help_current_folder_only">
+                If selected, the navigation tree will only show the current 
+                folder and its children at all times.
+                </div>
+            </div>
               
               <div class="field"
                 tal:define="

@@ -3241,67 +3241,6 @@ class TestMigrations_v2_1(MigrationTest):
         mailer = getattr(self.portal, 'MailHost', None)
         self.failUnless(mailer is not None)
         self.assertEqual(mailer.meta_type, 'Secure Mail Host')
-
-    def testNormalizeNavtreeProperties(self):
-        ntp = self.portal.portal_properties.navtree_properties
-        toRemove = ['skipIndex_html', 'showMyUserFolderOnly', 'showFolderishSiblingsOnly',
-                    'showFolderishChildrenOnly', 'showNonFolderishObject', 'showTopicResults',
-                    'rolesSeeContentView', 'rolesSeeUnpublishedContent', 'batchSize', 
-                    'croppingLength', 'forceParentsInBatch', 'rolesSeeHiddenContent', 'typesLinkToFolderContents']
-        toAdd = {'name' : 'Navigation', 'root' : '/'}
-        for property in toRemove:
-            ntp._setProperty(property, 'X', 'string')
-        for property, value in toAdd.items():
-            ntp._delProperty(property)
-        ntp.manage_changeProperties(bottomLevel = 65535)
-        normalizeNavtreeProperties(self.portal, [])
-        for property in toRemove:
-            self.assertEqual(ntp.getProperty(property, None), None)
-        for property, value in toAdd.items():
-            self.assertEqual(ntp.getProperty(property), value)
-        self.assertEqual(ntp.getProperty('bottomLevel'), 0)
-        
-    def testNormalizeNavtreePropertiesTwice(self):
-        ntp = self.portal.portal_properties.navtree_properties
-        toRemove = ['skipIndex_html', 'showMyUserFolderOnly', 'showFolderishSiblingsOnly',
-                    'showFolderishChildrenOnly', 'showNonFolderishObject', 'showTopicResults',
-                    'rolesSeeContentView', 'rolesSeeUnpublishedContent', 'rolesSeeContentsView',
-                    'batchSize', 'sortCriteria', 'croppingLength', 'forceParentsInBatch', 
-                    'rolesSeeHiddenContent', 'typesLinkToFolderContents']
-        toAdd = {'name' : 'Navigation', 'root' : '/'}
-        for property in toRemove:
-            ntp._setProperty(property, 'X', 'string')
-        for property, value in toAdd.items():
-            ntp._delProperty(property)
-        ntp.manage_changeProperties(bottomLevel = 65535)
-        normalizeNavtreeProperties(self.portal, [])
-        normalizeNavtreeProperties(self.portal, [])
-        for property in toRemove:
-            self.assertEqual(ntp.getProperty(property, None), None)
-        for property, value in toAdd.items():
-            self.assertEqual(ntp.getProperty(property), value)
-        self.assertEqual(ntp.getProperty('bottomLevel'), 0)
-        
-    def testNormalizeNavtreePropertiesNoTool(self):
-        self.portal._delObject('portal_properties')
-        normalizeNavtreeProperties(self.portal, [])
-
-    def testNormalizeNavtreePropertiesNoSheet(self):
-        self.portal.portal_properties._delObject('navtree_properties')
-        normalizeNavtreeProperties(self.portal, [])
-
-    def testNormalizeNavtreePropertiesNoPropertyToRemove(self):
-        ntp = self.portal.portal_properties.navtree_properties
-        if ntp.getProperty('skipIndex_html', None) is not None:
-            ntp._delProperty('skipIndex_html')
-        normalizeNavtreeProperties(self.portal, [])
-        
-    def testNormalizeNavtreePropertiesNewPropertyExists(self):
-        ntp = self.portal.portal_properties.navtree_properties
-        ntp.manage_changeProperties(root = '/foo', bottomLevel = 10)
-        normalizeNavtreeProperties(self.portal, [])
-        self.assertEqual(ntp.getProperty('root'), '/foo')
-        self.assertEqual(ntp.getProperty('bottomLevel'), 10)
         
 class TestMigrations_v2_1_1(MigrationTest):
 
@@ -3506,6 +3445,68 @@ class TestMigrations_v2_1_2(MigrationTest):
         self.portal._delObject('portal_quickinstaller')
         reinstallPortalTransforms(self.portal, [])
 
+class TestMigrations_v2_1_3(MigrationTest):
+    
+    def testNormalizeNavtreeProperties(self):
+        ntp = self.portal.portal_properties.navtree_properties
+        toRemove = ['skipIndex_html', 'showMyUserFolderOnly', 'showFolderishSiblingsOnly',
+                    'showFolderishChildrenOnly', 'showNonFolderishObject', 'showTopicResults',
+                    'rolesSeeContentView', 'rolesSeeUnpublishedContent', 'batchSize', 
+                    'croppingLength', 'forceParentsInBatch', 'rolesSeeHiddenContent', 'typesLinkToFolderContents']
+        toAdd = {'name' : '', 'root' : '/', 'currentFolderOnlyInNavtree' : False}
+        for property in toRemove:
+            ntp._setProperty(property, 'X', 'string')
+        for property, value in toAdd.items():
+            ntp._delProperty(property)
+        ntp.manage_changeProperties(bottomLevel = 65535)
+        normalizeNavtreeProperties(self.portal, [])
+        for property in toRemove:
+            self.assertEqual(ntp.getProperty(property, None), None)
+        for property, value in toAdd.items():
+            self.assertEqual(ntp.getProperty(property), value)
+        self.assertEqual(ntp.getProperty('bottomLevel'), 0)
+        
+    def testNormalizeNavtreePropertiesTwice(self):
+        ntp = self.portal.portal_properties.navtree_properties
+        toRemove = ['skipIndex_html', 'showMyUserFolderOnly', 'showFolderishSiblingsOnly',
+                    'showFolderishChildrenOnly', 'showNonFolderishObject', 'showTopicResults',
+                    'rolesSeeContentView', 'rolesSeeUnpublishedContent', 'rolesSeeContentsView',
+                    'batchSize', 'sortCriteria', 'croppingLength', 'forceParentsInBatch', 
+                    'rolesSeeHiddenContent', 'typesLinkToFolderContents']
+        toAdd = {'name' : '', 'root' : '/', 'currentFolderOnlyInNavtree' : False}
+        for property in toRemove:
+            ntp._setProperty(property, 'X', 'string')
+        for property, value in toAdd.items():
+            ntp._delProperty(property)
+        ntp.manage_changeProperties(bottomLevel = 65535)
+        normalizeNavtreeProperties(self.portal, [])
+        normalizeNavtreeProperties(self.portal, [])
+        for property in toRemove:
+            self.assertEqual(ntp.getProperty(property, None), None)
+        for property, value in toAdd.items():
+            self.assertEqual(ntp.getProperty(property), value)
+        self.assertEqual(ntp.getProperty('bottomLevel'), 0)
+        
+    def testNormalizeNavtreePropertiesNoTool(self):
+        self.portal._delObject('portal_properties')
+        normalizeNavtreeProperties(self.portal, [])
+
+    def testNormalizeNavtreePropertiesNoSheet(self):
+        self.portal.portal_properties._delObject('navtree_properties')
+        normalizeNavtreeProperties(self.portal, [])
+
+    def testNormalizeNavtreePropertiesNoPropertyToRemove(self):
+        ntp = self.portal.portal_properties.navtree_properties
+        if ntp.getProperty('skipIndex_html', None) is not None:
+            ntp._delProperty('skipIndex_html')
+        normalizeNavtreeProperties(self.portal, [])
+        
+    def testNormalizeNavtreePropertiesNewPropertyExists(self):
+        ntp = self.portal.portal_properties.navtree_properties
+        ntp.manage_changeProperties(root = '/foo', bottomLevel = 10)
+        normalizeNavtreeProperties(self.portal, [])
+        self.assertEqual(ntp.getProperty('root'), '/foo')
+        self.assertEqual(ntp.getProperty('bottomLevel'), 10)
 
 def test_suite():
     from unittest import TestSuite, makeSuite
@@ -3514,6 +3515,7 @@ def test_suite():
     suite.addTest(makeSuite(TestMigrations_v2_1))
     suite.addTest(makeSuite(TestMigrations_v2_1_1))
     suite.addTest(makeSuite(TestMigrations_v2_1_2))
+    suite.addTest(makeSuite(TestMigrations_v2_1_3))
         
     return suite
 

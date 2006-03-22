@@ -590,22 +590,19 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     def createNavTree(self, context, sitemap=None):
         """Returns a structure that can be used by navigation_tree_slot."""
         
-        portal_url = getToolByName(self, 'portal_url')
-        portal = portal_url.getPortalObject()
-        
         if context == self:
             sitemap = True
         
         if sitemap: 
-            queryBuilder = SitemapQueryBuilder(portal, context)
-            strategy = SitemapNavtreeStrategy(portal, context)
+            queryBuilder = SitemapQueryBuilder(context)
+            strategy = SitemapNavtreeStrategy(context)
         else:
-            queryBuilder = NavtreeQueryBuilder(portal, context)
-            strategy = DefaultNavtreeStrategy(portal, context)
+            queryBuilder = NavtreeQueryBuilder(context)
+            strategy = DefaultNavtreeStrategy(context)
         
         query = queryBuilder()
         
-        return buildFolderTree(portal, context=context, query=query, strategy=strategy)
+        return buildFolderTree(context, obj=context, query=query, strategy=strategy)
 
     security.declarePublic('createTopLevelTabs')
     def createTopLevelTabs(self, actions=None):

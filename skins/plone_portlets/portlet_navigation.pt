@@ -7,19 +7,28 @@
        tal:omit-tag=""
        tal:define="props nocall:portal_properties/navtree_properties;
                    data python:putils.createNavTree(here, sitemap=None);
-                   getRoot python:modules['Products.CMFPlone.browser.navtree'].getNavigationRoot;
-                   topLevel python:props.getProperty('topLevel', 0);
-                   navRoot python:getRoot(portal, here, topLevel);
+                   strategy python:modules['Products.CMFPlone.browser.navtree'].DefaultNavtreeStrategy(here);
+                   navRoot strategy/rootPath;
+                   name python:props.getProperty('name', None);
                    portalPath utool/getPortalPath">
        
 <dl class="portlet" id="portlet-navigation-tree" tal:condition="python:len(data['children']) > 0">
     <dt class="portletHeader">
         <span class="portletTopLeft"></span>
+        
         <a href="#" 
            class="tile"
-           tal:content="props/name | default"
+           tal:content="name"
+           tal:condition="name"
            tal:attributes="href string:$portal_url/sitemap" 
-           i18n:translate="box_navigation">Navigation</a>
+           >Navigation</a>
+        <a href="#" 
+           class="tile"
+           tal:condition="not:name"
+           tal:attributes="href string:$portal_url/sitemap" 
+           i18n:translate="">Navigation</a>
+
+           
         <span class="portletTopRight"></span>
     </dt>
     

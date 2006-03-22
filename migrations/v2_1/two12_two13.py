@@ -20,7 +20,9 @@ def normalizeNavtreeProperties(portal, out):
                 'rolesSeeContentView', 'rolesSeeUnpublishedContent', 'rolesSeeContentsView', 
                 'batchSize', 'sortCriteria', 'croppingLength', 'forceParentsInBatch', 
                 'rolesSeeHiddenContent', 'typesLinkToFolderContents']
-    toAdd = {'name' : 'Navigation', 'root' : '/'}
+    toAdd = {'name' : ('string', ''), 
+             'root' : ('string', '/'), 
+             'currentFolderOnlyInNavtree' : ('boolean', False)}
     portal_properties = getToolByName(portal, 'portal_properties', None)
     if portal_properties is not None:
         navtree_properties = getattr(portal_properties, 'navtree_properties', None)
@@ -30,7 +32,7 @@ def normalizeNavtreeProperties(portal, out):
                     navtree_properties._delProperty(property)
             for property, value in toAdd.items():
                 if navtree_properties.getProperty(property, None) is None:
-                    navtree_properties._setProperty(property, value, 'string')
+                    navtree_properties._setProperty(property, value[1], value[0])
             bottomLevel = navtree_properties.getProperty('bottomLevel', None)
             if bottomLevel == 65535:
                 navtree_properties.manage_changeProperties(bottomLevel = 0)
