@@ -12,6 +12,13 @@ class IDefaultPage(Interface):
         """Returns the id of the default page for the adapted object.
         """
 
+class INavigationQueryBuilder(Interface):
+    """An object which returns a catalog query when called"""
+    def __call__():
+        """Returns a mapping describing a catalog query used to build a
+           navigation structure.
+        """
+
 class INavtreeStrategy(Interface):
 
     rootPath = Attribute("The path to the root of the navtree (None means use portal root)")
@@ -334,7 +341,7 @@ class IPlone(Interface):
         """ Returns the CSS class used by the page layout hide empty
             portlet columns.
         """
-        
+
     def navigationRootPath():
         """Get the current navigation root path
         """

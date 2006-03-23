@@ -6,6 +6,14 @@
     <implements interface=".interfaces.INavigationRoot" />
   </content>
 
+  <content class=".navtree.NavtreeStrategyBase">
+    <allow interface=".interfaces.INavtreeStrategy" />
+  </content>
+
+  <content class=".navtree.NavtreeQueryBuilder">
+    <allow interface=".interfaces.INavigationQueryBuilder" />
+  </content>
+
   <browser:layer
       name="plone"
       />
@@ -46,7 +54,7 @@
       permission="zope.Public"
       allowed_attributes="navigationTree"
       />
-   
+
   <browser:page
       for="*"
       name="sitemap_builder_view"
@@ -118,7 +126,7 @@
       permission="zope.Public"
       allowed_interface=".interfaces.ISitemapView"
       />
-      
+
    <adapter for="*
                 .interfaces.INavigationTree"
             factory=".navtree.DefaultNavtreeStrategy"

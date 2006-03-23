@@ -9,7 +9,9 @@ from Acquisition import aq_base
 
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import utils
-from Products.CMFPlone.browser.interfaces import INavtreeStrategy, INavigationRoot
+from Products.CMFPlone.browser.interfaces import INavtreeStrategy
+from Products.CMFPlone.browser.interfaces import INavigationRoot
+from Products.CMFPlone.browser.interfaces import INavigationQueryBuilder
 
 from types import StringType
 
@@ -382,6 +384,7 @@ def getNavigationRoot(context):
 class NavtreeQueryBuilder:
     """Build a navtree query based on the settings in navtree_properties
     """
+    implements(INavigationQueryBuilder)
 
     def __init__(self, context):
         portal_properties = getToolByName(context, 'portal_properties')
@@ -534,7 +537,10 @@ class DefaultNavtreeStrategy(SitemapNavtreeStrategy):
         navtree_properties = getattr(portal_properties, 'navtree_properties')
         # XXX: We can't do this with a 'depth' query to EPI...
         self.bottomLevel = navtree_properties.getProperty('bottomLevel', 0)
-        self.rootPath = view.navigationTreeRootPath()
+        if view is not None:
+            self.rootPath = view.navigationTreeRootPath()
+        else:
+            self.rootPath = getNavigationRoot(context)
 
     def subtreeFilter(self, node):
         sitemapDecision = SitemapNavtreeStrategy.subtreeFilter(self, node)
