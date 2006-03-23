@@ -77,6 +77,7 @@ function liveSearchInit() {
         searchInput.addEventListener("keydown",liveSearchKeyPress,false);
         searchInput.addEventListener("focus",liveSearchDoSearch,false);
         searchInput.addEventListener("keydown",liveSearchStart, false);
+        searchInput.addEventListener("blur",liveSearchHideDelayed,false);
     } else if (searchInput.addEventListener) {
         searchInput.addEventListener("keypress",liveSearchKeyPress,false);
         searchInput.addEventListener("blur",liveSearchHideDelayed,false);
