@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1.3 - Tomahawk - Unreleased
 
+    - Fixed up Summary View to show author/date on News Items and location/time
+      on Events.
+      [limi]
+
     - Incorporated various fixes for RTL support.
       http://dev.plone.org/plone/ticket/5299
       [fschulze]
