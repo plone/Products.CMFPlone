@@ -12,6 +12,34 @@ class IDefaultPage(Interface):
         """Returns the id of the default page for the adapted object.
         """
 
+class INavigationQueryBuilder(Interface):
+    """An object which returns a catalog query when called"""
+    def __call__():
+        """Returns a mapping describing a catalog query used to build a
+           navigation structure.
+        """
+
+class INavtreeStrategy(Interface):
+
+    rootPath = Attribute("The path to the root of the navtree (None means use portal root)")
+
+    showAllParents = Attribute("Whether or not to show all parents of the current context always")
+
+    def nodeFilter(node):
+        """Return True or False to determine whether to include the given node
+        in the tree. Nodes are dicts with at least one key - 'item', the
+        catalog brain of the object the node represents.
+        """
+
+    def subtreeFilter(node):
+        """Return True or False to determine whether to expand the given
+        (folderish) node
+        """
+
+    def decoratorFactory(node):
+        """Inject any additional keys in the node that are needed and return
+        the new node.
+        """
 
 class INavigationBreadcrumbs(Interface):
 
@@ -27,33 +55,47 @@ class INavigationTabs(Interface):
 
 class INavigationTree(Interface):
 
-    def navigationTree():
-        """Navigation Tree
+    def navigationTreeRootPath():
+        """Get the path to the root of the navigation tree
         """
 
-class INavigationStructure(INavigationBreadcrumbs,
-                           INavigationTabs,
-                           INavigationTree):
-    """Navigation Structure
-    """
+    def navigationTree():
+        """Navigation tree
+        """
+
+class ISiteMap(Interface):
+
+    def siteMap():
+        """Site map
+        """
 
 class INavigationRoot(Interface):
     """A marker interface for signaling the navigation root.
     """
 
-
 class INavigationPortlet(Interface):
-    """ """
+    """Interface for portlet to display navigation tree"""
+
+    def title():
+        """The title of the navigation portlet (may be '' to fall back on default)"""
+
+    def display():
+        """Whether or not the navtree should be displayed"""
 
     def includeTop():
-        """ """
+        """Whether or not to include the root element in the tree"""
+
+    def navigationRoot():
+        """Get the root object"""
+
+    def rootTypeName():
+        """Get a normalized content type name for the root object"""
 
     def createNavTree():
-        """ """
+        """Build the actual tree"""
 
     def isPortalOrDefaultChild():
-        """ """
-
+        """Determine if the context is the portal or a default-document"""
 
 class INewsPortlet(Interface):
     """Interface for portlet to display recent news items"""
@@ -89,10 +131,10 @@ class IEventsPortlet(Interface):
 
 
 class IRecentPortlet(Interface):
-    """ """
+    """Interface for portlet to display recently modified items"""
 
     def results():
-        """ """
+        """Get the list of recently modified items"""
 
 
 class ICalendarPortlet(Interface):
@@ -138,10 +180,10 @@ class ICalendarPortlet(Interface):
 
 
 class ISitemapView(Interface):
-    """ """
+    """Interface to the view that creates a site map"""
 
-    def createSitemap():
-        """ """
+    def createSiteMap():
+        """Create the site map data structure"""
 
 
 class IPlone(Interface):
@@ -298,4 +340,12 @@ class IPlone(Interface):
     def hide_columns(self, column_left, column_right):
         """ Returns the CSS class used by the page layout hide empty
             portlet columns.
+        """
+
+    def navigationRootPath():
+        """Get the current navigation root path
+        """
+
+    def navigationRootUrl():
+        """Get the url to the current navigation root
         """

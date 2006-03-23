@@ -477,10 +477,12 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         log_exc()
 
     security.declarePublic('createSitemap')
-    def createSitemap(self, context):
+    def createSitemap(self, context, request=None):
         """Returns a sitemap navtree structure.
         """
-        return self.createNavTree(context, sitemap=True)
+        if request is None:
+            request = self.REQUEST
+        return utils.createSiteMap(context, request)
 
     def _addToNavTreeResult(self, result, data):
         """Adds a piece of content to the result tree.
@@ -491,14 +493,13 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     def typesToList(self):
         return utils.typesToList(self)
 
-    # TODO Please, refactor me! :-)
     security.declarePublic('createNavTree')
     def createNavTree(self, context, sitemap=None, request=None):
         """Returns a structure that can be used by navigation_tree_slot.
         """
         if request is None:
             request = self.REQUEST
-        return utils.createNavTree(context, request, sitemap=sitemap)
+        return utils.createNavTree(context, request)
 
     security.declarePublic('createTopLevelTabs')
     def createTopLevelTabs(self, context, actions=None, request=None):

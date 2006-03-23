@@ -130,10 +130,13 @@ from Products.CMFPlone.migrations.v2_1.two11_two12 import removeDiscussionItemWo
 from Products.CMFPlone.migrations.v2_1.two11_two12 import addMemberData
 from Products.CMFPlone.migrations.v2_1.two11_two12 import reinstallPortalTransforms
 
+from Products.CMFPlone.migrations.v2_1.two12_two13 import normalizeNavtreeProperties
+
 from Products.CMFPlone.migrations.v2_5.alphas import installPlacefulWorkflow
 from Products.CMFPlone.migrations.v2_5.alphas import installDeprecated
 
 from Products.CMFPlone.migrations.v2_5.betas import addGetEventTypeIndex
+from Products.CMFPlone.migrations.v2_5.betas import fixHomeAction
 
 from Products.CMFDynamicViewFTI.migrate import migrateFTI
 
@@ -3044,7 +3047,7 @@ class TestMigrations_v2_1(MigrationTest):
         topic.setSortCriterion('created', False)
         self.portal._delObject('portal_atct')
         alterSortCriterionOnNewsTopic(self.portal, [])
-        
+
     def testFixPreferenceActionTitle(self):
         # Should change the preferences action title
         new_actions = self.membership._cloneActions()
@@ -3402,7 +3405,7 @@ class TestMigrations_v2_1_2(MigrationTest):
     def testRemoveDiscussionItemWorkflowNoTool(self):
         self.portal._delObject('portal_workflow')
         removeDiscussionItemWorkflow(self.portal, [])
-        
+
     def testRemoveDiscussionItemWorkflowNoType(self):
         self.types._delObject('Discussion Item')
         removeDiscussionItemWorkflow(self.portal, [])
@@ -3448,6 +3451,69 @@ class TestMigrations_v2_1_2(MigrationTest):
     def testReinstallPortalTransformsNoTool(self):
         self.portal._delObject('portal_quickinstaller')
         reinstallPortalTransforms(self.portal, [])
+
+class TestMigrations_v2_1_3(MigrationTest):
+
+    def testNormalizeNavtreeProperties(self):
+        ntp = self.portal.portal_properties.navtree_properties
+        toRemove = ['skipIndex_html', 'showMyUserFolderOnly', 'showFolderishSiblingsOnly',
+                    'showFolderishChildrenOnly', 'showNonFolderishObject', 'showTopicResults',
+                    'rolesSeeContentView', 'rolesSeeUnpublishedContent', 'batchSize',
+                    'croppingLength', 'forceParentsInBatch', 'rolesSeeHiddenContent', 'typesLinkToFolderContents']
+        toAdd = {'name' : '', 'root' : '/', 'currentFolderOnlyInNavtree' : False}
+        for property in toRemove:
+            ntp._setProperty(property, 'X', 'string')
+        for property, value in toAdd.items():
+            ntp._delProperty(property)
+        ntp.manage_changeProperties(bottomLevel = 65535)
+        normalizeNavtreeProperties(self.portal, [])
+        for property in toRemove:
+            self.assertEqual(ntp.getProperty(property, None), None)
+        for property, value in toAdd.items():
+            self.assertEqual(ntp.getProperty(property), value)
+        self.assertEqual(ntp.getProperty('bottomLevel'), 0)
+
+    def testNormalizeNavtreePropertiesTwice(self):
+        ntp = self.portal.portal_properties.navtree_properties
+        toRemove = ['skipIndex_html', 'showMyUserFolderOnly', 'showFolderishSiblingsOnly',
+                    'showFolderishChildrenOnly', 'showNonFolderishObject', 'showTopicResults',
+                    'rolesSeeContentView', 'rolesSeeUnpublishedContent', 'rolesSeeContentsView',
+                    'batchSize', 'sortCriteria', 'croppingLength', 'forceParentsInBatch',
+                    'rolesSeeHiddenContent', 'typesLinkToFolderContents']
+        toAdd = {'name' : '', 'root' : '/', 'currentFolderOnlyInNavtree' : False}
+        for property in toRemove:
+            ntp._setProperty(property, 'X', 'string')
+        for property, value in toAdd.items():
+            ntp._delProperty(property)
+        ntp.manage_changeProperties(bottomLevel = 65535)
+        normalizeNavtreeProperties(self.portal, [])
+        normalizeNavtreeProperties(self.portal, [])
+        for property in toRemove:
+            self.assertEqual(ntp.getProperty(property, None), None)
+        for property, value in toAdd.items():
+            self.assertEqual(ntp.getProperty(property), value)
+        self.assertEqual(ntp.getProperty('bottomLevel'), 0)
+
+    def testNormalizeNavtreePropertiesNoTool(self):
+        self.portal._delObject('portal_properties')
+        normalizeNavtreeProperties(self.portal, [])
+
+    def testNormalizeNavtreePropertiesNoSheet(self):
+        self.portal.portal_properties._delObject('navtree_properties')
+        normalizeNavtreeProperties(self.portal, [])
+
+    def testNormalizeNavtreePropertiesNoPropertyToRemove(self):
+        ntp = self.portal.portal_properties.navtree_properties
+        if ntp.getProperty('skipIndex_html', None) is not None:
+            ntp._delProperty('skipIndex_html')
+        normalizeNavtreeProperties(self.portal, [])
+
+    def testNormalizeNavtreePropertiesNewPropertyExists(self):
+        ntp = self.portal.portal_properties.navtree_properties
+        ntp.manage_changeProperties(root = '/foo', bottomLevel = 10)
+        normalizeNavtreeProperties(self.portal, [])
+        self.assertEqual(ntp.getProperty('root'), '/foo')
+        self.assertEqual(ntp.getProperty('bottomLevel'), 10)
 
 class TestMigrations_v2_5(MigrationTest):
 
@@ -3545,6 +3611,29 @@ class TestMigrations_v2_5(MigrationTest):
         self.portal._delObject('portal_catalog')
         addGetEventTypeIndex(self.portal, [])
 
+    def testFixHomeAction(self):
+        editActions = ('index_html',)
+        for a in editActions:
+            self.removeActionFromTool(a)
+        fixHomeAction(self.portal, [])
+        actions = [x.id for x in self.actions.listActions()]
+        for a in editActions:
+            self.failUnless(a in actions)
+
+    def testFixHomeActionTwice(self):
+        editActions = ('index_html',)
+        for a in editActions:
+            self.removeActionFromTool(a)
+        fixHomeAction(self.portal, [])
+        fixHomeAction(self.portal, [])
+        actions = [x.id for x in self.actions.listActions()]
+        for a in editActions:
+            self.failUnless(a in actions)
+
+    def testFixHomeActionNoTool(self):
+        self.portal._delObject('portal_actions')
+        fixHomeAction(self.portal, [])
+
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
@@ -3552,8 +3641,9 @@ def test_suite():
     suite.addTest(makeSuite(TestMigrations_v2_1))
     suite.addTest(makeSuite(TestMigrations_v2_1_1))
     suite.addTest(makeSuite(TestMigrations_v2_1_2))
+    suite.addTest(makeSuite(TestMigrations_v2_1_3))
     suite.addTest(makeSuite(TestMigrations_v2_5))
-        
+
     return suite
 
 if __name__ == '__main__':

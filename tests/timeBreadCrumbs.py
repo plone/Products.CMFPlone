@@ -28,11 +28,11 @@ if __name__ == '__main__':
     obj = site.unrestrictedTraverse('folder2/folder22/folder222/doc2222')
 
     def catalog():
-        return navigation.CatalogNavigationStructure(
+        return navigation.CatalogNavigationBreadcrumbs(
             obj, request).breadcrumbs()
 
     def physical():
-        return navigation.PhysicalNavigationStructure(
+        return navigation.PhysicalNavigationBreadcrumbs(
             obj, request).breadcrumbs()
 
     times = int(sys.argv[2])

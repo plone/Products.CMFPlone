@@ -56,30 +56,20 @@ def context(view):
     return view.context[0]
 
 def createBreadCrumbs(context, request):
-    view = getMultiAdapter((context, request), name='nav_view')
+    view = getMultiAdapter((context, request), name='breadcrumbs_view')
     return view.breadcrumbs()
 
 def createTopLevelTabs(context, request, actions=None):
-    view = getMultiAdapter((context, request), name='nav_view')
+    view = getMultiAdapter((context, request), name='portal_tabs_view')
     return view.topLevelTabs(actions=actions)
 
 def createNavTree(context, request, sitemap=False):
-    view = getMultiAdapter((context, request), name='nav_view')
-    return view.navigationTree(sitemap=sitemap)
+    view = getMultiAdapter((context, request), name='navtree_builder_view')
+    return view.navigationTree()
 
-def addToNavTreeResult(result, data):
-    path = data['path']
-    parentpath = '/'.join(path.split('/')[:-1])
-    # Tell parent about self
-    if result.has_key(parentpath):
-        result[parentpath]['children'].append(data)
-    else:
-        result[parentpath] = {'children':[data]}
-    # If we have processed a child already, make sure we register it
-    # as a child
-    if result.has_key(path):
-        data['children'] = result[path]['children']
-    result[path] = data
+def createSiteMap(context, request, sitemap=False):
+    view = getMultiAdapter((context, request), name='sitemap_builder_view')
+    return view.siteMap()
 
 def _getDefaultPageView(obj, request):
     """This is a nasty hack because the view lookup fails when it occurs too

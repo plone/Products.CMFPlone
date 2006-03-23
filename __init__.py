@@ -105,6 +105,9 @@ def initialize(context):
     this_module.transaction_note = transaction_note
     this_module.base_hasattr = base_hasattr
 
+    # Make the navtree constructs available TTW
+    allow_module('Products.CMFPlone.browser.navtree')
+
     # Setup migrations
     import migrations
     migrations.executeMigrations()

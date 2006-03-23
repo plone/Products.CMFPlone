@@ -5,6 +5,8 @@ from Products.CMFPlone.migrations.migration_util import installOrReinstallProduc
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.DirectoryView import createDirectoryView
 
+from Products.CMFCore.Expression import Expression
+
 def alpha2_beta1(portal):
     """2.5-alpha2 -> 2.5-beta1
     """
@@ -15,6 +17,9 @@ def alpha2_beta1(portal):
 
     # Add getEventTypes KeywordIndex to portal_catalog
     addGetEventTypeIndex(portal, out)
+
+    # Fix 'home' portal action
+    fixHomeAction(portal, out)
 
     return out
 
@@ -54,3 +59,35 @@ def addGetEventTypeIndex(portal, out):
         out.append("Added KeywordIndex 'getEventType' to portal_catalog.")
         return 1 # Ask for reindexing
     return 0
+
+def fixHomeAction(portal, out):
+    """Make the 'home' action use the @@plone view to get a properly rooted
+    navtree.
+    """
+    newaction = { 'id'         : 'index_html',
+                  'name'       : 'Home',
+                  'action'     : 'string:${here/@@plone/navigationRootUrl}',
+                  'condition'  : '',
+                  'permission' : 'View',
+                  'category'   : 'portal_tabs',
+                }
+    exists = False
+    actionsTool = getToolByName(portal, 'portal_actions', None)
+    if actionsTool is not None:
+        new_actions = actionsTool._cloneActions()
+        for action in new_actions:
+            if action.getId() == newaction['id'] and action.category == newaction['category']:
+                exists = True
+                action.condition = Expression(text=newaction['condition']) or ''
+                out.append('Modified existing home/index_html action')
+        if exists:
+            actionsTool._actions = new_actions
+        else:
+            actionsTool.addAction(newaction['id'],
+                    name=newaction['name'],
+                    action=newaction['action'],
+                    condition=newaction['condition'],
+                    permission=newaction['permission'],
+                    category=newaction['category'],
+                    visible=1)
+            out.append("Added missing home/index_html action")

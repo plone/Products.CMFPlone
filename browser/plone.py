@@ -1,4 +1,5 @@
 from Products.CMFPlone.browser.interfaces import IPlone
+from Products.CMFPlone.browser.navtree import getNavigationRoot
 from Products.CMFPlone.interfaces.NonStructuralFolder import INonStructuralFolder
 from Products.CMFPlone import utils
 from Products.CMFCore.utils import getToolByName
@@ -10,6 +11,7 @@ import ZTUtils
 import sys
 
 from Acquisition import aq_inner, aq_parent
+
 
 _marker = []
 
@@ -86,6 +88,7 @@ class Plone(utils.BrowserView):
         self._data['workflow_actions'] =  actions['workflow']
         self._data['folder_actions'] =  actions['folder']
         self._data['global_actions'] =  actions['global']
+        # XXX: This should use the view!
         self._data['portal_tabs'] =  putils.createTopLevelTabs(context,
                                                               actions=actions)
         self._data['wf_state'] =  wtool.getInfoFor(context,'review_state', None)
@@ -125,6 +128,8 @@ class Plone(utils.BrowserView):
         self._data['toLocalizedTime'] = self.toLocalizedTime
         self._data['isStructuralFolder'] = self.isStructuralFolder()
         self._data['isContextDefaultPage'] = self.isDefaultPageInFolder()
+
+        self._data['navigation_root_url'] = self.navigationRootUrl()
 
     def __getattr__(self, key):
         """Override to look in _data first"""
@@ -284,3 +289,19 @@ class Plone(utils.BrowserView):
             return False
         else:
             return True
+            
+    def navigationRootPath(self):
+        context = utils.context(self)
+        return getNavigationRoot(context)
+        
+    def navigationRootUrl(self):
+        context = utils.context(self)
+        portal_url = getToolByName(context, 'portal_url')
+        
+        portal = portal_url.getPortalObject()
+        portalPath = portal_url.getPortalPath()
+        
+        rootPath = getNavigationRoot(context)
+        rootSubPath = rootPath[len(portalPath):]
+        
+        return portal.absolute_url() + rootSubPath

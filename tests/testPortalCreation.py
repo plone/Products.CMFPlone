@@ -619,7 +619,21 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
             self.transforms.safe_html.get_parameter_value('disable_transform')
         except (AttrbuteError, KeyError):
             self.fail('safe_html transformation not updated')
-
+    
+    def testNavtreePropertiesNormalized(self):
+        ntp = self.portal.portal_properties.navtree_properties
+        toRemove = ['skipIndex_html', 'showMyUserFolderOnly', 'showFolderishSiblingsOnly',
+                    'showFolderishChildrenOnly', 'showNonFolderishObject', 'showTopicResults',
+                    'rolesSeeContentView', 'rolesSeeUnpublishedContent', 'rolesSeeContentsView ',
+                    'batchSize', 'sortCriteria', 'croppingLength', 'forceParentsInBatch', 
+                    'rolesSeeHiddenContent', 'typesLinkToFolderContents']
+        toAdd = {'name' : '', 'root' : '/', 'currentFolderOnlyInNavtree' : False}
+        for property in toRemove:
+            self.assertEqual(ntp.getProperty(property, None), None)
+        for property, value in toAdd.items():
+            self.assertEqual(ntp.getProperty(property), value)
+        self.assertEqual(ntp.getProperty('bottomLevel'), 0)
+            
     def testCacheManagers(self):
         # The cache and caching policy managers should exist
         httpcache = self.portal._getOb('HTTPCache', None)
@@ -628,6 +642,11 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.failUnless(isinstance(httpcache, AcceleratedHTTPCacheManager))
         self.failUnless(isinstance(ramcache, RAMCacheManager))
         self.failUnless(isinstance(cpm, CachingPolicyManager))
+
+    def testHomeActionUsesView(self):
+        actions = self.portal.portal_actions.listActions()
+        homeAction = [x for x in actions if x.id == 'index_html'][0]
+        self.assertEquals(homeAction.getActionExpression(), 'string:${here/@@plone/navigationRootUrl}')
 
 class TestPortalBugs(PloneTestCase.PloneTestCase):
 

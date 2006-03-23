@@ -413,6 +413,7 @@ except DiscussionNotAllowed: pass
         self.check('from Products.ZCatalog.Catalog import mergeResults')
 
 
+
 class TestAcquisitionMethods(RestrictedPythonTest):
 
     def test_aq_explicit(self):
@@ -488,6 +489,56 @@ class TestSkinSecurity(PloneTestCase.PloneTestCase):
             self.fail("Owner could not access folder_constraintypes_form")
 
 
+class TestNavtreeSecurity(PloneTestCase.PloneTestCase, RestrictedPythonTest):
+
+    def testNavtreeStrategyBase(self):
+        self.check('from Products.CMFPlone.browser.navtree import NavtreeStrategyBase;'
+                    'n=NavtreeStrategyBase();'
+                    'n.nodeFilter({});'
+                    'n.subtreeFilter({});'
+                    'n.decoratorFactory({});')
+
+    def testNavtreeStrategyBase(self):
+        self.check('from Products.CMFPlone.browser.navtree import NavtreeStrategyBase;'
+                    'n=NavtreeStrategyBase();'
+                    'n.nodeFilter({});'
+                    'n.subtreeFilter({});'
+                    'n.decoratorFactory({});')
+
+    def testSitemapNavtreeStrategy(self):
+        # We don't test the decorator factory because that requres an
+        # actual brain in item
+        self.check('from Products.CMFPlone.browser.navtree import SitemapNavtreeStrategy;'
+                    'n=SitemapNavtreeStrategy(context);'
+                    'n.nodeFilter({"item":1});'
+                    'n.subtreeFilter({"item":1});')
+
+    def testDefaultNavtreeStrategy(self):
+        # We don't test the decorator factory because that requres an
+        # actual brain in item
+        self.check('from Products.CMFPlone.browser.navtree import DefaultNavtreeStrategy;'
+                    'n=DefaultNavtreeStrategy(context);'
+                    'n.nodeFilter({"item":1});'
+                    'n.subtreeFilter({"item":1});')
+
+    def testNavtreeQueryBuilder(self):
+        self.check('from Products.CMFPlone.browser.navtree import NavtreeQueryBuilder;'
+                    'n=NavtreeQueryBuilder(context);'
+                    'n();')
+
+    def testSitemapQueryBuilder(self):
+        self.check('from Products.CMFPlone.browser.navtree import SitemapQueryBuilder;'
+                    'n=SitemapQueryBuilder(context);'
+                    'n();')
+
+    def testGetNavigationRoot(self):
+        self.check('from Products.CMFPlone.browser.navtree import getNavigationRoot')
+
+    def testBuildFolderTree(self):
+        self.check('from Products.CMFPlone.browser.navtree import buildFolderTree')
+
+
+
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
@@ -495,6 +546,7 @@ def test_suite():
     suite.addTest(makeSuite(TestAcquisitionMethods))
     suite.addTest(makeSuite(TestAllowSendtoSecurity))
     suite.addTest(makeSuite(TestSkinSecurity))
+    suite.addTest(makeSuite(TestNavtreeSecurity))
     return suite
 
 if __name__ == '__main__':
