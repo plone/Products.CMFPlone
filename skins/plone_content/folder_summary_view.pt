@@ -61,6 +61,22 @@
                                        item_object item/getObject;
                                    ">
 
+                    <a href="#"
+                       tal:condition="python:item_type != 'Link'"
+                       tal:attributes="href python:test(item_type in use_view_action, item_url+'/view', item_url+'/');">
+                        <img src="" alt=""
+                             tal:condition="item_object/image_thumb|nothing"
+                             tal:replace="structure python: item_object.tag(scale='thumb', css_class='tileImage')" />
+                    </a>
+
+                    <a href="#"
+                       tal:condition="python:item_type == 'Link'"
+                       tal:attributes="href python:test(item_type in use_view_action, item_url+'/view', item_url+'/');">
+                        <img src="" alt=""
+                             tal:condition="item_object/image_thumb|nothing"
+                             tal:replace="structure python: item_object.tag(scale='thumb', css_class='tileImage')" />
+                    </a>
+
                     <h2 class="tileHeadline"
                         metal:define-macro="listitem">
 
@@ -77,31 +93,34 @@
                            tal:attributes="href item/getRemoteUrl;">
                             External Link
                         </a>
-
-                        <span class="documentByLine"
-                              tal:condition="python: item_type == 'Event'">
-                        (<span tal:replace="string:${item/location}">Oslo</span>, from
-                         <span tal:replace="python:toLocalizedTime(item_start,long_format=1)">from date</span> to
-                         <span tal:replace="python:toLocalizedTime(item_end,long_format=1)">to date</span>)
-                         </span>
-
                     </h2>
 
-                    <a href="#"
-                       tal:condition="python:item_type != 'Link'"
-                       tal:attributes="href python:test(item_type in use_view_action, item_url+'/view', item_url+'/');">
-                        <img src="" alt=""
-                             tal:condition="item_object/image_thumb|nothing"
-                             tal:replace="structure python: item_object.tag(scale='thumb', css_class='tileImage')" />
-                    </a>
-
-                    <a href="#"
-                       tal:condition="python:item_type == 'Link'"
-                       tal:attributes="href python:test(item_type in use_view_action, item_url+'/view', item_url+'/');">
-                        <img src="" alt=""
-                             tal:condition="item_object/image_thumb|nothing"
-                             tal:replace="structure python: item_object.tag(scale='thumb', css_class='tileImage')" />
-                    </a>
+                    <div class="documentByLine">
+                    <tal:event condition="python: item_type == 'Event'">
+                         <span tal:replace="string:${item/location}">Oslo</span>, from
+                         <span tal:replace="python:toLocalizedTime(item_start,long_format=1)">from date</span> to
+                         <span tal:replace="python:toLocalizedTime(item_end,long_format=1)">to date</span>
+                    </tal:event>
+                    <tal:newsitem condition="python: item_type == 'News Item'">
+                        <tal:name tal:condition="item_creator"
+                            tal:define="author python:mtool.getMemberInfo(item_creator)">
+                          <span i18n:translate="label_by_author">
+                            by
+                          <a href="#"
+                             tal:attributes="href string:${portal_url}/author/${item_creator}"
+                             tal:content="python:author and author['fullname'] or item_creator"
+                             tal:omit-tag="not:author"
+                             i18n:name="author">
+                            Bob Dobalina
+                          </a>
+                          </span>
+                        </tal:name>
+                        &mdash;
+                        <span tal:replace="python:toLocalizedTime(item_modified,long_format=1)">
+                        August 16, 2001 at 23:35:59
+                        </span>
+                    </tal:newsitem>
+                    </div>
 
                     <p class="tileBody">
                         <span tal:omit-tag="" tal:condition="not:item_description">
