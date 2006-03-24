@@ -1,4 +1,5 @@
 from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone import PloneMessageFactory as _
 
 request = context.REQUEST
 
@@ -8,14 +9,14 @@ intvals = ('topLevel', 'bottomLevel')
 for k in required:
     v = request.form.get(k, '').strip()
     if not v:
-        state.setError(k, 'Input Required.')
+        state.setError(k, _(u'Input Required.'))
 for k in intvals:
     v = request.form.get(k, '').strip()
     if v:
         try:
             int(v)
         except ValueError:
-            state.setError(k, 'Input must be an integer.')
+            state.setError(k, _(u'Input must be an integer.'))
 
 root = request.form.get('root', None)
 if root and root != '/':
@@ -23,11 +24,11 @@ if root and root != '/':
     rootPath = purl.getPortalPath() + root
     rootObject = purl.getPortalObject().restrictedTraverse(rootPath)
     if rootObject is None:
-        state.setError('root', 'Could not find %s' % root)
+        state.setError('root', _(u'Could not find ${root}', mapping={u'root' : root}))
 
 if state.getErrors():
-    return state.set(status='failure',
-        portal_status_message='Please correct the indicated errors.')
+    context.plone_utils.addPortalMessage(_(u'Please correct the indicated errors.'))
+    return state.set(status='failure')
 else:
     return state
 

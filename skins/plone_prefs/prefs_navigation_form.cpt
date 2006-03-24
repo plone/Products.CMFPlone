@@ -18,7 +18,7 @@
        class="link-parent"
        tal:attributes="href string: $portal_url/plone_control_panel"
        i18n:translate="label_up_to_plone_setup">
-    Up to Site Setup
+        Up to Site Setup
     </a>
 
     <p i18n:translate="description_navigation_setup">
@@ -46,12 +46,14 @@
                        value="1"
                        tal:attributes="checked python:test(generated_tabs, 'checked', None)" />
 
-                <label i18n:translate="label_generated_tabs_enable">Automatically generate tabs</label>
+                <label i18n:translate="label_generated_tabs_enable">
+                    Automatically generate tabs
+                </label>
 
                 <div class="formHelp" i18n:translate="help_generated_tabs">
-                By default, all items created at the root level will add to the global section
-                navigation. You can turn this off if you prefer manually constructing
-                this part of the navigation.
+                    By default, all items created at the root level will add to
+                    the global section navigation. You can turn this off if you
+                    prefer manually constructing this part of the navigation.
                 </div>
             </div>
             
@@ -60,11 +62,17 @@
                             value request/name|value;
                             error errors/name|nothing"
                 tal:attributes="class python:error and 'field error' or 'field';">
-                <label>Navigation tree portlet title</label>
-                <div class="formHelp">
-                  Change the English title of the navigation tree portlet. Note
-                  that this won't affect the title in other languages.
+
+                <label i18n:translate="label_navigation_portlet_title">
+                    Navigation tree portlet title
+                </label>
+
+                <div class="formHelp"
+                     i18n:translate="help_navigation_portlet_title">
+                    Change the English title of the navigation tree portlet.
+                    Note that this won't affect the title in other languages.
                 </div>
+
                 <input name="name"
                        type="text"
                        size="30"
@@ -77,13 +85,18 @@
                             value request/root|value;
                             error errors/root|nothing"
                 tal:attributes="class python:error and 'field error' or 'field';">
-                <label>Navigation tree root</label>
-                <div class="formHelp">
-                    A path that specifies the base folder where the
-                    navigation tree, sitemap, breadcrumbs and tabs will be rooted. 
-                    Use <strong>'/'</strong> for the portal root, and 
-                    <strong>'/folder1'</strong> to start at 'folder1'.
+
+                <label i18n:translate="label_navigation_root">
+                    Navigation tree root
+                </label>
+
+                <div class="formHelp"
+                     i18n:translate="help_navigation_root">
+                    A path that specifies the base folder where the navigation
+                    tree, sitemap, breadcrumbs and tabs will be rooted. Use '/'
+                    for the portal root, and '/folder1' to start at 'folder1'.
                 </div>
+
                 <input name="root"
                        type="text"
                        size="30"
@@ -104,11 +117,13 @@
                        value="0"
                        tal:attributes="checked python:test(value, 'checked', None)" />
 
-                <label i18n:translate="label_current_folder_only">Root navigation tree in current folder</label>
+                <label i18n:translate="label_current_folder_only">
+                    Root navigation tree in current folder
+                </label>
 
                 <div class="formHelp" i18n:translate="help_current_folder_only">
-                If selected, the navigation tree will only show the current 
-                folder and its children at all times.
+                    If selected, the navigation tree will only show the current 
+                    folder and its children at all times.
                 </div>
             </div>
               
@@ -118,43 +133,61 @@
                   value request/topLevel|value;
                   error errors/topLevel|nothing"
                 tal:attributes="class python:error and 'field error' or 'field';">
-                <label>Navigation tree start level</label>
-                <span class="fieldRequired" title="Required"
-                  i18n:attributes="title title_required;"
-                  i18n:translate="label_required">(Required)
+
+                <label i18n:translate="label_navigation_start_level">
+                    Navigation tree start level
+                </label>
+
+                <span class="fieldRequired"
+                      title="Required"
+                      i18n:attributes="title title_required;"
+                      i18n:translate="label_required">
+                    (Required)
                 </span>
-                <div class="formHelp">
-                  An integer value that specifies the number of folder levels 
-                  below the site root that must be exceeded before the
-                  navigation tree will display. 0 means that the navigation
-                  tree should be displayed everywhere including pages in the
-                  root of the site. 1 means the tree should be displayed 
-                  with content contained inside folders in the site root and 
-                  below.
+
+                <div class="formHelp"
+                     i18n:translate="help_navigation_start_level">
+                    An integer value that specifies the number of folder levels 
+                    below the site root that must be exceeded before the
+                    navigation tree will display. 0 means that the navigation
+                    tree should be displayed everywhere including pages in the
+                    root of the site. 1 means the tree should be displayed 
+                    with content contained inside folders in the site root and 
+                    below.
                 </div>
+
                 <input name="topLevel"
                        type="text"
                        size="4"
                        tal:attributes="value value;"/>
                 <div tal:content="error">Validation error output</div>
               </div>
+
               <div class="field"
-                tal:define="
-                  value python:navtree_props.getProperty('bottomLevel');
-                  value request/bottomLevel|value;
-                  error errors/bottomLevel|nothing"
-                tal:attributes="class python:error and 'field error' or 'field';">
-                <label>Navigation tree depth</label>
-                <span class="fieldRequired" title="Required"
-                  i18n:attributes="title title_required;"
-                  i18n:translate="label_required">(Required)
+                   tal:define="value python:navtree_props.getProperty('bottomLevel');
+                               value request/bottomLevel|value;
+                               error errors/bottomLevel|nothing"
+                   tal:attributes="class python:error and 'field error' or 'field';">
+
+                <label i18n:translate="label_navigation_tree_depth">
+                    Navigation tree depth
+                </label>
+
+                <span class="fieldRequired"
+                      title="Required"
+                      i18n:attributes="title title_required;"
+                      i18n:translate="label_required">
+                    (Required)
                 </span>
-                <div class="formHelp">
-                  An integer value that specifies the number of folder levels
-                  below the root that should be included in the tree structure 
-                  of the navigation tree.  0 means no limit.  1 means only 
-                  include the root folder.
+
+                <div class="formHelp"
+                     i18n:translate="help_navigation_tree_depth">
+                    An integer value that specifies the number of folder levels
+                    below the root that should be included in the tree structure 
+                    of the navigation tree. 0 means no limit. 1 means only 
+                    include the root folder.
                 </div>
+
                 <input name="bottomLevel"
                        type="text"
                        size="30"
@@ -171,11 +204,15 @@
                        blacklisted      navtree_props/metaTypesNotToList;
                        searchTypes      python:[t.getId() for t in allTypes if t.getId() not in blacklisted];">
 
-                <label i18n:translate="label_navigation_types">Displayed content types</label>
+                <label i18n:translate="label_navigation_types">
+                    Displayed content types
+                </label>
 
-                <div class="formHelp" id="navigationtypes_help"
+                <div class="formHelp"
+                     id="navigationtypes_help"
                      i18n:translate="help_navigationtypes">
-                     The content types that should be shown in the navigation tree and the site map.
+                    The content types that should be shown in the navigation
+                    tree and the site map.
                 </div>
 
                 <div style="float:left; margin-right: 2em; width: 29%" tal:repeat="sublist typeLists">
@@ -214,12 +251,15 @@
                                tal:attributes="checked navtree_props/enable_wf_state_filtering;" />
                         <label for="enable-wf-state-filtering"
                                style="font-size: 110%"
-                               i18n:translate="label_navtree_wf_enable">Filter on workflow state</label>
+                               i18n:translate="label_navtree_wf_enable">
+                            Filter on workflow state
+                        </label>
                     </legend>
 
                     <div class="formHelp"
-                             i18n:translate="help_wf_states">
-                        The workflow states that should be shown in the navigation tree and the site map.
+                         i18n:translate="help_wf_states">
+                        The workflow states that should be shown in the
+                        navigation tree and the site map.
                     </div>
 
                     <tal:states repeat="sublist state_lists">
@@ -266,5 +306,3 @@
 
 </body>
 </html>
-
-
