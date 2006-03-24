@@ -2,6 +2,7 @@ import os
 from Acquisition import aq_base
 
 from Products.CMFPlone.migrations.migration_util import installOrReinstallProduct
+from Products.CMFPlone.migrations.v2_1.two12_two13 import normalizeNavtreeProperties
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.DirectoryView import createDirectoryView
 
@@ -20,6 +21,11 @@ def alpha2_beta1(portal):
 
     # Fix 'home' portal action
     fixHomeAction(portal, out)
+
+    # Fixup the navtree properties (this was already done in 1.3, but may
+    # need to be done again for those migrating from alphas)
+    normalizeNavtreeProperties(portal, out)
+
 
     return out
 
