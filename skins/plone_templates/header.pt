@@ -70,10 +70,26 @@
 
     <link rel="shortcut icon" type="image/x-icon" tal:attributes="href string:$portal_url/favicon.ico" />
 
-    <link rel="home" href="" title="Front page" tal:attributes="href string:$portal_url" />
-    <link rel="search" title="Search this site" tal:attributes="href string:$portal_url/search_form" />
-    <link rel="author" title="Author information" tal:attributes="href string:${portal_url}/author/${here/Creator}" />
-    <link rel="contents" href="" title="Site Map" tal:attributes="href string:$portal_url/sitemap" />
+    <link rel="home"
+          href=""
+          title="Front page"
+          i18n:attributes="title title_frontpage"
+          tal:attributes="href string:$portal_url" />
+    <link rel="search"
+          href=""
+          title="Search this site"
+          i18n:attributes="title title_search_this_site"
+          tal:attributes="href string:$portal_url/search_form" />
+    <link rel="author"
+          href=""
+          title="Author information"
+          i18n:attributes="title title_author_info"
+          tal:attributes="href string:${portal_url}/author/${here/Creator}" />
+    <link rel="contents"
+          href=""
+          title="Site Map"
+          i18n:attributes="title title_sitemap"
+          tal:attributes="href string:$portal_url/sitemap" />
 
     <tal:fixme tal:replace="nothing">
       <link rel="help" href="" title="Help" tal:attributes="href string:$portal_url/help" />

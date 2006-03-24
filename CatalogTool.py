@@ -125,7 +125,13 @@ num_sort_regex = re.compile('\d+')
 
 
 def sortable_title(obj, portal, **kwargs):
-    """Helper method for to provide FieldIndex for Title.
+    """ Helper method for to provide FieldIndex for Title.
+    
+    >>> from Products.CMFPlone.CatalogTool import sortable_title
+
+    >>> self.folder.setTitle('Plone42 _foo')
+    >>> sortable_title(self.folder, self.portal)
+    'plone00000042 _foo'
     """
     def_charset = portal.plone_utils.getSiteEncoding()
     title = getattr(obj, 'Title', None)
@@ -155,7 +161,12 @@ registerIndexableAttribute('sortable_title', sortable_title)
 
 
 def getObjPositionInParent(obj, **kwargs):
-    """Helper method for catalog based folder contents.
+    """ Helper method for catalog based folder contents.
+
+    >>> from Products.CMFPlone.CatalogTool import getObjPositionInParent
+
+    >>> getObjPositionInParent(self.folder)
+    0
     """
     parent = aq_parent(aq_inner(obj))
     if IOrderedContainer.isImplementedBy(parent):
@@ -175,7 +186,12 @@ SIZE_CONST = {'kB': 1024, 'MB': 1024*1024, 'GB': 1024*1024*1024}
 SIZE_ORDER = ('GB', 'MB', 'kB')
 
 def getObjSize(obj, **kwargs):
-    """Helper method for catalog based folder contents.
+    """ Helper method for catalog based folder contents.
+
+    >>> from Products.CMFPlone.CatalogTool import getObjSize
+
+    >>> getObjSize(self.folder)
+    '1 kB'
     """
     smaller = SIZE_ORDER[-1]
 
@@ -211,6 +227,11 @@ def is_folderish(obj, **kwargs):
 
     Checks isPrincipiaFolderish, as well as the INonStructuralFolder
     interface.
+
+    >>> from Products.CMFPlone.CatalogTool import is_folderish
+
+    >>> is_folderish(self.folder)
+    True
     """
     # If the object explicitly states it doesn't want to be treated as a
     # structural folder, don't argue with it.

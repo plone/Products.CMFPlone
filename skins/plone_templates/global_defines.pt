@@ -8,7 +8,8 @@ moved to (much faster) Python code in CMFPlone/browser/plone.py
       tal:define="
         foo context/@@plone/globalize;
         global Iterator python:modules['Products.CMFPlone'].IndexIterator;
-        global tabindex python:Iterator(pos=30000);
+        global tabindex python:Iterator(pos=30000, mainSlot=False);
+        global uniqueItemIndex python:Iterator(pos=0);
         global template_id options/template_id | template/getId | nothing;
         view_template_id here/getViewTemplateId|nothing;
         global isViewTemplate python:template_id==view_template_id;

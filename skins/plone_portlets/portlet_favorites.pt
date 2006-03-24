@@ -17,12 +17,14 @@
                      favorites python: favorites[:limit]">
 
     <dt class="portletHeader">
+        <span class="portletTopLeft"></span>
         <a href=""
            class="tile"
            tal:attributes="href string:${folder/absolute_url}/folder_contents"
            i18n:translate="box_my_favorites"
            >My Favorites
          </a>
+        <span class="portletTopRight"></span>
     </dt>
 
     <dd class="portletItem odd" tal:condition="favorites">
@@ -44,6 +46,8 @@
            i18n:translate="box_morelink">
             More&hellip;
         </a>
+        <span class="portletBottomLeft"></span>
+        <span class="portletBottomRight"></span>
     </dd>
 
 </dl>

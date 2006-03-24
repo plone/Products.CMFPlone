@@ -5,7 +5,7 @@
 
 <metal:leftcolumn define-macro="left_column"
    tal:define="Iterator python:modules['Products.CMFPlone'].IndexIterator;
-               tabindex python:Iterator(pos=10000);"
+               tabindex python:Iterator(pos=10000, mainSlot=False);"
    tal:condition="sl|nothing">
 
     <metal:block tal:repeat="slot sl">
@@ -29,7 +29,7 @@
 
 <metal:rightcolumn define-macro="right_column"
    tal:define="Iterator python:modules['Products.CMFPlone'].IndexIterator;
-               tabindex python:Iterator(pos=20000);"
+               tabindex python:Iterator(pos=20000, mainSlot=False);"
    tal:condition="sr">
 
     <metal:block tal:repeat="slot sr">

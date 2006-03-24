@@ -246,18 +246,29 @@ def normalizeString(text, context=None, encoding=None, relaxed=False):
     return base
 
 class IndexIterator:
+    """An iterator used to generate tabindexes. Note that tabindexes are not as
+    good for accessibility as once thought, and are largely disabled with this
+    iterator. Only the first iteration of an iterator instantiated with 
+    mainSlot=True will get an index, subsequent iterations will get None (thus
+    removing the tabindex attribute).
+    """
     __allow_access_to_unprotected_subobjects__ = 1
 
-    def __init__(self, upper=100000, pos=0):
+    def __init__(self, upper=100000, pos=0, mainSlot=True):
         self.upper=upper
         self.pos=pos
+        self.mainSlot=mainSlot
+
+        if not mainSlot:
+            self.disabled = True
+        else:
+            self.disabled = False
 
     def next(self):
-        if self.pos <= self.upper:
-            self.pos += 1
-            return self.pos
-        raise KeyError, 'Reached upper bounds'
-
+        if self.disabled:
+            return None
+        self.disabled = True
+        return self.pos
 
 class ToolInit(CMFCoreToolInit):
 

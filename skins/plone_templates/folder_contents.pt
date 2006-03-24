@@ -47,10 +47,13 @@
                i18n:translate="go_to_parent_url">
                 Up one level
             </a>
-    
-            <p tal:content="here/Description">
+
+            <p class="documentDescription"
+               tal:content="here/Description"
+               tal:condition="here/Description">
                 Description
             </p>
+
         </tal:full_view>
 
         <p class="discreet"

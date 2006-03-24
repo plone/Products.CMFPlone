@@ -105,7 +105,7 @@
 
         <!-- start of main content block -->
         <div id="portal-column-content"
-             tal:define="tabindex python:Iterator(pos=0)">
+             tal:define="tabindex python:Iterator(pos=0, mainSlot=True)">
 
           <metal:block define-slot="content">
             <div id="content"

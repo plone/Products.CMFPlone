@@ -204,10 +204,10 @@
                            tabindex=""
                            tal:attributes="value type;
                                            tabindex tabindex;
-                                           id string:portal_type_${tabindex}"/>
+                                           id string:portal_type_${repeat/sublist/number}_${repeat/type/number}"/>
                     <label for=""
                            i18n:translate=""
-                           tal:attributes="for string:portal_type_${tabindex}"
+                           tal:attributes="for string:portal_type_${repeat/sublist/number}_${repeat/type/number}"
                            tal:content="python: portal_types.getTypeInfo(type).Title()"
                            />
                     <br />
@@ -285,7 +285,8 @@
                            checked="checked"
                            tal:attributes="value python:state[1];
                                            id python:normalizeString(state[1]);" />
-                    <label for="review_state:list"
+                    <label for=""
+                           tal:attributes="for python:normalizeString(state[1])"
                            i18n:translate=""
                            tal:content="python:state[0] or state[1]"
                            />

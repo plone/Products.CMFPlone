@@ -108,22 +108,50 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     security.declarePublic('getSiteEncoding')
     def getSiteEncoding(self):
-        """Get the default_charset or fallback to utf8."""
+        """ Get the default_charset or fallback to utf8.
+
+        >>> ptool = self.portal.plone_utils
+
+        >>> ptool.getSiteEncoding()
+        'utf-8'
+        """
         return utils.getSiteEncoding(self)
 
     security.declarePublic('portal_utf8')
     def portal_utf8(self, str, errors='strict'):
-        """Transforms an string in portal encoding to utf8."""
+        """ Transforms an string in portal encoding to utf8.
+
+        >>> ptool = self.portal.plone_utils
+        >>> text = u'Eksempel \xe6\xf8\xe5'
+        >>> sitetext = text.encode(ptool.getSiteEncoding())
+
+        >>> ptool.portal_utf8(sitetext) == text.encode('utf-8')
+        True
+        """
         return utils.portal_utf8(self, str, errors)
 
     security.declarePublic('utf8_portal')
     def utf8_portal(self, str, errors='strict'):
-        """Transforms an utf8 string to portal encoding."""
+        """ Transforms an utf8 string to portal encoding.
+
+        >>> ptool = self.portal.plone_utils
+        >>> text = u'Eksempel \xe6\xf8\xe5'
+        >>> utf8text = text.encode('utf-8')
+
+        >>> ptool.utf8_portal(utf8text) == text.encode(ptool.getSiteEncoding())
+        True
+        """
         return utils.utf8_portal(self, str, errors)
 
     security.declarePrivate('getMailHost')
     def getMailHost(self):
-        """Gets the MailHost."""
+        """ Gets the MailHost.
+
+        >>> ptool = self.portal.plone_utils
+
+        >>> ptool.getMailHost()
+        <SecureMailHost ...>
+        """
         return getattr(aq_parent(self), 'MailHost')
 
     security.declareProtected(AllowSendto, 'sendto')
@@ -348,6 +376,11 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         object's review_state.
 
         Returns None if no review_state found.
+
+        >>> ptool = self.portal.plone_utils
+
+        >>> ptool.getReviewStateTitleFor(self.folder)
+        'Public Draft'
         """
         wf_tool = getToolByName(self, 'portal_workflow')
         wfs = ()
@@ -444,6 +477,11 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
         See Python standard library urlparse.urlparse:
         http://python.org/doc/lib/module-urlparse.html
+
+        >>> ptool = self.portal.plone_utils
+
+        >>> ptool.urlparse('http://dev.plone.org/plone/query?milestone=2.1#foo')
+        ('http', 'dev.plone.org', '/plone/query', '', 'milestone=2.1', 'foo')
         """
         return urlparse.urlparse(url)
 
@@ -454,6 +492,11 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
         See also Python standard library: urlparse.urlunparse:
         http://python.org/doc/lib/module-urlparse.html
+
+        >>> ptool = self.portal.plone_utils
+
+        >>> ptool.urlunparse(('http', 'plone.org', '/support', '', '', 'users'))
+        'http://plone.org/support#users'
         """
         return urlparse.urlunparse(url_tuple)
 
@@ -755,7 +798,8 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                 if pageobj is not None and ITranslatable.isImplementedBy(pageobj):
                     translation = pageobj.getTranslation()
                     if translation is not None and \
-                       wftool.getInfoFor(pageobj, 'review_state') == wftool.getInfoFor(translation, 'review_state'):
+                       (not wftool.getChainFor(pageobj) or\
+                           wftool.getInfoFor(pageobj, 'review_state') == wftool.getInfoFor(translation, 'review_state')):
                         if ids.has_key(translation.getId()):
                             return obj, [translation.getId()]
                         else:
@@ -865,6 +909,11 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         That is, a folderish item which does not explicitly implement
         INonStructuralFolder to declare that it doesn't wish to be treated
         as a folder by the navtree, the tab generation etc.
+
+        >>> ptool = self.portal.plone_utils
+
+        >>> ptool.isStructuralFolder(self.folder)
+        True
         """
         if not obj.isPrincipiaFolderish:
             return False
@@ -902,7 +951,14 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     security.declarePublic('getOwnerName')
     def getOwnerName(self, obj):
-        """Returns the user name of the owner of an object."""
+        """ Returns the userid of the owner of an object.
+
+        >>> ptool = self.portal.plone_utils
+        >>> from Products.PloneTestCase.PloneTestCase import default_user
+
+        >>> ptool.getOwnerName(self.folder) == default_user
+        True
+        """
         mt = getToolByName(self, 'portal_membership')
         if not mt.checkPermission(View, obj):
             raise Unauthorized
@@ -925,6 +981,9 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
         >>> ptool.normalizeString("Foo bar", relaxed=True)
         'Foo bar'
+        
+        >>> ptool.normalizeString("Some!_are allowed, others&?:are not")
+        'some-_are-allowed-others-are-not'
 
         >>> ptool.normalizeString("Some!_are allowed, others&?:are not")
         'some-_are-allowed-others-are-not'
@@ -1124,7 +1183,13 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     security.declarePublic('getEmptyTitle')
     def getEmptyTitle(self, translated=True):
-        """Returns string to be used for objects with no title or id"""
+        """ Returns string to be used for objects with no title or id.
+
+        >>> ptool = self.portal.plone_utils
+
+        >>> ptool.getEmptyTitle(translated=False) == u'[\xb7\xb7\xb7]'
+        True
+        """
         return utils.getEmptyTitle(self, translated)
 
     security.declarePublic('pretty_title_or_id')

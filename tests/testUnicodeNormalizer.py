@@ -29,7 +29,7 @@ class TestNormalizer(PloneTestCase.PloneTestCase):
     def testNormalizeGerman(self):
         # German normalization mapping
         input = u"\xc4ffin"
-        self.assertEqual(normalizeUnicode(input), 'Aeffin')
+        self.assertEqual(normalizeUnicode(input), 'Affin')
 
     def testNormalizeWithNumbers(self):
         # Mixed numbers with text
@@ -42,7 +42,7 @@ class TestNormalizer(PloneTestCase.PloneTestCase):
         input = u'\u039d\u03af\u03ba\u03bf\u03c2 \u03a4\u03b6\u03ac\u03bd\u03bf\u03c2'
         self.assertEqual(normalizeUnicode(input), 'Nikos Tzanos')
 
-    def testNormalizeRussion(self):
+    def testNormalizeRussian(self):
         # Russian letters (not supported by UnicodeData)
         input = u'\u041f\u043e\u043b\u0438\u0442\u0438\u043a\u0430'
         self.assertEqual(normalizeUnicode(input), 'Politika')
@@ -50,6 +50,11 @@ class TestNormalizer(PloneTestCase.PloneTestCase):
         self.assertEqual(normalizeUnicode(input), 'Ekonomika')
         input = u'\u041f\u041e\u0421\u041b\u0415\u0414\u041d\u0418\u0415 \u041d\u041e\u0412\u041e\u0421\u0422\u0418'
         self.assertEqual(normalizeUnicode(input), 'POSLEDNIE NOVOSTI')
+
+    def testNormalizeTurkish(self):
+        # Turkish normalization mapping
+        input = u"\xdc\u011f\xfcr"
+        self.assertEqual(normalizeUnicode(input), 'Ugur')
 
     def testNormalizeNonUnicode(self):
         # Non-unicode input raises a TypeError

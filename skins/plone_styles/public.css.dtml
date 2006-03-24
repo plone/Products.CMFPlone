@@ -312,7 +312,6 @@
     visibility: visible;
     text-align:left;
     color: &dtml-globalFontColor;;
-    background-color: transparent;
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
     width:300px;
     text-transform: none;
@@ -872,39 +871,6 @@ textarea.proportional {
     padding-left: 1em;
     border-left: 0.5em solid &dtml-globalBackgroundColor;;
     margin: 0 0 0 0.6em;
-}
-
-/* Accessibility and visual enhancement elements */
-
-.hiddenStructure {
-    display: block;
-    background: transparent;
-    background-image: none; /* safari bug */
-    border: none;
-    height: 1px;
-    overflow: hidden;
-    padding: 0;
-    margin: -1px 0 0 -1px;
-    width: 1px;
-}
-
-.contentViews .hiddenStructure,
-.contentActions .hiddenStructure {
-    position: absolute;
-    top: -200px;
-    left: -200px;
-}
-
-.hiddenLabel {
-    display: block;
-    background: transparent;
-    background-image: none; /* safari bug */
-    border: none;
-    height: 1px;
-    overflow: hidden;
-    padding: 0;
-    margin: -1px 0 0 -1px;
-    width: 1px;
 }
 
 /* Link types */

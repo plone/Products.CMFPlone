@@ -1,10 +1,6 @@
 from unicodedata import normalize, decomposition
 import string
 
-# Hand-made table from PloneTool.py
-mapping_custom_1 =  {
-138: 's', 142: 'z', 154: 's', 158: 'z', 159: 'Y' }
-
 # UnicodeData.txt does not contain normalization of Greek letters.
 mapping_greek = {
 912: 'i', 913: 'A', 914: 'B', 915: 'G', 916: 'D', 917: 'E', 918: 'Z',
@@ -37,31 +33,30 @@ mapping_russian = {
 1073 : 'b', 1041 : 'B', 1102 : 'yu', 1070 : 'YU',
 1105 : 'yo', 1025 : 'YO' }
 
-# This may be specific to German...
-mapping_two_chars = {
-140 : 'OE', 156: 'oe', 196: 'Ae', 246: 'oe', 252: 'ue', 214: 'Oe',
-228 : 'ae', 220: 'Ue', 223: 'ss', 230: 'e', 198: 'E' }
+# Turkish character mapping.
+mapping_turkish = {
+286 : 'G', 287 : 'g', 304 : 'I', 305 : 'i', 350 : 'S', 351 : 's' }
 
 # Latin characters with accents, etc.
 mapping_latin_chars = {
-192 : 'A', 193 : 'A', 194 : 'A', 195 : 'a', 197 : 'A', 199 : 'C', 200 : 'E',
-201 : 'E', 202 : 'E', 203 : 'E', 204 : 'I', 205 : 'I', 206 : 'I', 207 : 'I',
-208 : 'D', 209 : 'N', 210 : 'O', 211 : 'O', 212 : 'O', 213 : 'O', 215 : 'x',
-216 : 'O', 217 : 'U', 218 : 'U', 219 : 'U', 221 : 'Y', 224 : 'a', 225 : 'a',
-226 : 'a', 227 : 'a', 229 : 'a', 231 : 'c', 232 : 'e', 233 : 'e', 234 : 'e',
+138 : 's', 140 : 'O', 142 : 'z', 154 : 's', 156 : 'o', 158 : 'z', 159 : 'Y',
+192 : 'A', 193 : 'A', 194 : 'A', 195 : 'a', 196 : 'A', 197 : 'A', 198 : 'E',
+199 : 'C', 200 : 'E', 201 : 'E', 202 : 'E', 203 : 'E', 204 : 'I', 205 : 'I',
+206 : 'I', 207 : 'I', 208 : 'D', 209 : 'N', 210 : 'O', 211 : 'O', 212 : 'O',
+213 : 'O', 214 : 'O', 215 : 'x', 216 : 'O', 217 : 'U', 218 : 'U', 219 : 'U',
+220 : 'U', 221 : 'Y', 223 : 's', 224 : 'a', 225 : 'a', 226 : 'a', 227 : 'a',
+228 : 'a', 229 : 'a', 230 : 'e', 231 : 'c', 232 : 'e', 233 : 'e', 234 : 'e',
 235 : 'e', 236 : 'i', 237 : 'i', 238 : 'i', 239 : 'i', 240 : 'd', 241 : 'n',
-242 : 'o', 243 : 'o', 244 : 'o', 245 : 'o', 248 : 'o', 249 : 'u', 250 : 'u',
-251 : 'u', 253 : 'y', 255 : 'y' }
+242 : 'o', 243 : 'o', 244 : 'o', 245 : 'o', 246 : 'o', 248 : 'o', 249 : 'u',
+250 : 'u', 251 : 'u', 252 : 'u', 253 : 'y', 255 : 'y' }
 
 # Feel free to add new user-defined mapping. Don't forget to update mapping dict
 # with your dict.
-
 mapping = {}
-mapping.update(mapping_custom_1)
 mapping.update(mapping_greek)
 mapping.update(mapping_russian)
-mapping.update(mapping_two_chars)
 mapping.update(mapping_latin_chars)
+mapping.update(mapping_turkish)
 
 # On OpenBSD string.whitespace has a non-standard implementation
 # See http://dev.plone.org/plone/ticket/4704 for details

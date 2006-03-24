@@ -9,7 +9,11 @@
 
 <dl class="portlet" id="portlet-workflow-review">
 
-    <dt class="portletHeader"><span i18n:translate="box_review_list">Review List</span></dt>
+    <dt class="portletHeader">
+        <span class="portletTopLeft"></span>
+        <span i18n:translate="box_review_list">Review List</span>
+        <span class="portletTopRight"></span>
+    </dt>
 
     <tal:items repeat="o results">
     <dd class="portletItem"
@@ -38,6 +42,8 @@
            class="tile"
            tal:attributes="href string:${portal_url}/full_review_list"
            i18n:translate="box_full_review_list">Full review list&hellip;</a>
+        <span class="portletBottomLeft"></span>
+        <span class="portletBottomRight"></span>
     </dd>
 </dl>
 

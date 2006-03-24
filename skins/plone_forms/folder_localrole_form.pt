@@ -13,18 +13,17 @@
                    username member/getUserName|nothing;
                    avail_roles python:[role for role in mtool.getCandidateLocalRoles(here) if role!='Owner'];
                    b_size python:12;b_start python:0;b_start request/b_start | b_start;
-                   tabindex python:Iterator();
                    itemPortalTypeTitle python:here.getTypeInfo().Title();
                    inheritanceActive python:putils.isLocalRoleAcquired(here);
                    search_submitted request/role_submit|nothing;
                    search_results python:search_submitted and mtool.searchForMembers(
                                          {request.get('search_param',''):
-					 request.get('search_term', '')}) or None;
+                                          request.get('search_term', '')}) or None;
                    group_search_submitted request/group_role_submit|nothing;
                    group_search_results python:group_search_submitted and gtool.searchForGroups(
                                          {request.get('group_search_param',''):
-					 request.get('group_search_term', '')}) or None;
-					 ">
+                                          request.get('group_search_term', '')}) or None;
+                  ">
 
     <div metal:use-macro="here/document_actions/macros/document_actions">
         Document actions (print, sendto etc)

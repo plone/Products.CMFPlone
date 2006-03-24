@@ -115,7 +115,7 @@
 
             <tal:comment replace="nothing"> Start of main content block </tal:comment>
             <td id="portal-column-content"
-                tal:define="tabindex python:Iterator(pos=0)">
+                tal:define="tabindex python:Iterator(pos=0, mainSlot=True)">
 
               <metal:block define-slot="content">
                 <div id="content"

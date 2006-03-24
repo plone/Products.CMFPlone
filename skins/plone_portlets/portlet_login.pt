@@ -2,7 +2,7 @@
       xmlns:metal="http://xml.zope.org/namespaces/metal"
       i18n:domain="plone">
 <body tal:define="Iterator python:modules['Products.CMFPlone'].IndexIterator;
-                  tabindex python:Iterator()">
+                  tabindex python:Iterator(mainSlot=False)">
 <div metal:define-macro="portlet"
      tal:omit-tag=""
      tal:define="pageloc python: request.URL.split('/')[-1];
@@ -21,10 +21,12 @@
     tal:condition="python: auth">
 
     <dt class="portletHeader">
+        <span class="portletTopLeft"></span>
         <a href="#" 
            class="tile"
            tal:attributes="href string:$portal_url/login_form"
            i18n:translate="box_sign_in">Log in</a>
+        <span class="portletTopRight"></span>
     </dt>
 
     <dd class="portletItem odd">
@@ -96,13 +98,15 @@
         </a>
     </dd>
     
-    <dd class="portletItem" tal:condition="canRegister">
+    <dd class="portletItem lastItem" tal:condition="canRegister">
         <a href="" 
            class="tile"
            tal:attributes="href python:join.pop()">
             <tal:block replace="structure portal_object/user.gif"/>
             <span tal:omit-tag="" i18n:translate="box_new_user_option">New user?</span>
         </a>
+        <span class="portletBottomLeft"></span>
+        <span class="portletBottomRight"></span>
     </dd>
 </dl>
 

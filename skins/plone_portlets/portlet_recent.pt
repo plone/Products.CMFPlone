@@ -11,9 +11,11 @@
 <dl class="portlet" id="portlet-recent">
 
     <dt class="portletHeader">
-        <a href="#"
+        <span class="portletTopLeft"></span>
+        <a href="#" 
             tal:attributes="href string:${portal_url}/recently_modified"
             i18n:translate="box_recent_changes">Recent Changes</a>
+        <span class="portletTopRight"></span>
     </dt>
     <tal:items tal:repeat="obj results">
     <dd class="portletItem"
@@ -53,6 +55,8 @@
            i18n:translate="box_more_recently_changed">
         All recent changes&hellip;
         </a>
+        <span class="portletBottomLeft"></span>
+        <span class="portletBottomRight"></span>
     </dd>
 </dl>
 
