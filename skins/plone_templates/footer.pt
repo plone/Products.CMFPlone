@@ -7,7 +7,7 @@
     <span i18n:translate="description_copyright" tal:omit-tag="">
     The 
     <span i18n:name="plonecms">
-        <a href="http://plone.org" i18n:translate="label_plone_cms">Plone&trade; CMS &mdash; Open Source Content Management System</a>
+        <a href="http://plone.org" i18n:translate="label_plone_cms">Plone<sup>&reg;</sup> CMS &mdash; Open Source Content Management System</a>
     </span>
     is Copyright
     <acronym title="Copyright" i18n:name="copyright" i18n:attributes="title title_copyright;">&copy;</acronym>
@@ -25,7 +25,7 @@
 <p>
 
     <span i18n:translate="description_trademark">
-    Plone&trade; and the Plone logo are trademarks of the  
+    Plone<sup>&reg;</sup> and the Plone logo are registered trademarks of the  
         <span i18n:name="plonefoundation">
             <a href="http://plone.org/foundation" i18n:translate="label_plone_foundation">Plone Foundation</a>
         </span>.
