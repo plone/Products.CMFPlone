@@ -25,6 +25,23 @@
     in the lists below. 
     </div>
 
+    <p>
+      New products should be installed in <b tal:content="string:${QI/getInstanceHome}/Products">[$INSTANCE_HOME/Products]</b>.
+
+    </p>
+
+    <p tal:condition="QI/isDevelopmentMode" class="discreet">
+      You are not running in "debug mode". This means that some configuration changes,
+      such as changes to templates, will not take effect until your server is restarted
+      or a product refreshed. For information, see XXXX DO WE HAVE A GOOD HOWTO? XXXX
+    </p>
+
+    <p tal:condition="not: QI/isDevelopmentMode" class="discreet">
+      You are running in "debug mode". This mode is intended for sites that are under development.
+      This allows many configuration changes to be immediately evident, but will make your
+      site run more slowly. For information, see XXX DO WE HAVE A GOOD HOWTO? XXX
+    </p>
+
     <form style="float: left;"
           action="installProducts" 
           tal:attributes="action python:QI.absolute_url()+'/installProducts'" 
