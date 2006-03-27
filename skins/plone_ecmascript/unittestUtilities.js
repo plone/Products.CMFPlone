@@ -109,8 +109,24 @@ function runTestCases() {
     testcase_registry.setTestSuiteFilter(suite_filter);
     testcase_registry.setTestFilter(test_filter);
     var testcases = testcase_registry.getFilteredTestCases();
+
+    var iframe = window.document.getElementById('iframe');
+    if (iframe) {
+        iframe.style.display = 'block';
+        // IE seems to re-initialize the iframe on designMode change,
+        // destroying the blank document. But only Mozilla needs that mode.
+        if (_SARISSA_IS_MOZ) {
+            iframe.contentWindow.document.designMode = 'on';
+        };
+    }
+
     for (var testcase_index=0; testcase_index < testcases.length; testcase_index++) {
         runTestCase(testcases[testcase_index]);
+    }
+
+    if (iframe) {
+        iframe.contentWindow.document.designMode = 'off';
+        iframe.style.display = 'none';
     }
 }
 
