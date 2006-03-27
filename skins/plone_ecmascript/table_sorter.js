@@ -122,6 +122,7 @@ function sort(e) {
     }
     
     for (var j = 0; j < a.length; j++) {
+        a[j][3].className = ((j % 2) == 0) ? 'odd' : 'even';
         tbody.appendChild(a[j][3]);
     }
 }
