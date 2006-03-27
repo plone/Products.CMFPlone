@@ -64,7 +64,7 @@ class TestPortalFactory(PloneTestCase.PloneTestCase):
         temp_object2 = self.folder.folder2.restrictedTraverse('portal_factory/Document/tmp_id')
         self.assertEqual(sortTuple(member.getRolesInContext(temp_object2)),
                          ('Authenticated', 'Foo', 'Member', 'Reviewer'))
-        
+
     def testTempFolderLocalRolesWithBlocking(self):
         # Temporary objects should "inherit" local roles from container,
         # but also need to respect PLIP 16 local role blocking
@@ -189,7 +189,7 @@ class TestPortalFactory(PloneTestCase.PloneTestCase):
         temp_folder = self.folder.restrictedTraverse(
                                 'portal_factory/Document/tmp_id').aq_parent
         temp_roles = [r for r in temp_folder.rolesOfPermission(AddPortalContent) if r['name'] == 'Anonymous']
-        
+
         self.assertEqual(temp_roles, new_roles)
 
 
@@ -253,12 +253,8 @@ class TestCreateObjectByURL(PloneTestCase.FunctionalTestCase):
         # The redirect URL should contain the factory parts
         location = response.getHeader('Location')
         self.failUnless(location.startswith(self.folder_url+'/portal_factory/Document/'))
-        # CMFFormController is unclear about whether a redirect to an action using an 
-        # alias (e.g. 'edit') should go to the true target of the alias (e.g. 
-        # 'atct_edit') or just the alias name.  Different versions behave differently
-        # but the code indicates that the latter is the expected behavior.  This test
-        # will accept either.
-        self.failUnless(location.endswith('edit'))
+        # CMFFormController redirects should not do alias translation
+        self.failUnless(location.endswith('/edit'))
 
         # Perform the redirect
         edit_form_path = location[len(self.app.REQUEST.SERVER_URL):]
@@ -277,12 +273,7 @@ class TestCreateObjectByURL(PloneTestCase.FunctionalTestCase):
         # The redirect URL should contain the factory parts
         location = response.getHeader('Location')
         self.failUnless(location.startswith(self.folder_url+'/portal_factory/Document/'))
-        # CMFFormController is unclear about whether a redirect to an action using an 
-        # alias (e.g. 'edit') should go to the true target of the alias (e.g. 
-        # 'atct_edit') or just the alias name.  Different versions behave differently
-        # but the code indicates that the latter is the expected behavior.  This test
-        # will accept either.
-        self.failUnless(location.endswith('edit'))
+        self.failUnless(location.endswith('/edit'))
 
         # Perform the redirect
         edit_form_path = location[len(self.app.REQUEST.SERVER_URL):]

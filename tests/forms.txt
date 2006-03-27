@@ -1,0 +1,144 @@
+This is a test suite to make sure that editing of objects works as expected:
+
+Import the user's name and password:
+
+  >>> from Products.PloneTestCase.PloneTestCase import default_user
+  >>> from Products.PloneTestCase.PloneTestCase import default_password
+
+Get the portal and the home paths:
+
+  >>> portal_path = '/'.join(self.portal.getPhysicalPath())
+  >>> folder_path = '/'.join(self.folder.getPhysicalPath())
+
+Let's create a page to play with:
+
+  >>> folder.invokeFactory('Document', 'test-page', title='My Title')
+  'test-page'
+
+Let's edit our test page, but leave off some required fields:
+
+  >>> edit_path = folder_path + '/test-page/atct_edit'
+  >>> print http(r"""
+  ... POST %s HTTP/1.1
+  ... Authorization: Basic %s:%s
+  ... Content-Type: multipart/form-data; boundary=---------------------------6981500387474556631359179914
+  ... -----------------------------6981500387474556631359179914
+  ... Content-Disposition: form-data; name="id"
+  ...
+  ... test-page
+  ... -----------------------------6981500387474556631359179914
+  ... Content-Disposition: form-data; name="title"
+  ...
+  ...
+  ... -----------------------------6981500387474556631359179914
+  ... Content-Disposition: form-data; name="description"
+  ...
+  ...
+  ... -----------------------------6981500387474556631359179914
+  ... Content-Disposition: form-data; name="description_text_format"
+  ...
+  ... text/plain
+  ... -----------------------------6981500387474556631359179914
+  ... Content-Disposition: form-data; name="text"
+  ...
+  ... <p>a</p>
+  ... -----------------------------6981500387474556631359179914
+  ... Content-Disposition: form-data; name="allowDiscussion"
+  ...
+  ... None
+  ... -----------------------------6981500387474556631359179914
+  ... Content-Disposition: form-data; name="fieldset"
+  ...
+  ... default
+  ... -----------------------------6981500387474556631359179914
+  ... Content-Disposition: form-data; name="form.submitted"
+  ...
+  ... 1
+  ... -----------------------------6981500387474556631359179914
+  ... Content-Disposition: form-data; name="form_submit"
+  ...
+  ... Save
+  ... -----------------------------6981500387474556631359179914
+  ... Content-Disposition: form-data; name="text_text_format"
+  ...
+  ... text/html
+  ... -----------------------------6981500387474556631359179914--
+  ... """ % (edit_path, default_user, default_password),
+  ...        handle_errors=False)
+  HTTP/1.1 200 OK...
+  <h1> Edit Page </h1>...
+  <div class="field error ArchetypesStringWidget"...
+  <div>Title is required, please correct.</div>
+  <input...type="text"...name="title"...value="My Title".../>...
+  <input...type="submit"...name="form_submit"...value="Save".../>...
+
+No changes should have been made:
+  >>> obj = folder['test-page']
+  >>> obj.Title()
+  'My Title'
+  >>> obj.Description()
+  ''
+  >>> obj.getText()
+  ''
+
+And let's edit it properly:
+
+  >>> print http(r"""
+  ... POST %s HTTP/1.1
+  ... Authorization: Basic %s:%s
+  ... Content-Type: multipart/form-data; boundary=---------------------------6981500387474556631359179914
+  ... -----------------------------6981500387474556631359179914
+  ... Content-Disposition: form-data; name="id"
+  ...
+  ... test-page
+  ... -----------------------------6981500387474556631359179914
+  ... Content-Disposition: form-data; name="title"
+  ...
+  ... My Title 2
+  ... -----------------------------6981500387474556631359179914
+  ... Content-Disposition: form-data; name="description"
+  ...
+  ... A description
+  ... -----------------------------6981500387474556631359179914
+  ... Content-Disposition: form-data; name="description_text_format"
+  ...
+  ... text/plain
+  ... -----------------------------6981500387474556631359179914
+  ... Content-Disposition: form-data; name="text"
+  ...
+  ... <p>a</p>
+  ... -----------------------------6981500387474556631359179914
+  ... Content-Disposition: form-data; name="allowDiscussion"
+  ...
+  ... None
+  ... -----------------------------6981500387474556631359179914
+  ... Content-Disposition: form-data; name="fieldset"
+  ...
+  ... default
+  ... -----------------------------6981500387474556631359179914
+  ... Content-Disposition: form-data; name="form.submitted"
+  ...
+  ... 1
+  ... -----------------------------6981500387474556631359179914
+  ... Content-Disposition: form-data; name="form_submit"
+  ...
+  ... Save
+  ... -----------------------------6981500387474556631359179914
+  ... Content-Disposition: form-data; name="text_text_format"
+  ...
+  ... text/html
+  ... -----------------------------6981500387474556631359179914--
+  ... """ % (edit_path, default_user, default_password),
+  ...        handle_errors=False)
+  HTTP/1.1 302 Moved Temporarily
+  ...
+  Location: ...test-page?portal_status_message=Changes%20saved.
+
+Let's make sure our changes were applied:
+
+  >>> obj = folder['test-page']
+  >>> obj.Title()
+  'My Title 2'
+  >>> obj.getText()
+  '<p>a</p>'
+

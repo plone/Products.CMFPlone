@@ -8,19 +8,20 @@ if __name__ == '__main__':
     execfile(os.path.join(sys.path[0], 'framework.py'))
 
 import unittest
-from Testing.ZopeTestCase import FunctionalDocFileSuite, FunctionalDocTestSuite
+from Testing.ZopeTestCase import FunctionalDocFileSuite
+from Testing.ZopeTestCase import ZopeDocTestSuite
 from Products.PloneTestCase import PloneTestCase
 PloneTestCase.setupPloneSite()
 
 def test_suite():
     return unittest.TestSuite((
-        FunctionalDocTestSuite('Products.CMFPlone.CatalogTool',
+        ZopeDocTestSuite('Products.CMFPlone.CatalogTool',
                                 test_class=PloneTestCase.FunctionalTestCase),
-        FunctionalDocTestSuite('Products.CMFPlone.PloneTool',
+        ZopeDocTestSuite('Products.CMFPlone.PloneTool',
                                 test_class=PloneTestCase.FunctionalTestCase),
-        FunctionalDocTestSuite('Products.CMFPlone.TranslationServiceTool',
+        ZopeDocTestSuite('Products.CMFPlone.TranslationServiceTool',
                                 test_class=PloneTestCase.FunctionalTestCase),
-        FunctionalDocTestSuite('Products.CMFPlone.CalendarTool',
+        ZopeDocTestSuite('Products.CMFPlone.CalendarTool',
                                 test_class=PloneTestCase.FunctionalTestCase),
         FunctionalDocFileSuite('webdav_index_html_put.txt',
                                 package='Products.CMFPlone.tests',
@@ -30,6 +31,9 @@ def test_suite():
                                 test_class=PloneTestCase.FunctionalTestCase),
         FunctionalDocFileSuite('messages.txt',
                                 package='Products.CMFPlone.tests'),
+        FunctionalDocFileSuite('forms.txt',
+                                package='Products.CMFPlone.tests',
+                                test_class=PloneTestCase.FunctionalTestCase),
         ))
 
 if __name__ == '__main__':
