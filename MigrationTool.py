@@ -8,7 +8,6 @@ from Products.CMFCore.permissions import ManagePortal, View
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFPlone.utils import versionTupleFromString
 from Products.CMFPlone.utils import log
-from Products.CMFPlone.utils import classImplements
 import transaction
 
 import logging
@@ -380,5 +379,4 @@ def registerSetupWidget(widget):
     """ Basic register things """
     _widgetRegistry[widget.type] = widget
 
-classImplements(MigrationTool, MigrationTool.__implements__)
 InitializeClass(MigrationTool)

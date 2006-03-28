@@ -3,7 +3,6 @@ from Products.CMFPlone import ToolNames
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
-from Products.CMFPlone.utils import classImplements
 
 from urlparse import urlparse
 
@@ -34,5 +33,4 @@ class URLTool(PloneBaseTool, BaseTool):
 
 URLTool.__doc__ = BaseTool.__doc__
 
-classImplements(URLTool, URLTool.__implements__)
 InitializeClass(URLTool)

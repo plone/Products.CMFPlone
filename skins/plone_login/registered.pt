@@ -11,7 +11,7 @@
    Cookie authentication has been disabled.
 </div>
 
-<div tal:define="ve site_properties/validate_email"
+<div tal:define="ve portal/validate_email"
      tal:condition="python: auth">
 
 <h1 i18n:translate="heading_welcome">Welcome!</h1>

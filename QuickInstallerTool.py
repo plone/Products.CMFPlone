@@ -5,7 +5,6 @@ from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFPlone import ToolNames
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
-from utils import classImplements
 
 class QuickInstallerTool(PloneBaseTool, BaseTool):
     """ A tool to ease installing/uninstalling all sorts of products """
@@ -18,5 +17,4 @@ class QuickInstallerTool(PloneBaseTool, BaseTool):
 
 QuickInstallerTool.__doc__ = BaseTool.__doc__
 
-classImplements(QuickInstallerTool, QuickInstallerTool.__implements__)
 InitializeClass(QuickInstallerTool)

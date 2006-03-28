@@ -3,7 +3,6 @@ from Products.CMFPlone import ToolNames
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
-from Products.CMFPlone.utils import classImplements
 
 from StructuredText.StructuredText import HTML
 from DocumentTemplate.DT_Util import html_quote
@@ -55,5 +54,4 @@ class DiscussionTool(PloneBaseTool, BaseTool):
 
 DiscussionTool.__doc__ = BaseTool.__doc__
 
-classImplements(DiscussionTool, DiscussionTool.__implements__)
 InitializeClass(DiscussionTool)

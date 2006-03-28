@@ -1,16 +1,19 @@
 from types import ModuleType, ListType, TupleType
-from Products.CMFPlone.interfaces.InterfaceTool import IInterfaceTool
+from Products.CMFPlone.interfaces.InterfaceTool import IInterfaceTool \
+     as z2IInterfaceTool
+from Products.CMFPlone.interfaces import IInterfaceTool
 from Acquisition import aq_base
 from Products.CMFCore.utils import UniqueObject
 from OFS.SimpleItem import SimpleItem
 from Globals import InitializeClass
 from AccessControl import ClassSecurityInfo
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
-from Products.CMFPlone.utils import classImplements
 
 from Interface.Implements import getImplements, flattenInterfaces
 from Interface import Interface
 from Interface.IMethod import IMethod
+
+from zope.interface import implements
 
 _marker = ('module_finder',)
 
@@ -19,8 +22,10 @@ class InterfaceTool(PloneBaseTool, UniqueObject, SimpleItem):
     by accepting a dotted name of an interface and exporting the
     IInterface API """
 
-    __implements__ = (PloneBaseTool.__implements__, IInterfaceTool,
+    __implements__ = (PloneBaseTool.__implements__, z2IInterfaceTool,
                       SimpleItem.__implements__, )
+
+    implements(IInterfaceTool)
 
     id = 'portal_interface'
     meta_type= 'Portal Interface Tool'
@@ -180,5 +185,4 @@ class InterfaceFinder:
     def found(self, iface):
         self._found[getDottedName(iface)] = iface
 
-classImplements(InterfaceTool, InterfaceTool.__implements__)
 InitializeClass(InterfaceTool)

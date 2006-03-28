@@ -1,21 +1,8 @@
-from Interface import Interface
+""" Customization policy interface.
 
-class ICustomizationPolicy(Interface):
-    """
-    A Customization Policy is responsible for setting up a raw
-    Plone instance according to the instruction provided for the
-    Policy.  The Policy must register via
-    Products.CMFPlone.Portal.addPolicy
-    """
+$Id:$
+"""
 
-    def customize(portal):
-        """
-        the customize method takes the portal object and massages
-        it.  the only thing that really needs to be understood is that
-        the Policy itself is not persisted.
-
-        Most likely a
-        CustomizationPolicy would be derived from the
-        DefaultCustomizationPolicy, you would call its customize()
-        method and then continue on customization the portal.
-        """
+# BBB: module will be removed in Plone 3.0
+#      zope2 interfaces created on runtime:
+#      - ICustomizationPolicy

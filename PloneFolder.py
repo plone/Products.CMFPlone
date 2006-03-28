@@ -14,6 +14,7 @@ from OFS.ObjectManager import REPLACEABLE
 from DocumentTemplate.sequence import sort
 from webdav.NullResource import NullResource
 from webdav.WriteLockInterface import WriteLockInterface
+from webdav.interfaces import IWriteLock
 
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.CMFCatalogAware import CMFCatalogAware
@@ -22,9 +23,10 @@ from Products.CMFCore.permissions import AccessContentsInformation, \
                     AddPortalContent, AddPortalFolders, ListFolderContents, \
                     ManageProperties, ModifyPortalContent, View
 from Products.CMFDefault.DublinCore import DefaultDublinCoreImpl
-from Products.CMFPlone.utils import classImplements
 
 from Products.CMFPlone import PloneMessageFactory as _
+
+from zope.interface import implements
 
 # ATM it's safer to define our own
 from interfaces.OrderedContainer import IOrderedContainer
@@ -248,7 +250,6 @@ class OrderedContainer(Folder):
         putils.reindexOnReorder(self)
         return result
 
-classImplements(OrderedContainer, OrderedContainer.__implements__)
 InitializeClass(OrderedContainer)
 
 class BasePloneFolder(CMFCatalogAware, PortalFolderBase, DefaultDublinCoreImpl):
@@ -259,6 +260,8 @@ class BasePloneFolder(CMFCatalogAware, PortalFolderBase, DefaultDublinCoreImpl):
 
     __implements__ = DefaultDublinCoreImpl.__implements__ + \
                      (PortalFolderBase.__implements__,WriteLockInterface)
+
+    implements(IWriteLock)
 
     manage_options = Folder.manage_options + \
                      CMFCatalogAware.manage_options
@@ -398,7 +401,6 @@ class BasePloneFolder(CMFCatalogAware, PortalFolderBase, DefaultDublinCoreImpl):
             new_id = id
         return new_id
 
-classImplements(BasePloneFolder, BasePloneFolder.__implements__)
 InitializeClass(BasePloneFolder)
 
 class PloneFolder(BasePloneFolder, OrderedContainer):
@@ -411,7 +413,6 @@ class PloneFolder(BasePloneFolder, OrderedContainer):
     manage_renameObject = OrderedContainer.manage_renameObject
     security.declareProtected(Permissions.copy_or_move, 'manage_copyObjects')
 
-classImplements(PloneFolder, PloneFolder.__implements__)
 InitializeClass(PloneFolder)
 
 def safe_cmp(x, y):

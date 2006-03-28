@@ -5,7 +5,6 @@ from Products.CMFPlone import ToolNames
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
-from Products.CMFPlone.utils import classImplements
 
 class TypesTool(PloneBaseTool, BaseTool):
 
@@ -56,5 +55,4 @@ class TypesTool(PloneBaseTool, BaseTool):
 
 TypesTool.__doc__ = BaseTool.__doc__
 
-classImplements(TypesTool, TypesTool.__implements__)
 InitializeClass(TypesTool)

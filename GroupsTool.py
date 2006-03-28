@@ -5,7 +5,6 @@ from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from utils import base_hasattr
-from Products.CMFPlone.utils import classImplements
 
 class GroupsTool(PloneBaseTool, BaseTool):
 
@@ -49,5 +48,4 @@ class GroupsTool(PloneBaseTool, BaseTool):
 
 GroupsTool.__doc__ = BaseTool.__doc__
 
-classImplements(GroupsTool, GroupsTool.__implements__)
 InitializeClass(GroupsTool)

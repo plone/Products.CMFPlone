@@ -19,7 +19,6 @@ from interfaces.PloneControlPanel import IControlPanel as z2IControlPanel
 from interfaces import IControlPanel
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFPlone import PloneMessageFactory as _
-from Products.CMFPlone.utils import classImplements
 
 class PloneConfiglet(ActionInformation):
 
@@ -403,5 +402,4 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
                                  , manage_tabs_message=manage_tabs_message
                                  )
 
-classImplements(PloneControlPanel, PloneControlPanel.__implements__)
 InitializeClass(PloneControlPanel)

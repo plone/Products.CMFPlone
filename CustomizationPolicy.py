@@ -1,11 +1,16 @@
 #These CustomizationPolicies *are not* persisted!!
 from Products.CMFPlone.Portal import addPolicy
-from Products.CMFPlone.interfaces.CustomizationPolicy import ICustomizationPolicy
-from Products.CMFPlone.utils import classImplements
+from Products.CMFPlone.interfaces.CustomizationPolicy \
+     import ICustomizationPolicy as z2ICustomizationPolicy
+from Products.CMFPlone.interfaces import ICustomizationPolicy
+
+from zope.interface import implements
 
 class DefaultCustomizationPolicy:
     """ Customizes various actions on CMF tools """
-    __implements__ = ICustomizationPolicy
+    __implements__ = z2ICustomizationPolicy
+
+    implements(ICustomizationPolicy)
 
     availableAtConstruction=1
 
@@ -16,8 +21,6 @@ class DefaultCustomizationPolicy:
         gs = mi_tool._getWidget('General Setup')
         gs.addItems(gs.available())
 
-classImplements(DefaultCustomizationPolicy,
-                DefaultCustomizationPolicy.__implements__)
 
 def register(context, app_state):
     addPolicy('Default Plone', DefaultCustomizationPolicy())

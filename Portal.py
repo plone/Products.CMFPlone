@@ -24,7 +24,6 @@ from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFDefault import DublinCore
 from Products.CMFDynamicViewFTI.browserdefault import BrowserDefaultMixin
 from Products.CMFPlone.PloneFolder import OrderedContainer
-from Products.CMFPlone.utils import classImplements
 import Globals
 
 from AccessControl import ClassSecurityInfo
@@ -34,6 +33,9 @@ from webdav.NullResource import NullResource
 from Products.CMFPlone.PloneFolder import ReplaceableWrapper
 from Products.CMFPlone.utils import log_exc
 from Products.CMFPlone.utils import WWW_DIR
+from Products.CMFPlone.interfaces import IPloneSiteRoot
+
+from zope.interface import implements
 
 member_indexhtml="""\
 member_search=context.restrictedTraverse('member_search_form')
@@ -47,6 +49,9 @@ class PloneSite(CMFSite, OrderedContainer, BrowserDefaultMixin):
     """
     security=ClassSecurityInfo()
     meta_type = portal_type = 'Plone Site'
+
+    implements(IPloneSiteRoot)
+
     __implements__ = DublinCore.DefaultDublinCoreImpl.__implements__ + \
                      OrderedContainer.__implements__ + \
                      BrowserDefaultMixin.__implements__
@@ -124,5 +129,4 @@ class PloneSite(CMFSite, OrderedContainer, BrowserDefaultMixin):
         """
         return self.listFolderContents(spec, contentFilter)
 
-classImplements(PloneSite, PloneSite.__implements__, ISiteRoot)
 Globals.InitializeClass(PloneSite)

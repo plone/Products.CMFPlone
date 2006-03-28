@@ -10,7 +10,6 @@ from Products.CMFCore.utils import UniqueObject
 from Products.CMFPlone import ToolNames
 from AccessControl import ClassSecurityInfo
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
-from Products.CMFPlone.utils import classImplements
 from Products.CMFCore.utils import getToolByName
 from i18nl10n import utranslate, ulocalized_time, \
                      monthname_msgid, monthname_msgid_abbr, \
@@ -157,6 +156,4 @@ class TranslationServiceTool(PloneBaseTool, UniqueObject, SimpleItem):
         """
         return weekdayname_english(number, format=format)
 
-classImplements(TranslationServiceTool,
-                TranslationServiceTool.__implements__)
 InitializeClass(TranslationServiceTool)

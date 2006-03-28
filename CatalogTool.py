@@ -19,12 +19,12 @@ from Products.CMFCore.utils import _getAuthenticatedUser
 from Products.CMFCore.utils import _checkPermission
 from Products.CMFCore.CatalogTool import _mergedLocalRoles
 from Products.CMFCore.interfaces.portal_catalog \
-        import IndexableObjectWrapper as IIndexableObjectWrapper
+        import IndexableObjectWrapper as z2IIndexableObjectWrapper
+from Products.CMFCore.interfaces import IIndexableObjectWrapper
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFPlone.interfaces.NonStructuralFolder import INonStructuralFolder
 from Products.CMFPlone.utils import base_hasattr
 from Products.CMFPlone.utils import safe_callable
-from Products.CMFPlone.utils import classImplements
 from OFS.IOrderSupport import IOrderedContainer
 from ZODB.POSException import ConflictError
 
@@ -33,6 +33,8 @@ from Products.ZCatalog.ZCatalog import ZCatalog
 from AccessControl.Permissions import manage_zcatalog_entries as ManageZCatalogEntries
 from AccessControl.Permissions import search_zcatalog as SearchZCatalog
 from AccessControl.PermissionRole import rolesForPermissionOn
+
+from zope.interface import implements
 
 _marker = object()
 
@@ -66,7 +68,9 @@ class ExtensibleIndexableObjectWrapper(object):
     **kwargs - additional keyword arguments
     """
 
-    __implements__ = IIndexableObjectWrapper
+    __implements__ = z2IIndexableObjectWrapper
+
+    implements(IIndexableObjectWrapper)
 
     def __init__(self, vars, obj, portal, registry = _eioRegistry, **kwargs):
         self._vars = vars
@@ -92,8 +96,6 @@ class ExtensibleIndexableObjectWrapper(object):
             return vars[name]
         return getattr(obj, name)
 
-classImplements(ExtensibleIndexableObjectWrapper,
-                ExtensibleIndexableObjectWrapper.__implements__)
 
 def allowedRolesAndUsers(obj, portal, **kwargs):
     """Return a list of roles and users with View permission.
@@ -468,7 +470,6 @@ class CatalogTool(PloneBaseTool, BaseTool):
 
 CatalogTool.__doc__ = BaseTool.__doc__
 
-classImplements(CatalogTool, CatalogTool.__implements__)
 InitializeClass(CatalogTool)
 
 # Utility function for calling reindexObject from ZopeFindAndApply

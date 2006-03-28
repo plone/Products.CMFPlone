@@ -10,7 +10,6 @@ from AccessControl import ClassSecurityInfo
 from Products.CMFCore.permissions import ManagePortal
 from Products.DCWorkflow.Transitions import TRIGGER_USER_ACTION
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
-from Products.CMFPlone.utils import classImplements
 
 class WorkflowTool(PloneBaseTool, BaseTool):
 
@@ -281,5 +280,4 @@ class WorkflowTool(PloneBaseTool, BaseTool):
 
 WorkflowTool.__doc__ = BaseTool.__doc__
 
-classImplements(WorkflowTool, WorkflowTool.__implements__)
 InitializeClass(WorkflowTool)

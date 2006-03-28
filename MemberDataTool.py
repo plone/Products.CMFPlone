@@ -9,7 +9,6 @@ from AccessControl import ClassSecurityInfo
 from Acquisition import aq_base
 from Products.BTreeFolder2.BTreeFolder2 import BTreeFolder2
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.utils import classImplements
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFCore.permissions import SetOwnProperties, ManagePortal
 from ZODB.POSException import ConflictError
@@ -172,8 +171,6 @@ class MemberDataTool(PloneBaseTool, BaseTool):
 
 MemberDataTool.__doc__ = BaseTool.__doc__
 
-classImplements(MemberDataTool,
-                MemberDataTool.__implements__)
 InitializeClass(MemberDataTool)
 
 

@@ -5,7 +5,6 @@ from Products.CMFCore.ActionsTool import ActionsTool as BaseTool
 from Products.CMFPlone import ToolNames
 from setup.ConfigurationMethods import correctFolderContentsAction
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
-from Products.CMFPlone.utils import classImplements
 from Products.CMFCore.interfaces.portal_actions \
      import ActionProvider as IActionProvider
 
@@ -72,5 +71,4 @@ class ActionsTool(PloneBaseTool, BaseTool):
 
 ActionsTool.__doc__ = BaseTool.__doc__
 
-classImplements(ActionsTool, ActionsTool.__implements__)
 InitializeClass(ActionsTool)
