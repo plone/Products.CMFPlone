@@ -139,6 +139,6 @@ Let's make sure our changes were applied:
   >>> obj = folder['test-page']
   >>> obj.Title()
   'My Title 2'
-  >>> obj.getText()
+  >>> obj.getText().strip()
   '<p>a</p>'
 

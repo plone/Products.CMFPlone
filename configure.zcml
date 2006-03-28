@@ -26,6 +26,10 @@
       class="Products.CMFCore.DirectoryView.DirectoryViewSurrogate"
       />
 
+  <five:traversable
+      class="Products.CMFPlone.PloneFolder.PloneFolder"
+      />
+
   <five:deprecatedManageAddDelete
       class=".Portal.PloneSite" />
 

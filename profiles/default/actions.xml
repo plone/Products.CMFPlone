@@ -2,8 +2,6 @@
 <object name="portal_actions" meta_type="Plone Actions Tool"
    xmlns:i18n="http://xml.zope.org/namespaces/i18n">
 
- <action-provider name="portal_types"/>
-
  <action-provider name="portal_workflow"/>
 
  <action-provider name="portal_actions">
@@ -225,5 +223,7 @@
    <permission>Manage portal</permission>
   </action>
  </action-provider>
+
+ <action-provider name="portal_types"/>
 
 </object>
