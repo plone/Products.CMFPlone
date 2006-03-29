@@ -2,7 +2,9 @@
                     children options/children | nothing;
                     bottomLevel options/bottomLevel | nothing;
                     normalizeString nocall:context/plone_utils/normalizeString;
-                    viewActions site_properties/typesUseViewActionInListings|python:()">
+                    viewActions site_properties/typesUseViewActionInListings|python:();
+                    member context/portal_membership/getAuthenticatedMember|nothing;
+                    member_id member/getId|nothing">
 
 <metal:main define-macro="nav_main">
 <tal:navitem repeat="node children">
@@ -11,7 +13,7 @@
                 item       node/item;
                 useView    python:item.portal_type in viewActions;
                 itemUrl    python:test(useView, item.getURL() + '/view', item.getURL());
-                linkRemote python:item.getRemoteUrl and item.Creator != member.getId();
+                linkRemote python:item.getRemoteUrl and item.Creator != member_id;
                 isCurrent  node/currentItem;"
     tal:condition="python: bottomLevel <= 0 or level < bottomLevel-1">
 
