@@ -4,6 +4,17 @@ Changelog for Plone
 
 Plone 2.5 (unreleased)
 
+    - Added "Extension profile" support to the addSite.zpt ZMI form to allow
+      extension profiles to be applied to a site at site creation time,
+      similar to how customization policies used to be available.
+      [rafrombrc]
+
+    - Removed nearly all instances of the "classImplements" idiom which
+      dynamically creates Z3 interfaces from Z2 interfaces, replaced them
+      with real Z3 interfaces, dynamically creating Z2 interfaces using
+      "createZope3Bridge" calls.
+      [rafrombrc]
+
     - Added the portalWarningMessage and portalStopMessage css classes which are
       used for status messages with 'warn' or 'stop' type. portalMessage is
       still used for the default case of an 'info' message.
