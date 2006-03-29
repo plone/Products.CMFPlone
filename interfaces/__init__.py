@@ -23,3 +23,6 @@ createZope3Bridge(IControlPanel, PloneControlPanel, 'IControlPanel')
 createZope3Bridge(ICustomizationPolicy, CustomizationPolicy,
                   'ICustomizationPolicy')
 createZope3Bridge(IInterfaceTool, InterfaceTool, 'IInterfaceTool')
+# BBB attach IPloneBaseTool to InterfaceTool module to make the
+#     'testAvailableInterfaces' test pass
+createZope3Bridge(IPloneBaseTool, InterfaceTool, 'IPloneBaseTool')
