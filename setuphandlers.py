@@ -18,7 +18,8 @@ class PloneGenerator:
 
     def installProducts(self, p):
         """QuickInstaller install of required Products"""
-        # XXX These should all be done via a CMFSetup handler
+        # XXX The product installations should be done by a CMFSetup
+        # handler
         qi = getToolByName(p, 'portal_quickinstaller')
         qi.installProduct('Archetypes', locked=0)
         qi.installProduct('CMFFormController', locked=1)
@@ -27,9 +28,9 @@ class PloneGenerator:
         qi.installProduct('PlonePAS', locked=1)
         qi.installProduct('CMFPlacefulWorkflow', locked=0)
         qi.installProduct('kupu', locked=0)
-        #qi.notifyInstalled('ResourceRegistries', locked=0)
-        #qi.notifyInstalled('ATContentTypes', locked=0)
-        #qi.notifyInstalled('ATReferenceBrowserWidget', locked=0)
+        qi.notifyInstalled('ResourceRegistries', locked=1)
+        qi.notifyInstalled('ATContentTypes', locked=1)
+        qi.notifyInstalled('ATReferenceBrowserWidget', locked=1)
         qi.notifyInstalled('CMFCalendar', locked=1)
         qi.notifyInstalled('CMFActionIcons', locked=1)
 
@@ -54,13 +55,12 @@ class PloneGenerator:
                 p._setObject(mgr_id, mgr_class(mgr_id))
             else:
                 unwrapped = aq_base(existing)
-                # XXX tool_class is undefined
-                if not isinstance(unwrapped, tool_class):
+                if not isinstance(unwrapped, mgr_class):
                     p._delObject(mgr_id)
                     p._setObject(mgr_id, mgr_class(mgr_id))
 
     # XXX: This should all be done by custom setuphandlers, possibly
-    # using Kapil's XMLIO
+    # using XMLIO
     def setupPortalContent(self, p):
         """
         Import default plone content
@@ -111,7 +111,8 @@ class PloneGenerator:
         members.setTitle('Members')
         members.setDescription("Container for portal members' home directories")
         members.manage_addProperty('right_slots', [], 'lines')
-        # XXX: Not sure why reindex is needed, but it doesn't seem to happen otherwise
+        # XXX: Not sure why reindex is needed, but it doesn't seem to happen
+        #      otherwise
         members.reindexObject()
 
         # add index_html to Members area
