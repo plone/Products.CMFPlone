@@ -17,6 +17,7 @@ ZopeTestCase.installProduct('ZChecker')
 from Testing.ZopeTestCase import _print
 
 ignoredObjectIds = ['rssBody', 'RSS', 'rss_template', 'search_rss',
+                    'test_ecmascripts',
                     # There is no DTD for the pdf topic stuff
                     'atct_topic_pdf', 'atct_topic_pdf_template']
 
