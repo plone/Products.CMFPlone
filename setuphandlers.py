@@ -28,11 +28,17 @@ class PloneGenerator:
         qi.installProduct('PlonePAS', locked=1)
         qi.installProduct('CMFPlacefulWorkflow', locked=0)
         qi.installProduct('kupu', locked=0)
-        qi.notifyInstalled('ResourceRegistries', locked=1)
-        qi.notifyInstalled('ATContentTypes', locked=1)
-        qi.notifyInstalled('ATReferenceBrowserWidget', locked=1)
+
         qi.notifyInstalled('CMFCalendar', locked=1)
         qi.notifyInstalled('CMFActionIcons', locked=1)
+
+        # BBB The following products are "installed" by virtue of
+        #     the GenericSetup profile.  They really shouldn't be
+        #     managed by QuickInstaler at all any more, but we need
+        #     to kill some chickens so migrations will still work.
+        qi.installProduct('ResourceRegistries', locked=1)
+        qi.installProduct('ATContentTypes', locked=1)
+        qi.notifyInstalled('ATReferenceBrowserWidget', locked=1)
 
     def customizePortalOptions(self, p):
         p.manage_permission( cmfpermissions.ListFolderContents, \
