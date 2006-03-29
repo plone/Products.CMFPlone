@@ -71,70 +71,83 @@ class PloneGenerator:
         """
         Import default plone content
         """
+        existing = p.objectIds()
 
         # News topic
-        _createObjectByType('Topic', p, id='news', title='News', description='Site News')
-        topic = p.news
-        type_crit = topic.addCriterion('Type','ATPortalTypeCriterion')
-        type_crit.setValue('News Item')
-        sort_crit = topic.addCriterion('created','ATSortCriterion')
-        state_crit = topic.addCriterion('review_state', 'ATSimpleStringCriterion')
-        state_crit.setValue('published')
-        topic.setSortCriterion('effective', True)
-        topic.setLayout('folder_summary_view')
+        if 'news' not in existing:
+            _createObjectByType('Topic', p, id='news', title='News',
+                                description='Site News')
+            topic = p.news
+            type_crit = topic.addCriterion('Type','ATPortalTypeCriterion')
+            type_crit.setValue('News Item')
+            sort_crit = topic.addCriterion('created','ATSortCriterion')
+            state_crit = topic.addCriterion('review_state', 'ATSimpleStringCriterion')
+            state_crit.setValue('published')
+            topic.setSortCriterion('effective', True)
+            topic.setLayout('folder_summary_view')
 
         # Events topic
-        _createObjectByType('Topic', p, id='events', title='Events', description='Site Events')
-        topic = p.events
-        type_crit = topic.addCriterion('Type','ATPortalTypeCriterion')
-        type_crit.setValue('Event')
-        sort_crit = topic.addCriterion('start','ATSortCriterion')
-        state_crit = topic.addCriterion('review_state', 'ATSimpleStringCriterion')
-        state_crit.setValue('published')
-        date_crit = topic.addCriterion('start', 'ATFriendlyDateCriteria')
-        # Set date reference to now
-        date_crit.setValue(0)
-        # Only take events in the future
-        date_crit.setDateRange('+') # This is irrelevant when the date is now
-        date_crit.setOperation('more')
+        if 'events' not in existing:
+            _createObjectByType('Topic', p, id='events', title='Events', description='Site Events')
+            topic = p.events
+            type_crit = topic.addCriterion('Type','ATPortalTypeCriterion')
+            type_crit.setValue('Event')
+            sort_crit = topic.addCriterion('start','ATSortCriterion')
+            state_crit = topic.addCriterion('review_state', 'ATSimpleStringCriterion')
+            state_crit.setValue('published')
+            date_crit = topic.addCriterion('start', 'ATFriendlyDateCriteria')
+            # Set date reference to now
+            date_crit.setValue(0)
+            # Only take events in the future
+            date_crit.setDateRange('+') # This is irrelevant when the date is now
+            date_crit.setOperation('more')
+        else:
+            topic = p.events
 
         # Previous events subtopic
-        _createObjectByType('Topic', topic, id='previous', title='Past Events',
-                            description="Events which have already happened.")
-        topic = topic.previous
-        topic.setAcquireCriteria(True)
-        sort_crit = topic.addCriterion('start','ATSortCriterion')
-        sort_crit.setReversed(True)
-        date_crit = topic.addCriterion('start','ATFriendlyDateCriteria')
-        # Set date reference to now
-        date_crit.setValue(0)
-        # Only take events in the past
-        date_crit.setDateRange('-') # This is irrelevant when the date is now
-        date_crit.setOperation('less')
+        if 'previous' not in topic.objectIds():
+            _createObjectByType('Topic', topic, id='previous', title='Past Events',
+                                description="Events which have already happened.")
+            topic = topic.previous
+            topic.setAcquireCriteria(True)
+            sort_crit = topic.addCriterion('start','ATSortCriterion')
+            sort_crit.setReversed(True)
+            date_crit = topic.addCriterion('start','ATFriendlyDateCriteria')
+            # Set date reference to now
+            date_crit.setValue(0)
+            # Only take events in the past
+            date_crit.setDateRange('-') # This is irrelevant when the date is now
+            date_crit.setOperation('less')
 
         # configure Members folder (already added by the content import)
         members = getattr(p , 'Members')
         members.setTitle('Members')
         members.setDescription("Container for portal members' home directories")
-        members.manage_addProperty('right_slots', [], 'lines')
+        if not members.hasProperty('right_slots'):
+            members.manage_addProperty('right_slots', [], 'lines')
         # XXX: Not sure why reindex is needed, but it doesn't seem to happen
         #      otherwise
         members.reindexObject()
 
         # add index_html to Members area
-        addPy = members.manage_addProduct['PythonScripts'].manage_addPythonScript
-        addPy('index_html')
-        index_html = getattr(members, 'index_html')
-        index_html.write(member_indexhtml)
-        index_html.ZPythonScript_setTitle('Member Search')
+        if 'index_html' not in members.objectIds():
+            addPy = members.manage_addProduct['PythonScripts'].manage_addPythonScript
+            addPy('index_html')
+            index_html = getattr(members, 'index_html')
+            index_html.write(member_indexhtml)
+            index_html.ZPythonScript_setTitle('Member Search')
 
     def setupGroups(self, p):
         """
         Create Plone's default set of groups.
         """
         gtool = getToolByName(p, 'portal_groups')
-        gtool.addGroup('Administrators', roles=['Manager'])
-        gtool.addGroup('Reviewers', roles=['Reviewer'])
+        # XXX this is raising errors on subsequent imports!
+        existing = gtool.listGroupIds()
+        if 'Administrators' not in existing:
+            gtool.addGroup('Administrators', roles=['Manager'])
+        if 'Reviewers' not in existing:
+            gtool.addGroup('Reviewers', roles=['Reviewer'])
 
     def performMigrationActions(self, p):
         """
