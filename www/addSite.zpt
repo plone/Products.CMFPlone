@@ -39,30 +39,18 @@
     <textarea name="description" cols="60" rows="10"
      style="width: 95%"></textarea>
 
-    <!--input type="hidden" name="custom_policy" value="Default Plone"
-           tal:condition="python:len(policies)==1" /-->
 
-  <!--
-    If you want to have your customization policy to show up, the class needs
-    an boolean attribute: availableAtConstruction
-   -->
-<!--tal:custpolicy condition="python:len(policies)>1">
-    <div class="form-label">
-    Customisation policy setup
-    </div>
-      <select name="custom_policy">
-        <tal:block tal:repeat="policy policies">
-        <option tal:attributes="name policy" tal:content="policy"> Custom Policy </option>
-        </tal:block>
+    <tal:extensionprofiles condition="options/extension_profiles">
+      <div class="form-label">
+        Extension Profiles
+      </div>
+      <select name="extension_ids:list"
+              id="extension_ids" multiple="True" size="5">
+        <option tal:repeat="info options/extension_profiles"
+                tal:attributes="value info/id"
+                tal:content="info/title">PROFILE TITLE</option>
       </select>
-   
-    <p>
-    (A Customisation Policy is a pre-defined type of site, normally set up as
-     as a certain combination of settings and add-on products. You can normally
-     not revert this to a Default Plone site without a lot of work, so make sure
-     the policy you select is the correct one.) 
-    </p>
-</tal:custpolicy-->
+    </tal:extensionprofiles>
     
     <div class="form-element">
     <input class="form-element" type="submit" name="submit" 

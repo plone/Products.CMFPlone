@@ -2,9 +2,13 @@ from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 
 from Products.CMFCore.utils import getToolByName
 from Products.GenericSetup.tool import SetupTool
+from Products.GenericSetup import profile_registry
+from Products.GenericSetup import EXTENSION
 
 from Portal import PloneSite
 from utils import WWW_DIR
+from interfaces import IPloneSiteRoot
+
 _TOOL_ID = 'portal_setup'
 
 
@@ -13,7 +17,14 @@ def addPloneSiteForm(dispatcher):
     Wrap the PTF in 'dispatcher'.
     """
     wrapped = PageTemplateFile('addSite', WWW_DIR).__of__(dispatcher)
-    return wrapped()
+
+    extension_profiles = []
+    for info in profile_registry.listProfileInfo():
+        if info.get('type') == EXTENSION and \
+           info.get('for') == IPloneSiteRoot:
+            extension_profiles.append(info)
+    
+    return wrapped(extension_profiles=tuple(extension_profiles))
 
 def addPloneSite(dispatcher, id, title='', description='',
                  create_userfolder=1, email_from_address='',
