@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.5 (unreleased)
 
+    - Added the portalWarningMessage and portalStopMessage css classes which are
+      used for status messages with 'warn' or 'stop' type. portalMessage is
+      still used for the default case of an 'info' message.
+      [hannosch]
+
     - Fixed up Summary View to show author/date on News Items and location/time
       on Events.
       [limi]

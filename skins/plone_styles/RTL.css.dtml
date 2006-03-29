@@ -237,11 +237,12 @@ Anyway, didn't get it fixed but at least we know what it is. :-/
 
 /* .system-message and #error-handling are reST error indicators */
 .portalMessage,
+.portalWarningMessage,
+.portalStopMessage,
 .system-message,
 #error-handling {
     padding: 0.5em 3em 0.5em 1em;
     background-position: 98% center ;
-
 }
 
 
