@@ -59,7 +59,7 @@ def installDeprecated(portal, out):
         path = [s.strip() for s in  path.split(',')]
         if not 'plone_deprecated' in path:
             if 'plone_3rdparty' in path:
-                path.insert(path.index('plone_3rdparty'), 'plone_login')
+                path.insert(path.index('plone_3rdparty'), 'plone_deprecated')
             else:
                 path.append('plone_deprecated')
             st.addSkinSelection(s, ','.join(path))

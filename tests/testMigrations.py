@@ -3569,7 +3569,7 @@ class TestMigrations_v2_5(MigrationTest):
         installDeprecated(self.portal, [])
         installDeprecated(self.portal, [])
         self.failUnless('plone_deprecated' in self.skins.objectIds())
-        # it should be the last element in the skin
+        # it should be the third to last element in the skin
         self.assertEqual(self.skins.getSkinPath('Plone Default').split(',')[-3],
                          'plone_deprecated')
         self.assertEqual(self.skins.getSkinPath('Plone Tableless').split(',')[-3],
