@@ -6,13 +6,12 @@ import os, sys
 if __name__ == '__main__':
     execfile(os.path.join(sys.path[0], 'framework.py'))
 
-from Testing import ZopeTestCase
-from Products.PloneTestCase import PloneTestCase
-PloneTestCase.setupPloneSite()
+from Products.CMFPlone.tests import PloneTestCase
 
 from Products.ZCTextIndex.ParseTree import ParseError
 
 import types
+
 
 class TestQueryCatalog(PloneTestCase.PloneTestCase):
     """Test queryCatalog script.
@@ -225,6 +224,7 @@ class TestSearchForms(PloneTestCase.PloneTestCase):
         self.setPermissions([AddPortalTopics])
         self.folder.invokeFactory('Topic', id='topic')
         self.folder.topic.atct_topic_view()
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite

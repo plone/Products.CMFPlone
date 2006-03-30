@@ -6,10 +6,8 @@ import os, sys
 if __name__ == '__main__':
     execfile(os.path.join(sys.path[0], 'framework.py'))
 
-from Testing import ZopeTestCase
-from Products.PloneTestCase import PloneTestCase
-from Products.PloneTestCase import dummy
-PloneTestCase.setupPloneSite()
+from Products.CMFPlone.tests import PloneTestCase
+from Products.CMFPlone.tests import dummy
 
 from AccessControl.User import nobody
 from Acquisition import aq_base
@@ -18,6 +16,7 @@ from zExceptions import BadRequest
 
 default_user = PloneTestCase.default_user
 default_password = PloneTestCase.default_password
+
 
 class TestMembershipTool(PloneTestCase.PloneTestCase):
 

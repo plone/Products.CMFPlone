@@ -6,10 +6,8 @@ import os, sys
 if __name__ == '__main__':
     execfile(os.path.join(sys.path[0], 'framework.py'))
 
-from Testing import ZopeTestCase
-from Products.PloneTestCase import PloneTestCase
-from Products.PloneTestCase import dummy
-PloneTestCase.setupPloneSite()
+from Products.CMFPlone.tests import PloneTestCase
+from Products.CMFPlone.tests import dummy
 
 AddPortalTopics = 'Add portal topics'
 from Products.CMFPlone import LargePloneFolder
@@ -20,6 +18,7 @@ from OFS.CopySupport import CopyError
 #    document, link, and newsitem edit's are now validated
 #    so we must pass in fields that the validators need
 #    such as title on a favorite's link_edit
+
 
 class TestContentTypeScripts(PloneTestCase.PloneTestCase):
 

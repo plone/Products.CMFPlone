@@ -6,12 +6,11 @@ import os, sys
 if __name__ == '__main__':
     execfile(os.path.join(sys.path[0], 'framework.py'))
 
-from Testing import ZopeTestCase
-from Products.PloneTestCase import PloneTestCase
-PloneTestCase.setupPloneSite()
+from Products.CMFPlone.tests import PloneTestCase
 
 from Products.CMFPlone.browser.interfaces import IRecentPortlet
 from Products.CMFPlone.browser.portlets.recent import RecentPortlet
+
 
 class TestRecentPortletView(PloneTestCase.PloneTestCase):
 
@@ -64,6 +63,7 @@ class TestRecentPortletView(PloneTestCase.PloneTestCase):
         result = view.results()
         self.failUnlessEqual(len(result), 1)
         self.failUnlessEqual(result[0].getId, 'testpage')
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite

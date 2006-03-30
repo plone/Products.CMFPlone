@@ -15,7 +15,7 @@ import warnings
 warnings.simplefilter('ignore', DeprecationWarning, append=1)
 
 from Testing import ZopeTestCase
-from Products.PloneTestCase import PloneTestCase
+from Products.CMFPlone.tests import PloneTestCase
 
 ZopeTestCase.installProduct('ZChecker')
 PloneTestCase.setupPloneSite()

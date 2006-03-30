@@ -6,17 +6,15 @@ import os, sys
 if __name__ == '__main__':
     execfile(os.path.join(sys.path[0], 'framework.py'))
 
-import transaction
-from Testing import ZopeTestCase
-from Products.PloneTestCase import PloneTestCase
-PloneTestCase.setupPloneSite()
+from Products.CMFPlone.tests import PloneTestCase
 
-from Products.PloneTestCase import dummy
+from Products.CMFPlone.tests import dummy
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.browser.navtree import *
 
 from Products.CMFPlone.browser.interfaces import INavigationRoot
 
+import transaction
 from zope.interface import directlyProvides
 
 default_user = PloneTestCase.default_user

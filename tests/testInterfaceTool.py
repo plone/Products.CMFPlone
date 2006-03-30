@@ -7,8 +7,7 @@ if __name__ == '__main__':
     execfile(os.path.join(sys.path[0], 'framework.py'))
 
 from Testing import ZopeTestCase
-from Products.PloneTestCase import PloneTestCase
-PloneTestCase.setupPloneSite()
+from Products.CMFPlone.tests import PloneTestCase
 
 from Products.CMFCore.interfaces.DublinCore import DublinCore
 from Products.CMFCore.interfaces.Contentish import Contentish
@@ -21,6 +20,7 @@ from Products.CMFPlone.InterfaceTool import InterfaceFinder
 from Products.CMFPlone.interfaces import PloneBaseTool
 from Products.CMFPlone.utils import classImplements
 
+
 class MyPortalContent(Contentish): pass
 
 class A(PortalContent, DefaultDublinCoreImpl):
@@ -32,6 +32,7 @@ class B(PortalContent, DefaultDublinCoreImpl):
     __implements__ = MyPortalContent, \
                      DefaultDublinCoreImpl.__implements__
 classImplements(B, B.__implements__)
+
 
 class TestInterfaceResolution(ZopeTestCase.ZopeTestCase):
 

@@ -6,15 +6,13 @@ import os, sys
 if __name__ == '__main__':
     execfile(os.path.join(sys.path[0], 'framework.py'))
 
-from Testing import ZopeTestCase
-from Products.PloneTestCase import PloneTestCase
-PloneTestCase.setupPloneSite()
+from Products.CMFPlone.tests import PloneTestCase
 
 from Acquisition import aq_base
-from Products.PloneTestCase.PloneTestCase import FunctionalTestCase
-from Products.PloneTestCase.PloneTestCase import default_user
-from Products.PloneTestCase.PloneTestCase import default_password
-from Products.PloneTestCase import dummy
+from Products.CMFPlone.tests.PloneTestCase import FunctionalTestCase
+from Products.CMFPlone.tests.PloneTestCase import default_user
+from Products.CMFPlone.tests.PloneTestCase import default_password
+from Products.CMFPlone.tests import dummy
 import difflib
 import re
 
@@ -23,6 +21,7 @@ from Products.CMFPlone.PloneFolder import ReplaceableWrapper
 
 RE_REMOVE_DOCCONT = re.compile('href="http://.*?#documentContent"')
 RE_REMOVE_NAVTREE = re.compile('href="http://.*?#portlet-navigation-tree"')
+
 
 class TestPloneToolBrowserDefault(FunctionalTestCase):
     """Test the PloneTool's browserDefault() method in various use cases.

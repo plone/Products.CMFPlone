@@ -6,10 +6,8 @@ import os, sys
 if __name__ == '__main__':
     execfile(os.path.join(sys.path[0], 'framework.py'))
 
-from Testing import ZopeTestCase
-from Products.PloneTestCase import PloneTestCase
-from Products.PloneTestCase import dummy
-PloneTestCase.setupPloneSite()
+from Products.CMFPlone.tests import PloneTestCase
+from Products.CMFPlone.tests import dummy
 
 from Products.CMFPlone.utils import _createObjectByType
 
@@ -25,6 +23,7 @@ from Products.CMFCore.WorkflowTool import WorkflowTool
 from Products.CMFPlone.InterfaceTool import InterfaceTool
 from Products.CMFPlone.SyndicationTool import SyndicationTool
 from Products.CMFPlone.browser.plone import Plone
+
 
 class TestPloneView(PloneTestCase.PloneTestCase):
     """Tests the global plone view.  """

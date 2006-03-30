@@ -2,13 +2,11 @@ import os, sys
 if __name__ == '__main__':
     execfile(os.path.join(sys.path[0], 'framework.py'))
 
-from Testing import ZopeTestCase
-from Products.PloneTestCase import PloneTestCase
-PloneTestCase.setupPloneSite()
+from Products.CMFPlone.tests import PloneTestCase
 
-from Products.PloneTestCase import dummy
-from Products.PloneTestCase.PloneTestCase import default_user
-from Products.PloneTestCase.PloneTestCase import default_password
+from Products.CMFPlone.tests import dummy
+from Products.CMFPlone.tests.PloneTestCase import default_user
+from Products.CMFPlone.tests.PloneTestCase import default_password
 
 from Products.CMFCore.utils import getToolByName
 

@@ -6,9 +6,7 @@ import os, sys
 if __name__ == '__main__':
     execfile(os.path.join(sys.path[0], 'framework.py'))
 
-from Testing import ZopeTestCase
-from Products.PloneTestCase import PloneTestCase
-PloneTestCase.setupPloneSite()
+from Products.CMFPlone.tests import PloneTestCase
 
 from Acquisition import aq_base
 from Globals import REPLACEABLE
@@ -20,7 +18,7 @@ from Products.CMFPlone.CatalogTool import ExtensibleIndexableObjectWrapper
 from Products.CMFPlone.CatalogTool import _eioRegistry
 
 from Products.CMFPlone.CatalogTool import is_folderish
-from Products.PloneTestCase import dummy
+from Products.CMFPlone.tests import dummy
 
 portal_name = PloneTestCase.portal_name
 default_user  = PloneTestCase.default_user

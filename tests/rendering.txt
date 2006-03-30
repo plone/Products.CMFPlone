@@ -4,8 +4,8 @@ CMS tasks through the Plone Management Interface (PMI).
 
 Import the user's name and password:
 
-  >>> from Products.PloneTestCase.PloneTestCase import default_user
-  >>> from Products.PloneTestCase.PloneTestCase import default_password
+  >>> from Products.CMFPlone.tests.PloneTestCase import default_user
+  >>> from Products.CMFPlone.tests.PloneTestCase import default_password
 
 Get the portal and the home paths:
 

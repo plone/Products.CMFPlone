@@ -11,10 +11,8 @@ try:
 except ImportError:
     ZOPE28 = True
 
-from Testing import ZopeTestCase
-from Products.PloneTestCase import PloneTestCase
-from Products.PloneTestCase import dummy
-PloneTestCase.setupPloneSite()
+from Products.CMFPlone.tests import PloneTestCase
+from Products.CMFPlone.tests import dummy
 
 from Products.CMFPlone.utils import _createObjectByType
 

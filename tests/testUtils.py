@@ -6,11 +6,10 @@ import os, sys
 if __name__ == '__main__':
     execfile(os.path.join(sys.path[0], 'framework.py'))
 
-from Testing import ZopeTestCase
-from Products.PloneTestCase import PloneTestCase
-PloneTestCase.setupPloneSite()
+from Products.CMFPlone.tests import PloneTestCase
 
 from Products.CMFPlone import utils
+
 
 class TestUtils(PloneTestCase.PloneTestCase):
 
@@ -36,6 +35,7 @@ class TestUtils(PloneTestCase.PloneTestCase):
         i = utils.IndexIterator(pos=10, mainSlot=False)
         self.assertEqual(i.next(), None)
         self.assertEqual(i.next(), None)
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite
