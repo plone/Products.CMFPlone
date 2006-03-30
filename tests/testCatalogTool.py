@@ -654,7 +654,7 @@ class TestCatalogBugs(PloneTestCase.PloneTestCase):
         # Should be able to copy/paste a portal containing
         # a catalog tool. Triggers manage_afterAdd of portal_catalog
         # thereby exposing a bug which is now going to be fixed.
-        self.loginPortalOwner()
+        self.loginAsPortalOwner()
         cb = self.app.manage_copyObjects([portal_name])
         self.app.manage_pasteObjects(cb)
         self.failUnless(hasattr(self.app, 'copy_of_'+portal_name))
@@ -684,7 +684,7 @@ class TestCatalogBugs(PloneTestCase.PloneTestCase):
         # Should be able to rename a Plone portal
         # This test is to demonstrate that http://dev.plone.org/plone/ticket/1745
         # is fixed and can be closed.
-        self.loginPortalOwner()
+        self.loginAsPortalOwner()
         self.app.manage_renameObjects([portal_name], ['foo'])
         self.failUnless(hasattr(self.app, 'foo'))
 

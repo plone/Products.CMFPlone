@@ -692,7 +692,7 @@ class TestPortalBugs(PloneTestCase.PloneTestCase):
 
     def testExportImportLosesTextIndexes(self):
         # Importing a portal .zexp loses text indexes? (#4803)
-        self.loginPortalOwner()
+        self.loginAsPortalOwner()
         tempfile = mkstemp('.zexp')
         tempname = tempfile[1]
         try:
