@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 2.1.3 - Tomahawk - Unreleased
 
+    - Removed underline button from Kupu, you shouldn't use underline for 
+      web pages - as it's very hard to discern from a link.
+      If you want it back, add the following to your CSS file:
+      #kupu-underline-button { display: inline; }
+      [limi]
+
     - Added condition so that you don't get the "send feedback to author" on
       yourself. If you don't know how to get in touch with yourself, seek
       professional help. ;)
