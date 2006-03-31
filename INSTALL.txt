@@ -34,7 +34,7 @@ Installing Plone manually, step by step instructions.
 
   **MANDATORY**
 
-  - Zope 2.8.5 (or 2.9.1, does not run natively on Zope 3)
+  - Zope 2.8.6 (or 2.9.1, does not run natively on Zope 3)
      http://www.zope.org/Products/Zope/2.8.5
      Note: Zope 2.8 requires Python 2.3.5, Zope 2.9 requires Python 2.4
 
@@ -96,21 +96,30 @@ Installing Plone manually, step by step instructions.
 
   - GenericSetup 1.0 or newer
      Included in the Plone tarball
-     
+
   - PlonePAS 1.2 or newer
      Included in the Plone tarball
-     
+
   - PasswordResetTool 0.3 or newer
      Included in the Plone tarball
-     
+
   - PluggableAuthService 1.2 beta or newer
      Included in the Plone tarball
-     
+
   - PluginRegistry 1.1 or newer
      Included in the Plone tarball
-     
+
   - ExternalEditor 0.9.1 or newer
      Included in the Plone tarball
+
+  **OPTIONAL**
+
+  - CacheFu 1.0 beta or newer
+     Included in the Plone tarball
+     In order to use CacheFu, you must copy or link the directories
+     ``CacheSetup``, ``CMFSquidTool``, ``PageCacheManager``, and
+     ``PolicyHTTPCacheManager`` into your Products directory and carefully
+     read the instructions included with the product.
 
 ===============================================================================
 
@@ -172,6 +181,7 @@ Installing Plone manually, step by step instructions.
    Archetypes
    ATContentTypes
    ATReferenceBrowserWidget
+   CacheFu
    CMFActionIcons
    CMFCalendar
    CMFCore
