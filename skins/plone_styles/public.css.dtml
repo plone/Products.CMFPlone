@@ -72,6 +72,7 @@
 
 /* The edit form elements */
 
+
 .field {
     top: 0;
     left: 0;
@@ -87,6 +88,18 @@
     padding: 0 0 0 8px;
     color: &dtml-backgroundColor;;
 }
+
+.fieldUploadFile {
+    text-align: right; 
+    margin-right: 0.75em;
+    display: none;
+}
+
+.fieldTextFormat {
+    text-align: right;
+    margin-right: 0.75em
+}
+
 
 .formHelp {
     font-size: 90%;

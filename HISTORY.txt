@@ -4,8 +4,20 @@ Changelog for Plone
 
 Plone 2.1.3 - Tomahawk - Unreleased
 
-    - Fixed up Summary View to show author/date on News Items and location/time
-      on Events.
+    - Disabled the RichWidget file upload field using CSS. The reason is that
+      it causes a lot of problems for naïve users, who upload Word documents,
+      images etc here. The content has to be in HTML or the selected text
+      format for this to work. If you want to re-enable this in your site, add
+      the following to your CSS file: .fieldUploadFile { display: block }
+      [limi]
+
+    - Removed inline styles on file upload field in RichWidget, added classes
+      fieldUploadFile and fieldTextFormat so these elements can be styled
+      using CSS.
+      [limi]
+
+    - Fixed up Summary View to show author/date on News Items and
+      location/time on Events.
       [limi]
 
     - Incorporated various fixes for RTL support.
