@@ -704,9 +704,9 @@ dl.collapsedInlineCollapsible dt.collapsibleHeader {
 /* for draggable elements */
 
 tr.dragging td {
-    background: yellow;
+    background-color: yellow;
 }
-.draggable {
+.draggingHook {
     cursor: move;
 }
 

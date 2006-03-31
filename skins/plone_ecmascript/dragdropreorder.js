@@ -10,7 +10,7 @@ ploneDnDReorder.isDraggable = function(node) {
 
 ploneDnDReorder.doDown = function(e) {
     if (!e) var e = window.event; // IE compatibility
-    var target = this;//findContainer(e.target, ploneDnDReorder.isDraggable);
+    var target = findContainer(this, ploneDnDReorder.isDraggable);
     if (target == null)
         return;
     for (var i=0; i<ploneDnDReorder.rows.length; i++)
@@ -88,6 +88,9 @@ ploneDnDReorder.doUp = function(e) {
     removeClassName(ploneDnDReorder.dragging, "dragging");
     ploneDnDReorder.updatePositionOnServer();
     ploneDnDReorder.dragging._position = null;
+    try {
+        delete ploneDnDReorder.dragging._position;
+    } catch(e) {}
     ploneDnDReorder.dragging = null;
     for (var i=0; i<ploneDnDReorder.rows.length; i++)
         ploneDnDReorder.rows[i].onmousemove = null;
@@ -97,6 +100,8 @@ ploneDnDReorder.doUp = function(e) {
 ploneDnDReorder.updatePositionOnServer = function() {
     var delta = ploneDnDReorder.getPos(ploneDnDReorder.dragging) - ploneDnDReorder.dragging._position;
 
+    if (delta == 0) // nothing changed
+        return;
     var req = new XMLHttpRequest();
     req.open("POST", "folder_moveitem", true);
     req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -107,10 +112,14 @@ ploneDnDReorder.initializeDragDrop = function() {
     ploneDnDReorder.table = cssQuery("table#sortable")[0];
     if (!ploneDnDReorder.table)
         return;
-    ploneDnDReorder.rows = cssQuery("table#sortable tr");
-    for (var i=0; i<ploneDnDReorder.rows.length; i++) {
-        ploneDnDReorder.rows[i].onmousedown=ploneDnDReorder.doDown;
-        ploneDnDReorder.rows[i].onmouseup=ploneDnDReorder.doUp;
+    ploneDnDReorder.rows = cssQuery("table#sortable > tr," +
+                                    "table#sortable > tbody > tr");
+    var targets = cssQuery("table#sortable > tr > td," +
+                           "table#sortable > tbody > tr > td");
+    for (var i=1; i<targets.length; i++) {
+        targets[i].onmousedown=ploneDnDReorder.doDown;
+        targets[i].onmouseup=ploneDnDReorder.doUp;
+        addClassName(targets[i], "draggingHook");
     }
 }
 
