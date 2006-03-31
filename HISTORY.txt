@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.1.3 - Tomahawk - Unreleased
 
+    - Added condition so that you don't get the "send feedback to author" on
+      yourself. If you don't know how to get in touch with yourself, seek
+      professional help. ;)
+      [limi]
+
     - Disabled the RichWidget file upload field using CSS. The reason is that
       it causes a lot of problems for naïve users, who upload Word documents,
       images etc here. The content has to be in HTML or the selected text
