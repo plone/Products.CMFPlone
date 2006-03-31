@@ -40,18 +40,19 @@ Plone 2.1.3 - Tomahawk - Unreleased
       if the button labels were translated.
       [hannosch]
 
-    - Tabindexes aren't as good for usability/accessibility as we once thought,
-      and they wreak havoc with JavaScript/AJAX type code that dynamically 
-      inserts form elements. Instead, we should have the first element in the
-      main body have tabindex="0" and the rest not have tabindexes, this making
-      the cursor focus on that element first, and then follow normal ordering
-      thereafter. Fixed IndexIterator to support just this - when mainSlot=False
-      it always returns None; when mainSlot=True, it returns a number on the
-      first iteration, and no number thereafter. Fixed up global_defines, the
-      portlet fetcher and various templates that were abusing tabindexes to get
-      a unique number for form elements to reflect this. Also added a new 
-      iterator called uniqueItemIndex in global_defines, which can be used when
-      a page-unique number *is* needed, as it is in calendar_macros.pt.
+    - Tabindexes aren't as good for usability/accessibility as we once
+      thought, and they wreak havoc with JavaScript/AJAX type code that 
+      dynamically inserts form elements. Instead, we should have the first 
+      element in the main body have tabindex="0" and the rest not have 
+      tabindexes, this making the cursor focus on that element first, and then 
+      follow normal ordering thereafter. Fixed IndexIterator to support just 
+      this - when mainSlot=False it always returns None; when mainSlot=True, 
+      it returns a number on the first iteration, and no number thereafter. 
+      Fixed up global_defines, the portlet fetcher and various templates that 
+      were abusing tabindexes to get a unique number for form elements to 
+      reflect this. Also added a new iterator called uniqueItemIndex in 
+      global_defines, which can be used when a page-unique number *is* needed, 
+      as it is in calendar_macros.pt.
       [optilude]
 
     - Replace &larr; with '-' in the breadcrumb trail for RTL environments. It
@@ -59,12 +60,13 @@ Plone 2.1.3 - Tomahawk - Unreleased
       Firefox can compensate for that, but IE can not.
       http://dev.plone.org/plone/ticket/4388
 
-    - Re-added toPortalTime script which was accidentally removed earlier. It is
-      deprecated though and won't be included in Plone 2.5. This closes
+    - Re-added toPortalTime script which was accidentally removed earlier. It
+      is deprecated though and won't be included in Plone 2.5. This closes
       http://dev.plone.org/plone/ticket/5326.
       [hannosch]
 
-    - Added explanatory doctests for the translation service tool l10n methods.
+    - Added explanatory doctests for the translation service tool l10n 
+      methods.
       [hannosch]
 
     - Added some missing i18n statements for link related tags in the headed.
@@ -96,13 +98,16 @@ Plone 2.1.3 - Tomahawk - Unreleased
       when there is no description (all similar to document_view).
       [ender]
 
-    - Re-added support for topLevel and bottomLevel navtree propreties, as well
-      as the new name (of the navtree portlet) and root (of site navigation)
-      properties, and added the Sprout navtree preference panel to let users
-      manage these settings. Factored the navtree code out to .browser.navtree,
-      which is TTW importable and contains a re-usable buildFolderTree() 
-      function that can be used to build navtree-like structures in custom code.
-      See the docstrings in that module for more details.
+    - Re-added support for topLevel and bottomLevel navtree propreties, as 
+      well as the new name (of the navtree portlet) and root (of site 
+      navigation) properties, and added the Sprout navtree preference panel to 
+      let users manage these settings. Factored the navtree code out to 
+      .browser.navtree, which is TTW importable and contains a re-usable 
+      buildFolderTree() function that can be used to build navtree-like 
+      structures in custom code. See the docstrings in that module for more 
+      details.
+      THIS REQUIRES THAT YOU RE-CUSTOMIZE YOUR NAVTREE IF YOU HAVE A CUSTOM
+      VERSION IN YOUR SITE!
       Fixes https://dev.plone.org/plone/ticket/5265.
       [optilude]
 
