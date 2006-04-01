@@ -68,7 +68,6 @@
     <layer name="plone_prefs"/>
     <layer name="plone_portlets"/>
     <layer name="plone_templates"/>
-    <layer name="plone_3rdParty/CMFTopic"/>
     <layer name="plone_styles"/>
     <layer name="plone_form_scripts"/>
     <layer name="plone_scripts"/>
@@ -96,7 +95,6 @@
     <layer name="plone_portlets"/>
     <layer name="plone_tableless"/>
     <layer name="plone_templates"/>
-    <layer name="plone_3rdParty/CMFTopic"/>
     <layer name="plone_styles"/>
     <layer name="plone_form_scripts"/>
     <layer name="plone_scripts"/>
