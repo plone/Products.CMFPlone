@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.5 (unreleased)
 
+    - Adjusted status message related methods of PloneTool to the new
+      implementation of statusmessages as an adapter for the request rather than
+      a utility.
+      [hannosch]
+
     - Added "Extension profile" support to the addSite.zpt ZMI form to allow
       extension profiles to be applied to a site at site creation time,
       similar to how customization policies used to be available.

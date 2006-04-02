@@ -37,8 +37,7 @@ from DateTime import DateTime
 DateTime.SyntaxError
 from Products.CMFPlone.PloneFolder import ReplaceableWrapper
 
-from zope.app import zapi
-from Products.statusmessages.interfaces import IStatusMessageUtility
+from Products.statusmessages.interfaces import IStatusMessage
 
 AllowSendto = 'Allow sendto'
 permissions.setDefaultRoles(AllowSendto,
@@ -668,7 +667,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         return utils.getDefaultPage(obj, request, context=self)
 
     security.declarePublic('addPortalMessage')
-    def addPortalMessage(self, message, type='info'):
+    def addPortalMessage(self, message, type='info', request=None):
         """\
         Call this once or more to add messages to be displayed at the
         top of the web page.
@@ -715,11 +714,12 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
           <tal:block tal:define="temp python:putils.addPortalMessage('A random info message')" />
         """
-        zapi.getUtility(IStatusMessageUtility).addStatusMessage(self, message,
-                                                                type=type)
+        if request is None:
+            request = self.REQUEST
+        IStatusMessage(request).addStatusMessage(message, type=type)
 
     security.declarePublic('showPortalMessages')
-    def showPortalMessages(self):
+    def showPortalMessages(self, request=None):
         """\
         Return portal status messages that will be displayed when the
         response web page is rendered. Portal status messages are by default
@@ -728,7 +728,9 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         
         See addPortalMessages for examples.
         """
-        return zapi.getUtility(IStatusMessageUtility).showStatusMessages(self)
+        if request is None:
+            request = self.REQUEST
+        return IStatusMessage(request).showStatusMessages()
 
     security.declarePublic('browserDefault')
     def browserDefault(self, obj):
