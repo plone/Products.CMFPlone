@@ -6,8 +6,6 @@
            class="AccessControl.User.UserFolder"/>
  <required tool_id="caching_policy_manager"
            class="Products.CMFCore.CachingPolicyManager.CachingPolicyManager"/>
- <required tool_id="cookie_authentication"
-           class="Products.CMFCore.CookieCrumbler.CookieCrumbler"/>
  <required tool_id="portal_actions"
            class="Products.CMFPlone.ActionsTool.ActionsTool"/>
  <required tool_id="portal_catalog"

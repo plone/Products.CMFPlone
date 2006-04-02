@@ -1,5 +1,5 @@
 #
-# CookieCrumbler tests
+# CookieAuth tests
 #
 
 import os, sys
@@ -15,7 +15,7 @@ default_user = PloneTestCase.default_user
 default_password = PloneTestCase.default_password
 
 
-class TestCookieCrumbler(PloneTestCase.FunctionalTestCase):
+class TestCookieAuth(PloneTestCase.FunctionalTestCase):
 
     def afterSetUp(self):
         self.portal_url = self.portal.absolute_url()
@@ -74,7 +74,7 @@ class TestCookieCrumbler(PloneTestCase.FunctionalTestCase):
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
-    suite.addTest(makeSuite(TestCookieCrumbler))
+    suite.addTest(makeSuite(TestCookieAuth))
     return suite
 
 if __name__ == '__main__':
