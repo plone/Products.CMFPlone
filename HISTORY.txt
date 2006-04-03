@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.1.3 - Tomahawk - Unreleased
 
+    - Backported feature from 2.5: Added method to Catalog Tool to fully
+      rebuild the catalog by walking the tree and looking for content, as well
+      as a ZMI button.
+      [alecm, hannosch]
+
     - Removed underline button from Kupu, you shouldn't use underline for 
       web pages - as it's very hard to discern from a link.
       If you want it back, add the following to your CSS file:

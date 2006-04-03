@@ -150,6 +150,14 @@ class TestCatalogIndexing(PloneTestCase.PloneTestCase):
         self.folder.invokeFactory('Document', id='doc', title='Foo', description='Bar')
         self.catalog.unindexObject(self.folder.doc)
 
+    def assertResults(self, result, expect):
+        # Verifies ids of catalog results against expected ids
+        lhs = [r.getId for r in result]
+        lhs.sort()
+        rhs = list(expect)
+        rhs.sort()
+        self.assertEqual(lhs, rhs)
+
     def testFixture(self):
         self.assertEqual(self.folder.doc.getId(), 'doc')
         self.assertEqual(self.folder.doc.Title(), 'Foo')
@@ -276,6 +284,38 @@ class TestCatalogIndexing(PloneTestCase.PloneTestCase):
         self.assertEqual(len(self.catalog(Title='Foo')), 0)
         self.assertEqual(len(self.catalog(Description='Bar')), 0)
 
+    def testClearFindAndRebuildRemovesBadContent(self):
+        # Index the doc for consistency
+        self.catalog.indexObject(self.folder.doc)
+        res = self.catalog.searchResults()
+        self.assertResults(res, base_content)
+        # index an object which shouldn't be there
+        self.catalog.indexObject(self.portal.portal_skins)
+        res = self.catalog.searchResults()
+        self.assertResults(res, base_content+['portal_skins'])
+        self.catalog.clearFindAndRebuild()
+        # This will remove the extraneous item and add the document added
+        # in afterSetup
+        res = self.catalog.searchResults()
+        self.assertResults(res, base_content)
+
+    def testClearFindAndRebuildAddsMissingContent(self):
+        # Index the doc for consistency
+        self.catalog.indexObject(self.folder.doc)
+        res = self.catalog.searchResults()
+        self.assertResults(res, base_content)
+        # index an object which shouldn't be there
+        self.catalog.unindexObject(self.portal.Members)
+        altered_content = base_content[:]
+        altered_content.remove('Members')
+        res = self.catalog.searchResults()
+        self.assertResults(res, altered_content)
+        self.catalog.clearFindAndRebuild()
+        # This will add the missing item and also the document added
+        # in afterSetup
+        res = self.catalog.searchResults()
+        self.assertResults(res, base_content)
+
 
 class TestCatalogSearching(PloneTestCase.PloneTestCase):
 
@@ -332,7 +372,7 @@ class TestCatalogSearching(PloneTestCase.PloneTestCase):
         self.assertEqual(len(self.catalog(SearchableText='aaa AND ccc')), 1)
 
     def testSearchReturnsDocumentUsing_OR(self):
-        # Two documents (aaa, bbb)  should be found when owner does a search using OR 
+        # Two documents (aaa, bbb)  should be found when owner does a search using OR
         results = self.catalog(SearchableText='aaa OR bbb')
         self.assertEqual(len(results), 2)
 
@@ -430,8 +470,8 @@ class TestFolderCataloging(PloneTestCase.PloneTestCase):
         self.folder.invokeFactory('Folder', id='foo')
 
     def testFolderTitleIsUpdatedOnEdit(self):
-        # Test for catalog that searches to ensure folder titles are 
-        # updated in the catalog. 
+        # Test for catalog that searches to ensure folder titles are
+        # updated in the catalog.
         title = 'Test Folder - Snooze!'
         self.folder.foo.folder_edit(title, '')
         results = self.catalog(Title='Snooze')
@@ -441,8 +481,8 @@ class TestFolderCataloging(PloneTestCase.PloneTestCase):
             self.assertEqual(result.id, 'foo')
 
     def testFolderTitleIsUpdatedOnRename(self):
-        # Test for catalog that searches to ensure folder titles are 
-        # updated in the catalog. 
+        # Test for catalog that searches to ensure folder titles are
+        # updated in the catalog.
         title = 'Test Folder - Snooze!'
         transaction.savepoint(optimistic=True) # make rename work
         self.folder.foo.folder_edit(title, '', id='bar')
@@ -595,7 +635,7 @@ class TestCatalogOrdering(PloneTestCase.PloneTestCase):
         all_objs = self.catalog()
         sorted_objs = self.catalog(sort_on='getObjPositionInParent')
         self.failUnlessEqual(len(all_objs), len(sorted_objs))
-        
+
         members = self.portal.Members
         members_path = '/'.join(members.getPhysicalPath())
         members_query = self.catalog(path=members_path)
