@@ -25,6 +25,12 @@
     in the lists below. 
     </div>
 
+    <p class="discreet" i18n:translate="description_product_location">
+      To make products show up here, put them in the directory
+      <strong i18n:name="location" tal:content="string:${QI/getInstanceHome}/Products">[$INSTANCE_HOME/Products]</strong>
+      on the file system, and restart the server process.
+    </p>
+
     <form style="float: left;"
           action="installProducts" 
           tal:attributes="action python:QI.absolute_url()+'/installProducts'" 

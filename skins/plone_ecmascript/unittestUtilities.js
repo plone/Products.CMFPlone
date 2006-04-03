@@ -100,7 +100,15 @@ function runTestCase(testCase) {
     placeHolder.appendChild(header);
     results_box.appendChild(placeHolder);
     testCase.initialize(new HTMLReporter(placeHolder));
-    testCase.runTests();
+    try {
+        testCase.runTests();
+    } catch(e) {
+        var raw = e;
+        if (e.name && e.message) { // Microsoft
+            e = e.name + ': ' + e.message;
+        }
+        placeHolder.appendChild(document.createTextNode(e));
+    }
 };
 
 function runTestCases() {
@@ -109,8 +117,34 @@ function runTestCases() {
     testcase_registry.setTestSuiteFilter(suite_filter);
     testcase_registry.setTestFilter(test_filter);
     var testcases = testcase_registry.getFilteredTestCases();
+
+    var iframe = window.document.getElementById('iframe');
+    if (typeof(iframe) != 'undefined') {
+        iframe.style.display = 'block';
+        // IE seems to re-initialize the iframe on designMode change,
+        // destroying the blank document. But only Mozilla needs that mode.
+        if (_SARISSA_IS_MOZ) {
+            try {
+                if (typeof(iframe.contentWindow.document.designMode) != 'undefined')
+                    iframe.contentWindow.document.designMode = 'on';
+            } catch(e) {
+            }
+        };
+    }
+
     for (var testcase_index=0; testcase_index < testcases.length; testcase_index++) {
         runTestCase(testcases[testcase_index]);
+    }
+
+    if (iframe) {
+        if (_SARISSA_IS_MOZ) {
+            try {
+                if (typeof(iframe.contentWindow.document.designMode) != 'undefined')
+                    iframe.contentWindow.document.designMode = 'off';
+            } catch(e) {
+            }
+        };
+        iframe.style.display = 'none';
     }
 }
 

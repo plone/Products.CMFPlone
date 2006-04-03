@@ -47,22 +47,49 @@
         </ul>                           
 
     </tal:block>                        
-    <div class="discreet"               
-        tal:define="sys here/getZopeInfo;
-                    mt here/portal_migration;
-                    pil mt/getPILVersion">
-        <strong i18n:translate="heading_plone_version_overview">Plone version overview</strong><br />
-        Plone <span tal:replace="mt/getInstanceVersion" />, <br />
-        Zope <span tal:replace="python:sys[0]" />, <br />
-        Python <span tal:replace="python:sys[1]" />, <br />
-        <tal:pil condition="pil">
-        PIL <span tal:replace="pil" />
-        </tal:pil>
-        <tal:nopil condition="not:pil"
-                   i18n:translate="text_no_pil_installed">
-        Warning: PIL is not installed properly, so image scaling will not work.
-        </tal:nopil>
-    </div>
+
+    <tal:versions define="sys here/getZopeInfo;
+                          mt here/portal_migration;
+                          pil mt/getPILVersion">
+        <p class="discreet">
+            <strong i18n:translate="heading_plone_version_overview">Plone version overview</strong><br />
+            Plone <span tal:replace="mt/getInstanceVersion" />, <br />
+            Zope <span tal:replace="python:sys[0]" />, <br />
+            Python <span tal:replace="python:sys[1]" />, <br />
+            <tal:pil condition="pil">
+            PIL <span tal:replace="pil" />
+            </tal:pil>
+        </p>
+
+        <p class="portalMessage"
+           tal:condition="not:pil"
+           i18n:translate="text_no_pil_installed">
+        Warning: PIL is not installed properly, image scaling will not work.
+        </p>
+    </tal:versions>
+    
+    <tal:debugmode define="QI python:context.portal_url.getPortalObject().portal_quickinstaller">
+        <p tal:condition="QI/isDevelopmentMode" 
+           class="discreet"
+           i18n:translate="description_production_mode">
+          You are running in "production mode". This means that some 
+          configuration changes will not take effect until your server is 
+          restarted or a product refreshed. If this is a development instance,
+          and you want to enable debug mode, edit your zope.conf file to say
+          'debug-mode on'.
+        </p>
+
+        <p tal:condition="not: QI/isDevelopmentMode"
+           class="discreet"
+           i18n:translate="description_debug_mode">
+          Note: You are running in "debug mode". This mode is intended for
+          sites that are under development. This allows many configuration
+          changes to be immediately evident, but will make your site run 
+          more slowly. To turn off debug mode, edit your zope.conf file to
+          say 'debug-mode off'.
+        </p>
+    </tal:debugmode>
+
     </div>
 
 </body>

@@ -13,16 +13,17 @@
 <h5 class="hiddenStructure" i18n:translate="heading_personal_tools">Personal tools</h5>
 
 <ul id="portal-personaltools">
-    <li class="portalUser" 
-        tal:define="author python:mtool.getMemberInfo(user.getId())"
-        tal:condition="not: isAnon"><a 
-        id="user-name"
-        tal:attributes="href string:${portal_url}/author/${user/getId}">
-        <span class="visualCaseSensitive"
-              tal:content="python:author and author['fullname'] or user.getId()">
-             John
-        </span>
-    </a></li>
+   <tal:block condition="not: isAnon">
+       <li class="portalUser" 
+           tal:define="author python:mtool.getMemberInfo(user.getId())"><a 
+           id="user-name"
+           tal:attributes="href string:${portal_url}/author/${user/getId}">
+           <span class="visualCaseSensitive"
+                 tal:content="python:author and author['fullname'] or user.getId()">
+                John
+           </span>
+       </a></li>
+   </tal:block>
 
     <tal:actions tal:repeat="action python:here.getOrderedUserActions(keyed_actions=keyed_actions)">
         <li tal:define="icon python:getIconFor(action['category'], action['id'], None);

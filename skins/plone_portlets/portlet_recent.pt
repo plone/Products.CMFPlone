@@ -48,7 +48,7 @@
         No items changed yet.
     </dd>
 
-    <dd class="portletFooter even">
+    <dd class="portletFooter">
         <a href="#"
            class="tile"
            tal:attributes="href string:${portal_url}/recently_modified"

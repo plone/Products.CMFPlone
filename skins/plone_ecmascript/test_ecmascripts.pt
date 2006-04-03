@@ -23,6 +23,23 @@
         <script type="text/javascript" src="testHighlightsearchterms.js"> </script>
         <script type="text/javascript" src="testNodeutilities.js"> </script>
         <script type="text/javascript" src="testBeforeUnload.js"> </script>
+        <!-- kupu tests -->
+        <script type="text/javascript" src="test_kupueditor.js"> </script>
+        <script type="text/javascript" src="test_kupuhelpers.js"> </script>
+        <script type="text/javascript" src="test_xhtml.js"> </script>
+        <script type="text/javascript" src="test_kupubasetools.js"> </script>
+        <script type="text/javascript" src="test_plone.js"> </script>
+        <script type="text/javascript" src="test_kupuinit.js"> </script>
+        <script type="text/javascript"><!--
+            testcase_registry.registerTestCase(KupuHelpersTestCase, 'kupu');
+            testcase_registry.registerTestCase(KupuEditorTestCase, 'kupu');
+            testcase_registry.registerTestCase(KupuSelectionTestCase, 'kupu');
+            testcase_registry.registerTestCase(KupuXhtmlTestCase, 'kupu');
+            testcase_registry.registerTestCase(InitKupuCheckersTestCase, 'kupu');
+            testcase_registry.registerTestCase(KupuUITestCase, 'kupu');
+            testcase_registry.registerTestCase(ImageToolTestCase, 'kupu');
+            testcase_registry.registerTestCase(KupuPloneTestCase, 'kupu');
+        // --></script>
     </metal:javascript_head_slot>
     <metal:block fill-slot="top_slot"
                  tal:define="dummy python:request.set('disable_border',1)" />
@@ -60,6 +77,31 @@
     <ul id="testResultsToc"></ul>
     <div id="testResultsPlaceHolder"></div>
     <div id="testSandbox"></div>
+<!-- the following parts are for the kupu tests. -->
+<!-- some test data for the loadDictFromXML function -->
+<div style="visibility: hidden">
+<xml id="xmlisland">
+    <dict>
+        <foo>bar</foo>
+        <sna>fu</sna>
+        <some_int>1</some_int>
+        <nested>
+            <foo>bar</foo>
+        </nested>
+        <list>0</list>
+        <list>1</list>
+    </dict>
+</xml>
+</div>
+<select id="kupu-tb-styles" style="display:none">
+<option value="p">Normal</option>
+<option value="h2">Heading</option>
+<option value="h3">Subheading</option>
+<option value="pre">Formatted</option>
+<option value="div|Caption">Caption</option>
+</select>
+<iframe style="display: none" id="iframe" ></iframe>
+<div style="display:none" id="testdiv" ></div>
 </metal:main>
 
 </body>
