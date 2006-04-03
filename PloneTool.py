@@ -677,23 +677,9 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         >>> ptool = self.portal.plone_utils
 
         >>> ptool.addPortalMessage(u'A random warning message', 'warn')
+
+        If no type is given it defaults to 'info'
         >>> ptool.addPortalMessage(u'A random info message')
-
-        This is the result:
-
-        >>> messages = ptool.showPortalMessages()
-        >>> messages[0].message
-        u'A random warning message'
-
-        >>> messages[0].type
-        'warn'
-
-        >>> messages[1].message
-        u'A random info message'
-
-        Type defaults to 'info'
-        >>> messages[1].type
-        'info'
 
         The arguments are:
             message:   a string, with the text message you want to show,
