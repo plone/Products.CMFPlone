@@ -8,7 +8,10 @@ def two12_two13(portal):
 
     # Put navtree properties in a sensible state
     normalizeNavtreeProperties(portal, out)
-    
+
+    # Remove vcXMLRPC.js from ResourceRegistries
+    removeVcXMLRPC(portal, out)
+
     return out
 
 def normalizeNavtreeProperties(portal, out):
@@ -36,3 +39,12 @@ def normalizeNavtreeProperties(portal, out):
             bottomLevel = navtree_properties.getProperty('bottomLevel', None)
             if bottomLevel == 65535:
                 navtree_properties.manage_changeProperties(bottomLevel = 0)
+
+def removeVcXMLRPC(portal, out):
+    """Remove vcXMLRPC.js from ResourceRegistries
+    """
+    jsreg = getToolByName(portal, 'portal_javascripts', None)
+    if jsreg is not None:
+        if 'vcXMLRPC.js' in jsreg.getResourceIds():
+            jsreg.unregisterResource('vcXMLRPC.js')
+            out.append('Removed vcXMLRPC.js')
