@@ -69,7 +69,7 @@
     </tal:versions>
     
     <tal:debugmode define="QI python:context.portal_url.getPortalObject().portal_quickinstaller">
-        <p tal:condition="QI/isDevelopmentMode" 
+        <p tal:condition="not: QI/isDevelopmentMode" 
            class="discreet"
            i18n:translate="description_production_mode">
           You are running in "production mode". This means that some 
@@ -79,7 +79,7 @@
           'debug-mode on'.
         </p>
 
-        <p tal:condition="not: QI/isDevelopmentMode"
+        <p tal:condition="QI/isDevelopmentMode"
            class="discreet"
            i18n:translate="description_debug_mode">
           Note: You are running in "debug mode". This mode is intended for
