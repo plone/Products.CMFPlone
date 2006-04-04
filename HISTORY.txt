@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.5 (unreleased)
 
+    - Removed vcXMLRPC.js.
+      [fschulze]
+
     - Removed underline button from Kupu, you shouldn't use underline for 
       web pages - as it's very hard to discern from a link.
       If you want it back, add the following to your CSS file:

@@ -53,8 +53,6 @@
     id="plone_minwidth.js" inline="False"/>
  <javascript cookable="True" enabled="False" expression=""
     id="correctPREformatting.js" inline="False"/>
- <javascript cookable="True" enabled="False" expression="" id="vcXMLRPC.js"
-    inline="False"/>
  <javascript cookable="True" enabled="True" expression="" id="login.js"
     inline="False"/>
  <javascript cookable="True" enabled="True"
