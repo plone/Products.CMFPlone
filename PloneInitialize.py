@@ -1,5 +1,4 @@
 from Products.ExternalMethod.ExternalMethod import manage_addExternalMethod
-from Products.CMFPlone.Portal import manage_addSite
 from Products.SiteAccess.SiteRoot import manage_addSiteRoot
 from Products.SiteAccess.AccessRule import manage_addAccessRule
 import transaction
@@ -56,16 +55,8 @@ def create(app, admin_username='admin'):
 
     # 3. actually add in Plone
     if pid not in oids:
-        manage_addSite(app,
-                   pid,
-                   title='Portal',
-                   description='',
-                   create_userfolder=1,
-                   email_from_address='postmaster@localhost',
-                   email_from_name='Portal Administrator',
-                   validate_email=0,
-                   custom_policy='Default Plone',
-                   RESPONSE=None)
+        factory = app.manage_addProduct['CMFPlone']
+        factory.addPloneSite(pid, create_userfolder=1)
         out.append("Added Plone")
 ##         if user:
 ##             getattr(app, pid).changeOwnership(user, recursive=1)
