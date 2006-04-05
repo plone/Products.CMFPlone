@@ -24,9 +24,6 @@ def process(name, swhome, ihome):
     Zope.configure(configfile)
     app = Zope.app()
 
-    from OFS.Application import initialize
-    initialize(app)
-
     from Testing import makerequest
     app = makerequest.makerequest(app)
 
