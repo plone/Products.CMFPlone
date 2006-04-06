@@ -23,7 +23,7 @@ class NewsPortlet(utils.BrowserView):
         portal_url = utool()
         portal = utool.getPortalObject()
 
-        if 'news' in portal.contentIds():
+        if 'news' in portal.objectIds():
             return '%s/news' % portal_url
         else:
             return '%s/news_listing' % portal_url
