@@ -9,8 +9,7 @@
                  prev_events_link view/prev_events_link"
      tal:condition="results">
 
-<dl class="portlet" id="portlet-events"
-    tal:define="eventsfolder python:'events' in portal.contentIds()">
+<dl class="portlet" id="portlet-events">
 
     <dt class="portletHeader">
         <span class="portletTopLeft"></span>
@@ -61,7 +60,6 @@
     <dd class="portletFooter">
         <a href=""
            class="tile"
-           tal:condition="eventsfolder"
            tal:attributes="href events_link"
            i18n:translate="box_upcoming_events">
                 Upcoming events&hellip;
