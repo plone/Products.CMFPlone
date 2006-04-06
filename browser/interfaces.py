@@ -178,6 +178,20 @@ class ICalendarPortlet(Interface):
     def getNextMonth(month, year):
         """ """
 
+    def getWeekdays(self):
+        """Returns a list of Messages for the weekday names."""
+
+    def getEnglishMonthName(self, month):
+        """Returns the English month name."""
+
+    def getMonthName(self, month):
+        """Returns the month name as a Message."""
+
+    def isToday(self, day):
+        """Returns True if the given day and the current month and year equals
+           today, otherwise False.
+        """
+
 
 class ISitemapView(Interface):
     """Interface to the view that creates a site map"""

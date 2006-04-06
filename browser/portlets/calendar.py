@@ -4,7 +4,9 @@ from zope.interface import implements
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import utils
 from Products.CMFPlone.browser.interfaces import ICalendarPortlet
-
+# don't use the standard _ for PMF here as we don't want the extraction tools
+# to pick this up
+from Products.CMFPlone import PloneMessageFactory
 
 class CalendarPortlet(utils.BrowserView):
     implements(ICalendarPortlet)
@@ -24,6 +26,8 @@ class CalendarPortlet(utils.BrowserView):
         self.nextMonthTime = self.getNextMonth(self.month, self.year)
         calendar = getToolByName(context, 'portal_calendar')
         self.weeks = calendar.getEventsForCalendar(self.month, self.year)
+        self.daynumbers = calendar.getDayNumbers()
+        self._translation_service = getToolByName(context, 'translation_service')
 
     def getYearAndMonthToDisplay(self):
         """ from skins/plone_scripts/getYearAndMonthToDisplay.py """
@@ -85,3 +89,33 @@ class CalendarPortlet(utils.BrowserView):
             month+=1
 
         return DateTime(year, month, 1)
+
+    def getWeekdays(self):
+        """Returns a list of Messages for the weekday names."""
+
+        weekdays = []
+        # list of ordered weekdays as numbers
+        for day in self.daynumbers:
+            msgid   = self._translation_service.day_msgid(day, format='s')
+            english = self._translation_service.weekday_english(day, format='a')
+            weekdays.append(PloneMessageFactory(msgid, default=english))
+
+        return weekdays
+
+    def getEnglishMonthName(self):
+        """Returns the current English month name."""
+        return self._translation_service.month_english(self.month)
+
+    def getMonthName(self):
+        """Returns the current month name as a Message."""
+        msgid   = self._translation_service.month_msgid(self.month)
+        english = self._translation_service.month_english(self.month)
+        return PloneMessageFactory(msgid, default=english)
+
+    def isToday(self, day):
+        """Returns True if the given day and the current month and year equals
+           today, otherwise False.
+        """
+        return self.current_day==day and self.current.month()==self.month and \
+               self.current.year()==self.year
+

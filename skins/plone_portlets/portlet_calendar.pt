@@ -18,16 +18,16 @@
                  prevMonthTime view/prevMonthTime;
                  nextMonthTime view/nextMonthTime;
                  weeks view/weeks;
+                 weekdays view/getWeekdays;
+                 englishMonthName view/getEnglishMonthName;
+                 monthName view/getMonthName;
+                 isToday nocall:view/isToday;
 
                  anchor_url request/anchor_url | here_url;
                  query_string python:request.get('orig_query', None);
                  query_string python: (query_string is None and request.get('QUERY_STRING', None)) or query_string;
                  url_quote python:modules['Products.PythonScripts.standard'].url_quote;
                  anchor_method request/anchor_method | template/getId;
-                 translation_service nocall:here/translation_service;
-                 day_msgid nocall:translation_service/day_msgid;
-                 weekday_english nocall:translation_service/weekday_english;
-                 utranslate nocall:here/utranslate;
                  getEventString nocall:here/getEventString;">
 
     <!-- The calendar, rendered as a table -->
@@ -45,9 +45,8 @@
                 <th colspan="5">
                     <span i18n:translate="" tal:omit-tag="">
                         <span i18n:name="monthname"
-                              tal:define="month_english python:translation_service.month_english(month);"
-                              tal:attributes="id string:calendar-month-$month_english"
-                              tal:content="python: utranslate(translation_service.month_msgid(month), default=month_english)"
+                              tal:attributes="id string:calendar-month-$englishMonthName"
+                              tal:content="monthName"
                               tal:omit-tag=""
                               id="calendar-month-month">monthname</span>
                         <span i18n:name="year"
@@ -65,10 +64,9 @@
                        i18n:attributes="title title_next_month;">&raquo;</a>
                 </th>
             </tr>
-            <tr tal:define="weekdaynumbers here/portal_calendar/getDayNumbers" class="weekdays">
-                <tal:data tal:repeat="daynumber weekdaynumbers">
-                    <td tal:define="weekday_english python:weekday_english(daynumber,format='a');"
-                        tal:content="python: utranslate(day_msgid(daynumber, format='s'), default=weekday_english)">Su</td>
+            <tr class="weekdays">
+                <tal:data tal:repeat="weekday weekdays">
+                    <td tal:content="weekday">Su</td>
                 </tal:data>
             </tr>
         </thead>
@@ -82,7 +80,7 @@
             ><tal:block repeat="day week"
             ><tal:block define="int_daynumber python: int(day['day']);
                                 day_event day/event;
-                                is_today python: current_day==int_daynumber and current.month()==month and current.year()==year">
+                                is_today python: isToday(int_daynumber)">
                <td class="event" tal:condition="day_event"
                       tal:attributes="class python:is_today and 'todayevent' or 'event'"
                    ><tal:data tal:define="cur_date python:DateTime(year,month,int_daynumber);
