@@ -250,7 +250,7 @@
                 <label for="review_state" i18n:translate="label_review_status">Review status</label>
 
                 <div class="formHelp" i18n:translate="help_search_review_status">
-                As a reviewer, you may search for items based on their
+                You may search for items based on their
                 review state. If you wish to constrain results to items
                 in certain states, select them from this list.
                 </div>
