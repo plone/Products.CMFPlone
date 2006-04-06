@@ -78,28 +78,36 @@
         <tbody>
             <tr tal:repeat="week weeks"
             ><tal:block repeat="day week"
-            ><tal:block define="int_daynumber python: int(day['day']);
-                                day_event day/event;
-                                is_today python: isToday(int_daynumber)">
-               <td class="event" tal:condition="day_event"
-                      tal:attributes="class python:is_today and 'todayevent' or 'event'"
-                   ><tal:data tal:define="cur_date python:DateTime(year,month,int_daynumber);
-                                          begin python:url_quote((cur_date.latestTime()).ISO());
-                                          end python:url_quote(cur_date.earliestTime().ISO());"
-                              tal:omit-tag=""
-                     ><a href=""
-                         tal:attributes="href string:${portal_url}/search?review_state=published&amp;start.query:record:list:date=${begin}&amp;start.range:record=max&amp;end.query:record:list:date=${end}&amp;end.range:record=min;
-                                         title python:'\n'.join([toLocalizedTime(cur_date)]+[getEventString(e) for e in day['eventslist']]);"
-                         tal:content="python:int_daynumber or default">
-                      31
-                      </a
-                   ></tal:data>
-                </td
-                ><tal:notdayevent tal:condition="not: day_event"
-               ><td tal:attributes="class python:is_today and 'todaynoevent' or None"
-                    tal:content="python:int_daynumber or default"></td
-               ></tal:notdayevent
-            ></tal:block
+            ><tal:day define="daynumber day/day;"
+            ><tal:isday condition="daynumber"
+                ><tal:block define="day_event day/event;
+                                    is_today python: isToday(daynumber);
+                                    number python:daynumber or default"
+                    ><td class="event"
+                        tal:condition="day_event"
+                        tal:attributes="class python:is_today and 'todayevent' or 'event'"
+                    ><tal:data tal:define="cur_date python:DateTime(year,month,daynumber);
+                                           begin python:url_quote((cur_date.latestTime()).ISO());
+                                           end python:url_quote(cur_date.earliestTime().ISO());"
+                               tal:omit-tag=""
+                        ><a href=""
+                            tal:attributes="href string:${portal_url}/search?review_state=published&amp;start.query:record:list:date=${begin}&amp;start.range:record=max&amp;end.query:record:list:date=${end}&amp;end.range:record=min;
+                                            title python:'\n'.join([toLocalizedTime(cur_date)]+[getEventString(e) for e in day['eventslist']]);"
+                            tal:content="number">
+                            31
+                        </a
+                    ></tal:data>
+                    </td
+                    ><tal:notdayevent tal:condition="not: day_event"
+                    ><td tal:attributes="class python:is_today and 'todaynoevent' or None"
+                         tal:content="number"></td
+                    ></tal:notdayevent
+                ></tal:block
+            ></tal:isday
+            ><tal:notisday condition="not: daynumber"
+                ><td></td
+            ></tal:notisday
+            ></tal:day
             ></tal:block>
             </tr>
         </tbody>

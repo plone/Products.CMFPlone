@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.5 (unreleased)
 
+    - Fixed wrong html markup in events portlet.
+      Closes http://dev.plone.org/plone/ticket/5407
+      [hannosch]
+
     - Fixed dumb migration issue bug https://dev.plone.org/plone/ticket/5357
       [alecm]
 

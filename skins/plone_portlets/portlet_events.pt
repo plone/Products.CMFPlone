@@ -49,8 +49,8 @@
     <dd class="portletFooter"
            tal:condition="prev_events_link">
         <a href=""
-           tal:attributes="href prev_events_link">
-           class="tile"
+           tal:attributes="href prev_events_link"
+           class="tile">
             <span i18n:translate="box_previous_events">
                 Previous events&hellip;
             </span>
