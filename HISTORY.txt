@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.5 (unreleased)
 
+    - Slightly optimized portlet events view for performance.
+      [hannosch]
+
     - Refactored some more logic out of portlet_calendar into calendar view.
       [hannosch]
 

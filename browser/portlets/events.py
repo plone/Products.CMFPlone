@@ -15,7 +15,7 @@ class EventsPortlet(utils.BrowserView):
         self.portal_url = utool()
         # this has a messed up context, but we don't care in this case
         self.portal = utool.getPortalObject()
-
+        self.eventsFolder = 'events' in self.portal.contentIds()
 
     def published_events(self):
         context = utils.context(self)
@@ -29,14 +29,14 @@ class EventsPortlet(utils.BrowserView):
                                             review_state='published')[:5]
 
     def all_events_link(self):
-        if 'events' in self.portal.contentIds():
+        if self.eventsFolder:
             return '%s/events' % self.portal_url
         else:
             return '%s/events_listing' % self.portal_url
 
     def prev_events_link(self):
-        if 'events' in self.portal.contentIds() and \
-           'previous' in self.portal.events.contentIds():
+        if self.eventsFolder and 'previous' in self.portal.events.contentIds():
             return '%s/news/previous' % self.portal_url
         else:
             return None
+
