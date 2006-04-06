@@ -81,8 +81,7 @@
             ><tal:day define="daynumber day/day;"
             ><tal:isday condition="daynumber"
                 ><tal:block define="day_event day/event;
-                                    is_today python: isToday(daynumber);
-                                    number python:daynumber or default"
+                                    is_today python: isToday(daynumber)"
                     ><td class="event"
                         tal:condition="day_event"
                         tal:attributes="class python:is_today and 'todayevent' or 'event'"
@@ -93,14 +92,14 @@
                         ><a href=""
                             tal:attributes="href string:${portal_url}/search?review_state=published&amp;start.query:record:list:date=${begin}&amp;start.range:record=max&amp;end.query:record:list:date=${end}&amp;end.range:record=min;
                                             title python:'\n'.join([toLocalizedTime(cur_date)]+[getEventString(e) for e in day['eventslist']]);"
-                            tal:content="number">
+                            tal:content="daynumber">
                             31
                         </a
                     ></tal:data>
                     </td
                     ><tal:notdayevent tal:condition="not: day_event"
                     ><td tal:attributes="class python:is_today and 'todaynoevent' or None"
-                         tal:content="number"></td
+                         tal:content="daynumber"></td
                     ></tal:notdayevent
                 ></tal:block
             ></tal:isday
