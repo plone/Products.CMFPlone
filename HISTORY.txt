@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.5 (unreleased)
 
+    - Fixed dumb migration issue bug https://dev.plone.org/plone/ticket/5357
+      [alecm]
+
     - Slightly optimized portlet events view for performance.
       [hannosch]
 
@@ -13,7 +16,7 @@ Plone 2.5 (unreleased)
     - Removed vcXMLRPC.js.
       [fschulze]
 
-    - Removed underline button from Kupu, you shouldn't use underline for 
+    - Removed underline button from Kupu, you shouldn't use underline for
       web pages - as it's very hard to discern from a link.
       If you want it back, add the following to your CSS file:
       #kupu-underline-button { display: inline; }
@@ -29,7 +32,7 @@ Plone 2.5 (unreleased)
       [limi]
 
     - Disabled the RichWidget file upload field using CSS. The reason is that
-      it causes a lot of problems for na? users, who upload Word documents,
+      it causes a lot of problems for naive users, who upload Word documents,
       images etc here. The content has to be in HTML or the selected text
       format for this to work. If you want to re-enable this in your site, add
       the following to your CSS file: .fieldUploadFile { display: block }
@@ -88,17 +91,17 @@ Plone 2.5 (unreleased)
       [hannosch]
 
     - Tabindexes aren't as good for usability/accessibility as we once
-      thought, and they wreak havoc with JavaScript/AJAX type code that 
-      dynamically inserts form elements. Instead, we should have the first 
-      element in the main body have tabindex="0" and the rest not have 
-      tabindexes, this making the cursor focus on that element first, and then 
-      follow normal ordering thereafter. Fixed IndexIterator to support just 
-      this - when mainSlot=False it always returns None; when mainSlot=True, 
-      it returns a number on the first iteration, and no number thereafter. 
-      Fixed up global_defines, the portlet fetcher and various templates that 
-      were abusing tabindexes to get a unique number for form elements to 
-      reflect this. Also added a new iterator called uniqueItemIndex in 
-      global_defines, which can be used when a page-unique number *is* needed, 
+      thought, and they wreak havoc with JavaScript/AJAX type code that
+      dynamically inserts form elements. Instead, we should have the first
+      element in the main body have tabindex="0" and the rest not have
+      tabindexes, this making the cursor focus on that element first, and then
+      follow normal ordering thereafter. Fixed IndexIterator to support just
+      this - when mainSlot=False it always returns None; when mainSlot=True,
+      it returns a number on the first iteration, and no number thereafter.
+      Fixed up global_defines, the portlet fetcher and various templates that
+      were abusing tabindexes to get a unique number for form elements to
+      reflect this. Also added a new iterator called uniqueItemIndex in
+      global_defines, which can be used when a page-unique number *is* needed,
       as it is in calendar_macros.pt.
       [optilude]
 
@@ -112,7 +115,7 @@ Plone 2.5 (unreleased)
       http://dev.plone.org/plone/ticket/5326.
       [hannosch]
 
-    - Added explanatory doctests for the translation service tool l10n 
+    - Added explanatory doctests for the translation service tool l10n
       methods.
       [hannosch]
 
@@ -139,19 +142,19 @@ Plone 2.5 (unreleased)
       authoring.css
       [ender]
 
-    - Standardized how description fields are rendered in html among the 
+    - Standardized how description fields are rendered in html among the
       various templates. document_view used a <p> while folder_listing
       used a <div> etc. They all use <p> now and omit the field completely
       when there is no description (all similar to document_view).
       [ender]
 
-    - Re-added support for topLevel and bottomLevel navtree propreties, as 
-      well as the new name (of the navtree portlet) and root (of site 
-      navigation) properties, and added the Sprout navtree preference panel to 
-      let users manage these settings. Factored the navtree code out to 
-      .browser.navtree, which is TTW importable and contains a re-usable 
-      buildFolderTree() function that can be used to build navtree-like 
-      structures in custom code. See the docstrings in that module for more 
+    - Re-added support for topLevel and bottomLevel navtree propreties, as
+      well as the new name (of the navtree portlet) and root (of site
+      navigation) properties, and added the Sprout navtree preference panel to
+      let users manage these settings. Factored the navtree code out to
+      .browser.navtree, which is TTW importable and contains a re-usable
+      buildFolderTree() function that can be used to build navtree-like
+      structures in custom code. See the docstrings in that module for more
       details.
       THIS REQUIRES THAT YOU RE-CUSTOMIZE YOUR NAVTREE IF YOU HAVE A CUSTOM
       VERSION IN YOUR SITE!

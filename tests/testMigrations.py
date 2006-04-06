@@ -135,6 +135,7 @@ from Products.CMFPlone.migrations.v2_5.alphas import installDeprecated
 
 from Products.CMFPlone.migrations.v2_5.betas import addGetEventTypeIndex
 from Products.CMFPlone.migrations.v2_5.betas import fixHomeAction
+from Products.CMFPlone.migrations.v2_5.betas import removeBogusSkin
 
 from Products.CMFDynamicViewFTI.migrate import migrateFTI
 
@@ -3539,16 +3540,17 @@ class TestMigrations_v2_5(MigrationTest):
     def testInstallDeprecated(self):
         # Remove skin
         self.skins._delObject('plone_deprecated')
-        selections = self.skins._getSelections()
         skins = ['Plone Default', 'Plone Tableless']
         for s in skins:
             path = self.skins.getSkinPath(s)
-            path = [s.strip() for s in  path.split(',')]
+            path = [p.strip() for p in  path.split(',')]
             path.remove('plone_deprecated')
             self.skins.addSkinSelection(s, ','.join(path))
+        self.failIf('plone_deprecated' in
+                           self.skins.getSkinPath('Plone Default').split(','))
         installDeprecated(self.portal, [])
         self.failUnless('plone_deprecated' in self.skins.objectIds())
-        # it should be the last element in the skin
+        # it should be in the skin now
         self.assertEqual(self.skins.getSkinPath('Plone Default').split(',')[-3],
                          'plone_deprecated')
         self.assertEqual(self.skins.getSkinPath('Plone Tableless').split(',')[-3],
@@ -3557,21 +3559,25 @@ class TestMigrations_v2_5(MigrationTest):
     def testInstallDeprecatedTwice(self):
         # Remove skin
         self.skins._delObject('plone_deprecated')
-        selections = self.skins._getSelections()
         skins = ['Plone Default', 'Plone Tableless']
         for s in skins:
             path = self.skins.getSkinPath(s)
-            path = [s.strip() for s in  path.split(',')]
+            path = [p.strip() for p in  path.split(',')]
             path.remove('plone_deprecated')
             self.skins.addSkinSelection(s, ','.join(path))
+        self.failIf('plone_deprecated' in
+                           self.skins.getSkinPath('Plone Default').split(','))
+        skin_len = len(self.skins.getSkinPath('Plone Default').split(','))
         installDeprecated(self.portal, [])
         installDeprecated(self.portal, [])
         self.failUnless('plone_deprecated' in self.skins.objectIds())
-        # it should be the third to last element in the skin
+        # it should be in the skin now
         self.assertEqual(self.skins.getSkinPath('Plone Default').split(',')[-3],
                          'plone_deprecated')
         self.assertEqual(self.skins.getSkinPath('Plone Tableless').split(',')[-3],
                          'plone_deprecated')
+        self.assertEqual(len(self.skins.getSkinPath('Plone Default').split(',')),
+                         skin_len+1)
 
     def testInstallDeprecatedNoTool(self):
         # Remove skin
@@ -3631,6 +3637,32 @@ class TestMigrations_v2_5(MigrationTest):
     def testFixHomeActionNoTool(self):
         self.portal._delObject('portal_actions')
         fixHomeAction(self.portal, [])
+
+    def testRemoveBogusSkin(self):
+        # Add bogus skin
+        self.skins.manage_skinLayers(add_skin=1, skinname='cmf_legacy',
+                                  skinpath=['plone_forms','plone_templates'])
+        self.failUnless(self.skins._getSelections().has_key('cmf_legacy'))
+        removeBogusSkin(self.portal, [])
+        # It should be gone
+        self.failIf(self.skins._getSelections().has_key('cmf_legacy'))
+
+    def testRemoveBogusSkinTwice(self):
+        self.skins.manage_skinLayers(add_skin=1, skinname='cmf_legacy',
+                                  skinpath=['plone_forms','plone_templates'])
+        self.failUnless(self.skins._getSelections().has_key('cmf_legacy'))
+        removeBogusSkin(self.portal, [])
+        removeBogusSkin(self.portal, [])
+        self.failIf(self.skins._getSelections().has_key('cmf_legacy'))
+
+    def testRemoveBogusSkinNoSkin(self):
+        self.failIf(self.skins._getSelections().has_key('cmf_legacy'))
+        removeBogusSkin(self.portal, [])
+        self.failIf(self.skins._getSelections().has_key('cmf_legacy'))
+
+    def testRemoveBogusSkinNoTool(self):
+        self.portal._delObject('portal_skins')
+        removeBogusSkin(self.portal, [])
 
 def test_suite():
     from unittest import TestSuite, makeSuite

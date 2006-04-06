@@ -308,8 +308,8 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
 
         if self.needUpgrading():
             out.append((("The upgrade path did NOT reach "
-                        "current version"), logging.PROBLEM))
-            out.append(("Migration has failed", logging.PROBLEM))
+                        "current version"), logging.ERROR))
+            out.append(("Migration has failed", logging.ERROR))
         else:
             out.append((("Your ZODB and Filesystem Plone "
                          "instances are now up-to-date."), logging.INFO))

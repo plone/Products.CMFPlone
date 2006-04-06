@@ -3,6 +3,7 @@ from Acquisition import aq_base
 
 from Products.CMFPlone.migrations.migration_util import installOrReinstallProduct
 from Products.CMFPlone.migrations.v2_1.two12_two13 import normalizeNavtreeProperties
+from Products.CMFPlone.migrations.v2_5.alphas import installDeprecated
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.DirectoryView import createDirectoryView
 
@@ -26,6 +27,18 @@ def alpha2_beta1(portal):
     # need to be done again for those migrating from alphas)
     normalizeNavtreeProperties(portal, out)
 
+
+    return out
+
+def beta1_beta2(portal):
+    """2.5-beta1 - > 2.5-beta2
+    """
+    out = []
+
+    # The migration done during the alpha screwed things up, so we do it again
+    # and fix the mistake while we're at it
+    installDeprecated(portal, out)
+    removeBogusSkin(portal, out)
 
     return out
 
@@ -97,3 +110,10 @@ def fixHomeAction(portal, out):
                     category=newaction['category'],
                     visible=1)
             out.append("Added missing home/index_html action")
+
+def removeBogusSkin(portal, out):
+    skins = getToolByName(portal, 'portal_skins', None)
+    if skins is not None:
+        if skins._getSelections().has_key('cmf_legacy'):
+            skins.manage_skinLayers(('cmf_legacy',), del_skin=True)
+            out.append("Deleted incorrectly added 'cmf_legacy' skin")
