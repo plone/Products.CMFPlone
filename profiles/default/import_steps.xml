@@ -70,13 +70,6 @@
     Import types tool's type information objects.
   </import-step>
 
-  <import-step id="various" version="20041118-01"
-               handler="Products.CMFDefault.setuphandlers.importVarious"
-               title="Various Settings">
-    <dependency step="toolset"/>
-    Import various settings from PortalGenerator.
-  </import-step>
-
   <import-step id="plone_various" version="20041118-01"
                handler="Products.CMFPlone.setuphandlers.importVarious"
                title="Various Plone Settings">
