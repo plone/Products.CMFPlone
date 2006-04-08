@@ -28,7 +28,6 @@
             Change Ownership
         </legend>
 
-    <tal:block >
       <form action="change_ownership"
           name="ownership_form"
           method="post"
@@ -84,7 +83,6 @@
                            />
             </div>
       </form>
-    </tal:block>
     </fieldset>
 
     <fieldset>
