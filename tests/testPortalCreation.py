@@ -258,12 +258,20 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
                 self.fail("Actions tool still has 'News' action")
 
     def testNewsFolderIsIndexed(self):
-        # News folder should be cataloged
+        # News (smart) folder should be cataloged
         res = self.catalog(id='news')
         self.assertEqual(len(res), 1)
         self.assertEqual(res[0].getId, 'news')
         self.assertEqual(res[0].Title, 'News')
         self.assertEqual(res[0].Description, 'Site News')
+
+    def testEventsFolderIsIndexed(self):
+        # Events (smart) folder should be cataloged
+        res = self.catalog(id='events')
+        self.assertEqual(len(res), 1)
+        self.assertEqual(res[0].getId, 'events')
+        self.assertEqual(res[0].Title, 'Events')
+        self.assertEqual(res[0].Description, 'Site Events')
 
     def testNewsTopic(self):
         # News topic is in place as default view and has a criterion to show
