@@ -5,7 +5,8 @@ Changelog for Plone
 Plone 2.5 (unreleased)
 
     - introduce a large_site site property, which can be used to tweak site
-      behaviour.
+      behaviour. Modify ownership_form to show all users for small sites and
+      search for users on large sites.
       [wichert]
 
     - Fixed wrong html markup in events portlet.
