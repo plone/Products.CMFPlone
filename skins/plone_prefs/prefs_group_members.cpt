@@ -91,8 +91,9 @@
                     method="post"
                     tal:attributes="action string:$here_url/$template_id"
                     tal:define="searchstring request/searchstring | nothing;
+                                findAll python:'form.button.FindAll' in request.keys();
                                 ignoreUsersGroups python: group.getAllGroupMembers() + [group,];
-                                results python:searchstring and here.prefs_user_group_search(searchstring, 'all', ignore=ignoreUsersGroups) or [];
+                                results python:(searchstring or findAll) and here.prefs_user_group_search(searchstring, 'all', ignore=ignoreUsersGroups) or [];
                                 batch python:Batch(results, b_size, int(b_start), orphan=1)">
             <h2 i18n:translate="heading_groupmembers_current">Current group members</h2>
               <table class="listing" summary="Group Members Listing"
@@ -197,6 +198,14 @@
                            tabindex=""
                            i18n:attributes="value label_search;"
                            tal:attributes="tabindex tabindex/next;" />
+                    <input type="submit"
+                           class="searchButton"
+                           name="form.button.FindAll"
+                           value="Show all"
+                           tabindex=""
+                           i18n:attributes="value label_search_large;"
+                           tal:condition="not:site_properties/large_site"
+                           tal:attributes="tabindex tabindex/next;" />
                 </th>
               </tr>
               <tr>
@@ -251,9 +260,14 @@
             <tal:block condition="not:batch">
               <p tal:condition="searchstring"
                         i18n:translate="text_nomatches">No matches</p>
-                  <p tal:condition="not:searchstring"
+              <tal:block condition="not:searchstring">
+                <p tal:condition="site_properties/large_site"
                      class="discreet"
-                     i18n:translate="text_no_searchstring">Enter a group or user name to search for.</p>
+                     i18n:translate="text_no_searchstring_large">Enter a group or user name to search for.</p>
+                <p tal:condition="not:site_properties/large_site"
+                     class="discreet"
+                     i18n:translate="text_no_searchstring">Enter a group or user name to search for or click 'Show All'.</p>
+              </tal:block>
             </tal:block>
 
             <input type="hidden" value="b_start" name="b_start"
