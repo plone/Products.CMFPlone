@@ -1,6 +1,6 @@
 import string
 from Products.CMFCore.utils import getToolByName
-from alphas import reindexCatalog
+from alphas import reindexCatalog, indexMembersFolder
 
 def two12_two13(portal):
     """2.1.2 -> 2.1.3
@@ -13,8 +13,14 @@ def two12_two13(portal):
     # Remove vcXMLRPC.js from ResourceRegistries
     removeVcXMLRPC(portal, out)
 
-    # Reindex the site to get correct word boundaries html content
+    # Required due to a fix in PortalTransforms...
     reindexCatalog(portal, out)
+
+    # FIXME: *Must* be called after reindexCatalog.
+    # In tests, reindexing loses the folders for some reason...
+
+    # Make sure the Members folder is cataloged
+    indexMembersFolder(portal, out)
 
     return out
 
