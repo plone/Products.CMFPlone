@@ -26,50 +26,61 @@ from Products.CMFPlone.browser.plone import Plone
 
 
 class TestPloneView(PloneTestCase.PloneTestCase):
-    """Tests the global plone view.  """
+    """Tests the global plone view.  All the old global_defines should be
+       in the _data mapping of the view, which is globablized into
+       calling templates."""
 
     def afterSetUp(self):
+        # We need to fiddle the request for zope 2.9+
+        try:
+            from zope.app.publication.browser import setDefaultSkin
+            setDefaultSkin(self.app.REQUEST)
+        except ImportError:
+            # BBB: zope 2.8
+            pass
+        self.folder.invokeFactory('Document', 'test',
+                                  title='Test default page')
         self.view = Plone(self.portal, self.app.REQUEST)
         self.view._initializeData()
 
     def testUTool(self):
-        assert isinstance(self.view.utool, URLTool)
+        assert isinstance(self.view._data['utool'], URLTool)
 
     def testPortal(self):
-        assert self.view.portal == self.portal
+        assert self.view._data['portal'] == self.portal
 
     def testPortalObject(self):
-        assert self.view.portal_object == self.portal
+        assert self.view._data['portal_object'] == self.portal
 
     def testPortalURL(self):
-        assert isinstance(self.view.portal_url, type(''))
+        assert isinstance(self.view._data['portal_url'], type(''))
 
     def testMTool(self):
-        assert isinstance(self.view.mtool, MembershipTool)
+        assert isinstance(self.view._data['mtool'], MembershipTool)
 
     def testGTool(self):
-        assert isinstance(self.view.gtool, GroupsTool)
+        assert isinstance(self.view._data['gtool'], GroupsTool)
 
     def testGDTool(self):
-        assert isinstance(self.view.gdtool, GroupDataTool)
+        assert isinstance(self.view._data['gdtool'], GroupDataTool)
 
     def testATool(self):
-        assert isinstance(self.view.atool, ActionsTool)
+        assert isinstance(self.view._data['atool'], ActionsTool)
 
     def testAITool(self):
-        assert isinstance(self.view.aitool, ActionIconsTool)
+        assert isinstance(self.view._data['aitool'], ActionIconsTool)
 
     def testPUtils(self):
         pass
 
     def testWTool(self):
-        assert isinstance(self.view.wtool, WorkflowTool)
+        assert isinstance(self.view._data['wtool'], WorkflowTool)
 
     def testIFaceTool(self):
-        assert isinstance(self.view.ifacetool, InterfaceTool)
+        assert isinstance(self.view._data['ifacetool'], InterfaceTool)
 
     def testSynTool(self):
-        assert isinstance(self.view.syntool, SyndicationTool)
+        assert isinstance(self.view._data['syntool'], SyndicationTool)
 
     def testPortalTitle(self):
         pass
@@ -87,28 +98,62 @@ class TestPloneView(PloneTestCase.PloneTestCase):
         self.failIf(Plone(f, self.app.REQUEST).isStructuralFolder())
 
     def testIsDefaultPageInFolder(self):
-        # We need to fiddle the request for zope 2.9+
-        try:
-            from zope.app.publication.browser import setDefaultSkin
-            setDefaultSkin(self.app.REQUEST)
-        except ImportError:
-            # BBB: zope 2.8
-            pass
-        self.folder.invokeFactory('Document', 'test',
-                                  title='Test default page')
         view = Plone(self.folder.test, self.app.REQUEST)
         self.failIf(view.isDefaultPageInFolder())
         self.failUnless(self.folder.canSelectDefaultPage())
         self.folder.saveDefaultPage('test')
+        # re-create the view, because the old value is cached
+        view = Plone(self.folder.test, self.app.REQUEST)
         self.failUnless(view.isDefaultPageInFolder())
 
     def testNavigationRootPath(self):
         view = Plone(self.folder, self.app.REQUEST)
         self.assertEqual(view.navigationRootPath(), self.portal.portal_url.getPortalPath())
-        
+
     def testNavigationRootUrl(self):
         view = Plone(self.folder, self.app.REQUEST)
         self.assertEqual(view.navigationRootUrl(), self.portal.absolute_url())
+
+    def testGetParentObject(self):
+        view = Plone(self.folder.test, self.app.REQUEST)
+        self.assertEqual(view.getParentObject(), self.folder)
+        # Make sure this looks only at containment
+        view = Plone(self.folder.test.__of__(self.portal), self.app.REQUEST)
+        self.assertEqual(view.getParentObject(), self.folder)
+
+    def testIsFolderOrFolderDefaultPage(self):
+        # an actual folder whould return true
+        view = Plone(self.folder, self.app.REQUEST)
+        self.failUnless(view.isFolderOrFolderDefaultPage())
+        # But not a document
+        view = Plone(self.folder.test, self.app.REQUEST)
+        self.failIf(view.isFolderOrFolderDefaultPage())
+        # Unless we make it the default view
+        self.folder.saveDefaultPage('test')
+        view = Plone(self.folder.test, self.app.REQUEST)
+        self.failUnless(view.isFolderOrFolderDefaultPage())
+        # And if we have a non-structural folder it should not be true
+        f = dummy.NonStructuralFolder('ns_folder')
+        self.folder._setObject('ns_folder', f)
+        view = Plone(self.folder.ns_folder, self.app.REQUEST)
+        self.failIf(view.isFolderOrFolderDefaultPage())
+
+    def testIsPortalOrPortalDefaultPage(self):
+        # an actual folder whould return true
+        view = Plone(self.portal, self.app.REQUEST)
+        self.failUnless(view.isPortalOrPortalDefaultPage())
+        # But not a document
+        self.setRoles(['Manager'])
+        self.portal.invokeFactory('Document', 'portal_test',
+                                  title='Test default page')
+        view = Plone(self.portal.portal_test, self.app.REQUEST)
+        self.failIf(view.isPortalOrPortalDefaultPage())
+        # Unless we make it the default view
+        self.portal.saveDefaultPage('portal_test')
+        view = Plone(self.portal.portal_test, self.app.REQUEST)
+        self.failUnless(view.isPortalOrPortalDefaultPage())
+
+
 
 class TestVisibleIdsEnabled(PloneTestCase.PloneTestCase):
     '''Tests the visibleIdsEnabled method'''

@@ -1,3 +1,6 @@
+from Acquisition import aq_base
+from Acquisition import aq_inner
+from Acquisition import aq_parent
 from Products.CMFPlone.browser.interfaces import IPlone
 from Products.CMFPlone.browser.navtree import getNavigationRoot
 from Products.CMFPlone.interfaces.NonStructuralFolder import INonStructuralFolder
@@ -10,10 +13,24 @@ from Products import CMFPlone
 import ZTUtils
 import sys
 
-from Acquisition import aq_inner, aq_parent
-
-
 _marker = []
+
+# A simple memoize decorator that saves the value of method calls in a mapping
+# on the view, don't use this to store anything but python built-ins
+def cache_decorator(method):
+    key = method.__name__
+    def cached_method(self, *args, **kwargs):
+        value_cache = getattr(self, '_value_cache', _marker)
+        if value_cache is _marker:
+            value_cache = self._value_cache = {}
+        cached = value_cache.get(key, _marker)
+        if cached is not _marker:
+            return cached
+        else:
+            result = method(self, *args, **kwargs)
+            value_cache[key] = result
+            return result
+    return cached_method
 
 class Plone(utils.BrowserView):
     implements(IPlone)
@@ -131,17 +148,6 @@ class Plone(utils.BrowserView):
 
         self._data['navigation_root_url'] = self.navigationRootUrl()
 
-    def __getattr__(self, key):
-        """Override to look in _data first"""
-
-        value = self.__dict__['_data'].get(key, _marker)
-        if value is _marker:
-            try:
-                value = super(Plone, self).__getattr__(key)
-            except AttributeError:
-                raise AttributeError, key
-        return value
-
     def keyFilteredActions(self, actions=None):
         """ See interface """
         context = utils.context(self)
@@ -167,6 +173,7 @@ class Plone(utils.BrowserView):
         if query:
             query = '?'+query
         return url+query
+    getCurrentUrl = cache_decorator(getCurrentUrl)
 
     def visibleIdsEnabled(self):
         """ See interface """
@@ -183,6 +190,7 @@ class Plone(utils.BrowserView):
         if user is not None:
             return user.getProperty('visible_ids', False)
         return False
+    visibleIdsEnabled = cache_decorator(visibleIdsEnabled)
 
     def isRightToLeft(self, domain):
         """ See interface """
@@ -199,6 +207,7 @@ class Plone(utils.BrowserView):
                 # This may mean that PTS is present but not installed.
                 # Can effectively only happen in unit tests.
                 return 0
+    isRightToLeft = cache_decorator(isRightToLeft)
 
     # XXX: This is lame
     def hide_columns(self, column_left, column_right):
@@ -277,7 +286,9 @@ class Plone(utils.BrowserView):
         if not container:
             return False
         view = getMultiAdapter((container, request), name='default_page')
+        view.isDefaultPage(context)
         return view.isDefaultPage(context)
+    isDefaultPageInFolder = cache_decorator(isDefaultPageInFolder)
 
     def isStructuralFolder(self):
         """ See interface """
@@ -289,19 +300,43 @@ class Plone(utils.BrowserView):
             return False
         else:
             return True
-            
+    isStructuralFolder = cache_decorator(isStructuralFolder)
+
     def navigationRootPath(self):
         context = utils.context(self)
         return getNavigationRoot(context)
-        
+    navigationRootPath = cache_decorator(navigationRootPath)
+
     def navigationRootUrl(self):
         context = utils.context(self)
         portal_url = getToolByName(context, 'portal_url')
-        
+
         portal = portal_url.getPortalObject()
         portalPath = portal_url.getPortalPath()
-        
+
         rootPath = getNavigationRoot(context)
         rootSubPath = rootPath[len(portalPath):]
-        
+
         return portal.absolute_url() + rootSubPath
+    navigationRootUrl = cache_decorator(navigationRootUrl)
+
+    def getParentObject(self):
+        context = utils.context(self)
+        return aq_parent(aq_inner(context))
+
+    def isFolderOrFolderDefaultPage(self):
+        context = utils.context(self)
+        if self.isStructuralFolder() or self.isDefaultPageInFolder():
+            return True
+        return False
+    isFolderOrFolderDefaultPage = cache_decorator(isFolderOrFolderDefaultPage)
+
+    def isPortalOrPortalDefaultPage(self):
+        context = utils.context(self)
+        portal = getToolByName(context, 'portal_url').getPortalObject()
+        if aq_base(context) is aq_base(portal) or \
+           (aq_base(self.getParentObject()) is aq_base(portal) and
+            self.isDefaultPageInFolder()):
+            return True
+        return False
+    isPortalOrPortalDefaultPage = cache_decorator(isPortalOrPortalDefaultPage)

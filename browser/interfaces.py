@@ -363,3 +363,17 @@ class IPlone(Interface):
     def navigationRootUrl():
         """Get the url to the current navigation root
         """
+    def getParentObject():
+        """Returns the parent of the current object, equivalent to
+           aq_inner(aq_parent(context)), or context.aq_inner.getParentNode()
+        """
+
+    def isFolderOrFolderDefaultPage():
+        """Returns true only if the current object is either a folder (as
+           determined by isStructuralFolder) or the default page in context.
+        """
+
+    def isPortalOrPortalDefaultPage():
+        """Returns true only if the current object is either the portal object
+           or the default page of the portal.
+        """

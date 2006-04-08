@@ -4,6 +4,21 @@ Changelog for Plone
 
 Plone 2.5 (unreleased)
 
+    - Added a cache decorator to the @@plone implementation so that multiple
+      calls to expensive methods don't require multiple computations.
+      [alecm]
+
+    - Added three convenience methods to @@plone to simplify action and
+      template logic.  'getParentObject()', which returns the container of the
+      current context object.  'isFolderOrFolderDefaultPage()', which returns
+      True if the current object is either a folder or the default page of
+      a folder.  'isPortalOrPortalDefaultPage()', which returns True is the
+      current object is either the portal, or the default page of the portal.
+      [alecm]
+
+    - Removed __getattr__ hack from the @@plone view.
+      [alecm]
+
     - introduce a large_site site property, which can be used to tweak site
       behaviour. Modify the user and group management templates to show all
       users and groups on small sites and search for them on large sites.
