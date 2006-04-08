@@ -18,7 +18,7 @@
                 b_size python:20;
                 portal_roles here/getGlobalPortalRoles;
                 searchstring request/searchstring | nothing;
-                search_results python:searchstring and here.prefs_user_group_search(searchstring, 'groups') or None;
+                search_results python:test(not site_properties.large_site, gtool.listGroups(), searchstring and here.prefs_user_group_search(searchstring, 'groups') or None);
                 batch python:search_results and Batch(search_results, b_size, int(b_start), orphan=1) or None;">
     <div id="content" class="documentEditable"
          tal:condition="python:checkPermission('Manage Groups', here)">
@@ -67,7 +67,7 @@
                 </p>
 
                 <p i18n:translate="description_pas_group_listing"
-                   tal:condition="python:not searchstring and not context.acl_users.canListAllGroups()">
+                   tal:condition="python:not (site_properties.large_site or searchstring) and not context.acl_users.canListAllGroups()">
                     Note: Some or all of your PAS groups
                     source plugins do not allow listing of groups, so you
                     may not see the groups defined by those plugins unless
@@ -131,7 +131,7 @@
                             </th>
                         </tr>
 
-                        <tal:block tal:condition="python:(searchstring and search_results)">
+                        <tal:block tal:condition="search_results">
                         <tr>
                             <th rowspan="2"
                                 i18n:translate="listingheader_group_name">
