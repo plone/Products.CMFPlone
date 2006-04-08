@@ -6,7 +6,8 @@
       metal:use-macro="here/main_template/macros/master"
       i18n:domain="plone">
 
-<div metal:fill-slot="main">
+<div metal:fill-slot="main"
+     tal:define="owner python:putils.getOwnerName(here)">
     <h1 i18n:translate="heading_change_ownership">Change ownership</h1>
 
     <p i18n:translate="description_change_ownership">
@@ -16,7 +17,7 @@
 
     <p i18n:translate="description_current_owner">
       The current owner is
-      <b tal:content="python:putils.getOwnerName(here)" i18n:name="name">admin</b>.
+      <b tal:content="owner" i18n:name="name">admin</b>.
     </p>
 
     <tal:block tal:condition="not:site_properties/large_site">
@@ -46,7 +47,7 @@
                   <tal:block tal:repeat="uid mtool/listMemberIds">
                        <option value=""
                                tal:attributes="value uid;
-                                               selected python:test(uid==putils.getOwnerName(here), 'selected', None);"
+                                               selected python:test(uid==owner, 'selected', None);"
                                tal:content="uid">userid</option>
                      </tal:block>
                   </select>
@@ -113,7 +114,7 @@
                   <tal:block tal:repeat="member search_results">
                        <option value=""
                                tal:attributes="value member/getId;
-                                               selected python:test(member.getId()==putils.getOwnerName(here), 'selected', None);"
+                                               selected python:test(member.getId()==owner, 'selected', None);"
                                tal:content="member/getUserName">username</option>
                      </tal:block>
                   </select>
