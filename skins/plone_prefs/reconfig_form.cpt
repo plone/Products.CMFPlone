@@ -187,6 +187,47 @@
             </div>
 
             <div class="field"
+                 tal:condition="exists:site_properties/large_site"
+                 tal:define="large_site request/large_site | site_properties/large_site;
+                             tabindex tabindex/next;">
+
+                <label i18n:translate="label_setup_large_site">Large site</label>
+
+                <div class="formHelp" i18n:translate="help_setup_large_site">
+                  Determines if your Plone is optimized for a small or large sites.
+                  Since large sites can deal with a lot of content and a large
+                  amount of users and groups parts of its interface require
+                  different handling.
+                </div>
+
+                <input type="radio"
+                       class="noborder"
+                       name="large_site"
+                       value="on"
+                       id="cb_large_site"
+                       tabindex=""
+                       tal:attributes="tabindex tabindex;
+                                       checked large_site"
+                       />
+
+                <label for="cb_large_site" i18n:translate="yes">Yes</label>
+
+                <br />
+
+                <input type="radio"
+                       class="noborder"
+                       name="large_site"
+                       value=""
+                       id="cb_nolarge_site"
+                       tabindex=""
+                       tal:attributes="tabindex tabindex;
+                                       checked not:large_site;"
+                       />
+
+                <label for="cb_nosmall_site" i18n:translate="no">No</label>
+            </div>
+
+            <div class="field"
                  tal:condition="exists:site_properties/ext_editor"
                  tal:define="ext_editor request/ext_editor | site_properties/ext_editor;
                              tabindex tabindex/next;">
