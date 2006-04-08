@@ -40,6 +40,14 @@ def beta1_beta2(portal):
     installDeprecated(portal, out)
     removeBogusSkin(portal, out)
 
+    # add a property indicating if this is a big or small site, so the UI can
+    # change depending on it
+    propTool = getToolByName(portal, 'portal_properties', None)
+    propSheet = getattr(propTool, 'site_properties', None)
+    if not propSheet.hasProperty('large_site'):
+        propSheet.manage_addProperty('large_site', 0, 'boolean')
+        out.append("Added 'large_site' property to site_properties.")
+
     return out
 
 def addDragDropReorderJS(portal, out):
