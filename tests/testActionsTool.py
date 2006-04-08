@@ -102,6 +102,18 @@ class TestActionsTool(PloneTestCase.PloneTestCase):
         match = [a for a in actions.get('document_actions', []) if a['id'] == 'foo']
         self.failIf(match)
 
+    def testActionNamespace(self):
+        self.actions.addAction(id='foo',
+                               name='foo_name',
+                               action='string:${globals_view/isStructuralFolder}',
+                               condition='',
+                               permission='View',
+                               category='folder',
+                               visible=1)
+
+        actions = self.actions.listFilteredActionsFor(self.folder)
+        url = actions['folder'][0]['url']
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite

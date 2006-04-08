@@ -7,6 +7,10 @@ from Acquisition import aq_base
 from Acquisition import aq_parent
 from Acquisition import aq_inner
 
+from Products.CMFCore import Expression
+from Products.PageTemplates.Expressions import getEngine
+from Products.PageTemplates.Expressions import SecureModuleImporter
+
 from zope.interface import implements
 
 TempFolderClass = None
@@ -15,7 +19,6 @@ TempFolderClass = None
 # Copyright (c) 2002 Zope Corporation and Contributors. All Rights Reserved.
 # ZPL 2.1
 from Products.CMFCore.ActionInformation import oai
-from Products.CMFCore.Expression import createExprContext
 from Products.CMFCore.utils import getToolByName
 
 def initializeTFC():
@@ -59,6 +62,13 @@ def getOAI(context, object=None):
         if request:
             cache[ id(object) ] = info
     return info
+
+def createExprContext(folder, portal, object):
+    expr_context = Expression.createExprContext(folder, portal, object)
+    globals_view = object.restrictedTraverse('@@plone')
+    expr_context.global_vars['globals_view'] = globals_view
+
+    return expr_context
 
 def getExprContext(context, object=None):
     initializeTFC()
