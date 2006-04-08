@@ -1,5 +1,6 @@
 import string
 from Products.CMFCore.utils import getToolByName
+from alphas import reindexCatalog
 
 def two12_two13(portal):
     """2.1.2 -> 2.1.3
@@ -11,6 +12,9 @@ def two12_two13(portal):
 
     # Remove vcXMLRPC.js from ResourceRegistries
     removeVcXMLRPC(portal, out)
+
+    # Reindex the site to get correct word boundaries html content
+    reindexCatalog(portal, out)
 
     return out
 
