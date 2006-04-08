@@ -363,6 +363,7 @@ class IPlone(Interface):
     def navigationRootUrl():
         """Get the url to the current navigation root
         """
+
     def getParentObject():
         """Returns the parent of the current object, equivalent to
            aq_inner(aq_parent(context)), or context.aq_inner.getParentNode()

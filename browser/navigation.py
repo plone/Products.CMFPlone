@@ -1,6 +1,5 @@
 from zope.interface import implements
 from zope.component import getMultiAdapter
-from zope.component import getMultiAdapter
 
 from Acquisition import aq_base, aq_inner
 from Products.CMFCore.utils import getToolByName
