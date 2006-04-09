@@ -1,8 +1,4 @@
-# BBB
-# This file contains the old-style interfaces; please use the Z3 style
-# interfaces from the constraintypes module instead.
-
-from Interface import Interface
+from zope.interface import Interface
 
 class IConstrainTypes(Interface):
     """
