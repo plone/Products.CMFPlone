@@ -47,7 +47,7 @@
   </action>
   <action title="Contents" action_id="folderContents" category="object"
      condition_expr="object/displayContentsTab"
-     url_expr="python:((object.isDefaultPageInFolder() and object.getParentNode().absolute_url()) or folder_url)+'/folder_contents'"
+     url_expr="python:((object.restrictedTraverse('@@plone').isDefaultPageInFolder() and object.getParentNode().absolute_url()) or folder_url)+'/folder_contents'"
      visible="True">
    <permission>List folder contents</permission>
   </action>
@@ -74,32 +74,32 @@
    <permission>Manage portal</permission>
   </action>
   <action title="Cut" action_id="cut" category="object_buttons"
-     condition_expr="python:portal.portal_membership.checkPermission(&quot;Delete objects&quot;, object.aq_inner.getParentNode()) and portal.portal_membership.checkPermission(&quot;Copy or Move&quot;, object) and object is not portal and not (object.isDefaultPageInFolder() and object.getParentNode() is portal)"
-     url_expr="python:&quot;%s/object_cut&quot;%(object.isDefaultPageInFolder() and object.getParentNode().absolute_url() or object_url)"
+     condition_expr="python:portal.portal_membership.checkPermission(&quot;Delete objects&quot;, object.aq_inner.getParentNode()) and portal.portal_membership.checkPermission(&quot;Copy or Move&quot;, object) and object is not portal and not (object.restrictedTraverse('@@plone').isDefaultPageInFolder() and object.getParentNode() is portal)"
+     url_expr="python:&quot;%s/object_cut&quot;%(object.restrictedTraverse('@@plone').isDefaultPageInFolder() and object.getParentNode().absolute_url() or object_url)"
      visible="True">
    <permission>Delete objects</permission>
   </action>
   <action title="Copy" action_id="copy" category="object_buttons"
-     condition_expr="python: portal.portal_membership.checkPermission(&quot;Copy or Move&quot;, object) and object is not portal and not (object.isDefaultPageInFolder() and object.getParentNode() is portal)"
-     url_expr="python:&quot;%s/object_copy&quot;%(object.isDefaultPageInFolder() and object.getParentNode().absolute_url() or object_url)"
+     condition_expr="python: portal.portal_membership.checkPermission(&quot;Copy or Move&quot;, object) and object is not portal and not (object.restrictedTraverse('@@plone').isDefaultPageInFolder() and object.getParentNode() is portal)"
+     url_expr="python:&quot;%s/object_copy&quot;%(object.restrictedTraverse('@@plone').isDefaultPageInFolder() and object.getParentNode().absolute_url() or object_url)"
      visible="True">
    <permission>View</permission>
   </action>
   <action title="Paste" action_id="paste" category="object_buttons"
      condition_expr="folder/cb_dataValid|nothing"
-     url_expr="python:&quot;%s/object_paste&quot;%((object.isDefaultPageInFolder() or not object.is_folderish()) and object.getParentNode().absolute_url() or object_url)"
+     url_expr="python:&quot;%s/object_paste&quot;%((object.restrictedTraverse('@@plone').isDefaultPageInFolder() or not object.is_folderish()) and object.getParentNode().absolute_url() or object_url)"
      visible="True">
    <permission>View</permission>
   </action>
   <action title="Delete" action_id="delete" category="object_buttons"
-     condition_expr="python:portal.portal_membership.checkPermission(&quot;Delete objects&quot;, object.aq_inner.getParentNode()) and object is not portal and not (object.isDefaultPageInFolder() and object.getParentNode() is portal)"
-     url_expr="python:&quot;%s/object_delete&quot;%(object.isDefaultPageInFolder() and object.getParentNode().absolute_url() or object_url)"
+     condition_expr="python:portal.portal_membership.checkPermission(&quot;Delete objects&quot;, object.aq_inner.getParentNode()) and object is not portal and not (object.restrictedTraverse('@@plone').isDefaultPageInFolder() and object.getParentNode() is portal)"
+     url_expr="python:&quot;%s/object_delete&quot;%(object.restrictedTraverse('@@plone').isDefaultPageInFolder() and object.getParentNode().absolute_url() or object_url)"
      visible="True">
    <permission>Delete objects</permission>
   </action>
   <action title="Rename" action_id="rename" category="object_buttons"
-     condition_expr="python:portal.portal_membership.checkPermission('Delete objects', object.aq_inner.getParentNode()) and portal.portal_membership.checkPermission('Copy or Move', object) and portal.portal_membership.checkPermission('Add portal content', object) and object is not portal and not (object.isDefaultPageInFolder() and object.getParentNode() is portal)"
-     url_expr="python:'%s/object_rename'%(object.isDefaultPageInFolder() and object.getParentNode().absolute_url() or object_url)"
+     condition_expr="python:portal.portal_membership.checkPermission('Delete objects', object.aq_inner.getParentNode()) and portal.portal_membership.checkPermission('Copy or Move', object) and portal.portal_membership.checkPermission('Add portal content', object) and object is not portal and not (object.restrictedTraverse('@@plone').isDefaultPageInFolder() and object.getParentNode() is portal)"
+     url_expr="python:'%s/object_rename'%(object.restrictedTraverse('@@plone').isDefaultPageInFolder() and object.getParentNode().absolute_url() or object_url)"
      visible="True">
    <permission>Add Portal Content</permission>
   </action>
