@@ -17,7 +17,7 @@ Plone 2.5 (unreleased)
       and action logic.
       [alecm]
 
-    - Made all our deprecated scripts use the new views.
+    - Made all our deprecated scripts use the new views internally.
       [alecm]
 
     - fix strange English in site feedback mail template. Fixes
