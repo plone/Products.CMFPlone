@@ -1,17 +1,16 @@
-
 <!-- 
 The expressions that used to generate these globals have been 
 moved to (much faster) Python code in CMFPlone/browser/plone.py
+
+!!!! Do not add any more defines here, under penalty of death !!!!
 -->
 
 <metal:globaldefine define-macro="defines" 
       tal:define="
-        foo context/@@plone/globalize;
-        global Iterator python:modules['Products.CMFPlone'].IndexIterator;
-        global tabindex python:Iterator(pos=30000, mainSlot=False);
-        global uniqueItemIndex python:Iterator(pos=0);
+        global plone_view context/@@plone;
+        foo plone_view/globalize;
         global template_id options/template_id | template/getId | nothing;
-        view_template_id here/getViewTemplateId|nothing;
+        view_template_id plone_view/getViewTemplateId;
         global isViewTemplate python:template_id==view_template_id;
         global normalizeString nocall:putils/normalizeString;
         " />

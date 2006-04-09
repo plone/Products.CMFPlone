@@ -153,6 +153,30 @@ class TestPloneView(PloneTestCase.PloneTestCase):
         view = Plone(self.portal.portal_test, self.app.REQUEST)
         self.failUnless(view.isPortalOrPortalDefaultPage())
 
+    def testGetCurrentFolder(self):
+        # If context is a folder, then the folder is returned
+        view = Plone(self.folder, self.app.REQUEST)
+        self.assertEqual(view.getCurrentFolder(), self.folder)
+        # If context is not a folder, then the parent is returned
+        view = Plone(self.folder.test, self.app.REQUEST)
+        self.assertEqual(view.getCurrentFolder(), self.folder)
+        # The real container is returned regardless of context
+        view = Plone(self.folder.test.__of__(self.portal), self.app.REQUEST)
+        self.assertEqual(view.getCurrentFolder(), self.folder)
+        # A non-structural folder does not count as a folder`
+        f = dummy.NonStructuralFolder('ns_folder')
+        self.folder._setObject('ns_folder', f)
+        view = Plone(self.folder.ns_folder, self.app.REQUEST)
+        self.assertEqual(view.getCurrentFolder(), self.folder)
+        # And even a structural folder that is used as a default page
+        # returns its parent
+        self.setRoles(['Manager'])
+        self.folder.invokeFactory('Topic', 'topic')
+        view = Plone(self.folder.topic, self.app.REQUEST)
+        self.assertEqual(view.getCurrentFolder(), self.folder.topic)
+        self.folder.saveDefaultPage('topic')
+        view = Plone(self.folder.topic, self.app.REQUEST)
+        self.assertEqual(view.getCurrentFolder(), self.folder)
 
 
 class TestVisibleIdsEnabled(PloneTestCase.PloneTestCase):

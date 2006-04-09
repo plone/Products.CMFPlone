@@ -5,7 +5,15 @@ from Products.CMFPlone.browser.interfaces import IPlone
 from Products.CMFPlone.browser.navtree import getNavigationRoot
 from Products.CMFPlone.interfaces.NonStructuralFolder import INonStructuralFolder
 from Products.CMFPlone import utils
+from Products.CMFPlone import IndexIterator
 from Products.CMFCore.utils import getToolByName
+from Products.CMFCore.utils import _checkPermission
+from Products.CMFCore.permissions import ModifyPortalContent
+from Products.CMFCore.permissions import ListFolderContents
+from Products.CMFCore.permissions import AddPortalContent
+from Products.CMFCore.permissions import DeleteObjects
+from Products.CMFCore.permissions import ReviewPortalContent
+from Products.CMFPlone.interfaces.BrowserDefault import IBrowserDefault
 
 from zope.interface import implements
 from zope.component import getMultiAdapter
@@ -115,7 +123,7 @@ class Plone(utils.BrowserView):
         self._data['ztu'] =  ZTUtils
         # BBB: wf_actions is deprecated use workflow_actions instead
         self._data['wf_actions'] =  self._data['workflow_actions']
-        self._data['isFolderish'] =  context.isPrincipiaFolderish
+        self._data['isFolderish'] =  context.aq_explicit.isPrincipiaFolderish
         self._data['slots_mapping'] = slots = self.request.get(
                                                             'slots_mapping',
                                                             None) or \
@@ -147,6 +155,9 @@ class Plone(utils.BrowserView):
         self._data['isContextDefaultPage'] = self.isDefaultPageInFolder()
 
         self._data['navigation_root_url'] = self.navigationRootUrl()
+        self._data['Iterator'] = IndexIterator
+        self._data['tabindex'] = IndexIterator(pos=30000, mainSlot=False)
+        self._data['uniqueItemIndex'] = IndexIterator(pos=0)
 
     def keyFilteredActions(self, actions=None):
         """ See interface """
@@ -207,7 +218,6 @@ class Plone(utils.BrowserView):
                 # This may mean that PTS is present but not installed.
                 # Can effectively only happen in unit tests.
                 return 0
-    isRightToLeft = cache_decorator(isRightToLeft)
 
     # XXX: This is lame
     def hide_columns(self, column_left, column_right):
@@ -276,7 +286,8 @@ class Plone(utils.BrowserView):
         """ See interface """
         context = utils.context(self)
         tool = getToolByName(context, 'translation_service')
-        return tool.ulocalized_time(time, long_format, context, domain='plone')
+        return tool.ulocalized_time(time, long_format, context,
+                                    domain='plone')
 
     def isDefaultPageInFolder(self):
         """ See interface """
@@ -324,6 +335,13 @@ class Plone(utils.BrowserView):
         context = utils.context(self)
         return aq_parent(aq_inner(context))
 
+
+    def getCurrentFolder(self):
+        context = utils.context(self)
+        if self.isStructuralFolder() and not self.isDefaultPageInFolder():
+            return context
+        return self.getParentObject()
+
     def isFolderOrFolderDefaultPage(self):
         context = utils.context(self)
         if self.isStructuralFolder() or self.isDefaultPageInFolder():
@@ -340,3 +358,85 @@ class Plone(utils.BrowserView):
             return True
         return False
     isPortalOrPortalDefaultPage = cache_decorator(isPortalOrPortalDefaultPage)
+
+    def getViewTemplateId(self):
+        """See interface"""
+        context = utils.context(self)
+        # XXX: Use z3 interface here
+        if IBrowserDefault.isImplementedBy(context):
+            try:
+                return context.getLayout()
+            except AttributeError:
+                # Might happen if FTI didn't migrate yet.
+                pass
+
+        # Else, if there is a 'folderlisting' action, this will take
+        # precedence for folders, so try this, else use the 'view' action.
+        action = self._lookupTypeActionTemplate('object/view')
+
+        if not action:
+            action = self._lookupTypeActionTemplate('folder/folderlisting')
+
+        return action
+    getViewTemplateId = cache_decorator(getViewTemplateId)
+
+    def _lookupTypeActionTemplate(self, actionId):
+        context = utils.context(self)
+        fti = context.getTypeInfo()
+        try:
+            # XXX: This isn't quite right since it assumeCs the action starts with ${object_url}
+            action = fti.getActionInfo(actionId)['url'].split('/')[-1]
+        except ValueError:
+            # If the action doesn't exist, stop
+            return None
+
+        # Try resolving method aliases because we need a real template_id here
+        action = fti.queryMethodID(action, default = action, context = context)
+
+        # Strip off leading /
+        if action and action[0] == '/':
+            action = action[1:]
+        return action
+
+    def displayContentsTab(self):
+        """See interface"""
+        context = utils.context(self)
+        modification_permissions = (ModifyPortalContent,
+                                    AddPortalContent,
+                                    DeleteObjects,
+                                    ReviewPortalContent)
+
+        contents_object = context
+        # If this object is the parent folder's default page, then the
+        # folder_contents action is for the parent, we check permissions
+        # there. Otherwise, if the object is not folderish, we don not display
+        # the tab.
+        if self.isDefaultPageInFolder():
+            contents_object = self.getCurrentFolder()
+        elif not self.isStructuralFolder():
+            return 0
+
+        # If this is not a structural folder, stop.
+        plone_view = getMultiAdapter((contents_object, self.request),
+                                     name='plone')
+        if not plone_view.isStructuralFolder():
+            return 0
+
+        show = 0
+        # We only want to show the 'contents' action under the following
+        # conditions:
+        # - If you have permission to list the contents of the relavant
+        #   object, and you can DO SOMETHING in a folder_contents view. i.e.
+        #   Copy or Move, or Modify portal content, Add portal content,
+        #   or Delete objects.
+
+        # Require 'List folder contents' on the current object
+        if _checkPermission(ListFolderContents, contents_object):
+            # If any modifications are allowed on object show the tab.
+            for permission in modification_permissions:
+                if _checkPermission(permission, contents_object):
+                    show = 1
+                    break
+
+        return show
+    displayContentsTab = cache_decorator(displayContentsTab)

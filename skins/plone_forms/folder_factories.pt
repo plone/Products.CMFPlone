@@ -20,9 +20,7 @@
         Select the type of item you want to add to your folder.
     </p>
 
-    <p tal:define="folder python:test(isStructuralFolder, here, here.aq_inner.getParentNode());
-                   parent_folder python: isContextDefaultPage and here.aq_inner.getParentNode() or folder;
-                   addContext nocall:parent_folder;
+    <p tal:define="addContext plone_view/getCurrentFolder;
                    showSettings addContext/canConstrainTypes;">
         <a href="#" tal:condition="showSettings"
                     title="Configure which content types can be added here"

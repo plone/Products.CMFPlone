@@ -4,6 +4,22 @@ Changelog for Plone
 
 Plone 2.5 (unreleased)
 
+    - Implemented displayContentsTab and getViewTemplateId in @@plone.
+      The script getViewTemplateId is now deprecated, displayContentsTab
+      will stick around for a while because people often override it in their
+      content classes.
+      [alecm]
+
+    - Added another convenience method to @@plone to simplify template
+      and action logic.  getCurrentFolder() returns the object if it is a
+      not the default page for its container and is a structural folder
+      otherwise it returns the object's container.  Simplified some template
+      and action logic.
+      [alecm]
+
+    - Made all our deprecated scripts use the new views.
+      [alecm]
+
     - fix strange English in site feedback mail template. Fixes
       http://dev.plone.org/plone/ticket/5346
       [wichert]

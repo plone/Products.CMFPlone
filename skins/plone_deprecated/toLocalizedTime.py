@@ -14,5 +14,4 @@ context.plone_log("The toLocalizedTime script is deprecated and will be "
                   "removed in plone 3.5.  Use the method of the @@plone view,"
                   " or the method in the main_template globals.")
 
-tool = context.translation_service
-return tool.ulocalized_time(time, long_format, context, domain='plone')
+return context.restrictedTraverse('@@plone').toLocalizedTime(time, long_format)

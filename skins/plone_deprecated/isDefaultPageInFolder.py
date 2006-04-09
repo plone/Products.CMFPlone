@@ -10,7 +10,4 @@ context.plone_log("The isDefaultPageInFolder script is deprecated and will be"
                   " removed in plone 3.5.  Use the isDefaultPageInFolder "
                   "method of the @@plone view instead.")
 
-from Products.CMFCore.utils import getToolByName
-ptool = getToolByName(context, 'plone_utils')
-
-return ptool.isDefaultPage(context)
+return context.restrictedTraverse('@@plone').isDefaultPageInFolder()

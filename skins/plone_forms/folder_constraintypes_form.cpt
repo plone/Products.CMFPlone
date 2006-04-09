@@ -36,7 +36,7 @@
                            currentAllow   request/locallyAllowedTypes | here/getLocallyAllowedTypes;
                            currentPrefer  request/immediatelyAddableTypes | here/getImmediatelyAddableTypes;
                            availableTypes here/getDefaultAddableTypes;
-                           parent here/aq_inner/getParentNode;
+                           parent plone_view/getParentObject;
                            parent_allowed_types getLocallyAllowedTypes|python:[];
                            parent_immediate_types parent/getImmediatelyAddableTypes|python:[];
                            default_types here/getDefaultAddableTypes">

@@ -6,26 +6,8 @@
 ##bind script=script
 ##bind subpath=traverse_subpath
 ##parameters=
+context.plone_log("The getViewTemplateId script is deprecated and will be "
+                  "removed in plone 3.5.  Use the getViewTemplateId method "
+                  "of the @@plone view instead.")
 
-INTERFACE = 'Products.CMFPlone.interfaces.BrowserDefault.IBrowserDefault'
-from Products.CMFCore.utils import getToolByName
-
-itool = getToolByName(context, 'portal_interface')
-
-# If we have IBrowserDefault, get the selected layout
-if itool.objectImplements(context, INTERFACE):
-    try:
-        return context.getLayout()
-    except AttributeError:
-        # Might happen if FTI didn't migrate yet.
-        pass
-
-# Else, if there is a 'folderlisting' action, this will take precedence for
-# folders, so try this, else use the 'view' action.
-
-action = context.lookupTypeAction('object/view')
-
-if not action:
-    action = context.lookupTypeAction('folder/folderlisting')
-
-return action
+return context.restrictedTraverse('@@plone').getViewTemplateId()

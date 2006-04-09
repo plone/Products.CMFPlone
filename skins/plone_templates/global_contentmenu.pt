@@ -6,9 +6,7 @@
 <metal:menubarmacro define-macro="contentMenu">
 
 <ul tal:define="manage_portal python:checkPermission('Manage portal', here);
-                folder python:test(isStructuralFolder, here, here.aq_inner.getParentNode());
-                isParentStructuralFolder folder/is_folderish;
-                parent_folder python: isContextDefaultPage and here.aq_inner.getParentNode() or folder;
+                parent_folder plone_view/getCurrentFolder;
                 disableMenu python:here.portal_factory.isTemporary(here);
                 useSelf python:isStructuralFolder and not isContextDefaultPage;"
     tal:condition="not:disableMenu">
@@ -77,7 +75,7 @@
 
     </tal:states>
 
-    <tal:structuralFolder condition="python:isStructuralFolder or isParentStructuralFolder">
+    <tal:structuralFolder condition="parent_folder/@@plone/isStructuralFolder">
     <tal:add define="addContext   nocall:parent_folder;
                      allowedTypes addContext/getAllowedTypes;
                      menuTypes    python:here.getAddableTypesInMenu(allowedTypes);
@@ -161,11 +159,11 @@
                                  alt typetitle;"
                  i18n:attributes="alt" />
             <span i18n:translate="label_add_type"
-                  tal:condition="python:folder == parent_folder">
+                  tal:condition="useSelf">
                 Add <span i18n:name="type"><span tal:content="typetitle" tal:omit-tag="" i18n:translate="">Title</span></span>
             </span>
             <span i18n:translate="label_add_type_to_folder"
-                  tal:condition="python:folder != parent_folder">
+                  tal:condition="not:useSelf">
                 Add <span i18n:name="type"><span tal:content="typetitle" tal:omit-tag="" i18n:translate="">Title</span></span> to folder
             </span>
         </a>
@@ -428,7 +426,8 @@
                                 <li tal:condition="python:editAction['id']=='delete'"
                                     tal:attributes="class class_name">
                                     <a onclick="#"
-                                       tal:define="alert_msg python:((isContextDefaultPage or (isStructuralFolder and not here.portal_type == 'Topic')) and here.translate('alert_really_delete_folder', default='Do you really want to delete this folder and all its contents?')) or here.translate('alert_really_delete', default='Do you really want to delete this item?');"
+                                       tal:define="use_folder_warning python:useSelf and not here.portal_type == 'Topic';
+alert_msg python:use_folder_warning and here.translate('alert_really_delete_folder', default='Do you really want to delete this folder and all its contents?') or here.translate('alert_really_delete', default='Do you really want to delete this item?');"
                                        tal:attributes="href editAction/url;
                                                        title editAction/title;
                                                        class python:test(icon, 'visualIconReplace', nothing);

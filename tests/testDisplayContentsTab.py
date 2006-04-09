@@ -18,6 +18,9 @@ from AccessControl.Permissions import delete_objects
 import transaction
 
 
+# XXX: This is done in the PloneView now, and perhaps these tests should be
+# moved there.  We will leave the script around for a while, so we still test
+# there for now.
 class TestDisplayContentsTab(PloneTestCase.PloneTestCase):
     '''For the contents tab to display a user must have the ListFolderContents,
        and one of the (Modify portal contents, Copy or move, Add portal contents,

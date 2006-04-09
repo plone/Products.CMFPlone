@@ -298,6 +298,9 @@ class IPlone(Interface):
 
     isStructuralFolder = Attribute("Boolean indicating that the context is a "
                                    "'Structural Folder'.")
+    Iterator = A factory for generating sinple integer Iterators
+    tabindex = An iterator for use in creating tabindexes
+    uniqueItemIndex = An iterator for help inc reading unique html ids
 
     # BBB: deprecated elements
     utool = Attribute("The portal_url tool")
@@ -369,6 +372,14 @@ class IPlone(Interface):
            aq_inner(aq_parent(context)), or context.aq_inner.getParentNode()
         """
 
+    def getCurrentFolder():
+        """If the context is the default page of a folder or is not itself a
+           folder, the parent is returned, otherwise the object itself is
+           returned.  This is useful for providing a context for methods
+           which wish to act on what is considered the current folder in the
+           ui.
+        """
+
     def isFolderOrFolderDefaultPage():
         """Returns true only if the current object is either a folder (as
            determined by isStructuralFolder) or the default page in context.
@@ -377,4 +388,14 @@ class IPlone(Interface):
     def isPortalOrPortalDefaultPage():
         """Returns true only if the current object is either the portal object
            or the default page of the portal.
+        """
+    def getViewTemplateId():
+        """Returns the template Id corresponding to the default view method of
+           the context object.
+        """
+
+    def displayContentsTab():
+        """Returns true if the contents tab should be displayed in the current
+           context.  Evaluates whether the object is a folder or the default
+           page of a folder, and checks if the user has relevant permissions.
         """
