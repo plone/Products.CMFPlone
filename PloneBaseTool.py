@@ -12,6 +12,7 @@ from Products.PageTemplates.Expressions import getEngine
 from Products.PageTemplates.Expressions import SecureModuleImporter
 
 from zope.interface import implements
+from zope.component import getMultiAdapter
 
 TempFolderClass = None
 
@@ -65,7 +66,11 @@ def getOAI(context, object=None):
 
 def createExprContext(folder, portal, object):
     expr_context = Expression.createExprContext(folder, portal, object)
-    globals_view = object.restrictedTraverse('@@plone')
+    view_obj = object
+    if view_obj is None:
+        view_obj = portal
+    req = view_obj.REQUEST
+    globals_view = getMultiAdapter((view_obj, req), name='plone')
     expr_context.global_vars['globals_view'] = globals_view
 
     return expr_context
