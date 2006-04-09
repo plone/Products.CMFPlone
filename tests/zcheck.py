@@ -15,19 +15,19 @@ import warnings
 warnings.simplefilter('ignore', DeprecationWarning, append=1)
 
 from Testing import ZopeTestCase
-from Products.CMFPlone.tests import PloneTestCase
-
-ZopeTestCase.installProduct('ZChecker')
-PloneTestCase.setupPloneSite()
-
 from Testing.ZopeTestCase import _print
+
+ZopeTestCase.installProduct('PlacelessTranslationService')
+ZopeTestCase.installProduct('ZChecker')
+
+from Products.CMFPlone.tests import PloneTestCase
 
 ignoredObjectIds = ['rssBody', 'RSS', 'rss_template', 'search_rss',
                     'test_ecmascripts',
                     # There is no DTD for the pdf topic stuff
                     'atct_topic_pdf', 'atct_topic_pdf_template']
 
-ignoredSkinLayers = ['portal_skins/kupu_plone']
+ignoredSkinLayers = ['portal_skins/kupu_plone', 'portal_skins/kupu_tests']
 
 
 class TestSkins(PloneTestCase.PloneTestCase):
@@ -68,6 +68,7 @@ class TestSkins(PloneTestCase.PloneTestCase):
         path = obj.absolute_url(1)
         path = path.split('/')
         return '/'.join(path[1:])
+
 
 if __name__ == '__main__':
     TestRunner(verbosity=0).run(test_suite())
