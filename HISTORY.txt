@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.5 (unreleased)
 
+    - fix strange English in site feedback mail template. Fixes
+      http://dev.plone.org/plone/ticket/5346
+      [wichert]
+
     - Added a cache decorator to the @@plone implementation so that multiple
       calls to expensive methods don't require multiple computations.
       [alecm]
