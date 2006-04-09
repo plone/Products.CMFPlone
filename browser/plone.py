@@ -335,7 +335,6 @@ class Plone(utils.BrowserView):
         context = utils.context(self)
         return aq_parent(aq_inner(context))
 
-
     def getCurrentFolder(self):
         context = utils.context(self)
         if self.isStructuralFolder() and not self.isDefaultPageInFolder():

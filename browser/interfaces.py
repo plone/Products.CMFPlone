@@ -298,9 +298,13 @@ class IPlone(Interface):
 
     isStructuralFolder = Attribute("Boolean indicating that the context is a "
                                    "'Structural Folder'.")
-    Iterator = A factory for generating sinple integer Iterators
-    tabindex = An iterator for use in creating tabindexes
-    uniqueItemIndex = An iterator for help inc reading unique html ids
+
+    Iterator = Attribute("A factory for generating sinple integer Iterators.")
+
+    tabindex = Attribute("An iterator for use in creating tabindexes.")
+
+    uniqueItemIndex = Attribute("An iterator for help inc reading unique "
+                                "html ids.")
 
     # BBB: deprecated elements
     utool = Attribute("The portal_url tool")
@@ -389,6 +393,7 @@ class IPlone(Interface):
         """Returns true only if the current object is either the portal object
            or the default page of the portal.
         """
+
     def getViewTemplateId():
         """Returns the template Id corresponding to the default view method of
            the context object.
