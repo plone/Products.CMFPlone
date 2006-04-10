@@ -10,6 +10,7 @@ from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
 
 from AccessControl.User import nobody
+from AccessControl import Unauthorized
 from Acquisition import aq_base
 from DateTime import DateTime
 from zExceptions import BadRequest
@@ -569,6 +570,35 @@ class TestDefaultUserAndPasswordNotChanged(PloneTestCase.PloneTestCase):
         self.failIf(self.membership.testCurrentPassword('geheim'))
 
 
+class TestMethodProtection(PloneTestCase.PloneTestCase):
+    # MembershipTool is missing security declarations
+    # http://dev.plone.org/plone/ticket/5432
+
+    _unprotected = (
+        'changeMemberPortrait',
+        'deletePersonalPortrait',
+        'testCurrentPassword',
+    )
+
+    def afterSetUp(self):
+        self.membership = self.portal.portal_membership
+
+    def assertUnprotected(self, object, method):
+        self.logout()
+        object.restrictedTraverse(method)
+
+    def assertProtected(self, object, method):
+        self.logout()
+        self.assertRaises(Unauthorized, object.restrictedTraverse, method)
+
+    for method in _unprotected:
+        exec "def testUnprotected_%s(self):" \
+             "    self.assertProtected(self.membership, '%s')" % (method, method)
+
+        exec "def testMemberAccessible_%s(self):" \
+             "    self.membership.restrictedTraverse('%s')" % (method, method)
+
+
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
@@ -577,6 +607,7 @@ def test_suite():
     suite.addTest(makeSuite(TestMemberareaSetup))
     suite.addTest(makeSuite(TestSearchForMembers))
     suite.addTest(makeSuite(TestDefaultUserAndPasswordNotChanged))
+    suite.addTest(makeSuite(TestMethodProtection))
     return suite
 
 if __name__ == '__main__':
