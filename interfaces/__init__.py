@@ -7,12 +7,15 @@ from controlpanel import IControlPanel
 from custpolicy import ICustomizationPolicy
 from interface import IInterfaceTool
 from siteroot import IPloneSiteRoot
+from constrains import IConstrainTypes
+from constrains import ISelectableConstrainTypes
 
 import PropertiesTool
 import PloneBaseTool
 import PloneControlPanel
 import CustomizationPolicy
 import InterfaceTool
+import ConstrainTypes
 
 from Interface.bridge import createZope3Bridge
 createZope3Bridge(IPropertiesTool, PropertiesTool, 'IPropertiesTool')
@@ -26,3 +29,7 @@ createZope3Bridge(IInterfaceTool, InterfaceTool, 'IInterfaceTool')
 # BBB attach IPloneBaseTool to InterfaceTool module to make the
 #     'testAvailableInterfaces' test pass
 createZope3Bridge(IPloneBaseTool, InterfaceTool, 'IPloneBaseTool')
+createZope3Bridge(IConstrainTypes, ConstrainTypes, 'IConstrainTypes')
+createZope3Bridge(ISelectableConstrainTypes, ConstrainTypes,
+                  'ISelectableConstrainTypes')
+
