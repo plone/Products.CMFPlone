@@ -462,7 +462,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     def changeOwnershipOf(self, object, owner, recursive=0):
         """Changes the ownership of an object."""
         membership = getToolByName(self, 'portal_membership')
-        if owner not in membership.listMemberIds():
+        if membership.getMemberById(owner) is None:
             raise KeyError, 'Only users in this site can be made owners.'
         acl_users = getattr(self, 'acl_users')
         user = acl_users.getUser(owner)
