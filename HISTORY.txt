@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1.3 - Tomahawk - Unreleased
 
+    - Fixed missing security declarations in MembershipTool.
+      http://dev.plone.org/plone/ticket/5432
+      [stefan]
+
     - Force a catalog reindex on upgrade to get correct work boundaries on
       transformed html content. 
       http://dev.plone.org/plone/ticket/5393

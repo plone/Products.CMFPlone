@@ -10,6 +10,8 @@ from zExceptions import BadRequest
 from AccessControl.SecurityManagement import noSecurityManager
 from Acquisition import aq_base, aq_parent, aq_inner
 from Products.CMFCore.permissions import ManagePortal
+from Products.CMFCore.permissions import ManageUsers
+from Products.CMFCore.permissions import SetOwnProperties
 from Products.CMFCore.permissions import SetOwnPassword
 from Products.CMFCore.permissions import View
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
@@ -89,28 +91,30 @@ class MembershipTool(PloneBaseTool, BaseTool):
 
         return memberinfo
 
+    security.declarePublic('getPersonalPortrait')
     def getPersonalPortrait(self, member_id = None, verifyPermission=0):
         """
         returns the Portrait for a member_id
         """
         membertool   = getToolByName(self, 'portal_memberdata')
 
-        # what are we doing with that
-        #if verifyPermission and not _checkPermission('View', portrait):
-        #    return None
         if not member_id:
             member_id = self.getAuthenticatedMember().getId()
 
         portrait = membertool._getPortrait(member_id)
         if type(portrait) == type(''):
             portrait = None
-        #portrait = None
+        if portrait is not None:
+            if verifyPermission and not _checkPermission(View, portrait):
+                # Don't return the portrait if the user can't get to it
+                portrait = None
         if portrait is None:
             portal = getToolByName(self, 'portal_url').getPortalObject()
             portrait = getattr(portal, default_portrait)
 
         return portrait
 
+    security.declareProtected(SetOwnProperties, 'deletePersonalPortrait')
     def deletePersonalPortrait(self, member_id = None):
         """
         deletes the Portrait of member_id
@@ -122,6 +126,7 @@ class MembershipTool(PloneBaseTool, BaseTool):
 
         membertool._deletePortrait(member_id)
 
+    security.declarePublic('getHomeFolder')
     def getHomeFolder(self, id=None, verifyPermission=0):
         """ Return a member's home folder object, or None.
         dwm: straight from CMF1.5.2
@@ -144,6 +149,7 @@ class MembershipTool(PloneBaseTool, BaseTool):
                 pass
         return None
 
+    security.declarePublic('getPersonalFolder')
     def getPersonalFolder(self, member_id=None):
         """
         returns the Personal Item folder for a member
@@ -157,6 +163,7 @@ class MembershipTool(PloneBaseTool, BaseTool):
                             , None )
         return personal
 
+    security.declareProtected(SetOwnProperties, 'changeMemberPortrait')
     def changeMemberPortrait(self, portrait, member_id=None):
         """
         given a portrait we will modify the users portrait
@@ -177,6 +184,7 @@ class MembershipTool(PloneBaseTool, BaseTool):
 ##         self.createMemberarea(u.getId())
 ##         return BaseTool.wrapUser(self, u)
 
+    security.declarePublic('createMemberarea')
     def createMemberarea(self, member_id=None, minimal=1):
         """
         Create a member area for 'member_id' or the authenticated user.
@@ -303,6 +311,7 @@ class MembershipTool(PloneBaseTool, BaseTool):
     security.declarePublic('createMemberArea')
     createMemberArea = createMemberarea
 
+    security.declareProtected(ManageUsers, 'listMembers')
     def listMembers(self):
         '''Gets the list of all members.
         THIS METHOD MIGHT BE VERY EXPENSIVE ON LARGE USER FOLDERS AND MUST BE USED
@@ -316,6 +325,7 @@ class MembershipTool(PloneBaseTool, BaseTool):
         else:
             return BaseTool.listMembers(self)
 
+    security.declareProtected(ManageUsers, 'listMemberIds')
     def listMemberIds(self):
         '''Lists the ids of all members.  This may eventually be
         replaced with a set of methods for querying pieces of the
@@ -328,7 +338,7 @@ class MembershipTool(PloneBaseTool, BaseTool):
             return self.__getPUS().getUserIds()
 
     # this should probably be in MemberDataTool.py
-    #security.declarePublic( 'searchForMembers' )
+    security.declarePublic('searchForMembers')
     def searchForMembers( self, REQUEST=None, **kw ):
         """
         searchForMembers(self, REQUEST=None, **kw) => normal or fast search method.
@@ -471,12 +481,12 @@ class MembershipTool(PloneBaseTool, BaseTool):
             res.append(member)
         return res
 
-    def testCurrentPassword(self, password, userid=None):
+    security.declareProtected(SetOwnPassword, 'testCurrentPassword')
+    def testCurrentPassword(self, password):
         """ test to see if password is current """
         portal=getToolByName(self, 'portal_url').getPortalObject()
         REQUEST=getattr(self, 'REQUEST', {})
-        if userid is None:
-            userid=self.getAuthenticatedMember().getUserId()
+        userid=self.getAuthenticatedMember().getUserId()
         acl_users = self._findUsersAclHome(userid)
         if not acl_users:
             return 0
