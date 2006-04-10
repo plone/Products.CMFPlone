@@ -1,5 +1,5 @@
-from Products.CMFCore.CMFCorePermissions import SetOwnPassword
 from Products.CMFCore.utils import getToolByName
+from Products.CMFCore.utils import _checkPermission
 from Products.CMFDefault.MembershipTool import MembershipTool as BaseTool
 from Products.CMFPlone import ToolNames
 from Products.CMFPlone.PloneUtilities import translate
@@ -8,6 +8,9 @@ from OFS.Image import Image
 from AccessControl import ClassSecurityInfo, getSecurityManager
 from Globals import InitializeClass
 from Acquisition import aq_base, aq_parent, aq_inner
+from Products.CMFCore.CMFCorePermissions import ManagePortal
+from Products.CMFCore.CMFCorePermissions import SetOwnProperties
+from Products.CMFCore.CMFCorePermissions import SetOwnPassword
 from Products.CMFCore.CMFCorePermissions import View
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 
@@ -39,6 +42,7 @@ class MembershipTool(PloneBaseTool, BaseTool):
     #    in CMFCore.MembershipTool - but in Plone we are not so anal ;-)
     security.declareProtected(View, 'getPortalRoles')
 
+    security.declarePublic('getAuthenticatedMember')
     def getAuthenticatedMember(self):
         """ """
         _user=self.REQUEST.get('_portaluser', None)
@@ -51,28 +55,30 @@ class MembershipTool(PloneBaseTool, BaseTool):
             self.REQUEST.set('_portaluser', _user)
         return _user
 
+    security.declarePublic('getPersonalPortrait')
     def getPersonalPortrait(self, member_id = None, verifyPermission=0):
         """
         returns the Portait for a member_id
         """
         membertool   = getToolByName(self, 'portal_memberdata')
 
-        # what are we doing with that
-        #if verifyPermission and not _checkPermission('View', portrait):
-        #    return None
         if not member_id:
             member_id = self.getAuthenticatedMember().getUserName()
 
         portrait = membertool._getPortrait(member_id)
         if type(portrait) == type(''):
             portrait = None
-        #portrait = None
+        if portrait is not None:
+            if verifyPermission and not _checkPermission(View, portrait):
+                # Don't return the portrait if the user can't get to it
+                portrait = None
         if portrait is None:
             portal = getToolByName(self, 'portal_url').getPortalObject()
             portrait = getattr(portal, default_portrait)
 
         return portrait
 
+    security.declareProtected(SetOwnProperties, 'deletePersonalPortrait')
     def deletePersonalPortrait(self, member_id = None):
         """
         deletes the Portait of member_id
@@ -84,6 +90,7 @@ class MembershipTool(PloneBaseTool, BaseTool):
 
         membertool._deletePortrait(member_id)
 
+    security.declarePublic('getPersonalFolder')
     def getPersonalFolder(self, member_id=None):
         """
         returns the Personal Item folder for a member
@@ -97,6 +104,7 @@ class MembershipTool(PloneBaseTool, BaseTool):
                             , None )
         return personal
 
+    security.declareProtected(SetOwnProperties, 'changeMemberPortrait')
     def changeMemberPortrait(self, portrait, member_id=None):
         """
         given a portrait we will modify the users portrait
@@ -111,6 +119,7 @@ class MembershipTool(PloneBaseTool, BaseTool):
             membertool   = getToolByName(self, 'portal_memberdata')
             membertool._setPortrait(portrait, member_id)
 
+    security.declarePublic('createMemberarea')
     def createMemberarea(self, member_id=None, minimal=0):
         """
         Create a member area for 'member_id' or the authenticated user.
@@ -241,6 +250,7 @@ class MembershipTool(PloneBaseTool, BaseTool):
     security.declarePublic('createMemberArea')
     createMemberArea = createMemberarea
 
+    security.declareProtected(ManagePortal, 'listMembers')
     def listMembers(self):
         '''Gets the list of all members.
         '''
@@ -250,6 +260,7 @@ class MembershipTool(PloneBaseTool, BaseTool):
         else:
             return BaseTool.listMembers(self)
 
+    security.declareProtected(ManagePortal, 'listMemberIds')
     def listMemberIds(self):
         '''Lists the ids of all members.  This may eventually be
         replaced with a set of methods for querying pieces of the
@@ -262,7 +273,7 @@ class MembershipTool(PloneBaseTool, BaseTool):
             return self.__getPUS().getUserNames()
 
     # this should probably be in MemberDataTool.py
-    #security.declarePublic( 'searchForMembers' )
+    security.declarePublic('searchForMembers')
     def searchForMembers( self, REQUEST=None, **kw ):
         """ """
         if REQUEST:
@@ -318,12 +329,12 @@ class MembershipTool(PloneBaseTool, BaseTool):
             res.append(member)
         return res
 
-    def testCurrentPassword(self, password, username=None):
+    security.declareProtected(SetOwnPassword, 'testCurrentPassword')
+    def testCurrentPassword(self, password):
         """ test to see if password is current """
         portal=getToolByName(self, 'portal_url').getPortalObject()
         REQUEST=getattr(self, 'REQUEST', {})
-        if username is None:
-            username=self.getAuthenticatedMember().getUserName()
+        username=self.getAuthenticatedMember().getUserName()
         acl_users = self._findUsersAclHome(username)
         if not acl_users:
             return 0
