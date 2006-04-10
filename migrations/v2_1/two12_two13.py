@@ -1,5 +1,6 @@
 import string
 from Products.CMFCore.utils import getToolByName
+from alphas import reindexCatalog, indexMembersFolder
 
 def two12_two13(portal):
     """2.1.2 -> 2.1.3
@@ -8,7 +9,19 @@ def two12_two13(portal):
 
     # Put navtree properties in a sensible state
     normalizeNavtreeProperties(portal, out)
-    
+
+    # Remove vcXMLRPC.js from ResourceRegistries
+    removeVcXMLRPC(portal, out)
+
+    # Required due to a fix in PortalTransforms...
+    reindexCatalog(portal, out)
+
+    # FIXME: *Must* be called after reindexCatalog.
+    # In tests, reindexing loses the folders for some reason...
+
+    # Make sure the Members folder is cataloged
+    indexMembersFolder(portal, out)
+
     return out
 
 def normalizeNavtreeProperties(portal, out):
@@ -36,3 +49,12 @@ def normalizeNavtreeProperties(portal, out):
             bottomLevel = navtree_properties.getProperty('bottomLevel', None)
             if bottomLevel == 65535:
                 navtree_properties.manage_changeProperties(bottomLevel = 0)
+
+def removeVcXMLRPC(portal, out):
+    """Remove vcXMLRPC.js from ResourceRegistries
+    """
+    jsreg = getToolByName(portal, 'portal_javascripts', None)
+    if jsreg is not None:
+        if 'vcXMLRPC.js' in jsreg.getResourceIds():
+            jsreg.unregisterResource('vcXMLRPC.js')
+            out.append('Removed vcXMLRPC.js')

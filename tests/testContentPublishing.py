@@ -61,21 +61,21 @@ class TestContentPublishing(PloneTestCase.PloneTestCase):
         self.workflow = self.portal.portal_workflow
 
     def _checkMD(self, obj, **changes):
-        """ check the DublinCore Metadata on obj - it must inherient from DublinCore """
+        """ check the DublinCore Metadata on obj - it must inherit from DublinCore """
         if changes:
             _orig_props = {}
             _orig_props.update(props)
             props.update(changes)
             
-        self.failUnless(obj.Title() == props['title'])
-        self.failUnless(obj.Description() == props['description'])
-        self.failUnless(obj.Subject() == tuple(props['subject']))
-        self.failUnless(obj.ExpirationDate() == obj._datify(props['expiration_date']).ISO())
-        self.failUnless(obj.EffectiveDate() == obj._datify(props['effective_date']).ISO())
-        self.failUnless(obj.Format() == props['format'])
-        self.failUnless(obj.Rights() == props['rights'])
-        self.failUnless(obj.Language() == props['language'])
-        self.failUnless(obj.Contributors() == tuple(props['contributors']))
+        self.assertEqual(obj.Title(), props['title'])
+        self.assertEqual(obj.Description(), props['description'])
+        self.assertEqual(obj.Subject(), tuple(props['subject']))
+        self.assertEqual(obj.ExpirationDate(), obj._datify(props['expiration_date']).ISO())
+        self.assertEqual(obj.EffectiveDate(), obj._datify(props['effective_date']).ISO())
+        self.assertEqual(obj.Format(), props['format'])
+        self.assertEqual(obj.Rights(), props['rights'])
+        self.assertEqual(obj.Language(), props['language'])
+        self.assertEqual(obj.Contributors(), tuple(props['contributors']))
 
         if changes:
             props.update(_orig_props)

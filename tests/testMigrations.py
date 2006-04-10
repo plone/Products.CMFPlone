@@ -3514,6 +3514,12 @@ class TestMigrations_v2_1_3(MigrationTest):
         self.assertEqual(ntp.getProperty('root'), '/foo')
         self.assertEqual(ntp.getProperty('bottomLevel'), 10)
 
+    def testRemoveVcXMLRPC(self):
+        jsreg = self.portal.portal_javascripts
+        script_ids = jsreg.getResourceIds()
+        self.failIf('vcXMLRPC.js' in script_ids)
+
+
 class TestMigrations_v2_5(MigrationTest):
 
     def afterSetUp(self):

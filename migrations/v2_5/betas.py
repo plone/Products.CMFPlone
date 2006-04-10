@@ -2,7 +2,9 @@ import os
 from Acquisition import aq_base
 
 from Products.CMFPlone.migrations.migration_util import installOrReinstallProduct
+from Products.CMFPlone.migrations.v2_1.alphas import reindexCatalog, indexMembersFolder
 from Products.CMFPlone.migrations.v2_1.two12_two13 import normalizeNavtreeProperties
+from Products.CMFPlone.migrations.v2_1.two12_two13 import removeVcXMLRPC
 from Products.CMFPlone.migrations.v2_5.alphas import installDeprecated
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.DirectoryView import createDirectoryView
@@ -23,7 +25,7 @@ def alpha2_beta1(portal):
     # Fix 'home' portal action
     fixHomeAction(portal, out)
 
-    # Fixup the navtree properties (this was already done in 1.3, but may
+    # Fixup the navtree properties (this was already done in 2.1.3, but may
     # need to be done again for those migrating from alphas)
     normalizeNavtreeProperties(portal, out)
 
@@ -47,6 +49,19 @@ def beta1_beta2(portal):
     if not propSheet.hasProperty('large_site'):
         propSheet.manage_addProperty('large_site', 0, 'boolean')
         out.append("Added 'large_site' property to site_properties.")
+
+    # Remove vcXMLRPC.js from ResourceRegistries (this was already done in
+    # 2.1.3, but may need to be done again for those migrating from alphas)
+    removeVcXMLRPC(portal, out)
+
+    # Required due to a fix in PortalTransforms...
+    reindexCatalog(portal, out)
+
+    # FIXME: *Must* be called after reindexCatalog.
+    # In tests, reindexing loses the folders for some reason...
+
+    # Make sure the Members folder is cataloged
+    indexMembersFolder(portal, out)
 
     return out
 

@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.5 (unreleased)
 
+    - Force a catalog reindex on upgrade to get correct work boundaries on
+      transformed html content. 
+      http://dev.plone.org/plone/ticket/5393
+      [wichert]
+
     - Implemented displayContentsTab and getViewTemplateId in @@plone.
       The script getViewTemplateId is now deprecated, displayContentsTab
       will stick around for a while because people often override it in their
