@@ -129,6 +129,8 @@ from Products.CMFPlone.migrations.v2_1.two11_two12 import addMemberData
 from Products.CMFPlone.migrations.v2_1.two11_two12 import reinstallPortalTransforms
 
 from Products.CMFPlone.migrations.v2_1.two12_two13 import normalizeNavtreeProperties
+from Products.CMFPlone.migrations.v2_1.two12_two13 import removeVcXMLRPC
+from Products.CMFPlone.migrations.v2_1.two12_two13 import addActionDropDownMenuIcons
 
 from Products.CMFPlone.migrations.v2_5.alphas import installPlacefulWorkflow
 from Products.CMFPlone.migrations.v2_5.alphas import installDeprecated
@@ -3519,6 +3521,52 @@ class TestMigrations_v2_1_3(MigrationTest):
         script_ids = jsreg.getResourceIds()
         self.failIf('vcXMLRPC.js' in script_ids)
 
+    def testRemoveVcXMLRPCTwice(self):
+        removeVcXMLRPC(self.portal, [])
+        removeVcXMLRPC(self.portal, [])
+        jsreg = self.portal.portal_javascripts
+        script_ids = jsreg.getResourceIds()
+        self.failIf('vcXMLRPC.js' in script_ids)
+
+    def testAddActionDropDownMenuIcons(self):
+        ai=self.portal.portal_actionicons
+        icons = dict([
+            ((x.getCategory(), x.getActionId()), x)
+            for x in ai.listActionIcons()
+        ])
+        self.failIf(('object_buttons', 'cut') not in icons)
+        self.failIf(('object_buttons', 'copy') not in icons)
+        self.failIf(('object_buttons', 'paste') not in icons)
+        self.failIf(('object_buttons', 'delete') not in icons)
+        self.assertEqual(icons[('object_buttons', 'cut')].getExpression(), 'cut_icon.gif')
+        self.assertEqual(icons[('object_buttons', 'copy')].getExpression(), 'copy_icon.gif')
+        self.assertEqual(icons[('object_buttons', 'paste')].getExpression(), 'paste_icon.gif')
+        self.assertEqual(icons[('object_buttons', 'delete')].getExpression(), 'delete_icon.gif')
+        self.assertEqual(icons[('object_buttons', 'cut')].getTitle(), 'Cut')
+        self.assertEqual(icons[('object_buttons', 'copy')].getTitle(), 'Copy')
+        self.assertEqual(icons[('object_buttons', 'paste')].getTitle(), 'Paste')
+        self.assertEqual(icons[('object_buttons', 'delete')].getTitle(), 'Delete')
+
+    def testAddActionDropDownMenuIconsTwice(self):
+        addActionDropDownMenuIcons(self.portal, [])
+        addActionDropDownMenuIcons(self.portal, [])
+        ai=self.portal.portal_actionicons
+        icons = dict([
+            ((x.getCategory(), x.getActionId()), x)
+            for x in ai.listActionIcons()
+        ])
+        self.failIf(('object_buttons', 'cut') not in icons)
+        self.failIf(('object_buttons', 'copy') not in icons)
+        self.failIf(('object_buttons', 'paste') not in icons)
+        self.failIf(('object_buttons', 'delete') not in icons)
+        self.assertEqual(icons[('object_buttons', 'cut')].getExpression(), 'cut_icon.gif')
+        self.assertEqual(icons[('object_buttons', 'copy')].getExpression(), 'copy_icon.gif')
+        self.assertEqual(icons[('object_buttons', 'paste')].getExpression(), 'paste_icon.gif')
+        self.assertEqual(icons[('object_buttons', 'delete')].getExpression(), 'delete_icon.gif')
+        self.assertEqual(icons[('object_buttons', 'cut')].getTitle(), 'Cut')
+        self.assertEqual(icons[('object_buttons', 'copy')].getTitle(), 'Copy')
+        self.assertEqual(icons[('object_buttons', 'paste')].getTitle(), 'Paste')
+        self.assertEqual(icons[('object_buttons', 'delete')].getTitle(), 'Delete')
 
 class TestMigrations_v2_5(MigrationTest):
 

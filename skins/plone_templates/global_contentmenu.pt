@@ -411,26 +411,24 @@
                             <tal:action define="icon python:getIconFor('object_buttons', editAction['id'], None);
                                   class_name string:actionicon-object_buttons-${editAction/id};
                                   class_name python:test(icon, class_name, nothing);">
-                                <li tal:condition="python:editAction['id'] not in ('delete', 'batch')"
-                                    tal:attributes="class class_name">
+                                <li tal:condition="python:editAction['id'] not in ('delete', 'batch')">
                                     <a tal:content="editAction/title"
                                        tal:attributes="href editAction/url;
                                        title editAction/title;
-                                       class python:test(icon, 'visualIconReplace', nothing);"
+                                       class python:test(icon, 'visualIconPadding %s' % class_name, nothing);"
                                        i18n:attributes="title"
                                        i18n:translate="">
                                         Action name
                                     </a>
                                 </li>
 
-                                <li tal:condition="python:editAction['id']=='delete'"
-                                    tal:attributes="class class_name">
+                                <li tal:condition="python:editAction['id']=='delete'">
                                     <a onclick="#"
                                        tal:define="use_folder_warning python:useSelf and not here.portal_type == 'Topic';
 alert_msg python:use_folder_warning and here.translate('alert_really_delete_folder', default='Do you really want to delete this folder and all its contents?') or here.translate('alert_really_delete', default='Do you really want to delete this item?');"
                                        tal:attributes="href editAction/url;
                                                        title editAction/title;
-                                                       class python:test(icon, 'visualIconReplace', nothing);
+                                                       class python:test(icon, 'visualIconPadding %s' % class_name, nothing);
                                                        onclick string: confirmDelete = confirm('${alert_msg}');; event.returnValue = confirmDelete;; return confirmDelete;;"
                                        tal:content="editAction/title"
                                        i18n:attributes="title"

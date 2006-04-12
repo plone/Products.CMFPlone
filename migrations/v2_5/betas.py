@@ -5,6 +5,7 @@ from Products.CMFPlone.migrations.migration_util import installOrReinstallProduc
 from Products.CMFPlone.migrations.v2_1.alphas import reindexCatalog, indexMembersFolder
 from Products.CMFPlone.migrations.v2_1.two12_two13 import normalizeNavtreeProperties
 from Products.CMFPlone.migrations.v2_1.two12_two13 import removeVcXMLRPC
+from Products.CMFPlone.migrations.v2_1.two12_two13 import addActionDropDownMenuIcons
 from Products.CMFPlone.migrations.v2_5.alphas import installDeprecated
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.DirectoryView import createDirectoryView
@@ -62,6 +63,9 @@ def beta1_beta2(portal):
 
     # Make sure the Members folder is cataloged
     indexMembersFolder(portal, out)
+
+    # add icons for copy, cut, paste and delete
+    addActionDropDownMenuIcons(portal, out)
 
     return out
 

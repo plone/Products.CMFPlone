@@ -15,7 +15,7 @@
                 itemUrl    python:test(useView, item.getURL() + '/view', item.getURL());
                 linkRemote python:item.getRemoteUrl and item.Creator != member_id;
                 isCurrent  node/currentItem;"
-    tal:condition="python: bottomLevel <= 0 or level < bottomLevel-1">
+    tal:condition="python: bottomLevel &lt;= 0 or level &lt; bottomLevel-1">
 
     <tal:level define="item_type_class     python: 'contenttype-' + normalizeString(item.portal_type);
                        item_wf_state_class python: 'state-' + normalizeString(item.review_state);">
