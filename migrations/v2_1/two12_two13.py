@@ -22,6 +22,9 @@ def two12_two13(portal):
     # Make sure the Members folder is cataloged
     indexMembersFolder(portal, out)
 
+    # add icons for copy, cut, paste and delete
+    addActionDropDownMenuIcons(portal, out)
+
     return out
 
 def normalizeNavtreeProperties(portal, out):
@@ -58,3 +61,39 @@ def removeVcXMLRPC(portal, out):
         if 'vcXMLRPC.js' in jsreg.getResourceIds():
             jsreg.unregisterResource('vcXMLRPC.js')
             out.append('Removed vcXMLRPC.js')
+
+def addActionDropDownMenuIcons(portal, out):
+    """Add icons for copy, cut, paste and delete
+    """
+    ai=getToolByName(portal, 'portal_actionicons', None)
+    if ai is None:
+        return
+    icons = dict([
+        ((x.getCategory(), x.getActionId()), x)
+        for x in ai.listActionIcons()
+    ])
+    added = False
+    if ('object_buttons', 'cut') not in icons:
+        ai.addActionIcon('object_buttons', 'cut', 'cut_icon.gif', 'Cut')
+        added = True
+    else:
+        ai.updateActionIcon('object_buttons', 'cut', 'cut_icon.gif', 'Cut')
+    if ('object_buttons', 'copy') not in icons:
+        ai.addActionIcon('object_buttons', 'copy', 'copy_icon.gif', 'Copy')
+        added = True
+    else:
+        ai.updateActionIcon('object_buttons', 'copy', 'copy_icon.gif', 'Copy')
+    if ('object_buttons', 'paste') not in icons:
+        ai.addActionIcon('object_buttons', 'paste', 'paste_icon.gif', 'Paste')
+        added = True
+    else:
+        ai.updateActionIcon('object_buttons', 'paste', 'paste_icon.gif', 'Paste')
+    if ('object_buttons', 'delete') not in icons:
+        ai.addActionIcon('object_buttons', 'delete', 'delete_icon.gif', 'Delete')
+        added = True
+    else:
+        ai.updateActionIcon('object_buttons', 'delete', 'delete_icon.gif', 'Delete')
+    if added:
+        out.append('Added icons for copy, cut, paste and delete')
+    else:
+        out.append('Updated icons for copy, cut, paste and delete')
