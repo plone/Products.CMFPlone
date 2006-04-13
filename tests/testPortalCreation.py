@@ -39,6 +39,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.factory = self.portal.portal_factory
         self.skins = self.portal.portal_skins
         self.transforms = self.portal.portal_transforms
+        self.javascripts = self.portal.portal_javascripts
 
     def testPloneSkins(self):
         # Plone skins should have been set up
@@ -640,6 +641,25 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
             self.assertEqual(ntp.getProperty(property), value)
         self.assertEqual(ntp.getProperty('bottomLevel'), 0)
             
+    def testvcXMLRPCRemoved(self):
+        # vcXMLRPC.js should no longer be registered
+        self.failIf('vcXMLRPC.js' in self.javascripts.getResourceIds())
+
+    def testActionDropDownMenuIcons(self):
+        # Object buttons should have icons
+        icons = self.icons.listActionIcons()
+        def assertIcon(action_id):
+            for icon in icons:
+                if (icon.getActionId() == action_id and
+                    icon.getCategory() == 'object_buttons'):
+                    break
+            else:
+                self.fail("Action icons tool has no '%s' icon" % action_id)
+        assertIcon('cut')
+        assertIcon('copy')
+        assertIcon('paste')
+        assertIcon('delete')
+
     def testCacheManagers(self):
         # The cache and caching policy managers should exist
         httpcache = self.portal._getOb('HTTPCache', None)
@@ -653,6 +673,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         actions = self.portal.portal_actions.listActions()
         homeAction = [x for x in actions if x.id == 'index_html'][0]
         self.assertEquals(homeAction.getActionExpression(), 'string:${here/@@plone/navigationRootUrl}')
+
 
 class TestPortalBugs(PloneTestCase.PloneTestCase):
 

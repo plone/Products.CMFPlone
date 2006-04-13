@@ -25,6 +25,8 @@ from Products.CMFPlone.interfaces.Translatable import ITranslatable
 from Products.CMFPlone.interfaces.NonStructuralFolder import INonStructuralFolder
 from Products.CMFPlone import ToolNames
 from Products.CMFPlone.utils import transaction_note
+from Products.CMFPlone.utils import base_hasattr
+from Products.CMFPlone.utils import safe_hasattr
 from Products.CMFPlone.interfaces.BrowserDefault import IBrowserDefault
 
 from OFS.SimpleItem import SimpleItem
@@ -99,7 +101,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     security.declareProtected(ManageUsers, 'setMemberProperties')
     def setMemberProperties(self, member, **properties):
         membership = getToolByName(self, 'portal_membership')
-        if hasattr(member, 'getId'):
+        if safe_hasattr(member, 'getId'):
             member = member.getId()
         user = membership.getMemberById(member)
         user.setMemberProperties(properties)
@@ -253,7 +255,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             disc_tool = getToolByName(self, 'portal_discussion')
             if allowDiscussion is None:
                 allowDiscussion = disc_tool.isDiscussionAllowedFor(obj)
-                if not hasattr(obj, 'allow_discussion'):
+                if not safe_hasattr(obj, 'allow_discussion'):
                     allowDiscussion = None
                 allowDiscussion = REQUEST.get('allowDiscussion', allowDiscussion)
             if type(allowDiscussion) == StringType:
@@ -400,7 +402,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         """Given a discussionContainer, return the thread it is in, upwards,
         including the parent object that is being discussed.
         """
-        if hasattr(discussionContainer, 'parentsInThread'):
+        if safe_hasattr(discussionContainer, 'parentsInThread'):
             thread = discussionContainer.parentsInThread()
             if discussionContainer.portal_type == 'Discussion Item':
                 thread.append(discussionContainer)
@@ -798,8 +800,8 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
         # If we are not dealing with a folder, then leave this empty
         if obj.isPrincipiaFolderish:
-            # For BTreeFolders we just use the has_key, otherwise build a dict
-            if hasattr(aq_base(obj), 'has_key'):
+            # For BTreeFolders we just use has_key, otherwise build a dict
+            if base_hasattr(obj, 'has_key'):
                 ids = obj
             else:
                 for id in obj.objectIds():
