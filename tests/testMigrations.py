@@ -175,13 +175,25 @@ class MigrationTest(PloneTestCase.PloneTestCase):
         tool = getattr(self.portal, action_provider)
         tool.addAction(action_id, action_id, '', '', '', category)
 
-    def removeActionIconFromTool(self, action_id):
+    def removeActionIconFromTool(self, action_id, category='plone'):
         # Removes an action icon from portal_actionicons
         tool = getattr(self.portal, 'portal_actionicons')
         try:
-            tool.removeActionIcon('plone', action_id)
+            tool.removeActionIcon(category, action_id)
         except KeyError:
             pass # No icon associated
+
+    def addResourceToJSTool(self, resource_name):
+        # Registers a resource with the javascripts tool
+        tool = getattr(self.portal, 'portal_javascripts')
+        if not resource_name in tool.getResourceIds():
+            tool.registerScript(resource_name)
+
+    def addResourceToCSSTool(self, resource_name):
+        # Registers a resource with the css tool
+        tool = getattr(self.portal, 'portal_css')
+        if not resource_name in tool.getResourceIds():
+            tool.registerStylesheet(resource_name)
 
     def removeSiteProperty(self, property_id):
         # Removes a site property from portal_properties
@@ -3514,18 +3526,34 @@ class TestMigrations_v2_1_3(MigrationTest):
         self.assertEqual(ntp.getProperty('bottomLevel'), 10)
 
     def testRemoveVcXMLRPC(self):
+        # Should unregister vcXMLRPC.js
+        self.addResourceToJSTool('vcXMLRPC.js')
+        removeVcXMLRPC(self.portal, [])
         jsreg = self.portal.portal_javascripts
         script_ids = jsreg.getResourceIds()
         self.failIf('vcXMLRPC.js' in script_ids)
 
     def testRemoveVcXMLRPCTwice(self):
+        # Should not fail if migrated again
+        self.addResourceToJSTool('vcXMLRPC.js')
         removeVcXMLRPC(self.portal, [])
         removeVcXMLRPC(self.portal, [])
         jsreg = self.portal.portal_javascripts
         script_ids = jsreg.getResourceIds()
         self.failIf('vcXMLRPC.js' in script_ids)
 
+    def testRemoveVcXMLRPCNoTool(self):
+        # Should not break if javascripts tool is missing
+        self.portal._delObject('portal_javascripts')
+        removeVcXMLRPC(self.portal, [])
+
     def testAddActionDropDownMenuIcons(self):
+        # Should add icons to object buttons
+        self.removeActionIconFromTool('cut', 'object_buttons')
+        self.removeActionIconFromTool('copy', 'object_buttons')
+        self.removeActionIconFromTool('paste', 'object_buttons')
+        self.removeActionIconFromTool('delete', 'object_buttons')
+        addActionDropDownMenuIcons(self.portal, [])
         ai=self.portal.portal_actionicons
         icons = dict([
             ((x.getCategory(), x.getActionId()), x)
@@ -3545,6 +3573,11 @@ class TestMigrations_v2_1_3(MigrationTest):
         self.assertEqual(icons[('object_buttons', 'delete')].getTitle(), 'Delete')
 
     def testAddActionDropDownMenuIconsTwice(self):
+        # Should not fail if migrated again
+        self.removeActionIconFromTool('cut', 'object_buttons')
+        self.removeActionIconFromTool('copy', 'object_buttons')
+        self.removeActionIconFromTool('paste', 'object_buttons')
+        self.removeActionIconFromTool('delete', 'object_buttons')
         addActionDropDownMenuIcons(self.portal, [])
         addActionDropDownMenuIcons(self.portal, [])
         ai=self.portal.portal_actionicons
@@ -3564,6 +3597,11 @@ class TestMigrations_v2_1_3(MigrationTest):
         self.assertEqual(icons[('object_buttons', 'copy')].getTitle(), 'Copy')
         self.assertEqual(icons[('object_buttons', 'paste')].getTitle(), 'Paste')
         self.assertEqual(icons[('object_buttons', 'delete')].getTitle(), 'Delete')
+
+    def testAddActionDropDownMenuIconsNoTool(self):
+        # Should not break if actionicons tool is missing
+        self.portal._delObject('portal_actionicons')
+        addActionDropDownMenuIcons(self.portal, [])
 
 
 def test_suite():

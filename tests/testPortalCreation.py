@@ -34,6 +34,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.cc = self.portal.cookie_authentication
         self.skins = self.portal.portal_skins
         self.transforms = self.portal.portal_transforms
+        self.javascripts = self.portal.portal_javascripts
 
     def testPloneSkins(self):
         # Plone skins should have been set up
@@ -640,6 +641,26 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         for property, value in toAdd.items():
             self.assertEqual(ntp.getProperty(property), value)
         self.assertEqual(ntp.getProperty('bottomLevel'), 0)
+
+    def testvcXMLRPCRemoved(self):
+        # vcXMLRPC.js should no longer be registered
+        self.failIf('vcXMLRPC.js' in self.javascripts.getResourceIds())
+
+    def testActionDropDownMenuIcons(self):
+        # Object buttons should have icons
+        icons = self.icons.listActionIcons()
+        def assertIcon(action_id):
+            for icon in icons:
+                if (icon.getActionId() == action_id and
+                    icon.getCategory() == 'object_buttons'):
+                    break
+            else:
+                self.fail("Action icons tool has no '%s' icon" % action_id)
+        assertIcon('cut')
+        assertIcon('copy')
+        assertIcon('paste')
+        assertIcon('delete')
+
 
 class TestPortalBugs(PloneTestCase.PloneTestCase):
 
