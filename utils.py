@@ -87,7 +87,7 @@ def _getDefaultPageView(obj, request):
 
 def isDefaultPage(obj, request, context=None):
     container = parent(obj)
-    if container is not None:
+    if not container:
         return False
     view = _getDefaultPageView(container, request)
     if context is None:
