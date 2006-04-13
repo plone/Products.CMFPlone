@@ -4,6 +4,7 @@ from types import UnicodeType, StringType
 import urlparse
 
 from Products.CMFPlone.utils import safe_callable
+from Products.CMFPlone.utils import safe_hasattr
 from Products.CMFPlone.utils import base_hasattr
 from Products.CMFPlone.utils import log
 from Products.CMFPlone.utils import log_exc
@@ -109,7 +110,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     security.declareProtected(ManageUsers, 'setMemberProperties')
     def setMemberProperties(self, member, **properties):
         membership = getToolByName(self, 'portal_membership')
-        if hasattr(member, 'getId'):
+        if safe_hasattr(member, 'getId'):
             member = member.getId()
         user = membership.getMemberById(member)
         user.setMemberProperties(properties)
@@ -280,7 +281,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             disc_tool = getToolByName(self, 'portal_discussion')
             if allowDiscussion is None:
                 allowDiscussion = disc_tool.isDiscussionAllowedFor(obj)
-                if not hasattr(obj, 'allow_discussion'):
+                if not safe_hasattr(obj, 'allow_discussion'):
                     allowDiscussion = None
                 allowDiscussion = REQUEST.get('allowDiscussion', allowDiscussion)
             if type(allowDiscussion) == StringType:
@@ -427,7 +428,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         """Given a discussionContainer, return the thread it is in, upwards,
         including the parent object that is being discussed.
         """
-        if hasattr(discussionContainer, 'parentsInThread'):
+        if safe_hasattr(discussionContainer, 'parentsInThread'):
             thread = discussionContainer.parentsInThread()
             if discussionContainer.portal_type == 'Discussion Item':
                 thread.append(discussionContainer)
@@ -783,7 +784,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         """
 
         parent = aq_parent(aq_inner(obj))
-        if not parent:
+        if parent is None:
             return False
 
         parentDefaultPage = self.getDefaultPage(parent)
@@ -832,8 +833,8 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         portal = getToolByName(self, 'portal_url').getPortalObject()
         wftool = getToolByName(self, 'portal_workflow')
 
-        # For BTreeFolders we just use the has_key, otherwise build a dict
-        if hasattr(aq_base(obj), 'has_key'):
+        # For BTreeFolders we just use has_key, otherwise build a dict
+        if base_hasattr(obj, 'has_key'):
             ids = obj
         else:
             for id in obj.objectIds():
@@ -861,7 +862,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             if page and ids.has_key(page):
                 return lookupTranslationId(obj, page)
         for page in pages:
-            if portal.unrestrictedTraverse(page, None):
+            if portal.unrestrictedTraverse(page, None) is not None:
                 return lookupTranslationId(obj, page)
 
         # 4. Test for default sitewide default_page setting
@@ -953,7 +954,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         # If we are not dealing with a folder, then leave this empty
         if obj.isPrincipiaFolderish:
             # For BTreeFolders we just use the has_key, otherwise build a dict
-            if hasattr(aq_base(obj), 'has_key'):
+            if safe_hasattr(aq_base(obj), 'has_key'):
                 ids = obj
             else:
                 for id in obj.objectIds():
