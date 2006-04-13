@@ -784,7 +784,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         """
 
         parent = aq_parent(aq_inner(obj))
-        if parent is None:
+        if not parent:
             return False
 
         parentDefaultPage = self.getDefaultPage(parent)
