@@ -103,7 +103,7 @@ Anyway, didn't get it fixed but at least we know what it is. :-/
 #portal-globalnav li a {
     float: right;
     margin-left: 0.5em !important;
-    margin-bottom: -1px;
+    margin-bottom: -3px;
 }
 
 * html #portal-globalnav {
@@ -429,6 +429,12 @@ dt span.documentByLine {
 /* Fix to big header which causes a horizontal scrollbar to appear */
 #portal-top {
     margin-right: 1px;
+}
+
+/* LiveSearch */
+.livesearchContainer {
+    right: auto;
+    left: 0px;
 }
 
 /* </dtml-with> */
