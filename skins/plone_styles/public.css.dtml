@@ -473,6 +473,10 @@
     margin: 0em 0em 2em 0em;
 }
 
+.documentEditable {
+    padding: 0em 2em 1em 2em !important;
+}
+
 #content-news h1 {
     margin-bottom: 1em;
 }
