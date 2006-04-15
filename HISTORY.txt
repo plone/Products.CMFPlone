@@ -4,8 +4,8 @@ Changelog for Plone
 
 Plone 2.5 (unreleased)
 
-    - Removed unused default configuration from PloneControlPanel which is
-      handled by the GS profile now.
+    - Removed unused default configurations from PloneControlPanel and
+      CatalogTool, which are handled by the GenericSetup profile now.
       [hannosch]
 
     - Force a catalog reindex on upgrade to get correct work boundaries on

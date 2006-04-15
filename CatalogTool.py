@@ -278,60 +278,6 @@ class CatalogTool(PloneBaseTool, BaseTool):
     def __init__(self):
         ZCatalog.__init__(self, self.getId())
 
-    security.declarePublic('enumerateIndexes')
-    def enumerateIndexes(self):
-
-        idxs = ( ('Subject', 'KeywordIndex')
-               , ('Creator', 'FieldIndex')
-               , ('Date', 'DateIndex')
-               , ('Type', 'FieldIndex')
-               , ('created', 'DateIndex')
-               , ('effective', 'DateIndex')
-               , ('expires', 'DateIndex')
-               , ('modified', 'DateIndex')
-               , ('allowedRolesAndUsers', 'KeywordIndex')
-               , ('review_state', 'FieldIndex')
-               , ('in_reply_to', 'FieldIndex')
-               , ('meta_type', 'FieldIndex')
-               , ('id', 'FieldIndex')
-               , ('getId', 'FieldIndex')
-               , ('path', 'ExtendedPathIndex')
-               , ('portal_type', 'FieldIndex')
-               , ('getObjPositionInParent', 'FieldIndex')
-               , ('is_folderish', 'FieldIndex')
-               , ('is_default_page', 'FieldIndex')
-               )
-        return tuple([(n, t, None) for n, t in idxs])
-
-    security.declarePublic('enumerateColumns')
-    def enumerateColumns(self):
-        """Return a sequence of schema names to be cached.
-        """
-        return ( 'Subject'
-               , 'Title'
-               , 'Description'
-               , 'Type'
-               , 'review_state'
-               , 'Creator'
-               , 'listCreators'
-               , 'Date'
-               , 'getIcon'
-               , 'created'
-               , 'effective'
-               , 'expires'
-               , 'modified'
-               , 'CreationDate'
-               , 'EffectiveDate'
-               , 'ExpirationDate'
-               , 'ModificationDate'
-               , 'getId'
-               , 'portal_type'
-               # plone metadata
-               , 'id', # BBB to be removed in Plone 3.0
-               'getObjSize',
-               'exclude_from_nav',
-               )
-
     def _removeIndex(self, index):
         """Safe removal of an index.
         """
@@ -339,58 +285,6 @@ class CatalogTool(PloneBaseTool, BaseTool):
             self.manage_delIndex(index)
         except:
             pass
-
-    def manage_afterAdd(self, item, container):
-        self._createTextIndexes(item, container)
-
-    def _createTextIndexes(self, item, container):
-        """In addition to the standard indexes we need to create
-           'SearchableText', 'Title' and 'Description' as ZCTextIndex instance.
-        """
-
-        class args:
-            def __init__(self, **kw):
-                self.__dict__.update(kw)
-            def keys(self):
-                return self.__dict__.keys()
-
-        # This if-clause still looks somewhat scary
-        if item is self and not hasattr(aq_base(self), 'plone_lexicon'):
-
-            # We need to remove the indexes to keep the tests working...baaah
-            for idx in ('SearchableText', 'Title', 'Description'):
-                self._removeIndex(idx)
-
-            self.manage_addProduct['ZCTextIndex'].manage_addLexicon(
-                'plone_lexicon',
-                elements=[
-                    args(group='Case Normalizer', name='Case Normalizer'),
-                    args(group='Stop Words', name=" Don't remove stop words"),
-                    args(group='Word Splitter', name="Unicode Whitespace splitter"),
-                ]
-                )
-
-            extra = args(doc_attr='SearchableText',
-                         lexicon_id='plone_lexicon',
-                         index_type='Okapi BM25 Rank')
-            self.manage_addIndex('SearchableText', 'ZCTextIndex', extra=extra)
-
-            extra = args(doc_attr='Description',
-                         lexicon_id='plone_lexicon',
-                         index_type='Okapi BM25 Rank')
-            self.manage_addIndex('Description', 'ZCTextIndex', extra=extra)
-
-            extra = args(doc_attr='Title',
-                         lexicon_id='plone_lexicon',
-                         index_type='Okapi BM25 Rank')
-            self.manage_addIndex('Title', 'ZCTextIndex', extra=extra)
-
-    security.declareProtected(ManagePortal, 'migrateIndexes')
-    def migrateIndexes(self):
-        """Recreate all indexes.
-        """
-        self._initIndexes()
-        self._createTextIndexes()
 
     def _listAllowedRolesAndUsers(self, user):
         """Makes sure the list includes the user's groups.
