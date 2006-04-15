@@ -216,6 +216,7 @@
             </ul>
         </fieldset>
     </form>
+    <div class="visualClear"><!-- --></div>
 </div>
 
 </body>
