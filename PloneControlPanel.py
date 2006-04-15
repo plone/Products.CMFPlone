@@ -40,132 +40,6 @@ class PloneConfiglet(ActionInformation):
         res['description']=self.getDescription()
         return res
 
-default_configlets = (
-    {'id':'QuickInstaller',
-     'appId':'QuickInstaller',
-     'name':_(u'Add/Remove Products'),
-     'action':'string:${portal_url}/prefs_install_products_form',
-     'category':'Plone',
-     'permission': ManagePortal,
-     'imageUrl':'product_icon.gif'},
-
-    {'id':'PloneReconfig',
-     'appId':'Plone',
-     'name':_(u'Portal Settings'),
-     'action':'string:${portal_url}/reconfig_form',
-     'category':'Plone',
-     'permission': ManagePortal,
-     'imageUrl':'logoIcon.gif'},
-
-    {'id':'UsersGroups',
-     'appId':'UsersGroups',
-     'name':_(u'Users and Groups Administration'),
-     'action':'string:${portal_url}/prefs_users_overview',
-     'category':'Plone',
-     'permission': ManagePortal,
-     'imageUrl':'group.gif'},
-
-    {'id':'UsersGroups2',
-     'appId':'UsersGroups',
-     'name':_(u'Users and Groups Administration'),
-     'action':'string:${portal_url}/prefs_groups_overview',
-     'category':'Plone',
-     'permission': ManagePortal,
-     'visible' : 0,
-     'imageUrl':'group.gif'},
-
-    {'id':'MemberPrefs',
-     'appId':'Plone',
-     'name':_(u'Personal Preferences'),
-     'action':'string:${portal_url}/personalize_form',
-     'category':'Member',
-     'permission': SetOwnProperties,
-     'imageUrl':'user.gif'},
-
-    {'id':'MemberPassword',
-     'appId':'Plone',
-     'name':_(u'Change Password'),
-     'action':'string:${portal_url}/password_form',
-     'category':'Member',
-     'permission': SetOwnPassword,
-     'imageUrl':'lock_icon.gif'},
-
-#    {'id':'WorkflowPrefs',
-#     'appId':'Plone',
-#     'name':_(u'Manage Workflow'),
-#     'action':'string:${portal_url}/prefs_workflow_basic',
-#     'category':'Plone',
-#     'permission': ManagePortal,
-#     'imageUrl':'site_icon.gif'},
-
-    {'id':'MailHost',
-     'appId':'MailHost',
-     'name':_(u'Mail Settings'),
-     'action':'string:${portal_url}/prefs_mailhost_form',
-     'category':'Plone',
-     'permission': ManagePortal,
-     'imageUrl':'mail_icon.gif'},
-
-    {'id':'PortalSkin',
-     'appId':'PortalSkin',
-     'name':_(u'Skins'),
-     'action':'string:${portal_url}/prefs_portalskin_form',
-     'category':'Plone',
-     'permission': ManagePortal,
-     'imageUrl':'skins_icon.gif'},
-
-#    {'id':'Syndication',
-#     'appId':'Syndication',
-#     'name':_(u'Syndication'),
-#     'action':'string:${portal_url}/prefs_syndication_form',
-#     'category':'Plone',
-#     'permission': ManagePortal,
-#     'imageUrl':'site_icon.gif'},
-
-    {'id':'errorLog',
-     'appId':'ErrorLog',
-     'name':_(u'Error Log'),
-     'action':'string:${portal_url}/prefs_error_log_form',
-     'category':'Plone',
-     'permission': ManagePortal,
-     'imageUrl':'error_log_icon.gif'},
-
-#   {'id':'PortalProperties',
-#     'appId':'PortalProperties',
-#     'name':_(u'Properties'),
-#     'action':'string:${portal_url}/prefs_portal_properties_list',
-#     'category':'Plone',
-#     'permission': ManagePortal,
-#     'imageUrl':'site_icon.gif'},
-
-    {'id':'ZMI',
-     'appId':'ZMI',
-     'name':_(u'Zope Management Interface'),
-     'action':'string:${portal_url}/manage_main',
-     'category':'Plone',
-     'permission': ManagePortal,
-     'imageUrl':'zope_icon.gif'},
-
-    {'id':'SearchSettings',
-     'appId':'Plone',
-     'name':_(u'Search Settings'),
-     'action':'string:${portal_url}/prefs_search_form',
-     'category':'Plone',
-     'permission': ManagePortal,
-     'imageUrl':'search_icon.gif'},
-
-     {'id':'NavigationSettings',
-     'appId':'Plone',
-     'name':_(u'Navigation Settings'),
-     'action':'string:${portal_url}/prefs_navigation_form',
-     'category':'Plone',
-     'permission': ManagePortal,
-     'imageUrl':'navigation_icon.gif'},
-
-)
-
-
-
 class PloneControlPanel(PloneBaseTool, UniqueObject,
                         Folder, ActionProviderBase, PropertyManager):
     """Weave together the various sources of "actions" which
@@ -194,6 +68,7 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
     manage_options = (ActionProviderBase.manage_options +
                       PropertyManager.manage_options)
 
+    # TODO this is still used but should be handled by the GS profile
     groups = ['site|Plone|Plone Configuration',
               'site|Products|Add-on Product Configuration',
               'member|Member|Member Preferences']
@@ -211,13 +86,6 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
         """
         for conf in configlets:
             self.registerConfiglet(**conf)
-
-    security.declareProtected( ManagePortal, 'registerDefaultConfiglets' )
-    def registerDefaultConfiglets(self):
-        """ We need to bootstrap the default_configlets
-        into the control panel
-        """
-        self.registerConfiglets(default_configlets)
 
     security.declareProtected( ManagePortal, 'getGroupIds' )
     def getGroupIds(self, category=''):

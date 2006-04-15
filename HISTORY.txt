@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.5 (unreleased)
 
+    - Removed unused default configuration from PloneControlPanel which is
+      handled by the GS profile now.
+      [hannosch]
+
     - Force a catalog reindex on upgrade to get correct work boundaries on
       transformed html content. 
       http://dev.plone.org/plone/ticket/5393
