@@ -9,10 +9,13 @@ from Products.CMFPlone import PloneMessageFactory as _
 pm = context.portal_membership
 pu = context.plone_utils
 
+reindex=False
 # first look for members
 if len(member_ids)>0:
+    reindex=True
     pm.deleteLocalRoles( obj=context,
-                         member_ids=member_ids )
+                         member_ids=member_ids,
+			 reindex=False)
 
 def parseMemberRoleString( s ):
     sidx = s.find('((')
@@ -25,7 +28,7 @@ def parseMemberRoleString( s ):
 # second look for certain roles
 #
 if len(member_role_ids)>0:
-
+    reindex=True
 
     # get all local roles 
     local_roles=context.acl_users.getLocalRolesForDisplay(context)
@@ -51,13 +54,18 @@ if len(member_role_ids)>0:
 
         # delete all roles for that member
         pm.deleteLocalRoles( obj=context,
-                             member_ids=(member_id,) )
+                             member_ids=(member_id,),
+			     reindex=False)
 
         # add the other roles again
         for role in newRoles:
             pm.setLocalRoles( obj=context,
                           member_ids=(member_id,),
-                          member_role=role )
+                          member_role=role,
+			  reindex=False)
+
+if reindex:
+    context.reindexObjectSecurity()
 
 transaction_note('Modified sharing for folder %s at %s' % (context.title_or_id(), context.absolute_url()))
 context.plone_utils.addPortalMessage(_(u'Local roles deleted.'))

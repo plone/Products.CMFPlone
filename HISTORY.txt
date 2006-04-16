@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.5 (unreleased)
 
+    - Modify local role addition and removal scripts to only reindex object
+      security once.
+      http://dev.plone.org/plone/ticket/5352
+      [wichert]
+
     - Remove never used use_portrait handling from folder_localrole_set
       [wichert]
 
