@@ -138,6 +138,7 @@ from Products.CMFPlone.migrations.v2_5.alphas import installDeprecated
 from Products.CMFPlone.migrations.v2_5.betas import addGetEventTypeIndex
 from Products.CMFPlone.migrations.v2_5.betas import fixHomeAction
 from Products.CMFPlone.migrations.v2_5.betas import removeBogusSkin
+from Products.CMFPlone.migrations.v2_5.betas import addPloneSkinLayers
 
 from Products.CMFDynamicViewFTI.migrate import migrateFTI
 
@@ -3740,6 +3741,20 @@ class TestMigrations_v2_5(MigrationTest):
         removeBogusSkin(self.portal, [])
         # It should be gone
         self.failIf(self.skins._getSelections().has_key('cmf_legacy'))
+
+    def testAddPloneSkinLayers(self):
+        # Add bogus skin
+        self.skins.manage_skinLayers(add_skin=1, skinname='foo_bar',
+                                  skinpath=['plone_forms','plone_templates'])
+        self.failUnless(self.skins._getSelections().has_key('foo_bar'))
+
+        path = [p.strip() for p in self.skins.getSkinPath('foo_bar').split(',')]
+        self.assertEqual(['plone_forms', 'plone_templates'], path)
+
+        addPloneSkinLayers(self.portal, [])
+
+        path = [p.strip() for p in self.skins.getSkinPath('foo_bar').split(',')]
+        self.assertEqual(['plone_forms', 'plone_templates', 'plone_deprecated'], path)
 
     def testRemoveBogusSkinTwice(self):
         self.skins.manage_skinLayers(add_skin=1, skinname='cmf_legacy',

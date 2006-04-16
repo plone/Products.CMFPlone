@@ -67,6 +67,9 @@ def beta1_beta2(portal):
     # add icons for copy, cut, paste and delete
     addActionDropDownMenuIcons(portal, out)
 
+    # add any appropriate plone skin layers to custom skins
+    addPloneSkinLayers(portal, out)
+
     return out
 
 def addDragDropReorderJS(portal, out):
@@ -144,3 +147,17 @@ def removeBogusSkin(portal, out):
         if skins._getSelections().has_key('cmf_legacy'):
             skins.manage_skinLayers(('cmf_legacy',), del_skin=True)
             out.append("Deleted incorrectly added 'cmf_legacy' skin")
+
+def addPloneSkinLayers(portal, out):
+    st = getToolByName(portal, 'portal_skins', None)
+    if st is None:
+        out.append('No portal_skins tool')
+        return
+    
+    for skin in st._getSelections().keys():
+        path = st.getSkinPath(skin)
+        path = [p.strip() for p in path.split(',')]
+        if not 'plone_deprecated' in path:
+            path.append('plone_deprecated')
+            st.addSkinSelection(skin, ','.join(path))
+            out.append('Added plone_deprecated to %s' % skin)
