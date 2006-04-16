@@ -111,9 +111,13 @@
 
     <!-- Disable IE6 image toolbar -->
     <meta http-equiv="imagetoolbar" content="no" />
+    
+    <metal:block metal:define-slot="style_slot" tal:replace="nothing">
+      Inserts CSS specified from a page.
+    </metal:block>
 
     <metal:block metal:define-slot="css_slot" tal:replace="nothing">
-      Inserts CSS specified from a page.
+      This is deprecated, please use style_slot instead.
     </metal:block>
 
     <metal:block metal:define-slot="head_slot" tal:replace="nothing">

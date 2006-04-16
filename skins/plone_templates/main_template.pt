@@ -27,9 +27,14 @@
       <metal:headslot define-slot="head_slot" />
       <tal:comment replace="nothing"> A slot where you can insert elements in the header from a template </tal:comment>
     </metal:headslot>
+    
+    <metal:styleslot fill-slot="style_slot">
+      <tal:comment replace="nothing"> A slot where you can insert CSS in the header from a template </tal:comment>
+      <metal:styleslot define-slot="style_slot" />
+    </metal:styleslot>
 
     <metal:cssslot fill-slot="css_slot">
-      <tal:comment replace="nothing"> A slot where you can insert CSS in the header from a template </tal:comment>
+      <tal:comment replace="nothing"> This is deprecated, please use style_slot instead. </tal:comment>
       <metal:cssslot define-slot="css_slot" />
     </metal:cssslot>
 
