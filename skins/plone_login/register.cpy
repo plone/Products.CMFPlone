@@ -53,7 +53,6 @@ if site_properties.validate_email or REQUEST.get('mail_me', 0):
         context.plone_utils.addPortalMessage(_(u'Please enter a valid email address.'))
         return state.set(status='failure')
 
-context.plone_utils.addPortalMessage(_(u'Registered.'))
 state.set(came_from=REQUEST.get('came_from','login_success'))
 
 if came_from_prefs:
