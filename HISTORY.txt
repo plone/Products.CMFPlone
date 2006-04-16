@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.5 (unreleased)
 
+    - Deprecate CMFPlone.MemberData. This class is never used, and the future
+      is with PAS-based objects instead of membership/memberdata tools.
+      [wichert]
+      
     - Marked FolderWorkflow and PloneWorkflow as deprecated. Workflow setup is
       handled by the GS profile now.
       [hannosch]
