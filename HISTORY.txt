@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.5 (unreleased)
 
+    - Remove never used use_portrait handling from folder_localrole_set
+      [wichert]
+
     - Deprecate CMFPlone.MemberData. This class is never used, and the future
       is with PAS-based objects instead of membership/memberdata tools.
       [wichert]
