@@ -252,7 +252,7 @@ class CatalogNavigationTabs(utils.BrowserView):
         for item in rawresult:
             if not (excludedIds.has_key(item.getId) or item.exclude_from_nav):
                 id, item_url = get_view_url(item)
-                data = {'title'      : utils.pretty_title_or_id(context, item),
+                data = {'name'      : utils.pretty_title_or_id(context, item),
                         'id'         : id,
                         'url'        : item_url,
                         'description': item.Description}

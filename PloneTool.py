@@ -551,21 +551,14 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         request = request or self.REQUEST
         context = context or self
         
-        # XXX This method needs to eventually go away, in the meantime
-        # we'll fix up the portal_tab_view's tabs to be a little more
-        # backward compatible
+        # XXX This method needs to eventually go away
 
         utils.log_deprecated("plone_utils.createTopLevelTabs is deprecated and "
                              "will be removed in plone 3.5, please use the "
                              "topLevelTabs method of the INavigationTabs view "
                              "instead.")
 
-        tabs = utils.createTopLevelTabs(context, request, actions=actions)
-        for tab in tabs:
-            if not tab.has_key('name'):
-                tab['name'] = tab['title']
-        
-        return tabs
+        return utils.createTopLevelTabs(context, request, actions=actions)
 
     security.declarePublic('createBreadCrumbs')
     def createBreadCrumbs(self, context, request=None):
