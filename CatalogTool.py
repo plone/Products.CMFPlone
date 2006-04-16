@@ -128,7 +128,7 @@ num_sort_regex = re.compile('\d+')
 
 def sortable_title(obj, portal, **kwargs):
     """ Helper method for to provide FieldIndex for Title.
-    
+
     >>> from Products.CMFPlone.CatalogTool import sortable_title
 
     >>> self.folder.setTitle('Plone42 _foo')
@@ -332,7 +332,7 @@ class CatalogTool(PloneBaseTool, BaseTool):
         This version uses the 'effectiveRange' DateRangeIndex.
 
         It also accepts a keyword argument show_inactive to disable
-        effectiveRange checking entirely even for those withot portal
+        effectiveRange checking entirely even for those without portal
         wide AccessInactivePortalContent permission.
         """
         kw = kw.copy()
@@ -343,10 +343,6 @@ class CatalogTool(PloneBaseTool, BaseTool):
 
         if not show_inactive and not _checkPermission(AccessInactivePortalContent, self):
             kw['effectiveRange'] = DateTime()
-            if kw.has_key('effective'):
-                del kw['effective']
-            if kw.has_key('expires'):
-                del kw['expires']
 
         return ZCatalog.searchResults(self, REQUEST, **kw)
 

@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 2.5 (unreleased)
 
+    - No longer remove expires and effective parameters from catalog queries.
+      The use of the DateRangeIndex is sufficient, no reason not to let users
+      further restrict results.
+      https://dev.plone.org/plone/ticket/4697
+      [alecm]
+
     - Use portal_transforms to do stx -> html conversion instead of relying
       on ugly module import in the quickinstaller configlet.
       https://dev.plone.org/plone/ticket/5428

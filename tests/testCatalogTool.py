@@ -839,6 +839,35 @@ class TestCatalogExpirationFiltering(PloneTestCase.PloneTestCase):
         res = self.catalog()
         self.assertResults(res, base_content)
 
+    def testSearchResultsWithAdditionalExpiryFilter(self):
+        # For this test we want the expires and effective indices in place,
+        # let's make sure everything still works
+        self.folder.doc.setExpirationDate(DateTime(2000, 12, 31))
+        self.folder.doc.reindexObject()
+        res = self.catalog.searchResults()
+        self.assertResults(res, base_content[:-1])
+        # Now make the object expire at some fixed date in the future
+        self.folder.doc.setExpirationDate(DateTime()+2)
+        self.folder.doc.reindexObject()
+        res = self.catalog.searchResults()
+        self.assertResults(res, base_content)
+        # We should be able to further limit the search using the exipres
+        # and efective indices.
+        res = self.catalog.searchResults(expires={'query':DateTime()+3,
+                                                  'range':'min'})
+        self.assertResults(res, base_content[:-1])
+
+    def testSearchResultsExpiredWithAdditionalExpiryFilter(self):
+        # Now make the object expire at some date in the recent past
+        self.folder.doc.setExpirationDate(DateTime()-2)
+        self.folder.doc.reindexObject()
+        res = self.catalog.searchResults()
+        self.assertResults(res, base_content[:-1])
+        # Even if we explicitly ask for it, we shouldn't get expired content
+        res = self.catalog.searchResults(expires={'query':DateTime()-3,
+                                                  'range':'min'})
+        self.assertResults(res, base_content[:-1])
+
 
 def dummyMethod(obj, **kwargs):
     return 'a dummy'
