@@ -9,6 +9,7 @@ from AccessControl import ClassSecurityInfo
 from Acquisition import aq_base
 from Products.BTreeFolder2.BTreeFolder2 import BTreeFolder2
 from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.utils import log_deprecated
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFCore.permissions import SetOwnProperties, ManagePortal
 from ZODB.POSException import ConflictError
@@ -184,6 +185,7 @@ class MemberData(BaseData):
     _is_new_kind = 1
 
     def __init__(self, *args, **kw):
+        log_deprecated("The CMFPlone.MemberData class will be removed in Plone 3.0")
         BaseData.__init__(self, *args, **kw)
 
     security.declareProtected(SetOwnProperties, 'setProperties')
@@ -192,6 +194,7 @@ class MemberData(BaseData):
         Accepts either keyword arguments or a mapping for the "properties"
         argument.
         '''
+        log_deprecated("The CMFPlone.MemberData class will be removed in Plone 3.0")
         if properties is None:
             properties = kw
         membership = getToolByName(self, 'portal_membership')
@@ -209,6 +212,7 @@ class MemberData(BaseData):
 
     security.declarePublic('getProperty')
     def getProperty(self, id, default=_marker):
+        log_deprecated("The CMFPlone.MemberData class will be removed in Plone 3.0")
         tool = self.getTool()
         base = aq_base( self )
 
@@ -253,6 +257,7 @@ class MemberData(BaseData):
         '''Sets the properties of the member.
         If force_local is true, values will not be stored in the underlying user folder
         '''
+        log_deprecated("The CMFPlone.MemberData class will be removed in Plone 3.0")
         # Sets the properties given in the MemberDataTool.
         tool = self.getTool()
         for id in tool.propertyIds():
