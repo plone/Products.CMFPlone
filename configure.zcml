@@ -10,10 +10,6 @@
       />
 
   <five:traversable
-      class="Products.BTreeFolder2.BTreeFolder2.BTreeFolder2"
-      />
-
-  <five:traversable
       class="Products.CMFCore.PortalObject.PortalObjectBase"
       />
 
