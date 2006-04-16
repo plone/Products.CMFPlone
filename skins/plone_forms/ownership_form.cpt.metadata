@@ -9,5 +9,5 @@ validators=
 
 [actions]
 action.success..Search=traverse_to:string:ownership_form
-action.success..Save=traverse_to:string:ownership_form
+action.success..Save=traverse_to:string:change_ownership
 action.success=traverse_to:string:change_ownership
