@@ -22,7 +22,7 @@ if not mtool.checkPermission('Copy or Move', context):
                                           {'title': context.title_or_id()})
 
 pathName = url_quote_plus('paths:list')
-safePath = url_quote_plus('/'.join(context.getPhysicalPath()))
+safePath = context.absolute_url_path()
 url = 'folder_rename_form?orig_template=%s&%s=%s' % (safePath, 
                                                      pathName, 
                                                      safePath)
