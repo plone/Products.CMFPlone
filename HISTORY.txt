@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.5 (unreleased)
 
+    - Marked FolderWorkflow and PloneWorkflow as deprecated. Workflow setup is
+      handled by the GS profile now.
+      [hannosch]
+
     - Removed unused default configurations from PloneControlPanel and
       CatalogTool, which are handled by the GenericSetup profile now.
       [hannosch]

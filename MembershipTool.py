@@ -18,16 +18,6 @@ from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 
 default_portrait = 'defaultUser.gif'
 
-DEFAULT_MEMBER_CONTENT = """\
-Default page for %s
-
-  This is the default document created for you when
-  you joined this community.
-
-  To change the content just click the 'edit'
-  tab above.
-"""
-
 _marker = object()
 
 class MembershipTool(PloneBaseTool, BaseTool):
@@ -178,12 +168,6 @@ class MembershipTool(PloneBaseTool, BaseTool):
             membertool   = getToolByName(self, 'portal_memberdata')
             membertool._setPortrait(portrait, member_id)
 
-
-##     security.declarePrivate('wrapUser')
-##     def wrapUser(self, u):
-##         self.createMemberarea(u.getId())
-##         return BaseTool.wrapUser(self, u)
-
     security.declarePublic('createMemberarea')
     def createMemberarea(self, member_id=None, minimal=1):
         """
@@ -229,8 +213,6 @@ class MembershipTool(PloneBaseTool, BaseTool):
                     'cannot get user for member area creation'
 
         ## translate the default content
-
-        # get some translation interfaces
 
         translation_service = getToolByName(self, 'translation_service', _marker)
         if translation_service is _marker:
@@ -484,7 +466,6 @@ class MembershipTool(PloneBaseTool, BaseTool):
     security.declareProtected(SetOwnPassword, 'testCurrentPassword')
     def testCurrentPassword(self, password):
         """ test to see if password is current """
-        portal=getToolByName(self, 'portal_url').getPortalObject()
         REQUEST=getattr(self, 'REQUEST', {})
         userid=self.getAuthenticatedMember().getUserId()
         acl_users = self._findUsersAclHome(userid)

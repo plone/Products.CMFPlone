@@ -1,3 +1,7 @@
+from warnings import warn
+warn('FolderWorkflow is deprecated and will be removed in Plone 3.0. '
+     'Please use a GenericSetup profile instead.', DeprecationWarning)
+
 from Products.CMFCore.WorkflowTool import addWorkflowFactory
 from Products.DCWorkflow.DCWorkflow import DCWorkflowDefinition
 from Products.CMFCore.permissions import AccessContentsInformation, \
@@ -66,7 +70,3 @@ def createPrivateFolderWorkflow(id):
     ob.setProperties(title='Private Folder Workflow [Plone]')
     return ob
 
-# Will go into PloneWorkflows product
-#addWorkflowFactory( createPrivateFolderWorkflow,
-#                    id='private_folder_workflow',
-#                    title='Private Folder Workflow [Plone]' )

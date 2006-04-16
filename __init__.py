@@ -128,19 +128,13 @@ def initialize(context):
     DirectoryView.registerDirectory('skins', cmfplone_globals)
 
     # Plone content
-    import PloneContent, PloneFolder, PloneWorkflow, FolderWorkflow
+    import PloneContent, PloneFolder, LargePloneFolder
     import Portal
 
-    contentClasses = ( PloneFolder.PloneFolder , )
-    contentConstructors = ( PloneFolder.addPloneFolder, )
-
-    try:
-        import LargePloneFolder
-    except ImportError:
-        pass
-    else:
-        contentClasses += ( LargePloneFolder.LargePloneFolder, )
-        contentConstructors += ( LargePloneFolder.addLargePloneFolder,)
+    contentClasses      = ( PloneFolder.PloneFolder,
+                            LargePloneFolder.LargePloneFolder, )
+    contentConstructors = ( PloneFolder.addPloneFolder,
+                            LargePloneFolder.addLargePloneFolder, )
 
     # CMFCore and CMFDefault tools
     from Products.CMFCore import CachingPolicyManager

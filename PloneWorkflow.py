@@ -1,3 +1,7 @@
+from warnings import warn
+warn('PloneWorkflow is deprecated and will be removed in Plone 3.0. '
+     'Please use a GenericSetup profile instead.', DeprecationWarning)
+
 from Products.CMFCore.permissions import ModifyPortalContent, View, \
      AccessContentsInformation
 from Products.CMFCalendar.permissions import ChangeEvents
@@ -70,7 +74,3 @@ def createPrivatePloneWorkflow(id):
     ob.setProperties(title='Private Workflow [Plone]')
     return ob
 
-# Will go into PloneWorkflows product
-#addWorkflowFactory( createPrivatePloneWorkflow,
-#                    id='private_plone_workflow',
-#                    title='Private Workflow [Plone]' )
