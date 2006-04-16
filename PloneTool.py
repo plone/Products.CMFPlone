@@ -545,11 +545,11 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         return utils.createNavTree(context, request)
 
     security.declarePublic('createTopLevelTabs')
-    def createTopLevelTabs(self, context, actions=None, request=None):
+    def createTopLevelTabs(self, context=None, actions=None, request=None):
         """Returns a structure for the top level tabs.
         """
-        if request is None:
-            request = self.REQUEST
+        request = request or self.REQUEST
+        context = context or self
         return utils.createTopLevelTabs(context, request, actions=actions)
 
     security.declarePublic('createBreadCrumbs')
