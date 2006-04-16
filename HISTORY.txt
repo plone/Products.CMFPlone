@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.5 (unreleased)
 
+    - Use portal_transforms to do stx -> html conversion instead of relying
+      on ugly module import in the quickinstaller configlet.
+      https://dev.plone.org/plone/ticket/5428
+      [alecm]
+
     - Modify local role addition and removal scripts to only reindex object
       security once.
       http://dev.plone.org/plone/ticket/5352
@@ -15,7 +20,7 @@ Plone 2.5 (unreleased)
     - Deprecate CMFPlone.MemberData. This class is never used, and the future
       is with PAS-based objects instead of membership/memberdata tools.
       [wichert]
-      
+
     - Marked FolderWorkflow and PloneWorkflow as deprecated. Workflow setup is
       handled by the GS profile now.
       [hannosch]
@@ -25,7 +30,7 @@ Plone 2.5 (unreleased)
       [hannosch]
 
     - Force a catalog reindex on upgrade to get correct work boundaries on
-      transformed html content. 
+      transformed html content.
       http://dev.plone.org/plone/ticket/5393
       [wichert]
 
