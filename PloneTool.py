@@ -545,12 +545,27 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         return utils.createNavTree(context, request)
 
     security.declarePublic('createTopLevelTabs')
-    def createTopLevelTabs(self, context=None, actions=None, request=None):
+    def createTopLevelTabs(self, actions=None, context=None, request=None):
         """Returns a structure for the top level tabs.
         """
         request = request or self.REQUEST
         context = context or self
-        return utils.createTopLevelTabs(context, request, actions=actions)
+        
+        # XXX This method needs to eventually go away, in the meantime
+        # we'll fix up the portal_tab_view's tabs to be a little more
+        # backward compatible
+
+        utils.log_deprecated("plone_utils.createTopLevelTabs is deprecated and "
+                             "will be removed in plone 3.5, please use the "
+                             "topLevelTabs method of the INavigationTabs view "
+                             "instead.")
+
+        tabs = utils.createTopLevelTabs(context, request, actions=actions)
+        for tab in tabs:
+            if not tab.has_key('name'):
+                tab['name'] = tab['title']
+        
+        return tabs
 
     security.declarePublic('createBreadCrumbs')
     def createBreadCrumbs(self, context, request=None):
