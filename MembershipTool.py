@@ -223,7 +223,7 @@ class MembershipTool(PloneBaseTool, BaseTool):
         encode = translation_service.encode
 
         # convert the member_id to unicode type
-        umember_id = translation_service.asunicodetype(member_id, errors='replace')
+        umember_id = translation_service.asunicodetype(user.getUserName(), errors='replace')
 
         member_folder_title = utranslate(
             'plone', 'title_member_folder',

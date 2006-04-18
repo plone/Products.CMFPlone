@@ -385,6 +385,12 @@ class TestCreateMemberarea(PloneTestCase.PloneTestCase):
         memberfolder = self.membership.getHomeFolder('user2')
         self.failIf(memberfolder, 'createMemberarea created memberarea despite flag')
 
+    def testCreateMemberAreaUsersUserNameAsTitle(self):
+        self.portal.acl_users.source_users.removeUser('user2')
+        self.portal.acl_users.source_users.addUser('user2', 'User2Name', 'foo')
+        self.membership.createMemberarea('user2')
+        memberfolder = self.membership.getHomeFolder('user2')
+        self.assertEqual(memberfolder.Title(), 'User2Name')
 
 class TestMemberareaSetup(PloneTestCase.PloneTestCase):
 
