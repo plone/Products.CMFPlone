@@ -2,8 +2,8 @@ import os
 from Acquisition import aq_base
 
 from Products.GenericSetup.tool import SetupTool
-from Products.GenericSetup.tool import _TOOL_ID as SETUP_TOOL_ID
 
+from Products.CMFPlone.factory import _TOOL_ID as SETUP_TOOL_ID
 from Products.CMFPlone.migrations.migration_util import installOrReinstallProduct
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.DirectoryView import createDirectoryView
@@ -47,7 +47,7 @@ def installPlonePAS(portal, out):
     installOrReinstallProduct(portal, 'PlonePAS', out)
 
 def installPortalSetup(portal, out):
-    """Adds setup_tool if not installed yet."""
+    """Adds portal_setup if not installed yet."""
     if SETUP_TOOL_ID not in portal.objectIds():
         portal._setObject(SETUP_TOOL_ID, SetupTool(SETUP_TOOL_ID))
         out.append('Added setup_tool.')

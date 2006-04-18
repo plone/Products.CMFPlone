@@ -3634,17 +3634,17 @@ class TestMigrations_v2_5(MigrationTest):
         self.failUnless('portal_placeful_workflow' in self.portal.objectIds())
 
     def testInstallPortalSetup(self):
-        if 'setup_tool' in self.portal.objectIds():
-            self.portal._delObject('setup_tool')
+        if 'portal_setup' in self.portal.objectIds():
+            self.portal._delObject('portal_setup')
         installPortalSetup(self.portal, [])
-        self.failUnless('setup_tool' in self.portal.objectIds())
+        self.failUnless('portal_setup' in self.portal.objectIds())
 
     def testInstallPortalSetupTwice(self):
-        if 'setup_tool' in self.portal.objectIds():
-            self.portal._delObject('setup_tool')
+        if 'portal_setup' in self.portal.objectIds():
+            self.portal._delObject('portal_setup')
         installPortalSetup(self.portal, [])
         installPortalSetup(self.portal, [])
-        self.failUnless('setup_tool' in self.portal.objectIds())
+        self.failUnless('portal_setup' in self.portal.objectIds())
 
     def testInstallDeprecated(self):
         # Remove skin
