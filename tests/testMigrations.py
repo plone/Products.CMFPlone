@@ -133,13 +133,13 @@ from Products.CMFPlone.migrations.v2_1.two12_two13 import removeVcXMLRPC
 from Products.CMFPlone.migrations.v2_1.two12_two13 import addActionDropDownMenuIcons
 
 from Products.CMFPlone.migrations.v2_5.alphas import installPlacefulWorkflow
-from Products.CMFPlone.migrations.v2_5.alphas import installPortalSetup
 from Products.CMFPlone.migrations.v2_5.alphas import installDeprecated
 
 from Products.CMFPlone.migrations.v2_5.betas import addGetEventTypeIndex
 from Products.CMFPlone.migrations.v2_5.betas import fixHomeAction
 from Products.CMFPlone.migrations.v2_5.betas import removeBogusSkin
 from Products.CMFPlone.migrations.v2_5.betas import addPloneSkinLayers
+from Products.CMFPlone.migrations.v2_5.betas import installPortalSetup
 
 from Products.CMFDynamicViewFTI.migrate import migrateFTI
 

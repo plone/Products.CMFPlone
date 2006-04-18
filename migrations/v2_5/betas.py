@@ -1,15 +1,18 @@
 import os
 from Acquisition import aq_base
 
+from Products.GenericSetup.tool import SetupTool
+
 from Products.CMFPlone.migrations.migration_util import installOrReinstallProduct
 from Products.CMFPlone.migrations.v2_1.alphas import reindexCatalog, indexMembersFolder
 from Products.CMFPlone.migrations.v2_1.two12_two13 import normalizeNavtreeProperties
 from Products.CMFPlone.migrations.v2_1.two12_two13 import removeVcXMLRPC
 from Products.CMFPlone.migrations.v2_1.two12_two13 import addActionDropDownMenuIcons
 from Products.CMFPlone.migrations.v2_5.alphas import installDeprecated
+from Products.CMFPlone.factory import _TOOL_ID as SETUP_TOOL_ID
+
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.DirectoryView import createDirectoryView
-
 from Products.CMFCore.Expression import Expression
 
 def alpha2_beta1(portal):
@@ -69,6 +72,9 @@ def beta1_beta2(portal):
 
     # add any appropriate plone skin layers to custom skins
     addPloneSkinLayers(portal, out)
+
+    # Install portal_setup
+    installPortalSetup(portal, out)
 
     return out
 
@@ -161,3 +167,9 @@ def addPloneSkinLayers(portal, out):
             path.append('plone_deprecated')
             st.addSkinSelection(skin, ','.join(path))
             out.append('Added plone_deprecated to %s' % skin)
+
+def installPortalSetup(portal, out):
+    """Adds portal_setup if not installed yet."""
+    if SETUP_TOOL_ID not in portal.objectIds():
+        portal._setObject(SETUP_TOOL_ID, SetupTool(SETUP_TOOL_ID))
+        out.append('Added setup_tool.')
