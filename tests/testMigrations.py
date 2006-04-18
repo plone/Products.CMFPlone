@@ -133,6 +133,7 @@ from Products.CMFPlone.migrations.v2_1.two12_two13 import removeVcXMLRPC
 from Products.CMFPlone.migrations.v2_1.two12_two13 import addActionDropDownMenuIcons
 
 from Products.CMFPlone.migrations.v2_5.alphas import installPlacefulWorkflow
+from Products.CMFPlone.migrations.v2_5.alphas import installPortalSetup
 from Products.CMFPlone.migrations.v2_5.alphas import installDeprecated
 
 from Products.CMFPlone.migrations.v2_5.betas import addGetEventTypeIndex
@@ -3631,6 +3632,19 @@ class TestMigrations_v2_5(MigrationTest):
         installPlacefulWorkflow(self.portal, [])
         installPlacefulWorkflow(self.portal, [])
         self.failUnless('portal_placeful_workflow' in self.portal.objectIds())
+
+    def testInstallPortalSetup(self):
+        if 'setup_tool' in self.portal.objectIds():
+            self.portal._delObject('setup_tool')
+        installPortalSetup(self.portal, [])
+        self.failUnless('setup_tool' in self.portal.objectIds())
+
+    def testInstallPortalSetupTwice(self):
+        if 'setup_tool' in self.portal.objectIds():
+            self.portal._delObject('setup_tool')
+        installPortalSetup(self.portal, [])
+        installPortalSetup(self.portal, [])
+        self.failUnless('setup_tool' in self.portal.objectIds())
 
     def testInstallDeprecated(self):
         # Remove skin

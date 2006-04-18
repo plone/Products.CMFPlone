@@ -1,6 +1,9 @@
 import os
 from Acquisition import aq_base
 
+from Products.GenericSetup.tool import SetupTool
+from Products.GenericSetup.tool import _TOOL_ID as SETUP_TOOL_ID
+
 from Products.CMFPlone.migrations.migration_util import installOrReinstallProduct
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.DirectoryView import createDirectoryView
@@ -13,6 +16,9 @@ def two5_alpha1(portal):
     # Install CMFPlacefulWorkflow
     installPlacefulWorkflow(portal, out)
 
+    # Install portal_setup
+    installPortalSetup(portal, out)
+    
     return out
 
 def alpha1_alpha2(portal):
@@ -39,6 +45,12 @@ def installPlonePAS(portal, out):
     """Quickinstalls PlonePAS if not installed yet."""
     installOrReinstallProduct(portal, 'PasswordResetTool', out)
     installOrReinstallProduct(portal, 'PlonePAS', out)
+
+def installPortalSetup(portal, out):
+    """Adds setup_tool if not installed yet."""
+    if SETUP_TOOL_ID not in portal.objectIds():
+        portal._setObject(SETUP_TOOL_ID, SetupTool(SETUP_TOOL_ID))
+        out.append('Added setup_tool.')
 
 def installDeprecated(portal, out):
     # register login skin
