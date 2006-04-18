@@ -717,6 +717,13 @@ class TestPortalBugs(PloneTestCase.PloneTestCase):
         self.app._delObject(PloneTestCase.portal_name)
         self.failUnless(self.foo.before_delete_called())
 
+    def testSubsequentProfileImportSucceeds(self):
+        # Subsequent profile imports fail (#5439)
+        self.loginAsPortalOwner()
+        setup_tool = self.portal.portal_setup
+        setup_tool.runAllImportSteps() # this will raise an error if it fails
+        self.failUnless(1 == 1)
+
     def testExportImportLosesTextIndexes(self):
         # Importing a portal .zexp loses text indexes? (#4803)
         self.loginAsPortalOwner()

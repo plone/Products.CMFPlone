@@ -32,10 +32,10 @@ class PloneGenerator:
         qi.notifyInstalled('CMFCalendar', locked=1)
         qi.notifyInstalled('CMFActionIcons', locked=1)
 
-        # BBB The following products are "installed" by virtue of
-        #     the GenericSetup profile.  They really shouldn't be
-        #     managed by QuickInstaler at all any more, but we need
-        #     to kill some chickens so migrations will still work.
+        # BBB The following products are "installed" by virtue of the
+        #     GenericSetup profile.  They really shouldn't be managed
+        #     by QuickInstaller at all any more, but we need to kill
+        #     some chickens so migrations will still work.
         qi.installProduct('ResourceRegistries', locked=1)
         qi.installProduct('ATContentTypes', locked=1)
         qi.notifyInstalled('ATReferenceBrowserWidget', locked=1)
@@ -142,7 +142,6 @@ class PloneGenerator:
         Create Plone's default set of groups.
         """
         gtool = getToolByName(p, 'portal_groups')
-        # XXX this is raising errors on subsequent imports!
         existing = gtool.listGroupIds()
         if 'Administrators' not in existing:
             gtool.addGroup('Administrators', roles=['Manager'])
