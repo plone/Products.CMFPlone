@@ -13,6 +13,7 @@ from Products.CMFCore import permissions as cmfpermissions
 from Products.CMFPlone.utils import _createObjectByType
 from Products.CMFPlone import migrations as migs
 from Products.CMFPlone.Portal import member_indexhtml
+from Products.CMFPlone.setup.ConfigurationMethods import assignTitles
 
 class PloneGenerator:
 
@@ -190,3 +191,4 @@ def importFinalSteps(context):
     gen.setupGroups(site)
     gen.performMigrationActions(site)
     gen.setATCTToolVersion(site)
+    assignTitles(site, site)
