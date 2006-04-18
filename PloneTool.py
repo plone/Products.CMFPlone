@@ -548,8 +548,12 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     def createTopLevelTabs(self, actions=None, context=None, request=None):
         """Returns a structure for the top level tabs.
         """
-        request = request or self.REQUEST
-        context = context or self
+
+        if context is None:
+            context = self
+
+        if request is None and hasattr(context, 'REQUEST'):
+            request = context.REQUEST
         
         # XXX This method needs to eventually go away
 
