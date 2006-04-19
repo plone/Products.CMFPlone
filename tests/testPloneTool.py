@@ -562,6 +562,9 @@ class TestPortalTabs(PloneTestCase.PloneTestCase):
         self.failUnless(tabs)
         #Only the folders show up (Members, news, events, folder1, folder2)
         self.assertEqual(len(tabs), 5)
+        # Check if selecting a different category returns different results
+        tabs = self.utils.createTopLevelTabs(category='notthere')
+        self.assertEqual(len(tabs), 0)
 
     def testTabsRespectFolderOrder(self):
         # See if reordering causes a change in the tab order
