@@ -134,6 +134,7 @@ from Products.CMFPlone.migrations.v2_1.two12_two13 import addActionDropDownMenuI
 
 from Products.CMFPlone.migrations.v2_5.alphas import installPlacefulWorkflow
 from Products.CMFPlone.migrations.v2_5.alphas import installDeprecated
+from Products.CMFPlone.migrations.v2_5.alphas import installPlonePAS
 
 from Products.CMFPlone.migrations.v2_5.betas import addGetEventTypeIndex
 from Products.CMFPlone.migrations.v2_5.betas import fixHomeAction
@@ -3645,6 +3646,34 @@ class TestMigrations_v2_5(MigrationTest):
         installPortalSetup(self.portal, [])
         installPortalSetup(self.portal, [])
         self.failUnless('portal_setup' in self.portal.objectIds())
+
+    def testInstallPlonePAS(self):
+        qi = self.portal.portal_quickinstaller
+        if qi.isProductInstalled('PlonePAS'):
+            qi.uninstallProducts(['PlonePAS'])
+        self.failIf(qi.isProductInstalled('PlonePAS'))
+        installPlonePAS(self.portal, [])
+        self.failUnless(qi.isProductInstalled('PlonePAS'))
+
+    def testInstallPlonePASTwice(self):
+        qi = self.portal.portal_quickinstaller
+        if qi.isProductInstalled('PlonePAS'):
+            qi.uninstallProducts(['PlonePAS'])
+        installPlonePAS(self.portal, [])
+        installPlonePAS(self.portal, [])
+        self.failUnless(qi.isProductInstalled('PlonePAS'))
+
+    def testInstallPlonePASWithEnvironmentVariableSet(self):
+        qi = self.portal.portal_quickinstaller
+        if qi.isProductInstalled('PlonePAS'):
+            qi.uninstallProducts(['PlonePAS'])
+        self.failIf(qi.isProductInstalled('PlonePAS'))
+        os.environ['SUPPRESS_PLONEPAS_INSTALLATION'] = 'YES'
+        installPlonePAS(self.portal, [])
+        self.failIf(qi.isProductInstalled('PlonePAS'))
+        del os.environ['SUPPRESS_PLONEPAS_INSTALLATION']
+        installPlonePAS(self.portal, [])
+        self.failUnless(qi.isProductInstalled('PlonePAS'))
 
     def testInstallDeprecated(self):
         # Remove skin

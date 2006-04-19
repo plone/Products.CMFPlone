@@ -4,6 +4,13 @@ Changelog for Plone
 
 Plone 2.5 (unreleased)
 
+    - Allow turning off PlonePAS installation during 2.1 -> 2.5 migration
+      using an environment variable.  If 'SUPPRESS_PLONEPAS_INSTALLATION' is
+      'YES', then the migrations will not install PlonePAS.  This is not a
+      supported configuration, but it should allow CMFMember/Teamspace users
+      to upgrade their 2.1 sites.
+      [alecm]
+
     - No longer remove expires and effective parameters from catalog queries.
       The use of the DateRangeIndex is sufficient, no reason not to let users
       further restrict results.

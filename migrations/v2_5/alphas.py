@@ -12,7 +12,7 @@ def two5_alpha1(portal):
 
     # Install CMFPlacefulWorkflow
     installPlacefulWorkflow(portal, out)
-    
+
     return out
 
 def alpha1_alpha2(portal):
@@ -37,8 +37,10 @@ def installPlacefulWorkflow(portal, out):
 
 def installPlonePAS(portal, out):
     """Quickinstalls PlonePAS if not installed yet."""
-    installOrReinstallProduct(portal, 'PasswordResetTool', out)
-    installOrReinstallProduct(portal, 'PlonePAS', out)
+    NO_PLONEPAS = os.environ.get('SUPPRESS_PLONEPAS_INSTALLATION',None)=='YES'
+    if not NO_PLONEPAS:
+        installOrReinstallProduct(portal, 'PasswordResetTool', out)
+        installOrReinstallProduct(portal, 'PlonePAS', out)
 
 def installDeprecated(portal, out):
     # register login skin
