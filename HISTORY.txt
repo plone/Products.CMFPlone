@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1.3 - Tomahawk - Unreleased
 
+    - Add a category parameter to createToplevelTabs to allow skins to use a
+      different action category.
+      [wichert]
+
     - The padding on the documentEditable content area depends on the design
       in public.css, and was moved there to make CSS customization more
       predictable. 

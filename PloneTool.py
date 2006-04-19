@@ -606,7 +606,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         return buildFolderTree(context, obj=context, query=query, strategy=strategy)
 
     security.declarePublic('createTopLevelTabs')
-    def createTopLevelTabs(self, actions=None):
+    def createTopLevelTabs(self, actions=None, category='portal_tabs'):
         """Returns a structure for the top level tabs."""
         ct = getToolByName(self, 'portal_catalog')
         ntp = getToolByName(self, 'portal_properties').navtree_properties
@@ -620,7 +620,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             trans = getToolByName(self, 'translation_service', None)
             if trans is not None:
                 utranslate = trans.utranslate
-                for action_info in actions.get('portal_tabs', []):
+                for action_info in actions.get(category, []):
                     data = action_info.copy()
                     data['name'] = utranslate('plone',
                                               data['name'],
