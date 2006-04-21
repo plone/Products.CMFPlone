@@ -562,9 +562,26 @@ class TestPortalTabs(PloneTestCase.PloneTestCase):
         self.failUnless(tabs)
         #Only the folders show up (Members, news, events, folder1, folder2)
         self.assertEqual(len(tabs), 5)
-        # Check if selecting a different category returns different results
+        # Check if selecting a different category returns the same results
         tabs = self.utils.createTopLevelTabs(category='notthere')
-        self.assertEqual(len(tabs), 0)
+        self.assertEqual(len(tabs), 5)
+        # Now register an action in the default category
+        actions={ "portal_tabs" : [
+                        { "category" : "portal_tabs",
+                          "available" : True,
+                          "title"    : "Test tab",
+                          "url"      : "test",
+                          "name"     : "Home",
+                          "visible"  : True,
+                          "allowed"  : True,
+                          "id"       : "test",
+                          "permissions" : ("View",)}]}
+        # The new action should appear in the normal tabs
+        tabs = self.utils.createTopLevelTabs(actions)
+        self.assertEqual(len(tabs), 6)
+        # But it should not appear if we select a different action category
+        tabs = self.utils.createTopLevelTabs(actions,category='notthere')
+        self.assertEqual(len(tabs), 5)
 
     def testTabsRespectFolderOrder(self):
         # See if reordering causes a change in the tab order
