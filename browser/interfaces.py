@@ -49,7 +49,7 @@ class INavigationBreadcrumbs(Interface):
 
 class INavigationTabs(Interface):
 
-    def topLevelTabs(actions=None):
+    def topLevelTabs(actions=None, category='portal_tabs'):
         """Top level tabs
         """
 

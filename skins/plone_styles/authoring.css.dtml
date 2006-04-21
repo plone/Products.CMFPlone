@@ -614,10 +614,6 @@ dl.collapsedInlineCollapsible dt.collapsibleHeader {
     display: inline;
 }
 
-.documentEditable {
-    padding: 0em 2em 1em 2em !important;
-}
-
 .configlet .documentEditable {
     padding: 0em !important;
 }

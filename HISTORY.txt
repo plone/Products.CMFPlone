@@ -4,6 +4,19 @@ Changelog for Plone
 
 Plone 2.5 (unreleased)
 
+    - Add a category parameter to createToplevelTabs to allow skins to use a
+      different action category.
+      [wichert]
+
+    - The padding on the documentEditable content area depends on the design
+      in public.css, and was moved there to make CSS customization more
+      predictable. 
+      [limi]
+
+    - Fixed missing security declarations in MembershipTool.
+      http://dev.plone.org/plone/ticket/5432
+      [stefan]
+
     - Allow turning off PlonePAS installation during 2.1 -> 2.5 migration
       using an environment variable.  If 'SUPPRESS_PLONEPAS_INSTALLATION' is
       'YES', then the migrations will not install PlonePAS.  This is not a

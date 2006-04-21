@@ -561,6 +561,185 @@ class TestFormulatorFields(PloneTestCase.PloneTestCase):
         #      receive the Formulator treatment.
         self.assertEqual(self.doc.Language(), '')
 
+class TestPortalTabs(PloneTestCase.PloneTestCase):
+    '''Tests for the portal tabs query'''
+
+    def afterSetUp(self):
+        self.utils = self.portal.plone_utils
+        self.populateSite()
+
+    def populateSite(self):
+        self.setRoles(['Manager'])
+        self.portal.invokeFactory('Document', 'doc1')
+        self.portal.invokeFactory('Document', 'doc2')
+        self.portal.invokeFactory('Document', 'doc3')
+        self.portal.invokeFactory('Folder', 'folder1')
+        folder1 = getattr(self.portal, 'folder1')
+        self.portal.invokeFactory('Folder', 'folder2')
+        folder2 = getattr(self.portal, 'folder2')
+        self.setRoles(['Member'])
+
+    def testCreateTopLevelTabs(self):
+        # See if we can create one at all
+        tabs = self.utils.createTopLevelTabs()
+        self.failUnless(tabs)
+        #Only the folders show up (Members, news, events, folder1, folder2)
+        self.assertEqual(len(tabs), 5)
+        # Check if selecting a different category returns different results
+        tabs = self.utils.createTopLevelTabs(category='notthere')
+        self.assertEqual(len(tabs), 0)
+
+    def testTabsRespectFolderOrder(self):
+        # See if reordering causes a change in the tab order
+        tabs1 = self.utils.createTopLevelTabs()
+        # Must be manager to change order on portal itself
+        self.setRoles(['Manager','Member'])
+        self.portal.folder_position('up', 'folder2')
+        tabs2 = self.utils.createTopLevelTabs()
+        #Same number of objects
+        self.failUnlessEqual(len(tabs1), len(tabs2))
+        #Different order
+        self.failUnless(tabs1 != tabs2)
+
+    def testCustomQuery(self):
+        # Try a custom query script for the tabs that returns only published
+        # objects
+        workflow = self.portal.portal_workflow
+        factory = self.portal.manage_addProduct['PythonScripts']
+        factory.manage_addPythonScript('getCustomNavQuery')
+        script = self.portal.getCustomNavQuery
+        script.ZPythonScript_edit('','return {"review_state":"published"}')
+        self.assertEqual(self.portal.getCustomNavQuery(),{"review_state":"published"})
+        tabs = self.utils.createTopLevelTabs()
+        #Should contain no folders
+        self.assertEqual(len(tabs), 0)
+        #change workflow for folder1
+        workflow.doActionFor(self.portal.folder1, 'publish')
+        self.portal.folder1.reindexObject()
+        tabs = self.utils.createTopLevelTabs()
+        #Should only contain the published folder
+        self.assertEqual(len(tabs), 1)
+
+    def testStateFiltering(self):
+        # Test tabs workflow state filtering
+        workflow = self.portal.portal_workflow
+        ntp=self.portal.portal_properties.navtree_properties
+        ntp.manage_changeProperties(wf_states_to_show=['published'])
+        ntp.manage_changeProperties(enable_wf_state_filtering=True)
+        tabs = self.utils.createTopLevelTabs()
+        #Should contain no folders
+        self.assertEqual(len(tabs), 0)
+        #change workflow for folder1
+        workflow.doActionFor(self.portal.folder1, 'publish')
+        self.portal.folder1.reindexObject()
+        tabs = self.utils.createTopLevelTabs()
+        #Should only contain the published folder
+        self.assertEqual(len(tabs), 1)
+
+    def testDisableFolderTabs(self):
+        # Setting the site_property disable_folder_sections should remove
+        # all folder based tabs
+        props = self.portal.portal_properties.site_properties
+        props.manage_changeProperties(disable_folder_sections=True)
+        tabs = self.utils.createTopLevelTabs()
+        self.assertEqual(tabs, [])
+
+    def testTabsExcludeItemsWithExcludeProperty(self):
+        # Make sure that items witht he exclude_from_nav property are purged
+        tabs = self.utils.createTopLevelTabs()
+        orig_len = len(tabs)
+        self.portal.folder2.setExcludeFromNav(True)
+        self.portal.folder2.reindexObject()
+        tabs = self.utils.createTopLevelTabs()
+        self.failUnless(tabs)
+        self.assertEqual(len(tabs), orig_len - 1)
+        tab_names = [t['id'] for t in tabs]
+        self.failIf('folder2' in tab_names)
+
+    def testTabsRespectsTypesWithViewAction(self):
+        # With a type in typesUseViewActionInListings as current action it
+        # should return a tab which has '/view' appended to the url
+        tabs = self.utils.createTopLevelTabs()
+        self.failUnless(tabs)
+        # Fail if 'view' is used for folder
+        self.failIf(tabs[-1]['url'][-5:]=='/view')
+        # Add Folder to site_property
+        props = self.portal.portal_properties.site_properties
+        props.manage_changeProperties(typesUseViewActionInListings=['Image','File','Folder'])
+        # Verify that we have '/view'
+        tabs = self.utils.createTopLevelTabs()
+        self.failUnless(tabs)
+        self.assertEqual(tabs[-1]['url'][-5:],'/view')
+
+    def testTabsExcludeItemsInIdsNotToList(self):
+        # Make sure that items whose ids are in the idsNotToList navTree
+        # property get purged
+        tabs = self.utils.createTopLevelTabs()
+        orig_len = len(tabs)
+        ntp=self.portal.portal_properties.navtree_properties
+        ntp.manage_changeProperties(idsNotToList=['folder2'])
+        tabs = self.utils.createTopLevelTabs()
+        self.failUnless(tabs)
+        self.assertEqual(len(tabs), orig_len - 1)
+        tab_names = [t['id'] for t in tabs]
+        self.failIf('folder2' in tab_names)
+
+    def testTabsExcludeNonFolderishItems(self):
+        # Make sure that items witht he exclude_from_nav property are purged
+        tabs = self.utils.createTopLevelTabs()
+        orig_len = len(tabs)
+        self.setRoles(['Manager','Member'])
+        self.portal.invokeFactory('Document','foo')
+        self.portal.foo.reindexObject()
+        tabs = self.utils.createTopLevelTabs()
+        self.failUnless(tabs)
+        self.assertEqual(len(tabs),orig_len)
+
+    def testIsStructuralFolderWithNonFolder(self):
+        i = dummy.Item()
+        self.failIf(self.utils.isStructuralFolder(i))
+
+    def testIsStructuralFolderWithFolder(self):
+        f = dummy.Folder('struct_folder')
+        self.failUnless(self.utils.isStructuralFolder(f))
+
+    def testIsStructuralFolderWithNonStructuralFolder(self):
+        f = dummy.NonStructuralFolder('ns_folder')
+        self.failIf(self.utils.isStructuralFolder(f))
+
+
+class TestBreadCrumbs(PloneTestCase.PloneTestCase):
+    '''Tests for the portal tabs query'''
+
+    def afterSetUp(self):
+        self.utils = self.portal.plone_utils
+        self.populateSite()
+
+    def populateSite(self):
+        self.setRoles(['Manager'])
+        self.portal.invokeFactory('Folder', 'folder1')
+        folder1 = getattr(self.portal, 'folder1')
+        folder1.invokeFactory('Document', 'doc11')
+        folder1.invokeFactory('File', 'file11')
+        self.setRoles(['Member'])
+
+    def testCreateBreadCrumbs(self):
+        # See if we can create one at all
+        doc = self.portal.folder1.doc11
+        crumbs = self.utils.createBreadCrumbs(doc)
+        self.failUnless(crumbs)
+        self.assertEqual(len(crumbs), 2)
+        self.assertEqual(crumbs[-1]['absolute_url'], doc.absolute_url())
+        self.assertEqual(crumbs[-2]['absolute_url'], doc.aq_parent.absolute_url())
+
+    def testBreadcrumbsRespectTypesWithViewAction(self):
+        # With a type in typesUseViewActionInListings as current action it
+        # should return a breadcrumb which has '/view' appended to the url
+        file = self.portal.folder1.file11
+        crumbs = self.utils.createBreadCrumbs(file)
+        self.failUnless(crumbs)
+        self.assertEqual(crumbs[-1]['absolute_url'][-5:],'/view')
+
 
 class TestIDGenerationMethods(PloneTestCase.PloneTestCase):
     """Tests the isIDAutoGenerated method and pretty_title_or_id
@@ -706,6 +885,8 @@ def test_suite():
     suite.addTest(makeSuite(TestEditMetadata))
     suite.addTest(makeSuite(TestEditMetadataIndependence))
     suite.addTest(makeSuite(TestFormulatorFields))
+    suite.addTest(makeSuite(TestPortalTabs))
+    suite.addTest(makeSuite(TestBreadCrumbs))
     suite.addTest(makeSuite(TestIDGenerationMethods))
     suite.addTest(makeSuite(TestPortalStatusMessages))
     return suite

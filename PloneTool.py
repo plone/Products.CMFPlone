@@ -545,7 +545,8 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         return utils.createNavTree(context, request)
 
     security.declarePublic('createTopLevelTabs')
-    def createTopLevelTabs(self, actions=None, context=None, request=None):
+    def createTopLevelTabs(self, actions=None, context=None, request=None,
+                           category='portal_tabs'):
         """Returns a structure for the top level tabs.
         """
 
@@ -562,7 +563,8 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                              "topLevelTabs method of the INavigationTabs view "
                              "instead.")
 
-        return utils.createTopLevelTabs(context, request, actions=actions)
+        return utils.createTopLevelTabs(context, request, actions=actions,
+                                        category=category)
 
     security.declarePublic('createBreadCrumbs')
     def createBreadCrumbs(self, context, request=None):

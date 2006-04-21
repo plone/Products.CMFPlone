@@ -43,8 +43,9 @@
         </p>
 
         <div class="stx"
-             tal:condition="len_text"
-             tal:omit-tag="python:here.text_format != 'structured-text'">
+             tal:condition="text"
+             tal:attributes="class python:test(here.Format() in ('text/structured',
+                                                   'text/x-rst', ), 'stx', 'plain')">
             <div tal:replace="structure text" />
         </div>
 

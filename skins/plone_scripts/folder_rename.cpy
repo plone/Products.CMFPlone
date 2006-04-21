@@ -41,7 +41,7 @@ for x in range(0, len(new_ids)):
             real_orig = orig_template
             if orig_template is not None and orig_template == origPath:
                 newObj = parent[new_id]
-                orig_template = '/'.join(newObj.getPhysicalPath())
+                orig_template = newObj.absolute_url_path()
                 request.set('orig_template', orig_template)
                 message = "Renamed '%s' to '%s'" % (id, new_id)
         else:

@@ -194,7 +194,7 @@ class CatalogSiteMap(utils.BrowserView):
 class CatalogNavigationTabs(utils.BrowserView):
     implements(INavigationTabs)
 
-    def topLevelTabs(self, actions=None):
+    def topLevelTabs(self, actions=None, category='portal_tabs'):
         context = utils.context(self)
 
         portal_catalog = getToolByName(context, 'portal_catalog')
@@ -206,7 +206,7 @@ class CatalogNavigationTabs(utils.BrowserView):
         result = []
         # first the actions
         if actions is not None:
-            for actionInfo in actions.get('portal_tabs', []):
+            for actionInfo in actions.get(category, []):
                 data = actionInfo.copy()
                 data['name'] = _(data['title'], default=data['title'])
                 result.append(data)
