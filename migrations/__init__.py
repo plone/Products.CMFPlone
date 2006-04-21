@@ -1,7 +1,7 @@
 from Products.CMFPlone import MigrationTool
 
 def executeMigrations():
-    import v1, v2, v2_1, v2_5
+    import v1, v2, v2_1, v2_5, v3_0
 
 def null(portal):
     """ This is a null migration, use it when nothing happens """
@@ -164,3 +164,8 @@ def registerMigrations():
     MigrationTool.registerUpgradePath('2.5-beta1',
                                       '2.5-beta2 (SVN/UNRLEASED)',
                                       v2_5.betas.beta1_beta2)
+
+    MigrationTool.registerUpgradePath('2.5-beta2 (SVN/UNRLEASED)',
+                                      '3.0 (SVN/UNRLEASED)',
+                                      null)
+

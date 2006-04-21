@@ -34,14 +34,8 @@ Installing Plone manually, step by step instructions.
 
   **MANDATORY**
 
-  - Zope 2.8.6 (or 2.9.1, does not run natively on Zope 3)
-     http://www.zope.org/Products/Zope/2.8.5
-     Note: Zope 2.8 requires Python 2.3.5, Zope 2.9 requires Python 2.4
-
-  - Five 1.2.1 or newer
-     Included in the Plone tarball for Zope 2.8.x
-     (If you run Zope 2.9, you will need to remove Five from your
-      Products directory, as a newer version is included with Zope)
+  - Zope 2.9.3 (does not run natively on Zope 3)
+     http://www.zope.org/Products/Zope/2.9.3
 
   - CMF 1.6.0 or newer (neither 1.5 nor 2.0)
      Included in the Plone tarball
@@ -85,7 +79,7 @@ Installing Plone manually, step by step instructions.
   - Placeless Translation Service 1.2.7 or newer
      Included in the Plone tarball
 
-  - PloneTranslations 2.5
+  - PloneTranslations 3.0
      Included in the Plone tarball
 
   - PloneLanguageTool 0.9 or newer
@@ -158,13 +152,12 @@ Installing Plone manually, step by step instructions.
       $SOFTWARE_HOME/Products folder
 
    Sometimes a Product's documentation will instruct you to install it in
-   SOFTWARE_HOME/Products.  SOFTWARE_HOME refers to the lib/python sub-folder of
+   SOFTWARE_HOME/Products. SOFTWARE_HOME refers to the lib/python sub-folder of
    the Zope folder. We strongly discourage installing packages in these places for
    two reasons:
 
-    * These folders affect all Plone 2 sites using that version of Zope.
-    * If you reinstall Plone 2 or a newer version of Plone 2, Zope will
-      be replaced.
+    * These folders affect all Plone sites using that version of Zope.
+    * If you reinstall Plone, Zope will be replaced.
 
    Any time you're asked to place packages into a Products folder, choose
    the INSTANCE_HOME/Products folder instead. Thank you!
