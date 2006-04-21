@@ -208,7 +208,7 @@ class CatalogNavigationTabs(utils.BrowserView):
         if actions is not None:
             for actionInfo in actions.get('portal_tabs', []):
                 data = actionInfo.copy()
-                data['title'] = _(data['title'], default=data['title'])
+                data['name'] = _(data['title'], default=data['title'])
                 result.append(data)
 
         # check whether we only want actions
