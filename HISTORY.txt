@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.5 (unreleased)
 
+    - Deprecate CatalogTool._initIndexes
+      [wichert]
+
     - Add a category parameter to createToplevelTabs to allow skins to use a
       different action category.
       [wichert]
