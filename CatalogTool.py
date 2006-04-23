@@ -25,6 +25,7 @@ from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFPlone.interfaces.NonStructuralFolder import INonStructuralFolder
 from Products.CMFPlone.utils import base_hasattr
 from Products.CMFPlone.utils import safe_callable
+from Products.CMFPlone.utils import log_deprecated
 from OFS.IOrderSupport import IOrderedContainer
 from ZODB.POSException import ConflictError
 
