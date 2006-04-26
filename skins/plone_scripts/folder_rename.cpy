@@ -32,15 +32,17 @@ for x in range(0, len(new_ids)):
             obj.setTitle(new_title)
             success[path]=(new_id,new_title)
         if new_id and id != new_id:
-            origPath = '/'.join(obj.getPhysicalPath())
+            origPath = obj.absolute_url_path()
             parent = obj.aq_inner.aq_parent
             parent.manage_renameObjects((id,), (new_id,))
             success[path]=(new_id,new_title)
             orig_template = request.get('orig_template', None)
-            real_orig = orig_template
-            if orig_template is not None and orig_template == origPath:
-                newObj = parent[new_id]
-                orig_template = newObj.absolute_url_path()
+            if orig_template is not None:
+                # We were called by 'object_rename'.  So now we take
+                # care that the user is not redirected to the object
+                # with the original id but with the new id.
+                newObjPath = parent[new_id].absolute_url_path()
+                orig_template = orig_template.replace(origPath, newObjPath)
                 request.set('orig_template', orig_template)
                 message = "Renamed '%s' to '%s'" % (id, new_id)
         else:
