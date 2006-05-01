@@ -73,7 +73,7 @@ Installing Plone manually, step by step instructions.
   - ExtendedPathIndex 2.3 or newer
      Included in the Plone tarball
 
-  - CMFDynamicViewFTI 1.0.3 or newer
+  - CMFDynamicViewFTI 2.0 or newer
      Included in the Plone tarball
 
   - Python Imaging Library 1.1.5 or newer
