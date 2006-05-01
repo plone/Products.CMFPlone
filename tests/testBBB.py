@@ -14,8 +14,12 @@ from zope.component.exceptions import ComponentLookupError
 from zope.interface import Interface
 from zope.interface import implements
 from zope.interface.verify import verifyObject
-from zope.app.tests import placelesssetup
-from zope.app.tests import ztapi
+try:
+    from zope.app.tests import placelesssetup
+    from zope.app.tests import ztapi
+except ImportError:
+    from zope.app.testing import placelesssetup
+    from zope.app.testing import ztapi
 
 ZOPE28 = True
 try:

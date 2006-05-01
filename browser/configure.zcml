@@ -14,15 +14,6 @@
     <allow interface=".interfaces.INavigationQueryBuilder" />
   </content>
 
-  <browser:layer
-      name="plone"
-      />
-
-  <browser:skin
-      name="plone"
-      layers="plone default"
-      />
-
   <browser:page
       for="*"
       name="default_page"
