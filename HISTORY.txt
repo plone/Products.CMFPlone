@@ -4,6 +4,28 @@ Changelog for Plone
 
 Plone 2.5 (unreleased)
 
+    - Fixes #5487.  Changed 'orig_template' query value from context's
+      URL to HTTP_REFERER in 'object_rename' so that we can really
+      redirect to the original view and not only the default view in
+      'folder_rename'.
+      http://dev.plone.org/plone/ticket/5487
+      [maurits, nouri]
+
+    - Turn I(Selectable)ConstrainTypes and I(Selectable)Browser default into
+      Zope 3 interface with reverse bridges. Depends on changes to 
+      ATContentTypes trunk and CMFDynamicViewFTI trunk as well!
+      [optilude]
+
+    - Various small fixes for support of future CMF versions.
+      [hannosch]
+      
+    - Incorporate some fixes for Zope 2.10 support. Note that 2.10 is not
+      officially supported for Plone 2.5.
+      [hannosch]
+
+    - Deprecate CatalogTool._initIndexes
+      [wichert]
+
     - Add a category parameter to createToplevelTabs to allow skins to use a
       different action category.
       [wichert]

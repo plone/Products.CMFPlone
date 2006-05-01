@@ -22,9 +22,10 @@ from Products.CMFCore.interfaces.portal_catalog \
         import IndexableObjectWrapper as z2IIndexableObjectWrapper
 from Products.CMFCore.interfaces import IIndexableObjectWrapper
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
-from Products.CMFPlone.interfaces.NonStructuralFolder import INonStructuralFolder
+from Products.CMFPlone.interfaces import INonStructuralFolder
 from Products.CMFPlone.utils import base_hasattr
 from Products.CMFPlone.utils import safe_callable
+from Products.CMFPlone.utils import log_deprecated
 from OFS.IOrderSupport import IOrderedContainer
 from ZODB.POSException import ConflictError
 
@@ -237,7 +238,7 @@ def is_folderish(obj, **kwargs):
     """
     # If the object explicitly states it doesn't want to be treated as a
     # structural folder, don't argue with it.
-    if INonStructuralFolder.isImplementedBy(obj):
+    if INonStructuralFolder.providedBy(obj):
         return False
     else:
         return bool(getattr(aq_base(obj), 'isPrincipiaFolderish', False))
@@ -277,6 +278,8 @@ class CatalogTool(PloneBaseTool, BaseTool):
 
     def __init__(self):
         ZCatalog.__init__(self, self.getId())
+	log_deprecated("CatalogTool._initIndexes is deprecated, please use a GenericSetup profile instead.")
+	self._initIndexes()
 
     def _removeIndex(self, index):
         """Safe removal of an index.

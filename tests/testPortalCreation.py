@@ -182,7 +182,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
 
     def testFullScreenAction(self):
         # There should be a full_screen action
-        self.failUnless(self.actions.getActionObject('document_actions/full_screen') is not None)
+        self.failUnless(self.actions.getActionInfo('document_actions/full_screen') is not None)
 
     def testFullScreenActionIcon(self):
         # There should be a full_screen action icon
@@ -307,10 +307,10 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
     def testObjectButtonActions(self):
         self.setRoles(['Manager', 'Member'])
         atool = self.actions
-        self.failIf(atool.getActionObject('object_buttons/cut') is None)
-        self.failIf(atool.getActionObject('object_buttons/copy') is None)
-        self.failIf(atool.getActionObject('object_buttons/paste') is None)
-        self.failIf(atool.getActionObject('object_buttons/delete') is None)
+        self.failIf(atool.getActionInfo('object_buttons/cut') is None)
+        self.failIf(atool.getActionInfo('object_buttons/copy') is None)
+        self.failIf(atool.getActionInfo('object_buttons/paste') is None)
+        self.failIf(atool.getActionInfo('object_buttons/delete') is None)
 
     def testContentsTabVisible(self):
         for a in self.actions.listActions():
@@ -433,13 +433,18 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
     def testSiteActions(self):
         self.setRoles(['Manager', 'Member'])
         atool = self.actions
-        self.failIf(atool.getActionObject('site_actions/sitemap') is None)
-        self.failIf(atool.getActionObject('site_actions/contact') is None)
-        self.failIf(atool.getActionObject('site_actions/accessibility') is None)
-        self.failIf(atool.getActionObject('site_actions/plone_setup') is None)
+        self.failIf(atool.getActionInfo('site_actions/sitemap') is None)
+        self.failIf(atool.getActionInfo('site_actions/contact') is None)
+        self.failIf(atool.getActionInfo('site_actions/accessibility') is None)
+        self.failIf(atool.getActionInfo('site_actions/plone_setup') is None)
         
     def testNoMembershipToolPloneSetupAction(self):
-        self.failUnless(self.actions.getActionObject('user/plone_setup') is None)
+        try:
+            self.failUnless(self.actions.getActionInfo('user/plone_setup'))
+        except ValueError:
+            pass
+        else:
+            self.fail('Found plone_setup action in user category.')
 
     def testTypesHaveSelectedLayoutViewAction(self):
         # Should add method aliases to the Plone Site FTI

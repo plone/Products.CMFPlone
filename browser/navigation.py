@@ -4,15 +4,15 @@ from zope.component import getMultiAdapter
 from Acquisition import aq_base, aq_inner
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import utils
-from Products.CMFPlone import PloneMessageFactory as _
+from Products.CMFPlone import PloneMessageFactory as PMF
 from Products.CMFPlone.browser.interfaces import IDefaultPage
 from Products.CMFPlone.browser.interfaces import INavigationBreadcrumbs
 from Products.CMFPlone.browser.interfaces import INavigationTabs
 from Products.CMFPlone.browser.interfaces import INavtreeStrategy
 from Products.CMFPlone.browser.interfaces import INavigationTree
 from Products.CMFPlone.browser.interfaces import ISiteMap
-from Products.CMFPlone.interfaces.BrowserDefault import IBrowserDefault
-from Products.CMFPlone.interfaces.BrowserDefault import IDynamicViewTypeInformation
+from Products.CMFPlone.interfaces import IBrowserDefault
+from Products.CMFPlone.interfaces import IDynamicViewTypeInformation
 
 from Products.CMFPlone.browser.navtree import buildFolderTree
 from Products.CMFPlone.browser.navtree import NavtreeQueryBuilder, SitemapQueryBuilder
@@ -104,12 +104,13 @@ class DefaultPage(utils.BrowserView):
             return lookupTranslationId(context, 'index_html')
 
         # 2. Test for IBrowserDefault
-        if IBrowserDefault.isImplementedBy(context):
+        browserDefault = IBrowserDefault(context, None)
+        if browserDefault is not None:
             fti = context.getTypeInfo()
             if fti is not None:
-                # Also check that the fti is really IDynamicViewTypeInformation
-                if IDynamicViewTypeInformation.isImplementedBy(fti):
-                    page = fti.getDefaultPage(context, check_exists=True)
+                dynamicFTI = IDynamicViewTypeInformation(fti, None)
+                if dynamicFTI is not None:
+                    page = dynamicFTI.getDefaultPage(context, check_exists=True)
                     if page is not None:
                         return lookupTranslationId(context, page)
 
@@ -208,7 +209,9 @@ class CatalogNavigationTabs(utils.BrowserView):
         if actions is not None:
             for actionInfo in actions.get(category, []):
                 data = actionInfo.copy()
-                data['name'] = _(data['title'], default=data['title'])
+                # We use PMF instead of _() here, as this should not be picked
+                # up by the extraction tool.
+                data['name'] = PMF(data['title'], default=data['title'])
                 result.append(data)
 
         # check whether we only want actions

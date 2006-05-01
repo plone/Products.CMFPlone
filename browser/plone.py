@@ -3,7 +3,7 @@ from Acquisition import aq_inner
 from Acquisition import aq_parent
 from Products.CMFPlone.browser.interfaces import IPlone
 from Products.CMFPlone.browser.navtree import getNavigationRoot
-from Products.CMFPlone.interfaces.NonStructuralFolder import INonStructuralFolder
+from Products.CMFPlone.interfaces import INonStructuralFolder
 from Products.CMFPlone import utils
 from Products.CMFPlone import IndexIterator
 from Products.CMFCore.utils import getToolByName
@@ -13,10 +13,12 @@ from Products.CMFCore.permissions import ListFolderContents
 from Products.CMFCore.permissions import AddPortalContent
 from Products.CMFCore.permissions import DeleteObjects
 from Products.CMFCore.permissions import ReviewPortalContent
-from Products.CMFPlone.interfaces.BrowserDefault import IBrowserDefault
+from Products.CMFPlone.interfaces import IBrowserDefault
 
 from zope.interface import implements
 from zope.component import getMultiAdapter
+
+
 from Products import CMFPlone
 import ZTUtils
 import sys
@@ -298,7 +300,6 @@ class Plone(utils.BrowserView):
         if not container:
             return False
         view = getMultiAdapter((container, request), name='default_page')
-        view.isDefaultPage(context)
         return view.isDefaultPage(context)
     isDefaultPageInFolder = cache_decorator(isDefaultPageInFolder)
 
@@ -307,8 +308,7 @@ class Plone(utils.BrowserView):
         context = utils.context(self)
         if not context.isPrincipiaFolderish:
             return False
-        #XXX: This should use a z3 interface and directlyProvides
-        elif INonStructuralFolder.isImplementedBy(context):
+        elif INonStructuralFolder.providedBy(context):
             return False
         else:
             return True
@@ -362,10 +362,11 @@ class Plone(utils.BrowserView):
     def getViewTemplateId(self):
         """See interface"""
         context = utils.context(self)
-        # XXX: Use z3 interface here
-        if IBrowserDefault.isImplementedBy(context):
+        
+        browserDefault = IBrowserDefault(context, None)
+        if browserDefault is not None:
             try:
-                return context.getLayout()
+                return browserDefault.getLayout()
             except AttributeError:
                 # Might happen if FTI didn't migrate yet.
                 pass
@@ -384,7 +385,7 @@ class Plone(utils.BrowserView):
         context = utils.context(self)
         fti = context.getTypeInfo()
         try:
-            # XXX: This isn't quite right since it assumeCs the action starts with ${object_url}
+            # XXX: This isn't quite right since it assumes the action starts with ${object_url}
             action = fti.getActionInfo(actionId)['url'].split('/')[-1]
         except ValueError:
             # If the action doesn't exist, stop

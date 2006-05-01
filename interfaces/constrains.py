@@ -60,7 +60,7 @@ class ISelectableConstrainTypes(IConstrainTypes):
         
     def setLocallyAllowedTypes(types):
         """
-        Set a list of type ids which should be allowed. Thist must be a 
+        Set a list of type ids which should be allowed. This must be a 
         subset of the type's FTI-set allowable types. This list only comes
         into effect when the restrictions mode is 1 (enabled).
         """

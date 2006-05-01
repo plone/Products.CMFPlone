@@ -22,12 +22,12 @@ from Products.CMFCore.interfaces.Discussions import Discussable
 from Products.CMFCore.WorkflowCore import WorkflowException
 from Products.CMFDefault.DublinCore import DefaultDublinCoreImpl
 from Products.CMFPlone.interfaces.Translatable import ITranslatable
-from Products.CMFPlone.interfaces.NonStructuralFolder import INonStructuralFolder
+from Products.CMFPlone.interfaces import INonStructuralFolder
 from Products.CMFPlone import ToolNames
 from Products.CMFPlone.utils import transaction_note
 from Products.CMFPlone.utils import base_hasattr
 from Products.CMFPlone.utils import safe_hasattr
-from Products.CMFPlone.interfaces.BrowserDefault import IBrowserDefault
+from Products.CMFPlone.interfaces import IBrowserDefault
 
 from OFS.SimpleItem import SimpleItem
 from OFS.ObjectManager import bad_id
@@ -859,8 +859,9 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
         # 5. If there is no default page, try IBrowserDefault.getLayout()
 
-        if IBrowserDefault.isImplementedBy(obj):
-            return obj, [obj.getLayout()]
+        browserDefault = IBrowserDefault(obj, None)
+        if browserDefault is not None:
+            return obj, [browserDefault.getLayout()]
 
         #
         # 6. If the object has a 'folderlisting' action, use this
@@ -920,7 +921,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         """
         if not obj.isPrincipiaFolderish:
             return False
-        elif INonStructuralFolder.isImplementedBy(obj):
+        elif INonStructuralFolder.providedBy(obj):
             return False
         else:
             return True
