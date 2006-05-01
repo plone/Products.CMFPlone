@@ -6,7 +6,9 @@
 
 import os
 
-from Products.CMFPlone.interfaces.NonStructuralFolder import INonStructuralFolder
+from zope.interface import implements
+
+from Products.CMFPlone.interfaces import INonStructuralFolder
 
 from ComputedAttribute import ComputedAttribute
 from OFS.SimpleItem import SimpleItem
@@ -119,12 +121,7 @@ class Folder(SimpleFolder):
 
 class NonStructuralFolder(Folder):
     '''Folder implementing the INonStructuralFolder interface'''
-    __implements__ = (INonStructuralFolder,)
-
-
-class FullNonStructuralFolder(Folder):
-    '''A real folder implementing the INonStructuralFolder interface'''
-    __implements__ = (Folder.__implements__,) + (INonStructuralFolder,)
+    implements(INonStructuralFolder)
 
 
 class Error(Exception):

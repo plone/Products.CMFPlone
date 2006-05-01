@@ -11,8 +11,8 @@ from Products.CMFPlone.browser.interfaces import INavigationTabs
 from Products.CMFPlone.browser.interfaces import INavtreeStrategy
 from Products.CMFPlone.browser.interfaces import INavigationTree
 from Products.CMFPlone.browser.interfaces import ISiteMap
-from Products.CMFPlone.interfaces.BrowserDefault import IBrowserDefault
-from Products.CMFPlone.interfaces.BrowserDefault import IDynamicViewTypeInformation
+from Products.CMFPlone.interfaces import IBrowserDefault
+from Products.CMFPlone.interfaces import IDynamicViewTypeInformation
 
 from Products.CMFPlone.browser.navtree import buildFolderTree
 from Products.CMFPlone.browser.navtree import NavtreeQueryBuilder, SitemapQueryBuilder
@@ -104,12 +104,13 @@ class DefaultPage(utils.BrowserView):
             return lookupTranslationId(context, 'index_html')
 
         # 2. Test for IBrowserDefault
-        if IBrowserDefault.isImplementedBy(context):
+        browserDefault = IBrowserDefault(context, None)
+        if browserDefault is not None:
             fti = context.getTypeInfo()
             if fti is not None:
-                # Also check that the fti is really IDynamicViewTypeInformation
-                if IDynamicViewTypeInformation.isImplementedBy(fti):
-                    page = fti.getDefaultPage(context, check_exists=True)
+                dynamicFTI = IDynamicViewTypeInformation(fti, None)
+                if dynamicFTI is not None:
+                    page = dynamicFTI.getDefaultPage(context, check_exists=True)
                     if page is not None:
                         return lookupTranslationId(context, page)
 

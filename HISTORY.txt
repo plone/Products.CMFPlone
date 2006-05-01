@@ -4,9 +4,14 @@ Changelog for Plone
 
 Plone 2.5 (unreleased)
 
+    - Turn I(Selectable)ConstrainTypes and I(Selectable)Browser default into
+      Zope 3 interface with reverse bridges. Depends on changes to 
+      ATContentTypes trunk and CMFDynamicViewFTI trunk as well!
+      [optilude]
+
     - Various small fixes for support of future CMF versions.
       [hannosch]
-
+      
     - Incorporate some fixes for Zope 2.10 support. Note that 2.10 is not
       officially supported for Plone 2.5.
       [hannosch]

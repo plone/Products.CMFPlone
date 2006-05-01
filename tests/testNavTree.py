@@ -20,10 +20,10 @@ from zope.interface import directlyProvides
 default_user = PloneTestCase.default_user
 
 from Products.CMFPlone.PloneFolder import PloneFolder
-from Products.CMFPlone.interfaces.NonStructuralFolder import INonStructuralFolder
+from Products.CMFPlone.interfaces import INonStructuralFolder
 
 class DummyNonStructuralFolder(PloneFolder):
-    __implements__ = (PloneFolder.__implements__,) + (INonStructuralFolder,)
+    implements(INonStructuralFolder)
 
 
 class TestFolderTree(PloneTestCase.PloneTestCase):
