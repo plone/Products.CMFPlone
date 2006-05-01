@@ -2,7 +2,7 @@
 <import-steps>
 
   <import-step id="actions" version="20040630-01"
-               handler="Products.CMFSetup.actions.importActionProviders"
+               handler="Products.CMFCore.exportimport.actions.importActionProviders"
                title="Action Providers">
     <dependency step="toolset"/>
     Import actions tool's action providers and their actions.
@@ -16,7 +16,7 @@
   </import-step>
 
   <import-step id="catalog" version="20050929-01"
-               handler="Products.CMFSetup.catalog.importCatalogTool"
+               handler="Products.CMFCore.exportimport.catalog.importCatalogTool"
                title="Catalog Tool">
     <dependency step="toolset"/>
     Import catalog tool's sub-objects, indexes and columns.
@@ -31,40 +31,40 @@
   </import-step>
 
   <import-step id="mailhost" version="20050803-01"
-               handler="Products.CMFSetup.mailhost.importMailHost"
+               handler="Products.CMFCore.exportimport.mailhost.importMailHost"
                title="MailHost">
     <dependency step="toolset"/>
     Import mailhost settings
   </import-step>
  
   <import-step id="properties" version="20041215-01"
-               handler="Products.CMFSetup.properties.importSiteProperties"
+               handler="Products.CMFCore.exportimport.properties.importSiteProperties"
                title="Site Properties">
     Import site properties.
   </import-step>
 
   <import-step id="rolemap" version="20040523-01"
-               handler="Products.CMFSetup.rolemap.importRolemap"
+               handler="Products.GenericSetup.rolemap.importRolemap"
                title="Role / Permission Map">
     Import custom roles and non-default role-permission mappings.
   </import-step>
 
   <import-step id="skins" version="20040630-01"
-               handler="Products.CMFSetup.skins.importSkinsTool"
+               handler="Products.CMFCore.exportimport.skins.importSkinsTool"
                title="Skins Tool">
     <dependency step="toolset"/>
     Import skins tool's filesystem directory views and skin path definitions.
   </import-step>
 
   <import-step id="toolset" version="20040630-01"
-               handler="Products.CMFSetup.tool.importToolset"
+               handler="Products.GenericSetup.tool.importToolset"
                title="Required tools">
     Create required tools, replacing any of the wrong class, and remove
     forbidden ones.
   </import-step>
 
   <import-step id="typeinfo" version="20040630-01"
-               handler="Products.CMFSetup.typeinfo.importTypesTool"
+               handler="Products.CMFCore.exportimport.typeinfo.importTypesTool"
                title="Types Tool">
     <dependency step="toolset"/>
     Import types tool's type information objects.
@@ -79,7 +79,7 @@
   </import-step>
 
   <import-step id="workflow" version="20040630-01"
-               handler="Products.CMFSetup.workflow.importWorkflowTool"
+               handler="Products.CMFCore.exportimport.workflow.importWorkflowTool"
                title="Workflow Tool">
     <dependency step="toolset"/>
     <dependency step="typeinfo"/>

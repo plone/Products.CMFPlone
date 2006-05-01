@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <export-steps>
  <export-step id="actions"
-              handler="Products.CMFSetup.actions.exportActionProviders"
+              handler="Products.CMFCore.exportimport.actions.exportActionProviders"
               title="Action Providers">
   
   
@@ -27,7 +27,7 @@
  
  </export-step>
  <export-step id="cookieauth"
-              handler="Products.CMFSetup.cookieauth.exportCookieCrumbler"
+              handler="Products.CMFCore.exportimport.cookieauth.exportCookieCrumbler"
               title="Cookie Authentication">
   
   
@@ -40,7 +40,7 @@
  
  </export-step>
  <export-step id="mailhost"
-              handler="Products.CMFSetup.mailhost.exportMailHost"
+              handler="Products.CMFCore.exportimport.mailhost.exportMailHost"
               title="MailHost">
   
   
@@ -53,7 +53,7 @@
  
  </export-step>
  <export-step id="properties"
-              handler="Products.CMFSetup.properties.exportSiteProperties"
+              handler="Products.CMFCore.exportimport.properties.exportSiteProperties"
               title="Site Properties">
   
   
@@ -66,7 +66,7 @@
  
  </export-step>
  <export-step id="rolemap"
-              handler="Products.CMFSetup.rolemap.exportRolemap"
+              handler="Products.GenericSetup.rolemap.exportRolemap"
               title="Role / Permission Map">
   
   
@@ -79,7 +79,7 @@
  
  </export-step>
  <export-step id="skins"
-              handler="Products.CMFSetup.skins.exportSkinsTool"
+              handler="Products.CMFCore.exportimport.skins.exportSkinsTool"
               title="Skins Tool">
   
   
@@ -92,7 +92,7 @@
  
  </export-step>
  <export-step id="step_registries"
-              handler="Products.CMFSetup.tool.exportStepRegistries"
+              handler="Products.GenericSetup.tool.exportStepRegistries"
               title="Step Registries">
   
   
@@ -105,7 +105,7 @@
  
  </export-step>
  <export-step id="toolset"
-              handler="Products.CMFSetup.tool.exportToolset"
+              handler="Products.GenericSetup.tool.exportToolset"
               title="Required Tools">
   
   
@@ -118,7 +118,7 @@
  
  </export-step>
  <export-step id="typeinfo"
-              handler="Products.CMFSetup.typeinfo.exportTypesTool"
+              handler="Products.CMFCore.exportimport.typeinfo.exportTypesTool"
               title="Types Tool">
   
   
@@ -131,7 +131,7 @@
  
  </export-step>
  <export-step id="workflows"
-              handler="Products.CMFSetup.workflow.exportWorkflowTool"
+              handler="Products.CMFCore.exportimport.workflow.exportWorkflowTool"
               title="Workflow Tool">
   
   
@@ -199,7 +199,7 @@
 
  </export-step>
  <export-step id="catalog"
-              handler="Products.CMFSetup.catalog.exportCatalogTool"
+              handler="Products.CMFCore.exportimport.catalog.exportCatalogTool"
               title="Catalog Tool">
    Export Catalog subobjects, indexes and columns
 

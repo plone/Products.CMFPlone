@@ -4,7 +4,7 @@ from zope.component import getMultiAdapter
 from Acquisition import aq_base, aq_inner
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import utils
-from Products.CMFPlone import PloneMessageFactory as _
+from Products.CMFPlone import PloneMessageFactory as PMF
 from Products.CMFPlone.browser.interfaces import IDefaultPage
 from Products.CMFPlone.browser.interfaces import INavigationBreadcrumbs
 from Products.CMFPlone.browser.interfaces import INavigationTabs
@@ -208,7 +208,9 @@ class CatalogNavigationTabs(utils.BrowserView):
         if actions is not None:
             for actionInfo in actions.get(category, []):
                 data = actionInfo.copy()
-                data['name'] = _(data['title'], default=data['title'])
+                # We use PMF instead of _() here, as this should not be picked
+                # up by the extraction tool.
+                data['name'] = PMF(data['title'], default=data['title'])
                 result.append(data)
 
         # check whether we only want actions

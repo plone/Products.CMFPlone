@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.5 (unreleased)
 
+    - Various small fixes for support of future CMF versions.
+      [hannosch]
+
     - Incorporate some fixes for Zope 2.10 support. Note that 2.10 is not
       officially supported for Plone 2.5.
       [hannosch]
