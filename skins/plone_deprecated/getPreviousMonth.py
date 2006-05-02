@@ -11,4 +11,4 @@ context.plone_log("The getPreviousMonth script is deprecated and will be "
                   "removed in plone 3.5.  Use the getPreviousMonth method "
                   "of the @@calendar_view view instead.")
 
-return context.restrictedTraverse('@@calendar_view').getNextMonth(month, year)
+return context.restrictedTraverse('@@calendar_view').getPreviousMonth(month, year)
