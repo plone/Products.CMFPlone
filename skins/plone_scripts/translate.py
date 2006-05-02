@@ -27,5 +27,9 @@ if not value and default is None:
     for k, v in mapping.items():
         value = value.replace('${%s}' % k, v)
 
+# XXX Quick fix for missing feature
+if escape_for_js:
+    value = value.replace ("'", "\\'")
+
 return value
 
