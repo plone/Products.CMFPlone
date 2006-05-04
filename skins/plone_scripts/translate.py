@@ -28,6 +28,6 @@ if not value and default is None:
         value = value.replace('${%s}' % k, v)
 
 if escape_for_js:
-    return result.replace("'", "\\'")
-else:
-    return result
+    value = value.replace("'", "\\'")
+
+return value
