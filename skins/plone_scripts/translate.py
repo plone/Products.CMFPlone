@@ -13,7 +13,7 @@ if msgid == None:
 # get tool
 tool = context.translation_service
 
-# this returns type unicode 
+# this returns type unicode
 value = tool.utranslate(domain,
                         msgid,
                         mapping,
@@ -27,5 +27,7 @@ if not value and default is None:
     for k, v in mapping.items():
         value = value.replace('${%s}' % k, v)
 
-return value
+if escape_for_js:
+    value = value.replace("'", "\\'")
 
+return value

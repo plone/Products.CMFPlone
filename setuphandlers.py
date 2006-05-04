@@ -25,8 +25,8 @@ class PloneGenerator:
         qi.installProduct('Archetypes', locked=0)
         qi.installProduct('CMFFormController', locked=1)
         qi.installProduct('GroupUserFolder', locked=1)
-        qi.installProduct('PasswordResetTool', locked=1)
         qi.installProduct('PlonePAS', locked=1)
+        qi.installProduct('PasswordResetTool', locked=1)
         qi.installProduct('CMFPlacefulWorkflow', locked=0)
         qi.installProduct('kupu', locked=0)
 
@@ -40,7 +40,7 @@ class PloneGenerator:
         qi.installProduct('ResourceRegistries', locked=1)
         qi.installProduct('ATContentTypes', locked=1)
         qi.notifyInstalled('ATReferenceBrowserWidget', locked=1)
-
+        
     def customizePortalOptions(self, p):
         p.manage_permission( cmfpermissions.ListFolderContents, \
                              ('Manager', 'Member', 'Owner',), acquire=1 )
@@ -138,6 +138,22 @@ class PloneGenerator:
             index_html.write(member_indexhtml)
             index_html.ZPythonScript_setTitle('Member Search')
 
+    def addRolesToPlugIn(self, p):
+        """
+        XXX This is horrible.. need to switch PlonePAS to a GenericSetup
+        based install so this doesn't need to happen.
+
+        Have to manually register the roles from the 'rolemap' step
+        with the roles plug-in.
+        """
+        uf = getToolByName(p, 'acl_users')
+        rmanager = uf.portal_role_manager
+        roles = ('Reviewer', 'Member')
+        existing = rmanager.listRoleIds()
+        for role in roles:
+            if role not in existing:
+                rmanager.addRole(role)
+
     def setupGroups(self, p):
         """
         Create Plone's default set of groups.
@@ -188,6 +204,7 @@ def importFinalSteps(context):
     site = context.getSite()
     gen = PloneGenerator()
     gen.setupPortalContent(site)
+    gen.addRolesToPlugIn(site)
     gen.setupGroups(site)
     gen.performMigrationActions(site)
     gen.setATCTToolVersion(site)
