@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1.3 - Tomahawk - Unreleased
 
+    - External editor link showed on temporary content.
+      This closes http://dev.plone.org/plone/ticket/5250.
+      [hannosch]
+
     - Calendar showed arrow when it's not clickable.
       This closes http://dev.plone.org/plone/ticket/5223.
       [hannosch]
