@@ -4,9 +4,12 @@ Changelog for Plone
 
 Plone 2.1.3 - Tomahawk - Unreleased
 
-    - Fixes #5301.  A confirmation page is now displayed upon 
-      successful submission of the contact-info form.
-      https://dev.plone.org/plone/ticket/5301
+    - Updated tableless main_template.pt to get it in sync with the tablebased
+      main_template.pt. This closes http://dev.plone.org/plone/ticket/5056.
+      [hannosch]
+
+    - A confirmation page is now displayed upon successful submission of the
+      contact-info form. This fixes http://dev.plone.org/plone/ticket/5301.
       [rocky]
 
     - Added missing i18n translation in live search for 'Advanced search' and

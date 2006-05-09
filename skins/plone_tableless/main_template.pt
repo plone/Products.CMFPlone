@@ -1,203 +1,208 @@
 <metal:page define-macro="master"><metal:doctype define-slot="doctype"><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"></metal:doctype>
 <metal:block define-slot="top_slot" />
 <metal:block use-macro="here/global_defines/macros/defines" />
+
 <html xmlns="http://www.w3.org/1999/xhtml"
       xml:lang="en"
       lang="en"
       tal:attributes="lang language;
                       xml:lang language">
 
-<head metal:use-macro="here/header/macros/html_header">
+  <head metal:use-macro="here/header/macros/html_header">
 
     <metal:fillbase fill-slot="base">
-        <metal:baseslot define-slot="base">
-            <base href="" tal:attributes="href here/renderBase" />
-        </metal:baseslot>
+      <metal:baseslot define-slot="base">
+        <base href="" tal:attributes="href here/renderBase" />
+      </metal:baseslot>
     </metal:fillbase>
 
     <metal:headslot fill-slot="head_slot"
-               tal:define="lang language;
-                           charset site_properties/default_charset|string:utf-8">
+                    tal:define="lang language;
+                                charset site_properties/default_charset|string:utf-8">
 
-    <!-- min-width support for IE via Javascript, required for tableless -->
-    <tal:comment replace="structure string:&lt;!--[if IE]&gt;" />
-    <script type="text/javascript"
-            tal:attributes="src string:$portal_url/plone_minwidth.js"></script>
-    <tal:comment replace="structure string:&lt;![endif]--&gt;" />
+      <tal:comment replace="nothing">min-width support for IE via Javascript, required for tableless</tal:comment>
+      <tal:comment replace="structure string:&lt;!--[if IE]&gt;" />
+      <script type="text/javascript"
+              tal:attributes="src string:$portal_url/plone_minwidth.js"></script>
+      <tal:comment replace="structure string:&lt;![endif]--&gt;" />
 
-    <metal:cache use-macro="here/global_cache_settings/macros/cacheheaders">
-      Get the global cache headers located in global_cache_settings.
-    </metal:cache>
+      <metal:cache use-macro="here/global_cache_settings/macros/cacheheaders">
+        Get the global cache headers located in global_cache_settings.
+      </metal:cache>
 
-    <metal:headslot define-slot="head_slot" />
-      <!-- A slot where you can insert elements in the header from a template -->
-    </metal:headslot>
+      <metal:headslot define-slot="head_slot" />
+      <tal:comment replace="nothing"> A slot where you can insert elements in the header from a template </tal:comment>
+      </metal:headslot>
 
     <metal:cssslot fill-slot="css_slot">
-      <!-- A slot where you can insert CSS in the header from a template -->
-        <metal:cssslot define-slot="css_slot" />
+      <tal:comment replace="nothing"> A slot where you can insert CSS in the header from a template </tal:comment>
+      <metal:cssslot define-slot="css_slot" />
     </metal:cssslot>
 
     <metal:javascriptslot fill-slot="javascript_head_slot">
-      <!-- A slot where you can insert javascript in the header from a template -->
-        <metal:javascriptslot define-slot="javascript_head_slot" />
+      <tal:comment replace="nothing"> A slot where you can insert javascript in the header from a template </tal:comment>
+      <metal:javascriptslot define-slot="javascript_head_slot" />
     </metal:javascriptslot>
-</head>
+  </head>
 
-<body tal:attributes="class here/getSectionFromURL;
-                      dir python:test(isRTL, 'rtl', 'ltr')">
+  <body tal:attributes="class here/getSectionFromURL;
+                        dir python:test(isRTL, 'rtl', 'ltr')">
 
+    <div id="visual-portal-wrapper">
 
-<div id="visual-portal-wrapper">
+      <div id="portal-top" i18n:domain="plone">
 
-  <div id="portal-top" i18n:domain="plone">
+        <div id="portal-header">
+          <a class="hiddenStructure"
+             accesskey="2"
+             tal:attributes="href string:${request/ACTUAL_URL}#documentContent"
+             i18n:translate="label_skiptocontent">Skip to content.</a>
 
-    <a href="#documentContent" class="hiddenStructure"
-       accesskey="2"
-       i18n:translate="label_skiptocontent">Skip to content.</a>
+          <a class="hiddenStructure"
+             accesskey="6"
+             tal:attributes="href string:${request/ACTUAL_URL}#portlet-navigation-tree"
+             i18n:translate="label_skiptonavigation">Skip to navigation</a>
 
-    <a class="hiddenStructure"
-       accesskey="6"
-       tal:attributes="href string:${request/ACTUAL_URL}#portlet-navigation-tree"
-       i18n:translate="label_skiptonavigation">Skip to navigation</a>
+             <div metal:use-macro="here/global_siteactions/macros/site_actions">
+               Site-wide actions (Contact, Sitemap, Help, Style Switcher etc)
+             </div>
 
-    <div metal:use-macro="here/global_skinswitcher/macros/skin_tabs">
-        The skin switcher tabs. Based on which role you have, you
-        get a selection of skins that you can switch between.
-    </div>
+             <div metal:use-macro="here/global_searchbox/macros/quick_search">
+               The quicksearch box, normally placed at the top right
+             </div>
 
-    <div metal:use-macro="here/global_siteactions/macros/site_actions">
-        Site-wide actions (Contact, Sitemap, Help, Style Switcher etc)
-    </div>
+             <a metal:use-macro="here/global_logo/macros/portal_logo">
+               The portal logo, linked to the portal root
+             </a>
 
-    <div metal:use-macro="here/global_searchbox/macros/quick_search">
-        The quicksearch box, normally placed at the top right
-    </div>
+             <div metal:use-macro="here/global_skinswitcher/macros/skin_tabs">
+               The skin switcher tabs. Based on which role you have, you
+               get a selection of skins that you can switch between.
+             </div>
 
-    <a metal:use-macro="here/global_logo/macros/portal_logo">
-        The portal logo, linked to the portal root
-    </a>
+             <div metal:use-macro="here/global_sections/macros/portal_tabs">
+               The global sections tabs. (Welcome, News etc)
+             </div>
+          </div>
 
-    <div metal:use-macro="here/global_sections/macros/portal_tabs">
-        The global sections tabs. (Welcome, News etc)
-    </div>
+          <div metal:use-macro="here/global_personalbar/macros/personal_bar">
+             The personal bar. (log in, logout etc...)
+           </div>
 
+           <div metal:use-macro="here/global_pathbar/macros/path_bar">
+             The breadcrumb navigation ("you are here")
+           </div>
+      </div>
 
-    <div metal:use-macro="here/global_personalbar/macros/personal_bar">
-        The personal bar. (log in, logout etc...)
-    </div>
+      <div class="visualClear"><!-- --></div>
 
-    <div metal:use-macro="here/global_pathbar/macros/path_bar">
-        The breadcrumb navigation ("you are here")
-    </div>
+      <tal:comment replace="nothing">
+      The wrapper table. It contains the three columns.
+      </tal:comment>
 
-  </div>
+      <div id="portal-columns"
+           tal:attributes="class string:${hidecolumns}">
+          <div id="visual-column-wrapper">
 
-<div class="visualClear"><!-- --></div>
+            <tal:comment replace="nothing"> Start of main content block </tal:comment>
+            <div id="portal-column-content"
+                 tal:define="tabindex python:Iterator(pos=0, mainSlot=True)">
 
-<!-- The wrapper div. It contains the three columns. -->
-<div id="portal-columns" tal:attributes="class string:${hidecolumns}">
+              <metal:block define-slot="content">
+                <div id="content"
+                     metal:define-macro="content"
+                     tal:define="show_border python:here.showEditableBorder(template_id=template_id, actions=actions );"
+                     tal:attributes="class python:test(show_border,'documentEditable','')">
 
-    <!-- start of the main and left columns -->
-    <div id="visual-column-wrapper">
-
-        <!-- start of main content block -->
-        <div id="portal-column-content"
-             tal:define="tabindex python:Iterator(pos=0, mainSlot=True)">
-
-          <metal:block define-slot="content">
-            <div id="content"
-                 metal:define-macro="content"
-                 tal:define="show_border python:here.showEditableBorder(template_id=template_id, actions=actions );"
-                 tal:attributes="class python:test(show_border,'documentEditable','')">
-
-                <metal:ifborder tal:condition="show_border" >
+                  <metal:ifborder tal:condition="show_border" >
                     <div metal:use-macro="here/global_contentviews/macros/content_views">
                         The content views (View, Edit, Properties, Workflow)
                     </div>
 
                     <div metal:use-macro="here/global_contentviews/macros/content_actions">
-                        The content bar
+                      The content bar
                     </div>
-                </metal:ifborder>
+                  </metal:ifborder>
 
-                <div class="documentContent" id="region-content">
+                  <div class="documentContent" id="region-content">
 
                     <a name="documentContent"></a>
 
                     <div metal:use-macro="here/global_statusmessage/macros/portal_message">
-                        Portal status message
+                      Portal status message
                     </div>
 
                     <metal:header metal:define-slot="header" tal:content="nothing">
-                        Visual Header
+                      Visual Header
                     </metal:header>
 
                     <metal:bodytext metal:define-slot="main" tal:content="nothing">
-                        Page body text
+                      Page body text
                     </metal:bodytext>
 
                     <metal:sub metal:define-slot="sub">
-                        <metal:discussion use-macro="here/viewThreadsAtBottom/macros/discussionView" />
+                      <metal:discussion use-macro="here/viewThreadsAtBottom/macros/discussionView" />
                     </metal:sub>
+
+                  </div>
 
                 </div>
 
+              </metal:block>
             </div>
-          </metal:block>
-        </div>
-        <!-- end of main content block -->
+            <tal:comment replace="nothing"> End of main content block </tal:comment>
 
-        <!-- start of the left (by default at least) column -->
-        <div id="portal-column-one"
-             tal:condition="slots_mapping/left"
-             metal:define-slot="column_one_slot">
-            <div class="visualPadding">
+            <tal:comment replace="nothing"> Start of the left column </tal:comment>
+            <div id="portal-column-one"
+                 metal:define-slot="column_one_slot"
+                 tal:condition="sl">
+              <div class="visualPadding">
                 <metal:portlets define-slot="portlets_one_slot">
-                    <metal:leftportlets use-macro="here/portlets_fetcher/macros/left_column">
-                        This instruction gets the portlets (boxes) for the left column.
-                    </metal:leftportlets>
+                  <metal:leftportlets use-macro="here/portlets_fetcher/macros/left_column">
+                    This instruction gets the portlets (boxes) for the left column.
+                  </metal:leftportlets>
                 </metal:portlets>
                 &nbsp;
+              </div>
             </div>
-        </div>
-        <!-- end of the left (by default at least) column -->
+            <tal:comment replace="nothing"> End of the left column </tal:comment>
 
-    </div>
-    <!-- end of the main and left columns -->
-
-    <!-- start of right (by default at least) column -->
-    <div id="portal-column-two"
-         tal:condition="slots_mapping/right"
-         metal:define-slot="column_two_slot">
-        <div class="visualPadding">
-            <metal:portlets define-slot="portlets_two_slot">
-                <metal:rightportlets metal:use-macro="here/portlets_fetcher/macros/right_column">
-                    This instruction gets the portlets (boxes) for the right column.
+          </div>
+          <tal:comment replace="nothing"> Start of right column </tal:comment>
+          <div id="portal-column-two"
+               metal:define-slot="column_two_slot"
+               tal:condition="sr">
+            <div class="visualPadding">
+              <metal:portlets define-slot="portlets_two_slot">
+                <metal:rightportlets use-macro="here/portlets_fetcher/macros/right_column">
+                  This instruction gets the portlets (boxes) for the right column.
                 </metal:rightportlets>
-            </metal:portlets>
-            &nbsp;
-        </div>
+              </metal:portlets>
+              &nbsp;
+            </div>
+          </div>
+          <tal:comment replace="nothing"> End of the right column </tal:comment>
+
+      <div class="visualClear"><!-- --></div>
+
+      </div>
+      <tal:comment replace="nothing"> end column wrapper </tal:comment>
+
+      <hr class="netscape4" />
+
+      <metal:block i18n:domain="plone">
+
+        <metal:footer use-macro="here/footer/macros/portal_footer">
+          Footer
+        </metal:footer>
+
+        <metal:colophon use-macro="here/colophon/macros/colophon">
+          The colophon area - contains details about the production of
+          the site. Typically "powered by" buttons, standards, tools used.
+        </metal:colophon>
+      </metal:block>
+
     </div>
-    <!-- end of the right (by default at least) column -->
-
-    <div class="visualClear"><!-- --></div>
-
-</div>
-<!-- end column wrapper -->
-
-<hr class="netscape4" />
-
-<div id="portal-footer" metal:use-macro="here/footer/macros/portal_footer">
-  Footer
-</div>
-
-<div id="portal-colophon" metal:use-macro="here/colophon/macros/colophon">
-  The colophon area - contains details about the production of
-  the site. Typically "powered by" buttons, standards, tools used.
-</div>
-
-</div>
 
 </body>
 </html>
