@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1.3 - Tomahawk - Unreleased
 
+    - Fixed trivial error in validate_emailaddr.
+      This closes http://dev.plone.org/plone/ticket/5249.
+      [hannosch]
+
     - External editor link showed on temporary content.
       This closes http://dev.plone.org/plone/ticket/5250.
       [hannosch]
