@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1.3 - Tomahawk - Unreleased
 
+    - Added missing i18n translation in live search for 'Advanced search' and
+      'Show all'. This closes http://dev.plone.org/plone/ticket/5425.
+      [hannosch]
+
     - Fixed incorrect coloring of workflow states in content menu in some cases,
       due to missing normalizeString call.
       This fixes http://dev.plone.org/plone/ticket/5078.

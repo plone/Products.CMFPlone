@@ -55,6 +55,8 @@ RESPONSE.setHeader('Content-Type', 'text/xml;charset=%s' % context.plone_utils.g
 _ = context.translate
 legend_livesearch = _('legend_livesearch', default='LiveSearch &darr;')
 label_no_results_found = _('label_no_results_found', default='No matching results found.')
+label_advanced_search = _('label_advanced_search', default='Advanched Search&hellip;')
+label_show_all = _('label_show_all', default='Show all&hellip;')
 
 if not results:
     print '''<fieldset class="livesearchContainer">'''
@@ -62,7 +64,7 @@ if not results:
     print '''<div class="LSIEFix">'''
     print '''<div id="LSNothingFound">%s</div>''' % label_no_results_found
     print '''<li class="LSRow">'''
-    print '<a href="search_form" style="font-weight:normal">Advanced Search&hellip;</a>'
+    print '<a href="search_form" style="font-weight:normal">%s</a>' % label_advanced_search
     print '''</li>'''
     print '''</div>'''
     print '''</fieldset>'''
@@ -95,13 +97,13 @@ else:
         full_title, display_title, display_description = None, None, None
 
     print '''<li class="LSRow">'''
-    print '<a href="search_form" style="font-weight:normal">Advanced Search&hellip;</a>'
+    print '<a href="search_form" style="font-weight:normal">%s</a>' % label_advanced_search
     print '''</li>'''
 
     if len(results)>limit:
         # add a more... row
         print '''<li class="LSRow">'''
-        print '<a href="%s" style="font-weight:normal">Show all&hellip;</a>' % ('search?SearchableText=' + searchterms)
+        print '<a href="%s" style="font-weight:normal">%s</a>' % ('search?SearchableText=' + searchterms, label_show_all)
         print '''</li>'''
     print '''</ul>'''
     print '''</div>'''
