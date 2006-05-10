@@ -19,7 +19,7 @@
         class="actionMenuDisabled">
         <tal:state i18n:translate="label_state">State:</tal:state>
         <span tal:content="python:putils.getReviewStateTitleFor(here)"
-              tal:attributes="class string:state-${review_state}"
+              tal:attributes="class python:'state-'+normalizeString(review_state)"
               i18n:translate="">
         Workflow state
         </span>
@@ -38,7 +38,7 @@
                 <span i18n:translate="label_state">State:</span>
 
                 <span tal:content="python:putils.getReviewStateTitleFor(here)"
-                         tal:attributes="class string:state-${review_state}"
+                         tal:attributes="class python:'state-'+normalizeString(review_state)"
                          i18n:translate="">
                     Workflow state
                 </span>

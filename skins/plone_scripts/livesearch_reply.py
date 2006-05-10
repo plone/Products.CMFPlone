@@ -55,21 +55,25 @@ RESPONSE.setHeader('Content-Type', 'text/xml;charset=%s' % context.plone_utils.g
 
 legend_livesearch = _('legend_livesearch', default='LiveSearch &darr;')
 label_no_results_found = _('label_no_results_found', default='No matching results found.')
+label_advanced_search = _('label_advanced_search', default='Advanched Search&hellip;')
+label_show_all = _('label_show_all', default='Show all&hellip;')
+
+ts = getToolByName(context, 'translation_service')
 
 if not results:
     print '''<fieldset class="livesearchContainer">'''
-    print '''<legend id="livesearchLegend">%s</legend>''' % legend_livesearch
+    print '''<legend id="livesearchLegend">%s</legend>''' % ts.translate(legend_livesearch)
     print '''<div class="LSIEFix">'''
-    print '''<div id="LSNothingFound">%s</div>''' % label_no_results_found
+    print '''<div id="LSNothingFound">%s</div>''' % ts.translate(label_no_results_found)
     print '''<li class="LSRow">'''
-    print '<a href="search_form" style="font-weight:normal">Advanced Search&hellip;</a>'
+    print '<a href="search_form" style="font-weight:normal">%s</a>' % ts.translate(label_advanced_search)
     print '''</li>'''
     print '''</div>'''
     print '''</fieldset>'''
 
 else:
     print '''<fieldset class="livesearchContainer">'''
-    print '''<legend id="livesearchLegend">%s</legend>''' % legend_livesearch
+    print '''<legend id="livesearchLegend">%s</legend>''' % ts.translate(legend_livesearch)
     print '''<div class="LSIEFix">'''
     print '''<ul class="LSTable">'''
     for result in results[:limit]:
@@ -95,13 +99,13 @@ else:
         full_title, display_title, display_description = None, None, None
 
     print '''<li class="LSRow">'''
-    print '<a href="search_form" style="font-weight:normal">Advanced Search&hellip;</a>'
+    print '<a href="search_form" style="font-weight:normal">%s</a>' % ts.translate(label_advanced_search)
     print '''</li>'''
 
     if len(results)>limit:
         # add a more... row
         print '''<li class="LSRow">'''
-        print '<a href="%s" style="font-weight:normal">Show all&hellip;</a>' % ('search?SearchableText=' + searchterms)
+        print '<a href="%s" style="font-weight:normal">%s</a>' % ('search?SearchableText=' + searchterms, ts.translate(label_show_all))
         print '''</li>'''
     print '''</ul>'''
     print '''</div>'''

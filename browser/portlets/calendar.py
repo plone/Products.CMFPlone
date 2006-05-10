@@ -28,6 +28,9 @@ class CalendarPortlet(utils.BrowserView):
         self.weeks = calendar.getEventsForCalendar(self.month, self.year)
         self.daynumbers = calendar.getDayNumbers()
         self._translation_service = getToolByName(context, 'translation_service')
+        self.showStates = calendar.getCalendarStates()
+        self.showPrevMonth = self.yearmonth > (self.prevYearMin.year(), self.prevYearMin.month())
+        self.showNextMonth = self.yearmonth < (self.nextYearMax.year(), self.nextYearMax.month())
 
     def getYearAndMonthToDisplay(self):
         """ from skins/plone_scripts/getYearAndMonthToDisplay.py """

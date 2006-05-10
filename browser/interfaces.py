@@ -169,6 +169,15 @@ class ICalendarPortlet(Interface):
     def weeks():
         """ """
 
+    def showStates():
+        """ """
+
+    def showPrevMonth():
+        """ """
+
+    def showNextMonth():
+        """ """
+
     def getYearAndMonthToDisplay():
         """ """
 

@@ -4,6 +4,48 @@ Changelog for Plone
 
 Plone 2.5 (unreleased)
 
+    - Updated tableless main_template.pt to get it in sync with the tablebased
+      main_template.pt. This closes http://dev.plone.org/plone/ticket/5056.
+      [hannosch]
+
+    - A confirmation page is now displayed upon successful submission of the
+      contact-info form. This fixes http://dev.plone.org/plone/ticket/5301.
+      [rocky]
+
+    - Added missing i18n translation in live search for 'Advanced search' and
+      'Show all'. This closes http://dev.plone.org/plone/ticket/5425.
+      [hannosch]
+
+    - Fixed incorrect coloring of workflow states in content menu in some cases,
+      due to missing normalizeString call.
+      This fixes http://dev.plone.org/plone/ticket/5078.
+      [hannosch]
+
+    - Fixed typo in image_view_fullscreen.pt.
+      This closes http://dev.plone.org/plone/ticket/5469.
+      [hannosch]
+
+    - Fixed trivial error in validate_emailaddr.
+      This closes http://dev.plone.org/plone/ticket/5249.
+      [hannosch]
+
+    - External editor link showed on temporary content.
+      This closes http://dev.plone.org/plone/ticket/5250.
+      [hannosch]
+
+    - Calendar showed arrow when it's not clickable.
+      This closes http://dev.plone.org/plone/ticket/5223.
+      [hannosch]
+
+    - Links in calendar portlet showed only "published" items, rather than all
+      states set by calendar tool.
+      This closes http://dev.plone.org/plone/ticket/5077.
+      [hannosch]
+
+    - OpenDocument files are no longer shown as garbage text. This fixes
+      http://dev.plone.org/plone/ticket/5504
+      [hannosch]
+
     - Readd a couple prematurely deleted scripts. Fixes #5482.
       [alecm]
 

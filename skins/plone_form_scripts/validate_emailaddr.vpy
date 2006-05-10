@@ -13,7 +13,7 @@ from Products.CMFPlone import PloneMessageFactory as _
 reg_tool=context.portal_registration
 
 def invalid(field):
-    state.setError('email', _(u'You entered an invalid email address.'), 'invalid_email')
+    state.setError(field, _(u'You entered an invalid email address.'), 'invalid_email')
 
 if email and reg_tool.isValidEmail(email):
     pass

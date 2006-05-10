@@ -12,7 +12,6 @@
         color: black; 
         font-family: "Lucida Grande", Verdana, Lucida, Helvetica, Arial, sans-serif; 
         font-size: 69%;
-        style="text-align:center;"
     }
     
     a {
