@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.1.3 - Tomahawk - Unreleased
 
+    - Fixed bug in login_success. If you did not came_from somewhere, it would
+      still offer you to go there. Changed this to portal_url instead.
+      This closes http://dev.plone.org/plone/ticket/5496.
+      [hannosch]
+
     - Repaired the portal logo appearance visual bug in IE 5, 5.5.
       This closes http://dev.plone.org/plone/ticket/5228.
       [wald]
@@ -114,7 +119,7 @@ Plone 2.1.3 - Tomahawk - Unreleased
       [limi]
 
     - Disabled the RichWidget file upload field using CSS. The reason is that
-      it causes a lot of problems for naïve users, who upload Word documents,
+      it causes a lot of problems for na? users, who upload Word documents,
       images etc here. The content has to be in HTML or the selected text
       format for this to work. If you want to re-enable this in your site, add
       the following to your CSS file: .fieldUploadFile { display: block }
