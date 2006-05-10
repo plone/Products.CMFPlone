@@ -4,6 +4,27 @@ Changelog for Plone
 
 Plone 2.5 (unreleased)
 
+    - Repaired the portal logo appearance visual bug in IE 5, 5.5.
+      This closes http://dev.plone.org/plone/ticket/5228.
+      [wald]
+
+    - Corrected the portlet_calendar view for tableless layout for Firefox.
+      This closes http://dev.plone.org/plone/ticket/5467.
+      [wald]
+
+    - When setting some background to the top, Live Search did not look
+      properly. Moreover in IE it had a bad visual behavior. Changed the visual
+      representation of the Live Search to repair the improper look.
+      This closes http://dev.plone.org/plone/ticket/4313 and
+      http.://dev.plone.org/plone/ticket/5005.
+      [wald]
+
+    - contentActions drop down menus were falling below the content area text
+      in IE. This closes http://dev.plone.org/plone/ticket/4949,
+      http://dev.plone.org/plone/ticket/4960 and
+      http://dev.plone.org/plone/ticket/4961.
+      [wald]
+
     - Updated tableless main_template.pt to get it in sync with the tablebased
       main_template.pt. This closes http://dev.plone.org/plone/ticket/5056.
       [hannosch]
