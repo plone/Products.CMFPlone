@@ -29,7 +29,7 @@
                  toLocalizedTime nocall:here/toLocalizedTime;
                  getEventString nocall:here/getEventString;
                  show_states here/portal_calendar/getCalendarStates;
-                 showPrevMonth python:yearmonth > (prevYearMin.year(), prevYearMin.month());
+                 showPrevMonth python:yearmonth &gt; (prevYearMin.year(), prevYearMin.month());
                  showNextMonth python:yearmonth &lt; (nextYearMax.year(), nextYearMax.month());">
     <!-- The calendar, rendered as a table -->
 
