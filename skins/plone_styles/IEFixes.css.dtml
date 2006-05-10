@@ -42,10 +42,10 @@ textarea {
     filter:alpha(opacity=20); 
 }
 
-#portal-logo a {
-    height: 0px !important;
-    height /**/: <dtml-var "_[logoName].height">px;
-}
+#portal-logo {
+  height /**/: <dtml-var "_[logoName].height">px;
+  overflow: hidden;
+}       
 
 /* Fix bottom margin on tabs in IE */
 #portal-globalnav li.selected a {
@@ -66,6 +66,16 @@ position: relative;
 }
 
 /* Calendar fixes */
+.ploneCalendar { 
+    border-collapse:collapse;
+    width:auto; 
+    height:1%;
+}
+
+.ploneCalendar td { 
+    width:1%;
+}
+
 .ploneCalendar .todaynoevent,
 .ploneCalendar .todayevent {
     position: relative;
@@ -95,6 +105,13 @@ body { /* These work in IE only, changes the look of the scrollbar + textareas *
 #floatholder, #float {
     height: 1%;
 }
+
+* html .link-external,
+* html .link-external a,
+* html .link-mailto a,
+* html .link-mailto {
+     height: 1%; 
+} 
 
 /* Fix for IE float bug */
 * html .visualIEFloatFix,
