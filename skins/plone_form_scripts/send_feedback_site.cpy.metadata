@@ -5,5 +5,5 @@ proxy=Manager,Anonymous
 validators=validate_site_feedback
 
 [actions]
-action.success = traverse_to:string:contact-info
+action.success = traverse_to:string:send_feedback_confirm
 action.failure = traverse_to:string:contact-info
