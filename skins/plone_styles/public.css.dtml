@@ -298,9 +298,9 @@
 }
 
 .LSResult {
-    position:relative;
+    position: relative;
     display: block;
-    text-align:right;
+    text-align: right;
     padding-top: 5px;
     margin: 0;
     left: 3px;
@@ -308,8 +308,8 @@
 }
 
 .LSShadow {
-    position:relative;
-    text-align:right;
+    position: relative;
+    text-align: right;
 }
 
 .livesearchContainer {
@@ -317,17 +317,38 @@
     margin-top: 0;
     padding: 0 !important;
     position: absolute;
-    right:0px;
+    right: 0px;
     /* Currently exposes a rendering bug in Mozilla */
-    top: -17px;
+    top: 0;
     white-space: normal;
     font-family:  <dtml-var fontFamily>;
     visibility: visible;
-    text-align:left;
+    text-align: left;
     color: &dtml-globalFontColor;;
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
-    width:300px;
+    width: 30em;
     text-transform: none;
+}
+
+* html .livesearchContainer {
+    padding: &dtml-borderWidth; !important;
+    padding-top: 0 !important;
+    background-color: &dtml-globalBorderColor;;
+    border: 0;
+}
+
+#livesearchLegend {
+    line-height: 1em;
+    margin-top: -2em;
+    margin-left: -0.1em;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    border-bottom: 0;
+}
+
+* html #livesearchLegend {
+    margin-top: -1.9em;
+    margin-left: -8px;
+    position: relative;
 }
 
 /* Workaround for Internet Explorer's broken z-index implementation */

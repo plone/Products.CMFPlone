@@ -325,6 +325,7 @@ ol.visualNoMarker {
     text-transform: &dtml-textTransform;;
     padding: 0 0 0 1em;
     z-index: 2;
+    position:relative;
     height: 1.6em;
 }
 
