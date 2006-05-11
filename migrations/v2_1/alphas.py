@@ -1186,7 +1186,7 @@ def changePloneSetupActionToSiteSetup(portal, out):
     """
     newaction = {'id': 'plone_setup',
                 'name': 'Site Setup',
-                'action': 'string: ${portal_url}/plone_control_panel',
+                'action': 'string:${portal_url}/plone_control_panel',
                 'condition': '', # condition
                 'permission': ManagePortal,
                 'category': 'user',

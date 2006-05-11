@@ -43,7 +43,7 @@ def twoBeta2_twoBeta3(portal):
     mt=getToolByName(portal, 'portal_membership')
     mt.addAction('plone_setup',
                 'Plone Setup',
-                'string: ${portal_url}/plone_control_panel',
+                'string:${portal_url}/plone_control_panel',
                 '', # condition
                 ManagePortal,
                 'user',
