@@ -141,6 +141,8 @@ from Products.CMFPlone.migrations.v2_5.betas import fixHomeAction
 from Products.CMFPlone.migrations.v2_5.betas import removeBogusSkin
 from Products.CMFPlone.migrations.v2_5.betas import addPloneSkinLayers
 from Products.CMFPlone.migrations.v2_5.betas import installPortalSetup
+from Products.CMFPlone.migrations.v2_5.betas import simplifyActions
+from Products.CMFPlone.migrations.v2_5.betas import migrateCSSRegExpression
 
 from Products.CMFDynamicViewFTI.migrate import migrateFTI
 
@@ -3815,6 +3817,131 @@ class TestMigrations_v2_5(MigrationTest):
     def testRemoveBogusSkinNoTool(self):
         self.portal._delObject('portal_skins')
         removeBogusSkin(self.portal, [])
+
+    def testSimplifyActions(self):
+        # Should simplify a number of actions across multiple tools using the
+        # view methods
+        tool = self.portal.portal_actions
+        paste = tool.getActionObject('object_buttons/paste')
+        rename = tool.getActionObject('object_buttons/rename')
+        contents = tool.getActionObject('object/folderContents')
+        index = tool.getActionObject('portal_tabs/index_html')
+        # Should work across multiple tools
+        wkspace = self.portal.portal_membership.getActionObject(
+                                                           'user/myworkspace')
+        # Set the expressions and conditions to their 2.5 analogues to test
+        # every substitution
+        paste.setActionExpression(
+'python:"%s/object_paste"%((object.isDefaultPageInFolder() or not object.is_folderish()) and object.getParentNode().absolute_url() or object_url)')
+        rename.setActionExpression(
+'python:"%s/object_rename"%(object.isDefaultPageInFolder() and object.getParentNode().absolute_url() or object_url)')
+        rename.edit(condition=
+'python:portal.portal_membership.checkPermission("Delete objects", object.aq_inner.getParentNode()) and portal.portal_membership.checkPermission("Copy or Move", object) and portal.portal_membership.checkPermission("Add portal content", object) and object is not portal and not (object.isDefaultPageInFolder() and object.getParentNode() is portal)')
+        contents.setActionExpression(
+"python:((object.isDefaultPageInFolder() and object.getParentNode().absolute_url()) or folder_url)+'/folder_contents'")
+        index.setActionExpression(
+"string: ${here/@@plone/navigationRootUrl}")
+        wkspace.setActionExpression(
+"python: portal.portal_membership.getHomeUrl()+'/workspace'")
+
+        # Verify that the changes have been made
+        paste = tool.getActionObject('object_buttons/paste')
+        self.failUnless("object.isDefaultPageInFolder()" in
+                                                  paste.getActionExpression())
+        # Run the action simplifications
+        simplifyActions(self.portal, [])
+        self.assertEqual(paste.getActionExpression(),
+                "string:${globals_view/getCurrentFolderUrl}/object_paste")
+        self.assertEqual(rename.getActionExpression(),
+                "string:${globals_view/getCurrentObjectUrl}/object_rename")
+        self.assertEqual(rename.getCondition(),
+'python:checkPermission("Delete objects", globals_view.getParentObject()) and checkPermission("Copy or Move", object) and checkPermission("Add portal content", object) and not globals_view.isPortalOrPortalDefaultPage()')
+        self.assertEqual(contents.getActionExpression(),
+                "string:${globals_view/getCurrentFolderUrl}/folder_contents")
+        self.assertEqual(index.getActionExpression(),
+                "string:${globals_view/navigationRootUrl}")
+        self.assertEqual(wkspace.getActionExpression(),
+                "string:${portal/portal_membership/getHomeUrl}/workspace")
+
+    def testSimplifyActionsTwice(self):
+        # Should result in the same string when applied twice
+        tool = self.portal.portal_actions
+        paste = tool.getActionObject('object_buttons/paste')
+        paste.setActionExpression(
+'python:"%s/object_paste"%((object.isDefaultPageInFolder() or not object.is_folderish()) and object.getParentNode().absolute_url() or object_url)')
+
+        # Verify that the changes have been made
+        paste = tool.getActionObject('object_buttons/paste')
+        self.failUnless("object.isDefaultPageInFolder()" in
+                                                  paste.getActionExpression())
+
+        # Run the action simplifications twice
+        simplifyActions(self.portal, [])
+        simplifyActions(self.portal, [])
+
+        # We should have the same result
+        self.assertEqual(paste.getActionExpression(),
+                "string:${globals_view/getCurrentFolderUrl}/object_paste")
+
+    def testSimplifyActionsNoTool(self):
+        # Sholud not fail if the tool is missing
+        self.portal._delObject('portal_actions')
+        simplifyActions(self.portal, [])
+
+    def testMigrateCSSRegExpression(self):
+        # Should convert the expression using a deprecated script to use the
+        # view
+        css_reg = self.portal.portal_css
+        resource = css_reg.getResource('RTL.css')
+        resource.setExpression("python:object.isRightToLeft(domain='plone')")
+        css_reg.cookResources()
+
+        # Ensure the change worked
+        resource = css_reg.getResource('RTL.css')
+        self.failUnless('object.isRightToLeft' in resource.getExpression())
+
+        # perform the migration
+        migrateCSSRegExpression(self.portal, [])
+        self.assertEqual(resource.getExpression(),
+                "object/@@plone/isRightToLeft")
+
+    def testMigrateCSSRegExpressionWith25Expression(self):
+        # Should replace the restrictedTraverse call with the more compact
+        # path expression
+        css_reg = self.portal.portal_css
+        resource = css_reg.getResource('RTL.css')
+        resource.setExpression(
+"python:object.restrictedTraverse('@@plone').isRightToLeft(domain='plone')")
+        css_reg.cookResources()
+
+        # perform the migration
+        migrateCSSRegExpression(self.portal, [])
+        self.assertEqual(resource.getExpression(),
+                "object/@@plone/isRightToLeft")
+
+    def testMigrateCSSRegExpressionTwice(self):
+        # Should result in the same string when applied twice
+        css_reg = self.portal.portal_css
+        resource = css_reg.getResource('RTL.css')
+        resource.setExpression("python:object.isRightToLeft(domain='plone')")
+        css_reg.cookResources()
+
+        # perform the migration twice
+        migrateCSSRegExpression(self.portal, [])
+        migrateCSSRegExpression(self.portal, [])
+        self.assertEqual(resource.getExpression(),
+                "object/@@plone/isRightToLeft")
+
+    def testMigrateCSSRegExpressionNoTool(self):
+        # Should not fail if the tool is missing
+        self.portal._delObject('portal_css')
+        migrateCSSRegExpression(self.portal, [])
+
+    def testMigrateCSSRegExpressionNoResource(self):
+        # Should not fail if the resource is missing
+        css_reg = self.portal.portal_css
+        css_reg.unregisterResource('RTL.css')
+        migrateCSSRegExpression(self.portal, [])
 
 
 def test_suite():

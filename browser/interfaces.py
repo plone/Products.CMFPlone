@@ -345,7 +345,7 @@ class IPlone(Interface):
            settings.
         """
 
-    def isRightToLeft(domain):
+    def isRightToLeft(domain='plone'):
         """Is the currently selected language a right to left language"""
 
     def toLocalizedTime(time, long_format=None):

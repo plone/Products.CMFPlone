@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 2.5 (unreleased)
 
+    - Added migrations to get rid of deprecation warnings due to actions which
+      still use the old scripts.  Gave @@plone.isRightToLeft a sane default
+      value.  Made the quoting conventions used in the XML profiles a bit more
+      consistent.
+      [alecm]
+
     - Simplified action url/condition expressions by using @@plone view
       methods.  There are now no more URL expressions that use 'python:'
       expressions.

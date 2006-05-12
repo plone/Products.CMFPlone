@@ -206,7 +206,7 @@ class Plone(utils.BrowserView):
         return False
     visibleIdsEnabled = cache_decorator(visibleIdsEnabled)
 
-    def isRightToLeft(self, domain):
+    def isRightToLeft(self, domain='plone'):
         """ See interface """
         context = utils.context(self)
         try:
