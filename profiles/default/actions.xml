@@ -75,13 +75,13 @@
   </action>
   <action title="Cut" action_id="cut" category="object_buttons"
      condition_expr="python:checkPermission(&quot;Delete objects&quot;, globals_view.getParentObject()) and checkPermission(&quot;Copy or Move&quot;, object) and not globals_view.isPortalOrPortalDefaultPage()"
-     url_expr="string:${globals_view/getCurrentFolderUrl}/object_cut"
+     url_expr="string:${globals_view/getCurrentObjectUrl}/object_cut"
      visible="True">
    <permission>Delete objects</permission>
   </action>
   <action title="Copy" action_id="copy" category="object_buttons"
      condition_expr="python:checkPermission(&quot;Copy or Move&quot;, object) and not globals_view.isPortalOrPortalDefaultPage()"
-     url_expr="string:${globals_view/getCurrentFolderUrl}/object_copy"
+     url_expr="string:${globals_view/getCurrentObjectUrl}/object_copy"
      visible="True">
    <permission>View</permission>
   </action>
@@ -93,13 +93,13 @@
   </action>
   <action title="Delete" action_id="delete" category="object_buttons"
      condition_expr="python:checkPermission(&quot;Delete objects&quot;, globals_view.getParentObject()) and not globals_view.isPortalOrPortalDefaultPage()"
-     url_expr="string:${globals_view/getCurrentFolderUrl}/object_delete"
+     url_expr="string:${globals_view/getCurrentObjectUrl}/object_delete"
      visible="True">
    <permission>Delete objects</permission>
   </action>
   <action title="Rename" action_id="rename" category="object_buttons"
      condition_expr="python:checkPermission('Delete objects', globals_view.getParentObject()) and checkPermission('Copy or Move', object) and checkPermission('Add portal content', object) and not globals_view.isPortalOrPortalDefaultPage()"
-     url_expr="string:${globals_view/getCurrentFolderUrl}/object_rename"
+     url_expr="string:${globals_view/getCurrentObjectUrl}/object_rename"
      visible="True">
    <permission>Add Portal Content</permission>
   </action>

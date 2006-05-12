@@ -345,6 +345,14 @@ class Plone(utils.BrowserView):
     def getCurrentFolderUrl(self):
         return self.getCurrentFolder().absolute_url()
 
+    def getCurrentObjectUrl(self):
+        context = utils.context(self)
+        if self.isDefaultPageInFolder():
+            obj = self.getParentObject()
+        else:
+            obj = context
+        return obj.absolute_url()
+
     def isFolderOrFolderDefaultPage(self):
         context = utils.context(self)
         if self.isStructuralFolder() or self.isDefaultPageInFolder():

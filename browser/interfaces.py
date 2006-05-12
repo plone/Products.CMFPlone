@@ -398,6 +398,11 @@ class IPlone(Interface):
            self.getCurrentFolder(), used heavily in actions.
         """
 
+    def getCurrentObjectUrl():
+        """Returns the URL of the current object unless that object is a
+           folder default page, in which case it returns the parent.
+        """
+
     def isFolderOrFolderDefaultPage():
         """Returns true only if the current object is either a folder (as
            determined by isStructuralFolder) or the default page in context.
