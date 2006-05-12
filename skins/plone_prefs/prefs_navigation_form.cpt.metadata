@@ -2,7 +2,7 @@
 title=Navigation Setup
 
 [security]
-View=0:Authenticated
+View = 0:Manager
 
 [validators]
 validators=prefs_navigation_form_validate
