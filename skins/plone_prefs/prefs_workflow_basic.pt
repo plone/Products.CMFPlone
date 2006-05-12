@@ -67,8 +67,7 @@
             <metal:block tal:repeat="wf workflow_list">
                 <option value="wf"
                             tal:attributes="value wf"
-                            tal:content="wf"
-                            i18n:translate="label_pubdraft">public draft</option>
+                            tal:content="wf">public draft</option>
                 </metal:block>
         </select>
 
