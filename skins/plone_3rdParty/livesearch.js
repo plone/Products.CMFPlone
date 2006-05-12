@@ -253,7 +253,8 @@ function liveSearchDoSearch() {
     }
     liveSearchReq = new XMLHttpRequest();
     liveSearchReq.onreadystatechange= liveSearchProcessReqChange;
-    liveSearchReq.open("GET", liveSearchRoot + queryTarget + encodeURI(searchInput.value) );
+    // need to use encodeURIComponent instead of encodeURI, to escape +
+    liveSearchReq.open("GET", liveSearchRoot + queryTarget + encodeURIComponent(searchInput.value) );
     liveSearchLast = searchInput.value;
     liveSearchReq.send(null);
     }
