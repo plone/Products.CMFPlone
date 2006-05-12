@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1.3 - Tomahawk - Unreleased
 
+    - Fixed livesearch issues.
+      This closes http://dev.plone.org/plone/ticket/5204 .
+      [ree]
+
     - Set access for all plone control panel forms to View =
       0:Manager. Closes https://dev.plone.org/plone/ticket/5434.
       [brcwhit]
