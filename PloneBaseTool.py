@@ -8,6 +8,7 @@ from Acquisition import aq_parent
 from Acquisition import aq_inner
 
 from Products.CMFCore import Expression
+from Products.CMFCore.utils import getToolByName
 from Products.PageTemplates.Expressions import getEngine
 from Products.PageTemplates.Expressions import SecureModuleImporter
 
@@ -72,6 +73,11 @@ def createExprContext(folder, portal, object):
     req = view_obj.REQUEST
     globals_view = getMultiAdapter((view_obj, req), name='plone')
     expr_context.global_vars['globals_view'] = globals_view
+    # Add checkPermission to the action expression context to make cleaner
+    # faster expressions
+    membership_tool = getToolByName(view_obj, 'portal_membership')
+    checkPerm = membership_tool.checkPermission
+    expr_context.global_vars['checkPermission'] = checkPerm
 
     return expr_context
 

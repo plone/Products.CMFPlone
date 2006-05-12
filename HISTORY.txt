@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.5 (unreleased)
 
+    - Simplified action url/condition expressions by using @@plone view
+      methods.  There are now no more URL expressions that use 'python:'
+      expressions.
+      [alecm]
+
     - Readd folder_edit_form which is still used to edit the site root.
       This closes http://dev.plone.org/plone/ticket/5430.
       [hannosch]

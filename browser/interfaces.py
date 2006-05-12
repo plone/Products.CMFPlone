@@ -393,6 +393,11 @@ class IPlone(Interface):
            ui.
         """
 
+    def getCurrentFolderUrl():
+        """Returns the URL of the current folder as determined by
+           self.getCurrentFolder(), used heavily in actions.
+        """
+
     def isFolderOrFolderDefaultPage():
         """Returns true only if the current object is either a folder (as
            determined by isStructuralFolder) or the default page in context.
