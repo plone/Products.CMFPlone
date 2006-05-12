@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.5 (unreleased)
 
+    - Moved css rules for the photo album view inside Plone's public.css,
+      instead of having them inline in the template. This way they can be
+      overridden. This closes http://dev.plone.org/plone/ticket/4765.
+
     - Repaired the portal logo appearance visual bug in IE 5, 5.5.
       This closes http://dev.plone.org/plone/ticket/5228.
       [wald]
