@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.5 (unreleased)
 
+    - Readd folder_edit_form which is still used to edit the site root.
+      This closes http://dev.plone.org/plone/ticket/5430.
+      [hannosch]
+
     - Fixed some i18n markup problems revealed by the Zope 2.10 ZChecker tests.
       [hannosch]
 
