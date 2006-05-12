@@ -915,6 +915,54 @@ textarea.proportional {
     margin: 0 0 0 0.6em;
 }
 
+/* Album view classes */
+
+.photoAlbumEntry {
+    float: left;
+    height: 185px;
+    width: 143px;
+    margin: 0em;
+    padding: 0px 6px 0px 9px;
+    text-align: center;
+    background-image: url('&dtml-portal_url;/polaroid-single.png');
+    background-repeat: no-repeat;
+}
+
+.photoAlbumEntry img {
+    border: 1px solid #ccc;
+    display: block;
+    margin: 0 auto;
+}
+
+.photoAlbumEntryWrapper {
+    /*display: block;*/
+    height: 130px;
+    width: 128px;
+    margin-bottom: 7px;
+}
+
+.photoAlbumEntry a {
+    display: block;
+    text-decoration: none;
+    font-size: &dtml-fontSmallSize;;
+    height: 169px;
+    width: 130px;
+    margin: 16px auto 0px;
+}
+
+.photoAlbumFolder {
+    background-image: url('&dtml-portal_url;/polaroid-multi.png');
+    background-repeat: no-repeat;
+}
+
+.photoAlbumEntryTitle {
+    color: &dtml-discreetColor;;
+    display: block;
+    overflow: hidden;
+    width: 128px;
+    height: 3.6em;
+}
+
 /* Link types */
 
 .link-plain {

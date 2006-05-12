@@ -2,6 +2,7 @@
 # Plone CatalogTool
 #
 import re
+import urllib, time
 
 from Products.CMFCore.CatalogTool import CatalogTool as BaseTool
 from Products.CMFCore.permissions import ManagePortal
@@ -278,8 +279,8 @@ class CatalogTool(PloneBaseTool, BaseTool):
 
     def __init__(self):
         ZCatalog.__init__(self, self.getId())
-	log_deprecated("CatalogTool._initIndexes is deprecated, please use a GenericSetup profile instead.")
-	self._initIndexes()
+        log_deprecated("CatalogTool._initIndexes is deprecated, please use a GenericSetup profile instead.")
+        self._initIndexes()
 
     def _removeIndex(self, index):
         """Safe removal of an index.
@@ -350,14 +351,29 @@ class CatalogTool(PloneBaseTool, BaseTool):
         return ZCatalog.searchResults(self, REQUEST, **kw)
 
     security.declareProtected(ManageZCatalogEntries, 'clearFindAndRebuild')
-    def clearFindAndRebuild(self):
+    def clearFindAndRebuild(self, REQUEST=None, RESPONSE=None, URL1=None):
         """Empties catalog, then finds all contentish objects (i.e. objects
            with a reindexObject method), and reindexes them.
            This may take a long time."""
+
+        elapse = time.time()
+        c_elapse = time.clock()
+
         self.manage_catalogClear()
         portal = aq_parent(aq_inner(self))
         portal.ZopeFindAndApply(portal, search_sub=True,
                                 apply_func=reindexContentObject)
+
+        elapse = time.time() - elapse
+        c_elapse = time.clock() - c_elapse
+
+        if REQUEST and RESPONSE:
+            RESPONSE.redirect(
+                URL1 +
+                '/manage_catalogAdvanced?manage_tabs_message=' +
+                urllib.quote('Catalog Cleared and Recreated \n'
+                             'Total time: %s\n'
+                             'Total CPU time: %s' % (`elapse`, `c_elapse`)))
 
     __call__ = searchResults
 

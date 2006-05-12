@@ -167,7 +167,7 @@ class TestContentTypeScripts(PloneTestCase.PloneTestCase):
         self.assertEqual(self.folder.image.Title(), 'Foo')
         self.folder.image.image_edit(title='')
         self.assertEqual(self.folder.image.Title(), '')
- 
+
     def testAddToFavorites(self):
         # Ugh, addFavorite traverses to remote_url, so make sure it can.
         self.setRoles(['Manager'])
@@ -393,10 +393,11 @@ class TestBadFileIds(PloneTestCase.PloneTestCase):
     # TODO: Dang! No easy way to get at the validator state...
 
 
-class TestImagePatch(PloneTestCase.PloneTestCase):
+class TestImageProps(PloneTestCase.PloneTestCase):
 
-    def testImagePatchComputedProps(self):
-        from Products.CMFPlone.patches.imagePatch import tag
+    def testImageComputedProps(self):
+        from OFS.Image import Image
+        tag = Image.tag.im_func
         kw = {'_title':'some title',
               '_alt':'alt tag',
               'height':100,
@@ -419,9 +420,9 @@ class TestWorkflowHistory(PloneTestCase.PloneTestCase):
     def test_WorkflowHistory(self):
         # see if doc returns any history at this point
         history = self.doc.getWorkflowHistory()
-        self.failUnlessEqual(history, []) 
+        self.failUnlessEqual(history, [])
 
-        # do a transition 
+        # do a transition
         self.setRoles(['Reviewer']) # has no modify portal content permission
         self.wf.doActionFor(self.doc, 'publish')
         self.wf.doActionFor(self.doc, 'retract')
@@ -449,7 +450,7 @@ def test_suite():
     suite.addTest(makeSuite(TestFileURL))
     suite.addTest(makeSuite(TestFileExtensions))
     suite.addTest(makeSuite(TestBadFileIds))
-    suite.addTest(makeSuite(TestImagePatch))
+    suite.addTest(makeSuite(TestImageProps))
     suite.addTest(makeSuite(TestWorkflowHistory))
     return suite
 
