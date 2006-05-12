@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.0.6 - Anti-Pop - (Unreleased)
 
+    - Applied patch from tracker as a "just in case" measure.
+      http://dev.plone.org/plone/ticket/3770
+      [stefan]
+
     - Fixed missing security declarations in MembershipTool.
       http://dev.plone.org/plone/ticket/5432
       [stefan]

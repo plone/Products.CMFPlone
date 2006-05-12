@@ -22,7 +22,7 @@
                      Batch python:modules['Products.CMFPlone'].Batch;
                      login_time python:member.getProperty('login_time', DateTime());
                      begin_time python:here.ZopeTime('2000/01/01');
-                     validate_email here/validate_email;">
+                     validate_email portal_object/validate_email;">
 
             <metal:block tal:on-error="nothing"
                  tal:define="d_reg python: member.setProperties(last_login_time=login_time);
