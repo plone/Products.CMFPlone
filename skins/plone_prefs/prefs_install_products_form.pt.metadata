@@ -2,4 +2,4 @@
 title=Add/Remove Products
 
 [security]
-View=0:Authenticated
+View = 0:Manager
