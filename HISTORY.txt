@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.5 (unreleased)
 
+    - Fixed some i18n markup problems revealed by the Zope 2.10 ZChecker tests.
+      [hannosch]
+
     - Moved css rules for the photo album view inside Plone's public.css,
       instead of having them inline in the template. This way they can be
       overridden. This closes http://dev.plone.org/plone/ticket/4765.

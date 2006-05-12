@@ -192,7 +192,7 @@
                  tal:attributes="class python:test(error_workflow_action, 'field error', 'field')">
 
               <div tal:condition="error_workflow_action">
-                <tal:block i18n:translate="text_error" content="error_workflow_action">Error</tal:block>
+                <tal:block content="error_workflow_action">Error</tal:block>
                 <br />
               </div>
 
