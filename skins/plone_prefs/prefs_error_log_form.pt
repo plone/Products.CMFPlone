@@ -23,7 +23,13 @@
         This page lists the exceptions that have occurred in this site
         recently.  You can configure how many exceptions should be kept
         and whether the exceptions should be copied to Zope's event log
-        file(s).
+        file(s). 
+    </p>
+
+    <p class="discrete" i18n:translate="error_rerference_link">
+      Refer to the <a href="http://plone.org/documentation/error">
+      plone.org error reference</a> for more information about these
+      exceptions.
     </p>
 
         <form action="prefs_error_log_update" method="get">
