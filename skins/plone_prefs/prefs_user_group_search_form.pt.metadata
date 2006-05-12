@@ -2,4 +2,4 @@
 title=User and Groups Search
 
 [security]
-View=0:Authenticated
+View = 0:Manager

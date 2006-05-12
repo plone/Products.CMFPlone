@@ -2,7 +2,7 @@
 title=Site setup
 
 [security]
-View=0:Authenticated
+View = 0:Manager
 
 [validators]
 validators=validate_reconfig
