@@ -4,6 +4,16 @@ Changelog for Plone
 
 Plone 2.1.3 - Tomahawk - Unreleased
 
+    - Added link to error reference on plone.org to error log form.
+      ticket: https://dev.plone.org/plone/ticket/5478
+      [brcwhit]
+
+    - Fixed showEditableBorder.py to check the following permission
+      before checking whether a user is anonymous: Modify portal
+      content, Add portal content, Review portal content.
+      In response to https://dev.plone.org/plone/ticket/5117.
+      [brcwhit]
+
     - Fixed livesearch issues.
       This closes http://dev.plone.org/plone/ticket/5204 .
       [ree]
