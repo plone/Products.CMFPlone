@@ -159,6 +159,8 @@
 
         </tal:foldercontents>
         </metal:listingmacro>
+
+        <metal:subtopics use-macro="here/atct_topic_view/macros/folderlisting_macro" />
     </metal:main-macro>
     </div>
 
