@@ -2,7 +2,7 @@
 title=User Management
 
 [security]
-View=0:Authenticated
+View = 0:Authenticated
 
 [validators]
 validators = 

@@ -9,10 +9,18 @@
 </head>
 
 <body>
+
 <div metal:fill-slot="main">
 
-    <h1 i18n:translate="heading_send_feedback_confirm">Site Administrator has been contacted</h1>
-	<p i18n:translate="message_send_feedback_confirm">A mail has now been sent to the site administrator regarding your questions and/or comments.</p>
+    <h1 i18n:translate="heading_send_feedback_confirm">
+        Site Administrator has been contacted.
+    </h1>
+	
+    <p i18n:translate="message_send_feedback_confirm">
+        A mail has now been sent to the site administrator regarding your
+        questions and/or comments.
+    </p>
 </div>
+
 </body>
 </html>

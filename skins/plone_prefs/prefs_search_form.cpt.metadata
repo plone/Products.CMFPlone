@@ -2,7 +2,7 @@
 title=Search Setup
 
 [security]
-View=0:Authenticated
+View = 0:Manager
 
 [validators]
 validators=

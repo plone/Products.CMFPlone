@@ -12,7 +12,7 @@ INTERFACE = 'Products.CMFPlone.interfaces.BrowserDefault.ISelectableBrowserDefau
 from Products.CMFPlone import PloneMessageFactory as _
 
 if not objectId:
-    context.plone_utils.addPortalMessage(_(u'Please select an item to use'))
+    context.plone_utils.addPortalMessage(_(u'Please select an item to use.'))
     return state.set(status = 'missing')
 
 from Products.CMFCore.utils import getToolByName
