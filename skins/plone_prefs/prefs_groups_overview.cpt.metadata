@@ -2,7 +2,7 @@
 title=Groups Management
 
 [security]
-View = 0:Manager
+View = 0:Authenticated
 
 [actions]
 action.success..AddGroup = redirect_to:string:prefs_group_details
