@@ -225,7 +225,7 @@
     <metal:block tal:condition="python:test(search_submitted and not search_results, 1, 0)">
         <h1 i18n:translate="heading_search_results">Search results</h1>
         <p i18n:translate="no_members_found">
-            No members were found using your search Criteria.
+            No members were found using your search criteria.
         </p>
         <hr />
     </metal:block>
