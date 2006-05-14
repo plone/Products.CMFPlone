@@ -225,7 +225,7 @@
     <metal:block tal:condition="python:test(search_submitted and not search_results, 1, 0)">
         <h1 i18n:translate="heading_search_results">Search results</h1>
         <p i18n:translate="no_members_found">
-            No members were found using your <strong>Search Criteria</strong>
+            No members were found using your search Criteria.
         </p>
         <hr />
     </metal:block>
@@ -268,7 +268,7 @@
                                tabindex=""
                                tal:attributes="tabindex tabindex/next;"/>
                         </th>
-                        <th i18n:translate="label_full_name">Full name</th>
+                        <th i18n:translate="label_full_name">Full Name</th>
                         <th i18n:translate="label_user_name">User Name</th>
                     </tr>
                     </thead>

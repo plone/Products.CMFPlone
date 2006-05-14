@@ -4,18 +4,23 @@ Changelog for Plone
 
 Plone 2.1.3 - Tomahawk - Unreleased
 
+    - Various small i18n markup fixes. Updated folder_edit_form to conform to
+      the same style as the Archetypes based edit forms, as it is still used
+      for the Plone site object.
+      [hannosch]
+
     - Added smart folder sub-topic listing to all available smart folder view
-      templates.  Fixes #5349.
+      templates. Fixes http://dev.plone.org/plone/ticket/5349.
       [alecm]
 
     - Added link to error reference on plone.org to error log form.
-      ticket: https://dev.plone.org/plone/ticket/5478
+      Fixes http://dev.plone.org/plone/ticket/5478.
       [brcwhit]
 
     - Fixed showEditableBorder.py to check the following permission
       before checking whether a user is anonymous: Modify portal
       content, Add portal content, Review portal content.
-      In response to https://dev.plone.org/plone/ticket/5117.
+      This closes http://dev.plone.org/plone/ticket/5117.
       [brcwhit]
 
     - Fixed livesearch issues.

@@ -16,7 +16,7 @@
        class="link-parent"
        tal:attributes="href string: $portal_url/plone_control_panel"
        i18n:translate="label_up_to_plone_setup">
-    Up to Site Setup
+        Up to Site Setup
     </a>
 
     <p i18n:translate="description_error_log_setup">
@@ -26,10 +26,12 @@
         file(s). 
     </p>
 
-    <p class="discrete" i18n:translate="error_rerference_link">
-      Refer to the <a href="http://plone.org/documentation/error">
-      plone.org error reference</a> for more information about these
-      exceptions.
+    <p class="discrete">
+        <a href="http://plone.org/documentation/error"
+           i18n:translate="description_error_rerference_link">
+            Refer to the plone.org error reference for more information about
+            these exceptions.
+        </a>
     </p>
 
         <form action="prefs_error_log_update" method="get">
@@ -43,12 +45,21 @@
                 </div>
 
                 <div class="formControls">
-                    <input class="standalone" type="submit" name="form.button.refresh"
-                           value="Refresh" i18n:attributes="value label_refresh;" />
-                    <input class="standalone" type="submit" name="form.button.clear"
-                           value="Clear Displayed Entries" i18n:attributes="value label_clear_displayed_entries;" />
-                    <input class="standalone" type="submit" name="form.button.showall"
-                           value="Show all entries" i18n:attributes="value label_show_all_entries;" />
+                    <input class="standalone"
+                           type="submit"
+                           name="form.button.refresh"
+                           value="Refresh"
+                           i18n:attributes="value label_refresh;" />
+                    <input class="standalone"
+                           type="submit"
+                           name="form.button.clear"
+                           value="Clear Displayed Entries"
+                           i18n:attributes="value label_clear_displayed_entries;" />
+                    <input class="standalone"
+                           type="submit"
+                           name="form.button.showall"
+                           value="Show all entries"
+                           i18n:attributes="value label_show_all_entries;" />
                 </div>
 
                 <table class="listing"
@@ -76,7 +87,8 @@
                             <td tal:content="python: here.toLocalizedTime(DateTime(entry['time']), long_format=True)">13:04:41</td>
                             <td tal:content="string: ${entry/username} (${entry/userid})">joe</td>
                             <td>
-                                <a href="showEntry" tal:attributes="href string:prefs_error_log_showEntry?id=${entry/id}">
+                                <a href="showEntry"
+                                   tal:attributes="href string:prefs_error_log_showEntry?id=${entry/id}">
                                     <span tal:replace="entry/type">AttributeError</span>:
                                     <span tal:define="value entry/value"
                                           tal:content="python: len(value) &lt; 70 and value or value[:70] + '...'">
@@ -119,7 +131,9 @@
                        tal:attributes="checked props/copy_to_zlog;
                                        disabled not:here/error_log/checkEventLogPermission|nothing" />
 
-                <label for="cb_copy_to_zlog" i18n:translate="label_copy_exceptions">Copy exceptions to the event log</label>
+                <label for="cb_copy_to_zlog" i18n:translate="label_copy_exceptions">
+                    Copy exceptions to the event log
+                </label>
                 
             </div>
                                        
@@ -127,7 +141,8 @@
                 <label i18n:translate="label_ignored_exception">Ignored exception types</label>
                 
                 <textarea name="ignored_exceptions:lines" 
-                          cols="40" rows="3"
+                          cols="40"
+                          rows="3"
                           tal:content="python: '\n'.join(props['ignored_exceptions'])"></textarea>
             </div>
             

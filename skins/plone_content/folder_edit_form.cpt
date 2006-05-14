@@ -12,19 +12,28 @@
     <div metal:fill-slot="main"
          tal:define="errors options/state/getErrors">
 
-      <h1 i18n:translate="heading_edit_folder_properties">Edit Folder</h1>
+      <h1 i18n:translate="heading_edit_item">
+        Edit
+        <span i18n:name="itemtype">
+          <span i18n:translate=""
+                tal:omit-tag="">Folder</span>
+        </span>
+      </h1>
+
+      <div metal:use-macro="here/document_byline/macros/byline">
+        Get the byline - contains details about author and modification date.
+      </div>
+
+      <p class="discreet" i18n:translate="">
+          A folder which can contain other items.
+      </p>
 
       <form name="edit_form"
-            action="."
             method="post"
             enctype="multipart/form-data"
+            class="enableUnloadProtection"
+            action="."
             tal:attributes="action string:${here_url}/${template/getId}" >
-
-
-
-        <fieldset>
-
-          <legend i18n:translate="legend_folder_details">Folder Details</legend>
 
           <div class="field"
                tal:condition="python:site_properties.getProperty('visible_ids', None) and
@@ -36,9 +45,8 @@
             <label for="id" i18n:translate="label_short_name">Short Name</label>
 
             <div class="formHelp" i18n:translate="help_shortname">
-                   Short Name is part of the item's web address. 
-		           For accessibility reasons, do not use spaces, upper case, 
-                   underscores, or special characters.
+                Should not contain spaces, underscores or mixed case.
+                Short Name is part of the item's web address.
             </div>
 
             <div tal:content="error">Validation error output</div>
@@ -64,6 +72,7 @@
                  />
 
           <div class="field"
+               id="archetypes-fieldname-title"
                tal:define="error errors/title|nothing;
                            Title request/title | here/Title;"
                tal:attributes="class python:test(error, 'field error', 'field')">
@@ -94,7 +103,7 @@
             <label for="description" i18n:translate="label_description">Description</label>
 
             <div class="formHelp" i18n:translate="help_description">
-              A brief description of the item.
+              A short summary of the content
             </div>
 
             <textarea cols="80"
@@ -111,6 +120,7 @@
 
           <div class="formControls"
                tal:define="process_creation request/process_creation|nothing;">
+
             <input class="context"
                    tabindex=""
                    type="submit"
@@ -118,7 +128,6 @@
                    value="Save"
                    i18n:attributes="value label_save;"
                    tal:attributes="tabindex tabindex/next;" />
-
             <input class="standalone"
                    tabindex=""
                    type="submit"
@@ -127,15 +136,10 @@
                    i18n:attributes="value label_cancel;"
                    tal:attributes="tabindex tabindex/next;" />
           </div>
-        </fieldset>
 
         <input type="hidden" name="form.submitted" value="1" />
 
       </form>
-
-      <div metal:use-macro="here/document_byline/macros/byline">
-        Get the byline - contains details about author and modification date.
-      </div>
 
     </div>
 

@@ -259,7 +259,7 @@
                         i18n:translate="text_nomatches">No matches</p>
                   <p tal:condition="not:searchstring"
                      class="discreet"
-                     i18n:translate="text_no_searchstring">Enter a group or user name to search for, or click 'Show All'.</p>
+                     i18n:translate="text_no_searchstring">Enter a group or user name to search for or click 'Show All'.</p>
             </tal:block>
 
             <input type="hidden" value="b_start" name="b_start"
