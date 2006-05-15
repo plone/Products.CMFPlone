@@ -41,7 +41,16 @@ if REQUEST.has_key('disable_border'): #short circuit
 if REQUEST.has_key('enable_border'): #short circuit
     return 1
 
+from Products.CMFPlone.utils import log
+
 mtool = context.portal_membership
+checkPerm = mtool.checkPermission
+
+if checkPerm('Modify portal content', context) or\
+       checkPerm('Add portal content', context)  or\
+       checkPerm('Review portal content', context):
+    return 1
+
 if mtool.isAnonymousUser():
     return 0
 
@@ -66,12 +75,6 @@ if idActions.has_key('edit') :
     if (idActions.has_key(template_id) or \
         template_id in ['synPropertiesForm', 'folder_contents', 'folder_listing']) :
         return 1
-
-if mtool.checkPermission('Modify portal content', context):
-    return 1
-
-if mtool.checkPermission('Review portal content', context):
-    return 1
 
 if context.portal_workflow.getTransitionsFor(context, context):
     return 1

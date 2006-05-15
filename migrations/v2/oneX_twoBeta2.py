@@ -492,7 +492,7 @@ def fixUndoActions(portal):
             del action
     st.addAction('undo',
                  'Undo',
-                 'string: ${portal_url}/undo_form',
+                 'string:${portal_url}/undo_form',
                  'member',
                  'List undoable changes',
                  'user')

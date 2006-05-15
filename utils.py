@@ -208,7 +208,8 @@ def typesToList(context):
     return wl
 
 def normalizeString(text, context=None, encoding=None, relaxed=False):
-    assert context or encoding, 'Either context or encoding must be provided'
+    assert (context is not None) or (encoding is not None), \
+           'Either context or encoding must be provided'
     # Make sure we are dealing with a stringish type
     if not isinstance(text, basestring):
         # This most surely ends up in something the user does not expect

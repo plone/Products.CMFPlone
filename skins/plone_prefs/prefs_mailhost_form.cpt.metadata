@@ -1,12 +1,12 @@
 [default]
 title=Mail Setup
 
-[security]
-View=0:Authenticated
-
 [validators]
 validators=
 
 [actions]
 action.success=traverse_to:string:prefs_mailhost_set
 action.failure=traverse_to:string:prefs_mailhost_form
+
+[security]
+View = 0:Manager

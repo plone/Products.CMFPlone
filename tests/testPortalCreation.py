@@ -437,7 +437,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.failIf(atool.getActionInfo('site_actions/contact') is None)
         self.failIf(atool.getActionInfo('site_actions/accessibility') is None)
         self.failIf(atool.getActionInfo('site_actions/plone_setup') is None)
-        
+
     def testNoMembershipToolPloneSetupAction(self):
         try:
             self.failUnless(self.actions.getActionInfo('user/plone_setup'))
@@ -631,13 +631,13 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
             self.transforms.safe_html.get_parameter_value('disable_transform')
         except (AttrbuteError, KeyError):
             self.fail('safe_html transformation not updated')
-    
+
     def testNavtreePropertiesNormalized(self):
         ntp = self.portal.portal_properties.navtree_properties
         toRemove = ['skipIndex_html', 'showMyUserFolderOnly', 'showFolderishSiblingsOnly',
                     'showFolderishChildrenOnly', 'showNonFolderishObject', 'showTopicResults',
                     'rolesSeeContentView', 'rolesSeeUnpublishedContent', 'rolesSeeContentsView ',
-                    'batchSize', 'sortCriteria', 'croppingLength', 'forceParentsInBatch', 
+                    'batchSize', 'sortCriteria', 'croppingLength', 'forceParentsInBatch',
                     'rolesSeeHiddenContent', 'typesLinkToFolderContents']
         toAdd = {'name' : '', 'root' : '/', 'currentFolderOnlyInNavtree' : False}
         for property in toRemove:
@@ -645,7 +645,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         for property, value in toAdd.items():
             self.assertEqual(ntp.getProperty(property), value)
         self.assertEqual(ntp.getProperty('bottomLevel'), 0)
-            
+
     def testvcXMLRPCRemoved(self):
         # vcXMLRPC.js should no longer be registered
         self.failIf('vcXMLRPC.js' in self.javascripts.getResourceIds())
@@ -677,7 +677,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
     def testHomeActionUsesView(self):
         actions = self.portal.portal_actions.listActions()
         homeAction = [x for x in actions if x.id == 'index_html'][0]
-        self.assertEquals(homeAction.getActionExpression(), 'string:${here/@@plone/navigationRootUrl}')
+        self.assertEquals(homeAction.getActionExpression(), 'string:${globals_view/navigationRootUrl}')
 
 
 class TestPortalBugs(PloneTestCase.PloneTestCase):

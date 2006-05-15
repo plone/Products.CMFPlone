@@ -345,7 +345,7 @@ class IPlone(Interface):
            settings.
         """
 
-    def isRightToLeft(domain):
+    def isRightToLeft(domain='plone'):
         """Is the currently selected language a right to left language"""
 
     def toLocalizedTime(time, long_format=None):
@@ -391,6 +391,16 @@ class IPlone(Interface):
            returned.  This is useful for providing a context for methods
            which wish to act on what is considered the current folder in the
            ui.
+        """
+
+    def getCurrentFolderUrl():
+        """Returns the URL of the current folder as determined by
+           self.getCurrentFolder(), used heavily in actions.
+        """
+
+    def getCurrentObjectUrl():
+        """Returns the URL of the current object unless that object is a
+           folder default page, in which case it returns the parent.
         """
 
     def isFolderOrFolderDefaultPage():

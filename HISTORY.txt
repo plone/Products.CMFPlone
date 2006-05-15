@@ -4,12 +4,68 @@ Changelog for Plone
 
 Plone 2.5 (unreleased)
 
+    - Various small i18n markup fixes. Updated folder_edit_form to conform to
+      the same style as the Archetypes based edit forms, as it is still used
+      for the Plone site object.
+      [hannosch]
+
+    - Added smart folder sub-topic listing to all available smart folder view
+      templates. Fixes http://dev.plone.org/plone/ticket/5349.
+      [alecm]
+
+    - Added link to error reference on plone.org to error log form.
+      Fixes http://dev.plone.org/plone/ticket/5478.
+      [brcwhit]
+
+    - Fixed showEditableBorder.py to check the following permission
+      before checking whether a user is anonymous: Modify portal
+      content, Add portal content, Review portal content.
+      This closes http://dev.plone.org/plone/ticket/5117.
+      [brcwhit]
+
+    - Fixed livesearch issues.
+      This closes http://dev.plone.org/plone/ticket/5204 .
+      [ree]
+
+    - Set access for all plone control panel forms to View =
+      0:Manager. Closes https://dev.plone.org/plone/ticket/5434.
+      [brcwhit]
+
+    - Fixed extra space in changeSiteActions function in some migrations.
+      This closes http://dev.plone.org/plone/ticket/5161.
+      [hannosch]
+
+    - Fixed the float bug on Events' view page
+      This closes http://dev.plone.org/plone/ticket/5226
+      [spliter]
+
+    - Fixed bug in login_success. If you did not came_from somewhere, it would
+      still offer you to go there. Changed this to portal_url instead.
+      This closes http://dev.plone.org/plone/ticket/5496.
+      [hannosch]
+
+    - Added migrations to get rid of deprecation warnings due to actions which
+      still use the old scripts.  Gave @@plone.isRightToLeft a sane default
+      value.  Made the quoting conventions used in the XML profiles a bit more
+      consistent.
+      [alecm]
+
+    - Simplified action url/condition expressions by using @@plone view
+      methods.  There are now no more URL expressions that use 'python:'
+      expressions.
+      [alecm]
+
+    - Readd folder_edit_form which is still used to edit the site root.
+      This closes http://dev.plone.org/plone/ticket/5430.
+      [hannosch]
+
     - Fixed some i18n markup problems revealed by the Zope 2.10 ZChecker tests.
       [hannosch]
 
     - Moved css rules for the photo album view inside Plone's public.css,
       instead of having them inline in the template. This way they can be
       overridden. This closes http://dev.plone.org/plone/ticket/4765.
+      [hannosch]
 
     - Repaired the portal logo appearance visual bug in IE 5, 5.5.
       This closes http://dev.plone.org/plone/ticket/5228.

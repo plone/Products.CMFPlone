@@ -9,6 +9,7 @@
 
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
+from Products.PythonScripts.standard import url_quote
 
 ploneUtils = getToolByName(context, 'plone_utils')
 pretty_title_or_id = ploneUtils.pretty_title_or_id
@@ -43,20 +44,33 @@ def quote_bad_chars(s):
 # way to do this in the future, we'd use a in-memory probability based
 # result set.
 # convert queries to zctextindex
-r=q.split(' ')
+
+# XXX really if it contains + * ? or -
+# it will not be right since the catalog ignores all non-word
+# characters equally like
+# so we don't even attept to make that right.
+# But we strip these and these so that the catalog does
+# not interpret them as metachars
+##q = re.compile(r'[\*\?\-\+]+').sub(' ', q)
+for char in '?-+*':
+    q = q.replace(char, ' ')
+r=q.split()
 r = " AND ".join(r)
 r = quote_bad_chars(r)+'*'
-searchterms = r.replace(' ','+')
+searchterms = url_quote(r.replace(' ','+'))
 
 results = catalog(SearchableText=r, portal_type=friendly_types)
 
 RESPONSE = context.REQUEST.RESPONSE
 RESPONSE.setHeader('Content-Type', 'text/xml;charset=%s' % context.plone_utils.getSiteEncoding())
 
-legend_livesearch = _('legend_livesearch', default='LiveSearch &darr;')
+# replace named entities with their numbered counterparts, in the xml the named ones are not correct
+#   &darr;      --> &#8595;
+#   &hellip;    --> &#8230;
+legend_livesearch = _('legend_livesearch', default='LiveSearch &#8595;')
 label_no_results_found = _('label_no_results_found', default='No matching results found.')
-label_advanced_search = _('label_advanced_search', default='Advanched Search&hellip;')
-label_show_all = _('label_show_all', default='Show all&hellip;')
+label_advanced_search = _('label_advanced_search', default='Advanched Search&#8230;')
+label_show_all = _('label_show_all', default='Show all&#8230;')
 
 ts = getToolByName(context, 'translation_service')
 

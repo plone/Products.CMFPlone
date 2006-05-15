@@ -206,7 +206,7 @@ class Plone(utils.BrowserView):
         return False
     visibleIdsEnabled = cache_decorator(visibleIdsEnabled)
 
-    def isRightToLeft(self, domain):
+    def isRightToLeft(self, domain='plone'):
         """ See interface """
         context = utils.context(self)
         try:
@@ -342,6 +342,17 @@ class Plone(utils.BrowserView):
             return context
         return self.getParentObject()
 
+    def getCurrentFolderUrl(self):
+        return self.getCurrentFolder().absolute_url()
+
+    def getCurrentObjectUrl(self):
+        context = utils.context(self)
+        if self.isDefaultPageInFolder():
+            obj = self.getParentObject()
+        else:
+            obj = context
+        return obj.absolute_url()
+
     def isFolderOrFolderDefaultPage(self):
         context = utils.context(self)
         if self.isStructuralFolder() or self.isDefaultPageInFolder():
@@ -362,7 +373,7 @@ class Plone(utils.BrowserView):
     def getViewTemplateId(self):
         """See interface"""
         context = utils.context(self)
-        
+
         browserDefault = IBrowserDefault(context, None)
         if browserDefault is not None:
             try:

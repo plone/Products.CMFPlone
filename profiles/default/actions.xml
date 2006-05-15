@@ -23,7 +23,7 @@
   </action>
   <action title="Add to Favorites" action_id="addtofavorites"
      category="document_actions"
-     condition_expr="python: member and portal.portal_membership.getHomeFolder() is not None"
+     condition_expr="python:member and portal.portal_membership.getHomeFolder() is not None"
      url_expr="string:${object_url}/addtoFavorites" visible="False">
    <permission>View</permission>
   </action>
@@ -41,13 +41,13 @@
    <permission>Copy or Move</permission>
   </action>
   <action title="Cut" action_id="cut" category="folder_buttons"
-     condition_expr="python:portal.portal_membership.checkPermission(&quot;Delete objects&quot;, object)"
+     condition_expr="python:checkPermission(&quot;Delete objects&quot;, object)"
      url_expr="string:folder_cut:method" visible="True">
    <permission>Copy or Move</permission>
   </action>
   <action title="Contents" action_id="folderContents" category="object"
      condition_expr="object/displayContentsTab"
-     url_expr="python:((globals_view.isDefaultPageInFolder() and object.getParentNode().absolute_url()) or folder_url)+'/folder_contents'"
+     url_expr="string:${globals_view/getCurrentFolderUrl}/folder_contents"
      visible="True">
    <permission>List folder contents</permission>
   </action>
@@ -60,51 +60,51 @@
   </action>
   <action title="Accessibility" action_id="accessibility"
      category="site_actions" condition_expr=""
-     url_expr="string: ${portal_url}/accessibility-info" visible="True">
+     url_expr="string:${portal_url}/accessibility-info" visible="True">
    <permission>View</permission>
   </action>
   <action title="Contact" action_id="contact" category="site_actions"
-     condition_expr="" url_expr="string: ${portal_url}/contact-info"
+     condition_expr="" url_expr="string:${portal_url}/contact-info"
      visible="True">
    <permission>View</permission>
   </action>
   <action title="Site Setup" action_id="plone_setup" category="site_actions"
-     condition_expr="" url_expr="string: ${portal_url}/plone_control_panel"
+     condition_expr="" url_expr="string:${portal_url}/plone_control_panel"
      visible="True">
    <permission>Manage portal</permission>
   </action>
   <action title="Cut" action_id="cut" category="object_buttons"
-     condition_expr="python:portal.portal_membership.checkPermission(&quot;Delete objects&quot;, object.aq_inner.getParentNode()) and portal.portal_membership.checkPermission(&quot;Copy or Move&quot;, object) and object is not portal and not (globals_view.isDefaultPageInFolder() and object.getParentNode() is portal)"
-     url_expr="python:&quot;%s/object_cut&quot;%(globals_view.isDefaultPageInFolder() and object.getParentNode().absolute_url() or object_url)"
+     condition_expr="python:checkPermission(&quot;Delete objects&quot;, globals_view.getParentObject()) and checkPermission(&quot;Copy or Move&quot;, object) and not globals_view.isPortalOrPortalDefaultPage()"
+     url_expr="string:${globals_view/getCurrentObjectUrl}/object_cut"
      visible="True">
    <permission>Delete objects</permission>
   </action>
   <action title="Copy" action_id="copy" category="object_buttons"
-     condition_expr="python: portal.portal_membership.checkPermission(&quot;Copy or Move&quot;, object) and object is not portal and not (globals_view.isDefaultPageInFolder() and object.getParentNode() is portal)"
-     url_expr="python:&quot;%s/object_copy&quot;%(globals_view.isDefaultPageInFolder() and object.getParentNode().absolute_url() or object_url)"
+     condition_expr="python:checkPermission(&quot;Copy or Move&quot;, object) and not globals_view.isPortalOrPortalDefaultPage()"
+     url_expr="string:${globals_view/getCurrentObjectUrl}/object_copy"
      visible="True">
    <permission>View</permission>
   </action>
   <action title="Paste" action_id="paste" category="object_buttons"
      condition_expr="folder/cb_dataValid|nothing"
-     url_expr="python:&quot;%s/object_paste&quot;%((globals_view.isDefaultPageInFolder() or not object.is_folderish()) and object.getParentNode().absolute_url() or object_url)"
+     url_expr="string:${globals_view/getCurrentFolderUrl}/object_paste"
      visible="True">
    <permission>View</permission>
   </action>
   <action title="Delete" action_id="delete" category="object_buttons"
-     condition_expr="python:portal.portal_membership.checkPermission(&quot;Delete objects&quot;, object.aq_inner.getParentNode()) and object is not portal and not (globals_view.isDefaultPageInFolder() and object.getParentNode() is portal)"
-     url_expr="python:&quot;%s/object_delete&quot;%(globals_view.isDefaultPageInFolder() and object.getParentNode().absolute_url() or object_url)"
+     condition_expr="python:checkPermission(&quot;Delete objects&quot;, globals_view.getParentObject()) and not globals_view.isPortalOrPortalDefaultPage()"
+     url_expr="string:${globals_view/getCurrentObjectUrl}/object_delete"
      visible="True">
    <permission>Delete objects</permission>
   </action>
   <action title="Rename" action_id="rename" category="object_buttons"
-     condition_expr="python:portal.portal_membership.checkPermission('Delete objects', object.aq_inner.getParentNode()) and portal.portal_membership.checkPermission('Copy or Move', object) and portal.portal_membership.checkPermission('Add portal content', object) and object is not portal and not (globals_view.isDefaultPageInFolder() and object.getParentNode() is portal)"
-     url_expr="python:'%s/object_rename'%(globals_view.isDefaultPageInFolder() and object.getParentNode().absolute_url() or object_url)"
+     condition_expr="python:checkPermission(&quot;Delete objects&quot;, globals_view.getParentObject()) and checkPermission(&quot;Copy or Move&quot;, object) and checkPermission(&quot;Add portal content&quot;, object) and not globals_view.isPortalOrPortalDefaultPage()"
+     url_expr="string:${globals_view/getCurrentObjectUrl}/object_rename"
      visible="True">
    <permission>Add Portal Content</permission>
   </action>
   <action title="Home" action_id="index_html" category="portal_tabs"
-     condition_expr="" url_expr="string:${here/@@plone/navigationRootUrl}" visible="True">
+     condition_expr="" url_expr="string:${globals_view/navigationRootUrl}" visible="True">
    <permission>View</permission>
   </action>
   <action title="Ownership" action_id="change_ownership"
@@ -128,7 +128,7 @@
   </action>
   <action title="Change State" action_id="change_state"
      category="folder_buttons"
-     condition_expr="python:portal.portal_membership.checkPermission(&quot;Modify portal content&quot;, object) or portal.portal_membership.checkPermission(&quot;Review portal content&quot;, object)"
+     condition_expr="python:checkPermission(&quot;Modify portal content&quot;, object) or checkPermission(&quot;Review portal content&quot;, object)"
      url_expr="string:content_status_history:method" visible="True">
    <permission>View</permission>
   </action>
@@ -136,18 +136,18 @@
 
  <action-provider name="portal_membership">
   <action title="My Folder" action_id="mystuff" category="user"
-     condition_expr="python: member and portal.portal_membership.getHomeFolder()"
+     condition_expr="python:member and portal.portal_membership.getHomeFolder()"
      url_expr="string:${portal/portal_membership/getHomeUrl}" visible="True">
    <permission>View</permission>
   </action>
   <action title="Workspace" action_id="myworkspace" category="user"
-     condition_expr="python: member and portal.portal_membership.getHomeFolder() is not None"
-     url_expr="python: portal.portal_membership.getHomeUrl()+&quot;/workspace&quot;"
+     condition_expr="python:member and portal.portal_membership.getHomeFolder() is not None"
+     url_expr="string:${portal/portal_membership/getHomeUrl}/workspace"
      visible="False">
    <permission>View</permission>
   </action>
   <action title="My favorites" action_id="favorites" category="user"
-     condition_expr="python: member and hasattr(portal.portal_membership.getHomeFolder(), &quot;Favorites&quot;)"
+     condition_expr="python:member and hasattr(portal.portal_membership.getHomeFolder(), &quot;Favorites&quot;)"
      url_expr="string:${portal/portal_membership/getHomeUrl}/Favorites/folder_contents"
      visible="False">
    <permission>View</permission>
@@ -194,7 +194,7 @@
 
  <action-provider name="portal_discussion">
   <action title="Reply" action_id="reply" category="object"
-     condition_expr="python: object is not None and portal.portal_discussion.isDiscussionAllowedFor(object)"
+     condition_expr="python:object is not None and portal.portal_discussion.isDiscussionAllowedFor(object)"
      url_expr="string:${object_url}/discussion_reply_form" visible="False">
    <permission>Reply to item</permission>
   </action>
@@ -210,7 +210,7 @@
 
  <action-provider name="portal_syndication">
   <action title="Syndication" action_id="syndication" category="object"
-     condition_expr="python: folder is object and portal.portal_syndication.isSiteSyndicationAllowed()"
+     condition_expr="python:folder is object and portal.portal_syndication.isSiteSyndicationAllowed()"
      url_expr="string:${folder_url}/synPropertiesForm" visible="False">
    <permission>Manage properties</permission>
   </action>

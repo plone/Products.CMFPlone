@@ -1,4 +1,5 @@
 import os
+import re
 from Acquisition import aq_base
 
 from Products.GenericSetup.tool import SetupTool
@@ -75,6 +76,12 @@ def beta1_beta2(portal):
 
     # Install portal_setup
     installPortalSetup(portal, out)
+
+    # Simplify actions using the @@plone view
+    simplifyActions(portal, out)
+
+    # Use the @@plone view for the RTL.css expression entry
+    migrateCSSRegExpression(portal, out)
 
     return out
 
@@ -159,7 +166,7 @@ def addPloneSkinLayers(portal, out):
     if st is None:
         out.append('No portal_skins tool')
         return
-    
+
     for skin in st._getSelections().keys():
         path = st.getSkinPath(skin)
         path = [p.strip() for p in path.split(',')]
@@ -173,3 +180,85 @@ def installPortalSetup(portal, out):
     if SETUP_TOOL_ID not in portal.objectIds():
         portal._setObject(SETUP_TOOL_ID, SetupTool(SETUP_TOOL_ID))
         out.append('Added setup_tool.')
+
+# A set of regexes and substitution strings for cleaning up the current
+# actions, in particular to make optimal use of the methods provided by
+# @@plone and remove deprecation warnings.
+action_replacements = [
+# Remove leading space from string and python expressions, it is annoying
+(re.compile(r"^string: "),
+ r"string:"),
+(re.compile(r"^python: "),
+ r"python:"),
+(re.compile(r"portal\.portal_membership\.checkPermission"),
+ r"checkPermission"),
+(re.compile(r"^python:\(\(object\.isDefaultPageInFolder\(\) and object.getParentNode\(\)\.absolute_url\(\)\) or folder_url\)\+(?:\"|')/(.+)(?:\"|')$"),
+ r"string:${globals_view/getCurrentFolderUrl}/\1"),
+(re.compile(r"python:(?:\"|')%s/(.+)(?:\"|')%\(\(object\.isDefaultPageInFolder\(\) or not object\.is_folderish\(\)\) and object\.getParentNode\(\)\.absolute_url\(\) or object_url\)$"),
+ r"string:${globals_view/getCurrentFolderUrl}/\1"),
+(re.compile(r"^python:(?:\"|')%s/(.+)(?:\"|')%\(object\.isDefaultPageInFolder\(\) and object.getParentNode\(\)\.absolute_url\(\) or object_url\)$"),
+ r"string:${globals_view/getCurrentObjectUrl}/\1"),
+(re.compile(r"object is not portal and not \(object\.isDefaultPageInFolder\(\) and object\.getParentNode\(\) is portal\)"),
+ r"not globals_view.isPortalOrPortalDefaultPage()"),
+(re.compile(r"object\.aq_inner\.getParentNode\(\)"),
+ r"globals_view.getParentObject()"),
+(re.compile("here/@@plone"),
+ r"globals_view"),
+(re.compile(r"^python:portal\.portal_membership\.getHomeUrl\(\)\+(?:\"|')/(.+)(?:\"|')$"),
+ r"string:${portal/portal_membership/getHomeUrl}/\1"),
+]
+
+def simplifyActions(portal, out):
+    from Products.CMFCore.ActionInformation import ActionInformation
+    action_tool = getToolByName(portal, 'portal_actions', None)
+    if action_tool is not None:
+        providers = action_tool.listActionProviders()
+        # Iterate ofer all action providers
+        for provider in providers:
+            tool = getToolByName(portal, provider, None)
+            # If this is not a provider with persistent Action objects skip it
+            if not getattr(tool, '_actions', None) or \
+               not isinstance(tool._actions[0], ActionInformation):
+                continue
+            actions = tool.listActions()
+            # iterate through the actions and for each action check if it
+            # matches any of the patterns we want to replace
+            for action in actions:
+                action_id = '%s/%s/%s'%(provider, action.getCategory(),
+                                        action.getId())
+                cur_expr = action.getActionExpression()
+                cur_condition = action.getCondition()
+                for regex, replacement in action_replacements:
+                    new_expr = regex.sub(replacement, cur_expr)
+                    new_condition = regex.sub(replacement, cur_condition)
+                    if new_expr != cur_expr:
+                        action.setActionExpression(new_expr)
+                        out.append(
+                      'Changed url expression on action %s from: \n%s\nto:\n%s'%(
+                                             action_id, cur_expr, new_expr))
+                    if new_condition != cur_condition:
+                        action.edit(condition=new_condition)
+                        out.append(
+                           'Changed condition on action %s from: \n"%s"\nto:\n"%s"'%(
+                                         action_id, cur_condition, new_condition))
+                    cur_expr = new_expr
+                    cur_condition = new_condition
+
+
+def migrateCSSRegExpression(portal, out):
+    """Changes calls to the isRightToLeft script to use the view, also
+       replaces the use of restrictedTraverse with a more compact path
+       expression."""
+    css_reg = getToolByName(portal, 'portal_css', None)
+    if css_reg is not None:
+        resource = css_reg.getResource('RTL.css')
+        # The None that comes out of RR is apparently acquisition wrapped,
+        # nasty.
+        if aq_base(resource) is not None:
+            css_expr = resource.getExpression()
+            new_expr = 'object/@@plone/isRightToLeft'
+            if "object.isRightToLeft" in css_expr or \
+               "object.restrictedTraverse('@@plone')" in css_expr:
+                resource.setExpression(new_expr)
+                css_reg.cookResources()
+                out.append("Fixed RTL.css expression to use the @@plone view")
