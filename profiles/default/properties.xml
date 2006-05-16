@@ -1,24 +1,29 @@
 <?xml version="1.0"?>
 <site>
-  <property name="title">Portal</property>
-  <property name="description"></property>
-  <property name="default_page" type="string">front-page</property>
-  <property name="selectable_views" type="lines">
-   <element value="folder_listing" />
-   <element value="news_listing" /></property>
-  <property name="email_from_address" type="string">postmaster@localhost</property>
-  <property name="email_from_name" type="string">Portal Administrator</property>
-  <property name="validate_email" type="boolean">0</property>
-  <property name="default_charset" type="string"></property>
-  <property name="enable_permalink" type="boolean">0</property>
-  <property name="left_slots" type="lines">
-   <element value="here/portlet_navigation/macros/portlet" />
-   <element value="here/portlet_login/macros/portlet" />
-   <element value="here/portlet_recent/macros/portlet" />
-   <element value="here/portlet_related/macros/portlet" /></property>
-  <property name="right_slots" type="lines">
-   <element value="here/portlet_review/macros/portlet" />
-   <element value="here/portlet_news/macros/portlet" />
-   <element value="here/portlet_events/macros/portlet" />
-   <element value="here/portlet_calendar/macros/portlet" /></property>
+ <property name="title">Portal</property>
+ <property name="description"></property>
+ <property name="default_page" type="string">front-page</property>
+ <property name="selectable_views" type="lines">
+  <element value="folder_listing"/>
+  <element value="news_listing"/>
+ </property>
+ <property name="email_from_address"
+    type="string">postmaster@localhost</property>
+ <property name="email_from_name"
+    type="string">Portal Administrator</property>
+ <property name="validate_email" type="boolean">False</property>
+ <property name="default_charset" type="string"></property>
+ <property name="enable_permalink" type="boolean">False</property>
+ <property name="left_slots" type="lines">
+  <element value="here/portlet_navigation/macros/portlet"/>
+  <element value="here/portlet_login/macros/portlet"/>
+  <element value="here/portlet_recent/macros/portlet"/>
+  <element value="here/portlet_related/macros/portlet"/>
+ </property>
+ <property name="right_slots" type="lines">
+  <element value="here/portlet_review/macros/portlet"/>
+  <element value="here/portlet_news/macros/portlet"/>
+  <element value="here/portlet_events/macros/portlet"/>
+  <element value="here/portlet_calendar/macros/portlet"/>
+ </property>
 </site>

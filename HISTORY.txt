@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.5 (unreleased)
 
+    - Updated the GenericSetup profile format to CMF1.6-style. No configuration
+      changes were made, only format changes.
+      [hannosch]
+
     - Various small i18n markup fixes. Updated folder_edit_form to conform to
       the same style as the Archetypes based edit forms, as it is still used
       for the Plone site object.

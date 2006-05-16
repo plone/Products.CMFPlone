@@ -2,13 +2,13 @@
 <object name="portal_catalog" meta_type="Plone Catalog Tool">
  <property name="title">Indexes all content in the site</property>
  <property name="unwrapobjects" type="boolean">True</property>
- <object name="plaintext_lexicon" meta_type="ZCTextIndex Lexicon">
-  <element name="Whitespace splitter" group="Word Splitter"/>
+ <object name="htmltext_lexicon" meta_type="ZCTextIndex Lexicon">
+  <element name="HTML aware splitter" group="Word Splitter"/>
   <element name="Case Normalizer" group="Case Normalizer"/>
   <element name="Remove listed stop words only" group="Stop Words"/>
  </object>
- <object name="htmltext_lexicon" meta_type="ZCTextIndex Lexicon">
-  <element name="HTML aware splitter" group="Word Splitter"/>
+ <object name="plaintext_lexicon" meta_type="ZCTextIndex Lexicon">
+  <element name="Whitespace splitter" group="Word Splitter"/>
   <element name="Case Normalizer" group="Case Normalizer"/>
   <element name="Remove listed stop words only" group="Stop Words"/>
  </object>
@@ -35,9 +35,6 @@
  <index name="Subject" meta_type="KeywordIndex">
   <indexed_attr value="Subject"/>
  </index>
- <index name="getEventType" meta_type="KeywordIndex">
-  <indexed_attr value="getEventType"/>
- </index>
  <index name="Title" meta_type="ZCTextIndex">
   <indexed_attr value="Title"/>
   <extra name="index_type" value="Okapi BM25 Rank"/>
@@ -62,6 +59,9 @@
  </index>
  <index name="expires" meta_type="DateIndex">
   <property name="index_naive_time_as_local">True</property>
+ </index>
+ <index name="getEventType" meta_type="KeywordIndex">
+  <indexed_attr value="getEventType"/>
  </index>
  <index name="getId" meta_type="FieldIndex">
   <indexed_attr value="getId"/>
