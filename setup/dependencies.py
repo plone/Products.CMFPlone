@@ -5,11 +5,11 @@
 import logging
 import sys
 
-MINIMUM_PYTHON_VER = (2, 3, 4)
+MINIMUM_PYTHON_VER = (2, 3, 5)
 PREFERRED_PYTHON_VER = "2.3.5 or newer"
 
-MINIMUM_ZOPE_VER = (2, 8, 4)
-PREFERRED_ZOPE_VER = "2.8.5 or newer"
+MINIMUM_ZOPE_VER = (2, 8, 7)
+PREFERRED_ZOPE_VER = "2.8.7 or newer"
 
 MINIMUM_CMF_VER = (1, 6, 0)
 
