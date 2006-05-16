@@ -38,7 +38,7 @@ class PloneGenerator:
         #     by QuickInstaller at all any more, but we need to kill
         #     some chickens so migrations will still work.
         qi.installProduct('ResourceRegistries', locked=1)
-        qi.installProduct('ATContentTypes', locked=1)
+        qi.notifyInstalled('ATContentTypes', locked=1)
         qi.notifyInstalled('ATReferenceBrowserWidget', locked=1)
         
     def customizePortalOptions(self, p):
