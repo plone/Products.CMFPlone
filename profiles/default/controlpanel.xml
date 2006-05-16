@@ -1,98 +1,70 @@
 <?xml version="1.0"?>
-<object name="portal_controlpanel" meta_type="Plone Control Panel"
-   xmlns:i18n="http://xml.zope.org/namespaces/i18n">
-
-  <configlet title="Add/Remove Products" action_id="QuickInstaller"
-          category="Plone" condition_expr=""
-          url_expr="string:${portal_url}/prefs_install_products_form"
-          visible="True" appId="QuickInstaller">
-    <permission>Manage portal</permission>
-  </configlet>
-
-  <configlet title="Portal Settings" action_id="PloneReconfig"
-          category="Plone" condition_expr=""
-          url_expr="string:${portal_url}/reconfig_form"
-          visible="True" appId="Plone">
-    <permission>Manage portal</permission>
-  </configlet>
-
-  <configlet title="Users and Groups Administration"
-          action_id="UsersGroups"
-          category="Plone" condition_expr=""
-          url_expr="string:${portal_url}/prefs_users_overview"
-          visible="True" appId="UsersGroups">
-    <permission>Manage portal</permission>
-  </configlet>
-
-  <configlet title="Users and Groups Administration"
-          action_id="UsersGroups2"
-          category="Plone" condition_expr=""
-          url_expr="string:${portal_url}/prefs_groups_overview"
-          visible="False" appId="UsersGroups">
-    <permission>Manage portal</permission>
-  </configlet>
-
-  <configlet title="Personal Preferences" action_id="MemberPrefs"
-          category="Member" condition_expr=""
-          url_expr="string:${portal_url}/personalize_form"
-          visible="True" appId="Plone">
-    <permission>Set own properties</permission>
-  </configlet>
-
-  <configlet title="Change Password" action_id="MemberPassword"
-          category="Member" condition_expr=""
-          url_expr="string:${portal_url}/password_form"
-          visible="True" appId="Plone">
-    <permission>Set own password</permission>
-  </configlet>
-
-  <configlet title="Mail Settings" action_id="MailHost"
-          category="Plone" condition_expr=""
-          url_expr="string:${portal_url}/prefs_mailhost_form"
-          visible="True" appId="MailHost">
-    <permission>Manage portal</permission>
-  </configlet>
-
-  <configlet title="Skins" action_id="PortalSkin"
-          category="Plone" condition_expr=""
-          url_expr="string:${portal_url}/prefs_portalskin_form"
-          visible="True" appId="PortalSkin">
-    <permission>Manage portal</permission>
-  </configlet>
-
-  <configlet title="Error Log" action_id="errorLog"
-          category="Plone" condition_expr=""
-          url_expr="string:${portal_url}/prefs_error_log_form"
-          visible="True" appId="ErrorLog">
-    <permission>Manage portal</permission>
-  </configlet>
-
-  <configlet title="Zope Management Interface" action_id="ZMI"
-          category="Plone" condition_expr=""
-          url_expr="string:${portal_url}/manage_main"
-          visible="True" appId="ZMI">
-    <permission>Manage portal</permission>
-  </configlet>
-
-  <configlet title="Search Settings" action_id="SearchSettings"
-          category="Plone" condition_expr=""
-          url_expr="string:${portal_url}/prefs_search_form"
-          visible="True" appId="Plone">
-    <permission>Manage portal</permission>
-  </configlet>
-
-  <configlet title="Navigation Settings" action_id="NavigationSettings"
-          category="Plone" condition_expr=""
-          url_expr="string:${portal_url}/prefs_navigation_form"
-          visible="True" appId="Plone">
-    <permission>Manage portal</permission>
-  </configlet>
-
-  <configlet title="Smart Folder Settings" action_id="portal_atct"
-          category="Plone" condition_expr=""
-          url_expr="string:${portal_url}/portal_atct/atct_manageTopicIndex"
-          visible="True" appId="ATContentTypes">
-    <permission>Manage portal</permission>
-  </configlet>
-
+<object name="portal_controlpanel" meta_type="Plone Control Panel Tool">
+ <configlet title="Add/Remove Products" action_id="QuickInstaller"
+    appId="QuickInstaller" category="Plone" condition_expr=""
+    url_expr="string:${portal_url}/prefs_install_products_form"
+    visible="True">
+  <permission>Manage portal</permission>
+ </configlet>
+ <configlet title="Portal Settings" action_id="PloneReconfig" appId="Plone"
+    category="Plone" condition_expr=""
+    url_expr="string:${portal_url}/reconfig_form" visible="True">
+  <permission>Manage portal</permission>
+ </configlet>
+ <configlet title="Users and Groups Administration" action_id="UsersGroups"
+    appId="UsersGroups" category="Plone" condition_expr=""
+    url_expr="string:${portal_url}/prefs_users_overview" visible="True">
+  <permission>Manage portal</permission>
+ </configlet>
+ <configlet title="Users and Groups Administration" action_id="UsersGroups2"
+    appId="UsersGroups" category="Plone" condition_expr=""
+    url_expr="string:${portal_url}/prefs_groups_overview" visible="False">
+  <permission>Manage portal</permission>
+ </configlet>
+ <configlet title="Personal Preferences" action_id="MemberPrefs" appId="Plone"
+    category="Member" condition_expr=""
+    url_expr="string:${portal_url}/personalize_form" visible="True">
+  <permission>Set own properties</permission>
+ </configlet>
+ <configlet title="Change Password" action_id="MemberPassword" appId="Plone"
+    category="Member" condition_expr="python:member.canPasswordSet()"
+    url_expr="string:${portal_url}/password_form" visible="True">
+  <permission>Set own password</permission>
+ </configlet>
+ <configlet title="Mail Settings" action_id="MailHost" appId="MailHost"
+    category="Plone" condition_expr=""
+    url_expr="string:${portal_url}/prefs_mailhost_form" visible="True">
+  <permission>Manage portal</permission>
+ </configlet>
+ <configlet title="Skins" action_id="PortalSkin" appId="PortalSkin"
+    category="Plone" condition_expr=""
+    url_expr="string:${portal_url}/prefs_portalskin_form" visible="True">
+  <permission>Manage portal</permission>
+ </configlet>
+ <configlet title="Error Log" action_id="errorLog" appId="ErrorLog"
+    category="Plone" condition_expr=""
+    url_expr="string:${portal_url}/prefs_error_log_form" visible="True">
+  <permission>Manage portal</permission>
+ </configlet>
+ <configlet title="Zope Management Interface" action_id="ZMI" appId="ZMI"
+    category="Plone" condition_expr=""
+    url_expr="string:${portal_url}/manage_main" visible="True">
+  <permission>Manage portal</permission>
+ </configlet>
+ <configlet title="Search Settings" action_id="SearchSettings" appId="Plone"
+    category="Plone" condition_expr=""
+    url_expr="string:${portal_url}/prefs_search_form" visible="True">
+  <permission>Manage portal</permission>
+ </configlet>
+ <configlet title="Navigation Settings" action_id="NavigationSettings"
+    appId="Plone" category="Plone" condition_expr=""
+    url_expr="string:${portal_url}/prefs_navigation_form" visible="True">
+  <permission>Manage portal</permission>
+ </configlet>
+ <configlet title="Smart Folder Settings" action_id="portal_atct"
+    appId="ATContentTypes" category="Plone" condition_expr=""
+    url_expr="string:${portal_url}/portal_atct/atct_manageTopicIndex"
+    visible="True">
+  <permission>Manage portal</permission>
+ </configlet>
 </object>

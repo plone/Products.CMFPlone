@@ -1,5 +1,3 @@
 <?xml version="1.0"?>
-
-<mailhost id="MailHost" smtp_pwd="" smtp_port="25"
-          smtp_host="localhost" i18n:domain="" smtp_uid=""
-          xmlns:i18n="http://xml.zope.org/namespaces/i18n"/>
+<object name="MailHost" meta_type="Secure Mail Host" smtp_host="localhost"
+   smtp_port="25" smtp_pwd="" smtp_uid=""/>

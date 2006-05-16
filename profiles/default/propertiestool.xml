@@ -1,13 +1,12 @@
 <?xml version="1.0"?>
-<object name="portal_properties" meta_type="Plone Properties Tool"
-   xmlns:i18n="http://xml.zope.org/namespaces/i18n">
+<object name="portal_properties" meta_type="Plone Properties Tool">
  <object name="navtree_properties" meta_type="Plone Property Sheet">
   <property name="title">NavigationTree properties</property>
   <property name="sortAttribute"
      type="string">getObjPositionInParent</property>
   <property name="sortOrder" type="string">asc</property>
   <property name="sitemapDepth" type="int">3</property>
-  <property name="name" type="string"/>
+  <property name="name" type="string"></property>
   <property name="root" type="string">/</property>
   <property name="currentFolderOnlyInNavtree" type="boolean">False</property>
   <property name="includeTop" type="boolean">True</property>
@@ -39,7 +38,6 @@
   <property name="enable_wf_state_filtering" type="boolean">False</property>
   <property name="wf_states_to_show" type="lines"/>
  </object>
- 
  <object name="site_properties" meta_type="Plone Property Sheet">
   <property name="title">Site wide properties</property>
   <property name="allowAnonymousViewAbout" type="boolean">True</property>

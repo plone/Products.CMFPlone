@@ -1,9 +1,6 @@
 <?xml version="1.0"?>
-<object name="portal_actions" meta_type="Plone Actions Tool"
-   xmlns:i18n="http://xml.zope.org/namespaces/i18n">
-
+<object name="portal_actions" meta_type="Plone Actions Tool">
  <action-provider name="portal_workflow"/>
-
  <action-provider name="portal_actions">
   <action title="RSS feed of this listing" action_id="rss"
      category="document_actions"
@@ -104,7 +101,8 @@
    <permission>Add Portal Content</permission>
   </action>
   <action title="Home" action_id="index_html" category="portal_tabs"
-     condition_expr="" url_expr="string:${globals_view/navigationRootUrl}" visible="True">
+     condition_expr="" url_expr="string:${globals_view/navigationRootUrl}"
+     visible="True">
    <permission>View</permission>
   </action>
   <action title="Ownership" action_id="change_ownership"
@@ -133,7 +131,6 @@
    <permission>View</permission>
   </action>
  </action-provider>
-
  <action-provider name="portal_membership">
   <action title="My Folder" action_id="mystuff" category="user"
      condition_expr="python:member and portal.portal_membership.getHomeFolder()"
@@ -183,15 +180,13 @@
    <permission>View</permission>
   </action>
  </action-provider>
-
  <action-provider name="portal_registration">
-    <action title="Join" action_id="join" category="user"
-     condition_expr="not:member"
-     url_expr="string:${portal_url}/join_form" visible="True">
+  <action title="Join" action_id="join" category="user"
+     condition_expr="not:member" url_expr="string:${portal_url}/join_form"
+     visible="True">
    <permission>Add portal member</permission>
   </action>
-  </action-provider>
-
+ </action-provider>
  <action-provider name="portal_discussion">
   <action title="Reply" action_id="reply" category="object"
      condition_expr="python:object is not None and portal.portal_discussion.isDiscussionAllowedFor(object)"
@@ -199,7 +194,6 @@
    <permission>Reply to item</permission>
   </action>
  </action-provider>
-
  <action-provider name="portal_undo">
   <action title="Undo" action_id="undo" category="user"
      condition_expr="member" url_expr="string:${portal_url}/undo_form"
@@ -207,7 +201,6 @@
    <permission>List undoable changes</permission>
   </action>
  </action-provider>
-
  <action-provider name="portal_syndication">
   <action title="Syndication" action_id="syndication" category="object"
      condition_expr="python:folder is object and portal.portal_syndication.isSiteSyndicationAllowed()"
@@ -215,7 +208,6 @@
    <permission>Manage properties</permission>
   </action>
  </action-provider>
-
  <action-provider name="portal_properties">
   <action title="Reconfigure Portal" action_id="configPortal"
      category="global" condition_expr=""
@@ -223,7 +215,5 @@
    <permission>Manage portal</permission>
   </action>
  </action-provider>
-
  <action-provider name="portal_types"/>
-
 </object>

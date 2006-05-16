@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<object name="portal_types" meta_type="Plone Types Tool">
+ <property
+    name="title">Controls the available content types in your portal</property>
+ <object name="ATBooleanCriterion"
+    meta_type="Factory-based Type Information"/>
+ <object name="ATCurrentAuthorCriterion"
+    meta_type="Factory-based Type Information"/>
+ <object name="ATDateCriteria" meta_type="Factory-based Type Information"/>
+ <object name="ATDateRangeCriterion"
+    meta_type="Factory-based Type Information"/>
+ <object name="ATListCriterion" meta_type="Factory-based Type Information"/>
+ <object name="ATPathCriterion" meta_type="Factory-based Type Information"/>
+ <object name="ATPortalTypeCriterion"
+    meta_type="Factory-based Type Information"/>
+ <object name="ATReferenceCriterion"
+    meta_type="Factory-based Type Information"/>
+ <object name="ATSelectionCriterion"
+    meta_type="Factory-based Type Information"/>
+ <object name="ATSimpleIntCriterion"
+    meta_type="Factory-based Type Information"/>
+ <object name="ATSimpleStringCriterion"
+    meta_type="Factory-based Type Information"/>
+ <object name="ATSortCriterion" meta_type="Factory-based Type Information"/>
+ <object name="CMF Document" meta_type="Factory-based Type Information"/>
+ <object name="CMF Event" meta_type="Factory-based Type Information"/>
+ <object name="CMF Favorite" meta_type="Factory-based Type Information"/>
+ <object name="CMF File" meta_type="Factory-based Type Information"/>
+ <object name="CMF Folder" meta_type="Factory-based Type Information"/>
+ <object name="CMF Image" meta_type="Factory-based Type Information"/>
+ <object name="CMF Large Plone Folder"
+    meta_type="Factory-based Type Information"/>
+ <object name="CMF Link" meta_type="Factory-based Type Information"/>
+ <object name="CMF News Item" meta_type="Factory-based Type Information"/>
+ <object name="CMF Topic" meta_type="Factory-based Type Information"/>
+ <object name="Discussion Item" meta_type="Factory-based Type Information"/>
+ <object name="Document"
+    meta_type="Factory-based Type Information with dynamic views"/>
+ <object name="Event"
+    meta_type="Factory-based Type Information with dynamic views"/>
+ <object name="Favorite"
+    meta_type="Factory-based Type Information with dynamic views"/>
+ <object name="File"
+    meta_type="Factory-based Type Information with dynamic views"/>
+ <object name="Folder"
+    meta_type="Factory-based Type Information with dynamic views"/>
+ <object name="Image"
+    meta_type="Factory-based Type Information with dynamic views"/>
+ <object name="Large Plone Folder"
+    meta_type="Factory-based Type Information with dynamic views"/>
+ <object name="Link"
+    meta_type="Factory-based Type Information with dynamic views"/>
+ <object name="News Item"
+    meta_type="Factory-based Type Information with dynamic views"/>
+ <object name="Plone Site"
+    meta_type="Factory-based Type Information with dynamic views"/>
+ <object name="TempFolder" meta_type="Factory-based Type Information"/>
+ <object name="Topic"
+    meta_type="Factory-based Type Information with dynamic views"/>
+</object>

@@ -4,9 +4,9 @@
              state_variable="review_state"
              initial_state="visible">
  <permission>Access contents information</permission>
+ <permission>Change portal events</permission>
  <permission>Modify portal content</permission>
  <permission>View</permission>
- <permission>Change portal events</permission>
  <state state_id="pending" title="Pending">
   <exit-transition transition_id="hide"/>
   <exit-transition transition_id="publish"/>
@@ -33,6 +33,7 @@
    <permission-role>Owner</permission-role>
    <permission-role>Reviewer</permission-role>
   </permission-map>
+
  </state>
  <state state_id="private" title="Private">
   <exit-transition transition_id="show"/>
@@ -55,6 +56,7 @@
    <permission-role>Manager</permission-role>
    <permission-role>Owner</permission-role>
   </permission-map>
+
  </state>
  <state state_id="published" title="Published">
   <exit-transition transition_id="reject"/>
@@ -76,6 +78,7 @@
    <permission-role>Anonymous</permission-role>
    <permission-role>Manager</permission-role>
   </permission-map>
+
  </state>
  <state state_id="visible" title="Public Draft">
   <exit-transition transition_id="hide"/>
@@ -102,6 +105,7 @@
    <permission-role>Manager</permission-role>
    <permission-role>Reviewer</permission-role>
   </permission-map>
+
  </state>
  <transition transition_id="hide"
              title="Member makes content private"
