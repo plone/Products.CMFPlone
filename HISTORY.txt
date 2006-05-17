@@ -4,6 +4,8 @@ Changelog for Plone
 
 Plone 2.5 (unreleased)
 
+    Beta 2 - released May 17, 2006
+
     - Updated the GenericSetup profile format to CMF1.6-style. No configuration
       changes were made, only format changes.
       [hannosch]
@@ -303,6 +305,121 @@ Plone 2.5 (unreleased)
       a utility.
       [hannosch]
 
+    - Added some missing .metadata file for images.
+      [panjunyong]
+
+    - Removed colophon.pt from the tableless skin - there's no need for it
+      to have a separate file for this.
+      [limi]
+
+    - Use fullname but not username in viewThreadsAtBottom.
+      [panjunyong]
+
+    - Adding relaxed mode to PloneTool.normalizeString(). This will be used in
+      ATContentTypes to avoid stripping too much from valid filenames being
+      uploaded.
+      [optilude]
+
+    - Making links link directly to the target in the navtree. Fixes
+      http://dev.plone.org/plone/ticket/5264.
+      [optilude]
+
+    - Making the user-name link in the personal-bar link to the author profile.
+      Fixes http://dev.plone.org/plone/ticket/5268.
+      [optilude]
+
+    - Added more insane TAL logic to portlets_fetcher.pt to actually show the
+      error to the user, as opposed to simply logging it. If anyone has an issue
+      with this, please just remove the tal:on-error. Fixes
+      https://dev.plone.org/plone/ticket/5282 and
+      http://dev.plone.org/plone/ticket/2850.
+      [optilude]
+
+    - Handle empty values for group properties of lines and ulines types
+      correctly in the group details template.
+      [wichert]
+
+    - Removed 'input' from the print CSS blacklist; forms print properly now.
+      [limi]
+
+    - Moved the colophon icons into classes instead of using inline styles.
+      [limi]
+
+    - Lots of improvements to the visual editor [limi]:
+
+      - Added "pullquote" and "callout" layout classes, renamed "formatted"
+        label to "literal"
+
+      - Updating icons to better match the Plone style
+
+      - Improved tool ordering (growing elements like the text format selector
+        should be at the end, since they displace all the other icons when they
+        change if not)
+
+      - Fixed stupid bug in Mozilla by explicitly setting the link styling
+        inside Kupu
+
+      - Made all images load from an absolute URL to improve caching
+
+    - Fixed CSS regression: the p tag would sometimes be a victim of the
+      peekaboo bug after we removed it to work better with Kupu; put it
+      back in with a position: relative hack instead. This should work better.
+      This closes http://dev.plone.org/plone/ticket/5225
+      [limi]
+
+    - Made the file_view link directly to the file.
+      This closes http://dev.plone.org/plone/ticket/5196
+      [limi]
+
+    - The Sharing page was showing mail addresses to easier be able to discern
+      between users with similar user names; now it uses full name instead.
+      This closes http://dev.plone.org/plone/ticket/5196
+      [limi]
+
+    - Move two IE hacks to IEFixes.css.dtml where there belong, as these had
+      ugly side-effects when viewing a site with IE 7 beta2.
+      [hannosch]
+
+    - Renamed "discussion" to "comments" in the UI, made the labels more
+      explicit about what they actually do.
+      [limi]
+
+    - Checkboxes got background in IE, this was fixed. Also moved the
+      'noborder' class to public.css.
+      [limi]
+
+    - prefs_mailhost_form looked up "smtp_server" in a strange location.
+      Removed some backwards compatibility code from PropertiesTool as well.
+      Fixes http://dev.plone.org/plone/ticket/5174.
+      [hannosch]
+
+    - Clarify description for 'show short name' feature in the prefs panel.
+      Closes http://dev.plone.org/plone/ticket/5112.
+      [hannosch]
+
+    - Added warning message to version overview in the control panel if PIL
+      is not installed. Closes http://dev.plone.org/plone/ticket/5134.
+      [hannosch]
+
+    - Fixed inconsistencies where some 'Controller Python Script' were being
+      declared as normal 'Script (Python)' and were missing the state variable.
+      [deo]
+
+    - Fix confusion between user names and user ids in the membership tool.
+      Fixes http://dev.plone.org/plone/ticket/5098
+      [wichert]
+
+    - Fixed bug: can't access content when the user have no permission to access
+      the acquired left_slots/right_slots properties.
+      [panjunyong]
+
+    - Introduced a new class "tile" to use in the portlets. The previous
+      portlet code implicitly assumed that all links would be block-level,
+      which is not a good thing. This should have minimal impact on old
+      portlets, but if you want the block-level behaviour and stay compatible
+      with older portlet code too, just add class="tile" to your links.
+      [limi]
+
     Beta 1 - released March 31, 2006
 
     - Added "Extension profile" support to the addSite.zpt ZMI form to allow
@@ -533,123 +650,6 @@ Plone 2.5 (unreleased)
       moves some files to /portal_skins/plone_deprecated which will be removed
       in the next release.
       [hannosch]
-
-Plone 2.1.3 - Tomahawk - Unreleased
-
-    - Added some missing .metadata file for images.
-      [panjunyong]
-
-    - Removed colophon.pt from the tableless skin - there's no need for it
-      to have a separate file for this.
-      [limi]
-
-    - Use fullname but not username in viewThreadsAtBottom.
-      [panjunyong]
-
-    - Adding relaxed mode to PloneTool.normalizeString(). This will be used in
-      ATContentTypes to avoid stripping too much from valid filenames being
-      uploaded.
-      [optilude]
-
-    - Making links link directly to the target in the navtree. Fixes
-      http://dev.plone.org/plone/ticket/5264.
-      [optilude]
-
-    - Making the user-name link in the personal-bar link to the author profile.
-      Fixes http://dev.plone.org/plone/ticket/5268.
-      [optilude]
-
-    - Added more insane TAL logic to portlets_fetcher.pt to actually show the
-      error to the user, as opposed to simply logging it. If anyone has an issue
-      with this, please just remove the tal:on-error. Fixes
-      https://dev.plone.org/plone/ticket/5282 and
-      http://dev.plone.org/plone/ticket/2850.
-      [optilude]
-
-    - Handle empty values for group properties of lines and ulines types
-      correctly in the group details template.
-      [wichert]
-
-    - Removed 'input' from the print CSS blacklist; forms print properly now.
-      [limi]
-
-    - Moved the colophon icons into classes instead of using inline styles.
-      [limi]
-
-    - Lots of improvements to the visual editor [limi]:
-
-      - Added "pullquote" and "callout" layout classes, renamed "formatted"
-        label to "literal"
-
-      - Updating icons to better match the Plone style
-
-      - Improved tool ordering (growing elements like the text format selector
-        should be at the end, since they displace all the other icons when they
-        change if not)
-
-      - Fixed stupid bug in Mozilla by explicitly setting the link styling
-        inside Kupu
-
-      - Made all images load from an absolute URL to improve caching
-
-    - Fixed CSS regression: the p tag would sometimes be a victim of the
-      peekaboo bug after we removed it to work better with Kupu; put it
-      back in with a position: relative hack instead. This should work better.
-      This closes http://dev.plone.org/plone/ticket/5225
-      [limi]
-
-    - Made the file_view link directly to the file.
-      This closes http://dev.plone.org/plone/ticket/5196
-      [limi]
-
-    - The Sharing page was showing mail addresses to easier be able to discern
-      between users with similar user names; now it uses full name instead.
-      This closes http://dev.plone.org/plone/ticket/5196
-      [limi]
-
-    - Move two IE hacks to IEFixes.css.dtml where there belong, as these had
-      ugly side-effects when viewing a site with IE 7 beta2.
-      [hannosch]
-
-    - Renamed "discussion" to "comments" in the UI, made the labels more
-      explicit about what they actually do.
-      [limi]
-
-    - Checkboxes got background in IE, this was fixed. Also moved the
-      'noborder' class to public.css.
-      [limi]
-
-    - prefs_mailhost_form looked up "smtp_server" in a strange location.
-      Removed some backwards compatibility code from PropertiesTool as well.
-      Fixes http://dev.plone.org/plone/ticket/5174.
-      [hannosch]
-
-    - Clarify description for 'show short name' feature in the prefs panel.
-      Closes http://dev.plone.org/plone/ticket/5112.
-      [hannosch]
-
-    - Added warning message to version overview in the control panel if PIL
-      is not installed. Closes http://dev.plone.org/plone/ticket/5134.
-      [hannosch]
-
-    - Fixed inconsistencies where some 'Controller Python Script' were being
-      declared as normal 'Script (Python)' and were missing the state variable.
-      [deo]
-
-    - Fix confusion between user names and user ids in the membership tool.
-      Fixes http://dev.plone.org/plone/ticket/5098
-      [wichert]
-
-    - Fixed bug: can't access content when the user have no permission to access
-      the acquired left_slots/right_slots properties.
-      [panjunyong]
-
-    - Introduced a new class "tile" to use in the portlets. The previous
-      portlet code implicitly assumed that all links would be block-level,
-      which is not a good thing. This should have minimal impact on old
-      portlets, but if you want the block-level behaviour and stay compatible
-      with older portlet code too, just add class="tile" to your links.
-      [limi]
 
 Plone 2.1.2 - Saint Etienne - Released January 20, 2006
 
