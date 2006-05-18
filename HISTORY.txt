@@ -2,7 +2,7 @@ Changelog for Plone
 
    (name of developer listed in brackets)
 
-Plone 2.1.3 - Tomahawk - Unreleased
+Plone 2.1.3 - Tomahawk - RC1 - Released May 17, 2006
 
     - Moved column padding to public.css to make sure it doesn't stick around
       when doing customizations of the site theme. It used to be in columns.css.
