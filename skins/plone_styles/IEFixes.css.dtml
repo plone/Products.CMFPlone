@@ -150,6 +150,21 @@ dd.portletFooter {
     border-top-style: solid;
 }
 
+/* Rounded corner workarounds for IE */
+* html .portletHeader {
+    height: 1%;
+}
+.portletTopRight, 
+.portletTopLeft {
+    top: 0px;
+}
+.portletTopRight,
+.portletTopLeft,
+.portletBottomRight,
+.portletBottomLeft {
+    font-size: 1px;
+}
+
 /* fixes for the drop down menus */
 
 * html #objectMenu.actionMenu .actionMenuContent li {
