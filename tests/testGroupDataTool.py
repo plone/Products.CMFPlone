@@ -147,11 +147,47 @@ class TestGroupData(PloneTestCase.PloneTestCase):
         self.failUnless(g.has_role('Member'))
 
 
+from AccessControl import Unauthorized
+
+class TestMethodProtection(PloneTestCase.PloneTestCase):
+    # GroupData has wrong security declarations
+
+    _unprotected = (
+        'addMember',
+        'removeMember',
+    )
+
+    def afterSetUp(self):
+        self.groups = self.portal.portal_groups
+        self.groups.groupWorkspacesCreationFlag = 0
+        self.groups.addGroup('foo')
+        self.groupdata = self.groups.getGroupById('foo')
+
+    def assertUnprotected(self, object, method):
+        self.logout()
+        object.restrictedTraverse(method)
+
+    def assertProtected(self, object, method):
+        self.logout()
+        self.assertRaises(Unauthorized, object.restrictedTraverse, method)
+
+    def assertMemberProtected(self, object, method):
+        self.assertRaises(Unauthorized, object.restrictedTraverse, method)
+
+    for method in _unprotected:
+        exec "def testAnonProtected_%s(self):" \
+             "    self.assertProtected(self.groupdata, '%s')" % (method, method)
+
+        exec "def testMemberProtected_%s(self):" \
+             "    self.assertMemberProtected(self.groupdata, '%s')" % (method, method)
+
+
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
     suite.addTest(makeSuite(TestGroupDataTool))
     suite.addTest(makeSuite(TestGroupData))
+    suite.addTest(makeSuite(TestMethodProtection))
     return suite
 
 if __name__ == '__main__':
