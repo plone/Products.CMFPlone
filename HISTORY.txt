@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1.3 - Tomahawk - Unreleased
 
+    - Moved column padding to public.css to make sure it doesn't stick around
+      when doing customizations of the site theme. It used to be in columns.css.
+      [limi]
+
     - Various small i18n markup fixes. Updated folder_edit_form to conform to
       the same style as the Archetypes based edit forms, as it is still used
       for the Plone site object.
