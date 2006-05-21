@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.5 (unreleased)
 
+    - Fixed private attribute access in PloneBaseTool createExprContext to use
+      the API. This way it will also work with the Zope3 TAL engine.
+      [hannosch]
+
     Beta 2 - released May 17, 2006
 
     - Updated the GenericSetup profile format to CMF1.6-style. No configuration
