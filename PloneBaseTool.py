@@ -72,12 +72,12 @@ def createExprContext(folder, portal, object):
         view_obj = portal
     req = view_obj.REQUEST
     globals_view = getMultiAdapter((view_obj, req), name='plone')
-    expr_context.global_vars['globals_view'] = globals_view
+    expr_context.setGlobal('globals_view', globals_view)
     # Add checkPermission to the action expression context to make cleaner
     # faster expressions
     membership_tool = getToolByName(view_obj, 'portal_membership')
     checkPerm = membership_tool.checkPermission
-    expr_context.global_vars['checkPermission'] = checkPerm
+    expr_context.setGlobal('checkPermission', checkPerm)
 
     return expr_context
 
