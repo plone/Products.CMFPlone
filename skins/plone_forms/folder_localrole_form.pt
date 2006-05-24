@@ -11,7 +11,8 @@
   <div metal:fill-slot="main"
        tal:define="Batch python:modules['Products.CMFPlone'].Batch;
                    username member/getUserName;
-                   avail_roles python:[role for role in mtool.getCandidateLocalRoles(here) if role!='Owner'];
+                   candidate_roles python:mtool.getCandidateLocalRoles(here);
+                   avail_roles python:[role for role in candidate_roles if role!='Owner'];
                    b_size python:12;b_start python:0;b_start request/b_start | b_start;
                    iscontainer isFolderish|nothing;
                    itemPortalTypeTitle python:here.getTypeInfo().Title();
@@ -506,7 +507,7 @@
                                 multiple="multiple"
                                 tabindex=""
                                 tal:attributes="tabindex tabindex/next;">
-                            <option tal:repeat="lroles python:mtool.getCandidateLocalRoles(here)"
+                            <option tal:repeat="lroles candidate_roles"
                                     tal:attributes="value lroles"
                                     tal:content="lroles"
                                     i18n:translate="">
@@ -534,7 +535,7 @@
     <form method="post"
           name="setacquisition"
           action="folder_localrole_set"
-	  tal:attributes="action string:$here_url/folder_localrole_set">
+          tal:attributes="action string:$here_url/folder_localrole_set">
 
       <fieldset>
 
