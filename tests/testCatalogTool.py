@@ -338,11 +338,13 @@ class TestCatalogSearching(PloneTestCase.PloneTestCase):
         self.folder.invokeFactory('Document', id='bbb', text='bbb')
 
     def addUser2ToGroup(self):
+        self.loginPortalOwner()
         self.groups.groupWorkspacesCreationFlag = 0
         self.groups.addGroup(group2, None, [], [])
         group = self.groups.getGroupById(group2)
         group.addMember(user2)
         prefix = self.portal.acl_users.getGroupPrefix()
+        self.logout()
         return '%s%s' % (prefix, group2)
 
     def testListAllowedRolesAndUsers(self):
