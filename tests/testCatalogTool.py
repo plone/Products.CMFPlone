@@ -320,6 +320,7 @@ class TestCatalogIndexing(PloneTestCase.PloneTestCase):
 class TestCatalogSearching(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
+        self.loginPortalOwner()
         self.catalog = self.portal.portal_catalog
         self.workflow = self.portal.portal_workflow
         self.groups = self.portal.portal_groups
@@ -336,6 +337,7 @@ class TestCatalogSearching(PloneTestCase.PloneTestCase):
         # Used for testing AND/OR search functionality below
         self.folder.invokeFactory('Document', id='aaa', text='aaa', title='ccc')
         self.folder.invokeFactory('Document', id='bbb', text='bbb')
+        self.logout()
 
     def addUser2ToGroup(self):
         self.loginPortalOwner()
@@ -356,7 +358,7 @@ class TestCatalogSearching(PloneTestCase.PloneTestCase):
 
     def testSearchReturnsDocument(self):
         # Document should be found when owner does a search
-        self.assertEqual(self.catalog(SearchableText='foo')[0].id, 'doc')
+        self.assertEqual(self.catalog(SearchableText='aaa')[0].id, 'aaa')
 
     def testSearchDoesNotReturnDocument(self):
         # Document should not be found when user2 does a search
@@ -384,7 +386,7 @@ class TestCatalogSearching(PloneTestCase.PloneTestCase):
         groupname = self.addUser2ToGroup()
         self.folder.folder_localrole_edit('add', [groupname], 'Owner')
         self.login(user2)
-        self.assertEqual(self.catalog(SearchableText='foo')[0].id, 'doc')
+        self.assertEqual(self.catalog(SearchableText='aaa')[0].id, 'aaa')
 
     def testSearchRespectsLocalRoleAcquisition(self):
         # After adding a group with access rights and containing user2,
@@ -393,7 +395,7 @@ class TestCatalogSearching(PloneTestCase.PloneTestCase):
         self.folder.folder_localrole_edit('add', [groupname], 'Owner')
         self.login(user2)
         # Local Role works in subfolder
-        self.assertEqual(self.catalog(SearchableText='bar')[0].id, 'doc2')
+        self.assertEqual(self.catalog(SearchableText='bbb')[0].id, 'bbb')
 
     def testSearchRespectsLocalRoleAcquisitionDisabled(self):
         # After adding a group with access rights and containing user2,
@@ -402,11 +404,13 @@ class TestCatalogSearching(PloneTestCase.PloneTestCase):
         groupname = self.addUser2ToGroup()
         self.folder.folder_localrole_edit('add', [groupname], 'Owner')
         # Acquisition off for folder2
-        self.login(default_user)
+        self.loginPortalOwner()
         self.folder.folder2.folder_localrole_set(use_acquisition=0)
+        self.logout()
         #Everything in subfolder should be invisible
         self.login(user2)
         self.failIf(self.catalog(SearchableText='bar'))
+        self.logout()
 
 
 class TestCatalogSorting(PloneTestCase.PloneTestCase):
