@@ -49,7 +49,7 @@ Plone 2.5 (unreleased)
       [ree]
 
     - Set access for all plone control panel forms to View =
-      0:Manager. Closes https://dev.plone.org/plone/ticket/5434.
+      0:Manager. Closes http://dev.plone.org/plone/ticket/5434.
       [brcwhit]
 
     - Fixed extra space in changeSiteActions function in some migrations.
@@ -199,12 +199,12 @@ Plone 2.5 (unreleased)
     - No longer remove expires and effective parameters from catalog queries.
       The use of the DateRangeIndex is sufficient, no reason not to let users
       further restrict results.
-      https://dev.plone.org/plone/ticket/4697
+      http://dev.plone.org/plone/ticket/4697
       [alecm]
 
     - Use portal_transforms to do stx -> html conversion instead of relying
       on ugly module import in the quickinstaller configlet.
-      https://dev.plone.org/plone/ticket/5428
+      http://dev.plone.org/plone/ticket/5428
       [alecm]
 
     - Modify local role addition and removal scripts to only reindex object
@@ -276,7 +276,7 @@ Plone 2.5 (unreleased)
       Closes http://dev.plone.org/plone/ticket/5407
       [hannosch]
 
-    - Fixed dumb migration issue bug https://dev.plone.org/plone/ticket/5357
+    - Fixed dumb migration issue bug http://dev.plone.org/plone/ticket/5357
       [alecm]
 
     - Slightly optimized portlet events view for performance.
@@ -346,7 +346,7 @@ Plone 2.5 (unreleased)
     - Added more insane TAL logic to portlets_fetcher.pt to actually show the
       error to the user, as opposed to simply logging it. If anyone has an issue
       with this, please just remove the tal:on-error. Fixes
-      https://dev.plone.org/plone/ticket/5282 and
+      http://dev.plone.org/plone/ticket/5282 and
       http://dev.plone.org/plone/ticket/2850.
       [optilude]
 
@@ -545,7 +545,7 @@ Plone 2.5 (unreleased)
       details.
       THIS REQUIRES THAT YOU RE-CUSTOMIZE YOUR NAVTREE IF YOU HAVE A CUSTOM
       VERSION IN YOUR SITE!
-      Fixes https://dev.plone.org/plone/ticket/5265.
+      Fixes http://dev.plone.org/plone/ticket/5265.
       [optilude]
 
     - Split the various navigation views into their respective parts, no more
