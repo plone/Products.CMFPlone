@@ -20,7 +20,7 @@
       <b tal:content="owner" i18n:name="name">admin</b>.
     </p>
 
-    <tal:block tal:condition="not:site_properties/large_site">
+    <tal:block tal:condition="not:site_properties/many_users">
       <fieldset>
           <legend i18n:translate="legend_change_ownership">
               Change Ownership
@@ -84,7 +84,7 @@
       </fieldset>
     </tal:block>
 
-    <tal:block tal:condition="site_properties/large_site"
+    <tal:block tal:condition="site_properties/many_users"
                tal:define="search_submitted request/search_submit|nothing;
                            search_results python:search_submitted and mtool.searchForMembers(
                                          name=request.get('search_term', '')) or [];">

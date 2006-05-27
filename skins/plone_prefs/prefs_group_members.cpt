@@ -204,7 +204,7 @@
                            value="Show all"
                            tabindex=""
                            i18n:attributes="value label_search_large;"
-                           tal:condition="not:site_properties/large_site"
+                           tal:condition="not:site_properties/many_users"
                            tal:attributes="tabindex tabindex/next;" />
                 </th>
               </tr>
@@ -261,10 +261,10 @@
               <p tal:condition="searchstring"
                         i18n:translate="text_nomatches">No matches</p>
               <tal:block condition="not:searchstring">
-                <p tal:condition="site_properties/large_site"
+                <p tal:condition="site_properties/many_users"
                      class="discreet"
                      i18n:translate="text_no_searchstring_large">Enter a group or user name to search for.</p>
-                <p tal:condition="not:site_properties/large_site"
+                <p tal:condition="not:site_properties/many_users"
                      class="discreet"
                      i18n:translate="text_no_searchstring">Enter a group or user name to search for or click 'Show All'.</p>
               </tal:block>

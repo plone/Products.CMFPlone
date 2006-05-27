@@ -125,7 +125,7 @@
                            value="Show all"
                            tabindex=""
                            i18n:attributes="value label_showall;"
-                           tal:condition="not:site_properties/large_site"
+                           tal:condition="not:site_properties/many_users"
                            tal:attributes="tabindex tabindex/next;" />
                     </th>
                 </tr>
@@ -210,13 +210,13 @@
                         i18n:translate="text_nomatches"
                         style="text-align:center;">No matches</td>
                     <tal:block tal:condition="not:searchstring">
-                      <td tal:condition="site_properties/large_site"
+                      <td tal:condition="site_properties/many_users"
                           class="discreet"
                           i18n:translate="text_no_user_searchstring"
                           style="text-align:center; font-size: 100%;">
                           Enter a username to search for
                       </td>
-                      <td tal:condition="not:site_properties/large_site"
+                      <td tal:condition="not:site_properties/many_users"
                           class="discreet"
                           i18n:translate="text_no_user_searchstring_largesite"
                           style="text-align:center; font-size: 100%;">

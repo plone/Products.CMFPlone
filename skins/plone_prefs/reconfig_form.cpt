@@ -187,41 +187,43 @@
             </div>
 
             <div class="field"
-                 tal:condition="exists:site_properties/large_site"
-                 tal:define="large_site request/large_site | site_properties/large_site;
+                 tal:condition="exists:site_properties/many_users"
+                 tal:define="many_users request/many_users | site_properties/many_users;
                              tabindex tabindex/next;">
 
-                <label i18n:translate="label_setup_large_site">Large site</label>
+                <label i18n:translate="label_setup_many_users">Many users/groups</label>
 
-                <div class="formHelp" i18n:translate="help_setup_large_site">
-                  Determines if your Plone is optimized for a small or large sites.
-                  Since large sites can deal with a lot of content and a large
-                  amount of users and groups parts of its interface require
-                  different handling.
+                <div class="formHelp" i18n:translate="help_setup_many_users">
+		  Determines if your Plone is optimized for a small or large
+		  sites.  In environments with a lot of users and/or groups it
+		  can be very slow or impossible to build a list all users or
+		  groups.  This option tunes the user interface and behaviour
+		  of Plone for this case by allowing you to search for
+		  users/groups instead of listing all of them.
                 </div>
 
                 <input type="radio"
                        class="noborder"
-                       name="large_site"
+                       name="many_users"
                        value="on"
-                       id="cb_large_site"
+                       id="cb_many_users"
                        tabindex=""
                        tal:attributes="tabindex tabindex;
-                                       checked large_site"
+                                       checked many_users"
                        />
 
-                <label for="cb_large_site" i18n:translate="yes">Yes</label>
+                <label for="cb_many_users" i18n:translate="yes">Yes</label>
 
                 <br />
 
                 <input type="radio"
                        class="noborder"
-                       name="large_site"
+                       name="many_users"
                        value=""
-                       id="cb_nolarge_site"
+                       id="cb_nomany_users"
                        tabindex=""
                        tal:attributes="tabindex tabindex;
-                                       checked not:large_site;"
+                                       checked not:many_users;"
                        />
 
                 <label for="cb_nosmall_site" i18n:translate="no">No</label>

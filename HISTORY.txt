@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 2.5 (unreleased)
 
+    - Rename 'large site' option to 'Many users/groups', which covers its
+      meaning properly. If more similar options are added later we can group
+      those in a new 'large site' option.
+      fixes http://dev.plone.org/plone/ticket/5451
+      [wichert]
+
     - When changing ownership of an object the new owner is identified by a
       userid, not the username. Adjust the implementation accordingly. This
       fixes http://dev.plone.org/plone/ticket/5535
