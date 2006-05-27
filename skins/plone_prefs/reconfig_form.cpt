@@ -354,21 +354,34 @@
             <div class="field"
                  tal:condition="exists:site_properties/allowRolesToAddKeywords"
                  tal:define="allowRolesToAddKeywords request/allowRolesToAddKeywords|site_properties/allowRolesToAddKeywords;
-                             error errors/allowRolesToAddKeywords | nothing;
-                             content python:'\n'.join(allowRolesToAddKeywords)"
+		             avail_roles python:mtool.getCandidateLocalRoles(here);
+                             error errors/allowRolesToAddKeywords | nothing;"
                   >
-
-                <label i18n:translate="label_allowRolesToAddKeywords">Roles Allowed To Add Keywords</label>
+              <fieldset id="fieldset_allowRolesToAddKeywords">
+                <legend i18n:translate="label_allowRolesToAddKeywords">Roles allowed to add keywords</legend>
 
                 <div class="formHelp" i18n:translate="help_allowRolesToAddKeywords">
-                   Determines which roles are allowed to add keywords.
+                  Users with one of the roles selected here are allowed to add
+                  keywords to the site.
                 </div>
-                <textarea name="allowRolesToAddKeywords" id="ta_allowRolesToAddKeywords"
-                   rows="5" cols="15"
-                  tal:content="content"
-                >
-                </textarea>
 
+		<ul class="configlets"
+                    tal:define="allowed_roles site_properties/allowRolesToAddKeywords">
+                  <li tal:repeat="role avail_roles">
+                    <input class="noborder"
+                           type="checkbox"
+                           name="tmp_allowRoleToAddKeyword:list"
+                           tal:attributes="value role;
+                                           id string:tmp_allowRoleToAddKeyword_${role};
+                                           checked python:test(role in allowed_roles, 'checked', '');"/>
+                    <label for=""
+                           i18n:translate=""
+                           tal:attributes="for string:tmp_allowRoleToAddKeyword_${role}"
+                           tal:content="role"
+                           />
+                  </li>
+                </ul>
+              </fieldset>
             </div>
 
             <div class="formControls">
@@ -386,6 +399,7 @@
         </fieldset>
 
         <input type="hidden" name="form.submitted" value="1" />
+        <input type="hidden" name="submitted" value="1" />
 
     </form>
 
