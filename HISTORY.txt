@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.5 (unreleased)
 
+    - When changing ownership of an object the new owner is identified by a
+      userid, not the username. Adjust the implementation accordingly. This
+      fixes http://dev.plone.org/plone/ticket/5535
+      [wichert]
+
     - Fixed private attribute access in PloneBaseTool createExprContext to use
       the API. This way it will also work with the Zope3 TAL engine.
       [hannosch]

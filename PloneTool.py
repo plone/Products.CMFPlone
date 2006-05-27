@@ -434,11 +434,11 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     security.declareProtected(ManagePortal,
                               'changeOwnershipOf')
-    def changeOwnershipOf(self, object, owner, recursive=0):
+    def changeOwnershipOf(self, object, userid, recursive=0):
         """Changes the ownership of an object."""
         membership = getToolByName(self, 'portal_membership')
         acl_users = getattr(self, 'acl_users')
-        user = acl_users.getUser(owner)
+        user = acl_users.getUserById(userid)
         if user is None:
             raise KeyError, 'Only retrievable users in this site can be made owners.'
         object.changeOwnership(user, recursive)
