@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.5 (unreleased)
 
+    - Expose allowAnonymousViewAbout and allowRolesToAddKeywords in the
+      site configuration configlet. Fixes http://dev.plone.org/plone/ticket/5275
+      [wichert]
+
     - Move the 'mail password' text and link on the login form so the tab
       order is more sane. Fixes http://dev.plone.org/plone/ticket/5516
       [wichert]

@@ -194,12 +194,12 @@
                 <label i18n:translate="label_setup_many_users">Many users/groups</label>
 
                 <div class="formHelp" i18n:translate="help_setup_many_users">
-		  Determines if your Plone is optimized for a small or large
-		  sites.  In environments with a lot of users and/or groups it
-		  can be very slow or impossible to build a list all users or
-		  groups.  This option tunes the user interface and behaviour
-		  of Plone for this case by allowing you to search for
-		  users/groups instead of listing all of them.
+                    Determines if your Plone is optimized for a small or large
+                    sites.  In environments with a lot of users and/or groups it
+                    can be very slow or impossible to build a list all users or
+                    groups.  This option tunes the user interface and behaviour
+                    of Plone for this case by allowing you to search for
+                    users/groups instead of listing all of them.
                 </div>
 
                 <input type="radio"
@@ -310,6 +310,65 @@
                        />
 
                 <label for="cb_novisible_ids" i18n:translate="no">No</label>
+            </div>
+
+            <div class="field"
+                 tal:condition="exists:site_properties/allowAnonymousViewAbout"
+                 tal:define="allowAnonymousViewAbout request/allowAnonymousViewAbout | site_properties/allowAnonymousViewAbout;
+                             tabindex tabindex/next;">
+
+                <label i18n:translate="label_allowAnonymousViewAbout">All Anonymous Users To View About Information</label>
+
+                <div class="formHelp" i18n:translate="help_allowAnonymousViewAbout">
+                  Determines if an anonymous user will be allowed to view the
+                  authorship information for objects and folders.
+                </div>
+
+                <input type="radio"
+                       class="noborder"
+                       name="allowAnonymousViewAbout"
+                       value="on"
+                       id="cb_allowAnonymousViewAbout"
+                       tabindex=""
+                       tal:attributes="tabindex tabindex;
+                                       checked allowAnonymousViewAbout"
+                       />
+
+                <label for="cb_allowAnonymousViewAbout" i18n:translate="yes">Yes</label>
+
+                <br />
+
+                <input type="radio"
+                       class="noborder"
+                       name="allowAnonymousViewAbout"
+                       value=""
+                       id="cb_allowAnonymousViewAbout"
+                       tabindex=""
+                       tal:attributes="tabindex tabindex;
+                                       checked not:allowAnonymousViewAbout;"
+                       />
+
+                <label for="cb_allowAnonymousViewAbout" i18n:translate="no">No</label>
+            </div>
+
+            <div class="field"
+                 tal:condition="exists:site_properties/allowRolesToAddKeywords"
+                 tal:define="allowRolesToAddKeywords request/allowRolesToAddKeywords|site_properties/allowRolesToAddKeywords;
+                             error errors/allowRolesToAddKeywords | nothing;
+                             content python:'\n'.join(allowRolesToAddKeywords)"
+                  >
+
+                <label i18n:translate="label_allowRolesToAddKeywords">Roles Allowed To Add Keywords</label>
+
+                <div class="formHelp" i18n:translate="help_allowRolesToAddKeywords">
+                   Determines which roles are allowed to add keywords.
+                </div>
+                <textarea name="allowRolesToAddKeywords" id="ta_allowRolesToAddKeywords"
+                   rows="5" cols="15"
+                  tal:content="content"
+                >
+                </textarea>
+
             </div>
 
             <div class="formControls">
