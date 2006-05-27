@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.5 (unreleased)
 
+    - Move the 'mail password' text and link on the login form so the tab
+      order is more sane. Fixes http://dev.plone.org/plone/ticket/5516
+      [wichert]
+
     - Rename 'large site' option to 'Many users/groups', which covers its
       meaning properly. If more similar options are added later we can group
       those in a new 'large site' option.
