@@ -123,18 +123,16 @@ class TestMembershipTool(PloneTestCase.PloneTestCase):
 
     def testSetPasswordAndKeepGroups(self):
         # Password should be changed and user must not change group membership
-        self.loginPortalOwner()
         group2 = 'g2'
         groups = self.portal.portal_groups
         groups.addGroup(group2, None, [], [])
         group = groups.getGroupById(group2)
+        self.loginPortalOwner() # GRUF 3.52
         group.addMember(default_user)
+        self.login(default_user) # Back to normal
         ugroups = self.portal.acl_users.getUserById(default_user).getGroups()
-        self.logout()
-        self.login(default_user)
         self.membership.setPassword('geheim')
         self.failUnless(self.portal.acl_users.getUserById(default_user).getGroups() == ugroups)
-        self.logout()
 
     def testGetMemberById(self):
         # This should work for portal users,
