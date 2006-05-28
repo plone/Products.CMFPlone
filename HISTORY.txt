@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.5 (unreleased)
 
+    - Added little spamProtect.py enhancement, to allow overwriting of the name
+      that should be shown. This closes http://dev.plone.org/plone/ticket/4868.
+      [hannosch]
+
     - Use sort_limit in the search for portlet_recent. Fixes
       https://dev.plone.org/plone/ticket/5520
       [alecm]
