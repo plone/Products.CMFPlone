@@ -15,7 +15,11 @@
      tal:define="auth nocall:here/acl_users/credentials_cookie_auth|nothing;
                  came_from request/came_from|request/HTTP_REFERER|nothing;
                  came_from python:test(utool.isURLInPortal(came_from), came_from, None);
-                 errors options/state/getErrors;">
+		 errors options/state/getErrors;
+		 ac_name auth/name_cookie|string:__ac_name;
+		 ac_password auth/pw_cookie|string:__ac_password;
+		 ac_persist auth/persist_cookie|nothing;
+		 login_name python:request.get('login_name', request.get(ac_name, ''));">
 
 <h1 i18n:translate="heading_sign_in">Please log in</h1>
 
@@ -40,6 +44,15 @@ If you do not have an account here, head over to the
 
 </p>
 
+<p tal:condition="python:checkPermission('Mail forgotten password', here)"
+     i18n:translate="help_password_retrieval">
+    If you have forgotten your password,
+    <span i18n:name="click_here">
+	<a tal:attributes="href python:'mail_password_form?'+ztu.make_query(userid=login_name)"
+	   i18n:translate="label_click_here_to_retrieve">click here to retrieve it</a>
+    </span>.
+</p>
+
 <div id="enable_cookies_message" i18n:translate="enable_cookies_message" class="portalMessage" style="display:none">
   Cookies are not enabled. You must <span i18n:name="enable_cookies">
   <a href="enabling_cookies" i18n:translate="label_enable_cookies">enable cookies</a></span> before you can log in.
@@ -54,10 +67,7 @@ If you do not have an account here, head over to the
       id="login_form"
       tal:condition="python:auth">
 
-    <fieldset tal:define="ac_name auth/name_cookie|string:__ac_name;
-                          ac_password auth/pw_cookie|string:__ac_password;
-                          ac_persist auth/persist_cookie|nothing;
-                          login_name python:request.get('login_name', request.get(ac_name, ''));">
+    <fieldset>
 
         <legend i18n:translate="legend_account_details">Account details</legend>
 
@@ -107,14 +117,6 @@ If you do not have an account here, head over to the
             <div class="formHelp">
                 <div i18n:translate="help_capslock_password">
                     Case sensitive, make sure caps lock is not enabled.
-                </div>
-                <div tal:condition="python:checkPermission('Mail forgotten password', here)"
-                     i18n:translate="help_password_retrieval">
-                    If you have forgotten your password,
-                    <span i18n:name="click_here">
-                        <a tal:attributes="href python:'mail_password_form?'+ztu.make_query(userid=login_name)"
-                           i18n:translate="label_click_here_to_retrieve">click here to retrieve it</a>
-                    </span>.
                 </div>
             </div>
 

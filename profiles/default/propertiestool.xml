@@ -112,7 +112,7 @@
    <element value="File"/>
   </property>
   <property name="verify_login_name" type="boolean">True</property>
-  <property name="large_site" type="boolean">False</property>
+  <property name="many_users" type="boolean">False</property>
   <property name="enable_livesearch" type="boolean">True</property>
   <property name="default_page_types" type="lines">
    <element value="Document"/>

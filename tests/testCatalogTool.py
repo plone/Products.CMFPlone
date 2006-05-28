@@ -341,7 +341,9 @@ class TestCatalogSearching(PloneTestCase.PloneTestCase):
         self.groups.groupWorkspacesCreationFlag = 0
         self.groups.addGroup(group2, None, [], [])
         group = self.groups.getGroupById(group2)
+        self.loginAsPortalOwner() # GRUF 3.52
         group.addMember(user2)
+        self.login(default_user) # Back to normal
         return group2
 
     def testListAllowedRolesAndUsers(self):
@@ -353,7 +355,7 @@ class TestCatalogSearching(PloneTestCase.PloneTestCase):
 
     def testSearchReturnsDocument(self):
         # Document should be found when owner does a search
-        self.assertEqual(self.catalog(SearchableText='foo')[0].getId, 'doc')
+        self.assertEqual(self.catalog(SearchableText='aaa')[0].id, 'aaa')
 
     def testSearchDoesNotReturnDocument(self):
         # Document should not be found when user2 does a search
@@ -381,7 +383,7 @@ class TestCatalogSearching(PloneTestCase.PloneTestCase):
         groupname = self.addUser2ToGroup()
         self.folder.folder_localrole_edit('add', [groupname], 'Owner')
         self.login(user2)
-        self.assertEqual(self.catalog(SearchableText='foo')[0].getId, 'doc')
+        self.assertEqual(self.catalog(SearchableText='aaa')[0].id, 'aaa')
 
     def testSearchRespectsLocalRoleAcquisition(self):
         # After adding a group with access rights and containing user2,
@@ -390,7 +392,7 @@ class TestCatalogSearching(PloneTestCase.PloneTestCase):
         self.folder.folder_localrole_edit('add', [groupname], 'Owner')
         self.login(user2)
         # Local Role works in subfolder
-        self.assertEqual(self.catalog(SearchableText='bar')[0].getId, 'doc2')
+        self.assertEqual(self.catalog(SearchableText='bbb')[0].id, 'bbb')
 
     def testSearchRespectsLocalRoleAcquisitionDisabled(self):
         # After adding a group with access rights and containing user2,
@@ -399,9 +401,8 @@ class TestCatalogSearching(PloneTestCase.PloneTestCase):
         groupname = self.addUser2ToGroup()
         self.folder.folder_localrole_edit('add', [groupname], 'Owner')
         # Acquisition off for folder2
-        self.login(default_user)
         self.folder.folder2.folder_localrole_set(use_acquisition=0)
-        #Everything in subfolder should be invisible
+        # Everything in subfolder should be invisible
         self.login(user2)
         self.failIf(self.catalog(SearchableText='bar'))
 

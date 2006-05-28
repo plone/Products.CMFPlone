@@ -187,41 +187,43 @@
             </div>
 
             <div class="field"
-                 tal:condition="exists:site_properties/large_site"
-                 tal:define="large_site request/large_site | site_properties/large_site;
+                 tal:condition="exists:site_properties/many_users"
+                 tal:define="many_users request/many_users | site_properties/many_users;
                              tabindex tabindex/next;">
 
-                <label i18n:translate="label_setup_large_site">Large site</label>
+                <label i18n:translate="label_setup_many_users">Many users/groups</label>
 
-                <div class="formHelp" i18n:translate="help_setup_large_site">
-                  Determines if your Plone is optimized for a small or large sites.
-                  Since large sites can deal with a lot of content and a large
-                  amount of users and groups parts of its interface require
-                  different handling.
+                <div class="formHelp" i18n:translate="help_setup_many_users">
+                    Determines if your Plone is optimized for a small or large
+                    sites.  In environments with a lot of users and/or groups it
+                    can be very slow or impossible to build a list all users or
+                    groups.  This option tunes the user interface and behaviour
+                    of Plone for this case by allowing you to search for
+                    users/groups instead of listing all of them.
                 </div>
 
                 <input type="radio"
                        class="noborder"
-                       name="large_site"
+                       name="many_users"
                        value="on"
-                       id="cb_large_site"
+                       id="cb_many_users"
                        tabindex=""
                        tal:attributes="tabindex tabindex;
-                                       checked large_site"
+                                       checked many_users"
                        />
 
-                <label for="cb_large_site" i18n:translate="yes">Yes</label>
+                <label for="cb_many_users" i18n:translate="yes">Yes</label>
 
                 <br />
 
                 <input type="radio"
                        class="noborder"
-                       name="large_site"
+                       name="many_users"
                        value=""
-                       id="cb_nolarge_site"
+                       id="cb_nomany_users"
                        tabindex=""
                        tal:attributes="tabindex tabindex;
-                                       checked not:large_site;"
+                                       checked not:many_users;"
                        />
 
                 <label for="cb_nosmall_site" i18n:translate="no">No</label>
@@ -310,6 +312,78 @@
                 <label for="cb_novisible_ids" i18n:translate="no">No</label>
             </div>
 
+            <div class="field"
+                 tal:condition="exists:site_properties/allowAnonymousViewAbout"
+                 tal:define="allowAnonymousViewAbout request/allowAnonymousViewAbout | site_properties/allowAnonymousViewAbout;
+                             tabindex tabindex/next;">
+
+                <label i18n:translate="label_allowAnonymousViewAbout">All Anonymous Users To View About Information</label>
+
+                <div class="formHelp" i18n:translate="help_allowAnonymousViewAbout">
+                  Determines if an anonymous user will be allowed to view the
+                  authorship information for objects and folders.
+                </div>
+
+                <input type="radio"
+                       class="noborder"
+                       name="allowAnonymousViewAbout"
+                       value="on"
+                       id="cb_allowAnonymousViewAbout"
+                       tabindex=""
+                       tal:attributes="tabindex tabindex;
+                                       checked allowAnonymousViewAbout"
+                       />
+
+                <label for="cb_allowAnonymousViewAbout" i18n:translate="yes">Yes</label>
+
+                <br />
+
+                <input type="radio"
+                       class="noborder"
+                       name="allowAnonymousViewAbout"
+                       value=""
+                       id="cb_allowAnonymousViewAbout"
+                       tabindex=""
+                       tal:attributes="tabindex tabindex;
+                                       checked not:allowAnonymousViewAbout;"
+                       />
+
+                <label for="cb_allowAnonymousViewAbout" i18n:translate="no">No</label>
+            </div>
+
+            <div class="field"
+                 tal:condition="exists:site_properties/allowRolesToAddKeywords"
+                 tal:define="allowRolesToAddKeywords request/allowRolesToAddKeywords|site_properties/allowRolesToAddKeywords;
+		             avail_roles python:mtool.getCandidateLocalRoles(here);
+                             error errors/allowRolesToAddKeywords | nothing;"
+                  >
+              <fieldset id="fieldset_allowRolesToAddKeywords">
+                <legend i18n:translate="label_allowRolesToAddKeywords">Roles allowed to add keywords</legend>
+
+                <div class="formHelp" i18n:translate="help_allowRolesToAddKeywords">
+                  Users with one of the roles selected here are allowed to add
+                  keywords to the site.
+                </div>
+
+		<ul class="configlets"
+                    tal:define="allowed_roles site_properties/allowRolesToAddKeywords">
+                  <li tal:repeat="role avail_roles">
+                    <input class="noborder"
+                           type="checkbox"
+                           name="tmp_allowRoleToAddKeyword:list"
+                           tal:attributes="value role;
+                                           id string:tmp_allowRoleToAddKeyword_${role};
+                                           checked python:test(role in allowed_roles, 'checked', '');"/>
+                    <label for=""
+                           i18n:translate=""
+                           tal:attributes="for string:tmp_allowRoleToAddKeyword_${role}"
+                           tal:content="role"
+                           />
+                  </li>
+                </ul>
+              </fieldset>
+            </div>
+
             <div class="formControls">
                 <input class="context"
                        tabindex=""
@@ -325,6 +399,7 @@
         </fieldset>
 
         <input type="hidden" name="form.submitted" value="1" />
+        <input type="hidden" name="submitted" value="1" />
 
     </form>
 

@@ -4,6 +4,41 @@ Changelog for Plone
 
 Plone 2.5 (unreleased)
 
+    - Use sort_limit in the search for portlet_recent. Fixes
+      https://dev.plone.org/plone/ticket/5520
+      [alecm]
+
+    - Expose allowAnonymousViewAbout and allowRolesToAddKeywords in the
+      site configuration configlet. Fixes http://dev.plone.org/plone/ticket/5275
+      [wichert]
+
+    - Move the 'mail password' text and link on the login form so the tab
+      order is more sane. Fixes http://dev.plone.org/plone/ticket/5516
+      [wichert]
+
+    - Rename 'large site' option to 'Many users/groups', which covers its
+      meaning properly. If more similar options are added later we can group
+      those in a new 'large site' option.
+      fixes http://dev.plone.org/plone/ticket/5451
+      [wichert]
+
+    - When changing ownership of an object the new owner is identified by a
+      userid, not the username. Adjust the implementation accordingly. This
+      fixes http://dev.plone.org/plone/ticket/5535
+      [wichert]
+
+    - Fixed spelling error in livesearch. This closes
+      http://dev.plone.org/plone/ticket/5425
+      [hannosch]
+
+    - Added workarounds so the rounded corners for portlets work in Internet
+      Explorer too.
+      [limi] [spliter]
+
+    - Moved column padding to public.css to make sure it doesn't stick around
+      when doing customizations of the site theme. It used to be in columns.css.
+      [limi]
+
     - Fixed private attribute access in PloneBaseTool createExprContext to use
       the API. This way it will also work with the Zope3 TAL engine.
       [hannosch]
@@ -38,7 +73,7 @@ Plone 2.5 (unreleased)
       [ree]
 
     - Set access for all plone control panel forms to View =
-      0:Manager. Closes https://dev.plone.org/plone/ticket/5434.
+      0:Manager. Closes http://dev.plone.org/plone/ticket/5434.
       [brcwhit]
 
     - Fixed extra space in changeSiteActions function in some migrations.
@@ -188,12 +223,12 @@ Plone 2.5 (unreleased)
     - No longer remove expires and effective parameters from catalog queries.
       The use of the DateRangeIndex is sufficient, no reason not to let users
       further restrict results.
-      https://dev.plone.org/plone/ticket/4697
+      http://dev.plone.org/plone/ticket/4697
       [alecm]
 
     - Use portal_transforms to do stx -> html conversion instead of relying
       on ugly module import in the quickinstaller configlet.
-      https://dev.plone.org/plone/ticket/5428
+      http://dev.plone.org/plone/ticket/5428
       [alecm]
 
     - Modify local role addition and removal scripts to only reindex object
@@ -265,7 +300,7 @@ Plone 2.5 (unreleased)
       Closes http://dev.plone.org/plone/ticket/5407
       [hannosch]
 
-    - Fixed dumb migration issue bug https://dev.plone.org/plone/ticket/5357
+    - Fixed dumb migration issue bug http://dev.plone.org/plone/ticket/5357
       [alecm]
 
     - Slightly optimized portlet events view for performance.
@@ -335,7 +370,7 @@ Plone 2.5 (unreleased)
     - Added more insane TAL logic to portlets_fetcher.pt to actually show the
       error to the user, as opposed to simply logging it. If anyone has an issue
       with this, please just remove the tal:on-error. Fixes
-      https://dev.plone.org/plone/ticket/5282 and
+      http://dev.plone.org/plone/ticket/5282 and
       http://dev.plone.org/plone/ticket/2850.
       [optilude]
 
@@ -534,7 +569,7 @@ Plone 2.5 (unreleased)
       details.
       THIS REQUIRES THAT YOU RE-CUSTOMIZE YOUR NAVTREE IF YOU HAVE A CUSTOM
       VERSION IN YOUR SITE!
-      Fixes https://dev.plone.org/plone/ticket/5265.
+      Fixes http://dev.plone.org/plone/ticket/5265.
       [optilude]
 
     - Split the various navigation views into their respective parts, no more

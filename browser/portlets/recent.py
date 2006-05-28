@@ -18,4 +18,5 @@ class RecentPortlet(utils.BrowserView):
             'items',
             portal_catalog.searchResults(sort_on='modified',
                                          portal_type=typesToShow,
-                                         sort_order='reverse')[:5])
+                                         sort_order='reverse',
+                                         sort_limit=5)[:5])

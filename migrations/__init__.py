@@ -146,8 +146,12 @@ def registerMigrations():
                                       v2_1.two11_two12.two12rc2_two12)
 
     MigrationTool.registerUpgradePath('2.1.2',
-                                      '2.1.3',
+                                      '2.1.3-rc1',
                                       v2_1.two12_two13.two12_two13)
+
+    MigrationTool.registerUpgradePath('2.1.3-rc1',
+                                      '2.1.3',
+                                      null)
 
     MigrationTool.registerUpgradePath('2.1.3',
                                       '2.5-alpha1',
@@ -166,6 +170,10 @@ def registerMigrations():
                                       v2_5.betas.beta1_beta2)
 
     MigrationTool.registerUpgradePath('2.5-beta2',
+                                      '2.5-rc1',
+                                      v2_5.rcs.beta2_rc1)
+
+    MigrationTool.registerUpgradePath('2.5-rc1',
                                       '3.0 (SVN/UNRLEASED)',
                                       null)
 
