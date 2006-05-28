@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.5 (unreleased)
 
+    - Use sort_limit in the search for portlet_recent. Fixes
+      https://dev.plone.org/plone/ticket/5520
+      [alecm]
+
     - Expose allowAnonymousViewAbout and allowRolesToAddKeywords in the
       site configuration configlet. Fixes http://dev.plone.org/plone/ticket/5275
       [wichert]
