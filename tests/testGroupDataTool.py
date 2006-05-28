@@ -8,6 +8,9 @@ if __name__ == '__main__':
 
 from Products.CMFPlone.tests import PloneTestCase
 
+from AccessControl import Unauthorized
+from AccessControl import Permissions
+
 default_user = PloneTestCase.default_user
 
 def sortTuple(t):
@@ -74,11 +77,13 @@ class TestGroupData(PloneTestCase.PloneTestCase):
         self.assertEqual(ms[0].aq_parent.aq_parent.__class__.__name__, 'PluggableAuthService')
 
     def testAddMember(self):
+        self.setPermissions([Permissions.manage_users])
         g = self.groups.getGroupById('foo')
         g.addMember(default_user)
         self.assertEqual(g.getGroupMembers()[0].getId(), default_user)
 
     def testRemoveMember(self):
+        self.setPermissions([Permissions.manage_users])
         g = self.groups.getGroupById('foo')
         g.addMember(default_user)
         g.removeMember(default_user)
@@ -148,15 +153,8 @@ class TestGroupData(PloneTestCase.PloneTestCase):
         self.failUnless(g.has_role('Member'))
 
 
-from AccessControl import Unauthorized
-
 class TestMethodProtection(PloneTestCase.PloneTestCase):
     # GroupData has wrong security declarations
-
-    _unprotected = (
-        'addMember',
-        'removeMember',
-    )
 
     def afterSetUp(self):
         self.groups = self.portal.portal_groups
@@ -164,23 +162,28 @@ class TestMethodProtection(PloneTestCase.PloneTestCase):
         self.groups.addGroup('foo')
         self.groupdata = self.groups.getGroupById('foo')
 
-    def assertUnprotected(self, object, method):
+    def testAnonAddMember(self):
         self.logout()
-        object.restrictedTraverse(method)
+        self.assertRaises(Unauthorized, self.groupdata.addMember, default_user)
 
-    def assertProtected(self, object, method):
+    def testAnonRemoveMember(self):
         self.logout()
-        self.assertRaises(Unauthorized, object.restrictedTraverse, method)
+        self.assertRaises(Unauthorized, self.groupdata.removeMember, default_user)
 
-    def assertMemberProtected(self, object, method):
-        self.assertRaises(Unauthorized, object.restrictedTraverse, method)
+    def testMemberAddMember(self):
+        self.assertRaises(Unauthorized, self.groupdata.addMember, default_user)
 
-    for method in _unprotected:
-        exec "def testAnonProtected_%s(self):" \
-             "    self.assertProtected(self.groupdata, '%s')" % (method, method)
+    def testMemberRemoveMember(self):
+        self.assertRaises(Unauthorized, self.groupdata.removeMember, default_user)
 
-        exec "def testMemberProtected_%s(self):" \
-             "    self.assertMemberProtected(self.groupdata, '%s')" % (method, method)
+    def testManagerAddMember(self):
+        self.setPermissions([Permissions.manage_users])
+        self.groupdata.addMember(default_user)
+
+    def testManagerRemoveMember(self):
+        self.setPermissions([Permissions.manage_users])
+        self.groupdata.addMember(default_user)
+        self.groupdata.removeMember(default_user)
 
 
 def test_suite():

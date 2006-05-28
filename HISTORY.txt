@@ -27,6 +27,18 @@ Plone 2.5 (unreleased)
       fixes http://dev.plone.org/plone/ticket/5535
       [wichert]
 
+    - Fixed spelling error in livesearch. This closes
+      http://dev.plone.org/plone/ticket/5425
+      [hannosch]
+
+    - Added workarounds so the rounded corners for portlets work in Internet
+      Explorer too.
+      [limi] [spliter]
+
+    - Moved column padding to public.css to make sure it doesn't stick around
+      when doing customizations of the site theme. It used to be in columns.css.
+      [limi]
+
     - Fixed private attribute access in PloneBaseTool createExprContext to use
       the API. This way it will also work with the Zope3 TAL engine.
       [hannosch]
