@@ -84,20 +84,22 @@ we eventually might want to merge this form with personalize_form
           <div class="row" tal:define="error errors/fullname| nothing;
                                    fullname python:request.get('fullname', member.getProperty('fullname', ''));"
                        tal:attributes="class python:test(error, 'field error', 'field')">
-        <label i18n:translate="label_full_name">Full Name</label>
+        <label for="fullname"
+               i18n:translate="label_full_name">Full Name</label>
         <div class="formHelp" i18n:translate="help_full_name_creation">
           Enter full name, eg. John Smith.
         </div>
 
         <div tal:content="error">Validation error output</div>
         <input type="text"
-                   name="fullname"
-                   size="30"
-                   value="fullname"
-                   tabindex=""
-                   tal:attributes="value fullname;
-                                   tabindex tabindex/next;
-                                   disabled python:member.canWriteProperty('fullname') and default or 'disabled'"
+               id="fullname"
+               name="fullname"
+               size="30"
+               value="fullname"
+               tabindex=""
+               tal:attributes="value fullname;
+                               tabindex tabindex/next;
+                               disabled python:member.canWriteProperty('fullname') and default or 'disabled'"
                    />
           </div>
 
@@ -105,7 +107,8 @@ we eventually might want to merge this form with personalize_form
                                       email python:request.get('email', member.getProperty('email',''));"
                                  tal:attributes="class python:test(error, 'field error', 'field')">
 
-            <label i18n:translate="label_email">E-mail</label>
+            <label for="email"
+                   i18n:translate="label_email">E-mail</label>
 
             <span class="fieldRequired" title="Required"
                   i18n:attributes="title title_required;"
@@ -121,6 +124,7 @@ we eventually might want to merge this form with personalize_form
 
                   <input type="text"
                          name="email"
+                         id="email"
                          size="30"
                          tabindex=""
                          tal:attributes="value email;

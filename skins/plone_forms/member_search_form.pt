@@ -23,13 +23,15 @@
             <legend i18n:translate="legend_member_search_criteria">User Search Criteria</legend>
     
             <div class="field">
-                <label i18n:translate="label_name">Name</label>
+                <label for="name"
+                       i18n:translate="label_name">Name</label>
                 
                 <div class="formHelp" i18n:translate="help_search_name">
                 Return users with login names containing this value.
                 </div>
     
                 <input type="text"
+                       id="name"
                        name="name"
                        size="25"
                        tabindex=""
@@ -38,13 +40,15 @@
             </div>
     
             <div class="field">
-                <label i18n:translate="label_email">E-mail</label>
+                <label for="email"
+                       i18n:translate="label_email">E-mail</label>
                 
                 <div class="formHelp" i18n:translate="help_search_email">
                 Return users with email addresses containing this value.
                 </div>
                 
                 <input type="text"
+                       id="email"
                        name="email"
                        size="25"
                        tabindex=""
@@ -54,7 +58,8 @@
     
     
             <div class="field">
-                <label i18n:translate="label_last_logged_in">Last logged in</label>
+                <label for="last_login_time"
+                       i18n:translate="label_last_logged_in">Last logged in</label>
                 
                 <div class="formHelp" i18n:translate="help_search_last_logged_in">
                 Return users who have logged in since yesterday, last week, etc.
@@ -62,6 +67,7 @@
     
                 <tal:datetime define="today python:DateTime().earliestTime()">
                     <select name="last_login_time:date"
+                            id="last_login_time"
                             tabindex=""
                             tal:attributes="tabindex tabindex/next;"
                             tal:define="yesterday python:(today-1).Date();
@@ -82,7 +88,8 @@
                      tabindex=""
                      tal:attributes="tabindex tabindex/next;" />
 
-              <label i18n:translate="label_before_specified_time">Not logged in since specified time</label>
+              <label for="cb_before_specified_time"
+                     i18n:translate="label_before_specified_time">Not logged in since specified time</label>
 
               <div class="formHelp" i18n:translate="help_search_before_specified_time">
                 Return users who have NOT logged in since the time specified above.
@@ -93,13 +100,14 @@
             <div class="field"
                  tal:define="grouplist gtool/listGroups"
                  tal:condition="grouplist">
-                 <label i18n:translate="legend_group"> Group </label>
+                 <label for="groupname"
+                        i18n:translate="legend_group"> Group </label>
 
                  <div class="formHelp" i18n:translate="help_search_group"> 
                  Return users in the selected group.
                  </div>
 
-                 <select name="groupname">
+                 <select id="groupname" name="groupname">
                      <option value="" i18n:translate="search_any_group"> Any Group </option>
                      <option tal:repeat="group grouplist"
                              tal:attributes="value group/getGroupName"
@@ -113,7 +121,8 @@
                  tal:define="memberRoles request/roles|nothing;
                              portalRoles python:mtool.getPortalRoles()">
     
-                <label i18n:translate="label_roles">Role(s)</label>
+                <label for="roles"
+                       i18n:translate="label_roles">Role(s)</label>
     
                 <div class="formHelp" i18n:translate="help_search_roles">
                 Return users with all of the selected roles.
@@ -121,7 +130,8 @@
     
                 <metal:role tal:repeat="role portalRoles">
                 <metal:tabindex tal:define="tabindex tabindex/next">
-                    <input name="roles:list"
+                    <input id="roles"
+                           name="roles:list"
                            type="checkbox"
                            class="noborder"
                            tabindex=""

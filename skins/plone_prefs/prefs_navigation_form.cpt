@@ -46,7 +46,8 @@
                        value="1"
                        tal:attributes="checked python:test(generated_tabs, 'checked', None)" />
 
-                <label i18n:translate="label_generated_tabs_enable">
+                <label for="cb_allow_any"
+                       i18n:translate="label_generated_tabs_enable">
                     Automatically generate tabs
                 </label>
 
@@ -63,7 +64,8 @@
                             error errors/name|nothing"
                 tal:attributes="class python:error and 'field error' or 'field';">
 
-                <label i18n:translate="label_navigation_portlet_title">
+                <label for="name"
+                       i18n:translate="label_navigation_portlet_title">
                     Navigation tree portlet title
                 </label>
 
@@ -74,6 +76,7 @@
                 </div>
 
                 <input name="name"
+                       id="name"
                        type="text"
                        size="30"
                        tal:attributes="value value;"/>
@@ -86,7 +89,7 @@
                             error errors/root|nothing"
                 tal:attributes="class python:error and 'field error' or 'field';">
 
-                <label i18n:translate="label_navigation_root">
+                <label for="root" i18n:translate="label_navigation_root">
                     Navigation tree root
                 </label>
 
@@ -98,6 +101,7 @@
                 </div>
 
                 <input name="root"
+                       id="root"
                        type="text"
                        size="30"
                        tal:attributes="value value;"/>
@@ -117,7 +121,8 @@
                        value="0"
                        tal:attributes="checked python:test(value, 'checked', None)" />
 
-                <label i18n:translate="label_current_folder_only">
+                <label for="cb_current_folder_only"
+                       i18n:translate="label_current_folder_only">
                     Root navigation tree in current folder
                 </label>
 
@@ -134,7 +139,8 @@
                   error errors/topLevel|nothing"
                 tal:attributes="class python:error and 'field error' or 'field';">
 
-                <label i18n:translate="label_navigation_start_level">
+                <label for="topLevel"
+                       i18n:translate="label_navigation_start_level">
                     Navigation tree start level
                 </label>
 
@@ -157,6 +163,7 @@
                 </div>
 
                 <input name="topLevel"
+                       id="topLevel"
                        type="text"
                        size="4"
                        tal:attributes="value value;"/>
@@ -169,7 +176,8 @@
                                error errors/bottomLevel|nothing"
                    tal:attributes="class python:error and 'field error' or 'field';">
 
-                <label i18n:translate="label_navigation_tree_depth">
+                <label for="bottomLevel"
+                       i18n:translate="label_navigation_tree_depth">
                     Navigation tree depth
                 </label>
 
@@ -189,6 +197,7 @@
                 </div>
 
                 <input name="bottomLevel"
+                       id="bottomLevel"
                        type="text"
                        size="30"
                        tal:attributes="value value;"/>

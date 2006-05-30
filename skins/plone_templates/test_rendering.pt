@@ -189,17 +189,17 @@ Table of class <code>vertical listing</code>
         <legend>Fieldset legend</legend>
 
         <div class="field">
-            <label>Text field</label>
+            <label for="onefield">Text field</label>
             <span class="fieldRequired" title="Required"
                   i18n:attributes="title title_required;"
                   i18n:translate="label_required">(Required)</span>
             <div class="formHelp">
                 This is the help for this form field. And <a href="#">links are also possible</a>.
             </div>
-            <input type="text" value="Some content" />
+            <input type="text" id="onefield" value="Some content" />
         </div>
         <div class="field error">
-            <label>Text field with error</label>
+            <label for="anotherfield">Text field with error</label>
             <span class="fieldRequired" title="Required"
                   i18n:attributes="title title_required;"
                   i18n:translate="label_required">(Required)</span>
@@ -207,20 +207,20 @@ Table of class <code>vertical listing</code>
                 This field is just here to demonstrate an error message.
             </div>
             <div>This is the error message.</div>
-            <input type="text" value="Some content" />
+            <input type="text" id="anotherfield" value="Some content" />
         </div>
         <div class="field">
-            <label>Checkbox</label>
+            <label for="onecheckbox">Checkbox</label>
             <span class="fieldRequired" title="Required"
                   i18n:attributes="title title_required;"
                   i18n:translate="label_required">(Required)</span>
             <div class="formHelp">
                 This is a checkbox field.
             </div>
-            <input type="checkbox" />
+            <input type="checkbox" id="onecheckbox" />
         </div>
         <div class="field error">
-            <label>Checkbox with error</label>
+            <label for="anothercheckbox">Checkbox with error</label>
             <span class="fieldRequired" title="Required"
                   i18n:attributes="title title_required;"
                   i18n:translate="label_required">(Required)</span>
@@ -228,10 +228,10 @@ Table of class <code>vertical listing</code>
                 This checkbox field is just here to demonstrate an error message.
             </div>
             <div>This is the error message.</div>
-            <input type="checkbox" />
+            <input type="checkbox" id="anothercheckbox" />
         </div>
         <div class="field">
-            <label>Checkbox without border</label>
+            <label for="onestylishcheckbox">Checkbox without border</label>
             <span class="fieldRequired" title="Required"
                   i18n:attributes="title title_required;"
                   i18n:translate="label_required">(Required)</span>
@@ -239,10 +239,12 @@ Table of class <code>vertical listing</code>
                 This is a checkbox field.
             </div>
             <input type="checkbox"
-                   class="noborder" />
+                   class="noborder"
+                   id="onestylishcheckbox" />
         </div>
         <div class="field error">
-            <label>Checkbox without border with error</label>
+            <label for="anotherstylishcheckbox">
+            Checkbox without border with error</label>
             <span class="fieldRequired" title="Required"
                   i18n:attributes="title title_required;"
                   i18n:translate="label_required">(Required)</span>
@@ -251,7 +253,8 @@ Table of class <code>vertical listing</code>
             </div>
             <div>This is the error message.</div>
             <input type="checkbox"
-                   class="noborder" />
+                   class="noborder"
+                   id="anotherstylishcheckbox" />
         </div>
         <div class="field">
             <label>Radio</label>
@@ -261,20 +264,23 @@ Table of class <code>vertical listing</code>
             <div class="formHelp">
                 This is a checkbox field.
             </div>
+            <label>First
             <input class="noborder"
                    type="radio"
                    name="radio_group1" />
-            <label>First</label>
+            </label>
             <br />
+            <label>Second
             <input class="noborder"
                    type="radio"
                    name="radio_group1" />
-            <label>Second</label>
+            </label>
             <br />
+            <label>Third
             <input class="noborder"
                    type="radio"
                    name="radio_group1" />
-            <label>Third</label>
+            </label>
             <br />
         </div>
         <div class="field error">
@@ -286,20 +292,23 @@ Table of class <code>vertical listing</code>
                 This checkbox field is just here to demonstrate an error message.
             </div>
             <div>This is the error message.</div>
+            <label>First
             <input class="noborder"
                    type="radio"
                    name="radio_group2" />
-            <label>First</label>
+            </label>
             <br />
+            <label>Second
             <input class="noborder"
                    type="radio"
                    name="radio_group2" />
-            <label>Second</label>
+            </label>
             <br />
+            <label>Third
             <input class="noborder"
                    type="radio"
                    name="radio_group2" />
-            <label>Third</label>
+            </label>
             <br />
         </div>
         <div class="formControls">

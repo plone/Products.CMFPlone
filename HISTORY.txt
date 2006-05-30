@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.5 (unreleased)
 
+    - Fix several wrong usages of the 'label' tag.
+      [nouri]
+
     - Added little spamProtect.py enhancement, to allow overwriting of the name
       that should be shown. This closes http://dev.plone.org/plone/ticket/4868.
       [hannosch]
