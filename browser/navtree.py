@@ -108,7 +108,7 @@ def buildFolderTree(context, obj=None, query={}, strategy=NavtreeStrategyBase())
     
     showAllParents = strategy.showAllParents
     rootPath = strategy.rootPath
-    
+
     # Find the object's path. Use parent folder if context is a default-page
     
     objPath = None
