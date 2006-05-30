@@ -12,6 +12,9 @@ Plone 2.1.3 - Tomahawk - Unreleased
       http://dev.plone.org/plone/ticket/5425
       [hannosch]
 
+    - Fix username vs userid confusion in PloneTool.changeOwnershipOf.
+      [wichert]
+
    RC1 - Released May 17, 2006
 
     - Added workarounds so the rounded corners for portlets work in Internet
