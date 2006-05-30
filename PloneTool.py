@@ -466,7 +466,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         if membership.getMemberById(owner) is None:
             raise KeyError, 'Only users in this site can be made owners.'
         acl_users = getattr(self, 'acl_users')
-        user = acl_users.getUser(owner)
+        user = acl_users.getUserById(owner)
         if user is not None:
             user = user.__of__(acl_users)
         else:
