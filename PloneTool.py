@@ -601,15 +601,9 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             queryBuilder = NavtreeQueryBuilder(context)
             strategy = DefaultNavtreeStrategy(context)
         
-        return self.buildFolderTree(context, query=queryBuilder(), strategy=strategy)
-
-
-    security.declarePublic('buildFolderTree')
-    def buildFolderTree(self, context, query, strategy):
-        """Return a data structure representing a folder tree structure, using
-        a specific navtree strategy."""
+        query = queryBuilder()
+        
         return buildFolderTree(context, obj=context, query=query, strategy=strategy)
-
 
     security.declarePublic('createTopLevelTabs')
     def createTopLevelTabs(self, actions=None, category='portal_tabs'):
