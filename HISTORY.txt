@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.5 (unreleased)
 
+    - Now that five:traversable handles multiple inheritance better, we can
+      just make some common base classes traversable.  Fixes issues with
+      CompositePack.
+      [alecm]
+
     - Fix several wrong usages of the 'label' tag.
       [nouri]
 

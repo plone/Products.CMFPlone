@@ -5,29 +5,13 @@
   <include package=".browser" />
   <include package=".exportimport" />
 
-  <five:traversable
-      class="Products.Archetypes.atapi.BaseObject"
-      />
-
-  <five:traversable
-      class="Products.CMFCore.PortalObject.PortalObjectBase"
-      />
-
-  <five:traversable
-      class="Products.CMFCore.PortalContent.PortalContent"
-      />
-
-  <!-- Make all CMF style tools traversable via SimpleItem !danger! -->
+  <!-- Make all CMF style tools traversable via SimpleItem and Folder !danger! -->
   <five:traversable
       class="OFS.SimpleItem.SimpleItem"
       />
 
   <five:traversable
-      class="Products.CMFCore.DirectoryView.DirectoryViewSurrogate"
-      />
-
-  <five:traversable
-      class="Products.CMFPlone.PloneFolder.PloneFolder"
+      class="OFS.Folder.Folder"
       />
 
   <five:deprecatedManageAddDelete
