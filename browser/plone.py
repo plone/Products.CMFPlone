@@ -54,11 +54,14 @@ class Plone(utils.BrowserView):
         YOU CAN ONLY CALL THIS METHOD FROM A PAGE TEMPLATE AND EVEN
         THEN IT MIGHT DESTROY YOU!
         """
-
         context = sys._getframe(2).f_locals['econtext']
+        # Some of the original global_defines used 'options' to get parameters
+        # passed in through the template call, so we need this to support
+        # products which may have used this little hack
+        options = context.global_vars.get('options',{})
 
         state = {}
-        self._initializeData()
+        self._initializeData(options=options)
         for name, v in self._data.items():
             state[name] = v
             context.setGlobal(name, v)
@@ -68,14 +71,15 @@ class Plone(utils.BrowserView):
 
         self._data = {}
 
-    def _initializeData(self):
-
+    def _initializeData(self, options=None):
         # We don't want to do this in __init__ because the view provides
         # methods which are useful outside of globals.  Also, performing
         # actions during __init__ is dangerous because instances are usually
         # created during traversal, which means authentication hasn't yet
         # happened.
         context = utils.context(self)
+        if options is None:
+            options = {}
 
         # XXX: Can't store data as attributes directly because it will
         # insert the view into the acquisition chain. Someone should
@@ -109,7 +113,8 @@ class Plone(utils.BrowserView):
         self._data['member'] = mtool.getAuthenticatedMember()
         self._data['membersfolder'] =  mtool.getMembersFolder()
         self._data['isAnon'] =  mtool.isAnonymousUser()
-        self._data['actions'] = actions = atool.listFilteredActionsFor(context)
+        self._data['actions'] = actions = (options.get('actions', None) or
+                                        atool.listFilteredActionsFor(context))
         self._data['keyed_actions'] =  self.keyFilteredActions(actions)
         self._data['user_actions'] =  actions['user']
         self._data['workflow_actions'] =  actions['workflow']
@@ -127,10 +132,9 @@ class Plone(utils.BrowserView):
         # BBB: wf_actions is deprecated use workflow_actions instead
         self._data['wf_actions'] =  self._data['workflow_actions']
         self._data['isFolderish'] =  context.aq_explicit.isPrincipiaFolderish
-        self._data['slots_mapping'] = slots = self.request.get(
-                                                            'slots_mapping',
-                                                            None) or \
-                                              self._prepare_slots() or None
+        self._data['slots_mapping'] = slots = (
+                                         options.get('slots_mapping', None) or
+                                         self._prepare_slots())
         self._data['sl'] = sl = slots['left']
         self._data['sr'] = sr = slots['right']
         self._data['here_url'] =  context.absolute_url()
