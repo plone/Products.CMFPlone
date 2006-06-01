@@ -58,7 +58,7 @@ class Plone(utils.BrowserView):
         # Some of the original global_defines used 'options' to get parameters
         # passed in through the template call, so we need this to support
         # products which may have used this little hack
-        options = context.global_vars.get('options',{})
+        options = context.vars.get('options',{})
 
         state = {}
         self._initializeData(options=options)
