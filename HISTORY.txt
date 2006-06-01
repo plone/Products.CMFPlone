@@ -4,6 +4,17 @@ Changelog for Plone
 
 Plone 2.5 (unreleased)
 
+    - Added a few functional tests using 'zope.testbrowser', see
+      'AddMoveAndDeleteDocument.txt' and 'LoginAndLogout.txt'.  These
+      should eventually replace the 'rendering.txt' and 'forms.txt'
+      tests.
+
+      All *.txt files in the tests/ directory are now picked up by
+      'test_functional.py'.  I'm open to change here.
+      
+      Note that these tests are only run if you have Five >= 1.4
+      [nouri]
+
     - Now that five:traversable handles multiple inheritance better, we can
       just make some common base classes traversable.  Fixes issues with
       CompositePack.

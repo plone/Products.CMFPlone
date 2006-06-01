@@ -1,0 +1,48 @@
+Logging in and out
+==================
+
+A very simple and underdocumented testbrowser test.  This is all about
+logging in and out.
+
+    >>> from Products.Five.testbrowser import Browser
+    >>> browser = Browser()
+
+Using the Login Form
+--------------------
+
+    >>> browser.open('http://nohost/plone/')
+    >>> browser.getLink('Log in').click()
+    >>> browser.url
+    'http://nohost/plone/login_form'
+    >>> browser.getControl('Login Name').value = 'test_user_1_'
+    >>> browser.getControl('Password').value = 'secret'
+    >>> browser.getControl('Log in').click()
+    >>> "You are now logged in" in browser.contents
+    True
+    >>> browser.url
+    'http://nohost/plone/login_form'
+    >>> browser.getLink('Log out').click()
+    >>> browser.url
+    'http://nohost/plone/logged_out'
+
+Using the Login Portlet
+-----------------------
+
+    >>> browser.getLink('Home').click()
+    >>> browser.url
+    'http://nohost/plone'
+    >>> browser.getControl('Login Name').value = 'test_user_1_'
+    >>> browser.getControl('Password').value = 'secret'
+    >>> browser.getControl('Log in').click()
+    >>> 'You are now logged in' in browser.contents
+    True
+    >>> browser.url
+    'http://nohost/plone/login_form'
+
+We landed in ``login_form`` because we don't have JavaScript enabled
+and therefore Plone thinks we don't have cookies and displays a
+warning.  We're logged in however even on the next page load:
+
+    >>> browser.reload()
+    >>> browser.getLink('Log out')
+    <Link text='Log out' url='http://nohost/plone/logout'>
