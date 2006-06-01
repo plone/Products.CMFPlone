@@ -74,10 +74,7 @@ the Document into.
 First off, we'll cut our document: (XXX We want a proper label for
 this control in Plone)
 
-    >>> checkbox = browser.getControl(name='paths:list').controls[0]
-    >>> checkbox.click()
-    >>> browser.getControl(name='paths:list').value
-    ['/plone/Members/test_user_1_/my-page']
+    >>> browser.getControl('Ons Bier').click()
     >>> browser.getControl('Cut').click()
 
 Before doing the actual paste, we create a folder to paste into.
@@ -116,8 +113,7 @@ the ``folder_contents`` page and clicking a checkbox.
 This is how we click the checkbox.  There's a nicer way to do this,
 I'm sure:
 
-    >>> checkbox = browser.getControl(name='paths:list').controls[0]
-    >>> checkbox.click()
+    >>> browser.getControl('Ons Bier').click()
     >>> browser.getControl('Delete').click()
     >>> 'Item(s) deleted.' in browser.contents
     True
