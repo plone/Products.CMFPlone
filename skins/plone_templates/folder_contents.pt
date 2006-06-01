@@ -223,10 +223,9 @@
                                                   title string: $item_type: $item_description;
                                                   class string:$item_wf_state_class visualIconPadding;">
                             <strong tal:omit-tag="python:not isBrowserDefault">
-                            <label tal:content="item_title_or_id"
-                                   tal:attributes="for string:cb_$item_id">
+                            <span tal:content="item_title_or_id">
                               Item Title
-                            </label>
+                            </span>
                             </strong>
                         </a>
                         </span>
