@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.5 (unreleased)
 
+    - Added missing 'Apply' button in group preferences again.
+      This closes http://dev.plone.org/plone/ticket/5544.
+      [hannosch]
+
     - Added a few functional tests using 'zope.testbrowser', see
       'AddMoveAndDeleteDocument.txt' and 'LoginAndLogout.txt'.  These
       should eventually replace the 'rendering.txt' and 'forms.txt'
