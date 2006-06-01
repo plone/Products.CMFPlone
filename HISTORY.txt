@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1.3 - Tomahawk - Unreleased
 
+    - Polished HTML in livesearch_reply.py. It generated <LI> element
+      without the <UL> when there are no livesearch results
+      [spliter]
+
     - Use sort_limit in the search for portlet_recent. Fixes
       https://dev.plone.org/plone/ticket/5520
       [alecm]

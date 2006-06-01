@@ -77,9 +77,9 @@ if not results:
     print '''<legend id="livesearchLegend">%s</legend>''' % legend_livesearch
     print '''<div class="LSIEFix">'''
     print '''<div id="LSNothingFound">%s</div>''' % label_no_results_found
-    print '''<li class="LSRow">'''
+    print '''<div class="LSRow">'''
     print '<a href="search_form" style="font-weight:normal">%s</a>' % label_advanced_search
-    print '''</li>'''
+    print '''</div>'''
     print '''</div>'''
     print '''</fieldset>'''
 
