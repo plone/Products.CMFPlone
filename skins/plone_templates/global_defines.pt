@@ -19,7 +19,7 @@
         global checkPermission nocall:mtool/checkPermission;
         global membersfolder mtool/getMembersFolder;
         global isAnon mtool/isAnonymousUser;
-        global actions python:portal.portal_actions.listFilteredActionsFor(here);
+        global actions python:atool.listFilteredActionsFor(here);
         global keyed_actions python:portal.keyFilteredActions(actions);
         global user_actions actions/user;
         global workflow_actions actions/workflow;
