@@ -4,6 +4,14 @@ Changelog for Plone
 
 Plone 2.5 (unreleased)
 
+    - Deleting objects in the portal root now requires the user to have the
+      'Delete objects' permission on both the portal and the objects to be
+      deleted.  This makes the rules for object deletion consistent between
+      the portal and all other folderish objects in the portal (at least those
+      based on BasePloneFolder or AT's BaseFolder).  This fixes
+      http://dev.plone.org/plone/ticket/2925
+      [alecm]
+
     - Don't propose local workflow policy configuration iw we aren't in a
       folderish type. We don't allow it on plone root too.
       [encolpe]
@@ -27,7 +35,7 @@ Plone 2.5 (unreleased)
 
       All *.txt files in the tests/ directory are now picked up by
       'test_functional.py'.  I'm open to change here.
-      
+
       Note that these tests are only run if you have Five >= 1.4
       [nouri]
 

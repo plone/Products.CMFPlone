@@ -601,6 +601,7 @@ class TestMigrations_v2_1(MigrationTest):
 
     def testInstallCSSandJSRegistries(self):
         # Should install ResourceRegistries
+        self.setRoles(('Manager',))
         self.uninstallProduct('ResourceRegistries')
         self.portal.manage_delObjects(['portal_css', 'portal_javascripts'])
         installCSSandJSRegistries(self.portal, [])
@@ -609,6 +610,7 @@ class TestMigrations_v2_1(MigrationTest):
 
     def testInstallCSSandJSRegistriesTwice(self):
         # Should not fail if migrated again
+        self.setRoles(('Manager',))
         self.uninstallProduct('ResourceRegistries')
         self.portal.manage_delObjects(['portal_css', 'portal_javascripts'])
         installCSSandJSRegistries(self.portal, [])
@@ -2404,6 +2406,7 @@ class TestMigrations_v2_1(MigrationTest):
         tool_ids = ('portal_uidgenerator', 'portal_uidannotation',
                    'portal_uidhandler')
         # remove tools
+        self.setRoles(('Manager',))
         self.portal.manage_delObjects(list(tool_ids))
         for id in tool_ids:
             self.failIf(id in self.portal.objectIds(), id)
@@ -3014,6 +3017,7 @@ class TestMigrations_v2_1(MigrationTest):
 
     def testMoveDefaultTopicsToPortalRootNoFolders(self):
         # Should not fail if folders are missing
+        self.setRoles(('Manager',))
         self.portal.manage_delObjects(['news','events'])
         moveDefaultTopicsToPortalRoot(self.portal,[])
 
@@ -3652,6 +3656,7 @@ class TestMigrations_v2_5(MigrationTest):
     def testInstallPlonePAS(self):
         qi = self.portal.portal_quickinstaller
         if qi.isProductInstalled('PlonePAS'):
+            self.setRoles(('Manager',))
             qi.uninstallProducts(['PlonePAS'])
         self.failIf(qi.isProductInstalled('PlonePAS'))
         installPlonePAS(self.portal, [])
@@ -3660,6 +3665,7 @@ class TestMigrations_v2_5(MigrationTest):
     def testInstallPlonePASTwice(self):
         qi = self.portal.portal_quickinstaller
         if qi.isProductInstalled('PlonePAS'):
+            self.setRoles(('Manager',))
             qi.uninstallProducts(['PlonePAS'])
         installPlonePAS(self.portal, [])
         installPlonePAS(self.portal, [])
@@ -3668,6 +3674,7 @@ class TestMigrations_v2_5(MigrationTest):
     def testInstallPlonePASWithEnvironmentVariableSet(self):
         qi = self.portal.portal_quickinstaller
         if qi.isProductInstalled('PlonePAS'):
+            self.setRoles(('Manager',))
             qi.uninstallProducts(['PlonePAS'])
         self.failIf(qi.isProductInstalled('PlonePAS'))
         os.environ['SUPPRESS_PLONEPAS_INSTALLATION'] = 'YES'

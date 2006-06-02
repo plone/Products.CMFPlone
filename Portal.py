@@ -18,7 +18,7 @@ def listPolicies(creation=1):
 def addPolicy(label, klass):
     custom_policies[label]=klass
 
-from Products.CMFCore.permissions import AccessContentsInformation
+from Products.CMFCore import permissions
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFDefault import DublinCore
@@ -27,6 +27,7 @@ from Products.CMFPlone.PloneFolder import OrderedContainer
 import Globals
 
 from AccessControl import ClassSecurityInfo
+from AccessControl import Unauthorized
 from Acquisition import aq_base
 from ComputedAttribute import ComputedAttribute
 from webdav.NullResource import NullResource
@@ -117,8 +118,8 @@ class PloneSite(CMFSite, OrderedContainer, BrowserDefaultMixin):
         """
         return self()
 
-    security.declareProtected(AccessContentsInformation,
-			     'folderlistingFolderContents')
+    security.declareProtected(permissions.AccessContentsInformation,
+                 'folderlistingFolderContents')
     def folderlistingFolderContents(self, spec=None, contentFilter=None):
         """Calls listFolderContents in protected only by ACI so that
         folder_listing can work without the List folder contents permission,
@@ -128,5 +129,19 @@ class PloneSite(CMFSite, OrderedContainer, BrowserDefaultMixin):
         reference browser.
         """
         return self.listFolderContents(spec, contentFilter)
+
+    security.declareProtected(permissions.DeleteObjects,
+                              'manage_delObjects')
+    def manage_delObjects(self, ids=[], REQUEST=None):
+        """We need to enforce security."""
+        mt = getToolByName(self, 'portal_membership')
+        if type(ids) is str:
+            ids = [ids]
+        for id in ids:
+            item = self._getOb(id)
+            if not mt.checkPermission(permissions.DeleteObjects, item):
+                raise Unauthorized, (
+                    "Do not have permissions to remove this object")
+        return CMFSite.manage_delObjects(self, ids, REQUEST=REQUEST)
 
 Globals.InitializeClass(PloneSite)

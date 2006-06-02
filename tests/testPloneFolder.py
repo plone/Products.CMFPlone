@@ -36,7 +36,7 @@ class TestPloneFolder(PloneTestCase.PloneTestCase):
         self.assertRaises(NotFound, self.folder.getObjectPosition, 'foobar')
 
     def testSortOrder(self):
-        self.assertEqual(self.folder.objectIds(), 
+        self.assertEqual(self.folder.objectIds(),
             ['sub1', 'sub2', 'sub3'])
 
     def testEditFolderKeepsPosition(self):
@@ -44,7 +44,7 @@ class TestPloneFolder(PloneTestCase.PloneTestCase):
         self.folder.sub2.folder_edit('Foo', 'Description')
         self.assertEqual(self.folder.sub2.Title(), 'Foo')
         # Order should remain the same
-        self.assertEqual(self.folder.objectIds(), 
+        self.assertEqual(self.folder.objectIds(),
             ['sub1', 'sub2', 'sub3'])
 
     def testRenameFolderKeepsPosition(self):
@@ -53,7 +53,7 @@ class TestPloneFolder(PloneTestCase.PloneTestCase):
         self.folder.sub2.folder_edit('Foo', 'Description', id='foo')
         self.assertEqual(self.folder.foo.Title(), 'Foo')
         # Order should remain the same
-        self.assertEqual(self.folder.objectIds(), 
+        self.assertEqual(self.folder.objectIds(),
             ['sub1', 'foo', 'sub3'])
 
     def testCanViewManagementScreen(self):
@@ -68,9 +68,9 @@ class TestPloneFolder(PloneTestCase.PloneTestCase):
 
 class TestCheckIdAvailable(PloneTestCase.PloneTestCase):
     # PortalFolder.checkIdAvailable() did not properly catch
-    # zExceptions.BadRequest. 
+    # zExceptions.BadRequest.
     # Fixed in CMFCore.PortalFolder, not Plone.
-    
+
     def afterSetUp(self):
         _createObjectByType('Large Plone Folder', self.folder, 'lpf')
         self.lpf = self.folder.lpf
@@ -246,8 +246,7 @@ class TestManageDelObjectsInPortal(PloneTestCase.PloneTestCase):
         # Should be able to delete sub1 as the portal does not implement
         # additional permission checks.
         self.sub1.manage_permission(DeleteObjects, ['Manager'], acquire=0)
-        self.portal.manage_delObjects('sub1')
-        self.failIf('sub1' in self.portal.objectIds())
+        self.assertRaises(Unauthorized, self.portal.manage_delObjects, 'sub1')
 
 
 def test_suite():

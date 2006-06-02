@@ -57,12 +57,14 @@ class TestNewsPortletView(PloneTestCase.PloneTestCase):
         NewsPortlet.all_news_link() must return URL of 'newslisting'
         template if 'news' does not exist
         """
+        # We must have permission to delete objects
+        self.setRoles(('Manager',))
         self.portal.manage_delObjects(['news'])
         view = NewsPortlet(self.portal, self.app.REQUEST)
         url = view.all_news_link()
         self.failUnlessEqual(url, self.portal.absolute_url()+'/news_listing')
-        
- 
+
+
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
