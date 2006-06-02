@@ -4,6 +4,14 @@ Changelog for Plone
 
 Plone 2.5 (unreleased)
 
+    - Don't propose local workflow policy configuration iw we aren't in a
+      folderish type. We don't allow it on plone root too.
+      [encolpe]
+
+    - Finish worklists implementation with workflow id and complete guard
+      filtering
+      [encolpe]
+
     - Polished HTML in livesearch_reply.py. It generated <LI> element
       without the <UL> when there are no livesearch results
       [spliter]
