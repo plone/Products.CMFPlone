@@ -49,9 +49,9 @@ def test_suite():
         filenames = list_doctests()
 
     return unittest.TestSuite(
-        [Suite(filename,
+        [Suite(os.path.basename(filename),
                #optionflags=OPTIONFLAGS,
-               module_relative=False,
+               package='Products.CMFPlone.tests',
                test_class=PloneTestCase.FunctionalTestCase)
          for filename in filenames]
         )
