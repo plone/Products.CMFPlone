@@ -139,12 +139,13 @@ class WorkflowTool(PloneBaseTool, BaseTool):
                 types_by_wf[wf] = types_by_wf.get(wf,[]) + [t]
 
         # Placeful stuff
-        placeful_tool = getToolByName(self, 'portal_placeful_workflow')
-        for policy in placeful_tool.getWorkflowPolicies():
-            for t in list_ptypes:
-                chain = policy.getChainFor(t) or ()
-                for wf in chain:
-                    types_by_wf[wf] = types_by_wf.get(wf,[]) + [t]
+        placeful_tool = getToolByName(self, 'portal_placeful_workflow', None)
+        if placeful_tool is not None:
+            for policy in placeful_tool.getWorkflowPolicies():
+                for t in list_ptypes:
+                    chain = policy.getChainFor(t) or ()
+                    for wf in chain:
+                        types_by_wf[wf] = types_by_wf.get(wf,[]) + [t]
 
         wf_with_wlists = {}
         for id in self.getWorkflowIds():
@@ -194,12 +195,13 @@ class WorkflowTool(PloneBaseTool, BaseTool):
                 types_by_wf[wf] = types_by_wf.get(wf, []) + [t]
 
         # PlacefulWorkflowTool will give us other results
-        placeful_tool = getToolByName(self, 'portal_placeful_workflow')
-        for policy in placeful_tool.getWorkflowPolicies():
-            for t in list_ptypes:
-                chain = policy.getChainFor(t) or ()
-                for wf in chain:
-                    types_by_wf[wf] = types_by_wf.get(wf, []) + [t]
+        placeful_tool = getToolByName(self, 'portal_placeful_workflow', None)
+        if placeful_tool is not None:
+            for policy in placeful_tool.getWorkflowPolicies():
+                for t in list_ptypes:
+                    chain = policy.getChainFor(t) or ()
+                    for wf in chain:
+                        types_by_wf[wf] = types_by_wf.get(wf, []) + [t]
 
         objects_by_path = {}
         for id in self.getWorkflowIds():
