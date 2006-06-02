@@ -62,7 +62,10 @@
                        i18n:translate="label_advanced">Advanced&hellip;</a>
                 </li>
                 <li class="actionSeperator"
-                    tal:condition="manage_portal">
+                    tal:define="is_folder_or_default_page here/@@plone/isFolderOrFolderDefaultPage;
+                                is_portal_or_portal_default_page here/@@plone/isPortalOrPortalDefaultPage;
+                                is_default_page here/@@plone/isDefaultPageInFolder;"
+                    tal:condition="python:manage_portal and is_folder_or_default_page and not is_default_page and not is_portal_or_portal_default_page">
                     <a href="#"
                        tal:attributes="href string:$here_url/placeful_workflow_configuration"
                        i18n:translate="workflow_policy">Policy</a>
