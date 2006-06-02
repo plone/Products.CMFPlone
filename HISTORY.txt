@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.5 (unreleased)
 
+    - Polished HTML in livesearch_reply.py. It generated <LI> element
+      without the <UL> when there are no livesearch results
+      [spliter]
+
     - Added missing 'Apply' button in group preferences again.
       This closes http://dev.plone.org/plone/ticket/5544.
       [hannosch]
