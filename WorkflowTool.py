@@ -5,7 +5,7 @@ from ZODB.POSException import ConflictError
 from Acquisition import aq_base
 
 from Globals import InitializeClass
-from AccessControl import ClassSecurityInfo
+from AccessControl import getSecurityManager, ClassSecurityInfo
 from Products.CMFCore.permissions import ManagePortal
 from Products.DCWorkflow.Transitions import TRIGGER_USER_ACTION
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
@@ -132,13 +132,22 @@ class WorkflowTool(PloneBaseTool, BaseTool):
         # We want to know which types use the workflows with worklists
         # This for example avoids displaying 'pending' of multiple workflows in the same worklist
         types_tool = getToolByName(self, 'portal_types')
+        list_ptypes = types_tool.listContentTypes()
         types_by_wf = {} # wf:[list,of,types]
-        for t in types_tool.listContentTypes():
-            for wf in self.getChainForPortalType(t):
+        for t in list_ptypes:
+            for wf in self.getChainFor(t):
                 types_by_wf[wf] = types_by_wf.get(wf,[]) + [t]
 
+        # Placeful stuff
+        placeful_tool = getToolByName(self, 'portal_placeful_workflow')
+        for policy in placeful_tool.getWorkflowPolicies():
+            for t in list_ptypes:
+                chain = policy.getChainFor(t) or ()
+                for wf in chain:
+                    types_by_wf[wf] = types_by_wf.get(wf,[]) + [t]
+
         wf_with_wlists = {}
-        for id in [workflow for seq in self.workflows_in_use() for workflow in seq]:
+        for id in self.getWorkflowIds():
             # the above list incomprehension merely _flattens_ nested sequences into 1 sequence
 
             wf=self.getWorkflowById(id)
@@ -163,9 +172,63 @@ class WorkflowTool(PloneBaseTool, BaseTool):
 
         return wf_with_wlists
 
+    security.declarePublic('getWorklistsResults')
+    def getWorklistsResults(self):
+        """Return all the objects concerned by one or more worklists
+
+        This method replace 'getWorklists' by implementing the whole worklists
+        work for the script.
+        An object is returned only once, even if is return by several worklists.
+        Make the whole work as expensive it is.
+        """
+        sm = getSecurityManager()
+        # We want to know which types use the workflows with worklists
+        # This for example avoids displaying 'pending' of multiple workflows in the same worklist
+        types_tool = getToolByName(self, 'portal_types')
+        catalog = getToolByName(self, 'portal_catalog')
+
+        list_ptypes = types_tool.listContentTypes()
+        types_by_wf = {} # wf:[list,of,types]
+        for t in list_ptypes:
+            for wf in self.getChainFor(t):
+                types_by_wf[wf] = types_by_wf.get(wf, []) + [t]
+
+        # PlacefulWorkflowTool will give us other results
+        placeful_tool = getToolByName(self, 'portal_placeful_workflow')
+        for policy in placeful_tool.getWorkflowPolicies():
+            for t in list_ptypes:
+                chain = policy.getChainFor(t) or ()
+                for wf in chain:
+                    types_by_wf[wf] = types_by_wf.get(wf, []) + [t]
+
+        objects_by_path = {}
+        for id in self.getWorkflowIds():
+
+            wf=self.getWorkflowById(id)
+            if hasattr(wf, 'worklists'):
+                wlists = []
+                for worklist in wf.worklists._objects:
+                    wlist_def=wf.worklists._mapping[worklist['id']]
+                    # Make the var_matches a dict instead of PersistentMapping to enable access from scripts
+                    catalog_vars = {}
+                    for key in wlist_def.var_matches.keys():
+                        catalog_vars[key] = wlist_def.var_matches[key]
+                    for result in catalog.searchResults(catalog_vars, portal_type=types_by_wf.get(id, [])):
+                        o = result.getObject()
+                        if o \
+                           and id in self.getChainFor(o) \
+                           and wlist_def.getGuard().check(sm, wf, o):
+                            absurl = o.absolute_url()
+                            if absurl:
+                                objects_by_path[absurl] = (o.modified(), o)
+
+        results = objects_by_path.values()
+        results.sort()
+        return tuple([ obj[1] for obj in results ])
+
+
     security.declareProtected(ManagePortal, 'getChainForPortalType')
     def getChainForPortalType(self, pt_name, managescreen=0):
-
         """ Get a chain for a specific portal type.
         """
         if self._chains_by_type.has_key(pt_name):
@@ -181,7 +244,6 @@ class WorkflowTool(PloneBaseTool, BaseTool):
 
     security.declareProtected(ManagePortal, 'listWorkflows')
     def listWorkflows(self):
-
         """ Return the list of workflows
         """
         return self.objectIds()
