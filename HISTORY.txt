@@ -2,6 +2,12 @@ Changelog for Plone
 
    (name of developer listed in brackets)
 
+Plone 3.0 (unreleased)
+
+    - Removed bbb code for MessageIDFactory, queryMultiAdapter, transaction and
+      CatalogTool._initIndexes.
+      [hannosch]
+
 Plone 2.5 (unreleased)
 
     - Deleting objects in the portal root now requires the user to have the

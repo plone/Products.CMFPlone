@@ -5,15 +5,6 @@
   <include package=".browser" />
   <include package=".exportimport" />
 
-  <!-- Make all CMF style tools traversable via SimpleItem and Folder !danger! -->
-  <five:traversable
-      class="OFS.SimpleItem.SimpleItem"
-      />
-
-  <five:traversable
-      class="OFS.Folder.Folder"
-      />
-
   <five:deprecatedManageAddDelete
       class=".Portal.PloneSite" />
 

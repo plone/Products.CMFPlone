@@ -1,5 +1,6 @@
 import os
 import string
+import transaction
 
 import zLOG
 
@@ -17,7 +18,7 @@ from Products.CMFCore.Expression import Expression
 from Products.CMFPlone.migrations.v2.plone2_base import setupExtEditor, addDocumentActions, addActionIcons
 from Products.CMFPlone.migrations.migration_util import safeEditProperty, addLinesToProperty
 from Products.CMFPlone.setup import ConfigurationMethods
-from Products.CMFPlone import ToolNames, transaction
+from Products.CMFPlone import ToolNames
 from portlet_migration import upgradeSlots2Portlets
 import plone2_base
 

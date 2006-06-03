@@ -279,8 +279,6 @@ class CatalogTool(PloneBaseTool, BaseTool):
 
     def __init__(self):
         ZCatalog.__init__(self, self.getId())
-        log_deprecated("CatalogTool._initIndexes is deprecated, please use a GenericSetup profile instead.")
-        self._initIndexes()
 
     def _removeIndex(self, index):
         """Safe removal of an index.

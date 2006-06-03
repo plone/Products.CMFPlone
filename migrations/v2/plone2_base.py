@@ -13,6 +13,8 @@
 # one02_one03
 # upg_1_0_1_to_1_1
 
+import transaction
+
 from cStringIO import StringIO
 from Acquisition import aq_base
 
@@ -23,7 +25,7 @@ from Globals import package_home
 from Products.CMFPlone import cmfplone_globals
 from Products.CMFPlone.setup.ConfigurationMethods import addSiteProperties
 from Products.CMFPlone.migrations.migration_util import safeEditProperty
-from Products.CMFPlone import ToolNames, transaction
+from Products.CMFPlone import ToolNames
 
 from Products.CMFCore import CachingPolicyManager
 from Products.CMFCore.permissions import ListFolderContents, SetOwnProperties, SetOwnPassword
