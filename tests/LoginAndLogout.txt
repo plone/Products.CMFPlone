@@ -44,5 +44,19 @@ and therefore Plone thinks we don't have cookies and displays a
 warning.  We're logged in however even on the next page load:
 
     >>> browser.reload()
-    >>> browser.getLink('Log out')
-    <Link text='Log out' url='http://nohost/plone/logout'>
+    >>> browser.getLink('Log out').click()
+    >>> 'You are now logged out' in browser.contents
+    True
+
+Login with user defined in root user folder
+-------------------------------------------
+
+A user defined in the root user folder should be able to log in into
+the site:
+
+    >>> self.app.acl_users.userFolderAddUser('rootuser', 'secret', [], [])
+    >>> browser.getControl('Login Name').value = 'rootuser'
+    >>> browser.getControl('Password').value = 'secret'
+    >>> browser.getControl('Log in').click()
+    >>> 'You are now logged in' in browser.contents
+    True
