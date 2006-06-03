@@ -8,7 +8,7 @@ Plone 2.5 (unreleased)
       'Delete objects' permission on both the portal and the objects to be
       deleted.  This makes the rules for object deletion consistent between
       the portal and all other folderish objects in the portal (at least those
-      based on BasePloneFolder or AT's BaseFolder).  This fixes
+      based on BasePloneFolder or AT's BaseFolder). This fixes
       http://dev.plone.org/plone/ticket/2925
       [alecm]
 
@@ -17,11 +17,11 @@ Plone 2.5 (unreleased)
       [encolpe]
 
     - Finish worklists implementation with workflow id and complete guard
-      filtering
+      filtering.
       [encolpe]
 
     - Polished HTML in livesearch_reply.py. It generated <LI> element
-      without the <UL> when there are no livesearch results
+      without the <UL> when there are no livesearch results.
       [spliter]
 
     - Added missing 'Apply' button in group preferences again.
@@ -40,7 +40,7 @@ Plone 2.5 (unreleased)
       [nouri]
 
     - Now that five:traversable handles multiple inheritance better, we can
-      just make some common base classes traversable.  Fixes issues with
+      just make some common base classes traversable. Fixes issues with
       CompositePack.
       [alecm]
 
@@ -52,7 +52,7 @@ Plone 2.5 (unreleased)
       [hannosch]
 
     - Use sort_limit in the search for portlet_recent. Fixes
-      https://dev.plone.org/plone/ticket/5520
+      http://dev.plone.org/plone/ticket/5520
       [alecm]
 
     - Expose allowAnonymousViewAbout and allowRolesToAddKeywords in the
