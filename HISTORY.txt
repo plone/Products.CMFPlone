@@ -2,7 +2,7 @@ Changelog for Plone
 
    (name of developer listed in brackets)
 
-Plone 2.1.3 - Tomahawk - Unreleased
+Plone 2.1.3 - Tomahawk - Released June 3, 2006
 
     - Polished HTML in livesearch_reply.py. It generated <LI> element
       without the <UL> when there are no livesearch results
