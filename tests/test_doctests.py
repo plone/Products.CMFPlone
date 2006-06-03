@@ -1,5 +1,5 @@
 """
-    CMFPlone doctests.
+    CMFPlone doctests.  See also ``test_functional``.
 """
 
 import os, sys
@@ -22,17 +22,6 @@ def test_suite():
         ZopeDocTestSuite('Products.CMFPlone.TranslationServiceTool',
                                 test_class=PloneTestCase.FunctionalTestCase),
         ZopeDocTestSuite('Products.CMFPlone.CalendarTool',
-                                test_class=PloneTestCase.FunctionalTestCase),
-        FunctionalDocFileSuite('webdav_index_html_put.txt',
-                                package='Products.CMFPlone.tests',
-                                test_class=PloneTestCase.FunctionalTestCase),
-        FunctionalDocFileSuite('rendering.txt',
-                                package='Products.CMFPlone.tests',
-                                test_class=PloneTestCase.FunctionalTestCase),
-        FunctionalDocFileSuite('messages.txt',
-                                package='Products.CMFPlone.tests'),
-        FunctionalDocFileSuite('forms.txt',
-                                package='Products.CMFPlone.tests',
                                 test_class=PloneTestCase.FunctionalTestCase),
         ))
 

@@ -11,7 +11,7 @@ from Products.CMFPlone.tests import PloneTestCase
 
 class InstanceHomeFixup:
     '''Sigh, in Zope versions < 2.7.1 the Testing package changes
-       the INSTANCE_HOME variable. QuickInstaller now requires a 
+       the INSTANCE_HOME variable. QuickInstaller now requires a
        valid INSTANCE_HOME so we have to restore it.
     '''
 
@@ -59,6 +59,7 @@ class TestQuickInstallerTool(InstanceHomeFixup, PloneTestCase.PloneTestCase):
     def testInstallUninstallProduct(self):
         # CMFFormController should be uninstalled, we install it and
         # it should not show up as installable
+        self.setRoles(('Manager',))
         self.qi.CMFFormController.locked = 0
         self.qi.uninstallProducts(['CMFFormController',])
         self.failIf('CMFFormController' in self._installed())

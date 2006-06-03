@@ -41,8 +41,11 @@
                                       display python:layout[1];">
                         <input type="radio" class="noborder" name="templateId" value=""
                                tal:attributes="value value;
+                                               id value;
                                                disabled python:value==selectedLayout"/>
-                        <label tal:content="display" i18n:translate="">
+                        <label for="" tal:content="display"
+                               i18n:translate=""
+                               tal:attributes="for value">
                             Layout name
                         </label>
                         <span class="discreet"

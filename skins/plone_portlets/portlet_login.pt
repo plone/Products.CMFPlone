@@ -44,7 +44,8 @@
             <input type="hidden" name="pwd_empty" id="pwd_empty" value="0" />
 
             <div class="field">
-                <label for="__ac_name"
+                <label for=""
+                       tal:attributes="for ac_name"
                        i18n:translate="label_login_name">Login Name</label>
                 <br />
                 <input type="text"
@@ -58,7 +59,8 @@
             </div>
             
             <div class="field">
-                <label for="__ac_password"
+                <label for=""
+                       tal:attributes="for ac_password"
                        i18n:translate="label_password">Password</label>
                 <br />
                 <input type="password"

@@ -105,7 +105,7 @@
                 <legend i18n:translate="link_group_properties">Group Properties</legend>
 
                 <div class="field" metal:define-slot="name">
-                   <label for="addname" i18n:translate="label_name">Name</label>
+                   <label for="groupname" i18n:translate="label_name">Name</label>
 
                    <div tal:content="group/getGroupName | string:" />
                    <input type="hidden" name="groupname" value="groupname" id="groupname"
@@ -139,18 +139,21 @@
                         <input type="text" name="id" size="35"
                                 tal:condition="python:type in ('int', 'long')"
                                 tal:attributes="name string:$id:$type;
+                                                id id;
                                                 value python:test(propertyvalue, propertyvalue, '');
                                                 disabled disabled;" />
 
                         <input type="text" name="id" size="35"
                                 tal:condition="python:type in ('float','date')"
                                 tal:attributes="name string:$id:${request/management_page_charset_tag}$type;
+                                                id id;
                                                 value python:test(propertyvalue, propertyvalue, '');
                                                 disabled disabled;" />
 
                         <input type="text" name="string and ustring" size="35"
                                 tal:condition="python:type in ('string','ustring')"
                                 tal:attributes="name string:$id:${request/management_page_charset_tag}$type;
+                                                id id;
                                                 value python:test(propertyvalue, propertyvalue, '');
                                                 disabled disabled;" />
 
@@ -160,7 +163,7 @@
                                 id="cb-checkbox"
                                 tal:condition="python: type in ('boolean',)"
                                 tal:attributes="name string:$id:$type;
-                                                id string:cb-$id;
+                                                id id;
                                                 checked python:test(propertyvalue, 'checked', '');
                                                 disabled disabled;" />
 

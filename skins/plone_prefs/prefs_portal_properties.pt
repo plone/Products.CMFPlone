@@ -41,11 +41,13 @@
             <div class="field"
                  tal:repeat="id python:obj.propertyIds()">
 
-                <label i18n:translate="" tal:content="id" />
+                <label i18n:translate="" tal:content="id"
+                       tal:attributes="for id" />
     
                 <input size="40"
                        tabindex=""
                        tal:attributes="name id;
+                                       id id;
                                        value python:obj.getProperty(id);
                                        tabindex tabindex/next;"
                         tal:condition="python:obj.getPropertyType(id) in ('float','date','string','ustring','tokens','utokens', 'int')" />

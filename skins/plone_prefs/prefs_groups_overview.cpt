@@ -218,7 +218,7 @@
                         </tal:block>
                     </table>
 
-                    <tal:block tal:condition="python:(searchstring and search_results)">
+                    <tal:block tal:condition="python:(searchstring or search_results)">
 
                         <div metal:use-macro="here/batch_macros/macros/navigation" />
 

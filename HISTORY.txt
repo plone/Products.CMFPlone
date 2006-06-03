@@ -4,8 +4,55 @@ Changelog for Plone
 
 Plone 2.5 (unreleased)
 
+    - Deleting objects in the portal root now requires the user to have the
+      'Delete objects' permission on both the portal and the objects to be
+      deleted.  This makes the rules for object deletion consistent between
+      the portal and all other folderish objects in the portal (at least those
+      based on BasePloneFolder or AT's BaseFolder). This fixes
+      http://dev.plone.org/plone/ticket/2925
+      [alecm]
+
+    - Don't propose local workflow policy configuration iw we aren't in a
+      folderish type. We don't allow it on plone root too.
+      [encolpe]
+
+    - Finish worklists implementation with workflow id and complete guard
+      filtering.
+      [encolpe]
+
+    - Polished HTML in livesearch_reply.py. It generated <LI> element
+      without the <UL> when there are no livesearch results.
+      [spliter]
+
+    - Added missing 'Apply' button in group preferences again.
+      This closes http://dev.plone.org/plone/ticket/5544.
+      [hannosch]
+
+    - Added a few functional tests using 'zope.testbrowser', see
+      'AddMoveAndDeleteDocument.txt' and 'LoginAndLogout.txt'.  These
+      should eventually replace the 'rendering.txt' and 'forms.txt'
+      tests.
+
+      All *.txt files in the tests/ directory are now picked up by
+      'test_functional.py'.  I'm open to change here.
+
+      Note that these tests are only run if you have Five >= 1.4
+      [nouri]
+
+    - Now that five:traversable handles multiple inheritance better, we can
+      just make some common base classes traversable. Fixes issues with
+      CompositePack.
+      [alecm]
+
+    - Fix several wrong usages of the 'label' tag.
+      [nouri]
+
+    - Added little spamProtect.py enhancement, to allow overwriting of the name
+      that should be shown. This closes http://dev.plone.org/plone/ticket/4868.
+      [hannosch]
+
     - Use sort_limit in the search for portlet_recent. Fixes
-      https://dev.plone.org/plone/ticket/5520
+      http://dev.plone.org/plone/ticket/5520
       [alecm]
 
     - Expose allowAnonymousViewAbout and allowRolesToAddKeywords in the

@@ -39,7 +39,8 @@
                  tal:attributes="class python:test(error, 'field error', 'field')">
 
 
-                <label i18n:translate="label_portal_title">Site title</label>
+                <label for="title"
+                       i18n:translate="label_portal_title">Site title</label>
 
                 <span class="fieldRequired" title="Required"
                       i18n:attributes="title title_required;"
@@ -52,6 +53,7 @@
                 <div tal:content="error">Validation error output</div>
 
                 <input name="title"
+                       id="title"
                        size="30"
                        value=""
                        tabindex=""
@@ -63,7 +65,8 @@
                  tal:define="description request/description | portal/description;
                              error errors/description | nothing;">
 
-                <label i18n:translate="label_portal_description">Portal description</label>
+                <label for="description"
+                       i18n:translate="label_portal_description">Portal description</label>
 
                 <div class="formHelp" i18n:translate="help_portal_description">
                 The site description is available in syndicated
@@ -72,6 +75,7 @@
 
                 <textarea cols="30"
                           rows="6"
+                          id="description"
                           name="description"
                           tabindex=""
                           tal:attributes="tabindex tabindex/next"
@@ -82,7 +86,8 @@
                  tal:define="email_from_name request/email_from_name|portal/email_from_name;
                              error errors/email_from_name | nothing;">
 
-                <label i18n:translate="label_portal_from_name">Site 'From' name</label>
+                <label for="email_from_name"
+                       i18n:translate="label_portal_from_name">Site 'From' name</label>
 
                 <div class="formHelp" i18n:translate="help_portal_from_name">
                 Plone generates e-mail using this name
@@ -92,6 +97,7 @@
                 <div tal:content="error">Validation error output</div>
 
                 <input name="email_from_name"
+                       id="email_from_name"
                        size="30"
                        value=""
                        tabindex=""
@@ -104,7 +110,7 @@
                              error errors/email_from_address | nothing;"
                  tal:attributes="class python:test(error, 'field error', 'field')">
 
-                <label i18n:translate="label_portal_from_address">Site 'From' address</label>
+                <label for="email_from_address" i18n:translate="label_portal_from_address">Site 'From' address</label>
 
                 <span class="fieldRequired" title="Required"
                       i18n:attributes="title title_required;"
@@ -120,6 +126,7 @@
                 <div tal:content="error">Validation error output</div>
 
                 <input name="email_from_address"
+                       id="email_from_address"
                        size="30"
                        value=""
                        tabindex=""
@@ -128,7 +135,8 @@
             </div>
 
             <div class="field">
-                <label i18n:translate="label_default_language">Default Language</label>
+                <label for="default_language"
+                       i18n:translate="label_default_language">Default Language</label>
 
                 <div class="formHelp" i18n:translate="help_default_language">
                 Specify the default language setting for newly created items.
@@ -136,6 +144,7 @@
 
                 <!-- ISO-639-2 language selector for Plone -->
                 <select name="default_language"
+                        id="default_language"
                         tabindex=""
                         value=""
                         tal:attributes="value default_language;

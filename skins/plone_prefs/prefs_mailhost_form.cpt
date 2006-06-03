@@ -38,7 +38,8 @@
                              error errors/smtp_server | nothing;"
                  tal:attributes="class python:test(error, 'field error', 'field')">
     
-                <label i18n:translate="label_smtp_server">SMTP server</label>
+                <label for="smtp_server"
+                       i18n:translate="label_smtp_server">SMTP server</label>
     
                 <div class="formHelp" id="smtp_server_help"
                      i18n:translate="help_smtp_server">
@@ -50,6 +51,7 @@
                 <div tal:content="error">Validation error output</div>
     
                 <input name="smtp_server"
+                       id="smtp_server"
                        value=""
                        size="30"
                        tabindex=""
@@ -62,7 +64,8 @@
                              error errors/smtp_port | nothing;"
                  tal:attributes="class python:test(error, 'field error', 'field')">
     
-                <label i18n:translate="label_smtp_port">SMTP port</label>
+                <label for="smtp_port"
+                       i18n:translate="label_smtp_port">SMTP port</label>
 
                 <div class="formHelp" i18n:translate="help_smtp_port">
                     The port of your local SMTP (outgoing e-mail) server.
@@ -72,6 +75,7 @@
                 <div tal:content="error">Validation error output</div>
 
                 <input name="smtp_port"
+                       id="smtp_port"
                        value=""
                        size="30"
                        tabindex=""
@@ -85,7 +89,8 @@
                  tal:attributes="class python:test(error, 'field error', 'field')"
                  tal:condition="python: hasattr(here.MailHost, 'smtp_userid') or hasattr(here.MailHost, 'smtp_uid')">
     
-                <label i18n:translate="label_smtp_userid">ESMTP username</label>
+                <label id="smpt_userid"
+                       i18n:translate="label_smtp_userid">ESMTP username</label>
 
                 <div class="formHelp" i18n:translate="help_smtp_userid">
                     Username for authentication to your e-mail server.
@@ -95,6 +100,7 @@
                 <div tal:content="error">Validation error output</div>
 
                 <input name="smtp_userid"
+                       id="smtp_userid"
                        value=""
                        size="30"
                        tabindex=""
@@ -107,7 +113,8 @@
                  tal:attributes="class python:test(error, 'field error', 'field')"
                  tal:condition="python: hasattr(here.MailHost, 'smtp_pass') or hasattr(here.MailHost, 'smtp_pwd')">
     
-                <label i18n:translate="label_smtp_pass">ESMTP password</label>
+                <label for="smtp_pass"
+                       i18n:translate="label_smtp_pass">ESMTP password</label>
 
                 <div class="formHelp" i18n:translate="help_smtp_pass">
                     The password for the ESMTP user account.
@@ -116,6 +123,7 @@
                 <div tal:content="error">Validation error output</div>
 
                 <input name="smtp_pass"
+                       id="smtp_pass"
                        value=""
                        size="30"
                        tabindex=""

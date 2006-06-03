@@ -84,7 +84,7 @@
           </div>
 
           <div class="field">
-            <label i18n:translate="label_comment">Comment</label>
+            <label for="comment" i18n:translate="label_comment">Comment</label>
 
             <div class="formHelp" i18n:translate="help_comment_to_link">
               A comment about this link.
@@ -93,6 +93,7 @@
             <textarea cols="80"
                       rows="5"
                       tabindex=""
+                      id="comment"
                       name="comment"
                       tal:content="request/comment | nothing"
                       tal:attributes="tabindex tabindex/next;"

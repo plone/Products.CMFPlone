@@ -114,14 +114,14 @@
                               isGroup   python:entry['type']=='group';"
             tal:attributes="class python:test(oddrow,'even','odd');">
                 <td valign="top" class="field">
-                    <label class="hiddenLabel" for="member_ids:list"
+                    <label class="hiddenLabel" for="member_ids"
                            i18n:translate="label_select_usergroup">
                         select user/group <span tal:content="entry/id" tal:omit-tag="" i18n:name="role">userid/groupid</span>
                     </label>
                     <input class="formSelection"
                            type="checkbox"
                            name="member_ids:list"
-                           id="#"
+                           id="member_ids"
                            value=""
                            tabindex=""
                            tal:condition="python:entry['name']!=username"
@@ -291,17 +291,19 @@
                     <tr tal:repeat="member batch">
                         <td class="field" tal:define="member_name member/getUserName;
                                                       member_id member/getId">
-                            <label class="hiddenLabel" for="member_ids:list"
-                                   i18n:translate="label_select_user">
+                            <label class="hiddenLabel" for=""
+                                   i18n:translate="label_select_user"
+                                   tal:attributes="for member_id">
                                 Select user <span tal:content="member_name" tal:omit-tag="" i18n:name="user">username</span>
                             </label>
                             <input class="formSelection"
                                    type="checkbox"
                                    name="member_ids:list"
-                                   id="#"
+                                   id=""
                                    value=""
                                    tabindex=""
-                                   tal:attributes="value member_id;
+                                   tal:attributes="id member_id;
+                                                   value member_id;
                                                    checked python:nResults==1;
                                                    tabindex tabindex/next;"
                             />
@@ -493,17 +495,18 @@
                                     group_title group/getGroupTitleOrName;
                                     group_description python:group.getProperty('description', '')">
                         <td>
-                            <label class="hiddenLabel" for="member_ids:list"
+                            <label class="hiddenLabel" for="group_id"
                                    i18n:translate="label_select_group">
                                 select group <span tal:content="group_name" tal:omit-tag="" i18n:name="name">groupname</span>
                             </label>
                             <input class="formSelection"
                                 type="checkbox"
                                 name="member_ids:list"
-                                id="#"
+                                id=""
                                 value=""
                                 tabindex=""
-                                tal:attributes="value group_id;
+                                tal:attributes="id group_id;
+                                                value group_id;
                                                 tabindex tabindex/next;"/>
                         </td>
                         <td tal:content="group_title">
@@ -568,7 +571,7 @@
                 <input type="hidden" name="group_search_param" value="name"/>
 
                 <div class="field">
-                    <label for="search_term" i18n:translate="label_search_term">
+                    <label for="group_search_term" i18n:translate="label_search_term">
                         Search Term
                     </label>
 

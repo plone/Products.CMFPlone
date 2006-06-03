@@ -55,7 +55,8 @@
 
               <div class="field" tal:condition="isFolderish">
 
-                  <label i18n:translate="label_subobjects">
+                  <label for="subobjects"
+                         i18n:translate="label_subobjects">
                       Subobjects
                   </label>
                   
@@ -66,6 +67,7 @@
                   <div class="field">
                       <input type="checkbox"
                              name="subobjects"
+                             id="subobjects"
                              />
                   </div>
               </div>
@@ -99,7 +101,8 @@
             tal:attributes="action string:$here_url/$template_id">
 
               <div class="field">
-                  <label i18n:translate="label_new_owner">New owner</label>
+                  <label for="userid"
+                         i18n:translate="label_new_owner">New owner</label>
                   
                   <span class="fieldRequired" title="Required"
                         i18n:attributes="title title_required;"
@@ -110,7 +113,7 @@
                   </div>
 
                 <b i18n:translate="heading_new_owner">New owner</b>
-                  <select name="userid">
+                  <select name="userid" id="userid">
                   <tal:block tal:repeat="member search_results">
                        <option value=""
                                tal:attributes="value member/getId;
@@ -122,7 +125,8 @@
 
               <div class="field" tal:condition="isFolderish">
 
-                  <label i18n:translate="label_subobjects">
+                  <label for="subobjects"
+                         i18n:translate="label_subobjects">
                       Subobjects
                   </label>
                   
@@ -133,6 +137,7 @@
                   <div class="field">
                       <input type="checkbox"
                              name="subobjects"
+                             id="subobjects"
                              />
                   </div>
               </div>
@@ -169,7 +174,10 @@
             <input type="hidden" name="search_submit" value="chown_submit"/>
 
             <div class="field">
-              <label i18n:translate="label_new_owner_search">Search for new owner</label>
+              <label for="search_term"
+                     i18n:translate="label_new_owner_search">
+              Search for new owner
+              </label>
 
               <span class="fieldRequired" title="Required"
                 i18n:attributes="title title_required;"
