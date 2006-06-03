@@ -34,8 +34,8 @@ Installing Plone manually, step by step instructions.
 
   **MANDATORY**
 
-  - Zope 2.9.3 (does not run natively on Zope 3)
-     http://www.zope.org/Products/Zope/2.9.3
+  - Zope 2.10.0 (does not run natively on Zope 3)
+     http://www.zope.org/Products/Zope/2.10.0b1
 
   - CMF 1.6.0 or newer (neither 1.5 nor 2.0)
      Included in the Plone tarball

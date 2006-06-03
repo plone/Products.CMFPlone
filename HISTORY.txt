@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0 (unreleased)
 
+    - Removed five:traversable from configure.zcml as it is not needed anymore
+      for Zope 2.10.
+      [hannosch]
+
     - Removed bbb code for MessageIDFactory, queryMultiAdapter, transaction and
       CatalogTool._initIndexes.
       [hannosch]
