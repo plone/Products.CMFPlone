@@ -66,14 +66,13 @@ except ImportError:
 
 # check the CMF version
 if cmfcore:
-    from Products.CMFCore import cmfcore_globals
-    from App.Common import package_home
+    from Products.CMFCore.utils import _wwwdir
     from os.path import join
 
     x = []
     CMF_VERSION = 'Unknown'
     try:
-        file = join(package_home(cmfcore_globals), 'version.txt')
+        file = join(_wwwdir, '..', 'version.txt')
         CMF_VERSION = open(file, 'r').read().strip()
         version = CMF_VERSION.strip()
         if version.lower().startswith('cmf-'):
