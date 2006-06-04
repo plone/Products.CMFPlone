@@ -11,6 +11,7 @@
 from Products.CMFCore.utils import getToolByName
 
 ai_tool = getToolByName(context, 'portal_actionicons')
+plone_utils = getToolByName(context, 'plone_utils')
 normalizeString = plone_utils.normalizeString
 
 class ActionIconInfo:
