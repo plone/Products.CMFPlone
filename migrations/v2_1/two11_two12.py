@@ -71,10 +71,10 @@ def addRenameObjectButton(portal,out):
         # update/add actions
         for newaction in ACTIONS:
             idx = 0
-            for action in actionsTool.listActions():
+            for action in actionsTool.listActionInfos():
                 # if action exists, remove and re-add
-                if action.getId() == newaction['id'] \
-                        and action.getCategory() == newaction['category']:
+                if action['id'] == newaction['id'] \
+                        and action['category'] in (newaction['category']):
                     actionsTool.deleteActions((idx,))
                     out.append("Removed '%s' contentmenu action from actions tool." % newaction['name'])
                     break

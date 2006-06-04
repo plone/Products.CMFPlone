@@ -119,8 +119,8 @@ class PloneSite(CMFSite, OrderedContainer, BrowserDefaultMixin):
         return self()
 
     security.declareProtected(permissions.AccessContentsInformation,
-                 'folderlistingFolderContents')
-    def folderlistingFolderContents(self, spec=None, contentFilter=None):
+			     'folderlistingFolderContents')
+    def folderlistingFolderContents(self, contentFilter=None):
         """Calls listFolderContents in protected only by ACI so that
         folder_listing can work without the List folder contents permission,
         as in CMFDefault.
@@ -128,20 +128,6 @@ class PloneSite(CMFSite, OrderedContainer, BrowserDefaultMixin):
         This is copied from Archetypes Basefolder and is needed by the
         reference browser.
         """
-        return self.listFolderContents(spec, contentFilter)
-
-    security.declareProtected(permissions.DeleteObjects,
-                              'manage_delObjects')
-    def manage_delObjects(self, ids=[], REQUEST=None):
-        """We need to enforce security."""
-        mt = getToolByName(self, 'portal_membership')
-        if type(ids) is str:
-            ids = [ids]
-        for id in ids:
-            item = self._getOb(id)
-            if not mt.checkPermission(permissions.DeleteObjects, item):
-                raise Unauthorized, (
-                    "Do not have permissions to remove this object")
-        return CMFSite.manage_delObjects(self, ids, REQUEST=REQUEST)
+        return self.listFolderContents(contentFilter)
 
 Globals.InitializeClass(PloneSite)

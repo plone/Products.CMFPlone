@@ -38,7 +38,7 @@ class PloneGenerator:
         #     by QuickInstaller at all any more, but we need to kill
         #     some chickens so migrations will still work.
         qi.installProduct('ResourceRegistries', locked=1)
-        qi.installProduct('ATContentTypes', locked=1)
+        qi.notifyInstalled('ATContentTypes', locked=1)
         qi.notifyInstalled('ATReferenceBrowserWidget', locked=1)
         
     def customizePortalOptions(self, p):
@@ -183,7 +183,18 @@ class PloneGenerator:
         """
         atcttool = getToolByName(p, 'portal_atct')
         atcttool.setVersionFromFS()
-        
+
+    def setATCTToolCMFTypesAreRecataloged(self, p):
+        """
+        Have to set the portal_atct _cmfTypesAreRecataloged property since
+        we no longer call it's installer.
+
+        XXX This should really be handled w/ a specific import handler
+        for the tool.
+        """
+        atcttool = getToolByName(p, 'portal_atct')
+        atcttool.setCMFTypesAreRecataloged()
+
 def importVarious(context):
     """
     Import various settings.
@@ -208,4 +219,5 @@ def importFinalSteps(context):
     gen.setupGroups(site)
     gen.performMigrationActions(site)
     gen.setATCTToolVersion(site)
+    gen.setATCTToolCMFTypesAreRecataloged(site)
     assignTitles(site, site)

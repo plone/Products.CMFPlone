@@ -5,16 +5,4 @@
   <include package=".browser" />
   <include package=".exportimport" />
 
-  <five:deprecatedManageAddDelete
-      class=".Portal.PloneSite" />
-
-  <five:deprecatedManageAddDelete
-      class=".LargePloneFolder.LargePloneFolder" />
-
-  <five:deprecatedManageAddDelete
-      class=".PloneFolder.PloneFolder" />
-
-  <five:deprecatedManageAddDelete
-      class=".CatalogTool.CatalogTool" />
-
 </configure>

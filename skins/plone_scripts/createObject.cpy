@@ -36,7 +36,7 @@ else:
 if o is None:
     raise Exception
 
-if o.getTypeInfo().getActionById('edit', None) is None:
+if o.getTypeInfo().listActionInfos('object/edit'):
     state.setStatus('success_no_edit')
 
 if script_id:

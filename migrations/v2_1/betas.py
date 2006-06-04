@@ -700,10 +700,10 @@ def fixContentActionConditions(portal,out):
         # update/add actions
         for newaction in ACTIONS:
             idx = 0
-            for action in actionsTool.listActions():
+            for action in actionsTool.listActionInfos():
                 # if action exists, remove and re-add
-                if action.getId() == newaction['id'] \
-                        and action.getCategory() == newaction['category']:
+                if action['id'] == newaction['id'] \
+                        and action['category'] == newaction['category']:
                     actionsTool.deleteActions((idx,))
                     break
                 idx += 1
@@ -799,10 +799,10 @@ def fixFolderContentsActionAgain(portal, out):
         for newaction in ACTIONS:
             idx = 0
             del_idxs=[]
-            for action in actionsTool.listActions():
+            for action in actionsTool.listActionInfos():
                 # if action exists, remove (including duplicates)
-                if action.getId() == newaction['id'] \
-                        and action.getCategory() in (newaction['category'], 'folder'):
+                if action['id'] == newaction['id'] \
+                        and action['category'] in (newaction['category'], 'folder'):
                     del_idxs.append(idx)
                 idx += 1
             actionsTool.deleteActions(del_idxs)
