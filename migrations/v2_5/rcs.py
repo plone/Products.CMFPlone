@@ -3,7 +3,7 @@ from Products.CMFCore.utils import getToolByName
 def beta2_rc1(portal):
     """2.5-beta2 -> 2.5-rc1
     """
-    out = [ ]
+    out = []
     # add a property indicating if this is a big or small site, so the UI can
     # change depending on it
     propTool = getToolByName(portal, 'portal_properties', None)

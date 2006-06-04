@@ -14,6 +14,8 @@ Plone 3.0 (unreleased)
 
 Plone 2.5 (unreleased)
 
+    Release Candidate 1 - released June 3, 2006
+
     - Deleting objects in the portal root now requires the user to have the
       'Delete objects' permission on both the portal and the objects to be
       deleted.  This makes the rules for object deletion consistent between
