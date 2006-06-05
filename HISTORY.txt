@@ -2,6 +2,13 @@ Changelog for Plone
 
    (name of developer listed in brackets)
 
+Plone 2.1.4 - Devo - Unreleased
+
+    - Changed the default background color to match the defined background 
+      color for better readability. If you want the old behaviour back, add 
+      'dl.portlet { background-color: transparent }' to your style sheet.
+      [limi]
+
 Plone 2.1.3 - Tomahawk - Released June 3, 2006
 
     - Polished HTML in livesearch_reply.py. It generated <LI> element
