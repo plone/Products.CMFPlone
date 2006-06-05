@@ -173,28 +173,6 @@ class PloneGenerator:
         migs.v2_1.alphas.addDefaultTypesToPortalFactory(p, out)
         migs.v2_1.rcs.enableSyndicationOnTopics(p, out)
 
-    def setATCTToolVersion(self, p):
-        """
-        Have to specify the portal_atct version number by hand since
-        we no longer call it's installer.
-
-        XXX This should really be handled w/ a specific import handler
-        for the tool.
-        """
-        atcttool = getToolByName(p, 'portal_atct')
-        atcttool.setVersionFromFS()
-
-    def setATCTToolCMFTypesAreRecataloged(self, p):
-        """
-        Have to set the portal_atct _cmfTypesAreRecataloged property since
-        we no longer call it's installer.
-
-        XXX This should really be handled w/ a specific import handler
-        for the tool.
-        """
-        atcttool = getToolByName(p, 'portal_atct')
-        atcttool.setCMFTypesAreRecataloged()
-
 def importVarious(context):
     """
     Import various settings.
@@ -218,6 +196,4 @@ def importFinalSteps(context):
     gen.addRolesToPlugIn(site)
     gen.setupGroups(site)
     gen.performMigrationActions(site)
-    gen.setATCTToolVersion(site)
-    gen.setATCTToolCMFTypesAreRecataloged(site)
     assignTitles(site, site)
