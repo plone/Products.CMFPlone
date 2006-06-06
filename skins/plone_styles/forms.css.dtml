@@ -1,0 +1,69 @@
+/*
+** Plone style sheet - Form Elements
+**
+** Style sheet documentation can be found at http://plone.org/documentation
+**
+** You should preferrably use ploneCustom.css to add your own CSS classes and to
+** customize your portal, as these are the base fundaments of Plone, and will
+** change and be refined in newer versions. Keeping your changes in
+** ploneCustom.css will make it easier to upgrade.
+**
+** Feel free to use whole or parts of this for your own designs, but give credit
+** where credit is due.
+**
+*/
+
+/* <dtml-with base_properties> (do not remove this :) */
+/* <dtml-call "REQUEST.set('portal_url', portal_url())"> (not this either :) */
+
+.standalone,
+.documentEditable * .standalone {
+    background: &dtml-globalBackgroundColor; url(&dtml-portal_url;/linkOpaque.gif) 9px 1px no-repeat;
+    cursor: pointer;
+    font-size: &dtml-fontSmallSize;;
+    padding: 1px 1px 1px 15px;
+    text-transform: &dtml-textTransform;;
+}
+.context,
+.documentEditable * .context {
+    background: transparent url(&dtml-portal_url;/linkTransparent.gif) 9px 1px no-repeat;
+    cursor: pointer;
+    font-size: &dtml-fontSmallSize;;
+    padding: 1px 1px 1px 15px;
+    text-transform: &dtml-textTransform;;
+}
+.destructive,
+.documentEditable * .destructive {
+    background: &dtml-notifyBackgroundColor; url(&dtml-portal_url;/linkTransparent.gif) 9px 1px no-repeat;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-notifyBorderColor;;
+    cursor: pointer;
+    font-size: &dtml-fontSmallSize;;
+    padding: 1px 1px 1px 15px;
+    text-transform: &dtml-textTransform;;
+}
+input.searchButton {
+    margin-bottom: &dtml-borderWidth; ! important;
+    font-size: &dtml-fontSmallSize;;
+    background: &dtml-backgroundColor; url(&dtml-portal_url;/search_icon.gif) 2px 1px no-repeat;
+    cursor: pointer;
+    padding: 1px 1px 1px 15px;
+    text-transform: &dtml-textTransform;;
+
+}
+
+/* Styles to make the editing widgets look more like their view counterparts */
+
+#archetypes-fieldname-title input {
+    font-size: 160%;
+    font-family: <dtml-var headingFontFamily>;
+    font-weight: normal;
+    width: 99%;
+}
+
+#archetypes-fieldname-description textarea {
+    font: 100% <dtml-var fontFamily>;
+    font-weight: bold;
+}
+
+
+/* </dtml-with> */
