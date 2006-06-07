@@ -33,12 +33,13 @@ def addNavtreeCSS(portal, out):
     if 'navtree.css' not in stylesheet_ids:
         cssreg.registerStylesheet('navtree.css', media='screen')
         cssreg.moveResourceAfter('navtree.css', 'textLarge.css')
+        out.append("Added navtree.css to the registry")
     if 'invisibles.css' not in stylesheet_ids:
         cssreg.registerStylesheet('invisibles.css', media='screen')
-        cssreg.moveResourceAfter('navtree.css', 'invisibles.css')
+        cssreg.moveResourceAfter('invisibles.css', 'navtree.css')
+        out.append("Added invisibles.css to the registry")
     if 'forms.css' not in stylesheet_ids:
         cssreg.registerStylesheet('forms.css', media='screen')
-        cssreg.moveResourceAfter('invisibles.css', 'forms.css')
-	
-        out.append("Added navtree.css to the registry")
+        cssreg.moveResourceAfter('forms.css', 'invisibles.css')
+        out.append("Added forms.css to the registry")
 
