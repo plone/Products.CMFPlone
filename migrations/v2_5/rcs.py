@@ -18,3 +18,27 @@ def beta2_rc1(portal):
         propSheet.manage_addProperty('many_users', default, 'boolean')
         out.append("Added 'many_users' property to site_properties.")
 
+def rc1_final(portal):
+    """2.5-rc1 -> 2.5.0
+    """
+    out = []
+    addNavtreeCSS(portal, out)
+
+    return out
+
+def addNavtreeCSS(portal, out):
+    # add new css files to the portal_css registries
+    cssreg = getToolByName(portal, 'portal_css', None)
+    stylesheet_ids = cssreg.getResourceIds()
+    if 'navtree.css' not in stylesheet_ids:
+        cssreg.registerStylesheet('navtree.css', media='screen')
+        cssreg.moveResourceAfter('navtree.css', 'textLarge.css')
+    if 'invisibles.css' not in stylesheet_ids:
+        cssreg.registerStylesheet('invisibles.css', media='screen')
+        cssreg.moveResourceAfter('navtree.css', 'invisibles.css')
+    if 'forms.css' not in stylesheet_ids:
+        cssreg.registerStylesheet('forms.css', media='screen')
+        cssreg.moveResourceAfter('invisibles.css', 'forms.css')
+	
+        out.append("Added navtree.css to the registry")
+

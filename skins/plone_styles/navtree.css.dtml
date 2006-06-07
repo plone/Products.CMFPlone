@@ -22,8 +22,8 @@
 .portletNavigationTree {
     margin: 0 0 0 0.75em; 
     padding: 0; 
-    list-style: none; 
-    list-style-image: none; 
+    list-style: none !important;
+    list-style-image: none !important; 
     line-height: 1em;
 }
 

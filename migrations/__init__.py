@@ -175,4 +175,5 @@ def registerMigrations():
 
     MigrationTool.registerUpgradePath('2.5-rc1',
                                       '2.5.0 (SVN/UNRELEASED)',
-                                      null)
+                                      v2_5.rcs.rc1_final)
+

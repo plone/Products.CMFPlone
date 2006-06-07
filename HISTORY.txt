@@ -4,8 +4,12 @@ Changelog for Plone
 
 Plone 2.5 (unreleased)
 
-    - Split up the CSS into a couple of new modules to ease customization
-      [limi]:
+      - Added migration for the css files added by limi in the previous
+        entry
+	[jladage]
+
+      - Split up the CSS into a couple of new modules to ease customization
+        [limi]
     
       - 'navtree.css' - for navtree CSS only (extracted from portlets.css since
         customizing the navtree CSS is a common operation)
