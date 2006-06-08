@@ -94,6 +94,10 @@ Plone 2.5 (unreleased)
 
     Beta 2 - released May 17, 2006
 
+    - Added 'style_slot' to main_template for compatibility with newer CMF
+      versions, and Five applications.
+      [siebo]
+
     - Updated the GenericSetup profile format to CMF1.6-style. No configuration
       changes were made, only format changes.
       [hannosch]
