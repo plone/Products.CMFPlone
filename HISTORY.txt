@@ -4,23 +4,6 @@ Changelog for Plone
 
 Plone 2.5 (unreleased)
 
-      - Added migration for the css files added by limi in the previous
-        entry
-	[jladage]
-
-      - Split up the CSS into a couple of new modules to ease customization
-        [limi]
-    
-      - 'navtree.css' - for navtree CSS only (extracted from portlets.css since
-        customizing the navtree CSS is a common operation)
-        
-      - 'invisibles.css' - for all the invisible accessibility and helper 
-        classses. They used to disappear if you overrode 'public.css', but now 
-        they are in a separate file, and is easily kept.
-        
-      - 'forms.css' - collects all the form-related CSS into one file to make
-        it easier to override form and button styles.
-
     Release Candidate 1 - released June 3, 2006
 
     - Deleting objects in the portal root now requires the user to have the

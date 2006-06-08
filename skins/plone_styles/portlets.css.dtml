@@ -16,14 +16,18 @@
 /* <dtml-with base_properties> (do not remove this :) */
 /* <dtml-call "REQUEST.set('portal_url', portal_url())"> (not this either :) */
 
+/* The new portlet CSS - these will be switched to non-qualified classes
+   (ie. .portlet, not dl.portlet) once the old portlet layout is removed in
+   Plone 2.5. ~limi */
+
 /* Main portlet elements */
 
-.portlet {
+dl.portlet {
     margin: 1px 0 1em 0;
     border-bottom: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
 }
 
-.portlet a {
+dl.portlet a {
     text-decoration: none;
 }
 
@@ -33,12 +37,12 @@
 
 
 /* XXX: The two below rules should really be in the rule above, but that makes the items grow/shrink on :hover (navtree) - need to investigate how to make it not do that. ~limi, Dec 2005 */
-.portletItem a,
-.portletFooter a {
+dd.portletItem a,
+dd.portletFooter a {
     border-bottom: none;
 }
-.portletItem a:visited,
-.portletFooter a:visited {
+dd.portletItem a:visited,
+dd.portletFooter a:visited {
     color: &dtml-linkColor;;
 }
 
@@ -68,7 +72,7 @@
     color: &dtml-fontColor;;
 }
 
-.portletFooter {
+dd.portletFooter {
     background-color: &dtml-evenRowBackgroundColor;;
     margin: 0;
     padding: 0.25em 1em;
@@ -87,6 +91,85 @@
 
 
 
+/* New navtree styles */
+
+.portletNavigationTree {
+    margin: 0 0 0 0.75em; 
+    padding: 0; 
+    list-style: none; 
+    list-style-image: none; 
+    line-height: 1em;
+}
+
+
+
+.navTree {
+    list-style: none; 
+    list-style-image: none; 
+    margin-top: 1px;
+}
+
+.navTree li {
+    margin-bottom: 1px;
+}
+
+.navTreeItem {
+    display: block;
+    padding: 0;
+    margin: 0;
+}
+
+.navTreeItem a,
+dd.portletItem .navTreeItem a {
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-backgroundColor;;
+    display: block;
+    text-decoration: none;
+    padding-top: 0.2em;
+    padding-bottom: 0.25em;
+}
+
+.navTreeItem a:hover,
+dd.portletItem .navTreeItem a:hover {
+    background-color: &dtml-globalBackgroundColor;;
+    color: &dtml-globalFontColor;;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+}
+
+.navTreeCurrentItem {
+    background-color: &dtml-globalBackgroundColor;;
+    color: &dtml-globalFontColor;;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor; !important;
+}
+
+li.navTreeCurrentItem {
+    display: block;
+    padding: 0 0 0 1px;
+    margin: 0 0 2px -1px;
+}
+
+li.navTreeCurrentItem a,
+li.navTreeCurrentItem a:hover {
+    display: block;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBackgroundColor;;
+    min-height: 1.6em;
+    line-height: 1.6em;
+    height: auto;
+}
+
+/* Another workaround for broken Internet Explorer */
+
+* html li.navTreeCurrentItem a,
+* html li.navTreeCurrentItem a:hover {
+    height: 1.6em;
+}
+
+
+.navTreeLevel0 { margin: 0; }
+.navTreeLevel1 { margin-left: 1em;}
+.navTreeLevel2 { margin-left: 0.75em; }
+.navTreeLevel3 { margin-left: 0.75em; }
+.navTreeLevel4 { margin-left: 0.75em; }
+.navTreeLevel5 { margin-left: 0.75em; }
 
 
 /*

@@ -43,15 +43,6 @@
     cookable="True" enabled="1" expression="" id="textLarge.css"
     media="screen" rel="alternate stylesheet" rendering="link"/>
  <stylesheet title="" cacheable="True" compression="safe" cookable="True"
-    enabled="1" expression="" id="navtree.css" media="screen" rel="stylesheet"
-    rendering="import"/>
- <stylesheet title="" cacheable="True" compression="safe" cookable="True"
-    enabled="1" expression="" id="invisibles.css" media="screen" rel="stylesheet"
-    rendering="import"/>
- <stylesheet title="" cacheable="True" compression="safe" cookable="True"
-    enabled="1" expression="" id="forms.css" media="screen" rel="stylesheet"
-    rendering="import"/>
- <stylesheet title="" cacheable="True" compression="safe" cookable="True"
     enabled="True"
     expression="python:portal.kupu_library_tool.isKupuEnabled(REQUEST=request)"
     id="kupustyles.css" media="" rel="stylesheet" rendering="import"/>

@@ -603,6 +603,8 @@
 /* .system-message and #error-handling are reST error indicators */
 
 .portalMessage,
+.portalWarningMessage,
+.portalStopMessage,
 .system-message,
 #error-handling {
     background-color: &dtml-notifyBackgroundColor;;
@@ -618,7 +620,9 @@
     background-position: 5px 50%;
 }
 
-.portalMessage a {
+.portalMessage a,
+.portalWarningMessage a,
+.portalStopMessage a {
     color: &dtml-fontColor;;
 }
 
@@ -674,107 +678,6 @@
     color: #CC9933;
     padding: 0px 1em;
 }
-
-
-.notify,
-.documentEditable * .notify {
-    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-notifyBorderColor;;
-}
-
-.card {
-    background-color: &dtml-globalBackgroundColor;;
-    border-color: &dtml-globalBorderColor;;
-    border-width: &dtml-borderWidth;;
-    border-style: &dtml-borderStyle;;
-    float: left;
-    margin: 1em;
-    text-align: center;
-    width: 110px;
-    padding: 1em 0;
-}
-
-.card a {
-    text-decoration: none;
-}
-
-.portrait {
-    background-color: &dtml-globalBackgroundColor;;
-    border-color: &dtml-globalBorderColor;;
-    border-width: &dtml-borderWidth;;
-    border-style: &dtml-borderStyle;;
-    font-size: &dtml-fontSmallSize;;
-    margin: 0.5em;
-    padding: 1em 0 0.5em 0;
-    text-align: center;
-    width: 100px;
-}
-
-.portraitPhoto {
-    border: 1px solid black;
-}
-
-/* The table used for listings - horizontal and vertical variants */
-
-.listing,
-.stx table {
-    /* The default table for document listings. Contains name, document types, modification times etc in a file-browser-like fashion */
-    border-collapse: collapse;
-    border-left: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
-    border-bottom: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
-    font-size: &dtml-fontSmallSize;;
-    margin: 1em 0em 1em 0em;
-}
-.listing th,
-.stx table th {
-    background: &dtml-globalBackgroundColor;;
-    border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
-    border-bottom: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
-    border-right: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
-    font-weight: normal;
-    padding: 0.25em 1em;
-    text-transform: &dtml-textTransform;;
-}
-.listing .top {
-    border-left: &dtml-borderWidth; &dtml-borderStyle; &dtml-backgroundColor;;
-    border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-backgroundColor; ! important;
-    border-right: &dtml-borderWidth; &dtml-borderStyle; &dtml-backgroundColor; ! important;
-    text-align: right ! important;
-    padding: 0em 0em 1em 0em;
-}
-.listing .listingCheckbox {
-    text-align: center;
-}
-.listing td,
-.stx table td {
-    border-right: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
-    padding: 0.25em 1em;
-}
-
-.listing a {
-    text-decoration: none;
-}
-
-.listing a:hover {
-    text-decoration: underline;
-}
-.listing img {
-    vertical-align: middle;
-}
-
-/* Vertical addition class */
-
-.vertical {
-    background-color: &dtml-backgroundColor;;	
-}
-.vertical th {
-    padding: 0.5em;
-}
-
-.vertical td {
-    border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
-    padding: 0.5em;
-}
-
 
 /* Batch selector */
 
@@ -1170,16 +1073,6 @@ body.fullscreen #portal-searchbox {
     margin: 0.5em 2em 0 0.5em;
     padding: 0;
     position: relative;
-}
-
-/* Padding for the columns */
-
-#portal-column-one .visualPadding {
-    padding: 2em 0em 1em 2em;
-}
-
-#portal-column-two .visualPadding {
-    padding: 2em 2em 1em 0em;
 }
 
 /* Kupu image alignment classes */
