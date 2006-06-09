@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 3.0 (unreleased)
 
+    - Removed lots of deprecated values from the PloneView.
+      [hannosch]
+
     - Removed deprecated FolderWorkflow, PloneWorkflow and PloneUtilities
       classes. Removed aliases for base_hasattr and transaction_note from
       CMFPlone. Import these from CMFPlone.utils. Removed security declarations

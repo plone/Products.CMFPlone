@@ -218,6 +218,10 @@ class IPlone(Interface):
             globals of the current tal expression context (plus the
             toLocalizedTime method):
 
+    atool = Attribute("The portal_actions tool")
+
+    utool = Attribute("The portal_url tool")
+
     portal = Attribute("The portal object itself")
 
     portal_url = Attribute("The portal url")
@@ -316,18 +320,7 @@ class IPlone(Interface):
                                 "html ids.")
 
     # BBB: deprecated elements
-    utool = Attribute("The portal_url tool")
     portal_object = Attribute("A deprecated spelling of portal")
-    atool = Attribute("The portal_actions tool")
-    aitool = Attribute("The portal_actionicons tool")
-    gtool = Attribute("The portal_groups tool")
-    gdtool = Attribute("The portal_groupdata tool")
-    wf_actions = Attribute("A deprecated variant of workflow_actions")
-    hidecolumns = Attribute("The css class to use for the column container"
-                            "which determines which columns to show")
-    isEditable = Attribute("A deprecated spelling of is_editable")
-    lockable = Attribute("A boolean indicating that the object capable of"
-                             " being webdav locked")
     """
 
     def getCurrentUrl():

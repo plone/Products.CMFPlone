@@ -86,28 +86,18 @@ class Plone(utils.BrowserView):
         # come up with a way to prevent this or get rid of the globals
         # view altogether
 
-        # BBB: utool is deprecated, use portal or portal_url instead
         self._data['utool'] = utool = getToolByName(context, 'portal_url')
         self._data['portal'] = portal = utool.getPortalObject()
         # BBB: portal_object is deprecated use portal instead
         self._data['portal_object'] = portal_object = portal
         self._data['portal_url'] =  utool()
         self._data['mtool'] = mtool = getToolByName(portal, 'portal_membership')
-        # BBB: gtool is deprecated because it is only used in sepcialized
-        # contexts
-        self._data['gtool'] =  getToolByName(portal, 'portal_groups', None)
-        # BBB: gdtool is deprecated because it is only used in specialized
-        # contexts
-        self._data['gdtool'] = getToolByName(portal, 'portal_groupdata', None)
-        # BBB: atool is deprecated because it is unsused
         self._data['atool'] = atool = getToolByName(portal, 'portal_actions')
-        # BBB: aitool is deprecated because it is unused
-        self._data['aitool'] = getToolByName(portal, 'portal_actionicons', None)
         self._data['putils'] = putils = getToolByName(portal, 'plone_utils')
         self._data['wtool'] = wtool = getToolByName(portal, 'portal_workflow')
         self._data['ifacetool'] = getToolByName(portal, 'portal_interface', None)
         self._data['syntool'] = getToolByName(portal, 'portal_syndication')
-        self._data['portal_title'] = portal_object.Title()
+        self._data['portal_title'] = portal.Title()
         self._data['object_title'] = putils.pretty_title_or_id(context)
         self._data['checkPermission'] = checkPermission = mtool.checkPermission
         self._data['member'] = mtool.getAuthenticatedMember()
@@ -129,8 +119,6 @@ class Plone(utils.BrowserView):
                                                           'portal_properties')
         self._data['site_properties'] = site_props = props.site_properties
         self._data['ztu'] =  ZTUtils
-        # BBB: wf_actions is deprecated use workflow_actions instead
-        self._data['wf_actions'] =  self._data['workflow_actions']
         self._data['isFolderish'] =  context.aq_explicit.isPrincipiaFolderish
         self._data['slots_mapping'] = slots = (
                                          options.get('slots_mapping', None) or
@@ -138,20 +126,13 @@ class Plone(utils.BrowserView):
         self._data['sl'] = sl = slots['left']
         self._data['sr'] = sr = slots['right']
         self._data['here_url'] =  context.absolute_url()
-        # BBB: hidecolumns is deprecated as it is not needed globally
-        self._data['hidecolumns'] =  self.hide_columns(sl, sr)
         self._data['default_language'] = default_language = \
                               site_props.getProperty('default_language', None)
         self._data['language'] =  self.request.get('language', None) or \
                                   context.Language or default_language
         self._data['is_editable'] =  checkPermission('Modify portal content',
                                                      context)
-        # BBB: isEditable is deprecated use is_editable instead
-        self._data['isEditable'] =  self._data['is_editable']
         lockable = hasattr(aq_inner(context).aq_explicit, 'wl_isLocked')
-        # BBB: locakble is deprecated use only isLocked intead, which implies
-        # lockable
-        self._data['lockable'] = lockable
         self._data['isLocked'] = lockable and context.wl_isLocked()
         self._data['isRTL'] =  self.isRightToLeft(domain='plone')
         self._data['visible_ids'] =  self.visibleIdsEnabled() or None
