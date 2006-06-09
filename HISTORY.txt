@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.5 (unreleased)
 
+    Release Candidate 2 - released June 8, 2006
+
+    - Fixed issue with encoding of translated ui strings in javascript.
+      [ree, nouri]
+
     Release Candidate 1 - released June 3, 2006
 
     - Deleting objects in the portal root now requires the user to have the
