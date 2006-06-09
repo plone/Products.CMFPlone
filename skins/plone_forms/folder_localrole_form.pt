@@ -21,6 +21,7 @@
                                          {request.get('search_param',''):
                                           request.get('search_term', '')}) or None;
                    group_search_submitted request/group_role_submit|nothing;
+                   gtool context/portal_groups;
                    group_search_results python:group_search_submitted and gtool.searchForGroups(
                                          {request.get('group_search_param',''):
                                           request.get('group_search_term', '')}) or None;

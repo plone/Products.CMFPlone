@@ -126,6 +126,7 @@ class Plone(utils.BrowserView):
         self._data['sl'] = sl = slots['left']
         self._data['sr'] = sr = slots['right']
         self._data['here_url'] =  context.absolute_url()
+        self._data['hidecolumns'] =  self.hide_columns(sl, sr)
         self._data['default_language'] = default_language = \
                               site_props.getProperty('default_language', None)
         self._data['language'] =  self.request.get('language', None) or \

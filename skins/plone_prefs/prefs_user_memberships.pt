@@ -12,7 +12,8 @@
      tal:define="userid python:request.get('userid', member.getId());
                 member python:mtool.getMemberById(userid);
                 groups member/getGroups;
-                mdata here/portal_memberdata;
+                gtool context/portal_groups;
+                mdata context/portal_memberdata;
                 errors python:request.get('errors', {});
                 searchonly string:groups;
                 takeaction string:prefs_user_membership_edit;">
@@ -89,7 +90,7 @@
 
           <tr tal:repeat="groupid groups" class="odd">
               <tal:block tal:define="group python:gtool.getGroupById(groupid);
-                                 groupname group/getGroupName">
+                                     groupname group/getGroupName">
                 <td>
                     <a href="prefs_group_details"
                        tal:attributes="href string:prefs_group_details?groupname=$groupname">

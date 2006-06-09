@@ -98,7 +98,8 @@
     
             <tal:condition condition="python:checkPermission('View Groups', portal)">
             <div class="field"
-                 tal:define="grouplist gtool/listGroups"
+                 tal:define="gtool context/portal_groups;
+                             grouplist gtool/listGroups;"
                  tal:condition="grouplist">
                  <label for="groupname"
                         i18n:translate="legend_group"> Group </label>

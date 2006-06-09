@@ -288,6 +288,9 @@ class IPlone(Interface):
 
     sr = Attribute("The elements in the right slot")
 
+    hidecolumns = Attribute("The css class to use for the column container"
+                            "which determines which columns to show")
+
     default_language = Attribute("The default language of the portal")
 
     language = Attribute("The language of the current request or context.")

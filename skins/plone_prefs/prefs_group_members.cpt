@@ -16,6 +16,7 @@
                 b_size python:20;
                 groupname request/groupname|nothing;
                 grouproles python:request.set('grouproles', []);
+                gtool context/portal_groups;
                 group python:gtool.getGroupById(groupname);
                 grouptitle group/getGroupTitleOrName|groupname;
                 groupMembers group/getGroupMembers|nothing;
