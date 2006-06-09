@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 3.0 (unreleased)
 
+    - Removed deprecated scripts from the plone_deprecated skins layer.
+      [hannosch]
+
     - Removed lots of deprecated values from the PloneView.
       [hannosch]
 
