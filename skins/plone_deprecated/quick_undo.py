@@ -7,7 +7,7 @@
 ##title=Undo transactions
 ##parameters=
 context.plone_log("The quickUndo script is deprecated and will be "
-                  "removed in plone 3.5.")
+                  "removed in plone 3.0.")
 from AccessControl import Unauthorized
 request=context.REQUEST
 trxs=context.portal_undo.listUndoableTransactionsFor(context)

@@ -7,7 +7,7 @@
 ##parameters=
 ##title=Discussion parent breadcrumbs
 context.plone_log("The aboveInThread script is deprecated and will be "
-                  "removed in plone 3.5.")
+                  "removed in plone 3.0.")
 breadcrumbs = ''
 crumbs = []
 parents = context.parentsInThread()

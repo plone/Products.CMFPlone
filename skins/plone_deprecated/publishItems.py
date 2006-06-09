@@ -3,7 +3,7 @@
 ##title=
 ##
 context.plone_log("The publishItems script is deprecated and will be "
-                  "removed in plone 3.5.")
+                  "removed in plone 3.0.")
 wf_tool = context.portal_workflow
 
 if items is None:

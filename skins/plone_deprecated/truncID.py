@@ -3,7 +3,7 @@
 ##title=return truncated objID
 ##
 context.plone_log("The truncID script is deprecated and will be "
-                  "removed in plone 3.5.")
+                  "removed in plone 3.0.")
 if len(objID) > size:
     return objID[:size] + '...'
 else:

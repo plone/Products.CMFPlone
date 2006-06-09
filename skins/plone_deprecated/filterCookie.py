@@ -8,7 +8,7 @@
 ##title=Manage filter cookie
 ##
 context.plone_log("The filterCookie script is deprecated and will be "
-                  "removed in plone 3.5.")
+                  "removed in plone 3.0.")
 REQUEST=context.REQUEST
 
 if REQUEST.get('filter_state', 0):

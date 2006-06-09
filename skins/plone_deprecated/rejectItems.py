@@ -8,7 +8,7 @@
 ##title=
 ##
 context.plone_log("The rejectItems script is deprecated and will be "
-                  "removed in plone 3.5.")
+                  "removed in plone 3.0.")
 wf_tool = context.portal_workflow # XXX getToolByName
 for path in items:
     object = context.restrictedTraverse( path )
