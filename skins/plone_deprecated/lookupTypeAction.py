@@ -7,7 +7,7 @@
 ##bind subpath=traverse_subpath
 ##parameters=actionId
 context.plone_log("The lookupTypeAction script is deprecated and will be "
-                  "removed in plone 3.5.")
+                  "removed in plone 3.0.")
 
 action = None
 fti = context.getTypeInfo()

@@ -23,6 +23,11 @@ Plone 3.0 (unreleased)
 
 Plone 2.5 (unreleased)
 
+    Release Candidate 2 - released June 8, 2006
+
+    - Fixed issue with encoding of translated ui strings in javascript.
+      [ree, nouri]
+
     Release Candidate 1 - released June 3, 2006
 
     - Deleting objects in the portal root now requires the user to have the
@@ -112,6 +117,10 @@ Plone 2.5 (unreleased)
       [hannosch]
 
     Beta 2 - released May 17, 2006
+
+    - Added 'style_slot' to main_template for compatibility with newer CMF
+      versions, and Five applications.
+      [siebo]
 
     - Updated the GenericSetup profile format to CMF1.6-style. No configuration
       changes were made, only format changes.

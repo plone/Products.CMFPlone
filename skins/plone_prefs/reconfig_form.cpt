@@ -326,7 +326,7 @@
                  tal:define="allowAnonymousViewAbout request/allowAnonymousViewAbout | site_properties/allowAnonymousViewAbout;
                              tabindex tabindex/next;">
 
-                <label i18n:translate="label_allowAnonymousViewAbout">All Anonymous Users To View About Information</label>
+                <label i18n:translate="label_allowAnonymousViewAbout">Allow Anonymous Users To View About Information</label>
 
                 <div class="formHelp" i18n:translate="help_allowAnonymousViewAbout">
                   Determines if an anonymous user will be allowed to view the

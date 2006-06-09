@@ -1,3 +1,4 @@
+<tal:block define="_dummy python:request.response.setHeader('content-type','text/javascript;;charset=utf-8')" />
 <metal:block i18n:domain="plone">
 // Global Plone variables that need to be accessible to the Javascripts
 var portal_url = '<tal:block replace="here/portal_url" />';
