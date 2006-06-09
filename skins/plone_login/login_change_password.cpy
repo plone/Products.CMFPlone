@@ -21,7 +21,7 @@ except AttributeError:
 
 member.setProperties(must_change_password=0)
 
-from Products.CMFPlone import transaction_note
+from Products.CMFPlone.utils import transaction_note
 transaction_note('Changed password for %s' % (member.getUserName()))
 
 return state

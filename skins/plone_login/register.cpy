@@ -59,7 +59,7 @@ if came_from_prefs:
     context.plone_utils.addPortalMessage(_(u'User added.'))
     state.set(status='prefs')
 
-from Products.CMFPlone import transaction_note
+from Products.CMFPlone.utils import transaction_note
 transaction_note('%s registered' % username)
 
 return state

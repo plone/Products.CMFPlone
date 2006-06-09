@@ -48,27 +48,6 @@ class TestSecurityDeclarations(RestrictedPythonTest):
     # environment. Therefore the tests are not truly independent.
     # Be careful when adding new tests to this class.
 
-    def testImport_LOG(self):
-        self.check('from zLOG import LOG')
-
-    def testAccess_LOG(self):
-        self.check('import zLOG;'
-                   'print zLOG.LOG')
-
-    def testImport_INFO(self):
-        self.check('from zLOG import INFO')
-
-    def testAccess_INFO(self):
-        self.check('import zLOG;'
-                   'print zLOG.INFO')
-
-    def testImport_WARNING(self):
-        self.check('from zLOG import WARNING')
-
-    def testAccess_WARNING(self):
-        self.check('import zLOG;'
-                   'print zLOG.WARNING')
-
     def testImport_log(self):
         self.check('from Products.CMFPlone.utils import log')
 
@@ -189,22 +168,6 @@ class TestSecurityDeclarations(RestrictedPythonTest):
     def testAccess_safe_callable(self):
         self.check('import Products.CMFPlone.utils;'
                    'print Products.CMFPlone.utils.safe_callable')
-
-    # B/w compatibility
-
-    def testImport_transaction_note_bbb(self):
-        self.check('from Products.CMFPlone import transaction_note')
-
-    def testAccess_transaction_note_bbb(self):
-        self.check('import Products.CMFPlone;'
-                   'print Products.CMFPlone.transaction_note')
-
-    def testImport_base_hasattr_bbb(self):
-        self.check('from Products.CMFPlone import base_hasattr')
-
-    def testAccess_base_hasattr_bbb(self):
-        self.check('import Products.CMFPlone;'
-                   'print Products.CMFPlone.base_hasattr')
 
     # Exceptions
 

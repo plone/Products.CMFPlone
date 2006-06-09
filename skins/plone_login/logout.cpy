@@ -25,7 +25,7 @@ if sdm is not None:
     if session is not None:
         session.invalidate()
 
-from Products.CMFPlone import transaction_note
+from Products.CMFPlone.utils import transaction_note
 transaction_note('Logged out')
 
 target_url = REQUEST.URL1

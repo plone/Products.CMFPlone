@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 3.0 (unreleased)
 
+    - Removed deprecated FolderWorkflow, PloneWorkflow and PloneUtilities
+      classes. Removed aliases for base_hasattr and transaction_note from
+      CMFPlone. Import these from CMFPlone.utils. Removed security declarations
+      for zLOG levels. zLOG usage was replaced by Python's logging module.
+      [hannosch]
+
     - Removed five:traversable from configure.zcml as it is not needed anymore
       for Zope 2.10.
       [hannosch]
