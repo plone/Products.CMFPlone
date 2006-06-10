@@ -4,7 +4,7 @@
 /* <dtml-with base_properties> (do not remove this :) */
 /* <dtml-call "REQUEST.set('portal_url', portal_url())"> (not this either :) */
 
-/* Classes that were introduced erroneously in Plone 2.1. Will disappear in 2.5. */
+/* Classes that were introduced erroneously in Plone 2.1. Will disappear in 3.0. */
 
 .portletItemSingle {
     margin: 0;
@@ -20,7 +20,7 @@ dd.portletItemLast {
     border-style: none &dtml-borderStyle;;
 }
 
-/* Old div-based portlet syntax - this is deprecated and will be removed in plone 2.5, please use the new
+/* Old div-based portlet syntax - this is deprecated and will be removed in plone 3.0, please use the new
    definition list-based portlets above in your products. */
 
 div.portlet {
