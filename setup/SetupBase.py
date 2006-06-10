@@ -1,3 +1,5 @@
+from Products.CMFPlone.utils import log_deprecated
+
 class SetupWidget:
     # if single is set to one, then we will
     # show radio buttons rather than check boxes
@@ -5,6 +7,9 @@ class SetupWidget:
 
     def __init__(self, portal):
         self.portal = portal
+        log_deprecated("SetupWidget is deprecated and will be removed in Plone"
+                       " 3.0. Site creation is based on GenericSetup now.")
+
 
     #####################################################
     # To be overridden

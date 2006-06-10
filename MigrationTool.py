@@ -8,6 +8,7 @@ from Products.CMFCore.permissions import ManagePortal, View
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFPlone.utils import versionTupleFromString
 from Products.CMFPlone.utils import log
+from Products.CMFPlone.utils import log_deprecated
 import transaction
 
 import logging
@@ -80,6 +81,8 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
     security.declarePublic('isPloneOne')
     def isPloneOne(self):
         """ is this still a plone 1 instance? Needed for require login"""
+        log_deprecated("isPloneOne is deprecated and will be removed in "
+                       "Plone 3.0.")
         ver = self.getInstanceVersion().strip()
         if ver.startswith('1'):
             return 1
@@ -182,6 +185,8 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
     def _getWidget(self, widget):
         """ We cant instantiate widgets at run time
         but can send all get calls through here... """
+        log_deprecated("_getWidget is deprecated and will be removed in "
+                       "Plone 3.0.")
         _widget = _widgetRegistry[widget]
         obj = getToolByName(self, 'portal_url').getPortalObject()
         return _widget(obj)
@@ -189,26 +194,36 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
     security.declareProtected(ManagePortal, 'listWidgets')
     def listWidgets(self):
         """ List all the widgets """
+        log_deprecated("listWidgets is deprecated and will be removed in "
+                       "Plone 3.0.")
         return _widgetRegistry.keys()
 
     security.declareProtected(ManagePortal, 'getDescription')
     def getDescription(self, widget):
         """ List all the widgets """
+        log_deprecated("getDescription is deprecated and will be removed in "
+                       "Plone 3.0.")
         return self._getWidget(widget).description
 
     security.declareProtected(ManagePortal, 'listAvailable')
     def listAvailable(self, widget):
         """  List all the Available things """
+        log_deprecated("listAvailable is deprecated and will be removed in "
+                       "Plone 3.0.")
         return self._getWidget(widget).available()
 
     security.declareProtected(ManagePortal, 'listInstalled')
     def listInstalled(self, widget):
         """  List all the installed things """
+        log_deprecated("listInstalled is deprecated and will be removed in "
+                       "Plone 3.0.")
         return self._getWidget(widget).installed()
 
     security.declareProtected(ManagePortal, 'listNotInstalled')
     def listNotInstalled(self, widget):
         """ List all the not installed things """
+        log_deprecated("listNotInstalled is deprecated and will be removed in "
+                       "Plone 3.0.")
         avail = self.listAvailable(widget)
         install = self.listInstalled(widget)
         return [ item for item in avail if item not in install ]
@@ -216,16 +231,22 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
     security.declareProtected(ManagePortal, 'activeWidget')
     def activeWidget(self, widget):
         """ Show the state """
+        log_deprecated("activeWidget is deprecated and will be removed in "
+                       "Plone 3.0.")
         return self._getWidget(widget).active()
 
     security.declareProtected(ManagePortal, 'setupWidget')
     def setupWidget(self, widget):
         """ Show the state """
+        log_deprecated("setupWidget is deprecated and will be removed in "
+                       "Plone 3.0.")
         return self._getWidget(widget).setup()
 
     security.declareProtected(ManagePortal, 'alterItems')
     def alterItems(self, widget=None, items=[]):
         """ Figure out which items to install and which to uninstall """
+        log_deprecated("alterItems is deprecated and will be removed in "
+                       "Plone 3.0.")
         installed = self.listInstalled(widget)
 
         toAdd = [ item for item in items if item not in installed ]
@@ -242,11 +263,15 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
     security.declareProtected(ManagePortal, 'installItems')
     def installItems(self, widget, items):
         """ Install the items """
+        log_deprecated("installItems is deprecated and will be removed in "
+                       "Plone 3.0.")
         return self._getWidget(widget).addItems(items)
 
     security.declareProtected(ManagePortal, 'uninstallItems')
     def uninstallItems(self, widget, items):
         """ Uninstall the items """
+        log_deprecated("unInstallItems is deprecated and will be removed in "
+                       "Plone 3.0.")
         return self._getWidget(widget).delItems(items)
 
     ##############################################################
@@ -377,6 +402,8 @@ def registerUpgradePath(oldversion, newversion, function):
 
 def registerSetupWidget(widget):
     """ Basic register things """
+    log_deprecated("registerSetupWidget is deprecated and will be removed in "
+                   "Plone 3.0.")
     _widgetRegistry[widget.type] = widget
 
 InitializeClass(MigrationTool)

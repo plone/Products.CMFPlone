@@ -5,6 +5,7 @@ from Products.CMFCore.permissions import AccessInactivePortalContent, \
         ModifyPortalContent, View
 from Products.CMFCore.Expression import Expression
 from Products.CMFPlone.migrations.migration_util import safeEditProperty
+from Products.CMFPlone.utils import log_deprecated
 from Acquisition import aq_get
 from AccessControl import Permissions
 from Products.SiteErrorLog.SiteErrorLog import manage_addErrorLog
@@ -15,16 +16,21 @@ from zLOG import INFO
 from SetupBase import SetupWidget
 
 def addErrorLog(self, portal):
+    log_deprecated("addErrorLog is deprecated and will be removed in Plone 3.0")
     if "error_log" not in portal.objectIds():
         manage_addErrorLog(portal)
         portal.error_log.copy_to_zlog = 1
 
 def installPortalTools(self,portal):
     ''' This should be done in Products/CMFPlone/Portal.py in setupTools '''
+    log_deprecated("installPortalTools is deprecated and will be removed in "
+                   "Plone 3.0")
     pass
 
 def addSiteProperties(self, portal):
     """ adds site_properties in portal_properties """
+    log_deprecated("addSiteProperties is deprecated and will be removed in "
+                   "Plone 3.0")
     id = 'site_properties'
     title = 'Site wide properties'
     year = DateTime().year()
@@ -60,9 +66,10 @@ def addSiteProperties(self, portal):
     if not hasattr(p, 'calendar_future_years_available'):
         safeEditProperty(p, 'calendar_future_years_available', 5, 'int')
 
-
 def setupDefaultLeftRightSlots(self, portal):
     """ sets up the slots on objectmanagers """
+    log_deprecated("setupDefaultLeftRightSlots is deprecated and will be "
+                   "removed in Plone 3.0")
     left_slots=( 'here/portlet_navigation/macros/portlet'
                , 'here/portlet_login/macros/portlet'
                , 'here/portlet_recent/macros/portlet'
@@ -77,10 +84,14 @@ def setupDefaultLeftRightSlots(self, portal):
 def setupDefaultItemActionSlots(self, portal):
     """ Sets up the default action item slots """
     'These are now document_actions ActionInformation object in portal_actiosn'
+    log_deprecated("setupDefaultItemActionSlots is deprecated and will be "
+                   "removed in Plone 3.0")
     pass
 
 def installExternalEditor(self, portal):
     ''' responsible for doing whats necessary if external editor is found '''
+    log_deprecated("installExternalEditor is deprecated and will be removed in "
+                   "Plone 3.0")
     try:
         from Products.ExternalEditor.ExternalEditor import ExternalEditorPermission
     except ImportError:
@@ -135,6 +146,8 @@ def assignTitles(self, portal):
             setattr(aq_get(portal, oid), 'title', title)
 
 def addMemberdata(self, portal):
+    log_deprecated("addMemberdata is deprecated and will be removed in "
+                   "Plone 3.0")
     md=getToolByName(portal, 'portal_memberdata')
     if not hasattr(md,'wysiwyg_editor'):
         safeEditProperty(md, 'wysiwyg_editor', '', 'string')
@@ -155,6 +168,8 @@ def addMemberdata(self, portal):
         safeEditProperty(md, 'error_log_update', 0.0, 'float')
 
 def modifyActionProviders(self, portal):
+    log_deprecated("modifyActionProviders is deprecated and will be removed in "
+                   "Plone 3.0")
     mt=getToolByName(portal, 'portal_properties')
     _actions=mt._cloneActions()
     for action in _actions:
@@ -180,6 +195,8 @@ def modifyActionProviders(self, portal):
     dt._actions=_actions
 
 def correctFolderContentsAction(actionTool):
+    log_deprecated("correctFolderContentsAction is deprecated and will be "
+                   "removed in Plone 3.0")
     _actions=actionTool._cloneActions()
     for action in _actions:
         if action.id=='folderContents':
@@ -188,8 +205,9 @@ def correctFolderContentsAction(actionTool):
             action.permissions=(ListFolderContents,)
     actionTool._actions=_actions
 
-
 def modifyMembershipTool(self, portal):
+    log_deprecated("modifyMembershipTool is deprecated and will be removed in "
+                   "Plone 3.0")
     mt=getToolByName(portal, 'portal_membership')
     mt.addAction('myworkspace'
                 ,'Workspace'
@@ -225,6 +243,7 @@ def modifyMembershipTool(self, portal):
 def modifySkins(self, portal):
     #remove non Plone skins from skins tool
     #since we implemented the portal_form proxy these skins will no longer work
+    log_deprecated("modifySkins is deprecated and will be removed in Plone 3.0")
 
     # this should be run through the skins setup widget :)
     st=getToolByName(portal, 'portal_skins')
@@ -252,6 +271,8 @@ def modifySkins(self, portal):
                 a.visible = 0
 
 def addNewActions(self, portal):
+    log_deprecated("addNewActions is deprecated and will be removed in "
+                   "Plone 3.0")
     at=getToolByName(portal, 'portal_actions')
 
     at.addAction('index_html',
@@ -299,12 +320,16 @@ def addNewActions(self, portal):
     at._actions = cloned_actions
 
 def setPortalDefaultPermissions(self, portal):
+    log_deprecated("setPortalDefaultPermissions is deprecated and will be "
+                   "removed in Plone 3.0")
     portal.manage_permission(AccessInactivePortalContent,
                                                 ('Owner',), acquire=1)
     portal.manage_permission(ViewGroups, ('Manager', 'Owner', 'Member'),
                                                             acquire=1)
 
 def enableSiteSyndication(self, portal):
+    log_deprecated("enableSiteSyndication is deprecated and will be removed in "
+                   "Plone 3.0")
     syn_tool = getToolByName(portal, 'portal_syndication')
     syn_tool.editProperties(isAllowed=True)
 

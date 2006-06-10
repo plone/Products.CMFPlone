@@ -7,6 +7,10 @@ from ZODB.POSException import ConflictError
 import sys
 import traceback
 
+from Products.CMFPlone.utils import log_deprecated
+log_deprecated("CustomizationPolicies are deprecated and will be removed in "
+               "Plone 3.0. Please use GenericSetup extension profiles instead.")
+
 class CustomizationPolicySetup(SetupWidget):
     type = 'Customization Policy Setup'
     single = 1

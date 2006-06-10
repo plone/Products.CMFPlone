@@ -3,8 +3,12 @@ from Products.CMFPlone.Portal import addPolicy
 from Products.CMFPlone.interfaces.CustomizationPolicy \
      import ICustomizationPolicy as z2ICustomizationPolicy
 from Products.CMFPlone.interfaces import ICustomizationPolicy
+from Products.CMFPlone.utils import log_deprecated
 
 from zope.interface import implements
+
+log_deprecated("CustomizationPolicies are deprecated and will be removed in "
+               "Plone 3.0. Please use GenericSetup extension profiles instead.")
 
 class DefaultCustomizationPolicy:
     """ Customizes various actions on CMF tools """
