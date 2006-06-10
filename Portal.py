@@ -1,10 +1,7 @@
-import os
-
 from Products.CMFDefault.Portal import CMFSite
 
 from Products.CMFCore import permissions
 from Products.CMFCore.utils import getToolByName
-from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFDefault import DublinCore
 from Products.CMFDynamicViewFTI.browserdefault import BrowserDefaultMixin
 from Products.CMFPlone.PloneFolder import OrderedContainer
@@ -16,8 +13,6 @@ from Acquisition import aq_base
 from ComputedAttribute import ComputedAttribute
 from webdav.NullResource import NullResource
 from Products.CMFPlone.PloneFolder import ReplaceableWrapper
-from Products.CMFPlone.utils import log_exc
-from Products.CMFPlone.utils import WWW_DIR
 from Products.CMFPlone.interfaces import IPloneSiteRoot
 
 from zope.interface import implements

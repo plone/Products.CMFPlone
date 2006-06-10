@@ -5,7 +5,6 @@ import re
 import urllib, time
 
 from Products.CMFCore.CatalogTool import CatalogTool as BaseTool
-from Products.CMFCore.permissions import ManagePortal
 from Products.CMFCore.permissions import AccessInactivePortalContent
 from Products.CMFPlone import ToolNames
 from AccessControl import ClassSecurityInfo

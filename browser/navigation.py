@@ -1,7 +1,7 @@
 from zope.interface import implements
 from zope.component import getMultiAdapter
 
-from Acquisition import aq_base, aq_inner
+from Acquisition import aq_base
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import utils
 from Products.CMFPlone import PloneMessageFactory as PMF
@@ -17,8 +17,6 @@ from Products.CMFPlone.interfaces import IDynamicViewTypeInformation
 from Products.CMFPlone.browser.navtree import buildFolderTree
 from Products.CMFPlone.browser.navtree import NavtreeQueryBuilder, SitemapQueryBuilder
 from Products.CMFPlone.browser.navtree import getNavigationRoot
-
-from Products.CMFPlone.browser.navtree import DefaultNavtreeStrategy, SitemapNavtreeStrategy
 
 def get_url(item):
     if hasattr(aq_base(item), 'getURL'):

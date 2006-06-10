@@ -8,13 +8,11 @@ if __name__ == '__main__':
 
 from Products.CMFPlone.tests import PloneTestCase
 
-from Products.CMFPlone.tests import dummy
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.browser.navtree import *
 
 from Products.CMFPlone.browser.interfaces import INavigationRoot
 
-import transaction
 from zope.interface import directlyProvides
 
 default_user = PloneTestCase.default_user

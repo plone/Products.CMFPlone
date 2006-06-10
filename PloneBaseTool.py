@@ -9,8 +9,6 @@ from Acquisition import aq_inner
 
 from Products.CMFCore import Expression
 from Products.CMFCore.utils import getToolByName
-from Products.PageTemplates.Expressions import getEngine
-from Products.PageTemplates.Expressions import SecureModuleImporter
 
 from zope.interface import implements
 from zope.component import getMultiAdapter
@@ -21,7 +19,6 @@ TempFolderClass = None
 # Copyright (c) 2002 Zope Corporation and Contributors. All Rights Reserved.
 # ZPL 2.1
 from Products.CMFCore.ActionInformation import oai
-from Products.CMFCore.utils import getToolByName
 
 def initializeTFC():
     """To work around circular imports ...

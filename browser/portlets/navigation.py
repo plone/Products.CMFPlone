@@ -7,8 +7,6 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import utils
 from Products.CMFPlone.browser.interfaces import INavigationPortlet
 
-from Products.CMFPlone.browser.navtree import getNavigationRoot
-
 class NavigationPortlet(utils.BrowserView):
     implements(INavigationPortlet)
 

@@ -18,8 +18,6 @@ from Products.CMFPlone.interfaces import IBrowserDefault
 from zope.interface import implements
 from zope.component import getMultiAdapter
 
-
-from Products import CMFPlone
 import ZTUtils
 import sys
 
