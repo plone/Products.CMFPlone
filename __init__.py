@@ -9,9 +9,6 @@ cmfplone_globals = globals()
 this_module = sys.modules[ __name__ ]
 _marker = []
 
-# Stores the available 'Customization Policies'
-custom_policies = {}
-
 ADD_CONTENT_PERMISSION = 'Add portal content'
 
 misc_ = {'plone_icon': Globals.ImageFile(
@@ -169,7 +166,7 @@ def initialize(context):
     from Products.CMFCore.utils import ContentInit
     from Products.CMFPlone.utils import ToolInit
 
-    # Register tools, content, and customization policies
+    # Register tools and content
     z_bases = initializeBasesPhase1(contentClasses, this_module)
     initializeBasesPhase2(z_bases, context)
 
@@ -196,9 +193,6 @@ def initialize(context):
                           constructors=(factory.addPloneSiteForm,
                                         factory.addPloneSite),
                           icon='skins/plone_images/logoIcon.gif')
-
-    import CustomizationPolicy
-    CustomizationPolicy.register(context, cmfplone_globals)
 
 # Import "PloneMessageFactory as _" to create message ids in the plone domain
 from zope.i18nmessageid import MessageFactory

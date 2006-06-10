@@ -28,7 +28,6 @@ from Products.CMFPlone.ActionIconsTool import ActionIconsTool
 from Products.CMFPlone.ActionsTool import ActionsTool
 from Products.CMFPlone.CalendarTool import CalendarTool
 from Products.CMFPlone.CatalogTool import CatalogTool
-from Products.CMFPlone.CustomizationPolicy import DefaultCustomizationPolicy
 from Products.CMFPlone.DiscussionTool import DiscussionTool
 from Products.CMFPlone.FactoryTool import FactoryTool, TempFolder
 from Products.CMFPlone.GroupDataTool import GroupDataTool
@@ -302,7 +301,6 @@ testClasses = [
     (ActionsTool, ()),
     (CalendarTool, ()),
     (CatalogTool, ()),
-    (DefaultCustomizationPolicy, ()),
     (DiscussionTool, ()),
     (FactoryTool, ()), (TempFolder, ()),
     (GroupDataTool, ()),

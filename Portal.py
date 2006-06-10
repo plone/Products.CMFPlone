@@ -1,22 +1,6 @@
 import os
 
-from Products.CMFPlone import custom_policies
 from Products.CMFDefault.Portal import CMFSite
-
-def listPolicies(creation=1):
-    """ Float default plone to the top """
-    names=[]
-    for name, klass in custom_policies.items():
-        available=getattr(klass, 'availableAtConstruction', None)
-        if creation and available:
-            names.append(name)
-
-    default=names.pop(names.index('Default Plone'))
-    names.insert(0, default)
-    return names
-
-def addPolicy(label, klass):
-    custom_policies[label]=klass
 
 from Products.CMFCore import permissions
 from Products.CMFCore.utils import getToolByName

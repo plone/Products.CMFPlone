@@ -132,13 +132,6 @@ class TestSecurityDeclarations(RestrictedPythonTest):
         self.check('from Products.CMFPlone import Batch;'
                    'print Batch([], 0).nexturls')
 
-    def testImport_listPolicies(self):
-        self.check('from Products.CMFPlone.Portal import listPolicies')
-
-    def testAccess_listPolicies(self):
-        self.check('import Products.CMFPlone.Portal;'
-                   'print Products.CMFPlone.Portal.listPolicies')
-
     # utils
 
     def testImport_transaction_note(self):
