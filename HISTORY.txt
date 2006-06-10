@@ -29,6 +29,9 @@ Plone 3.0 (unreleased)
 
 Plone 2.5 (unreleased)
 
+    - Added deprecation warnings for the old site creation machinery.
+      [hannosch]
+
     - Fixed last deprecated occurrences of portal_object. Use portal instead.
       [hannosch]
 
