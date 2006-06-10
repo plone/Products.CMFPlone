@@ -212,7 +212,6 @@ class ISitemapView(Interface):
 class IPlone(Interface):
     """ """
 
-
     def globalize():
         """ A method which puts all of the following view attributes into the
             globals of the current tal expression context (plus the
@@ -321,9 +320,6 @@ class IPlone(Interface):
 
     uniqueItemIndex = Attribute("An iterator for help inc reading unique "
                                 "html ids.")
-
-    # BBB: deprecated elements
-    portal_object = Attribute("A deprecated spelling of portal")
     """
 
     def getCurrentUrl():

@@ -40,9 +40,6 @@ class TestPloneView(PloneTestCase.PloneTestCase):
     def testPortal(self):
         assert self.view._data['portal'] == self.portal
 
-    def testPortalObject(self):
-        assert self.view._data['portal_object'] == self.portal
-
     def testPortalURL(self):
         assert isinstance(self.view._data['portal_url'], type(''))
 

@@ -88,8 +88,6 @@ class Plone(utils.BrowserView):
 
         self._data['utool'] = utool = getToolByName(context, 'portal_url')
         self._data['portal'] = portal = utool.getPortalObject()
-        # BBB: portal_object is deprecated use portal instead
-        self._data['portal_object'] = portal_object = portal
         self._data['portal_url'] =  utool()
         self._data['mtool'] = mtool = getToolByName(portal, 'portal_membership')
         self._data['atool'] = atool = getToolByName(portal, 'portal_actions')
