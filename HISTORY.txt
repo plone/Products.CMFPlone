@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 3.0 (unreleased)
 
+    - Removed deprecated CSS styles from deprecated.css.
+      [hannosch]
+
     - Removed deprecated scripts from the plone_deprecated skins layer.
       [hannosch]
 
