@@ -375,9 +375,8 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
 
     def testChangeStateIsLastFolderButton(self):
         # Change state button should be the last
-        actions = [x for x in self.actions.listActionInfos() if
-                    x['category'] == 'folder_buttons']
-        self.assertEqual(actions[-1]['id'], 'change_state', [x['id'] for x in actions])
+        actions = self.actions._getOb('folder_buttons').objectIds()
+        self.assertEqual(actions[-1], 'change_state')
 
     def testTypesUseViewActionInListingsProperty(self):
         # site_properties should have the typesUseViewActionInListings property
@@ -675,9 +674,9 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.failUnless(isinstance(cpm, CachingPolicyManager))
 
     def testHomeActionUsesView(self):
-        actions = self.portal.portal_actions.listActionInfos()
-        homeAction = [x for x in actions if x['id'] == 'index_html'][0]
-        self.assertEquals(homeAction['available_expr'], 'string:${globals_view/navigationRootUrl}')
+        actions = self.portal.portal_actions.listActions()
+        homeAction = [x for x in actions if x.id == 'index_html'][0]
+        self.assertEquals(homeAction.getInfoData()[0]['url'].text, 'string:${globals_view/navigationRootUrl}')
 
 
 class TestPortalBugs(PloneTestCase.PloneTestCase):
