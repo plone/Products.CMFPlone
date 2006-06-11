@@ -10,8 +10,7 @@ from zope.interface import implements
 from Products.CMFCore.Expression import Expression, createExprContext
 from Products.CMFCore.ActionInformation import ActionInformation
 from Products.CMFCore.ActionProviderBase import ActionProviderBase
-from Products.CMFCore.permissions import ManagePortal, SetOwnProperties, \
-                                         SetOwnPassword, View
+from Products.CMFCore.permissions import ManagePortal, View
 from Products.CMFCore.utils import _checkPermission, getToolByName, UniqueObject
 
 import ToolNames

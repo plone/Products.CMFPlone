@@ -22,9 +22,6 @@ table.listing td.top {
     top: -1px;
 }
 
-div#portal-columns div.portlet {
-    text-align: left;
-}
 div#portal-columns div#portal-column-one,
 div#portal-columns div#portal-column-two {
     overflow: hidden;

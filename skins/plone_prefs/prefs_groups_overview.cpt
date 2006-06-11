@@ -18,6 +18,7 @@
                 b_size python:20;
                 portal_roles here/getGlobalPortalRoles;
                 searchstring request/searchstring | nothing;
+                gtool context/portal_groups;
                 search_results python:test(not site_properties.many_users, gtool.listGroups(), searchstring and here.prefs_user_group_search(searchstring, 'groups') or None);
                 batch python:search_results and Batch(search_results, b_size, int(b_start), orphan=1) or None;">
     <div id="content" class="documentEditable"

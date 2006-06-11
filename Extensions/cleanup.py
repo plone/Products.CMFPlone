@@ -3,7 +3,7 @@ $Id$
 """
 
 from sets import Set
-from Products.CMFPlone import transaction
+from Products.CMFPlone.utils import transaction
 
 def cleanUpCatalog(catalog, out):
     _cat = catalog._catalog

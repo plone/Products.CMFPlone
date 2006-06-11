@@ -1,26 +1,7 @@
-import os
-
-from Products.CMFPlone import custom_policies
 from Products.CMFDefault.Portal import CMFSite
-
-def listPolicies(creation=1):
-    """ Float default plone to the top """
-    names=[]
-    for name, klass in custom_policies.items():
-        available=getattr(klass, 'availableAtConstruction', None)
-        if creation and available:
-            names.append(name)
-
-    default=names.pop(names.index('Default Plone'))
-    names.insert(0, default)
-    return names
-
-def addPolicy(label, klass):
-    custom_policies[label]=klass
 
 from Products.CMFCore import permissions
 from Products.CMFCore.utils import getToolByName
-from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFDefault import DublinCore
 from Products.CMFDynamicViewFTI.browserdefault import BrowserDefaultMixin
 from Products.CMFPlone.PloneFolder import OrderedContainer
@@ -32,8 +13,6 @@ from Acquisition import aq_base
 from ComputedAttribute import ComputedAttribute
 from webdav.NullResource import NullResource
 from Products.CMFPlone.PloneFolder import ReplaceableWrapper
-from Products.CMFPlone.utils import log_exc
-from Products.CMFPlone.utils import WWW_DIR
 from Products.CMFPlone.interfaces import IPloneSiteRoot
 
 from zope.interface import implements

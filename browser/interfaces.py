@@ -212,11 +212,14 @@ class ISitemapView(Interface):
 class IPlone(Interface):
     """ """
 
-
     def globalize():
         """ A method which puts all of the following view attributes into the
             globals of the current tal expression context (plus the
             toLocalizedTime method):
+
+    atool = Attribute("The portal_actions tool")
+
+    utool = Attribute("The portal_url tool")
 
     portal = Attribute("The portal object itself")
 
@@ -284,6 +287,9 @@ class IPlone(Interface):
 
     sr = Attribute("The elements in the right slot")
 
+    hidecolumns = Attribute("The css class to use for the column container"
+                            "which determines which columns to show")
+
     default_language = Attribute("The default language of the portal")
 
     language = Attribute("The language of the current request or context.")
@@ -314,20 +320,6 @@ class IPlone(Interface):
 
     uniqueItemIndex = Attribute("An iterator for help inc reading unique "
                                 "html ids.")
-
-    # BBB: deprecated elements
-    utool = Attribute("The portal_url tool")
-    portal_object = Attribute("A deprecated spelling of portal")
-    atool = Attribute("The portal_actions tool")
-    aitool = Attribute("The portal_actionicons tool")
-    gtool = Attribute("The portal_groups tool")
-    gdtool = Attribute("The portal_groupdata tool")
-    wf_actions = Attribute("A deprecated variant of workflow_actions")
-    hidecolumns = Attribute("The css class to use for the column container"
-                            "which determines which columns to show")
-    isEditable = Attribute("A deprecated spelling of is_editable")
-    lockable = Attribute("A boolean indicating that the object capable of"
-                             " being webdav locked")
     """
 
     def getCurrentUrl():

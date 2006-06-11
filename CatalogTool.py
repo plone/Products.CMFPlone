@@ -5,7 +5,6 @@ import re
 import urllib, time
 
 from Products.CMFCore.CatalogTool import CatalogTool as BaseTool
-from Products.CMFCore.permissions import ManagePortal
 from Products.CMFCore.permissions import AccessInactivePortalContent
 from Products.CMFPlone import ToolNames
 from AccessControl import ClassSecurityInfo
@@ -26,7 +25,6 @@ from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFPlone.interfaces import INonStructuralFolder
 from Products.CMFPlone.utils import base_hasattr
 from Products.CMFPlone.utils import safe_callable
-from Products.CMFPlone.utils import log_deprecated
 from OFS.IOrderSupport import IOrderedContainer
 from ZODB.POSException import ConflictError
 

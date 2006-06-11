@@ -13,6 +13,7 @@
                  portal_roles mtool/getPortalRoles;
                  groupname request/groupname | nothing;
                  grouproles python:request.set('grouproles', []);
+                 gtool context/portal_groups;
                  group python:gtool.getGroupById(groupname);
                  grouptitle group/getGroupTitleOrName | nothing">
 
@@ -98,7 +99,7 @@
               method="post"
               class="enableUnloadProtection"
               tal:attributes="action string:${gtool/absolute_url}"
-              tal:define="targetobject gdtool;
+              tal:define="targetobject context/portal_groupdata;
                           targetGetProperty nocall:group/getProperty | nocall:here/returnNone;">
 
             <fieldset>

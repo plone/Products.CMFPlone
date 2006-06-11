@@ -9,20 +9,15 @@ if __name__ == '__main__':
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
 
+from Products.CMFPlone.browser.plone import Plone
 from Products.CMFPlone.utils import _createObjectByType
 
-from Products.CMFPlone.URLTool import URLTool
-from Products.CMFPlone.MembershipTool import MembershipTool
-from Products.CMFPlone.GroupsTool import GroupsTool
-from Products.CMFPlone.GroupDataTool import GroupDataTool
 from Products.CMFPlone.ActionsTool import ActionsTool
-from Products.CMFPlone.ActionIconsTool import ActionIconsTool
-
-from Products.CMFCore.WorkflowTool import WorkflowTool
-
 from Products.CMFPlone.InterfaceTool import InterfaceTool
+from Products.CMFPlone.MembershipTool import MembershipTool
 from Products.CMFPlone.SyndicationTool import SyndicationTool
-from Products.CMFPlone.browser.plone import Plone
+from Products.CMFPlone.URLTool import URLTool
+from Products.CMFCore.WorkflowTool import WorkflowTool
 
 
 class TestPloneView(PloneTestCase.PloneTestCase):
@@ -32,12 +27,8 @@ class TestPloneView(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
         # We need to fiddle the request for zope 2.9+
-        try:
-            from zope.app.publication.browser import setDefaultSkin
-            setDefaultSkin(self.app.REQUEST)
-        except ImportError:
-            # BBB: zope 2.8
-            pass
+        from zope.app.publication.browser import setDefaultSkin
+        setDefaultSkin(self.app.REQUEST)
         self.folder.invokeFactory('Document', 'test',
                                   title='Test default page')
         self.view = Plone(self.portal, self.app.REQUEST)
@@ -49,26 +40,14 @@ class TestPloneView(PloneTestCase.PloneTestCase):
     def testPortal(self):
         assert self.view._data['portal'] == self.portal
 
-    def testPortalObject(self):
-        assert self.view._data['portal_object'] == self.portal
-
     def testPortalURL(self):
         assert isinstance(self.view._data['portal_url'], type(''))
 
     def testMTool(self):
         assert isinstance(self.view._data['mtool'], MembershipTool)
 
-    def testGTool(self):
-        assert isinstance(self.view._data['gtool'], GroupsTool)
-
-    def testGDTool(self):
-        assert isinstance(self.view._data['gdtool'], GroupDataTool)
-
     def testATool(self):
         assert isinstance(self.view._data['atool'], ActionsTool)
-
-    def testAITool(self):
-        assert isinstance(self.view._data['aitool'], ActionIconsTool)
 
     def testPUtils(self):
         pass

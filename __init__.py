@@ -9,9 +9,6 @@ cmfplone_globals = globals()
 this_module = sys.modules[ __name__ ]
 _marker = []
 
-# Stores the available 'Customization Policies'
-custom_policies = {}
-
 ADD_CONTENT_PERMISSION = 'Add portal content'
 
 misc_ = {'plone_icon': Globals.ImageFile(
@@ -29,20 +26,13 @@ def initialize(context):
     from AccessControl import ModuleSecurityInfo
     from AccessControl import allow_module, allow_class
 
-    # zLOG is deprecated in Zope > 2.7.0, use logger instead
+    # allow logging
     ModuleSecurityInfo('logging').declarePublic('getLogger')
     from logging import Logger
     allow_class(Logger)
 
-    # BBB: Deprecated do not use, will be removed in Plone 3.0
-    ModuleSecurityInfo('zLOG').declarePublic('LOG')
-    ModuleSecurityInfo('zLOG').declarePublic('INFO')
-    ModuleSecurityInfo('zLOG').declarePublic('WARNING')
-
+    # various small utils functions
     allow_module('Products.CMFPlone.utils')
-
-    # This is now deprecated, use utils instead.
-    allow_module('Products.CMFPlone.PloneUtilities')
 
     # For form validation bits
     from Products.CMFPlone.utils import IndexIterator
@@ -97,11 +87,6 @@ def initialize(context):
 
     # Make ZCatalog's mergeResults importable TTW
     ModuleSecurityInfo('Products.ZCatalog.Catalog').declarePublic('mergeResults')
-
-    # Backward compatibility only, please import from utils directly
-    from Products.CMFPlone.utils import transaction_note, base_hasattr
-    this_module.transaction_note = transaction_note
-    this_module.base_hasattr = base_hasattr
 
     # Make the navtree constructs available TTW
     allow_module('Products.CMFPlone.browser.navtree')
@@ -181,7 +166,7 @@ def initialize(context):
     from Products.CMFCore.utils import ContentInit
     from Products.CMFPlone.utils import ToolInit
 
-    # Register tools, content, and customization policies
+    # Register tools and content
     z_bases = initializeBasesPhase1(contentClasses, this_module)
     initializeBasesPhase2(z_bases, context)
 
@@ -208,11 +193,6 @@ def initialize(context):
                           constructors=(factory.addPloneSiteForm,
                                         factory.addPloneSite),
                           icon='skins/plone_images/logoIcon.gif')
-
-    import CustomizationPolicy
-    CustomizationPolicy.register(context, cmfplone_globals)
-
-    ModuleSecurityInfo('Products.CMFPlone').declarePrivate('transaction')
 
 # Import "PloneMessageFactory as _" to create message ids in the plone domain
 from zope.i18nmessageid import MessageFactory

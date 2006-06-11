@@ -1,7 +1,0 @@
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US"
-      i18n:domain="plone">
-
-<!-- BBB: This template is no longer used, and will go away in Plone 3.0 -->
-<body metal:define-macro="body_tag" class="" tal:attributes="class here/getBodyTagClass"><metal:bodyslot define-slot="bodytag_body"></metal:bodyslot></body>
-
-</html>

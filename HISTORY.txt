@@ -4,6 +4,24 @@ Changelog for Plone
 
 Plone 3.0 (unreleased)
 
+    - Removed deprecated CustomizationPolicy and old site creation machinery.
+      [hannosch]
+
+    - Removed deprecated CSS styles from deprecated.css.
+      [hannosch]
+
+    - Removed deprecated scripts from the plone_deprecated skins layer.
+      [hannosch]
+
+    - Removed lots of deprecated values from the PloneView.
+      [hannosch]
+
+    - Removed deprecated FolderWorkflow, PloneWorkflow and PloneUtilities
+      classes. Removed aliases for base_hasattr and transaction_note from
+      CMFPlone. Import these from CMFPlone.utils. Removed security declarations
+      for zLOG levels. zLOG usage was replaced by Python's logging module.
+      [hannosch]
+
     - Removed five:traversable from configure.zcml as it is not needed anymore
       for Zope 2.10.
       [hannosch]
@@ -13,6 +31,17 @@ Plone 3.0 (unreleased)
       [hannosch]
 
 Plone 2.5 (unreleased)
+
+    - Added deprecation warnings for the old site creation machinery.
+      [hannosch]
+
+    - Fixed last deprecated occurrences of portal_object. Use portal instead.
+      [hannosch]
+
+    Release Candidate 2 - released June 8, 2006
+
+    - Fixed issue with encoding of translated ui strings in javascript.
+      [ree, nouri]
 
     Release Candidate 1 - released June 3, 2006
 
@@ -103,6 +132,10 @@ Plone 2.5 (unreleased)
       [hannosch]
 
     Beta 2 - released May 17, 2006
+
+    - Added 'style_slot' to main_template for compatibility with newer CMF
+      versions, and Five applications.
+      [siebo]
 
     - Updated the GenericSetup profile format to CMF1.6-style. No configuration
       changes were made, only format changes.

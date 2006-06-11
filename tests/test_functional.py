@@ -18,9 +18,6 @@ from Globals import package_home
 from Testing.ZopeTestCase import FunctionalDocFileSuite as Suite
 from Products.CMFPlone.tests import PloneTestCase, GLOBALS
 
-REQUIRE_TESTBROWSER = ['AddMoveAndDeleteDocument.txt',
-                       'LoginAndLogout.txt']
-
 # Looks like we can safely assume that these options are set by the
 # testsuite:
 ## OPTIONFLAGS = (doctest.REPORT_ONLY_FIRST_FAILURE |
@@ -32,21 +29,8 @@ def list_doctests():
     return [filename for filename in
             glob.glob(os.path.sep.join([home, '*.txt']))]
 
-def list_nontestbrowser_tests():
-    return [filename for filename in list_doctests()
-            if os.path.basename(filename) not in REQUIRE_TESTBROWSER]
-
 def test_suite():
-    # BBB: We can obviously remove this when testbrowser is Plone
-    #      mainstream.
-    try:
-        import Products.Five.testbrowser
-    except ImportError:
-        print >> sys.stderr, ("testbrowser not found; "
-                              "testbrowser tests skipped")
-        filenames = list_nontestbrowser_tests()
-    else:
-        filenames = list_doctests()
+    filenames = list_doctests()
 
     return unittest.TestSuite(
         [Suite(os.path.basename(filename),

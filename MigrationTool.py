@@ -77,13 +77,6 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
             self.setInstanceVersion(self.getFileSystemVersion())
         return self._version.lower()
 
-    security.declarePublic('isPloneOne')
-    def isPloneOne(self):
-        """ is this still a plone 1 instance? Needed for require login"""
-        ver = self.getInstanceVersion().strip()
-        if ver.startswith('1'):
-            return 1
-
     security.declareProtected(ManagePortal, 'setInstanceVersion')
     def setInstanceVersion(self, version):
         """ The version this instance of plone is on """
@@ -172,84 +165,6 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
         except ImportError:
             VERSION = None
         return VERSION
-
-    ##############################################################
-    # the setup widget registry
-    # this is a whole bunch of wrappers
-    # Really an unprotected sub object
-    # declaration could do this...
-
-    def _getWidget(self, widget):
-        """ We cant instantiate widgets at run time
-        but can send all get calls through here... """
-        _widget = _widgetRegistry[widget]
-        obj = getToolByName(self, 'portal_url').getPortalObject()
-        return _widget(obj)
-
-    security.declareProtected(ManagePortal, 'listWidgets')
-    def listWidgets(self):
-        """ List all the widgets """
-        return _widgetRegistry.keys()
-
-    security.declareProtected(ManagePortal, 'getDescription')
-    def getDescription(self, widget):
-        """ List all the widgets """
-        return self._getWidget(widget).description
-
-    security.declareProtected(ManagePortal, 'listAvailable')
-    def listAvailable(self, widget):
-        """  List all the Available things """
-        return self._getWidget(widget).available()
-
-    security.declareProtected(ManagePortal, 'listInstalled')
-    def listInstalled(self, widget):
-        """  List all the installed things """
-        return self._getWidget(widget).installed()
-
-    security.declareProtected(ManagePortal, 'listNotInstalled')
-    def listNotInstalled(self, widget):
-        """ List all the not installed things """
-        avail = self.listAvailable(widget)
-        install = self.listInstalled(widget)
-        return [ item for item in avail if item not in install ]
-
-    security.declareProtected(ManagePortal, 'activeWidget')
-    def activeWidget(self, widget):
-        """ Show the state """
-        return self._getWidget(widget).active()
-
-    security.declareProtected(ManagePortal, 'setupWidget')
-    def setupWidget(self, widget):
-        """ Show the state """
-        return self._getWidget(widget).setup()
-
-    security.declareProtected(ManagePortal, 'alterItems')
-    def alterItems(self, widget=None, items=[]):
-        """ Figure out which items to install and which to uninstall """
-        installed = self.listInstalled(widget)
-
-        toAdd = [ item for item in items if item not in installed ]
-        toDel = [ install for install in installed if install not in items ]
-
-        out = []
-        if toAdd: out += self.installItems(widget, toAdd)
-        if toDel: out += self.uninstallItems(widget, toDel)
-        try:
-            return self.manage_results(self, out=out)
-        except NameError:
-            pass
-
-    security.declareProtected(ManagePortal, 'installItems')
-    def installItems(self, widget, items):
-        """ Install the items """
-        return self._getWidget(widget).addItems(items)
-
-    security.declareProtected(ManagePortal, 'uninstallItems')
-    def uninstallItems(self, widget, items):
-        """ Uninstall the items """
-        return self._getWidget(widget).delItems(items)
-
-    ##############################################################
 
     security.declareProtected(ManagePortal, 'upgrade')
     def upgrade(self, REQUEST=None, dry_run=None, swallow_errors=1):
@@ -374,9 +289,5 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
 def registerUpgradePath(oldversion, newversion, function):
     """ Basic register func """
     _upgradePaths[oldversion.lower()] = [newversion.lower(), function]
-
-def registerSetupWidget(widget):
-    """ Basic register things """
-    _widgetRegistry[widget.type] = widget
 
 InitializeClass(MigrationTool)
