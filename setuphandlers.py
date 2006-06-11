@@ -165,13 +165,39 @@ class PloneGenerator:
         if 'Reviewers' not in existing:
             gtool.addGroup('Reviewers', roles=['Reviewer'])
 
-    def performMigrationActions(self, p):
-        """
-        Perform any necessary migration steps.
-        """
-        out = []
-        migs.v2_1.alphas.addDefaultTypesToPortalFactory(p, out)
-        migs.v2_1.rcs.enableSyndicationOnTopics(p, out)
+    def addDefaultTypesToPortalFactory(self, portal, out):
+        """Put the default content types in portal_factory"""
+        factory = getToolByName(portal, 'portal_factory', None)
+        if factory is not None:
+            types = factory.getFactoryTypes().keys()
+            for metaType in ('Document', 'Event', 'File', 'Folder', 'Image', 
+                             'Large Plone Folder', 'Link', 'News Item',
+                             'Topic'):
+                if metaType not in types:
+                    types.append(metaType)
+            factory.manage_setPortalFactoryTypes(listOfTypeIds = types)
+            out.append('Added default content types to portal_factory.')
+
+    def enableSyndicationOnTopics(self, portal, out):
+        syn = getToolByName(portal, 'portal_syndication', None)
+        if syn is not None:
+            enabled = syn.isSiteSyndicationAllowed()
+            # We must enable syndication for the site to enable it on objects
+            # otherwise we get a nasty string exception from CMFDefault
+            syn.editProperties(isAllowed=True)
+            cat = getToolByName(portal, 'portal_catalog', None)
+            if cat is not None:
+                topics = cat(portal_type='Topic')
+                for b in topics:
+                    topic = b.getObject()
+                    # If syndication is already enabled then another nasty string
+                    # exception gets raised in CMFDefault
+                    if topic is not None and not syn.isSyndicationAllowed(topic):
+                        syn.enableSyndication(topic)
+                        out.append('Enabled syndication on %s'%b.getPath())
+            # Reset site syndication to default state
+            syn.editProperties(isAllowed=enabled)
+
 
 def importVarious(context):
     """
@@ -190,10 +216,12 @@ def importFinalSteps(context):
     """
     Final plone import steps.
     """
+    out = []
     site = context.getSite()
     gen = PloneGenerator()
     gen.setupPortalContent(site)
     gen.addRolesToPlugIn(site)
     gen.setupGroups(site)
-    gen.performMigrationActions(site)
+    gen.addDefaultTypesToPortalFactory(site, out)
+    gen.enableSyndicationOnTopics(site, out)
     assignTitles(site, site)

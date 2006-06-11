@@ -5,7 +5,7 @@ from Acquisition import aq_base
 from Products.GenericSetup.tool import SetupTool
 
 from Products.CMFPlone.migrations.migration_util import installOrReinstallProduct
-from Products.CMFPlone.migrations.v2_1.alphas import reindexCatalog, indexMembersFolder
+from Products.CMFPlone.migrations.v2_1.two12_two13 import reindexCatalog, indexMembersFolder
 from Products.CMFPlone.migrations.v2_1.two12_two13 import normalizeNavtreeProperties
 from Products.CMFPlone.migrations.v2_1.two12_two13 import removeVcXMLRPC
 from Products.CMFPlone.migrations.v2_1.two12_two13 import addActionDropDownMenuIcons
