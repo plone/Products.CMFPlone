@@ -159,7 +159,7 @@
      description="Is this item visible in the site navigation" enabled="False"
      friendlyName="Exclude from navigation"/>
   <metadata name="ExpirationDate"
-     description="The time and date an item is no longer publically available"
+     description="The time and date an item is no longer publicly available"
      enabled="True" friendlyName="Expiration Date"/>
   <metadata name="expires"
      description="The time and date an item is no longer publicly available (non-ISO)"
