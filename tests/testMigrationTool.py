@@ -31,9 +31,17 @@ class TestMigrationTool(PloneTestCase.PloneTestCase):
         self.failIf(self.migration.needRecatalog(),
                     'Migration needs recataloging')
 
+    def testForceMigrationFromUnsupportedVersion(self):
+        version = '2.0.5'
+        while version is not None:
+            version, msg = self.migration._upgrade(version)
+        expect = 'Migration failed. Version is %s.' % \
+                 self.migration.getFileSystemVersion()
+        self.assertEqual(msg[0], expect)
+
     def testForceMigration(self):
         # Make sure we don't embarrass ourselves again...
-        version = '2.0.5'
+        version = '2.1'
         while version is not None:
             version, msg = self.migration._upgrade(version)
         expect = 'Migration completed at version %s' % \
