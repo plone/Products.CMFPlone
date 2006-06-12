@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.5 (unreleased)
 
+    - Added missing nocall: for toLocalizedTime in mail_password_template.pt.
+      Fixes http://dev.plone.org/plone/ticket/5568
+      [alecm]
+
     - Added deprecation warnings for the old site creation machinery.
       [hannosch]
 
