@@ -34,14 +34,15 @@ Installing Plone manually, step by step instructions.
 
   **MANDATORY**
 
-  - Zope 2.9.3 (does not run natively on Zope 3)
+  - Zope 2.9.3+ (does not run natively on Zope 3)
      http://www.zope.org/Products/Zope/2.9.3
+     **You must remove the 'Five' product from your Products directory before
+     starting Zope when using Zope 2.9.x**
    or
-    Zope 2.8.7 (Zope 2.8.7 requires Five 1.2 to work with Plone)
+    Zope 2.8.7+
      http://www.zope.org/Products/Zope/2.8.7
-     http://codespeak.net/z3/five/release/Five-1.2.5.tgz
 
-  - CMF 1.6.0 or newer (neither 1.5 nor 2.0)
+  - CMF 1.6.0+ (neither 1.5 nor 2.x+ will work)
      Included in the Plone tarball
 
   - CMFQuickInstallerTool 1.5.9 or newer
@@ -59,7 +60,7 @@ Installing Plone manually, step by step instructions.
   - Archetypes 1.4.0 or newer
      Included in the Plone tarball
 
-  - ATContentTypes 1.1.0 or newer
+  - ATContentTypes 1.1.1 or newer
      Included in the Plone tarball
 
   - ATReferenceBrowserWidget 1.4 or newer
@@ -195,6 +196,7 @@ Installing Plone manually, step by step instructions.
    DCWorkflow
    ExtendedPathIndex
    ExternalEditor
+   Five (remove this if running Zope 2.9.x)
    GenericSetup
    GroupUserFolder
    kupu
@@ -215,7 +217,8 @@ Installing Plone manually, step by step instructions.
 
    Move (or symlink) each of these subdirectories into your
    $INSTANCE_HOME/Products
-   directory. If it does not exist, create it.
+   directory. If it does not exist, create it.  If you are running Zope 2.9.x
+   do not place Five in your Products directory, or Zope will not start.
 
   *****************************************************************************
   * Note that each of these is a Product in its own right and *must* be       *
