@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.1.4 - Devo - Unreleased
 
+    - Added portal status message to author and personalize_form. Since Limi
+      Added the tabs and switched to the content slot instead of main, the
+      status message wasn't shown.
+      [jladage]
+
     - Fixed Plone/Unknown in HTTP Server header. It now shows the correct
       Plone version (again).
       [stefan]
