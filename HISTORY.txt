@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1.4 - Devo - Unreleased
 
+    - Fixed Plone/Unknown in HTTP Server header. It now shows the correct
+      Plone version (again).
+      [stefan]
+
     - Changed the default background color to match the defined background 
       color for better readability. If you want the old behaviour back, add 
       'dl.portlet { background-color: transparent }' to your style sheet.
