@@ -4,6 +4,8 @@ Changelog for Plone
 
 Plone 2.5 (unreleased)
 
+    Release candidate 3 - released June 13, 2006
+
     - Added missing nocall: for toLocalizedTime in mail_password_template.pt.
       Fixes http://dev.plone.org/plone/ticket/5568
       [alecm]
