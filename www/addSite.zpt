@@ -15,8 +15,7 @@
   Add Plone Site
   </div>
   
-<form action="addPloneSite" method="post"
-      tal:define="policies python:modules['Products.CMFPlone.Portal'].listPolicies()">
+<form action="addPloneSite" method="post">
     <div class="form-help">
     Enter an ID and click the button below to create a new Plone site.
     </div>
