@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1.4 - Devo - Unreleased
 
+    - Added plone.css Python Script that returns the rendered CSS for use when
+      external tools need a static reference. Cached for one day.
+      [fschulze][limi]
+
     - Added portal status message to author and personalize_form. Since Limi
       Added the tabs and switched to the content slot instead of main, the
       status message wasn't shown.
