@@ -131,7 +131,7 @@ class Plone(utils.BrowserView):
         self._data['ztu'] =  ZTUtils
         # BBB: wf_actions is deprecated use workflow_actions instead
         self._data['wf_actions'] =  self._data['workflow_actions']
-        self._data['isFolderish'] =  context.aq_explicit.isPrincipiaFolderish
+        self._data['isFolderish'] =  getattr(context.aq_explicit, 'isPrincipiaFolderish', False)
         self._data['slots_mapping'] = slots = (
                                          options.get('slots_mapping', None) or
                                          self._prepare_slots())

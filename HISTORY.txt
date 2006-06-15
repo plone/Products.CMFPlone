@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.5 (unreleased)
 
+    - Small fix to avoid an AttributeError in @@plone when viewing objects
+      without isPrincipiaFolderish, in general uses of aq_explicit should be
+      conditional.
+      [alecm]
+
     Release candidate 3 - released June 13, 2006
 
     - Added missing nocall: for toLocalizedTime in mail_password_template.pt.
