@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.5 (unreleased)
 
+    - Fix rename from the action menu when using virtual hosting. Thanks to
+      Daniel Nouri, Maurits van Rees, Alec Mitchell and Stefan Holek for 
+      pointers and code.
+      [optilude]
+
     - Small fix to avoid an AttributeError in @@plone when viewing objects
       without isPrincipiaFolderish, in general uses of aq_explicit should be
       conditional.
