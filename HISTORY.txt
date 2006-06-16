@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.1.4 - Devo - Unreleased
 
+    - Fix rename from the action menu when using virtual hosting. Thanks to
+      Daniel Nouri, Maurits van Rees, Alec Mitchell and Stefan Holek for 
+      pointers and code.
+      [optilude]
+
     - Added plone.css Python Script that returns the rendered CSS for use when
       external tools need a static reference. Cached for one day.
       [fschulze][limi]
