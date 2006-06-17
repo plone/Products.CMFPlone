@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.5 (unreleased)
 
+    - Fixed invalid URL for events/previous link in events portlet. This
+      closes http://dev.plone.org/plone/ticket/5582.
+      [hannosch]
+
     - Added missing i18n magic to the dummy workflow transition labeled
       'No change' in content_status_history.cpt.
       [hannosch]
