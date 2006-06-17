@@ -36,7 +36,7 @@ class EventsPortlet(utils.BrowserView):
 
     def prev_events_link(self):
         if self.eventsFolder and 'previous' in self.portal.events.objectIds():
-            return '%s/news/previous' % self.portal_url
+            return '%s/events/previous' % self.portal_url
         else:
             return None
 

@@ -115,7 +115,7 @@ class Plone(utils.BrowserView):
                                                           'portal_properties')
         self._data['site_properties'] = site_props = props.site_properties
         self._data['ztu'] =  ZTUtils
-        self._data['isFolderish'] =  context.aq_explicit.isPrincipiaFolderish
+        self._data['isFolderish'] =  getattr(context.aq_explicit, 'isPrincipiaFolderish', False)
         self._data['slots_mapping'] = slots = (
                                          options.get('slots_mapping', None) or
                                          self._prepare_slots())

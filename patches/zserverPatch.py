@@ -9,12 +9,13 @@ except:
 if zserver:
     from ZServer import zhttp_server
     from App.Common import package_home
+    from Products.CMFPlone import cmfplone_globals
     from ZServer import ZOPE_VERSION, ZSERVER_VERSION
 
     from os.path import join
 
     try:
-        file = join(package_home(globals()), 'version.txt')
+        file = join(package_home(cmfplone_globals), 'version.txt')
         PLONE_VERSION = open(file, 'r').read().strip()
     except IOError:
         PLONE_VERSION = 'Unknown'

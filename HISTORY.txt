@@ -32,6 +32,34 @@ Plone 3.0 (unreleased)
 
 Plone 2.5 (unreleased)
 
+    - Officially deprecated portlet_related which was slated for removal since
+      Plone 2.1.
+      [hannosch]
+
+    - Fixed invalid URL for events/previous link in events portlet. This
+      closes http://dev.plone.org/plone/ticket/5582.
+      [hannosch]
+
+    - Added missing i18n magic to the dummy workflow transition labeled
+      'No change' in content_status_history.cpt.
+      [hannosch]
+
+    - Fix rename from the action menu when using virtual hosting. Thanks to
+      Daniel Nouri, Maurits van Rees, Alec Mitchell and Stefan Holek for 
+      pointers and code.
+      [optilude]
+
+    - Small fix to avoid an AttributeError in @@plone when viewing objects
+      without isPrincipiaFolderish, in general uses of aq_explicit should be
+      conditional.
+      [alecm]
+
+    Release candidate 3 - released June 13, 2006
+
+    - Added missing nocall: for toLocalizedTime in mail_password_template.pt.
+      Fixes http://dev.plone.org/plone/ticket/5568
+      [alecm]
+
     - Added deprecation warnings for the old site creation machinery.
       [hannosch]
 

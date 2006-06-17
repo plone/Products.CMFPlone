@@ -22,10 +22,11 @@ if not mtool.checkPermission('Copy or Move', context):
                           mapping={u'title': context.title_or_id()})
 
 pathName = url_quote_plus('paths:list')
-safePath = context.absolute_url_path()
+safePath = '/'.join(context.getPhysicalPath())
 orig_template = REQUEST['HTTP_REFERER'].split('?')[0]
-url = 'folder_rename_form?orig_template=%s&%s=%s' % (orig_template,
-                                                     pathName, 
-                                                     safePath)
+url = '%s/folder_rename_form?orig_template=%s&%s=%s' % (context.absolute_url(),
+                                                        orig_template,
+                                                        pathName, 
+                                                        safePath)
 
 REQUEST.RESPONSE.redirect(url)

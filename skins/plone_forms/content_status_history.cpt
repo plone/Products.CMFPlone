@@ -188,7 +188,6 @@
             <div tal:define="tabindex tabindex/next;
                              error_workflow_action errors/workflow_action|nothing;
                              objs request/paths|nothing;
-                             review_state_label string:No change;
                              target python:test(objs, objs, here);"
                  tal:attributes="class python:test(error_workflow_action, 'field error', 'field')">
 
@@ -198,11 +197,10 @@
               </div>
 
               <span tal:replace="nothing">
-                For usability we will want to signify what state we
-                are currently in. DCWorkflow only returns what t
-                ransitions are available.  But we want to visually
-                represent what *state* we are currently in along with
-                possible transitions.
+                For usability we will want to signify what state we are
+                currently in. DCWorkflow only returns what transitions are
+                available. But we want to visually represent what *state* we
+                are currently in along with possible transitions.
               </span>
 
               <input class="noborder"
@@ -215,31 +213,29 @@
                                      title review_state;
                                      checked python:test(request.get('workflow_action', review_state)==review_state,1,0);" />
               <label for="workflow_action"
-                     i18n:translate=""
-                     tal:content="review_state_label"
-                     >Transition Name</label>
-                     <br />
+                     i18n:translate="label_no_change">No change</label>
+              <br />
 
-                     <tal:block define="transitions python:wtool.getTransitionsFor(target, here)"
-                                repeat="transition transitions">
-                       <input class="noborder"
-                              id=""
-                              type="radio"
-                              name="workflow_action"
-                              title=""
-                              value=""
-                              i18n:attributes="title"
-                              tal:attributes="value transition/id;
-                                              id    transition/id;
-                                              title transition/name;
-                                              checked python:test(transition.get('id') == request.get('workflow_action', ''), 'checked', None)" />
-                       <label for=""
-                              i18n:translate=""
-                              tal:attributes="for transition/id;"
-                              tal:content="transition/name"
-                              >Transition Name</label>
-                              <br />
-                     </tal:block>
+              <tal:block define="transitions python:wtool.getTransitionsFor(target, here)"
+                         repeat="transition transitions">
+                  <input class="noborder"
+                         id=""
+                         type="radio"
+                         name="workflow_action"
+                         title=""
+                         value=""
+                         i18n:attributes="title"
+                         tal:attributes="value transition/id;
+                                         id    transition/id;
+                                         title transition/name;
+                                         checked python:test(transition.get('id') == request.get('workflow_action', ''), 'checked', None)" />
+                  <label for=""
+                         i18n:translate=""
+                         tal:attributes="for transition/id;"
+                         tal:content="transition/name"
+                         >Transition Name</label>
+                         <br />
+              </tal:block>
 
             </div>
 
