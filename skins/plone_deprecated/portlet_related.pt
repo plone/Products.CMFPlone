@@ -3,8 +3,8 @@
       i18n:domain="plone">
 <body>
 
-<!-- Should be removed once the related items list on the view templates is
-     in place (Plone 2.1) ~limi -->
+<!-- Should have been removed once the related items list on the view templates
+     was in place (Plone 2.1), will be removed in Plone 3.0 -->
 
 <div metal:define-macro="portlet"
      tal:define="related here/navigationLocalRelated;

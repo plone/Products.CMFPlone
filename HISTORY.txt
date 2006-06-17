@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.5 (unreleased)
 
+    - Officially deprecated portlet_related which was slated for removal since
+      Plone 2.1.
+      [hannosch]
+
     - Fixed invalid URL for events/previous link in events portlet. This
       closes http://dev.plone.org/plone/ticket/5582.
       [hannosch]
