@@ -782,38 +782,6 @@ Plone 2.5 - released June 16, 2006
       in the next release.
       [hannosch]
 
-Plone 2.1.4 - Devo - Unreleased
-
-    - Cleaned up some messages that were only differing slightly.
-      [hannosch]
-
-    - Changed remaining blank 'a' styles to 'a:link' to make sure anchors aren't
-      affected.
-      [limi]
-
-    - Fix rename from the action menu when using virtual hosting. Thanks to
-      Daniel Nouri, Maurits van Rees, Alec Mitchell and Stefan Holek for 
-      pointers and code.
-      [optilude]
-
-    - Added plone.css Python Script that returns the rendered CSS for use when
-      external tools need a static reference. Cached for one day.
-      [fschulze][limi]
-
-    - Added portal status message to author and personalize_form. Since Limi
-      Added the tabs and switched to the content slot instead of main, the
-      status message wasn't shown.
-      [jladage]
-
-    - Fixed Plone/Unknown in HTTP Server header. It now shows the correct
-      Plone version (again).
-      [stefan]
-
-    - Changed the default background color to match the defined background 
-      color for better readability. If you want the old behaviour back, add 
-      'dl.portlet { background-color: transparent }' to your style sheet.
-      [limi]
-
 Plone 2.1.2 - Saint Etienne - Released January 20, 2006
 
     - Events portlet was not displayed when /events had been deleted.

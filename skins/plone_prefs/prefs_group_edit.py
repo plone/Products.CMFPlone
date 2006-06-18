@@ -11,7 +11,7 @@
 from Products.CMFPlone import PloneMessageFactory as _
 
 REQUEST=context.REQUEST
-msg = _(u'No changes done.')
+msg = _(u'No change has been done.')
 
 if addname:
     context.portal_groups.addGroup(addname,(),())

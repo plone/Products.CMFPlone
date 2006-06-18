@@ -39,10 +39,6 @@
 
                 <a name="documentContent"></a>
 
-                <div metal:use-macro="here/global_statusmessage/macros/portal_message">
-                    Portal status message
-                </div>
-
                 <h1 i18n:translate="heading_my_preferences">Personal Preferences</h1>
 
                 <a href=""

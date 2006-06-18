@@ -25,7 +25,6 @@
 dl.portlet {
     margin: 1px 0 1em 0;
     border-bottom: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
-    background-color: &dtml-backgroundColor;;
 }
 
 dl.portlet a {

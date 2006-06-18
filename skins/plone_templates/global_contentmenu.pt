@@ -250,7 +250,7 @@
                                 <li class="actionSeparator">
                                     <a title="Select an item to be used as default view in this folder" href="#"
                                        tal:attributes="href string:${parent_folder/absolute_url}/select_default_page;"
-                                       i18n:attributes="title title_select_default_page;"
+                                       i18n:attributes="title title_select_default_view_item;"
                                        i18n:translate="label_choose_item">
                                          Select a content item<br />as default view&hellip;
                                     </a>
