@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1.4 - Devo - Unreleased
 
+    - Cleaned up some messages that were only differing slightly.
+      [hannosch]
+
     - Changed remaining blank 'a' styles to 'a:link' to make sure anchors aren't
       affected.
       [limi]

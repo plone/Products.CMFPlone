@@ -20,7 +20,7 @@ cookies_enabled = cookies_enabled=='1' or cookies_enabled==1
 if js_enabled and not cookies_enabled:
     # auth cookie won't persist -- erase it so users aren't confused
     context.portal_membership.immediateLogout()
-    state.set(status='enable_cookies', portal_status_message='You must enable cookies before you can log in')
+    state.set(status='enable_cookies', portal_status_message='You must enable cookies before you can log in.')
     return state
 
 mt=context.portal_membership

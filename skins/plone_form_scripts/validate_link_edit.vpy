@@ -10,7 +10,7 @@
 ##
 
 if not remote_url:
-    state.setError('remote_url', 'This field is required, please provide some information', 'invalid_url')
+    state.setError('remote_url', 'This field is required, please provide some information.', 'invalid_url')
 
 if state.getErrors():
     return state.set(status='failure', portal_status_message='Please correct the indicated errors.')

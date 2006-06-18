@@ -8,7 +8,7 @@ intvals = ('topLevel', 'bottomLevel')
 for k in required:
     v = request.form.get(k, '').strip()
     if not v:
-        state.setError(k, 'Input Required.')
+        state.setError(k, 'Input is required but not given.')
 for k in intvals:
     v = request.form.get(k, '').strip()
     if v:

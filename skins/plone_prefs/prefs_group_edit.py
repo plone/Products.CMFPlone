@@ -10,7 +10,7 @@
 from Products.PythonScripts.standard import url_quote
 
 REQUEST=context.REQUEST
-msg = 'No change has been done.'
+msg = 'No changes done.'
 
 if addname:
     context.portal_groups.addGroup(addname,(),())

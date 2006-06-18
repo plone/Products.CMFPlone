@@ -113,7 +113,7 @@ if checkForCollision:
     if hasattr(contained_by, 'contentIds'):
         try:
             if id in contained_by.contentIds():
-                return "There is already an item named '%s' in this folder." % id
+                return "There is already an item named %s in this folder." % id
         except Unauthorized:
             pass # ignore if we don't have permission
 
