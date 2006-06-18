@@ -1,0 +1,51 @@
+Plone 2.5 - June 17, 2006
+=========================
+
+The following is a short summary of changes in Plone 2.5 which may impact
+existing deployments or products:
+
+* The main_template and various portlets lookup and call various Zope 3-style
+  views.  This means that any object which needs to be viewed through the
+  Plone interface (i.e. using some template that inherits main_template),
+  will need to be made traversable via the Five zcml declaration::
+
+    <five:traversable class="dotted.path.to.class" />
+
+  Fortunately, the most common base classes (OFS.Folder.Folder and
+  OFS.SimpleItem.SimpleItem) have already been marked traversable.  This means
+  that nearly all persistent objects, including all AT types, will have no
+  issues.  Products using non-persistent objects which need in-Plone views,
+  or custom persistent objects which don't inherit (directly or indirectly)
+  from one of the above listed classes, will need to make this declaration.
+  This requirement will go away in Plone 3.0 because it will no longer be
+  needed for Zope 2.10.
+
+* Plone 2.5 now uses the GenericSetup Product for portal creation.  The
+  preferred method for 3rd-party products to make customizations to the
+  portal is also using GenericSetup.  Unfortunately, the dramatic changes
+  required to transition to this new technology have made it impossible to
+  continue supporting the prior means of portal customization using
+  Customization Policies.  We feel the advantages provided by GenericSetup
+  (customizable XML based portal setup, configuration import/export) far
+  outweigh this unfortunate loss.  However, very little work is needed to
+  make your existing Customization Policies work as GenericSetup extension
+  profiles; this will provide the same functionality.  Instructions for doing
+  so are available in Rob Miller's excellent `Tutorial on GenericSetup and
+  Plone <http://plone.org/documentation/tutorial/understanding-and-using-genericsetup-in-plone>`_.
+
+* Plone 2.5 now handles user/member management using the Pluggable
+  Authentication Service (PAS) via the product PlonePAS.  This provides a lot
+  of additional flexibility for integrators to use heterogenous sources for
+  authentication, user info, group info, role assignments, and other
+  authentication and membership related information.  As a result, existing
+  products which depend heavily on the occasionally byzantine internals of the
+  former standard authentication product (GRUF) are likely to no longer work
+  with Plone.  These products include CMFMember, GRUFSpaces, Teamspaces, and
+  likely a few others.  There is an unsupported option to allow existing
+  instances which use these products to migrate to Plone 2.5 without
+  installing PlonePAS; this may allow you to obtain some of the benefits of
+  Plone 2.5 without having to throw out existing work.  To use this option
+  you must set an environment variable in your shell before starting your
+  Zope instance to perform the Plone migration.  The environment variable is
+  ``SUPPRESS_PLONEPAS_INSTALLATION`` and must be set to ``YES``.  Work on
+  compatible updates/replacements for these important products is underway.
