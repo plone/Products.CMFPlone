@@ -184,3 +184,7 @@ def registerMigrations():
     MigrationTool.registerUpgradePath('2.5-rc3',
                                       '2.5',
                                       null)
+
+    MigrationTool.registerUpgradePath('2.5',
+                                      '2.5.1 (SVN/UNRELEASED)',
+                                      null)
