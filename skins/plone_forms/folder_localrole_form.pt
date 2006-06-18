@@ -396,8 +396,11 @@
                           id="search_param"
                           tabindex=""
                           tal:attributes="tabindex tabindex/next;">
-                      <option value="name" i18n:translate="label_user_name">
-                          User Name
+                      <option value="fullname" i18n:translate="label_fullname">
+                          User Full Name
+                      </option>
+                      <option value="login" i18n:translate="label_login_name">
+                          Login Name
                       </option>
                       <option value="email" i18n:translate="label_email_address">
                           Email Address
