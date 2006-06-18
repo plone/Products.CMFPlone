@@ -127,7 +127,7 @@ input.searchButton {
     padding: 0.25em 1em;
 }
 
-.listing a {
+.listing a:link {
     text-decoration: none;
 }
 

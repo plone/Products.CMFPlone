@@ -65,6 +65,10 @@
 
             <a name="documentContent"></a>
                     
+            <div metal:use-macro="here/global_statusmessage/macros/portal_message">
+                Portal status message
+            </div>
+
             <!-- Author information -->
             <h1 class="documentFirstHeading" tal:condition="authorinfo/fullname" tal:content="authorinfo/fullname">
                 Author name
