@@ -12,7 +12,7 @@
 from Products.CMFPlone import PloneMessageFactory as _
 
 if not remote_url:
-    state.setError('remote_url', _(u'This field is required, please provide some information'), 'invalid_url')
+    state.setError('remote_url', _(u'This field is required, please provide some information.'), 'invalid_url')
 
 if state.getErrors():
     context.plone_utils.addPortalMessage(_(u'Please correct the indicated errors.'))

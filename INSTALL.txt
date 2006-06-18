@@ -46,7 +46,7 @@ Installing Plone manually, step by step instructions.
   - GroupUserFolder 3.52 or newer
      Included in the Plone tarball
 
-  - CMFFormController 2.0.2 or newer
+  - CMFFormController 2.0.3 or newer
      Included in the Plone tarball
 
   - SecureMailHost 1.0.4 or newer
@@ -88,10 +88,7 @@ Installing Plone manually, step by step instructions.
   - CMFPlacefulWorkflow 1.0 or newer
      Included in the Plone tarball
 
-  - GenericSetup 1.1 or newer
-     Included in the Plone tarball
-
-  - PlonePAS 2.0 or newer
+  - PlonePAS 2.0.1 or newer
      Included in the Plone tarball
 
   - PasswordResetTool 0.4 or newer
@@ -104,6 +101,9 @@ Installing Plone manually, step by step instructions.
      Included in the Plone tarball
 
   - ExternalEditor 0.9.1 or newer
+     Included in the Plone tarball
+
+  - kupu 1.3.7 or newer
      Included in the Plone tarball
 
   **OPTIONAL**

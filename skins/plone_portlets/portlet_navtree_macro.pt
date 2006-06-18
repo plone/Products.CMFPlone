@@ -2,7 +2,7 @@
                     children options/children | nothing;
                     bottomLevel options/bottomLevel | nothing;
                     normalizeString nocall:context/plone_utils/normalizeString;
-                    viewActions site_properties/typesUseViewActionInListings|python:();
+                    viewActions here/portal_properties/site_properties/typesUseViewActionInListings|python:();
                     member context/portal_membership/getAuthenticatedMember|nothing;
                     member_id member/getId|nothing">
 
