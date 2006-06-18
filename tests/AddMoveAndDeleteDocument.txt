@@ -71,8 +71,7 @@ the Document into.
 
     >>> browser.getLink('Actions').click()
 
-First off, we'll cut our document: (XXX We want a proper label for
-this control in Plone)
+First off, we'll cut our document:
 
     >>> browser.getControl('Ons Bier').click()
     >>> browser.getControl('Cut').click()
