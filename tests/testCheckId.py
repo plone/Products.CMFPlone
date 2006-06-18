@@ -76,7 +76,7 @@ class TestCheckId(PloneTestCase.PloneTestCase):
         self.folder.invokeFactory('Document', id='foo')
         self.folder.invokeFactory('Document', id='bar')
         r = self.folder.foo.check_id('bar')
-        self.assertEqual(r, "There is already an item named 'bar' in this folder.")
+        self.assertEqual(r, "There is already an item named bar in this folder.")
 
     def testTempObjectCollision(self):
         foo = self.folder.restrictedTraverse('portal_factory/Document/foo')
