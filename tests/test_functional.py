@@ -21,9 +21,11 @@ from Products.CMFPlone.tests import PloneTestCase, GLOBALS
 REQUIRE_TESTBROWSER = ['AddMoveAndDeleteDocument.txt',
                        'LoginAndLogout.txt']
 
-OPTIONFLAGS = (doctest.REPORT_ONLY_FIRST_FAILURE |
-               doctest.ELLIPSIS |
-               doctest.NORMALIZE_WHITESPACE)
+# Looks like we can safely assume that these options are set by the
+# testsuite:
+## OPTIONFLAGS = (doctest.REPORT_ONLY_FIRST_FAILURE |
+##                doctest.ELLIPSIS |
+##                doctest.NORMALIZE_WHITESPACE) # overkill?
 
 def list_doctests():
     home = package_home(GLOBALS)
@@ -36,7 +38,7 @@ def list_nontestbrowser_tests():
 
 def test_suite():
     # BBB: We can obviously remove this when testbrowser is Plone
-    #      mainstream, read: with Five 1.4.
+    #      mainstream.
     try:
         import Products.Five.testbrowser
     except ImportError:
@@ -48,7 +50,7 @@ def test_suite():
 
     return unittest.TestSuite(
         [Suite(os.path.basename(filename),
-               optionflags=OPTIONFLAGS,
+               #optionflags=OPTIONFLAGS,
                package='Products.CMFPlone.tests',
                test_class=PloneTestCase.FunctionalTestCase)
          for filename in filenames]
