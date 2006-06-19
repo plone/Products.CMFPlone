@@ -4,6 +4,13 @@ Changelog for Plone
 
 Plone 3.0 (unreleased)
 
+    - Fixed deprecation warnings for the ZCML content directive.
+      [hannosch]
+
+    - Removed deprecated createTopLevelTabs from PloneTool and utils. Use the
+      topLevelTabs method of the INavigationTabs view instead.
+      [hannosch]
+
     - Removed deprecated CustomizationPolicy and old site creation machinery.
       [hannosch]
 

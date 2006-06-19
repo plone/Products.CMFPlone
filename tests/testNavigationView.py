@@ -5,11 +5,8 @@
 import os, sys
 if __name__ == '__main__':
     execfile(os.path.join(sys.path[0], 'framework.py'))
-try:
-    from zope.app.publication.browser import setDefaultSkin
-    ZOPE28 = False
-except ImportError:
-    ZOPE28 = True
+
+from zope.publisher.browser import setDefaultSkin
 
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
@@ -34,9 +31,8 @@ class TestBaseNavTree(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
         self.request = self.app.REQUEST
-        if not ZOPE28:
-            # Apply a default layer for view lookups to work in Zope 2.9+
-            setDefaultSkin(self.request)
+        # Apply a default layer for view lookups to work in Zope 2.9+
+        setDefaultSkin(self.request)
         self.populateSite()
         
     def populateSite(self):
@@ -356,9 +352,8 @@ class TestBaseSiteMap(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
         self.request = self.app.REQUEST
-        if not ZOPE28:
-            # Apply a default layer for view lookups to work in Zope 2.9+
-            setDefaultSkin(self.request)
+        # Apply a default layer for view lookups to work in Zope 2.9+
+        setDefaultSkin(self.request)
         self.populateSite()
         
     def populateSite(self):
@@ -484,8 +479,7 @@ class TestBasePortalTabs(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
         self.request = self.app.REQUEST
-        if not ZOPE28:
-            setDefaultSkin(self.request)
+        setDefaultSkin(self.request)
         self.populateSite()
 
     def populateSite(self):
@@ -661,8 +655,7 @@ class TestBaseBreadCrumbs(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
         self.request = self.app.REQUEST
-        if not ZOPE28:
-            setDefaultSkin(self.request)
+        setDefaultSkin(self.request)
         self.populateSite()
 
     def populateSite(self):
