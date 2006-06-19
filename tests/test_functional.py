@@ -12,7 +12,7 @@ if __name__ == '__main__':
     execfile(os.path.join(sys.path[0], 'framework.py'))
 
 import glob
-import doctest
+from zope.testing import doctest
 import unittest
 from Globals import package_home
 from Testing.ZopeTestCase import FunctionalDocFileSuite as Suite
