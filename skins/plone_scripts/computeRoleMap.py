@@ -2,6 +2,7 @@
 pu=context.plone_utils
 acquired_roles=pu.getInheritedLocalRoles(context)
 local_roles=context.acl_users.getLocalRolesForDisplay(context)
+mtool=context.portal_membership
 
 # result contains dictionaries with the keys
 # name, type, global_roles, acquired_roles, local_roles
@@ -11,20 +12,30 @@ result1={}
 
 # first process acquired roles
 for name, roles, type, id in acquired_roles:
+    #We prefer the fullname
+    if not id.startswith('group_'):
+        member = mtool.getMemberInfo(name)
+        if not member['fullname'] == '':
+            name = name + ' (' + member['fullname'] + ')'
     result1[id]={
-	'id'		: id,
-	'name'		: name,
-	'type'		: type,
-	'global'	: [],
-	'acquired'	: roles,
-	'local'		: []
+       'id'            : id,
+       'name'          : name,
+       'type'          : type,
+       'global'        : [],
+       'acquired'      : roles,
+       'local'         : []
     }
 
 # second process local roles
 for name, roles, type, id in local_roles:
     if result1.has_key(id):
-	result1[id]['local']=roles
+        result1[id]['local']=roles
     else:
+        #We prefer the fullname
+        if not id.startswith('group_'):
+            member = mtool.getMemberInfo(name)
+            if not member['fullname'] == '':
+                name = name + ' (' + member['fullname'] + ')'
 	result1[id]={
 	    'id'                : id,
 	    'name'              : name,
