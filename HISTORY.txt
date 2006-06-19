@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1.4 - Devo - Unreleased
 
+    - Use Fullname in recently_published and modified templates
+      [jladage]
+
     - Cleaned up some messages that were only differing slightly.
       [hannosch]
 
