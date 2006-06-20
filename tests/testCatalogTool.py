@@ -912,12 +912,39 @@ class TestExtensibleIndexableObjectWrapper(PloneTestCase.PloneTestCase):
         self.failIf(is_folderish(f))
 
 
+class TestInterfaceCataloging(PloneTestCase.PloneTestCase):
+    """Test interface cataloging.
+    """
+
+    def afterSetUp(self):
+        self.catalog = self.portal.portal_catalog
+        self.folder.invokeFactory('Document', id='doc')
+
+    def test_standard_interface(self):
+        self.assertEqual(len(self.catalog(
+                object_implements='zope.interface.Interface')), 7)
+        self.assertEqual(len(self.catalog(
+                object_adapts_to='zope.interface.Interface')), 7)
+
+    def test_unknown_interface(self):
+        self.assertEqual(len(self.catalog(
+                object_implements='unknown.Interface')), 0)
+        self.assertEqual(len(self.catalog(
+                object_adapts_to='unknown.Interface')), 0)
+
+    def test_adapting_interface(self):
+        self.assertEqual(len(self.catalog(
+                object_implements='zope.traversing.interfaces.ITraverser')), 0)
+        self.assertEqual(len(self.catalog(
+                object_adapts_to='zope.traversing.interfaces.ITraverser')), 7)
+
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
     suite.addTest(makeSuite(TestCatalogSetup))
     suite.addTest(makeSuite(TestCatalogIndexing))
     suite.addTest(makeSuite(TestCatalogSearching))
+    suite.addTest(makeSuite(TestInterfaceCataloging))
     suite.addTest(makeSuite(TestFolderCataloging))
     suite.addTest(makeSuite(TestCatalogOrdering))
     suite.addTest(makeSuite(TestCatalogBugs))
