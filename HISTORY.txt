@@ -10,10 +10,6 @@ Plone 2.1.4 - Devo - Unreleased
     - Cleaned up some messages that were only differing slightly.
       [hannosch]
 
-    - Changed remaining blank 'a' styles to 'a:link' to make sure anchors aren't
-      affected.
-      [limi]
-
     - Fix rename from the action menu when using virtual hosting. Thanks to
       Daniel Nouri, Maurits van Rees, Alec Mitchell and Stefan Holek for 
       pointers and code.

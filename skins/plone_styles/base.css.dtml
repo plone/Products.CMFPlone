@@ -29,7 +29,7 @@ table {
     font-size: 100%;
 }
 
-a:link {
+a {
     color: &dtml-linkColor;;
     background-color: transparent;
 }
