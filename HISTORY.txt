@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1.4 - Devo - Unreleased
 
+    - Backport r10134 to 2.1 branch.
+      [nouri]
+
     - Use Fullname in recently_published and modified templates
       [jladage]
 

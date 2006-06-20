@@ -474,10 +474,13 @@ class CatalogTool(PloneBaseTool, BaseTool):
             if base_hasattr(obj, 'reindexObject') and \
                     safe_callable(obj.reindexObject):
                 try:
+                    modified = obj.modified()
                     obj.reindexObject()
+                    obj.setModificationDate(modified)
+                    obj.reindexObject(['modified'])
                 except TypeError:
-                    # Catalogs have this method as well, but they take
-                    # different args, and will fail
+                    # Catalogs have 'reindexObject' as well, but they
+                    # take different args, and will fail
                     pass
 
     __call__ = searchResults

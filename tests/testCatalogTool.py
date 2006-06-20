@@ -316,6 +316,14 @@ class TestCatalogIndexing(PloneTestCase.PloneTestCase):
         res = self.catalog.searchResults()
         self.assertResults(res, base_content)
 
+    def testClearFindAndRebuildKeepsModificationDate(self):
+        # Index the doc for consistency
+        self.catalog.indexObject(self.folder.doc)
+        self.folder.doc.setModificationDate(DateTime(0))
+        self.catalog.clearFindAndRebuild()
+        self.assertEquals(self.folder.doc.modified(), DateTime(0))
+        self.assertEquals(len(self.catalog(modified=DateTime(0))), 1)
+
 
 class TestCatalogSearching(PloneTestCase.PloneTestCase):
 
