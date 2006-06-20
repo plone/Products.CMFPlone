@@ -389,8 +389,12 @@ def reindexContentObject(obj, *args):
     if base_hasattr(obj, 'reindexObject') and \
             safe_callable(obj.reindexObject):
         try:
+            # 'reindexObject' sets modification date to now
+            modified = obj.modified()
             obj.reindexObject()
+            obj.setModificationDate(modified)
+            obj.reindexObject(['modified'])
         except TypeError:
-            # Catalogs have this method as well, but they take
+            # Catalogs have 'reindexObject' as well, but they take
             # different args, and will fail
             pass
