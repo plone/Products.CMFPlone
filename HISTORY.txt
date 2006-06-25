@@ -2,6 +2,12 @@ Changelog for Plone
 
    (name of developer listed in brackets)
 
+    - Changed all action conditions that were simply "member" or
+      "not:member" to be "python:member" or "python:not member" to
+      prevent member object from being called, leading to infinite
+      recursion in certain cases.
+      [rafrombrc]
+
     - Fix 'reindexContentObject' in CatalogTool.py so that it doesn't
       set the modification date to now due to some AT "convenience".
       [nouri]
