@@ -59,10 +59,6 @@ def createBreadCrumbs(context, request):
     view = getMultiAdapter((context, request), name='breadcrumbs_view')
     return view.breadcrumbs()
 
-def createTopLevelTabs(context, request, actions=None, category='portal_tabs'):
-    view = getMultiAdapter((context, request), name='portal_tabs_view')
-    return view.topLevelTabs(actions=actions, category=category)
-
 def createNavTree(context, request, sitemap=False):
     view = getMultiAdapter((context, request), name='navtree_builder_view')
     return view.navigationTree()

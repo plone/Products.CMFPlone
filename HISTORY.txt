@@ -4,6 +4,18 @@ Changelog for Plone
 
 Plone 3.0 (unreleased)
 
+    - Add object_implements and object_adapts_to indices to portal_catalog.
+      object_adapts_to will eventually be replaced with a utility (hopefully
+      for Plone 3.5) but is useful right now.
+      [wichert]
+
+    - Fixed deprecation warnings for the ZCML content directive.
+      [hannosch]
+
+    - Removed deprecated createTopLevelTabs from PloneTool and utils. Use the
+      topLevelTabs method of the INavigationTabs view instead.
+      [hannosch]
+
     - Removed deprecated CustomizationPolicy and old site creation machinery.
       [hannosch]
 
@@ -30,7 +42,35 @@ Plone 3.0 (unreleased)
       CatalogTool._initIndexes.
       [hannosch]
 
-Plone 2.5 (unreleased)
+Plone 2.5 - released June 16, 2006
+
+    - Officially deprecated portlet_related which was slated for removal since
+      Plone 2.1.
+      [hannosch]
+
+    - Fixed invalid URL for events/previous link in events portlet. This
+      closes http://dev.plone.org/plone/ticket/5582.
+      [hannosch]
+
+    - Added missing i18n magic to the dummy workflow transition labeled
+      'No change' in content_status_history.cpt.
+      [hannosch]
+
+    - Fix rename from the action menu when using virtual hosting. Thanks to
+      Daniel Nouri, Maurits van Rees, Alec Mitchell and Stefan Holek for 
+      pointers and code.
+      [optilude]
+
+    - Small fix to avoid an AttributeError in @@plone when viewing objects
+      without isPrincipiaFolderish, in general uses of aq_explicit should be
+      conditional.
+      [alecm]
+
+    Release candidate 3 - released June 13, 2006
+
+    - Added missing nocall: for toLocalizedTime in mail_password_template.pt.
+      Fixes http://dev.plone.org/plone/ticket/5568
+      [alecm]
 
     - Added deprecation warnings for the old site creation machinery.
       [hannosch]

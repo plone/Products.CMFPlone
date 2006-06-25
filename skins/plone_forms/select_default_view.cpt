@@ -58,7 +58,7 @@
                         <span i18n:translate="label_or">or</span>
                         <a title="Select an item to be used as default view in this folder" href="#" class="selected"
                            tal:attributes="href string:${parent_folder/absolute_url}/select_default_page;"
-                           i18n:attributes="title title_select_default_view_item;"
+                           i18n:attributes="title title_select_default_page;"
                            i18n:translate="label_choose_content_item">
                              Choose a content item&hellip;
                         </a>

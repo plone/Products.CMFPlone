@@ -7,9 +7,13 @@ if __name__ == '__main__':
     execfile(os.path.join(sys.path[0], 'framework.py'))
 
 from Products.CMFPlone.tests import PloneTestCase
+from Products.PloneTestCase.setup import default_user
+from Products.PloneTestCase.setup import default_password
 
 import transaction
 
+from Testing import ZopeTestCase
+ZopeTestCase.installProduct('SiteAccess')
 
 class TestFolderRename(PloneTestCase.PloneTestCase):
     # Tests for folder_rename and folder_rename_form
@@ -179,6 +183,124 @@ class TestFolderCutCopy(PloneTestCase.PloneTestCase):
         self.app.REQUEST.set('paths', ['/garbage/path'])
         self.folder.folder_copy()
 
+class TestObjectActions(PloneTestCase.FunctionalTestCase):
+    
+    def afterSetUp(self):
+        self.basic_auth = '%s:%s' % (default_user, default_password)
+    
+    def assertStatusEqual(self, a, b, msg=''):
+        if a != b:
+            entries = self.portal.error_log.getLogEntries()
+            if entries:
+                msg = entries[0]['tb_text']
+            else:
+                if not msg:
+                    msg = 'no error log entry available'
+        self.failUnlessEqual(a, b, msg)
+    
+    def testObjectRenameWithoutVHM(self):
+        self.folder.invokeFactory('Document', 'd1', title='Doc1')
+        folderUrl = self.folder.absolute_url()
+        objPath = '/'.join(self.folder.d1.getPhysicalPath())
+        objectUrl = self.folder.d1.absolute_url()
+        origTemplate = self.folder.d1.absolute_url() + '/document_view?foo=bar'
+
+        response = self.publish(objPath + '/object_rename', self.basic_auth, extra={'HTTP_REFERER' : origTemplate})
+
+        self.assertStatusEqual(response.getStatus(), 302) # Redirect to edit
+        
+        location = response.getHeader('Location').split('?')[0]
+        params = {}
+        for p in response.getHeader('Location').split('?')[1].split('&'):
+            key, val = p.split('=')
+            self.failIf(key in params)
+            params[key] = val
+        self.failUnless('paths%3Alist' in params)
+        self.failUnless('orig_template' in params)
+
+        self.failUnless(location.startswith(objectUrl), location)
+        self.failUnless(location.endswith('folder_rename_form'), location)
+
+        # Perform the redirect
+        editFormPath = location[len(self.app.REQUEST.SERVER_URL):]
+        newParams = "orig_template=%s" % params['orig_template']
+        newParams += "&paths:list=%s" % params['paths%3Alist']
+        response = self.publish("%s?%s" % (editFormPath, newParams,), self.basic_auth)
+        self.assertStatusEqual(response.getStatus(), 200)
+
+        # Set up next set of params, faking user submission
+        newParams += "&form.submitted=1"
+        newParams += "&form.button.renameAll=Rename All"
+        newParams += "&new_ids:list=%s" % 'new-id'
+        newParams += "&new_titles:list=%s" % 'New title'
+                
+        response = self.publish('%s?%s' % (editFormPath, newParams,), self.basic_auth)
+        self.assertStatusEqual(response.getStatus(), 302)
+        
+        # Make sure we landed in the right place
+        location = response.getHeader('Location').split('?')[0]
+        self.failUnless(location.startswith(folderUrl + '/new-id'), location)
+        self.failUnless(location.endswith('document_view'), location)
+        
+        self.failUnless('new-id' in self.folder.objectIds())
+        self.failIf('d1' in self.folder.objectIds())
+        self.assertEqual(self.folder['new-id'].Title(), 'New title')
+
+    def testObjectRenameWithVHM(self):
+        adding = self.app.manage_addProduct['SiteAccess']
+        adding.manage_addVirtualHostMonster('vhm')
+        
+        vhmBasePath = "/VirtualHostBase/http/example.org:80/%s/VirtualHostRoot/" % self.portal.getId()
+        vhmBaseUrl = 'http://example.org/'
+        
+        self.folder.invokeFactory('Document', 'd1', title='Doc1')
+        folderPath = vhmBasePath + '/'.join(self.folder.getPhysicalPath()[2:])
+        folderUrl = vhmBaseUrl + '/'.join(self.folder.getPhysicalPath()[2:]) 
+        objPath = vhmBasePath + '/'.join(self.folder.d1.getPhysicalPath()[2:])
+        objectUrl = vhmBaseUrl + '/'.join(self.folder.d1.getPhysicalPath()[2:])
+        
+        origTemplate = objectUrl + '/document_view?foo=bar'
+
+        response = self.publish(objPath + '/object_rename', self.basic_auth, extra={'HTTP_REFERER' : origTemplate})
+
+        self.assertStatusEqual(response.getStatus(), 302) # Redirect to edit
+        
+        location = response.getHeader('Location').split('?')[0]
+        params = {}
+        for p in response.getHeader('Location').split('?')[1].split('&'):
+            key, val = p.split('=')
+            self.failIf(key in params)
+            params[key] = val
+        self.failUnless('paths%3Alist' in params)
+        self.failUnless('orig_template' in params)
+
+        self.failUnless(location.startswith(objectUrl), location)
+        self.failUnless(location.endswith('folder_rename_form'), location)
+
+        # Perform the redirect
+        editFormPath = vhmBasePath + location[len(vhmBaseUrl):]
+        newParams = "orig_template=%s" % params['orig_template']
+        newParams += "&paths:list=%s" % params['paths%3Alist']
+        response = self.publish("%s?%s" % (editFormPath, newParams,), self.basic_auth)
+        self.assertStatusEqual(response.getStatus(), 200)
+
+        # Set up next set of params, faking user submission
+        newParams += "&form.submitted=1"
+        newParams += "&form.button.renameAll=Rename All"
+        newParams += "&new_ids:list=%s" % 'new-id'
+        newParams += "&new_titles:list=%s" % 'New title'
+                
+        response = self.publish('%s?%s' % (editFormPath, newParams,), self.basic_auth)
+        self.assertStatusEqual(response.getStatus(), 302)
+        
+        # Make sure we landed in the right place
+        location = response.getHeader('Location').split('?')[0]
+        self.failUnless(location.startswith(folderUrl + '/new-id'), location)
+        self.failUnless(location.endswith('document_view'), location)
+        
+        self.failUnless('new-id' in self.folder.objectIds())
+        self.failIf('d1' in self.folder.objectIds())
+        self.assertEqual(self.folder['new-id'].Title(), 'New title')
 
 def test_suite():
     from unittest import TestSuite, makeSuite
@@ -187,6 +309,7 @@ def test_suite():
     suite.addTest(makeSuite(TestFolderDelete))
     suite.addTest(makeSuite(TestFolderPublish))
     suite.addTest(makeSuite(TestFolderCutCopy))
+    suite.addTest(makeSuite(TestObjectActions))
     return suite
 
 if __name__ == '__main__':

@@ -18,11 +18,9 @@ from Globals import package_home
 from Testing.ZopeTestCase import FunctionalDocFileSuite as Suite
 from Products.CMFPlone.tests import PloneTestCase, GLOBALS
 
-# Looks like we can safely assume that these options are set by the
-# testsuite:
-## OPTIONFLAGS = (doctest.REPORT_ONLY_FIRST_FAILURE |
-##                doctest.ELLIPSIS |
-##                doctest.NORMALIZE_WHITESPACE) # overkill?
+OPTIONFLAGS = (doctest.REPORT_ONLY_FIRST_FAILURE |
+               doctest.ELLIPSIS |
+               doctest.NORMALIZE_WHITESPACE)
 
 def list_doctests():
     home = package_home(GLOBALS)
@@ -34,7 +32,7 @@ def test_suite():
 
     return unittest.TestSuite(
         [Suite(os.path.basename(filename),
-               #optionflags=OPTIONFLAGS,
+               optionflags=OPTIONFLAGS,
                package='Products.CMFPlone.tests',
                test_class=PloneTestCase.FunctionalTestCase)
          for filename in filenames]
