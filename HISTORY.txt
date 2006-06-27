@@ -2,6 +2,10 @@ Changelog for Plone
 
    (name of developer listed in brackets)
 
+    - Fixed bug in folder_contents causing all links to get /folder_contents
+      appended as well.
+      [optilude]
+
     - Changed all action conditions that were simply "member" or
       "not:member" to be "python:member" or "python:not member" to
       prevent member object from being called, leading to infinite
