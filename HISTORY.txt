@@ -2,6 +2,10 @@ Changelog for Plone
 
    (name of developer listed in brackets)
 
+    - Changed setupSite.py to import 'Zope2' instead of 'Zope'. Could
+      cause confusion on case-insensitive filesystems with 'zope'.
+      [sidnei]
+
     - Fixed bug in folder_contents causing all links to get /folder_contents
       appended as well.
       [optilude]
