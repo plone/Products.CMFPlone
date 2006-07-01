@@ -19,6 +19,7 @@ from Products.CMFPlone.SyndicationTool import SyndicationTool
 from Products.CMFPlone.URLTool import URLTool
 from Products.CMFCore.WorkflowTool import WorkflowTool
 
+from zope.publisher.browser import setDefaultSkin
 
 class TestPloneView(PloneTestCase.PloneTestCase):
     """Tests the global plone view.  All the old global_defines should be
@@ -27,7 +28,6 @@ class TestPloneView(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
         # We need to fiddle the request for zope 2.9+
-        from zope.app.publication.browser import setDefaultSkin
         setDefaultSkin(self.app.REQUEST)
         self.folder.invokeFactory('Document', 'test',
                                   title='Test default page')
