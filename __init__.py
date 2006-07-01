@@ -102,9 +102,6 @@ def initialize(context):
     # Apply monkey patches
     import patches
 
-    # Load catalog indexers
-    import catalog
-
     # Register unicode splitter w/ ZCTextIndex
     # pipeline registry
     import UnicodeSplitter

@@ -8,11 +8,6 @@ Plone 3.0 (unreleased)
       is with PAS-based objects instead of membership/memberdata tools.
       [wichert]
 
-    - Add object_implements and object_adapts_to indices to portal_catalog.
-      object_adapts_to will eventually be replaced with a utility (hopefully
-      for Plone 3.5) but is useful right now.
-      [wichert]
-
     - Fixed deprecation warnings for the ZCML content directive.
       [hannosch]
 

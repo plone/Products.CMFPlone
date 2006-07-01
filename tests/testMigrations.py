@@ -144,8 +144,6 @@ from Products.CMFPlone.migrations.v2_5.betas import installPortalSetup
 from Products.CMFPlone.migrations.v2_5.betas import simplifyActions
 from Products.CMFPlone.migrations.v2_5.betas import migrateCSSRegExpression
 
-from Products.CMFPlone.migrations.v3_0.alphas import addInterfaceIndices
-
 from Products.CMFDynamicViewFTI.migrate import migrateFTI
 
 import types
@@ -3953,26 +3951,6 @@ class TestMigrations_v2_5(MigrationTest):
         migrateCSSRegExpression(self.portal, [])
 
 
-class TestMigrations_v3_0(MigrationTest):
-
-    def afterSetUp(self):
-        self.catalog = self.portal.portal_catalog
-
-    def testCatalogInterfaceIndex(self):
-        totest=['object_implements', 'object_adapts_to']
-        indices=self.catalog.indexes()
-        for index in totest:
-            if index in indices:
-                self.catalog.delIndex(index)
-
-        out=[]
-        addInterfaceIndices(self.portal, out)
-
-        indices=self.catalog.indexes()
-        for index in totest:
-            self.assertEqual(index in indices, True)
-
-
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
@@ -3982,7 +3960,6 @@ def test_suite():
     suite.addTest(makeSuite(TestMigrations_v2_1_2))
     suite.addTest(makeSuite(TestMigrations_v2_1_3))
     suite.addTest(makeSuite(TestMigrations_v2_5))
-    suite.addTest(makeSuite(TestMigrations_v3_0))
 
     return suite
 
