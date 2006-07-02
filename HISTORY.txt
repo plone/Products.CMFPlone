@@ -2,6 +2,10 @@ Changelog for Plone
 
    (name of developer listed in brackets)
 
+    - Added support for the hCalendar/hCard standard for events. This closes
+      http://dev.plone.org/plone/ticket/4102. Thanks, Nate.
+      [hannosch]
+
     - Changed setupSite.py to import 'Zope2' instead of 'Zope'. Could
       cause confusion on case-insensitive filesystems with 'zope'.
       [sidnei]
