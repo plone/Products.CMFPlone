@@ -55,7 +55,7 @@
                 <form name="quickAdd" action="createObject" method="post">
     
                     <label tal:attributes="class python: 'contenttype-' + normalizeString(Id) + ' visualIconPadding';
-                                           for Title;">
+                                           for python:normalizeString(Id);">
                     &nbsp;
                     </label>
 
@@ -75,7 +75,7 @@
                          tabindex=""
                          i18n:attributes="value"
                          tal:define="ttitle python: here.utranslate(Title)"
-                         tal:attributes="id Id;
+                         tal:attributes="id python:normalizeString(Id);
                                          value python: here.utranslate('Add ${type}', {'type': ttitle})"
                          />
                         <p class="formHelp" tal:content="ctype/Description" i18n:translate="">

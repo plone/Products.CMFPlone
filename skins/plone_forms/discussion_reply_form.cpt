@@ -119,7 +119,7 @@
         tal:define="error errors/subject|nothing;"
         tal:attributes="class python:test(error, 'field error', 'field')">
 
-                <label for="title" i18n:translate="label_subject">Subject</label>
+                <label for="subject" i18n:translate="label_subject">Subject</label>
 
         <span class="fieldRequired" title="Required"
               i18n:attributes="title title_required;"
@@ -141,7 +141,7 @@
         tal:define="error errors/body_text|nothing;"
         tal:attributes="class python:test(error, 'field error', 'field')">
 
-                <label for="text" i18n:translate="label_comment">Comment</label>
+          <label for="body_text" i18n:translate="label_comment">Comment</label>
 
         <span class="fieldRequired" title="Required"
               i18n:attributes="title title_required;"

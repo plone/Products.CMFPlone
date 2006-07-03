@@ -57,7 +57,8 @@
                             Id ctype/getId;
                             current_wf python:wtool.getChainForPortalType(Id)[0]">
 
-                <label tal:content="Title">Title</label>
+                <label for="select_workflow"
+                       tal:content="Title">Title</label>
 
                 <img src=""
                     alt=""

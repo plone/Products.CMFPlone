@@ -21,7 +21,8 @@
             <legend i18n:translate="legend_change_ownership">Change Ownership</legend>
     
             <div class="field">
-                <label i18n:translate="label_new_owner">New owner</label>
+                <label for="userid" 
+                         i18n:translate="label_new_owner">New owner</label>
                 
                 <span class="fieldRequired" title="Required"
                       i18n:attributes="title title_required;"
@@ -31,7 +32,7 @@
                 Changes the ownership of the current object.
                 </div>
         
-                <select name="userid">
+                <select name="userid" id="userid">
                    <tal:block tal:repeat="uid mtool/listMemberIds">
                      <option value=""
                              tal:attributes="value uid;

@@ -183,9 +183,8 @@
                            tabindex=""
                            checked="checked"
                            tal:attributes="tabindex tabindex;"/>
-                    <label for=""
+                    <label for="pt_toggle"
                            i18n:translate="label_toggle"
-                           tal:attributes="for string:pt_toggle"
                            >Select All/None
                     </label>
                 </span>
@@ -265,9 +264,8 @@
                        checked="checked"
                        tabindex=""
                        tal:attributes="tabindex tabindex;"/>
-                <label for=""
+                <label for="rs_toggle"
                        i18n:translate="label_toggle"
-                       tal:attributes="for string:rs_toggle"
                        >Select All/None
                 </label>
                 <br />

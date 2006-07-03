@@ -62,7 +62,7 @@ registerPloneFunction(
                                        checked enable_livesearch;"
                        /> 
     
-                <label for="enable_livesearch" 
+                <label for="cb_enable_livesearch" 
                     i18n:translate="label_livesearch_enable">Enable LiveSearch</label>
     
                 <div class="formHelp" id="livesearch_help"

@@ -31,9 +31,12 @@
             <legend i18n:translate="legend_syndication_details">Syndication Details</legend>
     
             <div class="field">
-                <label i18n:translate="label_syndication_updateperiod">Update Period</label>
+                <label for="updatePeriod"
+                       i18n:translate="label_syndication_updateperiod">
+                Update Period</label>
     
-                <select name="updatePeriod" 
+                <select name="updatePeriod"
+                        id="updatePeriod"
                         size="1"
                         tal:attributes="tabindex tabindex/next"
                         tal:define="upperiod syntool/getUpdatePeriod">
@@ -51,7 +54,8 @@
                              error_syndication_frequency nothing;"
                  tal:attributes="class python:test(error, 'field error', 'field')">
     
-                <label i18n:translate="label_syndication_frequency">Update frequency</label>
+                <label for="updateFrequency"
+                       i18n:translate="label_syndication_frequency">Update frequency</label>
     
                 <div class="formHelp" i18n:translate="help_syndication_frequency">
                  Controls the frequency of the updates. For example, if you want it to 
@@ -61,6 +65,7 @@
                 <div tal:content="error">Validation error output</div>
     
                 <input name="updateFrequency"
+                       id="updateFrequency"
                        value=""
                        size="3"
                        tabindex=""
@@ -73,7 +78,8 @@
                              error_syndication_base nothing;"
                  tal:attributes="class python:test(error, 'field error', 'field')">
     
-                <label i18n:translate="label_syndication_base">Update base</label>
+                <label for="updateBase"
+                       i18n:translate="label_syndication_base">Update base</label>
     
                 <div class="formHelp" i18n:translate="help_syndication_base">
                   Update base date (dummy description).
@@ -82,6 +88,7 @@
                 <div tal:content="error">Validation error output</div>
     
                 <input name="updateBase:date"
+                       id="updateBase"
                        value=""
                        size="70"
                        tabindex=""
@@ -94,7 +101,8 @@
                              error_syndication_maxitems nothing;"
                  tal:attributes="class python:test(error, 'field error', 'field')">
     
-                <label i18n:translate="label_syndication_maxitems">Max Syndicated Items </label>
+                <label for="max_items"
+                       i18n:translate="label_syndication_maxitems">Max Syndicated Items </label>
     
                 <div class="formHelp" i18n:translate="help_syndication_maxitems">
                   Max Syndicated Items.
@@ -103,6 +111,7 @@
                 <div tal:content="error">Validation error output</div>
     
                 <input name="max_items"
+                       id="max_items"
                        value=""
                        size="3"
                        tabindex=""

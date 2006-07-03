@@ -36,13 +36,15 @@
 
             
             <div class="field">
-                <label i18n:translate="label_default_skin">Default skin</label>
+                <label for="default_skin"
+                       i18n:translate="label_default_skin">Default skin</label>
     
                 <div class="formHelp" i18n:translate="help_default_skin">
                     Select the default skin for the Plone site.
                 </div>
     
                 <select name="default_skin" 
+                    id="default_skin"
                     size="1"
                     tal:attributes="tabindex tabindex/next"
                     tal:define="defskin here/portal_skins/getDefaultSkin">

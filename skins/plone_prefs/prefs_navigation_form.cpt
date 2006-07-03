@@ -46,7 +46,8 @@
                        value="1"
                        tal:attributes="checked python:test(generated_tabs, 'checked', None)" />
 
-                <label i18n:translate="label_generated_tabs_enable">Automatically generate tabs</label>
+                <label for="cb_allow_any" 
+                            i18n:translate="label_generated_tabs_enable">Automatically generate tabs</label>
 
                 <div class="formHelp" i18n:translate="help_generated_tabs">
                 By default, all items created at the root level will add to the global section
@@ -60,12 +61,13 @@
                             value request/name|value;
                             error errors/name|nothing"
                 tal:attributes="class python:error and 'field error' or 'field';">
-                <label>Navigation tree portlet title</label>
+                <label for="name">Navigation tree portlet title</label>
                 <div class="formHelp">
                   Change the English title of the navigation tree portlet. Note
                   that this won't affect the title in other languages.
                 </div>
                 <input name="name"
+                       id="name"
                        type="text"
                        size="30"
                        tal:attributes="value value;"/>
@@ -77,7 +79,7 @@
                             value request/root|value;
                             error errors/root|nothing"
                 tal:attributes="class python:error and 'field error' or 'field';">
-                <label>Navigation tree root</label>
+                <label for="root">Navigation tree root</label>
                 <div class="formHelp">
                     A path that specifies the base folder where the
                     navigation tree, sitemap, breadcrumbs and tabs will be rooted. 
@@ -85,6 +87,7 @@
                     <strong>'/folder1'</strong> to start at 'folder1'.
                 </div>
                 <input name="root"
+                       id="root"
                        type="text"
                        size="30"
                        tal:attributes="value value;"/>
@@ -104,7 +107,8 @@
                        value="0"
                        tal:attributes="checked python:test(value, 'checked', None)" />
 
-                <label i18n:translate="label_current_folder_only">Root navigation tree in current folder</label>
+                <label for="cb_current_folder_only"
+                            i18n:translate="label_current_folder_only">Root navigation tree in current folder</label>
 
                 <div class="formHelp" i18n:translate="help_current_folder_only">
                 If selected, the navigation tree will only show the current 
@@ -118,7 +122,7 @@
                   value request/topLevel|value;
                   error errors/topLevel|nothing"
                 tal:attributes="class python:error and 'field error' or 'field';">
-                <label>Navigation tree start level</label>
+                <label for="topLevel">Navigation tree start level</label>
                 <span class="fieldRequired" title="Required"
                   i18n:attributes="title title_required;"
                   i18n:translate="label_required">(Required)
@@ -133,6 +137,7 @@
                   below.
                 </div>
                 <input name="topLevel"
+                       id="topLevel"
                        type="text"
                        size="4"
                        tal:attributes="value value;"/>
@@ -144,7 +149,7 @@
                   value request/bottomLevel|value;
                   error errors/bottomLevel|nothing"
                 tal:attributes="class python:error and 'field error' or 'field';">
-                <label>Navigation tree depth</label>
+                <label for="bottomLevel">Navigation tree depth</label>
                 <span class="fieldRequired" title="Required"
                   i18n:attributes="title title_required;"
                   i18n:translate="label_required">(Required)
@@ -156,6 +161,7 @@
                   include the root folder.
                 </div>
                 <input name="bottomLevel"
+                       id="bottomLevel"
                        type="text"
                        size="30"
                        tal:attributes="value value;"/>

@@ -472,18 +472,20 @@
                                         group_title group/getGroupTitleOrName;
                                         group_description python:group.getProperty('description', '')">
                             <td>
-                                <label class="hiddenLabel" for="member_ids:list"
-                                       i18n:translate="label_select_group">
+                                <label class="hiddenLabel" 
+                                             tal:attributes="for group_id"
+                                             i18n:translate="label_select_group">
                                     select group <span tal:content="group_name" tal:omit-tag="" i18n:name="name">groupname</span>
                                 </label>
                                 <input class="formSelection"
                                     type="checkbox"
                                     name="member_ids:list"
-                                    id="#"
+                                    id=""
                                     value=""
                                     tabindex=""
                                     tal:attributes="value group_id;
-                                                    tabindex tabindex/next;"/>
+                                                            id group_id;
+                                                            tabindex tabindex/next;"/>
                             </td>
                             <td tal:content="group_title">
                                 groupname

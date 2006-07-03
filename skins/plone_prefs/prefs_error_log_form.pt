@@ -113,12 +113,14 @@
             <legend i18n:translate="legend_logdetails">Log details</legend>
 
             <div class="field">
-                <label i18n:translate="label_number_exceptions">Number of exceptions to keep</label>
+                <label for="keep_entries"
+                       i18n:translate="label_number_exceptions">Number of exceptions to keep</label>
 
                 <div></div>
                 
                 <input type="text" 
-                       name="keep_entries" 
+                       name="keep_entries"
+                       id="keep_entries"
                        size="40"
                        tal:attributes="value props/keep_entries" />
             </div>
@@ -138,9 +140,11 @@
             </div>
                                        
             <div class="field">
-                <label i18n:translate="label_ignored_exception">Ignored exception types</label>
+                <label for="ignored_exceptions"
+                       i18n:translate="label_ignored_exception">Ignored exception types</label>
                 
                 <textarea name="ignored_exceptions:lines" 
+                          id="ignored_exceptions"
                           cols="40"
                           rows="3"
                           tal:content="python: '\n'.join(props['ignored_exceptions'])"></textarea>

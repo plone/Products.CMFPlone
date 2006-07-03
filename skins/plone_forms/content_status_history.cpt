@@ -87,7 +87,7 @@
           <div class="field formSingleCheckbox"
                tal:condition="folders_in_publishing|nothing">
 
-            <label for="include_contained_objects" i18n:translate="label_include_contained_objects">
+            <label for="include_children" i18n:translate="label_include_contained_objects">
               Include folder items
             </label>
 
@@ -159,7 +159,8 @@
           </div>
 
           <div class="field">
-            <label i18n:translate="label_comments">Comments</label>
+            <label for="comment" 
+                   i18n:translate="label_comments">Comments</label>
 
             <div class="formHelp"
                  i18n:translate="help_publishing_comments">
@@ -205,7 +206,7 @@
               </span>
 
               <input class="noborder"
-                     id=""
+                     id="workflow_action"
                      type="radio"
                      name="workflow_action"
                      title=""
@@ -213,9 +214,8 @@
                      tal:attributes="value review_state;
                                      title review_state;
                                      checked python:test(request.get('workflow_action', review_state)==review_state,1,0);" />
-              <label for=""
+              <label for="workflow_action"
                      i18n:translate=""
-                     tal:attributes="for review_state;"
                      tal:content="review_state_label"
                      >Transition Name</label>
                      <br />

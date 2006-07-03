@@ -55,7 +55,8 @@
               <div tal:define="canRenameItem python:checkPermission('Delete objects', obj) and checkPermission('Copy or Move', obj);"
                    tal:attributes="class python:test(canRenameItem, nothing, 'error')">
 
-                <label i18n:translate="label_new_short_name">
+                <label tal:attributes="for string:${item}_id;"
+                       i18n:translate="label_new_short_name">
                   New Short Name
                 </label><div></div>
 
@@ -76,11 +77,13 @@
 
                     <input type="text"
                            name="new_ids:list"
+                           id=""
                            value=""
                            size="40"
                            tabindex=""
                            tal:condition="canRenameItem"
                            tal:attributes="value item;
+                                           id string:${item}_id;
                                            tabindex tabindex/next;" />
 
               </div>
@@ -88,7 +91,8 @@
               <div tal:define="canModifyItem python:checkPermission('Modify portal content', obj);"
                    tal:attributes="class python:test(canModifyItem, nothing, 'error')">
 
-                <label i18n:translate="label_new_title">
+                <label tal:attributes="for string:${item}_title;"
+                       i18n:translate="label_new_title">
                   New Title
                 </label><div></div>
 
@@ -104,6 +108,7 @@
                            tabindex=""
                            tal:condition="canModifyItem"
                            tal:attributes="value obj/Title;
+                                           id string:${item}_title;
                                            tabindex tabindex/next;" />
 
               </div>

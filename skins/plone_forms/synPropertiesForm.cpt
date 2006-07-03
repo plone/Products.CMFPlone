@@ -79,13 +79,15 @@
             <legend i18n:translate="legend_syndication_details">Syndication Details</legend>
 
             <div class="field">
-              <label i18n:translate="label_syndication_updateperiod">Update Period</label>
+              <label for="updatePeriod"
+                     i18n:translate="label_syndication_updateperiod">Update Period</label>
               
               <div class="formHelp" i18n:translate="help_syndication_update_period">
                 Controls how often the channel is updated.
               </div>
 
               <select name="updatePeriod"
+                      id="updatePeriod"
                       tabindex=""
                       tal:attributes="tabindex tabindex/next;"
                       >
@@ -104,7 +106,8 @@
                              error errors/updateFrequency|nothing"
                  tal:attributes="class python:test(error, 'field error', 'field')">
 
-              <label i18n:translate="label_syndication_update_frequency">Update Frequency</label>
+              <label for="updateFrequency"
+                     i18n:translate="label_syndication_update_frequency">Update Frequency</label>
               
               <div class="formHelp" i18n:translate="help_syndication_update_frequency">
                 Controls the frequency of the updates. For example, 
@@ -115,6 +118,7 @@
               <div tal:content="error">Validation error output</div>
 
               <input type="text"
+                     id="updateFrequency"
                      name="updateFrequency"
                      size="3"
                      value="#"
@@ -151,7 +155,8 @@
                              error errors/max_items|nothing"
                  tal:attributes="class python:test(error, 'field error', 'field')">
 
-              <label i18n:translate="label_syndication_max_items">Maximum Items</label>
+              <label for="max_items"
+                     i18n:translate="label_syndication_max_items">Maximum Items</label>
               
               <span class="fieldRequired" title="Required"
                     i18n:attributes="title title_required;"
@@ -165,6 +170,7 @@
 
                     <input type="text"
                            name="max_items:int"
+                           id="max_items"
                            value="#"
                            size="3"
                            tabindex=""
