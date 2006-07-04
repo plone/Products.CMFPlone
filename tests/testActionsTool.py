@@ -58,25 +58,25 @@ class TestActionsTool(PloneTestCase.PloneTestCase):
         self.assertEqual(Set(self.actions.listFilteredActionsFor(self.folder).keys()),
                          expected_filtered_actions)
 
-    def testPortalRegistrationIsActionProvider(self):
-        self.failUnless('portal_registration' in self.actions.listActionProviders())
+    def testPortalTypesIsActionProvider(self):
+        self.failUnless('portal_types' in self.actions.listActionProviders())
 
     def testMissingActionProvider(self):
-        self.portal._delObject('portal_registration')
+        self.portal._delObject('portal_types')
         try:
             self.actions.listFilteredActionsFor(self.portal)
         except:
             self.fail_tb('Should not bomb out if a provider is missing')
 
     def testBrokenActionProvider(self):
-        self.portal.portal_registration = None
+        self.portal.portal_types = None
         try:
             self.actions.listFilteredActionsFor(self.portal)
         except:
             self.fail_tb('Should not bomb out if a provider is broken')
 
     def testMissingListActions(self):
-        self.portal.portal_registration = ExplicitItem()
+        self.portal.portal_types = ExplicitItem()
         try:
             self.actions.listFilteredActionsFor(self.portal)
         except:
