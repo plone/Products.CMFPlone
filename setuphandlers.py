@@ -2,7 +2,7 @@
 CMFPlone setup handlers.
 """
 
-from Acquisition import aq_base
+from Acquisition import aq_base, aq_get
 from Products.StandardCacheManagers.AcceleratedHTTPCacheManager import \
      AcceleratedHTTPCacheManager
 from Products.StandardCacheManagers.RAMCacheManager import \
@@ -13,7 +13,6 @@ from Products.CMFCore import permissions as cmfpermissions
 from Products.CMFPlone.utils import _createObjectByType
 from Products.CMFPlone import migrations as migs
 from Products.CMFPlone.Portal import member_indexhtml
-from Products.CMFPlone.setup.ConfigurationMethods import assignTitles
 
 class PloneGenerator:
 
@@ -198,6 +197,40 @@ class PloneGenerator:
             # Reset site syndication to default state
             syn.editProperties(isAllowed=enabled)
 
+    def assignTitles(self, portal, out):
+        titles={'portal_actions':'Contains custom tabs and buttons',
+         'portal_membership':'Handles membership policies',
+         'portal_memberdata':'Handles the available properties on members',
+         'portal_undo':'Defines actions and functionality related to undo',
+         'portal_types':'Controls the available content types in your portal',
+         'plone_utils':'Various utility methods',
+         'portal_metadata':'Controls metadata like keywords, copyrights, etc',
+         'portal_migration':'Handles migrations to newer Plone versions',
+         'portal_registration':'Handles registration of new users',
+         'portal_skins':'Controls skin behaviour (search order etc)',
+         'portal_syndication':'Generates RSS for folders',
+         'portal_workflow':'Contains workflow definitions for your portal',
+         'portal_url':'Methods to anchor you to the root of your Plone site',
+         'portal_discussion':'Controls how discussions are stored',
+         'portal_catalog':'Indexes all content in the site',
+         'portal_factory':'Responsible for the creation of content objects',
+         'portal_calendar':'Controls how events are shown',
+         'portal_quickinstaller':'Allows to install/uninstall products',
+         'portal_interface':'Allows to query object interfaces',
+         'portal_actionicons':'Associates actions with icons',
+         'portal_groupdata':'Handles properties on groups',
+         'portal_groups':'Handles group related functionality',
+         'translation_service': 'Provides access to the translation machinery',
+         'mimetypes_registry': 'MIME types recognized by Plone',
+         'portal_transforms': 'Handles data conversion between MIME types',
+         }
+    
+        for oid in portal.objectIds():
+            title=titles.get(oid, None)
+            if title:
+                setattr(aq_get(portal, oid), 'title', title)
+        out.append('Assigned titles to portal tools.')
+
 
 def importVarious(context):
     """
@@ -224,4 +257,4 @@ def importFinalSteps(context):
     gen.setupGroups(site)
     gen.addDefaultTypesToPortalFactory(site, out)
     gen.enableSyndicationOnTopics(site, out)
-    assignTitles(site, site)
+    gen.assignTitles(site, out)
