@@ -4,9 +4,8 @@ Changelog for Plone
 
 Plone 3.0 (unreleased)
 
-    - Add object_implements and object_adapts_to indices to portal_catalog.
-      object_adapts_to will eventually be replaced with a utility (hopefully
-      for Plone 3.5) but is useful right now.
+    - Removed CMFPlone.MemberData. This class is never used, and the future
+      is with PAS-based objects instead of membership/memberdata tools.
       [wichert]
 
     - Fixed deprecation warnings for the ZCML content directive.

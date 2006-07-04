@@ -103,12 +103,6 @@
  <index name="start" meta_type="DateIndex">
   <property name="index_naive_time_as_local">True</property>
  </index>
- <index name="object_implements" meta_type="KeywordIndex">
-  <indexed_attr value="object_implements"/>
- </index>
- <index name="object_adapts_to" meta_type="KeywordIndex">
-  <indexed_attr value="object_adapts_to"/>
- </index>
  <column value="CreationDate"/>
  <column value="Creator"/>
  <column value="Date"/>
