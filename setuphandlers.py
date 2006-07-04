@@ -22,7 +22,6 @@ class PloneGenerator:
         # handler
         qi = getToolByName(p, 'portal_quickinstaller')
         qi.installProduct('Archetypes', locked=0)
-        qi.installProduct('CMFFormController', locked=1)
         qi.installProduct('GroupUserFolder', locked=1)
         qi.installProduct('PlonePAS', locked=1)
         qi.installProduct('PasswordResetTool', locked=1)
@@ -39,6 +38,7 @@ class PloneGenerator:
         qi.installProduct('ResourceRegistries', locked=1)
         qi.notifyInstalled('ATContentTypes', locked=1)
         qi.notifyInstalled('ATReferenceBrowserWidget', locked=1)
+        qi.notifyInstalled('CMFFormController', locked=1)
         
     def customizePortalOptions(self, p):
         p.manage_permission( cmfpermissions.ListFolderContents, \
