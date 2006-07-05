@@ -12,7 +12,7 @@
 <body>
 
 <div metal:fill-slot="main"
-     tal:define="auth nocall:here/acl_users/credentials_cookie_auth|nothing;
+     tal:define="auth nocall:here/acl_users/credentials_cookie_auth|here/cookie_authentication|nothing;
                  came_from request/came_from|request/HTTP_REFERER|nothing;
                  came_from python:test(utool.isURLInPortal(came_from), came_from, None);
 		 errors options/state/getErrors;
