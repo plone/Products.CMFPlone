@@ -2,6 +2,10 @@ Changelog for Plone
 
    (name of developer listed in brackets)
 
+    - Small spelling corrections in reconfig_form. This closes
+      http://dev.plone.org/plone/ticket/5552.
+      [hannosch]
+
     - Event time and location aren't considered byline information in
       folder_listing anymore and thus visible if allowAnonymousViewAbout is
       disabled. This closes http://dev.plone.org/plone/ticket/5573.
