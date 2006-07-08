@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1.4 - Devo - Unreleased
 
+    - Minor spelling fix in folder_localrole_form.
+      [hannosch]
+
     - Removed OS notes for iCal and vCal on the event view. Meanwhile both
       standards are used on all OS'es. This closes
       http://dev.plone.org/plone/ticket/4113.

@@ -557,9 +557,10 @@
             Inherit roles from higher levels
             </label>
             <div class="formHelp" i18n:translate="help_use_acquisition">
-                Determines if the roles given to users and groups from higher levels are in
-                effect in this context. Use this to block people that have local roles in higher-level
-                folders from accessing this folder.
+                Determines if the roles given to users and groups from higher
+                levels are in effect in this context. Use this to block people
+                who have local roles in higher-level folders from accessing
+                this folder.
             </div>
         </div>
 
