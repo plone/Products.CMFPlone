@@ -85,8 +85,7 @@
                             </span>
                         </tal:to_external>
 
-                        <span class="documentByLine"
-                              tal:condition="show_about">
+                        <span class="documentByLine">
 
                             <span tal:condition="python: item_type == 'Event'"
                                   i18n:translate="label_event_byline">
@@ -101,39 +100,42 @@
                                        tal:attributes="title python:item_end"
                                        tal:content="python:toLocalizedTime(item_end,long_format=1)"
                                        i18n:name="end">to date</abbr>)
-                            &mdash;
                             </span>
 
-                            <tal:name tal:condition="item_creator"
-                                tal:define="author python:mtool.getMemberInfo(item_creator)">
-                              <span i18n:translate="label_by_author">
-                                by
-                              <a href="#"
-                                 tal:attributes="href string:${portal_url}/author/${item_creator}"
-                                 tal:content="python:author and author['fullname'] or item_creator"
-                                 tal:omit-tag="not:author"
-                                 i18n:name="author">
-                                Bob Dobalina
-                              </a>
-                              </span>
-
-                            </tal:name>
-
-                            <tal:modified condition="python: item_type != 'Event'">
+                            <tal:byline condition="show_about">
                                 &mdash;
-                                <tal:mod i18n:translate="box_last_modified">
-                                  last modified
-                                </tal:mod>
-                                <span tal:replace="python:toLocalizedTime(item_modified,long_format=1)">
-                                  August 16, 2001 at 23:35:59
-                                </span>
-                            </tal:modified>
 
-                            <metal:description define-slot="description_slot">
-                                <tal:comment replace="nothing"> 
-                                    Place custom listing info for custom types here
-                                </tal:comment>
-                            </metal:description>
+                                <tal:name tal:condition="item_creator"
+                                    tal:define="author python:mtool.getMemberInfo(item_creator)">
+                                  <span i18n:translate="label_by_author">
+                                    by
+                                  <a href="#"
+                                     tal:attributes="href string:${portal_url}/author/${item_creator}"
+                                     tal:content="python:author and author['fullname'] or item_creator"
+                                     tal:omit-tag="not:author"
+                                     i18n:name="author">
+                                    Bob Dobalina
+                                  </a>
+                                  </span>
+
+                                </tal:name>
+
+                                <tal:modified condition="python: item_type != 'Event'">
+                                    &mdash;
+                                    <tal:mod i18n:translate="box_last_modified">
+                                      last modified
+                                    </tal:mod>
+                                    <span tal:replace="python:toLocalizedTime(item_modified,long_format=1)">
+                                      August 16, 2001 at 23:35:59
+                                    </span>
+                                </tal:modified>
+
+                                <metal:description define-slot="description_slot">
+                                    <tal:comment replace="nothing"> 
+                                        Place custom listing info for custom types here
+                                    </tal:comment>
+                                </metal:description>
+                            </tal:byline>
                         </span>
 
                     </dt>

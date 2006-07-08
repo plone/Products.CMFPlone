@@ -2,6 +2,11 @@ Changelog for Plone
 
    (name of developer listed in brackets)
 
+    - Event time and location aren't considered byline information in
+      folder_listing anymore and thus visible if allowAnonymousViewAbout is
+      disabled. This closes http://dev.plone.org/plone/ticket/5573.
+      [hannosch]
+
     - Corrected RSS search template to show correct numbers. This closes
       http://dev.plone.org/plone/ticket/5211.
       [hannosch]
