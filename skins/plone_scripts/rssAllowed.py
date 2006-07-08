@@ -25,7 +25,3 @@ if not allowed:
     raise ValueError, "Site syndication via RSS feeds is not allowed. Ask the sites"\
     " system administrator to go to portal_syndication > Policies and enable syndication. Each folder"\
     " then needs to have syndication enabled."
-
-# this is the backwards compatible response
-# assuming that you have rssDisabled (which Plone sites don't actually have)
-#    return context.REQUEST.RESPONSE.redirect('%s/rssDisabled?# portal_status_message=Syndication+is+Disabled' % context.absolute_url())

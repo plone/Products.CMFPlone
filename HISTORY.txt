@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1.4 - Devo - Unreleased
 
+    - Fixed mysterious RuntimeError bug in rssAllowed.py.
+      This closes http://dev.plone.org/plone/ticket/5611.
+      [hannosch]
+
     - Backport r9928 and r9934 to 2.1 branch.  Thanks to Mirella van
       Teulingen.
       [nouri]
