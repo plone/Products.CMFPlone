@@ -2,6 +2,10 @@ Changelog for Plone
 
    (name of developer listed in brackets)
 
+    - Corrected RSS search template to show correct numbers. This closes
+      http://dev.plone.org/plone/ticket/5211.
+      [hannosch]
+
     - Modify login logic to work for sites which do not use the cookie plugin
       or still use GRUF.
       [wichert]
