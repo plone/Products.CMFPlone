@@ -827,6 +827,18 @@ Plone 2.5 - released June 16, 2006
 
 Plone 2.1.4 - Devo - Unreleased
 
+    - Minor spelling fix in folder_localrole_form.
+      [hannosch]
+
+    - Removed OS notes for iCal and vCal on the event view. Meanwhile both
+      standards are used on all OS'es. This closes
+      http://dev.plone.org/plone/ticket/4113.
+      [hannosch]
+
+    - Fixed mysterious RuntimeError bug in rssAllowed.py.
+      This closes http://dev.plone.org/plone/ticket/5611.
+      [hannosch]
+
     - Use Fullname in recently_published and modified templates
       [jladage]
 
