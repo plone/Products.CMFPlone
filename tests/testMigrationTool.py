@@ -32,6 +32,10 @@ class TestMigrationTool(PloneTestCase.PloneTestCase):
                     'Migration needs recataloging')
 
     def testForceMigrationFromUnsupportedVersion(self):
+        # XXX This fails currently as support for migrating from
+        # old releases has been removed. This should however give a nice
+        # warning and explanation and not fail silently. This failure
+        # reminds us of not forgetting to write this explanation.
         version = '2.0.5'
         while version is not None:
             version, msg = self.migration._upgrade(version)
@@ -42,6 +46,10 @@ class TestMigrationTool(PloneTestCase.PloneTestCase):
     def testForceMigration(self):
         # Make sure we don't embarrass ourselves again...
         version = '2.1'
+        # XXX This fails because when migrating old sites we still have
+        # ActionInformation objects stored in the actions tool.
+        # We need to write a migration that converts these to Actions
+        # before any other migration step is run
         while version is not None:
             version, msg = self.migration._upgrade(version)
         expect = 'Migration completed at version %s' % \

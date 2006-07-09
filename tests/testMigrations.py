@@ -253,8 +253,7 @@ class TestMigrations_v2_1_2(MigrationTest):
         editActions = ('cut', 'copy', 'paste', 'delete', 'rename')
         self.removeActionFromTool('rename', 'object_buttons')
         addRenameObjectButton(self.portal, [])
-        actions = [x['id'] for x in self.actions.listActionInfos()
-                   if x['category'] == 'object_buttons']
+        actions = self.actions.object_buttons.objectIds()
         self.assertEqual(actions, list(editActions))
 
     def testAddRenameObjectButtonTwice(self):
@@ -263,16 +262,14 @@ class TestMigrations_v2_1_2(MigrationTest):
         self.removeActionFromTool('rename', 'object_buttons')
         addRenameObjectButton(self.portal, [])
         addRenameObjectButton(self.portal, [])
-        actions = [x['id'] for x in self.actions.listActionInfos()
-                   if x['category'] == 'object_buttons']
+        actions = self.actions.object_buttons.objectIds()
         self.assertEqual(actions, list(editActions))
 
     def testAddRenameObjectButtonActionExists(self):
         # Should add 'rename' object_button action
         editActions = ('cut', 'copy', 'paste', 'delete', 'rename')
         addRenameObjectButton(self.portal, [])
-        actions = [x['id'] for x in self.actions.listActionInfos()
-                   if x['category'] == 'object_buttons']
+        actions = self.actions.object_buttons.objectIds()
         self.assertEqual(actions, list(editActions))
 
     def testAddRenameObjectButtonNoTool(self):
@@ -701,65 +698,63 @@ class TestMigrations_v2_5(MigrationTest):
         # Should simplify a number of actions across multiple tools using the
         # view methods
         tool = self.portal.portal_actions
-        paste = tool.getActionObject('object_buttons/paste')
-        rename = tool.getActionObject('object_buttons/rename')
-        contents = tool.getActionObject('object/folderContents')
-        index = tool.getActionObject('portal_tabs/index_html')
-        # Should work across multiple tools
-        wkspace = self.portal.portal_membership.getActionObject(
-                                                           'user/myworkspace')
+        paste = tool.object_buttons.paste
+        rename = tool.object_buttons.rename
+        contents = tool.object.folderContents
+        index = tool.portal_tabs.index_html
+        wkspace = tool.user.myworkspace
         # Set the expressions and conditions to their 2.5 analogues to test
         # every substitution
-        paste.setActionExpression(
-'python:"%s/object_paste"%((object.isDefaultPageInFolder() or not object.is_folderish()) and object.getParentNode().absolute_url() or object_url)')
-        rename.setActionExpression(
-'python:"%s/object_rename"%(object.isDefaultPageInFolder() and object.getParentNode().absolute_url() or object_url)')
-        rename.edit(condition=
-'python:portal.portal_membership.checkPermission("Delete objects", object.aq_inner.getParentNode()) and portal.portal_membership.checkPermission("Copy or Move", object) and portal.portal_membership.checkPermission("Add portal content", object) and object is not portal and not (object.isDefaultPageInFolder() and object.getParentNode() is portal)')
-        contents.setActionExpression(
-"python:((object.isDefaultPageInFolder() and object.getParentNode().absolute_url()) or folder_url)+'/folder_contents'")
-        index.setActionExpression(
-"string: ${here/@@plone/navigationRootUrl}")
-        wkspace.setActionExpression(
-"python: portal.portal_membership.getHomeUrl()+'/workspace'")
+        paste._updateProperty('url_expr',
+                'python:"%s/object_paste"%((object.isDefaultPageInFolder() or not object.is_folderish()) and object.getParentNode().absolute_url() or object_url)')
+        rename._updateProperty('url_expr',
+                'python:"%s/object_rename"%(object.isDefaultPageInFolder() and object.getParentNode().absolute_url() or object_url)')
+        rename.edit('available_expr',
+                'python:portal.portal_membership.checkPermission("Delete objects", object.aq_inner.getParentNode()) and portal.portal_membership.checkPermission("Copy or Move", object) and portal.portal_membership.checkPermission("Add portal content", object) and object is not portal and not (object.isDefaultPageInFolder() and object.getParentNode() is portal)')
+        contents._updateProperty('url_expr',
+                "python:((object.isDefaultPageInFolder() and object.getParentNode().absolute_url()) or folder_url)+'/folder_contents'")
+        index._updateProperty('url_expr',
+                'string: ${here/@@plone/navigationRootUrl}')
+        wkspace._updateProperty('url_expr',
+                                "python: portal.portal_membership.getHomeUrl()+'/workspace'")
 
         # Verify that the changes have been made
-        paste = tool.getActionObject('object_buttons/paste')
+        paste = tool.object_buttons.paste
         self.failUnless("object.isDefaultPageInFolder()" in
-                                                  paste.getActionExpression())
+                                                  paste.getProperty('url_expr'))
         # Run the action simplifications
         simplifyActions(self.portal, [])
-        self.assertEqual(paste.getActionExpression(),
+        self.assertEqual(paste.getProperty('url_expr'),
                 "string:${globals_view/getCurrentFolderUrl}/object_paste")
-        self.assertEqual(rename.getActionExpression(),
+        self.assertEqual(rename.getProperty('url_expr'),
                 "string:${globals_view/getCurrentObjectUrl}/object_rename")
-        self.assertEqual(rename.getCondition(),
-'python:checkPermission("Delete objects", globals_view.getParentObject()) and checkPermission("Copy or Move", object) and checkPermission("Add portal content", object) and not globals_view.isPortalOrPortalDefaultPage()')
-        self.assertEqual(contents.getActionExpression(),
+        self.assertEqual(rename.getProperty('available_expr'),
+                'python:checkPermission("Delete objects", globals_view.getParentObject()) and checkPermission("Copy or Move", object) and checkPermission("Add portal content", object) and not globals_view.isPortalOrPortalDefaultPage()')
+        self.assertEqual(contents.getProperty('url_expr'),
                 "string:${globals_view/getCurrentFolderUrl}/folder_contents")
-        self.assertEqual(index.getActionExpression(),
+        self.assertEqual(index.getProperty('url_expr'),
                 "string:${globals_view/navigationRootUrl}")
-        self.assertEqual(wkspace.getActionExpression(),
+        self.assertEqual(wkspace.getProperty('url_expr'),
                 "string:${portal/portal_membership/getHomeUrl}/workspace")
 
     def testSimplifyActionsTwice(self):
         # Should result in the same string when applied twice
         tool = self.portal.portal_actions
-        paste = tool.getActionObject('object_buttons/paste')
-        paste.setActionExpression(
-'python:"%s/object_paste"%((object.isDefaultPageInFolder() or not object.is_folderish()) and object.getParentNode().absolute_url() or object_url)')
+        paste = tool.object_buttons.paste
+        paste._updateProperty('url_expr',
+                              'python:"%s/object_paste"%((object.isDefaultPageInFolder() or not object.is_folderish()) and object.getParentNode().absolute_url() or object_url)')
 
         # Verify that the changes have been made
-        paste = tool.getActionObject('object_buttons/paste')
+        paste = tool.object_buttons.paste
         self.failUnless("object.isDefaultPageInFolder()" in
-                                                  paste.getActionExpression())
+                                paste.getProperty('url_expr'))
 
         # Run the action simplifications twice
         simplifyActions(self.portal, [])
         simplifyActions(self.portal, [])
 
         # We should have the same result
-        self.assertEqual(paste.getActionExpression(),
+        self.assertEqual(paste.getProperty('url_expr'),
                 "string:${globals_view/getCurrentFolderUrl}/object_paste")
 
     def testSimplifyActionsNoTool(self):

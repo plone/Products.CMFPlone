@@ -209,40 +209,35 @@ action_replacements = [
 ]
 
 def simplifyActions(portal, out):
-    from Products.CMFCore.ActionInformation import ActionInformation
-    action_tool = getToolByName(portal, 'portal_actions', None)
-    if action_tool is not None:
-        providers = action_tool.listActionProviders()
-        # Iterate ofer all action providers
-        for provider in providers:
-            tool = getToolByName(portal, provider, None)
-            # If this is not a provider with persistent Action objects skip it
-            if not getattr(tool, '_actions', None) or \
-               not isinstance(tool._actions[0], ActionInformation):
-                continue
-            actions = tool.listActions()
-            # iterate through the actions and for each action check if it
-            # matches any of the patterns we want to replace
-            for action in actions:
-                action_id = '%s/%s/%s'%(provider, action.getCategory(),
-                                        action.getId())
-                cur_expr = action.getActionExpression()
-                cur_condition = action.getCondition()
-                for regex, replacement in action_replacements:
-                    new_expr = regex.sub(replacement, cur_expr)
-                    new_condition = regex.sub(replacement, cur_condition)
-                    if new_expr != cur_expr:
-                        action.setActionExpression(new_expr)
-                        out.append(
-                      'Changed url expression on action %s from: \n%s\nto:\n%s'%(
-                                             action_id, cur_expr, new_expr))
-                    if new_condition != cur_condition:
-                        action.edit(condition=new_condition)
-                        out.append(
-                           'Changed condition on action %s from: \n"%s"\nto:\n"%s"'%(
-                                         action_id, cur_condition, new_condition))
-                    cur_expr = new_expr
-                    cur_condition = new_condition
+    from Products.CMFCore.ActionInformation import ActionCategory
+    tool = getToolByName(portal, 'portal_actions', None)
+    if tool is not None:
+        categories = [obj for obj in tool.objectItems()
+                                  if isinstance(obj[1], ActionCategory)]
+        if not categories:
+            return
+        actions = tool.listActions()
+        # iterate through the actions and for each action check if it
+        # matches any of the patterns we want to replace
+        for action in actions:
+            action_id = '%s/%s'%(action.getInfoData()[0]['category'], action.id)
+            cur_expr = action.getProperty('url_expr')
+            cur_condition = action.getProperty('available_expr')
+            for regex, replacement in action_replacements:
+                new_expr = regex.sub(replacement, cur_expr)
+                new_condition = regex.sub(replacement, cur_condition)
+                if new_expr != cur_expr:
+                    action._updateProperty('url_expr', new_expr)
+                    out.append(
+                    'Changed url expression on action %s from: \n%s\nto:\n%s'%(
+                                                action_id, cur_expr, new_expr))
+                if new_condition != cur_condition:
+                    action._updateProperty('available_expr', new_condition)
+                    out.append(
+                    'Changed condition on action %s from: \n"%s"\nto:\n"%s"'%(
+                                     action_id, cur_condition, new_condition))
+                cur_expr = new_expr
+                cur_condition = new_condition
 
 
 def migrateCSSRegExpression(portal, out):

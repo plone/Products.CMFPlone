@@ -56,39 +56,26 @@ def removeCMFTopicSkinLayer(portal, out):
 def addRenameObjectButton(portal,out):
     """Add the missing rename action for renaming single content items.
     """
-    
-    ACTIONS = (
-        {'id'        : 'rename',
-         'name'      : 'Rename',
-         'action'    : 'python:"%s/object_rename"%(object.isDefaultPageInFolder() and object.getParentNode().absolute_url() or object_url)',
-         'condition' : 'python:portal.portal_membership.checkPermission("Delete objects", object.aq_inner.getParentNode()) and portal.portal_membership.checkPermission("Copy or Move", object) and portal.portal_membership.checkPermission("Add portal content", object) and object is not portal and not (object.isDefaultPageInFolder() and object.getParentNode() is portal)',
-         'permission': AddPortalContent,
-         'category'  : 'object_buttons',
-        },)
-
     actionsTool = getToolByName(portal, 'portal_actions', None)
     if actionsTool is not None:
-        # update/add actions
-        for newaction in ACTIONS:
-            idx = 0
-            for action in actionsTool.listActionInfos():
-                # if action exists, remove and re-add
-                if action['id'] == newaction['id'] \
-                        and action['category'] in (newaction['category']):
-                    actionsTool.deleteActions((idx,))
-                    out.append("Removed '%s' contentmenu action from actions tool." % newaction['name'])
-                    break
-                idx += 1
+        idx = 0
+        for action in actionsTool.listActionInfos():
+            # if action exists, remove and re-add
+            if action['id'] == 'rename' and action['category'] == 'object_buttons':
+                actionsTool.deleteActions((idx,))
+                out.append("Removed rename contentmenu action from actions tool.")
+                break
+            idx += 1
 
-            actionsTool.addAction(newaction['id'],
-                name=newaction['name'],
-                action=newaction['action'],
-                condition=newaction['condition'],
-                permission=newaction['permission'],
-                category=newaction['category'],
-                visible=1)
+        actionsTool.addAction('rename',
+            name='Rename',
+            action='python:"%s/object_rename"%(object.isDefaultPageInFolder() and object.getParentNode().absolute_url() or object_url)',
+            condition='python:portal.portal_membership.checkPermission("Delete objects", object.aq_inner.getParentNode()) and portal.portal_membership.checkPermission("Copy or Move", object) and portal.portal_membership.checkPermission("Add portal content", object) and object is not portal and not (object.isDefaultPageInFolder() and object.getParentNode() is portal)',
+            permission=AddPortalContent,
+            category='object_buttons',
+            visible=1)
 
-            out.append("Added '%s' contentmenu action to actions tool." % newaction['name'])
+        out.append("Added rename contentmenu action to actions tool.")
 
 
 def addSEHighLightJS(portal, out):
