@@ -25,7 +25,7 @@
    <permission>View</permission>
   </action>
   <action title="Toggle full screen mode" action_id="full_screen"
-     category="document_actions" condition_expr="member"
+     category="document_actions" condition_expr="python:member"
      url_expr="string:javascript:toggleFullScreenMode();" visible="True">
    <permission>View</permission>
   </action>
@@ -150,7 +150,7 @@
    <permission>View</permission>
   </action>
   <action title="Preferences" action_id="preferences" category="user"
-     condition_expr="member"
+     condition_expr="python:member"
      url_expr="string:${portal_url}/plone_memberprefs_panel" visible="True">
    <permission>View</permission>
   </action>
@@ -160,7 +160,7 @@
    <permission>View</permission>
   </action>
   <action title="Log in" action_id="login" category="user"
-     condition_expr="not: member" url_expr="string:${portal_url}/login_form"
+     condition_expr="python:not member" url_expr="string:${portal_url}/login_form"
      visible="True">
    <permission>View</permission>
   </action>
@@ -175,14 +175,14 @@
    <permission>View</permission>
   </action>
   <action title="Log out" action_id="logout" category="user"
-     condition_expr="member" url_expr="string:${portal_url}/logout"
+     condition_expr="python:member" url_expr="string:${portal_url}/logout"
      visible="True">
    <permission>View</permission>
   </action>
  </action-provider>
  <action-provider name="portal_registration">
   <action title="Join" action_id="join" category="user"
-     condition_expr="not:member" url_expr="string:${portal_url}/join_form"
+     condition_expr="python:not member" url_expr="string:${portal_url}/join_form"
      visible="True">
    <permission>Add portal member</permission>
   </action>
@@ -196,7 +196,7 @@
  </action-provider>
  <action-provider name="portal_undo">
   <action title="Undo" action_id="undo" category="user"
-     condition_expr="member" url_expr="string:${portal_url}/undo_form"
+     condition_expr="python:member" url_expr="string:${portal_url}/undo_form"
      visible="True">
    <permission>List undoable changes</permission>
   </action>

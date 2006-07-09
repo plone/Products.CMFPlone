@@ -41,7 +41,9 @@
 
                     <span class="discreet" i18n:translate="text_creator_date">
                         by
-                        <span tal:content="result/Creator"
+                        <span tal:define="creator result/Creator;
+                                          author python:mtool.getMemberInfo(creator)"
+                              tal:content="python:author and author['fullname'] or creator"
                               tal:omit-tag=""
                               i18n:name="creator">creator</span>,
                         last updated:

@@ -193,7 +193,7 @@
                                    item_rel_url         python:hasGetUrl and item.getURL(relative=1) or getRelativeContentURL(item);
                                    browserDefaultResult here/browserDefault;
                                    isBrowserDefault     python:len(browserDefaultResult[1]) == 1 and item.id == here.browserDefault()[1][0];
-                                   item_folderish item/@@plone/isStructuralFolder|item/isPrincipiaFolderish|nothing"
+                                   item_folderish       item/is_folderish|nothing"
                        tal:attributes="class python:test(oddrow, 'draggable even', 'draggable odd');
                                        id item_id;" >
 

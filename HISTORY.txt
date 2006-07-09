@@ -2,7 +2,7 @@ Changelog for Plone
 
    (name of developer listed in brackets)
 
-Plone 3.0 (unreleased)
+Plone 3.0 - Unreleased
 
     - Removed CMFPlone.MemberData. This class is never used, and the future
       is with PAS-based objects instead of membership/memberdata tools.
@@ -40,6 +40,51 @@ Plone 3.0 (unreleased)
     - Removed bbb code for MessageIDFactory, queryMultiAdapter, transaction and
       CatalogTool._initIndexes.
       [hannosch]
+
+Plone 2.5.1 - Unreleased
+
+    - Small spelling corrections in reconfig_form. This closes
+      http://dev.plone.org/plone/ticket/5552.
+      [hannosch]
+
+    - Event time and location aren't considered byline information in
+      folder_listing anymore and thus visible if allowAnonymousViewAbout is
+      disabled. This closes http://dev.plone.org/plone/ticket/5573.
+      [hannosch]
+
+    - Corrected RSS search template to show correct numbers. This closes
+      http://dev.plone.org/plone/ticket/5211.
+      [hannosch]
+
+    - Modify login logic to work for sites which do not use the cookie plugin
+      or still use GRUF.
+      [wichert]
+
+    - Added support for the hCalendar/hCard standard for events. This closes
+      http://dev.plone.org/plone/ticket/4102. Thanks, Nate.
+      [hannosch]
+
+    - Changed setupSite.py to import 'Zope2' instead of 'Zope'. Could
+      cause confusion on case-insensitive filesystems with 'zope'.
+      [sidnei]
+
+    - Fixed bug in folder_contents causing all links to get /folder_contents
+      appended as well.
+      [optilude]
+
+    - Changed all action conditions that were simply "member" or
+      "not:member" to be "python:member" or "python:not member" to
+      prevent member object from being called, leading to infinite
+      recursion in certain cases.
+      [rafrombrc]
+
+    - Fix 'reindexContentObject' in CatalogTool.py so that it doesn't
+      set the modification date to now due to some AT "convenience".
+      [nouri]
+
+    - Cleanup the localrole form to support searching for either a users full
+      name or login name; both at once does not work.
+      [wichert]
 
 Plone 2.5 - released June 16, 2006
 
@@ -820,6 +865,53 @@ Plone 2.5 - released June 16, 2006
       moves some files to /portal_skins/plone_deprecated which will be removed
       in the next release.
       [hannosch]
+
+Plone 2.1.4 - Devo - Unreleased
+
+    - Minor spelling fix in folder_localrole_form.
+      [hannosch]
+
+    - Removed OS notes for iCal and vCal on the event view. Meanwhile both
+      standards are used on all OS'es. This closes
+      http://dev.plone.org/plone/ticket/4113.
+      [hannosch]
+
+    - Fixed mysterious RuntimeError bug in rssAllowed.py.
+      This closes http://dev.plone.org/plone/ticket/5611.
+      [hannosch]
+
+    - Use Fullname in recently_published and modified templates
+      [jladage]
+
+    - Cleaned up some messages that were only differing slightly.
+      [hannosch]
+
+    - Changed remaining blank 'a' styles to 'a:link' to make sure anchors aren't
+      affected.
+      [limi]
+
+    - Fix rename from the action menu when using virtual hosting. Thanks to
+      Daniel Nouri, Maurits van Rees, Alec Mitchell and Stefan Holek for 
+      pointers and code.
+      [optilude]
+
+    - Added plone.css Python Script that returns the rendered CSS for use when
+      external tools need a static reference. Cached for one day.
+      [fschulze][limi]
+
+    - Added portal status message to author and personalize_form. Since Limi
+      Added the tabs and switched to the content slot instead of main, the
+      status message wasn't shown.
+      [jladage]
+
+    - Fixed Plone/Unknown in HTTP Server header. It now shows the correct
+      Plone version (again).
+      [stefan]
+
+    - Changed the default background color to match the defined background 
+      color for better readability. If you want the old behaviour back, add 
+      'dl.portlet { background-color: transparent }' to your style sheet.
+      [limi]
 
 Plone 2.1.2 - Saint Etienne - Released January 20, 2006
 

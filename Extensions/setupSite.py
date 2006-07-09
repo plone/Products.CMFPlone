@@ -6,16 +6,22 @@ def process(name, swhome, ihome):
     os.environ['INSTANCE_HOME'] = ihome
 
     if sys.platform == 'win32':
-        sys.path.insert(0, '%s/Zope/lib/python' % swhome)
-        sys.path.insert(1, '%s/Python/lib' % swhome)
-        sys.path.insert(2, '%s' % swhome)
+        sys.path.insert(0, os.path.join(swhome, 'Zope', 'lib', 'python'))
+        sys.path.insert(1, os.path.join(swhome, 'Python', 'lib'))
+        sys.path.insert(2, swhome)
     else:
         os.environ['SOFTWARE_HOME'] = swhome
-        sys.path.insert(0, '%s' % swhome)
+        sys.path.insert(0, swhome)
 
     # have to set up env first
-    import Zope
-    configfile = os.path.join(ihome,'etc','zope.conf')
+    try:
+        # Zope 2.8 on, Zope is now 'Zope2' and 'zope' is the Zope 3
+        # libs.
+        import Zope2 as Zope
+    except ImportError:
+        import Zope
+
+    configfile = os.path.join(ihome, 'etc', 'zope.conf')
 
     # nuke remaining command line arguments
     sys.argv = sys.argv[:1]
