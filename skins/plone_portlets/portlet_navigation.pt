@@ -67,7 +67,9 @@
                                  level python:0;
                                  show_children python:True;
                                  isNaviTree python:True;">
+                <ul class="navTreeLocal" tal:omit-tag="python:navRoot == portalPath">
                 <metal:main metal:use-macro="here/portlet_navtree_macro/macros/nav_main" />
+                </ul>
             </tal:navtree>
         </ul>
         <span class="portletBottomLeft"></span>

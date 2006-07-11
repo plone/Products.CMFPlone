@@ -108,7 +108,7 @@
                        tal:attributes="checked python:test(value, 'checked', None)" />
 
                 <label for="cb_current_folder_only"
-                            i18n:translate="label_current_folder_only">Root navigation tree in current folder</label>
+                            i18n:translate="label_current_folder_only">Only show the contents of the current folder</label>
 
                 <div class="formHelp" i18n:translate="help_current_folder_only">
                 If selected, the navigation tree will only show the current 
@@ -132,9 +132,9 @@
                   below the site root that must be exceeded before the
                   navigation tree will display. 0 means that the navigation
                   tree should be displayed everywhere including pages in the
-                  root of the site. 1 means the tree should be displayed 
-                  with content contained inside folders in the site root and 
-                  below.
+                  root of the site. 1 means the tree only shows up inside 
+                  folders located in the root and downwards, never showing at 
+                  the top level.
                 </div>
                 <input name="topLevel"
                        id="topLevel"
@@ -155,10 +155,9 @@
                   i18n:translate="label_required">(Required)
                 </span>
                 <div class="formHelp">
-                  An integer value that specifies the number of folder levels
-                  below the root that should be included in the tree structure 
-                  of the navigation tree.  0 means no limit.  1 means only 
-                  include the root folder.
+                  How many folders should be included before the navigation
+                  tree stops. 0 means no limit. 1 only includes the root 
+                  folder.
                 </div>
                 <input name="bottomLevel"
                        id="bottomLevel"

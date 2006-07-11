@@ -110,6 +110,10 @@ dd.portletFooter {
     margin-top: 1px;
 }
 
+.navTreeLocal {
+    margin: 0 0 0 0.75em;
+}
+
 .navTree li {
     margin-bottom: 1px;
 }
@@ -166,7 +170,7 @@ li.navTreeCurrentItem a:hover {
 
 
 .navTreeLevel0 { margin: 0; }
-.navTreeLevel1 { margin-left: 1em;}
+.navTreeLevel1 { margin-left: 0.75em; }
 .navTreeLevel2 { margin-left: 0.75em; }
 .navTreeLevel3 { margin-left: 0.75em; }
 .navTreeLevel4 { margin-left: 0.75em; }
