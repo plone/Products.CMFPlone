@@ -4,6 +4,14 @@ Changelog for Plone
 
 Plone 2.1.4 - Devo - Unreleased
 
+    - Rearranged some of the nav tree CSS so it is easier to have proper
+      padding when not using the icons.
+      [limi]
+
+    - Made the local nav tree functionality better, has correct indentation
+      now.
+      [limi] 
+
     - Minor spelling fix in folder_localrole_form.
       [hannosch]
 

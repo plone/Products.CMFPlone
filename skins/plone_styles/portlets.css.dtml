@@ -161,10 +161,21 @@ li.navTreeCurrentItem a:hover {
     height: auto;
 }
 
+.visualIconPadding,
+.actionMenu .actionMenuContent .visualIconPadding {
+    line-height: 1.6em;
+    padding-left: 0.5em;
+}
+
 /* Another workaround for broken Internet Explorer */
 
 * html li.navTreeCurrentItem a,
 * html li.navTreeCurrentItem a:hover {
+    height: 1.6em;
+}
+
+/* IE workaround to make sure the element is selectable in its full width */
+* html .visualIconPadding {
     height: 1.6em;
 }
 

@@ -79,12 +79,6 @@
     line-height: 1.6em;
 }
 
-/* And another IE workaround */
-
-* html .visualIconPadding {
-    height: 1.6em;
-}
-
 .visualIconReplace {
     background: transparent;
     display: block !important;
