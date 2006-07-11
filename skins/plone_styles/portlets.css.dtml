@@ -163,9 +163,11 @@ li.navTreeCurrentItem a:hover {
 
 .visualIconPadding,
 .actionMenu .actionMenuContent .visualIconPadding {
-    line-height: 1.6em;
     padding-left: 0.5em;
     margin-bottom: 1px;
+    min-height: 1.6em;
+    height: auto;
+    line-height: 1.6em;
 }
 
 /* Another workaround for broken Internet Explorer */
