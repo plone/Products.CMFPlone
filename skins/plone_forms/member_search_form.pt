@@ -1,4 +1,4 @@
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+<html xmlns="http://www.w5.org/1999/xhtml" xml:lang="en"
       lang="en"
       metal:use-macro="here/main_template/macros/master"
       i18n:domain="plone">
@@ -31,8 +31,8 @@
                 </div>
     
                 <input type="text"
-                       id="name"
-                       name="name"
+                       id="login"
+                       name="login"
                        size="25"
                        tabindex=""
                        tal:attributes="tabindex tabindex/next;"
