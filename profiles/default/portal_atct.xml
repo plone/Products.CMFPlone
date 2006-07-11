@@ -1,7 +1,5 @@
 <?xml version="1.0"?>
 <atcttool>
- <atct_tool_version value="from_filesystem"/>
- <cmftypes_are_recataloged value="True"/>
  <topic_indexes>
   <index name="allowedRolesAndUsers"
      description="The roles and users with View permission on an item"
