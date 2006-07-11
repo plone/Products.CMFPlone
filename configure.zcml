@@ -5,6 +5,11 @@
   <include package=".browser" />
   <include package=".exportimport" />
 
+  <five:implements
+    class=".FactoryTool.FactoryTool"
+    interface=".interfaces.IFactoryTool"
+    />
+
   <!-- Make all CMF style tools traversable via SimpleItem and Folder !danger! -->
   <five:traversable
       class="OFS.SimpleItem.SimpleItem"

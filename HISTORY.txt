@@ -2,6 +2,9 @@ Changelog for Plone
 
    (name of developer listed in brackets)
 
+    - Add GenericSetup import and export steps for the portal factory.
+      [wichert]
+
     - Fix a username vs userid confusion in the member search page and
       bring the implementation inline with the help text. This fixes
       http://dev.plone.org/plone/ticket/5657
