@@ -2,6 +2,10 @@ Changelog for Plone
 
    (name of developer listed in brackets)
 
+    - The list of addable types in a folder is now ordered according to the
+      translated title and not the English title anymore. This closes
+      http://dev.plone.org/plone/ticket/1760.
+
     - Add GenericSetup import and export steps for the portal factory.
       [wichert]
 
