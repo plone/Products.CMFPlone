@@ -134,7 +134,7 @@ except ImportError:
          "runs without this, but if you want multilingual "
          "interface or access keys, you must download it from "
          "http://plone.org/products/pts/"),
-        severity=zLOG.INFO, optional=1)
+        severity=logging.INFO, optional=1)
 
 try:
     import Products.PloneTranslations
