@@ -2,6 +2,11 @@ Changelog for Plone
 
    (name of developer listed in brackets)
 
+    - Using 'indexObject' instead of 'reindexObject' for
+      CatalogTool.clearFindAndRebuild works just as well, but does not
+      touch every object and cause a monster transaction to be committed.
+      [stefan]
+
     - The list of addable types in a folder is now ordered according to the
       translated title and not the English title anymore. This closes
       http://dev.plone.org/plone/ticket/1760.

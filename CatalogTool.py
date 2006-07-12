@@ -381,19 +381,15 @@ CatalogTool.__doc__ = BaseTool.__doc__
 
 InitializeClass(CatalogTool)
 
-# Utility function for calling reindexObject from ZopeFindAndApply
+# Utility function for calling indexObject from ZopeFindAndApply
 def reindexContentObject(obj, *args):
     """A method which reindexes an object if it is content.
        The ZopeFindAndApply method expects a function that takes both an
        object and a path as positional parameters."""
-    if base_hasattr(obj, 'reindexObject') and \
-            safe_callable(obj.reindexObject):
+    if base_hasattr(obj, 'indexObject') and \
+            safe_callable(obj.indexObject):
         try:
-            # 'reindexObject' sets modification date to now
-            modified = obj.modified()
-            obj.reindexObject()
-            obj.setModificationDate(modified)
-            obj.reindexObject(['modified'])
+            obj.indexObject()
         except TypeError:
             # Catalogs have 'reindexObject' as well, but they take
             # different args, and will fail
