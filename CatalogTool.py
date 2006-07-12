@@ -391,6 +391,6 @@ def reindexContentObject(obj, *args):
         try:
             obj.indexObject()
         except TypeError:
-            # Catalogs have 'reindexObject' as well, but they take
+            # Catalogs have 'indexObject' as well, but they take
             # different args, and will fail
             pass
