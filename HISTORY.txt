@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 2.1.4 - Devo - Unreleased
 
+    - Using 'indexObject' instead of 'reindexObject' for
+      CatalogTool.clearFindAndRebuild works just as well, but does not
+      touch every object and cause a monster transaction to be committed.
+      Also improved the ZMI experience.
+      [stefan]
+
     - Rearranged some of the nav tree CSS so it is easier to have proper
       padding when not using the icons.
       [limi]

@@ -2,6 +2,8 @@
 # Plone CatalogTool
 #
 import re
+import time
+import urllib
 
 from Products.CMFCore.CatalogTool import CatalogTool as BaseTool
 from Products.CMFCore.permissions import ManagePortal
@@ -463,27 +465,44 @@ class CatalogTool(PloneBaseTool, BaseTool):
 
         return ZCatalog.searchResults(self, REQUEST, **kw)
 
+    __call__ = searchResults
+
     security.declareProtected(ManageZCatalogEntries, 'clearFindAndRebuild')
     def clearFindAndRebuild(self):
         """Empties catalog, then finds all contentish objects (i.e. objects
-           with a reindexObject method), and reindexes them.
+           with an indexObject method), and reindexes them.
            This may take a long time."""
         self.manage_catalogClear()
         portal = aq_parent(aq_inner(self))
         for path, obj in portal.ZopeFind(portal, search_sub=True):
-            if base_hasattr(obj, 'reindexObject') and \
-                    safe_callable(obj.reindexObject):
+            if base_hasattr(obj, 'indexObject') and \
+                    safe_callable(obj.indexObject):
                 try:
-                    modified = obj.modified()
-                    obj.reindexObject()
-                    obj.setModificationDate(modified)
-                    obj.reindexObject(['modified'])
+                    obj.indexObject()
                 except TypeError:
-                    # Catalogs have 'reindexObject' as well, but they
+                    # Catalogs have 'indexObject' as well, but they
                     # take different args, and will fail
                     pass
 
-    __call__ = searchResults
+    security.declareProtected(ManageZCatalogEntries, 'manage_catalogRebuild')
+    def manage_catalogRebuild(self, RESPONSE=None, URL1=None):
+        """Clears the catalog and indexes all objects with an 'indexObject' method.
+           This may take a long time.
+        """
+        elapse = time.time()
+        c_elapse = time.clock()
+
+        self.clearFindAndRebuild()
+
+        elapse = time.time() - elapse
+        c_elapse = time.clock() - c_elapse
+
+        if RESPONSE is not None:
+            RESPONSE.redirect(
+              URL1 + '/manage_catalogAdvanced?manage_tabs_message=' +
+              urllib.quote('Catalog Rebuilt\n'
+                           'Total time: %s\n'
+                           'Total CPU time: %s' % (`elapse`, `c_elapse`)))
 
 CatalogTool.__doc__ = BaseTool.__doc__
 
