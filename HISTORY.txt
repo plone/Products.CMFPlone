@@ -2,6 +2,12 @@ Changelog for Plone
 
    (name of developer listed in brackets)
 
+    - Fix handling of login_time and last_login member properties:
+      last_login_time is now the time of the previous login and login_time is
+      the time of the current login. This fixes
+      http://dev.plone.org/plone/ticket/5471
+      [wichert]
+
     - Ignore the ' character when normalizing strings. This implements part
       of http://dev.plone.org/plone/ticket/5664
       [wichert]
