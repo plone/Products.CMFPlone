@@ -36,6 +36,7 @@ from i18nl10n import ulocalized_time
 from i18nl10n import getGlobalTranslationService
 
 # Define and compile static regexes
+IGNORE_REGEX = re.compile(r"[']")
 FILENAME_REGEX = re.compile(r"^(.+)\.(\w{,4})$")
 NON_WORD_REGEX = re.compile(r"[\W\-]+")
 DANGEROUS_CHARS_REGEX = re.compile(r"[?&/:\\#]+")
@@ -234,6 +235,8 @@ def normalizeString(text, context=None, encoding=None, relaxed=False):
     if m is not None:
         base = m.groups()[0]
         ext  = m.groups()[1]
+
+    base = IGNORE_REGEX.sub("", base)
 
     if not relaxed:
         base = NON_WORD_REGEX.sub("-", base)

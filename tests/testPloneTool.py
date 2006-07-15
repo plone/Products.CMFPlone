@@ -131,8 +131,8 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
         # Punctuation and spaces are trimmed, multiples reduced to 1
         self.assertEqual(self.utils.normalizeString(" a string    "),
                          'a-string')
-        self.assertEqual(self.utils.normalizeString(">here's another!"),
-                         'here-s-another')
+        self.assertEqual(self.utils.normalizeString(">here is another!"),
+                         'here-is-another')
         self.assertEqual(
             self.utils.normalizeString("one with !@#$!@#$ stuff in the middle"),
             'one-with-stuff-in-the-middle')
@@ -178,6 +178,10 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
         self.assertEqual(
             self.utils.normalizeString(u"\uc774\ubbf8\uc9f1 Korean"),
             'c774bbf8c9f1-korean')
+
+    def testNormalizeStringIgnoredCharacters(self):
+        # Some characters should be ignored
+        self.assertEqual(self.utils.normalizeString("test'test"), 'testtest')
 
     def testNormalizeStringObject(self):
         # Objects should be converted to strings using repr()
