@@ -102,9 +102,18 @@ function DOMContentLoadedInit() {
 	window.DOMContentLoadedInitDone = true;
 
 	// iterates through array of registered functions 
+	var exceptions = new Array();
 	for (var i=0; i<window.onDOMLoadEvents.length; i++) {
 		var func = window.onDOMLoadEvents[i];
-		func();
+		try {
+			func();
+		} catch(e) {
+			// continue running init functions but save exceptions for later
+			exceptions[exceptions.length] = e;
+		}
+	}
+	for (var i=0; i<exceptions.length; i++) {
+		throw exceptions[i];
 	}
 }
 
