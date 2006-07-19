@@ -12,64 +12,70 @@ var bugRiddenCrashPronePieceOfJunk = (
 
 // check for W3CDOM compatibility
 var W3CDOM = (!bugRiddenCrashPronePieceOfJunk &&
-               document.getElementsByTagName &&
-               document.createElement);
+               typeof document.getElementsByTagName != 'undefined' &&
+               typeof document.createElement != 'undefined' );
 
 // cross browser function for registering event handlers
+var registerEventListener = undefined;
+
 if (typeof addEvent != 'undefined') {
     // use Dean Edwards' function if available
-    function registerEventListener(elem, event, func) {
+    registerEventListener = function (elem, event, func) {
         addEvent(elem, event, func);
         return true;
     }
 } else if (window.addEventListener) {
-    function registerEventListener(elem, event, func) {
+    registerEventListener = function (elem, event, func) {
         elem.addEventListener(event, func, false);
         return true;
     }
 } else if (window.attachEvent) {
-    function registerEventListener(elem, event, func) {
+    registerEventListener = function (elem, event, func) {
         var result = elem.attachEvent("on"+event, func);
         return result;
     }
 } else {
-    function registerEventListener(elem, event, func) {
+    registerEventListener = function (elem, event, func) {
         // maybe we could implement something with an array
         return false;
     }
 }
 
 // cross browser function for unregistering event handlers
+var unRegisterEventListener = undefined;
+
 if (typeof removeEvent != 'undefined') {
     // use Dean Edwards' function if available
-    function unRegisterEventListener(elem, event, func) {
+    unRegisterEventListener = function (elem, event, func) {
         removeEvent(element, event, func);
         return true;
     }
 } else if (window.removeEventListener) {
-    function unRegisterEventListener(elem, event, func) {
+    unRegisterEventListener = function (elem, event, func) {
         elem.removeEventListener(event, func, false);
         return true;
     }
 } else if (window.detachEvent) {
-    function unRegisterEventListener(elem, event, func) {
+    unRegisterEventListener = function (elem, event, func) {
         var result = elem.detachEvent("on"+event, func);
         return result;
     }
 } else {
-    function unRegisterEventListener(elem, event, func) {
+    unRegisterEventListener = function (elem, event, func) {
         // maybe we could implement something with an array
         return false;
     }
 }
 
+var registerPloneFunction = undefined;
+
 if (typeof addDOMLoadEvent != 'undefined') {
-    function registerPloneFunction(func) {
-        // registers a function to fire onload.
+    registerPloneFunction = function (func) {
+        // registers a function to fire ondomload.
         registerEventListener(window, "domload", func);
     }
 } else {
-    function registerPloneFunction(func) {
+    registerPloneFunction = function (func) {
         // registers a function to fire onload.
         registerEventListener(window, "load", func);
     }
