@@ -22,12 +22,11 @@ function decodeReferrer(ref) {
     }
     if (!ref) return null;
 
-    var match = new RegExp('');
     var seQuery = '';
     for (var i = 0; i < searchEngines.length; i ++) {
-        match.compile(searchEngines[i][0], 'i');
+        var match = new RegExp(searchEngines[i][0], 'i');
         if (ref.match(match)) {
-            match.compile('^.*'+searchEngines[i][1]+'([^&]+)&?.*$');
+            var match = new RegExp('^.*'+searchEngines[i][1]+'([^&]+)&?.*$');
             seQuery = ref.replace(match, '$1');
             if (seQuery) {
                 seQuery = decodeURIComponent(seQuery);
