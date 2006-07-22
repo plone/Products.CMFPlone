@@ -200,4 +200,15 @@
   <metadata name="Type" description="An item's type (e.g. Event)"
      enabled="True" friendlyName="Item Type"/>
  </topic_metadata>
+ <property name="title">ATContentTypes Tool</property>
+ <property name="image_types">
+  <element value="Image"/>
+  <element value="News Item"/>
+ </property>
+ <property name="folder_types">
+  <element value="Image"/>
+ </property>
+ <property name="album_batch_size">30</property>
+ <property name="album_image_scale">thumb</property>
+ <property name="single_image_scale">preview</property>
 </atcttool>
