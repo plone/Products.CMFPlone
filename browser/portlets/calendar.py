@@ -45,7 +45,7 @@ class CalendarPortlet(utils.BrowserView):
         month = request.get('month', None)
 
         # Next get the data from the SESSION
-        if context.portal_calendar.getUseSession():  # XXX GoldEgg changed from 'container' to 'context'
+        if context.portal_calendar.getUseSession():
             session = request.get('SESSION', None)
             if session:
                 if not year:

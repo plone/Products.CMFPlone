@@ -2,6 +2,9 @@ Changelog for Plone
 
    (name of developer listed in brackets)
 
+    - Added a few tests for the calendar view.
+      [hannosch]
+
     - Fixed the problem where you cannot select items in folder_contents in
       Safari. All non-draggable elements must have the 'notDraggable' CSS
       class now. This closes http://dev.plone.org/plone/ticket/5586.
