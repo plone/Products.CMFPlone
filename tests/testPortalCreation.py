@@ -7,20 +7,29 @@ if __name__ == '__main__':
     execfile(os.path.join(sys.path[0], 'framework.py'))
 
 from Products.CMFPlone.tests import PloneTestCase
-
-from Products.CMFCore.permissions import AccessInactivePortalContent
 from Products.CMFPlone.tests import dummy
 
-from Products.PageTemplates.ZopePageTemplate import ZopePageTemplate
+from tempfile import mkstemp
+from zope.app.component.interfaces import ISite
+from zope.component import getGlobalSiteManager
+from zope.component import getSiteManager
+from zope.component import getUtility
+from zope.component import queryUtility
+from zope.component.interfaces import IComponentLookup
+from zope.component.interfaces import IComponentRegistry
+from zope.interface import alsoProvides
+
 from Acquisition import aq_base
 from DateTime import DateTime
-from tempfile import mkstemp
+from OFS.SimpleItem import SimpleItem
 
+from Products.CMFCore.CachingPolicyManager import CachingPolicyManager
+from Products.CMFCore.permissions import AccessInactivePortalContent
+from Products.PageTemplates.ZopePageTemplate import ZopePageTemplate
 from Products.StandardCacheManagers.AcceleratedHTTPCacheManager import \
      AcceleratedHTTPCacheManager
 from Products.StandardCacheManagers.RAMCacheManager import \
      RAMCacheManager
-from Products.CMFCore.CachingPolicyManager import CachingPolicyManager
 
 
 class TestPortalCreation(PloneTestCase.PloneTestCase):
@@ -678,6 +687,54 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         actions = self.portal.portal_actions.listActions()
         homeAction = [x for x in actions if x.id == 'index_html'][0]
         self.assertEquals(homeAction.getActionExpression(), 'string:${globals_view/navigationRootUrl}')
+
+    def testSiteManagerSetup(self):
+        # The portal should be an ISite
+        self.failUnless(ISite.providedBy(self.portal))
+        # There should be a IComponentRegistry
+        comp = IComponentLookup(self.portal)
+        IComponentRegistry.providedBy(comp)
+        # Test if we get the right site managers
+        gsm = getGlobalSiteManager()
+        sm = getSiteManager()
+        # Without a context we should get the global site manager
+        self.failUnless(sm is gsm)
+        # On the portal itself we should get the local site manager
+        sm = getSiteManager(self.portal)
+        self.failUnless(sm is comp)
+        # On any folder inside the portal we should get the local site
+        # manager as well, through Acquistion
+        sm = getSiteManager(self.folder)
+        self.failUnless(sm is comp)        
+
+    def testUtilityRegistration(self):
+        gsm = getGlobalSiteManager()
+        global_util = dummy.DummyUtility()
+
+        # Register a global utility and see if we can get it
+        gsm.registerUtility(global_util, dummy.IDummyUtility)
+        getutil = getUtility(dummy.IDummyUtility)
+        self.assertEquals(getutil, global_util)
+
+        # Register a local utility and see if we can get it
+        sm = getSiteManager(self.portal)
+        local_util = dummy.DummyUtility()
+
+        sm.registerUtility(local_util, dummy.IDummyUtility)
+        getutil = getUtility(dummy.IDummyUtility, context=self.portal)
+        self.assertEquals(getutil, local_util)
+
+        # If we don't pass a context we get the global utility
+        getutil = getUtility(dummy.IDummyUtility)
+        self.assertEquals(getutil, global_util)
+
+        # Clean up again and unregister the utilites
+        gsm.unregisterUtility(provided=dummy.IDummyUtility)
+        sm.unregisterUtility(provided=dummy.IDummyUtility)
+        
+        # Make sure unregistration was successful
+        util = queryUtility(dummy.IDummyUtility, context=self.portal)
+        self.failUnless(util is None)
 
 
 class TestPortalBugs(PloneTestCase.PloneTestCase):

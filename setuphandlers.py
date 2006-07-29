@@ -2,6 +2,9 @@
 CMFPlone setup handlers.
 """
 
+from zope.component.globalregistry import base
+from zope.component.persistentregistry import PersistentComponents
+
 from Acquisition import aq_base
 from Products.StandardCacheManagers.AcceleratedHTTPCacheManager import \
      AcceleratedHTTPCacheManager
@@ -14,6 +17,8 @@ from Products.CMFPlone.utils import _createObjectByType
 from Products.CMFPlone import migrations as migs
 from Products.CMFPlone.Portal import member_indexhtml
 from Products.CMFPlone.setup.ConfigurationMethods import assignTitles
+from Products.Five.component import enableSite
+from Products.Five.component.interfaces import IObjectManagerSite
 
 class PloneGenerator:
 
@@ -183,7 +188,17 @@ class PloneGenerator:
         """
         atcttool = getToolByName(p, 'portal_atct')
         atcttool.setVersionFromFS()
-        
+
+    def enableSite(self, portal):
+        """
+        Make the portal a Zope3 site and create a site manager.
+        """
+        enableSite(portal, iface=IObjectManagerSite)
+
+        components = PersistentComponents()
+        components.__bases__ = (base,)
+        portal.setSiteManager(components)
+
 def importVarious(context):
     """
     Import various settings.
@@ -193,6 +208,7 @@ def importVarious(context):
     """
     site = context.getSite()
     gen = PloneGenerator()
+    gen.enableSite(site)
     gen.installProducts(site)
     gen.customizePortalOptions(site)
     gen.addCacheHandlers(site)

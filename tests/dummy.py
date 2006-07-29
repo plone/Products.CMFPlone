@@ -7,6 +7,7 @@
 import os
 
 from zope.interface import implements
+from zope.interface import Interface
 
 from Products.CMFPlone.interfaces import INonStructuralFolder
 
@@ -179,3 +180,9 @@ class ImageComputedProps(Item):
         return getattr(self, '_longdesc', '')
 
     longdesc = ComputedAttribute(get_longdesc, 1)
+
+class IDummyUtility(Interface):
+    pass
+
+class DummyUtility(SimpleItem):
+    implements(IDummyUtility)
