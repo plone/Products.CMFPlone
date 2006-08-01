@@ -144,7 +144,15 @@ from Products.CMFPlone.migrations.v2_5.betas import installPortalSetup
 from Products.CMFPlone.migrations.v2_5.betas import simplifyActions
 from Products.CMFPlone.migrations.v2_5.betas import migrateCSSRegExpression
 
+from Products.CMFPlone.migrations.v3_0.alphas import enableZope3Site
+
+from zope.app.component.hooks import clearSite
+from zope.app.component.interfaces import ISite
+from zope.component import getGlobalSiteManager
+from zope.component import getSiteManager
+
 from Products.CMFDynamicViewFTI.migrate import migrateFTI
+from Products.Five.component import disableSite
 
 import types
 
@@ -3951,6 +3959,46 @@ class TestMigrations_v2_5(MigrationTest):
         migrateCSSRegExpression(self.portal, [])
 
 
+class TestMigrations_v3_0(MigrationTest):
+
+    def afterSetUp(self):
+        self.actions = self.portal.portal_actions
+        self.skins = self.portal.portal_skins
+        self.types = self.portal.portal_types
+        self.workflow = self.portal.portal_workflow
+
+    def testEnableZope3Site(self):
+        # First we remove the site and site manager
+        disableSite(self.portal)
+        clearSite(self.portal)
+        self.portal.setSiteManager(None)
+
+        # Then run the migration step
+        enableZope3Site(self.portal, [])
+        
+        # And see if we have an ISite with a local site manager
+        self.failUnless(ISite.providedBy(self.portal))
+        gsm = getGlobalSiteManager()
+        sm = getSiteManager(self.portal)
+        self.failIf(gsm is sm)
+
+    def testEnableZope3SiteTwice(self):
+        # First we remove the site and site manager
+        disableSite(self.portal)
+        clearSite(self.portal)
+        self.portal.setSiteManager(None)
+
+        # Then run the migration step
+        enableZope3Site(self.portal, [])
+        enableZope3Site(self.portal, [])
+
+        # And see if we have an ISite with a local site manager
+        self.failUnless(ISite.providedBy(self.portal))
+        gsm = getGlobalSiteManager()
+        sm = getSiteManager(self.portal)
+        self.failIf(gsm is sm)
+
+
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
@@ -3960,6 +4008,7 @@ def test_suite():
     suite.addTest(makeSuite(TestMigrations_v2_1_2))
     suite.addTest(makeSuite(TestMigrations_v2_1_3))
     suite.addTest(makeSuite(TestMigrations_v2_5))
+    suite.addTest(makeSuite(TestMigrations_v3_0))
 
     return suite
 

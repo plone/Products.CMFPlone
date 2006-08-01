@@ -4,8 +4,7 @@ Changelog for Plone
 
 Plone 3.0 - Unreleased
 
-    - The portal object is set up as a Zope3 site with a local component
-      registry during portal creation now.
+    - The portal object is set up as a Zope3 site with a local site manager.
       [hannosch]
 
     - Removed CMFPlone.MemberData. This class is never used, and the future

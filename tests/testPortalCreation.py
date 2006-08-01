@@ -17,7 +17,6 @@ from zope.component import getUtility
 from zope.component import queryUtility
 from zope.component.interfaces import IComponentLookup
 from zope.component.interfaces import IComponentRegistry
-from zope.interface import alsoProvides
 
 from Acquisition import aq_base
 from DateTime import DateTime
