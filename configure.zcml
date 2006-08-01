@@ -5,6 +5,11 @@
   <include package=".browser" />
   <include package=".exportimport" />
 
+  <five:implements
+    class=".FactoryTool.FactoryTool"
+    interface=".interfaces.IFactoryTool"
+    />
+
   <five:deprecatedManageAddDelete
       class=".Portal.PloneSite" />
 

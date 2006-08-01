@@ -12,6 +12,7 @@ from structure import INonStructuralFolder
 from view import IBrowserDefault
 from view import ISelectableBrowserDefault
 from view import IDynamicViewTypeInformation
+from factory import IFactoryTool
 
 import PropertiesTool
 import PloneBaseTool

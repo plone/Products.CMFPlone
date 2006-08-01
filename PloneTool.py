@@ -990,7 +990,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         'a-string'
 
         >>> ptool.normalizeString(">here's another!")
-        'here-s-another'
+        'heres-another'
 
         >>> ptool.normalizeString("one with !@#$!@#$ stuff in the middle")
         'one-with-stuff-in-the-middle'

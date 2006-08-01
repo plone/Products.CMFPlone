@@ -5,6 +5,13 @@
    >
 
   <adapter
+     factory=".factorytool.PortalFactoryXMLAdapter"
+     provides="Products.GenericSetup.interfaces.IBody"
+     for="Products.CMFPlone.interfaces.IFactoryTool
+          Products.GenericSetup.interfaces.ISetupEnviron"
+     />
+
+  <adapter
      factory=".propertiestool.PlonePropertiesToolXMLAdapter"
      provides="Products.GenericSetup.interfaces.IBody"
      for="Products.CMFPlone.interfaces.IPropertiesTool

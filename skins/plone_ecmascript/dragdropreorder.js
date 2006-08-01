@@ -116,7 +116,9 @@ ploneDnDReorder.initializeDragDrop = function() {
                                     "table#sortable > tbody > tr");
     var targets = cssQuery("table#sortable > tr > td," +
                            "table#sortable > tbody > tr > td");
-    for (var i=1; i<targets.length; i++) {
+    for (var i=0; i<targets.length; i++) {
+        if (hasClassName(targets[i], 'notDraggable'))
+            continue;
         targets[i].onmousedown=ploneDnDReorder.doDown;
         targets[i].onmouseup=ploneDnDReorder.doUp;
         addClassName(targets[i], "draggingHook");

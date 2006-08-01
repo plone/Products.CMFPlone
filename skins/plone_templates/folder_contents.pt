@@ -24,7 +24,7 @@
                      contentsMethod python:test(here.portal_type=='Topic', here.queryCatalog, here.getFolderContents);
                      batch batch|python:contentsMethod(contentFilter,batch=True, b_size=b_size);
                      full_view full_view|request/full_view|python:True;">
-      
+
       <form name="folderContentsForm"
             method="post"
             action="folder_object"
@@ -38,7 +38,7 @@
           <span tal:content="python: view_title and here.utranslate(view_title) or putils.pretty_title_or_id(here)" tal:omit-tag="">Directory Id</span>
         </h1>
         <tal:full_view condition="full_view">
-    
+
             <a href=""
                class="link-parent"
                tal:define="parent_url python:here.navigationParent(here, fallThroughDefaultPage = False, checkPermissions = ['List folder contents'])"
@@ -202,7 +202,7 @@
                             * Create title_or_id metadata in the catalog (why not just use item.Title or item.getId? (alecm))
                        </tal:comment>
 
-                       <td>
+                       <td class="notDraggable">
                            <input type="checkbox"
                                   class="noborder"
                                   name="paths:list" id="#"
@@ -230,7 +230,7 @@
                             </strong>
                         </a>
                         </span>
-                        
+
                         <span class="state-expired"
                               tal:condition="python:portal.isExpired(item)"
                               i18n:translate="time_expired">expired</span>

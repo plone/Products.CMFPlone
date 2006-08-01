@@ -110,6 +110,10 @@ dd.portletFooter {
     margin-top: 1px;
 }
 
+.navTreeLocal {
+    margin: 0 0 0 0.75em;
+}
+
 .navTree li {
     margin-bottom: 1px;
 }
@@ -157,6 +161,15 @@ li.navTreeCurrentItem a:hover {
     height: auto;
 }
 
+.visualIconPadding,
+.actionMenu .actionMenuContent .visualIconPadding {
+    padding-left: 0.5em;
+    margin-bottom: 1px;
+    min-height: 1.6em;
+    height: auto;
+    line-height: 1.6em;
+}
+
 /* Another workaround for broken Internet Explorer */
 
 * html li.navTreeCurrentItem a,
@@ -164,9 +177,14 @@ li.navTreeCurrentItem a:hover {
     height: 1.6em;
 }
 
+/* IE workaround to make sure the element is selectable in its full width */
+* html .visualIconPadding {
+    height: 1.6em;
+}
+
 
 .navTreeLevel0 { margin: 0; }
-.navTreeLevel1 { margin-left: 1em;}
+.navTreeLevel1 { margin-left: 0.75em;}
 .navTreeLevel2 { margin-left: 0.75em; }
 .navTreeLevel3 { margin-left: 0.75em; }
 .navTreeLevel4 { margin-left: 0.75em; }

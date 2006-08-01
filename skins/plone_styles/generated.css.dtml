@@ -73,16 +73,6 @@
 .actionMenu .actionMenuContent .visualIconPadding {
     padding-left: 18px;
     margin-left: -1px;
-    margin-bottom: 1px;
-    min-height: 1.6em;
-    height: auto;
-    line-height: 1.6em;
-}
-
-/* And another IE workaround */
-
-* html .visualIconPadding {
-    height: 1.6em;
 }
 
 .visualIconReplace {
