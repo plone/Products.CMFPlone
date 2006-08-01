@@ -143,8 +143,8 @@ class Plone(utils.BrowserView):
         self._data['default_language'] = default_language = \
                               site_props.getProperty('default_language', None)
         self._data['language'] =  self.request.get('language', None) or \
-                                  context.Language or default_language
-        self._data['is_editable'] =  checkPermission('Modify portal content',
+                                  context.Language() or default_language
+        self._data['is_editable'] = checkPermission('Modify portal content',
                                                      context)
         # BBB: isEditable is deprecated use is_editable instead
         self._data['isEditable'] =  self._data['is_editable']

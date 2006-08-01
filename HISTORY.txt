@@ -2,6 +2,10 @@ Changelog for Plone
 
    (name of developer listed in brackets)
 
+    - Fixed language setting in the html page header. This closes
+      http://dev.plone.org/plone/ticket/5444.
+      [hannosch]
+
     - Added a few tests for the calendar view.
       [hannosch]
 
