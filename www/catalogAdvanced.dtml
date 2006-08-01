@@ -26,24 +26,6 @@
 </tr>
 <tr>
   <td align="left" valign="top">
-  <p class="form-help"> Clear and Rebuild will remove all entries from the
-  catalog, and then walk the entire portal looking for content objects which
-  should be indexed in the catalog and index them.  Doing this will remove
-  inappropriate entries from the portal catalog (scripts, templates) and
-  preserve all indexed content.  This may take a very long time, but it is the
-  correct way to rebuild a catalog that has had objects improperly added or
-  removed.
-  </p>
-  </td>
-  <td align="right" valign="top">
-<form action="&dtml-URL1;">
-<input class="form-element" type="submit"
- name="clearFindAndRebuild:method" value=" Clear and Rebuild ">
-</form>
-  </td>
-</tr>
-<tr>
-  <td align="left" valign="top">
   <p class="form-help">Clearing the catalog will remove all entries.
   </p>
   </td>
@@ -54,7 +36,6 @@
 </form>
   </td>
 </tr>
-<tr>
   <td align="left" valign="top">
   <p class="form-help">Log progress of reindexing every N objects to the Zope logger (set to 0 to disable logging)
   </p>
@@ -67,11 +48,33 @@
 </form>
   </td>
 </tr>
-<tr>
-  <td>
-
+<tr class="section-bar">
+  <td colspan="2" align="left">
+  <div class="form-label">
+  Clear and Rebuild
+  </div>
   </td>
 </tr>
+<tr>
+  <td align="left" valign="top">
+  <p class="form-help"> Clear and Rebuild will remove all entries from the
+  catalog, and then walk the entire portal looking for content objects which
+  should be indexed in the catalog and index them.  Doing this will remove
+  inappropriate entries from the portal catalog (scripts, templates) and
+  preserve all indexed content.  This may take a long time, but it is the
+  correct way to rebuild a catalog that has had objects improperly added or
+  removed.
+  </p>
+  <br />
+  </td>
+  <td align="right" valign="top">
+<form action="&dtml-URL1;">
+<input class="form-element" type="submit"
+ name="manage_catalogRebuild:method" value=" Clear and Rebuild ">
+</form>
+  </td>
+</tr>
+<tr>
 <tr class="section-bar">
   <td colspan="2" align="left">
   <div class="form-label">
@@ -149,8 +152,4 @@
 </tr>
 </table>
 <dtml-var manage_page_footer>
-
-
-
-
 

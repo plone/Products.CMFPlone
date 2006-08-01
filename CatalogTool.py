@@ -2,7 +2,8 @@
 # Plone CatalogTool
 #
 import re
-import urllib, time
+import time
+import urllib
 
 from Products.CMFCore.CatalogTool import CatalogTool as BaseTool
 from Products.CMFCore.permissions import ManagePortal
@@ -350,47 +351,45 @@ class CatalogTool(PloneBaseTool, BaseTool):
 
         return ZCatalog.searchResults(self, REQUEST, **kw)
 
-    security.declareProtected(ManageZCatalogEntries, 'clearFindAndRebuild')
-    def clearFindAndRebuild(self, REQUEST=None, RESPONSE=None, URL1=None):
-        """Empties catalog, then finds all contentish objects (i.e. objects
-           with a reindexObject method), and reindexes them.
-           This may take a long time."""
+    __call__ = searchResults
 
+    security.declareProtected(ManageZCatalogEntries, 'clearFindAndRebuild')
+    def clearFindAndRebuild(self):
+        """Empties catalog, then finds all contentish objects (i.e. objects
+           with an indexObject method), and reindexes them.
+           This may take a long time."""
+        self.manage_catalogClear()
+        portal = aq_parent(aq_inner(self))
+        for path, obj in portal.ZopeFind(portal, search_sub=True):
+            if base_hasattr(obj, 'indexObject') and \
+                    safe_callable(obj.indexObject):
+                try:
+                    obj.indexObject()
+                except TypeError:
+                    # Catalogs have 'indexObject' as well, but they
+                    # take different args, and will fail
+                    pass
+
+    security.declareProtected(ManageZCatalogEntries, 'manage_catalogRebuild')
+    def manage_catalogRebuild(self, RESPONSE=None, URL1=None):
+        """Clears the catalog and indexes all objects with an 'indexObject' method.
+           This may take a long time.
+        """
         elapse = time.time()
         c_elapse = time.clock()
 
-        self.manage_catalogClear()
-        portal = aq_parent(aq_inner(self))
-        portal.ZopeFindAndApply(portal, search_sub=True,
-                                apply_func=reindexContentObject)
+        self.clearFindAndRebuild()
 
         elapse = time.time() - elapse
         c_elapse = time.clock() - c_elapse
 
-        if REQUEST and RESPONSE:
+        if RESPONSE is not None:
             RESPONSE.redirect(
-                URL1 +
-                '/manage_catalogAdvanced?manage_tabs_message=' +
-                urllib.quote('Catalog Cleared and Recreated \n'
-                             'Total time: %s\n'
-                             'Total CPU time: %s' % (`elapse`, `c_elapse`)))
-
-    __call__ = searchResults
+              URL1 + '/manage_catalogAdvanced?manage_tabs_message=' +
+              urllib.quote('Catalog Rebuilt\n'
+                           'Total time: %s\n'
+                           'Total CPU time: %s' % (`elapse`, `c_elapse`)))
 
 CatalogTool.__doc__ = BaseTool.__doc__
 
 InitializeClass(CatalogTool)
-
-# Utility function for calling indexObject from ZopeFindAndApply
-def reindexContentObject(obj, *args):
-    """A method which reindexes an object if it is content.
-       The ZopeFindAndApply method expects a function that takes both an
-       object and a path as positional parameters."""
-    if base_hasattr(obj, 'indexObject') and \
-            safe_callable(obj.indexObject):
-        try:
-            obj.indexObject()
-        except TypeError:
-            # Catalogs have 'indexObject' as well, but they take
-            # different args, and will fail
-            pass

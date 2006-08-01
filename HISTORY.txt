@@ -868,6 +868,20 @@ Plone 2.5 - released June 16, 2006
 
 Plone 2.1.4 - Devo - Unreleased
 
+    - Using 'indexObject' instead of 'reindexObject' for
+      CatalogTool.clearFindAndRebuild works just as well, but does not
+      touch every object and cause a monster transaction to be committed.
+      Also improved the ZMI experience.
+      [stefan]
+
+    - Rearranged some of the nav tree CSS so it is easier to have proper
+      padding when not using the icons.
+      [limi]
+
+    - Made the local nav tree functionality better, has correct indentation
+      now.
+      [limi]
+
     - Minor spelling fix in folder_localrole_form.
       [hannosch]
 
