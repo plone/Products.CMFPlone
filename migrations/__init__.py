@@ -8,7 +8,128 @@ def null(portal):
     pass
 
 def registerMigrations():
-    # so the basic concepts is you put a bunch of migrations is here
+    # So the basic concepts is you put a bunch of migrations in here.
+
+    # If False is specified as the actual migration function, this means
+    # this upgrade path is not available anymore.
+
+    MigrationTool.registerUpgradePath('1.0',
+                                      '1.0.1',
+                                      False)
+
+    MigrationTool.registerUpgradePath('1.0.1',
+                                      '1.0.2',
+                                      False)
+
+    MigrationTool.registerUpgradePath('1.0.2',
+                                      '1.0.3',
+                                      False)
+
+    MigrationTool.registerUpgradePath('1.0.3',
+                                      '1.0.4',
+                                      False)
+
+    MigrationTool.registerUpgradePath('1.0.4',
+                                      '1.0.5',
+                                      False)
+
+    MigrationTool.registerUpgradePath('1.0.5',
+                                      '2.0-beta2',
+                                      False)
+
+    MigrationTool.registerUpgradePath('2.0-beta2',
+                                      '2.0-beta3',
+                                      False)
+
+    MigrationTool.registerUpgradePath('2.0-beta3',
+                                      '2.0-rc2',
+                                      False)
+
+    MigrationTool.registerUpgradePath('2.0-rc2',
+                                      '2.0-rc3',
+                                      False)
+
+    MigrationTool.registerUpgradePath('2.0-rc3',
+                                      '2.0-rc4',
+                                      False)
+
+    MigrationTool.registerUpgradePath('2.0-rc4',
+                                      '2.0-rc5',
+                                      False)
+
+    MigrationTool.registerUpgradePath('2.0-rc5',
+                                      '2.0',
+                                      False)
+
+    MigrationTool.registerUpgradePath('2.0',
+                                      '2.0-rc6',
+                                      False)
+
+    MigrationTool.registerUpgradePath('2.0-rc6',
+                                      '2.0-final',
+                                      False)
+
+    MigrationTool.registerUpgradePath('2.0-final',
+                                      '2.0.1',
+                                      False)
+
+    MigrationTool.registerUpgradePath('2.0.1',
+                                      '2.0.2',
+                                      False)
+
+    MigrationTool.registerUpgradePath('2.0.2',
+                                      '2.0.3',
+                                      False)
+
+    MigrationTool.registerUpgradePath('2.0.3',
+                                      '2.0.4',
+                                      False)
+
+    MigrationTool.registerUpgradePath('2.0.4',
+                                      '2.0.5-rc1',
+                                      False)
+
+    MigrationTool.registerUpgradePath('2.0.5-rc1',
+                                      '2.0.5-rc2',
+                                      False)
+
+    MigrationTool.registerUpgradePath('2.0.5-rc2',
+                                      '2.0.5',
+                                      False)
+
+    MigrationTool.registerUpgradePath('2.0.5',
+                                      '2.1-alpha1',
+                                      False)
+
+    MigrationTool.registerUpgradePath('2.1-alpha1',
+                                      '2.1-alpha2',
+                                      False)
+
+    MigrationTool.registerUpgradePath('2.1-alpha2',
+                                      '2.1-beta1',
+                                      False)
+
+    MigrationTool.registerUpgradePath('2.1-beta1',
+                                      '2.1-beta2',
+                                      False)
+
+    MigrationTool.registerUpgradePath('2.1-beta2',
+                                      '2.1-rc1',
+                                      False)
+
+    MigrationTool.registerUpgradePath('2.1-rc1',
+                                      '2.1-rc2',
+                                      False)
+
+    MigrationTool.registerUpgradePath('2.1-rc2',
+                                      '2.1-rc3',
+                                      False)
+
+    MigrationTool.registerUpgradePath('2.1-rc3',
+                                      '2.1',
+                                      False)
+
+    # Currently supported migrations
 
     MigrationTool.registerUpgradePath('2.1',
                                       '2.1.1',

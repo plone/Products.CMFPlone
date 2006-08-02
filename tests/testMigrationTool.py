@@ -32,15 +32,10 @@ class TestMigrationTool(PloneTestCase.PloneTestCase):
                     'Migration needs recataloging')
 
     def testForceMigrationFromUnsupportedVersion(self):
-        # XXX This fails currently as support for migrating from
-        # old releases has been removed. This should however give a nice
-        # warning and explanation and not fail silently. This failure
-        # reminds us of not forgetting to write this explanation.
         version = '2.0.5'
         while version is not None:
             version, msg = self.migration._upgrade(version)
-        expect = 'Migration failed. Version is %s.' % \
-                 self.migration.getFileSystemVersion()
+        expect = 'Migration stopped at version 2.0.5.'
         self.assertEqual(msg[0], expect)
 
     def testForceMigration(self):
@@ -52,7 +47,7 @@ class TestMigrationTool(PloneTestCase.PloneTestCase):
         # before any other migration step is run
         while version is not None:
             version, msg = self.migration._upgrade(version)
-        expect = 'Migration completed at version %s' % \
+        expect = 'Migration completed at version %s.' % \
                  self.migration.getFileSystemVersion()
         self.assertEqual(msg[0], expect)
 

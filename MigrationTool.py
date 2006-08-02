@@ -84,8 +84,19 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     security.declareProtected(ManagePortal, 'knownVersions')
     def knownVersions(self):
-        """ All known version ids, except current one """
-        return _upgradePaths.keys()
+        """All known version ids, except current one and unsupported
+           migration paths.
+        """
+        versions = [k for k in _upgradePaths if _upgradePaths[k][1] != False]
+        return versions
+
+    security.declareProtected(ManagePortal, 'unsupportedVersion')
+    def unsupportedVersion(self):
+        """Is the current instance version known to be a no longer supported
+           version for migrations.
+        """
+        versions = [k for k in _upgradePaths if _upgradePaths[k][1] is False]
+        return self._version in versions
 
     security.declareProtected(ManagePortal, 'getFileSystemVersion')
     def getFileSystemVersion(self):
@@ -280,9 +291,12 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
     def _upgrade(self, version):
         version = version.lower()
         if not _upgradePaths.has_key(version):
-            return None, ("Migration completed at version %s" % version,)
+            return None, ("Migration completed at version %s." % version,)
 
         newversion, function = _upgradePaths[version]
+        # This means a now unsupported migration path has been triggered
+        if function is False:
+            return None, ("Migration stopped at version %s." % version,)
         res = function(self.aq_parent)
         return newversion, res
 
