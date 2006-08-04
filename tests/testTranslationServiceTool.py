@@ -47,8 +47,8 @@ class TestTranslationServiceTool(PloneTestCase.PloneTestCase):
     def test_ulocalized_time_fetch_error(self):
         # http://dev.plone.org/plone/ticket/4251
         error = "(Missing.Value,), {}"
-	value = self.tool.ulocalized_time(error)
-	self.failUnlessEqual(value, None)
+        value = self.tool.ulocalized_time(error)
+        self.failUnlessEqual(value, None)
 
 
 def test_suite():

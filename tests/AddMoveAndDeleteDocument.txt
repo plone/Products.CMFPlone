@@ -1,5 +1,5 @@
-Adding, Moving and Deleting a Document
-======================================
+Adding, Editing, Moving and Deleting a Document
+===============================================
 
 A replacement for both the 'rendering.txt' and the 'forms.txt' test.
 Does what the title says, really.  Plus some assertions.
@@ -62,6 +62,40 @@ We edit the document a second time:
     >>> browser.getControl('Save').click()
     >>> 'Ons Bier' in browser.contents
     True
+
+Editing Properties
+------------------
+
+We edit the document properties:
+
+    >>> browser.getLink('Properties').click()
+    >>> browser.url
+    'http://nohost/plone/Members/test_user_1_/my-page/properties'
+
+We make sure the language is neutral at the beginning:
+
+    >>> browser.getControl(name='language').displayValue
+    ['Language neutral (site default)']
+
+And the content language is set to the default:
+
+    >>> browser.headers.dict['content-language']
+    'en'
+
+Now set the language to German:
+
+    >>> browser.getControl(name='language').value = ['de']
+    >>> browser.getControl(name='language').displayValue
+    ['German']
+
+    >>> browser.getControl('Save').click()
+    >>> 'Changes saved.' in browser.contents
+    True
+
+Make sure the content language was updated:
+
+    >>> browser.headers.dict['content-language']
+    'de'
 
 Cut and paste Document
 ----------------------
