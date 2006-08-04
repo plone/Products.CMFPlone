@@ -861,7 +861,12 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
         browserDefault = IBrowserDefault(obj, None)
         if browserDefault is not None:
-            return obj, [browserDefault.getLayout()]
+            layout = browserDefault.getLayout()
+            if layout is None:
+                raise AttributeError(
+                    "%s has no assigned layout, perhaps it needs an FTI"%obj)
+            else:
+                return obj, [layout]
 
         #
         # 6. If the object has a 'folderlisting' action, use this

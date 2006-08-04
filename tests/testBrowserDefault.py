@@ -224,6 +224,15 @@ class TestPloneToolBrowserDefault(FunctionalTestCase):
         self.assertEqual(self.portal.atctfolder.getDefaultPage(), None)
         self.assertEqual(self.portal.atctfolder.defaultView(), defaultLayout)
 
+    def testBrowserDefaultMixinWithoutFTIGivesSensibleError(self):
+        # Test for issue https://dev.plone.org/plone/ticket/5676
+        # Ensure that the error displayed for missing FTIs is not so cryptic
+        self.portal.portal_types._delOb('Document')
+
+        self.assertRaises(AttributeError,
+                          self.portal.plone_utils.browserDefault,
+                          self.portal.atctdocument)
+
 class TestDefaultPage(PloneTestCase.PloneTestCase):
     """Test the default_page functionality in more detail
     """

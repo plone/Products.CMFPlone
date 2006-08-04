@@ -2,6 +2,10 @@ Changelog for Plone
 
    (name of developer listed in brackets)
 
+   - Made PloneTool.browserDefault check for a result of None from getLayout
+      and raise a sensible error.  Generally this means that the FTI is missing or
+      otherwise incorrect.  Fixes http://dev.plone.org/plone/ticket/5676
+
    - Added migration to reindex the catalog which is necessary for the changes
       made for http://dev.plone.org/plone/ticket/5569 and
       http://dev.plone.org/plone/ticket/5231
