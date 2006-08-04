@@ -44,13 +44,29 @@ class Splitter:
     def process(self, lst):
         result = []
         for s in lst:
-            result += self.rx.findall(s)
+            # This is a hack to get the word splitting working with
+            # non-unicode text. Ultimately unicode should hit this method,
+            # but right now we add this hack to get it working with at least
+            # utf-8 as well.
+            try:
+                texts = self.rx.findall(unicode(s, 'utf-8'))
+                result += [t.encode('utf-8') for t in texts]
+            except (UnicodeDecodeError, TypeError):
+                result += self.rx.findall(s)
         return result
 
     def processGlob(self, lst):
         result = []
         for s in lst:
-            result += self.rxGlob.findall(s)
+            # This is a hack to get the word splitting working with
+            # non-unicode text. Ultimately unicode should hit this method,
+            # but right now we add this hack to get it working with at least
+            # utf-8 as well.
+            try:
+                texts = self.rxGlob.findall(unicode(s, 'utf-8'))
+                result += [t.encode('utf-8') for t in texts]
+            except (UnicodeDecodeError, TypeError):
+                result += self.rxGlob.findall(s)
         return result
 
 classImplements(Splitter, Splitter.__implements__)

@@ -1,12 +1,20 @@
 Changelog for Plone
 
    (name of developer listed in brackets)
-   - Added migration to remove plone.css from portal_css and marked
+
+    - Added a workaround for erroneous indexing behavior for words containing
+      non-ascii characters. These were treated as word breaks so far. The code
+      works for a site encoding of 'utf-8' now as well as proper unicode usage.
+      This closes http://dev.plone.org/plone/ticket/5231.
+      [hannosch]
+
+    - Added migration to remove plone.css from portal_css and marked
       the css generating script as deprecated. Fixes
       http://dev.plone.org/plone/ticket/5614.
       [alecm]
 
-   - Fixed #5539: Wrong usage of label tag. Added one for attribute that was missing.
+    - Fixed wrong usage of label tag. Added one for attribute that was missing.
+      This closes http://dev.plone.org/plone/ticket/5539.
       [ender]
 
     - Added test that ensures the language is getting set in header.
@@ -15,7 +23,7 @@ Changelog for Plone
       [hannosch]
 
     - Fixed folder_summary_view ignored allowAnonymousViewAbout.
-      http://dev.plone.org/plone/ticket/5678.
+      http://dev.plone.org/plone/ticket/5678
       [ender]
 
     - Fixed language setting in the html page header. This closes
