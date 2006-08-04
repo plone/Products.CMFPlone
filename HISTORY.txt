@@ -2,6 +2,10 @@ Changelog for Plone
 
    (name of developer listed in brackets)
 
+   - Applied patch from paregorius to add ids to all visualClear divs. Fixes
+      http://dev.plone.org/plone/ticket/4145
+      [paregorius, alecm]
+
    - Applied patch from paregorius to make the LiveSearch div vanish in IE
       as needed.  Fixes https://dev.plone.org/plone/ticket/5705
       [paregorius, alecm]

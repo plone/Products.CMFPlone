@@ -94,7 +94,7 @@
            </div>
       </div>
 
-      <div class="visualClear"><!-- --></div>
+      <div class="visualClear" id="clear-space-before-portal-columns"><!-- --></div>
 
       <tal:comment replace="nothing">
       The wrapper table. It contains the three columns.
@@ -183,7 +183,7 @@
           </div>
           <tal:comment replace="nothing"> End of the right column </tal:comment>
 
-      <div class="visualClear"><!-- --></div>
+      <div class="visualClear" id="clear-space-bottom-portal-columns"><!-- --></div>
 
       </div>
       <tal:comment replace="nothing"> end column wrapper </tal:comment>
