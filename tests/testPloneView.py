@@ -6,6 +6,8 @@ import os, sys
 if __name__ == '__main__':
     execfile(os.path.join(sys.path[0], 'framework.py'))
 
+from Products.CMFPlone.interfaces.NonStructuralFolder import \
+     INonStructuralFolder as z2INonStructuralFolder
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
 
@@ -95,6 +97,11 @@ class TestPloneView(PloneTestCase.PloneTestCase):
 
     def testIsStructuralFolderWithNonStructuralFolder(self):
         f = dummy.NonStructuralFolder('ns_folder')
+        self.failIf(Plone(f, self.app.REQUEST).isStructuralFolder())
+
+    def testIsStructuralFolderWithZ2NonStructuralFolder(self):
+        f = dummy.Folder('z2_nsFolder')
+        f.__implements__ = f.__implements__ + (z2INonStructuralFolder,)
         self.failIf(Plone(f, self.app.REQUEST).isStructuralFolder())
 
     def testIsDefaultPageInFolder(self):
