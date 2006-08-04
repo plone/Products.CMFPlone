@@ -42,8 +42,8 @@
                       Changes the ownership of the current object.
                   </div>
 
-                <b i18n:translate="heading_new_owner">New owner</b>
-                  <select name="userid">
+                <label for="new_owners" i18n:translate="heading_new_owner">New owner</label>
+                  <select id="new_owners" name="userid">
                   <tal:block tal:repeat="uid mtool/listMemberIds">
                        <option value=""
                                tal:attributes="value uid;

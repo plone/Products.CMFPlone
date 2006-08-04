@@ -1,6 +1,8 @@
 Changelog for Plone
 
    (name of developer listed in brackets)
+    - Fixed #5539: Wrong usage of label tag. Added one for attribute that was missing.
+      [ender]
 
     - Added test that ensures the language is getting set in header.
       This is related to http://dev.plone.org/plone/ticket/5444 and 
