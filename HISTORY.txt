@@ -1,6 +1,8 @@
 Changelog for Plone
 
    (name of developer listed in brackets)
+    - Fixed #5678 folder_summary_view ignores allowAnonymousViewAbout.
+      [ender]
 
     - Fixed language setting in the html page header. This closes
       http://dev.plone.org/plone/ticket/5444.
