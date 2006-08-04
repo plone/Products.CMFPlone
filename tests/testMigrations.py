@@ -3973,7 +3973,7 @@ class TestMigrations_v2_5_1(MigrationTest):
 
     def testRemovePloneCssFromRRTwice(self):
         # Should not fail if performed twice
-        self.css.registerStylesheet('plone.css', 'media'='all')
+        self.css.registerStylesheet('plone.css', media='all')
         self.failUnless('plone.css' in self.css.getResourceIds())
         removePloneCssFromRR(self.portal, [])
         removePloneCssFromRR(self.portal, [])
