@@ -471,18 +471,20 @@ class CatalogTool(PloneBaseTool, BaseTool):
     def clearFindAndRebuild(self):
         """Empties catalog, then finds all contentish objects (i.e. objects
            with an indexObject method), and reindexes them.
-           This may take a long time."""
-        self.manage_catalogClear()
-        portal = aq_parent(aq_inner(self))
-        for path, obj in portal.ZopeFind(portal, search_sub=True):
-            if base_hasattr(obj, 'indexObject') and \
-                    safe_callable(obj.indexObject):
+           This may take a long time.
+        """
+        def indexObject(obj, path):
+            if (base_hasattr(obj, 'indexObject') and
+                safe_callable(obj.indexObject)):
                 try:
                     obj.indexObject()
                 except TypeError:
                     # Catalogs have 'indexObject' as well, but they
                     # take different args, and will fail
                     pass
+        self.manage_catalogClear()
+        portal = aq_parent(aq_inner(self))
+        portal.ZopeFindAndApply(portal, search_sub=True, apply_func=indexObject)
 
     security.declareProtected(ManageZCatalogEntries, 'manage_catalogRebuild')
     def manage_catalogRebuild(self, RESPONSE=None, URL1=None):
