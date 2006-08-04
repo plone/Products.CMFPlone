@@ -2,6 +2,12 @@ Changelog for Plone
 
    (name of developer listed in brackets)
 
+    - Changed all of the action conditional expressions checking for
+      the existence of 'member' to explicitly use 'member is None'
+      or 'member is not None' rather than just using truth or falsehood
+      of the member object.
+      [rafrombrc]
+
     - Added a workaround for erroneous indexing behavior for words containing
       non-ascii characters. These were treated as word breaks so far. The code
       works for a site encoding of 'utf-8' now as well as proper unicode usage.
