@@ -3986,7 +3986,7 @@ class TestMigrations_v2_5_1(MigrationTest):
 
     def testRemovePloneCssFromRRNoCSS(self):
         # Should not fail if the tool is missing
-        self.portal.mnage_delObjects(['portal_css'])
+        self.portal._delObject('portal_css')
         removePloneCssFromRR(self.portal, [])
 
 def test_suite():
