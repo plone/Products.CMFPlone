@@ -2,30 +2,35 @@ Changelog for Plone
 
    (name of developer listed in brackets)
 
-   - Made PloneTool.browserDefault check if the default page it is trying to
+    - According to GenericSetup.interfaces: when an extension profile is
+      registered for 'None', it should be available in any type of site.
+      Fixed CMFPlone.factory to include such profiles.
+      [stefan]
+
+    - Made PloneTool.browserDefault check if the default page it is trying to
       render is the folder itself, and prevent it from doing so (which would
       cause an endless loop).  Fixes http://dev.plone.org/plone/ticket/5704
       [alecm]
 
-   - Applied patch from paregorius to add ids to all visualClear divs. Fixes
+    - Applied patch from paregorius to add ids to all visualClear divs. Fixes
       http://dev.plone.org/plone/ticket/4145
       [paregorius, alecm]
 
-   - Applied patch from paregorius to make the LiveSearch div vanish in IE
+    - Applied patch from paregorius to make the LiveSearch div vanish in IE
       as needed.  Fixes https://dev.plone.org/plone/ticket/5705
       [paregorius, alecm]
 
-   - Made PloneTool.browserDefault check for a result of None from getLayout
+    - Made PloneTool.browserDefault check for a result of None from getLayout
       and raise a sensible error.  Generally this means that the FTI is missing
       or otherwise incorrect.  Fixes http://dev.plone.org/plone/ticket/5676
       [alecm]
 
-   - Added migration to reindex the catalog which is necessary for the changes
+    - Added migration to reindex the catalog which is necessary for the changes
       made for http://dev.plone.org/plone/ticket/5569 and
       http://dev.plone.org/plone/ticket/5231
       [alecm]
 
-   - Made is_folderish and isStructuralFolder respect the z2
+    - Made is_folderish and isStructuralFolder respect the z2
       INonStructuralFolder interface as well as the z3 one.  Fixes
       http://dev.plone.org/plone/ticket/5592
       http://dev.plone.org/plone/ticket/5569
