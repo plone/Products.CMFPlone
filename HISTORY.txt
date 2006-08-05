@@ -2,6 +2,11 @@ Changelog for Plone
 
    (name of developer listed in brackets)
 
+   - Made PloneTool.browserDefault check if the default page it is trying to
+      render is the folder itself, and prevent it from doing so (which would
+      cause an endless loop).  Fixes http://dev.plone.org/plone/ticket/5704
+      [alecm]
+
    - Applied patch from paregorius to add ids to all visualClear divs. Fixes
       http://dev.plone.org/plone/ticket/4145
       [paregorius, alecm]
