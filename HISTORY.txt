@@ -2,9 +2,9 @@ Changelog for Plone
 
    (name of developer listed in brackets)
 
-    - According to GenericSetup.interfaces: when an extension profile is
-      registered for 'None', it should be available in any type of site.
-      Fixed CMFPlone.factory to include such profiles.
+    - According to GenericSetup.interfaces.IProfileRegistry: when an extension
+      profile is registered for 'None', it should be available in any type of
+      site. Fixed CMFPlone.factory to include such profiles.
       [stefan]
 
     - Made PloneTool.browserDefault check if the default page it is trying to
