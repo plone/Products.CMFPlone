@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.1.4 - Devo - Unreleased
 
+    - Made PloneTool.browserDefault check if the default page it is trying to
+      render is the folder itself, and prevent it from doing so (which would
+      cause an endless loop).  Fixes http://dev.plone.org/plone/ticket/5704
+      [alecm]
+
     - Using 'indexObject' instead of 'reindexObject' for
       CatalogTool.clearFindAndRebuild works just as well, but does not
       touch every object and cause a monster transaction to be committed.

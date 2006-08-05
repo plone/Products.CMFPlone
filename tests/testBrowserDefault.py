@@ -223,6 +223,21 @@ class TestPloneToolBrowserDefault(FunctionalTestCase):
         self.assertEqual(self.portal.atctfolder.getDefaultPage(), None)
         self.assertEqual(self.portal.atctfolder.defaultView(), defaultLayout)
 
+    def testFolderDefaultPageSameAsSelfWithPageMissing(self):
+        # We need to avoid infinite recursion in the case that
+        # a page with the same id as the folder was made the default
+        # page and then deleted. See http://dev.plone.org/plone/ticket/5704
+        # We should fallback on the default layout folder_listing
+        f = self.portal.atctfolder
+        f.invokeFactory('Document', f.getId())
+        f.setDefaultPage(f.getId())
+        self.assertEqual(self.putils.browserDefault(f),
+                         (f, [f.getId()],))
+        f._delObject(f.getId())
+        self.assertEqual(self.putils.browserDefault(f),
+                         (f, ['folder_listing'],))
+
+
 class TestDefaultPage(PloneTestCase.PloneTestCase):
     """Test the default_page functionality in more detail
     """
