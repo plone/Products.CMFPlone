@@ -7,8 +7,6 @@
 ##parameters=
 ##title=Rendered version of the Plone CSS for use from external tools
 ##
-context.plone_log("plone.css deprecated and will be removed in plone 3.5.  "
-                  "Use the portal_css tool instead")
 
 portal_css = context.portal_css
 stylesheets = portal_css.getEvaluatedResources(context);

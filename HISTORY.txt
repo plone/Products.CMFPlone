@@ -48,8 +48,7 @@ Changelog for Plone
       This closes http://dev.plone.org/plone/ticket/5231.
       [hannosch]
 
-    - Added migration to remove plone.css from portal_css and marked
-      the css generating script as deprecated. Fixes
+    - Added migration to remove plone.css from portal_css. Fixes
       http://dev.plone.org/plone/ticket/5614.
       [alecm]
 
