@@ -1,6 +1,10 @@
 Changelog for Plone
 
-   (name of developer listed in brackets)
+    (name of developer listed in brackets)
+
+    - Fixed incorrect status message after bad login attempt. This closes
+      http://dev.plone.org/plone/ticket/5695.
+      [hannosch]
 
     - According to GenericSetup.interfaces.IProfileRegistry: when an extension
       profile is registered for 'None', it should be available in any type of
