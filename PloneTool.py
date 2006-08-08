@@ -596,6 +596,8 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         if portal != here:
             parent = here.aq_parent
             while cont:
+                if not getattr(parent, 'acl_users', False):
+                    break
                 userroles = parent.acl_users.getLocalRolesForDisplay(parent)
                 for user, roles, role_type, name in userroles:
                     # Find user in result

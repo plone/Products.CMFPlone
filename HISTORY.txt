@@ -2,6 +2,10 @@ Changelog for Plone
 
     (name of developer listed in brackets)
 
+    - Made getInheritedLocalRoles in PloneTool more error resilient. This
+      closes http://dev.plone.org/plone/ticket/5542.
+      [hannosch]
+
     - Added some workaround code for the general misbehaving utranslate and
       uLocalizedTime methods. They should return Unicode now again, but right
       now they only work for the single supported site encoding of utf-8.
