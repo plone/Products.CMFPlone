@@ -24,9 +24,18 @@ def utranslate(*args, **kw):
     # get the global translation service
     service = getGlobalTranslationService()
 
-    # As we now require Five which has a unicode aware translate method
-    # this returns the translation as type unicode
-    return service.translate(*args, **kw)
+    # As we use the Five translation service now, we get some results back in
+    # Unicode directly from it, but others in site encoding, as they are passed
+    # to the underlying translate method of PlacelessTranslationService instead
+    # of the utranslate method. As we have no context here which we could use
+    # to get to the site encoding, we only try to decode from utf-8 here.
+    text = service.translate(*args, **kw)
+    if not isinstance(text, unicode):
+        try:
+            text = unicode(text, 'utf-8')
+        except UnicodeEncodeError:
+            pass
+    return text
 
 # unicode aware localized time method (l10n)
 def ulocalized_time(time, long_format = None, context = None, domain='plone'):
