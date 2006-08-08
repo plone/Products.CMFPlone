@@ -2,6 +2,10 @@ Changelog for Plone
 
     (name of developer listed in brackets)
 
+    - Enhanced accessibility of adjacent links in main_template. This fixes
+      http://dev.plone.org/plone/ticket/5210.
+      [hannosch]
+
     - Removed some unnecessary hyphens from date_components_support. This
       fixes http://dev.plone.org/plone/ticket/5711.
       [hannosch]
