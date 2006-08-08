@@ -2,6 +2,10 @@ Changelog for Plone
 
     (name of developer listed in brackets)
 
+    - Synced table-less and table-based main_template again. This fixes
+      http://dev.plone.org/plone/ticket/5696.
+      [hannosch]
+
     - Fixed incorrect status message after bad login attempt. This closes
       http://dev.plone.org/plone/ticket/5695.
       [hannosch]
