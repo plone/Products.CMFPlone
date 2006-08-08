@@ -2,6 +2,10 @@ Changelog for Plone
 
     (name of developer listed in brackets)
 
+    - Added Five and CMF version to the control panel version overview. This
+      closes http://dev.plone.org/plone/ticket/5345.
+      [hannosch]
+
     - Made getInheritedLocalRoles in PloneTool more error resilient. This
       closes http://dev.plone.org/plone/ticket/5542.
       [hannosch]

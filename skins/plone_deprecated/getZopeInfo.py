@@ -7,6 +7,9 @@
 ##parameters=
 ##title=
 ##
+context.plone_log("The getZopeInfo script is deprecated and will be removed "
+                  "in Plone 3.5. Use the coreVersions method of the migration "
+                  "tool instead.")
 
 cp = context.Control_Panel
 return (cp.version_txt(), cp.sys_version())
