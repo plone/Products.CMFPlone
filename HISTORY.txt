@@ -2,6 +2,10 @@ Changelog for Plone
 
     (name of developer listed in brackets)
 
+    - Removed some unnecessary hyphens from date_components_support. This
+      fixes http://dev.plone.org/plone/ticket/5711.
+      [hannosch]
+
     - Added Five and CMF version to the control panel version overview. This
       closes http://dev.plone.org/plone/ticket/5345.
       [hannosch]
