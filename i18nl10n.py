@@ -30,7 +30,7 @@ def utranslate(*args, **kw):
     # of the utranslate method. As we have no context here which we could use
     # to get to the site encoding, we only try to decode from utf-8 here.
     text = service.translate(*args, **kw)
-    if not isinstance(text, unicode):
+    if not isinstance(text, unicode) and isinstance(text, basestring):
         try:
             text = unicode(text, 'utf-8')
         except UnicodeEncodeError:
