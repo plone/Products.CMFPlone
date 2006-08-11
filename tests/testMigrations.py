@@ -143,7 +143,9 @@ from Products.CMFPlone.migrations.v2_5.betas import addPloneSkinLayers
 from Products.CMFPlone.migrations.v2_5.betas import installPortalSetup
 from Products.CMFPlone.migrations.v2_5.betas import simplifyActions
 from Products.CMFPlone.migrations.v2_5.betas import migrateCSSRegExpression
+
 from Products.CMFPlone.migrations.v2_5.final_two51 import removePloneCssFromRR
+from Products.CMFPlone.migrations.v2_5.final_two51 import addEventRegistrationJS
 
 from Products.CMFDynamicViewFTI.migrate import migrateFTI
 
@@ -3988,6 +3990,19 @@ class TestMigrations_v2_5_1(MigrationTest):
         # Should not fail if the tool is missing
         self.portal._delObject('portal_css')
         removePloneCssFromRR(self.portal, [])
+
+    def testAddEventRegistrationJS(self):
+        jsreg = self.portal.portal_javascripts
+        # unregister first
+        jsreg.unregisterResource('event-registration.js')
+        script_ids = jsreg.getResourceIds()
+        self.failIf('event-registration.js' in script_ids)
+        # migrate and test again
+        addEventRegistrationJS(self.portal, [])
+        script_ids = jsreg.getResourceIds()
+        self.failUnless('event-registration.js' in script_ids)
+        self.assertEqual(jsreg.getResourcePosition('event-registration.js'), 0)
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite
