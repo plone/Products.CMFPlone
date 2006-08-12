@@ -31,7 +31,7 @@ class DiscussionTool(PloneBaseTool, BaseTool):
 
         return content.talkback # Return wrapped talkback
 
-    security.declareProtected('Modify portal content', 'cookReply')
+    security.declareProtected('View', 'cookReply')
     def cookReply(self, reply, text_format=None):
         """ TODO We need this because currently we can not easily change the
             text_format on document objects.  Discussions in plone are going
