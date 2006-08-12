@@ -3,6 +3,7 @@ from Products.CMFPlone import ToolNames
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
+from Products.CMFDefault.permissions import ReplyToItem
 
 from Products.CMFCore.utils import format_stx
 from DocumentTemplate.DT_Util import html_quote
@@ -31,7 +32,7 @@ class DiscussionTool(PloneBaseTool, BaseTool):
 
         return content.talkback # Return wrapped talkback
 
-    security.declareProtected('View', 'cookReply')
+    security.declareProtected(ReplyToItem, 'cookReply')
     def cookReply(self, reply, text_format=None):
         """ TODO We need this because currently we can not easily change the
             text_format on document objects.  Discussions in plone are going
