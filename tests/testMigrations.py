@@ -132,6 +132,8 @@ from Products.CMFPlone.migrations.v2_1.two12_two13 import normalizeNavtreeProper
 from Products.CMFPlone.migrations.v2_1.two12_two13 import removeVcXMLRPC
 from Products.CMFPlone.migrations.v2_1.two12_two13 import addActionDropDownMenuIcons
 
+from Products.CMFPlone.migrations.v2_1.two13_two14 import removePloneCssFromRR
+
 from Products.CMFDynamicViewFTI.migrate import migrateFTI
 
 import types
@@ -3604,6 +3606,43 @@ class TestMigrations_v2_1_3(MigrationTest):
         addActionDropDownMenuIcons(self.portal, [])
 
 
+class TestMigrations_v2_1_4(MigrationTest):
+
+    def afterSetUp(self):
+        self.actions = self.portal.portal_actions
+        self.memberdata = self.portal.portal_memberdata
+        self.catalog = self.portal.portal_catalog
+        self.skins = self.portal.portal_skins
+        self.types = self.portal.portal_types
+        self.workflow = self.portal.portal_workflow
+        self.css = self.portal.portal_css
+
+    def testRemovePloneCssFromRR(self):
+        # Check to ensure that plone.css gets removed from portal_css
+        self.css.registerStylesheet('plone.css', media='all')
+        self.failUnless('plone.css' in self.css.getResourceIds())
+        removePloneCssFromRR(self.portal, [])
+        self.failIf('plone.css' in self.css.getResourceIds())
+
+    def testRemovePloneCssFromRRTwice(self):
+        # Should not fail if performed twice
+        self.css.registerStylesheet('plone.css', media='all')
+        self.failUnless('plone.css' in self.css.getResourceIds())
+        removePloneCssFromRR(self.portal, [])
+        removePloneCssFromRR(self.portal, [])
+        self.failIf('plone.css' in self.css.getResourceIds())
+
+    def testRemovePloneCssFromRRNoCSS(self):
+        # Should not fail if the stylesheet is missing
+        self.failIf('plone.css' in self.css.getResourceIds())
+        removePloneCssFromRR(self.portal, [])
+
+    def testRemovePloneCssFromRRNoCSS(self):
+        # Should not fail if the tool is missing
+        self.portal._delObject('portal_css')
+        removePloneCssFromRR(self.portal, [])
+
+
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
@@ -3612,6 +3651,7 @@ def test_suite():
     suite.addTest(makeSuite(TestMigrations_v2_1_1))
     suite.addTest(makeSuite(TestMigrations_v2_1_2))
     suite.addTest(makeSuite(TestMigrations_v2_1_3))
+    suite.addTest(makeSuite(TestMigrations_v2_1_4))
 
     return suite
 

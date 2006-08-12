@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1.4 - Devo - Unreleased
 
+    - Added migration to remove plone.css from portal_css. Fixes
+      http://dev.plone.org/plone/ticket/5614.
+      [alecm]
+
     - DiscussionTool.cookReply needs to be available to anyone who can comment
       on an item, otherwise the comment will not be cooked and we get HTML
       injection.  This fixes http://dev.plone.org/plone/ticket/5718
