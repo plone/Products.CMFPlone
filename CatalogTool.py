@@ -238,7 +238,7 @@ def is_folderish(obj, **kwargs):
       >>> from Products.CMFPlone.CatalogTool import is_folderish
       >>> from Products.CMFPlone.interfaces import INonStructuralFolder
       >>> from Products.CMFPlone.interfaces.NonStructuralFolder import INonStructuralFolder as z2INonStructuralFolder
-      >>> from zope.interface import providedBy, directlyProvides, alsoProvides
+      >>> from zope.interface import providedBy, directlyProvides
 
     A Folder is folderish generally::
       >>> is_folderish(self.folder)
@@ -246,7 +246,7 @@ def is_folderish(obj, **kwargs):
 
     But if we make it an INonStructuralFolder it is not::
       >>> base_implements = providedBy(self.folder)
-      >>> alsoProvides(self.folder, INonStructuralFolder)
+      >>> directlyProvides(self.folder, providedBy(self.folder) + INonStructuralFolder)
       >>> is_folderish(self.folder)
       False
       
