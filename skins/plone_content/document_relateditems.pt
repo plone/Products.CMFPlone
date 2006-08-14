@@ -17,7 +17,7 @@
                         <li tal:define="
                                 desc                item/Description;
                                 item_type item/portal_type;
-                                item_type_class python: 'contenttype-' + normalizeString(item_type);
+                                item_type_class python: 'visualIcon contenttype-' + normalizeString(item_type);
                                 item_wf_state       item/review_state|python: getInfoFor(item, 'review_state', '');
                                 item_wf_state_class python: 'state-' + normalizeString(item_wf_state);
 				item_url           item/absolute_url;

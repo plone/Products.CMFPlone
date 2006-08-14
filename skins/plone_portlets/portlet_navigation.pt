@@ -30,10 +30,10 @@
 
             <li class="navTreeItem"
                 tal:condition="view/includeTop">
-                <tal:block define="typeClass string:contenttype-${view/rootTypeName};
+                <tal:block define="typeClass string:visualIcon contenttype-${view/rootTypeName};
                                    selectedClass python:test(path('view/isPortalOrDefaultChild'), 'navTreeCurrentItem', '');
                                   ">
-                   <div class="contenttype-plone-site" tal:attributes="class typeClass">
+                   <div class="visualIcon contenttype-plone-site" tal:attributes="class typeClass">
                        <a class="visualIconPadding"
                           tal:attributes="href root/absolute_url;
                                           title portal/Description;
