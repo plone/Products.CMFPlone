@@ -27,44 +27,54 @@
             type_id="item['id']"
             type_icon="item['icon']">
     .contenttype-&dtml-type_id;,
-    .actionMenu .contenttype-&dtml-type_id; a:hover { 
-        background-image: url(&dtml-portal_url;/&dtml-type_icon;); 
-        background-repeat: no-repeat; 
-        background-position: 0% 0%;
-    }
-    /* Holly hack to prevent items from shifting to the left in IE*/
-    * html .contenttype-&dtml-type_id; { 
-        height: 1%;
-    }
+    .actionMenu .contenttype-&dtml-type_id; a:hover,
     #portal-sitemap .contenttype-&dtml-type_id; a:hover,
     #portlet-navigation-tree .contenttype-&dtml-type_id; a:hover,
     #portlet-navigation-tree .contenttype-&dtml-type_id; a.navTreeCurrentItem {
         background-image: url(&dtml-portal_url;/&dtml-type_icon;);
-        background-repeat: no-repeat;
-        background-position: 0% 3px;
-    }
-    #portal-sitemap .contenttype-&dtml-type_id;,
-    #portlet-navigation-tree .contenttype-&dtml-type_id; {
-        background-position: 0% 4px;
-    }
-    * html #portal-sitemap .contenttype-&dtml-type_id; a:hover,
-    * html #portlet-navigation-tree .contenttype-&dtml-type_id; a:hover,
-    * html #portlet-navigation-tree .contenttype-&dtml-type_id; a.navTreeCurrentItem {
-        position: relative;
-    }
-    .listing .contenttype-&dtml-type_id; { 
-        display: block; 
     }
   </dtml-let>
 </dtml-in>
 
+.visualIcon,
+.actionMenu .visualIcon a:hover { 
+    background-repeat: no-repeat; 
+    background-position: 0% 0%;
+}
+/* Holly hack to prevent items from shifting to the left in IE*/
+* html .visualIcon { 
+    height: 1%;
+}
+#portal-sitemap .visualIcon a:hover,
+#portlet-navigation-tree .visualIcon a:hover,
+#portlet-navigation-tree .visualIcon a.navTreeCurrentItem {
+    background-repeat: no-repeat;
+    background-position: 0% 3px;
+}
+#portal-sitemap .visualIcon,
+#portlet-navigation-tree .visualIcon {
+    background-position: 0% 4px;
+}
+* html #portal-sitemap .visualIcon a:hover,
+* html #portlet-navigation-tree .visualIcon a:hover,
+* html #portlet-navigation-tree .visualIcon a.navTreeCurrentItem {
+    position: relative;
+}
+.listing .visualIcon { 
+    display: block; 
+}
+
 <dtml-in "getActionIconList()">
     .actionicon-<dtml-var category>-<dtml-var action> { 
         background-image: url(<dtml-var portal_url>/<dtml-var icon>) !important; 
-        background-repeat: no-repeat; 
-        background-position: 0% 50%;
     }
 </dtml-in>
+
+#portal-personaltools .visualIcon,
+.actionMenuContent .visualIcon {
+    background-repeat: no-repeat; 
+    background-position: 0% 50%;
+}
 
 /* Extra padding class for the generated icons - we have to do it
    this way because of the IE flicker bug on hovering. */

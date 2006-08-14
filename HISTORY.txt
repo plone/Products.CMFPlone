@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 3.0 - Unreleased
 
+    - Using new 'visualIcon' css class to allow much smaller generated.css
+      and RTL.css. When new content types are installed, then generated.css
+      will grow much less then before and RTL.css will not grow at all
+      anymore. The footprint of action icons is also smaller now.
+      [fschulze]
+
     - The portal object is set up as a Zope3 site with a local site manager.
       [hannosch]
 

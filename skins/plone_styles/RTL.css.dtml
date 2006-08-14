@@ -3,32 +3,32 @@
 /* <dtml-with base_properties> (do not remove this :) */
 /* <dtml-call "REQUEST.set('portal_url', portal_url())"> (not this either :) */
 
-<dtml-in "getPortalTypeList()">
-  <dtml-let type_id="_['sequence-item']['id']">
-.contenttype-&dtml-type_id;,
-#objectMenu .contenttype-&dtml-type_id; a:hover { 
+.visualIcon,
+#objectMenu .visualIcon a:hover { 
     background-position: 100% 0%;
 }
 
-#portal-sitemap .contenttype-&dtml-type_id; a:hover,
-#portal-sitemap .contenttype-&dtml-type_id; a.navTreeCurrentItem,
-#portlet-navigation-tree .contenttype-&dtml-type_id; a:hover,
-#portlet-navigation-tree .contenttype-&dtml-type_id; a.navTreeCurrentItem {
-    background-position: 100% 3px; margin-right: -1px; margin-left: 0;
+#portal-sitemap .visualIcon a:hover,
+#portal-sitemap .visualIcon a.navTreeCurrentItem,
+#portlet-navigation-tree .visualIcon a:hover,
+#portlet-navigation-tree .visualIcon a.navTreeCurrentItem {
+    background-position: 100% 3px;
+    margin-right: -1px;
+    margin-left: 0;
 }
 
-#portal-sitemap .contenttype-&dtml-type_id;,
-#portlet-navigation-tree .contenttype-&dtml-type_id; {
+#portal-sitemap .visualIcon,
+#portlet-navigation-tree .visualIcon {
     background-position: 100% 4px;
 }
 
-dt span.contenttype-&dtml-type_id; { display : block; float: right; margin-top: -2px; }
-  </dtml-let>
-</dtml-in>
+dt span.visualIcon { display : block; float: right; margin-top: -2px; }
 
-<dtml-in "getActionIconList()">
-.actionicon-<dtml-var category>-<dtml-var action> { background-position: 100% 50%;}
-</dtml-in>
+#portal-personaltools .visualIcon,
+.actionMenuContent .visualIcon {
+    background-position: 100% 50%;
+}
+
 
 /* Extra padding class for the generated icons - we have to do it
    this way because of the IE flicker bug on hovering. */
