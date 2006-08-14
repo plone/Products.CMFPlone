@@ -112,7 +112,7 @@
             <ul>
                 <tal:types repeat="ctype menuTypes">
                     <li tal:define="Title ctype/Title; Id ctype/getId; Description ctype/Description;
-                                    item_type_class python: 'contenttype-' + normalizeString(Id);"
+                                    item_type_class python: 'visualIcon contenttype-' + normalizeString(Id);"
                         tal:attributes="class string:${item_type_class}">
                         <a href="#"
                            i18n:attributes="title"
@@ -412,7 +412,7 @@
                     <ul>
                         <tal:objectAction repeat="editAction editActions">
                             <tal:action define="icon python:getIconFor('object_buttons', editAction['id'], None);
-                                  class_name string:actionicon-object_buttons-${editAction/id};
+                                  class_name string:visualIcon actionicon-object_buttons-${editAction/id};
                                   class_name python:test(icon, class_name, nothing);">
                                 <li tal:condition="python:editAction['id'] not in ('delete', 'batch')">
                                     <a tal:content="editAction/title"

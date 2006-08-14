@@ -184,7 +184,7 @@
                                    item_type            item/portal_type;
                                    item_size            item/getObjSize;
                                    item_modified        item/ModificationDate;
-                                   item_type_class      python:'contenttype-' + normalizeString(item_type);
+                                   item_type_class      python:'visualIcon contenttype-' + normalizeString(item_type);
                                    item_wf_state        item/review_state|python: wtool.getInfoFor(item, 'review_state', '');
                                    item_state_title     python:wtool.getTitleForStateOnType(item_wf_state, item_type);
                                    item_wf_state_class  python:'state-' + normalizeString(item_wf_state);

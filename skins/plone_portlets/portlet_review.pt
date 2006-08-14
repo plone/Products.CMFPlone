@@ -20,7 +20,7 @@
         tal:define="oddrow repeat/o/odd"
         tal:attributes="class python:test(oddrow, 'portletItem even','portletItem odd')">
 
-        <div tal:attributes="class python:'contenttype-' + normalizeString(o.portal_type)">
+        <div tal:attributes="class python:'visualIcon contenttype-' + normalizeString(o.portal_type)">
         <a href="#"
            class="visualIconPadding tile"
            tal:attributes="href string:${o/absolute_url}/view;

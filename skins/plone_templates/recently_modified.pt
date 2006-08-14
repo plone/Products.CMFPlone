@@ -30,7 +30,7 @@
             <dl>
                 <dt tal:define="item_wf_state result/review_state;
                                 item_wf_state_class python:'state-' + normalizeString(item_wf_state);">
-                    <span tal:attributes="class python: 'contenttype-' + normalizeString(result.portal_type) + ' visualIconPadding'">
+                    <span tal:attributes="class python: 'visualIcon contenttype-' + normalizeString(result.portal_type) + ' visualIconPadding'">
                     <a href="/view"
                        tal:content="result/pretty_title_or_id"
                        tal:attributes="href result/getURL;
