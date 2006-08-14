@@ -1,6 +1,11 @@
 Changelog for Plone
 
     (name of developer listed in brackets)
+
+    - Circumvented a UnicodeDecodeError on smart folders editing view. This
+      closes http://dev.plone.org/plone/ticket/5746.
+      [hannosch]
+
     - Added new css class visualIcon. This will be used to make generated.css
       much smaller in Plone 3.0 and is introduced now, so people can see how
       this will affect templates. Only templates which use css to add icons
