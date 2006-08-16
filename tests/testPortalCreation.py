@@ -41,6 +41,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.skins = self.portal.portal_skins
         self.transforms = self.portal.portal_transforms
         self.javascripts = self.portal.portal_javascripts
+        self.setup = self.portal.portal_setup
 
     def testPloneSkins(self):
         # Plone skins should have been set up
@@ -686,6 +687,12 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.failUnless(len(pipeline) >= 2)
         self.failUnless(isinstance(pipeline[0], Splitter))
         self.failUnless(isinstance(pipeline[1], CaseNormalizer))
+
+    def testMakeSnapshot(self):
+        # GenericSetup snapshot should work
+        self.setRoles(['Manager'])
+        snapshot_id = self.setup._mangleTimestampName('test')
+        self.setup.createSnapshot(snapshot_id)
 
 
 class TestPortalBugs(PloneTestCase.PloneTestCase):
