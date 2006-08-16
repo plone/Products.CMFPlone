@@ -128,7 +128,7 @@ def addCatalogLexicon(portal):
         catalog.manage_addProduct[ 'ZCTextIndex' ].manage_addLexicon(
             'plone_lexicon',
             elements=[
-            largs(group= 'Case Normalizer' , name= 'Case Normalizer' ),
+            largs(group= 'Case Normalizer' , name= 'Unicode Case Normalizer' ),
             largs(group= 'Stop Words', name= " Don't remove stop words" ),
             largs(group= 'Word Splitter' , name= "Unicode Whitespace splitter" ),
             ]
