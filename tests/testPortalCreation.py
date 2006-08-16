@@ -16,6 +16,8 @@ from Acquisition import aq_base
 from DateTime import DateTime
 from tempfile import mkstemp
 
+from Products.CMFPlone.UnicodeSplitter import Splitter, CaseNormalizer
+
 
 class TestPortalCreation(PloneTestCase.PloneTestCase):
 
@@ -660,6 +662,13 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         assertIcon('copy')
         assertIcon('paste')
         assertIcon('delete')
+
+    def testPloneLexicon(self):
+        # Plone lexicon should use new splitter and case normalizer
+        pipeline = self.catalog.plone_lexicon._pipeline
+        self.failUnless(len(pipeline) >= 2)
+        self.failUnless(isinstance(pipeline[0], Splitter))
+        self.failUnless(isinstance(pipeline[1], CaseNormalizer))
 
 
 class TestPortalBugs(PloneTestCase.PloneTestCase):

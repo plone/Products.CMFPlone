@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.1.4 - Devo - Unreleased
 
+    - Added Unicode and UTF-8 aware word splitter and case normalizer to
+      the plone_lexicon pipeline. Backported from 2.5 branch.
+      Fixes http://dev.plone.org/plone/ticket/5231
+      [stefan]
+
     - Added migration to remove plone.css from portal_css. Fixes
       http://dev.plone.org/plone/ticket/5614.
       [alecm]
