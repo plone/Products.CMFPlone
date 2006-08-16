@@ -13,6 +13,7 @@ from Products.CMFCore.Expression import Expression
 from Products.CMFCore.permissions import AccessInactivePortalContent
 from Products.CMFPlone.PloneTool import AllowSendto
 from Products.CMFPlone.utils import _createObjectByType
+from Products.CMFPlone.UnicodeSplitter import Splitter, CaseNormalizer
 
 from Products.CMFPlone.migrations.v2.two04_two05 import replaceFolderPropertiesWithEdit
 from Products.CMFPlone.migrations.v2.two04_two05 import interchangeEditAndSharing
@@ -146,6 +147,7 @@ from Products.CMFPlone.migrations.v2_5.betas import migrateCSSRegExpression
 
 from Products.CMFPlone.migrations.v2_5.final_two51 import removePloneCssFromRR
 from Products.CMFPlone.migrations.v2_5.final_two51 import addEventRegistrationJS
+from Products.CMFPlone.migrations.v2_5.final_two51 import fixupPloneLexicon
 
 from Products.CMFDynamicViewFTI.migrate import migrateFTI
 
@@ -3986,7 +3988,7 @@ class TestMigrations_v2_5_1(MigrationTest):
         self.failIf('plone.css' in self.css.getResourceIds())
         removePloneCssFromRR(self.portal, [])
 
-    def testRemovePloneCssFromRRNoCSS(self):
+    def testRemovePloneCssFromRRNoTool(self):
         # Should not fail if the tool is missing
         self.portal._delObject('portal_css')
         removePloneCssFromRR(self.portal, [])
@@ -4002,6 +4004,52 @@ class TestMigrations_v2_5_1(MigrationTest):
         script_ids = jsreg.getResourceIds()
         self.failUnless('event-registration.js' in script_ids)
         self.assertEqual(jsreg.getResourcePosition('event-registration.js'), 0)
+
+    def testAddEventRegistrationJSTwice(self):
+        # Should not break if migrated again
+        jsreg = self.portal.portal_javascripts
+        # unregister first
+        jsreg.unregisterResource('event-registration.js')
+        script_ids = jsreg.getResourceIds()
+        self.failIf('event-registration.js' in script_ids)
+        # migrate and test again
+        addEventRegistrationJS(self.portal, [])
+        addEventRegistrationJS(self.portal, [])
+        script_ids = jsreg.getResourceIds()
+        self.failUnless('event-registration.js' in script_ids)
+        self.assertEqual(jsreg.getResourcePosition('event-registration.js'), 0)
+
+    def testAddEventRegistrationJSNoTool(self):
+        # Should not break if the tool is missing
+        self.portal._delObject('portal_javascripts')
+        addEventRegistrationJS(self.portal, [])
+
+    def testFixupPloneLexicon(self):
+        # Should update the plone_lexicon pipeline
+        lexicon = self.portal.portal_catalog.plone_lexicon
+        lexicon._pipeline = (object(), object())
+        fixupPloneLexicon(self.portal, [])
+        self.failUnless(isinstance(lexicon._pipeline[0], Splitter))
+        self.failUnless(isinstance(lexicon._pipeline[1], CaseNormalizer))
+
+    def testFixupPloneLexiconTwice(self):
+        # Should not break if migrated again
+        lexicon = self.portal.portal_catalog.plone_lexicon
+        lexicon._pipeline = (object(), object())
+        fixupPloneLexicon(self.portal, [])
+        fixupPloneLexicon(self.portal, [])
+        self.failUnless(isinstance(lexicon._pipeline[0], Splitter))
+        self.failUnless(isinstance(lexicon._pipeline[1], CaseNormalizer))
+
+    def testFixupPloneLexiconNoLexicon(self):
+        # Should not break if plone_lexicon is missing
+        self.portal.portal_catalog._delObject('plone_lexicon')
+        fixupPloneLexicon(self.portal, [])
+
+    def testFixupPloneLexiconNoTool(self):
+        # Should not break if portal_catalog is missing
+        self.portal._delObject('portal_catalog')
+        fixupPloneLexicon(self.portal, [])
 
 
 def test_suite():

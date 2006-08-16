@@ -21,6 +21,7 @@ from Products.StandardCacheManagers.AcceleratedHTTPCacheManager import \
 from Products.StandardCacheManagers.RAMCacheManager import \
      RAMCacheManager
 from Products.CMFCore.CachingPolicyManager import CachingPolicyManager
+from Products.CMFPlone.UnicodeSplitter import Splitter, CaseNormalizer
 
 
 class TestPortalCreation(PloneTestCase.PloneTestCase):
@@ -678,6 +679,13 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         actions = self.portal.portal_actions.listActions()
         homeAction = [x for x in actions if x.id == 'index_html'][0]
         self.assertEquals(homeAction.getActionExpression(), 'string:${globals_view/navigationRootUrl}')
+
+    def testPloneLexicon(self):
+        # Plone lexicon should use new splitter and case normalizer
+        pipeline = self.catalog.plone_lexicon._pipeline
+        self.failUnless(len(pipeline) >= 2)
+        self.failUnless(isinstance(pipeline[0], Splitter))
+        self.failUnless(isinstance(pipeline[1], CaseNormalizer))
 
 
 class TestPortalBugs(PloneTestCase.PloneTestCase):

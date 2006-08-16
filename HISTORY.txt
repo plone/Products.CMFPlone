@@ -2,6 +2,10 @@ Changelog for Plone
 
     (name of developer listed in brackets)
 
+    - Added a Unicode and UTF-8 aware case normalizer to the plone_lexicon
+      pipeline. Goes with the fix for http://dev.plone.org/plone/ticket/5231
+      [stefan]
+
     - Circumvented a UnicodeDecodeError on smart folders editing view. This
       closes http://dev.plone.org/plone/ticket/5746.
       [hannosch]
