@@ -1,0 +1,43 @@
+<ul tal:define="menu view/menu"
+    tal:condition="view/available">
+
+    <li tal:repeat="menuItem menu">
+
+        <dl class="actionMenu"
+            tal:attributes="id menuItem/extra/id">
+          <dt class="actionMenuHeader">
+            <img width="16"
+                 height="16"
+                 tal:condition="menuItem/icon"
+                 tal:attributes="src string:$portal_url/${menuItem/icon};
+                                 alt menuItem/description"/>
+            <a href="#"
+               tal:omit-tag="not:menuItem/action"
+               tal:attributes="href menuItem/action;
+                               title menuItem/description">
+                <span tal:content="menuItem/title">Title</span>
+                <span tal:condition="menuItem/extra/stateTitle | nothing"
+                      tal:attributes="class menuItem/extra/class | nothing"
+                      tal:content="menuItem/extra/stateTitle">State title</span>
+            </a>
+          </dt>
+          <dd class="actionMenuContent" tal:condition="not:menuItem/extra/hideChildren | nothing">
+            <ul>
+                <tal:block repeat="subMenuItem menuItem/submenu">
+                  <li tal:attributes="class subMenuItem/extra/separator">
+                    <a href="#"
+                       tal:omit-tag="not:subMenuItem/action"
+                       tal:attributes="href subMenuItem/action;
+                                       title subMenuItem/description;
+                                       class subMenuItem/extra/class | nothing">
+                        <span tal:content="subMenuItem/title">Title</span>
+                    </a>
+                  </li>
+                </tal:block>
+            </ul>
+          </dd>
+        </dl>
+
+    </li>
+
+</ul>

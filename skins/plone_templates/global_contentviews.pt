@@ -64,8 +64,8 @@
             </li>
         </ul>
 
-        <div metal:use-macro="here/global_contentmenu/macros/contentMenu">
-          Insert Add Content and Publishing pulldown.
+        <div tal:define="global view context/@@plone">
+          <div tal:replace="structure provider:plone.contentmenu" />
         </div>
 
     </div>
