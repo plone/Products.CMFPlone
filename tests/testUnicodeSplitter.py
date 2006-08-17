@@ -13,6 +13,19 @@ from Products.CMFPlone.UnicodeSplitter import Splitter
 from Products.CMFPlone.UnicodeSplitter import CaseNormalizer
 
 import locale
+LATIN1 = ('de_DE.ISO8859-15', 'de_DE.ISO8859-15@euro')
+
+def _setlocale(*names):
+    saved = locale.setlocale(locale.LC_ALL)
+    for name in names:
+        try:
+            locale.setlocale(locale.LC_ALL, name)
+            break
+        except locale.Error:
+            pass
+    else:
+        return None
+    return saved
 
 
 class TestSplitter(PloneTestCase.PloneTestCase):
@@ -70,13 +83,13 @@ class TestSplitter(PloneTestCase.PloneTestCase):
         input = ["\xc4ffin foo"]
         output = ["\xc4ffin", "foo"]
 
-        saved = locale.setlocale(locale.LC_ALL)
-        locale.setlocale(locale.LC_ALL, 'de_DE.ISO8859-15')
+        # May still fail if none of the locales is available
+        saved = _setlocale(*LATIN1)
         try:
             self.assertEqual(self.process(input), output)
             self.assertEqual(self.processGlob(input), output)
         finally:
-            locale.setlocale(locale.LC_ALL, saved)
+            _setlocale(saved)
 
 
 class TestCaseNormalizer(PloneTestCase.PloneTestCase):
@@ -103,12 +116,12 @@ class TestCaseNormalizer(PloneTestCase.PloneTestCase):
         input = ["\xc4ffin"]
         output = ["\xe4ffin"]
 
-        saved = locale.setlocale(locale.LC_ALL)
-        locale.setlocale(locale.LC_ALL, 'de_DE.ISO8859-15')
+        # May still fail if none of the locales is available
+        saved = _setlocale(*LATIN1)
         try:
             self.assertEqual(self.process(input), output)
         finally:
-            locale.setlocale(locale.LC_ALL, saved)
+            _setlocale(saved)
 
 
 class TestQuery(PloneTestCase.PloneTestCase):
@@ -153,38 +166,35 @@ class TestQuery(PloneTestCase.PloneTestCase):
         # Test passes because plone_lexicon pipeline elements
         # are coded defensively.
         #
-        saved = locale.setlocale(locale.LC_ALL)
-        locale.setlocale(locale.LC_ALL, 'de_DE.ISO8859-15')
+        saved = _setlocale(*LATIN1)
         try:
             self.doc1.SearchableText = '\xc4ffin'
             self.catalog.indexObject(self.doc1)
             brains = self.catalog(SearchableText='\xc4ffin')
             self.assertEqual(len(brains), 1)
         finally:
-            locale.setlocale(locale.LC_ALL, saved)
+            _setlocale(saved)
 
     def testQueryByLatin1Lower(self):
         #
         # Test passes because plone_lexicon pipeline elements
         # are coded defensively.
         #
-        saved = locale.setlocale(locale.LC_ALL)
-        locale.setlocale(locale.LC_ALL, 'de_DE.ISO8859-15')
+        saved = _setlocale(*LATIN1)
         try:
             self.doc1.SearchableText = '\xc4ffin'
             self.catalog.indexObject(self.doc1)
             brains = self.catalog(SearchableText='\xe4ffin')
             self.assertEqual(len(brains), 1)
         finally:
-            locale.setlocale(locale.LC_ALL, saved)
+            _setlocale(saved)
 
     def testMixedModeQuery(self):
         #
         # Test passes because plone_lexicon pipeline elements
         # are coded defensively.
         #
-        saved = locale.setlocale(locale.LC_ALL)
-        locale.setlocale(locale.LC_ALL, 'de_DE.ISO8859-15')
+        saved = _setlocale(*LATIN1)
         try:
             # Index Latin-1
             self.doc1.SearchableText = '\xc4ffin'
@@ -194,7 +204,7 @@ class TestQuery(PloneTestCase.PloneTestCase):
             # We get no results, but at least we don't break
             self.assertEqual(len(brains), 0)
         finally:
-            locale.setlocale(locale.LC_ALL, saved)
+            _setlocale(saved)
 
     def testQueryByUnicode(self):
         self.doc1.SearchableText = '\303\204ffin'
