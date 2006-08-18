@@ -45,7 +45,7 @@ class ControlPanelXMLAdapter(XMLAdapterBase):
         """
         node = self._getObjectNode('object')
         node.appendChild(self._extractConfiglets())
-        self._logger.info('Control panel exported')
+        self._logger.info('Control panel exported.')
         return node
 
     def _importNode(self, node):
@@ -53,7 +53,7 @@ class ControlPanelXMLAdapter(XMLAdapterBase):
         Import the object from the DOM node.
         """
         self._initProvider(node)
-        self._logger.info('Control panel imported')
+        self._logger.info('Control panel imported.')
 
     def _initProvider(self, node):
         if self.environ.shouldPurge():
