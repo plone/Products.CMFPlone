@@ -12,8 +12,8 @@ from Products.PloneTestCase.setup import default_password
 
 import transaction
 
-from Testing import ZopeTestCase
-ZopeTestCase.installProduct('SiteAccess')
+PloneTestCase.installProduct('SiteAccess', quiet=1)
+
 
 class TestFolderRename(PloneTestCase.PloneTestCase):
     # Tests for folder_rename and folder_rename_form
@@ -183,6 +183,7 @@ class TestFolderCutCopy(PloneTestCase.PloneTestCase):
         self.app.REQUEST.set('paths', ['/garbage/path'])
         self.folder.folder_copy()
 
+
 class TestObjectActions(PloneTestCase.FunctionalTestCase):
     
     def afterSetUp(self):
@@ -301,6 +302,7 @@ class TestObjectActions(PloneTestCase.FunctionalTestCase):
         self.failUnless('new-id' in self.folder.objectIds())
         self.failIf('d1' in self.folder.objectIds())
         self.assertEqual(self.folder['new-id'].Title(), 'New title')
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite
