@@ -13,7 +13,7 @@ def importMemberDataProperties(context):
     """ Import MemberData tool properties.
     """
     site = context.getSite()
-    logger = context.getLogger('memberdata properties')
+    logger = context.getLogger('memberdata')
     ptool = getToolByName(site, 'portal_memberdata')
 
     body = context.readDataFile(_FILENAME)
@@ -33,7 +33,7 @@ def exportMemberDataProperties(context):
     """ Export MemberData tool properties .
     """
     site = context.getSite()
-    logger = context.getLogger('memberdata properties')
+    logger = context.getLogger('memberdata')
     ptool = getToolByName(site, 'portal_memberdata', None)
     if ptool is None:
         logger.info('Nothing to export.')

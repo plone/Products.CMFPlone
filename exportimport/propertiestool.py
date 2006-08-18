@@ -20,7 +20,7 @@ def importPloneProperties(context):
     """ Import plone properties tool.
     """
     site = context.getSite()
-    logger = context.getLogger('plone properties')
+    logger = context.getLogger('propertiestool')
     ptool = getToolByName(site, 'portal_properties')
 
     body = context.readDataFile(_FILENAME)
@@ -40,7 +40,7 @@ def exportPloneProperties(context):
     """ Export plone properties tool.
     """
     site = context.getSite()
-    logger = context.getLogger('plone properties')
+    logger = context.getLogger('propertiestool')
     ptool = getToolByName(site, 'portal_properties', None)
     if ptool is None:
         logger.info('Nothing to export.')
