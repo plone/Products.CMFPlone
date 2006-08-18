@@ -16,6 +16,8 @@ class PortalFactoryXMLAdapter(XMLAdapterBase):
 
     __used_for__ = IFactoryTool
 
+    _LOGGER_ID = name = 'factorytool'
+
     def _exportNode(self):
         """Export the object as a DOM node.
         """
