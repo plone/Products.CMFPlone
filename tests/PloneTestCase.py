@@ -13,6 +13,7 @@ setupPloneSite()
 # this patch is mandatory or we will see endless UnicodeDecodeErrors
 from Products.PlacelessTranslationService import PatchStringIO
 
+
 class PloneTestCase(PloneTestCase):
     """This is a stub now, but in case you want to try
        something fancy on Your Branch (tm), put it here.
