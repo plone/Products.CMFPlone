@@ -21,7 +21,7 @@ class PortalFactoryXMLAdapter(XMLAdapterBase):
     def _exportNode(self):
         """Export the object as a DOM node.
         """
-        node=self._doc.createElement("object")
+        node = self._getObjectNode("object")
         node.appendChild(self._extractFactoryToolSettings())
 
         self._logger.info("FactoryTool settings exported.")
@@ -29,7 +29,7 @@ class PortalFactoryXMLAdapter(XMLAdapterBase):
 
     def _importNode(self, node):
         if self.environ.shouldPurge():
-            self._purseFactoryTypes()
+            self._purgeFactoryToolSettings()
 
         self._initFactoryToolSettings(node)
         self._logger.info("FactoryTool settings imported.")
