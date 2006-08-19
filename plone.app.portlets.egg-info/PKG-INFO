@@ -1,0 +1,11 @@
+Metadata-Version: 1.0
+Name: plone.app.portlets
+Version: 0.1dev
+Summary: Plone integration for the basic plone.portlets package
+Home-page: http://svn.plone.org/svn/plone/plone.app.portlets
+Author: Martin Aspeli
+Author-email: optilude@gmx.net
+License: GPL
+Description: UNKNOWN
+Keywords: portlets viewlets plone
+Platform: UNKNOWN

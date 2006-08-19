@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<import-steps>
+  <import-step id="plone.app.portlets_various" version="20060816-01"
+               handler="plone.app.portletes.setuphandlers.importVarious"
+               title="Various plone.app.portlets settings">
+ </import-step>
+</import-steps>

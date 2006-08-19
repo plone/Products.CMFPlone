@@ -1,0 +1,15 @@
+========================
+plone.app.portlets to-do
+========================
+
+  o Make proper GenericSetup import/export handler for:
+      - Portlet manager registrations
+      - Portlet registration
+      
+  o Make ClassicPortlet - must adequately wrap a legacy portlet macro
+      - Look at Bling to determine what context must be provided
+      
+  o Make other portlets
+  
+  o Add a generic migration from left_slots/right_slots
+      
