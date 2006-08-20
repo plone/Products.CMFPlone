@@ -116,13 +116,17 @@ class Plone(utils.BrowserView):
         self._data['site_properties'] = site_props = props.site_properties
         self._data['ztu'] =  ZTUtils
         self._data['isFolderish'] =  getattr(context.aq_explicit, 'isPrincipiaFolderish', False)
+        
+        # TODO: How should these interact with plone.portlets? Ideally, they'd
+        # be obsolete, with a simple "show-column" boolean
         self._data['slots_mapping'] = slots = (
                                          options.get('slots_mapping', None) or
                                          self._prepare_slots())
         self._data['sl'] = sl = slots['left']
         self._data['sr'] = sr = slots['right']
-        self._data['here_url'] =  context.absolute_url()
         self._data['hidecolumns'] =  self.hide_columns(sl, sr)
+        
+        self._data['here_url'] =  context.absolute_url()
         self._data['default_language'] = default_language = \
                               site_props.getProperty('default_language', None)
         self._data['language'] =  self.request.get('language', None) or \

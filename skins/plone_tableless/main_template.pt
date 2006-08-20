@@ -154,13 +154,10 @@
 
             <tal:comment replace="nothing"> Start of the left column </tal:comment>
             <div id="portal-column-one"
-                 metal:define-slot="column_one_slot"
-                 tal:condition="sl">
+                 metal:define-slot="column_one_slot">
               <div class="visualPadding">
                 <metal:portlets define-slot="portlets_one_slot">
-                  <metal:leftportlets use-macro="here/portlets_fetcher/macros/left_column">
-                    This instruction gets the portlets (boxes) for the left column.
-                  </metal:leftportlets>
+                  <tal:block replace="structure provider:plone.leftcolumn" />
                 </metal:portlets>
                 &nbsp;
               </div>
@@ -170,13 +167,10 @@
           </div>
           <tal:comment replace="nothing"> Start of right column </tal:comment>
           <div id="portal-column-two"
-               metal:define-slot="column_two_slot"
-               tal:condition="sr">
+               metal:define-slot="column_two_slot">
             <div class="visualPadding">
               <metal:portlets define-slot="portlets_two_slot">
-                <metal:rightportlets use-macro="here/portlets_fetcher/macros/right_column">
-                  This instruction gets the portlets (boxes) for the right column.
-                </metal:rightportlets>
+                <tal:block replace="structure provider:plone.rightcolumn" />
               </metal:portlets>
               &nbsp;
             </div>
