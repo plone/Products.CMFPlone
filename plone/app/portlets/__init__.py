@@ -4,12 +4,12 @@ def initialize(context):
     """
 
     from Products.CMFPlone.interfaces import IPloneSiteRoot
-    from Products.GenericSetup import profile_registry
+    from Products.GenericSetup import profile_registry, EXTENSION
 
     profile_registry.registerProfile('default',
                                      'plone.app.portlets',
                                      'Portlets and UI for Plone',
                                      'profiles/default',
                                      'plone.app.portlets',
-                                     GenericSetup.EXTENSION,
+                                     EXTENSION,
                                      for_=IPloneSiteRoot)
