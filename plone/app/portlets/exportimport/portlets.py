@@ -71,7 +71,7 @@ class PortletsXMLAdapter(XMLAdapterBase):
                 continue
             
             if id not in self.context.objectIds():
-                if placeless:
+                if not placeless:
                     manager = PortletManager()
                 else:
                     manager = PlacelessPortletManager()
