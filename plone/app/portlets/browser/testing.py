@@ -20,8 +20,6 @@ class Testing(BrowserView):
     
     def __call__(self):
         
-        import pdb; pdb.set_trace()
-        
         # Convert left_slots and right_slots to portlets
         
         portal = getToolByName(self.context, 'portal_url').getPortalObject()
