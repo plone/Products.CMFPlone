@@ -2,14 +2,39 @@
 plone.app.portlets to-do
 ========================
 
-  o Make proper GenericSetup import/export handler for:
-      - Portlet manager registrations
-      - Portlet registration
+  Portlets
+
+    o Make ClassicPortlet - must adequately wrap a legacy portlet macro
+        - Look at Bling to determine what context must be provided
       
-  o Make ClassicPortlet - must adequately wrap a legacy portlet macro
-      - Look at Bling to determine what context must be provided
+    o Make other portlets
+        - Smart Folder renderer
+        - News, Events (may be Smart Folder portlets)
       
-  o Make other portlets
+        - Login
+        - Calendar
+
+  Plone Integration
+
+    o Modify main_template to load portlets.leftcolumn and portlets.rightcolumn
+    
+    o Add dashboard page using portlets.dashboard
+        - May need to split dashboard into several columns
+        
+    o Port portlet assignment UI from PlonePortlets
+        - Assign portlets to context
+        - Assign portlets to users, groups
   
-  o Add a generic migration from left_slots/right_slots
+    o Add a generic migration from left_slots/right_slots
+        - Should be "on-demand" (perhaps automatic for site root)
+
+  GenericSetup import/export handlers
+
+    o Better test coverage for portlet manager GenericSetup import/export
+        - export
+        - re-import with purge
+        - re-import without purge
       
+    o Extend import/export handler to cover portlet assignments
+        - requires individual import/export adapters for each portlet 
+            assignment type!  
