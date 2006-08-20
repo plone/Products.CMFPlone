@@ -22,22 +22,22 @@ from plone.app.portlets.interfaces import IPortletManagerFolder
 from Acquisition import aq_base
 from OFS.Folder import Folder
 
-class PortletManagerXMLAdapter(XMLAdapterBase):
-    """In- and exporter for a local portlet manager configuration
+class PortletsXMLAdapter(XMLAdapterBase):
+    """In- and exporter for a local portlet configuration
     """
     __used_for__ = IPortletManagerFolder
-    name = 'portletmanager'
-    _LOGGER_ID = 'controlpanel'
+    name = 'portlets'
+    _LOGGER_ID = 'portlets'
     
     def _exportNode(self):
-        node = self._getObjectNode('object')
+        node = self._getObjectNode('portlets')
         node.appendChild(self._extractPortletManagers())
-        self._logger.info('Portlet managers exported')
+        self._logger.info('Portlets exported')
         return node
 
     def _importNode(self, node):
         self._initProvider(node)
-        self._logger.info('Portlet managers imported')
+        self._logger.info('Portlets imported')
 
     def _initProvider(self, node):
         if self.environ.shouldPurge():
@@ -100,8 +100,8 @@ class PortletManagerXMLAdapter(XMLAdapterBase):
 
         return fragment
 
-def importPortletManager(context):
-    """Import portlet managers
+def importPortlets(context):
+    """Import portlet managers and portlet assignments
     """
 
     site = context.getSite()
@@ -118,8 +118,8 @@ def importPortletManager(context):
     
     importObjects(folder, '', context)
 
-def exportPortletManager(context):
-    """Export portlet managers
+def exportPortlets(context):
+    """Export portlet managers and portlet assignments
     """
     
     site = context.getSite()

@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <import-steps>
-  <import-step id="portletmanager"
+  <import-step id="portlets"
     version="20060819-01"
-    handler="plone.app.portlets.exportimport.portletmanager.importPortletManager"
+    handler="plone.app.portlets.exportimport.portlets.importPortlets"
     title="Portlet Managers">
     Import local portlet manager configuration.
   </import-step>

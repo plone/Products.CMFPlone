@@ -2,7 +2,7 @@
    xmlns="http://namespaces.zope.org/zope">
 
   <adapter
-      factory=".portletmanager.PortletManagerXMLAdapter"
+      factory=".portlets.PortletsXMLAdapter"
       provides="Products.GenericSetup.interfaces.IBody"
       for="plone.app.portlets.interfaces.IPortletManagerFolder
            Products.GenericSetup.interfaces.ISetupEnviron"
