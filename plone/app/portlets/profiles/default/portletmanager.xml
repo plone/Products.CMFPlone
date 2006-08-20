@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<object>
+ <portletmanager id="left" column="plone.leftcolumn" />
+ <portletmanager id="right" column="plone.rightcolumn" />
+ <portletmanager id="dashboard" column="plone.dashboard" placeless="True"/>
+</object>

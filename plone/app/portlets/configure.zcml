@@ -4,4 +4,6 @@
 
     <five:registerPackage package="." initialize=".initialize" />
 
+    <include package=".exportimport" />
+
 </configure>
