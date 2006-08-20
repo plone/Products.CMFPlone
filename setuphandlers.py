@@ -24,6 +24,7 @@ class PloneGenerator:
 
     def installProducts(self, p):
         """QuickInstaller install of required Products"""
+        
         # XXX The product installations should be done by a CMFSetup
         # handler
         qi = getToolByName(p, 'portal_quickinstaller')

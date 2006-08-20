@@ -128,4 +128,12 @@
   <dependency step="typeinfo"/>
   Import type registration for the portal factory tool.
  </import-step>
+ 
+ <import-step id="portlets" version="20060820-01"
+               handler="plone.app.portlets.exportimport.portlets.importPortlets"
+               title="Portlet Managers">
+    <dependency step="plone_various"/>
+    Import local portlet manager configuration.
+  </import-step>
+ 
 </import-steps>

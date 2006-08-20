@@ -5,6 +5,8 @@
   <include package=".browser" />
   <include package=".exportimport" />
 
+  <include package="plone.app.portlets" />
+
   <five:implements
     class=".FactoryTool.FactoryTool"
     interface=".interfaces.IFactoryTool"
