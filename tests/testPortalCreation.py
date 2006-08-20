@@ -14,6 +14,7 @@ from zope.app.component.hooks import setSite, clearSite, setHooks
 from zope.app.component.interfaces import ISite
 from zope.component import getGlobalSiteManager
 from zope.component import getSiteManager
+from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.component import queryUtility
 from zope.component.interfaces import IComponentLookup
@@ -31,6 +32,8 @@ from Products.StandardCacheManagers.AcceleratedHTTPCacheManager import \
 from Products.StandardCacheManagers.RAMCacheManager import \
      RAMCacheManager
 
+from plone.portlets.interfaces import IPortletManager
+from plone.app.portlets.config import PORTLETMANAGER_FOLDER
 
 class TestPortalCreation(PloneTestCase.PloneTestCase):
 
@@ -743,6 +746,19 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         # Make sure unregistration was successful
         util = queryUtility(dummy.IDummyUtility)
         self.failUnless(util is None)
+        
+    def testPortletManagersInstalled(self):
+        self.failUnless(PORTLETMANAGER_FOLDER in self.portal.objectIds())
+        portlets = self.portal[PORTLETMANAGER_FOLDER]
+        
+        self.failUnless('left' in portlets.objectIds())
+        self.failUnless('right' in portlets.objectIds())
+        self.failUnless('dashboard' in portlets.objectIds())
+        
+        sm = getSiteManager(self.portal)
+        registrations = [r.name for r in sm.registeredAdapters()
+                            if IPortletManager.providedBy(r.factory)]
+        self.assertEquals(['plone.dashboard', 'plone.leftcolumn', 'plone.rightcolumn'], sorted(registrations))
 
 class TestPortalBugs(PloneTestCase.PloneTestCase):
 
