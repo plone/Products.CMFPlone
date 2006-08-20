@@ -5,5 +5,8 @@
     <five:registerPackage package="." initialize=".initialize" />
 
     <include package=".exportimport" />
+    
+    <adapter factory=".portletcontext.ContentContext" />
+    <adapter factory=".portletcontext.PortalRootContext" />
 
 </configure>
