@@ -77,6 +77,8 @@ class PortletsXMLAdapter(XMLAdapterBase):
                     manager = PlacelessPortletManager()
                 self.context._setObject(id, manager)
             
+            manager = self.context._getOb(id)
+            
             sm.registerAdapter(required=(Interface, IBrowserRequest, IBrowserView), 
                                provided=IPortletManagerRenderer,
                                name=column, 

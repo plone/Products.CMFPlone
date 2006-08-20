@@ -1,6 +1,6 @@
 Metadata-Version: 1.0
 Name: plone.app.portlets
-Version: 0.1dev
+Version: 0.1dev-r10528
 Summary: Plone integration for the basic plone.portlets package
 Home-page: http://svn.plone.org/svn/plone/plone.app.portlets
 Author: Martin Aspeli

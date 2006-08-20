@@ -12,8 +12,9 @@ from Products.PloneTestCase.PloneTestCase import PloneTestCase
 from Products.PloneTestCase.PloneTestCase import FunctionalTestCase
 from Products.PloneTestCase.PloneTestCase import setupPloneSite
 
-# Set up a Plone site, and apply the plone.app.portlets extension profile
-setupPloneSite(extension_profiles=('plone.app.portlets:default',))
+# Set up a Plone site - note that the portlets branch of CMFPlone applies
+# a portlets profile.
+setupPloneSite()
 
 class PortletsTestCase(PloneTestCase):
     """Base class for integration tests for plone.app.portlets. This may

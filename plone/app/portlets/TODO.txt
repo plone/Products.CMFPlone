@@ -17,6 +17,10 @@ plone.app.portlets to-do
   Plone Integration
 
     o Modify main_template to load portlets.leftcolumn and portlets.rightcolumn
+        - remove/deprecate portlets_fetcher
+        - consider what to do with 'sr', 'sl', and slots_mapping in 
+            global_defines
+        - need equivalent way of checking if column should be hidden altogether.
     
     o Add dashboard page using portlets.dashboard
         - May need to split dashboard into several columns
@@ -27,6 +31,10 @@ plone.app.portlets to-do
   
     o Add a generic migration from left_slots/right_slots
         - Should be "on-demand" (perhaps automatic for site root)
+        
+    o Add migration steps to Plone's migration machinery
+    
+    o Set up default portlets during site set-up
 
   GenericSetup import/export handlers
 

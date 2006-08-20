@@ -20,9 +20,7 @@ class TestProductInstall(PortletsTestCase):
         sm = getSiteManager(self.portal)
         registrations = [r.name for r in sm.registeredAdapters()
                             if IPortletManager.providedBy(r.factory)]
-        registrations.sort()
-        
-        self.assertEquals(['plone.dashboard', 'plone.leftcolumn', 'plone.rightcolumn'], registrations)
+        self.assertEquals(['plone.dashboard', 'plone.leftcolumn', 'plone.rightcolumn'], sorted(registrations))
         
 def test_suite():
     from unittest import TestSuite, makeSuite
