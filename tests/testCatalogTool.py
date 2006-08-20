@@ -324,6 +324,7 @@ class TestCatalogIndexing(PloneTestCase.PloneTestCase):
         self.assertEquals(self.folder.doc.modified(), DateTime(0))
         self.assertEquals(len(self.catalog(modified=DateTime(0))), 1)
 
+
 class TestCatalogSearching(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
