@@ -4,7 +4,9 @@
 
     <five:registerPackage package="." initialize=".initialize" />
 
+    <include package=".browser" />
     <include package=".exportimport" />
+    <include package=".portlets" />
     
     <adapter factory=".portletcontext.ContentContext" />
     <adapter factory=".portletcontext.PortalRootContext" />

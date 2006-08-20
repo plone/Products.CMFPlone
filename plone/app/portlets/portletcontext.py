@@ -3,7 +3,7 @@ from types import StringTypes
 from zope.interface import implements
 from zope.component import adapts
 
-from Acquisition import aq_parent, aq_base
+from Acquisition import aq_parent, aq_base, aq_inner
 
 from Products.CMFCore.interfaces import IDynamicType
 from Products.CMFCore.interfaces import ISiteRoot
@@ -33,7 +33,7 @@ class ContentContext(object):
         
     @property
     def parent(self):
-        return aq_parent(self.context)
+        return aq_parent(aq_inner(self.context))
     
     @property
     def userId(self):

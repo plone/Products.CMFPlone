@@ -1,0 +1,14 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser">
+
+    <browser:page
+      for="*"
+      class=".testing.Testing"
+      name="portlets_testing"
+      permission="zope.Public"
+      />
+
+        
+
+</configure>

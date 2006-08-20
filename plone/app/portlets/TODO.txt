@@ -9,7 +9,7 @@ plone.app.portlets to-do
       
     o Make other portlets
         - Smart Folder renderer
-        - News, Events (may be Smart Folder portlets)
+        - News, Events (may be Smart Folder portlets?)
       
         - Login
         - Calendar
