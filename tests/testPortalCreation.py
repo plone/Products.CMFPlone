@@ -755,6 +755,14 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.failUnless('right' in portlets.objectIds())
         self.failUnless('dashboard' in portlets.objectIds())
         
+        left = portlets['left']
+        right = portlets['right']
+        dashboard = portlets['dashboard']
+        
+        self.failUnless(left.meta_type == 'Portlet Manager')
+        self.failUnless(right.meta_type == 'Portlet Manager')
+        self.failUnless(dashboard.meta_type == 'Placeless Portlet Manager')
+        
         sm = getSiteManager(self.portal)
         registrations = [r.name for r in sm.registeredAdapters()
                             if IPortletManager.providedBy(r.factory)]
