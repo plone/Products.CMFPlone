@@ -6,12 +6,17 @@ plone.app.portlets to-do
 
     o Make standard set of portlets
         - Smart Folder renderer
+        - Document renderer
         - News
         - Events
         - Recent
         - Related
-        - Login
         - Calendar
+        
+    o Make a base class for add forms based on formlib's AddForm
+        - Register these as part of portlet configuration
+        - Also register edit form, using e.g. 'edit' as name convention
+        - Look for all such add forms to get list of addable portlets
 
   Plone Integration
 
@@ -38,6 +43,8 @@ plone.app.portlets to-do
     o Add a generic migration from left_slots/right_slots
         - Should be "on-demand" (perhaps automatic for site root)
         - See code in testing.py
+        - Could also have a custom IPortletManagerRenderer that builds
+            ClassicPortlet's on-the-fly
         
     o Add migration steps to Plone's migration machinery
     
@@ -50,6 +57,4 @@ plone.app.portlets to-do
         - re-import with purge
         - re-import without purge
       
-    o Extend import/export handler to cover portlet assignments
-        - requires individual import/export adapters for each portlet 
-            assignment type!  
+    o Extend import/export handler to cover portlet assignments?
