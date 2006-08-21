@@ -1,10 +1,8 @@
-"""Integration tests for adapter registrations.
+"""Integration tests for portlet contexts.
 
-These tests ensure that the various adapter registrations are in effect,
-not the exact functionality they promise. They utilise the full PloneTestCase
-bases, since we are actually testing that the registrations are properly loaded
-at Zope start-up, not just that they could be made to work (e.g. using the
-zope testing API)
+The application layer (i.e. this package) must provide adapters to 
+IPortletContext so that plone.portlets can find out about things like
+users, groups and context UIDs.
 """
 
 import unittest

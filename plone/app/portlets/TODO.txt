@@ -4,33 +4,40 @@ plone.app.portlets to-do
 
   Portlets
 
-    o Make ClassicPortlet - must adequately wrap a legacy portlet macro
-        - Look at Bling to determine what context must be provided
-      
-    o Make other portlets
+    o Make standard set of portlets
         - Smart Folder renderer
-        - News, Events (may be Smart Folder portlets?)
-      
+        - News
+        - Events
+        - Recent
+        - Related
         - Login
         - Calendar
 
   Plone Integration
 
-    o Modify main_template to load portlets.leftcolumn and portlets.rightcolumn
-        - remove/deprecate portlets_fetcher
-        - consider what to do with 'sr', 'sl', and slots_mapping in 
-            global_defines
-        - need equivalent way of checking if column should be hidden altogether.
+    o Remove/deprecate portlets_fetcher
     
+        - The need for a provider: expression will break existing customisations
+          of main_template. May be better to put this expression in 
+          portlet_fetcher.pt for now.
+          
+        - Consider what to do with 'sr', 'sl', 'hide_columns' and 
+           'slots_mapping' in global_defines. Is anyone depending on these?
+           
+        - Need a way to signal that columns should be hidden
+            - e.g. a property 'available' in the renderer?
+
     o Add dashboard page using portlets.dashboard
         - May need to split dashboard into several columns
         
     o Port portlet assignment UI from PlonePortlets
         - Assign portlets to context
-        - Assign portlets to users, groups
+        - Assign portlets to users, groups, content types (?)
+        - Blacklisting
   
     o Add a generic migration from left_slots/right_slots
         - Should be "on-demand" (perhaps automatic for site root)
+        - See code in testing.py
         
     o Add migration steps to Plone's migration machinery
     

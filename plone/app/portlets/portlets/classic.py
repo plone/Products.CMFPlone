@@ -48,7 +48,7 @@ class ClassicPortletAssignment(Persistent):
         return self
         
     def __repr__(self):
-        return '<ClassicPortlet rendering %s : %s' % (self.template, self.macro,)
+        return '<ClassicPortlet rendering %s : %s>' % (self.template, self.macro,)
 
 class ClassicPortletRenderer(Explicit):
     implements(IPortletRenderer)
@@ -73,5 +73,7 @@ class ClassicPortletRenderer(Explicit):
 
     render = ZopeTwoPageTemplateFile('classic.pt')
 
+    def __repr__(self):
+        return '<ClassicPortletRenderer rendering %s>' % (self.path_expression(),)
 
 
