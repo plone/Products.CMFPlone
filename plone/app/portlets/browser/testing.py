@@ -10,6 +10,7 @@ from plone.portlets.interfaces import IPortletContext
 from plone.portlets.interfaces import IPortletAssignable
 
 from plone.app.portlets.portlets.classic import ClassicPortletAssignment
+from plone.app.portlets.portlets.login import LoginPortletAssignment
 
 class Testing(BrowserView):
     
@@ -19,6 +20,8 @@ class Testing(BrowserView):
         self.request = request
     
     def __call__(self):
+        
+        portletsMapping = { 'portlet_login' : LoginPortletAssignment() }
         
         # Convert left_slots and right_slots to portlets
         
@@ -36,12 +39,20 @@ class Testing(BrowserView):
         
         for item in left_slots:
             path = item.split('/')
-            if len(path) == 4 and path[0] in ('context', 'here',) and path[2] == 'macros':
-                leftAssignments.append(ClassicPortletAssignment(path[1], path[3]))
+            if len(path) == 4:
+                newPortlet = portletsMapping.get(path[1], None)
+                if newPortlet is not None:
+                     leftAssignments.append(newPortlet)
+                elif path[0] in ('context', 'here',) and path[2] == 'macros':
+                    leftAssignments.append(ClassicPortletAssignment(path[1], path[3]))
         for item in right_slots:
             path = item.split('/')
-            if len(path) == 4 and path[0] in ('context', 'here',) and path[2] == 'macros':
-                rightAssignments.append(ClassicPortletAssignment(path[1], path  [3]))
+            if len(path) == 4:
+                newPortlet = portletsMapping.get(path[1], None)
+                if newPortlet is not None:
+                     rightAssignments.append(newPortlet)
+                elif path[0] in ('context', 'here',) and path[2] == 'macros':
+                    rightAssignments.append(ClassicPortletAssignment(path[1], path  [3]))
         
         leftAssignable = getMultiAdapter((portletContext, left), IPortletAssignable)
         rightAssignable = getMultiAdapter((portletContext, right), IPortletAssignable)
