@@ -5,7 +5,7 @@ from zope.component import getUtility
 from zope.component import adapts
 
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
-from zope.app.publisher.interfaces.browser import IBrowserView
+from zope.publisher.interfaces.browser import IBrowserView
 from zope.app.publisher.interfaces.browser import IBrowserMenu
 
 from interfaces import IContentMenuView
