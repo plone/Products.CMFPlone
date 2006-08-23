@@ -4,6 +4,7 @@ from zope.interface import Interface, implements
 from zope.component import adapts
 
 from zope import schema
+from zope.formlib import form
 
 from zope.publisher.interfaces.browser import IBrowserRequest
 from zope.publisher.interfaces.browser import IBrowserView
@@ -15,6 +16,7 @@ from plone.portlets.interfaces import IPortletManager
 
 from Acquisition import Explicit
 
+from Products.Five.formlib.formbase import AddForm
 from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
 
 from Products.CMFPlone.browser.plone import cache_decorator
@@ -125,3 +127,9 @@ class LoginPortletRenderer(Explicit):
         return '<LoginPortletRenderer>'
 
 
+class LoginPortletAdd(AddForm):
+
+    form_fields = form.Fields(ILoginPortlet)
+
+    def create(self, data):
+        return LoginPortletAssignment()

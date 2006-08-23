@@ -8,7 +8,48 @@
       name="portlets_testing"
       permission="zope.Public"
       />
+      
+    <!--
+      
+      To support adding to a particular portlet manager, we do the following:
+      
+      - The view @@portletmanager is registered for any object
+      - Upon traversal, the PortletManagerTraverser is invoked. Suppose the
+         URL is the following
+          
+          /path/to/object/@@portletmanager/plone.leftcolumn/+/portlets.Classic
+          
+        In this case, the PortletManagerView's 'manager' attribute is set to
+        plone.leftcolumn, and a a view for the PortletManagerView is 
+        looked up and returned.
+      
+      - The '+' view is a special IAdding view for the PortletManagerView.
+        This in turn can be used by add forms.
+      
+      note: If http://zope.org/Collectors/Zope3-dev/589 gets fixed (in Zope 
+      3.4?), we can use a namespace traverser instead of the PortletManagerView
+      and PortletManagerTraverser
+      
+    -->
 
-        
+    <adapter
+      name="portletmanager"
+      factory=".traversal.PortletManagerView"
+      provides="zope.publisher.interfaces.browser.IBrowserView"
+      permission="zope.Public"
+      />
+      
+    <adapter
+      factory=".traversal.PortletManagerTraverser"
+      provides="zope.publisher.interfaces.IPublishTraverse"
+      permission="zope.Public"
+      />
+      
+    <browser:view
+      for="plone.app.portlets.interfaces.IPortletManagerView"
+      name="+"
+      class=".adding.PortletAdding"
+      permission="cmf.ManagePortal"
+      />
 
 </configure>

@@ -46,18 +46,25 @@ class PortletsXMLAdapter(XMLAdapterBase):
 
     def _purgePortletManagers(self):
         sm = getSiteManager(self.context)
-        registrations = [r for r in sm.registeredAdapters()
-                            if IPortletManager.providedBy(r.factory)]
+        adapterRegistrations = [r for r in sm.registeredAdapters()
+                                    if IPortletManager.providedBy(r.factory)]
         
-        for registration in registrations:
+        for registration in adapterRegistrations:
             sm.unregisterAdapter(provided=registration.provided,
                                  name=registration.name)
+                                 
+        utilityRegistrations = [r for r in sm.registeredUtilities()
+                                    if r.provided.isOrExtends(IPortletManager)]
+        
+        for registration in utilityRegistrations:
+            sm.unregisterUtility(name=registration.name)
 
     def _initPortletManagers(self, node):
         sm = getSiteManager(self.context)
-        registered = [r.name for r in sm.registeredAdapters()
-                        if IPortletManager.providedBy(r.factory)]
-        
+        registeredAdapters = [r.name for r in sm.registeredAdapters()
+                                if IPortletManager.providedBy(r.factory)]
+        registeredUtilities = [r.name for r in sm.registeredUtilities()
+                                    if r.provided.isOrExtends(IPortletManager)]
         
         for child in node.childNodes:
             if child.nodeName != 'portletmanager':
@@ -66,23 +73,26 @@ class PortletsXMLAdapter(XMLAdapterBase):
             id = str(child.getAttribute('id'))
             column = str(child.getAttribute('column'))
             placeless = bool(child.getAttribute('placeless'))
-            
-            if column in registered:
-                continue
-            
+                        
             if id not in self.context.objectIds():
                 if not placeless:
                     manager = PortletManager()
                 else:
                     manager = PlacelessPortletManager()
+                manager.id = id
                 self.context._setObject(id, manager)
             
             manager = self.context._getOb(id)
             
-            sm.registerAdapter(required=(Interface, IBrowserRequest, IBrowserView), 
-                               provided=IPortletManagerRenderer,
-                               name=column, 
-                               factory=aq_base(manager))
+            if column not in registeredAdapters:
+                sm.registerAdapter(required=(Interface, IBrowserRequest, IBrowserView), 
+                                   provided=IPortletManagerRenderer,
+                                   name=column, 
+                                   factory=aq_base(manager))
+            if column not in registeredUtilities:
+                sm.registerUtility(component=manager, 
+                                   provided=IPortletManager,
+                                   name=column)
             
 
     def _extractPortletManagers(self):
@@ -130,6 +140,7 @@ def exportPortlets(context):
     
     if PORTLETMANAGER_FOLDER not in site.objectIds():
         folder = PortletManagerFolder(PORTLETMANAGER_FOLDER)
+        folder.id = PORTLETMANAGER_FOLDER
         site._setObject(PORTLETMANAGER_FOLDER, folder)
         folder = site._getOb(PORTLETMANAGER_FOLDER)
     else:

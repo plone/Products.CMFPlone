@@ -2,6 +2,22 @@
 plone.app.portlets to-do
 ========================
 
+  Tests
+  
+    - login portlet
+    - add views
+    - portlet manager traversal adapters
+    - portlet context on tools
+
+  Infrastructure
+  
+    o Consider use of INameChoosers and containment constraints when adding
+        assignments in IPortletAdding.
+        
+    o Portlets like the login portlet have no configuration: formlib then
+        displays a blank page :-(
+        - can we short-circuit these?
+  
   Portlets
 
     o Make standard set of portlets
@@ -14,9 +30,19 @@ plone.app.portlets to-do
         - Calendar
         
     o Make a base class for add forms based on formlib's AddForm
-        - Register these as part of portlet configuration
+        - Register these as part of portlet configuration (mostly done)
         - Also register edit form, using e.g. 'edit' as name convention
         - Look for all such add forms to get list of addable portlets
+
+  User Interface
+
+    o Add dashboard page using portlets.dashboard
+        - May need to split dashboard into several columns
+        
+    o Port portlet assignment UI from PlonePortlets
+        - Assign portlets to context
+        - Assign portlets to users, groups, content types (?)
+        - Blacklisting
 
   Plone Integration
 
@@ -31,14 +57,6 @@ plone.app.portlets to-do
            
         - Need a way to signal that columns should be hidden
             - e.g. a property 'available' in the renderer?
-
-    o Add dashboard page using portlets.dashboard
-        - May need to split dashboard into several columns
-        
-    o Port portlet assignment UI from PlonePortlets
-        - Assign portlets to context
-        - Assign portlets to users, groups, content types (?)
-        - Blacklisting
   
     o Add a generic migration from left_slots/right_slots
         - Should be "on-demand" (perhaps automatic for site root)

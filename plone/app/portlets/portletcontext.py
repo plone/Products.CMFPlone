@@ -1,13 +1,12 @@
 from types import StringTypes
 
-from zope.interface import implements
+from zope.interface import implements, Interface
 from zope.component import adapts
 
 from Acquisition import aq_parent, aq_base, aq_inner
+from OFS.interfaces import ITraversable
 
-from Products.CMFCore.interfaces import IDynamicType
 from Products.CMFCore.interfaces import ISiteRoot
-
 from Products.CMFCore.utils import getToolByName
 
 from Products.Archetypes.interfaces import IReferenceable
@@ -16,9 +15,13 @@ from plone.portlets.interfaces import IPortletContext
 
 class ContentContext(object):
     """A portlet context for regular content items.
+    
+    Note - we register this for ITraversable so that it can also work for
+    tools and other non-content items. This may hijack the context in non-CMF
+    contexts, but that is doubtfully going to be an issue.
     """
     implements(IPortletContext)
-    adapts(IDynamicType)
+    adapts(ITraversable)
     
     def __init__(self, context):
         self.context = context
@@ -37,8 +40,8 @@ class ContentContext(object):
     
     @property
     def userId(self):
-        membership = getToolByName(self.context, 'portal_membership')
-        if membership.isAnonymousUser():
+        membership = getToolByName(self.context, 'portal_membership', None)
+        if membership is None or membership.isAnonymousUser():
             return None
         
         member = membership.getAuthenticatedMember()
@@ -57,8 +60,8 @@ class ContentContext(object):
         
     @property                     
     def groupIds(self):
-        membership = getToolByName(self.context, 'portal_membership')
-        if membership.isAnonymousUser():
+        membership = getToolByName(self.context, 'portal_membership', None)
+        if membership is None or membership.isAnonymousUser():
             return ()
         
         member = membership.getAuthenticatedMember()
