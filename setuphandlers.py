@@ -42,8 +42,6 @@ class PloneGenerator:
         qi.notifyInstalled('ATReferenceBrowserWidget', locked=1)
         
     def customizePortalOptions(self, p):
-        p.manage_permission( cmfpermissions.ListFolderContents, \
-                             ('Manager', 'Member', 'Owner',), acquire=1 )
         stool = getToolByName(p, 'portal_skins')
         stool.allow_any=0 # Skin changing for users is turned off by default
 
