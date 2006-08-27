@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0 - Unreleased
 
+    - Fixed the 'Unauthorized: You are not allowed to access 'Creator' in this
+      context' error that was raised in the testCookieAuth tests.
+      [hannosch]
+
     - Using new 'visualIcon' css class to allow much smaller generated.css
       and RTL.css. When new content types are installed, then generated.css
       will grow much less then before and RTL.css will not grow at all
