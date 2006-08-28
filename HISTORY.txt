@@ -2,6 +2,10 @@ Changelog for Plone
 
     (name of developer listed in brackets)
 
+    - Made 'setuphandlers.PloneGenerator.setupPortalContent' more
+      robust by checking if the Members folder is really there.
+      [nouri]
+
     - Copied '_getSecurity' from Archetypes.utils to avoid a dependency.
       Plone should not import from Archetypes to minimize coupling.
       [stefan]

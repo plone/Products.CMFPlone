@@ -22,6 +22,7 @@ from Products.StandardCacheManagers.RAMCacheManager import \
      RAMCacheManager
 from Products.CMFCore.CachingPolicyManager import CachingPolicyManager
 from Products.CMFPlone.UnicodeSplitter import Splitter, CaseNormalizer
+from Products.CMFPlone import setuphandlers
 
 
 class TestPortalCreation(PloneTestCase.PloneTestCase):
@@ -742,6 +743,19 @@ class TestPortalBugs(PloneTestCase.PloneTestCase):
         self.loginAsPortalOwner()
         setup_tool = self.portal.portal_setup
         setup_tool.runAllImportSteps() # this will raise an error if it fails
+        self.failUnless(1 == 1)
+
+    def testFinalStepsWithMembersFolderDeleted(self):
+        # We want the final steps to work even if the 'Members' folder
+        # is gone
+        self.loginAsPortalOwner()
+        portal = self.portal
+        portal.manage_delObjects(['Members'])
+        class FakeContext:
+            def getSite(self):
+                return portal
+
+        setuphandlers.importFinalSteps(FakeContext()) # raises error if fail
         self.failUnless(1 == 1)
 
     def testExportImportLosesTextIndexes(self):
