@@ -56,9 +56,7 @@ def test_suite():
     for s in suites:
         s.layer=ZCMLLayer
 
-    return unittest.TestSuite(
-
-        )
+    return unittest.TestSuite(suites)
 
 if __name__ == '__main__':
     framework()
