@@ -12,7 +12,8 @@ from Testing.ZopeTestCase import FunctionalDocFileSuite
 from Testing.ZopeTestCase import ZopeDocTestSuite
 from Products.CMFPlone.tests import PloneTestCase
 from Products.PloneTestCase.layer import ZCMLLayer
-from Products.PloneTestCase.layer
+import Products.PloneTestCase.setup as setup
+
 
 def test_suite():
     suites = (
@@ -25,9 +26,10 @@ def test_suite():
         ZopeDocTestSuite('Products.CMFPlone.CalendarTool',
                          test_class=PloneTestCase.FunctionalTestCase),
         )
-    
-    for s in suites:
-        s.layer = ZCMLLayer
+
+    if setup.USELAYER:
+        for s in suites:
+            s.layer = ZCMLLayer
         
     return TestSuite(suites)
 
