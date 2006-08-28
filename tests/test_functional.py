@@ -18,6 +18,7 @@ from Globals import package_home
 from Testing.ZopeTestCase import FunctionalDocFileSuite as Suite
 from Products.CMFPlone.tests import PloneTestCase, GLOBALS
 from Products.PloneTestCase.layer import ZCMLLayer
+import Products.PloneTestCase.setup as setup
 
 REQUIRE_TESTBROWSER = ['AddMoveAndDeleteDocument.txt',
                        'LoginAndLogout.txt']
@@ -53,8 +54,9 @@ def test_suite():
                test_class=PloneTestCase.FunctionalTestCase)
               for filename in filenames]
 
-    for s in suites:
-        s.layer=ZCMLLayer
+    if setup.USELAYER:
+        for s in suites:
+            s.layer=ZCMLLayer
 
     return unittest.TestSuite(suites)
 
