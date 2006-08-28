@@ -30,14 +30,7 @@ from zope.interface import implements
 
 # ATM it's safer to define our own
 from interfaces.OrderedContainer import IOrderedContainer
-
-# This import can change in Zope 2.7
-try:
-    from OFS.IOrderSupport import IOrderedContainer as IZopeOrderedContainer
-    hasZopeOrderedSupport = 1
-except ImportError:
-    hasZopeOrderedSupport = 0
-
+from OFS.IOrderSupport import IOrderedContainer as IZopeOrderedContainer
 
 class ReplaceableWrapper:
     """A wrapper around an object to make it replaceable."""
@@ -102,12 +95,7 @@ factory_type_information = {
 class OrderedContainer(Folder):
     """Folder with subobject ordering support."""
 
-    if hasZopeOrderedSupport:
-        # Got the IOrderedContainer interface from Zope 2.7 too,
-        # make sure this implementation fullfills both interfaces
-        __implements__ = (IOrderedContainer, IZopeOrderedContainer)
-    else:
-        __implements__ = (IOrderedContainer,)
+    __implements__ = (IOrderedContainer, IZopeOrderedContainer)
 
     security = ClassSecurityInfo()
 

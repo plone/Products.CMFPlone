@@ -33,7 +33,6 @@ from Products.CMFPlone.FactoryTool import FactoryTool, TempFolder
 from Products.CMFPlone.GroupDataTool import GroupDataTool
 from Products.CMFPlone.GroupsTool import GroupsTool
 from Products.CMFPlone.InterfaceTool import InterfaceTool
-from Products.CMFPlone.LargePloneFolder import LargePloneFolder
 from Products.CMFPlone.MemberDataTool import MemberDataTool
 from Products.CMFPlone.MembershipTool import MembershipTool
 from Products.CMFPlone.MetadataTool import MetadataTool
@@ -306,7 +305,6 @@ testClasses = [
     (GroupDataTool, ()),
     (GroupsTool, ()),
     (InterfaceTool, ()),
-    (LargePloneFolder, ()),
     (MemberDataTool, ()),
     (MembershipTool, ()),
     (MetadataTool, ()),

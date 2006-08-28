@@ -10,7 +10,6 @@ from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
 
 AddPortalTopics = 'Add portal topics'
-from Products.CMFPlone import LargePloneFolder
 import transaction
 from OFS.CopySupport import CopyError
 
@@ -124,17 +123,6 @@ class TestContentTypeScripts(PloneTestCase.PloneTestCase):
         self.folder.folder.folder_edit('Foo', 'Bar')
         self.assertEqual(self.folder.folder.Title(), 'Foo')
         self.assertEqual(self.folder.folder.Description(), 'Bar')
-
-    def testLargePloneFolderCreate(self):
-        LargePloneFolder.addLargePloneFolder(self.folder, id='lpf', title='Foo', description='Bar')
-        self.assertEqual(self.folder.lpf.Title(), 'Foo')
-        self.assertEqual(self.folder.lpf.Description(), 'Bar')
-
-    def testLargePloneFolderEdit(self):
-        LargePloneFolder.addLargePloneFolder(self.folder, id='lpf')
-        self.folder.lpf.folder_edit('Foo', 'Bar')
-        self.assertEqual(self.folder.lpf.Title(), 'Foo')
-        self.assertEqual(self.folder.lpf.Description(), 'Bar')
 
     def testLinkCreate(self):
         self.folder.invokeFactory('Link', id='link', remote_url='http://foo.com', title='Foo')

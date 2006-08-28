@@ -9,7 +9,6 @@ if __name__ == '__main__':
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
 
-from Products.CMFPlone import LargePloneFolder
 from Products.ATContentTypes.interfaces import IATContentType
 from Acquisition import aq_base
 
@@ -107,12 +106,6 @@ class TestContentTypes(PloneTestCase.PloneTestCase):
         self.folder.folder.edit(title='Fred', description='BamBam')
         self.assertEqual(self.folder.folder.Title(), 'Fred')
         self.assertEqual(self.folder.folder.Description(), 'BamBam')
-
-    def testLargePloneFolderEdit(self):
-        LargePloneFolder.addLargePloneFolder(self.folder, id='lpf')
-        self.folder.lpf.edit(title='Foo', description='Bar')
-        self.assertEqual(self.folder.lpf.Title(), 'Foo')
-        self.assertEqual(self.folder.lpf.Description(), 'Bar')
 
     def testLinkEdit(self):
         self.folder.invokeFactory('Link', id='link')

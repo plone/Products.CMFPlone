@@ -790,7 +790,6 @@ class TestPortalBugs(PloneTestCase.PloneTestCase):
         # got fixed by hazmat.
         members = self.members
         self.assertEqual(aq_base(members).meta_type, 'ATBTreeFolder')
-        #self.assertEqual(members.index_html.meta_type, 'Document')
         self.assertEqual(members.index_html.meta_type, self.mem_index_type)
 
     def testManageBeforeDeleteIsCalledRecursively(self):

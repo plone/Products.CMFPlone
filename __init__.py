@@ -114,6 +114,7 @@ def initialize(context):
     import PloneContent, PloneFolder, LargePloneFolder
     import Portal
 
+    # BBB LargePloneFolder will be removed in Plone 3.5
     contentClasses      = ( PloneFolder.PloneFolder,
                             LargePloneFolder.LargePloneFolder, )
     contentConstructors = ( PloneFolder.addPloneFolder,

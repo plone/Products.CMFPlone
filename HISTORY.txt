@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0 - Unreleased
 
+    - Deprecated the CMFPlone implementation of LargePloneFolder. Use
+      ATBTreeFolder from ATContentTypes instead.
+      [hannosch]
+
     - Added unicodeFallbackPatch that allows to use utf-8 encoded strings to be
       used inside the Zope3 TAL engine.
       [ree, hannosch]
