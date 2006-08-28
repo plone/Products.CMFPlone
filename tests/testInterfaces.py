@@ -37,7 +37,6 @@ from Products.CMFPlone.MemberDataTool import MemberDataTool
 from Products.CMFPlone.MembershipTool import MembershipTool
 from Products.CMFPlone.MetadataTool import MetadataTool
 from Products.CMFPlone.MigrationTool import MigrationTool
-from Products.CMFPlone.PloneContent import PloneContent
 from Products.CMFPlone.PloneControlPanel import PloneControlPanel, PloneConfiglet
 from Products.CMFPlone.PloneFolder import OrderedContainer, BasePloneFolder, PloneFolder
 from Products.CMFPlone.PloneTool import PloneTool
@@ -309,7 +308,6 @@ testClasses = [
     (MembershipTool, ()),
     (MetadataTool, ()),
     (MigrationTool, ()),
-    (PloneContent, ()),
     (PloneControlPanel, ()), (PloneConfiglet, ()),
     (OrderedContainer, ()), (BasePloneFolder, ()), (PloneFolder, ()),
     (PloneTool, ()),

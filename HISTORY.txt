@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0 - Unreleased
 
+    - Deprecated PloneContent. Use (marker) interfaces instead to get a way to
+      check for a functionality that is common to some types.
+      [hannosch]
+
     - Deprecated the CMFPlone implementation of LargePloneFolder. Use
       ATBTreeFolder from ATContentTypes instead.
       [hannosch]
