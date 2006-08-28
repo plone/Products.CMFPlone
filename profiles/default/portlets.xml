@@ -1,6 +1,20 @@
 <?xml version="1.0"?>
 <portlets>
- <portletmanager id="left" column="plone.leftcolumn" />
- <portletmanager id="right" column="plone.rightcolumn" />
- <portletmanager id="dashboard" column="plone.dashboard" placeless="True"/>
+  
+ <portletmanager name="plone.leftcolumn" />
+ <portletmanager name="plone.rightcolumn" />
+ <portletmanager name="plone.dashboard" placeless="True"/>
+ 
+ <portlet 
+   addview="portlets.Classic"
+   title="Classic portlet"
+   description="A portlet which can render an classic template-based portlet"
+   />
+
+ <portlet 
+   addview="portlets.Login"
+   title="Login portlet"
+   description="A portlet which can render a log-in box"
+   />
+ 
 </portlets>

@@ -16,10 +16,13 @@ from Products.CMFCore.permissions import ReviewPortalContent
 from Products.CMFPlone.interfaces import IBrowserDefault
 
 from zope.interface import implements
-from zope.component import getMultiAdapter
+from zope.component import getMultiAdapter, getUtility
 
 import ZTUtils
 import sys
+
+IPortletManager = sys.modules['plone.portlets.interfaces'].IPortletManager
+IPortletManagerRenderer = sys.modules['plone.portlets.interfaces'].IPortletManagerRenderer
 
 _marker = []
 
@@ -119,9 +122,7 @@ class Plone(utils.BrowserView):
         
         # TODO: How should these interact with plone.portlets? Ideally, they'd
         # be obsolete, with a simple "show-column" boolean
-        self._data['slots_mapping'] = slots = (
-                                         options.get('slots_mapping', None) or
-                                         self._prepare_slots())
+        self._data['slots_mapping'] = slots = self._prepare_slots(options)
         self._data['sl'] = sl = slots['left']
         self._data['sr'] = sr = slots['right']
         self._data['hidecolumns'] =  self.hide_columns(sl, sr)
@@ -220,55 +221,29 @@ class Plone(utils.BrowserView):
             return "visualColumnHideTwo"
         return "visualColumnHideNone"
 
-    def _prepare_slots(self):
-        """ Prepares a structure that makes it conveient to determine
-            if we want to use-macro or render the path expression.
-            The values for the dictioanries is a list of tuples
-            that are path expressions and the second value is a
-            1 for use-macro, 0 for render path expression.
+    def _prepare_slots(self, options={}):
+        """XXX: This is a silly attempt at BBB - the only purpose of this
+        function is to return [] or [1] (non-empty) for each slot 'left' and
+        'right', whether or not that column should be rendered.
         """
+        
+        slots = {'left' : [1], 'right' : [1]}
+        
         context = utils.context(self)
-        slots={ 'left':[],
-                'right':[],
-                'document_actions':[] }
 
-        left_slots=getattr(context,'left_slots', [])
-        right_slots=getattr(context,'right_slots', [])
-        document_action_slots=getattr(context,'document_action_slots', [])
-
-        #check if the *_slots attributes are callable so that they can be
-        # overridden by methods or python scripts
-
-        if callable(left_slots):
-            left_slots=left_slots()
-
-        if callable(right_slots):
-            right_slots=right_slots()
-
-        if callable(document_action_slots):
-            document_action_slots=document_action_slots()
-
-        for slot in left_slots:
-            if not slot: continue
-            if slot.find('/macros/')!=-1:
-                slots['left'].append( (slot, 1) )
-            else:
-                slots['left'].append( (slot, 0) )
-
-        for slot in right_slots:
-            if not slot: continue
-            if slot.find('/macros/')!=-1:
-                slots['right'].append( (slot, 1) )
-            else:
-                slots['right'].append( (slot, 0) )
-
-        for slot in document_action_slots:
-            if not slot: continue
-            if slot.find('/macros/')!=-1:
-                slots['document_actions'].append( (slot, 1) )
-            else:
-                slots['document_actions'].append( (slot, 0) )
-
+        left = getUtility(IPortletManager, name='plone.leftcolumn')
+        right = getUtility(IPortletManager, name='plone.rightcolumn')
+        
+        view = options.get('view', self)
+        
+        leftRenderer = getMultiAdapter((context, self.request, view, left), IPortletManagerRenderer)
+        rightRenderer = getMultiAdapter((context, self.request, view, right), IPortletManagerRenderer)
+        
+        if not leftRenderer.visible:
+            slots['left'] = []
+        if not rightRenderer.visible:
+            slots['right'] = []
+            
         return slots
 
     def toLocalizedTime(self, time, long_format=None):

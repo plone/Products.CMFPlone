@@ -33,7 +33,6 @@ from Products.StandardCacheManagers.RAMCacheManager import \
      RAMCacheManager
 
 from plone.portlets.interfaces import IPortletManager
-from plone.app.portlets.config import PORTLETMANAGER_FOLDER
 
 class TestPortalCreation(PloneTestCase.PloneTestCase):
 
@@ -748,24 +747,9 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.failUnless(util is None)
         
     def testPortletManagersInstalled(self):
-        self.failUnless(PORTLETMANAGER_FOLDER in self.portal.objectIds())
-        portlets = self.portal[PORTLETMANAGER_FOLDER]
-        
-        self.failUnless('left' in portlets.objectIds())
-        self.failUnless('right' in portlets.objectIds())
-        self.failUnless('dashboard' in portlets.objectIds())
-        
-        left = portlets['left']
-        right = portlets['right']
-        dashboard = portlets['dashboard']
-        
-        self.failUnless(left.meta_type == 'Portlet Manager')
-        self.failUnless(right.meta_type == 'Portlet Manager')
-        self.failUnless(dashboard.meta_type == 'Placeless Portlet Manager')
-        
         sm = getSiteManager(self.portal)
-        registrations = [r.name for r in sm.registeredAdapters()
-                            if IPortletManager.providedBy(r.factory)]
+        registrations = [r.name for r in sm.registeredUtilities()
+                            if IPortletManager == r.provided]
         self.assertEquals(['plone.dashboard', 'plone.leftcolumn', 'plone.rightcolumn'], sorted(registrations))
 
 class TestPortalBugs(PloneTestCase.PloneTestCase):

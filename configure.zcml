@@ -2,10 +2,10 @@
            xmlns:browser="http://namespaces.zope.org/browser"
            xmlns:five="http://namespaces.zope.org/five">
 
+  <include package="plone.app.portlets" />
+
   <include package=".browser" />
   <include package=".exportimport" />
-
-  <include package="plone.app.portlets" />
 
   <five:implements
     class=".FactoryTool.FactoryTool"

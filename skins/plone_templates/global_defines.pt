@@ -8,7 +8,7 @@ moved to (much faster) Python code in CMFPlone/browser/plone.py
 <metal:globaldefine define-macro="defines" 
       tal:define="
         global plone_view context/@@plone;
-        global view view | plone_view;
+        global view nocall:view | nocall:plone_view;
         foo plone_view/globalize;
         global template_id options/template_id | template/getId | nothing;
         view_template_id plone_view/getViewTemplateId;

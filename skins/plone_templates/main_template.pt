@@ -105,7 +105,8 @@
           <tr>
             <tal:comment replace="nothing"> Start of the left column </tal:comment>
             <td id="portal-column-one"
-                metal:define-slot="column_one_slot">
+                metal:define-slot="column_one_slot"
+                tal:condition="sl">
               <div class="visualPadding">
                 <metal:portlets define-slot="portlets_one_slot">
                   <tal:block replace="structure provider:plone.leftcolumn" />
