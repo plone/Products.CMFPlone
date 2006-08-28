@@ -28,6 +28,8 @@
  <object name="CMF File" meta_type="Factory-based Type Information"/>
  <object name="CMF Folder" meta_type="Factory-based Type Information"/>
  <object name="CMF Image" meta_type="Factory-based Type Information"/>
+ <object name="CMF Large Plone Folder"
+    meta_type="Factory-based Type Information"/>
  <object name="CMF Link" meta_type="Factory-based Type Information"/>
  <object name="CMF News Item" meta_type="Factory-based Type Information"/>
  <object name="CMF Topic" meta_type="Factory-based Type Information"/>
