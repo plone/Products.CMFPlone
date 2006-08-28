@@ -36,6 +36,7 @@
     </permission>
     <permission name="List folder contents" acquire="True">
       <role name="Manager"/>
+      <role name="Member"/>
       <role name="Owner"/>
     </permission>
     <permission name="List portal members" acquire="True">

@@ -310,12 +310,8 @@
                             />
                         </td>
 
-                        <tal:user define="username member/getUserName;
-                                          authorinfo python:mtool.getMemberInfo(username);">
-                        <td tal:content="authorinfo/fullname">Full name</td>
-                        <td tal:content="username">Username</td>
-                        
-                        </tal:user>
+                        <td tal:content="python:member.getProperty('fullname')">Full name</td>
+                        <td tal:content="member/getUserName">Username</td>
                     </tr>
                     </tbody>
                 </table>

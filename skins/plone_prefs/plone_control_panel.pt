@@ -48,21 +48,22 @@
 
     </tal:block>                        
 
-    <tal:versions define="sys here/getZopeInfo;
-                          mt here/portal_migration;
-                          pil mt/getPILVersion">
+    <tal:versions define="mt here/portal_migration;
+                          sys mt/coreVersions">
         <p class="discreet">
             <strong i18n:translate="heading_plone_version_overview">Plone version overview</strong><br />
             Plone <span tal:replace="mt/getInstanceVersion" />, <br />
-            Zope <span tal:replace="python:sys[0]" />, <br />
-            Python <span tal:replace="python:sys[1]" />, <br />
-            <tal:pil condition="pil">
-            PIL <span tal:replace="pil" />
+            <span tal:replace="sys/CMF" />, <br />
+            Zope <span tal:replace="sys/Zope" />, <br />
+            <span tal:replace="sys/Five" />, <br />
+            Python <span tal:replace="sys/Python" />, <br />
+            <tal:pil condition="sys/PIL">
+            PIL <span tal:replace="sys/PIL" />
             </tal:pil>
         </p>
 
         <p class="portalMessage"
-           tal:condition="not:pil"
+           tal:condition="not:sys/PIL"
            i18n:translate="text_no_pil_installed">
         Warning: PIL is not installed properly, image scaling will not work.
         </p>

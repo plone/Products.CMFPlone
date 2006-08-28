@@ -20,17 +20,17 @@ def importPloneProperties(context):
     """ Import plone properties tool.
     """
     site = context.getSite()
-    logger = context.getLogger('plone properties')
+    logger = context.getLogger('propertiestool')
     ptool = getToolByName(site, 'portal_properties')
 
     body = context.readDataFile(_FILENAME)
     if body is None:
-        logger.info('Properties tool: Nothing to import.')
+        logger.info('Nothing to import.')
         return
 
     importer = zapi.queryMultiAdapter((ptool, context), IBody)
     if importer is None:
-        logger.warning('Properties tool: Import adapter misssing.')
+        logger.warning('Import adapter missing.')
         return
 
     importer.body = body
@@ -40,19 +40,20 @@ def exportPloneProperties(context):
     """ Export plone properties tool.
     """
     site = context.getSite()
-    logger = context.getLogger('plone properties')
+    logger = context.getLogger('propertiestool')
     ptool = getToolByName(site, 'portal_properties', None)
     if ptool is None:
-        logger.info('Properties tool: Nothing to export.')
+        logger.info('Nothing to export.')
         return
 
     exporter = zapi.queryMultiAdapter((ptool, context), IBody)
     #IBody(ptool)
     if exporter is None:
-        return 'Properties tool: Export adapter misssing.'
+        logger.warning('Export adapter missing.')
+        return
 
     context.writeDataFile(_FILENAME, exporter.body, exporter.mime_type)
-    logger.info('Plone properties tool exported.')
+    logger.info('Properties tool exported.')
 
 class SimpleItemWithPropertiesXMLAdapter(XMLAdapterBase, PropertyManagerHelpers):
 

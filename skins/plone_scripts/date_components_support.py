@@ -78,7 +78,7 @@ else:
 year=int(date.strftime('%Y'))
 
 if min_year != max_year:
-    years.append({'id': '----', 'value': '0000', 'selected': None})
+    years.append({'id': '--', 'value': '0000', 'selected': None})
 
 for x in range(min_year, max_year+1):
     d={'id': x, 'value': x, 'selected': None}
@@ -89,9 +89,9 @@ for x in range(min_year, max_year+1):
 month=int(date.strftime('%m'))
 
 if default:
-    months.append({'id': '----', 'value': '00', 'selected': 1})
+    months.append({'id': '--', 'value': '00', 'selected': 1})
 else:
-    months.append({'id': '----', 'value': '00', 'selected': None})
+    months.append({'id': '--', 'value': '00', 'selected': None})
 
 for x in range(1, 13):
     d={'id': month_dict[x], 'value': '%02d' % x, 'selected': None}
@@ -102,9 +102,9 @@ for x in range(1, 13):
 day=int(date.strftime('%d'))
 
 if default:
-    days.append({'id': '----', 'value': '00', 'selected': 1})
+    days.append({'id': '--', 'value': '00', 'selected': 1})
 else:
-    days.append({'id': '----', 'value': '00', 'selected': None})
+    days.append({'id': '--', 'value': '00', 'selected': None})
 
 for x in range(1, 32):
     d={'id': x, 'value': '%02d' % x, 'selected': None}
@@ -122,9 +122,9 @@ else:
     hour=int(date.strftime('%H'))
 
 if default:
-    hours.append({'id': '----', 'value': hour_default, 'selected': 1})
+    hours.append({'id': '--', 'value': hour_default, 'selected': 1})
 else:
-    hours.append({'id': '----', 'value': hour_default, 'selected': None})
+    hours.append({'id': '--', 'value': hour_default, 'selected': None})
 
 for x in hours_range:
     d={'id': '%02d' % x, 'value': '%02d' % x, 'selected': None }
@@ -135,9 +135,9 @@ for x in hours_range:
 minute=int(date.strftime('%M'))
 
 if default:
-    minutes.append({'id': '----', 'value': '00', 'selected': 1})
+    minutes.append({'id': '--', 'value': '00', 'selected': 1})
 else:
-    minutes.append({'id': '----', 'value': '00', 'selected': None})
+    minutes.append({'id': '--', 'value': '00', 'selected': None})
 
 for x in range(0, 60, 5):
     d={'id': '%02d' % x, 'value': '%02d' % x, 'selected': None}
@@ -149,9 +149,9 @@ if use_ampm:
     p=date.strftime('%p')
 
     if default:
-        ampm.append({'id': '----', 'value': 'AM', 'selected': 1})
+        ampm.append({'id': '--', 'value': 'AM', 'selected': 1})
     else:
-        ampm.append({'id': '----', 'value': 'AM', 'selected': None})
+        ampm.append({'id': '--', 'value': 'AM', 'selected': None})
 
     for x in ('AM', 'PM'):
         d={'id': x, 'value': x, 'selected': None}

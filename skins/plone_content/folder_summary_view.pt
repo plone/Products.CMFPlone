@@ -96,7 +96,7 @@
                         </a>
                     </h2>
 
-                    <div class="documentByLine">
+                    <div class="documentByLine" tal:condition="python: site_properties.allowAnonymousViewAbout or not isAnon">
                     <tal:event condition="python: item_type == 'Event'">
                          <span tal:condition="python: item_type == 'Event'"
                                i18n:translate="label_event_byline">

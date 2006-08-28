@@ -688,6 +688,19 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         homeAction = [x for x in actions if x.id == 'index_html'][0]
         self.assertEquals(homeAction.getActionExpression(), 'string:${globals_view/navigationRootUrl}')
 
+    def testPloneLexicon(self):
+        # Plone lexicon should use new splitter and case normalizer
+        pipeline = self.catalog.plone_lexicon._pipeline
+        self.failUnless(len(pipeline) >= 2)
+        self.failUnless(isinstance(pipeline[0], Splitter))
+        self.failUnless(isinstance(pipeline[1], CaseNormalizer))
+
+    def testMakeSnapshot(self):
+        # GenericSetup snapshot should work
+        self.setRoles(['Manager'])
+        snapshot_id = self.setup._mangleTimestampName('test')
+        self.setup.createSnapshot(snapshot_id)
+
     def testSiteManagerSetup(self):
         setHooks()
         # The portal should be an ISite

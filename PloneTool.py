@@ -574,6 +574,8 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         if portal != here:
             parent = here.aq_parent
             while cont:
+                if not getattr(parent, 'acl_users', False):
+                    break
                 userroles = parent.acl_users.getLocalRolesForDisplay(parent)
                 for user, roles, role_type, name in userroles:
                     # Find user in result
@@ -829,7 +831,10 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             if defaultPage is not None:
                 if ids.has_key(defaultPage):
                     return returnPage(obj, defaultPage)
-                else:
+                # Avoid infinite recursion in the case that the page id == the
+                # object id
+                elif defaultPage != obj.getId() and \
+                     defaultpage != '/'.join(obj.getPhysicalPath()):
                     # For the default_page property, we may get things in the
                     # skin layers or with an explicit path - split this path
                     # to comply with the __browser_default__() spec
@@ -839,7 +844,12 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
         browserDefault = IBrowserDefault(obj, None)
         if browserDefault is not None:
-            return obj, [browserDefault.getLayout()]
+            layout = browserDefault.getLayout()
+            if layout is None:
+                raise AttributeError(
+                    "%s has no assigned layout, perhaps it needs an FTI"%obj)
+            else:
+                return obj, [layout]
 
         #
         # 6. If the object has a 'folderlisting' action, use this

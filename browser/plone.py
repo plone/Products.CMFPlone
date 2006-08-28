@@ -4,6 +4,8 @@ from Acquisition import aq_parent
 from Products.CMFPlone.browser.interfaces import IPlone
 from Products.CMFPlone.browser.navtree import getNavigationRoot
 from Products.CMFPlone.interfaces import INonStructuralFolder
+from Products.CMFPlone.interfaces.NonStructuralFolder import \
+     INonStructuralFolder as z2INonStructuralFolder
 from Products.CMFPlone import utils
 from Products.CMFPlone import IndexIterator
 from Products.CMFCore.utils import getToolByName
@@ -126,8 +128,8 @@ class Plone(utils.BrowserView):
         self._data['default_language'] = default_language = \
                               site_props.getProperty('default_language', None)
         self._data['language'] =  self.request.get('language', None) or \
-                                  context.Language or default_language
-        self._data['is_editable'] =  checkPermission('Modify portal content',
+                                  context.Language() or default_language
+        self._data['is_editable'] = checkPermission('Modify portal content',
                                                      context)
         lockable = hasattr(aq_inner(context).aq_explicit, 'wl_isLocked')
         self._data['isLocked'] = lockable and context.wl_isLocked()
@@ -288,12 +290,17 @@ class Plone(utils.BrowserView):
     def isStructuralFolder(self):
         """ See interface """
         context = utils.context(self)
-        if not context.isPrincipiaFolderish:
+        folderish = bool(getattr(aq_base(context), 'isPrincipiaFolderish',
+                                 False))
+        if not folderish:
             return False
         elif INonStructuralFolder.providedBy(context):
             return False
+        elif z2INonStructuralFolder.isImplementedBy(context):
+            # BBB: for z2 interface compat
+            return False
         else:
-            return True
+            return folderish
     isStructuralFolder = cache_decorator(isStructuralFolder)
 
     def navigationRootPath(self):

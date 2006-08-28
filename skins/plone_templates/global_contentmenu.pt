@@ -427,13 +427,14 @@
 
                                 <li tal:condition="python:editAction['id']=='delete'">
                                     <a onclick="#"
-                                       tal:define="use_folder_warning python:useSelf and not here.portal_type == 'Topic';
+                                       tal:define="action_title editAction/title;
+                                                   use_folder_warning python:useSelf and not here.portal_type == 'Topic';
 alert_msg python:use_folder_warning and here.translate('alert_really_delete_folder', default='Do you really want to delete this folder and all its contents?') or here.translate('alert_really_delete', default='Do you really want to delete this item?');"
                                        tal:attributes="href editAction/url;
-                                                       title editAction/title;
+                                                       title python:here.translate(action_title);
                                                        class python:test(icon, 'visualIconPadding %s' % class_name, nothing);
                                                        onclick string: confirmDelete = confirm('${alert_msg}');; event.returnValue = confirmDelete;; return confirmDelete;;"
-                                       tal:content="editAction/title"
+                                       tal:content="action_title"
                                        i18n:attributes="title"
                                        i18n:translate="">
                                         Action name

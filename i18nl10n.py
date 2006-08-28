@@ -24,8 +24,8 @@ def utranslate(*args, **kw):
     # get the global translation service
     service = getGlobalTranslationService()
 
-    # As we now require Five which has a unicode aware translate method
-    # this returns the translation as type unicode
+    # As both the Five translation service as well as PTS return Unicode in all
+    # cases now, this return Unicode
     return service.translate(*args, **kw)
 
 # unicode aware localized time method (l10n)

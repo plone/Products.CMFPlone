@@ -120,7 +120,13 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
         vars['Plone Instance'] = self.getInstanceVersion()
         vars['Plone File System'] = self.getFileSystemVersion()
         vars['CMF'] = cp.Products.CMFCore.version
+        vars['Five'] = cp.Products.Five.version
         vars['Debug mode'] = DevelopmentMode and 'Yes' or 'No'
+        try:
+            from PIL.Image import VERSION
+        except ImportError:
+            VERSION = ''
+        vars['PIL'] = VERSION
         return vars
 
     security.declareProtected(ManagePortal, 'coreVersionsList')
@@ -160,6 +166,8 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
     security.declareProtected(ManagePortal,'getPILVersion')
     def getPILVersion(self):
         """The version of the installed Python Imaging Library."""
+        log_deprecated("getPILVersion is deprecated and will be removed in "
+                       "Plone 3.5. Please use coreVersions instead.")
         try:
             from PIL.Image import VERSION
         except ImportError:

@@ -13,17 +13,17 @@ def importMemberDataProperties(context):
     """ Import MemberData tool properties.
     """
     site = context.getSite()
-    logger = context.getLogger('memberdata properties')
+    logger = context.getLogger('memberdata')
     ptool = getToolByName(site, 'portal_memberdata')
 
     body = context.readDataFile(_FILENAME)
     if body is None:
-        logger.info('MemberData tool: Nothing to import.')
+        logger.info('Nothing to import.')
         return
 
     importer = zapi.queryMultiAdapter((ptool, context), IBody)
     if importer is None:
-        logger.warning('MemberData tool: Import adapter misssing.')
+        logger.warning('Import adapter missing.')
         return
 
     importer.body = body
@@ -33,15 +33,15 @@ def exportMemberDataProperties(context):
     """ Export MemberData tool properties .
     """
     site = context.getSite()
-    logger = context.getLogger('memberdata properties')
+    logger = context.getLogger('memberdata')
     ptool = getToolByName(site, 'portal_memberdata', None)
     if ptool is None:
-        logger.info('MemberData tool: Nothing to export.')
+        logger.info('Nothing to export.')
         return
 
     exporter = zapi.queryMultiAdapter((ptool, context), IBody)
     if exporter is None:
-        logger.warning('MemberData tool: Export adapter misssing.')
+        logger.warning('Export adapter missing.')
         return
 
     context.writeDataFile(_FILENAME, exporter.body, exporter.mime_type)

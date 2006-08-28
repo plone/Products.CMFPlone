@@ -558,3 +558,30 @@ def _unrestricted_rename(container, id, new_id):
     #!#if REQUEST is not None:
     #!#    return container.manage_main(container, REQUEST, update_menu=1)
     return None
+
+
+# Copied '_getSecurity' from Archetypes.utils to avoid a dependency.
+
+from AccessControl import ClassSecurityInfo
+
+def _getSecurity(klass, create=True):
+    # a Zope 2 class can contain some attribute that is an instance
+    # of ClassSecurityInfo. Zope 2 scans through things looking for
+    # an attribute that has the name __security_info__ first
+    info = vars(klass)
+    security = None
+    for k, v in info.items():
+        if hasattr(v, '__security_info__'):
+            security = v
+            break
+    # Didn't found a ClassSecurityInfo object
+    if security is None:
+        if not create:
+            return None
+        # we stuff the name ourselves as __security__, not security, as this
+        # could theoretically lead to name clashes, and doesn't matter for
+        # zope 2 anyway.
+        security = ClassSecurityInfo()
+        setattr(klass, '__security__', security)
+    return security
+

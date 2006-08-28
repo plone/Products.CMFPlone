@@ -27,7 +27,7 @@ TypesTool.all_meta_types = all_meta_types
 from Globals import InitializeClass
 from AccessControl.Permissions import access_contents_information
 from OFS.ObjectManager import ObjectManager
-from Products.Archetypes.utils import _getSecurity
+from Products.CMFPlone.utils import _getSecurity
 
 def __delitem__(self, name):
     self.manage_delObjects(ids=[name])

@@ -123,7 +123,7 @@
           </metal:add_button>
           </div>
 
-        <div class="visualClear"><!-- --></div>
+        <div class="visualClear" id="clear-space-before-navigation"><!-- --></div>
 
         <!-- Navigation -->
         <div metal:use-macro="here/batch_macros/macros/navigation" />
