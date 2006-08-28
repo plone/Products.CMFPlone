@@ -13,13 +13,8 @@ from Products.CMFPlone.tests.PloneTestCase import FunctionalTestCase
 from Products.CMFPlone.tests.PloneTestCase import default_user
 from Products.CMFPlone.tests.PloneTestCase import default_password
 
-try:
-    from zope.app.testing.ztapi import provideUtility
-    from zope.app.testing.ztapi import unprovideUtility
-except ImportError:
-    # BBB for Zope 2.8, can be removed in Plone 3.0
-    from zope.app.tests.ztapi import provideUtility
-    from zope.app.tests.ztapi import unprovideUtility
+from zope.app.testing.ztapi import provideUtility
+from zope.app.testing.ztapi import unprovideUtility
 
 from zope.i18n.simpletranslationdomain import SimpleTranslationDomain
 from zope.i18n.interfaces import ITranslationDomain

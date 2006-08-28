@@ -6,7 +6,7 @@ import re
 from DateTime import DateTime
 from log import log_exc
 
-# get the registered translation service and the dummy
+# get the registered translation service
 from Products.PageTemplates.GlobalTranslationService import \
      getGlobalTranslationService
 
@@ -19,14 +19,9 @@ name_formatvariables = ('a', 'A', 'b', 'B')
 
 # unicode aware translate method (i18n)
 def utranslate(*args, **kw):
-    # python useable unicode aware translate method
-
-    # get the global translation service
-    service = getGlobalTranslationService()
-
     # As both the Five translation service as well as PTS return Unicode in all
-    # cases now, this return Unicode
-    return service.translate(*args, **kw)
+    # cases now, this returns Unicode
+    return getGlobalTranslationService().translate(*args, **kw)
 
 # unicode aware localized time method (l10n)
 def ulocalized_time(time, long_format = None, context = None, domain='plone'):
@@ -73,10 +68,13 @@ def ulocalized_time(time, long_format = None, context = None, domain='plone'):
     if context is None:
         # when without context, we cannot do very much.
         return time.ISO()
-    
+
+    # get the translation service
+    service = getGlobalTranslationService()
+
     # get the formatstring
-    formatstring = utranslate(domain, msgid, mapping, context)
-    
+    formatstring = service.translate(domain, msgid, mapping, context)
+
     if formatstring is None or formatstring.startswith('date_'):
         # msg catalog was not able to translate this msgids
         # use default setting
@@ -122,16 +120,13 @@ def ulocalized_time(time, long_format = None, context = None, domain='plone'):
             mapping['b']=monthname_msgid_abbr(monthday)
         if 'B' in name_elements:
             mapping['B']=monthname_msgid(monthday)
-    
+
     # feed translateable elements to translation service
     for key in name_elements:
-        mapping[key]=utranslate(domain, mapping[key], context=context, default=mapping[key])
+        mapping[key]=service.translate(domain, mapping[key], context=context, default=mapping[key])
 
-    # feed numbers for formatting to translation service
-    # TODO: implement me, see PLIP60
-    
     # translate the time string
-    return utranslate(domain, msgid, mapping, context)
+    return service.translate(domain, msgid, mapping, context)
 
 def _numbertoenglishname(number, format='', attr='_days'):
     # returns the english name of day or month number

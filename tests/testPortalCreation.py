@@ -25,6 +25,7 @@ from OFS.SimpleItem import SimpleItem
 
 from Products.CMFCore.CachingPolicyManager import CachingPolicyManager
 from Products.CMFCore.permissions import AccessInactivePortalContent
+from Products.CMFPlone.UnicodeSplitter import Splitter, CaseNormalizer 
 from Products.PageTemplates.ZopePageTemplate import ZopePageTemplate
 from Products.StandardCacheManagers.AcceleratedHTTPCacheManager import \
      AcceleratedHTTPCacheManager
@@ -49,6 +50,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.skins = self.portal.portal_skins
         self.transforms = self.portal.portal_transforms
         self.javascripts = self.portal.portal_javascripts
+        self.setup = self.portal.portal_setup 
 
     def testPloneSkins(self):
         # Plone skins should have been set up
