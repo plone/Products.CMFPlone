@@ -33,6 +33,21 @@ def _unicode_replace(structure):
         text = unicode(structure)
     return text
 
+# Deal with the case where Unicode and encoded strings occur on the same tag.
+# The mandatory PatchStringIO in PlacelessTranslationService deals only with
+# joining complete tags together
+def _nulljoin(valuelist):
+    try:
+        return ''.join(valuelist)
+    except UnicodeDecodeError:
+        text = u''
+        for value in valuelist:
+            text += _unicode_replace(value)
+        return text
+
 # monkey patch
 import zope.tal.talinterpreter
 zope.tal.talinterpreter.unicode = _unicode_replace
+
+zope.tal.talinterpreter._nulljoin_old = zope.tal.talinterpreter._nulljoin
+zope.tal.talinterpreter._nulljoin = _nulljoin
