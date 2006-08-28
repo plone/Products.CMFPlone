@@ -12,6 +12,7 @@ from Testing.ZopeTestCase import FunctionalDocFileSuite
 from Testing.ZopeTestCase import ZopeDocTestSuite
 from Products.CMFPlone.tests import PloneTestCase
 from Products.PloneTestCase.layer import ZCMLLayer
+from Products.PloneTestCase.layer
 
 def test_suite():
     suites = (
@@ -28,7 +29,7 @@ def test_suite():
     for s in suites:
         s.layer = ZCMLLayer
         
-    return TestSuite()
+    return TestSuite(suites)
 
 if __name__ == '__main__':
     framework()
