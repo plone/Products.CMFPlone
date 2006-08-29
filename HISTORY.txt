@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 3.0 - Unreleased
 
+    - Added error tolerant version of FasterStringIO to unicodeFallbackPatch.
+      This is monkey patched into the Zope3 tal and pagetemplate modules and
+      replaces the monkey patch found in PlacelessTranslationService so far.
+      [ree, hannosch]
+
     - Deprecated PloneContent. Use (marker) interfaces instead to get a way to
       check for a functionality that is common to some types.
       [hannosch]

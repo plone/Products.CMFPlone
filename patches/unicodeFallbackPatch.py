@@ -45,9 +45,49 @@ def _nulljoin(valuelist):
             text += _unicode_replace(value)
         return text
 
-# monkey patch
-import zope.tal.talinterpreter
-zope.tal.talinterpreter.unicode = _unicode_replace
+# deal with the case of tal snippets encoded as utf-8 and those being Unicode
+# these are joined using a StringIO objects getValue
 
-zope.tal.talinterpreter._nulljoin_old = zope.tal.talinterpreter._nulljoin
-zope.tal.talinterpreter._nulljoin = _nulljoin
+from StringIO import StringIO
+class FasterStringIO(StringIO):
+    """Append-only version of StringIO.
+
+    This let's us have a much faster write() method.
+
+    Most of this code was taken from zope.tal.talinterpreter.py licenced under
+    the ZPL 2.1.
+    """
+    def close(self):
+        if not self.closed:
+            self.write = _write_ValueError
+            StringIO.close(self)
+
+    def seek(self, pos, mode=0):
+        raise RuntimeError("FasterStringIO.seek() not allowed")
+
+    def write(self, s):
+        #assert self.pos == self.len
+        self.buflist.append(s)
+        self.len = self.pos = self.pos + len(s)
+
+    def getvalue(self):
+        if self.buflist:
+            try:
+                self.buf += ''.join(self.buflist)
+            except UnicodeDecodeError:
+                for value in self.buflist:
+                    self.buf += _unicode_replace(value)
+            self.buflist = []
+        return self.buf
+
+# monkey patch
+from zope.tal import talinterpreter
+from zope.pagetemplate import pagetemplate
+
+talinterpreter.unicode = _unicode_replace
+
+talinterpreter._nulljoin_old = talinterpreter._nulljoin
+talinterpreter._nulljoin = _nulljoin
+
+talinterpreter.TALInterpreter.StringIO = FasterStringIO
+pagetemplate.StringIO = FasterStringIO
