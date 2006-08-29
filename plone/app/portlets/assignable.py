@@ -42,16 +42,4 @@ class LocalPortletAssignmentManager(SimpleItem, BaseManager):
     
     def saveAssignment(self, assignment):
         assignment = aq_base(assignment)
-        key = getattr(assignment, '__name__', None)
-        try:
-            key = self._key(key)
-        except KeyError:
-            key = None
-        if key is not None:
-            self._assignments[key] = assignment
-        else:
-            key = len(self._assignments)
-            assignment.__name__ = str(key)
-            self._assignments.append(assignment)
-            
-        assignment.__parent__ = self
+        BaseManager.saveAssignment(self, assignment)

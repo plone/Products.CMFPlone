@@ -28,3 +28,7 @@ class PortletAssignmentMapping(BaseMapping, SimpleItem):
             items.append((idx, a.__of__(self)))
             idx += 1
         return items
+        
+    def saveAssignment(self, assignment):
+        assignment = aq_base(assignment)
+        BaseMapping.saveAssignment(self, assignment)

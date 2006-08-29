@@ -3,7 +3,7 @@ from warnings import warn
 from zope.interface import implements
 from zope.component import getMultiAdapter
 
-from Acquisition import aq_inner
+from Acquisition import aq_inner, aq_base
 from OFS.SimpleItem import SimpleItem
 from Products.Five import BrowserView
 
@@ -16,7 +16,8 @@ class PortletAdding(SimpleItem, BrowserView):
         """Add the rule to the context
         """
         context = aq_inner(self.context)
-        context.saveAssignment(content)
+        manager = aq_base(context)
+        manager.saveAssignment(content)
         
     def nextURL(self):
         context = aq_parent(aq_inner(self.context))
