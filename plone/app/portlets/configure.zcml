@@ -3,7 +3,9 @@
     xmlns:browser="http://namespaces.zope.org/browser"
     xmlns:five="http://namespaces.zope.org/five">
 
-    <five:registerPackage package="." initialize=".initialize" />
+    <include package="plone.portlets" />
+    
+    <!-- <five:registerPackage package="." initialize=".initialize" /> -->
 
     <include package=".browser" />
     <include package=".exportimport" />
@@ -11,5 +13,16 @@
     
     <adapter factory=".portletcontext.ContentContext" />
     <adapter factory=".portletcontext.PortalRootContext" />
+    
+    <!-- Make any folder a possible portlet manager -->
+
+    <five:implements
+        class="Products.CMFPlone.Portal.PloneSite"
+        interface="plone.portlets.interfaces.ILocalPortletAssignable"
+        />
+    <five:implements
+        class="Products.ATContentTypes.content.folder.ATFolder"
+        interface="plone.portlets.interfaces.ILocalPortletAssignable"
+        />
     
 </configure>

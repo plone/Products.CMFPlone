@@ -7,14 +7,17 @@
       factory=".classic.ClassicPortletRenderer"
       provides="plone.portlets.interfaces.IPortletRenderer"/>
     
-    <class class=".classic.ClassicPortletRenderer">
-      <allow attributes="use_macro path_expression" />
-    </class>
+    <browser:page 
+      for="plone.app.portlets.browser.interfaces.IPortletAdding"
+      name="portlets.Classic"
+      class=".classic.ClassicPortletAddForm"
+      permission="cmf.ManagePortal"
+      />
     
     <browser:page 
-      for="plone.app.portlets.interfaces.IPortletAdding"
-      name="portlets.Classic"
-      class=".classic.ClassicPortletAdd"
+      for=".classic.IClassicPortlet"
+      name="edit.html"
+      class=".classic.ClassicPortletEditForm"
       permission="cmf.ManagePortal"
       />
     
@@ -24,16 +27,17 @@
       factory=".login.LoginPortletRenderer"
       provides="plone.portlets.interfaces.IPortletRenderer"/>
     
-    <class class=".login.LoginPortletRenderer">
-      <allow attributes="show available login_form login_name login_password 
-                          persist_cookie join_action can_register 
-                          can_request_password mail_password_form" />
-    </class>
+    <browser:page 
+      for="plone.app.portlets.browser.interfaces.IPortletAdding"
+      name="portlets.Login"
+      class=".login.LoginPortletAddForm"
+      permission="cmf.ManagePortal"
+      />
     
     <browser:page 
-      for="plone.app.portlets.interfaces.IPortletAdding"
-      name="portlets.Login"
-      class=".login.LoginPortletAdd"
+      for=".login.ILoginPortlet"
+      name="edit.html"
+      class=".login.LoginPortletEditForm"
       permission="cmf.ManagePortal"
       />
 

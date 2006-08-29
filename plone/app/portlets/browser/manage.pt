@@ -1,0 +1,61 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      metal:use-macro="context/@@standard_macros/page">
+<head>
+</head>
+
+<body>
+<div metal:fill-slot="body">
+
+  <h1 class="documentFirstHeading">Manage portlets</h1>
+  
+  <p>
+    The left and right portlet slots will now display only those portlets
+    explicitly assigned here. Use the buttons on each portlet to move them
+    up or down, delete, edit portlets, blacklist categories or add new
+    portlets.
+  </p>
+
+  <div tal:condition="view/has_legacy_portlets">
+    
+    <h2>Legacy portlets</h2>
+    
+    <p>
+      There are legacy portlets defined here. Click 
+      <a tal:attributes="href string:${context/absolute_url}/@@convert-legacy-portlets">
+        here
+      </a> to convert them to new-style portlets.
+    </p>
+  </div>
+  
+  <h2>My portlets</h2>
+  
+  <p>
+    Portlets can be assigned to users. This works by selecting the column and
+    invoking an add view on e.g ++myportlets++column.name. This could also be
+    used to build dashboards of portlets independent of context by assigned
+    to users and groups.
+  </p>
+  <p>
+    The UI for doing this is not yet finished - stay tuned.
+  </p>
+  
+  <h2>Group portlets</h2>
+  
+  <p>
+    Portlets can be assigned to groups. This works the same way as
+    assigning portlets to users, but the UI is not yet in place. Stay tuned.
+  </p>
+  
+  <h2>Content type portlets</h2>
+  
+  <p>
+    Portlets can be assigned to content types. This works the same way 
+    as assigning portlets to users, but the UI is not yet in place. Stay tuned.
+  </p>
+
+</div>
+</body>
+</html>

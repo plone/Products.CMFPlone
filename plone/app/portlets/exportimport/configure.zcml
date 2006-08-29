@@ -1,11 +1,6 @@
 <configure
    xmlns="http://namespaces.zope.org/zope">
 
-  <adapter
-      factory=".portlets.PortletsXMLAdapter"
-      provides="Products.GenericSetup.interfaces.IBody"
-      for="plone.app.portlets.interfaces.IPortletManagerFolder
-           Products.GenericSetup.interfaces.ISetupEnviron"
-      />
+  <adapter factory=".portlets.PortletsXMLAdapter" />
 
 </configure>

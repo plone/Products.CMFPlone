@@ -4,16 +4,23 @@ plone.app.portlets to-do
 
   Tests
   
+    - Existing tests do not work - they need to be updated for the latest
+      refactoring. This will be fixed ASAP. :)
+  
+    Also test:
+  
     - login portlet
     - add views
-    - portlet manager traversal adapters
-    - portlet context on tools
+    - namespace traversal adapters
 
   Infrastructure
   
-    o Consider use of INameChoosers and containment constraints when adding
-        assignments in IPortletAdding.
-        
+    o Category mappings are created on-the-fly in the namespace traversal
+      adapters, which many not be ideal (even though these are protected by
+      ManagePortal)
+      
+        - create when users and groups are added?
+  
     o Portlets like the login portlet have no configuration: formlib then
         displays a blank page :-(
         - can we short-circuit these?
@@ -39,10 +46,11 @@ plone.app.portlets to-do
     o Add dashboard page using portlets.dashboard
         - May need to split dashboard into several columns
         
-    o Port portlet assignment UI from PlonePortlets
-        - Assign portlets to context
-        - Assign portlets to users, groups, content types (?)
-        - Blacklisting
+    o Need UI for assigning user-, group- and content-type-portlets.
+        - This should be very similar to how contextual portlets work.
+        
+    o There is no UI yet for blacklisting (stop-acquistion) of context, user,
+      group or content-type portlets
 
   Plone Integration
 

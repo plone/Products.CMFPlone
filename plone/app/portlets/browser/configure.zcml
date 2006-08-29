@@ -2,54 +2,104 @@
     xmlns="http://namespaces.zope.org/zope"
     xmlns:browser="http://namespaces.zope.org/browser">
 
-    <browser:page
-      for="*"
-      class=".testing.Testing"
-      name="portlets_testing"
-      permission="zope.Public"
-      />
-      
-    <!--
-      
-      To support adding to a particular portlet manager, we do the following:
-      
-      - The view @@portletmanager is registered for any object
-      - Upon traversal, the PortletManagerTraverser is invoked. Suppose the
-         URL is the following
-          
-          /path/to/object/@@portletmanager/plone.leftcolumn/+/portlets.Classic
-          
-        In this case, the PortletManagerView's 'manager' attribute is set to
-        plone.leftcolumn, and a a view for the PortletManagerView is 
-        looked up and returned.
-      
-      - The '+' view is a special IAdding view for the PortletManagerView.
-        This in turn can be used by add forms.
-      
-      note: If http://zope.org/Collectors/Zope3-dev/589 gets fixed (in Zope 
-      3.4?), we can use a namespace traverser instead of the PortletManagerView
-      and PortletManagerTraverser
-      
-    -->
+    <!-- Portlet management pages -->
+    <browser:pages
+      for="plone.portlets.interfaces.ILocalPortletAssignable"
+      class=".manage.ManagePortlets"
+      permission="cmf.ManagePortal"
+      >
 
-    <adapter
-      name="portletmanager"
-      factory=".traversal.PortletManagerView"
-      provides="zope.publisher.interfaces.browser.IBrowserView"
-      permission="zope.Public"
-      />
+      <browser:page
+        name="manage-portlets"
+        template="manage.pt"
+        />
       
+      <browser:page
+        name="convert-legacy-portlets"
+        attribute="convert_legacy_portlets"
+        />
+        
+    </browser:pages>
+    
     <adapter
-      factory=".traversal.PortletManagerTraverser"
-      provides="zope.publisher.interfaces.IPublishTraverse"
-      permission="zope.Public"
-      />
+        factory=".editmanager.EditPortletManagerRenderer"
+        provides="plone.portlets.interfaces.IPortletManagerRenderer"
+        />
+        
+    <browser:pages
+      for="plone.portlets.interfaces.IPortletAssignmentMapping"
+      class=".editmanager.ManagePortletAssignments"
+      permission="cmf.ManagePortal"
+      >
       
+      <browser:page
+        name="delete-portlet"
+        attribute="delete_portlet"
+        />
+      
+      <browser:page
+        name="move-portlet-up"
+        attribute="move_portlet_up"
+        />
+      
+      <browser:page
+        name="move-portlet-down"
+        attribute="move_portlet_down"
+        />
+        
+    </browser:pages>
+
+    <!-- Traversal adapter for various types of portlets -->
+    <adapter
+        factory=".traversal.ContextPortletNamespace"
+        name="contextportlets"
+        />
+    <adapter
+        factory=".traversal.CurrentUserPortletNamespace"
+        name="myportlets"
+        />
+    <adapter
+        factory=".traversal.UserPortletNamespace"
+        name="userportlets"
+        />
+    <adapter
+        factory=".traversal.GroupPortletNamespace"
+        name="groupportlets"
+        />
+
+    <!-- Adding view for portlet assignments -->
     <browser:view
-      for="plone.app.portlets.interfaces.IPortletManagerView"
+      for="plone.portlets.interfaces.IPortletAssignmentMapping"
       name="+"
       class=".adding.PortletAdding"
+      allowed_interface="plone.app.portlets.browser.interfaces.IPortletAdding"
       permission="cmf.ManagePortal"
       />
+    
+    <!-- Get pretty templates on our add and edit pages -->
+    <configure package="Products.CMFDefault.browser">
+
+      <browser:page
+        name="five_template"
+        for="plone.portlets.interfaces.IPortletAssignment"
+        template="five_template.pt"
+        permission="zope2.View"
+        />
+
+      <browser:page
+        name="five_template"
+        for="plone.portlets.interfaces.IPortletAssignmentMapping"
+        template="five_template.pt"
+        permission="zope2.View"
+        />
+      
+      <browser:page
+        name="five_template"
+        for="plone.app.portlets.browser.interfaces.IPortletAdding"
+        template="five_template.pt"
+        permission="zope2.View"
+        />
+      
+    </configure>
 
 </configure>

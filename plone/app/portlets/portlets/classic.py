@@ -1,4 +1,4 @@
-from persistent import Persistent
+from OFS.SimpleItem import SimpleItem
 
 from zope.interface import Interface, implements
 from zope.component import adapts
@@ -16,7 +16,7 @@ from plone.portlets.interfaces import IPortletManager
 
 from Acquisition import Explicit
 
-from Products.Five.formlib.formbase import AddForm
+from plone.app.portlets.browser.formhelper import AddForm, EditForm
 from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
 
 from Products.CMFPlone import PloneMessageFactory as _
@@ -34,12 +34,16 @@ class IClassicPortlet(IPortletDataProvider):
                                default=u'portlet',
                                required=True)
                                
-class ClassicPortletAssignment(Persistent):
+class ClassicPortletAssignment(SimpleItem):
     implements(IClassicPortlet, IPortletAssignment)
 
     def __init__(self, template=u'', macro=u''):
         self.template = template
         self.macro = macro
+        
+    @property
+    def title(self):
+        return self.template
         
     @property
     def available(self):
@@ -79,8 +83,7 @@ class ClassicPortletRenderer(Explicit):
         return '<ClassicPortletRenderer rendering %s>' % (self.path_expression(),)
 
 
-class ClassicPortletAdd(AddForm):
-
+class ClassicPortletAddForm(AddForm):
     form_fields = form.Fields(IClassicPortlet)
 
     def create(self, data):
@@ -88,3 +91,6 @@ class ClassicPortletAdd(AddForm):
         p.template = data.get('template', None)
         p.macro = data.get('macro', None)
         return p
+
+class ClassicPortletEditForm(EditForm):
+    form_fields = form.Fields(IClassicPortlet)

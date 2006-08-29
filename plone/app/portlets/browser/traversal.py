@@ -1,46 +1,115 @@
-from zope.interface import implements, Interface
-from zope.component import adapts, getMultiAdapter
+from zope.interface import implements
+from zope.component import adapts, getUtility, getMultiAdapter
 
-from zope.publisher.interfaces import IPublishTraverse
-from zope.publisher.interfaces.browser import IBrowserPublisher
+from zope.traversing.interfaces import ITraversable
 from zope.publisher.interfaces.http import IHTTPRequest
 
-from Products.Five.browser import BrowserView
-
+from plone.portlets.interfaces import ILocalPortletAssignable
+from plone.portlets.interfaces import ILocalPortletAssignmentManager
 from plone.portlets.interfaces import IPortletManager
-from plone.app.portlets.interfaces import IPortletManagerView
 
-class PortletManagerView(BrowserView):
-    implements(IPortletManagerView)
-    adapts(Interface, IHTTPRequest)
-    
-    __name__ = 'portletmanager' # Keep Zope 2 happy
-    
-    context = None # Will be set by BrowserView's __init__()
-    manager = None # Will be set by publishTraverse() below
-    
-class PortletManagerTraverser(BrowserView):
-    implements(IPublishTraverse)
-    adapts(IPortletManagerView, IHTTPRequest)
+from Products.CMFCore.interfaces import ISiteRoot
+from Products.CMFCore.utils import getToolByName
 
-    def __init__(self, context, request):
+from plone.portlets.constants import USER_CATEGORY
+from plone.portlets.constants import GROUP_CATEGORY
+from plone.portlets.constants import CONTENT_TYPE_CATEGORY
+
+from plone.app.portlets.storage import PortletAssignmentMapping
+
+from Acquisition import aq_base
+
+class ContextPortletNamespace(object):
+    """Used to traverse to a contextual portlet assignable
+    """
+    implements(ITraversable)
+    adapts(ILocalPortletAssignable, IHTTPRequest)
+    
+    def __init__(self, context, request=None):
         self.context = context
         self.request = request
+        
+    def traverse(self, name, ignore):
+        column = getUtility(IPortletManager, name=name)
+        manager = getMultiAdapter((self.context, column,), ILocalPortletAssignmentManager)
+        return aq_base(manager).__of__(self.context)
 
-    def publishTraverse(self, request, name):
-        """Use the traversing name to locate refer to a portlet manager.
-        """
-        self.context.manager = name
+class CurrentUserPortletNamespace(object):
+    """Used to traverse to a portlet assignable for the current user.
+    """
+    implements(ITraversable)
+    adapts(ISiteRoot, IHTTPRequest)
+    
+    def __init__(self, context, request=None):
+        self.context = context
+        self.request = request
         
-        # Find the name of the view to render and return it. In doing so,
-        # we must also fix up the URL, since Zope won't add it for us
-        # once we've popped it off the traversal name stack.
+    def traverse(self, name, ignore):
+        mtool = getToolByName(self.context, 'portal_membership')
+        if mtool.isAnonymousUser():
+            raise KeyError, "Cannot get current user portlets for anonymous"
+        user = mtool.getAuthenticatedMember().getId()
+        col = name
+        column = getUtility(IPortletManager, name=col)
+        category = column[USER_CATEGORY]
+        manager = category.get(user, None)
+        if manager is None:
+            manager = category[user] = PortletAssignmentMapping()
+        return aq_base(manager).__of__(self.context)
         
-        viewName = request['TraversalRequestNameStack'].pop()
-        request['URL'] += '/' + viewName
-        request['ACTUAL_URL'] += '/' + viewName
+class UserPortletNamespace(object):
+    """Used to traverse to a user portlet assignable
+    """
+    implements(ITraversable)
+    adapts(ISiteRoot, IHTTPRequest)
+    
+    def __init__(self, context, request=None):
+        self.context = context
+        self.request = request
         
-        if viewName.startswith('@@'):
-            viewName = viewName[2:]
-        view = getMultiAdapter((self.context, self.request), name=viewName)
-        return view.__of__(self.context.context)
+    def traverse(self, name, ignore):
+        col, user = name.split('+')
+        column = getUtility(IPortletManager, name=col)
+        category = column[USER_CATEGORY]
+        manager = category.get(user, None)
+        if manager is None:
+            manager = category[user] = PortletAssignmentMapping()
+        return aq_base(manager).__of__(self.context)
+
+class GroupPortletNamespace(object):
+    """Used to traverse to a group portlet assignable
+    """
+    implements(ITraversable)
+    adapts(ISiteRoot, IHTTPRequest)
+    
+    def __init__(self, context, request=None):
+        self.context = context
+        self.request = request
+        
+    def traverse(self, name, ignore):
+        col, group = name.split('+')
+        column = getUtility(IPortletManager, name=col)
+        category = column[GROUP_CATEGORY]
+        manager = category.get(group, None)
+        if manager is None:
+            manager = category[group] = PortletAssignmentMapping()
+        return aq_base(manager).__of__(self.context)
+
+class ContentTypePortletNamespace(object):
+    """Used to traverse to a content type portlet assignable
+    """
+    implements(ITraversable)
+    adapts(ISiteRoot, IHTTPRequest)
+    
+    def __init__(self, context, request=None):
+        self.context = context
+        self.request = request
+        
+    def traverse(self, name, ignore):
+        col, pt = name.split('+')
+        column = getUtility(IPortletManager, name=col)
+        category = column[CONTENT_TYPE_CATEGORY]
+        manager = category.get(pt, None)
+        if manager is None:
+            manager = category[pt] = PortletAssignmentMapping()
+        return aq_base(manager).__of__(self.context)
