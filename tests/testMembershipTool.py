@@ -30,6 +30,13 @@ class TestMembershipTool(PloneTestCase.PloneTestCase):
         member = self.membership.getMemberById(username)
         member.setMemberProperties({'fullname': fullname, 'email': email,
                                     'last_login_time': DateTime(last_login_time),})
+    def makeRealImage(self):
+        import Products.CMFPlone as plone
+        plone_path = os.path.dirname(plone.__file__)
+        path = os.path.join(plone_path, 'tests', 'images', 'test.jpg')
+        image = open(path)
+        image_upload = dummy.FileUpload(dummy.FieldStorage(image))
+        return image_upload
 
     def testNoMorePersonalFolder(self):
         # .personal folders are history
@@ -49,20 +56,24 @@ class TestMembershipTool(PloneTestCase.PloneTestCase):
 
     def testChangeMemberPortrait(self):
         # Should change the portrait image
-        self.membership.changeMemberPortrait(dummy.File(), default_user)
+        # first we need a valid image
+        image = self.makeRealImage()
+        self.membership.changeMemberPortrait(image, default_user)
         self.assertEqual(self.membership.getPersonalPortrait(default_user).getId(), default_user)
         self.assertEqual(self.membership.getPersonalPortrait(default_user).meta_type, 'Image')
 
     def testDeletePersonalPortrait(self):
         # Should delete the portrait image
-        self.membership.changeMemberPortrait(dummy.File(), default_user)
+        image = self.makeRealImage()
+        self.membership.changeMemberPortrait(image, default_user)
         self.assertEqual(self.membership.getPersonalPortrait(default_user).getId(), default_user)
         self.membership.deletePersonalPortrait(default_user)
         self.assertEqual(self.membership.getPersonalPortrait(default_user).getId(), 'defaultUser.gif')
 
     def testGetPersonalPortraitWithoutPassingId(self):
         # Should return the logged in users portrait if no id is given
-        self.membership.changeMemberPortrait(dummy.File(), default_user)
+        image = self.makeRealImage()
+        self.membership.changeMemberPortrait(image, default_user)
         self.assertEqual(self.membership.getPersonalPortrait().getId(), default_user)
         self.assertEqual(self.membership.getPersonalPortrait().meta_type, 'Image')
 
@@ -312,6 +323,14 @@ class TestMembershipTool(PloneTestCase.PloneTestCase):
         barney = self.membership.getMemberById('barney')
         self.failIfEqual(barney.getProperty('fullname'), 'Barney Rubble')
         self.failIfEqual(barney.getProperty('email'), 'barney@bedrock.com')
+
+    def testBogusMemberPortrait(self):
+        # Should change the portrait image
+        bad_file = dummy.File(data='<div>This is a lie!!!</div>',
+                              headers={'content_type':'image/jpeg'})
+        self.assertRaises(IOError, self.membership.changeMemberPortrait,
+                          bad_file, default_user)
+
 
 
 class TestCreateMemberarea(PloneTestCase.PloneTestCase):

@@ -71,6 +71,13 @@ class SizedItem(Item):
     def get_size(self):
         return self.size
 
+class FieldStorage(object):
+    def __init__(self, file, filename='testfile', headers=None):
+        self.file = file
+        if headers is None:
+            headers = {}
+        self.headers = headers
+        self.filename = filename
 
 class File(FileUpload):
     '''Dummy upload object
