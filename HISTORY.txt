@@ -2,13 +2,20 @@ Changelog for Plone
 
     (name of developer listed in brackets)
 
-    - Added method and amangement template to membership tool to cleanup
-      members with bad images.
-      [alecm]
+Plone 2.5.1 - unreleased
 
-    - Fix member portrait handling by automatically scaling all incoming images 
-      using PIL.  This will throw an IOError on any invalid image and also
-      save some bandwidth and space in the zodb.
+    - Making text/* not render inline for security reasons (Internet Explorer
+      renders these blindly, no matter that they are not text/html), and
+      fixing inline rendering of Office documents and PDFs in the process.
+      [limi]
+
+    - Fix member portrait handling by automatically scaling all incoming
+      images using PIL.  This will throw an IOError on any invalid image and
+      also save some bandwidth and space in the zodb.
+      [alecm]
+      
+    - Added method and management template to membership tool to cleanup
+      members with bad images.
       [alecm]
 
     - Made 'setuphandlers.PloneGenerator.setupPortalContent' more
