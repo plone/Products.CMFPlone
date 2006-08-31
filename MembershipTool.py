@@ -7,6 +7,7 @@ from Products.CMFPlone import ToolNames
 from Products.CMFPlone.utils import scale_image
 from Products.CMFPlone.utils import _createObjectByType
 from OFS.Image import Image
+from Acquisition import aq_base
 from AccessControl import ClassSecurityInfo, getSecurityManager
 from Globals import InitializeClass, DTMLFile
 from zExceptions import BadRequest
@@ -596,7 +597,7 @@ class MembershipTool(PloneBaseTool, BaseTool):
         bad_member_ids = []
         for member_id in portraits.objectIds():
             portrait = portraits[member_id]
-            portrait_data = portrait.data
+            portrait_data = aq_base(portrait.data)
             if portrait_data == '':
                 continue
             try:
