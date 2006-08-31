@@ -999,7 +999,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                 # Avoid infinite recursion in the case that the page id == the
                 # object id
                 elif defaultPage != obj.getId() and \
-                     defaultpage != '/'.join(obj.getPhysicalPath()):
+                     defaultPage != '/'.join(obj.getPhysicalPath()):
                     # For the default_page property, we may get things in the
                     # skin layers or with an explicit path - split this path
                     # to comply with the __browser_default__() spec
