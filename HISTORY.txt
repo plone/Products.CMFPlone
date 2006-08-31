@@ -3,6 +3,11 @@ Changelog for Plone
     (name of developer listed in brackets)
 
 Plone 3.0 - Unreleased
+    
+    - Make the syntool methods for enabling and disabling syndication check
+     for the Manager properties permission on the object.
+     [alecm]
+
     - Fix member portrait handling by automatically scaling all incoming images 
       using PIL.  This will throw an IOError on any invalid image and also
       save some bandwidth and space in the zodb.
