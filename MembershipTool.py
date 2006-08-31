@@ -2,6 +2,7 @@ from DateTime import DateTime
 from Products.CMFCore.utils import getToolByName, _checkPermission
 from Products.CMFDefault.MembershipTool import MembershipTool as BaseTool
 from Products.CMFPlone import ToolNames
+from Products.CMFPlone.utils import scale_image
 from Products.CMFPlone.utils import _createObjectByType
 from OFS.Image import Image
 from AccessControl import ClassSecurityInfo, getSecurityManager
@@ -164,7 +165,8 @@ class MembershipTool(PloneBaseTool, BaseTool):
             member_id = self.getAuthenticatedMember().getId()
 
         if portrait and portrait.filename:
-            portrait = Image(id=member_id, file=portrait, title='')
+            scaled, mimetype = scale_image(portrait)
+            portrait = Image(id=member_id, file=scaled, title='')
             membertool   = getToolByName(self, 'portal_memberdata')
             membertool._setPortrait(portrait, member_id)
 
