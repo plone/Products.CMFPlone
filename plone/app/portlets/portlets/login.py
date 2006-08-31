@@ -12,13 +12,13 @@ from plone.portlets.interfaces import IPortletAssignment
 from plone.portlets.interfaces import IPortletRenderer
 from plone.portlets.interfaces import IPortletManager
 
-from Acquisition import Explicit
-from OFS.SimpleItem import SimpleItem
+from Acquisition import Explicit, Implicit
 
 from plone.app.portlets.browser.formhelper import AddForm, EditForm
 from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
 
-# from Products.CMFPlone.browser.plone import cache_decorator
+from zope.app.container.contained import Contained
+
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
 
@@ -26,7 +26,7 @@ class ILoginPortlet(IPortletDataProvider):
     """A portlet which can render a login form.
     """
                                
-class LoginPortletAssignment(SimpleItem):
+class LoginPortletAssignment(Implicit, Contained):
     implements(ILoginPortlet, IPortletAssignment)
 
     title = _(u'Login portlet')
@@ -114,7 +114,6 @@ class LoginPortletRenderer(Explicit):
         membership = getToolByName(self.context, 'portal_membership')
         return membership.checkPermission('Mail forgotten password', self.context)
 
-    # @cache_decorator
     def auth(self):
         acl_users = getToolByName(self.context, 'acl_users')
         return getattr(acl_users, 'credentials_cookie_auth', None)

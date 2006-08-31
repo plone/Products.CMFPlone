@@ -7,6 +7,7 @@ from zope.publisher.interfaces.http import IHTTPRequest
 from plone.portlets.interfaces import ILocalPortletAssignable
 from plone.portlets.interfaces import ILocalPortletAssignmentManager
 from plone.portlets.interfaces import IPortletManager
+from plone.portlets.interfaces import IPortletAssignmentMapping
 
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFCore.utils import getToolByName
@@ -31,8 +32,8 @@ class ContextPortletNamespace(object):
         
     def traverse(self, name, ignore):
         column = getUtility(IPortletManager, name=name)
-        manager = getMultiAdapter((self.context, column,), ILocalPortletAssignmentManager)
-        return aq_base(manager).__of__(self.context)
+        manager = getMultiAdapter((self.context, column,), IPortletAssignmentMapping)
+        return manager
 
 class CurrentUserPortletNamespace(object):
     """Used to traverse to a portlet assignable for the current user.
@@ -55,7 +56,7 @@ class CurrentUserPortletNamespace(object):
         manager = category.get(user, None)
         if manager is None:
             manager = category[user] = PortletAssignmentMapping()
-        return aq_base(manager).__of__(self.context)
+        return manager
         
 class UserPortletNamespace(object):
     """Used to traverse to a user portlet assignable
@@ -74,7 +75,7 @@ class UserPortletNamespace(object):
         manager = category.get(user, None)
         if manager is None:
             manager = category[user] = PortletAssignmentMapping()
-        return aq_base(manager).__of__(self.context)
+        return manager
 
 class GroupPortletNamespace(object):
     """Used to traverse to a group portlet assignable
@@ -93,7 +94,7 @@ class GroupPortletNamespace(object):
         manager = category.get(group, None)
         if manager is None:
             manager = category[group] = PortletAssignmentMapping()
-        return aq_base(manager).__of__(self.context)
+        return manager
 
 class ContentTypePortletNamespace(object):
     """Used to traverse to a content type portlet assignable
@@ -112,4 +113,4 @@ class ContentTypePortletNamespace(object):
         manager = category.get(pt, None)
         if manager is None:
             manager = category[pt] = PortletAssignmentMapping()
-        return aq_base(manager).__of__(self.context)
+        return manager

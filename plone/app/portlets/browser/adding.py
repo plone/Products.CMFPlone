@@ -3,6 +3,8 @@ from warnings import warn
 from zope.interface import implements
 from zope.component import getMultiAdapter
 
+from zope.app.container.interfaces import INameChooser
+
 from Acquisition import aq_inner, aq_base
 from OFS.SimpleItem import SimpleItem
 from Products.Five import BrowserView
@@ -11,13 +13,15 @@ from plone.app.portlets.browser.interfaces import IPortletAdding
 
 class PortletAdding(SimpleItem, BrowserView):
     implements(IPortletAdding)
-
+    
     def add(self, content):
         """Add the rule to the context
         """
         context = aq_inner(self.context)
         manager = aq_base(context)
-        manager.saveAssignment(content)
+        
+        chooser = INameChooser(manager)
+        manager[chooser.chooseName(None, content)] = content
         
     def nextURL(self):
         context = aq_parent(aq_inner(self.context))

@@ -1,45 +1,27 @@
-from Acquisition import aq_base, Explicit
-from OFS.SimpleItem import SimpleItem
+from zope.interface import implementer
+from zope.component import adapter
+from zope.annotation.interfaces import IAnnotations
 
-from zope.interface import implements
-from zope.component import adapts
-
-from plone.portlets.interfaces import ILocalPortletAssignmentManager
+from plone.portlets.interfaces import IPortletAssignmentMapping
 from plone.portlets.interfaces import ILocalPortletAssignable
 from plone.portlets.interfaces import IPortletManager
 
-from plone.portlets.assignable import LocalPortletAssignmentManager as BaseManager
+from plone.portlets.constants import CONTEXT_ASSIGNMENT_KEY
 
-class LocalPortletAssignmentManager(SimpleItem, BaseManager):
-    """Default implementation of a portlet assignable for contexts (content 
-    objects).
+from BTrees.OOBTree import OOBTree
+
+from plone.app.portlets.storage import PortletAssignmentMapping
+
+@adapter(ILocalPortletAssignable, IPortletManager)
+@implementer(IPortletAssignmentMapping)
+def localPortletAssignmentMappingAdapter(context, manager):
+    """Zope 2 version of the localPortletAssignmentMappingAdapter factory.
     """
-    implements(ILocalPortletAssignmentManager)
-    adapts(ILocalPortletAssignable, IPortletManager)
-
-    def __init__(self, context, manager):
-        BaseManager.__init__(self, context, manager)
-        
-    def __getitem__(self, key):
-        return self._assignments[self._key(key)].__of__(self)
-
-    def get(self, key, default=None):
-        try:
-            return self[key].__of__(self)
-        except KeyError:
-            return default
-
-    def values(self):
-        return [a.__of__(self) for a in self._assignments]
-        
-    def items(self):
-        items = []
-        idx = 0
-        for a in self._assignments:
-            items.append((idx, a.__of__(self)))
-            idx += 1
-        return items
-    
-    def saveAssignment(self, assignment):
-        assignment = aq_base(assignment)
-        BaseManager.saveAssignment(self, assignment)
+    annotations = IAnnotations(context)
+    local = annotations.get(CONTEXT_ASSIGNMENT_KEY, None)
+    if local is None:
+        local = annotations[CONTEXT_ASSIGNMENT_KEY] = OOBTree()
+    portlets = local.get(manager.__name__, None)
+    if portlets is None:
+        portlets = local[manager.__name__] = PortletAssignmentMapping()
+    return portlets

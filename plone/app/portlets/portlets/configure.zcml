@@ -3,6 +3,13 @@
 
     <!-- Classic portlet -->
 
+    <class class=".classic.ClassicPortletAssignment">
+      <require 
+        permission="zope.View"
+        interface=".classic.IClassicPortlet"
+        />
+    </class>
+
     <adapter 
       factory=".classic.ClassicPortletRenderer"
       provides="plone.portlets.interfaces.IPortletRenderer"/>
@@ -22,6 +29,13 @@
       />
     
     <!-- Login portlet -->
+    
+    <class class=".login.LoginPortletAssignment">
+      <require 
+        permission="zope.View"
+        interface=".login.ILoginPortlet"
+        />
+    </class>
     
     <adapter 
       factory=".login.LoginPortletRenderer"

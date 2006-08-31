@@ -24,5 +24,26 @@
         class="Products.ATContentTypes.content.folder.ATFolder"
         interface="plone.portlets.interfaces.ILocalPortletAssignable"
         />
+        
+    <!-- Make a Zope 2 safe traversal adapter for assignment mappings -->
+    <adapter 
+      factory=".storage.PortletAssignmentMappingTraverser"
+      provides="zope.publisher.interfaces.browser.IBrowserPublisher"
+      />
+      
+    <class class=".storage.PortletAssignmentMapping">
+      <require 
+        permission="zope.View"
+        interface="zope.app.container.interfaces.IReadContainer"
+        />
+      <require
+        permission="cmf.ManagePortal"
+        interface="zope.app.container.interfaces.IWriteContainer"
+        />
+      <require
+        permission="cmf.ManagePortal"
+        attributes="updateOrder"
+        />
+    </class>
     
 </configure>

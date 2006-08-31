@@ -49,7 +49,7 @@
         
     </browser:pages>
 
-    <!-- Traversal adapter for various types of portlets -->
+    <!-- Namespace traversal adapters for various types of portlets -->
     <adapter
         factory=".traversal.ContextPortletNamespace"
         name="contextportlets"
@@ -75,6 +75,12 @@
       allowed_interface="plone.app.portlets.browser.interfaces.IPortletAdding"
       permission="cmf.ManagePortal"
       />
+    
+    <class class=".adding.PortletAdding">
+      <require
+        permission="cmf.ManagePortal"
+        interface=".interfaces.IPortletAdding" />
+    </class>
     
     <!-- Get pretty templates on our add and edit pages -->
     <configure package="Products.CMFDefault.browser">

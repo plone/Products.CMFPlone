@@ -14,7 +14,9 @@ from plone.portlets.interfaces import IPortletAssignment
 from plone.portlets.interfaces import IPortletRenderer
 from plone.portlets.interfaces import IPortletManager
 
-from Acquisition import Explicit
+from zope.app.container.contained import Contained
+
+from Acquisition import Explicit, Implicit
 
 from plone.app.portlets.browser.formhelper import AddForm, EditForm
 from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
@@ -34,7 +36,7 @@ class IClassicPortlet(IPortletDataProvider):
                                default=u'portlet',
                                required=True)
                                
-class ClassicPortletAssignment(SimpleItem):
+class ClassicPortletAssignment(Implicit, Contained):
     implements(IClassicPortlet, IPortletAssignment)
 
     def __init__(self, template=u'', macro=u''):

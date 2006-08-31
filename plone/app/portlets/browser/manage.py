@@ -1,13 +1,14 @@
 from zope.interface import implements
 from zope.component import getMultiAdapter, getUtility
-from Products.Five import BrowserView
+from zope.app.container.interfaces import INameChooser
 
+from Products.Five import BrowserView
 from Acquisition import aq_base
 
 from Products.CMFCore.utils import getToolByName
 
 from plone.portlets.interfaces import IPortletManager
-from plone.portlets.interfaces import ILocalPortletAssignmentManager
+from plone.portlets.interfaces import IPortletAssignmentMapping
 
 from plone.app.portlets.portlets.classic import ClassicPortletAssignment
 from plone.app.portlets.portlets.login import LoginPortletAssignment
@@ -34,8 +35,11 @@ class ManagePortlets(BrowserView):
         left = getUtility(IPortletManager, name='plone.leftcolumn')
         right = getUtility(IPortletManager, name='plone.rightcolumn')
         
-        leftAssignable = getMultiAdapter((self.context, left), ILocalPortletAssignmentManager)
-        rightAssignable = getMultiAdapter((self.context, right), ILocalPortletAssignmentManager)
+        leftAssignable = getMultiAdapter((self.context, left), IPortletAssignmentMapping)
+        rightAssignable = getMultiAdapter((self.context, right), IPortletAssignmentMapping)
+        
+        leftChooser = INameChooser(leftAssignable)
+        rightChooser = INameChooser(rightAssignable)
         
         left_slots = getattr(aq_base(self.context), 'left_slots', [])
         right_slots = getattr(aq_base(self.context), 'right_slots', [])
@@ -44,18 +48,19 @@ class ManagePortlets(BrowserView):
             path = item.split('/')
             if len(path) == 4:
                 newPortlet = portletsMapping.get(path[1], None)
+                if newPortlet is None and path[0] in ('context', 'here',) and path[2] == 'macros':
+                    newPortlet = ClassicPortletAssignment(path[1], path[3])
                 if newPortlet is not None:
-                     leftAssignable.saveAssignment(newPortlet)
-                elif path[0] in ('context', 'here',) and path[2] == 'macros':
-                    leftAssignable.saveAssignment(ClassicPortletAssignment(path[1], path[3]))
+                    leftAssignable[leftChooser.chooseName(None, newPortlet)] = newPortlet
+                    
         for item in right_slots:
             path = item.split('/')
             if len(path) == 4:
                 newPortlet = portletsMapping.get(path[1], None)
+                if newPortlet is None and path[0] in ('context', 'here',) and path[2] == 'macros':
+                    newPortlet = ClassicPortletAssignment(path[1], path[3])
                 if newPortlet is not None:
-                     rightAssignable.saveAssignment(newPortlet)
-                elif path[0] in ('context', 'here',) and path[2] == 'macros':
-                    rightAssignable.saveAssignment(ClassicPortletAssignment(path[1], path[3]))
+                    rightAssignable[rightChooser.chooseName(None, newPortlet)] = newPortlet
                     
         self.context.left_slots = []
         self.context.right_slots = []

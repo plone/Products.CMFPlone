@@ -17,6 +17,8 @@ from plone.portlets.interfaces import IPlacelessPortletManager
 from plone.portlets.interfaces import IPortletManagerRenderer
 from plone.portlets.interfaces import IPortletRenderer
 from plone.portlets.interfaces import ILocalPortletAssignable
+from plone.portlets.interfaces import IPortletAssignmentMapping
+from plone.portlets.interfaces import ILocalPortletAssignmentManager
 
 from plone.portlets.constants import CONTEXT_ASSIGNMENT_KEY
 
@@ -66,47 +68,51 @@ class EditPortletManagerRenderer(Explicit):
     # Used by the view template
 
     def portlets(self):
-        baseUrl = str(getMultiAdapter((self.context, self.request), name='absolute_url'))
-        manager = self.manager.__name__
+        baseUrl = self._contextUrl()
         assignments = self._lazyLoadAssignments()
         portlets = self._lazyLoadPortlets()
         assert len(assignments) == len(portlets)
         data = []
         for idx in range(len(assignments)):
+            name = assignments[idx].__name__
             data.append( {'title'      : assignments[idx].title,
                           'html'       : portlets[idx].render(),
-                          'editview'   : '%s/++contextportlets++%s/%d/edit.html' % (baseUrl, manager, idx),
-                          'up_url'     : '%s/++contextportlets++%s/@@move-portlet-up?id=%d' % (baseUrl, manager, idx),
-                          'down_url'   : '%s/++contextportlets++%s/@@move-portlet-down?id=%d' % (baseUrl, manager, idx),
-                          'delete_url' : '%s/++contextportlets++%s/@@delete-portlet?id=%d' % (baseUrl, manager, idx),
+                          'editview'   : '%s/%s/edit.html' % (baseUrl, name),
+                          'up_url'     : '%s/@@move-portlet-up?name=%s' % (baseUrl, name),
+                          'down_url'   : '%s/@@move-portlet-down?name=%s' % (baseUrl, name),
+                          'delete_url' : '%s/@@delete-portlet?name=%s' % (baseUrl, name),
                           })
         if len(data) > 0:
             data[0]['up_url'] = data[-1]['down_url'] = None
         return data
         
     def context_blacklist_status(self):
-        assignable = getMultiAdapter((self.context, self.manager,), ILocalPortletAssignable)
+        assignable = getMultiAdapter((self.context, self.manager,), ILocalPortletAssignmentManager)
         return assignable.getBlacklistStatus(CONTEXT_CATEGORY)
 
     def user_blacklist_status(self):
-        assignable = getMultiAdapter((self.context, self.manager,), ILocalPortletAssignable)
+        assignable = getMultiAdapter((self.context, self.manager,), ILocalPortletAssignmentManager)
         return assignable.getBlacklistStatus(USER_CATEGORY)
     
     def group_blacklist_status(self):
-        assignable = getMultiAdapter((self.context, self.manager,), ILocalPortletAssignable)
+        assignable = getMultiAdapter((self.context, self.manager,), ILocalPortletAssignmentManager)
         return assignable.getBlacklistStatus(GROUP_CATEGORY)
     
     def content_type_blacklist_status(self):
-        assignable = getMultiAdapter((self.context, self.manager,), ILocalPortletAssignable)
+        assignable = getMultiAdapter((self.context, self.manager,), ILocalPortletAssignmentManager)
         return assignable.getBlacklistStatus(CONTENT_TYPE_CATEGORY)
         
     def addable_portlets(self):
-        baseUrl = str(getMultiAdapter((self.context, self.request), name='absolute_url'))
-        manager = self.manager.__name__
+        baseUrl = self._contextUrl()
         return [ {'title' : p[1].title,
                   'description' : p[1].description,
-                  'addview' : '%s/++contextportlets++%s/+/%s' % (baseUrl, manager, p[1].addview,),
+                  'addview' : '%s/+/%s' % (baseUrl, p[1].addview,),
                   } for p in getUtilitiesFor(IPortletType)]
+        
+    def _contextUrl(self):
+        baseUrl = str(getMultiAdapter((self.context, self.request), name='absolute_url'))
+        manager = self.manager.__name__
+        return '%s/++contextportlets++%s' % (baseUrl, manager)
         
     def _lazyLoadPortlets(self):
         if self.__portlets is None:
@@ -117,9 +123,8 @@ class EditPortletManagerRenderer(Explicit):
     
     def _lazyLoadAssignments(self):
         if self.__assignments is None:
-            annotations = IAnnotations(self.context)
-            local = annotations.get(CONTEXT_ASSIGNMENT_KEY, {})
-            self.__assignments = local.get(self.manager.__name__, [])
+            assignments = getMultiAdapter((self.context, self.manager), IPortletAssignmentMapping)
+            self.__assignments = assignments.values()
         return self.__assignments
     
     def _dataToPortlet(self, data):
@@ -135,31 +140,39 @@ class ManagePortletAssignments(BrowserView):
     """
     
     # view @@move-portlet-up
-    def move_portlet_up(self):
+    def move_portlet_up(self, name):
         assignments = aq_inner(self.context)
-        context = aq_parent(assignments)
-        idx = int(self.request.get('id'))
-        assignments.moveAssignment(idx, idx-1)
-        url = str(getMultiAdapter((context, self.request), name=u"absolute_url"))
-        self.request.response.redirect('%s/@@manage-portlets' % (url,))
+        keys = list(assignments.keys())
+        
+        idx = keys.index(name)
+        keys.remove(name)
+        keys.insert(idx-1, name)
+        assignments.updateOrder(keys)
+        
+        self.request.response.redirect(self._nextUrl())
         return ''
     
     # view @@move-portlet-down
-    def move_portlet_down(self):
+    def move_portlet_down(self, name):
         assignments = aq_inner(self.context)
-        context = aq_parent(assignments)
-        idx = int(self.request.get('id'))
-        assignments.moveAssignment(idx, idx+1)
-        url = str(getMultiAdapter((context, self.request), name=u"absolute_url"))
-        self.request.response.redirect('%s/@@manage-portlets' % (url,))
+        keys = list(assignments.keys())
+        
+        idx = keys.index(name)
+        keys.remove(name)
+        keys.insert(idx+1, name)
+        assignments.updateOrder(keys)
+        
+        self.request.response.redirect(self._nextUrl())
         return ''
     
     # view @@delete-portlet
-    def delete_portlet(self):
+    def delete_portlet(self, name):
         assignments = aq_inner(self.context)
-        context = aq_parent(assignments)
-        idx = int(self.request.get('id'))
-        del assignments[idx]
-        url = str(getMultiAdapter((context, self.request), name=u"absolute_url"))
-        self.request.response.redirect('%s/@@manage-portlets' % (url,))
+        del assignments[name]
+        self.request.response.redirect(self._nextUrl())
         return ''
+        
+    def _nextUrl(self):
+        context = aq_parent(aq_inner(self.context))
+        url = str(getMultiAdapter((context, self.request), name=u"absolute_url"))
+        return '%s/@@manage-portlets' % (url,)
