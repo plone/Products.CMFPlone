@@ -7,6 +7,7 @@ if __name__ == '__main__':
     execfile(os.path.join(sys.path[0], 'framework.py'))
 
 from Testing import ZopeTestCase
+from AccessControl import Unauthorized
 from Products.CMFPlone.tests import PloneTestCase
 
 
@@ -40,6 +41,18 @@ class TestSyndicationTool(PloneTestCase.PloneTestCase):
     def testGetSyndicatableContent(self):
         content = self.syndication.getSyndicatableContent(self.folder)
         self.assertEqual(len(content),2)
+
+    def testOwnerCanEnableAndDisableSyndication(self):
+        self.setRoles(['Owner'])
+        self.syndication.disableSyndication(self.folder)
+        self.failIf(self.syndication.isSyndicationAllowed(self.folder))
+        self.syndication.enableSyndication(self.folder)
+        self.failUnless(self.syndication.isSyndicationAllowed(self.folder))
+        self.logout()
+        self.assertRaises(Unauthorized, self.syndication.enableSyndication,
+                          self.folder)
+        self.assertRaises(Unauthorized, self.syndication.disableSyndication,
+                          self.folder)
 
 
 def test_suite():

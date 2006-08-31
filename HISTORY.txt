@@ -3,7 +3,12 @@ Changelog for Plone
    (name of developer listed in brackets)
 
 Plone 2.1.4 - Devo - Unreleased
-    - Added method and amangement template to membership tool to cleanup
+
+    - Make the syntool methods for enabling and disabling syndication check
+     for the Manager properties permission on the object.
+     [alecm]
+
+    - Added method and management template to membership tool to cleanup
       members with bad images.
       [alecm]
 
