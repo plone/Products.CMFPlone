@@ -9,6 +9,7 @@ if __name__ == '__main__':
 
 import unittest
 from Testing.ZopeTestCase import FunctionalDocFileSuite, FunctionalDocTestSuite
+from zope.testing.doctestunit import DocTestSuite
 from Products.CMFPlone.tests import PloneTestCase
 
 def test_suite():
@@ -24,6 +25,7 @@ def test_suite():
         FunctionalDocFileSuite('webdav_index_html_put.txt',
                                 package='Products.CMFPlone.tests',
                                 test_class=PloneTestCase.FunctionalTestCase),
+        DocTestSuite('Products.CMFPlone.utils'),
         ))
 
 if __name__ == '__main__':

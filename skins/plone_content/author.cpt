@@ -100,7 +100,6 @@
                  alt=""
                  class="portraitPhoto"
                  width="75"
-                 height="100"
                  style="float: left; margin: 1em;"
                  tal:attributes="src portrait/absolute_url" />
                       

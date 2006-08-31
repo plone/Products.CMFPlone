@@ -1,7 +1,10 @@
+import PIL
+from cStringIO import StringIO
 from DateTime import DateTime
 from Products.CMFCore.utils import getToolByName, _checkPermission
 from Products.CMFDefault.MembershipTool import MembershipTool as BaseTool
 from Products.CMFPlone import ToolNames
+from Products.CMFPlone.utils import scale_image
 from Products.CMFPlone.utils import _createObjectByType
 from OFS.Image import Image
 from AccessControl import ClassSecurityInfo, getSecurityManager
@@ -43,12 +46,20 @@ class MembershipTool(PloneBaseTool, BaseTool):
 
     __implements__ = (PloneBaseTool.__implements__, BaseTool.__implements__, )
 
+    manage_options = (BaseTool.manage_options +
+                      ( { 'label' : 'Portraits'
+                     , 'action' : 'manage_portrait_fix'
+                     },))
+
     # TODO I'm not quite sure why getPortalRoles is declared 'Managed'
     #    in CMFCore.MembershipTool - but in Plone we are not so anal ;-)
     security.declareProtected(View, 'getPortalRoles')
 
     security.declareProtected(ManagePortal, 'manage_mapRoles')
     manage_mapRoles = DTMLFile('www/membershipRolemapping', globals())
+
+    security.declareProtected(ManagePortal, 'manage_portrait_fix')
+    manage_portrait_fix = DTMLFile('www/portrait_fix', globals())
 
     security.declareProtected(ManagePortal, 'manage_setMemberAreaType')
     def manage_setMemberAreaType(self, type_name, REQUEST=None):
@@ -174,7 +185,8 @@ class MembershipTool(PloneBaseTool, BaseTool):
             member_id = self.getAuthenticatedMember().getId()
 
         if portrait and portrait.filename:
-            portrait = Image(id=member_id, file=portrait, title='')
+            scaled, mimetype = scale_image(portrait)
+            portrait = Image(id=member_id, file=scaled, title='')
             membertool   = getToolByName(self, 'portal_memberdata')
             membertool._setPortrait(portrait, member_id)
 
@@ -572,6 +584,27 @@ class MembershipTool(PloneBaseTool, BaseTool):
                 login_time = self.ZopeTime()
             member.setProperties(login_time=login_time,
                                  last_login_time=self.ZopeTime())
+
+    security.declareProtected(ManagePortal, 'getBadMembers')
+    def getBadMembers(self):
+        """Will search for members with bad images in the portal_memberdata
+        and return the member ids of those members"""
+        memberdata = getToolByName(self, 'portal_memberdata')
+        portraits = getattr(memberdata, 'portraits', None)
+        if portraits is None:
+            return []
+        bad_member_ids = []
+        for member_id in portraits.objectIds():
+            portrait = portraits[member_id]
+            portrait_data = portrait.data
+            if portrait_data == '':
+                continue
+            try:
+                img = PIL.Image.open(StringIO(portrait_data))
+            except IOError:
+                bad_member_ids.append(member_id)
+
+        return bad_member_ids
 
 MembershipTool.__doc__ = BaseTool.__doc__
 

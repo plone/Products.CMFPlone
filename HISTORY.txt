@@ -3,6 +3,14 @@ Changelog for Plone
    (name of developer listed in brackets)
 
 Plone 2.1.4 - Devo - Unreleased
+    - Added method and amangement template to membership tool to cleanup
+      members with bad images.
+      [alecm]
+
+    - Fix member portrait handling by automatically scaling all incoming images 
+      using PIL.  This will throw an IOError on any invalid image and also
+      save some bandwidth and space in the zodb.
+      [alecm]
 
     - Added Unicode and UTF-8 aware word splitter and case normalizer to
       the plone_lexicon pipeline. Backported from 2.5 branch.
