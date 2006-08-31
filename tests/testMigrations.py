@@ -2649,6 +2649,8 @@ class TestMigrations_v2_1(MigrationTest):
         syn = self.portal.portal_syndication
         news = self.portal.news
         events = self.portal.events
+        # Only owners and managers can set syndication properties
+        self.setRoles(['Manager'])
         syn.disableSyndication(news)
         syn.disableSyndication(events)
         self.failIf(syn.isSyndicationAllowed(news))
@@ -2663,6 +2665,7 @@ class TestMigrations_v2_1(MigrationTest):
         syn = self.portal.portal_syndication
         news = self.portal.news
         events = self.portal.events
+        self.setRoles(['Manager'])
         syn.disableSyndication(news)
         syn.disableSyndication(events)
         enableSyndicationOnTopics(self.portal,[])
@@ -2675,6 +2678,7 @@ class TestMigrations_v2_1(MigrationTest):
         syn = self.portal.portal_syndication
         news = self.portal.news
         events = self.portal.events
+        self.setRoles(['Manager'])
         syn.disableSyndication(news)
         syn.disableSyndication(events)
         syn.editProperties(isAllowed=False)
