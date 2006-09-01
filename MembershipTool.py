@@ -10,6 +10,7 @@ from OFS.Image import Image
 from AccessControl import ClassSecurityInfo, getSecurityManager
 from Globals import InitializeClass, DTMLFile
 from zExceptions import BadRequest
+from ZODB.POSException import ConflictError
 from AccessControl.SecurityManagement import noSecurityManager
 from Acquisition import aq_base, aq_parent, aq_inner
 from Products.CMFCore.permissions import ManagePortal
@@ -18,6 +19,7 @@ from Products.CMFCore.permissions import SetOwnProperties
 from Products.CMFCore.permissions import SetOwnPassword
 from Products.CMFCore.permissions import View
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
+from Products.CMFPlone.log import log
 
 default_portrait = 'defaultUser.gif'
 
@@ -570,26 +572,31 @@ class MembershipTool(PloneBaseTool, BaseTool):
     security.declareProtected(ManagePortal, 'getBadMembers')
     def getBadMembers(self):
         """Will search for members with bad images in the portal_memberdata
-        and return the member ids of those members"""
+        delete their portraits and return their member ids"""
         memberdata = getToolByName(self, 'portal_memberdata')
         portraits = getattr(memberdata, 'portraits', None)
         if portraits is None:
             return []
         bad_member_ids = []
-        TXN_THRESHOLD = 100
         import transaction
+        TXN_THRESHOLD = 50
         counter = 1
-        for member_id in portraits.objectIds():
+        for member_id in tuple(portraits.objectIds()):
             portrait = portraits[member_id]
             portrait_data = str(portrait.data)
             if portrait_data == '':
                 continue
             try:
                 img = PIL.Image.open(StringIO(portrait_data))
-            except IOError:
+            except ConflictError:
+                pass
+            except:
+                # Anything else we have a bad bad image and we destroy it
+                # and ask questions later.
+                portraits._delObject(member_id)
                 bad_member_ids.append(member_id)
             if not counter%TXN_THRESHOLD:
-                transaction.commit(1)
+                transaction.savepoint(optimistic=True)
             counter = counter + 1
 
         return bad_member_ids
