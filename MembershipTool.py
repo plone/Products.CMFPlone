@@ -3,6 +3,7 @@ from cStringIO import StringIO
 from DateTime import DateTime
 from Products.CMFCore.utils import getToolByName, _checkPermission
 from Products.CMFDefault.MembershipTool import MembershipTool as BaseTool
+from Products.CMFPlone import transaction
 from Products.CMFPlone import ToolNames
 from Products.CMFPlone.utils import scale_image
 from Products.CMFPlone.utils import _createObjectByType
@@ -590,24 +591,19 @@ class MembershipTool(PloneBaseTool, BaseTool):
     security.declareProtected(ManagePortal, 'getBadMembers')
     def getBadMembers(self):
         """Will search for members with bad images in the portal_memberdata
-        and return the member ids of those members"""
+        delete their portraits and return their member ids"""
         memberdata = getToolByName(self, 'portal_memberdata')
         portraits = getattr(memberdata, 'portraits', None)
         if portraits is None:
             return []
         bad_member_ids = []
-        TXN_THRESHOLD = 100
-        import transaction
+        TXN_THRESHOLD = 50
         counter = 1
-        for member_id in portraits.objectIds():
+        for member_id in tuple(portraits.objectIds()):
             portrait = portraits[member_id]
             portrait_data = str(portrait.data)
             if portrait_data == '':
                 continue
-            log('Checking image #%s from member %s with size %s'%(
-                counter,
-                member_id,
-                len(portrait_data)))
             try:
                 img = PIL.Image.open(StringIO(portrait_data))
             except ConflictError:
@@ -618,7 +614,7 @@ class MembershipTool(PloneBaseTool, BaseTool):
                 portraits._delObject(member_id)
                 bad_member_ids.append(member_id)
             if not counter%TXN_THRESHOLD:
-                transaction.commit(1)
+                transaction.savepoint(optimistic=True)
             counter = counter + 1
 
         return bad_member_ids
@@ -626,4 +622,3 @@ class MembershipTool(PloneBaseTool, BaseTool):
 MembershipTool.__doc__ = BaseTool.__doc__
 
 InitializeClass(MembershipTool)
-
