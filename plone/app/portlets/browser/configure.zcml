@@ -2,6 +2,24 @@
     xmlns="http://namespaces.zope.org/zope"
     xmlns:browser="http://namespaces.zope.org/browser">
 
+    <!-- Namespace traversal adapters for various types of portlets -->
+    <adapter
+        factory=".traversal.ContextPortletNamespace"
+        name="contextportlets"
+        />
+    <adapter
+        factory=".traversal.CurrentUserPortletNamespace"
+        name="myportlets"
+        />
+    <adapter
+        factory=".traversal.UserPortletNamespace"
+        name="userportlets"
+        />
+    <adapter
+        factory=".traversal.GroupPortletNamespace"
+        name="groupportlets"
+        />
+
     <!-- Portlet management pages -->
     <browser:pages
       for="plone.portlets.interfaces.ILocalPortletAssignable"
@@ -20,12 +38,23 @@
         />
         
     </browser:pages>
+  
     
+    <browser:page
+      for="Products.CMFCore.interfaces.ISiteRoot"
+      class=".manage.ManageCurrentUserPortlets"
+      name="manage-my-portlets"
+      template="myportlets.pt"
+      permission="zope.View" 
+      /> <!-- XXX: Need custom permission for this -->
+    
+    <!-- Renderer for the columns in edit mode -->
     <adapter
         factory=".editmanager.EditPortletManagerRenderer"
         provides="plone.portlets.interfaces.IPortletManagerRenderer"
         />
-        
+    
+    <!-- Operations on portlets when in edit mode -->
     <browser:pages
       for="plone.portlets.interfaces.IPortletAssignmentMapping"
       class=".editmanager.ManagePortletAssignments"
@@ -48,24 +77,6 @@
         />
         
     </browser:pages>
-
-    <!-- Namespace traversal adapters for various types of portlets -->
-    <adapter
-        factory=".traversal.ContextPortletNamespace"
-        name="contextportlets"
-        />
-    <adapter
-        factory=".traversal.CurrentUserPortletNamespace"
-        name="myportlets"
-        />
-    <adapter
-        factory=".traversal.UserPortletNamespace"
-        name="userportlets"
-        />
-    <adapter
-        factory=".traversal.GroupPortletNamespace"
-        name="groupportlets"
-        />
 
     <!-- Adding view for portlet assignments -->
     <browser:view

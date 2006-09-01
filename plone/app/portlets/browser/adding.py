@@ -24,9 +24,12 @@ class PortletAdding(SimpleItem, BrowserView):
         manager[chooser.chooseName(None, content)] = content
         
     def nextURL(self):
-        context = aq_parent(aq_inner(self.context))
-        url = str(getMultiAdapter((context, self.request), name=u"absolute_url"))
-        return url + '/@@manage-portlets'
+        referer = self.request.get('HTTP_REFERER', None)
+        if not referer:
+            context = aq_parent(aq_inner(self.context))
+            url = str(getMultiAdapter((context, self.request), name=u"absolute_url"))
+            referer = url + '/@@manage-portlets'
+        return referer
 
     def renderAddButton(self):
         warn("The renderAddButton method is deprecated, use nameAllowed",

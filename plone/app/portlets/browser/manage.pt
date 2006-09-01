@@ -33,13 +33,8 @@
   <h2>My portlets</h2>
   
   <p>
-    Portlets can be assigned to users. This works by selecting the column and
-    invoking an add view on e.g ++myportlets++column.name. This could also be
-    used to build dashboards of portlets independent of context by assigned
-    to users and groups.
-  </p>
-  <p>
-    The UI for doing this is not yet finished - stay tuned.
+    You can assign personal portlets by clicking 
+      <a tal:attributes="href string:${context/portal_url}/@@manage-my-portlets">here</a>
   </p>
   
   <h2>Group portlets</h2>

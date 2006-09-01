@@ -10,3 +10,11 @@ class IPortletAdding(IAdding):
 class IManagePortletsView(Interface):
     """The screen used to manage portlets in a particular context.
     """
+    
+    def getAssignmentMappingUrl(manager):
+        """Given a portlet manager, get the URL to its assignment mapping.
+        """
+        
+    def getAssignmentsForManager(manager):
+        """Get the assignments in the current context for the given manager.
+        """

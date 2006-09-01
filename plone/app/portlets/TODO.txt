@@ -15,11 +15,17 @@ plone.app.portlets to-do
 
   Infrastructure
   
+    o Need a custom permission for assign-personal-portlets, assign-group-
+      portlets and so on!
+      
+    o Add form always redirects to @@manage-portlets (since HTTP_REFERER isn't
+        useful)
+  
     o Category mappings are created on-the-fly in the namespace traversal
       adapters, which many not be ideal (even though these are protected by
       ManagePortal)
       
-        - create when users and groups are added?
+        - may be sufficient to create when the management views are invoked
   
     o Portlets like the login portlet have no configuration: formlib then
         displays a blank page :-(
@@ -35,11 +41,6 @@ plone.app.portlets to-do
         - Recent
         - Related
         - Calendar
-        
-    o Make a base class for add forms based on formlib's AddForm
-        - Register these as part of portlet configuration (mostly done)
-        - Also register edit form, using e.g. 'edit' as name convention
-        - Look for all such add forms to get list of addable portlets
 
   User Interface
 
@@ -47,7 +48,10 @@ plone.app.portlets to-do
         - May need to split dashboard into several columns
         
     o Need UI for assigning user-, group- and content-type-portlets.
-        - This should be very similar to how contextual portlets work.
+        - This should be very similar to how contextual portlets work
+        - The IManagePortletsView could have a form field selecting which
+          user/group/content type to manage, and when reloaded, the columns
+          would change - problem is carrying that state across portlet changes.
         
     o There is no UI yet for blacklisting (stop-acquistion) of context, user,
       group or content-type portlets
@@ -65,13 +69,7 @@ plone.app.portlets to-do
            
         - Need a way to signal that columns should be hidden
             - e.g. a property 'available' in the renderer?
-  
-    o Add a generic migration from left_slots/right_slots
-        - Should be "on-demand" (perhaps automatic for site root)
-        - See code in testing.py
-        - Could also have a custom IPortletManagerRenderer that builds
-            ClassicPortlet's on-the-fly
-        
+          
     o Add migration steps to Plone's migration machinery
     
     o Set up default portlets during site set-up

@@ -68,7 +68,7 @@ class EditPortletManagerRenderer(Explicit):
     # Used by the view template
 
     def portlets(self):
-        baseUrl = self._contextUrl()
+        baseUrl = self.__parent__.getAssignmentMappingUrl(self.manager)
         assignments = self._lazyLoadAssignments()
         portlets = self._lazyLoadPortlets()
         assert len(assignments) == len(portlets)
@@ -103,16 +103,11 @@ class EditPortletManagerRenderer(Explicit):
         return assignable.getBlacklistStatus(CONTENT_TYPE_CATEGORY)
         
     def addable_portlets(self):
-        baseUrl = self._contextUrl()
+        baseUrl = self.__parent__.getAssignmentMappingUrl(self.manager)
         return [ {'title' : p[1].title,
                   'description' : p[1].description,
                   'addview' : '%s/+/%s' % (baseUrl, p[1].addview,),
                   } for p in getUtilitiesFor(IPortletType)]
-        
-    def _contextUrl(self):
-        baseUrl = str(getMultiAdapter((self.context, self.request), name='absolute_url'))
-        manager = self.manager.__name__
-        return '%s/++contextportlets++%s' % (baseUrl, manager)
         
     def _lazyLoadPortlets(self):
         if self.__portlets is None:
@@ -123,8 +118,7 @@ class EditPortletManagerRenderer(Explicit):
     
     def _lazyLoadAssignments(self):
         if self.__assignments is None:
-            assignments = getMultiAdapter((self.context, self.manager), IPortletAssignmentMapping)
-            self.__assignments = assignments.values()
+            self.__assignments = self.__parent__.getAssignmentsForManager(self.manager)
         return self.__assignments
     
     def _dataToPortlet(self, data):
@@ -173,6 +167,9 @@ class ManagePortletAssignments(BrowserView):
         return ''
         
     def _nextUrl(self):
-        context = aq_parent(aq_inner(self.context))
-        url = str(getMultiAdapter((context, self.request), name=u"absolute_url"))
-        return '%s/@@manage-portlets' % (url,)
+        referer = self.request.get('HTTP_REFERER', None)
+        if referer is None:
+            context = aq_parent(aq_inner(self.context))
+            url = str(getMultiAdapter((context, self.request), name=u"absolute_url"))    
+            referer = '%s/@@manage-portlets' % (url,)
+        return referer

@@ -17,8 +17,9 @@ from plone.portlets.constants import GROUP_CATEGORY
 from plone.portlets.constants import CONTENT_TYPE_CATEGORY
 
 from plone.app.portlets.storage import PortletAssignmentMapping
+from plone.app.portlets.storage import CurrentUserAssignmentMapping
 
-from Acquisition import aq_base
+from Acquisition import aq_inner
 
 class ContextPortletNamespace(object):
     """Used to traverse to a contextual portlet assignable
@@ -46,17 +47,9 @@ class CurrentUserPortletNamespace(object):
         self.request = request
         
     def traverse(self, name, ignore):
-        mtool = getToolByName(self.context, 'portal_membership')
-        if mtool.isAnonymousUser():
-            raise KeyError, "Cannot get current user portlets for anonymous"
-        user = mtool.getAuthenticatedMember().getId()
-        col = name
-        column = getUtility(IPortletManager, name=col)
+        column = getUtility(IPortletManager, name=name)
         category = column[USER_CATEGORY]
-        manager = category.get(user, None)
-        if manager is None:
-            manager = category[user] = PortletAssignmentMapping()
-        return manager
+        return CurrentUserAssignmentMapping(aq_inner(self.context), category)
         
 class UserPortletNamespace(object):
     """Used to traverse to a user portlet assignable
