@@ -116,7 +116,7 @@
                 <td valign="top" class="field">
                     <label class="hiddenLabel" for="member_ids"
                            i18n:translate="label_select_usergroup">
-                        select user/group <span tal:content="entry/id" tal:omit-tag="" i18n:name="role">userid/groupid</span>
+                        select user/group <span tal:content="entry/name" tal:omit-tag="" i18n:name="role">userid/groupid</span>
                     </label>
                     <input class="formSelection"
                            type="checkbox"

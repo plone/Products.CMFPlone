@@ -37,8 +37,9 @@
                    tal:define="actorid python:items.get('actor');
                                actor python:mtool.getMemberInfo(actorid);
                                fullname actor/fullname|nothing"
+                               username actor/username|nothing"
                    tal:attributes="href string:${portal_url}/author/${actorid}"
-                   tal:content="python:fullname or actorid">
+                   tal:content="python:fullname or username or actorid">
                   runyaga
                 </a>
               </td>
