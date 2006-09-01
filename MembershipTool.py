@@ -18,6 +18,7 @@ from Products.CMFCore.permissions import SetOwnProperties
 from Products.CMFCore.permissions import SetOwnPassword
 from Products.CMFCore.permissions import View
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
+from Products.CMFPlone.log import log
 
 default_portrait = 'defaultUser.gif'
 
@@ -606,6 +607,14 @@ class MembershipTool(PloneBaseTool, BaseTool):
                 img = PIL.Image.open(StringIO(portrait_data))
             except IOError:
                 bad_member_ids.append(member_id)
+            except MemoryError:
+                # We have found a huge image that causes a memory error
+                # for now we log its size and creator, later we should
+                # consider deleting as a matter of policy
+                log('%s has unusually large portrait (%s bytes) '
+                    'starts with %s'%(member_id,
+                                      len(portrait_data),
+                                      portrait_data[:4]))
             if not counter%TXN_THRESHOLD:
                 transaction.commit(1)
             counter = counter + 1
@@ -615,3 +624,4 @@ class MembershipTool(PloneBaseTool, BaseTool):
 MembershipTool.__doc__ = BaseTool.__doc__
 
 InitializeClass(MembershipTool)
+
