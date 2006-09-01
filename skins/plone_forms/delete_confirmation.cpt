@@ -1,0 +1,46 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+  <metal:block fill-slot="top_slot"
+               tal:define="dummy python:request.set('disable_border',1)" />
+
+  <body>
+
+    <div metal:fill-slot="main">
+
+      <h1 i18n:translate="alert_really_delete_folder">
+        Do you really want to delete this folder and all its contents?
+      </h1>
+
+      <h1 i18n:translate="alert_really_delete">
+        Do you really want to delete this item?
+      </h1>
+
+      <ul>
+          <li>The item title (ID)</li>
+      </ul>
+
+      <form>
+        <div class="formControls">
+
+          <input class="destructive"
+                 type="submit"
+                 value="Delete"
+                 i18n:attributes="value;"
+                 />
+          <input class="standalone"
+                 type="submit"
+                 value="Cancel"
+                 name="form.button.Cancel"
+                 i18n:attributes="value label_cancel;"
+                 />
+        </div>
+
+      </form>
+
+
+    </div>
+
+  </body>
+</html>
