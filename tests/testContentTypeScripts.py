@@ -6,6 +6,7 @@ import os, sys
 if __name__ == '__main__':
     execfile(os.path.join(sys.path[0], 'framework.py'))
 
+from AccessControl import Unauthorized
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
 
@@ -194,6 +195,15 @@ class TestContentTypeScripts(PloneTestCase.PloneTestCase):
         doc.setTitle('title')
         metatypes = tool.listMetaTags(doc)
         # TODO: atm it checks only of the script can be called w/o an error
+
+    def testObjectDeleteFailsOnGET(self):
+        self.assertRaises(Unauthorized, self.folder.object_delete,)
+
+    def testObjectDelete(self):
+        self.folder.invokeFactory('Document', id='doc')
+        self.app.REQUEST.set('REQUEST_METHOD', 'POST')
+        self.folder.doc.object_delete()
+        self.failIf('doc' in self.folder.objectIds())
 
 
 class TestEditShortName(PloneTestCase.PloneTestCase):

@@ -9,9 +9,14 @@
 ##title=Delete objects from a folder
 ##
 
+from AccessControl import Unauthorized
 from Products.CMFPlone.utils import transaction_note
 from Products.CMFPlone import PloneMessageFactory as _
 from ZODB.POSException import ConflictError
+
+if context.REQUEST.get('REQUEST_METHOD', 'GET').upper() == 'GET':
+    raise Unauthorized, 'This method can not be accessed using a GET request'
+
 paths=context.REQUEST.get('paths', [])
 titles=[]
 titles_and_paths=[]

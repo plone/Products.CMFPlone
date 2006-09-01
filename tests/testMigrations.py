@@ -148,6 +148,7 @@ from Products.CMFPlone.migrations.v2_5.betas import migrateCSSRegExpression
 from Products.CMFPlone.migrations.v2_5.final_two51 import removePloneCssFromRR
 from Products.CMFPlone.migrations.v2_5.final_two51 import addEventRegistrationJS
 from Products.CMFPlone.migrations.v2_5.final_two51 import fixupPloneLexicon
+from Products.CMFPlone.migrations.v2_5.final_two51 import fixObjDeleteAction
 
 from Products.CMFDynamicViewFTI.migrate import migrateFTI
 
@@ -4054,6 +4055,55 @@ class TestMigrations_v2_5_1(MigrationTest):
         # Should not break if portal_catalog is missing
         self.portal._delObject('portal_catalog')
         fixupPloneLexicon(self.portal, [])
+
+    def testFixObjDeleteActionNoAction(self):
+        # sould fix the action expression for the action
+        editActions = ('delete',)
+        newactions = self.actions._cloneActions()
+        for a in newactions:
+            if a['id'] in editActions:
+                a.action = ''
+        self.actions._actions = actions
+        fixObjDeleteAction(self.portal, [])
+        found = 0
+        # test that our actions have been altered
+        for a in self.actions._cloneActions():
+            if a['id'] in editActions:
+                self.failUnless(a.action)
+                found = found + 1
+        # Check that we found the right number of actions
+        self.assertEqual(found, len(editActions))
+
+    def tesFixObjDeleteActionTwice(self):
+        # Should not error if performed twice
+        editActions = ('delete',)
+        for a in editActions:
+            self.removeActionFromTool(a)
+        fixObjDeleteAction(self.portal, [])
+        fixObjDeleteAction(self.portal, [])
+        actions = [x.id for x in self.actions.listActions()
+                   if x.id in editActions]
+        # check that all of our deleted actions are now present
+        for a in editActions:
+            self.failUnless(a in actions)
+        # ensure that they are present only once
+        self.failUnlessEqual(len(editActions), len(actions))
+
+    def testFixObjDeleteActionNoAction(self):
+        # Should add the action
+        editActions = ('delete',)
+        for a in editActions:
+            self.removeActionFromTool(a)
+        fixObjDeleteAction(self.portal, [])
+        actions = [x.id for x in self.actions.listActions()
+                   if x.id in editActions]
+        for a in editActions:
+            self.failUnless(a in actions)
+        self.failUnlessEqual(len(editActions), len(actions))
+
+    def testtFixHomeActionNoTool(self):
+        self.portal._delObject('portal_actions')
+        fixObjDeleteAction(self.portal, [])
 
 
 def test_suite():

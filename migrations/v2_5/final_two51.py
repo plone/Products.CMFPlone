@@ -1,3 +1,4 @@
+from Products.CMFCore.Expression import Expression
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.UnicodeSplitter import Splitter, CaseNormalizer
 from Products.CMFPlone.migrations.v2_1.alphas import reindexCatalog, \
@@ -15,6 +16,9 @@ def final_two51(portal):
 
     # Repair plone_lexicon pipeline
     fixupPloneLexicon(portal, out)
+
+    # Make object delete action use confirmation form
+    fixObjDeleteAction(portal, out)
 
     # Required for #5569 (is_folderish needs reindexing) and #5231 (all text
     # indices need to be reindexed so they are split properly)
@@ -76,3 +80,33 @@ def fixupPloneLexicon(portal, out):
                     lexicon.length = Length()
                     out.append('Updated plone_lexicon pipeline.')
 
+def fixObjDeleteAction(portal, out):
+    """Make the delete action use the new confirmation form
+    """
+    newaction = { 'id'         : 'delete',
+                  'name'       : 'Delete',
+                  'action'     : 'string:${globals_view/getCurrentObjectUrl}/delete_confirmation',
+                  'condition'  : 'python:checkPermission(&quot;Delete objects&quot;, globals_view.getParentObject()) and not globals_view.isPortalOrPortalDefaultPage()',
+                  'permission' : 'Delete objects',
+                  'category'   : 'object_buttons',
+                }
+    exists = False
+    actionsTool = getToolByName(portal, 'portal_actions', None)
+    if actionsTool is not None:
+        new_actions = actionsTool._cloneActions()
+        for action in new_actions:
+            if action.getId() == newaction['id'] and action.category == newaction['category']:
+                exists = True
+                action.action = Expression(text=newaction['action'])
+                out.append('Modified existing object delete action')
+        if exists:
+            actionsTool._actions = new_actions
+        else:
+            actionsTool.addAction(newaction['id'],
+                    name=newaction['name'],
+                    action=newaction['action'],
+                    condition=newaction['condition'],
+                    permission=newaction['permission'],
+                    category=newaction['category'],
+                    visible=1)
+            out.append("Added missing object delete action")

@@ -538,10 +538,17 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         acts = self.actions.listFilteredActionsFor(self.folder.index_html)
         buttons = acts['object_buttons']
         self.assertEqual(len(buttons), 4)
-        urls = [(a['id'],a['url']) for a in buttons]
+        # special case for delete which needs a confirmation form
+        urls = [(a['id'],a['url']) for a in buttons
+                if a['id'] != 'delete']
         for url in urls:
             # ensure that e.g. the 'copy' url contains object_copy
             self.failUnless('object_'+url[0] in url[1], "%s does not perform the expected object_%s action"%(url[0],url[0]))
+        
+        delete_action = [(a['id'],a['url']) for a in buttons
+                if a['id'] == 'delete'][0]
+        self.failUnless('delete_confirmation' in delete_action[1],
+                         "object_delete does not use the confirmation form")
 
     def testObjectButtonActionsInExpectedOrder(self):
         # The object buttons need to be in a standardized order

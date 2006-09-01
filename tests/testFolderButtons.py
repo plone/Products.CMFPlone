@@ -6,6 +6,7 @@ import os, sys
 if __name__ == '__main__':
     execfile(os.path.join(sys.path[0], 'framework.py'))
 
+from AccessControl import Unauthorized
 from Products.CMFPlone.tests import PloneTestCase
 from Products.PloneTestCase.setup import default_user
 from Products.PloneTestCase.setup import default_password
@@ -100,6 +101,8 @@ class TestFolderDelete(PloneTestCase.PloneTestCase):
         # Make sure object gets deleted
         doc_path = '/'.join(self.folder.foo.doc1.getPhysicalPath())
         self.app.REQUEST.set('paths', [doc_path])
+        # folder_delete requires a non-GET request
+        self.app.REQUEST.set('REQUEST_METHOD', 'POST')
         self.folder.folder_delete()
         self.assertEqual(getattr(self.folder.foo, 'doc1', None), None)
 
@@ -107,6 +110,8 @@ class TestFolderDelete(PloneTestCase.PloneTestCase):
         # Make sure catalog gets updated
         doc_path = '/'.join(self.folder.foo.doc1.getPhysicalPath())
         self.app.REQUEST.set('paths', [doc_path])
+        # folder_delete requires a non-GET request
+        self.app.REQUEST.set('REQUEST_METHOD', 'POST')
         self.folder.folder_delete()
         results = self.catalog(path=doc_path)
         self.failIf(results)
@@ -116,6 +121,8 @@ class TestFolderDelete(PloneTestCase.PloneTestCase):
         doc1_path = '/'.join(self.folder.foo.doc1.getPhysicalPath())
         doc2_path = '/'.join(self.folder.bar.doc2.getPhysicalPath())
         self.app.REQUEST.set('paths', [doc1_path,doc2_path])
+        # folder_delete requires a non-GET request
+        self.app.REQUEST.set('REQUEST_METHOD', 'POST')
         self.folder.folder_delete()
         self.assertEqual(getattr(self.folder.foo, 'doc1', None), None)
         self.assertEqual(getattr(self.folder.bar, 'doc2', None), None)
@@ -123,7 +130,14 @@ class TestFolderDelete(PloneTestCase.PloneTestCase):
     def testNoErrorOnBadPaths(self):
         # Ensure we don't fail on a bad path
         self.app.REQUEST.set('paths', ['/garbage/path'])
+        # folder_delete requires a non-GET request
+        self.app.REQUEST.set('REQUEST_METHOD', 'POST')
         self.folder.folder_delete()
+
+    def testGETRaisesUnauthorized(self):
+        # folder_delete requires a non-GET request and will fial otherwise
+        self.assertRaises(Unauthorized, self.folder.folder_delete)
+
 
 
 class TestFolderPublish(PloneTestCase.PloneTestCase):
