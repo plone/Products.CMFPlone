@@ -594,6 +594,9 @@ class MembershipTool(PloneBaseTool, BaseTool):
         if portraits is None:
             return []
         bad_member_ids = []
+        TXN_THRESHOLD = 100
+        import transaction
+        counter = 1
         for member_id in portraits.objectIds():
             portrait = portraits[member_id]
             portrait_data = str(portrait.data)
@@ -603,6 +606,9 @@ class MembershipTool(PloneBaseTool, BaseTool):
                 img = PIL.Image.open(StringIO(portrait_data))
             except IOError:
                 bad_member_ids.append(member_id)
+            if not counter%TXN_THRESHOLD:
+                transaction.commit(1)
+            counter = counter + 1
 
         return bad_member_ids
 
