@@ -10,6 +10,7 @@ from OFS.Image import Image
 from AccessControl import ClassSecurityInfo, getSecurityManager
 from Globals import InitializeClass, DTMLFile
 from zExceptions import BadRequest
+from ZODB.POSException import ConflictError
 from AccessControl.SecurityManagement import noSecurityManager
 from Acquisition import aq_base, aq_parent, aq_inner
 from Products.CMFCore.permissions import ManagePortal
@@ -609,16 +610,13 @@ class MembershipTool(PloneBaseTool, BaseTool):
                 len(portrait_data)))
             try:
                 img = PIL.Image.open(StringIO(portrait_data))
-            except IOError:
+            except ConflictError:
+                pass
+            except:
+                # Anything else we have a bad bad image and we destroy it
+                # and ask questions later.
+                portraits._delObject(member_id)
                 bad_member_ids.append(member_id)
-            except MemoryError:
-                # We have found a huge image that causes a memory error
-                # for now we log its size and creator, later we should
-                # consider deleting as a matter of policy
-                log('%s has unusually large portrait (%s bytes) '
-                    'starts with %s'%(member_id,
-                                      len(portrait_data),
-                                      portrait_data[:4]))
             if not counter%TXN_THRESHOLD:
                 transaction.commit(1)
             counter = counter + 1
