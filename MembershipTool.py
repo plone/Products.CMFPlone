@@ -603,6 +603,10 @@ class MembershipTool(PloneBaseTool, BaseTool):
             portrait_data = str(portrait.data)
             if portrait_data == '':
                 continue
+            log('Checking image #%s from member %s with size %s'%(
+                counter,
+                member_id,
+                len(portrait_data)))
             try:
                 img = PIL.Image.open(StringIO(portrait_data))
             except IOError:
