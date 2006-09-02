@@ -23,8 +23,8 @@
     <!-- Portlet management pages -->
     <browser:pages
       for="plone.portlets.interfaces.ILocalPortletAssignable"
-      class=".manage.ManagePortlets"
-      permission="cmf.ManagePortal"
+      class=".manage.ManageContextualPortlets"
+      permission="plone.app.portlets.ManagePortlets"
       >
 
       <browser:page
@@ -45,12 +45,16 @@
       class=".manage.ManageCurrentUserPortlets"
       name="manage-my-portlets"
       template="myportlets.pt"
-      permission="zope.View" 
-      /> <!-- XXX: Need custom permission for this -->
+      permission="plone.app.portlets.ManageOwnPortlets"
+      />
     
     <!-- Renderer for the columns in edit mode -->
     <adapter
         factory=".editmanager.EditPortletManagerRenderer"
+        provides="plone.portlets.interfaces.IPortletManagerRenderer"
+        />
+    <adapter
+        factory=".editmanager.ContextualEditPortletManagerRenderer"
         provides="plone.portlets.interfaces.IPortletManagerRenderer"
         />
     
@@ -58,7 +62,7 @@
     <browser:pages
       for="plone.portlets.interfaces.IPortletAssignmentMapping"
       class=".editmanager.ManagePortletAssignments"
-      permission="cmf.ManagePortal"
+      permission="plone.app.portlets.ManagePortlets"
       >
       
       <browser:page
@@ -84,12 +88,12 @@
       name="+"
       class=".adding.PortletAdding"
       allowed_interface="plone.app.portlets.browser.interfaces.IPortletAdding"
-      permission="cmf.ManagePortal"
+      permission="plone.app.portlets.ManagePortlets"
       />
     
     <class class=".adding.PortletAdding">
       <require
-        permission="cmf.ManagePortal"
+        permission="plone.app.portlets.ManagePortlets"
         interface=".interfaces.IPortletAdding" />
     </class>
     

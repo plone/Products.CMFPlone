@@ -1,0 +1,18 @@
+<configure xmlns="http://namespaces.zope.org/zope"
+           i18n_domain="contentratings">
+
+  <!-- Note: These permissions are also set up in the rolemap.xml GenericSetup
+    importer in CMFPlone.
+     -->
+
+  <permission
+    id="plone.app.portlets.ManagePortlets"
+    title="Portlets: Manage portlets"
+    />
+  
+  <permission
+    id="plone.app.portlets.ManageOwnPortlets"
+    title="Portlets: Manage own portlets"
+    />
+
+</configure>

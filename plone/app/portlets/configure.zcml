@@ -5,17 +5,17 @@
 
     <include package="plone.portlets" />
     
-    <!-- <five:registerPackage package="." initialize=".initialize" /> -->
-
+    <include file="permissions.zcml" />
+    
     <include package=".browser" />
     <include package=".exportimport" />
     <include package=".portlets" />
     
+    <!-- Set up the portlet context -->
     <adapter factory=".portletcontext.ContentContext" />
     <adapter factory=".portletcontext.PortalRootContext" />
     
-    <!-- Make any folder a possible portlet manager -->
-
+    <!-- Make any folder and the site root a possible portlet manager -->
     <five:implements
         class="Products.CMFPlone.Portal.PloneSite"
         interface="plone.portlets.interfaces.ILocalPortletAssignable"
@@ -37,11 +37,11 @@
         interface="zope.app.container.interfaces.IReadContainer"
         />
       <require
-        permission="cmf.ManagePortal"
+        permission="plone.app.portlets.ManagePortlets"
         interface="zope.app.container.interfaces.IWriteContainer"
         />
       <require
-        permission="cmf.ManagePortal"
+        permission="plone.app.portlets.ManagePortlets"
         attributes="updateOrder"
         />
     </class>

@@ -18,3 +18,23 @@ class IManagePortletsView(Interface):
     def getAssignmentsForManager(manager):
         """Get the assignments in the current context for the given manager.
         """
+
+class IManageContextualPortletsView(IManagePortletsView):
+    """Marker for the manage contextual portlets view
+    """
+
+class IManageCurrentUserPortletsView(IManagePortletsView):
+    """Marker for the manage contextual personal view
+    """
+
+class IManageUserPortletsView(IManagePortletsView):
+    """Marker for the manage user portlets view
+    """
+
+class IManageGroupPortletsView(IManagePortletsView):
+    """Marker for the manage group portlets view
+    """
+
+class IManageContentTypePortletsView(IManagePortletsView):
+    """Marker for the manage content type portlets view
+    """

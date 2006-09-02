@@ -28,12 +28,16 @@ from plone.portlets.constants import GROUP_CATEGORY
 from plone.portlets.constants import CONTENT_TYPE_CATEGORY
 
 from plone.app.portlets.browser.interfaces import IManagePortletsView
+from plone.app.portlets.browser.interfaces import IManageContextualPortletsView
 
 from Products.Five.browser import BrowserView 
 from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
 
 class EditPortletManagerRenderer(Explicit):
     """Render a portlet manager in edit mode.
+    
+    This is the generic renderer, which delegates to the view to determine
+    which assignments to display.
     """
     implements(IPortletManagerRenderer)
     adapts(Interface, IBrowserRequest, IManagePortletsView, IPortletManager)
@@ -86,22 +90,6 @@ class EditPortletManagerRenderer(Explicit):
             data[0]['up_url'] = data[-1]['down_url'] = None
         return data
         
-    def context_blacklist_status(self):
-        assignable = getMultiAdapter((self.context, self.manager,), ILocalPortletAssignmentManager)
-        return assignable.getBlacklistStatus(CONTEXT_CATEGORY)
-
-    def user_blacklist_status(self):
-        assignable = getMultiAdapter((self.context, self.manager,), ILocalPortletAssignmentManager)
-        return assignable.getBlacklistStatus(USER_CATEGORY)
-    
-    def group_blacklist_status(self):
-        assignable = getMultiAdapter((self.context, self.manager,), ILocalPortletAssignmentManager)
-        return assignable.getBlacklistStatus(GROUP_CATEGORY)
-    
-    def content_type_blacklist_status(self):
-        assignable = getMultiAdapter((self.context, self.manager,), ILocalPortletAssignmentManager)
-        return assignable.getBlacklistStatus(CONTENT_TYPE_CATEGORY)
-        
     def addable_portlets(self):
         baseUrl = self.__parent__.getAssignmentMappingUrl(self.manager)
         return [ {'title' : p[1].title,
@@ -128,6 +116,30 @@ class EditPortletManagerRenderer(Explicit):
         portlet = getMultiAdapter((self.context, self.request, self.__parent__,
                                     self.manager, data,), IPortletRenderer)
         return portlet.__of__(self.context)
+          
+class ContextualEditPortletManagerRenderer(EditPortletManagerRenderer):
+    """Render a portlet manager in edit mode for contextual portlets
+    """
+    adapts(Interface, IBrowserRequest, IManageContextualPortletsView, IPortletManager)
+
+    def __init__(self, context, request, view, manager):
+        EditPortletManagerRenderer.__init__(self, context, request, view, manager)
+    
+    def context_blacklist_status(self):
+        assignable = getMultiAdapter((self.context, self.manager,), ILocalPortletAssignmentManager)
+        return assignable.getBlacklistStatus(CONTEXT_CATEGORY)
+
+    def user_blacklist_status(self):
+        assignable = getMultiAdapter((self.context, self.manager,), ILocalPortletAssignmentManager)
+        return assignable.getBlacklistStatus(USER_CATEGORY)
+    
+    def group_blacklist_status(self):
+        assignable = getMultiAdapter((self.context, self.manager,), ILocalPortletAssignmentManager)
+        return assignable.getBlacklistStatus(GROUP_CATEGORY)
+    
+    def content_type_blacklist_status(self):
+        assignable = getMultiAdapter((self.context, self.manager,), ILocalPortletAssignmentManager)
+        return assignable.getBlacklistStatus(CONTENT_TYPE_CATEGORY)
         
 class ManagePortletAssignments(BrowserView):
     """Utility views for managing portlets for a particular column

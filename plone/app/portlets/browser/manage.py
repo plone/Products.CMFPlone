@@ -18,9 +18,11 @@ from plone.app.portlets.portlets.login import LoginPortletAssignment
 from plone.app.portlets.storage import PortletAssignmentMapping
 
 from plone.app.portlets.browser.interfaces import IManagePortletsView
+from plone.app.portlets.browser.interfaces import IManageContextualPortletsView
+from plone.app.portlets.browser.interfaces import IManageCurrentUserPortletsView
 
-class ManagePortlets(BrowserView):
-    implements(IManagePortletsView)
+class ManageContextualPortlets(BrowserView):
+    implements(IManageContextualPortletsView)
         
     # IManagePortletsView implementation
     
@@ -85,7 +87,7 @@ class ManagePortlets(BrowserView):
         self.context.request.response.redirect(self.context.absolute_url() + '/@@manage-portlets')
 
 class ManageCurrentUserPortlets(BrowserView):
-    implements(IManagePortletsView)
+    implements(IManageCurrentUserPortletsView)
         
     # IManagePortletsView implementation
     
