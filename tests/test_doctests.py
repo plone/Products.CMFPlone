@@ -8,12 +8,10 @@ if __name__ == '__main__':
     execfile(os.path.join(sys.path[0], 'framework.py'))
 
 from unittest import TestSuite
-from zope.testing.doctestunit import DocTestSuite
-from Testing.ZopeTestCase import FunctionalDocFileSuite
 from Testing.ZopeTestCase import ZopeDocTestSuite
 from Products.CMFPlone.tests import PloneTestCase
 from Products.PloneTestCase.layer import ZCMLLayer
-import Products.PloneTestCase.setup as setup
+from Products.PloneTestCase import setup
 
 
 def test_suite():
@@ -26,7 +24,7 @@ def test_suite():
                          test_class=PloneTestCase.FunctionalTestCase),
         ZopeDocTestSuite('Products.CMFPlone.CalendarTool',
                          test_class=PloneTestCase.FunctionalTestCase),
-        DocTestSuite('Products.CMFPlone.utils'),
+        ZopeDocTestSuite('Products.CMFPlone.utils'),
         )
 
     if setup.USELAYER:
