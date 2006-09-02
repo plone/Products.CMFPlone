@@ -26,10 +26,10 @@
       class=".manage.ManageContextualPortlets"
       permission="plone.app.portlets.ManagePortlets"
       >
-
+      
       <browser:page
         name="manage-portlets"
-        template="manage.pt"
+        template="templates/manage-contextual.pt"
         />
       
       <browser:page
@@ -44,7 +44,7 @@
       for="Products.CMFCore.interfaces.ISiteRoot"
       class=".manage.ManageCurrentUserPortlets"
       name="manage-my-portlets"
-      template="myportlets.pt"
+      template="templates/manage-currentuser.pt"
       permission="plone.app.portlets.ManageOwnPortlets"
       />
     

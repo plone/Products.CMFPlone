@@ -1,0 +1,37 @@
+<div>
+  
+  <strong>Portlets assigned here</strong>
+  
+  <tal:block repeat="portlet view/portlets">
+    
+      <hr />
+      
+      <div>
+        <a tal:attributes="href portlet/editview"
+           tal:content="portlet/title" />
+      </div>
+      <div>
+        <a tal:attributes="href portlet/up_url">Up</a>
+        <a tal:attributes="href portlet/down_url">Down</a>
+        <a tal:attributes="href portlet/delete_url">Delete</a>
+      </div>
+      
+      <div tal:replace="structure portlet/html" />
+    
+  </tal:block>
+  
+  <hr />
+
+  <strong>Filtering</strong>
+
+  <hr />
+  
+  <strong>Add</strong>
+  
+  <div tal:repeat="portlet view/addable_portlets">
+    <a tal:attributes="href portlet/addview;
+                       title portlet/description"
+       tal:content="portlet/title" />
+  </div>
+  
+</div>

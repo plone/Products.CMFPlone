@@ -47,7 +47,7 @@ class EditPortletManagerRenderer(Explicit):
         self.manager = manager # part of interface
         self.context = context
         self.request = request
-        self.template = ZopeTwoPageTemplateFile('editmanager.pt')
+        self.template = ZopeTwoPageTemplateFile('templates/edit-manager.pt')
         self.__updated = False
         self.__assignments = None
         self.__portlets = None
@@ -124,6 +124,7 @@ class ContextualEditPortletManagerRenderer(EditPortletManagerRenderer):
 
     def __init__(self, context, request, view, manager):
         EditPortletManagerRenderer.__init__(self, context, request, view, manager)
+        self.template = ZopeTwoPageTemplateFile('templates/edit-manager-contextual.pt')
     
     def context_blacklist_status(self):
         assignable = getMultiAdapter((self.context, self.manager,), ILocalPortletAssignmentManager)
