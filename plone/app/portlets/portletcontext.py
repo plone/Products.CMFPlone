@@ -52,7 +52,10 @@ class ContentContext(object):
         try:
             memberId = member.getUserId()
         except AttributeError:
-            memberId = member.getId()
+            try:
+                memberId = member.getUserName()
+            except AttributeError:
+                memberId = member.getId()
 
         if not memberId:
             return None
@@ -77,7 +80,7 @@ class ContentContext(object):
             if type(group) not in StringTypes:
                 return ()
                 
-        return groups
+        return sorted(groups)
         
     def _getContentType(self):
         typeInfo = getattr(aq_base(self.context), 'getTypeInfo', None)

@@ -106,7 +106,10 @@ class CurrentUserAssignmentMapping(SimpleItem):
         try:
             memberId = member.getUserId()
         except AttributeError:
-            memberId = member.getId()
+            try:
+                memberId = member.getUserName()
+            except AttributeError:
+                memberId = member.getId()
 
         if not memberId:
             raise AttributeError, "Cannot find user id"
