@@ -33,7 +33,7 @@
       
     <class class=".storage.PortletAssignmentMapping">
       <require 
-        permission="zope.View"
+        permission="zope2.View"
         interface="zope.app.container.interfaces.IReadContainer"
         />
       <require

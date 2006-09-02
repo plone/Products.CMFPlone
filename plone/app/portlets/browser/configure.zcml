@@ -36,7 +36,12 @@
         name="convert-legacy-portlets"
         attribute="convert_legacy_portlets"
         />
-        
+  
+      <browser:page
+        name="set-portlet-blacklist-status"
+        attribute="set_blacklist_status"
+        />
+    
     </browser:pages>
   
     

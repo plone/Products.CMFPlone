@@ -1,5 +1,4 @@
-<configure xmlns="http://namespaces.zope.org/zope"
-           i18n_domain="contentratings">
+<configure xmlns="http://namespaces.zope.org/zope">
 
   <!-- Note: These permissions are also set up in the rolemap.xml GenericSetup
     importer in CMFPlone.

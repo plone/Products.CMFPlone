@@ -5,7 +5,7 @@
 
     <class class=".classic.ClassicPortletAssignment">
       <require 
-        permission="zope.View"
+        permission="zope2.View"
         interface=".classic.IClassicPortlet"
         />
     </class>
@@ -32,7 +32,7 @@
     
     <class class=".login.LoginPortletAssignment">
       <require 
-        permission="zope.View"
+        permission="zope2.View"
         interface=".login.ILoginPortlet"
         />
     </class>

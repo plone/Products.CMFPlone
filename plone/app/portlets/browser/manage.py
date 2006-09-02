@@ -9,8 +9,12 @@ from Products.CMFCore.utils import getToolByName
 
 from plone.portlets.interfaces import IPortletManager
 from plone.portlets.interfaces import IPortletAssignmentMapping
-from plone.portlets.constants import USER_CATEGORY
+from plone.portlets.interfaces import ILocalPortletAssignmentManager
 
+from plone.portlets.constants import USER_CATEGORY
+from plone.portlets.constants import GROUP_CATEGORY
+from plone.portlets.constants import CONTENT_TYPE_CATEGORY
+from plone.portlets.constants import CONTEXT_CATEGORY
 
 from plone.app.portlets.portlets.classic import ClassicPortletAssignment
 from plone.app.portlets.portlets.login import LoginPortletAssignment
@@ -42,6 +46,27 @@ class ManageContextualPortlets(BrowserView):
         
         return left_slots or right_slots
 
+    # view @@set-portlet-blacklist-status
+    def set_blacklist_status(self, manager, user_status, group_status, content_type_status, context_status):
+        portletManager = getUtility(IPortletManager, name=manager)
+        assignable = getMultiAdapter((self.context, portletManager,), ILocalPortletAssignmentManager)
+        
+        def int2status(status):
+            if status == 0:
+                return None
+            elif status > 0:
+                return True
+            else:
+                return False
+        
+        assignable.setBlacklistStatus(USER_CATEGORY, int2status(user_status))
+        assignable.setBlacklistStatus(GROUP_CATEGORY, int2status(group_status))
+        assignable.setBlacklistStatus(CONTENT_TYPE_CATEGORY, int2status(content_type_status))
+        assignable.setBlacklistStatus(CONTEXT_CATEGORY, int2status(context_status))
+        
+        baseUrl = str(getMultiAdapter((self.context, self.request), name='absolute_url'))
+        self.request.response.redirect(baseUrl + '/@@manage-portlets')
+        return ''
     
     # view @@convert-legacy-portlets
     

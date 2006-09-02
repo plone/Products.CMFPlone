@@ -126,6 +126,13 @@ class ContextualEditPortletManagerRenderer(EditPortletManagerRenderer):
         EditPortletManagerRenderer.__init__(self, context, request, view, manager)
         self.template = ZopeTwoPageTemplateFile('templates/edit-manager-contextual.pt')
     
+    def blacklist_status_action(self):
+        baseUrl = str(getMultiAdapter((self.context, self.request), name='absolute_url'))
+        return baseUrl + '/@@set-portlet-blacklist-status'
+    
+    def manager_name(self):
+        return self.manager.__name__
+    
     def context_blacklist_status(self):
         assignable = getMultiAdapter((self.context, self.manager,), ILocalPortletAssignmentManager)
         return assignable.getBlacklistStatus(CONTEXT_CATEGORY)
