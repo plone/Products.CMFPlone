@@ -598,12 +598,16 @@ def scale_image(image_file, max_size=MEMBER_IMAGE_SCALE,
     """Scales an image down to at most max_size preserving aspect ratio
     from an input file
 
+        >>> import Products.CMFPlone
+        >>> import os
+        >>> from StringIO import StringIO
+        >>> from Products.CMFPlone.utils import scale_image
+        >>> from PIL import Image
+
     Let's make a couple test images and see how it works (all are
     100x100), the gif is palletted mode::
 
-        >>> import Products.CMFPlone as plone
-        >>> import os
-        >>> plone_path = os.path.dirname(plone.__file__)
+        >>> plone_path = os.path.dirname(Products.CMFPlone.__file__)
         >>> pjoin = os.path.join
         >>> path = pjoin(plone_path, 'tests', 'images')
         >>> orig_jpg = open(pjoin(path, 'test.jpg'))
