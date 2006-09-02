@@ -84,5 +84,14 @@
       <role name="Manager"/>
       <role name="Owner"/>
     </permission>
+    <permission name="Portlets: Manage portlets"
+                acquire="True">
+      <role name="Manager"/>
+    </permission>
+    <permission name="Portlets: Manage own portlets"
+                acquire="True">
+      <role name="Manager"/>
+      <role name="Member"/>
+    </permission>
   </permissions>
 </rolemap>
