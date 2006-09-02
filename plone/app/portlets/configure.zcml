@@ -31,6 +31,7 @@
       provides="zope.publisher.interfaces.browser.IBrowserPublisher"
       />
       
+    <!-- Set up assignment mapping permissions -->
     <class class=".storage.PortletAssignmentMapping">
       <require 
         permission="zope2.View"
@@ -45,5 +46,15 @@
         attributes="updateOrder"
         />
     </class>
+    
+    <!-- Register the name chooser explicitly - including zope.app.container
+    seems to cause other conflicts with Five and Plone
+     -->
+     
+     <adapter
+      provides="zope.app.container.interfaces.INameChooser"
+      for="plone.portlets.interfaces.IPortletAssignmentMapping"
+      factory="zope.app.container.contained.NameChooser"
+      />
     
 </configure>
