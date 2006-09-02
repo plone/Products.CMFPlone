@@ -1,87 +1,116 @@
-"""Integration tests for portlet contexts.
-
-The application layer (i.e. this package) must provide adapters to 
-IPortletContext so that plone.portlets can find out about things like
-users, groups and context UIDs.
-"""
-
-import unittest
-from Testing.ZopeTestCase import ZopeDocTestSuite
-
 from plone.app.portlets.tests.base import PortletsTestCase
-from plone.app.portlets.tests.utils import optionflags
 
-def test_default_adapter():
-    """Test the default portlet context adapter
+from plone.portlets.interfaces import IPortletContext
+
+from Testing.ZopeTestCase import user_name
+
+class TestBasicContext(PortletsTestCase):
+
+    def testParent(self):
+        ctx = IPortletContext(self.folder)
+        self.failUnless(ctx.getParent() is self.folder.aq_parent)
     
-    >>> from plone.portlets.interfaces import IPortletContext
-    >>> folderContext = IPortletContext(self.folder)
+    def testGlobalsNoGroups(self):
+        ctx = IPortletContext(self.folder)
+        g = ctx.globalPortletCategories()
+        self.assertEquals(len(g), 2)
+        self.assertEquals(g[0], ('content_type', 'Folder'))
+        self.assertEquals(g[1], ('user', user_name))
     
-    On Archetypes objects, the UID is the AT UID. The parent lookup uses 
-    acquisition.
+    def testGlobalsWithSingleGroup(self):
+        
+        group = self.portal.portal_groups.getGroupById('Reviewers')
+        self.setRoles(('Manager',))
+        group.addMember(user_name)
+        self.setRoles(('Member',))
+
+        ctx = IPortletContext(self.folder)
+        g = ctx.globalPortletCategories()
+        self.assertEquals(len(g), 3)
+        self.assertEquals(g[0], ('content_type', 'Folder'))
+        self.assertEquals(g[1], ('user', user_name))
+        self.assertEquals(g[2], ('group', 'Reviewers'))
     
-    >>> folderContext.uid == self.folder.UID()
-    True
-    >>> folderContext.parent is self.folder.aq_parent
-    True
+    def testGlobalsWithMultipleGroup(self):
+        
+        self.setRoles(('Manager',))
+        group = self.portal.portal_groups.getGroupById('Reviewers')
+        group.addMember(user_name)
+        group = self.portal.portal_groups.getGroupById('Administrators')
+        group.addMember(user_name)
+        self.setRoles(('Member',))
+
+        ctx = IPortletContext(self.folder)
+        g = ctx.globalPortletCategories()
+        self.assertEquals(len(g), 4)
+        self.assertEquals(g[0], ('content_type', 'Folder'))
+        self.assertEquals(g[1], ('user', user_name))
+        self.assertEquals(g[2], ('group', 'Administrators'))
+        self.assertEquals(g[3], ('group', 'Reviewers'))
+        
+    def testAnonymous(self):
+        self.logout()
+        ctx = IPortletContext(self.folder)
+        g = ctx.globalPortletCategories()
+        self.assertEquals(len(g), 2)
+        self.assertEquals(g[0], ('content_type', 'Folder'))
+        self.assertEquals(g[1], ('user', 'Anonymous User'))
+
+class TestPortalRootContext(PortletsTestCase):
+
+    def testParent(self):
+        ctx = IPortletContext(self.portal)
+        self.failUnless(ctx.getParent() is None)
     
-    The userId property should return the current user's id.
+    def testGlobalsNoGroups(self):
+        ctx = IPortletContext(self.portal)
+        g = ctx.globalPortletCategories()
+        self.assertEquals(len(g), 2)
+        self.assertEquals(g[0], ('content_type', 'Plone Site'))
+        self.assertEquals(g[1], ('user', user_name))
     
-    >>> from Testing.ZopeTestCase import user_name
-    >>> folderContext.userId == user_name
-    True
+    def testGlobalsWithSingleGroup(self):
+        
+        group = self.portal.portal_groups.getGroupById('Reviewers')
+        self.setRoles(('Manager',))
+        group.addMember(user_name)
+        self.setRoles(('Member',))
+
+        ctx = IPortletContext(self.portal)
+        g = ctx.globalPortletCategories()
+        self.assertEquals(len(g), 3)
+        self.assertEquals(g[0], ('content_type', 'Plone Site'))
+        self.assertEquals(g[1], ('user', user_name))
+        self.assertEquals(g[2], ('group', 'Reviewers'))
     
-    The groupIds property should return a list of group ids.
+    def testGlobalsWithMultipleGroup(self):
+        
+        self.setRoles(('Manager',))
+        group = self.portal.portal_groups.getGroupById('Reviewers')
+        group.addMember(user_name)
+        group = self.portal.portal_groups.getGroupById('Administrators')
+        group.addMember(user_name)
+        self.setRoles(('Member',))
+
+        ctx = IPortletContext(self.portal)
+        g = ctx.globalPortletCategories()
+        self.assertEquals(len(g), 4)
+        self.assertEquals(g[0], ('content_type', 'Plone Site'))
+        self.assertEquals(g[1], ('user', user_name))
+        self.assertEquals(g[2], ('group', 'Administrators'))
+        self.assertEquals(g[3], ('group', 'Reviewers'))
     
-    >>> tuple(folderContext.groupIds)
-    ()
-    
-    >>> group = self.portal.portal_groups.getGroupById('Reviewers')
-    >>> self.setRoles(('Manager',))
-    >>> group.addMember(user_name)
-    >>> self.setRoles(('Member',))
-    >>> tuple(folderContext.groupIds)
-    ('Reviewers',)
-    
-    The context should also work for the anonymous user.
-    
-    >>> self.logout()
-    
-    >>> folderContext.uid == self.folder.UID()
-    True
-    >>> folderContext.parent == self.folder.aq_parent
-    True
-    
-    >>> folderContext.userId == None
-    True
-    >>> folderContext.groupIds
-    ()
-    """
-    
-def test_default_adapter_non_archetypes():
-    """For a type not providing IReferenceable, the path will be used as the
-    UID.
-    
-    >>> from Products.CMFPlone.utils import _createObjectByType
-    >>> obj = _createObjectByType('CMF Folder', self.folder, 'cmffolder')
-    
-    >>> from plone.portlets.interfaces import IPortletContext
-    >>> folderContext = IPortletContext(self.folder.cmffolder)
-    >>> folderContext.uid == '/'.join(self.folder.cmffolder.getPhysicalPath())
-    True
-    """
-    
-def test_portal_root_adapter():
-    """The portal root version of the adapter always has parent = None
-    
-    >>> from plone.portlets.interfaces import IPortletContext
-    >>> portalContext = IPortletContext(self.portal)
-    >>> portalContext.parent == None
-    True
-    """
-    
+    def testAnonymous(self):
+        self.logout()
+        ctx = IPortletContext(self.portal)
+        g = ctx.globalPortletCategories()
+        self.assertEquals(len(g), 2)
+        self.assertEquals(g[0], ('content_type', 'Plone Site'))
+        self.assertEquals(g[1], ('user', 'Anonymous User'))
+        
 def test_suite():
-    return unittest.TestSuite((
-            ZopeDocTestSuite(test_class=PortletsTestCase,
-                             optionflags=optionflags),
-        ))
+    from unittest import TestSuite, makeSuite
+    suite = TestSuite()
+    suite.addTest(makeSuite(TestBasicContext))
+    suite.addTest(makeSuite(TestPortalRootContext))
+    return suite
