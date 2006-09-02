@@ -33,6 +33,7 @@ class TestMigrationTool(PloneTestCase.PloneTestCase):
                     'Migration needs recataloging')
 
     def testForceMigration(self):
+        self.setRoles(['Manager'])
         # Make sure we don't embarrass ourselves again...
         version = '2.0.5'
         while version is not None:
