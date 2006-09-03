@@ -89,10 +89,8 @@ class ClassicPortletAddForm(AddForm):
     form_fields = form.Fields(IClassicPortlet)
 
     def create(self, data):
-        p = ClassicPortletAssignment()
-        p.template = data.get('template', None)
-        p.macro = data.get('macro', None)
-        return p
+        return ClassicPortletAssignment(template=data.get('template', ''),
+                                        macro=data.get('macro', ''))
 
 class ClassicPortletEditForm(EditForm):
     form_fields = form.Fields(IClassicPortlet)

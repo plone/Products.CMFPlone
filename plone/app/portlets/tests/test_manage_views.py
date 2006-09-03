@@ -1,0 +1,20 @@
+from plone.app.portlets.tests.base import PortletsTestCase
+
+class TestManageAssignments(PortletsTestCase):
+    
+    def testMoveUp(self): 
+        self.fail('Test missing')
+
+    def testMoveDown(self): 
+        self.fail('Test missing')
+
+    def testDelete(self): 
+        self.fail('Test missing')
+    
+        
+def test_suite():
+    from unittest import TestSuite, makeSuite
+    suite = TestSuite()
+    suite.addTest(makeSuite(TestAddingView))
+    suite.addTest(makeSuite(TestManageAssignments))
+    return suite

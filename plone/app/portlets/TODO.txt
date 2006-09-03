@@ -4,19 +4,12 @@ plone.app.portlets to-do
 
   Tests
   
-    - Existing tests do not work - they need to be updated for the latest
-      refactoring. This will be fixed ASAP. :)
-  
-    Also test:
-  
-    - login portlet
-    - add views
-    - namespace traversal adapters
+    - manage assignments views (@@move-portlet-up etc)
+    - storage.CurrentUserAssignmentMapping
+    - actual portlet type registrations
+    - traversal namespaces
 
   Infrastructure
-  
-    o Need a custom permission for assign-personal-portlets, assign-group-
-      portlets and so on!
       
     o Add form always redirects to @@manage-portlets (since HTTP_REFERER isn't
         useful)
@@ -46,16 +39,13 @@ plone.app.portlets to-do
 
     o Add dashboard page using portlets.dashboard
         - May need to split dashboard into several columns
+        - Need appropriate edit view
         
     o Need UI for assigning user-, group- and content-type-portlets.
-        - This should be very similar to how contextual portlets work
         - The IManagePortletsView could have a form field selecting which
           user/group/content type to manage, and when reloaded, the columns
           would change - problem is carrying that state across portlet changes.
         
-    o There is no UI yet for blacklisting (stop-acquistion) of context, user,
-      group or content-type portlets
-
   Plone Integration
 
     o Remove/deprecate portlets_fetcher
