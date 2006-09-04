@@ -33,7 +33,7 @@ class TestDateComponentsSupport(PloneTestCase.PloneTestCase):
         max_year = site_properties.getProperty('calendar_future_years_available', 5) + this_year
 
         data = [
-            {'selected': None, 'id': '----', 'value': '0000'}
+            {'selected': None, 'id': '--', 'value': '0000'}
         ]
 
         for y in range(min_year, max_year+1):
@@ -48,7 +48,7 @@ class TestDateComponentsSupport(PloneTestCase.PloneTestCase):
 
     def testMonths(self):
         data = [
-            {'selected': None, 'id': '----',      'value': '00'},
+            {'selected': None, 'id': '--',      'value': '00'},
             {'selected': None, 'id': 'January',   'value': '01'},
             {'selected': None, 'id': 'February',  'value': '02'},
             {'selected': None, 'id': 'March',     'value': '03'},
@@ -69,7 +69,7 @@ class TestDateComponentsSupport(PloneTestCase.PloneTestCase):
 
     def testDays(self):
         data = [
-            {'selected': None, 'id': '----', 'value': '00'},
+            {'selected': None, 'id': '--', 'value': '00'},
             {'selected': 1,    'id': 1,      'value': '01'},
             {'selected': None, 'id': 2,      'value': '02'},
             {'selected': None, 'id': 3,      'value': '03'},
@@ -109,7 +109,7 @@ class TestDateComponentsSupport(PloneTestCase.PloneTestCase):
 
     def testHours(self):
         data = [
-            {'selected': None, 'id': '----', 'value': '00'},
+            {'selected': None, 'id': '--', 'value': '00'},
             {'selected': None, 'id': '00',   'value': '00'},
             {'selected': None, 'id': '01',   'value': '01'},
             {'selected': None, 'id': '02',   'value': '02'},
@@ -142,7 +142,7 @@ class TestDateComponentsSupport(PloneTestCase.PloneTestCase):
 
     def testMinutes(self):
         data = [
-            {'selected': None, 'id': '----', 'value': '00'},
+            {'selected': None, 'id': '--', 'value': '00'},
             {'selected': None, 'id': '00',   'value': '00'},
             {'selected': None, 'id': '05',   'value': '05'},
             {'selected': None, 'id': '10',   'value': '10'},
@@ -187,7 +187,7 @@ class TestDateComponentsSupportDefault(PloneTestCase.PloneTestCase):
         max_year = site_properties.getProperty('calendar_future_years_available', 5) + this_year
 
         data = [
-            {'selected': None, 'id': '----', 'value': '0000'}
+            {'selected': None, 'id': '--', 'value': '0000'}
         ]
 
         for y in range(min_year, max_year+1):
@@ -202,7 +202,7 @@ class TestDateComponentsSupportDefault(PloneTestCase.PloneTestCase):
 
     def testMonths(self):
         data = [
-            {'selected': 1,    'id': '----',      'value': '00'},
+            {'selected': 1,    'id': '--',      'value': '00'},
             {'selected': None, 'id': 'January',   'value': '01'},
             {'selected': None, 'id': 'February',  'value': '02'},
             {'selected': None, 'id': 'March',     'value': '03'},
@@ -223,7 +223,7 @@ class TestDateComponentsSupportDefault(PloneTestCase.PloneTestCase):
 
     def testDays(self):
         data = [
-            {'selected': 1,    'id': '----', 'value': '00'},
+            {'selected': 1,    'id': '--', 'value': '00'},
             {'selected': None, 'id': 1,      'value': '01'},
             {'selected': None, 'id': 2,      'value': '02'},
             {'selected': None, 'id': 3,      'value': '03'},
@@ -263,7 +263,7 @@ class TestDateComponentsSupportDefault(PloneTestCase.PloneTestCase):
 
     def testHours(self):
         data = [
-            {'selected': 1,    'id': '----', 'value': '00'},
+            {'selected': 1,    'id': '--', 'value': '00'},
             {'selected': None, 'id': '00',   'value': '00'},
             {'selected': None, 'id': '01',   'value': '01'},
             {'selected': None, 'id': '02',   'value': '02'},
@@ -296,7 +296,7 @@ class TestDateComponentsSupportDefault(PloneTestCase.PloneTestCase):
 
     def testMinutes(self):
         data = [
-            {'selected': 1,    'id': '----', 'value': '00'},
+            {'selected': 1,    'id': '--', 'value': '00'},
             {'selected': None, 'id': '00',   'value': '00'},
             {'selected': None, 'id': '05',   'value': '05'},
             {'selected': None, 'id': '10',   'value': '10'},
@@ -332,7 +332,7 @@ class TestDateComponentsSupportAMPM(PloneTestCase.PloneTestCase):
 
     def testHours(self):
         data = [
-            {'selected': None, 'id': '----', 'value': '12'},
+            {'selected': None, 'id': '--', 'value': '12'},
             {'selected': None, 'id': '12',   'value': '12'},
             {'selected': None, 'id': '01',   'value': '01'},
             {'selected': None, 'id': '02',   'value': '02'},
@@ -356,7 +356,7 @@ class TestDateComponentsSupportAMPM(PloneTestCase.PloneTestCase):
         d = self.portal.date_components_support(d, use_ampm=1)
 
         data = [
-            {'selected': None, 'id': '----', 'value': 'AM'},
+            {'selected': None, 'id': '--', 'value': 'AM'},
             {'selected': 1,    'id': 'AM',   'value': 'AM'},
             {'selected': None, 'id': 'PM',   'value': 'PM'},
         ]
@@ -367,7 +367,7 @@ class TestDateComponentsSupportAMPM(PloneTestCase.PloneTestCase):
 
     def testPM(self):
         data = [
-            {'selected': None, 'id': '----', 'value': 'AM'},
+            {'selected': None, 'id': '--', 'value': 'AM'},
             {'selected': None, 'id': 'AM',   'value': 'AM'},
             {'selected': 1,    'id': 'PM',   'value': 'PM'},
         ]
@@ -388,7 +388,7 @@ class TestDateComponentsSupportAMPMDefault(PloneTestCase.PloneTestCase):
 
     def testHours(self):
         data = [
-            {'selected': 1,    'id': '----', 'value': '12'},
+            {'selected': 1,    'id': '--', 'value': '12'},
             {'selected': None, 'id': '12',   'value': '12'},
             {'selected': None, 'id': '01',   'value': '01'},
             {'selected': None, 'id': '02',   'value': '02'},
@@ -409,7 +409,7 @@ class TestDateComponentsSupportAMPMDefault(PloneTestCase.PloneTestCase):
 
     def testAMPM(self):
         data = [
-            {'selected': 1,    'id': '----', 'value': 'AM'},
+            {'selected': 1,    'id': '--', 'value': 'AM'},
             {'selected': None, 'id': 'AM',   'value': 'AM'},
             {'selected': None, 'id': 'PM',   'value': 'PM'},
         ]

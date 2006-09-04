@@ -33,12 +33,10 @@ from Products.CMFPlone.FactoryTool import FactoryTool, TempFolder
 from Products.CMFPlone.GroupDataTool import GroupDataTool
 from Products.CMFPlone.GroupsTool import GroupsTool
 from Products.CMFPlone.InterfaceTool import InterfaceTool
-from Products.CMFPlone.LargePloneFolder import LargePloneFolder
 from Products.CMFPlone.MemberDataTool import MemberDataTool
 from Products.CMFPlone.MembershipTool import MembershipTool
 from Products.CMFPlone.MetadataTool import MetadataTool
 from Products.CMFPlone.MigrationTool import MigrationTool
-from Products.CMFPlone.PloneContent import PloneContent
 from Products.CMFPlone.PloneControlPanel import PloneControlPanel, PloneConfiglet
 from Products.CMFPlone.PloneFolder import OrderedContainer, BasePloneFolder, PloneFolder
 from Products.CMFPlone.PloneTool import PloneTool
@@ -306,12 +304,10 @@ testClasses = [
     (GroupDataTool, ()),
     (GroupsTool, ()),
     (InterfaceTool, ()),
-    (LargePloneFolder, ()),
     (MemberDataTool, ()),
     (MembershipTool, ()),
     (MetadataTool, ()),
     (MigrationTool, ()),
-    (PloneContent, ()),
     (PloneControlPanel, ()), (PloneConfiglet, ()),
     (OrderedContainer, ()), (BasePloneFolder, ()), (PloneFolder, ()),
     (PloneTool, ()),

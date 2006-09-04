@@ -1,4 +1,4 @@
-## Script (Python) "utranslate"
+## Script (Python) "utranslate (alias for translate)"
 ##bind container=container
 ##bind context=context
 ##bind namespace=
@@ -26,6 +26,9 @@ if not value and default is None:
 
     for k, v in mapping.items():
         value = value.replace('${%s}' % k, v)
+
+if escape_for_js:
+    value = value.replace("'", "\\'")
 
 return value
 

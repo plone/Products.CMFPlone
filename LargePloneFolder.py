@@ -4,6 +4,7 @@ from Globals import InitializeClass
 from PloneFolder import BasePloneFolder, ReplaceableWrapper
 from PloneFolder import factory_type_information as PloneFolder_fti
 from Products.BTreeFolder2.BTreeFolder2 import BTreeFolder2Base
+from Products.CMFPlone.utils import log_deprecated
 
 # Pure laziness
 factory_type_information={}
@@ -20,8 +21,10 @@ class LargePloneFolder(BTreeFolder2Base, BasePloneFolder):
     # BTreeFolder2Base has no __implements__
     __implements__ = BasePloneFolder.__implements__
 
-
     def __init__(self, id, title=''):
+        # BBB To be removed in Plone 3.5
+        log_deprecated("LargePloneFolder is deprecated and will be removed in "
+                       "Plone 3.5. Please use ATBTreeFolder from ATCT instead.")
         BTreeFolder2Base.__init__(self, id)
         BasePloneFolder.__init__(self, id, title)
         self.id=id
@@ -60,6 +63,10 @@ InitializeClass(LargePloneFolder)
 
 def addLargePloneFolder(self, id, title='', description='', REQUEST=None):
     """ add a BTree-backed Plone Folder """
+    # BBB To be removed in Plone 3.5
+    log_deprecated("LargePloneFolder is deprecated and will be removed in "
+                   "Plone 3.5. Please use ATBTreeFolder from ATCT instead.")
+
     obj = LargePloneFolder(id, title=title)
     obj.setDescription(description)
     self._setObject(id, obj)

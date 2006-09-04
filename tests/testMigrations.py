@@ -15,6 +15,7 @@ from Products.CMFCore.interfaces import IActionCategory
 from Products.CMFCore.interfaces import IActionInfo
 from Products.CMFPlone.PloneTool import AllowSendto
 from Products.CMFPlone.utils import _createObjectByType
+from Products.CMFPlone.UnicodeSplitter import Splitter, CaseNormalizer
 
 from Products.CMFPlone.migrations.v2_1.final_two11 import reindexPathIndex
 from Products.CMFPlone.migrations.v2_1.two11_two12 import removeCMFTopicSkinLayer
@@ -40,7 +41,19 @@ from Products.CMFPlone.migrations.v2_5.betas import installPortalSetup
 from Products.CMFPlone.migrations.v2_5.betas import simplifyActions
 from Products.CMFPlone.migrations.v2_5.betas import migrateCSSRegExpression
 
+from Products.CMFPlone.migrations.v2_5.final_two51 import removePloneCssFromRR
+from Products.CMFPlone.migrations.v2_5.final_two51 import addEventRegistrationJS
+from Products.CMFPlone.migrations.v2_5.final_two51 import fixupPloneLexicon
+
+from Products.CMFPlone.migrations.v3_0.alphas import enableZope3Site
+
+from zope.app.component.hooks import clearSite
+from zope.app.component.interfaces import ISite
+from zope.component import getGlobalSiteManager
+from zope.component import getSiteManager
+
 from Products.CMFDynamicViewFTI.migrate import migrateFTI
+from Products.Five.component import disableSite
 
 import types
 
@@ -818,6 +831,141 @@ class TestMigrations_v2_5(MigrationTest):
         migrateCSSRegExpression(self.portal, [])
 
 
+class TestMigrations_v2_5_1(MigrationTest):
+
+    def afterSetUp(self):
+        self.actions = self.portal.portal_actions
+        self.memberdata = self.portal.portal_memberdata
+        self.catalog = self.portal.portal_catalog
+        self.skins = self.portal.portal_skins
+        self.types = self.portal.portal_types
+        self.workflow = self.portal.portal_workflow
+        self.css = self.portal.portal_css
+
+    def testRemovePloneCssFromRR(self):
+        # Check to ensure that plone.css gets removed from portal_css
+        self.css.registerStylesheet('plone.css', media='all')
+        self.failUnless('plone.css' in self.css.getResourceIds())
+        removePloneCssFromRR(self.portal, [])
+        self.failIf('plone.css' in self.css.getResourceIds())
+
+    def testRemovePloneCssFromRRTwice(self):
+        # Should not fail if performed twice
+        self.css.registerStylesheet('plone.css', media='all')
+        self.failUnless('plone.css' in self.css.getResourceIds())
+        removePloneCssFromRR(self.portal, [])
+        removePloneCssFromRR(self.portal, [])
+        self.failIf('plone.css' in self.css.getResourceIds())
+
+    def testRemovePloneCssFromRRNoCSS(self):
+        # Should not fail if the stylesheet is missing
+        self.failIf('plone.css' in self.css.getResourceIds())
+        removePloneCssFromRR(self.portal, [])
+
+    def testRemovePloneCssFromRRNoTool(self):
+        # Should not fail if the tool is missing
+        self.portal._delObject('portal_css')
+        removePloneCssFromRR(self.portal, [])
+
+    def testAddEventRegistrationJS(self):
+        jsreg = self.portal.portal_javascripts
+        # unregister first
+        jsreg.unregisterResource('event-registration.js')
+        script_ids = jsreg.getResourceIds()
+        self.failIf('event-registration.js' in script_ids)
+        # migrate and test again
+        addEventRegistrationJS(self.portal, [])
+        script_ids = jsreg.getResourceIds()
+        self.failUnless('event-registration.js' in script_ids)
+        self.assertEqual(jsreg.getResourcePosition('event-registration.js'), 0)
+
+    def testAddEventRegistrationJSTwice(self):
+        # Should not break if migrated again
+        jsreg = self.portal.portal_javascripts
+        # unregister first
+        jsreg.unregisterResource('event-registration.js')
+        script_ids = jsreg.getResourceIds()
+        self.failIf('event-registration.js' in script_ids)
+        # migrate and test again
+        addEventRegistrationJS(self.portal, [])
+        addEventRegistrationJS(self.portal, [])
+        script_ids = jsreg.getResourceIds()
+        self.failUnless('event-registration.js' in script_ids)
+        self.assertEqual(jsreg.getResourcePosition('event-registration.js'), 0)
+
+    def testAddEventRegistrationJSNoTool(self):
+        # Should not break if the tool is missing
+        self.portal._delObject('portal_javascripts')
+        addEventRegistrationJS(self.portal, [])
+
+    def testFixupPloneLexicon(self):
+        # Should update the plone_lexicon pipeline
+        lexicon = self.portal.portal_catalog.plone_lexicon
+        lexicon._pipeline = (object(), object())
+        fixupPloneLexicon(self.portal, [])
+        self.failUnless(isinstance(lexicon._pipeline[0], Splitter))
+        self.failUnless(isinstance(lexicon._pipeline[1], CaseNormalizer))
+
+    def testFixupPloneLexiconTwice(self):
+        # Should not break if migrated again
+        lexicon = self.portal.portal_catalog.plone_lexicon
+        lexicon._pipeline = (object(), object())
+        fixupPloneLexicon(self.portal, [])
+        fixupPloneLexicon(self.portal, [])
+        self.failUnless(isinstance(lexicon._pipeline[0], Splitter))
+        self.failUnless(isinstance(lexicon._pipeline[1], CaseNormalizer))
+
+    def testFixupPloneLexiconNoLexicon(self):
+        # Should not break if plone_lexicon is missing
+        self.portal.portal_catalog._delObject('plone_lexicon')
+        fixupPloneLexicon(self.portal, [])
+
+    def testFixupPloneLexiconNoTool(self):
+        # Should not break if portal_catalog is missing
+        self.portal._delObject('portal_catalog')
+        fixupPloneLexicon(self.portal, [])
+
+
+class TestMigrations_v3_0(MigrationTest):
+
+    def afterSetUp(self):
+        self.actions = self.portal.portal_actions
+        self.skins = self.portal.portal_skins
+        self.types = self.portal.portal_types
+        self.workflow = self.portal.portal_workflow
+
+    def testEnableZope3Site(self):
+        # First we remove the site and site manager
+        disableSite(self.portal)
+        clearSite(self.portal)
+        self.portal.setSiteManager(None)
+
+        # Then run the migration step
+        enableZope3Site(self.portal, [])
+        
+        # And see if we have an ISite with a local site manager
+        self.failUnless(ISite.providedBy(self.portal))
+        gsm = getGlobalSiteManager()
+        sm = getSiteManager(self.portal)
+        self.failIf(gsm is sm)
+
+    def testEnableZope3SiteTwice(self):
+        # First we remove the site and site manager
+        disableSite(self.portal)
+        clearSite(self.portal)
+        self.portal.setSiteManager(None)
+
+        # Then run the migration step
+        enableZope3Site(self.portal, [])
+        enableZope3Site(self.portal, [])
+
+        # And see if we have an ISite with a local site manager
+        self.failUnless(ISite.providedBy(self.portal))
+        gsm = getGlobalSiteManager()
+        sm = getSiteManager(self.portal)
+        self.failIf(gsm is sm)
+
+
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
@@ -825,6 +973,8 @@ def test_suite():
     suite.addTest(makeSuite(TestMigrations_v2_1_2))
     suite.addTest(makeSuite(TestMigrations_v2_1_3))
     suite.addTest(makeSuite(TestMigrations_v2_5))
+    suite.addTest(makeSuite(TestMigrations_v2_5_1))
+    suite.addTest(makeSuite(TestMigrations_v3_0))
 
     return suite
 

@@ -39,6 +39,7 @@ class TestMigrationTool(PloneTestCase.PloneTestCase):
         self.assertEqual(msg[0], expect)
 
     def testForceMigration(self):
+        self.setRoles(['Manager'])
         # Make sure we don't embarrass ourselves again...
         version = '2.1'
         # XXX This fails because when migrating old sites we still have

@@ -2,6 +2,9 @@
 CMFPlone setup handlers.
 """
 
+from zope.component.globalregistry import base
+from zope.component.persistentregistry import PersistentComponents
+
 from Acquisition import aq_base, aq_get
 from Products.StandardCacheManagers.AcceleratedHTTPCacheManager import \
      AcceleratedHTTPCacheManager
@@ -13,6 +16,8 @@ from Products.CMFCore import permissions as cmfpermissions
 from Products.CMFPlone.utils import _createObjectByType
 from Products.CMFPlone import migrations as migs
 from Products.CMFPlone.Portal import member_indexhtml
+from Products.Five.component import enableSite
+from Products.Five.component.interfaces import IObjectManagerSite
 
 class PloneGenerator:
 
@@ -41,8 +46,6 @@ class PloneGenerator:
         qi.notifyInstalled('CMFFormController', locked=1)
         
     def customizePortalOptions(self, p):
-        p.manage_permission( cmfpermissions.ListFolderContents, \
-                             ('Manager', 'Member', 'Owner',), acquire=1 )
         stool = getToolByName(p, 'portal_skins')
         stool.allow_any=0 # Skin changing for users is turned off by default
 
@@ -197,6 +200,16 @@ class PloneGenerator:
             # Reset site syndication to default state
             syn.editProperties(isAllowed=enabled)
 
+    def enableSite(self, portal):
+        """
+        Make the portal a Zope3 site and create a site manager.
+        """
+        enableSite(portal, iface=IObjectManagerSite)
+
+        components = PersistentComponents()
+        components.__bases__ = (base,)
+        portal.setSiteManager(components)
+
     def assignTitles(self, portal, out):
         titles={'portal_actions':'Contains custom tabs and buttons',
          'portal_membership':'Handles membership policies',
@@ -241,6 +254,7 @@ def importVarious(context):
     """
     site = context.getSite()
     gen = PloneGenerator()
+    gen.enableSite(site)
     gen.installProducts(site)
     gen.customizePortalOptions(site)
     gen.addCacheHandlers(site)

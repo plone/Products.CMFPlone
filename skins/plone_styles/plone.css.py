@@ -7,10 +7,11 @@
 ##parameters=
 ##title=Rendered version of the Plone CSS for use from external tools
 ##
+
 portal_css = context.portal_css
 stylesheets = portal_css.getEvaluatedResources(context);
 current_skin = context.getCurrentSkinName()
- 
+
 for stylesheet in stylesheets:
   if stylesheet.getRendering() in ['import','inline']:
     print portal_css.restrictedTraverse('%s/%s' % (current_skin, stylesheet.getId()))

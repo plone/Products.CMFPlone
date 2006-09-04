@@ -24,7 +24,7 @@
                      contentsMethod python:test(here.portal_type=='Topic', here.queryCatalog, here.getFolderContents);
                      batch batch|python:contentsMethod(contentFilter,batch=True, b_size=b_size);
                      full_view full_view|request/full_view|python:True;">
-      
+
       <form name="folderContentsForm"
             method="post"
             action="folder_object"
@@ -38,7 +38,7 @@
           <span tal:content="python: view_title and here.utranslate(view_title) or putils.pretty_title_or_id(here)" tal:omit-tag="">Directory Id</span>
         </h1>
         <tal:full_view condition="full_view">
-    
+
             <a href=""
                class="link-parent"
                tal:define="parent_url python:here.navigationParent(here, fallThroughDefaultPage = False, checkPermissions = ['List folder contents'])"
@@ -123,7 +123,7 @@
           </metal:add_button>
           </div>
 
-        <div class="visualClear"><!-- --></div>
+        <div class="visualClear" id="clear-space-before-navigation"><!-- --></div>
 
         <!-- Navigation -->
         <div metal:use-macro="here/batch_macros/macros/navigation" />
@@ -184,7 +184,7 @@
                                    item_type            item/portal_type;
                                    item_size            item/getObjSize;
                                    item_modified        item/ModificationDate;
-                                   item_type_class      python:'contenttype-' + normalizeString(item_type);
+                                   item_type_class      python:'visualIcon contenttype-' + normalizeString(item_type);
                                    item_wf_state        item/review_state|python: wtool.getInfoFor(item, 'review_state', '');
                                    item_state_title     python:wtool.getTitleForStateOnType(item_wf_state, item_type);
                                    item_wf_state_class  python:'state-' + normalizeString(item_wf_state);
@@ -193,7 +193,7 @@
                                    item_rel_url         python:hasGetUrl and item.getURL(relative=1) or getRelativeContentURL(item);
                                    browserDefaultResult here/browserDefault;
                                    isBrowserDefault     python:len(browserDefaultResult[1]) == 1 and item.id == here.browserDefault()[1][0];
-                                   item_folderish item/@@plone/isStructuralFolder|item/isPrincipiaFolderish|nothing"
+                                   item_folderish       item/is_folderish|nothing"
                        tal:attributes="class python:test(oddrow, 'draggable even', 'draggable odd');
                                        id item_id;" >
 
@@ -202,7 +202,7 @@
                             * Create title_or_id metadata in the catalog (why not just use item.Title or item.getId? (alecm))
                        </tal:comment>
 
-                       <td>
+                       <td class="notDraggable">
                            <input type="checkbox"
                                   class="noborder"
                                   name="paths:list" id="#"
@@ -230,7 +230,7 @@
                             </strong>
                         </a>
                         </span>
-                        
+
                         <span class="state-expired"
                               tal:condition="python:portal.isExpired(item)"
                               i18n:translate="time_expired">expired</span>

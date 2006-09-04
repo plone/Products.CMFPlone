@@ -7,6 +7,7 @@
 import os
 
 from zope.interface import implements
+from zope.interface import Interface
 
 from Products.CMFPlone.interfaces import INonStructuralFolder
 
@@ -70,6 +71,13 @@ class SizedItem(Item):
     def get_size(self):
         return self.size
 
+class FieldStorage(object):
+    def __init__(self, file, filename='testfile', headers=None):
+        self.file = file
+        if headers is None:
+            headers = {}
+        self.headers = headers
+        self.filename = filename
 
 class File(FileUpload):
     '''Dummy upload object
@@ -179,3 +187,9 @@ class ImageComputedProps(Item):
         return getattr(self, '_longdesc', '')
 
     longdesc = ComputedAttribute(get_longdesc, 1)
+
+class IDummyUtility(Interface):
+    pass
+
+class DummyUtility(SimpleItem):
+    implements(IDummyUtility)

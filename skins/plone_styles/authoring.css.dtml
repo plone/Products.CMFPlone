@@ -127,7 +127,7 @@ input.searchButton {
     padding: 0.25em 1em;
 }
 
-.listing a:link {
+.listing a {
     text-decoration: none;
 }
 
@@ -703,8 +703,12 @@ dl.collapsedInlineCollapsible dt.collapsibleHeader {
 tr.dragging td {
     background-color: yellow;
 }
+
 .draggingHook {
     cursor: move;
+}
+
+.notDraggable {
 }
 
 /* </dtml-with> */

@@ -12,43 +12,73 @@ var bugRiddenCrashPronePieceOfJunk = (
 
 // check for W3CDOM compatibility
 var W3CDOM = (!bugRiddenCrashPronePieceOfJunk &&
-               document.getElementsByTagName &&
-               document.createElement);
+               typeof document.getElementsByTagName != 'undefined' &&
+               typeof document.createElement != 'undefined' );
 
 // cross browser function for registering event handlers
-function registerEventListener(elem, event, func) {
-    if (elem.addEventListener) {
+var registerEventListener = undefined;
+
+if (typeof addEvent != 'undefined') {
+    // use Dean Edwards' function if available
+    registerEventListener = function (elem, event, func) {
+        addEvent(elem, event, func);
+        return true;
+    }
+} else if (window.addEventListener) {
+    registerEventListener = function (elem, event, func) {
         elem.addEventListener(event, func, false);
         return true;
-    } else if (elem.attachEvent) {
+    }
+} else if (window.attachEvent) {
+    registerEventListener = function (elem, event, func) {
         var result = elem.attachEvent("on"+event, func);
         return result;
     }
-    // maybe we could implement something with an array
-    return false;
+} else {
+    registerEventListener = function (elem, event, func) {
+        // maybe we could implement something with an array
+        return false;
+    }
 }
 
 // cross browser function for unregistering event handlers
-function unRegisterEventListener(elem, event, func) {
-    if (elem.removeEventListener) {
+var unRegisterEventListener = undefined;
+
+if (typeof removeEvent != 'undefined') {
+    // use Dean Edwards' function if available
+    unRegisterEventListener = function (elem, event, func) {
+        removeEvent(element, event, func);
+        return true;
+    }
+} else if (window.removeEventListener) {
+    unRegisterEventListener = function (elem, event, func) {
         elem.removeEventListener(event, func, false);
         return true;
-    } else if (elem.detachEvent) {
+    }
+} else if (window.detachEvent) {
+    unRegisterEventListener = function (elem, event, func) {
         var result = elem.detachEvent("on"+event, func);
         return result;
     }
-    // maybe we could implement something with an array
-    return false;
+} else {
+    unRegisterEventListener = function (elem, event, func) {
+        // maybe we could implement something with an array
+        return false;
+    }
 }
 
-function registerPloneFunction(func) {
-    // registers a function to fire onload.
-    registerEventListener(window, "load", func);
-}
+var registerPloneFunction = undefined;
 
-function unRegisterPloneFunction(func) {
-    // unregisters a function so it does not fire onload.
-    unRegisterEventListener(window, "load", func);
+if (typeof addDOMLoadEvent != 'undefined') {
+    registerPloneFunction = function (func) {
+        // registers a function to fire ondomload.
+        registerEventListener(window, "domload", func);
+    }
+} else {
+    registerPloneFunction = function (func) {
+        // registers a function to fire onload.
+        registerEventListener(window, "load", func);
+    }
 }
 
 function getContentArea() {

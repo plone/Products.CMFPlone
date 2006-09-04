@@ -15,7 +15,11 @@ import ZTUtils
 
 REQUEST = context.REQUEST
 
-context.acl_users.credentials_cookie_auth.login()
+try:
+    context.acl_users.credentials_cookie_auth.login()
+except AttributeError:
+    # The cookie plugin may not be used, or the site still uses GRUF
+    pass
 
 util = context.plone_utils
 membership_tool=context.portal_membership

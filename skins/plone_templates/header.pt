@@ -84,7 +84,7 @@
           href=""
           title="Author information"
           i18n:attributes="title title_author_info"
-          tal:attributes="href string:${portal_url}/author/${here/Creator}" />
+          tal:attributes="href string:${portal_url}/author/${here/Creator|nothing}" />
     <link rel="contents"
           href=""
           title="Site Map"

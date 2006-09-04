@@ -32,10 +32,15 @@
 
       <metal:headslot define-slot="head_slot" />
       <tal:comment replace="nothing"> A slot where you can insert elements in the header from a template </tal:comment>
-      </metal:headslot>
+    </metal:headslot>
+
+    <metal:styleslot fill-slot="style_slot"> 
+      <tal:comment replace="nothing"> A slot where you can insert CSS in the header from a template </tal:comment> 
+      <metal:styleslot define-slot="style_slot" /> 
+    </metal:styleslot> 
 
     <metal:cssslot fill-slot="css_slot">
-      <tal:comment replace="nothing"> A slot where you can insert CSS in the header from a template </tal:comment>
+      <tal:comment replace="nothing"> This is deprecated, please use style_slot instead. </tal:comment>
       <metal:cssslot define-slot="css_slot" />
     </metal:cssslot>
 
@@ -53,15 +58,15 @@
       <div id="portal-top" i18n:domain="plone">
 
         <div id="portal-header">
-          <a class="hiddenStructure"
-             accesskey="2"
-             tal:attributes="href string:${request/ACTUAL_URL}#documentContent"
-             i18n:translate="label_skiptocontent">Skip to content.</a>
+          <p class="hiddenStructure">
+            <a accesskey="2"
+               tal:attributes="href string:${request/ACTUAL_URL}#documentContent"
+               i18n:translate="label_skiptocontent">Skip to content.</a> |
 
-          <a class="hiddenStructure"
-             accesskey="6"
-             tal:attributes="href string:${request/ACTUAL_URL}#portlet-navigation-tree"
-             i18n:translate="label_skiptonavigation">Skip to navigation</a>
+            <a accesskey="6"
+               tal:attributes="href string:${request/ACTUAL_URL}#portlet-navigation-tree"
+               i18n:translate="label_skiptonavigation">Skip to navigation</a>
+          </p>
 
              <div metal:use-macro="here/global_siteactions/macros/site_actions">
                Site-wide actions (Contact, Sitemap, Help, Style Switcher etc)
@@ -94,7 +99,7 @@
            </div>
       </div>
 
-      <div class="visualClear"><!-- --></div>
+      <div class="visualClear" id="clear-space-before-portal-columns"><!-- --></div>
 
       <tal:comment replace="nothing">
       The wrapper table. It contains the three columns.
@@ -184,7 +189,7 @@
           </div>
           <tal:comment replace="nothing"> End of the right column </tal:comment>
 
-      <div class="visualClear"><!-- --></div>
+      <div class="visualClear" id="clear-space-bottom-portal-columns"><!-- --></div>
 
       </div>
       <tal:comment replace="nothing"> end column wrapper </tal:comment>

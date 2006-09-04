@@ -100,4 +100,9 @@
               title="Workflow Tool">
   Export workflow tool's workflow definitions and supporting scripts.
  </export-step>
+ <export-step id="factorytool"
+              handler="Products.CMFPlone.exportimport.factorytool.exportFactoryTool"
+              title="Portal Factory Tool">
+  Export type registration for the portal factory tool.
+ </export-step>
 </export-steps>

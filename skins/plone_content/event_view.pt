@@ -10,30 +10,54 @@
             Document actions (print, sendto etc)
         </div>
 
-        <h1 tal:content="object_title" class="documentFirstHeading">
+        <div class="vevent">
+
+        <h1 tal:content="object_title" class="documentFirstHeading summary">
             Title or id
         </h1>
 
-        <div class="eventDetails">
+        <div class="eventDetails vcard">
         <table class="vertical listing"
                summary="Event details" i18n:attributes="summary summary_event_details;">
 
             <tbody>
                 <tr>
                     <th i18n:translate="event_what">What</th>
-                    <td tal:content="python:modules['string'].join(here.Subject(), ' ')">Conference</td>
+                    <td tal:content="python:modules['string'].join(here.Subject(), ' ')">
+                        Conference
+                    </td>
                 </tr>
                 <tr>
                     <th i18n:translate="event_when">When</th>
                     <td>
                         <tal:differentday tal:condition="python:not here.start().Date() == here.end().Date()">
-                            <span tal:replace="python:toLocalizedTime(here.start(), long_format=1)">Start Date Time</span>
+                            <abbr class="dtstart"
+                                  tal:attributes="title python:here.start()"
+                                  tal:content="python:here.toLocalizedTime(here.start(), long_format=1)">
+                                Start Date Time
+                            </abbr>
                             <span i18n:translate="event_to">to</span> <br />
-                            <span tal:replace="python:toLocalizedTime(here.end(), long_format=1)">End Date Time</span>
+                            <abbr class="dtend"
+                                  tal:attributes="title python:here.end()"
+                                  tal:content="python:here.toLocalizedTime(here.end(), long_format=1)">
+                                End Date Time
+                            </abbr>
                         </tal:differentday>
 
                         <tal:sameday tal:condition="python:here.start().Date() == here.end().Date()"
                                      tal:define="ampm python:site_properties.getProperty('localLongTimeFormat').find('%p') >= 0">
+                            <abbr class="dtstart"
+                                  style="display: none;"
+                                  tal:attributes="title python:here.start()"
+                                  tal:content="python:here.toLocalizedTime(here.start(), long_format=1)">
+                                Start Date Time
+                            </abbr>
+                            <abbr class="dtend"
+                                  style="display: none;"
+                                  tal:attributes="title python:here.end()"
+                                  tal:content="python:here.toLocalizedTime(here.end(), long_format=1)">
+                                End Date Time
+                            </abbr>
                             <span tal:replace="python:toLocalizedTime(here.start())">Start Date Time</span> <br />
                             <span i18n:translate="event_from">from</span>
                             <span tal:replace="python:test(ampm, here.start().AMPMMinutes(), here.start().TimeMinutes())">Start Time</span>
@@ -45,22 +69,24 @@
                 </tr>
                 <tr tal:condition="here/location">
                     <th i18n:translate="event_where">Where</th>
-                    <td tal:content="here/location">Oslo, Norway</td>
+                    <td class="location" tal:content="here/location">Oslo, Norway</td>
                 </tr>
                 <tr tal:condition="here/contact_name">
                     <th i18n:translate="contact_name">Contact Name</th>
-                    <td tal:content="here/contact_name">John Smith</td>
+                    <td class="fn"
+                        tal:content="here/contact_name">John Smith</td>
                 </tr>
                 <tr tal:define="contact_email here/contact_email"
                     tal:condition="here/contact_email">
                     <th i18n:translate="contact_email">Contact Email</th>
-                    <td>
+                    <td class="email">
                         <a tal:replace="structure python: here.spamProtect(contact_email)" />
                     </td>
                 </tr>
                 <tr tal:condition="here/contact_phone">
                     <th i18n:translate="contact_phone">Contact Phone</th>
-                    <td tal:content="here/contact_phone">555-GET-PLONE</td>
+                    <td class="tel"
+                        tal:content="here/contact_phone">555-GET-PLONE</td>
                 </tr>
                 <tr tal:condition="here/getAttendees|nothing">
                     <th i18n:translate="contact_attendees">Attendees</th>
@@ -74,13 +100,13 @@
                            title="Add this item to your vCal calendar"
                            i18n:attributes="title title_add_to_vcal;">
                             <img tal:replace="structure here/icon_export_vcal.png" src="" alt="" />
-                            <span i18n:translate="label_add_to_vcal">vCal (Windows, Linux)</span></a><br />
+                            <span i18n:translate="label_add_to_vcal">vCal</span></a><br />
                         <a href="#"
                            tal:attributes="href string:$here_url/ics_view"
                            title="Add this item to your iCal calendar"
                            i18n:attributes="title title_add_to_ical;">
                             <img tal:replace="structure here/icon_export_ical.png" src="" alt="" />
-                            <span i18n:translate="label_add_to_ical">iCal (Mac OS X)</span></a>
+                            <span i18n:translate="label_add_to_ical">iCal</span></a>
                     </td>
                 </tr>
             </tbody>
@@ -91,7 +117,7 @@
             Get the byline - contains details about author and modification date.
         </div>
 
-        <p class="documentDescription"
+        <p class="documentDescription description"
            tal:content="here/Description"
            tal:condition="here/Description">
             Description
@@ -102,17 +128,20 @@
         </div>
 
         <p tal:condition="here/event_url|nothing">
-            <a href="event_url"
+            <a class="url"
+               href="event_url"
                tal:attributes="href here/event_url"
                i18n:translate="event_more_information">
                More information about this event&hellip;</a>
         </p>
 
+        </div>
+
         <div metal:use-macro="here/document_relateditems/macros/relatedItems">
             show related items if they exist
         </div>
 
-        <div class="visualClear"><!-- --></div>
+        <div class="visualClear" id="clear-space-after-relatedItems"><!-- --></div>
 
     </tal:main-macro>
 </div>

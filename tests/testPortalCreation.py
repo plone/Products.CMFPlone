@@ -7,20 +7,30 @@ if __name__ == '__main__':
     execfile(os.path.join(sys.path[0], 'framework.py'))
 
 from Products.CMFPlone.tests import PloneTestCase
-
-from Products.CMFCore.permissions import AccessInactivePortalContent
 from Products.CMFPlone.tests import dummy
 
-from Products.PageTemplates.ZopePageTemplate import ZopePageTemplate
+from tempfile import mkstemp
+from zope.app.component.hooks import setSite, clearSite, setHooks
+from zope.app.component.interfaces import ISite
+from zope.component import getGlobalSiteManager
+from zope.component import getSiteManager
+from zope.component import getUtility
+from zope.component import queryUtility
+from zope.component.interfaces import IComponentLookup
+from zope.component.interfaces import IComponentRegistry
+
 from Acquisition import aq_base
 from DateTime import DateTime
-from tempfile import mkstemp
+from OFS.SimpleItem import SimpleItem
 
+from Products.CMFCore.CachingPolicyManager import CachingPolicyManager
+from Products.CMFCore.permissions import AccessInactivePortalContent
+from Products.CMFPlone.UnicodeSplitter import Splitter, CaseNormalizer 
+from Products.PageTemplates.ZopePageTemplate import ZopePageTemplate
 from Products.StandardCacheManagers.AcceleratedHTTPCacheManager import \
      AcceleratedHTTPCacheManager
 from Products.StandardCacheManagers.RAMCacheManager import \
      RAMCacheManager
-from Products.CMFCore.CachingPolicyManager import CachingPolicyManager
 
 
 class TestPortalCreation(PloneTestCase.PloneTestCase):
@@ -40,6 +50,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.skins = self.portal.portal_skins
         self.transforms = self.portal.portal_transforms
         self.javascripts = self.portal.portal_javascripts
+        self.setup = self.portal.portal_setup 
 
     def testPloneSkins(self):
         # Plone skins should have been set up
@@ -678,6 +689,74 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         homeAction = [x for x in actions if x.id == 'index_html'][0]
         self.assertEquals(homeAction.getInfoData()[0]['url'].text, 'string:${globals_view/navigationRootUrl}')
 
+    def testPloneLexicon(self):
+        # Plone lexicon should use new splitter and case normalizer
+        pipeline = self.catalog.plone_lexicon._pipeline
+        self.failUnless(len(pipeline) >= 2)
+        self.failUnless(isinstance(pipeline[0], Splitter))
+        self.failUnless(isinstance(pipeline[1], CaseNormalizer))
+
+    def testMakeSnapshot(self):
+        # GenericSetup snapshot should work
+        self.setRoles(['Manager'])
+        snapshot_id = self.setup._mangleTimestampName('test')
+        self.setup.createSnapshot(snapshot_id)
+
+    def testSiteManagerSetup(self):
+        setHooks()
+        # The portal should be an ISite
+        self.failUnless(ISite.providedBy(self.portal))
+        # There should be a IComponentRegistry
+        comp = IComponentLookup(self.portal)
+        IComponentRegistry.providedBy(comp)
+
+        # Test if we get the right site managers
+        gsm = getGlobalSiteManager()
+        sm = getSiteManager()
+        # Without setting the site we should get the global site manager
+        self.failUnless(sm is gsm)
+
+        # Now we set the site, as it is done in url traversal normally
+        setSite(self.portal)
+        # And should get the local site manager
+        sm = getSiteManager()
+        self.failUnless(sm is comp)
+        # And clean up the site again
+        clearSite()
+
+    def testUtilityRegistration(self):
+        setHooks()
+        gsm = getGlobalSiteManager()
+        global_util = dummy.DummyUtility()
+
+        # Register a global utility and see if we can get it
+        gsm.registerUtility(global_util, dummy.IDummyUtility)
+        getutil = getUtility(dummy.IDummyUtility)
+        self.assertEquals(getutil, global_util)
+
+        # Now we set the site, as it is done in url traversal normally
+        setSite(self.portal)
+        # And register a local utility and see if we can get it
+        sm = getSiteManager()
+        local_util = dummy.DummyUtility()
+
+        sm.registerUtility(local_util, dummy.IDummyUtility)
+        getutil = getUtility(dummy.IDummyUtility)
+        self.assertEquals(getutil, local_util)
+        # And clean up the site again
+        clearSite()
+
+        # Without a site we get the global utility
+        getutil = getUtility(dummy.IDummyUtility)
+        self.assertEquals(getutil, global_util)
+
+        # Clean up again and unregister the utilites
+        gsm.unregisterUtility(provided=dummy.IDummyUtility)
+        sm.unregisterUtility(provided=dummy.IDummyUtility)
+        
+        # Make sure unregistration was successful
+        util = queryUtility(dummy.IDummyUtility)
+        self.failUnless(util is None)
 
 class TestPortalBugs(PloneTestCase.PloneTestCase):
 
@@ -710,7 +789,6 @@ class TestPortalBugs(PloneTestCase.PloneTestCase):
         # got fixed by hazmat.
         members = self.members
         self.assertEqual(aq_base(members).meta_type, 'ATBTreeFolder')
-        #self.assertEqual(members.index_html.meta_type, 'Document')
         self.assertEqual(members.index_html.meta_type, self.mem_index_type)
 
     def testManageBeforeDeleteIsCalledRecursively(self):

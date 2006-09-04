@@ -43,6 +43,11 @@
       <div class="form-label">
         Extension Profiles
       </div>
+      <div class="form-help">
+          You normally don't need to select anything here unless you have 
+          specific reasons and know what you are doing. Leave it blank if you
+          want a default Plone site.
+      </div>
       <select name="extension_ids:list"
               id="extension_ids" multiple="True" size="5">
         <option tal:repeat="info options/extension_profiles"

@@ -215,7 +215,7 @@
                 </div>
             </div>
 
-            <div class="visualClear"><!-- --></div>
+            <div class="visualClear" id="clear-space-before-author"><!-- --></div>
             <br />
 
             <div class="field">
@@ -293,7 +293,7 @@
                 </tal:states>
             </div>
 
-            <div class="visualClear"><!-- --></div>
+            <div class="visualClear" id="clear-space-before-submit"><!-- --></div>
 
             <div class="formControls">
                 <input class="context"

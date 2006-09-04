@@ -1,8 +1,52 @@
 Changelog for Plone
 
-   (name of developer listed in brackets)
+    (name of developer listed in brackets)
 
-Plone 3.0 (unreleased)
+Plone 3.0 - Unreleased
+    
+    - Make the syntool methods for enabling and disabling syndication check
+      for the Manager properties permission on the object.
+      [alecm]
+
+    - Making text/* not render inline for security reasons (Internet Explorer
+      renders these blindly, no matter that they are not text/html), and
+      fixing inline rendering of Office documents and PDFs in the process.
+      [limi]
+
+    - Fix member portrait handling by automatically scaling all incoming
+      images using PIL.  This will throw an IOError on any invalid image and
+      also save some bandwidth and space in the zodb.
+      [alecm]
+      
+    - Added error tolerant version of FasterStringIO to unicodeFallbackPatch.
+      This is monkey patched into the Zope3 tal and pagetemplate modules and
+      replaces the monkey patch found in PlacelessTranslationService so far.
+      [ree, hannosch]
+
+    - Deprecated PloneContent. Use (marker) interfaces instead to get a way to
+      check for a functionality that is common to some types.
+      [hannosch]
+
+    - Deprecated the CMFPlone implementation of LargePloneFolder. Use
+      ATBTreeFolder from ATContentTypes instead.
+      [hannosch]
+
+    - Added unicodeFallbackPatch that allows to use utf-8 encoded strings to be
+      used inside the Zope3 TAL engine.
+      [ree, hannosch]
+
+    - Fixed the 'Unauthorized: You are not allowed to access 'Creator' in this
+      context' error that was raised in the testCookieAuth tests.
+      [hannosch]
+
+    - Using new 'visualIcon' css class to allow much smaller generated.css
+      and RTL.css. When new content types are installed, then generated.css
+      will grow much less then before and RTL.css will not grow at all
+      anymore. The footprint of action icons is also smaller now.
+      [fschulze]
+
+    - The portal object is set up as a Zope3 site with a local site manager.
+      [hannosch]
 
     - Removed CMFPlone.MemberData. This class is never used, and the future
       is with PAS-based objects instead of membership/memberdata tools.
@@ -40,6 +84,215 @@ Plone 3.0 (unreleased)
     - Removed bbb code for MessageIDFactory, queryMultiAdapter, transaction and
       CatalogTool._initIndexes.
       [hannosch]
+
+Plone 2.5.1 - Unreleased
+
+    - Copied '_getSecurity' from Archetypes.utils to avoid a dependency.
+      Plone should not import from Archetypes to minimize coupling.
+      [stefan]
+
+    - Added a Unicode and UTF-8 aware case normalizer to the plone_lexicon
+      pipeline. Goes with the fix for http://dev.plone.org/plone/ticket/5231
+      [stefan]
+
+    - Circumvented a UnicodeDecodeError on smart folders editing view. This
+      closes http://dev.plone.org/plone/ticket/5746.
+      [hannosch]
+
+    - Added new css class visualIcon. This will be used to make generated.css
+      much smaller in Plone 3.0 and is introduced now, so people can see how
+      this will affect templates. Only templates which use css to add icons
+      for content types are affected.
+      [fschulze]
+
+    - DiscussionTool.cookReply needs to be available to anyone who can comment
+      on an item, otherwise the comment will not be cooked and we get HTML
+      injection.  This fixes http://dev.plone.org/plone/ticket/5718
+      [alecm]
+
+    - Made the code in utranslate more error resilient and added tests for it.
+      [rafrombrc, hannosch]
+
+    - Enhanced accessibility of adjacent links in main_template. This fixes
+      http://dev.plone.org/plone/ticket/5210.
+      [hannosch]
+
+    - Removed some unnecessary hyphens from date_components_support. This
+      fixes http://dev.plone.org/plone/ticket/5711.
+      [hannosch]
+
+    - Added Five and CMF version to the control panel version overview. This
+      closes http://dev.plone.org/plone/ticket/5345.
+      [hannosch]
+
+    - Made getInheritedLocalRoles in PloneTool more error resilient. This
+      closes http://dev.plone.org/plone/ticket/5542.
+      [hannosch]
+
+    - Added some workaround code for the general misbehaving utranslate and
+      uLocalizedTime methods. They should return Unicode now again, but right
+      now they only work for the single supported site encoding of utf-8.
+      This fixes http://dev.plone.org/plone/ticket/5609.
+      [hannosch]
+
+    - Synced table-less and table-based main_template again. This fixes
+      http://dev.plone.org/plone/ticket/5696.
+      [hannosch]
+
+    - Fixed incorrect status message after bad login attempt. This closes
+      http://dev.plone.org/plone/ticket/5695.
+      [hannosch]
+
+    - According to GenericSetup.interfaces.IProfileRegistry: when an extension
+      profile is registered for 'None', it should be available in any type of
+      site. Fixed CMFPlone.factory to include such profiles.
+      [stefan]
+
+    - Made PloneTool.browserDefault check if the default page it is trying to
+      render is the folder itself, and prevent it from doing so (which would
+      cause an endless loop). Fixes http://dev.plone.org/plone/ticket/5704.
+      [alecm]
+
+    - Applied patch from paregorius to add ids to all visualClear divs. Fixes
+      http://dev.plone.org/plone/ticket/4145.
+      [paregorius, alecm]
+
+    - Applied patch from paregorius to make the LiveSearch div vanish in IE
+      as needed. Fixes https://dev.plone.org/plone/ticket/5705.
+      [paregorius, alecm]
+
+    - Made PloneTool.browserDefault check for a result of None from getLayout
+      and raise a sensible error.  Generally this means that the FTI is missing
+      or otherwise incorrect. Fixes http://dev.plone.org/plone/ticket/5676.
+      [alecm]
+
+    - Added migration to reindex the catalog which is necessary for the changes
+      made for http://dev.plone.org/plone/ticket/5569 and
+      http://dev.plone.org/plone/ticket/5231.
+      [alecm]
+
+    - Made is_folderish and isStructuralFolder respect the z2
+      INonStructuralFolder interface as well as the z3 one. Fixes
+      http://dev.plone.org/plone/ticket/5592 and
+      http://dev.plone.org/plone/ticket/5569.
+      [alecm]
+
+    - Changed all of the action conditional expressions checking for
+      the existence of 'member' to explicitly use 'member is None'
+      or 'member is not None' rather than just using truth or falsehood
+      of the member object.
+      [rafrombrc]
+
+    - Added a workaround for erroneous indexing behavior for words containing
+      non-ascii characters. These were treated as word breaks so far. The code
+      works for a site encoding of 'utf-8' now as well as proper unicode usage.
+      This closes http://dev.plone.org/plone/ticket/5231.
+      [hannosch]
+
+    - Added migration to remove plone.css from portal_css. Fixes
+      http://dev.plone.org/plone/ticket/5614.
+      [alecm]
+
+    - Fixed wrong usage of label tag. Added one for attribute that was missing.
+      This closes http://dev.plone.org/plone/ticket/5539.
+      [ender]
+
+    - Added test that ensures the language is getting set in header.
+      This is related to http://dev.plone.org/plone/ticket/5444 and 
+      http://dev.plone.org/plone/ticket/4770.
+      [hannosch]
+
+    - Fixed folder_summary_view ignored allowAnonymousViewAbout.
+      http://dev.plone.org/plone/ticket/5678
+      [ender]
+
+    - Fixed language setting in the html page header. This closes
+      http://dev.plone.org/plone/ticket/5444.
+      [hannosch]
+
+    - Added a few tests for the calendar view.
+      [hannosch]
+
+    - Fixed the problem where you cannot select items in folder_contents in
+      Safari. All non-draggable elements must have the 'notDraggable' CSS
+      class now. This closes http://dev.plone.org/plone/ticket/5586.
+      [deo]
+
+    - Fixed handling of login_time and last_login member properties:
+      last_login_time is now the time of the previous login and login_time is
+      the time of the current login. This fixes
+      http://dev.plone.org/plone/ticket/5471.
+      [wichert]
+
+    - Ignored the ' character when normalizing strings. This implements part
+      of http://dev.plone.org/plone/ticket/5664.
+      [wichert]
+
+    - Improved test for autogenerated ids to handle content types with an
+      underscore in their id. This fixes
+      http://dev.plone.org/plone/ticket/5560.
+      [wichert]
+
+    - Using 'indexObject' instead of 'reindexObject' for
+      CatalogTool.clearFindAndRebuild works just as well, but does not
+      touch every object and cause a monster transaction to be committed.
+      [stefan]
+
+    - The list of addable types in a folder is now ordered according to the
+      translated title and not the English title anymore. This closes
+      http://dev.plone.org/plone/ticket/1760.
+      [hannosch]
+
+    - Add GenericSetup import and export steps for the portal factory.
+      [wichert]
+
+    - Fixed a username vs userid confusion in the member search page and
+      bring the implementation inline with the help text. This fixes
+      http://dev.plone.org/plone/ticket/5657.
+      [wichert]
+
+    - Small spelling corrections in reconfig_form. This closes
+      http://dev.plone.org/plone/ticket/5552.
+      [hannosch]
+
+    - Event time and location aren't considered byline information in
+      folder_listing anymore and thus visible if allowAnonymousViewAbout is
+      disabled. This closes http://dev.plone.org/plone/ticket/5573.
+      [hannosch]
+
+    - Corrected RSS search template to show correct numbers. This closes
+      http://dev.plone.org/plone/ticket/5211.
+      [hannosch]
+
+    - Modify login logic to work for sites which do not use the cookie plugin
+      or still use GRUF.
+      [wichert]
+
+    - Added support for the hCalendar/hCard standard for events. This closes
+      http://dev.plone.org/plone/ticket/4102. Thanks, Nate.
+      [hannosch]
+
+    - Changed setupSite.py to import 'Zope2' instead of 'Zope'. Could
+      cause confusion on case-insensitive filesystems with 'zope'.
+      [sidnei]
+
+    - Fixed bug in folder_contents causing all links to get /folder_contents
+      appended as well.
+      [optilude]
+
+    - Changed all action conditions that were simply "member" or
+      "not:member" to be "python:member" or "python:not member" to
+      prevent member object from being called, leading to infinite
+      recursion in certain cases.
+      [rafrombrc]
+
+    - Fix 'reindexContentObject' in CatalogTool.py so that it doesn't
+      set the modification date to now due to some AT "convenience".
+      [nouri]
+
+    - Cleanup the localrole form to support searching for either a users full
+      name or login name; both at once does not work.
+      [wichert]
 
 Plone 2.5 - released June 16, 2006
 
@@ -820,6 +1073,53 @@ Plone 2.5 - released June 16, 2006
       moves some files to /portal_skins/plone_deprecated which will be removed
       in the next release.
       [hannosch]
+
+Plone 2.1.4 - Devo - Unreleased
+
+    - Minor spelling fix in folder_localrole_form.
+      [hannosch]
+
+    - Removed OS notes for iCal and vCal on the event view. Meanwhile both
+      standards are used on all OS'es. This closes
+      http://dev.plone.org/plone/ticket/4113.
+      [hannosch]
+
+    - Fixed mysterious RuntimeError bug in rssAllowed.py.
+      This closes http://dev.plone.org/plone/ticket/5611.
+      [hannosch]
+
+    - Use Fullname in recently_published and modified templates
+      [jladage]
+
+    - Cleaned up some messages that were only differing slightly.
+      [hannosch]
+
+    - Changed remaining blank 'a' styles to 'a:link' to make sure anchors aren't
+      affected.
+      [limi]
+
+    - Fix rename from the action menu when using virtual hosting. Thanks to
+      Daniel Nouri, Maurits van Rees, Alec Mitchell and Stefan Holek for 
+      pointers and code.
+      [optilude]
+
+    - Added plone.css Python Script that returns the rendered CSS for use when
+      external tools need a static reference. Cached for one day.
+      [fschulze][limi]
+
+    - Added portal status message to author and personalize_form. Since Limi
+      Added the tabs and switched to the content slot instead of main, the
+      status message wasn't shown.
+      [jladage]
+
+    - Fixed Plone/Unknown in HTTP Server header. It now shows the correct
+      Plone version (again).
+      [stefan]
+
+    - Changed the default background color to match the defined background 
+      color for better readability. If you want the old behaviour back, add 
+      'dl.portlet { background-color: transparent }' to your style sheet.
+      [limi]
 
 Plone 2.1.2 - Saint Etienne - Released January 20, 2006
 

@@ -15,14 +15,16 @@
         syn context/portal_syndication;
         max_items syn/max_items;
         start python: int(request.get('b_start', 0));
+        startnumber python: start+1;
         end python: int(request.get('b_end', start+max_items));
         order python: request.get('sort_on', None) and request.set('sort_order', 'reverse');
         dummy python: request.set('sort_on', request.get('sort_on', 'effective'));
-        objectList python:context.queryCatalog(use_types_blacklist=True)[start:end]">
+        objectList python:context.queryCatalog(use_types_blacklist=True)[start:end];
+        endnumber python: start+len(objectList)">
     <metal:block use-macro="context/rss_template/macros/master">
         RSS goes here
         <metal:block fill-slot="description">
-            These are the search results for the site for the query, showing results <tal:number content="start" /> to <tal:number content="end" />.
+            These are the search results for the query, showing results <tal:number content="startnumber" /> to <tal:number content="endnumber" />.
         </metal:block>
     </metal:block>
 </tal:block>

@@ -8,7 +8,7 @@
     <tal:allowed condition="isViewTemplate">
         <tal:relatedItems tal:define="related python:here.computeRelatedItems();">
             <tal:block tal:condition="python:related">
-                <div class="visualClear"><!-- --></div>
+                <div class="visualClear" id="clear-space-before-relatedItemBox"><!-- --></div>
                 <fieldset id="relatedItemBox">
                     <legend i18n:translate="label_related_items">Related content</legend>
                     <ul class="visualNoMarker">
@@ -17,7 +17,7 @@
                         <li tal:define="
                                 desc                item/Description;
                                 item_type item/portal_type;
-                                item_type_class python: 'contenttype-' + normalizeString(item_type);
+                                item_type_class python: 'visualIcon contenttype-' + normalizeString(item_type);
                                 item_wf_state       item/review_state|python: getInfoFor(item, 'review_state', '');
                                 item_wf_state_class python: 'state-' + normalizeString(item_wf_state);
 				item_url           item/absolute_url;

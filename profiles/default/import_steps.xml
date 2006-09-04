@@ -128,4 +128,11 @@
   <dependency step="typeinfo"/>
     Import workflow tool's workflow definitions and supporting scripts.
  </import-step>
+ <import-step id="factorytool" version="20060711-01"
+              handler="Products.CMFPlone.exportimport.factorytool.importFactoryTool"
+              title="Portal Factory Tool">
+  <dependency step="toolset"/>
+  <dependency step="typeinfo"/>
+  Import type registration for the portal factory tool.
+ </import-step>
 </import-steps>

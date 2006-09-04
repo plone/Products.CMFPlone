@@ -21,20 +21,20 @@
           </tr>
 
           <metal:block tal:define="review_history python: portal.reverseList(review_history);"
-                       tal:repeat="items review_history">
-            <tr tal:define="odd repeat/items/odd;
-                            rhComments items/comments|nothing;
-                            state items/review_state|nothing"
+                       tal:repeat="item review_history">
+            <tr tal:define="odd repeat/item/odd;
+                            rhComments item/comments|nothing;
+                            state item/review_state|nothing"
                 tal:attributes="class python:test(odd, 'even', 'odd')"
-                tal:condition="items/action">
-              <td i18n:translate="" tal:content="python:wtool.getTitleForTransitionOnType(items['action'],context.portal_type)"
+                tal:condition="item/action">
+              <td i18n:translate="" tal:content="python:wtool.getTitleForTransitionOnType(item['action'],context.portal_type)"
                   tal:attributes="class string:state-${state}">
                 action
               </td>
 
               <td>
                 <a href="/Members/runyaga"
-                   tal:define="actorid python:items.get('actor');
+                   tal:define="actorid python:item.get('actor');
                                actor python:mtool.getMemberInfo(actorid);
                                fullname actor/fullname|nothing"
                    tal:attributes="href string:${portal_url}/author/${actorid}"
@@ -44,10 +44,10 @@
               </td>
 
               <td>
-                <span tal:replace="python:toLocalizedTime(items['time'],long_format=True)" />
-                <span tal:condition="items/effective_date|nothing">
+                <span tal:replace="python:toLocalizedTime(item['time'],long_format=True)" />
+                <span tal:condition="item/effective_date|nothing">
                   (<span i18n:translate="label_publishing_effective" tal:omit-tag="">effective</span>:
-                  <span tal:replace="python: toLocalizedTime(items['effective_date'],long_format=True)"></span>)
+                  <span tal:replace="python: toLocalizedTime(item['effective_date'],long_format=True)"></span>)
                 </span>
               </td>
 

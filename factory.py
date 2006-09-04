@@ -21,7 +21,7 @@ def addPloneSiteForm(dispatcher):
     extension_profiles = []
     for info in profile_registry.listProfileInfo():
         if info.get('type') == EXTENSION and \
-           info.get('for') == IPloneSiteRoot:
+           info.get('for') in (IPloneSiteRoot, None):
             extension_profiles.append(info)
     
     return wrapped(extension_profiles=tuple(extension_profiles))

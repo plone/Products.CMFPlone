@@ -111,7 +111,10 @@ def initialize(context):
     DirectoryView.registerDirectory('skins', cmfplone_globals)
 
     # Plone content
-    import PloneContent, PloneFolder, LargePloneFolder
+
+    # LargePloneFolder is deprectated and will be removed in Plone 3.5.
+    # Usage of PloneFolder is discouraged.
+    import PloneFolder, LargePloneFolder
     import Portal
 
     contentClasses      = ( PloneFolder.PloneFolder,

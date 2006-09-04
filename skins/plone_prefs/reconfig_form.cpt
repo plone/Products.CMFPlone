@@ -203,8 +203,8 @@
                 <label i18n:translate="label_setup_many_users">Many users/groups</label>
 
                 <div class="formHelp" i18n:translate="help_setup_many_users">
-                    Determines if your Plone is optimized for a small or large
-                    sites.  In environments with a lot of users and/or groups it
+                    Determines if your Plone is optimized for small or large
+                    sites. In environments with a lot of users and/or groups it
                     can be very slow or impossible to build a list all users or
                     groups.  This option tunes the user interface and behaviour
                     of Plone for this case by allowing you to search for

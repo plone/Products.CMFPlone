@@ -11,8 +11,6 @@
 
 from Products.CMFPlone import PloneMessageFactory as _
 
-LOGIN_FAILED_MESSAGE = _(u'Login failed')
-
 request = context.REQUEST
 js_enabled = request.get('js_enabled',0) # is javascript enabled?
 js_enabled = js_enabled=='1' or js_enabled==1
@@ -44,12 +42,12 @@ if mt.isAnonymousUser():
                 # XXX mixing up username and loginname here
                 if mt.getMemberById(user_name) is None:
                     state.setError(ac_name, _(u'Login name not found.'), 'login_name_not_found')
-	        elif not password_empty:
+                elif not password_empty:
                     state.setError(ac_password, _(u'Password incorrect.'), 'password_incorrect')
-	context.plone_utils.addPortalMessage(LOGIN_FAILED_MESSAGE)
-	state.set(status='failure')
+        context.plone_utils.addPortalMessage(_(u'Login failed'))
+        state.set(status='failure')
     else: # no javascript - do low tech login failure
-	context.plone_utils.addPortalMessage(LOGIN_FAILED_MESSAGE)
-	state.set(status='failure_page')
+        context.plone_utils.addPortalMessage(_(u'Login failed'))
+        state.set(status='failure_page')
 
 return state

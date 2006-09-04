@@ -26,9 +26,9 @@
 
         <div>
         <metal:block tal:repeat="result batch">
-            <div class="card" tal:define="name result/getUserName;
-                                           home python:container.portal_membership.getHomeUrl(name, verifyPermission=1);
-                                           portrait python: here.portal_membership.getPersonalPortrait(name);">
+            <div class="card" tal:define="userid result/getUserId;
+                                           home python:container.portal_membership.getHomeUrl(userid, verifyPermission=1);
+                                           portrait python: here.portal_membership.getPersonalPortrait(userid);">
                 <a href="#" tal:attributes="href home">
                     <img src="defaultUser.gif"
                          alt=""
@@ -37,7 +37,7 @@
                          height="100"
                          tal:attributes="src portrait/absolute_url" />
                     <br />
-                    <span tal:content="name">user id</span>
+                    <span tal:content="userid">user id</span>
                 </a>
                 <br />
             </div>
@@ -45,11 +45,11 @@
         </div>
 
         <!-- Navigation -->
-        <div class="visualClear"><!-- --></div>
+        <div class="visualClear" id="clear-space-before-navigation"><!-- --></div>
 
         <div metal:use-macro="here/batch_macros/macros/navigation" />
 
-        <div class="visualClear"><!-- --></div>
+        <div class="visualClear" id="clear-space-after-navigation"><!-- --></div>
 
     </div>
 
