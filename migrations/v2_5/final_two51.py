@@ -1,6 +1,6 @@
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.UnicodeSplitter import Splitter, CaseNormalizer
-from Products.CMFPlone.migrations.v2_1.alphas import reindexCatalog, \
+from Products.CMFPlone.migrations.v2_1.two12_two13 import reindexCatalog, \
      indexMembersFolder
 
 
