@@ -90,7 +90,7 @@
   </action>
   <action title="Delete" action_id="delete" category="object_buttons"
      condition_expr="python:checkPermission(&quot;Delete objects&quot;, globals_view.getParentObject()) and not globals_view.isPortalOrPortalDefaultPage()"
-     url_expr="string:${globals_view/getCurrentObjectUrl}/object_delete"
+     url_expr="string:${globals_view/getCurrentObjectUrl}/delete_confirmation"
      visible="True">
    <permission>Delete objects</permission>
   </action>

@@ -3,21 +3,7 @@ Changelog for Plone
     (name of developer listed in brackets)
 
 Plone 3.0 - Unreleased
-    
-    - Make the syntool methods for enabling and disabling syndication check
-      for the Manager properties permission on the object.
-      [alecm]
 
-    - Making text/* not render inline for security reasons (Internet Explorer
-      renders these blindly, no matter that they are not text/html), and
-      fixing inline rendering of Office documents and PDFs in the process.
-      [limi]
-
-    - Fix member portrait handling by automatically scaling all incoming
-      images using PIL.  This will throw an IOError on any invalid image and
-      also save some bandwidth and space in the zodb.
-      [alecm]
-      
     - Added error tolerant version of FasterStringIO to unicodeFallbackPatch.
       This is monkey patched into the Zope3 tal and pagetemplate modules and
       replaces the monkey patch found in PlacelessTranslationService so far.
@@ -86,6 +72,31 @@ Plone 3.0 - Unreleased
       [hannosch]
 
 Plone 2.5.1 - Unreleased
+
+    - Make the object_delete and folder_delete methods require non-GET
+      requests. This is a bit of a band-aid and it is likely we will want
+      to do the same for other object actions which could be easily triggered
+      by a crawler (a paste for instance, which may have been preceeded by a 
+      cut or copy). Related to https://dev.plone.org/plone/ticket/4886
+      [alecm, limi]
+
+    - Make the syntool methods for enabling and disabling syndication check
+      for the Manager properties permission on the object.
+      [alecm]
+
+    - Making text/* not render inline for security reasons (Internet Explorer
+      renders these blindly, no matter that they are not text/html), and
+      fixing inline rendering of Office documents and PDFs in the process.
+      [limi]
+
+    - Fix member portrait handling by automatically scaling all incoming
+      images using PIL. This will throw an IOError on any invalid image and
+      also save some bandwidth and space in the zodb.
+      [alecm]
+
+    - Added method and management template to membership tool to cleanup
+      members with bad images.
+      [alecm]
 
     - Made 'setuphandlers.PloneGenerator.setupPortalContent' more
       robust by checking if the Members folder is really there.

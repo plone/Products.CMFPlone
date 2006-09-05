@@ -6,6 +6,10 @@ import os, sys
 if __name__ == '__main__':
     execfile(os.path.join(sys.path[0], 'framework.py'))
 
+from cStringIO import StringIO
+
+from OFS.Image import Image
+
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
 
@@ -331,6 +335,23 @@ class TestMembershipTool(PloneTestCase.PloneTestCase):
         self.assertRaises(IOError, self.membership.changeMemberPortrait,
                           bad_file, default_user)
 
+    def testGetBadMembers(self):
+        # Should list members with bad images
+        # We should not have any bad images out of the box
+        self.assertEqual(self.membership.getBadMembers(), [])
+        # Let's add one
+        bad_file = Image(id=default_user, title='',
+                               file=StringIO('<div>This is a lie!!!</div>'))
+        # Manually set a bad image using private methods
+        self.portal.portal_memberdata._setPortrait(bad_file, default_user)
+        self.assertEqual(self.membership.getBadMembers(), [default_user])
+        # Try an empty image
+        empty_file =  Image(id=default_user, title='', file=StringIO(''))
+        self.portal.portal_memberdata._setPortrait(empty_file, default_user)
+        self.assertEqual(self.membership.getBadMembers(), [])
+        # And a good image
+        self.membership.changeMemberPortrait(self.makeRealImage(), default_user)
+        self.assertEqual(self.membership.getBadMembers(), [])
 
 
 class TestCreateMemberarea(PloneTestCase.PloneTestCase):

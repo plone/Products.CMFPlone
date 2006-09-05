@@ -1,5 +1,3 @@
-# -*- coding: UTF-8 -*-
-#
 # Tests the CalendarPortlet View
 #
 
@@ -146,8 +144,8 @@ class TestCalendarPortlet(PloneTestCase.FunctionalTestCase):
 
         # set up some messages to test the calendar date/time formatting
         messages = {
-            ('ja', 'date_format_long'): unicode("${Y}年${m}月${d}日 ${H}時${M}分", "utf-8"),
-            ('ja', 'date_format_short'): unicode("${Y}年${m}月${d}日", "utf-8")}
+            ('ja', 'date_format_long'): u'${Y}\u5e74${m}\u6708${d}\u65e5 ${H}\u6642${M}\u5206',
+            ('ja', 'date_format_short'): u'${Y}\u5e74${m}\u6708${d}\u65e5'}
         dates = SimpleTranslationDomain('plone', messages)
         provideUtility(ITranslationDomain, dates, 'plone')
 
@@ -158,6 +156,12 @@ class TestCalendarPortlet(PloneTestCase.FunctionalTestCase):
         self.failUnless('event1' in response.getBody())
         self.failUnless('event2' in response.getBody())
         self.failUnless('event3' in response.getBody())
+        # construct our date
+        event1_date = self.portal.event1.start_date.strftime('%Y[s%m[s%d[s')
+        event1_date = event1_date.replace('[s','%s')%(u'\u5e74', u'\u6708',
+                                                      u'\u65e5')
+        self.failUnless(event1_date.encode('utf-8')
+                        in response.getBody())
 
         # Clean up after ourselves
         unprovideUtility(ITranslationDomain, name='plone')

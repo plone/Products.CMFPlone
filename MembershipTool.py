@@ -1,3 +1,5 @@
+import PIL
+from cStringIO import StringIO
 from DateTime import DateTime
 from Products.CMFCore.utils import getToolByName, _checkPermission
 from Products.CMFDefault.MembershipTool import MembershipTool as BaseTool
@@ -8,6 +10,7 @@ from OFS.Image import Image
 from AccessControl import ClassSecurityInfo, getSecurityManager
 from Globals import InitializeClass, DTMLFile
 from zExceptions import BadRequest
+from ZODB.POSException import ConflictError
 from AccessControl.SecurityManagement import noSecurityManager
 from Acquisition import aq_base, aq_parent, aq_inner
 from Products.CMFCore.permissions import ManagePortal
@@ -16,6 +19,7 @@ from Products.CMFCore.permissions import SetOwnProperties
 from Products.CMFCore.permissions import SetOwnPassword
 from Products.CMFCore.permissions import View
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
+from Products.CMFPlone.log import log
 
 default_portrait = 'defaultUser.gif'
 
@@ -34,12 +38,20 @@ class MembershipTool(PloneBaseTool, BaseTool):
 
     __implements__ = (PloneBaseTool.__implements__, BaseTool.__implements__, )
 
+    manage_options = (BaseTool.manage_options +
+                      ( { 'label' : 'Portraits'
+                     , 'action' : 'manage_portrait_fix'
+                     },))
+
     # TODO I'm not quite sure why getPortalRoles is declared 'Managed'
     #    in CMFCore.MembershipTool - but in Plone we are not so anal ;-)
     security.declareProtected(View, 'getPortalRoles')
 
     security.declareProtected(ManagePortal, 'manage_mapRoles')
     manage_mapRoles = DTMLFile('www/membershipRolemapping', globals())
+
+    security.declareProtected(ManagePortal, 'manage_portrait_fix')
+    manage_portrait_fix = DTMLFile('www/portrait_fix', globals())
 
     security.declareProtected(ManagePortal, 'manage_setMemberAreaType')
     def manage_setMemberAreaType(self, type_name, REQUEST=None):
@@ -75,9 +87,10 @@ class MembershipTool(PloneBaseTool, BaseTool):
 
         memberinfo = { 'fullname'    : member.getProperty('fullname'),
                        'description' : member.getProperty('description'),
-                       'location' : member.getProperty('location'),
-                       'language' : member.getProperty('language'),
-                       'home_page' : member.getProperty('home_page'),
+                       'location'    : member.getProperty('location'),
+                       'language'    : member.getProperty('language'),
+                       'home_page'   : member.getProperty('home_page'),
+                       'username'    : member.getUserName(),
                      }
 
         return memberinfo
@@ -555,6 +568,38 @@ class MembershipTool(PloneBaseTool, BaseTool):
                 login_time = self.ZopeTime()
             member.setProperties(login_time=self.ZopeTime(),
                                  last_login_time=login_time)
+
+    security.declareProtected(ManagePortal, 'getBadMembers')
+    def getBadMembers(self):
+        """Will search for members with bad images in the portal_memberdata
+        delete their portraits and return their member ids"""
+        memberdata = getToolByName(self, 'portal_memberdata')
+        portraits = getattr(memberdata, 'portraits', None)
+        if portraits is None:
+            return []
+        bad_member_ids = []
+        import transaction
+        TXN_THRESHOLD = 50
+        counter = 1
+        for member_id in tuple(portraits.objectIds()):
+            portrait = portraits[member_id]
+            portrait_data = str(portrait.data)
+            if portrait_data == '':
+                continue
+            try:
+                img = PIL.Image.open(StringIO(portrait_data))
+            except ConflictError:
+                pass
+            except:
+                # Anything else we have a bad bad image and we destroy it
+                # and ask questions later.
+                portraits._delObject(member_id)
+                bad_member_ids.append(member_id)
+            if not counter%TXN_THRESHOLD:
+                transaction.savepoint(optimistic=True)
+            counter = counter + 1
+
+        return bad_member_ids
 
 MembershipTool.__doc__ = BaseTool.__doc__
 
