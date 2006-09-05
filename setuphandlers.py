@@ -123,23 +123,24 @@ class PloneGenerator:
             date_crit.setDateRange('-') # This is irrelevant when the date is now
             date_crit.setOperation('less')
 
-        # configure Members folder (already added by the content import)
-        members = getattr(p , 'Members')
-        members.setTitle('Members')
-        members.setDescription("Container for portal members' home directories")
-        if not members.hasProperty('right_slots'):
-            members.manage_addProperty('right_slots', [], 'lines')
-        # XXX: Not sure why reindex is needed, but it doesn't seem to happen
-        #      otherwise
-        members.reindexObject()
+        if 'Members' in existing:
+            # configure Members folder (already added by the content import)
+            members = getattr(p , 'Members')
+            members.setTitle('Members')
+            members.setDescription("Container for portal members' home directories")
+            if not members.hasProperty('right_slots'):
+                members.manage_addProperty('right_slots', [], 'lines')
+            # XXX: Not sure why reindex is needed, but it doesn't seem to
+            # happen otherwise
+            members.reindexObject()
 
-        # add index_html to Members area
-        if 'index_html' not in members.objectIds():
-            addPy = members.manage_addProduct['PythonScripts'].manage_addPythonScript
-            addPy('index_html')
-            index_html = getattr(members, 'index_html')
-            index_html.write(member_indexhtml)
-            index_html.ZPythonScript_setTitle('Member Search')
+            # add index_html to Members area
+            if 'index_html' not in members.objectIds():
+                addPy = members.manage_addProduct['PythonScripts'].manage_addPythonScript
+                addPy('index_html')
+                index_html = getattr(members, 'index_html')
+                index_html.write(member_indexhtml)
+                index_html.ZPythonScript_setTitle('Member Search')
 
     def addRolesToPlugIn(self, p):
         """

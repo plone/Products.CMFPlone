@@ -17,6 +17,8 @@ import unittest
 from Globals import package_home
 from Testing.ZopeTestCase import FunctionalDocFileSuite as Suite
 from Products.CMFPlone.tests import PloneTestCase, GLOBALS
+from Products.PloneTestCase.layer import ZCMLLayer
+import Products.PloneTestCase.setup as setup
 
 OPTIONFLAGS = (doctest.REPORT_ONLY_FIRST_FAILURE |
                doctest.ELLIPSIS |
@@ -30,13 +32,17 @@ def list_doctests():
 def test_suite():
     filenames = list_doctests()
 
-    return unittest.TestSuite(
-        [Suite(os.path.basename(filename),
+    suites = [Suite(os.path.basename(filename),
                optionflags=OPTIONFLAGS,
                package='Products.CMFPlone.tests',
                test_class=PloneTestCase.FunctionalTestCase)
-         for filename in filenames]
-        )
+              for filename in filenames]
+
+    if setup.USELAYER:
+        for s in suites:
+            s.layer=ZCMLLayer
+
+    return unittest.TestSuite(suites)
 
 if __name__ == '__main__':
     framework()
