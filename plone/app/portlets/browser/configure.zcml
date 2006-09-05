@@ -19,6 +19,10 @@
         factory=".traversal.GroupPortletNamespace"
         name="groupportlets"
         />
+    <adapter
+        factory=".traversal.ContentTypePortletNamespace"
+        name="contenttypeportlets"
+        />
 
     <!-- Portlet management pages -->
     <browser:pages

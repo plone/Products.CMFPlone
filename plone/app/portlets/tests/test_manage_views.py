@@ -15,6 +15,5 @@ class TestManageAssignments(PortletsTestCase):
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
-    suite.addTest(makeSuite(TestAddingView))
     suite.addTest(makeSuite(TestManageAssignments))
     return suite
