@@ -12,9 +12,11 @@ from Products.CMFPlone.migrations.v2_1.two12_two13 import addActionDropDownMenuI
 from Products.CMFPlone.migrations.v2_5.alphas import installDeprecated
 from Products.CMFPlone.factory import _TOOL_ID as SETUP_TOOL_ID
 
+from Products.CMFCore.ActionInformation import Action
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.DirectoryView import createDirectoryView
 from Products.CMFCore.Expression import Expression
+from Products.CMFCore.permissions import View
 
 def alpha2_beta1(portal):
     """2.5-alpha2 -> 2.5-beta1
@@ -126,33 +128,27 @@ def fixHomeAction(portal, out):
     """Make the 'home' action use the @@plone view to get a properly rooted
     navtree.
     """
-    newaction = { 'id'         : 'index_html',
-                  'name'       : 'Home',
-                  'action'     : 'string:${here/@@plone/navigationRootUrl}',
-                  'condition'  : '',
-                  'permission' : 'View',
-                  'category'   : 'portal_tabs',
-                }
+    home = Action('index_html',
+        title='Home',
+        i18n_domain='plone',
+        url_expr='string:${here/@@plone/navigationRootUrl}',
+        available_expr='',
+        permissions=(View,),
+        visible=True)
+
     exists = False
     actionsTool = getToolByName(portal, 'portal_actions', None)
     if actionsTool is not None:
-        new_actions = actionsTool._cloneActions()
-        for action in new_actions:
-            if action.getId() == newaction['id'] and action.category == newaction['category']:
-                exists = True
-                action.condition = Expression(text=newaction['condition']) or ''
-                out.append('Modified existing home/index_html action')
-        if exists:
-            actionsTool._actions = new_actions
-        else:
-            actionsTool.addAction(newaction['id'],
-                    name=newaction['name'],
-                    action=newaction['action'],
-                    condition=newaction['condition'],
-                    permission=newaction['permission'],
-                    category=newaction['category'],
-                    visible=1)
-            out.append("Added missing home/index_html action")
+        category = actionsTool.portal_tabs
+        for action in category.objectIds():
+            # if action exists, remove and re-add
+            if action == 'index_html':
+                category._delObject('index_html')
+                break
+
+        category['index_html'] = home
+        category.moveObjectsToTop(('index_html',))
+        out.append("Added/modified home/index_html portal_tabs action.")
 
 def removeBogusSkin(portal, out):
     skins = getToolByName(portal, 'portal_skins', None)

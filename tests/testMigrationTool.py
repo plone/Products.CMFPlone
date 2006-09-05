@@ -42,10 +42,6 @@ class TestMigrationTool(PloneTestCase.PloneTestCase):
         self.setRoles(['Manager'])
         # Make sure we don't embarrass ourselves again...
         version = '2.1'
-        # XXX This fails because when migrating old sites we still have
-        # ActionInformation objects stored in the actions tool.
-        # We need to write a migration that converts these to Actions
-        # before any other migration step is run
         while version is not None:
             version, msg = self.migration._upgrade(version)
         expect = 'Migration completed at version %s.' % \

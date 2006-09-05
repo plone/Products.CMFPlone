@@ -1,4 +1,5 @@
 import string
+from Products.CMFCore.ActionInformation import Action
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.permissions import AddPortalContent
 from Products.CMFPlone.migrations.migration_util import safeGetMemberDataTool, \
@@ -58,23 +59,23 @@ def addRenameObjectButton(portal,out):
     """
     actionsTool = getToolByName(portal, 'portal_actions', None)
     if actionsTool is not None:
-        idx = 0
-        for action in actionsTool.listActionInfos():
+        category = actionsTool.object_buttons
+        for action in category.objectIds():
             # if action exists, remove and re-add
-            if action['id'] == 'rename' and action['category'] == 'object_buttons':
-                actionsTool.deleteActions((idx,))
+            if action == 'rename':
+                category._delObject('rename')
                 out.append("Removed rename contentmenu action from actions tool.")
                 break
-            idx += 1
 
-        actionsTool.addAction('rename',
-            name='Rename',
-            action='python:"%s/object_rename"%(object.isDefaultPageInFolder() and object.getParentNode().absolute_url() or object_url)',
-            condition='python:portal.portal_membership.checkPermission("Delete objects", object.aq_inner.getParentNode()) and portal.portal_membership.checkPermission("Copy or Move", object) and portal.portal_membership.checkPermission("Add portal content", object) and object is not portal and not (object.isDefaultPageInFolder() and object.getParentNode() is portal)',
-            permission=AddPortalContent,
-            category='object_buttons',
-            visible=1)
+        rename = Action('rename',
+            title='Rename',
+            i18n_domain='plone',
+            url_expr='python:"%s/object_rename"%(object.isDefaultPageInFolder() and object.getParentNode().absolute_url() or object_url)',
+            available_expr='python:portal.portal_membership.checkPermission("Delete objects", object.aq_inner.getParentNode()) and portal.portal_membership.checkPermission("Copy or Move", object) and portal.portal_membership.checkPermission("Add portal content", object) and object is not portal and not (object.isDefaultPageInFolder() and object.getParentNode() is portal)',
+            permissions=(AddPortalContent,),
+            visible=True)
 
+        category['rename'] = rename
         out.append("Added rename contentmenu action to actions tool.")
 
 
