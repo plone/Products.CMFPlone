@@ -1,6 +1,7 @@
 from Products.CMFDefault.Portal import CMFSite
 
 from Products.CMFCore import permissions
+from Products.CMFCore.utils import _checkPermission
 from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault import DublinCore
 from Products.CMFDynamicViewFTI.browserdefault import BrowserDefaultMixin
@@ -75,6 +76,18 @@ class PloneSite(CMFSite, OrderedContainer, BrowserDefaultMixin):
         """ Should send out an Event before Site is being deleted """
         self.removal_inprogress=1
         PloneSite.inheritedAttribute('manage_beforeDelete')(self, container, item)
+
+    security.declareProtected(permissions.DeleteObjects, 'manage_delObjects')
+    def manage_delObjects(self, ids=[], REQUEST=None):
+        """We need to enforce security."""
+        if isinstance(ids, basestring):
+            ids = [ids]
+        for id in ids:
+            item = self._getOb(id)
+            if not _checkPermission(permissions.DeleteObjects, item):
+                raise Unauthorized, (
+                    "Do not have permissions to remove this object")
+        return CMFSite.manage_delObjects(self, ids, REQUEST=REQUEST)
 
     def _management_page_charset(self):
         """ Returns default_charset for management screens """

@@ -45,6 +45,11 @@
               title="Stylesheet registry">
    Export stylesheet registry
  </export-step>
+ <export-step id="factorytool"
+              handler="Products.CMFPlone.exportimport.factorytool.exportFactoryTool"
+              title="Portal Factory Tool">
+  Export type registration for the portal factory tool.
+ </export-step>
  <export-step id="jsregistry"
               handler="Products.ResourceRegistries.exportimport.jsregistry.exportJSRegistry"
               title="Javascript registry">
@@ -99,10 +104,5 @@
               handler="Products.CMFCore.exportimport.workflow.exportWorkflowTool"
               title="Workflow Tool">
   Export workflow tool's workflow definitions and supporting scripts.
- </export-step>
- <export-step id="factorytool"
-              handler="Products.CMFPlone.exportimport.factorytool.exportFactoryTool"
-              title="Portal Factory Tool">
-  Export type registration for the portal factory tool.
  </export-step>
 </export-steps>

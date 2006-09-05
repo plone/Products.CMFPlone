@@ -1,219 +1,483 @@
 <?xml version="1.0"?>
-<object name="portal_actions" meta_type="Plone Actions Tool">
+<object name="portal_actions" meta_type="Plone Actions Tool"
+   xmlns:i18n="http://xml.zope.org/namespaces/i18n">
  <action-provider name="portal_workflow"/>
- <action-provider name="portal_actions">
-  <action title="RSS feed of this listing" action_id="rss"
-     category="document_actions"
-     condition_expr="python:portal.portal_syndication.isSyndicationAllowed(object)"
-     url_expr="string:$object_url/RSS" visible="True">
-   <permission>View</permission>
-  </action>
-  <action title="Send this page to somebody" action_id="sendto"
-     category="document_actions" condition_expr=""
-     url_expr="string:$object_url/sendto_form" visible="True">
-   <permission>Allow sendto</permission>
-  </action>
-  <action title="Print this page" action_id="print"
-     category="document_actions" condition_expr=""
-     url_expr="string:javascript:this.print();" visible="True">
-   <permission>View</permission>
-  </action>
-  <action title="Add to Favorites" action_id="addtofavorites"
-     category="document_actions"
-     condition_expr="python:(member is not None) and (portal.portal_membership.getHomeFolder() is not None)"
-     url_expr="string:${object_url}/addtoFavorites" visible="False">
-   <permission>View</permission>
-  </action>
-  <action title="Toggle full screen mode" action_id="full_screen"
-     category="document_actions" condition_expr="python:member is not None"
-     url_expr="string:javascript:toggleFullScreenMode();" visible="True">
-   <permission>View</permission>
-  </action>
-  <action title="Site Map" action_id="sitemap" category="site_actions"
-     condition_expr="" url_expr="string:$portal_url/sitemap" visible="True">
-   <permission>View</permission>
-  </action>
-  <action title="Copy" action_id="copy" category="folder_buttons"
-     condition_expr="" url_expr="string:folder_copy:method" visible="True">
-   <permission>Copy or Move</permission>
-  </action>
-  <action title="Cut" action_id="cut" category="folder_buttons"
-     condition_expr="python:checkPermission(&quot;Delete objects&quot;, object)"
-     url_expr="string:folder_cut:method" visible="True">
-   <permission>Copy or Move</permission>
-  </action>
-  <action title="Contents" action_id="folderContents" category="object"
-     condition_expr="object/displayContentsTab"
-     url_expr="string:${globals_view/getCurrentFolderUrl}/folder_contents"
-     visible="True">
-   <permission>List folder contents</permission>
-  </action>
-  <action
-     title="Edit this file in an external application (Requires Zope ExternalEditor installed)"
-     action_id="extedit" category="document_actions"
-     condition_expr="object/externalEditorEnabled"
-     url_expr="string:$object_url/external_edit" visible="True">
-   <permission>Modify portal content</permission>
-  </action>
-  <action title="Accessibility" action_id="accessibility"
-     category="site_actions" condition_expr=""
-     url_expr="string:${portal_url}/accessibility-info" visible="True">
-   <permission>View</permission>
-  </action>
-  <action title="Contact" action_id="contact" category="site_actions"
-     condition_expr="" url_expr="string:${portal_url}/contact-info"
-     visible="True">
-   <permission>View</permission>
-  </action>
-  <action title="Site Setup" action_id="plone_setup" category="site_actions"
-     condition_expr="" url_expr="string:${portal_url}/plone_control_panel"
-     visible="True">
-   <permission>Manage portal</permission>
-  </action>
-  <action title="Cut" action_id="cut" category="object_buttons"
-     condition_expr="python:checkPermission(&quot;Delete objects&quot;, globals_view.getParentObject()) and checkPermission(&quot;Copy or Move&quot;, object) and not globals_view.isPortalOrPortalDefaultPage()"
-     url_expr="string:${globals_view/getCurrentObjectUrl}/object_cut"
-     visible="True">
-   <permission>Delete objects</permission>
-  </action>
-  <action title="Copy" action_id="copy" category="object_buttons"
-     condition_expr="python:checkPermission(&quot;Copy or Move&quot;, object) and not globals_view.isPortalOrPortalDefaultPage()"
-     url_expr="string:${globals_view/getCurrentObjectUrl}/object_copy"
-     visible="True">
-   <permission>View</permission>
-  </action>
-  <action title="Paste" action_id="paste" category="object_buttons"
-     condition_expr="folder/cb_dataValid|nothing"
-     url_expr="string:${globals_view/getCurrentFolderUrl}/object_paste"
-     visible="True">
-   <permission>View</permission>
-  </action>
-  <action title="Delete" action_id="delete" category="object_buttons"
-     condition_expr="python:checkPermission(&quot;Delete objects&quot;, globals_view.getParentObject()) and not globals_view.isPortalOrPortalDefaultPage()"
-     url_expr="string:${globals_view/getCurrentObjectUrl}/object_delete"
-     visible="True">
-   <permission>Delete objects</permission>
-  </action>
-  <action title="Rename" action_id="rename" category="object_buttons"
-     condition_expr="python:checkPermission(&quot;Delete objects&quot;, globals_view.getParentObject()) and checkPermission(&quot;Copy or Move&quot;, object) and checkPermission(&quot;Add portal content&quot;, object) and not globals_view.isPortalOrPortalDefaultPage()"
-     url_expr="string:${globals_view/getCurrentObjectUrl}/object_rename"
-     visible="True">
-   <permission>Add Portal Content</permission>
-  </action>
-  <action title="Home" action_id="index_html" category="portal_tabs"
-     condition_expr="" url_expr="string:${globals_view/navigationRootUrl}"
-     visible="True">
-   <permission>View</permission>
-  </action>
-  <action title="Ownership" action_id="change_ownership"
-     category="object_tabs" condition_expr=""
-     url_expr="string:${object_url}/ownership_form" visible="False">
-   <permission>Manage portal</permission>
-  </action>
-  <action title="Rename" action_id="rename" category="folder_buttons"
-     condition_expr="" url_expr="string:folder_rename_form:method"
-     visible="True">
-   <permission>Add portal content</permission>
-  </action>
-  <action title="Paste" action_id="paste" category="folder_buttons"
-     condition_expr="folder/cb_dataValid"
-     url_expr="string:folder_paste:method" visible="True">
-   <permission>Add portal content</permission>
-  </action>
-  <action title="Delete" action_id="delete" category="folder_buttons"
-     condition_expr="" url_expr="string:folder_delete:method" visible="True">
-   <permission>Delete objects</permission>
-  </action>
-  <action title="Change State" action_id="change_state"
-     category="folder_buttons"
-     condition_expr="python:checkPermission(&quot;Modify portal content&quot;, object) or checkPermission(&quot;Review portal content&quot;, object)"
-     url_expr="string:content_status_history:method" visible="True">
-   <permission>View</permission>
-  </action>
- </action-provider>
- <action-provider name="portal_membership">
-  <action title="My Folder" action_id="mystuff" category="user"
-     condition_expr="python:(member is not None) and (portal.portal_membership.getHomeFolder() is not None)"
-     url_expr="string:${portal/portal_membership/getHomeUrl}" visible="True">
-   <permission>View</permission>
-  </action>
-  <action title="Workspace" action_id="myworkspace" category="user"
-     condition_expr="python:(member is not None) and (portal.portal_membership.getHomeFolder() is not None)"
-     url_expr="string:${portal/portal_membership/getHomeUrl}/workspace"
-     visible="False">
-   <permission>View</permission>
-  </action>
-  <action title="My favorites" action_id="favorites" category="user"
-     condition_expr="python:(member is not None) and hasattr(portal.portal_membership.getHomeFolder(), &quot;Favorites&quot;)"
-     url_expr="string:${portal/portal_membership/getHomeUrl}/Favorites/folder_contents"
-     visible="False">
-   <permission>View</permission>
-  </action>
-  <action title="Preferences" action_id="preferences" category="user"
-     condition_expr="python:member is not None"
-     url_expr="string:${portal_url}/plone_memberprefs_panel" visible="True">
-   <permission>View</permission>
-  </action>
-  <action title="Add to favorites" action_id="addFavorite" category="user"
-     condition_expr="python: portal.portal_membership.getHomeFolder() is not None"
-     url_expr="string:${object_url}/addtoFavorites" visible="False">
-   <permission>View</permission>
-  </action>
-  <action title="Log in" action_id="login" category="user"
-     condition_expr="python:member is None" url_expr="string:${portal_url}/login_form"
-     visible="True">
-   <permission>View</permission>
-  </action>
-  <action title="Manage members" action_id="manage_members" category="global"
-     condition_expr="" url_expr="string:${portal_url}/members_manage_form"
-     visible="True">
-   <permission>Manage users</permission>
-  </action>
-  <action title="Logged in" action_id="logged_in" category="user"
-     condition_expr="" url_expr="string:${portal_url}/logged_in"
-     visible="False">
-   <permission>View</permission>
-  </action>
-  <action title="Log out" action_id="logout" category="user"
-     condition_expr="python:member is not None" url_expr="string:${portal_url}/logout"
-     visible="True">
-   <permission>View</permission>
-  </action>
- </action-provider>
- <action-provider name="portal_registration">
-  <action title="Join" action_id="join" category="user"
-     condition_expr="python:member is None" url_expr="string:${portal_url}/join_form"
-     visible="True">
-   <permission>Add portal member</permission>
-  </action>
- </action-provider>
- <action-provider name="portal_discussion">
-  <action title="Reply" action_id="reply" category="object"
-     condition_expr="python:object is not None and portal.portal_discussion.isDiscussionAllowedFor(object)"
-     url_expr="string:${object_url}/discussion_reply_form" visible="False">
-   <permission>Reply to item</permission>
-  </action>
- </action-provider>
- <action-provider name="portal_undo">
-  <action title="Undo" action_id="undo" category="user"
-     condition_expr="python:member is not None" url_expr="string:${portal_url}/undo_form"
-     visible="True">
-   <permission>List undoable changes</permission>
-  </action>
- </action-provider>
- <action-provider name="portal_syndication">
-  <action title="Syndication" action_id="syndication" category="object"
-     condition_expr="python:folder is object and portal.portal_syndication.isSiteSyndicationAllowed()"
-     url_expr="string:${folder_url}/synPropertiesForm" visible="False">
-   <permission>Manage properties</permission>
-  </action>
- </action-provider>
- <action-provider name="portal_properties">
-  <action title="Reconfigure Portal" action_id="configPortal"
-     category="global" condition_expr=""
-     url_expr="string:${portal_url}/reconfig_form" visible="False">
-   <permission>Manage portal</permission>
-  </action>
- </action-provider>
+ <action-provider name="portal_actions"/>
  <action-provider name="portal_types"/>
+ <object name="document_actions" meta_type="CMF Action Category">
+  <property name="title"></property>
+  <object name="rss" meta_type="CMF Action">
+   <property name="title">RSS feed of this listing</property>
+   <property name="description"></property>
+   <property name="url_expr">string:$object_url/RSS</property>
+   <property name="icon_expr"></property>
+   <property
+      name="available_expr">python:portal.portal_syndication.isSyndicationAllowed(object)</property>
+   <property name="permissions">
+    <element value="View"/>
+   </property>
+   <property name="visible">True</property>
+  </object>
+  <object name="sendto" meta_type="CMF Action">
+   <property name="title">Send this page to somebody</property>
+   <property name="description"></property>
+   <property name="url_expr">string:$object_url/sendto_form</property>
+   <property name="icon_expr"></property>
+   <property name="available_expr"></property>
+   <property name="permissions">
+    <element value="Allow sendto"/>
+   </property>
+   <property name="visible">True</property>
+  </object>
+  <object name="print" meta_type="CMF Action">
+   <property name="title">Print this page</property>
+   <property name="description"></property>
+   <property name="url_expr">string:javascript:this.print();</property>
+   <property name="icon_expr"></property>
+   <property name="available_expr"></property>
+   <property name="permissions">
+    <element value="View"/>
+   </property>
+   <property name="visible">True</property>
+  </object>
+  <object name="addtofavorites" meta_type="CMF Action">
+   <property name="title">Add to Favorites</property>
+   <property name="description"></property>
+   <property name="url_expr">string:${object_url}/addtoFavorites</property>
+   <property name="icon_expr"></property>
+   <property
+      name="available_expr">python:(member is not None) and (portal.portal_membership.getHomeFolder() is not None)</property>
+   <property name="permissions">
+    <element value="View"/>
+   </property>
+   <property name="visible">False</property>
+  </object>
+  <object name="full_screen" meta_type="CMF Action">
+   <property name="title">Toggle full screen mode</property>
+   <property name="description"></property>
+   <property
+      name="url_expr">string:javascript:toggleFullScreenMode();</property>
+   <property name="icon_expr"></property>
+   <property name="available_expr">python:member is not None</property>
+   <property name="permissions">
+    <element value="View"/>
+   </property>
+   <property name="visible">True</property>
+  </object>
+  <object name="extedit" meta_type="CMF Action">
+   <property
+      name="title">Edit this file in an external application (Requires Zope ExternalEditor installed)</property>
+   <property name="description"></property>
+   <property name="url_expr">string:$object_url/external_edit</property>
+   <property name="icon_expr"></property>
+   <property name="available_expr">object/externalEditorEnabled</property>
+   <property name="permissions">
+    <element value="Modify portal content"/>
+   </property>
+   <property name="visible">True</property>
+  </object>
+ </object>
+ <object name="site_actions" meta_type="CMF Action Category">
+  <property name="title"></property>
+  <object name="sitemap" meta_type="CMF Action">
+   <property name="title">Site Map</property>
+   <property name="description"></property>
+   <property name="url_expr">string:$portal_url/sitemap</property>
+   <property name="icon_expr"></property>
+   <property name="available_expr"></property>
+   <property name="permissions">
+    <element value="View"/>
+   </property>
+   <property name="visible">True</property>
+  </object>
+  <object name="accessibility" meta_type="CMF Action">
+   <property name="title">Accessibility</property>
+   <property name="description"></property>
+   <property
+      name="url_expr">string:${portal_url}/accessibility-info</property>
+   <property name="icon_expr"></property>
+   <property name="available_expr"></property>
+   <property name="permissions">
+    <element value="View"/>
+   </property>
+   <property name="visible">True</property>
+  </object>
+  <object name="contact" meta_type="CMF Action">
+   <property name="title">Contact</property>
+   <property name="description"></property>
+   <property name="url_expr">string:${portal_url}/contact-info</property>
+   <property name="icon_expr"></property>
+   <property name="available_expr"></property>
+   <property name="permissions">
+    <element value="View"/>
+   </property>
+   <property name="visible">True</property>
+  </object>
+  <object name="plone_setup" meta_type="CMF Action">
+   <property name="title">Site Setup</property>
+   <property name="description"></property>
+   <property
+      name="url_expr">string:${portal_url}/plone_control_panel</property>
+   <property name="icon_expr"></property>
+   <property name="available_expr"></property>
+   <property name="permissions">
+    <element value="Manage portal"/>
+   </property>
+   <property name="visible">True</property>
+  </object>
+ </object>
+ <object name="folder_buttons" meta_type="CMF Action Category">
+  <property name="title"></property>
+  <object name="copy" meta_type="CMF Action">
+   <property name="title">Copy</property>
+   <property name="description"></property>
+   <property name="url_expr">string:folder_copy:method</property>
+   <property name="icon_expr"></property>
+   <property name="available_expr"></property>
+   <property name="permissions">
+    <element value="Copy or Move"/>
+   </property>
+   <property name="visible">True</property>
+  </object>
+  <object name="cut" meta_type="CMF Action">
+   <property name="title">Cut</property>
+   <property name="description"></property>
+   <property name="url_expr">string:folder_cut:method</property>
+   <property name="icon_expr"></property>
+   <property
+      name="available_expr">python:checkPermission("Delete objects", object)</property>
+   <property name="permissions">
+    <element value="Copy or Move"/>
+   </property>
+   <property name="visible">True</property>
+  </object>
+  <object name="rename" meta_type="CMF Action">
+   <property name="title">Rename</property>
+   <property name="description"></property>
+   <property name="url_expr">string:folder_rename_form:method</property>
+   <property name="icon_expr"></property>
+   <property name="available_expr"></property>
+   <property name="permissions">
+    <element value="Add portal content"/>
+   </property>
+   <property name="visible">True</property>
+  </object>
+  <object name="paste" meta_type="CMF Action">
+   <property name="title">Paste</property>
+   <property name="description"></property>
+   <property name="url_expr">string:folder_paste:method</property>
+   <property name="icon_expr"></property>
+   <property name="available_expr">folder/cb_dataValid</property>
+   <property name="permissions">
+    <element value="Add portal content"/>
+   </property>
+   <property name="visible">True</property>
+  </object>
+  <object name="delete" meta_type="CMF Action">
+   <property name="title">Delete</property>
+   <property name="description"></property>
+   <property name="url_expr">string:folder_delete:method</property>
+   <property name="icon_expr"></property>
+   <property name="available_expr"></property>
+   <property name="permissions">
+    <element value="Delete objects"/>
+   </property>
+   <property name="visible">True</property>
+  </object>
+  <object name="change_state" meta_type="CMF Action">
+   <property name="title">Change State</property>
+   <property name="description"></property>
+   <property name="url_expr">string:content_status_history:method</property>
+   <property name="icon_expr"></property>
+   <property
+      name="available_expr">python:checkPermission("Modify portal content", object) or checkPermission("Review portal content", object)</property>
+   <property name="permissions">
+    <element value="View"/>
+   </property>
+   <property name="visible">True</property>
+  </object>
+ </object>
+ <object name="object" meta_type="CMF Action Category">
+  <property name="title"></property>
+  <object name="folderContents" meta_type="CMF Action">
+   <property name="title">Contents</property>
+   <property name="description"></property>
+   <property
+      name="url_expr">string:${globals_view/getCurrentFolderUrl}/folder_contents</property>
+   <property name="icon_expr"></property>
+   <property name="available_expr">object/displayContentsTab</property>
+   <property name="permissions">
+    <element value="List folder contents"/>
+   </property>
+   <property name="visible">True</property>
+  </object>
+  <object name="reply" meta_type="CMF Action">
+   <property name="title">Reply</property>
+   <property name="description"></property>
+   <property
+      name="url_expr">string:${object_url}/discussion_reply_form</property>
+   <property name="icon_expr"></property>
+   <property
+      name="available_expr">python:object is not None and portal.portal_discussion.isDiscussionAllowedFor(object)</property>
+   <property name="permissions">
+    <element value="Reply to item"/>
+   </property>
+   <property name="visible">False</property>
+  </object>
+  <object name="syndication" meta_type="CMF Action">
+   <property name="title">Syndication</property>
+   <property name="description"></property>
+   <property name="url_expr">string:${folder_url}/synPropertiesForm</property>
+   <property name="icon_expr"></property>
+   <property
+      name="available_expr">python:folder is object and portal.portal_syndication.isSiteSyndicationAllowed()</property>
+   <property name="permissions">
+    <element value="Manage properties"/>
+   </property>
+   <property name="visible">False</property>
+  </object>
+ </object>
+ <object name="object_buttons" meta_type="CMF Action Category">
+  <property name="title"></property>
+  <object name="cut" meta_type="CMF Action">
+   <property name="title">Cut</property>
+   <property name="description"></property>
+   <property
+      name="url_expr">string:${globals_view/getCurrentObjectUrl}/object_cut</property>
+   <property name="icon_expr"></property>
+   <property
+      name="available_expr">python:checkPermission("Delete objects", globals_view.getParentObject()) and checkPermission("Copy or Move", object) and not globals_view.isPortalOrPortalDefaultPage()</property>
+   <property name="permissions">
+    <element value="Delete objects"/>
+   </property>
+   <property name="visible">True</property>
+  </object>
+  <object name="copy" meta_type="CMF Action">
+   <property name="title">Copy</property>
+   <property name="description"></property>
+   <property
+      name="url_expr">string:${globals_view/getCurrentObjectUrl}/object_copy</property>
+   <property name="icon_expr"></property>
+   <property
+      name="available_expr">python:checkPermission("Copy or Move", object) and not globals_view.isPortalOrPortalDefaultPage()</property>
+   <property name="permissions">
+    <element value="View"/>
+   </property>
+   <property name="visible">True</property>
+  </object>
+  <object name="paste" meta_type="CMF Action">
+   <property name="title">Paste</property>
+   <property name="description"></property>
+   <property
+      name="url_expr">string:${globals_view/getCurrentFolderUrl}/object_paste</property>
+   <property name="icon_expr"></property>
+   <property name="available_expr">folder/cb_dataValid|nothing</property>
+   <property name="permissions">
+    <element value="View"/>
+   </property>
+   <property name="visible">True</property>
+  </object>
+  <object name="delete" meta_type="CMF Action">
+   <property name="title">Delete</property>
+   <property name="description"></property>
+   <property
+      name="url_expr">string:${globals_view/getCurrentObjectUrl}/object_delete</property>
+   <property name="icon_expr"></property>
+   <property
+      name="available_expr">python:checkPermission("Delete objects", globals_view.getParentObject()) and not globals_view.isPortalOrPortalDefaultPage()</property>
+   <property name="permissions">
+    <element value="Delete objects"/>
+   </property>
+   <property name="visible">True</property>
+  </object>
+  <object name="rename" meta_type="CMF Action">
+   <property name="title">Rename</property>
+   <property name="description"></property>
+   <property
+      name="url_expr">string:${globals_view/getCurrentObjectUrl}/object_rename</property>
+   <property name="icon_expr"></property>
+   <property
+      name="available_expr">python:checkPermission("Delete objects", globals_view.getParentObject()) and checkPermission("Copy or Move", object) and checkPermission("Add portal content", object) and not globals_view.isPortalOrPortalDefaultPage()</property>
+   <property name="permissions">
+    <element value="Add Portal Content"/>
+   </property>
+   <property name="visible">True</property>
+  </object>
+ </object>
+ <object name="portal_tabs" meta_type="CMF Action Category">
+  <property name="title"></property>
+  <object name="index_html" meta_type="CMF Action">
+   <property name="title">Home</property>
+   <property name="description"></property>
+   <property
+      name="url_expr">string:${globals_view/navigationRootUrl}</property>
+   <property name="icon_expr"></property>
+   <property name="available_expr"></property>
+   <property name="permissions">
+    <element value="View"/>
+   </property>
+   <property name="visible">True</property>
+  </object>
+ </object>
+ <object name="object_tabs" meta_type="CMF Action Category">
+  <property name="title"></property>
+  <object name="change_ownership" meta_type="CMF Action">
+   <property name="title">Ownership</property>
+   <property name="description"></property>
+   <property name="url_expr">string:${object_url}/ownership_form</property>
+   <property name="icon_expr"></property>
+   <property name="available_expr"></property>
+   <property name="permissions">
+    <element value="Manage portal"/>
+   </property>
+   <property name="visible">False</property>
+  </object>
+ </object>
+ <object name="user" meta_type="CMF Action Category">
+  <property name="title"></property>
+  <object name="mystuff" meta_type="CMF Action">
+   <property name="title">My Folder</property>
+   <property name="description"></property>
+   <property
+      name="url_expr">string:${portal/portal_membership/getHomeUrl}</property>
+   <property name="icon_expr"></property>
+   <property
+      name="available_expr">python:(member is not None) and (portal.portal_membership.getHomeFolder() is not None)</property>
+   <property name="permissions">
+    <element value="View"/>
+   </property>
+   <property name="visible">True</property>
+  </object>
+  <object name="myworkspace" meta_type="CMF Action">
+   <property name="title">Workspace</property>
+   <property name="description"></property>
+   <property
+      name="url_expr">string:${portal/portal_membership/getHomeUrl}/workspace</property>
+   <property name="icon_expr"></property>
+   <property
+      name="available_expr">python:(member is not None) and (portal.portal_membership.getHomeFolder() is not None)</property>
+   <property name="permissions">
+    <element value="View"/>
+   </property>
+   <property name="visible">False</property>
+  </object>
+  <object name="favorites" meta_type="CMF Action">
+   <property name="title">My favorites</property>
+   <property name="description"></property>
+   <property
+      name="url_expr">string:${portal/portal_membership/getHomeUrl}/Favorites/folder_contents</property>
+   <property name="icon_expr"></property>
+   <property
+      name="available_expr">python:(member is not None) and hasattr(portal.portal_membership.getHomeFolder(), "Favorites")</property>
+   <property name="permissions">
+    <element value="View"/>
+   </property>
+   <property name="visible">False</property>
+  </object>
+  <object name="preferences" meta_type="CMF Action">
+   <property name="title">Preferences</property>
+   <property name="description"></property>
+   <property
+      name="url_expr">string:${portal_url}/plone_memberprefs_panel</property>
+   <property name="icon_expr"></property>
+   <property name="available_expr">python:member is not None</property>
+   <property name="permissions">
+    <element value="View"/>
+   </property>
+   <property name="visible">True</property>
+  </object>
+  <object name="addFavorite" meta_type="CMF Action">
+   <property name="title">Add to favorites</property>
+   <property name="description"></property>
+   <property name="url_expr">string:${object_url}/addtoFavorites</property>
+   <property name="icon_expr"></property>
+   <property
+      name="available_expr">python: portal.portal_membership.getHomeFolder() is not None</property>
+   <property name="permissions">
+    <element value="View"/>
+   </property>
+   <property name="visible">False</property>
+  </object>
+  <object name="login" meta_type="CMF Action">
+   <property name="title">Log in</property>
+   <property name="description"></property>
+   <property name="url_expr">string:${portal_url}/login_form</property>
+   <property name="icon_expr"></property>
+   <property name="available_expr">python:member is None</property>
+   <property name="permissions">
+    <element value="View"/>
+   </property>
+   <property name="visible">True</property>
+  </object>
+  <object name="logged_in" meta_type="CMF Action">
+   <property name="title">Logged in</property>
+   <property name="description"></property>
+   <property name="url_expr">string:${portal_url}/logged_in</property>
+   <property name="icon_expr"></property>
+   <property name="available_expr"></property>
+   <property name="permissions">
+    <element value="View"/>
+   </property>
+   <property name="visible">False</property>
+  </object>
+  <object name="logout" meta_type="CMF Action">
+   <property name="title">Log out</property>
+   <property name="description"></property>
+   <property name="url_expr">string:${portal_url}/logout</property>
+   <property name="icon_expr"></property>
+   <property name="available_expr">python:member is not None</property>
+   <property name="permissions">
+    <element value="View"/>
+   </property>
+   <property name="visible">True</property>
+  </object>
+  <object name="join" meta_type="CMF Action">
+   <property name="title">Join</property>
+   <property name="description"></property>
+   <property name="url_expr">string:${portal_url}/join_form</property>
+   <property name="icon_expr"></property>
+   <property name="available_expr">python:member is None</property>
+   <property name="permissions">
+    <element value="Add portal member"/>
+   </property>
+   <property name="visible">True</property>
+  </object>
+  <object name="undo" meta_type="CMF Action">
+   <property name="title">Undo</property>
+   <property name="description"></property>
+   <property name="url_expr">string:${portal_url}/undo_form</property>
+   <property name="icon_expr"></property>
+   <property name="available_expr">python:member is not None</property>
+   <property name="permissions">
+    <element value="List undoable changes"/>
+   </property>
+   <property name="visible">True</property>
+  </object>
+ </object>
+ <object name="global" meta_type="CMF Action Category">
+  <property name="title"></property>
+  <object name="manage_members" meta_type="CMF Action">
+   <property name="title">Manage members</property>
+   <property name="description"></property>
+   <property
+      name="url_expr">string:${portal_url}/members_manage_form</property>
+   <property name="icon_expr"></property>
+   <property name="available_expr"></property>
+   <property name="permissions">
+    <element value="Manage users"/>
+   </property>
+   <property name="visible">True</property>
+  </object>
+  <object name="configPortal" meta_type="CMF Action">
+   <property name="title">Reconfigure Portal</property>
+   <property name="description"></property>
+   <property name="url_expr">string:${portal_url}/reconfig_form</property>
+   <property name="icon_expr"></property>
+   <property name="available_expr"></property>
+   <property name="permissions">
+    <element value="Manage portal"/>
+   </property>
+   <property name="visible">False</property>
+  </object>
+ </object>
 </object>
