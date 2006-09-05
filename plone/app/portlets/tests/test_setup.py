@@ -1,11 +1,17 @@
-from zope.component import getSiteManager
+from zope.app.component.hooks import setSite, setHooks
+from zope.component import getSiteManager, getUtilitiesFor
 
 from plone.portlets.interfaces import IPortletManager
 from plone.portlets.interfaces import ILocalPortletAssignable
+from plone.portlets.interfaces import IPortletType
 
 from plone.app.portlets.tests.base import PortletsTestCase
 
 class TestProductInstall(PortletsTestCase):
+
+    def afterSetUp(self):
+        setHooks()
+        setSite(self.portal)
 
     def testPortletManagersRegistered(self):
         sm = getSiteManager(self.portal)
@@ -17,13 +23,10 @@ class TestProductInstall(PortletsTestCase):
         self.failUnless(ILocalPortletAssignable.providedBy(self.folder))
         self.failUnless(ILocalPortletAssignable.providedBy(self.portal))
         
-    def testPermissions(self): 
-        self.fail('Test missing')
-
     def testPortletTypesRegistered(self): 
-        self.fail('Test missing')
-
-    
+        portlets = [u[0] for u in getUtilitiesFor(IPortletType)]
+        self.failUnless('portlets.Classic' in portlets)
+        self.failUnless('portlets.Login' in portlets)
         
 def test_suite():
     from unittest import TestSuite, makeSuite
