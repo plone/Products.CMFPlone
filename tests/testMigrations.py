@@ -148,6 +148,7 @@ from Products.CMFPlone.migrations.v2_5.betas import migrateCSSRegExpression
 from Products.CMFPlone.migrations.v2_5.final_two51 import removePloneCssFromRR
 from Products.CMFPlone.migrations.v2_5.final_two51 import addEventRegistrationJS
 from Products.CMFPlone.migrations.v2_5.final_two51 import fixupPloneLexicon
+from Products.CMFPlone.migrations.v2_5.final_two51 import fixObjDeleteAction
 
 from Products.CMFPlone.migrations.v3_0.alphas import enableZope3Site
 
