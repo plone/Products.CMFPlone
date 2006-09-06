@@ -3,6 +3,11 @@ Changelog for Plone
     (name of developer listed in brackets)
 
 Plone 2.5.1 - unreleased
+
+    - Updated the CSS validation link to use the CSS 2.1 and CSS 3 compatible
+      profile, which is what Plone uses.
+      [limi]
+
     - Added description in the dict in WorkflowTool's getTransitionsFor.
       [ender]
 
