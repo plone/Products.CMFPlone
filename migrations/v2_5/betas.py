@@ -136,7 +136,6 @@ def fixHomeAction(portal, out):
         permissions=(View,),
         visible=True)
 
-    exists = False
     actionsTool = getToolByName(portal, 'portal_actions', None)
     if actionsTool is not None:
         category = actionsTool.portal_tabs

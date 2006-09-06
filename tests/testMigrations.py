@@ -947,13 +947,13 @@ class TestMigrations_v2_5_1(MigrationTest):
         for a in editActions:
             self.removeActionFromTool(a)
         fixObjDeleteAction(self.portal, [])
-        actions = [x.id for x in self.actions.listActions()
-                   if x.id in editActions]
+        actions = [x for x in self.actions.object_buttons.objectIds()
+                   if x in editActions]
         for a in editActions:
             self.failUnless(a in actions)
         self.failUnlessEqual(len(editActions), len(actions))
 
-    def testtFixHomeActionNoTool(self):
+    def testFixObjDeleteActionNoTool(self):
         self.portal._delObject('portal_actions')
         fixObjDeleteAction(self.portal, [])
 
