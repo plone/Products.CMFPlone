@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1.4 - Devo - Unreleased
 
+    - Updated the CSS validation link to use the CSS 2.1 and CSS 3 compatible
+      profile, which is what Plone uses.
+      [limi]
+
     - Make the syntool methods for enabling and disabling syndication check
       for the Manager properties permission on the object.
       [alecm]
