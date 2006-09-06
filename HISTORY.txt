@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.5.1 - unreleased
 
+    - Made login_form and default_error_message not invoke the portlets, since
+      they are irrelevant and expensive in those forms. Also made the error
+      template a valid HTML document. 
+      [limi]
+
     - Updated the CSS validation link to use the CSS 2.1 and CSS 3 compatible
       profile, which is what Plone uses.
       [limi]
