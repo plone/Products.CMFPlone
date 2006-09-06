@@ -3,6 +3,8 @@ Changelog for Plone
     (name of developer listed in brackets)
 
 Plone 2.5.1 - unreleased
+    - Added description in the dict in WorkflowTool's getTransitionsFor.
+      [ender]
 
     - Corrected the log_exc method in log.py to actually log the exception, as
       it was done before replacing zLOG with Python's logging module.

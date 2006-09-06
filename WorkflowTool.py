@@ -98,6 +98,7 @@ class WorkflowTool(PloneBaseTool, BaseTool):
                                     'id': tdef.id,
                                     'title': tdef.title,
                                     'title_or_id': tdef.title_or_id(),
+                                    'description': tdef.description,
                                     'name': tdef.actbox_name,
                                     'url': tdef.actbox_url %
                                            {'content_url': obj.absolute_url(),
