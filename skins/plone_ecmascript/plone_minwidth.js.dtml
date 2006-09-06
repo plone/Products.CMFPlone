@@ -47,6 +47,7 @@ window.attachEvent('onload', fixwidth);
 window.attachEvent('onresize', fixwidth);
 
 
+@end @*/
+
 /* </dtml-with> */
 
-@end @*/
