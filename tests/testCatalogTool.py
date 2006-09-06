@@ -761,6 +761,8 @@ class TestCatalogUnindexing(PloneTestCase.PloneTestCase):
         self.setRoles(['Member'])
         doc_path = '/'.join(self.folder.doc.getPhysicalPath())
         self.app.REQUEST.set('paths', [doc_path])
+        # folder_delete requires a non-GET request
+        self.app.REQUEST.set('REQUEST_METHOD', 'POST')
         self.folder.folder_delete()
         self.failIf(self.catalog(getId='doc'))
 

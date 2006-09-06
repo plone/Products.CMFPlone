@@ -281,7 +281,7 @@
    <property name="title">Delete</property>
    <property name="description"></property>
    <property
-      name="url_expr">string:${globals_view/getCurrentObjectUrl}/object_delete</property>
+      name="url_expr">string:${globals_view/getCurrentObjectUrl}/delete_confirmation</property>
    <property name="icon_expr"></property>
    <property
       name="available_expr">python:checkPermission("Delete objects", globals_view.getParentObject()) and not globals_view.isPortalOrPortalDefaultPage()</property>

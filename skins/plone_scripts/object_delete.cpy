@@ -9,10 +9,13 @@
 ##title=Delete objects from a folder
 ##
 
+from AccessControl import Unauthorized
 from Products.CMFPlone.utils import transaction_note
 from Products.CMFPlone import PloneMessageFactory as _
 
 REQUEST = context.REQUEST
+if REQUEST.get('REQUEST_METHOD', 'GET').upper() == 'GET':
+    raise Unauthorized, 'This method can not be accessed using a GET request'
 
 parent = context.aq_inner.aq_parent
 parent.manage_delObjects(context.getId())

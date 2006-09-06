@@ -44,6 +44,7 @@ from Products.CMFPlone.migrations.v2_5.betas import migrateCSSRegExpression
 from Products.CMFPlone.migrations.v2_5.final_two51 import removePloneCssFromRR
 from Products.CMFPlone.migrations.v2_5.final_two51 import addEventRegistrationJS
 from Products.CMFPlone.migrations.v2_5.final_two51 import fixupPloneLexicon
+from Products.CMFPlone.migrations.v2_5.final_two51 import fixObjDeleteAction
 
 from Products.CMFPlone.migrations.v3_0.alphas import enableZope3Site
 
@@ -924,6 +925,37 @@ class TestMigrations_v2_5_1(MigrationTest):
         # Should not break if portal_catalog is missing
         self.portal._delObject('portal_catalog')
         fixupPloneLexicon(self.portal, [])
+
+    def tesFixObjDeleteActionTwice(self):
+        # Should not error if performed twice
+        editActions = ('delete',)
+        for a in editActions:
+            self.removeActionFromTool(a)
+        fixObjDeleteAction(self.portal, [])
+        fixObjDeleteAction(self.portal, [])
+        actions = [x.id for x in self.actions.listActions()
+                   if x.id in editActions]
+        # check that all of our deleted actions are now present
+        for a in editActions:
+            self.failUnless(a in actions)
+        # ensure that they are present only once
+        self.failUnlessEqual(len(editActions), len(actions))
+
+    def testFixObjDeleteActionNoAction(self):
+        # Should add the action
+        editActions = ('delete',)
+        for a in editActions:
+            self.removeActionFromTool(a)
+        fixObjDeleteAction(self.portal, [])
+        actions = [x.id for x in self.actions.listActions()
+                   if x.id in editActions]
+        for a in editActions:
+            self.failUnless(a in actions)
+        self.failUnlessEqual(len(editActions), len(actions))
+
+    def testtFixHomeActionNoTool(self):
+        self.portal._delObject('portal_actions')
+        fixObjDeleteAction(self.portal, [])
 
 
 class TestMigrations_v3_0(MigrationTest):

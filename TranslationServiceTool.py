@@ -123,7 +123,7 @@ class TranslationServiceTool(PloneBaseTool, UniqueObject, SimpleItem):
         """
         return 'a' == format and monthname_msgid_abbr(number) or monthname_msgid(number)
 
-    security.declarePublic('monthname_english')
+    security.declarePublic('month_english')
     def month_english(self, number, format=''):
         """ Returns the english name of month by number. Format is either '' or
         'a' (long or abbreviation).
@@ -138,7 +138,7 @@ class TranslationServiceTool(PloneBaseTool, UniqueObject, SimpleItem):
         """
         return monthname_english(number, format=format)
 
-    security.declarePublic('weekdayname_english')
+    security.declarePublic('weekday_english')
     def weekday_english(self, number, format=''):
         """ Returns the english name of a week by number. Format is either '',
         'a' or 'p'.

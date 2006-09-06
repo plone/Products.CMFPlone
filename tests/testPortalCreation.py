@@ -31,6 +31,7 @@ from Products.StandardCacheManagers.AcceleratedHTTPCacheManager import \
      AcceleratedHTTPCacheManager
 from Products.StandardCacheManagers.RAMCacheManager import \
      RAMCacheManager
+from Products.CMFPlone import setuphandlers
 
 
 class TestPortalCreation(PloneTestCase.PloneTestCase):
@@ -540,10 +541,17 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         acts = self.actions.listFilteredActionsFor(self.folder.index_html)
         buttons = acts['object_buttons']
         self.assertEqual(len(buttons), 4)
-        urls = [(a['id'],a['url']) for a in buttons]
+        # special case for delete which needs a confirmation form
+        urls = [(a['id'],a['url']) for a in buttons
+                if a['id'] != 'delete']
         for url in urls:
             # ensure that e.g. the 'copy' url contains object_copy
             self.failUnless('object_'+url[0] in url[1], "%s does not perform the expected object_%s action"%(url[0],url[0]))
+        
+        delete_action = [(a['id'],a['url']) for a in buttons
+                if a['id'] == 'delete'][0]
+        self.failUnless('delete_confirmation' in delete_action[1],
+                         "object_delete does not use the confirmation form")
 
     def testObjectButtonActionsInExpectedOrder(self):
         # The object buttons need to be in a standardized order
@@ -799,6 +807,19 @@ class TestPortalBugs(PloneTestCase.PloneTestCase):
         self.loginAsPortalOwner()
         setup_tool = self.portal.portal_setup
         setup_tool.runAllImportSteps() # this will raise an error if it fails
+        self.failUnless(1 == 1)
+
+    def testFinalStepsWithMembersFolderDeleted(self):
+        # We want the final steps to work even if the 'Members' folder
+        # is gone
+        self.loginAsPortalOwner()
+        portal = self.portal
+        portal.manage_delObjects(['Members'])
+        class FakeContext:
+            def getSite(self):
+                return portal
+
+        setuphandlers.importFinalSteps(FakeContext()) # raises error if fail
         self.failUnless(1 == 1)
 
     def testExportImportLosesTextIndexes(self):
