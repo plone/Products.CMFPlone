@@ -426,8 +426,7 @@
                                 </li>
 
                                 <li tal:condition="python:editAction['id']=='delete'">
-                                    <a onclick="#"
-                                       tal:define="action_title editAction/title;"
+                                    <a tal:define="action_title editAction/title;"
                                        tal:attributes="href editAction/url;
                                                        title python:here.translate(action_title);
                                                        class python:test(icon, 'visualIconPadding %s' % class_name, nothing);"
