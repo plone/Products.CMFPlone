@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0 - Unreleased
 
+    - Updated the text on the member search form to be more user friendly.
+      This closes http://dev.plone.org/plone/ticket/4675.
+      [hannosch]
+
     - Deprecated our unmaintainable 'how-to enable cookie' instructions.
       This closes http://dev.plone.org/plone/ticket/4602.
       [hannosch]
