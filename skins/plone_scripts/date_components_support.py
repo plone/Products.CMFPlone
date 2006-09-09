@@ -4,7 +4,7 @@
 ##bind namespace=
 ##bind script=script
 ##bind subpath=traverse_subpath
-##parameters=date=None, use_ampm=0, starting_year=None, ending_year=None, future_years=None
+##parameters=date=None, use_ampm=0, starting_year=None, ending_year=None, future_years=None, minute_step=5
 ##title=
 ##
 
@@ -139,9 +139,9 @@ if default:
 else:
     minutes.append({'id': '--', 'value': '00', 'selected': None})
 
-for x in range(0, 60, 5):
+for x in range(0, 60, minute_step):
     d={'id': '%02d' % x, 'value': '%02d' % x, 'selected': None}
-    if (x==minute or minute < x < minute+5) and not default:
+    if (x==minute or minute < x < minute+minute_step) and not default:
         d['selected']=1
     minutes.append(d)
 

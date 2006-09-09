@@ -419,6 +419,35 @@ class TestDateComponentsSupportAMPMDefault(PloneTestCase.PloneTestCase):
             self.assertEqual(ampm[i], data[i])
 
 
+class TestDateComponentsSupportMinuteStepDefault(PloneTestCase.PloneTestCase):
+
+    def testMinutesStep1(self):
+        data = [
+            {'selected': 1,    'id': '--', 'value': '00'},
+        ]
+        for x in range(0, 60, 1):
+            d={'id': '%02d' % x, 'value': '%02d' % x, 'selected': None}
+            data.append(d)
+
+        d = self.portal.date_components_support(None, minute_step=1)
+        minutes = d.get('minutes')
+        for i in range(61):
+            self.assertEqual(minutes[i], data[i])
+
+    def testMinutesStep10(self):
+        data = [
+            {'selected': 1,    'id': '--', 'value': '00'},
+        ]
+        for x in range(0, 60, 10):
+            d={'id': '%02d' % x, 'value': '%02d' % x, 'selected': None}
+            data.append(d)
+
+        d = self.portal.date_components_support(None, minute_step=10)
+        minutes = d.get('minutes')
+        for i in range(7):
+            self.assertEqual(minutes[i], data[i])
+
+
 class TestSpecialCases(PloneTestCase.PloneTestCase):
 
     def testNoneUsesDefault(self):
@@ -467,6 +496,7 @@ def test_suite():
     suite.addTest(makeSuite(TestDateComponentsSupportDefault))
     suite.addTest(makeSuite(TestDateComponentsSupportAMPM))
     suite.addTest(makeSuite(TestDateComponentsSupportAMPMDefault))
+    suite.addTest(makeSuite(TestDateComponentsSupportMinuteStepDefault))
     suite.addTest(makeSuite(TestSpecialCases))
     return suite
 

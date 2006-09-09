@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 3.0 - Unreleased
 
+    - Added an optional keyword argument to the date_components_support script
+      that allows to specify the minute steps. It still defaults to five.
+      This closes http://dev.plone.org/plone/ticket/5178.
+      [hannosch]
+
     - Deprecated some more unused skins scripts: extract_date_components,
       getPersonalFolderFor, navigationCurrent, navigationLocalRelated and
       rejectAnonymous.
