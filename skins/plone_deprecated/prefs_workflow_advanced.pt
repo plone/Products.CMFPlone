@@ -8,6 +8,8 @@
 
 <body>
 
+<!-- This template will be removed in Plone 3.5. -->
+
 <div metal:fill-slot="prefs_configlet_main"
      tal:define="workflow_list wtool/listWorkflows">
 

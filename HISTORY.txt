@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0 - Unreleased
 
+    - Deprecated the never used nor functional prefs_workflow* control panels,
+      we are better of with a fresh start on these anyways.
+      [hannosch]
+
     - Do not set initial descriptions for the member folders, as these often
       ended up in a translation the user did not want or understand. We only
       use the simply username as a title now, which is language independent.
