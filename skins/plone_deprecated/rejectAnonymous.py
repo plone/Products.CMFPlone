@@ -10,6 +10,9 @@
 
 from Products.CMFPlone import PloneMessageFactory as _
 
+context.plone_log("The rejectAnonymous script is deprecated and will be "
+                  "removed in Plone 3.5.")
+
 if context.portal_membership.isAnonymousUser():
 
     url = '%s/login_form' % context.portal_url()
@@ -17,4 +20,4 @@ if context.portal_membership.isAnonymousUser():
 
     RESPONSE=context.REQUEST.RESPONSE
     return RESPONSE.redirect(url)
-return 1
+return True

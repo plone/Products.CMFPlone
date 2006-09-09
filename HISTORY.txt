@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 3.0 - Unreleased
 
+    - Deprecated some more unused skins scripts: extract_date_components,
+      getPersonalFolderFor, navigationCurrent, navigationLocalRelated and
+      rejectAnonymous.
+      [hannosch]
+
     - Deprecated the never used nor functional prefs_workflow* control panels,
       we are better of with a fresh start on these anyways.
       [hannosch]
