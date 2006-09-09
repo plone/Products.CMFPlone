@@ -639,7 +639,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         # The safe_html transformation should be configurable
         try:
             self.transforms.safe_html.get_parameter_value('disable_transform')
-        except (AttrbuteError, KeyError):
+        except (AttributeError, KeyError):
             self.fail('safe_html transformation not updated')
 
     def testNavtreePropertiesNormalized(self):
