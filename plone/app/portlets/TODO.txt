@@ -6,21 +6,33 @@ plone.app.portlets to-do
   
     - manage assignments views (@@move-portlet-up etc)
 
-  Infrastructure
-      
-    o Add form always redirects to @@manage-portlets (since HTTP_REFERER isn't
-        useful)
+  Bugs
+  
+    o Edit forms stopped working e.g.:
+    
+        """
+        Unauthorized: The container has no security assertions.  Access to 
+        'use_macro' of (ClassicPortletRenderer ...) denied.
+        """
+
+    o Add and edit forms always redirect to @@manage-portlets, even when you
+      are viewing e.g. @@manage-content-type-portlets
+        - HTTP_REFERER is not useful (referer is add/edit view...)
+        - need to place a hidden form field or similar in the form - how (?)
+        - refer to this in nextUrl() in formhelper.py
+  
+    o Portlets like the login portlet have no configuration: formlib then
+        displays a blank page :-(
+        - can we short-circuit these?
+  
+  Decisions
   
     o Category mappings are created on-the-fly in the namespace traversal
       adapters, which many not be ideal (even though these are protected by
       ManagePortal)
       
         - may be sufficient to create when the management views are invoked
-  
-    o Portlets like the login portlet have no configuration: formlib then
-        displays a blank page :-(
-        - can we short-circuit these?
-  
+
   Portlets
 
     o Make standard set of portlets
