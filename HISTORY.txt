@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 3.0 - Unreleased
 
+    - Do not set initial descriptions for the member folders, as these often
+      ended up in a translation the user did not want or understand. We only
+      use the simply username as a title now, which is language independent.
+      This fixes http://dev.plone.org/plone/ticket/4214.
+      [hannosch]
+
     - Updated the text on the member search form to be more user friendly.
       This closes http://dev.plone.org/plone/ticket/4675.
       [hannosch]

@@ -23,8 +23,6 @@ from Products.CMFPlone.log import log
 
 default_portrait = 'defaultUser.gif'
 
-_marker = object()
-
 class MembershipTool(PloneBaseTool, BaseTool):
 
     meta_type = ToolNames.MembershipTool
@@ -184,7 +182,7 @@ class MembershipTool(PloneBaseTool, BaseTool):
             membertool._setPortrait(portrait, member_id)
 
     security.declarePublic('createMemberarea')
-    def createMemberarea(self, member_id=None, minimal=1):
+    def createMemberarea(self, member_id=None, minimal=True):
         """
         Create a member area for 'member_id' or the authenticated user.
         """
@@ -227,49 +225,12 @@ class MembershipTool(PloneBaseTool, BaseTool):
                 raise NotImplementedError, \
                     'cannot get user for member area creation'
 
-        ## translate the default content
-
-        translation_service = getToolByName(self, 'translation_service', _marker)
-        if translation_service is _marker:
-            # test environ, some other aberent sitch
-            return
-
-        utranslate = translation_service.utranslate
-        encode = translation_service.encode
-
-        # convert the member_id to unicode type
-        umember_id = translation_service.asunicodetype(user.getUserName(), errors='replace')
-
-        member_folder_title = utranslate(
-            'plone', 'title_member_folder',
-            {'member': umember_id}, self,
-            default = "%s" % umember_id)
-
-        member_folder_description = utranslate(
-            'plone', 'description_member_folder',
-            {'member': umember_id}, self,
-            default = '')
-
-        member_folder_index_html_title = utranslate(
-            'plone', 'title_member_folder_index_html',
-            {'member': umember_id}, self,
-            default = "Home page for %s" % umember_id)
-
-        # encode strings to site encoding as we dont like to store type unicode atm
-        member_folder_title = encode(member_folder_title, errors='replace')
-        member_folder_description = encode(member_folder_description, errors='replace')
-        member_folder_index_html_title = encode(member_folder_index_html_title, errors='replace')
-
         ## Modify member folder
         member_folder = self.getHomeFolder(member_id)
         # Grant Ownership and Owner role to Member
         member_folder.changeOwnership(user)
         member_folder.__ac_local_roles__ = None
         member_folder.manage_setLocalRoles(member_id, ['Owner'])
-        # We use ATCT now use the mutators
-        member_folder.setTitle(member_folder_title)
-        member_folder.setDescription(member_folder_description)
-        member_folder.reindexObject()
 
         if not minimal:
             # if it's minimal, don't create the memberarea but do notification
@@ -285,10 +246,8 @@ class MembershipTool(PloneBaseTool, BaseTool):
                 _createObjectByType('Document', member_folder, id='index_html')
                 hpt = getattr(member_folder, 'index_html')
                 # edit title, text and format
-                # TODO
-                hpt.setTitle(member_folder_index_html_title)
+                hpt.setTitle(user.getUserName())
                 if hpt.meta_type == 'Document':
-                    # CMFDefault Document
                     hpt.edit(text_format='structured-text', text=content)
                 else:
                     hpt.update(text=content)
