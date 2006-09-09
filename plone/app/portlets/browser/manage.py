@@ -24,6 +24,8 @@ from plone.app.portlets.storage import PortletAssignmentMapping
 from plone.app.portlets.browser.interfaces import IManagePortletsView
 from plone.app.portlets.browser.interfaces import IManageContextualPortletsView
 from plone.app.portlets.browser.interfaces import IManageCurrentUserPortletsView
+from plone.app.portlets.browser.interfaces import IManageGroupPortletsView
+from plone.app.portlets.browser.interfaces import IManageContentTypePortletsView
 
 class ManageContextualPortlets(BrowserView):
     implements(IManageContextualPortletsView)
@@ -144,3 +146,68 @@ class ManageCurrentUserPortlets(BrowserView):
             raise KeyError, "Cannot find user id of current user" 
         
         return memberId
+
+class ManageGroupPortlets(BrowserView):
+    implements(IManageGroupPortletsView)
+        
+    # IManagePortletsView implementation
+    
+    def getAssignmentMappingUrl(self, manager):
+        baseUrl = str(getMultiAdapter((self.context, self.request), name='absolute_url'))
+        groupId = self.request.get('groupId', None)
+        if groupId is None:
+            groupId = self.groups()[0]
+        return '%s/++groupportlets++%s+%s' % (baseUrl, manager.__name__, groupId)
+
+    def getAssignmentsForManager(self, manager):
+        groupId = self.request.get('groupId', None)
+        if groupId is None:
+            groupId = self.groups()[0]
+        column = getUtility(IPortletManager, name=manager.__name__)
+        category = column[GROUP_CATEGORY]
+        mapping = category.get(groupId, None)
+        if mapping is None:
+            mapping = category[groupId] = PortletAssignmentMapping()
+        return mapping.values()
+    
+    # View attributes
+    
+    def groups(self):
+        portal_groups = getToolByName(self.context, 'portal_groups')
+        return sorted(portal_groups.getGroupIds())
+
+class ManageContentTypePortlets(BrowserView):
+    implements(IManageContentTypePortletsView)
+        
+    # IManagePortletsView implementation
+    
+    def getAssignmentMappingUrl(self, manager):
+        baseUrl = str(getMultiAdapter((self.context, self.request), name='absolute_url'))
+        pt = self.request.get('portal_type', None)
+        if pt is None:
+            pt = self.portal_types()[0]['id']
+        return '%s/++contenttypeportlets++%s+%s' % (baseUrl, manager.__name__, pt)
+
+    def getAssignmentsForManager(self, manager):
+        pt = self.request.get('portal_type', None)
+        if pt is None:
+            pt = self.portal_types()[0]['id']
+        column = getUtility(IPortletManager, name=manager.__name__)
+        category = column[CONTENT_TYPE_CATEGORY]
+        mapping = category.get(pt, None)
+        if mapping is None:
+            mapping = category[pt] = PortletAssignmentMapping()
+        return mapping.values()
+    
+    # View attributes
+    
+    def portal_types(self):
+        portal_types = getToolByName(self.context, 'portal_types')
+        pts = []
+        for fti in portal_types.listTypeInfo():
+            pts.append({ 'id'           : fti.getId(),
+                         'title'        : fti.Title(),
+                         'description'  : fti.Description()})
+        pts.sort(lambda x, y: cmp(x['title'], y['title']))
+        return pts
+

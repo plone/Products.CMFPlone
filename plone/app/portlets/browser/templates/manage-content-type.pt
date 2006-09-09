@@ -1,0 +1,40 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      metal:use-macro="context/@@standard_macros/page">
+<head>
+</head>
+
+<body>
+<div metal:fill-slot="body">
+
+  <h1 class="documentFirstHeading">Manage content type portlets</h1>
+  
+  <p>
+    The left and right portlet slots will now display only those portlets
+    assigned to the content type chosen below. Use the up, down, delete and 
+    add links there to manage user portlets.
+  </p>
+  <p>
+    Note that content type portlets are normally rendered below context portlets.
+  </p>
+  
+  <form method="GET" action="" 
+    tal:attributes="action string:${context/absolute_url}/@@manage-content-type-portlets">
+  
+    <label for="portal_type">Portal type</label>
+    <select id="portal_type" name="portal_type" size="1" tal:define="current request/portal_type | nothing">
+      <option tal:repeat="pt view/portal_types"
+              tal:attributes="value pt/id;
+                              selected python:pt['id'] == current and 'selected' or None"
+              tal:content="pt/title" />
+    </select>
+    
+    <input type="submit" class="context" value="Change" />
+    
+  </form>
+
+</div>
+</body>
+</html>

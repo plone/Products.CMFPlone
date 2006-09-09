@@ -40,15 +40,15 @@
   <h2>Group portlets</h2>
   
   <p>
-    Portlets can be assigned to groups. This works the same way as
-    assigning portlets to users, but the UI is not yet in place. Stay tuned.
+    You can assign group specific portlets by clicking
+      <a tal:attributes="href string:${context/absolute_url}/@@manage-group-portlets">here</a>
   </p>
   
   <h2>Content type portlets</h2>
   
   <p>
-    Portlets can be assigned to content types. This works the same way 
-    as assigning portlets to users, but the UI is not yet in place. Stay tuned.
+    You can assign content-type specific portlets by clicking
+      <a tal:attributes="href string:${context/absolute_url}/@@manage-content-type-portlets">here</a>
   </p>
 
 </div>

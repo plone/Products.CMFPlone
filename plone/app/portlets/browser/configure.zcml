@@ -57,6 +57,22 @@
       permission="plone.app.portlets.ManageOwnPortlets"
       />
     
+    <browser:page
+      for="Products.CMFCore.interfaces.ISiteRoot"
+      class=".manage.ManageContentTypePortlets"
+      name="manage-content-type-portlets"
+      template="templates/manage-content-type.pt"
+      permission="plone.app.portlets.ManagePortlets"
+      />
+    
+    <browser:page
+      for="Products.CMFCore.interfaces.ISiteRoot"
+      class=".manage.ManageGroupPortlets"
+      name="manage-group-portlets"
+      template="templates/manage-group.pt"
+      permission="plone.app.portlets.ManagePortlets"
+      />
+    
     <!-- Renderer for the columns in edit mode -->
     <adapter
         factory=".editmanager.EditPortletManagerRenderer"

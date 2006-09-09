@@ -10,7 +10,7 @@ class TestManageAssignments(PortletsTestCase):
 
     def testDelete(self): 
         self.fail('Test missing')
-    
+        
         
 def test_suite():
     from unittest import TestSuite, makeSuite

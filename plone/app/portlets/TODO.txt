@@ -5,9 +5,6 @@ plone.app.portlets to-do
   Tests
   
     - manage assignments views (@@move-portlet-up etc)
-    - storage.CurrentUserAssignmentMapping
-    - actual portlet type registrations
-    - traversal namespaces
 
   Infrastructure
       
@@ -40,12 +37,7 @@ plone.app.portlets to-do
     o Add dashboard page using portlets.dashboard
         - May need to split dashboard into several columns
         - Need appropriate edit view
-        
-    o Need UI for assigning user-, group- and content-type-portlets.
-        - The IManagePortletsView could have a form field selecting which
-          user/group/content type to manage, and when reloaded, the columns
-          would change - problem is carrying that state across portlet changes.
-        
+
   Plone Integration
 
     o Remove/deprecate portlets_fetcher
