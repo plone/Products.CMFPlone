@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.5.1 - unreleased
 
+    - Adjusted button CSS to have overflow: visible because Internet Explorer
+      makes them very wide in foreign languages like Finnish. This fixes
+      http://dev.plone.org/plone/ticket/5461 - thanks to Mikko.
+      [limi]
+
     - Made login_form and default_error_message not invoke the portlets, since
       they are irrelevant and expensive in those forms. Also made the error
       template a valid HTML document. 
@@ -24,7 +29,7 @@ Plone 2.5.1 - unreleased
       requests. This is a bit of a band-aid and it is likely we will want
       to do the same for other object actions which could be easily triggered
       by a crawler (a paste for instance, which may have been preceeded by a 
-      cut or copy). Related to https://dev.plone.org/plone/ticket/4886
+      cut or copy). Related to http://dev.plone.org/plone/ticket/4886
       [alecm, limi]
 
     - Make the syntool methods for enabling and disabling syndication check

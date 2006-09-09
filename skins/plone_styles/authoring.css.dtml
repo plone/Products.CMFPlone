@@ -23,6 +23,7 @@
     font-size: &dtml-fontSmallSize;;
     padding: 1px 1px 1px 15px;
     text-transform: &dtml-textTransform;;
+    overflow: visible;
 }
 .context,
 .documentEditable * .context {
@@ -31,6 +32,7 @@
     font-size: &dtml-fontSmallSize;;
     padding: 1px 1px 1px 15px;
     text-transform: &dtml-textTransform;;
+    overflow: visible;
 }
 .destructive,
 .documentEditable * .destructive {
@@ -40,6 +42,7 @@
     font-size: &dtml-fontSmallSize;;
     padding: 1px 1px 1px 15px;
     text-transform: &dtml-textTransform;;
+    overflow: visible;
 }
 input.searchButton {
     margin-bottom: &dtml-borderWidth; ! important;
