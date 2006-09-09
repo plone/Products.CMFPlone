@@ -11,8 +11,6 @@ from zope.publisher.browser import setDefaultSkin
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
 
-from Products.CMFPlone.utils import _createObjectByType
-
 from Products.CMFPlone.browser.navigation import CatalogNavigationTree
 from Products.CMFPlone.browser.navigation import CatalogSiteMap
 from Products.CMFPlone.browser.navigation import CatalogNavigationTabs

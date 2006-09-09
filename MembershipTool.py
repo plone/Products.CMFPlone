@@ -1,13 +1,11 @@
 import PIL
 from cStringIO import StringIO
-from DateTime import DateTime
 from Products.CMFCore.utils import getToolByName, _checkPermission
 from Products.CMFDefault.MembershipTool import MembershipTool as BaseTool
 from Products.CMFPlone import ToolNames
 from Products.CMFPlone.utils import scale_image
-from Products.CMFPlone.utils import _createObjectByType
 from OFS.Image import Image
-from AccessControl import ClassSecurityInfo, getSecurityManager
+from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass, DTMLFile
 from zExceptions import BadRequest
 from ZODB.POSException import ConflictError
@@ -19,7 +17,6 @@ from Products.CMFCore.permissions import SetOwnProperties
 from Products.CMFCore.permissions import SetOwnPassword
 from Products.CMFCore.permissions import View
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
-from Products.CMFPlone.log import log
 
 default_portrait = 'defaultUser.gif'
 

@@ -1,19 +1,12 @@
 from Products.CMFCore import MemberDataTool
 from Products.CMFCore.MemberDataTool import MemberDataTool as BaseTool
-from Products.CMFCore.MemberDataTool import MemberData as BaseData
 from Products.CMFPlone import ToolNames
 from Globals import InitializeClass
-from ZPublisher.Converters import type_converters
-from zExceptions import BadRequest
 from AccessControl import ClassSecurityInfo
-from Acquisition import aq_base
 from Products.BTreeFolder2.BTreeFolder2 import BTreeFolder2
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.utils import log_deprecated
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
-from Products.CMFCore.permissions import SetOwnProperties, ManagePortal
-from ZODB.POSException import ConflictError
-
+from Products.CMFCore.permissions import ManagePortal
 
 class MemberDataTool(PloneBaseTool, BaseTool):
 
@@ -174,7 +167,4 @@ MemberDataTool.__doc__ = BaseTool.__doc__
 
 InitializeClass(MemberDataTool)
 
-
 _marker = []  # Create a new marker object.
-
-

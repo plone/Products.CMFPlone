@@ -1,6 +1,7 @@
 from StringIO import StringIO
 import textwrap
 import warnings
+from zope.tal.talinterpreter import _write_ValueError
 
 def _unicode_replace(structure):
     if isinstance(structure, str):

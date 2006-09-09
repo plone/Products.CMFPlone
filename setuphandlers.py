@@ -12,7 +12,6 @@ from Products.StandardCacheManagers.RAMCacheManager import \
      RAMCacheManager
 
 from Products.CMFCore.utils import getToolByName
-from Products.CMFCore import permissions as cmfpermissions
 from Products.CMFPlone.utils import _createObjectByType
 from Products.CMFPlone import migrations as migs
 from Products.CMFPlone.Portal import member_indexhtml

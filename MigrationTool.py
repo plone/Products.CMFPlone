@@ -7,7 +7,7 @@ from Products.CMFCore.utils import UniqueObject, getToolByName
 from Products.CMFCore.permissions import ManagePortal, View
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFPlone.utils import versionTupleFromString
-from Products.CMFPlone.utils import log
+from Products.CMFPlone.utils import log, log_deprecated
 import transaction
 
 import logging

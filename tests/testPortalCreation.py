@@ -21,12 +21,10 @@ from zope.component.interfaces import IComponentRegistry
 
 from Acquisition import aq_base
 from DateTime import DateTime
-from OFS.SimpleItem import SimpleItem
 
 from Products.CMFCore.CachingPolicyManager import CachingPolicyManager
 from Products.CMFCore.permissions import AccessInactivePortalContent
-from Products.CMFPlone.UnicodeSplitter import Splitter, CaseNormalizer 
-from Products.PageTemplates.ZopePageTemplate import ZopePageTemplate
+from Products.CMFPlone.UnicodeSplitter import Splitter, CaseNormalizer
 from Products.StandardCacheManagers.AcceleratedHTTPCacheManager import \
      AcceleratedHTTPCacheManager
 from Products.StandardCacheManagers.RAMCacheManager import \
@@ -648,7 +646,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         # The safe_html transformation should be configurable
         try:
             self.transforms.safe_html.get_parameter_value('disable_transform')
-        except (AttrbuteError, KeyError):
+        except (AttributeError, KeyError):
             self.fail('safe_html transformation not updated')
 
     def testNavtreePropertiesNormalized(self):

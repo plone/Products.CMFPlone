@@ -12,7 +12,6 @@ from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
 
 from Products.CMFPlone.browser.plone import Plone
-from Products.CMFPlone.utils import _createObjectByType
 
 from Products.CMFPlone.ActionsTool import ActionsTool
 from Products.CMFPlone.InterfaceTool import InterfaceTool

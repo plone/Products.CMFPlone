@@ -17,7 +17,6 @@ import ToolNames
 from interfaces.PloneControlPanel import IControlPanel as z2IControlPanel
 from interfaces import IControlPanel
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
-from Products.CMFPlone import PloneMessageFactory as _
 
 class PloneConfiglet(ActionInformation):
 

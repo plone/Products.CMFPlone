@@ -36,7 +36,6 @@ from log import log_deprecated
 # please use i18nl10n directly
 from i18nl10n import utranslate
 from i18nl10n import ulocalized_time
-from i18nl10n import getGlobalTranslationService
 
 # Define and compile static regexes
 IGNORE_REGEX = re.compile(r"[']")
@@ -520,7 +519,6 @@ def webdav_enabled(obj, container):
 # a dependency.
 
 from App.Dialogs import MessageDialog
-from OFS.CopySupport import CopyContainer
 from OFS.CopySupport import CopyError
 from OFS.CopySupport import eNotSupported
 from cgi import escape
@@ -536,23 +534,23 @@ def _unrestricted_rename(container, id, new_id):
         * no verify object check from PortalFolder so it's allowed to rename
           even unallowed portal types inside a folder
     """
-    try: container._checkId(new_id)
-    except: raise CopyError, MessageDialog(
-                  title='Invalid Id',
-                  message=sys.exc_info()[1],
-                  action ='manage_main')
+    try:
+        container._checkId(new_id)
+    except:
+        raise CopyError, MessageDialog(
+              title='Invalid Id',
+              message=sys.exc_info()[1],
+              action ='manage_main')
     ob=container._getOb(id)
-    #!#if ob.wl_isLocked():
-    #!#    raise ResourceLockedError, 'Object "%s" is locked via WebDAV' % ob.getId()
     if not ob.cb_isMoveable():
         raise CopyError, eNotSupported % escape(id)
-    #!#container._verifyObjectPaste(ob)
-    #!#CopyContainer._verifyObjectPaste(container, ob)
-    try:    ob._notifyOfCopyTo(container, op=1)
-    except: raise CopyError, MessageDialog(
-                  title='Rename Error',
-                  message=sys.exc_info()[1],
-                  action ='manage_main')
+    try:
+        ob._notifyOfCopyTo(container, op=1)
+    except:
+        raise CopyError, MessageDialog(
+              title='Rename Error',
+              message=sys.exc_info()[1],
+              action ='manage_main')
     container._delObject(id)
     ob = aq_base(ob)
     ob._setId(new_id)
@@ -563,8 +561,6 @@ def _unrestricted_rename(container, id, new_id):
     ob = container._getOb(new_id)
     ob._postCopy(container, op=1)
 
-    #!#if REQUEST is not None:
-    #!#    return container.manage_main(container, REQUEST, update_menu=1)
     return None
 
 
