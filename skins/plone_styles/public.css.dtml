@@ -847,6 +847,7 @@ textarea.proportional {
     padding-top: 15px;
     height: 0px !important;
     width: 80px;
+    vertical-align:top;
 }
 
 #portal-colophon a.colophonIcon {
