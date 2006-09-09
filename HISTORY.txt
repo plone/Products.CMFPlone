@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.5.1 - unreleased
 
+    - Fixed an UnicodeDecodeError in enableSyndication script. This closes
+      http://dev.plone.org/plone/ticket/5750.
+      [hannosch]
+
     - Adjusted button CSS to have overflow: visible because Internet Explorer
       makes them very wide in foreign languages like Finnish. This fixes
       http://dev.plone.org/plone/ticket/5461 - thanks to Mikko.
