@@ -4,6 +4,13 @@ Changelog for Plone
 
 Plone 3.0 - Unreleased
 
+    - Added migration for the css files added by limi in the previous
+       entry
+       [jladage]
+
+    - Split up the CSS into a couple of new modules to ease customization
+      [limi]
+
     - Added an optional keyword argument to the date_components_support script
       that allows to specify the minute steps. It still defaults to five.
       This closes http://dev.plone.org/plone/ticket/5178.

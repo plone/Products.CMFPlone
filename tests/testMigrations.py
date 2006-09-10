@@ -151,6 +151,7 @@ from Products.CMFPlone.migrations.v2_5.final_two51 import fixupPloneLexicon
 from Products.CMFPlone.migrations.v2_5.final_two51 import fixObjDeleteAction
 
 from Products.CMFPlone.migrations.v3_0.alphas import enableZope3Site
+from Products.CMFPlone.migrations.v3_0.alphas import addNewCSSFiles
 
 from zope.app.component.hooks import clearSite
 from zope.app.component.interfaces import ISite
@@ -3254,7 +3255,6 @@ class TestMigrations_v2_1(MigrationTest):
             'textLarge.css',
             # ploneCustom.css is at the bottom by default
         ]
-
         stylesheet_ids = cssreg.getResourceIds()
         for index, value in enumerate(desired_order):
             self.assertEqual(value, stylesheet_ids[index])
@@ -3968,7 +3968,6 @@ class TestMigrations_v2_5(MigrationTest):
         css_reg.unregisterResource('RTL.css')
         migrateCSSRegExpression(self.portal, [])
 
-
 class TestMigrations_v2_5_1(MigrationTest):
 
     def afterSetUp(self):
@@ -4111,7 +4110,7 @@ class TestMigrations_v3_0(MigrationTest):
 
         # Then run the migration step
         enableZope3Site(self.portal, [])
-        
+
         # And see if we have an ISite with a local site manager
         self.failUnless(ISite.providedBy(self.portal))
         gsm = getGlobalSiteManager()
@@ -4134,6 +4133,23 @@ class TestMigrations_v3_0(MigrationTest):
         sm = getSiteManager(self.portal)
         self.failIf(gsm is sm)
 
+    def testAddNewCSSFiles(self):
+        cssreg = self.portal.portal_css
+        added_ids = ['navtree.css', 'invisibles.css', 'forms.css']
+        for id in added_ids:
+            cssreg.unregisterResource(id)
+        stylesheet_ids = cssreg.getResourceIds()
+        for id in added_ids:
+            self.failIf('navtree.css' in stylesheet_ids)
+        addNewCSSFiles(self.portal, [])
+        stylesheet_ids = cssreg.getResourceIds()
+        for id in added_ids:
+            self.failUnless(id in stylesheet_ids)
+
+        # perform migration twice
+        addNewCSSFiles(self.portal, [])
+        for id in added_ids:
+            self.failUnless(id in stylesheet_ids)
 
 def test_suite():
     from unittest import TestSuite, makeSuite
