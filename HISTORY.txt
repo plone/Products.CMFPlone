@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1.4 - Devo - Unreleased
 
+    - Made sure validate_email is turned on by default.
+      [stefan]
+
     - Fixed a bug in the highlighting of selected tabs in an environment which
       uses Apache rewrite rules. This closes
       http://dev.plone.org/plone/ticket/5518.
