@@ -445,7 +445,7 @@ def manage_addSite(self, id, title='Portal', description='',
                    create_userfolder=1,
                    email_from_address='postmaster@localhost',
                    email_from_name='Portal Administrator',
-                   validate_email=0,
+                   validate_email=1,
                    custom_policy='Default Plone',
                    RESPONSE=None):
     """ Plone Site factory """

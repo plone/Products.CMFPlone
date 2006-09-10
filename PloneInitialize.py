@@ -63,7 +63,7 @@ def create(app, admin_username='admin'):
                    create_userfolder=1,
                    email_from_address='postmaster@localhost',
                    email_from_name='Portal Administrator',
-                   validate_email=0,
+                   validate_email=1,
                    custom_policy='Default Plone',
                    RESPONSE=None)
         out.append("Added Plone")

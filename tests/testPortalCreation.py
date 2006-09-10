@@ -670,6 +670,10 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.failUnless(isinstance(pipeline[0], Splitter))
         self.failUnless(isinstance(pipeline[1], CaseNormalizer))
 
+    def testValidateEmail(self):
+        # validate_email should be on by default
+        self.failUnless(self.portal.getProperty('validate_email'))
+
 
 class TestPortalBugs(PloneTestCase.PloneTestCase):
 

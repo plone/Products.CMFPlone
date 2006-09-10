@@ -9,6 +9,7 @@ def two13_two14(portal):
     """
     out = []
     removePloneCssFromRR(portal, out)
+    turnOnValidateEmail(portal, out)
 
     # Repair plone_lexicon pipeline
     if fixupPloneLexicon(portal, out):
@@ -55,4 +56,10 @@ def fixupPloneLexicon(portal, out):
                     out.append('Updated plone_lexicon pipeline.')
                     return True
     return False
+
+def turnOnValidateEmail(portal, out):
+    """validate_email should be on by default."""
+    if portal.hasProperty('validate_email'):
+        portal.manage_changeProperties(validate_email=True)
+        out.append('Turned on validate_email.')
 
