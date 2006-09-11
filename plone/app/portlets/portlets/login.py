@@ -16,7 +16,7 @@ from plone.portlets.interfaces import IPortletManager
 
 from Acquisition import Explicit, Implicit
 
-from plone.app.portlets.browser.formhelper import AddForm, EditForm
+from plone.app.portlets.browser.formhelper import NullAddForm, EditForm
 from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
 
 from zope.app.container.contained import Contained
@@ -129,10 +129,9 @@ class LoginPortletRenderer(Explicit):
         return '<LoginPortletRenderer>'
 
 
-class LoginPortletAddForm(AddForm):
-    form_fields = form.Fields(ILoginPortlet)
+class LoginPortletAddForm(NullAddForm):
 
-    def create(self, data):
+    def create(self):
         return LoginPortletAssignment()
         
 class LoginPortletEditForm(EditForm):
