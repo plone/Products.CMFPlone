@@ -135,7 +135,6 @@ from Products.CMFPlone.migrations.v2_1.two12_two13 import addActionDropDownMenuI
 
 from Products.CMFPlone.migrations.v2_1.two13_two14 import removePloneCssFromRR
 from Products.CMFPlone.migrations.v2_1.two13_two14 import fixupPloneLexicon
-from Products.CMFPlone.migrations.v2_1.two13_two14 import turnOnValidateEmail
 
 from Products.CMFDynamicViewFTI.migrate import migrateFTI
 
@@ -3675,26 +3674,6 @@ class TestMigrations_v2_1_4(MigrationTest):
         # Should not break if portal_catalog is missing
         self.portal._delObject('portal_catalog')
         fixupPloneLexicon(self.portal, [])
-
-    def testTurnOnValidateEmail(self):
-        # Should turn on validate_email
-        self.portal.manage_changeProperties(validate_email=False)
-        turnOnValidateEmail(self.portal, [])
-        self.failUnless(self.portal.getProperty('validate_email'))
-
-    def testTurnOnValidateEmailTwice(self):
-        # Should not break if migrated twice
-        self.portal.manage_changeProperties(validate_email=False)
-        turnOnValidateEmail(self.portal, [])
-        turnOnValidateEmail(self.portal, [])
-        self.failUnless(self.portal.getProperty('validate_email'))
-
-    def testTurnOnValidateEmailNoProperty(self):
-        # Should not break if the property does not exists
-        self.portal.manage_delProperties(['validate_email'])
-        turnOnValidateEmail(self.portal, [])
-        # The property is not added in this case
-        self.failIf(self.portal.hasProperty('validate_email'))
 
 
 def test_suite():
