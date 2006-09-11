@@ -36,7 +36,7 @@ class IClassicPortlet(IPortletDataProvider):
                                default=u'portlet',
                                required=True)
 
-class ClassicPortletAssignment(Implicit, Contained):
+class ClassicPortletAssignment(SimpleItem, Contained):
     implements(IClassicPortlet, IPortletAssignment)
 
     def __init__(self, template=u'', macro=u''):

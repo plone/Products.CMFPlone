@@ -8,19 +8,6 @@ plone.app.portlets to-do
 
   Bugs
   
-    o Edit forms stopped working e.g.:
-    
-        """
-        Unauthorized: The container has no security assertions.  Access to 
-        'use_macro' of (ClassicPortletRenderer ...) denied.
-        """
-
-    o Add and edit forms always redirect to @@manage-portlets, even when you
-      are viewing e.g. @@manage-content-type-portlets
-        - HTTP_REFERER is not useful (referer is add/edit view...)
-        - need to place a hidden form field or similar in the form - how (?)
-        - refer to this in nextUrl() in formhelper.py
-  
     o Portlets like the login portlet have no configuration: formlib then
         displays a blank page :-(
         - can we short-circuit these?
@@ -32,6 +19,12 @@ plone.app.portlets to-do
       ManagePortal)
       
         - may be sufficient to create when the management views are invoked
+
+    o May need a way to filter addable portlets by permission (e.g. some
+        portlets are only available to some groups of users)
+        
+    o May need a way to filter addable portlets by portlet manager type
+        (e.g. dashboard-only portlets)
 
   Portlets
 

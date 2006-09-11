@@ -1,3 +1,5 @@
+from OFS.SimpleItem import SimpleItem
+
 from zope.interface import Interface, implements
 from zope.component import adapts
 
@@ -26,7 +28,7 @@ class ILoginPortlet(IPortletDataProvider):
     """A portlet which can render a login form.
     """
                                
-class LoginPortletAssignment(Implicit, Contained):
+class LoginPortletAssignment(SimpleItem, Contained):
     implements(ILoginPortlet, IPortletAssignment)
 
     title = _(u'Login portlet')
