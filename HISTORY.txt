@@ -2,7 +2,7 @@ Changelog for Plone
 
    (name of developer listed in brackets)
 
-Plone 2.1.4 - Devo - Unreleased
+Plone 2.1.4 - Devo - RC1 - Released September 12, 2006
 
     - Made sure validate_email is turned on by default.
       [stefan]
