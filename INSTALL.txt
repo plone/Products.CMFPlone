@@ -34,45 +34,48 @@ Installing Plone manually, step by step instructions.
 
   **MANDATORY**
 
-  - Zope 2.9.3+ (does not run natively on Zope 3)
-     http://www.zope.org/Products/Zope/2.9.3
-     **You must remove the 'Five' product from your Products directory before
-     starting Zope when using Zope 2.9.x**
+  - Zope 2.9.4+ (does not run natively on Zope 3)
+     http://www.zope.org/Products/Zope/2.9.4
+     **If you are running Zope 2.9.5+ you should consider removing the ``Five``
+     Product included with Plone**
    or
     Zope 2.8.7+
      http://www.zope.org/Products/Zope/2.8.7
+     **To use Plone 2.5 with Zope 2.8, you must remove the included ``Five``
+     package and replace it with Five 1.2.6+ from
+     http://codespeak.net/z3/five/release/Five-1.2.6.tgz**
 
-  - CMF 1.6.0+ (neither 1.5 nor 2.x+ will work)
+  - CMF 1.6.2+ (neither 1.5 nor 2.x+ will work)
      Included in the Plone tarball
 
   - CMFQuickInstallerTool 1.5.9 or newer
      Included in the Plone tarball
 
-  - GroupUserFolder 3.52 or newer
+  - GroupUserFolder 3.53 or newer
      Included in the Plone tarball
 
-  - CMFFormController 2.0.3 or newer
+  - CMFFormController 2.0.5 or newer
      Included in the Plone tarball
 
   - SecureMailHost 1.0.4 or newer
      Included in the Plone tarball
 
-  - Archetypes 1.4.0 or newer
+  - Archetypes 1.4.1 or newer
      Included in the Plone tarball
 
-  - ATContentTypes 1.1.1 or newer
+  - ATContentTypes 1.1.2 or newer
      Included in the Plone tarball
 
-  - ATReferenceBrowserWidget 1.4 or newer
+  - ATReferenceBrowserWidget 1.5 or newer
      Included in the Plone tarball
 
-  - ResourceRegistries 1.3 or newer
+  - ResourceRegistries 1.3.2 or newer
      Included in the Plone tarball
 
-  - ExtendedPathIndex 2.3 or newer
+  - ExtendedPathIndex 2.4 or newer
      Included in the Plone tarball
 
-  - CMFDynamicViewFTI 2.0 or newer
+  - CMFDynamicViewFTI 2.1 or newer
      Included in the Plone tarball
 
   - Python Imaging Library 1.1.5 or newer
@@ -81,25 +84,25 @@ Installing Plone manually, step by step instructions.
      Note: You have to build PIL with jpeg and png support. See the README
      of PIL for more information.
 
-  - Placeless Translation Service 1.3.1 or newer
+  - Placeless Translation Service 1.3.2 or newer
      Included in the Plone tarball
 
-  - PloneTranslations 2.5
+  - PloneTranslations 2.5.1
      Included in the Plone tarball
 
-  - PloneLanguageTool 1.2 or newer
+  - PloneLanguageTool 1.4 or newer
      Included in the Plone tarball
 
-  - CMFPlacefulWorkflow 1.0 or newer
+  - CMFPlacefulWorkflow 1.0.1 or newer
      Included in the Plone tarball
 
-  - PlonePAS 2.0.1 or newer
+  - PlonePAS 2.1 or newer
      Included in the Plone tarball
 
   - PasswordResetTool 0.4 or newer
      Included in the Plone tarball
 
-  - PluggableAuthService 1.2 or newer
+  - PluggableAuthService 1.4 or newer
      Included in the Plone tarball
 
   - PluginRegistry 1.1 or newer
@@ -108,12 +111,12 @@ Installing Plone manually, step by step instructions.
   - ExternalEditor 0.9.1 or newer
      Included in the Plone tarball
 
-  - kupu 1.3.7 or newer
+  - kupu 1.3.8 or newer
      Included in the Plone tarball
 
   **OPTIONAL**
 
-  - CacheFu 1.0 or newer
+  - CacheFu 1.0.1 or newer
      Included in the Plone tarball
      In order to use CacheFu, you must copy or link the directories
      ``CacheSetup``, ``CMFSquidTool``, ``PageCacheManager``, and
@@ -196,7 +199,10 @@ Installing Plone manually, step by step instructions.
    DCWorkflow
    ExtendedPathIndex
    ExternalEditor
-   Five (remove this if running Zope 2.9.x)
+   Five -
+        replace this with a 1.2.x version from codespeak.net/z3/five
+        to run with Zope 2.8, or optionally remove it if running with
+        Zope 2.9.5+
    GenericSetup
    GroupUserFolder
    kupu

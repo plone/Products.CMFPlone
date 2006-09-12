@@ -2,7 +2,7 @@ Changelog for Plone
 
     (name of developer listed in brackets)
 
-Plone 2.5.1 - unreleased
+Plone 2.5.1 - released September 11, 2006
 
     - Fixed an UnicodeDecodeError in enableSyndication script. This closes
       http://dev.plone.org/plone/ticket/5750.
