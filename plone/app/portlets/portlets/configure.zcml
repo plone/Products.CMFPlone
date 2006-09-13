@@ -48,11 +48,4 @@
       permission="cmf.ManagePortal"
       />
     
-    <browser:page 
-      for=".login.ILoginPortlet"
-      name="edit.html"
-      class=".login.LoginPortletEditForm"
-      permission="cmf.ManagePortal"
-      />
-
 </configure>

@@ -5,27 +5,34 @@ plone.app.portlets to-do
   Tests
   
     - manage assignments views (@@move-portlet-up etc)
-
+    - form helpers (AddForm, NullAddForm, EditForm)
+    - adding view
+  
   Bugs
   
-    o Portlets like the login portlet have no configuration: formlib then
-        displays a blank page :-(
-        - can we short-circuit these?
+    o Edit view superfluous for assignment types using NullAddForm
+        - Add name of edit view to IPortletType registration, allow None?
   
   Decisions
   
+    o May need a way to filter addable portlets by permission (e.g. some
+        portlets are only available to some groups of users)
+        
+    o May need a way to filter addable portlets by portlet manager type
+        (e.g. dashboard-only portlets)
+        
+        -> could use filter by interface and permission in IPortletType
+
     o Category mappings are created on-the-fly in the namespace traversal
       adapters, which many not be ideal (even though these are protected by
       ManagePortal)
       
         - may be sufficient to create when the management views are invoked
 
-    o May need a way to filter addable portlets by permission (e.g. some
-        portlets are only available to some groups of users)
+    o ++myportlets++ probably only applicable to dashboard
+        - may want to imply more restrictions on category for different portlet
+          manager types
         
-    o May need a way to filter addable portlets by portlet manager type
-        (e.g. dashboard-only portlets)
-
   Portlets
 
     o Make standard set of portlets
@@ -40,8 +47,8 @@ plone.app.portlets to-do
   User Interface
 
     o Add dashboard page using portlets.dashboard
-        - May need to split dashboard into several columns
-        - Need appropriate edit view
+        - May need to filter portlets that are applicable for dashbaoard
+          by type and/or permission
 
   Plone Integration
 

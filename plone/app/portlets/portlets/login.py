@@ -133,6 +133,3 @@ class LoginPortletAddForm(NullAddForm):
 
     def create(self):
         return LoginPortletAssignment()
-        
-class LoginPortletEditForm(EditForm):
-    form_fields = form.Fields(ILoginPortlet)

@@ -105,7 +105,8 @@
   <tal:block repeat="portlet view/portlets">
           
       <div>
-        <a tal:attributes="href portlet/editview"
+        <a tal:omit-tag="not:portlet/editview"
+           tal:attributes="href portlet/editview"
            tal:content="portlet/title" />
       </div>
       <div>

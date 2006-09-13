@@ -1,6 +1,7 @@
 from zope.interface import implements
 from zope.interface import Interface
 from zope.interface import directlyProvides
+from zope.interface import providedBy
 
 from zope.component import adapts
 from zope.component import getSiteManager
@@ -13,18 +14,17 @@ from Products.GenericSetup.interfaces import ISetupEnviron
 from Products.GenericSetup.utils import XMLAdapterBase
 from Products.GenericSetup.utils import exportObjects
 from Products.GenericSetup.utils import importObjects
+from Products.GenericSetup.utils import _getDottedName
+from Products.GenericSetup.utils import _resolveDottedName
 
 from plone.portlets.interfaces import IPortletType
 from plone.portlets.interfaces import IPortletManager
-from plone.portlets.interfaces import IPlacelessPortletManager
 
 from plone.portlets.constants import USER_CATEGORY, GROUP_CATEGORY, CONTENT_TYPE_CATEGORY
 
-from plone.portlets.manager import PortletManager, PlacelessPortletManager
+from plone.portlets.manager import PortletManager
 from plone.portlets.storage import PortletCategoryMapping
 from plone.portlets.registration import PortletType
-
-from plone.app.portlets.utils import registerPortletType, unregisterPortletType
 
 class PortletsXMLAdapter(XMLAdapterBase):
     """In- and exporter for a local portlet configuration
@@ -74,13 +74,12 @@ class PortletsXMLAdapter(XMLAdapterBase):
         
         for child in node.childNodes:
             if child.nodeName.lower() == 'portletmanager':
+                manager = PortletManager()
                 name = str(child.getAttribute('name'))
-                placeless = bool(child.getAttribute('placeless'))
                 
-                if placeless:
-                    manager = PlacelessPortletManager()
-                else:
-                    manager = PortletManager()
+                managerType = child.getAttribute('type')
+                if managerType:
+                    directlyProvides(manager, _resolveDottedName(managerType))
                 
                 manager[USER_CATEGORY] = PortletCategoryMapping()
                 manager[GROUP_CATEGORY] = PortletCategoryMapping()
@@ -98,11 +97,16 @@ class PortletsXMLAdapter(XMLAdapterBase):
                     portlet.title = str(child.getAttribute('title'))
                     portlet.description = str(child.getAttribute('description'))
                     portlet.addview = addview
+                    
+                    for_ = child.getAttribute('for')
+                    if for_:
+                        portlet.for_ = _resolveDottedName(str(for_))
+
                     self.context.registerUtility(component=portlet, 
                                                  provided=IPortletType, 
                                                  name=addview)
     
-    def _extractPortletManagers(self):
+    def _extractPortlets(self):
         fragment = self._doc.createDocumentFragment()
         
         registeredPortletTyeps = [r.name for r in self.context.registeredUtilities()
@@ -113,8 +117,11 @@ class PortletsXMLAdapter(XMLAdapterBase):
         for r in portletManagerRegistrations:
             child = self._doc.createElement('portletmanager')
             child.setAttribute('name', r.name)
-            if IPlacelessPortletManager.providedBy(r.component):
-                child.setAttribute('placeless', 'True')
+            
+            specificInterface = providedBy(r.component).flattened()[0]
+            if specificInterface != IPortletManager:
+                child.setAttribute('type', _getDottedName(specificInterface))
+            
             fragment.appendChild(child)
             
         for name, portletType in getUtilitiesFor(IPortletType):
@@ -123,6 +130,9 @@ class PortletsXMLAdapter(XMLAdapterBase):
                 child.setAttribute('addview', portletType.addview)
                 child.setAttribute('title', portletType.title)
                 child.setAttribute('description', portletType.description)
+                
+                if portletType.for_:
+                    child.setAttribute('for', _getDottedName(child.for_))
 
         return fragment
 

@@ -1,4 +1,4 @@
-from zope.component import getUtility, getMultiAdapter
+from zope.component import getUtility, getMultiAdapter, queryMultiAdapter
 from zope.app.component.hooks import setHooks, setSite
 
 from plone.portlets.interfaces import IPortletType
@@ -8,7 +8,6 @@ from plone.portlets.interfaces import IPortletDataProvider
 from plone.portlets.interfaces import IPortletRenderer
 
 from plone.app.portlets.portlets.login import LoginPortletAssignment
-from plone.app.portlets.portlets.login import LoginPortletEditForm
 from plone.app.portlets.portlets.login import LoginPortletRenderer
 
 from plone.app.portlets.storage import PortletAssignmentMapping
@@ -38,7 +37,8 @@ class TestLoginPortlet(PortletsTestCase):
         adding = getMultiAdapter((mapping, request,), name='+')
         addview = getMultiAdapter((adding, request), name=portlet.addview)
         
-        addview.createAndAdd(data={})
+        # This is a NullAddForm - calling it does the work
+        addview()
         
         self.assertEquals(len(mapping), 1)
         self.failUnless(isinstance(mapping.values()[0], LoginPortletAssignment))
@@ -48,8 +48,8 @@ class TestLoginPortlet(PortletsTestCase):
         request = self.folder.REQUEST
         
         mapping['foo'] = LoginPortletAssignment()
-        editview = getMultiAdapter((mapping['foo'], request), name='edit.html')
-        self.failUnless(isinstance(editview, LoginPortletEditForm))
+        editview = queryMultiAdapter((mapping['foo'], request), name='edit.html', default=None)
+        self.failUnless(editview is None)
 
     def testRenderer(self): 
         context = self.folder

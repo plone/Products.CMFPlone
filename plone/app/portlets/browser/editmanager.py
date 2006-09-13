@@ -1,7 +1,7 @@
 from Acquisition import Explicit, aq_parent, aq_inner
 
 from zope.interface import implements, Interface
-from zope.component import adapts, getMultiAdapter, getUtilitiesFor
+from zope.component import adapts, getMultiAdapter, queryMultiAdapter, getUtilitiesFor
 
 from zope.annotation.interfaces import IAnnotations
 
@@ -10,10 +10,8 @@ from zope.publisher.interfaces.browser import IBrowserRequest
 
 from zope.contentprovider.interfaces import UpdateNotCalled
 
-from plone.portlets.interfaces import IPortletType
 from plone.portlets.interfaces import IPortletRetriever
 from plone.portlets.interfaces import IPortletManager
-from plone.portlets.interfaces import IPlacelessPortletManager
 from plone.portlets.interfaces import IPortletManagerRenderer
 from plone.portlets.interfaces import IPortletRenderer
 from plone.portlets.interfaces import ILocalPortletAssignable
@@ -79,9 +77,16 @@ class EditPortletManagerRenderer(Explicit):
         data = []
         for idx in range(len(assignments)):
             name = assignments[idx].__name__
+            
+            editview = queryMultiAdapter((assignments[idx], self.request), name='edit.html', default=None)
+            if editview is None:
+                editviewName = ''
+            else:
+                editviewName = '%s/%s/edit.html' % (baseUrl, name)
+            
             data.append( {'title'      : assignments[idx].title,
                           'html'       : portlets[idx].render(),
-                          'editview'   : '%s/%s/edit.html' % (baseUrl, name),
+                          'editview'   : editviewName,
                           'up_url'     : '%s/@@move-portlet-up?name=%s' % (baseUrl, name),
                           'down_url'   : '%s/@@move-portlet-down?name=%s' % (baseUrl, name),
                           'delete_url' : '%s/@@delete-portlet?name=%s' % (baseUrl, name),
@@ -92,10 +97,10 @@ class EditPortletManagerRenderer(Explicit):
         
     def addable_portlets(self):
         baseUrl = self.__parent__.getAssignmentMappingUrl(self.manager)
-        return [ {'title' : p[1].title,
-                  'description' : p[1].description,
-                  'addview' : '%s/+/%s' % (baseUrl, p[1].addview,),
-                  } for p in getUtilitiesFor(IPortletType)]
+        return [ {'title' : p.title,
+                  'description' : p.description,
+                  'addview' : '%s/+/%s' % (baseUrl, p.addview,),
+                  } for p in self.manager.getAddablePortletTypes()]
         
     def _lazyLoadPortlets(self):
         if self.__portlets is None:
