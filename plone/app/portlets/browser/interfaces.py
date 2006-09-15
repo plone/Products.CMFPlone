@@ -19,22 +19,30 @@ class IManagePortletsView(Interface):
         """Get the assignments in the current context for the given manager.
         """
 
-class IManageContextualPortletsView(IManagePortletsView):
+class IManageDashboardPortletsView(IManagePortletsView):
+    """Marker for the manage dashboard portlets view
+    """
+
+class IManageColumnPortletsView(IManagePortletsView):
+    """Base class for views that should display the edit fuctionality
+    for column portlets.
+    
+    This allows us to register a generic portlet manager renderer for this
+    view that can apply to different categories of assignment.
+    """
+
+class IManageContextualPortletsView(IManageColumnPortletsView):
     """Marker for the manage contextual portlets view
     """
-
-class IManageCurrentUserPortletsView(IManagePortletsView):
-    """Marker for the manage contextual personal view
-    """
-
-class IManageUserPortletsView(IManagePortletsView):
+    
+class IManageUserPortletsView(IManageColumnPortletsView):
     """Marker for the manage user portlets view
     """
 
-class IManageGroupPortletsView(IManagePortletsView):
+class IManageGroupPortletsView(IManageColumnPortletsView):
     """Marker for the manage group portlets view
     """
 
-class IManageContentTypePortletsView(IManagePortletsView):
+class IManageContentTypePortletsView(IManageColumnPortletsView):
     """Marker for the manage content type portlets view
     """

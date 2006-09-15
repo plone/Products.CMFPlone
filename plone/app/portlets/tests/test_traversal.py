@@ -28,10 +28,10 @@ class TestTraversal(PortletsTestCase):
         mapping['foo'] = assignment
         self.failUnless(target['foo'] is assignment)
 
-    def testCurrentUserNamespace(self): 
+    def testDashboardNamespace(self): 
         assignment = ClassicPortletAssignment()
-        manager = getUtility(IPortletManager, name='plone.leftcolumn')
-        mapping = self.portal.restrictedTraverse('++myportlets++plone.leftcolumn')
+        manager = getUtility(IPortletManager, name='plone.dashboard')
+        mapping = self.portal.restrictedTraverse('++dashboard++')
         self.failUnless(aq_parent(mapping) is self.portal)
         mapping['foo'] = assignment
         self.failUnless(manager[USER_CATEGORY][user_name]['foo'] is assignment)

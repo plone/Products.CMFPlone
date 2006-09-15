@@ -8,8 +8,8 @@
         name="contextportlets"
         />
     <adapter
-        factory=".traversal.CurrentUserPortletNamespace"
-        name="myportlets"
+        factory=".traversal.DashboardNamespace"
+        name="dashboard"
         />
     <adapter
         factory=".traversal.UserPortletNamespace"
@@ -51,9 +51,9 @@
     
     <browser:page
       for="Products.CMFCore.interfaces.ISiteRoot"
-      class=".manage.ManageCurrentUserPortlets"
-      name="manage-my-portlets"
-      template="templates/manage-currentuser.pt"
+      class=".manage.ManageDashboardPortlets"
+      name="manage-dashboard"
+      template="templates/manage-dashboard.pt"
       permission="plone.app.portlets.ManageOwnPortlets"
       />
     
@@ -82,6 +82,11 @@
         factory=".editmanager.ContextualEditPortletManagerRenderer"
         provides="plone.portlets.interfaces.IPortletManagerRenderer"
         />
+    <adapter
+        factory=".editmanager.DashboardEditPortletManagerRenderer"
+        provides="plone.portlets.interfaces.IPortletManagerRenderer"
+        />
+
     
     <!-- Operations on portlets when in edit mode -->
     <browser:pages

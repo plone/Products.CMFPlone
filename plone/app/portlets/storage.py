@@ -37,7 +37,7 @@ class PortletAssignmentMappingTraverser(ItemTraverser):
 class CurrentUserAssignmentMapping(SimpleItem):
     """An on-the-fly assignment mapping that knows about the current user.
     
-    This is necessary because during traversal to the ++myportlets++ namespace,
+    This is necessary because during traversal to the ++dashboard++ namespace,
     authentication hasn't kicked in yet, so we must defer to later.
     """
     implements(IPortletAssignmentMapping)
@@ -87,7 +87,7 @@ class CurrentUserAssignmentMapping(SimpleItem):
         if userId is None and not create:
             return {}
         elif userId is None:
-            raise Unauthorized, "Cannot assign portlets to anonymous via ++myportlets++"
+            raise Unauthorized, "Cannot assign portlets to anonymous via ++dashboard++"
         category = aq_inner(self.categoryMapping)
         assignments = category.get(userId, None)
         if assignments is None and not create:

@@ -25,8 +25,11 @@ from plone.portlets.constants import USER_CATEGORY
 from plone.portlets.constants import GROUP_CATEGORY
 from plone.portlets.constants import CONTENT_TYPE_CATEGORY
 
-from plone.app.portlets.browser.interfaces import IManagePortletsView
+from plone.app.portlets.interfaces import IDashboard
+
+from plone.app.portlets.browser.interfaces import IManageColumnPortletsView
 from plone.app.portlets.browser.interfaces import IManageContextualPortletsView
+from plone.app.portlets.browser.interfaces import IManageDashboardPortletsView
 
 from Products.Five.browser import BrowserView 
 from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
@@ -38,7 +41,7 @@ class EditPortletManagerRenderer(Explicit):
     which assignments to display.
     """
     implements(IPortletManagerRenderer)
-    adapts(Interface, IBrowserRequest, IManagePortletsView, IPortletManager)
+    adapts(Interface, IBrowserRequest, IManageColumnPortletsView, IPortletManager)
 
     def __init__(self, context, request, view, manager):
         self.__parent__ = view
@@ -153,6 +156,11 @@ class ContextualEditPortletManagerRenderer(EditPortletManagerRenderer):
     def content_type_blacklist_status(self):
         assignable = getMultiAdapter((self.context, self.manager,), ILocalPortletAssignmentManager)
         return assignable.getBlacklistStatus(CONTENT_TYPE_CATEGORY)
+  
+class DashboardEditPortletManagerRenderer(EditPortletManagerRenderer):
+    """Render a portlet manager in edit mode for the dashboard
+    """
+    adapts(Interface, IBrowserRequest, IManageDashboardPortletsView, IDashboard)
         
 class ManagePortletAssignments(BrowserView):
     """Utility views for managing portlets for a particular column

@@ -36,8 +36,9 @@ class ContextPortletNamespace(object):
         manager = getMultiAdapter((self.context, column,), IPortletAssignmentMapping)
         return manager
 
-class CurrentUserPortletNamespace(object):
-    """Used to traverse to a portlet assignable for the current user.
+class DashboardNamespace(object):
+    """Used to traverse to a portlet assignable for the current user for
+    the dashboard.
     """
     implements(ITraversable)
     adapts(ISiteRoot, IHTTPRequest)
@@ -47,7 +48,7 @@ class CurrentUserPortletNamespace(object):
         self.request = request
         
     def traverse(self, name, ignore):
-        column = getUtility(IPortletManager, name=name)
+        column = getUtility(IPortletManager, name='plone.dashboard')
         category = column[USER_CATEGORY]
         return CurrentUserAssignmentMapping(aq_inner(self.context), category)
         

@@ -23,7 +23,7 @@ from plone.app.portlets.storage import PortletAssignmentMapping
 
 from plone.app.portlets.browser.interfaces import IManagePortletsView
 from plone.app.portlets.browser.interfaces import IManageContextualPortletsView
-from plone.app.portlets.browser.interfaces import IManageCurrentUserPortletsView
+from plone.app.portlets.browser.interfaces import IManageDashboardPortletsView
 from plone.app.portlets.browser.interfaces import IManageGroupPortletsView
 from plone.app.portlets.browser.interfaces import IManageContentTypePortletsView
 
@@ -113,14 +113,14 @@ class ManageContextualPortlets(BrowserView):
                     
         self.context.request.response.redirect(self.context.absolute_url() + '/@@manage-portlets')
 
-class ManageCurrentUserPortlets(BrowserView):
-    implements(IManageCurrentUserPortletsView)
+class ManageDashboardPortlets(BrowserView):
+    implements(IManageDashboardPortletsView)
         
     # IManagePortletsView implementation
     
     def getAssignmentMappingUrl(self, manager):
         baseUrl = str(getMultiAdapter((self.context, self.request), name='absolute_url'))
-        return '%s/++myportlets++%s' % (baseUrl, manager.__name__)
+        return '%s/++dashboard++' % (baseUrl, )
 
     def getAssignmentsForManager(self, manager):
         userId = self._getUserId()

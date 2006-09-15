@@ -1,0 +1,71 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="plone">
+
+<head>
+    <metal:block fill-slot="top_slot"
+                 tal:define="dummy python:request.set('disable_border',1)" />
+</head>
+
+<body>
+
+<tal:comment replace="nothing">
+    Please note that this template fills the "content" slot instead of the
+    "main" slot, this is done so we can provide stuff like the content
+    tabs. This also means that we have to supply things that are normally
+    present from main_template.
+</tal:comment>
+
+<metal:main fill-slot="content"
+    tal:define="errors options/state/getErrors | nothing">
+    <tal:main-macro metal:define-macro="main"
+                    tal:define="memberinfo mtool/getMemberInfo;
+                                name python:memberinfo['fullname'] or member.getUserName() or member.getId()">
+ 
+    <div id="content" class="documentEditable">
+
+        <h5 class="hiddenStructure">Views</h5>
+        
+        <ul class="contentViews">
+          <li>
+            <a href=""
+               tal:attributes="href string: ${portal_url}/dashboard"
+               i18n:translate="label_view">View</a>
+          </li>
+          <li class="selected">
+            <a href=""
+               tal:attributes="href string:${portal_url}/@@manage-dashboard"
+               i18n:translate="label_edit">Manage</a>
+          </li>
+        </ul>
+
+        <div class="contentActions">
+          &nbsp;
+        </div>
+
+        <div class="documentContent" id="region-content">
+
+            <a name="documentContent"></a>
+                    
+            <div metal:use-macro="context/global_statusmessage/macros/portal_message">
+                Portal status message
+            </div>
+
+            <!-- Author information -->
+            <h1 class="documentFirstHeading" i18n:translate="dashboard_title">
+                <span tal:content="name" i18n:name="user_name" />'s dashboard
+            </h1>
+
+            <div id="dashboard-portlets" 
+              tal:content="structure provider:plone.dashboard" />
+        
+    </div> <!-- end simulated tabs -->
+
+    </tal:main-macro>
+
+</metal:main>
+
+</body>
+</html>
+
