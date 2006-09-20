@@ -51,7 +51,7 @@ Installing Plone manually, step by step instructions.
   - CMFQuickInstallerTool 1.5.9 or newer
      Included in the Plone tarball
 
-  - GroupUserFolder 3.53 or newer
+  - GroupUserFolder 3.54 or newer
      Included in the Plone tarball
 
   - CMFFormController 2.0.5 or newer
@@ -63,7 +63,7 @@ Installing Plone manually, step by step instructions.
   - Archetypes 1.4.1 or newer
      Included in the Plone tarball
 
-  - ATContentTypes 1.1.2 or newer
+  - ATContentTypes 1.1.3 or newer
      Included in the Plone tarball
 
   - ATReferenceBrowserWidget 1.5 or newer
@@ -87,13 +87,13 @@ Installing Plone manually, step by step instructions.
   - Placeless Translation Service 1.3.2 or newer
      Included in the Plone tarball
 
-  - PloneTranslations 2.5.1
+  - PloneTranslations 2.6.0
      Included in the Plone tarball
 
   - PloneLanguageTool 1.4 or newer
      Included in the Plone tarball
 
-  - CMFPlacefulWorkflow 1.0.1 or newer
+  - CMFPlacefulWorkflow 1.0.2 or newer
      Included in the Plone tarball
 
   - PlonePAS 2.1 or newer
@@ -108,7 +108,7 @@ Installing Plone manually, step by step instructions.
   - PluginRegistry 1.1 or newer
      Included in the Plone tarball
 
-  - ExternalEditor 0.9.1 or newer
+  - ExternalEditor 0.9.2 or newer
      Included in the Plone tarball
 
   - kupu 1.3.8 or newer
