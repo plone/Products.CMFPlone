@@ -761,6 +761,8 @@ class TestPortalBugs(PloneTestCase.PloneTestCase):
         class FakeContext:
             def getSite(self):
                 return portal
+            def readDataFile(self, filename):
+                return True # Anything other than None runs the step
 
         setuphandlers.importFinalSteps(FakeContext()) # raises error if fail
         self.failUnless(1 == 1)
