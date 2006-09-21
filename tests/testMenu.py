@@ -254,7 +254,7 @@ class TestFactoriesMenu(PloneTestCase.PloneTestCase):
         constraints.setLocallyAllowedTypes(('Document',))
         constraints.setImmediatelyAddableTypes(('Document',))
         actions = self.menu.getMenuItems(self.folder.folder1, self.request)
-        self.failUnless('Image' in actions[0]['extra']['id'])
+        self.failUnless('Event' in actions[0]['extra']['id'])
         
 class TestWorkflowMenu(PloneTestCase.PloneTestCase):
     
@@ -299,7 +299,7 @@ class TestContentMenu(PloneTestCase.PloneTestCase):
     def testActionsSubMenuIncluded(self):
         items = self.menu.getMenuItems(self.folder, self.request)
         actionsMenuItem = [i for i in items if i['extra']['id'] == 'plone.contentmenu.actions'][0]
-        self.assertEqual(actionsMenuItem['action'], self.folder.aq_parent.absolute_url() + '/folder_contents')
+        self.assertEqual(actionsMenuItem['action'], self.folder.absolute_url() + '/folder_contents')
         self.failUnless(len(actionsMenuItem['submenu']) > 0)
 
     # Display sub-menu
@@ -315,7 +315,6 @@ class TestContentMenu(PloneTestCase.PloneTestCase):
         _createObjectByType('CMF Folder', self.folder, 'f1')
         items = self.menu.getMenuItems(self.folder.f1, self.request)
         self.assertEqual([i for i in items if i['extra']['id'] == 'plone.contentmenu.display'], [])
-        
     
     def testDisplayMenuNotIncludedIfNoActionsAvailable(self):
         self.folder.invokeFactory('Document', 'doc1')

@@ -48,8 +48,8 @@ directlyProvides(IContentMenuItem, IMenuItemType)
 #   id           :   The id of the menu item, e.g. the id of the type to add or
 #                        the workflow transition
 #   state        :   The current state of the item
-#   stateTitle   :   The title of the state - to be displayed after the main item
-#                        title
+#   stateTitle   :   The title of the state - to be displayed after the main
+#                        item title
 #   class        :   A CSS class to apply
 #   separator    :   True if the item should be preceded by a separator
 #   hideChildren :   True if the item's children should not be rendered

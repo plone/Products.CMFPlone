@@ -1,5 +1,6 @@
 <ul tal:define="menu view/menu"
-    tal:condition="view/available">
+    tal:condition="view/available"
+    i18n:domain="plone">
 
     <li tal:repeat="menuItem menu">
 
@@ -9,16 +10,25 @@
             <img width="16"
                  height="16"
                  tal:condition="menuItem/icon"
-                 tal:attributes="src string:$portal_url/${menuItem/icon};
-                                 alt menuItem/description"/>
+                 tal:attributes="src menuItem/icon;
+                                 alt menuItem/description"
+                 i18n:attributes="alt;"/>
             <a href="#"
                tal:omit-tag="not:menuItem/action"
                tal:attributes="href menuItem/action;
-                               title menuItem/description">
-                <span tal:content="menuItem/title">Title</span>
+                               title menuItem/description"
+               i18n:attributes="title;">
+
+                <span tal:content="menuItem/title"
+                      i18n:translate="">
+                    Title
+                </span>
                 <span tal:condition="menuItem/extra/stateTitle | nothing"
                       tal:attributes="class menuItem/extra/class | nothing"
-                      tal:content="menuItem/extra/stateTitle">State title</span>
+                      tal:content="menuItem/extra/stateTitle"
+                      i18n:translate="">
+                    State title
+                </span>
             </a>
           </dt>
           <dd class="actionMenuContent" tal:condition="not:menuItem/extra/hideChildren | nothing">
@@ -29,8 +39,12 @@
                        tal:omit-tag="not:subMenuItem/action"
                        tal:attributes="href subMenuItem/action;
                                        title subMenuItem/description;
-                                       class subMenuItem/extra/class | nothing">
-                        <span tal:content="subMenuItem/title">Title</span>
+                                       class subMenuItem/extra/class | nothing"
+                       i18n:attributes="title">
+                        <span tal:content="subMenuItem/title"
+                              i18n:translate="">
+                            Title
+                        </span>
                     </a>
                   </li>
                 </tal:block>

@@ -47,8 +47,11 @@ class ActionsSubMenuItem(BrowserSubMenuItem):
     
     @property
     def action(self):
-        parent = utils.parent(self.context)
-        return parent.absolute_url() + '/folder_contents'
+        ploneView = getMultiAdapter((self.context, self.request), name="plone")
+        folder = utils.parent(self.context)
+        if ploneView.isStructuralFolder():
+            folder = self.context
+        return folder.absolute_url() + '/folder_contents'
     
     @cache_decorator
     def available(self):
@@ -463,7 +466,7 @@ class FactoriesSubMenuItem(BrowserSubMenuItem):
         showConstrainOptions = self._showConstrainOptions()
         return (len(itemsToAdd) == 1 and not showConstrainOptions)
             
-class FactoriesMenu(BrowserMenu):    
+class FactoriesMenu(BrowserMenu):
     implements(IFactoriesMenu)
     
     def getMenuItems(self, context, request):
@@ -508,6 +511,14 @@ class FactoriesMenu(BrowserMenu):
                                   'extra'        : {'id' : typeId, 'separator' : None, 'class' : cssClass},
                                   'submenu'      : None,
                                  })
+
+        # Sort the addable content types based on their translated title
+        # BBB addContext.translate should be replaced by a translate call of
+        # "from zope.i18n import translate", once we use only the Zope3
+        # translation machinery
+        results = [(addContext.translate(ctype['title']), ctype) for ctype in results]
+        results.sort()
+        results = [ctype[-1] for ctype in results]
 
         if haveMore:
             url = '%s/folder_factories' % (addContext.absolute_url(),)
