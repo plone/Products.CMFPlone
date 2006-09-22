@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.5.1 - released September 20, 2006
 
+    - Noted the new hard dependency on ElementTree that was introduced in the
+      Marshall product as of Plone 2.5.1.
+      [hannosch]
+
     - The plone_various and plone-final steps now honour
       GenericSetup conventions and only run when a config file is present for
       them. ExtensionProfiles no longer need to override these steps. Fixes

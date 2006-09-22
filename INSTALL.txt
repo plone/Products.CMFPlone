@@ -84,6 +84,10 @@ Installing Plone manually, step by step instructions.
      Note: You have to build PIL with jpeg and png support. See the README
      of PIL for more information.
 
+  - Python ElementTree
+     Not included in the Plone tarball
+     http://effbot.org/downloads/#elementtree
+
   - Placeless Translation Service 1.3.2 or newer
      Included in the Plone tarball
 
