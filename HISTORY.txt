@@ -4,11 +4,14 @@ Changelog for Plone
 
 Plone 3.0 - Unreleased
 
-    - Added migration for the css files added by limi in the previous
-       entry
-       [jladage]
+    - Silenced the utf-8 / Unicode DeprecationWarning. We should only emit
+      warnings once we fixed this in all standard cases ourselves.
+      [hannosch]
 
-    - Split up the CSS into a couple of new modules to ease customization
+    - Added migration for the css files added by limi in the previous entry.
+      [jladage]
+
+    - Split up the CSS into a couple of new modules to ease customization.
       [limi]
 
     - Added an optional keyword argument to the date_components_support script
