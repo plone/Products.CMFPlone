@@ -16,258 +16,7 @@
 /* <dtml-with base_properties> (do not remove this :) */
 /* <dtml-call "REQUEST.set('portal_url', portal_url())"> (not this either :) */
 
-.standalone,
-.documentEditable * .standalone {
-    background: &dtml-globalBackgroundColor; url(&dtml-portal_url;/linkOpaque.gif) 9px 1px no-repeat;
-    cursor: pointer;
-    font-size: &dtml-fontSmallSize;;
-    padding: 1px 1px 1px 15px;
-    text-transform: &dtml-textTransform;;
-}
-.context,
-.documentEditable * .context {
-    background: transparent url(&dtml-portal_url;/linkTransparent.gif) 9px 1px no-repeat;
-    cursor: pointer;
-    font-size: &dtml-fontSmallSize;;
-    padding: 1px 1px 1px 15px;
-    text-transform: &dtml-textTransform;;
-}
-.destructive,
-.documentEditable * .destructive {
-    background: &dtml-notifyBackgroundColor; url(&dtml-portal_url;/linkTransparent.gif) 9px 1px no-repeat;
-    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-notifyBorderColor;;
-    cursor: pointer;
-    font-size: &dtml-fontSmallSize;;
-    padding: 1px 1px 1px 15px;
-    text-transform: &dtml-textTransform;;
-}
-input.searchButton {
-    margin-bottom: &dtml-borderWidth; ! important;
-    font-size: &dtml-fontSmallSize;;
-    background: &dtml-backgroundColor; url(&dtml-portal_url;/search_icon.gif) 2px 1px no-repeat;
-    cursor: pointer;
-    padding: 1px 1px 1px 15px;
-    text-transform: &dtml-textTransform;;
-
-}
-.add,
-.documentEditable * .add {
-}
-.quickSearch {
-}
-.notify,
-.documentEditable * .notify {
-    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-notifyBorderColor;;
-}
-
-.card {
-    background-color: &dtml-globalBackgroundColor;;
-    border-color: &dtml-globalBorderColor;;
-    border-width: &dtml-borderWidth;;
-    border-style: &dtml-borderStyle;;
-    float: left;
-    margin: 1em;
-    text-align: center;
-    width: 110px;
-    padding: 1em 0;
-}
-
-.card a {
-    text-decoration: none;
-}
-
-.portrait {
-    background-color: &dtml-globalBackgroundColor;;
-    border-color: &dtml-globalBorderColor;;
-    border-width: &dtml-borderWidth;;
-    border-style: &dtml-borderStyle;;
-    font-size: &dtml-fontSmallSize;;
-    margin: 0.5em;
-    padding: 1em 0 0.5em 0;
-    text-align: center;
-    width: 100px;
-}
-
-.portraitPhoto {
-    border: 1px solid black;
-}
-
-.listing,
-.stx table {
-    /* The default table for document listings. Contains name, document types, modification times etc in a file-browser-like fashion */
-    border-collapse: collapse;
-    border-left: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
-    border-bottom: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
-    font-size: &dtml-fontSmallSize;;
-    margin: 1em 0em 1em 0em;
-}
-.listing th,
-.stx table th {
-    background: &dtml-globalBackgroundColor;;
-    border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
-    border-bottom: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
-    border-right: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
-    font-weight: normal;
-    padding: 0.25em 1em;
-    text-transform: &dtml-textTransform;;
-}
-.listing .top {
-    border-left: &dtml-borderWidth; &dtml-borderStyle; &dtml-backgroundColor;;
-    border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-backgroundColor; ! important;
-    border-right: &dtml-borderWidth; &dtml-borderStyle; &dtml-backgroundColor; ! important;
-    text-align: right ! important;
-    padding: 0em 0em 1em 0em;
-}
-.listing .listingCheckbox {
-    text-align: center;
-}
-.listing td,
-.stx table td {
-    border-right: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
-    padding: 0.25em 1em;
-}
-
-.listing a {
-    text-decoration: none;
-}
-
-.listing a:hover {
-    text-decoration: underline;
-}
-.listing img {
-    vertical-align: middle;
-}
-
-/* Vertical addition class */
-
-.vertical {
-    background-color: &dtml-backgroundColor;;	
-}
-.vertical th {
-    padding: 0.5em;
-}
-
-.vertical td {
-    border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
-    padding: 0.5em;
-}
-
-
-
-ul.configlets {
-    margin: 1em 0;
-    list-style-image: none;
-    list-style: none;
-}
-
-ul.configlets li {
-    margin-bottom: 1em;
-}
-
-ul.configlets li a {
-    text-decoration: none;
-    border: none;
-}
-
-ul.configlets li a:visited {
-    color: &dtml-linkColor;;
-    background-color: transparent;
-}
-
-ul.configlets li a:active {
-    color: &dtml-linkColor;;
-    background-color: transparent;
-}
-
-ul.configlets li label {
-    font-weight: bold;
-}
-
-ul.configletDetails {
-    margin: 0em 1em 1em 4em;
-    list-style-image: none;
-    list-style: none;
-}
-
-ul.configletDetails li {
-    margin-bottom: 1em;
-    display: inline;
-}
-
-ul.configletDetails li a {
-	text-decoration: none;
-}
-
-ul.configletDetails li label {
-    font-weight: bold;
-}
-
-/* List classes without markers */
-
-ul.visualNoMarker,
-ol.visualNoMarker {
-    list-style-type: none;
-    list-style-image: none;
-    margin: 0.5em 0 0 0;
-}
-
-
-
-/* Additional STX workaround classes */
-.stx table p /* stupid STX table workaround */
-{
-    margin: 0;
-    padding: 0;
-}
-.stx table  /* stupid STX table workaround */
-{
-    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor; ! important;
-}
-.stx table td {
-    border-bottom: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
-}
-
-.reviewHistory {
-    display: inline;
-    font-size: 110% !important; 
-    color: Black;
-}
-
-.comment {
-    background: &dtml-evenRowBackgroundColor;; 
-    border: &dtml-borderWidth; &dtml-borderStyleAnnotations; &dtml-globalBorderColor;; 
-    padding: 0.25em 1em 0.5em 1em;
-    margin-bottom: 1em;
-}
-
-.comment h1,
-.comment h2,
-.comment h3,
-.comment h4, 
-.comment h5,
-.comment h6 {
-    border-bottom: &dtml-borderWidth; &dtml-borderStyleAnnotations; &dtml-discreetColor;;
-    font-weight: normal;
-}
-
-.comment h3 a {
-    background-image: url(&dtml-portal_url;/discussionitem_icon.gif);
-    background-repeat: no-repeat;
-    padding-left: 18px;
-    margin-left: -1px;
-    margin-bottom: 1px;
-    min-height: 1.6em;
-    height: auto;
-    line-height: 1.6em;	
-}
-
-.commentBody {
-    margin: 0 1em 1em 1em;
-}
-
-.spacer {
-    margin: 1em;
-}
+/* Editable border */
 
 .contentViews {
     background-color: transparent;
@@ -535,6 +284,118 @@ ol.visualNoMarker {
 */
 
 
+
+
+
+ul.configlets {
+    margin: 1em 0;
+    list-style-image: none;
+    list-style: none;
+}
+
+ul.configlets li {
+    margin-bottom: 1em;
+}
+
+ul.configlets li a {
+    text-decoration: none;
+    border: none;
+}
+
+ul.configlets li a:visited {
+    color: &dtml-linkColor;;
+    background-color: transparent;
+}
+
+ul.configlets li a:active {
+    color: &dtml-linkColor;;
+    background-color: transparent;
+}
+
+ul.configlets li label {
+    font-weight: bold;
+}
+
+ul.configletDetails {
+    margin: 0em 1em 1em 4em;
+    list-style-image: none;
+    list-style: none;
+}
+
+ul.configletDetails li {
+    margin-bottom: 1em;
+    display: inline;
+}
+
+ul.configletDetails li a {
+	text-decoration: none;
+}
+
+ul.configletDetails li label {
+    font-weight: bold;
+}
+
+
+
+
+/* Additional STX workaround classes */
+.stx table p /* stupid STX table workaround */
+{
+    margin: 0;
+    padding: 0;
+}
+.stx table  /* stupid STX table workaround */
+{
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor; ! important;
+}
+.stx table td {
+    border-bottom: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+}
+
+.reviewHistory {
+    display: inline;
+    font-size: 110% !important; 
+    color: Black;
+}
+
+.comment {
+    background: &dtml-evenRowBackgroundColor;; 
+    border: &dtml-borderWidth; &dtml-borderStyleAnnotations; &dtml-globalBorderColor;; 
+    padding: 0.25em 1em 0.5em 1em;
+    margin-bottom: 1em;
+}
+
+.comment h1,
+.comment h2,
+.comment h3,
+.comment h4, 
+.comment h5,
+.comment h6 {
+    border-bottom: &dtml-borderWidth; &dtml-borderStyleAnnotations; &dtml-discreetColor;;
+    font-weight: normal;
+}
+
+.comment h3 a {
+    background-image: url(&dtml-portal_url;/discussionitem_icon.gif);
+    background-repeat: no-repeat;
+    padding-left: 18px;
+    margin-left: -1px;
+    margin-bottom: 1px;
+    min-height: 1.6em;
+    height: auto;
+    line-height: 1.6em;	
+}
+
+.commentBody {
+    margin: 0 1em 1em 1em;
+}
+
+.spacer {
+    margin: 1em;
+}
+
+
+
 /* Collapsible elements */
 
 dl.collapsible {
@@ -646,22 +507,6 @@ dl.collapsedInlineCollapsible dt.collapsibleHeader {
     border-width: &dtml-borderWidth;;
 }
 
-.visualOverflow {
-    overflow: auto;
-    margin: 0 0 1em 0;
-}
-
-.visualOverflow pre,
-.visualOverflow table,
-.visualOverflow img {
-    margin: 0;
-}
-
-.visualFontSizeCorrection { /* Correction for WYSIWYG editors */
-    font-size: 75%;
-    background: transparent;
-    background-image: none;
-}
 
 
 /* for highlighting of search terms */
@@ -682,20 +527,6 @@ dl.collapsedInlineCollapsible dt.collapsibleHeader {
     border-collapse: collapse;
     border: 2px &dtml-borderStyle; &dtml-notifyBorderColor;;
     padding: 1px;
-}
-
-/* Styles to make the editing widgets look more like their view counterparts */
-
-#archetypes-fieldname-title input {
-    font-size: 160%;
-    font-family: <dtml-var headingFontFamily>;
-    font-weight: normal;
-    width: 99%;
-}
-
-#archetypes-fieldname-description textarea {
-    font: 100% <dtml-var fontFamily>;
-    font-weight: bold;
 }
 
 /* for draggable elements */

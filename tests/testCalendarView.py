@@ -7,7 +7,6 @@ if __name__ == '__main__':
 
 from Products.CMFPlone.tests import PloneTestCase
 
-from Products.CMFPlone.tests.PloneTestCase import FunctionalTestCase
 from Products.CMFPlone.tests.PloneTestCase import default_user
 from Products.CMFPlone.tests.PloneTestCase import default_password
 

@@ -8,6 +8,9 @@
 ##title=encapsulates the related box
 ##
 
+context.plone_log("The navigationLocalRelated script is deprecated and will be "
+                  "removed in Plone 3.5.")
+
 local = []
 remote = []
 subjects=None

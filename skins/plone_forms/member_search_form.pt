@@ -10,26 +10,26 @@
     <h1 i18n:translate="heading_member_search">Search for users</h1>
 
     <p i18n:translate="description_member_search">
-    This search form enables you to find users by specifying one or more
-    search criteria.
+        This search form enables you to find users by specifying one or more
+        search criteria.
     </p>
 
-  	<form action="member_search_results"
+    <form action="member_search_results"
           method="post"
           name="search"
           tal:define="DateTime python:modules['DateTime'].DateTime">
 
         <fieldset>
             <legend i18n:translate="legend_member_search_criteria">User Search Criteria</legend>
-    
+
             <div class="field">
                 <label for="name"
                        i18n:translate="label_name">Name</label>
                 
                 <div class="formHelp" i18n:translate="help_search_name">
-                Return users with login names containing this value.
+                    Find users whose login-names contain
                 </div>
-    
+
                 <input type="text"
                        id="login"
                        name="login"
@@ -38,15 +38,15 @@
                        tal:attributes="tabindex tabindex/next;"
                        />
             </div>
-    
+
             <div class="field">
                 <label for="email"
                        i18n:translate="label_email">E-mail</label>
-                
+
                 <div class="formHelp" i18n:translate="help_search_email">
-                Return users with email addresses containing this value.
+                    Find users whose email-addresses contain
                 </div>
-                
+
                 <input type="text"
                        id="email"
                        name="email"
@@ -55,16 +55,17 @@
                        tal:attributes="tabindex tabindex/next;"
                        />
             </div>
-    
-    
+
             <div class="field">
                 <label for="last_login_time"
-                       i18n:translate="label_last_logged_in">Last logged in</label>
-                
+                       i18n:translate="label_last_logged_in">
+                    Last logged in
+                </label>
+
                 <div class="formHelp" i18n:translate="help_search_last_logged_in">
-                Return users who have logged in since yesterday, last week, etc.
+                    Find users who have logged in since yesterday, last week, etc.
                 </div>
-    
+
                 <tal:datetime define="today python:DateTime().earliestTime()">
                     <select name="last_login_time:date"
                             id="last_login_time"
@@ -74,10 +75,10 @@
                                         lastweek python:(today-7).Date();
                                         lastmonth python:(today-31).Date();
                                         ever string:2000/02/01 00:00:00 GMT;">
-                        <option value="#" tal:attributes="value yesterday" i18n:translate="time_yesterday"> Yesterday </option>
-                        <option value="#" tal:attributes="value lastweek" i18n:translate="time_last_week"> Last week </option>
-                        <option value="#" tal:attributes="value lastmonth" i18n:translate="time_last_month"> Last month </option>
-                        <option value="#" tal:attributes="value ever" selected="selected" i18n:translate="time_ever"> Ever </option>
+                        <option value="#" tal:attributes="value yesterday" i18n:translate="time_yesterday">Yesterday</option>
+                        <option value="#" tal:attributes="value lastweek" i18n:translate="time_last_week">Last week</option>
+                        <option value="#" tal:attributes="value lastmonth" i18n:translate="time_last_month">Last month</option>
+                        <option value="#" tal:attributes="value ever" selected="selected" i18n:translate="time_ever">Ever</option>
                     </select>
                 </tal:datetime>
             </div>
@@ -92,10 +93,10 @@
                      i18n:translate="label_before_specified_time">Not logged in since specified time</label>
 
               <div class="formHelp" i18n:translate="help_search_before_specified_time">
-                Return users who have NOT logged in since the time specified above.
+                Find users who have NOT logged in since the time specified above.
               </div>
             </div>
-    
+
             <tal:condition condition="python:checkPermission('View Groups', portal)">
             <div class="field"
                  tal:define="gtool context/portal_groups;
@@ -105,7 +106,7 @@
                         i18n:translate="legend_group"> Group </label>
 
                  <div class="formHelp" i18n:translate="help_search_group"> 
-                 Return users in the selected group.
+                     Find users in the selected group.
                  </div>
 
                  <select id="groupname" name="groupname">
@@ -121,14 +122,14 @@
                  tal:condition="is_manager"
                  tal:define="memberRoles request/roles|nothing;
                              portalRoles python:mtool.getPortalRoles()">
-    
+
                 <label for="roles"
                        i18n:translate="label_roles">Role(s)</label>
-    
+
                 <div class="formHelp" i18n:translate="help_search_roles">
-                Return users with all of the selected roles.
+                    Find users with all of the selected roles.
                 </div>
-    
+
                 <metal:role tal:repeat="role portalRoles">
                 <metal:tabindex tal:define="tabindex tabindex/next">
                     <input id="roles"
@@ -149,7 +150,7 @@
                 </metal:tabindex>
                 </metal:role>
             </div>
-    
+
             <div class="formControls">
                 <input class="context"
                        tabindex=""

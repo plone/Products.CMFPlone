@@ -9,7 +9,7 @@ from Products.CMFPlone import ToolNames
 from Globals import InitializeClass
 from AccessControl import ClassSecurityInfo, Unauthorized
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
-from Products.CMFPlone.PloneTool import EMAIL_RE
+from Products.SecureMailHost.SecureMailHost import EMAIL_RE
 
 # - remove '1', 'l', and 'I' to avoid confusion
 # - remove '0', 'O', and 'Q' to avoid confusion
@@ -27,7 +27,6 @@ def getValidPasswordChars():
     return password_chars
 
 password_chars = getValidPasswordChars()
-
 
 # seed the random number generator
 random.seed()

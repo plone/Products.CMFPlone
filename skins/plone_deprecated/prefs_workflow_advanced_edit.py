@@ -7,7 +7,9 @@
 ##parameters=wf
 ##title=
 ##
-# Example code:
+
+context.plone_log("The prefs_workflow_advanced_edit script is deprecated and "
+                  "will be removed in Plone 3.5.")
 
 # Import a standard function, and get the HTML request and response objects.
 from Products.PythonScripts.standard import html_quote

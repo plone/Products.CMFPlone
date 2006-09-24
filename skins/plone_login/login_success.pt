@@ -24,7 +24,6 @@
 
       <h1 i18n:translate="heading_you_are_now_logged_in">You are now logged in</h1>
 
-
       <div tal:condition="initial_login">
         <p i18n:translate="description_logged_in_explain">
            Notice that the top right bar has changed. It now
@@ -82,15 +81,8 @@
          </p>
 
          <p i18n:translate="description_enable_cookies_for_login">
-            Note: If you do not remain logged in after leaving this
-            page, it is because you need to
-            <span i18n:name="enable_cookies">
-                <a href="enabling_cookies"
-                   i18n:translate="label_enable_cookies">
-                    enable cookies
-                </a>
-            </span>
-            in your browser.
+            Note: If you do not remain logged in after leaving this page,
+            it is because you need to enable cookies in your browser.
          </p>
       </div>
 

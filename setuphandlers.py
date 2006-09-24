@@ -12,7 +12,6 @@ from Products.StandardCacheManagers.RAMCacheManager import \
      RAMCacheManager
 
 from Products.CMFCore.utils import getToolByName
-from Products.CMFCore import permissions as cmfpermissions
 from Products.CMFPlone.utils import _createObjectByType
 from Products.CMFPlone import migrations as migs
 from Products.CMFPlone.Portal import member_indexhtml
@@ -253,6 +252,9 @@ def importVarious(context):
     Provisional handler that does initialization that is not yet taken
     care of by other handlers.
     """
+    # Only run step if a flag file is present (e.g. not an extension profile)
+    if context.readDataFile('plone_various.txt') is None:
+        return
     site = context.getSite()
     gen = PloneGenerator()
     gen.enableSite(site)
@@ -264,6 +266,9 @@ def importFinalSteps(context):
     """
     Final plone import steps.
     """
+    # Only run step if a flag file is present (e.g. not an extension profile)
+    if context.readDataFile('plone-final.txt') is None:
+        return
     out = []
     site = context.getSite()
     gen = PloneGenerator()

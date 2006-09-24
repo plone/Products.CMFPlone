@@ -1,27 +1,29 @@
 from Acquisition import aq_base
 from Acquisition import aq_inner
 from Acquisition import aq_parent
-from Products.CMFPlone.browser.interfaces import IPlone
-from Products.CMFPlone.browser.navtree import getNavigationRoot
-from Products.CMFPlone.interfaces import INonStructuralFolder
-from Products.CMFPlone.interfaces.NonStructuralFolder import \
-     INonStructuralFolder as z2INonStructuralFolder
-from Products.CMFPlone import utils
-from Products.CMFPlone import IndexIterator
-from Products.CMFCore.utils import getToolByName
-from Products.CMFCore.utils import _checkPermission
-from Products.CMFCore.permissions import ModifyPortalContent
-from Products.CMFCore.permissions import ListFolderContents
 from Products.CMFCore.permissions import AddPortalContent
 from Products.CMFCore.permissions import DeleteObjects
+from Products.CMFCore.permissions import ListFolderContents
+from Products.CMFCore.permissions import ModifyPortalContent
 from Products.CMFCore.permissions import ReviewPortalContent
+from Products.CMFCore.utils import _checkPermission
+from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone import utils
+from Products.CMFPlone.browser.interfaces import IPlone
+from Products.CMFPlone.browser.navtree import getNavigationRoot
 from Products.CMFPlone.interfaces import IBrowserDefault
+from Products.CMFPlone.interfaces import INonStructuralFolder
+from Products.CMFPlone.interfaces.NonStructuralFolder import INonStructuralFolder\
+     as z2INonStructuralFolder
 
-from zope.interface import implements
 from zope.component import getMultiAdapter
+from zope.interface import implements
 
 import ZTUtils
 import sys
+
+# @@ deprecate import from this location?
+IndexIterator = utils.IndexIterator
 
 _marker = []
 
@@ -142,9 +144,9 @@ class Plone(utils.BrowserView):
         self._data['isContextDefaultPage'] = self.isDefaultPageInFolder()
 
         self._data['navigation_root_url'] = self.navigationRootUrl()
-        self._data['Iterator'] = IndexIterator
-        self._data['tabindex'] = IndexIterator(pos=30000, mainSlot=False)
-        self._data['uniqueItemIndex'] = IndexIterator(pos=0)
+        self._data['Iterator'] = utils.IndexIterator
+        self._data['tabindex'] = utils.IndexIterator(pos=30000, mainSlot=False)
+        self._data['uniqueItemIndex'] = utils.IndexIterator(pos=0)
 
     def keyFilteredActions(self, actions=None):
         """ See interface """

@@ -1,6 +1,7 @@
 from StringIO import StringIO
 import textwrap
 import warnings
+from zope.tal.talinterpreter import _write_ValueError
 
 def _unicode_replace(structure):
     if isinstance(structure, str):
@@ -9,12 +10,16 @@ def _unicode_replace(structure):
         except UnicodeDecodeError:
             try:
                 text = structure.decode('utf')
-                warnings.warn(textwrap.dedent('''\
-
-                *** *** Insertion of non-unicode non-ascii text in TAL is deprecated and will be broken in Plone 4.0 !!!
-
-                %s...
-                ''' % (repr(structure), )), DeprecationWarning, 2)
+                # BBB: We shouldn't emit those warnings in Plone 3.0, as all
+                # of the core content types still have this problem. Enable this
+                # once we fixed at least Archetypes to return Unicode (which
+                # should happen in Plone 3.5).
+                #warnings.warn(textwrap.dedent('''\
+                #
+                #*** *** Insertion of non-unicode non-ascii text in TAL is deprecated and will be broken in Plone 4.0 !!!
+                #
+                #%s...
+                #''' % (repr(structure), )), DeprecationWarning, 2)
             except UnicodeDecodeError:
                 # XXX Maybe, raise an exception here instead of a warning?
                 warnings.warn(textwrap.dedent('''\

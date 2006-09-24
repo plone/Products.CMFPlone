@@ -10,7 +10,6 @@ from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
 
 from Products.ATContentTypes.interfaces import IATContentType
-from Acquisition import aq_base
 
 AddPortalTopics = 'Add portal topics'
 

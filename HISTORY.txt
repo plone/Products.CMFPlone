@@ -4,6 +4,44 @@ Changelog for Plone
 
 Plone 3.0 - Unreleased
 
+    - Silenced the utf-8 / Unicode DeprecationWarning. We should only emit
+      warnings once we fixed this in all standard cases ourselves.
+      [hannosch]
+
+    - Added migration for the css files added by limi in the previous entry.
+      [jladage]
+
+    - Split up the CSS into a couple of new modules to ease customization.
+      [limi]
+
+    - Added an optional keyword argument to the date_components_support script
+      that allows to specify the minute steps. It still defaults to five.
+      This closes http://dev.plone.org/plone/ticket/5178.
+      [hannosch]
+
+    - Deprecated some more unused skins scripts: extract_date_components,
+      getPersonalFolderFor, navigationCurrent, navigationLocalRelated and
+      rejectAnonymous.
+      [hannosch]
+
+    - Deprecated the never used nor functional prefs_workflow* control panels,
+      we are better of with a fresh start on these anyways.
+      [hannosch]
+
+    - Do not set initial descriptions for the member folders, as these often
+      ended up in a translation the user did not want or understand. We only
+      use the simply username as a title now, which is language independent.
+      This fixes http://dev.plone.org/plone/ticket/4214.
+      [hannosch]
+
+    - Updated the text on the member search form to be more user friendly.
+      This closes http://dev.plone.org/plone/ticket/4675.
+      [hannosch]
+
+    - Deprecated our unmaintainable 'how-to enable cookie' instructions.
+      This closes http://dev.plone.org/plone/ticket/4602.
+      [hannosch]
+
     - Added error tolerant version of FasterStringIO to unicodeFallbackPatch.
       This is monkey patched into the Zope3 tal and pagetemplate modules and
       replaces the monkey patch found in PlacelessTranslationService so far.

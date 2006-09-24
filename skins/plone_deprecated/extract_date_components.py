@@ -9,6 +9,9 @@
 ##
 # this script extracts %Y %m %d %H %M from a given date string
 
+context.plone_log("The extract_date_components script is deprecated and will "
+                  "be removed in Plone 3.5.")
+
 from DateTime import DateTime
 from ZODB.POSException import ConflictError
 

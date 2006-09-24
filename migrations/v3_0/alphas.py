@@ -4,6 +4,7 @@ from zope.component.persistentregistry import PersistentComponents
 
 from Products.CMFCore.ActionInformation import Action
 from Products.CMFCore.ActionInformation import ActionCategory
+from Products.CMFCore.utils import getToolByName
 from Products.Five.component import enableSite
 from Products.Five.component.interfaces import IObjectManagerSite
 
@@ -18,7 +19,11 @@ def three0_alpha1(portal):
     # Migrate old ActionInformation to Actions and move them to the actions tool
     migrateOldActions(portal, out)
 
+    # Add new css files to RR
+    addNewCSSFiles(portal, out)
+
     return out
+
 
 def enableZope3Site(portal, out):
     if not ISite.providedBy(portal):
@@ -61,3 +66,20 @@ def migrateOldActions(portal, out):
 
         # Remove old actions from migrated providers
         provider._actions = ()
+
+def addNewCSSFiles(portal, out):
+    # add new css files to the portal_css registries
+    cssreg = getToolByName(portal, 'portal_css', None)
+    stylesheet_ids = cssreg.getResourceIds()
+    if 'navtree.css' not in stylesheet_ids:
+        cssreg.registerStylesheet('navtree.css', media='screen')
+        cssreg.moveResourceAfter('navtree.css', 'textLarge.css')
+        out.append("Added navtree.css to the registry")
+    if 'invisibles.css' not in stylesheet_ids:
+        cssreg.registerStylesheet('invisibles.css', media='screen')
+        cssreg.moveResourceAfter('invisibles.css', 'navtree.css')
+        out.append("Added invisibles.css to the registry")
+    if 'forms.css' not in stylesheet_ids:
+        cssreg.registerStylesheet('forms.css', media='screen')
+        cssreg.moveResourceAfter('forms.css', 'invisibles.css')
+        out.append("Added forms.css to the registry")

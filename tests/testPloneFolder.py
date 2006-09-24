@@ -12,8 +12,6 @@ from Products.CMFPlone.tests import dummy
 from Products.CMFPlone.utils import _createObjectByType
 import transaction
 
-from OFS.IOrderSupport import IOrderedContainer
-
 from AccessControl import Unauthorized
 from Products.CMFCore.permissions import DeleteObjects
 

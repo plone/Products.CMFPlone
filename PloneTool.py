@@ -50,11 +50,7 @@ _icons = {}
 
 CEILING_DATE = DefaultDublinCoreImpl._DefaultDublinCoreImpl__CEILING_DATE
 FLOOR_DATE = DefaultDublinCoreImpl._DefaultDublinCoreImpl__FLOOR_DATE
-
-from Products.SecureMailHost.SecureMailHost import EMAIL_RE
-from Products.SecureMailHost.SecureMailHost import EMAIL_CUTOFF_RE
 BAD_CHARS = re.compile(r'[^a-zA-Z0-9-_~,.$\(\)# ]').findall
-
 
 # XXX Remove this when we don't depend on python2.1 any longer,
 # use email.Utils.getaddresses instead

@@ -9,4 +9,3 @@ validators=login_form_validate
 action.success=traverse_to:string:logged_in
 action.failure=traverse_to:string:login_form
 action.failure_page=traverse_to:string:login_failed
-action.enable_cookies=traverse_to:string:enabling_cookies
