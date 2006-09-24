@@ -13,6 +13,8 @@ from Products.CMFCore.Expression import Expression
 from Products.CMFCore.permissions import AccessInactivePortalContent
 from Products.CMFCore.interfaces import IActionCategory
 from Products.CMFCore.interfaces import IActionInfo
+from Products.CMFCore.ActionInformation import Action
+from Products.CMFCore.ActionInformation import ActionInformation
 from Products.CMFPlone.PloneTool import AllowSendto
 from Products.CMFPlone.utils import _createObjectByType
 from Products.CMFPlone.UnicodeSplitter import Splitter, CaseNormalizer
@@ -47,6 +49,7 @@ from Products.CMFPlone.migrations.v2_5.final_two51 import fixupPloneLexicon
 from Products.CMFPlone.migrations.v2_5.final_two51 import fixObjDeleteAction
 
 from Products.CMFPlone.migrations.v3_0.alphas import enableZope3Site
+from Products.CMFPlone.migrations.v3_0.alphas import migrateOldActions
 
 from zope.app.component.hooks import clearSite
 from zope.app.component.interfaces import ISite
@@ -998,6 +1001,78 @@ class TestMigrations_v3_0(MigrationTest):
         self.failIf(gsm is sm)
 
 
+class TestMigrations_v3_0_Actions(MigrationTest):
+
+    def afterSetUp(self):
+        self.actions = self.portal.portal_actions
+        self.types = self.portal.portal_types
+        self.workflow = self.portal.portal_workflow
+        
+        # Create dummy old ActionInformation
+        self.reply = ActionInformation('reply',
+            title='Reply',
+            category='reply_actions',
+            condition='context/replyAllowed',
+            permissions=(AccessInactivePortalContent, ),
+            priority=10,
+            visible=True,
+            action='context/reply'
+        )
+        self.discussion = self.portal.portal_discussion
+        self.discussion._actions = (self.reply, )
+
+    def testMigrateActions(self):
+        self.failUnless(self.discussion._actions == (self.reply, ))
+        
+        migrateOldActions(self.portal, [])
+
+        reply_actions = getattr(self.actions, 'reply_actions', None)
+        self.failIf(reply_actions is None)
+        reply = getattr(reply_actions, 'reply', None)
+        self.failIf(reply is None)
+        self.failUnless(isinstance(reply, Action))
+
+        # Verify all data has been migrated correctly to the new Action
+        data = reply.getInfoData()[0]
+        self.assertEquals(data['category'], 'reply_actions')
+        self.assertEquals(data['title'], 'Reply')
+        self.assertEquals(data['visible'], True)
+        self.assertEquals(data['permissions'], (AccessInactivePortalContent, ))
+        self.assertEquals(data['available'].text, 'context/replyAllowed')
+        self.assertEquals(data['url'].text, 'context/reply')
+
+        # Make sure the original action has been removed
+        self.failUnless(len(self.discussion._actions) == 0)
+
+    def testMigrateActionsTwice(self):
+        self.failUnless(self.discussion._actions == (self.reply, ))
+
+        migrateOldActions(self.portal, [])
+        migrateOldActions(self.portal, [])
+
+        reply_actions = getattr(self.actions, 'reply_actions', None)
+        self.failIf(reply_actions is None)
+        reply = getattr(reply_actions, 'reply', None)
+        self.failIf(reply is None)
+        self.failUnless(isinstance(reply, Action))
+
+        # Verify all data has been migrated correctly to the new Action
+        data = reply.getInfoData()[0]
+        self.assertEquals(data['category'], 'reply_actions')
+        self.assertEquals(data['title'], 'Reply')
+        self.assertEquals(data['visible'], True)
+        self.assertEquals(data['permissions'], (AccessInactivePortalContent, ))
+        self.assertEquals(data['available'].text, 'context/replyAllowed')
+        self.assertEquals(data['url'].text, 'context/reply')
+
+        # Make sure the original action has been removed
+        self.failUnless(len(self.discussion._actions) == 0)
+
+    def beforeTearDown(self):
+        if len(self.discussion._actions) > 0:
+            self.discussion._actions = ()
+
+
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
@@ -1007,7 +1082,7 @@ def test_suite():
     suite.addTest(makeSuite(TestMigrations_v2_5))
     suite.addTest(makeSuite(TestMigrations_v2_5_1))
     suite.addTest(makeSuite(TestMigrations_v3_0))
-
+    suite.addTest(makeSuite(TestMigrations_v3_0_Actions))
     return suite
 
 if __name__ == '__main__':

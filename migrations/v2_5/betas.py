@@ -10,6 +10,7 @@ from Products.CMFPlone.migrations.v2_1.two12_two13 import normalizeNavtreeProper
 from Products.CMFPlone.migrations.v2_1.two12_two13 import removeVcXMLRPC
 from Products.CMFPlone.migrations.v2_1.two12_two13 import addActionDropDownMenuIcons
 from Products.CMFPlone.migrations.v2_5.alphas import installDeprecated
+from Products.CMFPlone.migrations.v3_0.alphas import migrateOldActions
 from Products.CMFPlone.factory import _TOOL_ID as SETUP_TOOL_ID
 
 from Products.CMFCore.ActionInformation import Action
@@ -29,6 +30,8 @@ def alpha2_beta1(portal):
     # Add getEventTypes KeywordIndex to portal_catalog
     addGetEventTypeIndex(portal, out)
 
+    # We need to migrate all existing actions to new-style actions first
+    migrateOldActions(portal, out)
     # Fix 'home' portal action
     fixHomeAction(portal, out)
 
@@ -79,6 +82,8 @@ def beta1_beta2(portal):
     # Install portal_setup
     installPortalSetup(portal, out)
 
+    # We need to migrate all existing actions to new-style actions first
+    migrateOldActions(portal, out)
     # Simplify actions using the @@plone view
     simplifyActions(portal, out)
 

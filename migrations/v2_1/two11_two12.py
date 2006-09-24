@@ -4,6 +4,8 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.permissions import AddPortalContent
 from Products.CMFPlone.migrations.migration_util import safeGetMemberDataTool, \
      safeEditProperty
+from Products.CMFPlone.migrations.v3_0.alphas import migrateOldActions
+
 
 def two11_two12rc1(portal):
     """2.1.1 -> 2.1.2-rc1
@@ -12,6 +14,11 @@ def two11_two12rc1(portal):
 
     # Remove plone_3rdParty\CMFTopic from skin layers
     removeCMFTopicSkinLayer(portal, out)
+
+
+    # We need to migrate all existing actions to new-style actions first
+    migrateOldActions(portal, out)
+    # Add rename object action
     addRenameObjectButton(portal, out)
 
     # add se-highlight.js (plone_3rdParty) to ResourceRegistries

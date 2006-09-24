@@ -5,6 +5,7 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.UnicodeSplitter import Splitter, CaseNormalizer
 from Products.CMFPlone.migrations.v2_1.two12_two13 import reindexCatalog, \
      indexMembersFolder
+from Products.CMFPlone.migrations.v3_0.alphas import migrateOldActions
 
 
 def final_two51(portal):
@@ -19,6 +20,8 @@ def final_two51(portal):
     # Repair plone_lexicon pipeline
     fixupPloneLexicon(portal, out)
 
+    # We need to migrate all existing actions to new-style actions first
+    migrateOldActions(portal, out)
     # Make object delete action use confirmation form
     fixObjDeleteAction(portal, out)
 
