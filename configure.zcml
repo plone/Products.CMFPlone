@@ -12,4 +12,13 @@
     interface=".interfaces.IFactoryTool"
     />
 
+  <five:deprecatedManageAddDelete
+      class=".Portal.PloneSite" />
+
+  <five:deprecatedManageAddDelete
+      class=".PloneFolder.PloneFolder" />
+
+  <five:deprecatedManageAddDelete
+      class=".CatalogTool.CatalogTool" />
+  
 </configure>
