@@ -22,6 +22,14 @@ def three0_alpha1(portal):
     # Add new css files to RR
     addNewCSSFiles(portal, out)
 
+    # Actions should gain a i18n_domain now, so their title and description are
+    # returned as Messages
+    updateActionsI18NDomain(portal, out)
+
+    # Type information should gain a i18n_domain now, so their title and
+    # description are returned as Messages
+    updateFTII18NDomain(portal, out)
+
     return out
 
 
@@ -83,3 +91,15 @@ def addNewCSSFiles(portal, out):
         cssreg.registerStylesheet('forms.css', media='screen')
         cssreg.moveResourceAfter('forms.css', 'invisibles.css')
         out.append("Added forms.css to the registry")
+
+def updateActionsI18NDomain(portal, out):
+    actions = portal.portal_actions.listActions()
+    domainless_actions = [a for a in actions if not a.i18n_domain]
+    for action in domainless_actions:
+        action.i18n_domain = 'plone'
+
+def updateFTII18NDomain(portal, out):
+    types = portal.portal_types.listTypeInfo()
+    domainless_types = [fti for fti in types if not fti.i18n_domain]
+    for fti in domainless_types:
+        fti.i18n_domain = 'plone'

@@ -51,6 +51,8 @@ from Products.CMFPlone.migrations.v2_5.final_two51 import fixObjDeleteAction
 from Products.CMFPlone.migrations.v3_0.alphas import enableZope3Site
 from Products.CMFPlone.migrations.v3_0.alphas import migrateOldActions
 from Products.CMFPlone.migrations.v3_0.alphas import addNewCSSFiles
+from Products.CMFPlone.migrations.v3_0.alphas import updateActionsI18NDomain
+from Products.CMFPlone.migrations.v3_0.alphas import updateFTII18NDomain
 
 from zope.app.component.hooks import clearSite
 from zope.app.component.interfaces import ISite
@@ -1017,6 +1019,23 @@ class TestMigrations_v3_0(MigrationTest):
         for id in added_ids:
             self.failUnless(id in stylesheet_ids)
 
+    def testUpdateFTII18NDomain(self):
+        doc = self.types.Document
+        doc.i18n_domain = ''
+        # Update FTI's
+        updateFTII18NDomain(self.portal, [])
+        # domain should have been updated
+        self.assertEquals(doc.i18n_domain, 'plone')
+
+    def testUpdateFTII18NDomainTwice(self):
+        doc = self.types.Document
+        doc.i18n_domain = ''
+        # Update FTI's twice
+        updateFTII18NDomain(self.portal, [])
+        updateFTII18NDomain(self.portal, [])
+        # domain should have been updated
+        self.assertEquals(doc.i18n_domain, 'plone')
+
 
 class TestMigrations_v3_0_Actions(MigrationTest):
 
@@ -1084,6 +1103,25 @@ class TestMigrations_v3_0_Actions(MigrationTest):
 
         # Make sure the original action has been removed
         self.failUnless(len(self.discussion._actions) == 0)
+
+    def testUpdateActionsI18NDomain(self):
+        migrateOldActions(self.portal, [])
+        reply = self.actions.reply_actions.reply
+        self.assertEquals(reply.i18n_domain, '')        
+
+        updateActionsI18NDomain(self.portal, [])
+        
+        self.assertEquals(reply.i18n_domain, 'plone')
+
+    def testUpdateActionsI18NDomainTwice(self):
+        migrateOldActions(self.portal, [])
+        reply = self.actions.reply_actions.reply
+        self.assertEquals(reply.i18n_domain, '')        
+
+        updateActionsI18NDomain(self.portal, [])
+        updateActionsI18NDomain(self.portal, [])
+
+        self.assertEquals(reply.i18n_domain, 'plone')
 
     def beforeTearDown(self):
         if len(self.discussion._actions) > 0:

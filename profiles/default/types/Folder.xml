@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <object name="Folder"
    meta_type="Factory-based Type Information with dynamic views"
-   xmlns:i18n="http://xml.zope.org/namespaces/i18n">
- <property name="title">Folder</property>
- <property
-    name="description">A folder which can contain other items.</property>
+   i18n:domain="plone" xmlns:i18n="http://xml.zope.org/namespaces/i18n">
+ <property name="title" i18n:translate="">Folder</property>
+ <property name="description"
+     i18n:translate="">A folder which can contain other items.</property>
  <property name="content_icon">folder_icon.gif</property>
  <property name="content_meta_type">ATFolder</property>
  <property name="product">ATContentTypes</property>

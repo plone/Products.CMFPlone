@@ -1,9 +1,10 @@
 <?xml version="1.0"?>
 <object name="ATSimpleStringCriterion"
    meta_type="Factory-based Type Information"
-   xmlns:i18n="http://xml.zope.org/namespaces/i18n">
- <property name="title">Simple String Criterion</property>
- <property name="description">A simple string criterion</property>
+   i18n:domain="plone" xmlns:i18n="http://xml.zope.org/namespaces/i18n">
+ <property name="title" i18n:translate="">Simple String Criterion</property>
+ <property name="description"
+    i18n:translate="">A simple string criterion</property>
  <property name="content_icon">document_icon.gif</property>
  <property name="content_meta_type">ATSimpleStringCriterion</property>
  <property name="product">ATContentTypes</property>

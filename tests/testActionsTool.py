@@ -8,10 +8,13 @@ if __name__ == '__main__':
 
 from Products.CMFPlone.tests import PloneTestCase
 
-from OFS.SimpleItem import Item
-from Acquisition import Explicit
-from traceback import format_exception
 from sets import Set
+from traceback import format_exception
+from zope.i18nmessageid.message import Message
+
+from Acquisition import Explicit
+from OFS.SimpleItem import Item
+from Products.CMFCore.ActionInformation import ActionInfo
 
 class ExplicitItem(Item, Explicit):
     '''Item without implicit acquisition'''
@@ -113,6 +116,13 @@ class TestActionsTool(PloneTestCase.PloneTestCase):
 
         actions = self.actions.listFilteredActionsFor(self.folder)
         url = actions['folder'][0]['url']
+
+    def testAllActionsAreRenderedAsMessages(self):
+        actions = self.actions.listActions()
+        for action in actions:
+            info = ActionInfo(action, self.portal)
+            self.failUnless(isinstance(info['title'], Message))
+            self.failUnless(isinstance(info['description'], Message))
 
 
 def test_suite():

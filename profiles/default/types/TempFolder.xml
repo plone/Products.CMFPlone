@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <object name="TempFolder" meta_type="Factory-based Type Information"
-   xmlns:i18n="http://xml.zope.org/namespaces/i18n">
- <property name="title"></property>
- <property
-    name="description">Use folders to put content in categories.</property>
+   i18n:domain="plone" xmlns:i18n="http://xml.zope.org/namespaces/i18n">
+ <property name="title" i18n:translate=""></property>
+ <property name="description"
+     i18n:translate="">Use folders to put content in categories.</property>
  <property name="content_icon">folder_icon.gif</property>
  <property name="content_meta_type">TempFolder</property>
  <property name="product">CMFCore</property>

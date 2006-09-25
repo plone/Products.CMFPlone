@@ -1,8 +1,9 @@
 <?xml version="1.0"?>
 <object name="ATSimpleIntCriterion" meta_type="Factory-based Type Information"
-   xmlns:i18n="http://xml.zope.org/namespaces/i18n">
- <property name="title">Simple Int Criterion</property>
- <property name="description">A simple int criterion</property>
+   i18n:domain="plone" xmlns:i18n="http://xml.zope.org/namespaces/i18n">
+ <property name="title" i18n:translate="">Simple Int Criterion</property>
+ <property name="description"
+    i18n:translate="">A simple int criterion</property>
  <property name="content_icon">document_icon.gif</property>
  <property name="content_meta_type">ATSimpleIntCriterion</property>
  <property name="product">ATContentTypes</property>

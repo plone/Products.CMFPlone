@@ -1,8 +1,9 @@
 <?xml version="1.0"?>
 <object name="ATPathCriterion" meta_type="Factory-based Type Information"
-   xmlns:i18n="http://xml.zope.org/namespaces/i18n">
- <property name="title">Path Criterion</property>
- <property name="description">A path criterion</property>
+   i18n:domain="plone" xmlns:i18n="http://xml.zope.org/namespaces/i18n">
+ <property name="title" i18n:translate="">Path Criterion</property>
+ <property name="description"
+     i18n:translate="">A path criterion</property>
  <property name="content_icon">document_icon.gif</property>
  <property name="content_meta_type">ATPathCriterion</property>
  <property name="product">ATContentTypes</property>

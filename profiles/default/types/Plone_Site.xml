@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <object name="Plone Site"
    meta_type="Factory-based Type Information with dynamic views"
-   xmlns:i18n="http://xml.zope.org/namespaces/i18n">
- <property name="title"></property>
- <property
-    name="description">The portal_type for the root object in a Plone system.</property>
+   i18n:domain="plone" xmlns:i18n="http://xml.zope.org/namespaces/i18n">
+ <property name="title" i18n:translate=""></property>
+ <property name="description"
+      i18n:translate="">The portal_type for the root object in a Plone system.</property>
  <property name="content_icon">site_icon.gif</property>
  <property name="content_meta_type">Plone Site</property>
  <property name="product">CMFPlone</property>

@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <object name="News Item"
    meta_type="Factory-based Type Information with dynamic views"
-   xmlns:i18n="http://xml.zope.org/namespaces/i18n">
- <property name="title">News Item</property>
- <property
-    name="description">An announcement that will show up on the news portlet and in the news listing.</property>
+   i18n:domain="plone" xmlns:i18n="http://xml.zope.org/namespaces/i18n">
+ <property name="title" i18n:translate="">News Item</property>
+ <property name="description"
+     i18n:translate="">An announcement that will show up on the news portlet and in the news listing.</property>
  <property name="content_icon">newsitem_icon.gif</property>
  <property name="content_meta_type">ATNewsItem</property>
  <property name="product">ATContentTypes</property>

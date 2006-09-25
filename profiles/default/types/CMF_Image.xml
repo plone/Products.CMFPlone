@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <object name="CMF Image" meta_type="Factory-based Type Information"
-   xmlns:i18n="http://xml.zope.org/namespaces/i18n">
- <property name="title"></property>
- <property
-    name="description">Image objects can be embedded in Portal documents.</property>
+   i18n:domain="plone" xmlns:i18n="http://xml.zope.org/namespaces/i18n">
+ <property name="title" i18n:translate=""></property>
+ <property name="description"
+      i18n:translate="">Image objects can be embedded in Portal documents.</property>
  <property name="content_icon">image_icon.gif</property>
  <property name="content_meta_type">Portal Image</property>
  <property name="product">CMFDefault</property>

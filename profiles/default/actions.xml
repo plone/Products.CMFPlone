@@ -6,9 +6,9 @@
  <action-provider name="portal_types"/>
  <object name="document_actions" meta_type="CMF Action Category">
   <property name="title"></property>
-  <object name="rss" meta_type="CMF Action">
-   <property name="title">RSS feed of this listing</property>
-   <property name="description"></property>
+  <object name="rss" meta_type="CMF Action" i18n:domain="plone">
+   <property name="title" i18n:translate="">RSS feed of this listing</property>
+   <property name="description" i18n:translate=""></property>
    <property name="url_expr">string:$object_url/RSS</property>
    <property name="icon_expr"></property>
    <property
@@ -18,9 +18,9 @@
    </property>
    <property name="visible">True</property>
   </object>
-  <object name="sendto" meta_type="CMF Action">
-   <property name="title">Send this page to somebody</property>
-   <property name="description"></property>
+  <object name="sendto" meta_type="CMF Action" i18n:domain="plone">
+   <property name="title" i18n:translate="">Send this page to somebody</property>
+   <property name="description" i18n:translate=""></property>
    <property name="url_expr">string:$object_url/sendto_form</property>
    <property name="icon_expr"></property>
    <property name="available_expr"></property>
@@ -29,9 +29,9 @@
    </property>
    <property name="visible">True</property>
   </object>
-  <object name="print" meta_type="CMF Action">
-   <property name="title">Print this page</property>
-   <property name="description"></property>
+  <object name="print" meta_type="CMF Action" i18n:domain="plone">
+   <property name="title" i18n:translate="">Print this page</property>
+   <property name="description" i18n:translate=""></property>
    <property name="url_expr">string:javascript:this.print();</property>
    <property name="icon_expr"></property>
    <property name="available_expr"></property>
@@ -40,9 +40,9 @@
    </property>
    <property name="visible">True</property>
   </object>
-  <object name="addtofavorites" meta_type="CMF Action">
-   <property name="title">Add to Favorites</property>
-   <property name="description"></property>
+  <object name="addtofavorites" meta_type="CMF Action" i18n:domain="plone">
+   <property name="title" i18n:translate="">Add to Favorites</property>
+   <property name="description" i18n:translate=""></property>
    <property name="url_expr">string:${object_url}/addtoFavorites</property>
    <property name="icon_expr"></property>
    <property
@@ -52,9 +52,9 @@
    </property>
    <property name="visible">False</property>
   </object>
-  <object name="full_screen" meta_type="CMF Action">
-   <property name="title">Toggle full screen mode</property>
-   <property name="description"></property>
+  <object name="full_screen" meta_type="CMF Action" i18n:domain="plone">
+   <property name="title" i18n:translate="">Toggle full screen mode</property>
+   <property name="description" i18n:translate=""></property>
    <property
       name="url_expr">string:javascript:toggleFullScreenMode();</property>
    <property name="icon_expr"></property>
@@ -64,10 +64,10 @@
    </property>
    <property name="visible">True</property>
   </object>
-  <object name="extedit" meta_type="CMF Action">
-   <property
-      name="title">Edit this file in an external application (Requires Zope ExternalEditor installed)</property>
-   <property name="description"></property>
+  <object name="extedit" meta_type="CMF Action" i18n:domain="plone">
+   <property name="title"
+       i18n:translate="">Edit this file in an external application (Requires Zope ExternalEditor installed)</property>
+   <property name="description" i18n:translate=""></property>
    <property name="url_expr">string:$object_url/external_edit</property>
    <property name="icon_expr"></property>
    <property name="available_expr">object/externalEditorEnabled</property>
@@ -79,9 +79,9 @@
  </object>
  <object name="site_actions" meta_type="CMF Action Category">
   <property name="title"></property>
-  <object name="sitemap" meta_type="CMF Action">
-   <property name="title">Site Map</property>
-   <property name="description"></property>
+  <object name="sitemap" meta_type="CMF Action" i18n:domain="plone">
+   <property name="title" i18n:translate="">Site Map</property>
+   <property name="description" i18n:translate=""></property>
    <property name="url_expr">string:$portal_url/sitemap</property>
    <property name="icon_expr"></property>
    <property name="available_expr"></property>
@@ -90,9 +90,9 @@
    </property>
    <property name="visible">True</property>
   </object>
-  <object name="accessibility" meta_type="CMF Action">
-   <property name="title">Accessibility</property>
-   <property name="description"></property>
+  <object name="accessibility" meta_type="CMF Action" i18n:domain="plone">
+   <property name="title" i18n:translate="">Accessibility</property>
+   <property name="description" i18n:translate=""></property>
    <property
       name="url_expr">string:${portal_url}/accessibility-info</property>
    <property name="icon_expr"></property>
@@ -102,9 +102,9 @@
    </property>
    <property name="visible">True</property>
   </object>
-  <object name="contact" meta_type="CMF Action">
-   <property name="title">Contact</property>
-   <property name="description"></property>
+  <object name="contact" meta_type="CMF Action" i18n:domain="plone">
+   <property name="title" i18n:translate="">Contact</property>
+   <property name="description" i18n:translate=""></property>
    <property name="url_expr">string:${portal_url}/contact-info</property>
    <property name="icon_expr"></property>
    <property name="available_expr"></property>
@@ -113,9 +113,9 @@
    </property>
    <property name="visible">True</property>
   </object>
-  <object name="plone_setup" meta_type="CMF Action">
-   <property name="title">Site Setup</property>
-   <property name="description"></property>
+  <object name="plone_setup" meta_type="CMF Action" i18n:domain="plone">
+   <property name="title" i18n:translate="">Site Setup</property>
+   <property name="description" i18n:translate=""></property>
    <property
       name="url_expr">string:${portal_url}/plone_control_panel</property>
    <property name="icon_expr"></property>
@@ -128,9 +128,9 @@
  </object>
  <object name="folder_buttons" meta_type="CMF Action Category">
   <property name="title"></property>
-  <object name="copy" meta_type="CMF Action">
-   <property name="title">Copy</property>
-   <property name="description"></property>
+  <object name="copy" meta_type="CMF Action" i18n:domain="plone">
+   <property name="title" i18n:translate="">Copy</property>
+   <property name="description" i18n:translate=""></property>
    <property name="url_expr">string:folder_copy:method</property>
    <property name="icon_expr"></property>
    <property name="available_expr"></property>
@@ -139,9 +139,9 @@
    </property>
    <property name="visible">True</property>
   </object>
-  <object name="cut" meta_type="CMF Action">
-   <property name="title">Cut</property>
-   <property name="description"></property>
+  <object name="cut" meta_type="CMF Action" i18n:domain="plone">
+   <property name="title" i18n:translate="">Cut</property>
+   <property name="description" i18n:translate=""></property>
    <property name="url_expr">string:folder_cut:method</property>
    <property name="icon_expr"></property>
    <property
@@ -151,9 +151,9 @@
    </property>
    <property name="visible">True</property>
   </object>
-  <object name="rename" meta_type="CMF Action">
-   <property name="title">Rename</property>
-   <property name="description"></property>
+  <object name="rename" meta_type="CMF Action" i18n:domain="plone">
+   <property name="title" i18n:translate="">Rename</property>
+   <property name="description" i18n:translate=""></property>
    <property name="url_expr">string:folder_rename_form:method</property>
    <property name="icon_expr"></property>
    <property name="available_expr"></property>
@@ -162,9 +162,9 @@
    </property>
    <property name="visible">True</property>
   </object>
-  <object name="paste" meta_type="CMF Action">
-   <property name="title">Paste</property>
-   <property name="description"></property>
+  <object name="paste" meta_type="CMF Action" i18n:domain="plone">
+   <property name="title" i18n:translate="">Paste</property>
+   <property name="description" i18n:translate=""></property>
    <property name="url_expr">string:folder_paste:method</property>
    <property name="icon_expr"></property>
    <property name="available_expr">folder/cb_dataValid</property>
@@ -173,9 +173,9 @@
    </property>
    <property name="visible">True</property>
   </object>
-  <object name="delete" meta_type="CMF Action">
-   <property name="title">Delete</property>
-   <property name="description"></property>
+  <object name="delete" meta_type="CMF Action" i18n:domain="plone">
+   <property name="title" i18n:translate="">Delete</property>
+   <property name="description" i18n:translate=""></property>
    <property name="url_expr">string:folder_delete:method</property>
    <property name="icon_expr"></property>
    <property name="available_expr"></property>
@@ -184,9 +184,9 @@
    </property>
    <property name="visible">True</property>
   </object>
-  <object name="change_state" meta_type="CMF Action">
-   <property name="title">Change State</property>
-   <property name="description"></property>
+  <object name="change_state" meta_type="CMF Action" i18n:domain="plone">
+   <property name="title" i18n:translate="">Change State</property>
+   <property name="description" i18n:translate=""></property>
    <property name="url_expr">string:content_status_history:method</property>
    <property name="icon_expr"></property>
    <property
@@ -199,9 +199,9 @@
  </object>
  <object name="object" meta_type="CMF Action Category">
   <property name="title"></property>
-  <object name="folderContents" meta_type="CMF Action">
-   <property name="title">Contents</property>
-   <property name="description"></property>
+  <object name="folderContents" meta_type="CMF Action" i18n:domain="plone">
+   <property name="title" i18n:translate="">Contents</property>
+   <property name="description" i18n:translate=""></property>
    <property
       name="url_expr">string:${globals_view/getCurrentFolderUrl}/folder_contents</property>
    <property name="icon_expr"></property>
@@ -211,9 +211,9 @@
    </property>
    <property name="visible">True</property>
   </object>
-  <object name="reply" meta_type="CMF Action">
-   <property name="title">Reply</property>
-   <property name="description"></property>
+  <object name="reply" meta_type="CMF Action" i18n:domain="plone">
+   <property name="title" i18n:translate="">Reply</property>
+   <property name="description" i18n:translate=""></property>
    <property
       name="url_expr">string:${object_url}/discussion_reply_form</property>
    <property name="icon_expr"></property>
@@ -224,9 +224,9 @@
    </property>
    <property name="visible">False</property>
   </object>
-  <object name="syndication" meta_type="CMF Action">
-   <property name="title">Syndication</property>
-   <property name="description"></property>
+  <object name="syndication" meta_type="CMF Action" i18n:domain="plone">
+   <property name="title" i18n:translate="">Syndication</property>
+   <property name="description" i18n:translate=""></property>
    <property name="url_expr">string:${folder_url}/synPropertiesForm</property>
    <property name="icon_expr"></property>
    <property
@@ -239,9 +239,9 @@
  </object>
  <object name="object_buttons" meta_type="CMF Action Category">
   <property name="title"></property>
-  <object name="cut" meta_type="CMF Action">
-   <property name="title">Cut</property>
-   <property name="description"></property>
+  <object name="cut" meta_type="CMF Action" i18n:domain="plone">
+   <property name="title" i18n:translate="">Cut</property>
+   <property name="description" i18n:translate=""></property>
    <property
       name="url_expr">string:${globals_view/getCurrentObjectUrl}/object_cut</property>
    <property name="icon_expr"></property>
@@ -252,9 +252,9 @@
    </property>
    <property name="visible">True</property>
   </object>
-  <object name="copy" meta_type="CMF Action">
-   <property name="title">Copy</property>
-   <property name="description"></property>
+  <object name="copy" meta_type="CMF Action" i18n:domain="plone">
+   <property name="title" i18n:translate="">Copy</property>
+   <property name="description" i18n:translate=""></property>
    <property
       name="url_expr">string:${globals_view/getCurrentObjectUrl}/object_copy</property>
    <property name="icon_expr"></property>
@@ -265,9 +265,9 @@
    </property>
    <property name="visible">True</property>
   </object>
-  <object name="paste" meta_type="CMF Action">
-   <property name="title">Paste</property>
-   <property name="description"></property>
+  <object name="paste" meta_type="CMF Action" i18n:domain="plone">
+   <property name="title" i18n:translate="">Paste</property>
+   <property name="description" i18n:translate=""></property>
    <property
       name="url_expr">string:${globals_view/getCurrentFolderUrl}/object_paste</property>
    <property name="icon_expr"></property>
@@ -277,9 +277,9 @@
    </property>
    <property name="visible">True</property>
   </object>
-  <object name="delete" meta_type="CMF Action">
-   <property name="title">Delete</property>
-   <property name="description"></property>
+  <object name="delete" meta_type="CMF Action" i18n:domain="plone">
+   <property name="title" i18n:translate="">Delete</property>
+   <property name="description" i18n:translate=""></property>
    <property
       name="url_expr">string:${globals_view/getCurrentObjectUrl}/delete_confirmation</property>
    <property name="icon_expr"></property>
@@ -290,9 +290,9 @@
    </property>
    <property name="visible">True</property>
   </object>
-  <object name="rename" meta_type="CMF Action">
-   <property name="title">Rename</property>
-   <property name="description"></property>
+  <object name="rename" meta_type="CMF Action" i18n:domain="plone">
+   <property name="title" i18n:translate="">Rename</property>
+   <property name="description" i18n:translate=""></property>
    <property
       name="url_expr">string:${globals_view/getCurrentObjectUrl}/object_rename</property>
    <property name="icon_expr"></property>
@@ -306,9 +306,9 @@
  </object>
  <object name="portal_tabs" meta_type="CMF Action Category">
   <property name="title"></property>
-  <object name="index_html" meta_type="CMF Action">
-   <property name="title">Home</property>
-   <property name="description"></property>
+  <object name="index_html" meta_type="CMF Action" i18n:domain="plone">
+   <property name="title" i18n:translate="">Home</property>
+   <property name="description" i18n:translate=""></property>
    <property
       name="url_expr">string:${globals_view/navigationRootUrl}</property>
    <property name="icon_expr"></property>
@@ -321,9 +321,9 @@
  </object>
  <object name="object_tabs" meta_type="CMF Action Category">
   <property name="title"></property>
-  <object name="change_ownership" meta_type="CMF Action">
-   <property name="title">Ownership</property>
-   <property name="description"></property>
+  <object name="change_ownership" meta_type="CMF Action" i18n:domain="plone">
+   <property name="title" i18n:translate="">Ownership</property>
+   <property name="description" i18n:translate=""></property>
    <property name="url_expr">string:${object_url}/ownership_form</property>
    <property name="icon_expr"></property>
    <property name="available_expr"></property>
@@ -335,9 +335,9 @@
  </object>
  <object name="user" meta_type="CMF Action Category">
   <property name="title"></property>
-  <object name="mystuff" meta_type="CMF Action">
-   <property name="title">My Folder</property>
-   <property name="description"></property>
+  <object name="mystuff" meta_type="CMF Action" i18n:domain="plone">
+   <property name="title" i18n:translate="">My Folder</property>
+   <property name="description" i18n:translate=""></property>
    <property
       name="url_expr">string:${portal/portal_membership/getHomeUrl}</property>
    <property name="icon_expr"></property>
@@ -348,9 +348,9 @@
    </property>
    <property name="visible">True</property>
   </object>
-  <object name="myworkspace" meta_type="CMF Action">
-   <property name="title">Workspace</property>
-   <property name="description"></property>
+  <object name="myworkspace" meta_type="CMF Action" i18n:domain="plone">
+   <property name="title" i18n:translate="">Workspace</property>
+   <property name="description" i18n:translate=""></property>
    <property
       name="url_expr">string:${portal/portal_membership/getHomeUrl}/workspace</property>
    <property name="icon_expr"></property>
@@ -361,9 +361,9 @@
    </property>
    <property name="visible">False</property>
   </object>
-  <object name="favorites" meta_type="CMF Action">
-   <property name="title">My favorites</property>
-   <property name="description"></property>
+  <object name="favorites" meta_type="CMF Action" i18n:domain="plone">
+   <property name="title" i18n:translate="">My favorites</property>
+   <property name="description" i18n:translate=""></property>
    <property
       name="url_expr">string:${portal/portal_membership/getHomeUrl}/Favorites/folder_contents</property>
    <property name="icon_expr"></property>
@@ -374,9 +374,9 @@
    </property>
    <property name="visible">False</property>
   </object>
-  <object name="preferences" meta_type="CMF Action">
-   <property name="title">Preferences</property>
-   <property name="description"></property>
+  <object name="preferences" meta_type="CMF Action" i18n:domain="plone">
+   <property name="title" i18n:translate="">Preferences</property>
+   <property name="description" i18n:translate=""></property>
    <property
       name="url_expr">string:${portal_url}/plone_memberprefs_panel</property>
    <property name="icon_expr"></property>
@@ -386,9 +386,9 @@
    </property>
    <property name="visible">True</property>
   </object>
-  <object name="addFavorite" meta_type="CMF Action">
-   <property name="title">Add to favorites</property>
-   <property name="description"></property>
+  <object name="addFavorite" meta_type="CMF Action" i18n:domain="plone">
+   <property name="title" i18n:translate="">Add to favorites</property>
+   <property name="description" i18n:translate=""></property>
    <property name="url_expr">string:${object_url}/addtoFavorites</property>
    <property name="icon_expr"></property>
    <property
@@ -398,9 +398,9 @@
    </property>
    <property name="visible">False</property>
   </object>
-  <object name="login" meta_type="CMF Action">
-   <property name="title">Log in</property>
-   <property name="description"></property>
+  <object name="login" meta_type="CMF Action" i18n:domain="plone">
+   <property name="title" i18n:translate="">Log in</property>
+   <property name="description" i18n:translate=""></property>
    <property name="url_expr">string:${portal_url}/login_form</property>
    <property name="icon_expr"></property>
    <property name="available_expr">python:member is None</property>
@@ -409,9 +409,9 @@
    </property>
    <property name="visible">True</property>
   </object>
-  <object name="logged_in" meta_type="CMF Action">
-   <property name="title">Logged in</property>
-   <property name="description"></property>
+  <object name="logged_in" meta_type="CMF Action" i18n:domain="plone">
+   <property name="title" i18n:translate="">Logged in</property>
+   <property name="description" i18n:translate=""></property>
    <property name="url_expr">string:${portal_url}/logged_in</property>
    <property name="icon_expr"></property>
    <property name="available_expr"></property>
@@ -420,9 +420,9 @@
    </property>
    <property name="visible">False</property>
   </object>
-  <object name="logout" meta_type="CMF Action">
-   <property name="title">Log out</property>
-   <property name="description"></property>
+  <object name="logout" meta_type="CMF Action" i18n:domain="plone">
+   <property name="title" i18n:translate="">Log out</property>
+   <property name="description" i18n:translate=""></property>
    <property name="url_expr">string:${portal_url}/logout</property>
    <property name="icon_expr"></property>
    <property name="available_expr">python:member is not None</property>
@@ -431,9 +431,9 @@
    </property>
    <property name="visible">True</property>
   </object>
-  <object name="join" meta_type="CMF Action">
-   <property name="title">Join</property>
-   <property name="description"></property>
+  <object name="join" meta_type="CMF Action" i18n:domain="plone">
+   <property name="title" i18n:translate="">Join</property>
+   <property name="description" i18n:translate=""></property>
    <property name="url_expr">string:${portal_url}/join_form</property>
    <property name="icon_expr"></property>
    <property name="available_expr">python:member is None</property>
@@ -442,9 +442,9 @@
    </property>
    <property name="visible">True</property>
   </object>
-  <object name="undo" meta_type="CMF Action">
-   <property name="title">Undo</property>
-   <property name="description"></property>
+  <object name="undo" meta_type="CMF Action" i18n:domain="plone">
+   <property name="title" i18n:translate="">Undo</property>
+   <property name="description" i18n:translate=""></property>
    <property name="url_expr">string:${portal_url}/undo_form</property>
    <property name="icon_expr"></property>
    <property name="available_expr">python:member is not None</property>
@@ -456,9 +456,9 @@
  </object>
  <object name="global" meta_type="CMF Action Category">
   <property name="title"></property>
-  <object name="manage_members" meta_type="CMF Action">
-   <property name="title">Manage members</property>
-   <property name="description"></property>
+  <object name="manage_members" meta_type="CMF Action" i18n:domain="plone">
+   <property name="title" i18n:translate="">Manage members</property>
+   <property name="description" i18n:translate=""></property>
    <property
       name="url_expr">string:${portal_url}/members_manage_form</property>
    <property name="icon_expr"></property>
@@ -468,9 +468,9 @@
    </property>
    <property name="visible">True</property>
   </object>
-  <object name="configPortal" meta_type="CMF Action">
-   <property name="title">Reconfigure Portal</property>
-   <property name="description"></property>
+  <object name="configPortal" meta_type="CMF Action" i18n:domain="plone">
+   <property name="title" i18n:translate="">Reconfigure Portal</property>
+   <property name="description" i18n:translate=""></property>
    <property name="url_expr">string:${portal_url}/reconfig_form</property>
    <property name="icon_expr"></property>
    <property name="available_expr"></property>
