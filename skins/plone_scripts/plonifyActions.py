@@ -5,8 +5,8 @@
 ##bind script=script
 ##bind subpath=traverse_subpath
 ##parameters=template_id, actions=None, default_tab='view'
-##title=
 ##
+from urllib import unquote
 here_url = context.absolute_url()
 site_properties=context.portal_properties.site_properties
 
@@ -53,7 +53,8 @@ for action in actionlist:
         # Don't raise if we don't have a CMF 1.5 FTI
         pass
 
-    request_action = request_url_path
+    # we unquote since view names sometimes get escaped
+    request_action = unquote( request_url_path )
     try:
         request_action=context.getTypeInfo().queryMethodID(request_action,
                                                            default = request_action)

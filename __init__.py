@@ -41,6 +41,9 @@ def initialize(context):
     ModuleSecurityInfo('zLOG').declarePublic('INFO')
     ModuleSecurityInfo('zLOG').declarePublic('WARNING')
 
+    # added for unescaping view names in urls when finding selected action
+    ModuleSecurityInfo('urllib').declarePublic('unquote')
+    
     allow_module('Products.CMFPlone.utils')
 
     # This is now deprecated, use utils instead.
