@@ -18,16 +18,16 @@
 
 <p i18n:translate="description_you_are_registered">You have been registered.</p>
 
-<p tal:condition="ve" i18n:translate="description_you_will_get_password">
-    You will receive an e-mail shortly containing your password. When you
-    receive your password, you can
-    <span i18n:name="log_in_here">
-        <a href="#"
-           tal:attributes="href string:$portal_url/login_form"
-           i18n:translate="label_log_in_here">
-            log in here
-        </a>
-    </span>.
+<p tal:condition="ve" 
+   tal:define="expire_length portal/portal_password_reset/getExpirationTimeout"
+   i18n:translate="description_you_will_get_password">
+    You will receive an e-mail shortly containing a URL that will
+    allow you to set your password. When you receive this e-mail,
+    please follow the link to complete your registration process.
+    NOTE: The password reset URL will expire in
+    <span tal:replace="expire_length" /> hours.  If your password
+    reset request expires, you may use the "Forgot your password" link
+    to generate another password reset request.
 </p>
 
 <tal:block condition="python:not(ve)">
