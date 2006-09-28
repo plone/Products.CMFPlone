@@ -23,7 +23,9 @@
 
     <fieldset>
 
-      <legend i18n:translate="legend_personal_details">Personal Details</legend>
+      <legend i18n:translate="legend_personal_details">
+          Personal Details
+      </legend>
 
       <input type="hidden" name="came_from" value=""
              tal:condition="request/came_from|nothing"
@@ -204,7 +206,7 @@
       <div class="field"
            tal:condition="allowEnterPassword">
 
-        <div class="formHelp" i18n:translate="label_password_will_be_mailed">
+        <div class="formHelp" i18n:translate="label_password_change_mail">
           A URL will be generated and e-mailed to you; follow the link
           to reach a page where you can change your password and
           complete the registration process. 
@@ -230,4 +232,3 @@
 
 </body>
 </html>
-

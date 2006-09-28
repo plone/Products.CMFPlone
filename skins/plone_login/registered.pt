@@ -14,24 +14,29 @@
 <div tal:define="ve portal/validate_email"
      tal:condition="python: auth">
 
-<h1 i18n:translate="heading_welcome">Welcome!</h1>
+<h1 i18n:translate="heading_welcome">
+    Welcome!
+</h1>
 
-<p i18n:translate="description_you_are_registered">You have been registered.</p>
+<p i18n:translate="description_you_are_registered">
+    You have been registered.
+</p>
 
 <p tal:condition="ve" 
    tal:define="expire_length portal/portal_password_reset/getExpirationTimeout"
-   i18n:translate="description_you_will_get_password">
-    You will receive an e-mail shortly containing a URL that will
-    allow you to set your password. When you receive this e-mail,
-    please follow the link to complete your registration process.
-    NOTE: The password reset URL will expire in
-    <span tal:replace="expire_length" /> hours.  If your password
-    reset request expires, you may use the "Forgot your password" link
+   i18n:translate="description_password_reset_or_registered">
+    You will receive an e-mail shortly containing a URL that will allow you to
+    set your password. When you receive this e-mail, please follow the link to
+    complete your registration process. NOTE: The password reset URL will expire
+    in <span tal:replace="expire_length" i18n:name="time"/> hours. If your
+    password reset request expires, you may use the "Forgot your password" link
     to generate another password reset request.
 </p>
 
 <tal:block condition="python:not(ve)">
-    <p i18n:translate="description_you_can_log_on_now">Click the button to log in immediately.</p>
+    <p i18n:translate="description_you_can_log_on_now">
+        Click the button to log in immediately.
+    </p>
 
     <div id="enable_cookies_message" i18n:translate="enable_cookies_message" class="portalMessage" style="display:none">
       Cookies are not enabled. You must <span i18n:name="enable_cookies">
