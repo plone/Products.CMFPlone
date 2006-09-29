@@ -2,12 +2,12 @@ Changelog for Plone
 
     (name of developer listed in brackets)
 
+Plone 2.5.1 - released September 28, 2006
+
     - The content tab selection logic now checks the request in addition 
       to template_id when trying to determine which tab should be 
       selected.
       [rocky]
-
-Plone 2.5.1 - released September 20, 2006
 
     - Noted the new hard dependency on ElementTree that was introduced in the
       Marshall product as of Plone 2.5.1.
