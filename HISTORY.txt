@@ -7,6 +7,7 @@ Plone 3.0 - Unreleased
     - Changed the logo template 'global_logo' to not use the image replacement
       approach, but use a straightforward link/image approach instead.
       Sometimes Plone tries to be too smart for its own good. ;)
+      This also fixes the horizontal scrollbar problem in IE6 for RTL layouts.
       [limi]
 
     - Silenced the utf-8 / Unicode DeprecationWarning. We should only emit

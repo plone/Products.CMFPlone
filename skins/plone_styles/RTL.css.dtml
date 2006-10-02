@@ -54,35 +54,9 @@ ol {
     margin: 0.5em 1.5em 0 0;
 }
 
-#portal-logo {
-    background: url(&dtml-portal_url;/&dtml-logoName;) no-repeat top right;
-    margin: 0.75em 1.5em 0.75em 0em;
-    width: <dtml-var "_[logoName].width">px; /* Fix for wide logo problem - smoothify */
+#portal-logo img {
+    margin: 1em 2em 1em 0em;
 }
-
-#portal-skinswitcher a {
-    float: right;
-}
-
-/* start goofy horizontal scroll problem
-
-Ok, the rtl horizontal-scroll problem happens here. Removing the following
-two rules removes the problem. However, the item that actually gets pushed out
-in space is #portal-logo a. To make this clear enable the following rule.
-
-I thought it might have something to do with floats and clearing on the h1, but
-that seems not to be it. It doesn't appear to be the LIR on portal-logo either,
-since we are padding-top, not -left.
-
-Anyway, didn't get it fixed but at least we know what it is. :-/
-
-  -- Chad Whitacre (whit537)
-
-#portal-logo a {
-    background: orange;
-    }
-
-*/
 
 #portal-siteactions {
     float: left;

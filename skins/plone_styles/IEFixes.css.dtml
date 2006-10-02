@@ -39,11 +39,6 @@ textarea {
     filter:alpha(opacity=20); 
 }
 
-#portal-logo {
-  height /**/: <dtml-var "_[logoName].height">px;
-  overflow: hidden;
-}       
-
 /* Fix bottom margin on tabs in IE */
 #portal-globalnav li.selected a {
 position: relative;
