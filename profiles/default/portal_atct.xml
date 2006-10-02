@@ -16,8 +16,8 @@
    <criteria>ATListCriterion</criteria>
   </index>
   <index name="Date"
-     description="The time and date an item was last modified (duplicate)"
-     enabled="False" friendlyName="Modification Date (duplicate)">
+     description="The time and date an item was last modified"
+     enabled="False" friendlyName="Modification Date">
    <criteria>ATFriendlyDateCriteria</criteria>
    <criteria>ATDateRangeCriterion</criteria>
   </index>
@@ -70,8 +70,8 @@
      friendlyName="Related To">
    <criteria>ATReferenceCriterion</criteria>
   </index>
-  <index name="id" description="The short name of an item (duplicate)"
-     enabled="False" friendlyName="Short Name (duplicate)">
+  <index name="id" description="The short name of an item (used in the url)"
+     enabled="False" friendlyName="Short Name">
    <criteria>ATSimpleStringCriterion</criteria>
    <criteria>ATListCriterion</criteria>
   </index>
@@ -172,7 +172,7 @@
   <metadata name="getRemoteUrl" description="The url of a Link item"
      enabled="False" friendlyName="Remote Url"/>
   <metadata name="id" description="" enabled="False"
-     friendlyName="Short Name (duplicate)"/>
+     friendlyName="Short Name"/>
   <metadata name="is_folderish"
      description="Find items that can contain other objects" enabled="False"
      friendlyName="Folder-like"/>
