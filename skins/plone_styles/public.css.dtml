@@ -160,24 +160,10 @@
 
 /* Logo properties */
 
-#portal-logo {
-    background: url(&dtml-portal_url;/&dtml-logoName;) no-repeat;
+#portal-logo img {
     border: 0;
-    margin: 0.75em 0em 0.75em 1.5em;
     padding: 0;
-}
-
-#portal-logo a {
-    display: block;
-    text-decoration: none;
-    overflow: hidden;
-    border: 0;
-    margin: 0;
-    padding: 0;
-    padding-top: <dtml-var "_[logoName].height">px;
-    height: 0px !important;
-    width: <dtml-var "_[logoName].width">px;
-    cursor: pointer;
+    margin: 1em 0em 1em 2em;
 }
 
 /* The skin switcher at the top, only shows up if you have multiple skins available */

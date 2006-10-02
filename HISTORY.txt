@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 3.0 - Unreleased
 
+    - Changed the logo template 'global_logo' to not use the image replacement
+      approach, but use a straightforward link/image approach instead.
+      Sometimes Plone tries to be too smart for its own good. ;)
+      [limi]
+
     - Silenced the utf-8 / Unicode DeprecationWarning. We should only emit
       warnings once we fixed this in all standard cases ourselves.
       [hannosch]
