@@ -4101,7 +4101,7 @@ class TestMigrations_v2_5_1(MigrationTest):
             self.failUnless(a in actions)
         self.failUnlessEqual(len(editActions), len(actions))
 
-    def testtFixHomeActionNoTool(self):
+    def testtFixObjDeleteActionNoTool(self):
         self.portal._delObject('portal_actions')
         fixObjDeleteAction(self.portal, [])
 

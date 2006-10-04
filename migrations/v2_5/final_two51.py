@@ -86,7 +86,7 @@ def fixObjDeleteAction(portal, out):
     newaction = { 'id'         : 'delete',
                   'name'       : 'Delete',
                   'action'     : 'string:${globals_view/getCurrentObjectUrl}/delete_confirmation',
-                  'condition'  : 'python:checkPermission(&quot;Delete objects&quot;, globals_view.getParentObject()) and not globals_view.isPortalOrPortalDefaultPage()',
+                  'condition'  : 'python:checkPermission("Delete objects", globals_view.getParentObject()) and not globals_view.isPortalOrPortalDefaultPage()',
                   'permission' : 'Delete objects',
                   'category'   : 'object_buttons',
                 }
