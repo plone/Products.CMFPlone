@@ -65,7 +65,7 @@ class PloneSite(CMFSite, OrderedContainer, BrowserDefaultMixin):
     # Switch off ZMI ordering interface as it assumes a slightly
     # different functionality
     has_order_support = 0
-    manage_main = Globals.DTMLFile('www/main', globals())
+    _default_sort_key = 'id'
 
     def __browser_default__(self, request):
         """ Set default so we can return whatever we want instead
