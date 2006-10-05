@@ -2,6 +2,11 @@ Changelog for Plone
 
    (name of developer listed in brackets)
 
+Plone 2.1.5 - Fischerspooner - (Unreleased)
+
+    - Removed www/main.dtml as it turns out we can use the default just fine.
+      [stefan]
+
 Plone 2.1.4 - Devo - Released September 19, 2006
 
     - No changes since RC1.
