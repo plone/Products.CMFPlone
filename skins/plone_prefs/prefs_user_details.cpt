@@ -75,8 +75,20 @@ we eventually might want to merge this form with personalize_form
                   tal:condition="user | nothing"
               tal:attributes="action template_id">
 
-          <fieldset>
+          <fieldset tal:define="macros here/additional_memberdata/macros | nothing;
+                                          top_macro macros/top | nothing;
+                                          showTop python:top_macro;
+                                          bottom_macro macros/bottom | nothing;
+                                          showBottom python:bottom_macro;
+                                          after_primary macros/after_primary| nothing;
+                                          showAfterPrimary python:after_primary;">
+                                          
             <legend i18n:translate="legend_member_details">User Details</legend>
+    
+            <tal:macro condition="showTop">
+                <div metal:use-macro="top_macro"/>
+            </tal:macro>
+    
     
             <input type="hidden" name="userid" value="username"
                    tal:attributes="value member/getId" />
@@ -133,6 +145,10 @@ we eventually might want to merge this form with personalize_form
                          />
           </div>
 
+            <tal:macro condition="showAfterPrimary">
+                <div metal:use-macro="after_primary"/>
+            </tal:macro>
+            
             <div class="field"
                  tal:define="error errors/location | nothing;
                              location python:request.get('location', member.getProperty('location', ''));"
@@ -355,7 +371,10 @@ we eventually might want to merge this form with personalize_form
 
             </div>
 
-    
+            <tal:macro condition="showBottom">
+                <div metal:use-macro="bottom_macro" />
+            </tal:macro>
+
             <div class="formControls">
                     <input class="context"
                         tabindex=""

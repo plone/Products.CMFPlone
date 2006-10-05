@@ -4,6 +4,13 @@ Changelog for Plone
 
 Plone 2.5.2 - Orb - (Unreleased)
 
+    - Added a few macro hooks in personalize_form and prefs_user_details to allow
+      at least some form of easy customization without the need to customize
+      the entire forms. Now it looks for a file additional_memberdata in your
+      skin and uses the macros in there to inject them into these horrible forms.
+      Now it sucks slightly less ;-).
+      [ender]
+
     - Removed www/main.dtml as it turns out we can use the default just fine.
       [stefan]
 

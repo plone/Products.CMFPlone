@@ -25,7 +25,6 @@
            tal:condition="here/Description">
             Description
         </p>
-    
         <p tal:condition="python: not text and is_editable"
            i18n:translate="no_body_text"
            class="discreet">
