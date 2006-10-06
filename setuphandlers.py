@@ -34,11 +34,12 @@ class PloneGenerator:
         qi.installProduct('CMFPlacefulWorkflow', locked=0)
         qi.installProduct('kupu', locked=0)
 
+        qi.installProduct('CMFEditions', locked=0)
+        qi.installProduct('CMFDiffTool', locked=0)
+
         qi.notifyInstalled('CMFCalendar', locked=1)
         qi.notifyInstalled('CMFActionIcons', locked=1)
 
-        qi.notifyInstalled('CMFEditions', locked=1)
-        qi.notifyInstalled('CMFDiffTool', locked=0)
 
         # BBB The following products are "installed" by virtue of the
         #     GenericSetup profile.  They really shouldn't be managed
