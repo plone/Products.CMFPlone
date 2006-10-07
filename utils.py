@@ -144,8 +144,8 @@ def lookupTranslationId(obj, page, ids):
 
 def pretty_title_or_id(context, obj, empty_value=_marker):
     """Return the best possible title or id of an item, regardless
-    of whether obj is a catalog brain or an object, but returning an
-    empty title marker if the id is not set (i.e. it's auto-generated).
+       of whether obj is a catalog brain or an object, but returning an
+       empty title marker if the id is not set (i.e. it's auto-generated).
     """
     #if safe_hasattr(obj, 'aq_explicit'):
     #    obj = obj.aq_explicit
@@ -254,10 +254,30 @@ def normalizeString(text, context=None, encoding=None, relaxed=False):
 
 class IndexIterator:
     """An iterator used to generate tabindexes. Note that tabindexes are not as
-    good for accessibility as once thought, and are largely disabled with this
-    iterator. Only the first iteration of an iterator instantiated with 
-    mainSlot=True will get an index, subsequent iterations will get None (thus
-    removing the tabindex attribute).
+       good for accessibility as once thought, and are largely disabled with
+       this iterator.
+       
+       Only the first iteration of an iterator instantiated with mainSlot=True
+       will get an index:
+
+        >>> i = IndexIterator(pos=10, mainSlot=True)
+        >>> i.next()
+        10
+
+       Subsequent iterations will get None (thus removing the tabindex
+       attribute):
+
+        >>> i.next() is None
+        True
+
+       Outside the mainSlot all iterations will get None:
+
+        >>> i = IndexIterator(pos=10, mainSlot=False)
+        >>> i.next() is None
+        True
+
+        >>> i.next() is None
+        True
     """
     __allow_access_to_unprotected_subobjects__ = 1
 
@@ -374,7 +394,23 @@ release_levels = ('alpha', 'beta', 'candidate', 'final')
 rl_abbr = {'a':'alpha', 'b':'beta', 'rc':'candidate'}
 
 def versionTupleFromString(v_str):
-    """Returns version tuple from passed in version string"""
+    """Returns version tuple from passed in version string
+
+        >>> versionTupleFromString('1.2.3')
+        (1, 2, 3, 'final', 0)
+
+        >>> versionTupleFromString('2.1-final1 (SVN)')
+        (2, 1, 0, 'final', 1)
+
+        >>> versionTupleFromString('3-beta')
+        (3, 0, 0, 'beta', 0)
+
+        >>> versionTupleFromString('2.0a3')
+        (2, 0, 0, 'alpha', 3)
+
+        >>> versionTupleFromString('foo') is None
+        True
+        """
     regex_str = "(^\d+)[.]?(\d*)[.]?(\d*)[- ]?(alpha|beta|candidate|final|a|b|rc)?(\d*)"
     v_regex = re.compile(regex_str)
     match = v_regex.match(v_str)

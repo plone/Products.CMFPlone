@@ -4,10 +4,9 @@ Changelog for Plone
 
 Plone 3.0 - Unreleased
 
-
-    - livesearch_reply.py mixed up utf-8-encoded strings and unicode strings
-      leading to unpredictable UnicodeDecodeErrors 
-      [ajung]
+    - Converted some tests to inline doctests and some others to real unit tests
+      as opposed to integration tests.
+      [hannosch]
 
     - Added a few macro hooks in personalize_form and prefs_user_details to allow
       at least some form of easy customization without the need to customize
@@ -128,6 +127,11 @@ Plone 3.0 - Unreleased
       [hannosch]
 
 Plone 2.5.1 - Unreleased
+
+    - livesearch_reply.py mixed up utf-8-encoded strings and unicode strings
+      leading to unpredictable UnicodeDecodeErrors. This closes
+      http://dev.plone.org/plone/ticket/5828.
+      [ajung]
 
     - Corrected the log_exc method in log.py to actually log the exception, as
       it was done before replacing zLOG with Python's logging module.

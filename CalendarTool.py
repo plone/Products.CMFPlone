@@ -26,7 +26,7 @@ class CalendarTool(PloneBaseTool, BaseTool):
 
         >>> fwday = (calendar.firstweekday()+1) % 7
 
-        >>> ctool = self.portal.portal_calendar
+        >>> ctool = CalendarTool()
 
         >>> ctool.getDayNumbers()[0] == fwday
         True

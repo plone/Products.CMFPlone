@@ -79,7 +79,7 @@ class TranslationServiceTool(PloneBaseTool, UniqueObject, SimpleItem):
         """ Returns the msgid which can be passed to the translation service for
         l10n of weekday names. Format is either '', 'a' or 's'.
 
-        >>> ttool = self.portal.translation_service
+        >>> ttool = TranslationServiceTool()
 
         >>> ttool.day_msgid(0)
         'weekday_sun'
@@ -110,7 +110,7 @@ class TranslationServiceTool(PloneBaseTool, UniqueObject, SimpleItem):
         """ Returns the msgid which can be passed to the translation service for
         l10n of month names. Format is either '' or 'a' (long or abbreviation).
 
-        >>> ttool = self.portal.translation_service
+        >>> ttool = TranslationServiceTool()
 
         >>> ttool.month_msgid(1)
         'month_jan'
@@ -128,7 +128,7 @@ class TranslationServiceTool(PloneBaseTool, UniqueObject, SimpleItem):
         """ Returns the english name of month by number. Format is either '' or
         'a' (long or abbreviation).
 
-        >>> ttool = self.portal.translation_service
+        >>> ttool = TranslationServiceTool()
 
         >>> ttool.month_english(1)
         'January'
@@ -143,7 +143,7 @@ class TranslationServiceTool(PloneBaseTool, UniqueObject, SimpleItem):
         """ Returns the english name of a week by number. Format is either '',
         'a' or 'p'.
 
-        >>> ttool = self.portal.translation_service
+        >>> ttool = TranslationServiceTool()
 
         >>> ttool.weekday_english(0)
         'Sunday'

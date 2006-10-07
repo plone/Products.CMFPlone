@@ -2,37 +2,24 @@
     CMFPlone doctests.  See also ``test_functional``.
 """
 
-import os, sys
-
-if __name__ == '__main__':
-    execfile(os.path.join(sys.path[0], 'framework.py'))
-
 from unittest import TestSuite
-from Testing.ZopeTestCase import ZopeDocTestSuite
-from Products.CMFPlone.tests import PloneTestCase
-from Products.PloneTestCase.layer import ZCMLLayer
-from Products.PloneTestCase import setup
+from zope.testing import doctest
+from zope.testing.doctestunit import DocTestSuite, DocFileSuite
 
+from Products.CMFPlone.tests import PloneTestCase
+from Testing.ZopeTestCase import ZopeDocTestSuite
 
 def test_suite():
     suites = (
+        DocFileSuite('messages.txt', package='Products.CMFPlone.tests'),
+        DocTestSuite('Products.CMFPlone.CalendarTool'),
         ZopeDocTestSuite('Products.CMFPlone.CatalogTool',
-                        test_class=PloneTestCase.FunctionalTestCase),
+                         test_class=PloneTestCase.FunctionalTestCase),
+        DocTestSuite('Products.CMFPlone.i18nl10n'),
         ZopeDocTestSuite('Products.CMFPlone.PloneTool',
                          test_class=PloneTestCase.FunctionalTestCase),
-        ZopeDocTestSuite('Products.CMFPlone.TranslationServiceTool',
-                         test_class=PloneTestCase.FunctionalTestCase),
-        ZopeDocTestSuite('Products.CMFPlone.CalendarTool',
-                         test_class=PloneTestCase.FunctionalTestCase),
-        ZopeDocTestSuite('Products.CMFPlone.utils'),
+        DocTestSuite('Products.CMFPlone.TranslationServiceTool'),
+        DocTestSuite('Products.CMFPlone.utils'),
         )
 
-    if setup.USELAYER:
-        for s in suites:
-            s.layer = ZCMLLayer
-
     return TestSuite(suites)
-
-if __name__ == '__main__':
-    framework()
-

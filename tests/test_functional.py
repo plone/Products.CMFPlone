@@ -20,6 +20,8 @@ from Products.CMFPlone.tests import PloneTestCase, GLOBALS
 from Products.PloneTestCase.layer import ZCMLLayer
 import Products.PloneTestCase.setup as setup
 
+UNITTESTS = ['messages.txt']
+
 OPTIONFLAGS = (doctest.REPORT_ONLY_FIRST_FAILURE |
                doctest.ELLIPSIS |
                doctest.NORMALIZE_WHITESPACE)
@@ -27,7 +29,8 @@ OPTIONFLAGS = (doctest.REPORT_ONLY_FIRST_FAILURE |
 def list_doctests():
     home = package_home(GLOBALS)
     return [filename for filename in
-            glob.glob(os.path.sep.join([home, '*.txt']))]
+            glob.glob(os.path.sep.join([home, '*.txt']))
+            if os.path.basename(filename) not in UNITTESTS]
 
 def test_suite():
     filenames = list_doctests()
