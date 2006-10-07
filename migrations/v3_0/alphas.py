@@ -3,6 +3,7 @@ from zope.component.globalregistry import base
 from zope.component.persistentregistry import PersistentComponents
 
 from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.migrations.migration_util import installOrReinstallProduct
 from Products.Five.component import enableSite
 from Products.Five.component.interfaces import IObjectManagerSite
 

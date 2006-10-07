@@ -23,7 +23,7 @@ class PloneGenerator:
 
     def installProducts(self, p):
         """QuickInstaller install of required Products"""
-        # XXX The product installations should be done by a CMFSetup
+        # XXX The product installations should be done by a GenericSetup
         # handler
         qi = getToolByName(p, 'portal_quickinstaller')
         qi.installProduct('Archetypes', locked=0)
@@ -39,7 +39,6 @@ class PloneGenerator:
 
         qi.notifyInstalled('CMFCalendar', locked=1)
         qi.notifyInstalled('CMFActionIcons', locked=1)
-
 
         # BBB The following products are "installed" by virtue of the
         #     GenericSetup profile.  They really shouldn't be managed
@@ -72,8 +71,7 @@ class PloneGenerator:
                     p._delObject(mgr_id)
                     p._setObject(mgr_id, mgr_class(mgr_id))
 
-    # XXX: This should all be done by custom setuphandlers, possibly
-    # using XMLIO
+    # XXX: This should all be done by custom setuphandlers
     def setupPortalContent(self, p):
         """
         Import default plone content
