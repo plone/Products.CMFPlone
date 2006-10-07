@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 3.0 - Unreleased
 
+
+    - livesearch_reply.py mixed up utf-8-encoded strings and unicode strings
+      leading to unpredictable UnicodeDecodeErrors 
+      [ajung]
+
     - Added a few macro hooks in personalize_form and prefs_user_details to allow
       at least some form of easy customization without the need to customize
       the entire forms. Now it looks for a file additional_memberdata in your
