@@ -14,6 +14,9 @@ Plone 2.5.2 - Orb - (Unreleased)
     - Removed www/main.dtml as it turns out we can use the default just fine.
       [stefan]
 
+    - livesearch_reply.py mixed up utf-8-encoded strings and unicode strings
+      leading to unpredictable UnicodeDecodeErrors [ajung]
+
 Plone 2.5.1 - released September 28, 2006
 
     - The content tab selection logic now checks the request in addition 

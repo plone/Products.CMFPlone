@@ -59,10 +59,12 @@ r = " AND ".join(r)
 r = quote_bad_chars(r)+'*'
 searchterms = url_quote(r.replace(' ','+'))
 
+site_encoding = context.plone_utils.getSiteEncoding()
+
 results = catalog(SearchableText=r, portal_type=friendly_types)
 
 RESPONSE = context.REQUEST.RESPONSE
-RESPONSE.setHeader('Content-Type', 'text/xml;charset=%s' % context.plone_utils.getSiteEncoding())
+RESPONSE.setHeader('Content-Type', 'text/xml;charset=%s' % site_encoding)
 
 # replace named entities with their numbered counterparts, in the xml the named ones are not correct
 #   &darr;      --> &#8595;
@@ -74,56 +76,64 @@ label_show_all = _('label_show_all', default='Show all&#8230;')
 
 ts = getToolByName(context, 'translation_service')
 
+output = []
+
+def write(s):
+    if same_type(s, ''):
+        s = unicode(s, site_encoding)
+    output.append(s)
+
+
 if not results:
-    print '''<fieldset class="livesearchContainer">'''
-    print '''<legend id="livesearchLegend">%s</legend>''' % ts.translate(legend_livesearch)
-    print '''<div class="LSIEFix">'''
-    print '''<div id="LSNothingFound">%s</div>''' % ts.translate(label_no_results_found)
-    print '''<div class="LSRow">'''
-    print '<a href="search_form" style="font-weight:normal">%s</a>' % ts.translate(label_advanced_search)
-    print '''</div>'''
-    print '''</div>'''
-    print '''</fieldset>'''
+    write('''<fieldset class="livesearchContainer">''')
+    write('''<legend id="livesearchLegend">%s</legend>''' % ts.translate(legend_livesearch))
+    write('''<div class="LSIEFix">''')
+    write('''<div id="LSNothingFound">%s</div>''' % ts.translate(label_no_results_found))
+    write('''<div class="LSRow">''')
+    write('<a href="search_form" style="font-weight:normal">%s</a>' % ts.translate(label_advanced_search))
+    write('''</div>''')
+    write('''</div>''')
+    write('''</fieldset>''')
 
 else:
-    print '''<fieldset class="livesearchContainer">'''
-    print '''<legend id="livesearchLegend">%s</legend>''' % ts.translate(legend_livesearch)
-    print '''<div class="LSIEFix">'''
-    print '''<ul class="LSTable">'''
+    write('''<fieldset class="livesearchContainer">''')
+    write('''<legend id="livesearchLegend">%s</legend>''' % ts.translate(legend_livesearch))
+    write('''<div class="LSIEFix">''')
+    write('''<ul class="LSTable">''')
     for result in results[:limit]:
 
         itemUrl = result.getURL()
         if result.portal_type in useViewAction:
             itemUrl += '/view'
 
-        print '''<li class="LSRow">''',
-        print '''<img src="%s"/>''' % result.getIcon,
+        write('''<li class="LSRow">''')
+        write('''<img src="%s"/>''' % result.getIcon)
         full_title = pretty_title_or_id(result)
         if len(full_title) >= MAX_TITLE:
             display_title = ''.join((full_title[:MAX_TITLE],'...'))
         else:
             display_title = full_title
-        print '''<a href="%s" title="%s">%s</a>''' % (itemUrl, full_title, display_title)
-        print '''<span class="discreet">[%s%%]</span>''' % result.data_record_normalized_score_
+        write('''<a href="%s" title="%s">%s</a>''' % (itemUrl, full_title, display_title))
+        write('''<span class="discreet">[%s%%]</span>''' % result.data_record_normalized_score_)
         display_description = result.Description
         if len(display_description) >= MAX_DESCRIPTION:
             display_description = ''.join((display_description[:MAX_DESCRIPTION],'...'))
-        print '''<div class="discreet" style="margin-left: 2.5em;">%s</div>''' % (display_description)
-        print '''</li>'''
+        write('''<div class="discreet" style="margin-left: 2.5em;">%s</div>''' % (display_description))
+        write('''</li>''')
         full_title, display_title, display_description = None, None, None
 
-    print '''<li class="LSRow">'''
-    print '<a href="search_form" style="font-weight:normal">%s</a>' % ts.translate(label_advanced_search)
-    print '''</li>'''
+    write('''<li class="LSRow">''')
+    write( '<a href="search_form" style="font-weight:normal">%s</a>' % ts.translate(label_advanced_search))
+    write('''</li>''')
 
     if len(results)>limit:
         # add a more... row
-        print '''<li class="LSRow">'''
-        print '<a href="%s" style="font-weight:normal">%s</a>' % ('search?SearchableText=' + searchterms, ts.translate(label_show_all))
-        print '''</li>'''
-    print '''</ul>'''
-    print '''</div>'''
-    print '''</fieldset>'''
+        write('''<li class="LSRow">''')
+        write( '<a href="%s" style="font-weight:normal">%s</a>' % ('search?SearchableText=' + searchterms, ts.translate(label_show_all)))
+        write('''</li>''')
+    write('''</ul>''')
+    write('''</div>''')
+    write('''</fieldset>''')
 
-return printed
+return '\n'.join(output).encode(site_encoding)
 
