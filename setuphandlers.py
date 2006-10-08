@@ -5,7 +5,7 @@ CMFPlone setup handlers.
 from zope.component.globalregistry import base
 from zope.component.persistentregistry import PersistentComponents
 
-from Acquisition import aq_base
+from Acquisition import aq_base, aq_get
 from Products.StandardCacheManagers.AcceleratedHTTPCacheManager import \
      AcceleratedHTTPCacheManager
 from Products.StandardCacheManagers.RAMCacheManager import \
@@ -15,7 +15,6 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import _createObjectByType
 from Products.CMFPlone import migrations as migs
 from Products.CMFPlone.Portal import member_indexhtml
-from Products.CMFPlone.setup.ConfigurationMethods import assignTitles
 from Products.Five.component import enableSite
 from Products.Five.component.interfaces import IObjectManagerSite
 
@@ -27,7 +26,6 @@ class PloneGenerator:
         # handler
         qi = getToolByName(p, 'portal_quickinstaller')
         qi.installProduct('Archetypes', locked=0)
-        qi.installProduct('CMFFormController', locked=1)
         qi.installProduct('GroupUserFolder', locked=1)
         qi.installProduct('PlonePAS', locked=1)
         qi.installProduct('PasswordResetTool', locked=1)
@@ -45,8 +43,9 @@ class PloneGenerator:
         #     by QuickInstaller at all any more, but we need to kill
         #     some chickens so migrations will still work.
         qi.installProduct('ResourceRegistries', locked=1)
-        qi.installProduct('ATContentTypes', locked=1)
+        qi.notifyInstalled('ATContentTypes', locked=1)
         qi.notifyInstalled('ATReferenceBrowserWidget', locked=1)
+        qi.notifyInstalled('CMFFormController', locked=1)
         
     def customizePortalOptions(self, p):
         stool = getToolByName(p, 'portal_skins')
@@ -170,24 +169,38 @@ class PloneGenerator:
         if 'Reviewers' not in existing:
             gtool.addGroup('Reviewers', roles=['Reviewer'])
 
-    def performMigrationActions(self, p):
-        """
-        Perform any necessary migration steps.
-        """
-        out = []
-        migs.v2_1.alphas.addDefaultTypesToPortalFactory(p, out)
-        migs.v2_1.rcs.enableSyndicationOnTopics(p, out)
+    def addDefaultTypesToPortalFactory(self, portal, out):
+        """Put the default content types in portal_factory"""
+        factory = getToolByName(portal, 'portal_factory', None)
+        if factory is not None:
+            types = factory.getFactoryTypes().keys()
+            for metaType in ('Document', 'Event', 'File', 'Folder', 'Image', 
+                             'Large Plone Folder', 'Link', 'News Item',
+                             'Topic'):
+                if metaType not in types:
+                    types.append(metaType)
+            factory.manage_setPortalFactoryTypes(listOfTypeIds = types)
+            out.append('Added default content types to portal_factory.')
 
-    def setATCTToolVersion(self, p):
-        """
-        Have to specify the portal_atct version number by hand since
-        we no longer call it's installer.
-
-        XXX This should really be handled w/ a specific import handler
-        for the tool.
-        """
-        atcttool = getToolByName(p, 'portal_atct')
-        atcttool.setVersionFromFS()
+    def enableSyndicationOnTopics(self, portal, out):
+        syn = getToolByName(portal, 'portal_syndication', None)
+        if syn is not None:
+            enabled = syn.isSiteSyndicationAllowed()
+            # We must enable syndication for the site to enable it on objects
+            # otherwise we get a nasty string exception from CMFDefault
+            syn.editProperties(isAllowed=True)
+            cat = getToolByName(portal, 'portal_catalog', None)
+            if cat is not None:
+                topics = cat(portal_type='Topic')
+                for b in topics:
+                    topic = b.getObject()
+                    # If syndication is already enabled then another nasty string
+                    # exception gets raised in CMFDefault
+                    if topic is not None and not syn.isSyndicationAllowed(topic):
+                        syn.enableSyndication(topic)
+                        out.append('Enabled syndication on %s'%b.getPath())
+            # Reset site syndication to default state
+            syn.editProperties(isAllowed=enabled)
 
     def enableSite(self, portal):
         """
@@ -198,6 +211,41 @@ class PloneGenerator:
         components = PersistentComponents()
         components.__bases__ = (base,)
         portal.setSiteManager(components)
+
+    def assignTitles(self, portal, out):
+        titles={'portal_actions':'Contains custom tabs and buttons',
+         'portal_membership':'Handles membership policies',
+         'portal_memberdata':'Handles the available properties on members',
+         'portal_undo':'Defines actions and functionality related to undo',
+         'portal_types':'Controls the available content types in your portal',
+         'plone_utils':'Various utility methods',
+         'portal_metadata':'Controls metadata like keywords, copyrights, etc',
+         'portal_migration':'Handles migrations to newer Plone versions',
+         'portal_registration':'Handles registration of new users',
+         'portal_skins':'Controls skin behaviour (search order etc)',
+         'portal_syndication':'Generates RSS for folders',
+         'portal_workflow':'Contains workflow definitions for your portal',
+         'portal_url':'Methods to anchor you to the root of your Plone site',
+         'portal_discussion':'Controls how discussions are stored',
+         'portal_catalog':'Indexes all content in the site',
+         'portal_factory':'Responsible for the creation of content objects',
+         'portal_calendar':'Controls how events are shown',
+         'portal_quickinstaller':'Allows to install/uninstall products',
+         'portal_interface':'Allows to query object interfaces',
+         'portal_actionicons':'Associates actions with icons',
+         'portal_groupdata':'Handles properties on groups',
+         'portal_groups':'Handles group related functionality',
+         'translation_service': 'Provides access to the translation machinery',
+         'mimetypes_registry': 'MIME types recognized by Plone',
+         'portal_transforms': 'Handles data conversion between MIME types',
+         }
+    
+        for oid in portal.objectIds():
+            title=titles.get(oid, None)
+            if title:
+                setattr(aq_get(portal, oid), 'title', title)
+        out.append('Assigned titles to portal tools.')
+
 
 def importVarious(context):
     """
@@ -223,11 +271,12 @@ def importFinalSteps(context):
     # Only run step if a flag file is present (e.g. not an extension profile)
     if context.readDataFile('plone-final.txt') is None:
         return
+    out = []
     site = context.getSite()
     gen = PloneGenerator()
     gen.setupPortalContent(site)
     gen.addRolesToPlugIn(site)
     gen.setupGroups(site)
-    gen.performMigrationActions(site)
-    gen.setATCTToolVersion(site)
-    assignTitles(site, site)
+    gen.addDefaultTypesToPortalFactory(site, out)
+    gen.enableSyndicationOnTopics(site, out)
+    gen.assignTitles(site, out)

@@ -2,9 +2,6 @@ import sys
 import os
 import Globals
 
-from Products.GenericSetup import BASE
-from Products.GenericSetup import profile_registry
-
 cmfplone_globals = globals()
 this_module = sys.modules[ __name__ ]
 _marker = []
@@ -164,15 +161,10 @@ def initialize(context):
               TranslationServiceTool.TranslationServiceTool,
             )
 
-    from Products.CMFCore.utils import initializeBasesPhase1
-    from Products.CMFCore.utils import initializeBasesPhase2
     from Products.CMFCore.utils import ContentInit
     from Products.CMFPlone.utils import ToolInit
 
     # Register tools and content
-    z_bases = initializeBasesPhase1(contentClasses, this_module)
-    initializeBasesPhase2(z_bases, context)
-
     ToolInit('Plone Tool'
              , tools=tools
              , icon='tool.gif'
@@ -183,13 +175,6 @@ def initialize(context):
                 , permission=ADD_CONTENT_PERMISSION
                 , extra_constructors=contentConstructors
                 ).initialize( context )
-
-    profile_registry.registerProfile('plone',
-                                     'Plone Site',
-                                     'Profile for a default Plone.',
-                                     'profiles/default',
-                                     'CMFPlone',
-                                     BASE)
 
     import factory
     context.registerClass(Portal.PloneSite,

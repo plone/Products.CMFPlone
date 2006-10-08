@@ -5,16 +5,19 @@ from Acquisition import aq_base
 from Products.GenericSetup.tool import SetupTool
 
 from Products.CMFPlone.migrations.migration_util import installOrReinstallProduct
-from Products.CMFPlone.migrations.v2_1.alphas import reindexCatalog, indexMembersFolder
+from Products.CMFPlone.migrations.v2_1.two12_two13 import reindexCatalog, indexMembersFolder
 from Products.CMFPlone.migrations.v2_1.two12_two13 import normalizeNavtreeProperties
 from Products.CMFPlone.migrations.v2_1.two12_two13 import removeVcXMLRPC
 from Products.CMFPlone.migrations.v2_1.two12_two13 import addActionDropDownMenuIcons
 from Products.CMFPlone.migrations.v2_5.alphas import installDeprecated
+from Products.CMFPlone.migrations.v3_0.alphas import migrateOldActions
 from Products.CMFPlone.factory import _TOOL_ID as SETUP_TOOL_ID
 
+from Products.CMFCore.ActionInformation import Action
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.DirectoryView import createDirectoryView
 from Products.CMFCore.Expression import Expression
+from Products.CMFCore.permissions import View
 
 def alpha2_beta1(portal):
     """2.5-alpha2 -> 2.5-beta1
@@ -27,6 +30,8 @@ def alpha2_beta1(portal):
     # Add getEventTypes KeywordIndex to portal_catalog
     addGetEventTypeIndex(portal, out)
 
+    # We need to migrate all existing actions to new-style actions first
+    migrateOldActions(portal, out)
     # Fix 'home' portal action
     fixHomeAction(portal, out)
 
@@ -77,6 +82,8 @@ def beta1_beta2(portal):
     # Install portal_setup
     installPortalSetup(portal, out)
 
+    # We need to migrate all existing actions to new-style actions first
+    migrateOldActions(portal, out)
     # Simplify actions using the @@plone view
     simplifyActions(portal, out)
 
@@ -126,33 +133,26 @@ def fixHomeAction(portal, out):
     """Make the 'home' action use the @@plone view to get a properly rooted
     navtree.
     """
-    newaction = { 'id'         : 'index_html',
-                  'name'       : 'Home',
-                  'action'     : 'string:${here/@@plone/navigationRootUrl}',
-                  'condition'  : '',
-                  'permission' : 'View',
-                  'category'   : 'portal_tabs',
-                }
-    exists = False
+    home = Action('index_html',
+        title='Home',
+        i18n_domain='plone',
+        url_expr='string:${here/@@plone/navigationRootUrl}',
+        available_expr='',
+        permissions=(View,),
+        visible=True)
+
     actionsTool = getToolByName(portal, 'portal_actions', None)
     if actionsTool is not None:
-        new_actions = actionsTool._cloneActions()
-        for action in new_actions:
-            if action.getId() == newaction['id'] and action.category == newaction['category']:
-                exists = True
-                action.condition = Expression(text=newaction['condition']) or ''
-                out.append('Modified existing home/index_html action')
-        if exists:
-            actionsTool._actions = new_actions
-        else:
-            actionsTool.addAction(newaction['id'],
-                    name=newaction['name'],
-                    action=newaction['action'],
-                    condition=newaction['condition'],
-                    permission=newaction['permission'],
-                    category=newaction['category'],
-                    visible=1)
-            out.append("Added missing home/index_html action")
+        category = actionsTool.portal_tabs
+        for action in category.objectIds():
+            # if action exists, remove and re-add
+            if action == 'index_html':
+                category._delObject('index_html')
+                break
+
+        category['index_html'] = home
+        category.moveObjectsToTop(('index_html',))
+        out.append("Added/modified home/index_html portal_tabs action.")
 
 def removeBogusSkin(portal, out):
     skins = getToolByName(portal, 'portal_skins', None)
@@ -209,40 +209,35 @@ action_replacements = [
 ]
 
 def simplifyActions(portal, out):
-    from Products.CMFCore.ActionInformation import ActionInformation
-    action_tool = getToolByName(portal, 'portal_actions', None)
-    if action_tool is not None:
-        providers = action_tool.listActionProviders()
-        # Iterate ofer all action providers
-        for provider in providers:
-            tool = getToolByName(portal, provider, None)
-            # If this is not a provider with persistent Action objects skip it
-            if not getattr(tool, '_actions', None) or \
-               not isinstance(tool._actions[0], ActionInformation):
-                continue
-            actions = tool.listActions()
-            # iterate through the actions and for each action check if it
-            # matches any of the patterns we want to replace
-            for action in actions:
-                action_id = '%s/%s/%s'%(provider, action.getCategory(),
-                                        action.getId())
-                cur_expr = action.getActionExpression()
-                cur_condition = action.getCondition()
-                for regex, replacement in action_replacements:
-                    new_expr = regex.sub(replacement, cur_expr)
-                    new_condition = regex.sub(replacement, cur_condition)
-                    if new_expr != cur_expr:
-                        action.setActionExpression(new_expr)
-                        out.append(
-                      'Changed url expression on action %s from: \n%s\nto:\n%s'%(
-                                             action_id, cur_expr, new_expr))
-                    if new_condition != cur_condition:
-                        action.edit(condition=new_condition)
-                        out.append(
-                           'Changed condition on action %s from: \n"%s"\nto:\n"%s"'%(
-                                         action_id, cur_condition, new_condition))
-                    cur_expr = new_expr
-                    cur_condition = new_condition
+    from Products.CMFCore.ActionInformation import ActionCategory
+    tool = getToolByName(portal, 'portal_actions', None)
+    if tool is not None:
+        categories = [obj for obj in tool.objectItems()
+                                  if isinstance(obj[1], ActionCategory)]
+        if not categories:
+            return
+        actions = tool.listActions()
+        # iterate through the actions and for each action check if it
+        # matches any of the patterns we want to replace
+        for action in actions:
+            action_id = '%s/%s'%(action.getInfoData()[0]['category'], action.id)
+            cur_expr = action.getProperty('url_expr')
+            cur_condition = action.getProperty('available_expr')
+            for regex, replacement in action_replacements:
+                new_expr = regex.sub(replacement, cur_expr)
+                new_condition = regex.sub(replacement, cur_condition)
+                if new_expr != cur_expr:
+                    action._updateProperty('url_expr', new_expr)
+                    out.append(
+                    'Changed url expression on action %s from: \n%s\nto:\n%s'%(
+                                                action_id, cur_expr, new_expr))
+                if new_condition != cur_condition:
+                    action._updateProperty('available_expr', new_condition)
+                    out.append(
+                    'Changed condition on action %s from: \n"%s"\nto:\n"%s"'%(
+                                     action_id, cur_condition, new_condition))
+                cur_expr = new_expr
+                cur_condition = new_condition
 
 
 def migrateCSSRegExpression(portal, out):

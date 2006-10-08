@@ -12,6 +12,12 @@
   <dependency step="toolset"/>
     Import actions tool's action providers and their actions.
  </import-step>
+ <import-step id="atcttool" version="20060603-01"
+              handler="Products.ATContentTypes.exportimport.atcttool.importATCTTool"
+              title="ATContentTypes Tool">
+  <dependency step="toolset"/>
+    Import ATContentTypes specific configuration.
+ </import-step>
  <import-step id="catalog" version="20050929-01"
               handler="Products.CMFCore.exportimport.catalog.importCatalogTool"
               title="Catalog Tool">
@@ -46,6 +52,13 @@
               title="Stylesheet registry">
   <dependency step="toolset"/>
     Import stylesheet registry
+ </import-step>
+ <import-step id="factorytool" version="20060711-01"
+              handler="Products.CMFPlone.exportimport.factorytool.importFactoryTool"
+              title="Portal Factory Tool">
+  <dependency step="toolset"/>
+  <dependency step="typeinfo"/>
+  Import type registration for the portal factory tool.
  </import-step>
  <import-step id="jsregistry" version="20051015-01"
               handler="Products.ResourceRegistries.exportimport.jsregistry.importJSRegistry"
@@ -120,12 +133,5 @@
   <dependency step="toolset"/>
   <dependency step="typeinfo"/>
     Import workflow tool's workflow definitions and supporting scripts.
- </import-step>
- <import-step id="factorytool" version="20060711-01"
-              handler="Products.CMFPlone.exportimport.factorytool.importFactoryTool"
-              title="Portal Factory Tool">
-  <dependency step="toolset"/>
-  <dependency step="typeinfo"/>
-  Import type registration for the portal factory tool.
  </import-step>
 </import-steps>

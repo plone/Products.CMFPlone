@@ -339,9 +339,9 @@ class BasePloneFolder(CMFCatalogAware, PortalFolderBase, DefaultDublinCoreImpl):
         return getToolByName(self, 'plone_utils').browserDefault(self)
 
     security.declarePublic('contentValues')
-    def contentValues(self, spec=None, filter=None, sort_on=None, reverse=0):
+    def contentValues(self, filter=None, sort_on=None, reverse=0):
         """Able to sort on field."""
-        values = PortalFolderBase.contentValues(self, spec=spec, filter=filter)
+        values = PortalFolderBase.contentValues(self, filter=filter)
         if sort_on is not None:
             values.sort(lambda x, y,
                         sort_on=sort_on: safe_cmp(getattr(x,sort_on),
@@ -352,12 +352,12 @@ class BasePloneFolder(CMFCatalogAware, PortalFolderBase, DefaultDublinCoreImpl):
         return values
 
     security.declareProtected(ListFolderContents, 'listFolderContents')
-    def listFolderContents(self, spec=None, contentFilter=None,
+    def listFolderContents(self, contentFilter=None,
                            suppressHiddenFiles=0):
         """Optionally you can suppress "hidden" files, or files that
         begin with .
         """
-        contents = PortalFolderBase.listFolderContents(self, spec=spec,
+        contents = PortalFolderBase.listFolderContents(self,
                                                   contentFilter=contentFilter)
         if suppressHiddenFiles:
             contents = [obj for obj in contents if obj.getId()[:1]!='.']
@@ -365,13 +365,13 @@ class BasePloneFolder(CMFCatalogAware, PortalFolderBase, DefaultDublinCoreImpl):
 
     security.declareProtected(AccessContentsInformation,
                               'folderlistingFolderContents')
-    def folderlistingFolderContents(self, spec=None, contentFilter=None,
+    def folderlistingFolderContents(self, contentFilter=None,
                                     suppressHiddenFiles=0):
         """Calls listFolderContents in protected only by ACI so that
         folder_listing can work without the List folder contents permission,
         as in CMFDefault.
         """
-        return self.listFolderContents(spec, contentFilter, suppressHiddenFiles)
+        return self.listFolderContents(contentFilter, suppressHiddenFiles)
 
     # Override CMFCore's invokeFactory to return the id returned by the
     # factory in case the factory modifies the id

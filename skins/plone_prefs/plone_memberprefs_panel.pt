@@ -34,7 +34,7 @@
                                                  alt configlet/description"
                                  i18n:attributes="alt"
                                  tal:on-error="string:" />
-                            <tal:configletname tal:content="configlet/name"
+                            <tal:configletname tal:content="configlet/title"
                                                i18n:translate=""></tal:configletname>
                         </a>
                     </li>

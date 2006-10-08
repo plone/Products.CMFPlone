@@ -109,7 +109,7 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
                     verified = 1
             if verified and a.category==group and a.testCondition(context):
                 res.append(a.getAction(context))
-        res.sort(lambda a,b:cmp(a['name'],b['name']))
+        res.sort(lambda a,b:cmp(a['title'],b['title']))
         return res
 
     security.declareProtected( ManagePortal, 'unregisterConfiglet' )

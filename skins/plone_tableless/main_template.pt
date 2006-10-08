@@ -137,13 +137,14 @@
                       Portal status message
                     </div>
 
-                    <metal:header metal:define-slot="header" tal:content="nothing">
-                      Visual Header
-                    </metal:header>
-
-                    <metal:bodytext metal:define-slot="main" tal:content="nothing">
-                      Page body text
-                    </metal:bodytext>
+                    <metal:slot metal:define-slot="body">
+                      <metal:header metal:define-slot="header" tal:content="nothing">
+                        Visual Header
+                      </metal:header>
+                      <metal:bodytext metal:define-slot="main" tal:content="nothing">
+                        Page body text
+                      </metal:bodytext>
+                    </metal:slot>
 
                     <metal:sub metal:define-slot="sub">
                       <metal:discussion use-macro="here/viewThreadsAtBottom/macros/discussionView" />

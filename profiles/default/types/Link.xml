@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <object name="Link"
    meta_type="Factory-based Type Information with dynamic views"
-   xmlns:i18n="http://xml.zope.org/namespaces/i18n">
- <property name="title">Link</property>
- <property
-    name="description">A link to an internal or external resource.</property>
+   i18n:domain="plone" xmlns:i18n="http://xml.zope.org/namespaces/i18n">
+ <property name="title" i18n:translate="">Link</property>
+ <property name="description"
+      i18n:translate="">A link to an internal or external resource.</property>
  <property name="content_icon">link_icon.gif</property>
  <property name="content_meta_type">ATLink</property>
  <property name="product">ATContentTypes</property>

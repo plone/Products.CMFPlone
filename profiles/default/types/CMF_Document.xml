@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <object name="CMF Document" meta_type="Factory-based Type Information"
-   xmlns:i18n="http://xml.zope.org/namespaces/i18n">
- <property name="title"></property>
- <property
-    name="description">Documents contain text that can be formatted using 'Structured Text.'
+   i18n:domain="plone" xmlns:i18n="http://xml.zope.org/namespaces/i18n">
+ <property name="title" i18n:translate=""></property>
+ <property name="description"
+     i18n:translate="">Documents contain text that can be formatted using 'Structured Text.'
   They may also contain HTML, or "plain" text.</property>
  <property name="content_icon">document_icon.gif</property>
  <property name="content_meta_type">Document</property>

@@ -1,8 +1,9 @@
 <?xml version="1.0"?>
 <object name="CMF Link" meta_type="Factory-based Type Information"
-   xmlns:i18n="http://xml.zope.org/namespaces/i18n">
- <property name="title"></property>
- <property name="description">Link items are annotated URLs.</property>
+   i18n:domain="plone" xmlns:i18n="http://xml.zope.org/namespaces/i18n">
+ <property name="title" i18n:translate=""></property>
+ <property name="description"
+      i18n:translate="">Link items are annotated URLs.</property>
  <property name="content_icon">link_icon.gif</property>
  <property name="content_meta_type">Link</property>
  <property name="product">CMFDefault</property>

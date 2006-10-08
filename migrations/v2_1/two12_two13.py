@@ -1,6 +1,5 @@
 import string
 from Products.CMFCore.utils import getToolByName
-from alphas import reindexCatalog, indexMembersFolder
 
 def two12_two13(portal):
     """2.1.2 -> 2.1.3
@@ -97,3 +96,29 @@ def addActionDropDownMenuIcons(portal, out):
         out.append('Added icons for copy, cut, paste and delete')
     else:
         out.append('Updated icons for copy, cut, paste and delete')
+
+def reindexCatalog(portal, out):
+    """Rebuilds the portal_catalog."""
+    catalog = getToolByName(portal, 'portal_catalog', None)
+    if catalog is not None:
+        # Reduce threshold for the reindex run
+        old_threshold = catalog.threshold
+        pg_threshold = getattr(catalog, 'pgthreshold', 0)
+        catalog.pgthreshold = 300
+        catalog.threshold = 2000
+        catalog.refreshCatalog(clear=1)
+        catalog.threshold = old_threshold
+        catalog.pgthreshold = pg_threshold
+        out.append("Reindexed portal_catalog.")
+
+def indexMembersFolder(portal, out):
+    """Makes sure the Members folder is cataloged."""
+    catalog = getToolByName(portal, 'portal_catalog', None)
+    if catalog is not None:
+        membershipTool = getToolByName(portal, 'portal_membership', None)
+        if membershipTool is not None:
+            members = membershipTool.getMembersFolder()
+            if members is not None:
+                members.indexObject()
+                out.append('Recataloged Members folder.')
+

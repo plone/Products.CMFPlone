@@ -1,8 +1,11 @@
+from Products.CMFCore.ActionInformation import Action
 from Products.CMFCore.Expression import Expression
+from Products.CMFCore.permissions import DeleteObjects
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.UnicodeSplitter import Splitter, CaseNormalizer
-from Products.CMFPlone.migrations.v2_1.alphas import reindexCatalog, \
+from Products.CMFPlone.migrations.v2_1.two12_two13 import reindexCatalog, \
      indexMembersFolder
+from Products.CMFPlone.migrations.v3_0.alphas import migrateOldActions
 
 
 def final_two51(portal):
@@ -17,6 +20,8 @@ def final_two51(portal):
     # Repair plone_lexicon pipeline
     fixupPloneLexicon(portal, out)
 
+    # We need to migrate all existing actions to new-style actions first
+    migrateOldActions(portal, out)
     # Make object delete action use confirmation form
     fixObjDeleteAction(portal, out)
 
@@ -83,30 +88,24 @@ def fixupPloneLexicon(portal, out):
 def fixObjDeleteAction(portal, out):
     """Make the delete action use the new confirmation form
     """
-    newaction = { 'id'         : 'delete',
-                  'name'       : 'Delete',
-                  'action'     : 'string:${globals_view/getCurrentObjectUrl}/delete_confirmation',
-                  'condition'  : 'python:checkPermission(&quot;Delete objects&quot;, globals_view.getParentObject()) and not globals_view.isPortalOrPortalDefaultPage()',
-                  'permission' : 'Delete objects',
-                  'category'   : 'object_buttons',
-                }
-    exists = False
+    delete = Action('delete',
+        title='Delete',
+        i18n_domain='plone',
+        url_expr='string:${globals_view/getCurrentObjectUrl}/delete_confirmation',
+        available_expr='python:checkPermission(&quot;Delete objects&quot;, globals_view.getParentObject()) and not globals_view.isPortalOrPortalDefaultPage()',
+        permissions=(DeleteObjects,),
+        visible=True)
+
     actionsTool = getToolByName(portal, 'portal_actions', None)
     if actionsTool is not None:
-        new_actions = actionsTool._cloneActions()
-        for action in new_actions:
-            if action.getId() == newaction['id'] and action.category == newaction['category']:
-                exists = True
-                action.action = Expression(text=newaction['action'])
-                out.append('Modified existing object delete action')
-        if exists:
-            actionsTool._actions = new_actions
-        else:
-            actionsTool.addAction(newaction['id'],
-                    name=newaction['name'],
-                    action=newaction['action'],
-                    condition=newaction['condition'],
-                    permission=newaction['permission'],
-                    category=newaction['category'],
-                    visible=1)
-            out.append("Added missing object delete action")
+        category = actionsTool.object_buttons
+        for action in category.objectIds():
+            # if action exists, remove and re-add
+            if action == 'delete':
+                category._delObject('delete')
+                break
+
+        category['delete'] = delete
+        category.moveObjectsToBottom(('delete',))
+        category.moveObjectsUp(('delete',))
+        out.append("Added/modified delete object_buttons action.")

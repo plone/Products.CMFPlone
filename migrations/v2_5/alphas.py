@@ -48,7 +48,7 @@ def installDeprecated(portal, out):
     if st is None:
         return
     if not hasattr(aq_base(st), 'plone_deprecated'):
-        createDirectoryView(st, os.path.join('CMFPlone', 'skins', 'plone_deprecated'))
+        createDirectoryView(st, 'CMFPlone/skins/plone_deprecated')
         out.append('Added directory view for plone_deprecated')
 
     # add deprecated skin to default skins

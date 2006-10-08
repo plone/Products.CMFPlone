@@ -74,17 +74,13 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.failUnless(self.cp.__dict__.has_key('groups'))
 
     def testWorkflowIsActionProvider(self):
-        # This change has been backed out and the test inverted!
-        # Remove portal_workflow by default.  We are falling back to
-        # our use of the 'review_slot'.  There are no places using
-        # the worklist ui anymore directly from the listFilteredActionsFor
-        at = self.portal.portal_actions
-        self.failUnless('portal_workflow' in at.listActionProviders())
+        # The workflow tool is one of the last remaining action providers.
+        self.failUnless('portal_workflow' in self.actions.listActionProviders())
 
     def testReplyTabIsOff(self):
         # Ensure 'reply' tab is turned off
-        dtool = self.portal.portal_discussion
-        self.assertEqual(dtool.getActionInfo('object/reply')['visible'], False)
+        reply = self.actions.getActionInfo('object/reply')
+        self.assertEqual(reply['visible'], False)
 
     def testLargePloneFolderWorkflow(self):
         # Large Plone Folder should use folder_workflow
@@ -96,7 +92,6 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
     def testMembersFolderMetaType(self):
         # Members folder should have meta_type 'ATBTreeFolder'
         members = self.membership.getMembersFolder()
-        #self.assertEqual(members.meta_type, 'Large Plone Folder')
         self.assertEqual(members.meta_type, 'ATBTreeFolder')
 
     def testMembersFolderPortalType(self):
@@ -385,9 +380,8 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
 
     def testChangeStateIsLastFolderButton(self):
         # Change state button should be the last
-        actions = [x for x in self.actions.listActions() if
-                    x.category == 'folder_buttons']
-        self.assertEqual(actions[-1].id, 'change_state', [x.id for x in actions])
+        actions = self.actions._getOb('folder_buttons').objectIds()
+        self.assertEqual(actions[-1], 'change_state')
 
     def testTypesUseViewActionInListingsProperty(self):
         # site_properties should have the typesUseViewActionInListings property
@@ -692,9 +686,9 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.failUnless(isinstance(cpm, CachingPolicyManager))
 
     def testHomeActionUsesView(self):
-        actions = self.portal.portal_actions.listActions()
+        actions = self.actions.listActions()
         homeAction = [x for x in actions if x.id == 'index_html'][0]
-        self.assertEquals(homeAction.getActionExpression(), 'string:${globals_view/navigationRootUrl}')
+        self.assertEquals(homeAction.getInfoData()[0]['url'].text, 'string:${globals_view/navigationRootUrl}')
 
     def testPloneLexicon(self):
         # Plone lexicon should use new splitter and case normalizer

@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <object name="CMF Event" meta_type="Factory-based Type Information"
-   xmlns:i18n="http://xml.zope.org/namespaces/i18n">
- <property name="title"></property>
- <property
-    name="description">Events are objects for use in Calendar topical queries on the catalog.</property>
+   i18n:domain="plone" xmlns:i18n="http://xml.zope.org/namespaces/i18n">
+ <property name="title" i18n:translate=""></property>
+ <property name="description"
+    i18n:translate="">Events are objects for use in Calendar topical queries on the catalog.</property>
  <property name="content_icon">event_icon.gif</property>
  <property name="content_meta_type">CMF Event</property>
  <property name="product">CMFCalendar</property>

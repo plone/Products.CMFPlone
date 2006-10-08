@@ -1,8 +1,11 @@
 import string
+from Products.CMFCore.ActionInformation import Action
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.permissions import AddPortalContent
 from Products.CMFPlone.migrations.migration_util import safeGetMemberDataTool, \
      safeEditProperty
+from Products.CMFPlone.migrations.v3_0.alphas import migrateOldActions
+
 
 def two11_two12rc1(portal):
     """2.1.1 -> 2.1.2-rc1
@@ -11,6 +14,11 @@ def two11_two12rc1(portal):
 
     # Remove plone_3rdParty\CMFTopic from skin layers
     removeCMFTopicSkinLayer(portal, out)
+
+
+    # We need to migrate all existing actions to new-style actions first
+    migrateOldActions(portal, out)
+    # Add rename object action
     addRenameObjectButton(portal, out)
 
     # add se-highlight.js (plone_3rdParty) to ResourceRegistries
@@ -56,39 +64,26 @@ def removeCMFTopicSkinLayer(portal, out):
 def addRenameObjectButton(portal,out):
     """Add the missing rename action for renaming single content items.
     """
-    
-    ACTIONS = (
-        {'id'        : 'rename',
-         'name'      : 'Rename',
-         'action'    : 'python:"%s/object_rename"%(object.isDefaultPageInFolder() and object.getParentNode().absolute_url() or object_url)',
-         'condition' : 'python:portal.portal_membership.checkPermission("Delete objects", object.aq_inner.getParentNode()) and portal.portal_membership.checkPermission("Copy or Move", object) and portal.portal_membership.checkPermission("Add portal content", object) and object is not portal and not (object.isDefaultPageInFolder() and object.getParentNode() is portal)',
-         'permission': AddPortalContent,
-         'category'  : 'object_buttons',
-        },)
-
     actionsTool = getToolByName(portal, 'portal_actions', None)
     if actionsTool is not None:
-        # update/add actions
-        for newaction in ACTIONS:
-            idx = 0
-            for action in actionsTool.listActions():
-                # if action exists, remove and re-add
-                if action.getId() == newaction['id'] \
-                        and action.getCategory() == newaction['category']:
-                    actionsTool.deleteActions((idx,))
-                    out.append("Removed '%s' contentmenu action from actions tool." % newaction['name'])
-                    break
-                idx += 1
+        category = actionsTool.object_buttons
+        for action in category.objectIds():
+            # if action exists, remove and re-add
+            if action == 'rename':
+                category._delObject('rename')
+                out.append("Removed rename contentmenu action from actions tool.")
+                break
 
-            actionsTool.addAction(newaction['id'],
-                name=newaction['name'],
-                action=newaction['action'],
-                condition=newaction['condition'],
-                permission=newaction['permission'],
-                category=newaction['category'],
-                visible=1)
+        rename = Action('rename',
+            title='Rename',
+            i18n_domain='plone',
+            url_expr='python:"%s/object_rename"%(object.isDefaultPageInFolder() and object.getParentNode().absolute_url() or object_url)',
+            available_expr='python:portal.portal_membership.checkPermission("Delete objects", object.aq_inner.getParentNode()) and portal.portal_membership.checkPermission("Copy or Move", object) and portal.portal_membership.checkPermission("Add portal content", object) and object is not portal and not (object.isDefaultPageInFolder() and object.getParentNode() is portal)',
+            permissions=(AddPortalContent,),
+            visible=True)
 
-            out.append("Added '%s' contentmenu action to actions tool." % newaction['name'])
+        category['rename'] = rename
+        out.append("Added rename contentmenu action to actions tool.")
 
 
 def addSEHighLightJS(portal, out):

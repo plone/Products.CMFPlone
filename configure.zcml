@@ -5,6 +5,8 @@
   <include package=".browser" />
   <include package=".exportimport" />
 
+  <include file="profiles.zcml"/>
+
   <five:implements
     class=".FactoryTool.FactoryTool"
     interface=".interfaces.IFactoryTool"
@@ -18,5 +20,5 @@
 
   <five:deprecatedManageAddDelete
       class=".CatalogTool.CatalogTool" />
-
+  
 </configure>

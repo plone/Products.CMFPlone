@@ -9,6 +9,9 @@ if __name__ == '__main__':
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
 
+from zope.i18nmessageid.message import Message
+
+from Acquisition import aq_base
 from Products.ATContentTypes.interfaces import IATContentType
 
 AddPortalTopics = 'Add portal topics'
@@ -125,11 +128,26 @@ class TestContentTypes(PloneTestCase.PloneTestCase):
         self.assertEqual(self.folder.topic.Title(), 'Foo')
 
 
+class TestContentTypeInformation(PloneTestCase.PloneTestCase):
+
+    def afterSetUp(self):
+        self.types = self.portal.portal_types
+
+    def testTypeTitlesAreMessages(self):
+        types = self.types.objectValues()
+        for t in types:
+            # If the title is empty we get back the id
+            if t.title:
+                self.failUnless(isinstance(t.Title(), Message))
+            self.failUnless(isinstance(t.Description(), Message))
+
+
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
     suite.addTest(makeSuite(TestATContentTypes))
     suite.addTest(makeSuite(TestContentTypes))
+    suite.addTest(makeSuite(TestContentTypeInformation))
     return suite
 
 if __name__ == '__main__':

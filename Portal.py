@@ -1,6 +1,7 @@
 from Products.CMFDefault.Portal import CMFSite
 
 from Products.CMFCore import permissions
+from Products.CMFCore.utils import _checkPermission
 from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault import DublinCore
 from Products.CMFDynamicViewFTI.browserdefault import BrowserDefaultMixin
@@ -76,6 +77,18 @@ class PloneSite(CMFSite, OrderedContainer, BrowserDefaultMixin):
         self.removal_inprogress=1
         PloneSite.inheritedAttribute('manage_beforeDelete')(self, container, item)
 
+    security.declareProtected(permissions.DeleteObjects, 'manage_delObjects')
+    def manage_delObjects(self, ids=[], REQUEST=None):
+        """We need to enforce security."""
+        if isinstance(ids, basestring):
+            ids = [ids]
+        for id in ids:
+            item = self._getOb(id)
+            if not _checkPermission(permissions.DeleteObjects, item):
+                raise Unauthorized, (
+                    "Do not have permissions to remove this object")
+        return CMFSite.manage_delObjects(self, ids, REQUEST=REQUEST)
+
     def _management_page_charset(self):
         """ Returns default_charset for management screens """
         properties = getToolByName(self, 'portal_properties', None)
@@ -98,8 +111,8 @@ class PloneSite(CMFSite, OrderedContainer, BrowserDefaultMixin):
         return self()
 
     security.declareProtected(permissions.AccessContentsInformation,
-                 'folderlistingFolderContents')
-    def folderlistingFolderContents(self, spec=None, contentFilter=None):
+			     'folderlistingFolderContents')
+    def folderlistingFolderContents(self, contentFilter=None):
         """Calls listFolderContents in protected only by ACI so that
         folder_listing can work without the List folder contents permission,
         as in CMFDefault.
@@ -107,20 +120,6 @@ class PloneSite(CMFSite, OrderedContainer, BrowserDefaultMixin):
         This is copied from Archetypes Basefolder and is needed by the
         reference browser.
         """
-        return self.listFolderContents(spec, contentFilter)
-
-    security.declareProtected(permissions.DeleteObjects,
-                              'manage_delObjects')
-    def manage_delObjects(self, ids=[], REQUEST=None):
-        """We need to enforce security."""
-        mt = getToolByName(self, 'portal_membership')
-        if type(ids) is str:
-            ids = [ids]
-        for id in ids:
-            item = self._getOb(id)
-            if not mt.checkPermission(permissions.DeleteObjects, item):
-                raise Unauthorized, (
-                    "Do not have permissions to remove this object")
-        return CMFSite.manage_delObjects(self, ids, REQUEST=REQUEST)
+        return self.listFolderContents(contentFilter)
 
 Globals.InitializeClass(PloneSite)

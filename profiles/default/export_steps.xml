@@ -10,6 +10,11 @@
               title="Action Providers">
   Export actions tool's action providers and their actions.
  </export-step>
+ <export-step id="atcttool"
+              handler="Products.ATContentTypes.exportimport.atcttool.exportATCTTool"
+              title="ATContentTypes Tool">
+  Export ATContentTypes specific configuration.
+ </export-step>
  <export-step id="catalog"
               handler="Products.CMFCore.exportimport.catalog.exportCatalogTool"
               title="Catalog Tool">
@@ -39,6 +44,11 @@
               handler="Products.ResourceRegistries.exportimport.cssregistry.exportCSSRegistry"
               title="Stylesheet registry">
    Export stylesheet registry
+ </export-step>
+ <export-step id="factorytool"
+              handler="Products.CMFPlone.exportimport.factorytool.exportFactoryTool"
+              title="Portal Factory Tool">
+  Export type registration for the portal factory tool.
  </export-step>
  <export-step id="jsregistry"
               handler="Products.ResourceRegistries.exportimport.jsregistry.exportJSRegistry"
@@ -94,10 +104,5 @@
               handler="Products.CMFCore.exportimport.workflow.exportWorkflowTool"
               title="Workflow Tool">
   Export workflow tool's workflow definitions and supporting scripts.
- </export-step>
- <export-step id="factorytool"
-              handler="Products.CMFPlone.exportimport.factorytool.exportFactoryTool"
-              title="Portal Factory Tool">
-  Export type registration for the portal factory tool.
  </export-step>
 </export-steps>
