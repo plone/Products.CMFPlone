@@ -1,5 +1,10 @@
 <?xml version="1.0"?>
 <export-steps>
+ <export-step id="portlets"
+              handler="plone.app.portlets.exportimport.portlets.exportPortlets"
+              title="Portlets">
+    Export local portlet configuration.
+ </export-step>
  <export-step id="action-icons"
               handler="Products.CMFActionIcons.exportimport.exportActionIconsTool"
               title="Action Icons">

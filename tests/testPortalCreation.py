@@ -14,6 +14,7 @@ from zope.app.component.hooks import setSite, clearSite, setHooks
 from zope.app.component.interfaces import ISite
 from zope.component import getGlobalSiteManager
 from zope.component import getSiteManager
+from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.component import queryUtility
 from zope.component.interfaces import IComponentLookup
@@ -31,6 +32,7 @@ from Products.StandardCacheManagers.RAMCacheManager import \
      RAMCacheManager
 from Products.CMFPlone import setuphandlers
 
+from plone.portlets.interfaces import IPortletManager
 
 class TestPortalCreation(PloneTestCase.PloneTestCase):
 
@@ -758,6 +760,12 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         # Make sure unregistration was successful
         util = queryUtility(dummy.IDummyUtility)
         self.failUnless(util is None)
+        
+    def testPortletManagersInstalled(self):
+        sm = getSiteManager(self.portal)
+        registrations = [r.name for r in sm.registeredUtilities()
+                            if IPortletManager == r.provided]
+        self.assertEquals(['plone.dashboard', 'plone.leftcolumn', 'plone.rightcolumn'], sorted(registrations))
 
 class TestPortalBugs(PloneTestCase.PloneTestCase):
 
