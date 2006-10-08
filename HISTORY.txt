@@ -4,6 +4,18 @@ Changelog for Plone
 
 Plone 3.0 - Unreleased
 
+    - Merged plip142-componentised-content-menu
+      http://plone.org/products/plone/roadmap/142.
+      [optilude, hannosch]
+
+    - Merged plip148-cmf21 bundle. This implements
+      http://plone.org/products/plone/roadmap/148 and
+      http://plone.org/products/plone/roadmap/161.
+      [hannosch]
+
+    - Merged PLIP 8 versioning bundle http://plone.org/products/plone/roadmap/8.
+      [wichert]
+
     - Converted some tests to inline doctests and some others to real unit tests
       as opposed to integration tests.
       [hannosch]
