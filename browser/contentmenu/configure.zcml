@@ -1,0 +1,98 @@
+<configure xmlns="http://namespaces.zope.org/zope"
+           xmlns:browser="http://namespaces.zope.org/browser"
+           xmlns:five="http://namespaces.zope.org/five"
+           i18n_domain="plone">
+
+  <!-- Top level menu -->
+  <browser:menu
+    id="plone.contentmenu"
+    title="Content menu - contains contextual actions related to the content"
+    interface=".interfaces.IContentMenuItem"
+    />
+    
+  <!-- Sub-menus -->
+
+  <browser:menu
+    id="plone.contentmenu.actions.menu"
+    title="The 'actions' menu - allows the user to execute actions on an object"
+    class=".menu.ActionsMenu"
+    />  
+
+  <browser:menu
+    id="plone.contentmenu.display.menu"
+    title="The 'display' menu - allows the user to select the view of an object"
+    class=".menu.DisplayMenu"
+    />
+  
+   <browser:menu
+    id="plone.contentmenu.factories.menu"
+    title="The 'add' menu - allows the user to add new content items in the context"
+    class=".menu.FactoriesMenu"
+    />
+
+  <browser:menu
+    id="plone.contentmenu.workflow.menu"
+    title="The 'workflow' menu - allows the user to execute workflow transitions"
+    class=".menu.WorkflowMenu"
+    />
+
+    
+  <!--
+    The menu items in the contentMenu are all sub-menu items. Unfortunately,
+    Five (with Zope 2.9 at least) does not seem to support the subMenuItem
+    directive. More importantly, the menus require additional logic beyond what
+    Zope 3's BrowserMenuItem provides - principally dynamic titles and more
+    flexible available() methods.
+    
+    In the spirit of not inventing additional ZCML, we simply register our menu
+    items as what they are: adapters of (context, request) -> IContentMenuItem.
+    
+    You can override these registrations in your own overrides.zcml. You can
+    also plug new sub-menus into the menu by providing similar menu item
+    registrations. If the browser:menuItem directive is sufficient, you should
+    be able to use this as normal.
+    
+    Note that menu items are ordered by an 'ordered' property. To allow third
+    party products to slot their own sub-menus in between the default menu 
+    items, these are registered with gaps: 
+    
+      actions menu   - order=10
+      display menu   - order=20
+      factories menu - order=30
+      workflows menu - order=40
+    
+  -->
+
+ 
+  <adapter for="* *"
+           name="plone.contentmenu.actions"
+           factory=".menu.ActionsSubMenuItem"
+           provides=".interfaces.IContentMenuItem" />
+  
+  <adapter for="* *"
+           name="plone.contentmenu.display"
+           factory=".menu.DisplaySubMenuItem"
+           provides=".interfaces.IContentMenuItem" />
+  
+  <adapter for="* *"
+           name="plone.contentmenu.factories"
+           factory=".menu.FactoriesSubMenuItem"
+           provides=".interfaces.IContentMenuItem" />
+  
+  <adapter for="* *"
+           name="plone.contentmenu.workflow"
+           factory=".menu.WorkflowSubMenuItem"
+           provides=".interfaces.IContentMenuItem" />
+           
+  <!-- Content provider -->
+           
+  <adapter factory=".view.ContentMenuProvider"
+           name="plone.contentmenu"
+           provides="zope.contentprovider.interfaces.IContentProvider"/>
+           
+  
+  <class class=".view.ContentMenuProvider">
+    <allow interface=".interfaces.IContentMenuView" />
+  </class>
+           
+</configure>
