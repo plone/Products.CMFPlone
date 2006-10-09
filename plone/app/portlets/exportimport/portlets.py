@@ -36,7 +36,13 @@ class PortletsXMLAdapter(XMLAdapterBase):
     _LOGGER_ID = 'portlets'
     
     def _exportNode(self):
+        # hack around an issue where _getObjectNode expects to have the context
+        # a meta_type, which isn't the case for a component registry
+        if IComponentRegistry.providedBy(self.context):
+            self.context.meta_type = 'ComponentRegistry'
         node = self._getObjectNode('portlets')
+        if IComponentRegistry.providedBy(self.context):
+            del(self.context.meta_type)
         node.appendChild(self._extractPortlets())
         self._logger.info('Portlets exported')
         return node
@@ -109,7 +115,7 @@ class PortletsXMLAdapter(XMLAdapterBase):
     def _extractPortlets(self):
         fragment = self._doc.createDocumentFragment()
         
-        registeredPortletTyeps = [r.name for r in self.context.registeredUtilities()
+        registeredPortletTypes = [r.name for r in self.context.registeredUtilities()
                                             if r.provided == IPortletType]
         portletManagerRegistrations = [r for r in self.context.registeredUtilities()
                                             if r.provided.isOrExtends(IPortletManager)]
@@ -117,8 +123,8 @@ class PortletsXMLAdapter(XMLAdapterBase):
         for r in portletManagerRegistrations:
             child = self._doc.createElement('portletmanager')
             child.setAttribute('name', r.name)
-            
-            specificInterface = providedBy(r.component).flattened()[0]
+
+            specificInterface = providedBy(r.component).flattened().next()
             if specificInterface != IPortletManager:
                 child.setAttribute('type', _getDottedName(specificInterface))
             
@@ -132,7 +138,7 @@ class PortletsXMLAdapter(XMLAdapterBase):
                 child.setAttribute('description', portletType.description)
                 
                 if portletType.for_:
-                    child.setAttribute('for', _getDottedName(child.for_))
+                    child.setAttribute('for', _getDottedName(portletType.for_))
 
         return fragment
 

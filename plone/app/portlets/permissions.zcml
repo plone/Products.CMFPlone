@@ -1,4 +1,5 @@
-<configure xmlns="http://namespaces.zope.org/zope">
+<configure xmlns="http://namespaces.zope.org/zope"
+    i18n_domain="plone.app.portlets">
 
   <!-- Note: These permissions are also set up in the rolemap.xml GenericSetup
     importer in CMFPlone.
