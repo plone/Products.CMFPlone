@@ -10,7 +10,7 @@ from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
 
 from tempfile import mkstemp
-from zope.app.component.hooks import setSite, clearSite, setHooks
+from zope.app.component.hooks import setSite, clearSite
 from zope.app.component.interfaces import ISite
 from zope.component import getGlobalSiteManager
 from zope.component import getSiteManager
@@ -706,7 +706,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.setup.createSnapshot(snapshot_id)
 
     def testSiteManagerSetup(self):
-        setHooks()
+        clearSite()
         # The portal should be an ISite
         self.failUnless(ISite.providedBy(self.portal))
         # There should be a IComponentRegistry
@@ -724,11 +724,8 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         # And should get the local site manager
         sm = getSiteManager()
         self.failUnless(sm is comp)
-        # And clean up the site again
-        clearSite()
 
     def testUtilityRegistration(self):
-        setHooks()
         gsm = getGlobalSiteManager()
         global_util = dummy.DummyUtility()
 
@@ -737,16 +734,14 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         getutil = getUtility(dummy.IDummyUtility)
         self.assertEquals(getutil, global_util)
 
-        # Now we set the site, as it is done in url traversal normally
-        setSite(self.portal)
-        # And register a local utility and see if we can get it
+        # Register a local utility and see if we can get it
         sm = getSiteManager()
         local_util = dummy.DummyUtility()
 
         sm.registerUtility(local_util, dummy.IDummyUtility)
         getutil = getUtility(dummy.IDummyUtility)
         self.assertEquals(getutil, local_util)
-        # And clean up the site again
+        # Clean up the site again
         clearSite()
 
         # Without a site we get the global utility
