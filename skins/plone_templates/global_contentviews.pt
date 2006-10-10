@@ -64,9 +64,7 @@
             </li>
         </ul>
 
-        <div tal:define="global view context/@@plone">
-          <div tal:replace="structure provider:plone.contentmenu" />
-        </div>
+        <div tal:replace="structure provider:plone.contentmenu" />
 
     </div>
   </body>
