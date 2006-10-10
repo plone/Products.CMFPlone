@@ -19,6 +19,10 @@ Plone 2.5.2 - Orb - (Unreleased)
       http://dev.plone.org/plone/ticket/5828.
       [ajung]
 
+    - livesearch_reply.py wrote quotes (") in the title-attribute. misformed
+      XML was generated. replaced quotes by &quot;.
+      [jensens]
+
 Plone 2.5.1 - released September 28, 2006
 
     - The content tab selection logic now checks the request in addition 

@@ -110,9 +110,10 @@ else:
         write('''<img src="%s"/>''' % result.getIcon)
         full_title = pretty_title_or_id(result)
         if len(full_title) >= MAX_TITLE:
-            display_title = ''.join((full_title[:MAX_TITLE],'...'))
+            display_title = ''.join((full_title[:MAX_TITLE],'...'))            
         else:
             display_title = full_title
+        full_title = full_title.replace('"', '&quot;')
         write('''<a href="%s" title="%s">%s</a>''' % (itemUrl, full_title, display_title))
         write('''<span class="discreet">[%s%%]</span>''' % result.data_record_normalized_score_)
         display_description = result.Description
