@@ -113,6 +113,7 @@ else:
             display_title = ''.join((full_title[:MAX_TITLE],'...'))
         else:
             display_title = full_title
+        full_title = full_title.replace('"', '&quot;')
         write('''<a href="%s" title="%s">%s</a>''' % (itemUrl, full_title, display_title))
         write('''<span class="discreet">[%s%%]</span>''' % result.data_record_normalized_score_)
         display_description = result.Description

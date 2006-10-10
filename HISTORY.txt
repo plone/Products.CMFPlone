@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0 - Unreleased
 
+    - livesearch_reply.py wrote quotes (") in the title-attribute. misformed 
+      XML was generated. replaced quotes by &quot;. 
+      [jensens]
+
     - Merged plip142-componentised-content-menu
       http://plone.org/products/plone/roadmap/142.
       [optilude, hannosch]
