@@ -17,7 +17,7 @@ from Products.CMFPlone.interfaces.NonStructuralFolder import INonStructuralFolde
      as z2INonStructuralFolder
 
 from zope.interface import implements
-from zope.component import getMultiAdapter, getUtility
+from zope.component import getMultiAdapter, queryMultiAdapter, getUtility
 
 import ZTUtils
 import sys
@@ -238,10 +238,21 @@ class Plone(utils.BrowserView):
         left = getUtility(IPortletManager, name='plone.leftcolumn')
         right = getUtility(IPortletManager, name='plone.rightcolumn')
         
-        view = options.get('view', self)
+        # Try to find the actual view to adapt from, if there is one
+        # (there won't be if this a regular page template)
+        view = self
+        args = options.get('args', None)
+        if args is not None and len(args) > 0:
+            view = args[0]
         
-        leftRenderer = getMultiAdapter((context, self.request, view, left), IPortletManagerRenderer)
-        rightRenderer = getMultiAdapter((context, self.request, view, right), IPortletManagerRenderer)
+        leftRenderer = queryMultiAdapter((context, self.request, view, left), IPortletManagerRenderer)
+        rightRenderer = queryMultiAdapter((context, self.request, view, right), IPortletManagerRenderer)
+        
+        if leftRenderer is None:
+            leftRenderer = getMultiAdapter((context, self.request, self, left), IPortletManagerRenderer)
+            
+        if rightRenderer is None:
+            rightRenderer = getMultiAdapter((context, self.request, self, right), IPortletManagerRenderer)
         
         if not leftRenderer.visible:
             slots['left'] = []
