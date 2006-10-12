@@ -85,7 +85,7 @@ function liveSearchInit() {
     } else {
         searchInput.attachEvent("onkeydown",liveSearchKeyPress);
         searchInput.attachEvent("onkeydown",liveSearchStart);
-        searchInput.attachEvent("onblur",liveSearchHide);
+        searchInput.attachEvent("onblur",liveSearchHideDelayed);
         isIE = true;
     }
 
