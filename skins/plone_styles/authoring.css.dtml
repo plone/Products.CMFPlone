@@ -542,4 +542,11 @@ tr.dragging td {
 .notDraggable {
 }
 
+.managePortletsLink {
+    display:  block;
+    color: &dtml-discreetColor;;
+    font-size: &dtml-fontSmallSize;;
+    font-weight: normal;
+}
+
 /* </dtml-with> */
