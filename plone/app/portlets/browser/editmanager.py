@@ -55,7 +55,7 @@ class EditPortletManagerRenderer(Explicit):
         
     @property
     def visible(self):
-        True
+        return True
 
     def filter(self, portlets):
         return portlets
@@ -67,7 +67,7 @@ class EditPortletManagerRenderer(Explicit):
 
     def render(self):
         if not self.__updated:
-            raise UpdateNotCalled()
+            raise UpdateNotCalled
         return self.template()
     
     # Used by the view template

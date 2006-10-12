@@ -46,7 +46,7 @@ class ManageContextualPortlets(BrowserView):
         left_slots = getattr(aq_base(self.context), 'left_slots', [])
         right_slots = getattr(aq_base(self.context), 'right_slots', [])
         
-        return left_slots or right_slots
+        return (left_slots or right_slots)
 
     # view @@set-portlet-blacklist-status
     def set_blacklist_status(self, manager, user_status, group_status, content_type_status, context_status):

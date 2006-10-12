@@ -15,6 +15,14 @@
     <adapter factory=".portletcontext.ContentContext" />
     <adapter factory=".portletcontext.PortalRootContext" />
     
+    <!-- Make a special renderer for the columns so we can control them
+      with a template
+    -->
+    <adapter 
+      factory=".manager.ColumnPortletManagerRenderer"
+      provides="plone.portlets.interfaces.IPortletManagerRenderer"
+      />
+    
     <!-- Make any folder and the site root a possible portlet manager -->
     <five:implements
         class="Products.CMFPlone.Portal.PloneSite"
