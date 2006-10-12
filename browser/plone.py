@@ -64,9 +64,10 @@ class Plone(utils.BrowserView):
         # passed in through the template call, so we need this to support
         # products which may have used this little hack
         options = context.vars.get('options',{})
+        view = context.vars.get('view', {})
 
         state = {}
-        self._initializeData(options=options)
+        self._initializeData(options=options, view=view)
         for name, v in self._data.items():
             state[name] = v
             context.setGlobal(name, v)
@@ -76,7 +77,7 @@ class Plone(utils.BrowserView):
 
         self._data = {}
 
-    def _initializeData(self, options=None):
+    def _initializeData(self, options=None, view=None):
         # We don't want to do this in __init__ because the view provides
         # methods which are useful outside of globals.  Also, performing
         # actions during __init__ is dangerous because instances are usually
@@ -126,7 +127,7 @@ class Plone(utils.BrowserView):
         
         # TODO: How should these interact with plone.portlets? Ideally, they'd
         # be obsolete, with a simple "show-column" boolean
-        self._data['slots_mapping'] = slots = self._prepare_slots(options)
+        self._data['slots_mapping'] = slots = self._prepare_slots(view)
         self._data['sl'] = sl = slots['left']
         self._data['sr'] = sr = slots['right']
         self._data['hidecolumns'] =  self.hide_columns(sl, sr)
@@ -225,25 +226,20 @@ class Plone(utils.BrowserView):
             return "visualColumnHideTwo"
         return "visualColumnHideNone"
 
-    def _prepare_slots(self, options={}):
+    def _prepare_slots(self, view=None):
         """XXX: This is a silly attempt at BBB - the only purpose of this
         function is to return [] or [1] (non-empty) for each slot 'left' and
         'right', whether or not that column should be rendered.
         """
         
-        slots = {'left' : [1], 'right' : [1]}
-        
         context = utils.context(self)
+        slots = {'left' : [1], 'right' : [1]}
+
+        if view is None:
+            view = self
 
         left = getUtility(IPortletManager, name='plone.leftcolumn')
         right = getUtility(IPortletManager, name='plone.rightcolumn')
-        
-        # Try to find the actual view to adapt from, if there is one
-        # (there won't be if this a regular page template)
-        view = self
-        args = options.get('args', None)
-        if args is not None and len(args) > 0:
-            view = args[0]
         
         leftRenderer = queryMultiAdapter((context, self.request, view, left), IPortletManagerRenderer)
         rightRenderer = queryMultiAdapter((context, self.request, view, right), IPortletManagerRenderer)
