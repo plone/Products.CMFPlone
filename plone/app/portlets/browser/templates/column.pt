@@ -1,0 +1,11 @@
+<tal:block repeat="portlet options/portlets"
+           replace="structure python:portlet.render()" />  
+
+<div class="managePortletsLink">
+  <a title="View portlet management screen"
+     tal:condition="view/can_manage_portlets"
+     i18n:attributes="title"
+     i18n:translate="manage_portlets_link"
+     tal:attributes="href string:${view/base_url}/@@manage-portlets"
+     >Manage portlets</a>
+</div>
