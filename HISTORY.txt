@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 3.0 - Unreleased
 
+    - Added first part of multilingual front-page support code.
+      [hannosch]
+
     - livesearch_reply.py wrote quotes (") in the title-attribute. misformed 
       XML was generated. replaced quotes by &quot;. 
       [jensens]

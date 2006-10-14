@@ -4,6 +4,7 @@ CMFPlone setup handlers.
 
 from zope.component.globalregistry import base
 from zope.component.persistentregistry import PersistentComponents
+from zope.i18n.interfaces import IUserPreferredLanguages
 
 from Acquisition import aq_base, aq_get
 from Products.StandardCacheManagers.AcceleratedHTTPCacheManager import \
@@ -76,6 +77,19 @@ class PloneGenerator:
         Import default plone content
         """
         existing = p.objectIds()
+
+        # Special handling of the front-page, as we want to translate it into
+        # the current user preferred language
+        if 'front-page' in existing:
+            fp = p['front-page']
+            pl = IUserPreferredLanguages(p.REQUEST)
+            if pl is not None:
+                languages = pl.getPreferredLanguages()
+                if len(languages) > 0:
+                    language = languages[0]
+                    # TODO: If a translation of the front-page is available,
+                    # we want to change the content accordingly
+                    fp.setLanguage(language)
 
         # News topic
         if 'news' not in existing:
