@@ -23,13 +23,13 @@
       provides="plone.portlets.interfaces.IPortletManagerRenderer"
       />
     
-    <!-- Make any folder and the site root a possible portlet manager -->
+    <!-- Make the site root and any ATContentType a possible portlet manager -->
     <five:implements
         class="Products.CMFPlone.Portal.PloneSite"
         interface="plone.portlets.interfaces.ILocalPortletAssignable"
         />
     <five:implements
-        class="Products.ATContentTypes.content.folder.ATFolder"
+        class="Products.ATContentTypes.content.base.ATCTMixin"
         interface="plone.portlets.interfaces.ILocalPortletAssignable"
         />
         

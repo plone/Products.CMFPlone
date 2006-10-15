@@ -1,6 +1,5 @@
 from zope.interface import implements
 from zope.component import getMultiAdapter, getUtility
-from zope.app.container.interfaces import INameChooser
 
 from Products.Five import BrowserView
 from Acquisition import aq_base
@@ -16,9 +15,6 @@ from plone.portlets.constants import GROUP_CATEGORY
 from plone.portlets.constants import CONTENT_TYPE_CATEGORY
 from plone.portlets.constants import CONTEXT_CATEGORY
 
-from plone.app.portlets.portlets.classic import ClassicPortletAssignment
-from plone.app.portlets.portlets.login import LoginPortletAssignment
-
 from plone.app.portlets.storage import PortletAssignmentMapping
 
 from plone.app.portlets.browser.interfaces import IManagePortletsView
@@ -26,6 +22,8 @@ from plone.app.portlets.browser.interfaces import IManageContextualPortletsView
 from plone.app.portlets.browser.interfaces import IManageDashboardPortletsView
 from plone.app.portlets.browser.interfaces import IManageGroupPortletsView
 from plone.app.portlets.browser.interfaces import IManageContentTypePortletsView
+
+from plone.app.portlets import utils
 
 class ManageContextualPortlets(BrowserView):
     implements(IManageContextualPortletsView)
@@ -73,44 +71,7 @@ class ManageContextualPortlets(BrowserView):
     # view @@convert-legacy-portlets
     
     def convert_legacy_portlets(self):
-        
-        portletsMapping = { 'portlet_login' : LoginPortletAssignment() }
-        
-        # Convert left_slots and right_slots to portlets
-        
-        left = getUtility(IPortletManager, name='plone.leftcolumn')
-        right = getUtility(IPortletManager, name='plone.rightcolumn')
-        
-        leftAssignable = getMultiAdapter((self.context, left), IPortletAssignmentMapping)
-        rightAssignable = getMultiAdapter((self.context, right), IPortletAssignmentMapping)
-        
-        leftChooser = INameChooser(leftAssignable)
-        rightChooser = INameChooser(rightAssignable)
-        
-        left_slots = getattr(aq_base(self.context), 'left_slots', [])
-        right_slots = getattr(aq_base(self.context), 'right_slots', [])
-                
-        for item in left_slots:
-            path = item.split('/')
-            if len(path) == 4:
-                newPortlet = portletsMapping.get(path[1], None)
-                if newPortlet is None and path[0] in ('context', 'here',) and path[2] == 'macros':
-                    newPortlet = ClassicPortletAssignment(path[1], path[3])
-                if newPortlet is not None:
-                    leftAssignable[leftChooser.chooseName(None, newPortlet)] = newPortlet
-                    
-        for item in right_slots:
-            path = item.split('/')
-            if len(path) == 4:
-                newPortlet = portletsMapping.get(path[1], None)
-                if newPortlet is None and path[0] in ('context', 'here',) and path[2] == 'macros':
-                    newPortlet = ClassicPortletAssignment(path[1], path[3])
-                if newPortlet is not None:
-                    rightAssignable[rightChooser.chooseName(None, newPortlet)] = newPortlet
-                    
-        self.context.left_slots = []
-        self.context.right_slots = []
-                    
+        utils.convert_legacy_portlets(self.context)
         self.context.request.response.redirect(self.context.absolute_url() + '/@@manage-portlets')
 
 class ManageDashboardPortlets(BrowserView):
