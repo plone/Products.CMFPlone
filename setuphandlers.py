@@ -33,11 +33,10 @@ class PloneGenerator:
         qi.installProduct('CMFPlacefulWorkflow', locked=0)
         qi.installProduct('kupu', locked=0)
 
-        qi.installProduct('CMFEditions', locked=0)
-        qi.installProduct('CMFDiffTool', locked=0)
-
-        qi.notifyInstalled('CMFCalendar', locked=1)
-        qi.notifyInstalled('CMFActionIcons', locked=1)
+        # The following two products are "installed" based on a GenericSetup
+        # extension profile by CMFQuickInstallerTool
+        qi.installProduct('CMFEditions', locked=0, forceProfile=True)
+        qi.installProduct('CMFDiffTool', locked=0, forceProfile=True)
 
         # BBB The following products are "installed" by virtue of the
         #     GenericSetup profile.  They really shouldn't be managed
@@ -46,8 +45,10 @@ class PloneGenerator:
         qi.installProduct('ResourceRegistries', locked=1)
         qi.notifyInstalled('ATContentTypes', locked=1)
         qi.notifyInstalled('ATReferenceBrowserWidget', locked=1)
+        qi.notifyInstalled('CMFActionIcons', locked=1)
+        qi.notifyInstalled('CMFCalendar', locked=1)
         qi.notifyInstalled('CMFFormController', locked=1)
-        
+
     def customizePortalOptions(self, p):
         stool = getToolByName(p, 'portal_skins')
         stool.allow_any=0 # Skin changing for users is turned off by default

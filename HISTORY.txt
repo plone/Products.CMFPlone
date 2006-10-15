@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 3.0 - Unreleased
 
+    - Added some notes about CMFEditions and CMFDiffTool installation.
+      [hannosch]
+
     - Added first part of multilingual front-page support code.
       [hannosch]
 
