@@ -1,11 +1,10 @@
-import os
 import re
 from Acquisition import aq_base
 
 from Products.GenericSetup.tool import SetupTool
 
-from Products.CMFPlone.migrations.migration_util import installOrReinstallProduct
-from Products.CMFPlone.migrations.v2_1.two12_two13 import reindexCatalog, indexMembersFolder
+from Products.CMFPlone.migrations.v2_1.two12_two13 import indexMembersFolder
+from Products.CMFPlone.migrations.v2_1.two12_two13 import reindexCatalog
 from Products.CMFPlone.migrations.v2_1.two12_two13 import normalizeNavtreeProperties
 from Products.CMFPlone.migrations.v2_1.two12_two13 import removeVcXMLRPC
 from Products.CMFPlone.migrations.v2_1.two12_two13 import addActionDropDownMenuIcons
@@ -15,8 +14,6 @@ from Products.CMFPlone.factory import _TOOL_ID as SETUP_TOOL_ID
 
 from Products.CMFCore.ActionInformation import Action
 from Products.CMFCore.utils import getToolByName
-from Products.CMFCore.DirectoryView import createDirectoryView
-from Products.CMFCore.Expression import Expression
 from Products.CMFCore.permissions import View
 
 def alpha2_beta1(portal):

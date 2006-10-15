@@ -14,7 +14,6 @@ from Products.StandardCacheManagers.RAMCacheManager import \
 
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import _createObjectByType
-from Products.CMFPlone import migrations as migs
 from Products.CMFPlone.Portal import member_indexhtml
 from Products.Five.component import enableSite
 from Products.Five.component.interfaces import IObjectManagerSite
