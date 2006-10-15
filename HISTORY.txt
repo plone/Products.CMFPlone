@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 3.0 - Unreleased
 
+    - Removed unused scripts from the extensions folder.
+      [hannosch]
+
     - Added some notes about CMFEditions and CMFDiffTool installation.
       [hannosch]
 
