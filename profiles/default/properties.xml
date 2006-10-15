@@ -14,16 +14,4 @@
  <property name="validate_email" type="boolean">False</property>
  <property name="default_charset" type="string"></property>
  <property name="enable_permalink" type="boolean">False</property>
- <property name="left_slots" type="lines">
-  <element value="here/portlet_navigation/macros/portlet"/>
-  <element value="here/portlet_login/macros/portlet"/>
-  <element value="here/portlet_recent/macros/portlet"/>
-  <element value="here/portlet_related/macros/portlet"/>
- </property>
- <property name="right_slots" type="lines">
-  <element value="here/portlet_review/macros/portlet"/>
-  <element value="here/portlet_news/macros/portlet"/>
-  <element value="here/portlet_events/macros/portlet"/>
-  <element value="here/portlet_calendar/macros/portlet"/>
- </property>
 </site>

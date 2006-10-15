@@ -33,6 +33,10 @@ from Products.StandardCacheManagers.RAMCacheManager import \
 from Products.CMFPlone import setuphandlers
 
 from plone.portlets.interfaces import IPortletManager
+from plone.portlets.interfaces import IPortletAssignmentMapping
+from plone.portlets.interfaces import IPortletManager
+from plone.portlets.interfaces import ILocalPortletAssignmentManager
+from plone.portlets.constants import CONTEXT_CATEGORY as CONTEXT_PORTLETS
 
 class TestPortalCreation(PloneTestCase.PloneTestCase):
 
@@ -761,6 +765,22 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         registrations = [r.name for r in sm.registeredUtilities()
                             if IPortletManager == r.provided]
         self.assertEquals(['plone.dashboard', 'plone.leftcolumn', 'plone.rightcolumn'], sorted(registrations))
+
+    def testPortletAssignmentsAtRoot(self):
+        leftColumn = getUtility(IPortletManager, name=u'plone.leftcolumn')
+        rightColumn = getUtility(IPortletManager, name=u'plone.rightcolumn')
+        
+        left = getMultiAdapter((self.portal, leftColumn,), IPortletAssignmentMapping)
+        right = getMultiAdapter((self.portal, rightColumn,), IPortletAssignmentMapping)
+        
+        self.assertEquals(len(left), 4)
+        self.assertEquals(len(right), 4)
+        
+    def testPortletBlockingForMembersFolder(self):
+        members = self.portal.Members
+        rightColumn = getUtility(IPortletManager, name=u'plone.rightcolumn')
+        portletAssignments = getMultiAdapter((members, rightColumn,), ILocalPortletAssignmentManager)
+        self.assertEquals(True, portletAssignments.getBlacklistStatus(CONTEXT_PORTLETS))
 
 class TestPortalBugs(PloneTestCase.PloneTestCase):
 

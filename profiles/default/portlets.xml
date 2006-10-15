@@ -1,6 +1,9 @@
 <?xml version="1.0"?>
 <portlets>
   
+
+ <!-- Columns (portlet managers) -->
+  
  <portletmanager 
    name="plone.leftcolumn" 
    type="plone.app.portlets.interfaces.ILeftColumn"
@@ -15,6 +18,8 @@
    name="plone.dashboard" 
    type="plone.app.portlets.interfaces.IDashboard"
    />
+ 
+ <!-- Portlet type registrations -->
  
  <portlet 
    addview="portlets.Classic"

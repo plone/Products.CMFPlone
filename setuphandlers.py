@@ -2,6 +2,8 @@
 CMFPlone setup handlers.
 """
 
+from zope.component import getUtility, getMultiAdapter
+
 from zope.component.globalregistry import base
 from zope.component.persistentregistry import PersistentComponents
 from zope.i18n.interfaces import IUserPreferredLanguages
@@ -17,6 +19,12 @@ from Products.CMFPlone.utils import _createObjectByType
 from Products.CMFPlone.Portal import member_indexhtml
 from Products.Five.component import enableSite
 from Products.Five.component.interfaces import IObjectManagerSite
+
+from plone.portlets.interfaces import IPortletAssignmentMapping
+from plone.portlets.interfaces import IPortletManager
+from plone.portlets.interfaces import ILocalPortletAssignmentManager
+from plone.portlets.constants import CONTEXT_CATEGORY as CONTEXT_PORTLETS
+from plone.app.portlets import portlets
 
 class PloneGenerator:
 
@@ -142,12 +150,13 @@ class PloneGenerator:
             members = getattr(p , 'Members')
             members.setTitle('Members')
             members.setDescription("Container for portal members' home directories")
-            if not members.hasProperty('right_slots'):
-                members.manage_addProperty('right_slots', [], 'lines')
-            # XXX: Not sure why reindex is needed, but it doesn't seem to
-            # happen otherwise
             members.reindexObject()
-
+            
+            # Disable portlets here
+            rightColumn = getUtility(IPortletManager, name=u'plone.rightcolumn', context=p)
+            portletAssignments = getMultiAdapter((members, rightColumn,), ILocalPortletAssignmentManager)
+            portletAssignments.setBlacklistStatus(CONTEXT_PORTLETS, True)
+            
             # add index_html to Members area
             if 'index_html' not in members.objectIds():
                 addPy = members.manage_addProduct['PythonScripts'].manage_addPythonScript
@@ -260,6 +269,35 @@ class PloneGenerator:
                 setattr(aq_get(portal, oid), 'title', title)
         out.append('Assigned titles to portal tools.')
 
+    def addDefaultPortlets(self, portal):
+        leftColumn = getUtility(IPortletManager, name=u'plone.leftcolumn', context=portal)
+        rightColumn = getUtility(IPortletManager, name=u'plone.rightcolumn', context=portal)
+        
+        left = getMultiAdapter((portal, leftColumn,), IPortletAssignmentMapping, context=portal)
+        right = getMultiAdapter((portal, rightColumn,), IPortletAssignmentMapping, context=portal)
+        
+        cpa = portlets.classic.ClassicPortletAssignment
+        lpa = portlets.login.LoginPortletAssignment
+        
+        # XXX: Replace these with "real" portlets as they become available
+        
+        if u'navigation' not in left:
+            left[u'navigation'] = cpa(template=u'portlet_navigation', macro=u'portlet')
+        if u'login' not in left:
+            left[u'login'] = lpa()
+        if u'recent' not in left:
+            left[u'recent'] = cpa(template=u'portlet_recent', macro=u'portlet')
+        if u'related' not in left:
+            left[u'related'] = cpa(template=u'portlet_related', macro=u'portlet')
+        
+        if u'review' not in right:
+            right[u'review'] = cpa(template=u'portlet_review', macro=u'portlet')
+        if u'news' not in right:
+            right[u'news'] = cpa(template=u'portlet_news', macro=u'portlet')
+        if u'events' not in right:
+            right[u'events'] = cpa(template=u'portlet_events', macro=u'portlet')
+        if u'calendar' not in right:
+            right[u'calendar'] = cpa(template=u'portlet_calendar', macro=u'portlet')
 
 def importVarious(context):
     """
@@ -288,6 +326,7 @@ def importFinalSteps(context):
     out = []
     site = context.getSite()
     gen = PloneGenerator()
+    gen.addDefaultPortlets(site)
     gen.setupPortalContent(site)
     gen.addRolesToPlugIn(site)
     gen.setupGroups(site)

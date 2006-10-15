@@ -54,15 +54,26 @@ from Products.CMFPlone.migrations.v3_0.alphas import addNewCSSFiles
 from Products.CMFPlone.migrations.v3_0.alphas import updateActionsI18NDomain
 from Products.CMFPlone.migrations.v3_0.alphas import updateFTII18NDomain
 
+from Products.CMFPlone.migrations.v3_0.alphas import convertLegacyPortlets
+
 from zope.app.component.hooks import clearSite
 from zope.app.component.interfaces import ISite
 from zope.component import getGlobalSiteManager
 from zope.component import getSiteManager
 
+from zope.component import getUtility, getMultiAdapter
+
 from Products.CMFDynamicViewFTI.migrate import migrateFTI
 from Products.Five.component import disableSite
 
 import types
+
+from plone.portlets.interfaces import IPortletManager
+from plone.portlets.interfaces import IPortletAssignmentMapping
+from plone.portlets.interfaces import IPortletManager
+from plone.portlets.interfaces import ILocalPortletAssignmentManager
+from plone.portlets.constants import CONTEXT_CATEGORY as CONTEXT_PORTLETS
+from plone.app.portlets import portlets
 
 class BogusMailHost(SimpleItem):
     meta_type = 'Bad Mailer'
@@ -1037,7 +1048,187 @@ class TestMigrations_v3_0(MigrationTest):
         # domain should have been updated
         self.assertEquals(doc.i18n_domain, 'plone')
 
-
+    def testLegacyPortletsConverted(self):
+        leftColumn = getUtility(IPortletManager, name=u'plone.leftcolumn', context=self.portal)
+        rightColumn = getUtility(IPortletManager, name=u'plone.rightcolumn', context=self.portal)
+        
+        left = getMultiAdapter((self.portal, leftColumn,), IPortletAssignmentMapping, context=self.portal)
+        right = getMultiAdapter((self.portal, rightColumn,), IPortletAssignmentMapping, context=self.portal)
+        
+        for k in left:
+            del left[k]
+        for k in right:
+            del right[k]
+                
+        self.portal.left_slots = ['here/portlet_recent/macros/portlet',
+                                  'here/portlet_news/macros/portlet']
+        self.portal.right_slots = ['here/portlet_login/macros/portlet']
+        
+        convertLegacyPortlets(self.portal, [])
+        
+        self.assertEquals(self.portal.left_slots, [])
+        self.assertEquals(self.portal.right_slots, [])
+        
+        lp = left.values()
+        self.assertEquals(2, len(lp))
+        self.assertEquals(lp[0].template, u'portlet_recent')
+        self.assertEquals(lp[0].macro, u'portlet')
+        self.assertEquals(lp[1].template, u'portlet_news')
+        self.assertEquals(lp[1].macro, u'portlet')
+        
+        rp = right.values()
+        self.assertEquals(1, len(rp))
+        self.failUnless(isinstance(rp[0], portlets.login.LoginPortletAssignment))
+        
+        members = self.portal.Members
+        portletAssignments = getMultiAdapter((members, rightColumn,), ILocalPortletAssignmentManager)
+        self.assertEquals(True, portletAssignments.getBlacklistStatus(CONTEXT_PORTLETS))
+        
+    def testLegacyPortletsConvertedTwice(self):
+        leftColumn = getUtility(IPortletManager, name=u'plone.leftcolumn', context=self.portal)
+        rightColumn = getUtility(IPortletManager, name=u'plone.rightcolumn', context=self.portal)
+        
+        left = getMultiAdapter((self.portal, leftColumn,), IPortletAssignmentMapping, context=self.portal)
+        right = getMultiAdapter((self.portal, rightColumn,), IPortletAssignmentMapping, context=self.portal)
+        
+        for k in left:
+            del left[k]
+        for k in right:
+            del right[k]
+            
+        self.portal.left_slots = ['here/portlet_recent/macros/portlet',
+                                  'here/portlet_news/macros/portlet']
+        self.portal.right_slots = ['here/portlet_login/macros/portlet']
+        
+        convertLegacyPortlets(self.portal, [])
+        convertLegacyPortlets(self.portal, [])
+        
+        self.assertEquals(self.portal.left_slots, [])
+        self.assertEquals(self.portal.right_slots, [])
+        
+        lp = left.values()
+        self.assertEquals(2, len(lp))
+        self.assertEquals(lp[0].template, u'portlet_recent')
+        self.assertEquals(lp[0].macro, u'portlet')
+        self.assertEquals(lp[1].template, u'portlet_news')
+        self.assertEquals(lp[1].macro, u'portlet')
+        
+        rp = right.values()
+        self.assertEquals(1, len(rp))
+        self.failUnless(isinstance(rp[0], portlets.login.LoginPortletAssignment))
+        
+        members = self.portal.Members
+        portletAssignments = getMultiAdapter((members, rightColumn,), ILocalPortletAssignmentManager)
+        self.assertEquals(True, portletAssignments.getBlacklistStatus(CONTEXT_PORTLETS))
+        
+    def testLegacyPortletsConvertedNoSlots(self):
+        leftColumn = getUtility(IPortletManager, name=u'plone.leftcolumn', context=self.portal)
+        rightColumn = getUtility(IPortletManager, name=u'plone.rightcolumn', context=self.portal)
+        
+        left = getMultiAdapter((self.portal, leftColumn,), IPortletAssignmentMapping, context=self.portal)
+        right = getMultiAdapter((self.portal, rightColumn,), IPortletAssignmentMapping, context=self.portal)
+        
+        for k in left:
+            del left[k]
+        for k in right:
+            del right[k]
+            
+        self.portal.left_slots = ['here/portlet_recent/macros/portlet',
+                                  'here/portlet_news/macros/portlet']
+        if hasattr(self.portal.aq_base, 'right_slots'):
+            delattr(self.portal, 'right_slots')
+        
+        convertLegacyPortlets(self.portal, [])
+        
+        self.assertEquals(self.portal.left_slots, [])
+        
+        lp = left.values()
+        self.assertEquals(2, len(lp))
+        self.assertEquals(lp[0].template, u'portlet_recent')
+        self.assertEquals(lp[0].macro, u'portlet')
+        self.assertEquals(lp[1].template, u'portlet_news')
+        self.assertEquals(lp[1].macro, u'portlet')
+        
+        rp = right.values()
+        self.assertEquals(0, len(rp))
+        
+        members = self.portal.Members
+        portletAssignments = getMultiAdapter((members, rightColumn,), ILocalPortletAssignmentManager)
+        self.assertEquals(True, portletAssignments.getBlacklistStatus(CONTEXT_PORTLETS))
+        
+    def testLegacyPortletsConvertedBadSlots(self):
+        leftColumn = getUtility(IPortletManager, name=u'plone.leftcolumn', context=self.portal)
+        rightColumn = getUtility(IPortletManager, name=u'plone.rightcolumn', context=self.portal)
+        
+        left = getMultiAdapter((self.portal, leftColumn,), IPortletAssignmentMapping, context=self.portal)
+        right = getMultiAdapter((self.portal, rightColumn,), IPortletAssignmentMapping, context=self.portal)
+        
+        for k in left:
+            del left[k]
+        for k in right:
+            del right[k]
+        
+        self.portal.left_slots = ['here/portlet_recent/macros/portlet',
+                                  'here/portlet_news/macros/portlet',
+                                  'foobar',]
+        self.portal.right_slots = ['here/portlet_login/macros/portlet']
+        
+        convertLegacyPortlets(self.portal, [])
+        
+        self.assertEquals(self.portal.left_slots, [])
+        self.assertEquals(self.portal.right_slots, [])
+        
+        lp = left.values()
+        self.assertEquals(2, len(lp))
+        self.assertEquals(lp[0].template, u'portlet_recent')
+        self.assertEquals(lp[0].macro, u'portlet')
+        self.assertEquals(lp[1].template, u'portlet_news')
+        self.assertEquals(lp[1].macro, u'portlet')
+        
+        rp = right.values()
+        self.assertEquals(1, len(rp))
+        self.failUnless(isinstance(rp[0], portlets.login.LoginPortletAssignment))
+        
+        members = self.portal.Members
+        portletAssignments = getMultiAdapter((members, rightColumn,), ILocalPortletAssignmentManager)
+        self.assertEquals(True, portletAssignments.getBlacklistStatus(CONTEXT_PORTLETS))
+        
+    def testLegacyPortletsConvertedNoMembersFolder(self):
+        leftColumn = getUtility(IPortletManager, name=u'plone.leftcolumn', context=self.portal)
+        rightColumn = getUtility(IPortletManager, name=u'plone.rightcolumn', context=self.portal)
+        
+        left = getMultiAdapter((self.portal, leftColumn,), IPortletAssignmentMapping, context=self.portal)
+        right = getMultiAdapter((self.portal, rightColumn,), IPortletAssignmentMapping, context=self.portal)
+        
+        for k in left:
+            del left[k]
+        for k in right:
+            del right[k]
+        
+        self.portal.left_slots = ['here/portlet_recent/macros/portlet',
+                                  'here/portlet_news/macros/portlet',
+                                  'foobar',]
+        self.portal.right_slots = ['here/portlet_login/macros/portlet']
+        
+        
+        self.portal._delObject('Members')
+        
+        convertLegacyPortlets(self.portal, [])
+        
+        self.assertEquals(self.portal.left_slots, [])
+        self.assertEquals(self.portal.right_slots, [])
+        
+        lp = left.values()
+        self.assertEquals(2, len(lp))
+        self.assertEquals(lp[0].template, u'portlet_recent')
+        self.assertEquals(lp[0].macro, u'portlet')
+        self.assertEquals(lp[1].template, u'portlet_news')
+        self.assertEquals(lp[1].macro, u'portlet')
+        
+        rp = right.values()
+        self.assertEquals(1, len(rp))
+        self.failUnless(isinstance(rp[0], portlets.login.LoginPortletAssignment))
+        
 class TestMigrations_v3_0_Actions(MigrationTest):
 
     def afterSetUp(self):

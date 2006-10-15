@@ -1,3 +1,5 @@
+from zope.component import getUtility, getMultiAdapter
+
 from zope.app.component.interfaces import ISite
 from zope.component.globalregistry import base
 from zope.component.persistentregistry import PersistentComponents
@@ -11,6 +13,12 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.migrations.migration_util import installOrReinstallProduct
 from Products.Five.component import enableSite
 from Products.Five.component.interfaces import IObjectManagerSite
+
+from plone.portlets.interfaces import IPortletManager
+from plone.portlets.interfaces import ILocalPortletAssignmentManager
+from plone.portlets.constants import CONTEXT_CATEGORY as CONTEXT_PORTLETS
+
+from plone.app.portlets.utils import convert_legacy_portlets
 
 def three0_alpha1(portal):
     """2.5.x -> 3.0-alpha1
@@ -42,6 +50,9 @@ def three0_alpha1(portal):
     installProduct('CMFEditions', portal, out)
     installProduct('CMFDiffTool', portal, out)
 
+    # Migrate legacy portlets
+    convertLegacyPortlets(portal, out)
+    
     return out
 
 
@@ -129,7 +140,31 @@ def updateFTII18NDomain(portal, out):
         fti.i18n_domain = 'plone'
     out.append('Updated type informations i18n domain attribute.')
 
+def convertLegacyPortlets(portal, out):
+    """Convert portlets defined in left_slots and right_slots at the portal
+    root to use plone.portlets. Also block portlets in the Members folder.
+    
+    Note - there may be other portlets defined elsewhere. These will require
+    manual migration from the @@manage-portlets view. This is to avoid a 
+    full walk of the portal (i.e. waking up every single object) looking for
+    potential left_slots/right_slots! 
+    """
+    convert_legacy_portlets(portal)
+    out.append('Converted legacy portlets at the portal root')
+    out.append('NOTE: You may need to convert other portlets manually.')
+    out.append(' - to do so, click "manage portlets" in the relevant folder.')
+    
+    members = getattr(portal, 'Members', None)
+    if members is not None:
+        membersRightSlots = getattr(aq_base(members), 'right_slots', None)
+        if membersRightSlots == []:
+            rightColumn = getUtility(IPortletManager, name=u'plone.rightcolumn', context=portal)
+            portletAssignments = getMultiAdapter((members, rightColumn,), ILocalPortletAssignmentManager)
+            portletAssignments.setBlacklistStatus(CONTEXT_PORTLETS, True)
+            out.append('Blacklisted contextual portlets in the Members folder')
+
 def installProduct(product, portal, out):
     """Quickinstalls a product if it is not installed yet."""
     if product in portal.Control_Panel.Products.objectIds():
         installOrReinstallProduct(portal, product, out)
+
