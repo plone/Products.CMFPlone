@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.5.2 - Orb - (Unreleased)
 
+    - Fixed the calendar portlet to display correctly in Internet Explorer 7.
+      [limi]
+
     - Updated links in the automatically generated front-page.
       [hannosch]
 
