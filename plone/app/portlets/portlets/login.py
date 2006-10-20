@@ -27,7 +27,7 @@ from Products.CMFPlone import PloneMessageFactory as _
 class ILoginPortlet(IPortletDataProvider):
     """A portlet which can render a login form.
     """
-                               
+
 class LoginPortletAssignment(SimpleItem, Contained):
     implements(ILoginPortlet, IPortletAssignment)
 
@@ -46,9 +46,9 @@ class LoginPortletAssignment(SimpleItem, Contained):
 
 class LoginPortletRenderer(Explicit):
     implements(IPortletRenderer)
-    adapts(Interface, IBrowserRequest, IBrowserView, 
+    adapts(Interface, IBrowserRequest, IBrowserView,
             IPortletManager, ILoginPortlet)
-            
+
     def __init__(self, context, request, view, manager, data):
         self.context = context
         self.request = request
@@ -66,7 +66,7 @@ class LoginPortletRenderer(Explicit):
     def login_form(self):
         url = getToolByName(self.context, 'portal_url')
         return '%s/join_form' % url()
-        
+
     def mail_password_form(self):
         url = getToolByName(self.context, 'portal_url')
         return '%s/mail_password_form' % url()
@@ -79,7 +79,7 @@ class LoginPortletRenderer(Explicit):
         if not name:
             name = '__ac_name'
         return name
-            
+
     def login_password(self):
         auth = self.auth()
         passwd = None
@@ -88,14 +88,14 @@ class LoginPortletRenderer(Explicit):
         if not passwd:
             passwd = '__ac_password'
         return passwd
-        
+
     def persist_cookie(self):
         auth = self.auth()
         persist = False
         if auth is not None:
             persist = getattr(auth, 'persist_cookie', None)
         return persist
-        
+
     def join_action(self):
         actions = getToolByName(self.context, 'portal_actions')
         userActions = actions.listFilteredActionsFor(self.context)['user']
@@ -104,14 +104,14 @@ class LoginPortletRenderer(Explicit):
             return joinAction.pop()
         else:
             return None
-            
+
     def can_register(self):
         registration = getToolByName(self.context, 'portal_registration', None)
         membership = getToolByName(self.context, 'portal_membership')
         if registration is None:
             return False
         return membership.checkPermission('Add portal member', self.context)
-    
+
     def can_request_password(self):
         membership = getToolByName(self.context, 'portal_membership')
         return membership.checkPermission('Mail forgotten password', self.context)
