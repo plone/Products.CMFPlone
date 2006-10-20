@@ -20,25 +20,25 @@ class TestProductInstall(PortletsTestCase):
         registrations = [r.name for r in sm.registeredUtilities()
                             if IPortletManager == r.provided]
         self.assertEquals(['plone.dashboard', 'plone.leftcolumn', 'plone.rightcolumn'], sorted(registrations))
-        
+
     def testInterfaces(self):
         left = getUtility(IPortletManager, 'plone.leftcolumn')
         right = getUtility(IPortletManager, 'plone.rightcolumn')
         dashboard = getUtility(IPortletManager, 'plone.dashboard')
-        
+
         self.failUnless(ILeftColumn.providedBy(left))
         self.failUnless(IRightColumn.providedBy(right))
         self.failUnless(IDashboard.providedBy(dashboard))
-        
+
     def testAssignable(self):
         self.failUnless(ILocalPortletAssignable.providedBy(self.folder))
         self.failUnless(ILocalPortletAssignable.providedBy(self.portal))
-        
-    def testPortletTypesRegistered(self): 
+
+    def testPortletTypesRegistered(self):
         portlets = [u[0] for u in getUtilitiesFor(IPortletType)]
         self.failUnless('portlets.Classic' in portlets)
         self.failUnless('portlets.Login' in portlets)
-        
+
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()

@@ -21,7 +21,7 @@ class PortletsTestCase(PloneTestCase):
     provide specific set-up and tear-down operations, or provide convenience
     methods.
     """
-    
+
 class PortletsFunctionalTestCase(FunctionalTestCase):
     """Base class for functional integration tests for plone.app.portlets. 
     This may provide specific set-up and tear-down operations, or provide 
