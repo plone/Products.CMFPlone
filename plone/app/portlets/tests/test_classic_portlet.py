@@ -21,11 +21,11 @@ class TestClassicPortlet(PortletsTestCase):
         setHooks()
         setSite(self.portal)
 
-    def testPortletTypeRegistered(self): 
+    def testPortletTypeRegistered(self):
         portlet = getUtility(IPortletType, name='portlets.Classic')
         self.assertEquals(portlet.addview, 'portlets.Classic')
 
-    def testInterfaces(self): 
+    def testInterfaces(self):
         portlet = ClassicPortletAssignment(template='portlet_recent', macro='portlet')
         self.failUnless(IPortletAssignment.providedBy(portlet))
         self.failUnless(IPortletDataProvider.providedBy(portlet.data))
@@ -34,24 +34,24 @@ class TestClassicPortlet(PortletsTestCase):
         portlet = getUtility(IPortletType, name='portlets.Classic')
         mapping = PortletAssignmentMapping()
         request = self.folder.REQUEST
-        
+
         adding = getMultiAdapter((mapping, request,), name='+')
         addview = getMultiAdapter((adding, request), name=portlet.addview)
-        
+
         addview.createAndAdd(data={})
-        
+
         self.assertEquals(len(mapping), 1)
         self.failUnless(isinstance(mapping.values()[0], ClassicPortletAssignment))
-        
-    def testInvokeEditView(self): 
+
+    def testInvokeEditView(self):
         mapping = PortletAssignmentMapping()
         request = self.folder.REQUEST
-        
+
         mapping['foo'] = ClassicPortletAssignment(template='portlet_recent', macro='portlet')
         editview = getMultiAdapter((mapping['foo'], request), name='edit.html')
         self.failUnless(isinstance(editview, ClassicPortletEditForm))
 
-    def testRenderer(self): 
+    def testRenderer(self):
         context = self.folder
         request = self.folder.REQUEST
         view = self.folder.restrictedTraverse('@@plone')
@@ -60,13 +60,13 @@ class TestClassicPortlet(PortletsTestCase):
 
         renderer = getMultiAdapter((context, request, view, manager, assignment), IPortletRenderer)
         self.failUnless(isinstance(renderer, ClassicPortletRenderer))
-        
+
 class TestClassicPortletRenderer(PortletsTestCase):
-    
+
     def afterSetUp(self):
         setHooks()
         setSite(self.portal)
-    
+
     def renderer(self, context=None, request=None, view=None, manager=None, assignment=None):
         context = context or self.folder
         request = request or self.folder.REQUEST
@@ -75,14 +75,14 @@ class TestClassicPortletRenderer(PortletsTestCase):
         assignment = assignment or ClassicPortletAssignment(template='portlet_recent', macro='portlet')
 
         return getMultiAdapter((context, request, view, manager, assignment), IPortletRenderer)
-    
-    def testUseMacro(self): 
+
+    def testUseMacro(self):
         r = self.renderer(assignment=ClassicPortletAssignment(template='portlet_recent', macro='portlet'))
         self.assertEquals(True, r.use_macro())
         r = self.renderer(assignment=ClassicPortletAssignment(template='portlet_recent', macro=None))
         self.assertEquals(False, r.use_macro())
-    
-    def testPathExpression(self): 
+
+    def testPathExpression(self):
         r = self.renderer(assignment=ClassicPortletAssignment(template='portlet_recent', macro='portlet'))
         self.assertEquals('context/portlet_recent/macros/portlet', r.path_expression())
         r = self.renderer(assignment=ClassicPortletAssignment(template='portlet_recent', macro=None))
