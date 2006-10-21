@@ -5,8 +5,10 @@
     <li tal:repeat="menuItem menu">
 
         <dl class="actionMenu"
-            tal:attributes="id menuItem/extra/id">
-          <dt class="actionMenuHeader">
+            tal:attributes="id menuItem/extra/id"
+            tal:omit-tag="menuItem/extra/hideChildren | nothing">
+          <dt class="actionMenuHeader"
+              tal:omit-tag="menuItem/extra/hideChildren | nothing">
             <img width="16"
                  height="16"
                  tal:condition="menuItem/icon"
@@ -31,7 +33,8 @@
                 </span>
             </a>
           </dt>
-          <dd class="actionMenuContent" tal:condition="not:menuItem/extra/hideChildren | nothing">
+          <dd class="actionMenuContent"
+              tal:condition="not:menuItem/extra/hideChildren | nothing">
             <ul>
                 <tal:block repeat="subMenuItem menuItem/submenu">
                   <li tal:attributes="class subMenuItem/extra/separator">
