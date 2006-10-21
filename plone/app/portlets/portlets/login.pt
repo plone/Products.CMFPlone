@@ -58,8 +58,7 @@
             </div>
 
             <div id="cookies_message" i18n:translate="enable_cookies_message" class="portalMessage" style="display:none">
-                Cookies are not enabled. You must <span i18n:name="enable_cookies">
-                <a href="enabling_cookies" i18n:translate="label_enable_cookies">enable cookies</a></span> before you can log in.
+                Cookies are not enabled. You must enable cookies before you can log in.
             </div>
             
             <div class="formControls">

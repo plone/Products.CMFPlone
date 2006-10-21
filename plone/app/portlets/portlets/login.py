@@ -65,7 +65,7 @@ class LoginPortletRenderer(Explicit):
 
     def login_form(self):
         url = getToolByName(self.context, 'portal_url')
-        return '%s/join_form' % url()
+        return '%s/login_form' % url()
 
     def mail_password_form(self):
         url = getToolByName(self.context, 'portal_url')
