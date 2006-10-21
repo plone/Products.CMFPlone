@@ -43,7 +43,7 @@ class ActionsSubMenuItem(BrowserSubMenuItem):
     submenuId = 'plone.contentmenu.actions.menu'
     
     order = 10
-    extra = {'id' : 'plone.contentmenu.actions'}
+    extra = {'id' : 'plone-contentmenu-actions'}
     
     @property
     def action(self):
@@ -111,7 +111,7 @@ class DisplaySubMenuItem(BrowserSubMenuItem):
     
     @property
     def extra(self):
-        return {'id' : 'plone.contentmenu.display', 'disabled' : self.disabled()}
+        return {'id' : 'plone-contentmenu-display', 'disabled' : self.disabled()}
 
     @property
     def description(self):
@@ -369,7 +369,7 @@ class FactoriesSubMenuItem(BrowserSubMenuItem):
     
     @property
     def extra(self):
-        return {'id' : 'plone.contentmenu.factories', 
+        return {'id' : 'plone-contentmenu-factories', 
                 'hideChildren' : self._hideChildren()}
     
     @property
@@ -557,7 +557,7 @@ class WorkflowSubMenuItem(BrowserSubMenuItem):
     def extra(self):
         state = self._currentState()
         stateTitle = self._currentStateTitle()
-        return {'id'         : 'plone.contentmenu.workflow', 
+        return {'id'         : 'plone-contentmenu-workflow', 
                 'class'      : 'state-%s' % state,
                 'state'      : state, 
                 'stateTitle' : stateTitle,}
