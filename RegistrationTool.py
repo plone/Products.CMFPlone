@@ -3,7 +3,10 @@ import md5
 
 from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault.RegistrationTool import RegistrationTool as BaseTool
-from Products.CMFDefault.RegistrationTool import _checkEmail
+try:
+    from Products.CMFDefault.utils import checkEmailAddress
+except ImportError:
+    from Products.CMFDefault.RegistrationTool import _checkEmail as checkEmailAddress
 from Products.CMFPlone import ToolNames
 
 from Globals import InitializeClass
@@ -87,7 +90,7 @@ class RegistrationTool(PloneBaseTool, BaseTool):
         """ checks for valid email """
         if EMAIL_RE.search(email) == None:
             return 0
-        if not _checkEmail(email)[0]:
+        if not checkEmailAddress(email)[0]:
             return 0
         return 1
 
@@ -116,7 +119,7 @@ class RegistrationTool(PloneBaseTool, BaseTool):
             if email is None:
                 return 'You must enter an email address.'
 
-            ok, message =  _checkEmail( email )
+            ok, message =  checkEmailAddress( email )
             if not ok:
                 return 'You must enter a valid email address.'
 
@@ -128,7 +131,7 @@ class RegistrationTool(PloneBaseTool, BaseTool):
 
                 if email is not None:
 
-                    ok, message =  _checkEmail( email )
+                    ok, message =  checkEmailAddress( email )
                     if not ok:
                         return 'You must enter a valid email address.'
 

@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 3.0 - Unreleased
 
+    - Deal with CMFDefault replacing  _checkEmailwith checkEmailAddress
+      [wichert]
+
     - Removed unused scripts from the extensions folder.
       [hannosch]
 
