@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.5.2 - Orb - (Unreleased)
 
+    - Removed redundant getToolByName call in send_feedback_site. This closes
+      https://dev.plone.org/plone/ticket/5863.
+      [hannosch]
+
     - Fixed the calendar portlet to display correctly in Internet Explorer 7.
       [limi]
 

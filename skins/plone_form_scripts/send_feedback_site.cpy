@@ -23,7 +23,6 @@ state_failure = "failure"
 
 plone_utils = getToolByName(context, 'plone_utils')
 mtool = getToolByName(context, 'portal_membership')
-
 site_properties = getToolByName(context, 'portal_properties').site_properties
 
 ## make these arguments?
@@ -34,7 +33,6 @@ sender_fullname = REQUEST.get('sender_fullname', '')
 
 url     = context.portal_url
 
-site_properties = getToolByName(context, 'portal_properties').site_properties
 send_to_address = site_properties.email_from_address
 envelope_from = site_properties.email_from_address
 
