@@ -3,14 +3,14 @@ from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Products.CMFCore.utils import getToolByName
 from Products.GenericSetup.tool import SetupTool
 from Products.GenericSetup import profile_registry
-from Products.GenericSetup import EXTENSION
+from Products.GenericSetup import BASE, EXTENSION
 
 from Portal import PloneSite
 from utils import WWW_DIR
 from interfaces import IPloneSiteRoot
 
 _TOOL_ID = 'portal_setup'
-
+_DEFAULT_PROFILE = 'CMFPlone:plone'
 
 def addPloneSiteForm(dispatcher):
     """
@@ -18,18 +18,26 @@ def addPloneSiteForm(dispatcher):
     """
     wrapped = PageTemplateFile('addSite', WWW_DIR).__of__(dispatcher)
 
+    base_profiles = []
     extension_profiles = []
     for info in profile_registry.listProfileInfo():
         if info.get('type') == EXTENSION and \
            info.get('for') in (IPloneSiteRoot, None):
             extension_profiles.append(info)
-    
-    return wrapped(extension_profiles=tuple(extension_profiles))
+
+    for info in profile_registry.listProfileInfo():
+        if info.get('type') == BASE and \
+           info.get('for') in (IPloneSiteRoot, None):
+            base_profiles.append(info)
+
+    return wrapped(base_profiles=tuple(base_profiles),
+                   extension_profiles=tuple(extension_profiles),
+                   default_profile=_DEFAULT_PROFILE)
 
 def addPloneSite(dispatcher, id, title='', description='',
                  create_userfolder=1, email_from_address='',
                  email_from_name='', validate_email=0,
-                 profile_id='CMFPlone:plone', snapshot=False,
+                 profile_id=_DEFAULT_PROFILE, snapshot=False,
                  RESPONSE=None, extension_ids=()):
     """ Add a PloneSite to 'dispatcher', configured according to 'profile_id'.
     """

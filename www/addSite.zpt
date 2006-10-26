@@ -39,6 +39,26 @@
     <textarea name="description" cols="60" rows="10"
      style="width: 95%"></textarea>
 
+    <tal:baseprofile condition="python: len(options['base_profiles']) > 1">
+      <div class="form-label">
+        Base Profile
+      </div>
+      <div class="form-help">
+        You normally don't need to change anything here unless you have 
+        specific reasons and know what you are doing.
+      </div>
+
+      <tal:profiles tal:repeat="info options/base_profiles">
+        <input type="radio"
+               name="profile_id:string"
+               value="profile"
+               tal:attributes="value info/id;
+                               checked python: options['default_profile']==info['id'] and 'checked' or nothing"
+               />
+        <span tal:replace="info/title">profile title</span>
+        <br />
+      </tal:profiles>
+    </tal:baseprofile>
 
     <tal:extensionprofiles condition="options/extension_profiles">
       <div class="form-label">

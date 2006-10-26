@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.5.2 - Orb - (Unreleased)
 
+    - Added option to choose different base profile while creating a new Plone
+      site. This closes http://dev.plone.org/plone/ticket/5890.
+      [hannosch]
+
     - Removed redundant getToolByName call in send_feedback_site. This closes
       https://dev.plone.org/plone/ticket/5863.
       [hannosch]
