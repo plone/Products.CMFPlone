@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0 - Unreleased
 
+    - Added option to choose different base profile while creating a new Plone
+      site. This closes http://dev.plone.org/plone/ticket/5890.
+      [hannosch]
+
     - Deal with CMFDefault renaming _checkEmail to checkEmailAddress.
       [wichert]
 
