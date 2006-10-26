@@ -94,9 +94,8 @@
                                    value="member.fullname html_quote"
                                    tal:attributes="value fullname;
                                        tabindex tabindex/next;
-                                       disabled python:True and default or 'disabled'"
+                                       disabled python:member.canWriteProperty('fullname') and default or 'disabled'"
                                    />
-<h1 tal:content="python:repr(member.canWriteProperty('fullname'))">test</h1>
 
                         </div>
 
