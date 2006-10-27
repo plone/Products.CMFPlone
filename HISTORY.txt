@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0 - Unreleased
 
+    - First day of week in the calendar is Monday now in Plone by default.
+      This closes https://dev.plone.org/plone/ticket/5882.
+      [hannosch]
+
     - Added option to choose different base profile while creating a new Plone
       site. This closes http://dev.plone.org/plone/ticket/5890.
       [hannosch]

@@ -13,6 +13,8 @@ class CalendarTool(PloneBaseTool, BaseTool):
 
     __implements__ = (PloneBaseTool.__implements__, BaseTool.__implements__, )
 
+    firstweekday = 0 # 0 is Monday
+
     security.declarePublic('getDayNumbers')
     def getDayNumbers(self):
         """ Returns a list of daynumbers with the correct start day first.
