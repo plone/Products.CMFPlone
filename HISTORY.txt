@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.5.2 - Orb - (Unreleased)
 
+    - Fixed flawed lookup of email_from_address in send_feedback scripts. This
+      closes https://dev.plone.org/plone/ticket/5839.
+      [hannosch]
+
     - Added option to choose different base profile while creating a new Plone
       site. This closes http://dev.plone.org/plone/ticket/5890.
       [hannosch]
