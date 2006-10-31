@@ -26,6 +26,18 @@
    title="Classic portlet"
    description="A portlet which can render an classic template-based portlet"
    />
+ 
+ <portlet 
+   addview="portlets.News"
+   title="News portlet"
+   description="A portlet which can render a listing of recent news"
+   />
+  
+ <portlet 
+   addview="portlets.Events"
+   title="Events portlet"
+   description="A portlet which can render a listing of recent events"
+   />
 
  <portlet 
    addview="portlets.Login"

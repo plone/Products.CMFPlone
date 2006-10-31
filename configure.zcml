@@ -3,7 +3,7 @@
            xmlns:five="http://namespaces.zope.org/five">
 
   <include package="plone.app.portlets" />
-
+  
   <include package=".browser" />
   <include package=".exportimport" />
 

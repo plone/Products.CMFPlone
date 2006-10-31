@@ -276,15 +276,14 @@ class PloneGenerator:
         left = getMultiAdapter((portal, leftColumn,), IPortletAssignmentMapping, context=portal)
         right = getMultiAdapter((portal, rightColumn,), IPortletAssignmentMapping, context=portal)
         
-        cpa = portlets.classic.ClassicPortletAssignment
-        lpa = portlets.login.LoginPortletAssignment
+        cpa = portlets.classic.Assignment
         
         # XXX: Replace these with "real" portlets as they become available
         
         if u'navigation' not in left:
             left[u'navigation'] = cpa(template=u'portlet_navigation', macro=u'portlet')
         if u'login' not in left:
-            left[u'login'] = lpa()
+            left[u'login'] = portlets.login.Assignment()
         if u'recent' not in left:
             left[u'recent'] = cpa(template=u'portlet_recent', macro=u'portlet')
         if u'related' not in left:
@@ -293,9 +292,9 @@ class PloneGenerator:
         if u'review' not in right:
             right[u'review'] = cpa(template=u'portlet_review', macro=u'portlet')
         if u'news' not in right:
-            right[u'news'] = cpa(template=u'portlet_news', macro=u'portlet')
+            right[u'news'] = portlets.news.Assignment(count=5)
         if u'events' not in right:
-            right[u'events'] = cpa(template=u'portlet_events', macro=u'portlet')
+            right[u'events'] = portlets.events.Assignment(count=5)
         if u'calendar' not in right:
             right[u'calendar'] = cpa(template=u'portlet_calendar', macro=u'portlet')
 

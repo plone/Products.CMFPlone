@@ -1073,12 +1073,12 @@ class TestMigrations_v3_0(MigrationTest):
         self.assertEquals(2, len(lp))
         self.assertEquals(lp[0].template, u'portlet_recent')
         self.assertEquals(lp[0].macro, u'portlet')
-        self.assertEquals(lp[1].template, u'portlet_news')
-        self.assertEquals(lp[1].macro, u'portlet')
+        
+        self.failUnless(isinstance(lp[1], portlets.news.Assignment))
         
         rp = right.values()
         self.assertEquals(1, len(rp))
-        self.failUnless(isinstance(rp[0], portlets.login.LoginPortletAssignment))
+        self.failUnless(isinstance(rp[0], portlets.login.Assignment))
         
         members = self.portal.Members
         portletAssignments = getMultiAdapter((members, rightColumn,), ILocalPortletAssignmentManager)
@@ -1110,12 +1110,12 @@ class TestMigrations_v3_0(MigrationTest):
         self.assertEquals(2, len(lp))
         self.assertEquals(lp[0].template, u'portlet_recent')
         self.assertEquals(lp[0].macro, u'portlet')
-        self.assertEquals(lp[1].template, u'portlet_news')
-        self.assertEquals(lp[1].macro, u'portlet')
+        
+        self.failUnless(isinstance(lp[1], portlets.news.Assignment))
         
         rp = right.values()
         self.assertEquals(1, len(rp))
-        self.failUnless(isinstance(rp[0], portlets.login.LoginPortletAssignment))
+        self.failUnless(isinstance(rp[0], portlets.login.Assignment))
         
         members = self.portal.Members
         portletAssignments = getMultiAdapter((members, rightColumn,), ILocalPortletAssignmentManager)
@@ -1146,8 +1146,8 @@ class TestMigrations_v3_0(MigrationTest):
         self.assertEquals(2, len(lp))
         self.assertEquals(lp[0].template, u'portlet_recent')
         self.assertEquals(lp[0].macro, u'portlet')
-        self.assertEquals(lp[1].template, u'portlet_news')
-        self.assertEquals(lp[1].macro, u'portlet')
+        
+        self.failUnless(isinstance(lp[1], portlets.news.Assignment))
         
         rp = right.values()
         self.assertEquals(0, len(rp))
@@ -1182,12 +1182,12 @@ class TestMigrations_v3_0(MigrationTest):
         self.assertEquals(2, len(lp))
         self.assertEquals(lp[0].template, u'portlet_recent')
         self.assertEquals(lp[0].macro, u'portlet')
-        self.assertEquals(lp[1].template, u'portlet_news')
-        self.assertEquals(lp[1].macro, u'portlet')
+        
+        self.failUnless(isinstance(lp[1], portlets.news.Assignment))
         
         rp = right.values()
         self.assertEquals(1, len(rp))
-        self.failUnless(isinstance(rp[0], portlets.login.LoginPortletAssignment))
+        self.failUnless(isinstance(rp[0], portlets.login.Assignment))
         
         members = self.portal.Members
         portletAssignments = getMultiAdapter((members, rightColumn,), ILocalPortletAssignmentManager)
@@ -1222,12 +1222,12 @@ class TestMigrations_v3_0(MigrationTest):
         self.assertEquals(2, len(lp))
         self.assertEquals(lp[0].template, u'portlet_recent')
         self.assertEquals(lp[0].macro, u'portlet')
-        self.assertEquals(lp[1].template, u'portlet_news')
-        self.assertEquals(lp[1].macro, u'portlet')
+        
+        self.failUnless(isinstance(lp[1], portlets.news.Assignment))
         
         rp = right.values()
         self.assertEquals(1, len(rp))
-        self.failUnless(isinstance(rp[0], portlets.login.LoginPortletAssignment))
+        self.failUnless(isinstance(rp[0], portlets.login.Assignment))
         
 class TestMigrations_v3_0_Actions(MigrationTest):
 
