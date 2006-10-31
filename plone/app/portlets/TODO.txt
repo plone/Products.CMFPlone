@@ -42,10 +42,6 @@ plone.app.portlets to-do
         - Need a way to signal that columns should be hidden
             - e.g. a property 'available' in the renderer?
           
-    o Add migration steps to Plone's migration machinery
-    
-    o Set up default portlets during site set-up
-
   GenericSetup import/export handlers
 
     o Better test coverage for portlet manager GenericSetup import/export

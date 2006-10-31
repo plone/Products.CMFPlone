@@ -1,51 +1,41 @@
 <configure xmlns="http://namespaces.zope.org/zope"
-           xmlns:browser="http://namespaces.zope.org/browser">
+           xmlns:browser="http://namespaces.zope.org/browser"
+           xmlns:plone="http://namespaces.plone.org/plone">
 
-    <!-- Classic portlet -->
-
-    <class class=".classic.ClassicPortletAssignment">
-      <require 
-        permission="zope2.View"
+    <plone:portlet
+        name="portlets.Classic"
         interface=".classic.IClassicPortlet"
+        assignment=".classic.Assignment"
+        renderer=".classic.Renderer"
+        addview=".classic.AddForm"
+        editview=".classic.EditForm"
         />
-    </class>
+    
+    <plone:portlet
+        name="portlets.News"
+        interface=".news.INewsPortlet"
+        assignment=".news.Assignment"
+        renderer=".news.Renderer"
+        addview=".news.AddForm"
+        editview=".news.EditForm"
+        />
 
-    <adapter 
-      factory=".classic.ClassicPortletRenderer"
-      provides="plone.portlets.interfaces.IPortletRenderer"/>
-    
-    <browser:page 
-      for="plone.app.portlets.browser.interfaces.IPortletAdding"
-      name="portlets.Classic"
-      class=".classic.ClassicPortletAddForm"
-      permission="cmf.ManagePortal"
-      />
-    
-    <browser:page 
-      for=".classic.IClassicPortlet"
-      name="edit.html"
-      class=".classic.ClassicPortletEditForm"
-      permission="cmf.ManagePortal"
-      />
-    
-    <!-- Login portlet -->
-    
-    <class class=".login.LoginPortletAssignment">
-      <require 
-        permission="zope2.View"
-        interface=".login.ILoginPortlet"
+    <plone:portlet
+        name="portlets.Events"
+        interface=".events.IEventsPortlet"
+        assignment=".events.Assignment"
+        renderer=".events.Renderer"
+        addview=".events.AddForm"
+        editview=".events.EditForm"
         />
-    </class>
     
-    <adapter 
-      factory=".login.LoginPortletRenderer"
-      provides="plone.portlets.interfaces.IPortletRenderer"/>
-    
-    <browser:page 
-      for="plone.app.portlets.browser.interfaces.IPortletAdding"
-      name="portlets.Login"
-      class=".login.LoginPortletAddForm"
-      permission="cmf.ManagePortal"
-      />
+    <plone:portlet
+        name="portlets.Login"
+        interface=".login.ILoginPortlet"
+        assignment=".login.Assignment"
+        renderer=".login.Renderer"
+        addview=".login.AddForm"
+        />
+
     
 </configure>

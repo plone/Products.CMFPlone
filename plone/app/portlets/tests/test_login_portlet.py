@@ -7,14 +7,13 @@ from plone.portlets.interfaces import IPortletAssignment
 from plone.portlets.interfaces import IPortletDataProvider
 from plone.portlets.interfaces import IPortletRenderer
 
-from plone.app.portlets.portlets.login import LoginPortletAssignment
-from plone.app.portlets.portlets.login import LoginPortletRenderer
+from plone.app.portlets.portlets import login
 
 from plone.app.portlets.storage import PortletAssignmentMapping
 
 from plone.app.portlets.tests.base import PortletsTestCase
 
-class TestLoginPortlet(PortletsTestCase):
+class TestPortlet(PortletsTestCase):
 
     def afterSetUp(self):
         setHooks()
@@ -25,7 +24,7 @@ class TestLoginPortlet(PortletsTestCase):
         self.assertEquals(portlet.addview, 'portlets.Login')
 
     def testInterfaces(self):
-        portlet = LoginPortletAssignment()
+        portlet = login.Assignment()
         self.failUnless(IPortletAssignment.providedBy(portlet))
         self.failUnless(IPortletDataProvider.providedBy(portlet.data))
 
@@ -41,13 +40,13 @@ class TestLoginPortlet(PortletsTestCase):
         addview()
 
         self.assertEquals(len(mapping), 1)
-        self.failUnless(isinstance(mapping.values()[0], LoginPortletAssignment))
+        self.failUnless(isinstance(mapping.values()[0], login.Assignment))
 
     def testInvokeEditView(self):
         mapping = PortletAssignmentMapping()
         request = self.folder.REQUEST
 
-        mapping['foo'] = LoginPortletAssignment()
+        mapping['foo'] = login.Assignment()
         editview = queryMultiAdapter((mapping['foo'], request), name='edit.html', default=None)
         self.failUnless(editview is None)
 
@@ -56,12 +55,12 @@ class TestLoginPortlet(PortletsTestCase):
         request = self.folder.REQUEST
         view = self.folder.restrictedTraverse('@@plone')
         manager = getUtility(IPortletManager, name='plone.leftcolumn', context=self.portal)
-        assignment = LoginPortletAssignment()
+        assignment = login.Assignment()
 
         renderer = getMultiAdapter((context, request, view, manager, assignment), IPortletRenderer)
-        self.failUnless(isinstance(renderer, LoginPortletRenderer))
+        self.failUnless(isinstance(renderer, login.Renderer))
 
-class TestLoginPortletRenderer(PortletsTestCase):
+class TestRenderer(PortletsTestCase):
 
     def afterSetUp(self):
         setHooks()
@@ -72,7 +71,7 @@ class TestLoginPortletRenderer(PortletsTestCase):
         request = request or self.folder.REQUEST
         view = view or self.folder.restrictedTraverse('@@plone')
         manager = manager or getUtility(IPortletManager, name='plone.leftcolumn', context=self.portal)
-        assignment = assignment or LoginPortletAssignment()
+        assignment = assignment or login.Assignment()
 
         return getMultiAdapter((context, request, view, manager, assignment), IPortletRenderer)
 
@@ -97,10 +96,9 @@ class TestLoginPortletRenderer(PortletsTestCase):
 
     # TODO: Add more detailed tests here
 
-
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
-    suite.addTest(makeSuite(TestLoginPortlet))
-    suite.addTest(makeSuite(TestLoginPortletRenderer))
+    suite.addTest(makeSuite(TestPortlet))
+    suite.addTest(makeSuite(TestRenderer))
     return suite

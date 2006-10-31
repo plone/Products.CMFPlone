@@ -1,0 +1,40 @@
+<dl class="portlet" id="portlet-news" tal:condition="view/show">
+
+    <dt class="portletHeader">
+        <span class="portletTopLeft"></span>
+        <a href="#" 
+           class="tile"
+           tal:attributes="href view/all_news_link"
+           i18n:translate="box_news">News</a>
+        <span class="portletTopRight"></span>
+    </dt>
+
+    <tal:newsitems tal:repeat="obj view/published_news_items">
+    <dd tal:define="oddrow repeat/obj/odd"
+         tal:attributes="class python:oddrow and 'portletItem even' or 'portletItem odd'">
+
+        <a href=""
+           class="tile"
+           tal:attributes="href obj/getURL;
+                           title obj/Description">
+            <tal:block replace="structure here/newsitem_icon.gif"/>
+            <span tal:replace="obj/pretty_title_or_id">
+            Plone 2.1 announced!
+            </span>
+            <span class="portletItemDetails"
+                  tal:content="python:context.toLocalizedTime(obj.Date)">May 5</span>
+        </a>
+    </dd>
+    </tal:newsitems>
+
+    <dd class="portletFooter">
+        <a href=""
+           tal:attributes="href view/all_news_link"
+           i18n:translate="box_more_news_link"
+           >
+          More news&hellip;
+        </a>
+        <span class="portletBottomLeft"></span>
+        <span class="portletBottomRight"></span>
+    </dd>
+</dl>

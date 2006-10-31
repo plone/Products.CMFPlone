@@ -15,7 +15,7 @@ from plone.portlets.constants import USER_CATEGORY
 
 from plone.app.portlets.storage import PortletAssignmentMapping
 from plone.app.portlets.storage import CurrentUserAssignmentMapping
-from plone.app.portlets.portlets.classic import ClassicPortletAssignment
+from plone.app.portlets.portlets import classic
 
 from plone.app.portlets.browser.adding import PortletAdding
 
@@ -26,10 +26,10 @@ class TestNameChooser(PortletsTestCase):
     def testNameChooser(self):
         mapping = PortletAssignmentMapping()
         chooser = INameChooser(mapping)
-        c = ClassicPortletAssignment()
+        c = classic.Assignment()
         mapping[chooser.chooseName(None, c)] = c
         self.failUnless(c.__name__)
-        d = ClassicPortletAssignment()
+        d = classic.Assignment()
         self.failIfEqual(chooser.chooseName(None, d), c.__name__)
 
 class TestContextMapping(PortletsTestCase):
@@ -45,7 +45,7 @@ class TestContextMapping(PortletsTestCase):
 
     def testEquivalence(self):
         mapping = getMultiAdapter((self.folder, self.manager,), IPortletAssignmentMapping)
-        c = ClassicPortletAssignment()
+        c = classic.Assignment()
         mapping['foo'] = c
 
         mapping2 = getMultiAdapter((self.folder, self.manager,), IPortletAssignmentMapping)
@@ -55,7 +55,7 @@ class TestTraverser(PortletsTestCase):
 
     def afterSetUp(self):
         self.mapping = PortletAssignmentMapping()
-        c = ClassicPortletAssignment()
+        c = classic.Assignment()
         self.mapping['foo'] = c
         self.traverser = getMultiAdapter((self.mapping, self.folder.REQUEST), IBrowserPublisher)
 
@@ -84,27 +84,27 @@ class TestCurrentUserAssignmentMapping(PortletsTestCase):
 
     def testKeys(self):
         self.assertEquals(0, len(self.mapping.keys()))
-        assignment = ClassicPortletAssignment()
+        assignment = classic.Assignment()
         self.cat[user_name]['foo'] = assignment
         self.assertEquals(['foo'], sorted(self.mapping.keys()))
 
     def testIter(self):
-        a1 = ClassicPortletAssignment()
-        a2 = ClassicPortletAssignment()
+        a1 = classic.Assignment()
+        a2 = classic.Assignment()
         self.cat[user_name]['foo'] = a1
         self.cat[user_name]['bar'] = a2
         items = [a for a in self.mapping]
         self.assertEquals(items, ['foo', 'bar'])
 
     def testGetItem(self):
-        assignment = ClassicPortletAssignment()
+        assignment = classic.Assignment()
         self.cat[user_name]['foo'] = assignment
         self.assertEquals(assignment, self.mapping.get('foo'))
         self.assertEquals(None, self.mapping.get('bar', None))
 
     def testValues(self):
-        a1 = ClassicPortletAssignment()
-        a2 = ClassicPortletAssignment()
+        a1 = classic.Assignment()
+        a2 = classic.Assignment()
         self.cat[user_name]['foo'] = a1
         self.cat[user_name]['bar'] = a2
         items = [a for a in self.mapping.values()]
@@ -112,39 +112,39 @@ class TestCurrentUserAssignmentMapping(PortletsTestCase):
 
     def testLen(self):
         self.assertEquals(0, len(self.mapping))
-        self.cat[user_name]['foo'] = ClassicPortletAssignment()
+        self.cat[user_name]['foo'] = classic.Assignment()
         self.assertEquals(1, len(self.mapping))
 
     def testItems(self):
-        a1 = ClassicPortletAssignment()
-        a2 = ClassicPortletAssignment()
+        a1 = classic.Assignment()
+        a2 = classic.Assignment()
         self.cat[user_name]['foo'] = a1
         self.cat[user_name]['bar'] = a2
         self.assertEquals([('foo', a1), ('bar', a2)], self.mapping.items())
 
     def testContains(self):
         self.failIf('foo' in self.mapping)
-        self.cat[user_name]['foo'] = ClassicPortletAssignment()
+        self.cat[user_name]['foo'] = classic.Assignment()
         self.failUnless('foo' in self.mapping)
 
     def testHasKey(self):
         self.failIf(self.mapping.has_key('foo'))
-        self.cat[user_name]['foo'] = ClassicPortletAssignment()
+        self.cat[user_name]['foo'] = classic.Assignment()
         self.failUnless(self.mapping.has_key('foo'))
 
     def testSetItem(self):
-        assignment = ClassicPortletAssignment()
+        assignment = classic.Assignment()
         self.mapping['foo'] = assignment
         self.failUnless(self.cat[user_name]['foo'] is assignment)
 
     def testDelItem(self):
-        self.cat[user_name]['foo'] = ClassicPortletAssignment()
+        self.cat[user_name]['foo'] = classic.Assignment()
         del self.mapping['foo']
         self.assertEquals(0, len(self.cat[user_name]))
 
     def testUpdateOrder(self):
-        a1 = ClassicPortletAssignment()
-        a2 = ClassicPortletAssignment()
+        a1 = classic.Assignment()
+        a2 = classic.Assignment()
         self.cat[user_name]['foo'] = a1
         self.cat[user_name]['bar'] = a2
         self.mapping.updateOrder(['bar', 'foo'])

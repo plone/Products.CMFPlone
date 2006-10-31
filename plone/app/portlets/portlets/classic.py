@@ -1,26 +1,11 @@
-from OFS.SimpleItem import SimpleItem
+from zope.interface import implements
 
-from zope.interface import Interface, implements
-from zope.component import adapts
+from plone.portlets.interfaces import IPortletDataProvider
+from plone.app.portlets.portlets import base
 
 from zope import schema
 from zope.formlib import form
-
-from zope.publisher.interfaces.browser import IBrowserRequest
-from zope.publisher.interfaces.browser import IBrowserView
-
-from plone.portlets.interfaces import IPortletDataProvider
-from plone.portlets.interfaces import IPortletAssignment
-from plone.portlets.interfaces import IPortletRenderer
-from plone.portlets.interfaces import IPortletManager
-
-from zope.app.container.contained import Contained
-
-from Acquisition import Explicit, Implicit
-
-from plone.app.portlets.browser.formhelper import AddForm, EditForm
 from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
-
 from Products.CMFPlone import PloneMessageFactory as _
 
 class IClassicPortlet(IPortletDataProvider):
@@ -36,8 +21,8 @@ class IClassicPortlet(IPortletDataProvider):
                                default=u'portlet',
                                required=True)
 
-class ClassicPortletAssignment(SimpleItem, Contained):
-    implements(IClassicPortlet, IPortletAssignment)
+class Assignment(base.Assignment):
+    implements(IClassicPortlet)
 
     def __init__(self, template=u'', macro=u''):
         self.template = template
@@ -47,29 +32,14 @@ class ClassicPortletAssignment(SimpleItem, Contained):
     def title(self):
         return self.template
 
-    @property
-    def available(self):
-        return True
-
-    @property
-    def data(self):
-        return self
-
-    def __repr__(self):
-        return '<ClassicPortlet rendering %s : %s>' % (self.template, self.macro,)
-
-class ClassicPortletRenderer(Explicit):
-    implements(IPortletRenderer)
-    adapts(Interface, IBrowserRequest, IBrowserView,
-            IPortletManager, IClassicPortlet)
+class Renderer(base.Renderer):
 
     def __init__(self, context, request, view, manager, data):
         self.context = context
         self.data = data
 
-    def update(self):
-        pass
-
+    render = ZopeTwoPageTemplateFile('classic.pt')
+    
     def use_macro(self):
         return bool(self.data.macro)
 
@@ -79,18 +49,12 @@ class ClassicPortletRenderer(Explicit):
             expr += '/macros/%s' % self.data.macro
         return expr
 
-    render = ZopeTwoPageTemplateFile('classic.pt')
-
-    def __repr__(self):
-        return '<ClassicPortletRenderer rendering %s>' % (self.path_expression(),)
-
-
-class ClassicPortletAddForm(AddForm):
+class AddForm(base.AddForm):
     form_fields = form.Fields(IClassicPortlet)
 
     def create(self, data):
-        return ClassicPortletAssignment(template=data.get('template', ''),
-                                        macro=data.get('macro', ''))
+        return Assignment(template=data.get('template', ''),
+                          macro=data.get('macro', ''))
 
-class ClassicPortletEditForm(EditForm):
+class EditForm(base.EditForm):
     form_fields = form.Fields(IClassicPortlet)

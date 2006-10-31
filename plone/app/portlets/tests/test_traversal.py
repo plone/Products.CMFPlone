@@ -11,7 +11,7 @@ from plone.portlets.constants import GROUP_CATEGORY
 from plone.portlets.constants import CONTENT_TYPE_CATEGORY
 
 from plone.app.portlets.tests.base import PortletsTestCase
-from plone.app.portlets.portlets.classic import ClassicPortletAssignment
+from plone.app.portlets.portlets import classic
 
 class TestTraversal(PortletsTestCase):
 
@@ -20,7 +20,7 @@ class TestTraversal(PortletsTestCase):
         setSite(self.portal)
 
     def testContextNamespace(self):
-        assignment = ClassicPortletAssignment()
+        assignment = classic.Assignment()
         manager = getUtility(IPortletManager, name='plone.leftcolumn')
         mapping = self.folder.restrictedTraverse('++contextportlets++plone.leftcolumn')
         target = getMultiAdapter((self.folder, manager), IPortletAssignmentMapping)
@@ -29,7 +29,7 @@ class TestTraversal(PortletsTestCase):
         self.failUnless(target['foo'] is assignment)
 
     def testDashboardNamespace(self):
-        assignment = ClassicPortletAssignment()
+        assignment = classic.Assignment()
         manager = getUtility(IPortletManager, name='plone.dashboard')
         mapping = self.portal.restrictedTraverse('++dashboard++')
         self.failUnless(aq_parent(mapping) is self.portal)
@@ -37,7 +37,7 @@ class TestTraversal(PortletsTestCase):
         self.failUnless(manager[USER_CATEGORY][user_name]['foo'] is assignment)
 
     def testUserNamespace(self):
-        assignment = ClassicPortletAssignment()
+        assignment = classic.Assignment()
         manager = getUtility(IPortletManager, name='plone.leftcolumn')
         mapping = self.portal.restrictedTraverse('++userportlets++plone.leftcolumn+' + user_name)
         self.failUnless(aq_parent(mapping) is self.portal)
@@ -45,7 +45,7 @@ class TestTraversal(PortletsTestCase):
         self.failUnless(manager[USER_CATEGORY][user_name]['foo'] is assignment)
 
     def testGroupNamespace(self):
-        assignment = ClassicPortletAssignment()
+        assignment = classic.Assignment()
         manager = getUtility(IPortletManager, name='plone.leftcolumn')
         mapping = self.portal.restrictedTraverse('++groupportlets++plone.leftcolumn+Reviewers')
         self.failUnless(aq_parent(mapping) is self.portal)
@@ -53,7 +53,7 @@ class TestTraversal(PortletsTestCase):
         self.failUnless(manager[GROUP_CATEGORY]['Reviewers']['foo'] is assignment)
 
     def testContentTypeNamespace(self):
-        assignment = ClassicPortletAssignment()
+        assignment = classic.Assignment()
         manager = getUtility(IPortletManager, name='plone.leftcolumn')
         mapping = self.portal.restrictedTraverse('++contenttypeportlets++plone.leftcolumn+Image')
         self.failUnless(aq_parent(mapping) is self.portal)

@@ -1,57 +1,27 @@
-from OFS.SimpleItem import SimpleItem
+from zope.interface import implements
 
-from zope.interface import Interface, implements
-from zope.component import adapts
+from plone.portlets.interfaces import IPortletDataProvider
+from plone.app.portlets.portlets import base
 
 from zope import schema
 from zope.formlib import form
 
-from zope.publisher.interfaces.browser import IBrowserRequest
-from zope.publisher.interfaces.browser import IBrowserView
-
-from plone.portlets.interfaces import IPortletDataProvider
-from plone.portlets.interfaces import IPortletAssignment
-from plone.portlets.interfaces import IPortletRenderer
-from plone.portlets.interfaces import IPortletManager
-
-from Acquisition import Explicit, Implicit
-
-from plone.app.portlets.browser.formhelper import NullAddForm, EditForm
+from Acquisition import aq_inner
 from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
-
-from zope.app.container.contained import Contained
-
 from Products.CMFCore.utils import getToolByName
+
 from Products.CMFPlone import PloneMessageFactory as _
 
 class ILoginPortlet(IPortletDataProvider):
     """A portlet which can render a login form.
     """
 
-class LoginPortletAssignment(SimpleItem, Contained):
-    implements(ILoginPortlet, IPortletAssignment)
+class Assignment(base.Assignment):
+    implements(ILoginPortlet)
 
     title = _(u'Login portlet')
 
-    @property
-    def available(self):
-        return True
-
-    @property
-    def data(self):
-        return self
-
-    def __repr__(self):
-        return '<LoginPortlet>'
-
-class LoginPortletRenderer(Explicit):
-    implements(IPortletRenderer)
-    adapts(Interface, IBrowserRequest, IBrowserView,
-            IPortletManager, ILoginPortlet)
-
-    def __init__(self, context, request, view, manager, data):
-        self.context = context
-        self.request = request
+class Renderer(base.Renderer):
 
     def show(self):
         membership = getToolByName(self.context, 'portal_membership')
@@ -125,11 +95,7 @@ class LoginPortletRenderer(Explicit):
 
     render = ZopeTwoPageTemplateFile('login.pt')
 
-    def __repr__(self):
-        return '<LoginPortletRenderer>'
-
-
-class LoginPortletAddForm(NullAddForm):
+class AddForm(base.NullAddForm):
 
     def create(self):
-        return LoginPortletAssignment()
+        return Assignment()

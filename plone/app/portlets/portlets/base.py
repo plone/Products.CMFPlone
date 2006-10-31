@@ -16,6 +16,7 @@ from zope.app.container.contained import Contained
 
 # Convenience imports
 from plone.app.portlets.browser.formhelper import AddForm
+from plone.app.portlets.browser.formhelper import NullAddForm
 from plone.app.portlets.browser.formhelper import EditForm
 
 class Assignment(SimpleItem, Contained):

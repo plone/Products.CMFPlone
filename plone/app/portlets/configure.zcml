@@ -60,9 +60,9 @@
      -->
      
      <adapter
-      provides="zope.app.container.interfaces.INameChooser"
-      for="plone.portlets.interfaces.IPortletAssignmentMapping"
-      factory="zope.app.container.contained.NameChooser"
-      />
+        provides="zope.app.container.interfaces.INameChooser"
+        for="plone.portlets.interfaces.IPortletAssignmentMapping"
+        factory="zope.app.container.contained.NameChooser"
+        />
     
 </configure>
