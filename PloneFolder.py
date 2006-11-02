@@ -169,7 +169,7 @@ class OrderedContainer(Folder):
     def getCMFObjectsSubsetIds(self, objs):
         """Get the ids of only cmf objects (used for moveObjectsByDelta)."""
         ttool = getToolByName(self, 'portal_types')
-        cmf_meta_types = ttool.listContentTypes(by_metatype=1)
+        cmf_meta_types = [ti.Metatype() for ti in ttool.listTypeInfo()]
         return [obj['id'] for obj in objs if obj['meta_type'] in cmf_meta_types]
 
     security.declareProtected(ModifyPortalContent, 'getObjectPosition')
