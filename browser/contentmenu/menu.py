@@ -638,7 +638,7 @@ class WorkflowMenu(BrowserMenu):
                                  'action'       : action['url'],
                                  'selected'     : False,
                                  'icon'         : None,
-                                 'extra'        : {'id' : action['id'], 'separator' : None, 'class' : ''},
+                                 'extra'        : {'id' : 'workflow-transition-%s' % action['id'], 'separator' : None, 'class' : ''},
                                  'submenu'      : None,
                                  })
 
@@ -650,7 +650,7 @@ class WorkflowMenu(BrowserMenu):
                              'action'        : url + '/content_status_history',
                              'selected'      : False,
                              'icon'          : None,
-                             'extra'         : {'id' : '_advanced', 'separator' : 'actionSeparator', 'class' : ''},
+                             'extra'         : {'id' : '_advanced', 'separator' : 'actionSeparator', 'class' : 'kssIgnore'},
                              'submenu'       : None,
                             })
             results.append({ 'title'         : _(u'workflow_policy', default=u'Policy...'),
@@ -658,7 +658,7 @@ class WorkflowMenu(BrowserMenu):
                              'action'        : url + '/placeful_workflow_configuration',
                              'selected'      : False,
                              'icon'          : None,
-                             'extra'         : {'id' : '_policy', 'separator' : None, 'class' : ''},
+                             'extra'         : {'id' : '_policy', 'separator' : None, 'class' : 'kssIgnore'},
                              'submenu'       : None,
                             })
 
