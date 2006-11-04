@@ -107,7 +107,15 @@ except ImportError:
     log(("PIL not found. Plone needs PIL 1.1.5 or newer to scale images. "
          "Please download it from http://www.pythonware.com/products/pil/ or "
          "http://effbot.org/downloads/#Imaging"),
-         severity=logging.INFO, optional=1)
+         severity=logging.INFO)
+
+try:
+    from elementtree import ElementTree
+except ImportError:
+    log(("Elementtree not found. Plone needs Elementtree for XML "
+         "transformation. Please download it from "
+         "http://effbot.org/downloads/#elementtree"),
+         severity=logging.INFO)
 
 try:
     import Products.ExternalEditor

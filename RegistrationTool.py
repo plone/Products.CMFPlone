@@ -199,7 +199,29 @@ class RegistrationTool(PloneBaseTool, BaseTool):
             if not utils.validateSingleEmailAddress(member.getProperty('email')):
                 raise ValueError, 'The email address did not validate'
 
-        return BaseTool.registeredNotify(self, new_member_id)
+        email = member.getProperty( 'email' )
+        check, msg = _checkEmail(email)
+        if not check:
+            raise ValueError, msg
+
+        pwrt = getToolByName(self, 'portal_password_reset')
+        reset = pwrt.requestReset(new_member_id)
+
+        # Rather than have the template try to use the mailhost, we will
+        # render the message ourselves and send it from here (where we
+        # don't need to worry about 'UseMailHost' permissions).
+        mail_text = self.registered_notify_template( self
+                                                   , self.REQUEST
+                                                   , member=member
+                                                   , reset=reset
+                                                   , email=email
+                                                   )
+
+        host = self.MailHost
+        host.send( mail_text )
+
+        return self.mail_password_response( self, self.REQUEST )
+
 
 
 RegistrationTool.__doc__ = BaseTool.__doc__

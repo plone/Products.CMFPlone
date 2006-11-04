@@ -29,6 +29,9 @@ def initialize(context):
     allow_class(Logger)
 
     # various small utils functions
+    # added for unescaping view names in urls when finding selected action
+    ModuleSecurityInfo('urllib').declarePublic('unquote')
+    
     allow_module('Products.CMFPlone.utils')
 
     # For form validation bits

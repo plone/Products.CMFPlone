@@ -92,7 +92,7 @@ def fixObjDeleteAction(portal, out):
         title='Delete',
         i18n_domain='plone',
         url_expr='string:${globals_view/getCurrentObjectUrl}/delete_confirmation',
-        available_expr='python:checkPermission(&quot;Delete objects&quot;, globals_view.getParentObject()) and not globals_view.isPortalOrPortalDefaultPage()',
+        available_expr='python:checkPermission("Delete objects", globals_view.getParentObject()) and not globals_view.isPortalOrPortalDefaultPage()',
         permissions=(DeleteObjects,),
         visible=True)
 

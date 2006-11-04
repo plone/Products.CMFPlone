@@ -110,7 +110,7 @@ else:
         write('''<img src="%s"/>''' % result.getIcon)
         full_title = pretty_title_or_id(result)
         if len(full_title) >= MAX_TITLE:
-            display_title = ''.join((full_title[:MAX_TITLE],'...'))
+            display_title = ''.join((full_title[:MAX_TITLE],'...'))            
         else:
             display_title = full_title
         full_title = full_title.replace('"', '&quot;')

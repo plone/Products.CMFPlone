@@ -20,11 +20,10 @@ from ZODB.POSException import ConflictError
 state_success = "success"
 state_failure = "failure"
 
-
 plone_utils = getToolByName(context, 'plone_utils')
-mtool = getToolByName(context, 'portal_membership')
-
-site_properties = getToolByName(context, 'portal_properties').site_properties
+urltool = getToolByName(context, 'portal_url')
+portal = urltool.getPortalObject()
+url = urltool()
 
 ## make these arguments?
 subject = REQUEST.get('subject', '')
@@ -32,11 +31,8 @@ message = REQUEST.get('message', '')
 sender_from_address = REQUEST.get('sender_from_address', '')
 sender_fullname = REQUEST.get('sender_fullname', '')
 
-url     = context.portal_url
-
-site_properties = getToolByName(context, 'portal_properties').site_properties
-send_to_address = site_properties.email_from_address
-envelope_from = site_properties.email_from_address
+send_to_address = portal.getProperty('email_from_address')
+envelope_from = portal.getProperty('email_from_address')
 
 state.set(status=state_success) ## until proven otherwise
 
@@ -56,10 +52,10 @@ try:
 except ConflictError:
     raise
 except: # TODO Too many things could possibly go wrong. So we catch all.
-    exception = context.plone_utils.exceptionString()
+    exception = plone_utils.exceptionString()
     message = _(u'Unable to send mail: ${exception}',
                 mapping={u'exception' : exception})
-    context.plone_utils.addPortalMessage(message)
+    plone_utils.addPortalMessage(message)
     return state.set(status=state_failure)
 
 ## clear request variables so form is cleared as well
@@ -68,5 +64,5 @@ REQUEST.set('subject', None)
 REQUEST.set('sender_from_address', None)
 REQUEST.set('sender_fullname', None)
 
-context.plone_utils.addPortalMessage(_(u'Mail sent.'))
+plone_utils.addPortalMessage(_(u'Mail sent.'))
 return state

@@ -166,7 +166,61 @@ Plone 3.0 - Unreleased
       CatalogTool._initIndexes.
       [hannosch]
 
-Plone 2.5.1 - released September 11, 2006
+Plone 2.5.2 - Orb - (Unreleased)
+
+    - Fixed flawed lookup of email_from_address in send_feedback scripts. This
+      closes https://dev.plone.org/plone/ticket/5839.
+      [hannosch]
+
+    - Added option to choose different base profile while creating a new Plone
+      site. This closes http://dev.plone.org/plone/ticket/5890.
+      [hannosch]
+
+    - Removed redundant getToolByName call in send_feedback_site. This closes
+      https://dev.plone.org/plone/ticket/5863.
+      [hannosch]
+
+    - Fixed the calendar portlet to display correctly in Internet Explorer 7.
+      [limi]
+
+    - Updated links in the automatically generated front-page.
+      [hannosch]
+
+    - Added a few macro hooks in personalize_form and prefs_user_details to
+      allow at least some form of easy customization without the need to
+      customize the entire forms. Now it looks for a file additional_memberdata
+      in your skin and uses the macros in there to inject them into these
+      horrible forms. Now it sucks slightly less ;-).
+      [ender]
+
+    - Removed www/main.dtml as it turns out we can use the default just fine.
+      [stefan]
+
+    - livesearch_reply.py mixed up utf-8-encoded strings and unicode strings
+      leading to unpredictable UnicodeDecodeErrors. This fixes
+      http://dev.plone.org/plone/ticket/5828.
+      [ajung]
+
+    - livesearch_reply.py wrote quotes (") in the title-attribute. misformed
+      XML was generated. replaced quotes by &quot;.
+      [jensens]
+
+Plone 2.5.1 - released September 28, 2006
+
+    - The content tab selection logic now checks the request in addition 
+      to template_id when trying to determine which tab should be 
+      selected.
+      [rocky]
+
+    - Noted the new hard dependency on ElementTree that was introduced in the
+      Marshall product as of Plone 2.5.1.
+      [hannosch]
+
+    - The plone_various and plone-final steps now honour
+      GenericSetup conventions and only run when a config file is present for
+      them. ExtensionProfiles no longer need to override these steps. Fixes
+      http://dev.plone.org/plone/ticket/5823
+      [mj]
 
     - livesearch_reply.py mixed up utf-8-encoded strings and unicode strings
       leading to unpredictable UnicodeDecodeErrors. This closes

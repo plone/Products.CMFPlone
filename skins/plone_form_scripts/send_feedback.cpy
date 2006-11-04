@@ -15,16 +15,14 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
 from ZODB.POSException import ConflictError
 
-##
 ## This may change depending on the called (portal_feedback or author)
 state_success = "success"
 state_failure = "failure"
 
-
 plone_utils = getToolByName(context, 'plone_utils')
 mtool = getToolByName(context, 'portal_membership')
-
-site_properties = getToolByName(context, 'portal_properties').site_properties
+urltool = getToolByName(context, 'portal_url')
+portal = urltool.getPortalObject()
 
 ## make these arguments?
 referer = REQUEST.get('referer', 'unknown referer')
@@ -33,12 +31,10 @@ message = REQUEST.get('message', '')
 author = REQUEST.get('author', None) # None means portal administrator
 
 sender = mtool.getAuthenticatedMember()
-
-site_properties = getToolByName(context, 'portal_properties').site_properties
-envelope_from = site_properties.email_from_address
+envelope_from = portal.getProperty('email_from_address')
 
 if author is None:
-    send_to_address = site_properties.email_from_address
+    send_to_address = portal.getProperty('email_from_address')
 else:
     send_to_address = mtool.getMemberById(author).getProperty('email')
     state_success = "success_author"
@@ -52,7 +48,7 @@ if send_from_address == '':
     # happens if you don't exist as user in the portal (but at a higher level)
     # or if your memberdata is incomplete.
     # Would be nicer to check in the feedback form, but that's hard to do securely
-    context.plone_utils.addPortalMessage(_(u'Could not find a valid email address'))
+    plone_utils.addPortalMessage(_(u'Could not find a valid email address'))
     return state.set(status=state_failure)
     
 sender_id = "%s (%s), %s" % (sender.getProperty('fullname'), sender.getId(), send_from_address)
@@ -77,10 +73,10 @@ try:
 except ConflictError:
     raise
 except: # TODO Too many things could possibly go wrong. So we catch all.
-    exception = context.plone_utils.exceptionString()
+    exception = plone_utils.exceptionString()
     message = _(u'Unable to send mail: ${exception}',
                 mapping={u'exception' : exception})
-    context.plone_utils.addPortalMessage(message)
+    plone_utils.addPortalMessage(message)
     return state.set(status=state_failure)
 
 tmsg='Sent feedback from %s to %s' % ('x', 'y')
@@ -90,5 +86,5 @@ transaction_note(tmsg)
 REQUEST.set('message', None)
 REQUEST.set('subject', None)
 
-context.plone_utils.addPortalMessage(_(u'Mail sent.'))
+plone_utils.addPortalMessage(_(u'Mail sent.'))
 return state
