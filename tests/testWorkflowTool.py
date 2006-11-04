@@ -33,6 +33,11 @@ class TestWorkflowTool(PloneTestCase.PloneTestCase):
         # Test that url has filled in string substitutions for content url
         self.failUnless('http://' in trans[0]['url'])
 
+    def testGetTransitionsForProvidesDescription(self):
+        trans = self.workflow.getTransitionsFor(self.doc)
+        self.assertEqual(len(trans), 2)
+        self.failUnless(trans[0].has_key('description'))
+
     def testGetTitleForStateOnType(self):
         state_id = self.workflow.getInfoFor(self.doc, 'review_state', '')
         state_title = self.workflow.getTitleForStateOnType(state_id, self.doc.portal_type)

@@ -188,9 +188,14 @@ def registerMigrations():
                                       null)
 
     MigrationTool.registerUpgradePath('2.5',
-                                      '2.5.1 (SVN/UNRELEASED)',
+                                      '2.5.1-rc1',
                                       v2_5.final_two51.final_two51)
 
-    MigrationTool.registerUpgradePath('2.5.1 (SVN/UNRELEASED)',
+    MigrationTool.registerUpgradePath('2.5.1-rc1',
+                                      '2.5.1',
+                                      v2_5.final_two51.final_two51)
+
+    MigrationTool.registerUpgradePath('2.5.2',
                                       '3.0 (SVN/UNRLEASED)',
                                       v3_0.alphas.three0_alpha1)
+                                      null)
