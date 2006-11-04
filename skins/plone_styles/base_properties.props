@@ -1,8 +1,6 @@
 # Please note that this approach will gradually be phased out, probably in
 # Plone 3.0 or 3.5. Using DTML in CSS is something we want to stop doing.
 
-DEPRECATED:string=This approach is deprecated and will be phased out in Plone 3.0 or 3.5
-
 title:string=Plone's color, font, logo and border defaults
 
 plone_skin:string=Plone Default
