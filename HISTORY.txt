@@ -9,7 +9,7 @@ Plone 3.0 - Unreleased
       [optilude]
 
     - First day of week in the calendar is Monday now in Plone by default.
-      This closes https://dev.plone.org/plone/ticket/5882.
+      This closes http://dev.plone.org/plone/ticket/5882.
       [hannosch]
 
     - Added option to choose different base profile while creating a new Plone
@@ -169,7 +169,7 @@ Plone 3.0 - Unreleased
 Plone 2.5.2 - Orb - (Unreleased)
 
     - Fixed flawed lookup of email_from_address in send_feedback scripts. This
-      closes https://dev.plone.org/plone/ticket/5839.
+      closes http://dev.plone.org/plone/ticket/5839.
       [hannosch]
 
     - Added option to choose different base profile while creating a new Plone
@@ -177,7 +177,7 @@ Plone 2.5.2 - Orb - (Unreleased)
       [hannosch]
 
     - Removed redundant getToolByName call in send_feedback_site. This closes
-      https://dev.plone.org/plone/ticket/5863.
+      http://dev.plone.org/plone/ticket/5863.
       [hannosch]
 
     - Fixed the calendar portlet to display correctly in Internet Explorer 7.
@@ -352,7 +352,7 @@ Plone 2.5.1 - released September 28, 2006
       [paregorius, alecm]
 
     - Applied patch from paregorius to make the LiveSearch div vanish in IE
-      as needed. Fixes https://dev.plone.org/plone/ticket/5705.
+      as needed. Fixes http://dev.plone.org/plone/ticket/5705.
       [paregorius, alecm]
 
     - Made PloneTool.browserDefault check for a result of None from getLayout
