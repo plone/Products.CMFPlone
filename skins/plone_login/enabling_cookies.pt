@@ -50,7 +50,7 @@
 
 <ol>
   <li i18n:translate="text_moz_cookies_step1">Click Edit on the menu at the top of your browser and select Preferences</li>
-  <li i18n:translate="text_moz_cookies_step2">Find "Privacy &amp; Security" in the menu on the left.  If there is a [+] to the left of "Privacy &amp; Security", click it.</li>
+  <li i18n:translate="text_moz_cookies_step2">Find "Privacy &amp; Security" in the menu on the left. If there is a [+] to the left of "Privacy &amp; Security", click it.</li>
   <li i18n:translate="text_moz_cookies_step3">Select "Cookies".</li>
   <li i18n:translate="text_moz_cookies_step4">Select "Enable cookies for the originating web site only" or "Enable all cookies" and click "OK"</li>
 </ol>
@@ -68,7 +68,7 @@
 
 <ol>
   <li i18n:translate="text_netscape6_cookies_step1">Click Edit on the menu at the top of your browser and select Preferences</li>
-  <li i18n:translate="text_netscape6_cookies_step2">Find "Privacy &amp; Security" in the menu on the left.  If there is a triangle pointing to the right next to Privacy &amp; Security, click it.</li>
+  <li i18n:translate="text_netscape6_cookies_step2">Find "Privacy &amp; Security" in the menu on the left. If there is a triangle pointing to the right next to Privacy &amp; Security, click it.</li>
   <li i18n:translate="text_netscape6_cookies_step3">Select "Cookies" under "Privacy &amp; Security"</li>
   <li i18n:translate="text_netscape6_cookies_step4">Select "Enable cookies for the originating web site only" or "Enable all cookies" and click "OK"</li>
 </ol>

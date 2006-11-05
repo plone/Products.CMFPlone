@@ -21,7 +21,7 @@
 
     <p i18n:translate="description_error_log_setup">
         This page lists the exceptions that have occurred in this site
-        recently.  You can configure how many exceptions should be kept
+        recently. You can configure how many exceptions should be kept
         and whether the exceptions should be copied to Zope's event log
         file(s). 
     </p>

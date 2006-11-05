@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.5.2 - Orb - (Unreleased)
 
+    - Lots of minor whitespace corrections, found by using the new i18ndude 3.0
+      which is based on zope.tal.talgettext for extraction of translation files.
+      [hannosch]
+
     - Fixed a minor spelling inconsistency in folder_localrole_form.
       [hannosch]
 
