@@ -393,7 +393,7 @@
                           tabindex=""
                           tal:attributes="tabindex tabindex/next;">
                       <option value="fullname" i18n:translate="label_fullname">
-                          User Full Name
+                          Full Name
                       </option>
                       <option value="login" i18n:translate="label_login_name">
                           Login Name

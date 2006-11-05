@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.5.2 - Orb - (Unreleased)
 
+    - Fixed a minor spelling inconsistency in folder_localrole_form.
+      [hannosch]
+
     - Fixed flawed lookup of email_from_address in send_feedback scripts. This
       closes https://dev.plone.org/plone/ticket/5839.
       [hannosch]
