@@ -250,6 +250,7 @@
     text-transform: &dtml-textTransform;;
     white-space: nowrap;
     z-index: 2;
+    overflow: hidden;
 }
 
 #portal-advanced-search {
