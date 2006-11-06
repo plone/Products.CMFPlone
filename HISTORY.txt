@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 3.0 - Unreleased
 
+    - Plone 3.5 will introduce the role "Power User" to make it possible to
+      hide advanced functionality from casual users. It you have any
+      deployments that use this role name, now would be a good time to rename
+      that role and stop using it in product code.
+
     - Update migrations for portlets, and kick the meta.zcml in 
       plone.app.portlets.
       [optilude]
