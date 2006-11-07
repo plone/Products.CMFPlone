@@ -13,6 +13,7 @@ from zope.component import getUtility
 
 from zope.app.publisher.interfaces.browser import IBrowserMenu
 
+from Products.CMFCore.Expression import Expression
 from Products.CMFPlone.interfaces import IBrowserDefault
 from Products.CMFPlone.interfaces import ISelectableConstrainTypes
 from Products.CMFPlone.interfaces import INonStructuralFolder
@@ -399,32 +400,32 @@ class TestContentMenu(PloneTestCase.PloneTestCase):
         items = self.menu.getMenuItems(self.folder, self.request)
         workflowMenuItem = [i for i in items if i['extra']['id'] == 'plone-contentmenu-workflow'][0]
         self.assertEqual(workflowMenuItem['action'], '')
-        
+
     def testWorkflowMenuWithNoTransitionsEnabledAsManager(self):
         # set workflow guard condition that fails, so there are no transitions.
         # then show that manager will get a drop-down with settings whilst
         # regular users won't
         
-        # This doesn't seem to clear out the menu - it's unclear whether this
-        # is a bug in the menu code or my inappropriate use of the API to
-        # set up the test
-        
         self.portal.portal_workflow.doActionFor(self.folder, 'hide')
-        wf = self.portal.portal_workflow['plone_workflow']
-        wf.transitions['show'].guard.expr = 'python:False'
-        wf.transitions['publish'].guard.expr = 'python:False'
+        wf = self.portal.portal_workflow['folder_workflow']
+        wf.transitions['show'].guard.expr = Expression('python: False')
+        wf.transitions['publish'].guard.expr = Expression('python: False')
         
         items = self.menu.getMenuItems(self.folder, self.request)
         workflowMenuItem = [i for i in items if i['extra']['id'] == 'plone-contentmenu-workflow'][0]
         
+        # A regular user doesn't see any actions
+        self.failUnless(workflowMenuItem['action'] == '')
+        self.failUnless(workflowMenuItem['submenu'] is None)
+
         self.fail('Unable to write a proper test so far')
-        
+
     def testWorkflowMenuWithNoWorkflowNotIncluded(self):
         self.portal.portal_workflow.setChainForPortalTypes(('Document',), ())
         self.folder.invokeFactory('Document', 'doc1')
         actions = self.menu.getMenuItems(self.folder.doc1, self.request)
         self.failIf('plone.contentmenu.workflow.menu' in [a['extra']['id'] for a in actions])
-    
+
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
