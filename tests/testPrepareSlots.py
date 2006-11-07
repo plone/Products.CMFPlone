@@ -1,5 +1,5 @@
 #
-# Tests for prepare_slots script
+# Tests for prepare_slots functionality
 #
 
 import os, sys
@@ -8,11 +8,9 @@ if __name__ == '__main__':
 
 from Products.CMFPlone.tests import PloneTestCase
 
+from Products.CMFPlone.browser.plone import Plone
 
 class TestPrepareSlots(PloneTestCase.PloneTestCase):
-
-    def afterSetUp(self):
-        pass
 
     def addPS(self, id, params='', body=''):
         self.folder.manage_addProduct['PythonScripts'].manage_addPythonScript(id)
@@ -22,10 +20,10 @@ class TestPrepareSlots(PloneTestCase.PloneTestCase):
         self.folder.manage_addProduct['PageTemplates'].manage_addPageTemplate(id, title, text)
 
     def testDefaultSlots(self):
-        slots = self.folder.prepare_slots()
+        view = Plone(self.folder, self.app.REQUEST)
+        slots = view._prepare_slots()
         self.failUnless(len(slots['left']) > 0)
         self.assertEqual(len(slots['right']), 0)
-        self.assertEqual(len(slots['document_actions']), 0)
 
     def testAcquiredFromPortal(self):
         pslots = self.portal.Members.prepare_slots()

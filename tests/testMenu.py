@@ -271,7 +271,8 @@ class TestWorkflowMenu(PloneTestCase.PloneTestCase):
         
     def testMenuIncludesActions(self):
         actions = self.menu.getMenuItems(self.folder.doc1, self.request)
-        self.failUnless('submit' in [a['extra']['id'] for a in actions])
+        self.failUnless('workflow-transition-submit' in
+                        [a['extra']['id'] for a in actions])
         
     def testNoTransitions(self):
         self.logout()
