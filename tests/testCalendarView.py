@@ -6,6 +6,7 @@ if __name__ == '__main__':
     execfile(os.path.join(sys.path[0], 'framework.py'))
 
 from Products.CMFPlone.tests import PloneTestCase
+import Products.PloneTestCase.setup as setup
 
 from Products.CMFPlone.tests.PloneTestCase import FunctionalTestCase
 from Products.CMFPlone.tests.PloneTestCase import default_user
@@ -144,32 +145,31 @@ class TestCalendarPortlet(PloneTestCase.FunctionalTestCase):
         self.failUnless('event2' in response.getBody())
         self.failUnless('event3' in response.getBody())
 
-    def testLocalizedCalendarWithEvents(self):
-        self.populateSite()
+    # BBB: Conditional check can be removed in Plone 3.0
+    if setup.USELAYER:
+        def testLocalizedCalendarWithEvents(self):
+            self.populateSite()
 
-        # set up some messages to test the calendar date/time formatting
-        messages = {
-            ('ja', 'date_format_long'): u'${Y}\u5e74${m}\u6708${d}\u65e5 ${H}\u6642${M}\u5206',
-            ('ja', 'date_format_short'): u'${Y}\u5e74${m}\u6708${d}\u65e5'}
-        dates = SimpleTranslationDomain('plone', messages)
-        provideUtility(ITranslationDomain, dates, 'plone')
+            # set up some messages to test the calendar date/time formatting
+            messages = {
+                ('ja', 'date_format_long'): u'${Y}\u5e74${m}\u6708${d}\u65e5 ${H}\u6642${M}\u5206',
+                ('ja', 'date_format_short'): u'${Y}\u5e74${m}\u6708${d}\u65e5'}
+            dates = SimpleTranslationDomain('plone', messages)
+            provideUtility(ITranslationDomain, dates, 'plone')
 
-        response = self.publish(self.portal_path, self.basic_auth,
-                                env={'HTTP_ACCEPT_LANGUAGE': 'ja'})
-        self.assertEquals(response.getStatus(), 200)
-        self.failUnless('id="thePloneCalendar"' in response.getBody())
-        self.failUnless('event1' in response.getBody())
-        self.failUnless('event2' in response.getBody())
-        self.failUnless('event3' in response.getBody())
-        # construct our date
-        event1_date = self.portal.event1.start_date.strftime('%Y[s%m[s%d[s')
-        event1_date = event1_date.replace('[s','%s')%(u'\u5e74', u'\u6708',
-                                                      u'\u65e5')
-        self.failUnless(event1_date.encode('utf-8')
-                        in response.getBody())
-
-        # Clean up after ourselves
-        unprovideUtility(ITranslationDomain, name='plone')
+            response = self.publish(self.portal_path, self.basic_auth,
+                                    env={'HTTP_ACCEPT_LANGUAGE': 'ja'})
+            self.assertEquals(response.getStatus(), 200)
+            self.failUnless('id="thePloneCalendar"' in response.getBody())
+            self.failUnless('event1' in response.getBody())
+            self.failUnless('event2' in response.getBody())
+            self.failUnless('event3' in response.getBody())
+            # construct our date
+            event1_date = self.portal.event1.start_date.strftime('%Y[s%m[s%d[s')
+            event1_date = event1_date.replace('[s','%s')%(u'\u5e74', u'\u6708',
+                                                          u'\u65e5')
+            self.failUnless(event1_date.encode('utf-8')
+                            in response.getBody())
 
 
 def test_suite():
