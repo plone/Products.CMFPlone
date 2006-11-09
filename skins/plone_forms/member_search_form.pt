@@ -38,6 +38,23 @@
                        tal:attributes="tabindex tabindex/next;"
                        />
             </div>
+
+           <div class="field">
+                <label for="fullname"
+                       i18n:translate="label_fullname">Full Name</label>
+
+                <div class="formHelp" i18n:translate="help_search_fullname">
+                Return users with full names containing this value.
+                </div>
+
+                <input type="text"
+                       id="fullname"
+                       name="fullname"
+                       size="25"
+                       tabindex=""
+                       tal:attributes="tabindex tabindex/next;"
+                       />
+            </div>
     
             <div class="field">
                 <label for="email"
@@ -80,23 +97,6 @@
                         <option value="#" tal:attributes="value ever" selected="selected" i18n:translate="time_ever"> Ever </option>
                     </select>
                 </tal:datetime>
-            </div>
-
-           <div class="field">
-                <label for="fullname"
-                       i18n:translate="label_fullname">Full Name</label>
-
-                <div class="formHelp" i18n:translate="help_search_fullname">
-                Return users with full names containing this value.
-                </div>
-
-                <input type="text"
-                       id="fullname"
-                       name="fullname"
-                       size="25"
-                       tabindex=""
-                       tal:attributes="tabindex tabindex/next;"
-                       />
             </div>
 
             <div class="field">
