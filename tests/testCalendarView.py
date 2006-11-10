@@ -6,11 +6,10 @@ if __name__ == '__main__':
     execfile(os.path.join(sys.path[0], 'framework.py'))
 
 from Products.CMFPlone.tests import PloneTestCase
-import Products.PloneTestCase.setup as setup
 
-from Products.CMFPlone.tests.PloneTestCase import FunctionalTestCase
 from Products.CMFPlone.tests.PloneTestCase import default_user
 from Products.CMFPlone.tests.PloneTestCase import default_password
+from Products.PloneTestCase import setup
 
 try:
     from zope.app.testing.ztapi import provideUtility
@@ -147,6 +146,7 @@ class TestCalendarPortlet(PloneTestCase.FunctionalTestCase):
 
     # BBB: Conditional check can be removed in Plone 3.0
     if setup.USELAYER:
+
         def testLocalizedCalendarWithEvents(self):
             self.populateSite()
 
