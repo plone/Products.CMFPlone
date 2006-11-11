@@ -111,7 +111,7 @@
              title="Member makes content private"
              new_state="private" trigger="USER"
              before_script="" after_script="">
-  <action url="%(content_url)s/content_hide_form"
+  <action url="%(content_url)s/content_status_modify?workflow_action=hide"
           category="workflow">Make private</action>
   <guard>
    <guard-role>Owner</guard-role>
@@ -121,7 +121,7 @@
              title="Reviewer publishes content"
              new_state="published" trigger="USER"
              before_script="" after_script="">
-  <action url="%(content_url)s/content_publish_form"
+  <action url="%(content_url)s/content_status_modify?workflow_action=publish"
           category="workflow">Publish</action>
   <guard>
    <guard-permission>Review portal content</guard-permission>
@@ -131,7 +131,7 @@
              title="Reviewer rejects submission"
              new_state="visible" trigger="USER"
              before_script="" after_script="">
-  <action url="%(content_url)s/content_reject_form"
+  <action url="%(content_url)s/content_status_modify?workflow_action=reject"
           category="workflow">Reject</action>
   <guard>
    <guard-permission>Review portal content</guard-permission>
@@ -141,7 +141,7 @@
              title="Member retracts submission"
              new_state="visible" trigger="USER"
              before_script="" after_script="">
-  <action url="%(content_url)s/content_retract_form"
+  <action url="%(content_url)s/content_status_modify?workflow_action=retract"
           category="workflow">Retract</action>
   <guard>
    <guard-permission>Request review</guard-permission>
@@ -151,7 +151,7 @@
              title="Member makes content visible"
              new_state="visible" trigger="USER"
              before_script="" after_script="">
-  <action url="%(content_url)s/content_show_form"
+  <action url="%(content_url)s/content_status_modify?workflow_action=show"
           category="workflow">Make visible</action>
   <guard>
    <guard-role>Owner</guard-role>
@@ -161,7 +161,7 @@
              title="Member requests publishing"
              new_state="pending" trigger="USER"
              before_script="" after_script="">
-  <action url="%(content_url)s/content_submit_form"
+  <action url="%(content_url)s/content_status_modify?workflow_action=submit"
           category="workflow">Submit</action>
   <guard>
    <guard-permission>Request review</guard-permission>

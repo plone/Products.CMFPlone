@@ -617,6 +617,21 @@ class WorkflowSubMenuItem(BrowserSubMenuItem):
 class WorkflowMenu(BrowserMenu):
     implements(IWorkflowMenu)
     
+    # BBB: These actions (url's) existed in old workflow definitions
+    # but were never used. The scripts they reference don't exist in
+    # a standard installation. We allow the menu to fail gracefully
+    # if these are encountered.
+    
+    BOGUS_WORKFLOW_ACTIONS = (
+        'content_hide_form',
+        'content_publish_form',
+        'content_reject_form',
+        'content_retract_form',
+        'content_show_form',
+        'content_submit_form',
+    )
+    
+    
     def getMenuItems(self, context, request):
         """Return menu item entries in a TAL-friendly form."""
         results = []
@@ -632,10 +647,17 @@ class WorkflowMenu(BrowserMenu):
 
         for a in workflowActions:
             action = IActionInfo(a)
+            actionUrl = action['url']
+            
+            for bogus in self.BOGUS_WORKFLOW_ACTIONS:
+                if actionUrl.endswith(bogus):
+                    if getattr(context, bogus, None) is None:
+                        actionUrl = '%s/content_status_modify?workflow_action=%s' % (context.absolute_url(), action['id'],)
+            
             if action['allowed']:
                 results.append({ 'title'        : action['title'],
                                  'description'  : '',
-                                 'action'       : action['url'],
+                                 'action'       : actionUrl,
                                  'selected'     : False,
                                  'icon'         : None,
                                  'extra'        : {'id' : 'workflow-transition-%s' % action['id'], 'separator' : None, 'class' : ''},
