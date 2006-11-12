@@ -156,6 +156,14 @@ def registerMigrations():
                                       null)
 
     MigrationTool.registerUpgradePath('2.1.3',
+                                      '2.1.4-rc1',
+                                      null)
+
+    MigrationTool.registerUpgradePath('2.1.4-rc1',
+                                      '2.1.4',
+                                      null)
+
+    MigrationTool.registerUpgradePath('2.1.4',
                                       '2.5-alpha1',
                                       v2_5.alphas.two5_alpha1)
 

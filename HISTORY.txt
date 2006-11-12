@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 3.0 - Unreleased
 
+    - Injected Plone 2.1.4 into the migration chain.
+      [stefan]
+
     - Removed bogus scripts from workflow actions, and introduced some BBB
       code to ensure that if people are using those scripts and they don't
       exist, the old fallback (content_status_modify) is still used.
