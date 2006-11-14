@@ -14,26 +14,24 @@
 // +----------------------------------------------------------------------+
 // | Author: Bitflux GmbH <devel@bitflux.ch>                              |
 // +----------------------------------------------------------------------+
-
 */
+
 var liveSearchReq = false;
 var t = null;
 var liveSearchLast = "";
 var queryTarget = "livesearch_reply?q=";
 
 var searchForm = null;
-var searchInput = null; 
+var searchInput = null;
 
 var isIE = false;
 
-
 var _cache = new Object();
 
-var widthOffset=1;
+var widthOffset = 1;
 
-function calculateWidth(){
+function calculateWidth() {
 }
-
 
 function getElementDimensions(elemID) {
     var base = document.getElementById(elemID);
@@ -41,7 +39,7 @@ function getElementDimensions(elemID) {
     var offsetLeft = 0;
     var offsetTop = 0;
     var width = 0;
-    
+
     while (offsetTrail) {
         offsetLeft += offsetTrail.offsetLeft;
         offsetTop += offsetTrail.offsetTop;
@@ -52,27 +50,24 @@ function getElementDimensions(elemID) {
         offsetLeft += document.body.leftMargin;
         offsetTop += document.body.topMargin;
     }
-
-    if(!isIE){
-    width =  searchInput.offsetWidth-widthOffset*2;
-    }
-    else {
-    width = searchInput.offsetWidth;
-    }
-
-    return { left:offsetLeft, 
-         top:offsetTop, 
-         width: width, 
+    if (!isIE)
+        width = searchInput.offsetWidth-widthOffset*2;
+    else
+        width = searchInput.offsetWidth;
+    return { left: offsetLeft,
+             top: offsetTop,
+             width: width,
              height: base.offsetHeight,
-         bottom: offsetTop + base.offsetHeight, 
-         right : offsetLeft + width};
+             bottom: offsetTop + base.offsetHeight,
+             right: offsetLeft + width};
 }
 
 function liveSearchInit() {
     searchInput = document.getElementById('searchGadget');
-    if (searchInput == null || searchInput == undefined) return
-//  Only keypress catches repeats in moz/FF but keydown is needed for
-//  khtml based browsers.
+    if (searchInput == null || searchInput == undefined)
+        return
+    // Only keypress catches repeats in moz/FF but keydown is needed for
+    // khtml based browsers.
     if (navigator.userAgent.indexOf("KHTML") > 0) {
         searchInput.addEventListener("keydown",liveSearchKeyPress,false);
         searchInput.addEventListener("focus",liveSearchDoSearch,false);
@@ -89,26 +84,24 @@ function liveSearchInit() {
         isIE = true;
     }
 
-//  Why doesn't this work in konq, setting it inline does.
-    searchInput.setAttribute("autocomplete","off");
-
-    var pos = getElementDimensions('searchGadget'); 
+    // Why doesn't this work in konq, setting it inline does.
+    searchInput.setAttribute("autocomplete", "off");
+    var pos = getElementDimensions('searchGadget');
     result = document.getElementById('LSResult');
     pos.left = pos.left - result.offsetParent.offsetLeft + pos.width;
-    result.style.display='none';
+    result.style.display = 'none';
 }
 
 
 function liveSearchHideDelayed() {
-    window.setTimeout("liveSearchHide()",400);
+    window.setTimeout("liveSearchHide()", 400);
 }
-    
-function liveSearchHide() { 
+
+function liveSearchHide() {
     document.getElementById("LSResult").style.display = "none";
     var highlight = document.getElementById("LSHighlight");
-    if (highlight) {
+    if (highlight)
         highlight.removeAttribute("id");
-    }
 }
 
 function getFirstHighlight() {
@@ -124,147 +117,140 @@ function getLastHighlight() {
 function getHits() {
     var res = document.getElementById("LSShadow");
     var set = res.getElementsByTagName('li');
-    return set
+    return set;
 }
 
 function findChild(object, specifier) {
     var cur = object.firstChild;
     try {
-    while (cur != undefined) {
-        cur = cur.nextSibling;
-        if (specifier(cur) == true) return cur;
-    }
+        while (cur != undefined) {
+            cur = cur.nextSibling;
+            if (specifier(cur) == true)
+                return cur;
+        }
     } catch(e) {};
     return null;
-    
 }
 
 function findNext(object, specifier) {
- var cur = object;
- try {
- while (cur != undefined) {
-
-    cur = cur.nextSibling;
-    if (cur.nodeType==3) cur=cur.nextSibling;
-    
-    if (cur != undefined) {
-        if (specifier(cur) == true) return cur;
-    } else { break }
- }
- } catch(e) {};
- return null;
+    var cur = object;
+    try {
+        while (cur != undefined) {
+            cur = cur.nextSibling;
+            if (cur.nodeType==3)
+                cur=cur.nextSibling;
+            if (cur != undefined) {
+                if (specifier(cur) == true)
+                    return cur;
+            } else { break; }
+        }
+    } catch(e) {};
+    return null;
 }
 
 function findPrev(object, specifier) {
- var cur = object;
- try {
+    var cur = object;
+    try {
         cur = cur.previousSibling;
-        if (cur.nodeType==3) cur=cur.previousSibling;
-        if (cur!=undefined) {
-            if (specifier(cur) == true) 
+        if (cur.nodeType == 3)
+            cur = cur.previousSibling;
+        if (cur != undefined) {
+            if (specifier(cur) == true)
                 return cur;
-        } 
- } catch(e) {};
- return null;
+        }
+    } catch(e) {};
+    return null;
 }
 
-
 function liveSearchKeyPress(event) {
+    var highlight = document.getElementById("LSHighlight");
     if (event.keyCode == 40 )
     //KEY DOWN
     {
-        highlight = document.getElementById("LSHighlight");
         if (!highlight) {
             highlight = getFirstHighlight();
         } else {
             highlight.removeAttribute("id");
             highlight = findNext(highlight, function (o) {return o.className =="LSRow";});
-
         }
-        if (highlight) {
+        if (highlight)
             highlight.setAttribute("id","LSHighlight");
-        } 
-        if (!isIE) { event.preventDefault(); }
-    } 
+        if (!isIE)
+            event.preventDefault();
+    }
     //KEY UP
     else if (event.keyCode == 38 ) {
-        highlight = document.getElementById("LSHighlight");
         if (!highlight) {
             highlight = getLastHighlight();
-        } 
+        }
         else {
             highlight.removeAttribute("id");
             highlight = findPrev(highlight, function (o) {return o.className=='LSRow';});
         }
-        if (highlight) {
-                highlight.setAttribute("id","LSHighlight");
-        }
-        if (!isIE) { event.preventDefault(); }
-    } 
+        if (highlight)
+            highlight.setAttribute("id","LSHighlight");
+        if (!isIE)
+            event.preventDefault();
+    }
     //ESC
     else if (event.keyCode == 27) {
-        highlight = document.getElementById("LSHighlight");
-        if (highlight) {
+        if (highlight)
             highlight.removeAttribute("id");
-        }
         document.getElementById("LSResult").style.display = "none";
-    } 
+    }
 }
+
 function liveSearchStart(event) {
     if (t) {
         window.clearTimeout(t);
     }
-    code = event.keyCode;
+    var code = event.keyCode;
     if (code!=40 && code!=38 && code!=27 && code!=37 && code!=39) {
-        t = window.setTimeout("liveSearchDoSearch()",200);
-    } 
+        t = window.setTimeout("liveSearchDoSearch()", 200);
+    }
 }
 
 function liveSearchDoSearch() {
-
     if (typeof liveSearchRoot == "undefined") {
         liveSearchRoot = "";
     }
     if (typeof liveSearchRootSubDir == "undefined") {
         liveSearchRootSubDir = "";
     }
-
     if (liveSearchLast != searchInput.value) {
-    if (liveSearchReq && liveSearchReq.readyState < 4) {
-        liveSearchReq.abort();
-    }
-    if ( searchInput.value == "") {
-        liveSearchHide();
-        return false;
-    }
-
-    // Do nothing as long as we have less then two characters - 
-    // the search results makes no sense, and it's harder on the server.
-    if ( searchInput.value.length < 2) {
-        liveSearchHide();
-        return false;
-    }
-
-    // Do we have cached results
-    var result = _cache[searchInput.value];
-    if (result) {
-        showResult(result); 
-        return;
-    }
-    liveSearchReq = new XMLHttpRequest();
-    liveSearchReq.onreadystatechange= liveSearchProcessReqChange;
-    // need to use encodeURIComponent instead of encodeURI, to escape +
-    liveSearchReq.open("GET", liveSearchRoot + queryTarget + encodeURIComponent(searchInput.value) );
-    liveSearchLast = searchInput.value;
-    liveSearchReq.send(null);
+        if (liveSearchReq && liveSearchReq.readyState < 4) {
+            liveSearchReq.abort();
+        }
+        if ( searchInput.value == "") {
+            liveSearchHide();
+            return false;
+        }
+        // Do nothing as long as we have less then two characters -
+        // the search results makes no sense, and it's harder on the server.
+        if ( searchInput.value.length < 2) {
+            liveSearchHide();
+            return false;
+        }
+        // Do we have cached results
+        var result = _cache[searchInput.value];
+        if (result) {
+            showResult(result);
+            return;
+        }
+        liveSearchReq = new XMLHttpRequest();
+        liveSearchReq.onreadystatechange = liveSearchProcessReqChange;
+        // Need to use encodeURIComponent instead of encodeURI, to escape +
+        liveSearchReq.open("GET", liveSearchRoot + queryTarget + encodeURIComponent(searchInput.value));
+        liveSearchLast = searchInput.value;
+        liveSearchReq.send(null);
     }
 }
 
 function showResult(result) {
-  var  res = document.getElementById("LSResult");
-  res.style.display = "block";
-  var  sh = document.getElementById("LSShadow");
-  sh.innerHTML = result;
+    var res = document.getElementById("LSResult");
+    res.style.display = "block";
+    var sh = document.getElementById("LSShadow");
+    sh.innerHTML = result;
 }
 
 function liveSearchProcessReqChange() {
@@ -283,19 +269,16 @@ function liveSearchProcessReqChange() {
 
 function liveSearchSubmit() {
     var highlight = document.getElementById("LSHighlight");
-    
-    if (highlight){
-        target = highlight.getElementsByTagName('a')[0];
+    if (highlight) {
+        var target = highlight.getElementsByTagName('a')[0];
         window.location = liveSearchRoot + liveSearchRootSubDir + target;
         return false;
-    } 
-    else {
+    } else {
         return true;
     }
 }
 
-
-
-if (window.addEventListener) window.addEventListener("load",liveSearchInit,false);
-else if (window.attachEvent) window.attachEvent("onload", liveSearchInit);
-
+if (window.addEventListener)
+    window.addEventListener("load", liveSearchInit, false);
+else if (window.attachEvent)
+    window.attachEvent("onload", liveSearchInit);
