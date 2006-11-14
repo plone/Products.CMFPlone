@@ -79,6 +79,7 @@ class TestRenderer(PortletsTestCase):
         r = self.renderer()
         self.assertEquals(True, r.available())
         self.portal.acl_users._delObject('credentials_cookie_auth')
+        r = self.renderer()
         self.assertEquals(False, r.available())
 
     def testShow(self):

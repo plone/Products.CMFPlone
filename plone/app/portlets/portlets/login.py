@@ -23,9 +23,17 @@ class Assignment(base.Assignment):
 
 class Renderer(base.Renderer):
 
+    def __init__(self, context, request, view, manager, data):
+        base.Renderer.__init__(self, context, request, view, manager, data)
+        
+        self.membership = getToolByName(self.context, 'portal_membership')
+        self.actions = getToolByName(self.context, 'portal_actions')
+        self.registration = getToolByName(self.context, 'portal_registration', None)
+        
+        self.portal_url = getToolByName(self.context, 'portal_url')()
+
     def show(self):
-        membership = getToolByName(self.context, 'portal_membership')
-        if not membership.isAnonymousUser():
+        if not self.membership.isAnonymousUser():
             return False
         page = self.request.get('URL', '').split('/')[-1]
         return page not in ('login_form', 'join_form')
@@ -34,12 +42,10 @@ class Renderer(base.Renderer):
         return self.auth() is not None
 
     def login_form(self):
-        url = getToolByName(self.context, 'portal_url')
-        return '%s/login_form' % url()
+        return '%s/login_form' % self.portal_url
 
     def mail_password_form(self):
-        url = getToolByName(self.context, 'portal_url')
-        return '%s/mail_password_form' % url()
+        return '%s/mail_password_form' % portal_url
 
     def login_name(self):
         auth = self.auth()
@@ -67,8 +73,7 @@ class Renderer(base.Renderer):
         return persist
 
     def join_action(self):
-        actions = getToolByName(self.context, 'portal_actions')
-        userActions = actions.listFilteredActionsFor(self.context)['user']
+        userActions = self.actions.listFilteredActionsFor(self.context)['user']
         joinAction = [a['url'] for a in userActions if a['id'] == 'join']
         if len(joinAction) > 0:
             return joinAction.pop()
@@ -76,19 +81,19 @@ class Renderer(base.Renderer):
             return None
 
     def can_register(self):
-        registration = getToolByName(self.context, 'portal_registration', None)
-        membership = getToolByName(self.context, 'portal_membership')
-        if registration is None:
+        if self.registration is None:
             return False
-        return membership.checkPermission('Add portal member', self.context)
+        return self.membership.checkPermission('Add portal member', self.context)
 
     def can_request_password(self):
-        membership = getToolByName(self.context, 'portal_membership')
-        return membership.checkPermission('Mail forgotten password', self.context)
+        return self.membership.checkPermission('Mail forgotten password', self.context)
 
-    def auth(self):
-        acl_users = getToolByName(self.context, 'acl_users')
-        return getattr(acl_users, 'credentials_cookie_auth', None)
+    def auth(self, _marker=[]):
+        auth = getattr(self, '_auth', _marker)
+        if auth is _marker:
+            acl_users = getToolByName(self.context, 'acl_users')
+            auth = self._auth = getattr(acl_users, 'credentials_cookie_auth', None)
+        return auth
 
     def update(self):
         pass
