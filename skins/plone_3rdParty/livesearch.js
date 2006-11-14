@@ -269,10 +269,15 @@ function showResult(result) {
 
 function liveSearchProcessReqChange() {
     if (liveSearchReq.readyState == 4) {
-        if (liveSearchReq.status > 299 || liveSearchReq.status < 200  ||
-            liveSearchReq.responseText.length < 10) return; 
-    showResult(liveSearchReq.responseText);
-    _cache[liveSearchLast] = liveSearchReq.responseText;
+        try {
+            if (liveSearchReq.status > 299 || liveSearchReq.status < 200  ||
+                liveSearchReq.responseText.length < 10)
+                return;
+        } catch(e) {
+            return;
+        }
+        showResult(liveSearchReq.responseText);
+        _cache[liveSearchLast] = liveSearchReq.responseText;
     }
 }
 
