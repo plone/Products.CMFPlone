@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.5.2 - Orb - (Unreleased)
 
+    - Fixed the Live search error: 0x80040111 (NS_ERROR_NOT_AVAILABLE). This
+      closes http://dev.plone.org/plone/ticket/4519.
+      [deo]
+
     - Injected Plone 2.1.4 into the migration chain.
       [stefan]
 
@@ -15,7 +19,7 @@ Plone 2.5.2 - Orb - (Unreleased)
       [hannosch]
 
     - Fixed flawed lookup of email_from_address in send_feedback scripts. This
-      closes https://dev.plone.org/plone/ticket/5839.
+      closes http://dev.plone.org/plone/ticket/5839.
       [hannosch]
 
     - Added option to choose different base profile while creating a new Plone
@@ -23,7 +27,7 @@ Plone 2.5.2 - Orb - (Unreleased)
       [hannosch]
 
     - Removed redundant getToolByName call in send_feedback_site. This closes
-      https://dev.plone.org/plone/ticket/5863.
+      http://dev.plone.org/plone/ticket/5863.
       [hannosch]
 
     - Fixed the calendar portlet to display correctly in Internet Explorer 7.
@@ -53,8 +57,8 @@ Plone 2.5.2 - Orb - (Unreleased)
 
 Plone 2.5.1 - released September 28, 2006
 
-    - The content tab selection logic now checks the request in addition 
-      to template_id when trying to determine which tab should be 
+    - The content tab selection logic now checks the request in addition
+      to template_id when trying to determine which tab should be
       selected.
       [rocky]
 
@@ -81,7 +85,7 @@ Plone 2.5.1-rc1 - released September 11, 2006
 
     - Made login_form and default_error_message not invoke the portlets, since
       they are irrelevant and expensive in those forms. Also made the error
-      template a valid HTML document. 
+      template a valid HTML document.
       [limi]
 
     - Updated the CSS validation link to use the CSS 2.1 and CSS 3 compatible
@@ -98,9 +102,9 @@ Plone 2.5.1-rc1 - released September 11, 2006
     - Make the object_delete and folder_delete methods require non-GET
       requests. This is a bit of a band-aid and it is likely we will want
       to do the same for other object actions which could be easily triggered
-      by a crawler (a paste for instance, which may have been preceeded by a 
+      by a crawler (a paste for instance, which may have been preceeded by a
       cut or copy). Related to http://dev.plone.org/plone/ticket/4886
-      [alecm, limi]
+      [alecm] [limi]
 
     - Make the syntool methods for enabling and disabling syndication check
       for the Manager properties permission on the object.
@@ -115,7 +119,7 @@ Plone 2.5.1-rc1 - released September 11, 2006
       images using PIL. This will throw an IOError on any invalid image and
       also save some bandwidth and space in the zodb.
       [alecm]
-      
+
     - Added method and management template to membership tool to cleanup
       members with bad images.
       [alecm]
@@ -148,7 +152,7 @@ Plone 2.5.1-rc1 - released September 11, 2006
       [alecm]
 
     - Made the code in utranslate more error resilient and added tests for it.
-      [rafrombrc, hannosch]
+      [rafrombrc] [hannosch]
 
     - Enhanced accessibility of adjacent links in main_template. This fixes
       http://dev.plone.org/plone/ticket/5210.
@@ -192,11 +196,11 @@ Plone 2.5.1-rc1 - released September 11, 2006
 
     - Applied patch from paregorius to add ids to all visualClear divs. Fixes
       http://dev.plone.org/plone/ticket/4145.
-      [paregorius, alecm]
+      [paregorius] [alecm]
 
     - Applied patch from paregorius to make the LiveSearch div vanish in IE
-      as needed. Fixes https://dev.plone.org/plone/ticket/5705.
-      [paregorius, alecm]
+      as needed. Fixes http://dev.plone.org/plone/ticket/5705.
+      [paregorius] [alecm]
 
     - Made PloneTool.browserDefault check for a result of None from getLayout
       and raise a sensible error.  Generally this means that the FTI is missing
@@ -235,7 +239,7 @@ Plone 2.5.1-rc1 - released September 11, 2006
       [ender]
 
     - Added test that ensures the language is getting set in header.
-      This is related to http://dev.plone.org/plone/ticket/5444 and 
+      This is related to http://dev.plone.org/plone/ticket/5444 and
       http://dev.plone.org/plone/ticket/4770.
       [hannosch]
 
