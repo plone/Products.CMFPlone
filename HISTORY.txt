@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 3.0 - Unreleased
 
+    - Moved global_contentmenu to plone_deprecated
+      [optilude]
+
     - Injected Plone 2.1.4 into the migration chain.
       [stefan]
 
