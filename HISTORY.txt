@@ -4,6 +4,18 @@ Changelog for Plone
 
 Plone 2.1.5 - Fischerspooner - (Unreleased)
 
+    - fixed the view of livesearch in fullscreen mode (contentActions were 
+      overlapping the livesearch output)
+      [spliter]
+
+    - enabled IEFixes.css for all IE's, not for <IE7 only
+      [spliter]
+   
+    - re-enabled livesearch back (removed overflow:hidden from 
+      #portal-searchbox) and fixed horizontal scroll issue for IE's due to 
+      floated searchbox.
+      [spliter]
+    
     - Removed www/main.dtml as it turns out we can use the default just fine.
       [stefan]
 
