@@ -22,8 +22,6 @@ plone.app.portlets to-do
     o Make standard set of portlets
         - Smart Folder renderer
         - Document renderer
-        - News
-        - Events
         - Recent
         - Related
         - Calendar
