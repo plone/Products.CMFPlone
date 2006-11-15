@@ -8,12 +8,14 @@ from plone.app.portlets.portlets import classic
 from plone.app.portlets.portlets import login
 from plone.app.portlets.portlets import news
 from plone.app.portlets.portlets import events
+from plone.app.portlets.portlets import navigation
 
 from Acquisition import aq_base
 
-portletsMapping = { 'portlet_login'  : login.Assignment(),
-                    'portlet_news'   : news.Assignment(count=5),
-                    'portlet_events' : events.Assignment(count=5),
+portletsMapping = { 'portlet_login'      : login.Assignment(),
+                    'portlet_news'       : news.Assignment(count=5),
+                    'portlet_events'     : events.Assignment(count=5),
+                    'portlet_navigation' : navigation.Assignment(),
                   }
                   
 def convert_legacy_portlets(context):

@@ -45,7 +45,7 @@ class Renderer(base.Renderer):
         return '%s/login_form' % self.portal_url
 
     def mail_password_form(self):
-        return '%s/mail_password_form' % portal_url
+        return '%s/mail_password_form' % self.portal_url
 
     def login_name(self):
         auth = self.auth()

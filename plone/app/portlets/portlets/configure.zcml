@@ -36,6 +36,18 @@
         renderer=".login.Renderer"
         addview=".login.AddForm"
         />
+        
+    <plone:portlet
+        name="portlets.Navigation"
+        interface=".navigation.INavigationPortlet"
+        assignment=".navigation.Assignment"
+        renderer=".navigation.Renderer"
+        addview=".navigation.AddForm"
+        editview=".navigation.EditForm"
+        />
+
+    <adapter factory=".navigation.QueryBuilder" />
+    <adapter factory=".navigation.NavtreeStrategy" />
 
     
 </configure>

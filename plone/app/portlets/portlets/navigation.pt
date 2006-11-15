@@ -1,0 +1,50 @@
+<tal:block condition="view/display">
+<dl class="portlet" id="portlet-navigation-tree"  
+    tal:define="root view/navigation_root">
+    
+    <dt class="portletHeader">
+        <span class="portletTopLeft"></span>
+        <a href="#" 
+           class="tile"
+           tal:condition="not:view/title"
+           tal:attributes="href string:${root/absolute_url}/sitemap" 
+           i18n:translate="box_navigation">Navigation</a>
+       <a href="#" 
+           class="tile"
+           tal:condition="view/title"
+           tal:attributes="href string:${root/absolute_url}/sitemap"
+           tal:content="view/title">Navigation</a>
+        <span class="portletTopRight"></span>
+    </dt>
+
+    <dd class="portletItem lastItem">
+        <ul class="portletNavigationTree navTreeLevel0">
+
+            <li class="navTreeItem"
+                tal:condition="view/include_top">
+                <tal:block define="typeClass string:visualIcon contenttype-${view/root_type_name};
+                                   selectedClass view/root_item_class;
+                                   rootIsPortal view/root_is_portal;">
+                   <div class="visualIcon contenttype-plone-site" tal:attributes="class typeClass">
+                       <a class="visualIconPadding"
+                          tal:attributes="href root/absolute_url;
+                                          title root/Description;
+                                          class string:$selectedClass visualIconPadding;">
+                       <span tal:omit-tag=""
+                             tal:condition="rootIsPortal"
+                             i18n:translate="tabs_home">Home</span>
+                       <span tal:condition="not:rootIsPortal"
+                             tal:replace="root/Title">Home</span>
+                       </a>
+                   </div>
+                </tal:block>
+            </li>
+            <li tal:replace="structure view/createNavTree">
+                SUBTREE
+            </li>
+        </ul>
+        <span class="portletBottomLeft"></span>
+        <span class="portletBottomRight"></span>
+    </dd>
+</dl>
+</tal:block>

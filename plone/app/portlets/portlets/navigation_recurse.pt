@@ -1,0 +1,40 @@
+<tal:master define="level options/level|python:0;
+                    children options/children | nothing;
+                    bottomLevel options/bottomLevel | nothing;">
+
+<metal:main define-macro="nav_main">
+<tal:navitem repeat="node children">
+<li class="navTreeItem visualNoMarker"
+    tal:define="children    node/children;
+                item_url    node/getURL;
+                remote_url  node/getRemoteUrl;
+                link_remote node/link_remote;
+                is_current   node/currentItem;"
+    tal:condition="python:bottomLevel &lt;= 0 or level &lt; bottomLevel-1">
+
+    <tal:level define="item_type_class     string:visualIcon contenttype-${node/normalized_portal_type};
+                       item_wf_state_class string:state-${node/normalized_review_state}">
+
+    <div tal:attributes="class item_type_class"
+         tal:define="item_class string:$item_wf_state_class visualIconPadding;
+                     item_class python:is_current and item_class + ' navTreeCurrentItem' or item_class">
+        
+        <a tal:attributes="href python:link_remote and remote_url or item_url;
+                           title node/Description;
+                           class string:$item_class"
+            tal:content="node/Title">
+            Selected Item Title 
+        </a>
+        
+    </div>
+
+    <ul tal:attributes="class python:'navTree navTreeLevel'+str(level)"
+        tal:condition="nocall:children">  
+        <span tal:replace="structure python:view.recurse(children=children, 
+                level=level+1, show_children=True, isNaviTree=True, bottomLevel=bottomLevel)" />
+    </ul>
+    </tal:level>
+</li>
+</tal:navitem>
+</metal:main>
+</tal:master>
