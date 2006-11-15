@@ -179,6 +179,20 @@ select {
     background-color: White;
     vertical-align: top;
 }
+optgroup {
+  font-style: normal;
+  font-weight: bold;
+  color: #999;
+  padding-left: 0.25em;
+}
+
+option {
+  color: black;
+}
+
+optgroup > option {
+  padding: 0 0.25em 0 1em;
+}
 abbr, acronym, .explain {
     border-bottom: &dtml-borderWidth; dotted &dtml-fontColor;;
     color: &dtml-fontColor;;

@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.5.2 - Orb - (Unreleased)
 
+    - Added optgroup styling, since the default in Firefox looks like crap.
+      [limi]
+
     - fixed the view of livesearch in fullscreen mode (contentActions were 
       overlapping the livesearch output)
       [spliter]
