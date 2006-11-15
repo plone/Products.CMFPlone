@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.5.2 - Orb - (Unreleased)
 
+    - Added button tag styling that conforms to the standard input button 
+      look.
+      [limi]
+
     - Added optgroup styling, since the default in Firefox looks like crap.
       [limi]
 
