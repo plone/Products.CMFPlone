@@ -250,7 +250,6 @@
     text-transform: &dtml-textTransform;;
     white-space: nowrap;
     z-index: 2;
-    overflow: hidden;
 }
 
 #portal-advanced-search {
@@ -1075,6 +1074,7 @@ body.fullscreen #portal-searchbox {
     margin: 0.5em 2em 0 0.5em;
     padding: 0;
     position: relative;
+    z-index: 3;
 }
 
 /* Kupu image alignment classes */

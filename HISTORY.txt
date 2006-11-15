@@ -4,6 +4,18 @@ Changelog for Plone
 
 Plone 2.5.2 - Orb - (Unreleased)
 
+    - fixed the view of livesearch in fullscreen mode (contentActions were 
+      overlapping the livesearch output)
+      [spliter]
+
+    - enabled IEFixes.css for all IE's, not for <IE7 only
+      [spliter]
+   
+    - re-enabled livesearch back (removed overflow:hidden from 
+      #portal-searchbox) and fixed horizontal scroll issue for IE's due to 
+      floated searchbox.
+      [spliter]
+
     - Fixed the Live search error: 0x80040111 (NS_ERROR_NOT_AVAILABLE). This
       closes http://dev.plone.org/plone/ticket/4519.
       [deo]
