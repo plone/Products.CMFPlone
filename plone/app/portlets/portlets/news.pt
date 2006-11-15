@@ -9,7 +9,8 @@
         <span class="portletTopRight"></span>
     </dt>
 
-    <tal:newsitems tal:repeat="obj view/published_news_items">
+    <tal:newsitems  tal:define="toLocalizedTime nocall:context/@@plone/toLocalizedTime"
+                    tal:repeat="obj view/published_news_items">
     <dd tal:define="oddrow repeat/obj/odd"
          tal:attributes="class python:oddrow and 'portletItem even' or 'portletItem odd'">
 
@@ -22,7 +23,7 @@
             Plone 2.1 announced!
             </span>
             <span class="portletItemDetails"
-                  tal:content="python:context.toLocalizedTime(obj.Date)">May 5</span>
+                  tal:content="python:toLocalizedTime(obj.Date)">May 5</span>
         </a>
     </dd>
     </tal:newsitems>

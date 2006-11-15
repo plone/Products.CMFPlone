@@ -11,7 +11,8 @@
         <span class="portletTopRight"></span>
     </dt>
 
-    <tal:events tal:repeat="obj view/published_events">
+    <tal:events tal:define="toLocalizedTime nocall:context/@@plone/toLocalizedTime"
+                tal:repeat="obj view/published_events">
     <dd class="portletItem"
         tal:define="oddrow repeat/obj/odd"
         tal:attributes="class python:oddrow and 'portletItem even' or 'portletItem odd'">
@@ -27,7 +28,7 @@
                 <tal:condition condition="obj/location">
                     <tal:location content="obj/location">Location</tal:location>, <br />
                 </tal:condition>
-                <tal:date content="python:context.toLocalizedTime(obj.start)">
+                <tal:date content="python:toLocalizedTime(obj.start)">
                 May 5
                 </tal:date>
             </span>
