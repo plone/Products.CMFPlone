@@ -24,6 +24,13 @@
     <p i18n:translate="description_navigation_setup">
         Lets you control how navigation is constructed in your site.
     </p>
+    
+    <p i18n:translate="description_navigation_setup_navtree">
+        Note that to control how the navigation tree is displayed, you
+        should go to "Manage portlets" at the root of the site (or wherever)
+        a navigation tree portlet has been added, and change its settings
+        directly.
+    </p>
 
     <form action=""
           name=""
@@ -58,152 +65,6 @@
                 </div>
             </div>
             
-            <div class="field"
-                tal:define="value python:navtree_props.getProperty('name', None);
-                            value request/name|value;
-                            error errors/name|nothing"
-                tal:attributes="class python:error and 'field error' or 'field';">
-
-                <label for="name"
-                       i18n:translate="label_navigation_portlet_title">
-                    Navigation tree portlet title
-                </label>
-
-                <div class="formHelp"
-                     i18n:translate="help_navigation_portlet_title">
-                    Change the English title of the navigation tree portlet.
-                    Note that this won't affect the title in other languages.
-                </div>
-
-                <input name="name"
-                       id="name"
-                       type="text"
-                       size="30"
-                       tal:attributes="value value;"/>
-                <div tal:content="error">Validation error output</div>
-              </div>
-              
-              <div class="field"
-                tal:define="value python:navtree_props.getProperty('root', None);
-                            value request/root|value;
-                            error errors/root|nothing"
-                tal:attributes="class python:error and 'field error' or 'field';">
-
-                <label for="root" i18n:translate="label_navigation_root">
-                    Navigation tree root
-                </label>
-
-                <div class="formHelp"
-                     i18n:translate="help_navigation_root">
-                    A path that specifies the base folder where the navigation
-                    tree, sitemap, breadcrumbs and tabs will be rooted. Use '/'
-                    for the portal root, and '/folder1' to start at 'folder1'.
-                </div>
-
-                <input name="root"
-                       id="root"
-                       type="text"
-                       size="30"
-                       tal:attributes="value value;"/>
-                <div tal:content="error">Validation error output</div>
-              </div>
-              
-              <div class="field"
-                 tal:define="value python:navtree_props.getProperty('currentFolderOnlyInNavtree', False);
-                             value request/currentFolderOnlyInNavtree | value;
-                             error errors/currentFolderOnlyInNavtree | nothing;"
-                 tal:attributes="class python:test(error, 'field error', 'field')">
-                 
-                <input type="checkbox"
-                       class="noborder"
-                       id="cb_current_folder_only"
-                       name="currentFolderOnlyInNavtree"
-                       value="0"
-                       tal:attributes="checked python:test(value, 'checked', None)" />
-
-                <label for="cb_current_folder_only"
-                       i18n:translate="label_current_folder_only">
-                    Only show the contents of the current folder.
-                </label>
-
-                <div class="formHelp" i18n:translate="help_current_folder_only">
-                    If selected, the navigation tree will only show the current 
-                    folder and its children at all times.
-                </div>
-            </div>
-              
-              <div class="field"
-                tal:define="
-                  value python:navtree_props.getProperty('topLevel');
-                  value request/topLevel|value;
-                  error errors/topLevel|nothing"
-                tal:attributes="class python:error and 'field error' or 'field';">
-
-                <label for="topLevel"
-                       i18n:translate="label_navigation_start_level">
-                    Navigation tree start level
-                </label>
-
-                <span class="fieldRequired"
-                      title="Required"
-                      i18n:attributes="title title_required;"
-                      i18n:translate="label_required">
-                    (Required)
-                </span>
-
-                <div class="formHelp"
-                     i18n:translate="help_navigation_start_level">
-                    An integer value that specifies the number of folder levels 
-                    below the site root that must be exceeded before the
-                    navigation tree will display. 0 means that the navigation
-                    tree should be displayed everywhere including pages in the
-                    root of the site. 1 means the tree only shows up inside 
-                    folders located in the root and downwards, never showing at 
-                    the top level.
-                </div>
-
-                <input name="topLevel"
-                       id="topLevel"
-                       type="text"
-                       size="4"
-                       tal:attributes="value value;"/>
-                <div tal:content="error">Validation error output</div>
-              </div>
-
-              <div class="field"
-                   tal:define="value python:navtree_props.getProperty('bottomLevel');
-                               value request/bottomLevel|value;
-                               error errors/bottomLevel|nothing"
-                   tal:attributes="class python:error and 'field error' or 'field';">
-
-                <label for="bottomLevel"
-                       i18n:translate="label_navigation_tree_depth">
-                    Navigation tree depth
-                </label>
-
-                <span class="fieldRequired"
-                      title="Required"
-                      i18n:attributes="title title_required;"
-                      i18n:translate="label_required">
-                    (Required)
-                </span>
-
-                <div class="formHelp"
-                     i18n:translate="help_navigation_tree_depth">
-                    How many folders should be included before the navigation
-                    tree stops. 0 means no limit. 1 only includes the root 
-                    folder.
-                </div>
-
-                <input name="bottomLevel"
-                       id="bottomLevel"
-                       type="text"
-                       size="30"
-                       tal:attributes="value value;"/>
-                <div tal:content="error">Validation error output</div>
-              </div>
-
-
             <div class="field" id="navigationtypes-field"
                  tal:define="
                        portal_types     portal/portal_types;
