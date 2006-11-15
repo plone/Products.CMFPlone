@@ -15,7 +15,7 @@ from Products.CMFPlone.browser.interfaces import INavigationQueryBuilder
 
 from types import StringType
 
-class NavtreeStrategyBase:
+class NavtreeStrategyBase(object):
     """Basic navigation tree strategy that does nothing.
     """
 
@@ -322,18 +322,22 @@ def buildFolderTree(context, obj=None, query={}, strategy=NavtreeStrategyBase())
     return itemPaths.get(rootPath, {'children' : []})
 
 
-def getNavigationRoot(context):
+def getNavigationRoot(context, relativeRoot=None):
     """Get the path to the root of the navigation tree. If context or one of
     its parents until (but not including) the portal root implements
     INavigationRoot, return this.
 
-    Otherwise, if an explicit root is set in navtree_properties, use this. If
-    the property is not set or is set to '/', use the portal root.
+    Otherwise, if an explicit root is set in navtree_properties or given as
+    relativeRoot, use this. If the property is not set or is set to '/', use 
+    the portal root.
     """
 
     portal_url = getToolByName(context, 'portal_url')
-    portal_properties = getToolByName(context, 'portal_properties')
-    navtree_properties = getattr(portal_properties, 'navtree_properties')
+    
+    if not relativeRoot:
+        portal_properties = getToolByName(context, 'portal_properties')
+        navtree_properties = getattr(portal_properties, 'navtree_properties')
+        relativeRoot = navtree_properties.getProperty('root', None)
 
     portal = portal_url.getPortalObject()
     obj = context
@@ -342,7 +346,7 @@ def getNavigationRoot(context):
     if INavigationRoot.providedBy(obj) and aq_base(obj) is not aq_base(portal):
         return '/'.join(obj.getPhysicalPath())
 
-    rootPath = navtree_properties.getProperty('root', None)
+    rootPath = relativeRoot
     portalPath = portal_url.getPortalPath()
     contextPath = '/'.join(context.getPhysicalPath())
 
@@ -381,7 +385,7 @@ def getNavigationRoot(context):
 # to expand the default navtree behaviour, and pass instances of your subclasses
 # to buildFolderTree().
 
-class NavtreeQueryBuilder:
+class NavtreeQueryBuilder(object):
     """Build a navtree query based on the settings in navtree_properties
     """
     implements(INavigationQueryBuilder)
@@ -475,6 +479,9 @@ class SitemapNavtreeStrategy(NavtreeStrategyBase):
 
         self.showAllParents = navtree_properties.getProperty('showAllParents', True)
         self.rootPath = getNavigationRoot(context)
+        
+        membership = getToolByName(context, 'portal_membership')
+        self.memberId = membership.getAuthenticatedMember().getId()
 
 
     def nodeFilter(self, node):
@@ -522,6 +529,10 @@ class SitemapNavtreeStrategy(NavtreeStrategyBase):
         newNode['getRemoteUrl'] = getattr(item, 'getRemoteUrl', None)
         newNode['show_children'] = showChildren
         newNode['no_display'] = False # We sort this out with the nodeFilter
+        newNode['link_remote'] = newNode['getRemoteUrl'] and newNode['Creator'] != self.memberId
+
+        newNode['normalized_portal_type'] = utils.normalizeString(portalType, context=context)
+        newNode['normalized_review_state'] = utils.normalizeString(newNode['review_state'], context=context)
 
         return newNode
 

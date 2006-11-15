@@ -281,7 +281,7 @@ class PloneGenerator:
         # XXX: Replace these with "real" portlets as they become available
         
         if u'navigation' not in left:
-            left[u'navigation'] = cpa(template=u'portlet_navigation', macro=u'portlet')
+            left[u'navigation'] = portlets.navigation.Assignment()
         if u'login' not in left:
             left[u'login'] = portlets.login.Assignment()
         if u'recent' not in left:
