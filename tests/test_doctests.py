@@ -10,8 +10,6 @@ if __name__ == '__main__':
 from unittest import TestSuite
 from Testing.ZopeTestCase import ZopeDocTestSuite
 from Products.CMFPlone.tests import PloneTestCase
-from Products.PloneTestCase.layer import ZCMLLayer
-from Products.PloneTestCase import setup
 
 
 def test_suite():
@@ -27,9 +25,14 @@ def test_suite():
         ZopeDocTestSuite('Products.CMFPlone.utils'),
         )
 
+    # BBB: Fix for http://zope.org/Collectors/Zope/2178
+    from Products.PloneTestCase import layer
+    from Products.PloneTestCase import setup
+
     if setup.USELAYER:
         for s in suites:
-            s.layer = ZCMLLayer
+            if not hasattr(s, 'layer'):
+                s.layer = layer.PloneSite
 
     return TestSuite(suites)
 
