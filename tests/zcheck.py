@@ -22,6 +22,14 @@ ZopeTestCase.installProduct('ZChecker')
 
 from Products.CMFPlone.tests import PloneTestCase
 
+from Products.PloneTestCase import setup
+from Products.PloneTestCase import layer
+
+if setup.USELAYER:
+    # Set up the Plone site "layer"
+    layer.ZCML.setUp()
+    layer.PloneSite.setUp()
+
 ignoredObjectIds = ['rssBody', 'RSS', 'rss_template', 'search_rss',
                     'test_ecmascripts',
                     # There is no DTD for the pdf topic stuff
