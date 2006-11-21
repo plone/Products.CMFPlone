@@ -39,15 +39,6 @@ def test_suite():
                test_class=PloneTestCase.FunctionalTestCase)
               for filename in filenames]
 
-    # BBB: Fix for http://zope.org/Collectors/Zope/2178
-    from Products.PloneTestCase import layer
-    from Products.PloneTestCase import setup
-
-    if setup.USELAYER:
-        for s in suites:
-            if not hasattr(s, 'layer'):
-                s.layer = layer.PloneSite
-
     return unittest.TestSuite(suites)
 
 if __name__ == '__main__':
