@@ -22,4 +22,13 @@ def test_suite():
         DocTestSuite('Products.CMFPlone.utils'),
         )
 
+    # BBB: Fix for http://zope.org/Collectors/Zope/2178
+    from Products.PloneTestCase import layer
+    from Products.PloneTestCase import setup
+
+    if setup.USELAYER:
+        for s in suites:
+            if not hasattr(s, 'layer'):
+                s.layer = layer.PloneSite
+
     return TestSuite(suites)

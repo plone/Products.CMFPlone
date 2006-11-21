@@ -17,8 +17,6 @@ import unittest
 from Globals import package_home
 from Testing.ZopeTestCase import FunctionalDocFileSuite as Suite
 from Products.CMFPlone.tests import PloneTestCase, GLOBALS
-from Products.PloneTestCase.layer import ZCMLLayer
-import Products.PloneTestCase.setup as setup
 
 UNITTESTS = ['messages.txt']
 
@@ -41,9 +39,14 @@ def test_suite():
                test_class=PloneTestCase.FunctionalTestCase)
               for filename in filenames]
 
+    # BBB: Fix for http://zope.org/Collectors/Zope/2178
+    from Products.PloneTestCase import layer
+    from Products.PloneTestCase import setup
+
     if setup.USELAYER:
         for s in suites:
-            s.layer=ZCMLLayer
+            if not hasattr(s, 'layer'):
+                s.layer = layer.PloneSite
 
     return unittest.TestSuite(suites)
 

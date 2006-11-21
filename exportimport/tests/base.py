@@ -1,15 +1,16 @@
 
 from Products.GenericSetup.testing import BodyAdapterTestCase
 from Products.GenericSetup.testing import NodeAdapterTestCase
-from Products.PloneTestCase.layer import ZCMLLayer
-import Products.PloneTestCase.setup as setup
+from Products.PloneTestCase import layer
+from Products.PloneTestCase import setup
+
 
 # Disable PlacelessSetup as PTC does not like it
 
 class BodyAdapterTestCase(BodyAdapterTestCase):
 
     if setup.USELAYER:
-        layer = ZCMLLayer
+        layer = layer.ZCML
 
     def setUp(self):
         pass
@@ -21,7 +22,7 @@ class BodyAdapterTestCase(BodyAdapterTestCase):
 class NodeAdapterTestCase(NodeAdapterTestCase):
 
     if setup.USELAYER:
-        layer = ZCMLLayer
+        layer = layer.ZCML
 
     def setUp(self):
         pass
