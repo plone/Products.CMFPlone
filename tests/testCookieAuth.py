@@ -34,7 +34,7 @@ class TestCookieAuth(PloneTestCase.FunctionalTestCase):
 
         location = response.getHeader('Location')
         self.failUnless(location.startswith(self.portal_url))
-        self.failUnless(urlparse(location)[2].endswith('/login_form'))
+        self.failUnless(urlparse(location)[2].endswith('/require_login'))
 
     def testInsufficientPrivileges(self):
         # Should send us to login_form
@@ -43,7 +43,7 @@ class TestCookieAuth(PloneTestCase.FunctionalTestCase):
 
         location = response.getHeader('Location')
         self.failUnless(location.startswith(self.portal_url))
-        self.failUnless(urlparse(location)[2].endswith('/login_form'))
+        self.failUnless(urlparse(location)[2].endswith('/require_login'))
 
     def testSetSessionCookie(self):
         # The __ac cookie should be set for the session only

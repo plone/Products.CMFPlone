@@ -171,6 +171,7 @@ class PloneGenerator:
         out = []
         migs.v2_1.alphas.addDefaultTypesToPortalFactory(p, out)
         migs.v2_1.rcs.enableSyndicationOnTopics(p, out)
+        migs.v2_5.two51_two52.setLoginFormInCookieAuth(p, out)
 
     def setATCTToolVersion(self, p):
         """
