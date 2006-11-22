@@ -131,7 +131,7 @@
                         <label for="value"
                                 tal:attributes="for id"
                                 i18n:translate=""
-                                tal:content="python:targetobject.propertyLabel(id)">Property Value</label>
+                                tal:content="python:targetobject.propertyLabel(id).capitalize()">Property Value</label>
 
                         <div tal:define="propertyitem python:targetobject.getProperty(id);
                                          disabled python:(not group or group.canWriteProperty(id)) and default or 'disabled';"
