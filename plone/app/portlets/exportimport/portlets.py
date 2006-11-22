@@ -6,6 +6,7 @@ from zope.interface import providedBy
 from zope.component import adapts
 from zope.component import getSiteManager
 from zope.component import getUtilitiesFor
+from zope.component import queryMultiAdapter
 from zope.component.interfaces import IComponentRegistry
 
 from Products.GenericSetup.interfaces import IBody
@@ -153,13 +154,18 @@ def importPortlets(context):
         logger = context.getLogger('portlets')
         logger.info("Can not register components - no site manager found.")
         return
-        
-    # XXX GenericSetup.utils.importObjects expects the object to have a getId
-    # function. We provide a dummy one for now, but this should be fixed in GS
-    # itself
-    sm.getId = dummyGetId
-    importObjects(sm, '', context)
-    del(sm.getId)
+
+    # This code was taken from GenericSetup.utils.import.importObjects
+    # and slightly simplified. The main difference is the lookup of a named
+    # adapter to make it possible to have more than one handler for the same
+    # object, which in case of a component registry is crucial.
+    importer = queryMultiAdapter((sm, context), IBody, name=u'plone.portlets')
+    if importer:
+        filename = '%s%s' % (importer.name, importer.suffix)
+        body = context.readDataFile(filename)
+        if body is not None:
+            importer.filename = filename # for error reporting
+            importer.body = body
 
 def exportPortlets(context):
     """Export portlet managers and portlets
@@ -169,10 +175,15 @@ def exportPortlets(context):
         logger = context.getLogger('portlets')
         logger.info("Nothing to export.")
         return
-        
-    # XXX GenericSetup.utils.exportObjects expects the object to have a getId
-    # function. We provide a dummy one for now, but this should be fixed in GS
-    # itself
-    sm.getId = dummyGetId
-    exportObjects(sm, '', context)
-    del(sm.getId)
+
+    # This code was taken from GenericSetup.utils.import.exportObjects
+    # and slightly simplified. The main difference is the lookup of a named
+    # adapter to make it possible to have more than one handler for the same
+    # object, which in case of a component registry is crucial.
+    exporter = queryMultiAdapter((obj, context), IBody, name=u'plone.portlets')
+    if exporter:
+        filename = '%s%s' % (exporter.name, exporter.suffix)
+        body = exporter.body
+        if body is not None:
+            context.writeDataFile(filename, body, exporter.mime_type)
+

@@ -1,6 +1,7 @@
 <configure
    xmlns="http://namespaces.zope.org/zope">
 
-  <adapter factory=".portlets.PortletsXMLAdapter" />
+  <adapter factory=".portlets.PortletsXMLAdapter"
+           name="plone.portlets" />
 
 </configure>
