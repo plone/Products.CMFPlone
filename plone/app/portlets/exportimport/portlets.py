@@ -27,6 +27,9 @@ from plone.portlets.manager import PortletManager
 from plone.portlets.storage import PortletCategoryMapping
 from plone.portlets.registration import PortletType
 
+def dummyGetId():
+    return ''
+
 class PortletsXMLAdapter(XMLAdapterBase):
     """In- and exporter for a local portlet configuration
     """
@@ -38,12 +41,15 @@ class PortletsXMLAdapter(XMLAdapterBase):
     
     def _exportNode(self):
         # hack around an issue where _getObjectNode expects to have the context
-        # a meta_type, which isn't the case for a component registry
+        # a meta_type and a getId method, which isn't the case for a component
+        # registry
         if IComponentRegistry.providedBy(self.context):
             self.context.meta_type = 'ComponentRegistry'
+            self.context.getId = dummyGetId
         node = self._getObjectNode('portlets')
         if IComponentRegistry.providedBy(self.context):
             del(self.context.meta_type)
+            del(self.context.getId)
         node.appendChild(self._extractPortlets())
         self._logger.info('Portlets exported')
         return node
@@ -143,9 +149,6 @@ class PortletsXMLAdapter(XMLAdapterBase):
 
         return fragment
 
-def dummyGetId():
-    return ''
-
 def importPortlets(context):
     """Import portlet managers and portlets
     """
@@ -180,7 +183,7 @@ def exportPortlets(context):
     # and slightly simplified. The main difference is the lookup of a named
     # adapter to make it possible to have more than one handler for the same
     # object, which in case of a component registry is crucial.
-    exporter = queryMultiAdapter((obj, context), IBody, name=u'plone.portlets')
+    exporter = queryMultiAdapter((sm, context), IBody, name=u'plone.portlets')
     if exporter:
         filename = '%s%s' % (exporter.name, exporter.suffix)
         body = exporter.body
