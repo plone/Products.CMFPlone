@@ -40,11 +40,6 @@ class PloneGenerator:
         qi.installProduct('CMFPlacefulWorkflow', locked=0)
         qi.installProduct('kupu', locked=0)
 
-        # The following two products are "installed" based on a GenericSetup
-        # extension profile by CMFQuickInstallerTool
-        qi.installProduct('CMFEditions', locked=0, forceProfile=True)
-        qi.installProduct('CMFDiffTool', locked=0, forceProfile=True)
-
         # BBB The following products are "installed" by virtue of the
         #     GenericSetup profile.  They really shouldn't be managed
         #     by QuickInstaller at all any more, but we need to kill
@@ -55,6 +50,11 @@ class PloneGenerator:
         qi.notifyInstalled('CMFActionIcons', locked=1)
         qi.notifyInstalled('CMFCalendar', locked=1)
         qi.notifyInstalled('CMFFormController', locked=1)
+
+        # The following two products are "installed" based on a GenericSetup
+        # extension profile by CMFQuickInstallerTool
+        qi.installProduct('CMFDiffTool', locked=0, forceProfile=True)
+        qi.installProduct('CMFEditions', locked=0, forceProfile=True)
 
     def customizePortalOptions(self, p):
         stool = getToolByName(p, 'portal_skins')

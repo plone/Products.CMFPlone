@@ -62,7 +62,7 @@
            class="Products.CMFUid.UniqueIdAnnotationTool.UniqueIdAnnotationTool"/>
  <required tool_id="portal_uidgenerator"
            class="Products.CMFUid.UniqueIdGeneratorTool.UniqueIdGeneratorTool"/>
- <required tool_id="portal_uidhandler"
+<required tool_id="portal_uidhandler"
            class="Products.CMFUid.UniqueIdHandlerTool.UniqueIdHandlerTool"/>
  <required tool_id="portal_undo"
            class="Products.CMFPlone.UndoTool.UndoTool"/>
