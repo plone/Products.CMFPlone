@@ -1,0 +1,135 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      xml:lang="en" lang="en"
+      metal:use-macro="context/prefs_main_template/macros/master"
+      i18n:domain="plone">
+
+<metal:block metal:fill-slot="top_slot"
+             tal:define="dummy python:request.set('disable_border', 1)" />
+
+<body>
+
+<div metal:fill-slot="prefs_configlet_main">
+
+    <div metal:define-macro="form">
+
+        <form action="."
+              metal:define-macro="master"
+              tal:attributes="action request/URL" method="post"
+              class="edit-form" enctype="multipart/form-data"
+              id="zc.page.browser_form">
+
+            <div id="viewspace" metal:define-slot="viewspace">
+
+                <h1 i18n:translate=""
+                    tal:condition="view/label"
+                    tal:content="view/label"
+                    metal:define-slot="heading">
+                    Do something
+                </h1>
+
+                <a href=""
+                   class="link-parent"
+                   tal:attributes="href string: $portal_url/plone_control_panel"
+                   i18n:translate="label_up_to_plone_setup">
+                    Up to Site Setup
+                </a>
+
+                <p i18n:translate=""
+                   tal:condition="view/description"
+                   tal:content="view/description">
+                    Description
+                </p>
+
+                <metal:block define-macro="header">
+
+                    <div class="form-status"
+                         tal:define="status view/status"
+                         tal:condition="status">
+
+                        <div class="summary portalMessage"
+                             i18n:translate=""
+                             tal:content="view/status">
+                            Form status summary
+                        </div>
+
+                    </div>
+
+                </metal:block>
+
+                <div metal:define-slot="extra_info" tal:replace="nothing">
+                </div>
+
+                <fieldset>
+                    <legend tal:define="form_name view/form_name|nothing"
+                            tal:condition="form_name"
+                            tal:content="form_name">Form name</legend>
+                    <tal:block tal:repeat="widget view/widgets">
+
+                        <div class="field"
+                             tal:define="description widget/hint;
+                                         error widget/error"
+                             tal:attributes="class python:'field'+(error and ' error' or '')">
+
+                            <label i18n:translate=""
+                                   tal:attributes="for widget/name"
+                                   tal:content="widget/label">
+                                label
+                            </label>
+
+                            <span class="fieldRequired"
+                                  title="Required"
+                                  i18n:attributes="title title_required;"
+                                  i18n:translate="label_required"
+                                  tal:condition="widget/required">
+                                (Required)
+                            </span>
+
+                            <div class="formHelp"
+                                 i18n:translate=""
+                                 tal:content="description"
+                                 tal:condition="description">
+                                field description
+                            </div>
+
+                            <div tal:condition="error"
+                                 tal:content="structure error">
+                                The Error
+                            </div>
+
+                            <div class="widget" tal:content="structure widget">
+                                <input type="text" />
+                            </div>
+                        </div>
+
+                    </tal:block>
+
+                    <metal:block define-slot="above_buttons" />
+
+                    <div class="visualClear"><!-- --></div>
+
+                    <div id="actionsView" class="formControls">
+                        <span class="actionButtons"
+                              tal:condition="view/availableActions"
+                              metal:define-slot="bottom_buttons">
+                            <input tal:repeat="action view/actions"
+                                   tal:replace="structure action/render" />
+                        </span>
+                    </div>
+                </fieldset>
+            </div>
+        </form>
+
+        <script type="text/javascript"
+            tal:define="extra_script view/extra_script | nothing"
+            tal:condition="extra_script"
+            tal:content="structure extra_script">
+        </script>
+
+    </div>
+
+</div>
+</body>
+</html>

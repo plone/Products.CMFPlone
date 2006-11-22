@@ -53,8 +53,9 @@ from Products.CMFPlone.migrations.v3_0.alphas import migrateOldActions
 from Products.CMFPlone.migrations.v3_0.alphas import addNewCSSFiles
 from Products.CMFPlone.migrations.v3_0.alphas import updateActionsI18NDomain
 from Products.CMFPlone.migrations.v3_0.alphas import updateFTII18NDomain
-
 from Products.CMFPlone.migrations.v3_0.alphas import convertLegacyPortlets
+from Products.CMFPlone.migrations.v3_0.alphas import addIconForCalendarSettingsConfiglet
+from Products.CMFPlone.migrations.v3_0.alphas import addCalendarConfiglet
 
 from zope.app.component.hooks import clearSite
 from zope.app.component.interfaces import ISite
@@ -979,6 +980,8 @@ class TestMigrations_v3_0(MigrationTest):
 
     def afterSetUp(self):
         self.actions = self.portal.portal_actions
+        self.cp = self.portal.portal_controlpanel
+        self.icons = self.portal.portal_actionicons
         self.skins = self.portal.portal_skins
         self.types = self.portal.portal_types
         self.workflow = self.portal.portal_workflow
@@ -1228,7 +1231,43 @@ class TestMigrations_v3_0(MigrationTest):
         rp = right.values()
         self.assertEquals(1, len(rp))
         self.failUnless(isinstance(rp[0], portlets.login.Assignment))
-        
+
+    def testAddIconForCalendarSettingsConfiglet(self):
+        # Should add the calendar action icon
+        self.removeActionIconFromTool('CalendarSettings')
+        addIconForCalendarSettingsConfiglet(self.portal, [])
+        self.failUnless('CalendarSettings' in [x.getActionId() for x in self.icons.listActionIcons()])
+
+    def testAddIconForCalendarSettingsConfigletTwice(self):
+        # Should not fail if migrated again
+        self.removeActionIconFromTool('CalendarSettings')
+        addIconForCalendarSettingsConfiglet(self.portal, [])
+        addIconForCalendarSettingsConfiglet(self.portal, [])
+        self.failUnless('CalendarSettings' in [x.getActionId() for x in self.icons.listActionIcons()])
+
+    def testAddIconForCalendarSettingsConfigletNoTool(self):
+        # Should not fail if portal_actionicons is missing
+        self.portal._delObject('portal_actionicons')
+        addIconForCalendarSettingsConfiglet(self.portal, [])
+
+    def testAddCalendarConfiglet(self):
+        self.removeActionFromTool('CalendarSettings', action_provider='portal_controlpanel')
+        addCalendarConfiglet(self.portal, [])
+        self.failUnless('CalendarSettings' in [x.getId() for x in self.cp.listActions()])
+    
+    def testAddCalendarConfigletTwice(self):
+        # Should not fail if done twice
+        self.removeActionFromTool('CalendarSettings', action_provider='portal_controlpanel')
+        addCalendarConfiglet(self.portal, [])
+        addCalendarConfiglet(self.portal, [])
+        self.failUnless('CalendarSettings' in [x.getId() for x in self.cp.listActions()])
+    
+    def testAddCalendarConfigletNoTool(self):
+        # Should not fail if tool is missing
+        self.portal._delObject('portal_controlpanel')
+        addCalendarConfiglet(self.portal, [])
+
+
 class TestMigrations_v3_0_Actions(MigrationTest):
 
     def afterSetUp(self):

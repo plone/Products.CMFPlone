@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0 - Unreleased
 
+    - Added calendar control panel based on formlib. This is related to
+      http://dev.plone.org/plone/ticket/5271.
+      [hannosch]
+
     - Moved global_contentmenu to plone_deprecated
       [optilude]
 

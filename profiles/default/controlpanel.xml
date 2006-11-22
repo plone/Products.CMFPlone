@@ -53,7 +53,7 @@
  </configlet>
  <configlet title="Search Settings" action_id="SearchSettings" appId="Plone"
     category="Plone" condition_expr=""
-    url_expr="string:${portal_url}/prefs_search_form" visible="True">
+    url_expr="string:${portal_url}/@@search-controlpanel.html" visible="True">
   <permission>Manage portal</permission>
  </configlet>
  <configlet title="Navigation Settings" action_id="NavigationSettings"
@@ -65,6 +65,11 @@
     appId="ATContentTypes" category="Plone" condition_expr=""
     url_expr="string:${portal_url}/portal_atct/atct_manageTopicIndex"
     visible="True">
+  <permission>Manage portal</permission>
+ </configlet>
+ <configlet title="Calendar Settings" action_id="CalendarSettings"
+    appId="Plone" category="Plone" condition_expr=""
+    url_expr="string:${portal_url}/@@calendar-controlpanel.html" visible="True">
   <permission>Manage portal</permission>
  </configlet>
 </object>

@@ -25,6 +25,7 @@
     text-transform: &dtml-textTransform;;
 }
 .context,
+.formControls .actionButtons .button,
 .documentEditable * .context {
     background: transparent url(&dtml-portal_url;/linkTransparent.gif) 9px 1px no-repeat;
     cursor: pointer;

@@ -10,6 +10,7 @@ from Products.ATContentTypes.migration.v1_2 import upgradeATCTTool
 from Products.CMFCore.ActionInformation import Action
 from Products.CMFCore.ActionInformation import ActionCategory
 from Products.CMFCore.utils import getToolByName
+from Products.CMFCore.permissions import ManagePortal
 from Products.CMFPlone.migrations.migration_util import installOrReinstallProduct
 from Products.Five.component import enableSite
 from Products.Five.component.interfaces import IObjectManagerSite
@@ -52,7 +53,13 @@ def three0_alpha1(portal):
 
     # Migrate legacy portlets
     convertLegacyPortlets(portal, out)
-    
+
+    # Add icon for calendar settings configlet
+    addIconForCalendarSettingsConfiglet(portal, out)
+
+    # Install the calendar settings control panel
+    addCalendarConfiglet(portal, out)
+
     return out
 
 
@@ -167,4 +174,37 @@ def installProduct(product, portal, out):
     """Quickinstalls a product if it is not installed yet."""
     if product in portal.Control_Panel.Products.objectIds():
         installOrReinstallProduct(portal, product, out)
+
+def addIconForCalendarSettingsConfiglet(portal, out):
+    """Adds an icon for the calendar settings configlet. """
+    iconsTool = getToolByName(portal, 'portal_actionicons', None)
+    if iconsTool is not None:
+        for icon in iconsTool.listActionIcons():
+            if icon.getActionId() == 'CalendarSettings':
+                break # We already have the icon
+        else:
+            iconsTool.addActionIcon(
+                category='controlpanel',
+                action_id='CalendarSettings',
+                icon_expr='event_icon.gif',
+                title='Calendar Settings',
+                )
+        out.append("Added 'calendar' icon to actionicons tool.")
+
+def addCalendarConfiglet(portal, out):
+    """Add the configlet for the calendar settings"""
+    controlPanel = getToolByName(portal, 'portal_controlpanel', None)
+    if controlPanel is not None:
+        haveCalendar = False
+        for configlet in controlPanel.listActions():
+            if configlet.getId() == 'CalendarSettings':
+                haveCalendar = True
+        if not haveCalendar:
+            controlPanel.registerConfiglet(id         = 'CalendarSettings',
+                                           appId      = 'Plone',
+                                           name       = 'Calendar Settings',
+                                           action     = 'string:${portal_url}/@@calendar-controlpanel.html',
+                                           category   = 'Plone',
+                                           permission = ManagePortal,)
+            out.append("Added calendar settings to the control panel")
 
