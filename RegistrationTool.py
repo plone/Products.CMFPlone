@@ -9,21 +9,8 @@ from Globals import InitializeClass
 from AccessControl import ClassSecurityInfo, Unauthorized
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.SecureMailHost.SecureMailHost import EMAIL_RE
-
-try:
-    from Products.CMFDefault.utils import checkEmailAddress
-    from Products.CMFDefault.exceptions import EmailAddressInvalid
-except ImportError:
-    # BBB for CMF 2.1a1
-    from Products.CMFDefault.RegistrationTool import _checkEmail 
-
-    class EmailAddressInvalid(Exception):
-        pass
-
-    def checkEmailAddress(adress):
-        (result, message)=_checkEmail(adress)
-        if not result:
-            raise EmailAddressInvalid
+from Products.CMFDefault.utils import checkEmailAddress
+from Products.CMFDefault.exceptions import EmailAddressInvalid
 
 # - remove '1', 'l', and 'I' to avoid confusion
 # - remove '0', 'O', and 'Q' to avoid confusion
