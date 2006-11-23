@@ -13,7 +13,7 @@ from Products.CMFPlone.UnicodeSplitter import Splitter
 from Products.CMFPlone.UnicodeSplitter import CaseNormalizer
 
 import locale
-LATIN1 = ('de_DE.ISO8859-15', 'de_DE.ISO8859-15@euro')
+LATIN1 = ('de_DE.ISO8859-15', 'de_DE.ISO8859-15@euro', 'nl_NL.iso8859')
 
 def _setlocale(*names):
     saved = locale.setlocale(locale.LC_ALL)
