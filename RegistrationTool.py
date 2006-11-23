@@ -3,7 +3,6 @@ import md5
 
 from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault.RegistrationTool import RegistrationTool as BaseTool
-from Products.CMFDefault.exceptions import EmailAddressInvalid
 from Products.CMFPlone import ToolNames
 
 from Globals import InitializeClass
@@ -13,9 +12,14 @@ from Products.SecureMailHost.SecureMailHost import EMAIL_RE
 
 try:
     from Products.CMFDefault.utils import checkEmailAddress
+    from Products.CMFDefault.exceptions import EmailAddressInvalid
 except ImportError:
     # BBB for CMF 2.1a1
     from Products.CMFDefault.RegistrationTool import _checkEmail 
+
+    class EmailAddressInvalid(Exception):
+        pass
+
     def checkEmailAddress(adress):
         (result, message)=_checkEmail(adress)
         if not result:
