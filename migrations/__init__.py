@@ -207,4 +207,7 @@ def registerMigrations():
                                       '3.0-alpha1',
                                       v3_0.alphas.three0_alpha1)
 
+    MigrationTool.registerUpgradePath('3.0-alpha1',
+                                      '3.0-alpha2 (SVN/UNRELEASED)',
+                                      v3_0.alphas.alpha1_alpha2)
 

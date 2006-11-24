@@ -63,6 +63,14 @@ def three0_alpha1(portal):
     return out
 
 
+def alpha1_alpha2(portal):
+    """ 3.0-alpha1 -> 3.0-alpha2
+    """
+    out = []
+
+    return out
+
+
 def enableZope3Site(portal, out):
     if not ISite.providedBy(portal):
         enableSite(portal, iface=IObjectManagerSite)

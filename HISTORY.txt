@@ -2,7 +2,9 @@ Changelog for Plone
 
     (name of developer listed in brackets)
 
-Plone 3.0 - released November 24, 2006
+Plone 3.0 - unreleased
+
+Plone 3.0-alpha1 - released November 24, 2006
 
     - Update installation instructions for the new Plone release.
       [wichert]
