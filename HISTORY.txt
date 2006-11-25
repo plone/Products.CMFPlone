@@ -23,18 +23,6 @@ Plone 2.5.2 - Orb - (Unreleased)
     - Added optgroup styling, since the default in Firefox looks like crap.
       [limi]
 
-    - fixed the view of livesearch in fullscreen mode (contentActions were 
-      overlapping the livesearch output)
-      [spliter]
-
-    - enabled IEFixes.css for all IE's, not for <IE7 only
-      [spliter]
-   
-    - re-enabled livesearch back (removed overflow:hidden from 
-      #portal-searchbox) and fixed horizontal scroll issue for IE's due to 
-      floated searchbox.
-      [spliter]
-
     - Fixed the Live search error: 0x80040111 (NS_ERROR_NOT_AVAILABLE). This
       closes http://dev.plone.org/plone/ticket/4519.
       [deo]
@@ -73,9 +61,6 @@ Plone 2.5.2 - Orb - (Unreleased)
       in your skin and uses the macros in there to inject them into these
       horrible forms. Now it sucks slightly less ;-).
       [ender]
-
-    - Removed www/main.dtml as it turns out we can use the default just fine.
-      [stefan]
 
     - livesearch_reply.py mixed up utf-8-encoded strings and unicode strings
       leading to unpredictable UnicodeDecodeErrors. This fixes
@@ -1141,6 +1126,23 @@ Plone 2.5 - released June 16, 2006
       moves some files to /portal_skins/plone_deprecated which will be removed
       in the next release.
       [hannosch]
+
+Plone 2.1.5 - Fischerspooner - (Unreleased)
+
+    - Fixed the view of livesearch in fullscreen mode (contentActions were 
+      overlapping the livesearch output).
+      [spliter]
+
+    - Enabled IEFixes.css for all IE's, not for <IE7 only
+      [spliter]
+   
+    - Re-enabled livesearch back (removed overflow:hidden from 
+      #portal-searchbox) and fixed horizontal scroll issue for IE's due to 
+      floated searchbox.
+      [spliter]
+    
+    - Removed www/main.dtml as it turns out we can use the default just fine.
+      [stefan]
 
 Plone 2.1.4 - Devo - Released September 19, 2006
 
