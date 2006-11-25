@@ -4,6 +4,14 @@ Changelog for Plone
 
 Plone 2.5.2 - Orb - (Unreleased)
 
+    - Fixed another UnicodeDecodeError in livesearch_reply.
+      This fixed http://dev.plone.org/plone/ticket/5828.
+      [hannosch]
+
+    - Added a general safe_unicode method to utils.py, which can be used to
+      convert any Unicode, 'utf-8' or 'ascii' encoded string to Unicode.
+      [hannosch]
+
     - Added button tag styling that conforms to the standard input button 
       look.
       [limi]

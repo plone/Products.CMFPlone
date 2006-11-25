@@ -50,9 +50,9 @@ class TestUTranslate(PloneTestCase.PloneTestCase):
         value = self.tool.utranslate('domain', u'\xc3'.encode('utf-8'))
         self.assertEquals(value, u'\xc3')
 
-        # Test iso8859-1 value
+        # Test iso8859-1 value, should be replaced
         value = self.tool.utranslate('domain', u'\xc3'.encode('iso8859-1'))
-        self.assertEquals(value, '\xc3')
+        self.assertEquals(value, u'\ufffd')
 
         # Test empty string
         value = self.tool.utranslate('domain', '')

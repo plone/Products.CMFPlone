@@ -9,6 +9,7 @@
 
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
+from Products.CMFPlone.utils import safe_unicode
 from Products.PythonScripts.standard import url_quote
 
 ploneUtils = getToolByName(context, 'plone_utils')
@@ -79,9 +80,7 @@ ts = getToolByName(context, 'translation_service')
 output = []
 
 def write(s):
-    if same_type(s, ''):
-        s = unicode(s, site_encoding)
-    output.append(s)
+    output.append(safe_unicode(s))
 
 
 if not results:
@@ -108,15 +107,15 @@ else:
 
         write('''<li class="LSRow">''')
         write('''<img src="%s"/>''' % result.getIcon)
-        full_title = pretty_title_or_id(result)
+        full_title = safe_unicode(pretty_title_or_id(result))
         if len(full_title) >= MAX_TITLE:
-            display_title = ''.join((full_title[:MAX_TITLE],'...'))            
+            display_title = ''.join((full_title[:MAX_TITLE],'...'))
         else:
             display_title = full_title
         full_title = full_title.replace('"', '&quot;')
         write('''<a href="%s" title="%s">%s</a>''' % (itemUrl, full_title, display_title))
         write('''<span class="discreet">[%s%%]</span>''' % result.data_record_normalized_score_)
-        display_description = result.Description
+        display_description = safe_unicode(result.Description)
         if len(display_description) >= MAX_DESCRIPTION:
             display_description = ''.join((display_description[:MAX_DESCRIPTION],'...'))
         write('''<div class="discreet" style="margin-left: 2.5em;">%s</div>''' % (display_description))

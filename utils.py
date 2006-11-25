@@ -32,12 +32,6 @@ from log import log
 from log import log_exc
 from log import log_deprecated
 
-# Keep these here to not fully change the old API
-# please use i18nl10n directly
-from i18nl10n import utranslate
-from i18nl10n import ulocalized_time
-from i18nl10n import getGlobalTranslationService
-
 # Define and compile static regexes
 IGNORE_REGEX = re.compile(r"[']")
 FILENAME_REGEX = re.compile(r"^(.+)\.(\w{,4})$")
@@ -444,6 +438,34 @@ def safe_callable(obj):
     else:
         return callable(obj)
 
+
+def safe_unicode(value, encoding='utf-8'):
+    """Converts a value to unicode, even it is already a unicode string.
+
+        >>> from Products.CMFPlone.utils import safe_unicode
+
+        >>> safe_unicode('spam')
+        u'spam'
+        >>> safe_unicode(u'spam')
+        u'spam'
+        >>> safe_unicode(u'spam'.encode('utf-8'))
+        u'spam'
+        >>> safe_unicode('\xc6\xb5')
+        u'\u01b5'
+        >>> safe_unicode(u'\xc6\xb5'.encode('iso-8859-1'))
+        u'\u01b5'
+        >>> safe_unicode('\xc6\xb5', encoding='ascii')
+        u'\u01b5'
+    """
+    if isinstance(value, unicode):
+        return value
+    try:
+        value = unicode(value, encoding)
+    except UnicodeDecodeError:
+        value = value.decode('utf-8', 'replace')
+    return value
+
+
 def tuplize(value):
     if isinstance(value, tuple):
         return value
@@ -718,3 +740,11 @@ def scale_image(image_file, max_size=MEMBER_IMAGE_SCALE,
     new_file.seek(0)
     # Return the file data and the new mimetype
     return new_file, mimetype
+
+
+# Keep these here to not fully change the old API
+# Put these at the end to avoid an ImportError for safe_unicode
+from i18nl10n import utranslate
+from i18nl10n import ulocalized_time
+from i18nl10n import getGlobalTranslationService
+

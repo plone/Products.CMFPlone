@@ -1,10 +1,12 @@
 """
 Collection of i18n and l10n utility methods.
-All methods here may return unicode type.
 """
 import re
+import logging
 from DateTime import DateTime
-from log import log_exc
+
+from Products.CMFPlone.log import log
+from Products.CMFPlone.utils import safe_unicode
 
 # get the registered translation service and the dummy
 from Products.PageTemplates.GlobalTranslationService import \
@@ -30,12 +32,7 @@ def utranslate(*args, **kw):
     # of the utranslate method. As we have no context here which we could use
     # to get to the site encoding, we only try to decode from utf-8 here.
     text = service.translate(*args, **kw)
-    if isinstance(text, str):
-        try:
-            text = unicode(text, 'utf-8')
-        except UnicodeDecodeError:
-            pass
-    return text
+    return safe_unicode(text)
 
 # unicode aware localized time method (l10n)
 def ulocalized_time(time, long_format = None, context = None, domain='plone'):
@@ -76,7 +73,8 @@ def ulocalized_time(time, long_format = None, context = None, domain='plone'):
     try:
         time = DateTime(time)
     except:
-        log_exc('Failed to convert %s to a DateTime object' % time)
+        log('Failed to convert %s to a DateTime object' % time,
+            severity=logging.DEBUG)
         return None
        
     if context is None:
