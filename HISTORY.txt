@@ -119,10 +119,6 @@ Plone 2.5.1-rc1 - released September 11, 2006
       template a valid HTML document.
       [limi]
 
-    - Updated the CSS validation link to use the CSS 2.1 and CSS 3 compatible
-      profile, which is what Plone uses.
-      [limi]
-
     - Added description in the dict in WorkflowTool's getTransitionsFor.
       [ender]
 
@@ -1146,7 +1142,23 @@ Plone 2.5 - released June 16, 2006
       in the next release.
       [hannosch]
 
-Plone 2.1.4 - Devo - Unreleased
+Plone 2.1.4 - Devo - Released September 19, 2006
+
+    - No changes since RC1.
+
+   RC1 - Released September 12, 2006
+
+    - Made sure validate_email is turned on by default.
+      [stefan]
+
+    - Fixed a bug in the highlighting of selected tabs in an environment which
+      uses Apache rewrite rules. This closes
+      http://dev.plone.org/plone/ticket/5518.
+      [hannosch]
+
+    - Updated the CSS validation link to use the CSS 2.1 and CSS 3 compatible
+      profile, which is what Plone uses.
+      [limi]
 
     - Using 'indexObject' instead of 'reindexObject' for
       CatalogTool.clearFindAndRebuild works just as well, but does not

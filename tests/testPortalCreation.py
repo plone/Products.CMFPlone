@@ -702,6 +702,10 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         snapshot_id = self.setup._mangleTimestampName('test')
         self.setup.createSnapshot(snapshot_id)
 
+    def testValidateEmail(self):
+        # validate_email should be on by default
+        self.failUnless(self.portal.getProperty('validate_email'))
+
 
 class TestPortalBugs(PloneTestCase.PloneTestCase):
 
