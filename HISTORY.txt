@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.5.2 - Orb - (Unreleased)
 
+    - Non-ascii characters in actions used in the portal tabs provoked an
+      UnicodeDecodeError. This closes http://dev.plone.org/plone/ticket/5791.
+      [hannosch]
+
     - Fixed another UnicodeDecodeError in livesearch_reply.
       This fixed http://dev.plone.org/plone/ticket/5828.
       [hannosch]
