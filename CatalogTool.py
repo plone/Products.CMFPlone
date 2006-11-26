@@ -28,6 +28,8 @@ from Products.CMFPlone.interfaces.NonStructuralFolder import \
      INonStructuralFolder as z2INonStructuralFolder
 from Products.CMFPlone.utils import base_hasattr
 from Products.CMFPlone.utils import safe_callable
+from Products.CMFPlone.utils import safe_unicode
+from Products.CMFPlone.utils import log_deprecated
 from OFS.IOrderSupport import IOrderedContainer
 from ZODB.POSException import ConflictError
 
@@ -138,7 +140,6 @@ def sortable_title(obj, portal, **kwargs):
     >>> sortable_title(self.folder, self.portal)
     'plone00000042 _foo'
     """
-    def_charset = portal.plone_utils.getSiteEncoding()
     title = getattr(obj, 'Title', None)
     if title is not None:
         if safe_callable(title):
@@ -148,17 +149,7 @@ def sortable_title(obj, portal, **kwargs):
             # Replace numbers with zero filled numbers
             sortabletitle = num_sort_regex.sub(zero_fill, sortabletitle)
             # Truncate to prevent bloat
-            for charset in [def_charset, 'latin-1', 'utf-8']:
-                try:
-                    sortabletitle = unicode(sortabletitle, charset)[:30]
-                    sortabletitle = sortabletitle.encode(def_charset or 'utf-8')
-                    break
-                except UnicodeError:
-                    pass
-                except TypeError:
-                    # If we get a TypeError if we already have a unicode string
-                    sortabletitle = sortabletitle[:30]
-                    break
+            sortabletitle = safe_unicode(sortabletitle)[:30].encode('utf-8')
             return sortabletitle
     return ''
 

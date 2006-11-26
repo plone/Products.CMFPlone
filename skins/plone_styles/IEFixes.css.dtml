@@ -174,5 +174,4 @@ body.fullscreen #portal-searchbox {
     overflow: visible;
 }
 
-
 /* </dtml-with> */

@@ -17,7 +17,7 @@ plone_url = url_tool()
 request = context.REQUEST
 valid_actions = []
 
-url = request['ACTUAL_URL']
+url = request['URL']
 path = url[len(plone_url):]
 
 for action in portal_tabs:

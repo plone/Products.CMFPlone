@@ -209,7 +209,8 @@ class CatalogNavigationTabs(utils.BrowserView):
                 data = actionInfo.copy()
                 # We use PMF instead of _() here, as this should not be picked
                 # up by the extraction tool.
-                data['name'] = PMF(data['title'], default=data['title'])
+                title = utils.safe_unicode(data['title'])
+                data['name'] = PMF(title, default=title)
                 result.append(data)
 
         # check whether we only want actions

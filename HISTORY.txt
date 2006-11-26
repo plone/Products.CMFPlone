@@ -201,24 +201,24 @@ Plone 3.0-alpha1 - released November 24, 2006
 
 Plone 2.5.2 - Orb - (Unreleased)
 
+    - Non-ascii characters in actions used in the portal tabs provoked an
+      UnicodeDecodeError. This closes http://dev.plone.org/plone/ticket/5791.
+      [hannosch]
+
+    - Fixed another UnicodeDecodeError in livesearch_reply.
+      This fixed http://dev.plone.org/plone/ticket/5828.
+      [hannosch]
+
+    - Added a general safe_unicode method to utils.py, which can be used to
+      convert any Unicode, 'utf-8' or 'ascii' encoded string to Unicode.
+      [hannosch]
+
     - Added button tag styling that conforms to the standard input button 
       look.
       [limi]
 
     - Added optgroup styling, since the default in Firefox looks like crap.
       [limi]
-
-    - fixed the view of livesearch in fullscreen mode (contentActions were 
-      overlapping the livesearch output)
-      [spliter]
-
-    - enabled IEFixes.css for all IE's, not for <IE7 only
-      [spliter]
-   
-    - re-enabled livesearch back (removed overflow:hidden from 
-      #portal-searchbox) and fixed horizontal scroll issue for IE's due to 
-      floated searchbox.
-      [spliter]
 
     - Fixed the Live search error: 0x80040111 (NS_ERROR_NOT_AVAILABLE). This
       closes http://dev.plone.org/plone/ticket/4519.
@@ -258,9 +258,6 @@ Plone 2.5.2 - Orb - (Unreleased)
       in your skin and uses the macros in there to inject them into these
       horrible forms. Now it sucks slightly less ;-).
       [ender]
-
-    - Removed www/main.dtml as it turns out we can use the default just fine.
-      [stefan]
 
     - livesearch_reply.py mixed up utf-8-encoded strings and unicode strings
       leading to unpredictable UnicodeDecodeErrors. This fixes
@@ -302,10 +299,6 @@ Plone 2.5.1-rc1 - released September 11, 2006
     - Made login_form and default_error_message not invoke the portlets, since
       they are irrelevant and expensive in those forms. Also made the error
       template a valid HTML document.
-      [limi]
-
-    - Updated the CSS validation link to use the CSS 2.1 and CSS 3 compatible
-      profile, which is what Plone uses.
       [limi]
 
     - Added description in the dict in WorkflowTool's getTransitionsFor.
@@ -1331,7 +1324,45 @@ Plone 2.5 - released June 16, 2006
       in the next release.
       [hannosch]
 
-Plone 2.1.4 - Devo - Unreleased
+Plone 2.1.5 - Fischerspooner - (Unreleased)
+
+    - Fixed the sharing page to handle groups which come from non-traditional
+      PAS sources. This closes
+      http://dev.plone.org/plone/ticket/5727.
+      [hannosch]
+
+    - Fixed the view of livesearch in fullscreen mode (contentActions were 
+      overlapping the livesearch output).
+      [spliter]
+
+    - Enabled IEFixes.css for all IE's, not for <IE7 only
+      [spliter]
+   
+    - Re-enabled livesearch back (removed overflow:hidden from 
+      #portal-searchbox) and fixed horizontal scroll issue for IE's due to 
+      floated searchbox.
+      [spliter]
+    
+    - Removed www/main.dtml as it turns out we can use the default just fine.
+      [stefan]
+
+Plone 2.1.4 - Devo - Released September 19, 2006
+
+    - No changes since RC1.
+
+   RC1 - Released September 12, 2006
+
+    - Made sure validate_email is turned on by default.
+      [stefan]
+
+    - Fixed a bug in the highlighting of selected tabs in an environment which
+      uses Apache rewrite rules. This closes
+      http://dev.plone.org/plone/ticket/5518.
+      [hannosch]
+
+    - Updated the CSS validation link to use the CSS 2.1 and CSS 3 compatible
+      profile, which is what Plone uses.
+      [limi]
 
     - Using 'indexObject' instead of 'reindexObject' for
       CatalogTool.clearFindAndRebuild works just as well, but does not
