@@ -159,12 +159,6 @@ except ImportError:
          "download it from http://plone.org/products/cmfformcontroller"))
 
 try:
-    import Products.GroupUserFolder
-except ImportError:
-    log(("GroupUserFolder not found. Please "
-         "http://plone.org/products/groupuserfolder"))
-
-try:
     import Products.SecureMailHost
 except ImportError:
     log(("SecureMailHost not found. Please "
