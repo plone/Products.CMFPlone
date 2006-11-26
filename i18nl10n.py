@@ -6,6 +6,7 @@ import logging
 from DateTime import DateTime
 
 from Products.CMFPlone.log import log
+from Products.CMFPlone.utils import safe_unicode
 
 # get the registered translation service
 from Products.PageTemplates.GlobalTranslationService import \
@@ -22,7 +23,13 @@ name_formatvariables = ('a', 'A', 'b', 'B')
 def utranslate(*args, **kw):
     # As both the Five translation service as well as PTS return Unicode in all
     # cases now, this returns Unicode
-    return getGlobalTranslationService().translate(*args, **kw)
+
+    # get the global translation service
+    service = getGlobalTranslationService()
+
+    # safety precaution for cases where we get passed in an encoded string
+    text = service.translate(*args, **kw)
+    return safe_unicode(text)
 
 # unicode aware localized time method (l10n)
 def ulocalized_time(time, long_format = None, context = None, domain='plone'):

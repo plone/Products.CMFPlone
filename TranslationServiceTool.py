@@ -10,15 +10,11 @@ from Products.CMFPlone import ToolNames
 from AccessControl import ClassSecurityInfo
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFCore.utils import getToolByName
-from i18nl10n import ulocalized_time, \
+from i18nl10n import ulocalized_time, utranslate, \
                      monthname_msgid, monthname_msgid_abbr, \
                      weekdayname_msgid, weekdayname_msgid_abbr, \
                      weekdayname_msgid_short, \
                      monthname_english, weekdayname_english
-
-# get the registered translation service
-from Products.PageTemplates.GlobalTranslationService import \
-     getGlobalTranslationService
 
 class TranslationServiceTool(PloneBaseTool, UniqueObject, SimpleItem):
     """ Utility methods to access the translation machinery """
@@ -35,7 +31,7 @@ class TranslationServiceTool(PloneBaseTool, UniqueObject, SimpleItem):
     def utranslate(self, *args, **kw):
         # Translate method to access the translation service
         # from resticted code like skins.
-        return getGlobalTranslationService().translate(*args, **kw)
+        return utranslate(*args, **kw)
 
     security.declarePublic('encode')
     def encode(self, m, input_encoding=None, output_encoding=None, errors='strict'):
