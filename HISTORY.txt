@@ -4,14 +4,19 @@ Changelog for Plone
 
 Plone 2.1.5 - Fischerspooner - (Unreleased)
 
-    - fixed the view of livesearch in fullscreen mode (contentActions were 
-      overlapping the livesearch output)
+    - Fixed the sharing page to handle groups which come from non-traditional
+      PAS sources. This closes
+      http://dev.plone.org/plone/ticket/5727.
+      [hannosch]
+
+    - Fixed the view of livesearch in fullscreen mode (contentActions were 
+      overlapping the livesearch output).
       [spliter]
 
-    - enabled IEFixes.css for all IE's, not for <IE7 only
+    - Enabled IEFixes.css for all IE's, not for <IE7 only.
       [spliter]
    
-    - re-enabled livesearch back (removed overflow:hidden from 
+    - Re-enabled livesearch back (removed overflow:hidden from 
       #portal-searchbox) and fixed horizontal scroll issue for IE's due to 
       floated searchbox.
       [spliter]
