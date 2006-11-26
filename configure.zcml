@@ -3,6 +3,11 @@
            xmlns:five="http://namespaces.zope.org/five">
 
   <include package="plone.app.portlets" />
+
+  <!-- kss -->
+  <include package="kss.core" />
+  <include package="plone.app.kss" />
+  <include package="archetypes.kss" />
   
   <include package=".browser" />
   <include package=".exportimport" />

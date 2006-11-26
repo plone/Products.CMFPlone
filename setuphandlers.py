@@ -332,3 +332,4 @@ def importFinalSteps(context):
     gen.addDefaultTypesToPortalFactory(site, out)
     gen.enableSyndicationOnTopics(site, out)
     gen.assignTitles(site, out)
+
