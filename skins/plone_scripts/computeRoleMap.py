@@ -55,5 +55,3 @@ dec_users.sort()
 result = [a[-1] for a in dec_users]
 return result
 
-
-
