@@ -432,7 +432,6 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         expected_aliases = {
                 '(Default)'  : '(dynamic view)',
                 'view'       : '(selected layout)',
-                'index.html' : '(dynamic view)',
                 'edit'       : 'folder_edit_form',
                 'sharing'    : 'folder_localrole_form',
               }

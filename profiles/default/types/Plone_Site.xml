@@ -23,7 +23,6 @@
  </property>
  <alias from="(Default)" to="(dynamic view)"/>
  <alias from="edit" to="folder_edit_form"/>
- <alias from="index.html" to="(dynamic view)"/>
  <alias from="sharing" to="folder_localrole_form"/>
  <alias from="view" to="(selected layout)"/>
  <action title="View" action_id="view" category="object" condition_expr=""
