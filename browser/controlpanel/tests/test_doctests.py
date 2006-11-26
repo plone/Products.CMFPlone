@@ -14,6 +14,14 @@ def test_suite():
             optionflags=OPTIONFLAGS,
             package='Products.CMFPlone.browser.controlpanel.tests',
             test_class=PloneTestCase.FunctionalTestCase),
+        FunctionalDocFileSuite('mail.txt',
+            optionflags=OPTIONFLAGS,
+            package='Products.CMFPlone.browser.controlpanel.tests',
+            test_class=PloneTestCase.FunctionalTestCase),
+        FunctionalDocFileSuite('search.txt',
+            optionflags=OPTIONFLAGS,
+            package='Products.CMFPlone.browser.controlpanel.tests',
+            test_class=PloneTestCase.FunctionalTestCase),
         )
 
     return TestSuite(suites)

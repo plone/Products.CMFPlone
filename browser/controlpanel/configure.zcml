@@ -6,10 +6,32 @@
       factory=".calendar.CalendarControlPanelAdapter"
       />
 
+  <adapter
+      factory=".mail.MailControlPanelAdapter"
+      />
+
+  <adapter
+      factory=".search.SearchControlPanelAdapter"
+      />
+
   <browser:page
       name="calendar-controlpanel.html"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       class=".calendar.CalendarControlPanel"
+      permission="cmf.ManagePortal"
+      />
+
+  <browser:page
+      name="mail-controlpanel.html"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".mail.MailControlPanel"
+      permission="cmf.ManagePortal"
+      />
+
+  <browser:page
+      name="search-controlpanel.html"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".search.SearchControlPanel"
       permission="cmf.ManagePortal"
       />
 

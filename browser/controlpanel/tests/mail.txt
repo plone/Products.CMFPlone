@@ -1,0 +1,88 @@
+Mail control panel
+==================
+
+First some initial setup code:
+
+    >>> from Products.Five.testbrowser import Browser
+    >>> browser = Browser()
+
+    >>> uf = self.portal.acl_users
+    >>> uf.userFolderAddUser('root', 'secret', ['Manager'], [])
+
+    >>> from Products.CMFCore.utils import getToolByName
+    >>> mailhost = getToolByName(self.portal, 'MailHost')
+
+And now log in with an user with the Manager role:
+
+    >>> browser.open('http://nohost/plone/')
+    >>> browser.getLink('Log in').click()
+    >>> browser.getControl('Login Name').value = 'root'
+    >>> browser.getControl('Password').value = 'secret'
+    >>> browser.getControl('Log in').click()
+
+Viewing the search control panel
+--------------------------------
+
+    >>> browser.open('http://nohost/plone/@@mail-controlpanel.html')
+    >>> browser.url
+    'http://nohost/plone/@@mail-controlpanel.html'
+
+Click the save button without making any changes:
+
+    >>> browser.getControl(name="form.actions.save").click()
+    >>> browser.url
+    'http://nohost/plone/%40%40mail-controlpanel.html'
+
+We should get a status message:
+
+    >>> 'No changes done.' in browser.contents
+    True
+
+Now click the cancel button:
+
+    >>> browser.getControl(name="form.actions.cancel").click()
+    >>> browser.url
+    'http://nohost/plone/%40%40mail-controlpanel.html'
+
+There should be still no changes:
+
+    >>> 'Changes canceled.' in browser.contents
+    True
+
+Make some changes
+-----------------
+
+    >>> browser.open('http://nohost/plone/@@mail-controlpanel.html')
+    >>> browser.url
+    'http://nohost/plone/@@mail-controlpanel.html'
+
+    >>> browser.getControl(name='form.smtp_host').value = 'localhost2'
+    >>> browser.getControl(name='form.smtp_port').value = '2525'
+    >>> browser.getControl(name='form.smtp_userid').value = 'admin'
+    >>> browser.getControl(name='form.smtp_pass').value = 'secret'
+
+Click the save button:
+
+    >>> browser.getControl(name="form.actions.save").click()
+    >>> browser.url
+    'http://nohost/plone/%40%40mail-controlpanel.html'
+
+We should be informed that something has changed:
+
+    >>> 'Changes saved.' in browser.contents
+    True
+
+Make sure the changes have been applied correctly to the mailhost:
+
+    >>> mailhost.smtp_host
+    u'localhost2'
+
+    >>> mailhost.smtp_port
+    2525
+
+    >>> mailhost.smtp_userid
+    u'admin'
+
+    >>> mailhost.smtp_pass
+    u'secret'
+

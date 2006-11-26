@@ -33,7 +33,7 @@
  </configlet>
  <configlet title="Mail Settings" action_id="MailHost" appId="MailHost"
     category="Plone" condition_expr=""
-    url_expr="string:${portal_url}/prefs_mailhost_form" visible="True">
+    url_expr="string:${portal_url}/@@mail-controlpanel.html" visible="True">
   <permission>Manage portal</permission>
  </configlet>
  <configlet title="Skins" action_id="PortalSkin" appId="PortalSkin"

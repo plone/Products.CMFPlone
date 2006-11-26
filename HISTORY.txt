@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Added formlib based mail and search control panels.
+      [hannosch]
+
     - Removed the view alias of index.html for all standard content types. This
       makes it possible to create and upload files called index.html to the
       site, which is quite common when batch importing old sites into the site.
