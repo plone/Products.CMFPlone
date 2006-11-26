@@ -39,8 +39,8 @@ class ActionsTool(PloneBaseTool, BaseTool):
         actions = []
 
         # Include actions from specific tools.
-        [self._getActions(provider_name, actions, object) \
-         for provider_name in self.listActionProviders()]
+        for provider_name in self.listActionProviders():
+            self._getActions(provider_name, actions, object)
 
         # Include actions from object.
         if object is not None:

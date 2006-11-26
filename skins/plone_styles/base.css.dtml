@@ -173,11 +173,37 @@ input {
     vertical-align: middle;
     background: White url(&dtml-portal_url;/input_background.gif) repeat-x;
 }
+button {
+    font-family: <dtml-var fontFamily>;
+    visibility: visible;
+    border: &dtml-borderWidth; solid &dtml-globalBorderColor;;
+    color: &dtml-inputFontColor;;
+    vertical-align: middle;
+    background-color: &dtml-globalBackgroundColor;;
+    padding: 1px;
+    cursor: pointer;
+    font-size: &dtml-fontSmallSize;;
+    text-transform: &dtml-textTransform;;    
+}
 select {
     border: &dtml-borderWidth; solid &dtml-globalBorderColor;;
     color: &dtml-inputFontColor;;
     background-color: White;
     vertical-align: top;
+}
+optgroup {
+  font-style: normal;
+  font-weight: bold;
+  color: #999;
+  padding-left: 0.25em;
+}
+
+option {
+  color: black;
+}
+
+optgroup > option {
+  padding: 0 0.25em 0 1em;
 }
 abbr, acronym, .explain {
     border-bottom: &dtml-borderWidth; dotted &dtml-fontColor;;

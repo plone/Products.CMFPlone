@@ -165,4 +165,14 @@ dd.portletFooter {
     height: auto;
 }
 
+/* fix for the horizontal scroll due to the floated searchbox without width definition */
+
+#portal-searchbox {
+    overflow: auto; 
+}
+body.fullscreen #portal-searchbox {
+    overflow: visible;
+}
+
+
 /* </dtml-with> */

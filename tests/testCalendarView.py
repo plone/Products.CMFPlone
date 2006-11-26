@@ -162,9 +162,6 @@ class TestCalendarPortlet(PloneTestCase.FunctionalTestCase):
         self.failUnless(event1_date.encode('utf-8')
                         in response.getBody())
 
-        # Clean up after ourselves
-        unprovideUtility(ITranslationDomain, name='plone')
-
 
 def test_suite():
     from unittest import TestSuite, makeSuite

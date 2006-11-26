@@ -5,11 +5,9 @@
 
     <div class="documentByLine">
         <img src="" alt=""
-           title="This document is locked."
            tal:define="locked portal/lock_icon.gif;"
            tal:condition="isLocked"
            tal:replace="structure python:locked.tag(title='Locked')"
-           i18n:attributes="title label_document_locked;"
            />
 
         <tal:name tal:condition="creator"
@@ -46,8 +44,7 @@
               tal:condition="isLocked">
             <img src=""
                  tal:replace="structure python:locked.tag(title='This item is locked')"
-                 alt="Object locked"
-                 i18n:attributes="alt label_object_locked;" />
+                 alt="Object locked" />
         </span>
 
         <div tal:condition="here/Contributors"

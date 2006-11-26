@@ -25,7 +25,9 @@
         <div tal:define="entry python:here.error_log.getLogEntryById(request.get('id'))">
 
             <em tal:condition="not:entry">
-                <span i18n:translate="text_errlog_notfound"> The specified log entry was not found.  It may have expired.</span>
+                <span i18n:translate="text_errlog_notfound">
+                    The specified log entry was not found. It may have expired.
+                </span>
             </em>
 
             <div tal:condition="entry">

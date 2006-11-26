@@ -32,7 +32,7 @@
 
         <p i18n:translate="description_undo_action_select">
         Select one or more transactions below and then click on the &quot;Undo&quot;
-        button to undo the transactions.  Note that even though a transaction
+        button to undo the transactions. Note that even though a transaction
         is shown below, you will not be able to undo it if later transactions
         modified objects that were modified by the transaction.
         </p>

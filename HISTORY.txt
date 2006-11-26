@@ -201,6 +201,39 @@ Plone 3.0-alpha1 - released November 24, 2006
 
 Plone 2.5.2 - Orb - (Unreleased)
 
+    - Added button tag styling that conforms to the standard input button 
+      look.
+      [limi]
+
+    - Added optgroup styling, since the default in Firefox looks like crap.
+      [limi]
+
+    - fixed the view of livesearch in fullscreen mode (contentActions were 
+      overlapping the livesearch output)
+      [spliter]
+
+    - enabled IEFixes.css for all IE's, not for <IE7 only
+      [spliter]
+   
+    - re-enabled livesearch back (removed overflow:hidden from 
+      #portal-searchbox) and fixed horizontal scroll issue for IE's due to 
+      floated searchbox.
+      [spliter]
+
+    - Fixed the Live search error: 0x80040111 (NS_ERROR_NOT_AVAILABLE). This
+      closes http://dev.plone.org/plone/ticket/4519.
+      [deo]
+
+    - Injected Plone 2.1.4 into the migration chain.
+      [stefan]
+
+    - Lots of minor whitespace corrections, found by using the new i18ndude 3.0
+      which is based on zope.tal.talgettext for extraction of translation files.
+      [hannosch]
+
+    - Fixed a minor spelling inconsistency in folder_localrole_form.
+      [hannosch]
+
     - Fixed flawed lookup of email_from_address in send_feedback scripts. This
       closes http://dev.plone.org/plone/ticket/5839.
       [hannosch]
@@ -240,8 +273,8 @@ Plone 2.5.2 - Orb - (Unreleased)
 
 Plone 2.5.1 - released September 28, 2006
 
-    - The content tab selection logic now checks the request in addition 
-      to template_id when trying to determine which tab should be 
+    - The content tab selection logic now checks the request in addition
+      to template_id when trying to determine which tab should be
       selected.
       [rocky]
 
@@ -255,10 +288,7 @@ Plone 2.5.1 - released September 28, 2006
       http://dev.plone.org/plone/ticket/5823
       [mj]
 
-    - livesearch_reply.py mixed up utf-8-encoded strings and unicode strings
-      leading to unpredictable UnicodeDecodeErrors. This closes
-      http://dev.plone.org/plone/ticket/5828.
-      [ajung]
+Plone 2.5.1-rc1 - released September 11, 2006
 
     - Fixed an UnicodeDecodeError in enableSyndication script. This closes
       http://dev.plone.org/plone/ticket/5750.
@@ -271,7 +301,7 @@ Plone 2.5.1 - released September 28, 2006
 
     - Made login_form and default_error_message not invoke the portlets, since
       they are irrelevant and expensive in those forms. Also made the error
-      template a valid HTML document. 
+      template a valid HTML document.
       [limi]
 
     - Updated the CSS validation link to use the CSS 2.1 and CSS 3 compatible
@@ -288,9 +318,9 @@ Plone 2.5.1 - released September 28, 2006
     - Make the object_delete and folder_delete methods require non-GET
       requests. This is a bit of a band-aid and it is likely we will want
       to do the same for other object actions which could be easily triggered
-      by a crawler (a paste for instance, which may have been preceeded by a 
+      by a crawler (a paste for instance, which may have been preceeded by a
       cut or copy). Related to http://dev.plone.org/plone/ticket/4886
-      [alecm, limi]
+      [alecm] [limi]
 
     - Make the syntool methods for enabling and disabling syndication check
       for the Manager properties permission on the object.
@@ -338,7 +368,7 @@ Plone 2.5.1 - released September 28, 2006
       [alecm]
 
     - Made the code in utranslate more error resilient and added tests for it.
-      [rafrombrc, hannosch]
+      [rafrombrc] [hannosch]
 
     - Enhanced accessibility of adjacent links in main_template. This fixes
       http://dev.plone.org/plone/ticket/5210.
@@ -382,11 +412,11 @@ Plone 2.5.1 - released September 28, 2006
 
     - Applied patch from paregorius to add ids to all visualClear divs. Fixes
       http://dev.plone.org/plone/ticket/4145.
-      [paregorius, alecm]
+      [paregorius] [alecm]
 
     - Applied patch from paregorius to make the LiveSearch div vanish in IE
       as needed. Fixes http://dev.plone.org/plone/ticket/5705.
-      [paregorius, alecm]
+      [paregorius] [alecm]
 
     - Made PloneTool.browserDefault check for a result of None from getLayout
       and raise a sensible error.  Generally this means that the FTI is missing
@@ -425,7 +455,7 @@ Plone 2.5.1 - released September 28, 2006
       [ender]
 
     - Added test that ensures the language is getting set in header.
-      This is related to http://dev.plone.org/plone/ticket/5444 and 
+      This is related to http://dev.plone.org/plone/ticket/5444 and
       http://dev.plone.org/plone/ticket/4770.
       [hannosch]
 
@@ -491,8 +521,8 @@ Plone 2.5.1 - released September 28, 2006
       http://dev.plone.org/plone/ticket/5211.
       [hannosch]
 
-    - Modify login logic to work for sites which do not use the cookie plugin
-      or still use GRUF.
+    - Modified login logic to work for sites which do not use the cookie
+      plugin or still use GRUF.
       [wichert]
 
     - Added support for the hCalendar/hCard standard for events. This closes
@@ -513,12 +543,12 @@ Plone 2.5.1 - released September 28, 2006
       recursion in certain cases.
       [rafrombrc]
 
-    - Fix 'reindexContentObject' in CatalogTool.py so that it doesn't
+    - Fixed 'reindexContentObject' in CatalogTool.py so that it doesn't
       set the modification date to now due to some AT "convenience".
       [nouri]
 
-    - Cleanup the localrole form to support searching for either a users full
-      name or login name; both at once does not work.
+    - Cleaned up the localrole form to support searching for either a users
+      full name or login name; both at once does not work.
       [wichert]
 
 Plone 2.5 - released June 16, 2006
@@ -536,7 +566,7 @@ Plone 2.5 - released June 16, 2006
       [hannosch]
 
     - Fix rename from the action menu when using virtual hosting. Thanks to
-      Daniel Nouri, Maurits van Rees, Alec Mitchell and Stefan Holek for 
+      Daniel Nouri, Maurits van Rees, Alec Mitchell and Stefan Holek for
       pointers and code.
       [optilude]
 
@@ -1273,18 +1303,18 @@ Plone 2.5 - released June 16, 2006
       that provides IDefaultPage. Factored out createBreadCrumbs into
       a view that provides INavigationStructure. Started implementing
       soon-to-be-written PLIP for configurable navigation root.
-      [dreamcatcher]
+      [sidnei]
 
     - Factored out most of the 'functions' in PloneTool.py into real
       functions that take a 'context' in utils.py. Later one, those
       will be used by the new adapters code.
-      [dreamcatcher]
+      [sidnei]
 
     - Added helper functions for making 'zope.interface'-style
       declarations from Zope 2 interface declarations. Removed some
       BBB code. Make sure that for all interfaces declared, they are
       declared for both Zope 2 and 'zope.interface'-style.
-      [dreamcatcher]
+      [sidnei]
 
     Alpha 1 - released January 29, 2006
 
@@ -1302,6 +1332,20 @@ Plone 2.5 - released June 16, 2006
       [hannosch]
 
 Plone 2.1.4 - Devo - Unreleased
+
+    - Using 'indexObject' instead of 'reindexObject' for
+      CatalogTool.clearFindAndRebuild works just as well, but does not
+      touch every object and cause a monster transaction to be committed.
+      Also improved the ZMI experience.
+      [stefan]
+
+    - Rearranged some of the nav tree CSS so it is easier to have proper
+      padding when not using the icons.
+      [limi]
+
+    - Made the local nav tree functionality better, has correct indentation
+      now.
+      [limi]
 
     - Minor spelling fix in folder_localrole_form.
       [hannosch]
@@ -1326,7 +1370,7 @@ Plone 2.1.4 - Devo - Unreleased
       [limi]
 
     - Fix rename from the action menu when using virtual hosting. Thanks to
-      Daniel Nouri, Maurits van Rees, Alec Mitchell and Stefan Holek for 
+      Daniel Nouri, Maurits van Rees, Alec Mitchell and Stefan Holek for
       pointers and code.
       [optilude]
 
@@ -1343,8 +1387,8 @@ Plone 2.1.4 - Devo - Unreleased
       Plone version (again).
       [stefan]
 
-    - Changed the default background color to match the defined background 
-      color for better readability. If you want the old behaviour back, add 
+    - Changed the default background color to match the defined background
+      color for better readability. If you want the old behaviour back, add
       'dl.portlet { background-color: transparent }' to your style sheet.
       [limi]
 
