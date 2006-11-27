@@ -818,14 +818,6 @@ class TestPortalBugs(PloneTestCase.PloneTestCase):
         self.assertEqual(aq_base(members).meta_type, 'ATBTreeFolder')
         self.assertEqual(members.index_html.meta_type, self.mem_index_type)
 
-    def testManageBeforeDeleteIsCalledRecursively(self):
-        # When the portal is deleted, all subobject should have
-        # their manage_beforeDelete hook called. Fixed by geoffd.
-        self.folder._setObject('foo', dummy.DeletedItem())
-        self.foo = self.folder.foo
-        self.app._delObject(PloneTestCase.portal_name)
-        self.failUnless(self.foo.before_delete_called())
-
     def testSubsequentProfileImportSucceeds(self):
         # Subsequent profile imports fail (#5439)
         self.loginAsPortalOwner()

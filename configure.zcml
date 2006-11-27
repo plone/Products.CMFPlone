@@ -22,5 +22,5 @@
 
   <five:deprecatedManageAddDelete
       class=".CatalogTool.CatalogTool" />
-  
+
 </configure>
