@@ -53,11 +53,11 @@
         <div id="portal-header">
           <p class="hiddenStructure">
             <a accesskey="2"
-               tal:attributes="href string:${request/ACTUAL_URL}#documentContent"
+               tal:attributes="href string:${current_page_url}#documentContent"
                i18n:translate="label_skiptocontent">Skip to content.</a> |
 
             <a accesskey="6"
-               tal:attributes="href string:${request/ACTUAL_URL}#portlet-navigation-tree"
+               tal:attributes="href string:${current_page_url}#portlet-navigation-tree"
                i18n:translate="label_skiptonavigation">Skip to navigation</a>
           </p>
 

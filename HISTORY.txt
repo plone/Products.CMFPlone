@@ -207,6 +207,44 @@ Plone 3.0-alpha1 - released November 24, 2006
 
 Plone 2.5.2 - Orb - (Unreleased)
 
+    - Don't assume portal_catalog when reindexing during ownership change.
+      Fixes http://dev.plone.org/plone/ticket/5063
+      [alecm]
+
+    - Ensure rss_template max items is an integer.  Should fix
+      http://dev.plone.org/plone/ticket/5553
+      [alecm]
+
+    - Applied patch from aaronv to add includeTop setting to navigation
+      prefs form.  Fixes http://dev.plone.org/plone/ticket/5519
+      [alecm]
+
+    - Made standard_error_message more tolerant of security issues and
+      acquisition problems.  Fixes http://dev.plone.org/plone/ticket/5955
+      [alecm]
+
+    - Fixed issue with search for members of groups, using patch from
+      derek_richardson.  Fixes http://dev.plone.org/plone/ticket/5902
+      [alecm]
+
+    - Use some url unquoting to ensure that the rename form redirects to the
+      correct url after rename, even if quoted characters are involved.  Fixes
+      http://dev.plone.org/plone/ticket/5843
+      [alecm]
+
+    - Use current_page_url instead of ACTUAL_URL for accessibility anchors.
+      Fixes http://dev.plone.org/plone/ticket/5777
+      [alecm]
+
+    - Made the error displayed on SMTPRecipientsRefused during password reset
+      not display the email address, as this is an undesirable privacy leakage.
+      Fixes https://dev.plone.org/plone/ticket/5962
+      [alecm]
+
+    - Applied the Hotfix for CVE-2006-4249, which also fixes
+      http://dev.plone.org/plone/ticket/5906
+      [wiggy, alecm]
+
     - Non-ascii characters in actions used in the portal tabs provoked an
       UnicodeDecodeError. This closes http://dev.plone.org/plone/ticket/5791.
       [hannosch]

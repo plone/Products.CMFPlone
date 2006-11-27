@@ -26,7 +26,7 @@
 
         <div>
         <metal:block tal:repeat="result batch">
-            <div class="card" tal:define="userid result/getUserId;
+            <div class="card" tal:define="userid result/getMemberId;
                                            home python:container.portal_membership.getHomeUrl(userid, verifyPermission=1);
                                            portrait python: here.portal_membership.getPersonalPortrait(userid);">
                 <a href="#" tal:attributes="href home">
