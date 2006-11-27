@@ -5,7 +5,7 @@
 ##bind script=script
 ##bind state=state
 ##bind subpath=traverse_subpath
-##parameters=generated_tabs=False, portaltypes=[], enable_wf_state_filtering=False, wf_states_to_show=[], bottomLevel=0, name='Navigation', root='/', currentFolderOnlyInNavtree=False, topLevel=0, RESPONSE=None
+##parameters=generated_tabs=False, portaltypes=[], enable_wf_state_filtering=False, wf_states_to_show=[], bottomLevel=0, name='Navigation', root='/', currentFolderOnlyInNavtree=False, topLevel=0, includeTop=False, RESPONSE=None
 ##title=Set Navigation Prefs
 ##
 
@@ -36,7 +36,8 @@ portal_properties.navtree_properties.manage_changeProperties(
                         root=root,
                         currentFolderOnlyInNavtree=currentFolderOnlyInNavtree,
                         topLevel=topLevel,
-                        bottomLevel=bottomLevel)
+                        bottomLevel=bottomLevel,
+                        includeTop=includeTop)
 
 context.plone_utils.addPortalMessage(_(u'Navigation settings updated.'))
 return state

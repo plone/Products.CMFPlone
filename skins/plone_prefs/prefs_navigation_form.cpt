@@ -57,7 +57,6 @@
                     prefer manually constructing this part of the navigation.
                 </div>
             </div>
-            
             <div class="field"
                 tal:define="value python:navtree_props.getProperty('name', None);
                             value request/name|value;
@@ -82,7 +81,28 @@
                        tal:attributes="value value;"/>
                 <div tal:content="error">Validation error output</div>
               </div>
-              
+              <div class="field"
+                   tal:define="value python:navtree_props.getProperty('includeTop', False);
+                               value request/includeTop|value;
+                               error errors/includeTop|nothing"
+                   tal:attributes="class python:test(error, 'field error', 'field')">
+
+                <input type="checkbox"
+                       class="noborder"
+                       id="cb_include_top"
+                       name="includeTop"
+                       value="1"
+                       tal:attributes="checked python:test(value, 'checked', None)" />
+                <label for="cb_include_top"
+                       i18n:translate="label_include_top_enable">
+                    Include top level navigation link
+                </label>
+
+                <div class="formHelp" i18n:translate="help_include_top">
+                    By default, a 'Home' link is generated that points to the root of your site.  You can turn this off if you
+                    prefer not to display it.
+                </div>
+            </div> 
               <div class="field"
                 tal:define="value python:navtree_props.getProperty('root', None);
                             value request/root|value;

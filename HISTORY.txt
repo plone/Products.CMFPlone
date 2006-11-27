@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.5.2 - Orb - (Unreleased)
 
+    - Applied patch from aaronvanderlip to add includeTop setting to navigation
+      prefs form.  Fixes http://dev.plone.org/plone/ticket/5519
+      [alecm]
+
     - Made standard_error_message more tolerant of security issues and
       acquisition problems.  Fixes http://dev.plone.org/plone/ticket/5955
       [alecm]
