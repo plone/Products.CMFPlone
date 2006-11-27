@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.5.2 - Orb - (Unreleased)
 
+    - Ensure rss_template max items is an integer.  Should fix
+      http://dev.plone.org/plone/ticket/5553
+      [alecm]
+
     - Applied patch from aaronvanderlip to add includeTop setting to navigation
       prefs form.  Fixes http://dev.plone.org/plone/ticket/5519
       [alecm]

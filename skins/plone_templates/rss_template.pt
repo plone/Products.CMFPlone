@@ -11,10 +11,11 @@
 
 <metal:block 
     define-macro="master" 
-    tal:define="
-                    syn context/portal_syndication; 
-                    max max_items|python:syn.getMaxItems(here);
-                    objects python: objectList[:max]"
+    tal:define="syn context/portal_syndication;
+                default_max syn/getMaxItems;
+                max max_items|python:syn.getMaxItems(here);
+                max python:same_type(max, 1) and max or default_max;
+                objects python: objectList[:max]"
     >
 
 <metal:block tal:define="dummy python:request.RESPONSE.setHeader('Content-Type', 'text/xml;;charset='+context.plone_utils.getSiteEncoding())" />
