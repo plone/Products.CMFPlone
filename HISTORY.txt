@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.5.2 - Orb - (Unreleased)
 
+    - Use current_page_url instead of ACTUAL_URL for accessibility anchors.
+      Fixes http://dev.plone.org/plone/ticket/5777
+      [alecm]
+
     - Remove REQUEST parameter from copy/cut calls to avoid unnecessary
       rendering of ZMI pages in the background. Fixes
       http://dev.plone.org/plone/ticket/5530
