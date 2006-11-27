@@ -4,7 +4,11 @@ Changelog for Plone
 
 Plone 2.5.2 - Orb - (Unreleased)
 
-    - Use clever url unquoting to ensure that the rename form redirects to the
+    - Fixed issue with search for members of groups, using patch from
+      derek_richardson.  Fixes http://dev.plone.org/plone/ticket/5902
+      [alecm]
+
+    - Use some url unquoting to ensure that the rename form redirects to the
       correct url after rename, even if quoted characters are involved.  Fixes
       http://dev.plone.org/plone/ticket/5843
       [alecm]
