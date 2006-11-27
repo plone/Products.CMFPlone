@@ -17,11 +17,6 @@ Plone 2.5.2 - Orb - (Unreleased)
       Fixes http://dev.plone.org/plone/ticket/5777
       [alecm]
 
-    - Remove REQUEST parameter from copy/cut calls to avoid unnecessary
-      rendering of ZMI pages in the background. Fixes
-      http://dev.plone.org/plone/ticket/5530
-      [alecm]
-
     - Made the error displayed on SMTPRecipientsRefused during password reset
       not display the email address, as this is an undesirable privacy leakage.
       Fixes https://dev.plone.org/plone/ticket/5962
