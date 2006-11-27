@@ -58,6 +58,7 @@ from Products.CMFPlone.migrations.v3_0.alphas import updateFTII18NDomain
 from Products.CMFPlone.migrations.v3_0.alphas import convertLegacyPortlets
 from Products.CMFPlone.migrations.v3_0.alphas import addIconForCalendarSettingsConfiglet
 from Products.CMFPlone.migrations.v3_0.alphas import addCalendarConfiglet
+from Products.CMFPlone.migrations.v3_0.alphas import updateSearchAndMailHostConfiglet
 
 from zope.app.component.hooks import clearSite
 from zope.app.component.interfaces import ISite
@@ -1289,6 +1290,35 @@ class TestMigrations_v3_0(MigrationTest):
         # Should not fail if tool is missing
         self.portal._delObject('portal_controlpanel')
         addCalendarConfiglet(self.portal, [])
+
+    def testUpdateSearchAndMailHostConfiglet(self):
+        search = self.cp.getActionObject('Plone/SearchSettings')
+        mail = self.cp.getActionObject('Plone/MailHost')
+        search.action = Expression('string:search')
+        mail.action = Expression('string:mail')
+        updateSearchAndMailHostConfiglet(self.portal, [])
+        self.assertEquals(search.action.text,
+                          'string:${portal_url}/@@search-controlpanel.html')
+        self.assertEquals(mail.action.text,
+                          'string:${portal_url}/@@mail-controlpanel.html')
+    
+    def testUpdateSearchAndMailHostConfigletTwice(self):
+        # Should not fail if done twice
+        search = self.cp.getActionObject('Plone/SearchSettings')
+        mail = self.cp.getActionObject('Plone/MailHost')
+        search.action = Expression('string:search')
+        mail.action = Expression('string:mail')
+        updateSearchAndMailHostConfiglet(self.portal, [])
+        updateSearchAndMailHostConfiglet(self.portal, [])
+        self.assertEquals(search.action.text,
+                          'string:${portal_url}/@@search-controlpanel.html')
+        self.assertEquals(mail.action.text,
+                          'string:${portal_url}/@@mail-controlpanel.html')
+    
+    def testUpdateSearchAndMailHostConfigletNoTool(self):
+        # Should not fail if tool is missing
+        self.portal._delObject('portal_controlpanel')
+        updateSearchAndMailHostConfiglet(self.portal, [])
 
 
 class TestMigrations_v3_0_Actions(MigrationTest):

@@ -13,6 +13,7 @@ from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.interfaces import IPloneSiteRoot
 
 from form import ControlPanelForm
+from widgets import MultiCheckBoxThreeColumnWidget
 
 class ISearchSchema(Interface):
 
@@ -32,7 +33,7 @@ class ISearchSchema(Interface):
                                              unless explicitly turned off here
                                              or by the relevant installer.'''),
                                required=True,
-                               missing_value=list(),
+                               missing_value=tuple(),
                                value_type=Choice(vocabulary="AvailablePortalTypes"))
 
 
@@ -76,8 +77,8 @@ class SearchControlPanelAdapter(SchemaAdapterBase):
 class SearchControlPanel(ControlPanelForm):
 
     form_fields = FormFields(ISearchSchema)
-    # XXX Custom widget needs to be implemented
-    # form_fields['types_not_searched'].custom_widget = MultiCheckBoxThreeColumnWidget
+    form_fields['types_not_searched'].custom_widget = MultiCheckBoxThreeColumnWidget
+    form_fields['types_not_searched'].custom_widget.cssClass='label'
 
     label = _("Search settings")
     description = _("Search settings for Site.")

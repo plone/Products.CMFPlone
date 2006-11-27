@@ -59,7 +59,7 @@ Make some changes
     'http://nohost/plone/@@search-controlpanel.html'
 
     >>> browser.getControl(name='form.enable_livesearch').value = False
-    >>> browser.getControl(name='form.types_not_searched:list').value = \
+    >>> browser.getControl(name='form.types_not_searched').value = \
     ...     ['Event', 'Page']
     
 

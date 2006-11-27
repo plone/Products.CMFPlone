@@ -6,6 +6,80 @@ from zope.schema.vocabulary import SimpleVocabulary
 from Products.CMFPlone import PloneMessageFactory as _
 
 
+class MultiCheckBoxThreeColumnWidget(MultiCheckBoxWidget):
+    """ """
+
+    def __init__(self, field, request):
+        """Initialize the widget."""
+        super(MultiCheckBoxThreeColumnWidget, self).__init__(field,
+            field.value_type.vocabulary, request)
+
+    def renderItemsWithValues(self, values):
+        """Render the list of possible values, with those found in
+        `values` being marked as selected.
+        
+        This code is mostly taken from from zope.app.form.browser.itemswidgets
+        import ItemsEditWidgetBase licensed under the ZPL 2.1.
+        """
+
+        cssClass = self.cssClass
+
+        # multiple items with the same value are not allowed from a
+        # vocabulary, so that need not be considered here
+        rendered_items = []
+        count = 0
+
+        rendered_items.append('<div style="float:left; margin-right: 2em;">')
+
+        # Handle case of missing value
+        missing = self._toFormValue(self.context.missing_value)
+
+        if self._displayItemForMissingValue and not self.context.required:
+            if missing in values:
+                render = self.renderSelectedItem
+            else:
+                render = self.renderItem
+
+            missing_item = render(count,
+                self.translate(self._messageNoValue),
+                missing,
+                self.name,
+                cssClass)
+            rendered_items.append(missing_item)
+            count += 1
+
+        length = len(self.vocabulary)
+        break1 = length % 3 == 0 and length / 3 or length / 3 + 1
+        break2 = break1 * 2
+
+        # Render normal values
+        for term in self.vocabulary:
+            item_text = self.textForValue(term)
+
+            if term.value in values:
+                render = self.renderSelectedItem
+            else:
+                render = self.renderItem
+
+            rendered_item = render(count,
+                item_text,
+                term.token,
+                self.name,
+                cssClass)
+
+            rendered_items.append(rendered_item)
+            count += 1
+
+            if (count == break1 or count == break2):
+                rendered_items.append('</div><div style="float:left; '
+                                      'margin-right: 2em;">')
+
+        rendered_items.append('</div>')
+
+        return rendered_items
+
+
+
 class MultiSelectTupleWidget(MultiSelectWidget):
     """Provide a selection list for the tuple to be selected."""
 
