@@ -18,7 +18,7 @@ if REQUEST.has_key('paths'):
     ids = [p.split('/')[-1] or p.split('/')[-2] for p in REQUEST['paths']]
 
     try:
-        context.manage_cutObjects(ids, REQUEST)
+        context.manage_cutObjects(ids)
     except CopyError:
         message = _(u'One or more items not moveable.')
 	context.plone_utils.addPortalMessage(message)

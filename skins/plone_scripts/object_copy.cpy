@@ -25,7 +25,7 @@ if not mtool.checkPermission('Copy or Move', context):
 
 parent = context.aq_inner.aq_parent
 try:
-    parent.manage_copyObjects(context.getId(), REQUEST)
+    parent.manage_copyObjects(context.getId())
 except CopyError:
     message = _(u'${title} is not copyable.',
                 mapping={u'title' : context.title_or_id()})
