@@ -11,6 +11,9 @@ from AccessControl import ClassSecurityInfo, Unauthorized
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFPlone.PloneTool import EMAIL_RE
 
+from Products.PluggableAuthService.interfaces.authservice \
+        import IPluggableAuthService
+
 # - remove '1', 'l', and 'I' to avoid confusion
 # - remove '0', 'O', and 'Q' to avoid confusion
 # - remove vowels to avoid spelling words
@@ -208,7 +211,26 @@ class RegistrationTool(PloneBaseTool, BaseTool):
 
         return self.mail_password_response( self, self.REQUEST )
 
+    def isMemberIdAllowed(self, id):
+        if len(id) < 1 or id == 'Anonymous User':
+            return 0
+        if not self._ALLOWED_MEMBER_ID_PATTERN.match( id ):
+            return 0
 
+        pas = getToolByName(self, 'acl_users')
+        if IPluggableAuthService.providedBy(pas):
+            results = pas.searchPrincipals(id=id)
+            if results:
+                return 0
+        else:
+            membership = getToolByName(self, 'portal_membership')
+            if membership.getMemberById(id) is not None:
+                return 0
+            groups = getToolByName(self, 'portal_groups')
+            if groups.getGroupById(id) is not None:
+                return 0
+
+        return 1
 
 RegistrationTool.__doc__ = BaseTool.__doc__
 

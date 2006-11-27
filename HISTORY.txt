@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.5.2 - Orb - (Unreleased)
 
+    - Applied the Hotfix for CVE-2006-4249, which also fixes
+      http://dev.plone.org/plone/ticket/5906
+      [wiggy, alecm]
+
     - Non-ascii characters in actions used in the portal tabs provoked an
       UnicodeDecodeError. This closes http://dev.plone.org/plone/ticket/5791.
       [hannosch]
