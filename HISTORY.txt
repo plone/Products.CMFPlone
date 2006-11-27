@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.5.2 - Orb - (Unreleased)
 
+    - Use clever url unquoting to ensure that the rename form redirects to the
+      correct url after rename, even if quoted characters are involved.  Fixes
+      http://dev.plone.org/plone/ticket/5843
+      [alecm]
+
     - Use current_page_url instead of ACTUAL_URL for accessibility anchors.
       Fixes http://dev.plone.org/plone/ticket/5777
       [alecm]

@@ -12,6 +12,7 @@
 from Products.CMFPlone.utils import transaction_note
 from Products.CMFPlone import PloneMessageFactory as _
 from ZODB.POSException import ConflictError
+from Products.PythonScripts.standard import url_unquote
 
 portal = context.portal_url.getPortalObject()
 failed = {}
@@ -43,7 +44,8 @@ for x in range(0, len(new_ids)):
                 # care that the user is not redirected to the object
                 # with the original id but with the new id.
                 newObjPath = parent[new_id].absolute_url_path()
-                orig_template = orig_template.replace(origPath, newObjPath)
+                orig_template = orig_template.replace(url_unquote(origPath),
+                                                      newObjPath)
                 request.set('orig_template', orig_template)
                 message = "Renamed '%s' to '%s'" % (id, new_id)
         else:
