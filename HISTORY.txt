@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.5.2 - Orb - (Unreleased)
 
+    - Made standard_error_message more tolerant of security issues and
+      acquisition problems.  Fixes http://dev.plone.org/plone/ticket/5955
+      [alecm]
+
     - Fixed issue with search for members of groups, using patch from
       derek_richardson.  Fixes http://dev.plone.org/plone/ticket/5902
       [alecm]
