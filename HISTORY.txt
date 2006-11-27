@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Some minor code modernizations in the FactoryTool.
+      [hannosch]
+
     - Added formlib based mail and search control panels.
       [hannosch]
 
