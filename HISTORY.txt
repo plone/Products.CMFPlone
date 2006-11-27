@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.5.2 - Orb - (Unreleased)
 
+    - Made the error displayed on SMTPRecipientsRefused during password reset
+      not display the email address, as this is an undesirable privacy leakage.
+      Fixes https://dev.plone.org/plone/ticket/5962
+      [alecm]
+
     - Applied the Hotfix for CVE-2006-4249, which also fixes
       http://dev.plone.org/plone/ticket/5906
       [wiggy, alecm]

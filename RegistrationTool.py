@@ -1,5 +1,6 @@
 import random
 import md5
+from smtplib import SMTPRecipientsRefused
 
 from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault.RegistrationTool import RegistrationTool as BaseTool
@@ -173,8 +174,11 @@ class RegistrationTool(PloneBaseTool, BaseTool):
             # add the single email address
             if not utils.validateSingleEmailAddress(member.getProperty('email')):
                 raise ValueError, 'The email address did not validate'
-
-        return BaseTool.mailPassword(self, forgotten_userid, REQUEST)
+        try:
+            return BaseTool.mailPassword(self, forgotten_userid, REQUEST)
+        except SMTPRecipientsRefused:
+            # Don't disclose email address on failure
+            raise SMTPRecipientsRefused('Recipient address rejected by server')
 
     security.declarePublic('registeredNotify')
     def registeredNotify(self, new_member_id):
