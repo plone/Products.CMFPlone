@@ -4,11 +4,15 @@ Changelog for Plone
 
 Plone 2.5.2 - Orb - (Unreleased)
 
+    - Don't assume portal_catalog when reindexing during ownership change.
+      Fixes http://dev.plone.org/plone/ticket/5063
+      [alecm]
+
     - Ensure rss_template max items is an integer.  Should fix
       http://dev.plone.org/plone/ticket/5553
       [alecm]
 
-    - Applied patch from aaronvanderlip to add includeTop setting to navigation
+    - Applied patch from aaronv to add includeTop setting to navigation
       prefs form.  Fixes http://dev.plone.org/plone/ticket/5519
       [alecm]
 

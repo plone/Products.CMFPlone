@@ -459,17 +459,19 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             object.manage_setLocalRoles(user_id, roles)
 
         fixOwnerRole(object, user.getId())
-        catalog_tool = getToolByName(self, 'portal_catalog')
-        catalog_tool.reindexObject(object)
+        if base_hasattr(object, 'reindexObject'):
+            object.reindexObject()
 
         if recursive:
+            catalog_tool = getToolByName(self, 'portal_catalog')
             purl = getToolByName(self, 'portal_url')
             _path = purl.getRelativeContentURL(object)
             subobjects = [b.getObject() for b in \
                          catalog_tool(path={'query':_path,'level':1})]
             for obj in subobjects:
                 fixOwnerRole(obj, user.getId())
-                catalog_tool.reindexObject(obj)
+                if base_hasattr(obj, 'reindexObject'):
+                    obj.reindexObject()
 
     security.declarePublic('urlparse')
     def urlparse(self, url):
