@@ -4,6 +4,16 @@ Changelog for Plone
 
 Plone 2.5.2 - Orb - (Unreleased)
 
+    - Make css ids for rows in folder_contents sane.  Fixes
+      http://dev.plone.org/plone/ticket/5940
+      [alecm]
+
+    - Make various icons in folder_contents explicitly render alt tags, because
+      the rendering of those images magically picks up items named 'alt' in
+      the context, which breaks the page (plus it adds usability).  Fixes
+      http://dev.plone.org/plone/ticket/5934
+      [alecm]
+
     - Don't assume portal_catalog when reindexing during ownership change.
       Fixes http://dev.plone.org/plone/ticket/5063
       [alecm]

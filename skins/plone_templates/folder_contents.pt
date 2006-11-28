@@ -34,7 +34,7 @@
             Document actions (print, sendto etc)
         </div>
         <h1>
-          <tal:block replace="structure python:getattr(here, here.getIcon(1))"/>
+          <tal:block replace="structure python:getattr(here, here.getIcon(1)).tag(alt=here.portal_type)"/>
           <span tal:content="python: view_title and here.utranslate(view_title) or putils.pretty_title_or_id(here)" tal:omit-tag="">Directory Id</span>
         </h1>
         <tal:full_view condition="full_view">
@@ -170,8 +170,10 @@
             </thead>
 
             <metal:block tal:condition="batch|not:standalone|nothing">
-            <tbody tal:define="arrowUp portal/arrowUp.gif;
-                               arrowDown portal/arrowDown.gif;
+            <tbody tal:define="arrowUp nocall:portal/arrowUp.gif;
+                               arrowUp python:arrowUp.tag(alt='Move Up');
+                               arrowDown nocall:portal/arrowDown.gif;
+                               arrowDown python:arrowDown.tag(alt='Move Down');
                                getRelativeContentURL nocall:utool/getRelativeContentURL
                                ">
                 <tal:items tal:repeat="item batch">
@@ -195,7 +197,7 @@
                                    isBrowserDefault     python:len(browserDefaultResult[1]) == 1 and item.id == here.browserDefault()[1][0];
                                    item_folderish       item/is_folderish|nothing"
                        tal:attributes="class python:test(oddrow, 'draggable even', 'draggable odd');
-                                       id item_id;" >
+                                       id string:folder-contents-item-${item_id};" >
 
                        <tal:comment replace="nothing">
                             * We have to check if the browserDefault stuff is really necessary
