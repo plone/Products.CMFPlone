@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.5.2 - Orb - (Unreleased)
 
+    - Make hasIndexHtml script more efficient for BTreeFolders.  Fixes
+      http://dev.plone.org/plone/ticket/5769
+      [alecm]
+
     - Add event support to OrderedContainer so that moveObjectToPosition
       doesn't break on Zope 2.9.  Should fix
       http://dev.plone.org/plone/ticket/5961
