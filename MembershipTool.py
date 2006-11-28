@@ -583,10 +583,10 @@ class MembershipTool(PloneBaseTool, BaseTool):
         if not self.isAnonymousUser():
             member = self.getAuthenticatedMember()
             login_time = member.getProperty('login_time', '2000/01/01')
-            if  str(login_time) == '2000/01/01':
+            if str(login_time) == '2000/01/01':
                 login_time = self.ZopeTime()
-            member.setProperties(login_time=login_time,
-                                 last_login_time=self.ZopeTime())
+            member.setProperties(login_time=self.ZopeTime(),
+                                 last_login_time=login_time)
 
     security.declareProtected(ManagePortal, 'getBadMembers')
     def getBadMembers(self):

@@ -51,7 +51,7 @@ class TestLogin(PloneTestCase.PloneTestCase):
         member = self.membership.getAuthenticatedMember()
         self.failUnless(DateTime(member.getProperty('last_login_time')) >= now)
 
-    def testInitialLoginTimeDoesNotChange(self):
+    def testInitialLoginTimeDoesChange(self):
         member = self.membership.getAuthenticatedMember()
         self.portal.logged_in()
         member = self.membership.getAuthenticatedMember()
@@ -59,9 +59,9 @@ class TestLogin(PloneTestCase.PloneTestCase):
         # Log in again later
         sleep(0.2)
         self.portal.logged_in()
-        # login_time did not change
+        # login_time did change
         member = self.membership.getAuthenticatedMember()
-        self.assertEqual(DateTime(member.getProperty('login_time')), login_time)
+        self.failUnless(DateTime(member.getProperty('login_time')) > login_time)
 
 
 def test_suite():
