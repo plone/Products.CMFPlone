@@ -43,6 +43,10 @@ EXTRA_DASHES_REGEX = re.compile(r"(^\-+)|(\-+$)")
 PIL_SCALING_ALGO = Image.ANTIALIAS
 PIL_QUALITY = 88
 MEMBER_IMAGE_SCALE = (75, 100)
+IMAGE_SCALE_PARAMS = {'scale': MEMBER_IMAGE_SCALE,
+                      'quality': PIL_QUALITY,
+                      'algorithm': PIL_SCALING_ALGO,
+                      'default_format': 'PNG'}
 
 _marker = []
 
@@ -619,8 +623,7 @@ def _getSecurity(klass, create=True):
         setattr(klass, '__security__', security)
     return security
 
-def scale_image(image_file, max_size=MEMBER_IMAGE_SCALE,
-                default_format = 'PNG'):
+def scale_image(image_file, max_size=None, default_format=None):
     """Scales an image down to at most max_size preserving aspect ratio
     from an input file
 
@@ -707,6 +710,10 @@ def scale_image(image_file, max_size=MEMBER_IMAGE_SCALE,
         (50, 50)
 
     """
+    if max_size is None:
+        max_size = IMAGE_SCALE_PARAMS['scale']
+    if default_format is None:
+        default_format = IMAGE_SCALE_PARAMS['default_format']
     # Make sure we have ints
     size = (int(max_size[0]), int(max_size[1]))
     # Load up the image, don't try to catch errors, we want to fail miserably
@@ -730,13 +737,13 @@ def scale_image(image_file, max_size=MEMBER_IMAGE_SCALE,
         image = image.convert('RGBA')
     # Rescale in place with an method that will not alter the aspect ratio
     # and will only shrink the image not enlarge it.
-    image.thumbnail(size, resample=PIL_SCALING_ALGO)
+    image.thumbnail(size, resample=IMAGE_SCALE_PARAMS['algorithm'])
     # preserve palletted mode for GIF and PNG
     if original_mode == 'P' and format in ('GIF', 'PNG'):
         image = image.convert('P')
     # Save
     new_file = StringIO()
-    image.save(new_file, format, quality=PIL_QUALITY)
+    image.save(new_file, format, quality=IMAGE_SCALE_PARAMS['quality'])
     new_file.seek(0)
     # Return the file data and the new mimetype
     return new_file, mimetype

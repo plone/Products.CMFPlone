@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.5.2 - Orb - (Unreleased)
 
+    - Make the parameters for member image scaling more easily configurable
+      by putting them in a mutable data structure.  Eventually, we should
+      provide a TTW configuration for this.
+      [alecm]
+
     - Make hasIndexHtml script more efficient for BTreeFolders.  Fixes
       http://dev.plone.org/plone/ticket/5769
       [alecm]
