@@ -27,6 +27,7 @@ from Products.CMFDefault.DublinCore import DefaultDublinCoreImpl
 from Products.CMFPlone import PloneMessageFactory as _
 
 from zope.interface import implements
+from zope.app.container.contained import notifyContainerModified
 
 # ATM it's safer to define our own
 from interfaces.OrderedContainer import IOrderedContainer
@@ -129,7 +130,8 @@ class OrderedContainer(Folder):
     # the 2.7 specific class OFS.OrderedContainer.OrderedContainer
 
     security.declareProtected(ModifyPortalContent, 'moveObjectsByDelta')
-    def moveObjectsByDelta(self, ids, delta, subset_ids=None):
+    def moveObjectsByDelta(self, ids, delta, subset_ids=None,
+                           suppress_events=False):
         """Move specified sub-objects by delta."""
         if type(ids) is StringType:
             ids = (ids,)
@@ -175,6 +177,10 @@ class OrderedContainer(Folder):
                         raise ValueError('The object with the id "%s" does '
                                          'not exist.' % subset_ids[pos])
             self._objects = tuple(objects)
+
+        if not suppress_events:
+            notifyContainerModified(self)
+
         return counter
 
     security.declarePrivate('getCMFObjectsSubsetIds')
@@ -224,10 +230,11 @@ class OrderedContainer(Folder):
             RESPONSE.redirect('manage_workspace')
 
     security.declareProtected(ModifyPortalContent, 'moveObjectToPosition')
-    def moveObjectToPosition(self, id, position):
+    def moveObjectToPosition(self, id, position, suppress_events=False):
         """Move specified object to absolute position."""
         delta = position - self.getObjectPosition(id)
-        return self.moveObjectsByDelta(id, delta)
+        return self.moveObjectsByDelta(id, delta,
+                                       suppress_events=suppress_events)
 
     security.declareProtected(ModifyPortalContent, 'orderObjects')
     def orderObjects(self, key, reverse=None):

@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.5.2 - Orb - (Unreleased)
 
+    - Add event support to OrderedContainer so that moveObjectToPosition
+      doesn't break on Zope 2.9.  Should fix
+      http://dev.plone.org/plone/ticket/5961
+      [alecm]
+
     - Make css ids for rows in folder_contents sane.  Fixes
       http://dev.plone.org/plone/ticket/5940
       [alecm]
