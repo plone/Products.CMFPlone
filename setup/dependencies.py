@@ -104,10 +104,9 @@ try:
     # TODO: we might want to check if the user has jpeg and zlib support, too
     import PIL.Image
 except ImportError:
-    log(("PIL not found. Plone needs PIL 1.1.5 or newer to scale images. "
+    log(("PIL not found. Plone needs PIL 1.1.5 or newer. "
          "Please download it from http://www.pythonware.com/products/pil/ or "
-         "http://effbot.org/downloads/#Imaging"),
-         severity=logging.INFO)
+         "http://effbot.org/downloads/#Imaging"))
 
 try:
     from elementtree import ElementTree

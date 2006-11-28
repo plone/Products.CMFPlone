@@ -207,6 +207,25 @@ Plone 3.0-alpha1 - released November 24, 2006
 
 Plone 2.5.2 - Orb - (Unreleased)
 
+    - Make hasIndexHtml script more efficient for BTreeFolders.  Fixes
+      http://dev.plone.org/plone/ticket/5769
+      [alecm]
+
+    - Add event support to OrderedContainer so that moveObjectToPosition
+      doesn't break on Zope 2.9.  Should fix
+      http://dev.plone.org/plone/ticket/5961
+      [alecm]
+
+    - Make css ids for rows in folder_contents sane.  Fixes
+      http://dev.plone.org/plone/ticket/5940
+      [alecm]
+
+    - Make various icons in folder_contents explicitly render alt tags, because
+      the rendering of those images magically picks up items named 'alt' in
+      the context, which breaks the page (plus it adds usability).  Fixes
+      http://dev.plone.org/plone/ticket/5934
+      [alecm]
+
     - Don't assume portal_catalog when reindexing during ownership change.
       Fixes http://dev.plone.org/plone/ticket/5063
       [alecm]
@@ -1369,6 +1388,12 @@ Plone 2.5 - released June 16, 2006
       [hannosch]
 
 Plone 2.1.5 - Fischerspooner - (Unreleased)
+
+    - Fixed handling of login_time and last_login member properties:
+      last_login_time is now the time of the previous login and login_time is
+      the time of the current login. This fixes
+      http://dev.plone.org/plone/ticket/5965.
+      [hannosch]
 
     - Fixed the sharing page to handle groups which come from non-traditional
       PAS sources. This closes
