@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Added missing ATRelativePathCriterion to the default profile.
+      [stefan]
+
     - Some minor code modernizations in the FactoryTool.
       [hannosch]
 
