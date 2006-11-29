@@ -460,13 +460,18 @@ def safe_unicode(value, encoding='utf-8'):
         u'\u01b5'
         >>> safe_unicode('\xc6\xb5', encoding='ascii')
         u'\u01b5'
+        >>> safe_unicode(1)
+        1
+        >>> print safe_unicode(None)
+        None
     """
     if isinstance(value, unicode):
         return value
-    try:
-        value = unicode(value, encoding)
-    except UnicodeDecodeError:
-        value = value.decode('utf-8', 'replace')
+    elif isinstance(value, basestring):
+        try:
+            value = unicode(value, encoding)
+        except (UnicodeDecodeError):
+            value = value.decode('utf-8', 'replace')
     return value
 
 
