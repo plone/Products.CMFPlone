@@ -100,7 +100,7 @@
       prefer layouts that don't use tables.
       </tal:comment>
 
-      <table id="portal-columns">
+      <table id="portal-columns" cellspacing="0" cellpadding="0">
         <tbody>
           <tr>
             <tal:comment replace="nothing"> Start of the left column </tal:comment>

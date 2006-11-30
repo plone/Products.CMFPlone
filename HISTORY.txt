@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.5.2 - Orb - (Unreleased)
 
+    - main table for columns (#portal-columns) should not have paddings or 
+      spacings - they can confuse when styling. That table has cellpadding="0"
+      cellspacing="0" now.
+      [spliter]
+
     - Make the parameters for member image scaling more easily configurable
       by putting them in a mutable data structure.  Eventually, we should
       provide a TTW configuration for this.
