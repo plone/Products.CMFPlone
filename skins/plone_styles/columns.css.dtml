@@ -16,17 +16,23 @@
 #portal-column-one {
     vertical-align: top;
     width: <dtml-var columnOneWidth missing="16em">;
+    border-collapse: collapse;
+    padding: 0;
 }
 
 #portal-column-content {
     vertical-align: top;
     margin: 0;
     padding: 0;
+    border-collapse: collapse;
+    padding: 0;    
 }
 
 #portal-column-two {
     vertical-align: top;
     width: <dtml-var columnTwoWidth missing="16em">;
+    border-collapse: collapse;
+    padding: 0;    
 }
 
 /* fullscreen */
