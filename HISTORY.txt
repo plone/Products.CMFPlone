@@ -228,6 +228,16 @@ Plone 3.0-alpha1 - released November 24, 2006
 
 Plone 2.5.2 - Orb - (Unreleased)
 
+    - main table for columns (#portal-columns) should not have paddings or 
+      spacings - they can confuse when styling. Fixed with CSS for the table 
+      cells, thanks to deo ;)
+      [spliter]
+
+    - Make the parameters for member image scaling more easily configurable
+      by putting them in a mutable data structure.  Eventually, we should
+      provide a TTW configuration for this.
+      [alecm]
+
     - Make hasIndexHtml script more efficient for BTreeFolders.  Fixes
       http://dev.plone.org/plone/ticket/5769
       [alecm]
