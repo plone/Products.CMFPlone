@@ -4,6 +4,7 @@
 # navtrees.
 
 from zope.interface import implements
+from zope.component import getMultiAdapter
 
 from Acquisition import aq_base
 
@@ -12,6 +13,7 @@ from Products.CMFPlone import utils
 from Products.CMFPlone.browser.interfaces import INavtreeStrategy
 from Products.CMFPlone.browser.interfaces import INavigationRoot
 from Products.CMFPlone.browser.interfaces import INavigationQueryBuilder
+from Products.CMFPlone.browser.interfaces import IContentIcon
 
 from types import StringType
 
@@ -502,6 +504,7 @@ class SitemapNavtreeStrategy(NavtreeStrategyBase):
 
     def decoratorFactory(self, node):
         context = utils.context(self)
+        request = context.REQUEST
         
         newNode = node.copy()
         item = node['item']
@@ -520,7 +523,8 @@ class SitemapNavtreeStrategy(NavtreeStrategyBase):
         newNode['absolute_url'] = itemUrl
         newNode['getURL'] = itemUrl
         newNode['path'] = item.getPath()
-        newNode['icon'] = getattr(item, 'getIcon', None)
+        newNode['icon'] = getattr(item, 'getIcon', None) # Deprecated, use item_icon
+        newNode['item_icon'] = getMultiAdapter((context, request, item), IContentIcon)
         newNode['Creator'] = getattr(item, 'Creator', None)
         newNode['creation_date'] = getattr(item, 'CreationDate', None)
         newNode['portal_type'] = portalType
