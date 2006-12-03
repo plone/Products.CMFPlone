@@ -209,6 +209,28 @@ class ISitemapView(Interface):
         """Create the site map data structure"""
 
 
+class IContentIcon(Interface):
+    """ """
+
+    def width():
+        """Returns the width of the icon (required)."""
+
+    def height():
+        """Returns the height of the icon (required)."""
+
+    def url():
+        """Returns the absolute url of the icon. This has to return None if
+           no icon should be rendered."""
+
+    def description():
+        """Returns the description used for the alt attribute. Has to return
+           at least an empty string."""
+
+    def title():
+        """Returns the content of the title attribute. Return None if title
+           is empty."""
+
+
 class IPlone(Interface):
     """ """
 
@@ -415,3 +437,8 @@ class IPlone(Interface):
            context.  Evaluates whether the object is a folder or the default
            page of a folder, and checks if the user has relevant permissions.
         """
+
+    def getIcon(item):
+        """Returns an object which implements the IContentIcon interface and
+           provides the informations necessary to render an icon.
+           The item parameter needs to be adaptable to IContentIcon."""

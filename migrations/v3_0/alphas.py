@@ -72,6 +72,9 @@ def alpha1_alpha2(portal):
     # Update search and mailhost control panels to new formlib based ones
     updateSearchAndMailHostConfiglet(portal, out)
 
+    # remove generated.css from ResourceRegistries
+    removeGeneratedCSS(portal, out)
+
     return out
 
 
@@ -233,3 +236,10 @@ def updateSearchAndMailHostConfiglet(portal, out):
         if mail is not None:
             mail.action = Expression('string:${portal_url}/@@mail-controlpanel.html')
 
+def removeGeneratedCSS(portal, out):
+    # remove generated.css from the portal_css registries
+    cssreg = getToolByName(portal, 'portal_css', None)
+    stylesheet_ids = cssreg.getResourceIds()
+    if 'generated.css' in stylesheet_ids:
+        cssreg.unregisterResource('generated.css')
+        out.append("Removed generated.css from the registry")

@@ -81,14 +81,15 @@ class ActionsMenu(BrowserMenu):
             return []
         
         plone_utils = getToolByName(context, 'plone_utils')
+        portal_url = getToolByName(context, 'portal_url')()
         
         for a in editActions:
             action = IActionInfo(a)
             if action['allowed']:
+                cssClass = 'actionicon-object_buttons-%s' % action['id']
                 icon = plone_utils.getIconFor('object_buttons', action['id'], None)
-                cssClass = ''
                 if icon:
-                    cssClass = 'visualIconPadding visualIcon actionicon-object_buttons-%s' % action['id']
+                    icon = '%s/%s' % (portal_url, icon)
                     
                 results.append({ 'title'        : action['title'],
                                  'description'  : '',
@@ -473,6 +474,8 @@ class FactoriesMenu(BrowserMenu):
         """Return menu item entries in a TAL-friendly form."""
         results = []
         
+        portal_url = getToolByName(context, 'portal_url')()
+
         ploneView = getMultiAdapter((context, request), name="plone")
         addContext = ploneView.getCurrentFolder()
         
@@ -498,19 +501,22 @@ class FactoriesMenu(BrowserMenu):
                 haveSettings = True
 
         for t in allowedTypes:
-             typeId = t.getId()
-             if typeId not in exclude and (include is None or typeId in include):
-                 url = '%s/createObject?type_name=%s' % (addContext.absolute_url(), typeId,)
-                 cssClass = 'visualIconPadding visualIcon contenttype-%s' % utils.normalizeString(typeId, context=context)
+            typeId = t.getId()
+            if typeId not in exclude and (include is None or typeId in include):
+                cssClass = 'contenttype-%s' % utils.normalizeString(typeId, context=context)
+                url = '%s/createObject?type_name=%s' % (addContext.absolute_url(), typeId,)
+                icon = t.getIcon()
+                if icon:
+                    icon = '%s/%s' % (portal_url, icon)
                  
-                 results.append({ 'title'        : t.Title(),
-                                  'description'  : t.Description(),
-                                  'action'       : url,
-                                  'selected'     : False,
-                                  'icon'         : None,
-                                  'extra'        : {'id' : typeId, 'separator' : None, 'class' : cssClass},
-                                  'submenu'      : None,
-                                 })
+                results.append({ 'title'        : t.Title(),
+                                 'description'  : t.Description(),
+                                 'action'       : url,
+                                 'selected'     : False,
+                                 'icon'         : icon,
+                                 'extra'        : {'id' : typeId, 'separator' : None, 'class' : cssClass},
+                                 'submenu'      : None,
+                                })
 
         # Sort the addable content types based on their translated title
         # BBB addContext.translate should be replaced by a translate call of

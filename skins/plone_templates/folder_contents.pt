@@ -186,7 +186,8 @@
                                    item_type            item/portal_type;
                                    item_size            item/getObjSize;
                                    item_modified        item/ModificationDate;
-                                   item_type_class      python:'visualIcon contenttype-' + normalizeString(item_type);
+                                   item_icon            python:plone_view.getIcon(item);
+                                   item_type_class      python:'contenttype-' + normalizeString(item_type);
                                    item_wf_state        item/review_state|python: wtool.getInfoFor(item, 'review_state', '');
                                    item_state_title     python:wtool.getTitleForStateOnType(item_wf_state, item_type);
                                    item_wf_state_class  python:'state-' + normalizeString(item_wf_state);
@@ -221,16 +222,24 @@
                     <td tal:define="url python:test(item_use_view, item_url+'/view',
                                     test(item_folderish, item_url+'/folder_contents', item_url+'/'));">
                         <span tal:attributes="class item_type_class">
-                        <a href="#" tal:attributes="href  url;
-                                                  title string: $item_type: $item_description;
-                                                  class string:$item_wf_state_class visualIconPadding;">
-                            <strong tal:omit-tag="python:not isBrowserDefault">
-                            <label tal:content="item_title_or_id"
-                                   tal:attributes="for string:cb_$item_id">
-                              Item Title
-                            </label>
-                            </strong>
-                        </a>
+                            <img width="16" height="16"
+                                 src="" alt=""
+                                 tal:condition="item_icon/url"
+                                 tal:attributes="src item_icon/url;
+                                                 alt item_icon/description;
+                                                 title item_icon/title;
+                                                 width item_icon/width;
+                                                 height item_icon/height;" />
+                            <a href="#" tal:attributes="href  url;
+                                                      title string: $item_type: $item_description;
+                                                      class item_wf_state_class;">
+                                <strong tal:omit-tag="python:not isBrowserDefault">
+                                <label tal:content="item_title_or_id"
+                                       tal:attributes="for string:cb_$item_id">
+                                  Item Title
+                                </label>
+                                </strong>
+                            </a>
                         </span>
 
                         <span class="state-expired"

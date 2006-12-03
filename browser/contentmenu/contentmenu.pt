@@ -10,18 +10,17 @@
             tal:omit-tag="menuItem/extra/hideChildren | nothing">
           <dt class="actionMenuHeader"
               tal:omit-tag="menuItem/extra/hideChildren | nothing">
-            <img width="16"
-                 height="16"
-                 tal:condition="menuItem/icon"
-                 tal:attributes="src menuItem/icon;
-                                 alt menuItem/description"
-                 i18n:attributes="alt;"/>
             <a href="#"
                tal:omit-tag="not:menuItem/action"
                tal:attributes="href menuItem/action;
                                title menuItem/description"
                i18n:attributes="title;">
-
+                <img width="16"
+                     height="16"
+                     tal:condition="menuItem/icon"
+                     tal:attributes="src menuItem/icon;
+                                     alt menuItem/description"
+                     i18n:attributes="alt;"/>
                 <span tal:content="menuItem/title"
                       i18n:translate="">
                     Title
@@ -46,6 +45,12 @@
                                        id subMenuItem/extra/id | nothing;
                                        class subMenuItem/extra/class | nothing"
                        i18n:attributes="title">
+                        <img width="16"
+                             height="16"
+                             tal:condition="subMenuItem/icon"
+                             tal:attributes="src subMenuItem/icon;
+                                             alt subMenuItem/description"
+                             i18n:attributes="alt;"/>
                         <span tal:content="subMenuItem/title"
                               i18n:translate="">
                             Title

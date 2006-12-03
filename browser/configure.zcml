@@ -18,6 +18,10 @@
     <allow interface=".interfaces.INavigationQueryBuilder" />
   </class>
 
+  <class class=".icon.CatalogBrainContentIcon">
+    <allow interface=".interfaces.IContentIcon" />
+  </class>
+
   <browser:page
       for="*"
       name="default_page"
@@ -132,5 +136,22 @@
             factory=".navtree.SitemapNavtreeStrategy"
             provides=".interfaces.INavtreeStrategy" />
 
+  <adapter for="*
+                zope.publisher.interfaces.browser.IBrowserRequest
+                Products.ZCatalog.CatalogBrains.AbstractCatalogBrain"
+           factory=".icon.CatalogBrainContentIcon"
+           provides=".interfaces.IContentIcon" />
+
+  <adapter for="*
+                zope.publisher.interfaces.browser.IBrowserRequest
+                Products.ATContentTypes.interface.IATContentType"
+           factory=".icon.ATCTContentIcon"
+           provides=".interfaces.IContentIcon" />
+
+  <adapter for="*
+                zope.publisher.interfaces.browser.IBrowserRequest
+                Products.CMFCore.TypesTool.FactoryTypeInformation"
+           factory=".icon.FTIContentIcon"
+           provides=".interfaces.IContentIcon" />
 
 </configure>

@@ -15,6 +15,7 @@ from Products.CMFPlone.interfaces import IBrowserDefault
 from Products.CMFPlone.interfaces import INonStructuralFolder
 from Products.CMFPlone.interfaces.NonStructuralFolder import INonStructuralFolder\
      as z2INonStructuralFolder
+from Products.CMFPlone.browser.interfaces import IContentIcon
 
 from zope.interface import implements
 from zope.component import getMultiAdapter, queryMultiAdapter, getUtility
@@ -429,3 +430,11 @@ class Plone(utils.BrowserView):
 
         return show
     displayContentsTab = cache_decorator(displayContentsTab)
+
+    def getIcon(self, item):
+        """Returns a dictionary with informations necessary to render an icon.
+           The item parameter can either be a catalog brain, or a content
+           object."""
+        context = utils.context(self)
+        icon = getMultiAdapter((context, self.request, item), IContentIcon)
+        return icon

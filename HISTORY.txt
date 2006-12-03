@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Use img tags instead of css classes for icons (PLIP 178).
+      [fschulze]
+
     - Added missing ATRelativePathCriterion to the default profile.
       [stefan]
 

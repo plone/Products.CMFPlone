@@ -43,23 +43,25 @@
                             batch folderContents">
         <tal:listing condition="folderContents">
 
-            <div class="tileItem visualIEFloatFix vevent" tal:repeat="item folderContents">
-                <tal:block tal:define="item_url item/getURL|item/absolute_url;
+            <tal:block tal:repeat="item folderContents">
+                <div class="tileItem visualIEFloatFix vevent" 
+                     tal:define="item_url item/getURL|item/absolute_url;
                                        item_id item/getId|item/id;
                                        item_title_or_id item/pretty_title_or_id;
                                        item_description item/Description;
                                        item_type item/portal_type;
                                        item_type_title item/Type;
+                                       item_type_class python: 'contenttype-' + normalizeString(item_type);
                                        item_modified item/ModificationDate;
                                        item_created item/CreationDate;
-                                       item_type_class python: 'visualIcon contenttype-' + normalizeString(item_type);
                                        item_wf_state        item/review_state|python: wtool.getInfoFor(item, 'review_state', '');
                                        item_wf_state_class python:'state-' + normalizeString(item_wf_state);
                                        item_creator item/Creator;
                                        item_start item/start/ISO|item/StartDate|nothing;
                                        item_end item/end/ISO|item/EndDate|nothing;
                                        item_object item/getObject;
-                                   ">
+                                   "
+                     tal:attributes="class string:tileItem visualIEFloatFix vevent ${item_type_class}">
 
                     <a href="#"
                        tal:condition="python:item_type != 'Link'"
@@ -153,8 +155,8 @@
 
                     <div class="visualClear"><!-- --></div>
 
-                </tal:block>
-            </div>
+                </div>
+            </tal:block>
 
             <!-- Navigation -->
             <div metal:use-macro="here/batch_macros/macros/navigation" />

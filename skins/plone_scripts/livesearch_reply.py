@@ -13,7 +13,9 @@ from Products.CMFPlone.utils import safe_unicode
 from Products.PythonScripts.standard import url_quote
 
 ploneUtils = getToolByName(context, 'plone_utils')
+portal_url = getToolByName(context, 'portal_url')()
 pretty_title_or_id = ploneUtils.pretty_title_or_id
+plone_view = context.restrictedTraverse('@@plone')
 
 portalProperties = getToolByName(context, 'portal_properties')
 siteProperties = getattr(portalProperties, 'site_properties', None)
@@ -101,12 +103,16 @@ else:
     write('''<ul class="LSTable">''')
     for result in results[:limit]:
 
+        icon = plone_view.getIcon(result)
         itemUrl = result.getURL()
         if result.portal_type in useViewAction:
             itemUrl += '/view'
 
         write('''<li class="LSRow">''')
-        write('''<img src="%s"/>''' % result.getIcon)
+        write('''<img src="%s" alt="%s" width="%i" height="%i" />''' % (icon.url(),
+                                                                        icon.description(),
+                                                                        icon.width(),
+                                                                        icon.height()))
         full_title = safe_unicode(pretty_title_or_id(result))
         if len(full_title) >= MAX_TITLE:
             display_title = ''.join((full_title[:MAX_TITLE],'...'))
