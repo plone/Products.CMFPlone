@@ -1,0 +1,9 @@
+Changelog for plone.app.layout
+
+    (name of developer listed in brackets)
+
+plone.app.layout - 0.1 Unreleased
+
+    - Initial package structure.
+      [zopeskel]
+

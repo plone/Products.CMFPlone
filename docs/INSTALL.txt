@@ -1,0 +1,21 @@
+plone.app.layout Installation
+=======================
+
+ * When you're reading this you have probably already run 
+   ``easy_install plone.app.layout``. Find out how to install setuptools
+   (and EasyInstall) here:
+   http://peak.telecommunity.com/DevCenter/EasyInstall
+
+ * Get `pythonproducts`_ and install it via::
+
+       python setup.py install --home /path/to/instance
+
+   into your Zope instance.
+
+ * Create a file called ``plone.app.layout-configure.zcml`` in the
+   ``/path/to/instance/etc/package-includes`` directory.  The file
+   should only contain this::
+
+       <include package="plone.app.layout" />
+
+.. _pythonproducts: http://plone.org/products/pythonproducts

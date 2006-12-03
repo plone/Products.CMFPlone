@@ -1,0 +1,65 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser">
+
+    <!-- Views with global constants -->
+    
+    <browser:view
+        name="plone_tools"
+        permission="zope2.View"
+        class=".globals.tools.Tools"
+        allowed_interface=".globals.interfaces.ITools"
+        />
+        
+    <browser:view
+        name="plone_context_state"
+        permission="zope2.View"
+        class=".globals.context.ContextState"
+        allowed_interface=".globals.interfaces.IContextState"
+        />
+        
+    <browser:view
+        name="plone_portal_state"
+        permission="zope2.View"
+        class=".globals.portal.PortalState"
+        allowed_interface=".globals.interfaces.IPortalStatus"
+        />
+    
+    <!-- We need to make the request annotatable for this to work -->
+    <class class="ZPublisher.BaseRequest.BaseRequest">
+        <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
+    </class>
+    
+    <!-- Register viewlet managers - used in plone's main_template -->
+    
+    <browser:viewletManager
+        name="plone.htmlhead"
+        provides=".viewlets.interfaces.IHtmlHead"
+        permission="zope2.View"
+        />
+
+    <browser:viewletManager
+        name="plone.siteactions"
+        provides=".viewlets.interfaces.ISiteActions"
+        permission="zope2.View"
+        />
+
+    <browser:viewletManager
+        name="plone.abovecontent"
+        provides=".viewlets.interfaces.IAboveContent"
+        permission="zope2.View"
+        />
+
+    <browser:viewletManager
+        name="plone.belowcontent"
+        provides=".viewlets.interfaces.IBelowContent"
+        permission="zope2.View"
+        />
+
+    <browser:viewletManager
+        name="plone.portalfooter"
+        provides=".viewlets.interfaces.IPortalFooter"
+        permission="zope2.View"
+        />
+
+</configure>
