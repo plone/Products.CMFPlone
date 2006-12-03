@@ -422,7 +422,7 @@ class Plone(utils.BrowserView):
         return show
 
     def getIcon(self, item):
-        """Returns a dictionary with informations necessary to render an icon.
+        """Returns an item with informations necessary to render an icon.
            The item parameter can either be a catalog brain, or a content
            object."""
         context = utils.context(self)

@@ -32,14 +32,7 @@
                                 item_wf_state result/review_state;
                                 item_wf_state_class python:'state-' + normalizeString(item_wf_state);">
                     <span tal:attributes="class python:'contenttype-' + normalizeString(result.portal_type)">
-                      <img width="16" height="16"
-                           src="" alt=""
-                           tal:condition="item_icon/url"
-                           tal:attributes="src item_icon/url;
-                                           alt item_icon/description;
-                                           title item_icon/title;
-                                           width item_icon/width;
-                                           height item_icon/height;" />
+                      <img tal:replace="structure item_icon/html_tag" />
                       <a href="/view"
                          tal:content="result/pretty_title_or_id"
                          tal:attributes="href result/getURL;

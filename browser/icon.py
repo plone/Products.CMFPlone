@@ -1,11 +1,31 @@
 from zope.interface import implements
 
-from Products.CMFCore.utils import getToolByName
+# Caused by the remaining module alias to browser.plone (now browser.ploneview)
+import sys
+memoize = sys.modules['plone.memoize.instance'].memoize
 
+from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.browser.interfaces import IContentIcon
 
+class BaseIcon(object):
+    """Helper base class for html rendering
+    """
+    
+    @memoize
+    def html_tag(self):
+        
+        if not self.url:
+            return None
+        
+        tag = '<img width="%s" height="%s" src="%s"' % (self.width, self.height, self.url,)
+        if self.title:
+            tag += ' title="%s"' % self.title
+        if self.description:
+            tag += ' alt="%s"' % self.description
+        tag += ' />'
+        return tag
 
-class CatalogBrainContentIcon(object):
+class CatalogBrainContentIcon(BaseIcon):
     implements(IContentIcon)
 
     def __init__(self, context, request, brain):
@@ -14,12 +34,10 @@ class CatalogBrainContentIcon(object):
         self.brain = brain
         self.portal_url = getToolByName(context, 'portal_url')()
 
-    def width(self):
-        return 16
+    width = 16
+    height = 16
 
-    def height(self):
-        return 16
-
+    @property
     def url(self):
         path = self.brain['getIcon']
         if path is None or path == '':
@@ -27,14 +45,16 @@ class CatalogBrainContentIcon(object):
         path = path.split('/')[-1]
         return "%s/%s" % (self.portal_url, path)
 
+    @property
     def description(self):
         return self.brain['portal_type']
 
+    @property
     def title(self):
         return None
+    
 
-
-class ATCTContentIcon(object):
+class ATCTContentIcon(BaseIcon):
     implements(IContentIcon)
 
     def __init__(self, context, request, obj):
@@ -43,24 +63,24 @@ class ATCTContentIcon(object):
         self.obj = obj
         self.portal_url = getToolByName(context, 'portal_url')()
 
-    def width(self):
-        return 16
+    width = 16
+    height = 16
 
-    def height(self):
-        return 16
-
+    @property
     def url(self):
         path = self.obj.getIcon(1)
         return "%s/%s" % (self.portal_url, path)
 
+    @property
     def description(self):
         return self.obj.portal_type
 
+    @property
     def title(self):
         return None
 
 
-class FTIContentIcon(object):
+class FTIContentIcon(BaseIcon):
     implements(IContentIcon)
 
     def __init__(self, context, request, obj):
@@ -69,18 +89,18 @@ class FTIContentIcon(object):
         self.obj = obj
         self.portal_url = getToolByName(context, 'portal_url')()
 
-    def width(self):
-        return 16
+    width = 16
+    height = 16
 
-    def height(self):
-        return 16
-
+    @property
     def url(self):
         path = self.obj.getIcon()
         return "%s/%s" % (self.portal_url, path)
 
+    @property
     def description(self):
         return self.obj.Metatype()
 
+    @property
     def title(self):
         return None

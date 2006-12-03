@@ -65,14 +65,7 @@
                            url python:'%s?searchterm=%s'%(test(result_type in use_view_action, result_url+'/view', result_url+'/'), searchterm);">
             <dt tal:define="item_wf_state_class string:state-${result/review_state};"
                 tal:attributes="class python:'contenttype-' + normalizeString(result.portal_type)">
-              <img width="16" height="16"
-                   src="" alt=""
-                   tal:condition="item_icon/url"
-                   tal:attributes="src item_icon/url;
-                                   alt item_icon/description;
-                                   title item_icon/title;
-                                   width item_icon/width;
-                                   height item_icon/height;" />
+              <img tal:replace="structure item_icon/html_tag" />
                <a
                  href="#" 
                  tal:attributes="href url;

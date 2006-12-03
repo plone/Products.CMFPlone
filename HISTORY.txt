@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Gave IContentIcon a html_tag() helper method to make rendering the
+      icon one line (<img tal:replace="structure item_icon/html_tag" />) 
+      rather than ten or so. Also made the properties properties rather than
+      functions.
+      [optilude]
+
     - Removed outdated version of listFilteredActionsFor from the actions tool.
       [hannosch]
 

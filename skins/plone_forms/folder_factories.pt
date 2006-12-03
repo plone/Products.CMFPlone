@@ -54,14 +54,7 @@
                     <label tal:define="normalized_id python:normalizeString(Id);"
                            tal:attributes="class string:contenttype-${normalized_id};
                                            for normalized_id">
-                        <img width="16" height="16"
-                             src="" alt=""
-                             tal:condition="item_icon/url"
-                             tal:attributes="src item_icon/url;
-                                             alt item_icon/description;
-                                             title item_icon/title;
-                                             width item_icon/width;
-                                             height item_icon/height;" />
+                        <img tal:replace="structure item_icon/html_tag" />
                     </label>
 
                     <input name="type_name"
