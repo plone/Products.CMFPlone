@@ -22,19 +22,19 @@
 
             <li class="navTreeItem"
                 tal:condition="view/include_top">
-                <tal:block define="typeClass string:visualIcon contenttype-${view/root_type_name};
-                                   selectedClass view/root_item_class;
+                <tal:block define="selectedClass view/root_item_class;
                                    rootIsPortal view/root_is_portal;">
-                   <div class="visualIcon contenttype-plone-site" tal:attributes="class typeClass">
-                       <a class="visualIconPadding"
-                          tal:attributes="href root/absolute_url;
+                   <div>
+                       <a tal:attributes="href root/absolute_url;
                                           title root/Description;
-                                          class string:$selectedClass visualIconPadding;">
+                                          class selectedClass">
+                       <img src="" height="16" width="16" alt=""
+                            tal:attributes="src view/root_icon" />
                        <span tal:omit-tag=""
                              tal:condition="rootIsPortal"
                              i18n:translate="tabs_home">Home</span>
                        <span tal:condition="not:rootIsPortal"
-                             tal:replace="root/Title">Home</span>
+                             tal:replace="root/Title">Root item title</span>
                        </a>
                    </div>
                 </tal:block>

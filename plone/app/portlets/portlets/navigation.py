@@ -114,6 +114,9 @@ class Renderer(base.Renderer):
         else:
             return ''
             
+    def root_icon(self):
+        return "%s/site_icon.gif" % self.urltool()
+            
     def root_is_portal(self):
         root = self.getNavRoot()
         return aq_base(root) is aq_base(self.urltool.getPortalObject())
@@ -123,8 +126,7 @@ class Renderer(base.Renderer):
         
         bottomLevel = self.data.bottomLevel or self.properties.getProperty('bottomLevel', 0)
 
-        return self.recurse(children=data.get('children', []), level=1, 
-            show_children=True, isNaviTree=True, bottomLevel=bottomLevel)
+        return self.recurse(children=data.get('children', []), level=1, bottomLevel=bottomLevel)
 
     # Cached lookups
 

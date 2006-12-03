@@ -7,31 +7,35 @@
 <li class="navTreeItem visualNoMarker"
     tal:define="children    node/children;
                 item_url    node/getURL;
+                item_icon   node/item_icon;
                 remote_url  node/getRemoteUrl;
                 link_remote node/link_remote;
                 is_current   node/currentItem;"
     tal:condition="python:bottomLevel &lt;= 0 or level &lt; bottomLevel-1">
 
-    <tal:level define="item_type_class     string:visualIcon contenttype-${node/normalized_portal_type};
-                       item_wf_state_class string:state-${node/normalized_review_state}">
+    <tal:level define="item_class string:state-${node/normalized_review_state}">
 
-    <div tal:attributes="class item_type_class"
-         tal:define="item_class string:$item_wf_state_class visualIconPadding;
-                     item_class python:is_current and item_class + ' navTreeCurrentItem' or item_class">
+    <div tal:define="item_class python:is_current and item_class + ' navTreeCurrentItem' or item_class">
         
         <a tal:attributes="href python:link_remote and remote_url or item_url;
                            title node/Description;
-                           class string:$item_class"
-            tal:content="node/Title">
-            Selected Item Title 
+                           class string:$item_class">
+            <img width="16" height="16"
+                 src="" alt=""
+                 tal:condition="item_icon/url"
+                 tal:attributes="src item_icon/url;
+                                 alt item_icon/description;
+                                 title item_icon/title;
+                                 width item_icon/width;
+                                 height item_icon/height;" />
+            <span tal:replace="node/Title">Selected Item Title</span>
         </a>
         
     </div>
 
     <ul tal:attributes="class python:'navTree navTreeLevel'+str(level)"
         tal:condition="nocall:children">  
-        <span tal:replace="structure python:view.recurse(children=children, 
-                level=level+1, show_children=True, isNaviTree=True, bottomLevel=bottomLevel)" />
+        <span tal:replace="structure python:view.recurse(children=children, level=level+1, bottomLevel=bottomLevel)" />
     </ul>
     </tal:level>
 </li>
