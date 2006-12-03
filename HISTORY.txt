@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Removed outdated version of listFilteredActionsFor from the actions tool.
+      [hannosch]
+
     - Deprecated cache_decorator in browser/ploneview.py (formerly plone.py),
       in favour of plone.memoize's instance.memoize decorator. Replaced all
       uses of cache_decorator in CMFPlone with plone.memoize.
