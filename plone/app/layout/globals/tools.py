@@ -5,9 +5,13 @@ from Products.Five.browser import BrowserView
 
 from Products.CMFCore.utils import getToolByName
 
+from interfaces import ITools
+
 class Tools(BrowserView):
     """Common tools
     """
+    
+    implements(ITools)
     
     @property
     @memoize_contextless

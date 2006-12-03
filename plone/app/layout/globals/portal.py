@@ -6,9 +6,13 @@ from Products.Five.browser import BrowserView
 
 from Products.CMFPlone.browser.navtree import getNavigationRoot
 
+from interfaces import IPortalState
+
 class PortalState(BrowserView):
     """Information about the state of the portal
     """
+    
+    implements(IPortalState)
     
     @property
     @memoize_contextless
@@ -45,13 +49,13 @@ class PortalState(BrowserView):
         return site_properties.getProperty('default_lanaguage', None)
     
     @property
-    @memoized
+    @memoize
     def lanaguage(self):
         return self.request.get('language', None) or context.Language() or \
                 self.default_language
         
     @property
-    @memoized
+    @memoize
     def is_rtl(self):
         try:
             from Products.PlacelessTranslationService import isRTL

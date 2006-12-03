@@ -30,7 +30,7 @@ class IPortalState(Interface):
     member              = Attribute("The current authenticated member")
     anonymous           = Attribute("Whether or not the current member is Anonymous")
 
-class IObjectState(Interface):
+class IContextState(Interface):
     """A view that gives access to the state of the current context
     """
     

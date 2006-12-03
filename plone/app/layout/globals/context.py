@@ -2,16 +2,20 @@ from zope.interface import implements
 from zope.component import getMultiAdapter
 from plone.memoize.view import memoize
 
-from Aquisition import aq_inner, aq_parent
+from Acquisition import aq_inner, aq_parent
 from Products.Five.browser import BrowserView
 
 from Products.CMFPlone.interfaces import INonStructuralFolder
 from Products.CMFPlone.interfaces.NonStructuralFolder import INonStructuralFolder \
      as z2INonStructuralFolder
 
+from interfaces import IContextState
+
 class ContextState(BrowserView):
     """Information about the state of the current context
     """
+    
+    implements(IContextState)
     
     @property
     @memoize
