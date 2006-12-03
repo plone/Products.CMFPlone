@@ -12,6 +12,7 @@ misc_ = {'plone_icon': Globals.ImageFile(
                        os.path.join('skins', 'plone_images', 'logoIcon.gif'),
                        cmfplone_globals)}
 
+
 def initialize(context):
 
     # Stuff has been moved from module level to this method for a
@@ -189,3 +190,6 @@ def initialize(context):
 from zope.i18nmessageid import MessageFactory
 PloneMessageFactory = MessageFactory('plone')
 
+# A module alias for the stupidly named plone.py - now called 'ploneview.py'
+from browser import ploneview
+sys.modules['Products.CMFPlone.browser.plone'] = ploneview

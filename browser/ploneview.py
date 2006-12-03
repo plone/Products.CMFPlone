@@ -23,30 +23,20 @@ from zope.component import getMultiAdapter, queryMultiAdapter, getUtility
 import ZTUtils
 import sys
 
-IPortletManager = sys.modules['plone.portlets.interfaces'].IPortletManager
-IPortletManagerRenderer = sys.modules['plone.portlets.interfaces'].IPortletManagerRenderer
+from plone.memoize.view import memoize
+from plone.portlets.interfaces import IPortletManager, IPortletManagerRenderer
 
 # @@ deprecate import from this location?
 IndexIterator = utils.IndexIterator
 
 _marker = []
 
-# A simple memoize decorator that saves the value of method calls in a mapping
-# on the view, don't use this to store anything but python built-ins
-def cache_decorator(method):
-    key = method.__name__
-    def cached_method(self, *args, **kwargs):
-        value_cache = getattr(self, '_value_cache', _marker)
-        if value_cache is _marker:
-            value_cache = self._value_cache = {}
-        cached = value_cache.get(key, _marker)
-        if cached is not _marker:
-            return cached
-        else:
-            result = method(self, *args, **kwargs)
-            value_cache[key] = result
-            return result
-    return cached_method
+import zope.deferredimport
+zope.deferredimport.deprecated(
+    "It has been replaced by plone.memoize.instance.memoize. This alias will " 
+    "be gone in Plone 4.0.",
+    cache_decorator = 'plone.memoize.instance.memoize',
+    )
 
 class Plone(utils.BrowserView):
     implements(IPlone)
@@ -171,6 +161,7 @@ class Plone(utils.BrowserView):
 
         return keyed_actions
 
+    @memoize
     def getCurrentUrl(self):
         """ See interface """
         context = utils.context(self)
@@ -180,8 +171,8 @@ class Plone(utils.BrowserView):
         if query:
             query = '?'+query
         return url+query
-    getCurrentUrl = cache_decorator(getCurrentUrl)
 
+    @memoize
     def visibleIdsEnabled(self):
         """ See interface """
         context = utils.context(self)
@@ -197,7 +188,6 @@ class Plone(utils.BrowserView):
         if user is not None:
             return user.getProperty('visible_ids', False)
         return False
-    visibleIdsEnabled = cache_decorator(visibleIdsEnabled)
 
     def isRightToLeft(self, domain='plone'):
         """ See interface """
@@ -265,6 +255,7 @@ class Plone(utils.BrowserView):
         return tool.ulocalized_time(time, long_format, context,
                                     domain='plone')
 
+    @memoize
     def isDefaultPageInFolder(self):
         """ See interface """
         context = utils.context(self)
@@ -274,8 +265,8 @@ class Plone(utils.BrowserView):
             return False
         view = getMultiAdapter((container, request), name='default_page')
         return view.isDefaultPage(context)
-    isDefaultPageInFolder = cache_decorator(isDefaultPageInFolder)
 
+    @memoize
     def isStructuralFolder(self):
         """ See interface """
         context = utils.context(self)
@@ -290,13 +281,13 @@ class Plone(utils.BrowserView):
             return False
         else:
             return folderish
-    isStructuralFolder = cache_decorator(isStructuralFolder)
 
+    @memoize
     def navigationRootPath(self):
         context = utils.context(self)
         return getNavigationRoot(context)
-    navigationRootPath = cache_decorator(navigationRootPath)
 
+    @memoize
     def navigationRootUrl(self):
         context = utils.context(self)
         portal_url = getToolByName(context, 'portal_url')
@@ -308,7 +299,6 @@ class Plone(utils.BrowserView):
         rootSubPath = rootPath[len(portalPath):]
 
         return portal.absolute_url() + rootSubPath
-    navigationRootUrl = cache_decorator(navigationRootUrl)
 
     def getParentObject(self):
         context = utils.context(self)
@@ -331,13 +321,14 @@ class Plone(utils.BrowserView):
             obj = context
         return obj.absolute_url()
 
+    @memoize
     def isFolderOrFolderDefaultPage(self):
         context = utils.context(self)
         if self.isStructuralFolder() or self.isDefaultPageInFolder():
             return True
         return False
-    isFolderOrFolderDefaultPage = cache_decorator(isFolderOrFolderDefaultPage)
 
+    @memoize
     def isPortalOrPortalDefaultPage(self):
         context = utils.context(self)
         portal = getToolByName(context, 'portal_url').getPortalObject()
@@ -346,8 +337,8 @@ class Plone(utils.BrowserView):
             self.isDefaultPageInFolder()):
             return True
         return False
-    isPortalOrPortalDefaultPage = cache_decorator(isPortalOrPortalDefaultPage)
-
+        
+    @memoize
     def getViewTemplateId(self):
         """See interface"""
         context = utils.context(self)
@@ -368,7 +359,6 @@ class Plone(utils.BrowserView):
             action = self._lookupTypeActionTemplate('folder/folderlisting')
 
         return action
-    getViewTemplateId = cache_decorator(getViewTemplateId)
 
     def _lookupTypeActionTemplate(self, actionId):
         context = utils.context(self)
@@ -388,6 +378,7 @@ class Plone(utils.BrowserView):
             action = action[1:]
         return action
 
+    @memoize
     def displayContentsTab(self):
         """See interface"""
         context = utils.context(self)
@@ -429,7 +420,6 @@ class Plone(utils.BrowserView):
                     break
 
         return show
-    displayContentsTab = cache_decorator(displayContentsTab)
 
     def getIcon(self, item):
         """Returns a dictionary with informations necessary to render an icon.

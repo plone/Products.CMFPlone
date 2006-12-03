@@ -73,7 +73,7 @@
   <browser:page
       for="*"
       name="plone"
-      class=".plone.Plone"
+      class=".ploneview.Plone"
       permission="zope.Public"
       allowed_interface=".interfaces.IPlone"
       />

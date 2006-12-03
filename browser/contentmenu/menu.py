@@ -5,6 +5,8 @@ from zope.app.publisher.browser.menu import BrowserMenu
 from zope.app.publisher.browser.menu import BrowserMenuItem
 from zope.app.publisher.browser.menu import BrowserSubMenuItem
 
+from plone.memoize.instance import memoize
+
 from Products.CMFCore.interfaces import IActionsTool
 from Products.CMFCore.interfaces import IActionInfo
 
@@ -16,7 +18,6 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFDynamicViewFTI.interface import ISelectableBrowserDefault
 
 from Products.CMFPlone.browser.interfaces import IPlone
-from Products.CMFPlone.browser.plone import cache_decorator
 
 from Products.CMFPlone.interfaces.structure import INonStructuralFolder
 from Products.CMFPlone.interfaces.constrains import IConstrainTypes
@@ -53,7 +54,7 @@ class ActionsSubMenuItem(BrowserSubMenuItem):
             folder = self.context
         return folder.absolute_url() + '/folder_contents'
     
-    @cache_decorator
+    @memoize
     def available(self):
         _actionsTool = getToolByName(self.context, 'portal_actions')
         actionsTool = IActionsTool(_actionsTool)
@@ -128,7 +129,7 @@ class DisplaySubMenuItem(BrowserSubMenuItem):
         else:
             return self.context.absolute_url() + '/select_default_view'
     
-    @cache_decorator
+    @memoize
     def available(self):
         ploneView = getMultiAdapter((self.context, self.request), name="plone")
         isDefaultPage = ploneView.isDefaultPageInFolder()
@@ -176,7 +177,7 @@ class DisplaySubMenuItem(BrowserSubMenuItem):
     def selected(self):
         return False
         
-    @cache_decorator
+    @memoize
     def disabled(self):
         context = self.context
         ploneView = getMultiAdapter((self.context, self.request), name="plone")
@@ -431,12 +432,12 @@ class FactoriesSubMenuItem(BrowserSubMenuItem):
     def selected(self):
         return False
     
-    @cache_decorator
+    @memoize
     def _addContext(self):
         ploneView = getMultiAdapter((self.context, self.request), name="plone")
         return ploneView.getCurrentFolder()
         
-    @cache_decorator
+    @memoize
     def _itemsToAdd(self):
         addContext = self._addContext()
         constrain = IConstrainTypes(addContext, None)
@@ -446,11 +447,11 @@ class FactoriesSubMenuItem(BrowserSubMenuItem):
             locallyAllowed = constrain.getLocallyAllowedTypes()
             return [fti for fti in addContext.allowedContentTypes() if fti.getId() in locallyAllowed]
                 
-    @cache_decorator
+    @memoize
     def _addingToParent(self):
         return (self._addContext().absolute_url() == self.context.absolute_url())
         
-    @cache_decorator
+    @memoize
     def _showConstrainOptions(self):
         addContext = self._addContext()
         constrain = ISelectableConstrainTypes(addContext, None)
@@ -461,7 +462,7 @@ class FactoriesSubMenuItem(BrowserSubMenuItem):
         elif len(constrain.getLocallyAllowedTypes()) < len(constrain.getImmediatelyAddableTypes()):
             return True
             
-    @cache_decorator
+    @memoize
     def _hideChildren(self):
         itemsToAdd = self._itemsToAdd()
         showConstrainOptions = self._showConstrainOptions()
@@ -582,20 +583,20 @@ class WorkflowSubMenuItem(BrowserSubMenuItem):
         else:
             return ''
     
-    @cache_decorator
+    @memoize
     def available(self):
         return (self._currentState() is not None)
 
     def selected(self):
         return False
 
-    @cache_decorator
+    @memoize
     def _manageSettings(self):
         _membershipTool = getToolByName(self.context, 'portal_membership')
         membershipTool = IMembershipTool(_membershipTool)
         return membershipTool.checkPermission(WorkflowSubMenuItem.MANAGE_SETTINGS_PERMISSION, self.context)
 
-    @cache_decorator
+    @memoize
     def _transitions(self):
         _actionsTool = getToolByName(self.context, 'portal_actions')
         actionsTool = IActionsTool(_actionsTool)
@@ -603,13 +604,13 @@ class WorkflowSubMenuItem(BrowserSubMenuItem):
         workflowActions = actions.get('workflow', [])
         return workflowActions
         
-    @cache_decorator
+    @memoize
     def _currentState(self):
         _workflowTool = getToolByName(self.context, 'portal_workflow')
         workflowTool = IWorkflowTool(_workflowTool)
         return workflowTool.getInfoFor(self.context, 'review_state', default=None)        
         
-    @cache_decorator
+    @memoize
     def _currentStateTitle(self):
         _workflowTool = getToolByName(self.context, 'portal_workflow')
         workflowTool = IWorkflowTool(_workflowTool)
