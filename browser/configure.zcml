@@ -136,6 +136,8 @@
             factory=".navtree.SitemapNavtreeStrategy"
             provides=".interfaces.INavtreeStrategy" />
 
+   <!-- Icon adapters -->
+
   <adapter for="*
                 zope.publisher.interfaces.browser.IBrowserRequest
                 Products.ZCatalog.CatalogBrains.AbstractCatalogBrain"

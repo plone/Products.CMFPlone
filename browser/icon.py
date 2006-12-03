@@ -5,7 +5,7 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.browser.interfaces import IContentIcon
 
 
-class CatalogBrainContentIcon:
+class CatalogBrainContentIcon(object):
     implements(IContentIcon)
 
     def __init__(self, context, request, brain):
@@ -34,7 +34,7 @@ class CatalogBrainContentIcon:
         return None
 
 
-class ATCTContentIcon:
+class ATCTContentIcon(object):
     implements(IContentIcon)
 
     def __init__(self, context, request, obj):
@@ -60,7 +60,7 @@ class ATCTContentIcon:
         return None
 
 
-class FTIContentIcon:
+class FTIContentIcon(object):
     implements(IContentIcon)
 
     def __init__(self, context, request, obj):
