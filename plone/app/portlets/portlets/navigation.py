@@ -7,6 +7,8 @@ from plone.app.portlets.portlets import base
 from zope import schema
 from zope.formlib import form
 
+from plone.memoize.instance import memoize
+
 from Acquisition import aq_inner, aq_base, aq_parent
 from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
 from Products.CMFCore.utils import getToolByName
@@ -126,39 +128,31 @@ class Renderer(base.Renderer):
 
     # Cached lookups
 
+    @memoize
     def getNavRoot(self, _marker=[]):
-        root = getattr(self, '_root', _marker)
-        if root is _marker:
-            portal = self.urltool.getPortalObject()
+        portal = self.urltool.getPortalObject()
 
-            currentFolderOnly = self.data.currentFolderOnly or self.properties.getProperty('currentFolderOnlyInNavtree', False)
-            topLevel = self.data.topLevel or self.properties.getProperty('topLevel', 0)
-            
-            rootPath = getRootPath(self.context, currentFolderOnly, topLevel, self.data.root)
-            
-            if rootPath == self.urltool.getPortalPath():
-                root = portal
-            else:
-                try:
-                    root = portal.unrestrictedTraverse(rootPath)
-                except (AttributeError, KeyError,):
-                    root = portal
+        currentFolderOnly = self.data.currentFolderOnly or self.properties.getProperty('currentFolderOnlyInNavtree', False)
+        topLevel = self.data.topLevel or self.properties.getProperty('topLevel', 0)
+        
+        rootPath = getRootPath(self.context, currentFolderOnly, topLevel, self.data.root)
+        
+        if rootPath == self.urltool.getPortalPath():
+            return portal
+        else:
+            try:
+                return portal.unrestrictedTraverse(rootPath)
+            except (AttributeError, KeyError,):
+                return portal
 
-            self._root = [root]
-
-        return self._root[0]
-
+    @memoize
     def getNavTree(self, _marker=[]):
-        tree = getattr(self, '_navtree', _marker)
-        if tree is _marker:
-            context = aq_inner(self.context)
-            
-            queryBuilder = getMultiAdapter((context, self.data), INavigationQueryBuilder)
-            strategy = getMultiAdapter((context, self.data), INavtreeStrategy)
+        context = aq_inner(self.context)
+        
+        queryBuilder = getMultiAdapter((context, self.data), INavigationQueryBuilder)
+        strategy = getMultiAdapter((context, self.data), INavtreeStrategy)
 
-            return buildFolderTree(context, obj=context, query=queryBuilder(), strategy=strategy)
-            
-        return tree
+        return buildFolderTree(context, obj=context, query=queryBuilder(), strategy=strategy)
 
     def update(self):
         pass

@@ -6,6 +6,8 @@ from plone.app.portlets.portlets import base
 from zope import schema
 from zope.formlib import form
 
+from plone.memoize.instance import memoize
+
 from Acquisition import aq_inner
 from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
 from Products.CMFCore.utils import getToolByName
@@ -50,18 +52,16 @@ class Renderer(base.Renderer):
         else:
             return '%s/news_listing' % portal_url
 
+    @memoize
     def _data(self):
-        data = getattr(self, '__results', None)
-        if data is None:
-            context = aq_inner(self.context)
-            catalog = getToolByName(context, 'portal_catalog')
-            limit = self.data.count
-            self.__results = catalog(portal_type='News Item',
-                                     review_state='published',
-                                     sort_on='Date',
-                                     sort_order='reverse',
-                                     sort_limit=limit)[:limit]
-        return self.__results
+        context = aq_inner(self.context)
+        catalog = getToolByName(context, 'portal_catalog')
+        limit = self.data.count
+        return catalog(portal_type='News Item',
+                       review_state='published',
+                       sort_on='Date',
+                       sort_order='reverse',
+                       sort_limit=limit)[:limit]
 
 class AddForm(base.AddForm):
     form_fields = form.Fields(INewsPortlet)

@@ -6,6 +6,8 @@ from plone.app.portlets.portlets import base
 from zope import schema
 from zope.formlib import form
 
+from plone.memoize.instance import memoize
+
 from Acquisition import aq_inner
 from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
 from Products.CMFCore.utils import getToolByName
@@ -88,12 +90,10 @@ class Renderer(base.Renderer):
     def can_request_password(self):
         return self.membership.checkPermission('Mail forgotten password', self.context)
 
+    @memoize
     def auth(self, _marker=[]):
-        auth = getattr(self, '_auth', _marker)
-        if auth is _marker:
-            acl_users = getToolByName(self.context, 'acl_users')
-            auth = self._auth = getattr(acl_users, 'credentials_cookie_auth', None)
-        return auth
+        acl_users = getToolByName(self.context, 'acl_users')
+        return getattr(acl_users, 'credentials_cookie_auth', None)
 
     def update(self):
         pass
