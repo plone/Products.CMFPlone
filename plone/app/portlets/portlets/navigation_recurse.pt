@@ -20,14 +20,7 @@
         <a tal:attributes="href python:link_remote and remote_url or item_url;
                            title node/Description;
                            class string:$item_class">
-            <img width="16" height="16"
-                 src="" alt=""
-                 tal:condition="item_icon/url"
-                 tal:attributes="src item_icon/url;
-                                 alt item_icon/description;
-                                 title item_icon/title;
-                                 width item_icon/width;
-                                 height item_icon/height;" />
+            <img tal:replace="structure item_icon/html_tag" />
             <span tal:replace="node/Title">Selected Item Title</span>
         </a>
         
