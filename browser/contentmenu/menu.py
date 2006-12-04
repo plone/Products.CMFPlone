@@ -53,13 +53,13 @@ class ActionsSubMenuItem(BrowserSubMenuItem):
     @property
     def action(self):
         folder = self.context
-        if not self.context_state.is_structural_folder:
+        if not self.context_state.is_structural_folder():
             folder = utils.parent(self.context)
         return folder.absolute_url() + '/folder_contents'
     
     @memoize
     def available(self):
-        editActions = self.context_state.actions.get('object_buttons', None)        
+        editActions = self.context_state.actions().get('object_buttons', None)        
         return (editActions is not None and len(editActions) >= 0)
 
     def selected(self):
@@ -77,14 +77,14 @@ class ActionsMenu(BrowserMenu):
         context_state = getMultiAdapter((context, request), name='plone_context_state')
         tools = getMultiAdapter((context, request), name='plone_tools')
                 
-        actions = context_state.actions
+        actions = context_state.actions()
         editActions = actions.get('object_buttons', None)
         
         if editActions is None:
             return []
         
-        plone_utils = tools.plone_utils
-        portal_url = portal_state.portal_url
+        plone_utils = getToolByName(context, 'plone_utils')
+        portal_url = portal_state.portal_url()
         
         for a in editActions:
             action = IActionInfo(a)
@@ -137,7 +137,7 @@ class DisplaySubMenuItem(BrowserSubMenuItem):
     
     @memoize
     def available(self):
-        isDefaultPage = self.context_state.is_default_page
+        isDefaultPage = self.context_state.is_default_page()
         
         folder = None
         context = None
@@ -185,7 +185,7 @@ class DisplaySubMenuItem(BrowserSubMenuItem):
     @memoize
     def disabled(self):
         context = self.context
-        if self.context_state.is_default_page:
+        if self.context_state.is_default_page():
             context = utils.parent(context)
         if not getattr(context, 'isPrincipiaFolderish', False):
             return False
@@ -203,7 +203,7 @@ class DisplayMenu(BrowserMenu):
         results = []
 
         context_state = getMultiAdapter((obj, request), name='plone_context_state')
-        isDefaultPage = context_state.is_default_page
+        isDefaultPage = context_state.is_default_page()
         
         parent = None
         
@@ -442,7 +442,7 @@ class FactoriesSubMenuItem(BrowserSubMenuItem):
     
     @memoize
     def _addContext(self):
-        return self.context_state.folder
+        return self.context_state.folder()
         
     @memoize
     def _itemsToAdd(self):
@@ -486,8 +486,8 @@ class FactoriesMenu(BrowserMenu):
         portal_state = getMultiAdapter((context, request), name='plone_portal_state')
         context_state = getMultiAdapter((context, request), name='plone_context_state')
         
-        portal_url = portal_state.portal_url
-        addContext = context_state.folder
+        portal_url = portal_state.portal_url()
+        addContext = context_state.folder()
         
         allowedTypes = addContext.allowedContentTypes()
         
@@ -575,7 +575,7 @@ class WorkflowSubMenuItem(BrowserSubMenuItem):
 
     @property
     def extra(self):
-        state = self.context_state.workflow_state
+        state = self.context_state.workflow_state()
         stateTitle = self._currentStateTitle()
         return {'id'         : 'plone-contentmenu-workflow', 
                 'class'      : 'state-%s' % state,
@@ -598,23 +598,23 @@ class WorkflowSubMenuItem(BrowserSubMenuItem):
     
     @memoize
     def available(self):
-        return (self.context_state.workflow_state is not None)
+        return (self.context_state.workflow_state() is not None)
 
     def selected(self):
         return False
 
     @memoize
     def _manageSettings(self):
-        return self.tools.portal_membership.checkPermission(WorkflowSubMenuItem.MANAGE_SETTINGS_PERMISSION, self.context)
+        return self.tools.membership().checkPermission(WorkflowSubMenuItem.MANAGE_SETTINGS_PERMISSION, self.context)
 
     @memoize
     def _transitions(self):
-        return self.context_state.actions.get('workflow', [])
+        return self.context_state.actions().get('workflow', [])
         
     @memoize
     def _currentStateTitle(self):
-        state = self.context_state.workflow_state
-        workflows = self.tools.portal_workflow.getWorkflowsFor(self.context)
+        state = self.context_state.workflow_state()
+        workflows = self.tools.workflow().getWorkflowsFor(self.context)
         if workflows:
             for w in workflows:
                 if w.states.has_key(state):
@@ -643,7 +643,7 @@ class WorkflowMenu(BrowserMenu):
         
         context_state = getMultiAdapter((context, request), name='plone_context_state')
         
-        workflowActions = context_state.actions.get('workflow', None)
+        workflowActions = context_state.actions().get('workflow', None)
 
         if workflowActions is None:
             return []
