@@ -19,17 +19,19 @@ class IPortalState(Interface):
     """A view that gives access to the current state of the portal
     """
     
-    portal              = Attribute("The portal object")
-    portal_title        = Attribute("The title of the portal object")
-    portal_url          = Attribute("The URL of the portal object")
-    navigation_root_url = Attribute("The URL of the navigation root")
+    portal               = Attribute("The portal object")
+    portal_title         = Attribute("The title of the portal object")
+    portal_url           = Attribute("The URL of the portal object")
     
-    default_language    = Attribute("The default language in the portal")
-    language            = Attribute("The current language")
-    is_rtl              = Attribute("Whether or not the portal is being viewed in an RTL language")
+    navigation_root_path = Attribute("The path of the navigation root")
+    navigation_root_url  = Attribute("The URL of the navigation root")
     
-    member              = Attribute("The current authenticated member")
-    anonymous           = Attribute("Whether or not the current member is Anonymous")
+    default_language     = Attribute("The default language in the portal")
+    language             = Attribute("The current language")
+    is_rtl               = Attribute("Whether or not the portal is being viewed in an RTL language")
+     
+    member               = Attribute("The current authenticated member")
+    anonymous            = Attribute("Whether or not the current member is Anonymous")
 
 class IContextState(Interface):
     """A view that gives access to the state of the current context

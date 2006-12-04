@@ -33,11 +33,16 @@ class PortalState(BrowserView):
         
     @property
     @memoize_contextless
+    def navigation_root_path(self):
+        return getNavigationRoot(aq_inner(self.context))
+    
+    @property
+    @memoize_contextless
     def navigation_root_url(self):
         portal = self.portal
         portalPath = '/'.join(portal.getPhysicalPath())
 
-        rootPath = getNavigationRoot(aq_inner(self.context))
+        rootPath = self.navigation_root_path
         rootSubPath = rootPath[len(portalPath):]
 
         return portal.absolute_url() + rootSubPath
@@ -47,7 +52,7 @@ class PortalState(BrowserView):
     def default_language(self):
         tools = getMultiAdapter((self.context, self.request), name='plone_tools')
         site_properties = tools.portal_properties.site_properties
-        return site_properties.getProperty('default_lanaguage', None)
+        return site_properties.getProperty('default_language', None)
     
     @property
     @memoize
@@ -74,6 +79,7 @@ class PortalState(BrowserView):
     @property
     @memoize_contextless
     def member(self):
+        # XXX: This doesn't work properly, it gets wrapped in an ImplicitAcquisitonWrapper!
         tools = getMultiAdapter((self.context, self.request), name='plone_tools')
         return tools.portal_membership.getAuthenticatedMember()
         
@@ -81,5 +87,5 @@ class PortalState(BrowserView):
     @memoize_contextless
     def anonymous(self):
         tools = getMultiAdapter((self.context, self.request), name='plone_tools')
-        return tools.portal_membership.isAnonymousUser()
+        return bool(tools.portal_membership.isAnonymousUser())
     
