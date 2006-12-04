@@ -10,6 +10,8 @@ from zope.publisher.interfaces.browser import IBrowserRequest
 
 from zope.contentprovider.interfaces import UpdateNotCalled
 
+from plone.memoize.view import memoize
+
 from plone.portlets.interfaces import IPortletRetriever
 from plone.portlets.interfaces import IPortletManager
 from plone.portlets.interfaces import IPortletManagerRenderer
@@ -50,8 +52,6 @@ class EditPortletManagerRenderer(Explicit):
         self.request = request
         self.template = ZopeTwoPageTemplateFile('templates/edit-manager.pt')
         self.__updated = False
-        self.__assignments = None
-        self.__portlets = None
         
     @property
     def visible(self):
@@ -62,7 +62,7 @@ class EditPortletManagerRenderer(Explicit):
 
     def update(self):
         self.__updated = True
-        for p in self._lazyLoadPortlets():
+        for p in self._lazyLoadPortlets(self.manager):
             p.update()
 
     def render(self):
@@ -74,8 +74,8 @@ class EditPortletManagerRenderer(Explicit):
 
     def portlets(self):
         baseUrl = self.__parent__.getAssignmentMappingUrl(self.manager)
-        assignments = self._lazyLoadAssignments()
-        portlets = self._lazyLoadPortlets()
+        assignments = self._lazyLoadAssignments(self.manager)
+        portlets = self._lazyLoadPortlets(self.manager)
         assert len(assignments) == len(portlets)
         data = []
         for idx in range(len(assignments)):
@@ -105,17 +105,16 @@ class EditPortletManagerRenderer(Explicit):
                   'addview' : '%s/+/%s' % (baseUrl, p.addview,),
                   } for p in self.manager.getAddablePortletTypes()]
         
-    def _lazyLoadPortlets(self):
-        if self.__portlets is None:
-            assignments = self._lazyLoadAssignments()
-            self.__portlets = [self._dataToPortlet(a.data)
-                                for a in self.filter(assignments)]
-        return self.__portlets
+    # See note in plone.portlets.manager
     
-    def _lazyLoadAssignments(self):
-        if self.__assignments is None:
-            self.__assignments = self.__parent__.getAssignmentsForManager(self.manager)
-        return self.__assignments
+    @memoize
+    def _lazyLoadPortlets(self, manager):
+        assignments = self._lazyLoadAssignments(manager)
+        return [self._dataToPortlet(a.data) for a in self.filter(assignments)]
+    
+    @memoize    
+    def _lazyLoadAssignments(self, manager):
+        return self.__parent__.getAssignmentsForManager(manager)
     
     def _dataToPortlet(self, data):
         """Helper method to get the correct IPortletRenderer for the given
