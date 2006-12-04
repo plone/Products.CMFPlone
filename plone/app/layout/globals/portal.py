@@ -34,7 +34,7 @@ class PortalState(BrowserView):
     @memoize_contextless
     def navigation_root_url(self):
         portal = self.portal
-        portalPath = '/'.join(portal.getPortalPath())
+        portalPath = '/'.join(portal.getPhysicalPath())
 
         rootPath = getNavigationRoot(self.context)
         rootSubPath = rootPath[len(portalPath):]
@@ -50,8 +50,8 @@ class PortalState(BrowserView):
     
     @property
     @memoize
-    def lanaguage(self):
-        return self.request.get('language', None) or context.Language() or \
+    def language(self):
+        return self.request.get('language', None) or self.context.Language() or \
                 self.default_language
         
     @property

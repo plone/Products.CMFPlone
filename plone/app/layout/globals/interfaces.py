@@ -24,7 +24,7 @@ class IPortalState(Interface):
     navigation_root_url = Attribute("The URL of the navigation root")
     
     default_language    = Attribute("The default language in the portal")
-    lanaguage           = Attribute("The current language")
+    language            = Attribute("The current language")
     is_rtl              = Attribute("Whether or not the portal is being viewed in an RTL language")
     
     member              = Attribute("The current authenticated member")
@@ -40,10 +40,13 @@ class IContextState(Interface):
     object_title         = Attribute("The prettified title of the current object")
     workflow_state       = Attribute("The workflow state of the current object")
                             
+    is_folderish         = Attribute("True if this is a folderish object, structural or not")
     is_structural_folder = Attribute("True if this is a structural folder")
     is_default_page      = Attribute("True if this is the default page of its folder")
     
     is_editable          = Attribute("Whether or not the current object is editable")
+    is_locked            = Attribute("Whether or not the current object is locked")
                             
     actions              = Attribute("The filtered actions in the context")
-    keyed_actions        = Attribute("The keyed actions in the context")
+    keyed_actions        = Attribute("A mapping of action categories to action ids to "
+                                     "action information: mapping[cat][id] == actioninfo")

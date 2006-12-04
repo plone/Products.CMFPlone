@@ -2,7 +2,7 @@ from zope.interface import implements
 from zope.component import getMultiAdapter
 from plone.memoize.view import memoize
 
-from Acquisition import aq_inner, aq_parent
+from Acquisition import aq_base, aq_inner, aq_parent
 from Products.Five.browser import BrowserView
 
 from Products.CMFPlone.interfaces import INonStructuralFolder
@@ -41,17 +41,22 @@ class ContextState(BrowserView):
     @memoize
     def workflow_state(self):
         tools = getMultiAdapter((self.context, self.request), name='plone_tools')
-        return tools.portal_workflows.getInfoFor(self.context, 'review_state', None)
+        return tools.portal_workflow.getInfoFor(self.context, 'review_state', None)
                             
     @property
     @memoize
+    def is_folderish(self):
+        return bool(getattr(aq_base(self.context), 'isPrincipiaFolderish', False))
+            
+    @property
+    @memoize
     def is_structural_folder(self):
-        folderish = bool(getattr(aq_base(self.context), 'isPrincipiaFolderish', False))
+        folderish = self.is_folderish
         if not folderish:
             return False
-        elif INonStructuralFolder.providedBy(context):
+        elif INonStructuralFolder.providedBy(self.context):
             return False
-        elif z2INonStructuralFolder.isImplementedBy(context):
+        elif z2INonStructuralFolder.isImplementedBy(self.context):
             # BBB: for z2 interface compat
             return False
         else:
@@ -64,22 +69,35 @@ class ContextState(BrowserView):
         if not container:
             return False
         view = getMultiAdapter((container, self.request), name='default_page')
-        return view.isDefaultPage(context)
+        return view.isDefaultPage(self.context)
     
     @property
     @memoize
     def is_editable(self):
         tools = getMultiAdapter((self.context, self.request), name='plone_tools')
         return tools.portal_membership.checkPermission('Modify portal content', self.context)
+    
+    @property
+    @memoize
+    def is_locked(self):
+        lockable = getattr(aq_inner(self.context).aq_explicit, 'wl_isLocked', None) is not None
+        return lockable and self.context.wl_isLocked()
                             
     @property
     @memoize
     def actions(self):
         tools = getMultiAdapter((self.context, self.request), name='plone_tools')
-        return tools.portal_actions.listFilteredActionsFor(context)
+        return tools.portal_actions.listFilteredActionsFor(self.context)
         
     @property
     @memoize
     def keyed_actions(self):
-        tools = getMultiAdapter((self.context, self.request), name='plone_tools')
-        return tools.portal_actions.keyFilteredActions(context)
+        actions = self.actions
+        keyed_actions = {}
+        for category in actions.keys():
+            keyed_actions[category] = {}
+            for action in actions[category]:
+                id = action.get('id', None)
+                if id is not None:
+                    keyed_actions[category][id] = action.copy()
+        return keyed_actions
