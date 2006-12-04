@@ -43,8 +43,8 @@
         />
 
     <browser:viewletManager
-        name="plone.siteactions"
-        provides=".viewlets.interfaces.ISiteActions"
+        name="plone.portalheader"
+        provides=".viewlets.interfaces.IPortalHeader"
         permission="zope2.View"
         />
 

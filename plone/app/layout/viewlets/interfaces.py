@@ -4,7 +4,7 @@ class IHtmlHead(IViewletManager):
     """A viewlet manager that sits in the <head> of the rendered page
     """
 
-class ISiteActions(IViewletManager):
+class IPortalHeader(IViewletManager):
     """A viewlet manager that sits at the very top of the rendered page
     """
 
