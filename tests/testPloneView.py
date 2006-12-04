@@ -11,7 +11,7 @@ from Products.CMFPlone.interfaces.NonStructuralFolder import \
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
 
-from Products.CMFPlone.browser.plone import Plone
+from Products.CMFPlone.browser.ploneview import Plone
 
 from Products.CMFPlone.ActionsTool import ActionsTool
 from Products.CMFPlone.InterfaceTool import InterfaceTool
@@ -80,6 +80,8 @@ class TestPloneView(PloneTestCase.PloneTestCase):
     def testIsStructuralFolderWithZ2NonStructuralFolder(self):
         f = dummy.Folder('z2_nsFolder')
         f.__implements__ = f.__implements__ + (z2INonStructuralFolder,)
+        view = Plone(f, self.app.REQUEST)
+        value = view.isStructuralFolder()
         self.failIf(Plone(f, self.app.REQUEST).isStructuralFolder())
 
     def testIsDefaultPageInFolder(self):
@@ -88,6 +90,7 @@ class TestPloneView(PloneTestCase.PloneTestCase):
         self.failUnless(self.folder.canSelectDefaultPage())
         self.folder.saveDefaultPage('test')
         # re-create the view, because the old value is cached
+        del self.app.REQUEST.__annotations__
         view = Plone(self.folder.test, self.app.REQUEST)
         self.failUnless(view.isDefaultPageInFolder())
 
@@ -103,6 +106,7 @@ class TestPloneView(PloneTestCase.PloneTestCase):
         view = Plone(self.folder.test, self.app.REQUEST)
         self.assertEqual(view.getParentObject(), self.folder)
         # Make sure this looks only at containment
+        del self.app.REQUEST.__annotations__
         view = Plone(self.folder.test.__of__(self.portal), self.app.REQUEST)
         self.assertEqual(view.getParentObject(), self.folder)
 
@@ -111,15 +115,18 @@ class TestPloneView(PloneTestCase.PloneTestCase):
         view = Plone(self.folder, self.app.REQUEST)
         self.failUnless(view.isFolderOrFolderDefaultPage())
         # But not a document
+        del self.app.REQUEST.__annotations__
         view = Plone(self.folder.test, self.app.REQUEST)
         self.failIf(view.isFolderOrFolderDefaultPage())
         # Unless we make it the default view
         self.folder.saveDefaultPage('test')
+        del self.app.REQUEST.__annotations__
         view = Plone(self.folder.test, self.app.REQUEST)
         self.failUnless(view.isFolderOrFolderDefaultPage())
         # And if we have a non-structural folder it should not be true
         f = dummy.NonStructuralFolder('ns_folder')
         self.folder._setObject('ns_folder', f)
+        del self.app.REQUEST.__annotations__
         view = Plone(self.folder.ns_folder, self.app.REQUEST)
         self.failIf(view.isFolderOrFolderDefaultPage())
 
@@ -131,10 +138,12 @@ class TestPloneView(PloneTestCase.PloneTestCase):
         self.setRoles(['Manager'])
         self.portal.invokeFactory('Document', 'portal_test',
                                   title='Test default page')
+        del self.app.REQUEST.__annotations__
         view = Plone(self.portal.portal_test, self.app.REQUEST)
         self.failIf(view.isPortalOrPortalDefaultPage())
         # Unless we make it the default view
         self.portal.saveDefaultPage('portal_test')
+        del self.app.REQUEST.__annotations__
         view = Plone(self.portal.portal_test, self.app.REQUEST)
         self.failUnless(view.isPortalOrPortalDefaultPage())
 
@@ -142,24 +151,36 @@ class TestPloneView(PloneTestCase.PloneTestCase):
         # If context is a folder, then the folder is returned
         view = Plone(self.folder, self.app.REQUEST)
         self.assertEqual(view.getCurrentFolder(), self.folder)
+        
         # If context is not a folder, then the parent is returned
+        # A bit crude ... we need to make sure our memos don't stick in the tests
+        del self.app.REQUEST.__annotations__
         view = Plone(self.folder.test, self.app.REQUEST)
         self.assertEqual(view.getCurrentFolder(), self.folder)
+        
         # The real container is returned regardless of context
+        del self.app.REQUEST.__annotations__
         view = Plone(self.folder.test.__of__(self.portal), self.app.REQUEST)
         self.assertEqual(view.getCurrentFolder(), self.folder)
+        
         # A non-structural folder does not count as a folder`
         f = dummy.NonStructuralFolder('ns_folder')
         self.folder._setObject('ns_folder', f)
+        del self.app.REQUEST.__annotations__
         view = Plone(self.folder.ns_folder, self.app.REQUEST)
         self.assertEqual(view.getCurrentFolder(), self.folder)
+        
         # And even a structural folder that is used as a default page
         # returns its parent
         self.setRoles(['Manager'])
         self.folder.invokeFactory('Topic', 'topic')
+        
+        del self.app.REQUEST.__annotations__
         view = Plone(self.folder.topic, self.app.REQUEST)
         self.assertEqual(view.getCurrentFolder(), self.folder.topic)
         self.folder.saveDefaultPage('topic')
+        
+        del self.app.REQUEST.__annotations__
         view = Plone(self.folder.topic, self.app.REQUEST)
         self.assertEqual(view.getCurrentFolder(), self.folder)
 

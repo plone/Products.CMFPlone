@@ -65,6 +65,10 @@ class Plone(utils.BrowserView):
 
     def __init__(self, context, request):
         super(Plone, self).__init__(context, request)
+        
+        self.tools = getMultiAdapter((context, request), name=u'plone_tools')
+        self.portal_state = getMultiAdapter((context, request), name=u'plone_portal_state')
+        self.context_state = getMultiAdapter((context, request), name=u'plone_context_state')
 
         self._data = {}
 
@@ -83,24 +87,27 @@ class Plone(utils.BrowserView):
         # come up with a way to prevent this or get rid of the globals
         # view altogether
 
-        self._data['utool'] = utool = getToolByName(context, 'portal_url')
-        self._data['portal'] = portal = utool.getPortalObject()
-        self._data['portal_url'] =  utool()
-        self._data['mtool'] = mtool = getToolByName(portal, 'portal_membership')
-        self._data['atool'] = atool = getToolByName(portal, 'portal_actions')
-        self._data['putils'] = putils = getToolByName(portal, 'plone_utils')
-        self._data['wtool'] = wtool = getToolByName(portal, 'portal_workflow')
-        self._data['ifacetool'] = getToolByName(portal, 'portal_interface', None)
-        self._data['syntool'] = getToolByName(portal, 'portal_syndication')
-        self._data['portal_title'] = portal.Title()
-        self._data['object_title'] = putils.pretty_title_or_id(context)
+        self._data['utool'] = utool = self.tools.portal_url
+        self._data['portal'] = portal = self.portal_state.portal
+        self._data['portal_url'] =  self.portal_state.portal_url
+        self._data['mtool'] = mtool = self.tools.portal_membership
+        self._data['atool'] = atool = self.tools.portal_actions
+        self._data['putils'] = putils = self.tools.plone_utils
+        self._data['wtool'] = wtool = self.tools.portal_workflow
+        self._data['ifacetool'] = self.tools.portal_interface
+        self._data['syntool'] = self.tools.portal_syndication
+        self._data['portal_title'] = self.portal_state.portal_title
+        self._data['object_title'] = self.context_state.object_title
         self._data['checkPermission'] = checkPermission = mtool.checkPermission
-        self._data['member'] = mtool.getAuthenticatedMember()
+        
+        # XXX: Disabled for now due to this returning an ImplicitAquisitionWrapper
+        # self._data['member'] = self.portal_state.member
+        self._data['member'] = self.tools.portal_membership.getAuthenticatedMember()
+        
         self._data['membersfolder'] =  mtool.getMembersFolder()
-        self._data['isAnon'] =  mtool.isAnonymousUser()
-        self._data['actions'] = actions = (options.get('actions', None) or
-                                        atool.listFilteredActionsFor(context))
-        self._data['keyed_actions'] =  self.keyFilteredActions(actions)
+        self._data['isAnon'] =  self.portal_state.anonymous
+        self._data['actions'] = actions = (options.get('actions', None) or self.context_state.actions)
+        self._data['keyed_actions'] =  self.context_state.keyed_actions
         self._data['user_actions'] =  actions['user']
         self._data['workflow_actions'] =  actions['workflow']
         self._data['folder_actions'] =  actions['folder']
@@ -109,12 +116,11 @@ class Plone(utils.BrowserView):
         portal_tabs_view = getMultiAdapter((context, context.REQUEST), name='portal_tabs_view')
         self._data['portal_tabs'] =  portal_tabs_view.topLevelTabs(actions=actions)
 
-        self._data['wf_state'] =  wtool.getInfoFor(context,'review_state', None)
-        self._data['portal_properties'] = props = getToolByName(portal,
-                                                          'portal_properties')
+        self._data['wf_state'] =  self.context_state.workflow_state
+        self._data['portal_properties'] = props = self.tools.portal_properties
         self._data['site_properties'] = site_props = props.site_properties
         self._data['ztu'] =  ZTUtils
-        self._data['isFolderish'] =  getattr(context.aq_explicit, 'isPrincipiaFolderish', False)
+        self._data['isFolderish'] =  self.context_state.is_folderish
         
         # TODO: How should these interact with plone.portlets? Ideally, they'd
         # be obsolete, with a simple "show-column" boolean
@@ -123,54 +129,31 @@ class Plone(utils.BrowserView):
         self._data['sr'] = sr = slots['right']
         self._data['hidecolumns'] =  self.hide_columns(sl, sr)
         
-        self._data['here_url'] =  context.absolute_url()
-        self._data['default_language'] = default_language = \
-                              site_props.getProperty('default_language', None)
-        self._data['language'] =  self.request.get('language', None) or \
-                                  context.Language() or default_language
-        self._data['is_editable'] = checkPermission('Modify portal content',
-                                                     context)
-        lockable = hasattr(aq_inner(context).aq_explicit, 'wl_isLocked')
-        self._data['isLocked'] = lockable and context.wl_isLocked()
-        self._data['isRTL'] =  self.isRightToLeft(domain='plone')
+        self._data['here_url'] =  self.context_state.object_url
+        self._data['default_language'] = self.portal_state.default_language
+        self._data['language'] =  self.portal_state.language
+        self._data['is_editable'] = self.context_state.is_editable
+        self._data['isLocked'] = self.context_state.is_locked
+        self._data['isRTL'] =  self.portal_state.is_rtl
         self._data['visible_ids'] =  self.visibleIdsEnabled() or None
-        self._data['current_page_url'] =  self.getCurrentUrl() or None
+        self._data['current_page_url'] =  self.context_state.current_page_url
         self._data['normalizeString'] = putils.normalizeString
         self._data['toLocalizedTime'] = self.toLocalizedTime
-        self._data['isStructuralFolder'] = self.isStructuralFolder()
-        self._data['isContextDefaultPage'] = self.isDefaultPageInFolder()
+        self._data['isStructuralFolder'] = self.context_state.is_structural_folder
+        self._data['isContextDefaultPage'] = self.context_state.is_default_page
 
-        self._data['navigation_root_url'] = self.navigationRootUrl()
+        self._data['navigation_root_url'] = self.portal_state.navigation_root_url
         self._data['Iterator'] = utils.IndexIterator
         self._data['tabindex'] = utils.IndexIterator(pos=30000, mainSlot=False)
         self._data['uniqueItemIndex'] = utils.IndexIterator(pos=0)
 
     def keyFilteredActions(self, actions=None):
         """ See interface """
-        context = utils.context(self)
-        if actions is None:
-            actions=context.portal_actions.listFilteredActionsFor()
+        return self.context_state.keyed_actions
 
-        keyed_actions={}
-        for category in actions.keys():
-            keyed_actions[category]={}
-            for action in actions[category]:
-                id=action.get('id',None)
-                if id is not None:
-                    keyed_actions[category][id]=action.copy()
-
-        return keyed_actions
-
-    @memoize
     def getCurrentUrl(self):
         """ See interface """
-        context = utils.context(self)
-        request = context.REQUEST
-        url = request.get('ACTUAL_URL', request.get('URL', None))
-        query = request.get('QUERY_STRING','')
-        if query:
-            query = '?'+query
-        return url+query
+        return self.context_state.current_page_url
 
     @memoize
     def visibleIdsEnabled(self):
@@ -191,6 +174,8 @@ class Plone(utils.BrowserView):
 
     def isRightToLeft(self, domain='plone'):
         """ See interface """
+        # Note: Not delegated to @@plone_context_state, because that view
+        # does not take into account different domains (it always assumes 'plone')
         context = utils.context(self)
         try:
             from Products.PlacelessTranslationService import isRTL
@@ -255,64 +240,30 @@ class Plone(utils.BrowserView):
         return tool.ulocalized_time(time, long_format, context,
                                     domain='plone')
 
-    @memoize
     def isDefaultPageInFolder(self):
         """ See interface """
-        context = utils.context(self)
-        request = context.REQUEST
-        container = aq_parent(aq_inner((context)))
-        if not container:
-            return False
-        view = getMultiAdapter((container, request), name='default_page')
-        return view.isDefaultPage(context)
+        return self.context_state.is_default_page
 
-    @memoize
     def isStructuralFolder(self):
         """ See interface """
-        context = utils.context(self)
-        folderish = bool(getattr(aq_base(context), 'isPrincipiaFolderish',
-                                 False))
-        if not folderish:
-            return False
-        elif INonStructuralFolder.providedBy(context):
-            return False
-        elif z2INonStructuralFolder.isImplementedBy(context):
-            # BBB: for z2 interface compat
-            return False
-        else:
-            return folderish
+        return self.context_state.is_structural_folder
 
-    @memoize
     def navigationRootPath(self):
-        context = utils.context(self)
-        return getNavigationRoot(context)
+        return self.portal_state.navigation_root_path
 
-    @memoize
     def navigationRootUrl(self):
-        context = utils.context(self)
-        portal_url = getToolByName(context, 'portal_url')
-
-        portal = portal_url.getPortalObject()
-        portalPath = portal_url.getPortalPath()
-
-        rootPath = getNavigationRoot(context)
-        rootSubPath = rootPath[len(portalPath):]
-
-        return portal.absolute_url() + rootSubPath
+        return self.portal_state.navigation_root_url
 
     def getParentObject(self):
-        context = utils.context(self)
-        return aq_parent(aq_inner(context))
+        return self.context_state.parent
 
     def getCurrentFolder(self):
-        context = utils.context(self)
-        if self.isStructuralFolder() and not self.isDefaultPageInFolder():
-            return context
-        return self.getParentObject()
+        return self.context_state.folder
 
     def getCurrentFolderUrl(self):
-        return self.getCurrentFolder().absolute_url()
+        return self.context_state.folder.absolute_url()
 
+    @memoize
     def getCurrentObjectUrl(self):
         context = utils.context(self)
         if self.isDefaultPageInFolder():
@@ -323,15 +274,12 @@ class Plone(utils.BrowserView):
 
     @memoize
     def isFolderOrFolderDefaultPage(self):
-        context = utils.context(self)
-        if self.isStructuralFolder() or self.isDefaultPageInFolder():
-            return True
-        return False
+        return self.context_state.is_structural_folder or self.context_state.is_default_page
 
     @memoize
     def isPortalOrPortalDefaultPage(self):
         context = utils.context(self)
-        portal = getToolByName(context, 'portal_url').getPortalObject()
+        portal = self.portal_state.portal
         if aq_base(context) is aq_base(portal) or \
            (aq_base(self.getParentObject()) is aq_base(portal) and
             self.isDefaultPageInFolder()):
