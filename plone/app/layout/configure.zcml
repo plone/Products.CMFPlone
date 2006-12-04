@@ -4,7 +4,7 @@
 
     <!-- Views with global constants -->
 
-    <browser:view
+    <browser:page
         name="plone_tools"
         for="*"
         permission="zope2.View"
@@ -12,7 +12,7 @@
         allowed_interface=".globals.interfaces.ITools"
         />
         
-    <browser:view
+    <browser:page
         name="plone_context_state"
         for="*"
         permission="zope2.View"
@@ -20,7 +20,7 @@
         allowed_interface=".globals.interfaces.IContextState"
         />
         
-    <browser:view
+    <browser:page
         name="plone_portal_state"
         for="*"
         permission="zope2.View"

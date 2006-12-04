@@ -5,7 +5,9 @@ from plone.memoize.view import memoize, memoize_contextless
 
 from Acquisition import aq_inner
 from Products.Five.browser import BrowserView
+from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.browser.navtree import getNavigationRoot
+
 
 from interfaces import IPortalState
 
@@ -15,54 +17,50 @@ class PortalState(BrowserView):
     
     implements(IPortalState)
     
-    @property
+    def __init__(self, context, request):
+        BrowserView.__init__(self, context, request)
+        self._context = [context]
+    
     @memoize_contextless
     def portal(self):
         tools = getMultiAdapter((self.context, self.request), name='plone_tools')
-        return tools.portal_url.getPortalObject()
+        return tools.url().getPortalObject()
     
-    @property
     @memoize_contextless
     def portal_title(self):
-        return self.portal.Title()
+        return self.portal().Title()
         
-    @property
     @memoize_contextless
     def portal_url(self):
-        return self.portal.absolute_url()
+        return self.portal().absolute_url()
         
-    @property
     @memoize_contextless
     def navigation_root_path(self):
         return getNavigationRoot(aq_inner(self.context))
     
-    @property
     @memoize_contextless
     def navigation_root_url(self):
-        portal = self.portal
+        portal = self.portal()
         portalPath = '/'.join(portal.getPhysicalPath())
 
-        rootPath = self.navigation_root_path
+        rootPath = self.navigation_root_path()
         rootSubPath = rootPath[len(portalPath):]
 
         return portal.absolute_url() + rootSubPath
     
-    @property
     @memoize_contextless
     def default_language(self):
         tools = getMultiAdapter((self.context, self.request), name='plone_tools')
-        site_properties = tools.portal_properties.site_properties
+        site_properties = tools.properties().site_properties
         return site_properties.getProperty('default_language', None)
     
-    @property
     @memoize
     def language(self):
         return self.request.get('language', None) or \
                 aq_inner(self.context).Language() or self.default_language
         
-    @property
     @memoize
-    def is_rtl(self):
+    def is_rtl(self, domain='plone'):
         try:
             from Products.PlacelessTranslationService import isRTL
         except ImportError:
@@ -70,22 +68,19 @@ class PortalState(BrowserView):
             return False
         else:
             try:
-                return isRTL(aq_inner(self.context), 'plone')
+                return isRTL(aq_inner(self.context), domain)
             except AttributeError:
                 # This may mean that PTS is present but not installed.
                 # Can effectively only happen in unit tests.
                 return False
                 
-    @property
     @memoize_contextless
     def member(self):
-        # XXX: This doesn't work properly, it gets wrapped in an ImplicitAcquisitonWrapper!
         tools = getMultiAdapter((self.context, self.request), name='plone_tools')
-        return tools.portal_membership.getAuthenticatedMember()
+        return tools.membership().getAuthenticatedMember()
         
-    @property
     @memoize_contextless
     def anonymous(self):
         tools = getMultiAdapter((self.context, self.request), name='plone_tools')
-        return bool(tools.portal_membership.isAnonymousUser())
+        return bool(tools.membership().isAnonymousUser())
     

@@ -1,58 +1,151 @@
 from zope.interface import Interface, Attribute
 
+# Note: We'd like these to be properties, but acquisition gets in our face
+# and wraps them in unexplainable ways :-(
+
 class ITools(Interface):
     """A view that gives access to common tools
     """
     
-    portal_actions     = Attribute("The portal_actions tool")
-    portal_catalog     = Attribute("The portal_catalog tool")
-    portal_interface   = Attribute("The portal_interface tool")
-    portal_membership  = Attribute("The portal_membership tool")
-    portal_properties  = Attribute("The portal_properties tool")
-    portal_syndication = Attribute("The portal_syndication tool")
-    portal_url         = Attribute("The portal_url tool")
-    portal_workflow    = Attribute("The portal_workflow tool")
-    
-    plone_utils        = Attribute("The plone_utils tool")
+    def actions():
+        """The portal_actions tool
+        """
+        
+    def catalog():
+        """The portal_catalog tool
+        """
+        
+    def membership():
+        """The portal_membership tool
+        """
+        
+    def properties():
+        """The portal_properties tool
+        """
+        
+    def syndication():
+        """The portal_syndication tool
+        """
+        
+    def url():
+        """The portal_url tool"""
+
+    def workflow():
+        """The portal_workflow tool"""
+
     
 class IPortalState(Interface):
     """A view that gives access to the current state of the portal
     """
     
-    portal               = Attribute("The portal object")
-    portal_title         = Attribute("The title of the portal object")
-    portal_url           = Attribute("The URL of the portal object")
-    
-    navigation_root_path = Attribute("The path of the navigation root")
-    navigation_root_url  = Attribute("The URL of the navigation root")
-    
-    default_language     = Attribute("The default language in the portal")
-    language             = Attribute("The current language")
-    is_rtl               = Attribute("Whether or not the portal is being viewed in an RTL language")
-     
-    member               = Attribute("The current authenticated member")
-    anonymous            = Attribute("Whether or not the current member is Anonymous")
+    def portal():
+        """The portal object
+        """
+        
+    def portal_title():
+        """The title of the portal object
+        """
+        
+    def portal_url():
+        """The URL of the portal object
+        """
+                       
+    def navigation_root_path():
+        """ path of the navigation root
+        """
+        
+    def navigation_root_url():
+        """The URL of the navigation root
+        """
+
+    def default_language():
+        """The default language in the portal
+        """
+        
+    def language():
+        """The current language
+        """
+        
+    def is_rtl(domain='plone'):
+        """Whether or not the portal is being viewed in an RTL language
+        """
+        
+    def member():
+        """The current authenticated member
+        """
+        
+    def anonymous():
+        """Whether or not the current member is Anonymous
+        """        
 
 class IContextState(Interface):
     """A view that gives access to the state of the current context
     """
     
-    current_page_url     = Attribute("The URL to the current page, including template")
+    def current_page_url():
+        """The URL to the current page, including template
+        """
+        
+    def canonical_object_url():
+        """The URL to the current "canonical" object.
+        
+        That is, the current object unless this object is the default page
+        in its folder, in which case the folder is returned.
+        """
+        
+    def view_template_id():
+        """The id of the view template of the context
+        """
                             
-    object_url           = Attribute("The URL of the current object")
-    object_title         = Attribute("The prettified title of the current object")
-    workflow_state       = Attribute("The workflow state of the current object")
+    def object_url():
+        """The URL of the current object
+        """
+        
+    def object_title():
+        """The prettified title of the current object
+        """
+        
+    def workflow_state():
+        """The workflow state of the current object
+        """
     
-    parent               =Attribute("The direct parent of the current object")
-    folder               = Attribute("The current canonical folder")
+    def parent():
+        """The direct parent of the current object
+        """
+        
+    def folder():
+        """The current canonical folder
+        """
                             
-    is_folderish         = Attribute("True if this is a folderish object, structural or not")
-    is_structural_folder = Attribute("True if this is a structural folder")
-    is_default_page      = Attribute("True if this is the default page of its folder")
+    def is_folderish():
+        """True if this is a folderish object, structural or not
+        """
     
-    is_editable          = Attribute("Whether or not the current object is editable")
-    is_locked            = Attribute("Whether or not the current object is locked")
+    def is_structural_folder():
+        """True if this is a structural folder
+        """
+    
+    def is_default_page():
+        """True if this is the default page of its folder
+        """
+        
+    def is_portal_root():
+        """True if this is the portal or the default page in the portal
+        """
+    
+    def is_editable():
+        """Whether or not the current object is editable
+        """
+    
+    def is_locked():
+        """Whether or not the current object is locked
+        """
                             
-    actions              = Attribute("The filtered actions in the context")
-    keyed_actions        = Attribute("A mapping of action categories to action ids to "
-                                     "action information: mapping[cat][id] == actioninfo")
+    def actions():
+        """The filtered actions in the context
+        """
+    
+    def keyed_actions():
+        """A mapping of action categories to action ids to
+        action information: mapping[cat][id] == actioninfo
+        """

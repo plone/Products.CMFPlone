@@ -1,8 +1,8 @@
 from zope.interface import implements
 from plone.memoize.view import memoize_contextless
 
+from Acquisition import aq_inner
 from Products.Five.browser import BrowserView
-
 from Products.CMFCore.utils import getToolByName
 
 from interfaces import ITools
@@ -13,47 +13,38 @@ class Tools(BrowserView):
     
     implements(ITools)
     
-    @property
     @memoize_contextless
-    def portal_actions(self):
-        return getToolByName(self.context, 'portal_actions')
+    def actions(self):
+        return getToolByName(aq_inner(self.context), 'portal_actions')
         
-    @property
     @memoize_contextless
-    def portal_catalog(self):
-        return getToolByName(self.context, 'portal_catalog')
+    def catalog(self):
+        return getToolByName(aq_inner(self.context), 'portal_catalog')
         
-    @property
     @memoize_contextless
-    def portal_interface(self):
-        return getToolByName(self.context, 'portal_interface')
+    def interface(self):
+        return getToolByName(aq_inner(self.context), 'portal_interface')
         
-    @property
     @memoize_contextless
-    def portal_membership(self):
-        return getToolByName(self.context, 'portal_membership')
+    def membership(self):
+        return getToolByName(aq_inner(self.context), 'portal_membership')
         
-    @property
     @memoize_contextless
-    def portal_properties(self):
-        return getToolByName(self.context, 'portal_properties')
+    def properties(self):
+        return getToolByName(aq_inner(self.context), 'portal_properties')
 
-    @property
     @memoize_contextless
-    def portal_syndication(self):
-        return getToolByName(self.context, 'portal_syndication')
+    def syndication(self):
+        return getToolByName(aq_inner(self.context), 'portal_syndication')
         
-    @property
     @memoize_contextless
-    def portal_url(self):
-        return getToolByName(self.context, 'portal_url')
+    def url(self):
+        return getToolByName(aq_inner(self.context), 'portal_url')
 
-    @property
     @memoize_contextless
-    def portal_workflow(self):
-        return getToolByName(self.context, 'portal_workflow')
+    def workflow(self):
+        return getToolByName(aq_inner(self.context), 'portal_workflow')
 
-    @property
     @memoize_contextless
     def plone_utils(self):
-        return getToolByName(self.context, 'plone_utils')
+        return getToolByName(aq_inner(self.context), 'plone_utils')

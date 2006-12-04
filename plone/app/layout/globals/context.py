@@ -5,9 +5,12 @@ from plone.memoize.view import memoize
 from Acquisition import aq_base, aq_inner, aq_parent
 from Products.Five.browser import BrowserView
 
+from Products.CMFPlone.interfaces import IBrowserDefault
 from Products.CMFPlone.interfaces import INonStructuralFolder
 from Products.CMFPlone.interfaces.NonStructuralFolder import INonStructuralFolder \
      as z2INonStructuralFolder
+
+from Products.CMFPlone import utils
 
 from interfaces import IContextState
 
@@ -17,7 +20,6 @@ class ContextState(BrowserView):
     
     implements(IContextState)
     
-    @property
     @memoize
     def current_page_url(self):
         url = self.request.get('ACTUAL_URL', self.request.get('URL', None))
@@ -26,45 +28,63 @@ class ContextState(BrowserView):
             url += '?' + query
         return url
         
-    @property
+    @memoize
+    def canonical_object_url(self):
+        if self.is_default_page():
+            return self.parent().absolute_url()
+        else:
+            self.context.absolute_url()
+            
+    @memoize
+    def view_template_id(self):
+        context = aq_inner(self.context)
+        browserDefault = IBrowserDefault(context, None)
+        
+        if browserDefault is not None:
+            try:
+                return browserDefault.getLayout()
+            except AttributeError:
+                # Might happen if FTI didn't migrate yet.
+                pass
+
+        action = self._lookupTypeActionTemplate('object/view')
+        if not action:
+            action = self._lookupTypeActionTemplate('folder/folderlisting')
+
+        return action
+        
     @memoize
     def object_url(self):
         return aq_inner(self.context).absolute_url()
         
-    @property
     @memoize
     def object_title(self):
-        tools = getMultiAdapter((self.context, self.request), name='plone_tools')
-        return tools.plone_utils.pretty_title_or_id(aq_inner(self.context))
+        context = aq_inner(self.context)
+        return utils.pretty_title_or_id(context, context)
         
-    @property
     @memoize
     def workflow_state(self):
         tools = getMultiAdapter((self.context, self.request), name='plone_tools')
-        return tools.portal_workflow.getInfoFor(aq_inner(self.context), 'review_state', None)
+        return tools.workflow().getInfoFor(aq_inner(self.context), 'review_state', None)
     
-    @property
     @memoize
     def parent(self):
         return aq_parent(aq_inner(self.context))
-    
-    @property
+
     @memoize
     def folder(self):
-        if self.is_structural_folder and not self.is_default_page:
+        if self.is_structural_folder() and not self.is_default_page():
             return aq_inner(self.context)
         else:
-            return self.parent
+            return self.parent()
     
-    @property
     @memoize
     def is_folderish(self):
         return bool(getattr(aq_base(aq_inner(self.context)), 'isPrincipiaFolderish', False))
             
-    @property
     @memoize
     def is_structural_folder(self):
-        folderish = self.is_folderish
+        folderish = self.is_folderish()
         context = aq_inner(self.context)
         if not folderish:
             return False
@@ -76,7 +96,6 @@ class ContextState(BrowserView):
         else:
             return folderish
         
-    @property
     @memoize
     def is_default_page(self):
         context = aq_inner(self.context)
@@ -86,29 +105,33 @@ class ContextState(BrowserView):
         view = getMultiAdapter((container, self.request), name='default_page')
         return view.isDefaultPage(context)
     
-    @property
+    @memoize
+    def is_portal_root(self):
+        context = aq_inner(self.context)
+        portal_state = getMultiAdapter((context, self.request), name=u'plone_portal_state')
+        portal = portal_state.portal()
+        return aq_base(context) is aq_base(portal) or \
+                (self.is_default_page() and aq_base(self.parent()) is aq_base(portal))
+    
     @memoize
     def is_editable(self):
         tools = getMultiAdapter((self.context, self.request), name='plone_tools')
-        return tools.portal_membership.checkPermission('Modify portal content', aq_inner(self.context))
+        return tools.membership().checkPermission('Modify portal content', aq_inner(self.context))
     
-    @property
     @memoize
     def is_locked(self):
         context = aq_inner(self.context)
         lockable = getattr(context.aq_explicit, 'wl_isLocked', None) is not None
         return lockable and context.wl_isLocked()
                             
-    @property
     @memoize
     def actions(self):
         tools = getMultiAdapter((self.context, self.request), name='plone_tools')
-        return tools.portal_actions.listFilteredActionsFor(aq_inner(self.context))
+        return tools.actions().listFilteredActionsFor(aq_inner(self.context))
         
-    @property
     @memoize
     def keyed_actions(self):
-        actions = self.actions
+        actions = self.actions()
         keyed_actions = {}
         for category in actions.keys():
             keyed_actions[category] = {}
@@ -117,3 +140,22 @@ class ContextState(BrowserView):
                 if id is not None:
                     keyed_actions[category][id] = action.copy()
         return keyed_actions
+        
+    # Helper methods
+    def _lookupTypeActionTemplate(self, actionId):
+        context = aq_inner(self.context)
+        fti = context.getTypeInfo()
+        try:
+            # XXX: This isn't quite right since it assumes the action starts with ${object_url}
+            action = fti.getActionInfo(actionId)['url'].split('/')[-1]
+        except ValueError:
+            # If the action doesn't exist, stop
+            return None
+
+        # Try resolving method aliases because we need a real template_id here
+        action = fti.queryMethodID(action, default = action, context = context)
+
+        # Strip off leading /
+        if action and action[0] == '/':
+            action = action[1:]
+        return action
