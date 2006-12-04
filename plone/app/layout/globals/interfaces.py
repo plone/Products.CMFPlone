@@ -5,6 +5,7 @@ class ITools(Interface):
     """
     
     portal_actions     = Attribute("The portal_actions tool")
+    portal_catalog     = Attribute("The portal_catalog tool")
     portal_interface   = Attribute("The portal_interface tool")
     portal_membership  = Attribute("The portal_membership tool")
     portal_properties  = Attribute("The portal_properties tool")
@@ -39,6 +40,9 @@ class IContextState(Interface):
     object_url           = Attribute("The URL of the current object")
     object_title         = Attribute("The prettified title of the current object")
     workflow_state       = Attribute("The workflow state of the current object")
+    
+    parent               =Attribute("The direct parent of the current object")
+    folder               = Attribute("The current canonical folder")
                             
     is_folderish         = Attribute("True if this is a folderish object, structural or not")
     is_structural_folder = Attribute("True if this is a structural folder")

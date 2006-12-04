@@ -42,7 +42,20 @@ class ContextState(BrowserView):
     def workflow_state(self):
         tools = getMultiAdapter((self.context, self.request), name='plone_tools')
         return tools.portal_workflow.getInfoFor(aq_inner(self.context), 'review_state', None)
-                            
+    
+    @property
+    @memoize
+    def parent(self):
+        return aq_parent(aq_inner(self.context))
+    
+    @property
+    @memoize
+    def folder(self):
+        if self.is_structural_folder and not self.is_default_page:
+            return aq_inner(self.context)
+        else:
+            return self.parent
+    
     @property
     @memoize
     def is_folderish(self):

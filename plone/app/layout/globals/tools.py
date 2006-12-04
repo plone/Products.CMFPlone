@@ -20,6 +20,11 @@ class Tools(BrowserView):
         
     @property
     @memoize_contextless
+    def portal_catalog(self):
+        return getToolByName(self.context, 'portal_catalog')
+        
+    @property
+    @memoize_contextless
     def portal_interface(self):
         return getToolByName(self.context, 'portal_interface')
         
