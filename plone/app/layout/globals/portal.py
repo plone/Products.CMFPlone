@@ -1,9 +1,10 @@
 from zope.interface import implements
 from zope.component import getMultiAdapter
+
 from plone.memoize.view import memoize, memoize_contextless
 
+from Acquisition import aq_inner
 from Products.Five.browser import BrowserView
-
 from Products.CMFPlone.browser.navtree import getNavigationRoot
 
 from interfaces import IPortalState
@@ -36,7 +37,7 @@ class PortalState(BrowserView):
         portal = self.portal
         portalPath = '/'.join(portal.getPhysicalPath())
 
-        rootPath = getNavigationRoot(self.context)
+        rootPath = getNavigationRoot(aq_inner(self.context))
         rootSubPath = rootPath[len(portalPath):]
 
         return portal.absolute_url() + rootSubPath
@@ -51,8 +52,8 @@ class PortalState(BrowserView):
     @property
     @memoize
     def language(self):
-        return self.request.get('language', None) or self.context.Language() or \
-                self.default_language
+        return self.request.get('language', None) or \
+                aq_inner(self.context).Language() or self.default_language
         
     @property
     @memoize
@@ -64,7 +65,7 @@ class PortalState(BrowserView):
             return False
         else:
             try:
-                return isRTL(self.context, 'plone')
+                return isRTL(aq_inner(self.context), 'plone')
             except AttributeError:
                 # This may mean that PTS is present but not installed.
                 # Can effectively only happen in unit tests.
