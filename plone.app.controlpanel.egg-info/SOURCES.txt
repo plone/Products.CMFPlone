@@ -16,4 +16,16 @@ plone.app.controlpanel.egg-info/paster_plugins.txt
 plone.app.controlpanel.egg-info/top_level.txt
 plone/app/__init__.py
 plone/app/controlpanel/__init__.py
+plone/app/controlpanel/calendar.py
 plone/app/controlpanel/configure.zcml
+plone/app/controlpanel/control-panel.pt
+plone/app/controlpanel/form.py
+plone/app/controlpanel/mail.py
+plone/app/controlpanel/search.py
+plone/app/controlpanel/vocabularies.py
+plone/app/controlpanel/widgets.py
+plone/app/controlpanel/tests/__init__.py
+plone/app/controlpanel/tests/calendar.txt
+plone/app/controlpanel/tests/mail.txt
+plone/app/controlpanel/tests/search.txt
+plone/app/controlpanel/tests/test_doctests.py
