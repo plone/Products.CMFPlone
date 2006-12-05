@@ -1,0 +1,9 @@
+Changelog for plone.app.controlpanel
+
+    (name of developer listed in brackets)
+
+plone.app.controlpanel - 0.1 Unreleased
+
+    - Initial package structure.
+      [zopeskel]
+
