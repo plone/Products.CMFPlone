@@ -16,15 +16,15 @@ def test_suite():
     suites = (
         FunctionalDocFileSuite('calendar.txt',
             optionflags=OPTIONFLAGS,
-            package='Products.CMFPlone.browser.controlpanel.tests',
+            package='plone.app.controlpanel.tests',
             test_class=FunctionalTestCase),
         FunctionalDocFileSuite('mail.txt',
             optionflags=OPTIONFLAGS,
-            package='Products.CMFPlone.browser.controlpanel.tests',
+            package='plone.app.controlpanel.tests',
             test_class=FunctionalTestCase),
         FunctionalDocFileSuite('search.txt',
             optionflags=OPTIONFLAGS,
-            package='Products.CMFPlone.browser.controlpanel.tests',
+            package='plone.app.controlpanel.tests',
             test_class=FunctionalTestCase),
         )
 
