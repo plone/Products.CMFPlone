@@ -75,7 +75,6 @@ class ActionsMenu(BrowserMenu):
                 
         portal_state = getMultiAdapter((context, request), name='plone_portal_state')
         context_state = getMultiAdapter((context, request), name='plone_context_state')
-        tools = getMultiAdapter((context, request), name='plone_tools')
                 
         actions = context_state.actions()
         editActions = actions.get('object_buttons', None)
