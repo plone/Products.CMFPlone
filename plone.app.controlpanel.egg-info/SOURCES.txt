@@ -1,6 +1,10 @@
 README.txt
 setup.cfg
 setup.py
+docs/HISTORY.txt
+docs/INSTALL.txt
+docs/LICENSE.GPL
+docs/LICENSE.txt
 plone/__init__.py
 plone.app.controlpanel.egg-info/PKG-INFO
 plone.app.controlpanel.egg-info/SOURCES.txt
@@ -12,3 +16,4 @@ plone.app.controlpanel.egg-info/paster_plugins.txt
 plone.app.controlpanel.egg-info/top_level.txt
 plone/app/__init__.py
 plone/app/controlpanel/__init__.py
+plone/app/controlpanel/configure.zcml
