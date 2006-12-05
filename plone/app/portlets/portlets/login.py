@@ -1,4 +1,5 @@
 from zope.interface import implements
+from zope.component import getMultiAdapter
 
 from plone.portlets.interfaces import IPortletDataProvider
 from plone.app.portlets.portlets import base
@@ -29,13 +30,12 @@ class Renderer(base.Renderer):
         base.Renderer.__init__(self, context, request, view, manager, data)
         
         self.membership = getToolByName(self.context, 'portal_membership')
-        self.actions = getToolByName(self.context, 'portal_actions')
-        self.registration = getToolByName(self.context, 'portal_registration', None)
         
-        self.portal_url = getToolByName(self.context, 'portal_url')()
+        self.context_state = getMultiAdapter((context, request), name=u'plone_context_state')
+        self.portal_state = getMultiAdapter((context, request), name=u'plone_portal_state')
 
     def show(self):
-        if not self.membership.isAnonymousUser():
+        if not self.portal_state.anonymous():
             return False
         page = self.request.get('URL', '').split('/')[-1]
         return page not in ('login_form', 'join_form')
@@ -44,10 +44,10 @@ class Renderer(base.Renderer):
         return self.auth() is not None
 
     def login_form(self):
-        return '%s/login_form' % self.portal_url
+        return '%s/login_form' % self.portal_state.portal_url()
 
     def mail_password_form(self):
-        return '%s/mail_password_form' % self.portal_url
+        return '%s/mail_password_form' % self.portal_state.portal_url()
 
     def login_name(self):
         auth = self.auth()
@@ -75,7 +75,7 @@ class Renderer(base.Renderer):
         return persist
 
     def join_action(self):
-        userActions = self.actions.listFilteredActionsFor(self.context)['user']
+        userActions = self.context_state.actions()['user']
         joinAction = [a['url'] for a in userActions if a['id'] == 'join']
         if len(joinAction) > 0:
             return joinAction.pop()
@@ -83,7 +83,7 @@ class Renderer(base.Renderer):
             return None
 
     def can_register(self):
-        if self.registration is None:
+        if getToolByName(self.context, 'portal_registration', None) is None:
             return False
         return self.membership.checkPermission('Add portal member', self.context)
 

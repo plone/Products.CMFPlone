@@ -24,7 +24,7 @@
 
             <input type="hidden" name="form.submitted" value="1" />
             <input type="hidden" name="came_from" value="" 
-              tal:attributes="value context/@@plone/getCurrentUrl" />
+              tal:attributes="value context/@@plone_context_state/current_page_url" />
             <input type="hidden" name="js_enabled" id="js_enabled" value="0" />
             <input type="hidden" name="cookies_enabled" id="cookies_enabled" value="" />
             <input type="hidden" name="login_name" id="login_name" value="" />
