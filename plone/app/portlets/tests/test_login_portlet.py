@@ -83,15 +83,21 @@ class TestRenderer(PortletsTestCase):
         self.assertEquals(False, r.available())
 
     def testShow(self):
+        request = self.folder.REQUEST
+        
         r = self.renderer()
         self.assertEquals(False, r.show())
+        
         self.logout()
+        
+        del request.__annotations__
         self.assertEquals(True, r.show())
-
-        request = self.folder.REQUEST
+        
+        del request.__annotations__
         request['URL'] = self.portal.absolute_url() + '/login_form'
         self.assertEquals(False, self.renderer(request=request).show())
 
+        del request.__annotations__
         request['URL'] = self.portal.absolute_url() + '/join_form'
         self.assertEquals(False, self.renderer(request=request).show())
 
