@@ -4,6 +4,15 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Moved various interfaces and utilities - IDefaultPage, INvigationRoot,
+      INavtreeStrategy, INavigationQueryBuilder and the buildFolderTree()
+      and getNavigationRoot() helper functions - to plone.app.layout. This
+      reduces the dumping-ground feeling of CMFPlone.browser, leaving it
+      free to focus on actual views that implement CMFPlone look-and-feel and
+      policy, and provide a saner dependency/import location for third party
+      components needing these tools.
+      [optilude]
+
     - Gave IContentIcon a html_tag() helper method to make rendering the
       icon one line (<img tal:replace="structure item_icon/html_tag" />) 
       rather than ten or so. Also made the properties properties rather than
