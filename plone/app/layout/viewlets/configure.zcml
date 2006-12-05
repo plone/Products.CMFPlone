@@ -1,0 +1,37 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser">
+    
+    <!-- Register viewlet managers - used in plone's main_template -->
+    
+    <browser:viewletManager
+        name="plone.htmlhead"
+        provides=".interfaces.IHtmlHead"
+        permission="zope2.View"
+        />
+
+    <browser:viewletManager
+        name="plone.portalheader"
+        provides=".interfaces.IPortalHeader"
+        permission="zope2.View"
+        />
+
+    <browser:viewletManager
+        name="plone.abovecontent"
+        provides=".interfaces.IAboveContent"
+        permission="zope2.View"
+        />
+
+    <browser:viewletManager
+        name="plone.belowcontent"
+        provides=".interfaces.IBelowContent"
+        permission="zope2.View"
+        />
+
+    <browser:viewletManager
+        name="plone.portalfooter"
+        provides=".interfaces.IPortalFooter"
+        permission="zope2.View"
+        />
+        
+</configure>
