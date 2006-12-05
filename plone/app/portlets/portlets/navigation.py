@@ -17,13 +17,13 @@ from Products.CMFPlone.interfaces import INonStructuralFolder
 from Products.CMFPlone import utils
 from Products.CMFPlone import PloneMessageFactory as _
 
-from Products.CMFPlone.browser.interfaces import INavtreeStrategy
-from Products.CMFPlone.browser.interfaces import INavigationQueryBuilder
+from plone.app.layout.navigation.interfaces import INavtreeStrategy
+from plone.app.layout.navigation.interfaces import INavigationQueryBuilder
 
-from Products.CMFPlone.browser.navtree import getNavigationRoot
-from Products.CMFPlone.browser.navtree import buildFolderTree
+from plone.app.layout.navigation.root import getNavigationRoot
+from plone.app.layout.navigation.navtree import buildFolderTree
+
 from Products.CMFPlone.browser.navtree import SitemapNavtreeStrategy
-
 
 class INavigationPortlet(IPortletDataProvider):
     """A portlet which can render the navigation tree
