@@ -84,7 +84,7 @@ def _getDefaultPageView(obj, request):
         view = getMultiAdapter((obj, request), name='default_page')
     except ComponentLookupError:
         # XXX: import here to avoid a circular dependency
-        from browser.navigation import DefaultPage
+        from plone.app.layout.navigation.defaultpage import DefaultPage
         view = DefaultPage(obj, request)
     return view
 

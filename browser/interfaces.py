@@ -1,45 +1,31 @@
 from zope.interface import Interface, Attribute
 
+import zope.deferredimport
 
-class IDefaultPage(Interface):
+zope.deferredimport.deprecated(
+    "It has been moved to plone.app.layout.navigation.interfaces. " 
+    "This alias will be removed in Plone 4.0",
+    INavigationRoot = 'plone.app.layout.navigation.interfaces:INavigationRoot',
+    )
 
-    def isDefaultPage(obj):
-        """Finds out if the given obj is the default page for the
-        adapted object.
-        """
+zope.deferredimport.deprecated(
+    "It has been moved to plone.app.layout.navigation.interfaces. " 
+    "This alias will be removed in Plone 4.0",
+    IDefaultPage = 'plone.app.layout.navigation.interfaces:IDefaultPage',
+    )
 
-    def getDefaultPage():
-        """Returns the id of the default page for the adapted object.
-        """
+zope.deferredimport.deprecated(
+    "It has been moved to plone.app.layout.navigation.interfaces. " 
+    "This alias will be removed in Plone 4.0",
+    INavigationQueryBuilder = 'plone.app.layout.navigation.interfaces:INavigationQueryBuilder',
+    )
 
-class INavigationQueryBuilder(Interface):
-    """An object which returns a catalog query when called"""
-    def __call__():
-        """Returns a mapping describing a catalog query used to build a
-           navigation structure.
-        """
+zope.deferredimport.deprecated(
+    "It has been moved to plone.app.layout.navigation.interfaces. " 
+    "This alias will be removed in Plone 4.0",
+    INavtreeStrategy = 'plone.app.layout.navigation.interfaces:INavtreeStrategy',
+    )
 
-class INavtreeStrategy(Interface):
-
-    rootPath = Attribute("The path to the root of the navtree (None means use portal root)")
-
-    showAllParents = Attribute("Whether or not to show all parents of the current context always")
-
-    def nodeFilter(node):
-        """Return True or False to determine whether to include the given node
-        in the tree. Nodes are dicts with at least one key - 'item', the
-        catalog brain of the object the node represents.
-        """
-
-    def subtreeFilter(node):
-        """Return True or False to determine whether to expand the given
-        (folderish) node
-        """
-
-    def decoratorFactory(node):
-        """Inject any additional keys in the node that are needed and return
-        the new node.
-        """
 
 class INavigationBreadcrumbs(Interface):
 
@@ -68,10 +54,6 @@ class ISiteMap(Interface):
     def siteMap():
         """Site map
         """
-
-class INavigationRoot(Interface):
-    """A marker interface for signaling the navigation root.
-    """
 
 class INavigationPortlet(Interface):
     """Interface for portlet to display navigation tree"""

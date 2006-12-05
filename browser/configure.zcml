@@ -7,28 +7,16 @@
   <include package=".controlpanel" />
 
   <class class="Products.CMFPlone.Portal.PloneSite">
-    <implements interface=".interfaces.INavigationRoot" />
-  </class>
-
-  <class class=".navtree.NavtreeStrategyBase">
-    <allow interface=".interfaces.INavtreeStrategy" />
+    <implements interface="plone.app.layout.navigation.interfaces.INavigationRoot" />
   </class>
 
   <class class=".navtree.NavtreeQueryBuilder">
-    <allow interface=".interfaces.INavigationQueryBuilder" />
+      <allow interface="plone.app.layout.navigation.interfaces.INavigationQueryBuilder" />
   </class>
 
   <class class=".icon.CatalogBrainContentIcon">
-    <allow interface=".interfaces.IContentIcon" />
+      <allow interface=".interfaces.IContentIcon" />
   </class>
-
-  <browser:page
-      for="*"
-      name="default_page"
-      class=".navigation.DefaultPage"
-      permission="zope.Public"
-      allowed_interface=".interfaces.IDefaultPage"
-      />
 
   <browser:page
       for="*"
@@ -39,7 +27,7 @@
       />
 
   <browser:page
-      for=".interfaces.INavigationRoot"
+      for="plone.app.layout.navigation.interfaces.INavigationRoot"
       name="breadcrumbs_view"
       class=".navigation.RootPhysicalNavigationBreadcrumbs"
       permission="zope.Public"

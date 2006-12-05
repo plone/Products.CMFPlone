@@ -10,7 +10,6 @@ from Products.CMFCore.utils import _checkPermission
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import utils
 from Products.CMFPlone.browser.interfaces import IPlone
-from Products.CMFPlone.browser.navtree import getNavigationRoot
 from Products.CMFPlone.interfaces import IBrowserDefault
 from Products.CMFPlone.interfaces import INonStructuralFolder
 from Products.CMFPlone.interfaces.NonStructuralFolder import INonStructuralFolder\
@@ -35,7 +34,7 @@ import zope.deferredimport
 zope.deferredimport.deprecated(
     "It has been replaced by plone.memoize.instance.memoize. This alias will " 
     "be gone in Plone 4.0.",
-    cache_decorator = 'plone.memoize.instance.memoize',
+    cache_decorator = 'plone.memoize.instance:memoize',
     )
 
 class Plone(utils.BrowserView):
