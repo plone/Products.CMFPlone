@@ -115,12 +115,12 @@
    <adapter for="*
                 .interfaces.INavigationTree"
             factory=".navtree.DefaultNavtreeStrategy"
-            provides=".interfaces.INavtreeStrategy" />
+            provides="plone.app.layout.navigation.interfaces.INavtreeStrategy" />
 
    <adapter for="*
                 .interfaces.ISiteMap"
             factory=".navtree.SitemapNavtreeStrategy"
-            provides=".interfaces.INavtreeStrategy" />
+            provides="plone.app.layout.navigation.interfaces.INavtreeStrategy" />
 
    <!-- Icon adapters -->
 

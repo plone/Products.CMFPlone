@@ -7,18 +7,16 @@ from zope.interface import implements
 from zope.component import getMultiAdapter
 
 from Acquisition import aq_base
-
-from Products.CMFPlone.browser.interfaces import INavtreeStrategy
-from Products.CMFPlone.browser.interfaces import INavigationQueryBuilder
 from Products.CMFPlone.browser.interfaces import IContentIcon
-
 
 # Nasty hack to circumvent 'plone' modulealias
 import sys
 import plone
 del sys.modules['Products.CMFPlone.browser.plone']
 
+from plone.app.layout.navigation.interfaces import INavigationQueryBuilder
 from plone.app.layout.navigation.interfaces import INavigationRoot
+from plone.app.layout.navigation.interfaces import INavtreeStrategy
 
 from plone.app.layout.navigation.navtree import buildFolderTree
 from plone.app.layout.navigation.navtree import NavtreeStrategyBase
