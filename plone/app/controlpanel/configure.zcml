@@ -1,6 +1,57 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
-    xmlns:five="http://namespaces.zope.org/five">
+    xmlns:browser="http://namespaces.zope.org/browser">
 
+  <adapter
+      factory=".calendar.CalendarControlPanelAdapter"
+      />
+
+  <adapter
+      factory=".mail.MailControlPanelAdapter"
+      />
+
+  <adapter
+      factory=".search.SearchControlPanelAdapter"
+      />
+
+  <browser:page
+      name="calendar-controlpanel.html"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".calendar.CalendarControlPanel"
+      permission="cmf.ManagePortal"
+      />
+
+  <browser:page
+      name="mail-controlpanel.html"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".mail.MailControlPanel"
+      permission="cmf.ManagePortal"
+      />
+
+  <browser:page
+      name="search-controlpanel.html"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".search.SearchControlPanel"
+      permission="cmf.ManagePortal"
+      />
+
+  <utility
+      component=".vocabularies.PortalTypesVocabularyFactory"
+      name="AvailablePortalTypes"
+      />
+
+  <utility
+      component=".vocabularies.WorkflowStatesVocabularyFactory"
+      name="AvailableWorkflowStates"
+      />
+
+  <view
+      type="zope.publisher.interfaces.browser.IBrowserRequest"
+      for="zope.schema.interfaces.ITuple
+           zope.schema.interfaces.IVocabularyTokenized"
+      provides="zope.app.form.interfaces.IInputWidget"
+      factory=".widgets.MultiSelectTupleWidget"
+      permission="zope.Public"
+      />
 
 </configure>
