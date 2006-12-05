@@ -4,8 +4,6 @@
 
   <include package=".contentmenu" />
 
-  <include package=".controlpanel" />
-
   <class class="Products.CMFPlone.Portal.PloneSite">
     <implements interface="plone.app.layout.navigation.interfaces.INavigationRoot" />
   </class>

@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Moved new controlpanels to its own package (plone.app.controlpanel).
+      [hannosch]
+
     - Moved various interfaces and utilities - IDefaultPage, INvigationRoot,
       INavtreeStrategy, INavigationQueryBuilder and the buildFolderTree()
       and getNavigationRoot() helper functions - to plone.app.layout. This
