@@ -1,17 +1,15 @@
+from zope import schema
+from zope.component import getMultiAdapter
+from zope.formlib import form
 from zope.interface import implements
 
-from plone.portlets.interfaces import IPortletDataProvider
 from plone.app.portlets.portlets import base
-
-from zope import schema
-from zope.formlib import form
-
 from plone.memoize.instance import memoize
+from plone.portlets.interfaces import IPortletDataProvider
 
 from Acquisition import aq_inner
 from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
 from Products.CMFCore.utils import getToolByName
-
 from Products.CMFPlone import PloneMessageFactory as _
 
 class INewsPortlet(IPortletDataProvider):
@@ -35,6 +33,13 @@ class Renderer(base.Renderer):
 
     render = ZopeTwoPageTemplateFile('news.pt')
 
+    def __init__(self, *args):
+        base.Renderer.__init__(self, *args)
+
+        portal_state = getMultiAdapter((self.context, self.request), name=u'plone_portal_state')
+        self.portal_url = portal_state.portal_url()
+        self.portal = portal_state.portal()
+
     def show(self):
         return len(self._data())
 
@@ -42,15 +47,10 @@ class Renderer(base.Renderer):
         return self._data()
 
     def all_news_link(self):
-        context = aq_inner(self.context)
-        utool = getToolByName(context, 'portal_url')
-        portal_url = utool()
-        portal = utool.getPortalObject()
-
-        if 'news' in portal.objectIds():
-            return '%s/news' % portal_url
+        if 'news' in self.portal.objectIds():
+            return '%s/news' % self.portal_url
         else:
-            return '%s/news_listing' % portal_url
+            return '%s/news_listing' % self.portal_url
 
     @memoize
     def _data(self):

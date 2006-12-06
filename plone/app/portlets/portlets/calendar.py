@@ -32,8 +32,6 @@ class Renderer(base.Renderer):
     def __init__(self, context, request, view, manager, data):
         base.Renderer.__init__(self, context, request, view, manager, data)
 
-        self.context = context
-        self.request = request
         self.calendar = getToolByName(context, 'portal_calendar')
         self._ts = getToolByName(context, 'translation_service')
         self.url_quote_plus = url_quote_plus

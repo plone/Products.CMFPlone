@@ -1,19 +1,17 @@
+from zope import schema
+from zope.component import getMultiAdapter
+from zope.formlib import form
 from zope.interface import implements
 
-from plone.portlets.interfaces import IPortletDataProvider
 from plone.app.portlets.portlets import base
-
-from zope import schema
-from zope.formlib import form
-
 from plone.memoize.instance import memoize
+from plone.portlets.interfaces import IPortletDataProvider
 
-from DateTime.DateTime import DateTime
 from Acquisition import aq_inner
-from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
+from DateTime.DateTime import DateTime
 from Products.CMFCore.utils import getToolByName
-
 from Products.CMFPlone import PloneMessageFactory as _
+from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
 
 class IEventsPortlet(IPortletDataProvider):
 
@@ -34,16 +32,16 @@ class Assignment(base.Assignment):
 
 class Renderer(base.Renderer):
 
+    render = ZopeTwoPageTemplateFile('events.pt')
+
     def __init__(self, *args):
         base.Renderer.__init__(self, *args)
-        
-        utool = getToolByName(self.context, 'portal_url')
-        self.portal_url = utool()
-        self.portal = utool.getPortalObject()
-        
-        self.have_events_folder = 'events' in self.portal.objectIds()
 
-    render = ZopeTwoPageTemplateFile('events.pt')
+        portal_state = getMultiAdapter((self.context, self.request), name=u'plone_portal_state')
+        self.portal_url = portal_state.portal_url()
+        self.portal = portal_state.portal()
+
+        self.have_events_folder = 'events' in self.portal.objectIds()
 
     def show(self):
         return len(self._data())
