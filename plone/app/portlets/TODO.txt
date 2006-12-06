@@ -24,7 +24,6 @@ plone.app.portlets to-do
         - Document renderer
         - Recent
         - Related
-        - Calendar
         - Review
 
   Plone Integration

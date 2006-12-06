@@ -3,6 +3,15 @@
            xmlns:plone="http://namespaces.plone.org/plone">
 
     <plone:portlet
+        name="portlets.Calendar"
+        interface=".calendar.ICalendarPortlet"
+        assignment=".calendar.Assignment"
+        renderer=".calendar.Renderer"
+        addview=".calendar.AddForm"
+        editview=".calendar.EditForm"
+        />
+
+    <plone:portlet
         name="portlets.Classic"
         interface=".classic.IClassicPortlet"
         assignment=".classic.Assignment"
@@ -10,7 +19,7 @@
         addview=".classic.AddForm"
         editview=".classic.EditForm"
         />
-    
+
     <plone:portlet
         name="portlets.News"
         interface=".news.INewsPortlet"
@@ -49,5 +58,4 @@
     <adapter factory=".navigation.QueryBuilder" />
     <adapter factory=".navigation.NavtreeStrategy" />
 
-    
 </configure>
