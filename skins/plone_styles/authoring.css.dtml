@@ -141,6 +141,11 @@ input.searchButton {
     vertical-align: middle;
 }
 
+.listing td a label,
+.stx table td a label {
+    cursor: pointer;
+}
+
 /* Vertical addition class */
 
 .vertical {

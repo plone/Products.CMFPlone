@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.5.2 - Orb - (Unreleased)
 
+    - links in Contents table behave as they should now - show the "pointer" 
+      hand when hovering the mouse over them. It was broken due to ajax sorting 
+      feature somehow
+      [spliter]
+
     - event_view.pt has a better position for details table now, letting byLine 
       and Description info to be content-wide and not to be shifted to the left,
       bacuse of Details table
