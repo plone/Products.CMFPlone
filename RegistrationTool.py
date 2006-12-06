@@ -200,7 +200,7 @@ class RegistrationTool(PloneBaseTool, BaseTool):
         email = member.getProperty( 'email' )
 	try:
             checkEmailAddress(email)
-        except EmailAddressInvalid
+        except EmailAddressInvalid:
             raise ValueError, 'The email address did not validate'
 
         pwrt = getToolByName(self, 'portal_password_reset')
