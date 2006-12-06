@@ -304,7 +304,8 @@ class PloneGenerator:
         if u'events' not in right:
             right[u'events'] = portlets.events.Assignment(count=5)
         if u'calendar' not in right:
-            right[u'calendar'] = cpa(template=u'portlet_calendar', macro=u'portlet')
+            right[u'calendar'] = portlets.calendar.Assignment()
+
 
 def importVarious(context):
     """
