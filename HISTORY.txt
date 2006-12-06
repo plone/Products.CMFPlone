@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.5.2 - Orb - (Unreleased)
 
+    - event_view.pt has a better position for details table now, letting byLine 
+      and Description info to be content-wide and not to be shifted to the left,
+      bacuse of Details table
+      [spliter]
+
     - main table for columns (#portal-columns) should not have paddings or 
       spacings - they can confuse when styling. Fixed with CSS for the table 
       cells, thanks to deo ;)

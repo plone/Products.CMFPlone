@@ -16,6 +16,16 @@
             Title or id
         </h1>
 
+        <div metal:use-macro="here/document_byline/macros/byline">
+            Get the byline - contains details about author and modification date.
+        </div>
+
+        <p class="documentDescription description"
+           tal:content="here/Description"
+           tal:condition="here/Description">
+            Description
+        </p>
+        
         <div class="eventDetails vcard">
         <table class="vertical listing"
                summary="Event details" i18n:attributes="summary summary_event_details;">
@@ -112,16 +122,6 @@
             </tbody>
         </table>
         </div>
-
-        <div metal:use-macro="here/document_byline/macros/byline">
-            Get the byline - contains details about author and modification date.
-        </div>
-
-        <p class="documentDescription description"
-           tal:content="here/Description"
-           tal:condition="here/Description">
-            Description
-        </p>
 
         <div tal:condition="here/getText|nothing">
             <div tal:replace="structure here/getText" />
