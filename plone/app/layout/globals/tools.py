@@ -40,11 +40,11 @@ class Tools(BrowserView):
     @memoize_contextless
     def url(self):
         return getToolByName(aq_inner(self.context), 'portal_url')
+        
+    @memoize_contextless
+    def types(self):
+        return getToolByName(aq_inner(self.context), 'portal_types')
 
     @memoize_contextless
     def workflow(self):
         return getToolByName(aq_inner(self.context), 'portal_workflow')
-
-    @memoize_contextless
-    def plone_utils(self):
-        return getToolByName(aq_inner(self.context), 'plone_utils')

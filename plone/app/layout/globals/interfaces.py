@@ -27,6 +27,10 @@ class ITools(Interface):
         """The portal_syndication tool
         """
         
+    def types():
+        """The portal_types tool
+        """
+        
     def url():
         """The portal_url tool"""
 
@@ -76,7 +80,11 @@ class IPortalState(Interface):
         
     def anonymous():
         """Whether or not the current member is Anonymous
-        """        
+        """
+        
+    def friendly_types():
+        """Get a list of portal types considered "end user" types
+        """
 
 class IContextState(Interface):
     """A view that gives access to the state of the current context

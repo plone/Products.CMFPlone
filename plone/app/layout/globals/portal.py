@@ -84,3 +84,15 @@ class PortalState(BrowserView):
         tools = getMultiAdapter((self.context, self.request), name='plone_tools')
         return bool(tools.membership().isAnonymousUser())
     
+    @memoize_contextless
+    def friendly_types(self):
+        tools = getMultiAdapter((self.context, self.request), name='plone_tools')
+        properties = tools.properties()
+        
+        site_properties = getattr(properties, 'site_properties')
+        not_searched = site_properties.getProperty('types_not_searched', [])
+
+        portal_types = tools.types()
+        types = portal_types.listContentTypes()
+
+        return [t for t in types if t not in not_searched]
