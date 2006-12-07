@@ -6,8 +6,9 @@
         <span class="portletTopRight"></span>
     </dt>
 
-    <tal:items tal:define="getIcon nocall:context/@@plone/getIcon;
-                           toLocalizedTime nocall:context/@@plone/toLocalizedTime;"
+    <tal:items tal:define="plone_view context/@@plone;
+                           getIcon nocall:plone_view/getIcon;
+                           toLocalizedTime nocall:plone_view/toLocalizedTime;"
                tal:repeat="o view/review_items">
         <dd class="portletItem"
             tal:define="oddrow repeat/o/odd;
