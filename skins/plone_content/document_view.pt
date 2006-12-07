@@ -12,17 +12,15 @@
             Document actions (print, sendto etc)
         </div>
 
-        <h1 tal:content="object_title" class="documentFirstHeading">
+        <h1 metal:use-macro="here/azax_macros_generic/macros/generic_title_view">
           Title or id
         </h1>
-    
+
         <div metal:use-macro="here/document_byline/macros/byline">
           Get the byline - contains details about author and modification date.
         </div>
 
-        <p class="documentDescription"
-           tal:content="here/Description"
-           tal:condition="here/Description">
+        <p  metal:use-macro="here/azax_macros_generic/macros/generic_description_view">
             Description
         </p>
         <p tal:condition="python: not text and is_editable"
@@ -31,10 +29,15 @@
             This item does not have any body text, click the edit tab to change it.
         </p>
     
-        <div class="stx"
+        <div id="archetypes-fieldname-text" class="stx"
+             tal:define="field python:context.getField('text');
+                 writable python:field.writeable(context);
+                 kukitclasses string:kukit-atfieldname-text kukit-widgetstate-view;
+                 kukitattrs python:test(writable, ' ' + kukitclasses, '');"
+            
              tal:condition="text"
              tal:attributes="class python:test(here.Format() in ('text/structured',
-                                                   'text/x-rst', ), 'stx', 'plain')">
+                                                   'text/x-rst', ), 'stx' + kukitattrs, 'plain' + kukitattrs)">
             <div tal:replace="structure text" />
         </div>
 
