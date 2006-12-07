@@ -58,4 +58,22 @@
     <adapter factory=".navigation.QueryBuilder" />
     <adapter factory=".navigation.NavtreeStrategy" />
 
+    <plone:portlet
+        name="portlets.Recent"
+        interface=".recent.IRecentPortlet"
+        assignment=".recent.Assignment"
+        renderer=".recent.Renderer"
+        addview=".recent.AddForm"
+        editview=".recent.EditForm"
+        />
+
+    <plone:portlet
+        name="portlets.Review"
+        interface=".review.IReviewPortlet"
+        assignment=".review.Assignment"
+        renderer=".review.Renderer"
+        addview=".review.AddForm"
+        editview=".review.EditForm"
+        />
+
 </configure>

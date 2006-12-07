@@ -22,9 +22,6 @@ plone.app.portlets to-do
     o Make standard set of portlets
         - Smart Folder renderer
         - Document renderer
-        - Recent
-        - Related
-        - Review
 
   Plone Integration
 
