@@ -32,11 +32,6 @@ from log import log
 from log import log_exc
 from log import log_deprecated
 
-# Keep these here to not fully change the old API
-# please use i18nl10n directly
-from i18nl10n import utranslate
-from i18nl10n import ulocalized_time
-
 # Define and compile static regexes
 IGNORE_REGEX = re.compile(r"[']")
 FILENAME_REGEX = re.compile(r"^(.+)\.(\w{,4})$")
@@ -48,6 +43,10 @@ EXTRA_DASHES_REGEX = re.compile(r"(^\-+)|(\-+$)")
 PIL_SCALING_ALGO = Image.ANTIALIAS
 PIL_QUALITY = 88
 MEMBER_IMAGE_SCALE = (75, 100)
+IMAGE_SCALE_PARAMS = {'scale': MEMBER_IMAGE_SCALE,
+                      'quality': PIL_QUALITY,
+                      'algorithm': PIL_SCALING_ALGO,
+                      'default_format': 'PNG'}
 
 _marker = []
 
@@ -85,7 +84,7 @@ def _getDefaultPageView(obj, request):
         view = getMultiAdapter((obj, request), name='default_page')
     except ComponentLookupError:
         # XXX: import here to avoid a circular dependency
-        from browser.navigation import DefaultPage
+        from plone.app.layout.navigation.defaultpage import DefaultPage
         view = DefaultPage(obj, request)
     return view
 
@@ -475,6 +474,39 @@ def safe_callable(obj):
     else:
         return callable(obj)
 
+
+def safe_unicode(value, encoding='utf-8'):
+    """Converts a value to unicode, even it is already a unicode string.
+
+        >>> from Products.CMFPlone.utils import safe_unicode
+
+        >>> safe_unicode('spam')
+        u'spam'
+        >>> safe_unicode(u'spam')
+        u'spam'
+        >>> safe_unicode(u'spam'.encode('utf-8'))
+        u'spam'
+        >>> safe_unicode('\xc6\xb5')
+        u'\u01b5'
+        >>> safe_unicode(u'\xc6\xb5'.encode('iso-8859-1'))
+        u'\u01b5'
+        >>> safe_unicode('\xc6\xb5', encoding='ascii')
+        u'\u01b5'
+        >>> safe_unicode(1)
+        1
+        >>> print safe_unicode(None)
+        None
+    """
+    if isinstance(value, unicode):
+        return value
+    elif isinstance(value, basestring):
+        try:
+            value = unicode(value, encoding)
+        except (UnicodeDecodeError):
+            value = value.decode('utf-8', 'replace')
+    return value
+
+
 def tuplize(value):
     if isinstance(value, tuple):
         return value
@@ -625,8 +657,7 @@ def _getSecurity(klass, create=True):
         setattr(klass, '__security__', security)
     return security
 
-def scale_image(image_file, max_size=MEMBER_IMAGE_SCALE,
-                default_format = 'PNG'):
+def scale_image(image_file, max_size=None, default_format=None):
     """Scales an image down to at most max_size preserving aspect ratio
     from an input file
 
@@ -713,6 +744,10 @@ def scale_image(image_file, max_size=MEMBER_IMAGE_SCALE,
         (50, 50)
 
     """
+    if max_size is None:
+        max_size = IMAGE_SCALE_PARAMS['scale']
+    if default_format is None:
+        default_format = IMAGE_SCALE_PARAMS['default_format']
     # Make sure we have ints
     size = (int(max_size[0]), int(max_size[1]))
     # Load up the image, don't try to catch errors, we want to fail miserably
@@ -736,13 +771,21 @@ def scale_image(image_file, max_size=MEMBER_IMAGE_SCALE,
         image = image.convert('RGBA')
     # Rescale in place with an method that will not alter the aspect ratio
     # and will only shrink the image not enlarge it.
-    image.thumbnail(size, resample=PIL_SCALING_ALGO)
+    image.thumbnail(size, resample=IMAGE_SCALE_PARAMS['algorithm'])
     # preserve palletted mode for GIF and PNG
     if original_mode == 'P' and format in ('GIF', 'PNG'):
         image = image.convert('P')
     # Save
     new_file = StringIO()
-    image.save(new_file, format, quality=PIL_QUALITY)
+    image.save(new_file, format, quality=IMAGE_SCALE_PARAMS['quality'])
     new_file.seek(0)
     # Return the file data and the new mimetype
     return new_file, mimetype
+
+
+# Keep these here to not fully change the old API
+# Put these at the end to avoid an ImportError for safe_unicode
+from i18nl10n import utranslate
+from i18nl10n import ulocalized_time
+from i18nl10n import getGlobalTranslationService
+

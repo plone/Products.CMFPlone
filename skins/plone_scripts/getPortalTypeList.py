@@ -33,6 +33,7 @@ excluded_ids = {
     'ATDateCriteria': None,
     'ATListCriterion': None,
     'ATPathCriterion': None,
+    'ATRelativePathCriterion': None,
     'ATPortalTypeCriterion': None,
     'ATReferenceCriterion': None,
     'ATBooleanCriterion': None, 

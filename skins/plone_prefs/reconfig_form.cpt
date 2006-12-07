@@ -206,7 +206,7 @@
                     Determines if your Plone is optimized for small or large
                     sites. In environments with a lot of users and/or groups it
                     can be very slow or impossible to build a list all users or
-                    groups.  This option tunes the user interface and behaviour
+                    groups. This option tunes the user interface and behaviour
                     of Plone for this case by allowing you to search for
                     users/groups instead of listing all of them.
                 </div>

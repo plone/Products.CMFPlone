@@ -64,7 +64,7 @@
         </small>
     
         <div class="row"
-             tal:condition="python:test(content_type.startswith('text'),1,0)">
+             tal:condition="python: content_type.startswith('text')">
     
                 <h2 i18n:translate="heading_file_contents">File contents</h2>
     

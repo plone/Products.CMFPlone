@@ -1,4 +1,6 @@
+import logging
 import os
+
 import Globals
 from AccessControl import Owned, ClassSecurityInfo, getSecurityManager
 from AccessControl.Permission import Permission
@@ -14,9 +16,8 @@ from StructuredText.StructuredText import HTML
 from Products.CMFPlone.PloneFolder import PloneFolder as TempFolderBase
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFPlone.utils import base_hasattr
+from Products.CMFPlone.utils import log_exc
 from ZODB.POSException import ConflictError
-
-ListType=type([])
 
 FACTORY_INFO = '__factory__info__'
 
@@ -151,7 +152,7 @@ class TempFolder(TempFolderBase):
                 # some errors from invokeFactory (AttributeError, maybe others)
                 # get swallowed -- dump the exception to the log to make sure
                 # developers can see what's going on
-                getToolByName(self, 'plone_utils').logException()
+                log_exc(severity=logging.DEBUG)
                 raise
             obj = self._getOb(id)
             
@@ -397,7 +398,7 @@ class FactoryTool(PloneBaseTool, UniqueObject, SimpleItem):
             p=Permission(name,value,intended_parent)
             roles = p.getRoles()
             folder_roles[name] = roles
-            if type(roles) is ListType:
+            if isinstance(roles, list):
                 n_acquired += 1
 
         # If intended_parent is not the portal, walk up the acquisition hierarchy and
@@ -410,20 +411,20 @@ class FactoryTool(PloneBaseTool, UniqueObject, SimpleItem):
                 for p in parent.ac_inherited_permissions(1):
                     name, value = p[:2]
                     roles = folder_roles[name]
-                    if type(roles) is ListType:
+                    if isinstance(roles, list):
                         p=Permission(name,value,parent)
                         aq_roles=p.getRoles()
                         for r in aq_roles:
                             if not r in roles:
                                 roles.append(r)
-                        if type(aq_roles) is ListType:
+                        if isinstance(aq_roles, list):
                             n_acquired += 1
                         else:
                             roles = tuple(roles)
                         folder_roles[name] = roles
                 parent = aq_parent(aq_inner(parent))
         for name, roles in folder_roles.items():
-            tempFolder.manage_permission(name, roles, acquire=type(roles) is ListType)
+            tempFolder.manage_permission(name, roles, acquire=isinstance(roles, list))
 
         factory_info[type_name] = tempFolder
         self.REQUEST.set(FACTORY_INFO, factory_info)

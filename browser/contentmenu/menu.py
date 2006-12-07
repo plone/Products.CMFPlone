@@ -5,6 +5,8 @@ from zope.app.publisher.browser.menu import BrowserMenu
 from zope.app.publisher.browser.menu import BrowserMenuItem
 from zope.app.publisher.browser.menu import BrowserSubMenuItem
 
+from plone.memoize.instance import memoize
+
 from Products.CMFCore.interfaces import IActionsTool
 from Products.CMFCore.interfaces import IActionInfo
 
@@ -16,7 +18,6 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFDynamicViewFTI.interface import ISelectableBrowserDefault
 
 from Products.CMFPlone.browser.interfaces import IPlone
-from Products.CMFPlone.browser.plone import cache_decorator
 
 from Products.CMFPlone.interfaces.structure import INonStructuralFolder
 from Products.CMFPlone.interfaces.constrains import IConstrainTypes
@@ -45,20 +46,20 @@ class ActionsSubMenuItem(BrowserSubMenuItem):
     order = 10
     extra = {'id' : 'plone-contentmenu-actions'}
     
+    def __init__(self, context, request):
+        BrowserSubMenuItem.__init__(self, context, request)
+        self.context_state = getMultiAdapter((context, request), name='plone_context_state')
+    
     @property
     def action(self):
-        ploneView = getMultiAdapter((self.context, self.request), name="plone")
-        folder = utils.parent(self.context)
-        if ploneView.isStructuralFolder():
-            folder = self.context
+        folder = self.context
+        if not self.context_state.is_structural_folder():
+            folder = utils.parent(self.context)
         return folder.absolute_url() + '/folder_contents'
     
-    @cache_decorator
+    @memoize
     def available(self):
-        _actionsTool = getToolByName(self.context, 'portal_actions')
-        actionsTool = IActionsTool(_actionsTool)
-        actions = actionsTool.listFilteredActionsFor(self.context)
-        editActions = actions.get('object_buttons', None)        
+        editActions = self.context_state.actions().get('object_buttons', None)        
         return (editActions is not None and len(editActions) >= 0)
 
     def selected(self):
@@ -67,28 +68,30 @@ class ActionsSubMenuItem(BrowserSubMenuItem):
 class ActionsMenu(BrowserMenu):
     implements(IActionsMenu)
     
+    
     def getMenuItems(self, context, request):
         """Return menu item entries in a TAL-friendly form."""
         results = []
-        
-        _actionsTool = getToolByName(context, 'portal_actions')
-        actionsTool = IActionsTool(_actionsTool)
-        
-        actions = actionsTool.listFilteredActionsFor(context)
+                
+        portal_state = getMultiAdapter((context, request), name='plone_portal_state')
+        context_state = getMultiAdapter((context, request), name='plone_context_state')
+                
+        actions = context_state.actions()
         editActions = actions.get('object_buttons', None)
         
         if editActions is None:
             return []
         
         plone_utils = getToolByName(context, 'plone_utils')
+        portal_url = portal_state.portal_url()
         
         for a in editActions:
             action = IActionInfo(a)
             if action['allowed']:
+                cssClass = 'actionicon-object_buttons-%s' % action['id']
                 icon = plone_utils.getIconFor('object_buttons', action['id'], None)
-                cssClass = ''
                 if icon:
-                    cssClass = 'visualIconPadding visualIcon actionicon-object_buttons-%s' % action['id']
+                    icon = '%s/%s' % (portal_url, icon)
                     
                 results.append({ 'title'        : action['title'],
                                  'description'  : '',
@@ -109,6 +112,10 @@ class DisplaySubMenuItem(BrowserSubMenuItem):
     
     order = 20
     
+    def __init__(self, context, request):
+        BrowserSubMenuItem.__init__(self, context, request)
+        self.context_state = getMultiAdapter((context, request), name='plone_context_state')
+    
     @property
     def extra(self):
         return {'id' : 'plone-contentmenu-display', 'disabled' : self.disabled()}
@@ -127,10 +134,9 @@ class DisplaySubMenuItem(BrowserSubMenuItem):
         else:
             return self.context.absolute_url() + '/select_default_view'
     
-    @cache_decorator
+    @memoize
     def available(self):
-        ploneView = getMultiAdapter((self.context, self.request), name="plone")
-        isDefaultPage = ploneView.isDefaultPageInFolder()
+        isDefaultPage = self.context_state.is_default_page()
         
         folder = None
         context = None
@@ -175,13 +181,12 @@ class DisplaySubMenuItem(BrowserSubMenuItem):
     def selected(self):
         return False
         
-    @cache_decorator
+    @memoize
     def disabled(self):
         context = self.context
-        ploneView = getMultiAdapter((self.context, self.request), name="plone")
-        if ploneView.isDefaultPageInFolder():
+        if self.context_state.is_default_page():
             context = utils.parent(context)
-        if not context.isPrincipiaFolderish:
+        if not getattr(context, 'isPrincipiaFolderish', False):
             return False
         elif 'index_html' not in context.objectIds():
             return False
@@ -196,8 +201,8 @@ class DisplayMenu(BrowserMenu):
         """Return menu item entries in a TAL-friendly form."""
         results = []
 
-        ploneView = getMultiAdapter((obj, request), name="plone")
-        isDefaultPage = ploneView.isDefaultPageInFolder()
+        context_state = getMultiAdapter((obj, request), name='plone_context_state')
+        isDefaultPage = context_state.is_default_page()
         
         parent = None
         
@@ -367,6 +372,10 @@ class FactoriesSubMenuItem(BrowserSubMenuItem):
     submenuId = 'plone.contentmenu.factories.menu'
     order = 30
     
+    def __init__(self, context, request):
+        BrowserSubMenuItem.__init__(self, context, request)
+        self.context_state = getMultiAdapter((context, request), name='plone_context_state')
+    
     @property
     def extra(self):
         return {'id' : 'plone-contentmenu-factories', 
@@ -430,12 +439,11 @@ class FactoriesSubMenuItem(BrowserSubMenuItem):
     def selected(self):
         return False
     
-    @cache_decorator
+    @memoize
     def _addContext(self):
-        ploneView = getMultiAdapter((self.context, self.request), name="plone")
-        return ploneView.getCurrentFolder()
+        return self.context_state.folder()
         
-    @cache_decorator
+    @memoize
     def _itemsToAdd(self):
         addContext = self._addContext()
         constrain = IConstrainTypes(addContext, None)
@@ -445,11 +453,11 @@ class FactoriesSubMenuItem(BrowserSubMenuItem):
             locallyAllowed = constrain.getLocallyAllowedTypes()
             return [fti for fti in addContext.allowedContentTypes() if fti.getId() in locallyAllowed]
                 
-    @cache_decorator
+    @memoize
     def _addingToParent(self):
         return (self._addContext().absolute_url() == self.context.absolute_url())
         
-    @cache_decorator
+    @memoize
     def _showConstrainOptions(self):
         addContext = self._addContext()
         constrain = ISelectableConstrainTypes(addContext, None)
@@ -460,7 +468,7 @@ class FactoriesSubMenuItem(BrowserSubMenuItem):
         elif len(constrain.getLocallyAllowedTypes()) < len(constrain.getImmediatelyAddableTypes()):
             return True
             
-    @cache_decorator
+    @memoize
     def _hideChildren(self):
         itemsToAdd = self._itemsToAdd()
         showConstrainOptions = self._showConstrainOptions()
@@ -468,18 +476,21 @@ class FactoriesSubMenuItem(BrowserSubMenuItem):
             
 class FactoriesMenu(BrowserMenu):
     implements(IFactoriesMenu)
+
     
     def getMenuItems(self, context, request):
         """Return menu item entries in a TAL-friendly form."""
         results = []
         
-        ploneView = getMultiAdapter((context, request), name="plone")
-        addContext = ploneView.getCurrentFolder()
+        portal_state = getMultiAdapter((context, request), name='plone_portal_state')
+        context_state = getMultiAdapter((context, request), name='plone_context_state')
+        
+        portal_url = portal_state.portal_url()
+        addContext = context_state.folder()
         
         allowedTypes = addContext.allowedContentTypes()
         
-        # XXX: This is calling a pyscript (which we encourage people to 
-        # customise TTW)
+        # XXX: This is calling a pyscript (which we encourage people to customise TTW)
         exclude = addContext.getNotAddableTypes()
         include = None
         
@@ -498,19 +509,22 @@ class FactoriesMenu(BrowserMenu):
                 haveSettings = True
 
         for t in allowedTypes:
-             typeId = t.getId()
-             if typeId not in exclude and (include is None or typeId in include):
-                 url = '%s/createObject?type_name=%s' % (addContext.absolute_url(), typeId,)
-                 cssClass = 'visualIconPadding visualIcon contenttype-%s' % utils.normalizeString(typeId, context=context)
+            typeId = t.getId()
+            if typeId not in exclude and (include is None or typeId in include):
+                cssClass = 'contenttype-%s' % utils.normalizeString(typeId, context=context)
+                url = '%s/createObject?type_name=%s' % (addContext.absolute_url(), typeId,)
+                icon = t.getIcon()
+                if icon:
+                    icon = '%s/%s' % (portal_url, icon)
                  
-                 results.append({ 'title'        : t.Title(),
-                                  'description'  : t.Description(),
-                                  'action'       : url,
-                                  'selected'     : False,
-                                  'icon'         : None,
-                                  'extra'        : {'id' : typeId, 'separator' : None, 'class' : cssClass},
-                                  'submenu'      : None,
-                                 })
+                results.append({ 'title'        : t.Title(),
+                                 'description'  : t.Description(),
+                                 'action'       : url,
+                                 'selected'     : False,
+                                 'icon'         : icon,
+                                 'extra'        : {'id' : typeId, 'separator' : None, 'class' : cssClass},
+                                 'submenu'      : None,
+                                })
 
         # Sort the addable content types based on their translated title
         # BBB addContext.translate should be replaced by a translate call of
@@ -553,9 +567,14 @@ class WorkflowSubMenuItem(BrowserSubMenuItem):
     submenuId = 'plone.contentmenu.workflow.menu'
     order = 40
 
+    def __init__(self, context, request):
+        BrowserSubMenuItem.__init__(self, context, request)
+        self.tools = getMultiAdapter((context, request), name='plone_tools')
+        self.context_state = getMultiAdapter((context, request), name='plone_context_state')
+
     @property
     def extra(self):
-        state = self._currentState()
+        state = self.context_state.workflow_state()
         stateTitle = self._currentStateTitle()
         return {'id'         : 'plone-contentmenu-workflow', 
                 'class'      : 'state-%s' % state,
@@ -576,39 +595,25 @@ class WorkflowSubMenuItem(BrowserSubMenuItem):
         else:
             return ''
     
-    @cache_decorator
+    @memoize
     def available(self):
-        return (self._currentState() is not None)
+        return (self.context_state.workflow_state() is not None)
 
     def selected(self):
         return False
 
-    @cache_decorator
+    @memoize
     def _manageSettings(self):
-        _membershipTool = getToolByName(self.context, 'portal_membership')
-        membershipTool = IMembershipTool(_membershipTool)
-        return membershipTool.checkPermission(WorkflowSubMenuItem.MANAGE_SETTINGS_PERMISSION, self.context)
+        return self.tools.membership().checkPermission(WorkflowSubMenuItem.MANAGE_SETTINGS_PERMISSION, self.context)
 
-    @cache_decorator
+    @memoize
     def _transitions(self):
-        _actionsTool = getToolByName(self.context, 'portal_actions')
-        actionsTool = IActionsTool(_actionsTool)
-        actions = actionsTool.listFilteredActionsFor(self.context)
-        workflowActions = actions.get('workflow', [])
-        return workflowActions
+        return self.context_state.actions().get('workflow', [])
         
-    @cache_decorator
-    def _currentState(self):
-        _workflowTool = getToolByName(self.context, 'portal_workflow')
-        workflowTool = IWorkflowTool(_workflowTool)
-        return workflowTool.getInfoFor(self.context, 'review_state', default=None)        
-        
-    @cache_decorator
+    @memoize
     def _currentStateTitle(self):
-        _workflowTool = getToolByName(self.context, 'portal_workflow')
-        workflowTool = IWorkflowTool(_workflowTool)
-        state = workflowTool.getInfoFor(self.context, 'review_state', default=None)
-        workflows = workflowTool.getWorkflowsFor(self.context)
+        state = self.context_state.workflow_state()
+        workflows = self.tools.workflow().getWorkflowsFor(self.context)
         if workflows:
             for w in workflows:
                 if w.states.has_key(state):
@@ -631,16 +636,13 @@ class WorkflowMenu(BrowserMenu):
         'content_submit_form',
     )
     
-    
     def getMenuItems(self, context, request):
         """Return menu item entries in a TAL-friendly form."""
         results = []
         
-        _actionsTool = getToolByName(context, 'portal_actions')
-        actionsTool = IActionsTool(_actionsTool)
+        context_state = getMultiAdapter((context, request), name='plone_context_state')
         
-        actions = actionsTool.listFilteredActionsFor(context)
-        workflowActions = actions.get('workflow', None)
+        workflowActions = context_state.actions().get('workflow', None)
 
         if workflowActions is None:
             return []

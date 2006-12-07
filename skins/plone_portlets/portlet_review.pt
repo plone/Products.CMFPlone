@@ -17,14 +17,22 @@
 
     <tal:items repeat="o results">
     <dd class="portletItem"
-        tal:define="oddrow repeat/o/odd"
+        tal:define="oddrow repeat/o/odd;
+                    item_icon python:plone_view.getIcon(o);"
         tal:attributes="class python:test(oddrow, 'portletItem even','portletItem odd')">
 
-        <div tal:attributes="class python:'visualIcon contenttype-' + normalizeString(o.portal_type)">
         <a href="#"
            class="visualIconPadding tile"
            tal:attributes="href string:${o/absolute_url}/view;
                            title o/Description">
+            <img width="16" height="16"
+                 src="" alt=""
+                 tal:condition="item_icon/url"
+                 tal:attributes="src item_icon/url;
+                                 alt item_icon/description;
+                                 title item_icon/title;
+                                 width item_icon/width;
+                                 height item_icon/height;" />
             <span tal:replace="o/pretty_title_or_id">
             Extended Calendar Product
             </span>
@@ -32,7 +40,6 @@
                   tal:define="moddate o/ModificationDate;"
                   tal:content="python:toLocalizedTime(moddate)">May 5</span>
         </a>
-        </div>
 
     </dd>
     </tal:items>

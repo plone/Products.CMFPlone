@@ -11,7 +11,7 @@ PREFERRED_PYTHON_VER = "2.4.1 or newer"
 MINIMUM_ZOPE_VER = (2, 10, 0)
 PREFERRED_ZOPE_VER = "2.10.0 or newer"
 
-MINIMUM_CMF_VER = (1, 6, 0)
+MINIMUM_CMF_VER = (2, 1, 0)
 
 messages = []
 
@@ -48,7 +48,7 @@ else:
 
 if ZOPE_VER in ('unknown', (-1, -1, -1)): # -1, -1, 1 is developer release
     log(("Unable to detect Zope version. Please make sure you have Zope "
-         "%s installed." % PREFERRED_ZOPE_VER))
+         "%s installed." % PREFERRED_ZOPE_VER), severity=logging.INFO)
 elif ZOPE_VER < MINIMUM_ZOPE_VER:
     log(("Zope version %s found but Plone needs at least "
          "Zope %s Please download and install Zope %s "
@@ -104,10 +104,9 @@ try:
     # TODO: we might want to check if the user has jpeg and zlib support, too
     import PIL.Image
 except ImportError:
-    log(("PIL not found. Plone needs PIL 1.1.5 or newer to scale images. "
+    log(("PIL not found. Plone needs PIL 1.1.5 or newer. "
          "Please download it from http://www.pythonware.com/products/pil/ or "
-         "http://effbot.org/downloads/#Imaging"),
-         severity=logging.INFO)
+         "http://effbot.org/downloads/#Imaging"))
 
 try:
     from elementtree import ElementTree
@@ -157,12 +156,6 @@ try:
 except ImportError:
     log(("CMFFormController not found. Please "
          "download it from http://plone.org/products/cmfformcontroller"))
-
-try:
-    import Products.GroupUserFolder
-except ImportError:
-    log(("GroupUserFolder not found. Please "
-         "http://plone.org/products/groupuserfolder"))
 
 try:
     import Products.SecureMailHost

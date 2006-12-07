@@ -9,11 +9,20 @@ if __name__ == '__main__':
 from Products.CMFPlone.tests import PloneTestCase
 
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.browser.navtree import *
 
-from Products.CMFPlone.browser.interfaces import INavigationRoot
+from plone.app.layout.navigation.interfaces import INavigationRoot
+
+from plone.app.layout.navigation.navtree import NavtreeStrategyBase
+from plone.app.layout.navigation.navtree import buildFolderTree
+from plone.app.layout.navigation.root import getNavigationRoot
+
+from Products.CMFPlone.browser.navtree import NavtreeQueryBuilder
+from Products.CMFPlone.browser.navtree import SitemapQueryBuilder
+from Products.CMFPlone.browser.navtree import SitemapNavtreeStrategy
+from Products.CMFPlone.browser.navtree import DefaultNavtreeStrategy
 
 from zope.interface import directlyProvides
+from zope.interface import implements
 
 default_user = PloneTestCase.default_user
 

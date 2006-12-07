@@ -3,48 +3,6 @@
 /* <dtml-with base_properties> (do not remove this :) */
 /* <dtml-call "REQUEST.set('portal_url', portal_url())"> (not this either :) */
 
-.visualIcon,
-#objectMenu .visualIcon a:hover { 
-    background-position: 100% 0%;
-}
-
-#portal-sitemap .visualIcon a:hover,
-#portal-sitemap .visualIcon a.navTreeCurrentItem,
-#portlet-navigation-tree .visualIcon a:hover,
-#portlet-navigation-tree .visualIcon a.navTreeCurrentItem {
-    background-position: 100% 3px;
-    margin-right: -1px;
-    margin-left: 0;
-}
-
-#portal-sitemap .visualIcon,
-#portlet-navigation-tree .visualIcon {
-    background-position: 100% 4px;
-}
-
-dt span.visualIcon { display : block; float: right; margin-top: -2px; }
-
-#portal-personaltools .visualIcon,
-.actionMenuContent .visualIcon {
-    background-position: 100% 50%;
-}
-
-
-/* Extra padding class for the generated icons - we have to do it
-   this way because of the IE flicker bug on hovering. */
-
-.visualIconPadding {
-    padding-right: 18px;
-    padding-left: 0;
-    margin-right: -1px;
-    margin-left: 0;
-    margin-bottom: 1px;
-    min-height: 1.6em;
-    height: auto;
-    line-height: 1.6em;
-}
-
-
 h1 {
     padding-left: 4em;
     padding-right: 0;

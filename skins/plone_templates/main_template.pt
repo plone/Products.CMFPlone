@@ -42,6 +42,9 @@
       <tal:comment replace="nothing"> A slot where you can insert javascript in the header from a template </tal:comment>
       <metal:javascriptslot define-slot="javascript_head_slot" />
     </metal:javascriptslot>
+    
+    <div tal:replace="structure provider:plone.htmlhead" />
+    
   </head>
 
   <body tal:attributes="class here/getSectionFromURL;
@@ -53,13 +56,15 @@
         <div id="portal-header">
           <p class="hiddenStructure">
             <a accesskey="2"
-               tal:attributes="href string:${request/ACTUAL_URL}#documentContent"
+               tal:attributes="href string:${current_page_url}#documentContent"
                i18n:translate="label_skiptocontent">Skip to content.</a> |
 
             <a accesskey="6"
-               tal:attributes="href string:${request/ACTUAL_URL}#portlet-navigation-tree"
+               tal:attributes="href string:${current_page_url}#portlet-navigation-tree"
                i18n:translate="label_skiptonavigation">Skip to navigation</a>
           </p>
+
+             <div tal:replace="structure provider:plone.portalheader" />
 
              <div metal:use-macro="here/global_siteactions/macros/site_actions">
                Site-wide actions (Contact, Sitemap, Help, Style Switcher etc)
@@ -143,6 +148,8 @@
                     <div metal:use-macro="here/global_statusmessage/macros/portal_message">
                       Portal status message
                     </div>
+                    
+                    <div tal:replace="structure provider:plone.abovecontent" />
 
                     <metal:slot metal:define-slot="body">
                       <metal:header metal:define-slot="header" tal:content="nothing">
@@ -154,7 +161,11 @@
                     </metal:slot>
 
                     <metal:sub metal:define-slot="sub">
+                    
+                      <div tal:replace="structure provider:plone.belowcontent" />
+                    
                       <metal:discussion use-macro="here/viewThreadsAtBottom/macros/discussionView" />
+                      
                     </metal:sub>
 
                   </div>
@@ -188,6 +199,8 @@
       <hr class="netscape4" />
 
       <metal:block i18n:domain="plone">
+
+        <div tal:replace="structure provider:plone.portalfooter" />
 
         <metal:footer use-macro="here/footer/macros/portal_footer">
           Footer

@@ -28,9 +28,6 @@
     enabled="1" expression="" id="deprecated.css" media="screen"
     rel="stylesheet" rendering="import"/>
  <stylesheet title="" cacheable="True" compression="safe" cookable="True"
-    enabled="1" expression="" id="generated.css" media="screen"
-    rel="stylesheet" rendering="import"/>
- <stylesheet title="" cacheable="True" compression="safe" cookable="True"
     enabled="1" expression="not: portal/portal_membership/isAnonymousUser"
     id="member.css" media="screen" rel="stylesheet" rendering="import"/>
  <stylesheet title="" cacheable="True" compression="safe" cookable="True"

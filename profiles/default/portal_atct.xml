@@ -96,6 +96,7 @@
   <index name="path" description="The location of an item in the site (path)"
      enabled="True" friendlyName="Location">
    <criteria>ATPathCriterion</criteria>
+   <criteria>ATRelativePathCriterion</criteria>
   </index>
   <index name="portal_type" description="" enabled="False"
      friendlyName="Item Type (internal)">

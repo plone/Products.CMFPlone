@@ -61,16 +61,16 @@
         <tal:results repeat="result batch">
         <tal:entry define="result_url result/getURL;
                            result_type result/portal_type;
+                           item_icon python:plone_view.getIcon(result);
                            url python:'%s?searchterm=%s'%(test(result_type in use_view_action, result_url+'/view', result_url+'/'), searchterm);">
-            <dt tal:define="item_wf_state result/review_state;
-                            item_wf_state_class python:'state-' + normalizeString(item_wf_state);">
-                <span tal:attributes="class python: 'visualIcon contenttype-' + normalizeString(result.portal_type)">
-                    <a
-                     href="#" 
-                     tal:attributes="href url;
-                                     class string:$item_wf_state_class visualIconPadding"
-                tal:content="result/pretty_title_or_id" />
-                </span>
+            <dt tal:define="item_wf_state_class string:state-${result/review_state};"
+                tal:attributes="class python:'contenttype-' + normalizeString(result.portal_type)">
+              <img tal:replace="structure item_icon/html_tag" />
+               <a
+                 href="#" 
+                 tal:attributes="href url;
+                                 class string:$item_wf_state_class"
+                 tal:content="result/pretty_title_or_id" />
                <span class="discreet" 
                      title="Relevance"
                      tal:condition="result/data_record_normalized_score_"

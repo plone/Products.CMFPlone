@@ -18,6 +18,9 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
         self.registration = self.portal.portal_registration
+        self.portal.acl_users.userFolderAddUser("userid", "password",
+                (), (), ())
+        self.portal.acl_users._doAddGroup("groupid", ())
 
     def testJoinCreatesUser(self):
         self.registration.addMember(member_id, 'secret',
@@ -80,7 +83,17 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
     def testInvalidCMFDefaultEmailFailsValidation(self):
         # http://dev.plone.org/plone/ticket/3910
         self.failIf(self.registration.isValidEmail('bogus@127.0.0.1'))
-    
+
+    def testNewIdAllowed(self):
+        self.assertEqual(self.registration.isMemberIdAllowed('newuser'), 1)
+
+
+    def testTakenUserId(self):
+        self.assertEqual(self.registration.isMemberIdAllowed('userid'), 0)
+
+
+    def testTakenGroupd(self):
+        self.assertEqual(self.registration.isMemberIdAllowed('groupid'), 0)
 
 class TestPasswordGeneration(PloneTestCase.PloneTestCase):
 

@@ -1,5 +1,6 @@
 import random
 import md5
+from smtplib import SMTPRecipientsRefused
 
 from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault.RegistrationTool import RegistrationTool as BaseTool
@@ -11,6 +12,9 @@ from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.SecureMailHost.SecureMailHost import EMAIL_RE
 from Products.CMFDefault.utils import checkEmailAddress
 from Products.CMFDefault.exceptions import EmailAddressInvalid
+
+from Products.PluggableAuthService.interfaces.authservice \
+        import IPluggableAuthService
 
 # - remove '1', 'l', and 'I' to avoid confusion
 # - remove '0', 'O', and 'Q' to avoid confusion
@@ -175,8 +179,11 @@ class RegistrationTool(PloneBaseTool, BaseTool):
             # add the single email address
             if not utils.validateSingleEmailAddress(member.getProperty('email')):
                 raise ValueError, 'The email address did not validate'
-
-        return BaseTool.mailPassword(self, forgotten_userid, REQUEST)
+        try:
+            return BaseTool.mailPassword(self, forgotten_userid, REQUEST)
+        except SMTPRecipientsRefused:
+            # Don't disclose email address on failure
+            raise SMTPRecipientsRefused('Recipient address rejected by server')
 
     security.declarePublic('registeredNotify')
     def registeredNotify(self, new_member_id):
@@ -191,9 +198,10 @@ class RegistrationTool(PloneBaseTool, BaseTool):
                 raise ValueError, 'The email address did not validate'
 
         email = member.getProperty( 'email' )
-        check, msg = _checkEmail(email)
-        if not check:
-            raise ValueError, msg
+	try:
+            checkEmailAddress(email)
+        except EmailAddressInvalid:
+            raise ValueError, 'The email address did not validate'
 
         pwrt = getToolByName(self, 'portal_password_reset')
         reset = pwrt.requestReset(new_member_id)
@@ -213,7 +221,26 @@ class RegistrationTool(PloneBaseTool, BaseTool):
 
         return self.mail_password_response( self, self.REQUEST )
 
+    def isMemberIdAllowed(self, id):
+        if len(id) < 1 or id == 'Anonymous User':
+            return 0
+        if not self._ALLOWED_MEMBER_ID_PATTERN.match( id ):
+            return 0
 
+        pas = getToolByName(self, 'acl_users')
+        if IPluggableAuthService.providedBy(pas):
+            results = pas.searchPrincipals(id=id)
+            if results:
+                return 0
+        else:
+            membership = getToolByName(self, 'portal_membership')
+            if membership.getMemberById(id) is not None:
+                return 0
+            groups = getToolByName(self, 'portal_groups')
+            if groups.getGroupById(id) is not None:
+                return 0
+
+        return 1
 
 RegistrationTool.__doc__ = BaseTool.__doc__
 

@@ -9,6 +9,7 @@ from Acquisition import aq_base
 from Products.ATContentTypes.migration.v1_2 import upgradeATCTTool
 from Products.CMFCore.ActionInformation import Action
 from Products.CMFCore.ActionInformation import ActionCategory
+from Products.CMFCore.Expression import Expression
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.permissions import ManagePortal
 from Products.CMFPlone.migrations.migration_util import installOrReinstallProduct
@@ -59,6 +60,20 @@ def three0_alpha1(portal):
 
     # Install the calendar settings control panel
     addCalendarConfiglet(portal, out)
+
+    return out
+
+
+def alpha1_alpha2(portal):
+    """ 3.0-alpha1 -> 3.0-alpha2
+    """
+    out = []
+
+    # Update search and mailhost control panels to new formlib based ones
+    updateSearchAndMailHostConfiglet(portal, out)
+
+    # remove generated.css from ResourceRegistries
+    removeGeneratedCSS(portal, out)
 
     return out
 
@@ -208,3 +223,23 @@ def addCalendarConfiglet(portal, out):
                                            permission = ManagePortal,)
             out.append("Added calendar settings to the control panel")
 
+
+def updateSearchAndMailHostConfiglet(portal, out):
+    """Use new configlets for the search and mailhost settings"""
+    controlPanel = getToolByName(portal, 'portal_controlpanel', None)
+    if controlPanel is not None:
+        search = controlPanel.getActionObject('Plone/SearchSettings')
+        mail = controlPanel.getActionObject('Plone/MailHost')
+
+        if search is not None:
+            search.action = Expression('string:${portal_url}/@@search-controlpanel.html')
+        if mail is not None:
+            mail.action = Expression('string:${portal_url}/@@mail-controlpanel.html')
+
+def removeGeneratedCSS(portal, out):
+    # remove generated.css from the portal_css registries
+    cssreg = getToolByName(portal, 'portal_css', None)
+    stylesheet_ids = cssreg.getResourceIds()
+    if 'generated.css' in stylesheet_ids:
+        cssreg.unregisterResource('generated.css')
+        out.append("Removed generated.css from the registry")

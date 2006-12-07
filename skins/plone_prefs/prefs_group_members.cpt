@@ -135,7 +135,8 @@
                             <a href="" tal:attributes="href string:prefs_group_details?groupname=${this_user/getGroupName}"
                                          tal:content="this_user/getGroupTitleOrName | default">
                               <span i18n:translate="link_groupname_not_available">
-                              groupname not available</span>
+                                  groupname not available
+                              </span>
                             </a>
                           </td>
                         </tal:block>
@@ -146,7 +147,8 @@
                             <a href="" tal:attributes="href string:prefs_user_details?userid=${this_user/getId}"
                                 tal:content="this_user/getUserName | default">
                                 <span i18n:translate="link_username_not_available">
-                                username not available</span>
+                                    username not available
+                                </span>
                             </a>
                           </td>
                         </tal:block>

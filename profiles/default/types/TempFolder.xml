@@ -27,7 +27,6 @@
  </property>
  <property name="allow_discussion">False</property>
  <alias from="(Default)" to="index_html"/>
- <alias from="index.html" to="index_html"/>
  <alias from="view" to="index_html"/>
  <action title="View" action_id="view" category="object" condition_expr=""
     url_expr="string:${object_url}" visible="True">

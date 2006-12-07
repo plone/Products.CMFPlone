@@ -28,15 +28,17 @@
         <tal:results tal:repeat="result batch">
 
             <dl>
-                <dt tal:define="item_wf_state result/review_state;
+                <dt tal:define="item_icon python:plone_view.getIcon(result);
+                                item_wf_state result/review_state;
                                 item_wf_state_class python:'state-' + normalizeString(item_wf_state);">
-                    <span tal:attributes="class python: 'visualIcon contenttype-' + normalizeString(result.portal_type) + ' visualIconPadding'">
-                    <a href="/view"
-                       tal:content="result/pretty_title_or_id"
-                       tal:attributes="href result/getURL;
-                                       class string:$item_wf_state_class">
-                    Title
-                    </a>
+                    <span tal:attributes="class python:'contenttype-' + normalizeString(result.portal_type)">
+                      <img tal:replace="structure item_icon/html_tag" />
+                      <a href="/view"
+                         tal:content="result/pretty_title_or_id"
+                         tal:attributes="href result/getURL;
+                                         class string:$item_wf_state_class">
+                      Title
+                      </a>
                     </span>
 
                     <span class="discreet" i18n:translate="text_creator_date">

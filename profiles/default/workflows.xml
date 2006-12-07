@@ -14,6 +14,7 @@
   <type type_id="ATDateRangeCriterion"/>
   <type type_id="ATListCriterion"/>
   <type type_id="ATPathCriterion"/>
+  <type type_id="ATRelativePathCriterion"/>
   <type type_id="ATPortalTypeCriterion"/>
   <type type_id="ATReferenceCriterion"/>
   <type type_id="ATSelectionCriterion"/>

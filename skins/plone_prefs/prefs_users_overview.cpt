@@ -56,7 +56,7 @@
         <p i18n:translate="description_user_management">
           Click the user's name to see and change the details of a
           specific user. Click the envelope icon to send a mail to
-          the user.  You can also edit the e-mail addresses, and
+          the user. You can also edit the e-mail addresses, and
           add/remove users.
         </p>
         <p i18n:translate="user_role_note">

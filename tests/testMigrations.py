@@ -48,6 +48,8 @@ from Products.CMFPlone.migrations.v2_5.final_two51 import addEventRegistrationJS
 from Products.CMFPlone.migrations.v2_5.final_two51 import fixupPloneLexicon
 from Products.CMFPlone.migrations.v2_5.final_two51 import fixObjDeleteAction
 
+from Products.CMFPlone.migrations.v2_5.two51_two52 import setLoginFormInCookieAuth
+
 from Products.CMFPlone.migrations.v3_0.alphas import enableZope3Site
 from Products.CMFPlone.migrations.v3_0.alphas import migrateOldActions
 from Products.CMFPlone.migrations.v3_0.alphas import addNewCSSFiles
@@ -56,6 +58,7 @@ from Products.CMFPlone.migrations.v3_0.alphas import updateFTII18NDomain
 from Products.CMFPlone.migrations.v3_0.alphas import convertLegacyPortlets
 from Products.CMFPlone.migrations.v3_0.alphas import addIconForCalendarSettingsConfiglet
 from Products.CMFPlone.migrations.v3_0.alphas import addCalendarConfiglet
+from Products.CMFPlone.migrations.v3_0.alphas import updateSearchAndMailHostConfiglet
 
 from zope.app.component.hooks import clearSite
 from zope.app.component.interfaces import ISite
@@ -971,10 +974,31 @@ class TestMigrations_v2_5_1(MigrationTest):
             self.failUnless(a in actions)
         self.failUnlessEqual(len(editActions), len(actions))
 
-    def testtFixObjDeleteActionNoTool(self):
+    def testFixObjDeleteActionNoTool(self):
         self.portal._delObject('portal_actions')
         fixObjDeleteAction(self.portal, [])
 
+    def testSetLoginFormInCookieAuth(self):
+        setLoginFormInCookieAuth(self.portal, [])
+        cookie_auth = self.portal.acl_users.credentials_cookie_auth
+        self.failUnlessEqual(cookie_auth.getProperty('login_path'),
+                             'require_login')
+
+    def testSetLoginFormNoCookieAuth(self):
+        # Shouldn't error
+        uf = self.portal.acl_users
+        uf._delOb('credentials_cookie_auth')
+        setLoginFormInCookieAuth(self.portal, [])
+
+    def testSetLoginFormAlreadyChanged(self):
+        # Shouldn't change the value if it's not the default
+        cookie_auth = self.portal.acl_users.credentials_cookie_auth
+        cookie_auth.manage_changeProperties(login_path='foo')
+        out = []
+        setLoginFormInCookieAuth(self.portal, out)
+        self.failIf(len(out) > 0)
+        self.failIfEqual(cookie_auth.getProperty('login_path'),
+                         'require_login')
 
 class TestMigrations_v3_0(MigrationTest):
 
@@ -1266,6 +1290,35 @@ class TestMigrations_v3_0(MigrationTest):
         # Should not fail if tool is missing
         self.portal._delObject('portal_controlpanel')
         addCalendarConfiglet(self.portal, [])
+
+    def testUpdateSearchAndMailHostConfiglet(self):
+        search = self.cp.getActionObject('Plone/SearchSettings')
+        mail = self.cp.getActionObject('Plone/MailHost')
+        search.action = Expression('string:search')
+        mail.action = Expression('string:mail')
+        updateSearchAndMailHostConfiglet(self.portal, [])
+        self.assertEquals(search.action.text,
+                          'string:${portal_url}/@@search-controlpanel.html')
+        self.assertEquals(mail.action.text,
+                          'string:${portal_url}/@@mail-controlpanel.html')
+    
+    def testUpdateSearchAndMailHostConfigletTwice(self):
+        # Should not fail if done twice
+        search = self.cp.getActionObject('Plone/SearchSettings')
+        mail = self.cp.getActionObject('Plone/MailHost')
+        search.action = Expression('string:search')
+        mail.action = Expression('string:mail')
+        updateSearchAndMailHostConfiglet(self.portal, [])
+        updateSearchAndMailHostConfiglet(self.portal, [])
+        self.assertEquals(search.action.text,
+                          'string:${portal_url}/@@search-controlpanel.html')
+        self.assertEquals(mail.action.text,
+                          'string:${portal_url}/@@mail-controlpanel.html')
+    
+    def testUpdateSearchAndMailHostConfigletNoTool(self):
+        # Should not fail if tool is missing
+        self.portal._delObject('portal_controlpanel')
+        updateSearchAndMailHostConfiglet(self.portal, [])
 
 
 class TestMigrations_v3_0_Actions(MigrationTest):

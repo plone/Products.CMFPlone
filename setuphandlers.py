@@ -16,6 +16,7 @@ from Products.StandardCacheManagers.RAMCacheManager import \
 
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import _createObjectByType
+from Products.CMFPlone import migrations as migs
 from Products.CMFPlone.Portal import member_indexhtml
 from Products.Five.component import enableSite
 from Products.Five.component.interfaces import IObjectManagerSite
@@ -192,6 +193,13 @@ class PloneGenerator:
         if 'Reviewers' not in existing:
             gtool.addGroup('Reviewers', roles=['Reviewer'])
 
+    def performMigrationActions(self, p):
+        """
+        Perform any necessary migration steps.
+        """
+        out = []
+        migs.v2_5.two51_two52.setLoginFormInCookieAuth(p, out)
+
     def addDefaultTypesToPortalFactory(self, portal, out):
         """Put the default content types in portal_factory"""
         factory = getToolByName(portal, 'portal_factory', None)
@@ -296,7 +304,8 @@ class PloneGenerator:
         if u'events' not in right:
             right[u'events'] = portlets.events.Assignment(count=5)
         if u'calendar' not in right:
-            right[u'calendar'] = cpa(template=u'portlet_calendar', macro=u'portlet')
+            right[u'calendar'] = portlets.calendar.Assignment()
+
 
 def importVarious(context):
     """
@@ -329,6 +338,7 @@ def importFinalSteps(context):
     gen.setupPortalContent(site)
     gen.addRolesToPlugIn(site)
     gen.setupGroups(site)
+    gen.performMigrationActions(site)
     gen.addDefaultTypesToPortalFactory(site, out)
     gen.enableSyndicationOnTopics(site, out)
     gen.assignTitles(site, out)

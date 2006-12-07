@@ -48,18 +48,6 @@ class Item(SimpleItem):
             self.title = title
 
 
-class DeletedItem(Item):
-    '''Item than can be asked whether it has been deleted'''
-
-    manage_before_delete_called = 0
-
-    def manage_beforeDelete(self, item, container):
-        self.manage_before_delete_called = 1
-
-    def before_delete_called(self):
-        return self.manage_before_delete_called
-
-
 class SizedItem(Item):
     '''Item maintaining a size'''
 
@@ -71,6 +59,7 @@ class SizedItem(Item):
     def get_size(self):
         return self.size
 
+
 class FieldStorage(object):
     def __init__(self, file, filename='testfile', headers=None):
         self.file = file
@@ -78,6 +67,7 @@ class FieldStorage(object):
             headers = {}
         self.headers = headers
         self.filename = filename
+
 
 class File(FileUpload):
     '''Dummy upload object
@@ -188,8 +178,11 @@ class ImageComputedProps(Item):
 
     longdesc = ComputedAttribute(get_longdesc, 1)
 
+
 class IDummyUtility(Interface):
     pass
 
+
 class DummyUtility(SimpleItem):
     implements(IDummyUtility)
+

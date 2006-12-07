@@ -79,7 +79,8 @@
                                           item_type_title item/Type;
                                           item_modified item/ModificationDate;
                                           item_created item/CreationDate;
-                                          item_type_class python: 'visualIcon contenttype-' + normalizeString(item_type);
+                                          item_icon python:plone_view.getIcon(item);
+                                          item_type_class python:'contenttype-' + normalizeString(item_type);
                                           item_wf_state        item/review_state|python: wtool.getInfoFor(item, 'review_state', '');
                                           item_wf_state_class python:'state-' + normalizeString(item_wf_state);
                                           item_creator item/Creator;
@@ -87,28 +88,45 @@
                                           item_end item/end/ISO|item/EndDate|nothing;
                                           ">
                             <td>
-                                <span tal:attributes="class item_type_class"
+                                <span class=""
+                                      tal:attributes="class item_type_class"
                                       tal:condition="python:item_type != 'Link'">
-                                <a href="#"
-                                   tal:attributes="href python:test(item_type in use_view_action, item_url+'/view', item_url+'/');
-                                                   class string:$item_wf_state_class visualIconPadding;
-                                                   title item_description;"
-                                   tal:content="item_title_or_id">
-                                    Item Title
-                                </a>
+                                    <img width="16" height="16"
+                                         src="" alt=""
+                                         tal:condition="item_icon/url"
+                                         tal:attributes="src item_icon/url;
+                                                         alt item_icon/description;
+                                                         title item_icon/title;
+                                                         width item_icon/width;
+                                                         height item_icon/height;" />
+                                    <a href="#"
+                                       tal:attributes="href python:test(item_type in use_view_action, item_url+'/view', item_url+'/');
+                                                       class string:${item_wf_state_class};
+                                                       title item_description;"
+                                       tal:content="item_title_or_id">
+                                        Item Title
+                                    </a>
                                 </span>
 
-                                <tal:to_external condition="python:item_type == 'Link'">
-                                    <span tal:attributes="class item_type_class">
+                                <span class=""
+                                      tal:attributes="class item_type_class"
+                                      tal:condition="python:item_type == 'Link'">
+                                    <img width="16" height="16"
+                                         src="" alt=""
+                                         tal:condition="item_icon/url"
+                                         tal:attributes="src item_icon/url;
+                                                         alt item_icon/description;
+                                                         title item_icon/title;
+                                                         width item_icon/width;
+                                                         height item_icon/height;" />
                                     <a href="#"
                                        tal:content="item_title_or_id"
                                        tal:attributes="href item/getRemoteUrl;
-                                                       class item_wf_state_class;
+                                                       class string:${item_wf_state_class} link-plain;
                                                        title item_description;">
                                         External Link
                                     </a>
-                                    </span>
-                                </tal:to_external>
+                                </span>
                             </td>
 
                             <td tal:condition="show_about">

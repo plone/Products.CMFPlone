@@ -4,27 +4,17 @@
 
   <include package=".contentmenu" />
 
-  <include package=".controlpanel" />
-
   <class class="Products.CMFPlone.Portal.PloneSite">
-    <implements interface=".interfaces.INavigationRoot" />
-  </class>
-
-  <class class=".navtree.NavtreeStrategyBase">
-    <allow interface=".interfaces.INavtreeStrategy" />
+    <implements interface="plone.app.layout.navigation.interfaces.INavigationRoot" />
   </class>
 
   <class class=".navtree.NavtreeQueryBuilder">
-    <allow interface=".interfaces.INavigationQueryBuilder" />
+      <allow interface="plone.app.layout.navigation.interfaces.INavigationQueryBuilder" />
   </class>
 
-  <browser:page
-      for="*"
-      name="default_page"
-      class=".navigation.DefaultPage"
-      permission="zope.Public"
-      allowed_interface=".interfaces.IDefaultPage"
-      />
+  <class class=".icon.CatalogBrainContentIcon">
+      <allow interface=".interfaces.IContentIcon" />
+  </class>
 
   <browser:page
       for="*"
@@ -35,7 +25,7 @@
       />
 
   <browser:page
-      for=".interfaces.INavigationRoot"
+      for="plone.app.layout.navigation.interfaces.INavigationRoot"
       name="breadcrumbs_view"
       class=".navigation.RootPhysicalNavigationBreadcrumbs"
       permission="zope.Public"
@@ -69,7 +59,7 @@
   <browser:page
       for="*"
       name="plone"
-      class=".plone.Plone"
+      class=".ploneview.Plone"
       permission="zope.Public"
       allowed_interface=".interfaces.IPlone"
       />
@@ -125,12 +115,31 @@
    <adapter for="*
                 .interfaces.INavigationTree"
             factory=".navtree.DefaultNavtreeStrategy"
-            provides=".interfaces.INavtreeStrategy" />
+            provides="plone.app.layout.navigation.interfaces.INavtreeStrategy" />
 
    <adapter for="*
                 .interfaces.ISiteMap"
             factory=".navtree.SitemapNavtreeStrategy"
-            provides=".interfaces.INavtreeStrategy" />
+            provides="plone.app.layout.navigation.interfaces.INavtreeStrategy" />
 
+   <!-- Icon adapters -->
+
+  <adapter for="*
+                zope.publisher.interfaces.browser.IBrowserRequest
+                Products.ZCatalog.CatalogBrains.AbstractCatalogBrain"
+           factory=".icon.CatalogBrainContentIcon"
+           provides=".interfaces.IContentIcon" />
+
+  <adapter for="*
+                zope.publisher.interfaces.browser.IBrowserRequest
+                Products.ATContentTypes.interface.IATContentType"
+           factory=".icon.ATCTContentIcon"
+           provides=".interfaces.IContentIcon" />
+
+  <adapter for="*
+                zope.publisher.interfaces.browser.IBrowserRequest
+                Products.CMFCore.TypesTool.FactoryTypeInformation"
+           factory=".icon.FTIContentIcon"
+           provides=".interfaces.IContentIcon" />
 
 </configure>

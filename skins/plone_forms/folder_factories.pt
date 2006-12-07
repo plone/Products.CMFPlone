@@ -45,14 +45,16 @@
 
             <div class="field" tal:define="pss modules/Products/PythonScripts/standard;
                                            Title ctype/Title;
-                                           Id ctype/getId"
+                                           Id ctype/getId;
+                                           item_icon python:plone_view.getIcon(ctype);"
                                tal:condition="python:test(Id not in filterOut, 1, 0)">
 
                 <form name="quickAdd" action="createObject" method="post">
     
-                    <label tal:attributes="class python: 'visualIcon contenttype-' + normalizeString(Id) + ' visualIconPadding';
-                                           for python:normalizeString(Id);">
-                    &nbsp;
+                    <label tal:define="normalized_id python:normalizeString(Id);"
+                           tal:attributes="class string:contenttype-${normalized_id};
+                                           for normalized_id">
+                        <img tal:replace="structure item_icon/html_tag" />
                     </label>
 
                     <input name="type_name"

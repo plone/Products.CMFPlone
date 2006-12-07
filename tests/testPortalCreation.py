@@ -432,7 +432,6 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         expected_aliases = {
                 '(Default)'  : '(dynamic view)',
                 'view'       : '(selected layout)',
-                'index.html' : '(dynamic view)',
                 'edit'       : 'folder_edit_form',
                 'sharing'    : 'folder_localrole_form',
               }
@@ -709,6 +708,10 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         snapshot_id = self.setup._mangleTimestampName('test')
         self.setup.createSnapshot(snapshot_id)
 
+    def testValidateEmail(self):
+        # validate_email should be on by default
+        self.failUnless(self.portal.getProperty('validate_email'))
+
     def testSiteManagerSetup(self):
         clearSite()
         # The portal should be an ISite
@@ -814,14 +817,6 @@ class TestPortalBugs(PloneTestCase.PloneTestCase):
         members = self.members
         self.assertEqual(aq_base(members).meta_type, 'ATBTreeFolder')
         self.assertEqual(members.index_html.meta_type, self.mem_index_type)
-
-    def testManageBeforeDeleteIsCalledRecursively(self):
-        # When the portal is deleted, all subobject should have
-        # their manage_beforeDelete hook called. Fixed by geoffd.
-        self.folder._setObject('foo', dummy.DeletedItem())
-        self.foo = self.folder.foo
-        self.app._delObject(PloneTestCase.portal_name)
-        self.failUnless(self.foo.before_delete_called())
 
     def testSubsequentProfileImportSucceeds(self):
         # Subsequent profile imports fail (#5439)

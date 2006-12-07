@@ -47,7 +47,7 @@
 
       <p i18n:translate="description_publishing_process">
         An item's status (also called its review state) determines who
-        can see it.  A <strong>private</strong> item can only be
+        can see it. A <strong>private</strong> item can only be
         viewed by its Owner and by the site management. Only
         <strong>published</strong> items are available to the general
         user base and anonymous visitors. To make an item published,
@@ -58,7 +58,7 @@
         Another way to control the visibility of an item is with its
         <strong>effective date</strong>. An item is not publicly
         searchable before its effective date, <em>even if its status is
-        <strong>published</strong></em>.  This will prevent the item
+        <strong>published</strong></em>. This will prevent the item
         from showing up in portlets (or any other templates fed by catalog
         queries), although the item will still be available if accessed 
         directly via URL.
@@ -111,7 +111,7 @@
             <div class="formHelp"
                  i18n:translate="help_effective_date">
               The date when the item will be available (of course it
-              needs to be published too).  If no date is selected the
+              needs to be published too). If no date is selected the
               item will be effective immediately.
             </div>
 

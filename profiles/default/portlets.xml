@@ -20,11 +20,17 @@
    />
  
  <!-- Portlet type registrations -->
- 
+
+ <portlet 
+   addview="portlets.Calendar"
+   title="Calendar portlet"
+   description="A portlet which can render a calendar."
+   />
+
  <portlet 
    addview="portlets.Classic"
    title="Classic portlet"
-   description="A portlet which can render an classic template-based portlet"
+   description="A portlet which can render a classic template-based portlet"
    />
  
  <portlet 

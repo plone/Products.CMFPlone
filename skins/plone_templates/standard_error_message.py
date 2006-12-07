@@ -12,6 +12,15 @@
 #  you could easily check for the error_type and
 #  dispatch to an appropriate PageTemplate.
 
+# Check if the object is traversable, if not it might be a view, get its parent
+# because we need to render the error on an actual content object
+from AccessControl import Unauthorized
+try:
+    while not hasattr(context.aq_explicit, 'restrictedTraverse'):
+        context = context.aq_parent
+except (Unauthorized, AttributeError):
+    context = context.portal_url.getPortalObject()
+
 error_type=kwargs.get('error_type', None)
 error_message=kwargs.get('error_message', None)
 error_log_url=kwargs.get('error_log_url', None)
