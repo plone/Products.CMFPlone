@@ -39,13 +39,11 @@ class Renderer(base.Renderer):
         portal_state = getMultiAdapter((self.context, self.request), name=u'plone_portal_state')
         self.anonymous = portal_state.anonymous()
         self.portal_url = portal_state.portal_url()
+        self.typesToShow = portal_state.friendly_types()
 
         plone_tools = getMultiAdapter((self.context, self.request), name=u'plone_tools')
-        plone_utils = plone_tools.plone_utils()
         self.catalog = plone_tools.catalog()
-        self.typesToShow = plone_utils.getUserFriendlyTypes()
-        self.normalizeString = plone_utils.normalizeString
-
+        
     def show(self):
         return not self.anonymous and len(self._data())
 

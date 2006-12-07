@@ -8,15 +8,17 @@
         <span class="portletTopRight"></span>
     </dt>
 
-    <tal:items tal:define="getIcon nocall:context/@@plone/getIcon;
-                           toLocalizedTime nocall:context/@@plone/toLocalizedTime;"
+    <tal:items tal:define="plone_view context/@@plone;
+                           getIcon nocall:plone_view/getIcon;
+                           normalizeString nocall:plone_view/normalizeString;
+                           toLocalizedTime nocall:plone_view/toLocalizedTime;"
                tal:repeat="obj view/recent_items">
 
         <dd class="portletItem"
             tal:define="oddrow repeat/obj/odd;
                         item_icon python:getIcon(obj);
                         item_wf_state obj/review_state;
-                        item_wf_state_class python:'state-' + view.normalizeString(item_wf_state);"
+                        item_wf_state_class python:'state-' + normalizeString(item_wf_state);"
             tal:attributes="class python:oddrow and  'portletItem even' or 'portletItem odd'">
             <a href=""
                tal:attributes="href string:${obj/getURL}/view;
