@@ -58,5 +58,17 @@
    description="A portlet which can render a navigation tree"
    for="plone.app.portlets.interfaces.IColumn"
    />
- 
+
+ <portlet 
+   addview="portlets.Recent"
+   title="Recent portlet"
+   description="A portlet which can render a listing of recently changed items."
+   />
+
+ <portlet 
+   addview="portlets.Review"
+   title="Review portlet"
+   description="A portlet which can render a listing on the review queue."
+   />
+
 </portlets>
