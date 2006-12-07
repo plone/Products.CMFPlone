@@ -9,7 +9,9 @@
                 parent_folder plone_view/getCurrentFolder;
                 disableMenu python:here.portal_factory.isTemporary(here);
                 useSelf python:isStructuralFolder and not isContextDefaultPage;"
-    tal:condition="not:disableMenu">
+    tal:condition="not:disableMenu"
+    id="contentActionMenus"
+    >
 
     <tal:states define="review_state wf_state;
                         transitions workflow_actions;"

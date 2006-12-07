@@ -8,7 +8,7 @@
 <tal:recentlist tal:define="view context/@@recent_view;
                             results view/results;">
 
-<dl class="portlet" id="portlet-recent">
+<dl class="portlet kssPortletRefresh" id="portlet-recent">
 
     <dt class="portletHeader">
         <span class="portletTopLeft"></span>
