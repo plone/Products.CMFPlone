@@ -232,6 +232,11 @@ class Plone(utils.BrowserView):
         context = utils.context(self)
         icon = getMultiAdapter((context, self.request, item), IContentIcon)
         return icon
+        
+    def normalizeString(self, text, relaxed=False):
+        """Normalizes a title to an id.
+        """
+        return utils.normalizeString(text, context=self, relaxed=relaxed)
 
     # Deprecated in favour of the @@plone_context_state and @@plone_portal_state views
 
