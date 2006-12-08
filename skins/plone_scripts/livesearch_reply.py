@@ -11,6 +11,7 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.utils import safe_unicode
 from Products.PythonScripts.standard import url_quote
+from Products.PythonScripts.standard import url_quote_plus
 
 ploneUtils = getToolByName(context, 'plone_utils')
 pretty_title_or_id = ploneUtils.pretty_title_or_id
@@ -64,6 +65,8 @@ site_encoding = context.plone_utils.getSiteEncoding()
 
 results = catalog(SearchableText=r, portal_type=friendly_types)
 
+searchterm_query = '?searchterm=%s'%url_quote_plus(q)
+
 RESPONSE = context.REQUEST.RESPONSE
 RESPONSE.setHeader('Content-Type', 'text/xml;charset=%s' % site_encoding)
 
@@ -104,6 +107,7 @@ else:
         itemUrl = result.getURL()
         if result.portal_type in useViewAction:
             itemUrl += '/view'
+        itemUrl = itemUrl + searchterm_query
 
         write('''<li class="LSRow">''')
         write('''<img src="%s"/>''' % result.getIcon)

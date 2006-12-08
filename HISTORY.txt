@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.5.2 - Orb - (Unreleased)
 
+    - Add search term highlighting to livesearch result links.
+      [alecm]
+
     - links in Contents table behave as they should now - show the "pointer" 
       hand when hovering the mouse over them. It was broken due to ajax sorting 
       feature somehow
