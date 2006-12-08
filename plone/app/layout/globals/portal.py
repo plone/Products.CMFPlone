@@ -1,5 +1,7 @@
 from zope.interface import implements
 from zope.component import getMultiAdapter
+from zope.i18n.interfaces import IUserPreferredLanguages
+from zope.i18n.locales import locales, LoadLocaleError
 
 from plone.memoize.view import memoize, memoize_contextless
 
@@ -20,7 +22,8 @@ class PortalState(BrowserView):
     def __init__(self, context, request):
         BrowserView.__init__(self, context, request)
         self._context = [context]
-    
+        self.setupLocale()
+
     @memoize_contextless
     def portal(self):
         tools = getMultiAdapter((self.context, self.request), name='plone_tools')
@@ -53,27 +56,49 @@ class PortalState(BrowserView):
         tools = getMultiAdapter((self.context, self.request), name='plone_tools')
         site_properties = tools.properties().site_properties
         return site_properties.getProperty('default_language', None)
-    
+
     @memoize
     def language(self):
         return self.request.get('language', None) or \
                 aq_inner(self.context).Language() or self.default_language
-        
+
+    def setupLocale(self):
+        # This code was adopted from zope.publisher.http.setupLocale
+        envadapter = IUserPreferredLanguages(self.request, None)
+        if envadapter is None:
+            self._locale = None
+            return None
+
+        langs = envadapter.getPreferredLanguages()
+        for httplang in langs:
+            parts = (httplang.split('-') + [None, None])[:3]
+            try:
+                self._locale = locales.getLocale(*parts)
+                return
+            except LoadLocaleError:
+                # Just try the next combination
+                pass
+        else:
+            # No combination gave us an existing locale, so use the default,
+            # which is guaranteed to exist
+            self._locale = locales.getLocale(None, None, None)
+
+    def _getLocale(self):
+        return self._locale
+    locale = property(_getLocale)
+
     @memoize
     def is_rtl(self, domain='plone'):
-        try:
-            from Products.PlacelessTranslationService import isRTL
-        except ImportError:
-            # This may mean we have an old version of PTS or no PTS at all.
+        if self.locale is None:
+            # We cannot determine the orientation
             return False
-        else:
-            try:
-                return isRTL(aq_inner(self.context), domain)
-            except AttributeError:
-                # This may mean that PTS is present but not installed.
-                # Can effectively only happen in unit tests.
-                return False
-                
+
+        char_orient = self.locale.orientation.characters
+        if char_orient == u'right-to-left':
+            return True
+
+        return False
+
     @memoize_contextless
     def member(self):
         tools = getMultiAdapter((self.context, self.request), name='plone_tools')
