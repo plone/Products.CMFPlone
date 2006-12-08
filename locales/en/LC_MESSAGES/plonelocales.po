@@ -1,0 +1,284 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Plone\n"
+"POT-Creation-Date: 2006-12-09 09:00+0100\n"
+"PO-Revision-Date: 2006-12-09 09:00+0100\n"
+"Last-Translator: Hanno Schlichting <plone@hannosch.info>\n"
+"Language-Team: Plone i18n <plone-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+# English default values for datetime msgids #
+
+#. name of a month, format %B
+#. Default: "April"
+#: datetime
+msgid "month_apr"
+msgstr "April"
+
+#. name of a month, format %b
+#. Default: "Apr"
+#: datetime
+msgid "month_apr_abbr"
+msgstr "Apr"
+
+#. name of a month, format %B
+#. Default: "August"
+#: datetime
+msgid "month_aug"
+msgstr "August"
+
+#. name of a month, format %b
+#. Default: "Aug"
+#: datetime
+msgid "month_aug_abbr"
+msgstr "Aug"
+
+#. name of a month, format %B
+#. Default: "December"
+#: datetime
+msgid "month_dec"
+msgstr "December"
+
+#. name of a month, format %b
+#. Default: "Dec"
+#: datetime
+msgid "month_dec_abbr"
+msgstr "Dec"
+
+#. name of a month, format %B
+#. Default: "February"
+#: datetime
+msgid "month_feb"
+msgstr "February"
+
+#. name of a month, format %b
+#. Default: "Feb"
+#: datetime
+msgid "month_feb_abbr"
+msgstr "Feb"
+
+#. name of a month, format %B
+#. Default: "January"
+#: datetime
+msgid "month_jan"
+msgstr "January"
+
+#. name of a month, format %b
+#. Default: "Jan"
+#: datetime
+msgid "month_jan_abbr"
+msgstr "Jan"
+
+#. name of a month, format %B
+#. Default: "July"
+#: datetime
+msgid "month_jul"
+msgstr "July"
+
+#. name of a month, format %b
+#. Default: "Jul"
+#: datetime
+msgid "month_jul_abbr"
+msgstr "Jul"
+
+#. name of a month, format %B
+#. Default: "June"
+#: datetime
+msgid "month_jun"
+msgstr "June"
+
+#. name of a month, format %b
+#. Default: "Jun"
+#: datetime
+msgid "month_jun_abbr"
+msgstr "Jun"
+
+#. name of a month, format %B
+#. Default: "March"
+#: datetime
+msgid "month_mar"
+msgstr "March"
+
+#. name of a month, format %b
+#. Default: "Mar"
+#: datetime
+msgid "month_mar_abbr"
+msgstr "Mar"
+
+#. name of a month, format %B
+#. Default: "May"
+#: datetime
+msgid "month_may"
+msgstr "May"
+
+#. name of a month, format %b
+#. Default: "May"
+#: datetime
+msgid "month_may_abbr"
+msgstr "May"
+
+#. name of a month, format %B
+#. Default: "November"
+#: datetime
+msgid "month_nov"
+msgstr "November"
+
+#. name of a month, format %b
+#. Default: "Nov"
+#: datetime
+msgid "month_nov_abbr"
+msgstr "Nov"
+
+#. name of a month, format %B
+#. Default: "October"
+#: datetime
+msgid "month_oct"
+msgstr "October"
+
+#. name of a month, format %b
+#. Default: "Oct"
+#: datetime
+msgid "month_oct_abbr"
+msgstr "Oct"
+
+#. name of a month, format %B
+#. Default: "September"
+#: datetime
+msgid "month_sep"
+msgstr "September"
+
+#. name of a month, format %b
+#. Default: "Sep"
+#: datetime
+msgid "month_sep_abbr"
+msgstr "Sep"
+
+#. name of a day, format %A
+#. Default: "Friday"
+#: datetime
+msgid "weekday_fri"
+msgstr "Friday"
+
+#. abbreviation of a day, format %a
+#. Default: "Fri"
+#: datetime
+msgid "weekday_fri_abbr"
+msgstr "Fri"
+
+#. two letter abbreviation of a day used in the portlet_calendar
+#. Default: "Fr"
+#: datetime
+msgid "weekday_fri_short"
+msgstr "Fr"
+
+#. name of a day, format %A
+#. Default: "Monday"
+#: datetime
+msgid "weekday_mon"
+msgstr "Monday"
+
+#. abbreviation of a day, format %a
+#. Default: "Mon"
+#: datetime
+msgid "weekday_mon_abbr"
+msgstr "Mon"
+
+#. two letter abbreviation of a day used in the portlet_calendar
+#. Default: "Mo"
+#: datetime
+msgid "weekday_mon_short"
+msgstr "Mo"
+
+#. name of a day, format %A
+#. Default: "Saturday"
+#: datetime
+msgid "weekday_sat"
+msgstr "Saturday"
+
+#. abbreviation of a day, format %a
+#. Default: "Sat"
+#: datetime
+msgid "weekday_sat_abbr"
+msgstr "Sat"
+
+#. two letter abbreviation of a day used in the portlet_calendar
+#. Default: "Sa"
+#: datetime
+msgid "weekday_sat_short"
+msgstr "Sa"
+
+#. name of a day, format %A
+#. Default: "Sunday"
+#: datetime
+msgid "weekday_sun"
+msgstr "Sunday"
+
+#. abbreviation of a day, format %a
+#. Default: "Sun"
+#: datetime
+msgid "weekday_sun_abbr"
+msgstr "Sun"
+
+#. two letter abbreviation of a day used in the portlet_calendar
+#. Default: "Su"
+#: datetime
+msgid "weekday_sun_short"
+msgstr "Su"
+
+#. name of a day, format %A
+#. Default: "Thursday"
+#: datetime
+msgid "weekday_thu"
+msgstr "Thursday"
+
+#. abbreviation of a day, format %a
+#. Default: "Thu"
+#: datetime
+msgid "weekday_thu_abbr"
+msgstr "Thu"
+
+#. two letter abbreviation of a day used in the portlet_calendar
+#. Default: "Th"
+#: datetime
+msgid "weekday_thu_short"
+msgstr "Th"
+
+#. name of a day, format %A
+#. Default: "Tuesday"
+#: datetime
+msgid "weekday_tue"
+msgstr "Tuesday"
+
+#. abbreviation of a day, format %a
+#. Default: "Tue"
+#: datetime
+msgid "weekday_tue_abbr"
+msgstr "Tue"
+
+#. two letter abbreviation of a day used in the portlet_calendar
+#. Default: "Tu"
+#: datetime
+msgid "weekday_tue_short"
+msgstr "Tu"
+
+#. name of a day, format %A
+#. Default: "Wednesday"
+#: datetime
+msgid "weekday_wed"
+msgstr "Wednesday"
+
+#. abbreviation of a day, format %a
+#. Default: "Wed"
+#: datetime
+msgid "weekday_wed_abbr"
+msgstr "Wed"
+
+#. two letter abbreviation of a day used in the portlet_calendar
+#. Default: "We"
+#: datetime
+msgid "weekday_wed_short"
+msgstr "We"
+

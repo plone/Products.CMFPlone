@@ -32,7 +32,7 @@ def utranslate(*args, **kw):
     return safe_unicode(text)
 
 # unicode aware localized time method (l10n)
-def ulocalized_time(time, long_format = None, context = None, domain='plone'):
+def ulocalized_time(time, long_format = None, context = None, domain='plonelocales'):
     # python useable unicode aware localized time method
 
     # get msgid

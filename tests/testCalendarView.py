@@ -145,8 +145,8 @@ class TestCalendarPortlet(PloneTestCase.FunctionalTestCase):
         messages = {
             ('ja', 'date_format_long'): u'${Y}\u5e74${m}\u6708${d}\u65e5 ${H}\u6642${M}\u5206',
             ('ja', 'date_format_short'): u'${Y}\u5e74${m}\u6708${d}\u65e5'}
-        dates = SimpleTranslationDomain('plone', messages)
-        provideUtility(ITranslationDomain, dates, 'plone')
+        dates = SimpleTranslationDomain('plonelocales', messages)
+        provideUtility(ITranslationDomain, dates, 'plonelocales')
 
         response = self.publish(self.portal_path, self.basic_auth,
                                 env={'HTTP_ACCEPT_LANGUAGE': 'ja'})

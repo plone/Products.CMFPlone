@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Moved date/time formatting related messages to it's own domain called
+      plonelocales. Message files in this domain are translated directly by the
+      Zope 3 translations service, which results in a major speed increase for
+      date/time formatting.
+      [hannosch]
+
     - Moved new controlpanels to its own package (plone.app.controlpanel).
       [hannosch]
 

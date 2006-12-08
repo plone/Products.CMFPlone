@@ -161,7 +161,7 @@ class Plone(utils.BrowserView):
         context = utils.context(self)
         tool = getToolByName(context, 'translation_service')
         return tool.ulocalized_time(time, long_format, context,
-                                    domain='plone')
+                                    domain='plonelocales')
     
     @memoize
     def visibleIdsEnabled(self):

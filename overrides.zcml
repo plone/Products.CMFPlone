@@ -1,5 +1,11 @@
-<configure xmlns="http://namespaces.zope.org">
-  
-  <include package="plone.app.portlets" file="overrides.zcml" />
-  
+<configure xmlns="http://namespaces.zope.org/zope">
+
+    <include package="plone.app.portlets" file="overrides.zcml" />
+
+    <adapter
+        for="zope.publisher.interfaces.http.IHTTPRequest"
+        provides="zope.i18n.interfaces.IUserPreferredLanguages"
+        factory="Products.Five.i18n.PTSLanguages"
+        />
+
 </configure>
