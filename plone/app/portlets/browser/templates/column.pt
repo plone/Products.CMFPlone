@@ -1,7 +1,8 @@
 <tal:block repeat="portlet options/portlets"
-           replace="structure python:portlet.render()" />  
+           replace="structure python:portlet.render()" />
 
-<div class="managePortletsLink">
+<div class="managePortletsLink"
+      i18n:domain="plone">
   <a title="View portlet management screen"
      tal:condition="view/can_manage_portlets"
      i18n:attributes="title"

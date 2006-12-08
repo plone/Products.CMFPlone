@@ -1,4 +1,5 @@
-<tal:block condition="view/show">
+<tal:block condition="view/show"
+           i18n:domain="plone">
 
 <dl class="portlet"
     id="portlet-login"

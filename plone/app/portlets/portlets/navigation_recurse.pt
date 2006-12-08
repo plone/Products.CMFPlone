@@ -1,6 +1,7 @@
 <tal:master define="level options/level|python:0;
                     children options/children | nothing;
-                    bottomLevel options/bottomLevel | nothing;">
+                    bottomLevel options/bottomLevel | nothing;"
+            i18n:domain="plone">
 
 <metal:main define-macro="nav_main">
 <tal:navitem repeat="node children">

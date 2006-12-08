@@ -1,6 +1,7 @@
 <table class="ploneCalendar"
        id="thePloneCalendar"
        summary="Calendar"
+       i18n:domain="plone"
        i18n:attributes="summary summary_calendar;"
        tal:define="portal_url context/@@plone_portal_state/portal_url;
                    anchor_url request/anchor_url | context/@@plone_context_state/object_url;
