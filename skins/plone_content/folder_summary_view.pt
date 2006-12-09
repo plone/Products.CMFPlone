@@ -12,7 +12,7 @@
             Document actions (print, sendto etc)
         </div>
 
-        <h1 tal:content="object_title" class="documentFirstHeading">
+        <h1 metal:use-macro="here/azax_macros_generic/macros/generic_title_view">
             Title or id
         </h1>
 
@@ -25,9 +25,7 @@
         Up one level
         </a>
 
-        <p class="documentDescription"
-           tal:content="here/Description"
-           tal:condition="here/Description">
+        <p  metal:use-macro="here/azax_macros_generic/macros/generic_description_view">
             Description
         </p>
 

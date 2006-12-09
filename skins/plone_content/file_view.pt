@@ -14,7 +14,13 @@
             Document actions (print, sendto etc)
         </div>
 
-        <h1 tal:content="object_title" class="documentFirstHeading">
+        <h1 tal:define="field python:context.getField('title');
+                        writable python:field.writeable(context);
+                        kukitclasses string:kukit-atfieldname-title kukit-widgetstate-view;
+                        kukitattrs python:test(writable, ' ' + kukitclasses, '');"
+            id="archetypes-fieldname-title"
+            tal:content="object_title"
+            tal:attributes="class string:documentFirstHeading$kukitattrs;">
             Title or id
         </h1>
     
@@ -22,10 +28,8 @@
           Get the byline - contains details about author and modification date.
         </div>
 
-        <p class="documentDescription"
-           tal:content="here/Description"
-           tal:condition="here/Description">
-            Description
+        <p metal:use-macro="here/azax_macros_generic/macros/generic_description_view">
+          Description
         </p>
     
         <p>

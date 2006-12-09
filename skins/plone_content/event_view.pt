@@ -12,7 +12,13 @@
 
         <div class="vevent">
 
-        <h1 tal:content="object_title" class="documentFirstHeading summary">
+        <h1 tal:define="field python:context.getField('title');
+                        writable python:field.writeable(context);
+                        kukitclasses string:kukit-atfieldname-title kukit-widgetstate-view;
+                        kukitattrs python:test(writable, ' ' + kukitclasses, '');"
+            id="archetypes-fieldname-title"
+            tal:content="object_title"
+            tal:attributes="class string:documentFirstHeading summary$kukitattrs;">
             Title or id
         </h1>
 
@@ -32,8 +38,14 @@
                     <td>
                         <tal:differentday tal:condition="python:not here.start().Date() == here.end().Date()">
                             <abbr class="dtstart"
-                                  tal:attributes="title python:here.start()"
-                                  tal:content="python:here.toLocalizedTime(here.start(), long_format=1)">
+                                  tal:content="python:here.toLocalizedTime(here.start(), long_format=1)"
+                                  tal:define="field python:context.getField('startDate');
+                        writable python:field.writeable(context);
+                        kukitclasses string:kukit-atfieldname-startDate kukit-widgetstate-view;
+                        kukitattrs python:test(writable, ' ' + kukitclasses, '');"
+                        id="archetypes-fieldname-startDate"
+                        tal:attributes="class string: summary$kukitattrs;
+                        title python:here.start()">
                                 Start Date Time
                             </abbr>
                             <span i18n:translate="event_to">to</span> <br />
@@ -47,9 +59,15 @@
                         <tal:sameday tal:condition="python:here.start().Date() == here.end().Date()"
                                      tal:define="ampm python:site_properties.getProperty('localLongTimeFormat').find('%p') >= 0">
                             <abbr class="dtstart"
-                                  style="display: none;"
-                                  tal:attributes="title python:here.start()"
-                                  tal:content="python:here.toLocalizedTime(here.start(), long_format=1)">
+                                  style="display: none;"             
+                                  tal:content="python:here.toLocalizedTime(here.start(), long_format=1)"
+                                  tal:define="field python:context.getField('startDate');
+                                  writable python:field.writeable(context);
+                                  kukitclasses string:kukit-atfieldname-startDate kukit-widgetstate-view;
+                                  kukitattrs python:test(writable, ' ' + kukitclasses, '');"
+                                  id="archetypes-fieldname-startDate"
+                                  tal:attributes="class string: summary$kukitattrs;
+                                  title python:here.start()">
                                 Start Date Time
                             </abbr>
                             <abbr class="dtend"
@@ -69,28 +87,62 @@
                 </tr>
                 <tr tal:condition="here/location">
                     <th i18n:translate="event_where">Where</th>
-                    <td class="location" tal:content="here/location">Oslo, Norway</td>
+                    <td class="location" tal:content="here/location"
+                        tal:define="field python:context.getField('location');
+                        writable python:field.writeable(context);
+                        kukitclasses string:kukit-atfieldname-location kukit-widgetstate-view;
+                        kukitattrs python:test(writable, ' ' + kukitclasses, '');"
+                        id="archetypes-fieldname-location"
+                        tal:attributes="class string: summary$kukitattrs;"
+>Oslo, Norway</td>
                 </tr>
                 <tr tal:condition="here/contact_name">
                     <th i18n:translate="contact_name">Contact Name</th>
                     <td class="fn"
-                        tal:content="here/contact_name">John Smith</td>
+                        tal:content="here/contact_name"
+                        tal:define="field python:context.getField('contactName');
+                        writable python:field.writeable(context);
+                        kukitclasses string:kukit-atfieldname-contactName kukit-widgetstate-view;
+                        kukitattrs python:test(writable, ' ' + kukitclasses, '');"
+                        id="archetypes-fieldname-contactName"
+                        tal:attributes="class string: summary$kukitattrs;">John Smith</td>
                 </tr>
                 <tr tal:define="contact_email here/contact_email"
                     tal:condition="here/contact_email">
                     <th i18n:translate="contact_email">Contact Email</th>
                     <td class="email">
-                        <a tal:replace="structure python: here.spamProtect(contact_email)" />
+                    <input type="button" value="edit"
+                        tal:define="field python:context.getField('contactEmail');
+                        writable python:field.writeable(context);
+                        kukitclasses string:kukit-atfieldname-contactEmail  kssExplicitEdit;
+                        kukitattrs python:test(writable, ' ' + kukitclasses, '');" 
+                        tal:attributes="class string: summary$kukitattrs;"       
+                      >
+                        <a tal:content="structure python: here.spamProtect(contact_email)"
+                        id="archetypes-fieldname-contactEmail"
+                          />
                     </td>
                 </tr>
                 <tr tal:condition="here/contact_phone">
                     <th i18n:translate="contact_phone">Contact Phone</th>
                     <td class="tel"
-                        tal:content="here/contact_phone">555-GET-PLONE</td>
+                        tal:content="here/contact_phone"
+                        tal:define="field python:context.getField('contactPhone');
+                        writable python:field.writeable(context);
+                        kukitclasses string:kukit-atfieldname-contactPhone kukit-widgetstate-view;
+                        kukitattrs python:test(writable, ' ' + kukitclasses, '');"
+                        id="archetypes-fieldname-contactPhone"
+                        tal:attributes="class string: summary$kukitattrs;">555-GET-PLONE</td>
                 </tr>
                 <tr tal:condition="here/getAttendees|nothing">
                     <th i18n:translate="contact_attendees">Attendees</th>
-                    <td tal:content="python: ', '.join(here.getAttendees())">Person 1, Person 2</td>
+                    <td tal:content="python: ', '.join(here.getAttendees())"
+                    tal:define="field python:context.getField('attendees');
+                        writable python:field.writeable(context);
+                        kukitclasses string:kukit-atfieldname-attendees kukit-widgetstate-view;
+                        kukitattrs python:test(writable, ' ' + kukitclasses, '');"
+                        id="archetypes-fieldname-attendees"
+                        tal:attributes="class string: summary$kukitattrs;">Person 1, Person 2</td>
                 </tr>
                 <tr>
                     <th i18n:translate="heading_add_to_calendar">Add event to calendar</th>
@@ -117,9 +169,7 @@
             Get the byline - contains details about author and modification date.
         </div>
 
-        <p class="documentDescription description"
-           tal:content="here/Description"
-           tal:condition="here/Description">
+        <p  metal:use-macro="here/azax_macros_generic/macros/generic_description_view">
             Description
         </p>
 
@@ -128,10 +178,19 @@
         </div>
 
         <p tal:condition="here/event_url|nothing">
+            <input type="button" value="edit"
+                        tal:define="field python:context.getField('eventUrl');
+                        writable python:field.writeable(context);
+                        kukitclasses string:kukit-atfieldname-eventUrl  kssExplicitEdit;
+                        kukitattrs python:test(writable, ' ' + kukitclasses, '');" 
+                        tal:attributes="class string: summary$kukitattrs;"       
+                      >
             <a class="url"
                href="event_url"
-               tal:attributes="href here/event_url"
-               i18n:translate="event_more_information">
+               i18n:translate="event_more_information"
+               tal:define="field python:context.getField('eventUrl');"                    
+                        id="archetypes-fieldname-eventUrl"
+                        tal:attributes="href here/event_url">
                More information about this event&hellip;</a>
         </p>
 
