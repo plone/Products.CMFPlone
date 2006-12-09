@@ -6,6 +6,7 @@
   <include package="plone.app.controlpanel" />
   <include package="plone.app.layout" />
   <include package="plone.app.portlets" />
+  <include package="plone.app.contentmenu" />
   
   <include package=".browser" />
   <include package=".exportimport" />

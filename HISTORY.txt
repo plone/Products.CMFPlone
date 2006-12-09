@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Moved Products.CMFPlone.browser.contentmenu to plone.app.contentmenu.
+      Note that the tests remain in CMFPlone for now (so that they get run
+      more often, and to avoid having to replicate dummies etc in the new
+      location).
+      [optilude]
+
     - Moved date/time formatting related messages to it's own domain called
       plonelocales. Message files in this domain are translated directly by the
       Zope 3 translations service, which results in a major speed increase for

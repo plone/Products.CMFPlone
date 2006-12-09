@@ -18,10 +18,10 @@ from Products.CMFPlone.interfaces import IBrowserDefault
 from Products.CMFPlone.interfaces import ISelectableConstrainTypes
 from Products.CMFPlone.interfaces import INonStructuralFolder
 
-from Products.CMFPlone.browser.contentmenu.interfaces import IActionsMenu
-from Products.CMFPlone.browser.contentmenu.interfaces import IDisplayMenu
-from Products.CMFPlone.browser.contentmenu.interfaces import IFactoriesMenu
-from Products.CMFPlone.browser.contentmenu.interfaces import IWorkflowMenu
+from plone.app.contentmenu.interfaces import IActionsMenu
+from plone.app.contentmenu.interfaces import IDisplayMenu
+from plone.app.contentmenu.interfaces import IFactoriesMenu
+from plone.app.contentmenu.interfaces import IWorkflowMenu
 
 from Products.CMFPlone.utils import _createObjectByType
 import dummy
