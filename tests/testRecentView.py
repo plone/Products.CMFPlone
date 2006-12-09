@@ -8,8 +8,15 @@ if __name__ == '__main__':
 
 from Products.CMFPlone.tests import PloneTestCase
 
+# BBB Plone 3.5
+import warnings
+showwarning = warnings.showwarning
+warnings.showwarning = lambda *a, **k: None
+# ignore deprecation warnings on import
 from Products.CMFPlone.browser.interfaces import IRecentPortlet
 from Products.CMFPlone.browser.portlets.recent import RecentPortlet
+# restore warning machinery
+warnings.showwarning = showwarning
 
 
 class TestRecentPortletView(PloneTestCase.PloneTestCase):

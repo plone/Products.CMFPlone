@@ -1,6 +1,7 @@
+import zope.deprecation
 from zope.interface import implements
-from DateTime import DateTime
 
+from DateTime import DateTime
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import utils
 from Products.CMFPlone.browser.interfaces import IEventsPortlet
@@ -40,3 +41,8 @@ class EventsPortlet(utils.BrowserView):
         else:
             return None
 
+zope.deprecation.deprecated(
+  ('EventsPortlet', ),
+   "Plone's portlets are based on plone.app.portlets now. The old portlets "
+   "will be removed in Plone 3.5."
+  )

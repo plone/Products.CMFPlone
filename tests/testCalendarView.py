@@ -19,8 +19,16 @@ from zope.i18n.interfaces import ITranslationDomain
 from DateTime import DateTime
 
 from Products.ATContentTypes.tests.utils import FakeRequestSession
+
+# BBB Plone 3.5
+import warnings
+showwarning = warnings.showwarning
+warnings.showwarning = lambda *a, **k: None
+# ignore deprecation warnings on import
 from Products.CMFPlone.browser.interfaces import ICalendarPortlet
 from Products.CMFPlone.browser.portlets.calendar import CalendarPortlet
+# restore warning machinery
+warnings.showwarning = showwarning
 
 
 class TestCalendarPortletView(PloneTestCase.PloneTestCase):

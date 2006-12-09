@@ -1,6 +1,7 @@
-from DateTime import DateTime
+import zope.deprecation
 from zope.interface import implements
 
+from DateTime import DateTime
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import utils
 from Products.CMFPlone.browser.interfaces import ICalendarPortlet
@@ -122,3 +123,8 @@ class CalendarPortlet(utils.BrowserView):
         return self.current_day==day and self.current.month()==self.month and \
                self.current.year()==self.year
 
+zope.deprecation.deprecated(
+  ('CalendarPortlet', ),
+   "Plone's portlets are based on plone.app.portlets now. The old portlets "
+   "will be removed in Plone 3.5."
+  )

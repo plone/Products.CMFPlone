@@ -159,10 +159,6 @@ class TestContentSecurity(PloneTestCase.PloneTestCase):
         except Unauthorized:
             self.fail("Could not access base_view on 'new'")
         # This should not raise Unauthorized
-        try:
-            subfolder.new.getAddableTypesInMenu(('Page','Smart Folder'))
-        except Unauthorized:
-            self.fail("Could not access getAddableTypesInMenu on 'new'")
 
 
 def test_suite():
