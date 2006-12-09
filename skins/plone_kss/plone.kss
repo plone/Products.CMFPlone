@@ -101,21 +101,21 @@ a.actionicon-object_buttons-copy:click {
 Content Menu Sections: Workflow State
 */
 
-/*
 dl#statusMenu dd a:click {
     evt-click-preventdefault: True;
     action-server: changeWorkflowState;
     changeWorkflowState-url: nodeAttr(href);
     changeWorkflowState-error: plone-followLink;
 }
-*/
 
+/*
 dl#plone-contentmenu-workflow dd.actionMenuContent a:click {
     evt-click-preventdefault: True;
     evt-click-allowbubbling: True; 
     action-server: changeWorkflowState;
     changeWorkflowState-id: nodeAttr(id);
 }
+*/
 
 dl#plone-contentmenu-workflow dd.actionMenuContent a.kssIgnore:click {
     evt-click-preventdefault: False;
