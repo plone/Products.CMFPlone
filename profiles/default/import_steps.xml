@@ -92,7 +92,6 @@
               title="Various Plone Settings">
   <dependency step="toolset"/>
   <dependency step="typeinfo"/>
-  <dependency step="kss_extension"/>
     Plone specific settings
  </import-step>
  <import-step id="properties" version="20041215-01"
@@ -115,7 +114,6 @@
               handler="Products.CMFCore.exportimport.skins.importSkinsTool"
               title="Skins Tool">
   <dependency step="toolset"/>
-  <dependency step="kss_extension"/>
     Import skins tool's filesystem directory views and skin path definitions.
  </import-step>
  <import-step id="toolset" version="20040630-01"
@@ -144,13 +142,6 @@
     <dependency step="plone_various"/>
     Import local portlet manager configuration.
   </import-step>
-
- <import-step id="kss_extension" version="20061125-01"
-              handler="plone.app.kss.exportimport.setup.setupExtension"
-              title="KSS setup / extension">
-  <dependency step="toolset"/>
-    KSS (Kinetic Style Sheet) setup. Register kss file extension.
- </import-step>
  <import-step id="kss_mimetype" version="20061125-01"
               handler="plone.app.kss.exportimport.setup.setupMimetype"
               title="KSS setup / mimetype">
