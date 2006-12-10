@@ -68,12 +68,12 @@ class PortalState(BrowserView):
         if envadapter is None:
             return None
 
-        locale = None
+        _locale = None
         langs = envadapter.getPreferredLanguages()
         for httplang in langs:
             parts = (httplang.split('-') + [None, None])[:3]
             try:
-                locale = locales.getLocale(*parts)
+                _locale = locales.getLocale(*parts)
                 break
             except LoadLocaleError:
                 # Just try the next combination
@@ -81,18 +81,18 @@ class PortalState(BrowserView):
         else:
             # No combination gave us an existing locale, so use the default,
             # which is guaranteed to exist
-            locale = locales.getLocale(None, None, None)
+            _locale = locales.getLocale(None, None, None)
 
-        return locale
+        return _locale
 
     @memoize_contextless
     def is_rtl(self):
-        locale = self.locale()
-        if locale is None:
+        _locale = self.locale()
+        if _locale is None:
             # We cannot determine the orientation
             return False
 
-        char_orient = locale.orientation.characters
+        char_orient = _locale.orientation.characters
         if char_orient == u'right-to-left':
             return True
 
