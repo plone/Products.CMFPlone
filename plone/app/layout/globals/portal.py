@@ -22,7 +22,6 @@ class PortalState(BrowserView):
     def __init__(self, context, request):
         BrowserView.__init__(self, context, request)
         self._context = [context]
-        self.setupLocale()
 
     @memoize_contextless
     def portal(self):
@@ -62,38 +61,38 @@ class PortalState(BrowserView):
         return self.request.get('language', None) or \
                 aq_inner(self.context).Language() or self.default_language
 
-    def setupLocale(self):
+    @memoize_contextless
+    def locale(self):
         # This code was adopted from zope.publisher.http.setupLocale
         envadapter = IUserPreferredLanguages(self.request, None)
         if envadapter is None:
-            self._locale = None
             return None
 
+        locale = None
         langs = envadapter.getPreferredLanguages()
         for httplang in langs:
             parts = (httplang.split('-') + [None, None])[:3]
             try:
-                self._locale = locales.getLocale(*parts)
-                return
+                locale = locales.getLocale(*parts)
+                break
             except LoadLocaleError:
                 # Just try the next combination
                 pass
         else:
             # No combination gave us an existing locale, so use the default,
             # which is guaranteed to exist
-            self._locale = locales.getLocale(None, None, None)
+            locale = locales.getLocale(None, None, None)
 
-    def _getLocale(self):
-        return self._locale
-    locale = property(_getLocale)
+        return locale
 
-    @memoize
-    def is_rtl(self, domain='plone'):
-        if self.locale is None:
+    @memoize_contextless
+    def is_rtl(self):
+        locale = self.locale()
+        if locale is None:
             # We cannot determine the orientation
             return False
 
-        char_orient = self.locale.orientation.characters
+        char_orient = locale.orientation.characters
         if char_orient == u'right-to-left':
             return True
 
