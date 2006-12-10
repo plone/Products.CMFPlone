@@ -59,6 +59,7 @@ from Products.CMFPlone.migrations.v3_0.alphas import convertLegacyPortlets
 from Products.CMFPlone.migrations.v3_0.alphas import addIconForCalendarSettingsConfiglet
 from Products.CMFPlone.migrations.v3_0.alphas import addCalendarConfiglet
 from Products.CMFPlone.migrations.v3_0.alphas import updateSearchAndMailHostConfiglet
+from Products.CMFPlone.migrations.v3_0.alphas import addFormTabbingJS
 
 from zope.app.component.hooks import clearSite
 from zope.app.component.interfaces import ISite
@@ -1057,6 +1058,23 @@ class TestMigrations_v3_0(MigrationTest):
         addNewCSSFiles(self.portal, [])
         for id in added_ids:
             self.failUnless(id in stylesheet_ids)
+
+    def testAddFormTabbingJS(self):
+        jsreg = self.portal.portal_javascripts
+        # unregister first
+        jsreg.unregisterResource('form_tabbing.js')
+        script_ids = jsreg.getResourceIds()
+        self.failIf('form_tabbing.js' in script_ids)
+        # migrate and test again
+        addFormTabbingJS(self.portal, [])
+        script_ids = jsreg.getResourceIds()
+        self.failUnless('form_tabbing.js' in script_ids)
+        # if collapsiblesections.js is available form_tabbing.js
+        # should be positioned right underneath it
+        if 'collapsiblesections.js' in script_ids:
+            posSE = jsreg.getResourcePosition('form_tabbing.js')
+            posHST = jsreg.getResourcePosition('collapsiblesections.js')
+            self.failUnless((posSE - 1) == posHST)
 
     def testUpdateFTII18NDomain(self):
         doc = self.types.Document

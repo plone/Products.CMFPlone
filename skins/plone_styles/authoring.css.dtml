@@ -549,4 +549,69 @@ tr.dragging td {
     font-weight: normal;
 }
 
+.formTabs {
+    position: relative;
+    z-index: 2;
+    display: block;
+    margin: 0 0 -2em 0;
+    padding: 0;
+    list-style-type: none;
+    text-align: center;
+}
+
+li.formTab {
+    display: inline;
+    margin: 0;
+    padding: 0;
+}
+
+li.formTab a {
+    border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    border-bottom: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    border-left: &dtml-borderWidth; dotted &dtml-globalBorderColor;;
+    background: &dtml-backgroundColor;;
+    margin: 0;
+    padding: 0.25em 0.75em;
+    line-height: 2em;
+    text-decoration: none;
+}
+
+li.firstFormTab a {
+    border-left: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+}
+
+li.lastFormTab a {
+    border-right: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+}
+
+li.formTab a.selected {
+    background: &dtml-globalBackgroundColor;;
+}
+
+li.formTab a:hover {
+    background: &dtml-globalBackgroundColor;;
+}
+
+li.formTab a.notify {
+    background-color: &dtml-notifyBackgroundColor;;
+    color: &dtml-fontColor;;
+}
+
+li.formTab a.notify:hover {
+    background-color: &dtml-notifyBorderColor;;
+}
+
+.formPanel {
+    padding: 1em 1em 1em 1em;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+}
+
+.formPanel.hidden {
+    display: none;
+}
+
+div.formControls input.hidden {
+    display: none;
+}
+
 /* </dtml-with> */

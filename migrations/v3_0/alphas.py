@@ -75,6 +75,9 @@ def alpha1_alpha2(portal):
     # remove generated.css from ResourceRegistries
     removeGeneratedCSS(portal, out)
 
+    # add form_tabbing.js
+    addFormTabbingJS(portal, out)
+
     return out
 
 
@@ -243,3 +246,21 @@ def removeGeneratedCSS(portal, out):
     if 'generated.css' in stylesheet_ids:
         cssreg.unregisterResource('generated.css')
         out.append("Removed generated.css from the registry")
+
+def addFormTabbingJS(portal, out):
+    """Add form_tabbing.js to ResourceRegistries.
+    """
+    jsreg = getToolByName(portal, 'portal_javascripts', None)
+    script = 'form_tabbing.js'
+    if jsreg is not None:
+        script_ids = jsreg.getResourceIds()
+        # Failsafe: first make sure the stylesheet doesn't exist in the list
+        if script not in script_ids:
+            jsreg.registerScript(script)
+            try:
+                jsreg.moveResourceAfter(script, 'collapsiblesections.js')
+            except ValueError:
+                # put it at the bottom of the stack
+                jsreg.moveResourceToBottom(script)
+            out.append("Added " + script + " to portal_javascipt")
+
