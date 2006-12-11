@@ -25,6 +25,8 @@ function highlightSearchTerms(terms, startnode) {
     for (var term_index=0; term_index < terms.length; term_index++) {
         // don't highlight reserved catalog search terms
         var term = terms[term_index];
+        if (term.length < 1)
+            continue;
         var term_lower = term.toLowerCase();
         if (term_lower != 'not'
             && term_lower != 'and'
