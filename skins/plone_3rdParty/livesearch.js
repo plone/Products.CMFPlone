@@ -212,7 +212,15 @@ function liveSearchStart(event) {
 
 function liveSearchDoSearch() {
     if (typeof liveSearchRoot == "undefined") {
-        liveSearchRoot = "";
+        if (typeof portal_url == "undefined") {
+            liveSearchRoot = "";
+        } else {
+            if (portal_url[portal_url.length-1] == '/') {
+                liveSearchRoot = portal_url;
+            } else {
+                liveSearchRoot = portal_url + '/';
+            }
+        }
     }
     if (typeof liveSearchRootSubDir == "undefined") {
         liveSearchRootSubDir = "";
