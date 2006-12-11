@@ -155,11 +155,15 @@ if(document.addEventListener)
 /* for Internet Explorer */
 /*@cc_on @*/
 /*@if (@_win32)
-	document.write("<script id=__ie_onload defer src=javascript:void(0)><\/script>");
+{
+	var proto = "src='javascript:void(0)'";
+	if (location.protocol == "https:") proto = "src=//0";
+	document.write("<scr"+"ipt id=__ie_onload defer " + proto + "><\/scr"+"ipt>");
 	var script = document.getElementById("__ie_onload");
 	script.onreadystatechange = function() {
 		if (this.readyState == "complete") {
 			DOMContentLoadedInit(); // call the onload handler
 		}
-	};
+	}
+};
 /*@end @*/
