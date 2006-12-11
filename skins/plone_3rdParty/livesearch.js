@@ -88,7 +88,11 @@ function liveSearchInit() {
     searchInput.setAttribute("autocomplete", "off");
     var pos = getElementDimensions('searchGadget');
     result = document.getElementById('LSResult');
-    pos.left = pos.left - result.offsetParent.offsetLeft + pos.width;
+    if ((typeof result.offsetParent != 'undefined') && (result.offsetParent != null)) {
+        pos.left = pos.left - result.offsetParent.offsetLeft + pos.width;
+    } else {
+        pos.left = pos.left + pos.width;
+    }
     result.style.display = 'none';
 }
 
