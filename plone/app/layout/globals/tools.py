@@ -1,9 +1,11 @@
+from zope.component import getUtility
 from zope.interface import implements
 from plone.memoize.view import memoize_contextless
 
 from Acquisition import aq_inner
 from Products.Five.browser import BrowserView
 from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.interfaces import IInterfaceTool
 
 from interfaces import ITools
 
@@ -23,7 +25,7 @@ class Tools(BrowserView):
         
     @memoize_contextless
     def interface(self):
-        return getToolByName(aq_inner(self.context), 'portal_interface')
+        return getUtility(IInterfaceTool)
         
     @memoize_contextless
     def membership(self):
