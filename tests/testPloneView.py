@@ -65,6 +65,11 @@ class TestPloneView(PloneTestCase.PloneTestCase):
     def testPortalTitle(self):
         pass
 
+    def testToLocalizedTime(self):
+        localdate = self.view.toLocalizedTime
+        value = localdate('Mar 9, 1997 1:45pm', long_format=True)
+        self.assertEquals(value, '1997-03-09 13:45')
+
     def testIsStructuralFolderWithNonFolder(self):
         i = dummy.Item()
         self.failIf(Plone(i, self.app.REQUEST).isStructuralFolder())

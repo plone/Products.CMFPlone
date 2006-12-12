@@ -10,32 +10,15 @@ if __name__ == '__main__':
 
 from Products.CMFPlone.tests import PloneTestCase
 
+from zope.component import getUtility
 from DateTime.DateTime import DateTime
-
-
-class TestToLocalizedTime(PloneTestCase.PloneTestCase):
-
-    def afterSetUp(self):
-        self.script = self.portal.toLocalizedTime
-
-    def testDateTimeArg(self):
-        value = self.script(DateTime('Mar 9, 1997 1:45pm'),
-                            long_format=True)
-        # TranslationServiceTool falls back to time formats in site properties
-        # because PTS isn't installed
-        self.assertEquals(value, '1997-03-09 13:45')
-
-    def testStringArg(self):
-        value = self.script('Mar 9, 1997 1:45pm', long_format=True)
-        # TranslationServiceTool falls back to time formats in site properties
-        # because PTS isn't installed
-        self.assertEquals(value, '1997-03-09 13:45')
+from Products.CMFPlone.interfaces import ITranslationServiceTool
 
 
 class TestUTranslate(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
-        self.tool = self.portal.translation_service
+        self.tool = getUtility(ITranslationServiceTool)
 
     def testUTranslate(self):
         # Test Unicode value
@@ -69,11 +52,12 @@ class TestUTranslate(PloneTestCase.PloneTestCase):
 class TestTranslationServiceTool(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
-        self.tool = self.portal.translation_service
+        self.tool = getUtility(ITranslationServiceTool)
 
     def testLocalized_time(self):
         value = self.tool.ulocalized_time('Mar 9, 1997 1:45pm',
-                                         long_format=True)
+                                         long_format=True,
+                                         context=self.portal)
         # TranslationServiceTool falls back to time formats in site properties
         # because PTS isn't installed
         self.assertEquals(value, '1997-03-09 13:45')
@@ -88,7 +72,6 @@ class TestTranslationServiceTool(PloneTestCase.PloneTestCase):
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
-    suite.addTest(makeSuite(TestToLocalizedTime))
     suite.addTest(makeSuite(TestUTranslate))
     suite.addTest(makeSuite(TestTranslationServiceTool))
     return suite

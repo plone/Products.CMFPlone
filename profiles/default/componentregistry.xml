@@ -4,5 +4,7 @@
  <utilities>
   <utility object="/portal_interface"
            interface="Products.CMFPlone.interfaces.IInterfaceTool"/>
+  <utility object="/translation_service"
+           interface="Products.CMFPlone.interfaces.ITranslationServiceTool"/>
  </utilities>
 </componentregistry>
