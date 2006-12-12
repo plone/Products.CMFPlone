@@ -33,7 +33,7 @@ class ContextState(BrowserView):
         if self.is_default_page():
             return self.parent().absolute_url()
         else:
-            self.context.absolute_url()
+            return self.context.absolute_url()
             
     @memoize
     def view_template_id(self):
