@@ -14,6 +14,7 @@ from Products.CMFPlone.interfaces import IBrowserDefault
 from Products.CMFPlone.interfaces import INonStructuralFolder
 from Products.CMFPlone.interfaces.NonStructuralFolder import INonStructuralFolder\
      as z2INonStructuralFolder
+from Products.CMFPlone.interfaces import ITranslationServiceTool
 from Products.CMFPlone.browser.interfaces import IContentIcon
 
 from zope.deprecation import deprecate
@@ -93,7 +94,7 @@ class Plone(utils.BrowserView):
         self._data['atool'] = atool = tools.actions()
         self._data['putils'] = putils = getToolByName(context, 'plone_utils')
         self._data['wtool'] = wtool = tools.workflow()
-        self._data['ifacetool'] = getToolByName(context, 'portal_interface')
+        self._data['ifacetool'] = tools.interface()
         self._data['syntool'] = tools.syndication()
         self._data['portal_title'] = portal_state.portal_title()
         self._data['object_title'] = context_state.object_title()
@@ -160,8 +161,8 @@ class Plone(utils.BrowserView):
         """Convert time to localized time
         """
         context = utils.context(self)
-        tool = getToolByName(context, 'translation_service')
-        return tool.ulocalized_time(time, long_format, context,
+        util = getUtility(ITranslationServiceTool)
+        return util.ulocalized_time(time, long_format, context,
                                     domain='plonelocales')
     
     @memoize

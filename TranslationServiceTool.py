@@ -2,14 +2,17 @@
 This tool requires a translation service which supports
 the translate method and the default parameter.
 """
+from zope.interface import implements
 
+from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
 from OFS.SimpleItem import SimpleItem
+from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.utils import UniqueObject
 from Products.CMFPlone import ToolNames
-from AccessControl import ClassSecurityInfo
+from Products.CMFPlone.interfaces import ITranslationServiceTool
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
-from Products.CMFCore.utils import getToolByName
+
 from i18nl10n import ulocalized_time, utranslate, \
                      monthname_msgid, monthname_msgid_abbr, \
                      weekdayname_msgid, weekdayname_msgid_abbr, \
@@ -23,6 +26,7 @@ class TranslationServiceTool(PloneBaseTool, UniqueObject, SimpleItem):
     meta_type = ToolNames.TranslationServiceTool
     toolicon = 'skins/plone_images/site_icon.gif'
     security = ClassSecurityInfo()
+    implements(ITranslationServiceTool)
 
     __implements__ = (PloneBaseTool.__implements__,
                       SimpleItem.__implements__, )

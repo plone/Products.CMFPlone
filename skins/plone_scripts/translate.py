@@ -10,8 +10,10 @@
 if msgid == None:
     return None
 
+from Products.CMFCore.utils import getToolByName
+
 # get tool
-tool = context.translation_service
+tool = getToolByName(context, 'translation_service')
 
 # this returns type unicode
 value = tool.utranslate(domain,

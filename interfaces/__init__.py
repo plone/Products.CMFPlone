@@ -13,6 +13,7 @@ from view import IBrowserDefault
 from view import ISelectableBrowserDefault
 from view import IDynamicViewTypeInformation
 from factory import IFactoryTool
+from translationservice import ITranslationServiceTool
 
 import PropertiesTool
 import PloneBaseTool

@@ -24,6 +24,12 @@
   <dependency step="toolset"/>
     Import catalog tool's sub-objects, indexes and columns.
  </import-step>
+ <import-step id="componentregistry" version="20061211-01"
+              handler="Products.GenericSetup.components.importComponentRegistry"
+              title="Local Component Registry">
+  <dependency step="plone_various"/>
+    Import local component registry configuration.
+ </import-step>
  <import-step id="content" version="20050927-01"
               handler="Products.CMFCore.exportimport.content.importSiteStructure"
               title="Content">
@@ -94,6 +100,13 @@
   <dependency step="typeinfo"/>
     Plone specific settings
  </import-step>
+ <import-step id="portlets" version="20060820-01"
+               handler="plone.app.portlets.exportimport.portlets.importPortlets"
+               title="Portlet Managers">
+    <dependency step="plone_various"/>
+    <dependency step="componentregistry"/>
+    Import local portlet manager configuration.
+ </import-step>
  <import-step id="properties" version="20041215-01"
               handler="Products.CMFCore.exportimport.properties.importSiteProperties"
               title="Site Properties">
@@ -135,18 +148,10 @@
   <dependency step="typeinfo"/>
     Import workflow tool's workflow definitions and supporting scripts.
  </import-step>
- 
- <import-step id="portlets" version="20060820-01"
-               handler="plone.app.portlets.exportimport.portlets.importPortlets"
-               title="Portlet Managers">
-    <dependency step="plone_various"/>
-    Import local portlet manager configuration.
-  </import-step>
  <import-step id="kss_mimetype" version="20061125-01"
               handler="plone.app.kss.exportimport.setup.setupMimetype"
               title="KSS setup / mimetype">
   <dependency step="plone_various"/>
     KSS (Kinetic Style Sheet) setup. Register kss mimetype.
  </import-step>
-
 </import-steps>
