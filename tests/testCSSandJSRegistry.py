@@ -73,7 +73,8 @@ class TestJSRegistry(PloneTestCase.PloneTestCase):
              'plone_javascript_variables.js',
              'register_function.js', 
              'formUnload.js',
-             'formsubmithelpers.js']
+             'formsubmithelpers.js',
+             'form_tabbing.js']
         for e in expected:
             self.failUnless(e in installedScriptIds, e)
 

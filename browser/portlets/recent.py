@@ -1,8 +1,9 @@
-from Products.CMFPlone.browser.interfaces import IRecentPortlet
-from Products.CMFCore.utils import getToolByName
-
+import zope.deprecation
 from zope.interface import implements
+
+from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import utils
+from Products.CMFPlone.browser.interfaces import IRecentPortlet
 
 
 class RecentPortlet(utils.BrowserView):
@@ -20,3 +21,9 @@ class RecentPortlet(utils.BrowserView):
                                          portal_type=typesToShow,
                                          sort_order='reverse',
                                          sort_limit=5)[:5])
+
+zope.deprecation.deprecated(
+  ('RecentPortlet', ),
+   "Plone's portlets are based on plone.app.portlets now. The old portlets "
+   "will be removed in Plone 3.5."
+  )

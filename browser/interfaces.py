@@ -1,6 +1,7 @@
 from zope.interface import Interface, Attribute
 
 import zope.deferredimport
+import zope.deprecation
 
 zope.deferredimport.deprecated(
     "It has been moved to plone.app.layout.navigation.interfaces. " 
@@ -78,6 +79,7 @@ class INavigationPortlet(Interface):
 
     def isPortalOrDefaultChild():
         """Determine if the context is the portal or a default-document"""
+
 
 class INewsPortlet(Interface):
     """Interface for portlet to display recent news items"""
@@ -422,3 +424,10 @@ class IPlone(Interface):
         """Returns an object which implements the IContentIcon interface and
            provides the informations necessary to render an icon.
            The item parameter needs to be adaptable to IContentIcon."""
+
+zope.deprecation.deprecated(
+   ('INavigationPortlet', 'INewsPortlet', 'IEventsPortlet', 'IRecentPortlet',
+    'ICalendarPortlet'),
+    "Plone's portlets are based on plone.app.portlets now. The old portlet "
+    "interfaces and views will be removed in Plone 3.5."
+   )

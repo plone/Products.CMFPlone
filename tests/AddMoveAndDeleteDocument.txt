@@ -68,9 +68,9 @@ Editing Properties
 
 We edit the document properties:
 
-    >>> browser.getLink('Properties').click()
+    >>> browser.getLink('Edit').click()
     >>> browser.url
-    'http://nohost/plone/Members/test_user_1_/my-page/properties'
+    'http://nohost/plone/Members/test_user_1_/my-page/edit'
 
 We make sure the language is neutral at the beginning:
 

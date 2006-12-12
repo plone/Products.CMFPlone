@@ -1,3 +1,4 @@
+import zope.deprecation
 from zope.component import getMultiAdapter
 from zope.interface import implements
 
@@ -87,3 +88,9 @@ class NavigationPortlet(utils.BrowserView):
                                    name='navtree_builder_view')
             self._navtree = view.navigationTree()
             return self._navtree
+
+zope.deprecation.deprecated(
+  ('NavigationPortlet', ),
+   "Plone's portlets are based on plone.app.portlets now. The old portlets "
+   "will be removed in Plone 3.5."
+  )

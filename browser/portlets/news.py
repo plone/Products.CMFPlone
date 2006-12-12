@@ -1,3 +1,4 @@
+import zope.deprecation
 from zope.interface import implements
 
 from Products.CMFCore.utils import getToolByName
@@ -27,3 +28,9 @@ class NewsPortlet(utils.BrowserView):
             return '%s/news' % portal_url
         else:
             return '%s/news_listing' % portal_url
+
+zope.deprecation.deprecated(
+  ('NewsPortlet', ),
+   "Plone's portlets are based on plone.app.portlets now. The old portlets "
+   "will be removed in Plone 3.5."
+  )

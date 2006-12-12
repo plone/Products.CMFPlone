@@ -153,3 +153,10 @@ function sortNodes(nodes, fetch_func, cmp_func) {
         dest.parentNode.replaceChild(items[i].cloned_node, dest);
     }
 };
+
+function copyChildNodes(srcNode, dstNode) {
+    var nodes = srcNode.childNodes;
+    for (var i=0; i<nodes.length; i++) {
+        dstNode.appendChild(nodes[i].cloneNode(true));
+    }
+}

@@ -19,8 +19,16 @@ from zope.i18n.interfaces import ITranslationDomain
 from DateTime import DateTime
 
 from Products.ATContentTypes.tests.utils import FakeRequestSession
+
+# BBB Plone 3.5
+import warnings
+showwarning = warnings.showwarning
+warnings.showwarning = lambda *a, **k: None
+# ignore deprecation warnings on import
 from Products.CMFPlone.browser.interfaces import ICalendarPortlet
 from Products.CMFPlone.browser.portlets.calendar import CalendarPortlet
+# restore warning machinery
+warnings.showwarning = showwarning
 
 
 class TestCalendarPortletView(PloneTestCase.PloneTestCase):
@@ -145,8 +153,8 @@ class TestCalendarPortlet(PloneTestCase.FunctionalTestCase):
         messages = {
             ('ja', 'date_format_long'): u'${Y}\u5e74${m}\u6708${d}\u65e5 ${H}\u6642${M}\u5206',
             ('ja', 'date_format_short'): u'${Y}\u5e74${m}\u6708${d}\u65e5'}
-        dates = SimpleTranslationDomain('plone', messages)
-        provideUtility(ITranslationDomain, dates, 'plone')
+        dates = SimpleTranslationDomain('plonelocales', messages)
+        provideUtility(ITranslationDomain, dates, 'plonelocales')
 
         response = self.publish(self.portal_path, self.basic_auth,
                                 env={'HTTP_ACCEPT_LANGUAGE': 'ja'})
