@@ -67,7 +67,7 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
                       PropertyManager.manage_options)
 
     # TODO this is still used but should be handled by the GS profile
-    groups = ['member|Member|Member Preferences',
+    groups = ['member|Member|My Preferences',
               'site|Plone|Plone Configuration',
               'site|Products|Add-on Product Configuration']
 
