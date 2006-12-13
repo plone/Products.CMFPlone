@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - The interface and translation service tools are registered as local
+      utilities now.
+      [hannosch]
+
     - Exposed the member preference panels in the prefs portlet. This closes
       http://dev.plone.org/plone/ticket/3083.
       [hannosch]

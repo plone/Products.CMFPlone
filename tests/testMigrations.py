@@ -16,6 +16,8 @@ from Products.CMFCore.interfaces import IActionInfo
 from Products.CMFCore.ActionInformation import Action
 from Products.CMFCore.ActionInformation import ActionInformation
 from Products.CMFPlone.PloneTool import AllowSendto
+from Products.CMFPlone.interfaces import IInterfaceTool
+from Products.CMFPlone.interfaces import ITranslationServiceTool
 from Products.CMFPlone.utils import _createObjectByType
 from Products.CMFPlone.UnicodeSplitter import Splitter, CaseNormalizer
 
@@ -60,6 +62,7 @@ from Products.CMFPlone.migrations.v3_0.alphas import addIconForCalendarSettingsC
 from Products.CMFPlone.migrations.v3_0.alphas import addCalendarConfiglet
 from Products.CMFPlone.migrations.v3_0.alphas import updateSearchAndMailHostConfiglet
 from Products.CMFPlone.migrations.v3_0.alphas import addFormTabbingJS
+from Products.CMFPlone.migrations.v3_0.alphas import registerToolsAsUtilities
 
 from zope.app.component.hooks import clearSite
 from zope.app.component.interfaces import ISite
@@ -1337,6 +1340,26 @@ class TestMigrations_v3_0(MigrationTest):
         # Should not fail if tool is missing
         self.portal._delObject('portal_controlpanel')
         updateSearchAndMailHostConfiglet(self.portal, [])
+
+    def testRegisterToolsAsUtilities(self):
+        sm = getSiteManager(self.portal)
+        interfaces = (IInterfaceTool, ITranslationServiceTool, )
+        for i in interfaces:
+            sm.unregisterUtility(provided=i)
+        registerToolsAsUtilities(self.portal, [])
+        for i in interfaces:
+            self.failIf(sm.queryUtility(i) is None)
+
+    def testRegisterToolsAsUtilitiesTwice(self):
+        # Should not fail if done twice
+        sm = getSiteManager(self.portal)
+        interfaces = (IInterfaceTool, ITranslationServiceTool, )
+        for i in interfaces:
+            sm.unregisterUtility(provided=i)
+        registerToolsAsUtilities(self.portal, [])
+        registerToolsAsUtilities(self.portal, [])
+        for i in interfaces:
+            self.failIf(sm.queryUtility(i) is None)
 
 
 class TestMigrations_v3_0_Actions(MigrationTest):
