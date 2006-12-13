@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Exposed the member preference panels in the prefs portlet. This closes
+      http://dev.plone.org/plone/ticket/3083.
+      [hannosch]
+
     - Added javascript and css to switch between schemas in edit page.
       [fschulze]
 

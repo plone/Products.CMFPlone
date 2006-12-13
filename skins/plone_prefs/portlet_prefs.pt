@@ -4,7 +4,7 @@
 <body>
 <metal:portlet define-macro="portlet"
    tal:define="controlPanel python:modules['Products.CMFCore.utils'].getToolByName(here, 'portal_controlpanel');
-               groups python:controlPanel.getGroups('site');
+               groups python:controlPanel.getGroups('');
                getIconFor nocall:putils/getIconFor">
 
 <dl class="portlet"
@@ -18,28 +18,27 @@
     <dd class="portletItem lastItem"
         tal:repeat="group groups">
 
-        <strong tal:content="group/title"
-                i18n:translate="">Plone Configlet Group Title</strong>
-        <ul class="configlets" tal:define="configlets python:controlPanel.enumConfiglets(group=group['id'])">
+        <tal:block tal:define="configlets python:controlPanel.enumConfiglets(group=group['id'])"
+                   tal:condition="configlets">
+            <strong tal:content="group/title"
+                    i18n:translate="">Plone Configlet Group Title</strong>
+            <ul class="configlets">
 
-            <li tal:repeat="configlet configlets">
-                <a href=""
-                   style="display: block;"
-                   tal:attributes="href configlet/url"
-                   tal:condition="configlet/visible">
-                    <img src="" alt="" tal:attributes="src python:'%s/%s' % (portal_url, getIconFor('controlpanel',configlet['id']));
-                                         alt configlet/description"
-                         i18n:attributes="alt"
-                         tal:on-error="string:" />
-                <tal:configletname tal:content="configlet/title"
-                                   i18n:translate=""></tal:configletname>
-                </a>
-            </li>
-
-            <li tal:condition="not:configlets" i18n:translate="label_no_panels_available">
-                No Preference Panels available.
-            </li>
-        </ul>
+                <li tal:repeat="configlet configlets">
+                    <a href=""
+                       style="display: block;"
+                       tal:attributes="href configlet/url"
+                       tal:condition="configlet/visible">
+                        <img src="" alt="" tal:attributes="src python:'%s/%s' % (portal_url, getIconFor('controlpanel',configlet['id']));
+                                             alt configlet/description"
+                             i18n:attributes="alt"
+                             tal:on-error="string:" />
+                    <tal:configletname tal:content="configlet/title"
+                                       i18n:translate=""></tal:configletname>
+                    </a>
+                </li>
+            </ul>
+        </tal:block>
         <span class="portletBottomLeft"></span>
         <span class="portletBottomRight"></span>
     </dd>
