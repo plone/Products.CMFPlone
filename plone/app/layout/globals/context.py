@@ -1,5 +1,5 @@
 from zope.interface import implements
-from zope.component import getMultiAdapter
+from zope.component import getMultiAdapter, queryMultiAdapter
 from plone.memoize.view import memoize
 
 from Acquisition import aq_base, aq_inner, aq_parent
@@ -120,9 +120,15 @@ class ContextState(BrowserView):
     
     @memoize
     def is_locked(self):
-        context = aq_inner(self.context)
-        lockable = getattr(context.aq_explicit, 'wl_isLocked', None) is not None
-        return lockable and context.wl_isLocked()
+        # plone_lock_info is registered on marker interface ITTWLockable, since
+        # not everything may want to parttake in its lock-stealing ways.
+        lock_info = queryMultiAdapter((self.context, self.request), name='plone_lock_info')
+        if lock_info is not None:
+            return lock_info.is_locked_for_current_user()
+        else:
+            context = aq_inner(self.context)
+            lockable = getattr(context.aq_explicit, 'wl_isLocked', None) is not None
+            return lockable and context.wl_isLocked()
                             
     @memoize
     def actions(self):
