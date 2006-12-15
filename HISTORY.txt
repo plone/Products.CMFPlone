@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Merged generalised next/previous navigation into plone.app.layout
+      (interfaces, viewlet), CMFPlone (rel links in header.pt, tests) and
+      ATContentTypes (adapter for IATFolder).
+      [henri, pelle_, trollfot, optilude]
+
     - The interface and translation service tools are registered as local
       utilities now.
       [hannosch]
