@@ -5,5 +5,6 @@
     <include package=".globals" />
     <include package=".navigation" />
     <include package=".viewlets" />
+    <include package=".nextprevious" />
     
 </configure>

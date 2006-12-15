@@ -1,0 +1,46 @@
+<tal:nextPrevious define="view context/@@plone_nextprevious_view;
+                          enabled view/enabled|nothing"
+                  condition="python:enabled">
+
+    <tal:block define="portal_url context/@@plone_portal_state/portal_url;">
+
+        <div class="listingBar"
+             tal:define="next view/next; 
+                         previous view/previous"
+    	     tal:condition="python:previous is not None or next is not None">
+
+          <tal:previous condition="previous">
+            <a class="listingPrevious" href="" 
+               title="Go to previous item"
+               i18n:attributes="title title_previous_item"
+               tal:attributes="href previous/url">
+               <img src="" alt="Left arrow" 
+                    i18n:attributes="alt label_previous_item_arrow"
+                    tal:attributes="src string:$portal_url/arrowLeft.gif" />
+
+                <span i18n:translate="label_previous_item"
+                      tal:omit-tag="">
+                Previous: </span> <span tal:replace="previous/title" />
+            </a>
+          </tal:previous>
+
+
+            <a class="listingNext" href="" 
+               title="Go to next item"
+               i18n:attributes="title title_next_item"
+               tal:condition="next"
+               tal:attributes="href next/url">
+               <span>Next: </span> <span tal:replace="next/title" />
+               <img src="" alt="Right arrow" 
+                    i18n:attributes="alt label_next_item_arrow"
+                    tal:attributes="src string:$portal_url/arrowRight.gif" />
+            </a>
+
+
+          &nbsp;
+
+       </div>
+
+   </tal:block>
+
+</tal:nextPrevious>
