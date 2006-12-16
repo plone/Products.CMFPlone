@@ -22,4 +22,3 @@ It aims to be *the* open source out-of-the-box publishing system.
 - License terms in LICENSE.txt
 
   Read more at http://plone.org/
-
