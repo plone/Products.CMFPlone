@@ -10,13 +10,11 @@
             Document actions (print, sendto etc)
         </div>
 
-        <h1 tal:define="field python:context.getField('title');
-                        writable python:field.writeable(context);
-                        kukitclasses string:kukit-atfieldname-title kukit-widgetstate-view;
-                        kukitattrs python:test(writable, ' ' + kukitclasses, '');"
+        <h1 tal:define="kss_field_decorator_view kss_field_decorator_view | context/@@kss_field_decorator_view;
+                        kss_class python:kss_field_decorator_view.kss_class('title', 'view');"
             id="archetypes-fieldname-title"
             tal:content="object_title"
-            tal:attributes="class string:documentFirstHeading$kukitattrs;">
+            tal:attributes="class string:documentFirstHeading$kss_class;">
             <span i18n:translate="heading_link_to">Link to</span>
             <a href="#" 
                tal:attributes="href here/getRemoteUrl"

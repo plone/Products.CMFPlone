@@ -30,14 +30,11 @@
         </p>
     
         <div id="archetypes-fieldname-text" class="stx"
-             tal:define="field python:context.getField('text');
-                 writable python:field.writeable(context);
-                 kukitclasses string:kukit-atfieldname-text kukit-widgetstate-view;
-                 kukitattrs python:test(writable, ' ' + kukitclasses, '');"
-            
+             tal:define="kss_field_decorator_view kss_field_decorator_view | context/@@kss_field_decorator_view;
+                         kss_class python:kss_field_decorator_view.kss_class('text', 'view');"
              tal:condition="text"
              tal:attributes="class python:test(here.Format() in ('text/structured',
-                                                   'text/x-rst', ), 'stx' + kukitattrs, 'plain' + kukitattrs)">
+                                                   'text/x-rst', ), 'stx' + kss_class, 'plain' + kss_class)">
             <div tal:replace="structure text" />
         </div>
 

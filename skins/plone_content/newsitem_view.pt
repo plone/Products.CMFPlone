@@ -33,12 +33,10 @@
             </a>
             <p class="discreet"
                   tal:content="here/getImageCaption"
-                  tal:define="field python:context.getField('imageCaption');
-                        writable python:field.writeable(context);
-                        kukitclasses string:kukit-atfieldname-imageCaption kukit-widgetstate-view;
-                        kukitattrs python:test(writable, ' ' + kukitclasses, '');"
+                  tal:define="kss_field_decorator_view kss_field_decorator_view | context/@@kss_field_decorator_view;
+                              kss_class python:kss_field_decorator_view.kss_class('imageCaption', 'view');"
             id="archetypes-fieldname-imageCaption"
-            tal:attributes="class string: summary$kukitattrs;">Image Caption</p>
+            tal:attributes="class string: summary$kss_class;">Image Caption</p>
         </div>
 
         <p tal:condition="python: not len_text and is_editable"
