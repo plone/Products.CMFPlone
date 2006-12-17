@@ -29,6 +29,7 @@
    <element value="ATSimpleIntCriterion"/>
    <element value="ATSimpleStringCriterion"/>
    <element value="ATSortCriterion"/>
+   <element value="ChangeSet"/>
    <element value="Discussion Item"/>
    <element value="Plone Site"/>
    <element value="TempFolder"/>
@@ -91,6 +92,7 @@
    <element value="ATSimpleIntCriterion"/>
    <element value="ATSimpleStringCriterion"/>
    <element value="ATSortCriterion"/>
+   <element value="ChangeSet"/>
    <element value="Discussion Item"/>
    <element value="Plone Site"/>
    <element value="TempFolder"/>
