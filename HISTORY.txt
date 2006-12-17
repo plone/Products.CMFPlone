@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Finished multilingual front-page support code. The front page which is
+      created at portal creation time is now localized to the browser language
+      used while creating the portal, as long as there is a complete translation
+      of the page.
+      [hannosch]
+
     - Merged generalised next/previous navigation into plone.app.layout
       (interfaces, viewlet), CMFPlone (rel links in header.pt, tests) and
       ATContentTypes (adapter for IATFolder).
