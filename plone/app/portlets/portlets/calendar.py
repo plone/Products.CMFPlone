@@ -4,16 +4,18 @@ from plone.portlets.interfaces import IPortletDataProvider
 
 from zope import schema
 from zope.formlib import form
+from zope.i18nmessageid import MessageFactory
 from zope.interface import implements
 
 from Acquisition import aq_inner
 from DateTime import DateTime
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
-from Products.CMFPlone import PloneMessageFactory as PMF
 from Products.CMFPlone.utils import safe_unicode
 from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
 from Products.PythonScripts.standard import url_quote_plus
+
+PLMF = MessageFactory('plonelocales')
 
 class ICalendarPortlet(IPortletDataProvider):
     pass
@@ -51,8 +53,8 @@ class Renderer(base.Renderer):
         self.prevMonthTime = self.getPreviousMonth(self.month, self.year)
         self.nextMonthTime = self.getNextMonth(self.month, self.year)
 
-        self.monthName = PMF(self._ts.month_msgid(self.month),
-                             default=self._ts.month_english(self.month))
+        self.monthName = PLMF(self._ts.month_msgid(self.month),
+                              default=self._ts.month_english(self.month))
 
         states = self.calendar.getCalendarStates()
         self.review_state_string = self.getReviewStateString(states)
@@ -150,8 +152,8 @@ class Renderer(base.Renderer):
         weekdays = []
         # list of ordered weekdays as numbers
         for day in self.calendar.getDayNumbers():
-            weekdays.append(PMF(self._ts.day_msgid(day, format='s'),
-                                default=self._ts.weekday_english(day, format='a')))
+            weekdays.append(PLMF(self._ts.day_msgid(day, format='s'),
+                                 default=self._ts.weekday_english(day, format='a')))
 
         return weekdays
 
