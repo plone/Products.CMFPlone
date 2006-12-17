@@ -1,13 +1,13 @@
 import zope.deprecation
+from zope.i18nmessageid import MessageFactory
 from zope.interface import implements
 
 from DateTime import DateTime
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import utils
 from Products.CMFPlone.browser.interfaces import ICalendarPortlet
-# don't use the standard _ for PMF here as we don't want the extraction tools
-# to pick this up
-from Products.CMFPlone import PloneMessageFactory
+
+PLMF = MessageFactory('plonelocales')
 
 class CalendarPortlet(utils.BrowserView):
     implements(ICalendarPortlet)
@@ -102,7 +102,7 @@ class CalendarPortlet(utils.BrowserView):
         for day in self.daynumbers:
             msgid   = self._translation_service.day_msgid(day, format='s')
             english = self._translation_service.weekday_english(day, format='a')
-            weekdays.append(PloneMessageFactory(msgid, default=english))
+            weekdays.append(PLMF(msgid, default=english))
 
         return weekdays
 
@@ -114,7 +114,7 @@ class CalendarPortlet(utils.BrowserView):
         """Returns the current month name as a Message."""
         msgid   = self._translation_service.month_msgid(self.month)
         english = self._translation_service.month_english(self.month)
-        return PloneMessageFactory(msgid, default=english)
+        return PLMF(msgid, default=english)
 
     def isToday(self, day):
         """Returns True if the given day and the current month and year equals
