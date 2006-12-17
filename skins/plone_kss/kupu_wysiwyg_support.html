@@ -2,30 +2,31 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:i18n="http://xml.zope.org/namespaces/i18n" i18n:domain="kupu">
 
   <!--$Id: include.kupu 11657 2005-04-30 17:19:15Z guido $-->
-    <!--$Id: wire.kupu 12162 2005-05-10 15:53:10Z guido $-->
+    <!--$Id: wire.kupu 20919 2005-12-09 10:14:44Z duncan $-->
     <!--$Id: html.kupu 13336 2005-06-13 11:03:58Z gotcha $-->
-    <!--$Id: head.kupu 16467 2005-08-25 11:08:10Z guido $-->
+    <!--$Id: head.kupu 20919 2005-12-09 10:14:44Z duncan $-->
+    <!-- saved from url=(0013)about:internet -->
     <!--$Id: body.kupu 9779 2005-03-15 11:34:47Z duncan $-->
     <!--$Id: xmlconfig.kupu 12162 2005-05-10 15:53:10Z guido $-->
     <!--$Id: saveonpart.kupu 9520 2005-02-26 16:30:23Z duncan $-->
-    <!--$Id: sourceedit.kupu 25716 2006-04-12 10:07:19Z fschulze $-->
+    <!--$Id: sourceedit.kupu 25717 2006-04-12 10:33:01Z fschulze $-->
     <!--$Id: sourceedit.kupu 9779 2005-03-15 11:34:47Z duncan $-->
     <!--$Id: contextmenu.kupu 9520 2005-02-26 16:30:23Z duncan $-->
-    <!--$Id: toolbar.kupu 27291 2006-05-16 17:15:27Z fschulze $-->
+    <!--$Id: toolbar.kupu 27597 2006-05-22 14:27:32Z guido $-->
     <!--$Id: toolboxes.kupu 16467 2005-08-25 11:08:10Z guido $-->
     <!--$Id: colorchooser.kupu 9520 2005-02-26 16:30:23Z duncan $-->
     <!--$Id: save.kupu 9520 2005-02-26 16:30:23Z duncan $-->
-    <!--$Id: drawers.kupu 25716 2006-04-12 10:07:19Z fschulze $-->
+    <!--$Id: drawers.kupu 32938 2006-10-06 06:56:24Z guido $-->
     <!--$Id: include.kupu 9520 2005-02-26 16:30:23Z duncan $-->
-    <!--$Id: wire.kupu 23401 2006-02-16 13:47:33Z limi $-->
-    <!--$Id: head.kupu 21720 2006-01-05 15:59:25Z paul $-->
-    <!--$Id: xmlconfig.kupu 30986 2006-08-04 11:38:46Z duncan $-->
-    <!--$Id: body.kupu 27715 2006-05-26 10:35:22Z duncan $-->
-    <!--$Id: toolbar.kupu 25716 2006-04-12 10:07:19Z fschulze $-->
-    <!--$Id: drawers.kupu 14546 2005-07-12 14:35:55Z duncan $-->
+    <!--$Id: wire.kupu 25247 2006-04-03 11:23:02Z fschulze $-->
+    <!--$Id: head.kupu 34332 2006-11-07 14:50:40Z duncan $-->
+    <!--$Id: xmlconfig.kupu 35367 2006-12-06 09:06:21Z duncan $-->
+    <!--$Id: body.kupu 34311 2006-11-07 11:18:23Z duncan $-->
+    <!--$Id: toolbar.kupu 35477 2006-12-08 13:20:38Z duncan $-->
+    <!--$Id: drawers.kupu 35477 2006-12-08 13:20:38Z duncan $-->
     <!--$Id: beforeunload.kupu 14546 2005-07-12 14:35:55Z duncan $-->
-    <!--$Id: sourceedit.kupu 14546 2005-07-12 14:35:55Z duncan $-->
-    <!--$Id: wysiwyg_support.kupu 27715 2006-05-26 10:35:22Z duncan $-->
+    <!--$Id: sourceedit.kupu 35477 2006-12-08 13:20:38Z duncan $-->
+    <!--$Id: wysiwyg_support.kupu 27722 2006-05-26 11:10:05Z duncan $-->
     
 
     <div xmlns:metal="http://xml.zope.org/namespaces/metal" xmlns:tal="http://xml.zope.org/namespaces/tal" metal:define-macro="wysiwygEditorBox" id="kupu-editor" tal:define="name fieldName|inputname;                 editorid string:kupu-editor-${name}" tal:attributes="id editorid">
@@ -56,7 +57,7 @@
     </tal:block>
 
 <tal:block define="excludes here/kupu_library_tool/getHtmlExclusions">
-<htmlfilter tal:condition="excludes">
+<htmlfilter>
 <tal:block repeat="exclude excludes"><tal:block define="tags python:exclude[0]; attributes python:exclude[1];"><c tal:omit-tag="not:python:tags and attributes"><a tal:repeat="attr attributes" tal:content="attr">
   </a><t tal:repeat="tag tags" tal:content="tag"/></c></tal:block></tal:block>
 <xstyle tal:repeat="st here/kupu_library_tool/getStyleWhitelist" tal:content="st"/>
@@ -64,16 +65,14 @@
 </htmlfilter>
 </tal:block>
   
-    <tal:var define="field field|nothing;         usecaptions python:field and field.default_output_type=='text/x-html-captioned'">
+    <tal:var define="field field|nothing;             tool here/kupu_library_tool;             usecaptions python:tool.getCaptioning() and tool.canCaption(field);             base python:here.kupu_library_tool.getBaseUrl(here);             base kupu_base_override|base;">
         <captions tal:condition="usecaptions">1</captions>
-    </tal:var>
-    <image_xsl_uri tal:content="string:${portal_url}/kupudrawers/drawer.xsl"/>
-    <link_xsl_uri tal:content="string:${portal_url}/kupudrawers/drawer.xsl"/>
-    <tal:var define="         base kupu_base_override|here/absolute_url;         posfactory python:base.find('/portal_factory/');         base python:posfactory &gt; 0 and base[:posfactory] or base;         lib_prefix    string:${base}/kupulibraries.xml?resource_type=;         search_prefix string:${portal_url}/kupusearch.xml?resource_type=;">
-      <image_libraries_uri tal:content="string:${lib_prefix}mediaobject"/>
-      <link_libraries_uri tal:content="string:${lib_prefix}linkable"/>
-      <search_images_uri tal:content="string:${search_prefix}mediaobject"/>
-      <search_links_uri tal:content="string:${search_prefix}linkable"/>
+        <xsl_uri tal:content="string:${portal_url}/kupudrawers/drawer.xsl"/>
+        <image_resource>mediaobject</image_resource>
+        <link_resource>linkable</link_resource>
+        <lib_prefix tal:content="string:${base}/kupulibraries.xml?resource_type="/>
+        <search_prefix tal:content="string:${portal_url}/kupusearch.xml?resource_type="/>
+        <select_prefix tal:content="string:${portal_url}/kupuselection.xml?resource_type="/>
     </tal:var>
   
         </kupuconfig>
@@ -89,7 +88,9 @@
    </tal:test>
   
   
-   <tal:test condition="not:exists:portal/portal_javascripts">
+   <tal:test condition="not:exists:portal/portal_javascripts" metal:define-macro="kupu_js_include">
+    <tal:test condition="not:kupu_js_loaded|nothing">
+      <tal:var define="global kupu_js_loaded string:yes"/>
     <script type="text/javascript" tal:attributes="src string:${portal_url}/kupunoi18n.js"> </script>
     <script type="text/javascript" tal:attributes="src string:${portal_url}/sarissa.js"> </script>
     <script type="text/javascript" tal:attributes="src string:${portal_url}/sarissa_ieemu_xpath.js"> </script>
@@ -98,7 +99,6 @@
     <script type="text/javascript" tal:attributes="src string:${portal_url}/kupubasetools.js"> </script>
     <script type="text/javascript" tal:attributes="src string:${portal_url}/kupuloggers.js"> </script>
     <script type="text/javascript" tal:attributes="src string:${portal_url}/kupucontentfilters.js"> </script>
-    <script type="text/javascript" tal:attributes="src string:${portal_url}/kupucontextmenu.js"> </script>
 
     <script type="text/javascript" tal:attributes="src string:${portal_url}/kupuploneeditor.js"> </script>
     <script type="text/javascript" tal:attributes="src string:${portal_url}/kupuploneui.js"> </script>
@@ -106,7 +106,7 @@
     <script type="text/javascript" src="kupusourceedit.js" tal:attributes="src string:${portal_url}/kupusourceedit.js"> </script>
 
     <script type="text/javascript" src="kupudrawers.js" tal:attributes="src string:${portal_url}/kupudrawers.js"> </script>
-    <script type="text/javascript" src="kupuspellchecker.js" tal:attributes="src string:${portal_url}/kupuspellchecker.js"> </script>
+    </tal:test>
    </tal:test>
   
 <tal:condition condition="python:here.kupu_library_tool.installBeforeUnload() and not path('haveBeforeUnload|nothing')">
@@ -117,91 +117,94 @@
   
     <script tal:condition="not:exists:portal/portal_javascripts" type="text/javascript" src="kupuploneinit.js" tal:attributes="src string:${portal_url}/kupuploneinit.js"> </script>
   
-    <div class="kupu-tb" id="toolbar">
+    <div class="kupu-tb" id="toolbar" tal:define="tool context/kupu_library_tool;field field|nothing;filter python:tool.filterToolbar(context,field);">
       
     <span id="kupu-tb-buttons" class="kupu-tb-buttons">
       
   
-    <span class="kupu-tb-buttongroup" style="float: right" id="kupu-zoom">
+    <span class="kupu-tb-buttongroup" style="float: right" id="kupu-zoom" tal:condition="filter/zoom">
       <button type="button" class="kupu-zoom" id="kupu-zoom-button" i18n:attributes="title" title="Zoom: Access key (Alt or Ctrl) + X" accesskey="x">&#160;</button>
     </span>
   
-    <span class="kupu-tb-buttongroup" id="kupu-bg-basicmarkup">
-      <button type="button" class="kupu-bold" id="kupu-bold-button" title="Bold: Access key (Alt or Ctrl) + B" i18n:attributes="title" accesskey="b">&#160;</button>
-      <button type="button" class="kupu-italic" id="kupu-italic-button" title="Italic: Access key (Alt or Ctrl) + I" i18n:attributes="title" accesskey="i">&#160;</button>
+    <span class="kupu-tb-buttongroup" id="kupu-bg-basicmarkup" tal:condition="filter/bg-basicmarkup">
+      <button type="button" class="kupu-bold" id="kupu-bold-button" title="Bold: Access key (Alt or Ctrl) + B" tal:condition="filter/bold-button" i18n:attributes="title" accesskey="b">&#160;</button>
+      <button type="button" class="kupu-italic" id="kupu-italic-button" title="Italic: Access key (Alt or Ctrl) + I" tal:condition="filter/italic-button" i18n:attributes="title" accesskey="i">&#160;</button>
     </span>
   
-    <span class="kupu-tb-buttongroup" id="kupu-bg-subsuper">
-      <button type="button" class="kupu-subscript" id="kupu-subscript-button" title="Subscript: Access key (Alt or Ctrl) + -" i18n:attributes="title" accesskey="-">&#160;</button>
-      <button type="button" class="kupu-superscript" id="kupu-superscript-button" title="Superscript: Access key (Alt or Ctrl) + +" i18n:attributes="title" accesskey="+">&#160;</button>
+    <span class="kupu-tb-buttongroup" id="kupu-bg-subsuper" tal:condition="filter/bg-subsuper">
+      <button type="button" class="kupu-subscript" id="kupu-subscript-button" title="Subscript: Access key (Alt or Ctrl) + -" tal:condition="filter/subscript-button" i18n:attributes="title" accesskey="-">&#160;</button>
+      <button type="button" class="kupu-superscript" id="kupu-superscript-button" title="Superscript: Access key (Alt or Ctrl) + +" tal:condition="filter/superscript-button" i18n:attributes="title" accesskey="+">&#160;</button>
     </span>
   
-    <span class="kupu-tb-buttongroup" id="kupu-bg-justify">
-      <button type="button" class="kupu-justifyleft" id="kupu-justifyleft-button" title="Left justify: Access key (Alt or Ctrl) + L" i18n:attributes="title" accesskey="l">&#160;</button>
-      <button type="button" class="kupu-justifycenter" id="kupu-justifycenter-button" title="Center justify: Access key (Alt or Ctrl) + C" i18n:attributes="title" accesskey="c">&#160;</button>
-      <button type="button" class="kupu-justifyright" id="kupu-justifyright-button" title="Right justify: Access key (Alt or Ctrl) + R" i18n:attributes="title" accesskey="r">&#160;</button>
+    <span class="kupu-tb-buttongroup" tal:condition="filter/bg-colorchooser">
+      <button type="button" class="kupu-forecolor" id="kupu-forecolor-button" tal:condition="filter/forecolor-button" title="text color: alt-f" i18n:attributes="title" accesskey="f">&#160;</button>
+      <button type="button" class="kupu-hilitecolor" id="kupu-hilitecolor-button" tal:condition="filter/hilitecolor-button" title="background color: alt-h" i18n:attributes="title" accesskey="h">&#160;</button>
     </span>
   
-              <span class="kupu-tb-buttongroup" id="kupu-bg-list">
+    <span class="kupu-tb-buttongroup" id="kupu-bg-justify" tal:condition="filter/bg-justify">
+      <button type="button" class="kupu-justifyleft" id="kupu-justifyleft-button" tal:condition="filter/justifyleft-button" title="Left justify: Access key (Alt or Ctrl) + L" i18n:attributes="title" accesskey="l">&#160;</button>
+      <button type="button" class="kupu-justifycenter" tal:condition="filter/justifycenter-button" id="kupu-justifycenter-button" title="Center justify: Access key (Alt or Ctrl) + C" i18n:attributes="title" accesskey="c">&#160;</button>
+      <button type="button" class="kupu-justifyright" tal:condition="filter/justifyright-button" id="kupu-justifyright-button" title="Right justify: Access key (Alt or Ctrl) + R" i18n:attributes="title" accesskey="r">&#160;</button>
+    </span>
+  
+    <span class="kupu-tb-buttongroup" id="kupu-bg-list" tal:condition="filter/bg-list">
       
-      <button type="button" class="kupu-insertorderedlist" title="Numbered list: Access key (Alt or Ctrl) + #" id="kupu-list-ol-addbutton" i18n:attributes="title" accesskey="#">&#160;</button>
-      <button type="button" class="kupu-insertunorderedlist" title="Unordered list: Access key (Alt or Ctrl) + *" id="kupu-list-ul-addbutton" i18n:attributes="title" accesskey="*">&#160;</button>
+      <button type="button" class="kupu-insertorderedlist" tal:condition="filter/list-ol-addbutton" title="Numbered list: Access key (Alt or Ctrl) + #" id="kupu-list-ol-addbutton" i18n:attributes="title" accesskey="#">&#160;</button>
+      <button type="button" class="kupu-insertunorderedlist" tal:condition="filter/list-ul-addbutton" title="Unordered list: Access key (Alt or Ctrl) + *" id="kupu-list-ul-addbutton" i18n:attributes="title" accesskey="*">&#160;</button>
               </span>
   
-    <span class="kupu-tb-buttongroup" id="kupu-bg-definitionlist">
+    <span class="kupu-tb-buttongroup" id="kupu-bg-definitionlist" tal:condition="filter/definitionlist">
       
       <button type="button" class="kupu-insertdefinitionlist" title="Definition list: Access key (Alt or Ctrl) + =" id="kupu-list-dl-addbutton" i18n:attributes="title" accesskey="=">&#160;</button>
     </span>
   
-    <span class="kupu-tb-buttongroup" id="kupu-bg-indent">
-      <button type="button" class="kupu-outdent" id="kupu-outdent-button" title="Decrease quote level: Access key (Alt or Ctrl) + &lt;" i18n:attributes="title" accesskey="&lt;">&#160;</button>
-      <button type="button" class="kupu-indent" id="kupu-indent-button" title="Increase quote level: Access key (Alt or Ctrl) + &gt;" i18n:attributes="title" accesskey="&gt;">&#160;</button>
+    <span class="kupu-tb-buttongroup" id="kupu-bg-indent" tal:condition="filter/bg-indent">
+      <button type="button" class="kupu-outdent" tal:condition="filter/outdent-button" id="kupu-outdent-button" title="Decrease quote level: Access key (Alt or Ctrl) + &lt;" i18n:attributes="title" accesskey="&lt;">&#160;</button>
+      <button type="button" class="kupu-indent" tal:condition="filter/indent-button" id="kupu-indent-button" title="Increase quote level: Access key (Alt or Ctrl) + &gt;" i18n:attributes="title" accesskey="&gt;">&#160;</button>
     </span>
   
-    <span class="kupu-tb-buttongroup">
-      <button type="button" class="kupu-image" id="kupu-imagelibdrawer-button" title="Insert image" i18n:attributes="title">&#160;</button>
-      <button type="button" class="kupu-inthyperlink" id="kupu-linklibdrawer-button" title="Insert internal link" i18n:attributes="title">&#160;</button>
-      <button type="button" class="kupu-exthyperlink" id="kupu-linkdrawer-button" title="Insert external link" i18n:attributes="title">&#160;</button>
-      <button type="button" class="kupu-table" id="kupu-tabledrawer-button" title="Insert table" i18n:attributes="title">&#160;</button>
+    <span class="kupu-tb-buttongroup" tal:condition="filter/bg-drawers">
+      <button type="button" class="kupu-image" tal:condition="filter/imagelibdrawer-button" id="kupu-imagelibdrawer-button" title="Insert image" i18n:attributes="title">&#160;</button>
+      <button type="button" class="kupu-inthyperlink" tal:condition="filter/linklibdrawer-button" id="kupu-linklibdrawer-button" title="Insert internal link" i18n:attributes="title">&#160;</button>
+      <button type="button" class="kupu-exthyperlink" tal:condition="filter/linkdrawer-button" id="kupu-linkdrawer-button" title="Insert external link" i18n:attributes="title">&#160;</button>
+      <button type="button" class="kupu-anchors" tal:condition="filter/anchors-button" id="kupu-anchors" title="Insert anchors" i18n:attributes="title">&#160;</button>
+      <button type="button" class="kupu-table" tal:condition="filter/tabledrawer-button" id="kupu-tabledrawer-button" title="Insert table" i18n:attributes="title">&#160;</button>
     </span>
   
-    <span class="kupu-tb-buttongroup" id="kupu-bg-remove">
-      <button type="button" class="kupu-removeimage invisible" id="kupu-removeimage-button" title="Remove image" i18n:attributes="title">&#160;</button>
-      <button type="button" class="kupu-removelink invisible" id="kupu-removelink-button" title="Remove link" i18n:attributes="title">&#160;</button>
+    <span class="kupu-tb-buttongroup" id="kupu-bg-remove" tal:condition="filter/bg-remove">
+      <button type="button" class="kupu-removeimage invisible" tal:condition="filter/removeimage-button" id="kupu-removeimage-button" title="Remove image" i18n:attributes="title">&#160;</button>
+      <button type="button" class="kupu-removelink invisible" tal:condition="filter/removelink-button" id="kupu-removelink-button" title="Remove link" i18n:attributes="title">&#160;</button>
     </span>
   
-    <span class="kupu-tb-buttongroup" id="kupu-bg-undo">
-      <button type="button" class="kupu-undo" id="kupu-undo-button" title="Undo: Access key (Alt or Ctrl) + Z" i18n:attributes="title" accesskey="z">&#160;</button>
-      <button type="button" class="kupu-redo" id="kupu-redo-button" title="Redo: Access key (Alt or Ctrl) + Y" i18n:attributes="title" accesskey="y">&#160;</button>
+    <span class="kupu-tb-buttongroup" id="kupu-bg-undo" tal:condition="filter/bg-undo">
+      <button type="button" class="kupu-undo" tal:condition="filter/undo-button" id="kupu-undo-button" title="Undo: Access key (Alt or Ctrl) + Z" i18n:attributes="title" accesskey="z">&#160;</button>
+      <button type="button" class="kupu-redo" tal:condition="filter/redo-button" id="kupu-redo-button" title="Redo: Access key (Alt or Ctrl) + Y" i18n:attributes="title" accesskey="y">&#160;</button>
     </span>
   
-    <span class="kupu-tb-buttongroup kupu-spellchecker-span" id="kupu-spellchecker">
+    <span class="kupu-tb-buttongroup kupu-spellchecker-span" id="kupu-spellchecker" tal:condition="filter/spellchecker">
       <button type="button" class="kupu-spellchecker" id="kupu-spellchecker-button" title="Check spelling" i18n:attributes="title">&#160;</button>
     </span>
   
-    <span class="kupu-tb-buttongroup kupu-source-span" id="kupu-source">
-      <button type="button" class="kupu-source" id="kupu-source-button" title="Edit HTML code" i18n:attributes="title" accesskey="h">&#160;</button>
+    <span class="kupu-tb-buttongroup kupu-source-span" id="kupu-source" tal:condition="filter/source">
+      <button type="button" class="kupu-source" id="kupu-source-button" title="Switch between visual editor and HTML view" i18n:attributes="title toggle_source_view;" accesskey="h">&#160;</button>
     </span>
   
-    <select class="kupu-tb-styles">
+    <select class="kupu-tb-styles" tal:condition="filter/styles" tal:define="field field|nothing;styles python:tool.getStyleList(field);">
       <option value="p" i18n:translate="">Normal</option>
-      <tal:block condition="here/kupu_library_tool/getParagraphStyles|nothing" repeat="style here/kupu_library_tool/getParagraphStyles">
-        <option i18n:translate="" tal:define="parts python:style.split('|',1)+['','']" tal:attributes="value python:parts[1]" tal:content="python:parts[0]"/>
-      </tal:block>
-      <tal:block tal:condition="field/widget/parastyles|nothing">
-        <option i18n:translate="" tal:condition="field/widget/parastyles" tal:repeat="style field/widget/parastyles" tal:attributes="value python:style[0]" tal:content="python:style[1]"/>
+      <tal:block condition="styles" repeat="style styles">
+        <option i18n:translate="" tal:attributes="value style/value" tal:content="style/content"/>
       </tal:block>
     </select>
   
     </span>
   
-    <select id="kupu-ulstyles" class="kupu-ulstyles">
+    <select id="kupu-ulstyles" class="kupu-ulstyles" tal:condition="filter/ulstyles">
       <option value="disc" i18n:translate="list-disc">&#9679;</option>
       <option value="square" i18n:translate="list-square">&#9632;</option>
       <option value="circle" i18n:translate="list-circle">&#9675;</option>
       <option value="none" i18n:translate="list-nobullet">no bullet</option>
     </select>
-    <select id="kupu-olstyles" class="kupu-olstyles">
+    <select id="kupu-olstyles" class="kupu-olstyles" tal:condition="filter/olstyles">
       <option value="decimal" i18n:translate="list-decimal">1</option>
       <option value="upper-roman" i18n:translate="list-upperroman">I</option>
       <option value="lower-roman" i18n:translate="list-lowerroman">i</option>
@@ -211,11 +214,12 @@
   
     
     <div style="display:block;" class="kupu-librarydrawer-parent">
-
+      <iframe style="display:none" class="kupu-anchorframe" src="javascript:''">
+      </iframe>
     </div>
   
     <div id="kupu-linkdrawer" class="kupu-drawer kupu-linkdrawer">
-      <h1 i18n:translate="">External Link</h1>
+      <h1 class="kupu-drawer-title" i18n:translate="">External Link</h1>
 
       <div id="kupu-linkdrawer-addlink" class="kupu-panels kupu-linkdrawer-addlink">
         <table cellspacing="0">
@@ -231,8 +235,14 @@
         <td class="kupu-preview-button">
           <button class="kupu-dialog-button" type="button" id="linkdrawer-preview" onclick="drawertool.current_drawer.preview()" i18n:translate="">Preview</button>
         </td></tr>
+        <tr class="kupu-linkdrawer-anchors" style="display:none">
+          <td colspan="2">
+            <label i18n:translate="" for="anchorselect">Anchor</label>
+            <select id="anchorselect"><option i18n:translate="" value="">(none)</option></select>
+          </td>
+        </tr>
         <tr><td colspan="2" align="center">
-        <iframe frameborder="1" scrolling="auto" width="440" height="198" class="kupu-linkdrawer-preview" src="kupublank.html">
+        <iframe frameborder="1" scrolling="auto" width="440" height="198" class="kupu-linkdrawer-preview" src="javascript:''">
         </iframe>
         </td></tr>
         </table>
@@ -246,7 +256,7 @@
     </div>
   
     <div id="kupu-tabledrawer" class="kupu-drawer kupu-tabledrawer">
-    <h1 i18n:translate="tabledrawer_title">Table</h1>
+    <h1 class="kupu-drawer-title" i18n:translate="tabledrawer_title">Table</h1>
     <div class="kupu-panels">
       <table width="300">
         <tr class="kupu-panelsrow">
@@ -276,8 +286,10 @@
                 <tr>
                   <th class="kupu-toolbox-label"> </th>
                   <td>
-                    <label><input class="kupu-tabledrawer-makeheader" type="checkbox" onkeypress="return HandleDrawerEnter(event);"/>
-                    <span i18n:translate="tabledrawer_headings_label">Create Headings</span></label>
+                    <input class="kupu-tabledrawer-makeheader" type="checkbox" onkeypress="return HandleDrawerEnter(event);" id="tabledrawer_makeheader"/>
+                    <label i18n:translate="tabledrawer_headings_label" for="tabledrawer_makeheader">
+                      Create Headings
+                    </label>
                   </td>
                 </tr>
                 <tr>
@@ -340,16 +352,79 @@
         </tr>
       </table>
       <div class="kupu-dialogbuttons">
-        <button class="kupu-dialog-button" type="button" onfocus="window.status='focus';" onmousedown="window.status ='onmousedown';" i18n:translate="tabledrawer_close_button" onclick="drawertool.closeDrawer(this)">Close</button>
+        <button class="kupu-dialog-button" type="button" i18n:translate="tabledrawer_close_button" onclick="drawertool.closeDrawer(this)">Close</button>
       </div>
     </div>
     </div>
 
   
+    <div id="kupu-anchordrawer" class="kupu-drawer kupu-anchordrawer">
+      <h1 class="kupu-drawer-title" i18n:translate="anchordrawer_title">Anchors</h1>
+      <div class="kupu-panels">
+        <table class="kupu-ins-bm">
+          <tr style="margin-bottom: 5px">
+            <td colspan="2">
+              <label i18n:translate="" for="kupu-ins-bm">
+                Link to anchor
+              </label>
+              <input type="radio" name="kupu-bm-mode" checked="checked" id="kupu-ins-bm"/>
+              <label for="kupu-toc" i18n:translate="">
+                Table of contents
+              </label>
+              <input type="radio" name="kupu-bm-mode" id="kupu-toc"/> 
+            </td>
+          </tr>
+          <tr>
+            <td class="kupu-bm-select">
+              <select id="kupu-bm-sel1" size="10"> </select>
+            </td>
+            <td rowspan="2">
+              <div class="kupu-bm-heading">
+                <div style="float:right">
+                  <label i18n:translate="" for="kupu-bm-outcls">
+                    Table style
+                  </label>
+                  <select id="kupu-bm-outcls" size="1">
+                    <option value="" i18n:translate="">Normal</option>
+                  </select>
+                </div>
+                <label for="kupu-bm-checkall">
+                  <em i18n:translate="">toggle all</em>
+                </label>
+                <input type="checkbox" checked="checked" id="kupu-bm-checkall"/>
+              </div>
+              <div class="kupu-bm-paras">&#160;</div>
+              <div class="kupu-bm-helpanchor">
+                Select a paragraph style then choose a paragraph and Ok to insert a link to that location.
+              </div>
+              <div class="kupu-bm-helptoc">
+                Select one or two paragraph styles, then Ok to insert a table of contents.
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <select id="kupu-bm-sel2" size="1">
+                <option value="" i18n:translate="">(optional 2nd style)</option>
+              </select>
+            </td>
+          </tr>
+        </table>
+        <div class="kupu-dialogbuttons">
+          <button class="kupu-dialog-button" type="button" onclick="drawertool.current_drawer.save()" i18n:translate="">Ok</button>
+          <button class="kupu-dialog-button" type="button" onclick="drawertool.closeDrawer()" i18n:translate="">Cancel</button>
+        </div>
+      </div>
+    </div>
+  
   
     </div>
+  
+    <table id="kupu-colorchooser" class="kupu-colorchooser" cellpadding="0" cellspacing="0" style="position: fixed; border-style: solid; border-color: black; border-width: 1px;">
+    </table>
   <script type="text/javascript">var focuscount = 0;</script>
-    <iframe class="kupu-editor-iframe" frameborder="0" src="emptypage" onfocus="this.contentWindow.focus();" tal:define="                 base here/absolute_url;                 posfactory python:base.find('/portal_factory/');                 base python:posfactory &gt; 0 and base[:posfactory+15] or base;                 base kupu_base_override|base;" tal:attributes="src string:${base}/emptypage;                          tabindex tabindex/next|nothing;  id string:kupu-editor-iframe-${fname}; name string:kupu-editor-iframe-${fname}">
+    <div>
+    <iframe class="kupu-editor-iframe" frameborder="0" src="emptypage" onfocus="this.contentWindow.focus();" tal:define="base python:here.kupu_library_tool.getBaseUrl(here, True);                     base kupu_base_override|base;" tal:attributes="src string:${base}/emptypage;                         tabindex tabindex/next|nothing; id string:kupu-editor-iframe-${fname}; name string:kupu-editor-iframe-${fname};">
     </iframe>
      <input type="hidden" name="text_format:default" value="text/html" tal:define="fieldName fieldName|inputname|nothing;                 val python:fieldName and 'text/html' or 'html';                 fieldName python:test(fieldName, fieldName+'_', '') + 'text_format:default';" tal:attributes="name fieldName;value val;"/>
 <tal:test condition="fieldName|nothing">
@@ -358,6 +433,7 @@
 </tal:test>
     <textarea cols="80" rows="25" tabindex="" class="kupu-editor-textarea" name="description" id="kupu-editor-textarea" tal:define="pss modules/Products/PythonScripts/standard;                 text_format python: getattr(here,'text_format','html');                 is_stx python:text_format=='structured-text';                 is_ptx python:text_format=='plain';" tal:condition="not:fieldName|nothing" tal:content="python:(is_stx and pss.structured_text(inputvalue))                                     or (is_ptx and pss.newline_to_br(inputvalue))                                     or inputvalue" tal:attributes="name inputname;                         onfocus onfocus|nothing;                         onblur onblur|nothing;                         tabindex tabindex|nothing;                         rows rows|default;                         cols cols|default;">
     </textarea>
+    </div>
   
     <div class="kupuoverride" tal:condition="python:exists('kupu_content') and len(kupu_content)==0" tal:define="floated widget/allow_file_upload | python:1;" tal:attributes="style python:test(floated, 'float:left;;', '');"><span class="discreet"><a class="forcekupu" href="#" i18n:translate="suppress-kupu" tal:attributes="href string:${request/URL0}?kupu.suppress=${fieldName};" title="reload current page without kupu">
          Edit without visual editor
@@ -403,7 +479,7 @@
     <tal:archetypes tal:condition="fieldName|nothing">
          <div metal:use-macro="here/widgets/visual/macros/area_format"/>
          <span tal:condition="python:portal.kupu_library_tool.isKupuEnabled(REQUEST=context.REQUEST, context=context, fieldName=fieldName)" tal:define="global kupu_convert_message_generated python:True">
-           <a href="#" tal:attributes="href string:${request/URL0}?kupu.convert=${fieldName};">Convert to HTML and edit with the visual editor</a></span>
+           <a href="#" tal:attributes="href python:portal.kupu_library_tool.forcekupu_url(fieldName);">Convert to HTML and edit with the visual editor</a></span>
     </tal:archetypes>
     <tal:nonat condition="not:fieldName|nothing">
      <label for="text_format" i18n:translate="label_format">Format</label>
