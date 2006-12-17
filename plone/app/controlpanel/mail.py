@@ -43,6 +43,21 @@ class IMailSchema(Interface):
                          default=None,
                          required=False)
 
+    email_from_name = TextLine(title=_(u"Site 'From' name"),
+                               description=_(u'''Plone generates e-mail using
+                                             this name as the e-mail sender.'''),
+                               default=None,
+                               required=True)
+
+    email_from_address = TextLine(title=_(u"Site 'From' address"),
+                                  description=_(u'''Plone generates e-mail using
+                                                this address as the e-mail
+                                                return address. It is also used
+                                                as the destination address on
+                                                the site-wide contact form.'''),
+                                  default=None,
+                                  required=True)
+
 
 class MailControlPanelAdapter(SchemaAdapterBase):
     
@@ -52,6 +67,8 @@ class MailControlPanelAdapter(SchemaAdapterBase):
     def __init__(self, context):
         super(MailControlPanelAdapter, self).__init__(context)
         self.context = getToolByName(context, 'MailHost')
+        pprop = getToolByName(context, 'portal_properties')
+        self.site_properties = pprop.site_properties
 
     smtp_host = ProxyFieldProperty(IMailSchema['smtp_host'])
     smtp_port = ProxyFieldProperty(IMailSchema['smtp_port'])
@@ -82,6 +99,22 @@ class MailControlPanelAdapter(SchemaAdapterBase):
 
     smtp_pass = property(get_smtp_pass, set_smtp_pass)
 
+    def get_email_from_name(self):
+        return self.site_properties.email_from_name
+
+    def set_email_from_name(self, value):
+        self.site_properties.email_from_name = value
+
+    email_from_name = property(get_email_from_name, set_email_from_name)
+
+    def get_email_from_address(self):
+        return self.site_properties.email_from_address
+
+    def set_email_from_address(self, value):
+        self.site_properties.email_from_address = value
+
+    email_from_address = property(get_email_from_address, set_email_from_address)
+
 
 class MailControlPanel(ControlPanelForm):
 
@@ -89,5 +122,5 @@ class MailControlPanel(ControlPanelForm):
 
     label = _("Mail settings")
     description = _("Mail settings for this Site.")
-    form_name = _("Outgoing Mail Server (SMTP) Details")
+    form_name = _("Outgoing Mail Details")
 

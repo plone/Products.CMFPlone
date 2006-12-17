@@ -11,6 +11,8 @@ First some initial setup code:
 
     >>> from Products.CMFCore.utils import getToolByName
     >>> mailhost = getToolByName(self.portal, 'MailHost')
+    >>> pprop = getToolByName(self.portal, 'portal_properties')
+    >>> site_properties = pprop.site_properties
 
 And now log in with an user with the Manager role:
 
@@ -60,6 +62,8 @@ Make some changes
     >>> browser.getControl(name='form.smtp_port').value = '2525'
     >>> browser.getControl(name='form.smtp_userid').value = 'admin'
     >>> browser.getControl(name='form.smtp_pass').value = 'secret'
+    >>> browser.getControl(name='form.email_from_name').value = 'Spambot'
+    >>> browser.getControl(name='form.email_from_address').value = 'spam@localhost'
 
 Click the save button:
 
@@ -86,3 +90,8 @@ Make sure the changes have been applied correctly to the mailhost:
     >>> mailhost.smtp_pass
     u'secret'
 
+    >>> site_properties.email_from_name
+    u'Spambot'
+
+    >>> site_properties.email_from_address
+    u'spam@localhost'
