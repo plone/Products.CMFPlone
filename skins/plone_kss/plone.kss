@@ -159,3 +159,13 @@ body:load {
     action-client: effect;
     effect-type: fade;
 }
+
+/*
+** Form tabs
+*/
+
+form.enableFormTabbing:load {
+    evt-load-initial: false;
+    action-client: plone-initFormTabs;
+}
+
