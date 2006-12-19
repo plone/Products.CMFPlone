@@ -1,4 +1,6 @@
-from zope.component import getUtility, getMultiAdapter
+from zope.component import getMultiAdapter
+from zope.component import getSiteManager
+from zope.component import getUtility
 
 from zope.app.component.interfaces import ISite
 from zope.component.globalregistry import base
@@ -12,6 +14,8 @@ from Products.CMFCore.ActionInformation import ActionCategory
 from Products.CMFCore.Expression import Expression
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.permissions import ManagePortal
+from Products.CMFPlone.interfaces import IInterfaceTool
+from Products.CMFPlone.interfaces import ITranslationServiceTool
 from Products.CMFPlone.migrations.migration_util import installOrReinstallProduct
 from Products.Five.component import enableSite
 from Products.Five.component.interfaces import IObjectManagerSite
@@ -77,6 +81,9 @@ def alpha1_alpha2(portal):
 
     # add form_tabbing.js
     addFormTabbingJS(portal, out)
+
+    # register some tools as utilities
+    registerToolsAsUtilities(portal, out)
 
     # install the kss bits
     installKss(portal, out)
@@ -267,6 +274,17 @@ def addFormTabbingJS(portal, out):
                 jsreg.moveResourceToBottom(script)
             out.append("Added " + script + " to portal_javascipt")
 
+def registerToolsAsUtilities(portal, out):
+    sm = getSiteManager(portal)
+    registration = ((portal.portal_interface, IInterfaceTool),
+                    (portal.translation_service, ITranslationServiceTool),
+                   )
+    for reg in registration:
+        if sm.queryUtility(reg[1]) is None:
+            sm.registerUtility(reg[0], reg[1])
+
+    out.append("Registered interface and translation service tools as "
+               "utilities.")
 
 # --
 # KSS registration

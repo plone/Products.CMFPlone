@@ -66,5 +66,8 @@ input.searchButton {
     font-weight: bold;
 }
 
+input.inputLabelActive {
+  color: &dtml-discreetColor;;
+}
 
 /* </dtml-with> */

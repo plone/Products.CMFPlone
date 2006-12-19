@@ -1,11 +1,13 @@
 <div metal:define-macro="byline"
      i18n:domain="plone"
-     tal:condition="python: site_properties.allowAnonymousViewAbout or not isAnon"
-     tal:define="creator here/Creator;">
+     tal:condition="python: not isAnon or site_properties.allowAnonymousViewAbout"
+     tal:define="plone_view context/@@plone;
+                 locked portal/lock_icon.gif;
+                 creator context/Creator;">
 
     <div class="documentByLine">
+
         <img src="" alt=""
-           tal:define="locked portal/lock_icon.gif;"
            tal:condition="isLocked"
            tal:replace="structure python:locked.tag(title='Locked')"
            />
@@ -30,7 +32,7 @@
         <span i18n:translate="box_last_modified">
         last modified
         </span>
-        <span tal:replace="python:toLocalizedTime(here.ModificationDate(),long_format=1)">
+        <span tal:replace="python:plone_view.toLocalizedTime(here.ModificationDate(),long_format=1)">
         August 16, 2001 at 23:35:59
         </span>
 
@@ -40,12 +42,10 @@
         &mdash; expired
         </span>
 
-        <span tal:define="locked portal/lock_icon.gif"
-              tal:condition="isLocked">
-            <img src=""
-                 tal:replace="structure python:locked.tag(title='This item is locked')"
-                 alt="Object locked" />
-        </span>
+        <img src="" alt=""
+             tal:condition="isLocked"
+             tal:replace="structure python:locked.tag(title='This item is locked')"
+             />
 
         <div tal:condition="here/Contributors"
              i18n:translate="text_contributors">
@@ -58,9 +58,9 @@
         </div>
 
         <tal:rights condition="here/Rights">
-        <div tal:replace="here/Rights">
-          Copyleft NiceCorp Inc.
-        </div>
+            <div tal:replace="here/Rights">
+                Copyleft NiceCorp Inc.
+            </div>
         </tal:rights>
 
         <span metal:use-macro="here/review_history/macros/review_history" />

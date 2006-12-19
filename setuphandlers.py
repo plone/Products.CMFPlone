@@ -2,10 +2,13 @@
 CMFPlone setup handlers.
 """
 
-from zope.component import getUtility, getMultiAdapter
+from zope.component import getUtility
+from zope.component import getMultiAdapter
+from zope.component import queryUtility
 
 from zope.component.globalregistry import base
 from zope.component.persistentregistry import PersistentComponents
+from zope.i18n.interfaces import ITranslationDomain
 from zope.i18n.interfaces import IUserPreferredLanguages
 
 from Acquisition import aq_base, aq_get
@@ -96,9 +99,19 @@ class PloneGenerator:
                 languages = pl.getPreferredLanguages()
                 if len(languages) > 0:
                     language = languages[0]
-                    # TODO: If a translation of the front-page is available,
-                    # we want to change the content accordingly
-                    fp.setLanguage(language)
+                    util = queryUtility(ITranslationDomain, 'plonefrontpage')
+                    if util is not None:
+                        title = util.translate(u'title',
+                                               target_language=language)
+                        desc = util.translate(u'description',
+                                              target_language=language)
+                        text = util.translate(u'text',
+                                              target_language=language)
+                        if title <> u'title' and text <> u'text':
+                            fp.setLanguage(language)
+                            fp.setTitle(title)
+                            fp.setDescription(desc)
+                            fp.setText(text)
 
         # News topic
         if 'news' not in existing:

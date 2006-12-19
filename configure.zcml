@@ -1,7 +1,6 @@
 <configure xmlns="http://namespaces.zope.org/zope"
            xmlns:browser="http://namespaces.zope.org/browser"
-           xmlns:five="http://namespaces.zope.org/five"
-           xmlns:i18n="http://namespaces.zope.org/i18n">
+           xmlns:five="http://namespaces.zope.org/five">
 
   <include package="plone.app.controlpanel" />
   <include package="plone.app.layout" />
@@ -22,8 +21,6 @@
     class=".FactoryTool.FactoryTool"
     interface=".interfaces.IFactoryTool"
     />
-
-  <i18n:registerTranslations directory="locales"/>
 
   <five:deprecatedManageAddDelete
       class=".Portal.PloneSite" />
