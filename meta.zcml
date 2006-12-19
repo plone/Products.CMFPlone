@@ -2,4 +2,7 @@
     
     <include package="plone.app.portlets" file="meta.zcml" />
     
+    <!-- kss -->
+    <include package="kss.core" file="meta.zcml" />
+
 </configure>

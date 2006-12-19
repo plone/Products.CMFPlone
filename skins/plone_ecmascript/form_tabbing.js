@@ -43,7 +43,21 @@ ploneFormTabbing.toggle = function(e) {
 };
 
 ploneFormTabbing.initializeForm = function(form) {
-    var legends = cssQuery("fieldset > legend", form);
+
+    // XXX this is now broken due to cssQuery, with dynamic insertions
+    //var legends = cssQuery("fieldset > legend", form);
+    //
+    var fieldsets = cssQuery("fieldset", form);
+    var legends = [];
+    for (var i=0; i<fieldsets.length; i++) {
+        var childnodes = fieldsets[i].childNodes;
+        for (var j=0; j<childnodes.length; j++) {
+            var child = childnodes[j];
+            if (child.nodeType == 1 && child.tagName.toLowerCase() == 'legend') {
+                legends.push(child);
+            }
+        }
+    }
 
     var tabs = document.createElement("ul");
     tabs.className = "formTabs";

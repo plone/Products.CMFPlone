@@ -23,6 +23,10 @@
     directory="kupu/plone/kupu_plone_layer"/>
  <object name="mimetypes_icons" meta_type="Filesystem Directory View"
     directory="MimetypesRegistry/skins/mimetypes_icons"/>
+ <object name="plone_kss" meta_type="Filesystem Directory View"
+    directory="CMFPlone/skins/plone_kss"/>
+ <object name="archetypes_kss" meta_type="Filesystem Directory View"
+    directory="Archetypes/skins/archetypes_kss"/>
  <object name="plone_3rdParty" meta_type="Filesystem Directory View"
     directory="CMFPlone/skins/plone_3rdParty"/>
  <object name="plone_content" meta_type="Filesystem Directory View"
@@ -55,6 +59,8 @@
     directory="CMFPlone/skins/plone_wysiwyg"/>
  <skin-path name="Plone Default">
   <layer name="custom"/>
+  <layer name="plone_kss"/>
+  <layer name="archetypes_kss"/>
   <layer name="kupu_plone"/>
   <layer name="kupu"/>
   <layer name="ATContentTypes"/>
@@ -81,6 +87,8 @@
  </skin-path>
  <skin-path name="Plone Tableless">
   <layer name="custom"/>
+  <layer name="plone_kss"/>
+  <layer name="archetypes_kss"/>
   <layer name="kupu_plone"/>
   <layer name="kupu"/>
   <layer name="ATContentTypes"/>

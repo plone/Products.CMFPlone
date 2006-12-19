@@ -12,7 +12,11 @@
 
         <div class="vevent">
 
-        <h1 tal:content="object_title" class="documentFirstHeading summary">
+        <h1 tal:define="kss_field_decorator_view kss_field_decorator_view | context/@@kss_field_decorator_view;
+                        kss_class python:kss_field_decorator_view.kss_class('title', 'view');"
+            id="archetypes-fieldname-title"
+            tal:content="object_title"
+            tal:attributes="class string:documentFirstHeading summary$kss_class;">
             Title or id
         </h1>
 
@@ -32,8 +36,12 @@
                     <td>
                         <tal:differentday tal:condition="python:not here.start().Date() == here.end().Date()">
                             <abbr class="dtstart"
-                                  tal:attributes="title python:here.start()"
-                                  tal:content="python:here.toLocalizedTime(here.start(), long_format=1)">
+                                  tal:content="python:here.toLocalizedTime(here.start(), long_format=1)"
+                                  tal:define="kss_field_decorator_view kss_field_decorator_view | context/@@kss_field_decorator_view;
+                                              kss_class python:kss_field_decorator_view.kss_class('startDate', 'view');"
+                        id="archetypes-fieldname-startDate"
+                        tal:attributes="class string: summary$kss_class;
+                        title python:here.start()">
                                 Start Date Time
                             </abbr>
                             <span i18n:translate="event_to">to</span> <br />
@@ -47,9 +55,13 @@
                         <tal:sameday tal:condition="python:here.start().Date() == here.end().Date()"
                                      tal:define="ampm python:site_properties.getProperty('localLongTimeFormat').find('%p') >= 0">
                             <abbr class="dtstart"
-                                  style="display: none;"
-                                  tal:attributes="title python:here.start()"
-                                  tal:content="python:here.toLocalizedTime(here.start(), long_format=1)">
+                                  style="display: none;"             
+                                  tal:content="python:here.toLocalizedTime(here.start(), long_format=1)"
+                                  tal:define="kss_field_decorator_view kss_field_decorator_view | context/@@kss_field_decorator_view;
+                                              kss_class python:kss_field_decorator_view.kss_class('startDate', 'view');"
+                                  id="archetypes-fieldname-startDate"
+                                  tal:attributes="class string: summary$kss_class;
+                                  title python:here.start()">
                                 Start Date Time
                             </abbr>
                             <abbr class="dtend"
@@ -69,28 +81,52 @@
                 </tr>
                 <tr tal:condition="here/location">
                     <th i18n:translate="event_where">Where</th>
-                    <td class="location" tal:content="here/location">Oslo, Norway</td>
+                    <td class="location" tal:content="here/location"
+                        tal:define="kss_field_decorator_view kss_field_decorator_view | context/@@kss_field_decorator_view;
+                                    kss_class python:kss_field_decorator_view.kss_class('location', 'view');"
+                        id="archetypes-fieldname-location"
+                        tal:attributes="class string: summary$kss_class;"
+>Oslo, Norway</td>
                 </tr>
                 <tr tal:condition="here/contact_name">
                     <th i18n:translate="contact_name">Contact Name</th>
                     <td class="fn"
-                        tal:content="here/contact_name">John Smith</td>
+                        tal:content="here/contact_name"
+                        tal:define="kss_field_decorator_view kss_field_decorator_view | context/@@kss_field_decorator_view;
+                                    kss_class python:kss_field_decorator_view.kss_class('contactName', 'view');"
+                        id="archetypes-fieldname-contactName"
+                        tal:attributes="class string: summary$kss_class;">John Smith</td>
                 </tr>
                 <tr tal:define="contact_email here/contact_email"
                     tal:condition="here/contact_email">
                     <th i18n:translate="contact_email">Contact Email</th>
                     <td class="email">
-                        <a tal:replace="structure python: here.spamProtect(contact_email)" />
+                    <input type="button" value="edit"
+                        tal:define="kss_field_decorator_view kss_field_decorator_view | context/@@kss_field_decorator_view;
+                                    kss_class python:kss_field_decorator_view.kss_class('contactEmail', 'view', singleclick=True);"
+                        tal:attributes="class string: summary$kss_class;"       
+                      >
+                        <a tal:content="structure python: here.spamProtect(contact_email)"
+                        id="archetypes-fieldname-contactEmail"
+                          />
                     </td>
                 </tr>
                 <tr tal:condition="here/contact_phone">
                     <th i18n:translate="contact_phone">Contact Phone</th>
                     <td class="tel"
-                        tal:content="here/contact_phone">555-GET-PLONE</td>
+                        tal:content="here/contact_phone"
+                        tal:define="kss_field_decorator_view kss_field_decorator_view | context/@@kss_field_decorator_view;
+                                    kss_class python:kss_field_decorator_view.kss_class('contactPhone', 'view');"
+                        id="archetypes-fieldname-contactPhone"
+                        tal:attributes="class string: summary$kss_class;">555-GET-PLONE</td>
                 </tr>
                 <tr tal:condition="here/getAttendees|nothing">
                     <th i18n:translate="contact_attendees">Attendees</th>
-                    <td tal:content="python: ', '.join(here.getAttendees())">Person 1, Person 2</td>
+                    <td tal:content="python: ', '.join(here.getAttendees())"
+                    tal:define="kss_field_decorator_view kss_field_decorator_view | context/@@kss_field_decorator_view;
+                                kss_class python:kss_field_decorator_view.kss_class('attendees', 'view');"
+                        id="archetypes-fieldname-attendees"
+                        tal:attributes="class string: summary$kss_class;">Person 1, Person 2</td>
                 </tr>
                 <tr>
                     <th i18n:translate="heading_add_to_calendar">Add event to calendar</th>
@@ -117,9 +153,7 @@
             Get the byline - contains details about author and modification date.
         </div>
 
-        <p class="documentDescription description"
-           tal:content="here/Description"
-           tal:condition="here/Description">
+        <p  metal:use-macro="here/azax_macros_generic/macros/generic_description_view">
             Description
         </p>
 
@@ -128,10 +162,17 @@
         </div>
 
         <p tal:condition="here/event_url|nothing">
+            <input type="button" value="edit"
+                        tal:define="kss_field_decorator_view kss_field_decorator_view | context/@@kss_field_decorator_view;
+                                    kss_class python:kss_field_decorator_view('eventUrl', 'view', singleclick=True);"
+                        tal:attributes="class string: summary$kss_class;"       
+                      >
             <a class="url"
                href="event_url"
-               tal:attributes="href here/event_url"
-               i18n:translate="event_more_information">
+               i18n:translate="event_more_information"
+               tal:define="field python:context.getField('eventUrl');"                    
+                        id="archetypes-fieldname-eventUrl"
+                        tal:attributes="href here/event_url">
                More information about this event&hellip;</a>
         </p>
 

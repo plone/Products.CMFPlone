@@ -7,10 +7,10 @@
 <tal:block i18n:domain="plone"
            metal:define-macro="portal_message">
 
-    <tal:block tal:define="portal_message request/portal_status_message | nothing"
-               tal:condition="portal_message">
+    <tal:block tal:define="portal_message request/portal_status_message | nothing">
 
-        <div class="portalMessage">
+        <div class="portalMessage" id="kssPortalMessage"
+			tal:attributes="style python: portal_message and 'display:block' or 'display:none'">
             <tal:msg tal:content="portal_message" i18n:translate="">Portal Message</tal:msg>
         </div>
 

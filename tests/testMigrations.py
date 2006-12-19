@@ -63,6 +63,7 @@ from Products.CMFPlone.migrations.v3_0.alphas import addCalendarConfiglet
 from Products.CMFPlone.migrations.v3_0.alphas import updateSearchAndMailHostConfiglet
 from Products.CMFPlone.migrations.v3_0.alphas import addFormTabbingJS
 from Products.CMFPlone.migrations.v3_0.alphas import registerToolsAsUtilities
+from Products.CMFPlone.migrations.v3_0.alphas import installKss
 
 from zope.app.component.hooks import clearSite
 from zope.app.component.interfaces import ISite
@@ -1360,7 +1361,43 @@ class TestMigrations_v3_0(MigrationTest):
         registerToolsAsUtilities(self.portal, [])
         for i in interfaces:
             self.failIf(sm.queryUtility(i) is None)
-
+    
+    def testInstallKss(self):
+        'Test kss migration'
+        jstool = self.portal.portal_javascripts
+        csstool = self.portal.portal_css
+        mt = self.portal.mimetypes_registry
+        mtid = 'text/kss'
+        # unregister first
+        for id, _compression in installKss.js_all:
+            jstool.unregisterResource(id)
+        for id in installKss.css_all + installKss.kss_all:
+            csstool.unregisterResource(id)
+        mt.manage_delObjects((mtid, ))
+        js_ids = jstool.getResourceIds()
+        for id, _compression in installKss.js_all:
+            self.failIf(id in js_ids)
+        css_ids = csstool.getResourceIds()
+        for id in installKss.css_all + installKss.kss_all:
+            self.failIf(id in css_ids)
+        self.failIf(mtid in mt.list_mimetypes())
+        # migrate and test again
+        installKss(self.portal, [])
+        js_ids = jstool.getResourceIds()
+        css_dict = csstool.getResourcesDict()
+        for id in installKss.js_unregister:
+            self.failIf(id in js_ids)
+        for id, _compression in installKss.js_all:
+            self.assert_(id in js_ids, '%r is not registered' % id)
+        for id in installKss.css_all:
+            self.assert_(id in css_dict)
+        for id in installKss.kss_all:
+            self.assert_(id in css_dict)
+            value = css_dict[id]
+            self.assertEqual(value.getEnabled(), True)
+            self.assertEqual(value.getRel(), 'k-stylesheet')
+            self.assertEqual(value.getRendering(), 'link')
+        self.assert_(mtid in mt.list_mimetypes())
 
 class TestMigrations_v3_0_Actions(MigrationTest):
 

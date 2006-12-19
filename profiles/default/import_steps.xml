@@ -90,6 +90,7 @@
               handler="Products.CMFPlone.setuphandlers.importFinalSteps"
               title="Final Plone Config">
   <dependency step="content"/>
+  <dependency step="kss_mimetype"/>
     Final Plone configuration
  </import-step>
  <import-step id="plone_various" version="20041118-01"
@@ -146,5 +147,11 @@
   <dependency step="toolset"/>
   <dependency step="typeinfo"/>
     Import workflow tool's workflow definitions and supporting scripts.
+ </import-step>
+ <import-step id="kss_mimetype" version="20061125-01"
+              handler="plone.app.kss.exportimport.setup.setupMimetype"
+              title="KSS setup / mimetype">
+  <dependency step="plone_various"/>
+    KSS (Kinetic Style Sheet) setup. Register kss mimetype.
  </import-step>
 </import-steps>

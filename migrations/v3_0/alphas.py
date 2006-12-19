@@ -67,7 +67,6 @@ def three0_alpha1(portal):
 
     return out
 
-
 def alpha1_alpha2(portal):
     """ 3.0-alpha1 -> 3.0-alpha2
     """
@@ -85,8 +84,10 @@ def alpha1_alpha2(portal):
     # register some tools as utilities
     registerToolsAsUtilities(portal, out)
 
-    return out
+    # install the kss bits
+    installKss(portal, out)
 
+    return out
 
 def enableZope3Site(portal, out):
     if not ISite.providedBy(portal):
@@ -233,7 +234,6 @@ def addCalendarConfiglet(portal, out):
                                            permission = ManagePortal,)
             out.append("Added calendar settings to the control panel")
 
-
 def updateSearchAndMailHostConfiglet(portal, out):
     """Use new configlets for the search and mailhost settings"""
     controlPanel = getToolByName(portal, 'portal_controlpanel', None)
@@ -282,3 +282,87 @@ def registerToolsAsUtilities(portal, out):
 
     out.append("Registered interface and translation service tools as "
                "utilities.")
+
+# --
+# KSS registration
+# --
+
+class installKss(object):
+
+    js_unregister = []
+
+    js_all = [
+        ('++resource++sarissa.js', 'safe'),
+        ('++resource++cssQuery.js', 'none'),
+        ('++resource++MochiKit.js', 'none'),
+        ('++resource++prototype.js', 'none'),
+        ('++resource++effects.js', 'none'),
+        ('++resource++kukit.js', 'none'),
+    ]
+
+    css_all = [
+        'ploneKss.css',
+    ]
+
+    kss_all = [
+        'plone.kss',
+        'at.kss',
+    ]
+
+    def __init__(self, portal, out):
+        self.portal = portal
+        self.out = out
+        self.installKss()
+
+    @staticmethod
+    def _old_res(tool, id):
+        return tool.getResourcesDict().get(id, None)
+     
+    def kss_install_resources(self):
+        portal, out = self.portal, self.out
+        jstool = getToolByName(portal, 'portal_javascripts')
+        for id in self.js_unregister:
+            if self._old_res(jstool, id):
+                jstool.unregisterResource(id)
+                out.append("Unregistered old %s" % (id, ))
+        for id, compression in self.js_all:
+            if not self._old_res(jstool, id):
+                jstool.registerScript(
+                    id = id,
+                    enabled = True,
+                    cookable = True,
+                    compression = compression,
+                    )
+        csstool = getToolByName(portal, 'portal_css')
+        for css in self.css_all:
+            if not self._old_res(csstool, css):
+                csstool.manage_addStylesheet(
+                    id = css,
+                    rel = 'stylesheet',
+                    rendering = 'link',
+                    enabled = True,
+                    cookable = True,
+                    )
+        # kss stylesheets
+        for kss in self.kss_all:
+            if not self._old_res(csstool, kss):
+                csstool.manage_addStylesheet(id=kss,
+                    rel='k-stylesheet',
+                    rendering = 'link',
+                    enabled=True,
+                    cookable=False,
+                    )
+        out.append("Registered kss resources")
+
+    def kss_install_mimetype(self):
+        portal, out = self.portal, self.out
+        mt = getToolByName(portal, 'mimetypes_registry')
+        mt.manage_addMimeType('KSS (Azax) StyleSheet', ('text/kss', ), ('kss', ), 'text.png',
+                               binary=0, globs=('*.kss', ))
+        out.append("Registered kss mimetype")
+
+    def installKss(self):
+        out = self.out
+        self.kss_install_mimetype() 
+        self.kss_install_resources() 
+        out.append("Succesfully migrated portal to KSS")

@@ -1,0 +1,15 @@
+#kss-status {
+ 	                 position: fixed;
+ 	                 bottom: 0;
+ 	                 
+ 	                 left: 30%;
+ 	                 width: 30%;
+ 	                 margin-top: -10px;
+ 	                 opacity: 0.85;
+ 	                 background-color: #dee7ec;
+ 	                 border : 1px solid #8cacbb;
+ 	                 color: #436976;
+ 	                 font-size: 25px;
+ 	                 vertical-align: middle;
+ 	                 }
+ 	

@@ -6,6 +6,11 @@
   <include package="plone.app.layout" />
   <include package="plone.app.portlets" />
   <include package="plone.app.contentmenu" />
+
+  <!-- kss -->
+  <include package="kss.core" />
+  <include package="plone.app.kss" />
+  <include package="archetypes.kss" />
   
   <include package=".browser" />
   <include package=".exportimport" />

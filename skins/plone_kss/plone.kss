@@ -1,0 +1,171 @@
+/* <dtml-call expr="RESPONSE.setHeader('pragma','no-cache')"> */
+
+/*
+    The above trick to let this file not be cached does not work, unless this file is renamed to have
+    a kss.dtml extension.
+*/
+
+
+/* General stylesheet for Plone AJAX */
+
+/* Content tab reloading */
+
+ul.contentViews li a:click {
+    evt-click-preventdefault: True;
+    action-server: replaceContentRegion;
+    replaceContentRegion-tabid: nodeAttr(id, true);
+    replaceContentRegion-url: nodeAttr(href);
+    replaceContentRegion-error: plone-followLink;
+}
+
+/* 
+Load the kupu editor.
+
+The editor is also loaded from the page, so
+we give the initial=false, otherwise that
+should be left out if we do that too.
+*/
+
+    /* evt-load-initial: false;*/
+
+iframe.kupu-editor-iframe:load {
+    action-client: plone-initKupu;
+}
+
+div#region-content:load {
+    evt-load-initial: false;
+    action-client: initializeCollapsible;
+}
+
+/* 
+Portlet refreshing. The refreshing portlets
+must have the kssPortletRefresh class for selection.
+You can also select per portlet, however this shows
+how to handle them all in one rule.
+*/
+/*
+dl.kssPortletRefresh:timeout {
+    evt-timeout-delay: 60000;
+    action-server: refreshPortlet;
+    refreshPortlet-name: nodeAttr(id);
+}
+*/
+
+
+/*
+Content Menu Sections: General
+*/
+
+div.contentActions:load {
+    evt-load-initial: false;
+    action-client: bindActionMenus;
+}
+
+/*
+Content Menu Sections: Change View
+*/
+
+
+dl#plone-contentmenu-display dd.actionMenuContent a:click {
+    evt-click-preventdefault: True;
+    action-server: changeViewTemplate;
+    evt-click-allowbubbling: True; 
+    changeViewTemplate-url: nodeAttr(href);
+}
+
+/* This rule is needed for keeping the default behavior for menu elements that */
+/* are supposed to send user to another page */
+dl#templateMenu dd li.actionSeparator a:click {
+    evt-click-preventdefault: False;
+    action-cancel: changeViewTemplate;
+}
+
+/*
+Content Menu Sections: Cut and Paste
+*/
+ /* Needed allowbubbling, because the menu-item is inside a span an the event selector is on the enclosing a-tag */
+
+a.actionicon-object_buttons-cut:click {
+    evt-click-preventdefault: True;
+    evt-click-allowbubbling: True;
+    action-server: cutObject;
+}
+
+a.actionicon-object_buttons-copy:click {
+    evt-click-preventdefault: True;
+    evt-click-allowbubbling: True; 
+    action-server: copyObject;
+}
+
+/*
+Content Menu Sections: Workflow State
+*/
+
+dl#statusMenu dd a:click {
+    evt-click-preventdefault: True;
+    action-server: changeWorkflowState;
+    changeWorkflowState-url: nodeAttr(href);
+    changeWorkflowState-error: plone-followLink;
+}
+
+/*
+dl#plone-contentmenu-workflow dd.actionMenuContent a:click {
+    evt-click-preventdefault: True;
+    evt-click-allowbubbling: True; 
+    action-server: changeWorkflowState;
+    changeWorkflowState-id: nodeAttr(id);
+}
+*/
+
+dl#plone-contentmenu-workflow dd.actionMenuContent a.kssIgnore:click {
+    evt-click-preventdefault: False;
+    action-cancel: changeWorkflowState;
+}
+
+/* 
+In-place calendar changing
+must have the kssPortletRefresh class for selection.
+*/
+
+a.kssCalendarChange:click {
+    evt-click-preventdefault:      true;
+    action-server:                 refreshCalendar;
+    refreshCalendar-year:          kssAttr(year);
+    refreshCalendar-month:         kssAttr(month);
+}
+
+
+
+/* Spinner */
+
+
+body:load {
+    action-client: insertHTMLAsLastChild;
+    insertHTMLAsLastChild-html:"<div id='kss-status'><img src='logoIcon.gif' />Loading</div>";
+}
+
+#kss-status:load {
+    action-client: setStyle;
+    setStyle-name: display;
+    setStyle-value: none;
+}
+
+#kss-status:spinneron {
+    action-client: effect;
+    effect-type: appear;
+}
+
+#kss-status:spinneroff {
+    action-client: effect;
+    effect-type: fade;
+}
+
+/*
+** Form tabs
+*/
+
+form.enableFormTabbing:load {
+    evt-load-initial: false;
+    action-client: plone-initFormTabs;
+}
+
