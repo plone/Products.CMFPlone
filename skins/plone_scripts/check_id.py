@@ -31,6 +31,7 @@ from AccessControl import Unauthorized
 from ZODB.POSException import ConflictError
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
+from Products.CMFPlone.utils import base_hasattr
 
 # if an alternative id has been supplied, see if we need to use it
 
@@ -99,13 +100,28 @@ if checkForCollision:
         except Unauthorized:
             return # nothing we can do
 
-    if hasattr(contained_by, 'contentIds'):
+    # Check for an existing object.  If it is a content object, then we don't
+    # try to replace it; there may be other attributes we shouldn't replace,
+    # but because there are some always replaceable attributes, this is the
+    # only type of filter we can reasonably expect to work.
+    exists = False
+    # Optimization for BTreeFolders
+    if base_hasattr(contained_by, 'has_key'):
+        exists = contained_by.has_key(id)
+    # Otherwise check object ids (using getattr can trigger Unauth exceptions)
+    elif base_hasattr(contained_by, 'objectIds'):
+        exists = id in contained_by.objectIds()
+    if exists:
         try:
-            if id in contained_by.contentIds():
+            existing_obj = getattr(contained_by, id, None)
+            if base_hasattr(existing_obj, 'portal_type'):
                 return _(u'There is already an item named ${name} in this folder.',
-                         mapping={u'name' : id})
+                     mapping={u'name' : id})
         except Unauthorized:
-            pass # ignore if we don't have permission
+            # If we cannot access the object it is safe to assume we cannot
+            # replace it
+            return _(u'There is already an item named ${name} in this folder.',
+                     mapping={u'name' : id})
 
     if hasattr(contained_by, 'checkIdAvailable'):
         try:

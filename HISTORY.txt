@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.5.2 - Orb - (Unreleased)
 
+    - Optimized the check_id.py uniqueness check to not use contentIds,
+      fixes http://dev.plone.org/plone/ticket/5976
+      [alecm]
+
     - Add search term highlighting to livesearch result links.
       [alecm]
 
