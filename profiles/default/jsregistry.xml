@@ -131,9 +131,6 @@
     id="++resource++prototype.js" inline="False"/>
  <javascript cacheable="True" compression="none" cookable="True"
     enabled="True" expression=""
-    id="++resource++prototype.js" inline="False"/>
- <javascript cacheable="True" compression="none" cookable="True"
-    enabled="True" expression=""
     id="++resource++effects.js" inline="False"/>
  <javascript cacheable="True" compression="none" cookable="True"
     enabled="True" expression=""
