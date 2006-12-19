@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Merged in kss.
+      [ree]
+
     - Finished multilingual front-page support code. The front page which is
       created at portal creation time is now localized to the browser language
       used while creating the portal, as long as there is a complete translation
