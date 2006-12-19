@@ -13,6 +13,6 @@ The message sent was:
 
 </div>
 --
-<span tal:replace="utool/email_from_name" />
+<span tal:replace="portal/email_from_name" />
 
 </div>
