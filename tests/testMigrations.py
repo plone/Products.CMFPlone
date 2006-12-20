@@ -76,6 +76,7 @@ from Products.CMFDynamicViewFTI.migrate import migrateFTI
 from Products.Five.component import disableSite
 
 import types
+from Acquisition import aq_base
 
 from plone.portlets.interfaces import IPortletManager
 from plone.portlets.interfaces import IPortletAssignmentMapping
@@ -1362,25 +1363,44 @@ class TestMigrations_v3_0(MigrationTest):
         for i in interfaces:
             self.failIf(sm.queryUtility(i) is None)
     
-    def testInstallKss(self):
+    def testInstallKss(self, unregister=True):
         'Test kss migration'
         jstool = self.portal.portal_javascripts
         csstool = self.portal.portal_css
         mt = self.portal.mimetypes_registry
         mtid = 'text/kss'
-        # unregister first
-        for id, _compression in installKss.js_all:
-            jstool.unregisterResource(id)
-        for id in installKss.css_all + installKss.kss_all:
-            csstool.unregisterResource(id)
-        mt.manage_delObjects((mtid, ))
-        js_ids = jstool.getResourceIds()
-        for id, _compression in installKss.js_all:
-            self.failIf(id in js_ids)
-        css_ids = csstool.getResourceIds()
-        for id in installKss.css_all + installKss.kss_all:
-            self.failIf(id in css_ids)
-        self.failIf(mtid in mt.list_mimetypes())
+        st = self.portal.portal_skins
+        skins = ['Plone Default', 'Plone Tableless']
+        if unregister:
+            # unregister first
+            for id, _compression in installKss.js_all:
+                jstool.unregisterResource(id)
+            for id in installKss.css_all + installKss.kss_all:
+                csstool.unregisterResource(id)
+            mt.manage_delObjects((mtid, ))
+            js_ids = jstool.getResourceIds()
+            for id, _compression in installKss.js_all:
+                self.failIf(id in js_ids)
+            css_ids = csstool.getResourceIds()
+            for id in installKss.css_all + installKss.kss_all:
+                self.failIf(id in css_ids)
+            self.failIf(mtid in mt.list_mimetypes())
+            selections = st._getSelections()
+            for s in skins:
+                if not selections.has_key(s):
+                    continue
+                path = st.getSkinPath(s)
+                path = [p.strip() for p in  path.split(',')]
+                path_changed = False
+                if 'plone.kss' in path:
+                    path.remove('plone.kss')
+                    path_changed = True
+                if 'at.kss' in path:
+                    path.remove('at.kss')
+                    path_changed = True
+                if path_changed:
+                    st.addSkinSelection(s, ','.join(path))
+            # XXX we cannot remove the directory views, so...
         # migrate and test again
         installKss(self.portal, [])
         js_ids = jstool.getResourceIds()
@@ -1398,6 +1418,22 @@ class TestMigrations_v3_0(MigrationTest):
             self.assertEqual(value.getRel(), 'k-stylesheet')
             self.assertEqual(value.getRendering(), 'link')
         self.assert_(mtid in mt.list_mimetypes())
+        # check the skins
+        selections = st._getSelections()
+        for s in skins:
+            if not selections.has_key(s):
+               continue
+            path = st.getSkinPath(s)
+            path = [p.strip() for p in  path.split(',')]
+            self.assert_('plone_kss' in path)
+            self.assert_('archetypes_kss' in path)
+        self.assert_(hasattr(aq_base(st), 'plone_kss'))
+        self.assert_(hasattr(aq_base(st), 'archetypes_kss'))
+
+    def testInstallKssTwice(self):
+        'Test kss migration, twice'
+        self.testInstallKss()
+        self.testInstallKss(unregister=False)
 
 class TestMigrations_v3_0_Actions(MigrationTest):
 

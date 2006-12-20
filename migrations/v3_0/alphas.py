@@ -14,6 +14,7 @@ from Products.CMFCore.ActionInformation import ActionCategory
 from Products.CMFCore.Expression import Expression
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.permissions import ManagePortal
+from Products.CMFCore.DirectoryView import createDirectoryView
 from Products.CMFPlone.interfaces import IInterfaceTool
 from Products.CMFPlone.interfaces import ITranslationServiceTool
 from Products.CMFPlone.migrations.migration_util import installOrReinstallProduct
@@ -318,7 +319,7 @@ class installKss(object):
     def _old_res(tool, id):
         return tool.getResourcesDict().get(id, None)
      
-    def kss_install_resources(self):
+    def install_resources(self):
         portal, out = self.portal, self.out
         jstool = getToolByName(portal, 'portal_javascripts')
         for id in self.js_unregister:
@@ -354,15 +355,41 @@ class installKss(object):
                     )
         out.append("Registered kss resources")
 
-    def kss_install_mimetype(self):
+    def install_mimetype(self):
         portal, out = self.portal, self.out
         mt = getToolByName(portal, 'mimetypes_registry')
         mt.manage_addMimeType('KSS (Azax) StyleSheet', ('text/kss', ), ('kss', ), 'text.png',
                                binary=0, globs=('*.kss', ))
         out.append("Registered kss mimetype")
 
+    def install_skins(self):
+        portal, out = self.portal, self.out
+        st = getToolByName(portal, 'portal_skins')
+        skins = ['Plone Default', 'Plone Tableless']
+        if not hasattr(aq_base(st), 'plone_kss'):
+            createDirectoryView(st, 'CMFPlone/skins/plone_kss')
+        if not hasattr(aq_base(st), 'archetypes_kss'):
+            createDirectoryView(st, 'Archetypes/skins/archetypes_kss')
+        selections = st._getSelections()
+        for s in skins:
+            if not selections.has_key(s):
+               continue
+            path = st.getSkinPath(s)
+            path = [p.strip() for p in  path.split(',')]
+            path_changed = False
+            if not 'plone_kss' in path:
+                path.append('plone_kss')
+                path_changed = True
+            if not 'archetypes_kss' in path:
+                path.append('archetypes_kss')
+                path_changed = True
+            if path_changed:
+                st.addSkinSelection(s, ','.join(path))
+                out.append('Added missing skins to %s' % s)
+
     def installKss(self):
         out = self.out
-        self.kss_install_mimetype() 
-        self.kss_install_resources() 
+        self.install_mimetype() 
+        self.install_resources() 
+        self.install_skins() 
         out.append("Succesfully migrated portal to KSS")
