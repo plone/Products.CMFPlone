@@ -293,11 +293,9 @@ class installKss(object):
     js_unregister = []
 
     js_all = [
-        ('++resource++sarissa.js', 'safe'),
-        ('++resource++cssQuery.js', 'none'),
         ('++resource++MochiKit.js', 'none'),
-        ('++resource++prototype.js', 'none'),
-        ('++resource++effects.js', 'none'),
+        ('++resource++prototype.js', 'safe'),
+        ('++resource++effects.js', 'safe'),
         ('++resource++kukit.js', 'none'),
     ]
 
