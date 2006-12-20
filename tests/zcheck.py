@@ -31,7 +31,7 @@ if setup.USELAYER:
     layer.PloneSite.setUp()
 
 ignoredObjectIds = ['rssBody', 'RSS', 'rss_template', 'search_rss',
-                    'test_ecmascripts',
+                    'test_ecmascripts', 'kupu_wysiwyg_support',
                     # There is no DTD for the pdf topic stuff
                     'atct_topic_pdf', 'atct_topic_pdf_template']
 
