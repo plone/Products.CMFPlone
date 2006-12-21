@@ -23,6 +23,8 @@ class ContextState(BrowserView):
     @memoize
     def current_page_url(self):
         url = self.request.get('ACTUAL_URL', self.request.get('URL', None))
+        if not url:
+            return self.context.absolute_url()
         query = self.request.get('QUERY_STRING', None)
         if query:
             url += '?' + query
