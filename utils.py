@@ -20,8 +20,10 @@ from Products.CMFCore.utils import ToolInit as CMFCoreToolInit
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.UnicodeNormalizer import normalizeUnicode
 from Products.CMFPlone.interfaces.Translatable import ITranslatable
-from Products.CMFPlone import PloneMessageFactory as _
 import transaction
+
+from Products.PageTemplates.GlobalTranslationService import \
+     getGlobalTranslationService
 
 # Canonical way to get at CMFPlone directory
 PACKAGE_HOME = Globals.package_home(globals())
@@ -198,9 +200,10 @@ def utf8_portal(context, str, errors='strict'):
 def getEmptyTitle(context, translated=True):
     """Returns string to be used for objects with no title or id"""
     # The default is an extra fancy unicode elipsis
-    empty = unicode('\x5b\xc2\xb7\xc2\xb7\xc2\xb7\x5d', 'utf-8', 'ignore')
+    empty = unicode('\x5b\xc2\xb7\xc2\xb7\xc2\xb7\x5d', 'utf-8')
     if translated:
-        empty = _(u'title_unset', default=empty)
+        service = getGlobalTranslationService()
+        empty = service.translate('plone', 'title_unset', context=context, default=empty)
     return empty
 
 def typesToList(context):

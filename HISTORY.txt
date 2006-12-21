@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 2.5.2 - Orb - (Unreleased)
 
+    - Moved the global_cache_settings call in main_template before the call to
+      header.pt as otherwise the encoding in the header would not be defined
+      and fall back to ZPublishers default_encoding. This closes
+      http://dev.plone.org/plone/ticket/6013
+      [hannosch]
+
     - Optimized the check_id.py uniqueness check to not use contentIds,
       fixes http://dev.plone.org/plone/ticket/5976
       [alecm]
