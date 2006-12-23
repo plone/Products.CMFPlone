@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.5.2 - Orb - (Unreleased)
 
+    - Do not display the right column on prefs_main_template anymore, as it
+      was unneeded and could cause design problems. This closes
+      http://dev.plone.org/plone/ticket/5803.
+      [hannosch]
+
     - Moved the global_cache_settings call in main_template before the call to
       header.pt as otherwise the encoding in the header would not be defined
       and fall back to ZPublishers default_encoding. This closes
