@@ -6,6 +6,7 @@
   <include package="plone.app.layout" />
   <include package="plone.app.portlets" />
   <include package="plone.app.contentmenu" />
+  <include package="plone.app.linkintegrity" />
 
   <!-- kss -->
   <include package="kss.core" />

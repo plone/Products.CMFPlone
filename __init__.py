@@ -97,6 +97,11 @@ def initialize(context):
     # Make the navtree constructs available TTW
     allow_module('Products.CMFPlone.browser.navtree')
 
+    # Allow access to the exception in the folder_delete script
+    from OFS.ObjectManager import BeforeDeleteException
+    allow_module('OFS.ObjectManager')
+    allow_class(BeforeDeleteException)
+
     # Setup migrations
     import migrations
     migrations.executeMigrations()

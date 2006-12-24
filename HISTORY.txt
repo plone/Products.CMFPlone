@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Merged changes necessary to support PLIP125 Link Integrity, mostly found
+      in the plone.app.linkintegrity package.
+      [witch, optilude]
+
     - Notify quickinstaller of some more products that it should ignore during
       site creation. Otherwise CMFDefault, CMFUid, etc. would show up in the
       install products control panel.
