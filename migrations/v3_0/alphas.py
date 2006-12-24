@@ -15,7 +15,9 @@ from Products.CMFCore.Expression import Expression
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.permissions import ManagePortal
 from Products.CMFCore.DirectoryView import createDirectoryView
+from Products.CMFPlone.interfaces import IControlPanel
 from Products.CMFPlone.interfaces import IInterfaceTool
+from Products.CMFPlone.interfaces import IMigrationTool
 from Products.CMFPlone.interfaces import ITranslationServiceTool
 from Products.CMFPlone.migrations.migration_util import installOrReinstallProduct
 from Products.Five.component import enableSite
@@ -274,15 +276,17 @@ def addFormTabbingJS(portal, out):
 
 def registerToolsAsUtilities(portal, out):
     sm = getSiteManager(portal)
-    registration = ((portal.portal_interface, IInterfaceTool),
+    registration = ((portal.portal_controlpanel, IControlPanel),
+                    (portal.portal_interface, IInterfaceTool),
+                    (portal.portal_migration, IMigrationTool),
                     (portal.translation_service, ITranslationServiceTool),
                    )
     for reg in registration:
         if sm.queryUtility(reg[1]) is None:
             sm.registerUtility(reg[0], reg[1])
 
-    out.append("Registered interface and translation service tools as "
-               "utilities.")
+    out.append("Registered controlpanel, interface, migration and translation "
+               "service tools as utilities.")
 
 # --
 # KSS registration

@@ -6,13 +6,16 @@ import os, sys
 if __name__ == '__main__':
     execfile(os.path.join(sys.path[0], 'framework.py'))
 
-from Products.CMFPlone.tests import PloneTestCase
+from zope.component import getUtility
 
+from Products.CMFPlone.tests import PloneTestCase
+from Products.CMFPlone.interfaces import IMigrationTool
 
 class TestMigrationTool(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
-        self.migration = self.portal.portal_migration
+        # Some methods need an Acquistion context
+        self.migration = getUtility(IMigrationTool).__of__(self.portal)
 
     def testMigrationFinished(self):
         self.assertEqual(self.migration.getInstanceVersion(),

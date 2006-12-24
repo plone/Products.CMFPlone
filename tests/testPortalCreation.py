@@ -25,12 +25,14 @@ from DateTime import DateTime
 
 from Products.CMFCore.CachingPolicyManager import CachingPolicyManager
 from Products.CMFCore.permissions import AccessInactivePortalContent
+from Products.CMFPlone import setuphandlers
+from Products.CMFPlone.interfaces import IControlPanel
 from Products.CMFPlone.UnicodeSplitter import Splitter, CaseNormalizer
+
 from Products.StandardCacheManagers.AcceleratedHTTPCacheManager import \
      AcceleratedHTTPCacheManager
 from Products.StandardCacheManagers.RAMCacheManager import \
      RAMCacheManager
-from Products.CMFPlone import setuphandlers
 
 from plone.portlets.interfaces import IPortletManager
 from plone.portlets.interfaces import IPortletAssignmentMapping
@@ -44,7 +46,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.membership = self.portal.portal_membership
         self.workflow = self.portal.portal_workflow
         self.types = self.portal.portal_types
-        self.cp = self.portal.portal_controlpanel
+        self.cp = getUtility(IControlPanel)
         self.actions = self.portal.portal_actions
         self.icons = self.portal.portal_actionicons
         self.properties = self.portal.portal_properties

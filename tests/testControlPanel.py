@@ -6,13 +6,17 @@ import os, sys
 if __name__ == '__main__':
     execfile(os.path.join(sys.path[0], 'framework.py'))
 
+from zope.component import getUtility
+
 from Products.CMFPlone.tests import PloneTestCase
+from Products.CMFPlone.interfaces import IControlPanel
 
 
 class TestControlPanel(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
-        self.controlpanel = self.portal.portal_controlpanel
+        self.controlpanel = getUtility(IControlPanel)
+        
         # get the expected default groups and configlets
         self.groups     = ['Plone', 'Products', 'Member']
         self.configlets = ['Add/Remove Products', 'Smart Folder Settings',
@@ -20,7 +24,8 @@ class TestControlPanel(PloneTestCase.PloneTestCase):
                            'Personal Preferences', 'Change Password', 'Skins',
                            'Zope Management Interface', 'Navigation Settings',
                            'Placeful Workflow', 'Search Settings', 'Error Log',
-                           'Kupu visual editor', 'Portal Settings']
+                           'Kupu visual editor', 'Portal Settings',
+                           'Calendar Settings', 'Versioning']
 
     def testDefaultGroups(self):
         for group in self.groups:

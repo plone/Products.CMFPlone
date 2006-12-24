@@ -16,7 +16,9 @@ from Products.CMFCore.interfaces import IActionInfo
 from Products.CMFCore.ActionInformation import Action
 from Products.CMFCore.ActionInformation import ActionInformation
 from Products.CMFPlone.PloneTool import AllowSendto
+from Products.CMFPlone.interfaces import IControlPanel
 from Products.CMFPlone.interfaces import IInterfaceTool
+from Products.CMFPlone.interfaces import IMigrationTool
 from Products.CMFPlone.interfaces import ITranslationServiceTool
 from Products.CMFPlone.utils import _createObjectByType
 from Products.CMFPlone.UnicodeSplitter import Splitter, CaseNormalizer
@@ -198,7 +200,7 @@ class TestMigrations_v2_1_1(MigrationTest):
         self.groups = self.portal.portal_groups
         self.factory = self.portal.portal_factory
         self.portal_memberdata = self.portal.portal_memberdata
-        self.cp = self.portal.portal_controlpanel
+        self.cp = getUtility(IControlPanel)
         self.skins = self.portal.portal_skins
 
     def testReindexPathIndex(self):
@@ -1010,7 +1012,7 @@ class TestMigrations_v3_0(MigrationTest):
 
     def afterSetUp(self):
         self.actions = self.portal.portal_actions
-        self.cp = self.portal.portal_controlpanel
+        self.cp = getUtility(IControlPanel)
         self.icons = self.portal.portal_actionicons
         self.skins = self.portal.portal_skins
         self.types = self.portal.portal_types
@@ -1345,7 +1347,8 @@ class TestMigrations_v3_0(MigrationTest):
 
     def testRegisterToolsAsUtilities(self):
         sm = getSiteManager(self.portal)
-        interfaces = (IInterfaceTool, ITranslationServiceTool, )
+        interfaces = (IControlPanel, IInterfaceTool, IMigrationTool,
+                      ITranslationServiceTool, )
         for i in interfaces:
             sm.unregisterUtility(provided=i)
         registerToolsAsUtilities(self.portal, [])
@@ -1355,7 +1358,8 @@ class TestMigrations_v3_0(MigrationTest):
     def testRegisterToolsAsUtilitiesTwice(self):
         # Should not fail if done twice
         sm = getSiteManager(self.portal)
-        interfaces = (IInterfaceTool, ITranslationServiceTool, )
+        interfaces = (IControlPanel, IInterfaceTool, IMigrationTool,
+                      ITranslationServiceTool, )
         for i in interfaces:
             sm.unregisterUtility(provided=i)
         registerToolsAsUtilities(self.portal, [])

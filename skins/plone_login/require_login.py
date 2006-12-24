@@ -8,11 +8,7 @@
 ##title=Login
 ##
 
-# needed for migration
-if context.portal_migration.isPloneOne():
-    login = 'failsafe_login'
-else:
-    login = 'login_form'
+login = 'login_form'
 
 portal = context.portal_url.getPortalObject()
 # if cookie crumbler did a traverse instead of a redirect,

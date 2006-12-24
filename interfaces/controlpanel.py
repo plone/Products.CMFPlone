@@ -1,4 +1,3 @@
-
 from basetool import IPloneBaseTool
 
 class IControlPanel(IPloneBaseTool):

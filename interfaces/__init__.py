@@ -5,6 +5,7 @@ from properties import ISimpleItemWithProperties
 from basetool import IPloneBaseTool
 from controlpanel import IControlPanel
 from interface import IInterfaceTool
+from migration import IMigrationTool
 from siteroot import IPloneSiteRoot
 from constrains import IConstrainTypes
 from constrains import ISelectableConstrainTypes

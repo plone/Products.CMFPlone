@@ -1,24 +1,29 @@
-from Globals import InitializeClass, DTMLFile, DevelopmentMode
+import logging
+import traceback
+import sys
+
+import transaction
+from zope.interface import implements
+
 from AccessControl import ClassSecurityInfo
+from Globals import InitializeClass, DTMLFile, DevelopmentMode
 from OFS.SimpleItem import SimpleItem
 from ZODB.POSException import ConflictError
 
 from Products.CMFCore.utils import UniqueObject, getToolByName
 from Products.CMFCore.permissions import ManagePortal, View
+from Products.CMFPlone.interfaces import IMigrationTool
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFPlone.utils import versionTupleFromString
 from Products.CMFPlone.utils import log, log_deprecated
-import transaction
-
-import logging
-import traceback
-import sys
 
 _upgradePaths = {}
 _widgetRegistry = {}
 
 class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
     """Handles migrations between Plone releases"""
+
+    implements(IMigrationTool)
 
     id = 'portal_migration'
     meta_type = 'Plone Migration Tool'
@@ -32,7 +37,6 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
     manage_options = (
         { 'label' : 'Overview', 'action' : 'manage_overview' },
         { 'label' : 'Migrate', 'action' : 'manage_migrate' },
-        { 'label' : 'Setup', 'action' : 'manage_setup' },
         )
 
     security = ClassSecurityInfo()
@@ -40,12 +44,10 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
     security.declareProtected(ManagePortal, 'manage_overview')
     security.declareProtected(ManagePortal, 'manage_results')
     security.declareProtected(ManagePortal, 'manage_migrate')
-    security.declareProtected(ManagePortal, 'manage_setup')
 
     manage_migrate = DTMLFile('www/migrationRun', globals())
     manage_overview = DTMLFile('www/migrationTool', globals())
     manage_results = DTMLFile('www/migrationResults', globals())
-    manage_setup = DTMLFile('www/migrationSetup', globals())
 
     # Add a visual note
     def om_icons(self):

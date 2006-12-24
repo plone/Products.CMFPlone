@@ -2,8 +2,12 @@
 <componentregistry>
  <adapters/>
  <utilities>
+  <utility object="/portal_controlpanel"
+           interface="Products.CMFPlone.interfaces.IControlPanel"/>
   <utility object="/portal_interface"
            interface="Products.CMFPlone.interfaces.IInterfaceTool"/>
+  <utility object="/portal_migration"
+           interface="Products.CMFPlone.interfaces.IMigrationTool"/>
   <utility object="/translation_service"
            interface="Products.CMFPlone.interfaces.ITranslationServiceTool"/>
  </utilities>

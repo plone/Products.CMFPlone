@@ -4,6 +4,18 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Removed the setup tab from the migration tool. It wasn't working anymore
+      is the functionality can be found on the controlpanel tool anyways.
+      [hannosch]
+
+    - Fixed a bug in the require_login script calling a non-existent method on
+      the migration tool.
+      [hannosch]
+
+    - The controlpanel and migration tools are registered as local utilities
+      now as well.
+      [hannosch]
+
     - Merged in kss.
       [ree]
 
