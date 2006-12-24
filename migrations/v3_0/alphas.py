@@ -90,6 +90,9 @@ def alpha1_alpha2(portal):
     # install the kss bits
     installKss(portal, out)
 
+    # install plone.app.redirector
+    installRedirectorUtility(portal, out)
+
     return out
 
 def enableZope3Site(portal, out):
@@ -287,6 +290,16 @@ def registerToolsAsUtilities(portal, out):
 
     out.append("Registered controlpanel, interface, migration and translation "
                "service tools as utilities.")
+
+def installRedirectorUtility(portal, out):
+    from plone.app.redirector.interfaces import IRedirectionStorage
+    from plone.app.redirector.storage import RedirectionStorage
+    
+    sm = getSiteManager(portal)
+    if sm.queryUtility(IRedirectionStorage) is None:
+        sm.registerUtility(RedirectionStorage(), IRedirectionStorage)
+
+    out.append("Registered redirector utility")
 
 # --
 # KSS registration

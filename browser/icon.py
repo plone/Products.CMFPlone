@@ -54,7 +54,7 @@ class CatalogBrainContentIcon(BaseIcon):
         return None
     
 
-class ATCTContentIcon(BaseIcon):
+class ArchetypesContentIcon(BaseIcon):
     implements(IContentIcon)
 
     def __init__(self, context, request, obj):
@@ -100,6 +100,30 @@ class FTIContentIcon(BaseIcon):
     @property
     def description(self):
         return self.obj.Metatype()
+
+    @property
+    def title(self):
+        return None
+
+class PloneSiteContentIcon(BaseIcon):
+    implements(IContentIcon)
+
+    def __init__(self, context, request, obj):
+        self.context = context
+        self.request = request
+        self.obj = obj
+        self.portal_url = getToolByName(context, 'portal_url')()
+
+    width = 16
+    height = 16
+
+    @property
+    def url(self):
+        return "%s/site_icon.gif" % self.portal_url
+
+    @property
+    def description(self):
+        return self.obj.Title
 
     @property
     def title(self):

@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Added support for plone.app.redirector to the 404 template. This enables
+      automatic redirects when an objet has been moved or renamed, and offers
+      suggested search results on the 404 page otherwise.
+      [optilude]
+
     - Merged changes necessary to support PLIP125 Link Integrity, mostly found
       in the plone.app.linkintegrity package.
       [witch, optilude]

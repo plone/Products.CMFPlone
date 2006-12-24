@@ -10,5 +10,7 @@
            interface="Products.CMFPlone.interfaces.IMigrationTool"/>
   <utility object="/translation_service"
            interface="Products.CMFPlone.interfaces.ITranslationServiceTool"/>
+  <utility factory="plone.app.redirector.storage.RedirectionStorage"
+           interface="plone.app.redirector.interfaces.IRedirectionStorage"/>
  </utilities>
 </componentregistry>

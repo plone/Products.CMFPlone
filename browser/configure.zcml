@@ -120,7 +120,7 @@
             factory=".navtree.SitemapNavtreeStrategy"
             provides="plone.app.layout.navigation.interfaces.INavtreeStrategy" />
 
-   <!-- Icon adapters -->
+  <!-- Icon adapters -->
 
   <adapter for="*
                 zope.publisher.interfaces.browser.IBrowserRequest
@@ -130,14 +130,20 @@
 
   <adapter for="*
                 zope.publisher.interfaces.browser.IBrowserRequest
-                Products.ATContentTypes.interface.IATContentType"
-           factory=".icon.ATCTContentIcon"
+                Products.Archetypes.interfaces.IBaseObject"
+           factory=".icon.ArchetypesContentIcon"
            provides=".interfaces.IContentIcon" />
 
   <adapter for="*
                 zope.publisher.interfaces.browser.IBrowserRequest
                 Products.CMFCore.TypesTool.FactoryTypeInformation"
            factory=".icon.FTIContentIcon"
+           provides=".interfaces.IContentIcon" />
+
+  <adapter for="*
+                zope.publisher.interfaces.browser.IBrowserRequest
+                Products.CMFPlone.interfaces.IPloneSiteRoot"
+           factory=".icon.PloneSiteContentIcon"
            provides=".interfaces.IContentIcon" />
 
 </configure>

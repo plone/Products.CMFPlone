@@ -7,7 +7,8 @@
   <include package="plone.app.portlets" />
   <include package="plone.app.contentmenu" />
   <include package="plone.app.linkintegrity" />
-
+  <include package="plone.app.redirector" />
+  
   <!-- kss -->
   <include package="kss.core" />
   <include package="plone.app.kss" />

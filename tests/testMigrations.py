@@ -66,6 +66,7 @@ from Products.CMFPlone.migrations.v3_0.alphas import updateSearchAndMailHostConf
 from Products.CMFPlone.migrations.v3_0.alphas import addFormTabbingJS
 from Products.CMFPlone.migrations.v3_0.alphas import registerToolsAsUtilities
 from Products.CMFPlone.migrations.v3_0.alphas import installKss
+from Products.CMFPlone.migrations.v3_0.alphas import installRedirectorUtility
 
 from zope.app.component.hooks import clearSite
 from zope.app.component.interfaces import ISite
@@ -86,6 +87,8 @@ from plone.portlets.interfaces import IPortletManager
 from plone.portlets.interfaces import ILocalPortletAssignmentManager
 from plone.portlets.constants import CONTEXT_CATEGORY as CONTEXT_PORTLETS
 from plone.app.portlets import portlets
+
+from plone.app.redirector.interfaces import IRedirectionStorage
 
 class BogusMailHost(SimpleItem):
     meta_type = 'Bad Mailer'
@@ -1438,6 +1441,19 @@ class TestMigrations_v3_0(MigrationTest):
         'Test kss migration, twice'
         self.testInstallKss()
         self.testInstallKss(unregister=False)
+        
+    def testInstallRedirectorUtility(self):
+        sm = getSiteManager(self.portal)
+        sm.unregisterUtility(provided=IRedirectionStorage)
+        installRedirectorUtility(self.portal, [])
+        self.failIf(sm.queryUtility(IRedirectionStorage) is None)
+
+    def testInstallRedirectorUtilityTwice(self):
+        sm = getSiteManager(self.portal)
+        sm.unregisterUtility(provided=IRedirectionStorage)
+        installRedirectorUtility(self.portal, [])
+        installRedirectorUtility(self.portal, [])
+        self.failIf(sm.queryUtility(IRedirectionStorage) is None)
 
 class TestMigrations_v3_0_Actions(MigrationTest):
 
