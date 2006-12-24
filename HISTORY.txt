@@ -4,8 +4,13 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Notify quickinstaller of some more products that it should ignore during
+      site creation. Otherwise CMFDefault, CMFUid, etc. would show up in the
+      install products control panel.
+      [hannosch]
+
     - Removed the setup tab from the migration tool. It wasn't working anymore
-      is the functionality can be found on the controlpanel tool anyways.
+      and the functionality can be found on the controlpanel tool anyways.
       [hannosch]
 
     - Fixed a bug in the require_login script calling a non-existent method on

@@ -37,10 +37,10 @@ class PloneGenerator:
         # XXX The product installations should be done by a GenericSetup
         # handler
         qi = getToolByName(p, 'portal_quickinstaller')
-        qi.installProduct('Archetypes', locked=0)
-        qi.installProduct('GroupUserFolder', locked=1)
-        qi.installProduct('PlonePAS', locked=1)
-        qi.installProduct('PasswordResetTool', locked=1)
+        qi.installProduct('Archetypes', locked=1, hidden=1)
+        qi.installProduct('GroupUserFolder', locked=1, hidden=1)
+        qi.installProduct('PlonePAS', locked=1, hidden=1)
+        qi.installProduct('PasswordResetTool', locked=1, hidden=1)
         qi.installProduct('CMFPlacefulWorkflow', locked=0)
         qi.installProduct('kupu', locked=0)
 
@@ -48,17 +48,25 @@ class PloneGenerator:
         #     GenericSetup profile.  They really shouldn't be managed
         #     by QuickInstaller at all any more, but we need to kill
         #     some chickens so migrations will still work.
-        qi.installProduct('ResourceRegistries', locked=1)
-        qi.notifyInstalled('ATContentTypes', locked=1)
-        qi.notifyInstalled('ATReferenceBrowserWidget', locked=1)
-        qi.notifyInstalled('CMFActionIcons', locked=1)
-        qi.notifyInstalled('CMFCalendar', locked=1)
-        qi.notifyInstalled('CMFFormController', locked=1)
+        qi.installProduct('ResourceRegistries', locked=1, hidden=1)
 
         # The following two products are "installed" based on a GenericSetup
         # extension profile by CMFQuickInstallerTool
         qi.installProduct('CMFDiffTool', locked=0, forceProfile=True)
         qi.installProduct('CMFEditions', locked=0, forceProfile=True)
+
+        # The following products should not show up in the install section,
+        # so tell QuickInstaller to ignore them:
+        qi.notifyInstalled('ATReferenceBrowserWidget', locked=1, hidden=1)
+        qi.notifyInstalled('CMFActionIcons', locked=1, hidden=1)
+        qi.notifyInstalled('CMFCalendar', locked=1, hidden=1)
+        qi.notifyInstalled('CMFDefault', locked=1, hidden=1)
+        qi.notifyInstalled('CMFFormController', locked=1, hidden=1)
+        qi.notifyInstalled('CMFTopic', locked=1, hidden=1)
+        qi.notifyInstalled('CMFUid', locked=1, hidden=1)
+        qi.notifyInstalled('DCWorkflow', locked=1, hidden=1)
+        qi.notifyInstalled('MimetypesRegistry', locked=1, hidden=1)
+        qi.notifyInstalled('PortalTransforms', locked=1, hidden=1)
 
     def customizePortalOptions(self, p):
         stool = getToolByName(p, 'portal_skins')
