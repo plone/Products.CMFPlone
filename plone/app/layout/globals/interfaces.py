@@ -94,6 +94,13 @@ class IContextState(Interface):
         """The URL to the current page, including template
         """
         
+    def canonical_object():
+        """The current "canonical" object.
+        
+        That is, the current object unless this object is the default page
+        in its folder, in which case the folder is returned.
+        """
+        
     def canonical_object_url():
         """The URL to the current "canonical" object.
         

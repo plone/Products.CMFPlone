@@ -31,11 +31,15 @@ class ContextState(BrowserView):
         return url
         
     @memoize
-    def canonical_object_url(self):
+    def canonical_object(self):
         if self.is_default_page():
-            return self.parent().absolute_url()
+            return self.parent()
         else:
-            return self.context.absolute_url()
+            return self.context
+            
+    @memoize
+    def canonical_object_url(self):
+        return self.canonical_object().absolute_url()
             
     @memoize
     def view_template_id(self):
