@@ -148,7 +148,7 @@
                 Error Message
                 </dt>
     
-                <dd i18n:translate="" tal:content="structure err_message|nothing">
+                <dd i18n:translate="" tal:content="err_message|nothing">
                 The rendered error message
                 </dd>
                 </tal:error>
@@ -158,7 +158,7 @@
                 Error Value
                 </dt>
     
-                <dd i18n:translate="" tal:content="structure err_value">
+                <dd i18n:translate="" tal:content="err_value">
                 The rendered error value
                 </dd>
                 </tal:value>
