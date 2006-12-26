@@ -1,16 +1,31 @@
-from Products.PageTemplates.PageTemplateFile import PageTemplateFile
+from zope.component import getAllUtilitiesRegisteredFor
+from zope.interface import implements
 
 from Products.CMFCore.utils import getToolByName
 from Products.GenericSetup.tool import SetupTool
 from Products.GenericSetup import profile_registry
 from Products.GenericSetup import BASE, EXTENSION
+from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 
 from Portal import PloneSite
 from utils import WWW_DIR
+from interfaces import INonInstallable
 from interfaces import IPloneSiteRoot
 
 _TOOL_ID = 'portal_setup'
 _DEFAULT_PROFILE = 'Products.CMFPlone:plone'
+
+
+class HiddenProfiles(object):
+    implements(INonInstallable)
+
+    def getNonInstallableProfiles(self):
+        return [u'Products.Archetypes:Archetypes',
+                u'Products.CMFDiffTool:CMFDiffTool',
+                u'Products.CMFEditions:CMFEditions',
+                u'Products.CMFQuickInstallerTool:CMFQuickInstallerTool',
+                u'kupu:default']
+
 
 def addPloneSiteForm(dispatcher):
     """
@@ -20,15 +35,23 @@ def addPloneSiteForm(dispatcher):
 
     base_profiles = []
     extension_profiles = []
+    not_installable = []
+
+    utils = getAllUtilitiesRegisteredFor(INonInstallable)
+    for util in utils:
+        not_installable.extend(util.getNonInstallableProfiles())
+
     for info in profile_registry.listProfileInfo():
         if info.get('type') == EXTENSION and \
            info.get('for') in (IPloneSiteRoot, None):
-            extension_profiles.append(info)
+            if info.get('id') not in not_installable:
+                extension_profiles.append(info)
 
     for info in profile_registry.listProfileInfo():
         if info.get('type') == BASE and \
            info.get('for') in (IPloneSiteRoot, None):
-            base_profiles.append(info)
+            if info.get('id') not in not_installable:
+                base_profiles.append(info)
 
     return wrapped(base_profiles=tuple(base_profiles),
                    extension_profiles=tuple(extension_profiles),

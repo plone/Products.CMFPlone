@@ -1,10 +1,11 @@
-# interface definitions for use by Plone
+# interface definitions
 
 from properties import IPropertiesTool
 from properties import ISimpleItemWithProperties
 from basetool import IPloneBaseTool
 from controlpanel import IControlPanel
 from interface import IInterfaceTool
+from installable import INonInstallable
 from migration import IMigrationTool
 from siteroot import IPloneSiteRoot
 from constrains import IConstrainTypes

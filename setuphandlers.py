@@ -10,6 +10,7 @@ from zope.component.globalregistry import base
 from zope.component.persistentregistry import PersistentComponents
 from zope.i18n.interfaces import ITranslationDomain
 from zope.i18n.interfaces import IUserPreferredLanguages
+from zope.interface import implements
 
 from Acquisition import aq_base, aq_get
 from Products.StandardCacheManagers.AcceleratedHTTPCacheManager import \
@@ -21,6 +22,7 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import _createObjectByType
 from Products.CMFPlone import migrations as migs
 from Products.CMFPlone.Portal import member_indexhtml
+from Products.CMFQuickInstallerTool.interfaces import INonInstallable
 from Products.Five.component import enableSite
 from Products.Five.component.interfaces import IObjectManagerSite
 
@@ -29,6 +31,22 @@ from plone.portlets.interfaces import IPortletManager
 from plone.portlets.interfaces import ILocalPortletAssignmentManager
 from plone.portlets.constants import CONTEXT_CATEGORY as CONTEXT_PORTLETS
 from plone.app.portlets import portlets
+
+
+class HiddenProducts(object):
+    implements(INonInstallable)
+
+    def getNonInstallableProducts(self):
+        return ['Archetypes', 'ATContentTypes', 'ATReferenceBrowserWidget',
+                'CMFActionIcons', 'CMFCalendar', 'CMFDefault',
+                'CMFTopic', 'CMFUid', 'DCWorkflow'
+                # TODO: These are added by installing Archetypes through QI,
+                # which shouldn't happen at all anymore. We don't add those
+                # to this list right now, as we don't want to get any annoying
+                # "removed from Products folder" messages.
+                # 'CMFFormController', 'MimetypesRegistry', 'PortalTransforms'
+               ]
+
 
 class PloneGenerator:
 
@@ -45,7 +63,7 @@ class PloneGenerator:
         qi.installProduct('kupu', locked=0)
 
         # BBB The following products are "installed" by virtue of the
-        #     GenericSetup profile.  They really shouldn't be managed
+        #     GenericSetup profile. They really shouldn't be managed
         #     by QuickInstaller at all any more, but we need to kill
         #     some chickens so migrations will still work.
         qi.installProduct('ResourceRegistries', locked=1, hidden=1)
@@ -54,19 +72,6 @@ class PloneGenerator:
         # extension profile by CMFQuickInstallerTool
         qi.installProduct('CMFDiffTool', locked=0, forceProfile=True)
         qi.installProduct('CMFEditions', locked=0, forceProfile=True)
-
-        # The following products should not show up in the install section,
-        # so tell QuickInstaller to ignore them:
-        qi.notifyInstalled('ATReferenceBrowserWidget', locked=1, hidden=1)
-        qi.notifyInstalled('CMFActionIcons', locked=1, hidden=1)
-        qi.notifyInstalled('CMFCalendar', locked=1, hidden=1)
-        qi.notifyInstalled('CMFDefault', locked=1, hidden=1)
-        qi.notifyInstalled('CMFFormController', locked=1, hidden=1)
-        qi.notifyInstalled('CMFTopic', locked=1, hidden=1)
-        qi.notifyInstalled('CMFUid', locked=1, hidden=1)
-        qi.notifyInstalled('DCWorkflow', locked=1, hidden=1)
-        qi.notifyInstalled('MimetypesRegistry', locked=1, hidden=1)
-        qi.notifyInstalled('PortalTransforms', locked=1, hidden=1)
 
     def customizePortalOptions(self, p):
         stool = getToolByName(p, 'portal_skins')

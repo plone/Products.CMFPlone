@@ -4,6 +4,18 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Add a new interface INonInstallable for which you can register named
+      utilites that provide a list of profiles that should not be available as
+      installable during site creation. We exclude certain products that are
+      installed anyways by Plone from the config screen this way.
+      [hannosch]
+
+    - Use the INonInstallable interface in CMFQuickInstallerTool to exclude
+      some products from the list of installable products in the ZMI and
+      install/uninstall control panel screen. Otherwise CMFDefault, CMFUid,
+      etc. would show up in the list.
+      [hannosch]
+
     - Added support for plone.app.redirector to the 404 template. This enables
       automatic redirects when an objet has been moved or renamed, and offers
       suggested search results on the 404 page otherwise.
@@ -12,11 +24,6 @@ Plone 3.0 - unreleased
     - Merged changes necessary to support PLIP125 Link Integrity, mostly found
       in the plone.app.linkintegrity package.
       [witch, optilude]
-
-    - Notify quickinstaller of some more products that it should ignore during
-      site creation. Otherwise CMFDefault, CMFUid, etc. would show up in the
-      install products control panel.
-      [hannosch]
 
     - Removed the setup tab from the migration tool. It wasn't working anymore
       and the functionality can be found on the controlpanel tool anyways.

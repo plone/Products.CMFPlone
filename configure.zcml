@@ -33,4 +33,10 @@
   <five:deprecatedManageAddDelete
       class=".CatalogTool.CatalogTool" />
 
+  <utility factory=".factory.HiddenProfiles"
+           name="Products.CMFPlone" />
+
+  <utility factory=".setuphandlers.HiddenProducts"
+           name="Products.CMFPlone" />
+
 </configure>
