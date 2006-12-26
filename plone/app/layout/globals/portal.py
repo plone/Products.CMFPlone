@@ -42,13 +42,8 @@ class PortalState(BrowserView):
     
     @memoize_contextless
     def navigation_root_url(self):
-        portal = self.portal()
-        portalPath = '/'.join(portal.getPhysicalPath())
-
         rootPath = self.navigation_root_path()
-        rootSubPath = rootPath[len(portalPath):]
-
-        return portal.absolute_url() + rootSubPath
+        return self.request.physicalPathToURL(rootPath)
     
     @memoize_contextless
     def default_language(self):

@@ -5,6 +5,14 @@
     <!-- Views with global constants -->
 
     <browser:page
+        name="plone_interface_info"
+        for="*"
+        permission="zope2.View"
+        class=".interface.InterfaceInformation"
+        allowed_interface=".interfaces.IInterfaceInformation"
+        />
+
+    <browser:page
         name="plone_tools"
         for="*"
         permission="zope2.View"

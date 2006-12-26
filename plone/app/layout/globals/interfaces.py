@@ -1,5 +1,19 @@
 from zope.interface import Interface, Attribute
 
+class IInterfaceInformation(Interface):
+    """A view that gives information about interfaces provided by its context
+    """
+    
+    def provides(dotted_name):
+        """Given an interface dotted name, determine if the context provides
+        this interface.
+        """
+
+    def class_provides(dotted_name):
+        """Given an interface dotted name, determine if the context's class 
+        provides this interface.
+        """
+
 # Note: We'd like these to be properties, but acquisition gets in our face
 # and wraps them in unexplainable ways :-(
 
@@ -70,7 +84,11 @@ class IPortalState(Interface):
         """The current language
         """
         
-    def is_rtl(domain='plone'):
+    def locale():
+        """Get the current locale
+        """
+        
+    def is_rtl():
         """Whether or not the portal is being viewed in an RTL language
         """
         

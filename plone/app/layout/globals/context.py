@@ -122,7 +122,7 @@ class ContextState(BrowserView):
     @memoize
     def is_editable(self):
         tools = getMultiAdapter((self.context, self.request), name='plone_tools')
-        return tools.membership().checkPermission('Modify portal content', aq_inner(self.context))
+        return bool(tools.membership().checkPermission('Modify portal content', aq_inner(self.context)))
     
     @memoize
     def is_locked(self):
