@@ -2,6 +2,7 @@ import unittest
 from plone.app.layout.globals.tests.base import GlobalsTestCase
 
 from plone.app.layout.navigation.root import getNavigationRoot
+from zope.i18n.locales import locales
 
 class TestPortalStateView(GlobalsTestCase):
     """Ensure that the basic redirector setup is successful.
@@ -36,10 +37,16 @@ class TestPortalStateView(GlobalsTestCase):
         self.assertEquals(self.view.language(), 'no')
         
     def test_locale(self):
-        self.fail('Test missing')
+        self.app.REQUEST.set('HTTP_ACCEPT_LANGUAGE', 'no')
+        no = locales.getLocale('no', None, None)
+        self.assertEquals(self.view.locale(), no)
         
     def test_is_rtl(self):
-        self.fail('Test missing')
+        self.app.REQUEST.set('HTTP_ACCEPT_LANGUAGE', 'no')
+        self.assertEquals(self.view.is_rtl(), False)
+        del self.app.REQUEST.__annotations__
+        self.app.REQUEST.set('HTTP_ACCEPT_LANGUAGE', 'he')
+        self.assertEquals(self.view.is_rtl(), True)
         
     def test_member(self):
         self.assertEquals(self.view.member(), self.portal.portal_membership.getAuthenticatedMember())
