@@ -64,46 +64,6 @@
 
   <browser:page
       for="*"
-      name="news_view"
-      class=".portlets.news.NewsPortlet"
-      permission="zope.Public"
-      allowed_interface=".interfaces.INewsPortlet"
-      />
-
-  <browser:page
-      for="*"
-      name="events_view"
-      class=".portlets.events.EventsPortlet"
-      permission="zope.Public"
-      allowed_interface=".interfaces.IEventsPortlet"
-      />
-
-  <browser:page
-      for="*"
-      name="navigation_view"
-      class=".portlets.navigation.NavigationPortlet"
-      permission="zope.Public"
-      allowed_interface=".interfaces.INavigationPortlet"
-      />
-
-  <browser:page
-      for="*"
-      name="calendar_view"
-      class=".portlets.calendar.CalendarPortlet"
-      permission="zope.Public"
-      allowed_interface=".interfaces.ICalendarPortlet"
-      />
-
-  <browser:page
-      for="*"
-      name="recent_view"
-      class=".portlets.recent.RecentPortlet"
-      permission="zope.Public"
-      allowed_interface=".interfaces.IRecentPortlet"
-      />
-
-  <browser:page
-      for="*"
       name="sitemap_view"
       class=".sitemap.SitemapView"
       permission="zope.Public"

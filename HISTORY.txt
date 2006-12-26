@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Moved deprecated zcml declarations to its own file deprecated.zcml in
+      order to make it easy to spot those or turn them off.
+      [hannosch]
+
     - Add a new interface INonInstallable for which you can register named
       utilites that provide a list of profiles that should not be available as
       installable during site creation. We exclude certain products that are
