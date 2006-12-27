@@ -27,7 +27,7 @@ Plone 3.0 - unreleased
 
     - Merged changes necessary to support PLIP125 Link Integrity, mostly found
       in the plone.app.linkintegrity package.
-      [witch, optilude]
+      [witsch, optilude]
 
     - Removed the setup tab from the migration tool. It wasn't working anymore
       and the functionality can be found on the controlpanel tool anyways.
