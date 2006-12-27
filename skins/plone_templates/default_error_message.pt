@@ -172,10 +172,10 @@
                 </dd>
             </dl>
 
-            <tal:ksserrors
+        </div>
+        <tal:ksserrors
                 tal:define="kss_view kss_view | context/@@kss_view | nothing;
                             _dummy python: kss_view and kss_view.attach_error(err_type, err_value);"/>
-        </div>
 
 </div>
 </body>
