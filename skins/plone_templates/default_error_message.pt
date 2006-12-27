@@ -172,8 +172,12 @@
                 </dd>
             </dl>
 
+            <tal:ksserrors
+                tal:define="kss_err_message string:${err_type}: ${err_value};
+                            kss_err_payload python: '<kukit:commands><kukit:command name=\'error\'><kukit:param name=\'type\'>system</kukit:param><kukit:param name=\'message\'>%s</kukit:param></kukit:command></kukit:commands>' % modules['cgi'].escape(kss_err_message).replace('\n', ' ');
+                            _dummy python: request.RESPONSE.setHeader('X-KSSCOMMANDS', kss_err_payload)"/>
         </div>
-</div>
 
+</div>
 </body>
 </html>

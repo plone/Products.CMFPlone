@@ -102,6 +102,9 @@ def initialize(context):
     allow_module('OFS.ObjectManager')
     allow_class(BeforeDeleteException)
 
+    # Make cgi.escape available TTW
+    ModuleSecurityInfo('cgi').declarePublic('escape')
+
     # Setup migrations
     import migrations
     migrations.executeMigrations()
