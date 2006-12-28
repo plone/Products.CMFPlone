@@ -18,7 +18,8 @@
                 tal:attributes="id python:showPrevMonth and 'calendar-previous' or ''">
                 <a href="#" rel="nofollow"
                    title="Previous month"
-                   tal:attributes="href python:'%s/%s?%s&amp;month:int=%d&amp;year:int=%d&amp;orig_query=%s' % (anchor_url, anchor_method, query_string, view.prevMonthTime.month(), view.prevMonthTime.year(), url_quote_plus(query_string))"
+                   tal:attributes="href python:'%s/%s?%s&amp;month:int=%d&amp;year:int=%d&amp;orig_query=%s' % (anchor_url, anchor_method, query_string, view.prevMonthTime.month(), view.prevMonthTime.year(), url_quote_plus(query_string));
+                                   class string:kssCalendarChange kukit-year-${view/prevMonthTime/year} kukit-month-${view/prevMonthTime/month};"
                    tal:condition="showPrevMonth"
                    i18n:attributes="title title_previous_month;">&laquo;</a>
             </th>
@@ -36,7 +37,8 @@
                   tal:attributes="id python:showNextMonth and 'calendar-next' or ''">
                 <a href="#" rel="nofollow"
                    title="Next month"
-                   tal:attributes="href python:'%s/%s?%s&amp;month:int=%d&amp;year:int=%d&amp;orig_query=%s' % (anchor_url, anchor_method, query_string, view.nextMonthTime.month(), view.nextMonthTime.year(), url_quote_plus(query_string))"
+                   tal:attributes="href python:'%s/%s?%s&amp;month:int=%d&amp;year:int=%d&amp;orig_query=%s' % (anchor_url, anchor_method, query_string, view.nextMonthTime.month(), view.nextMonthTime.year(), url_quote_plus(query_string));
+                                   class string:kssCalendarChange kukit-year-${view/nextMonthTime/year} kukit-month-${view/nextMonthTime/month};"
                    tal:condition="showNextMonth"
                    i18n:attributes="title title_next_month;">&raquo;</a>
             </th>
