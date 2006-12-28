@@ -1,5 +1,9 @@
-<tal:block repeat="portlet options/portlets"
-           replace="structure python:portlet.render()" />
+<tal:block repeat="portlet options/portlets">
+<div tal:define="info portlet/info;
+                 key  string:${info/manager}-${info/category}-${info/key}-${info/name}"
+     tal:attributes="id string:portletwrapper-${key}"
+     tal:content="structure python:portlet['renderer'].render()" />
+</tal:block>
 
 <div class="managePortletsLink"
       i18n:domain="plone">

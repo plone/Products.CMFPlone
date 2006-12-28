@@ -26,6 +26,10 @@ class ContentContext(object):
     def __init__(self, context):
         self.context = context
 
+    @property
+    def uid(self):
+        return '/'.join(self.context.getPhysicalPath())
+
     def getParent(self):
         return aq_parent(aq_inner(self.context))
 
