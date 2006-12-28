@@ -124,7 +124,6 @@ dl#plone-contentmenu-workflow dd.actionMenuContent a.kssIgnore:click {
 
 /* 
 In-place calendar changing
-must have the kssPortletRefresh class for selection.
 */
 
 a.kssCalendarChange:click {
