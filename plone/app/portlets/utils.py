@@ -4,6 +4,8 @@ from zope.app.container.interfaces import INameChooser
 from plone.portlets.interfaces import IPortletManager
 from plone.portlets.interfaces import IPortletAssignmentMapping
 
+from plone.portlets.constants import CONTEXT_CATEGORY
+
 from plone.app.portlets.portlets import classic
 from plone.app.portlets.portlets import login
 from plone.app.portlets.portlets import news
@@ -11,6 +13,28 @@ from plone.app.portlets.portlets import events
 from plone.app.portlets.portlets import navigation
 
 from Acquisition import aq_base
+from Products.CMFCore.utils import getToolByName
+
+def assignment_from_key(context, manager_name, category, key, name):
+    """Given the name of a portlet manager, the name of a category, a
+    key in that category and the name of a particular assignment, return
+    the IPortletAssignment. Raise a KeyError if it cannot be found.
+    """
+    
+    manager = getUtility(IPortletManager, manager_name)
+    
+    if category == CONTEXT_CATEGORY:
+        path = key
+        portal = getToolByName(context, 'portal_url').getPortalObject()
+        portal_path = '/'.join(portal.getPhysicalPath())
+        path = path[len(portal_path)+1:]
+        obj = portal.restrictedTraverse(path, None)
+        if obj is None:
+            raise KeyError, "Cannot find object at path %s" % path
+        assignable = getMultiAdapter((obj, manager), IPortletAssignmentMapping)
+        return assignable[name]
+    else:
+        return manager[category][key][name]
 
 portletsMapping = { 'portlet_login'      : login.Assignment(),
                     'portlet_news'       : news.Assignment(count=5),
