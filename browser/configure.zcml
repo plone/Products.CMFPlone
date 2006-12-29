@@ -10,10 +10,6 @@
       <allow interface="plone.app.layout.navigation.interfaces.INavigationQueryBuilder" />
   </class>
 
-  <class class=".icon.CatalogBrainContentIcon">
-      <allow interface=".interfaces.IContentIcon" />
-  </class>
-
   <browser:page
       for="*"
       name="breadcrumbs_view"
@@ -79,31 +75,5 @@
                 .interfaces.ISiteMap"
             factory=".navtree.SitemapNavtreeStrategy"
             provides="plone.app.layout.navigation.interfaces.INavtreeStrategy" />
-
-  <!-- Icon adapters -->
-
-  <adapter for="*
-                zope.publisher.interfaces.browser.IBrowserRequest
-                Products.ZCatalog.CatalogBrains.AbstractCatalogBrain"
-           factory=".icon.CatalogBrainContentIcon"
-           provides=".interfaces.IContentIcon" />
-
-  <adapter for="*
-                zope.publisher.interfaces.browser.IBrowserRequest
-                Products.Archetypes.interfaces.IBaseObject"
-           factory=".icon.ArchetypesContentIcon"
-           provides=".interfaces.IContentIcon" />
-
-  <adapter for="*
-                zope.publisher.interfaces.browser.IBrowserRequest
-                Products.CMFCore.TypesTool.FactoryTypeInformation"
-           factory=".icon.FTIContentIcon"
-           provides=".interfaces.IContentIcon" />
-
-  <adapter for="*
-                zope.publisher.interfaces.browser.IBrowserRequest
-                Products.CMFPlone.interfaces.IPloneSiteRoot"
-           factory=".icon.PloneSiteContentIcon"
-           provides=".interfaces.IContentIcon" />
 
 </configure>

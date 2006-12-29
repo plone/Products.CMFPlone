@@ -15,7 +15,6 @@ from Products.CMFPlone.interfaces import INonStructuralFolder
 from Products.CMFPlone.interfaces.NonStructuralFolder import INonStructuralFolder\
      as z2INonStructuralFolder
 from Products.CMFPlone.interfaces import ITranslationServiceTool
-from Products.CMFPlone.browser.interfaces import IContentIcon
 
 from zope.deprecation import deprecate
 from zope.interface import implements
@@ -26,6 +25,8 @@ import sys
 
 from plone.memoize.view import memoize
 from plone.portlets.interfaces import IPortletManager, IPortletManagerRenderer
+
+from plone.app.layout.icons.interfaces import IContentIcon
 
 # @@ deprecate import from this location?
 IndexIterator = utils.IndexIterator
