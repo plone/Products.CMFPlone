@@ -57,6 +57,8 @@ from Products.CMFPlone.migrations.v2_5.two51_two52 import setLoginFormInCookieAu
 from Products.CMFPlone.migrations.v3_0.alphas import enableZope3Site
 from Products.CMFPlone.migrations.v3_0.alphas import migrateOldActions
 from Products.CMFPlone.migrations.v3_0.alphas import addNewCSSFiles
+from Products.CMFPlone.migrations.v3_0.alphas import addDefaultAndForbiddenContentTypesProperties
+from Products.CMFPlone.migrations.v3_0.alphas import addTypesConfiglet
 from Products.CMFPlone.migrations.v3_0.alphas import updateActionsI18NDomain
 from Products.CMFPlone.migrations.v3_0.alphas import updateFTII18NDomain
 from Products.CMFPlone.migrations.v3_0.alphas import convertLegacyPortlets
@@ -1024,6 +1026,8 @@ class TestMigrations_v3_0(MigrationTest):
         self.skins = self.portal.portal_skins
         self.types = self.portal.portal_types
         self.workflow = self.portal.portal_workflow
+        self.properties = self.portal.portal_properties
+        self.cp = self.portal.portal_controlpanel
 
     def testEnableZope3Site(self):
         # First we remove the site and site manager
@@ -1072,6 +1076,44 @@ class TestMigrations_v3_0(MigrationTest):
         addNewCSSFiles(self.portal, [])
         for id in added_ids:
             self.failUnless(id in stylesheet_ids)
+
+    def testAddDefaultAndForbiddenContentTypesProperties(self):
+        # Should add the forbidden_contenttypes and default_contenttype property
+        self.removeSiteProperty('forbidden_contenttypes')
+        self.removeSiteProperty('default_contenttype')
+        self.failIf(self.properties.site_properties.hasProperty('forbidden_contenttypes'))
+        self.failIf(self.properties.site_properties.hasProperty('default_contenttype'))
+        addDefaultAndForbiddenContentTypesProperties(self.portal, [])
+        self.failUnless(self.properties.site_properties.hasProperty('forbidden_contenttypes'))
+        self.failUnless(self.properties.site_properties.hasProperty('default_contenttype'))
+
+    def testAddDefaultAndForbiddenContentTypesPropertiesTwice(self):
+        # Should not fail if migrated again
+        self.removeSiteProperty('forbidden_contenttypes')
+        self.removeSiteProperty('default_contenttype')
+        self.failIf(self.properties.site_properties.hasProperty('forbidden_contenttypes'))
+        self.failIf(self.properties.site_properties.hasProperty('default_contenttype'))
+        addDefaultAndForbiddenContentTypesProperties(self.portal, [])
+        addDefaultAndForbiddenContentTypesProperties(self.portal, [])
+        self.failUnless(self.properties.site_properties.hasProperty('forbidden_contenttypes'))
+        self.failUnless(self.properties.site_properties.hasProperty('default_contenttype'))
+
+    def testAddTypesConfiglet(self):
+        self.removeActionFromTool('TypesSettings', action_provider='portal_controlpanel')
+        addTypesConfiglet(self.portal, [])
+        self.failUnless('TypesSettings' in [action.getId() for action in self.cp.listActions()])
+        types = self.cp.getActionObject('Plone/TypesSettings')
+        self.assertEquals(types.action.text,
+                          'string:${portal_url}/@@types-controlpanel.html')
+
+    def testAddTypesConfigletTwice(self):
+        self.removeActionFromTool('TypesSettings', action_provider='portal_controlpanel')
+        addTypesConfiglet(self.portal, [])
+        addTypesConfiglet(self.portal, [])
+        self.failUnless('TypesSettings' in [action.getId() for action in self.cp.listActions()])
+        types = self.cp.getActionObject('Plone/TypesSettings')
+        self.assertEquals(types.action.text,
+                          'string:${portal_url}/@@types-controlpanel.html')
 
     def testAddFormTabbingJS(self):
         jsreg = self.portal.portal_javascripts
@@ -1567,7 +1609,6 @@ class TestMigrations_v3_0_Actions(MigrationTest):
     def beforeTearDown(self):
         if len(self.discussion._actions) > 0:
             self.discussion._actions = ()
-
 
 def test_suite():
     from unittest import TestSuite, makeSuite

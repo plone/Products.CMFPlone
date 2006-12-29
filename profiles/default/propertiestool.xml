@@ -126,5 +126,7 @@
    <element value="Topic"/>
   </property>
   <property name="use_folder_contents" type="lines"/>
+  <property name="forbidden_contenttypes" type="lines"></property>
+  <property name="default_contenttype" type="string">text/html</property>
  </object>
 </object>

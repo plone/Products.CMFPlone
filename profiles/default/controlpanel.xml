@@ -46,6 +46,12 @@
     url_expr="string:${portal_url}/prefs_error_log_form" visible="True">
   <permission>Manage portal</permission>
  </configlet>
+ <configlet title="Types Settings" action_id="TypesSettings"
+    appId="TypesSettings" category="Plone" condition_expr=""
+    url_expr="string:${portal_url}/@@types-controlpanel.html"
+    visible="True">
+  <permission>Manage portal</permission>
+ </configlet>
  <configlet title="Zope Management Interface" action_id="ZMI" appId="ZMI"
     category="Plone" condition_expr=""
     url_expr="string:${portal_url}/manage_main" visible="True">

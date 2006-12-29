@@ -43,6 +43,10 @@ def three0_alpha1(portal):
     # Add new css files to RR
     addNewCSSFiles(portal, out)
 
+    # Add new properties for default- and forbidden content types
+    addDefaultAndForbiddenContentTypesProperties(portal, out)
+    addTypesConfiglet(portal, out)
+
     # Actions should gain a i18n_domain now, so their title and description are
     # returned as Messages
     updateActionsI18NDomain(portal, out)
@@ -167,6 +171,38 @@ def addNewCSSFiles(portal, out):
         cssreg.registerStylesheet('forms.css', media='screen')
         cssreg.moveResourceAfter('forms.css', 'invisibles.css')
         out.append("Added forms.css to the registry")
+
+def addDefaultAndForbiddenContentTypesProperties(portal, out):
+    """Adds sitewide config for default and forbidden content types for AT textfields."""
+    propTool = getToolByName(portal, 'portal_properties', None)
+    if propTool is not None:
+        propSheet = getattr(aq_base(propTool), 'site_properties', None)
+        if propSheet is not None:
+            if not propSheet.hasProperty('default_contenttype'):
+                propSheet.manage_addProperty('default_contenttype', 'text/html', 'string')
+            out.append("Added 'default_contenttype' property to site_properties.")
+            if not propSheet.hasProperty('forbidden_contenttypes'):
+                propSheet.manage_addProperty('forbidden_contenttypes', [], 'lines')
+            out.append("Added 'forbidden_contenttypes' property to site_properties.")
+
+def addTypesConfiglet(portal, out):
+    """Add the types configlet."""
+    controlPanel = getToolByName(portal, 'portal_controlpanel', None)
+    if controlPanel is not None:
+        gotTypes = False
+        for configlet in controlPanel.listActions():
+            if configlet.getId() == 'TypesSettings':
+                gotTypes = True
+        if not gotTypes:
+            controlPanel.registerConfiglet(
+                id         = 'TypesSettings',
+                appId      = 'Plone',
+                name       = 'Types Settings',
+                action     = 'string:${portal_url}/@@types-controlpanel.html',
+                category   = 'Plone',
+                permission = ManagePortal,
+            )
+            out.append("Added Types Settings to the control panel")
 
 def updateActionsI18NDomain(portal, out):
     actions = portal.portal_actions.listActions()
