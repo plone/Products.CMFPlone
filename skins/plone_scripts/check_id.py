@@ -53,6 +53,10 @@ if not id:
 
 # do basic id validation
 
+# check for the magic 'login' alias
+if id == 'login':
+    return _(u'${name} is reserved.', mapping={u'name' : id})
+
 # check for bad characters
 plone_utils = getToolByName(container, 'plone_utils', None)
 if plone_utils is not None:

@@ -93,6 +93,9 @@ def alpha1_alpha2(portal):
     # install plone.app.redirector
     installRedirectorUtility(portal, out)
 
+    # Add action for plone.app.contentrules
+    addContentRulesAction(portal, out)
+
     return out
 
 def enableZope3Site(portal, out):
@@ -300,6 +303,22 @@ def installRedirectorUtility(portal, out):
         sm.registerUtility(RedirectionStorage(), IRedirectionStorage)
 
     out.append("Registered redirector utility")
+
+def addContentRulesAction(portal, out):
+    portal_actions = getToolByName(portal, 'portal_actions', None)
+    if portal_actions is not None:
+        object_buttons = getattr(portal_actions, 'object_buttons', None)
+        if object_buttons is not None:
+            if 'contentrules' not in object_buttons.objectIds():
+                new_action = Action('contentrules',
+                                    title='Rules',
+                                    description='',
+                                    url_expr='string:${plone_context_state/canonical_object_url}/@@manage-content-rules',
+                                    available_expr="python:plone_context_state.canonical_object()['@@plone_interface_info'].provides('plone.contentrules.engine.interfaces.IRuleContainer')",
+                                    permissions='Manage portal',
+                                    visible=True)
+                object_buttons._setObject('contentrules', new_action)
+                out.append("Added content rules action to object_buttons")
 
 # --
 # KSS registration

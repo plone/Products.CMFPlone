@@ -68,8 +68,23 @@ def createExprContext(folder, portal, object):
     if view_obj is None:
         view_obj = portal
     req = view_obj.REQUEST
+    
     globals_view = getMultiAdapter((view_obj, req), name='plone')
     expr_context.setGlobal('globals_view', globals_view)
+    
+    # XXX: For some reason, when using getMultiAdapter() here we get 
+    # authoriziation problems in some cases (e.g. when using one of these
+    # in a python: expression in an action).
+    
+    plone_portal_state = view_obj.restrictedTraverse('@@plone_portal_state')
+    expr_context.setGlobal('plone_portal_state', plone_portal_state)
+    
+    plone_context_state = view_obj.restrictedTraverse('@@plone_context_state')
+    expr_context.setGlobal('plone_context_state', plone_context_state)
+    
+    plone_tools = view_obj.restrictedTraverse('@@plone_tools')
+    expr_context.setGlobal('plone_tools', plone_tools)
+    
     # Add checkPermission to the action expression context to make cleaner
     # faster expressions
     membership_tool = getToolByName(view_obj, 'portal_membership')

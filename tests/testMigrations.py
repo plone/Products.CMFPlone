@@ -67,6 +67,7 @@ from Products.CMFPlone.migrations.v3_0.alphas import addFormTabbingJS
 from Products.CMFPlone.migrations.v3_0.alphas import registerToolsAsUtilities
 from Products.CMFPlone.migrations.v3_0.alphas import installKss
 from Products.CMFPlone.migrations.v3_0.alphas import installRedirectorUtility
+from Products.CMFPlone.migrations.v3_0.alphas import addContentRulesAction
 
 from zope.app.component.hooks import clearSite
 from zope.app.component.interfaces import ISite
@@ -297,27 +298,30 @@ class TestMigrations_v2_1_2(MigrationTest):
 
     def testAddRenameObjectButton(self):
         # Should add 'rename' object_button action
-        editActions = ('cut', 'copy', 'paste', 'delete', 'rename')
+        editActions = self.actions.object_buttons.objectIds()
+        assert 'rename' in editActions
         self.removeActionFromTool('rename', 'object_buttons')
         addRenameObjectButton(self.portal, [])
         actions = self.actions.object_buttons.objectIds()
-        self.assertEqual(actions, list(editActions))
+        self.assertEqual(sorted(actions), sorted(editActions))
 
     def testAddRenameObjectButtonTwice(self):
         # Should not fail if migrated again
-        editActions = ('cut', 'copy', 'paste', 'delete', 'rename')
+        editActions = self.actions.object_buttons.objectIds()
+        assert 'rename' in editActions
         self.removeActionFromTool('rename', 'object_buttons')
         addRenameObjectButton(self.portal, [])
         addRenameObjectButton(self.portal, [])
         actions = self.actions.object_buttons.objectIds()
-        self.assertEqual(actions, list(editActions))
+        self.assertEqual(sorted(actions), sorted(editActions))
 
     def testAddRenameObjectButtonActionExists(self):
         # Should add 'rename' object_button action
-        editActions = ('cut', 'copy', 'paste', 'delete', 'rename')
+        editActions = self.actions.object_buttons.objectIds()
+        assert 'rename' in editActions
         addRenameObjectButton(self.portal, [])
         actions = self.actions.object_buttons.objectIds()
-        self.assertEqual(actions, list(editActions))
+        self.assertEqual(sorted(actions), sorted(editActions))
 
     def testAddRenameObjectButtonNoTool(self):
         # Should not fail if tool is missing
@@ -1454,6 +1458,25 @@ class TestMigrations_v3_0(MigrationTest):
         installRedirectorUtility(self.portal, [])
         installRedirectorUtility(self.portal, [])
         self.failIf(sm.queryUtility(IRedirectionStorage) is None)
+        
+    def testAddContentRulesAction(self):
+        self.portal.portal_actions.object_buttons._delObject('contentrules')
+        addContentRulesAction(self.portal, [])
+        self.failUnless('contentrules' in self.portal.portal_actions.object_buttons.objectIds())
+        
+    def testAddContentRulesActionTwice(self):
+        self.portal.portal_actions.object_buttons._delOb('contentrules')
+        addContentRulesAction(self.portal, [])
+        addContentRulesAction(self.portal, [])
+        self.failUnless('contentrules' in self.portal.portal_actions.object_buttons.objectIds())
+        
+    def testAddContentRulesActionNoTool(self):
+        self.portal._delOb('portal_actions')
+        addContentRulesAction(self.portal, [])
+        
+    def testAddContentRulesActionNoCategory(self):
+        self.portal.portal_actions._delOb('object_buttons')
+        addContentRulesAction(self.portal, [])
 
 class TestMigrations_v3_0_Actions(MigrationTest):
 

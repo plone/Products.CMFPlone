@@ -519,14 +519,18 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         # only a manager would have proper permissions
         self.setRoles(['Manager', 'Member'])
         acts = self.actions.listFilteredActionsFor(self.portal)
-        self.failIf(acts.has_key('object_buttons'))
+        buttons = acts['object_buttons']
+        self.assertEquals(1, len(buttons))
+        self.assertEquals('contentrules', buttons[0]['id'])
 
     def testObjectButtonActionsInvisibleOnPortalDefaultDocument(self):
         # only a manager would have proper permissions
         self.setRoles(['Manager', 'Member'])
         self.portal.invokeFactory('Document','index_html')
         acts = self.actions.listFilteredActionsFor(self.portal.index_html)
-        self.failIf(acts.has_key('object_buttons'))
+        buttons = acts['object_buttons']
+        self.assertEquals(1, len(buttons))
+        self.assertEquals('contentrules', buttons[0]['id'])
 
     def testObjectButtonActionsOnDefaultDocumentApplyToParent(self):
         # only a manager would have proper permissions
@@ -534,7 +538,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.folder.invokeFactory('Document','index_html')
         acts = self.actions.listFilteredActionsFor(self.folder.index_html)
         buttons = acts['object_buttons']
-        self.assertEqual(len(buttons), 4)
+        self.assertEqual(len(buttons), 5)
         urls = [a['url'] for a in buttons]
         for url in urls:
             self.failIf('index_html' in url, 'Action wrongly applied to default page object %s'%url)
@@ -545,10 +549,10 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.folder.invokeFactory('Document','index_html')
         acts = self.actions.listFilteredActionsFor(self.folder.index_html)
         buttons = acts['object_buttons']
-        self.assertEqual(len(buttons), 4)
+        self.assertEqual(len(buttons), 5)
         # special case for delete which needs a confirmation form
         urls = [(a['id'],a['url']) for a in buttons
-                if a['id'] != 'delete']
+                if a['id'] not in ('delete', 'contentrules',)]
         for url in urls:
             # ensure that e.g. the 'copy' url contains object_copy
             self.failUnless('object_'+url[0] in url[1], "%s does not perform the expected object_%s action"%(url[0],url[0]))
@@ -557,6 +561,11 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
                 if a['id'] == 'delete'][0]
         self.failUnless('delete_confirmation' in delete_action[1],
                          "object_delete does not use the confirmation form")
+                         
+        rule_action = [(a['id'],a['url']) for a in buttons
+                if a['id'] == 'contentrules'][0]
+        self.failUnless('@@manage-content-rules' in rule_action[1],
+                         "contentrules does not use right form")
 
     def testObjectButtonActionsInExpectedOrder(self):
         # The object buttons need to be in a standardized order
@@ -565,9 +574,9 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.folder.cb_dataValid = True
         acts = self.actions.listFilteredActionsFor(self.folder)
         buttons = acts['object_buttons']
-        self.assertEqual(len(buttons),5)
+        self.assertEqual(len(buttons),6)
         ids = [(a['id']) for a in buttons]
-        self.assertEqual(ids, ['cut','copy','paste','delete', 'rename'])
+        self.assertEqual(ids, ['cut','copy','paste','delete', 'rename','contentrules'])
 
     def testPortalSharingActionIsLocalRoles(self):
         fti = getattr(self.types, 'Plone Site')
