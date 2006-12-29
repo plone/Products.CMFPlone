@@ -183,6 +183,12 @@ def addDefaultAndForbiddenContentTypesProperties(portal, out):
             out.append("Added 'default_contenttype' property to site_properties.")
             if not propSheet.hasProperty('forbidden_contenttypes'):
                 propSheet.manage_addProperty('forbidden_contenttypes', [], 'lines')
+                propSheet.forbidden_contenttypes = (
+                    'text/structured', 
+                    'text/x-rst', 
+                    'text/plain-pre', 
+                    'text/x-python', 
+                    'text/x-web-textile')
             out.append("Added 'forbidden_contenttypes' property to site_properties.")
 
 def addTypesConfiglet(portal, out):

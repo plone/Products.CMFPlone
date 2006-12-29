@@ -1086,6 +1086,14 @@ class TestMigrations_v3_0(MigrationTest):
         addDefaultAndForbiddenContentTypesProperties(self.portal, [])
         self.failUnless(self.properties.site_properties.hasProperty('forbidden_contenttypes'))
         self.failUnless(self.properties.site_properties.hasProperty('default_contenttype'))
+        self.failUnless(self.properties.site_properties.forbidden_contenttypes == ( 
+            'text/structured', 
+            'text/x-rst', 
+            'text/plain-pre', 
+            'text/x-python', 
+            'text/x-web-textile',
+            )
+        )
 
     def testAddDefaultAndForbiddenContentTypesPropertiesTwice(self):
         # Should not fail if migrated again
@@ -1094,10 +1102,23 @@ class TestMigrations_v3_0(MigrationTest):
         self.failIf(self.properties.site_properties.hasProperty('forbidden_contenttypes'))
         self.failIf(self.properties.site_properties.hasProperty('default_contenttype'))
         addDefaultAndForbiddenContentTypesProperties(self.portal, [])
+        self.failUnless(self.properties.site_properties.forbidden_contenttypes == ( 
+            'text/structured', 
+            'text/x-rst', 
+            'text/plain-pre', 
+            'text/x-python', 
+            'text/x-web-textile',
+            )
+        )
+        self.properties.site_properties.forbidden_contenttypes = ('text/x-rst',)
         addDefaultAndForbiddenContentTypesProperties(self.portal, [])
         self.failUnless(self.properties.site_properties.hasProperty('forbidden_contenttypes'))
         self.failUnless(self.properties.site_properties.hasProperty('default_contenttype'))
-
+        # adding a second time should leave existing `forbidden_contenttypes` settings alone:
+        self.failUnless(self.properties.site_properties.forbidden_contenttypes == ( 
+            'text/x-rst', 
+            )
+        )
     def testAddTypesConfiglet(self):
         self.removeActionFromTool('TypesSettings', action_provider='portal_controlpanel')
         addTypesConfiglet(self.portal, [])

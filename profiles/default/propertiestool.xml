@@ -126,7 +126,13 @@
    <element value="Topic"/>
   </property>
   <property name="use_folder_contents" type="lines"/>
-  <property name="forbidden_contenttypes" type="lines"></property>
+  <property name="forbidden_contenttypes" type="lines">
+   <element value="text/structured"/>
+   <element value="text/x-rst"/>
+   <element value="text/plain-pre"/>
+   <element value="text/x-python"/>
+   <element value="text/x-web-markdown"/>
+  </property>
   <property name="default_contenttype" type="string">text/html</property>
  </object>
 </object>
