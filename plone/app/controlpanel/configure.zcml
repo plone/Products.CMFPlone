@@ -14,6 +14,10 @@
       factory=".search.SearchControlPanelAdapter"
       />
 
+  <adapter
+      factory=".types.TypesControlPanelAdapter"
+      />
+
   <browser:page
       name="calendar-controlpanel.html"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
@@ -33,6 +37,23 @@
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       class=".search.SearchControlPanel"
       permission="cmf.ManagePortal"
+      />
+
+  <browser:page
+      name="types-controlpanel.html"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".types.TypesControlPanel"
+      permission="cmf.ManagePortal"
+      />
+
+  <utility
+      component=".vocabularies.AllowedContentTypesVocabularyFactory"
+      name="AllowedContentTypes"
+      />
+
+  <utility
+      component=".vocabularies.AllowableContentTypesVocabularyFactory"
+      name="AllowableContentTypes"
       />
 
   <utility
