@@ -85,6 +85,7 @@
  <import-step id="plone-content" version="20061230-01"
               handler="Products.CMFPlone.setuphandlers.importContent"
               title="Plone Content Import">
+  <dependency step="content"/>
   <dependency step="plone-final"/>
     Plone content import
  </import-step>
