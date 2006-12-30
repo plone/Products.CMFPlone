@@ -48,6 +48,7 @@
               handler="Products.CMFPlone.exportimport.controlpanel.importControlPanel"
               title="Control Panel">
   <dependency step="actions"/>
+  <dependency step="componentregistry"/>
     Import Plone control panel actions.
  </import-step>
  <import-step id="cssregistry" version="20051015-01"

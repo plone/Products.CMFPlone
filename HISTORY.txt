@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Added new SiteManagerCreatedEvent that is called right after the portal
+      is enabled as a site. We can use this to call the setHooks and setSite
+      functions which are mandatory during test runs, before any other
+      GenericSetup import step tries to call any local component.
+      [hannosch]
+
     - Decoupled some more of the GenericSetup import steps. The plone-site step
       only creates the local component registry and enables the portal object as
       a site manager. This is needed as steps using local components depend on

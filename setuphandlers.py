@@ -8,6 +8,7 @@ from zope.component import queryUtility
 
 from zope.component.globalregistry import base
 from zope.component.persistentregistry import PersistentComponents
+from zope.event import notify
 from zope.i18n.interfaces import ITranslationDomain
 from zope.i18n.interfaces import IUserPreferredLanguages
 from zope.interface import implements
@@ -21,6 +22,7 @@ from Products.StandardCacheManagers.RAMCacheManager import \
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import _createObjectByType
 from Products.CMFPlone import migrations as migs
+from Products.CMFPlone.events import SiteManagerCreatedEvent
 from Products.CMFPlone.Portal import member_indexhtml
 from Products.CMFQuickInstallerTool.interfaces import INonInstallable
 from Products.Five.component import enableSite
@@ -268,6 +270,9 @@ class PloneGenerator:
         components = PersistentComponents()
         components.__bases__ = (base,)
         portal.setSiteManager(components)
+        # The following event is primarily useful for setting the site hooks
+        # during test runs.
+        notify(SiteManagerCreatedEvent(portal))
 
     def assignTitles(self, portal, out):
         titles={'portal_actions':'Contains custom tabs and buttons',
