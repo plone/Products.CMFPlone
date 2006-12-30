@@ -64,12 +64,6 @@ class PloneGenerator:
         qi.installProduct('CMFPlacefulWorkflow', locked=0)
         qi.installProduct('kupu', locked=0)
 
-        # BBB The following products are "installed" by virtue of the
-        #     GenericSetup profile. They really shouldn't be managed
-        #     by QuickInstaller at all any more, but we need to kill
-        #     some chickens so migrations will still work.
-        qi.installProduct('ResourceRegistries', locked=1, hidden=1)
-
         # The following two products are "installed" based on a GenericSetup
         # extension profile by CMFQuickInstallerTool
         qi.installProduct('CMFDiffTool', locked=0, forceProfile=True)
