@@ -1,7 +1,6 @@
 <tal:block repeat="portlet options/portlets">
-<div tal:define="info portlet/info"
-     tal:attributes="id string:portletwrapper-${info/hash};
-                     class string:kukit-portlethash-${info/hash};"
+<div tal:attributes="id string:portletwrapper-${portlet/hash};
+                     class string:kukit-portlethash-${portlet/hash};"
      tal:content="structure python:portlet['renderer'].render()" />
 </tal:block>
 
