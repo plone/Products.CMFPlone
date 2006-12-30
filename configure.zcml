@@ -2,13 +2,14 @@
            xmlns:browser="http://namespaces.zope.org/browser"
            xmlns:five="http://namespaces.zope.org/five">
 
+  <include package="plone.app.contentmenu" />
+  <include package="plone.app.contentrules" />
   <include package="plone.app.controlpanel" />
   <include package="plone.app.layout" />
-  <include package="plone.app.portlets" />
-  <include package="plone.app.contentmenu" />
   <include package="plone.app.linkintegrity" />
+  <include package="plone.app.portlets" />
   <include package="plone.app.redirector" />
-  <include package="plone.app.contentrules" />
+  <include package="plone.app.vocabularies" />
   
   <!-- kss -->
   <include package="kss.core" />
