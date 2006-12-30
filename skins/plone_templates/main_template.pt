@@ -42,9 +42,7 @@
       <tal:comment replace="nothing"> A slot where you can insert javascript in the header from a template </tal:comment>
       <metal:javascriptslot define-slot="javascript_head_slot" />
     </metal:javascriptslot>
-    
-    <div tal:replace="structure provider:plone.htmlhead" />
-    
+
   </head>
 
   <body tal:attributes="class here/getSectionFromURL;
