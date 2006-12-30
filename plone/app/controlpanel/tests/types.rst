@@ -4,7 +4,7 @@ Types control panel
 Viewing the types control panel
 --------------------------------
 
-    >>> self.loginAsRoot()
+    >>> self.loginAsManager()
     >>> self.browser.open('http://nohost/plone/@@types-controlpanel.html')
     >>> self.browser.url
     'http://nohost/plone/@@types-controlpanel.html'

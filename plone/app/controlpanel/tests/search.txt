@@ -3,7 +3,7 @@ Search control panel
 First some initial setup code:
 
     >>> jstool = self.getToolByName('portal_javascripts')
-    >>> self.loginAsRoot()
+    >>> self.loginAsManager()
 
 
 Viewing the search control panel

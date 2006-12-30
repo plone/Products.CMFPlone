@@ -4,7 +4,7 @@ Calendar control panel
 First some initial setup code:
 
     >>> ctool = self.getToolByName('portal_calendar')
-    >>> self.loginAsRoot()
+    >>> self.loginAsManager()
 
 
 Viewing the calendar control panel

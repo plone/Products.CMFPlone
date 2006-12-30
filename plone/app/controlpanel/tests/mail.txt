@@ -5,7 +5,7 @@ First some initial setup code:
 
     >>> ctool = self.getToolByName('portal_calendar')
     >>> mailhost = self.getToolByName('MailHost')
-    >>> self.loginAsRoot()
+    >>> self.loginAsManager()
 
 Viewing the search control panel
 --------------------------------
