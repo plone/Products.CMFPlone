@@ -24,12 +24,14 @@ class ICalendarSchema(Interface):
                            description=_(u'Help?'),
                            required=True,
                            missing_value=set(),
-                           value_type=Choice(vocabulary="AvailablePortalTypes"))
+                           value_type=Choice(
+                               vocabulary="plone.app.vocabularies.AvailablePortalTypes"))
 
     calendar_states = Tuple(title=_(u'Workflow states to show in the calendar.'),
                             required=True,
                             missing_value=set(),
-                            value_type=Choice(vocabulary="AvailableWorkflowStates"))
+                            value_type=Choice(
+                                vocabulary="plone.app.vocabularies.AvailableWorkflowStates"))
 
     firstweekday = Int(title=_(u'First day of week used in the calendar.'),
                        default=0,
@@ -64,4 +66,3 @@ class CalendarControlPanel(ControlPanelForm):
     label = _("Calendar settings")
     description = None
     form_name = _("Calendar settings")
-

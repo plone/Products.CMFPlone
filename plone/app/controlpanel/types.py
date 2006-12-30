@@ -28,7 +28,7 @@ class ITypesSchema(Interface):
             for newly created content objects.'''),
         default=u'text/html',
         missing_value=set(),
-        vocabulary="AllowableContentTypes",
+        vocabulary="plone.app.vocabularies.AllowableContentTypes",
         required=True)
 
     allowed_types = Tuple(title=_(u'Alternative Formats'),
@@ -38,7 +38,8 @@ class ITypesSchema(Interface):
             explicitly turned off here or by the relevant installer.'''),
         required=True,
         missing_value=set(),
-        value_type=Choice(vocabulary="AllowableContentTypes"))
+        value_type=Choice(
+            vocabulary="plone.app.vocabularies.AllowableContentTypes"))
 
 
 class TypesControlPanelAdapter(SchemaAdapterBase):
@@ -76,8 +77,7 @@ class TypesControlPanel(ControlPanelForm):
     form_fields = FormFields(ITypesSchema)
     form_fields['allowed_types'].custom_widget = AllowedTypesWidget
 
-    label = _("Types settings")
+    label = _("Type settings")
     description = _('''Lets you set the default Mimetype for TextFields and configure the list of
         user-selectable alternatives to that default.''')
-    form_name = _("Types settings")
-
+    form_name = _("Type settings")

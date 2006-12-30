@@ -123,4 +123,3 @@ class MailControlPanel(ControlPanelForm):
     label = _("Mail settings")
     description = _("Mail settings for this Site.")
     form_name = _("Outgoing Mail Details")
-

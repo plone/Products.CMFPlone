@@ -46,26 +46,6 @@
       permission="cmf.ManagePortal"
       />
 
-  <utility
-      component=".vocabularies.AllowedContentTypesVocabularyFactory"
-      name="AllowedContentTypes"
-      />
-
-  <utility
-      component=".vocabularies.AllowableContentTypesVocabularyFactory"
-      name="AllowableContentTypes"
-      />
-
-  <utility
-      component=".vocabularies.PortalTypesVocabularyFactory"
-      name="AvailablePortalTypes"
-      />
-
-  <utility
-      component=".vocabularies.WorkflowStatesVocabularyFactory"
-      name="AvailableWorkflowStates"
-      />
-
   <view
       type="zope.publisher.interfaces.browser.IBrowserRequest"
       for="zope.schema.interfaces.ITuple

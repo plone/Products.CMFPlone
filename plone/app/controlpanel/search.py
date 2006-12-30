@@ -34,7 +34,8 @@ class ISearchSchema(Interface):
                                              or by the relevant installer.'''),
                                required=True,
                                missing_value=tuple(),
-                               value_type=Choice(vocabulary="AvailablePortalTypes"))
+                               value_type=Choice(
+                                   vocabulary="plone.app.vocabularies.AvailablePortalTypes"))
 
 
 class SearchControlPanelAdapter(SchemaAdapterBase):
@@ -83,4 +84,3 @@ class SearchControlPanel(ControlPanelForm):
     label = _("Search settings")
     description = _("Search settings for Site.")
     form_name = _("Search details")
-
