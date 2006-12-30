@@ -22,10 +22,12 @@ plone/app/controlpanel/control-panel.pt
 plone/app/controlpanel/form.py
 plone/app/controlpanel/mail.py
 plone/app/controlpanel/search.py
+plone/app/controlpanel/types.py
 plone/app/controlpanel/vocabularies.py
 plone/app/controlpanel/widgets.py
 plone/app/controlpanel/tests/__init__.py
-plone/app/controlpanel/tests/calendar.txt
-plone/app/controlpanel/tests/mail.txt
-plone/app/controlpanel/tests/search.txt
+plone/app/controlpanel/tests/calendar.rst
+plone/app/controlpanel/tests/mail.rst
+plone/app/controlpanel/tests/search.rst
 plone/app/controlpanel/tests/test_doctests.py
+plone/app/controlpanel/tests/types.rst
