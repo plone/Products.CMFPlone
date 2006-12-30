@@ -69,14 +69,6 @@ class PloneGenerator:
         qi.installProduct('CMFDiffTool', locked=0, forceProfile=True)
         qi.installProduct('CMFEditions', locked=0, forceProfile=True)
 
-    def customizePortalOptions(self, p):
-        stool = getToolByName(p, 'portal_skins')
-        stool.allow_any=0 # Skin changing for users is turned off by default
-
-        syntool = getToolByName(p, 'portal_syndication')
-        syntool.editProperties(isAllowed=1)
-        #p.icon = 'misc_/CMFPlone/plone_icon'
-
     def addCacheHandlers(self, p):
         """ Add RAM and AcceleratedHTTP cache handlers """
         mgrs = [(AcceleratedHTTPCacheManager, 'HTTPCache'),
@@ -222,25 +214,9 @@ class PloneGenerator:
         out = []
         migs.v2_5.two51_two52.setLoginFormInCookieAuth(p, out)
 
-    def addDefaultTypesToPortalFactory(self, portal, out):
-        """Put the default content types in portal_factory"""
-        factory = getToolByName(portal, 'portal_factory', None)
-        if factory is not None:
-            types = factory.getFactoryTypes().keys()
-            for metaType in ('Document', 'Event', 'File', 'Folder', 'Image', 
-                             'Large Plone Folder', 'Link', 'News Item',
-                             'Topic'):
-                if metaType not in types:
-                    types.append(metaType)
-            factory.manage_setPortalFactoryTypes(listOfTypeIds = types)
-            out.append('Added default content types to portal_factory.')
-
-    def enableSyndicationOnTopics(self, portal, out):
+    def enableSyndication(self, portal, out):
         syn = getToolByName(portal, 'portal_syndication', None)
         if syn is not None:
-            enabled = syn.isSiteSyndicationAllowed()
-            # We must enable syndication for the site to enable it on objects
-            # otherwise we get a nasty string exception from CMFDefault
             syn.editProperties(isAllowed=True)
             cat = getToolByName(portal, 'portal_catalog', None)
             if cat is not None:
@@ -252,8 +228,6 @@ class PloneGenerator:
                     if topic is not None and not syn.isSyndicationAllowed(topic):
                         syn.enableSyndication(topic)
                         out.append('Enabled syndication on %s'%b.getPath())
-            # Reset site syndication to default state
-            syn.editProperties(isAllowed=enabled)
 
     def enableSite(self, portal):
         """
@@ -348,7 +322,6 @@ def importVarious(context):
     site = context.getSite()
     gen = PloneGenerator()
     gen.installProducts(site)
-    gen.customizePortalOptions(site)
     gen.addCacheHandlers(site)
 
 def importFinalSteps(context):
@@ -365,8 +338,7 @@ def importFinalSteps(context):
     gen.addRolesToPlugIn(site)
     gen.setupGroups(site)
     gen.performMigrationActions(site)
-    gen.addDefaultTypesToPortalFactory(site, out)
-    gen.enableSyndicationOnTopics(site, out)
+    gen.enableSyndication(site, out)
     gen.assignTitles(site, out)
 
 def importContent(context):
