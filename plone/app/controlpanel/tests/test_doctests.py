@@ -40,7 +40,7 @@ class ControlPanelTestCase(FunctionalTestCase):
         return getToolByName(self.portal, name)
 
 def test_suite():
-    tests = ['calendar.txt', 'mail.txt', 'search.txt', 'types.txt']
+    tests = ['calendar.txt', 'mail.txt', 'search.txt', 'types.rst']
     suite = TestSuite()
     for test in tests:
         suite.addTest(FunctionalDocFileSuite(test,
