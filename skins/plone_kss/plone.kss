@@ -133,6 +133,7 @@ In-place calendar changing
 a.kssCalendarChange:click {
     evt-click-preventdefault:      true;
     action-server:                 refreshCalendar;
+    refreshCalendar-portlethash:   kssAttr(portlethash, True);
     refreshCalendar-year:          kssAttr(year);
     refreshCalendar-month:         kssAttr(month);
 }
