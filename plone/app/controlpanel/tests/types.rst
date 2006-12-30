@@ -9,6 +9,13 @@ Viewing the types control panel
     >>> self.browser.url
     'http://nohost/plone/@@types-controlpanel.html'
 
+We have two controls, one for the default type and a multiselection for alternativate formats:
+
+    >>> self.browser.getControl(name='form.default_type').value
+    ['text/html']
+    >>> self.browser.getControl(name='form.allowed_types').value
+    ['text/html', 'text/plain', 'text/restructured', 'text/x-web-textile']
+
 Click the save button without making any changes:
 
     >>> self.browser.getControl(name="form.actions.save").click()
@@ -17,7 +24,7 @@ Click the save button without making any changes:
 
 We should get a status message:
 
-    >>> 'No changes done.' in self.browser.contents
+    >>> 'Changes saved.' in self.browser.contents
     True
 
 Now click the cancel button:
@@ -35,13 +42,15 @@ Modifiying values
 -----------------
 
     >>> self.browser.getControl(name='form.default_type').value = ['text/x-web-textile',]
+    >>> self.browser.getControl(name='form.allowed_types').value = ['text/html', 'text/x-web-textile']
     >>> self.browser.getControl(name="form.actions.save").click()
     >>> 'Changes saved' in self.browser.contents
     True
 
 Verify, that the setting has actually been changed:
 
-    >>> from Products.Archetypes.mimetype_utils import getDefaultContentType
+    >>> from Products.Archetypes.mimetype_utils import getDefaultContentType, getAllowedContentTypes
     >>> getDefaultContentType(self.portal)
     'text/x-web-textile'
-
+    >>> getAllowedContentTypes(self.portal)
+    ['text/html', 'text/x-web-textile']
