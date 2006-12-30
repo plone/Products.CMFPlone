@@ -9,42 +9,39 @@
  <import-step id="actions" version="20040630-01"
               handler="Products.CMFCore.exportimport.actions.importActionProviders"
               title="Action Providers">
-  <dependency step="toolset"/>
+  <dependency step="componentregistry"/>
     Import actions tool's action providers and their actions.
  </import-step>
  <import-step id="atcttool" version="20060603-01"
               handler="Products.ATContentTypes.exportimport.atcttool.importATCTTool"
               title="ATContentTypes Tool">
-  <dependency step="toolset"/>
+  <dependency step="componentregistry"/>
     Import ATContentTypes specific configuration.
  </import-step>
  <import-step id="catalog" version="20050929-01"
               handler="Products.CMFCore.exportimport.catalog.importCatalogTool"
               title="Catalog Tool">
-  <dependency step="toolset"/>
+  <dependency step="componentregistry"/>
     Import catalog tool's sub-objects, indexes and columns.
  </import-step>
  <import-step id="componentregistry" version="20061211-01"
               handler="Products.GenericSetup.components.importComponentRegistry"
               title="Local Component Registry">
-  <dependency step="plone_various"/>
+  <dependency step="plone-site"/>
+  <dependency step="toolset"/>
     Import local component registry configuration.
  </import-step>
  <import-step id="content" version="20050927-01"
               handler="Products.CMFCore.exportimport.content.importSiteStructure"
               title="Content">
-  <dependency step="toolset"/>
-  <dependency step="catalog"/>
-  <dependency step="typeinfo"/>
-  <dependency step="workflow"/>
-  <dependency step="rolemap"/>
+  <dependency step="plone-final"/>
     Import the site's structure and content.
  </import-step>
  <import-step id="content_type_registry"
               version="20051013-01"
               handler="Products.CMFCore.exportimport.contenttyperegistry.importContentTypeRegistry"
               title="Content Type Registry">
-  <dependency step="toolset"/>
+  <dependency step="componentregistry"/>
     Import content type registry's predicates and bindings.
  </import-step>
  <import-step id="controlpanel" version="20060213-01"
@@ -56,7 +53,7 @@
  <import-step id="cssregistry" version="20051015-01"
               handler="Products.ResourceRegistries.exportimport.cssregistry.importCSSRegistry"
               title="Stylesheet registry">
-  <dependency step="toolset"/>
+  <dependency step="componentregistry"/>
     Import stylesheet registry
  </import-step>
  <import-step id="factorytool" version="20060711-01"
@@ -69,33 +66,49 @@
  <import-step id="jsregistry" version="20051015-01"
               handler="Products.ResourceRegistries.exportimport.jsregistry.importJSRegistry"
               title="Javascript registry">
-  <dependency step="toolset"/>
-  
+  <dependency step="componentregistry"/>
     Import javascript registry
  </import-step>
  <import-step id="mailhost" version="20050803-01"
               handler="Products.CMFCore.exportimport.mailhost.importMailHost"
               title="MailHost">
-  <dependency step="toolset"/>
+  <dependency step="componentregistry"/>
     Import mailhost settings
  </import-step>
  <import-step id="memberdata-properties"
               version="20051108-01"
               handler="Products.CMFPlone.exportimport.memberdata_properties.importMemberDataProperties"
               title="MemberData Properties">
-  <dependency step="toolset"/>
+  <dependency step="componentregistry"/>
     Import MemberData properties
+ </import-step>
+ <import-step id="plone-content" version="20061230-01"
+              handler="Products.CMFPlone.setuphandlers.importContent"
+              title="Plone Content Import">
+  <dependency step="plone-final"/>
+    Plone content import
  </import-step>
  <import-step id="plone-final" version="20051110-01"
               handler="Products.CMFPlone.setuphandlers.importFinalSteps"
               title="Final Plone Config">
-  <dependency step="content"/>
   <dependency step="kss_mimetype"/>
+  <dependency step="plone_various"/>
+  <dependency step="portlets"/>
     Final Plone configuration
  </import-step>
- <import-step id="plone_various" version="20041118-01"
+ <import-step id="plone-site" version="20061227-01"
+              handler="Products.CMFPlone.setuphandlers.importSite"
+              title="Plone Site Config">
+    Plone site configuration
+ </import-step>
+ <import-step id="plone_various" version="20061227-01"
               handler="Products.CMFPlone.setuphandlers.importVarious"
               title="Various Plone Settings">
+  <dependency step="catalog"/>
+  <dependency step="cssregistry"/>
+  <dependency step="jsregistry"/>
+  <dependency step="rolemap"/>
+  <dependency step="skins"/>
   <dependency step="toolset"/>
   <dependency step="typeinfo"/>
     Plone specific settings
@@ -103,7 +116,6 @@
  <import-step id="portlets" version="20060820-01"
                handler="plone.app.portlets.exportimport.portlets.importPortlets"
                title="Portlet Managers">
-    <dependency step="plone_various"/>
     <dependency step="componentregistry"/>
     Import local portlet manager configuration.
  </import-step>
@@ -126,7 +138,7 @@
  <import-step id="skins" version="20040630-01"
               handler="Products.CMFCore.exportimport.skins.importSkinsTool"
               title="Skins Tool">
-  <dependency step="toolset"/>
+  <dependency step="componentregistry"/>
     Import skins tool's filesystem directory views and skin path definitions.
  </import-step>
  <import-step id="toolset" version="20040630-01"
@@ -138,12 +150,13 @@
  <import-step id="typeinfo" version="20040630-01"
               handler="Products.CMFCore.exportimport.typeinfo.importTypesTool"
               title="Types Tool">
-  <dependency step="toolset"/>
+  <dependency step="componentregistry"/>
     Import types tool's type information objects.
  </import-step>
  <import-step id="workflow" version="20040630-01"
               handler="Products.CMFCore.exportimport.workflow.importWorkflowTool"
               title="Workflow Tool">
+  <dependency step="componentregistry"/>
   <dependency step="toolset"/>
   <dependency step="typeinfo"/>
     Import workflow tool's workflow definitions and supporting scripts.

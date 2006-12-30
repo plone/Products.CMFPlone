@@ -2,15 +2,20 @@
 <componentregistry>
  <adapters/>
  <utilities>
-  <utility object="/portal_controlpanel"
-           interface="Products.CMFPlone.interfaces.IControlPanel"/>
-  <utility object="/portal_interface"
-           interface="Products.CMFPlone.interfaces.IInterfaceTool"/>
-  <utility object="/portal_migration"
-           interface="Products.CMFPlone.interfaces.IMigrationTool"/>
-  <utility object="/translation_service"
-           interface="Products.CMFPlone.interfaces.ITranslationServiceTool"/>
-  <utility factory="plone.app.redirector.storage.RedirectionStorage"
-           interface="plone.app.redirector.interfaces.IRedirectionStorage"/>
+  <utility
+     interface="Products.CMFPlone.interfaces.IControlPanel"
+     object="/portal_controlpanel"/>
+  <utility
+     interface="Products.CMFPlone.interfaces.IInterfaceTool"
+     object="/portal_interface"/>
+  <utility
+     interface="Products.CMFPlone.interfaces.IMigrationTool"
+     object="/portal_migration"/>
+  <utility
+     interface="Products.CMFPlone.interfaces.ITranslationServiceTool"
+     object="/translation_service"/>
+  <utility
+     interface="plone.app.redirector.interfaces.IRedirectionStorage"
+     factory="plone.app.redirector.storage.RedirectionStorage"/>
  </utilities>
 </componentregistry>

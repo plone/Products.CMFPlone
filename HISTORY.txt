@@ -4,6 +4,14 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Decoupled some more of the GenericSetup import steps. The plone-site step
+      only creates the local component registry and enables the portal object as
+      a site manager. This is needed as steps using local components depend on
+      this step while not much else in the site may have been configured yet. 
+      The plone-content step adjusts the initial content and is run last as it
+      depends on everything else in the portal having been already set up.
+      [hannosch]
+
     - Added an alias view 'login' (aka '@@login') to let people use /login
       to get to login_form (it perform a redirect). This is also now a
       reserved id.

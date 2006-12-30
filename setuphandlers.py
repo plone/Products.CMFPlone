@@ -326,6 +326,15 @@ class PloneGenerator:
         if u'calendar' not in right:
             right[u'calendar'] = portlets.calendar.Assignment()
 
+def importSite(context):
+    """
+    Import site settings.
+    """
+    if context.readDataFile('plone-site.txt') is None:
+        return
+    site = context.getSite()
+    gen = PloneGenerator()
+    gen.enableSite(site)
 
 def importVarious(context):
     """
@@ -339,14 +348,13 @@ def importVarious(context):
         return
     site = context.getSite()
     gen = PloneGenerator()
-    gen.enableSite(site)
     gen.installProducts(site)
     gen.customizePortalOptions(site)
     gen.addCacheHandlers(site)
 
 def importFinalSteps(context):
     """
-    Final plone import steps.
+    Final Plone import steps.
     """
     # Only run step if a flag file is present (e.g. not an extension profile)
     if context.readDataFile('plone-final.txt') is None:
@@ -355,10 +363,21 @@ def importFinalSteps(context):
     site = context.getSite()
     gen = PloneGenerator()
     gen.addDefaultPortlets(site)
-    gen.setupPortalContent(site)
     gen.addRolesToPlugIn(site)
     gen.setupGroups(site)
     gen.performMigrationActions(site)
     gen.addDefaultTypesToPortalFactory(site, out)
     gen.enableSyndicationOnTopics(site, out)
     gen.assignTitles(site, out)
+
+def importContent(context):
+    """
+    Final Plone content import step.
+    """
+    # Only run step if a flag file is present (e.g. not an extension profile)
+    if context.readDataFile('plone-content.txt') is None:
+        return
+    out = []
+    site = context.getSite()
+    gen = PloneGenerator()
+    gen.setupPortalContent(site)
