@@ -14,8 +14,9 @@ from Products.CMFDefault.formlib.schema import SchemaAdapterBase
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.interfaces import IPloneSiteRoot
 
-from Products.Archetypes.mimetype_utils import getDefaultContentType, setDefaultContentType, \
-    getAllowedContentTypes, getAllowableContentTypes, setForbiddenContentTypes
+from Products.Archetypes.mimetype_utils import getDefaultContentType, \
+    setDefaultContentType, getAllowedContentTypes, getAllowableContentTypes, \
+    setForbiddenContentTypes
 
 from form import ControlPanelForm
 from widgets import AllowedTypesWidget
@@ -32,9 +33,9 @@ class ITypesSchema(Interface):
 
     allowed_types = Tuple(title=_(u'Alternative Formats'),
         description=_(u'''Select which formats are available for users 
-            as alternative to the default format.
-            Note that if new formats are installed, they will be enabled for text fields by 
-            default unless explicitly turned off here or by the relevant installer.'''),
+            as alternative to the default format. Note that if new formats are
+            installed, they will be enabled for text fields by default unless
+            explicitly turned off here or by the relevant installer.'''),
         required=True,
         missing_value=set(),
         value_type=Choice(vocabulary="AllowableContentTypes"))

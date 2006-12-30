@@ -39,13 +39,13 @@ class ControlPanelTestCase(FunctionalTestCase):
         """docstring for getToolByName"""
         return getToolByName(self.portal, name)
 
+
 def test_suite():
-    tests = ['calendar.txt', 'mail.txt', 'search.txt', 'types.rst']
+    tests = ['calendar.rst', 'mail.rst', 'search.rst', 'types.rst']
     suite = TestSuite()
     for test in tests:
         suite.addTest(FunctionalDocFileSuite(test,
+            optionflags=OPTIONFLAGS,
             package="plone.app.controlpanel.tests",
             test_class=ControlPanelTestCase))
     return suite
-
-

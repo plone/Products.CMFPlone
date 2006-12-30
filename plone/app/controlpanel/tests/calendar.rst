@@ -6,7 +6,6 @@ First some initial setup code:
     >>> ctool = self.getToolByName('portal_calendar')
     >>> self.loginAsManager()
 
-
 Viewing the calendar control panel
 ----------------------------------
 
@@ -17,8 +16,8 @@ Viewing the calendar control panel
 Click the save button without making any changes:
 
     >>> self.browser.getControl(name="form.actions.save").click()
-    >>> self.browser.url
-    'http://nohost/plone/%40%40calendar-controlpanel.html'
+    >>> self.browser.url.endswith('calendar-controlpanel.html')
+    True
 
 We should get a status message:
 
@@ -28,8 +27,8 @@ We should get a status message:
 Now click the cancel button:
 
     >>> self.browser.getControl(name="form.actions.cancel").click()
-    >>> self.browser.url
-    'http://nohost/plone/%40%40calendar-controlpanel.html'
+    >>> self.browser.url.endswith('calendar-controlpanel.html')
+    True
 
 There should be still no changes:
 
@@ -40,8 +39,8 @@ Make some changes
 -----------------
 
     >>> self.browser.open('http://nohost/plone/@@calendar-controlpanel.html')
-    >>> self.browser.url
-    'http://nohost/plone/@@calendar-controlpanel.html'
+    >>> self.browser.url.endswith('calendar-controlpanel.html')
+    True
 
     >>> self.browser.getControl(name='form.firstweekday').value = ['Sunday']
     >>> self.browser.getControl(name='form.calendar_types:list').value = ['Event', 'Page']
@@ -49,8 +48,8 @@ Make some changes
 Click the save button:
 
     >>> self.browser.getControl(name="form.actions.save").click()
-    >>> self.browser.url
-    'http://nohost/plone/%40%40calendar-controlpanel.html'
+    >>> self.browser.url.endswith('calendar-controlpanel.html')
+    True
 
 We should be informed that something has changed:
 

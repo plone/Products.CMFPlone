@@ -11,14 +11,14 @@ Viewing the search control panel
 --------------------------------
 
     >>> self.browser.open('http://nohost/plone/@@mail-controlpanel.html')
-    >>> self.browser.url
-    'http://nohost/plone/@@mail-controlpanel.html'
+    >>> self.browser.url.endswith('mail-controlpanel.html')
+    True
 
 Click the save button without making any changes:
 
     >>> self.browser.getControl(name="form.actions.save").click()
-    >>> self.browser.url
-    'http://nohost/plone/%40%40mail-controlpanel.html'
+    >>> self.browser.url.endswith('mail-controlpanel.html')
+    True
 
 We should get a status message:
 
@@ -28,8 +28,8 @@ We should get a status message:
 Now click the cancel button:
 
     >>> self.browser.getControl(name="form.actions.cancel").click()
-    >>> self.browser.url
-    'http://nohost/plone/%40%40mail-controlpanel.html'
+    >>> self.browser.url.endswith('mail-controlpanel.html')
+    True
 
 There should be still no changes:
 
@@ -40,8 +40,8 @@ Make some changes
 -----------------
 
     >>> self.browser.open('http://nohost/plone/@@mail-controlpanel.html')
-    >>> self.browser.url
-    'http://nohost/plone/@@mail-controlpanel.html'
+    >>> self.browser.url.endswith('mail-controlpanel.html')
+    True
 
     >>> self.browser.getControl(name='form.smtp_host').value = 'localhost2'
     >>> self.browser.getControl(name='form.smtp_port').value = '2525'
@@ -53,8 +53,8 @@ Make some changes
 Click the save button:
 
     >>> self.browser.getControl(name="form.actions.save").click()
-    >>> self.browser.url
-    'http://nohost/plone/%40%40mail-controlpanel.html'
+    >>> self.browser.url.endswith('mail-controlpanel.html')
+    True
 
 We should be informed that something has changed:
 

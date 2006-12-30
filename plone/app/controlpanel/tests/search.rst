@@ -1,23 +1,23 @@
 Search control panel
 ====================
+
 First some initial setup code:
 
     >>> jstool = self.getToolByName('portal_javascripts')
     >>> self.loginAsManager()
 
-
 Viewing the search control panel
 --------------------------------
 
     >>> self.browser.open('http://nohost/plone/@@search-controlpanel.html')
-    >>> self.browser.url
-    'http://nohost/plone/@@search-controlpanel.html'
+    >>> self.browser.url.endswith('search-controlpanel.html')
+    True
 
 Click the save button without making any changes:
 
     >>> self.browser.getControl(name="form.actions.save").click()
-    >>> self.browser.url
-    'http://nohost/plone/%40%40search-controlpanel.html'
+    >>> self.browser.url.endswith('search-controlpanel.html')
+    True
 
 We should get a status message:
 
@@ -27,8 +27,8 @@ We should get a status message:
 Now click the cancel button:
 
     >>> self.browser.getControl(name="form.actions.cancel").click()
-    >>> self.browser.url
-    'http://nohost/plone/%40%40search-controlpanel.html'
+    >>> self.browser.url.endswith('search-controlpanel.html')
+    True
 
 There should be still no changes:
 
@@ -39,8 +39,8 @@ Make some changes
 -----------------
 
     >>> self.browser.open('http://nohost/plone/@@search-controlpanel.html')
-    >>> self.browser.url
-    'http://nohost/plone/@@search-controlpanel.html'
+    >>> self.browser.url.endswith('search-controlpanel.html')
+    True
 
     >>> self.browser.getControl(name='form.enable_livesearch').value = False
     >>> self.browser.getControl(name='form.types_not_searched').value = \
@@ -50,8 +50,8 @@ Make some changes
 Click the save button:
 
     >>> self.browser.getControl(name="form.actions.save").click()
-    >>> self.browser.url
-    'http://nohost/plone/%40%40search-controlpanel.html'
+    >>> self.browser.url.endswith('search-controlpanel.html')
+    True
 
 We should be informed that something has changed:
 
@@ -74,4 +74,3 @@ Make sure the changes have been applied correctly to the tool:
 
     >>> 'File' in self.site_props.types_not_searched
     True
-

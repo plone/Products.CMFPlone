@@ -1,8 +1,8 @@
 Types control panel
-====================
+===================
 
 Viewing the types control panel
---------------------------------
+-------------------------------
 
     >>> self.loginAsManager()
     >>> self.browser.open('http://nohost/plone/@@types-controlpanel.html')
@@ -19,8 +19,8 @@ We have two controls, one for the default type and a multiselection for alternat
 Click the save button without making any changes:
 
     >>> self.browser.getControl(name="form.actions.save").click()
-    >>> self.browser.url
-    'http://nohost/plone/%40%40types-controlpanel.html'
+    >>> self.browser.url.endswith('types-controlpanel.html')
+    True
 
 We should get a status message:
 
@@ -30,16 +30,16 @@ We should get a status message:
 Now click the cancel button:
 
     >>> self.browser.getControl(name="form.actions.cancel").click()
-    >>> self.browser.url
-    'http://nohost/plone/%40%40types-controlpanel.html'
+    >>> self.browser.url.endswith('types-controlpanel.html')
+    True
 
 There should be still no changes:
 
     >>> 'Changes canceled.' in self.browser.contents
     True
 
-Modifiying values
------------------
+Modifying values
+----------------
 
     >>> self.browser.getControl(name='form.default_type').value = ['text/x-web-textile',]
     >>> self.browser.getControl(name='form.allowed_types').value = ['text/html', 'text/x-web-textile']
@@ -47,7 +47,7 @@ Modifiying values
     >>> 'Changes saved' in self.browser.contents
     True
 
-Verify, that the setting has actually been changed:
+Verify, that the settings have actually been changed:
 
     >>> from Products.Archetypes.mimetype_utils import getDefaultContentType, getAllowedContentTypes
     >>> getDefaultContentType(self.portal)
