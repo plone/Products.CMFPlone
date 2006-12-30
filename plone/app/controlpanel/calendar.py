@@ -25,13 +25,13 @@ class ICalendarSchema(Interface):
                            required=True,
                            missing_value=set(),
                            value_type=Choice(
-                               vocabulary="plone.app.vocabularies.AvailablePortalTypes"))
+                               vocabulary="plone.app.vocabularies.PortalTypes"))
 
     calendar_states = Tuple(title=_(u'Workflow states to show in the calendar.'),
                             required=True,
                             missing_value=set(),
                             value_type=Choice(
-                                vocabulary="plone.app.vocabularies.AvailableWorkflowStates"))
+                                vocabulary="plone.app.vocabularies.WorkflowStates"))
 
     firstweekday = Int(title=_(u'First day of week used in the calendar.'),
                        default=0,

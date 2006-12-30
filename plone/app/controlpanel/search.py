@@ -35,7 +35,7 @@ class ISearchSchema(Interface):
                                required=True,
                                missing_value=tuple(),
                                value_type=Choice(
-                                   vocabulary="plone.app.vocabularies.AvailablePortalTypes"))
+                                   vocabulary="plone.app.vocabularies.PortalTypes"))
 
 
 class SearchControlPanelAdapter(SchemaAdapterBase):
