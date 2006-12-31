@@ -24,6 +24,7 @@ class HiddenProfiles(object):
                 u'Products.CMFDiffTool:CMFDiffTool',
                 u'Products.CMFEditions:CMFEditions',
                 u'Products.CMFQuickInstallerTool:CMFQuickInstallerTool',
+                u'Products.PlonePAS:PlonePAS',
                 u'kupu:default']
 
 

@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Converted PlonePAS installation to be GenericSetup based and moved all
+      user/group related setup functions there as well. Also removed explicit
+      GroupUserFolder installation as it isn't needed anymore.
+      [hannosch]
+
     - Added new SiteManagerCreatedEvent that is called right after the portal
       is enabled as a site. We can use this to call the setHooks and setSite
       functions which are mandatory during test runs, before any other

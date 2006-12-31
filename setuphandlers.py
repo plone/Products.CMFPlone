@@ -58,9 +58,7 @@ class PloneGenerator:
         # handler
         qi = getToolByName(p, 'portal_quickinstaller')
         qi.installProduct('Archetypes', locked=1, hidden=1)
-        qi.installProduct('GroupUserFolder', locked=1, hidden=1)
-        qi.installProduct('PlonePAS', locked=1, hidden=1)
-        qi.installProduct('PasswordResetTool', locked=1, hidden=1)
+        qi.installProduct('PlonePAS', locked=1, hidden=1, forceProfile=True)
         qi.installProduct('CMFPlacefulWorkflow', locked=0)
         qi.installProduct('kupu', locked=0)
 
@@ -180,39 +178,11 @@ class PloneGenerator:
                 index_html.write(member_indexhtml)
                 index_html.ZPythonScript_setTitle('Member Search')
 
-    def addRolesToPlugIn(self, p):
-        """
-        XXX This is horrible.. need to switch PlonePAS to a GenericSetup
-        based install so this doesn't need to happen.
-
-        Have to manually register the roles from the 'rolemap' step
-        with the roles plug-in.
-        """
-        uf = getToolByName(p, 'acl_users')
-        rmanager = uf.portal_role_manager
-        roles = ('Reviewer', 'Member')
-        existing = rmanager.listRoleIds()
-        for role in roles:
-            if role not in existing:
-                rmanager.addRole(role)
-
-    def setupGroups(self, p):
-        """
-        Create Plone's default set of groups.
-        """
-        gtool = getToolByName(p, 'portal_groups')
-        existing = gtool.listGroupIds()
-        if 'Administrators' not in existing:
-            gtool.addGroup('Administrators', roles=['Manager'])
-        if 'Reviewers' not in existing:
-            gtool.addGroup('Reviewers', roles=['Reviewer'])
-
     def performMigrationActions(self, p):
         """
         Perform any necessary migration steps.
         """
         out = []
-        migs.v2_5.two51_two52.setLoginFormInCookieAuth(p, out)
 
     def enableSyndication(self, portal, out):
         syn = getToolByName(portal, 'portal_syndication', None)
@@ -335,8 +305,6 @@ def importFinalSteps(context):
     site = context.getSite()
     gen = PloneGenerator()
     gen.addDefaultPortlets(site)
-    gen.addRolesToPlugIn(site)
-    gen.setupGroups(site)
     gen.performMigrationActions(site)
     gen.enableSyndication(site, out)
     gen.assignTitles(site, out)
