@@ -33,36 +33,6 @@
           tal:attributes="name python:keyval[0];
                           content python:keyval[1];" />
 
-    <!-- Plone ECMAScripts -->
-    <metal:js tal:define="scripts nocall:here/renderAllTheScripts|nothing"
-	      tal:condition="nocall:scripts">
-      <metal:block metal:use-macro="scripts/macros/jsrenderer">
-        <!-- Fetch scripts from the Javascript Registry -->
-      </metal:block>
-    </metal:js>
-
-    <metal:css tal:define="css nocall:here/renderAllTheStylesheets|nothing">
-	<tal:block condition="nocall:css">
-          <metal:block metal:use-macro="css/macros/cssrenderer">
-            <!-- Fetch stylesheets from the CSS Registry -->
-          </metal:block>
-        </tal:block>
-        <tal:block condition="not:nocall:css">
-        <style type="text/css" media="all" tal:condition="exists:portal/base.css"
-               tal:content="string:@import url($portal_url/base.css);">
-        </style>
-        <style type="text/css" media="all" tal:condition="exists:portal/columns.css"
-               tal:content="string:@import url($portal_url/columns.css);">
-        </style>
-        <style type="text/css" media="all" tal:condition="exists:portal/public.css"
-               tal:content="string:@import url($portal_url/public.css);">
-        </style>
-        <style type="text/css" media="all" tal:condition="exists:portal/portlets.css"
-               tal:content="string:@import url($portal_url/portlets.css);">
-        </style>
-        </tal:block>
-    </metal:css>
-
     <!-- Internet Explorer CSS Fixes -->
     <tal:iefixstart replace="structure string:&lt;!--[if IE]&gt;" />
         <style type="text/css" media="all" tal:condition="exists: portal/IEFixes.css"
