@@ -21,6 +21,8 @@
     directory="kupu/common"/>
  <object name="kupu_plone" meta_type="Filesystem Directory View"
     directory="kupu/plone/kupu_plone_layer"/>
+ <object name="PasswordReset" meta_type="Filesystem Directory View"
+    directory="PasswordResetTool/skins/PasswordReset"/>
  <object name="mimetypes_icons" meta_type="Filesystem Directory View"
     directory="MimetypesRegistry/skins/mimetypes_icons"/>
  <object name="plone_kss" meta_type="Filesystem Directory View"
@@ -68,6 +70,7 @@
   <layer name="archetypes"/>
   <layer name="mimetypes_icons"/>
   <layer name="ResourceRegistries"/>
+  <layer name="PasswordReset"/>
   <layer name="gruf"/>
   <layer name="plone_ecmascript"/>
   <layer name="plone_wysiwyg"/>
@@ -96,6 +99,7 @@
   <layer name="archetypes"/>
   <layer name="mimetypes_icons"/>
   <layer name="ResourceRegistries"/>
+  <layer name="PasswordReset"/>
   <layer name="gruf"/>
   <layer name="plone_ecmascript"/>
   <layer name="plone_wysiwyg"/>
