@@ -41,7 +41,8 @@ class HiddenProducts(object):
     def getNonInstallableProducts(self):
         return ['Archetypes', 'ATContentTypes', 'ATReferenceBrowserWidget',
                 'CMFActionIcons', 'CMFCalendar', 'CMFDefault',
-                'CMFTopic', 'CMFUid', 'DCWorkflow', 'PasswordResetTool'
+                'CMFTopic', 'CMFUid', 'DCWorkflow', 'GroupUserFolder',
+                'PasswordResetTool'
                 # TODO: These are added by installing Archetypes through QI,
                 # which shouldn't happen at all anymore. We don't add those
                 # to this list right now, as we don't want to get any annoying
