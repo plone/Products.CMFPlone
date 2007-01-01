@@ -371,10 +371,10 @@ class installKss(object):
     js_unregister = []
 
     js_all = [
-        ('++resource++MochiKit.js', 'none'),
-        ('++resource++prototype.js', 'safe'),
-        ('++resource++effects.js', 'safe'),
-        ('++resource++kukit.js', 'none'),
+        ('++resource++MochiKit.js', 'none', False),
+        ('++resource++prototype.js', 'safe', True),
+        ('++resource++effects.js', 'safe', True),
+        ('++resource++kukit.js', 'none', True),
     ]
 
     css_all = [
@@ -402,11 +402,11 @@ class installKss(object):
             if self._old_res(jstool, id):
                 jstool.unregisterResource(id)
                 out.append("Unregistered old %s" % (id, ))
-        for id, compression in self.js_all:
+        for id, compression, enabled in self.js_all:
             if not self._old_res(jstool, id):
                 jstool.registerScript(
                     id = id,
-                    enabled = True,
+                    enabled = enabled,
                     cookable = True,
                     compression = compression,
                     )

@@ -1447,13 +1447,13 @@ class TestMigrations_v3_0(MigrationTest):
         skins = ['Plone Default', 'Plone Tableless']
         if unregister:
             # unregister first
-            for id, _compression in installKss.js_all:
+            for id, _compression, _enabled in installKss.js_all:
                 jstool.unregisterResource(id)
             for id in installKss.css_all + installKss.kss_all:
                 csstool.unregisterResource(id)
             mt.manage_delObjects((mtid, ))
             js_ids = jstool.getResourceIds()
-            for id, _compression in installKss.js_all:
+            for id, _compression, _enabled in installKss.js_all:
                 self.failIf(id in js_ids)
             css_ids = csstool.getResourceIds()
             for id in installKss.css_all + installKss.kss_all:
@@ -1481,7 +1481,7 @@ class TestMigrations_v3_0(MigrationTest):
         css_dict = csstool.getResourcesDict()
         for id in installKss.js_unregister:
             self.failIf(id in js_ids)
-        for id, _compression in installKss.js_all:
+        for id, _compression, _enabled in installKss.js_all:
             self.assert_(id in js_ids, '%r is not registered' % id)
         for id in installKss.css_all:
             self.assert_(id in css_dict)

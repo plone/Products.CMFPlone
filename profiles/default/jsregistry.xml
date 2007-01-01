@@ -118,7 +118,7 @@
     id="kupuploneinit.js" inline="False"/>
  <!-- kss -->
  <javascript cacheable="True" compression="none" cookable="True"
-    enabled="True" expression=""
+    enabled="False" expression=""
     id="++resource++MochiKit.js" inline="False"/>
  <javascript cacheable="True" compression="safe" cookable="True"
     enabled="True" expression=""
