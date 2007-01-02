@@ -7,6 +7,7 @@
   <include package="plone.app.controlpanel" />
   <include package="plone.app.layout" />
   <include package="plone.app.linkintegrity" />
+  <include package="plone.app.openid" />
   <include package="plone.app.portlets" />
   <include package="plone.app.redirector" />
   <include package="plone.app.vocabularies" />

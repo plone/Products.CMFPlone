@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Add support for OpenID authentication.
+      [wichert]
+
     - Make it possible to use the plone.session PAS plugin. This provides
       a scalable method to use session authentication in Plone sites.
       [wichert]
