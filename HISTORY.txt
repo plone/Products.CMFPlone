@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Make it possible to use the plone.session PAS plugin. This provides
+      a scalable method to use session authentication in Plone sites.
+      [wichert]
+
     - Converted PlonePAS installation to be GenericSetup based and moved all
       user/group related setup functions there as well. Also removed explicit
       GroupUserFolder installation as it isn't needed anymore.
