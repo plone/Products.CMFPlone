@@ -11,7 +11,7 @@
   <include package="plone.app.portlets" />
   <include package="plone.app.redirector" />
   <include package="plone.app.vocabularies" />
-
+  <include package="plone.app.workflow" />
   <include package="plone.session" />
   
   <!-- kss -->

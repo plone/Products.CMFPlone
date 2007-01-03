@@ -795,6 +795,14 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         rightColumn = getUtility(IPortletManager, name=u'plone.rightcolumn')
         portletAssignments = getMultiAdapter((members, rightColumn,), ILocalPortletAssignmentManager)
         self.assertEquals(True, portletAssignments.getBlacklistStatus(CONTEXT_PORTLETS))
+        
+    def testReaderEditorRoles(self):
+        self.failUnless('Reader' in self.portal.valid_roles())
+        self.failUnless('Editor' in self.portal.valid_roles())
+        self.failUnless('Reader' in self.portal.acl_users.portal_role_manager.listRoleIds())
+        self.failUnless('Editor' in self.portal.acl_users.portal_role_manager.listRoleIds())
+        self.failUnless('View' in [r['name'] for r in self.portal.permissionsOfRole('Reader') if r['selected']])
+        self.failUnless('Modify portal content' in [r['name'] for r in self.portal.permissionsOfRole('Editor') if r['selected']])
 
 class TestPortalBugs(PloneTestCase.PloneTestCase):
 

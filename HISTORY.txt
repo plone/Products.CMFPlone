@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Added Reader and Editor local roles, and merged in support for the new
+      sharing page, at the @@sharing view.
+      [optilude]
+
     - Add support for OpenID authentication.
       [wichert]
 

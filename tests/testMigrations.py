@@ -70,6 +70,7 @@ from Products.CMFPlone.migrations.v3_0.alphas import registerToolsAsUtilities
 from Products.CMFPlone.migrations.v3_0.alphas import installKss
 from Products.CMFPlone.migrations.v3_0.alphas import installRedirectorUtility
 from Products.CMFPlone.migrations.v3_0.alphas import addContentRulesAction
+from Products.CMFPlone.migrations.v3_0.alphas import addReaderAndEditorRoles
 
 from zope.app.component.hooks import clearSite
 from zope.app.component.interfaces import ISite
@@ -1540,6 +1541,38 @@ class TestMigrations_v3_0(MigrationTest):
     def testAddContentRulesActionNoCategory(self):
         self.portal.portal_actions._delOb('object_buttons')
         addContentRulesAction(self.portal, [])
+        
+    def testAddReaderEditorRoles(self):
+        self.portal._delRoles(['Reader', 'Editor'])
+        addReaderAndEditorRoles(self.portal, [])
+        self.failUnless('Reader' in self.portal.valid_roles())
+        self.failUnless('Editor' in self.portal.valid_roles())
+        self.failUnless('Reader' in self.portal.acl_users.portal_role_manager.listRoleIds())
+        self.failUnless('Editor' in self.portal.acl_users.portal_role_manager.listRoleIds())
+        self.failUnless('View' in [r['name'] for r in self.portal.permissionsOfRole('Reader') if r['selected']])
+        self.failUnless('Modify portal content' in [r['name'] for r in self.portal.permissionsOfRole('Editor') if r['selected']])
+        
+    def testAddReaderEditorRolesPermissionOnly(self):
+        self.portal.manage_permission('View', [], True)
+        self.portal.manage_permission('Modify portal content', [], True)
+        addReaderAndEditorRoles(self.portal, [])
+        self.failUnless('Reader' in self.portal.valid_roles())
+        self.failUnless('Editor' in self.portal.valid_roles())
+        self.failUnless('Reader' in self.portal.acl_users.portal_role_manager.listRoleIds())
+        self.failUnless('Editor' in self.portal.acl_users.portal_role_manager.listRoleIds())
+        self.failUnless('View' in [r['name'] for r in self.portal.permissionsOfRole('Reader') if r['selected']])
+        self.failUnless('Modify portal content' in [r['name'] for r in self.portal.permissionsOfRole('Editor') if r['selected']])
+        
+    def testAddReaderEditorRolesTwice(self):
+        self.portal._delRoles(['Reader', 'Editor'])
+        addReaderAndEditorRoles(self.portal, [])
+        addReaderAndEditorRoles(self.portal, [])
+        self.failUnless('Reader' in self.portal.valid_roles())
+        self.failUnless('Editor' in self.portal.valid_roles())
+        self.failUnless('Reader' in self.portal.acl_users.portal_role_manager.listRoleIds())
+        self.failUnless('Editor' in self.portal.acl_users.portal_role_manager.listRoleIds())
+        self.failUnless('View' in [r['name'] for r in self.portal.permissionsOfRole('Reader') if r['selected']])
+        self.failUnless('Modify portal content' in [r['name'] for r in self.portal.permissionsOfRole('Editor') if r['selected']])
 
 class TestMigrations_v3_0_Actions(MigrationTest):
 

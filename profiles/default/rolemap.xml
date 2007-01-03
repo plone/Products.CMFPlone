@@ -7,6 +7,8 @@
     <role name="Member"/>
     <role name="Owner"/>
     <role name="Reviewer"/>
+    <role name="Reader" />
+    <role name="Editor" />
   </roles>
   <permissions>
     <permission name="Access inactive portal content"
@@ -93,6 +95,14 @@
                 acquire="True">
       <role name="Manager"/>
       <role name="Member"/>
+    </permission>
+    <permission name="View"
+                acquire="True">
+        <role name="Reader" />
+    </permission>
+    <permission name="Modify portal content"
+                acquire="True">
+        <role name="Editor" />
     </permission>
   </permissions>
 </rolemap>

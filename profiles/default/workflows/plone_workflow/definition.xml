@@ -17,6 +17,8 @@
    <permission-role>Manager</permission-role>
    <permission-role>Owner</permission-role>
    <permission-role>Reviewer</permission-role>
+   <permission-role>Reader</permission-role>
+   <permission-role>Editor</permission-role>
   </permission-map>
   <permission-map name="Change portal events"
                   acquired="False">
@@ -32,6 +34,8 @@
    <permission-role>Manager</permission-role>
    <permission-role>Owner</permission-role>
    <permission-role>Reviewer</permission-role>
+   <permission-role>Reader</permission-role>
+   <permission-role>Editor</permission-role>
   </permission-map>
 
  </state>
@@ -41,6 +45,8 @@
                   acquired="False">
    <permission-role>Manager</permission-role>
    <permission-role>Owner</permission-role>
+   <permission-role>Reader</permission-role>
+   <permission-role>Editor</permission-role>
   </permission-map>
   <permission-map name="Change portal events"
                   acquired="False">
@@ -51,10 +57,13 @@
                   acquired="False">
    <permission-role>Manager</permission-role>
    <permission-role>Owner</permission-role>
+   <permission-role>Editor</permission-role>
   </permission-map>
   <permission-map name="View" acquired="False">
    <permission-role>Manager</permission-role>
    <permission-role>Owner</permission-role>
+   <permission-role>Reader</permission-role>
+   <permission-role>Editor</permission-role>
   </permission-map>
 
  </state>
@@ -65,6 +74,8 @@
                   acquired="True">
    <permission-role>Anonymous</permission-role>
    <permission-role>Manager</permission-role>
+   <permission-role>Reader</permission-role>
+   <permission-role>Editor</permission-role>
   </permission-map>
   <permission-map name="Change portal events"
                   acquired="False">
@@ -77,6 +88,8 @@
   <permission-map name="View" acquired="True">
    <permission-role>Anonymous</permission-role>
    <permission-role>Manager</permission-role>
+   <permission-role>Reader</permission-role>
+   <permission-role>Editor</permission-role>
   </permission-map>
 
  </state>
@@ -89,6 +102,8 @@
    <permission-role>Anonymous</permission-role>
    <permission-role>Manager</permission-role>
    <permission-role>Reviewer</permission-role>
+   <permission-role>Reader</permission-role>
+   <permission-role>Editor</permission-role>
   </permission-map>
   <permission-map name="Change portal events"
                   acquired="False">
@@ -99,11 +114,14 @@
                   acquired="False">
    <permission-role>Manager</permission-role>
    <permission-role>Owner</permission-role>
+   <permission-role>Editor</permission-role>
   </permission-map>
   <permission-map name="View" acquired="True">
    <permission-role>Anonymous</permission-role>
    <permission-role>Manager</permission-role>
    <permission-role>Reviewer</permission-role>
+   <permission-role>Reader</permission-role>
+   <permission-role>Editor</permission-role>
   </permission-map>
 
  </state>

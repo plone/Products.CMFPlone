@@ -100,6 +100,9 @@ def alpha1_alpha2(portal):
     # Add action for plone.app.contentrules
     addContentRulesAction(portal, out)
 
+    # Add reader and editor roles
+    addReaderAndEditorRoles(portal, out)
+
     return out
 
 def enableZope3Site(portal, out):
@@ -361,6 +364,29 @@ def addContentRulesAction(portal, out):
                                     visible=True)
                 object_buttons._setObject('contentrules', new_action)
                 out.append("Added content rules action to object_buttons")
+
+def addReaderAndEditorRoles(portal, out):
+    if 'Reader' not in portal.valid_roles():
+        portal._addRole('Reader')
+    if 'Editor' not in portal.valid_roles():
+        portal._addRole('Editor')
+    if 'Reader' not in portal.acl_users.portal_role_manager.listRoleIds():
+        portal.acl_users.portal_role_manager.addRole('Reader')
+    if 'Editor' not in portal.acl_users.portal_role_manager.listRoleIds():
+        portal.acl_users.portal_role_manager.addRole('Editor')
+    
+    viewRoles = [r['name'] for r in portal.rolesOfPermission('View') if r['selected']]
+    modifyRoles = [r['name'] for r in portal.rolesOfPermission('Modify portal content') if r['selected']]
+    
+    if 'Reader' not in viewRoles:
+        viewRoles.append('Reader')
+        portal.manage_permission('View', viewRoles, True)
+        
+    if 'Editor' not in modifyRoles:
+        modifyRoles.append('Editor')
+        portal.manage_permission('Modify portal content', modifyRoles, True)
+
+    out.append('Added reader and editor roles')
 
 # --
 # KSS registration
