@@ -202,6 +202,6 @@ def registerMigrations():
                                       null)
 
     MigrationTool.registerUpgradePath('2.5.1',
-                                      '2.5.2 (SVN/UNRELEASED)',
+                                      '2.5.2-rc1',
                                       v2_5.two51_two52.two51_two52)
 

@@ -2,7 +2,7 @@ Changelog for Plone
 
     (name of developer listed in brackets)
 
-Plone 2.5.2 - Orb - (Unreleased)
+Plone 2.5.2 - Orb - released January 3, 2007
 
     - In livesearch results, don't append ... at the end, when the lenght of
       the title or description is exactly the limit. This closes
