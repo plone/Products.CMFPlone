@@ -55,7 +55,6 @@
             Plone <span tal:replace="mt/getInstanceVersion" />, <br />
             <span tal:replace="sys/CMF" />, <br />
             Zope <span tal:replace="sys/Zope" />, <br />
-            <span tal:replace="sys/Five" />, <br />
             Python <span tal:replace="sys/Python" />, <br />
             <tal:pil condition="sys/PIL">
             PIL <span tal:replace="sys/PIL" />
