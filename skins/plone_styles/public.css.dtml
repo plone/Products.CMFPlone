@@ -36,22 +36,7 @@ h1, h2 {
     font-weight: normal;
 }
 
-h3 {
-    border-bottom: none;
-    font-weight: bold;
-}
-
-h4 {
-    border-bottom: none;
-    font-weight: bold;
-}
-
-h5 {
-    border-bottom: none;
-    font-weight: bold;
-}
-
-h6 {
+h3, h4, h5, h6 {
     border-bottom: none;
     font-weight: bold;
 }
