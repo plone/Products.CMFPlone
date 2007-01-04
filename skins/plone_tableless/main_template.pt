@@ -197,8 +197,6 @@
       </div>
       <tal:comment replace="nothing"> end column wrapper </tal:comment>
 
-      <hr class="netscape4" />
-
       <metal:block i18n:domain="plone">
 
         <div tal:replace="structure provider:plone.portalfooter" />
