@@ -6,6 +6,7 @@ Plone 3.0 - unreleased
 
     - Moved accessibility elements from base.css to invisibles.css, since they
       should remain even if you do a total customization.
+      [limi]
 
     - Removed Five from the core versions overview in the plone control panel.
       Five will probably evolve as a set of independent packages rather than

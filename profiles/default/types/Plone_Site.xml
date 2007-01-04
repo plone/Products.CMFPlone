@@ -23,7 +23,7 @@
  </property>
  <alias from="(Default)" to="(dynamic view)"/>
  <alias from="edit" to="folder_edit_form"/>
- <alias from="sharing" to="folder_localrole_form"/>
+ <alias from="sharing" to="@@sharing"/>
  <alias from="view" to="(selected layout)"/>
  <action title="View" action_id="view" category="object" condition_expr=""
     url_expr="string:${object_url}" visible="True">

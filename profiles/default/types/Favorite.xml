@@ -20,7 +20,7 @@
  </property>
  <alias from="(Default)" to="(dynamic view)"/>
  <alias from="edit" to="atct_edit"/>
- <alias from="sharing" to="folder_localrole_form"/>
+ <alias from="sharing" to="@@sharing"/>
  <alias from="view" to="(selected layout)"/>
  <action title="External Edit" action_id="external_edit" category="object"
     condition_expr="object/externalEditorEnabled"

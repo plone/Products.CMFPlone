@@ -435,7 +435,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
                 '(Default)'  : '(dynamic view)',
                 'view'       : '(selected layout)',
                 'edit'       : 'folder_edit_form',
-                'sharing'    : 'folder_localrole_form',
+                'sharing'    : '@@sharing',
               }
         fti = self.portal.getTypeInfo()
         aliases = fti.getMethodAliases()

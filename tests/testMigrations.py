@@ -71,6 +71,7 @@ from Products.CMFPlone.migrations.v3_0.alphas import installKss
 from Products.CMFPlone.migrations.v3_0.alphas import installRedirectorUtility
 from Products.CMFPlone.migrations.v3_0.alphas import addContentRulesAction
 from Products.CMFPlone.migrations.v3_0.alphas import addReaderAndEditorRoles
+from Products.CMFPlone.migrations.v3_0.alphas import migrateLocalroleForm
 
 from zope.app.component.hooks import clearSite
 from zope.app.component.interfaces import ISite
@@ -1573,6 +1574,33 @@ class TestMigrations_v3_0(MigrationTest):
         self.failUnless('Editor' in self.portal.acl_users.portal_role_manager.listRoleIds())
         self.failUnless('View' in [r['name'] for r in self.portal.permissionsOfRole('Reader') if r['selected']])
         self.failUnless('Modify portal content' in [r['name'] for r in self.portal.permissionsOfRole('Editor') if r['selected']])
+
+    def testMigrateLocalroleForm(self):
+        fti = self.portal.portal_types['Document']
+        aliases = fti.getMethodAliases()
+        aliases['sharing'] = 'folder_localrole_form'
+        fti.setMethodAliases(aliases)
+        fti.addAction('test', 'Test', 'string:${object_url}/folder_localrole_form', None, 'View', 'object_tabs')
+        migrateLocalroleForm(self.portal, [])
+        self.assertEquals('@@sharing', fti.aliases['sharing'])
+        test_action = fti.listActions()[-1]
+        self.assertEquals('string:${object_url}/@@sharing', test_action.getActionExpression())
+
+    def testMigrateLocalroleFormTwice(self):
+        fti = self.portal.portal_types['Document']
+        aliases = fti.getMethodAliases()
+        aliases['sharing'] = 'folder_localrole_form'
+        fti.setMethodAliases(aliases)
+        fti.addAction('test', 'Test', 'string:${object_url}/folder_localrole_form', None, 'View', 'object_tabs')
+        migrateLocalroleForm(self.portal, [])
+        migrateLocalroleForm(self.portal, [])
+        self.assertEquals('@@sharing', fti.aliases['sharing'])
+        test_action = fti.listActions()[-1]
+        self.assertEquals('string:${object_url}/@@sharing', test_action.getActionExpression())
+        
+    def testMigrateLocalroleFormNoTool(self):
+        self.portal._delObject('portal_types')
+        migrateLocalroleForm(self.portal, [])
 
 class TestMigrations_v3_0_Actions(MigrationTest):
 

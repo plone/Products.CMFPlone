@@ -37,7 +37,7 @@
   <permission value="View"/>
  </action>
  <action title="Sharing" action_id="local_roles" category="object"
-    condition_expr="" url_expr="string:${object_url}/folder_localrole_form"
+    condition_expr="" url_expr="string:${object_url}/@@sharing"
     visible="True">
   <permission value="Manage properties"/>
  </action>

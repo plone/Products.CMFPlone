@@ -64,7 +64,7 @@ factory_type_information = {
         {
             'id': 'local_roles',
             'name': _(u'Local Roles'),
-            'action': 'string:${folder_url}/folder_localrole_form',
+            'action': 'string:${folder_url}/@@sharing',
             'permissions': (ManageProperties,),
             'category': 'folder',
         },

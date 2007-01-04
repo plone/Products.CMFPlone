@@ -103,6 +103,9 @@ def alpha1_alpha2(portal):
     # Add reader and editor roles
     addReaderAndEditorRoles(portal, out)
 
+    # Change folder_localrole_form to @@sharing
+    migrateLocalroleForm(portal, out)
+
     return out
 
 def enableZope3Site(portal, out):
@@ -387,6 +390,24 @@ def addReaderAndEditorRoles(portal, out):
         portal.manage_permission('Modify portal content', modifyRoles, True)
 
     out.append('Added reader and editor roles')
+
+def migrateLocalroleForm(portal, out):
+    portal_types = getToolByName(portal, 'portal_types', None)
+    if portal_types is not None:
+        for fti in portal_types.objectValues():
+            
+            aliases = fti.getMethodAliases()
+            new_aliases = aliases.copy()
+            for k, v in aliases.items():
+                if 'folder_localrole_form' in v:
+                    new_aliases[k] = v.replace('folder_localrole_form', '@@sharing')
+            fti.setMethodAliases(new_aliases)
+            
+            for a in fti.listActions():
+                expr = a.getActionExpression()
+                if 'folder_localrole_form' in expr:
+                    a.setActionExpression(expr.replace('folder_localrole_form', '@@sharing'))
+    out.append('Ensured references to folder_localrole_form point to @@sharing now')
 
 # --
 # KSS registration

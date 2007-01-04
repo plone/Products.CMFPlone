@@ -20,7 +20,7 @@
  </property>
  <alias from="(Default)" to="index_html"/>
  <alias from="edit" to="atct_edit"/>
- <alias from="sharing" to="folder_localrole_form"/>
+ <alias from="sharing" to="@@sharing"/>
  <alias from="view" to="(selected layout)"/>
  <action title="View" action_id="view" category="object" condition_expr=""
     url_expr="string:${object_url}/view" visible="True">
