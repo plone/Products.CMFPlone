@@ -27,6 +27,34 @@
 }
 
 /* Content area */
+h1, h2, h3, h4, h5, h6 {
+    border-bottom: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+}
+
+h1, h2 {
+    border-bottom: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    font-weight: normal;
+}
+
+h3 {
+    border-bottom: none;
+    font-weight: bold;
+}
+
+h4 {
+    border-bottom: none;
+    font-weight: bold;
+}
+
+h5 {
+    border-bottom: none;
+    font-weight: bold;
+}
+
+h6 {
+    border-bottom: none;
+    font-weight: bold;
+}
 
 .documentContent {
     font-size: 110%;

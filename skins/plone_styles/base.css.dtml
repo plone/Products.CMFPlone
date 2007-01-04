@@ -58,11 +58,8 @@ hr {
 
 h1, h2, h3, h4, h5, h6 {
     color: &dtml-fontColor;;
-    background-color: transparent;
     font-family: <dtml-var headingFontFamily>;
-    font-weight: normal;
     margin: 0 0 0.25em 0;
-    border-bottom: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
 }
 
 h1 a,
