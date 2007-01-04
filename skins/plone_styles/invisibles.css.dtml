@@ -17,6 +17,18 @@
 /* <dtml-call "REQUEST.set('portal_url', portal_url())"> (not this either :) */
 
 
+/* This is going to be used later, but I haven't enabled it for now, since it 
+   has some side effects. Stashing it here for now, though. :) 
+   ~limi
+/* First, we remove some common browser stylings to make sure we have a neutral starting point */
+/* { margin: 0; padding: 0; } /* No elements should have implicit margin/padding */
+/* :link,:visited { text-decoration:none } /* no underline by default on links */
+/* ul,ol { list-style:none } /* when we want markers on lists, we will be explicit about it */
+/* h1,h2,h3,h4,h5,h6,pre,code { font-size:1em; }  /* Browsers are inconsistent here, reset */
+/* a img,:link img,:visited img { border:none } /* Linked images should not have borders */
+
+
+
 /* List classes without markers */
 ul.visualNoMarker,
 ol.visualNoMarker {
