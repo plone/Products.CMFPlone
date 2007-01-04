@@ -7,7 +7,7 @@ Plone 3.0 - unreleased
     - Deleted folder_localrole_form and its scripts, since this is now 
       provided in the @@sharing view. That felt good. Added an alias with
       a deprecation warning in plone.app.layout so that old links still work.
-      The alias will be gone in 4.0.
+      The alias will be gone in 3.5.
       [optilude]
 
     - Moved accessibility elements from base.css to invisibles.css, since they
