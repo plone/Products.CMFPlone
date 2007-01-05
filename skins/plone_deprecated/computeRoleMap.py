@@ -4,6 +4,9 @@ acquired_roles=pu.getInheritedLocalRoles(context)
 local_roles=context.acl_users.getLocalRolesForDisplay(context)
 mtool=context.portal_membership
 
+context.plone_log("The computeRoleMap script is deprecated and will be "
+                  "removed in Plone 3.5.")
+
 # result contains dictionaries with the keys
 # name, type, global_roles, acquired_roles, local_roles
 result=[]
