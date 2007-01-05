@@ -1582,7 +1582,7 @@ class TestMigrations_v3_0(MigrationTest):
         fti.setMethodAliases(aliases)
         fti.addAction('test', 'Test', 'string:${object_url}/folder_localrole_form', None, 'View', 'object_tabs')
         migrateLocalroleForm(self.portal, [])
-        self.assertEquals('@@sharing', fti.aliases['sharing'])
+        self.assertEquals('@@sharing', fti.getMethodAliases()['sharing'])
         test_action = fti.listActions()[-1]
         self.assertEquals('string:${object_url}/@@sharing', test_action.getActionExpression())
 
@@ -1594,7 +1594,7 @@ class TestMigrations_v3_0(MigrationTest):
         fti.addAction('test', 'Test', 'string:${object_url}/folder_localrole_form', None, 'View', 'object_tabs')
         migrateLocalroleForm(self.portal, [])
         migrateLocalroleForm(self.portal, [])
-        self.assertEquals('@@sharing', fti.aliases['sharing'])
+        self.assertEquals('@@sharing', fti.getMethodAliases()['sharing'])
         test_action = fti.listActions()[-1]
         self.assertEquals('string:${object_url}/@@sharing', test_action.getActionExpression())
         
