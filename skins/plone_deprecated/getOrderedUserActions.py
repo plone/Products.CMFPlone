@@ -8,6 +8,9 @@
 ##title=Depending on the context return the actions for a personalbar
 ##
 
+context.plone_log("The getOrderedUserActions script is deprecated and will be "
+                  "removed in Plone 3.5.")
+
 if keyed_actions is None:
     keyed_actions=context.keyFilteredActions()
 

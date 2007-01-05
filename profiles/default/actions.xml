@@ -361,32 +361,6 @@
    </property>
    <property name="visible">True</property>
   </object>
-  <object name="myworkspace" meta_type="CMF Action" i18n:domain="plone">
-   <property name="title" i18n:translate="">Workspace</property>
-   <property name="description" i18n:translate=""></property>
-   <property
-      name="url_expr">string:${portal/portal_membership/getHomeUrl}/workspace</property>
-   <property name="icon_expr"></property>
-   <property
-      name="available_expr">python:(member is not None) and (portal.portal_membership.getHomeFolder() is not None)</property>
-   <property name="permissions">
-    <element value="View"/>
-   </property>
-   <property name="visible">False</property>
-  </object>
-  <object name="favorites" meta_type="CMF Action" i18n:domain="plone">
-   <property name="title" i18n:translate="">My favorites</property>
-   <property name="description" i18n:translate=""></property>
-   <property
-      name="url_expr">string:${portal/portal_membership/getHomeUrl}/Favorites/folder_contents</property>
-   <property name="icon_expr"></property>
-   <property
-      name="available_expr">python:(member is not None) and hasattr(portal.portal_membership.getHomeFolder(), "Favorites")</property>
-   <property name="permissions">
-    <element value="View"/>
-   </property>
-   <property name="visible">False</property>
-  </object>
   <object name="preferences" meta_type="CMF Action" i18n:domain="plone">
    <property name="title" i18n:translate="">Preferences</property>
    <property name="description" i18n:translate=""></property>
@@ -399,46 +373,12 @@
    </property>
    <property name="visible">True</property>
   </object>
-  <object name="addFavorite" meta_type="CMF Action" i18n:domain="plone">
-   <property name="title" i18n:translate="">Add to favorites</property>
-   <property name="description" i18n:translate=""></property>
-   <property name="url_expr">string:${object_url}/addtoFavorites</property>
-   <property name="icon_expr"></property>
-   <property
-      name="available_expr">python: portal.portal_membership.getHomeFolder() is not None</property>
-   <property name="permissions">
-    <element value="View"/>
-   </property>
-   <property name="visible">False</property>
-  </object>
   <object name="login" meta_type="CMF Action" i18n:domain="plone">
    <property name="title" i18n:translate="">Log in</property>
    <property name="description" i18n:translate=""></property>
    <property name="url_expr">string:${portal_url}/login_form</property>
    <property name="icon_expr"></property>
    <property name="available_expr">python:member is None</property>
-   <property name="permissions">
-    <element value="View"/>
-   </property>
-   <property name="visible">True</property>
-  </object>
-  <object name="logged_in" meta_type="CMF Action" i18n:domain="plone">
-   <property name="title" i18n:translate="">Logged in</property>
-   <property name="description" i18n:translate=""></property>
-   <property name="url_expr">string:${portal_url}/logged_in</property>
-   <property name="icon_expr"></property>
-   <property name="available_expr"></property>
-   <property name="permissions">
-    <element value="View"/>
-   </property>
-   <property name="visible">False</property>
-  </object>
-  <object name="logout" meta_type="CMF Action" i18n:domain="plone">
-   <property name="title" i18n:translate="">Log out</property>
-   <property name="description" i18n:translate=""></property>
-   <property name="url_expr">string:${portal_url}/logout</property>
-   <property name="icon_expr"></property>
-   <property name="available_expr">python:member is not None</property>
    <property name="permissions">
     <element value="View"/>
    </property>
@@ -465,6 +405,66 @@
     <element value="List undoable changes"/>
    </property>
    <property name="visible">True</property>
+  </object>
+  <object name="logout" meta_type="CMF Action" i18n:domain="plone">
+   <property name="title" i18n:translate="">Log out</property>
+   <property name="description" i18n:translate=""></property>
+   <property name="url_expr">string:${portal_url}/logout</property>
+   <property name="icon_expr"></property>
+   <property name="available_expr">python:member is not None</property>
+   <property name="permissions">
+    <element value="View"/>
+   </property>
+   <property name="visible">True</property>
+  </object>
+  <object name="logged_in" meta_type="CMF Action" i18n:domain="plone">
+   <property name="title" i18n:translate="">Logged in</property>
+   <property name="description" i18n:translate=""></property>
+   <property name="url_expr">string:${portal_url}/logged_in</property>
+   <property name="icon_expr"></property>
+   <property name="available_expr"></property>
+   <property name="permissions">
+    <element value="View"/>
+   </property>
+   <property name="visible">False</property>
+  </object>
+  <object name="myworkspace" meta_type="CMF Action" i18n:domain="plone">
+   <property name="title" i18n:translate="">Workspace</property>
+   <property name="description" i18n:translate=""></property>
+   <property
+      name="url_expr">string:${portal/portal_membership/getHomeUrl}/workspace</property>
+   <property name="icon_expr"></property>
+   <property
+      name="available_expr">python:(member is not None) and (portal.portal_membership.getHomeFolder() is not None)</property>
+   <property name="permissions">
+    <element value="View"/>
+   </property>
+   <property name="visible">False</property>
+  </object>
+  <object name="addFavorite" meta_type="CMF Action" i18n:domain="plone">
+   <property name="title" i18n:translate="">Add to favorites</property>
+   <property name="description" i18n:translate=""></property>
+   <property name="url_expr">string:${object_url}/addtoFavorites</property>
+   <property name="icon_expr"></property>
+   <property
+      name="available_expr">python: portal.portal_membership.getHomeFolder() is not None</property>
+   <property name="permissions">
+    <element value="View"/>
+   </property>
+   <property name="visible">False</property>
+  </object>
+  <object name="favorites" meta_type="CMF Action" i18n:domain="plone">
+   <property name="title" i18n:translate="">My favorites</property>
+   <property name="description" i18n:translate=""></property>
+   <property
+      name="url_expr">string:${portal/portal_membership/getHomeUrl}/Favorites/folder_contents</property>
+   <property name="icon_expr"></property>
+   <property
+      name="available_expr">python:(member is not None) and hasattr(portal.portal_membership.getHomeFolder(), "Favorites")</property>
+   <property name="permissions">
+    <element value="View"/>
+   </property>
+   <property name="visible">False</property>
   </object>
  </object>
  <object name="global" meta_type="CMF Action Category">

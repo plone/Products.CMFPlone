@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Deprecated the getOrderedUserActions script. It was only used in the
+      global_personalbar to enforce a certain logical order of the actions,
+      but action categories support ordering themselves now, so the script was
+      obsolete.
+      [hannosch]
+
     - Deleted folder_localrole_form and its scripts, since this is now 
       provided in the @@sharing view. That felt good. Added an alias with
       a deprecation warning in plone.app.layout so that old links still work.

@@ -106,6 +106,10 @@ def alpha1_alpha2(portal):
     # Change folder_localrole_form to @@sharing
     migrateLocalroleForm(portal, out)
 
+    # Reorder the user actions in a way that makes the getOrderedUserActions
+    # script obsolete
+    reorderUserActions(portal, out)
+
     return out
 
 def enableZope3Site(portal, out):
@@ -408,6 +412,15 @@ def migrateLocalroleForm(portal, out):
                 if 'folder_localrole_form' in expr:
                     a.setActionExpression(expr.replace('folder_localrole_form', '@@sharing'))
     out.append('Ensured references to folder_localrole_form point to @@sharing now')
+
+def reorderUserActions(portal, out):
+    portal_actions = getToolByName(portal, 'portal_actions', None)
+    if portal_actions is not None:
+        user_category = getattr(portal_actions, 'user', None)
+        if user_category is not None:
+            user_category.moveObjectsToTop(['login', 'join', 'mystuff',
+                                            'preferences', 'undo', 'logout'])
+
 
 # --
 # KSS registration

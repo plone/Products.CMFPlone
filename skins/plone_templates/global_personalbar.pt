@@ -7,7 +7,7 @@
 
 <div metal:define-macro="personal_bar"
       id="portal-personaltools-wrapper"
-      tal:define="display_actions python:user_actions[:-1]+global_actions+user_actions[-1:];
+      tal:define="actions context/@@plone_context_state/actions;
                   getIconFor nocall:putils/getIconFor;">
 
 <h5 class="hiddenStructure" i18n:translate="heading_personal_tools">Personal tools</h5>
@@ -25,7 +25,7 @@
        </a></li>
    </tal:block>
 
-    <tal:actions tal:repeat="action python:here.getOrderedUserActions(keyed_actions=keyed_actions)">
+    <tal:actions tal:repeat="action actions/user">
         <li tal:define="icon python:getIconFor(action['category'], action['id'], None);
                         class_name string:visualIcon actionicon-${action/category}-${action/id};
                         class_name python:test(icon, class_name, nothing);"

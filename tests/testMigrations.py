@@ -72,6 +72,7 @@ from Products.CMFPlone.migrations.v3_0.alphas import installRedirectorUtility
 from Products.CMFPlone.migrations.v3_0.alphas import addContentRulesAction
 from Products.CMFPlone.migrations.v3_0.alphas import addReaderAndEditorRoles
 from Products.CMFPlone.migrations.v3_0.alphas import migrateLocalroleForm
+from Products.CMFPlone.migrations.v3_0.alphas import reorderUserActions
 
 from zope.app.component.hooks import clearSite
 from zope.app.component.interfaces import ISite
@@ -1601,6 +1602,42 @@ class TestMigrations_v3_0(MigrationTest):
     def testMigrateLocalroleFormNoTool(self):
         self.portal._delObject('portal_types')
         migrateLocalroleForm(self.portal, [])
+
+    def testReorderUserActions(self):
+        self.actions.user.moveObjectsToTop(['logout', 'undo', 'join'])
+        reorderUserActions(self.portal, [])
+        # build a dict that has the position as the value to make it easier to
+        # compare postions in the ordered list of actions
+        n = 0
+        sort = {}
+        for action in self.actions.user.objectIds():
+            sort[action] = n
+            n += 1
+        self.failUnless(sort['mystuff'] < sort['preferences'])
+        self.failUnless(sort['preferences'] < sort['undo'])
+        self.failUnless(sort['undo'] < sort['logout'])
+        self.failUnless(sort['login'] < sort['join'])
+
+    def testReorderUserActionsTwice(self):
+        self.actions.user.moveObjectsToTop(['logout', 'undo', 'join'])
+        reorderUserActions(self.portal, [])
+        reorderUserActions(self.portal, [])
+        # build a dict that has the position as the value to make it easier to
+        # compare postions in the ordered list of actions
+        n = 0
+        sort = {}
+        for action in self.actions.user.objectIds():
+            sort[action] = n
+            n += 1
+        self.failUnless(sort['mystuff'] < sort['preferences'])
+        self.failUnless(sort['preferences'] < sort['undo'])
+        self.failUnless(sort['undo'] < sort['logout'])
+        self.failUnless(sort['login'] < sort['join'])
+
+    def testReorderUserActionsNoTool(self):
+        self.portal._delObject('portal_actions')
+        reorderUserActions(self.portal, [])
+
 
 class TestMigrations_v3_0_Actions(MigrationTest):
 
