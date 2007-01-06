@@ -417,9 +417,12 @@ def reorderUserActions(portal, out):
     portal_actions = getToolByName(portal, 'portal_actions', None)
     if portal_actions is not None:
         user_category = getattr(portal_actions, 'user', None)
-        if user_category is not None:
-            user_category.moveObjectsToTop(['login', 'join', 'mystuff',
-                                            'preferences', 'undo', 'logout'])
+        if user_category is not None:        
+            new_actions = ['login', 'join', 'mystuff', 'preferences', 'undo', 'logout']
+            new_actions.reverse()
+            for action in new_actions:
+                if action in user_category.objectIds():
+                    user_category.moveObjectsToTop([action])
 
 
 # --

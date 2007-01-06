@@ -1638,6 +1638,21 @@ class TestMigrations_v3_0(MigrationTest):
         self.portal._delObject('portal_actions')
         reorderUserActions(self.portal, [])
 
+    def testReorderUserActionsIncompleteActions(self):
+        self.actions.user.moveObjectsToTop(['logout', 'undo', 'join'])
+        self.actions.user._delObject('preferences')
+        reorderUserActions(self.portal, [])
+        # build a dict that has the position as the value to make it easier to
+        # compare postions in the ordered list of actions
+        n = 0
+        sort = {}
+        for action in self.actions.user.objectIds():
+            sort[action] = n
+            n += 1
+        self.failUnless(sort['mystuff'] < sort['undo'])
+        self.failUnless(sort['undo'] < sort['logout'])
+        self.failUnless(sort['login'] < sort['join'])
+
 
 class TestMigrations_v3_0_Actions(MigrationTest):
 
