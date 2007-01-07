@@ -405,20 +405,17 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                 thread = [discussionContainer]
         return thread
 
-    # Convenience method since skinstool requires loads of acrobatics.
-    # We use this for the reconfig form
     security.declareProtected(ManagePortal, 'setDefaultSkin')
+    @deprecate("The setDefaultSkin method of the Plone tool has been "
+               "deprecated and will be removed in Plone 3.5.")
     def setDefaultSkin(self, default_skin):
         """Sets the default skin."""
         st = getToolByName(self, 'portal_skins')
         st.default_skin = default_skin
 
-    # Set the skin on the page to the specified value
-    # Can be called from a page template, but it must be called before
-    # anything anything on the skin path is resolved (e.g. main_template).
-    # TODO Note: This method will eventually be replaced by the setCurrentSkin
-    # method that is slated for CMF 1.4
     security.declarePublic('setCurrentSkin')
+    @deprecate("The setCurrentSkin method of the Plone tool has been "
+               "deprecated and will be removed in Plone 3.5.")
     def setCurrentSkin(self, skin_name):
         """Sets the current skin."""
         portal = getToolByName(self, 'portal_url').getPortalObject()

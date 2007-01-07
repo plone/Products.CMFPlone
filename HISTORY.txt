@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Deprecated skin related methods of the Plone tool. The functionality is
+      provided by the skins tool itself for some time now.
+      [hannosch]
+
     - Updated the various mixed Unicode/UTF-8 support patches to be compatible
       with Zope 2.10.2, which is required now as a minimum Zope version.
       [hannosch]
