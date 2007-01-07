@@ -1,0 +1,28 @@
+<tal:favicon define="plone_portal_state context/@@plone_portal_state;
+                     portal_url plone_portal_state/portal_url">
+    <link rel="home"
+          href=""
+          title="Front page"
+          i18n:attributes="title title_frontpage"
+          tal:attributes="href string:$portal_url" />
+
+    <link rel="contents"
+          href=""
+          title="Site Map"
+          i18n:attributes="title title_sitemap"
+          tal:attributes="href string:$portal_url/sitemap" />
+
+    <tal:fixme tal:replace="nothing">
+      <link rel="help" href="" title="Help" tal:attributes="href string:$portal_url/help" />
+      <link rel="copyright" href="" title="Copyright information" tal:attributes="href string:copyright" />
+
+<!--
+    <link rel="up" href="" title="Up one level"
+          tal:define="parent python:context.navigationParent(context, template_id)"
+          tal:condition="parent"
+          tal:attributes="href parent" />
+-->
+
+    </tal:fixme>
+
+</tal:favicon>

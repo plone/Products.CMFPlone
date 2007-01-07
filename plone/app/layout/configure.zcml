@@ -8,5 +8,6 @@
     <include package=".nextprevious" />
     <include package=".alias" />
     <include package=".icons" />
+    <include package=".links" />
     
 </configure>

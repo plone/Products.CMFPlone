@@ -1,0 +1,8 @@
+<tal:favicon define="plone_portal_state context/@@plone_portal_state;
+                     portal_url plone_portal_state/portal_url">
+    <link rel="author"
+          href=""
+          title="Author information"
+          i18n:attributes="title title_author_info"
+          tal:attributes="href string:${portal_url}/author/${context/Creator|nothing}" />
+</tal:favicon>
