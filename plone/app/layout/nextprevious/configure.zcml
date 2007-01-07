@@ -7,7 +7,7 @@
          values are request memoized, so the calculations will only be
          performed once.
      -->
-     
+
     <browser:page
         for="*"
         name="plone_nextprevious_view"
@@ -15,12 +15,19 @@
         permission="zope.Public"
         allowed_attributes="next previous enabled"
         />
- 
+
     <browser:viewlet  
-        name="plone.nextprevious" 
+        name="plone.nextprevious"
         manager="plone.app.layout.viewlets.interfaces.IBelowContent"
         template="nextprevious.pt"
         permission="zope2.View" 
         />
-    
+
+    <browser:viewlet  
+        name="plone.nextprevious.links"
+        manager="plone.app.layout.viewlets.interfaces.IHtmlHeadLinks"
+        template="links.pt"
+        permission="zope2.View" 
+        />
+
 </configure>
