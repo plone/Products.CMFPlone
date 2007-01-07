@@ -16,7 +16,7 @@ def _unicode_replace(structure):
                 # should happen in Plone 3.5).
                 #warnings.warn(textwrap.dedent('''\
                 #
-                #*** *** Insertion of non-unicode non-ascii text in TAL is deprecated and will be broken in Plone 4.0 !!!
+                #*** *** Insertion of non-unicode non-ascii text in TAL is deprecated and will be broken in Plone 4.5 !!!
                 #
                 #%s...
                 #''' % (repr(structure), )), DeprecationWarning, 2)
@@ -43,6 +43,14 @@ def _nulljoin(valuelist):
         for value in valuelist:
             text += _unicode_replace(value)
         return text
+
+
+def new__call__(self, econtext):
+    vvals = []
+    for var in self._vars:
+        v = var(econtext)
+        vvals.append(_unicode_replace(v))
+    return self._expr % tuple(vvals)
 
 
 class FasterStringIO(StringIO):

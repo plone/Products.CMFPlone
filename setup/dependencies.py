@@ -8,8 +8,8 @@ import sys
 MINIMUM_PYTHON_VER = (2, 4, 0)
 PREFERRED_PYTHON_VER = "2.4.1 or newer"
 
-MINIMUM_ZOPE_VER = (2, 10, 0)
-PREFERRED_ZOPE_VER = "2.10.0 or newer"
+MINIMUM_ZOPE_VER = (2, 10, 2)
+PREFERRED_ZOPE_VER = "2.10.2 or newer"
 
 MINIMUM_CMF_VER = (2, 1, 0)
 

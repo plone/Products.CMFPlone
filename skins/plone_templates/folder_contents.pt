@@ -181,7 +181,7 @@
                                    item_url             item/getURL|item/absolute_url;
                                    item_id              item/getId;
                                    item_path            item/getPath|python:'/'.join(item.getPhysicalPath());
-                                   item_title_or_id   item/pretty_title_or_id;
+                                   item_title_or_id     item/pretty_title_or_id;
                                    item_description     item/Description;
                                    item_type            item/portal_type;
                                    item_size            item/getObjSize;

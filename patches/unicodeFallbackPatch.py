@@ -1,10 +1,12 @@
 # import hacks
+from unicodehacks import new__call__
 from unicodehacks import _nulljoin
 from unicodehacks import _unicode_replace
 from unicodehacks import FasterStringIO
 
 # import the poor victims of our monkey patches
 from zope.tal import talinterpreter
+from zope.tales import expressions
 from zope.pagetemplate import pagetemplate
 
 # Enable use of utf-8 text in tales inserts, until all code is changed to use
@@ -20,3 +22,9 @@ talinterpreter._nulljoin = _nulljoin
 # These are joined using a the getValue method of a StringIO class.
 talinterpreter.TALInterpreter.StringIO = FasterStringIO
 pagetemplate.StringIO = FasterStringIO
+
+# Deal with the case of unicode tal expressions that have included parts
+# encoded in utf-8. For example u'string:Select $item_title_or_id' where
+# item_title_or_id is encoded in utf-8
+expressions.StringExpr._old_call = expressions.StringExpr.__call__
+expressions.StringExpr.__call__ = new__call__

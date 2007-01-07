@@ -8,4 +8,9 @@
         factory="Products.Five.i18n.PTSLanguages"
         />
 
+    <utility
+        provides="Products.PageTemplates.interfaces.IUnicodeEncodingConflictResolver"
+        component="Products.CMFPlone.unicodeconflictresolver.UTF8EncodingConflictResolver"
+        />
+
 </configure>

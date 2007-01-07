@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Updated the various mixed Unicode/UTF-8 support patches to be compatible
+      with Zope 2.10.2, which is required now as a minimum Zope version.
+      [hannosch]
+
     - Did some minor import locations cleanup. Deprecated i18n related methods
       in utils.py and importing IndexIterator from ploneview.py.
       [hannosch]
