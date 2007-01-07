@@ -20,18 +20,6 @@ class DiscussionTool(PloneBaseTool, BaseTool):
 
     __implements__ = (PloneBaseTool.__implements__, BaseTool.__implements__, )
 
-    security.declarePublic('getDiscussionFor')
-    def getDiscussionFor(self, content):
-        """Same as CMFDefault.DiscussionTool.getDiscussionFor, but never raises
-        DiscussionNotAllowed."""
-        if not IDiscussionResponse.isImplementedBy(content) and \
-                getattr( aq_base(content), 'talkback', None ) is None:
-            # Discussion Items use the DiscussionItemContainer object of the
-            # related content item, so only create one for other content items
-            self._createDiscussionFor(content)
-
-        return content.talkback # Return wrapped talkback
-
     security.declareProtected(ReplyToItem, 'cookReply')
     def cookReply(self, reply, text_format=None):
         """ TODO We need this because currently we can not easily change the

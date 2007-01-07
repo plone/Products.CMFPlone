@@ -21,10 +21,11 @@ except DiscussionNotAllowed:
 
 def getRs(obj, replies, counter):
     rs = pd.getDiscussionFor(obj).getReplies()
-    rs = container.sort_modified_ascending(rs)
-    for r in rs:
-        replies.append({'depth':counter, 'object':r})
-        getRs(r, replies, counter=counter + 1)
+    if len(rs) > 0:
+        rs = container.sort_modified_ascending(rs)
+        for r in rs:
+            replies.append({'depth':counter, 'object':r})
+            getRs(r, replies, counter=counter + 1)
 
 getRs(obj, replies, 0)
 return replies

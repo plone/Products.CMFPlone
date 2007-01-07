@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Added simply optimization to the getReplyReplies script, avoiding some
+      calculations when there are no replies and removed the custom
+      getDiscussionFor method from CMFPlone's DiscussionTool, as it wasn't
+      needed anymore.
+      [hannosch]
+
     - Fixed an unsafe usage of hasattr in computeRelatedItems with base_hasattr.
       [hannosch]
 
