@@ -11,6 +11,12 @@
         />
 
     <browser:viewletManager
+        name="plone.htmlhead.links"
+        provides=".interfaces.IHtmlHeadLinks"
+        permission="zope2.View"
+        />
+
+    <browser:viewletManager
         name="plone.portalheader"
         provides=".interfaces.IPortalHeader"
         permission="zope2.View"
