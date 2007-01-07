@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Did some minor import locations cleanup. Deprecated i18n related methods
+      in utils.py and importing IndexIterator from ploneview.py.
+      [hannosch]
+
     - Added simply optimization to the getReplyReplies script, avoiding some
       calculations when there are no replies and removed the custom
       getDiscussionFor method from CMFPlone's DiscussionTool, as it wasn't

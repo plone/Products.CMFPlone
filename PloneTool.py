@@ -2,15 +2,18 @@ import re
 import sys
 from types import UnicodeType, StringType
 import urlparse
-
-from Products.CMFPlone.utils import log
-from Products.CMFPlone.utils import log_exc
 import transaction
-from Products.CMFPlone import utils
 
+from zope.deprecation import deprecate
+
+from AccessControl import ClassSecurityInfo, Unauthorized
 from Acquisition import aq_base, aq_inner, aq_parent
-
 from ComputedAttribute import ComputedAttribute
+from DateTime import DateTime
+from Globals import InitializeClass
+from OFS.SimpleItem import SimpleItem
+from OFS.ObjectManager import bad_id
+from ZODB.POSException import ConflictError
 
 from Products.CMFCore.utils import UniqueObject
 from Products.CMFCore.utils import getToolByName
@@ -23,27 +26,20 @@ from Products.CMFCore.WorkflowCore import WorkflowException
 from Products.CMFDefault.DublinCore import DefaultDublinCoreImpl
 from Products.CMFPlone.interfaces.Translatable import ITranslatable
 from Products.CMFPlone.interfaces import INonStructuralFolder
+from Products.CMFPlone.PloneBaseTool import PloneBaseTool
+from Products.CMFPlone.PloneFolder import ReplaceableWrapper
 from Products.CMFPlone import ToolNames
+from Products.CMFPlone import utils
+from Products.CMFPlone.utils import log
+from Products.CMFPlone.utils import log_exc
 from Products.CMFPlone.utils import transaction_note
 from Products.CMFPlone.utils import base_hasattr
 from Products.CMFPlone.utils import safe_hasattr
 from Products.CMFPlone.interfaces import IBrowserDefault
-
-from OFS.SimpleItem import SimpleItem
-from OFS.ObjectManager import bad_id
-from Globals import InitializeClass
-from AccessControl import ClassSecurityInfo, Unauthorized
-from ZODB.POSException import ConflictError
-from Products.CMFPlone.PloneBaseTool import PloneBaseTool
-from DateTime import DateTime
-DateTime.SyntaxError
-from Products.CMFPlone.PloneFolder import ReplaceableWrapper
-
 from Products.statusmessages.interfaces import IStatusMessage
 
 AllowSendto = 'Allow sendto'
-permissions.setDefaultRoles(AllowSendto,
-                                   ('Anonymous', 'Manager',))
+permissions.setDefaultRoles(AllowSendto, ('Anonymous', 'Manager',))
 
 _marker = utils._marker
 _icons = {}
@@ -428,8 +424,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         portal = getToolByName(self, 'portal_url').getPortalObject()
         portal.changeSkin(skin_name)
 
-    security.declareProtected(ManagePortal,
-                              'changeOwnershipOf')
+    security.declareProtected(ManagePortal, 'changeOwnershipOf')
     def changeOwnershipOf(self, object, userid, recursive=0):
         """Changes the ownership of an object."""
         membership = getToolByName(self, 'portal_membership')

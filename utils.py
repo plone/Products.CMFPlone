@@ -783,9 +783,23 @@ def scale_image(image_file, max_size=None, default_format=None):
     return new_file, mimetype
 
 
-# Keep these here to not fully change the old API
+# BBB Plone 3.5: Cyclic import errors are bad, deprecate these import locations.
 # Put these at the end to avoid an ImportError for safe_unicode
 from i18nl10n import utranslate
 from i18nl10n import ulocalized_time
 from i18nl10n import getGlobalTranslationService
 
+import zope.deprecation
+zope.deprecation.deprecated(
+    ('getGlobalTranslationService'),
+    "This reference to getGlobalTranslationService will be removed in Plone 3.5"
+    ". Please import it from Products.PageTemplates.GlobalTranslationService.")
+zope.deprecation.deprecated(
+    ('utranslate'),
+    "This reference to the utranslate method has been deprecated will be "
+    "removed in Plone 3.5. Please use the translate method of the "
+    "GlobalTranslationService instead.")
+zope.deprecation.deprecated(
+    ('ulocalized_time'),
+    "This reference to the ulocalized_time method has been deprecated will be "
+    "removed in Plone 3.5. Please import it from Products.CMFPlone.i18nl10n.")

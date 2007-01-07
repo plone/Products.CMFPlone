@@ -16,7 +16,7 @@ from Products.CMFPlone.interfaces.NonStructuralFolder import INonStructuralFolde
      as z2INonStructuralFolder
 from Products.CMFPlone.interfaces import ITranslationServiceTool
 
-from zope.deprecation import deprecate
+from zope.deprecation import deprecate, deprecated
 from zope.interface import implements
 from zope.component import getMultiAdapter, queryMultiAdapter, getUtility
 
@@ -28,7 +28,11 @@ from plone.portlets.interfaces import IPortletManager, IPortletManagerRenderer
 
 from plone.app.layout.icons.interfaces import IContentIcon
 
-# @@ deprecate import from this location?
+deprecated(
+    ('IndexIterator'),
+    "This reference to IndexIterator will be removed in Plone 3.5. Please "
+    "import it from Products.CMFPlone.utils instead.")
+
 IndexIterator = utils.IndexIterator
 
 _marker = []
