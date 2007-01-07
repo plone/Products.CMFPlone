@@ -9,8 +9,9 @@
 ##
 
 from AccessControl import Unauthorized
+from Products.CMFPlone.utils import base_hasattr
 
-if hasattr(context, 'getRelatedItems'):
+if base_hasattr(context, 'getRelatedItems'):
     outgoing = context.getRelatedItems()
     incoming = []
     # if you want to show up the items which point to this one, too, then use the
@@ -23,15 +24,9 @@ if hasattr(context, 'getRelatedItems'):
     for d in range(len(in_out)):
         try:
             obj = in_out[d]
-	except Unauthorized:
+        except Unauthorized:
             continue
         if obj not in res:
             if mtool.checkPermission('View', obj):
                 res.append(obj)
-    
     return res
-
-
-
-
-

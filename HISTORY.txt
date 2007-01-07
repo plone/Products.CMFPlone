@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Fixed an unsafe usage of hasattr in computeRelatedItems with base_hasattr.
+      [hannosch]
+
     - Removed obsolete factory type information for the Plone folder classes.
       [hannosch]
 
