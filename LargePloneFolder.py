@@ -2,17 +2,9 @@ from Acquisition import aq_base, aq_inner, aq_parent
 from ComputedAttribute import ComputedAttribute
 from Globals import InitializeClass
 from PloneFolder import BasePloneFolder, ReplaceableWrapper
-from PloneFolder import factory_type_information as PloneFolder_fti
 from Products.BTreeFolder2.BTreeFolder2 import BTreeFolder2Base
 from Products.CMFPlone.utils import log_deprecated
 
-# Pure laziness
-factory_type_information={}
-factory_type_information.update(PloneFolder_fti)
-factory_type_information.update( {'id':'Large Plone Folder',
-                                  'meta_type':'Large Plone Folder',
-                                  'factory':'addLargePloneFolder',
-                                  'global_allow':0} )
 
 class LargePloneFolder(BTreeFolder2Base, BasePloneFolder):
     """ A large plone folder """

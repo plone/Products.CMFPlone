@@ -43,49 +43,6 @@ class ReplaceableWrapper:
             return REPLACEABLE
         return getattr(self.__ob, name)
 
-factory_type_information = {
-    'id': 'Folder',
-    'meta_type': 'Plone Folder',
-    'description': (_(u"Plone folders can define custom 'view' actions, or will "
-                    "behave like directory listings without one defined.")),
-    'icon': 'folder_icon.gif',
-    'product': 'CMFPlone',
-    'factory': 'addPloneFolder',
-    'filter_content_types': 0,
-    'immediate_view': 'folder_listing',
-    'actions': (
-        {
-            'id': 'view',
-            'name': _(u'View'),
-            'action': 'string:${folder_url}/',
-            'permissions': (View,),
-            'category': 'folder',
-        },
-        {
-            'id': 'local_roles',
-            'name': _(u'Local Roles'),
-            'action': 'string:${folder_url}/@@sharing',
-            'permissions': (ManageProperties,),
-            'category': 'folder',
-        },
-        {
-            'id': 'edit',
-            'name': _(u'Edit'),
-            'action': 'string:${folder_url}/folder_edit_form',
-            'permissions': (ModifyPortalContent,),
-            'category': 'folder',
-        },
-        {
-            'id': 'folderlisting',
-            'name': _(u'Folder Listing'),
-            'action': 'string:${folder_url}/folder_listing',
-            'permissions': (View,),
-            'category': 'folder',
-            'visible': 0,
-        },
-    )
-}
-
 # Portions of this class was copy/pasted from the OFS.Folder.OrderedFolder
 # from Zope2.7.  This class is licensed under the ZPL 2.0 as stated here:
 # http://www.zope.org/Resources/ZPL

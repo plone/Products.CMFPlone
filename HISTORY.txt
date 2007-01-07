@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Removed obsolete factory type information for the Plone folder classes.
+      [hannosch]
+
     - Deprecated the getOrderedUserActions script. It was only used in the
       global_personalbar to enforce a certain logical order of the actions,
       but action categories support ordering themselves now, so the script was
