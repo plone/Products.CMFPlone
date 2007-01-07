@@ -1,4 +1,3 @@
-<tal:favicon define="plone_portal_state context/@@plone_portal_state;
-                     portal_url plone_portal_state/portal_url">
+<tal:favicon define="portal_url view/portal_url">
     <link rel="shortcut icon" type="image/x-icon" tal:attributes="href string:$portal_url/favicon.ico" />
 </tal:favicon>

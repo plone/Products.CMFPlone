@@ -1,13 +1,12 @@
-<tal:nextPrevious define="nextprevious_view context/@@plone_nextprevious_view;
-                          nextprevious_enabled nextprevious_view/enabled | nothing"
-                  condition="python:nextprevious_enabled">
+<tal:nextPrevious define="enabled view/enabled | nothing"
+                  condition="python:enabled">
 
-    <tal:comment define="comment string:FIXME The above should be: condition='python:nextprevious_enabled and isViewTemplate'" />
+    <tal:comment define="comment string:FIXME The above should be: condition='python:enabled and isViewTemplate'" />
 
     <link rel="previous"
           href=""
           title="Go to previous item"
-          tal:define="previous nextprevious_view/previous"
+          tal:define="previous view/previous"
           tal:condition="previous"
           i18n:attributes="title title_previous_item"
           tal:attributes="href previous/url" />
@@ -15,7 +14,7 @@
     <link rel="next"
           href=""
           title="Go to next item"
-          tal:define="next nextprevious_view/next"
+          tal:define="next view/next"
           tal:condition="next"
           i18n:attributes="title title_next_item"
           tal:attributes="href next/url" />

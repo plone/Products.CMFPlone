@@ -5,28 +5,28 @@
     <browser:viewlet
         name="plone.links.favicon"
         manager="plone.app.layout.viewlets.interfaces.IHtmlHeadLinks"
-        template="favicon.pt"
+        class=".viewlets.FaviconViewlet"
         permission="zope2.View" 
         />
 
     <browser:viewlet
         name="plone.links.search"
         manager="plone.app.layout.viewlets.interfaces.IHtmlHeadLinks"
-        template="search.pt"
+        class=".viewlets.SearchViewlet"
         permission="zope2.View" 
         />
 
     <browser:viewlet
         name="plone.links.author"
         manager="plone.app.layout.viewlets.interfaces.IHtmlHeadLinks"
-        template="author.pt"
+        class=".viewlets.AuthorViewlet"
         permission="zope2.View" 
         />
 
     <browser:viewlet
         name="plone.links.navigation"
         manager="plone.app.layout.viewlets.interfaces.IHtmlHeadLinks"
-        template="navigation.pt"
+        class=".viewlets.NavigationViewlet"
         permission="zope2.View" 
         />
 

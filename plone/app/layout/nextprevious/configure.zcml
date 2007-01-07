@@ -19,14 +19,14 @@
     <browser:viewlet  
         name="plone.nextprevious"
         manager="plone.app.layout.viewlets.interfaces.IBelowContent"
-        template="nextprevious.pt"
+        class=".view.NextPreviousViewlet"
         permission="zope2.View" 
         />
 
     <browser:viewlet  
         name="plone.nextprevious.links"
         manager="plone.app.layout.viewlets.interfaces.IHtmlHeadLinks"
-        template="links.pt"
+        class=".view.NextPreviousLinksViewlet"
         permission="zope2.View" 
         />
 

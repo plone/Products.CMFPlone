@@ -1,13 +1,12 @@
-<tal:nextPrevious define="view context/@@plone_nextprevious_view;
-                          enabled view/enabled|nothing"
+<tal:nextPrevious define="enabled view/enabled|nothing"
                   condition="python:enabled">
 
-    <tal:block define="portal_url context/@@plone_portal_state/portal_url;">
+    <tal:block define="portal_url view/portal_url;">
 
         <div class="listingBar"
              tal:define="next view/next; 
                          previous view/previous"
-    	     tal:condition="python:previous is not None or next is not None">
+             tal:condition="python:previous is not None or next is not None">
 
           <tal:previous condition="previous">
             <a class="listingPrevious" href="" 
