@@ -40,6 +40,8 @@
         </style>
     <tal:iefixend replace="structure string:&lt;![endif]--&gt;" />
 
+    <link tal:replace="structure provider:plone.htmlhead.links" />
+
     <link rel="shortcut icon" type="image/x-icon" tal:attributes="href string:$portal_url/favicon.ico" />
 
     <link rel="home"
@@ -62,28 +64,6 @@
           title="Site Map"
           i18n:attributes="title title_sitemap"
           tal:attributes="href string:$portal_url/sitemap" />
-
-    <tal:nextPrevious define="nextprevious_view context/@@plone_nextprevious_view;
-                              nextprevious_enabled nextprevious_view/enabled | nothing"
-                      condition="python:nextprevious_enabled and isViewTemplate">
-        <tal:defNextPrevious define="next nextprevious_view/next; 
-                                     previous nextprevious_view/previous"
-                             condition="python:previous is not None or next is not None">
-            <link rel="previous"
-                  href=""
-                  title="Go to previous item"
-                  tal:condition="previous"
-                  i18n:attributes="title title_previous_item"
-                  tal:attributes="href previous/url" />
-        
-            <link rel="next"
-                  href=""
-                  title="Go to next item"
-                  tal:condition="next"
-                  i18n:attributes="title title_next_item"
-                  tal:attributes="href next/url" />
-        </tal:defNextPrevious>
-    </tal:nextPrevious>      
 
     <tal:fixme tal:replace="nothing">
       <link rel="help" href="" title="Help" tal:attributes="href string:$portal_url/help" />
