@@ -42,42 +42,9 @@
 
     <link tal:replace="structure provider:plone.htmlhead.links" />
 
-    <link rel="shortcut icon" type="image/x-icon" tal:attributes="href string:$portal_url/favicon.ico" />
-
-    <link rel="home"
-          href=""
-          title="Front page"
-          i18n:attributes="title title_frontpage"
-          tal:attributes="href string:$portal_url" />
-    <link rel="search"
-          href=""
-          title="Search this site"
-          i18n:attributes="title title_search_this_site"
-          tal:attributes="href string:$portal_url/search_form" />
-    <link rel="author"
-          href=""
-          title="Author information"
-          i18n:attributes="title title_author_info"
-          tal:attributes="href string:${portal_url}/author/${here/Creator|nothing}" />
-    <link rel="contents"
-          href=""
-          title="Site Map"
-          i18n:attributes="title title_sitemap"
-          tal:attributes="href string:$portal_url/sitemap" />
-
-    <tal:fixme tal:replace="nothing">
-      <link rel="help" href="" title="Help" tal:attributes="href string:$portal_url/help" />
-      <link rel="copyright" href="" title="Copyright information" tal:attributes="href string:copyright" />
-    </tal:fixme>
-
     <link rel="alternate" href="" title="RSS 1.0" type="application/rss+xml"
           tal:condition="python: syntool.isSyndicationAllowed(here)"
           tal:attributes="href string:$here_url/RSS" />
-
-    <link rel="up" href="" title="Up one level"
-          tal:define="parent python:here.navigationParent(here, template_id)"
-          tal:condition="parent"
-          tal:attributes="href parent" />
 
     <metal:block metal:define-slot="rel_slot" tal:replace="nothing">
       Inserts rel links specified from a page.
