@@ -24,11 +24,9 @@ body {
     margin: 0;
     padding: 0;
 }
-
 table {
     font-size: 100%;
 }
-
 a {
     color: &dtml-linkColor;;
     background-color: transparent;
@@ -41,12 +39,10 @@ p {
     margin: 0 0 0.75em 0;
     line-height: 1.5em;
 }
-
 p img {
     border: none;
     margin: 0;
 }
-
 hr {
     border: 0;
     height: &dtml-borderWidth;;
@@ -54,14 +50,11 @@ hr {
     background-color: &dtml-globalBorderColor;;
     margin: 0.5em 0 1em 0;
 }
-
-
 h1, h2, h3, h4, h5, h6 {
     color: &dtml-fontColor;;
     font-family: <dtml-var headingFontFamily>;
     margin: 0 0 0.25em 0;
 }
-
 h1 a,
 h2 a,
 h3 a,
@@ -71,39 +64,32 @@ h6 a {
     color: &dtml-fontColor; ! important;
     text-decoration: none;
 }
-
 h1 {
     font-size: 160%;
 }
-
 h2 {
     font-size: 150%;
 }
-
 h3 {
     font-size: 125%;
     border-bottom: none;
     font-weight: bold;
 }
-
 h4 {
     font-size: 110%;
     border-bottom: none;
     font-weight: bold;
 }
-
 h5 {
     font-size: 100%;
     border-bottom: none;
     font-weight: bold;
 }
-
 h6 {
     font-size: &dtml-fontSmallSize;;
     border-bottom: none;
     font-weight: bold;
 }
-
 ul {
     line-height: 1.5em;
     margin: 0.5em 0 0 1.5em;
@@ -111,27 +97,22 @@ ul {
     list-style-image: url(&dtml-portal_url;/bullet.gif);
     list-style-type: square;
 }
-
 ol {
     line-height: 1.5em;
     margin: 0.5em 0 0 2.5em;
     padding: 0;
     list-style-image: none;
 }
-
 li {
     margin-bottom: 0.5em;
 }
-
 dt {
     font-weight: bold;
 }
-
 dd {
     line-height: 1.5em;
     margin-bottom: 1em;
 }
-
 fieldset {
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
     margin: 1em 0em 1em 0em;
@@ -143,64 +124,6 @@ legend {
     background: &dtml-backgroundColor;;
     padding: 0.5em;
     font-size: 90%;
-}
-
-form {
-    border: none;
-    margin: 0;
-}
-
-label {
-    font-weight: bold;
-}
-
-textarea {
-    font: 100% Monaco, "Courier New", Courier, monospace;
-    border: &dtml-borderWidth; solid &dtml-globalBorderColor;;
-    color: &dtml-inputFontColor;;
-    background: White url(&dtml-portal_url;/input_background.gif) repeat-x;
-    width: 100%;
-}
-
-input {
-    font-family: <dtml-var fontFamily>;
-    visibility: visible;
-    border: &dtml-borderWidth; solid &dtml-globalBorderColor;;
-    color: &dtml-inputFontColor;;
-    vertical-align: middle;
-    background: White url(&dtml-portal_url;/input_background.gif) repeat-x;
-}
-button {
-    font-family: <dtml-var fontFamily>;
-    visibility: visible;
-    border: &dtml-borderWidth; solid &dtml-globalBorderColor;;
-    color: &dtml-inputFontColor;;
-    vertical-align: middle;
-    background-color: &dtml-globalBackgroundColor;;
-    padding: 1px;
-    cursor: pointer;
-    font-size: &dtml-fontSmallSize;;
-    text-transform: &dtml-textTransform;;    
-}
-select {
-    border: &dtml-borderWidth; solid &dtml-globalBorderColor;;
-    color: &dtml-inputFontColor;;
-    background-color: White;
-    vertical-align: top;
-}
-optgroup {
-  font-style: normal;
-  font-weight: bold;
-  color: #999;
-  padding-left: 0.25em;
-}
-
-option {
-  color: black;
-}
-
-optgroup > option {
-  padding: 0 0.25em 0 1em;
 }
 abbr, acronym, .explain {
     border-bottom: &dtml-borderWidth; dotted &dtml-fontColor;;
@@ -235,12 +158,10 @@ pre {
     background-color: &dtml-globalBackgroundColor;;
     overflow: auto;
 }
-
 ins {
     color: green;
     text-decoration: none;
 }
-
 del {
     color: red;
     text-decoration: line-through;
