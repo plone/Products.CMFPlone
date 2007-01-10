@@ -10,31 +10,25 @@
 * html*#portal-columns {
     width: auto;
 }
-
 input {
     margin-bottom: 1px; /* bug fix */
 }
-
 table.listing td.top {
     /* insane IE row bug workaround */
     position: relative;
     left: -1px;
     top: -1px;
 }
-
 div#portal-columns div#portal-column-one,
 div#portal-columns div#portal-column-two {
     overflow: hidden;
 }
-
 textarea {
     width: 97%;
 }
-
 .visualOverflow {
     width: 88%;
 }
-
 .visualGhosted {
     filter:alpha(opacity=20); 
 }
@@ -43,16 +37,13 @@ textarea {
 #portal-globalnav li.selected a {
 position: relative;
 }
-
 #portal-colophon .colophonIcon {
     height: 0px !important;
     height /**/: 15px;
 }
-
 .actionMenu .actionMenuHeader a {
     display: inline;
 }
-
 .actionMenu .actionMenuContent {
     top: 1.4em;
 }
@@ -63,17 +54,13 @@ position: relative;
     width:auto; 
     height:1%;
 }
-
 .ploneCalendar td { 
     width:1%;
 }
-
 .ploneCalendar .todaynoevent,
 .ploneCalendar .todayevent {
     position: relative;
 }
-
-
 .hiddenStructure { /* This is necessary to eliminate the 1px high object in
                       the document flow in place of .hiddenStructure block objects */
     position: absolute;
@@ -130,7 +117,6 @@ body { /* These work in IE only, changes the look of the scrollbar + textareas *
 * html p {
     position: relative;
 }
-
 * html h1.documentFirstHeading {
     height: auto;
 }
@@ -139,7 +125,6 @@ body { /* These work in IE only, changes the look of the scrollbar + textareas *
    to get positioned strangely (i.e. out of the portlet in this case), and
    to move about when scrolling.  May be related to:
    http://mtiki.mmf.at/mt/archives/000011.html */
-
 dd.portletFooter {
     border-top-style: solid;
 }
@@ -160,13 +145,11 @@ dd.portletFooter {
 }
 
 /* fixes for the drop down menus */
-
 * html #objectMenu.actionMenu .actionMenuContent li {
     height: auto;
 }
 
 /* fix for the horizontal scroll due to the floated searchbox without width definition */
-
 #portal-searchbox {
     overflow: auto; 
 }

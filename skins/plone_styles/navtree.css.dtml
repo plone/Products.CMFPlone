@@ -26,23 +26,19 @@
     list-style-image: none !important; 
     line-height: 1em;
 }
-
 .navTree {
     list-style: none; 
     list-style-image: none; 
     margin-top: 1px;
 }
-
 .navTree li {
     margin-bottom: 1px;
 }
-
 .navTreeItem {
     display: block;
     padding: 0;
     margin: 0;
 }
-
 .navTreeItem a,
 dd.portletItem .navTreeItem a {
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-backgroundColor;;
@@ -51,26 +47,22 @@ dd.portletItem .navTreeItem a {
     padding-top: 0.2em;
     padding-bottom: 0.25em;
 }
-
 .navTreeItem a:hover,
 dd.portletItem .navTreeItem a:hover {
     background-color: &dtml-globalBackgroundColor;;
     color: &dtml-globalFontColor;;
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
 }
-
 .navTreeCurrentItem {
     background-color: &dtml-globalBackgroundColor;;
     color: &dtml-globalFontColor;;
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor; !important;
 }
-
 li.navTreeCurrentItem {
     display: block;
     padding: 0 0 0 1px;
     margin: 0 0 2px -1px;
 }
-
 li.navTreeCurrentItem a,
 li.navTreeCurrentItem a:hover {
     display: block;
@@ -81,12 +73,10 @@ li.navTreeCurrentItem a:hover {
 }
 
 /* Another workaround for broken Internet Explorer */
-
 * html li.navTreeCurrentItem a,
 * html li.navTreeCurrentItem a:hover {
     height: 1.6em;
 }
-
 
 .navTreeLevel0 { margin: 0; }
 .navTreeLevel1 { margin-left: 1em;}
@@ -94,8 +84,5 @@ li.navTreeCurrentItem a:hover {
 .navTreeLevel3 { margin-left: 0.75em; }
 .navTreeLevel4 { margin-left: 0.75em; }
 .navTreeLevel5 { margin-left: 0.75em; }
-
-
-
 
 /* </dtml-with> */

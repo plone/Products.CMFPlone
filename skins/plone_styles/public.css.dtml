@@ -21,7 +21,6 @@
 #portal-column-one .visualPadding {
     padding: 2em 0em 1em 2em;
 }
-
 #portal-column-two .visualPadding {
     padding: 2em 2em 1em 0em;
 }
@@ -30,117 +29,92 @@
 h1, h2, h3, h4, h5, h6 {
     border-bottom: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
 }
-
 h1, h2 {
     border-bottom: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
     font-weight: normal;
 }
-
 h3, h4, h5, h6 {
     border-bottom: none;
     font-weight: bold;
 }
-
 .documentContent {
     font-size: 110%;
     padding: 1em 1em 2em 1em !important;
     background: &dtml-backgroundColor;;
 }
 
-
 /* Links with differently colored link underlines - only for content */
-
 .documentContent p a {
     text-decoration: none;
     border-bottom: 1px #cccccc solid;
 }
-
 .documentContent p a:visited {
     color: &dtml-linkVisitedColor;;
     background-color: transparent;
 }
-
 .documentContent p a:active {
     color: &dtml-linkActiveColor;;
     background-color: transparent;
 }
-
 .documentContent li a {
     text-decoration: none;
     border-bottom: 1px #cccccc solid;
 }
-
 .documentContent li a:visited {
     color: &dtml-linkVisitedColor;;
 }
-
 .documentContent li a:active {
     color: &dtml-linkActiveColor;;
 }
-
 .documentContent dd a {
     text-decoration: none;
     border-bottom: 1px #cccccc solid;
 }
-
 .documentContent dd a:visited {
     color: &dtml-linkVisitedColor;;
     background-color: transparent;
 }
-
 .documentContent dd a:active {
     color: &dtml-linkActiveColor;;
     background-color: transparent;
 }
-
 /* End links */
 
 /* The edit form elements */
-
-
 .field {
     top: 0;
     left: 0;
     margin: 0 1em 1em 0;
 }
-
 .field .field {
     margin: 1em 0 0 0;
 }
-
 .fieldRequired {
     background: url(&dtml-portal_url;/required.gif) center left no-repeat;
     padding: 0 0 0 8px;
     color: &dtml-backgroundColor;;
 }
-
 .fieldUploadFile {
     text-align: right; 
     margin-right: 0.75em;
     display: none;
 }
-
 .fieldTextFormat {
     text-align: right;
     margin-right: 0.75em
 }
-
-
 .formHelp {
     font-size: 90%;
     color: &dtml-discreetColor;;
     margin: 0 0 0.2em 0;
 }
-
 .formHelp:hover {
     color: &dtml-fontColor;;
     cursor: default;
 }
-
 .formControls {
    margin: 1em 0;
 }
-
 .error {
     /* Class for error indication in forms */
     background-color: &dtml-notifyBackgroundColor;;
@@ -149,7 +123,6 @@ h3, h4, h5, h6 {
     margin: 0 0 1em 0;
     width: 95%;
 }
-
 .error .fieldRequired {
    color: &dtml-notifyBackgroundColor;;
 }
@@ -162,8 +135,6 @@ h3, h4, h5, h6 {
     background: none;
     background-color: transparent;
 }
-
-
 /* End edit form elements */
 
 #visual-portal-wrapper {
@@ -172,7 +143,6 @@ h3, h4, h5, h6 {
 }
 
 /* Logo properties */
-
 #portal-logo img {
     border: 0;
     padding: 0;
@@ -180,15 +150,12 @@ h3, h4, h5, h6 {
 }
 
 /* The skin switcher at the top, only shows up if you have multiple skins available */
-
 #portal-skinswitcher {
 }
-
 #portal-skinswitcher a {
     display: block;
     float: left;
 }
-
 #portal-top {
     /* Top section */
     margin: 0;
@@ -197,7 +164,6 @@ h3, h4, h5, h6 {
 }
 
 /* Site-wide action menu - font size, contact, index, sitemap etc */
-
 #portal-siteactions {
     background-color: transparent;
     white-space: nowrap;
@@ -209,11 +175,9 @@ h3, h4, h5, h6 {
     float: right;
     padding: 3px 2em 3px 0;
 }
-
 #portal-siteactions li {
     display: inline;
 }
-
 #portal-siteactions li a {
     background-color: transparent;
     border: 1px solid &dtml-backgroundColor;;
@@ -224,13 +188,11 @@ h3, h4, h5, h6 {
     text-decoration: none;
     text-transform: &dtml-textTransform;;
 }
-
 #portal-siteactions li.selected a {
     background-color: &dtml-globalBackgroundColor;;
     color: &dtml-globalFontColor;;
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
 }
-
 #portal-siteactions li a:hover {
     background-color: &dtml-globalBackgroundColor;;
     color: &dtml-globalFontColor;;
@@ -250,12 +212,10 @@ h3, h4, h5, h6 {
     white-space: nowrap;
     z-index: 2;
 }
-
 #portal-advanced-search {
     margin-top: 0.2em;
     clear: both;
 }
-
 #portal-advanced-search a {
     color: &dtml-discreetColor;;
     text-decoration: none;
@@ -263,7 +223,6 @@ h3, h4, h5, h6 {
 }
 
 /* LiveSearch styles */
-
 .LSRes {
     font-family:  <dtml-var fontFamily>;
     visibility: visible;
@@ -279,13 +238,11 @@ h3, h4, h5, h6 {
     margin-left: 0;
     line-height: 1.1em;
 }
-
 #LSHighlight {
     background-color: &dtml-globalBackgroundColor;;
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
     color: &dtml-globalFontColor;;
 }
-
 .LSRow {
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-backgroundColor;;
     white-space: normal;
@@ -294,20 +251,17 @@ h3, h4, h5, h6 {
     list-style-image: none;
     list-style-type: none;
 }
-
 .LSRow a {
     text-decoration: none;
     font-weight:bold;
     white-space:nowrap
 }
-
 .LSDescr {
     color: &dtml-discreetColor;;
     text-transform: &dtml-textTransform;;
     padding-left:2.1em;
     margin-top:-0.1em;
 }
-
 .LSResult {
     position: relative;
     display: block;
@@ -317,12 +271,10 @@ h3, h4, h5, h6 {
     left: 3px;
     z-index: 3;
 }
-
 .LSShadow {
     position: relative;
     text-align: right;
 }
-
 .livesearchContainer {
     background-color: &dtml-backgroundColor;;
     margin-top: 0;
@@ -340,14 +292,12 @@ h3, h4, h5, h6 {
     width: 30em;
     text-transform: none;
 }
-
 * html .livesearchContainer {
     padding: &dtml-borderWidth; !important;
     padding-top: 0 !important;
     background-color: &dtml-globalBorderColor;;
     border: 0;
 }
-
 #livesearchLegend {
     line-height: 1em;
     margin-top: -2em;
@@ -355,7 +305,6 @@ h3, h4, h5, h6 {
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
     border-bottom: 0;
 }
-
 * html #livesearchLegend {
     margin-top: -1.9em;
     margin-left: -8px;
@@ -368,7 +317,6 @@ h3, h4, h5, h6 {
     padding: 0.5em !important;
     z-index: 20;
 }
-
 .LSBox {
     clear: left;
     float: left;
@@ -376,14 +324,12 @@ h3, h4, h5, h6 {
     padding-right: 1px;
     display:block;
 }
-
 #LSNothingFound {
     text-align: center;
     padding: 2px;
 }
 
 /* The global section tabs. */
-
 #portal-globalnav {
     background-color: transparent;
     padding: 0em 0em 0em 2em;
@@ -393,11 +339,9 @@ h3, h4, h5, h6 {
     height: auto;
     line-height: normal;
 }
-
 #portal-globalnav li {
     display: inline;
 }
-
 #portal-globalnav li a {
     /* The normal, unselected tabs. They are all links */
     background-color: transparent;
@@ -411,7 +355,6 @@ h3, h4, h5, h6 {
     text-decoration: none;
     text-transform: &dtml-textTransform;;
 }
-
 #portal-globalnav li.selected a {
     /* The selected tab. There's only one of this */
     background-color: &dtml-globalBackgroundColor;;
@@ -419,14 +362,12 @@ h3, h4, h5, h6 {
     border-bottom: &dtml-globalBackgroundColor; &dtml-borderWidth; &dtml-borderStyle;;
     color: &dtml-globalFontColor;;
 }
-
 #portal-globalnav li a:hover {
     background-color: &dtml-globalBackgroundColor;;
     border-color: &dtml-globalBorderColor;;
     border-bottom-color: &dtml-globalBackgroundColor;;
     color: &dtml-globalFontColor;;
 }
-
 #portal-personaltools {
     /* Bar with personalized menu (user preferences, favorites etc) */
     background-color: &dtml-globalBackgroundColor;;
@@ -444,12 +385,10 @@ h3, h4, h5, h6 {
     text-transform: &dtml-textTransform;;
     list-style: none;
 }
-
 #portal-personaltools .portalUser {
     background: transparent url(&dtml-portal_url;/user.gif) center left no-repeat;
     padding-left: 18px;
 }
-
 #portal-personaltools .portalNotLoggedIn {
     /* Used on all descriptions relevant to those not logged in */
     color: &dtml-fontColor;;
@@ -457,26 +396,21 @@ h3, h4, h5, h6 {
     background: transparent;
     background-image: none;
 }
-
 #portal-personaltools li {
     color: &dtml-globalFontColor;;
     margin-left: 1em;
     display: inline;
 }
-
 #portal-personaltools li a {
     text-decoration: none;
     color: &dtml-globalFontColor;;
 }
-
 #portal-personaltools .visualIconPadding {
     padding-left: 10px;
 }
-
 .visualCaseSensitive {
     text-transform: none;
 }
-
 #portal-breadcrumbs {
     /* The path bar, including breadcrumbs and add to favorites */
     border-bottom-color: &dtml-globalBorderColor;;
@@ -487,58 +421,46 @@ h3, h4, h5, h6 {
     text-transform: &dtml-textTransform;;
     line-height: 1.6em;
 }
-
 #portal-breadcrumbs a {
     text-decoration: none;
 }
-
 .breadcrumbSeparator {
     font-size: 120%;
 }
-
 .addFavorite {
     vertical-align: bottom;
 }
-
 #content {
     padding: 1em 1em 0 1em !important;
     margin: 0em 0em 2em 0em;
 }
-
 .documentEditable {
     padding: 0em 2em 1em 2em !important;
 }
-
 #content-news h1 {
     margin-bottom: 1em;
 }
 
 /* Only h5/h6 headlines in the content area should have the discreet color */
-
 #content h5,
 #content h6 {
     color: &dtml-discreetColor;;
 }
-
 .newsItem {
     margin-bottom: 1em;
     border-bottom: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
 }
-
 .newsImage {
     border: 1px solid black;
 }
-
 .newsImageContainer {
     float:right;
     margin: 0 0 0.5em 1em;
     width: 202px;
 }
-
 .newsContent {
     padding: 0 1em 1em 1em;
 }
-
 .newsContent ul,
 .newsContent li {
     display: block;
@@ -547,7 +469,6 @@ h3, h4, h5, h6 {
     margin: 0;
     padding: 0;
 }
-
 .newsAbout {
     display: block;
     color: &dtml-discreetColor;;
@@ -559,33 +480,27 @@ h3, h4, h5, h6 {
     float: right;
     text-align: right;
 }
-
 .newsAbout li {
     display: inline;
 }
-
 .newsFooter {
 
 }
-
 .newsFooter li {
     display: inline;
     margin: 0 1em 0 0;
 }
-
 .documentActions {
     float: right;
     margin: 0.4em 0 0 0.5em;
     padding: 0;
     text-align: right;
 }
-
 .documentActions ul {
     margin: 1px 0 2px 0;
     padding: 0;
     display: block;
 }
-
 .documentActions li {
     display: inline;
     list-style: none;
@@ -593,14 +508,12 @@ h3, h4, h5, h6 {
     margin: 0;
     padding: 0;
 }
-
 .documentActions a {
     border: none !important;
     text-decoration: none;
 }
 
 /* .system-message and #error-handling are reST error indicators */
-
 .portalMessage,
 .portalWarningMessage,
 .portalStopMessage,
@@ -618,13 +531,11 @@ h3, h4, h5, h6 {
     background-repeat: no-repeat;
     background-position: 5px 50%;
 }
-
 .portalMessage a,
 .portalWarningMessage a,
 .portalStopMessage a {
     color: &dtml-fontColor;;
 }
-
 .documentDescription {
     /* The summary text describing the document */
     font-weight: bold;
@@ -632,36 +543,29 @@ h3, h4, h5, h6 {
     margin: 0em 0em 0.5em 0em;
     line-height: 1.5em;
 }
-
 .documentByLine {
     font-size: &dtml-fontSmallSize;;
     font-weight: normal;
     color: &dtml-discreetColor;;
     margin: 0em 0em 0.5em 0em;
 }
-
 .discussion {
     margin-top: 1em;
 }
-
 .even {
     background-color: &dtml-evenRowBackgroundColor;;
 }
-
 .odd {
     background-color: &dtml-oddRowBackgroundColor;;
 }
-
 .visualHighlight {
     background-color: &dtml-evenRowBackgroundColor;;
 }
-
 .discreet {
     color: &dtml-discreetColor;;
     font-size: &dtml-fontSmallSize;;
     font-weight: normal;
 }
-
 .pullquote {
     padding: 0 1em 0 1em;
     margin: 0 0 1em 1em;
@@ -677,13 +581,10 @@ h3, h4, h5, h6 {
     color: #CC9933;
     padding: 0px 1em;
 }
-
-
 .notify,
 .documentEditable * .notify {
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-notifyBorderColor;;
 }
-
 .card {
     background-color: &dtml-globalBackgroundColor;;
     border-color: &dtml-globalBorderColor;;
@@ -695,11 +596,9 @@ h3, h4, h5, h6 {
     width: 110px;
     padding: 1em 0;
 }
-
 .card a {
     text-decoration: none;
 }
-
 .portrait {
     background-color: &dtml-globalBackgroundColor;;
     border-color: &dtml-globalBorderColor;;
@@ -711,13 +610,11 @@ h3, h4, h5, h6 {
     text-align: center;
     width: 100px;
 }
-
 .portraitPhoto {
     border: 1px solid black;
 }
 
 /* The table used for listings - horizontal and vertical variants */
-
 .listing,
 .stx table {
     /* The default table for document listings. Contains name, document types, modification times etc in a file-browser-like fashion */
@@ -752,11 +649,9 @@ h3, h4, h5, h6 {
     border-right: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
     padding: 0.25em 1em;
 }
-
 .listing a {
     text-decoration: none;
 }
-
 .listing a:hover {
     text-decoration: underline;
 }
@@ -765,22 +660,18 @@ h3, h4, h5, h6 {
 }
 
 /* Vertical addition class */
-
 .vertical {
     background-color: &dtml-backgroundColor;;	
 }
 .vertical th {
     padding: 0.5em;
 }
-
 .vertical td {
     border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
     padding: 0.5em;
 }
 
-
 /* Batch selector */
-
 .listingBar {
     background-color: &dtml-globalBackgroundColor;;
     border-color: &dtml-globalBorderColor;;
@@ -794,55 +685,45 @@ h3, h4, h5, h6 {
     font-size: 94%;
     clear: both;
 }
-
 .listingBar span.previous,
 .listingPrevious {
     text-align: left;
     float: left;
     margin-right: 1em;
 }
-
 .listingBar span.next,
 .listingNext {
     text-align: right;
     float: right;
     margin-left: 1em;
 }
-
 .listingBar img {
     vertical-align: middle;
 }
-
 .listingBar a {
     text-decoration: none;
 }
-
 .tileItem {
     border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
     padding-top: 0.5em;
     margin-top: 0.5em;
 }
-
 .tileHeadline {
     border: none;
     font-size: 110%;
     font-weight: bold;
 }
-
 .tileHeadline a {
     text-decoration: none;
 }
-
 .tileBody {
     margin-bottom: 0.5em;
 }
-
 .tileImage {
     float: right;
     margin: 0 0 0.5em 0.5em;
     border: 1px solid black;
 }
-
 .eventDetails {
     float: right;
     width: 20em;
@@ -852,7 +733,6 @@ h3, h4, h5, h6 {
 /* Useful deviations from regular style on elements */
 
 /* List classes without markers */
-
 ul.visualNoMarker,
 ol.visualNoMarker {
     list-style-type: none;
@@ -864,7 +744,6 @@ ol.visualNoMarker {
 textarea.proportional {
     font: 100% <dtml-var fontFamily>;
 }
-
 .productCredits {
     text-align: right;
     font-size: &dtml-fontSmallSize;;
@@ -872,7 +751,6 @@ textarea.proportional {
     font-weight: normal;
     color: &dtml-discreetColor;;
 }
-
 #portal-footer {
     background-color: &dtml-globalBackgroundColor;;
     border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
@@ -883,32 +761,26 @@ textarea.proportional {
     padding: 0.5em 0em 1em 0em;
     text-align: center;
 }
-
 #portal-footer p {
     margin: 0.25em 0;
 }
-
 #portal-footer a {
     text-decoration: none;
     color: &dtml-linkColor;;
     border: none;
 }
-
 #portal-footer a:visited {
     color: &dtml-linkColor;;
 }
-
 #portal-footer a:hover {
     text-decoration: underline;
 }
-
 #portal-colophon {
     float: none;
     margin: 0em 0em 2em 0em;
     padding: 0.5em 0em 1em 0em;
     text-align: center;
 }
-
 #portal-colophon ul,
 #portal-colophon ul li,
 #portal-colophon ul li a {
@@ -918,26 +790,22 @@ textarea.proportional {
     text-decoration: none;
     color: &dtml-fontColor;;
 }
-
 #portal-colophon ul {
     display: table-row;
     list-style-type: none;
 }
-
 #portal-colophon ul li {
     display: table-cell;
     font-size: &dtml-fontSmallSize;;
     margin: 0 0.25em;
     padding: 0.1em 0.2em;
 }
-
 #portal-colophon .colophonWrapper {
     display: table;
     margin: 0 auto;
     border-collapse: collapse;
     border-spacing: 0;
 }
-
 #portal-colophon .colophonIcon {
     display: block; /* This is for Mozilla, as it doesn't support
                        inline-block. The colophon icons aren't in
@@ -953,42 +821,33 @@ textarea.proportional {
     width: 80px;
     vertical-align: top;
 }
-
 #portal-colophon a.colophonIcon {
     cursor: pointer;
 }
-
 #portal-colophon .colophonIconPlone {
     background-image: url(&dtml-portal_url;/plone_powered.gif);
 }
-
 #portal-colophon .colophonIcon508 {
     background-image: url(&dtml-portal_url;/colophon_sec508.gif);
 }
-
 #portal-colophon .colophonIconWAI {
     background-image: url(&dtml-portal_url;/colophon_wai-aa.gif);
 }
-
 #portal-colophon .colophonIconXHTML {
     background-image: url(&dtml-portal_url;/colophon_xhtml.png);
 }
-
 #portal-colophon .colophonIconCSS {
     background-image: url(&dtml-portal_url;/colophon_css.png);
 }
-
 #portal-colophon .colophonIconAnyBrowser {
     background-image: url(&dtml-portal_url;/colophon_anybrowser.png);
 }
-
 
 .feedButton {
     display: block; 
     float: right; 
     margin-top: 1px;
 }
-
 .poweredBy {
     display: block;
     clear: both;
@@ -999,7 +858,6 @@ textarea.proportional {
 }
 
 /* Sitemap styles */
-
 #portal-sitemap {
     list-style: none;
     list-style-image: none;
@@ -1007,21 +865,17 @@ textarea.proportional {
     font-size: 90%;
     border: none;
 }
-
 #portal-sitemap a {
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-backgroundColor;;
 }
-
 #portal-sitemap a:hover {
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
 }
-
 #portal-sitemap .navTreeLevel1 {
     padding-left: 1em;
     border-left: 0.5em solid &dtml-globalBorderColor;;
     margin: 0 0 0 0.5em;
 }
-
 #portal-sitemap .navTreeLevel2 {
     padding-left: 1em;
     border-left: 0.5em solid &dtml-globalBackgroundColor;;
@@ -1029,7 +883,6 @@ textarea.proportional {
 }
 
 /* Album view classes */
-
 .photoAlbumEntry {
     float: left;
     height: 185px;
@@ -1040,20 +893,17 @@ textarea.proportional {
     background-image: url('&dtml-portal_url;/polaroid-single.png');
     background-repeat: no-repeat;
 }
-
 .photoAlbumEntry img {
     border: 1px solid #ccc;
     display: block;
     margin: 0 auto;
 }
-
 .photoAlbumEntryWrapper {
     /*display: block;*/
     height: 130px;
     width: 128px;
     margin-bottom: 7px;
 }
-
 .photoAlbumEntry a {
     display: block;
     text-decoration: none;
@@ -1062,12 +912,10 @@ textarea.proportional {
     width: 130px;
     margin: 16px auto 0px;
 }
-
 .photoAlbumFolder {
     background-image: url('&dtml-portal_url;/polaroid-multi.png');
     background-repeat: no-repeat;
 }
-
 .photoAlbumEntryTitle {
     color: &dtml-discreetColor;;
     display: block;
@@ -1077,12 +925,10 @@ textarea.proportional {
 }
 
 /* Link types */
-
 .link-plain {
     background-image: none;
     padding: 0;
 }
-
 .link-parent {
     display: block;
     background: transparent url(&dtml-portal_url;/arrowUp.gif) 4px 5px no-repeat;
@@ -1090,62 +936,50 @@ textarea.proportional {
     font-size: &dtml-fontSmallSize;;
     text-decoration: none;
 }
-
 .link-user {
     background: transparent url(&dtml-portal_url;/user.gif) 0 1px no-repeat;
     padding: 1px 0px 1px 16px;
 }
-
 .link-external {
     background: transparent url(&dtml-portal_url;/link_icon.gif) 0px 1px no-repeat;
     padding: 1px 0px 1px 16px;
 }
-
 .link-https {
     background: transparent url(&dtml-portal_url;/lock_icon.gif) 0px 1px no-repeat;
     padding: 1px 0px 1px 16px;
 }
-
 .link-mailto {
     background: transparent url(&dtml-portal_url;/mail_icon.gif) 0px 1px no-repeat;
     padding: 1px 0px 1px 16px;
 }
-
 .link-news {
     background: transparent url(&dtml-portal_url;/topic_icon.gif) 0px 1px no-repeat;
     padding: 1px 0px 1px 16px;
 }
-
 .link-ftp {
     background: transparent url(&dtml-portal_url;/file_icon.gif) 0px 1px no-repeat;
     padding: 1px 0px 1px 16px;
 }
-
 .link-irc {
     background: transparent url(&dtml-portal_url;/discussionitem_icon.gif) 0px 1px no-repeat;
     padding: 1px 0px 1px 16px;
 }
-
 .link-callto {
     background: transparent url(&dtml-portal_url;/phone_icon.gif) 0px 1px no-repeat;
     padding: 1px 0px 1px 16px;
 }
-
 .link-webcal {
     background: transparent url(&dtml-portal_url;/event_icon.gif) 0px 1px no-repeat;
     padding: 1px 0px 1px 16px;
 }
-
 .link-feed {
     background: transparent url(&dtml-portal_url;/rss.gif) 0px 1px no-repeat;
     padding: 1px 0px 1px 18px;
 }
-
 .link-comment {
     background: transparent url(&dtml-portal_url;/discussionitem_icon.gif) center left no-repeat;
     padding: 1px 0px 1px 16px !important; /* value:  */
 }
-
 .link-anchor {
     color: &dtml-discreetColor;;
     text-decoration: none;
@@ -1160,16 +994,13 @@ textarea.proportional {
 }
 
 /* Fullscreen */
-
 body.fullscreen #portal-logo,
 body.fullscreen #portal-siteactions {
     display: none;
 }
-
 body.fullscreen #portal-globalnav {
     margin-top: 4em;
 }
-
 body.fullscreen #portal-searchbox {
     margin: 0.5em 2em 0 0.5em;
     padding: 0;
@@ -1178,28 +1009,23 @@ body.fullscreen #portal-searchbox {
 }
 
 /* Padding for the columns */
-
 #portal-column-one .visualPadding {
     padding: 2em 0em 1em 2em;
 }
-
 #portal-column-two .visualPadding {
     padding: 2em 2em 1em 0em;
 }
 
 /* Kupu image alignment classes */
-
 .image-left {
    float: left;
    clear: both;
    margin: 0.5em 1em 0.5em 0;
    border: 1px solid Black;
 }
-
 .image-inline {
    float: none;
 }
-
 .image-right {
    float: right;
    clear: both;

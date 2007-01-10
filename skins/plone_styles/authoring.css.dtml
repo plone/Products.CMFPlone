@@ -55,8 +55,6 @@
     background-color: &dtml-contentViewBackgroundColor;;
     color: &dtml-contentViewFontColor;;
 }
-
-
 .configlet .contentViews {
     font-size: 90%;
 }
@@ -64,7 +62,6 @@
 /*
 ** begin ECMAScript Content Action Menus
 */
-
 .contentActions {
     background-color: &dtml-contentViewBackgroundColor;;
     border-left: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
@@ -77,7 +74,6 @@
     position:relative;
     height: 1.6em;
 }
-
 .contentActions ul,
 .contentActions li {
     margin: 0;
@@ -87,7 +83,6 @@
     color: &dtml-fontColor;;
     text-align: left;
 }
-
 .contentActions ul {
     line-height: 1.6em;
     padding: 0;
@@ -99,17 +94,14 @@
     border-left: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
     line-height: 1.6em;
 }
-
 .actionItems li {
     background-image: none;
 }
-
 .contentActions a {
     text-decoration: none;
     color: &dtml-contentViewFontColor;;
     padding: 0 0.5em;
 }
-
 .actionMenu {
     /*  The spec says we can't put this on an element with a float (although
         Opera is the only one that cares) and we need it in order to catch
@@ -119,23 +111,19 @@
     margin: 0;
     padding: 0;
 }
-
 .actionMenu .actionMenuHeader {
     margin: 0;
     padding: 0;
     font-weight: normal;
     cursor: pointer;
 }
-
 .actionMenu.activated .actionMenuHeader {
     position: relative;
     z-index: 10;
 }
-
 .actionMenu .actionMenuHeader a {
     display: block;
 }
-
 .actionMenu.activated .actionMenuHeader a,
 .actionMenu.deactivated .actionMenuHeader a {
     background-image: url(<dtml-var portal_url>/arrowDownAlternative.gif);
@@ -144,12 +132,10 @@
     padding: 0 1.6em 0 0.5em !important;
     cursor: pointer;
 }
-
 .actionMenuDisabled {
     padding: 0 0.5em 0 0.5em !important;
     cursor: pointer;
 }
-
 .actionMenu .actionMenuContent {
     display: none;
     z-index: 5;
@@ -161,7 +147,6 @@
     margin: 0;
     cursor: pointer;
 }
-
 .actionMenu .actionMenuContent ul {
     display: block;
     background: &dtml-contentViewBackgroundColor;;
@@ -171,7 +156,6 @@
     padding: 0;
     cursor: pointer;
 }
-
 .actionMenu.activated .actionMenuContent {
     display: block !important;
 }
@@ -182,11 +166,9 @@
     border-collapse: collapse;
     border-spacing: 0;
 }
-
 .actionMenu.deactivated .actionMenuContent {
     display: none !important;
 }
-
 .actionMenu .actionMenuContent li {
     float: none;
     background-color: transparent;
@@ -195,39 +177,33 @@
     margin: 0;
     border: 0;
 }
-
 .actionMenu .actionMenuContent li a {
     display: block;
     white-space: nowrap;
     padding: 0 0.5em;
     margin: 0.2em 0;
 }
-
 .actionMenu .actionMenuContent .selected {
     display: block;
     white-space: nowrap;
     padding: 0 0.5em;
     margin: 0.2em 0;
 }
-
 .actionMenu .actionMenuContent li a:hover {
     background-color: &dtml-contentViewBorderColor;;
     color: White;
 }
-
 .actionMenu .actionMenuContent .actionSeparator a {
     margin-top: 0.2em;
     padding-top: 0.2em;
     border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
 }
-
 .actionMenu .actionMenuContent .actionSeparator div.currentDefaultPage {
     margin-top: 0.2em;
     padding: 0.2em 0.5em 0em 0.5em;
     white-space: nowrap;
     border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
 }
-
 .actionMenu .actionMenuContent .actionSeparator div.actionLabel {
     margin-top: 0.2em;
     padding: 0.2em 0.5em 0em 0.5em;
@@ -237,8 +213,6 @@
     color: &dtml-contentViewBackgroundColor;;
     cursor: default;
 }
-
-
 .contentBatchAction {
     float: left !important;
     padding: 0 0.5em;
@@ -250,21 +224,17 @@
     top: -1px;
     margin-left: -0.5em !important;
 }
-
 #objectMenu.actionMenu .actionMenuContent li {
     display: block;
 }
-
 #objectMenu.actionMenu .actionMenuContent li,
 #objectMenu.actionMenu .actionMenuContent li a:hover {
     background-position: 3px 50%;
     margin-left: 0;
 }
-
 #objectMenu.actionMenu .actionMenuContent li a {
     padding-left: 22px;
 }
-
 .actionMenuSelected {
     display: block;
     cursor: default;
@@ -273,79 +243,58 @@
     background-position: 0% 3px;
     padding-left: 16px !important;
 }
-
 #templateMenu li a {
     padding-left: 16px;
 }
-
-
 /*
 ** end ECMAScript Content Action Menus
 */
-
-
-
-
 
 ul.configlets {
     margin: 1em 0;
     list-style-image: none;
     list-style: none;
 }
-
 ul.configlets li {
     margin-bottom: 1em;
 }
-
 ul.configlets li a {
     text-decoration: none;
     border: none;
 }
-
 ul.configlets li a:visited {
     color: &dtml-linkColor;;
     background-color: transparent;
 }
-
 ul.configlets li a:active {
     color: &dtml-linkColor;;
     background-color: transparent;
 }
-
 ul.configlets li label {
     font-weight: bold;
 }
-
 ul.configletDetails {
     margin: 0em 1em 1em 4em;
     list-style-image: none;
     list-style: none;
 }
-
 ul.configletDetails li {
     margin-bottom: 1em;
     display: inline;
 }
-
 ul.configletDetails li a {
 	text-decoration: none;
 }
-
 ul.configletDetails li label {
     font-weight: bold;
 }
 
-
-
-
 /* Additional STX workaround classes */
-.stx table p /* stupid STX table workaround */
-{
+.stx table p {
     margin: 0;
     padding: 0;
 }
-.stx table  /* stupid STX table workaround */
-{
+.stx table {
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor; ! important;
 }
 .stx table td {
@@ -357,14 +306,12 @@ ul.configletDetails li label {
     font-size: 110% !important; 
     color: Black;
 }
-
 .comment {
     background: &dtml-evenRowBackgroundColor;; 
     border: &dtml-borderWidth; &dtml-borderStyleAnnotations; &dtml-globalBorderColor;; 
     padding: 0.25em 1em 0.5em 1em;
     margin-bottom: 1em;
 }
-
 .comment h1,
 .comment h2,
 .comment h3,
@@ -374,7 +321,6 @@ ul.configletDetails li label {
     border-bottom: &dtml-borderWidth; &dtml-borderStyleAnnotations; &dtml-discreetColor;;
     font-weight: normal;
 }
-
 .comment h3 a {
     background-image: url(&dtml-portal_url;/discussionitem_icon.gif);
     background-repeat: no-repeat;
@@ -385,25 +331,19 @@ ul.configletDetails li label {
     height: auto;
     line-height: 1.6em;	
 }
-
 .commentBody {
     margin: 0 1em 1em 1em;
 }
-
 .spacer {
     margin: 1em;
 }
 
-
-
 /* Collapsible elements */
-
 dl.collapsible {
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor; !important;
     margin: 1em 0 0 0;
     padding: 0;
 }
-
 dl.collapsible dt.collapsibleHeader {
     display: block;
     float: left;
@@ -417,7 +357,6 @@ dl.collapsible dt.collapsibleHeader {
     margin: 0 0 -0.6em 1em;
     padding: 0 0.5em;
 }
-
 dl.collapsible dd.collapsibleContent {
     margin: 0;
     padding: 0 1em;
@@ -442,7 +381,6 @@ dl.collapsedBlockCollapsible {
     height: 1em;
     width: auto;
 }
-
 dl.collapsedBlockCollapsible dt.collapsibleHeader {
     float: none;
     position: static;
@@ -452,19 +390,16 @@ dl.collapsedBlockCollapsible dt.collapsibleHeader {
     background: transparent url(treeCollapsed.gif) no-repeat 6px 50%;
     cursor: pointer;
 }
-
 dl.collapsedInlineCollapsible dd.collapsibleContent,
 dl.collapsedBlockCollapsible dd.collapsibleContent {
     display: none;
 }
-
 dl.collapsedInlineCollapsible {
     border: none !important;
     height: 1em;
     width: auto;
     display: inline;
 }
-
 dl.collapsedInlineCollapsible dt.collapsibleHeader {
     position: static;
     float: none;
@@ -479,18 +414,15 @@ dl.collapsedInlineCollapsible dt.collapsibleHeader {
 .configlet .documentEditable {
     padding: 0em !important;
 }
-
 .documentEditable .documentContent {
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
     padding: 0;
 }
-
 .label {
     font-weight: bold;
     display: inline;
     padding-right: 0.5em;
 }
-
 .optionsToggle {
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
     color: &dtml-fontColor;;
@@ -498,8 +430,8 @@ dl.collapsedInlineCollapsible dt.collapsibleHeader {
     font-weight: normal !important;
     font-size: &dtml-fontSmallSize;;
 }
-
-.portalNotLoggedIn {} /* Used on all descriptions relevant to those not logged in */
+/* Used on all descriptions relevant to those not logged in */
+.portalNotLoggedIn {} 
 
 #portal-column-content fieldset > * input:focus,
 #portal-column-content fieldset > * textarea:focus {
@@ -507,38 +439,27 @@ dl.collapsedInlineCollapsible dt.collapsibleHeader {
     border-width: &dtml-borderWidth;;
 }
 
-
-
 /* for highlighting of search terms */
-
 .highlightedSearchTerm {
    background-color: #feff82;
 }
-
 /* for greying out inherited roles */
-
 .noInheritedRoles {
     color: #a0a0a0;
 }
-
 /* for highlighting current items, like the language or today in the calendar */
-
 .currentItem {
     border-collapse: collapse;
     border: 2px &dtml-borderStyle; &dtml-notifyBorderColor;;
     padding: 1px;
 }
-
 /* for draggable elements */
-
 tr.dragging td {
     background-color: yellow;
 }
-
 .draggingHook {
     cursor: move;
 }
-
 .notDraggable {
 }
 
@@ -548,7 +469,6 @@ tr.dragging td {
     font-size: &dtml-fontSmallSize;;
     font-weight: normal;
 }
-
 .formTabs {
     position: relative;
     z-index: 2;
@@ -558,13 +478,11 @@ tr.dragging td {
     list-style-type: none;
     text-align: center;
 }
-
 li.formTab {
     display: inline;
     margin: 0;
     padding: 0;
 }
-
 li.formTab a {
     border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
     border-bottom: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
@@ -575,41 +493,32 @@ li.formTab a {
     line-height: 2em;
     text-decoration: none;
 }
-
 li.firstFormTab a {
     border-left: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
 }
-
 li.lastFormTab a {
     border-right: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
 }
-
 li.formTab a.selected {
     background: &dtml-globalBackgroundColor;;
 }
-
 li.formTab a:hover {
     background: &dtml-globalBackgroundColor;;
 }
-
 li.formTab a.notify {
     background-color: &dtml-notifyBackgroundColor;;
     color: &dtml-fontColor;;
 }
-
 li.formTab a.notify:hover {
     background-color: &dtml-notifyBorderColor;;
 }
-
 .formPanel {
     padding: 1em 1em 1em 1em;
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
 }
-
 .formPanel.hidden {
     display: none;
 }
-
 div.formControls input.hidden {
     display: none;
 }

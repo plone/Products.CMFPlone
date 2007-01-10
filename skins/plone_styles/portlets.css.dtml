@@ -17,32 +17,28 @@
 /* <dtml-call "REQUEST.set('portal_url', portal_url())"> (not this either :) */
 
 /* Main portlet elements */
-
 .portlet {
     margin: 1px 0 1em 0;
     border-bottom: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
     background-color: &dtml-backgroundColor;;
 }
-
 .portlet a {
     text-decoration: none;
 }
-
 .portlet a.tile {
     display: block;
 }
-
 
 /* XXX: The two below rules should really be in the rule above, but that makes the items grow/shrink on :hover (navtree) - need to investigate how to make it not do that. ~limi, Dec 2005 */
 .portletItem a,
 .portletFooter a {
     border-bottom: none;
 }
+
 .portletItem a:visited,
 .portletFooter a:visited {
     color: &dtml-linkColor;;
 }
-
 .portletHeader {
     background-color: &dtml-globalBackgroundColor;;
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
@@ -51,24 +47,20 @@
     font-weight: normal;
     line-height: 1.6em;
 }
-
 .portletHeader a {
     color: &dtml-fontColor;;
 }
-
 .portletItem {
     margin: 0;
     padding: 1em;
     border-left: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
     border-right: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
 }
-
 .portletItemDetails {
     text-align: right;
     display: block;
     color: &dtml-fontColor;;
 }
-
 .portletFooter {
     background-color: &dtml-evenRowBackgroundColor;;
     margin: 0;
@@ -78,9 +70,7 @@
     text-align: right;
 }
 
-
 /* Elements that enable layout with rounded corners */
-
 .portletTopLeft {}
 .portletTopRight {}
 .portletBottomLeft {}
@@ -89,7 +79,6 @@
 /*
 ** Calendar elements - used in the calendar rendering
 */
-
 .dayPopup {
     background-color: &dtml-helpBackgroundColor;;
     border: &dtml-borderWidth; &dtml-borderStyle; Black;
@@ -102,7 +91,6 @@
 .date {
     font-weight: bold;
 }
-
 .ploneCalendar {
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
     margin: 1px 0 1em 0;
@@ -110,7 +98,6 @@
     border-spacing:0;
     width: 100%;
 }
-
 .ploneCalendar a {
     text-decoration: none;
 }
@@ -177,6 +164,5 @@
     height: 0px !important;
     height /**/: <dtml-var "_['arrowRight.gif'].height">px;
 }
-
 
 /* </dtml-with> */

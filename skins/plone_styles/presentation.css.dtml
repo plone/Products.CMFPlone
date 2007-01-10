@@ -26,21 +26,17 @@ body {
     padding: 0;
     min-width: 0px !important;
 }
-
 #visual-portal-wrapper {
     width: 100% !important;
     min-width: 0 !important;
 }
-
 #portal-column-content {
     margin: 0 !important;
 }
-
 #portal-column-content #content {
     padding: 1em;
     margin: 0 !important;
 }
-
 h1, h2 {
     font-size: 50px !important;
     background-color: &dtml-globalBackgroundColor;;
@@ -54,18 +50,15 @@ h1, h2 {
     page-break-before: always;
     font-weight: normal;
 }
-
 h1.documentFirstHeading { 
     /* Trick to avoid getting an initial blank page */
     page-break-before: avoid; 
 } 
-
 dl, ol, ul {
     font-size: 40px !important;
     text-align: left;
     margin-top: 0.5em;
 }
-
 dt {
     background-color: &dtml-globalBackgroundColor;;
     border-color: &dtml-globalBorderColor;;
@@ -74,33 +67,27 @@ dt {
     display: inline;
     padding-right: 0.5em;
 }
-
 dd {
     margin-bottom: 0.25em;
 }
-
 li {
     margin: 0 0 0.5em 0;
 }
-
 p {
     /* This hides evertything that is a normal paragraph, so you can write 
     presentations with additional notes that only show up in print/web.
     If you want normal paragraphs to show up, remove this selector. */
     display: none;
 }
-
 .documentDescription {
     font-size: 40px !important;
     font-weight: normal;
     margin-top: 4em;
     text-align: center !important;
 }
-
 ul { 
     list-style-image: url(&dtml-portal_url;/bulletBig.gif); 
 }
-
 pre { 
     font-size: 25px;
     padding: 0.5em;
@@ -108,7 +95,6 @@ pre {
     background-color: &dtml-globalBackgroundColor;;
     border: &dtml-borderWidth; &dtml-borderStyleAnnotations; &dtml-globalBorderColor;;
 }
-
 code {
     background-color: &dtml-globalBackgroundColor;;
     border-color: &dtml-globalBorderColor;;
@@ -116,7 +102,6 @@ code {
     border-width: &dtml-borderWidth;;
     padding: 0.1em 0.25em;
 }
-
 a {
     color: &dtml-linkColor; !important;
 }
@@ -151,12 +136,10 @@ div#portal-columns div#visual-column-wrapper,
 div#portal-columns div#visual-column-wrapper div#portal-column-content {
     width: 100%;
 }
-
 div#portal-columns div#visual-column-wrapper div#portal-column-content {
     padding: 0;
     margin: 0;
 }
-
 div#portal-columns div#visual-column-wrapper div#portal-column-content * {
     text-align: left;
 }
@@ -168,17 +151,14 @@ div#portal-columns div#visual-column-wrapper div#portal-column-content * {
     padding: 0;
     margin: 0;
 }
-
 #content {
     margin: 0 1em;
 }
-
 table.listing,
 table.listing td {
     border: 1pt &dtml-borderStyle; black;
     border-collapse: collapse;
 }
-
 a, a:link, a:visited {
     color: #520;
     background: transparent;
