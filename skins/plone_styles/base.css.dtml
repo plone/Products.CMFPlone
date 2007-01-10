@@ -113,18 +113,6 @@ dd {
     line-height: 1.5em;
     margin-bottom: 1em;
 }
-fieldset {
-    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
-    margin: 1em 0em 1em 0em;
-    padding: 0em 1em 1em 1em;
-    line-height: 1.5em;
-    width: auto;
-}
-legend {
-    background: &dtml-backgroundColor;;
-    padding: 0.5em;
-    font-size: 90%;
-}
 abbr, acronym, .explain {
     border-bottom: &dtml-borderWidth; dotted &dtml-fontColor;;
     color: &dtml-fontColor;;

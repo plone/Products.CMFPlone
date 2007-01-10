@@ -53,6 +53,18 @@ form {
     border: none;
     margin: 0;
 }
+fieldset {
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    margin: 1em 0em 1em 0em;
+    padding: 0em 1em 1em 1em;
+    line-height: 1.5em;
+    width: auto;
+}
+legend {
+    background: &dtml-backgroundColor;;
+    padding: 0.5em;
+    font-size: 90%;
+}
 label {
     font-weight: bold;
 }
