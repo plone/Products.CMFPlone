@@ -12,7 +12,8 @@
 
 <h5 class="hiddenStructure" i18n:translate="heading_personal_tools">Personal tools</h5>
 
-<ul id="portal-personaltools">
+<ul id="portal-personaltools"
+    class="visualInline">
    <tal:block condition="not: isAnon">
        <li class="portalUser" 
            tal:define="author python:mtool.getMemberInfo(user.getId())"><a 
@@ -32,9 +33,10 @@
             tal:attributes="class class_name">
             <a href=""
                tal:attributes="href action/url;
-                               class python:test(icon, 'visualIconPadding', nothing);">
-               <tal:actionname i18n:translate="" tal:content="action/title">dummy</tal:actionname>
-            </a>
+                               class python:test(icon, 'visualIconPadding', nothing);"
+            ><tal:actionname i18n:translate="" 
+                             tal:content="action/title">dummy</tal:actionname
+            ></a>
         </li>
     </tal:actions>
 
