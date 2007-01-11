@@ -92,16 +92,11 @@ h6 {
 }
 ul {
     line-height: 1.5em;
-    margin: 0.5em 0 0 1.5em;
     padding: 0;
-    list-style-image: url(&dtml-portal_url;/bullet.gif);
-    list-style-type: square;
 }
 ol {
     line-height: 1.5em;
-    margin: 0.5em 0 0 2.5em;
     padding: 0;
-    list-style-image: none;
 }
 li {
     margin-bottom: 0.5em;

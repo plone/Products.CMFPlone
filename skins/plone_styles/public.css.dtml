@@ -42,6 +42,14 @@ h3, h4, h5, h6 {
     padding: 1em 1em 2em 1em !important;
     background: &dtml-backgroundColor;;
 }
+.documentContent ul {
+    list-style-image: url(&dtml-portal_url;/bullet.gif);
+    list-style-type: square;
+    margin: 0.5em 0 0 1.5em;
+}
+.documentContent ol {
+    margin: 0.5em 0 0 2.5em;
+}
 
 /* Links with differently colored link underlines - only for content */
 .documentContent p a {
@@ -79,53 +87,6 @@ h3, h4, h5, h6 {
     background-color: transparent;
 }
 /* End links */
-
-/* The edit form elements */
-.field {
-    top: 0;
-    left: 0;
-    margin: 0 1em 1em 0;
-}
-.field .field {
-    margin: 1em 0 0 0;
-}
-.fieldRequired {
-    background: url(&dtml-portal_url;/required.gif) center left no-repeat;
-    padding: 0 0 0 8px;
-    color: &dtml-backgroundColor;;
-}
-.fieldUploadFile {
-    text-align: right; 
-    margin-right: 0.75em;
-    display: none;
-}
-.fieldTextFormat {
-    text-align: right;
-    margin-right: 0.75em
-}
-.formHelp {
-    font-size: 90%;
-    color: &dtml-discreetColor;;
-    margin: 0 0 0.2em 0;
-}
-.formHelp:hover {
-    color: &dtml-fontColor;;
-    cursor: default;
-}
-.formControls {
-   margin: 1em 0;
-}
-.error {
-    /* Class for error indication in forms */
-    background-color: &dtml-notifyBackgroundColor;;
-    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-notifyBorderColor;;
-    padding: 1em;
-    margin: 0 0 1em 0;
-    width: 95%;
-}
-.error .fieldRequired {
-   color: &dtml-notifyBackgroundColor;;
-}
 
 /* Code to work around IE's lacking support of sub-elements of the input element */
 .noborder,
