@@ -11,7 +11,9 @@
     id="portlet-prefs">
     <dt class="portletHeader">
         <span class="portletTopLeft"></span>
-        <span i18n:translate="heading_control_panel">Site Setup</span>
+        <a href="" 
+           tal:attributes="href string:${portal_url}/plone_control_panel"
+           i18n:translate="heading_control_panel">Site Setup</a>
         <span class="portletTopRight"></span>
     </dt>
 
