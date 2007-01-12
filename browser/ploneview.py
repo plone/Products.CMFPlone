@@ -62,9 +62,10 @@ class Plone(utils.BrowserView):
         # products which may have used this little hack
         options = context.vars.get('options',{})
         view = context.vars.get('view', {})
+        template = context.vars.get('template', None)
 
         state = {}
-        self._initializeData(options=options, view=view)
+        self._initializeData(options=options, view=view, template=template)
         for name, v in self._data.items():
             state[name] = v
             context.setGlobal(name, v)
@@ -73,7 +74,7 @@ class Plone(utils.BrowserView):
         super(Plone, self).__init__(context, request)
         self._data = {}
 
-    def _initializeData(self, options=None, view=None):
+    def _initializeData(self, options=None, view=None, template=None):
         # We don't want to do this in __init__ because the view provides
         # methods which are useful outside of globals.  Also, performing
         # actions during __init__ is dangerous because instances are usually
@@ -147,6 +148,13 @@ class Plone(utils.BrowserView):
         self._data['Iterator'] = utils.IndexIterator
         self._data['tabindex'] = utils.IndexIterator(pos=30000, mainSlot=False)
         self._data['uniqueItemIndex'] = utils.IndexIterator(pos=0)
+
+        template_id = options.get('template_id', None)
+        if template_id is None and template is not None:
+            template_id = template.getId()
+        self._data['template_id'] = template_id
+        isViewTemplate = (template_id == context_state.view_template_id())
+        self._data['isViewTemplate'] = isViewTemplate
 
     # XXX: This is lame
     def hide_columns(self, column_left, column_right):

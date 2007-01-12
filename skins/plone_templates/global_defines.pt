@@ -10,8 +10,4 @@ moved to (much faster) Python code in CMFPlone/browser/plone.py
         global plone_view context/@@plone;
         global view nocall:view | nocall:plone_view;
         foo plone_view/globalize;
-        global template_id options/template_id | template/getId | nothing;
-        view_template_id plone_view/getViewTemplateId;
-        global isViewTemplate python:template_id==view_template_id;
-        global normalizeString nocall:putils/normalizeString;
         " />
