@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Added some classes to document_byline.pt for more flexibility when styling
+      this template. This closes
+      http://dev.plone.org/plone/ticket/5025
+      [spliter]
+
     - Deprecated skin related methods of the Plone tool. The functionality is
       provided by the skins tool itself for some time now.
       [hannosch]
