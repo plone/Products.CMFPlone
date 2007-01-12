@@ -12,7 +12,8 @@
 
         <tal:name tal:condition="creator"
             tal:define="author python:mtool.getMemberInfo(creator)">
-          <span i18n:translate="label_by_author">
+          <span class="documentAuthor"
+                i18n:translate="label_by_author">
             by
           <a href="#"
              tal:attributes="href string:${portal_url}/author/${creator}"
@@ -21,17 +22,19 @@
              i18n:name="author">
             Bob Dobalina
           </a>
-          </span>
 
           &mdash;
-
+          
+          </span>
         </tal:name>
 
-        <span i18n:translate="box_last_modified">
-        last modified
-        </span>
-        <span tal:replace="python:toLocalizedTime(here.ModificationDate(),long_format=1)">
-        August 16, 2001 at 23:35:59
+        <span class="documentModified">
+            <span i18n:translate="box_last_modified">
+            last modified
+            </span>
+            <span tal:replace="python:toLocalizedTime(here.ModificationDate(),long_format=1)">
+            August 16, 2001 at 23:35:59
+            </span>
         </span>
 
         <span class="state-expired"
@@ -40,14 +43,16 @@
         &mdash; expired
         </span>
 
-        <span tal:define="locked portal/lock_icon.gif"
+        <span class="documentLocked"
+              tal:define="locked portal/lock_icon.gif"
               tal:condition="isLocked">
             <img src=""
                  tal:replace="structure python:locked.tag(title='This item is locked')"
                  alt="Object locked" />
         </span>
 
-        <div tal:condition="here/Contributors"
+        <div class="documentContributors"
+             tal:condition="here/Contributors"
              i18n:translate="text_contributors">
             Contributors:
             <span i18n:name="name"

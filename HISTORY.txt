@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.5.2 - Orb - released January 3, 2007
 
+    - Added some classes to document_byline.pt for more flexibility when styling
+      this template. This closes
+      http://dev.plone.org/plone/ticket/5025
+      [spliter]
+
     - In livesearch results, don't append ... at the end, when the lenght of
       the title or description is exactly the limit. This closes
       http://dev.plone.org/plone/ticket/5989.
