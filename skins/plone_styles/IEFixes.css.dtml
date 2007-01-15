@@ -66,7 +66,11 @@ position: relative;
     position: absolute;
 }
 
-body { /* These work in IE only, changes the look of the scrollbar + textareas */
+/* These work in IE only, changes the look of the scrollbar + textareas 
+   We disabled these in Plone 3.0, but if you want them back, uncomment 
+*/
+/*
+body { 
     scrollbar-base-color: &dtml-globalBackgroundColor;;
     scrollbar-highlight-color: &dtml-globalBackgroundColor;;
     scrollbar-track-color: &dtml-evenRowBackgroundColor;;
@@ -75,6 +79,7 @@ body { /* These work in IE only, changes the look of the scrollbar + textareas *
     scrollbar-shadow-color: &dtml-globalBorderColor;;
     scrollbar-arrow-color: &dtml-globalFontColor;;
 }
+*/
 
 /* Holly hack to kill the Peekaboo bug in IE - details at
    http://www.positioniseverything.net/explorer/peekaboo.html

@@ -4,8 +4,13 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
-    - Added some classes to document_byline.pt for more flexibility when styling
-      this template. This closes
+    - Commented out the IE-specific styling of textarea scrollbars from 
+      IEFixes.css. Plone uses standard scrollbars from 3.0 onwards, but if you
+      want them back, they can easily be uncommented.
+      [limi]
+
+    - Added some classes to document_byline.pt for more flexibility when
+      styling this template. This closes
       http://dev.plone.org/plone/ticket/5025
       [spliter]
 
