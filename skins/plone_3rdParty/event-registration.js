@@ -70,7 +70,7 @@ if (window.addEventListener) {
 } else if (window.attachEvent) {
     window.attachEvent("onload", DOMContentLoadedInit);
 } else {
-    function() {
+    var _dummy = function() {
         var $old_onload = window.onload;
         window.onload = function(e) {
             DOMContentLoadedInit();
