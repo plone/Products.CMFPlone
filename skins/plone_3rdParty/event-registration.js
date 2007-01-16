@@ -49,8 +49,11 @@ function DOMContentLoadedScheduler() {
             // Not ready yet, wait a little more.
             setTimeout("DOMContentLoadedScheduler()", 250);
         }
-    } else if(typeof document.getElementsByTagName != 'undefined' && (document.getElementsByTagName('body')[0] != null || document.body != null)) {
-        DOMContentLoadedInit();
+    } else if(typeof document.getElementsByTagName != 'undefined') {
+        var body = document.getElementsByTagName('body');
+        if (body.length > 0 || document.body != null) {
+            DOMContentLoadedInit();
+        }
     } else {
         // Not ready yet, wait a little more.
         setTimeout("DOMContentLoadedScheduler()", 250);
