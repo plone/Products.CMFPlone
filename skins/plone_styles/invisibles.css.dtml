@@ -28,7 +28,6 @@
 /* a img,:link img,:visited img { border:none } /* Linked images should not have borders */
 
 
-
 /* List classes without markers */
 ul.visualNoMarker,
 ol.visualNoMarker {
@@ -41,22 +40,20 @@ ol.visualNoMarker {
     overflow: auto;
     margin: 0 0 1em 0;
 }
-
 .visualOverflow pre,
 .visualOverflow table,
 .visualOverflow img {
     margin: 0;
 }
 
-.visualFontSizeCorrection { /* Correction for WYSIWYG editors */
+/* Correction for WYSIWYG editors */
+.visualFontSizeCorrection { 
     font-size: 75%;
     background: transparent;
     background-image: none;
 }
 
-
 /* Accessibility and visual enhancement elements */
-
 .hiddenStructure {
     display: block;
     background: transparent;
@@ -68,14 +65,12 @@ ol.visualNoMarker {
     margin: -1px 0 0 -1px;
     width: 1px;
 }
-
 .contentViews .hiddenStructure,
 .contentActions .hiddenStructure {
     position: absolute;
     top: -200px;
     left: -200px;
 }
-
 .hiddenLabel {
     display: block;
     background: transparent;
@@ -89,17 +84,14 @@ ol.visualNoMarker {
 }
 
 /* Helper element to work with CSS floats */
-
 .visualClear {
     display: block;
     clear: both;
 }
 
 /* Hiding helper elements for old browsers */
-
 .netscape4 {
     display: none;
 }
-
 
 /* </dtml-with> */
