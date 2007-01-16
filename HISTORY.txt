@@ -2,12 +2,19 @@ Changelog for Plone
 
     (name of developer listed in brackets)
 
-Plone 2.5.2 - Orb - released January 3, 2007
+Plone 2.5.2 - Orb - released January 15, 2007
+
+    - Fix issue with drag and drop caused by changing of css ids in
+      folder_contents.
+      [alecm]
 
     - Added some classes to document_byline.pt for more flexibility when styling
       this template. This closes
       http://dev.plone.org/plone/ticket/5025
       [spliter]
+
+
+Plone 2.5.2 - Release Candidate - released January 3, 2007
 
     - In livesearch results, don't append ... at the end, when the lenght of
       the title or description is exactly the limit. This closes

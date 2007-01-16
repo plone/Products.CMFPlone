@@ -105,7 +105,9 @@ ploneDnDReorder.updatePositionOnServer = function() {
     var req = new XMLHttpRequest();
     req.open("POST", "folder_moveitem", true);
     req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    req.send("item_id="+ploneDnDReorder.dragging.id+"&delta:int="+delta);
+    // Strip off id prefix
+    var item_id = ploneDnDReorder.dragging.id.substr('folder-contents-item-'.length);
+    req.send("item_id="+item_id+"&delta:int="+delta);
 }
 
 ploneDnDReorder.initializeDragDrop = function() {
