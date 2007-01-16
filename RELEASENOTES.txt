@@ -1,4 +1,4 @@
-Plone 2.5.2 - January 3, 2007
+Plone 2.5.2 - January 16, 2007
 =========================
 
 The following is a list of important things to note when installing or upgrading
