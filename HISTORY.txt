@@ -16,7 +16,7 @@ Plone 2.5.2 - Orb - released January 16, 2007
 
 Plone 2.5.2 - Release Candidate - released January 3, 2007
 
-    - In livesearch results, don't append ... at the end, when the lenght of
+    - In livesearch results, don't append ... at the end, when the length of
       the title or description is exactly the limit. This closes
       http://dev.plone.org/plone/ticket/5989.
       [hannosch]
