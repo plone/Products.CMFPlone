@@ -72,7 +72,7 @@ var registerPloneFunction = undefined;
 if (typeof addDOMLoadEvent != 'undefined') {
     registerPloneFunction = function (func) {
         // registers a function to fire ondomload.
-        registerEventListener(window, "domload", func);
+        addDOMLoadEvent(func);
     }
 } else {
     registerPloneFunction = function (func) {
