@@ -8,8 +8,40 @@ function scanforlinks() {
     // terminate if we hit a non-compliant DOM implementation
     if (!W3CDOM) { return false; }
 
+    // first make external links open in a new window, afterwards do the
+    // normal plone link wrapping in only the content area
+
+    if ((typeof external_links_in_content_only != 'undefined') &&
+        (external_links_in_content_only == false)) {
+        links = document.getElementsByTagName('a');
+        for (i=0; i < links.length; i++) {
+            if ( (links[i].getAttribute('href'))
+                 && (links[i].className.indexOf('link-plain')==-1) ) {
+                var linkval = links[i].getAttribute('href');
+
+                // check if the link href is a relative link, or an absolute link to
+                // the current host.
+                if (linkval.toLowerCase().indexOf(window.location.protocol
+                                                  + '//'
+                                                  + window.location.host)==0) {
+                    // absolute link internal to our host - do nothing
+                } else if (linkval.indexOf('http:') != 0) {
+                    // not a http-link. Possibly an internal relative link, but also
+                    // possibly a mailto or other protocol add tests for relevant
+                    // protocols as you like.
+                    // do nothing
+                } else {
+                    // we are in here if the link points to somewhere else than our
+                    // site.
+                    links[i].setAttribute('target', '_blank');
+                }
+            }
+        }
+    }
+
     contentarea = getContentArea();
-    if (!contentarea) { return false; }
+    if (!contentarea)
+        return false;
 
     links = contentarea.getElementsByTagName('a');
     for (i=0; i < links.length; i++) {
@@ -45,9 +77,13 @@ function scanforlinks() {
                     // we do not want to mess with those links that already have
                     // images in them
                     wrapNode(links[i], 'span', 'link-external');
-                    // uncomment the next line if you want external links to be
-                    // opened in a new window.
-                    // links[i].setAttribute('target', '_blank');
+                }
+                // set open_links_in_external_window in plone_javascript_variables.js.pt
+                // to true if you want external links to be opened in a new
+                // window.
+                if ((typeof external_links_open_new_window != 'undefined') &&
+                    (external_links_open_new_window == true)) {
+                    links[i].setAttribute('target', '_blank');
                 }
             }
         }

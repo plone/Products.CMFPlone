@@ -417,6 +417,39 @@ Plone 3.0-alpha1 - released November 24, 2006
 
 Plone 2.5.2 - Orb - (Unreleased)
 
+    - In livesearch results, don't append ... at the end, when the lenght of
+      the title or description is exactly the limit. This closes
+      http://dev.plone.org/plone/ticket/5989.
+      [hannosch]
+
+    - Do not display the right column on prefs_main_template anymore, as it
+      was unneeded and could cause design problems. This closes
+      http://dev.plone.org/plone/ticket/5803.
+      [hannosch]
+
+    - Moved the global_cache_settings call in main_template before the call to
+      header.pt as otherwise the encoding in the header would not be defined
+      and fall back to ZPublishers default_encoding. This closes
+      http://dev.plone.org/plone/ticket/6013
+      [hannosch]
+
+    - Optimized the check_id.py uniqueness check to not use contentIds,
+      fixes http://dev.plone.org/plone/ticket/5976
+      [alecm]
+
+    - Add search term highlighting to livesearch result links.
+      [alecm]
+
+    - links in Contents table behave as they should now - show the "pointer" 
+      hand when hovering the mouse over them. It was broken due to ajax sorting 
+      feature somehow
+      [spliter]
+
+    - event_view.pt has a better position for details table now, letting byLine 
+      and Description info to be content-wide and not to be shifted to the left,
+      bacuse of Details table
+      [spliter]
+
     - main table for columns (#portal-columns) should not have paddings or 
       spacings - they can confuse when styling. Fixed with CSS for the table 
       cells, thanks to deo ;)

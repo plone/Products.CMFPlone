@@ -20,7 +20,6 @@ plone_utils = getToolByName(context, 'plone_utils')
 mtool = getToolByName(context, 'portal_membership')
 site_properties = getToolByName(context, 'portal_properties').site_properties
 pretty_title_or_id = plone_utils.pretty_title_or_id
-empty_title = plone_utils.getEmptyTitle()
 
 if not mtool.checkPermission(AllowSendto, context):
     context.plone_utils.addPortalMessage(_(u'You are not allowed to send this link.'))

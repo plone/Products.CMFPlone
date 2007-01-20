@@ -11,6 +11,7 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.utils import safe_unicode
 from Products.PythonScripts.standard import url_quote
+from Products.PythonScripts.standard import url_quote_plus
 
 ploneUtils = getToolByName(context, 'plone_utils')
 portal_url = getToolByName(context, 'portal_url')()
@@ -66,6 +67,8 @@ site_encoding = context.plone_utils.getSiteEncoding()
 
 results = catalog(SearchableText=r, portal_type=friendly_types)
 
+searchterm_query = '?searchterm=%s'%url_quote_plus(q)
+
 RESPONSE = context.REQUEST.RESPONSE
 RESPONSE.setHeader('Content-Type', 'text/xml;charset=%s' % site_encoding)
 
@@ -107,6 +110,7 @@ else:
         itemUrl = result.getURL()
         if result.portal_type in useViewAction:
             itemUrl += '/view'
+        itemUrl = itemUrl + searchterm_query
 
         write('''<li class="LSRow">''')
         write('''<img src="%s" alt="%s" width="%i" height="%i" />''' % (icon.url,
@@ -114,7 +118,7 @@ else:
                                                                         icon.width,
                                                                         icon.height))
         full_title = safe_unicode(pretty_title_or_id(result))
-        if len(full_title) >= MAX_TITLE:
+        if len(full_title) > MAX_TITLE:
             display_title = ''.join((full_title[:MAX_TITLE],'...'))
         else:
             display_title = full_title
@@ -122,7 +126,7 @@ else:
         write('''<a href="%s" title="%s">%s</a>''' % (itemUrl, full_title, display_title))
         write('''<span class="discreet">[%s%%]</span>''' % result.data_record_normalized_score_)
         display_description = safe_unicode(result.Description)
-        if len(display_description) >= MAX_DESCRIPTION:
+        if len(display_description) > MAX_DESCRIPTION:
             display_description = ''.join((display_description[:MAX_DESCRIPTION],'...'))
         write('''<div class="discreet" style="margin-left: 2.5em;">%s</div>''' % (display_description))
         write('''</li>''')

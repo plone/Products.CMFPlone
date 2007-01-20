@@ -42,6 +42,10 @@ function HighlightSearchTermsTestCase() {
         this.sandbox.appendChild(testnode);
     }
 
+    this.testEndlessLoop = function() {
+        highlightSearchTerms(['','site:plone.org','plone','rules'], this.sandbox)
+    }
+
     this.tearDown = function() {
         clearChildNodes(this.sandbox);
     }

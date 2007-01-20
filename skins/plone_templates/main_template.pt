@@ -8,6 +8,13 @@
       tal:attributes="lang language;
                       xml:lang language">
 
+  <tal:cache tal:define="lang language;
+                         charset site_properties/default_charset|string:utf-8">
+    <metal:cache use-macro="here/global_cache_settings/macros/cacheheaders">
+      Get the global cache headers located in global_cache_settings.
+    </metal:cache>
+  </tal:cache>
+
   <head metal:use-macro="here/header/macros/html_header">
 
     <metal:fillbase fill-slot="base">
@@ -16,14 +23,7 @@
       </metal:baseslot>
     </metal:fillbase>
 
-    <metal:headslot fill-slot="head_slot"
-                    tal:define="lang language;
-                                charset site_properties/default_charset|string:utf-8">
-
-      <metal:cache use-macro="here/global_cache_settings/macros/cacheheaders">
-        Get the global cache headers located in global_cache_settings.
-      </metal:cache>
-
+    <metal:headslot fill-slot="head_slot">
       <metal:headslot define-slot="head_slot" />
       <tal:comment replace="nothing"> A slot where you can insert elements in the header from a template </tal:comment>
     </metal:headslot>
