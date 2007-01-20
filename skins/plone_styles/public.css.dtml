@@ -619,6 +619,10 @@ h3, h4, h5, h6 {
 .listing img {
     vertical-align: middle;
 }
+.listing td a label,
+.stx table td a label {
+    cursor: pointer;
+}
 
 /* Vertical addition class */
 .vertical {
