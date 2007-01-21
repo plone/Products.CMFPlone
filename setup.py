@@ -19,7 +19,7 @@ setup(name='plone.app.layout',
       include_package_data=True,
       zip_safe=False,
       install_requires=[
-          # -*- Extra requirements: -*-
+        'setuptools',
       ],
       entry_points="""
       # -*- Entry points: -*-
