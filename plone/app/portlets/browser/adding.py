@@ -13,7 +13,10 @@ from plone.app.portlets.browser.interfaces import IPortletAdding
 
 class PortletAdding(SimpleItem, BrowserView):
     implements(IPortletAdding)
-    
+
+    context = None
+    request = None
+
     def add(self, content):
         """Add the rule to the context
         """
@@ -40,3 +43,16 @@ class PortletAdding(SimpleItem, BrowserView):
 
     def nameAllowed(self):
         return False
+
+    @property
+    def contentName(self):
+         return None
+
+    def addingInfo():
+        return None
+
+    def isSingleMenuItem():
+        return False
+
+    def hasCustomAddView():
+        return 0
