@@ -38,21 +38,13 @@ function DOMContentLoadedScheduler() {
     // quit if the init function has already been called
     if (window.DOMContentLoadedInitDone) return true;
     
-    // First check for Safari or
-    //if DOM methods are supported, and the body element exists
-    //(using a double-check including document.body, for the benefit of older moz builds [eg ns7.1] 
-    //in which getElementsByTagName('body')[0] is undefined, unless this script is in the body section)
+    // Check for Safari/WebKit or KHTML
     if(/KHTML|WebKit/i.test(navigator.userAgent)) {
         if(/loaded|complete/.test(document.readyState)) {
             DOMContentLoadedInit();
         } else {
             // Not ready yet, wait a little more.
             setTimeout("DOMContentLoadedScheduler()", 250);
-        }
-    } else if(typeof document.getElementsByTagName != 'undefined') {
-        var body = document.getElementsByTagName('body');
-        if (body.length > 0 || document.body != null) {
-            DOMContentLoadedInit();
         }
     } else {
         // Not ready yet, wait a little more.
