@@ -8,11 +8,15 @@ from unicodehacks import FasterStringIO
 from zope.tal import talinterpreter
 from zope.tales import expressions
 from zope.pagetemplate import pagetemplate
+from Products.Five import i18n
 
 # Enable use of utf-8 text in tales inserts, until all code is changed to use
 # pure Unicode only. This will only work for sites with a portal encoding of
 # utf-8 but it will give us some time to change Archetypes and Plone
 talinterpreter.unicode = _unicode_replace
+
+# Patch Five's translation service to allow encoded strings as msgids
+i18n.unicode = _unicode_replace
 
 # Deal with the case where Unicode and encoded strings occur on the same tag.
 talinterpreter._nulljoin_old = talinterpreter._nulljoin
