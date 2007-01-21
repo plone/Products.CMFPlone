@@ -12,6 +12,5 @@
  <property name="email_from_name"
     type="string">Portal Administrator</property>
  <property name="validate_email" type="boolean">True</property>
- <property name="default_charset" type="string"></property>
  <property name="enable_permalink" type="boolean">False</property>
 </site>
