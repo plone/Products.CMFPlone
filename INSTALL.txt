@@ -40,7 +40,7 @@ Installing Plone manually, step by step instructions.
 
   - Zope 2.10.x (does not run natively on Zope 3)
      Not included in the Plone tarball.
-     http://www.zope.org/Products/Zope/2.10.0b1
+     http://www.zope.org/Products/Zope/2.10.1
 
   - Python Imaging Library 1.1.5 or newer
     Not included in the Plone tarball.
@@ -52,16 +52,15 @@ Installing Plone manually, step by step instructions.
     Not included in the Plone tarball.
     http://effbot.org/downloads/#elementtree
 
-
   **The following dependencies are included in the Plone tarball**
 
   - CMF 2.1.x 
 
   - CMFQuickInstallerTool 2.0.0 or newer
 
-  - GroupUserFolder 3.54 or newer
+  - GroupUserFolder 3.54.1 or newer
 
-  - CMFFormController 2.0.5 or newer
+  - CMFFormController 2.0.6 or newer
 
   - SecureMailHost 1.0.4 or newer
 
@@ -69,9 +68,9 @@ Installing Plone manually, step by step instructions.
 
   - ATContentTypes 1.2 or newer
 
-  - ATReferenceBrowserWidget 1.6 or newer
+  - ATReferenceBrowserWidget 1.7 or newer
 
-  - ResourceRegistries 1.3.2 or newer
+  - ResourceRegistries 1.3.3 or newer
 
   - ExtendedPathIndex 2.4 or newer
 
@@ -81,33 +80,29 @@ Installing Plone manually, step by step instructions.
 
   - PloneTranslations 3.0
 
-  - PloneLanguageTool 1.4 or newer
+  - PloneLanguageTool 1.5 or newer
 
   - CMFPlacefulWorkflow 1.0.2 or newer
 
-  - PlonePAS 2.1 or newer
+  - PlonePAS 2.2 or newer
 
-  - PasswordResetTool 0.4.1 or newer
+  - PasswordResetTool 0.4.2 or newer
 
-  - PluggableAuthService 1.4 or newer
+  - PluggableAuthService 1.4.1 or newer
 
   - PluginRegistry 1.1.1 or newer
 
-  - ExternalEditor 0.9.2 or newer
+  - ExternalEditor 0.9.3 or newer
 
   - Kupu 1.4 or newer
   
-  - plone.portlets
-
-  - plone.app.portlets
-
   - CMFEditions 1.1 or newer
 
   - ZopeVersionControl 0.3.3 or newer
 
   **OPTIONAL**
 
-  - CacheFu 1.0.1 or newer
+  - CacheFu 1.0.2 or newer
      Included in the Plone tarball.
      In order to use CacheFu, you must copy or link the directories
      ``CacheSetup``, ``CMFSquidTool``, ``PageCacheManager``, and
@@ -266,4 +261,3 @@ Enjoy Plone, and don't forget to report any bugs or inconsistencies in the
 Plone bug tracker: http://dev.plone.org/plone/
 
 Thank you for using Plone!
-

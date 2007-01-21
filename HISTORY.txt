@@ -415,9 +415,20 @@ Plone 3.0-alpha1 - released November 24, 2006
       CatalogTool._initIndexes.
       [hannosch]
 
-Plone 2.5.2 - Orb - (Unreleased)
+Plone 2.5.2 - Orb - released January 16, 2007
 
-    - In livesearch results, don't append ... at the end, when the lenght of
+    - Fix issue with drag and drop caused by changing of css ids in
+      folder_contents.
+      [alecm]
+
+    - Added some classes to document_byline.pt for more flexibility when styling
+      this template. This closes
+      http://dev.plone.org/plone/ticket/5025
+      [spliter]
+
+Plone 2.5.2 - Release Candidate - released January 3, 2007
+
+    - In livesearch results, don't append ... at the end, when the length of
       the title or description is exactly the limit. This closes
       http://dev.plone.org/plone/ticket/5989.
       [hannosch]
