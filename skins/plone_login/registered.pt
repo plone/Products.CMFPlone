@@ -50,8 +50,7 @@
           tal:define="username request/username;
                       password request/password;
                       ac_name auth/name_cookie|string:__ac_name;
-                      ac_password auth/pw_cookie|string:__ac_password;
-                      ac_persist auth/persist_cookie|nothing;"
+                      ac_password auth/pw_cookie|string:__ac_password;"
           tal:attributes="action python:'%s/login_form' % portal_url">
 
          <input type="hidden" name="form.submitted" value="1" />
