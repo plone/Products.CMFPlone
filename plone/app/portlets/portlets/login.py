@@ -67,13 +67,6 @@ class Renderer(base.Renderer):
             passwd = '__ac_password'
         return passwd
 
-    def persist_cookie(self):
-        auth = self.auth()
-        persist = False
-        if auth is not None:
-            persist = getattr(auth, 'persist_cookie', None)
-        return persist
-
     def join_action(self):
         userActions = self.context_state.actions()['user']
         joinAction = [a['url'] for a in userActions if a['id'] == 'join']

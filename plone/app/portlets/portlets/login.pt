@@ -16,8 +16,7 @@
 
     <dd class="portletItem odd"
         tal:define="ac_name view/login_name;
-                    ac_password view/login_password;
-                    ac_persist view/persist_cookie;">
+                    ac_password view/login_password">
         <form action="login_form"
               name="loginform"
               method="post"
