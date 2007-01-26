@@ -6,6 +6,7 @@ from Products.PloneTestCase.PloneTestCase import PloneTestCase
 from Products.PloneTestCase.PloneTestCase import FunctionalTestCase
 from Products.PloneTestCase.PloneTestCase import setupPloneSite
 from Products.CMFCore.utils import getToolByName
+from plone.app.controlpanel import wickedcp
 
 setupPloneSite()
 
@@ -48,4 +49,6 @@ def test_suite():
             optionflags=OPTIONFLAGS,
             package="plone.app.controlpanel.tests",
             test_class=ControlPanelTestCase))
+
+    suite.addTest(wickedcp.test_suite())
     return suite

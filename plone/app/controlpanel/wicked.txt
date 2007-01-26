@@ -1,0 +1,51 @@
+=====================
+ wicked controlpanel
+=====================
+
+the wicked controlpanel roughly follows the schema adapter pattern of
+the other plone control panels. We'll test the adapter that does most
+of the work.
+
+    >>> adapter = WickedControlPanelAdapter(self.portal)
+
+wicked's control panel stores it's settings as an annotation;
+the 'setting' attribute is used to access this annotation::
+
+    >>> adapter.settings
+    <plone.app.controlpanel.wickedcp.WickedSettings object at ...>
+
+    >>> annotations = IAnnotations(self.portal)
+    >>> annotations[SETTING_KEY] is adapter.settings
+    True
+
+
+The setting object is just a persistent bag, with some default settings::
+
+    >>> settings = adapter.settings
+    >>> settings.types_enabled
+    []
+
+    >>> settings.enable_mediawiki
+    False
+
+
+All the work is done by setting the properties::
+
+    >>> adapter.enable_mediawiki = True
+    >>> settings.enable_mediawiki
+    True
+
+The options are limited right now(and will probably be rewritten at
+the ui sprint).  The logic essentially works like on the pattern of
+unregister all and register fresh options(not suggested as number of
+options increases at which point the settings object should keep track
+of what is registered and what isn't and how).
+
+Turning on all 3 types::
+
+    >>> adapter.types_enabled=type_regs.keys()
+    >>> settings.types_enabled
+    ['NewsItem', 'Page', 'Event']
+
+This could use more tests to query the local sitemanager about what is
+and isn't registered, but the logic is working now.

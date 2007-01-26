@@ -18,6 +18,15 @@
       factory=".types.TypesControlPanelAdapter"
       />
 
+  <adapter factory=".wickedcp.WickedControlPanelAdapter" />
+
+  <browser:page
+      name="wicked-controlpanel.html"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".wickedcp.WickedControlPanel" 
+      permission="cmf.ManagePortal"
+     />
+
   <browser:page
       name="calendar-controlpanel.html"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
@@ -54,5 +63,10 @@
       factory=".widgets.MultiSelectTupleWidget"
       permission="zope.Public"
       />
+
+  <utility
+    component=".wickedcp.WickedTypesVocabularyFactory"
+    name="plone.app.controlpanel.WickedPortalTypes"
+    />
 
 </configure>
