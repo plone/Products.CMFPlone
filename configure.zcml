@@ -18,6 +18,12 @@
   <include package="kss.core" />
   <include package="plone.app.kss" />
   <include package="archetypes.kss" />
+
+  <!-- wicked -->
+  <include package="wicked.plone" file="selective-atct.zcml" />
+
+  <!-- all AT text fields and object wikified -->
+  <!-- include package="wicked.plone" file="all-at.zcml" / -->
   
   <include package=".browser" />
   <include package=".exportimport" />
