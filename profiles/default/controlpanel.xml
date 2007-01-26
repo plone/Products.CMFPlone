@@ -62,6 +62,11 @@
     url_expr="string:${portal_url}/@@search-controlpanel.html" visible="True">
   <permission>Manage portal</permission>
  </configlet>
+ <configlet title="Wiki Behavior Settings" action_id="WickedSettings" appId="Plone"
+    category="Plone" condition_expr=""
+    url_expr="string:${portal_url}/@@wicked-controlpanel.html" visible="True">
+  <permission>Manage portal</permission>
+ </configlet>
  <configlet title="Navigation Settings" action_id="NavigationSettings"
     appId="Plone" category="Plone" condition_expr=""
     url_expr="string:${portal_url}/prefs_navigation_form" visible="True">
