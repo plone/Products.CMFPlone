@@ -5,4 +5,7 @@
     <!-- kss -->
     <include package="kss.core" file="meta.zcml" />
 
+    <!-- wicked -->
+    <include package="wicked.fieldevent" file="meta.zcml" />
+
 </configure>
