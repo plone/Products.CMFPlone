@@ -284,7 +284,7 @@ function liveSearchSubmit() {
     if (highlight) {
         var targets = highlight.getElementsByTagName('a');
         if (targets.length == 0)
-            return tru;
+            return true;
         var target = targets[0].href;
         if (!target)
             return true;
