@@ -13,7 +13,6 @@ from Products.CMFPlone.browser.interfaces import INavigationTree
 from Products.CMFPlone.browser.interfaces import ISiteMap
 from Products.CMFPlone.interfaces import IBrowserDefault
 from Products.CMFPlone.interfaces import IDynamicViewTypeInformation
-from Products.CMFPlone.interfaces import IHideFromBreadcrumbs
 
 from Products.CMFPlone.browser.navtree import buildFolderTree
 from Products.CMFPlone.browser.navtree import NavtreeQueryBuilder, SitemapQueryBuilder
@@ -327,10 +326,6 @@ class PhysicalNavigationBreadcrumbs(utils.BrowserView):
 
         view = getMultiAdapter((container, request), name='breadcrumbs_view')
         base = tuple(view.breadcrumbs())
-
-        # Some things want to be hidden from the breadcrumbs
-        if IHideFromBreadcrumbs.providedBy(context):
-            return base
 
         if base:
             item_url = '%s/%s' % (base[-1]['absolute_url'], name)

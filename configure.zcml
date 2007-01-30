@@ -10,17 +10,6 @@
     interface=".interfaces.IFactoryTool"
     />
 
-  <five:implements
-    class=".FactoryTool.FactoryTool"
-    interface=".interfaces.IHideFromBreadcrumbs"
-    />
-    
-
-  <five:implements
-    class=".FactoryTool.TempFolder"
-    interface=".interfaces.IHideFromBreadcrumbs"
-    />
-    
   <!-- Make all CMF style tools traversable via SimpleItem and Folder !danger! -->
   <five:traversable
       class="OFS.SimpleItem.SimpleItem"
