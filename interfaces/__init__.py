@@ -17,6 +17,7 @@ from view import ISelectableBrowserDefault
 from view import IDynamicViewTypeInformation
 from factory import IFactoryTool
 from translationservice import ITranslationServiceTool
+from breadcrumbs import IHideFromBreadcrumbs
 
 import PropertiesTool
 import PloneBaseTool

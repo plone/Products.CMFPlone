@@ -7,6 +7,7 @@ if __name__ == '__main__':
     execfile(os.path.join(sys.path[0], 'framework.py'))
 
 from zope.publisher.browser import setDefaultSkin
+from zope.interface import directlyProvides
 
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
@@ -16,6 +17,7 @@ from Products.CMFPlone.browser.navigation import CatalogSiteMap
 from Products.CMFPlone.browser.navigation import CatalogNavigationTabs
 from Products.CMFPlone.browser.navigation import CatalogNavigationBreadcrumbs
 from Products.CMFPlone.browser.navigation import PhysicalNavigationBreadcrumbs
+from Products.CMFPlone.interfaces import IHideFromBreadcrumbs
 
 portal_name = PloneTestCase.portal_name
 
@@ -693,11 +695,19 @@ class TestBaseBreadCrumbs(PloneTestCase.PloneTestCase):
 
 
 class TestCatalogBreadCrumbs(TestBaseBreadCrumbs):
-        view_class = CatalogNavigationBreadcrumbs
+    view_class = CatalogNavigationBreadcrumbs
 
 
 class TestPhysicalBreadCrumbs(TestBaseBreadCrumbs):
-        view_class = PhysicalNavigationBreadcrumbs
+    view_class = PhysicalNavigationBreadcrumbs
+
+    def testBreadcrumbsFilterByInterface(self):
+        view = self.view_class(self.portal.folder1.doc11, self.request)
+        crumbs = view.breadcrumbs()
+        directlyProvides(self.portal.folder1, IHideFromBreadcrumbs)
+        newcrumbs = view.breadcrumbs()
+        self.assertEqual(len(crumbs)-1, len(newcrumbs))
+        self.assertEqual(newcrumbs[0]['absolute_url'], self.portal.folder1.doc11.absolute_url())
 
 
 def test_suite():

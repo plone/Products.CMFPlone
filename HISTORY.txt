@@ -415,6 +415,13 @@ Plone 3.0-alpha1 - released November 24, 2006
       CatalogTool._initIndexes.
       [hannosch]
 
+Plone 2.5.x
+
+    _ Add a new IHideFromBreadcrumbs interface. Items marked with this
+      interface will not be shown in the breadcrumb trail. Mark the portal
+      factory with this interface so it no longer polutes the breadcrumbs.
+      [wichert]
+
 Plone 2.5.2 - Orb - released January 16, 2007
 
     - Fix issue with drag and drop caused by changing of css ids in

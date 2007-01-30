@@ -36,6 +36,17 @@
     interface=".interfaces.IFactoryTool"
     />
 
+  <five:implements
+    class=".FactoryTool.FactoryTool"
+    interface=".interfaces.IHideFromBreadcrumbs"
+    />
+    
+
+  <five:implements
+    class=".FactoryTool.TempFolder"
+    interface=".interfaces.IHideFromBreadcrumbs"
+    />
+    
   <five:deprecatedManageAddDelete
       class=".Portal.PloneSite" />
 
