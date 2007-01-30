@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.5.2 - Orb - released January 16, 2007
 
+    _ Add a new IHideFromBreadcrumbs interface. Items marked with this
+      interface will not be shown in the breadcrumb trail. Mark the portal
+      factory with this interface so it no longer polutes the breadcrumbs.
+      [wichert]
+
     - Fix issue with drag and drop caused by changing of css ids in
       folder_contents.
       [alecm]

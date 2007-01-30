@@ -7,6 +7,8 @@ from Products.CMFDefault.RegistrationTool import RegistrationTool as BaseTool
 from Products.CMFDefault.RegistrationTool import _checkEmail
 from Products.CMFPlone import ToolNames
 
+from Products.CMFCore.permissions import AddPortalMember
+
 from Globals import InitializeClass
 from AccessControl import ClassSecurityInfo, Unauthorized
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
@@ -144,6 +146,30 @@ class RegistrationTool(PloneBaseTool, BaseTool):
                     return 'You must enter a valid email address.'
 
         return None
+
+
+    security.declareProtected(AddPortalMember, 'isMemberIdAllowed')
+    def isMemberIdAllowed(self, id):
+        if len(id) < 1 or id == 'Anonymous User':
+            return 0
+        if not self._ALLOWED_MEMBER_ID_PATTERN.match( id ):
+            return 0
+
+        pas = getToolByName("acl_users")
+        if IPluggableAuthService.providedBy(pas):
+            results = pas.searchPrincipals(id=id)
+            if results:
+                return 0
+        else:
+            membership = getToolByName(self, 'portal_membership')
+            if membership.getMemberById(id) is not None:
+                return 0
+            groups = getToolByName(self, 'portal_groups')
+            if groups.getGroupById(id) is not None:
+                return 0
+
+        return 1
+
 
     security.declarePublic('generatePassword')
     def generatePassword(self):
