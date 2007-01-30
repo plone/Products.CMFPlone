@@ -282,8 +282,17 @@ function liveSearchProcessReqChange() {
 function liveSearchSubmit() {
     var highlight = document.getElementById("LSHighlight");
     if (highlight) {
-        var target = highlight.getElementsByTagName('a')[0];
-        window.location = liveSearchRoot + liveSearchRootSubDir + target;
+        var targets = highlight.getElementsByTagName('a');
+        if (targets.length == 0)
+            return tru;
+        var target = targets[0].href;
+        if (!target)
+            return true;
+        if ((liveSearchRoot.length > 0) && (target.substring(0, liveSearchRoot.length) != liveSearchRoot)) {
+            window.location = liveSearchRoot + liveSearchRootSubDir + target;
+        } else {
+            window.location = target;
+        }
         return false;
     } else {
         return true;
