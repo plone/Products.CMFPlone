@@ -102,7 +102,7 @@ except ImportError:
 
 try:
     # TODO: we might want to check if the user has jpeg and zlib support, too
-    import PIL.Image
+    import Image
 except ImportError:
     log(("PIL not found. Plone needs PIL 1.1.5 or newer. "
          "Please download it from http://www.pythonware.com/products/pil/ or "

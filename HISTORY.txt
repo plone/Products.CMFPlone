@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Removed imports of PIL, which is not there when PIL is installed
+      as an egg. We import Image instead. This closes
+      http://dev.plone.org/plone/ticket/5883
+      [nouri]
+
     - Commented out the IE-specific styling of textarea scrollbars from 
       IEFixes.css. Plone uses standard scrollbars from 3.0 onwards, but if you
       want them back, they can easily be uncommented.

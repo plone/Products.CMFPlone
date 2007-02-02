@@ -3,7 +3,7 @@ from types import ClassType
 from os.path import join, abspath, split
 from cStringIO import StringIO
 
-from PIL import Image
+import Image
 
 import zope.interface
 from zope.interface import implementedBy
@@ -668,7 +668,7 @@ def scale_image(image_file, max_size=None, default_format=None):
         >>> import os
         >>> from StringIO import StringIO
         >>> from Products.CMFPlone.utils import scale_image
-        >>> from PIL import Image
+        >>> import Image
 
     Let's make a couple test images and see how it works (all are
     100x100), the gif is palletted mode::

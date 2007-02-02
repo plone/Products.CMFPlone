@@ -135,7 +135,7 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
         vars['CMF'] = cp.Products.CMFCore.version
         vars['Debug mode'] = DevelopmentMode and 'Yes' or 'No'
         try:
-            from PIL.Image import VERSION
+            from Image import VERSION
         except ImportError:
             VERSION = ''
         vars['PIL'] = VERSION
@@ -181,7 +181,7 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
         log_deprecated("getPILVersion is deprecated and will be removed in "
                        "Plone 3.5. Please use coreVersions instead.")
         try:
-            from PIL.Image import VERSION
+            from Image import VERSION
         except ImportError:
             VERSION = None
         return VERSION

@@ -1,4 +1,4 @@
-import PIL
+import Image
 from cStringIO import StringIO
 from Products.CMFCore.utils import getToolByName, _checkPermission
 from Products.CMFDefault.MembershipTool import MembershipTool as BaseTool
@@ -313,7 +313,7 @@ class MembershipTool(PloneBaseTool, BaseTool):
             if portrait_data == '':
                 continue
             try:
-                img = PIL.Image.open(StringIO(portrait_data))
+                img = Image.open(StringIO(portrait_data))
             except ConflictError:
                 pass
             except:
