@@ -1,14 +1,13 @@
 from setuptools import setup, find_packages
 import sys, os
 
-version = '0.1'
+version = '1.0a3'
 
 setup(name='plone.app.controlpanel',
       version=version,
       description="Formlib-based controlpanels for Plone.",
       long_description="""\
 """,
-      # Get more strings from http://www.python.org/pypi?%3Aaction=list_classifiers
       classifiers=[
         "Framework :: Zope2",
         "Framework :: Zope3",
