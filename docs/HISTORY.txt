@@ -2,7 +2,13 @@ Changelog for plone.app.controlpanel
 
     (name of developer listed in brackets)
 
-plone.app.controlpanel - 0.1 Unreleased
+plone.app.controlpanel - 1.0a2 Released February 6, 2007
+
+    - Additional control panels.
+      [tomster, whit]
+
+    - Groundwork and first control panels.
+      [hannosch]
 
     - Initial package structure.
       [zopeskel]
