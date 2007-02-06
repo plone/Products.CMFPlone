@@ -40,7 +40,7 @@ Installing Plone manually, step by step instructions.
 
   - Zope 2.10.x (does not run natively on Zope 3)
      Not included in the Plone tarball.
-     http://www.zope.org/Products/Zope/2.10.1
+     http://www.zope.org/Products/Zope/2.10.2
 
   - Python Imaging Library 1.1.5 or newer
     Not included in the Plone tarball.
@@ -52,7 +52,7 @@ Installing Plone manually, step by step instructions.
     Not included in the Plone tarball.
     http://effbot.org/downloads/#elementtree
 
-  **The following dependencies are included in the Plone tarball**
+  **The following Zope product dependencies are included in the Plone tarball**
 
   - CMF 2.1.x 
 
@@ -108,6 +108,29 @@ Installing Plone manually, step by step instructions.
      ``CacheSetup``, ``CMFSquidTool``, ``PageCacheManager``, and
      ``PolicyHTTPCacheManager`` into your Products directory and carefully
      read the instructions included with the product.
+
+  **The following python package dependencies are included in the Plone tarball**
+  - archetypes.kss
+  - kss.core
+  - plone.ap.linkintegrity
+  - plone.app.contentmenu
+  - plone.app.contentrules
+  - plone.app.controlpanel
+  - plone.app.iterate
+  - plone.app.kss
+  - plone.app.layout
+  - plone.app.openid
+  - plone.app.portlets
+  - plone.app.redirector
+  - plone.app.vocabularies
+  - plone.app.workflow
+  - plone.contentrules
+  - plone.locking
+  - plone.memoize
+  - plone.openid
+  - plone.portlets
+  - plone.session
+  - wicked
 
 ==============================================================================
 
@@ -216,9 +239,9 @@ Installing Plone manually, step by step instructions.
 * Plone.                                                                    *
 *****************************************************************************
 
-   The lib/python subdirectory contains a single subdirectory
-   named 'plone'. Move this into the $INSTANCE_HOME/lib/python
-   directory. If it does not exist, create it.
+   The lib/python subdirectory contains four subdirectories: archetypes,
+   kss, plone and wicked. Move or symlink this into the
+   $INSTANCE_HOME/lib/python directory. If it does not exist, create it.
 
   It's probably A Good Idea at this point to restart your Zope to load these
   Products, then test that they have installed correctly. You can do this by
