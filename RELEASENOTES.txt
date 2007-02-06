@@ -24,11 +24,49 @@ move the content over manually.
 Important notes for users
 -------------------------
 
+* The most significant new feature is undoubtedly KSS - Kinetic Style
+  Sheets - or, Plone's Ajax framework. This allows Plone to have a more
+  polished user interface elements and more powerful dynamic applications that
+  can refresh data in a page without having to reload the entire page. For
+  example, you can double-click the title of the page to instantly edit it. Or
+  switch between tabs nearly instantly. Or validate form fields before you hit
+  submit. And that's just the beginning.
+
+* Plone 3.0 now provides document versioning out of the box. Versioning allows
+  you to save old versions of a page, compare your current version to older
+  versions, and even to roll back to previous versions. Plone 3.0 also includes
+  document staging, the ability to work on a copy of a document while the old
+  version is still live.  Finally, Plone 3.0 includes locking, which prevents
+  two people from making changes to a document at the same time. Together,
+  versioning, staging and locking will make Plone 3.0 very appealing to folks
+  who are managing sophisticated sites with multiple people editing content at
+  the same time.
+
+* A link integrity feature has been added which can automatically
+  detect and prevent broken links in a site, or intelligently redirect users if
+  they use a broken link into a site. Plone will now:
+
+  - warn you when you try to delete a page that has incoming links from
+    elsewhere on your site
+
+  - automatically create redirects when you move or rename a page that has
+    incoming links
+
+* Portlets have been greatly enhanced. There is a new 'manage portlets' option
+  available in the site which allows you to
+
+  - instantly add, remove and reorder portlets
+
+  - control whether portlets get inherited from parent folders
+
+  - customize portlets per-user, per-group and per content type
+
+  - control the number of items in listing portlets
+
+
 * KSS/Azax
 * new workflows
 * wicked
-* link integrity
-* portlets
 * versioning, staging and locking
 
 Important notes for developers
