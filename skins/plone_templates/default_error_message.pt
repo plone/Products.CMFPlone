@@ -139,7 +139,7 @@
                 Error Type
                 </dt>
         
-                <dd i18n:translate="" tal:content="structure err_type">
+                <dd i18n:translate="" tal:content="err_type">
                 The rendered error type
                 </dd>
     
