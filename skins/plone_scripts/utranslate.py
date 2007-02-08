@@ -6,14 +6,16 @@
 ##bind subpath=traverse_subpath
 ##parameters=msgid, mapping={}, default=None, domain='plone', target_language=None, escape_for_js=False
 
+from Products.CMFCore.utils import getToolByName
+
 # handle the possible "nothing" condition in folder_contents.pt ln 21 gracefully
 if msgid == None:
     return None
 
 # get tool
-tool = context.translation_service
+tool = getToolByName(context, 'translation_service')
 
-# this returns type unicode 
+# this returns type unicode
 value = tool.utranslate(domain,
                         msgid,
                         mapping,
