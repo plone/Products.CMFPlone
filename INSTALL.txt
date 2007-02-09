@@ -112,7 +112,7 @@ Installing Plone manually, step by step instructions.
   **The following python package dependencies are included in the Plone tarball**
   - archetypes.kss
   - kss.core
-  - plone.ap.linkintegrity
+  - plone.app.linkintegrity
   - plone.app.contentmenu
   - plone.app.contentrules
   - plone.app.controlpanel
