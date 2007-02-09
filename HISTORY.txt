@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Added robots.txt file. This should remove some unwanted not-found-errors
+      and give fresh Plone-admins something to customise for robots if they 
+      want it.
+      more info about robots.txt here: 
+      http://www.robotstxt.org/wc/norobots.html
+
     - Commented out the IE-specific styling of textarea scrollbars from 
       IEFixes.css. Plone uses standard scrollbars from 3.0 onwards, but if you
       want them back, they can easily be uncommented.
