@@ -16,6 +16,7 @@
               handler="Products.ATContentTypes.exportimport.atcttool.importATCTTool"
               title="ATContentTypes Tool">
   <dependency step="componentregistry"/>
+  <dependency step="catalog"/>
     Import ATContentTypes specific configuration.
  </import-step>
  <import-step id="catalog" version="20050929-01"
