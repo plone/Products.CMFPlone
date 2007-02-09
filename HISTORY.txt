@@ -4,11 +4,17 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Added Google-specific extensions to the robots.txt file to deny it from
+      indexing a gazillion sendo_forms. The standard doesnt allow for wildcards
+      boot Google does.
+      [elvix]
+
     - Added robots.txt file. This should remove some unwanted not-found-errors
       and give fresh Plone-admins something to customise for robots if they 
       want it.
       more info about robots.txt here: 
       http://www.robotstxt.org/wc/norobots.html
+      [elvix]
 
     - Commented out the IE-specific styling of textarea scrollbars from 
       IEFixes.css. Plone uses standard scrollbars from 3.0 onwards, but if you
