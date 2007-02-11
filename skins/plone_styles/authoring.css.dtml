@@ -469,7 +469,7 @@ tr.dragging td {
     font-size: &dtml-fontSmallSize;;
     font-weight: normal;
 }
-.formTabs {
+ul.formTabs {
     position: relative;
     z-index: 2;
     display: block;
@@ -513,7 +513,7 @@ li.formTab a.notify:hover {
     background-color: &dtml-notifyBorderColor;;
 }
 .formPanel {
-    padding: 1em 1em 1em 1em;
+    padding: 1em 1em 1em 1em; 
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
 }
 .formPanel.hidden {
