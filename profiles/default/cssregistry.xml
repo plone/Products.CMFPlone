@@ -68,9 +68,9 @@
     enabled="1" expression="" id="ploneKss.css" media="all"
     rel="stylesheet" rendering="import"/>
  <stylesheet title="" cacheable="True" compression="none" cookable="False"
-    enabled="1" expression="" id="plone.kss" media=""
+    enabled="1" expression="" id="at.kss" media=""
     rel="k-stylesheet" rendering="link"/>
  <stylesheet title="" cacheable="True" compression="none" cookable="False"
-    enabled="1" expression="" id="at.kss" media=""
+    enabled="1" expression="" id="plone.kss" media=""
     rel="k-stylesheet" rendering="link"/>
 </object>
