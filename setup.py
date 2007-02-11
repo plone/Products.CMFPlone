@@ -7,6 +7,8 @@ setup(name='plone.app.portlets',
       version=version,
       description="Plone integration for the basic plone.portlets package",
       long_description="""\
+plone.app.portlets provides a Plone-specific user interface for 
+plone.portlets, as well as a standard set of portlets that ship with Plone.
 """,
       classifiers=[], # Get strings from http://www.python.org/pypi?%3Aaction=list_classifiers
       keywords='portlets viewlets plone',
@@ -20,6 +22,7 @@ setup(name='plone.app.portlets',
       zip_safe=False,
       install_requires=[
         'setuptools',
+        'plone.portlets>=' + version, # sync versions
       ],
       entry_points="""
       # -*- Entry points: -*-
