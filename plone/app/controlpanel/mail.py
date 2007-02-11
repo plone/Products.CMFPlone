@@ -1,3 +1,5 @@
+from plone.fieldsets import FormFieldsets
+
 from zope.interface import Interface
 from zope.component import adapts
 from zope.formlib.form import FormFields
@@ -15,7 +17,7 @@ from Products.CMFPlone.utils import safe_hasattr
 
 from form import ControlPanelForm
 
-class IMailSchema(Interface):
+class IMailHostSchema(Interface):
 
     smtp_host = TextLine(title=_(u'SMTP server'),
                          description=_(u'''The address of your local SMTP
@@ -43,6 +45,9 @@ class IMailSchema(Interface):
                          default=None,
                          required=False)
 
+
+class IMailFromSchema(Interface):
+
     email_from_name = TextLine(title=_(u"Site 'From' name"),
                                description=_(u'''Plone generates e-mail using
                                              this name as the e-mail sender.'''),
@@ -57,6 +62,11 @@ class IMailSchema(Interface):
                                                 the site-wide contact form.'''),
                                   default=None,
                                   required=True)
+
+
+class IMailSchema(IMailHostSchema, IMailFromSchema):
+    """Combined schema for the adapter lookup.
+    """
 
 
 class MailControlPanelAdapter(SchemaAdapterBase):
@@ -116,9 +126,18 @@ class MailControlPanelAdapter(SchemaAdapterBase):
     email_from_address = property(get_email_from_address, set_email_from_address)
 
 
+mailhostset = FormFieldsets(IMailHostSchema)
+mailhostset.id = 'mailhost'
+mailhostset.label = _(u'Mailhost settings')
+
+mailfromset = FormFieldsets(IMailFromSchema)
+mailfromset.id = 'mailfrom'
+mailfromset.label = _(u'Mail sender settings')
+
+
 class MailControlPanel(ControlPanelForm):
 
-    form_fields = FormFields(IMailSchema)
+    form_fields = FormFieldsets(mailhostset, mailfromset)
 
     label = _("Mail settings")
     description = _("Mail settings for this Site.")
