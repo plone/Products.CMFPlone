@@ -7,6 +7,8 @@ setup(name='plone.app.layout',
       version=version,
       description="Layout mechanisms for Plone",
       long_description="""\
+plone.app.layout contains various visual components for Plone, such as 
+viewlets and general views.
 """,
       classifiers=[], # Get strings from http://www.python.org/pypi?%3Aaction=list_classifiers
       keywords='plone layout viewlet',
