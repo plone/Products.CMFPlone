@@ -434,6 +434,11 @@ Plone 2.5.x
       factory with this interface so it no longer polutes the breadcrumbs.
       [wichert]
 
+    - Made CatalogTool.ExtensibleIndexableObjectWrapper a subclass of the
+      CMFCore.CatalogTool.IndexableObjectWrapper class to ensure Plone
+      doesn't miss on improvements made there. EIOW instances now proxy
+      Zope3 interface declarations of the wrapped object.
+
 Plone 2.5.2 - Orb - released January 16, 2007
 
     - Fix issue with drag and drop caused by changing of css ids in
