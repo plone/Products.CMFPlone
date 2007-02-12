@@ -20,5 +20,5 @@ class ControlPanelForm(FieldsetsEditForm):
 
     @form.action(_(u'Cancel'))
     def handle_cancel_action(self, action, data):
-        self.status = _("Changes cancelled.")
+        self.status = _("Changes canceled.")
         return
