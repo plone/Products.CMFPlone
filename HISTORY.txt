@@ -4,7 +4,11 @@ Changelog for Plone
 
 Plone 2.5.x - unreleased
 
-    _ Add a new IHideFromBreadcrumbs interface. Items marked with this
+    - Fixed problems with migrating member data like a members fullname. This
+      closes http://dev.plone.org/plone/ticket/6111.
+      [tesdal]
+
+    - Add a new IHideFromBreadcrumbs interface. Items marked with this
       interface will not be shown in the breadcrumb trail. Mark the portal
       factory with this interface so it no longer polutes the breadcrumbs.
       [wichert]
@@ -13,6 +17,7 @@ Plone 2.5.x - unreleased
       CMFCore.CatalogTool.IndexableObjectWrapper class to ensure Plone
       doesn't miss on improvements made there. EIOW instances now proxy
       Zope3 interface declarations of the wrapped object.
+      [mj]
 
 Plone 2.5.2 - Orb - released January 16, 2007
 
