@@ -78,7 +78,7 @@ class ExtensibleIndexableObjectWrapper(IndexableObjectWrapper):
     __implements__ = z2IIndexableObjectWrapper
 
     def __init__(self, vars, obj, portal, registry = _eioRegistry, **kwargs):
-        super(self, ExtensibleIndexableObjectWrapper).__init__(vars, obj)
+        super(ExtensibleIndexableObjectWrapper, self).__init__(vars, obj)
         self._portal = portal
         self._registry = registry
         self._kwargs = kwargs
@@ -87,7 +87,8 @@ class ExtensibleIndexableObjectWrapper(IndexableObjectWrapper):
         return vars, obj, kwargs
 
     def __getattr__(self, name):
-        obj = self._IndexableObjectWraper__ob
+        vars = self._IndexableObjectWrapper__vars
+        obj = self._IndexableObjectWrapper__ob
         kwargs = self._kwargs
         registry = self._registry
 
@@ -95,7 +96,7 @@ class ExtensibleIndexableObjectWrapper(IndexableObjectWrapper):
 
         if registry.has_key(name):
             return registry[name](obj, portal=self._portal, vars=vars, **kwargs)
-        return getattr(super(self, ExtensibleIndexableObjectWrapper), name)
+        return super(ExtensibleIndexableObjectWrapper, self).__getattr__(name)
 
 
 def allowedRolesAndUsers(obj, portal, **kwargs):
