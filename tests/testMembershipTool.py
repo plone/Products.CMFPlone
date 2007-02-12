@@ -38,7 +38,7 @@ class TestMembershipTool(PloneTestCase.PloneTestCase):
         import Products.CMFPlone as plone
         plone_path = os.path.dirname(plone.__file__)
         path = os.path.join(plone_path, 'tests', 'images', 'test.jpg')
-        image = open(path)
+        image = open(path, 'rb')
         image_upload = dummy.FileUpload(dummy.FieldStorage(image))
         return image_upload
 

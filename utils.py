@@ -647,9 +647,9 @@ def scale_image(image_file, max_size=None, default_format=None):
         >>> plone_path = os.path.dirname(Products.CMFPlone.__file__)
         >>> pjoin = os.path.join
         >>> path = pjoin(plone_path, 'tests', 'images')
-        >>> orig_jpg = open(pjoin(path, 'test.jpg'))
-        >>> orig_png = open(pjoin(path, 'test.png'))
-        >>> orig_gif = open(pjoin(path, 'test.gif'))
+        >>> orig_jpg = open(pjoin(path, 'test.jpg'), 'rb')
+        >>> orig_png = open(pjoin(path, 'test.png'), 'rb')
+        >>> orig_gif = open(pjoin(path, 'test.gif'), 'rb')
 
     We'll also make some evil non-images, including one which
     masquerades as a jpeg (which would trick OFS.Image)::
