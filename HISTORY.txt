@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Deprecated the isRightToLeft method on the ploneview in favour of the
+      is_rtl method on the plone_portal_state view.
+      [hannosch]
+
     - Added Google-specific extensions to the robots.txt file to deny it from
       indexing a gazillion sendo_forms. The standard doesnt allow for wildcards
       boot Google does.

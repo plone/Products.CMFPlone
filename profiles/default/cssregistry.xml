@@ -31,8 +31,8 @@
     enabled="1" expression="not: portal/portal_membership/isAnonymousUser"
     id="member.css" media="screen" rel="stylesheet" rendering="import"/>
  <stylesheet title="" cacheable="True" compression="safe" cookable="True"
-    enabled="1" expression="object/@@plone/isRightToLeft" id="RTL.css"
-    media="screen" rel="stylesheet" rendering="import"/>
+    enabled="1" expression="python:portal.restrictedTraverse('@@plone_portal_state').is_rtl()"
+    id="RTL.css" media="screen" rel="stylesheet" rendering="import"/>
  <stylesheet title="Small Text" cacheable="True" compression="safe"
     cookable="True" enabled="1" expression="" id="textSmall.css"
     media="screen" rel="alternate stylesheet" rendering="link"/>

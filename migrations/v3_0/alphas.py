@@ -110,6 +110,9 @@ def alpha1_alpha2(portal):
     # script obsolete
     reorderUserActions(portal, out)
 
+    # Update expression on RTL.css
+    updateRtlCSSexpression(portal, out)
+
     return out
 
 def enableZope3Site(portal, out):
@@ -424,6 +427,15 @@ def reorderUserActions(portal, out):
                 if action in user_category.objectIds():
                     user_category.moveObjectsToTop([action])
 
+def updateRtlCSSexpression(portal, out):
+    # update expression on rtl css file
+    cssreg = getToolByName(portal, 'portal_css', None)
+    if cssreg is not None:
+        stylesheet_ids = cssreg.getResourceIds()
+        if 'RTL.css' in stylesheet_ids:
+            rtl = cssreg.getResource('RTL.css')
+            rtl.setExpression("python:portal.restrictedTraverse('@@plone_portal_state').is_rtl()")
+            out.append("Updated RTL.css expression.")
 
 # --
 # KSS registration

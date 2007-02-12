@@ -40,7 +40,7 @@ _marker = []
 import zope.deferredimport
 zope.deferredimport.deprecated(
     "It has been replaced by plone.memoize.instance.memoize. This alias will " 
-    "be gone in Plone 4.0.",
+    "be gone in Plone 3.5.",
     cache_decorator = 'plone.memoize.instance:memoize',
     )
 
@@ -271,9 +271,9 @@ class Plone(utils.BrowserView):
         context_state = getMultiAdapter((utils.context(self), self.request), name=u'plone_context_state')
         return context_state.current_page_url()
 
-    # @deprecate("The isRightToLeft method of the Plone view has been "
-    #            "deprecated and will be removed in Plone 3.5. Use the "
-    #            "is_rtl method of the plone_portal_state adapter instead.")
+    @deprecate("The isRightToLeft method of the Plone view has been "
+               "deprecated and will be removed in Plone 3.5. Use the "
+               "is_rtl method of the plone_portal_state adapter instead.")
     def isRightToLeft(self, domain='plone'):
         portal_state = getMultiAdapter((utils.context(self), self.request), name=u'plone_portal_state')
         return portal_state.is_rtl()

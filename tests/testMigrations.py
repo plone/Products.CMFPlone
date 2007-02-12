@@ -73,6 +73,7 @@ from Products.CMFPlone.migrations.v3_0.alphas import addContentRulesAction
 from Products.CMFPlone.migrations.v3_0.alphas import addReaderAndEditorRoles
 from Products.CMFPlone.migrations.v3_0.alphas import migrateLocalroleForm
 from Products.CMFPlone.migrations.v3_0.alphas import reorderUserActions
+from Products.CMFPlone.migrations.v3_0.alphas import updateRtlCSSexpression
 
 from zope.app.component.hooks import clearSite
 from zope.app.component.interfaces import ISite
@@ -1652,6 +1653,24 @@ class TestMigrations_v3_0(MigrationTest):
         self.failUnless(sort['mystuff'] < sort['undo'])
         self.failUnless(sort['undo'] < sort['logout'])
         self.failUnless(sort['login'] < sort['join'])
+
+    def testUpdateRtlCSSexpression(self):
+        cssreg = self.portal.portal_css
+        rtl = cssreg.getResource('RTL.css')
+        rtl.setExpression('string:foo')
+        updateRtlCSSexpression(self.portal, [])
+        expr = rtl.getExpression()
+        self.failUnless(expr == "python:portal.restrictedTraverse('@@plone_portal_state').is_rtl()")
+
+    def testUpdateRtlCSSexpressionTwice(self):
+        # perform migration twice
+        cssreg = self.portal.portal_css
+        rtl = cssreg.getResource('RTL.css')
+        rtl.setExpression('string:foo')
+        updateRtlCSSexpression(self.portal, [])
+        updateRtlCSSexpression(self.portal, [])
+        expr = rtl.getExpression()
+        self.failUnless(expr == "python:portal.restrictedTraverse('@@plone_portal_state').is_rtl()")
 
 
 class TestMigrations_v3_0_Actions(MigrationTest):
