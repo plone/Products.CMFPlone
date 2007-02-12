@@ -97,6 +97,10 @@ class ExtensibleIndexableObjectWrapper(IndexableObjectWrapper):
         if registry.has_key(name):
             return registry[name](obj, portal=self._portal, vars=vars, **kwargs)
         return super(ExtensibleIndexableObjectWrapper, self).__getattr__(name)
+    
+    def allowedRolesAndUsers(self):
+        # Disable CMFCore version of this method; use registry hook instead
+        return self.__getattr__('allowedRolesAndUsers')
 
 
 def allowedRolesAndUsers(obj, portal, **kwargs):
