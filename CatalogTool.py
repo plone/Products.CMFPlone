@@ -6,6 +6,8 @@ import time
 import urllib
 
 from Products.CMFCore.CatalogTool import CatalogTool as BaseTool
+from Products.CMFCore.CatalogTool import IndexableObjectWrapper
+
 from Products.CMFCore.permissions import ManagePortal
 from Products.CMFCore.permissions import AccessInactivePortalContent
 from Products.CMFPlone import ToolNames
@@ -22,7 +24,6 @@ from Products.CMFCore.utils import _checkPermission
 from Products.CMFCore.CatalogTool import _mergedLocalRoles
 from Products.CMFCore.interfaces.portal_catalog \
         import IndexableObjectWrapper as z2IIndexableObjectWrapper
-from Products.CMFCore.interfaces import IIndexableObjectWrapper
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFPlone.interfaces import INonStructuralFolder
 from Products.CMFPlone.interfaces.NonStructuralFolder import \
@@ -64,7 +65,7 @@ _eioRegistry = ExtensibleIndexableObjectRegistry()
 registerIndexableAttribute = _eioRegistry.register
 
 
-class ExtensibleIndexableObjectWrapper(object):
+class ExtensibleIndexableObjectWrapper(IndexableObjectWrapper):
     """Extensible wrapper for object indexing.
 
     vars - additional vars as a dict, used for workflow vars like review_state
@@ -76,11 +77,8 @@ class ExtensibleIndexableObjectWrapper(object):
 
     __implements__ = z2IIndexableObjectWrapper
 
-    implements(IIndexableObjectWrapper)
-
     def __init__(self, vars, obj, portal, registry = _eioRegistry, **kwargs):
-        self._vars = vars
-        self._obj = obj
+        super(self, ExtensibleIndexableObjectWrapper).__init__(vars, obj)
         self._portal = portal
         self._registry = registry
         self._kwargs = kwargs
@@ -89,8 +87,7 @@ class ExtensibleIndexableObjectWrapper(object):
         return vars, obj, kwargs
 
     def __getattr__(self, name):
-        vars = self._vars
-        obj = self._obj
+        obj = self._IndexableObjectWraper__ob
         kwargs = self._kwargs
         registry = self._registry
 
@@ -98,9 +95,7 @@ class ExtensibleIndexableObjectWrapper(object):
 
         if registry.has_key(name):
             return registry[name](obj, portal=self._portal, vars=vars, **kwargs)
-        if vars.has_key(name):
-            return vars[name]
-        return getattr(obj, name)
+        return getattr(super(self, ExtensibleIndexableObjectWrapper), name)
 
 
 def allowedRolesAndUsers(obj, portal, **kwargs):

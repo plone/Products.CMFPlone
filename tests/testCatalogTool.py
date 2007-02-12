@@ -921,6 +921,16 @@ class TestExtensibleIndexableObjectWrapper(PloneTestCase.PloneTestCase):
         f = dummy.NonStructuralFolder('ns_folder')
         self.failIf(is_folderish(f))
 
+    def test_provided(self):
+        from Products.CMFCore.interfaces import IContentish
+        from Products.CMFCore.interfaces import IIndexableObjectWrapper
+        from Products.CMFCore.tests.base.dummy import DummyContent
+
+        obj = DummyContent()
+        w = ExtensibleIndexableObjectWrapper({}, obj, self.portal)
+        self.failUnless(IContentish.providedBy(w))
+        self.failUnless(IIndexableObjectWrapper.providedBy(w))
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite
