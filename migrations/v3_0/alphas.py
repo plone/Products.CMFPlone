@@ -125,6 +125,11 @@ def enableZope3Site(portal, out):
 
         out.append('Made the portal a Zope3 site.')
 
+
+def alpha2_alpha3(portal):
+    pass
+
+
 def migrateOldActions(portal, out):
     special_providers = ['portal_controlpanel',
                          'portal_types',
