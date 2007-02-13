@@ -14,7 +14,7 @@ We have two controls, one for the default type and a multiselection for alternat
     >>> self.browser.getControl(name='form.default_type').value
     ['text/html']
     >>> self.browser.getControl(name='form.allowed_types').value
-    ['text/html', 'text/plain', 'text/restructured', 'text/x-web-textile']
+    ['text/html', 'text/plain', 'text/restructured', 'text/x-html-captioned', 'text/x-web-textile']
 
 Click the save button without making any changes:
 
