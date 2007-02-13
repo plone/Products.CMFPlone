@@ -72,6 +72,12 @@
     url_expr="string:${portal_url}/prefs_navigation_form" visible="True">
   <permission>Manage portal</permission>
  </configlet>
+ <configlet title="Language Settings" action_id="PloneLanguageTool"
+    appId="PloneLanguageTool" category="Plone" condition_expr=""
+    url_expr="string:${portal_url}/portal_languages/prefs_languages"
+    visible="True">
+  <permission>Manage portal</permission>
+ </configlet>
  <configlet title="Smart Folder Settings" action_id="portal_atct"
     appId="ATContentTypes" category="Plone" condition_expr=""
     url_expr="string:${portal_url}/portal_atct/atct_manageTopicIndex"

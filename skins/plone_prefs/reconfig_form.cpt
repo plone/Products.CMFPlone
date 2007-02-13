@@ -98,7 +98,7 @@
                         tal:attributes="value default_language;
                                         tabindex tabindex/next;">
                    <option value="" i18n:translate="label_choose_language">Choose Language</option>
-                   <option tal:repeat="language here/availableLanguages"
+                   <option tal:repeat="language portal/availableLanguages"
                            tal:attributes="value python:language[0];
                                            selected python:test(default_language == language[0], 'selected', None)"
                            tal:content="structure python:language[1]" />

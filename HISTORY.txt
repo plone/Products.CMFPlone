@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Merged plip174-reusable-i18n branch. Normalization logic and language
+      handling are based on plone.i18n / plone.app.i18n now.
+      [hannosch]
+
 Plone 3.0-alpha2 - released February 13, 2006
 
     - Deprecated the isRightToLeft method on the ploneview in favour of the

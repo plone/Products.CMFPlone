@@ -2,12 +2,16 @@ import re
 from types import ClassType
 from os.path import join, abspath, split
 from cStringIO import StringIO
-
 from PIL import Image
+
+from plone.i18n.normalizer.interfaces import IIDNormalizer
+from plone.i18n.normalizer.interfaces import IURLNormalizer
+from plone.i18n.normalizer.interfaces import IUserPreferredURLNormalizer
 
 import zope.interface
 from zope.interface import implementedBy
 from zope.component import getMultiAdapter
+from zope.component import queryUtility
 from zope.component.interfaces import ComponentLookupError
 
 import OFS
@@ -18,7 +22,6 @@ from Products.Five import BrowserView as BaseView
 from Products.Five.bridge import fromZ2Interface
 from Products.CMFCore.utils import ToolInit as CMFCoreToolInit
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.UnicodeNormalizer import normalizeUnicode
 from Products.CMFPlone.interfaces.Translatable import ITranslatable
 import transaction
 
@@ -33,13 +36,6 @@ WWW_DIR = join(PACKAGE_HOME, 'www')
 from log import log
 from log import log_exc
 from log import log_deprecated
-
-# Define and compile static regexes
-IGNORE_REGEX = re.compile(r"[']")
-FILENAME_REGEX = re.compile(r"^(.+)\.(\w{,4})$")
-NON_WORD_REGEX = re.compile(r"[\W\-]+")
-DANGEROUS_CHARS_REGEX = re.compile(r"[?&/:\\#]+")
-EXTRA_DASHES_REGEX = re.compile(r"(^\-+)|(\-+$)")
 
 # Settings for member image resize quality
 PIL_SCALING_ALGO = Image.ANTIALIAS
@@ -228,31 +224,15 @@ def normalizeString(text, context=None, encoding=None, relaxed=False):
             encoding = getSiteEncoding(context)
         text = unicode(text, encoding)
 
-    text = text.strip()
     if not relaxed:
-        text = text.lower()
-    text = normalizeUnicode(text)
+        return queryUtility(IIDNormalizer).normalize(text)
 
-    base = text
-    ext  = ""
+    request = getattr(context, 'REQUEST', None)
+    # If we have a request, get the preferred user normalizer
+    if request is not None:
+        return IUserPreferredURLNormalizer(request).normalize(text)
 
-    m = FILENAME_REGEX.match(text)
-    if m is not None:
-        base = m.groups()[0]
-        ext  = m.groups()[1]
-
-    base = IGNORE_REGEX.sub("", base)
-
-    if not relaxed:
-        base = NON_WORD_REGEX.sub("-", base)
-    else:
-        base = DANGEROUS_CHARS_REGEX.sub("-", base)
-
-    base = EXTRA_DASHES_REGEX.sub("", base)
-
-    if ext != "":
-        base = base + "." + ext
-    return base
+    return queryUtility(IURLNormalizer).normalize(text)
 
 class IndexIterator:
     """An iterator used to generate tabindexes. Note that tabindexes are not as

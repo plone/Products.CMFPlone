@@ -5,7 +5,9 @@ from Products.CMFCore.utils import _checkPermission
 from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault import DublinCore
 from Products.CMFDynamicViewFTI.browserdefault import BrowserDefaultMixin
+from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.PloneFolder import OrderedContainer
+
 import Globals
 
 from AccessControl import ClassSecurityInfo
@@ -16,7 +18,9 @@ from webdav.NullResource import NullResource
 from Products.CMFPlone.PloneFolder import ReplaceableWrapper
 from Products.CMFPlone.interfaces import IPloneSiteRoot
 
+from plone.i18n.locales.interfaces import IMetadataLanguageAvailability
 from zope.interface import implements
+from zope.component import queryUtility
 
 member_indexhtml="""\
 member_search=context.restrictedTraverse('member_search_form')
@@ -121,5 +125,14 @@ class PloneSite(CMFSite, OrderedContainer, BrowserDefaultMixin):
         reference browser.
         """
         return self.listFolderContents(contentFilter)
+
+    security.declarePublic('availableLanguages')
+    def availableLanguages(self):
+        util = queryUtility(IMetadataLanguageAvailability)
+        languages = util.getLanguageListing()
+        languages.sort(lambda x,y:cmp(x[1], y[1]))
+        # Put language neutral at the top.
+        languages.insert(0,(u'',_(u'Language neutral (site default)')))
+        return languages
 
 Globals.InitializeClass(PloneSite)

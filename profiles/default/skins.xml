@@ -8,6 +8,8 @@
     directory="ATReferenceBrowserWidget/skins/ATReferenceBrowserWidget"/>
  <object name="ResourceRegistries" meta_type="Filesystem Directory View"
     directory="ResourceRegistries/skins/ResourceRegistries"/>
+ <object name="LanguageTool" meta_type="Filesystem Directory View"
+    directory="PloneLanguageTool/skins/LanguageTool"/>
  <object name="archetypes" meta_type="Filesystem Directory View"
     directory="Archetypes/skins/archetypes"/>
  <object name="cmf_legacy" meta_type="Filesystem Directory View"
@@ -71,6 +73,7 @@
   <layer name="mimetypes_icons"/>
   <layer name="ResourceRegistries"/>
   <layer name="PasswordReset"/>
+  <layer name="LanguageTool"/>
   <layer name="gruf"/>
   <layer name="plone_ecmascript"/>
   <layer name="plone_wysiwyg"/>
@@ -100,6 +103,7 @@
   <layer name="mimetypes_icons"/>
   <layer name="ResourceRegistries"/>
   <layer name="PasswordReset"/>
+  <layer name="LanguageTool"/>
   <layer name="gruf"/>
   <layer name="plone_ecmascript"/>
   <layer name="plone_wysiwyg"/>

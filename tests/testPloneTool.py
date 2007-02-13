@@ -160,15 +160,19 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
 
     def testNormalizeGreek(self):
         # Greek letters (not supported by UnicodeData)
+        self.app.REQUEST.set('HTTP_ACCEPT_LANGUAGE', 'el')
         input = (u'\u039d\u03af\u03ba\u03bf\u03c2 '
                  u'\u03a4\u03b6\u03ac\u03bd\u03bf\u03c2')
-        self.assertEqual(self.utils.normalizeString(input), 'nikos-tzanos')
+        self.assertEqual(self.utils.normalizeString(input, relaxed=True),
+                         'Nikos Tzanos')
 
     def testNormalizeGreekUTF8(self):
         # Greek letters (not supported by UnicodeData)
+        self.app.REQUEST.set('HTTP_ACCEPT_LANGUAGE', 'el')
         input = (u'\u039d\u03af\u03ba\u03bf\u03c2 '
                  u'\u03a4\u03b6\u03ac\u03bd\u03bf\u03c2').encode('utf-8')
-        self.assertEqual(self.utils.normalizeString(input), 'nikos-tzanos')
+        self.assertEqual(self.utils.normalizeString(input, relaxed=True),
+                         'Nikos Tzanos')
 
     def testNormalizeStringHex(self):
         # Everything that can't be transliterated will be hex'd
@@ -201,13 +205,13 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
 
     def testNormalizeStringRelaxedStripsDangerousChars(self):
         # Punctuation and spacing is removed and replaced by '-'
-        self.assertEqual(self.utils.normalizeString("A ?String&/\\foo.x#x", relaxed=True),
+        self.assertEqual(self.utils.normalizeString("A ?String&/\\foo.x!$#x", relaxed=True),
                          'A -String-foo.x-x')
 
     def testNormalizeStringRelaxedKeepsOtherSymbols(self):
         # Punctuation and spacing is removed and replaced by '-'
-        self.assertEqual(self.utils.normalizeString("A ?String&/\\.foo_!$#xx", relaxed=True),
-                         'A -String-.foo_!$-xx')
+        self.assertEqual(self.utils.normalizeString("A ?String&/\\.foo_#xx", relaxed=True),
+                         'A -String-.foo_-xx')
 
     def testTypesToList(self):
         # Make sure typesToList() returns the expected types

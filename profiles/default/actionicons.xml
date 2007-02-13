@@ -85,6 +85,10 @@
               title="Delete" priority="0"
               icon_expr="delete_icon.gif"/>
  <action-icon category="controlpanel"
+              action_id="PloneLanguageTool"
+              title="Language Settings" priority="0"
+              icon_expr="flag-plone.gif"/>
+ <action-icon category="controlpanel"
               action_id="portal_atct"
               title="Smart Folder Settings" priority="0"
               icon_expr="topic_icon.gif"/>

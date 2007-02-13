@@ -1,5 +1,8 @@
 import zope.deprecation
+from plone.i18n.normalizer.interfaces import IIDNormalizer
+
 from zope.component import getMultiAdapter
+from zope.component import queryUtility
 from zope.interface import implements
 
 from Acquisition import aq_base, aq_inner, aq_parent
@@ -30,9 +33,8 @@ class NavigationPortlet(utils.BrowserView):
         return self.getNavRoot()
 
     def rootTypeName(self):
-        context = utils.context(self)
         root = self.getNavRoot()
-        return utils.normalizeString(root.portal_type, context=context)
+        return queryUtility(IIDNormalizer).normalize(root.portal_type)
 
     def createNavTree(self):
         context = utils.context(self)

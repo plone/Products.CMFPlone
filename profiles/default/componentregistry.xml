@@ -2,6 +2,15 @@
 <componentregistry>
  <adapters/>
  <utilities>
+  <utility 
+     interface="plone.app.i18n.locales.interfaces.ICountries"
+     object="/plone_app_countries"/>
+  <utility
+     interface="plone.app.i18n.locales.interfaces.IContentLanguages"
+     object="/plone_app_content_languages"/>
+  <utility
+     interface="plone.app.i18n.locales.interfaces.IMetadataLanguages"
+     object="/plone_app_metadata_languages"/>
   <utility
      interface="Products.CMFPlone.interfaces.IControlPanel"
      object="/portal_controlpanel"/>

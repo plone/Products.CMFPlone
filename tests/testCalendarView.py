@@ -156,6 +156,8 @@ class TestCalendarPortlet(PloneTestCase.FunctionalTestCase):
         dates = SimpleTranslationDomain('plonelocales', messages)
         provideUtility(ITranslationDomain, dates, 'plonelocales')
 
+        # Allow Japanese language
+        self.portal.portal_languages.addSupportedLanguage('ja')
         response = self.publish(self.portal_path, self.basic_auth,
                                 env={'HTTP_ACCEPT_LANGUAGE': 'ja'})
         self.assertEquals(response.getStatus(), 200)

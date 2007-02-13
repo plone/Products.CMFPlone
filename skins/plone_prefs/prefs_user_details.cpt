@@ -194,7 +194,7 @@ we eventually might want to merge this form with personalize_form
                         tabindex=""
                         tal:attributes="tabindex tabindex/next;
                                         disabled python:member.canWriteProperty('language') and default or 'disabled'">
-                    <tal:block tal:repeat="lang here/availableLanguages">
+                    <tal:block tal:repeat="lang portal/availableLanguages">
                         <option value="None"
                             tal:content="python:lang[1]"
                             tal:attributes="value python:lang[0];
