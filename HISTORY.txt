@@ -4,6 +4,8 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+Plone 3.0-alpha2 - released February 13, 2006
+
     - Deprecated the isRightToLeft method on the ploneview in favour of the
       is_rtl method on the plone_portal_state view.
       [hannosch]
