@@ -1,6 +1,7 @@
 from zope.interface import implements, Interface
-from zope.component import adapts, getMultiAdapter
+from zope.component import adapts, getMultiAdapter, queryUtility
 
+from plone.i18n.normalizer.interfaces import IIDNormalizer
 from plone.portlets.interfaces import IPortletDataProvider
 from plone.app.portlets.portlets import base
 
@@ -102,7 +103,7 @@ class Renderer(base.Renderer):
 
     def root_type_name(self):
         root = self.getNavRoot()
-        return utils.normalizeString(root.portal_type, context=self.context)
+        return queryUtility(IIDNormalizer).normalize(root.portal_type)
 
     def root_item_class(self):
         context = aq_inner(self.context)
