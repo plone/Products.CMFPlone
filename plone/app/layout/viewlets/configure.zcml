@@ -29,6 +29,12 @@
         />
 
     <browser:viewletManager
+        name="plone.documentactions"
+        provides=".interfaces.IDocumentActions"
+        permission="zope2.View"
+        />
+
+    <browser:viewletManager
         name="plone.belowcontent"
         provides=".interfaces.IBelowContent"
         permission="zope2.View"
