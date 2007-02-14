@@ -31,6 +31,8 @@
     </ul>
     </tal:docactions>
 
+    <div tal:replace="structure provider:plone.documentactions" />
+
     <tal:lang tal:condition="exists: here/global_languageselector">
       <metal:lang use-macro="here/global_languageselector/macros/language">
       Language selector
