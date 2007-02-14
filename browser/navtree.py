@@ -4,7 +4,7 @@
 # navtrees.
 
 from zope.interface import implements
-from zope.component import getMultiAdapter
+from zope.component import getMultiAdapter, queryUtility
 
 from Acquisition import aq_base
 
@@ -22,6 +22,8 @@ from plone.app.layout.icons.interfaces import IContentIcon
 from plone.app.layout.navigation.navtree import buildFolderTree
 from plone.app.layout.navigation.navtree import NavtreeStrategyBase
 from plone.app.layout.navigation.root import getNavigationRoot
+
+from plone.i18n.normalizer.interfaces import IIDNormalizer
 
 import ploneview
 sys.modules['Products.CMFPlone.browser.plone'] = ploneview
@@ -181,8 +183,9 @@ class SitemapNavtreeStrategy(NavtreeStrategyBase):
         newNode['no_display'] = False # We sort this out with the nodeFilter
         newNode['link_remote'] = newNode['getRemoteUrl'] and newNode['Creator'] != self.memberId
 
-        newNode['normalized_portal_type'] = utils.normalizeString(portalType, context=context)
-        newNode['normalized_review_state'] = utils.normalizeString(newNode['review_state'], context=context)
+        idnormalizer = queryUtility(IIDNormalizer)
+        newNode['normalized_portal_type'] = idnormalizer.normalize(portalType)
+        newNode['normalized_review_state'] = idnormalizer.normalize(newNode['review_state'])
 
         return newNode
 
