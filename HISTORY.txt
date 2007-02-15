@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Deprecated relaxed mode of the normalizeString methods in favour of direct
+      usage of the normalizers in plone.i18n.
+      [hannosch]
+
     - Merged plip174-reusable-i18n branch. Normalization logic and language
       handling are based on plone.i18n / plone.app.i18n now.
       [hannosch]

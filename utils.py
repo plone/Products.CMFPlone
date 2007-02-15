@@ -5,8 +5,8 @@ from cStringIO import StringIO
 from PIL import Image
 
 from plone.i18n.normalizer.interfaces import IIDNormalizer
-from plone.i18n.normalizer.interfaces import IURLNormalizer
-from plone.i18n.normalizer.interfaces import IUserPreferredURLNormalizer
+from plone.i18n.normalizer.interfaces import IFileNameNormalizer
+from plone.i18n.normalizer.interfaces import IUserPreferredFileNameNormalizer
 
 import zope.interface
 from zope.interface import implementedBy
@@ -227,12 +227,17 @@ def normalizeString(text, context=None, encoding=None, relaxed=False):
     if not relaxed:
         return queryUtility(IIDNormalizer).normalize(text)
 
+    # BBB To be removed in Plone 3.5
+    log_deprecated("The relaxed mode of normalizeString is deprecated and will "
+                   "be removed in Plone 3.5. Please use either the url or file "
+                   "name normalizer from the plone.i18n package instead.")
+
     request = getattr(context, 'REQUEST', None)
     # If we have a request, get the preferred user normalizer
     if request is not None:
-        return IUserPreferredURLNormalizer(request).normalize(text)
+        return IUserPreferredFileNameNormalizer(request).normalize(text)
 
-    return queryUtility(IURLNormalizer).normalize(text)
+    return queryUtility(IFileNameNormalizer).normalize(text)
 
 class IndexIterator:
     """An iterator used to generate tabindexes. Note that tabindexes are not as
