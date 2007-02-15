@@ -8,7 +8,7 @@ from plone.memoize.instance import memoize
 from plone.portlets.interfaces import IPortletDataProvider
 
 from Acquisition import aq_inner
-from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
 
@@ -31,7 +31,7 @@ class Assignment(base.Assignment):
 
 class Renderer(base.Renderer):
 
-    render = ZopeTwoPageTemplateFile('news.pt')
+    render = ViewPageTemplateFile('news.pt')
 
     def __init__(self, *args):
         base.Renderer.__init__(self, *args)
@@ -65,9 +65,13 @@ class Renderer(base.Renderer):
 
 class AddForm(base.AddForm):
     form_fields = form.Fields(INewsPortlet)
+    label = _(u"Add News portlet")
+    description = _(u"This portlet displays recent News Items.")
 
     def create(self, data):
         return Assignment(count=data.get('count', 5))
 
 class EditForm(base.EditForm):
     form_fields = form.Fields(INewsPortlet)
+    label = _(u"Edit News portlet")
+    description = _(u"This portlet displays recent News Items.")

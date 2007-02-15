@@ -9,7 +9,7 @@
 <body>
 <div metal:fill-slot="body">
   
-  <div metal:use-macro="nocall:view/base_template/macros/master">
+  <div metal:use-macro="context/@@base-pageform.html/macros/form">
     <metal:block fill-slot="extra_info">
      <input type="hidden" name="referer" value="" tal:attributes="value view/referer" />
     </metal:block>

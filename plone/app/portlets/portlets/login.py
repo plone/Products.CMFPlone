@@ -10,7 +10,7 @@ from zope.formlib import form
 from plone.memoize.instance import memoize
 
 from Acquisition import aq_inner
-from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.CMFCore.utils import getToolByName
 
 from Products.CMFPlone import PloneMessageFactory as _
@@ -91,7 +91,7 @@ class Renderer(base.Renderer):
     def update(self):
         pass
 
-    render = ZopeTwoPageTemplateFile('login.pt')
+    render = ViewPageTemplateFile('login.pt')
 
 class AddForm(base.NullAddForm):
 

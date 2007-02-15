@@ -12,24 +12,23 @@ from DateTime import DateTime
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.utils import safe_unicode
-from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.PythonScripts.standard import url_quote_plus
 
 PLMF = MessageFactory('plonelocales')
 
 class ICalendarPortlet(IPortletDataProvider):
-    pass
+    """A portlet displaying a calendar
+    """
 
 class Assignment(base.Assignment):
     implements(ICalendarPortlet)
 
-    @property
-    def title(self):
-        return _(u"Calendar portlet")
+    title = _(u'Calendar portlet')
 
 class Renderer(base.Renderer):
 
-    render = ZopeTwoPageTemplateFile('calendar.pt')
+    render = ViewPageTemplateFile('calendar.pt')
 
     def __init__(self, context, request, view, manager, data):
         base.Renderer.__init__(self, context, request, view, manager, data)
@@ -169,11 +168,7 @@ class Renderer(base.Renderer):
         return ''.join(map(lambda x : 'review_state=%s&amp;' % self.url_quote_plus(x), showStates))
 
 
-class AddForm(base.AddForm):
-    form_fields = form.Fields(ICalendarPortlet)
+class AddForm(base.NullAddForm):
 
-    def create(self, data):
+    def create(self):
         return Assignment()
-
-class EditForm(base.EditForm):
-    form_fields = form.Fields(ICalendarPortlet)

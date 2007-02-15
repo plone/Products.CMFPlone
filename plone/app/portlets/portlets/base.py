@@ -50,9 +50,9 @@ class Renderer(Explicit):
     You must override render() to return a string to render. One way of 
     doing this is to write:
     
-        from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
+        from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
         ...
-        render = ZopeTwoPageTemplateFile('mytemplate.pt')
+        render = ViewPageTemplateFile('mytemplate.pt')
         
     This will render the template mytemplate.pt, found in the same directory
     as your source code file.

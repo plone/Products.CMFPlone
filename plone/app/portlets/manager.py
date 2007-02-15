@@ -5,7 +5,7 @@ from zope.publisher.interfaces.browser import IBrowserView
 from zope.publisher.interfaces.browser import IBrowserRequest
 
 from Acquisition import Explicit, aq_inner, aq_parent
-from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import isDefaultPage
 
@@ -30,7 +30,7 @@ class ColumnPortletManagerRenderer(PortletManagerRenderer):
     """A renderer for the column portlets
     """
     adapts(Interface, IBrowserRequest, IBrowserView, IColumn)
-    template = ZopeTwoPageTemplateFile('browser/templates/column.pt')
+    template = ViewPageTemplateFile('browser/templates/column.pt')
 
     def _context(self):
         context = aq_inner(self.context)

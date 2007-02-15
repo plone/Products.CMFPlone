@@ -152,5 +152,13 @@
         />
       
     </configure>
+    
+    <!-- Default page layout for portlet add/edit forms -->
+    <adapter
+      for=".interfaces.IPortletForm"
+      factory=".formhelper.portlets_named_template_adapter"
+      name="default"
+      provides="zope.formlib.namedtemplate.INamedTemplate"
+      />
 
 </configure>

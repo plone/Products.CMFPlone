@@ -1,10 +1,28 @@
 from zope.interface import Interface
 from zope.app.container.interfaces import IAdding
+from plone.app.form.interfaces import IPlonePageForm
 
 class IPortletAdding(IAdding):
     """Marker interface for the add view for portlet managers.
     
     Portlet add views should be registered for this interface.
+    """
+    
+class IPortletForm(IPlonePageForm):
+    """Generic marker for form views that are used to create or edit portlets.
+    """
+    
+    def referer(self):
+        """Return the URL that the user came from before entering the form
+        for the first time.
+        """
+    
+class IPortletAddForm(IPortletForm):
+    """Add form view for portlets
+    """
+    
+class IPortletEditForm(IPortletForm):
+    """Edit form view for portlets
     """
 
 class IManagePortletsView(Interface):

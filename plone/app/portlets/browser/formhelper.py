@@ -1,15 +1,27 @@
+from zope.interface import implements
 from zope.component import getMultiAdapter
 from zope.formlib import form
+
 import zope.event
 import zope.lifecycleevent
 
 from Acquisition import aq_parent, aq_inner
-
 from Products.Five.browser import BrowserView
-from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
-from Products.Five.formlib.formbase import AddFormBase, EditFormBase
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from Products.CMFPlone import PloneMessageFactory as _
 
-class AddForm(AddFormBase):
+from plone.app.form import named_template_adapter
+from plone.app.form.validators import null_validator
+
+from plone.app.portlets.browser.interfaces import IPortletAddForm
+from plone.app.portlets.browser.interfaces import IPortletEditForm
+ 
+# Add a named template form, which allows us to carry some extra information
+# about the referer
+_template = ViewPageTemplateFile('templates/portlets-pageform.pt')
+portlets_named_template_adapter = named_template_adapter(_template)
+
+class AddForm(form.AddFormBase):
     """A base add form for portlets.
     
     Use this for portlet assignments that require configuration before being 
@@ -29,8 +41,9 @@ class AddForm(AddFormBase):
             return MyAssignment()
     """
     
-    base_template = AddFormBase.template
-    template = ZopeTwoPageTemplateFile('templates/portlets-pageform.pt') 
+    implements(IPortletAddForm)
+    
+    form_name = _(u"Configure portlet")
     
     def referer(self):
         return self.request.form.get('referer') or self.request.get('HTTP_REFERER', '')
@@ -49,7 +62,7 @@ class AddForm(AddFormBase):
     def handle_save_action(self, action, data):
         self.createAndAdd(data)
     
-    @form.action("Cancel", validator=lambda *args, **kwargs: None)
+    @form.action("Cancel", validator=null_validator)
     def handle_cancel_action(self, action, data):
         nextURL = self.nextURL()
         if nextURL:
@@ -88,12 +101,13 @@ class NullAddForm(BrowserView):
         raise NotImplementedError("concrete classes must implement create()")
     
 
-class EditForm(EditFormBase):
+class EditForm(form.EditFormBase):
     """An edit form for portlets.
     """
     
-    base_template = EditFormBase.template
-    template = ZopeTwoPageTemplateFile('templates/portlets-pageform.pt') 
+    implements(IPortletEditForm)
+    
+    form_name = _(u"Modify portlet")
     
     def referer(self):
         return self.request.form.get('referer') or self.request.get('HTTP_REFERER', '')
@@ -121,7 +135,7 @@ class EditForm(EditFormBase):
             self.request.response.redirect(self.nextURL())
         return ''
             
-    @form.action("Cancel", validator=lambda *args, **kwargs: None)
+    @form.action("Cancel", validator=null_validator)
     def handle_cancel_action(self, action, data):
         nextURL = self.nextURL()
         if nextURL:

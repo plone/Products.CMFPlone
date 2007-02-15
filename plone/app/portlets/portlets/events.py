@@ -11,7 +11,7 @@ from Acquisition import aq_inner
 from DateTime.DateTime import DateTime
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
-from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
 class IEventsPortlet(IPortletDataProvider):
 
@@ -32,7 +32,7 @@ class Assignment(base.Assignment):
 
 class Renderer(base.Renderer):
 
-    render = ZopeTwoPageTemplateFile('events.pt')
+    render = ViewPageTemplateFile('events.pt')
 
     def __init__(self, *args):
         base.Renderer.__init__(self, *args)
@@ -75,9 +75,13 @@ class Renderer(base.Renderer):
 
 class AddForm(base.AddForm):
     form_fields = form.Fields(IEventsPortlet)
+    label = _(u"Add Events portlet")
+    description = _(u"This portlet lists upcoming Events.")
 
     def create(self, data):
         return Assignment(count=data.get('count', 5))
 
 class EditForm(base.EditForm):
     form_fields = form.Fields(IEventsPortlet)
+    label = _(u"Edit Events portlet")
+    description = _(u"This portlet lists upcoming Events.")

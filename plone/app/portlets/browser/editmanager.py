@@ -1,4 +1,5 @@
 from Acquisition import Explicit, aq_parent, aq_inner
+from ZODB.POSException import ConflictError
 
 from zope.interface import implements, Interface
 from zope.component import adapts, getMultiAdapter, queryMultiAdapter, getUtilitiesFor
@@ -34,7 +35,7 @@ from plone.app.portlets.browser.interfaces import IManageContextualPortletsView
 from plone.app.portlets.browser.interfaces import IManageDashboardPortletsView
 
 from Products.Five.browser import BrowserView 
-from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
 class EditPortletManagerRenderer(Explicit):
     """Render a portlet manager in edit mode.
@@ -50,7 +51,7 @@ class EditPortletManagerRenderer(Explicit):
         self.manager = manager # part of interface
         self.context = context
         self.request = request
-        self.template = ZopeTwoPageTemplateFile('templates/edit-manager.pt')
+        self.template = ViewPageTemplateFile('templates/edit-manager.pt')
         self.__updated = False
         
     @property
@@ -87,8 +88,15 @@ class EditPortletManagerRenderer(Explicit):
             else:
                 editviewName = '%s/%s/edit.html' % (baseUrl, name)
             
+            try:
+                rendered = portlets[idx].render()
+            except ConflictError:
+                raise
+            except:
+                rendered = 'ERROR: Cannot render portlet %s' % name
+            
             data.append( {'title'      : assignments[idx].title,
-                          'html'       : portlets[idx].render(),
+                          'html'       : rendered,
                           'editview'   : editviewName,
                           'up_url'     : '%s/@@move-portlet-up?name=%s' % (baseUrl, name),
                           'down_url'   : '%s/@@move-portlet-down?name=%s' % (baseUrl, name),
@@ -131,7 +139,7 @@ class ContextualEditPortletManagerRenderer(EditPortletManagerRenderer):
 
     def __init__(self, context, request, view, manager):
         EditPortletManagerRenderer.__init__(self, context, request, view, manager)
-        self.template = ZopeTwoPageTemplateFile('templates/edit-manager-contextual.pt')
+        self.template = ViewPageTemplateFile('templates/edit-manager-contextual.pt')
     
     def blacklist_status_action(self):
         baseUrl = str(getMultiAdapter((self.context, self.request), name='absolute_url'))

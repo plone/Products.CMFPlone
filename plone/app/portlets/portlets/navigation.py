@@ -11,7 +11,7 @@ from zope.formlib import form
 from plone.memoize.instance import memoize
 
 from Acquisition import aq_inner, aq_base, aq_parent
-from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.CMFCore.utils import getToolByName
 
 from Products.CMFPlone.interfaces import INonStructuralFolder
@@ -160,11 +160,13 @@ class Renderer(base.Renderer):
     def update(self):
         pass
 
-    render = ZopeTwoPageTemplateFile('navigation.pt')
-    recurse = ZopeTwoPageTemplateFile('navigation_recurse.pt')
+    render = ViewPageTemplateFile('navigation.pt')
+    recurse = ViewPageTemplateFile('navigation_recurse.pt')
 
 class AddForm(base.AddForm):
     form_fields = form.Fields(INavigationPortlet)
+    label = _(u"Add Navigation portlet")
+    description = _(u"This portlet display a navigation tree.")
 
     def create(self, data):
         return Assignment(name=data.get('name', u""),
@@ -175,6 +177,8 @@ class AddForm(base.AddForm):
 
 class EditForm(base.EditForm):
     form_fields = form.Fields(INavigationPortlet)
+    label = _(u"Edit Navigation portlet")
+    description = _(u"This portlet display a navigation tree.")
     
 class QueryBuilder(object):
     """Build a navtree query based on the settings in navtree_properties

@@ -5,26 +5,26 @@ from plone.app.portlets.portlets import base
 
 from zope import schema
 from zope.formlib import form
-from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.CMFPlone import PloneMessageFactory as _
 
 class IClassicPortlet(IPortletDataProvider):
     """A portlet which can render a classic Plone portlet macro
     """
 
-    template = schema.TextLine(title=_(u'Template'),
-                               description=_(u'The template containing the portlet'),
-                               required=True)
+    template = schema.ASCIILine(title=_(u'Template'),
+                            description=_(u'The template containing the portlet'),
+                            required=True)
 
-    macro = schema.TextLine(title=_(u'Macro'),
-                               description=_(u'The macro containing the portlet. Leave blank if there is no macro.'),
-                               default=u'portlet',
-                               required=True)
+    macro = schema.ASCIILine(title=_(u'Macro'),
+                         description=_(u'The macro containing the portlet. Leave blank if there is no macro.'),
+                         default='portlet',
+                         required=True)
 
 class Assignment(base.Assignment):
     implements(IClassicPortlet)
 
-    def __init__(self, template=u'', macro=u''):
+    def __init__(self, template='', macro=''):
         self.template = template
         self.macro = macro
 
@@ -38,7 +38,7 @@ class Renderer(base.Renderer):
         self.context = context
         self.data = data
 
-    render = ZopeTwoPageTemplateFile('classic.pt')
+    render = ViewPageTemplateFile('classic.pt')
     
     def use_macro(self):
         return bool(self.data.macro)
@@ -51,6 +51,8 @@ class Renderer(base.Renderer):
 
 class AddForm(base.AddForm):
     form_fields = form.Fields(IClassicPortlet)
+    label = _(u"Add Classic portlet")
+    description = _(u"A classic portlet allows you to use legacy portlet templates.")
 
     def create(self, data):
         return Assignment(template=data.get('template', ''),
@@ -58,3 +60,6 @@ class AddForm(base.AddForm):
 
 class EditForm(base.EditForm):
     form_fields = form.Fields(IClassicPortlet)
+    label = _(u"Edit Classic portlet")
+    description = _(u"A classic portlet allows you to use legacy portlet templates.")
+    

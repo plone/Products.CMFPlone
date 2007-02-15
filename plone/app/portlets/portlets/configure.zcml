@@ -8,7 +8,6 @@
         assignment=".calendar.Assignment"
         renderer=".calendar.Renderer"
         addview=".calendar.AddForm"
-        editview=".calendar.EditForm"
         />
 
     <plone:portlet
@@ -73,7 +72,6 @@
         assignment=".review.Assignment"
         renderer=".review.Renderer"
         addview=".review.AddForm"
-        editview=".review.EditForm"
         />
 
 </configure>

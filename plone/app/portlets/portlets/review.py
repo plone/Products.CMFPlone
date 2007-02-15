@@ -8,12 +8,12 @@ from plone.memoize.instance import memoize
 from plone.portlets.interfaces import IPortletDataProvider
 
 from Acquisition import aq_inner
-from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
 
 class IReviewPortlet(IPortletDataProvider):
-
+    
     pass
 
 class Assignment(base.Assignment):
@@ -25,7 +25,7 @@ class Assignment(base.Assignment):
 
 class Renderer(base.Renderer):
 
-    render = ZopeTwoPageTemplateFile('review.pt')
+    render = ViewPageTemplateFile('review.pt')
 
     def __init__(self, *args):
         base.Renderer.__init__(self, *args)
@@ -54,11 +54,10 @@ class Renderer(base.Renderer):
         return self.workflow.getWorklistsResults()
 
 
-class AddForm(base.AddForm):
+class AddForm(base.NullAddForm):
     form_fields = form.Fields(IReviewPortlet)
+    label = _(u"Add Review portlet")
+    description = _(u"This portlet displays a queue of documents awaiting review.")
 
-    def create(self, data):
+    def create(self):
         return Assignment()
-
-class EditForm(base.EditForm):
-    form_fields = form.Fields(IReviewPortlet)

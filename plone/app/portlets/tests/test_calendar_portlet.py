@@ -35,18 +35,11 @@ class TestPortlet(PortletsTestCase):
         adding = getMultiAdapter((mapping, request,), name='+')
         addview = getMultiAdapter((adding, request), name=portlet.addview)
 
-        addview.createAndAdd(data={})
+        # This is a NullAddForm - calling it does the work
+        addview()
 
         self.assertEquals(len(mapping), 1)
         self.failUnless(isinstance(mapping.values()[0], calendar.Assignment))
-
-    def testInvokeEditView(self):
-        mapping = PortletAssignmentMapping()
-        request = self.folder.REQUEST
-
-        mapping['foo'] = calendar.Assignment()
-        editview = getMultiAdapter((mapping['foo'], request), name='edit.html')
-        self.failUnless(isinstance(editview, calendar.EditForm))
 
     def testRenderer(self):
         context = self.folder

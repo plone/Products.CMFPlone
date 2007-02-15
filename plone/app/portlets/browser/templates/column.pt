@@ -1,7 +1,8 @@
 <tal:block repeat="portlet options/portlets">
 <div tal:attributes="id string:portletwrapper-${portlet/hash};
                      class string:kukit-portlethash-${portlet/hash};"
-     tal:content="structure python:portlet['renderer'].render()" />
+     tal:content="structure python:portlet['renderer'].render()" 
+     tal:on-error="string:ERROR: Cannot render portlet ${portlet/name}"/>
 </tal:block>
 
 <div class="managePortletsLink"
