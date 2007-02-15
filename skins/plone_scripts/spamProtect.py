@@ -1,4 +1,4 @@
-## Script (Python) "navigationParent"
+## Script (Python) "spamProtect"
 ##bind container=container
 ##bind context=context
 ##bind namespace=
