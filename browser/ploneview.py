@@ -240,14 +240,36 @@ class Plone(utils.BrowserView):
 
         return show
 
+    @memoize
+    def icons_visible(self):
+        portal_state = getMultiAdapter((self.context, self.request), name=u'plone_portal_state')
+        tools = getMultiAdapter((self.context, self.request), name='plone_tools')
+        properties = tools.properties()
+
+        site_properties = getattr(properties, 'site_properties')
+
+        icon_visibility = site_properties.getProperty('icon_visibility', 'enabled')
+
+        if icon_visibility == 'enabled':
+            return True
+        elif icon_visibility == 'authenticated' and not portal_state.anonymous():
+            return True
+        else:
+            return False
+
     def getIcon(self, item):
-        """Returns an item with informations necessary to render an icon.
-           The item parameter can either be a catalog brain, or a content
-           object."""
+        """Returns an object which implements the IContentIcon interface and
+           provides the informations necessary to render an icon.
+           The item parameter needs to be adaptable to IContentIcon.
+           Icons can be disabled globally or just for anonymous users with
+           the icon_visibility property in site_properties."""
         context = utils.context(self)
-        icon = getMultiAdapter((context, self.request, item), IContentIcon)
+        if not self.icons_visible():
+            icon = getMultiAdapter((context, self.request, None), IContentIcon)
+        else:
+            icon = getMultiAdapter((context, self.request, item), IContentIcon)
         return icon
-        
+
     def normalizeString(self, text, relaxed=False):
         """Normalizes a title to an id.
         """
@@ -367,7 +389,7 @@ class Plone(utils.BrowserView):
     def getViewTemplateId(self):
         context_state = getMultiAdapter((utils.context(self), self.request), name=u'plone_context_state')
         return context_state.view_template_id()
-        
+
     # Helper methods
     def _prepare_slots(self, view=None):
         """XXX: This is a silly attempt at BBB - the only purpose of this
