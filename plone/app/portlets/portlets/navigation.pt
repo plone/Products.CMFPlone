@@ -30,6 +30,7 @@
                                           title root/Description;
                                           class selectedClass">
                        <img src="" height="16" width="16" alt=""
+                            tal:condition="view/root_icon"
                             tal:attributes="src view/root_icon" />
                        <span tal:omit-tag=""
                              tal:condition="rootIsPortal"
