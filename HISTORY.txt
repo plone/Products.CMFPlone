@@ -3,6 +3,8 @@ Changelog for Plone
     (name of developer listed in brackets)
 
 Plone 3.0 - unreleased
+    - Fixed encoding problem when sending out registration emails
+      [jvloothuis, ender]
 
     - Deprecated relaxed mode of the normalizeString methods in favour of direct
       usage of the normalizers in plone.i18n.

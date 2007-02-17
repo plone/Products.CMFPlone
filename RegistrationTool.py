@@ -243,7 +243,7 @@ class RegistrationTool(PloneBaseTool, BaseTool):
                                                    )
 
         host = self.MailHost
-        host.send( mail_text )
+        host.send(mail_text.encode('utf-8'))
 
         return self.mail_password_response( self, self.REQUEST )
 
