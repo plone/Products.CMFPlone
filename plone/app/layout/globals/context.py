@@ -58,7 +58,15 @@ class ContextState(BrowserView):
             action = self._lookupTypeActionTemplate('folder/folderlisting')
 
         return action
-        
+
+    @memoize
+    def is_view_template(self):
+        obj = self.request.get('PUBLISHED', None)
+        if obj is None:
+            return False
+        template_id = obj.getId()
+        return (template_id == self.view_template_id())
+
     @memoize
     def object_url(self):
         return aq_inner(self.context).absolute_url()
