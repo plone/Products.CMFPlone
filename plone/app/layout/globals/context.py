@@ -61,10 +61,7 @@ class ContextState(BrowserView):
 
     @memoize
     def is_view_template(self):
-        obj = self.request.get('PUBLISHED', None)
-        if obj is None:
-            return False
-        template_id = obj.getId()
+        template_id = self.request.get('URL', '').split('/')[-1]
         return (template_id == self.view_template_id())
 
     @memoize
