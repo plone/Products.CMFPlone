@@ -17,8 +17,6 @@ from plone.app.layout.navigation.interfaces import INavigationQueryBuilder
 from plone.app.layout.navigation.interfaces import INavigationRoot
 from plone.app.layout.navigation.interfaces import INavtreeStrategy
 
-from plone.app.layout.icons.interfaces import IContentIcon
-
 from plone.app.layout.navigation.navtree import buildFolderTree
 from plone.app.layout.navigation.navtree import NavtreeStrategyBase
 from plone.app.layout.navigation.root import getNavigationRoot
@@ -167,12 +165,14 @@ class SitemapNavtreeStrategy(NavtreeStrategyBase):
         if isFolderish and (portalType is None or portalType not in self.parentTypesNQ):
             showChildren = True
 
+        ploneview = getMultiAdapter((context, request), name=u'plone')
+
         newNode['Title'] = utils.pretty_title_or_id(context, item)
         newNode['absolute_url'] = itemUrl
         newNode['getURL'] = itemUrl
         newNode['path'] = item.getPath()
         newNode['icon'] = getattr(item, 'getIcon', None) # Deprecated, use item_icon
-        newNode['item_icon'] = getMultiAdapter((context, request, item), IContentIcon)
+        newNode['item_icon'] = ploneview.getIcon(item)
         newNode['Creator'] = getattr(item, 'Creator', None)
         newNode['creation_date'] = getattr(item, 'CreationDate', None)
         newNode['portal_type'] = portalType
