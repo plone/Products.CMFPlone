@@ -30,7 +30,7 @@ We should get a status message:
 Now click the cancel button:
 
     >>> self.browser.getControl(name="form.actions.cancel").click()
-    >>> self.browser.url.endswith('types-controlpanel.html')
+    >>> self.browser.url.endswith('plone_control_panel')
     True
 
 There should be still no changes:
@@ -41,6 +41,7 @@ There should be still no changes:
 Modifying values
 ----------------
 
+    >>> self.browser.open('http://nohost/plone/@@types-controlpanel.html')
     >>> self.browser.getControl(name='form.default_type').value = ['text/x-web-textile',]
     >>> self.browser.getControl(name='form.allowed_types').value = ['text/html', 'text/x-web-textile']
     >>> self.browser.getControl(name="form.actions.save").click()

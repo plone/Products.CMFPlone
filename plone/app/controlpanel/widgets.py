@@ -74,7 +74,7 @@ class MultiCheckBoxThreeColumnWidget(MultiCheckBoxWidget):
                 rendered_items.append('</div><div style="float:left; '
                                       'margin-right: 2em;">')
 
-        rendered_items.append('</div>')
+        rendered_items.append('</div><div style="clear:both">&nbsp;</div>')
 
         return rendered_items
 

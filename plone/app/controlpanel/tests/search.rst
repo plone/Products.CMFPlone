@@ -27,7 +27,7 @@ We should get a status message:
 Now click the cancel button:
 
     >>> self.browser.getControl(name="form.actions.cancel").click()
-    >>> self.browser.url.endswith('search-controlpanel.html')
+    >>> self.browser.url.endswith('plone_control_panel')
     True
 
 There should be still no changes:

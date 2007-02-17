@@ -68,5 +68,13 @@
     component=".wickedcp.WickedTypesVocabularyFactory"
     name="plone.app.controlpanel.WickedPortalTypes"
     />
+    
+  <!-- Default page layout for the control panel-->
+  <adapter
+      for=".interfaces.IPloneControlPanelForm"
+      factory=".form.controlpanel_named_template_adapter"
+      name="default"
+      provides="zope.formlib.namedtemplate.INamedTemplate"
+      />
 
 </configure>

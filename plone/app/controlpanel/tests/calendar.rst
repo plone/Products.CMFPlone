@@ -21,13 +21,13 @@ Click the save button without making any changes:
 
 We should get a status message:
 
-    >>> 'No changes done.' in self.browser.contents
+    >>> 'No changes made.' in self.browser.contents
     True
 
 Now click the cancel button:
 
     >>> self.browser.getControl(name="form.actions.cancel").click()
-    >>> self.browser.url.endswith('calendar-controlpanel.html')
+    >>> self.browser.url.endswith('plone_control_panel')
     True
 
 There should be still no changes:
