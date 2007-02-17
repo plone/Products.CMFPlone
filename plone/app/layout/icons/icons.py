@@ -145,10 +145,14 @@ class DefaultContentIcon(BaseIcon):
 
     @property
     def url(self):
+        if self.obj is None:
+            return None
         return "%s/error_icon.gif" % self.portal_url
 
     @property
     def description(self):
+        if self.obj is None:
+            return None
         return self.obj.Title
 
     @property
