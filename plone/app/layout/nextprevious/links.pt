@@ -1,7 +1,6 @@
-<tal:nextPrevious define="enabled view/enabled | nothing"
-                  condition="python:enabled">
-
-    <tal:comment define="comment string:FIXME The above should be: condition='python:enabled and isViewTemplate'" />
+<tal:nextPrevious define="enabled view/enabled | nothing;
+                          isViewTemplate view/isViewTemplate | nothing"
+                  condition="python:enabled and isViewTemplate">
 
     <link rel="previous"
           href=""

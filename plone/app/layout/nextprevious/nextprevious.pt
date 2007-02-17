@@ -1,5 +1,6 @@
-<tal:nextPrevious define="enabled view/enabled|nothing"
-                  condition="python:enabled">
+<tal:nextPrevious define="enabled view/enabled|nothing;
+                          isViewTemplate view/isViewTemplate | nothing"
+                  condition="python:enabled and isViewTemplate">
 
     <tal:block define="portal_url view/portal_url;">
 

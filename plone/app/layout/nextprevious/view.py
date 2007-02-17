@@ -1,4 +1,5 @@
 from zope.interface import implements
+from zope.component import getMultiAdapter
 from zope.viewlet.interfaces import IViewlet
 
 from plone.app.layout.nextprevious.interfaces import INextPreviousProvider
@@ -40,6 +41,11 @@ class NextPreviousView(BrowserView):
         # Note - the next/previous provider is the container of this object!
         # This may not support next/previous navigation, so code defensively
         return INextPreviousProvider(aq_parent(aq_inner(self.context)), None)
+
+    @view.memoize
+    def isViewTemplate(self):
+        plone = getMultiAdapter((self.context, self.request), name=u'plone_context_state')
+        return plone.is_view_template()
 
 
 class ViewletBase(NextPreviousView):
