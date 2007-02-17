@@ -129,3 +129,28 @@ class PloneSiteContentIcon(BaseIcon):
     @property
     def title(self):
         return None
+
+
+class DefaultContentIcon(BaseIcon):
+    implements(IContentIcon)
+
+    def __init__(self, context, request, obj):
+        self.context = context
+        self.request = request
+        self.obj = obj
+        self.portal_url = getToolByName(context, 'portal_url')()
+
+    width = 16
+    height = 16
+
+    @property
+    def url(self):
+        return "%s/error_icon.gif" % self.portal_url
+
+    @property
+    def description(self):
+        return self.obj.Title
+
+    @property
+    def title(self):
+        return None

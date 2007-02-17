@@ -26,4 +26,10 @@
            factory=".icons.PloneSiteContentIcon"
            provides=".interfaces.IContentIcon" />
 
+  <adapter for="*
+                zope.publisher.interfaces.browser.IBrowserRequest
+                *"
+           factory=".icons.DefaultContentIcon"
+           provides=".interfaces.IContentIcon" />
+
 </configure>
