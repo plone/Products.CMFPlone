@@ -403,7 +403,9 @@ class IPlone(Interface):
     def getIcon(item):
         """Returns an object which implements the IContentIcon interface and
            provides the informations necessary to render an icon.
-           The item parameter needs to be adaptable to IContentIcon."""
+           The item parameter needs to be adaptable to IContentIcon.
+           Icons can be disabled globally or just for anonymous users with
+           the icon_visibility property in site_properties."""
 
 # XXX We should remove the portlet views itself in Plone 3.5 and therefor also
 # the zcml registrations in deprecated.zcml. Once this is done and we don't
