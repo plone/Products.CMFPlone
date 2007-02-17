@@ -69,8 +69,8 @@
     rel="stylesheet" rendering="import"/>
  <stylesheet title="" cacheable="True" compression="none" cookable="False"
     enabled="1" expression="" id="at.kss" media=""
-    rel="k-stylesheet" rendering="link"/>
+    rel="kinetic-stylesheet" rendering="link"/>
  <stylesheet title="" cacheable="True" compression="none" cookable="False"
     enabled="1" expression="" id="plone.kss" media=""
-    rel="k-stylesheet" rendering="link"/>
+    rel="kinetic-stylesheet" rendering="link"/>
 </object>
