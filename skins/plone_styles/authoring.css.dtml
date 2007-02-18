@@ -79,28 +79,30 @@
     margin: 0;
     list-style: none;
     list-style-image: none;
-    display: inline;
     color: &dtml-fontColor;;
     text-align: left;
-}
-.contentActions ul {
     line-height: 1.6em;
-    padding: 0;
-    margin: 0;
 }
 .contentActions li {
     float: right;
     z-index: 4;
     border-left: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
-    line-height: 1.6em;
-}
-.actionItems li {
-    background-image: none;
 }
 .contentActions a {
     text-decoration: none;
     color: &dtml-contentViewFontColor;;
     padding: 0 0.5em;
+    cursor: pointer;
+}
+.contentActions span.subMenuTitle {
+    padding: 0em 0.5em;
+    position: relative;
+    white-space: nowrap;
+    display: block;
+}
+.contentActions a span.subMenuTitle {
+    padding: 0px;
+    display: inline;
 }
 .actionMenu {
     /*  The spec says we can't put this on an element with a float (although
@@ -115,7 +117,6 @@
     margin: 0;
     padding: 0;
     font-weight: normal;
-    cursor: pointer;
 }
 .actionMenu.activated .actionMenuHeader {
     position: relative;
@@ -124,17 +125,8 @@
 .actionMenu .actionMenuHeader a {
     display: block;
 }
-.actionMenu.activated .actionMenuHeader a,
-.actionMenu.deactivated .actionMenuHeader a {
-    background-image: url(<dtml-var portal_url>/arrowDownAlternative.gif);
-    background-repeat: no-repeat;
-    background-position: 95% 60%;
-    padding: 0 1.6em 0 0.5em !important;
-    cursor: pointer;
-}
-.actionMenuDisabled {
-    padding: 0 0.5em 0 0.5em !important;
-    cursor: pointer;
+.arrowDownAlternative {
+    font-size: 0.8em;
 }
 .actionMenu .actionMenuContent {
     display: none;
@@ -145,16 +137,6 @@
     height: auto;
     padding: 0;
     margin: 0;
-    cursor: pointer;
-}
-.actionMenu .actionMenuContent ul {
-    display: block;
-    background: &dtml-contentViewBackgroundColor;;
-    border: &dtml-borderWidth; &dtml-contentViewBorderColor;;
-    border-style: none &dtml-borderStyle; &dtml-borderStyle; &dtml-borderStyle;;
-    margin: -2px 0 0 0;
-    padding: 0;
-    cursor: pointer;
 }
 .actionMenu.activated .actionMenuContent {
     display: block !important;
@@ -169,6 +151,14 @@
 .actionMenu.deactivated .actionMenuContent {
     display: none !important;
 }
+.actionMenu .actionMenuContent ul {
+    display: block;
+    background: &dtml-contentViewBackgroundColor;;
+    border: &dtml-borderWidth; &dtml-contentViewBorderColor;;
+    border-style: none &dtml-borderStyle; &dtml-borderStyle; &dtml-borderStyle;;
+    margin: -2px 0 0 0;
+    padding: 0;
+}
 .actionMenu .actionMenuContent li {
     float: none;
     background-color: transparent;
@@ -180,7 +170,6 @@
 .actionMenu .actionMenuContent li a {
     display: block;
     white-space: nowrap;
-    padding: 0 0.5em;
     margin: 0.2em 0;
 }
 .actionMenu .actionMenuContent .selected {
@@ -194,54 +183,8 @@
     color: White;
 }
 .actionMenu .actionMenuContent .actionSeparator a {
-    margin-top: 0.2em;
     padding-top: 0.2em;
     border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
-}
-.actionMenu .actionMenuContent .actionSeparator div.currentDefaultPage {
-    margin-top: 0.2em;
-    padding: 0.2em 0.5em 0em 0.5em;
-    white-space: nowrap;
-    border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
-}
-.actionMenu .actionMenuContent .actionSeparator div.actionLabel {
-    margin-top: 0.2em;
-    padding: 0.2em 0.5em 0em 0.5em;
-    white-space: nowrap;
-    border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
-    background-color: &dtml-contentViewBorderColor;;
-    color: &dtml-contentViewBackgroundColor;;
-    cursor: default;
-}
-.contentBatchAction {
-    float: left !important;
-    padding: 0 0.5em;
-    border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
-    border-right: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
-    border-left: none !important;
-    border-collapse: collapse;
-    position: relative;
-    top: -1px;
-    margin-left: -0.5em !important;
-}
-#objectMenu.actionMenu .actionMenuContent li {
-    display: block;
-}
-#objectMenu.actionMenu .actionMenuContent li,
-#objectMenu.actionMenu .actionMenuContent li a:hover {
-    background-position: 3px 50%;
-    margin-left: 0;
-}
-#objectMenu.actionMenu .actionMenuContent li a {
-    padding-left: 22px;
-}
-.actionMenuSelected {
-    display: block;
-    cursor: default;
-    background-image: url(<dtml-var portal_url>/bullet_icon.gif);
-    background-repeat: no-repeat;
-    background-position: 0% 3px;
-    padding-left: 16px !important;
 }
 #templateMenu li a {
     padding-left: 16px;
