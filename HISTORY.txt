@@ -3,6 +3,7 @@ Changelog for Plone
     (name of developer listed in brackets)
 
 Plone 3.0 - unreleased
+
     - Fixed encoding problem when sending out registration emails
       [jvloothuis, ender]
 

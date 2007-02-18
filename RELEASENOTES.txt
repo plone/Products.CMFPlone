@@ -96,6 +96,8 @@ Important notes for developers
 * CMF 2.1 instead of CMF 1.x:
    - Products.CMFCore.CMFPermissions is now called Products.CMFCore.permissions
 
+* You can use the contentmigration product to write migrations for your own products
+  -> this should be a seperate tutorial on plone.org !
 
 Preferred but not obligatory (right now):
 
