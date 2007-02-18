@@ -18,22 +18,30 @@
     </form>
 </div>
 
+
 <div metal:define-macro="current-portlets-list">
   <h4>Portlets assigned here</h4>
 
-  <ul>
-  <li tal:repeat="portlet view/portlets"
-      class="portletHeader">
-          
-        <a tal:omit-tag="not:portlet/editview"
-           tal:attributes="href portlet/editview"
-           tal:content="portlet/title" />
-        <span>
-        <a tal:attributes="href portlet/up_url">&uarr;</a>
-        <a tal:attributes="href portlet/down_url">&darr;</a>
-        <a tal:attributes="href portlet/delete_url">Delete</a>
+<tal:block repeat="portlet view/portlets">
+<dl class="">
+    <dt class="portletHeader managedPortlet">
+        <span style="display:block; float:right;">
+        <a tal:attributes="href portlet/up_url" title="Move Up">
+            <img tal:replace="structure context/arrowUp.gif" />
+        </a>
+        <a tal:attributes="href portlet/down_url" title="Move Down">
+            <img tal:replace="structure context/arrowDown.gif" />
+        </a>
+        <a tal:attributes="href portlet/delete_url" title="Delete">
+            <img tal:replace="structure context/delete_icon.gif" />
+        </a>
         </span>
-  </li>
-  </ul>
+        <span class="managedPortletTitle"><a tal:omit-tag="not:portlet/editview"
+           tal:attributes="href portlet/editview"
+           tal:content="portlet/title" /></span>
+    </dt>
+</dl>
+
+</tal:block>
 
 </div>

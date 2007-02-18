@@ -2,6 +2,8 @@
 
   <div metal:use-macro="context/@@manage-portlets-macros/macros/portlet-add-form" />
 
+  <div metal:use-macro="context/@@manage-portlets-macros/macros/current-portlets-list" />
+
   <h4>Block/unblock portlets</h4>
 
   <form method="post" tal:attributes="action view/blacklist_status_action">
@@ -86,12 +88,7 @@
     
     <div>&nbsp;</div>
     <input class="context" type="submit" value="Save" />
-    <hr />
     
   </form>
-  
-  <hr />
-
-  <div metal:use-macro="context/@@manage-portlets-macros/macros/current-portlets-list" />
 
 </div>
