@@ -9,5 +9,6 @@
     <include package=".alias" />
     <include package=".icons" />
     <include package=".links" />
+    <include package=".redirect" />
     
 </configure>
