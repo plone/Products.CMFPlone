@@ -1,0 +1,39 @@
+<div metal:define-macro="portlet-add-form">
+    <!-- <h4>Add portlet</h4> -->
+    <form method="get" action="redirect_to">
+        <label for="dest">Add portlet</label>
+        <select name="dest" tabindex="#"
+            onchange="window.location.href=this.options[this.selectedIndex].value"
+            tal:attributes="tabindex tabindex/next|nothing;">
+            <tal:options repeat="portlet view/addable_portlets">
+            <option tal:attributes="value portlet/addview"
+                    tal:content="portlet/title" />
+            </tal:options>
+        </select>
+        <noscript>
+            <input class="standalone" type="submit"
+                   value="Add" tabindex="#"
+                   tal:attributes="tabindex tabindex/next|nothing;" />
+        </noscript>
+    </form>
+</div>
+
+<div metal:define-macro="current-portlets-list">
+  <h4>Portlets assigned here</h4>
+
+  <ul>
+  <li tal:repeat="portlet view/portlets"
+      class="portletHeader">
+          
+        <a tal:omit-tag="not:portlet/editview"
+           tal:attributes="href portlet/editview"
+           tal:content="portlet/title" />
+        <span>
+        <a tal:attributes="href portlet/up_url">&uarr;</a>
+        <a tal:attributes="href portlet/down_url">&darr;</a>
+        <a tal:attributes="href portlet/delete_url">Delete</a>
+        </span>
+  </li>
+  </ul>
+
+</div>

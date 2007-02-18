@@ -1,14 +1,6 @@
 <div>
 
-  <h4>Add portlet</h4>
-  
-  <div tal:repeat="portlet view/addable_portlets">
-    <a tal:attributes="href portlet/addview;
-                       title portlet/description"
-       tal:content="portlet/title" />
-  </div>
-  
-  <hr />
+  <div metal:use-macro="context/@@manage-portlets-macros/macros/portlet-add-form" />
 
   <h4>Block/unblock portlets</h4>
 
@@ -100,25 +92,6 @@
   
   <hr />
 
-  <h4>Portlets assigned here</h4>
+  <div metal:use-macro="context/@@manage-portlets-macros/macros/current-portlets-list" />
 
-  <tal:block repeat="portlet view/portlets">
-          
-      <div>
-        <a tal:omit-tag="not:portlet/editview"
-           tal:attributes="href portlet/editview"
-           tal:content="portlet/title" />
-      </div>
-      <div>
-        <a tal:attributes="href portlet/up_url">Up</a>
-        <a tal:attributes="href portlet/down_url">Down</a>
-        <a tal:attributes="href portlet/delete_url">Delete</a>
-      </div>
-      
-      <div tal:replace="structure portlet/html" />
-          
-      <hr />
-  
-  </tal:block>
-  
 </div>

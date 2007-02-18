@@ -63,8 +63,6 @@ class EditPortletManagerRenderer(Explicit):
 
     def update(self):
         self.__updated = True
-        for p in self._lazyLoadPortlets(self.manager):
-            p.update()
 
     def render(self):
         if not self.__updated:
@@ -76,8 +74,6 @@ class EditPortletManagerRenderer(Explicit):
     def portlets(self):
         baseUrl = self.__parent__.getAssignmentMappingUrl(self.manager)
         assignments = self._lazyLoadAssignments(self.manager)
-        portlets = self._lazyLoadPortlets(self.manager)
-        assert len(assignments) == len(portlets)
         data = []
         for idx in range(len(assignments)):
             name = assignments[idx].__name__
@@ -88,15 +84,7 @@ class EditPortletManagerRenderer(Explicit):
             else:
                 editviewName = '%s/%s/edit.html' % (baseUrl, name)
             
-            try:
-                rendered = portlets[idx].render()
-            except ConflictError:
-                raise
-            except:
-                rendered = 'ERROR: Cannot render portlet %s' % name
-            
             data.append( {'title'      : assignments[idx].title,
-                          'html'       : rendered,
                           'editview'   : editviewName,
                           'up_url'     : '%s/@@move-portlet-up?name=%s' % (baseUrl, name),
                           'down_url'   : '%s/@@move-portlet-down?name=%s' % (baseUrl, name),
@@ -115,22 +103,10 @@ class EditPortletManagerRenderer(Explicit):
         
     # See note in plone.portlets.manager
     
-    @memoize
-    def _lazyLoadPortlets(self, manager):
-        assignments = self._lazyLoadAssignments(manager)
-        return [self._dataToPortlet(a.data) for a in self.filter(assignments)]
-    
     @memoize    
     def _lazyLoadAssignments(self, manager):
         return self.__parent__.getAssignmentsForManager(manager)
     
-    def _dataToPortlet(self, data):
-        """Helper method to get the correct IPortletRenderer for the given
-        data object.
-        """
-        portlet = getMultiAdapter((self.context, self.request, self.__parent__,
-                                    self.manager, data,), IPortletRenderer)
-        return portlet.__of__(self.context)
           
 class ContextualEditPortletManagerRenderer(EditPortletManagerRenderer):
     """Render a portlet manager in edit mode for contextual portlets

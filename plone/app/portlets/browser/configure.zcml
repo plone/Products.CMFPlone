@@ -32,6 +32,11 @@
       >
       
       <browser:page
+        name="manage-portlets-macros"
+        template="templates/edit-manager-macros.pt"
+        />
+      
+      <browser:page
         name="manage-portlets"
         template="templates/manage-contextual.pt"
         />
