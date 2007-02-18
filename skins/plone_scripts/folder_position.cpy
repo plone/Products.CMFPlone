@@ -11,21 +11,19 @@
 
 from Products.CMFPlone import PloneMessageFactory as _
 
-if position.lower()=='up':
+position=position.lower()
+
+if   position=='up':
     context.moveObjectsUp(id)
-
-if position.lower()=='down':
+elif position=='down':
     context.moveObjectsDown(id)
-
-if position.lower()=='top':
+elif position=='top':
     context.moveObjectsToTop(id)
-
-if position.lower()=='bottom':
+elif position=='bottom':
     context.moveObjectsToBottom(id)
-
 # order folder by field
 # id in this case is the field
-if position.lower()=='ordered':
+elif position=='ordered':
     context.orderObjects(id)
 
 context.plone_utils.reindexOnReorder(context)
