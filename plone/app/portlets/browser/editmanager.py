@@ -128,10 +128,6 @@ class ContextualEditPortletManagerRenderer(EditPortletManagerRenderer):
         assignable = getMultiAdapter((self.context, self.manager,), ILocalPortletAssignmentManager)
         return assignable.getBlacklistStatus(CONTEXT_CATEGORY)
 
-    def user_blacklist_status(self):
-        assignable = getMultiAdapter((self.context, self.manager,), ILocalPortletAssignmentManager)
-        return assignable.getBlacklistStatus(USER_CATEGORY)
-    
     def group_blacklist_status(self):
         assignable = getMultiAdapter((self.context, self.manager,), ILocalPortletAssignmentManager)
         return assignable.getBlacklistStatus(GROUP_CATEGORY)

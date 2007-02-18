@@ -2,38 +2,25 @@
       xmlns:metal="http://xml.zope.org/namespaces/metal"
       xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
-      metal:use-macro="context/@@standard_macros/page">
-<head>
-</head>
-
+      metal:use-macro="context/@@standard_macros/page"
+      i18n:domain="plone">
 <body>
 <div metal:fill-slot="body">
 
-  <h1 class="documentFirstHeading">Manage group portlets</h1>
+  <h1 i18n:translate="title_manage_group_portlets"
+      class="documentFirstHeading">
+      Manage group portlets for
+      <span i18n:name="group_name" tal:content="view/group">group</span>
+  </h1>
   
-  <p>
+  <p i18n:translate="description_manage_group_portlets">
     The left and right portlet slots will now display only those portlets
-    assigned to the group chosen below. Use the up, down, delete and 
-    add links there to manage user portlets.
+    assigned to this group. Use the up, down, delete and edit links 
+    to manage user portlets. Use the drop-down list to add new portlets.
   </p>
-  <p>
-    Note that group are normally rendered below context portlets.
+  <p i18n:translate="description_group_portlets_below">
+    Note that group portlets are normally rendered below context portlets.
   </p>
-  
-  <form method="GET" action="" 
-    tal:attributes="action string:${context/absolute_url}/@@manage-group-portlets">
-  
-    <label for="portal_type">Group</label>
-    <select id="portal_type" name="groupId" size="1" tal:define="current request/groupId | nothing">
-      <option tal:repeat="group view/groups"
-              tal:attributes="value group;
-                              selected python:group == current and 'selected' or None"
-              tal:content="group" />
-    </select>
-    
-    <input type="submit" class="context" value="Change" />
-    
-  </form>
 
 </div>
 </body>

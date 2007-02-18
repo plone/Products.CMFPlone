@@ -12,6 +12,13 @@
 
   <h1 i18n:translate="title_manage_contextual_portlets"
         class="documentFirstHeading">Manage portlets</h1>
+        
+  <a href=""
+       class="link-parent"
+       tal:attributes="href string:${context/absolute_url}"
+       i18n:translate="return_to_view">
+    Return
+  </a>
   
   <p i18n:translate="description_manage_contextual_portlets">
     The portlet columns will now display only those portlets
@@ -19,7 +26,7 @@
     to move them up or down, delete or edit them. To add a new portlet,
     use the drop-down list at the top of the column.
   </p>
-  <p>
+  <p i18n:translate="description_portlets_block_unblock">
       If you wish to block or unblock certain categories of portlets, you can 
       do so using the drop-down boxes.
   </p>

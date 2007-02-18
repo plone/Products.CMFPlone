@@ -27,6 +27,10 @@ from plone.app.portlets import utils
 
 class ManageContextualPortlets(BrowserView):
     implements(IManageContextualPortletsView)
+    
+    def __init__(self, context, request):
+        super(ManageContextualPortlets, self).__init__(context, request)
+        self.request.set('disable_border', True)
         
     # IManagePortletsView implementation
     
@@ -113,17 +117,17 @@ class ManageGroupPortlets(BrowserView):
         
     # IManagePortletsView implementation
     
+    def __init__(self, context, request):
+        super(ManageGroupPortlets, self).__init__(context, request)
+        self.request.set('disable_border', True)
+    
     def getAssignmentMappingUrl(self, manager):
         baseUrl = str(getMultiAdapter((self.context, self.request), name='absolute_url'))
-        groupId = self.request.get('groupId', None)
-        if groupId is None:
-            groupId = self.groups()[0]
+        groupId = self.request['groupId']
         return '%s/++groupportlets++%s+%s' % (baseUrl, manager.__name__, groupId)
 
     def getAssignmentsForManager(self, manager):
-        groupId = self.request.get('groupId', None)
-        if groupId is None:
-            groupId = self.groups()[0]
+        groupId = self.request['groupId']
         column = getUtility(IPortletManager, name=manager.__name__)
         category = column[GROUP_CATEGORY]
         mapping = category.get(groupId, None)
@@ -133,26 +137,25 @@ class ManageGroupPortlets(BrowserView):
     
     # View attributes
     
-    def groups(self):
-        portal_groups = getToolByName(self.context, 'portal_groups')
-        return sorted(portal_groups.getGroupIds())
+    def group(self):
+        return self.request['groupId']
 
 class ManageContentTypePortlets(BrowserView):
     implements(IManageContentTypePortletsView)
+    
+    def __init__(self, context, request):
+        super(ManageContentTypePortlets, self).__init__(context, request)
+        self.request.set('disable_border', True)
         
     # IManagePortletsView implementation
     
     def getAssignmentMappingUrl(self, manager):
         baseUrl = str(getMultiAdapter((self.context, self.request), name='absolute_url'))
-        pt = self.request.get('portal_type', None)
-        if pt is None:
-            pt = self.portal_types()[0]['id']
+        pt = self.request['portal_type']
         return '%s/++contenttypeportlets++%s+%s' % (baseUrl, manager.__name__, pt)
 
     def getAssignmentsForManager(self, manager):
-        pt = self.request.get('portal_type', None)
-        if pt is None:
-            pt = self.portal_types()[0]['id']
+        pt = self.request['portal_type']
         column = getUtility(IPortletManager, name=manager.__name__)
         category = column[CONTENT_TYPE_CATEGORY]
         mapping = category.get(pt, None)
@@ -162,13 +165,11 @@ class ManageContentTypePortlets(BrowserView):
     
     # View attributes
     
-    def portal_types(self):
+    def portal_type(self):
         portal_types = getToolByName(self.context, 'portal_types')
-        pts = []
+        portal_type = self.request['portal_type']
         for fti in portal_types.listTypeInfo():
-            pts.append({ 'id'           : fti.getId(),
-                         'title'        : fti.Title(),
-                         'description'  : fti.Description()})
-        pts.sort(lambda x, y: cmp(x['title'], y['title']))
-        return pts
+            if fti.getId() == portal_type:
+                return fti.Title()
+        
 
