@@ -149,11 +149,6 @@ dd.portletFooter {
     font-size: 1px;
 }
 
-/* fixes for the drop down menus */
-* html #objectMenu.actionMenu .actionMenuContent li {
-    height: auto;
-}
-
 /* fix for the horizontal scroll due to the floated searchbox without width definition */
 #portal-searchbox {
     overflow: auto; 
