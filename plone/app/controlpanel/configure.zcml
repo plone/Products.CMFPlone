@@ -18,14 +18,8 @@
       factory=".types.TypesControlPanelAdapter"
       />
 
-  <adapter
-      factory=".maintenance.MaintenanceControlPanelAdapter"
-      />
+  <adapter factory=".wickedcp.WickedControlPanelAdapter" />
   <adapter factory=".seo.SeoControlPanelAdapter" />
-
-  <adapter
-	  factory=".wickedcp.WickedControlPanelAdapter"
-	  />
 
   <browser:page
       name="wicked-controlpanel.html"
@@ -66,13 +60,6 @@
       name="types-controlpanel.html"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       class=".types.TypesControlPanel"
-      permission="cmf.ManagePortal"
-      />
-
-  <browser:page
-      name="maintenance-controlpanel.html"
-      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-      class=".maintenance.MaintenanceControlPanel"
       permission="cmf.ManagePortal"
       />
 
