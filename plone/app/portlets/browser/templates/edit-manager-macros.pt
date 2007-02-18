@@ -30,7 +30,7 @@
         <span style="display:block; float:right;">
         <a tal:attributes="href portlet/up_url">&uarr;</a>
         <a tal:attributes="href portlet/down_url">&darr;</a>
-        <a tal:attributes="href portlet/delete_url">&otimes;</a>
+        <a tal:attributes="href portlet/delete_url">&times;</a>
         </span>
         <a tal:omit-tag="not:portlet/editview"
            tal:attributes="href portlet/editview"
