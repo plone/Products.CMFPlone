@@ -21,7 +21,7 @@ Click the save button without making any changes:
 
 We should get a status message:
 
-    >>> 'Changes saved.' in self.browser.contents
+    >>> 'No changes done.' in self.browser.contents
     True
 
 Now click the cancel button:
