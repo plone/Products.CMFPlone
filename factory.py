@@ -25,6 +25,7 @@ class HiddenProfiles(object):
                 u'Products.CMFEditions:CMFEditions',
                 u'Products.CMFQuickInstallerTool:CMFQuickInstallerTool',
                 u'Products.PlonePAS:PlonePAS',
+                u'plone.app.iterate:plone.app.iterate',
                 u'kupu:default']
 
 
