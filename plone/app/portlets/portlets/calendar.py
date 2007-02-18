@@ -24,7 +24,7 @@ class ICalendarPortlet(IPortletDataProvider):
 class Assignment(base.Assignment):
     implements(ICalendarPortlet)
 
-    title = _(u'Calendar portlet')
+    title = _(u'Calendar')
 
 class Renderer(base.Renderer):
 

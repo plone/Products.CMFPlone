@@ -22,7 +22,7 @@ class ILoginPortlet(IPortletDataProvider):
 class Assignment(base.Assignment):
     implements(ILoginPortlet)
 
-    title = _(u'Login portlet')
+    title = _(u'Login')
 
 class Renderer(base.Renderer):
 

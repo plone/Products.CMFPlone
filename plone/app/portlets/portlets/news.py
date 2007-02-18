@@ -27,7 +27,7 @@ class Assignment(base.Assignment):
 
     @property
     def title(self):
-        return _(u"News portlet")
+        return _(u"News")
 
 class Renderer(base.Renderer):
 

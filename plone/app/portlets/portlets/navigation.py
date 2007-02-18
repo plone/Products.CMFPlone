@@ -70,7 +70,7 @@ class INavigationPortlet(IPortletDataProvider):
 class Assignment(base.Assignment):
     implements(INavigationPortlet)
 
-    title = _(u'Navigation portlet')
+    title = _(u'Navigation')
     
     def __init__(self, name=u"", root=u"", currentFolderOnly=False, topLevel=0, bottomLevel=0):
         self.name = name
