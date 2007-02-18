@@ -72,9 +72,47 @@ Important notes for users
 * wicked
 * versioning, staging and locking
 
+Important notes for system administrators
+-----------------------------------------
+
+For migration instructions please see http://plone.org/documentation/<nog even opzoeken>
+
+* Caching related changes required (or maybe none!)
+
+
+
+
 Important notes for developers
 ------------------------------
 
 * portlets have been re-implemented using the Zope3 component architecture.
+  -> Martin Aspeli to fill in stuff here
+
+* Skins: main_template now uses viewlet managers instead of metal macros
+  -> Alexander Limi or Cornelis to fill in stuff here
+
+* workflows must he implemented via GenericSetup profiles now
+
+* CMF 2.1 instead of CMF 1.x:
+   - Products.CMFCore.CMFPermissions is now called Products.CMFCore.permissions
+
+
+Preferred but not obligatory (right now):
+
+* use the python logging module instead of zLOG
+
+* QuickInstaller-based installation should use GenericSetup profiles instead 
+
+* use events instead of manage_ methods (which will probably disappear in plone 3.5 or 4.0)
+
+* Packaging technology:
+  - Use python packages instead of Zope products
+
+  - Ship packages as eggs and register in the cheeseshop
+
+  - Use paste to create new packages
+
+  - Use ploneit or ploneout to create development and/or production environments
+
 
 
