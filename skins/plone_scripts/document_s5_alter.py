@@ -35,5 +35,6 @@ body = body.split('<%s>' % tag)
 body = ('</div>\n<div class="slide">\n<%s>' % tag).join(body)
 body = body.split('</%s>' % tag)
 body = ('</%s>\n' % tag).join(body)
+body = '<div class="slide">' + body + '</div>'
 
 return body
