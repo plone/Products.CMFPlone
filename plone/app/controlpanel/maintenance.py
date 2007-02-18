@@ -8,12 +8,14 @@ from App.config import getConfiguration
 from zope.formlib import form
 
 from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
-from Products.Five.formlib.formbase import EditForm
 from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault.formlib.schema import SchemaAdapterBase
 from Products.CMFPlone.interfaces import IPloneSiteRoot
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.utils import safe_hasattr
+from plone.fieldsets.form import FieldsetsEditForm
+from plone.app.controlpanel.interfaces import IPloneControlPanelForm
+
 
 class IMaintenanceSchema(Interface):
 
@@ -47,14 +49,12 @@ class MaintenanceControlPanelAdapter(SchemaAdapterBase):
     days = property(get_days, set_days)
 
 
-class MaintenanceControlPanel(EditForm):
+class MaintenanceControlPanel(FieldsetsEditForm):
     """A simple form to pack the databases."""
 
-    def __init__(self, *args, **kwargs):
-        EditForm.__init__(self, *args, **kwargs)
+    implements(IPloneControlPanelForm)
 
     template = ZopeTwoPageTemplateFile('control-panel.pt')
-
     form_fields = form.FormFields(IMaintenanceSchema)
     label = _("Database maintenance")
     description = _("""The Zope Database is a transactional database, which results in
