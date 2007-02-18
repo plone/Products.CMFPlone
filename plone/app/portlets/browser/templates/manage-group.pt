@@ -1,27 +1,74 @@
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:metal="http://xml.zope.org/namespaces/metal"
-      xmlns:tal="http://xml.zope.org/namespaces/tal"
-      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
-      metal:use-macro="context/@@standard_macros/page"
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
       i18n:domain="plone">
-<body>
-<div metal:fill-slot="body">
 
-  <h1 i18n:translate="title_manage_group_portlets"
-      class="documentFirstHeading">
-      Manage group portlets for
-      <span i18n:name="group_name" tal:content="view/group">group</span>
-  </h1>
-  
-  <p i18n:translate="description_manage_group_portlets">
-    The left and right portlet slots will now display only those portlets
-    assigned to this group. Use the up, down, delete and edit links 
-    to manage user portlets. Use the drop-down list to add new portlets.
-  </p>
-  <p i18n:translate="description_group_portlets_below">
-    Note that group portlets are normally rendered below context portlets.
-  </p>
+<metal:block fill-slot="top_slot"
+             tal:define="dummy python:request.set('disable_border',1)" />
+
+<body>
+
+<div metal:fill-slot="content">
+
+      <div id="content" class="documentEditable">
+    <!-- simulating views on the groups/user pages until we have real objects. -->
+    <ul class="contentViews">
+      <li>
+        <a href=""
+           tal:attributes="href string:${context/absolute_url}/prefs_group_members?groupname=${request/groupId}"
+           i18n:translate="label_group_members">Group Members</a>
+      </li>
+      <li>
+        <a href=""
+           tal:attributes="href string:${context/absolute_url}/prefs_group_details?groupname=${request/groupId}"
+           i18n:translate="label_group_properties">Group Properties</a>
+      </li>
+      <li class="selected">
+        <a href=""
+           tal:attributes="href string:${portal_url}/@@manage-group-portlets?groupId=${request/groupId}"
+           i18n:translate="label_group_members">Group Portlets</a>
+      </li>
+    </ul>
+
+    <div class="contentActions">
+      &nbsp;
+    </div>
+
+    <div id="region-content" class="documentContent">
+      <a name="documentContent"></a>
+
+      <div metal:use-macro="here/global_statusmessage/macros/portal_message">
+        Portal status message
+      </div>
+
+      <div class="configlet">
+            <metal:block metal:define-macro="props" tal:omit-tag="">
+
+          <h1 i18n:translate="title_manage_group_portlets"
+              class="documentFirstHeading">
+              Manage Group Portlets for
+              <span i18n:name="group_name" tal:content="view/group">group</span>
+          </h1>
+    
+          <p i18n:translate="description_manage_group_portlets">
+            The left and right portlet slots will now display only those portlets
+            assigned to this group. Use the up, down, delete and edit links 
+            to manage user portlets. Use the drop-down list to add new portlets.
+          </p>
+          <p i18n:translate="description_group_portlets_below">
+            Note that group portlets are normally rendered below context portlets.
+          </p>
+
+        </metal:block>
+
+
+    </div>
 
 </div>
+
+</div>
+
+</div>
+
 </body>
 </html>
