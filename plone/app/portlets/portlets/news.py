@@ -40,6 +40,7 @@ class Renderer(base.Renderer):
         self.portal_url = portal_state.portal_url()
         self.portal = portal_state.portal()
 
+    @property
     def available(self):
         return len(self._data())
 

@@ -37,6 +37,7 @@ class Renderer(base.Renderer):
         plone_tools = getMultiAdapter((self.context, self.request), name=u'plone_tools')
         self.workflow = plone_tools.workflow()
 
+    @property
     def available(self):
         return not self.anonymous and len(self._data())
 

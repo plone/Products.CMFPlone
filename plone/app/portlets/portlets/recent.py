@@ -44,6 +44,7 @@ class Renderer(base.Renderer):
         plone_tools = getMultiAdapter((self.context, self.request), name=u'plone_tools')
         self.catalog = plone_tools.catalog()
         
+    @property
     def available(self):
         return not self.anonymous and len(self._data())
 
