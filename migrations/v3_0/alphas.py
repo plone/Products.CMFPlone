@@ -116,6 +116,16 @@ def alpha1_alpha2(portal):
     return out
 
 
+def alpha2_alpha3(portal):
+    """ 3.0-alpha2 -> 3.0-alpha3
+    """
+    out = []
+
+    # Add control panel actions 
+    addControlPanelActions(portal, out)
+
+    return out
+
 
 def enableZope3Site(portal, out):
     if not ISite.providedBy(portal):
@@ -126,18 +136,6 @@ def enableZope3Site(portal, out):
         portal.setSiteManager(components)
 
         out.append('Made the portal a Zope3 site.')
-
-def alpha2_alpha3(portal):
-    """ 3.0-alpha2 -> 3.0-alpha3
-    """
-    out = []
-
-    # Add control panel actions 
-    addControlPanelActions(portal, out)
-
-
-def alpha3_alpha4(portal):
-    pass
 
 
 def migrateOldActions(portal, out):
