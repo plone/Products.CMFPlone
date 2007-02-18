@@ -63,7 +63,9 @@ from Products.CMFPlone.migrations.v3_0.alphas import updateActionsI18NDomain
 from Products.CMFPlone.migrations.v3_0.alphas import updateFTII18NDomain
 from Products.CMFPlone.migrations.v3_0.alphas import convertLegacyPortlets
 from Products.CMFPlone.migrations.v3_0.alphas import addIconForCalendarSettingsConfiglet
+from Products.CMFPlone.migrations.v3_0.alphas import addIconForMaintenanceConfiglet
 from Products.CMFPlone.migrations.v3_0.alphas import addCalendarConfiglet
+from Products.CMFPlone.migrations.v3_0.alphas import addMaintenanceConfiglet
 from Products.CMFPlone.migrations.v3_0.alphas import updateSearchAndMailHostConfiglet
 from Products.CMFPlone.migrations.v3_0.alphas import addFormTabbingJS
 from Products.CMFPlone.migrations.v3_0.alphas import registerToolsAsUtilities
@@ -74,7 +76,7 @@ from Products.CMFPlone.migrations.v3_0.alphas import addReaderAndEditorRoles
 from Products.CMFPlone.migrations.v3_0.alphas import migrateLocalroleForm
 from Products.CMFPlone.migrations.v3_0.alphas import reorderUserActions
 from Products.CMFPlone.migrations.v3_0.alphas import updateRtlCSSexpression
-from Products.CMFPlone.migrations.v3_0.alphas import addControlPanelActions
+from Products.CMFPlone.migrations.v3_0.alphas import addMaintenanceProperty
 
 from zope.app.component.hooks import clearSite
 from zope.app.component.interfaces import ISite
@@ -1673,6 +1675,38 @@ class TestMigrations_v3_0(MigrationTest):
         expr = rtl.getExpression()
         self.failUnless(expr == "python:portal.restrictedTraverse('@@plone_portal_state').is_rtl()")
 
+    def testAddMaintenanceConfiglet(self):
+        self.removeActionFromTool('Maintenance', action_provider='portal_controlpanel')
+        addMaintenanceConfiglet(self.portal, [])
+        self.failUnless('Maintenance' in [x.getId() for x in self.cp.listActions()])
+
+    def testAddMaintenanceConfigletTwice(self):
+        self.removeActionFromTool('Maintenance', action_provider='portal_controlpanel')
+        addMaintenanceConfiglet(self.portal, [])
+        addMaintenanceConfiglet(self.portal, [])
+        self.failUnless('Maintenance' in [x.getId() for x in self.cp.listActions()])
+
+    def testAddIconForMaintenanceConfiglet(self):
+        # Should add the maintenance action icon
+        self.removeActionIconFromTool('Maintenance')
+        addIconForCalendarSettingsConfiglet(self.portal, [])
+        self.failUnless('Maintenance' in [x.getActionId() for x in self.icons.listActionIcons()])
+
+    def testAddIconForMaintenanceConfigletTwice(self):
+        # Should add the maintenance action icon
+        self.removeActionIconFromTool('Maintenance')
+        addIconForCalendarSettingsConfiglet(self.portal, [])
+        addIconForCalendarSettingsConfiglet(self.portal, [])
+        self.failUnless('Maintenance' in [x.getActionId() for x in self.icons.listActionIcons()])
+
+    def testAddMaintenanceProperty(self):
+        # adds a site property to portal_properties
+        self.removeSiteProperty('number_of_days_to_keep')
+        addMaintenanceProperty(self.portal, [])
+        tool = self.portal.portal_properties
+        sheet = tool.site_properties
+        self.failUnless(sheet.hasProperty('number_of_days_to_keep'))
+
 
 class TestMigrations_v3_0_Actions(MigrationTest):
 
@@ -1759,17 +1793,6 @@ class TestMigrations_v3_0_Actions(MigrationTest):
         updateActionsI18NDomain(self.portal, [])
 
         self.assertEquals(reply.i18n_domain, 'plone')
-        addControlPanelActions(self.portal, [])
-
-
-    def testAddControlPanelActions(self):
-        panels_to_add = ['Maintenance']
-        cpanel = self.portal.portal_controlpanel
-        addControlPanelActions(self.portal, [])
-        addControlPanelActions(self.portal, [])
-        actions = cpanel._actions
-        new_actions = [action.id for action in actions if action.id in panels_to_add]
-        self.assertEqual(new_actions, panels_to_add)
 
     def beforeTearDown(self):
         if len(self.discussion._actions) > 0:

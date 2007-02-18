@@ -121,10 +121,16 @@ def alpha2_alpha3(portal):
     """
     out = []
 
-    # Add control panel actions 
-    addControlPanelActions(portal, out)
+    # Add control panel action 
+    addMaintenanceConfiglet(portal, out)
+    
+    # Add action icon
+    addIconForMaintenanceConfiglet(portal, out)
 
     return out
+
+def alpha3_alpha4(portal):
+    pass
 
 
 def enableZope3Site(portal, out):
@@ -136,6 +142,7 @@ def enableZope3Site(portal, out):
         portal.setSiteManager(components)
 
         out.append('Made the portal a Zope3 site.')
+
 
 
 def migrateOldActions(portal, out):
@@ -450,19 +457,46 @@ def updateRtlCSSexpression(portal, out):
             rtl.setExpression("python:portal.restrictedTraverse('@@plone_portal_state').is_rtl()")
             out.append("Updated RTL.css expression.")
 
-def addControlPanelActions(portal, out):
-    cpanel = getToolByName(portal,'portal_controlpanel')
-    if not getattr(cpanel, 'Maintenance', None):
-        new_action = Action('Maintenance',
-                            title='Maintenance',
-                            description='',
-                            category="Plone",
-                            url_expr='string:${portal_url}/@@Maintenance-controlpanel.pt',
-                            available_expr='',
-                            permissions='Manage portal',
-                            visible=True)
-        cpanel._setObject('Maintenance', new_action)
-        out.append("Added Maintenance action to plone_controlpanel")
+def addIconForMaintenanceConfiglet(portal, out):
+    """Adds an icon for the maintenance settings configlet. """
+    iconsTool = getToolByName(portal, 'portal_actionicons', None)
+    if iconsTool is not None:
+        for icon in iconsTool.listActionIcons():
+            if icon.getActionId() == 'Maintenance':
+                break # We already have the icon
+        else:
+            iconsTool.addActionIcon(
+                category='controlpanel',
+                action_id='Maintenance',
+                icon_expr='maintenance_icon.gif',
+                title='Maintenance',
+                )
+        out.append("Added 'maintenance' icon to actionicons tool.")
+
+def addMaintenanceConfiglet(portal, out):
+    """Add the configlet for the calendar settings"""
+    controlPanel = getToolByName(portal, 'portal_controlpanel', None)
+    if controlPanel is not None:
+        haveCalendar = False
+        for configlet in controlPanel.listActions():
+            if configlet.getId() == 'alendarSettings':
+                haveCalendar = True
+        if not haveCalendar:
+            controlPanel.registerConfiglet(id         = 'Maintenance',
+                                           appId      = 'Plone',
+                                           name       = 'Maintenance',
+                                           action     = 'string:${portal_url}/@@calendar-controlpanel.html',
+                                           category   = 'Plone',
+                                           permission = ManagePortal,)
+            out.append("Added 'Maintenance' to the control panel")
+
+def addMaintenanceProperty(portal, out):
+    """ adds a site property to portal_properties"""
+    tool = getToolByName(portal, 'portal_properties')
+    sheet = tool.site_properties
+    if not sheet.hasProperty('number_of_days_to_keep'):
+        sheet.manage_addProperty('number_of_days_to_keep',7,'int')
+        out.append("Added 'number_of_days_to_keep' property to site properties")
 
 
 # --
