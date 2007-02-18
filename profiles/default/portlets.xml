@@ -35,39 +35,39 @@
  
  <portlet 
    addview="portlets.News"
-   title="News portlet"
+   title="News"
    description="A portlet which can render a listing of recent news"
    />
   
  <portlet 
    addview="portlets.Events"
-   title="Events portlet"
+   title="Events"
    description="A portlet which can render a listing of recent events"
    />
 
  <portlet 
    addview="portlets.Login"
-   title="Login portlet"
+   title="Login"
    description="A portlet which can render a log-in box"
    for="plone.app.portlets.interfaces.IColumn"
    />
   
  <portlet 
    addview="portlets.Navigation"
-   title="Navigation portlet"
+   title="Navigation"
    description="A portlet which can render a navigation tree"
    for="plone.app.portlets.interfaces.IColumn"
    />
 
  <portlet 
    addview="portlets.Recent"
-   title="Recent portlet"
+   title="Recent items"
    description="A portlet which can render a listing of recently changed items."
    />
 
  <portlet 
    addview="portlets.Review"
-   title="Review portlet"
+   title="Review list"
    description="A portlet which can render a listing on the review queue."
    />
 
