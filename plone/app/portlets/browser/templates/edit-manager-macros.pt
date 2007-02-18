@@ -1,11 +1,12 @@
 <div metal:define-macro="portlet-add-form"
     class="section">
     <!-- <h4>Add portlet</h4> -->
-    <form method="get" action="redirect_to">
-        <label for="dest">Add portlet</label>
+    <form method="get" action="@@plone_redirect">
+        <label for="dest" class="hiddenStructure">Add portlet</label>
         <select name="dest" tabindex="#"
             onchange="window.location.href=this.options[this.selectedIndex].value"
             tal:attributes="tabindex tabindex/next|nothing;">
+            <option value="">Add portlet&hellip;</option>
             <tal:options repeat="portlet view/addable_portlets">
             <option tal:attributes="value portlet/addview"
                     tal:content="portlet/title" />
