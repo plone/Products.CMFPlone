@@ -17,6 +17,9 @@
     present from main_template.
 </tal:comment>
 
+<metal:left fill-slot="column_one_slot" />
+<metal:right fill-slot="column_two_slot" />
+
 <metal:main fill-slot="content"
     tal:define="errors options/state/getErrors | nothing">
     <tal:main-macro metal:define-macro="main"
