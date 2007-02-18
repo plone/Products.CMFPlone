@@ -76,11 +76,18 @@ class TestRenderer(PortletsTestCase):
         return getMultiAdapter((context, request, view, manager, assignment), IPortletRenderer)
 
     def testAvailable(self):
+        request = self.folder.REQUEST
         r = self.renderer()
-        self.assertEquals(True, r.available())
+        self.assertEquals(False, r.available)
+        self.logout()
+        del request.__annotations__
+        r = self.renderer()
+        self.assertEquals(True, r.available)
         self.portal.acl_users._delObject('credentials_cookie_auth')
         r = self.renderer()
-        self.assertEquals(False, r.available())
+        del request.__annotations__
+        self.assertEquals(False, r.available)
+        
 
     def testShow(self):
         request = self.folder.REQUEST

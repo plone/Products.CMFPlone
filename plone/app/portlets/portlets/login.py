@@ -40,8 +40,9 @@ class Renderer(base.Renderer):
         page = self.request.get('URL', '').split('/')[-1]
         return page not in ('login_form', 'join_form')
 
+    @property
     def available(self):
-        return self.auth() is not None
+        return self.auth() is not None and self.show()
 
     def login_form(self):
         return '%s/login_form' % self.portal_state.portal_url()

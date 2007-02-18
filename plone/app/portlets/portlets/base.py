@@ -32,9 +32,8 @@ class Assignment(SimpleItem, Contained):
     def title(self):
         return self.template
 
-    @property
-    def available(self):
-        """Property specifying that this portlet is always available
+    def available(self, context, request):
+        """By default, this portlet is always available
         """
         return True
 
@@ -73,3 +72,9 @@ class Renderer(Explicit):
 
     def render(self):
         raise NotImplemented, "You must implement 'render' as a method or page template file attribute"
+        
+    @property
+    def available(self):
+        """By default, portlets are available
+        """
+        return True
