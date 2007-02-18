@@ -43,7 +43,7 @@ class Renderer(base.Renderer):
 
         self.have_events_folder = 'events' in self.portal.objectIds()
 
-    def show(self):
+    def available(self):
         return len(self._data())
 
     def published_events(self):

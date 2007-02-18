@@ -40,7 +40,7 @@ class Renderer(base.Renderer):
         self.portal_url = portal_state.portal_url()
         self.portal = portal_state.portal()
 
-    def show(self):
+    def available(self):
         return len(self._data())
 
     def published_news_items(self):

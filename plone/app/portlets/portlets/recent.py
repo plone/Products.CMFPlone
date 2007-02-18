@@ -23,7 +23,7 @@ class Assignment(base.Assignment):
     implements(IRecentPortlet)
 
     def __init__(self, count=5):
-        self.count = 5
+        self.count = count
 
     @property
     def title(self):
@@ -44,7 +44,7 @@ class Renderer(base.Renderer):
         plone_tools = getMultiAdapter((self.context, self.request), name=u'plone_tools')
         self.catalog = plone_tools.catalog()
         
-    def show(self):
+    def available(self):
         return not self.anonymous and len(self._data())
 
     def recent_items(self):

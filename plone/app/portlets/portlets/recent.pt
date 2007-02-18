@@ -1,6 +1,5 @@
 <dl class="portlet"
     id="portlet-recent"
-    tal:condition="view/show"
     i18n:domain="plone">
 
     <dt class="portletHeader">

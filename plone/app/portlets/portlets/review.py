@@ -37,7 +37,7 @@ class Renderer(base.Renderer):
         plone_tools = getMultiAdapter((self.context, self.request), name=u'plone_tools')
         self.workflow = plone_tools.workflow()
 
-    def show(self):
+    def available(self):
         return not self.anonymous and len(self._data())
 
     def review_items(self):
