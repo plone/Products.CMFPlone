@@ -42,7 +42,7 @@
         <h3 tal:content="context/Creator" />
     </div>
     <div><!-- dummy div to make the python easy -->
-        <tal:block  content="structure context/s5_hacked_body" /> 
+        <tal:block  content="structure context/document_s5_alter" /> 
     </div>
 </div>
 

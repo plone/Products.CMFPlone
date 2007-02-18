@@ -28,7 +28,7 @@
         </p>
         
         <p i18n:translate="s5_no_headers_found" class="system-message"
-           tal:condition="not: python: context.s5_hacked_body(test=True)">
+           tal:condition="not: python: context.document_s5_alter(test=True)">
             For Plone to show this page as a presentation to work, it must find some header
             tags (H1, h1, H2, h2) in your document. The document will be 
             "split into slides based upon those tags. Kupu will insert those headings for you.
