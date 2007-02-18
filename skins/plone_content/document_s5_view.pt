@@ -21,10 +21,9 @@
         </div>
 
         <p class="portalMessage" i18n:translate="s5_presentation">
-            This document can be viewed as a 
             <a href="document_s5_presentation"
                 tal:attributes="href string:${context/absolute_url}/document_s5_presentation">
-                presentation</a>.
+                View as a presentation</a>.
         </p>
         
         <p i18n:translate="s5_no_headers_found" class="system-message"
