@@ -19,11 +19,19 @@
       />
 
   <adapter factory=".wickedcp.WickedControlPanelAdapter" />
+  <adapter factory=".seo.SeoControlPanelAdapter" />
 
   <browser:page
       name="wicked-controlpanel.html"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       class=".wickedcp.WickedControlPanel" 
+      permission="cmf.ManagePortal"
+     />
+
+  <browser:page
+      name="seo-controlpanel.html"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".seo.SeoControlPanel" 
       permission="cmf.ManagePortal"
      />
 

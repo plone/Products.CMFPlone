@@ -42,7 +42,7 @@ class ControlPanelTestCase(FunctionalTestCase):
 
 
 def test_suite():
-    tests = ['calendar.rst', 'mail.rst', 'search.rst', 'types.rst']
+    tests = ['calendar.rst', 'mail.rst', 'search.rst', 'types.rst', 'seo.rst']
     suite = TestSuite()
     for test in tests:
         suite.addTest(FunctionalDocFileSuite(test,
