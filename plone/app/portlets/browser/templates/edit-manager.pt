@@ -1,4 +1,4 @@
-<div>
+<div class="portlets-manager">
 
   <div metal:use-macro="context/@@manage-portlets-macros/macros/portlet-add-form" />
 
