@@ -25,14 +25,19 @@
     <!-- simulating views on the groups/user pages until we have real objects. -->
     <ul class="contentViews">
       <li>
-            <a href=""
-               tal:attributes="href string:$here_url/prefs_group_members?groupname=${groupname}"
-               i18n:translate="label_group_members">Group Members</a>
+        <a href=""
+           tal:attributes="href string:$here_url/prefs_group_members?groupname=${groupname}"
+           i18n:translate="label_group_members">Group Members</a>
       </li>
       <li class="selected">
         <a href=""
            tal:attributes="href string:$here_url/${template_id}?groupname=${groupname}"
            i18n:translate="label_group_properties">Group Properties</a>
+      </li>
+      <li>
+        <a href=""
+           tal:attributes="href string:${portal_url}/@@manage-group-portlets?groupId=${groupname}"
+           i18n:translate="label_group_members">Group Portlets</a>
       </li>
     </ul>
 
@@ -93,7 +98,7 @@
         They are not directly related to permissions on a global level, you normally
         use Roles for that - and let certain Groups have a particular role.
         </p>
-
+        
         <form action=""
               name="groups"
               method="post"

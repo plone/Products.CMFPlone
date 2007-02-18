@@ -40,6 +40,11 @@
            tal:attributes="href string:${here_url}/prefs_group_details?groupname=${groupname}"
                i18n:translate="label_group_properties">Group Properties</a>
       </li>
+      <li>
+        <a href=""
+           tal:attributes="href string:${portal_url}/@@manage-group-portlets?groupId=${groupname}"
+           i18n:translate="label_group_members">Group Portlets</a>
+      </li>
     </ul>
 
     <div class="contentActions">
