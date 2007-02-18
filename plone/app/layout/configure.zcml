@@ -9,5 +9,7 @@
     <include package=".alias" />
     <include package=".icons" />
     <include package=".links" />
+    <include package=".sitemap" />
+    <include package=".analytics" />
     
 </configure>
