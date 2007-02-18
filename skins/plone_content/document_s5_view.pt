@@ -1,0 +1,66 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+<body>
+
+<metal:main fill-slot="main">
+    <tal:main-macro metal:define-macro="main"
+           tal:define="text python: here.CookedBody(stx_level=2)">
+
+        <div metal:use-macro="here/document_actions/macros/document_actions">
+            Document actions (print, sendto etc)
+        </div>
+
+        <h1 metal:use-macro="here/azax_macros_generic/macros/generic_title_view">
+          Title or id
+        </h1>
+
+        <div metal:use-macro="here/document_byline/macros/byline">
+          Get the byline - contains details about author and modification date.
+        </div>
+
+        <p class="portalMessage" i18n:translate="s5_presentation">
+            This document can be viewed as a 
+            <a href="document_s5_presentation"
+                tal:attributes="href string:${context/absolute_url}/document_s5_presentation">
+                presentation</a>.
+        </p>
+        
+        <p i18n:translate="s5_no_headers_found" class="system-message"
+           tal:condition="not: python: context.s5_hacked_body(test=True)">
+            For Plone to show this page as a presentation to work, it must find some header
+            tags (H1, h1, H2, h2) in your document. The document will be 
+            "split into slides based upon those tags. Kupu will insert those headings for you.
+        </p>
+            
+
+        <p  metal:use-macro="here/azax_macros_generic/macros/generic_description_view">
+            Description
+        </p>
+        
+        <p tal:condition="python: not text and is_editable"
+           i18n:translate="no_body_text"
+           class="discreet">
+            This item does not have any body text, click the edit tab to change it.
+        </p>
+    
+        <div id="archetypes-fieldname-text" class="stx"
+             tal:define="kss_field_decorator_view kss_field_decorator_view | context/@@kss_field_decorator_view;
+                         kss_class python:kss_field_decorator_view.kss_class('text', 'view');"
+             tal:condition="text"
+             tal:attributes="class python:test(here.Format() in ('text/structured',
+                                                   'text/x-rst', ), 'stx' + kss_class, 'plain' + kss_class)">
+            <div tal:replace="structure text" />
+        </div>
+
+        <div metal:use-macro="here/document_relateditems/macros/relatedItems">
+            show related items if they exist
+        </div>
+    
+    </tal:main-macro>
+</metal:main>
+
+</body>
+</html>
+
