@@ -89,4 +89,9 @@
     url_expr="string:${portal_url}/@@calendar-controlpanel.html" visible="True">
   <permission>Manage portal</permission>
  </configlet>
+ <configlet title="Maintenance" action_id="Maintenance"
+    appId="Plone" category="Plone" condition_expr=""
+    url_expr="string:${portal_url}/@@maintenance-controlpanel.html" visible="True">
+  <permission>Manage portal</permission>
+ </configlet>
 </object>
