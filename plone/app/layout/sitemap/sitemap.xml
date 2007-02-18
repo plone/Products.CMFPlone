@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.google.com/schemas/sitemap/0.84" 
+        xmlns:tal="http://xml.zope.org/namespaces/tal"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.google.com/schemas/sitemap/0.84
+        http://www.google.com/schemas/sitemap/0.84/sitemap.xsd">
+    <tal:block repeat="obj view/objects">
+    <url>
+        <loc tal:content="obj/getURL">URL</loc>
+        <lastmod tal:content="python:obj.ModificationDate.replace(' ','T')">modified</lastmod>
+    </url>
+</tal:block>
+
+</urlset>
