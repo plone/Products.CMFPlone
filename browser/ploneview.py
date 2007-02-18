@@ -124,12 +124,9 @@ class Plone(utils.BrowserView):
         self._data['ztu'] =  ZTUtils
         self._data['isFolderish'] =  context_state.is_folderish()
         
-        # TODO: How should these interact with plone.portlets? Ideally, they'd
-        # be obsolete, with a simple "show-column" boolean
-        self._data['slots_mapping'] = slots = self._prepare_slots(view)
-        self._data['sl'] = sl = slots['left']
-        self._data['sr'] = sr = slots['right']
-        self._data['hidecolumns'] =  self.hide_columns(sl, sr)
+        self._data['sl'] = have_left_portlets = self.have_portlets('plone.leftcolumn', view)
+        self._data['sr'] = have_right_portlets = self.have_portlets('plone.rightcolumn', view)
+        self._data['hidecolumns'] =  self.hide_columns(have_left_portlets, have_right_portlets)
         
         self._data['here_url'] =  context_state.object_url()
         self._data['default_language'] = portal_state.default_language()
@@ -158,13 +155,11 @@ class Plone(utils.BrowserView):
 
     # XXX: This is lame
     def hide_columns(self, column_left, column_right):
-        """ See interface """
-
-        if column_right==[] and column_left==[]:
+        if not column_right and not column_left:
             return "visualColumnHideOneTwo"
-        if column_right!=[]and column_left==[]:
+        if column_right and not column_left:
             return "visualColumnHideOne"
-        if column_right==[]and column_left!=[]:
+        if not column_right and column_left:
             return "visualColumnHideTwo"
         return "visualColumnHideNone"
 
@@ -392,33 +387,20 @@ class Plone(utils.BrowserView):
         return context_state.view_template_id()
 
     # Helper methods
-    def _prepare_slots(self, view=None):
-        """XXX: This is a silly attempt at BBB - the only purpose of this
-        function is to return [] or [1] (non-empty) for each slot 'left' and
-        'right', whether or not that column should be rendered.
+    def have_portlets(self, manager_name, view=None):
+        """Determine whether a column should be shown.
+        The left column is called plone.leftcolumn; the right column is called
+        plone.rightcolumn. Custom skins may have more portlet managers defined
+        (see portlets.xml).
         """
         
         context = utils.context(self)
-        slots = {'left' : [1], 'right' : [1]}
-
         if view is None:
             view = self
 
-        left = getUtility(IPortletManager, name='plone.leftcolumn')
-        right = getUtility(IPortletManager, name='plone.rightcolumn')
-        
-        leftRenderer = queryMultiAdapter((context, self.request, view, left), IPortletManagerRenderer)
-        rightRenderer = queryMultiAdapter((context, self.request, view, right), IPortletManagerRenderer)
-        
-        if leftRenderer is None:
-            leftRenderer = getMultiAdapter((context, self.request, self, left), IPortletManagerRenderer)
-            
-        if rightRenderer is None:
-            rightRenderer = getMultiAdapter((context, self.request, self, right), IPortletManagerRenderer)
-        
-        if not leftRenderer.visible:
-            slots['left'] = []
-        if not rightRenderer.visible:
-            slots['right'] = []
-            
-        return slots
+        manager = getUtility(IPortletManager, name=manager_name)
+        renderer = queryMultiAdapter((context, self.request, view, manager), IPortletManagerRenderer)
+        if renderer is None:
+            renderer = getMultiAdapter((context, self.request, self, manager), IPortletManagerRenderer)
+
+        return renderer.visible

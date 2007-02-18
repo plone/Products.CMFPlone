@@ -262,14 +262,11 @@ class IPlone(Interface):
     isFolderish = Attribute("A boolean indicating whether the object is "
                             "folderish")
 
-    slots_mapping = Attribute("A mapping containing a list of macros or "
-                              "expressions for each slot")
-
     here_url = Attribute("The url of the current object")
 
-    sl = Attribute("The elements in the left slot")
+    sl = Attribute("True if the left slot should be shown")
 
-    sr = Attribute("The elements in the right slot")
+    sr = Attribute("True if the right slot should be shown")
 
     hidecolumns = Attribute("The css class to use for the column container"
                             "which determines which columns to show")

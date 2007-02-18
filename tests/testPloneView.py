@@ -189,6 +189,10 @@ class TestPloneView(PloneTestCase.PloneTestCase):
         view = Plone(self.folder.topic, self.app.REQUEST)
         self.assertEqual(view.getCurrentFolder(), self.folder)
 
+    def testHavePortlets(self):
+        view = Plone(self.portal, self.app.REQUEST)
+        self.assertEqual(True, view.have_portlets('plone.leftcolumn'))
+        self.assertEqual(True, view.have_portlets('plone.rightcolumn'))
 
 class TestVisibleIdsEnabled(PloneTestCase.PloneTestCase):
     '''Tests the visibleIdsEnabled method'''

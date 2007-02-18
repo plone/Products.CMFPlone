@@ -16,6 +16,11 @@
 /* <dtml-with base_properties> (do not remove this :) */
 /* <dtml-call "REQUEST.set('portal_url', portal_url())"> (not this either :) */
 
+/* Fallback for edit screen if both columns are hidden */
+.managePortletsFallback {
+    margin: 0 0 0 1em;
+}
+
 /* Main portlet elements */
 .portlet {
     margin: 1px 0 1em 0;
