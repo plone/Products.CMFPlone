@@ -115,6 +115,8 @@ def alpha1_alpha2(portal):
 
     return out
 
+
+
 def enableZope3Site(portal, out):
     if not ISite.providedBy(portal):
         enableSite(portal, iface=IObjectManagerSite)
@@ -125,8 +127,16 @@ def enableZope3Site(portal, out):
 
         out.append('Made the portal a Zope3 site.')
 
-
 def alpha2_alpha3(portal):
+    """ 3.0-alpha2 -> 3.0-alpha3
+    """
+    out = []
+
+    # Add control panel actions 
+    addControlPanelActions(portal, out)
+
+
+def alpha3_alpha4(portal):
     pass
 
 
@@ -442,6 +452,21 @@ def updateRtlCSSexpression(portal, out):
             rtl.setExpression("python:portal.restrictedTraverse('@@plone_portal_state').is_rtl()")
             out.append("Updated RTL.css expression.")
 
+def addControlPanelActions(portal, out):
+    cpanel = getToolByName(portal,'portal_controlpanel')
+    if not getattr(cpanel, 'Maintenance', None):
+        new_action = Action('Maintenance',
+                            title='Maintenance',
+                            description='',
+                            category="Plone",
+                            url_expr='string:${portal_url}/@@Maintenance-controlpanel.pt',
+                            available_expr='',
+                            permissions='Manage portal',
+                            visible=True)
+        cpanel._setObject('Maintenance', new_action)
+        out.append("Added Maintenance action to plone_controlpanel")
+
+
 # --
 # KSS registration
 # --
@@ -549,3 +574,4 @@ class installKss(object):
         self.install_resources() 
         self.install_skins() 
         out.append("Succesfully migrated portal to KSS")
+
