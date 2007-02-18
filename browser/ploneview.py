@@ -242,8 +242,9 @@ class Plone(utils.BrowserView):
 
     @memoize
     def icons_visible(self):
-        portal_state = getMultiAdapter((self.context, self.request), name=u'plone_portal_state')
-        tools = getMultiAdapter((self.context, self.request), name='plone_tools')
+        context = utils.context(self)
+        portal_state = getMultiAdapter((context, self.request), name=u'plone_portal_state')
+        tools = getMultiAdapter((context, self.request), name='plone_tools')
         properties = tools.properties()
 
         site_properties = getattr(properties, 'site_properties')
