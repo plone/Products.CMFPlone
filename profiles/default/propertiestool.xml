@@ -135,7 +135,6 @@
   </property>
   <property name="default_contenttype" type="string">text/html</property>
   <property name="enable_sitemap" type="boolean">True</property>
-  <property name="webstats_js" type="string"></property>
   <property name="number_of_days_to_keep" type="int">7</property>
  </object>
 </object>
