@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" 
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" >
 
-<metal:block use-macro="here/global_defines/macros/defines" />    
+<metal:block use-macro="here/global_defines/macros/defines" />
 <html xmlns="http://www.w3.org/1999/xhtml" metal:define-macro="master">
 
 <head>
@@ -11,6 +11,8 @@
 
 <title tal:content="context/Title"></title>
 
+<link rel="stylesheet" href="ui/default/base.css" type="text/css" media="all"
+    tal:attributes="href string:${context/portal_url}/base.css" />
 <link rel="stylesheet" href="ui/default/slides.css" type="text/css" media="projection" id="slideProj"
     tal:attributes="href string:${context/portal_url}/s5_slides.css" />
 <link rel="stylesheet" href="ui/default/outline.css" type="text/css" media="screen" id="outlineStyle" 
@@ -31,9 +33,7 @@
     <div id="controls"><!-- DO NOT EDIT --></div>
     <div id="currentSlide"><!-- DO NOT EDIT --></div>
     <div id="header"></div>
-    <div id="footer">
-        <h1 tal:content="portal_properties/title">S<sup>5</sup> in Plone: Example</h1>
-    </div>
+    <div id="footer"></div>
 </div>
 
 <div class="presentation">
