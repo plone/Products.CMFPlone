@@ -22,7 +22,7 @@
     <div class="form-label">
     Id
     </div>
-    <input type="text" name="id" size="40" />
+    <input type="text" name="id" size="40" /> <span class="form-help">(No special characters or spaces)</span>
 
     <div class="form-label">
     Title
