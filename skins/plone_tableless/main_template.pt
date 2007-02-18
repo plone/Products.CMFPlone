@@ -197,6 +197,14 @@
       </div>
       <tal:comment replace="nothing"> end column wrapper </tal:comment>
 
+      <div tal:condition="python:not sl and not sr">
+          <a class="managePortletsFallback"
+             tal:attributes="href string:${context/absolute_url}/@@manage-portlets"
+             i18n:translate="manage_portlets_fallback">
+             Manage portlets
+          </a>
+      </div>
+
       <metal:block i18n:domain="plone">
 
         <div tal:replace="structure provider:plone.portalfooter" />
