@@ -180,7 +180,7 @@ div.managedPortlet {
 }
 
 .managedPortlet .portletHeader {
-    min-height: 3em;
+    min-height: 3em !important;
 }
 
 
@@ -195,7 +195,7 @@ div.managedPortlet {
 
 .managedPortletActions a.up,
 .managedPortletActions a.down {
-    color:blue;
+    color:blue !important;
 }
 
 .managedPortletActions a.delete {
