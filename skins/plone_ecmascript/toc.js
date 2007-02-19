@@ -49,8 +49,8 @@ function createTableOfContents() {
         return;
     }
     walkHeaders(content, function(n, d){d.push(n)}, elems); 
-    if (elems.length < 2) {
-        /* if there's only two elements, this is all rather pointless */
+    if (elems.length < 0) {
+        /* if there's no elements, this is all rather pointless */
         return;
     }
     
