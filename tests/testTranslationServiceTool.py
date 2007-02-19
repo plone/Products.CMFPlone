@@ -56,7 +56,7 @@ class TestTranslationServiceTool(PloneTestCase.PloneTestCase):
                                          context=self.portal)
         # TranslationServiceTool falls back to time formats in site properties
         # because PTS isn't installed
-        self.assertEquals(value, '1997-03-09 13:45')
+        self.assertEquals(value, 'Mar 09, 1997 01:45PM')
 
     def test_ulocalized_time_fetch_error(self):
         # http://dev.plone.org/plone/ticket/4251

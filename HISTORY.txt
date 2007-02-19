@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Change the default time and date format. This closes
+      http://dev.plone.org/plone/ticket/6172.
+      [hannosch]
+
     - On site setup the mail host and email address are left empty.
       This references http://dev.plone.org/plone/ticket/5881.
       [hannosch]

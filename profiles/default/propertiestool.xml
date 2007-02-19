@@ -43,8 +43,8 @@
  <object name="site_properties" meta_type="Plone Property Sheet">
   <property name="title">Site wide properties</property>
   <property name="allowAnonymousViewAbout" type="boolean">True</property>
-  <property name="localTimeFormat" type="string">%Y-%m-%d</property>
-  <property name="localLongTimeFormat" type="string">%Y-%m-%d %H:%M</property>
+  <property name="localTimeFormat" type="string">%b %d, %Y</property>
+  <property name="localLongTimeFormat" type="string">%b %d, %Y %I:%M%p</property>
   <property name="default_language" type="string">en</property>
   <property name="default_charset" type="string">utf-8</property>
   <property name="use_folder_tabs" type="lines">
