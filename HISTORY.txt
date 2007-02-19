@@ -4,7 +4,8 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
-    - Removed last occurrences of portal_status_messages. This references
+    - Removed last occurrences of portal_status_messages and removed the
+      inclusion code in global_statusmessage. This closes
       http://dev.plone.org/plone/ticket/6131.
       [hannosch]
 
