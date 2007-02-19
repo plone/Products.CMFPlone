@@ -42,6 +42,9 @@
  <action-icon category="controlpanel" action_id="MailHost"
               title="Mail Settings" priority="0"
               icon_expr="mail_icon.gif"/>
+ <action-icon category="controlpanel" action_id="HtmlFilter"
+              title="Html Filter Settings" priority="0"
+              icon_expr="htmlfilter_icon.gif"/>
  <action-icon category="controlpanel" action_id="PortalSkin"
               title="Skins" priority="0"
               icon_expr="skins_icon.gif"/>
