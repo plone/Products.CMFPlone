@@ -130,6 +130,10 @@ def alpha2_alpha3(portal):
     installS5(portal, out)
     
     addTableContents(portal, out)
+
+    # add input-label.js
+    addFormInputLabelJS(portal, out)
+    
     return out
 
 
@@ -353,6 +357,18 @@ def addFormTabbingJS(portal, out):
                 jsreg.moveResourceToBottom(script)
             out.append("Added " + script + " to portal_javascipt")
 
+def addFormInputLabelJS(portal, out):
+    """Add input-label.js to ResourceRegistries.
+    """
+    jsreg = getToolByName(portal, 'portal_javascripts', None)
+    script = 'input-label.js'
+    if jsreg is not None:
+        script_ids = jsreg.getResourceIds()
+        # Failsafe: first make sure the stylesheet doesn't exist in the list
+        if script not in script_ids:
+            jsreg.registerScript(script)
+            out.append("Added " + script + " to portal_javascipt")
+
 def registerToolsAsUtilities(portal, out):
     sm = getSiteManager(portal)
     registration = ((portal.portal_controlpanel, IControlPanel),
@@ -521,19 +537,24 @@ def addMaintenanceConfiglet(portal, out):
 
 def addMaintenanceProperty(portal, out):
     """ adds a site property to portal_properties"""
-    tool = getToolByName(portal, 'portal_properties')
-    sheet = tool.site_properties
-    if not sheet.hasProperty('number_of_days_to_keep'):
-        sheet.manage_addProperty('number_of_days_to_keep',7,'int')
-        out.append("Added 'number_of_days_to_keep' property to site properties")
-
+    tool = getToolByName(portal, 'portal_properties', None)
+    if tool is not None:
+        sheet = getattr(tool, 'site_properties', None)
+        if sheet is not None:
+            if not sheet.hasProperty('number_of_days_to_keep'):
+                sheet.manage_addProperty('number_of_days_to_keep',7,'int')
+                out.append("Added 'number_of_days_to_keep' property to site properties")
 
 def addTableContents(portal, out):
     """ Adds in table of contents """
-    csstool = getToolByName(portal, "portal_css")
-    csstool.manage_addStylesheet(id="toc.css",rel="stylesheet",enabled=True)
-    jstool = getToolByName(portal, "portal_javascripts")
-    jstool.registerScript(id="toc.js", enabled=True)
+    csstool = getToolByName(portal, "portal_css", None)
+    if csstool is not None:
+        if 'toc.css' not in csstool.getResourceIds():
+            csstool.manage_addStylesheet(id="toc.css",rel="stylesheet", enabled=True)
+    jstool = getToolByName(portal, "portal_javascripts", None)
+    if jstool is not None:
+        if 'toc.js' not in jstool.getResourceIds():
+            jstool.registerScript(id="toc.js", enabled=True)
     out.append("Added in css and js for table of contents")
 
 # --

@@ -68,6 +68,7 @@ from Products.CMFPlone.migrations.v3_0.alphas import addCalendarConfiglet
 from Products.CMFPlone.migrations.v3_0.alphas import addMaintenanceConfiglet
 from Products.CMFPlone.migrations.v3_0.alphas import updateSearchAndMailHostConfiglet
 from Products.CMFPlone.migrations.v3_0.alphas import addFormTabbingJS
+from Products.CMFPlone.migrations.v3_0.alphas import addFormInputLabelJS
 from Products.CMFPlone.migrations.v3_0.alphas import registerToolsAsUtilities
 from Products.CMFPlone.migrations.v3_0.alphas import installKss
 from Products.CMFPlone.migrations.v3_0.alphas import installRedirectorUtility
@@ -1159,6 +1160,17 @@ class TestMigrations_v3_0(MigrationTest):
             posSE = jsreg.getResourcePosition('form_tabbing.js')
             posHST = jsreg.getResourcePosition('collapsiblesections.js')
             self.failUnless((posSE - 1) == posHST)
+
+    def testAddFormInputLabelJS(self):
+        jsreg = self.portal.portal_javascripts
+        # unregister first
+        jsreg.unregisterResource('input-label.js')
+        script_ids = jsreg.getResourceIds()
+        self.failIf('input-label.js' in script_ids)
+        # migrate and test again
+        addFormInputLabelJS(self.portal, [])
+        script_ids = jsreg.getResourceIds()
+        self.failUnless('input-label.js' in script_ids)
 
     def testUpdateFTII18NDomain(self):
         doc = self.types.Document
