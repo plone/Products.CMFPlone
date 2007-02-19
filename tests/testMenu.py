@@ -314,8 +314,8 @@ class TestContentMenu(PloneTestCase.PloneTestCase):
     
     def testDisplayMenuNotIncludedIfContextDoesNotSupportBrowserDefault(self):
         # We need to create an object that does not have IBrowserDefault enabled
-        _createObjectByType('CMF Folder', self.folder, 'f1')
-        items = self.menu.getMenuItems(self.folder.f1, self.request)
+        _createObjectByType('ATListCriterion', self.folder, 'c1')
+        items = self.menu.getMenuItems(self.folder.c1, self.request)
         self.assertEqual([i for i in items if i['extra']['id'] == 'plone-contentmenu-display'], [])
     
     def testDisplayMenuNotIncludedIfNoActionsAvailable(self):

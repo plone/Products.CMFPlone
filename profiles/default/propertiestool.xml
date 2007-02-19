@@ -99,16 +99,6 @@
    <element value="ATCurrentAuthorCriterion"/>
    <element value="ATPathCriterion"/>
    <element value="ATRelativePathCriterion"/>
-   <element value="CMF Document"/>
-   <element value="CMF Event"/>
-   <element value="CMF Favorite"/>
-   <element value="CMF File"/>
-   <element value="CMF Folder"/>
-   <element value="CMF Image"/>
-   <element value="CMF Large Plone Folder"/>
-   <element value="CMF Link"/>
-   <element value="CMF News Item"/>
-   <element value="CMF Topic"/>
   </property>
   <property name="disable_folder_sections" type="boolean">False</property>
   <property name="typesUseViewActionInListings" type="lines">

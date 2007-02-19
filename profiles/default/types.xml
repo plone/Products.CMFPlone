@@ -23,17 +23,6 @@
  <object name="ATSimpleStringCriterion"
     meta_type="Factory-based Type Information"/>
  <object name="ATSortCriterion" meta_type="Factory-based Type Information"/>
- <object name="CMF Document" meta_type="Factory-based Type Information"/>
- <object name="CMF Event" meta_type="Factory-based Type Information"/>
- <object name="CMF Favorite" meta_type="Factory-based Type Information"/>
- <object name="CMF File" meta_type="Factory-based Type Information"/>
- <object name="CMF Folder" meta_type="Factory-based Type Information"/>
- <object name="CMF Image" meta_type="Factory-based Type Information"/>
- <object name="CMF Large Plone Folder"
-    meta_type="Factory-based Type Information"/>
- <object name="CMF Link" meta_type="Factory-based Type Information"/>
- <object name="CMF News Item" meta_type="Factory-based Type Information"/>
- <object name="CMF Topic" meta_type="Factory-based Type Information"/>
  <object name="Discussion Item" meta_type="Factory-based Type Information"/>
  <object name="Document"
     meta_type="Factory-based Type Information with dynamic views"/>

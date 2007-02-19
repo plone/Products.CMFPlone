@@ -53,12 +53,6 @@ class TestBrowserDefaultScripts(PloneTestCase.PloneTestCase):
         self.folder.setLayout('atct_album_view')
         self.assertEqual(self.folder.getViewTemplateId(), 'atct_album_view')
 
-    def testGetViewTemplateIdNonBrowserDefault(self):
-        _createObjectByType('CMF Folder', self.folder, 'cmffolder')
-        _createObjectByType('CMF Document', self.folder, 'cmfdocument')
-        self.assertEqual(self.folder.cmffolder.getViewTemplateId(), 'folder_listing')
-        self.assertEqual(self.folder.cmfdocument.getViewTemplateId(), 'document_view')
-
 
 def test_suite():
     from unittest import TestSuite, makeSuite

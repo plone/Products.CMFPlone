@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Removed the old CMF types from the GenericSetup profiles. This closes
+      http://dev.plone.org/plone/ticket/6156.
+      [hannosch]
+
     - Removed the news_listing template that hasn't been in use since Plone
       2.0 (it wasn't working anyway). It was replaced by the summary view in
       Plone 2.1, and deprecated then, which means it should be safe to remove.
