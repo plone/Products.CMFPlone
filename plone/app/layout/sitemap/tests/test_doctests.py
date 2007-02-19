@@ -41,7 +41,7 @@ class SiteMapTestCase(FunctionalTestCase):
 
 
 def test_suite():
-    tests = ['sitemap.rst']
+    tests = ['sitemap.txt']
     suite = TestSuite()
     for test in tests:
         suite.addTest(FunctionalDocFileSuite(test,
