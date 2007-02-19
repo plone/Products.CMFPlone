@@ -42,12 +42,9 @@ class HiddenProducts(object):
         return ['Archetypes', 'ATContentTypes', 'ATReferenceBrowserWidget',
                 'CMFActionIcons', 'CMFCalendar', 'CMFDefault',
                 'CMFTopic', 'CMFUid', 'DCWorkflow', 'GroupUserFolder',
-                'PasswordResetTool', 'wicked.at'
-                # TODO: These are added by installing Archetypes through QI,
-                # which shouldn't happen at all anymore. We don't add those
-                # to this list right now, as we don't want to get any annoying
-                # "removed from Products folder" messages.
-                # 'CMFFormController', 'MimetypesRegistry', 'PortalTransforms'
+                'PasswordResetTool', 'wicked.at', 'plone.app.iterate', 'kupu',
+                'Kupu', 'CMFFormController', 'MimetypesRegistry',
+                'PortalTransforms', 'CMFDiffTool', 'CMFEditions'
                ]
 
 
