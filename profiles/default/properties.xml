@@ -8,7 +8,7 @@
   <element value="news_listing"/>
  </property>
  <property name="email_from_address"
-    type="string">postmaster@localhost</property>
+    type="string"></property>
  <property name="email_from_name"
     type="string">Portal Administrator</property>
  <property name="validate_email" type="boolean">True</property>

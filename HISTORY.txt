@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - On site setup the mail host and email address are left empty.
+      This references http://dev.plone.org/plone/ticket/5881.
+      [hannosch]
+
     - Renamed "Smart Folder" to "Collection" since it better describes the new
       functionality, made other things more consistent: "Comments" everywhere
       instead of "Discussion", "Publication Date" instead of "Effective Date",
