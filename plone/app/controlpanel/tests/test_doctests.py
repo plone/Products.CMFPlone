@@ -10,8 +10,7 @@ from plone.app.controlpanel import wickedcp
 
 setupPloneSite()
 
-OPTIONFLAGS = (doctest.REPORT_ONLY_FIRST_FAILURE |
-               doctest.ELLIPSIS |
+OPTIONFLAGS = (doctest.ELLIPSIS |
                doctest.NORMALIZE_WHITESPACE)
 
 class ControlPanelTestCase(FunctionalTestCase):
@@ -42,12 +41,13 @@ class ControlPanelTestCase(FunctionalTestCase):
 
 
 def test_suite():
-    tests = ['calendar.txt',
-             'mail.txt',
-             'search.txt',
-             'types.txt',
-             'seo.txt',
-             'maintenance.txt',
+    tests = [#'calendar.txt',
+             #'mail.txt',
+             #'search.txt',
+             #'types.txt',
+             #'seo.txt',
+             #'maintenance.txt',
+             'filter.txt',
              ]
     suite = TestSuite()
     for test in tests:

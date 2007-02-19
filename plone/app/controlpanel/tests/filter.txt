@@ -1,0 +1,96 @@
+Filter control panel
+====================
+
+First some initial setup code:
+
+    >>> import sys
+    >>> browser = self.browser
+    >>> safe_html = self.getToolByName('portal_transforms').safe_html
+    >>> kupu_tool = self.getToolByName('kupu_library_tool')
+    >>> self.loginAsManager()
+
+Viewing the search control panel
+--------------------------------
+
+    >>> browser.open('http://nohost/plone/@@filter-controlpanel.html')
+    >>> browser.url.endswith('filter-controlpanel.html')
+    True
+
+Click the save button without making any changes:
+
+    >>> browser.getControl(name="form.actions.save").click()
+    >>> browser.url.endswith('filter-controlpanel.html')
+    True
+
+We should get a status message:
+
+    >>> 'Changes saved.' in browser.contents
+    True
+
+Now click the cancel button:
+
+    >>> browser.getControl(name="form.actions.cancel").click()
+    >>> browser.url.endswith('plone_control_panel')
+    True
+
+There should be still no changes:
+
+    >>> 'Changes canceled.' in browser.contents
+    True
+
+Look at the defaults
+--------------------
+
+    >>> browser.open('http://nohost/plone/@@filter-controlpanel.html')
+
+    >>> def print_all_of(fieldname):
+    ...     for i in xrange(sys.maxint):
+    ...         key = 'form.%s.%s.' % (fieldname, i)
+    ...         try:
+    ...             print browser.getControl(name=key).value
+    ...         except LookupError, e:
+    ...             break
+
+    >>> print_all_of('nasty_tags')
+    applet
+    embed
+    object
+    script
+
+    >>> print_all_of('stripped_tags')
+    abbr
+    acronym
+    address
+    bdo
+    button
+    col
+    colgroup
+    dfn
+    fieldset
+    form
+    input
+    label
+    legend
+    link
+    noscript
+    object
+    optgroup
+    option
+    param
+    samp
+    script
+    select
+    style
+    textarea
+    tfoot
+    thead
+    var
+
+    >>> print_all_of('custom_tags')
+    u
+
+    # XXX Hello Duncan!
+    >>> print_all_of('stripped_attributes')
+    >>> print_all_of('stripped_combinations')
+    >>> print_all_of('style_whitelist')
+    >>> print_all_of('class_whitelist')
