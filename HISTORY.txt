@@ -31,8 +31,8 @@ Plone 3.0 - unreleased
     - Fixed encoding problem when sending out registration emails
       [jvloothuis, ender]
 
-    - Deprecated relaxed mode of the normalizeString methods in favour of direct
-      usage of the normalizers in plone.i18n.
+    - Deprecated relaxed mode of the normalizeString methods in favour of
+      direct usage of the normalizers in plone.i18n.
       [hannosch]
 
     - Merged plip174-reusable-i18n branch. Normalization logic and language
@@ -46,8 +46,8 @@ Plone 3.0-alpha2 - released February 13, 2006
       [hannosch]
 
     - Added Google-specific extensions to the robots.txt file to deny it from
-      indexing a gazillion sendo_forms. The standard doesnt allow for wildcards
-      boot Google does.
+      indexing a gazillion sendo_forms. The standard doesnt allow for
+      wildcards boot Google does.
       [elvix]
 
     - Added robots.txt file. This should remove some unwanted not-found-errors
