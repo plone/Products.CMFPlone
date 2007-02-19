@@ -126,7 +126,7 @@
     display: block;
 }
 .arrowDownAlternative {
-    font-size: 0.8em;
+    font-size: 0.85em;
 }
 .actionMenu .actionMenuContent {
     display: none;
