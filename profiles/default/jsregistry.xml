@@ -116,6 +116,8 @@
     enabled="True"
     expression="python:portal.kupu_library_tool.isKupuEnabled(REQUEST=request)"
     id="kupuploneinit.js" inline="False"/>
+ <javascript cacheable="True" compression="safe" cookable="True" enabled="on"
+    expression="" id="toc.js" inline="False"/>
  <!-- kss -->
  <javascript cacheable="True" compression="none" cookable="True"
     enabled="False" expression=""

@@ -60,6 +60,9 @@
     enabled="True"
     expression="python:portal.kupu_library_tool.isKupuEnabled(REQUEST=request)"
     id="kupudrawerstyles.css" media="" rel="stylesheet" rendering="import"/>
+ <stylesheet title="Table of Contents CSS" cacheable="True" compression="safe"
+    cookable="True" enabled="on" expression="" id="toc.css" media="all"
+    rel="stylesheet" rendering="import"/>
  <stylesheet title="" cacheable="True" compression="safe" cookable="True"
     enabled="1" expression="" id="ploneCustom.css" media="all"
     rel="stylesheet" rendering="import"/>
