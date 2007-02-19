@@ -132,7 +132,7 @@ And let's edit it properly:
   ...        handle_errors=False)
   HTTP/1.1 302 Moved Temporarily
   ...
-  Location: ...test-page?portal_status_message=Changes%20saved.
+  Location: ...test-page
 
 Let's make sure our changes were applied:
 
