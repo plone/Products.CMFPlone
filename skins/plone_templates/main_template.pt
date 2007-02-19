@@ -21,17 +21,6 @@
           tal:define="charset site_properties/default_charset|string:utf-8"
           tal:attributes="content string:text/html;;charset=${charset}" />
 
-    <title tal:define="portal_title portal_properties/title;
-                       page_title object_title">
-        <tal:pagetitle replace="page_title">
-            Inserts page title
-        </tal:pagetitle>
-        &mdash;
-        <tal:portaltitle replace="portal_title">
-            Inserts portal title
-        </tal:portaltitle>
-    </title>
-
     <metal:baseslot define-slot="base">
       <base href="" tal:attributes="href here/renderBase" />
     </metal:baseslot>
