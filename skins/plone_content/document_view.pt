@@ -20,7 +20,7 @@
           Get the byline - contains details about author and modification date.
         </div>
 
-        <ul id="toc" style="display:none;" tal:condition="context/getTableContents">
+        <ul id="toc" style="display:none;" tal:condition="context/getTableContents|nothing">
         </ul>
 
         <p  metal:use-macro="here/kss_generic_macros/macros/generic_description_view">
