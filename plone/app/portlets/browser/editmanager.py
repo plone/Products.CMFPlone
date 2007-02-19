@@ -99,9 +99,10 @@ class EditPortletManagerRenderer(Explicit):
         
     def addable_portlets(self):
         baseUrl = self.baseUrl()
+        addviewbase = baseUrl.replace(self.context.absolute_url(), '')
         return [ {'title' : p.title,
                   'description' : p.description,
-                  'addview' : '%s' % p.addview,
+                  'addview' : '%s/+/%s' % (addviewbase, p.addview)
                   } for p in self.manager.getAddablePortletTypes()]
         
     # See note in plone.portlets.manager
