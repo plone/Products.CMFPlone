@@ -15,10 +15,10 @@ from plone.app.portlets.portlets import navigation
 from Acquisition import aq_base
 from Products.CMFCore.utils import getToolByName
 
-def assignment_from_key(context, manager_name, category, key, name):
-    """Given the name of a portlet manager, the name of a category, a
-    key in that category and the name of a particular assignment, return
-    the IPortletAssignment. Raise a KeyError if it cannot be found.
+def assignment_mapping_from_key(context, manager_name, category, key):
+    """Given the name of a portlet manager, the name of a category, and a
+    key in that category, return the IPortletAssignmentMapping. 
+    Raise a KeyError if it cannot be found.
     """
     
     manager = getUtility(IPortletManager, manager_name)
@@ -31,10 +31,17 @@ def assignment_from_key(context, manager_name, category, key, name):
         obj = portal.restrictedTraverse(path, None)
         if obj is None:
             raise KeyError, "Cannot find object at path %s" % path
-        assignable = getMultiAdapter((obj, manager), IPortletAssignmentMapping)
-        return assignable[name]
+        return getMultiAdapter((obj, manager), IPortletAssignmentMapping)
     else:
-        return manager[category][key][name]
+        return manager[category][key]
+
+def assignment_from_key(context, manager_name, category, key, name):
+    """Given the name of a portlet manager, the name of a category, a
+    key in that category and the name of a particular assignment, return
+    the IPortletAssignment. Raise a KeyError if it cannot be found.
+    """
+    return assignment_from_key(context, manager_name, category, key)[name]
+    
 
 portletsMapping = { 'portlet_login'      : login.Assignment(),
                     'portlet_news'       : news.Assignment(count=5),

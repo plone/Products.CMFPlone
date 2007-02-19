@@ -1,4 +1,5 @@
-<div class="portlets-manager">
+<div class="portlets-manager"
+     tal:attributes="id string:portletmanager-${view/normalized_manager_name};">
 
   <div metal:use-macro="context/@@manage-portlets-macros/macros/portlet-add-form" />
 

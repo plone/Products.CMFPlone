@@ -37,6 +37,8 @@ from plone.app.portlets.browser.interfaces import IManageDashboardPortletsView
 from Products.Five.browser import BrowserView 
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
+from plone.portlets.utils import hashPortletInfo
+
 class EditPortletManagerRenderer(Explicit):
     """Render a portlet manager in edit mode.
     
@@ -71,6 +73,9 @@ class EditPortletManagerRenderer(Explicit):
     
     # Used by the view template
 
+    def normalized_manager_name(self):
+        return self.manager.__name__.replace('.', '-')
+
     def baseUrl(self):
         return self.__parent__.getAssignmentMappingUrl(self.manager)
 
@@ -78,6 +83,11 @@ class EditPortletManagerRenderer(Explicit):
         baseUrl = self.baseUrl()
         assignments = self._lazyLoadAssignments(self.manager)
         data = []
+        
+        manager_name = self.manager.__name__
+        category = self.__parent__.category
+        key = self.__parent__.key
+        
         for idx in range(len(assignments)):
             name = assignments[idx].__name__
             
@@ -87,8 +97,12 @@ class EditPortletManagerRenderer(Explicit):
             else:
                 editviewName = '%s/%s/edit.html' % (baseUrl, name)
             
+            portlet_hash = hashPortletInfo(dict(manager=manager_name, category=category, 
+                                                key=key, name=name,))
+            
             data.append( {'title'      : assignments[idx].title,
                           'editview'   : editviewName,
+                          'hash'       : portlet_hash,
                           'up_url'     : '%s/@@move-portlet-up?name=%s' % (baseUrl, name),
                           'down_url'   : '%s/@@move-portlet-down?name=%s' % (baseUrl, name),
                           'delete_url' : '%s/@@delete-portlet?name=%s' % (baseUrl, name),

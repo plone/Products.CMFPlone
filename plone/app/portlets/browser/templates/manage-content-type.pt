@@ -2,10 +2,16 @@
       xmlns:metal="http://xml.zope.org/namespaces/metal"
       xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
-      metal:use-macro="context/@@standard_macros/page"
+      metal:use-macro="context/main_template/macros/master"
       i18n:domain="plone">
+      
+<div metal:fill-slot="javascript_head_slot" tal:omit-tag="">
+    <link type="text/css" rel="kinetic-stylesheet"
+        tal:attributes="href string:${context/absolute_url}/++resource++manage-portlets.kss"/>
+</div>
+    
 <body>
-<div metal:fill-slot="body">
+<div metal:fill-slot="main">
 
   <h1 i18n:translate="title_manage_contenttype_portlets"
       class="documentFirstHeading">

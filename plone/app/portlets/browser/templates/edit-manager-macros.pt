@@ -24,29 +24,29 @@
 </div>
 
 
-<div metal:define-macro="current-portlets-list"
-    class="section">
-  <h4>Portlets assigned here</h4>
+<div metal:define-macro="current-portlets-list" class="portletAssignments">
+     
+    <h4>Portlets assigned here</h4>
 
-<tal:block repeat="portlet view/portlets">
-<div class="managedPortlet">
-    <div class="portletHeader">
-        <span class="managedPortletActions">
-        <a href="#" class="up"
-           tal:condition="not:repeat/portlet/start"
-           tal:attributes="href portlet/up_url">&uarr;</a>
-        <a href="#" class="down"
-           tal:condition="not:repeat/portlet/end"
-           tal:attributes="href portlet/down_url">&darr;</a>
-        <a href="#" class="delete"
-           tal:attributes="href portlet/delete_url">&times;</a>
-        </span>
-        <a tal:omit-tag="not:portlet/editview"
-           tal:attributes="href portlet/editview"
-           tal:content="portlet/title" />
-    </div>
+<div tal:attributes="class string:kukit-viewname-${view/__parent__/__name__}">
+    <tal:block repeat="portlet view/portlets">
+        <div tal:attributes="class string:managedPortlet portlet kukit-portlethash-${portlet/hash}">
+            <div class="portletHeader">
+                <span class="managedPortletActions">
+                <a href="#" class="up"
+                   tal:condition="not:repeat/portlet/start"
+                   tal:attributes="href portlet/up_url">&uarr;</a>
+                <a href="#" class="down"
+                   tal:condition="not:repeat/portlet/end"
+                   tal:attributes="href portlet/down_url">&darr;</a>
+                <a href="#" class="delete"
+                   tal:attributes="href portlet/delete_url">&times;</a>
+                </span>
+                <a tal:omit-tag="not:portlet/editview"
+                   tal:attributes="href portlet/editview"
+                   tal:content="portlet/title" />
+            </div>
+        </div>
+    </tal:block>
 </div>
-
-</tal:block>
-
 </div>

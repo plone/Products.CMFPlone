@@ -165,5 +165,34 @@
       name="default"
       provides="zope.formlib.namedtemplate.INamedTemplate"
       />
+      
+    <!-- KSS actions -->
+    <browser:page
+        for="*"
+        name="inlineMovePortletUp"
+        class=".azax.PortletManagerAzax"
+        attribute="move_portlet_up"
+        permission="plone.app.portlets.ManagePortlets"
+        />
+    <browser:page
+        for="*"
+        name="inlineMovePortletDown"
+        class=".azax.PortletManagerAzax"
+        attribute="move_portlet_down"
+        permission="plone.app.portlets.ManagePortlets"
+        />
+    <browser:page
+        for="*"
+        name="inlineDeletePortlet"
+        class=".azax.PortletManagerAzax"
+        attribute="delete_portlet"
+        permission="plone.app.portlets.ManagePortlets"
+        />
+      
+    <!-- Resources -->
+    <browser:resource
+        name="manage-portlets.kss"
+        file="portlets.kss"
+        />
 
 </configure>

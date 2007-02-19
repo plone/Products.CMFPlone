@@ -1,4 +1,4 @@
-from zope.interface import Interface
+from zope.interface import Interface, Attribute
 from zope.app.container.interfaces import IAdding
 from plone.app.form.interfaces import IPlonePageForm
 
@@ -28,6 +28,9 @@ class IPortletEditForm(IPortletForm):
 class IManagePortletsView(Interface):
     """The screen used to manage portlets in a particular context.
     """
+    
+    category = Attribute("The portlet category being managed")
+    key = Attribute("The key in the category under which portlets are assigned")
     
     def getAssignmentMappingUrl(manager):
         """Given a portlet manager, get the URL to its assignment mapping.

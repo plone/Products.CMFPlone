@@ -34,6 +34,14 @@ class ManageContextualPortlets(BrowserView):
         
     # IManagePortletsView implementation
     
+    @property
+    def category(self):
+        return CONTEXT_CATEGORY
+        
+    @property
+    def key(self):
+        return '/'.join(self.context.getPhysicalPath())
+    
     def getAssignmentMappingUrl(self, manager):
         baseUrl = str(getMultiAdapter((self.context, self.request), name='absolute_url'))
         return '%s/++contextportlets++%s' % (baseUrl, manager.__name__)
@@ -51,7 +59,7 @@ class ManageContextualPortlets(BrowserView):
         return (left_slots or right_slots)
 
     # view @@set-portlet-blacklist-status
-    def set_blacklist_status(self, manager, user_status, group_status, content_type_status, context_status):
+    def set_blacklist_status(self, manager, group_status, content_type_status, context_status):
         portletManager = getUtility(IPortletManager, name=manager)
         assignable = getMultiAdapter((self.context, portletManager,), ILocalPortletAssignmentManager)
         
@@ -63,7 +71,6 @@ class ManageContextualPortlets(BrowserView):
             else:
                 return False
         
-        assignable.setBlacklistStatus(USER_CATEGORY, int2status(user_status))
         assignable.setBlacklistStatus(GROUP_CATEGORY, int2status(group_status))
         assignable.setBlacklistStatus(CONTENT_TYPE_CATEGORY, int2status(content_type_status))
         assignable.setBlacklistStatus(CONTEXT_CATEGORY, int2status(context_status))
@@ -82,6 +89,14 @@ class ManageDashboardPortlets(BrowserView):
     implements(IManageDashboardPortletsView)
         
     # IManagePortletsView implementation
+    
+    @property
+    def category(self):
+        return USER_CATEGORY
+        
+    @property
+    def key(self):
+        return self._getUserId()
     
     def getAssignmentMappingUrl(self, manager):
         baseUrl = str(getMultiAdapter((self.context, self.request), name='absolute_url'))
@@ -117,28 +132,36 @@ class ManageGroupPortlets(BrowserView):
         
     # IManagePortletsView implementation
     
+    @property
+    def category(self):
+        return GROUP_CATEGORY
+        
+    @property
+    def key(self):
+        return self.request['key']
+    
     def __init__(self, context, request):
         super(ManageGroupPortlets, self).__init__(context, request)
         self.request.set('disable_border', True)
     
     def getAssignmentMappingUrl(self, manager):
         baseUrl = str(getMultiAdapter((self.context, self.request), name='absolute_url'))
-        groupId = self.request['groupId']
-        return '%s/++groupportlets++%s+%s' % (baseUrl, manager.__name__, groupId)
+        key = self.request['key']
+        return '%s/++groupportlets++%s+%s' % (baseUrl, manager.__name__, key)
 
     def getAssignmentsForManager(self, manager):
-        groupId = self.request['groupId']
+        key = self.request['key']
         column = getUtility(IPortletManager, name=manager.__name__)
         category = column[GROUP_CATEGORY]
-        mapping = category.get(groupId, None)
+        mapping = category.get(key, None)
         if mapping is None:
-            mapping = category[groupId] = PortletAssignmentMapping()
+            mapping = category[key] = PortletAssignmentMapping()
         return mapping.values()
     
     # View attributes
     
     def group(self):
-        return self.request['groupId']
+        return self.request['key']
 
 class ManageContentTypePortlets(BrowserView):
     implements(IManageContentTypePortletsView)
@@ -149,13 +172,21 @@ class ManageContentTypePortlets(BrowserView):
         
     # IManagePortletsView implementation
     
+    @property
+    def category(self):
+        return CONTENT_TYPE_CATEGORY
+        
+    @property
+    def key(self):
+        return self.request['key']
+    
     def getAssignmentMappingUrl(self, manager):
         baseUrl = str(getMultiAdapter((self.context, self.request), name='absolute_url'))
-        pt = self.request['portal_type']
+        pt = self.request['key']
         return '%s/++contenttypeportlets++%s+%s' % (baseUrl, manager.__name__, pt)
 
     def getAssignmentsForManager(self, manager):
-        pt = self.request['portal_type']
+        pt = self.request['key']
         column = getUtility(IPortletManager, name=manager.__name__)
         category = column[CONTENT_TYPE_CATEGORY]
         mapping = category.get(pt, None)
@@ -167,7 +198,7 @@ class ManageContentTypePortlets(BrowserView):
     
     def portal_type(self):
         portal_types = getToolByName(self.context, 'portal_types')
-        portal_type = self.request['portal_type']
+        portal_type = self.request['key']
         for fti in portal_types.listTypeInfo():
             if fti.getId() == portal_type:
                 return fti.Title()
