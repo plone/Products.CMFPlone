@@ -129,9 +129,6 @@ def alpha2_alpha3(portal):
 
     return out
 
-def alpha3_alpha4(portal):
-    pass
-
 
 def enableZope3Site(portal, out):
     if not ISite.providedBy(portal):
