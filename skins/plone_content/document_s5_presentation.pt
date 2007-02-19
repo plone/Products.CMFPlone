@@ -22,10 +22,12 @@
 <link rel="stylesheet" href="ui/default/opera.css" type="text/css" media="projection" id="operaFix" 
     tal:attributes="href string:${context/portal_url}/s5_opera.css" />
 
-
+<script type="text/javascript" tal:content="structure string:var base_url=&quot;${here/absolute_url}&quot;;">
+  var base_url="/";
+</script>
 <script src="ui/default/slides.js" type="text/javascript"
-    tal:attributes="src string:${context/portal_url}/s5_slides.js" ></script>
-
+      tal:attributes="src string:${context/portal_url}/s5_slides.js" ></script>      
+    
 </head>
 <body>
 
