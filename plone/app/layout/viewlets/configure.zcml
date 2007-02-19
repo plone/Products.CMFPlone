@@ -45,5 +45,14 @@
         provides=".interfaces.IPortalFooter"
         permission="zope2.View"
         />
-        
+
+    <!-- Define some viewlets -->
+
+    <browser:viewlet
+        name="plone.htmlhead.title"
+        manager=".interfaces.IHtmlHead"
+        class=".common.TitleViewlet"
+        permission="zope2.View" 
+        />
+
 </configure>
