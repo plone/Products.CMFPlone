@@ -15,39 +15,59 @@
     </metal:cache>
   </tal:cache>
 
-  <head metal:use-macro="here/header/macros/html_header">
+  <head>
 
-    <metal:fillbase fill-slot="base">
-      <metal:baseslot define-slot="base">
-        <base href="" tal:attributes="href here/renderBase" />
-      </metal:baseslot>
-    </metal:fillbase>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"
+          tal:define="charset site_properties/default_charset|string:utf-8"
+          tal:attributes="content string:text/html;;charset=${charset}" />
 
-    <metal:headslot fill-slot="head_slot">
-      <tal:comment replace="nothing">min-width support for IE via Javascript, required for tableless</tal:comment>
-      <tal:comment replace="structure string:&lt;!--[if IE]&gt;" />
-      <script type="text/javascript"
-              tal:attributes="src string:$portal_url/plone_minwidth.js"></script>
-      <tal:comment replace="structure string:&lt;![endif]--&gt;" />
+    <metal:baseslot define-slot="base">
+      <base href="" tal:attributes="href here/renderBase" />
+    </metal:baseslot>
 
-      <metal:headslot define-slot="head_slot" />
-      <tal:comment replace="nothing"> A slot where you can insert elements in the header from a template </tal:comment>
-    </metal:headslot>
+    <meta name="generator" content="Plone - http://plone.org" />
 
-    <metal:styleslot fill-slot="style_slot"> 
-      <tal:comment replace="nothing"> A slot where you can insert CSS in the header from a template </tal:comment> 
-      <metal:styleslot define-slot="style_slot" /> 
-    </metal:styleslot> 
+    <div tal:replace="structure provider:plone.htmlhead" />
 
-    <metal:cssslot fill-slot="css_slot">
-      <tal:comment replace="nothing"> This is deprecated, please use style_slot instead. </tal:comment>
-      <metal:cssslot define-slot="css_slot" />
-    </metal:cssslot>
+    <meta tal:define="metatags python:putils.listMetaTags(here).items()"
+          tal:condition="metatags"
+          tal:repeat="keyval metatags"
+          tal:attributes="name python:keyval[0];
+                          content python:keyval[1];" />
 
-    <metal:javascriptslot fill-slot="javascript_head_slot">
-      <tal:comment replace="nothing"> A slot where you can insert javascript in the header from a template </tal:comment>
-      <metal:javascriptslot define-slot="javascript_head_slot" />
-    </metal:javascriptslot>
+    <!-- Internet Explorer CSS Fixes -->
+    <tal:iefixstart replace="structure string:&lt;!--[if IE]&gt;" />
+        <style type="text/css" media="all" tal:condition="exists: portal/IEFixes.css"
+               tal:content="string:@import url($portal_url/IEFixes.css);">
+        </style>
+    <tal:iefixend replace="structure string:&lt;![endif]--&gt;" />
+
+    <tal:comment replace="nothing">min-width support for IE via Javascript, required for tableless</tal:comment>
+    <tal:comment replace="structure string:&lt;!--[if IE]&gt;" />
+    <script type="text/javascript"
+            tal:attributes="src string:$portal_url/plone_minwidth.js"></script>
+    <tal:comment replace="structure string:&lt;![endif]--&gt;" />
+
+    <link tal:replace="structure provider:plone.htmlhead.links" />
+
+    <link rel="alternate" href="" title="RSS 1.0" type="application/rss+xml"
+          tal:condition="python: syntool.isSyndicationAllowed(here)"
+          tal:attributes="href string:$here_url/RSS" />
+
+    <!-- Disable IE6 image toolbar -->
+    <meta http-equiv="imagetoolbar" content="no" />
+    
+    <tal:comment replace="nothing"> A slot where you can insert elements in the header from a template </tal:comment>
+    <metal:headslot define-slot="head_slot" />
+
+    <tal:comment replace="nothing"> A slot where you can insert CSS in the header from a template </tal:comment>
+    <metal:styleslot define-slot="style_slot" />
+
+    <tal:comment replace="nothing"> This is deprecated, please use style_slot instead. </tal:comment>
+    <metal:cssslot define-slot="css_slot" />
+
+    <tal:comment replace="nothing"> A slot where you can insert javascript in the header from a template </tal:comment>
+    <metal:javascriptslot define-slot="javascript_head_slot" />
 
   </head>
 
