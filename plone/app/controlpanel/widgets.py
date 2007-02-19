@@ -90,15 +90,6 @@ class MultiSelectTupleWidget(MultiSelectWidget):
         return value
 
 
-def CalendarSessionWidget(field, request,
-                          true=_("Use sessions to remember the calendars state"),
-                          false=_("Don't use sessions to remember the calendars state")):
-    """A widget for the selection of session usage for the CMFCalendar tool."""
-    vocabulary = SimpleVocabulary.fromItems(((true, True), 
-                                             (false, False)))
-    return RadioWidget(field, vocabulary, request)
-
-
 def WeekdayWidget(field, request):
     """A widget for the selection of weekdays."""
     vocabulary = SimpleVocabulary.fromItems((('Monday', 0), 

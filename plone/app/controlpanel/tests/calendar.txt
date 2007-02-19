@@ -43,7 +43,6 @@ Make some changes
     True
 
     >>> self.browser.getControl(name='form.firstweekday').value = ['Sunday']
-    >>> self.browser.getControl(name='form.calendar_types:list').value = ['Event', 'Page']
 
 Click the save button:
 
@@ -57,9 +56,6 @@ We should be informed that something has changed:
     True
 
 Make sure the changes have been applied correctly to the tool:
-
-    >>> ctool.calendar_types
-    ('Event', 'Document')
 
     >>> ctool.firstweekday
     6
