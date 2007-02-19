@@ -1,7 +1,7 @@
 /* <dtml-with base_properties> (do not remove this :) */
 /* <dtml-call "REQUEST.set('portal_url', portal_url())"> (not this either :) */
 a.tocTop {
-    background: url(&dtml-portal_url;arrowTop.gif) no-repeat;   
+    background: url(&dtml-portal_url;/arrowTop.gif) no-repeat;   
     padding-left: 11px;
     float: right;
     padding-top: 16px;
@@ -13,7 +13,7 @@ a.tocTop span {
 
 #toc li {
     list-style: none;
-    background: url(&dtml-portal_url;arrowDown.gif) no-repeat;
+    background: url(&dtml-portal_url;/arrowDown.gif) no-repeat;
     padding-left: 11px;
 }
 #toc li.toc-2 {
