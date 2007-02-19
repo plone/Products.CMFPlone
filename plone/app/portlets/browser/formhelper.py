@@ -8,6 +8,7 @@ import zope.lifecycleevent
 from Acquisition import aq_parent, aq_inner
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from Products.Five.formlib import formbase
 from Products.CMFPlone import PloneMessageFactory as _
 
 from plone.app.form import named_template_adapter
@@ -21,7 +22,7 @@ from plone.app.portlets.browser.interfaces import IPortletEditForm
 _template = ViewPageTemplateFile('templates/portlets-pageform.pt')
 portlets_named_template_adapter = named_template_adapter(_template)
 
-class AddForm(form.AddFormBase):
+class AddForm(formbase.AddFormBase):
     """A base add form for portlets.
     
     Use this for portlet assignments that require configuration before being 
@@ -101,7 +102,7 @@ class NullAddForm(BrowserView):
         raise NotImplementedError("concrete classes must implement create()")
     
 
-class EditForm(form.EditFormBase):
+class EditForm(formbase.EditFormBase):
     """An edit form for portlets.
     """
     
