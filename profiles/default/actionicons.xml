@@ -114,4 +114,7 @@
  <action-icon category="plone" action_id="flip_vertical"
               title="Flip vertical" priority="0"
               icon_expr="icon_flip_vertical.png"/>
+ <action-icon category="plone" action_id="s5_presentation"
+              title="View as presentation" priority="0"
+              icon_expr="fullscreenexpand_icon.gif"/>
 </action-icons>
