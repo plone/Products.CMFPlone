@@ -10,59 +10,59 @@
 */
 
 var ploneInputLabel = {
-	focus: function() {
-		if (hasClassName(this, "inputLabelActive") && (this.value == this.title)) {
-			this.value = '';
-			removeClassName(this, "inputLabelActive");
-		}
-	},
+    focus: function() {
+        if (hasClassName(this, "inputLabelActive") && (this.value == this.title)) {
+            this.value = '';
+            removeClassName(this, "inputLabelActive");
+        }
+    },
 
-	blur: function() {
-		if (this.value == '') {
-			addClassName(this, "inputLabelActive");
-			this.value = this.title;
-		}
-	},
+    blur: function() {
+        if (this.value == '') {
+            addClassName(this, "inputLabelActive");
+            this.value = this.title;
+        }
+    },
 
-	isForm: function(node) {
-		return (node.tagName && node.tagName.toLowerCase() == 'form')
-	},
+    isForm: function(node) {
+        return (node.tagName && node.tagName.toLowerCase() == 'form')
+    },
 
-	submit: function() {
-		var elements = cssQuery("input[title].inputLabelActive", this);
+    submit: function() {
+        var elements = cssQuery("input[title].inputLabelActive", this);
 
-		for (var i=0; i<elements.length; i++) {
-			var element = elements[i];
-			if (hasClassName(element, "inputLabelActive") && (element.value == element.title)) {
-				element.value = '';
-				removeClassName(element, "inputLabelActive");
-			}
-		}
-		if (this.inputLabelData.oldsubmit)
-			return this.inputLabelData.oldsubmit();
-	},
+        for (var i=0; i<elements.length; i++) {
+            var element = elements[i];
+            if (hasClassName(element, "inputLabelActive") && (element.value == element.title)) {
+                element.value = '';
+                removeClassName(element, "inputLabelActive");
+            }
+        }
+        if (this.inputLabelData.oldsubmit)
+            return this.inputLabelData.oldsubmit();
+    },
 
-	init: function() {
-		// look for input elements with a title and inputLabel class
-		var elements = cssQuery("input[title].inputLabel");
-		for (var i=0; i<elements.length; i++) {
-			var element = elements[i];
-			var form = findContainer(element, ploneInputLabel.isForm);
+    init: function() {
+        // look for input elements with a title and inputLabel class
+        var elements = cssQuery("input[title].inputLabel");
+        for (var i=0; i<elements.length; i++) {
+            var element = elements[i];
+            var form = findContainer(element, ploneInputLabel.isForm);
 
-			if (element.value == '') {
-				element.value = element.title;
-				replaceClassName(element, "inputLabel", "inputLabelActive");
-			}
-			registerEventListener(element, 'focus', ploneInputLabel.focus);
-			registerEventListener(element, 'blur', ploneInputLabel.blur);
-			if (form.onsubmit != ploneInputLabel.submit) {
-				if (typeof form.inputLabelData == 'undefined')
-					form.inputLabelData = new Object();
-				form.inputLabelData.oldsubmit = form.onsubmit;
-				form.onsubmit = ploneInputLabel.submit;
-			}
-		}
-	}
+            if (element.value == '') {
+                element.value = element.title;
+                replaceClassName(element, "inputLabel", "inputLabelActive");
+            }
+            registerEventListener(element, 'focus', ploneInputLabel.focus);
+            registerEventListener(element, 'blur', ploneInputLabel.blur);
+            if (form.onsubmit != ploneInputLabel.submit) {
+                if (typeof form.inputLabelData == 'undefined')
+                    form.inputLabelData = new Object();
+                form.inputLabelData.oldsubmit = form.onsubmit;
+                form.onsubmit = ploneInputLabel.submit;
+            }
+        }
+    }
 };
 
 registerPloneFunction(ploneInputLabel.init);
