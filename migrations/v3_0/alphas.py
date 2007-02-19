@@ -127,8 +127,9 @@ def enableZope3Site(portal, out):
 
 
 def alpha2_alpha3(portal):
-    pass
-
+    out = []
+    installS5(portal, out)
+    return out
 
 def migrateOldActions(portal, out):
     special_providers = ['portal_controlpanel',
@@ -442,6 +443,37 @@ def updateRtlCSSexpression(portal, out):
             rtl.setExpression("python:portal.restrictedTraverse('@@plone_portal_state').is_rtl()")
             out.append("Updated RTL.css expression.")
 
+def installS5(portal, out):
+    actionsTool = getToolByName(portal, 'portal_actions', None)
+    if actionsTool is not None:
+        for action in actionsTool.listActions():
+            if action.getId() == 's5_presentation':
+                break # We already have the action
+        else:
+            actionsTool.addAction('s5_presentation',
+                name='View as presentation',
+                action="string:${object/absolute_url}/document_s5_presentation",
+                condition='python:object.document_s5_alter(test=True)',
+                permission='View',
+                category='document_actions',
+                visible=1,
+                )
+        out.append("Added 's5_presentation' action to actions tool.")
+
+    iconsTool = getToolByName(portal, 'portal_actionicons', None)
+    if iconsTool is not None:
+        for icon in iconsTool.listActionIcons():
+            if icon.getActionId() == 's5_presentation':
+                break # We already have the icon
+        else:
+            iconsTool.addActionIcon(
+                category='plone',
+                action_id='s5_presentation',
+                icon_expr='fullscreenexpand_icon.gif',
+                title='View as presentation',
+                )
+        out.append("Added 's5_presentation' icon to actionicons tool.")
+
 # --
 # KSS registration
 # --
@@ -549,3 +581,5 @@ class installKss(object):
         self.install_resources() 
         self.install_skins() 
         out.append("Succesfully migrated portal to KSS")
+
+
