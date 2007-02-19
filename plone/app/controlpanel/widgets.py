@@ -1,5 +1,6 @@
 from zope.app.form.browser import MultiCheckBoxWidget
 from zope.app.form.browser import MultiSelectWidget
+from zope.app.form.browser import DropdownWidget
 from zope.app.form.browser import RadioWidget
 from zope.schema.vocabulary import SimpleVocabulary
 
@@ -108,7 +109,7 @@ def WeekdayWidget(field, request):
                                              ('Friday', 4),
                                              ('Saturday', 5),
                                              ('Sunday', 6)))
-    return RadioWidget(field, vocabulary, request)
+    return DropdownWidget(field, vocabulary, request)
 
 
 class AllowedTypesWidget(MultiCheckBoxWidget):
