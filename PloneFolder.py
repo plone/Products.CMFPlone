@@ -24,8 +24,6 @@ from Products.CMFCore.permissions import AccessContentsInformation, \
                     ManageProperties, ModifyPortalContent, View
 from Products.CMFDefault.DublinCore import DefaultDublinCoreImpl
 
-from Products.CMFPlone import PloneMessageFactory as _
-
 from zope.interface import implements
 from zope.app.container.contained import notifyContainerModified
 
@@ -278,8 +276,7 @@ class BasePloneFolder(CMFCatalogAware, PortalFolderBase, DefaultDublinCoreImpl):
         self._setObject(id, ob)
         if REQUEST is not None:
             # TODO HARDCODED FIXME!
-            return self.folder_contents(self, REQUEST,
-                                        portal_status_message=_(u'Folder added.'))
+            return self.folder_contents(self, REQUEST)
 
     manage_addFolder = manage_addPloneFolder
     manage_renameObject = PortalFolderBase.manage_renameObject

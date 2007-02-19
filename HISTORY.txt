@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Removed last occurrences of portal_status_messages. This references
+      http://dev.plone.org/plone/ticket/6131.
+      [hannosch]
+
     - Removed the old CMF types from the GenericSetup profiles. This closes
       http://dev.plone.org/plone/ticket/6156.
       [hannosch]
