@@ -13,6 +13,7 @@ from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.interfaces import IPloneSiteRoot
 
 from form import ControlPanelForm
+from widgets import MultiCheckBoxVocabularyWidget
 from widgets import WeekdayWidget
 
 
@@ -45,6 +46,7 @@ class CalendarControlPanelAdapter(SchemaAdapterBase):
 class CalendarControlPanel(ControlPanelForm):
 
     form_fields = FormFields(ICalendarSchema)
+    form_fields['calendar_states'].custom_widget = MultiCheckBoxVocabularyWidget
     form_fields['firstweekday'].custom_widget = WeekdayWidget
 
     label = _("Calendar settings")

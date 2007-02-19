@@ -6,6 +6,15 @@ from zope.schema.vocabulary import SimpleVocabulary
 from Products.CMFPlone import PloneMessageFactory as _
 
 
+class MultiCheckBoxVocabularyWidget(MultiCheckBoxWidget):
+    """ """
+
+    def __init__(self, field, request):
+        """Initialize the widget."""
+        super(MultiCheckBoxVocabularyWidget, self).__init__(field,
+            field.value_type.vocabulary, request)
+
+
 class MultiCheckBoxThreeColumnWidget(MultiCheckBoxWidget):
     """ """
 
