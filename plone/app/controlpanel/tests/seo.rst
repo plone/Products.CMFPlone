@@ -21,7 +21,7 @@ Click the save button without making any changes:
 
 We should get a status message:
 
-    >>> 'Changes saved.' in self.browser.contents
+    >>> 'No changes made.' in self.browser.contents
     True
 
 Now click the cancel button:
@@ -43,7 +43,6 @@ Make some changes
     True
 
     >>> self.browser.getControl(name='form.enable_sitemap').value = False
-    >>> self.browser.getControl(name='form.webstats_js').value = "stats"
 
 Click the save button:
 
@@ -60,9 +59,6 @@ Make sure the changes have been applied correctly to the tool:
 
     >>> self.site_props.enable_sitemap
     False
-
-    >>> self.site_props.webstats_js
-    u'stats'
 
 Check the sitemap actually, should raise a 404
 
@@ -84,7 +80,6 @@ Make again some changes
     True
 
     >>> self.browser.getControl(name='form.enable_sitemap').value = True
-    >>> self.browser.getControl(name='form.webstats_js').value = "stats"
 
 Click the save button:
 
@@ -93,17 +88,14 @@ Click the save button:
     True
 
 We should be informed that something has changed:
-
-    >>> 'Changes saved.' in self.browser.contents
+    
+    >>> 'No changes made.' in self.browser.contents
     True
 
 Make sure the changes have been applied correctly to the tool:
 
     >>> self.site_props.enable_sitemap
     True
-
-    >>> self.site_props.webstats_js
-    u'stats'
 
 Test if the sitemaps does appear now
 

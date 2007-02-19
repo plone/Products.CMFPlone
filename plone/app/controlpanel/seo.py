@@ -23,13 +23,6 @@ def propify(func):
 
 class ISeoSchema(Interface):
 
-    webstats_js = SourceText(title=_(u'Web-Stats JavaScript snippet'),
-                          description=_(u"""Copy and paste here any javascript snippet from any web 
-                                            statistics package such as Google Analytics"""),
-                          required=False,
-                          missing_value=""
-                          )
-    
     enable_sitemap = Bool(title=_(u'Provide sitemap.xml.gz in the portal root'),
                             description=_(u"""A sitemap.xml.gz file might be useful for Google and lists all your content along with modification dates"""),
                             default=False)
@@ -52,23 +45,10 @@ class SeoControlPanelAdapter(SchemaAdapterBase):
     def set_enable_sitemap(self, value):
         if value:
             self.context.manage_changeProperties(enable_sitemap=True)
-            #self.jstool.getResource('livesearch.js').setEnabled(True)
         else:
             self.context.manage_changeProperties(enable_sitemap=False)
-            #self.jstool.getResource('livesearch.js').setEnabled(False)
-        #self.jstool.cookResources()
 
     enable_sitemap = property(get_enable_sitemap, set_enable_sitemap)
-
-    def get_webstats_js(self):
-        return getattr(self.context, 'webstats_js', "")
-        
-    def set_webstats_js(self, value):
-        self.context.manage_changeProperties(webstats_js=value)
-
-    webstats_js = property(get_webstats_js, set_webstats_js)
-
-
 
 class SeoControlPanel(ControlPanelForm):
     form_fields = FormFields(ISeoSchema)
