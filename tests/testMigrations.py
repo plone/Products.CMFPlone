@@ -78,6 +78,8 @@ from Products.CMFPlone.migrations.v3_0.alphas import migrateLocalroleForm
 from Products.CMFPlone.migrations.v3_0.alphas import reorderUserActions
 from Products.CMFPlone.migrations.v3_0.alphas import updateRtlCSSexpression
 from Products.CMFPlone.migrations.v3_0.alphas import addMaintenanceProperty
+from Products.CMFPlone.migrations.v3_0.alphas import installS5
+from Products.CMFPlone.migrations.v3_0.alphas import addTableContents
 
 from zope.app.component.hooks import clearSite
 from zope.app.component.interfaces import ISite
@@ -1718,6 +1720,29 @@ class TestMigrations_v3_0(MigrationTest):
         tool = self.portal.portal_properties
         sheet = tool.site_properties
         self.failUnless(sheet.hasProperty('number_of_days_to_keep'))
+    
+    def testAddTableContents(self):
+        css = self.portal.portal_css
+        js = self.portal.portal_javascripts
+        css.manage_removeStylesheet("toc.css")
+        js.manage_removeScript("toc.js")
+        addTableContents(self.portal, [])
+        self.failUnless("toc.js" in js.getResourceIds())
+        self.failUnless("toc.css" in css.getResourceIds())
+        addTableContents(self.portal, [])
+        self.failUnless("toc.js" in js.getResourceIds())
+        self.failUnless("toc.css" in css.getResourceIds())
+
+    def testPloneS5(self):
+        pa = self.portal.portal_actions
+        self.removeActionIconFromTool('s5_presentation')
+        self.removeActionFromTool('s5_presentation', action_provider='portal_actions')
+        installS5(self.portal, [])
+        self.failUnless('s5_presentation' in [x.getActionId() for x in self.icons.listActionIcons()])
+        self.failUnless('s5_presentation' in [x.getId() for x in pa.listActions()])
+        installS5(self.portal, [])
+        self.failUnless('s5_presentation' in [x.getActionId() for x in self.icons.listActionIcons()])
+        self.failUnless('s5_presentation' in [x.getId() for x in pa.listActions()])
 
 
 class TestMigrations_v3_0_Actions(MigrationTest):
