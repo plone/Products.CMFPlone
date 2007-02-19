@@ -1,4 +1,4 @@
-// S5 v1.1 slideshow -- released into the Public Domain
+// S5 v1.1 slides.js -- released into the Public Domain
 //
 // Please see http://www.meyerweb.com/eric/tools/s5/credits.html for information 
 // about all the wonderful and talented contributors to this code!
@@ -13,7 +13,7 @@ var s5mode = true;
 var defaultView = 'slideshow';
 var controlVis = 'visible';
 
-var isIE = navigator.appName == 'Microsoft Internet Explorer' ? 1 : 0;
+var isIE = navigator.appName == 'Microsoft Internet Explorer' && navigator.userAgent.indexOf('Opera') < 1 ? 1 : 0;
 var isOp = navigator.userAgent.indexOf('Opera') > -1 ? 1 : 0;
 var isGe = navigator.userAgent.indexOf('Gecko') > -1 && navigator.userAgent.indexOf('Safari') < 1 ? 1 : 0;
 
@@ -178,29 +178,7 @@ function subgo(step) {
 }
 
 function toggle() {
-	var slideColl = GetElementsWithClassName('*','slide');
-	var slides = document.getElementById('slideProj');
-	var outline = document.getElementById('outlineStyle');
-	if (!slides.disabled) {
-		slides.disabled = true;
-		outline.disabled = false;
-		s5mode = false;
-		fontSize('1em');
-		for (var n = 0; n < smax; n++) {
-			var slide = slideColl[n];
-			slide.style.visibility = 'visible';
-		}
-	} else {
-		slides.disabled = false;
-		outline.disabled = true;
-		s5mode = true;
-		fontScale();
-		for (var n = 0; n < smax; n++) {
-			var slide = slideColl[n];
-			slide.style.visibility = 'hidden';
-		}
-		slideColl[snum].style.visibility = 'visible';
-	}
+	window.location = base_url;
 }
 
 function showHide(action) {
@@ -383,9 +361,9 @@ function createControls() {
 	}
 	controlsDiv.innerHTML = '<form action="#" id="controlForm"' + hideDiv + '>' +
 	'<div id="navLinks">' +
-	'<a accesskey="t" id="toggle" href="javascript:toggle();">&#216;<\/a>' +
-	'<a accesskey="z" id="prev" href="javascript:go(-1);">&laquo;<\/a>' +
-	'<a accesskey="x" id="next" href="javascript:go(1);">&raquo;<\/a>' +
+	'<a accesskey="t" id="toggle" href="javascript:toggle();" title="Exit presentation Mode">&#216;<\/a>' +
+	'<a accesskey="z" id="prev" href="javascript:go(-1);" title="Previous page">&laquo;<\/a>' +
+	'<a accesskey="x" id="next" href="javascript:go(1);" title="Next page">&raquo;<\/a>' +
 	'<div id="navList"' + hideList + '><select id="jumplist" onchange="go(\'j\');"><\/select><\/div>' +
 	'<\/div><\/form>';
 	if (controlVis == 'hidden') {
@@ -530,7 +508,8 @@ function trap(e) {
 
 function startup() {
 	defaultCheck();
-	if (!isOp) createControls();
+	if (!isOp) 
+		createControls();
 	slideLabel();
 	fixLinks();
 	externalLinks();
