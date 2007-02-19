@@ -29,18 +29,23 @@
   <h4>Portlets assigned here</h4>
 
 <tal:block repeat="portlet view/portlets">
-<dl class="portlet">
-    <dt class="portletHeader">
-        <span style="display:block; float:right;">
-        <a tal:attributes="href portlet/up_url">&uarr;</a>
-        <a tal:attributes="href portlet/down_url">&darr;</a>
-        <a tal:attributes="href portlet/delete_url">&times;</a>
+<div class="managedPortlet">
+    <div class="portletHeader">
+        <span class="managedPortletActions">
+        <a href="#" class="up"
+           tal:condition="not:repeat/portlet/start"
+           tal:attributes="href portlet/up_url">&uarr;</a>
+        <a href="#" class="down"
+           tal:condition="not:repeat/portlet/end"
+           tal:attributes="href portlet/down_url">&darr;</a>
+        <a href="#" class="delete"
+           tal:attributes="href portlet/delete_url">&times;</a>
         </span>
         <a tal:omit-tag="not:portlet/editview"
            tal:attributes="href portlet/editview"
            tal:content="portlet/title" />
-    </dt>
-</dl>
+    </div>
+</div>
 
 </tal:block>
 
