@@ -495,6 +495,13 @@ def addMaintenanceProperty(portal, out):
         sheet.manage_addProperty('number_of_days_to_keep',7,'int')
         out.append("Added 'number_of_days_to_keep' property to site properties")
 
+def addTableContents(portal, out):
+    """ Adds in table of contents """
+    csstool = getToolByName(portal, "portal_css")
+    csstool.manage_addStylesheet(id="toc.css",rel="stylesheet",enabled=True)
+    jstool = getToolByName(portal, "portal_javascripts")
+    jstool.registerScript(id="toc.js", enabled=True)
+    out.append("Added in css and js for table of contents")
 
 # --
 # KSS registration
