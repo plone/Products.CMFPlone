@@ -63,6 +63,9 @@
  <stylesheet title="" cacheable="True" compression="safe" cookable="True"
     enabled="1" expression="" id="ploneCustom.css" media="all"
     rel="stylesheet" rendering="import"/>
+ <stylesheet title="Table of Contents CSS" cacheable="True" compression="safe"
+    cookable="True" enabled="on" expression="" id="toc.css" media="all"
+    rel="stylesheet" rendering="import"/>    
  <!-- kss  -->
  <stylesheet title="" cacheable="True" compression="safe" cookable="True"
     enabled="1" expression="" id="ploneKss.css" media="all"
