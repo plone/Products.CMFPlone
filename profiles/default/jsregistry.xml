@@ -129,4 +129,7 @@
  <javascript cacheable="True" compression="none" cookable="True"
     enabled="True" expression=""
     id="++resource++kukit.js" inline="False"/>
+ <javascript cacheable="True" compression="none" cookable="True"
+    enabled="False" expression=""
+    id="webstats.js" inline="False"/>
 </object>
