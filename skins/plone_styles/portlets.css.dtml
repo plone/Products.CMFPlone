@@ -170,8 +170,35 @@
     height /**/: <dtml-var "_['arrowRight.gif'].height">px;
 }
 
-.managedPortlet {
+div.portlets-manager div.section {
+    padding-top: 1em !important;
+}
+
+div.managedPortlet {
+    padding-top:0.5em;
+    padding-bottom:0.5em;
+}
+
+.managedPortlet .portletHeader {
     min-height: 3em;
 }
 
+
+.managedPortletActions {
+    display:block;
+    float:right;
+}
+
+.managedPortletActions a {
+    text-decoration:none;
+}
+
+.managedPortletActions a.up,
+.managedPortletActions a.down {
+    color:blue;
+}
+
+.managedPortletActions a.delete {
+    color:red !important;
+}
 /* </dtml-with> */
