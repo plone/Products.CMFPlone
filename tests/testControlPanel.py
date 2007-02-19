@@ -19,7 +19,7 @@ class TestControlPanel(PloneTestCase.PloneTestCase):
         
         # get the expected default groups and configlets
         self.groups     = ['Plone', 'Products', 'Member']
-        self.configlets = ['Add/Remove Products', 'Smart Folder Settings',
+        self.configlets = ['Add/Remove Products', 'Collection Settings',
                            'Users and Groups Administration', 'Mail Settings',
                            'Personal Preferences', 'Change Password', 'Skins',
                            'Zope Management Interface', 'Navigation Settings',
