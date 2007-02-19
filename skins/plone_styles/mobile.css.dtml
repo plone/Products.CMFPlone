@@ -214,9 +214,6 @@ label {
 }
 .contentActions li {
     float: right;
-    background-image: url(<dtml-var portal_url>/arrowDownAlternative.gif);
-    background-repeat: no-repeat;
-    background-position: center right;
     z-index: 4;
     border-left: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
     padding: 0 0 0 0.2em;

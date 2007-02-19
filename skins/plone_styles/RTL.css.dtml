@@ -110,10 +110,7 @@ ol {
 }
 .actionMenu.activated .actionMenuHeader a,
 .actionMenu.deactivated .actionMenuHeader a {
-    background-image: url(<dtml-var portal_url>/arrowDownAlternative.gif);
-    background-repeat: no-repeat;
-    background-position: 5% 60%;
-    padding: 0 0.5em 0 1.6em !important;
+    padding: 0 0.5em !important;
     cursor: pointer;
 }
 .newsAbout {
