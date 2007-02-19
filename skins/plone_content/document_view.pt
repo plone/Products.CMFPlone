@@ -23,6 +23,10 @@
         <p  metal:use-macro="here/azax_macros_generic/macros/generic_description_view">
             Description
         </p>
+        
+        <ul id="toc" style="display:none;" tal:condition="context/getTableContents">
+        </ul>
+
         <p tal:condition="python: not text and is_editable"
            i18n:translate="no_body_text"
            class="discreet">

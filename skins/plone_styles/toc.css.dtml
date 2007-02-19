@@ -1,0 +1,28 @@
+/* <dtml-with base_properties> (do not remove this :) */
+/* <dtml-call "REQUEST.set('portal_url', portal_url())"> (not this either :) */
+a.tocTop {
+    background: url(&dtml-portal_url;arrowTop.gif) no-repeat;   
+    padding-left: 11px;
+    float: right;
+    padding-top: 16px;
+}
+
+a.tocTop span {
+    display: none;
+}
+
+#toc li {
+    list-style: none;
+    background: url(&dtml-portal_url;arrowDown.gif) no-repeat;
+    padding-left: 11px;
+}
+#toc li.toc-2 {
+    margin-left: 6px;
+}
+#toc li.toc-3 {
+    margin-left: 12px;
+}
+#toc li.toc-4 {
+    margin-left: 18px;
+}
+/* </dtml-with> */
