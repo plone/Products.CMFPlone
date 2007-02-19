@@ -18,6 +18,13 @@ ploneFormTabbing.isFormPanel = function(node) {
     return false;
 };
 
+ploneFormTabbing.isForm = function(node) {
+    if (node.tagName == 'FORM' || node.tagName == 'form') {
+        return true;
+    }
+    return false;
+};
+
 ploneFormTabbing.toggle = function(e) {
     if (!e) var e = window.event; // IE compatibility
     var id = this.id.replace(/^fieldsetlegend-/, "fieldset-");
@@ -38,6 +45,11 @@ ploneFormTabbing.toggle = function(e) {
         } else {
             addClassName(panel, "hidden");
         }
+    }
+    var form = findContainer(panels[0], ploneFormTabbing.isForm);
+    var current = cssQuery("input[name=fieldset.current]", form);
+    if (current) {
+        current[0].value = this.id;
     }
     return false;
 };
@@ -98,6 +110,8 @@ ploneFormTabbing.initializeForm = function(form) {
         addClassName(fieldset, "formPanel")
     }
 
+    var tab_inited = false;
+
     var fieldswitherrors = cssQuery("div.field.error");
     for (var i=0; i<fieldswitherrors.length; i++) {
         var panel = findContainer(fieldswitherrors[i], ploneFormTabbing.isFormPanel);
@@ -105,10 +119,29 @@ ploneFormTabbing.initializeForm = function(form) {
             continue;
         }
         var id = panel.id.replace(/^fieldset-/, "fieldsetlegend-");
-        addClassName(document.getElementById(id), "notify");
+        var tab = document.getElementById(id);
+        if (tab) {
+            addClassName(tab, "notify");
+            if (tab.onclick) {
+                tab.onclick();
+                tab_inited = true;
+            }
+        }
     }
+
+    var active_fieldsets = cssQuery("input[name=fieldset.current]");
+    for (var i=0; i<active_fieldsets.length; i++) {
+        var tab = document.getElementById(active_fieldsets[i].value);
+        if (tab && tab.onclick && !tab_inited) {
+            tab.onclick();
+            tab_inited = true;
+        }
+    }
+
     var tabs = cssQuery("form.enableFormTabbing .formTab a");
-    tabs[0].onclick();
+    if (!tab_inited) {
+        tabs[0].onclick();
+    }
 
     schema_links = document.getElementById("archetypes-schemata-links")
     if (schema_links) {
