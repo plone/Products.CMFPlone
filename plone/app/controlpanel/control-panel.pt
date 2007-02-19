@@ -63,6 +63,11 @@
                   enctype="multipart/form-data"
                   id="zc.page.browser_form">
 
+                <input type="hidden"
+                       name="fieldset.current"
+                       value=""
+                       tal:attributes="value request/fieldset.current | string:" />
+
                 <div metal:define-slot="extra_info" tal:replace="nothing">
                 </div>
 
