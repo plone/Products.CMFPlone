@@ -12,19 +12,16 @@
 
         <div class="vevent">
 
-        <h1 tal:define="kss_field_decorator_view kss_field_decorator_view | context/@@kss_field_decorator_view;
-                        kss_class python:kss_field_decorator_view.kss_class('title', 'view');"
-            id="archetypes-fieldname-title"
-            tal:content="object_title"
-            tal:attributes="class string:documentFirstHeading summary$kss_class;">
+        <h1 metal:use-macro="here/kss_generic_macros/macros/generic_title_view">
             Title or id
         </h1>
+
 
         <div metal:use-macro="here/document_byline/macros/byline">
             Get the byline - contains details about author and modification date.
         </div>
 
-        <p metal:use-macro="here/azax_macros_generic/macros/generic_description_view">
+        <p metal:use-macro="here/kss_generic_macros/macros/generic_description_view">
             Description
         </p>
         
@@ -33,9 +30,14 @@
                summary="Event details" i18n:attributes="summary summary_event_details;">
 
             <tbody>
+
                 <tr>
                     <th i18n:translate="event_what">What</th>
-                    <td tal:content="python:modules['string'].join(here.Subject(), ' ')">
+                    <td metal:define-macro="subject-field-view" tal:define="kss_field_decorator_view kss_field_decorator_view | context/@@kss_field_decorator_view;
+                                              kss_class python:kss_field_decorator_view.kss_class('subject', 'view');"
+                        tal:content="python:' '.join(here.Subject())"
+                        id="parent-fieldname-subject"
+                        tal:attributes="class string: summary$kss_class;">
                         Conference
                     </td>
                 </tr>
@@ -47,7 +49,7 @@
                                   tal:content="python:here.toLocalizedTime(here.start(), long_format=1)"
                                   tal:define="kss_field_decorator_view kss_field_decorator_view | context/@@kss_field_decorator_view;
                                               kss_class python:kss_field_decorator_view.kss_class('startDate', 'view');"
-                        id="archetypes-fieldname-startDate"
+                        id="parent-fieldname-startDate"
                         tal:attributes="class string: summary$kss_class;
                         title python:here.start()">
                                 Start Date Time
@@ -67,7 +69,7 @@
                                   tal:content="python:here.toLocalizedTime(here.start(), long_format=1)"
                                   tal:define="kss_field_decorator_view kss_field_decorator_view | context/@@kss_field_decorator_view;
                                               kss_class python:kss_field_decorator_view.kss_class('startDate', 'view');"
-                                  id="archetypes-fieldname-startDate"
+                                  id="parent-fieldname-startDate"
                                   tal:attributes="class string: summary$kss_class;
                                   title python:here.start()">
                                 Start Date Time
@@ -92,7 +94,7 @@
                     <td class="location" tal:content="here/location"
                         tal:define="kss_field_decorator_view kss_field_decorator_view | context/@@kss_field_decorator_view;
                                     kss_class python:kss_field_decorator_view.kss_class('location', 'view');"
-                        id="archetypes-fieldname-location"
+                        id="parent-fieldname-location"
                         tal:attributes="class string: summary$kss_class;"
 >Oslo, Norway</td>
                 </tr>
@@ -102,7 +104,7 @@
                         tal:content="here/contact_name"
                         tal:define="kss_field_decorator_view kss_field_decorator_view | context/@@kss_field_decorator_view;
                                     kss_class python:kss_field_decorator_view.kss_class('contactName', 'view');"
-                        id="archetypes-fieldname-contactName"
+                        id="parent-fieldname-contactName"
                         tal:attributes="class string: summary$kss_class;">John Smith</td>
                 </tr>
                 <tr tal:define="contact_email here/contact_email"
@@ -115,7 +117,7 @@
                         tal:attributes="class string: summary$kss_class;"       
                       >
                         <a tal:content="structure python: here.spamProtect(contact_email)"
-                        id="archetypes-fieldname-contactEmail"
+                        id="parent-fieldname-contactEmail"
                           />
                     </td>
                 </tr>
@@ -125,15 +127,15 @@
                         tal:content="here/contact_phone"
                         tal:define="kss_field_decorator_view kss_field_decorator_view | context/@@kss_field_decorator_view;
                                     kss_class python:kss_field_decorator_view.kss_class('contactPhone', 'view');"
-                        id="archetypes-fieldname-contactPhone"
+                        id="parent-fieldname-contactPhone"
                         tal:attributes="class string: summary$kss_class;">555-GET-PLONE</td>
                 </tr>
                 <tr tal:condition="here/getAttendees|nothing">
                     <th i18n:translate="contact_attendees">Attendees</th>
-                    <td tal:content="python: ', '.join(here.getAttendees())"
+                    <td metal:define-macro="attendees-field-view" tal:content="python: ', '.join(here.getAttendees())"
                     tal:define="kss_field_decorator_view kss_field_decorator_view | context/@@kss_field_decorator_view;
                                 kss_class python:kss_field_decorator_view.kss_class('attendees', 'view');"
-                        id="archetypes-fieldname-attendees"
+                        id="parent-fieldname-attendees"
                         tal:attributes="class string: summary$kss_class;">Person 1, Person 2</td>
                 </tr>
                 <tr>
@@ -157,8 +159,15 @@
         </table>
         </div>
 
-        <div tal:condition="here/getText|nothing">
-            <div tal:replace="structure here/getText" />
+
+        <div metal:define-macro="text-field-view" id="parent-fieldname-text" class="stx"
+             tal:define="kss_field_decorator_view kss_field_decorator_view | context/@@kss_field_decorator_view;
+                         kss_class python:kss_field_decorator_view.kss_class('text', 'view'); 
+                         text here/getText|nothing"
+             tal:condition="text"
+             tal:attributes="class python:test(here.Format() in ('text/structured',
+                                                   'text/x-rst', ), 'stx' + kss_class, 'plain' + kss_class)">
+            <div tal:replace="structure text" />
         </div>
 
         <p tal:condition="here/event_url|nothing">
@@ -171,7 +180,7 @@
                href="event_url"
                i18n:translate="event_more_information"
                tal:define="field python:context.getField('eventUrl');"                    
-                        id="archetypes-fieldname-eventUrl"
+                        id="parent-fieldname-eventUrl"
                         tal:attributes="href here/event_url">
                More information about this event&hellip;</a>
         </p>

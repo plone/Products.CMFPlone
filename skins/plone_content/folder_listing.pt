@@ -12,7 +12,7 @@
             Document actions (print, sendto etc)
         </div>
 
-        <h1 metal:use-macro="here/azax_macros_generic/macros/generic_title_view">
+        <h1 metal:use-macro="here/kss_generic_macros/macros/generic_title_view">
             Title or id
         </h1>
 
@@ -25,7 +25,7 @@
         Up one level
         </a>
 
-        <p  metal:use-macro="here/azax_macros_generic/macros/generic_description_view">
+        <p  metal:use-macro="here/kss_generic_macros/macros/generic_description_view">
             Description
         </p>
 
