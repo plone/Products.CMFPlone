@@ -71,8 +71,11 @@ class EditPortletManagerRenderer(Explicit):
     
     # Used by the view template
 
+    def baseUrl(self):
+        return self.__parent__.getAssignmentMappingUrl(self.manager)
+
     def portlets(self):
-        baseUrl = self.__parent__.getAssignmentMappingUrl(self.manager)
+        baseUrl = self.baseUrl()
         assignments = self._lazyLoadAssignments(self.manager)
         data = []
         for idx in range(len(assignments)):
@@ -95,10 +98,10 @@ class EditPortletManagerRenderer(Explicit):
         return data
         
     def addable_portlets(self):
-        baseUrl = self.__parent__.getAssignmentMappingUrl(self.manager)
+        baseUrl = self.baseUrl()
         return [ {'title' : p.title,
                   'description' : p.description,
-                  'addview' : '%s/+/%s' % (baseUrl, p.addview,),
+                  'addview' : '%s' % p.addview,
                   } for p in self.manager.getAddablePortletTypes()]
         
     # See note in plone.portlets.manager
