@@ -53,7 +53,7 @@ elif ZOPE_VER < MINIMUM_ZOPE_VER:
     log(("Zope version %s found but Plone needs at least "
          "Zope %s Please download and install Zope %s "
      "from http://zope.org/" %
-     (ZOPE_VER, MINIMUM_ZOPE_VER, PREFERRED_ZOPE_VER) ))
+     ('.'.join(ZOPE_VER), '.'.join(MINIMUM_ZOPE_VER), PREFERRED_ZOPE_VER) ))
 
 # make sure CMF is installed
 cmfcore = 0
