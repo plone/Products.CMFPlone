@@ -9,6 +9,7 @@ if __name__ == '__main__':
 from Products.CMFPlone.tests import PloneTestCase
 
 from OFS.SimpleItem import SimpleItem
+from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.Expression import Expression
 from Products.CMFCore.permissions import AccessInactivePortalContent
 from Products.CMFCore.interfaces import IActionCategory
@@ -80,6 +81,7 @@ from Products.CMFPlone.migrations.v3_0.alphas import updateRtlCSSexpression
 from Products.CMFPlone.migrations.v3_0.alphas import addMaintenanceProperty
 from Products.CMFPlone.migrations.v3_0.alphas import installS5
 from Products.CMFPlone.migrations.v3_0.alphas import addTableContents
+from Products.CMFPlone.migrations.v3_0.alphas import updateMemberSecurity
 
 from zope.app.component.hooks import clearSite
 from zope.app.component.interfaces import ISite
@@ -1732,6 +1734,24 @@ class TestMigrations_v3_0(MigrationTest):
         addTableContents(self.portal, [])
         self.failUnless("toc.js" in js.getResourceIds())
         self.failUnless("toc.css" in css.getResourceIds())
+        
+    def testUpdateMemberSecurity(self):
+        pprop = getToolByName(self.portal, 'portal_properties')
+        pmembership = getToolByName(self.portal, 'portal_membership')
+        self.failUnless(pprop.site_properties.allowAnonymousViewAbout == False)
+        self.failUnless(pmembership.memberareaCreationFlag == False)
+        self.failUnless(self.portal.validate_email == True)
+        app_roles = self.portal.rolesOfPermission(permission='Add portal member')
+        app_perms = self.portal.permission_settings(permission='Add portal member')
+        acquire_check = app_perms[0]['acquire']
+        reg_roles = []
+        for appperm in app_roles:
+            if appperm['selected'] == 'SELECTED':
+                reg_roles.append(appperm['name'])
+        self.failUnless('Manager' in reg_roles)
+        self.failUnless('Owner' in reg_roles)
+        self.failUnless(acquire_check == '')
+
 
     def testPloneS5(self):
         pa = self.portal.portal_actions

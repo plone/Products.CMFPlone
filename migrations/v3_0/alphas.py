@@ -134,6 +134,9 @@ def alpha2_alpha3(portal):
     # add input-label.js
     addFormInputLabelJS(portal, out)
     
+    #modify member security settings to match new default policies
+    updateMemberSecurity(portal, out)
+    
     return out
 
 
@@ -556,6 +559,14 @@ def addTableContents(portal, out):
         if 'toc.js' not in jstool.getResourceIds():
             jstool.registerScript(id="toc.js", enabled=True)
     out.append("Added in css and js for table of contents")
+    
+def updateMemberSecurity(portal, out):
+    pprop = getToolByName(portal, 'portal_properties')
+    pmembership = getToolByName(portal, 'portal_membership')
+    portal.manage_permission('Add portal member', roles=['Manager','Owner'], acquire=0)
+    pprop.site_properties.allowAnonymousViewAbout = False
+    pmembership.memberareaCreationFlag = False
+    portal.validate_email = True
 
 # --
 # KSS registration
