@@ -173,14 +173,21 @@ form.enableFormTabbing:load {
     action-client: plone-initFormTabs;
 }
 
+form:load {
+    evt-load-initial: false;
+    action-client: plone-initFormProtection;
+}
 
 /* Temporarily disabled because it acts foul with queryFormLeave.
    This is realy an overwrite of the rule in at.kss !!!
 */
 
+/*
 input[name="form_submit"]:click {
     evt-click-preventdefault:     false;
     action-cancel:                kssValidateForm;
 }
+*/
+
 
 
