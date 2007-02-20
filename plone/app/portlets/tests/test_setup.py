@@ -19,12 +19,13 @@ class TestProductInstall(PortletsTestCase):
         sm = getSiteManager(self.portal)
         registrations = [r.name for r in sm.registeredUtilities()
                             if IPortletManager == r.provided]
-        self.assertEquals(['plone.dashboard', 'plone.leftcolumn', 'plone.rightcolumn'], sorted(registrations))
+        self.assertEquals(['plone.dashboard1', 'plone.dashboard2', 'plone.dashboard3', 'plone.dashboard4',
+                           'plone.leftcolumn', 'plone.rightcolumn'], sorted(registrations))
 
     def testInterfaces(self):
         left = getUtility(IPortletManager, 'plone.leftcolumn')
         right = getUtility(IPortletManager, 'plone.rightcolumn')
-        dashboard = getUtility(IPortletManager, 'plone.dashboard')
+        dashboard = getUtility(IPortletManager, 'plone.dashboard1')
 
         self.failUnless(ILeftColumn.providedBy(left))
         self.failUnless(IRightColumn.providedBy(right))
