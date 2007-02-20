@@ -40,7 +40,7 @@ def assignment_from_key(context, manager_name, category, key, name):
     key in that category and the name of a particular assignment, return
     the IPortletAssignment. Raise a KeyError if it cannot be found.
     """
-    return assignment_from_key(context, manager_name, category, key)[name]
+    return assignment_mapping_from_key(context, manager_name, category, key)[name]
     
 
 portletsMapping = { 'portlet_login'      : login.Assignment(),
