@@ -13,8 +13,7 @@ a.tocTop span {
 
 #toc li {
     list-style: none;
-/*    background: url(&dtml-portal_url;/arrowDown.gif) no-repeat;
-    padding-left: 11px;*/
+    list-style-image: none;
 }
 #toc li.toc-2 {
     margin-left: 6px;
