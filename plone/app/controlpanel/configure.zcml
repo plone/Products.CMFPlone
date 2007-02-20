@@ -2,34 +2,23 @@
     xmlns="http://namespaces.zope.org/zope"
     xmlns:browser="http://namespaces.zope.org/browser">
 
-  <adapter
-      factory=".calendar.CalendarControlPanelAdapter"
-      />
+  <adapter factory=".calendar.CalendarControlPanelAdapter" />
 
-  <adapter
-      factory=".mail.MailControlPanelAdapter"
-      />
+  <adapter factory=".mail.MailControlPanelAdapter" />
 
-  <adapter
-      factory=".filter.FilterControlPanelAdapter"
-      />
+  <adapter factory=".filter.FilterControlPanelAdapter" />
 
-  <adapter
-      factory=".search.SearchControlPanelAdapter"
-      />
+  <adapter factory=".search.SearchControlPanelAdapter" />
 
-  <adapter
-      factory=".types.TypesControlPanelAdapter"
-      />
+  <adapter factory=".skins.SkinsControlPanelAdapter" />
 
-  <adapter
-      factory=".maintenance.MaintenanceControlPanelAdapter"
-      />
+  <adapter factory=".types.TypesControlPanelAdapter" />
+
+  <adapter factory=".maintenance.MaintenanceControlPanelAdapter" />
+
   <adapter factory=".seo.SeoControlPanelAdapter" />
 
-  <adapter
-	  factory=".wickedcp.WickedControlPanelAdapter"
-	  />
+  <adapter factory=".wickedcp.WickedControlPanelAdapter" />
 
   <browser:page
       name="wicked-controlpanel.html"
@@ -70,6 +59,13 @@
       name="search-controlpanel.html"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       class=".search.SearchControlPanel"
+      permission="cmf.ManagePortal"
+      />
+
+  <browser:page
+      name="skins-controlpanel.html"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".skins.SkinsControlPanel"
       permission="cmf.ManagePortal"
       />
 

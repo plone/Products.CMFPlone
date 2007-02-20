@@ -14,18 +14,7 @@ Viewing the search control panel
     >>> self.browser.url.endswith('mail-controlpanel.html')
     True
 
-Click the save button without making any changes:
-
-    >>> self.browser.getControl(name="form.actions.save").click()
-    >>> self.browser.url.endswith('mail-controlpanel.html')
-    True
-
-We should get a status message:
-
-    >>> 'Changes saved.' in self.browser.contents
-    True
-
-Now click the cancel button:
+Click the cancel button:
 
     >>> self.browser.getControl(name="form.actions.cancel").click()
     >>> self.browser.url.endswith('plone_control_panel')
