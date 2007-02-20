@@ -777,7 +777,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         sm = getSiteManager(self.portal)
         registrations = [r.name for r in sm.registeredUtilities()
                             if IPortletManager == r.provided]
-        self.assertEquals(['plone.dashboard1', 'plone.dashboard2', 'plone.dashboard3', 'plone.dashboard4'
+        self.assertEquals(['plone.dashboard1', 'plone.dashboard2', 'plone.dashboard3', 'plone.dashboard4',
                             'plone.leftcolumn', 'plone.rightcolumn'], sorted(registrations))
 
     def testPortletAssignmentsAtRoot(self):
