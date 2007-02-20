@@ -362,19 +362,23 @@ class TestCreateMemberarea(PloneTestCase.PloneTestCase):
 
     def testCreateMemberarea(self):
         # Should create a memberarea for user2
-        members = self.membership.getMembersFolder()
-        self.membership.createMemberarea('user2')
-        memberfolder = self.membership.getHomeFolder('user2')
-        self.failUnless(memberfolder, 'createMemberarea failed to create memberarea')
-        # member area creation should be on by default
-        self.failUnless(self.membership.getMemberareaCreationFlag())
+        if self.membership.memberareaCreationFlag == True:
+            members = self.membership.getMembersFolder()
+            self.membership.createMemberarea('user2')
+            memberfolder = self.membership.getHomeFolder('user2')
+            self.failUnless(memberfolder, 'createMemberarea failed to create memberarea')
+            # member area creation should be on by default
+            self.failUnless(self.membership.getMemberareaCreationFlag())
 
     def testCreatMemberareaUsesCurrentUser(self):
-        # Should create a memberarea for user2
-        self.login('user2')
-        self.membership.createMemberarea()
-        memberfolder = self.membership.getHomeFolder('user2')
-        self.failUnless(memberfolder, 'createMemberarea failed to create memberarea for current user')
+        if self.membership.memberareaCreationFlag == True:
+            # Should create a memberarea for user2
+            self.login('user2')
+            self.membership.createMemberarea()
+            memberfolder = self.membership.getHomeFolder('user2')
+            self.failUnless(memberfolder, 'createMemberarea failed to create memberarea for current user')
+        else:
+            pass
 
     def testNoMemberareaIfNoMembersFolder(self):
         # Should not create a memberarea if the Members folder is missing
@@ -391,26 +395,29 @@ class TestCreateMemberarea(PloneTestCase.PloneTestCase):
 
     def testNotifyScriptIsCalled(self):
         # The notify script should be called
-        self.portal.notifyMemberAreaCreated = dummy.Raiser(dummy.Error)
-        self.assertRaises(dummy.Error, self.membership.createMemberarea, 'user2')
+        if self.membership.memberareaCreationFlag == True:
+            self.portal.notifyMemberAreaCreated = dummy.Raiser(dummy.Error)
+            self.assertRaises(dummy.Error, self.membership.createMemberarea, 'user2')       
 
     def testCreateMemberareaAlternateName(self):
         # Alternate method name 'createMemberaArea' should work
-        members = self.membership.getMembersFolder()
-        self.membership.createMemberArea('user2')
-        memberfolder = self.membership.getHomeFolder('user2')
-        self.failUnless(memberfolder, 'createMemberArea failed to create memberarea')
+        if self.membership.memberareaCreationFlag == True:
+            members = self.membership.getMembersFolder()
+            self.membership.createMemberArea('user2')
+            memberfolder = self.membership.getHomeFolder('user2')
+            self.failUnless(memberfolder, 'createMemberArea failed to create memberarea')
 
     def testCreateMemberareaLPF(self):
         # Should create a Large Plone Folder instead of a normal Folder
-        self.membership.setMemberAreaType('Large Plone Folder')
-        self.membership.createMemberarea('user2')
-        memberfolder = self.membership.getHomeFolder('user2')
-        self.assertEqual(memberfolder.getPortalTypeName(), 'Large Plone Folder')
+        if self.membership.memberareaCreationFlag == True:
+            self.membership.setMemberAreaType('Large Plone Folder')
+            self.membership.createMemberarea('user2')
+            memberfolder = self.membership.getHomeFolder('user2')
+            self.assertEqual(memberfolder.getPortalTypeName(), 'Large Plone Folder')
 
     def testCreateMemberareaWhenDisabled(self):
         # Should not create a member area
-        self.membership.setMemberareaCreationFlag()
+        self.membership.setMemberareaCreationFlag = False
         self.failIf(self.membership.getMemberareaCreationFlag())
         self.membership.createMemberarea('user2')
         memberfolder = self.membership.getHomeFolder('user2')
@@ -425,19 +432,21 @@ class TestMemberareaSetup(PloneTestCase.PloneTestCase):
         self.home = self.membership.getHomeFolder('user2')
 
     def testMemberareaIsPloneFolder(self):
-        # Memberarea should be a Plone folder
-        self.assertEqual(self.home.meta_type, 'ATFolder')
-        self.assertEqual(self.home.portal_type, 'Folder')
+        if self.membership.memberareaCreationFlag == True:
+            # Memberarea should be a Plone folder
+            self.assertEqual(self.home.meta_type, 'ATFolder')
+            self.assertEqual(self.home.portal_type, 'Folder')
 
     def testMemberareaIsOwnedByMember(self):
-        # Memberarea should be owned by member
-        try: owner_info = self.home.getOwnerTuple()
-        except AttributeError:
-            owner_info = self.home.getOwner(info=1)
-        self.assertEqual(owner_info[0], [PloneTestCase.portal_name, 'acl_users'])
-        self.assertEqual(owner_info[1], 'user2')
-        self.assertEqual(len(self.home.get_local_roles()), 1)
-        self.assertEqual(self.home.get_local_roles_for_userid('user2'), ('Owner',))
+        if self.membership.memberareaCreationFlag == True:
+            # Memberarea should be owned by member
+            try: owner_info = self.home.getOwnerTuple()
+            except AttributeError:
+                owner_info = self.home.getOwner(info=1)
+            self.assertEqual(owner_info[0], [PloneTestCase.portal_name, 'acl_users'])
+            self.assertEqual(owner_info[1], 'user2')
+            self.assertEqual(len(self.home.get_local_roles()), 1)
+            self.assertEqual(self.home.get_local_roles_for_userid('user2'), ('Owner',))
 
     def testMemberareaHasDescription(self):
         # Memberarea should have a description - not in 2.1 ~limi
@@ -445,14 +454,16 @@ class TestMemberareaSetup(PloneTestCase.PloneTestCase):
         pass
 
     def testMemberareaIsCataloged(self):
-        # Memberarea should be cataloged
-        catalog = self.portal.portal_catalog
-        self.failUnless(catalog(id='user2', Type='Folder', Title="user2"),
-                        "Could not find user2's home folder in the catalog")
+        if self.membership.memberareaCreationFlag == True:
+            # Memberarea should be cataloged
+            catalog = self.portal.portal_catalog
+            self.failUnless(catalog(id='user2', Type='Folder', Title="user2"),
+                            "Could not find user2's home folder in the catalog")
 
     def testHomePageNotExists(self):
-        # Should not have an index_html document anymore
-        self.failIf('index_html' in self.home.objectIds())
+        if self.membership.memberareaCreationFlag == True:
+            # Should not have an index_html document anymore
+            self.failIf('index_html' in self.home.objectIds())
 
 
 class TestSearchForMembers(PloneTestCase.PloneTestCase):

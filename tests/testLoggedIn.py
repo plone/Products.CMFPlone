@@ -21,9 +21,10 @@ class TestLogin(PloneTestCase.PloneTestCase):
         self.login('member')
 
     def testLoggedInCreatesMemberArea(self):
-        self.assertEqual(self.membership.getHomeFolder(), None) 
-        self.portal.logged_in()
-        self.failIfEqual(self.membership.getHomeFolder(), None) 
+        if self.membership.memberareaCreationFlag == 'True':
+            self.assertEqual(self.membership.getHomeFolder(), None) 
+            self.portal.logged_in()
+            self.failIfEqual(self.membership.getHomeFolder(), None)
 
     def testLoggedInSetsLoginTime(self):
         now = DateTime()

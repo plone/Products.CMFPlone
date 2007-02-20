@@ -301,11 +301,16 @@ def importFinalSteps(context):
         return
     out = []
     site = context.getSite()
+    pprop = getToolByName(site, 'portal_properties')
+    pmembership = getToolByName(site, 'portal_membership')
     gen = PloneGenerator()
     gen.addDefaultPortlets(site)
     gen.performMigrationActions(site)
     gen.enableSyndication(site, out)
     gen.assignTitles(site, out)
+    site.manage_permission('Add portal member', roles=['Manager','Owner'], acquire=0)
+    pprop.site_properties.allowAnonymousViewAbout = False
+    pmembership.memberareaCreationFlag = False
 
 def importContent(context):
     """
