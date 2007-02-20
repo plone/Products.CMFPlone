@@ -57,7 +57,7 @@ Test cropText.py
 Test ascii text cropping
 
   >>> self.portal.cropText('Hello world', 7)
-  'Hello...'
+  'Hello ...'
 
   >>> self.portal.cropText('Hello world', 99)
   'Hello world'
