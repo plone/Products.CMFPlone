@@ -1,6 +1,6 @@
 ##parameters=test=False
-# ugly, ugly, ugly code, that basically changes the way the slide is put together
-# this should be a HTML parser or XSLT or even JS
+# ugly, ugly, ugly code, that basically changes the way the slide is put
+# together this should be a HTML parser or XSLT or even JS
 
 from Products.CMFPlone.utils import safe_hasattr
 
@@ -10,7 +10,9 @@ msg = "For Plone to show this page as a presentation to work, it must find some 
 "will all generate suitable tags for you. Further you must have the "\
 "'Enable Presentation' setting turned on in the user interface for this peice of content."
 
-if not safe_hasattr(context, "getPresentation") or not context.getPresentation():
+if not safe_hasattr(context, "presentation") or \
+            not safe_hasattr(context, "getPresentation") or \
+            not context.getPresentation():
     if test:
         return False
     else:
