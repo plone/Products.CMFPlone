@@ -51,7 +51,7 @@ class IFilterTagsSchema(Interface):
     custom_tags = List(
         title=_(u'Custom tags'),
         description=_(u"Add tag names here for tags which are not part of "
-                      "HTML but which should be permitted."),
+                      "XHTML but which should be permitted."),
         default=[],
         value_type=TextLine(),
         required=False)
@@ -111,13 +111,37 @@ class FilterControlPanelAdapter(SchemaAdapterBase):
             getToolByName(context, 'portal_transforms'), 'safe_html')
         self.kupu_tool = getToolByName(context, 'kupu_library_tool')
 
+    def _settransform(self, **kwargs):
+        # Cannot pass a dict to set transform parameters, it has
+        # to be separate keys and values
+        # Also the transform requires all dictionary values to be set
+        # at the same time: other values may be present but are not
+        # required.
+        for k in ('valid_tags', 'nasty_tags'):
+            if k not in kwargs:
+                kwargs[k] = self.transform.get_parameter_value(k)
+
+        for k in list(kwargs):
+            if isinstance(kwargs[k], dict):
+                v = kwargs[k]
+                kwargs[k+'_key'] = v.keys()
+                kwargs[k+'_value'] = [str(s) for s in v.values()]
+                del kwargs[k]
+        self.transform.set_parameters(**kwargs)
+        self.transform._p_changed = True
+        self.transform.reload()
+
     @apply
     def nasty_tags():
         def get(self):
             return sorted(self.transform.get_parameter_value('nasty_tags'))
         def set(self, value):
             value = dict.fromkeys(value, 1)
-            self.transform.set_parameters(nasty_tags=value)
+            valid = self.transform.get_parameter_value('valid_tags')
+            for v in value:
+                if v in valid:
+                    del valid[v]
+            self._settransform(nasty_tags=value, valid_tags=valid)
         return property(get, set)
 
     @apply
@@ -127,7 +151,7 @@ class FilterControlPanelAdapter(SchemaAdapterBase):
             stripped = XHTML_TAGS - valid
             return sorted(stripped)
         def set_(self, value):
-            valid = set(self.transform.get_parameter_value('valid_tags'))
+            valid = dict(self.transform.get_parameter_value('valid_tags'))
             stripped = set(value)
             for v in XHTML_TAGS:
                 if v in stripped:
@@ -135,7 +159,12 @@ class FilterControlPanelAdapter(SchemaAdapterBase):
                         del valid[v]
                 else:
                     valid[v] = VALID_TAGS.get(v, 1)
-            self.transform.set_parameters(valid_tags=valid)
+
+            # Nasty tags must never be valid
+            for v in self.nasty_tags:
+                if v in valid:
+                    del valid[v]
+            self._settransform(valid_tags=valid)
         return property(get, set_)
 
     @apply
@@ -145,11 +174,18 @@ class FilterControlPanelAdapter(SchemaAdapterBase):
             custom = valid - XHTML_TAGS
             return sorted(custom)
         def set_(self, value):
-            valid = set(self.transform.get_parameter_value('valid_tags'))
+            valid = dict(self.transform.get_parameter_value('valid_tags'))
+            # Remove all non-standard tags
+            for v in valid.keys():
+                if v not in XHTML_TAGS:
+                    del valid[v]
+            # Now add in the custom tags
             for v in value:
                 if v not in valid:
                     valid[v] = 1
-            self.transform.set_parameters(valid_tags=valid)
+
+            self._settransform(valid_tags=valid)
+
         return property(get, set_)
 
 
@@ -206,3 +242,4 @@ class FilterControlPanel(ControlPanelForm):
     label = _("Html Filter settings")
     description = _("Html filtering settings for this site.")
     form_name = _("Html Filter Details")
+

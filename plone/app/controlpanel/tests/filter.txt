@@ -94,3 +94,41 @@ Look at the defaults
     >>> print_all_of('stripped_combinations')
     >>> print_all_of('style_whitelist')
     >>> print_all_of('class_whitelist')
+
+Changing some values
+--------------------
+
+Add a new nasty tag
+
+    >>> browser.getControl("Add Nasty tags").click()
+    >>> browser.getControl(name="form.nasty_tags.4.").value = "span"
+    >>> browser.getControl(name="form.actions.save").click()
+    >>> print_all_of('nasty_tags')
+    applet
+    embed
+    object
+    script
+    span
+    >>> print sorted(safe_html._config['nasty_tags'])
+    [u'applet', u'embed', u'object', u'script', u'span']
+
+Adding span to nasty tags should have automatically removed it from the valid tags.
+
+Check that the filtering works
+------------------------------
+
+    >>> browser.getLink('My Folder').click()
+    >>> browser.getLink('Add to folder').click()
+    >>> 'Add new item' in browser.contents
+    True
+    >>> browser.getControl('Add Page').click()
+    >>> browser.getControl('Body Text').value = \
+    ... '<p>Testing that<span> tag and its contents get stripped</span> works.</p>'
+    >>> browser.getControl('Title').value = 'My Page'
+    >>> browser.getControl('Save').click()
+    >>> 'Changes saved.' in browser.contents
+    True
+    >>> 'My Page' in browser.contents
+    True
+    >>> '<p>Testing that works.</p>' in browser.contents
+    True
