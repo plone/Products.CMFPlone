@@ -4,7 +4,7 @@
 ##bind namespace=
 ##bind script=script
 ##bind subpath=traverse_subpath
-##parameters=default_skin, allow_any=0, cookie_persistence=0, RESPONSE=None
+##parameters=default_skin, RESPONSE=None
 ##title=set portalskin prefs
 ##
 
@@ -21,10 +21,7 @@ if ps.request_varname:
 else:
     rv='plone_skin'
 
-ps.manage_properties(default_skin=default_skin,
-                     allow_any=allow_any,
-                     cookie_persistence=cookie_persistence,
-                     request_varname=rv)
+ps.manage_properties(default_skin=default_skin, request_varname=rv)
 
 context.plone_utils.addPortalMessage(_(u'Portal skin updated'))
 return state

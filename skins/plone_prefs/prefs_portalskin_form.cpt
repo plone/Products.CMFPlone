@@ -17,7 +17,7 @@
        class="link-parent"
        tal:attributes="href string: $portal_url/plone_control_panel"
        i18n:translate="label_up_to_plone_setup">
-    Up to Site Setup
+        Up to Site Setup
     </a>
 
     <p i18n:translate="description_skin_setup">
@@ -34,7 +34,6 @@
         <fieldset>
             <legend i18n:translate="legend_portalskin_details">Site Skin Details</legend>
 
-            
             <div class="field">
                 <label for="default_skin"
                        i18n:translate="label_default_skin">Default skin</label>
@@ -53,45 +52,9 @@
                             tal:content="skin" 
                             tal:attributes="value skin;
                                             selected python:test( skin==defskin,'selected' ,'')" />
-    		    </select>
+                </select>
             </div>
 
-            <div class="field">
-
-    	        <input type="checkbox" 
-                       class="noborder"
-                       id="cb_allow_any"
-                       name="allow_any"
-                       tal:define="allowany here/portal_skins/getAllowAny"
-                       tal:attributes="checked python:test(allowany, 'checked', '')" />
-
-                <label i18n:translate="label_skin_flexibility" for="cb_allow_any">Allow users to select skins</label>
-                
-                <div class="formHelp" i18n:translate="help_skin_flexibility">
-                    If checked, each user can select a skin from his
-                    preferences panel.
-                </div>
-
-            </div>
-
-            <div class="field">
-    
-                <input type="checkbox"
-                     class="noborder" 
-                     id="cb_cookie"
-                     name="cookie_persistence"
-                     tal:define="cookiepers here/portal_skins/getCookiePersistence"
-                     tal:attributes="checked python:test(cookiepers, 'checked', '')" />
-
-                <label i18n:translate="label_cookie_persistence" for="cb_cookie">Make skin cookie persist indefinitely</label>
-                
-                <div class="formHelp" i18n:translate="help_cookie_persistence">
-                    If checked, the skin cookie will never expire.
-                </div>
-
-            </div>
-    
-    
             <div class="formControls">
                 <input class="context"
                        tabindex=""
@@ -111,5 +74,3 @@
 
 </body>
 </html>
-
-
