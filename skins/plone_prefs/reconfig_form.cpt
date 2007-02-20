@@ -285,39 +285,6 @@
                 <label for="cb_allowAnonymousViewAbout" i18n:translate="no">No</label>
             </div>
 
-            <div class="field"
-                 tal:condition="exists:site_properties/allowRolesToAddKeywords"
-                 tal:define="allowRolesToAddKeywords request/allowRolesToAddKeywords|site_properties/allowRolesToAddKeywords;
-                             avail_roles python:mtool.getCandidateLocalRoles(here);
-                             error errors/allowRolesToAddKeywords | nothing;"
-                  >
-              <fieldset id="fieldset_allowRolesToAddKeywords">
-                <legend i18n:translate="label_allowRolesToAddKeywords">Roles allowed to add keywords</legend>
-
-                <div class="formHelp" i18n:translate="help_allowRolesToAddKeywords">
-                  Users with one of the roles selected here are allowed to add
-                  keywords to the site.
-                </div>
-
-                <ul class="configlets"
-                    tal:define="allowed_roles site_properties/allowRolesToAddKeywords">
-                  <li tal:repeat="role avail_roles">
-                    <input class="noborder"
-                           type="checkbox"
-                           name="tmp_allowRoleToAddKeyword:list"
-                           tal:attributes="value role;
-                                           id string:tmp_allowRoleToAddKeyword_${role};
-                                           checked python:test(role in allowed_roles, 'checked', '');"/>
-                    <label for=""
-                           i18n:translate=""
-                           tal:attributes="for string:tmp_allowRoleToAddKeyword_${role}"
-                           tal:content="role"
-                           />
-                  </li>
-                </ul>
-              </fieldset>
-            </div>
-
             <div class="formControls">
                 <input class="context"
                        tabindex=""
@@ -327,7 +294,6 @@
                        i18n:attributes="value label_save;"
                        tal:attributes="tabindex tabindex/next;"
                        />
-
             </div>
 
         </fieldset>
