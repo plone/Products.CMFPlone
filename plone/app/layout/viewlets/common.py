@@ -2,6 +2,7 @@ from zope.interface import implements
 from zope.component import getMultiAdapter
 from zope.viewlet.interfaces import IViewlet
 
+from Products.CMFPlone.utils import safe_unicode
 from Products.Five.browser import BrowserView
 
 
@@ -29,6 +30,7 @@ class ViewletBase(BrowserView):
 
 
 class TitleViewlet(ViewletBase):
+
     def __init__(self, context, request, view, manager):
         super(TitleViewlet, self).__init__(context, request, view, manager)
         self.context_state = getMultiAdapter((context, request), name=u'plone_context_state')
@@ -36,4 +38,6 @@ class TitleViewlet(ViewletBase):
         self.portal_title = self.portal_state.portal_title
 
     def render(self):
-        return "<title>%s &mdash; %s</title>" % (self.page_title(), self.portal_title())
+        return u"<title>%s &mdash; %s</title>" % (
+            safe_unicode(self.page_title()),
+            safe_unicode(self.portal_title()))
