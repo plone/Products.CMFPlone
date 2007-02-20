@@ -13,6 +13,22 @@ if (!window.beforeunload) (function() {
         this.submitting = false;
 
         this.execute = function(event) {
+            // First clean out dead references to make sure we only work on
+            // forms that are actually in the dom. This is needed in
+            // combination with KSS and/or other dynamic replacements.
+            var domforms = document.getElementsByTagName('form'); 
+            var forms_in_dom = [];
+            for(var i=0; i<this.forms.length; i++){
+                for(var j=0; j<domforms.length; j++){
+                    if(this.forms[i]==domforms[j]){
+                        forms_in_dom.push(domforms[j]);
+                    }
+                }
+            }
+            this.forms = forms_in_dom;
+             
+            
+            // Now do the protection work
             if (self.submitting) return;
             if (!event) event = window.event;
 

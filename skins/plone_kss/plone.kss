@@ -178,7 +178,7 @@ form.enableFormTabbing:load {
     action-client: plone-initFormTabs;
 }
 
-form:load {
+form.enableUnloadProtection:load {
     evt-load-initial: false;
     action-client: plone-initFormProtection;
 }
