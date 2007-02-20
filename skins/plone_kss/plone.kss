@@ -195,6 +195,16 @@ input[name="form_submit"]:click {
 */
 
 
+/*  Selector for the sharing page in plone.app.workflow.
+*/
+
+#sharing-save-button:click {
+  action-server: updateSharingInfo;
+  evt-click-preventdefault: true;
+  action-client: log;
+}
+
+
 /* kupu stuff */
 #kupu-save-button:load {
    action-client: setStyle;
