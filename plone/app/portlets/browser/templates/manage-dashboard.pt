@@ -38,12 +38,12 @@
           <li>
             <a href=""
                tal:attributes="href string: ${portal_url}/dashboard"
-               i18n:translate="label_view">View</a>
+               i18n:translate="label_view">Dashboard</a>
           </li>
           <li class="selected">
             <a href=""
                tal:attributes="href string:${portal_url}/@@manage-dashboard"
-               i18n:translate="label_edit">Manage</a>
+               i18n:translate="label_edit">Edit</a>
           </li>
         </ul>
 
@@ -63,16 +63,17 @@
             <h1 class="documentFirstHeading" i18n:translate="dashboard_title">
                 <span tal:content="name" i18n:name="user_name" />'s dashboard
             </h1>
-
-            <div id="dashboard-portlets" 
-              tal:content="structure provider:plone.dashboard1" />
-            <div id="dashboard-portlets" 
-              tal:content="structure provider:plone.dashboard2" />
-            <div id="dashboard-portlets" 
-              tal:content="structure provider:plone.dashboard3" />
-            <div id="dashboard-portlets" 
-              tal:content="structure provider:plone.dashboard4" />
-        
+            <div id="dashboard">
+                <div id="dashboard-portlets1" 
+                  tal:content="structure provider:plone.dashboard1" />
+                <div id="dashboard-portlets2" 
+                  tal:content="structure provider:plone.dashboard2" />
+                <div id="dashboard-portlets3" 
+                  tal:content="structure provider:plone.dashboard3" />
+                <div id="dashboard-portlets4" 
+                  tal:content="structure provider:plone.dashboard4" />
+            </div>
+            <div class="visualClear"><!-- --></div>
     </div> <!-- end simulated tabs -->
 
     </tal:main-macro>
