@@ -414,7 +414,6 @@ tr.dragging td {
 }
 ul.formTabs {
     position: relative;
-    z-index: 2;
     display: block;
     margin: 0 0 -2em 0;
     padding: 0;
