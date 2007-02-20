@@ -403,7 +403,7 @@ def addContentRulesAction(portal, out):
                                     title='Rules',
                                     description='',
                                     url_expr='string:${plone_context_state/canonical_object_url}/@@manage-content-rules',
-                                    available_expr="python:plone_context_state.canonical_object()['@@plone_interface_info'].provides('plone.contentrules.engine.interfaces.IRuleContainer')",
+                                    available_expr="python:plone_context_state.canonical_object()['@@plone_interface_info'].provides('plone.contentrules.engine.interfaces.IRuleAssignable')",
                                     permissions='Manage portal',
                                     visible=True)
                 object_buttons._setObject('contentrules', new_action)
@@ -556,6 +556,16 @@ def addTableContents(portal, out):
         if 'toc.js' not in jstool.getResourceIds():
             jstool.registerScript(id="toc.js", enabled=True)
     out.append("Added in css and js for table of contents")
+
+def installContentRulesUtility(portal, out):
+    from plone.contentrules.engine.interfaces import IRuleStorage
+    from plone.contentrules.engine.storage import RuleStorage
+    
+    sm = getSiteManager(portal)
+    if sm.queryUtility(IRuleStorage) is None:
+        sm.registerUtility(RuleStorage(), IRuleStorage)
+
+    out.append("Registered content rules storage utility")
 
 # --
 # KSS registration

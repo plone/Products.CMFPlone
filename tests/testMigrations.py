@@ -80,6 +80,7 @@ from Products.CMFPlone.migrations.v3_0.alphas import updateRtlCSSexpression
 from Products.CMFPlone.migrations.v3_0.alphas import addMaintenanceProperty
 from Products.CMFPlone.migrations.v3_0.alphas import installS5
 from Products.CMFPlone.migrations.v3_0.alphas import addTableContents
+from Products.CMFPlone.migrations.v3_0.alphas import installContentRulesUtility
 
 from zope.app.component.hooks import clearSite
 from zope.app.component.interfaces import ISite
@@ -102,6 +103,7 @@ from plone.portlets.constants import CONTEXT_CATEGORY as CONTEXT_PORTLETS
 from plone.app.portlets import portlets
 
 from plone.app.redirector.interfaces import IRedirectionStorage
+from plone.contentrules.engine.interfaces import IRuleStorage
 
 class BogusMailHost(SimpleItem):
     meta_type = 'Bad Mailer'
@@ -1744,6 +1746,18 @@ class TestMigrations_v3_0(MigrationTest):
         self.failUnless('s5_presentation' in [x.getActionId() for x in self.icons.listActionIcons()])
         self.failUnless('s5_presentation' in [x.getId() for x in pa.listActions()])
 
+    def testInstallContentrulesUtility(self):
+        sm = getSiteManager(self.portal)
+        sm.unregisterUtility(provided=IRuleStorage)
+        installContentRulesUtility(self.portal, [])
+        self.failIf(sm.queryUtility(IRuleStorage) is None)
+
+    def testInstallContentrulesUtility(self):
+        sm = getSiteManager(self.portal)
+        sm.unregisterUtility(provided=IRuleStorage)
+        installContentRulesUtility(self.portal, [])
+        installContentRulesUtility(self.portal, [])
+        self.failIf(sm.queryUtility(IRuleStorage) is None)
 
 class TestMigrations_v3_0_Actions(MigrationTest):
 
