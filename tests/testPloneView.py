@@ -194,6 +194,18 @@ class TestPloneView(PloneTestCase.PloneTestCase):
         self.assertEqual(True, view.have_portlets('plone.leftcolumn'))
         self.assertEqual(True, view.have_portlets('plone.rightcolumn'))
 
+    def testCropText(self):
+        view = Plone(self.portal, self.app.REQUEST)
+        self.assertEqual(view.cropText('Hello world', 7), 'Hello ...')
+        self.assertEqual(view.cropText('Hello world', 99), 'Hello world')
+        self.assertEqual(view.cropText('Hello world', 10), 'Hello worl...')
+        self.assertEqual(view.cropText(u'Hello world', 10), u'Hello worl...')
+        self.assertEqual(view.cropText(u'Koko\u0159\xedn', 5), u'Koko\u0159...')
+        # Test utf encoded string Kokorin with 'r' and 'i' accented 
+        # Must return 6 characters, because 5th character is two byte
+        text = u'Koko\u0159\xedn'.encode('utf8')
+        self.assertEqual(view.cropText(text, 5), 'Koko\xc5\x99...')
+
 class TestVisibleIdsEnabled(PloneTestCase.PloneTestCase):
     '''Tests the visibleIdsEnabled method'''
 

@@ -404,6 +404,9 @@ class IPlone(Interface):
            Icons can be disabled globally or just for anonymous users with
            the icon_visibility property in site_properties."""
 
+    def cropText(text, length, ellipsis):
+        """ Crop text on a word boundary """
+
 # XXX We should remove the portlet views itself in Plone 3.5 and therefor also
 # the zcml registrations in deprecated.zcml. Once this is done and we don't
 # use the interfaces anymore, we can deprecate those as well.

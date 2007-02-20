@@ -271,6 +271,25 @@ class Plone(utils.BrowserView):
         """
         return utils.normalizeString(text, context=self, relaxed=relaxed)
 
+    def cropText(self, text, length, ellipsis='...'):
+        """Crop text on a word boundary
+        """
+        converted = False
+        if not isinstance(text, unicode):
+            encoding = utils.getSiteEncoding(utils.context(self))
+            text = unicode(text, encoding)
+            converted = True
+        if len(text)>length:
+            text = text[:length]
+            l = text.rfind(' ')
+            if l > length/2:
+                text = text[:l+1]
+            text += ellipsis
+        if converted:
+            # encode back from unicode
+            text = text.encode(encoding)
+        return text
+
     # Deprecated in favour of the @@plone_context_state and @@plone_portal_state views
 
     @deprecate("The keyFilteredActions method of the Plone view has been "

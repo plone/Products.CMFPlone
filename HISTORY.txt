@@ -4,7 +4,8 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
-    - Fixed cropping of utf8 encoded text (cropText script).
+    - Fixed cropping of utf8 encoded text. cropText script 
+      is marked as deprecated now.
       This fixes http://dev.plone.org/plone/ticket/6190.
       [naro]
 
