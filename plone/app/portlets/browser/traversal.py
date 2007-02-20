@@ -48,7 +48,7 @@ class DashboardNamespace(object):
         self.request = request
         
     def traverse(self, name, ignore):
-        column = getUtility(IPortletManager, name='plone.dashboard')
+        column = getUtility(IPortletManager, name=name)
         category = column[USER_CATEGORY]
         return CurrentUserAssignmentMapping(aq_inner(self.context), category)
         

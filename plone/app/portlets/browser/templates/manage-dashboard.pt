@@ -65,7 +65,13 @@
             </h1>
 
             <div id="dashboard-portlets" 
-              tal:content="structure provider:plone.dashboard" />
+              tal:content="structure provider:plone.dashboard1" />
+            <div id="dashboard-portlets" 
+              tal:content="structure provider:plone.dashboard2" />
+            <div id="dashboard-portlets" 
+              tal:content="structure provider:plone.dashboard3" />
+            <div id="dashboard-portlets" 
+              tal:content="structure provider:plone.dashboard4" />
         
     </div> <!-- end simulated tabs -->
 

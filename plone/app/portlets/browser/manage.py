@@ -100,7 +100,7 @@ class ManageDashboardPortlets(BrowserView):
     
     def getAssignmentMappingUrl(self, manager):
         baseUrl = str(getMultiAdapter((self.context, self.request), name='absolute_url'))
-        return '%s/++dashboard++' % (baseUrl, )
+        return '%s/++dashboard++%s' % (baseUrl, manager.__name__)
 
     def getAssignmentsForManager(self, manager):
         userId = self._getUserId()

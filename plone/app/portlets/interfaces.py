@@ -20,7 +20,7 @@ class IRightColumn(IColumn):
     """
     
 class IDashboard(IPlacelessPortletManager):
-    """The personal dashboard.
+    """Common base class for dashboard columns
     
     Register a portlet for IDashboard if it is applicable to the dashboard
     only.
