@@ -10,6 +10,7 @@
 
 /* Content tab reloading */
 
+
 ul.contentViews li a:click {
     evt-click-preventdefault: True;
     action-server: replaceContentRegion;

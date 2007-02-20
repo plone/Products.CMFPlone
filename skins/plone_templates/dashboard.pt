@@ -60,8 +60,14 @@
                 <span tal:content="name" i18n:name="user_name" />'s dashboard
             </h1>
 
-            <div id="dashboard-portlets" 
-              tal:content="structure provider:plone.dashboard" />
+            <div id="dashboard-portlets1" 
+              tal:content="structure provider:plone.dashboard1" />
+            <div id="dashboard-portlets2" 
+              tal:content="structure provider:plone.dashboard2" />
+            <div id="dashboard-portlets3" 
+              tal:content="structure provider:plone.dashboard3" />
+            <div id="dashboard-portlets4" 
+              tal:content="structure provider:plone.dashboard4" />
 
         </div>
 

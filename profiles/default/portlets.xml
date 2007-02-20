@@ -15,7 +15,19 @@
    />
    
  <portletmanager 
-   name="plone.dashboard" 
+   name="plone.dashboard1" 
+   type="plone.app.portlets.interfaces.IDashboard"
+   />
+ <portletmanager 
+   name="plone.dashboard2" 
+   type="plone.app.portlets.interfaces.IDashboard"
+   />
+ <portletmanager 
+   name="plone.dashboard3" 
+   type="plone.app.portlets.interfaces.IDashboard"
+   />
+ <portletmanager 
+   name="plone.dashboard4" 
    type="plone.app.portlets.interfaces.IDashboard"
    />
  

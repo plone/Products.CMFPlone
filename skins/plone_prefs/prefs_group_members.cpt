@@ -42,7 +42,7 @@
       </li>
       <li>
         <a href=""
-           tal:attributes="href string:${portal_url}/@@manage-group-portlets?groupId=${groupname}"
+           tal:attributes="href string:${portal_url}/@@manage-group-portlets?key=${groupname}"
            i18n:translate="label_group_members">Group Portlets</a>
       </li>
     </ul>
