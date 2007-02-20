@@ -1,0 +1,40 @@
+<dl class="portlet"
+    id="portlet-rss"
+    i18n:domain="plone"
+    tal:condition="view/enabled">
+
+    <dt class="portletHeader">
+        <span class="portletTopLeft"></span>
+        <a href=""
+           tal:attributes="href view/url"
+           tal:content="view/title"
+           class="tile">
+            Tags
+        </a>
+        <span class="portletTopRight"></span>
+    </dt>
+    <tal:rss tal:condition="view/feedAvailable"
+                tal:define="toLocalizedTime nocall:context/@@plone/toLocalizedTime"
+                tal:repeat="item view/items">
+        <dd class="portletItem oddrow" 
+            tal:define="oddrow repeat/item/odd"
+            tal:attributes="class python:oddrow and 'portletItem even' or 'portletItem odd'">
+
+                    <a href="#"
+                        tal:attributes="href string:${item/url}"
+                        class="tile">
+                        <span tal:replace="item/title">
+                            Title
+                        </span></a>
+            <span class="portletItemDetails" tal:content="python:toLocalizedTime(item['updated'])">19.02.2007</span>
+        </dd>
+    </tal:rss>
+    <dd class="portletFooter" tal:condition="view/feedAvailable">
+        <a href=""
+            tal:attributes="href view/url">more&hellip;</a>
+            <span class="portletBottomLeft"></span>
+            <span class="portletBottomRight"></span>
+
+    </dd>
+               
+</dl>
