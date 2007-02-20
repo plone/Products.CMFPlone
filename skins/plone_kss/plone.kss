@@ -196,14 +196,15 @@ input[name="form_submit"]:click {
 
 
 /*  Selector for the sharing page in plone.app.workflow.
+    the search_term parameters, put the needed info the request
 */
 
 #sharing-save-button:click {
   action-server: updateSharingInfo;
+  updateSharingInfo-search_term: currentFormVar('search_term');
   evt-click-preventdefault: true;
   action-client: log;
 }
-
 
 /* kupu stuff */
 #kupu-save-button:load {
