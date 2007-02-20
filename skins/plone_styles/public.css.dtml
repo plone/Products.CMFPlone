@@ -998,4 +998,72 @@ body.fullscreen #portal-searchbox {
    border: 1px solid Black;
 }
 
+/* Dashboard */
+#dashboard {
+    width: 68em;
+}
+
+#dashboard-portlets1,
+#dashboard-portlets2,
+#dashboard-portlets3
+{
+    float:left;
+    width:16em;
+    padding:0.7em 1.3em 0 0;
+}
+
+#dashboard-portlets4 {
+    float:left;
+    width:16em;
+    padding-top:0.7em;
+}
+
+#dashboard-portlets1 a,
+#dashboard-portlets2 a,
+#dashboard-portlets3 a,
+#dashboard-portlets4 a {
+    border-bottom:medium none;
+}
+
+#dashboard-portlets1 dl.portlet,
+#dashboard-portlets2 dl.portlet,
+#dashboard-portlets3 dl.portlet,
+#dashboard-portlets4 dl.portlet {
+    margin-bottom:1.5em;
+}
+
+div.managedPortlet.portlet {
+    border-bottom:none;
+}
+#dashboard select {
+    width:100%;
+}
+
+.portletAssignments {
+    margin-top:1.5em;
+}
+
+#dashboard-portlets1 div.managedPortlet a,
+#dashboard-portlets2 div.managedPortlet a,
+#dashboard-portlets3 div.managedPortlet a,
+#dashboard-portlets4 div.managedPortlet a {
+    text-decoration: none;
+    color: &dtml-globalFontColor;;
+    border-bottom:1px solid &dtml-globalFontColor;;
+}
+
+#dashboard-portlets1 div.managedPortlet span a,
+#dashboard-portlets2 div.managedPortlet span a,
+#dashboard-portlets3 div.managedPortlet span a,
+#dashboard-portlets4 div.managedPortlet span a{
+    border-bottom:none;
+}
+
+/* manage portlets */
+
+.section div {
+    padding-top:0.5em;
+    padding-bottom:0.5em;
+}
+
 /* </dtml-with> */
