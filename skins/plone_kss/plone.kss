@@ -193,4 +193,15 @@ input[name="form_submit"]:click {
 */
 
 
+/* kupu stuff */
+#kupu-save-button:load {
+   action-client: setStyle;
+   setStyle-name: display;
+   setStyle-value: inline;
+}
 
+.kupu-save:click {
+   action-server: savekupu;
+   savekupu-text: currentFormVarFromKssAttr("atfieldname", true);
+   savekupu-fieldname: kssAttr("atfieldname", true);
+}
