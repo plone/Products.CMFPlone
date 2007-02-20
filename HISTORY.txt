@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.5.x - unreleased
 
+    - Fixed cropping of utf8 encoded text (cropText script).
+      This fixes http://dev.plone.org/plone/ticket/6190.
+      [naro]
+
     - Fixed problems with migrating member data like a members fullname. This
       closes http://dev.plone.org/plone/ticket/6111.
       [tesdal]

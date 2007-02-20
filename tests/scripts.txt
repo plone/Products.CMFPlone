@@ -56,3 +56,32 @@ And finally a tuple of lists:
   >>> self.portal.unique(([1, 2], [2, 3], [1, 2]))
   [[1, 2], [2, 3]]
 
+Test cropText.py
+----------------
+
+Test ascii text cropping
+
+  >>> self.portal.cropText('Hello world', 7)
+  'Hello...'
+
+  >>> self.portal.cropText('Hello world', 99)
+  'Hello world'
+
+  >>> self.portal.cropText('Hello world', 10)
+  'Hello worl...'
+
+Test unicode text cropping
+
+  >>> self.portal.cropText(u'Hello world', 10)
+  u'Hello worl...'
+
+  >>> self.portal.cropText(u'Koko\u0159\xedn', 5)
+  u'Koko\u0159...'
+
+Test utf encoded string Kokorin with 'r' and 'i' accented 
+Must return 6 characters, because 5th character is two byte
+
+  >>> text = u'Koko\u0159\xedn'.encode('utf8')
+  >>> self.portal.cropText(text, 5)
+  'Koko\xc5\x99...'
+
