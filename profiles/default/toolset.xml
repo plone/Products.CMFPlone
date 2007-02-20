@@ -78,6 +78,8 @@
            class="Products.CMFPlone.UndoTool.UndoTool"/>
  <required tool_id="portal_url"
            class="Products.CMFPlone.URLTool.URLTool"/>
+ <required tool_id="portal_view_customizations"
+           class="plone.app.customerize.tool.ViewTemplateContainer"/>
  <required tool_id="portal_workflow"
            class="Products.CMFPlone.WorkflowTool.WorkflowTool"/>
  <required tool_id="translation_service"

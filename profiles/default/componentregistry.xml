@@ -20,6 +20,9 @@
   <utility
      interface="Products.CMFPlone.interfaces.IMigrationTool"
      object="/portal_migration"/>
+  <utility 
+     interface="five.customerize.interfaces.IViewTemplateContainer"
+     object="/portal_view_customizations"/>
   <utility
      interface="Products.CMFPlone.interfaces.ITranslationServiceTool"
      object="/translation_service"/>
