@@ -1,6 +1,8 @@
 from Acquisition import Explicit
 from OFS.SimpleItem import SimpleItem
 
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+
 from zope.interface import Interface, implements
 from zope.component import adapts
 
@@ -11,6 +13,8 @@ from plone.portlets.interfaces import IPortletDataProvider
 from plone.portlets.interfaces import IPortletAssignment
 from plone.portlets.interfaces import IPortletRenderer
 from plone.portlets.interfaces import IPortletManager
+
+from plone.app.portlets.interfaces import IDeferredPortletRenderer
 
 from zope.app.container.contained import Contained
 
@@ -78,3 +82,28 @@ class Renderer(Explicit):
         """By default, portlets are available
         """
         return True
+        
+class DeferredRenderer(Renderer):
+    """provide defer functionality via KSS
+    
+    in here don't override render() but instead override render_full
+    
+    """
+
+    implements(IDeferredPortletRenderer)
+
+    render_preload = ViewPageTemplateFile('deferred_portlet.pt')
+    
+    def render_full(self):
+        raise NotImplemented, "You must implement 'render_full' as a method or page template file attribute"
+
+    def render(self):
+        """render the portlet
+
+        the template gets choosen depending on the initialize state
+        """
+        if self.initializing:
+            return self.render_preload()
+        else:
+            return self.render_full()
+
