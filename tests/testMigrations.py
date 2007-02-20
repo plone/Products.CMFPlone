@@ -81,6 +81,8 @@ from Products.CMFPlone.migrations.v3_0.alphas import addMaintenanceProperty
 from Products.CMFPlone.migrations.v3_0.alphas import installS5
 from Products.CMFPlone.migrations.v3_0.alphas import addTableContents
 from Products.CMFPlone.migrations.v3_0.alphas import installContentRulesUtility
+from Products.CMFPlone.migrations.v3_0.alphas import addIconForContentRulesConfiglet
+from Products.CMFPlone.migrations.v3_0.alphas import addContentRulesConfiglet
 
 from zope.app.component.hooks import clearSite
 from zope.app.component.interfaces import ISite
@@ -1758,6 +1760,15 @@ class TestMigrations_v3_0(MigrationTest):
         installContentRulesUtility(self.portal, [])
         installContentRulesUtility(self.portal, [])
         self.failIf(sm.queryUtility(IRuleStorage) is None)
+
+    def testContentRulesConfiglet(self):
+        pc = self.portal.portal_controlpanel
+        self.removeActionIconFromTool('ContentRules')
+        self.removeActionFromTool('ContentRules', action_provider='portal_controlpanel')
+        addIconForContentRulesConfiglet(self.portal, [])
+        addContentRulesConfiglet(self.portal, [])
+        self.failUnless('ContentRules' in [x.getActionId() for x in self.icons.listActionIcons()])
+        self.failUnless('ContentRules' in [x.getId() for x in pc.listActions()])
 
 class TestMigrations_v3_0_Actions(MigrationTest):
 

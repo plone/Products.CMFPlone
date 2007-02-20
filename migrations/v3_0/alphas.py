@@ -133,7 +133,14 @@ def alpha2_alpha3(portal):
 
     # add input-label.js
     addFormInputLabelJS(portal, out)
-    
+
+
+    # add content rules configlet
+
+    addIconForContentRulesConfiglet(portal, out)
+
+    addContentRulesConfiglet(portal, out)
+
     return out
 
 
@@ -393,22 +400,6 @@ def installRedirectorUtility(portal, out):
 
     out.append("Registered redirector utility")
 
-def addContentRulesAction(portal, out):
-    portal_actions = getToolByName(portal, 'portal_actions', None)
-    if portal_actions is not None:
-        object_buttons = getattr(portal_actions, 'object_buttons', None)
-        if object_buttons is not None:
-            if 'contentrules' not in object_buttons.objectIds():
-                new_action = Action('contentrules',
-                                    title='Rules',
-                                    description='',
-                                    url_expr='string:${plone_context_state/canonical_object_url}/@@manage-content-rules',
-                                    available_expr="python:plone_context_state.canonical_object()['@@plone_interface_info'].provides('plone.contentrules.engine.interfaces.IRuleAssignable')",
-                                    permissions='Manage portal',
-                                    visible=True)
-                object_buttons._setObject('contentrules', new_action)
-                out.append("Added content rules action to object_buttons")
-
 def addReaderAndEditorRoles(portal, out):
     if 'Reader' not in portal.valid_roles():
         portal._addRole('Reader')
@@ -524,13 +515,13 @@ def addMaintenanceConfiglet(portal, out):
     if controlPanel is not None:
         haveCalendar = False
         for configlet in controlPanel.listActions():
-            if configlet.getId() == 'alendarSettings':
+            if configlet.getId() == 'CalendarSettings':
                 haveCalendar = True
         if not haveCalendar:
             controlPanel.registerConfiglet(id         = 'Maintenance',
                                            appId      = 'Plone',
                                            name       = 'Maintenance',
-                                           action     = 'string:${portal_url}/@@calendar-controlpanel.html',
+                                           action     = 'string:${portal_url}/@@maintenance-controlpanel.html',
                                            category   = 'Plone',
                                            permission = ManagePortal,)
             out.append("Added 'Maintenance' to the control panel")
@@ -557,6 +548,26 @@ def addTableContents(portal, out):
             jstool.registerScript(id="toc.js", enabled=True)
     out.append("Added in css and js for table of contents")
 
+# --
+# ContentRules migration
+# --
+
+def addContentRulesAction(portal, out):
+    portal_actions = getToolByName(portal, 'portal_actions', None)
+    if portal_actions is not None:
+        object_buttons = getattr(portal_actions, 'object_buttons', None)
+        if object_buttons is not None:
+            if 'contentrules' not in object_buttons.objectIds():
+                new_action = Action('contentrules',
+                                    title='Rules',
+                                    description='',
+                                    url_expr='string:${plone_context_state/canonical_object_url}/@@manage-content-rules',
+                                    available_expr="python:plone_context_state.canonical_object()['@@plone_interface_info'].provides('plone.contentrules.engine.interfaces.IRuleAssignable')",
+                                    permissions='Manage portal',
+                                    visible=True)
+                object_buttons._setObject('contentrules', new_action)
+                out.append("Added content rules action to object_buttons")
+
 def installContentRulesUtility(portal, out):
     from plone.contentrules.engine.interfaces import IRuleStorage
     from plone.contentrules.engine.storage import RuleStorage
@@ -566,6 +577,40 @@ def installContentRulesUtility(portal, out):
         sm.registerUtility(RuleStorage(), IRuleStorage)
 
     out.append("Registered content rules storage utility")
+
+def addContentRulesConfiglet(portal, out):
+    """Add the configlet for the contentrules settings"""
+    controlPanel = getToolByName(portal, 'portal_controlpanel', None)
+    if controlPanel is not None:
+        haveContentRules = False
+        for configlet in controlPanel.listActions():
+            if configlet.getId() == 'ContentRulesSettings':
+                haveContentRules = True
+        if not haveContentRules:
+            controlPanel.registerConfiglet(id         = 'ContentRules',
+                                           appId      = 'Plone',
+                                           name       = 'Content Rules Settings',
+                                           action     = 'string:${portal_url}/@@rules-controlpanel.html',
+                                           category   = 'Plone',
+                                           permission = ManagePortal,)
+            out.append("Added 'Content Rules Settings' to the control panel")
+
+def addIconForContentRulesConfiglet(portal, out):
+    """Adds an icon for the maintenance settings configlet. """
+    iconsTool = getToolByName(portal, 'portal_actionicons', None)
+    if iconsTool is not None:
+        for icon in iconsTool.listActionIcons():
+            if icon.getActionId() == 'ContentRules':
+                break # We already have the icon
+        else:
+            iconsTool.addActionIcon(
+                category='controlpanel',
+                action_id='ContentRules',
+                icon_expr='contentrules_icon.gif',
+                title='Content Rules Settings',
+                )
+        out.append("Added 'Content Rules Settings' icon to actionicons tool.")
+
 
 # --
 # KSS registration
@@ -674,4 +719,4 @@ class installKss(object):
         self.install_resources() 
         self.install_skins() 
         out.append("Succesfully migrated portal to KSS")
-
+        
