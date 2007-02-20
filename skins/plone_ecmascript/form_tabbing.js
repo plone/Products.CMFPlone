@@ -48,7 +48,7 @@ ploneFormTabbing.toggle = function(e) {
     }
     var form = findContainer(panels[0], ploneFormTabbing.isForm);
     var current = cssQuery("input[name=fieldset.current]", form);
-    if (current) {
+    if (current && current.length) {
         current[0].value = this.id;
     }
     return false;
