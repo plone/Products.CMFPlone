@@ -2,12 +2,16 @@
       xmlns:metal="http://xml.zope.org/namespaces/metal"
       xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
-      metal:use-macro="context/@@standard_macros/page">
-<head>
-</head>
+      metal:use-macro="context/main_template/macros/master">
+
+<metal:block fill-slot="top_slot"
+                 tal:define="dummy python:request.set('disable_border',1)" />
+                 
+<div metal:fill-slot="portlets_one_slot">&nbsp;</div>
+<div metal:fill-slot="portlets_two_slot">&nbsp;</div>
 
 <body>
-<div metal:fill-slot="body">
+<div metal:fill-slot="main">
   
   <div metal:use-macro="context/@@base-pageform.html/macros/form">
     <metal:block fill-slot="extra_info">
