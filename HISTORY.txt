@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Remove the default language setting from the site control panel. This
+      setting doesn't work anyways right now.
+      [hannosch]
+
     - Split the dashboard into four columns. If you have run an earlier
       version of the alpha, you need to re-run the portlets.xml importhandler
       or re-create your portal to be able to use the dashboard.

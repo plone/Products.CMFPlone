@@ -82,29 +82,6 @@
                           tal:content="description">Description</textarea>
             </div>
 
-            <div class="field">
-                <label for="default_language"
-                       i18n:translate="label_default_language">Default Language</label>
-
-                <div class="formHelp" i18n:translate="help_default_language">
-                Specify the default language setting for newly created items.
-                </div>
-
-                <!-- ISO-639-2 language selector for Plone -->
-                <select name="default_language"
-                        id="default_language"
-                        tabindex=""
-                        value=""
-                        tal:attributes="value default_language;
-                                        tabindex tabindex/next;">
-                   <option value="" i18n:translate="label_choose_language">Choose Language</option>
-                   <option tal:repeat="language portal/availableLanguages"
-                           tal:attributes="value python:language[0];
-                                           selected python:test(default_language == language[0], 'selected', None)"
-                           tal:content="structure python:language[1]" />
-                </select>
-            </div>
-
             <div class="field"
                  tal:define="validateChecked portal/validate_email;
                              allowEnterChecked not:validateChecked;
@@ -311,7 +288,7 @@
             <div class="field"
                  tal:condition="exists:site_properties/allowRolesToAddKeywords"
                  tal:define="allowRolesToAddKeywords request/allowRolesToAddKeywords|site_properties/allowRolesToAddKeywords;
-		             avail_roles python:mtool.getCandidateLocalRoles(here);
+                             avail_roles python:mtool.getCandidateLocalRoles(here);
                              error errors/allowRolesToAddKeywords | nothing;"
                   >
               <fieldset id="fieldset_allowRolesToAddKeywords">
@@ -322,7 +299,7 @@
                   keywords to the site.
                 </div>
 
-		<ul class="configlets"
+                <ul class="configlets"
                     tal:define="allowed_roles site_properties/allowRolesToAddKeywords">
                   <li tal:repeat="role avail_roles">
                     <input class="noborder"
@@ -364,4 +341,3 @@
 
 </body>
 </html>
-

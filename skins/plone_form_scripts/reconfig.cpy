@@ -11,7 +11,6 @@
 from Products.CMFPlone import PloneMessageFactory as _
 
 REQUEST=context.REQUEST
-
 marker=[]
 
 if REQUEST.get("submitted", marker) is marker:
@@ -24,8 +23,8 @@ context.portal_url.getPortalObject().manage_changeProperties(REQUEST)
 
 roles=REQUEST.get('tmp_allowRoleToAddKeyword', [])
 if roles is not None:
-	portal_properties.site_properties.manage_changeProperties(
-			allowRolesToAddKeywords=roles)
+    portal_properties.site_properties.manage_changeProperties(
+        allowRolesToAddKeywords=roles)
 
 from Products.CMFPlone.utils import transaction_note
 transaction_note('Reconfigured portal')
