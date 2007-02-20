@@ -13,6 +13,10 @@
 
 ul.contentViews li a:click {
     evt-click-preventdefault: True;
+    action-client: plone-formProtectionCheck;
+}
+
+ul.contentViews li a:plone-formProtectionChecked {
     action-server: replaceContentRegion;
     replaceContentRegion-tabid: nodeAttr(id, true);
     replaceContentRegion-url: nodeAttr(href);
@@ -26,8 +30,6 @@ The editor is also loaded from the page, so
 we give the initial=false, otherwise that
 should be left out if we do that too.
 */
-
-    /* evt-load-initial: false;*/
 
 iframe.kupu-editor-iframe:load {
     action-client: plone-initKupu;
