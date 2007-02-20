@@ -236,7 +236,7 @@
       </metal:block>
 
     </div>
-
+<div id="kss-spinner"><img tal:attributes="src string:${portal_url}/spinner.gif" alt="" /></div>
 </body>
 </html>
 </metal:page>

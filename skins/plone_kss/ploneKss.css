@@ -1,15 +1,11 @@
-#kss-status {
- 	                 position: fixed;
- 	                 bottom: 0;
- 	                 
- 	                 left: 30%;
- 	                 width: 30%;
- 	                 margin-top: -10px;
- 	                 opacity: 0.85;
- 	                 background-color: #dee7ec;
- 	                 border : 1px solid #8cacbb;
- 	                 color: #436976;
- 	                 font-size: 25px;
- 	                 vertical-align: middle;
- 	                 }
- 	
+#kss-spinner {
+    display:none;
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    background-position: center middle;
+    top: 50%;
+    left: 50%;
+    margin-top: -10px;
+    margin-left: -10px;
+}

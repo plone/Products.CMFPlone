@@ -141,31 +141,33 @@ a.kssCalendarChange:click {
     refreshCalendar-month:         kssAttr(month);
 }
 
-
-
 /* Spinner */
 
 
-body:load {
-    action-client: insertHTMLAsLastChild;
-    insertHTMLAsLastChild-html:"<div id='kss-status'><img src='logoIcon.gif' />Loading</div>";
+/* effects do not seem to like animated gifs 
+#kss-spinner:spinneron {
+    action-client: effect;
+    effect-type: appear;
 }
 
-#kss-status:load {
+#kss-spinner:spinneroff {
+    action-client: effect;
+    effect-type: fade;
+}
+*/
+
+#kss-spinner:spinneron {
+    action-client: setStyle;
+    setStyle-name: display;
+    setStyle-value: block;
+}
+
+#kss-spinner:spinneroff {
     action-client: setStyle;
     setStyle-name: display;
     setStyle-value: none;
 }
 
-#kss-status:spinneron {
-    action-client: effect;
-    effect-type: appear;
-}
-
-#kss-status:spinneroff {
-    action-client: effect;
-    effect-type: fade;
-}
 
 /*
 ** Form tabs
