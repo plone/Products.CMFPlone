@@ -41,12 +41,12 @@ class ControlPanelTestCase(FunctionalTestCase):
 
 
 def test_suite():
-    tests = [#'calendar.txt',
-             #'mail.txt',
-             #'search.txt',
-             #'types.txt',
-             #'seo.txt',
-             #'maintenance.txt',
+    tests = ['calendar.txt',
+             'mail.txt',
+             'search.txt',
+             'types.txt',
+             'seo.txt',
+             'maintenance.txt',
              'filter.txt',
              ]
     suite = TestSuite()
