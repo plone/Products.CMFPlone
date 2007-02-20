@@ -45,21 +45,11 @@
     class=".FactoryTool.FactoryTool"
     interface=".interfaces.IHideFromBreadcrumbs"
     />
-    
 
   <five:implements
     class=".FactoryTool.TempFolder"
     interface=".interfaces.IHideFromBreadcrumbs"
     />
-    
-  <five:deprecatedManageAddDelete
-      class=".Portal.PloneSite" />
-
-  <five:deprecatedManageAddDelete
-      class=".PloneFolder.PloneFolder" />
-
-  <five:deprecatedManageAddDelete
-      class=".CatalogTool.CatalogTool" />
 
   <utility factory=".factory.HiddenProfiles"
            name="Products.CMFPlone" />

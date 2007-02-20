@@ -1,5 +1,7 @@
 <configure xmlns="http://namespaces.zope.org/zope"
-           xmlns:browser="http://namespaces.zope.org/browser">
+           xmlns:browser="http://namespaces.zope.org/browser"
+           xmlns:five="http://namespaces.zope.org/five"
+           i18n_domain="plone">
 
   <!-- The following declarations are deprecated and will be removed in
        Plone 3.5. -->
@@ -43,5 +45,17 @@
       permission="zope.Public"
       allowed_interface=".browser.interfaces.IRecentPortlet"
       />
+
+  <five:deprecatedManageAddDelete
+      class=".Portal.PloneSite" />
+
+  <five:deprecatedManageAddDelete
+      class=".PloneFolder.PloneFolder" />
+
+  <five:deprecatedManageAddDelete
+      class=".CatalogTool.CatalogTool" />
+
+  <five:deprecatedManageAddDelete
+      class="Products.kupu.plone.plonelibrarytool.PloneKupuLibraryTool" />
 
 </configure>
