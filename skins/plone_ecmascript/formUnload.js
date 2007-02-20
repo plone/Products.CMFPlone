@@ -18,14 +18,14 @@ if (!window.beforeunload) (function() {
             // combination with KSS and/or other dynamic replacements.
             var domforms = document.getElementsByTagName('form'); 
             var forms_in_dom = [];
-            for(var i=0; i<this.forms.length; i++){
+            for(var i=0; i<self.forms.length; i++){
                 for(var j=0; j<domforms.length; j++){
-                    if(this.forms[i]==domforms[j]){
+                    if(self.forms[i]==domforms[j]){
                         forms_in_dom.push(domforms[j]);
                     }
                 }
             }
-            this.forms = forms_in_dom;
+            self.forms = forms_in_dom;
              
             
             // Now do the protection work
