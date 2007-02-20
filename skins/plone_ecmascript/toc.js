@@ -61,6 +61,7 @@ function createTableOfContents() {
     for (var i=1; i < elems.length; i++) {
         var li = document.createElement('li');
         var tmp = document.createElement('a');
+        var arrow = document.createElement('span');
         var elem = elems[i];
         
         tmp.innerHTML = elem.innerHTML;
@@ -72,6 +73,11 @@ function createTableOfContents() {
         var level = elem.nodeName.substring(1);
         li.className = 'toc-' + level;
         
+        
+        arrow.innerHTML = '&#9660;';
+        arrow.className = 'arrowDownAlternative';
+        
+        li.appendChild(arrow);
         li.appendChild(tmp);
         dest.appendChild(li);
         
