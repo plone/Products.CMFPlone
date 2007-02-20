@@ -165,6 +165,8 @@ class FilterControlPanelAdapter(SchemaAdapterBase):
                 if v in valid:
                     del valid[v]
             self._settransform(valid_tags=valid)
+            self.kupu_tool.set_stripped_tags(value)
+
         return property(get, set_)
 
     @apply
@@ -192,9 +194,9 @@ class FilterControlPanelAdapter(SchemaAdapterBase):
     @apply
     def style_whitelist():
         def get(self):
-            return []
+            return self.kupu_tool.style_whitelist
         def set(self, value):
-            pass
+            self.kupu_tool.style_whitelist = list(value)
         return property(get, set)
 
     @apply
