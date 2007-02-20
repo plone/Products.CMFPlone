@@ -1737,10 +1737,15 @@ class TestMigrations_v3_0(MigrationTest):
         
     def testUpdateMemberSecurity(self):
         pprop = getToolByName(self.portal, 'portal_properties')
+        self.assertEquals(
+                pprop.site_properties.getProperty('allowAnonymousViewAbout'),
+                False)
+
         pmembership = getToolByName(self.portal, 'portal_membership')
-        self.failUnless(pprop.site_properties.allowAnonymousViewAbout == False)
-        self.failUnless(pmembership.memberareaCreationFlag == False)
-        self.failUnless(self.portal.validate_email == True)
+        self.assertEquals(pmembership.memberareaCreationFlag, False)
+
+        self.assertEquals(self.portal.getProperty('validate_email'), True)
+
         app_roles = self.portal.rolesOfPermission(permission='Add portal member')
         app_perms = self.portal.permission_settings(permission='Add portal member')
         acquire_check = app_perms[0]['acquire']

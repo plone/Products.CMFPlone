@@ -562,11 +562,14 @@ def addTableContents(portal, out):
     
 def updateMemberSecurity(portal, out):
     pprop = getToolByName(portal, 'portal_properties')
-    pmembership = getToolByName(portal, 'portal_membership')
     portal.manage_permission('Add portal member', roles=['Manager','Owner'], acquire=0)
-    pprop.site_properties.allowAnonymousViewAbout = False
-    pmembership.memberareaCreationFlag = False
-    portal.validate_email = True
+    pprop.site_properties.manage_changeProperties(allowAnonymousViewAbout=False)
+
+    portal.manage_changeProperties(validate_email=True)
+
+    pmembership = getToolByName(portal, 'portal_membership')
+    pmembership.memberareaCreationFlag = 0
+
 
 # --
 # KSS registration
