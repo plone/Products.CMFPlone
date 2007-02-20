@@ -1763,11 +1763,27 @@ class TestMigrations_v3_0(MigrationTest):
         self.removeActionIconFromTool('s5_presentation')
         self.removeActionFromTool('s5_presentation', action_provider='portal_actions')
         installS5(self.portal, [])
+        
+        self.folder.invokeFactory('Document', id="test_document")
+        doc_ids = self.portal.portal_actions.listFilteredActionsFor(self.folder.test_document)["document_actions"]
+        assert "s5_presentation" not in [ i["id"] for i in doc_ids ]
+        
+        self.folder.invokeFactory('News Item', id="test_news_item")
+        ni_ids = self.portal.portal_actions.listFilteredActionsFor(self.folder.test_news_item)["document_actions"]
+        assert "s5_presentation" not in [ i["id"] for i in ni_ids ]
+        
+        # add in something to the document
+        self.folder.test_document.setPresentation(True)
+        self.folder.test_document.setText("<h1>Test</h1><p>foo</p>")
+        
+        # now it should appear
+        doc_ids = self.portal.portal_actions.listFilteredActionsFor(self.folder.test_document)["document_actions"]
+        assert "s5_presentation" in [ i["id"] for i in doc_ids ]
+        
+        # and install again
         self.failUnless('s5_presentation' in [x.getActionId() for x in self.icons.listActionIcons()])
-        self.failUnless('s5_presentation' in [x.getId() for x in pa.listActions()])
         installS5(self.portal, [])
         self.failUnless('s5_presentation' in [x.getActionId() for x in self.icons.listActionIcons()])
-        self.failUnless('s5_presentation' in [x.getId() for x in pa.listActions()])
 
 
 class TestMigrations_v3_0_Actions(MigrationTest):

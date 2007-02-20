@@ -2,15 +2,7 @@
 <object name="portal_actions" meta_type="Plone Actions Tool"
    xmlns:i18n="http://xml.zope.org/namespaces/i18n">
  <action-provider name="portal_workflow"/>
- <action-provider name="portal_actions">
-    <action title="View as presentation" action_id="s5_presentation"
-     category="document_actions"
-     condition_expr="python:object.document_s5_alter(test=True)"
-     url_expr="string:${object/absolute_url}/document_s5_presentation"
-     visible="True">
-   <permission>View</permission>
-  </action>
- </action-provider>
+ <action-provider name="portal_actions" />
  <action-provider name="portal_types"/>
  <object name="document_actions" meta_type="CMF Action Category">
   <property name="title"></property>

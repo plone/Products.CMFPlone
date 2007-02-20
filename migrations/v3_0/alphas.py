@@ -475,21 +475,23 @@ def updateRtlCSSexpression(portal, out):
             out.append("Updated RTL.css expression.")
 
 def installS5(portal, out):
-    actionsTool = getToolByName(portal, 'portal_actions', None)
-    if actionsTool is not None:
-        for action in actionsTool.listActions():
-            if action.getId() == 's5_presentation':
-                break # We already have the action
-        else:
-            actionsTool.addAction('s5_presentation',
-                name='View as presentation',
-                action="string:${object/absolute_url}/document_s5_presentation",
-                condition='python:object.document_s5_alter(test=True)',
-                permission='View',
-                category='document_actions',
-                visible=1,
-                )
-        out.append("Added 's5_presentation' action to actions tool.")
+    portalTypes = getToolByName(portal, 'portal_types', None)
+    if portalTypes is not None:
+        document = portalTypes.restrictedTraverse('Document', None)
+        if document:
+            for action in document.listActions():
+                if action.getId() == 's5_presentation':
+                    break # We already have the action
+            else:
+                document.addAction('s5_presentation',
+                    name='View as presentation',
+                    action="string:${object/absolute_url}/document_s5_presentation",
+                    condition='python:object.document_s5_alter(test=True)',
+                    permission='View',
+                    category='document_actions',
+                    visible=1,
+                    )
+            out.append("Added 's5_presentation' action to actions tool.")
 
     iconsTool = getToolByName(portal, 'portal_actionicons', None)
     if iconsTool is not None:
