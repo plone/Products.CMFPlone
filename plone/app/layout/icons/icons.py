@@ -10,6 +10,8 @@ class BaseIcon(object):
     """Helper base class for html rendering
     """
 
+    __allow_access_to_unprotected_subobjects__ = True
+
     @memoize
     def html_tag(self):
         
