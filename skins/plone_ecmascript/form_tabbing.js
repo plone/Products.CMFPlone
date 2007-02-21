@@ -96,7 +96,9 @@ ploneFormTabbing.initializeForm = function(form) {
         a.id = legend.id;
         a.href = "#" + legend.id;
         a.onclick = ploneFormTabbing.toggle;
-        copyChildNodes(legend, a);
+        var span = document.createElement("span");
+        copyChildNodes(legend, span);
+        a.appendChild(span);
         tab.appendChild(a);
         tabs.appendChild(tab);
         parent.removeChild(legend);
