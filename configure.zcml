@@ -51,6 +51,16 @@
     interface=".interfaces.IHideFromBreadcrumbs"
     />
 
+  <five:implements
+    class="Products.PluggableAuthService.PluggableAuthService.PluggableAuthService"
+    interface=".interfaces.IHideFromBreadcrumbs"
+    />
+
+  <five:implements
+    class="Products.PluggableAuthService.plugins.BasePlugin.BasePlugin"
+    interface=".interfaces.IHideFromBreadcrumbs"
+    />
+
   <utility factory=".factory.HiddenProfiles"
            name="Products.CMFPlone" />
 

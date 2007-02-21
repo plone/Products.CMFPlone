@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Hide the PAS folder and its plugins from the breadcrumbs.
+      [wichert]
+
     - Fixed cropping of utf8 encoded text. cropText script 
       is marked as deprecated now.
       This fixes http://dev.plone.org/plone/ticket/6190.
