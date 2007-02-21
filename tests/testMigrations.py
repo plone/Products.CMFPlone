@@ -82,6 +82,7 @@ from Products.CMFPlone.migrations.v3_0.alphas import addMaintenanceProperty
 from Products.CMFPlone.migrations.v3_0.alphas import installS5
 from Products.CMFPlone.migrations.v3_0.alphas import addTableContents
 from Products.CMFPlone.migrations.v3_0.alphas import updateMemberSecurity
+from Products.CMFPlone.migrations.v3_0.alphas import updatePASPlugins
 
 from zope.app.component.hooks import clearSite
 from zope.app.component.interfaces import ISite
@@ -1784,6 +1785,24 @@ class TestMigrations_v3_0(MigrationTest):
         self.failUnless('s5_presentation' in [x.getActionId() for x in self.icons.listActionIcons()])
         installS5(self.portal, [])
         self.failUnless('s5_presentation' in [x.getActionId() for x in self.icons.listActionIcons()])
+
+
+    def testPASPluginInterfaces(self):
+        pas = self.portal.acl_users
+        from Products.PluggableAuthService.interfaces.plugins import IUserEnumerationPlugin
+        pas.plugins.deactivatePlugin(IUserEnumerationPlugin, 'mutable_properties')
+
+        updatePASPlugins(self.portal, [])
+
+        plugin = pas.mutable_properties
+        for intf_id in plugin.listInterfaces():
+            try:
+                intf = pas.plugins._getInterfaceFromName(intf_id)
+                self.failUnless('mutable_properties' in pas.plugins.listPluginIds(intf))
+            except KeyError:
+                # Ignore unregistered interface types 
+                pass
+
 
 
 class TestMigrations_v3_0_Actions(MigrationTest):
