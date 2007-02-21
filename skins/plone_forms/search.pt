@@ -88,7 +88,7 @@
 
             </dt>
             
-            <dd tal:content="python:here.cropText(result.Description, desc_length, desc_ellipsis)"> Description </dd>
+            <dd tal:content="python:plone_view.cropText(result.Description, desc_length, desc_ellipsis)"> Description </dd>
 
         </tal:entry>
         </tal:results>
