@@ -30,12 +30,16 @@ if setup.USELAYER:
     layer.ZCML.setUp()
     layer.PloneSite.setUp()
 
+ignoredSkinLayers = ['portal_skins/kupu_plone', 'portal_skins/kupu_tests']
+
 ignoredObjectIds = ['rssBody', 'RSS', 'rss_template', 'search_rss',
                     'test_ecmascripts', 'kupu_wysiwyg_support',
                     # There is no DTD for the pdf topic stuff
                     'atct_topic_pdf', 'atct_topic_pdf_template']
 
-ignoredSkinLayers = ['portal_skins/kupu_plone', 'portal_skins/kupu_tests']
+if setup.PLONE30:
+    # Ignore until it is no longer DTML
+    ignoredObjectIds += ['mail_password_template']
 
 
 class TestSkins(PloneTestCase.PloneTestCase):
