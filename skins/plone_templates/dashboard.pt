@@ -54,12 +54,22 @@
             <div metal:use-macro="context/global_statusmessage/macros/portal_message">
                 Portal status message
             </div>
-
-            <!-- Author information -->
-            <h1 class="documentFirstHeading" i18n:translate="dashboard_title">
-                <span tal:content="name" i18n:name="user_name" />'s dashboard
-            </h1>
             <div id="dashboard">
+                <div id="dashboard-actions">
+                    <ul>
+                        <li class="portalUser">
+                            <a href="personalize_form" 
+                               tal:attributes="href string:${portal_url}/author"
+                               i18n:translate="">Profile</a>
+                        </li>
+                        <li>
+                            <a href="personalize_form" 
+                               tal:attributes="href string:${portal_url}/personalize_form"
+                               i18n:translate="">Preferences</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="visualClear"><!-- --></div>
                 <div id="dashboard-portlets1" 
                   tal:content="structure provider:plone.dashboard1" />
                 <div id="dashboard-portlets2" 

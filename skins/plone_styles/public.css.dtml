@@ -1059,6 +1059,27 @@ div.managedPortlet.portlet {
     border-bottom:none;
 }
 
+#dashboard-actions {
+    float:right;
+}
+
+#dashboard-actions ul {
+    list-style-image:none;
+    list-style-position:outside;
+    list-style-type:none;    
+    margin-top:0;
+}
+
+#dashboard-actions ul li {
+    display:inline;
+    padding-left:0.7em;
+}
+
+#dashboard-actions ul li.portalUser {
+    background:transparent url(&dtml-portal_url;/user.gif) no-repeat scroll left center;
+    padding-left:18px;
+}
+
 /* manage portlets */
 
 .section div {
