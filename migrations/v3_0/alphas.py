@@ -554,6 +554,16 @@ def addMaintenanceProperty(portal, out):
                 sheet.manage_addProperty('number_of_days_to_keep',7,'int')
                 out.append("Added 'number_of_days_to_keep' property to site properties")
 
+def addLinkIntegritySwitch(portal, out):
+    """ adds a site property to portal_properties """
+    tool = getToolByName(portal, 'portal_properties', None)
+    if tool is not None:
+        sheet = getattr(tool, 'site_properties', None)
+        if sheet is not None:
+            if not sheet.hasProperty('enable_link_integrity_checks'):
+                sheet.manage_addProperty('enable_link_integrity_checks', True, 'boolean')
+                out.append("Added 'enable_link_integrity_checks' property to site properties")
+
 def addTableContents(portal, out):
     """ Adds in table of contents """
     csstool = getToolByName(portal, "portal_css", None)

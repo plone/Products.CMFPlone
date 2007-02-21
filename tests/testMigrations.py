@@ -79,6 +79,7 @@ from Products.CMFPlone.migrations.v3_0.alphas import migrateLocalroleForm
 from Products.CMFPlone.migrations.v3_0.alphas import reorderUserActions
 from Products.CMFPlone.migrations.v3_0.alphas import updateRtlCSSexpression
 from Products.CMFPlone.migrations.v3_0.alphas import addMaintenanceProperty
+from Products.CMFPlone.migrations.v3_0.alphas import addLinkIntegritySwitch
 from Products.CMFPlone.migrations.v3_0.alphas import installS5
 from Products.CMFPlone.migrations.v3_0.alphas import addTableContents
 from Products.CMFPlone.migrations.v3_0.alphas import updateMemberSecurity
@@ -1723,6 +1724,14 @@ class TestMigrations_v3_0(MigrationTest):
         tool = self.portal.portal_properties
         sheet = tool.site_properties
         self.failUnless(sheet.hasProperty('number_of_days_to_keep'))
+    
+    def testAddLinkIntegritySwitch(self):
+        # adds a site property to portal_properties
+        self.removeSiteProperty('enable_link_integrity_checks')
+        addLinkIntegritySwitch(self.portal, [])
+        tool = self.portal.portal_properties
+        sheet = tool.site_properties
+        self.failUnless(sheet.hasProperty('enable_link_integrity_checks'))
     
     def testAddTableContents(self):
         css = self.portal.portal_css
