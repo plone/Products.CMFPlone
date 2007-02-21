@@ -136,6 +136,8 @@ def alpha2_alpha3(portal):
     
     #modify member security settings to match new default policies
     updateMemberSecurity(portal, out)
+
+    updatePASPlugins(portal, out)
     
     return out
 
@@ -149,6 +151,7 @@ def enableZope3Site(portal, out):
         portal.setSiteManager(components)
 
         out.append('Made the portal a Zope3 site.')
+
 
 def migrateOldActions(portal, out):
     special_providers = ['portal_controlpanel',
@@ -192,6 +195,7 @@ def migrateOldActions(portal, out):
         # Remove old actions from migrated providers
         provider._actions = ()
     out.append('Migrated old actions to new actions stored in portal_actions.')
+
 
 def addNewCSSFiles(portal, out):
     # add new css files to the portal_css registries
@@ -571,6 +575,23 @@ def updateMemberSecurity(portal, out):
 
     pmembership = getToolByName(portal, 'portal_membership')
     pmembership.memberareaCreationFlag = 0
+    out.append("Updated member management security")
+
+
+def updatePASPlugins(portal, out):
+    pas = portal.acl_users
+    plugin = pas.mutable_properties
+
+    activate = []
+    for info in pas.plugins.listPluginTypeInfo():
+        interface = info['interface']
+        id = info['id']
+        if plugin.testImplements(interface):
+            activate.append(id)
+            out.append('Activate interface for PAS plugin %s: %s' % 
+                    (plugin.getId(), info['title']))
+    plugin.manage_activateInterfaces(activate)
+
 
 
 # --
