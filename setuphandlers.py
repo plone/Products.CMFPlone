@@ -42,7 +42,7 @@ class HiddenProducts(object):
         return ['Archetypes', 'ATContentTypes', 'ATReferenceBrowserWidget',
                 'CMFActionIcons', 'CMFCalendar', 'CMFDefault',
                 'CMFTopic', 'CMFUid', 'DCWorkflow', 'GroupUserFolder',
-                'PasswordResetTool', 'wicked.at', 'plone.app.iterate', 'kupu',
+                'PasswordResetTool', 'wicked.at', 'kupu',
                 'Kupu', 'CMFFormController', 'MimetypesRegistry',
                 'PortalTransforms', 'CMFDiffTool', 'CMFEditions'
                ]
