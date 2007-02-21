@@ -56,7 +56,7 @@
 
                         <tal:block replace="structure here/product_icon.gif"/>
                      
-                        <span tal:replace="pid">
+                        <span tal:replace="product/title">
                         Product Name
                         </span>
         
@@ -126,7 +126,7 @@
                         
                     <label for="" tal:attributes="for pid">
                         <tal:block replace="structure here/product_icon.gif"/>
-                        <span tal:replace="product/id" />
+                        <span tal:replace="product/title" />
                         
                         <span tal:replace="product/installedVersion">
                         1.3
