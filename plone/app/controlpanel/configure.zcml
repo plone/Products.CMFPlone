@@ -9,6 +9,8 @@
   <adapter factory=".filter.FilterControlPanelAdapter" />
 
   <adapter factory=".search.SearchControlPanelAdapter" />
+  
+  <adapter factory=".security.SecurityControlPanelAdapter" />
 
   <adapter factory=".skins.SkinsControlPanelAdapter" />
 
@@ -59,6 +61,13 @@
       name="search-controlpanel.html"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       class=".search.SearchControlPanel"
+      permission="cmf.ManagePortal"
+      />
+      
+  <browser:page
+      name="security-controlpanel.html"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".security.SecurityControlPanel"
       permission="cmf.ManagePortal"
       />
 
