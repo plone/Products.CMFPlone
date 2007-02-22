@@ -21,9 +21,11 @@
           tal:define="charset site_properties/default_charset|string:utf-8"
           tal:attributes="content string:text/html;;charset=${charset}" />
 
-    <metal:baseslot define-slot="base">
-      <base href="" tal:attributes="href here/renderBase" />
-    </metal:baseslot>
+    <tal:comment replace="nothing">
+      We need to put the base tag in a comment to get rid of it, otherwise
+      ZPublisher adds one itself.
+    </tal:comment>
+    <!-- <base /> -->
 
     <meta name="generator" content="Plone - http://plone.org" />
 
