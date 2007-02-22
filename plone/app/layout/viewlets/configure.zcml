@@ -47,12 +47,22 @@
         />
 
     <!-- Define some viewlets -->
-
+    
+    <!-- Render the browser title -->
     <browser:viewlet
         name="plone.htmlhead.title"
         manager=".interfaces.IHtmlHead"
         class=".common.TitleViewlet"
         permission="zope2.View" 
+        />
+        
+    <!-- Render lock info -->
+    <browser:viewlet
+        name="plone.lockinfo"
+        manager=".interfaces.IAboveContent"
+        class="plone.locking.browser.info.LockInfoViewlet"
+        permission="cmf.ModifyPortalContent"
+        view="Products.Archetypes.interfaces.IEditForm"
         />
 
 </configure>
