@@ -11,16 +11,32 @@
 
 var ploneInputLabel = {
     focus: function() {
-        if (hasClassName(this, "inputLabelActive") && (this.value == this.title)) {
-            this.value = '';
-            removeClassName(this, "inputLabelActive");
+        return function(e) {
+            var target;
+            if (!e) var e = window.event;
+            if (e.target) target = e.target;
+            else if (e.srcElement) target = e.srcElement;
+            if (target.nodeType == 3) // defeat Safari bug
+                target = target.parentNode;
+            if (hasClassName(target, "inputLabelActive") && (target.value == target.title)) {
+                target.value = '';
+                removeClassName(target, "inputLabelActive");
+            }
         }
     },
 
     blur: function() {
-        if (this.value == '') {
-            addClassName(this, "inputLabelActive");
-            this.value = this.title;
+        return function(e) {
+            var target;
+            if (!e) var e = window.event;
+            if (e.target) target = e.target;
+            else if (e.srcElement) target = e.srcElement;
+            if (target.nodeType == 3) // defeat Safari bug
+                target = target.parentNode;
+            if (target.value == '') {
+                addClassName(target, "inputLabelActive");
+                target.value = target.title;
+            }
         }
     },
 
@@ -29,17 +45,27 @@ var ploneInputLabel = {
     },
 
     submit: function() {
-        var elements = cssQuery("input[title].inputLabelActive", this);
+        return function(e) {
+            var target;
 
-        for (var i=0; i<elements.length; i++) {
-            var element = elements[i];
-            if (hasClassName(element, "inputLabelActive") && (element.value == element.title)) {
-                element.value = '';
-                removeClassName(element, "inputLabelActive");
+            if (!e) var e = window.event;
+            if (e.target) target = e.target;
+            else if (e.srcElement) target = e.srcElement;
+            if (target.nodeType == 3) // defeat Safari bug
+                target = target.parentNode;
+
+            var elements = cssQuery("input[title].inputLabelActive");
+
+            for (var i=0; i<elements.length; i++) {
+                var element = elements[i];
+                if (hasClassName(element, "inputLabelActive") && (element.value == element.title)) {
+                    element.value = '';
+                    removeClassName(element, "inputLabelActive");
+                }
             }
+            if (target.inputLabelData.oldsubmit)
+                return this.inputLabelData.oldsubmit();
         }
-        if (this.inputLabelData.oldsubmit)
-            return this.inputLabelData.oldsubmit();
     },
 
     init: function() {
@@ -53,13 +79,13 @@ var ploneInputLabel = {
                 element.value = element.title;
                 replaceClassName(element, "inputLabel", "inputLabelActive");
             }
-            registerEventListener(element, 'focus', ploneInputLabel.focus);
-            registerEventListener(element, 'blur', ploneInputLabel.blur);
+            registerEventListener(element, 'focus', ploneInputLabel.focus());
+            registerEventListener(element, 'blur', ploneInputLabel.blur());
             if (form.onsubmit != ploneInputLabel.submit) {
                 if (typeof form.inputLabelData == 'undefined')
                     form.inputLabelData = new Object();
                 form.inputLabelData.oldsubmit = form.onsubmit;
-                form.onsubmit = ploneInputLabel.submit;
+                form.onsubmit = ploneInputLabel.submit();
             }
         }
     }
