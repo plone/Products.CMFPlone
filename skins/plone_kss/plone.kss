@@ -218,3 +218,55 @@ input[name="form_submit"]:click {
    savekupu-text: currentFormVarFromKssAttr("atfieldname", true);
    savekupu-fieldname: kssAttr("atfieldname", true);
 }
+
+/* Folder contents stuff */
+
+table.listing input[type="checkbox"]:change {
+    action-client: plone-createCheckBoxSelection;
+    plone-createCheckBoxSelection-group: 'table.listing input[type="checkbox"]';
+}
+
+
+table.listing input[type="checkbox"]:change {
+    action-client: toggleClass;
+    toggleClass-kssSelector: parentnode("table.listing tbody tr");
+    toggleClass-classname: "selected";
+}
+
+
+#foldercontents-title-column:click {
+    action-server: foldercontents_sorton;
+    evt-click-preventdefault: True;
+    foldercontents_sorton-sort_on: "sortable_title";
+} 
+
+#foldercontents-modified-column:click {
+    action-server: foldercontents_sorton;
+    evt-click-preventdefault: True;
+    foldercontents_sorton-sort_on: "modified";
+} 
+
+#foldercontents-status-column:click {
+    action-server: foldercontents_sorton;
+    evt-click-preventdefault: True;
+    foldercontents_sorton-sort_on: "review_state";
+} 
+
+#foldercontents-order-column:click {
+    action-server: foldercontents_sorton;
+    evt-click-preventdefault: True;
+    foldercontents_sorton-sort_on: "getObjPositionInParent";
+} 
+
+#foldercontents-selectall:click {
+    action-server: foldercontents-selectall;
+    evt-click-preventdefault: True;
+} 
+
+/* kupu stuff */
+#kupu-save-button:load {
+   action-client: setStyle;
+   setStyle-name: display;
+   setStyle-value: inline;
+}
+
