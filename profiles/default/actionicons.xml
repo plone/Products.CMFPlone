@@ -69,6 +69,10 @@
               action_id="CalendarSettings"
               title="Calendar Settings" priority="0"
               icon_expr="event_icon.gif"/>
+<action-icon category="controlpanel"
+             action_id="SecuritySettings"
+             title="Security Settings" priority="0"
+             icon_expr="lock_icon.gif"/>
  <action-icon category="plone" action_id="full_screen"
               title="Toggle full screen mode" priority="0"
               icon_expr="fullscreenexpand_icon.gif"/>
