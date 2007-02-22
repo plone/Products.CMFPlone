@@ -48,6 +48,7 @@ class MultiCheckBoxThreeColumnWidget(MultiCheckBoxWidget):
         rendered_items = []
         count = 0
 
+        # XXX remove the inline styles!
         rendered_items.append('<div style="float:left; margin-right: 2em;">')
 
         # Handle case of missing value
