@@ -8,7 +8,7 @@
     <div class="documentByLine">
 
         <img src="" alt=""
-           tal:condition="isLocked"
+           tal:condition="context/@@plone_lock_info/is_locked"
            tal:replace="structure python:locked.tag(title='Locked')"
            />
 
@@ -40,15 +40,10 @@
         </span>
 
         <span class="state-expired"
-            tal:condition="python:portal.isExpired(here)"
+            tal:condition="python:portal.isExpired(here) and member.checkPermission('Modify portal content', here)"
             i18n:translate="time_expired">
         &mdash; expired
         </span>
-
-        <img src="" alt=""
-             tal:condition="isLocked"
-             tal:replace="structure python:locked.tag(title='This item is locked')"
-             />
 
         <div class="documentContributors"
              tal:condition="here/Contributors"
