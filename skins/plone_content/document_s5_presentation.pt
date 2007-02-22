@@ -2,8 +2,11 @@
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" >
 
 <metal:block use-macro="here/global_defines/macros/defines" />
-<html xmlns="http://www.w3.org/1999/xhtml" metal:define-macro="master">
-
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      metal:define-macro="master">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"
           tal:define="charset here/site_properties/default_charset|string:utf-8"
