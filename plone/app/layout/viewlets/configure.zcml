@@ -62,7 +62,16 @@
         manager=".interfaces.IAboveContent"
         class="plone.locking.browser.info.LockInfoViewlet"
         permission="cmf.ModifyPortalContent"
+        for="plone.locking.interfaces.ITTWLockable"
         view="Products.Archetypes.interfaces.IEditForm"
+        />
+    <browser:viewlet
+        name="plone.lockinfo"
+        manager=".interfaces.IAboveContent"
+        class="plone.locking.browser.info.LockInfoViewlet"
+        permission="cmf.ModifyPortalContent"
+        for="plone.locking.interfaces.ITTWLockable"
+        view="plone.app.form.interfaces.IEditForm"
         />
 
 </configure>
