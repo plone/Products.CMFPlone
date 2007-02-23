@@ -4,11 +4,10 @@ from zope.interface import Interface
 from zope.component import adapts
 from zope.formlib.form import FormFields
 from zope.interface import implements
-from zope.schema import Int
-from zope.schema import Password
-from zope.schema import TextLine
-from zope.schema import List
-from zope.schema import Tuple
+from zope import schema
+from zope.app.form import CustomWidgetFactory
+from zope.app.form.browser import ObjectWidget
+from zope.app.form.browser import ListSequenceWidget
 
 from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault.formlib.schema import ProxyFieldProperty
@@ -29,68 +28,77 @@ XHTML_TAGS = set(
     'table tbody td textarea tfoot th thead title tr tt ul var'.split())
 
 
+class ITagAttrPair(Interface):
+    tags = schema.TextLine(title=u"tags")
+    attributes = schema.TextLine(title=u"attributes")
+
+class TagAttrPair:
+    implements(ITagAttrPair)
+    def __init__(self, tags='', attributes=''):
+        self.tags = tags
+        self.attributes = attributes
+
 class IFilterTagsSchema(Interface):
 
-    nasty_tags = List(
+    nasty_tags = schema.List(
         title=_(u'Nasty tags'),
         description=_(u"These tags, and their content are completely blocked "
                       "when a page is save or rendered."),
         default=[u'applet', u'embed', u'object', u'script'],
-        value_type=TextLine(),
+        value_type=schema.TextLine(),
         required=False)
 
-    stripped_tags = List(
+    stripped_tags = schema.List(
         title=_(u'Stripped tags'),
         description=_(u"These tags are stripped when saving or rendering,"
                       "but any content is preserved."),
         default=[u'font', ],
-        value_type=TextLine(),
+        value_type=schema.TextLine(),
         required=False)
 
     
-    custom_tags = List(
+    custom_tags = schema.List(
         title=_(u'Custom tags'),
         description=_(u"Add tag names here for tags which are not part of "
                       "XHTML but which should be permitted."),
         default=[],
-        value_type=TextLine(),
+        value_type=schema.TextLine(),
         required=False)
 
 
 class IFilterAttributesSchema(Interface):
-    stripped_attributes = List(
+    stripped_attributes = schema.List(
         title=_(u'Stripped attributes'),
         description=_(u"These attributes are stripped from any tag when "
                       "saving."),
         default=(u'dir lang valign halign border frame rules cellspacing '
                  'cellpadding bgcolor').split(),
-        value_type=TextLine(),
+        value_type=schema.TextLine(),
         required=False)
     
-    stripped_combinations = Tuple(
+    stripped_combinations = schema.List(
         title=_(u'Stripped combinations'),
         description=_(u"These attributes are stripped from any tag when "
                       "saving."),
-        default=tuple(),
+        default=[],
         #default=u'dir lang valign halign border frame rules cellspacing cellpadding bgcolor'.split()
-        value_type=TextLine(), # XXX Needs to be a 2-tuple of lists of strings
+        value_type=schema.Object(ITagAttrPair, title=u"combination"),
         required=False)
 
 class IFilterEditorSchema(Interface):
-    style_whitelist = List(
+    style_whitelist = schema.List(
         title=_(u'Permitted styles'),
         description=_(u'These CSS styles are allowed in style attributes.'),
         default=u'text-align list-style-type float'.split(),
-        value_type=TextLine(),
+        value_type=schema.TextLine(),
         required=False)
     
-    class_whitelist = List(
-        title=_(u'Permitted classes'),
-        description=_(u'These class names styles are allowed in class '
-                      'attributes. Any classes explicitly defined '
-                      'within editor styles are also permitted.'),
+    class_blacklist = schema.List(
+        title=_(u'Filtered classes'),
+        description=_(u'These class names styles are not allowed in class '
+                      'attributes.'),
         default=[],
-        value_type=TextLine(),
+        value_type=schema.TextLine(),
         required=False)
 
 
@@ -200,27 +208,35 @@ class FilterControlPanelAdapter(SchemaAdapterBase):
         return property(get, set)
 
     @apply
-    def class_whitelist():
+    def class_blacklist():
+        '''Ideally the form should allow setting a class whitelist,
+        but that will have to be added later.'''
         def get(self):
-            return []
+            return  self.kupu_tool.getClassBlacklist()
         def set(self, value):
-            pass
+            self.kupu_tool.class_blacklist = list(value)
         return property(get, set)
 
     @apply
     def stripped_attributes():
         def get(self):
-            return []
+            return self.kupu_tool.get_stripped_attributes()
         def set(self, value):
-            pass
+            self.kupu_tool.set_stripped_attributes(value)
         return property(get, set)
 
     @apply
     def stripped_combinations():
         def get(self):
-            return []
+            return  [TagAttrPair(' '.join(t),' '.join(a)) for (t,a) in self.kupu_tool.get_stripped_combinations()]
         def set(self, value):
-            pass
+            stripped = []
+            for ta in value:
+                tags = ta.tags.replace(',', ' ').split()
+                attributes = ta.attributes.replace(',', ' ').split()
+                stripped.append((tags,attributes))
+
+            self.kupu_tool.set_stripped_combinations(stripped)
         return property(get, set)
 
 
@@ -236,10 +252,13 @@ filtereditor = FormFieldsets(IFilterEditorSchema)
 filtereditor.id = 'filtereditor'
 filtereditor.label = _(u'Styles')
 
+tagattr_widget = CustomWidgetFactory(ObjectWidget, TagAttrPair)
+combination_widget = CustomWidgetFactory(ListSequenceWidget, subwidget=tagattr_widget)
 
 class FilterControlPanel(ControlPanelForm):
 
     form_fields = FormFieldsets(filtertagset, filterattributes, filtereditor)
+    form_fields['stripped_combinations'].custom_widget = combination_widget
 
     label = _("Html Filter settings")
     description = _("Html filtering settings for this site.")
