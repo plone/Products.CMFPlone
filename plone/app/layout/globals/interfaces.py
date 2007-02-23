@@ -182,3 +182,8 @@ class IContextState(Interface):
         """A mapping of action categories to action ids to
         action information: mapping[cat][id] == actioninfo
         """
+        
+class IViewView(Interface):
+    """Marker interface which specifies that the current view is, in fact,
+    a canonical "view" of the object, e.g. what may go on the "view" tab.
+    """
