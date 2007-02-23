@@ -17,7 +17,7 @@ from Products.CMFPlone.interfaces.NonStructuralFolder import INonStructuralFolde
 from Products.CMFPlone.interfaces import ITranslationServiceTool
 
 from zope.deprecation import deprecate, deprecated
-from zope.interface import implements
+from zope.interface import implements, alsoProvides
 from zope.component import getMultiAdapter, queryMultiAdapter, getUtility
 
 import ZTUtils
@@ -26,6 +26,7 @@ import sys
 from plone.memoize.view import memoize
 from plone.portlets.interfaces import IPortletManager, IPortletManagerRenderer
 
+from plone.app.layout.globals.interfaces import IViewView
 from plone.app.layout.icons.interfaces import IContentIcon
 
 deprecated(
@@ -61,7 +62,7 @@ class Plone(utils.BrowserView):
         # passed in through the template call, so we need this to support
         # products which may have used this little hack
         options = context.vars.get('options',{})
-        view = context.vars.get('view', {})
+        view = context.vars.get('view', None)
         template = context.vars.get('template', None)
 
         state = {}
@@ -83,6 +84,8 @@ class Plone(utils.BrowserView):
         context = utils.context(self)
         if options is None:
             options = {}
+        if view is None:
+            view = self
 
         # XXX: Can't store data as attributes directly because it will
         # insert the view into the acquisition chain. Someone should
@@ -150,7 +153,12 @@ class Plone(utils.BrowserView):
         if template_id is None and template is not None:
             template_id = template.getId()
         self._data['template_id'] = template_id
+        
         isViewTemplate = (template_id == context_state.view_template_id())
+        if isViewTemplate and not IViewView.providedBy(view):
+            # Mark the view as being "the" view
+            alsoProvides(view, IViewView)
+            
         self._data['isViewTemplate'] = isViewTemplate
 
     # XXX: This is lame

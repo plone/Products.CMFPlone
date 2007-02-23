@@ -205,7 +205,7 @@ class TestPloneView(PloneTestCase.PloneTestCase):
         # Must return 6 characters, because 5th character is two byte
         text = u'Koko\u0159\xedn'.encode('utf8')
         self.assertEqual(view.cropText(text, 5), 'Koko\xc5\x99...')
-
+    
 class TestVisibleIdsEnabled(PloneTestCase.PloneTestCase):
     '''Tests the visibleIdsEnabled method'''
 
@@ -234,7 +234,6 @@ class TestVisibleIdsEnabled(PloneTestCase.PloneTestCase):
         self.props.manage_changeProperties(visible_ids=True)
         self.member.setProperties(visible_ids=True)
         self.failUnless(self.view.visibleIdsEnabled())
-
 
 def test_suite():
     from unittest import TestSuite, makeSuite
