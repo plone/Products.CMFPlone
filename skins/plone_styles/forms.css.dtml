@@ -179,4 +179,7 @@ input.inputLabelActive {
   color: &dtml-discreetColor;;
 }
 
+
+tr.selected { background-color: yellow;}
+
 /* </dtml-with> */
