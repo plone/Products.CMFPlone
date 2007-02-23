@@ -3,64 +3,64 @@
    cookie_persistence="False" default_skin="Plone Default"
    request_varname="plone_skin">
  <object name="ATContentTypes" meta_type="Filesystem Directory View"
-    directory="ATContentTypes/skins/ATContentTypes"/>
+    directory="Products.ATContentTypes:skins/ATContentTypes"/>
  <object name="ATReferenceBrowserWidget" meta_type="Filesystem Directory View"
-    directory="ATReferenceBrowserWidget/skins/ATReferenceBrowserWidget"/>
+    directory="Products.ATReferenceBrowserWidget:skins/ATReferenceBrowserWidget"/>
  <object name="ResourceRegistries" meta_type="Filesystem Directory View"
-    directory="ResourceRegistries/skins/ResourceRegistries"/>
+    directory="Products.ResourceRegistries:skins/ResourceRegistries"/>
  <object name="LanguageTool" meta_type="Filesystem Directory View"
-    directory="PloneLanguageTool/skins/LanguageTool"/>
+    directory="Products.PloneLanguageTool:skins/LanguageTool"/>
  <object name="archetypes" meta_type="Filesystem Directory View"
-    directory="Archetypes/skins/archetypes"/>
+    directory="Products.Archetypes:skins/archetypes"/>
  <object name="cmf_legacy" meta_type="Filesystem Directory View"
-    directory="CMFPlone/skins/cmf_legacy"/>
+    directory="Products.CMFPlone:skins/cmf_legacy"/>
  <object name="custom" meta_type="Folder"/>
  <object name="gruf" meta_type="Filesystem Directory View"
-    directory="GroupUserFolder/skins/gruf"/>
+    directory="Products.GroupUserFolder:skins/gruf"/>
  <object name="gruf_plone_2_0" meta_type="Filesystem Directory View"
-    directory="GroupUserFolder/skins/gruf_plone_2_0"/>
+    directory="Products.GroupUserFolder:skins/gruf_plone_2_0"/>
  <object name="kupu" meta_type="Filesystem Directory View"
-    directory="kupu/common"/>
+    directory="Products.kupu:common"/>
  <object name="kupu_plone" meta_type="Filesystem Directory View"
-    directory="kupu/plone/kupu_plone_layer"/>
+    directory="Products.kupu:plone/kupu_plone_layer"/>
  <object name="PasswordReset" meta_type="Filesystem Directory View"
-    directory="PasswordResetTool/skins/PasswordReset"/>
+    directory="Products.PasswordResetTool:skins/PasswordReset"/>
  <object name="mimetypes_icons" meta_type="Filesystem Directory View"
-    directory="MimetypesRegistry/skins/mimetypes_icons"/>
+    directory="Products.MimetypesRegistry:skins/mimetypes_icons"/>
  <object name="plone_kss" meta_type="Filesystem Directory View"
-    directory="CMFPlone/skins/plone_kss"/>
+    directory="Products.CMFPlone:skins/plone_kss"/>
  <object name="archetypes_kss" meta_type="Filesystem Directory View"
-    directory="Archetypes/skins/archetypes_kss"/>
+    directory="Products.Archetypes:skins/archetypes_kss"/>
  <object name="plone_3rdParty" meta_type="Filesystem Directory View"
-    directory="CMFPlone/skins/plone_3rdParty"/>
+    directory="Products.CMFPlone:skins/plone_3rdParty"/>
  <object name="plone_content" meta_type="Filesystem Directory View"
-    directory="CMFPlone/skins/plone_content"/>
+    directory="Products.CMFPlone:skins/plone_content"/>
  <object name="plone_deprecated" meta_type="Filesystem Directory View"
-    directory="CMFPlone/skins/plone_deprecated"/>
+    directory="Products.CMFPlone:skins/plone_deprecated"/>
  <object name="plone_ecmascript" meta_type="Filesystem Directory View"
-    directory="CMFPlone/skins/plone_ecmascript"/>
+    directory="Products.CMFPlone:skins/plone_ecmascript"/>
  <object name="plone_form_scripts" meta_type="Filesystem Directory View"
-    directory="CMFPlone/skins/plone_form_scripts"/>
+    directory="Products.CMFPlone:skins/plone_form_scripts"/>
  <object name="plone_forms" meta_type="Filesystem Directory View"
-    directory="CMFPlone/skins/plone_forms"/>
+    directory="Products.CMFPlone:skins/plone_forms"/>
  <object name="plone_images" meta_type="Filesystem Directory View"
-    directory="CMFPlone/skins/plone_images"/>
+    directory="Products.CMFPlone:skins/plone_images"/>
  <object name="plone_login" meta_type="Filesystem Directory View"
-    directory="CMFPlone/skins/plone_login"/>
+    directory="Products.CMFPlone:skins/plone_login"/>
  <object name="plone_portlets" meta_type="Filesystem Directory View"
-    directory="CMFPlone/skins/plone_portlets"/>
+    directory="Products.CMFPlone:skins/plone_portlets"/>
  <object name="plone_prefs" meta_type="Filesystem Directory View"
-    directory="CMFPlone/skins/plone_prefs"/>
+    directory="Products.CMFPlone:skins/plone_prefs"/>
  <object name="plone_scripts" meta_type="Filesystem Directory View"
-    directory="CMFPlone/skins/plone_scripts"/>
+    directory="Products.CMFPlone:skins/plone_scripts"/>
  <object name="plone_styles" meta_type="Filesystem Directory View"
-    directory="CMFPlone/skins/plone_styles"/>
+    directory="Products.CMFPlone:skins/plone_styles"/>
  <object name="plone_tableless" meta_type="Filesystem Directory View"
-    directory="CMFPlone/skins/plone_tableless"/>
+    directory="Products.CMFPlone:skins/plone_tableless"/>
  <object name="plone_templates" meta_type="Filesystem Directory View"
-    directory="CMFPlone/skins/plone_templates"/>
+    directory="Products.CMFPlone:skins/plone_templates"/>
  <object name="plone_wysiwyg" meta_type="Filesystem Directory View"
-    directory="CMFPlone/skins/plone_wysiwyg"/>
+    directory="Products.CMFPlone:skins/plone_wysiwyg"/>
  <skin-path name="Plone Default">
   <layer name="custom"/>
   <layer name="plone_kss"/>
