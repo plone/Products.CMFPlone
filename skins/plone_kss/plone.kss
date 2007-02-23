@@ -259,7 +259,17 @@ table.listing input[type="checkbox"]:change {
 } 
 
 #foldercontents-selectall:click {
-    action-server: foldercontents-selectall;
+    action-server: foldercontents_selectitems_on_screen;
+    evt-click-preventdefault: True;
+} 
+
+#foldercontents-selectall-completebatch:click {
+    action-server: foldercontents_selectall;
+    evt-click-preventdefault: True;
+} 
+
+#foldercontents-clearselection:click {
+    action-server: foldercontents_clearselection;
     evt-click-preventdefault: True;
 } 
 

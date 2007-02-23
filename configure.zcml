@@ -4,6 +4,7 @@
            i18n_domain="plone">
 
   <include package="plone.app.contentmenu" />
+  <include package="plone.app.content" />
   <include package="plone.app.contentrules" />
   <include package="plone.app.controlpanel" />
   <include package="plone.app.customerize" />
