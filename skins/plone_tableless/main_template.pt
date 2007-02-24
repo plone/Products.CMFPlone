@@ -177,8 +177,6 @@
                     
                       <div tal:replace="structure provider:plone.belowcontent" />
                       
-                      <metal:discussion use-macro="here/viewThreadsAtBottom/macros/discussionView" />
-                      
                     </metal:sub>
 
                   </div>

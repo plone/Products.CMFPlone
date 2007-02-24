@@ -24,8 +24,6 @@ talkback.deleteReply( obj.getId() )
 
 # redirect to the object that is being discussed
 redirect_target = context.plone_utils.getDiscussionThread(talkback)[0]
-view = redirect_target.getTypeInfo().getActionById('view')
-
 context.plone_utils.addPortalMessage(_(u'Reply deleted.'))
 
-context.REQUEST['RESPONSE'].redirect( redirect_target.absolute_url() + '/%s' % view )
+context.REQUEST['RESPONSE'].redirect( redirect_target.absolute_url() + '/view')
