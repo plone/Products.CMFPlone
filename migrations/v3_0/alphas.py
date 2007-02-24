@@ -148,6 +148,115 @@ def alpha2_alpha3(portal):
     return out
 
 
+# --
+# KSS registration
+# --
+
+class installKss(object):
+
+    js_unregister = []
+
+    js_all = [
+        ('++resource++MochiKit.js', 'none', False),
+        ('++resource++prototype.js', 'safe', True),
+        ('++resource++effects.js', 'safe', True),
+        ('++resource++kukit.js', 'none', True),
+    ]
+
+    css_all = [
+        'ploneKss.css',
+    ]
+
+    kss_all = [
+        'plone.kss',
+        'at.kss',
+    ]
+
+    def __init__(self, portal, out):
+        self.portal = portal
+        self.out = out
+        self.installKss()
+
+    @staticmethod
+    def _old_res(tool, id):
+        return tool.getResourcesDict().get(id, None)
+     
+    def install_resources(self):
+        portal, out = self.portal, self.out
+        jstool = getToolByName(portal, 'portal_javascripts')
+        for id in self.js_unregister:
+            if self._old_res(jstool, id):
+                jstool.unregisterResource(id)
+                out.append("Unregistered old %s" % (id, ))
+        for id, compression, enabled in self.js_all:
+            if not self._old_res(jstool, id):
+                jstool.registerScript(
+                    id = id,
+                    enabled = enabled,
+                    cookable = True,
+                    compression = compression,
+                    )
+        csstool = getToolByName(portal, 'portal_css')
+        for css in self.css_all:
+            if not self._old_res(csstool, css):
+                csstool.manage_addStylesheet(
+                    id = css,
+                    rel = 'stylesheet',
+                    rendering = 'link',
+                    enabled = True,
+                    cookable = True,
+                    )
+        # kss stylesheets
+        for kss in self.kss_all:
+            if not self._old_res(csstool, kss):
+                csstool.manage_addStylesheet(id=kss,
+                    rel='k-stylesheet',
+                    rendering = 'link',
+                    enabled=True,
+                    cookable=False,
+                    )
+        out.append("Registered kss resources")
+
+    def install_mimetype(self):
+        portal, out = self.portal, self.out
+        mt = getToolByName(portal, 'mimetypes_registry')
+        mt.manage_addMimeType('KSS (Azax) StyleSheet', ('text/kss', ), ('kss', ), 'text.png',
+                               binary=0, globs=('*.kss', ))
+        out.append("Registered kss mimetype")
+
+    def install_skins(self):
+        portal, out = self.portal, self.out
+        st = getToolByName(portal, 'portal_skins')
+        skins = ['Plone Default', 'Plone Tableless']
+        if not hasattr(aq_base(st), 'plone_kss'):
+            createDirectoryView(st, 'CMFPlone/skins/plone_kss')
+        if not hasattr(aq_base(st), 'archetypes_kss'):
+            createDirectoryView(st, 'Archetypes/skins/archetypes_kss')
+        selections = st._getSelections()
+        for s in skins:
+            if not selections.has_key(s):
+               continue
+            path = st.getSkinPath(s)
+            path = [p.strip() for p in  path.split(',')]
+            path_changed = False
+            if not 'plone_kss' in path:
+                path.append('plone_kss')
+                path_changed = True
+            if not 'archetypes_kss' in path:
+                path.append('archetypes_kss')
+                path_changed = True
+            if path_changed:
+                st.addSkinSelection(s, ','.join(path))
+                out.append('Added missing skins to %s' % s)
+
+    def installKss(self):
+        out = self.out
+        self.install_mimetype() 
+        self.install_resources() 
+        self.install_skins() 
+        out.append("Succesfully migrated portal to KSS")
+
+
 def enableZope3Site(portal, out):
     if not ISite.providedBy(portal):
         enableSite(portal, iface=IObjectManagerSite)
@@ -651,112 +760,4 @@ def updateConfigletTitles(portal, out):
             users.title = "Users and Groups"
         if users2 is not None:
             users2.title = "Users and Groups"
-
-# --
-# KSS registration
-# --
-
-class installKss(object):
-
-    js_unregister = []
-
-    js_all = [
-        ('++resource++MochiKit.js', 'none', False),
-        ('++resource++prototype.js', 'safe', True),
-        ('++resource++effects.js', 'safe', True),
-        ('++resource++kukit.js', 'none', True),
-    ]
-
-    css_all = [
-        'ploneKss.css',
-    ]
-
-    kss_all = [
-        'plone.kss',
-        'at.kss',
-    ]
-
-    def __init__(self, portal, out):
-        self.portal = portal
-        self.out = out
-        self.installKss()
-
-    @staticmethod
-    def _old_res(tool, id):
-        return tool.getResourcesDict().get(id, None)
-     
-    def install_resources(self):
-        portal, out = self.portal, self.out
-        jstool = getToolByName(portal, 'portal_javascripts')
-        for id in self.js_unregister:
-            if self._old_res(jstool, id):
-                jstool.unregisterResource(id)
-                out.append("Unregistered old %s" % (id, ))
-        for id, compression, enabled in self.js_all:
-            if not self._old_res(jstool, id):
-                jstool.registerScript(
-                    id = id,
-                    enabled = enabled,
-                    cookable = True,
-                    compression = compression,
-                    )
-        csstool = getToolByName(portal, 'portal_css')
-        for css in self.css_all:
-            if not self._old_res(csstool, css):
-                csstool.manage_addStylesheet(
-                    id = css,
-                    rel = 'stylesheet',
-                    rendering = 'link',
-                    enabled = True,
-                    cookable = True,
-                    )
-        # kss stylesheets
-        for kss in self.kss_all:
-            if not self._old_res(csstool, kss):
-                csstool.manage_addStylesheet(id=kss,
-                    rel='k-stylesheet',
-                    rendering = 'link',
-                    enabled=True,
-                    cookable=False,
-                    )
-        out.append("Registered kss resources")
-
-    def install_mimetype(self):
-        portal, out = self.portal, self.out
-        mt = getToolByName(portal, 'mimetypes_registry')
-        mt.manage_addMimeType('KSS (Azax) StyleSheet', ('text/kss', ), ('kss', ), 'text.png',
-                               binary=0, globs=('*.kss', ))
-        out.append("Registered kss mimetype")
-
-    def install_skins(self):
-        portal, out = self.portal, self.out
-        st = getToolByName(portal, 'portal_skins')
-        skins = ['Plone Default', 'Plone Tableless']
-        if not hasattr(aq_base(st), 'plone_kss'):
-            createDirectoryView(st, 'CMFPlone/skins/plone_kss')
-        if not hasattr(aq_base(st), 'archetypes_kss'):
-            createDirectoryView(st, 'Archetypes/skins/archetypes_kss')
-        selections = st._getSelections()
-        for s in skins:
-            if not selections.has_key(s):
-               continue
-            path = st.getSkinPath(s)
-            path = [p.strip() for p in  path.split(',')]
-            path_changed = False
-            if not 'plone_kss' in path:
-                path.append('plone_kss')
-                path_changed = True
-            if not 'archetypes_kss' in path:
-                path.append('archetypes_kss')
-                path_changed = True
-            if path_changed:
-                st.addSkinSelection(s, ','.join(path))
-                out.append('Added missing skins to %s' % s)
-
-    def installKss(self):
-        out = self.out
-        self.install_mimetype() 
-        self.install_resources() 
-        self.install_skins() 
-        out.append("Succesfully migrated portal to KSS")
 
