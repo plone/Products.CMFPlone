@@ -27,27 +27,36 @@
         <h2 tal:content="group/title"
             i18n:translate="">Plone Configlet Group Title</h2>
 
-        <ul class="configlets" tal:define="configlets python:controlPanel.enumConfiglets(group=group['id'])">
+        <div tal:define="allconfiglets python:controlPanel.enumConfiglets(group=group['id']);
+                         configlets python:here.createMultiColumnList(allconfiglets, numCols=3);"
+             tal:repeat="sublist configlets"
+             style="float:left; margin-right: 2em; width: 29%">
 
-            <tal:configlet repeat="configlet configlets">
-                <li tal:condition="configlet/visible">
-                    <a href=""          
-                       tal:attributes="href configlet/url">
-                        <img src="" alt="" tal:attributes="src python:getIconFor('controlpanel',configlet['id']);
-                                                           alt configlet/title;"
-                             i18n:attributes="alt"
-                             tal:on-error="string:" />
-                    <tal:configletname tal:content="configlet/title"
-                                       i18n:translate=""></tal:configletname>
-                    </a>                
-                </li>                   
-            </tal:configlet>            
+            <ul class="configlets">
+
+                <tal:configlet repeat="configlet sublist">
+                    <li tal:condition="configlet/visible">
+                        <a href=""          
+                           tal:attributes="href configlet/url">
+                            <img src="" alt="" tal:attributes="src python:getIconFor('controlpanel',configlet['id']);
+                                                               alt configlet/title;"
+                                 i18n:attributes="alt"
+                                 tal:on-error="string:" />
+                        <tal:configletname tal:content="configlet/title"
+                                           i18n:translate=""></tal:configletname>
+                        </a>                
+                    </li>                   
+                </tal:configlet>            
                                         
-            <li tal:condition="not:configlets" i18n:translate="label_no_panels_available">
-                No Preference Panels available.
-            </li>                       
+                <li tal:condition="not:configlets" i18n:translate="label_no_panels_available">
+                    No Preference Panels available.
+                </li>                       
+
+            </ul>
                                         
-        </ul>                           
+        </div>
+
+        <div class="visualClear"><!-- --></div>
 
     </tal:block>                        
 
