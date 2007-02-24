@@ -11,12 +11,12 @@
     url_expr="string:${portal_url}/@@site-controlpanel.html" visible="True">
   <permission>Manage portal</permission>
  </configlet>
- <configlet title="Users and Groups Administration" action_id="UsersGroups"
+ <configlet title="Users and Groups" action_id="UsersGroups"
     appId="UsersGroups" category="Plone" condition_expr=""
     url_expr="string:${portal_url}/prefs_users_overview" visible="True">
   <permission>Manage portal</permission>
  </configlet>
- <configlet title="Users and Groups Administration" action_id="UsersGroups2"
+ <configlet title="Users and Groups" action_id="UsersGroups2"
     appId="UsersGroups" category="Plone" condition_expr=""
     url_expr="string:${portal_url}/prefs_groups_overview" visible="False">
   <permission>Manage portal</permission>
@@ -46,7 +46,7 @@
     url_expr="string:${portal_url}/prefs_error_log_form" visible="True">
   <permission>Manage portal</permission>
  </configlet>
- <configlet title="Types Settings" action_id="TypesSettings"
+ <configlet title="Types" action_id="TypesSettings"
     appId="TypesSettings" category="Plone" condition_expr=""
     url_expr="string:${portal_url}/@@types-controlpanel.html"
     visible="True">
@@ -73,18 +73,18 @@
     url_expr="string:${portal_url}/@@wicked-controlpanel.html" visible="True">
   <permission>Manage portal</permission>
  </configlet>
- <configlet title="Navigation Settings" action_id="NavigationSettings"
+ <configlet title="Navigation" action_id="NavigationSettings"
     appId="Plone" category="Plone" condition_expr=""
     url_expr="string:${portal_url}/prefs_navigation_form" visible="True">
   <permission>Manage portal</permission>
  </configlet>
- <configlet title="Language Settings" action_id="PloneLanguageTool"
+ <configlet title="Language" action_id="PloneLanguageTool"
     appId="PloneLanguageTool" category="Plone" condition_expr=""
     url_expr="string:${portal_url}/portal_languages/prefs_languages"
     visible="True">
   <permission>Manage portal</permission>
  </configlet>
- <configlet title="Collection Settings" action_id="portal_atct"
+ <configlet title="Collection" action_id="portal_atct"
     appId="ATContentTypes" category="Plone" condition_expr=""
     url_expr="string:${portal_url}/portal_atct/atct_manageTopicIndex"
     visible="True">

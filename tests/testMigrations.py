@@ -85,6 +85,7 @@ from Products.CMFPlone.migrations.v3_0.alphas import addTableContents
 from Products.CMFPlone.migrations.v3_0.alphas import updateMemberSecurity
 from Products.CMFPlone.migrations.v3_0.alphas import updatePASPlugins
 from Products.CMFPlone.migrations.v3_0.alphas import updateSkinsAndSiteConfiglet
+from Products.CMFPlone.migrations.v3_0.alphas import updateConfigletTitles
 
 from zope.app.component.hooks import clearSite
 from zope.app.component.interfaces import ISite
@@ -1860,11 +1861,51 @@ class TestMigrations_v3_0(MigrationTest):
         self.assertEquals(site.title, 'Site settings')
         self.assertEquals(site.action.text,
                           'string:${portal_url}/@@site-controlpanel.html')
-    
+
     def testUpdateSkinsAndSiteConfigletNoTool(self):
         # Should not fail if tool is missing
         self.portal._delObject('portal_controlpanel')
         updateSkinsAndSiteConfiglet(self.portal, [])
+
+    def testUpdateConfigletTitles(self):
+        collection = self.cp.getActionObject('Plone/portal_atct')
+        language = self.cp.getActionObject('Plone/PloneLanguageTool')
+        navigation = self.cp.getActionObject('Plone/NavigationSettings')
+        types = self.cp.getActionObject('Plone/TypesSettings')
+        security = self.cp.getActionObject('Plone/SecuritySettings')
+        users = self.cp.getActionObject('Plone/UsersGroups')
+        users2 = self.cp.getActionObject('Plone/UsersGroups2')
+        updateConfigletTitles(self.portal, [])
+        self.assertEquals(collection.title, 'Collection')
+        self.assertEquals(language.title, 'Language')
+        self.assertEquals(navigation.title, 'Navigation')
+        self.assertEquals(types.title, 'Types')
+        self.assertEquals(security.title, 'Security')
+        self.assertEquals(users.title, 'Users and Groups')
+        self.assertEquals(users2.title, 'Users and Groups')
+
+    def testUpdateConfigletTitlesTwice(self):
+        collection = self.cp.getActionObject('Plone/portal_atct')
+        language = self.cp.getActionObject('Plone/PloneLanguageTool')
+        navigation = self.cp.getActionObject('Plone/NavigationSettings')
+        types = self.cp.getActionObject('Plone/TypesSettings')
+        security = self.cp.getActionObject('Plone/SecuritySettings')
+        users = self.cp.getActionObject('Plone/UsersGroups')
+        users2 = self.cp.getActionObject('Plone/UsersGroups2')
+        updateConfigletTitles(self.portal, [])
+        updateConfigletTitles(self.portal, [])
+        self.assertEquals(collection.title, 'Collection')
+        self.assertEquals(language.title, 'Language')
+        self.assertEquals(navigation.title, 'Navigation')
+        self.assertEquals(types.title, 'Types')
+        self.assertEquals(security.title, 'Security')
+        self.assertEquals(users.title, 'Users and Groups')
+        self.assertEquals(users2.title, 'Users and Groups')
+
+    def testUpdateConfigletTitlesNoTool(self):
+        # Should not fail if tool is missing
+        self.portal._delObject('portal_controlpanel')
+        updateConfigletTitles(self.portal, [])
 
 
 class TestMigrations_v3_0_Actions(MigrationTest):

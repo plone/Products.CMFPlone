@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Sanitized control panel names. Removed the redundant settings in titles.
+      [hannosch]
+
     - Converted site and skins control panels to be formlib based. Moved the
       Google sitemap option to the site control panel. Fixed migration code
       for maintenance control panel. This closes
