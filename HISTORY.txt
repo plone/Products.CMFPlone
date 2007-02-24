@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Removed the forms.txt and rendering.txt functional test - there are 
+      covered by  AddMoveAndDeleteDocument.txt, which is more sane. Also 
+      update the latter to reflect a label change from plone.app.contentmenu.
+      [optilude]
+
     - Deprectated viewThreadsAtBottom and getReplyReplies in favour of a
       viewlet for IBelowContent, defined in plone.app.form.
       [optilude]
