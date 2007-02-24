@@ -84,6 +84,7 @@ from Products.CMFPlone.migrations.v3_0.alphas import installS5
 from Products.CMFPlone.migrations.v3_0.alphas import addTableContents
 from Products.CMFPlone.migrations.v3_0.alphas import updateMemberSecurity
 from Products.CMFPlone.migrations.v3_0.alphas import updatePASPlugins
+from Products.CMFPlone.migrations.v3_0.alphas import updateSkinsAndSiteConfiglet
 
 from zope.app.component.hooks import clearSite
 from zope.app.component.interfaces import ISite
@@ -1398,6 +1399,10 @@ class TestMigrations_v3_0(MigrationTest):
         self.removeActionFromTool('CalendarSettings', action_provider='portal_controlpanel')
         addCalendarConfiglet(self.portal, [])
         self.failUnless('CalendarSettings' in [x.getId() for x in self.cp.listActions()])
+        cal = self.cp.getActionObject('Plone/CalendarSettings')
+        self.assertEquals(cal.title, 'Calendar')
+        self.assertEquals(cal.action.text,
+                          'string:${portal_url}/@@calendar-controlpanel.html')
     
     def testAddCalendarConfigletTwice(self):
         # Should not fail if done twice
@@ -1405,6 +1410,10 @@ class TestMigrations_v3_0(MigrationTest):
         addCalendarConfiglet(self.portal, [])
         addCalendarConfiglet(self.portal, [])
         self.failUnless('CalendarSettings' in [x.getId() for x in self.cp.listActions()])
+        cal = self.cp.getActionObject('Plone/CalendarSettings')
+        self.assertEquals(cal.title, 'Calendar')
+        self.assertEquals(cal.action.text,
+                          'string:${portal_url}/@@calendar-controlpanel.html')
     
     def testAddCalendarConfigletNoTool(self):
         # Should not fail if tool is missing
@@ -1417,8 +1426,10 @@ class TestMigrations_v3_0(MigrationTest):
         search.action = Expression('string:search')
         mail.action = Expression('string:mail')
         updateSearchAndMailHostConfiglet(self.portal, [])
+        self.assertEquals(search.title, 'Search')
         self.assertEquals(search.action.text,
                           'string:${portal_url}/@@search-controlpanel.html')
+        self.assertEquals(mail.title, 'Mail')
         self.assertEquals(mail.action.text,
                           'string:${portal_url}/@@mail-controlpanel.html')
     
@@ -1430,8 +1441,10 @@ class TestMigrations_v3_0(MigrationTest):
         mail.action = Expression('string:mail')
         updateSearchAndMailHostConfiglet(self.portal, [])
         updateSearchAndMailHostConfiglet(self.portal, [])
+        self.assertEquals(search.title, 'Search')
         self.assertEquals(search.action.text,
                           'string:${portal_url}/@@search-controlpanel.html')
+        self.assertEquals(mail.title, 'Mail')
         self.assertEquals(mail.action.text,
                           'string:${portal_url}/@@mail-controlpanel.html')
     
@@ -1697,12 +1710,20 @@ class TestMigrations_v3_0(MigrationTest):
         self.removeActionFromTool('Maintenance', action_provider='portal_controlpanel')
         addMaintenanceConfiglet(self.portal, [])
         self.failUnless('Maintenance' in [x.getId() for x in self.cp.listActions()])
+        main = self.cp.getActionObject('Plone/Maintenance')
+        self.assertEquals(main.title, 'Maintenance')
+        self.assertEquals(main.action.text,
+                          'string:${portal_url}/@@maintenance-controlpanel.html')
 
     def testAddMaintenanceConfigletTwice(self):
         self.removeActionFromTool('Maintenance', action_provider='portal_controlpanel')
         addMaintenanceConfiglet(self.portal, [])
         addMaintenanceConfiglet(self.portal, [])
         self.failUnless('Maintenance' in [x.getId() for x in self.cp.listActions()])
+        main = self.cp.getActionObject('Plone/Maintenance')
+        self.assertEquals(main.title, 'Maintenance')
+        self.assertEquals(main.action.text,
+                          'string:${portal_url}/@@maintenance-controlpanel.html')
 
     def testAddIconForMaintenanceConfiglet(self):
         # Should add the maintenance action icon
@@ -1812,6 +1833,38 @@ class TestMigrations_v3_0(MigrationTest):
                 # Ignore unregistered interface types 
                 pass
 
+    def testUpdateSkinsAndSiteConfiglet(self):
+        skins = self.cp.getActionObject('Plone/PortalSkin')
+        site = self.cp.getActionObject('Plone/PloneReconfig')
+        skins.action = Expression('string:skins')
+        site.action = Expression('string:site')
+        updateSkinsAndSiteConfiglet(self.portal, [])
+        self.assertEquals(skins.title, 'Theme')
+        self.assertEquals(skins.action.text,
+                          'string:${portal_url}/@@skins-controlpanel.html')
+        self.assertEquals(site.title, 'Site settings')
+        self.assertEquals(site.action.text,
+                          'string:${portal_url}/@@site-controlpanel.html')
+    
+    def testUpdateSkinsAndSiteConfigletTwice(self):
+        # Should not fail if done twice
+        skins = self.cp.getActionObject('Plone/PortalSkin')
+        site = self.cp.getActionObject('Plone/PloneReconfig')
+        skins.action = Expression('string:skins')
+        site.action = Expression('string:site')
+        updateSkinsAndSiteConfiglet(self.portal, [])
+        updateSkinsAndSiteConfiglet(self.portal, [])
+        self.assertEquals(skins.title, 'Theme')
+        self.assertEquals(skins.action.text,
+                          'string:${portal_url}/@@skins-controlpanel.html')
+        self.assertEquals(site.title, 'Site settings')
+        self.assertEquals(site.action.text,
+                          'string:${portal_url}/@@site-controlpanel.html')
+    
+    def testUpdateSkinsAndSiteConfigletNoTool(self):
+        # Should not fail if tool is missing
+        self.portal._delObject('portal_controlpanel')
+        updateSkinsAndSiteConfiglet(self.portal, [])
 
 
 class TestMigrations_v3_0_Actions(MigrationTest):

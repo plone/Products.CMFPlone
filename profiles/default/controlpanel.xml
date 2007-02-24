@@ -6,9 +6,9 @@
     visible="True">
   <permission>Manage portal</permission>
  </configlet>
- <configlet title="Portal Settings" action_id="PloneReconfig" appId="Plone"
+ <configlet title="Site Settings" action_id="PloneReconfig" appId="Plone"
     category="Plone" condition_expr=""
-    url_expr="string:${portal_url}/reconfig_form" visible="True">
+    url_expr="string:${portal_url}/@@site-controlpanel.html" visible="True">
   <permission>Manage portal</permission>
  </configlet>
  <configlet title="Users and Groups Administration" action_id="UsersGroups"
@@ -31,14 +31,14 @@
     url_expr="string:${portal_url}/password_form" visible="True">
   <permission>Set own password</permission>
  </configlet>
- <configlet title="Mail Settings" action_id="MailHost" appId="MailHost"
+ <configlet title="Mail" action_id="MailHost" appId="MailHost"
     category="Plone" condition_expr=""
     url_expr="string:${portal_url}/@@mail-controlpanel.html" visible="True">
   <permission>Manage portal</permission>
  </configlet>
- <configlet title="Skins" action_id="PortalSkin" appId="PortalSkin"
+ <configlet title="Theme" action_id="PortalSkin" appId="PortalSkin"
     category="Plone" condition_expr=""
-    url_expr="string:${portal_url}/prefs_portalskin_form" visible="True">
+    url_expr="string:${portal_url}/@@skins-controlpanel.html" visible="True">
   <permission>Manage portal</permission>
  </configlet>
  <configlet title="Error Log" action_id="errorLog" appId="ErrorLog"
@@ -52,7 +52,7 @@
     visible="True">
   <permission>Manage portal</permission>
  </configlet>
- <configlet title="Security Settings" action_id="SecuritySettings"
+ <configlet title="Security" action_id="SecuritySettings"
     appId="SecuritySettings" category="Plone" condition_expr=""
     url_expr="string:${portal_url}/@@security-controlpanel.html"
     visible="True">
@@ -63,7 +63,7 @@
     url_expr="string:${portal_url}/manage_main" visible="True">
   <permission>Manage portal</permission>
  </configlet>
- <configlet title="Search Settings" action_id="SearchSettings" appId="Plone"
+ <configlet title="Search" action_id="SearchSettings" appId="Plone"
     category="Plone" condition_expr=""
     url_expr="string:${portal_url}/@@search-controlpanel.html" visible="True">
   <permission>Manage portal</permission>
@@ -90,19 +90,14 @@
     visible="True">
   <permission>Manage portal</permission>
  </configlet>
- <configlet title="Calendar Settings" action_id="CalendarSettings"
+ <configlet title="Calendar" action_id="CalendarSettings"
     appId="Plone" category="Plone" condition_expr=""
     url_expr="string:${portal_url}/@@calendar-controlpanel.html" visible="True">
   <permission>Manage portal</permission>
  </configlet>
- <configlet title="HTML Filter Settings" action_id="HtmlFilter" appId="HtmlFilter"
+ <configlet title="HTML Filter" action_id="HtmlFilter" appId="HtmlFilter"
     category="Plone" condition_expr=""
     url_expr="string:${portal_url}/@@filter-controlpanel.html" visible="True">
-  <permission>Manage portal</permission>
- </configlet>
- <configlet title="SEO and Analytics Settings" action_id="SEOSettings"
-    appId="Plone" category="Plone" condition_expr=""
-    url_expr="string:${portal_url}/@@seo-controlpanel.html" visible="True">
   <permission>Manage portal</permission>
  </configlet>
  <configlet title="Maintenance" action_id="Maintenance"

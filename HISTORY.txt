@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Converted site and skins control panels to be formlib based. Moved the
+      Google sitemap option to the site control panel. Fixed migration code
+      for maintenance control panel. This closes
+      http://dev.plone.org/plone/ticket/6193.
+      [hannosch]
+
     - Removed base tag from main_template.
       [fschulze]
 

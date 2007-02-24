@@ -139,6 +139,9 @@ def alpha2_alpha3(portal):
 
     updatePASPlugins(portal, out)
     
+    # Update control panel actions
+    updateSkinsAndSiteConfiglet(portal, out)
+    
     return out
 
 
@@ -321,7 +324,7 @@ def addCalendarConfiglet(portal, out):
         if not haveCalendar:
             controlPanel.registerConfiglet(id         = 'CalendarSettings',
                                            appId      = 'Plone',
-                                           name       = 'Calendar Settings',
+                                           name       = 'Calendar',
                                            action     = 'string:${portal_url}/@@calendar-controlpanel.html',
                                            category   = 'Plone',
                                            permission = ManagePortal,)
@@ -335,8 +338,10 @@ def updateSearchAndMailHostConfiglet(portal, out):
         mail = controlPanel.getActionObject('Plone/MailHost')
 
         if search is not None:
+            search.title = "Search"
             search.action = Expression('string:${portal_url}/@@search-controlpanel.html')
         if mail is not None:
+            mail.title = "Mail"
             mail.action = Expression('string:${portal_url}/@@mail-controlpanel.html')
 
 def removeGeneratedCSS(portal, out):
@@ -531,15 +536,15 @@ def addMaintenanceConfiglet(portal, out):
     """Add the configlet for the calendar settings"""
     controlPanel = getToolByName(portal, 'portal_controlpanel', None)
     if controlPanel is not None:
-        haveCalendar = False
+        havePanel = False
         for configlet in controlPanel.listActions():
-            if configlet.getId() == 'alendarSettings':
-                haveCalendar = True
-        if not haveCalendar:
+            if configlet.getId() == 'Maintenance':
+                havePanel = True
+        if not havePanel:
             controlPanel.registerConfiglet(id         = 'Maintenance',
                                            appId      = 'Plone',
                                            name       = 'Maintenance',
-                                           action     = 'string:${portal_url}/@@calendar-controlpanel.html',
+                                           action     = 'string:${portal_url}/@@maintenance-controlpanel.html',
                                            category   = 'Plone',
                                            permission = ManagePortal,)
             out.append("Added 'Maintenance' to the control panel")
@@ -551,7 +556,7 @@ def addMaintenanceProperty(portal, out):
         sheet = getattr(tool, 'site_properties', None)
         if sheet is not None:
             if not sheet.hasProperty('number_of_days_to_keep'):
-                sheet.manage_addProperty('number_of_days_to_keep',7,'int')
+                sheet.manage_addProperty('number_of_days_to_keep', 7, 'int')
                 out.append("Added 'number_of_days_to_keep' property to site properties")
 
 def addLinkIntegritySwitch(portal, out):
@@ -603,6 +608,19 @@ def updatePASPlugins(portal, out):
     plugin.manage_activateInterfaces(activate)
 
 
+def updateSkinsAndSiteConfiglet(portal, out):
+    """Use new configlets for the skins and site settings"""
+    controlPanel = getToolByName(portal, 'portal_controlpanel', None)
+    if controlPanel is not None:
+        skins = controlPanel.getActionObject('Plone/PortalSkin')
+        site = controlPanel.getActionObject('Plone/PloneReconfig')
+
+        if skins is not None:
+            skins.action = Expression('string:${portal_url}/@@skins-controlpanel.html')
+            skins.title = "Theme"
+        if site is not None:
+            site.action = Expression('string:${portal_url}/@@site-controlpanel.html')
+            site.title = "Site settings"
 
 # --
 # KSS registration
