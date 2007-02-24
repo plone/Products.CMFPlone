@@ -748,7 +748,6 @@ def updateConfigletTitles(portal, out):
         language = controlPanel.getActionObject('Plone/PloneLanguageTool')
         navigation = controlPanel.getActionObject('Plone/NavigationSettings')
         types = controlPanel.getActionObject('Plone/TypesSettings')
-        security = controlPanel.getActionObject('Plone/SecuritySettings')
         users = controlPanel.getActionObject('Plone/UsersGroups')
         users2 = controlPanel.getActionObject('Plone/UsersGroups2')
 
@@ -760,8 +759,6 @@ def updateConfigletTitles(portal, out):
             navigation.title = "Navigation"
         if types is not None:
             types.title = "Types"
-        if security is not None:
-            security.title = "Security"
         if users is not None:
             users.title = "Users and Groups"
         if users2 is not None:

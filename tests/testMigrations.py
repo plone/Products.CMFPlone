@@ -1966,7 +1966,6 @@ class TestMigrations_v3_0(MigrationTest):
         language = self.cp.getActionObject('Plone/PloneLanguageTool')
         navigation = self.cp.getActionObject('Plone/NavigationSettings')
         types = self.cp.getActionObject('Plone/TypesSettings')
-        security = self.cp.getActionObject('Plone/SecuritySettings')
         users = self.cp.getActionObject('Plone/UsersGroups')
         users2 = self.cp.getActionObject('Plone/UsersGroups2')
         updateConfigletTitles(self.portal, [])
@@ -1974,7 +1973,6 @@ class TestMigrations_v3_0(MigrationTest):
         self.assertEquals(language.title, 'Language')
         self.assertEquals(navigation.title, 'Navigation')
         self.assertEquals(types.title, 'Types')
-        self.assertEquals(security.title, 'Security')
         self.assertEquals(users.title, 'Users and Groups')
         self.assertEquals(users2.title, 'Users and Groups')
 
@@ -1983,7 +1981,6 @@ class TestMigrations_v3_0(MigrationTest):
         language = self.cp.getActionObject('Plone/PloneLanguageTool')
         navigation = self.cp.getActionObject('Plone/NavigationSettings')
         types = self.cp.getActionObject('Plone/TypesSettings')
-        security = self.cp.getActionObject('Plone/SecuritySettings')
         users = self.cp.getActionObject('Plone/UsersGroups')
         users2 = self.cp.getActionObject('Plone/UsersGroups2')
         updateConfigletTitles(self.portal, [])
@@ -1992,7 +1989,6 @@ class TestMigrations_v3_0(MigrationTest):
         self.assertEquals(language.title, 'Language')
         self.assertEquals(navigation.title, 'Navigation')
         self.assertEquals(types.title, 'Types')
-        self.assertEquals(security.title, 'Security')
         self.assertEquals(users.title, 'Users and Groups')
         self.assertEquals(users2.title, 'Users and Groups')
 
