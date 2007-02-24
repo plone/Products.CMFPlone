@@ -1033,6 +1033,98 @@ class TestMigrations_v2_5_1(MigrationTest):
         self.failIfEqual(cookie_auth.getProperty('login_path'),
                          'require_login')
 
+
+class TestMigrations_v3_0_Actions(MigrationTest):
+
+    def afterSetUp(self):
+        self.actions = self.portal.portal_actions
+        self.types = self.portal.portal_types
+        self.workflow = self.portal.portal_workflow
+        
+        # Create dummy old ActionInformation
+        self.reply = ActionInformation('reply',
+            title='Reply',
+            category='reply_actions',
+            condition='context/replyAllowed',
+            permissions=(AccessInactivePortalContent, ),
+            priority=10,
+            visible=True,
+            action='context/reply'
+        )
+        self.discussion = self.portal.portal_discussion
+        self.discussion._actions = (self.reply, )
+
+    def testMigrateActions(self):
+        self.failUnless(self.discussion._actions == (self.reply, ))
+        
+        migrateOldActions(self.portal, [])
+
+        reply_actions = getattr(self.actions, 'reply_actions', None)
+        self.failIf(reply_actions is None)
+        reply = getattr(reply_actions, 'reply', None)
+        self.failIf(reply is None)
+        self.failUnless(isinstance(reply, Action))
+
+        # Verify all data has been migrated correctly to the new Action
+        data = reply.getInfoData()[0]
+        self.assertEquals(data['category'], 'reply_actions')
+        self.assertEquals(data['title'], 'Reply')
+        self.assertEquals(data['visible'], True)
+        self.assertEquals(data['permissions'], (AccessInactivePortalContent, ))
+        self.assertEquals(data['available'].text, 'context/replyAllowed')
+        self.assertEquals(data['url'].text, 'context/reply')
+
+        # Make sure the original action has been removed
+        self.failUnless(len(self.discussion._actions) == 0)
+
+    def testMigrateActionsTwice(self):
+        self.failUnless(self.discussion._actions == (self.reply, ))
+
+        migrateOldActions(self.portal, [])
+        migrateOldActions(self.portal, [])
+
+        reply_actions = getattr(self.actions, 'reply_actions', None)
+        self.failIf(reply_actions is None)
+        reply = getattr(reply_actions, 'reply', None)
+        self.failIf(reply is None)
+        self.failUnless(isinstance(reply, Action))
+
+        # Verify all data has been migrated correctly to the new Action
+        data = reply.getInfoData()[0]
+        self.assertEquals(data['category'], 'reply_actions')
+        self.assertEquals(data['title'], 'Reply')
+        self.assertEquals(data['visible'], True)
+        self.assertEquals(data['permissions'], (AccessInactivePortalContent, ))
+        self.assertEquals(data['available'].text, 'context/replyAllowed')
+        self.assertEquals(data['url'].text, 'context/reply')
+
+        # Make sure the original action has been removed
+        self.failUnless(len(self.discussion._actions) == 0)
+
+    def testUpdateActionsI18NDomain(self):
+        migrateOldActions(self.portal, [])
+        reply = self.actions.reply_actions.reply
+        self.assertEquals(reply.i18n_domain, '')        
+
+        updateActionsI18NDomain(self.portal, [])
+        
+        self.assertEquals(reply.i18n_domain, 'plone')
+
+    def testUpdateActionsI18NDomainTwice(self):
+        migrateOldActions(self.portal, [])
+        reply = self.actions.reply_actions.reply
+        self.assertEquals(reply.i18n_domain, '')        
+
+        updateActionsI18NDomain(self.portal, [])
+        updateActionsI18NDomain(self.portal, [])
+
+        self.assertEquals(reply.i18n_domain, 'plone')
+
+    def beforeTearDown(self):
+        if len(self.discussion._actions) > 0:
+            self.discussion._actions = ()
+
+
 class TestMigrations_v3_0(MigrationTest):
 
     def afterSetUp(self):
@@ -1907,96 +1999,6 @@ class TestMigrations_v3_0(MigrationTest):
         self.portal._delObject('portal_controlpanel')
         updateConfigletTitles(self.portal, [])
 
-
-class TestMigrations_v3_0_Actions(MigrationTest):
-
-    def afterSetUp(self):
-        self.actions = self.portal.portal_actions
-        self.types = self.portal.portal_types
-        self.workflow = self.portal.portal_workflow
-        
-        # Create dummy old ActionInformation
-        self.reply = ActionInformation('reply',
-            title='Reply',
-            category='reply_actions',
-            condition='context/replyAllowed',
-            permissions=(AccessInactivePortalContent, ),
-            priority=10,
-            visible=True,
-            action='context/reply'
-        )
-        self.discussion = self.portal.portal_discussion
-        self.discussion._actions = (self.reply, )
-
-    def testMigrateActions(self):
-        self.failUnless(self.discussion._actions == (self.reply, ))
-        
-        migrateOldActions(self.portal, [])
-
-        reply_actions = getattr(self.actions, 'reply_actions', None)
-        self.failIf(reply_actions is None)
-        reply = getattr(reply_actions, 'reply', None)
-        self.failIf(reply is None)
-        self.failUnless(isinstance(reply, Action))
-
-        # Verify all data has been migrated correctly to the new Action
-        data = reply.getInfoData()[0]
-        self.assertEquals(data['category'], 'reply_actions')
-        self.assertEquals(data['title'], 'Reply')
-        self.assertEquals(data['visible'], True)
-        self.assertEquals(data['permissions'], (AccessInactivePortalContent, ))
-        self.assertEquals(data['available'].text, 'context/replyAllowed')
-        self.assertEquals(data['url'].text, 'context/reply')
-
-        # Make sure the original action has been removed
-        self.failUnless(len(self.discussion._actions) == 0)
-
-    def testMigrateActionsTwice(self):
-        self.failUnless(self.discussion._actions == (self.reply, ))
-
-        migrateOldActions(self.portal, [])
-        migrateOldActions(self.portal, [])
-
-        reply_actions = getattr(self.actions, 'reply_actions', None)
-        self.failIf(reply_actions is None)
-        reply = getattr(reply_actions, 'reply', None)
-        self.failIf(reply is None)
-        self.failUnless(isinstance(reply, Action))
-
-        # Verify all data has been migrated correctly to the new Action
-        data = reply.getInfoData()[0]
-        self.assertEquals(data['category'], 'reply_actions')
-        self.assertEquals(data['title'], 'Reply')
-        self.assertEquals(data['visible'], True)
-        self.assertEquals(data['permissions'], (AccessInactivePortalContent, ))
-        self.assertEquals(data['available'].text, 'context/replyAllowed')
-        self.assertEquals(data['url'].text, 'context/reply')
-
-        # Make sure the original action has been removed
-        self.failUnless(len(self.discussion._actions) == 0)
-
-    def testUpdateActionsI18NDomain(self):
-        migrateOldActions(self.portal, [])
-        reply = self.actions.reply_actions.reply
-        self.assertEquals(reply.i18n_domain, '')        
-
-        updateActionsI18NDomain(self.portal, [])
-        
-        self.assertEquals(reply.i18n_domain, 'plone')
-
-    def testUpdateActionsI18NDomainTwice(self):
-        migrateOldActions(self.portal, [])
-        reply = self.actions.reply_actions.reply
-        self.assertEquals(reply.i18n_domain, '')        
-
-        updateActionsI18NDomain(self.portal, [])
-        updateActionsI18NDomain(self.portal, [])
-
-        self.assertEquals(reply.i18n_domain, 'plone')
-
-    def beforeTearDown(self):
-        if len(self.discussion._actions) > 0:
-            self.discussion._actions = ()
 
 def test_suite():
     from unittest import TestSuite, makeSuite
