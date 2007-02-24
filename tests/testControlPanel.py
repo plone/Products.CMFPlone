@@ -19,13 +19,13 @@ class TestControlPanel(PloneTestCase.PloneTestCase):
         
         # get the expected default groups and configlets
         self.groups     = ['Plone', 'Products', 'Member']
-        self.configlets = ['Add/Remove Products', 'Collection Settings',
-                           'Users and Groups Administration', 'Mail Settings',
-                           'Personal Preferences', 'Change Password', 'Skins',
-                           'Zope Management Interface', 'Navigation Settings',
-                           'Placeful Workflow', 'Search Settings', 'Error Log',
-                           'Kupu visual editor', 'Portal Settings',
-                           'Calendar Settings', 'Versioning']
+        self.configlets = ['Add/Remove Products', 'Collection', 'Mail',
+                           'Users and Groups', 'Personal Preferences', 'Theme',
+                           'Change Password', 'Zope Management Interface',
+                           'Navigation', 'Placeful Workflow', 'Search',
+                           'Error Log', 'Kupu visual editor', 'Site Settings',
+                           'Calendar', 'Versioning', 'Types', 'Security',
+                           'Language', 'Calendar', 'HTML Filter', 'Maintenance']
 
     def testDefaultGroups(self):
         for group in self.groups:
