@@ -3,21 +3,68 @@ from zope.component import adapts
 from zope.formlib.form import FormFields
 from zope.interface import implements
 from zope.schema import Bool
+from zope.schema import Text
+from zope.schema import TextLine
 
 from Products.CMFCore.utils import getToolByName
+from Products.CMFDefault.formlib.schema import ProxyFieldProperty
 from Products.CMFDefault.formlib.schema import SchemaAdapterBase
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.interfaces import IPloneSiteRoot
+from Products.CMFPlone.utils import safe_unicode
 
 from form import ControlPanelForm
 
 class ISiteSchema(Interface):
 
+    site_title = TextLine(title=_(u'Site title'),
+                          description=_(u"""The title of your site."""),
+                          default=u'')
+
+    site_description = Text(title=_(u'Site description'),
+                           description=_(u"""The site description is available
+                               in syndicated content and elsewhere. Keep it
+                               brief."""),
+                           default=u'',
+                           required=False)
+
+    visible_ids = Bool(title=_(u'Show "Short Name" on content?'),
+                       description=_(u"""Display and allow users to edit the
+                           "Short name" content identifiers, which form the URL
+                           part of a content item's address. Once enabled,
+                           users will then be able to enable this option in
+                           their preferences."""),
+                       default=False)
+
+    many_users = Bool(title=_(u'Many users/groups?'),
+                      description=_(u"""Determines if your Plone is optimized
+                          for small or large sites. In environments with a lot
+                          of users and/or groups it can be very slow or
+                          impossible to build a list all users or groups. This
+                          option tunes the user interface and behaviour of Plone
+                          for this case by allowing you to search for
+                          users/groups instead of listing all of them."""),
+                      default=True)
+
+    enable_link_integrity_checks = Bool(title=_(u'Enable link integrity checks'),
+                          description=_(u"""Determines if the users should get
+                              warnings when they delete or move content that is
+                              linked from inside the site"""),
+                          default=True)
+
+    ext_editor = Bool(title=_(u'Enable External Editor feature'),
+                          description=_(u"""Determines if the external editor
+                              feature is enabled. This feature requires a
+                              special client-side application installed. The
+                              users also have to enable this in their
+                              preferences."""),
+                          default=False)
+
     enable_sitemap = Bool(title=_(u'Provide sitemap.xml.gz in the portal root'),
                           description=_(u"""A sitemap.xml.gz file might be
-                                        useful for Google and lists all your
-                                        content along with modification dates"""),
-                          default=False)
+                              useful for Google and lists all your content
+                              along with modification dates"""),
+                          default=True)
 
 
 class SiteControlPanelAdapter(SchemaAdapterBase):
@@ -27,16 +74,36 @@ class SiteControlPanelAdapter(SchemaAdapterBase):
 
     def __init__(self, context):
         super(SiteControlPanelAdapter, self).__init__(context)
+        self.portal = context
         pprop = getToolByName(context, 'portal_properties')
         self.context = pprop.site_properties
+        self.encoding = pprop.site_properties.default_charset
 
-    def get_enable_sitemap(self):
-        return getattr(self.context, 'enable_sitemap', True)
+    def get_site_title(self):
+        title = getattr(self.portal, 'title', u'')
+        return safe_unicode(title)
 
-    def set_enable_sitemap(self, value):
-        self.context.manage_changeProperties(enable_sitemap=value)
+    def set_site_title(self, value):
+        self.portal.title = value.encode(self.encoding)
 
-    enable_sitemap = property(get_enable_sitemap, set_enable_sitemap)
+    def get_site_description(self):
+        description = getattr(self.portal, 'description', u'')
+        return safe_unicode(description)
+
+    def set_site_description(self, value):
+        if value is not None:
+            self.portal.description = value.encode(self.encoding)
+        else:
+            self.portal.description = ''
+
+    site_title = property(get_site_title, set_site_title)
+    site_description = property(get_site_description, set_site_description)
+
+    visible_ids = ProxyFieldProperty(ISiteSchema['visible_ids'])
+    many_users = ProxyFieldProperty(ISiteSchema['many_users'])
+    enable_link_integrity_checks = ProxyFieldProperty(ISiteSchema['enable_link_integrity_checks'])
+    ext_editor = ProxyFieldProperty(ISiteSchema['ext_editor'])
+    enable_sitemap = ProxyFieldProperty(ISiteSchema['enable_sitemap'])
 
 
 class SiteControlPanel(ControlPanelForm):
