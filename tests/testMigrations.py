@@ -86,6 +86,8 @@ from Products.CMFPlone.migrations.v3_0.alphas import updateMemberSecurity
 from Products.CMFPlone.migrations.v3_0.alphas import updatePASPlugins
 from Products.CMFPlone.migrations.v3_0.alphas import updateSkinsAndSiteConfiglet
 from Products.CMFPlone.migrations.v3_0.alphas import updateConfigletTitles
+from Products.CMFPlone.migrations.v3_0.alphas import addIconsForFilterAndSecurityConfiglets
+from Products.CMFPlone.migrations.v3_0.alphas import addFilterAndSecurityConfiglets
 
 from zope.app.component.hooks import clearSite
 from zope.app.component.interfaces import ISite
@@ -1998,6 +2000,65 @@ class TestMigrations_v3_0(MigrationTest):
         # Should not fail if tool is missing
         self.portal._delObject('portal_controlpanel')
         updateConfigletTitles(self.portal, [])
+
+    def testaddIconsForFilterAndSecurityConfiglets(self):
+        # Should add the filter and security action icons
+        self.removeActionIconFromTool('HtmlFilter')
+        self.removeActionIconFromTool('SecuritySettings')
+        addIconsForFilterAndSecurityConfiglets(self.portal, [])
+        self.failUnless('HtmlFilter' in [x.getActionId() for x in self.icons.listActionIcons()])
+        self.failUnless('SecuritySettings' in [x.getActionId() for x in self.icons.listActionIcons()])
+
+    def testaddIconsForFilterAndSecurityConfigletsTwice(self):
+        # Should not fail if migrated again
+        self.removeActionIconFromTool('HtmlFilter')
+        self.removeActionIconFromTool('SecuritySettings')
+        addIconsForFilterAndSecurityConfiglets(self.portal, [])
+        addIconsForFilterAndSecurityConfiglets(self.portal, [])
+        self.failUnless('HtmlFilter' in [x.getActionId() for x in self.icons.listActionIcons()])
+        self.failUnless('SecuritySettings' in [x.getActionId() for x in self.icons.listActionIcons()])
+
+    def testaddIconsForFilterAndSecurityConfigletsNoTool(self):
+        # Should not fail if portal_actionicons is missing
+        self.portal._delObject('portal_actionicons')
+        addIconsForFilterAndSecurityConfiglets(self.portal, [])
+
+    def testAddFilterAndSecurityConfiglets(self):
+        self.removeActionFromTool('HtmlFilter', action_provider='portal_controlpanel')
+        self.removeActionFromTool('SecuritySettings', action_provider='portal_controlpanel')
+        addFilterAndSecurityConfiglets(self.portal, [])
+        self.failUnless('HtmlFilter' in [x.getId() for x in self.cp.listActions()])
+        self.failUnless('SecuritySettings' in [x.getId() for x in self.cp.listActions()])
+        htmlfilter = self.cp.getActionObject('Plone/HtmlFilter')
+        self.assertEquals(htmlfilter.title, 'HTML Filter')
+        self.assertEquals(htmlfilter.action.text,
+                          'string:${portal_url}/@@filter-controlpanel.html')
+        security = self.cp.getActionObject('Plone/SecuritySettings')
+        self.assertEquals(security.title, 'Security')
+        self.assertEquals(security.action.text,
+                          'string:${portal_url}/@@security-controlpanel.html')
+
+    def testAddFilterAndSecurityConfigletsTwice(self):
+        # Should not fail if done twice
+        self.removeActionFromTool('HtmlFilter', action_provider='portal_controlpanel')
+        self.removeActionFromTool('SecuritySettings', action_provider='portal_controlpanel')
+        addFilterAndSecurityConfiglets(self.portal, [])
+        addFilterAndSecurityConfiglets(self.portal, [])
+        self.failUnless('HtmlFilter' in [x.getId() for x in self.cp.listActions()])
+        self.failUnless('SecuritySettings' in [x.getId() for x in self.cp.listActions()])
+        htmlfilter = self.cp.getActionObject('Plone/HtmlFilter')
+        self.assertEquals(htmlfilter.title, 'HTML Filter')
+        self.assertEquals(htmlfilter.action.text,
+                          'string:${portal_url}/@@filter-controlpanel.html')
+        security = self.cp.getActionObject('Plone/SecuritySettings')
+        self.assertEquals(security.title, 'Security')
+        self.assertEquals(security.action.text,
+                          'string:${portal_url}/@@security-controlpanel.html')
+    
+    def testAddFilterAndSecurityConfigletsNoTool(self):
+        # Should not fail if tool is missing
+        self.portal._delObject('portal_controlpanel')
+        addFilterAndSecurityConfiglets(self.portal, [])
 
 
 def test_suite():

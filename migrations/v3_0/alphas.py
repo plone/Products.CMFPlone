@@ -145,6 +145,12 @@ def alpha2_alpha3(portal):
     # Rename some control panel titles
     updateConfigletTitles(portal, out)
 
+    # Add icon for filter and security configlets
+    addIconsForFilterAndSecurityConfiglets(portal, out)
+
+    # Install the filter and security control panels
+    addFilterAndSecurityConfiglets(portal, out)
+
     return out
 
 
@@ -761,3 +767,58 @@ def updateConfigletTitles(portal, out):
         if users2 is not None:
             users2.title = "Users and Groups"
 
+def addIconsForFilterAndSecurityConfiglets(portal, out):
+    """Adds icons for the filter and security configlets."""
+    iconsTool = getToolByName(portal, 'portal_actionicons', None)
+    filterIcon = False
+    securityIcon = False
+    if iconsTool is not None:
+        for icon in iconsTool.listActionIcons():
+            if icon.getActionId() == 'HtmlFilter':
+                filterIcon = True
+            if icon.getActionId() == 'SecuritySettings':
+                securityIcon = True
+        if not filterIcon:
+            iconsTool.addActionIcon(
+                category='controlpanel',
+                action_id='HtmlFilter',
+                icon_expr='htmlfilter_icon.gif',
+                title='Html Filter Settings',
+                )
+            out.append("Added 'filter' icon to actionicons tool.")
+        if not securityIcon:
+            iconsTool.addActionIcon(
+                category='controlpanel',
+                action_id='SecuritySettings',
+                icon_expr='lock_icon.gif',
+                title='Security Settings',
+                )
+            out.append("Added 'security' icon to actionicons tool.")
+
+def addFilterAndSecurityConfiglets(portal, out):
+    """Add the configlets for the filter and security settings"""
+    controlPanel = getToolByName(portal, 'portal_controlpanel', None)
+    if controlPanel is not None:
+        haveFilter = False
+        haveSecurity = False
+        for configlet in controlPanel.listActions():
+            if configlet.getId() == 'HtmlFilter':
+                haveFilter = True
+            if configlet.getId() == 'SecuritySettings':
+                haveSecurity = True
+        if not haveFilter:
+            controlPanel.registerConfiglet(id         = 'HtmlFilter',
+                                           appId      = 'Plone',
+                                           name       = 'HTML Filter',
+                                           action     = 'string:${portal_url}/@@filter-controlpanel.html',
+                                           category   = 'Plone',
+                                           permission = ManagePortal,)
+            out.append("Added html filter settings to the control panel")
+        if not haveSecurity:
+            controlPanel.registerConfiglet(id         = 'SecuritySettings',
+                                           appId      = 'SecuritySettings',
+                                           name       = 'Security',
+                                           action     = 'string:${portal_url}/@@security-controlpanel.html',
+                                           category   = 'Plone',
+                                           permission = ManagePortal,)
+            out.append("Added security settings to the control panel")

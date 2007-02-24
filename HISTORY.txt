@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Added migration steps for new security and html filter control panels.
+      [hannosch]
+
     - Sanitized control panel names. Removed the redundant settings in titles.
       [hannosch]
 
