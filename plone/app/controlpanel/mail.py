@@ -128,11 +128,11 @@ class MailControlPanelAdapter(SchemaAdapterBase):
 
 mailhostset = FormFieldsets(IMailHostSchema)
 mailhostset.id = 'mailhost'
-mailhostset.label = _(u'Mail server settings')
+mailhostset.label = _(u'Mail server')
 
 mailfromset = FormFieldsets(IMailFromSchema)
 mailfromset.id = 'mailfrom'
-mailfromset.label = _(u'Mail sender settings')
+mailfromset.label = _(u'Mail sender')
 
 
 class MailControlPanel(ControlPanelForm):

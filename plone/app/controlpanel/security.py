@@ -1,5 +1,3 @@
-from plone.fieldsets import FormFieldsets
-
 from zope.interface import Interface
 from zope.component import adapts
 from zope.formlib.form import FormFields
@@ -7,11 +5,9 @@ from zope.interface import implements
 from zope.schema import Bool
 
 from Products.CMFCore.utils import getToolByName
-from Products.CMFDefault.formlib.schema import ProxyFieldProperty
 from Products.CMFDefault.formlib.schema import SchemaAdapterBase
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.interfaces import IPloneSiteRoot
-from Products.CMFPlone.utils import safe_hasattr
 
 from form import ControlPanelForm
 
@@ -58,9 +54,7 @@ class SecurityControlPanelAdapter(SchemaAdapterBase):
         portal_url = getToolByName(context, "portal_url")
         self.portal = portal_url.getPortalObject()
         self.context = pprop.site_properties
-        
-        from AccessControl.Role import RoleManager
-        
+
     def get_enable_self_reg(self):
         app_perms = self.portal.rolesOfPermission(permission='Add portal member')
         for appperm in app_perms:

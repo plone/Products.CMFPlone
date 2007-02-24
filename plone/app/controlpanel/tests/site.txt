@@ -1,5 +1,5 @@
-SEO and Anaytics control panel
-==============================
+Site control panel
+==================
 
 First some initial setup code:
 
@@ -9,12 +9,12 @@ First some initial setup code:
     >>> ptool.site_properties.enable_sitemap
     True
 
-Viewing the seo control panel
+Viewing the site control panel
 -----------------------------
 
-    >>> self.browser.open('http://nohost/plone/@@seo-controlpanel.html')
+    >>> self.browser.open('http://nohost/plone/@@site-controlpanel.html')
     >>> self.browser.url
-    'http://nohost/plone/@@seo-controlpanel.html'
+    'http://nohost/plone/@@site-controlpanel.html'
 
 Click the cancel button:
 
@@ -30,8 +30,8 @@ There should be still no changes:
 Make some changes
 -----------------
 
-    >>> self.browser.open('http://nohost/plone/@@seo-controlpanel.html')
-    >>> self.browser.url.endswith('seo-controlpanel.html')
+    >>> self.browser.open('http://nohost/plone/@@site-controlpanel.html')
+    >>> self.browser.url.endswith('site-controlpanel.html')
     True
 
     >>> self.browser.getControl(name='form.enable_sitemap').value = False
@@ -39,7 +39,7 @@ Make some changes
 Click the save button:
 
     >>> self.browser.getControl(name="form.actions.save").click()
-    >>> self.browser.url.endswith('seo-controlpanel.html')
+    >>> self.browser.url.endswith('site-controlpanel.html')
     True
 
 We should be informed that something has changed:
@@ -67,8 +67,8 @@ Check the sitemap actually, should raise a 404
 Make again some changes
 -----------------------
 
-    >>> self.browser.open('http://nohost/plone/@@seo-controlpanel.html')
-    >>> self.browser.url.endswith('seo-controlpanel.html')
+    >>> self.browser.open('http://nohost/plone/@@site-controlpanel.html')
+    >>> self.browser.url.endswith('site-controlpanel.html')
     True
 
     >>> self.browser.getControl(name='form.enable_sitemap').value = True
@@ -76,7 +76,7 @@ Make again some changes
 Click the save button:
 
     >>> self.browser.getControl(name="form.actions.save").click()
-    >>> self.browser.url.endswith('seo-controlpanel.html')
+    >>> self.browser.url.endswith('site-controlpanel.html')
     True
 
 We should be informed that something has changed:

@@ -45,6 +45,6 @@ class SkinsControlPanel(ControlPanelForm):
     form_fields = FormFields(ISkinsSchema)
     form_fields['theme'].custom_widget = DropdownChoiceWidget
 
-    label = _("Theme setup")
+    label = _("Theme settings")
     description = _("Settings that affect the site's look and feel.")
     form_name = _("Theme details")

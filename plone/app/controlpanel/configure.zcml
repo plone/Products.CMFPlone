@@ -4,42 +4,35 @@
 
   <adapter factory=".calendar.CalendarControlPanelAdapter" />
 
+  <adapter factory=".filter.FilterControlPanelAdapter" />
+
   <adapter factory=".mail.MailControlPanelAdapter" />
 
-  <adapter factory=".filter.FilterControlPanelAdapter" />
+  <adapter factory=".maintenance.MaintenanceControlPanelAdapter" />
 
   <adapter factory=".search.SearchControlPanelAdapter" />
   
   <adapter factory=".security.SecurityControlPanelAdapter" />
 
+  <adapter factory=".site.SiteControlPanelAdapter" />
+
   <adapter factory=".skins.SkinsControlPanelAdapter" />
 
   <adapter factory=".types.TypesControlPanelAdapter" />
 
-  <adapter factory=".maintenance.MaintenanceControlPanelAdapter" />
-
-  <adapter factory=".seo.SeoControlPanelAdapter" />
-
   <adapter factory=".wickedcp.WickedControlPanelAdapter" />
-
-  <browser:page
-      name="wicked-controlpanel.html"
-      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-      class=".wickedcp.WickedControlPanel" 
-      permission="cmf.ManagePortal"
-     />
-
-  <browser:page
-      name="seo-controlpanel.html"
-      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-      class=".seo.SeoControlPanel" 
-      permission="cmf.ManagePortal"
-     />
 
   <browser:page
       name="calendar-controlpanel.html"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       class=".calendar.CalendarControlPanel"
+      permission="cmf.ManagePortal"
+      />
+
+  <browser:page
+      name="filter-controlpanel.html"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".filter.FilterControlPanel"
       permission="cmf.ManagePortal"
       />
 
@@ -51,9 +44,9 @@
       />
 
   <browser:page
-      name="filter-controlpanel.html"
+      name="maintenance-controlpanel.html"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-      class=".filter.FilterControlPanel"
+      class=".maintenance.MaintenanceControlPanel"
       permission="cmf.ManagePortal"
       />
 
@@ -72,6 +65,13 @@
       />
 
   <browser:page
+      name="site-controlpanel.html"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".site.SiteControlPanel"
+      permission="cmf.ManagePortal"
+      />
+
+  <browser:page
       name="skins-controlpanel.html"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       class=".skins.SkinsControlPanel"
@@ -86,11 +86,11 @@
       />
 
   <browser:page
-      name="maintenance-controlpanel.html"
+      name="wicked-controlpanel.html"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-      class=".maintenance.MaintenanceControlPanel"
+      class=".wickedcp.WickedControlPanel" 
       permission="cmf.ManagePortal"
-      />
+     />
 
   <view
       type="zope.publisher.interfaces.browser.IBrowserRequest"
