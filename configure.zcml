@@ -61,6 +61,24 @@
     interface=".interfaces.IHideFromBreadcrumbs"
     />
 
+  <utility component=".i18nl10n.plonedomain"
+           name="plone" />
+
+  <utility component=".i18nl10n.atctdomain"
+           name="atcontenttypes" />
+
+  <utility component=".i18nl10n.pltdomain"
+           name="plonelanguagetool" />
+
+  <utility component=".i18nl10n.prtdomain"
+           name="passwordresettool" />
+
+  <utility component=".i18nl10n.cmfpwdomain"
+           name="cmfplacefulworkflow" />
+
+  <utility component=".i18nl10n.cmfedomain"
+           name="cmfeditions" />
+
   <utility factory=".factory.HiddenProfiles"
            name="Products.CMFPlone" />
 

@@ -12,6 +12,16 @@ from Products.CMFPlone.utils import safe_unicode
 from Products.PageTemplates.GlobalTranslationService import \
      getGlobalTranslationService
 
+from Products.PlacelessTranslationService.utility import PTSTranslationDomain
+
+# Create a PTS surrogate domain
+plonedomain = PTSTranslationDomain('plone')
+atctdomain = PTSTranslationDomain('atcontenttypes')
+pltdomain = PTSTranslationDomain('plonelanguagetool')
+prtdomain = PTSTranslationDomain('passwordresettool')
+cmfpwdomain = PTSTranslationDomain('cmfplacefulworkflow')
+cmfedomain = PTSTranslationDomain('cmfeditions')
+
 # these are taken from PTS, used for format interpolation
 NAME_RE = r"[a-zA-Z][a-zA-Z0-9_]*"
 _interp_regex = re.compile(r'(?<!\$)(\$(?:%(n)s|{%(n)s}))' %({'n': NAME_RE}))

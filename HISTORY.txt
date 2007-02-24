@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Added all currently used translation domains as PTSTranslationDomains.
+      This makes them available as Zope3 translation domain as well, so they
+      can be used in pure Zope3 page templates for example.
+      [hannosch, philiKON]
+
     - Changed plone_control_panel overview to use a three column layout.
       [hannosch]
 
