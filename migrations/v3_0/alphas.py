@@ -754,7 +754,7 @@ def updateSkinsAndSiteConfiglet(portal, out):
 
         if skins is not None:
             skins.action = Expression('string:${portal_url}/@@skins-controlpanel.html')
-            skins.title = "Theme"
+            skins.title = "Themes"
         if site is not None:
             site.action = Expression('string:${portal_url}/@@site-controlpanel.html')
             site.title = "Site settings"
@@ -825,7 +825,7 @@ def addFilterAndSecurityConfiglets(portal, out):
         if not haveFilter:
             controlPanel.registerConfiglet(id         = 'HtmlFilter',
                                            appId      = 'Plone',
-                                           name       = 'HTML Filter',
+                                           name       = 'HTML Filtering',
                                            action     = 'string:${portal_url}/@@filter-controlpanel.html',
                                            category   = 'Plone',
                                            permission = ManagePortal,)
@@ -858,7 +858,9 @@ def updateKukitJS(portal, out):
     new_id = '++resource++kukit-src.js'
     if jsreg is not None:
         script_ids = jsreg.getResourceIds()
-        if old_id in script_ids:
+        if old_id in script_ids and new_id in script_ids:
+            jsreg.unregisterResource(old_id)
+        elif old_id in script_ids:
             jsreg.renameResource(old_id, new_id)
             out.append("Use %s instead of %s" % (new_id, old_id))
         resource = jsreg.getResource(new_id)

@@ -19,13 +19,13 @@ class TestControlPanel(PloneTestCase.PloneTestCase):
         
         # get the expected default groups and configlets
         self.groups     = ['Plone', 'Products', 'Member']
-        self.configlets = ['Add-on Products', 'Collection', 'Mail',
-                           'Users and Groups', 'Personal Preferences', 'Theme',
-                           'Change Password', 'Zope Management Interface',
-                           'Navigation', 'Placeful Workflow', 'Search',
-                           'Error Log', 'Kupu visual editor', 'Site Settings',
-                           'Calendar', 'Versioning', 'Types', 'Security',
-                           'Language', 'Calendar', 'HTML Filter', 'Maintenance']
+        self.configlets = ['QuickInstaller', 'portal_atct', 'MailHost',
+                           'UsersGroups', 'MemberPrefs', 'PortalSkin',
+                           'MemberPassword', 'ZMI',
+                           'NavigationSettings', 'SearchSettings',
+                           'errorLog', 'kupu', 'PloneReconfig',
+                           'CalendarSettings', 'versioning', 'TypesSettings', 'SecuritySettings',
+                           'PloneLanguageTool', 'CalendarSettings', 'HtmlFilter', 'Maintenance']
 
     def testDefaultGroups(self):
         for group in self.groups:
@@ -34,9 +34,9 @@ class TestControlPanel(PloneTestCase.PloneTestCase):
 
     def testDefaultConfiglets(self):
         for title in self.configlets:
-            self.failUnless(title in [a.getAction(self)['title']
+            self.failUnless(title in [a.getAction(self)['id']
                                    for a in self.controlpanel.listActions()],
-                            "Missing configlet with title '%s'" % title)
+                            "Missing configlet with id '%s'" % title)
 
 
 def test_suite():

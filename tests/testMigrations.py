@@ -1932,7 +1932,7 @@ class TestMigrations_v3_0(MigrationTest):
         skins.action = Expression('string:skins')
         site.action = Expression('string:site')
         updateSkinsAndSiteConfiglet(self.portal, [])
-        self.assertEquals(skins.title, 'Theme')
+        self.assertEquals(skins.title, 'Themes')
         self.assertEquals(skins.action.text,
                           'string:${portal_url}/@@skins-controlpanel.html')
         self.assertEquals(site.title, 'Site settings')
@@ -1947,7 +1947,7 @@ class TestMigrations_v3_0(MigrationTest):
         site.action = Expression('string:site')
         updateSkinsAndSiteConfiglet(self.portal, [])
         updateSkinsAndSiteConfiglet(self.portal, [])
-        self.assertEquals(skins.title, 'Theme')
+        self.assertEquals(skins.title, 'Themes')
         self.assertEquals(skins.action.text,
                           'string:${portal_url}/@@skins-controlpanel.html')
         self.assertEquals(site.title, 'Site settings')
@@ -2024,7 +2024,7 @@ class TestMigrations_v3_0(MigrationTest):
         self.failUnless('HtmlFilter' in [x.getId() for x in self.cp.listActions()])
         self.failUnless('SecuritySettings' in [x.getId() for x in self.cp.listActions()])
         htmlfilter = self.cp.getActionObject('Plone/HtmlFilter')
-        self.assertEquals(htmlfilter.title, 'HTML Filter')
+        self.assertEquals(htmlfilter.title, 'HTML Filtering')
         self.assertEquals(htmlfilter.action.text,
                           'string:${portal_url}/@@filter-controlpanel.html')
         security = self.cp.getActionObject('Plone/SecuritySettings')
