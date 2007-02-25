@@ -28,11 +28,13 @@ class SiteMapView(BrowserView):
     def __call__(self):
         """render the template and compress it"""
         # check if we are allowed to be shown
-        if not getToolByName(self.context,'portal_properties').site_properties.enable_sitemap:
+        sp = getToolByName(self.context,'portal_properties').site_properties
+        if not sp.enable_sitemap:
             raise NotFound(self.context, "sitemap.xml.gz", self.request)
 
         # set the headers
-        self.request.RESPONSE.setHeader("Content-Type","application/octet-stream")
+        self.request.RESPONSE.setHeader("Content-Type",
+                "application/octet-stream")
         xml = self.template()
         fp = StringIO()
         gzip = GzipFile("sitemap.xml.gz","w",9,fp)
