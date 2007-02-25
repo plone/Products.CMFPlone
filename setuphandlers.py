@@ -57,7 +57,6 @@ class PloneGenerator:
         qi = getToolByName(p, 'portal_quickinstaller')
         qi.installProduct('Archetypes', locked=1, hidden=1)
         qi.installProduct('PlonePAS', locked=1, hidden=1, forceProfile=True)
-        qi.installProduct('CMFPlacefulWorkflow', locked=0)
         qi.installProduct('kupu', locked=0, forceProfile=True)
 
         # The following two products are "installed" based on a GenericSetup
