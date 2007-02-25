@@ -151,6 +151,9 @@ def alpha2_alpha3(portal):
     # Install the filter and security control panels
     addFilterAndSecurityConfiglets(portal, out)
 
+    # Use the unpacked kukit-src.js and pack it ourself
+    updateKukitJS(portal, out)
+
     return out
 
 
@@ -819,3 +822,18 @@ def addFilterAndSecurityConfiglets(portal, out):
                                            category   = 'Plone',
                                            permission = ManagePortal,)
             out.append("Added security settings to the control panel")
+
+def updateKukitJS(portal, out):
+    """Use the unpacked kukit-src.js and pack it ourself.
+    """
+    jsreg = getToolByName(portal, 'portal_javascripts', None)
+    old_id = '++resource++kukit.js'
+    new_id = '++resource++kukit-src.js'
+    if jsreg is not None:
+        script_ids = jsreg.getResourceIds()
+        if old_id in script_ids:
+            jsreg.renameResource(old_id, new_id)
+            out.append("Use %s instead of %s" % (new_id, old_id))
+        resource = jsreg.getResource(new_id)
+        if resource is not None:
+            resource.setCompression('safe')

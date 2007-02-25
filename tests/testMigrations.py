@@ -88,6 +88,7 @@ from Products.CMFPlone.migrations.v3_0.alphas import updateSkinsAndSiteConfiglet
 from Products.CMFPlone.migrations.v3_0.alphas import updateConfigletTitles
 from Products.CMFPlone.migrations.v3_0.alphas import addIconsForFilterAndSecurityConfiglets
 from Products.CMFPlone.migrations.v3_0.alphas import addFilterAndSecurityConfiglets
+from Products.CMFPlone.migrations.v3_0.alphas import updateKukitJS
 
 from zope.app.component.hooks import clearSite
 from zope.app.component.interfaces import ISite
@@ -2055,6 +2056,22 @@ class TestMigrations_v3_0(MigrationTest):
         # Should not fail if tool is missing
         self.portal._delObject('portal_controlpanel')
         addFilterAndSecurityConfiglets(self.portal, [])
+
+    def testUpdateKukitJS(self):
+        jsreg = self.portal.portal_javascripts
+        # put into old state first
+        jsreg.unregisterResource('++resource++kukit-src.js')
+        script_ids = jsreg.getResourceIds()
+        self.failIf('++resource++kukit-src.js' in script_ids)
+        jsreg.registerScript('++resource++kukit.js', compression="none")
+        script_ids = jsreg.getResourceIds()
+        self.failUnless('++resource++kukit.js' in script_ids)
+        # migrate and test again
+        updateKukitJS(self.portal, [])
+        script_ids = jsreg.getResourceIds()
+        self.failUnless('++resource++kukit-src.js' in script_ids)
+        resource = jsreg.getResource('++resource++kukit-src.js')
+        self.failUnless(resource.getCompression() == 'safe')
 
 
 def test_suite():
