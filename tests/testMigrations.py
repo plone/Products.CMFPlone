@@ -120,16 +120,6 @@ class BogusMailHost(SimpleItem):
 
 class MigrationTest(PloneTestCase.PloneTestCase):
 
-    def afterSetUp(self):
-        """general test setup"""
-        # disable resource compiling as it takes a long time now
-        self.portal.portal_javascripts.setDebugMode(True)
-        self.portal.portal_css.setDebugMode(True)
-
-        # NOTE: Do not reset this in beforeTearDown as it will compile the
-        # resources then which takes quite a bit and makes tests slow
-        # there should be no need to do so anyway 
-
     def removeActionFromTool(self, action_id, category=None, action_provider='portal_actions'):
         # Removes an action from portal_actions
         tool = getattr(self.portal, action_provider)
@@ -225,7 +215,6 @@ class MigrationTest(PloneTestCase.PloneTestCase):
 class TestMigrations_v2_1_1(MigrationTest):
 
     def afterSetUp(self):
-        MigrationTest.afterSetUp(self)
         self.actions = self.portal.portal_actions
         self.icons = self.portal.portal_actionicons
         self.properties = self.portal.portal_properties
@@ -287,7 +276,6 @@ class TestMigrations_v2_1_1(MigrationTest):
 class TestMigrations_v2_1_2(MigrationTest):
 
     def afterSetUp(self):
-        MigrationTest.afterSetUp(self)
         self.actions = self.portal.portal_actions
         self.memberdata = self.portal.portal_memberdata
         self.skins = self.portal.portal_skins
@@ -572,7 +560,6 @@ class TestMigrations_v2_1_3(MigrationTest):
 class TestMigrations_v2_5(MigrationTest):
 
     def afterSetUp(self):
-        MigrationTest.afterSetUp(self)
         self.actions = self.portal.portal_actions
         self.memberdata = self.portal.portal_memberdata
         self.catalog = self.portal.portal_catalog
@@ -904,7 +891,6 @@ class TestMigrations_v2_5(MigrationTest):
 class TestMigrations_v2_5_1(MigrationTest):
 
     def afterSetUp(self):
-        MigrationTest.afterSetUp(self)
         self.actions = self.portal.portal_actions
         self.memberdata = self.portal.portal_memberdata
         self.catalog = self.portal.portal_catalog
@@ -1053,7 +1039,6 @@ class TestMigrations_v2_5_1(MigrationTest):
 class TestMigrations_v3_0_Actions(MigrationTest):
 
     def afterSetUp(self):
-        MigrationTest.afterSetUp(self)
         self.actions = self.portal.portal_actions
         self.types = self.portal.portal_types
         self.workflow = self.portal.portal_workflow
@@ -1145,7 +1130,6 @@ class TestMigrations_v3_0_Actions(MigrationTest):
 class TestMigrations_v3_0(MigrationTest):
 
     def afterSetUp(self):
-        MigrationTest.afterSetUp(self)
         self.actions = self.portal.portal_actions
         self.cp = getUtility(IControlPanel)
         self.icons = self.portal.portal_actionicons
