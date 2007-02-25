@@ -69,6 +69,7 @@ class PloneGenerator:
         """ Add RAM and AcceleratedHTTP cache handlers """
         mgrs = [(AcceleratedHTTPCacheManager, 'HTTPCache'),
                 (RAMCacheManager, 'RAMCache'),
+                (RAMCacheManager, 'ResourceRegistryCache'),
                 ]
         for mgr_class, mgr_id in mgrs:
             existing = p._getOb(mgr_id, None)
@@ -79,6 +80,23 @@ class PloneGenerator:
                 if not isinstance(unwrapped, mgr_class):
                     p._delObject(mgr_id)
                     p._setObject(mgr_id, mgr_class(mgr_id))
+
+    def addCacheForResourceRegistry(self, portal):
+        ram_cache_id = 'ResourceRegistryCache'
+        if ram_cache_id in portal.objectIds():
+            cache = getattr(portal, ram_cache_id)
+            settings = cache.getSettings()
+            settings['max_age'] = 24*3600 # keep for up to 24 hours
+            settings['request_vars'] = ('URL',)
+            cache.manage_editProps('Cache for saved ResourceRegistry files', settings)
+        reg = getToolByName(portal, 'portal_css', None)
+        if reg is not None and getattr(aq_base(reg), 'ZCacheable_setManagerId', None) is not None:
+            reg.ZCacheable_setManagerId(ram_cache_id)
+            reg.ZCacheable_setEnabled(1)
+        reg = getToolByName(portal, 'portal_javascripts', None)
+        if reg is not None and getattr(aq_base(reg), 'ZCacheable_setManagerId', None) is not None:
+            reg.ZCacheable_setManagerId(ram_cache_id)
+            reg.ZCacheable_setEnabled(1)
 
     # XXX: This should all be done by custom setuphandlers
     def setupPortalContent(self, p):
@@ -291,6 +309,7 @@ def importVarious(context):
     gen = PloneGenerator()
     gen.installProducts(site)
     gen.addCacheHandlers(site)
+    gen.addCacheForResourceRegistry(site)
 
 def importFinalSteps(context):
     """
