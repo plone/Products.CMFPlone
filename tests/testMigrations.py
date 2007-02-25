@@ -77,6 +77,7 @@ from Products.CMFPlone.migrations.v3_0.alphas import migrateLocalroleForm
 from Products.CMFPlone.migrations.v3_0.alphas import reorderUserActions
 from Products.CMFPlone.migrations.v3_0.alphas import updateRtlCSSexpression
 from Products.CMFPlone.migrations.v3_0.alphas import addMaintenanceProperty
+from Products.CMFPlone.migrations.v3_0.alphas import addWebstatsJSProperty
 from Products.CMFPlone.migrations.v3_0.alphas import addWebstatsJSFile
 
 from zope.app.component.hooks import clearSite
@@ -1707,6 +1708,54 @@ class TestMigrations_v3_0(MigrationTest):
         tool = self.portal.portal_properties
         sheet = tool.site_properties
         self.failUnless(sheet.hasProperty('number_of_days_to_keep'))
+        
+    def testAddWebstatsJSProperty(self):
+        # adds a site property to portal_properties
+        self.removeSiteProperty('webstats_js')
+        addWebstatsJSProperty(self.portal, [])
+        tool = self.portal.portal_properties
+        sheet = tool.site_properties
+        self.failUnless(sheet.hasProperty('webstats_js'))
+        
+        
+    def testAddWebstatsJS(self):
+        jsreg = self.portal.portal_javascripts
+        # unregister first
+        jsreg.unregisterResource('webstats.js')
+        script_ids = jsreg.getResourceIds()
+        self.failIf('webstats.js' in script_ids)
+        # migrate and test again
+        addWebstatsJSFile(self.portal, [])
+        script_ids = jsreg.getResourceIds()
+        self.failUnless('webstats.js' in script_ids)
+        if 'webstats.js' in script_ids:
+            pos1 = jsreg.getResourcePosition('login.js')
+            pos2 = jsreg.getResourcePosition('webstats.js')
+            self.failUnless((pos2 - 1) == pos1)
+        # check if enabled
+        res = jsreg.getResource('webstats.js')
+        self.assertEqual(res.getEnabled(),True)
+
+    def testWebstatsJSTwice(self):
+        # Should not break if migrated again
+        jsreg = self.portal.portal_javascripts
+        # unregister first
+        jsreg.unregisterResource('webstats.js')
+        script_ids = jsreg.getResourceIds()
+        self.failIf('webstats.js' in script_ids)
+        # migrate and test again
+        addWebstatsJSFile(self.portal, [])
+        addWebstatsJSFile(self.portal, [])
+        script_ids = jsreg.getResourceIds()
+        self.failUnless('webstats.js' in script_ids)
+        if 'webstats.js' in script_ids:
+            pos1 = jsreg.getResourcePosition('login.js')
+            pos2 = jsreg.getResourcePosition('webstats.js')
+            self.failUnless((pos2 - 1) == pos1)
+
+            addWebstatsJSProperty
+
+
 
 
 class TestMigrations_v3_0_Actions(MigrationTest):
@@ -1795,37 +1844,7 @@ class TestMigrations_v3_0_Actions(MigrationTest):
 
         self.assertEquals(reply.i18n_domain, 'plone')
 
-    def testAddWebstatsJS(self):
-        jsreg = self.portal.portal_javascripts
-        # unregister first
-        jsreg.unregisterResource('webstats.js')
-        script_ids = jsreg.getResourceIds()
-        self.failIf('webstats.js' in script_ids)
-        # migrate and test again
-        addWebstatsJSFile(self.portal, [])
-        script_ids = jsreg.getResourceIds()
-        self.failUnless('webstats.js' in script_ids)
-        if 'webstats.js' in script_ids:
-            pos1 = jsreg.getResourcePosition('login.js')
-            pos2 = jsreg.getResourcePosition('webstats.js')
-            self.failUnless((pos2 - 1) == pos1)
 
-    def testWebstatsJSTwice(self):
-        # Should not break if migrated again
-        jsreg = self.portal.portal_javascripts
-        # unregister first
-        jsreg.unregisterResource('webstats.js')
-        script_ids = jsreg.getResourceIds()
-        self.failIf('webstats.js' in script_ids)
-        # migrate and test again
-        addWebstatsJSFile(self.portal, [])
-        addWebstatsJSFile(self.portal, [])
-        script_ids = jsreg.getResourceIds()
-        self.failUnless('webstats.js' in script_ids)
-        if 'webstats.js' in script_ids:
-            pos1 = jsreg.getResourcePosition('login.js')
-            pos2 = jsreg.getResourcePosition('webstats.js')
-            self.failUnless((pos2 - 1) == pos1)
 
     def beforeTearDown(self):
         if len(self.discussion._actions) > 0:
