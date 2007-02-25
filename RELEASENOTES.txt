@@ -71,6 +71,7 @@ Important notes for users
 * new workflows
 * wicked
 * versioning, staging and locking
+* google sitemap support
 
 Important notes for system administrators
 -----------------------------------------
