@@ -10,7 +10,12 @@ setup(name='plone.app.portlets',
 plone.app.portlets provides a Plone-specific user interface for 
 plone.portlets, as well as a standard set of portlets that ship with Plone.
 """,
-      classifiers=[], # Get strings from http://www.python.org/pypi?%3Aaction=list_classifiers
+      classifiers=[
+        "Framework :: Plone",
+        "Framework :: Zope2",
+        "License :: OSI Approved :: GNU General Public License (GPL)",
+        "Programming Language :: Python",
+        ],
       keywords='portlets viewlets plone',
       author='Martin Aspeli',
       author_email='optilude@gmx.net',
