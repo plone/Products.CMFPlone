@@ -8,6 +8,9 @@ Plone 3.0 - unreleased
       complex to be useful for normal users, and admin users have the ZMI.
       Also renamed "Join" action to "Register" and removed the dedicated
       link to the personal Preferences pending addition of the Dashboard link.
+      We do not migrate existing sites to these values on purpose - if you
+      want these changes, it's easy to fix them in portal_actions on your
+      site.
       [limi]
 
     - Set text-transform property to none, it's not 2001 anymore, and the mix
