@@ -39,6 +39,11 @@ dl.kssPortletRefresh:timeout {
 }
 */
 
+/* Deferred portlets */
+.portlet-deferred:load {
+    action-server: refreshPortlet;
+    refreshPortlet-portlethash: kssAttr(portlethash, True);
+}
 
 /*
 Content Menu Sections: General

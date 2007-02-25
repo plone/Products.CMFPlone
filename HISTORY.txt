@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Add a RSS portlet
+      [mrtopf]
+
     - Remove the never really supported Plone Tableless skin.
       [wichert]
 

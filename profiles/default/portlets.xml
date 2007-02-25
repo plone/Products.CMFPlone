@@ -84,8 +84,15 @@
    />
 
  <portlet 
+   addview="portlets.rss"
+   title="RSS Feed"
+   description="A portlet which can receive and render an RSS feed."
+   />
+
+ <portlet 
    addview="portlets.Search"
    title="Search"
    description="A portlet which shows a search box."
    />
+
 </portlets>
