@@ -95,6 +95,7 @@ from Products.CMFPlone.migrations.v3_0.alphas import updateCssQueryJS
 from Products.CMFPlone.migrations.v3_0.alphas import removeHideAddItemsJS
 from Products.CMFPlone.migrations.v3_0.alphas import addWebstatsJSProperty
 from Products.CMFPlone.migrations.v3_0.alphas import addWebstatsJSFile
+from Products.CMFPlone.migrations.v3_0.alphas import removeTablelessSkin
   
 
 from zope.app.component.hooks import clearSite
@@ -628,7 +629,7 @@ class TestMigrations_v2_5(MigrationTest):
     def testInstallDeprecated(self):
         # Remove skin
         self.skins._delObject('plone_deprecated')
-        skins = ['Plone Default', 'Plone Tableless']
+        skins = ['Plone Default']
         for s in skins:
             path = self.skins.getSkinPath(s)
             path = [p.strip() for p in  path.split(',')]
@@ -641,13 +642,11 @@ class TestMigrations_v2_5(MigrationTest):
         # it should be in the skin now
         self.assertEqual(self.skins.getSkinPath('Plone Default').split(',')[-3],
                          'plone_deprecated')
-        self.assertEqual(self.skins.getSkinPath('Plone Tableless').split(',')[-3],
-                         'plone_deprecated')
 
     def testInstallDeprecatedTwice(self):
         # Remove skin
         self.skins._delObject('plone_deprecated')
-        skins = ['Plone Default', 'Plone Tableless']
+        skins = ['Plone Default']
         for s in skins:
             path = self.skins.getSkinPath(s)
             path = [p.strip() for p in  path.split(',')]
@@ -661,8 +660,6 @@ class TestMigrations_v2_5(MigrationTest):
         self.failUnless('plone_deprecated' in self.skins.objectIds())
         # it should be in the skin now
         self.assertEqual(self.skins.getSkinPath('Plone Default').split(',')[-3],
-                         'plone_deprecated')
-        self.assertEqual(self.skins.getSkinPath('Plone Tableless').split(',')[-3],
                          'plone_deprecated')
         self.assertEqual(len(self.skins.getSkinPath('Plone Default').split(',')),
                          skin_len+1)
@@ -1578,7 +1575,7 @@ class TestMigrations_v3_0(MigrationTest):
         mt = self.portal.mimetypes_registry
         mtid = 'text/kss'
         st = self.portal.portal_skins
-        skins = ['Plone Default', 'Plone Tableless']
+        skins = ['Plone Default']
         if unregister:
             # unregister first
             for id, _compression, _enabled in installKss.js_all:
