@@ -41,9 +41,6 @@
     enabled="True" expression="" id="folder_contents_filter.js"
     inline="False"/>
  <javascript cacheable="True" compression="safe" cookable="True"
-    enabled="True" expression="" id="folder_contents_hideAddItems.js"
-    inline="False"/>
- <javascript cacheable="True" compression="safe" cookable="True"
     enabled="True" expression="" id="styleswitcher.js" inline="False"/>
  <javascript cacheable="True" compression="safe" cookable="True"
     enabled="True" expression="" id="table_sorter.js" inline="False"/>
