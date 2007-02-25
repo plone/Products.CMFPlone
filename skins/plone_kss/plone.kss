@@ -280,3 +280,8 @@ table.listing input[type="checkbox"]:change {
    setStyle-value: inline;
 }
 
+.kupu-save-message:timeout {
+   evt-timeout-delay: 2000;
+   evt-timeout-repeat: '';
+   action-client: deleteNode;
+}
