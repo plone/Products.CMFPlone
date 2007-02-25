@@ -73,7 +73,12 @@ Important notes for users
   It is enabled by default and the sitemap.xml.gz file is provided in the root
   of your portal.
 
-  You can switch the sitemap feature off under Site Settings in the Site Setup page.
+  You can switch the sitemap feature off under Site Settings in the Site Setup
+  page.
+
+* The Plone Tableless skin has been removed. The standard Plone skin makes
+  very minimal use of tables and can be flexibly styled, as is demonstrated
+  by the NuPlone theme.
 
 * KSS/Azax
 * new workflows
