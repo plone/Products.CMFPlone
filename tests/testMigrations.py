@@ -2082,7 +2082,7 @@ class TestMigrations_v3_0(MigrationTest):
         script_ids = jsreg.getResourceIds()
         self.failUnless('++resource++kukit-src.js' in script_ids)
         resource = jsreg.getResource('++resource++kukit-src.js')
-        self.failUnless(resource.getCompression() == 'safe')
+        self.failUnless(resource.getCompression() == 'full')
 
     def testAddCacheForResourceRegistry(self):
         ram_cache_id = 'ResourceRegistryCache'

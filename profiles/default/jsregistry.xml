@@ -127,7 +127,7 @@
  <javascript cacheable="True" compression="safe" cookable="True"
     enabled="True" expression=""
     id="++resource++effects.js" inline="False"/>
- <javascript cacheable="True" compression="safe" cookable="True"
+ <javascript cacheable="True" compression="full" cookable="True"
     enabled="True" expression=""
     id="++resource++kukit-src.js" inline="False"/>
 </object>

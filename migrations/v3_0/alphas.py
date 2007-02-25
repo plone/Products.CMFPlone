@@ -855,7 +855,7 @@ def updateKukitJS(portal, out):
             out.append("Use %s instead of %s" % (new_id, old_id))
         resource = jsreg.getResource(new_id)
         if resource is not None:
-            resource.setCompression('safe')
+            resource.setCompression('full')
 
 def addCacheForResourceRegistry(portal, out):
     ram_cache_id = 'ResourceRegistryCache'
