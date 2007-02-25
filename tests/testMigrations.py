@@ -88,6 +88,7 @@ from Products.CMFPlone.migrations.v3_0.alphas import updateSkinsAndSiteConfiglet
 from Products.CMFPlone.migrations.v3_0.alphas import updateConfigletTitles
 from Products.CMFPlone.migrations.v3_0.alphas import addIconsForFilterAndSecurityConfiglets
 from Products.CMFPlone.migrations.v3_0.alphas import addFilterAndSecurityConfiglets
+from Products.CMFPlone.migrations.v3_0.alphas import addSitemapProperty
 from Products.CMFPlone.migrations.v3_0.alphas import updateKukitJS
 
 from zope.app.component.hooks import clearSite
@@ -2056,6 +2057,15 @@ class TestMigrations_v3_0(MigrationTest):
         # Should not fail if tool is missing
         self.portal._delObject('portal_controlpanel')
         addFilterAndSecurityConfiglets(self.portal, [])
+
+
+    def testAddSitemapProperty(self):
+        self.removeSiteProperty('enable_sitemap')
+        addSitemapProperty(self.portal, [])
+        tool = self.portal.portal_properties
+        sheet = tool.site_properties
+        self.failUnless(sheet.hasProperty('enable_sitemap'))
+
 
     def testUpdateKukitJS(self):
         jsreg = self.portal.portal_javascripts

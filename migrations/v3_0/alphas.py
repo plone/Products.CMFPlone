@@ -153,6 +153,9 @@ def alpha2_alpha3(portal):
     # Install the filter and security control panels
     addFilterAndSecurityConfiglets(portal, out)
 
+    # Add the sitemap enabled property
+    addSitemapProperty(portal, out)
+
     # Use the unpacked kukit-src.js and pack it ourself
     updateKukitJS(portal, out)
 
@@ -827,6 +830,17 @@ def addFilterAndSecurityConfiglets(portal, out):
                                            category   = 'Plone',
                                            permission = ManagePortal,)
             out.append("Added security settings to the control panel")
+
+
+def addSitemapProperty(portal, out):
+    tool = getToolByName(portal, 'portal_properties', None)
+    if tool is not None:
+        sheet = getattr(tool, 'site_properties', None)
+        if sheet is not None:
+            if not sheet.hasProperty('enable_sitemap'):
+                sheet.manage_addProperty('enable_sitemap', True, 'boolean')
+                out.append("Added 'enable_sitemap' property to site properties")
+
 
 def updateKukitJS(portal, out):
     """Use the unpacked kukit-src.js and pack it ourself.

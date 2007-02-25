@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Add migration code for the enable_sitemap site property
+      [wichert]
+
     - Removed the Undo action (since we have versioning now) - it's too
       complex to be useful for normal users, and admin users have the ZMI.
       Also renamed "Join" action to "Register" and removed the dedicated
