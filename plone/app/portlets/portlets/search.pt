@@ -12,7 +12,8 @@
 
   <dd class="portletItem odd">
     <form name="searchform" action="search"
-          tal:attributes="action view/search_action;">
+          tal:define="livesearch view/enable_livesearch;"
+          tal:attributes="action view/search_action">
       <div class="LSBox">
         <input class="portlet-search-gadget"
             name="SearchableText"
