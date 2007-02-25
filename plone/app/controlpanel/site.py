@@ -22,49 +22,52 @@ class ISiteSchema(Interface):
                           default=u'')
 
     site_description = Text(title=_(u'Site description'),
-                           description=_(u"""The site description is available
-                               in syndicated content and elsewhere. Keep it
-                               brief."""),
+                           description=_(u"The site description is available "
+                               "in syndicated content and elsewhere. Keep it "
+                               "brief."),
                            default=u'',
                            required=False)
 
     visible_ids = Bool(title=_(u'Show "Short Name" on content?'),
-                       description=_(u"""Display and allow users to edit the
-                           "Short name" content identifiers, which form the URL
-                           part of a content item's address. Once enabled,
-                           users will then be able to enable this option in
-                           their preferences."""),
+                       description=_(u"Display and allow users to edit the "
+                           "'Short name' content identifiers, which form the "
+                           "URL part of a content item's address. Once "
+                           "enabled, users will then be able to enable this "
+                           "option in their preferences."),
                        default=False)
 
     many_users = Bool(title=_(u'Many users/groups?'),
-                      description=_(u"""Determines if your Plone is optimized
-                          for small or large sites. In environments with a lot
-                          of users and/or groups it can be very slow or
-                          impossible to build a list all users or groups. This
-                          option tunes the user interface and behaviour of Plone
-                          for this case by allowing you to search for
-                          users/groups instead of listing all of them."""),
+                      description=_(u"Determines if your Plone is optimized "
+                          "for small or large sites. In environments with a "
+                          "lot of users and/or groups it can be very slow or "
+                          "impossible to build a list all users or groups. "
+                          "This option tunes the user interface and behaviour "
+                          "of Plone for this case by allowing you to search "
+                          "for users/groups instead of listing all of them."),
                       default=True)
 
     enable_link_integrity_checks = Bool(title=_(u'Enable link integrity checks'),
-                          description=_(u"""Determines if the users should get
-                              warnings when they delete or move content that is
-                              linked from inside the site"""),
+                          description=_(u"Determines if the users should get "
+                              "warnings when they delete or move content that "
+                              "is linked from inside the site"),
                           default=True)
 
     ext_editor = Bool(title=_(u'Enable External Editor feature'),
-                          description=_(u"""Determines if the external editor
-                              feature is enabled. This feature requires a
-                              special client-side application installed. The
-                              users also have to enable this in their
-                              preferences."""),
+                          description=_(u"Determines if the external editor "
+                              "feature is enabled. This feature requires a "
+                              "special client-side application installed. The "
+                              "users also have to enable this in their "
+                              "preferences."),
                           default=False)
 
     enable_sitemap = Bool(title=_(u'Provide sitemap.xml.gz in the portal root'),
-                          description=_(u"""A sitemap.xml.gz file might be
-                              useful for Google and lists all your content
-                              along with modification dates"""),
-                          default=True)
+                          description=_(u"A sitemap.xml.gz file might be "
+                              "useful for Google and lists all your content "
+                              "along with modification dates. Please note that "
+                              "generating the sitemap is an expensive "
+                              "operation which can be abused to slow down "
+                              "your site."),
+                          default=False)
 
 
 class SiteControlPanelAdapter(SchemaAdapterBase):
