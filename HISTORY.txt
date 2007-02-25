@@ -5,7 +5,8 @@ Changelog for Plone
 Plone 3.0 - unreleased
 
     - Set text-transform property to none, it's not 2001 anymore, and the mix
-      of uppercase and lowercase was hurting me. ;)
+      of uppercase and lowercase was hurting me. Also fixed font size for the
+      unreadably small text in Firefox on certain platforms.
       [limi]
 
     - Install kupu via its GenericSetup profile.

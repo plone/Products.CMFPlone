@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <object name="portal_controlpanel" meta_type="Plone Control Panel Tool">
- <configlet title="Add/Remove Products" action_id="QuickInstaller"
+ <configlet title="Add-on Products" action_id="QuickInstaller"
     appId="QuickInstaller" category="Plone" condition_expr=""
     url_expr="string:${portal_url}/prefs_install_products_form"
     visible="True">
   <permission>Manage portal</permission>
  </configlet>
- <configlet title="Site Settings" action_id="PloneReconfig" appId="Plone"
+ <configlet title="Site" action_id="PloneReconfig" appId="Plone"
     category="Plone" condition_expr=""
     url_expr="string:${portal_url}/@@site-controlpanel.html" visible="True">
   <permission>Manage portal</permission>
@@ -36,17 +36,17 @@
     url_expr="string:${portal_url}/@@mail-controlpanel.html" visible="True">
   <permission>Manage portal</permission>
  </configlet>
- <configlet title="Theme" action_id="PortalSkin" appId="PortalSkin"
+ <configlet title="Themes" action_id="PortalSkin" appId="PortalSkin"
     category="Plone" condition_expr=""
     url_expr="string:${portal_url}/@@skins-controlpanel.html" visible="True">
   <permission>Manage portal</permission>
  </configlet>
- <configlet title="Error Log" action_id="errorLog" appId="ErrorLog"
+ <configlet title="Errors" action_id="errorLog" appId="ErrorLog"
     category="Plone" condition_expr=""
     url_expr="string:${portal_url}/prefs_error_log_form" visible="True">
   <permission>Manage portal</permission>
  </configlet>
- <configlet title="Types" action_id="TypesSettings"
+ <configlet title="Content Types" action_id="TypesSettings"
     appId="TypesSettings" category="Plone" condition_expr=""
     url_expr="string:${portal_url}/@@types-controlpanel.html"
     visible="True">
@@ -68,7 +68,7 @@
     url_expr="string:${portal_url}/@@search-controlpanel.html" visible="True">
   <permission>Manage portal</permission>
  </configlet>
- <configlet title="Wiki Behavior Settings" action_id="WickedSettings" appId="Plone"
+ <configlet title="Wiki" action_id="WickedSettings" appId="Plone"
     category="Plone" condition_expr=""
     url_expr="string:${portal_url}/@@wicked-controlpanel.html" visible="True">
   <permission>Manage portal</permission>
@@ -95,7 +95,7 @@
     url_expr="string:${portal_url}/@@calendar-controlpanel.html" visible="True">
   <permission>Manage portal</permission>
  </configlet>
- <configlet title="HTML Filter" action_id="HtmlFilter" appId="HtmlFilter"
+ <configlet title="HTML Filtering" action_id="HtmlFilter" appId="HtmlFilter"
     category="Plone" condition_expr=""
     url_expr="string:${portal_url}/@@filter-controlpanel.html" visible="True">
   <permission>Manage portal</permission>
