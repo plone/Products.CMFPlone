@@ -4,7 +4,7 @@
     enabled="True" expression="" id="event-registration.js" inline="False"/>
  <javascript cacheable="True" compression="safe" cookable="True"
     enabled="True" expression="" id="register_function.js" inline="False"/>
- <javascript cacheable="True" compression="safe" cookable="True"
+ <javascript cacheable="True" compression="full-encode" cookable="True"
     enabled="True" expression="" id="cssQuery.js" inline="False"/>
  <javascript cacheable="True" compression="safe" cookable="True"
     enabled="True" expression="" id="plone_javascript_variables.js"

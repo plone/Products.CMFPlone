@@ -162,6 +162,9 @@ def alpha2_alpha3(portal):
     # Add a RAMCache for ResourceRegistries
     addCacheForResourceRegistry(portal, out)
 
+    # Compress cssQuery with full-encode like it's supposed to.
+    updateCssQueryJS(portal, out)
+
     return out
 
 
@@ -856,6 +859,7 @@ def updateKukitJS(portal, out):
         resource = jsreg.getResource(new_id)
         if resource is not None:
             resource.setCompression('full')
+            out.append("Set 'full' compression on %s" % new_id)
 
 def addCacheForResourceRegistry(portal, out):
     ram_cache_id = 'ResourceRegistryCache'
@@ -877,3 +881,16 @@ def addCacheForResourceRegistry(portal, out):
         reg.ZCacheable_setManagerId(ram_cache_id)
         reg.ZCacheable_setEnabled(1)
         out.append('Associated portal_javascripts with %s' % ram_cache_id)
+
+def updateCssQueryJS(portal, out):
+    """Compress cssQuery with full-encode like it's supposed to.
+    """
+    jsreg = getToolByName(portal, 'portal_javascripts', None)
+    script_id = 'cssQuery.js'
+    if jsreg is not None:
+        script_ids = jsreg.getResourceIds()
+        resource = jsreg.getResource(script_id)
+        if resource is not None:
+            resource.setCompression('full-encode')
+            out.append("Set 'full-encode' compression on %s" % script_id)
+

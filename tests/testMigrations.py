@@ -91,6 +91,7 @@ from Products.CMFPlone.migrations.v3_0.alphas import addFilterAndSecurityConfigl
 from Products.CMFPlone.migrations.v3_0.alphas import addSitemapProperty
 from Products.CMFPlone.migrations.v3_0.alphas import updateKukitJS
 from Products.CMFPlone.migrations.v3_0.alphas import addCacheForResourceRegistry
+from Products.CMFPlone.migrations.v3_0.alphas import updateCssQueryJS
 
 from zope.app.component.hooks import clearSite
 from zope.app.component.interfaces import ISite
@@ -2107,6 +2108,17 @@ class TestMigrations_v3_0(MigrationTest):
         self.failIf(cssreg.ZCacheable_getManagerId() is None)
         self.failUnless(jsreg.ZCacheable_enabled())
         self.failIf(jsreg.ZCacheable_getManagerId() is None)
+
+    def testUpdateCssQueryJS(self):
+        jsreg = self.portal.portal_javascripts
+        # put into old state first
+        resource = jsreg.getResource('cssQuery.js')
+        resource.setCompression('safe')
+        self.failUnless(resource.getCompression() == 'safe')
+        # migrate and test again
+        updateCssQueryJS(self.portal, [])
+        resource = jsreg.getResource('cssQuery.js')
+        self.failUnless(resource.getCompression() == 'full-encode')
 
 
 def test_suite():
