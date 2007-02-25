@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Install kupu via its GenericSetup profile.
+      [wichert]
+
     - Renamed the statusmessage of type stop to error and the CSS class from
       portalStopMessage to portalErrorMessage accordingly.
       [hannosch]
