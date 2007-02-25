@@ -96,24 +96,31 @@
 .date {
     font-weight: bold;
 }
-.ploneCalendar {
+#plone-calendar {
+    width: 100%;
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
     margin: 1px 0 1em 0;
-    border-collapse: collapse;
-    border-spacing:0;
     width: 100%;
 }
-.ploneCalendar a {
-    text-decoration: none;
-}
-.ploneCalendar a:hover {
-    text-decoration: none;
-}
-.ploneCalendar th {
+#plone-calendar dt {
     background-color: &dtml-globalBackgroundColor;;
     font-weight: normal;
     text-align: center;
     line-height: 1.6em;
+}
+#plone-calendar dd {
+    margin: 0;
+}
+#plone-calendar a {
+    text-decoration: none;
+}
+#plone-calendar a:hover {
+    text-decoration: none;
+}
+.ploneCalendar {
+    border-collapse: collapse;
+    border-spacing:0;
+    width: 100%;
 }
 .ploneCalendar td {
     background-color: transparent;
@@ -140,34 +147,6 @@
 .ploneCalendar .todaynoevent {
     border-collapse: collapse;
     border: 2px &dtml-borderStyle; #ffa500;
-}
-.ploneCalendar #calendar-previous {
-    background-image: url(&dtml-portal_url;/arrowLeft.gif);
-    background-repeat: no-repeat;
-    background-position: 50% 50%;
-}
-.ploneCalendar #calendar-next {
-    background-image: url(&dtml-portal_url;/arrowRight.gif);
-    background-repeat: no-repeat;
-    background-position: 50% 50%;
-}
-.ploneCalendar #calendar-previous a,
-.ploneCalendar #calendar-next a {
-    display: block;
-    text-decoration: none;
-    overflow: hidden;
-    border: 0;
-    margin: 0;
-    padding: 0;
-    padding-top: <dtml-var "_['arrowLeft.gif'].height">px;
-    height: 0px !important;
-    height /**/: <dtml-var "_['arrowLeft.gif'].height">px;
-    cursor: pointer;
-}
-.ploneCalendar #calendar-next a {
-    padding-top: <dtml-var "_['arrowRight.gif'].height">px;
-    height: 0px !important;
-    height /**/: <dtml-var "_['arrowRight.gif'].height">px;
 }
 
 div.portlets-manager div.section {
@@ -201,4 +180,42 @@ div.managedPortlet {
 .managedPortletActions a.delete {
     color:red !important;
 }
+
+<dtml-comment>
+/* Commented out for now, since the calendar markup has changed slightly ~limi */
+
+
+#calendar-previous {
+    background-image: url(&dtml-portal_url;/arrowLeft.gif);
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    float: left;
+}
+#calendar-next {
+    background-image: url(&dtml-portal_url;/arrowRight.gif);
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    float: right;
+}
+#calendar-previous,
+#calendar-next {
+    display: block;
+    text-decoration: none;
+    overflow: hidden;
+    border: 0;
+    margin: 0;
+    padding: 0;
+    padding-top: <dtml-var "_['arrowLeft.gif'].height">px;
+    height: 0px !important;
+    height /**/: <dtml-var "_['arrowLeft.gif'].height">px;
+    cursor: pointer;
+}
+#calendar-next {
+    padding-top: <dtml-var "_['arrowRight.gif'].height">px;
+    height: 0px !important;
+    height /**/: <dtml-var "_['arrowRight.gif'].height">px;
+}
+
+</dtml-comment>
+
 /* </dtml-with> */
