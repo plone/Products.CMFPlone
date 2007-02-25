@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Renamed the statusmessage of type stop to error and the CSS class from
+      portalStopMessage to portalErrorMessage accordingly.
+      [hannosch]
+
     - Removed the forms.txt and rendering.txt functional test - there are 
       covered by  AddMoveAndDeleteDocument.txt, which is more sane. Also 
       update the latter to reflect a label change from plone.app.contentmenu.

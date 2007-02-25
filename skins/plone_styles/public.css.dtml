@@ -477,7 +477,7 @@ h3, h4, h5, h6 {
 /* .system-message and #error-handling are reST error indicators */
 .portalMessage,
 .portalWarningMessage,
-.portalStopMessage,
+.portalErrorMessage,
 .system-message,
 #error-handling {
     background-color: &dtml-notifyBackgroundColor;;
@@ -494,7 +494,7 @@ h3, h4, h5, h6 {
 }
 .portalMessage a,
 .portalWarningMessage a,
-.portalStopMessage a {
+.portalErrorMessage a {
     color: &dtml-fontColor;;
 }
 .documentDescription {
