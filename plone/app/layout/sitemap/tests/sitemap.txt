@@ -5,6 +5,12 @@ First some initial setup code:
 
     >>> self.loginAsManager()
 
+
+Is the property set?
+
+    >>> self.portal.portal_properties.site_properties.getProperty("enable_sitemap")
+    True
+
 Obtain the sitemap
 ------------------
 
@@ -25,8 +31,22 @@ Get the contents and decode them
 Not sure how to test the XML now as it also contains dates but for now
 we will just search for some URLs and tags.
 
-    >>> xml.find('<loc>http://nohost/plone/Members/root</loc>')!=-1
+    >>> xml.find('<loc>http://nohost/plone/Members/test_user_1_</loc>')!=-1
     True
     >>> xml.find('<loc>http://nohost/plone/front-page</loc>')!=-1
     True
-    
+
+Test if the enable_sitemap property is correctly checked
+--------------------------------------------------------
+
+unset it
+
+    >>> self.portal.portal_properties.site_properties.manage_changeProperties(enable_sitemap=False)
+
+and check if the sitemap still appears
+
+    >>> self.browser.open('http://nohost/plone/sitemap.xml.gz')
+    Traceback (most recent call last):
+    ...
+    HTTPError: HTTP Error 404: Not Found
+
