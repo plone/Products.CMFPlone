@@ -4,7 +4,7 @@
 ##bind namespace=
 ##bind script=script
 ##bind subpath=traverse_subpath
-##parameters=author,limit_per_type=5
+##parameters=
 ##title=Output the script in the webstats_js site property 
 ##
 
