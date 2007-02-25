@@ -5,14 +5,32 @@ First some initial setup code:
 
     >>> self.loginAsManager()
 
-
-Is the property set?
+There is a site property which controls accesso to the sitemap. This defaults
+to off, since generating the sitemap is an expensive operation which can
+easily lead to denial of service attack.
 
     >>> self.portal.portal_properties.site_properties.getProperty("enable_sitemap")
-    True
+    False
+
+Disabled sitemap
+----------------
+
+Trying to download the sitemap while it is not enabled results in an
+error:
+
+    >>> self.browser.open('http://nohost/plone/sitemap.xml.gz')
+    Traceback (most recent call last):
+    ...
+    HTTPError: HTTP Error 404: Not Found
 
 Obtain the sitemap
 ------------------
+
+To test the sitemap we first need to enable it:
+
+    >>> self.portal.portal_properties.site_properties.manage_changeProperties(enable_sitemap=True)
+
+we can now open the sitemap:
 
     >>> self.browser.open('http://nohost/plone/sitemap.xml.gz')
     >>> self.browser.url
@@ -35,18 +53,4 @@ we will just search for some URLs and tags.
     True
     >>> xml.find('<loc>http://nohost/plone/front-page</loc>')!=-1
     True
-
-Test if the enable_sitemap property is correctly checked
---------------------------------------------------------
-
-unset it
-
-    >>> self.portal.portal_properties.site_properties.manage_changeProperties(enable_sitemap=False)
-
-and check if the sitemap still appears
-
-    >>> self.browser.open('http://nohost/plone/sitemap.xml.gz')
-    Traceback (most recent call last):
-    ...
-    HTTPError: HTTP Error 404: Not Found
 
