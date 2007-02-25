@@ -67,11 +67,19 @@ Important notes for users
 
   - control the number of items in listing portlets
 
+* Plone now supports the Google Sitemap protocol, described in 
+  https://www.google.com/webmasters/tools/docs/en/protocol.html
+
+  It is enabled by default and the sitemap.xml.gz file is provided in the root
+  of your portal.
+
+  You can switch the sitemap feature off under Site Settings in the Site Setup page.
+
 * KSS/Azax
 * new workflows
 * wicked
 * versioning, staging and locking
-* google sitemap support
+
 
 Important notes for system administrators
 -----------------------------------------
