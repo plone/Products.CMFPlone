@@ -83,4 +83,9 @@
    description="A portlet which can render a listing on the review queue."
    />
 
+ <portlet 
+   addview="portlets.Search"
+   title="Search"
+   description="A portlet which shows a search box."
+   />
 </portlets>
