@@ -5,6 +5,7 @@ from zope.interface import implements
 from zope.schema import Bool
 from zope.schema import Text
 from zope.schema import TextLine
+from zope.schema import SourceText
 
 from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault.formlib.schema import ProxyFieldProperty
@@ -68,6 +69,16 @@ class ISiteSchema(Interface):
                               "operation which can be abused to slow down "
                               "your site."),
                           default=False)
+                          
+    webstats_js = SourceText(title=_(u'JavaScript for web statistics support'),
+                        description=_(u"For enabling web statistics support "
+                            "for e.g. Google Analytics. Look at "
+                            "http://plone.org for snippets which you can paste "
+                            "here. Do not paste Google Analytics code here "
+                            "directly; it will not work."),
+                        default=u'',
+                        required=False)                         
+                          
 
 
 class SiteControlPanelAdapter(SchemaAdapterBase):
@@ -99,8 +110,20 @@ class SiteControlPanelAdapter(SchemaAdapterBase):
         else:
             self.portal.description = ''
 
+    def get_webstats_js(self):
+        description = getattr(self.context, 'webstats_js', u'')
+        return safe_unicode(description)
+
+    def set_webstats_js(self, value):
+        if value is not None:
+            self.context.webstats_js = value.encode(self.encoding)
+        else:
+            self.context.webstats_js = ''
+            
+
     site_title = property(get_site_title, set_site_title)
     site_description = property(get_site_description, set_site_description)
+    webstats_js = property(get_webstats_js, set_webstats_js)
 
     visible_ids = ProxyFieldProperty(ISiteSchema['visible_ids'])
     many_users = ProxyFieldProperty(ISiteSchema['many_users'])
