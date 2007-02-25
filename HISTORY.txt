@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Removed the Undo action (since we have versioning now) - it's too
+      complex to be useful for normal users, and admin users have the ZMI.
+      Also renamed "Join" action to "Register" and removed the dedicated
+      link to the personal Preferences pending addition of the Dashboard link.
+      [limi]
+
     - Set text-transform property to none, it's not 2001 anymore, and the mix
       of uppercase and lowercase was hurting me. Also fixed font size for the
       unreadably small text in Firefox on certain platforms.
