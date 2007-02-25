@@ -9,6 +9,7 @@ setup(name='plone.app.controlpanel',
       long_description="""\
 """,
       classifiers=[
+        "Framework :: Plone",
         "Framework :: Zope2",
         "Framework :: Zope3",
         "Programming Language :: Python",
