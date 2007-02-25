@@ -79,6 +79,8 @@ Important notes for users
 * new workflows
 * wicked
 * versioning, staging and locking
+* content rules
+* S5
 
 
 Important notes for system administrators
