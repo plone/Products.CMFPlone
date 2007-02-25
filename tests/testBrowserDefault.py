@@ -51,7 +51,7 @@ class TestPloneToolBrowserDefault(FunctionalTestCase):
         base_path = obj.absolute_url(1)
 
         response = self.publish(base_path+path, self.basic_auth)
-        body = response.getBody()
+        body = response.getBody().decode('utf-8')
 
         # request/ACTUAL_URL is fubar in tests, remove lines that depend on it
         resolved = RE_REMOVE_DOCCONT.sub('', resolved)
