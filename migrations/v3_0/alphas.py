@@ -127,6 +127,9 @@ def alpha2_alpha3(portal):
     # Add action icon
     addIconForMaintenanceConfiglet(portal, out)
 
+    # Add webstats.js for Google Analytics
+    addWebstatsJSFile(portal,out)
+
     return out
 
 def alpha3_alpha4(portal):
@@ -498,6 +501,25 @@ def addMaintenanceProperty(portal, out):
         sheet.manage_addProperty('number_of_days_to_keep',7,'int')
         out.append("Added 'number_of_days_to_keep' property to site properties")
 
+def addWebstatsJSFile(portal, out):
+    """Add webstats.js in disabled state for Google Analytics support.
+    """
+    jsreg = getToolByName(portal, 'portal_javascripts', None)
+    script = 'webstats.js'
+    if jsreg is not None:
+        script_ids = jsreg.getResourceIds()
+        # Failsafe: first make sure the stylesheet doesn't exist in the list
+        if script not in script_ids:
+            jsreg.registerScript(script,
+                    enabled = False,
+                    cookable = True,
+                    compression = False)
+            try:
+                jsreg.moveResourceAfter(script, 'login.js')
+            except ValueError:
+                # put it at the bottom of the stack
+                jsreg.moveResourceToBottom(script)
+            out.append("Added " + script + " to portal_javascipt")
 
 # --
 # KSS registration
