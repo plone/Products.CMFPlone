@@ -20,8 +20,7 @@
         
             <p class="documentDescription"
                i18n:translate="description_contact_info_feedback">
-                If you want to contact the site administration, fill in the form
-                below.
+                Fill in the form to contact the owners of this site.
             </p>
             
             <form name="feedback_form"
