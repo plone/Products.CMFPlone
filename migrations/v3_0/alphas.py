@@ -8,6 +8,8 @@ from zope.component.persistentregistry import PersistentComponents
 
 from Acquisition import aq_base
 
+from Products.StandardCacheManagers import RAMCacheManager
+
 from Products.ATContentTypes.migration.v1_2 import upgradeATCTTool
 from Products.CMFCore.ActionInformation import Action
 from Products.CMFCore.ActionInformation import ActionCategory
@@ -153,6 +155,9 @@ def alpha2_alpha3(portal):
 
     # Use the unpacked kukit-src.js and pack it ourself
     updateKukitJS(portal, out)
+
+    # Add a RAMCache for ResourceRegistries
+    addCacheForResourceRegistry(portal, out)
 
     return out
 
@@ -837,3 +842,24 @@ def updateKukitJS(portal, out):
         resource = jsreg.getResource(new_id)
         if resource is not None:
             resource.setCompression('safe')
+
+def addCacheForResourceRegistry(portal, out):
+    ram_cache_id = 'ResourceRegistryCache'
+    if not ram_cache_id in portal.objectIds():
+        RAMCacheManager.manage_addRAMCacheManager(portal, ram_cache_id)
+        cache = getattr(portal, ram_cache_id)
+        settings = cache.getSettings()
+        settings['max_age'] = 24*3600 # keep for up to 24 hours
+        settings['request_vars'] = ('URL',)
+        cache.manage_editProps('Cache for saved ResourceRegistry files', settings)
+        out.append('Created RAMCache %s for ResourceRegistry output' % ram_cache_id)
+    reg = getToolByName(portal, 'portal_css', None)
+    if reg is not None and getattr(aq_base(reg), 'ZCacheable_setManagerId', None) is not None:
+        reg.ZCacheable_setManagerId(ram_cache_id)
+        reg.ZCacheable_setEnabled(1)
+        out.append('Associated portal_css with %s' % ram_cache_id)
+    reg = getToolByName(portal, 'portal_javascripts', None)
+    if reg is not None and getattr(aq_base(reg), 'ZCacheable_setManagerId', None) is not None:
+        reg.ZCacheable_setManagerId(ram_cache_id)
+        reg.ZCacheable_setEnabled(1)
+        out.append('Associated portal_javascripts with %s' % ram_cache_id)
