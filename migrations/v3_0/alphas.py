@@ -838,7 +838,7 @@ def addSitemapProperty(portal, out):
         sheet = getattr(tool, 'site_properties', None)
         if sheet is not None:
             if not sheet.hasProperty('enable_sitemap'):
-                sheet.manage_addProperty('enable_sitemap', True, 'boolean')
+                sheet.manage_addProperty('enable_sitemap', False, 'boolean')
                 out.append("Added 'enable_sitemap' property to site properties")
 
 
