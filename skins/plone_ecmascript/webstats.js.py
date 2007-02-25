@@ -4,7 +4,7 @@
 ##bind namespace=
 ##bind script=script
 ##bind subpath=traverse_subpath
-##parameters=
+##parameters=REQUEST=None, RESPONSE=None
 ##title=Output the script in the webstats_js site property 
 ##
 
