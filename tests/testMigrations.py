@@ -2046,7 +2046,7 @@ class TestMigrations_v3_0(MigrationTest):
         self.failUnless('HtmlFilter' in [x.getId() for x in self.cp.listActions()])
         self.failUnless('SecuritySettings' in [x.getId() for x in self.cp.listActions()])
         htmlfilter = self.cp.getActionObject('Plone/HtmlFilter')
-        self.assertEquals(htmlfilter.title, 'HTML Filter')
+        self.assertEquals(htmlfilter.title, 'HTML Filtering')
         self.assertEquals(htmlfilter.action.text,
                           'string:${portal_url}/@@filter-controlpanel.html')
         security = self.cp.getActionObject('Plone/SecuritySettings')
