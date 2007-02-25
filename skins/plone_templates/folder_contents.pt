@@ -81,50 +81,6 @@
                                    isOrderable python:ifacetool.objectImplements(here, orderable_iface);
                                    nosortclass python:test(isOrderable, 'nosort', '');
                                    canModifyFolderContent is_editable;">
-          <div tal:condition="standalone|nothing">
-          <metal:add_button define-macro="add_button"
-                            tal:define="num_types python:len(contentTypes);">
-            <!-- Add Item pulldown -->
-            <div tal:attributes="id python:test(path('full_view|string:Not Set'), 'traditional-add-item-pulldown',None)">
-                <label for="select_add_item">
-                  <span class="hiddenLabel" i18n:translate="label_add_item">Select an item to add</span>
-                </label>
-
-                <select id="select_add_item"
-                        name="type_name"
-                        tabindex=""
-                        tal:condition="python: num_types > 1"
-                        tal:attributes="tabindex tabindex/next|nothing">
-
-                  <option value="Select" i18n:translate="label_select">Select</option>
-                  <metal:types tal:repeat="ctype contentTypes">
-                    <option value="Document"
-                            tal:define="Id ctype/getId"
-                            tal:attributes="value ctype/getId"
-                            tal:content="ctype/Title"
-                            i18n:translate="">Document</option>
-                  </metal:types>
-                </select>
-
-                <input type="hidden"
-                       name="type_name"
-                       value="Content Type Id"
-                       tal:condition="python: num_types==1"
-                       tal:attributes="value python:contentTypes[0].getId()" />
-
-                <input class="standalone"
-                       type="submit"
-                       name="folder_factories:method"
-                       value="Add New Item"
-                       tabindex=""
-                       tal:define="ttype python: num_types==1 and here.utranslate(contentTypes[0].Title())"
-                       tal:condition="python: num_types"
-                       tal:attributes="tabindex tabindex/next|nothing;
-                                       value python:ttype and here.utranslate('Add ${type}', {'type': ttype}) or
-                                                              here.utranslate('label_add_new_item', default='Add New Item')" />
-            </div>
-          </metal:add_button>
-          </div>
 
         <div class="visualClear" id="clear-space-before-navigation"><!-- --></div>
 
