@@ -12,6 +12,8 @@ from Acquisition import aq_base
 from Products.CMFCore.interfaces.Discussions \
         import DiscussionResponse as IDiscussionResponse
 
+from plone.intelligenttext.transforms import convertWebIntelligentPlainTextToHtml
+
 class DiscussionTool(PloneBaseTool, BaseTool):
 
     meta_type = ToolNames.DiscussionTool
@@ -26,20 +28,7 @@ class DiscussionTool(PloneBaseTool, BaseTool):
             text_format on document objects.  Discussions in plone are going
             to use plain-text for now.  stx is too confusing.
         """
-        level = reply._stx_level
-        text = reply.text
-
-        if text_format is None:
-            text_format=reply.text_format
-
-        if text_format == 'html':
-            reply.text = reply.cooked_text = text
-        elif text_format == 'plain':
-            reply.text = text
-            reply.cooked_text = html_quote(text).replace('\n','<br>')
-        else:
-            reply.cooked_text = HTML(text=text, level=level)
-            reply.text = text
+        reply.cooked_text = convertWebIntelligentPlainTextToHtml(reply.text)                                    
 
 DiscussionTool.__doc__ = BaseTool.__doc__
 
