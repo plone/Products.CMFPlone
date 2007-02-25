@@ -519,7 +519,7 @@ def addWebstatsJSFile(portal, out):
             except ValueError:
                 # put it at the bottom of the stack
                 jsreg.moveResourceToBottom(script)
-            out.append("Added " + script + " to portal_javascipt")
+            out.append("Added " + script + " to portal_javascipts")
 
 # --
 # KSS registration
