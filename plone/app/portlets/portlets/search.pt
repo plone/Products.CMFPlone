@@ -1,0 +1,44 @@
+<dl class="portlet"
+    id="portlet-search"
+    i18n:domain="plone">
+
+  <dt class="portletHeader">
+      <span class="portletTopLeft"></span>
+      <a class="tile"
+         tal:attributes="href view/search_form"
+         i18n:translate="box_search">Search</a>
+      <span class="portletTopRight"></span>
+  </dt>
+
+  <dd class="portletItem odd">
+    <form name="searchform" action="search"
+          tal:attributes="action view/search_action;">
+      <div class="LSBox">
+        <input class="portlet-search-gadget"
+            name="SearchableText"
+            type="text"
+            size="15"
+            title="Search Site"
+            i18n:attributes="title title_search_title;"
+            tal:attributes="value request/SearchableTest|nothing;"
+            class="inputLabel" />
+        <input class="searchButton"
+            type="submit"
+            value="Search"
+            i18n:attributes="value label_search;"/>
+
+        <div class="LSResult" style="">
+          <div class="LSShadow"></div>
+        </div>
+      </div>
+    </form>
+
+    <dd class="portletFooter">
+      <a href="#"
+         class="tile"
+         tal:attributes="href view/search_form"
+         i18n:translate="label_advanced_search">
+       Advanced Search&hellip;
+     </a>
+  </dd>
+</dl>

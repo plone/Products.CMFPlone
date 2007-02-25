@@ -74,4 +74,12 @@
         addview=".review.AddForm"
         />
 
+    <plone:portlet
+        name="portlets.Search"
+        interface=".search.ISearchPortlet"
+        assignment=".search.Assignment"
+        renderer=".search.Renderer"
+        addview=".search.AddForm"
+        />
+
 </configure>
