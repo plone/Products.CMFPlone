@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Make it easy to include javascript for trackers like Google analytics via a new
+      control panel-managable webstats.js file.
+      [mrtopf]
+
     - Add a RSS portlet
       [mrtopf]
 
