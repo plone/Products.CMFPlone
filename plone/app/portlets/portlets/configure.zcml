@@ -73,6 +73,15 @@
         renderer=".review.Renderer"
         addview=".review.AddForm"
         />
+        
+    <plone:portlet
+        name="portlets.rss"
+        interface=".rss.IRSSPortlet"
+        assignment=".rss.Assignment"
+        renderer=".rss.Renderer"
+        addview=".rss.AddForm"
+        editview=".rss.EditForm"
+        />
 
     <plone:portlet
         name="portlets.Search"
