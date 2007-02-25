@@ -211,6 +211,10 @@ input[name="form_submit"]:click {
 
 /* Folder contents stuff */
 
+body:load { 
+    action-client: plone-initShiftDetection;
+}
+
 table.listing input[type="checkbox"]:change {
     action-client: plone-createCheckBoxSelection;
     plone-createCheckBoxSelection-group: 'table.listing input[type="checkbox"]';
@@ -225,43 +229,61 @@ table.listing input[type="checkbox"]:change {
 
 
 #foldercontents-title-column:click {
-    action-server: foldercontents_sorton;
+    action-server: foldercontents_update_table;
     evt-click-preventdefault: True;
     foldercontents_sorton-sort_on: "sortable_title";
 } 
 
 #foldercontents-modified-column:click {
-    action-server: foldercontents_sorton;
+    action-server: foldercontents_update_table;
     evt-click-preventdefault: True;
     foldercontents_sorton-sort_on: "modified";
 } 
 
 #foldercontents-status-column:click {
-    action-server: foldercontents_sorton;
+    action-server: foldercontents_update_table;
     evt-click-preventdefault: True;
     foldercontents_sorton-sort_on: "review_state";
 } 
 
 #foldercontents-order-column:click {
-    action-server: foldercontents_sorton;
+    action-server: foldercontents_update_table;
     evt-click-preventdefault: True;
     foldercontents_sorton-sort_on: "getObjPositionInParent";
 } 
 
 #foldercontents-selectall:click {
-    action-server: foldercontents_selectitems_on_screen;
+    action-server: foldercontents_update_table;
+    foldercontents_update_table-pagenumber: currentFormVar('pagenumber');
+    foldercontents_update_table-sort_on: currentFormVar('sort_on');
+    foldercontents_update_table-select: 'screen';
     evt-click-preventdefault: True;
 } 
 
 #foldercontents-selectall-completebatch:click {
-    action-server: foldercontents_selectall;
+    action-server: foldercontents_update_table;
+    foldercontents_update_table-pagenumber: currentFormVar('pagenumber');
+    foldercontents_update_table-sort_on: currentFormVar('sort_on');
+    foldercontents_update_table-select: 'all';
     evt-click-preventdefault: True;
 } 
 
 #foldercontents-clearselection:click {
-    action-server: foldercontents_clearselection;
+    action-server: foldercontents_update_table;
+    foldercontents_update_table-pagenumber: currentFormVar('pagenumber');
+    foldercontents_update_table-sort_on: currentFormVar('sort_on');
+    foldercontents_update_table-select: 'none';
     evt-click-preventdefault: True;
 } 
+
+#folderlisting-main-table:load { 
+    action-client: plone-initDragAndDrop;
+    plone-initDragAndDrop-table: '#listing-table';
+}
+
+#folderlisting-main-table:load { 
+    action-client: plone-initCheckBoxSelection;
+}
 
 /* kupu stuff */
 #kupu-save-button:load {

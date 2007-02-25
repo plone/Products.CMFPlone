@@ -82,7 +82,7 @@
             <label for="" i18n:translate="label_affected_content">Affected content</label>
             <div tal:define="dummy python:request.set('ids_checked', 1);">
               <table summary="Affected content" i18n:attributes="summary summary_affected_content;"
-                     metal:use-macro="here/folder_contents/macros/folder_listing">
+                     metal:use-macro="here/old_folder_contents/macros/folder_listing">
               </table>
             </div>
           </div>
