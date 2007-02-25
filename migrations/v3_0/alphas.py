@@ -74,6 +74,9 @@ def three0_alpha1(portal):
     # Install the calendar settings control panel
     addCalendarConfiglet(portal, out)
 
+    # Deal with the tableless skin disappearing
+    removeTablelessSkin(portal, out)
+
     return out
 
 def alpha1_alpha2(portal):
@@ -883,6 +886,16 @@ def addCacheForResourceRegistry(portal, out):
         reg.ZCacheable_setManagerId(ram_cache_id)
         reg.ZCacheable_setEnabled(1)
         out.append('Associated portal_javascripts with %s' % ram_cache_id)
+
+def removeTablelessSkin(portal, out):
+    st = getToolByName(portal, 'portal_skins')
+    if 'Plone Tableless' in st.getSkinSelections():
+        st.manage_skinLayers(['Plone Tableless'], del_skin=True)
+        out.append("Removed the Plone Tableless skin")
+    if st.default_skin=='Plone Tableless':
+        st.default_skin='Plone Default'
+        out.append("Changed the default skin to 'Plone Default'")
+
 
 def updateCssQueryJS(portal, out):
     """Compress cssQuery with full-encode like it's supposed to.

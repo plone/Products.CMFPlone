@@ -294,13 +294,6 @@ class TestMigrations_v2_1_2(MigrationTest):
         path = self.skins.getSkinPath('Plone Default')
         self.failIf('plone_3rdParty/CMFTopic' in path)
 
-    def testRemoveCMFTopicSkinPathFromTableless(self):
-        # Should remove plone_3rdParty/CMFTopic from skin paths
-        self.addSkinLayer('plone_3rdParty/CMFTopic', skin='Plone Tableless')
-        removeCMFTopicSkinLayer(self.portal, [])
-        path = self.skins.getSkinPath('Plone Tableless')
-        self.failIf('plone_3rdParty/CMFTopic' in path)
-
     def testRemoveCMFTopicSkinTwice(self):
         # Should not fail if migrated again
         self.addSkinLayer('plone_3rdParty/CMFTopic')
@@ -2110,6 +2103,14 @@ class TestMigrations_v3_0(MigrationTest):
         self.failUnless(jsreg.ZCacheable_enabled())
         self.failIf(jsreg.ZCacheable_getManagerId() is None)
 
+    def testTablelessRemoval(self):
+        st = getToolByName(self.portal, "portal_skins")
+        if "Plone Tableless" not in st.getSkinSelections():
+            st.addSkinSelection('Plone Tableless', 'one,two', make_default=True)
+        removeTablelessSkin(self.portal, [])
+        self.failIf('Plone Tableless' in st.getSkinSelections())
+        self.failIf(st.default_skin == 'Plone Tableless')
+
     def testUpdateCssQueryJS(self):
         jsreg = self.portal.portal_javascripts
         jsreg.registerScript("folder_contents_hideAddItems.js")
@@ -2119,7 +2120,6 @@ class TestMigrations_v3_0(MigrationTest):
         self.failIf('folder_contents_hideAddItems.js' in jsreg.getResourceIds())
         # try double migration
         removeHideAddItemsJS(self.portal, [])
-
 
 def test_suite():
     from unittest import TestSuite, makeSuite

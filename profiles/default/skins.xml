@@ -91,35 +91,4 @@
   <layer name="plone_3rdParty"/>
   <layer name="cmf_legacy"/>
  </skin-path>
- <skin-path name="Plone Tableless">
-  <layer name="custom"/>
-  <layer name="plone_kss"/>
-  <layer name="archetypes_kss"/>
-  <layer name="kupu_plone"/>
-  <layer name="kupu"/>
-  <layer name="ATContentTypes"/>
-  <layer name="ATReferenceBrowserWidget"/>
-  <layer name="archetypes"/>
-  <layer name="mimetypes_icons"/>
-  <layer name="ResourceRegistries"/>
-  <layer name="PasswordReset"/>
-  <layer name="LanguageTool"/>
-  <layer name="gruf"/>
-  <layer name="plone_ecmascript"/>
-  <layer name="plone_wysiwyg"/>
-  <layer name="plone_prefs"/>
-  <layer name="plone_portlets"/>
-  <layer name="plone_tableless"/>
-  <layer name="plone_templates"/>
-  <layer name="plone_styles"/>
-  <layer name="plone_form_scripts"/>
-  <layer name="plone_scripts"/>
-  <layer name="plone_forms"/>
-  <layer name="plone_images"/>
-  <layer name="plone_content"/>
-  <layer name="plone_login"/>
-  <layer name="plone_deprecated"/>
-  <layer name="plone_3rdParty"/>
-  <layer name="cmf_legacy"/>
- </skin-path>
 </object>

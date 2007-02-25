@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Remove the never really supported Plone Tableless skin.
+      [wichert]
+
     - Added class to the navtree: "navTreeItemInPath", which exists on all
       nodes that are in the current path.
       [limi]
