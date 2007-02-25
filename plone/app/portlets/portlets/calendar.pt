@@ -1,29 +1,24 @@
-<table class="ploneCalendar"
-       id="thePloneCalendar"
-       summary="Calendar"
-       i18n:domain="plone"
-       i18n:attributes="summary summary_calendar;"
-       tal:define="portal_url context/@@plone_portal_state/portal_url;
-                   anchor_url request/anchor_url | context/@@plone_context_state/object_url;
-                   query_string python:request.get('orig_query', None);
-                   query_string python:(query_string is None and request.get('QUERY_STRING', None)) or query_string;
-                   url_quote_plus nocall:view/url_quote_plus;
-                   anchor_method request/anchor_method | template/getId;
-                   showPrevMonth view/showPrevMonth;
-                   showNextMonth view/showNextMonth;
-                   year view/year;">
-    <thead>
-        <tr>
-            <th id="calendar-previous"
-                tal:attributes="id python:showPrevMonth and 'calendar-previous' or ''">
+<dl id="plone-calendar"
+    tal:define="portal_url context/@@plone_portal_state/portal_url;
+                anchor_url request/anchor_url | context/@@plone_context_state/object_url;
+                query_string python:request.get('orig_query', None);
+                query_string python:(query_string is None and request.get('QUERY_STRING', None)) or query_string;
+                url_quote_plus nocall:view/url_quote_plus;
+                anchor_method request/anchor_method | template/getId;
+                showPrevMonth view/showPrevMonth;
+                showNextMonth view/showNextMonth;
+                year view/year;">
+    <dt>
+
                 <a href="#" rel="nofollow"
+                   id="calendar-previous"
                    title="Previous month"
-                   tal:attributes="href python:'%s/%s?%s&amp;month:int=%d&amp;year:int=%d&amp;orig_query=%s' % (anchor_url, anchor_method, query_string, view.prevMonthTime.month(), view.prevMonthTime.year(), url_quote_plus(query_string));
+                   tal:attributes="id python:showPrevMonth and 'calendar-previous' or '';
+                                   href python:'%s/%s?%s&amp;month:int=%d&amp;year:int=%d&amp;orig_query=%s' % (anchor_url, anchor_method, query_string, view.prevMonthTime.month(), view.prevMonthTime.year(), url_quote_plus(query_string));
                                    class string:kssCalendarChange kukit-year-${view/prevMonthTime/year} kukit-month-${view/prevMonthTime/month};"
                    tal:condition="showPrevMonth"
                    i18n:attributes="title title_previous_month;">&laquo;</a>
-            </th>
-            <th colspan="5">
+
                 <span i18n:translate="" tal:omit-tag="">
                     <span i18n:name="monthname"
                           tal:content="view/monthName"
@@ -32,23 +27,29 @@
                           tal:content="year"
                           tal:omit-tag="">year</span>
                 </span>
-            </th>
-            <th id="calendar-next"
-                  tal:attributes="id python:showNextMonth and 'calendar-next' or ''">
+
                 <a href="#" rel="nofollow"
+                   id="calendar-next"
                    title="Next month"
-                   tal:attributes="href python:'%s/%s?%s&amp;month:int=%d&amp;year:int=%d&amp;orig_query=%s' % (anchor_url, anchor_method, query_string, view.nextMonthTime.month(), view.nextMonthTime.year(), url_quote_plus(query_string));
+                   tal:attributes="id python:showNextMonth and 'calendar-next' or '';
+                                   href python:'%s/%s?%s&amp;month:int=%d&amp;year:int=%d&amp;orig_query=%s' % (anchor_url, anchor_method, query_string, view.nextMonthTime.month(), view.nextMonthTime.year(), url_quote_plus(query_string));
                                    class string:kssCalendarChange kukit-year-${view/nextMonthTime/year} kukit-month-${view/nextMonthTime/month};"
                    tal:condition="showNextMonth"
                    i18n:attributes="title title_next_month;">&raquo;</a>
-            </th>
-        </tr>
+
+
+
+    </dt>
+    <dd>
+<table class="ploneCalendar"
+       summary="Calendar"
+       i18n:domain="plone"
+       i18n:attributes="summary summary_calendar;">
         <tr class="weekdays"
             ><tal:data tal:repeat="weekday view/getWeekdays"
                 ><td tal:content="weekday">Su</td
             ></tal:data>
         </tr>
-    </thead>
     <tbody>
         <tr tal:repeat="week view/weeks"
             ><tal:block repeat="day week"
@@ -81,3 +82,5 @@
     </tbody>
 
 </table>
+    </dd>
+</dl>
