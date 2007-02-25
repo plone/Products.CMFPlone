@@ -10,7 +10,12 @@ setup(name='plone.app.layout',
 plone.app.layout contains various visual components for Plone, such as 
 viewlets and general views.
 """,
-      classifiers=[], # Get strings from http://www.python.org/pypi?%3Aaction=list_classifiers
+      classifiers=[
+        "Framework :: Plone",
+        "Framework :: Zope2",
+        "License :: OSI Approved :: GNU General Public License (GPL)",
+        "Programming Language :: Python",
+        ],
       keywords='plone layout viewlet',
       author='Martin Aspeli',
       author_email='optilude@gmx.net',
