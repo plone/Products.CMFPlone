@@ -7,7 +7,7 @@ logoName:string=logo.jpg
 fontFamily:string="Lucida Grande", Verdana, Lucida, Helvetica, Arial, sans-serif
 fontBaseSize:string=69%
 fontColor:string=Black
-fontSmallSize:string=85%
+fontSmallSize:string=90%
 
 backgroundColor:string=White
 
@@ -31,7 +31,7 @@ contentViewFontColor:string=#578308
 
 inputFontColor:string=Black
 
-textTransform:string=lowercase
+textTransform:string=none
 
 evenRowBackgroundColor:string=#eef3f5 
 oddRowBackgroundColor:string=transparent
