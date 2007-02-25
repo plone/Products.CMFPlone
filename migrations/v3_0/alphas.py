@@ -129,6 +129,9 @@ def alpha2_alpha3(portal):
 
     # Add webstats.js for Google Analytics
     addWebstatsJSFile(portal,out)
+    
+    # Add webstats_js property to site properties
+    addWebstatsJSProperty(portal,out)
 
     return out
 
@@ -500,6 +503,14 @@ def addMaintenanceProperty(portal, out):
     if not sheet.hasProperty('number_of_days_to_keep'):
         sheet.manage_addProperty('number_of_days_to_keep',7,'int')
         out.append("Added 'number_of_days_to_keep' property to site properties")
+        
+def addWebstatsJSProperty(portal, out):
+    """ adds a site property to portal_properties"""
+    tool = getToolByName(portal, 'portal_properties')
+    sheet = tool.site_properties
+    if not sheet.hasProperty('webstats_js'):
+        sheet.manage_addProperty('webstats_js','','string')
+        out.append("Added 'webstats_js' property to site properties")
 
 def addWebstatsJSFile(portal, out):
     """Add webstats.js in disabled state for Google Analytics support.
@@ -511,7 +522,7 @@ def addWebstatsJSFile(portal, out):
         # Failsafe: first make sure the stylesheet doesn't exist in the list
         if script not in script_ids:
             jsreg.registerScript(script,
-                    enabled = False,
+                    enabled = True,
                     cookable = True,
                     compression = False)
             try:
