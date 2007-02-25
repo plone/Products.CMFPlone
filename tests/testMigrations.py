@@ -92,6 +92,7 @@ from Products.CMFPlone.migrations.v3_0.alphas import addSitemapProperty
 from Products.CMFPlone.migrations.v3_0.alphas import updateKukitJS
 from Products.CMFPlone.migrations.v3_0.alphas import addCacheForResourceRegistry
 from Products.CMFPlone.migrations.v3_0.alphas import updateCssQueryJS
+from Products.CMFPlone.migrations.v3_0.alphas import removeHideAddItemsJS
 
 from zope.app.component.hooks import clearSite
 from zope.app.component.interfaces import ISite
@@ -2111,14 +2112,13 @@ class TestMigrations_v3_0(MigrationTest):
 
     def testUpdateCssQueryJS(self):
         jsreg = self.portal.portal_javascripts
-        # put into old state first
-        resource = jsreg.getResource('cssQuery.js')
-        resource.setCompression('safe')
-        self.failUnless(resource.getCompression() == 'safe')
+        jsreg.registerScript("folder_contents_hideAddItems.js")
+        self.failUnless('folder_contents_hideAddItems.js' in jsreg.getResourceIds())
         # migrate and test again
-        updateCssQueryJS(self.portal, [])
-        resource = jsreg.getResource('cssQuery.js')
-        self.failUnless(resource.getCompression() == 'full-encode')
+        removeHideAddItemsJS(self.portal, [])
+        self.failIf('folder_contents_hideAddItems.js' in jsreg.getResourceIds())
+        # try double migration
+        removeHideAddItemsJS(self.portal, [])
 
 
 def test_suite():

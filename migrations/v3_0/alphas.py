@@ -165,6 +165,8 @@ def alpha2_alpha3(portal):
     # Compress cssQuery with full-encode like it's supposed to.
     updateCssQueryJS(portal, out)
 
+    # Remove very old javascript
+    removeHideAddItemsJS(portal, out)
     return out
 
 
@@ -894,3 +896,11 @@ def updateCssQueryJS(portal, out):
             resource.setCompression('full-encode')
             out.append("Set 'full-encode' compression on %s" % script_id)
 
+def removeHideAddItemsJS(portal, out):
+    """Remove very old javascript.
+    """
+    jsreg = getToolByName(portal, 'portal_javascripts', None)
+    script_id = 'folder_contents_hideAddItems.js'
+    if jsreg is not None:
+        jsreg.unregisterResource(script_id)
+        out.append('Removed %s from portal_javascripts.' % script_id)
