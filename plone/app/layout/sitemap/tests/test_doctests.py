@@ -28,7 +28,9 @@ class SiteMapTestCase(FunctionalTestCase):
         self.site_props = self.ptool.site_properties
         
     def loginAsManager(self):
-        """points the browser to the login screen and logs in as user root with Manager role."""
+        """points the browser to the login screen and logs in as user root
+        with Manager role."""
+
         self.browser.open('http://nohost/plone/')
         self.browser.getLink('Log in').click()
         self.browser.getControl('Login Name').value = 'root'
