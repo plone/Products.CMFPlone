@@ -90,6 +90,7 @@ from Products.CMFPlone.migrations.v3_0.alphas import addIconsForFilterAndSecurit
 from Products.CMFPlone.migrations.v3_0.alphas import addFilterAndSecurityConfiglets
 from Products.CMFPlone.migrations.v3_0.alphas import addSitemapProperty
 from Products.CMFPlone.migrations.v3_0.alphas import updateKukitJS
+from Products.CMFPlone.migrations.v3_0.alphas import addCacheForResourceRegistry
 
 from zope.app.component.hooks import clearSite
 from zope.app.component.interfaces import ISite
@@ -2082,6 +2083,30 @@ class TestMigrations_v3_0(MigrationTest):
         self.failUnless('++resource++kukit-src.js' in script_ids)
         resource = jsreg.getResource('++resource++kukit-src.js')
         self.failUnless(resource.getCompression() == 'safe')
+
+    def testAddCacheForResourceRegistry(self):
+        ram_cache_id = 'ResourceRegistryCache'
+        # first remove the cache manager and make sure it's removed
+        self.portal._delObject(ram_cache_id)
+        self.failIf(ram_cache_id in self.portal.objectIds())
+        cssreg = self.portal.portal_css
+        cssreg.ZCacheable_setEnabled(0)
+        cssreg.ZCacheable_setManagerId(None)
+        self.failIf(cssreg.ZCacheable_enabled())
+        self.failUnless(cssreg.ZCacheable_getManagerId() is None)
+        jsreg = self.portal.portal_javascripts
+        jsreg.ZCacheable_setEnabled(0)
+        jsreg.ZCacheable_setManagerId(None)
+        self.failIf(jsreg.ZCacheable_enabled())
+        self.failUnless(jsreg.ZCacheable_getManagerId() is None)
+        # then migrate
+        addCacheForResourceRegistry(self.portal, [])
+        # and test
+        self.failUnless(ram_cache_id in self.portal.objectIds())
+        self.failUnless(cssreg.ZCacheable_enabled())
+        self.failIf(cssreg.ZCacheable_getManagerId() is None)
+        self.failUnless(jsreg.ZCacheable_enabled())
+        self.failIf(jsreg.ZCacheable_getManagerId() is None)
 
 
 def test_suite():
