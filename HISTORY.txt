@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Removed ids from portlet templates and turned into classes. This makes
+      sure we do not get duplicate ids in our html when multiple instances of
+      the same portlet type are created, while still allowing different
+      styling of different portlet types
+      [wichert]
+
     - Undeprecated the toLocalizedTime script. We are probably going to change
       the approach to be based on Zope3 locales in the next release, so it
       doesn't make sense to force everybody to change their products now.
