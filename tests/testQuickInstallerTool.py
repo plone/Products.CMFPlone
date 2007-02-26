@@ -21,16 +21,15 @@ class TestQuickInstallerTool(PloneTestCase.PloneTestCase):
         return [p['id'] for p in self.qi.listInstallableProducts()]
 
     def testInstallUninstallProduct(self):
-        # CMFFormController should be uninstalled, we install it and
+        # CMFPlacefulWorkflow should be uninstalled, we install it and
         # it should not show up as installable
         self.setRoles(('Manager',))
-        self.qi.CMFPlacefulWorkflow.locked = 0
-        self.qi.uninstallProducts(['CMFPlacefulWorkflow',])
-        self.failIf('CMFPlacefulWorkflow' in self._installed())
-        self.failUnless('CMFPlacefulWorkflow' in self._available())
-        self.qi.installProduct('CMFPlacefulWorkflow')
-        self.failIf('CMFPlacefulWorkflow' in self._available())
+        self.qi.installProducts(['CMFPlacefulWorkflow', ])
         self.failUnless('CMFPlacefulWorkflow' in self._installed())
+        self.failIf('CMFPlacefulWorkflow' in self._available())
+        self.qi.uninstallProducts(['CMFPlacefulWorkflow', ])
+        self.failUnless('CMFPlacefulWorkflow' in self._available())
+        self.failIf('CMFPlacefulWorkflow' in self._installed())
 
 
 def test_suite():
