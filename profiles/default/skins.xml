@@ -55,8 +55,6 @@
     directory="Products.CMFPlone:skins/plone_scripts"/>
  <object name="plone_styles" meta_type="Filesystem Directory View"
     directory="Products.CMFPlone:skins/plone_styles"/>
- <object name="plone_tableless" meta_type="Filesystem Directory View"
-    directory="Products.CMFPlone:skins/plone_tableless"/>
  <object name="plone_templates" meta_type="Filesystem Directory View"
     directory="Products.CMFPlone:skins/plone_templates"/>
  <object name="plone_wysiwyg" meta_type="Filesystem Directory View"
