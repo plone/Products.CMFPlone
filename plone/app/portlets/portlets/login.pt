@@ -1,7 +1,7 @@
 <tal:block condition="view/show"
            i18n:domain="plone">
 
-<dl class="portlet portlet-login"
+<dl class="portlet portletLogin"
     tal:condition="view/available">
 
     <dt class="portletHeader">
@@ -56,7 +56,7 @@
                        i18n:attributes="alt label_password;"/>
             </div>
 
-            <div class="cookies_message" i18n:translate="enable_cookies_message" class="portalMessage" style="display:none">
+            <div class="cookiesMessage" i18n:translate="enable_cookies_message" class="portalMessage" style="display:none">
                 Cookies are not enabled. You must enable cookies before you can log in.
             </div>
             
@@ -95,7 +95,7 @@
 </dl>
 
 <dl class="portlet"
-    class="portlet-login"
+    class="portletLogin"
     tal:condition="not:view/available">
 
     <dt class="portletHeader">

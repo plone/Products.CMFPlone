@@ -1,6 +1,6 @@
 <tal:block condition="view/display"
            i18n:domain="plone">
-<dl class="portlet portlet-navigation-tree"  
+<dl class="portlet portletNavigationTree"  
     tal:define="root view/navigation_root">
     
     <dt class="portletHeader">

@@ -1,4 +1,4 @@
-<dl class="portlet portlet-recent"
+<dl class="portlet portletRecent"
     i18n:domain="plone">
 
     <dt class="portletHeader">
