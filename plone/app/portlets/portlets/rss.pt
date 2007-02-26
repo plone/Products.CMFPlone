@@ -1,5 +1,4 @@
-<dl class="portlet"
-    id="portlet-rss"
+<dl class="portlet portlet-rss"
     i18n:domain="plone"
     tal:condition="view/enabled">
 

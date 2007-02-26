@@ -1,4 +1,4 @@
-<dl id="plone-calendar"
+<dl class="plone-calendar"
     tal:define="portal_url context/@@plone_portal_state/portal_url;
                 anchor_url request/anchor_url | context/@@plone_context_state/object_url;
                 query_string python:request.get('orig_query', None);
@@ -11,7 +11,7 @@
     <dt>
 
                 <a href="#" rel="nofollow"
-                   id="calendar-previous"
+                   class="calendar-previous"
                    title="Previous month"
                    tal:attributes="id python:showPrevMonth and 'calendar-previous' or '';
                                    href python:'%s/%s?%s&amp;month:int=%d&amp;year:int=%d&amp;orig_query=%s' % (anchor_url, anchor_method, query_string, view.prevMonthTime.month(), view.prevMonthTime.year(), url_quote_plus(query_string));
@@ -29,7 +29,7 @@
                 </span>
 
                 <a href="#" rel="nofollow"
-                   id="calendar-next"
+                   class="calendar-next"
                    title="Next month"
                    tal:attributes="id python:showNextMonth and 'calendar-next' or '';
                                    href python:'%s/%s?%s&amp;month:int=%d&amp;year:int=%d&amp;orig_query=%s' % (anchor_url, anchor_method, query_string, view.nextMonthTime.month(), view.nextMonthTime.year(), url_quote_plus(query_string));

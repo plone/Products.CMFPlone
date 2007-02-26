@@ -1,5 +1,4 @@
-<dl class="portlet"
-    id="portlet-news"
+<dl class="portlet portlet-news"
     i18n:domain="plone">
 
     <dt class="portletHeader">

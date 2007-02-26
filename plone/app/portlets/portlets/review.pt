@@ -1,5 +1,4 @@
-<dl class="portlet"
-    id="portlet-workflow-review"
+<dl class="portlet portlet-workflow-review"
     i18n:domain="plone">
 
     <dt class="portletHeader">
