@@ -29,5 +29,8 @@
   <utility
      interface="plone.app.redirector.interfaces.IRedirectionStorage"
      factory="plone.app.redirector.storage.RedirectionStorage"/>
+  <utility
+     interface="plone.contentrules.engine.interfaces.IRuleStorage"
+     factory="plone.contentrules.engine.storage.RuleStorage"/>
  </utilities>
 </componentregistry>

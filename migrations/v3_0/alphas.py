@@ -153,6 +153,11 @@ def alpha2_alpha3(portal):
     # Add icon for filter and security configlets
     addIconsForFilterAndSecurityConfiglets(portal, out)
 
+    # add content rules configlet
+    installContentRulesUtility(portal, out)
+    addContentRulesConfiglet(portal, out)
+    addIconForContentRulesConfiglet(portal, out)
+
     # Install the filter and security control panels
     addFilterAndSecurityConfiglets(portal, out)
 
@@ -565,6 +570,16 @@ def addContentRulesAction(portal, out):
                 object_buttons._setObject('contentrules', new_action)
                 out.append("Added content rules action to object_buttons")
 
+def installContentRulesUtility(portal, out):
+    from plone.contentrules.engine.interfaces import IRuleStorage
+    from plone.contentrules.engine.storage import RuleStorage
+    
+    sm = getSiteManager(portal)
+    if sm.queryUtility(IRuleStorage) is None:
+        sm.registerUtility(RuleStorage(), IRuleStorage)
+
+    out.append("Registered content rules storage utility")
+
 def addReaderAndEditorRoles(portal, out):
     if 'Reader' not in portal.valid_roles():
         portal._addRole('Reader')
@@ -954,3 +969,41 @@ def removeHideAddItemsJS(portal, out):
     if jsreg is not None:
         jsreg.unregisterResource(script_id)
         out.append('Removed %s from portal_javascripts.' % script_id)
+
+# --
+# ContentRules migration
+# --
+
+def addContentRulesConfiglet(portal, out):
+    """Add the configlet for the contentrules settings"""
+    controlPanel = getToolByName(portal, 'portal_controlpanel', None)
+    if controlPanel is not None:
+        haveContentRules = False
+        for configlet in controlPanel.listActions():
+            if configlet.getId() == 'ContentRulesSettings':
+                haveContentRules = True
+        if not haveContentRules:
+            controlPanel.registerConfiglet(id         = 'ContentRules',
+                                           appId      = 'Plone',
+                                           name       = 'Content Rules Settings',
+                                           action     = 'string:${portal_url}/@@rules-controlpanel.html',
+                                           category   = 'Plone',
+                                           permission = ManagePortal,)
+            out.append("Added 'Content Rules Settings' to the control panel")
+
+def addIconForContentRulesConfiglet(portal, out):
+    """Adds an icon for the maintenance settings configlet. """
+    iconsTool = getToolByName(portal, 'portal_actionicons', None)
+    if iconsTool is not None:
+        for icon in iconsTool.listActionIcons():
+            if icon.getActionId() == 'ContentRules':
+                break # We already have the icon
+        else:
+            iconsTool.addActionIcon(
+                category='controlpanel',
+                action_id='ContentRules',
+                icon_expr='contentrules_icon.gif',
+                title='Content Rules Settings',
+                )
+        out.append("Added 'Content Rules Settings' icon to actionicons tool.")
+

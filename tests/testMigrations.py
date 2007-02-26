@@ -96,7 +96,9 @@ from Products.CMFPlone.migrations.v3_0.alphas import removeHideAddItemsJS
 from Products.CMFPlone.migrations.v3_0.alphas import addWebstatsJSProperty
 from Products.CMFPlone.migrations.v3_0.alphas import addWebstatsJSFile
 from Products.CMFPlone.migrations.v3_0.alphas import removeTablelessSkin
-  
+from Products.CMFPlone.migrations.v3_0.alphas import installContentRulesUtility
+from Products.CMFPlone.migrations.v3_0.alphas import addIconForContentRulesConfiglet
+from Products.CMFPlone.migrations.v3_0.alphas import addContentRulesConfiglet
 
 from zope.app.component.hooks import clearSite
 from zope.app.component.interfaces import ISite
@@ -119,6 +121,7 @@ from plone.portlets.constants import CONTEXT_CATEGORY as CONTEXT_PORTLETS
 from plone.app.portlets import portlets
 
 from plone.app.redirector.interfaces import IRedirectionStorage
+from plone.contentrules.engine.interfaces import IRuleStorage
 
 class BogusMailHost(SimpleItem):
     meta_type = 'Bad Mailer'
@@ -1914,7 +1917,6 @@ class TestMigrations_v3_0(MigrationTest):
         pas = self.portal.acl_users
         from Products.PluggableAuthService.interfaces.plugins import IUserEnumerationPlugin
         pas.plugins.deactivatePlugin(IUserEnumerationPlugin, 'mutable_properties')
-
         updatePASPlugins(self.portal, [])
 
         plugin = pas.mutable_properties
@@ -1925,6 +1927,23 @@ class TestMigrations_v3_0(MigrationTest):
             except KeyError:
                 # Ignore unregistered interface types 
                 pass
+
+    def testInstallContentrulesUtility(self):
+        sm = getSiteManager(self.portal)
+        sm.unregisterUtility(provided=IRuleStorage)
+        installContentRulesUtility(self.portal, [])
+        installContentRulesUtility(self.portal, [])
+        self.failIf(sm.queryUtility(IRuleStorage) is None)
+
+    def testContentRulesConfiglet(self):
+        pc = self.portal.portal_controlpanel
+        self.removeActionIconFromTool('ContentRules')
+        self.removeActionFromTool('ContentRules', action_provider='portal_controlpanel')
+        addIconForContentRulesConfiglet(self.portal, [])
+        addContentRulesConfiglet(self.portal, [])
+        self.failUnless('ContentRules' in [x.getActionId() for x in self.icons.listActionIcons()])
+        self.failUnless('ContentRules' in [x.getId() for x in pc.listActions()])
+
 
     def testUpdateSkinsAndSiteConfiglet(self):
         skins = self.cp.getActionObject('Plone/PortalSkin')
@@ -1994,23 +2013,6 @@ class TestMigrations_v3_0(MigrationTest):
         # Should not fail if tool is missing
         self.portal._delObject('portal_controlpanel')
         updateConfigletTitles(self.portal, [])
-
-    def testaddIconsForFilterAndSecurityConfiglets(self):
-        # Should add the filter and security action icons
-        self.removeActionIconFromTool('HtmlFilter')
-        self.removeActionIconFromTool('SecuritySettings')
-        addIconsForFilterAndSecurityConfiglets(self.portal, [])
-        self.failUnless('HtmlFilter' in [x.getActionId() for x in self.icons.listActionIcons()])
-        self.failUnless('SecuritySettings' in [x.getActionId() for x in self.icons.listActionIcons()])
-
-    def testaddIconsForFilterAndSecurityConfigletsTwice(self):
-        # Should not fail if migrated again
-        self.removeActionIconFromTool('HtmlFilter')
-        self.removeActionIconFromTool('SecuritySettings')
-        addIconsForFilterAndSecurityConfiglets(self.portal, [])
-        addIconsForFilterAndSecurityConfiglets(self.portal, [])
-        self.failUnless('HtmlFilter' in [x.getActionId() for x in self.icons.listActionIcons()])
-        self.failUnless('SecuritySettings' in [x.getActionId() for x in self.icons.listActionIcons()])
 
     def testaddIconsForFilterAndSecurityConfigletsNoTool(self):
         # Should not fail if portal_actionicons is missing
@@ -2170,6 +2172,23 @@ class TestMigrations_v3_0(MigrationTest):
         # check if enabled 
         res = jsreg.getResource('webstats.js') 
         self.assertEqual(res.getEnabled(),True)
+
+    def testaddIconsForFilterAndSecurityConfiglets(self):
+        # Should add the filter and security action icons
+        self.removeActionIconFromTool('HtmlFilter')
+        self.removeActionIconFromTool('SecuritySettings')
+        addIconsForFilterAndSecurityConfiglets(self.portal, [])
+        self.failUnless('HtmlFilter' in [x.getActionId() for x in self.icons.listActionIcons()])
+        self.failUnless('SecuritySettings' in [x.getActionId() for x in self.icons.listActionIcons()])
+
+    def testaddIconsForFilterAndSecurityConfigletsTwice(self):
+        # Should not fail if migrated again
+        self.removeActionIconFromTool('HtmlFilter')
+        self.removeActionIconFromTool('SecuritySettings')
+        addIconsForFilterAndSecurityConfiglets(self.portal, [])
+        addIconsForFilterAndSecurityConfiglets(self.portal, [])
+        self.failUnless('HtmlFilter' in [x.getActionId() for x in self.icons.listActionIcons()])
+        self.failUnless('SecuritySettings' in [x.getActionId() for x in self.icons.listActionIcons()])
 
 
 def test_suite():
