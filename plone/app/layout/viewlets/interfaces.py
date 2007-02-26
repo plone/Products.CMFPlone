@@ -18,8 +18,24 @@ class IAboveContent(IViewletManager):
     """A viewlet manager that sits above the content area
     """
 
+class IAboveContentTitle(IViewletManager):
+    """A viewlet manager that sits above the content title in view templates
+    """
+
 class IDocumentActions(IViewletManager):
     """A viewlet manager that sits near the content heading
+    """
+
+class IBelowContentTitle(IViewletManager):
+    """A viewlet manager that sits below the content title in view templates
+    """
+
+class IAboveContentBody(IViewletManager):
+    """A viewlet manager that sits above the content body in view templates
+    """
+
+class IBelowContentBody(IViewletManager):
+    """A viewlet manager that sits below the content body in view templates
     """
 
 class IBelowContent(IViewletManager):

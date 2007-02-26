@@ -1,0 +1,34 @@
+<div xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
+     xmlns:tal="http://xml.zope.org/namespaces/tal"
+     xmlns:metal="http://xml.zope.org/namespaces/metal"
+     xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+     i18n:domain="plone"
+     class="documentActions">
+    <tal:docactions tal:condition="view/actions">
+
+    <h5 class="hiddenStructure" i18n:translate="heading_document_actions">Document Actions</h5>
+
+    <ul>
+    <tal:actions repeat="daction view/actions">
+        <li>
+            <a href=""
+               tal:attributes="href daction/url"
+               tal:define="title daction/title;
+                           icon python:view.getIconFor('plone', daction['id'], None)"
+               tal:condition="icon">
+
+                <img i18n:attributes="title" src="" alt="" title=""
+                     tal:attributes="src    string:${view/portal_url}/$icon;
+                                     id     string:icon-${daction/id};
+                                     title  title;
+                                     alt    title;" />
+            </a>
+        </li>
+    </tal:actions>
+
+    </ul>
+    </tal:docactions>
+
+    <div tal:replace="structure provider:plone.documentactions" />
+
+</div>

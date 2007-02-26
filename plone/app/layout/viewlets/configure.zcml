@@ -29,8 +29,32 @@
         />
 
     <browser:viewletManager
+        name="plone.abovecontenttitle"
+        provides=".interfaces.IAboveContentTitle"
+        permission="zope2.View"
+        />
+
+    <browser:viewletManager
         name="plone.documentactions"
         provides=".interfaces.IDocumentActions"
+        permission="zope2.View"
+        />
+
+    <browser:viewletManager
+        name="plone.belowcontenttitle"
+        provides=".interfaces.IBelowContentTitle"
+        permission="zope2.View"
+        />
+
+    <browser:viewletManager
+        name="plone.abovecontentbody"
+        provides=".interfaces.IAboveContentBody"
+        permission="zope2.View"
+        />
+
+    <browser:viewletManager
+        name="plone.belowcontentbody"
+        provides=".interfaces.IBelowContentBody"
         permission="zope2.View"
         />
 
@@ -53,6 +77,14 @@
         name="plone.htmlhead.title"
         manager=".interfaces.IHtmlHead"
         class=".common.TitleViewlet"
+        permission="zope2.View" 
+        />
+        
+    <!-- Render the document actions -->
+    <browser:viewlet
+        name="plone.abovecontenttitle.documentactions"
+        manager=".interfaces.IAboveContentTitle"
+        class=".content.DocumentActionsViewlet"
         permission="zope2.View" 
         />
         

@@ -1,18 +1,18 @@
 from plone.app.layout.viewlets import ViewletBase
-from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
+from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
 
 
 class FaviconViewlet(ViewletBase):
-    render = ZopeTwoPageTemplateFile('favicon.pt')
+    render = ViewPageTemplateFile('favicon.pt')
 
 
 class SearchViewlet(ViewletBase):
-    render = ZopeTwoPageTemplateFile('search.pt')
+    render = ViewPageTemplateFile('search.pt')
 
 
 class AuthorViewlet(ViewletBase):
-    render = ZopeTwoPageTemplateFile('author.pt')
+    render = ViewPageTemplateFile('author.pt')
 
 
 class NavigationViewlet(ViewletBase):
-    render = ZopeTwoPageTemplateFile('navigation.pt')
+    render = ViewPageTemplateFile('navigation.pt')
