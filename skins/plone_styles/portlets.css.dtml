@@ -189,13 +189,13 @@ div.managedPortlet {
 /* Commented out for now, since the calendar markup has changed slightly ~limi */
 
 
-#calendar-previous {
+.calendar-previous {
     background-image: url(&dtml-portal_url;/arrowLeft.gif);
     background-repeat: no-repeat;
     background-position: 50% 50%;
     float: left;
 }
-#calendar-next {
+.calendar-next {
     background-image: url(&dtml-portal_url;/arrowRight.gif);
     background-repeat: no-repeat;
     background-position: 50% 50%;
