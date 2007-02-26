@@ -88,6 +88,14 @@
         permission="zope2.View" 
         />
         
+    <!-- Render the document byline -->
+    <browser:viewlet
+        name="plone.belowcontenttitle.documentbyline"
+        manager=".interfaces.IBelowContentTitle"
+        class=".content.DocumentBylineViewlet"
+        permission="zope2.View" 
+        />
+        
     <!-- Render comments -->
     <browser:viewlet
         name="plone.comments"

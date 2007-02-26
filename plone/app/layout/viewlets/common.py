@@ -18,8 +18,8 @@ class ViewletBase(BrowserView):
         self.request = request
         self.view = view
         self.manager = manager
-        portal_state = getMultiAdapter((context, request), name=u'plone_portal_state')
-        self.portal_url = portal_state.portal_url()
+        self.portal_state = getMultiAdapter((context, request), name=u'plone_portal_state')
+        self.portal_url = self.portal_state.portal_url()
 
     def update(self):
         pass

@@ -1,0 +1,65 @@
+<div xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
+     xmlns:tal="http://xml.zope.org/namespaces/tal"
+     xmlns:metal="http://xml.zope.org/namespaces/metal"
+     xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+     i18n:domain="plone"
+     tal:condition="view/show">
+
+    <div class="documentByLine">
+
+        <img tal:replace="structure view/locked_icon" />
+
+        <tal:name tal:condition="view/creator">
+          <span class="documentAuthor"
+                i18n:translate="label_by_author">
+            by
+          <a href="#"
+             tal:attributes="href string:${view/portal_url}/author/${view/creator}"
+             tal:content="view/authorname"
+             tal:omit-tag="not:view/author"
+             i18n:name="author">
+            Bob Dobalina
+          </a>
+
+          &mdash;
+          
+          </span>
+        </tal:name>
+
+        <span class="documentModified">
+            <span i18n:translate="box_last_modified">
+            last modified
+            </span>
+            <span tal:replace="python:view.toLocalizedTime(here.ModificationDate(),long_format=1)">
+            August 16, 2001 at 23:35:59
+            </span>
+        </span>
+
+        <span class="state-expired"
+            tal:condition="view/isExpired"
+            i18n:translate="time_expired">
+        &mdash; expired
+        </span>
+
+        <div class="documentContributors"
+             tal:condition="here/Contributors"
+             i18n:translate="text_contributors">
+            Contributors:
+            <span i18n:name="name"
+                  tal:omit-tag=""
+                  tal:content="python: ', '.join(here.Contributors())">
+              Mary
+            </span>
+        </div>
+
+        <tal:rights condition="here/Rights">
+            <div tal:replace="here/Rights">
+                Copyleft NiceCorp Inc.
+            </div>
+        </tal:rights>
+
+        <!--<span metal:use-macro="here/review_history/macros/review_history" />-->
+
+    </div>
+
+</div>
