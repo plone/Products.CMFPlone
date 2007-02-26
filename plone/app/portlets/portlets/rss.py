@@ -214,9 +214,9 @@ class Assignment(base.Assignment):
     title = _(u'RSS Portlet')
 
     def __init__(self, count=5, url=u"", timeout=100):
-        self.count = 5
+        self.count = count
         self.url = url
-        self.timeout = 100
+        self.timeout = timeout
         
 class Renderer(base.DeferredRenderer):
     
@@ -266,7 +266,7 @@ class Renderer(base.DeferredRenderer):
     
     @property            
     def items(self):
-        return self._getFeed().items
+        return self._getFeed().items[:self.data.count]
     
     @property    
     def enabled(self):
