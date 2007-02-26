@@ -96,25 +96,25 @@
 .date {
     font-weight: bold;
 }
-#plone-calendar {
+.ploneCalendar {
     width: 100%;
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
     margin: 1px 0 1em 0;
     width: 100%;
 }
-#plone-calendar dt {
+.ploneCalendar dt {
     background-color: &dtml-globalBackgroundColor;;
     font-weight: normal;
     text-align: center;
     line-height: 1.6em;
 }
-#plone-calendar dd {
+.ploneCalendar dd {
     margin: 0;
 }
-#plone-calendar a {
+.ploneCalendar a {
     text-decoration: none;
 }
-#plone-calendar a:hover {
+.ploneCalendar a:hover {
     text-decoration: none;
 }
 .ploneCalendar {
@@ -189,20 +189,20 @@ div.managedPortlet {
 /* Commented out for now, since the calendar markup has changed slightly ~limi */
 
 
-.calendar-previous {
+.calendarPrevious {
     background-image: url(&dtml-portal_url;/arrowLeft.gif);
     background-repeat: no-repeat;
     background-position: 50% 50%;
     float: left;
 }
-.calendar-next {
+.calendarNext {
     background-image: url(&dtml-portal_url;/arrowRight.gif);
     background-repeat: no-repeat;
     background-position: 50% 50%;
     float: right;
 }
-#calendar-previous,
-#calendar-next {
+.calendarPrevious,
+.calendarNext {
     display: block;
     text-decoration: none;
     overflow: hidden;
@@ -214,7 +214,7 @@ div.managedPortlet {
     height /**/: <dtml-var "_['arrowLeft.gif'].height">px;
     cursor: pointer;
 }
-#calendar-next {
+.calendarNext {
     padding-top: <dtml-var "_['arrowRight.gif'].height">px;
     height: 0px !important;
     height /**/: <dtml-var "_['arrowRight.gif'].height">px;
