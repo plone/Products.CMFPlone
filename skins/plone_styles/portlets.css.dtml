@@ -96,25 +96,25 @@
 .date {
     font-weight: bold;
 }
-.ploneCalendar {
+.portletCalendar {
     width: 100%;
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
     margin: 1px 0 1em 0;
     width: 100%;
 }
-.ploneCalendar dt {
+.portletCalendar dt {
     background-color: &dtml-globalBackgroundColor;;
     font-weight: normal;
     text-align: center;
     line-height: 1.6em;
 }
-.ploneCalendar dd {
+.portletCalendar dd {
     margin: 0;
 }
-.ploneCalendar a {
+.portletCalendar a {
     text-decoration: none;
 }
-.ploneCalendar a:hover {
+.portletCalendar a:hover {
     text-decoration: none;
 }
 .ploneCalendar {
