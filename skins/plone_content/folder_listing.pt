@@ -11,26 +11,27 @@
     <div metal:fill-slot="main">
     <metal:main-macro define-macro="main">
 
-        <div metal:use-macro="here/document_actions/macros/document_actions">
-            Document actions (print, sendto etc)
-        </div>
+        <div tal:replace="structure provider:plone.abovecontenttitle" />
 
         <h1 metal:use-macro="here/kss_generic_macros/macros/generic_title_view">
             Title or id
         </h1>
 
-        <a href=""
-           class="link-parent"
-           tal:define="parent_url python:here.navigationParent(here, template_id)"
-           tal:condition="parent_url"
-           tal:attributes="href parent_url"
-           i18n:translate="go_to_parent_url">
-        Up one level
-        </a>
-
         <p  metal:use-macro="here/kss_generic_macros/macros/generic_description_view">
             Description
         </p>
+
+        <div tal:replace="structure provider:plone.abovecontentbody" />
+
+        <div metal:define-macro="text-field-view" id="parent-fieldname-text" class="stx"
+             tal:define="kss_field_decorator_view kss_field_decorator_view | context/@@kss_field_decorator_view;
+                         kss_class python:kss_field_decorator_view.kss_class('text', 'view'); 
+                         text here/getText|nothing"
+             tal:condition="text"
+             tal:attributes="class python:test(here.Format() in ('text/structured',
+                                                   'text/x-rst', ), 'stx' + kss_class, 'plain' + kss_class)">
+            <div tal:replace="structure text" />
+        </div>
 
         <metal:listingmacro define-macro="listing">
         <tal:foldercontents define="contentFilter contentFilter|request/contentFilter|nothing;
@@ -167,6 +168,9 @@
 
         </tal:foldercontents>
         </metal:listingmacro>
+
+        <div tal:replace="structure provider:plone.belowcontentbody" />
+
     </metal:main-macro>
     </div>
 

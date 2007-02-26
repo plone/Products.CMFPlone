@@ -11,21 +11,20 @@
     <tal:main-macro metal:define-macro="main"
           tal:define="text python:here.CookedBody(stx_level=2);
                       len_text python:len(text.strip())">
-        <div metal:use-macro="here/document_actions/macros/document_actions">
-            Document actions (print, sendto etc)
-        </div>
+
+        <div tal:replace="structure provider:plone.abovecontenttitle" />
 
         <h1 metal:use-macro="here/kss_generic_macros/macros/generic_title_view">
             Title or id
         </h1>
 
-        <div metal:use-macro="here/document_byline/macros/byline">
-            Get the byline - contains details about author and modification date.
-        </div>
+        <div tal:replace="structure provider:plone.belowcontenttitle" />
 
         <p  metal:use-macro="here/kss_generic_macros/macros/generic_description_view">
             News summary
         </p>
+
+        <div tal:replace="structure provider:plone.abovecontentbody" />
 
         <div class="newsImageContainer"
              tal:condition="here/image_mini|nothing">
@@ -59,7 +58,7 @@
             Show related items if they exist
         </div>
         
-        <div class="visualClear" id="clear-space-after-relatedItems"></div>
+        <div tal:replace="structure provider:plone.belowcontentbody" />
 
     </tal:main-macro>
 </div>

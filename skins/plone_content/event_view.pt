@@ -9,9 +9,8 @@
 
 <div metal:fill-slot="main">
     <tal:main-macro metal:define-macro="main">
-        <div metal:use-macro="here/document_actions/macros/document_actions">
-            Document actions (print, sendto etc)
-        </div>
+
+        <div tal:replace="structure provider:plone.abovecontenttitle" />
 
         <div class="vevent">
 
@@ -19,15 +18,14 @@
             Title or id
         </h1>
 
-
-        <div metal:use-macro="here/document_byline/macros/byline">
-            Get the byline - contains details about author and modification date.
-        </div>
+        <div tal:replace="structure provider:plone.belowcontenttitle" />
 
         <p metal:use-macro="here/kss_generic_macros/macros/generic_description_view">
             Description
         </p>
         
+        <div tal:replace="structure provider:plone.abovecontentbody" />
+
         <div class="eventDetails vcard">
         <table class="vertical listing"
                summary="Event details" i18n:attributes="summary summary_event_details;">
@@ -194,7 +192,7 @@
             show related items if they exist
         </div>
 
-        <div class="visualClear" id="clear-space-after-relatedItems"><!-- --></div>
+        <div tal:replace="structure provider:plone.belowcontentbody" />
 
     </tal:main-macro>
 </div>
