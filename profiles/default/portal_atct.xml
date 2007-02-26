@@ -122,7 +122,7 @@
    <criteria>ATDateRangeCriterion</criteria>
   </index>
   <index name="Subject" description="The keywords used to describe an item"
-     enabled="True" friendlyName="Keywords">
+     enabled="True" friendlyName="Categories">
    <criteria>ATSelectionCriterion</criteria>
    <criteria>ATSimpleStringCriterion</criteria>
    <criteria>ATListCriterion</criteria>
@@ -196,7 +196,7 @@
   <metadata name="start" description="The start date and time of an event"
      enabled="True" friendlyName="Start Date"/>
   <metadata name="Subject" description="The keywords used to describe an item"
-     enabled="True" friendlyName="Keywords"/>
+     enabled="True" friendlyName="Categories"/>
   <metadata name="Title" description="" enabled="True" friendlyName="Title"/>
   <metadata name="Type" description="An item's type (e.g. Event)"
      enabled="True" friendlyName="Item Type"/>
