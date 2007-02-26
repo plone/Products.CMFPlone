@@ -149,6 +149,10 @@
     border: 2px &dtml-borderStyle; #ffa500;
 }
 
+.managePortletsLink {
+    text-align: center;
+}
+
 div.portlets-manager div.section {
     padding-top: 1em !important;
 }
