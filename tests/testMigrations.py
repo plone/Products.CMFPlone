@@ -2050,12 +2050,11 @@ class TestMigrations_v3_0(MigrationTest):
         self.assertEquals(security.title, 'Security')
         self.assertEquals(security.action.text,
                           'string:${portal_url}/@@security-controlpanel.html')
-    
+
     def testAddFilterAndSecurityConfigletsNoTool(self):
         # Should not fail if tool is missing
         self.portal._delObject('portal_controlpanel')
         addFilterAndSecurityConfiglets(self.portal, [])
-
 
     def testAddSitemapProperty(self):
         self.removeSiteProperty('enable_sitemap')
@@ -2063,7 +2062,6 @@ class TestMigrations_v3_0(MigrationTest):
         tool = self.portal.portal_properties
         sheet = tool.site_properties
         self.failUnless(sheet.hasProperty('enable_sitemap'))
-
 
     def testUpdateKukitJS(self):
         jsreg = self.portal.portal_javascripts
@@ -2123,7 +2121,6 @@ class TestMigrations_v3_0(MigrationTest):
         # try double migration
         removeHideAddItemsJS(self.portal, [])
 
-        
     def testAddWebstatsJSProperty(self):
         # adds a site property to portal_properties
         self.removeSiteProperty('webstats_js')
@@ -2131,8 +2128,7 @@ class TestMigrations_v3_0(MigrationTest):
         tool = self.portal.portal_properties
         sheet = tool.site_properties
         self.failUnless(sheet.hasProperty('webstats_js'))
-        
-        
+
     def testAddWebstatsJS(self):
         jsreg = self.portal.portal_javascripts
         # unregister first
@@ -2151,7 +2147,6 @@ class TestMigrations_v3_0(MigrationTest):
         res = jsreg.getResource('webstats.js')
         self.assertEqual(res.getEnabled(),True)
 
-
     def testWebstatsJSTwice(self):
         # Should not break if migrated again
         jsreg = self.portal.portal_javascripts
@@ -2168,7 +2163,6 @@ class TestMigrations_v3_0(MigrationTest):
             pos1 = jsreg.getResourcePosition('login.js')
             pos2 = jsreg.getResourcePosition('webstats.js')
             self.failUnless((pos2 - 1) == pos1)
-
         # check if enabled 
         res = jsreg.getResource('webstats.js') 
         self.assertEqual(res.getEnabled(),True)

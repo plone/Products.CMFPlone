@@ -74,12 +74,6 @@ def three0_alpha1(portal):
     # Install the calendar settings control panel
     addCalendarConfiglet(portal, out)
 
-    # Add icon for security settings configlet
-    addIconForSecuritySettingsConfiglet(portal, out)
-
-    # Install the calendar settings control panel
-    addSecurityConfiglet(portal, out)
-
     # Deal with the tableless skin disappearing
     removeTablelessSkin(portal, out)
 
@@ -484,39 +478,6 @@ def addCalendarConfiglet(portal, out):
                                            category   = 'Plone',
                                            permission = ManagePortal,)
             out.append("Added calendar settings to the control panel")
-
-def addIconForSecuritySettingsConfiglet(portal, out):
-    """Adds an icon for the security settings configlet. """
-    iconsTool = getToolByName(portal, 'portal_actionicons', None)
-    if iconsTool is not None:
-        for icon in iconsTool.listActionIcons():
-            if icon.getActionId() == 'SecuritySettings':
-                break # We already have the icon
-        else:
-            iconsTool.addActionIcon(
-                category='controlpanel',
-                action_id='SecuritySettings',
-                icon_expr='lock_icon.gif',
-                title='Security Settings',
-                )
-        out.append("Added 'security' icon to actionicons tool.")
-
-def addSecurityConfiglet(portal, out):
-    """Add the configlet for the security settings"""
-    controlPanel = getToolByName(portal, 'portal_controlpanel', None)
-    if controlPanel is not None:
-        haveCalendar = False
-        for configlet in controlPanel.listActions():
-            if configlet.getId() == 'SecuritySettings':
-                haveCalendar = True
-        if not haveCalendar:
-            controlPanel.registerConfiglet(id         = 'SecuritySettings',
-                                           appId      = 'Plone',
-                                           name       = 'Security',
-                                           action     = 'string:${portal_url}/@@security-controlpanel.html',
-                                           category   = 'Plone',
-                                           permission = ManagePortal,)
-            out.append("Added security settings to the control panel")
 
 def updateSearchAndMailHostConfiglet(portal, out):
     """Use new configlets for the search and mailhost settings"""
