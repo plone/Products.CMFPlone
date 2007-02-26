@@ -458,7 +458,7 @@ li.formTab a.notify:hover {
     padding: 1em 1em 1em 1em; 
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
 }
-.formPanel .hidden {
+.formPanel.hidden {
     display: none;
 }
 div.formControls input.hidden {
