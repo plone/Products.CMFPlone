@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Undeprecated the toLocalizedTime script. We are probably going to change
+      the approach to be based on Zope3 locales in the next release, so it
+      doesn't make sense to force everybody to change their products now.
+      [hannosch]
+
     - Renamed Keywords to Categories, and included tags/labels/keywords 
       explanation in the help text. User research showed that people 
       understand this term better than the other alternatives.
