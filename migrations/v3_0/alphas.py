@@ -557,18 +557,18 @@ def installRedirectorUtility(portal, out):
 def addContentRulesAction(portal, out):
     portal_actions = getToolByName(portal, 'portal_actions', None)
     if portal_actions is not None:
-        object_buttons = getattr(portal_actions, 'object_buttons', None)
-        if object_buttons is not None:
-            if 'contentrules' not in object_buttons.objectIds():
+        object_tabs = getattr(portal_actions, 'object_tabs', None)
+        if object_tabs is not None:
+            if 'contentrules' not in object_tabs.objectIds():
                 new_action = Action('contentrules',
                                     title='Rules',
                                     description='',
                                     url_expr='string:${plone_context_state/canonical_object_url}/@@manage-content-rules',
                                     available_expr="python:plone_context_state.canonical_object()['@@plone_interface_info'].provides('plone.contentrules.engine.interfaces.IRuleContainer')",
-                                    permissions='Manage portal',
+                                    permissions='Content rules: Manage rules',
                                     visible=True)
-                object_buttons._setObject('contentrules', new_action)
-                out.append("Added content rules action to object_buttons")
+                object_tabs._setObject('contentrules', new_action)
+                out.append("Added content rules action to object_tabs")
 
 def installContentRulesUtility(portal, out):
     from plone.contentrules.engine.interfaces import IRuleStorage
@@ -988,7 +988,7 @@ def addContentRulesConfiglet(portal, out):
                                            name       = 'Content Rules Settings',
                                            action     = 'string:${portal_url}/@@rules-controlpanel.html',
                                            category   = 'Plone',
-                                           permission = ManagePortal,)
+                                           permission = 'Content rules: Manage rules',)
             out.append("Added 'Content Rules Settings' to the control panel")
 
 def addIconForContentRulesConfiglet(portal, out):

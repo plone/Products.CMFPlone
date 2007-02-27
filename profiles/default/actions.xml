@@ -303,19 +303,6 @@
    </property>
    <property name="visible">True</property>
   </object>
-  <object name="contentrules" meta_type="CMF Action" i18n:domain="plone">
-   <property name="title" i18n:translate="">Rules</property>
-   <property name="description" i18n:translate=""></property>
-   <property
-      name="url_expr">string:${plone_context_state/canonical_object_url}/@@manage-content-rules</property>
-   <property name="icon_expr"></property>
-   <property
-      name="available_expr">python:plone_context_state.canonical_object().restrictedTraverse('@@plone_interface_info').provides('plone.contentrules.engine.interfaces.IRuleAssignable')</property>
-   <property name="permissions">
-    <element value="Manage portal"/>
-   </property>
-   <property name="visible">True</property>
-  </object>
  </object>
  <object name="portal_tabs" meta_type="CMF Action Category">
   <property name="title"></property>
@@ -344,6 +331,19 @@
     <element value="Manage portal"/>
    </property>
    <property name="visible">False</property>
+  </object>
+  <object name="contentrules" meta_type="CMF Action" i18n:domain="plone">
+   <property name="title" i18n:translate="">Rules</property>
+   <property name="description" i18n:translate=""></property>
+   <property
+      name="url_expr">string:${plone_context_state/canonical_object_url}/@@manage-content-rules</property>
+   <property name="icon_expr"></property>
+   <property
+      name="available_expr">python:plone_context_state.canonical_object().restrictedTraverse('@@plone_interface_info').provides('plone.contentrules.engine.interfaces.IRuleAssignable')</property>
+   <property name="permissions">
+    <element value="Content rules: Manage rules"/>
+   </property>
+   <property name="visible">True</property>
   </object>
  </object>
  <object name="user" meta_type="CMF Action Category">

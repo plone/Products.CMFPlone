@@ -1657,22 +1657,22 @@ class TestMigrations_v3_0(MigrationTest):
         self.failIf(sm.queryUtility(IRedirectionStorage) is None)
         
     def testAddContentRulesAction(self):
-        self.portal.portal_actions.object_buttons._delObject('contentrules')
+        self.portal.portal_actions.object_tabs._delObject('contentrules')
         addContentRulesAction(self.portal, [])
-        self.failUnless('contentrules' in self.portal.portal_actions.object_buttons.objectIds())
+        self.failUnless('contentrules' in self.portal.portal_actions.object_tabs.objectIds())
         
     def testAddContentRulesActionTwice(self):
-        self.portal.portal_actions.object_buttons._delOb('contentrules')
+        self.portal.portal_actions.object_tabs._delOb('contentrules')
         addContentRulesAction(self.portal, [])
         addContentRulesAction(self.portal, [])
-        self.failUnless('contentrules' in self.portal.portal_actions.object_buttons.objectIds())
+        self.failUnless('contentrules' in self.portal.portal_actions.object_tabs.objectIds())
         
     def testAddContentRulesActionNoTool(self):
         self.portal._delOb('portal_actions')
         addContentRulesAction(self.portal, [])
         
     def testAddContentRulesActionNoCategory(self):
-        self.portal.portal_actions._delOb('object_buttons')
+        self.portal.portal_actions._delOb('object_tabs')
         addContentRulesAction(self.portal, [])
         
     def testAddReaderEditorRoles(self):

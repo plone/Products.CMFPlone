@@ -96,6 +96,10 @@
       <role name="Manager"/>
       <role name="Member"/>
     </permission>
+    <permission name="Content rules: Manage rules"
+                acquire="False">
+      <role name="Manager"/>
+    </permission>
     <permission name="View"
                 acquire="True">
         <role name="Reader" />

@@ -108,6 +108,6 @@
  <configlet title="Content Rules Settings" action_id="ContentRules" appId="Plone"
     category="Plone" condition_expr=""
     url_expr="string:${portal_url}/@@rules-controlpanel.html" visible="True">
-  <permission>Manage portal</permission>
+  <permission>Content rules: Manage rules</permission>
  </configlet>
 </object>
