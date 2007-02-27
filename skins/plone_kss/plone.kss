@@ -151,6 +151,7 @@ a.kssCalendarChange:click {
 
 /* effects do not seem to like animated gifs 
 #kss-spinner:spinneron {
+    evt-spinneron-laziness: 1000;
     action-client: effect;
     effect-type: appear;
 }
