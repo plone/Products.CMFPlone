@@ -4,6 +4,13 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Made it possible to look up the ExtensibleIndexableObjectWrapper using
+      a multi-adapter on (context, portal). The wrapper now has an additional
+      method update() which can update with workflow variables and the like.
+      This allows a particular wrapper to be registered for a particular type
+      of object, allowing more careful control over the indexing process.
+      [optilude] 
+
     - Removed ids from portlet templates and turned into classes. This makes
       sure we do not get duplicate ids in our html when multiple instances of
       the same portlet type are created, while still allowing different

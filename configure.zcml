@@ -85,5 +85,11 @@
 
   <utility factory=".setuphandlers.HiddenProducts"
            name="Products.CMFPlone" />
+           
+  <!-- Default wrapper for indexing -->
+  <adapter
+      for="* Products.CMFCore.interfaces.ISiteRoot"
+      provides="plone.app.content.interfaces.IIndexableObjectWrapper"
+      factory=".CatalogTool.ExtensibleIndexableObjectWrapper" />
 
 </configure>

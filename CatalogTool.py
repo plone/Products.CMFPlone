@@ -40,7 +40,12 @@ from AccessControl.Permissions import manage_zcatalog_entries as ManageZCatalogE
 from AccessControl.Permissions import search_zcatalog as SearchZCatalog
 from AccessControl.PermissionRole import rolesForPermissionOn
 
-from zope.interface import implements
+from Products.CMFCore.interfaces import ISiteRoot
+
+from zope.interface import Interface, implements
+from zope.component import adapts, getMultiAdapter
+
+from plone.app.content.interfaces import IIndexableObjectWrapper
 
 _marker = object()
 
@@ -74,13 +79,22 @@ class ExtensibleIndexableObjectWrapper(IndexableObjectWrapper):
     **kwargs - additional keyword arguments
     """
 
-    __implements__ = z2IIndexableObjectWrapper
+    implements(IIndexableObjectWrapper)
+    adapts(Interface, ISiteRoot)
 
-    def __init__(self, vars, obj, portal, registry = _eioRegistry, **kwargs):
-        super(ExtensibleIndexableObjectWrapper, self).__init__(vars, obj)
+    def __init__(self, obj, portal, registry = _eioRegistry):
+        # Because we want to look this up as an adapter, we defer 
+        # initialisation until the update() method is called
+        super(ExtensibleIndexableObjectWrapper, self).__init__({}, obj)
         self._portal = portal
         self._registry = registry
+        self._kwargs = {}
+
+    def update(self, vars, **kwargs):
+        self._IndexableObjectWrapper__vars = vars
         self._kwargs = kwargs
+        if 'registry' in kwargs:
+            self._registry = kwargs['registry']
 
     def beforeGetattrHook(self, vars, obj, kwargs):
         return vars, obj, kwargs
@@ -349,7 +363,10 @@ class CatalogTool(PloneBaseTool, BaseTool):
         else:
             vars = {}
         portal = aq_parent(aq_inner(self))
-        w = ExtensibleIndexableObjectWrapper(vars, object, portal=portal)
+        
+        w = getMultiAdapter((object, portal), IIndexableObjectWrapper)
+        w.update(vars)
+        
         ZCatalog.catalog_object(self, w, uid, idxs,
                                 update_metadata, pghandler=pghandler)
 

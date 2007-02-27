@@ -456,7 +456,8 @@ class TestCatalogSorting(PloneTestCase.PloneTestCase):
 
     def testSortableTitleOutput(self):
         doc = self.folder.doc
-        wrapped = ExtensibleIndexableObjectWrapper(vars, doc, self.portal)
+        wrapped = ExtensibleIndexableObjectWrapper(doc, self.portal)
+        wrapped.update(vars={})
 
         self.assertEqual(wrapped.sortable_title, u'00000012 document 00000025')
 
@@ -465,7 +466,8 @@ class TestCatalogSorting(PloneTestCase.PloneTestCase):
         title = 'La Pe\xc3\xb1a'
         doc = self.folder.doc
         doc.setTitle(title)
-        wrapped = ExtensibleIndexableObjectWrapper(vars, doc, self.portal)
+        wrapped = ExtensibleIndexableObjectWrapper(doc, self.portal)
+        wrapped.update(vars={})
         self.assertEqual(wrapped.sortable_title, u'la pe\xf1a'.encode('utf-8'))
 
 
@@ -900,7 +902,8 @@ class TestExtensibleIndexableObjectWrapper(PloneTestCase.PloneTestCase):
     def testWrapper(self):
         doc = self.doc
         vars = {'var' : 'a var'}
-        wrapped = ExtensibleIndexableObjectWrapper(vars, doc, self.portal)
+        wrapped = ExtensibleIndexableObjectWrapper(doc, self.portal)
+        wrapped.update(vars)
         self.failUnlessEqual(wrapped.var, 'a var')
         self.failUnlessEqual(wrapped.getId(), 'doc')
         self.failUnlessEqual(wrapped.Title(), 'document')
@@ -927,7 +930,8 @@ class TestExtensibleIndexableObjectWrapper(PloneTestCase.PloneTestCase):
         from Products.CMFCore.tests.base.dummy import DummyContent
 
         obj = DummyContent()
-        w = ExtensibleIndexableObjectWrapper({}, obj, self.portal)
+        w = ExtensibleIndexableObjectWrapper(obj, self.portal)
+        w.update(vars={})
         self.failUnless(IContentish.providedBy(w))
         self.failUnless(IIndexableObjectWrapper.providedBy(w))
 
