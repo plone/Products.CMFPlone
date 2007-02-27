@@ -187,11 +187,16 @@ class TestFolderListing(PloneTestCase.PloneTestCase):
         self.assertEqual(len(contents), 1)
         self.assertEqual(contents[0].getId, 'sub1doc1')
 
-        self.failUnless(self.folder.sub1.folder_contents())
+        self.failUnless(self.folder.sub1.old_folder_contents())
+        view = self.folder.sub1.restrictedTraverse("folder_contents")
+        self.failUnless(view())
 
         self.folder.sub1.manage_permission('List folder contents', ['Manager'], acquire=0)
 
-        self.assertRaises(Unauthorized, self.folder.sub1.folder_contents)
+        self.assertRaises(Unauthorized, self.folder.sub1.old_folder_contents)
+        def func():
+            return self.folder.sub1.restrictedTraverse("folder_contents")
+        self.assertRaises(Unauthorized, func)
 
 
 class TestManageDelObjects(PloneTestCase.PloneTestCase):
