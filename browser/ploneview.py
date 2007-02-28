@@ -102,6 +102,7 @@ class Plone(utils.BrowserView):
         self._data['mtool'] = mtool = tools.membership()
         self._data['atool'] = atool = tools.actions()
         self._data['putils'] = putils = getToolByName(context, 'plone_utils')
+        self._data['acl_users'] = getToolByName(context, 'acl_users')
         self._data['wtool'] = wtool = tools.workflow()
         self._data['ifacetool'] = tools.interface()
         self._data['syntool'] = tools.syndication()
