@@ -4,7 +4,8 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
-    - Add a object_provides index to the catalog
+    - Add an object_provides index to the catalog. This indexes all
+      interfaces provided by an object with their dotted names.
       [wichert]
 
     - Made it possible to look up the ExtensibleIndexableObjectWrapper using
