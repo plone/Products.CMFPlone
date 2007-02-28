@@ -154,7 +154,7 @@ class Plone(utils.BrowserView):
             template_id = template.getId()
         self._data['template_id'] = template_id
         
-        isViewTemplate = (template_id == context_state.view_template_id())
+        isViewTemplate = context_state.is_view_template()
         if isViewTemplate and not IViewView.providedBy(view):
             # Mark the view as being "the" view
             alsoProvides(view, IViewView)
