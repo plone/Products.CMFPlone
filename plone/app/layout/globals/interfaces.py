@@ -103,13 +103,18 @@ class IPortalState(Interface):
     def friendly_types():
         """Get a list of portal types considered "end user" types
         """
-
+        
 class IContextState(Interface):
     """A view that gives access to the state of the current context
     """
     
     def current_page_url():
-        """The URL to the current page, including template
+        """The URL to the current page, including template and query string.
+        """
+        
+    def current_base_url():
+        """The current "actual" URL from the request, excluding the query
+        string.
         """
         
     def canonical_object():
@@ -128,6 +133,11 @@ class IContextState(Interface):
         
     def view_template_id():
         """The id of the view template of the context
+        """
+        
+    def is_view_template():
+        """Return True if the currentl URL (in the request) refers to the
+        standard "view" of the context (i.e. the "view" tab).
         """
                             
     def object_url():

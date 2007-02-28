@@ -22,14 +22,19 @@ class ContextState(BrowserView):
     
     @memoize
     def current_page_url(self):
-        url = self.request.get('ACTUAL_URL', self.request.get('URL', None))
-        if not url:
-            return self.context.absolute_url()
+        url = self.current_base_url()
         query = self.request.get('QUERY_STRING', None)
         if query:
             url += '?' + query
         return url
         
+    @memoize
+    def current_base_url(self):
+        return self.request.get('ACTUAL_URL',
+                 self.request.get('VIRTUAL_URL',
+                   self.request.get('URL', 
+                     self.context.absolute_url())))
+                             
     @memoize
     def canonical_object(self):
         if self.is_default_page():
@@ -61,8 +66,21 @@ class ContextState(BrowserView):
 
     @memoize
     def is_view_template(self):
-        template_id = self.request.get('URL', '').split('/')[-1]
-        return (template_id == self.view_template_id())
+        current_url = self.current_base_url()
+        object_url = self.object_url()
+        
+        if current_url == object_url:
+            return True
+        elif current_url == object_url + '/view':
+            return True
+        
+        template_id = self.view_template_id()
+        if current_url == "%s/%s" % (object_url, template_id):
+            return True
+        elif current_url == "%s/@@%s" % (object_url, template_id):
+            return True
+        
+        return False
 
     @memoize
     def object_url(self):

@@ -29,6 +29,12 @@ class TestContextStateView(GlobalsTestCase):
         self.app.REQUEST['QUERY_STRING'] = 'foo=bar'
         self.assertEquals(self.fview.current_page_url(), url + '?foo=bar')
         
+    def test_current_base_url(self):
+        url = self.folder.absolute_url() + '/some_view'
+        self.app.REQUEST['ACTUAL_URL'] = url
+        self.app.REQUEST['QUERY_STRING'] = 'foo=bar'
+        self.assertEquals(self.fview.current_base_url(), url)
+        
     def test_canonical_object(self):
         self.assertEquals(self.fview.canonical_object(), self.folder)
         self.assertEquals(self.dview.canonical_object(), self.folder)
@@ -40,6 +46,35 @@ class TestContextStateView(GlobalsTestCase):
     def test_view_template_id(self):
         self.folder.setLayout('foo_view')
         self.assertEquals(self.fview.view_template_id(), 'foo_view')
+                            
+    def test_is_view_template_default(self):
+        self.app.REQUEST['ACTUAL_URL'] = self.folder.absolute_url()
+        self.assertEquals(self.fview.is_view_template(), True)
+        self.assertEquals(self.dview.is_view_template(), False)
+                            
+    def test_is_view_template_template(self):
+        self.folder.setLayout('foo_view')
+        self.app.REQUEST['ACTUAL_URL'] = self.folder.absolute_url() + '/foo_view'
+        self.assertEquals(self.fview.is_view_template(), True)
+        self.assertEquals(self.dview.is_view_template(), False)
+        
+    def test_is_view_template_template_z3view(self):
+        self.folder.setLayout('foo_view')
+        self.app.REQUEST['ACTUAL_URL'] = self.folder.absolute_url() + '/@@foo_view'
+        self.assertEquals(self.fview.is_view_template(), True)
+        self.assertEquals(self.dview.is_view_template(), False)
+        
+    def test_is_view_template_view(self):
+        self.folder.setLayout('foo_view')
+        self.app.REQUEST['ACTUAL_URL'] = self.folder.absolute_url() + '/view'
+        self.assertEquals(self.fview.is_view_template(), True)
+        self.assertEquals(self.dview.is_view_template(), False)
+                            
+    def test_is_view_template_other(self):
+        self.folder.setLayout('foo_view')
+        self.app.REQUEST['ACTUAL_URL'] = self.folder.absolute_url() + '/bar_view'
+        self.assertEquals(self.fview.is_view_template(), False)
+        self.assertEquals(self.dview.is_view_template(), False)                            
                             
     def test_object_url(self):
         self.assertEquals(self.fview.object_url(), self.folder.absolute_url())
