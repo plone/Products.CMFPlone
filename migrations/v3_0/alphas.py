@@ -182,6 +182,9 @@ def alpha2_alpha3(portal):
     # Add webstats_js property to site properties
     addWebstatsJSProperty(portal,out)
 
+    # Add the object_provides catalog index
+    addObjectProvidesIndex(portal, out)
+
     return out
 
 
@@ -1006,4 +1009,12 @@ def addIconForContentRulesConfiglet(portal, out):
                 title='Content Rules Settings',
                 )
         out.append("Added 'Content Rules Settings' icon to actionicons tool.")
+
+def addObjectProvidesIndex(portal, out):
+    """Add the object_provides index to the portal_catalog.
+    """
+    catalog = getToolByName(portal, 'portal_catalog')
+    if 'object_provides' not in catalog.indexes():
+        catalog.addIndex('object_provides', 'KeywordIndex')
+        out.append("Added object_provides index to portal_catalog")
 

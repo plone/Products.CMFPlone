@@ -99,6 +99,7 @@ from Products.CMFPlone.migrations.v3_0.alphas import removeTablelessSkin
 from Products.CMFPlone.migrations.v3_0.alphas import installContentRulesUtility
 from Products.CMFPlone.migrations.v3_0.alphas import addIconForContentRulesConfiglet
 from Products.CMFPlone.migrations.v3_0.alphas import addContentRulesConfiglet
+from Products.CMFPlone.migrations.v3_0.alphas import addObjectProvidesIndex
 
 from zope.app.component.hooks import clearSite
 from zope.app.component.interfaces import ISite
@@ -2183,6 +2184,15 @@ class TestMigrations_v3_0(MigrationTest):
         addIconsForFilterAndSecurityConfiglets(self.portal, [])
         self.failUnless('HtmlFilter' in [x.getActionId() for x in self.icons.listActionIcons()])
         self.failUnless('SecuritySettings' in [x.getActionId() for x in self.icons.listActionIcons()])
+
+
+    def testObjectProvidesIndex(self):
+        catalog = getToolByName(self.portal, 'portal_catalog')
+        if 'object_provides' in catalog.indexes():
+            catalog.delIndex('object_provides')
+        self.failIf('object_provides' in catalog.indexes())
+        addObjectProvidesIndex(self.portal, [])
+        self.failUnless('object_provides' in catalog.indexes())
 
 
 def test_suite():

@@ -106,6 +106,9 @@
  <index name="UID" meta_type="FieldIndex">
   <indexed_attr value="UID"/>
  </index>
+ <index name="object_provides" meta_type="KeywordIndex">
+  <indexed_attr value="object_provides"/>
+ </index>
  <column value="CreationDate"/>
  <column value="Creator"/>
  <column value="Date"/>

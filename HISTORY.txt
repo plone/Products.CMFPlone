@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Add a object_provides index to the catalog
+      [wichert]
+
     - Made it possible to look up the ExtensibleIndexableObjectWrapper using
       a multi-adapter on (context, portal). The wrapper now has an additional
       method update() which can update with workflow variables and the like.
