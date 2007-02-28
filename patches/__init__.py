@@ -8,3 +8,5 @@ import interfacePatch           # Fixes for interfaces tests that need to
 
 import unicodeFallbackPatch     # Makes the TAL engine in Zope 2.10+ accept
                                 # utf-8 encoded strings as well as Unicode
+
+import httpresponse             # Temporarily fix bug in Z2's HTTPResponse
