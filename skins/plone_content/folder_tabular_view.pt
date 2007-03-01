@@ -9,7 +9,10 @@
 <body>
 
     <div metal:fill-slot="main">
-    <metal:main-macro define-macro="main">
+    <metal:main-macro define-macro="main"
+                      tal:define="kssClassesView context/@@kss_field_decorator_view;
+                                  getKssClasses nocall:kssClassesView/getKssClassesInlineEditable;
+                                  templateId template/getId">
 
         <div tal:replace="structure provider:plone.abovecontenttitle" />
 
@@ -25,14 +28,15 @@
 
         <div tal:replace="structure provider:plone.abovecontentbody" />
 
-        <div metal:define-macro="text-field-view" id="parent-fieldname-text" class="stx"
-             tal:define="kss_field_decorator_view kss_field_decorator_view | context/@@kss_field_decorator_view;
-                         kss_class python:kss_field_decorator_view.kss_class('text', 'view'); 
+        <div metal:define-macro="text-field-view"
+             id="parent-fieldname-text" class="stx"
+             tal:define="kss_class python:getKssClasses('text',
+                         templateId=templateId, macro='text-field-view');
                          text here/getText|nothing"
              tal:condition="text"
              tal:attributes="class python:test(here.Format() in ('text/structured',
                                                    'text/x-rst', ), 'stx' + kss_class, 'plain' + kss_class)">
-            <div tal:replace="structure text" />
+            <div metal:define-slot="inside" tal:replace="structure text">The body</div>
         </div>
 
         <metal:listingmacro define-macro="listing">

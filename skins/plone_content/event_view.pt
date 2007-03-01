@@ -8,7 +8,10 @@
 <body>
 
 <div metal:fill-slot="main">
-    <tal:main-macro metal:define-macro="main">
+    <tal:main-macro metal:define-macro="main" 
+         tal:define="kssClassesView context/@@kss_field_decorator_view;
+                     getKssClasses nocall:kssClassesView/getKssClassesInlineEditable;
+                     templateId template/getId">
 
         <div tal:replace="structure provider:plone.abovecontenttitle" />
 
@@ -34,26 +37,28 @@
 
                 <tr>
                     <th i18n:translate="event_what">What</th>
-                    <td metal:define-macro="subject-field-view" tal:define="kss_field_decorator_view kss_field_decorator_view | context/@@kss_field_decorator_view;
-                                              kss_class python:kss_field_decorator_view.kss_class('subject', 'view');"
-                        tal:content="python:' '.join(here.Subject())"
+                    <td metal:define-macro="subject-field-view"
+                        tal:define="kss_class python:getKssClasses('subject',
+                                    templateId=templateId, macro='subject-field-view');"
                         id="parent-fieldname-subject"
-                        tal:attributes="class string: summary$kss_class;">
-                        Conference
+                        tal:attributes="class string:summary$kss_class;">
+                        <span metal:define-slot="inside" tal:replace="python:' '.join(here.Subject())" />
                     </td>
                 </tr>
                 <tr>
                     <th i18n:translate="event_when">When</th>
                     <td>
                         <tal:differentday tal:condition="python:not here.start().Date() == here.end().Date()">
-                            <abbr class="dtstart"
-                                  tal:content="python:here.toLocalizedTime(here.start(), long_format=1)"
-                                  tal:define="kss_field_decorator_view kss_field_decorator_view | context/@@kss_field_decorator_view;
-                                              kss_class python:kss_field_decorator_view.kss_class('startDate', 'view');"
-                        id="parent-fieldname-startDate"
-                        tal:attributes="class string: summary$kss_class;
-                        title python:here.start()">
-                                Start Date Time
+                            <abbr metal:define-macro="startdate-field-view"
+                                  class="dtstart"
+                                  tal:define="kss_class python:getKssClasses('startDate',
+                                              templateId=templateId, macro='startdate-field-view');"
+                                  id="parent-fieldname-startDate"
+                                  tal:attributes="class string: summary$kss_class;
+                                  title python:here.start()">
+                                  <span metal:define-slot="inside" 
+                                        tal:replace="python:here.toLocalizedTime(here.start(),
+                                        long_format=1)">Start Date Time</span>
                             </abbr>
                             <span i18n:translate="event_to">to</span> <br />
                             <abbr class="dtend"
@@ -65,15 +70,17 @@
 
                         <tal:sameday tal:condition="python:here.start().Date() == here.end().Date()"
                                      tal:define="ampm python:site_properties.getProperty('localLongTimeFormat').find('%p') >= 0">
-                            <abbr class="dtstart"
+                            <abbr metal:define-macro="startdatesame-field-view"
+                                  class="dtstart"
                                   style="display: none;"             
-                                  tal:content="python:here.toLocalizedTime(here.start(), long_format=1)"
-                                  tal:define="kss_field_decorator_view kss_field_decorator_view | context/@@kss_field_decorator_view;
-                                              kss_class python:kss_field_decorator_view.kss_class('startDate', 'view');"
+                                  tal:define="kss_class python:getKssClasses('startDate',
+                                              templateId=templateId, macro='startdatesame-field-view');"
                                   id="parent-fieldname-startDate"
                                   tal:attributes="class string: summary$kss_class;
                                   title python:here.start()">
-                                Start Date Time
+                                  <span metal:define-slot="inside" 
+                                        tal:replace="python:here.toLocalizedTime(here.start(),
+                                        long_format=1)">Start Date Time</span>
                             </abbr>
                             <abbr class="dtend"
                                   style="display: none;"
@@ -92,31 +99,32 @@
                 </tr>
                 <tr tal:condition="here/location">
                     <th i18n:translate="event_where">Where</th>
-                    <td class="location" tal:content="here/location"
-                        tal:define="kss_field_decorator_view kss_field_decorator_view | context/@@kss_field_decorator_view;
-                                    kss_class python:kss_field_decorator_view.kss_class('location', 'view');"
+                    <td metal:define-macro="location-field-view"
+                        class="location" 
+                        tal:define="kss_class python:getKssClasses('location',
+                                    templateId=templateId, macro='location-field-view');"
                         id="parent-fieldname-location"
-                        tal:attributes="class string: summary$kss_class;"
->Oslo, Norway</td>
+                        tal:attributes="class string: summary$kss_class;">
+                      <span metal:define-slot="inside" 
+                            tal:replace="here/location">Oslo,
+                            Norway</span></td>
                 </tr>
                 <tr tal:condition="here/contact_name">
                     <th i18n:translate="contact_name">Contact Name</th>
-                    <td class="fn"
-                        tal:content="here/contact_name"
-                        tal:define="kss_field_decorator_view kss_field_decorator_view | context/@@kss_field_decorator_view;
-                                    kss_class python:kss_field_decorator_view.kss_class('contactName', 'view');"
+                    <td metal:define-macro="contactName-field-view"
+                        class="fn"
+                        tal:define="kss_class python:getKssClasses('contactName',
+                                    templateId=templateId, macro='contactName-field-view');"
                         id="parent-fieldname-contactName"
-                        tal:attributes="class string: summary$kss_class;">John Smith</td>
+                        tal:attributes="class string: summary$kss_class;">
+                      <span metal:define-slot="inside" 
+                            tal:replace="here/contact_name">Oslo,
+                            John Smith</span></td>
                 </tr>
                 <tr tal:define="contact_email here/contact_email"
                     tal:condition="here/contact_email">
                     <th i18n:translate="contact_email">Contact Email</th>
                     <td class="email">
-                    <input type="button" value="edit"
-                        tal:define="kss_field_decorator_view kss_field_decorator_view | context/@@kss_field_decorator_view;
-                                    kss_class python:kss_field_decorator_view.kss_class('contactEmail', 'view', singleclick=True);"
-                        tal:attributes="class string: summary$kss_class;"       
-                      >
                         <a tal:content="structure python: here.spamProtect(contact_email)"
                         id="parent-fieldname-contactEmail"
                           />
@@ -124,20 +132,26 @@
                 </tr>
                 <tr tal:condition="here/contact_phone">
                     <th i18n:translate="contact_phone">Contact Phone</th>
-                    <td class="tel"
-                        tal:content="here/contact_phone"
-                        tal:define="kss_field_decorator_view kss_field_decorator_view | context/@@kss_field_decorator_view;
-                                    kss_class python:kss_field_decorator_view.kss_class('contactPhone', 'view');"
+                    <td metal:define-macro="contactPhone-field-view"
+                        class="tel"
+                        tal:define="kss_class python:getKssClasses('contactPhone',
+                                    templateId=templateId, macro='contactPhone-field-view');"
                         id="parent-fieldname-contactPhone"
-                        tal:attributes="class string: summary$kss_class;">555-GET-PLONE</td>
+                        tal:attributes="class string: summary$kss_class;">
+                      <span metal:define-slot="inside" 
+                            tal:replace="here/contact_phone">Oslo,
+                            555-GET-PLONE</span></td>
                 </tr>
                 <tr tal:condition="here/getAttendees|nothing">
                     <th i18n:translate="contact_attendees">Attendees</th>
-                    <td metal:define-macro="attendees-field-view" tal:content="python: ', '.join(here.getAttendees())"
-                    tal:define="kss_field_decorator_view kss_field_decorator_view | context/@@kss_field_decorator_view;
-                                kss_class python:kss_field_decorator_view.kss_class('attendees', 'view');"
+                    <td metal:define-macro="attendees-field-view" 
+                        tal:define="kss_class python:getKssClasses('attendees',
+                                    templateId=templateId, macro='attendees-field-view');"
                         id="parent-fieldname-attendees"
-                        tal:attributes="class string: summary$kss_class;">Person 1, Person 2</td>
+                        tal:attributes="class string: summary$kss_class;">
+                      <span metal:define-slot="inside" 
+                            tal:replace="python: ', '.join(here.getAttendees())">Oslo,
+                            Person 1, Person 2</span></td>
                 </tr>
                 <tr>
                     <th i18n:translate="heading_add_to_calendar">Add event to calendar</th>
@@ -161,22 +175,18 @@
         </div>
 
 
-        <div metal:define-macro="text-field-view" id="parent-fieldname-text" class="stx"
-             tal:define="kss_field_decorator_view kss_field_decorator_view | context/@@kss_field_decorator_view;
-                         kss_class python:kss_field_decorator_view.kss_class('text', 'view'); 
+        <div metal:define-macro="text-field-view"
+             id="parent-fieldname-text" class="stx"
+             tal:define="kss_class python:getKssClasses('text',
+                         templateId=templateId, macro='text-field-view');
                          text here/getText|nothing"
              tal:condition="text"
              tal:attributes="class python:test(here.Format() in ('text/structured',
                                                    'text/x-rst', ), 'stx' + kss_class, 'plain' + kss_class)">
-            <div tal:replace="structure text" />
+            <div metal:define-slot="inside" tal:replace="structure text">The body</div>
         </div>
 
         <p tal:condition="here/event_url|nothing">
-            <input type="button" value="edit"
-                        tal:define="kss_field_decorator_view kss_field_decorator_view | context/@@kss_field_decorator_view;
-                                    kss_class python:kss_field_decorator_view('eventUrl', 'view', singleclick=True);"
-                        tal:attributes="class string: summary$kss_class;"       
-                      >
             <a class="url"
                href="event_url"
                i18n:translate="event_more_information"

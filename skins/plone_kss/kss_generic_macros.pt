@@ -10,12 +10,13 @@
 
         <metal:title_view define-macro="generic_title_view">
         <tal:archetypes condition="exists:here/getField">
-        <h1 tal:define="kss_field_decorator_view kss_field_decorator_view | context/@@kss_field_decorator_view;
-						kss_class python:kss_field_decorator_view.kss_class('title', 'view');"
+        <h1 metal:define-macro="title-field-view"
+            tal:define="kss_class python:getKssClasses('title',
+                        templateId='kss_generic_macros', macro='title-field-view');"
             id="parent-fieldname-title"
-            tal:content="object_title"
             tal:attributes="class string:documentFirstHeading$kss_class;">
-          Title or id
+            <span metal:define-slot="inside" 
+                  tal:replace="object_title">title</span>
         </h1>
         </tal:archetypes>
         <h1 tal:content="object_title" class="documentFirstHeading"
@@ -26,13 +27,14 @@
 
         <metal:description_view define-macro="generic_description_view">
         <tal:archetypes condition="exists:here/getField">
-        <p id="parent-fieldname-description"
-           tal:define="kss_field_decorator_view kss_field_decorator_view | context/@@kss_field_decorator_view;
-					   kss_class python:kss_field_decorator_view.kss_class('description', 'view');"
-           tal:content="here/Description"
+        <p metal:define-macro="description-field-view"
+           id="parent-fieldname-description"
+           tal:define="kss_class python:getKssClasses('description',
+                        templateId='kss_generic_macros', macro='description-field-view');"
            tal:condition="here/Description"
            tal:attributes="class string:documentDescription$kss_class;">
-            Description
+            <span metal:define-slot="inside" 
+                  tal:replace="here/Description">Description</span>
         </p>
         </tal:archetypes>
         <p class="documentDescription description"

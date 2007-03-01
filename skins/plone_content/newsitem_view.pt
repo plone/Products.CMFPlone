@@ -9,7 +9,10 @@
 
 <div metal:fill-slot="main">
     <tal:main-macro metal:define-macro="main"
-          tal:define="text python:here.CookedBody(stx_level=2);
+          tal:define="kssClassesView context/@@kss_field_decorator_view;
+                      getKssClasses nocall:kssClassesView/getKssClassesInlineEditable;
+                      templateId template/getId;
+                      text python:here.CookedBody(stx_level=2);
                       len_text python:len(text.strip())">
 
         <div tal:replace="structure provider:plone.abovecontenttitle" />
@@ -33,12 +36,14 @@
                id="parent-fieldname-image">
                <img tal:replace="structure python: here.tag(scale='mini', css_class='newsImage')" src="" alt="" />
             </a>
-            <p class="discreet"
-                  tal:content="here/getImageCaption"
-                  tal:define="kss_field_decorator_view kss_field_decorator_view | context/@@kss_field_decorator_view;
-                              kss_class python:kss_field_decorator_view.kss_class('imageCaption', 'view');"
-            id="parent-fieldname-imageCaption"
-            tal:attributes="class string: summary$kss_class;">Image Caption</p>
+            <p metal:define-macro="imageCaption-field-view"
+               class="discreet"
+               tal:define="kss_class python:getKssClasses('imageCaption',
+                           templateId='kss_generic_macros', macro='imageCaption-field-view');"
+               id="parent-fieldname-imageCaption"
+               tal:attributes="class string: summary$kss_class;">
+              <span metal:define-slot="inside" 
+                   tal:replace="here/getImageCaption">Image Caption</span></p>
         </div>
 
         <p tal:condition="python: not len_text and is_editable"
