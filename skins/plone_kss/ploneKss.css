@@ -19,3 +19,8 @@
    cursor: text;
 }
 
+.kssInlineForm input, 
+.kssInlineForm textarea 
+{
+   background-color: #FFFFCC;
+}
