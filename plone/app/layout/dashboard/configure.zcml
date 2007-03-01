@@ -1,0 +1,14 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser">
+
+    <include package="plone.app.portlets" />
+
+    <browser:page
+        for="Products.CMFCore.interfaces.ISiteRoot"
+        name="dashboard"
+        permission="plone.app.portlets.ManageOwnPortlets"
+        template="dashboard.pt"
+        />
+    
+</configure>
