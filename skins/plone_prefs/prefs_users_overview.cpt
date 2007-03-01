@@ -97,7 +97,7 @@
               tal:attributes="action template/getId"
               tal:define="findAll python:'form.button.FindAll' in request.keys();
                           searchstring request/searchstring | nothing;
-                          portal_users python:(searchstring or findAll) and mtool.searchForMembers(name=searchstring) or [];
+                          portal_users python:(searchstring or findAll) and acl_users.searchUsers(fullname=searchstring) or [];
                           batch python:Batch(portal_users, b_size, int(b_start), orphan=1)">
           <input type="hidden" name="form.submitted" value="1" />
 
@@ -144,24 +144,25 @@
           <tr>
             <th tal:repeat="portal_role portal_roles" tal:content="portal_role" i18n:translate="">Role</th>
           </tr>
-                </tal:block>
+        </tal:block>
 
-                <tal:block repeat="this_user batch">
+        <tal:block repeat="this_user batch">
           <tr tal:define="oddrow repeat/this_user/odd;
-                          userid this_user/getUserId;
-                                  fullname python: this_user.getProperty('fullname')"
+                          userid this_user/userid;
+                          user python:mtool.getMemberById(userid);
+                          fullname python:user.getProperty('fullname')"
               tal:attributes="class python:test(oddrow,'odd','even')">
 
                     <td>
               <a href="prefs_user_details"
              tal:attributes="href string:${here/portal_memberdata/absolute_url}/prefs_user_details?userid=$userid">
-            <tal:block replace="structure portal/user.gif"/>&nbsp;<span tal:replace="this_user/getUserName">username</span>
+            <tal:block replace="structure portal/user.gif"/>&nbsp;<span tal:replace="userid">username</span>
             (<span tal:replace="fullname">Full Name</span>)
               </a>
               <input type="hidden" name="users.id:records" tal:attributes="value userid" />
                     </td>
 
-            <td tal:define="email python:this_user.getProperty('email')">
+            <td tal:define="email python:user.getProperty('email')">
               <a href="#"
                          class="link-plain"
                          tal:attributes="href string:mailto:${email}"
@@ -174,11 +175,11 @@
                  name="users.email:records"
                  value=""
                  tal:attributes="value email;
-                                 disabled python:this_user.canWriteProperty('email') and default or 'disabled'" />
+                                 disabled python:user.canWriteProperty('email') and default or 'disabled'" />
             </td>
 
             <td class="listingCheckbox"
-            tal:define="user_roles this_user/getRoles"
+            tal:define="user_roles user/getRoles"
             tal:repeat="portal_role portal_roles">
               <input type="checkbox"
                  class="noborder"
@@ -186,7 +187,7 @@
                  value="Manager"
                              tal:attributes="value portal_role;
                                  checked python:test(portal_role in user_roles, 'checked', nothing);
-                                 disabled python:this_user.canAssignRole(portal_role) and default or 'disabled'" />
+                                 disabled python:user.canAssignRole(portal_role) and default or 'disabled'" />
             </td>
 
             <td class="listingCheckbox">
@@ -195,7 +196,7 @@
                  name="users.resetpassword:records"
                              value=""
                              tal:attributes="value userid;
-                                             disabled python:this_user.canPasswordSet() and default or 'disabled'" />
+                                             disabled python:user.canPasswordSet() and default or 'disabled'" />
             </td>
 
             <td class="listingCheckbox">
@@ -204,7 +205,7 @@
                              name="delete:list"
                              value=""
                              tal:attributes="value userid;
-                                             disabled python:this_user.canDelete() and default or 'disabled'" />
+                                             disabled python:user.canDelete() and default or 'disabled'" />
             </td>
           </tr>
         </tal:block>
