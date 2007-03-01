@@ -13,13 +13,14 @@
 
 <div metal:fill-slot="prefs_configlet_content"
      tal:define="errors python:request.get('errors', {});
+                search_view here/@@pas_search;
                 Batch python:modules['Products.CMFPlone'].Batch;
                 b_start request/b_start | python:0;
                 b_size python:20;
                 portal_roles here/getGlobalPortalRoles;
                 searchstring request/searchstring | nothing;
                 gtool context/portal_groups;
-                search_results python:test(not site_properties.many_users, gtool.listGroups(), searchstring and here.prefs_user_group_search(searchstring, 'groups') or None);
+                search_results python:test(not site_properties.many_users, search_view.searchGroups(), searchstring and search_view.searchGroups(id=searchstring) or None);
                 batch python:search_results and Batch(search_results, b_size, int(b_start), orphan=1) or None;">
     <div id="content" class="documentEditable"
          tal:condition="python:checkPermission('Manage Groups', here)">
@@ -160,39 +161,40 @@
                             </tal:header>
                         </tr>
 
-                        <tal:block repeat="this_group batch">
-                        <tr tal:define="oddrow repeat/this_group/odd;
-                                        roles python:['this'];"
+                        <tal:block repeat="group_info batch">
+                        <tr tal:define="oddrow repeat/group_info/odd;
+                                        roles python:['this'];
+                                        group python:acl_users.getGroupById(group_info['groupid']);"
                             tal:attributes="class python:test(oddrow,'odd','even')">
 
                             <td>
                                 <input type="hidden"
                                        name=""
-                                       tal:attributes="name string:group_${this_group/getGroupName}:list"
+                                       tal:attributes="name string:group_${group_info/groupid}:list"
                                        value=""
                                        />
 
                                 <a href="#"
-                                   tal:attributes="href python:here_url+'/prefs_group_members?'+ztu.make_query(groupname=this_group.getGroupName());
-                                                   title python:this_group.getProperty('description','')">
+                                   tal:attributes="href python:here_url+'/prefs_group_members?'+ztu.make_query(groupname=group_info['groupid']);
+                                                   title group_info/title|group_info/groupid">
 
                                    <tal:block replace="structure portal/group.gif" />&nbsp;
-                                   <tal:group tal:replace="this_group/getGroupTitleOrName|this_group/getGroupName" />
+                                   <tal:group tal:replace="group_info/title|group_info/groupid" />
                                </a>
                             </td>
 
                             <td class="listingCheckbox"
-                                tal:define="group_roles python:this_group.getRoles();"
+                                tal:define="group_roles python:group.getRoles();"
                                 tal:repeat="portal_role portal_roles">
 
                                 <input type="checkbox"
                                        class="noborder"
                                        name="name"
                                        value="Manager"
-                                       tal:attributes="name string:group_${this_group/getGroupName}:list;
+                                       tal:attributes="name string:group_${group_info/groupid}:list;
                                                        value portal_role;
                                                        checked python:test(portal_role in group_roles, 'checked' ,'');
-                                                       disabled python:this_group.canAssignRole(portal_role) and default or 'disabled'"
+                                                       disabled python:group.canAssignRole(portal_role) and default or 'disabled'"
                                        />
                             </td>
 
@@ -201,8 +203,8 @@
                                        class="noborder notify"
                                        name="delete:list"
                                        value="value"
-                                       tal:attributes="value this_group/getGroupName;
-                                                       disabled python:this_group.canDelete() and default or 'disabled'"
+                                       tal:attributes="value group_info/groupid;
+                                                       disabled python:group.canDelete() and default or 'disabled'"
                                        />
                             </td>
                         </tr>
