@@ -25,16 +25,20 @@
         />
 
     <!-- Portlet management pages -->
+    
+    <browser:page
+        for="*"
+        name="manage-portlets-macros"
+        class=".manage.ManageContextualPortlets"
+        template="templates/edit-manager-macros.pt"
+        permission="plone.app.portlets.ManageOwnPortlets"
+        />
+    
     <browser:pages
       for="plone.portlets.interfaces.ILocalPortletAssignable"
       class=".manage.ManageContextualPortlets"
       permission="plone.app.portlets.ManagePortlets"
       >
-      
-      <browser:page
-        name="manage-portlets-macros"
-        template="templates/edit-manager-macros.pt"
-        />
       
       <browser:page
         name="manage-portlets"
