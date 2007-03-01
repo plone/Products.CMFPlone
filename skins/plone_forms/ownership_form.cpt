@@ -44,11 +44,11 @@
 
                 <label for="new_owners" i18n:translate="heading_new_owner">New owner</label>
                   <select id="new_owners" name="userid">
-                  <tal:block tal:repeat="uid mtool/listMemberIds">
+                  <tal:block tal:repeat="userinfo acl_users/searchUsers">
                        <option value=""
-                               tal:attributes="value uid;
-                                               selected python:test(uid==owner, 'selected', None);"
-                               tal:content="uid">userid</option>
+                               tal:attributes="value userinfo/userid;
+                                               selected python:test(userinfo['userid']==owner, 'selected', None);"
+                               tal:content="userinfo/title|userinfo/userid">userid</option>
                      </tal:block>
                   </select>
               </div>
@@ -88,8 +88,8 @@
 
     <tal:block tal:condition="site_properties/many_users"
                tal:define="search_submitted request/search_submit|nothing;
-                           search_results python:search_submitted and mtool.searchForMembers(
-                                         name=request.get('search_term', '')) or [];">
+                           search_results python:search_submitted and acl_users.searchUsers(
+                                         fullname=request.get('search_term', '')) or [];">
         <fieldset tal:condition="search_results">
           <legend i18n:translate="legend_change_ownership">
               Change Ownership
@@ -114,11 +114,11 @@
 
                 <b i18n:translate="heading_new_owner">New owner</b>
                   <select name="userid" id="userid">
-                  <tal:block tal:repeat="member search_results">
+                  <tal:block tal:repeat="user search_results">
                        <option value=""
-                               tal:attributes="value member/getId;
-                                               selected python:test(member.getId()==owner, 'selected', None);"
-                               tal:content="member/getUserName">username</option>
+                               tal:attributes="value user/userid;
+                                               selected python:test(user['userid']==owner, 'selected', None);"
+                               tal:content="member/title">username</option>
                      </tal:block>
                   </select>
               </div>

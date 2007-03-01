@@ -10,7 +10,8 @@
              tal:define="dummy python:request.set('disable_border',1)" />
 
 <div metal:fill-slot="main"
-       tal:define="results python:mtool.searchForMembers(request);
+       tal:define="search_view here/@@pas_search;
+                   results python:search_view.searchUsersByRequest(request);
                    Batch python:modules['Products.CMFPlone'].Batch;
                    DateTime python:modules['DateTime'].DateTime;
                    b_size python:12;b_start python:0;b_start request/b_start | b_start;">
@@ -29,7 +30,8 @@
 
         <div>
         <metal:block tal:repeat="result batch">
-            <div class="card" tal:define="userid result/getMemberId;
+            <div class="card" tal:define="userid result/userid;
+                                          user python:acl_users.getUserById(userid);
                                            home python:container.portal_membership.getHomeUrl(userid, verifyPermission=1);
                                            portrait python: here.portal_membership.getPersonalPortrait(userid);">
                 <a href="#" tal:attributes="href home">
