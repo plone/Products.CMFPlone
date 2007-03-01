@@ -9,3 +9,13 @@
     margin-top: -10px;
     margin-left: -10px;
 }
+
+.inlineEditable:hover {
+   background-color: #FFFFCC;
+   border-top: 1px solid #CCCCCC;
+   border-left: 1px solid #CCCCCC;;
+   border-right: 1px solid #EEEEEE;
+   border-bottom: 1px solid #EEEEEE;
+   cursor: text;
+}
+
