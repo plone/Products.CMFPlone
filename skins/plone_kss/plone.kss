@@ -209,7 +209,6 @@ input[name="form_submit"]:click {
   action-server: updateSharingInfo;
   updateSharingInfo-search_term: currentFormVar('search_term');
   evt-click-preventdefault: true;
-  action-client: log;
 }
 
 /* kupu stuff */
@@ -231,13 +230,13 @@ body:load {
     action-client: plone-initShiftDetection;
 }
 
-table.listing input[type="checkbox"]:change {
+#folderlisting-main-table input[type="checkbox"]:change {
     action-client: plone-createCheckBoxSelection;
     plone-createCheckBoxSelection-group: 'table.listing input[type="checkbox"]';
 }
 
 
-table.listing input[type="checkbox"]:change {
+#folderlisting-main-table input[type="checkbox"]:change {
     action-client: toggleClass;
     toggleClass-kssSelector: parentnode("table.listing tbody tr");
     toggleClass-classname: "selected";
