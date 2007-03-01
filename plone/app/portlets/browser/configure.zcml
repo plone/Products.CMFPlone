@@ -12,10 +12,6 @@
         name="dashboard"
         />
     <adapter
-        factory=".traversal.UserPortletNamespace"
-        name="userportlets"
-        />
-    <adapter
         factory=".traversal.GroupPortletNamespace"
         name="groupportlets"
         />
@@ -57,7 +53,6 @@
     
     </browser:pages>
   
-    
     <browser:page
       for="Products.CMFCore.interfaces.ISiteRoot"
       class=".manage.ManageDashboardPortlets"

@@ -17,8 +17,6 @@ from plone.portlets.constants import GROUP_CATEGORY
 from plone.portlets.constants import CONTENT_TYPE_CATEGORY
 
 from plone.app.portlets.storage import PortletAssignmentMapping
-from plone.app.portlets.storage import CurrentUserAssignmentMapping
-
 from Acquisition import aq_inner
 
 class ContextPortletNamespace(object):
@@ -39,21 +37,6 @@ class ContextPortletNamespace(object):
 class DashboardNamespace(object):
     """Used to traverse to a portlet assignable for the current user for
     the dashboard.
-    """
-    implements(ITraversable)
-    adapts(ISiteRoot, IHTTPRequest)
-    
-    def __init__(self, context, request=None):
-        self.context = context
-        self.request = request
-        
-    def traverse(self, name, ignore):
-        column = getUtility(IPortletManager, name=name)
-        category = column[USER_CATEGORY]
-        return CurrentUserAssignmentMapping(aq_inner(self.context), category)
-        
-class UserPortletNamespace(object):
-    """Used to traverse to a user portlet assignable
     """
     implements(ITraversable)
     adapts(ISiteRoot, IHTTPRequest)

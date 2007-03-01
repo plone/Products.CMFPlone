@@ -10,7 +10,6 @@ from plone.portlets.interfaces import IPortletAssignmentMapping
 from plone.portlets.constants import USER_CATEGORY, CONTEXT_CATEGORY
 
 from plone.app.portlets.storage import PortletAssignmentMapping
-from plone.app.portlets.storage import CurrentUserAssignmentMapping
 from plone.app.portlets.portlets import classic
 
 from plone.app.portlets.tests.base import PortletsTestCase
@@ -25,7 +24,6 @@ class TestAssignmentFromKey(PortletsTestCase):
         self.manager = getUtility(IPortletManager, name=u'plone.leftcolumn')
         self.cat = self.manager[USER_CATEGORY]
         self.cat[user_name] = PortletAssignmentMapping()
-        self.user_mapping = CurrentUserAssignmentMapping(self.portal, self.cat)
 
     def testGetPortletFromContext(self):
         mapping = getMultiAdapter((self.folder, self.manager,), IPortletAssignmentMapping)
