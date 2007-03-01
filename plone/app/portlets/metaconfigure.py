@@ -12,7 +12,7 @@ from plone.app.portlets.browser.interfaces import IPortletAdding
 from Products.Five.browser.metaconfigure import page
 
 def portletDirective(_context, name, interface, assignment, renderer, addview,
-        view_permission=u"zope2.View", edit_permission="cmf.ManagePortal", editview=None):
+        view_permission=u"zope2.View", edit_permission="plone.app.portlets.ManageOwnPortlets", editview=None):
     """Register a portlet assignment type using typical options. 
     
     Portlets that consist of a simple assignment class deriving form 
