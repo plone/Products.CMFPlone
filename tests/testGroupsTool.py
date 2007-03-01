@@ -26,6 +26,9 @@ class TestGroupsTool(PloneTestCase.PloneTestCase):
         self.groups = self.portal.portal_groups
         self.groups.groupWorkspacesCreationFlag = 0
 
+        if 'auto_group' in self.acl_users.objectIds():
+            self.acl_users.manage_delObjects(['auto_group'])
+
         # Nuke Administators and Reviewers groups added in 2.1a2 migrations
         # (and any other migrated-in groups) to avoid test confusion
         self.groups.removeGroups(self.groups.listGroupIds())
@@ -157,6 +160,8 @@ class TestGroupWorkspacesFolder(PloneTestCase.PloneTestCase):
         self.acl_users = self.portal.acl_users
         self.groups = self.portal.portal_groups
         self.groups.groupWorkspacesCreationFlag = 0
+        if 'auto_group' in self.acl_users.objectIds():
+            self.acl_users.manage_delObjects(['auto_group'])
         # Note that this is not a proper portal type (anymore) but we don't care
         self.portal.manage_addPortalFolder(self.groups.getGroupWorkspacesFolderId())
 
