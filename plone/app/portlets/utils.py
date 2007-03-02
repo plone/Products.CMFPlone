@@ -61,8 +61,8 @@ def convert_legacy_portlets(context):
     left = getUtility(IPortletManager, name='plone.leftcolumn')
     right = getUtility(IPortletManager, name='plone.rightcolumn')
     
-    leftAssignable = getMultiAdapter((context, left), IPortletAssignmentMapping)
-    rightAssignable = getMultiAdapter((context, right), IPortletAssignmentMapping)
+    leftAssignable = getMultiAdapter((context, left), IPortletAssignmentMapping).__of__(context)
+    rightAssignable = getMultiAdapter((context, right), IPortletAssignmentMapping).__of__(context)
     
     IPortletPermissionChecker(leftAssignable)()
     IPortletPermissionChecker(rightAssignable)()
