@@ -29,8 +29,8 @@ class TestGroupDataTool(PloneTestCase.PloneTestCase):
         self.groups.addGroup('foo')
         # MUST reset _v_ attributes!
         self.groupdata._v_temps = None
-        if 'auto_group' in self.uf.objectIds():
-            self.uf.manage_delObjects(['auto_group'])
+        if 'auto_group' in self.acl_users.objectIds():
+            self.acl_users.manage_delObjects(['auto_group'])
 
     def testWrapGroup(self):
         g = self.acl_users.getGroup('foo')
