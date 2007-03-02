@@ -7,7 +7,7 @@ from Products.CMFPlone.interfaces import INonStructuralFolder
 from Products.CMFPlone.interfaces.NonStructuralFolder import \
      INonStructuralFolder as z2INonStructuralFolder
 from Products.CMFPlone import utils
-from Products.CMFPlone import IndexIterator
+from Products.CMFPlone.utils import IndexIterator
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.utils import _checkPermission
 from Products.CMFCore.permissions import ModifyPortalContent
