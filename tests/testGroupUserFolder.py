@@ -23,6 +23,9 @@ class TestGroupUserFolder(PloneTestCase.PloneTestCase):
     def afterSetUp(self):
         self.uf = self.portal.acl_users
         
+        if 'auto_group' in self.acl_users.objectIds():
+            self.acl_users.manage_delObjects(['auto_group'])
+
         # Nuke Administators and Reviewers groups added in 2.1a2 migrations
         # (and any other migrated-in groups) to avoid test confusion
         self.portal.portal_groups.removeGroups(self.portal.portal_groups.listGroupIds())
