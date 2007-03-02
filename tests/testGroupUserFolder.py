@@ -23,8 +23,8 @@ class TestGroupUserFolder(PloneTestCase.PloneTestCase):
     def afterSetUp(self):
         self.uf = self.portal.acl_users
         
-        if 'auto_group' in self.acl_users.objectIds():
-            self.acl_users.manage_delObjects(['auto_group'])
+        if 'auto_group' in self.uf.objectIds():
+            self.uf.manage_delObjects(['auto_group'])
 
         # Nuke Administators and Reviewers groups added in 2.1a2 migrations
         # (and any other migrated-in groups) to avoid test confusion
@@ -115,6 +115,8 @@ class TestUserManagement(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
         self.uf = self.portal.acl_users
+        if 'auto_group' in self.uf.objectIds():
+            self.uf.manage_delObjects(['auto_group'])
         self.uf.userFolderAddGroup(default_group, [])
         self.uf.userSetGroups(default_user, groupnames=[default_group])
 
@@ -204,6 +206,8 @@ class TestGroupManagement(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
         self.uf = self.portal.acl_users
+        if 'auto_group' in self.uf.objectIds():
+            self.uf.manage_delObjects(['auto_group'])
         self.uf.userFolderAddGroup(default_group, [])
         self.uf.userFolderAddGroup('group2', [])
 #        self.uf._updateGroup(default_group, groups=['group2'])
@@ -264,6 +268,8 @@ class TestUsersAndGroups(PloneTestCase.PloneTestCase):
     def afterSetUp(self):
         self.uf = self.portal.acl_users
         self.uf.userFolderAddGroup(default_group, [])
+        if 'auto_group' in self.uf.objectIds():
+            self.uf.manage_delObjects(['auto_group'])
         self.uf.userSetGroups(default_user, groupnames=[default_group])
 
         self.user = self.uf.getUser(default_user)
