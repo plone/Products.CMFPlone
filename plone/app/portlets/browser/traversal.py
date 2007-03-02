@@ -17,6 +17,8 @@ from plone.portlets.constants import GROUP_CATEGORY
 from plone.portlets.constants import CONTENT_TYPE_CATEGORY
 
 from plone.app.portlets.storage import PortletAssignmentMapping
+from plone.app.portlets.storage import UserPortletAssignmentMapping
+
 from Acquisition import aq_inner
 
 class ContextPortletNamespace(object):
@@ -51,7 +53,7 @@ class DashboardNamespace(object):
         category = column[USER_CATEGORY]
         manager = category.get(user, None)
         if manager is None:
-            manager = category[user] = PortletAssignmentMapping()
+            manager = category[user] = UserPortletAssignmentMapping()
         return manager
 
 class GroupPortletNamespace(object):

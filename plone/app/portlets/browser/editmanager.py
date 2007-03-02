@@ -28,7 +28,7 @@ from plone.portlets.constants import USER_CATEGORY
 from plone.portlets.constants import GROUP_CATEGORY
 from plone.portlets.constants import CONTENT_TYPE_CATEGORY
 
-from plone.app.portlets.interfaces import IDashboard
+from plone.app.portlets.interfaces import IDashboard, IPortletPermissionChecker
 
 from plone.app.portlets.browser.interfaces import IManageColumnPortletsView
 from plone.app.portlets.browser.interfaces import IManageContextualPortletsView
@@ -166,6 +166,8 @@ class ManagePortletAssignments(BrowserView):
     # view @@move-portlet-up
     def move_portlet_up(self, name):
         assignments = aq_inner(self.context)
+        IPortletPermissionChecker(assignments)()
+        
         keys = list(assignments.keys())
         
         idx = keys.index(name)
@@ -179,6 +181,8 @@ class ManagePortletAssignments(BrowserView):
     # view @@move-portlet-down
     def move_portlet_down(self, name):
         assignments = aq_inner(self.context)
+        IPortletPermissionChecker(assignments)()
+        
         keys = list(assignments.keys())
         
         idx = keys.index(name)
@@ -192,6 +196,7 @@ class ManagePortletAssignments(BrowserView):
     # view @@delete-portlet
     def delete_portlet(self, name):
         assignments = aq_inner(self.context)
+        IPortletPermissionChecker(assignments)()
         del assignments[name]
         self.request.response.redirect(self._nextUrl())
         return ''

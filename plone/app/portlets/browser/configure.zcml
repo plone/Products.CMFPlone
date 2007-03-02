@@ -96,7 +96,7 @@
     <browser:pages
       for="plone.portlets.interfaces.IPortletAssignmentMapping"
       class=".editmanager.ManagePortletAssignments"
-      permission="plone.app.portlets.ManagePortlets"
+      permission="plone.app.portlets.ManageOwnPortlets"
       >
       
       <browser:page
@@ -171,21 +171,21 @@
         name="inlineMovePortletUp"
         class=".azax.PortletManagerAzax"
         attribute="move_portlet_up"
-        permission="plone.app.portlets.ManagePortlets"
+        permission="plone.app.portlets.ManageOwnPortlets"
         />
     <browser:page
         for="*"
         name="inlineMovePortletDown"
         class=".azax.PortletManagerAzax"
         attribute="move_portlet_down"
-        permission="plone.app.portlets.ManagePortlets"
+        permission="plone.app.portlets.ManageOwnPortlets"
         />
     <browser:page
         for="*"
         name="inlineDeletePortlet"
         class=".azax.PortletManagerAzax"
         attribute="delete_portlet"
-        permission="plone.app.portlets.ManagePortlets"
+        permission="plone.app.portlets.ManageOwnPortlets"
         />
       
     <!-- Resources -->

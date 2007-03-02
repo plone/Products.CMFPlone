@@ -16,6 +16,9 @@ from plone.portlets.constants import CONTENT_TYPE_CATEGORY
 from plone.portlets.constants import CONTEXT_CATEGORY
 
 from plone.app.portlets.storage import PortletAssignmentMapping
+from plone.app.portlets.storage import UserPortletAssignmentMapping
+
+from plone.app.portlets.interfaces import IPortletPermissionChecker
 
 from plone.app.portlets.browser.interfaces import IManagePortletsView
 from plone.app.portlets.browser.interfaces import IManageContextualPortletsView
@@ -63,6 +66,8 @@ class ManageContextualPortlets(BrowserView):
         portletManager = getUtility(IPortletManager, name=manager)
         assignable = getMultiAdapter((self.context, portletManager,), ILocalPortletAssignmentManager)
         
+        IPortletPermissionChecker(assignable)()
+        
         def int2status(status):
             if status == 0:
                 return None
@@ -109,7 +114,7 @@ class ManageDashboardPortlets(BrowserView):
         category = column[USER_CATEGORY]
         mapping = category.get(userId, None)
         if mapping is None:
-            mapping = category[userId] = PortletAssignmentMapping()
+            mapping = category[userId] = UserPortletAssignmentMapping()
         return mapping.values()
     
     def _getUserId(self):

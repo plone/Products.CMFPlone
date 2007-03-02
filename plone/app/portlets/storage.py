@@ -17,12 +17,20 @@ from plone.portlets.storage import PortletAssignmentMapping as BaseMapping
 from zope.app.container.ordered import OrderedContainer
 from zope.app.container.contained import setitem, uncontained
 
+from plone.app.portlets.interfaces import IUserPortletAssignmentMapping
+
 class PortletAssignmentMapping(BaseMapping, SimpleItem):
     """A Zope 2 version of the default assignment mapping storage.
     """
         
     def __setitem__(self, key, assignment):
         BaseMapping.__setitem__(self, key, aq_base(assignment))
+
+class UserPortletAssignmentMapping(PortletAssignmentMapping):
+    """An assignment mapping for user/dashboard portlets
+    """
+
+    implements(IUserPortletAssignmentMapping)
         
 class PortletAssignmentMappingTraverser(ItemTraverser):
     """A traverser for portlet assignment mappings, that is acqusition-aware

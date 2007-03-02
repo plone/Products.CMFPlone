@@ -1,6 +1,23 @@
+from zope.interface import Interface
+
+from plone.portlets.interfaces import IPortletAssignmentMapping
 from plone.portlets.interfaces import IPortletManager
 from plone.portlets.interfaces import IPlacelessPortletManager
 from plone.portlets.interfaces import IPortletRenderer
+
+class IUserPortletAssignmentMapping(IPortletAssignmentMapping):
+    """A portlet assignment mapping that's user-specific
+    """
+
+class IPortletPermissionChecker(Interface):
+    """An adapter for an assignment manager, which can check whether the
+    current user is allowed to manipulate portlets in this mapping.
+    """
+    
+    def __call__():
+        """Check the adapted assignment manager. Will raise Unathorized if
+        something fishy is going on.
+        """
 
 class IColumn(IPortletManager):
     """Common base class for left and right columns.

@@ -15,6 +15,8 @@ from plone.portlets.interfaces import IPortletManagerRenderer
 from plone.portlets.utils import unhashPortletInfo
 from plone.app.portlets.utils import assignment_mapping_from_key
 
+from plone.app.portlets.interfaces import IPortletPermissionChecker
+
 class PortletManagerAzax(base):
     """Opertions on portlets done using KSS
     """
@@ -24,6 +26,8 @@ class PortletManagerAzax(base):
         info = unhashPortletInfo(portlethash)
         assignments = assignment_mapping_from_key(self.context, 
                         info['manager'], info['category'], info['key'])
+        
+        IPortletPermissionChecker(assignments)()
         
         keys = list(assignments.keys())
         name = info['name']
@@ -40,6 +44,8 @@ class PortletManagerAzax(base):
         assignments = assignment_mapping_from_key(self.context, 
                         info['manager'], info['category'], info['key'])
         
+        IPortletPermissionChecker(assignments)()
+        
         keys = list(assignments.keys())
         name = info['name']
         idx = keys.index(name)
@@ -53,6 +59,9 @@ class PortletManagerAzax(base):
         info = unhashPortletInfo(portlethash)
         assignments = assignment_mapping_from_key(self.context, 
                         info['manager'], info['category'], info['key'])
+                        
+        IPortletPermissionChecker(assignments)()
+        
         del assignments[info['name']]
         return self._render_column(info, viewname)
                 

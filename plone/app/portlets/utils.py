@@ -6,6 +6,8 @@ from plone.portlets.interfaces import IPortletAssignmentMapping
 
 from plone.portlets.constants import CONTEXT_CATEGORY
 
+from plone.app.portlets.interfaces import IPortletPermissionChecker
+
 from plone.app.portlets.portlets import classic
 from plone.app.portlets.portlets import login
 from plone.app.portlets.portlets import news
@@ -61,6 +63,9 @@ def convert_legacy_portlets(context):
     
     leftAssignable = getMultiAdapter((context, left), IPortletAssignmentMapping)
     rightAssignable = getMultiAdapter((context, right), IPortletAssignmentMapping)
+    
+    IPortletPermissionChecker(leftAssignable)()
+    IPortletPermissionChecker(rightAssignable)()
     
     leftChooser = INameChooser(leftAssignable)
     rightChooser = INameChooser(rightAssignable)

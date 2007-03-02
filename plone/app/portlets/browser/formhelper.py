@@ -14,6 +14,8 @@ from Products.CMFPlone import PloneMessageFactory as _
 from plone.app.form import named_template_adapter
 from plone.app.form.validators import null_validator
 
+from plone.app.portlets.interfaces import IPortletPermissionChecker
+
 from plone.app.portlets.browser.interfaces import IPortletAddForm
 from plone.app.portlets.browser.interfaces import IPortletEditForm
  
@@ -45,6 +47,10 @@ class AddForm(formbase.AddFormBase):
     implements(IPortletAddForm)
     
     form_name = _(u"Configure portlet")
+    
+    def __call__(self):
+        IPortletPermissionChecker(aq_parent(aq_inner(self.context)))()
+        return super(AddForm, self).__call__()
     
     def referer(self):
         return self.request.form.get('referer') or self.request.get('HTTP_REFERER', '')
@@ -80,6 +86,7 @@ class NullAddForm(BrowserView):
     """
     
     def __call__(self):
+        IPortletPermissionChecker(aq_parent(aq_inner(self.context)))()
         ob = self.create()
         zope.event.notify(zope.lifecycleevent.ObjectCreatedEvent(ob))
         self.context.add(ob)
@@ -109,6 +116,10 @@ class EditForm(formbase.EditFormBase):
     implements(IPortletEditForm)
     
     form_name = _(u"Modify portlet")
+    
+    def __call__(self):
+        IPortletPermissionChecker(aq_parent(aq_inner(self.context)))()
+        return super(EditForm, self).__call__()
     
     def referer(self):
         return self.request.form.get('referer') or self.request.get('HTTP_REFERER', '')
