@@ -12,8 +12,8 @@ from Products.CMFPlone import PloneMessageFactory as _
 
 RESPONSE = context.REQUEST.RESPONSE
 homeFolder=context.portal_membership.getHomeFolder()
-view_url = context.getTypeInfo().getActionInfo('object/view')['url']
-
+view_url = '%s/%s' % (context.absolute_url(),
+                      context.getTypeInfo().getActionById('view'))
 if not homeFolder:
     context.plone_utils.addPortalMessage(_(u'Can\'t access home folder. Favorite is not added.'))
     return RESPONSE.redirect(view_url)
@@ -30,10 +30,19 @@ if not base_hasattr(homeFolder, 'Favorites'):
 targetFolder = homeFolder.Favorites
 new_id='fav_' + str(int( context.ZopeTime()))
 myPath=context.portal_url.getRelativeUrl(context)
-targetFolder.invokeFactory('Favorite', id=new_id, title=context.TitleOrId(), remote_url=myPath)
+fav_id = targetFolder.invokeFactory('Favorite', id=new_id, title=context.TitleOrId(), remote_url=myPath)
+if fav_id:
+    favorite = getattr(targetFolder, fav_id, None)
+else:
+    favorite = getattr(targetFolder, new_id, None)
 
-msg = _(u'${title} has been added to your Favorites.',
-        mapping={u'title' : context.title_or_id()})
-context.plone_utils.addPortalMessage(msg)
+if favorite:
+    favorite.reindexObject()
+    msg = _(u'${title} has been added to your Favorites.',
+            mapping={u'title' : context.title_or_id()})
+    context.plone_utils.addPortalMessage(msg)
+else:
+    msg = _(u'There was a problem adding ${title} to your Favorites.',
+            mapping={u'title' : context.title_or_id()})
 
 return RESPONSE.redirect(view_url)

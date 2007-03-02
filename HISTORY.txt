@@ -3,6 +3,8 @@ Changelog for Plone
     (name of developer listed in brackets)
 
 Plone 2.5.x - unreleased
+    - Fixed some bugs in addtoFavorites
+      [ender]
 
     - Fixed cropping of utf8 encoded text (cropText script).
       This fixes http://dev.plone.org/plone/ticket/6190.
