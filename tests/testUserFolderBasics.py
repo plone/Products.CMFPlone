@@ -34,8 +34,8 @@ class TestUserFolder(PloneTestCase.PloneTestCase):
         folder_path = list(self.folder.getPhysicalPath())
         self.app.REQUEST.steps = folder_path + ['doc']
         
-        if 'auto_group' in self.acl_users.objectIds():
-            self.acl_users.manage_delObjects(['auto_group'])
+        if 'auto_group' in self.uf.objectIds():
+            self.uf.manage_delObjects(['auto_group'])
 
         # Nuke Administators and Reviewers groups added in 2.1a2 migrations
         # (and any other migrated-in groups) to avoid test confusion

@@ -30,7 +30,7 @@ looks like because we're navigating the page with a JavaScript- less
 browser.
 
     >>> browser.getLink('My Folder').click()
-    >>> browser.getLink('Add new?').click()
+    >>> browser.getLink('Add new').click()
     >>> 'Add new item' in browser.contents
     True
     >>> browser.getControl('Add Page').click()
@@ -112,7 +112,7 @@ First off, we'll cut our document:
 
 Before doing the actual paste, we create a folder to paste into.
 
-    >>> browser.getLink('Add new?').click()
+    >>> browser.getLink('Add new').click()
     >>> 'Add new item' in browser.contents
     True
     >>> browser.getControl('Add Folder').click()

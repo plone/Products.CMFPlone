@@ -29,6 +29,8 @@ class TestGroupDataTool(PloneTestCase.PloneTestCase):
         self.groups.addGroup('foo')
         # MUST reset _v_ attributes!
         self.groupdata._v_temps = None
+        if 'auto_group' in self.uf.objectIds():
+            self.uf.manage_delObjects(['auto_group'])
 
     def testWrapGroup(self):
         g = self.acl_users.getGroup('foo')
@@ -49,6 +51,8 @@ class TestGroupData(PloneTestCase.PloneTestCase):
         self.groupdata = self.portal.portal_groupdata
         self.groups.groupWorkspacesCreationFlag = 0
         self.groups.addGroup('foo')
+        if 'auto_group' in self.acl_users.objectIds():
+            self.acl_users.manage_delObjects(['auto_group'])
         # MUST reset _v_ attributes!
         self.memberdata._v_temps = None
         self.groupdata._v_temps = None
