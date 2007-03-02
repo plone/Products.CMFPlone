@@ -30,10 +30,12 @@
     </tal:rss>
     <dd class="portletFooter" tal:condition="view/feedAvailable">
         <a href=""
-            tal:attributes="href view/url">more&hellip;</a>
+            tal:attributes="href view/url"
+           i18n:translate="box_more_rss_link"
+                >
+                More news&hellip;
+            </a>
             <span class="portletBottomLeft"></span>
             <span class="portletBottomRight"></span>
-
     </dd>
-               
 </dl>
