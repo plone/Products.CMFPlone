@@ -211,7 +211,14 @@ class IRSSPortlet(IPortletDataProvider):
 class Assignment(base.Assignment):
     implements(IRSSPortlet)
     
-    title = _(u'RSS Portlet')
+    @property
+    def title(self):
+        """return the title with RSS feed title or from URL"""
+        feed = FEED_DATA.get(self.data.url,None)
+        if feed is None:
+            return u'RSS: '+self.url[:20]
+        else:
+            return u'RSS: '+feed.title[:20]
 
     def __init__(self, count=5, url=u"", timeout=100):
         self.count = count
