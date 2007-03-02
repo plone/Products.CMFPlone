@@ -21,7 +21,7 @@
        <li class="portalUser" 
            tal:define="author python:mtool.getMemberInfo(user.getId())"><a 
            id="user-name"
-           tal:attributes="href string:${portal_url}/author/${user/getId}"
+           tal:attributes="href string:${portal_url}/dashboard"
           ><span class="visualCaseSensitive"
                  tal:content="python:author and author['fullname'] or user.getUserName()">
                 John
