@@ -22,20 +22,6 @@ plone.app.portlets to-do
     o Make standard set of portlets
         - Smart Folder renderer
         - Document renderer
-
-  Plone Integration
-
-    o Remove/deprecate portlets_fetcher
-    
-        - The need for a provider: expression will break existing customisations
-          of main_template. May be better to put this expression in 
-          portlet_fetcher.pt for now.
-          
-        - Consider what to do with 'sr', 'sl', 'hide_columns' and 
-           'slots_mapping' in global_defines. Is anyone depending on these?
-           
-        - Need a way to signal that columns should be hidden
-            - e.g. a property 'available' in the renderer?
           
   GenericSetup import/export handlers
 
