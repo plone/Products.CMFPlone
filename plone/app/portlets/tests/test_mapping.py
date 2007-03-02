@@ -77,5 +77,4 @@ def test_suite():
     suite.addTest(makeSuite(TestContextMapping))
     suite.addTest(makeSuite(TestTraverser))
     suite.addTest(makeSuite(TestNameChooser))
-    suite.addTest(makeSuite(TestCurrentUserAssignmentMapping))
     return suite
