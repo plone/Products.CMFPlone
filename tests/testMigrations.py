@@ -1294,6 +1294,7 @@ class TestMigrations_v3_0(MigrationTest):
         self.assertEquals(doc.i18n_domain, 'plone')
 
     def testLegacyPortletsConverted(self):
+        self.setRoles(('Manager',))
         leftColumn = getUtility(IPortletManager, name=u'plone.leftcolumn', context=self.portal)
         rightColumn = getUtility(IPortletManager, name=u'plone.rightcolumn', context=self.portal)
         
@@ -1330,6 +1331,7 @@ class TestMigrations_v3_0(MigrationTest):
         self.assertEquals(True, portletAssignments.getBlacklistStatus(CONTEXT_PORTLETS))
         
     def testLegacyPortletsConvertedTwice(self):
+        self.setRoles(('Manager',))
         leftColumn = getUtility(IPortletManager, name=u'plone.leftcolumn', context=self.portal)
         rightColumn = getUtility(IPortletManager, name=u'plone.rightcolumn', context=self.portal)
         
@@ -1367,6 +1369,7 @@ class TestMigrations_v3_0(MigrationTest):
         self.assertEquals(True, portletAssignments.getBlacklistStatus(CONTEXT_PORTLETS))
         
     def testLegacyPortletsConvertedNoSlots(self):
+        self.setRoles(('Manager',))
         leftColumn = getUtility(IPortletManager, name=u'plone.leftcolumn', context=self.portal)
         rightColumn = getUtility(IPortletManager, name=u'plone.rightcolumn', context=self.portal)
         
@@ -1402,6 +1405,7 @@ class TestMigrations_v3_0(MigrationTest):
         self.assertEquals(True, portletAssignments.getBlacklistStatus(CONTEXT_PORTLETS))
         
     def testLegacyPortletsConvertedBadSlots(self):
+        self.setRoles(('Manager',))
         leftColumn = getUtility(IPortletManager, name=u'plone.leftcolumn', context=self.portal)
         rightColumn = getUtility(IPortletManager, name=u'plone.rightcolumn', context=self.portal)
         
@@ -1439,6 +1443,7 @@ class TestMigrations_v3_0(MigrationTest):
         self.assertEquals(True, portletAssignments.getBlacklistStatus(CONTEXT_PORTLETS))
         
     def testLegacyPortletsConvertedNoMembersFolder(self):
+        self.setRoles(('Manager',))
         leftColumn = getUtility(IPortletManager, name=u'plone.leftcolumn', context=self.portal)
         rightColumn = getUtility(IPortletManager, name=u'plone.rightcolumn', context=self.portal)
         
