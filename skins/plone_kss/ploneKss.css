@@ -10,17 +10,22 @@
     margin-left: -10px;
 }
 
-.inlineEditable:hover {
-   background-color: #FFFFCC;
-   border-top: 1px solid #CCCCCC;
-   border-left: 1px solid #CCCCCC;;
-   border-right: 1px solid #EEEEEE;
-   border-bottom: 1px solid #EEEEEE;
-   cursor: text;
+.inlineEditable {
+    padding: 1px;
 }
 
-.kssInlineForm input, 
-.kssInlineForm textarea 
-{
-   background-color: #FFFFCC;
+.inlineEditable:hover {
+    padding: 0;
+    background-color: #ffc;
+    border-top: 1px solid #666;
+    border-left: 1px solid #666;
+    border-right: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    cursor: text;
+}
+
+.kssInlineForm .formHelp,
+.kssInlineForm .fieldRequired,
+.kssInlineForm label {
+    display: none;
 }
