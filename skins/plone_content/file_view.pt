@@ -12,7 +12,8 @@
     <tal:main-macro metal:define-macro="main" 
            tal:define="size python:here.getObjSize(here);
                        content_type here/get_content_type|here/Format;
-                      ">
+                       kssClassesView context/@@kss_field_decorator_view; 
+                       getKssClasses nocall:kssClassesView/getKssClassesInlineEditable">
 
         <div tal:replace="structure provider:plone.abovecontenttitle" />
 
