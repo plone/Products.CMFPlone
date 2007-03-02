@@ -12,8 +12,8 @@ from Products.CMFPlone import PloneMessageFactory as _
 
 RESPONSE = context.REQUEST.RESPONSE
 homeFolder=context.portal_membership.getHomeFolder()
-view_url = '%s/%s' % (context.absolute_url(),
-                      context.getTypeInfo().defaultView(context))
+state = context.restrictedTraverse("@@plone_context_state")
+view_url = '%s/%s' % (context.absolute_url(), state.view_template_id())
 if not homeFolder:
     context.plone_utils.addPortalMessage(_(u'Can\'t access home folder. Favorite is not added.'))
     return RESPONSE.redirect(view_url)
