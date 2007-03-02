@@ -10,6 +10,7 @@ from OFS.SimpleItem import SimpleItem
 from Products.Five import BrowserView
 
 from plone.app.portlets.browser.interfaces import IPortletAdding
+from plone.app.portlets.interfaces import IPortletPermissionChecker
 
 class PortletAdding(SimpleItem, BrowserView):
     implements(IPortletAdding)
@@ -22,6 +23,8 @@ class PortletAdding(SimpleItem, BrowserView):
         """
         context = aq_inner(self.context)
         manager = aq_base(context)
+        
+        IPortletPermissionChecker(context)()
         
         chooser = INameChooser(manager)
         manager[chooser.chooseName(None, content)] = content

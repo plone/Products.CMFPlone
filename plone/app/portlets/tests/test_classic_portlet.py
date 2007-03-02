@@ -18,6 +18,7 @@ class TestPortlet(PortletsTestCase):
     def afterSetUp(self):
         setHooks()
         setSite(self.portal)
+        self.setRoles(('Manager',))
 
     def testPortletTypeRegistered(self):
         portlet = getUtility(IPortletType, name='portlets.Classic')
@@ -30,11 +31,10 @@ class TestPortlet(PortletsTestCase):
 
     def testInvokeAddview(self):
         portlet = getUtility(IPortletType, name='portlets.Classic')
-        mapping = PortletAssignmentMapping()
-        request = self.folder.REQUEST
-
-        adding = getMultiAdapter((mapping, request,), name='+')
-        addview = getMultiAdapter((adding, request), name=portlet.addview)
+        mapping = self.portal.restrictedTraverse('++contextportlets++plone.leftcolumn')
+        for m in mapping.keys():
+            del mapping[m]
+        addview = mapping.restrictedTraverse('+/' + portlet.addview)
 
         addview.createAndAdd(data={})
 
