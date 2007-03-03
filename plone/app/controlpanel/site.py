@@ -1,3 +1,4 @@
+from zope.app.form.browser import TextAreaWidget
 from zope.interface import Interface
 from zope.component import adapts
 from zope.formlib.form import FormFields
@@ -130,9 +131,15 @@ class SiteControlPanelAdapter(SchemaAdapterBase):
     enable_sitemap = ProxyFieldProperty(ISiteSchema['enable_sitemap'])
 
 
+class SmallTextAreaWidget(TextAreaWidget):
+
+    height = 5
+
+
 class SiteControlPanel(ControlPanelForm):
 
     form_fields = FormFields(ISiteSchema)
+    form_fields['site_description'].custom_widget = SmallTextAreaWidget
 
     label = _("Site settings")
     description = _("Site-wide settings.")
