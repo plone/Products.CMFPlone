@@ -120,60 +120,59 @@ class TypesControlPanel(BrowserView):
         blacklisted = portal_properties.site_properties.types_not_searched
         return (self.type_id not in blacklisted)
 
-    def current_workflow_title(self):
+    @memoize
+    def current_workflow(self):
         context = aq_inner(self.context)
         portal_workflow = getToolByName(context, 'portal_workflow')
         try: 
             wf_id = portal_workflow.getChainForPortalType(self.type_id)[0]
         except IndexError:
-            return _("No workflow selected")
-        return getattr(portal_workflow, wf_id).title
-
-
+            return dict(id='[none]', title=_(u"No workflow"))
+        wf = getattr(portal_workflow, wf_id)
+        return dict(id=wf.id, title=wf.title)
+        
+    def available_workflows(self):
+        vocab_factory = getUtility(IVocabularyFactory, name="plone.app.vocabularies.Workflows")
+        return [dict(id=v.value, title=v.token) for v in vocab_factory(self.context)]
 
     @memoize
-    def wf_title_for_id(self, wf_id):
-        context = aq_inner(self.context)
-        portal_workflow = getToolByName(context, 'portal_workflow')
-        try:
-            return (portal_workflow[wf_id].title)
-        except IndexError:
-            return ''
- 
-    @memoize
-    def states_for_new_workflow(self, wf_id):
-        context = aq_inner(self.context)
-        portal_workflow = getToolByName(context, 'portal_workflow')
-        if wf_id == 'No Change':
-            return None
+    def new_workflow(self):
+        current_workflow = self.current_workflow()['id']
+        old_type_id = self.request.form.get('old_type_id', self.type_id)
+        if old_type_id != self.type_id:
+            return current_workflow
         else:
-            if wf_id == 'No Workflow':
-                return ''
-            else:
-                return (portal_workflow[wf_id].states.keys())
+            return self.request.form.get('new_workflow', current_workflow)
 
-    @memoize
-    def states_for_current_workflow(self, type_id):
-        context = aq_inner(self.context)
-        portal_workflow = getToolByName(context, 'portal_workflow')
-
-        try: 
-            return (portal_workflow[portal_workflow.getChainForPortalType(type_id)[0]].states.keys())
-        except:
-            return ''
-
-    @memoize
-    def is_wf_selected(self, wf, wf_id):
-        """Has this workflow been selected in the drop down menu?
-        """
-        context = aq_inner(self.context)
-        portal_workflow = getToolByName(context, 'portal_workflow')
-        if wf_id == 'No Change':
-            return ''
+    def new_workflow_available_states(self):
+        current_workflow = self.current_workflow()['id']
+        new_workflow = self.new_workflow()
+        
+        if new_workflow != current_workflow:
+            portal_workflow = getToolByName(aq_inner(self.context), 'portal_workflow')
+            wf = getattr(portal_workflow, new_workflow)
+            return [dict(id=s.id, title=s.title) for s in wf.states.objectValues()]
         else:
-            if (wf_id != 'No Workflow'):
-                if (wf.id == portal_workflow[wf_id].id):
-                    return 'selected'
+            return []
+            
+    def suggested_state_map(self):
+        current_workflow = self.current_workflow()['id']
+        new_workflow = self.new_workflow()
+        
+        if new_workflow != current_workflow:
+            portal_workflow = getToolByName(aq_inner(self.context), 'portal_workflow')
+            old_wf = getattr(portal_workflow, current_workflow)
+            new_wf = getattr(portal_workflow, new_workflow)
+            
+            new_states = set([s.id for s in new_wf.states.objectValues()])
+            default_state = new_wf.initial_state
+            
+            return [dict(old_id = old.id,
+                         old_title = old.title,
+                         suggested_id = (old.id in new_states and old.id or default_state))
+                    for old in old_wf.states.objectValues()]
+        else:
+            return []
 
     @memoize
     def change_workflow(self):

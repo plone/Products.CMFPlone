@@ -94,84 +94,81 @@
                 </label>
 
             </div>
-
-            <div>
-                <label i18n:translate="types_controlpanel_current_workflow">Current workflow:</label>
-                <span tal:content="view/current_workflow_title">Community Workflow</span>
-            </div>
             
-            <tal:block replace="nothing">
-            <div>
-                <label>New workflow</label><br />
-                <select onchange="javascript:redirect_new_workflow()" id="workflows" name="wf_id">
-                    <option value="No Change">No Change</option>
+            <tal:workflows define="current_wf view/current_workflow">
 
-                    <tal:wfs repeat="wf python:portal.portal_workflow.objectValues()"
-                        tal:define="wf_id python:request.get('wf_id', 'No Change')">
+                <div>
+                    <label i18n:translate="types_controlpanel_current_workflow">Current workflow:</label>
+                    <span tal:content="current_wf/title">Community Workflow</span>
+                </div>
+            
+                <div>
+                    <label for="new_workflow" 
+                           i18n:translate="types_controlpanel_new_workflow">New workflow:</label>
+                
+                    <select onchange="form.submit()" id="workflows" name="new_workflow">
+                        <tal:wfs repeat="wf view/available_workflows">
+                            <option tal:content="wf/title"
+                                    tal:attributes="selected python:wf['id'] == current_wf['id'] and 'selected' or None;
+                                                    value wf/id">Intranet Workflow
+                            </option>
+                        </tal:wfs>
 
-                        <option tal:content="python: view.wf_title_for_id(wf.id)"
-                                tal:attributes="selected python: view.is_wf_selected(wf, wf_id);
-                                                value python: wf.id">Intranet Workflow
-                        </option>
-                    </tal:wfs>
+                        <option 
+                            value="[none]" 
+                            tal:attributes="selected python:current_wf['id'] == '[none]' and 'selected' or None"
+                            i18n:translate="types_controlpanel_no_workflow">No Workflow</option>
+                    </select>
+                </div>
+            
+                <div tal:define="new_workflow view/new_workflow"
+                     tal:condition="python:new_workflow != current_wf['id']" >
 
-                    <option>No Workflow</option>
-                </select>
-            </div>
+                    <label for="states" i18n:translate="types_controlpanel_state_mapping">
+                        State Mapping
+                    </label>
 
-            <tal:check_wf_in_request                 tal:condition="exists: request/wf_id" >
-            <tal:check_wf_in_request_change_selected tal:condition="python: request.wf_id != 'No Change'">
-
-                <!-- This only shows up if you actually selected a change in the workflow -->
-
-                <div class="visualClear" tal:define="wf_id python:request.get('wf_id', 'No Change')">
-                    <label>State Mapping</label>
-
-                    <div class="formHelp">
-                        When changing workflows, you have to select a state equivalent in the new workflow.
+                    <div class="formHelp" i18n:translate="types_controlpanel_state_mapping_help">
+                        When changing workflows, you have to select a state equivalent in the 
+                        new workflow.
                     </div>
 
-                    <table class="listing" 
-                        tal:define="states python:view.states_for_new_workflow(wf_id);
-                                    old_states python:view.states_for_current_workflow(type_id);">
+                    <table id="states" 
+                           class="listing nosort" 
+                           tal:define="new_wf_states view/new_workflow_available_states">
                         <thead>
                             <tr>
-                                <th>Old State</th>
-                                <th>New State</th>
+                                <th i18n:translate="types_controlpanel_old_state">Old State</th>
+                                <th i18n:translate="types_controlpanel_new_state">New State</th>
                             </tr>
                         </thead>
-
-                        <tbody tal:repeat="old_state old_states">
-
-                            <tr tal:attributes="class python:oddrow and 'odd' or 'even'"
-                                tal:define="oddrow repeat/old_state/odd;">
-
-                                <td tal:content="old_state"> Published </td>
-                                <td tal:attributes="class python:oddrow and 'odd' or 'even'">
-                                    <select>
-                                      <tal:states repeat="state states">              
-                                        <option tal:content="state">Pending</option>
-                                      </tal:states>
-                                    </select>
-                                </td>
-                            </tr>
+                        <tbody>                            
+                            <tal:states repeat="state_map view/suggested_state_map">
+                                <tr tal:define="oddrow repeat/state_map/odd;"
+                                    tal:attributes="class python:oddrow and 'odd' or 'even'">
+                                    <td>
+                                        <input type="hidden"
+                                               tal:attributes="name string:new_wfstates.old_state:records;
+                                                               value state_map/old_id">
+                                        <span tal:content="state_map/old_title">Published</span>
+                                    </td>
+                                    <td>
+                                        <select tal:attributes="name string:new_wfstates.new_state:records">
+                                          <tal:states repeat="new_state new_wf_states">
+                                            <option 
+                                                tal:attributes="value new_state/id;
+                                                                selected python:new_state['id'] == state_map['suggested_id'] and 'selected' or None"
+                                                tal:content="new_state/title">Pending</option>
+                                          </tal:states>
+                                        </select>
+                                    </td>
+                                </tr>
+                            </tal:states>
                         </tbody>
-
                     </table>
-
                 </div>
-
-            </tal:check_wf_in_request_change_selected>
-            </tal:check_wf_in_request>
-
-            <tal:check_wf_in_request                     tal:condition="exists: request/wf_id" >
-            <tal:check_wf_in_request_change_selected_not tal:condition="python: request.wf_id == 'No Change'">
-
-
-            </tal:check_wf_in_request_change_selected_not>
-            </tal:check_wf_in_request>
-
-            </tal:block>
+                
+            </tal:workflows>
 
             <div class="formControls">
                 
@@ -188,9 +185,7 @@
                 </tal:check_wf_in_request>
             </div>
             
-        
-
-    </fieldset>
+        </fieldset>
     
     </form>
 
