@@ -77,8 +77,7 @@ class ISiteSchema(Interface):
                             "here. Do not paste Google Analytics code here "
                             "directly; it will not work."),
                         default=u'',
-                        required=False)                         
-                          
+                        required=False)
 
 
 class SiteControlPanelAdapter(SchemaAdapterBase):
@@ -119,7 +118,6 @@ class SiteControlPanelAdapter(SchemaAdapterBase):
             self.context.webstats_js = value.encode(self.encoding)
         else:
             self.context.webstats_js = ''
-            
 
     site_title = property(get_site_title, set_site_title)
     site_description = property(get_site_description, set_site_description)

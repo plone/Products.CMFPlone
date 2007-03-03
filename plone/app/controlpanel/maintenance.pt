@@ -37,6 +37,22 @@
                 Description
             </p>
 
+            <metal:block define-macro="header">
+
+                <div class="form-status"
+                     tal:define="status view/status"
+                     tal:condition="status">
+
+                    <div class="summary portalMessage"
+                         i18n:translate=""
+                         tal:content="view/status">
+                        Form status summary
+                    </div>
+
+                </div>
+
+            </metal:block>
+
             <tal:debugmode define="isDevelopmentMode view/isDevelopmentMode">
                 <p tal:condition="not:isDevelopmentMode" 
                    class="discreet"
@@ -60,44 +76,44 @@
                 </p>
             </tal:debugmode>
 
-            <fieldset tal:define="sys view/coreVersions">
-                <legend i18n:translate="heading_plone_version_overview">
-                    Plone version overview
-                </legend>
+            <form action="."
+                  tal:attributes="action request/URL"
+                  method="post"
+                  class="edit-form"
+                  enctype="multipart/form-data">
 
-                <p class="discreet">
-                    Plone <span tal:replace="sys/Instance" />, <br />
-                    <span tal:replace="sys/CMF" />, <br />
-                    Zope <span tal:replace="sys/Zope" />, <br />
-                    Python <span tal:replace="sys/Python" />, <br />
-                    <tal:pil condition="sys/PIL">
-                    PIL <span tal:replace="sys/PIL" />
-                    </tal:pil>
-                </p>
+                <fieldset>
+                    <legend i18n:translate="heading_zope_server">
+                        Zope Server
+                    </legend>
 
-                <p class="portalMessage"
-                   tal:condition="not:sys/PIL"
-                   i18n:translate="text_no_pil_installed">
-                    Warning: PIL is not installed properly, image scaling will not work.
-                </p>
+                    <p i18n:translate="text_zope_server_uptime">
+                        Zope Server uptime: <span i18n:name="time" tal:replace="view/processTime" />
+                    </p>
 
-            </fieldset>
+                    <div id="actionsView" class="formControls">
+                        <span class="actionButtons">
+                            <input type="submit"
+                                   id="form.actions.shutdown"
+                                   name="form.actions.shutdown"
+                                   value="Shutdown"
+                                   i18n:attributes="value"
+                                   class="context" />
 
-            <metal:block define-macro="header">
+                            <input tal:condition="view/isRestartable"
+                                   type="submit"
+                                   id="form.actions.restart"
+                                   name="form.actions.restart"
+                                   value="Restart"
+                                   i18n:attributes="value"
+                                   class="context" />
 
-                <div class="form-status"
-                     tal:define="status view/status"
-                     tal:condition="status">
-
-                    <div class="summary portalMessage"
-                         i18n:translate=""
-                         tal:content="view/status">
-                        Form status summary
+                        </span>
                     </div>
 
-                </div>
+                </fieldset>
 
-            </metal:block>
+            </form>
 
             <form action="."
                   metal:define-macro="master"
@@ -114,6 +130,11 @@
                     <legend tal:define="form_name view/form_name|nothing"
                             tal:condition="form_name"
                             tal:content="form_name">Form name</legend>
+
+                    <p i18n:translate="text_zope_database_size">
+                        Database size: <span i18n:name="size" tal:replace="view/dbSize" />
+                    </p>
+
                     <tal:block tal:repeat="widget view/widgets">
 
                         <div class="field"
@@ -154,22 +175,47 @@
 
                     </tal:block>
 
+                    <metal:block define-slot="above_buttons" />
+
+                    <div class="visualClear"><!-- --></div>
+
+                    <div id="actionsView" class="formControls">
+                        <span class="actionButtons">
+                            <input type="submit"
+                                   id="form.actions.pack"
+                                   name="form.actions.pack"
+                                   value="Pack"
+                                   i18n:attributes="value"
+                                   class="context" />
+                        </span>
+                    </div>
+
                 </fieldset>
 
-                <metal:block define-slot="above_buttons" />
-
-                <div class="visualClear"><!-- --></div>
-
-                <div id="actionsView" class="formControls">
-                    <span class="actionButtons"
-                          tal:condition="view/availableActions"
-                          metal:define-slot="bottom_buttons">
-                        <input tal:repeat="action view/actions"
-                               tal:replace="structure action/render" />
-                    </span>
-                </div>
-
             </form>
+
+            <fieldset tal:define="sys view/coreVersions">
+                <legend i18n:translate="heading_version_overview">
+                    Version overview
+                </legend>
+
+                <p class="discreet">
+                    Plone <span tal:replace="sys/Instance" />, <br />
+                    <span tal:replace="sys/CMF" />, <br />
+                    Zope <span tal:replace="sys/Zope" />, <br />
+                    Python <span tal:replace="sys/Python" />, <br />
+                    <tal:pil condition="sys/PIL">
+                    PIL <span tal:replace="sys/PIL" />
+                    </tal:pil>
+                </p>
+
+                <p class="portalMessage"
+                   tal:condition="not:sys/PIL"
+                   i18n:translate="text_no_pil_installed">
+                    Warning: PIL is not installed properly, image scaling will not work.
+                </p>
+
+            </fieldset>
         </div>
 
         <script type="text/javascript"
