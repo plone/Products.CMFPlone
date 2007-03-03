@@ -21,11 +21,12 @@ class TestControlPanel(PloneTestCase.PloneTestCase):
         self.groups     = ['Plone', 'Products', 'Member']
         self.configlets = ['QuickInstaller', 'portal_atct', 'MailHost',
                            'UsersGroups', 'MemberPrefs', 'PortalSkin',
-                           'MemberPassword', 'ZMI',
+                           'MemberPassword', 'ZMI', 'SecuritySettings',
                            'NavigationSettings', 'SearchSettings',
                            'errorLog', 'kupu', 'PloneReconfig',
-                           'CalendarSettings', 'versioning', 'TypesSettings', 'SecuritySettings',
-                           'PloneLanguageTool', 'CalendarSettings', 'HtmlFilter', 'Maintenance']
+                           'CalendarSettings', 'TypesSettings', 
+                           'PloneLanguageTool', 'CalendarSettings',
+                           'HtmlFilter', 'Maintenance']
 
     def testDefaultGroups(self):
         for group in self.groups:
