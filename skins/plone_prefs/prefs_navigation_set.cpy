@@ -14,6 +14,7 @@ from Products.CMFCore.utils import getToolByName
 
 REQUEST=context.REQUEST
 portal_properties=getToolByName(context, 'portal_properties')
+plone_utils=getToolByName(context, 'plone_utils')
 
 if generated_tabs:
   portal_properties.site_properties.manage_changeProperties(disable_folder_sections=False)
@@ -22,8 +23,10 @@ else:
 
 # The menu pretends to be a whitelist, but we are storing a blacklist so that
 # new types are searchable by default. Inverse the list.
+userFriendlyTypes = plone_utils.getUserFriendlyTypes()
 allTypes = context.getPortalTypes()
-blacklistedTypes = [t for t in allTypes if t not in portaltypes]
+blacklistedTypes = [t for t in allTypes if t not in portaltypes
+                                        or t not in userFriendlyTypes]
 
 portal_properties.navtree_properties.manage_changeProperties(
                         metaTypesNotToList=blacklistedTypes,

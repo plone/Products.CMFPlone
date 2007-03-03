@@ -70,7 +70,9 @@
             <div class="field" id="navigationtypes-field"
                  tal:define="
                        portal_types     portal/portal_types;
-                       allTypes         python:[portal_types.getTypeInfo(t) for t in here.getPortalTypes()];
+                       plone_utils      portal/plone_utils;
+                       userTypes        plone_utils/getUserFriendlyTypes;
+                       allTypes         python:[portal_types.getTypeInfo(t) for t in userTypes];
                        typeLists        python:here.createMultiColumnList(allTypes, numCols=3, sort_on='title_or_id');
                        blacklisted      navtree_props/metaTypesNotToList;
                        searchTypes      python:[t.getId() for t in allTypes if t.getId() not in blacklisted];">

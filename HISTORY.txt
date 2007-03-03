@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Only show the user friendly types on the navigation control panel.
+      [hannosch]
+
     - Excluded x-web-intelligenttext from the list of activated mimetypes.
       [hannosch]
 
