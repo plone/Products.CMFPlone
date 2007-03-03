@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <dc-workflow workflow_id="simple_publication_workflow"
-             title="Simple Publication workflow [Plone]"
+             title="Simple Publication Workflow"
              state_variable="review_state"
              initial_state="private">
  <permission>Access contents information</permission>

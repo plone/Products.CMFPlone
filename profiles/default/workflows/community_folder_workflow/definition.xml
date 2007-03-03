@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <dc-workflow workflow_id="community_folder_workflow"
-             title="Community Workflow for Folder [Plone Default]"
+             title="Community Workflow for Folders"
              state_variable="review_state"
              initial_state="visible">
  <permission>Access contents information</permission>

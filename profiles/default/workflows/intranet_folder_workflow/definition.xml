@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <dc-workflow workflow_id="intranet_folder_workflow"
-             title="intranet workflow for folders [Plone]"
+             title="Private Intranet Workflow for Folders"
              state_variable="review_state"
              initial_state="internal">
  <permission>Access contents information</permission>

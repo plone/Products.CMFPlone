@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <dc-workflow workflow_id="one_state_workflow"
-             title="One State workflow [Plone]"
+             title="Single State Workflow"
              state_variable="review_state"
              initial_state="published">
  <permission>Access contents information</permission>

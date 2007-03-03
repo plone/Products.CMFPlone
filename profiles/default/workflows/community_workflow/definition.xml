@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <dc-workflow workflow_id="community_workflow"
-             title="Community Workflow [Plone Default]"
+             title="Community Workflow"
              state_variable="review_state"
              initial_state="public_draft">
  <permission>Access contents information</permission>

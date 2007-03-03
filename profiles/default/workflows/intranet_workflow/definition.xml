@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <dc-workflow workflow_id="intranet_workflow"
-             title="Private Intranet Workflow [Plone]"
+             title="Private Intranet Workflow"
              state_variable="review_state"
              initial_state="internal">
  <permission>Access contents information</permission>
