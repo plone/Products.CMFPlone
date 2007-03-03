@@ -89,8 +89,19 @@ Look at the defaults
     >>> print_all_of('custom_tags')
     u
 
-    # XXX Hello Duncan!
     >>> print_all_of('stripped_attributes')
+    dir
+    lang
+    valign
+    halign
+    border
+    frame
+    rules
+    cellspacing
+    cellpadding
+    bgcolor
+
+    # XXX Hello Duncan!
     >>> print_all_of('stripped_combinations')
     >>> print_all_of('style_whitelist')
     text-align
@@ -120,8 +131,8 @@ Adding span to nasty tags should have automatically removed it from the valid ta
 Check that the filtering works
 ------------------------------
 
-    >>> browser.getLink('My Folder').click()
-    >>> browser.getLink('Add to folder').click()
+    >>> browser.open('http://nohost/plone/Members')
+    >>> browser.getLink('Add new').click()
     >>> 'Add new item' in browser.contents
     True
     >>> browser.getControl('Add Page').click()
