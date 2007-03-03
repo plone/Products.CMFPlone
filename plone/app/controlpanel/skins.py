@@ -22,6 +22,14 @@ class ISkinsSchema(Interface):
                   missing_value=tuple(),
                   vocabulary="plone.app.vocabularies.Skins")
 
+    mark_special_links = Bool(title=_(u'Mark external links'),
+                              description=_(u"If enabled all external links "
+                                             "will be marked with link type "
+                                             "specific icons. If disabled "
+                                             "the 'external links open in new "
+                                             "window' setting has no effect."),
+                              default=True)
+
     ext_links_open_new_window = Bool(title=_(u'External links open in new window'),
                                      description=_(u"If enabled all external "
                                                     "links in the content "
@@ -49,6 +57,18 @@ class SkinsControlPanelAdapter(SchemaAdapterBase):
         self.context.default_skin = value
 
     theme = property(get_theme, set_theme)
+
+    def get_mark_special_links(self):
+        return self.jstool.getResource('mark_special_links.js').getEnabled()
+
+    def set_mark_special_links(self, value):
+        if value:
+            self.jstool.getResource('mark_special_links.js').setEnabled(True)
+        else:
+            self.jstool.getResource('mark_special_links.js').setEnabled(False)
+        self.jstool.cookResources()
+
+    mark_special_links = property(get_mark_special_links, set_mark_special_links)
 
     def get_ext_links_open_new_window(self):
         elonw = self.props.external_links_open_new_window
