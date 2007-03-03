@@ -1,0 +1,186 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      xml:lang="en" lang="en"
+      metal:use-macro="context/prefs_main_template/macros/master"
+      i18n:domain="plone">
+
+<metal:block metal:fill-slot="top_slot"
+             tal:define="dummy python:request.set('disable_border', 1)" />
+
+<body>
+
+<div metal:fill-slot="prefs_configlet_main">
+
+    <div metal:define-macro="form">
+
+        <div id="viewspace" metal:define-slot="viewspace">
+
+            <h1 i18n:translate=""
+                tal:condition="view/label"
+                tal:content="view/label"
+                metal:define-slot="heading">
+                Do something
+            </h1>
+
+            <a href=""
+               class="link-parent"
+               tal:attributes="href string: $portal_url/plone_control_panel"
+               i18n:translate="label_up_to_plone_setup">
+                Up to Site Setup
+            </a>
+
+            <p i18n:translate=""
+               tal:condition="view/description"
+               tal:content="view/description">
+                Description
+            </p>
+
+            <tal:debugmode define="QI python:context.portal_url.getPortalObject().portal_quickinstaller">
+                <p tal:condition="not:QI/isDevelopmentMode" 
+                   class="discreet"
+                   i18n:translate="description_production_mode">
+                  You are running in "production mode". This is the preferred mode of
+                  operation for a live Plone site, but means that some
+                  configuration changes will not take effect until your server is
+                  restarted or a product refreshed. If this is a development instance,
+                  and you want to enable debug mode, edit your zope.conf file to say
+                  'debug-mode on' &mdash; then restart the server process.
+                </p>
+
+                <p tal:condition="QI/isDevelopmentMode"
+                   class="discreet"
+                   i18n:translate="description_debug_mode">
+                  Note: You are running in "debug mode". This mode is intended for
+                  sites that are under development. This allows many configuration
+                  changes to be immediately evident, but will make your site
+                  run more slowly. To turn off debug mode, edit your zope.conf file to
+                  say 'debug-mode off' &mdash; then restart the server process.
+                </p>
+            </tal:debugmode>
+
+            <fieldset tal:define="mt here/portal_migration;
+                                  sys mt/coreVersions">
+                <legend i18n:translate="heading_plone_version_overview">
+                    Plone version overview
+                </legend>
+
+                <p class="discreet">
+                    Plone <span tal:replace="mt/getInstanceVersion" />, <br />
+                    <span tal:replace="sys/CMF" />, <br />
+                    Zope <span tal:replace="sys/Zope" />, <br />
+                    Python <span tal:replace="sys/Python" />, <br />
+                    <tal:pil condition="sys/PIL">
+                    PIL <span tal:replace="sys/PIL" />
+                    </tal:pil>
+                </p>
+
+                <p class="portalMessage"
+                   tal:condition="not:sys/PIL"
+                   i18n:translate="text_no_pil_installed">
+                    Warning: PIL is not installed properly, image scaling will not work.
+                </p>
+
+            </fieldset>
+
+            <metal:block define-macro="header">
+
+                <div class="form-status"
+                     tal:define="status view/status"
+                     tal:condition="status">
+
+                    <div class="summary portalMessage"
+                         i18n:translate=""
+                         tal:content="view/status">
+                        Form status summary
+                    </div>
+
+                </div>
+
+            </metal:block>
+
+            <form action="."
+                  metal:define-macro="master"
+                  tal:attributes="action request/URL"
+                  method="post"
+                  class="edit-form"
+                  enctype="multipart/form-data"
+                  id="zc.page.browser_form">
+
+                <div metal:define-slot="extra_info" tal:replace="nothing">
+                </div>
+
+                <fieldset>
+                    <legend tal:define="form_name view/form_name|nothing"
+                            tal:condition="form_name"
+                            tal:content="form_name">Form name</legend>
+                    <tal:block tal:repeat="widget view/widgets">
+
+                        <div class="field"
+                             tal:define="description widget/hint;
+                                         error widget/error"
+                             tal:attributes="class python:'field'+(error and ' error' or '')">
+
+                            <label i18n:translate=""
+                                   tal:attributes="for widget/name"
+                                   tal:content="widget/label">
+                                label
+                            </label>
+
+                            <span class="fieldRequired"
+                                  title="Required"
+                                  i18n:attributes="title title_required;"
+                                  i18n:translate="label_required"
+                                  tal:condition="widget/required">
+                                (Required)
+                            </span>
+
+                            <div class="formHelp"
+                                 i18n:translate=""
+                                 tal:content="description"
+                                 tal:condition="description">
+                                field description
+                            </div>
+
+                            <div tal:condition="error"
+                                 tal:content="structure error">
+                                The Error
+                            </div>
+
+                            <div class="widget" tal:content="structure widget">
+                                <input type="text" />
+                            </div>
+                        </div>
+
+                    </tal:block>
+
+                </fieldset>
+
+                <metal:block define-slot="above_buttons" />
+
+                <div class="visualClear"><!-- --></div>
+
+                <div id="actionsView" class="formControls">
+                    <span class="actionButtons"
+                          tal:condition="view/availableActions"
+                          metal:define-slot="bottom_buttons">
+                        <input tal:repeat="action view/actions"
+                               tal:replace="structure action/render" />
+                    </span>
+                </div>
+
+            </form>
+        </div>
+
+        <script type="text/javascript"
+            tal:define="extra_script view/extra_script | nothing"
+            tal:condition="extra_script"
+            tal:content="structure extra_script">
+        </script>
+
+    </div>
+
+</div>
+</body>
+</html>
