@@ -18,9 +18,7 @@
 
   <adapter factory=".skins.SkinsControlPanelAdapter" />
 
-  <adapter factory=".types.TypesControlPanelAdapter" />
-
-  <adapter factory=".wickedcp.WickedControlPanelAdapter" />
+  <adapter factory=".markup.MarkupControlPanelAdapter" />
 
   <browser:page
       name="calendar-controlpanel.html"
@@ -79,18 +77,18 @@
       />
 
   <browser:page
+      name="markup-controlpanel.html"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".markup.MarkupControlPanel"
+      permission="cmf.ManagePortal"
+      />
+      
+  <browser:page
       name="types-controlpanel.html"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       class=".types.TypesControlPanel"
       permission="cmf.ManagePortal"
       />
-
-  <browser:page
-      name="wicked-controlpanel.html"
-      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-      class=".wickedcp.WickedControlPanel" 
-      permission="cmf.ManagePortal"
-     />
 
   <view
       type="zope.publisher.interfaces.browser.IBrowserRequest"
@@ -102,7 +100,7 @@
       />
 
   <utility
-    component=".wickedcp.WickedTypesVocabularyFactory"
+    component=".markup.WickedTypesVocabularyFactory"
     name="plone.app.controlpanel.WickedPortalTypes"
     />
     

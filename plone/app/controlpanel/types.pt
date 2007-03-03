@@ -1,0 +1,200 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      xml:lang="en" lang="en"
+      metal:use-macro="context/prefs_main_template/macros/master"
+      i18n:domain="plone">
+
+<metal:block metal:fill-slot="top_slot"
+             tal:define="dummy python:request.set('disable_border', 1)" />
+
+<body>
+
+<div metal:fill-slot="prefs_configlet_main">
+
+    <div metal:use-macro="context/document_actions/macros/document_actions">
+        Document actions (print, sendto etc)
+    </div>
+
+    <h1 i18n:translate="heading_portal_setup">Type Settings</h1>
+
+    <a href=""
+        class="link-parent"
+        tal:attributes="href string: $portal_url/plone_control_panel"
+        i18n:translate="label_up_to_plone_setup">
+            Up to Site Setup
+    </a>
+
+    <p i18n:translate="description_types_setup">
+        Workflow, visibility and versioning settings for your content types.
+    </p>
+    
+    <form method="POST" 
+          tal:define="type_id view/type_id"
+          tal:attributes="action string:${context/absolute_url}/@@types-controlpanel.html">
+
+        <input type="hidden" name="form.submitted:boolean" value="True" />
+        <input type="hidden" name="old_type_id" tal:attributes="value type_id" />
+
+        <fieldset>
+            <legend>
+                <select name="type_id" onchange="form.submit()">
+                    <tal:option repeat="selectable view/selectable_types">
+                        <option tal:content="selectable/title" i18n:translate=""
+                                tal:attributes="value selectable/id;
+                                                selected python:type_id == selectable['id'] and 'selected' or None">
+                                Content type
+                        </option>
+                    </tal:option>
+                </select>
+           </legend>
+
+           <div class="field">
+               <label i18n:translate="types_controlpanel_title" for="title">Title:</label>
+               <input id="title"
+                      name="title"
+                      type="text" 
+                      tal:attributes="value view/selected_type_title"/>
+           </div>
+        
+           <div class="field">
+
+                <input id="addable"
+                       type="checkbox"
+                       name="addable:boolean"
+                       tal:attributes="checked python:view.is_addable() and 'checked' or None"
+                       />
+                <label for="addable" i18n:translate="types_controlpanel_addable">
+                    Addable
+                </label>
+
+                <input id="allow_discussion"
+                       type="checkbox"
+                       name="allow_discussion:boolean"
+                       tal:attributes="checked python:view.is_discussion_allowed() and 'checked' or None">
+                <label for="allow_discussion" i18n:translate="types_controlpanel_allow_discussion">
+                    Allow comments
+                </label>
+
+                <input id="versionable"
+                       type="checkbox"
+                       name="versionable"
+                       tal:attributes="checked python:view.is_versionable() and 'checked' or None">
+                <label for="versionable" i18n:translate="types_controlpanel_versionable">
+                    Enable versioning
+                </label>
+
+                <input id="searchable"
+                       type="checkbox"
+                       name="searchable"
+                       tal:attributes="checked python: view.is_searchable() and 'checked' or None">
+                <label for="searchable" i18n:translate="types_controlpanel_searchable">
+                    Visible in searches
+                </label>
+
+            </div>
+
+            <div>
+                <label i18n:translate="types_controlpanel_current_workflow">Current workflow:</label>
+                <span tal:content="view/current_workflow_title">Community Workflow</span>
+            </div>
+            
+            <tal:block replace="nothing">
+            <div>
+                <label>New workflow</label><br />
+                <select onchange="javascript:redirect_new_workflow()" id="workflows" name="wf_id">
+                    <option value="No Change">No Change</option>
+
+                    <tal:wfs repeat="wf python:portal.portal_workflow.objectValues()"
+                        tal:define="wf_id python:request.get('wf_id', 'No Change')">
+
+                        <option tal:content="python: view.wf_title_for_id(wf.id)"
+                                tal:attributes="selected python: view.is_wf_selected(wf, wf_id);
+                                                value python: wf.id">Intranet Workflow
+                        </option>
+                    </tal:wfs>
+
+                    <option>No Workflow</option>
+                </select>
+            </div>
+
+            <tal:check_wf_in_request                 tal:condition="exists: request/wf_id" >
+            <tal:check_wf_in_request_change_selected tal:condition="python: request.wf_id != 'No Change'">
+
+                <!-- This only shows up if you actually selected a change in the workflow -->
+
+                <div class="visualClear" tal:define="wf_id python:request.get('wf_id', 'No Change')">
+                    <label>State Mapping</label>
+
+                    <div class="formHelp">
+                        When changing workflows, you have to select a state equivalent in the new workflow.
+                    </div>
+
+                    <table class="listing" 
+                        tal:define="states python:view.states_for_new_workflow(wf_id);
+                                    old_states python:view.states_for_current_workflow(type_id);">
+                        <thead>
+                            <tr>
+                                <th>Old State</th>
+                                <th>New State</th>
+                            </tr>
+                        </thead>
+
+                        <tbody tal:repeat="old_state old_states">
+
+                            <tr tal:attributes="class python:oddrow and 'odd' or 'even'"
+                                tal:define="oddrow repeat/old_state/odd;">
+
+                                <td tal:content="old_state"> Published </td>
+                                <td tal:attributes="class python:oddrow and 'odd' or 'even'">
+                                    <select>
+                                      <tal:states repeat="state states">              
+                                        <option tal:content="state">Pending</option>
+                                      </tal:states>
+                                    </select>
+                                </td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </tal:check_wf_in_request_change_selected>
+            </tal:check_wf_in_request>
+
+            <tal:check_wf_in_request                     tal:condition="exists: request/wf_id" >
+            <tal:check_wf_in_request_change_selected_not tal:condition="python: request.wf_id == 'No Change'">
+
+
+            </tal:check_wf_in_request_change_selected_not>
+            </tal:check_wf_in_request>
+
+            </tal:block>
+
+            <div class="formControls">
+                
+              <input type="submit" value="Apply" name="form.button.Save" class="context" />
+              <input type="submit" value="Cancel" name="form.button.Cancel" class="context" />
+                          
+                <!-- This only shows up if changes were made to the workflow settings, since the remapping
+                     could be expensive --> 
+                <tal:check_wf_in_request tal:condition="exists: request/wf_id" >
+                  <tal:check_wf_in_request_change_selected tal:condition="python: request.wf_id != 'No Change'">
+                    <img tal:replace="structure here/info_icon.gif" />
+                    <span style="color: red">This may take a long time, and may slow down Plone significantly.</span>
+                  </tal:check_wf_in_request_change_selected>
+                </tal:check_wf_in_request>
+            </div>
+            
+        
+
+    </fieldset>
+    
+    </form>
+
+</div>
+
+</body>
+</html>
