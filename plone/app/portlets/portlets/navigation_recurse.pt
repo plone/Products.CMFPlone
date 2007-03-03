@@ -5,14 +5,15 @@
 
 <metal:main define-macro="nav_main">
 <tal:navitem repeat="node children">
-<li class="navTreeItem visualNoMarker"
-    tal:define="children    node/children;
-                item_url    node/getURL;
-                item_icon   node/item_icon;
-                remote_url  node/getRemoteUrl;
-                link_remote node/link_remote;
-                is_current   node/currentItem;
-                is_in_path  node/currentParent;"
+<li tal:define="children      node/children;
+                item_url      node/getURL;
+                item_icon     node/item_icon;
+                remote_url    node/getRemoteUrl;
+                link_remote   node/link_remote;
+                is_current    node/currentItem;
+                is_in_path    node/currentParent;
+                li_class      python:is_current and 'navTreeCurrentNode' or ''"
+    tal:attributes="class string:navTreeItem visualNoMarker ${li_class}"
     tal:condition="python:bottomLevel &lt;= 0 or level &lt; bottomLevel-1">
 
     <tal:level define="item_class string:state-${node/normalized_review_state}">
