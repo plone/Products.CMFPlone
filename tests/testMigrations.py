@@ -59,7 +59,8 @@ from Products.CMFPlone.migrations.v3_0.alphas import enableZope3Site
 from Products.CMFPlone.migrations.v3_0.alphas import migrateOldActions
 from Products.CMFPlone.migrations.v3_0.alphas import addNewCSSFiles
 from Products.CMFPlone.migrations.v3_0.alphas import addDefaultAndForbiddenContentTypesProperties
-from Products.CMFPlone.migrations.v3_0.alphas import addTypesConfiglet
+from Products.CMFPlone.migrations.v3_0.alphas import addMarkupConfiglet
+from Products.CMFPlone.migrations.v3_0.alphas import addIconForMarkupConfiglet
 from Products.CMFPlone.migrations.v3_0.alphas import updateActionsI18NDomain
 from Products.CMFPlone.migrations.v3_0.alphas import updateFTII18NDomain
 from Products.CMFPlone.migrations.v3_0.alphas import convertLegacyPortlets
@@ -101,6 +102,9 @@ from Products.CMFPlone.migrations.v3_0.alphas import addIconForContentRulesConfi
 from Products.CMFPlone.migrations.v3_0.alphas import addContentRulesConfiglet
 from Products.CMFPlone.migrations.v3_0.alphas import addObjectProvidesIndex
 from Products.CMFPlone.migrations.v3_0.alphas import addExternalLinksOpenNewWindowProperty
+from Products.CMFPlone.migrations.v3_0.alphas import addTypesConfiglet
+from Products.CMFPlone.migrations.v3_0.alphas import addIconForTypesConfiglet
+from Products.CMFPlone.migrations.v3_0.alphas import addMissingWorkflows
 
 from zope.app.component.hooks import clearSite
 from zope.app.component.interfaces import ISite
@@ -1234,6 +1238,58 @@ class TestMigrations_v3_0(MigrationTest):
             'text/x-rst', 
             )
         )
+        
+    def testAddIconForMarkupConfiglet(self):
+        self.removeActionIconFromTool('MarkupSettings')
+        addIconForMarkupConfiglet(self.portal, [])
+        self.failUnless('MarkupSettings' in [x.getActionId() for x in self.icons.listActionIcons()])
+
+    def testAddIconForMarkupConfigletTwice(self):
+        self.removeActionIconFromTool('MarkupSettings')
+        addIconForMarkupConfiglet(self.portal, [])
+        addIconForMarkupConfiglet(self.portal, [])
+        self.failUnless('MarkupSettings' in [x.getActionId() for x in self.icons.listActionIcons()])
+
+    def testAddIconForMarkupConfigletNoTool(self):
+        self.portal._delObject('portal_actionicons')
+        addIconForMarkupConfiglet(self.portal, [])
+    
+    def testAddMarkupConfiglet(self):
+        self.removeActionFromTool('MarkupSettings', action_provider='portal_controlpanel')
+        addMarkupConfiglet(self.portal, [])
+        self.failUnless('MarkupSettings' in [action.getId() for action in self.cp.listActions()])
+        types = self.cp.getActionObject('Plone/MarkupSettings')
+        self.assertEquals(types.action.text,
+                          'string:${portal_url}/@@markup-controlpanel.html')
+
+    def testAddMarkupConfigletTwice(self):
+        self.removeActionFromTool('MarkupSettings', action_provider='portal_controlpanel')
+        addMarkupConfiglet(self.portal, [])
+        addMarkupConfiglet(self.portal, [])
+        self.failUnless('MarkupSettings' in [action.getId() for action in self.cp.listActions()])
+        types = self.cp.getActionObject('Plone/MarkupSettings')
+        self.assertEquals(types.action.text,
+                          'string:${portal_url}/@@markup-controlpanel.html')
+                          
+    def testAddMarkupConfigletNoTool(self):
+        self.portal._delObject('portal_controlpanel')
+        addMarkupConfiglet(self.portal, [])
+                              
+    def testAddIconForTypesConfiglet(self):
+        self.removeActionIconFromTool('TypesSettings')
+        addIconForTypesConfiglet(self.portal, [])
+        self.failUnless('TypesSettings' in [x.getActionId() for x in self.icons.listActionIcons()])
+
+    def testAddIconForTypesConfigletTwice(self):
+        self.removeActionIconFromTool('TypesSettings')
+        addIconForTypesConfiglet(self.portal, [])
+        addIconForTypesConfiglet(self.portal, [])
+        self.failUnless('TypesSettings' in [x.getActionId() for x in self.icons.listActionIcons()])
+
+    def testAddIconForTypesConfigletNoTool(self):
+        self.portal._delObject('portal_actionicons')
+        addIconForTypesConfiglet(self.portal, [])      
+                          
     def testAddTypesConfiglet(self):
         self.removeActionFromTool('TypesSettings', action_provider='portal_controlpanel')
         addTypesConfiglet(self.portal, [])
@@ -1250,6 +1306,10 @@ class TestMigrations_v3_0(MigrationTest):
         types = self.cp.getActionObject('Plone/TypesSettings')
         self.assertEquals(types.action.text,
                           'string:${portal_url}/@@types-controlpanel.html')
+
+    def testAddTypesConfigletNoTool(self):
+        self.portal._delObject('portal_controlpanel')
+        addTypesConfiglet(self.portal, [])
 
     def testAddFormTabbingJS(self):
         jsreg = self.portal.portal_javascripts
@@ -2216,6 +2276,24 @@ class TestMigrations_v3_0(MigrationTest):
         self.failUnless(sheet.hasProperty('external_links_open_new_window'))
         self.failUnless(sheet.external_links_open_new_window == 'false')
 
+    def testAddMissingWorkflows(self):
+        self.portal.portal_workflow._delObject('community_workflow')
+        self.portal.portal_workflow.one_state_workflow.states.published.title = "Foo"
+        addMissingWorkflows(self.portal, [])
+        self.failUnless('community_workflow' in self.portal.portal_workflow.objectIds())
+        self.assertEquals("Foo", self.portal.portal_workflow.one_state_workflow.states.published.title)
+        
+    def testAddMissingWorkflowsTwice(self):
+        self.portal.portal_workflow._delObject('community_workflow')
+        self.portal.portal_workflow.one_state_workflow.states.published.title = "Foo"
+        addMissingWorkflows(self.portal, [])
+        addMissingWorkflows(self.portal, [])
+        self.failUnless('community_workflow' in self.portal.portal_workflow.objectIds())
+        self.assertEquals("Foo", self.portal.portal_workflow.one_state_workflow.states.published.title)
+        
+    def testAddMissingWorkflowsNoTool(self):
+        self.portal._delObject('portal_workflow')
+        addMissingWorkflows(self.portal, [])
 
 def test_suite():
     from unittest import TestSuite, makeSuite

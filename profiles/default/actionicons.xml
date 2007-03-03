@@ -54,6 +54,9 @@
  <action-icon category="controlpanel" action_id="TypesSettings"
               title="Types Settings" priority="0"
               icon_expr="document_icon.gif"/>
+ <action-icon category="controlpanel" action_id="MarkupSettings"
+              title="Markup Settings" priority="0"
+              icon_expr="edit.gif"/>
  <action-icon category="controlpanel" action_id="ZMI"
               title="Zope Management Interface" priority="0"
               icon_expr="zope_icon.gif"/>

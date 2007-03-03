@@ -781,6 +781,11 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.failUnless('View' in [r['name'] for r in self.portal.permissionsOfRole('Reader') if r['selected']])
         self.failUnless('Modify portal content' in [r['name'] for r in self.portal.permissionsOfRole('Editor') if r['selected']])
 
+    def testWorkflowsInstalled(self):
+        for wf in ['community_workflow', 'community_folder_workflow', 'intranet_workflow',
+                    'intranet_folder_workflow', 'one_state_workflow', 'simple_publication_workflow']:
+            self.failUnless(wf in self.portal.portal_workflow.objectIds())
+
 class TestPortalBugs(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):

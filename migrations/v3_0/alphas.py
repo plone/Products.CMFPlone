@@ -1,3 +1,5 @@
+import os
+
 from zope.component import getMultiAdapter
 from zope.component import getSiteManager
 from zope.component import getUtility
@@ -7,6 +9,7 @@ from zope.component.globalregistry import base
 from zope.component.persistentregistry import PersistentComponents
 
 from Acquisition import aq_base
+from Globals import package_home
 
 from Products.StandardCacheManagers import RAMCacheManager
 
@@ -17,6 +20,9 @@ from Products.CMFCore.Expression import Expression
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.permissions import ManagePortal
 from Products.CMFCore.DirectoryView import createDirectoryView
+from Products.DCWorkflow.DCWorkflow import DCWorkflowDefinition
+from Products.DCWorkflow.exportimport import WorkflowDefinitionConfigurator, _initDCWorkflow
+from Products.CMFPlone import cmfplone_globals
 from Products.CMFPlone.interfaces import IControlPanel
 from Products.CMFPlone.interfaces import IInterfaceTool
 from Products.CMFPlone.interfaces import IMigrationTool
@@ -47,7 +53,8 @@ def three0_alpha1(portal):
 
     # Add new properties for default- and forbidden content types
     addDefaultAndForbiddenContentTypesProperties(portal, out)
-    addTypesConfiglet(portal, out)
+    addMarkupConfiglet(portal, out)
+    addIconForMarkupConfiglet(portal, out)
 
     # Actions should gain a i18n_domain now, so their title and description are
     # returned as Messages
@@ -191,6 +198,13 @@ def alpha2_alpha3(portal):
 
     # Add external_links_open_new_window property to site properties
     addExternalLinksOpenNewWindowProperty(portal, out)
+
+    # Add the types configlet
+    addTypesConfiglet(portal, out)
+    addIconForTypesConfiglet(portal, out)
+    
+    # Add workflows that people may be missing
+    addMissingWorkflows(portal, out)
 
 # --
 # KSS registration
@@ -393,7 +407,42 @@ def addDefaultAndForbiddenContentTypesProperties(portal, out):
                     'text/x-web-textile',
                     'text/x-web-intelligent')
             out.append("Added 'forbidden_contenttypes' property to site_properties.")
-
+            
+def addMarkupConfiglet(portal, out):
+    """Add the markup configlet."""
+    controlPanel = getToolByName(portal, 'portal_controlpanel', None)
+    if controlPanel is not None:
+        gotTypes = False
+        for configlet in controlPanel.listActions():
+            if configlet.getId() == 'MarkupSettings':
+                gotMarkup = True
+        if not gotMarkup:
+            controlPanel.registerConfiglet(
+                id         = 'MarkupSettings',
+                appId      = 'Plone',
+                name       = 'Text markup',
+                action     = 'string:${portal_url}/@@markup-controlpanel.html',
+                category   = 'Plone',
+                permission = ManagePortal,
+            )
+            out.append("Added Markup Settings to the control panel")
+            
+def addIconForMarkupConfiglet(portal, out):
+    """Adds an icon for the markup settings configlet. """
+    iconsTool = getToolByName(portal, 'portal_actionicons', None)
+    if iconsTool is not None:
+        for icon in iconsTool.listActionIcons():
+            if icon.getActionId() == 'MarkupSettings':
+                break # We already have the icon
+        else:
+            iconsTool.addActionIcon(
+                category='controlpanel',
+                action_id='MarkupSettings',
+                icon_expr='edit.gif',
+                title='Text markup',
+                )
+        out.append("Added markup configlet icon to actionicons tool.")     
+            
 def addTypesConfiglet(portal, out):
     """Add the types configlet."""
     controlPanel = getToolByName(portal, 'portal_controlpanel', None)
@@ -412,6 +461,22 @@ def addTypesConfiglet(portal, out):
                 permission = ManagePortal,
             )
             out.append("Added Types Settings to the control panel")
+            
+def addIconForTypesConfiglet(portal, out):
+    """Adds an icon for the types settings configlet. """
+    iconsTool = getToolByName(portal, 'portal_actionicons', None)
+    if iconsTool is not None:
+        for icon in iconsTool.listActionIcons():
+            if icon.getActionId() == 'TypesSettings':
+                break # We already have the icon
+        else:
+            iconsTool.addActionIcon(
+                category='controlpanel',
+                action_id='TypesSettings',
+                icon_expr='document_icon.gif',
+                title='Types Settings',
+                )
+        out.append("Added types configlet icon to actionicons tool.")            
 
 def updateActionsI18NDomain(portal, out):
     actions = portal.portal_actions.listActions()
@@ -1041,3 +1106,58 @@ def addExternalLinksOpenNewWindowProperty(portal, out):
     if not sheet.hasProperty('external_links_open_new_window'):
         sheet.manage_addProperty('external_links_open_new_window','false','string')
         out.append("Added 'external_links_open_new_window' property to site properties")
+
+def addMissingWorkflows(portal, out):
+    """Add new Plone 3.0 workflows
+    """
+    
+    wft = getToolByName(portal, 'portal_workflow', None)
+    if wft is None:
+        return
+
+    new_workflow_ids = ['community_workflow', 'community_folder_workflow', 'intranet_workflow',
+                        'intranet_folder_workflow', 'one_state_workflow', 'simple_publication_workflow']
+    encoding = 'utf-8'
+    path_prefix = os.path.join(package_home(cmfplone_globals), 'profiles', 'default', 'workflows')
+    
+    for wf_id in new_workflow_ids:
+        if wf_id in wft.objectIds():
+            out.append("Workflow %s already installed; doing nothing" % wf_id)
+            continue
+
+        path = os.path.join(path_prefix, wf_id, 'definition.xml')
+        body = open(path,'r').read()
+
+        wft._setObject(wf_id, DCWorkflowDefinition(wf_id))
+        wf = wft[wf_id]
+        wfdc = WorkflowDefinitionConfigurator(wf)
+
+        ( workflow_id
+        , title
+        , state_variable
+        , initial_state
+        , states
+        , transitions
+        , variables
+        , worklists
+        , permissions
+        , scripts
+        ) = wfdc.parseWorkflowXML(body, encoding)
+
+        _initDCWorkflow( wf
+                       , title
+                       , state_variable
+                       , initial_state
+                       , states
+                       , transitions
+                       , variables
+                       , worklists
+                       , permissions
+                       , scripts
+                       , portal     # not sure what to pass here
+                                    # the site or the wft?
+                                    # (does it matter at all?)
+                      )
+        out.append("Added workflow %s" % wf_id)
+    
+    
