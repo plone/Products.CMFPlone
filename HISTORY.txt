@@ -3,8 +3,10 @@ Changelog for Plone
     (name of developer listed in brackets)
 
 Plone 3.0 - unreleased
-    - Fixed some bugs in addtoFavorites
-      [ender]
+
+    - Remove the folder user action, and re-point the author profile user action to
+      point to the users dashboard instead.
+      [wichert]
 
     - Add an object_provides index to the catalog. This indexes all
       interfaces provided by an object with their dotted names.

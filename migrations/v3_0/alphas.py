@@ -185,6 +185,8 @@ def alpha2_alpha3(portal):
     # Add the object_provides catalog index
     addObjectProvidesIndex(portal, out)
 
+    # Remove the mystuff user action
+    removeMyStuffAction(portal, out)
     return out
 
 
@@ -1018,3 +1020,13 @@ def addObjectProvidesIndex(portal, out):
         catalog.addIndex('object_provides', 'KeywordIndex')
         out.append("Added object_provides index to portal_catalog")
 
+
+def removeMyStuffAction(portal, out):
+    """The mystuff action is now covered by the dashboard"""
+    actions = getToolByName(portal, 'portal_actions')
+    if not hasattr(actions, 'user'):
+        return
+    category=actions.user
+    if 'mystuff' in category.objectIds():
+        category.manage_delObjects(ids=['mystuff'])
+        out.append("Removed the mystuff user action")
