@@ -1199,12 +1199,13 @@ class TestMigrations_v3_0(MigrationTest):
         self.failUnless(self.properties.site_properties.hasProperty('forbidden_contenttypes'))
         self.failUnless(self.properties.site_properties.hasProperty('default_contenttype'))
         self.failUnless(self.properties.site_properties.forbidden_contenttypes == ( 
-            'text/structured', 
-            'text/x-rst', 
-            'text/plain-pre', 
-            'text/x-python', 
+            'text/structured',
+            'text/x-rst',
+            'text/plain-pre',
+            'text/x-python',
+            'text/x-web-markdown',
             'text/x-web-textile',
-            )
+            'text/x-web-intelligent')
         )
 
     def testAddDefaultAndForbiddenContentTypesPropertiesTwice(self):
@@ -1215,12 +1216,13 @@ class TestMigrations_v3_0(MigrationTest):
         self.failIf(self.properties.site_properties.hasProperty('default_contenttype'))
         addDefaultAndForbiddenContentTypesProperties(self.portal, [])
         self.failUnless(self.properties.site_properties.forbidden_contenttypes == ( 
-            'text/structured', 
-            'text/x-rst', 
-            'text/plain-pre', 
-            'text/x-python', 
+            'text/structured',
+            'text/x-rst',
+            'text/plain-pre',
+            'text/x-python',
+            'text/x-web-markdown',
             'text/x-web-textile',
-            )
+            'text/x-web-intelligent')
         )
         self.properties.site_properties.forbidden_contenttypes = ('text/x-rst',)
         addDefaultAndForbiddenContentTypesProperties(self.portal, [])

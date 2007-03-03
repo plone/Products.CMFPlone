@@ -122,7 +122,8 @@
    <element value="text/plain-pre"/>
    <element value="text/x-python"/>
    <element value="text/x-web-markdown"/>
-   <element value="text/x-web-intelligent"/>   
+   <element value="text/x-web-intelligent"/>
+   <element value="text/x-web-textile"/>
   </property>
   <property name="default_contenttype" type="string">text/html</property>
   <property name="enable_sitemap" type="boolean">False</property>

@@ -4,8 +4,11 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
-    - Remove the folder user action, and re-point the author profile user action to
-      point to the users dashboard instead.
+    - Excluded x-web-intelligenttext from the list of activated mimetypes.
+      [hannosch]
+
+    - Remove the folder user action, and re-point the author profile user
+      action to point to the users dashboard instead.
       [wichert]
 
     - Add an object_provides index to the catalog. This indexes all
