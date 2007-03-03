@@ -5,6 +5,7 @@ from zope.interface import Interface
 from zope.interface import implements
 from zope.schema import Int
 
+from Acquisition import aq_inner
 from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault.formlib.schema import SchemaAdapterBase
 from Products.CMFPlone import PloneMessageFactory as _
@@ -63,3 +64,13 @@ class MaintenanceControlPanel(FieldsetsEditForm):
     def handle_edit_action(self, action, data):
         form.applyChanges(self.context, self.form_fields, data, self.adapters)
         self.status = _(u'Packed the database.')
+
+    def isDevelopmentMode(self):
+        qi = getToolByName(aq_inner(self.context), 'portal_quickinstaller')
+        return qi.isDevelopmentMode()
+
+    def coreVersions(self):
+        mt = getToolByName(aq_inner(self.context), 'portal_migration')
+        versions = mt.coreVersions()
+        versions['Instance'] = versions['Plone Instance']
+        return versions

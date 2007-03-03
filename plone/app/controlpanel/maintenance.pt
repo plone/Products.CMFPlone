@@ -37,8 +37,8 @@
                 Description
             </p>
 
-            <tal:debugmode define="QI python:context.portal_url.getPortalObject().portal_quickinstaller">
-                <p tal:condition="not:QI/isDevelopmentMode" 
+            <tal:debugmode define="isDevelopmentMode view/isDevelopmentMode">
+                <p tal:condition="not:isDevelopmentMode" 
                    class="discreet"
                    i18n:translate="description_production_mode">
                   You are running in "production mode". This is the preferred mode of
@@ -49,7 +49,7 @@
                   'debug-mode on' &mdash; then restart the server process.
                 </p>
 
-                <p tal:condition="QI/isDevelopmentMode"
+                <p tal:condition="isDevelopmentMode"
                    class="discreet"
                    i18n:translate="description_debug_mode">
                   Note: You are running in "debug mode". This mode is intended for
@@ -60,14 +60,13 @@
                 </p>
             </tal:debugmode>
 
-            <fieldset tal:define="mt here/portal_migration;
-                                  sys mt/coreVersions">
+            <fieldset tal:define="sys view/coreVersions">
                 <legend i18n:translate="heading_plone_version_overview">
                     Plone version overview
                 </legend>
 
                 <p class="discreet">
-                    Plone <span tal:replace="mt/getInstanceVersion" />, <br />
+                    Plone <span tal:replace="sys/Instance" />, <br />
                     <span tal:replace="sys/CMF" />, <br />
                     Zope <span tal:replace="sys/Zope" />, <br />
                     Python <span tal:replace="sys/Python" />, <br />
