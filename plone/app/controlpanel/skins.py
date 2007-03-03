@@ -2,6 +2,7 @@ from zope.interface import Interface
 from zope.component import adapts
 from zope.formlib.form import FormFields
 from zope.interface import implements
+from zope.schema import Bool
 from zope.schema import Choice
 from zope.schema import Tuple
 
@@ -21,6 +22,13 @@ class ISkinsSchema(Interface):
                   missing_value=tuple(),
                   vocabulary="plone.app.vocabularies.Skins")
 
+    ext_links_open_new_window = Bool(title=_(u'External links open in new window'),
+                                     description=_(u"If enabled all external "
+                                                    "links in the content "
+                                                    "region open in a new  "
+                                                    "window."),
+                                     default=False)
+
 
 class SkinsControlPanelAdapter(SchemaAdapterBase):
 
@@ -30,6 +38,9 @@ class SkinsControlPanelAdapter(SchemaAdapterBase):
     def __init__(self, context):
         super(SkinsControlPanelAdapter, self).__init__(context)
         self.context = getToolByName(context, 'portal_skins')
+        self.jstool=getToolByName(context, 'portal_javascripts')
+        ptool = getToolByName(context, 'portal_properties')
+        self.props = ptool.site_properties
 
     def get_theme(self):
         return self.context.getDefaultSkin()
@@ -38,6 +49,22 @@ class SkinsControlPanelAdapter(SchemaAdapterBase):
         self.context.default_skin = value
 
     theme = property(get_theme, set_theme)
+
+    def get_ext_links_open_new_window(self):
+        elonw = self.props.external_links_open_new_window
+        if elonw == 'true':
+            return True
+        return False
+
+    def set_ext_links_open_new_window(self, value):
+        if value:
+            self.props.manage_changeProperties(external_links_open_new_window='true')
+        else:
+            self.props.manage_changeProperties(external_links_open_new_window='false')
+        self.jstool.cookResources()
+
+    ext_links_open_new_window = property(get_ext_links_open_new_window,
+                                         set_ext_links_open_new_window)
 
 
 class SkinsControlPanel(ControlPanelForm):
