@@ -1,7 +1,6 @@
 Adding, Editing, Moving and Deleting a Document
 ===============================================
 
-A replacement for both the 'rendering.txt' and the 'forms.txt' test.
 Does what the title says, really.  Plus some assertions.
 
     >>> from Products.Five.testbrowser import Browser
