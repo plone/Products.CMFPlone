@@ -18,20 +18,22 @@ from widgets import MultiCheckBoxThreeColumnWidget
 class ISearchSchema(Interface):
 
     enable_livesearch = Bool(title=_(u'Enable LiveSearch'),
-                             description=_(u'''Enables the LiveSearch feature,
-                                            which shows live results if the
-                                            browser supports Javascript.'''),
+                             description=_(u"Enables the LiveSearch feature, "
+                                            "which shows live results if the"
+                                            "browser supports Javascript."),
                              default=False,
                              required=True)
 
-    types_not_searched = Tuple(title=_(u'Define the types to be searched'),
-                               description=_(u'''Define the types that should be
-                                             searched when you use the
-                                             searchbox. Note that if new content
-                                             types are installed, they will be
-                                             enabled for search by default
-                                             unless explicitly turned off here
-                                             or by the relevant installer.'''),
+    types_not_searched = Tuple(title=_(u"Define the types to be shown in the "
+                                        "site and searched"),
+                               description=_(u"Define the types that should be "
+                                             "searched and be available in the "
+                                             "user facing part of the site. "
+                                             "Note that if new content types "
+                                             "are installed, they will be "
+                                             "enabled by default unless "
+                                             "explicitly turned off here or "
+                                             "by the relevant installer."),
                                required=True,
                                missing_value=tuple(),
                                value_type=Choice(
@@ -72,6 +74,7 @@ class SearchControlPanelAdapter(SchemaAdapterBase):
         value = [t for t in self.ttool.listContentTypes() if t not in value]
         self.context._updateProperty('types_not_searched', value)
 
+    # This also defines the user friendly types
     types_not_searched = property(get_types_not_searched, set_types_not_searched)
 
 
