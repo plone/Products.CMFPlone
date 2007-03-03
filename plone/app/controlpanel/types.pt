@@ -106,10 +106,11 @@
                     <label for="new_workflow" 
                            i18n:translate="types_controlpanel_new_workflow">New workflow:</label>
                 
-                    <select onchange="form.submit()" id="workflows" name="new_workflow">
+                    <select onchange="form.submit()" id="workflows" name="new_workflow"
+                        tal:define="selected_wf view/new_workflow">
                         <tal:wfs repeat="wf view/available_workflows">
                             <option tal:content="wf/title"
-                                    tal:attributes="selected python:wf['id'] == current_wf['id'] and 'selected' or None;
+                                    tal:attributes="selected python:wf['id'] == selected_wf and 'selected' or None;
                                                     value wf/id">Intranet Workflow
                             </option>
                         </tal:wfs>
@@ -121,8 +122,15 @@
                     </select>
                 </div>
             
+                <input 
+                    type="hidden" 
+                    name="form.workflow.submitted:boolean" 
+                    value="True"
+                    tal:condition="view/have_new_workflow"
+                    />
+            
                 <div tal:define="new_workflow view/new_workflow"
-                     tal:condition="python:new_workflow != current_wf['id']" >
+                     tal:condition="python:view.have_new_workflow() and not view.new_workflow_is_none()">
 
                     <label for="states" i18n:translate="types_controlpanel_state_mapping">
                         State Mapping
@@ -170,19 +178,16 @@
                 
             </tal:workflows>
 
+            <div tal:condition="view/have_new_workflow">
+                <img tal:replace="structure here/info_icon.gif" />
+                <span style="color: red" i18n:translate="types_controlpanel_warn_remap">
+                    This operation may take a long time, and may slow down Plone significantly.
+                </span>
+            </div>
+
             <div class="formControls">
-                
               <input type="submit" value="Apply" name="form.button.Save" class="context" />
               <input type="submit" value="Cancel" name="form.button.Cancel" class="context" />
-                          
-                <!-- This only shows up if changes were made to the workflow settings, since the remapping
-                     could be expensive --> 
-                <tal:check_wf_in_request tal:condition="exists: request/wf_id" >
-                  <tal:check_wf_in_request_change_selected tal:condition="python: request.wf_id != 'No Change'">
-                    <img tal:replace="structure here/info_icon.gif" />
-                    <span style="color: red">This may take a long time, and may slow down Plone significantly.</span>
-                  </tal:check_wf_in_request_change_selected>
-                </tal:check_wf_in_request>
             </div>
             
         </fieldset>

@@ -80,13 +80,11 @@ class TypesControlPanel(BrowserView):
             site_properties.manage_changeProperties(types_not_searched = blacklisted)
 
             # Update workflow 
+            
+            if self.have_new_workflow() and form.get('form.workflow.submitted', False) and save_button:
+                # TODO: Remap
+                pass
 
-            #portal_workflow = getToolByName(self, 'portal_workflow')
-            #portal_workflow.setChainForPortalTypes((form['type_id'],), (form['wf_id'],))
-
-            # Update workflow state mappings
-            #self.change_workflow()
-            #self.request.response.redirect(self.context.absolute_url())
         
         if cancel_button:
             self.request.response.redirect(self.context.absolute_url() + '/plone_control_panel')
@@ -143,6 +141,14 @@ class TypesControlPanel(BrowserView):
             return current_workflow
         else:
             return self.request.form.get('new_workflow', current_workflow)
+
+    @memoize
+    def have_new_workflow(self):
+        return self.current_workflow()['id'] != self.new_workflow()
+
+    @memoize
+    def new_workflow_is_none(self):
+        return self.new_workflow() == '[none]'
 
     def new_workflow_available_states(self):
         current_workflow = self.current_workflow()['id']
