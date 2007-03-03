@@ -9,7 +9,9 @@
 <body>
 
 <div metal:fill-slot="main">
-    <tal:main-macro metal:define-macro="main">
+    <tal:main-macro metal:define-macro="main"
+                    tal:define="kssClassesView context/@@kss_field_decorator_view;
+                                getKssClasses nocall:kssClassesView/getKssClassesInlineEditable;">
 
         <div tal:replace="structure provider:plone.abovecontenttitle" />
 
