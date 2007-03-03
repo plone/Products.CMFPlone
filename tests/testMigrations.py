@@ -100,6 +100,7 @@ from Products.CMFPlone.migrations.v3_0.alphas import installContentRulesUtility
 from Products.CMFPlone.migrations.v3_0.alphas import addIconForContentRulesConfiglet
 from Products.CMFPlone.migrations.v3_0.alphas import addContentRulesConfiglet
 from Products.CMFPlone.migrations.v3_0.alphas import addObjectProvidesIndex
+from Products.CMFPlone.migrations.v3_0.alphas import addExternalLinksOpenNewWindowProperty
 
 from zope.app.component.hooks import clearSite
 from zope.app.component.interfaces import ISite
@@ -2192,7 +2193,6 @@ class TestMigrations_v3_0(MigrationTest):
         self.failUnless('HtmlFilter' in [x.getActionId() for x in self.icons.listActionIcons()])
         self.failUnless('SecuritySettings' in [x.getActionId() for x in self.icons.listActionIcons()])
 
-
     def testObjectProvidesIndex(self):
         catalog = getToolByName(self.portal, 'portal_catalog')
         if 'object_provides' in catalog.indexes():
@@ -2200,6 +2200,21 @@ class TestMigrations_v3_0(MigrationTest):
         self.failIf('object_provides' in catalog.indexes())
         addObjectProvidesIndex(self.portal, [])
         self.failUnless('object_provides' in catalog.indexes())
+
+    def testAddExternalLinksOpenNewWindowProperty(self):
+        # adds a site property to portal_properties
+        tool = self.portal.portal_properties
+        sheet = tool.site_properties
+        self.removeSiteProperty('external_links_open_new_window')
+        addExternalLinksOpenNewWindowProperty(self.portal, [])
+        self.failUnless(sheet.hasProperty('external_links_open_new_window'))
+        self.failUnless(sheet.external_links_open_new_window == 'false')
+        # Test migrations succeeds if run multiple times
+        self.removeSiteProperty('external_links_open_new_window')
+        addExternalLinksOpenNewWindowProperty(self.portal, [])
+        addExternalLinksOpenNewWindowProperty(self.portal, [])
+        self.failUnless(sheet.hasProperty('external_links_open_new_window'))
+        self.failUnless(sheet.external_links_open_new_window == 'false')
 
 
 def test_suite():

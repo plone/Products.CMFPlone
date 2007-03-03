@@ -189,6 +189,8 @@ def alpha2_alpha3(portal):
     removeMyStuffAction(portal, out)
     return out
 
+    # Add external_links_open_new_window property to site properties
+    addExternalLinksOpenNewWindowProperty(portal, out)
 
 # --
 # KSS registration
@@ -1022,7 +1024,6 @@ def addObjectProvidesIndex(portal, out):
         catalog.addIndex('object_provides', 'KeywordIndex')
         out.append("Added object_provides index to portal_catalog")
 
-
 def removeMyStuffAction(portal, out):
     """The mystuff action is now covered by the dashboard"""
     actions = getToolByName(portal, 'portal_actions')
@@ -1032,3 +1033,11 @@ def removeMyStuffAction(portal, out):
     if 'mystuff' in category.objectIds():
         category.manage_delObjects(ids=['mystuff'])
         out.append("Removed the mystuff user action")
+
+def addExternalLinksOpenNewWindowProperty(portal, out):
+    """ adds a site property to portal_properties"""
+    tool = getToolByName(portal, 'portal_properties')
+    sheet = tool.site_properties
+    if not sheet.hasProperty('external_links_open_new_window'):
+        sheet.manage_addProperty('external_links_open_new_window','false','string')
+        out.append("Added 'external_links_open_new_window' property to site properties")

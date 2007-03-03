@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Added external_links_open_new_window to site properties which controls
+      the behavior of mark_special_links.js.
+      [hannosch]
+
     - Only show the user friendly types on the navigation control panel.
       [hannosch]
 
