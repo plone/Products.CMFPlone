@@ -101,12 +101,12 @@
             
             <tal:workflows define="current_wf view/current_workflow">
 
-                <div>
+                <div class="field">
                     <label i18n:translate="types_controlpanel_current_workflow">Current workflow:</label>
                     <span tal:content="current_wf/title">Community Workflow</span>
                 </div>
             
-                <div>
+                <div class="field">
                     <label for="new_workflow" 
                            i18n:translate="types_controlpanel_new_workflow">New workflow:</label>
                 
