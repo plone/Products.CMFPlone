@@ -312,3 +312,9 @@ body:load {
    evt-timeout-repeat: '';
    action-client: deleteNode;
 }
+
+#portal-message:timeout {
+   evt-timeout-delay: 2000;
+   evt-timeout-repeat: '';
+   action-client: deleteNode;
+}

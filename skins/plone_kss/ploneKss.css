@@ -24,8 +24,17 @@
     cursor: text;
 }
 
-.kssInlineForm .formHelp,
-.kssInlineForm .fieldRequired,
-.kssInlineForm label {
+h1.inlineEditable:hover {
+    padding-bottom: 1px;
+}
+
+.inlineForm .formHelp,
+.inlineForm .fieldRequired,
+.inlineForm label {
     display: none;
+}
+
+.inlineForm #archetypes-fieldname-title input,
+.inlineForm #archetypes-fieldname-title {
+    font-size: 100%;
 }
