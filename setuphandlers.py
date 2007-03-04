@@ -2,12 +2,12 @@
 CMFPlone setup handlers.
 """
 
+from five.localsitemanager import make_objectmanager_site
+from zope.app.component.interfaces import ISite
 from zope.component import getUtility
 from zope.component import getMultiAdapter
 from zope.component import queryUtility
 
-from zope.component.globalregistry import base
-from zope.component.persistentregistry import PersistentComponents
 from zope.event import notify
 from zope.i18n.interfaces import ITranslationDomain
 from zope.i18n.interfaces import IUserPreferredLanguages
@@ -25,8 +25,6 @@ from Products.CMFPlone import migrations as migs
 from Products.CMFPlone.events import SiteManagerCreatedEvent
 from Products.CMFPlone.Portal import member_indexhtml
 from Products.CMFQuickInstallerTool.interfaces import INonInstallable
-from Products.Five.component import enableSite
-from Products.Five.component.interfaces import IObjectManagerSite
 
 from plone.portlets.interfaces import IPortletAssignmentMapping
 from plone.portlets.interfaces import IPortletManager
@@ -218,11 +216,8 @@ class PloneGenerator:
         """
         Make the portal a Zope3 site and create a site manager.
         """
-        enableSite(portal, iface=IObjectManagerSite)
-
-        components = PersistentComponents()
-        components.__bases__ = (base,)
-        portal.setSiteManager(components)
+        if not ISite.providedBy(portal):
+            make_objectmanager_site(portal)
         # The following event is primarily useful for setting the site hooks
         # during test runs.
         notify(SiteManagerCreatedEvent(portal))

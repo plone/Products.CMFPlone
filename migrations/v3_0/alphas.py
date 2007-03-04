@@ -1,12 +1,10 @@
 import os
 
+from five.localsitemanager import make_objectmanager_site
+from zope.app.component.interfaces import ISite
 from zope.component import getMultiAdapter
 from zope.component import getSiteManager
 from zope.component import getUtility
-
-from zope.app.component.interfaces import ISite
-from zope.component.globalregistry import base
-from zope.component.persistentregistry import PersistentComponents
 
 from Acquisition import aq_base
 from Globals import package_home
@@ -28,8 +26,6 @@ from Products.CMFPlone.interfaces import IInterfaceTool
 from Products.CMFPlone.interfaces import IMigrationTool
 from Products.CMFPlone.interfaces import ITranslationServiceTool
 from Products.CMFPlone.migrations.migration_util import installOrReinstallProduct
-from Products.Five.component import enableSite
-from Products.Five.component.interfaces import IObjectManagerSite
 
 from plone.portlets.interfaces import IPortletManager
 from plone.portlets.interfaces import ILocalPortletAssignmentManager
@@ -321,12 +317,7 @@ class installKss(object):
 
 def enableZope3Site(portal, out):
     if not ISite.providedBy(portal):
-        enableSite(portal, iface=IObjectManagerSite)
-
-        components = PersistentComponents()
-        components.__bases__ = (base,)
-        portal.setSiteManager(components)
-
+        make_objectmanager_site(portal)
         out.append('Made the portal a Zope3 site.')
 
 

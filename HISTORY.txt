@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Replaced our local component registry with one from five.localsitemanager.
+      There is no migration path for existing Plone 3.0 alpha sites, so make
+      sure to throw them away and recreate new ones. Migration from Plone < 3.0
+      is of course supported.
+      [hannosch]
+
     - Optimized the calendar_macros template. Trying to translate integers
       like years or hours wasn't very helpful.
       [hannosch]

@@ -717,7 +717,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         setSite(self.portal)
         # And should get the local site manager
         sm = getSiteManager()
-        self.failUnless(sm is comp)
+        self.failUnless(aq_base(sm) is aq_base(comp))
 
     def testUtilityRegistration(self):
         gsm = getGlobalSiteManager()
