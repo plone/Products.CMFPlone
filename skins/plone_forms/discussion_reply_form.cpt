@@ -20,9 +20,7 @@
     <tal:discussable define="template python:getattr(here, discussable.getLayout(), None);
                              macros template/macros | nothing;
                              main_macro macros/main | nothing;
-                             showDiscussable python:main_macro;
-                             template template_id"
-                     >
+                             showDiscussable python:main_macro;">
 
         <div class="comment" 
              tal:condition="showDiscussable"
