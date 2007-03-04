@@ -69,7 +69,7 @@ def portletDirective(_context, name, interface, assignment, renderer, addview,
     
     # <browser:page 
     #   for="[interface]"
-    #   name="edit.html"
+    #   name="edit"
     #   class="[editview]"
     #   permission="[edit_permission]"
     #   />
@@ -77,6 +77,6 @@ def portletDirective(_context, name, interface, assignment, renderer, addview,
     if editview is not None:
         page(_context, 
              for_=interface,
-             name=u"edit.html",
+             name=u"edit",
              class_=editview,
              permission=edit_permission)

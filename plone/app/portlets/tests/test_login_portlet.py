@@ -47,7 +47,7 @@ class TestPortlet(PortletsTestCase):
         request = self.folder.REQUEST
 
         mapping['foo'] = login.Assignment()
-        editview = queryMultiAdapter((mapping['foo'], request), name='edit.html', default=None)
+        editview = queryMultiAdapter((mapping['foo'], request), name='edit', default=None)
         self.failUnless(editview is None)
 
     def testRenderer(self):

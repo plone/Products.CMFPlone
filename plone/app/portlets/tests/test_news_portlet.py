@@ -45,7 +45,7 @@ class TestPortlet(PortletsTestCase):
         request = self.folder.REQUEST
 
         mapping['foo'] = news.Assignment(count=5)
-        editview = getMultiAdapter((mapping['foo'], request), name='edit.html')
+        editview = getMultiAdapter((mapping['foo'], request), name='edit')
         self.failUnless(isinstance(editview, news.EditForm))
 
     def testRenderer(self):

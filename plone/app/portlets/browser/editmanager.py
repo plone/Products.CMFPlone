@@ -91,11 +91,11 @@ class EditPortletManagerRenderer(Explicit):
         for idx in range(len(assignments)):
             name = assignments[idx].__name__
             
-            editview = queryMultiAdapter((assignments[idx], self.request), name='edit.html', default=None)
+            editview = queryMultiAdapter((assignments[idx], self.request), name='edit', default=None)
             if editview is None:
                 editviewName = ''
             else:
-                editviewName = '%s/%s/edit.html' % (baseUrl, name)
+                editviewName = '%s/%s/edit' % (baseUrl, name)
             
             portlet_hash = hashPortletInfo(dict(manager=manager_name, category=category, 
                                                 key=key, name=name,))
