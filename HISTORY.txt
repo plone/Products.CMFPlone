@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Added new user/group settings control panel.
+      [hannosch]
+
     - Moved version overview and server debug mode to the maintenance control
       panel. Added warning message about missing mail host or email from adress
       to the main control panel view.

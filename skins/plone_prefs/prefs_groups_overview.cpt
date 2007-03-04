@@ -36,6 +36,11 @@
                    tal:attributes="href string:$here_url/$template_id"
                    i18n:translate="label_groups">Groups</a>
             </li>
+            <li>
+                <a href=""
+                   tal:attributes="href string:$portal_url/@@usergroup-controlpanel.html"
+                   i18n:translate="label_usergroup_settings">Settings</a>
+            </li>
         </ul>
 
         <div class="contentActions">

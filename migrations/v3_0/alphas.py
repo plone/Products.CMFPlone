@@ -194,7 +194,6 @@ def alpha2_alpha3(portal):
 
     # Remove the mystuff user action
     removeMyStuffAction(portal, out)
-    return out
 
     # Add external_links_open_new_window property to site properties
     addExternalLinksOpenNewWindowProperty(portal, out)
@@ -205,6 +204,11 @@ def alpha2_alpha3(portal):
     
     # Add workflows that people may be missing
     addMissingWorkflows(portal, out)
+
+    # Add many_groups property to site properties
+    addManyGroupsProperty(portal, out)
+
+    return out
 
 # --
 # KSS registration
@@ -1159,5 +1163,11 @@ def addMissingWorkflows(portal, out):
                                     # (does it matter at all?)
                       )
         out.append("Added workflow %s" % wf_id)
-    
-    
+
+def addManyGroupsProperty(portal, out):
+    """ adds a site property to portal_properties"""
+    tool = getToolByName(portal, 'portal_properties')
+    sheet = tool.site_properties
+    if not sheet.hasProperty('many_groups'):
+        sheet.manage_addProperty('many_groups', False ,'boolean')
+        out.append("Added 'many_groups' property to site properties")

@@ -105,6 +105,7 @@ from Products.CMFPlone.migrations.v3_0.alphas import addExternalLinksOpenNewWind
 from Products.CMFPlone.migrations.v3_0.alphas import addTypesConfiglet
 from Products.CMFPlone.migrations.v3_0.alphas import addIconForTypesConfiglet
 from Products.CMFPlone.migrations.v3_0.alphas import addMissingWorkflows
+from Products.CMFPlone.migrations.v3_0.alphas import addManyGroupsProperty
 
 from zope.app.component.hooks import clearSite
 from zope.app.component.interfaces import ISite
@@ -2294,6 +2295,22 @@ class TestMigrations_v3_0(MigrationTest):
     def testAddMissingWorkflowsNoTool(self):
         self.portal._delObject('portal_workflow')
         addMissingWorkflows(self.portal, [])
+
+    def testAddManyGroupsProperty(self):
+        # adds a site property to portal_properties
+        tool = self.portal.portal_properties
+        sheet = tool.site_properties
+        self.removeSiteProperty('many_groups')
+        addManyGroupsProperty(self.portal, [])
+        self.failUnless(sheet.hasProperty('many_groups'))
+        self.failUnless(sheet.many_groups == False)
+        # Test migrations succeeds if run multiple times
+        self.removeSiteProperty('many_groups')
+        addManyGroupsProperty(self.portal, [])
+        addManyGroupsProperty(self.portal, [])
+        self.failUnless(sheet.hasProperty('many_groups'))
+        self.failUnless(sheet.many_groups == False)
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite
