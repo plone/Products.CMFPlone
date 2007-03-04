@@ -15,6 +15,7 @@ from Products.ATContentTypes.migration.v1_2 import upgradeATCTTool
 from Products.CMFCore.ActionInformation import Action
 from Products.CMFCore.ActionInformation import ActionCategory
 from Products.CMFCore.Expression import Expression
+from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.permissions import ManagePortal
 from Products.CMFCore.DirectoryView import createDirectoryView
@@ -24,6 +25,7 @@ from Products.CMFPlone import cmfplone_globals
 from Products.CMFPlone.interfaces import IControlPanel
 from Products.CMFPlone.interfaces import IInterfaceTool
 from Products.CMFPlone.interfaces import IMigrationTool
+from Products.CMFPlone.interfaces import IPloneSiteRoot
 from Products.CMFPlone.interfaces import ITranslationServiceTool
 from Products.CMFPlone.migrations.migration_util import installOrReinstallProduct
 
@@ -40,6 +42,9 @@ def three0_alpha1(portal):
 
     # Make the portal a Zope3 site
     enableZope3Site(portal, out)
+
+    # register some tools as utilities
+    registerToolsAsUtilities(portal, out)
 
     # Migrate old ActionInformation to Actions and move them to the actions tool
     migrateOldActions(portal, out)
@@ -95,9 +100,6 @@ def alpha1_alpha2(portal):
 
     # add form_tabbing.js
     addFormTabbingJS(portal, out)
-
-    # register some tools as utilities
-    registerToolsAsUtilities(portal, out)
 
     # install the kss bits
     installKss(portal, out)
@@ -203,6 +205,9 @@ def alpha2_alpha3(portal):
 
     # Add many_groups property to site properties
     addManyGroupsProperty(portal, out)
+
+    # register some tools as utilities
+    registerToolsAsUtilities(portal, out)
 
     return out
 
@@ -601,7 +606,9 @@ def addFormInputLabelJS(portal, out):
 
 def registerToolsAsUtilities(portal, out):
     sm = getSiteManager(portal)
-    registration = ((portal.portal_controlpanel, IControlPanel),
+    registration = ((portal, ISiteRoot),
+                    (portal, IPloneSiteRoot),
+                    (portal.portal_controlpanel, IControlPanel),
                     (portal.portal_interface, IInterfaceTool),
                     (portal.portal_migration, IMigrationTool),
                     (portal.translation_service, ITranslationServiceTool),
@@ -610,8 +617,8 @@ def registerToolsAsUtilities(portal, out):
         if sm.queryUtility(reg[1]) is None:
             sm.registerUtility(reg[0], reg[1])
 
-    out.append("Registered controlpanel, interface, migration and translation "
-               "service tools as utilities.")
+    out.append("Registered portal, controlpanel, interface, migration and "
+               "translation service tools as utilities.")
 
 def installRedirectorUtility(portal, out):
     from plone.app.redirector.interfaces import IRedirectionStorage

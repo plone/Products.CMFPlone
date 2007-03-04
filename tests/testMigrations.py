@@ -14,12 +14,14 @@ from Products.CMFCore.Expression import Expression
 from Products.CMFCore.permissions import AccessInactivePortalContent
 from Products.CMFCore.interfaces import IActionCategory
 from Products.CMFCore.interfaces import IActionInfo
+from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFCore.ActionInformation import Action
 from Products.CMFCore.ActionInformation import ActionInformation
 from Products.CMFPlone.PloneTool import AllowSendto
 from Products.CMFPlone.interfaces import IControlPanel
 from Products.CMFPlone.interfaces import IInterfaceTool
 from Products.CMFPlone.interfaces import IMigrationTool
+from Products.CMFPlone.interfaces import IPloneSiteRoot
 from Products.CMFPlone.interfaces import ITranslationServiceTool
 from Products.CMFPlone.utils import _createObjectByType
 from Products.CMFPlone.UnicodeSplitter import Splitter, CaseNormalizer
@@ -1621,8 +1623,8 @@ class TestMigrations_v3_0(MigrationTest):
 
     def testRegisterToolsAsUtilities(self):
         sm = getSiteManager(self.portal)
-        interfaces = (IControlPanel, IInterfaceTool, IMigrationTool,
-                      ITranslationServiceTool, )
+        interfaces = (ISiteRoot, IPloneSiteRoot, IControlPanel, IInterfaceTool,
+                      IMigrationTool, ITranslationServiceTool, )
         for i in interfaces:
             sm.unregisterUtility(provided=i)
         registerToolsAsUtilities(self.portal, [])
@@ -1632,8 +1634,8 @@ class TestMigrations_v3_0(MigrationTest):
     def testRegisterToolsAsUtilitiesTwice(self):
         # Should not fail if done twice
         sm = getSiteManager(self.portal)
-        interfaces = (IControlPanel, IInterfaceTool, IMigrationTool,
-                      ITranslationServiceTool, )
+        interfaces = (ISiteRoot, IPloneSiteRoot, IControlPanel, IInterfaceTool,
+                      IMigrationTool, ITranslationServiceTool, )
         for i in interfaces:
             sm.unregisterUtility(provided=i)
         registerToolsAsUtilities(self.portal, [])

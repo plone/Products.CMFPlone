@@ -2,6 +2,12 @@
 <componentregistry>
  <adapters/>
  <utilities>
+  <utility
+     interface="Products.CMFCore.interfaces.ISiteRoot"
+     object="/"/>
+  <utility
+     interface="Products.CMFPlone.interfaces.IPloneSiteRoot"
+     object="/"/>
   <utility 
      interface="plone.app.i18n.locales.interfaces.ICountries"
      object="/plone_app_countries"/>

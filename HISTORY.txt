@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Registered the portal itself as a utility providing IPloneSiteRoot and
+      as one providing CMF's ISiteRoot.
+      [hannosch]
+
     - Replaced our local component registry with one from five.localsitemanager.
       There is no migration path for existing Plone 3.0 alpha sites, so make
       sure to throw them away and recreate new ones. Migration from Plone < 3.0
