@@ -46,7 +46,7 @@
     url_expr="string:${portal_url}/prefs_error_log_form" visible="True">
   <permission>Manage portal</permission>
  </configlet>
- <configlet title="Content types" action_id="TypesSettings"
+ <configlet title="Types" action_id="TypesSettings"
     appId="TypesSettings" category="Plone" condition_expr=""
     url_expr="string:${portal_url}/@@types-controlpanel.html"
     visible="True">
@@ -106,7 +106,7 @@
     url_expr="string:${portal_url}/@@maintenance-controlpanel.html" visible="True">
   <permission>Manage portal</permission>
  </configlet>
- <configlet title="Content Rules Settings" action_id="ContentRules" appId="Plone"
+ <configlet title="Content Rules" action_id="ContentRules" appId="Plone"
     category="Plone" condition_expr=""
     url_expr="string:${portal_url}/@@rules-controlpanel.html" visible="True">
   <permission>Content rules: Manage rules</permission>
