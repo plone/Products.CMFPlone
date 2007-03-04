@@ -48,6 +48,10 @@
                         </option>
                     </tal:option>
                 </select>
+                <noscript>
+                    <input type="submit" name="form.button.SelectContentType" class="standalone" 
+                           value="Change" i18n:attributes="value" />
+                </noscript>
            </legend>
 
            <div class="field">
@@ -121,6 +125,10 @@
                             tal:attributes="selected python:selected_wf == '[none]' and 'selected' or None"
                             i18n:translate="types_controlpanel_no_workflow">No Workflow</option>
                     </select>
+                    <noscript>
+                        <input type="submit" name="form.button.SelectWorkflow" class="standalone"
+                                value="Change" i18n:attributes="value">
+                    </noscript>
                 </div>
             
                 <input 
