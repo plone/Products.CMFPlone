@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Optimized the calendar_macros template. Trying to translate integers
+      like years or hours wasn't very helpful.
+      [hannosch]
+
     - Optimized code in the translation service tool for the calendar_macros
       use case, so we can get rid of the explicit call of the deprecated
       utranslate script.

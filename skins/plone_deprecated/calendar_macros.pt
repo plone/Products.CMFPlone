@@ -46,7 +46,6 @@
 	  <option value="year"
 		  tal:repeat="year years"
 		  tal:attributes="value year/value; selected year/selected"
-		  i18n:translate=""
 	  tal:content="year/id">year</option>
 
 	</select>
@@ -106,7 +105,6 @@
 	  <option value="subj"
 		  tal:repeat="day days"
 		  tal:attributes="value day/value; selected day/selected"
-		  i18n:translate=""
 	  tal:content="day/id">day</option>
 
 	</select>
@@ -129,7 +127,6 @@
 	  <option value="subj"
 		  tal:repeat="hour hours"
 		  tal:attributes="value hour/value; selected hour/selected"
-		  i18n:translate=""
 	  tal:content="hour/id">hour</option>
 
 	</select>
@@ -163,7 +160,6 @@
 	  <option value="subj"
 		  tal:repeat="minute minutes"
 		  tal:attributes="value minute/value; selected minute/selected"
-		  i18n:translate=""
 	  tal:content="minute/id">hour</option>
 
 	</select>
