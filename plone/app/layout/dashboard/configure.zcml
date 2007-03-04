@@ -10,5 +10,5 @@
         permission="plone.app.portlets.ManageOwnPortlets"
         template="dashboard.pt"
         />
-    
+            
 </configure>
