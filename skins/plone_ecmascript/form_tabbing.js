@@ -58,8 +58,10 @@ ploneFormTabbing.initializeForm = function(form) {
 
     // XXX this is now broken due to cssQuery, with dynamic insertions
     //var legends = cssQuery("fieldset > legend", form);
+    // XXX the following does not work either:
+    //var fieldsets = cssQuery("> fieldset", form);
     //
-    var fieldsets = cssQuery("> fieldset", form);
+    var fieldsets = cssQuery("fieldset", form);
     var legends = [];
     for (var i=0; i<fieldsets.length; i++) {
         var childnodes = fieldsets[i].childNodes;
@@ -106,7 +108,7 @@ ploneFormTabbing.initializeForm = function(form) {
 
     form.insertBefore(tabs, form.firstChild);
 
-    var fieldsets = cssQuery("> fieldset", form);
+    //var fieldsets = cssQuery("> fieldset", form);
     for (var i=0; i<fieldsets.length; i++) {
         var fieldset = fieldsets[i];
         addClassName(fieldset, "formPanel")
