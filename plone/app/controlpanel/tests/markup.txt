@@ -5,9 +5,9 @@ Viewing the markup control panel
 --------------------------------
 
     >>> self.loginAsManager()
-    >>> self.browser.open('http://nohost/plone/@@markup-controlpanel.html')
+    >>> self.browser.open('http://nohost/plone/@@markup-controlpanel')
     >>> self.browser.url
-    'http://nohost/plone/@@markup-controlpanel.html'
+    'http://nohost/plone/@@markup-controlpanel'
 
 We have two controls, one for the default type and a multiselection for alternativate formats:
 
@@ -19,7 +19,7 @@ We have two controls, one for the default type and a multiselection for alternat
 Click the save button without making any changes:
 
     >>> self.browser.getControl(name="form.actions.save").click()
-    >>> self.browser.url.endswith('markup-controlpanel.html')
+    >>> self.browser.url.endswith('markup-controlpanel')
     True
 
 We should get a status message:
@@ -41,7 +41,7 @@ There should be still no changes:
 Modifying values
 ----------------
 
-    >>> self.browser.open('http://nohost/plone/@@markup-controlpanel.html')
+    >>> self.browser.open('http://nohost/plone/@@markup-controlpanel')
     >>> self.browser.getControl(name='form.default_type').value = ['text/x-web-textile',]
     >>> self.browser.getControl(name='form.allowed_types').value = ['text/html', 'text/x-web-textile']
     >>> self.browser.getControl(name="form.actions.save").click()

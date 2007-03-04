@@ -32,7 +32,7 @@
     
     <form method="POST" 
           tal:define="type_id view/type_id"
-          tal:attributes="action string:${context/absolute_url}/@@types-controlpanel.html">
+          tal:attributes="action string:${context/absolute_url}/@@types-controlpanel">
 
         <input type="hidden" name="form.submitted:boolean" value="True" />
         <input type="hidden" name="old_type_id" tal:attributes="value type_id" />

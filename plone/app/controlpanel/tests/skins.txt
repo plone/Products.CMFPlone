@@ -22,8 +22,8 @@ Make sure we assume the right defaults
 Viewing the skins control panel
 -------------------------------
 
-    >>> self.browser.open('http://nohost/plone/@@skins-controlpanel.html')
-    >>> self.browser.url.endswith('skins-controlpanel.html')
+    >>> self.browser.open('http://nohost/plone/@@skins-controlpanel')
+    >>> self.browser.url.endswith('skins-controlpanel')
     True
 
 Click the cancel button:
@@ -40,8 +40,8 @@ There should be still no changes:
 Make some changes
 -----------------
 
-    >>> self.browser.open('http://nohost/plone/@@skins-controlpanel.html')
-    >>> self.browser.url.endswith('skins-controlpanel.html')
+    >>> self.browser.open('http://nohost/plone/@@skins-controlpanel')
+    >>> self.browser.url.endswith('skins-controlpanel')
     True
 
     >>> self.browser.getControl(name='form.theme').value = ('TestSkin', )
@@ -49,7 +49,7 @@ Make some changes
 Click the save button:
 
     >>> self.browser.getControl(name="form.actions.save").click()
-    >>> self.browser.url.endswith('skins-controlpanel.html')
+    >>> self.browser.url.endswith('skins-controlpanel')
     True
 
 We should be informed that something has changed:

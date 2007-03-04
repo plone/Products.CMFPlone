@@ -95,7 +95,7 @@ class TypesControlPanel(BrowserView):
                     del state_map['[none]']
                 remap_workflow(context, type_ids=(type_id,), chain=chain, state_map=state_map)
                 
-                self.request.response.redirect('%s/@@types-controlpanel.html?type_id=%s' % (context.absolute_url() , type_id))
+                self.request.response.redirect('%s/@@types-controlpanel?type_id=%s' % (context.absolute_url() , type_id))
                 postback = False
             
         elif cancel_button:

@@ -9,14 +9,14 @@ First some initial setup code:
 Viewing the search control panel
 --------------------------------
 
-    >>> self.browser.open('http://nohost/plone/@@search-controlpanel.html')
-    >>> self.browser.url.endswith('search-controlpanel.html')
+    >>> self.browser.open('http://nohost/plone/@@search-controlpanel')
+    >>> self.browser.url.endswith('search-controlpanel')
     True
 
 Click the save button without making any changes:
 
     >>> self.browser.getControl(name="form.actions.save").click()
-    >>> self.browser.url.endswith('search-controlpanel.html')
+    >>> self.browser.url.endswith('search-controlpanel')
     True
 
 We should get a status message:
@@ -38,8 +38,8 @@ There should be still no changes:
 Make some changes
 -----------------
 
-    >>> self.browser.open('http://nohost/plone/@@search-controlpanel.html')
-    >>> self.browser.url.endswith('search-controlpanel.html')
+    >>> self.browser.open('http://nohost/plone/@@search-controlpanel')
+    >>> self.browser.url.endswith('search-controlpanel')
     True
 
     >>> self.browser.getControl(name='form.enable_livesearch').value = False
@@ -50,7 +50,7 @@ Make some changes
 Click the save button:
 
     >>> self.browser.getControl(name="form.actions.save").click()
-    >>> self.browser.url.endswith('search-controlpanel.html')
+    >>> self.browser.url.endswith('search-controlpanel')
     True
 
 We should be informed that something has changed:

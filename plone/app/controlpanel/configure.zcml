@@ -23,77 +23,77 @@
   <adapter factory=".usergroups.UserGroupsSettingsControlPanelAdapter" />
 
   <browser:page
-      name="calendar-controlpanel.html"
+      name="calendar-controlpanel"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       class=".calendar.CalendarControlPanel"
       permission="cmf.ManagePortal"
       />
 
   <browser:page
-      name="filter-controlpanel.html"
+      name="filter-controlpanel"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       class=".filter.FilterControlPanel"
       permission="cmf.ManagePortal"
       />
 
   <browser:page
-      name="mail-controlpanel.html"
+      name="mail-controlpanel"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       class=".mail.MailControlPanel"
       permission="cmf.ManagePortal"
       />
 
   <browser:page
-      name="markup-controlpanel.html"
+      name="markup-controlpanel"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       class=".markup.MarkupControlPanel"
       permission="cmf.ManagePortal"
       />
 
   <browser:page
-      name="maintenance-controlpanel.html"
+      name="maintenance-controlpanel"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       class=".maintenance.MaintenanceControlPanel"
       permission="cmf.ManagePortal"
       />
 
   <browser:page
-      name="search-controlpanel.html"
+      name="search-controlpanel"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       class=".search.SearchControlPanel"
       permission="cmf.ManagePortal"
       />
       
   <browser:page
-      name="security-controlpanel.html"
+      name="security-controlpanel"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       class=".security.SecurityControlPanel"
       permission="cmf.ManagePortal"
       />
 
   <browser:page
-      name="site-controlpanel.html"
+      name="site-controlpanel"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       class=".site.SiteControlPanel"
       permission="cmf.ManagePortal"
       />
 
   <browser:page
-      name="skins-controlpanel.html"
+      name="skins-controlpanel"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       class=".skins.SkinsControlPanel"
       permission="cmf.ManagePortal"
       />
 
   <browser:page
-      name="types-controlpanel.html"
+      name="types-controlpanel"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       class=".types.TypesControlPanel"
       permission="cmf.ManagePortal"
       />
 
   <browser:page
-      name="usergroup-controlpanel.html"
+      name="usergroup-controlpanel"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       class=".usergroups.UserGroupsSettingsControlPanel"
       permission="cmf.ManagePortal"

@@ -12,9 +12,9 @@ First some initial setup code:
 Viewing the site control panel
 -----------------------------
 
-    >>> self.browser.open('http://nohost/plone/@@site-controlpanel.html')
+    >>> self.browser.open('http://nohost/plone/@@site-controlpanel')
     >>> self.browser.url
-    'http://nohost/plone/@@site-controlpanel.html'
+    'http://nohost/plone/@@site-controlpanel'
 
 Click the cancel button:
 
@@ -30,8 +30,8 @@ There should be still no changes:
 Make some changes
 -----------------
 
-    >>> self.browser.open('http://nohost/plone/@@site-controlpanel.html')
-    >>> self.browser.url.endswith('site-controlpanel.html')
+    >>> self.browser.open('http://nohost/plone/@@site-controlpanel')
+    >>> self.browser.url.endswith('site-controlpanel')
     True
 
     >>> self.browser.getControl(name='form.enable_sitemap').value = True
@@ -39,7 +39,7 @@ Make some changes
 Click the save button:
 
     >>> self.browser.getControl(name="form.actions.save").click()
-    >>> self.browser.url.endswith('site-controlpanel.html')
+    >>> self.browser.url.endswith('site-controlpanel')
     True
 
 We should be informed that something has changed:
@@ -66,8 +66,8 @@ Test if the sitemaps does appear:
 Make again some changes
 -----------------------
 
-    >>> self.browser.open('http://nohost/plone/@@site-controlpanel.html')
-    >>> self.browser.url.endswith('site-controlpanel.html')
+    >>> self.browser.open('http://nohost/plone/@@site-controlpanel')
+    >>> self.browser.url.endswith('site-controlpanel')
     True
 
     >>> self.browser.getControl(name='form.enable_sitemap').value = False
@@ -75,7 +75,7 @@ Make again some changes
 Click the save button:
 
     >>> self.browser.getControl(name="form.actions.save").click()
-    >>> self.browser.url.endswith('site-controlpanel.html')
+    >>> self.browser.url.endswith('site-controlpanel')
     True
 
 We should be informed that something has changed:

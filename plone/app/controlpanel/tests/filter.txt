@@ -12,14 +12,14 @@ First some initial setup code:
 Viewing the search control panel
 --------------------------------
 
-    >>> browser.open('http://nohost/plone/@@filter-controlpanel.html')
-    >>> browser.url.endswith('filter-controlpanel.html')
+    >>> browser.open('http://nohost/plone/@@filter-controlpanel')
+    >>> browser.url.endswith('filter-controlpanel')
     True
 
 Click the save button without making any changes:
 
     >>> browser.getControl(name="form.actions.save").click()
-    >>> browser.url.endswith('filter-controlpanel.html')
+    >>> browser.url.endswith('filter-controlpanel')
     True
 
 We should get a status message:
@@ -41,7 +41,7 @@ There should be still no changes:
 Look at the defaults
 --------------------
 
-    >>> browser.open('http://nohost/plone/@@filter-controlpanel.html')
+    >>> browser.open('http://nohost/plone/@@filter-controlpanel')
 
     >>> def print_all_of(fieldname):
     ...     for i in xrange(sys.maxint):
@@ -171,7 +171,7 @@ safe_html's list of valid tags.
     ...        if c.value==value:
     ...            return c
     ...    raise RuntimeError("That didn't work")
-    >>> browser.open('http://nohost/plone/@@filter-controlpanel.html')
+    >>> browser.open('http://nohost/plone/@@filter-controlpanel')
 
     >>> browser.getControl("Add Stripped tags").click()
     >>> findControl("form.stripped_tags.", "").value = "table"

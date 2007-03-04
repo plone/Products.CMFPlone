@@ -10,8 +10,8 @@ First some initial setup code:
 Viewing the search control panel
 --------------------------------
 
-    >>> self.browser.open('http://nohost/plone/@@mail-controlpanel.html')
-    >>> self.browser.url.endswith('mail-controlpanel.html')
+    >>> self.browser.open('http://nohost/plone/@@mail-controlpanel')
+    >>> self.browser.url.endswith('mail-controlpanel')
     True
 
 Click the cancel button:
@@ -28,8 +28,8 @@ There should be still no changes:
 Make some changes
 -----------------
 
-    >>> self.browser.open('http://nohost/plone/@@mail-controlpanel.html')
-    >>> self.browser.url.endswith('mail-controlpanel.html')
+    >>> self.browser.open('http://nohost/plone/@@mail-controlpanel')
+    >>> self.browser.url.endswith('mail-controlpanel')
     True
 
     >>> self.browser.getControl(name='form.smtp_host').value = 'localhost2'
@@ -42,7 +42,7 @@ Make some changes
 Click the save button:
 
     >>> self.browser.getControl(name="form.actions.save").click()
-    >>> self.browser.url.endswith('mail-controlpanel.html')
+    >>> self.browser.url.endswith('mail-controlpanel')
     True
 
 We should be informed that something has changed:

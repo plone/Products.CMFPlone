@@ -8,8 +8,8 @@ First some initial setup code:
 Viewing the maintenance control panel
 -------------------------------------
 
-    >>> self.browser.open('http://nohost/plone/@@maintenance-controlpanel.html')
-    >>> self.browser.url.endswith('maintenance-controlpanel.html')
+    >>> self.browser.open('http://nohost/plone/@@maintenance-controlpanel')
+    >>> self.browser.url.endswith('maintenance-controlpanel')
     True
 
     >>> 'Zope Database' in self.browser.contents
@@ -20,7 +20,7 @@ manage_pack method by providing a negative value for days:
 
     >>> self.browser.getControl(name='form.days').value = '-1'
     >>> self.browser.getControl(name="form.actions.pack").click()
-    >>> self.browser.url.endswith('maintenance-controlpanel.html')
+    >>> self.browser.url.endswith('maintenance-controlpanel')
     True
 
 We should get a status message:
