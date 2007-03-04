@@ -42,7 +42,7 @@ def utranslate(*args, **kw):
     return safe_unicode(text)
 
 # unicode aware localized time method (l10n)
-def ulocalized_time(time, long_format = None, context = None, domain='plonelocales'):
+def ulocalized_time(time, long_format=None, context=None, domain='plonelocales'):
     # python useable unicode aware localized time method
 
     # get msgid
@@ -147,28 +147,29 @@ def ulocalized_time(time, long_format = None, context = None, domain='plonelocal
     # translate the time string
     return service.translate(domain, msgid, mapping, context)
 
-def _numbertoenglishname(number, format='', attr='_days'):
+def _numbertoenglishname(number, format=None, attr='_days'):
     # returns the english name of day or month number
     # starting with Sunday == 0
     # and January = 1
-    # format is either '', 'a' or 'p')
-    #   ''  means full name (January, February, ...)
+    # format is either None, 'a' or 'p')
+    #   None  means full name (January, February, ...)
     #   'a' means abbreviated (Jan, Feb, ..)
     #   'p' means abbreviated with . (dot) at end (Jan., Feb., ...)
     
     number = int(number)
-    if format: attr = '%s_%s' % (attr, format)
+    if format is not None:
+        attr = '%s_%s' % (attr, format)
     
     # get list from DateTime attribute
     thelist = getattr(DateTime, attr)
 
     return thelist[number]
     
-def monthname_english(number, format=''):
+def monthname_english(number, format=None):
     # returns the english name of month with number
     return _numbertoenglishname(number, format=format, attr='_months')
 
-def weekdayname_english(number, format=''):
+def weekdayname_english(number, format=None):
     # returns the english name of week with number
     return _numbertoenglishname(number, format=format, attr='_days')
 

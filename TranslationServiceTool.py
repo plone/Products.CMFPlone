@@ -9,6 +9,7 @@ from Globals import InitializeClass
 from OFS.SimpleItem import SimpleItem
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.utils import UniqueObject
+from Products.CMFPlone import PloneLocalesMessageFactory as PLMF
 from Products.CMFPlone import ToolNames
 from Products.CMFPlone.interfaces import ITranslationServiceTool
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
@@ -18,6 +19,7 @@ from i18nl10n import ulocalized_time, utranslate, \
                      weekdayname_msgid, weekdayname_msgid_abbr, \
                      weekdayname_msgid_short, \
                      monthname_english, weekdayname_english
+
 
 class TranslationServiceTool(PloneBaseTool, UniqueObject, SimpleItem):
     """ Utility methods to access the translation machinery """
@@ -69,15 +71,16 @@ class TranslationServiceTool(PloneBaseTool, UniqueObject, SimpleItem):
         return unicode(str(m), input_encoding, errors)
 
     security.declarePublic('ulocalized_time')
-    def ulocalized_time(self, time, long_format = None, context = None, domain='plonelocales'):
+    def ulocalized_time(self, time, long_format=None, context=None, domain='plonelocales'):
         # get some context if none is passed
-        if context is None: context = self
+        if context is None:
+            context = self
         return ulocalized_time(time, long_format, context, domain)
 
     security.declarePublic('day_msgid')
-    def day_msgid(self, number, format=''):
+    def day_msgid(self, number, format=None):
         """ Returns the msgid which can be passed to the translation service for
-        l10n of weekday names. Format is either '', 'a' or 's'.
+        l10n of weekday names. Format is either None, 'a' or 's'.
 
         >>> ttool = TranslationServiceTool()
 
@@ -106,7 +109,7 @@ class TranslationServiceTool(PloneBaseTool, UniqueObject, SimpleItem):
         return method(number)
 
     security.declarePublic('month_msgid')
-    def month_msgid(self, number, format=''):
+    def month_msgid(self, number, format=None):
         """ Returns the msgid which can be passed to the translation service for
         l10n of month names. Format is either '' or 'a' (long or abbreviation).
 
@@ -124,7 +127,7 @@ class TranslationServiceTool(PloneBaseTool, UniqueObject, SimpleItem):
         return 'a' == format and monthname_msgid_abbr(number) or monthname_msgid(number)
 
     security.declarePublic('month_english')
-    def month_english(self, number, format=''):
+    def month_english(self, number, format=None):
         """ Returns the english name of month by number. Format is either '' or
         'a' (long or abbreviation).
 
@@ -138,9 +141,19 @@ class TranslationServiceTool(PloneBaseTool, UniqueObject, SimpleItem):
         """
         return monthname_english(number, format=format)
 
+    security.declarePublic('month')
+    def month(self, number, format=None, default=None):
+        """ Returns a Message with the month name, that can be translated by
+        the TAL engine. Format is either None or 'a' (long or abbreviation).
+        """
+        if default is None:
+            default = monthname_english(number, format=format)
+        value = 'a' == format and monthname_msgid_abbr(number) or monthname_msgid(number)
+        return PLMF(value, default=default)
+
     security.declarePublic('weekday_english')
-    def weekday_english(self, number, format=''):
-        """ Returns the english name of a week by number. Format is either '',
+    def weekday_english(self, number, format=None):
+        """ Returns the english name of a week by number. Format is either None,
         'a' or 'p'.
 
         >>> ttool = TranslationServiceTool()

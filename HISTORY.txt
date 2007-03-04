@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Optimized code in the translation service tool for the calendar_macros
+      use case, so we can get rid of the explicit call of the deprecated
+      utranslate script.
+      [hannosch]
+
     - Added new user/group settings control panel.
       [hannosch]
 

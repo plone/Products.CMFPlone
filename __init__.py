@@ -199,9 +199,13 @@ def initialize(context):
                                         factory.addPloneSite),
                           icon='skins/plone_images/logoIcon.gif')
 
-# Import "PloneMessageFactory as _" to create message ids in the plone domain
+# Import "PloneMessageFactory as _" to create messages in the plone domain
 from zope.i18nmessageid import MessageFactory
 PloneMessageFactory = MessageFactory('plone')
+
+# Import PloneLocalesMessageFactory to create messages in the plonelocales domain
+from zope.i18nmessageid import MessageFactory
+PloneLocalesMessageFactory = MessageFactory('plonelocales')
 
 # A module alias for the stupidly named plone.py - now called 'ploneview.py'
 from browser import ploneview
