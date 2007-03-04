@@ -108,6 +108,7 @@
                 
                     <select onchange="form.submit()" id="workflows" name="new_workflow"
                         tal:define="selected_wf view/new_workflow">
+                        
                         <tal:wfs repeat="wf view/available_workflows">
                             <option tal:content="wf/title"
                                     tal:attributes="selected python:wf['id'] == selected_wf and 'selected' or None;
@@ -117,7 +118,7 @@
 
                         <option 
                             value="[none]" 
-                            tal:attributes="selected python:current_wf['id'] == '[none]' and 'selected' or None"
+                            tal:attributes="selected python:selected_wf == '[none]' and 'selected' or None"
                             i18n:translate="types_controlpanel_no_workflow">No Workflow</option>
                     </select>
                 </div>

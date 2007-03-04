@@ -10,6 +10,7 @@ from AccessControl import Unauthorized
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFCore.utils import getToolByName
 
+from plone.app.workflow.remap import remap_workflow
 from plone.memoize.instance import memoize
 
 class TypesControlPanel(BrowserView):
@@ -36,6 +37,7 @@ class TypesControlPanel(BrowserView):
     def __call__(self):
         """Perform the update and redirect if necessary, or render the page
         """
+        postback = True
         context = aq_inner(self.context)
         
         form = self.request.form
@@ -82,14 +84,26 @@ class TypesControlPanel(BrowserView):
             # Update workflow 
             
             if self.have_new_workflow() and form.get('form.workflow.submitted', False) and save_button:
-                # TODO: Remap
-                pass
-
-        
-        if cancel_button:
+                new_wf = self.new_workflow()
+                if new_wf == '[none]':
+                    chain = ()
+                else:
+                    chain = (new_wf,)
+                state_map = dict([(s['old_state'], s['new_state']) for s in form.get('new_wfstates', [])])
+                if state_map.has_key('[none]'):
+                    state_map[None] = state_map['[none]']
+                    del state_map['[none]']
+                remap_workflow(context, type_ids=(type_id,), chain=chain, state_map=state_map)
+                
+                self.request.response.redirect('%s/@@types-controlpanel.html?type_id=%s' % (context.absolute_url() , type_id))
+                postback = False
+            
+        elif cancel_button:
             self.request.response.redirect(self.context.absolute_url() + '/plone_control_panel')
+            postback = False
         
-        return self.template()
+        if postback:
+            return self.template()
             
     # View
 
@@ -164,9 +178,17 @@ class TypesControlPanel(BrowserView):
     def suggested_state_map(self):
         current_workflow = self.current_workflow()['id']
         new_workflow = self.new_workflow()
-        
-        if new_workflow != current_workflow:
-            portal_workflow = getToolByName(aq_inner(self.context), 'portal_workflow')
+            
+        portal_workflow = getToolByName(aq_inner(self.context), 'portal_workflow')
+                
+        if current_workflow == '[none]':
+            new_wf = getattr(portal_workflow, new_workflow)
+            default_state = new_wf.initial_state            
+            return [dict(old_id = '[none]',
+                         old_title = _(u"No workflow"),
+                         suggested_id = default_state)]
+                
+        elif new_workflow != current_workflow:
             old_wf = getattr(portal_workflow, current_workflow)
             new_wf = getattr(portal_workflow, new_workflow)
             
@@ -177,84 +199,6 @@ class TypesControlPanel(BrowserView):
                          old_title = old.title,
                          suggested_id = (old.id in new_states and old.id or default_state))
                     for old in old_wf.states.objectValues()]
+    
         else:
             return []
-
-    @memoize
-    def change_workflow(self):
-        """ Changes the workflow on all objects recursively from self """
-        # XXX DOES THIS WORK WITH PLACEFUL WORKFLOW?
-     
-        # Set up variables
-        portal = getToolByName(aq_inner(self.context), 'portal_url').getPortalObject()
-        typestool = getToolByName(self, 'portal_types')
-        wftool = getToolByName(self, 'portal_workflow')
-
-        cbt = wftool._chains_by_type
-
-        wf_mapping = { ( 'plone_workflow', 'community_workflow') :
-                     { 'private'   : 'private'
-                     , 'visible'   : 'public_draft'
-                     , 'pending'   : 'pending'
-                     , 'published' : 'published'
-                     }
-                 }
-     
-        def walk(obj):
-            num = 0
-            portal_type = getattr(aq_base(obj), 'portal_type', None)
-            if portal_type is not None:
-                chain = cbt.get(portal_type, None)
-                if chain is None or chain:
-                    if chain is None:
-                        chain = wftool._default_chain
-
-                    if hasattr(obj, 'workflow_history'):
-                        wf_hist = getattr(obj, 'workflow_history', {})
-
-                        for key in wf_hist.keys():
-                            for to_wf in chain:
-                                mapping = wf_mapping.get((key,'community_workflow'), {})
-                                if mapping:
-                                    wf_entries = wf_hist[key]
-                                    last_entry = wf_entries[-1]
-                                    if not mapping[last_entry['review_state']] == last_entry['review_state']:
-                                        # We need to insert a transition
-                                        transition = { 'action'       : 'script_migrate'
-                                                     , 'review_state' : mapping[last_entry['review_state']]
-                                                     , 'actor'        : last_entry['actor']
-                                                     , 'comments'     : last_entry['comments']
-                                                     , 'time'         : last_entry['time']
-                                                     }
-                                        wf_entries = wf_entries + (transition,)
-     
-                                    # After massaging and changing, we're ready to reassign
-                                    del wf_hist[key]
-                                    wf_hist[to_wf] = wf_entries
-     
-                        obj.workflow_history = wf_hist
-                        obj.reindexObject(idxs=['allowedRolesAndUsers','review_state'])
-                        num = 1
-     
-            objlist = []
-            if hasattr(aq_base(obj), 'objectValues') and \
-               not getattr(aq_base(obj), 'isLayerLanguage', 0):
-                objlist = list(aq_base(obj).objectValues())
-            if hasattr(aq_base(obj), 'opaqueValues'):
-                objlist += list(obj.opaqueValues())
-            for o in objlist:
-                num += walk(o)
-
-            return num
-     
-        num = 0
-        # Iterate over objects, changing the workflow id in the workflow_history
-        objlist = list(portal.objectValues())
-        if hasattr(self, 'opaqueValues'):
-            objlist += list(self.opaqueValues())
-        for o in objlist:
-            if o.id == 'front-page': 
-                num += walk(o)
-       
-        # Return the number of objects for which we changed workflow
-        return num 
