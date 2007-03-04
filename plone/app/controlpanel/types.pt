@@ -70,8 +70,9 @@
                        tal:attributes="checked python:view.is_addable() and 'checked' or None"
                        />
                 <label for="addable" i18n:translate="types_controlpanel_addable">
-                    Addable
+                    Globally addable
                 </label>
+                <br />
 
                 <input id="allow_discussion"
                        type="checkbox"
@@ -80,7 +81,8 @@
                 <label for="allow_discussion" i18n:translate="types_controlpanel_allow_discussion">
                     Allow comments
                 </label>
-
+                <br />
+                
                 <input id="versionable"
                        type="checkbox"
                        name="versionable"
@@ -88,6 +90,7 @@
                 <label for="versionable" i18n:translate="types_controlpanel_versionable">
                     Enable versioning
                 </label>
+                <br />
 
                 <input id="searchable"
                        type="checkbox"
