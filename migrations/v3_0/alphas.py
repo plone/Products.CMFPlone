@@ -1169,5 +1169,6 @@ def addManyGroupsProperty(portal, out):
     tool = getToolByName(portal, 'portal_properties')
     sheet = tool.site_properties
     if not sheet.hasProperty('many_groups'):
-        sheet.manage_addProperty('many_groups', False ,'boolean')
+        sheet.manage_addProperty('many_groups',
+                getattr(sheet, 'many_users', False) ,'boolean')
         out.append("Added 'many_groups' property to site properties")
