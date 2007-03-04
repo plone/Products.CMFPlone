@@ -10,6 +10,8 @@
 
   <adapter factory=".maintenance.MaintenanceControlPanelAdapter" />
 
+  <adapter factory=".markup.MarkupControlPanelAdapter" />
+
   <adapter factory=".search.SearchControlPanelAdapter" />
   
   <adapter factory=".security.SecurityControlPanelAdapter" />
@@ -18,7 +20,7 @@
 
   <adapter factory=".skins.SkinsControlPanelAdapter" />
 
-  <adapter factory=".markup.MarkupControlPanelAdapter" />
+  <adapter factory=".usergroups.UserGroupsSettingsControlPanelAdapter" />
 
   <browser:page
       name="calendar-controlpanel.html"
@@ -38,6 +40,13 @@
       name="mail-controlpanel.html"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       class=".mail.MailControlPanel"
+      permission="cmf.ManagePortal"
+      />
+
+  <browser:page
+      name="markup-controlpanel.html"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".markup.MarkupControlPanel"
       permission="cmf.ManagePortal"
       />
 
@@ -77,16 +86,16 @@
       />
 
   <browser:page
-      name="markup-controlpanel.html"
-      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-      class=".markup.MarkupControlPanel"
-      permission="cmf.ManagePortal"
-      />
-      
-  <browser:page
       name="types-controlpanel.html"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       class=".types.TypesControlPanel"
+      permission="cmf.ManagePortal"
+      />
+
+  <browser:page
+      name="usergroup-controlpanel.html"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".usergroups.UserGroupsSettingsControlPanel"
       permission="cmf.ManagePortal"
       />
 

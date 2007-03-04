@@ -114,5 +114,5 @@ class SecurityControlPanel(ControlPanelForm):
     form_fields = FormFields(ISecuritySchema)
 
     label = _("Security settings")
-    description = _("Security settings for this Site.")
-    form_name = _("Site Security Settings")
+    description = _("Security settings for this site.")
+    form_name = _("Site security settings")

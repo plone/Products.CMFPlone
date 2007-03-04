@@ -38,16 +38,6 @@ class ISiteSchema(Interface):
                            "option in their preferences."),
                        default=False)
 
-    many_users = Bool(title=_(u'Many users/groups?'),
-                      description=_(u"Determines if your Plone is optimized "
-                          "for small or large sites. In environments with a "
-                          "lot of users and/or groups it can be very slow or "
-                          "impossible to build a list all users or groups. "
-                          "This option tunes the user interface and behaviour "
-                          "of Plone for this case by allowing you to search "
-                          "for users/groups instead of listing all of them."),
-                      default=True)
-
     enable_link_integrity_checks = Bool(title=_(u'Enable link integrity checks'),
                           description=_(u"Determines if the users should get "
                               "warnings when they delete or move content that "
@@ -125,7 +115,6 @@ class SiteControlPanelAdapter(SchemaAdapterBase):
     webstats_js = property(get_webstats_js, set_webstats_js)
 
     visible_ids = ProxyFieldProperty(ISiteSchema['visible_ids'])
-    many_users = ProxyFieldProperty(ISiteSchema['many_users'])
     enable_link_integrity_checks = ProxyFieldProperty(ISiteSchema['enable_link_integrity_checks'])
     ext_editor = ProxyFieldProperty(ISiteSchema['ext_editor'])
     enable_sitemap = ProxyFieldProperty(ISiteSchema['enable_sitemap'])
