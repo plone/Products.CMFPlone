@@ -38,7 +38,7 @@
             </li>
             <li>
                 <a href=""
-                   tal:attributes="href string:$portal_url/@@usergroup-controlpanel.html"
+                   tal:attributes="href string:$portal_url/@@usergroup-controlpanel"
                    i18n:translate="label_usergroup_settings">Settings</a>
             </li>
         </ul>

@@ -420,8 +420,8 @@ def addMarkupConfiglet(portal, out):
             controlPanel.registerConfiglet(
                 id         = 'MarkupSettings',
                 appId      = 'Plone',
-                name       = 'Text markup',
-                action     = 'string:${portal_url}/@@markup-controlpanel.html',
+                name       = 'Text Markup',
+                action     = 'string:${portal_url}/@@markup-controlpanel',
                 category   = 'Plone',
                 permission = ManagePortal,
             )
@@ -439,7 +439,7 @@ def addIconForMarkupConfiglet(portal, out):
                 category='controlpanel',
                 action_id='MarkupSettings',
                 icon_expr='edit.gif',
-                title='Text markup',
+                title='Text Markup',
                 )
         out.append("Added markup configlet icon to actionicons tool.")     
             
@@ -455,8 +455,8 @@ def addTypesConfiglet(portal, out):
             controlPanel.registerConfiglet(
                 id         = 'TypesSettings',
                 appId      = 'Plone',
-                name       = 'Types Settings',
-                action     = 'string:${portal_url}/@@types-controlpanel.html',
+                name       = 'Types',
+                action     = 'string:${portal_url}/@@types-controlpanel',
                 category   = 'Plone',
                 permission = ManagePortal,
             )
@@ -474,7 +474,7 @@ def addIconForTypesConfiglet(portal, out):
                 category='controlpanel',
                 action_id='TypesSettings',
                 icon_expr='document_icon.gif',
-                title='Types Settings',
+                title='Types',
                 )
         out.append("Added types configlet icon to actionicons tool.")            
 
@@ -548,7 +548,7 @@ def addCalendarConfiglet(portal, out):
             controlPanel.registerConfiglet(id         = 'CalendarSettings',
                                            appId      = 'Plone',
                                            name       = 'Calendar',
-                                           action     = 'string:${portal_url}/@@calendar-controlpanel.html',
+                                           action     = 'string:${portal_url}/@@calendar-controlpanel',
                                            category   = 'Plone',
                                            permission = ManagePortal,)
             out.append("Added calendar settings to the control panel")
@@ -562,10 +562,10 @@ def updateSearchAndMailHostConfiglet(portal, out):
 
         if search is not None:
             search.title = "Search"
-            search.action = Expression('string:${portal_url}/@@search-controlpanel.html')
+            search.action = Expression('string:${portal_url}/@@search-controlpanel')
         if mail is not None:
             mail.title = "Mail"
-            mail.action = Expression('string:${portal_url}/@@mail-controlpanel.html')
+            mail.action = Expression('string:${portal_url}/@@mail-controlpanel')
 
 def removeGeneratedCSS(portal, out):
     # remove generated.css from the portal_css registries
@@ -779,7 +779,7 @@ def addMaintenanceConfiglet(portal, out):
             controlPanel.registerConfiglet(id         = 'Maintenance',
                                            appId      = 'Plone',
                                            name       = 'Maintenance',
-                                           action     = 'string:${portal_url}/@@maintenance-controlpanel.html',
+                                           action     = 'string:${portal_url}/@@maintenance-controlpanel',
                                            category   = 'Plone',
                                            permission = ManagePortal,)
             out.append("Added 'Maintenance' to the control panel")
@@ -879,10 +879,10 @@ def updateSkinsAndSiteConfiglet(portal, out):
         site = controlPanel.getActionObject('Plone/PloneReconfig')
 
         if skins is not None:
-            skins.action = Expression('string:${portal_url}/@@skins-controlpanel.html')
+            skins.action = Expression('string:${portal_url}/@@skins-controlpanel')
             skins.title = "Themes"
         if site is not None:
-            site.action = Expression('string:${portal_url}/@@site-controlpanel.html')
+            site.action = Expression('string:${portal_url}/@@site-controlpanel')
             site.title = "Site settings"
 
 def updateConfigletTitles(portal, out):
@@ -952,7 +952,7 @@ def addFilterAndSecurityConfiglets(portal, out):
             controlPanel.registerConfiglet(id         = 'HtmlFilter',
                                            appId      = 'Plone',
                                            name       = 'HTML Filtering',
-                                           action     = 'string:${portal_url}/@@filter-controlpanel.html',
+                                           action     = 'string:${portal_url}/@@filter-controlpanel',
                                            category   = 'Plone',
                                            permission = ManagePortal,)
             out.append("Added html filter settings to the control panel")
@@ -960,7 +960,7 @@ def addFilterAndSecurityConfiglets(portal, out):
             controlPanel.registerConfiglet(id         = 'SecuritySettings',
                                            appId      = 'SecuritySettings',
                                            name       = 'Security',
-                                           action     = 'string:${portal_url}/@@security-controlpanel.html',
+                                           action     = 'string:${portal_url}/@@security-controlpanel',
                                            category   = 'Plone',
                                            permission = ManagePortal,)
             out.append("Added security settings to the control panel")
@@ -1061,8 +1061,8 @@ def addContentRulesConfiglet(portal, out):
         if not haveContentRules:
             controlPanel.registerConfiglet(id         = 'ContentRules',
                                            appId      = 'Plone',
-                                           name       = 'Content Rules Settings',
-                                           action     = 'string:${portal_url}/@@rules-controlpanel.html',
+                                           name       = 'Content Rules',
+                                           action     = 'string:${portal_url}/@@rules-controlpanel',
                                            category   = 'Plone',
                                            permission = 'Content rules: Manage rules',)
             out.append("Added 'Content Rules Settings' to the control panel")
@@ -1079,7 +1079,7 @@ def addIconForContentRulesConfiglet(portal, out):
                 category='controlpanel',
                 action_id='ContentRules',
                 icon_expr='contentrules_icon.gif',
-                title='Content Rules Settings',
+                title='Content Rules',
                 )
         out.append("Added 'Content Rules Settings' icon to actionicons tool.")
 
