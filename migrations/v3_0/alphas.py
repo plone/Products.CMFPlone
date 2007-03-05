@@ -436,7 +436,7 @@ def addMarkupConfiglet(portal, out):
     """Add the markup configlet."""
     controlPanel = getToolByName(portal, 'portal_controlpanel', None)
     if controlPanel is not None:
-        gotTypes = False
+        gotMarkup = False
         for configlet in controlPanel.listActions():
             if configlet.getId() == 'MarkupSettings':
                 gotMarkup = True
