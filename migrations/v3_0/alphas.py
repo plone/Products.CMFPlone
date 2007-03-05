@@ -12,15 +12,32 @@ from Globals import package_home
 from Products.StandardCacheManagers import RAMCacheManager
 
 from Products.ATContentTypes.migration.v1_2 import upgradeATCTTool
+# from Products.CMFActionIcons.interfaces import IActionIconsTool
+from Products.CMFCalendar.interfaces import ICalendarTool
 from Products.CMFCore.ActionInformation import Action
 from Products.CMFCore.ActionInformation import ActionCategory
 from Products.CMFCore.Expression import Expression
+from Products.CMFCore.interfaces import IActionsTool
+from Products.CMFCore.interfaces import ICachingPolicyManager
+from Products.CMFCore.interfaces import ICatalogTool
+from Products.CMFCore.interfaces import IContentTypeRegistry
+from Products.CMFCore.interfaces import ICookieCrumbler
+from Products.CMFCore.interfaces import IDiscussionTool
+from Products.CMFCore.interfaces import IMemberDataTool
+from Products.CMFCore.interfaces import IMembershipTool
+from Products.CMFCore.interfaces import IMetadataTool
+from Products.CMFCore.interfaces import IPropertiesTool
+from Products.CMFCore.interfaces import IRegistrationTool
 from Products.CMFCore.interfaces import ISiteRoot
+from Products.CMFCore.interfaces import ISkinsTool
+# from Products.CMFCore.interfaces import ISyndicationTool
+from Products.CMFCore.interfaces import ITypesTool
+from Products.CMFCore.interfaces import IUndoTool
+from Products.CMFCore.interfaces import IURLTool
+from Products.CMFCore.interfaces import IConfigurableWorkflowTool
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.permissions import ManagePortal
 from Products.CMFCore.DirectoryView import createDirectoryView
-from Products.DCWorkflow.DCWorkflow import DCWorkflowDefinition
-from Products.DCWorkflow.exportimport import WorkflowDefinitionConfigurator, _initDCWorkflow
 from Products.CMFPlone import cmfplone_globals
 from Products.CMFPlone.interfaces import IControlPanel
 from Products.CMFPlone.interfaces import IInterfaceTool
@@ -28,6 +45,13 @@ from Products.CMFPlone.interfaces import IMigrationTool
 from Products.CMFPlone.interfaces import IPloneSiteRoot
 from Products.CMFPlone.interfaces import ITranslationServiceTool
 from Products.CMFPlone.migrations.migration_util import installOrReinstallProduct
+from Products.CMFUid.interfaces import IUniqueIdAnnotationManagement
+from Products.CMFUid.interfaces import IUniqueIdGenerator
+from Products.CMFUid.interfaces import IUniqueIdHandler
+from Products.DCWorkflow.DCWorkflow import DCWorkflowDefinition
+from Products.DCWorkflow.exportimport import WorkflowDefinitionConfigurator, _initDCWorkflow
+from Products.GenericSetup.interfaces import ISetupTool
+from Products.MailHost.interfaces import IMailHost
 
 from plone.portlets.interfaces import IPortletManager
 from plone.portlets.interfaces import ILocalPortletAssignmentManager
@@ -612,6 +636,31 @@ def registerToolsAsUtilities(portal, out):
                     (portal.portal_interface, IInterfaceTool),
                     (portal.portal_migration, IMigrationTool),
                     (portal.translation_service, ITranslationServiceTool),
+                    # TODO: Add this once the CMF tools as utilities branch is merged
+                    # (portal.portal_actionicons, IActionIconsTool),
+                    (portal.portal_calendar, ICalendarTool),
+                    (portal.portal_actions, IActionsTool),
+                    (portal.caching_policy_manager, ICachingPolicyManager),
+                    (portal.portal_catalog, ICatalogTool),
+                    (portal.content_type_registry, IContentTypeRegistry),
+                    (portal.portal_discussion, IDiscussionTool),
+                    (portal.portal_memberdata, IMemberDataTool),
+                    (portal.portal_membership, IMembershipTool),
+                    (portal.portal_metadata, IMetadataTool),
+                    (portal.portal_properties, IPropertiesTool),
+                    (portal.portal_registration, IRegistrationTool),
+                    (portal.portal_skins, ISkinsTool),
+                    # TODO: Add this once the CMF tools as utilities branch is merged
+                    # (portal.portal_syndication, ISyndicationTool),
+                    (portal.portal_types, ITypesTool),
+                    (portal.portal_undo, IUndoTool),
+                    (portal.portal_url, IURLTool),
+                    (portal.portal_workflow, IConfigurableWorkflowTool),
+                    (portal.portal_uidannotation, IUniqueIdAnnotationManagement),
+                    (portal.portal_uidgenerator, IUniqueIdGenerator),
+                    (portal.portal_uidhandler, IUniqueIdHandler),
+                    (portal.portal_setup, ISetupTool),
+                    (portal.MailHost, IMailHost),
                    )
     for reg in registration:
         if sm.queryUtility(reg[1]) is None:

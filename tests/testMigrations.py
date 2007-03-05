@@ -10,12 +10,31 @@ from Products.CMFPlone.tests import PloneTestCase
 
 from Acquisition import aq_base
 from OFS.SimpleItem import SimpleItem
+# from Products.CMFActionIcons.interfaces import IActionIconsTool
+from Products.CMFCalendar.interfaces import ICalendarTool
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.Expression import Expression
 from Products.CMFCore.permissions import AccessInactivePortalContent
 from Products.CMFCore.interfaces import IActionCategory
 from Products.CMFCore.interfaces import IActionInfo
+from Products.CMFCore.interfaces import IActionsTool
+from Products.CMFCore.interfaces import ICachingPolicyManager
+from Products.CMFCore.interfaces import ICatalogTool
+from Products.CMFCore.interfaces import IContentTypeRegistry
+from Products.CMFCore.interfaces import ICookieCrumbler
+from Products.CMFCore.interfaces import IDiscussionTool
+from Products.CMFCore.interfaces import IMemberDataTool
+from Products.CMFCore.interfaces import IMembershipTool
+from Products.CMFCore.interfaces import IMetadataTool
+from Products.CMFCore.interfaces import IPropertiesTool
+from Products.CMFCore.interfaces import IRegistrationTool
 from Products.CMFCore.interfaces import ISiteRoot
+from Products.CMFCore.interfaces import ISkinsTool
+# from Products.CMFCore.interfaces import ISyndicationTool
+from Products.CMFCore.interfaces import ITypesTool
+from Products.CMFCore.interfaces import IUndoTool
+from Products.CMFCore.interfaces import IURLTool
+from Products.CMFCore.interfaces import IConfigurableWorkflowTool
 from Products.CMFCore.ActionInformation import Action
 from Products.CMFCore.ActionInformation import ActionInformation
 from Products.CMFPlone.PloneTool import AllowSendto
@@ -26,6 +45,11 @@ from Products.CMFPlone.interfaces import IPloneSiteRoot
 from Products.CMFPlone.interfaces import ITranslationServiceTool
 from Products.CMFPlone.utils import _createObjectByType
 from Products.CMFPlone.UnicodeSplitter import Splitter, CaseNormalizer
+from Products.CMFUid.interfaces import IUniqueIdAnnotationManagement
+from Products.CMFUid.interfaces import IUniqueIdGenerator
+from Products.CMFUid.interfaces import IUniqueIdHandler
+from Products.GenericSetup.interfaces import ISetupTool
+from Products.MailHost.interfaces import IMailHost
 
 from Products.CMFPlone.migrations.v2_1.final_two11 import reindexPathIndex
 from Products.CMFPlone.migrations.v2_1.two11_two12 import removeCMFTopicSkinLayer
@@ -1167,7 +1191,9 @@ class TestMigrations_v3_0(MigrationTest):
 
     def testEnableZope3Site(self):
         # First we remove the site and site manager
-        self.disableSite(self.portal)
+        # TODO: Enable this once the CMF tools as utilities branch is merged
+        # self.disableSite(self.portal)
+        disableSite(self.portal)
         clearSite(self.portal)
         self.portal.setSiteManager(None)
 
@@ -1182,7 +1208,9 @@ class TestMigrations_v3_0(MigrationTest):
 
     def testEnableZope3SiteTwice(self):
         # First we remove the site and site manager
-        self.disableSite(self.portal)
+        # TODO: Enable this once the CMF tools as utilities branch is merged
+        # self.disableSite(self.portal)
+        disableSite(self.portal)
         clearSite(self.portal)
         self.portal.setSiteManager(None)
 
@@ -1640,18 +1668,22 @@ class TestMigrations_v3_0(MigrationTest):
     def testRegisterToolsAsUtilities(self):
         sm = getSiteManager(self.portal)
         interfaces = (ISiteRoot, IPloneSiteRoot, IControlPanel, IInterfaceTool,
-                      IMigrationTool, ITranslationServiceTool, )
+                      IMigrationTool, ITranslationServiceTool,
+                      # TODO: Add these once the CMF tools as utilities branch is merged
+                      # IActionIconsTool, ISyndicationTool,
+                      ICalendarTool, IActionsTool, ICachingPolicyManager,
+                      ICatalogTool, IContentTypeRegistry, IDiscussionTool,
+                      IMemberDataTool, IMembershipTool, IMetadataTool,
+                      IPropertiesTool, IRegistrationTool, ISkinsTool,
+                      ITypesTool, IUndoTool, IURLTool, IMailHost,
+                      IConfigurableWorkflowTool, IUniqueIdAnnotationManagement,
+                      IUniqueIdGenerator, IUniqueIdHandler, ISetupTool, )
         for i in interfaces:
             sm.unregisterUtility(provided=i)
         registerToolsAsUtilities(self.portal, [])
         for i in interfaces:
             self.failIf(sm.queryUtility(i) is None)
 
-    def testRegisterToolsAsUtilitiesTwice(self):
-        # Should not fail if done twice
-        sm = getSiteManager(self.portal)
-        interfaces = (ISiteRoot, IPloneSiteRoot, IControlPanel, IInterfaceTool,
-                      IMigrationTool, ITranslationServiceTool, )
         for i in interfaces:
             sm.unregisterUtility(provided=i)
         registerToolsAsUtilities(self.portal, [])

@@ -2,12 +2,15 @@
 <componentregistry>
  <adapters/>
  <utilities>
+  <utility 
+     interface="five.customerize.interfaces.IViewTemplateContainer"
+     object="/portal_view_customizations"/>
   <utility
-     interface="Products.CMFCore.interfaces.ISiteRoot"
-     object="/"/>
+     interface="plone.app.redirector.interfaces.IRedirectionStorage"
+     factory="plone.app.redirector.storage.RedirectionStorage"/>
   <utility
-     interface="Products.CMFPlone.interfaces.IPloneSiteRoot"
-     object="/"/>
+     interface="plone.contentrules.engine.interfaces.IRuleStorage"
+     factory="plone.contentrules.engine.storage.RuleStorage"/>
   <utility 
      interface="plone.app.i18n.locales.interfaces.ICountries"
      object="/plone_app_countries"/>
@@ -18,6 +21,69 @@
      interface="plone.app.i18n.locales.interfaces.IMetadataLanguages"
      object="/plone_app_metadata_languages"/>
   <utility
+     interface="Products.CMFCalendar.interfaces.ICalendarTool"
+     object="/portal_calendar"/>
+  <utility
+     interface="Products.CMFCore.interfaces.IActionsTool"
+     object="/portal_actions"/>
+  <utility
+     interface="Products.CMFCore.interfaces.ICachingPolicyManager"
+     object="/caching_policy_manager"/>
+  <utility
+     interface="Products.CMFCore.interfaces.ICatalogTool"
+     object="/portal_catalog"/>
+  <utility
+     interface="Products.CMFCore.interfaces.IContentTypeRegistry"
+     object="/content_type_registry"/>
+  <utility
+     interface="Products.CMFCore.interfaces.IDiscussionTool"
+     object="/portal_discussion"/>
+  <utility
+     interface="Products.CMFCore.interfaces.IMemberDataTool"
+     object="/portal_memberdata"/>
+  <utility
+     interface="Products.CMFCore.interfaces.IMembershipTool"
+     object="/portal_membership"/>
+  <utility
+     interface="Products.CMFCore.interfaces.IMetadataTool"
+     object="/portal_metadata"/>
+  <utility
+     interface="Products.CMFCore.interfaces.IPropertiesTool"
+     object="/portal_properties"/>
+  <utility
+     interface="Products.CMFCore.interfaces.IRegistrationTool"
+     object="/portal_registration"/>
+  <utility
+     interface="Products.CMFCore.interfaces.ISiteRoot"
+     object="/"/>
+  <utility
+     interface="Products.CMFCore.interfaces.ISkinsTool"
+     object="/portal_skins"/>
+  <utility
+     interface="Products.CMFCore.interfaces.ITypesTool"
+     object="/portal_types"/>
+  <utility
+     interface="Products.CMFCore.interfaces.IUndoTool"
+     object="/portal_undo"/>
+  <utility
+     interface="Products.CMFCore.interfaces.IURLTool"
+     object="/portal_url"/>
+  <utility
+     interface="Products.CMFCore.interfaces.IConfigurableWorkflowTool"
+     object="/portal_workflow"/>
+  <utility
+     interface="Products.CMFUid.interfaces.IUniqueIdAnnotationManagement"
+     object="/portal_uidannotation"/>
+  <utility
+     interface="Products.CMFUid.interfaces.IUniqueIdGenerator"
+     object="/portal_uidgenerator"/>
+  <utility
+     interface="Products.CMFUid.interfaces.IUniqueIdHandler"
+     object="/portal_uidhandler"/>
+  <utility
+     interface="Products.CMFPlone.interfaces.IPloneSiteRoot"
+     object="/"/>
+  <utility
      interface="Products.CMFPlone.interfaces.IControlPanel"
      object="/portal_controlpanel"/>
   <utility
@@ -26,17 +92,14 @@
   <utility
      interface="Products.CMFPlone.interfaces.IMigrationTool"
      object="/portal_migration"/>
-  <utility 
-     interface="five.customerize.interfaces.IViewTemplateContainer"
-     object="/portal_view_customizations"/>
   <utility
      interface="Products.CMFPlone.interfaces.ITranslationServiceTool"
      object="/translation_service"/>
   <utility
-     interface="plone.app.redirector.interfaces.IRedirectionStorage"
-     factory="plone.app.redirector.storage.RedirectionStorage"/>
+     interface="Products.GenericSetup.interfaces.ISetupTool"
+     object="/portal_setup"/>
   <utility
-     interface="plone.contentrules.engine.interfaces.IRuleStorage"
-     factory="plone.contentrules.engine.storage.RuleStorage"/>
+     interface="Products.MailHost.interfaces.IMailHost"
+     object="/MailHost"/>
  </utilities>
 </componentregistry>

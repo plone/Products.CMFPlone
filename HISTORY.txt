@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Registered all standard CMF tools as local utilities with the exception
+      of the actionicons and syndication tools, as these don't implement any
+      Zope 3 interfaces yet.
+      [hannosch]
+
     - Registered the portal itself as a utility providing IPloneSiteRoot and
       as one providing CMF's ISiteRoot.
       [hannosch]
