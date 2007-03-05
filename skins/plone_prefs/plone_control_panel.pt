@@ -9,7 +9,10 @@
 <metal:block fill-slot="top_slot"
              tal:define="dummy python:request.set('disable_border',1)" />
 
+<metal:block fill-slot="portlets_one_slot" />
+
 <body>
+
 
    <div metal:fill-slot="prefs_configlet_main"
       tal:define="controlPanel python:modules['Products.CMFCore.utils'].getToolByName(here, 'portal_controlpanel');
@@ -32,7 +35,9 @@
            i18n:translate="text_no_mailhost_configured">
             Warning: You have not configured a mail host or a site 'From'
             address, various features including contact forms, email
-            notification and password reset will not work.
+            notification and password reset will not work. Go to the
+            <a href="" tal:attributes="href string:${portal_url}/@@mail-controlpanel"
+            >Mail control panel</a> to fix this.
         </p>
 
         <p class="portalMessage"
