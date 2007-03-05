@@ -13,6 +13,8 @@ from Products.CMFCore.utils import getToolByName
 from plone.app.workflow.remap import remap_workflow
 from plone.memoize.instance import memoize
 
+from Products.CMFEditions.setuphandlers import DEFAULT_POLICIES
+
 class TypesControlPanel(BrowserView):
     
     # Actions
@@ -69,10 +71,14 @@ class TypesControlPanel(BrowserView):
             versionable_types = list(portal_repository.getVersionableContentTypes())
             if versionable and type_id not in versionable_types:
                 versionable_types.append(type_id)
+                # Add default versioning policies to the versioned type
+                for policy_id in DEFAULT_POLICIES:
+                    portal_repository.addPolicyForContentType(type_id,
+                                                              policy_id)
             elif not versionable and type_id in versionable_types:
                 versionable_types.remove(type_id)
             portal_repository.setVersionableContentTypes(versionable_types)
-            
+
             searchable = form.get('searchable', False)
             blacklisted = list(site_properties.getProperty('types_not_searched'))
             if searchable and type_id in blacklisted:
