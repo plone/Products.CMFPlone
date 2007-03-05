@@ -8,6 +8,7 @@ if __name__ == '__main__':
 
 from Products.CMFPlone.tests import PloneTestCase
 
+from Acquisition import aq_base
 from OFS.SimpleItem import SimpleItem
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.Expression import Expression
@@ -1149,9 +1150,24 @@ class TestMigrations_v3_0(MigrationTest):
         self.properties = self.portal.portal_properties
         self.cp = self.portal.portal_controlpanel
 
+    def disableSite(self, obj, iface=ISite):
+        # We need our own disableSite method as the CMF portal implements
+        # ISite directly, so we cannot remove it, like the disableSite method
+        # in Five.component would have done
+        from ZPublisher.BeforeTraverse import unregisterBeforeTraverse
+        from Products.Five.component import HOOK_NAME
+
+        obj = aq_base(obj)
+        if not iface.providedBy(obj):
+            raise TypeError('Object must be a site.')
+
+        unregisterBeforeTraverse(obj, HOOK_NAME)
+        if hasattr(obj, HOOK_NAME):
+            delattr(obj, HOOK_NAME)
+
     def testEnableZope3Site(self):
         # First we remove the site and site manager
-        disableSite(self.portal)
+        self.disableSite(self.portal)
         clearSite(self.portal)
         self.portal.setSiteManager(None)
 
@@ -1166,7 +1182,7 @@ class TestMigrations_v3_0(MigrationTest):
 
     def testEnableZope3SiteTwice(self):
         # First we remove the site and site manager
-        disableSite(self.portal)
+        self.disableSite(self.portal)
         clearSite(self.portal)
         self.portal.setSiteManager(None)
 
