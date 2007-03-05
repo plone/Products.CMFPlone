@@ -150,9 +150,6 @@ Plone 3.0 - unreleased
       http://dev.plone.org/plone/ticket/6193.
       [hannosch]
 
-    - Removed base tag from main_template.
-      [fschulze]
-
     - Hide the PAS folder and its plugins from the breadcrumbs.
       [wichert]
 
