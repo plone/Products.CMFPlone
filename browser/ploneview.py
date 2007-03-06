@@ -1,6 +1,8 @@
 from Acquisition import aq_base
 from Acquisition import aq_inner
 from Acquisition import aq_parent
+from Products.CMFCore.interfaces import IMembershipTool
+from Products.CMFCore.interfaces import IPropertiesTool
 from Products.CMFCore.permissions import AddPortalContent
 from Products.CMFCore.permissions import DeleteObjects
 from Products.CMFCore.permissions import ListFolderContents
@@ -12,6 +14,7 @@ from Products.CMFPlone import utils
 from Products.CMFPlone.browser.interfaces import IPlone
 from Products.CMFPlone.interfaces import IBrowserDefault
 from Products.CMFPlone.interfaces import INonStructuralFolder
+from Products.CMFPlone.interfaces import IPloneTool
 from Products.CMFPlone.interfaces.NonStructuralFolder import INonStructuralFolder\
      as z2INonStructuralFolder
 from Products.CMFPlone.interfaces import ITranslationServiceTool
@@ -101,7 +104,7 @@ class Plone(utils.BrowserView):
         self._data['portal_url'] =  portal_state.portal_url()
         self._data['mtool'] = mtool = tools.membership()
         self._data['atool'] = atool = tools.actions()
-        self._data['putils'] = putils = getToolByName(context, 'plone_utils')
+        self._data['putils'] = putils = getUtility(IPloneTool)
         self._data['acl_users'] = getToolByName(context, 'acl_users')
         self._data['wtool'] = wtool = tools.workflow()
         self._data['ifacetool'] = tools.interface()
@@ -187,7 +190,7 @@ class Plone(utils.BrowserView):
         """Determine if visible ids are enabled
         """
         context = utils.context(self)
-        props = getToolByName(context, 'portal_properties').site_properties
+        props = getUtility(IPropertiesTool).site_properties
         if not props.getProperty('visible_ids', False):
             return False
 
@@ -246,18 +249,15 @@ class Plone(utils.BrowserView):
 
     @memoize
     def icons_visible(self):
-        context = utils.context(self)
-        portal_state = getMultiAdapter((context, self.request), name=u'plone_portal_state')
-        tools = getMultiAdapter((context, self.request), name='plone_tools')
-        properties = tools.properties()
+        membership = getUtility(IMembershipTool)
+        properties = getUtility(IPropertiesTool)
 
         site_properties = getattr(properties, 'site_properties')
-
         icon_visibility = site_properties.getProperty('icon_visibility', 'enabled')
 
         if icon_visibility == 'enabled':
             return True
-        elif icon_visibility == 'authenticated' and not portal_state.anonymous():
+        elif icon_visibility == 'authenticated' and not membership.isAnonymousUser():
             return True
         else:
             return False
