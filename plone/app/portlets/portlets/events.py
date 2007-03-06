@@ -1,5 +1,6 @@
 from zope import schema
 from zope.component import getMultiAdapter
+from zope.component import getUtility
 from zope.formlib import form
 from zope.interface import implements
 
@@ -9,7 +10,7 @@ from plone.portlets.interfaces import IPortletDataProvider
 
 from Acquisition import aq_inner
 from DateTime.DateTime import DateTime
-from Products.CMFCore.utils import getToolByName
+from Products.CMFCore.interfaces import ICatalogTool
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
@@ -65,7 +66,7 @@ class Renderer(base.Renderer):
     @memoize
     def _data(self):
         context = aq_inner(self.context)
-        catalog = getToolByName(context, 'portal_catalog')
+        catalog = getUtility(ICatalogTool)
         limit = self.data.count
         return catalog(portal_type='Event',
                        review_state='published',

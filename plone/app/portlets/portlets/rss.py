@@ -1,30 +1,16 @@
 from zope import schema
-from zope.component import getMultiAdapter, getUtility
 from zope.formlib import form
 from zope.interface import implements, Interface
 
 from plone.app.portlets.portlets import base
-from plone.memoize.instance import memoize
-from plone.app.portlets.utils import assignment_from_key
 from plone.portlets.interfaces import IPortletDataProvider
-from plone.portlets.utils import unhashPortletInfo
-from plone.portlets.interfaces import IPortletManager, IPortletRenderer
 
-from Acquisition import aq_inner
 from DateTime.DateTime import DateTime
-from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
 
-from kss.core import CommandSet
-from kss.core import force_unicode, kssaction
-from plone.app.kss.interfaces import IPloneAzaxView
-from kss.core.azaxview import AzaxBaseView
-
 import feedparser
-import time, socket
-
-from DateTime import DateTime
+import time
 
 # store the feeds here (which means in RAM)
 FEED_DATA = {}  # url: ({date, title, url, itemlist})

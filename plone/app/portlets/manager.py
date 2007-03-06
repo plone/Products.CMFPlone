@@ -1,12 +1,12 @@
 from zope.interface import Interface
-from zope.component import adapts, getMultiAdapter
+from zope.component import adapts, getMultiAdapter, getUtility
 
 from zope.publisher.interfaces.browser import IBrowserView
 from zope.publisher.interfaces.browser import IBrowserRequest
 
 from Acquisition import Explicit, aq_inner, aq_parent
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from Products.CMFCore.utils import getToolByName
+from Products.CMFCore.interfaces import IMembershipTool
 from Products.CMFPlone.utils import isDefaultPage
 
 from plone.portlets.interfaces import IPortletRenderer, ILocalPortletAssignable
@@ -49,5 +49,5 @@ class ColumnPortletManagerRenderer(PortletManagerRenderer):
         context = self._context()
         if not ILocalPortletAssignable.providedBy(context):
             return False
-        mtool = getToolByName(context, 'portal_membership')
+        mtool = getUtility(IMembershipTool)
         return mtool.checkPermission("Portlets: Manage portlets", context)

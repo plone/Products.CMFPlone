@@ -5,12 +5,10 @@ from zope.traversing.interfaces import ITraversable
 from zope.publisher.interfaces.http import IHTTPRequest
 
 from plone.portlets.interfaces import ILocalPortletAssignable
-from plone.portlets.interfaces import ILocalPortletAssignmentManager
 from plone.portlets.interfaces import IPortletManager
 from plone.portlets.interfaces import IPortletAssignmentMapping
 
 from Products.CMFCore.interfaces import ISiteRoot
-from Products.CMFCore.utils import getToolByName
 
 from plone.portlets.constants import USER_CATEGORY
 from plone.portlets.constants import GROUP_CATEGORY
@@ -19,7 +17,6 @@ from plone.portlets.constants import CONTENT_TYPE_CATEGORY
 from plone.app.portlets.storage import PortletAssignmentMapping
 from plone.app.portlets.storage import UserPortletAssignmentMapping
 
-from Acquisition import aq_inner
 
 class ContextPortletNamespace(object):
     """Used to traverse to a contextual portlet assignable

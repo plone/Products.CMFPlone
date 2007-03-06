@@ -1,5 +1,5 @@
 from zope.interface import implements, Interface
-from zope.component import adapts, getMultiAdapter, queryUtility
+from zope.component import adapts, getMultiAdapter, getUtility, queryUtility
 
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 from plone.portlets.interfaces import IPortletDataProvider
@@ -12,7 +12,8 @@ from plone.memoize.instance import memoize
 
 from Acquisition import aq_inner, aq_base, aq_parent
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from Products.CMFCore.utils import getToolByName
+from Products.CMFCore.interfaces import IPropertiesTool
+from Products.CMFCore.interfaces import IURLTool
 
 from Products.CMFPlone.interfaces import INonStructuralFolder
 from Products.CMFPlone import utils
@@ -84,8 +85,8 @@ class Renderer(base.Renderer):
     def __init__(self, context, request, view, manager, data):
         base.Renderer.__init__(self, context, request, view, manager, data)
         
-        self.properties = getToolByName(context, 'portal_properties').navtree_properties
-        self.urltool = getToolByName(context, 'portal_url')
+        self.properties = getUtility(IPropertiesTool).navtree_properties
+        self.urltool = getUtility(IURLTool)
         
     def title(self):
         return self.data.name or self.properties.name
@@ -194,10 +195,10 @@ class QueryBuilder(object):
         self.context = context
         self.portlet = portlet
         
-        portal_properties = getToolByName(context, 'portal_properties')
+        portal_properties = getUtility(IPropertiesTool)
         navtree_properties = getattr(portal_properties, 'navtree_properties')
         
-        portal_url = getToolByName(context, 'portal_url')
+        portal_url = getUtility(IURLTool)
         
         # Acquire a custom nav query if available
         customQuery = getattr(context, 'getCustomNavQuery', None)
@@ -255,7 +256,7 @@ class NavtreeStrategy(SitemapNavtreeStrategy):
 
     def __init__(self, context, portlet):
         SitemapNavtreeStrategy.__init__(self, context, portlet)
-        portal_properties = getToolByName(context, 'portal_properties')
+        portal_properties = getUtility(IPropertiesTool)
         navtree_properties = getattr(portal_properties, 'navtree_properties')
         
         # XXX: We can't do this with a 'depth' query to EPI...
