@@ -43,6 +43,7 @@ from Products.CMFPlone.interfaces import IControlPanel
 from Products.CMFPlone.interfaces import IInterfaceTool
 from Products.CMFPlone.interfaces import IMigrationTool
 from Products.CMFPlone.interfaces import IPloneSiteRoot
+from Products.CMFPlone.interfaces import IPloneTool
 from Products.CMFPlone.interfaces import ITranslationServiceTool
 from Products.CMFPlone.migrations.migration_util import installOrReinstallProduct
 from Products.CMFUid.interfaces import IUniqueIdAnnotationManagement
@@ -635,6 +636,7 @@ def registerToolsAsUtilities(portal, out):
                     (portal.portal_controlpanel, IControlPanel),
                     (portal.portal_interface, IInterfaceTool),
                     (portal.portal_migration, IMigrationTool),
+                    (portal.plone_utils, IPloneTool),
                     (portal.translation_service, ITranslationServiceTool),
                     # TODO: Add this once the CMF tools as utilities branch is merged
                     # (portal.portal_actionicons, IActionIconsTool),

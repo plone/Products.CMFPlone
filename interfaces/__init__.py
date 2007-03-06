@@ -3,6 +3,7 @@
 from properties import IPropertiesTool
 from properties import ISimpleItemWithProperties
 from basetool import IPloneBaseTool
+from basetool import IPloneTool
 from controlpanel import IControlPanel
 from events import ISiteManagerCreatedEvent
 from interface import IInterfaceTool

@@ -5,6 +5,7 @@ import urlparse
 import transaction
 
 from zope.deprecation import deprecate
+from zope.interface import implements
 
 from AccessControl import ClassSecurityInfo, Unauthorized
 from Acquisition import aq_base, aq_inner, aq_parent
@@ -24,6 +25,7 @@ from Products.CMFCore.interfaces.DublinCore import DublinCore, MutableDublinCore
 from Products.CMFCore.interfaces.Discussions import Discussable
 from Products.CMFCore.WorkflowCore import WorkflowException
 from Products.CMFDefault.DublinCore import DefaultDublinCoreImpl
+from Products.CMFPlone.interfaces import IPloneTool
 from Products.CMFPlone.interfaces.Translatable import ITranslatable
 from Products.CMFPlone.interfaces import INonStructuralFolder
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
@@ -86,6 +88,8 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     plone_tool = 1
     # Prefix for forms fields!?
     field_prefix = 'field_'
+
+    implements(IPloneTool)
 
     __implements__ = (PloneBaseTool.__implements__,
                       SimpleItem.__implements__, )

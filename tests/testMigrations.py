@@ -42,6 +42,7 @@ from Products.CMFPlone.interfaces import IControlPanel
 from Products.CMFPlone.interfaces import IInterfaceTool
 from Products.CMFPlone.interfaces import IMigrationTool
 from Products.CMFPlone.interfaces import IPloneSiteRoot
+from Products.CMFPlone.interfaces import IPloneTool
 from Products.CMFPlone.interfaces import ITranslationServiceTool
 from Products.CMFPlone.utils import _createObjectByType
 from Products.CMFPlone.UnicodeSplitter import Splitter, CaseNormalizer
@@ -1668,7 +1669,7 @@ class TestMigrations_v3_0(MigrationTest):
     def testRegisterToolsAsUtilities(self):
         sm = getSiteManager(self.portal)
         interfaces = (ISiteRoot, IPloneSiteRoot, IControlPanel, IInterfaceTool,
-                      IMigrationTool, ITranslationServiceTool,
+                      IMigrationTool, IPloneTool, ITranslationServiceTool,
                       # TODO: Add these once the CMF tools as utilities branch is merged
                       # IActionIconsTool, ISyndicationTool,
                       ICalendarTool, IActionsTool, ICachingPolicyManager,

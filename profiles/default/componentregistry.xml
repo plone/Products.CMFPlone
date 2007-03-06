@@ -93,6 +93,9 @@
      interface="Products.CMFPlone.interfaces.IMigrationTool"
      object="/portal_migration"/>
   <utility
+     interface="Products.CMFPlone.interfaces.IPloneTool"
+     object="/plone_utils"/>
+  <utility
      interface="Products.CMFPlone.interfaces.ITranslationServiceTool"
      object="/translation_service"/>
   <utility
