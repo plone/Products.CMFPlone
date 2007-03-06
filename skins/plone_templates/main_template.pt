@@ -22,7 +22,7 @@
           tal:attributes="content string:text/html;;charset=${charset}" />
 
     <metal:baseslot define-slot="base">
-    <base href="" tal:attributes="href here/renderBase"></base>
+    <base href="" tal:attributes="href here/renderBase" />
     </metal:baseslot>
 
     <meta name="generator" content="Plone - http://plone.org" />
