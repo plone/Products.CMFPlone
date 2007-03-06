@@ -1,15 +1,14 @@
+from zope.component import getUtility
 from zope.interface import implements
 
 from Acquisition import aq_inner, aq_base
+from Products.CMFCore.interfaces import ISiteRoot
+from Products.CMFPlone.interfaces import IBrowserDefault
+from Products.CMFPlone.interfaces import IDynamicViewTypeInformation
+from Products.CMFPlone import utils
 from Products.Five.browser import BrowserView
 
 from plone.app.layout.navigation.interfaces import IDefaultPage
-
-from Products.CMFPlone.interfaces import IBrowserDefault
-from Products.CMFPlone.interfaces import IDynamicViewTypeInformation
-
-from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone import utils
 
 class DefaultPage(BrowserView):
     implements(IDefaultPage)
@@ -86,7 +85,7 @@ class DefaultPage(BrowserView):
             if page and ids.has_key(page):
                 return lookupTranslationId(context, page)
 
-        portal = getToolByName(context_, 'portal_url').getPortalObject()
+        portal = getUtility(ISiteRoot)
         for page in pages:
             if portal.unrestrictedTraverse(page, None):
                 return lookupTranslationId(context, page)

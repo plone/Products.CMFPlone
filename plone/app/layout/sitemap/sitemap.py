@@ -2,7 +2,7 @@ from Products.Five import BrowserView
 from zope.component import getUtility
 from zope.publisher.interfaces import NotFound
 from Products.CMFCore.interfaces import ICatalogTool
-from Products.CMFCore.utils import getToolByName
+from Products.CMFCore.interfaces import IPropertiesTool
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
 from cStringIO import StringIO
@@ -20,7 +20,7 @@ class SiteMapView(BrowserView):
         
         """
         # create the sitemap
-        catalog = getToolByName(self.context,"portal_catalog")
+        catalog = getUtility(ICatalogTool)
         all = catalog.searchResults()
         
         return all
@@ -28,7 +28,7 @@ class SiteMapView(BrowserView):
     def __call__(self):
         """render the template and compress it"""
         # check if we are allowed to be shown
-        sp = getToolByName(self.context,'portal_properties').site_properties
+        sp = getUtility(IPropertiesTool).site_properties
         if not sp.enable_sitemap:
             raise NotFound(self.context, "sitemap.xml.gz", self.request)
 
