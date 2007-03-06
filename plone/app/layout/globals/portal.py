@@ -1,11 +1,13 @@
 from zope.interface import implements
 from zope.component import getMultiAdapter
+from zope.component import getUtility
 from zope.i18n.interfaces import IUserPreferredLanguages
 from zope.i18n.locales import locales, LoadLocaleError
 
 from plone.memoize.view import memoize, memoize_contextless
 
 from Acquisition import aq_inner
+from Products.CMFCore.interfaces import ISiteRoot
 from Products.Five.browser import BrowserView
 
 from plone.app.layout.navigation.root import getNavigationRoot
@@ -24,8 +26,7 @@ class PortalState(BrowserView):
 
     @memoize_contextless
     def portal(self):
-        tools = getMultiAdapter((self.context, self.request), name='plone_tools')
-        return tools.url().getPortalObject()
+        return getUtility(ISiteRoot)
     
     @memoize_contextless
     def portal_title(self):
