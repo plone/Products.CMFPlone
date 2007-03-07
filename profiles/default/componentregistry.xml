@@ -27,6 +27,9 @@
      interface="Products.CMFCore.interfaces.IActionsTool"
      object="/portal_actions"/>
   <utility
+     interface="Products.CMFActionIcons.interfaces.IActionIconsTool"
+     object="/portal_actionicons"/>
+  <utility
      interface="Products.CMFCore.interfaces.ICachingPolicyManager"
      object="/caching_policy_manager"/>
   <utility
