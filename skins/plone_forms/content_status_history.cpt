@@ -122,7 +122,7 @@
 
             <div tal:define="inputname  string:effective_date;
                              formname   string:edit_form;
-                             effective here/EffectiveDate;
+                             effective python:test(request.get('paths'), None, here.EffectiveDate()) ;
                              inputvalue python:test(effective and effective!='None', effective, request.get('effective_date', ''));
                              tabindex tabindex/next;"
                  tal:attributes="class python:test(error, 'field error', 'field')">

@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Fix bug #6227 : Batch-workflowing objects would erroneously give them 
+      the effective date of the portal object or their container. 
+      [elvix]
+
     - Replaced various getToolByName calls in the ploneview with getUtility.
       [hannosch]
 
