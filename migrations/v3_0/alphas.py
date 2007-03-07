@@ -12,7 +12,7 @@ from Globals import package_home
 from Products.StandardCacheManagers import RAMCacheManager
 
 from Products.ATContentTypes.migration.v1_2 import upgradeATCTTool
-# from Products.CMFActionIcons.interfaces import IActionIconsTool
+from Products.CMFActionIcons.interfaces import IActionIconsTool
 from Products.CMFCalendar.interfaces import ICalendarTool
 from Products.CMFCore.ActionInformation import Action
 from Products.CMFCore.ActionInformation import ActionCategory
@@ -30,7 +30,7 @@ from Products.CMFCore.interfaces import IPropertiesTool
 from Products.CMFCore.interfaces import IRegistrationTool
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFCore.interfaces import ISkinsTool
-# from Products.CMFCore.interfaces import ISyndicationTool
+from Products.CMFCore.interfaces import ISyndicationTool
 from Products.CMFCore.interfaces import ITypesTool
 from Products.CMFCore.interfaces import IUndoTool
 from Products.CMFCore.interfaces import IURLTool
