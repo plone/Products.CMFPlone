@@ -4,6 +4,7 @@ CMFPlone setup handlers.
 
 from five.localsitemanager import make_objectmanager_site
 from zope.app.component.interfaces import ISite
+from zope.app.component.hooks import setSite
 from zope.component import getUtility
 from zope.component import getMultiAdapter
 from zope.component import queryUtility
@@ -56,7 +57,7 @@ class PloneGenerator:
         qi.installProduct('Archetypes', locked=1, hidden=1)
         qi.installProduct('PlonePAS', locked=1, hidden=1, forceProfile=True)
         qi.installProduct('kupu', locked=0, forceProfile=True)
-
+        
         # The following two products are "installed" based on a GenericSetup
         # extension profile by CMFQuickInstallerTool
         qi.installProduct('CMFDiffTool', locked=0, forceProfile=True)
@@ -300,6 +301,9 @@ def importVarious(context):
     if context.readDataFile('plone_various.txt') is None:
         return
     site = context.getSite()
+    
+    # Ensure we get a proper site context during these steps
+    setSite(site)
     gen = PloneGenerator()
     gen.installProducts(site)
     gen.addCacheHandlers(site)
