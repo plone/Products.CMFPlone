@@ -10,7 +10,7 @@ from Products.CMFPlone.tests import PloneTestCase
 
 from Acquisition import aq_base
 from OFS.SimpleItem import SimpleItem
-# from Products.CMFActionIcons.interfaces import IActionIconsTool
+from Products.CMFActionIcons.interfaces import IActionIconsTool
 from Products.CMFCalendar.interfaces import ICalendarTool
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.Expression import Expression
@@ -30,7 +30,7 @@ from Products.CMFCore.interfaces import IPropertiesTool
 from Products.CMFCore.interfaces import IRegistrationTool
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFCore.interfaces import ISkinsTool
-# from Products.CMFCore.interfaces import ISyndicationTool
+from Products.CMFCore.interfaces import ISyndicationTool
 from Products.CMFCore.interfaces import ITypesTool
 from Products.CMFCore.interfaces import IUndoTool
 from Products.CMFCore.interfaces import IURLTool
@@ -1192,9 +1192,7 @@ class TestMigrations_v3_0(MigrationTest):
 
     def testEnableZope3Site(self):
         # First we remove the site and site manager
-        # TODO: Enable this once the CMF tools as utilities branch is merged
-        # self.disableSite(self.portal)
-        disableSite(self.portal)
+        self.disableSite(self.portal)
         clearSite(self.portal)
         self.portal.setSiteManager(None)
 
@@ -1209,9 +1207,7 @@ class TestMigrations_v3_0(MigrationTest):
 
     def testEnableZope3SiteTwice(self):
         # First we remove the site and site manager
-        # TODO: Enable this once the CMF tools as utilities branch is merged
-        # self.disableSite(self.portal)
-        disableSite(self.portal)
+        self.disableSite(self.portal)
         clearSite(self.portal)
         self.portal.setSiteManager(None)
 
@@ -1670,8 +1666,7 @@ class TestMigrations_v3_0(MigrationTest):
         sm = getSiteManager(self.portal)
         interfaces = (ISiteRoot, IPloneSiteRoot, IControlPanel, IInterfaceTool,
                       IMigrationTool, IPloneTool, ITranslationServiceTool,
-                      # TODO: Add these once the CMF tools as utilities branch is merged
-                      # IActionIconsTool, ISyndicationTool,
+                      IActionIconsTool, ISyndicationTool,
                       ICalendarTool, IActionsTool, ICachingPolicyManager,
                       ICatalogTool, IContentTypeRegistry, IDiscussionTool,
                       IMemberDataTool, IMembershipTool, IMetadataTool,
