@@ -63,6 +63,9 @@
      interface="Products.CMFCore.interfaces.ISkinsTool"
      object="/portal_skins"/>
   <utility
+     interface="Products.CMFCore.interfaces.ISyndicationTool"
+     object="/portal_syndication"/>
+  <utility
      interface="Products.CMFCore.interfaces.ITypesTool"
      object="/portal_types"/>
   <utility

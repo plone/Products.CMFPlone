@@ -638,8 +638,7 @@ def registerToolsAsUtilities(portal, out):
                     (portal.portal_migration, IMigrationTool),
                     (portal.plone_utils, IPloneTool),
                     (portal.translation_service, ITranslationServiceTool),
-                    # TODO: Add this once the CMF tools as utilities branch is merged
-                    # (portal.portal_actionicons, IActionIconsTool),
+                    (portal.portal_actionicons, IActionIconsTool),
                     (portal.portal_calendar, ICalendarTool),
                     (portal.portal_actions, IActionsTool),
                     (portal.caching_policy_manager, ICachingPolicyManager),
@@ -652,8 +651,7 @@ def registerToolsAsUtilities(portal, out):
                     (portal.portal_properties, IPropertiesTool),
                     (portal.portal_registration, IRegistrationTool),
                     (portal.portal_skins, ISkinsTool),
-                    # TODO: Add this once the CMF tools as utilities branch is merged
-                    # (portal.portal_syndication, ISyndicationTool),
+                    (portal.portal_syndication, ISyndicationTool),
                     (portal.portal_types, ITypesTool),
                     (portal.portal_undo, IUndoTool),
                     (portal.portal_url, IURLTool),
