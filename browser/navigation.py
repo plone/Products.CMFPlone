@@ -1,10 +1,14 @@
 from zope.interface import implements
 from zope.component import getMultiAdapter
+from zope.component import getUtility
 
 from Acquisition import aq_base
-from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import utils
 from Products.CMFPlone import PloneMessageFactory as PMF
+
+from Products.CMFCore.interfaces import ICatalogTool
+from Products.CMFCore.interfaces import IPropertiesTool
+from Products.CMFCore.interfaces import IURLTool
 
 from Products.CMFPlone.browser.interfaces import INavigationBreadcrumbs
 from Products.CMFPlone.browser.interfaces import INavigationTabs
@@ -48,7 +52,7 @@ def get_id(item):
     return getId()
 
 def get_view_url(context):
-    props = getToolByName(context, 'portal_properties')
+    props = getUtility(IPropertiesTool)
     stp = props.site_properties
     view_action_types = stp.getProperty('typesUseViewActionInListings', ())
 
@@ -67,8 +71,8 @@ class CatalogNavigationTree(utils.BrowserView):
     def navigationTreeRootPath(self):
         context = utils.context(self)
 
-        portal_properties = getToolByName(context, 'portal_properties')
-        portal_url = getToolByName(context, 'portal_url')
+        portal_properties = getUtility(IPropertiesTool)
+        portal_url = getUtility(IURLTool)
 
         navtree_properties = getattr(portal_properties, 'navtree_properties')
 
@@ -124,8 +128,8 @@ class CatalogNavigationTabs(utils.BrowserView):
     def topLevelTabs(self, actions=None, category='portal_tabs'):
         context = utils.context(self)
 
-        portal_catalog = getToolByName(context, 'portal_catalog')
-        portal_properties = getToolByName(context, 'portal_properties')
+        portal_catalog = getUtility(ICatalogTool)
+        portal_properties = getUtility(IPropertiesTool)
         navtree_properties = getattr(portal_properties, 'navtree_properties')
         site_properties = getattr(portal_properties, 'site_properties')
 
@@ -196,7 +200,7 @@ class CatalogNavigationBreadcrumbs(utils.BrowserView):
     def breadcrumbs(self):
         context = utils.context(self)
         request = self.request
-        ct = getToolByName(context, 'portal_catalog')
+        ct = getUtility(ICatalogTool)
         query = {}
 
         # Check to see if the current page is a folder default view, if so

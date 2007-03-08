@@ -4,7 +4,7 @@
 # navtrees.
 
 from zope.interface import implements
-from zope.component import getMultiAdapter, queryUtility
+from zope.component import getUtility, getMultiAdapter, queryUtility
 
 from Acquisition import aq_base
 
@@ -26,7 +26,10 @@ from plone.i18n.normalizer.interfaces import IIDNormalizer
 import ploneview
 sys.modules['Products.CMFPlone.browser.plone'] = ploneview
 
-from Products.CMFCore.utils import getToolByName
+from Products.CMFCore.interfaces import IMembershipTool
+from Products.CMFCore.interfaces import IPropertiesTool
+from Products.CMFCore.interfaces import IURLTool
+
 from Products.CMFPlone import utils
 
 # Strategy objects for the navtree creation code. You can subclass these
@@ -39,8 +42,8 @@ class NavtreeQueryBuilder(object):
     implements(INavigationQueryBuilder)
 
     def __init__(self, context):
-        portal_properties = getToolByName(context, 'portal_properties')
-        portal_url = getToolByName(context, 'portal_url')
+        portal_properties = getUtility(IPropertiesTool)
+        portal_url = getUtility(IURLTool)
         navtree_properties = getattr(portal_properties, 'navtree_properties')
 
         # Acquire a custom nav query if available
@@ -97,8 +100,8 @@ class SitemapQueryBuilder(NavtreeQueryBuilder):
 
     def __init__(self, context):
         NavtreeQueryBuilder.__init__(self, context)
-        portal_url = getToolByName(context, 'portal_url')
-        portal_properties = getToolByName(context, 'portal_properties')
+        portal_url = getUtility(IURLTool)
+        portal_properties = getUtility(IPropertiesTool)
         navtree_properties = getattr(portal_properties, 'navtree_properties')
         sitemapDepth = navtree_properties.getProperty('sitemapDepth', 2)
         self.query['path'] = {'query' : portal_url.getPortalPath(),
@@ -114,9 +117,9 @@ class SitemapNavtreeStrategy(NavtreeStrategyBase):
     def __init__(self, context, view=None):
         self.context = [context]
         
-        portal_url = getToolByName(context, 'portal_url')
+        portal_url = getUtility(IURLTool)
         self.portal = portal_url.getPortalObject()
-        portal_properties = getToolByName(context, 'portal_properties')
+        portal_properties = getUtility(IPropertiesTool)
         navtree_properties = getattr(portal_properties, 'navtree_properties')
         site_properties = getattr(portal_properties, 'site_properties')
         self.excludedIds = {}
@@ -128,7 +131,7 @@ class SitemapNavtreeStrategy(NavtreeStrategyBase):
         self.showAllParents = navtree_properties.getProperty('showAllParents', True)
         self.rootPath = getNavigationRoot(context)
         
-        membership = getToolByName(context, 'portal_membership')
+        membership = getUtility(IMembershipTool)
         self.memberId = membership.getAuthenticatedMember().getId()
 
 
@@ -197,7 +200,7 @@ class DefaultNavtreeStrategy(SitemapNavtreeStrategy):
 
     def __init__(self, context, view=None):
         SitemapNavtreeStrategy.__init__(self, context, view)
-        portal_properties = getToolByName(context, 'portal_properties')
+        portal_properties = getUtility(IPropertiesTool)
         navtree_properties = getattr(portal_properties, 'navtree_properties')
         # XXX: We can't do this with a 'depth' query to EPI...
         self.bottomLevel = navtree_properties.getProperty('bottomLevel', 0)
