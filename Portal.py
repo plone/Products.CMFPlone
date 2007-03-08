@@ -2,7 +2,6 @@ from Products.CMFDefault.Portal import CMFSite
 
 from Products.CMFCore import permissions
 from Products.CMFCore.utils import _checkPermission
-from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault import DublinCore
 from Products.CMFDynamicViewFTI.browserdefault import BrowserDefaultMixin
 from Products.CMFPlone import PloneMessageFactory as _
@@ -20,7 +19,11 @@ from Products.CMFPlone.interfaces import IPloneSiteRoot
 
 from plone.i18n.locales.interfaces import IMetadataLanguageAvailability
 from zope.interface import implements
+from zope.component import getUtility
 from zope.component import queryUtility
+
+from Products.CMFCore.interfaces import IPropertiesTool
+from Products.CMFPlone.interfaces import IPloneTool
 
 member_indexhtml="""\
 member_search=context.restrictedTraverse('member_search_form')
@@ -54,7 +57,7 @@ class PloneSite(CMFSite, OrderedContainer, BrowserDefaultMixin):
     def __browser_default__(self, request):
         """ Set default so we can return whatever we want instead
         of index_html """
-        return getToolByName(self, 'plone_utils').browserDefault(self)
+        return getUtility(IPloneTool).browserDefault(self)
 
     def index_html(self):
         """ Acquire if not present. """
@@ -95,15 +98,14 @@ class PloneSite(CMFSite, OrderedContainer, BrowserDefaultMixin):
 
     def _management_page_charset(self):
         """ Returns default_charset for management screens """
-        properties = getToolByName(self, 'portal_properties', None)
+        properties = getUtility(IPropertiesTool)
         # Let's be a bit careful here because we don't want to break the ZMI
         # just because people screw up their Plone sites (however thoroughly).
-        if properties is not None:
-            site_properties = getattr(properties, 'site_properties', None)
-            if site_properties is not None:
-                getProperty = getattr(site_properties, 'getProperty', None)
-                if getProperty is not None:
-                    return getProperty('default_charset', 'utf-8')
+        site_properties = getattr(properties, 'site_properties', None)
+        if site_properties is not None:
+            getProperty = getattr(site_properties, 'getProperty', None)
+            if getProperty is not None:
+                return getProperty('default_charset', 'utf-8')
         return 'utf-8'
 
     management_page_charset = ComputedAttribute(_management_page_charset, 1)

@@ -1,6 +1,7 @@
+from zope.component import getUtility
 import PIL
 from cStringIO import StringIO
-from Products.CMFCore.utils import getToolByName, _checkPermission
+from Products.CMFCore.utils import _checkPermission
 from Products.CMFDefault.MembershipTool import MembershipTool as BaseTool
 from Products.CMFPlone import ToolNames
 from Products.CMFPlone.utils import scale_image
@@ -17,6 +18,8 @@ from Products.CMFCore.permissions import SetOwnProperties
 from Products.CMFCore.permissions import SetOwnPassword
 from Products.CMFCore.permissions import View
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
+from Products.CMFCore.interfaces import IMemberDataTool
+from Products.CMFCore.interfaces import IURLTool
 
 default_portrait = 'defaultUser.gif'
 
@@ -95,7 +98,7 @@ class MembershipTool(PloneBaseTool, BaseTool):
         """
         returns the Portrait for a member_id
         """
-        membertool   = getToolByName(self, 'portal_memberdata')
+        membertool = getUtility(IMemberDataTool)
 
         if not member_id:
             member_id = self.getAuthenticatedMember().getId()
@@ -108,7 +111,7 @@ class MembershipTool(PloneBaseTool, BaseTool):
                 # Don't return the portrait if the user can't get to it
                 portrait = None
         if portrait is None:
-            portal = getToolByName(self, 'portal_url').getPortalObject()
+            portal = getUtility(IURLTool).getPortalObject()
             portrait = getattr(portal, default_portrait)
 
         return portrait
@@ -118,7 +121,7 @@ class MembershipTool(PloneBaseTool, BaseTool):
         """
         deletes the Portrait of member_id
         """
-        membertool   = getToolByName(self, 'portal_memberdata')
+        membertool = getUtility(IMemberDataTool)
 
         if not member_id:
             member_id = self.getAuthenticatedMember().getId()
@@ -175,7 +178,7 @@ class MembershipTool(PloneBaseTool, BaseTool):
         if portrait and portrait.filename:
             scaled, mimetype = scale_image(portrait)
             portrait = Image(id=member_id, file=scaled, title='')
-            membertool   = getToolByName(self, 'portal_memberdata')
+            membertool = getUtility(IMemberDataTool)
             membertool._setPortrait(portrait, member_id)
 
     security.declareProtected(ManageUsers, 'listMembers')
@@ -215,7 +218,7 @@ class MembershipTool(PloneBaseTool, BaseTool):
         return acl_users.authenticate(userid, password, REQUEST)
 
     def _findUsersAclHome(self, userid):
-        portal = getToolByName(self, 'portal_url').getPortalObject()
+        portal = getUtility(IURLTool).getPortalObject()
         acl_users=portal.acl_users
         parent = acl_users
         while parent:
@@ -232,17 +235,16 @@ class MembershipTool(PloneBaseTool, BaseTool):
     def setPassword(self, password, domains=None):
         '''Allows the authenticated member to set his/her own password.
         '''
-        registration = getToolByName(self, 'portal_registration', None)
+        registration = getUtility(IRegistrationTool)
         if not self.isAnonymousUser():
             member = self.getAuthenticatedMember()
             acl_users = self._findUsersAclHome(member.getUserId())#self.acl_users
             if not acl_users:
                 # should not possibly ever happen
                 raise BadRequest, 'did not find current user in any user folder'
-            if registration:
-                failMessage = registration.testPasswordValidity(password)
-                if failMessage is not None:
-                    raise BadRequest, failMessage
+            failMessage = registration.testPasswordValidity(password)
+            if failMessage is not None:
+                raise BadRequest, failMessage
 
             if domains is None:
                 domains = []
@@ -299,7 +301,7 @@ class MembershipTool(PloneBaseTool, BaseTool):
     def getBadMembers(self):
         """Will search for members with bad images in the portal_memberdata
         delete their portraits and return their member ids"""
-        memberdata = getToolByName(self, 'portal_memberdata')
+        memberdata = getUtility(IMemberDataTool)
         portraits = getattr(memberdata, 'portraits', None)
         if portraits is None:
             return []

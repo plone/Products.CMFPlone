@@ -1,10 +1,11 @@
+from zope.component import getUtility
 from Products.CMFCore import MemberDataTool
+from Products.CMFCore.interfaces import IMembershipTool
 from Products.CMFCore.MemberDataTool import MemberDataTool as BaseTool
 from Products.CMFPlone import ToolNames
 from Globals import InitializeClass
 from AccessControl import ClassSecurityInfo
 from Products.BTreeFolder2.BTreeFolder2 import BTreeFolder2
-from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFCore.permissions import ManagePortal
 
@@ -44,7 +45,7 @@ class MemberDataTool(PloneBaseTool, BaseTool):
         and delete anything not in acl_users
         '''
         BaseTool.pruneMemberDataContents(self)
-        membertool= getToolByName(self, 'portal_membership')
+        membertool= getUtility(IMembershipTool)
         portraits   = self.portraits
         user_list = membertool.listMemberIds()
 
@@ -60,7 +61,7 @@ class MemberDataTool(PloneBaseTool, BaseTool):
         Delete ALL MemberData information. This is required for us as we change the
         MemberData class.
         '''
-        membertool= getToolByName(self, 'portal_membership')
+        membertool= getUtility(IMembershipTool)
         members   = self._members
 
         for tuple in members.items():
@@ -75,7 +76,7 @@ class MemberDataTool(PloneBaseTool, BaseTool):
         """Update former MemberData objects to new MemberData objects
         """
         count = 0
-        membertool= getToolByName(self, 'portal_membership')
+        membertool= getUtility(IMembershipTool)
         members   = self._members
         properties = self.propertyIds()
 
@@ -120,7 +121,7 @@ class MemberDataTool(PloneBaseTool, BaseTool):
         if search_param == 'username':
             search_param = 'id'
 
-        mtool   = getToolByName(self, 'portal_membership')
+        mtool   = getUtility(IMembershipTool)
 
         for member_id in self._members.keys():
 
