@@ -39,6 +39,7 @@ from Products.CMFCore.ActionInformation import Action
 from Products.CMFCore.ActionInformation import ActionInformation
 from Products.CMFPlone.PloneTool import AllowSendto
 from Products.CMFPlone.interfaces import IControlPanel
+from Products.CMFPlone.interfaces import IFactoryTool
 from Products.CMFPlone.interfaces import IInterfaceTool
 from Products.CMFPlone.interfaces import IMigrationTool
 from Products.CMFPlone.interfaces import IPloneSiteRoot
@@ -1666,7 +1667,7 @@ class TestMigrations_v3_0(MigrationTest):
         sm = getSiteManager(self.portal)
         interfaces = (ISiteRoot, IPloneSiteRoot, IControlPanel, IInterfaceTool,
                       IMigrationTool, IPloneTool, ITranslationServiceTool,
-                      IActionIconsTool, ISyndicationTool,
+                      IActionIconsTool, ISyndicationTool, IFactoryTool,
                       ICalendarTool, IActionsTool, ICachingPolicyManager,
                       ICatalogTool, IContentTypeRegistry, IDiscussionTool,
                       IMemberDataTool, IMembershipTool, IMetadataTool,

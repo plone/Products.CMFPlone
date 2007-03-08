@@ -93,6 +93,9 @@
      interface="Products.CMFPlone.interfaces.IControlPanel"
      object="/portal_controlpanel"/>
   <utility
+     interface="Products.CMFPlone.interfaces.IFactoryTool"
+     object="/portal_factory"/>
+  <utility
      interface="Products.CMFPlone.interfaces.IInterfaceTool"
      object="/portal_interface"/>
   <utility

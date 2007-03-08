@@ -1,7 +1,8 @@
 import logging
 import os
 
-from  zope.component import getUtility
+from zope.component import getUtility
+from zope.interface import implements
 
 from Products.CMFCore.interfaces import IMembershipTool
 from Products.CMFCore.interfaces import ITypesTool
@@ -17,8 +18,10 @@ from ZPublisher.mapply import mapply
 from Products.CMFPlone import cmfplone_globals
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Products.CMFCore.permissions import ManagePortal
+from Products.CMFCore.utils import registerToolInterface
 from Products.CMFCore.utils import UniqueObject
 from StructuredText.StructuredText import HTML
+from Products.CMFPlone.interfaces import IFactoryTool
 from Products.CMFPlone.PloneFolder import PloneFolder as TempFolderBase
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFPlone.utils import base_hasattr
@@ -186,6 +189,8 @@ class FactoryTool(PloneBaseTool, UniqueObject, SimpleItem):
     toolicon = 'skins/plone_images/add_icon.gif'
     security = ClassSecurityInfo()
     isPrincipiaFolderish = 0
+
+    implements(IFactoryTool)
 
     __implements__ = (PloneBaseTool.__implements__, SimpleItem.__implements__, )
 
@@ -437,3 +442,4 @@ class FactoryTool(PloneBaseTool, UniqueObject, SimpleItem):
         return tempFolder
 
 Globals.InitializeClass(FactoryTool)
+registerToolInterface('portal_factory', IFactoryTool)

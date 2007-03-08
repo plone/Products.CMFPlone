@@ -40,6 +40,7 @@ from Products.CMFCore.permissions import ManagePortal
 from Products.CMFCore.DirectoryView import createDirectoryView
 from Products.CMFPlone import cmfplone_globals
 from Products.CMFPlone.interfaces import IControlPanel
+from Products.CMFPlone.interfaces import IFactoryTool
 from Products.CMFPlone.interfaces import IInterfaceTool
 from Products.CMFPlone.interfaces import IMigrationTool
 from Products.CMFPlone.interfaces import IPloneSiteRoot
@@ -634,6 +635,7 @@ def registerToolsAsUtilities(portal, out):
     registration = ((portal, ISiteRoot),
                     (portal, IPloneSiteRoot),
                     (portal.portal_controlpanel, IControlPanel),
+                    (portla.portal_factory, IFactoryTool),
                     (portal.portal_interface, IInterfaceTool),
                     (portal.portal_migration, IMigrationTool),
                     (portal.plone_utils, IPloneTool),

@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Added an interface declaration to the factory tool aka portal_factory and
+      register it as a utility.
+      [hannosch]
+
     - Fix bug #6227 : Batch-workflowing objects would erroneously give them 
       the effective date of the portal object or their container. 
       [elvix]
