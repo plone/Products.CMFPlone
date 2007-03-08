@@ -29,6 +29,7 @@ from ZODB.POSException import ConflictError
 
 from Products.CMFCore.utils import UniqueObject
 from Products.CMFCore.utils import getToolByName
+from Products.CMFCore.utils import registerToolInterface
 from Products.CMFCore import permissions
 from Products.CMFCore.permissions import AccessContentsInformation, \
                         ManagePortal, ManageUsers, ModifyPortalContent, View
@@ -1209,3 +1210,4 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             return None
 
 InitializeClass(PloneTool)
+registerToolInterface('plone_utils', IPloneTool)

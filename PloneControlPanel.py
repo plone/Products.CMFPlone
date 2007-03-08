@@ -17,6 +17,7 @@ from Products.CMFCore.ActionInformation import ActionInformation
 from Products.CMFCore.ActionProviderBase import ActionProviderBase
 from Products.CMFCore.permissions import ManagePortal, View
 from Products.CMFCore.utils import _checkPermission, UniqueObject
+from Products.CMFCore.utils import registerToolInterface
 
 import ToolNames
 from interfaces.PloneControlPanel import IControlPanel as z2IControlPanel
@@ -275,3 +276,4 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
                                  )
 
 InitializeClass(PloneControlPanel)
+registerToolInterface('portal_controlpanel', IControlPanel)

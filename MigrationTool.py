@@ -11,6 +11,7 @@ from OFS.SimpleItem import SimpleItem
 from ZODB.POSException import ConflictError
 
 from Products.CMFCore.utils import UniqueObject, getToolByName
+from Products.CMFCore.utils import registerToolInterface
 from Products.CMFCore.permissions import ManagePortal, View
 from Products.CMFPlone.interfaces import IMigrationTool
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
@@ -314,3 +315,4 @@ def registerUpgradePath(oldversion, newversion, function):
     _upgradePaths[oldversion.lower()] = [newversion.lower(), function]
 
 InitializeClass(MigrationTool)
+registerToolInterface('portal_migration', IMigrationTool)

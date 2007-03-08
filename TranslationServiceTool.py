@@ -8,6 +8,7 @@ from zope.component import getUtility
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
 from OFS.SimpleItem import SimpleItem
+from Products.CMFCore.utils import registerToolInterface
 from Products.CMFCore.utils import UniqueObject
 from Products.CMFPlone import PloneLocalesMessageFactory as PLMF
 from Products.CMFPlone import ToolNames
@@ -175,3 +176,4 @@ class TranslationServiceTool(PloneBaseTool, UniqueObject, SimpleItem):
         return weekdayname_english(number, format=format)
 
 InitializeClass(TranslationServiceTool)
+registerToolInterface('translation_service', ITranslationServiceTool)

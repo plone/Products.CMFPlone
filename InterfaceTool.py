@@ -3,7 +3,9 @@ from Products.CMFPlone.interfaces.InterfaceTool import IInterfaceTool \
      as z2IInterfaceTool
 from Products.CMFPlone.interfaces import IInterfaceTool
 from Acquisition import aq_base
+from Products.CMFCore.utils import registerToolInterface
 from Products.CMFCore.utils import UniqueObject
+
 from OFS.SimpleItem import SimpleItem
 from Globals import InitializeClass
 from AccessControl import ClassSecurityInfo
@@ -186,3 +188,4 @@ class InterfaceFinder:
         self._found[getDottedName(iface)] = iface
 
 InitializeClass(InterfaceTool)
+registerToolInterface('portal_interface', IInterfaceTool)
