@@ -9,7 +9,11 @@ if __name__ == '__main__':
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.exportimport.tests.base import BodyAdapterTestCase
 
+from zope.app.component.hooks import setHooks, setSite
+from zope.component import getSiteManager
+from Products.CMFCore.interfaces import ITypesTool
 from Products.CMFPlone.FactoryTool import FactoryTool
+from Products.CMFPlone.setuphandlers import PloneGenerator
 from OFS.Folder import Folder
 
 _FACTORYTOOL_XML = """\
@@ -43,8 +47,14 @@ class PortalFactoryXMLAdapterTests(BodyAdapterTestCase):
         obj.manage_setPortalFactoryTypes(listOfTypeIds=('Folder', 'Document'))
 
     def setUp(self):
+        setHooks()
         self.site = Folder('site')
+        gen = PloneGenerator()
+        gen.enableSite(self.site)
+        setSite(self.site)
+        sm = getSiteManager()
         self.site.portal_types = DummyTypesTool()
+        sm.registerUtility(self.site.portal_types, ITypesTool)
         self.site.portal_factory = FactoryTool()
 
         self._obj = self.site.portal_factory

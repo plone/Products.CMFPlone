@@ -9,7 +9,12 @@ if __name__ == '__main__':
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.exportimport.tests.base import BodyAdapterTestCase
 
+from zope.app.component.hooks import setHooks, setSite
+from zope.component import getSiteManager
+from Products.CMFActionIcons.interfaces import IActionIconsTool
+from Products.CMFPlone.interfaces import IControlPanel
 from Products.CMFPlone.PloneControlPanel import PloneControlPanel
+from Products.CMFPlone.setuphandlers import PloneGenerator
 from OFS.Folder import Folder
 
 _CONTROLPANEL_XML = """\
@@ -52,9 +57,16 @@ class ControlPanelXMLAdapterTests(BodyAdapterTestCase):
                              )
 
     def setUp(self):
+        setHooks()
         self.site = Folder('site')
+        gen = PloneGenerator()
+        gen.enableSite(self.site)
+        setSite(self.site)
+        sm = getSiteManager()
         self.site.portal_actionicons = DummyActionIconsTool()
+        sm.registerUtility(self.site.portal_actionicons, IActionIconsTool)
         self.site.portal_control_panel = PloneControlPanel()
+        sm.registerUtility(self.site.portal_control_panel, IControlPanel)
 
         self._obj = self.site.portal_control_panel
         self._BODY = _CONTROLPANEL_XML

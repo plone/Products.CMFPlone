@@ -8,14 +8,20 @@ if __name__ == '__main__':
 
 from Products.CMFPlone.tests import PloneTestCase
 
-from Acquisition import aq_base
 from Products.CMFPlone.tests.PloneTestCase import FunctionalTestCase
 from Products.CMFPlone.tests.PloneTestCase import default_user
 from Products.CMFPlone.tests.PloneTestCase import default_password
 from Products.CMFPlone.tests import dummy
+
 import difflib
 import re
+from zope.component import getUtility
 
+from Acquisition import aq_base
+from Products.CMFCore.interfaces import ICatalogTool
+from Products.CMFCore.interfaces import IPropertiesTool
+from Products.CMFCore.interfaces import ITypesTool
+from Products.CMFPlone.interfaces import IPloneTool
 from Products.CMFPlone.utils import _createObjectByType
 from Products.CMFPlone.PloneFolder import ReplaceableWrapper
 
@@ -38,7 +44,7 @@ class TestPloneToolBrowserDefault(FunctionalTestCase):
         _createObjectByType('Document',     self.portal, 'atctdocument')
         _createObjectByType('File',         self.portal, 'atctfile')
 
-        self.putils = self.portal.plone_utils
+        self.putils = getUtility(IPloneTool)
 
     def compareLayoutVsView(self, obj, path="", viewaction=None):
         if viewaction is None:
@@ -108,7 +114,7 @@ class TestPloneToolBrowserDefault(FunctionalTestCase):
                          (self.portal.atctfolder, ['index_html'],))
 
     def testBrowserDefaultMixinFolderGlobalDefaultPage(self):
-        self.portal.portal_properties.site_properties.manage_changeProperties(default_page = ['foo'])
+        getUtility(IPropertiesTool).site_properties.manage_changeProperties(default_page = ['foo'])
         self.portal.atctfolder.invokeFactory('Document', 'foo')
         self.assertEqual(self.putils.browserDefault(self.portal.atctfolder),
                          (self.portal.atctfolder, ['foo']))
@@ -176,7 +182,7 @@ class TestPloneToolBrowserDefault(FunctionalTestCase):
     def testBrowserDefaultMixinWithoutFtiGivesSensibleError(self):
         # Test for issue http://dev.plone.org/plone/ticket/5676
         # Ensure that the error displayed for missing FTIs is not so cryptic
-        self.portal.portal_types._delOb('Document')
+        getUtility(ITypesTool)._delOb('Document')
 
         self.assertRaises(AttributeError,
                           self.portal.plone_utils.browserDefault,
@@ -203,11 +209,11 @@ class TestDefaultPage(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
         self.ob = dummy.DefaultPage()
-        sp = self.portal.portal_properties.site_properties
+        sp = getUtility(IPropertiesTool).site_properties
         self.default = sp.getProperty('default_page', [])
 
     def getDefault(self):
-        return self.portal.plone_utils.browserDefault(self.ob)
+        return getUtility(IPloneTool).browserDefault(self.ob)
 
     def testDefaultPageSetting(self):
         self.assertEquals(self.default, ('index_html', 'index.html',
@@ -336,7 +342,7 @@ class TestPortalBrowserDefault(PloneTestCase.PloneTestCase):
 
     def testSetDefaultPageUpdatesCatalog(self):
         # Ensure that Default page changes update the catalog
-        cat = self.portal.portal_catalog
+        cat = getUtility(ICatalogTool)
         self.portal.invokeFactory('Document', 'ad')
         self.portal.invokeFactory('Document', 'other')
         self.assertEqual(len(cat(getId=['ad','other'],is_default_page=True)), 0)
