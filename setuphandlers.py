@@ -26,6 +26,7 @@ from Products.CMFPlone import migrations as migs
 from Products.CMFPlone.events import SiteManagerCreatedEvent
 from Products.CMFPlone.Portal import member_indexhtml
 from Products.CMFQuickInstallerTool.interfaces import INonInstallable
+from Products.CMFQuickInstallerTool.interfaces import IQuickInstallerTool
 
 from plone.portlets.interfaces import IPortletAssignmentMapping
 from plone.portlets.interfaces import IPortletManager
@@ -57,7 +58,7 @@ class PloneGenerator:
         """QuickInstaller install of required Products"""
         # XXX The product installations should be done by a GenericSetup
         # handler
-        qi = getToolByName(p, 'portal_quickinstaller')
+        qi = getUtility(IQuickInstallerTool)
         qi.installProduct('Archetypes', locked=1, hidden=1)
         qi.installProduct('PlonePAS', locked=1, hidden=1, forceProfile=True)
         qi.installProduct('kupu', locked=0, forceProfile=True)

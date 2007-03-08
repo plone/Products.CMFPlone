@@ -46,6 +46,7 @@ from Products.CMFPlone.interfaces import IPloneTool
 from Products.CMFPlone.interfaces import ITranslationServiceTool
 from Products.CMFPlone.utils import _createObjectByType
 from Products.CMFPlone.UnicodeSplitter import Splitter, CaseNormalizer
+from Products.CMFQuickInstallerTool.interfaces import IQuickInstallerTool
 from Products.CMFUid.interfaces import IUniqueIdAnnotationManagement
 from Products.CMFUid.interfaces import IUniqueIdGenerator
 from Products.CMFUid.interfaces import IUniqueIdHandler
@@ -1673,7 +1674,8 @@ class TestMigrations_v3_0(MigrationTest):
                       IPropertiesTool, IRegistrationTool, ISkinsTool,
                       ITypesTool, IUndoTool, IURLTool, IMailHost,
                       IConfigurableWorkflowTool, IUniqueIdAnnotationManagement,
-                      IUniqueIdGenerator, IUniqueIdHandler, ISetupTool, )
+                      IUniqueIdGenerator, IUniqueIdHandler, ISetupTool, 
+                      IQuickInstallerTool, )
         for i in interfaces:
             sm.unregisterUtility(provided=i)
         registerToolsAsUtilities(self.portal, [])

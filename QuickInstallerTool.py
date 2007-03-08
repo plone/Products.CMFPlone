@@ -1,10 +1,12 @@
-from Products.CMFQuickInstallerTool.QuickInstallerTool \
-   import QuickInstallerTool as BaseTool
-from Products.CMFPlone.PloneBaseTool import PloneBaseTool
-
-from Products.CMFPlone import ToolNames
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
+from Products.CMFCore.utils import registerToolInterface
+from Products.CMFPlone.PloneBaseTool import PloneBaseTool
+from Products.CMFPlone import ToolNames
+from Products.CMFQuickInstallerTool.QuickInstallerTool \
+   import QuickInstallerTool as BaseTool
+from Products.CMFQuickInstallerTool.interfaces import IQuickInstallerTool
+
 
 class QuickInstallerTool(PloneBaseTool, BaseTool):
     """ A tool to ease installing/uninstalling all sorts of products """
@@ -18,3 +20,4 @@ class QuickInstallerTool(PloneBaseTool, BaseTool):
 QuickInstallerTool.__doc__ = BaseTool.__doc__
 
 InitializeClass(QuickInstallerTool)
+registerToolInterface('portal_quickinstaller', IQuickInstallerTool)

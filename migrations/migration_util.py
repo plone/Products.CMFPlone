@@ -4,10 +4,10 @@ from zope.component import getUtility
 from zope.component import queryUtility
 
 from Acquisition import aq_base
-from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.interfaces import IMemberDataTool
 from Products.CMFCore.interfaces import ISkinsTool
 from Products.CMFPlone.MemberDataTool import MemberDataTool
+from Products.CMFQuickInstallerTool.interfaces import IQuickInstallerTool
 from Products.PlonePAS.tools.memberdata \
         import MemberDataTool as PASMemberDataTool
 
@@ -82,7 +82,7 @@ def installOrReinstallProduct(portal, product_name, out):
     If product is already installed test if it needs to be reinstalled. Also
     fix skins after reinstalling
     """
-    qi = getToolByName(portal, 'portal_quickinstaller')
+    qi = getUtility(IQuickInstallerTool)
     if not qi.isProductInstalled(product_name):
         qi.installProduct(product_name)
         # Refresh skins

@@ -105,6 +105,9 @@
      interface="Products.CMFPlone.interfaces.IPloneTool"
      object="/plone_utils"/>
   <utility
+     interface="Products.CMFQuickInstallerTool.interfaces.IQuickInstallerTool"
+     object="/portal_quickinstaller"/>
+  <utility
      interface="Products.CMFPlone.interfaces.ITranslationServiceTool"
      object="/translation_service"/>
   <utility

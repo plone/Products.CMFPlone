@@ -47,6 +47,7 @@ from Products.CMFPlone.interfaces import IPloneSiteRoot
 from Products.CMFPlone.interfaces import IPloneTool
 from Products.CMFPlone.interfaces import ITranslationServiceTool
 from Products.CMFPlone.migrations.migration_util import installOrReinstallProduct
+from Products.CMFQuickInstallerTool.interfaces import IQuickInstallerTool
 from Products.CMFUid.interfaces import IUniqueIdAnnotationManagement
 from Products.CMFUid.interfaces import IUniqueIdGenerator
 from Products.CMFUid.interfaces import IUniqueIdHandler
@@ -638,6 +639,7 @@ def registerToolsAsUtilities(portal, out):
                     (portla.portal_factory, IFactoryTool),
                     (portal.portal_interface, IInterfaceTool),
                     (portal.portal_migration, IMigrationTool),
+                    (portal.portal_quickinstaller, IQuickInstallerTool),
                     (portal.plone_utils, IPloneTool),
                     (portal.translation_service, ITranslationServiceTool),
                     (portal.portal_actionicons, IActionIconsTool),
