@@ -6,6 +6,17 @@ import transaction
 
 from zope.deprecation import deprecate
 from zope.interface import implements
+from zope.component import getUtility
+
+from Products.CMFActionIcons.interfaces import IActionIconsTool
+from Products.CMFCore.interfaces import ICatalogTool
+from Products.CMFCore.interfaces import IConfigurableWorkflowTool
+from Products.CMFCore.interfaces import IDiscussionTool
+from Products.CMFCore.interfaces import IMembershipTool
+from Products.CMFCore.interfaces import IPropertiesTool
+from Products.CMFCore.interfaces import ISkinsTool
+from Products.CMFCore.interfaces import ITypesTool
+from Products.CMFCore.interfaces import IURLTool
 
 from AccessControl import ClassSecurityInfo, Unauthorized
 from Acquisition import aq_base, aq_inner, aq_parent
@@ -96,7 +107,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     security.declareProtected(ManageUsers, 'setMemberProperties')
     def setMemberProperties(self, member, **properties):
-        membership = getToolByName(self, 'portal_membership')
+        membership = getUtility(IMembershipTool)
         if safe_hasattr(member, 'getId'):
             member = member.getId()
         user = membership.getMemberById(member)
@@ -210,7 +221,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
         We assume the obj implements IDublinCoreMetadata.
         """
-        mt = getToolByName(self, 'portal_membership')
+        mt = getUtility(IMembershipTool)
         if not mt.checkPermission(ModifyPortalContent, obj):
             # FIXME: Some scripts rely on this being string?
             raise Unauthorized
@@ -248,7 +259,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
         if Discussable.isImplementedBy(obj) or \
             getattr(obj, '_isDiscussable', None):
-            disc_tool = getToolByName(self, 'portal_discussion')
+            disc_tool = getUtility(IDiscussionTool)
             if allowDiscussion is None:
                 allowDiscussion = disc_tool.isDiscussionAllowedFor(obj)
                 if not safe_hasattr(obj, 'allow_discussion'):
@@ -297,7 +308,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     def _makeTransactionNote(self, obj, msg=''):
         #TODO Why not aq_parent()?
-        relative_path = '/'.join(getToolByName(self, 'portal_url').getRelativeContentPath(obj)[:-1])
+        relative_path = '/'.join(getUtility(IURLTool).getRelativeContentPath(obj)[:-1])
         charset = self.getSiteEncoding()
         if not msg:
             msg = relative_path + '/' + obj.title_or_id() + ' has been modified.'
@@ -335,7 +346,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         """Proxy the request for the chain to the workflow tool, as
         this method is private there.
         """
-        wftool = getToolByName(self, 'portal_workflow')
+        wftool = getUtility(IConfigurableWorkflowTool)
         wfs = ()
         try:
             wfs = wftool.getChainFor(object)
@@ -355,7 +366,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         if (category, id) in _icons.keys():
             return _icons[(category, id)]
         try:
-            actionicons = getToolByName(self, 'portal_actionicons')
+            actionicons = getUtility(IActionIconsTool)
             iconinfo = actionicons.getActionIcon(category, id)
             icon = _icons.setdefault((category, id), iconinfo)
         except KeyError:
@@ -378,7 +389,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         >>> ptool.getReviewStateTitleFor(self.folder)
         'Public Draft'
         """
-        wf_tool = getToolByName(self, 'portal_workflow')
+        wf_tool = getUtility(IConfigurableWorkflowTool)
         wfs = ()
         review_states = ()
         objstate = None
@@ -414,7 +425,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                "deprecated and will be removed in Plone 3.5.")
     def setDefaultSkin(self, default_skin):
         """Sets the default skin."""
-        st = getToolByName(self, 'portal_skins')
+        st = getUtility(ISkinsTool)
         st.default_skin = default_skin
 
     security.declarePublic('setCurrentSkin')
@@ -422,13 +433,13 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                "deprecated and will be removed in Plone 3.5.")
     def setCurrentSkin(self, skin_name):
         """Sets the current skin."""
-        portal = getToolByName(self, 'portal_url').getPortalObject()
+        portal = getUtility(IURLTool).getPortalObject()
         portal.changeSkin(skin_name)
 
     security.declareProtected(ManagePortal, 'changeOwnershipOf')
     def changeOwnershipOf(self, object, userid, recursive=0):
         """Changes the ownership of an object."""
-        membership = getToolByName(self, 'portal_membership')
+        membership = getUtility(IMembershipTool)
         acl_users = getattr(self, 'acl_users')
         user = acl_users.getUserById(userid)
         if user is None:
@@ -455,8 +466,8 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             object.reindexObject()
 
         if recursive:
-            catalog_tool = getToolByName(self, 'portal_catalog')
-            purl = getToolByName(self, 'portal_url')
+            catalog_tool = getUtility(ICatalogTool)
+            purl = getUtility(IURLTool)
             _path = purl.getRelativeContentURL(object)
             subobjects = [b.getObject() for b in \
                          catalog_tool(path={'query':_path,'level':1})]
@@ -760,8 +771,8 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                 return obj, [request['REQUEST_METHOD']]
         # Now back to normal
 
-        portal = getToolByName(self, 'portal_url').getPortalObject()
-        wftool = getToolByName(self, 'portal_workflow')
+        portal = getUtility(IURLTool).getPortalObject()
+        wftool = getUtility(IConfigurableWorkflowTool)
 
         # Looking up translatable is done several places so we make a
         # method for it.
@@ -915,11 +926,11 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         If it's 0, prohibit it (it will allow some kind of local role
         blacklisting).
         """
-        mt = getToolByName(self, 'portal_membership')
+        mt = getUtility(IMembershipTool)
         if not mt.checkPermission(ModifyPortalContent, obj):
             raise Unauthorized
         # Set local role status
-        gruf = getToolByName(self, 'portal_url').getPortalObject().acl_users
+        gruf = getUtility(IURLTool).getPortalObject().acl_users
         # We perform our own security check
         gruf._acquireLocalRoles(obj, status)
         # Reindex the whole stuff.
@@ -932,7 +943,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         True if normal, false if blocked.
         GRUF IS REQUIRED FOR THIS TO WORK.
         """
-        gruf = getToolByName(self, 'portal_url').getPortalObject().acl_users
+        gruf = getUtility(IURLTool).getPortalObject().acl_users
         return gruf.isLocalRoleAcquired(obj)
 
     security.declarePublic('getOwnerName')
@@ -945,7 +956,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         >>> ptool.getOwnerName(self.folder) == default_user
         True
         """
-        mt = getToolByName(self, 'portal_membership')
+        mt = getUtility(IMembershipTool)
         if not mt.checkPermission(View, obj):
             raise Unauthorized
         return obj.getOwner().getUserName()
@@ -1033,7 +1044,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         Creates a mapping of meta tags -> values for the listMetaTags script.
         """
         result = {}
-        site_props = getToolByName(self, 'portal_properties').site_properties
+        site_props = getUtility(IPropertiesTool).site_properties
         use_all = site_props.getProperty('exposeDCMetaTags', None)
 
         if not use_all:
@@ -1122,11 +1133,11 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         from portal_types are used.
         """
 
-        ptool = getToolByName(self, 'portal_properties')
+        ptool = getUtility(IPropertiesTool)
         siteProperties = getattr(ptool, 'site_properties')
         blacklistedTypes = siteProperties.getProperty('types_not_searched', [])
 
-        ttool = getToolByName(self, 'portal_types')
+        ttool = getUtility(ITypesTool)
         types = typesList or ttool.listContentTypes()
 
         friendlyTypes = []
@@ -1145,10 +1156,10 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         # for humans than machines, therefore the fact that this won't scale
         # well for btrees isn't a huge issue, since btrees are more for
         # machines than humans.
-        mtool = getToolByName(self, 'portal_membership')
+        mtool = getUtility(IMembershipTool)
         if not mtool.checkPermission(ModifyPortalContent, parent):
             return
-        cat = getToolByName(self, 'portal_catalog')
+        cat = getUtility(ICatalogTool)
         cataloged_objs = cat(path = {'query':'/'.join(parent.getPhysicalPath()),
                                      'depth': 1})
         for brain in cataloged_objs:
