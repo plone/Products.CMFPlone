@@ -44,7 +44,7 @@ class Tools(BrowserView):
 
     @memoize_contextless
     def syndication(self):
-        return getUtility(ISyndicationtool)
+        return getUtility(ISyndicationTool)
         
     @memoize_contextless
     def url(self):
