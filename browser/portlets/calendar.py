@@ -8,7 +8,7 @@ from Products.CMFPlone import utils
 from Products.CMFPlone.browser.interfaces import ICalendarPortlet
 
 from Products.CMFCalendar.interfaces import ICalendarTool
-from Products.CMFPlone.interfaces import TranslationServiceTool
+from Products.CMFPlone.interfaces import ITranslationServiceTool
 
 PLMF = MessageFactory('plonelocales')
 
