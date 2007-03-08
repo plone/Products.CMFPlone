@@ -1,22 +1,25 @@
 import zope.deprecation
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 
+from zope.component import getUtility
 from zope.component import getMultiAdapter
 from zope.component import queryUtility
 from zope.interface import implements
 
 from Acquisition import aq_base, aq_inner, aq_parent
 
-from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import utils
 from Products.CMFPlone.browser.interfaces import INavigationPortlet
+
+from Products.CMFCore.interfaces import IPropertiesTool
+from Products.CMFCore.interfaces import IURLTool
 
 class NavigationPortlet(utils.BrowserView):
     implements(INavigationPortlet)
 
     def title(self):
         context = utils.context(self)
-        portal_properties = getToolByName(context, 'portal_properties')
+        portal_properties = getUtility(IPropertiesTool)
         return portal_properties.navtree_properties.name
 
     def display(self):
@@ -26,7 +29,7 @@ class NavigationPortlet(utils.BrowserView):
 
     def includeTop(self):
         context = utils.context(self)
-        portal_properties = getToolByName(context, 'portal_properties')
+        portal_properties = getUtility(IPropertiesTool)
         return portal_properties.navtree_properties.includeTop
 
     def navigationRoot(self):
@@ -39,7 +42,7 @@ class NavigationPortlet(utils.BrowserView):
     def createNavTree(self):
         context = utils.context(self)
         data = self.getNavTree()
-        properties = getToolByName(context, 'portal_properties')
+        properties = getUtility(IPropertiesTool)
         navtree_properties = getattr(properties, 'navtree_properties')
         bottomLevel = navtree_properties.getProperty('bottomLevel', 0)
         # XXX: The recursion should probably be done in python code
@@ -60,7 +63,7 @@ class NavigationPortlet(utils.BrowserView):
         """Get and cache the navigation root"""
         if not utils.base_hasattr(self, '_root'):
             context = utils.context(self)
-            portal_url = getToolByName(context, 'portal_url')
+            portal_url = getUtility(IURLTool)
             portal = portal_url.getPortalObject()
 
             view = getMultiAdapter((context, self.request),

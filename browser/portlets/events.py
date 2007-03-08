@@ -1,8 +1,11 @@
 import zope.deprecation
 from zope.interface import implements
+from zope.component import getUtility
+
+from Products.CMFCore.interfaces import ICatalogTool
+from Products.CMFCore.interfaces import IURLTool
 
 from DateTime import DateTime
-from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import utils
 from Products.CMFPlone.browser.interfaces import IEventsPortlet
 
@@ -12,7 +15,7 @@ class EventsPortlet(utils.BrowserView):
 
     def __init__(self, context, request, *args, **kw):
         super(EventsPortlet, self).__init__(context, request, *args, **kw)
-        utool = getToolByName(context, 'portal_url')
+        utool = getUtility(IURLTool)
         self.portal_url = utool()
         # this has a messed up context, but we don't care in this case
         self.portal = utool.getPortalObject()
@@ -20,7 +23,7 @@ class EventsPortlet(utils.BrowserView):
 
     def published_events(self):
         context = utils.context(self)
-        portal_catalog = getToolByName(context, 'portal_catalog')
+        portal_catalog = getUtility(ICatalogTool)
 
         return portal_catalog.searchResults(portal_type='Event',
                                             end={'query': DateTime(),
