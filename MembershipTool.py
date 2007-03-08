@@ -19,6 +19,7 @@ from Products.CMFCore.permissions import SetOwnPassword
 from Products.CMFCore.permissions import View
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFCore.interfaces import IMemberDataTool
+from Products.CMFCore.interfaces import IRegistrationTool
 from Products.CMFCore.interfaces import IURLTool
 
 default_portrait = 'defaultUser.gif'
