@@ -2,7 +2,7 @@ from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.interface import implements
 
-from Products.CMFCore.interfaaces import IPropertiesTool
+from Products.CMFCore.interfaces import IPropertiesTool
 
 from Products.CMFPlone import utils
 from Products.CMFPlone.browser.interfaces import ISitemapView
