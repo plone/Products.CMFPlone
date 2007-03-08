@@ -3,8 +3,11 @@ Mail control panel
 
 First some initial setup code:
 
-    >>> ctool = self.getToolByName('portal_calendar')
-    >>> mailhost = self.getToolByName('MailHost')
+    >>> from zope.component import getUtility
+    >>> from Products.CMFCalendar.interfaces import ICalendarTool
+    >>> from Products.MailHost.interfaces import IMailHost
+    >>> ctool = getUtility(ICalendarTool)
+    >>> mailhost = getUtility(IMailHost)
     >>> self.loginAsManager()
 
 Viewing the search control panel

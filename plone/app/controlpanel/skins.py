@@ -1,11 +1,14 @@
 from zope.interface import Interface
 from zope.component import adapts
+from zope.component import getUtility
 from zope.formlib.form import FormFields
 from zope.interface import implements
 from zope.schema import Bool
 from zope.schema import Choice
 from zope.schema import Tuple
 
+from Products.CMFCore.interfaces import IPropertiesTool
+from Products.CMFCore.interfaces import ISkinsTool
 from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault.formlib.schema import SchemaAdapterBase
 from Products.CMFPlone import PloneMessageFactory as _
@@ -45,9 +48,9 @@ class SkinsControlPanelAdapter(SchemaAdapterBase):
 
     def __init__(self, context):
         super(SkinsControlPanelAdapter, self).__init__(context)
-        self.context = getToolByName(context, 'portal_skins')
+        self.context = getUtility(ISkinsTool)
         self.jstool=getToolByName(context, 'portal_javascripts')
-        ptool = getToolByName(context, 'portal_properties')
+        ptool = getUtility(IPropertiesTool)
         self.props = ptool.site_properties
 
     def get_theme(self):

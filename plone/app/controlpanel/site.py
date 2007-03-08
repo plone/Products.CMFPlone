@@ -1,6 +1,7 @@
 from zope.app.form.browser import TextAreaWidget
 from zope.interface import Interface
 from zope.component import adapts
+from zope.component import getUtility
 from zope.formlib.form import FormFields
 from zope.interface import implements
 from zope.schema import Bool
@@ -8,7 +9,7 @@ from zope.schema import Text
 from zope.schema import TextLine
 from zope.schema import SourceText
 
-from Products.CMFCore.utils import getToolByName
+from Products.CMFCore.interfaces import IPropertiesTool
 from Products.CMFDefault.formlib.schema import ProxyFieldProperty
 from Products.CMFDefault.formlib.schema import SchemaAdapterBase
 from Products.CMFPlone import PloneMessageFactory as _
@@ -79,7 +80,7 @@ class SiteControlPanelAdapter(SchemaAdapterBase):
     def __init__(self, context):
         super(SiteControlPanelAdapter, self).__init__(context)
         self.portal = context
-        pprop = getToolByName(context, 'portal_properties')
+        pprop = getUtility(IPropertiesTool)
         self.context = pprop.site_properties
         self.encoding = pprop.site_properties.default_charset
 

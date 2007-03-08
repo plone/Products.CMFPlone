@@ -1,12 +1,13 @@
 from zope.interface import Interface
 from zope.component import adapts
+from zope.component import getUtility
 from zope.formlib.form import FormFields
 from zope.interface import implements
 from zope.schema import Choice
 from zope.schema import Int
 from zope.schema import Tuple
 
-from Products.CMFCore.utils import getToolByName
+from Products.CMFCalendar.interfaces import ICalendarTool
 from Products.CMFDefault.formlib.schema import ProxyFieldProperty
 from Products.CMFDefault.formlib.schema import SchemaAdapterBase
 from Products.CMFPlone import PloneMessageFactory as _
@@ -37,7 +38,7 @@ class CalendarControlPanelAdapter(SchemaAdapterBase):
 
     def __init__(self, context):
         super(CalendarControlPanelAdapter, self).__init__(context)
-        self.context = getToolByName(context, 'portal_calendar')
+        self.context = getUtility(ICalendarTool)
 
     firstweekday = ProxyFieldProperty(ICalendarSchema['firstweekday'])
     calendar_states = ProxyFieldProperty(ICalendarSchema['calendar_states'])

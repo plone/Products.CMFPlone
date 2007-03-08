@@ -2,19 +2,14 @@ from plone.fieldsets import FormFieldsets
 
 from zope.interface import Interface
 from zope.component import adapts
-from zope.formlib.form import FormFields
 from zope.interface import implements
 from zope.schema import Bool
 from zope.schema import Choice
-from zope.schema import Int
 from zope.schema import Tuple
-from zope.schema import TextLine
 
 from zope.schema.interfaces import IVocabularyFactory
 from zope.schema.vocabulary import SimpleVocabulary
 
-from Products.CMFCore.utils import getToolByName
-from Products.CMFDefault.formlib.schema import ProxyFieldProperty
 from Products.CMFDefault.formlib.schema import SchemaAdapterBase
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.interfaces import IPloneSiteRoot
@@ -32,8 +27,6 @@ from Products.Archetypes.mimetype_utils import getDefaultContentType, \
 
 from persistent import Persistent
 from zope.annotation.interfaces import IAnnotations
-
-from Products.CMFPlone.utils import safe_hasattr
 
 from wicked.plone.registration import basic_type_regs as wicked_basic_type_regs
 from wicked.txtfilter import BrackettedWickedFilter

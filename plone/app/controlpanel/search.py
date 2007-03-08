@@ -1,11 +1,14 @@
 from zope.interface import Interface
 from zope.component import adapts
+from zope.component import getUtility
 from zope.formlib.form import FormFields
 from zope.interface import implements
 from zope.schema import Bool
 from zope.schema import Choice
 from zope.schema import Tuple
 
+from Products.CMFCore.interfaces import IPropertiesTool
+from Products.CMFCore.interfaces import ITypesTool
 from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault.formlib.schema import ProxyFieldProperty
 from Products.CMFDefault.formlib.schema import SchemaAdapterBase
@@ -47,10 +50,10 @@ class SearchControlPanelAdapter(SchemaAdapterBase):
 
     def __init__(self, context):
         super(SearchControlPanelAdapter, self).__init__(context)
-        pprop = getToolByName(context, 'portal_properties')
+        pprop = getUtility(IPropertiesTool)
         self.context = pprop.site_properties
-        self.jstool=getToolByName(context, 'portal_javascripts')
-        self.ttool=getToolByName(context, 'portal_types')
+        self.jstool = getToolByName(context, 'portal_javascripts')
+        self.ttool = getUtility(ITypesTool)
 
     def get_enable_livesearch(self):
         return self.context.enable_livesearch

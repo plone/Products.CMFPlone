@@ -2,18 +2,20 @@ from plone.fieldsets import FormFieldsets
 
 from zope.interface import Interface
 from zope.component import adapts
+from zope.component import getUtility
 from zope.formlib.form import FormFields
 from zope.interface import implements
 from zope.schema import Int
 from zope.schema import Password
 from zope.schema import TextLine
 
-from Products.CMFCore.utils import getToolByName
+from Products.CMFCore.interfaces import IPropertiesTool
 from Products.CMFDefault.formlib.schema import ProxyFieldProperty
 from Products.CMFDefault.formlib.schema import SchemaAdapterBase
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.interfaces import IPloneSiteRoot
 from Products.CMFPlone.utils import safe_hasattr
+from Products.MailHost.interfaces import IMailHost
 
 from form import ControlPanelForm
 
@@ -76,8 +78,8 @@ class MailControlPanelAdapter(SchemaAdapterBase):
 
     def __init__(self, context):
         super(MailControlPanelAdapter, self).__init__(context)
-        self.context = getToolByName(context, 'MailHost')
-        pprop = getToolByName(context, 'portal_properties')
+        self.context = getUtility(IMailHost)
+        pprop = getUtility(IPropertiesTool)
         self.site_properties = pprop.site_properties
 
     smtp_host = ProxyFieldProperty(IMailSchema['smtp_host'])

@@ -5,7 +5,10 @@ from Testing.ZopeTestCase import FunctionalDocFileSuite
 from Products.PloneTestCase.PloneTestCase import PloneTestCase
 from Products.PloneTestCase.PloneTestCase import FunctionalTestCase
 from Products.PloneTestCase.PloneTestCase import setupPloneSite
+
+from zope.component import getUtility
 from Products.CMFCore.utils import getToolByName
+from Products.CMFCore.interfaces import IPropertiesTool
 
 setupPloneSite()
 
@@ -23,7 +26,7 @@ class ControlPanelTestCase(FunctionalTestCase):
         self.uf = self.portal.acl_users
         self.uf.userFolderAddUser('root', 'secret', ['Manager'], [])
         
-        self.ptool = self.getToolByName('portal_properties')
+        self.ptool = getUtility(IPropertiesTool)
         self.site_props = self.ptool.site_properties
         
     def loginAsManager(self):

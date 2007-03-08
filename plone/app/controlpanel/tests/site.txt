@@ -3,7 +3,9 @@ Site control panel
 
 First some initial setup code:
 
-    >>> ptool = self.getToolByName('portal_properties')
+    >>> from zope.component import getUtility
+    >>> from Products.CMFCore.interfaces import IPropertiesTool
+    >>> ptool = getUtility(IPropertiesTool)
     >>> self.loginAsManager()
 
     >>> ptool.site_properties.enable_sitemap
