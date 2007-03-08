@@ -8,7 +8,7 @@ from Products.CMFCore.interfaces import IActionsTool
 from Products.CMFCore.interfaces import ICatalogTool
 from Products.CMFCore.interfaces import IMembershipTool
 from Products.CMFCore.interfaces import IPropertiesTool
-from Products.CMFCore.interfaces import ISyndicationtool
+from Products.CMFCore.interfaces import ISyndicationTool
 from Products.CMFCore.interfaces import ITypesTool
 from Products.CMFCore.interfaces import IURLTool
 from Products.CMFCore.interfaces import IConfigurableWorkflowTool
