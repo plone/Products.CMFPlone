@@ -61,7 +61,7 @@
  <import-step id="factorytool" version="20060711-01"
               handler="Products.CMFPlone.exportimport.factorytool.importFactoryTool"
               title="Portal Factory Tool">
-  <dependency step="toolset"/>
+  <dependency step="componentregistry"/>
   <dependency step="typeinfo"/>
   Import type registration for the portal factory tool.
  </import-step>
@@ -110,9 +110,9 @@
   <dependency step="catalog"/>
   <dependency step="cssregistry"/>
   <dependency step="jsregistry"/>
+  <dependency step="propertiestool"/>
   <dependency step="rolemap"/>
   <dependency step="skins"/>
-  <dependency step="toolset"/>
   <dependency step="typeinfo"/>
     Plone specific settings
  </import-step>
@@ -130,7 +130,7 @@
  <import-step id="propertiestool" version="20051101-01"
               handler="Products.CMFPlone.exportimport.propertiestool.importPloneProperties"
               title="Plone Properties">
-  <dependency step="toolset"/>
+  <dependency step="componentregistry"/>
     Export plone properties tool and subobjects.
  </import-step>
  <import-step id="rolemap" version="20040523-01"
@@ -160,7 +160,6 @@
               handler="Products.CMFCore.exportimport.workflow.importWorkflowTool"
               title="Workflow Tool">
   <dependency step="componentregistry"/>
-  <dependency step="toolset"/>
   <dependency step="typeinfo"/>
     Import workflow tool's workflow definitions and supporting scripts.
  </import-step>

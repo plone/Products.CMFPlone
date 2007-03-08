@@ -13,7 +13,8 @@ from Products.GenericSetup.utils import PropertyManagerHelpers
 from Products.GenericSetup.utils import I18NURI
 from Products.CMFCore.interfaces import IPropertiesTool
 from Products.CMFPlone.PropertiesTool import SimpleItemWithProperties
-from Products.CMFPlone.interfaces import IPropertiesTool, ISimpleItemWithProperties
+from Products.CMFPlone.interfaces import IPropertiesTool as IPlonePropertiesTool
+from Products.CMFPlone.interfaces import ISimpleItemWithProperties
 
 _FILENAME = 'propertiestool.xml'
 
@@ -83,7 +84,7 @@ class PlonePropertiesToolXMLAdapter(XMLAdapterBase, ObjectManagerHelpers):
     """Node im- and exporter for Plone PropertiesTool.
     """
 
-    __used_for__ = IPropertiesTool
+    __used_for__ = IPlonePropertiesTool
 
     def _exportNode(self):
         """Export the object as a DOM node.
