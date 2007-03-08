@@ -30,12 +30,12 @@
 # found or accessed
 
 from ZODB.POSException import ConflictError
-from Products.CMFCore.utils import getToolByName
+from Products.CMFCore.utils import getToolByInterfaceName
 from AccessControl import Unauthorized
 
-portal_url = getToolByName(context, 'portal_url')
-plone_utils = getToolByName(context, 'plone_utils')
-portal_membership = getToolByName(context, 'portal_membership')
+portal_url = getToolByInterfaceName('Products.CMFCore.interfaces.IURLTool')
+plone_utils = getToolByInterfaceName('Products.CMFPlone.interfaces.IPloneTool')
+portal_membership = getToolByInterfaceName('Products.CMFCore.interfaces.IMembershipTool')
 
 if obj is None:
     obj = context

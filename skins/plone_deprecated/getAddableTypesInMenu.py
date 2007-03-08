@@ -12,9 +12,9 @@ context.plone_log("The getAddableTypesInMenu script is deprecated and will be "
 
 INTERFACE = "Products.CMFPlone.interfaces.ConstrainTypes.IConstrainTypes"
 
-from Products.CMFCore.utils import getToolByName
-itool = getToolByName(context, 'portal_interface')
-mtool = getToolByName(context, 'portal_membership')
+from Products.CMFCore.utils import getToolByInterfaceName
+itool = getToolByInterfaceName('Products.CMFPlone.interfaces.IInterfaceTool')
+mtool = getToolByInterfaceName('Products.CMFCore.interfaces.IMembershipTool')
 translate = context.translate
 
 plone_view = context.restrictedTraverse('@@plone')

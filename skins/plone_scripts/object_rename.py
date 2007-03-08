@@ -9,14 +9,14 @@
 ##
 
 from Products.CMFPlone.utils import transaction_note
-from Products.CMFCore.utils import getToolByName
+from Products.CMFCore.utils import getToolByInterfaceName
 from OFS.CopySupport import CopyError
 from AccessControl import Unauthorized
 from Products.PythonScripts.standard import url_quote_plus
 
 REQUEST = context.REQUEST
 
-mtool = getToolByName(context, 'portal_membership')
+mtool = getToolByInterfaceName('Products.CMFCore.interfaces.IMembershipTool')
 if not mtool.checkPermission('Copy or Move', context):
     raise Unauthorized, _(u'Permission denied to rename ${title}.',
                           mapping={u'title': context.title_or_id()})

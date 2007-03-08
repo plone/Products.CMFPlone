@@ -12,7 +12,7 @@
 <body>
 
    <div metal:fill-slot="prefs_configlet_main"
-      tal:define="controlPanel python:modules['Products.CMFCore.utils'].getToolByName(here, 'portal_controlpanel');
+      tal:define="controlPanel python:modules['Products.CMFCore.utils'].getToolByInterfaceName('Products.CMFPlone.interfaces.IControlPanel');
                   groups python:controlPanel.getGroups('member');
                   getIconFor nocall:putils/getIconFor">
 

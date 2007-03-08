@@ -3,7 +3,6 @@
 context.plone_log("The getEventString script is deprecated and will be "
                   "removed in Plone 3.5.")
 
-from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import safe_unicode
 
 start = event['start'] and ':'.join(event['start'].split(':')[:2]) or ''

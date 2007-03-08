@@ -8,11 +8,11 @@
 ##title=Can an object be changed with the external editor and by the user
 ##
 #
-from Products.CMFCore.utils import getToolByName
+from Products.CMFCore.utils import getToolByName, getToolByInterfaceName
 from Products.CMFPlone.utils import webdav_enabled
 
-portal = getToolByName(context, 'portal_url').getPortalObject()
-mtool = getToolByName(portal, 'portal_membership')
+portal = getToolByInterfaceName('Products.CMFCore.interfaces.IURLTool').getPortalObject()
+mtool = getToolByInterfaceName('Products.CMFCore.interfaces.IMembershipTool')
 
 if mtool.isAnonymousUser():
     return False

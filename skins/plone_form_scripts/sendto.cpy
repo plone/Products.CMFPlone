@@ -12,20 +12,20 @@ REQUEST=context.REQUEST
 
 from Products.CMFPlone.utils import transaction_note
 from Products.CMFPlone.PloneTool import AllowSendto
-from Products.CMFCore.utils import getToolByName
+from Products.CMFCore.utils import getToolByInterfaceName
 from Products.CMFPlone import PloneMessageFactory as _
 from ZODB.POSException import ConflictError
 
-plone_utils = getToolByName(context, 'plone_utils')
-mtool = getToolByName(context, 'portal_membership')
-site_properties = getToolByName(context, 'portal_properties').site_properties
+plone_utils = getToolByInterfaceName('Products.CMFPlone.interfaces.IPloneTool')
+mtool = getToolByInterfaceName('Products.CMFCore.interfaces.IMembershipTool')
+site_properties = getToolByInterfaceName('Products.CMFCore.interfaces.IPropertiesTool').site_properties
 pretty_title_or_id = plone_utils.pretty_title_or_id
 
 if not mtool.checkPermission(AllowSendto, context):
     context.plone_utils.addPortalMessage(_(u'You are not allowed to send this link.'))
     return state.set(status='failure')
 
-at = getToolByName(context, 'portal_actions')
+at = getToolByInterfaceName('Products.CMFCore.interfaces.IActionsTool')
 show = False
 actions = at.listActionInfos(object=context)
 # Check for visbility of sendto action

@@ -8,10 +8,10 @@
 ##title=
 ##
 
-from Products.CMFCore.utils import getToolByName
+from Products.CMFCore.utils import getToolByInterfaceName
 
-pt_tool = getToolByName(context, 'portal_types')
-plone_utils = getToolByName(context, 'plone_utils')
+pt_tool = getToolByInterfaceName('Products.CMFCore.interfaces.ITypesTool')
+plone_utils = getToolByInterfaceName('Products.CMFPlone.interfaces.IPloneTool')
 normalizeString = plone_utils.normalizeString
 
 type_info = pt_tool.listTypeInfo()

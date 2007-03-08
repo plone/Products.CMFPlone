@@ -18,8 +18,8 @@ try:
 except Unauthorized:
         return False
 
-from Products.CMFCore.utils import getToolByName
-itool = getToolByName(context, 'portal_interface')
+from Products.CMFCore.utils import getToolByInterfaceName
+itool = getToolByInterfaceName('Products.CMFPlone.interfaces.IInterfaceTool')
 
 if not itool.objectImplements(context, INTERFACE):
     return False

@@ -8,10 +8,10 @@
 ##title=Find content created by a specific author
 ##
 
-from Products.CMFCore.utils import getToolByName
+from Products.CMFCore.utils import getToolByInterfaceName
 
-catalog = getToolByName(context, 'portal_catalog')
-utils = getToolByName(context, 'plone_utils')
+catalog = getToolByInterfaceName('Products.CMFCore.interfaces.ICatalogTool')
+utils = getToolByInterfaceName('Products.CMFPlone.interfaces.IPloneTool')
 
 friendly_types = utils.getUserFriendlyTypes()
 

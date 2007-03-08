@@ -9,7 +9,7 @@
 ##
 from ZODB.POSException import ConflictError
 from Products.ZCTextIndex.ParseTree import ParseError
-from Products.CMFCore.utils import getToolByName
+from Products.CMFCore.utils import getToolByInterfaceName
 
 results=[]
 catalog=context.portal_catalog
@@ -54,7 +54,7 @@ def quote_bad_chars(s):
     return s
 
 def ensureFriendlyTypes(query):
-    ploneUtils = getToolByName(context, 'plone_utils')
+    ploneUtils = getToolByInterfaceName('Products.CMFPlone.interfaces.IPloneTool')
     portal_type = query.get('portal_type', [])
     if not same_type(portal_type, []):
         portal_type = [portal_type]

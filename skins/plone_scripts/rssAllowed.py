@@ -10,9 +10,9 @@
 # this is a replacement for the old syndication allowed option
 # in this case we don't bother getting syndication on each folder
 # we just check globally
-from Products.CMFCore.utils import getToolByName
+from Products.CMFCore.utils import getToolByInterfaceName
 
-ps = getToolByName(context, "portal_syndication")
+ps = getToolByInterfaceName('Products.CMFCore.interfaces.ISyndicationTool')
 
 allowed = True
 if not site and not ps.isSyndicationAllowed(context):

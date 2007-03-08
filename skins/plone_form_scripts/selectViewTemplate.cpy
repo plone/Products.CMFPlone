@@ -8,12 +8,12 @@
 ##bind subpath=traverse_subpath
 ##parameters=templateId
 
-from Products.CMFCore.utils import getToolByName
+from Products.CMFCore.utils import getToolByInterfaceName
 from Products.CMFPlone import PloneMessageFactory as _
 
 INTERFACE = 'Products.CMFPlone.interfaces.BrowserDefault.ISelectableBrowserDefault'
 
-itool = getToolByName(context, 'portal_interface')
+itool = getToolByInterfaceName('Products.CMFPlone.interfaces.IInterfaceTool')
 
 # This should never happen, but let's be informative if it does
 if not itool.objectImplements(context, INTERFACE):

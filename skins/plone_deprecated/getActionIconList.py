@@ -11,10 +11,10 @@
 context.plone_log("The getActionIconList script is deprecated and will be "
                   "removed in Plone 3.5.")
 
-from Products.CMFCore.utils import getToolByName
+from Products.CMFCore.utils import getToolByInterfaceName
 
-ai_tool = getToolByName(context, 'portal_actionicons')
-plone_utils = getToolByName(context, 'plone_utils')
+ai_tool = getToolByInterfaceName('Products.CMFActionIcons.interfaces.IActionIconsTool')
+plone_utils = getToolByInterfaceName('Products.CMFPlone.interfaces.IPloneTool')
 normalizeString = plone_utils.normalizeString
 
 class ActionIconInfo:
