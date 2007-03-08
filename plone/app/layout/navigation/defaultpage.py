@@ -1,4 +1,4 @@
-from zope.component import getUtility
+from zope.component import queryUtility
 from zope.interface import implements
 
 from Acquisition import aq_inner, aq_base
@@ -85,15 +85,17 @@ class DefaultPage(BrowserView):
             if page and ids.has_key(page):
                 return lookupTranslationId(context, page)
 
-        portal = getUtility(ISiteRoot)
-        for page in pages:
-            if portal.unrestrictedTraverse(page, None):
-                return lookupTranslationId(context, page)
+        portal = queryUtility(ISiteRoot)
+        # Might happen during portal creation
+        if portal is not None:
+            for page in pages:
+                if portal.unrestrictedTraverse(page, None):
+                    return lookupTranslationId(context, page)
 
-        # 4. Test for default sitewide default_page setting
-        site_properties = portal.portal_properties.site_properties
-        for page in site_properties.getProperty('default_page', []):
-            if ids.has_key(page):
-                return lookupTranslationId(context, page)
+            # 4. Test for default sitewide default_page setting
+            site_properties = portal.portal_properties.site_properties
+            for page in site_properties.getProperty('default_page', []):
+                if ids.has_key(page):
+                    return lookupTranslationId(context, page)
 
         return None
