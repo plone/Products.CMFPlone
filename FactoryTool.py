@@ -1,6 +1,12 @@
 import logging
 import os
 
+from  zope.component import getUtility
+
+from Products.CMFCore.interfaces import IMembershipTool
+from Products.CMFCore.interfaces import ITypesTool
+from Products.CMFCore.interfaces import IURLTool
+
 import Globals
 from AccessControl import Owned, ClassSecurityInfo, getSecurityManager
 from AccessControl.Permission import Permission
@@ -11,7 +17,7 @@ from ZPublisher.mapply import mapply
 from Products.CMFPlone import cmfplone_globals
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Products.CMFCore.permissions import ManagePortal
-from Products.CMFCore.utils import UniqueObject, getToolByName
+from Products.CMFCore.utils import UniqueObject
 from StructuredText.StructuredText import HTML
 from Products.CMFPlone.PloneFolder import PloneFolder as TempFolderBase
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
@@ -232,7 +238,7 @@ class FactoryTool(PloneBaseTool, UniqueObject, SimpleItem):
         if dict is None:
             dict = {}
         self._factory_types = {}
-        types_tool = getToolByName(self, 'portal_types')
+        types_tool = getUtility(ITypesTool)
         for t in types_tool.listContentTypes():
             if dict.has_key(t):
                 self._factory_types[t] = 1
@@ -257,7 +263,7 @@ class FactoryTool(PloneBaseTool, UniqueObject, SimpleItem):
 
             # give ownership to currently authenticated member if not anonymous
             # TODO is this necessary?
-            membership_tool = getToolByName(self, 'portal_membership')
+            membership_tool = getUtility(IMembershipTool)
             if not membership_tool.isAnonymousUser():
                 member = membership_tool.getAuthenticatedMember()
                 obj.changeOwnership(member.getUser(), 1)
@@ -305,7 +311,7 @@ class FactoryTool(PloneBaseTool, UniqueObject, SimpleItem):
         if len(stack) < 2: # ignore
             return
         type_name = stack[-1]
-        types_tool = getToolByName(self, 'portal_types')
+        types_tool = getUtility(ITypesTool)
         # make sure this is really a type name
         if not type_name in types_tool.listContentTypes():
             return # nope -- do nothing
@@ -338,7 +344,7 @@ class FactoryTool(PloneBaseTool, UniqueObject, SimpleItem):
         # __bobo_traverse__ can be invoked directly by a restricted_traverse method call
         # in which case the traversal stack will not have been cleared by __before_publishing_traverse__
         name = str(name) # fix unicode weirdness
-        types_tool = getToolByName(self, 'portal_types')
+        types_tool = getUtility(ITypesTool)
         if not name in types_tool.listContentTypes():
             return getattr(self, name) # not a type name -- do the standard thing
         return self._getTempFolder(str(name)) # a type name -- return a temp folder
@@ -380,14 +386,14 @@ class FactoryTool(PloneBaseTool, UniqueObject, SimpleItem):
             return tempFolder
         
         # make sure we can add an object of this type to the temp folder
-        types_tool = getToolByName(self, 'portal_types')
+        types_tool = getUtility(ITypesTool)
         if not type_name in types_tool.TempFolder.allowed_content_types:
             # update allowed types for tempfolder
             types_tool.TempFolder.allowed_content_types=(types_tool.listContentTypes())
             
         tempFolder = TempFolder(type_name).__of__(self)
         intended_parent = aq_parent(self)
-        portal = getToolByName(self, 'portal_url').getPortalObject()
+        portal = getUtility(IURLTool).getPortalObject()
         folder_roles = {} # mapping from permission name to list or tuple of roles
                           # list if perm is acquired; tuple if not
         n_acquired = 0    # number of permissions that are acquired
