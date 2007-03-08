@@ -12,7 +12,6 @@ from Acquisition import aq_base
 from OFS.SimpleItem import SimpleItem
 from Products.CMFActionIcons.interfaces import IActionIconsTool
 from Products.CMFCalendar.interfaces import ICalendarTool
-from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.Expression import Expression
 from Products.CMFCore.permissions import AccessInactivePortalContent
 from Products.CMFCore.interfaces import IActionCategory
@@ -1980,12 +1979,12 @@ class TestMigrations_v3_0(MigrationTest):
         self.failUnless("toc.css" in css.getResourceIds())
         
     def testUpdateMemberSecurity(self):
-        pprop = getToolByName(self.portal, 'portal_properties')
+        pprop = getUtility(IPropertiesTool)
         self.assertEquals(
                 pprop.site_properties.getProperty('allowAnonymousViewAbout'),
                 False)
 
-        pmembership = getToolByName(self.portal, 'portal_membership')
+        pmembership = getUtility(IMembershipTool)
         self.assertEquals(pmembership.memberareaCreationFlag, False)
 
         self.assertEquals(self.portal.getProperty('validate_email'), True)
@@ -2221,7 +2220,7 @@ class TestMigrations_v3_0(MigrationTest):
         self.failIf(jsreg.ZCacheable_getManagerId() is None)
 
     def testTablelessRemoval(self):
-        st = getToolByName(self.portal, "portal_skins")
+        st = getUtility(ISkinsTool)
         if "Plone Tableless" not in st.getSkinSelections():
             st.addSkinSelection('Plone Tableless', 'one,two', make_default=True)
         removeTablelessSkin(self.portal, [])
@@ -2302,7 +2301,7 @@ class TestMigrations_v3_0(MigrationTest):
         self.failUnless('SecuritySettings' in [x.getActionId() for x in self.icons.listActionIcons()])
 
     def testObjectProvidesIndex(self):
-        catalog = getToolByName(self.portal, 'portal_catalog')
+        catalog = getUtility(ICatalogTool)
         if 'object_provides' in catalog.indexes():
             catalog.delIndex('object_provides')
         self.failIf('object_provides' in catalog.indexes())

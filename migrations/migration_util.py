@@ -1,7 +1,12 @@
+import logging
 from types import ListType, TupleType
+from zope.component import getUtility
+from zope.component import queryUtility
+
 from Acquisition import aq_base
 from Products.CMFCore.utils import getToolByName
-import logging
+from Products.CMFCore.interfaces import IMemberDataTool
+from Products.CMFCore.interfaces import ISkinsTool
 from Products.CMFPlone.MemberDataTool import MemberDataTool
 from Products.PlonePAS.tools.memberdata \
         import MemberDataTool as PASMemberDataTool
@@ -14,7 +19,7 @@ def safeEditProperty(obj, key, value, data_type='string'):
         obj._setProperty(key, value, data_type)
 
 def safeGetMemberDataTool(portal):
-    memberdata = getToolByName(portal, 'portal_memberdata', None)
+    memberdata = queryUtility(IMemberDataTool)
     if memberdata is not None:
         if memberdata.__class__ == MemberDataTool or \
                 memberdata.__class__ == PASMemberDataTool:
@@ -62,7 +67,7 @@ def testSkinLayer(skinsTool, layer):
 
 def cleanupSkinPath(portal, skinName, test=1):
    """Remove invalid skin layers from skins"""
-   skinstool = getToolByName(portal, 'portal_skins')
+   skinstool = getUtility(ISkinsTool)
    selections = skinstool._getSelections()
    old_path = selections[skinName].split(',')
    new_path = []

@@ -315,7 +315,7 @@ class installKss(object):
 
     def install_skins(self):
         portal, out = self.portal, self.out
-        st = getToolByName(portal, 'portal_skins')
+        st = getUtility(ISkinsTool)
         skins = ['Plone Default', 'Plone Tableless']
         if not hasattr(aq_base(st), 'plone_kss'):
             createDirectoryView(st, 'CMFPlone/skins/plone_kss')
@@ -415,7 +415,7 @@ def addNewCSSFiles(portal, out):
 
 def addDefaultAndForbiddenContentTypesProperties(portal, out):
     """Adds sitewide config for default and forbidden content types for AT textfields."""
-    propTool = getToolByName(portal, 'portal_properties', None)
+    propTool = queryUtility(IPropertiesTool)
     if propTool is not None:
         propSheet = getattr(aq_base(propTool), 'site_properties', None)
         if propSheet is not None:
@@ -436,7 +436,7 @@ def addDefaultAndForbiddenContentTypesProperties(portal, out):
             
 def addMarkupConfiglet(portal, out):
     """Add the markup configlet."""
-    controlPanel = getToolByName(portal, 'portal_controlpanel', None)
+    controlPanel = queryUtility(IControlPanel)
     if controlPanel is not None:
         gotMarkup = False
         for configlet in controlPanel.listActions():
@@ -455,7 +455,7 @@ def addMarkupConfiglet(portal, out):
             
 def addIconForMarkupConfiglet(portal, out):
     """Adds an icon for the markup settings configlet. """
-    iconsTool = getToolByName(portal, 'portal_actionicons', None)
+    iconsTool = queryUtility(IActionIconsTool)
     if iconsTool is not None:
         for icon in iconsTool.listActionIcons():
             if icon.getActionId() == 'MarkupSettings':
@@ -471,7 +471,7 @@ def addIconForMarkupConfiglet(portal, out):
             
 def addTypesConfiglet(portal, out):
     """Add the types configlet."""
-    controlPanel = getToolByName(portal, 'portal_controlpanel', None)
+    controlPanel = queryUtility(IControlPanel)
     if controlPanel is not None:
         gotTypes = False
         for configlet in controlPanel.listActions():
@@ -490,7 +490,7 @@ def addTypesConfiglet(portal, out):
             
 def addIconForTypesConfiglet(portal, out):
     """Adds an icon for the types settings configlet. """
-    iconsTool = getToolByName(portal, 'portal_actionicons', None)
+    iconsTool = queryUtility(IActionIconsTool)
     if iconsTool is not None:
         for icon in iconsTool.listActionIcons():
             if icon.getActionId() == 'TypesSettings':
@@ -548,7 +548,7 @@ def installProduct(product, portal, out):
 
 def addIconForCalendarSettingsConfiglet(portal, out):
     """Adds an icon for the calendar settings configlet. """
-    iconsTool = getToolByName(portal, 'portal_actionicons', None)
+    iconsTool = queryUtility(IActionIconsTool)
     if iconsTool is not None:
         for icon in iconsTool.listActionIcons():
             if icon.getActionId() == 'CalendarSettings':
@@ -564,7 +564,7 @@ def addIconForCalendarSettingsConfiglet(portal, out):
 
 def addCalendarConfiglet(portal, out):
     """Add the configlet for the calendar settings"""
-    controlPanel = getToolByName(portal, 'portal_controlpanel', None)
+    controlPanel = queryUtility(IControlPanel)
     if controlPanel is not None:
         haveCalendar = False
         for configlet in controlPanel.listActions():
@@ -581,7 +581,7 @@ def addCalendarConfiglet(portal, out):
 
 def updateSearchAndMailHostConfiglet(portal, out):
     """Use new configlets for the search and mailhost settings"""
-    controlPanel = getToolByName(portal, 'portal_controlpanel', None)
+    controlPanel = queryUtility(IControlPanel)
     if controlPanel is not None:
         search = controlPanel.getActionObject('Plone/SearchSettings')
         mail = controlPanel.getActionObject('Plone/MailHost')
@@ -682,7 +682,7 @@ def installRedirectorUtility(portal, out):
     out.append("Registered redirector utility")
 
 def addContentRulesAction(portal, out):
-    portal_actions = getToolByName(portal, 'portal_actions', None)
+    portal_actions = queryUtility(IActionsTool)
     if portal_actions is not None:
         object_tabs = getattr(portal_actions, 'object_tabs', None)
         if object_tabs is not None:
@@ -731,7 +731,7 @@ def addReaderAndEditorRoles(portal, out):
     out.append('Added reader and editor roles')
 
 def migrateLocalroleForm(portal, out):
-    portal_types = getToolByName(portal, 'portal_types', None)
+    portal_types = queryUtility(ITypesTool)
     if portal_types is not None:
         for fti in portal_types.objectValues():
             
@@ -749,7 +749,7 @@ def migrateLocalroleForm(portal, out):
     out.append('Ensured references to folder_localrole_form point to @@sharing now')
 
 def reorderUserActions(portal, out):
-    portal_actions = getToolByName(portal, 'portal_actions', None)
+    portal_actions = queryUtility(IActionsTool)
     if portal_actions is not None:
         user_category = getattr(portal_actions, 'user', None)
         if user_category is not None:        
@@ -770,7 +770,7 @@ def updateRtlCSSexpression(portal, out):
             out.append("Updated RTL.css expression.")
 
 def installS5(portal, out):
-    portalTypes = getToolByName(portal, 'portal_types', None)
+    portalTypes = queryUtility(ITypesTool)
     if portalTypes is not None:
         document = portalTypes.restrictedTraverse('Document', None)
         if document:
@@ -788,7 +788,7 @@ def installS5(portal, out):
                     )
             out.append("Added 's5_presentation' action to actions tool.")
 
-    iconsTool = getToolByName(portal, 'portal_actionicons', None)
+    iconsTool = queryUtility(IActionIconsTool)
     if iconsTool is not None:
         for icon in iconsTool.listActionIcons():
             if icon.getActionId() == 's5_presentation':
@@ -804,7 +804,7 @@ def installS5(portal, out):
 
 def addIconForMaintenanceConfiglet(portal, out):
     """Adds an icon for the maintenance settings configlet. """
-    iconsTool = getToolByName(portal, 'portal_actionicons', None)
+    iconsTool = queryUtility(IActionIconsTool)
     if iconsTool is not None:
         for icon in iconsTool.listActionIcons():
             if icon.getActionId() == 'Maintenance':
@@ -820,7 +820,7 @@ def addIconForMaintenanceConfiglet(portal, out):
 
 def addMaintenanceConfiglet(portal, out):
     """Add the configlet for the calendar settings"""
-    controlPanel = getToolByName(portal, 'portal_controlpanel', None)
+    controlPanel = queryUtility(IControlPanel)
     if controlPanel is not None:
         havePanel = False
         for configlet in controlPanel.listActions():
@@ -837,7 +837,7 @@ def addMaintenanceConfiglet(portal, out):
 
 def addMaintenanceProperty(portal, out):
     """ adds a site property to portal_properties"""
-    tool = getToolByName(portal, 'portal_properties', None)
+    tool = queryUtility(IPropertiesTool)
     if tool is not None:
         sheet = getattr(tool, 'site_properties', None)
         if sheet is not None:
@@ -847,15 +847,16 @@ def addMaintenanceProperty(portal, out):
         
 def addWebstatsJSProperty(portal, out):
     """ adds a site property to portal_properties"""
-    tool = getToolByName(portal, 'portal_properties')
-    sheet = tool.site_properties
-    if not sheet.hasProperty('webstats_js'):
-        sheet.manage_addProperty('webstats_js','','string')
-        out.append("Added 'webstats_js' property to site properties")
+    tool = queryUtility(IPropertiesTool)
+    if tool is not None:
+        sheet = tool.site_properties
+        if not sheet.hasProperty('webstats_js'):
+            sheet.manage_addProperty('webstats_js','','string')
+            out.append("Added 'webstats_js' property to site properties")
 
 def addLinkIntegritySwitch(portal, out):
     """ adds a site property to portal_properties """
-    tool = getToolByName(portal, 'portal_properties', None)
+    tool = queryUtility(IPropertiesTool)
     if tool is not None:
         sheet = getattr(tool, 'site_properties', None)
         if sheet is not None:
@@ -896,13 +897,13 @@ def addTableContents(portal, out):
     out.append("Added in css and js for table of contents")
     
 def updateMemberSecurity(portal, out):
-    pprop = getToolByName(portal, 'portal_properties')
+    pprop = getUtility(IPropertiesTool)
     portal.manage_permission('Add portal member', roles=['Manager','Owner'], acquire=0)
     pprop.site_properties.manage_changeProperties(allowAnonymousViewAbout=False)
 
     portal.manage_changeProperties(validate_email=True)
 
-    pmembership = getToolByName(portal, 'portal_membership')
+    pmembership = getUtility(IMembershipTool)
     pmembership.memberareaCreationFlag = 0
     out.append("Updated member management security")
 
@@ -924,7 +925,7 @@ def updatePASPlugins(portal, out):
 
 def updateSkinsAndSiteConfiglet(portal, out):
     """Use new configlets for the skins and site settings"""
-    controlPanel = getToolByName(portal, 'portal_controlpanel', None)
+    controlPanel = queryUtility(IControlPanel)
     if controlPanel is not None:
         skins = controlPanel.getActionObject('Plone/PortalSkin')
         site = controlPanel.getActionObject('Plone/PloneReconfig')
@@ -938,7 +939,7 @@ def updateSkinsAndSiteConfiglet(portal, out):
 
 def updateConfigletTitles(portal, out):
     """Update titles of some configlets"""
-    controlPanel = getToolByName(portal, 'portal_controlpanel', None)
+    controlPanel = queryUtility(IControlPanel)
     if controlPanel is not None:
         collection = controlPanel.getActionObject('Plone/portal_atct')
         language = controlPanel.getActionObject('Plone/PloneLanguageTool')
@@ -962,7 +963,7 @@ def updateConfigletTitles(portal, out):
 
 def addIconsForFilterAndSecurityConfiglets(portal, out):
     """Adds icons for the filter and security configlets."""
-    iconsTool = getToolByName(portal, 'portal_actionicons', None)
+    iconsTool = queryUtility(IActionIconsTool)
     filterIcon = False
     securityIcon = False
     if iconsTool is not None:
@@ -990,7 +991,7 @@ def addIconsForFilterAndSecurityConfiglets(portal, out):
 
 def addFilterAndSecurityConfiglets(portal, out):
     """Add the configlets for the filter and security settings"""
-    controlPanel = getToolByName(portal, 'portal_controlpanel', None)
+    controlPanel = queryUtility(IControlPanel)
     if controlPanel is not None:
         haveFilter = False
         haveSecurity = False
@@ -1018,7 +1019,7 @@ def addFilterAndSecurityConfiglets(portal, out):
 
 
 def addSitemapProperty(portal, out):
-    tool = getToolByName(portal, 'portal_properties', None)
+    tool = queryUtility(IPropertiesTool)
     if tool is not None:
         sheet = getattr(tool, 'site_properties', None)
         if sheet is not None:
@@ -1067,7 +1068,7 @@ def addCacheForResourceRegistry(portal, out):
         out.append('Associated portal_javascripts with %s' % ram_cache_id)
 
 def removeTablelessSkin(portal, out):
-    st = getToolByName(portal, 'portal_skins')
+    st = getUtility(ISkinsTool)
     if 'Plone Tableless' in st.getSkinSelections():
         st.manage_skinLayers(['Plone Tableless'], del_skin=True)
         out.append("Removed the Plone Tableless skin")
@@ -1103,7 +1104,7 @@ def removeHideAddItemsJS(portal, out):
 
 def addContentRulesConfiglet(portal, out):
     """Add the configlet for the contentrules settings"""
-    controlPanel = getToolByName(portal, 'portal_controlpanel', None)
+    controlPanel = queryUtility(IControlPanel)
     if controlPanel is not None:
         haveContentRules = False
         for configlet in controlPanel.listActions():
@@ -1120,7 +1121,7 @@ def addContentRulesConfiglet(portal, out):
 
 def addIconForContentRulesConfiglet(portal, out):
     """Adds an icon for the maintenance settings configlet. """
-    iconsTool = getToolByName(portal, 'portal_actionicons', None)
+    iconsTool = queryUtility(IActionIconsTool)
     if iconsTool is not None:
         for icon in iconsTool.listActionIcons():
             if icon.getActionId() == 'ContentRules':
@@ -1137,14 +1138,14 @@ def addIconForContentRulesConfiglet(portal, out):
 def addObjectProvidesIndex(portal, out):
     """Add the object_provides index to the portal_catalog.
     """
-    catalog = getToolByName(portal, 'portal_catalog')
+    catalog = getUtility(ICatalogTool)
     if 'object_provides' not in catalog.indexes():
         catalog.addIndex('object_provides', 'KeywordIndex')
         out.append("Added object_provides index to portal_catalog")
 
 def removeMyStuffAction(portal, out):
     """The mystuff action is now covered by the dashboard"""
-    actions = getToolByName(portal, 'portal_actions')
+    actions = getUtility(IActionsTool)
     if not hasattr(actions, 'user'):
         return
     category=actions.user
@@ -1154,7 +1155,7 @@ def removeMyStuffAction(portal, out):
 
 def addExternalLinksOpenNewWindowProperty(portal, out):
     """ adds a site property to portal_properties"""
-    tool = getToolByName(portal, 'portal_properties')
+    tool = getUtility(IPropertiesTool)
     sheet = tool.site_properties
     if not sheet.hasProperty('external_links_open_new_window'):
         sheet.manage_addProperty('external_links_open_new_window','false','string')
@@ -1164,7 +1165,7 @@ def addMissingWorkflows(portal, out):
     """Add new Plone 3.0 workflows
     """
     
-    wft = getToolByName(portal, 'portal_workflow', None)
+    wft = queryUtility(IConfigurableWorkflowTool)
     if wft is None:
         return
 
@@ -1215,7 +1216,7 @@ def addMissingWorkflows(portal, out):
 
 def addManyGroupsProperty(portal, out):
     """ adds a site property to portal_properties"""
-    tool = getToolByName(portal, 'portal_properties')
+    tool = getUtility(IPropertiesTool)
     sheet = tool.site_properties
     if not sheet.hasProperty('many_groups'):
         sheet.manage_addProperty('many_groups',

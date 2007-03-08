@@ -9,8 +9,10 @@ if __name__ == '__main__':
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
 
-from Products.CMFCore.utils import getToolByName
+from zope.component import getUtility
+
 from Acquisition import Implicit
+from Products.CMFCore.interfaces import ICatalogTool
 
 default_user = PloneTestCase.default_user
 portal_name = PloneTestCase.portal_name
@@ -18,7 +20,7 @@ portal_name = PloneTestCase.portal_name
 class DummyTitle(Implicit):
     def Title(self):
         # Should just return 'portal_catalog'
-        tool = getToolByName(self, 'portal_catalog')
+        tool = getUtility(ICatalogTool)
         # Use implicit acquisition even, the horror
         tool = self.portal_catalog
         return tool.getId()

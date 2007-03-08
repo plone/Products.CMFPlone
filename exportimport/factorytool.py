@@ -1,8 +1,10 @@
+from zope.component import getUtility
+from zope.component import queryUtility
+
 from Products.CMFPlone.interfaces import IFactoryTool
 from Products.GenericSetup.utils import XMLAdapterBase
 from Products.GenericSetup.utils import importObjects
 from Products.GenericSetup.utils import exportObjects
-from Products.CMFCore.utils import getToolByName
 
 try:
     set()
@@ -62,7 +64,7 @@ def importFactoryTool(context):
     """Import Factory Tool configuration.
     """
     site = context.getSite()
-    tool = getToolByName(site, 'portal_factory')
+    tool = getUtility(IFactoryTool)
 
     importObjects(tool, '', context)
 
@@ -71,7 +73,7 @@ def exportFactoryTool(context):
     """Export Factory Tool configuration.
     """
     site = context.getSite()
-    tool = getToolByName(site, 'portal_factory', None)
+    tool = queryUtility(IFactoryTool)
     if tool is None:
         logger = context.getLogger("factorytool")
         logger.info("Nothing to export.")

@@ -8,7 +8,7 @@
 ##title=Can an object be changed with the external editor and by the user
 ##
 #
-from Products.CMFCore.utils import getToolByName, getToolByInterfaceName
+from Products.CMFCore.utils import getToolByInterfaceName
 from Products.CMFPlone.utils import webdav_enabled
 
 portal = getToolByInterfaceName('Products.CMFCore.interfaces.IURLTool').getPortalObject()
@@ -18,7 +18,7 @@ if mtool.isAnonymousUser():
     return False
 
 # Temporary content cannot be changed through EE (raises AttributeError)
-portal_factory = getToolByName(portal, 'portal_factory')
+portal_factory = getToolByInterfaceName('Products.CMFPlone.interfaces.IFactoryTool')
 if portal_factory.isTemporary(context):
     return False
 

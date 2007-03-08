@@ -8,7 +8,8 @@ from Products.CMFPlone.tests import dummy
 from Products.CMFPlone.tests.PloneTestCase import default_user
 from Products.CMFPlone.tests.PloneTestCase import default_password
 
-from Products.CMFCore.utils import getToolByName
+from zope.component import getUtility
+from Products.CMFCore.interfaces import IPropertiesTool
 
 from StringIO import StringIO
 
@@ -23,7 +24,7 @@ html = """\
 class TestDAVProperties(PloneTestCase.PloneTestCase):
 
     def testPropertiesToolTitle(self):
-        ptool = getToolByName(self.portal, 'portal_properties')
+        ptool = getUtility(IPropertiesTool)
         psets = dict(ptool.propertysheets.items())
         self.failUnless('webdav' in psets.keys())
         default = psets['webdav']
