@@ -291,6 +291,7 @@ def importSite(context):
     if context.readDataFile('plone-site.txt') is None:
         return
     site = context.getSite()
+    setSite(site)
     gen = PloneGenerator()
     gen.enableSite(site)
 
