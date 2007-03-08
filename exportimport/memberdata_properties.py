@@ -5,6 +5,7 @@ $Id:$
 
 from zope.app import zapi
 from zope.component import getUtility
+from zope.component import queryUtility
 from Products.CMFCore.interfaces import IMemberDataTool
 from Products.GenericSetup.interfaces import IBody
 
