@@ -141,7 +141,7 @@ from zope.app.component.interfaces import ISite
 from zope.component import getGlobalSiteManager
 from zope.component import getSiteManager
 
-from zope.component import getUtility, getMultiAdapter
+from zope.component import getUtility, getMultiAdapter, queryUtility
 
 from Products.CMFDynamicViewFTI.migrate import migrateFTI
 from Products.Five.component import disableSite
