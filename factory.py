@@ -1,7 +1,7 @@
 from zope.component import getAllUtilitiesRegisteredFor
 from zope.interface import implements
 
-from Products.CMFCore.utils import getToolByName
+from Products.GenericSetup.interfaces import ISetupTool
 from Products.GenericSetup.tool import SetupTool
 from Products.GenericSetup import profile_registry
 from Products.GenericSetup import BASE, EXTENSION
@@ -70,7 +70,7 @@ def addPloneSite(dispatcher, id, title='', description='',
     site = dispatcher._getOb(id)
 
     site._setObject(_TOOL_ID, SetupTool(_TOOL_ID))
-    setup_tool = getToolByName(site, _TOOL_ID)
+    setup_tool = getattr(site, _TOOL_ID)
 
     setup_tool.setImportContext('profile-%s' % profile_id)
     setup_tool.runAllImportSteps()

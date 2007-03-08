@@ -49,6 +49,7 @@
               handler="Products.CMFPlone.exportimport.controlpanel.importControlPanel"
               title="Control Panel">
   <dependency step="actions"/>
+  <dependency step="toolset"/>
   <dependency step="componentregistry"/>
     Import Plone control panel actions.
  </import-step>
