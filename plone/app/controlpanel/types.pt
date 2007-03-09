@@ -88,7 +88,7 @@
                        name="versionable"
                        tal:attributes="checked python:view.is_versionable() and 'checked' or None">
                 <label for="versionable" i18n:translate="types_controlpanel_versionable">
-                    Enable versioning
+                    Versioned
                 </label>
                 <br />
 
