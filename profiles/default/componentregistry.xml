@@ -93,6 +93,21 @@
      interface="Products.CMFDiffTool.interfaces.IDiffTool"
      object="/portal_diff"/>
   <utility
+     interface="Products.CMFEditions.interfaces.IArchivistTool"
+     object="/portal_archivist"/>
+  <utility
+     interface="Products.CMFEditions.interfaces.IPortalModifierTool"
+     object="/portal_modifier"/>
+  <utility
+     interface="Products.CMFEditions.interfaces.IPurgePolicyTool"
+     object="/portal_purgepolicy"/>
+  <utility
+     interface="Products.CMFEditions.interfaces.IRepository.IRepositoryTool"
+     object="/portal_repository"/>
+  <utility
+     interface="Products.CMFEditions.interfaces.IStorageTool"
+     object="/portal_historiesstorage"/>
+  <utility
      interface="Products.CMFUid.interfaces.IUniqueIdAnnotationManagement"
      object="/portal_uidannotation"/>
   <utility

@@ -43,6 +43,11 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.permissions import ManagePortal
 from Products.CMFCore.DirectoryView import createDirectoryView
 from Products.CMFDiffTool.interfaces import IDiffTool
+from Products.CMFEditions.interfaces import IArchivistTool
+from Products.CMFEditions.interfaces import IPortalModifierTool
+from Products.CMFEditions.interfaces import IPurgePolicyTool
+from Products.CMFEditions.interfaces.IRepository import IRepositoryTool
+from Products.CMFEditions.interfaces import IStorageTool
 from Products.CMFFormController.interfaces import IFormControllerTool
 from Products.CMFPlone import cmfplone_globals
 from Products.CMFPlone.interfaces import IControlPanel
@@ -681,6 +686,11 @@ def registerToolsAsUtilities(portal, out):
                     (portal.portal_uidgenerator, IUniqueIdGenerator),
                     (portal.portal_uidhandler, IUniqueIdHandler),
                     (portal.portal_setup, ISetupTool),
+                    (portal.portal_archivist, IArchivistTool),
+                    (portal.portal_modifier, IPortalModifierTool),
+                    (portal.portal_purgepolicy, IPurgePolicyTool),
+                    (portal.portal_repository, IRepositoryTool),
+                    (portal.portal_historiesstorage, IStorageTool),
                     (portal.MailHost, IMailHost),
                     (portal.mimetypes_registry, IMimetypesRegistryTool),
                     (portal.portal_transforms, IPortalTransformsTool),

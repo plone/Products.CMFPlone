@@ -40,6 +40,11 @@ from Products.CMFCore.interfaces import IConfigurableWorkflowTool
 from Products.CMFCore.ActionInformation import Action
 from Products.CMFCore.ActionInformation import ActionInformation
 from Products.CMFDiffTool.interfaces import IDiffTool
+from Products.CMFEditions.interfaces import IArchivistTool
+from Products.CMFEditions.interfaces import IPortalModifierTool
+from Products.CMFEditions.interfaces import IPurgePolicyTool
+from Products.CMFEditions.interfaces.IRepository import IRepositoryTool
+from Products.CMFEditions.interfaces import IStorageTool
 from Products.CMFFormController.interfaces import IFormControllerTool
 from Products.CMFPlone.PloneTool import AllowSendto
 from Products.CMFPlone.interfaces import IControlPanel
@@ -1688,8 +1693,10 @@ class TestMigrations_v3_0(MigrationTest):
                       IQuickInstallerTool, ICSSRegistry, IJSRegistry, 
                       IFormControllerTool, ILanguageTool, IDiffTool,
                       IATCTTool, IArchetypeTool, IReferenceCatalog,
-                      IUIDCatalog, IMimetypesRegistryTool, 
-                      IPortalTransformsTool, )
+                      IUIDCatalog, IMimetypesRegistryTool, IRepositoryTool,
+                      IPortalTransformsTool, IArchivistTool, IStorageTool,
+                      IPortalModifierTool, IPurgePolicyTool, )
+
         for i in interfaces:
             sm.unregisterUtility(provided=i)
         registerToolsAsUtilities(self.portal, [])
