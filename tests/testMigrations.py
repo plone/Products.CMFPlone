@@ -52,6 +52,8 @@ from Products.CMFUid.interfaces import IUniqueIdGenerator
 from Products.CMFUid.interfaces import IUniqueIdHandler
 from Products.GenericSetup.interfaces import ISetupTool
 from Products.MailHost.interfaces import IMailHost
+from Products.ResourceRegistries.interfaces import ICSSRegistry
+from Products.ResourceRegistries.interfaces import IJSRegistry
 
 from Products.CMFPlone.migrations.v2_1.final_two11 import reindexPathIndex
 from Products.CMFPlone.migrations.v2_1.two11_two12 import removeCMFTopicSkinLayer
@@ -1675,7 +1677,7 @@ class TestMigrations_v3_0(MigrationTest):
                       ITypesTool, IUndoTool, IURLTool, IMailHost,
                       IConfigurableWorkflowTool, IUniqueIdAnnotationManagement,
                       IUniqueIdGenerator, IUniqueIdHandler, ISetupTool, 
-                      IQuickInstallerTool, )
+                      IQuickInstallerTool, ICSSRegistry, IJSRegistry, )
         for i in interfaces:
             sm.unregisterUtility(provided=i)
         registerToolsAsUtilities(self.portal, [])

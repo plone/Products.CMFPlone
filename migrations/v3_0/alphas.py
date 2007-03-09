@@ -56,6 +56,8 @@ from Products.DCWorkflow.DCWorkflow import DCWorkflowDefinition
 from Products.DCWorkflow.exportimport import WorkflowDefinitionConfigurator, _initDCWorkflow
 from Products.GenericSetup.interfaces import ISetupTool
 from Products.MailHost.interfaces import IMailHost
+from Products.ResourceRegistries.interfaces import ICSSRegistry
+from Products.ResourceRegistries.interfaces import IJSRegistry
 
 from plone.portlets.interfaces import IPortletManager
 from plone.portlets.interfaces import ILocalPortletAssignmentManager
@@ -666,6 +668,8 @@ def registerToolsAsUtilities(portal, out):
                     (portal.portal_uidhandler, IUniqueIdHandler),
                     (portal.portal_setup, ISetupTool),
                     (portal.MailHost, IMailHost),
+                    (portal.portal_css, ICSSRegistry),
+                    (portal.portal_javascripts, IJSRegistry),
                    )
     for reg in registration:
         if sm.queryUtility(reg[1]) is None:

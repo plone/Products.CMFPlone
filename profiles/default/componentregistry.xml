@@ -116,5 +116,11 @@
   <utility
      interface="Products.MailHost.interfaces.IMailHost"
      object="/MailHost"/>
+  <utility
+     interface="Products.ResourceRegistries.interfaces.ICSSRegistry"
+     object="/portal_css"/>
+  <utility
+     interface="Products.ResourceRegistries.interfaces.IJSRegistry"
+     object="/portal_javascripts"/>
  </utilities>
 </componentregistry>
