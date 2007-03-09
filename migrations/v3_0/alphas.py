@@ -637,7 +637,7 @@ def registerToolsAsUtilities(portal, out):
     registration = ((portal, ISiteRoot),
                     (portal, IPloneSiteRoot),
                     (portal.portal_controlpanel, IControlPanel),
-                    (portla.portal_factory, IFactoryTool),
+                    (portal.portal_factory, IFactoryTool),
                     (portal.portal_interface, IInterfaceTool),
                     (portal.portal_migration, IMigrationTool),
                     (portal.portal_quickinstaller, IQuickInstallerTool),
