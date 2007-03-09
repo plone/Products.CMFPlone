@@ -2,7 +2,6 @@ from zope.component import getUtility
 from zope.interface import implements
 from plone.memoize.view import memoize_contextless
 
-from Acquisition import aq_inner
 from Products.Five.browser import BrowserView
 from Products.CMFCore.interfaces import IActionsTool
 from Products.CMFCore.interfaces import ICatalogTool

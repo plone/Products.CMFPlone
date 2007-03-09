@@ -1,10 +1,15 @@
 from zope.interface import implements
 from zope.component import getMultiAdapter, queryMultiAdapter
+from zope.component import getUtility
 from plone.memoize.view import memoize
 
 from Acquisition import aq_base, aq_inner, aq_parent
 from Products.Five.browser import BrowserView
 
+from Products.CMFCore.interfaces import IActionsTool
+from Products.CMFCore.interfaces import IConfigurableWorkflowTool
+from Products.CMFCore.interfaces import IMembershipTool
+from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFPlone.interfaces import IBrowserDefault
 from Products.CMFPlone.interfaces import INonStructuralFolder
 from Products.CMFPlone.interfaces.NonStructuralFolder import INonStructuralFolder \
@@ -93,8 +98,8 @@ class ContextState(BrowserView):
         
     @memoize
     def workflow_state(self):
-        tools = getMultiAdapter((self.context, self.request), name='plone_tools')
-        return tools.workflow().getInfoFor(aq_inner(self.context), 'review_state', None)
+        tool = getUtility(IConfigurableWorkflowTool)
+        return tool.getInfoFor(aq_inner(self.context), 'review_state', None)
     
     @memoize
     def parent(self):
@@ -137,15 +142,14 @@ class ContextState(BrowserView):
     @memoize
     def is_portal_root(self):
         context = aq_inner(self.context)
-        portal_state = getMultiAdapter((context, self.request), name=u'plone_portal_state')
-        portal = portal_state.portal()
+        portal = getUtility(ISiteRoot)
         return aq_base(context) is aq_base(portal) or \
                 (self.is_default_page() and aq_base(self.parent()) is aq_base(portal))
     
     @memoize
     def is_editable(self):
-        tools = getMultiAdapter((self.context, self.request), name='plone_tools')
-        return bool(tools.membership().checkPermission('Modify portal content', aq_inner(self.context)))
+        tool = getUtility(IMembershipTool)
+        return bool(tool.checkPermission('Modify portal content', aq_inner(self.context)))
     
     @memoize
     def is_locked(self):
@@ -161,8 +165,8 @@ class ContextState(BrowserView):
                             
     @memoize
     def actions(self):
-        tools = getMultiAdapter((self.context, self.request), name='plone_tools')
-        return tools.actions().listFilteredActionsFor(aq_inner(self.context))
+        tool = getUtility(IActionsTool)
+        return tool.listFilteredActionsFor(aq_inner(self.context))
         
     @memoize
     def keyed_actions(self):

@@ -1,5 +1,4 @@
 from zope.interface import implements
-from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.i18n.interfaces import IUserPreferredLanguages
 from zope.i18n.locales import locales, LoadLocaleError
@@ -7,6 +6,9 @@ from zope.i18n.locales import locales, LoadLocaleError
 from plone.memoize.view import memoize, memoize_contextless
 
 from Acquisition import aq_inner
+from Products.CMFCore.interfaces import IMembershipTool
+from Products.CMFCore.interfaces import IPropertiesTool
+from Products.CMFCore.interfaces import ITypesTool
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.Five.browser import BrowserView
 
@@ -47,8 +49,7 @@ class PortalState(BrowserView):
     
     @memoize_contextless
     def default_language(self):
-        tools = getMultiAdapter((self.context, self.request), name='plone_tools')
-        site_properties = tools.properties().site_properties
+        site_properties = getUtility(IPropertiesTool).site_properties
         return site_properties.getProperty('default_language', None)
 
     @memoize
@@ -95,23 +96,18 @@ class PortalState(BrowserView):
 
     @memoize_contextless
     def member(self):
-        tools = getMultiAdapter((self.context, self.request), name='plone_tools')
-        return tools.membership().getAuthenticatedMember()
-        
+        tool = getUtility(IMembershipTool)
+        return tool.getAuthenticatedMember()
+
     @memoize_contextless
     def anonymous(self):
-        tools = getMultiAdapter((self.context, self.request), name='plone_tools')
-        return bool(tools.membership().isAnonymousUser())
-    
+        tool = getUtility(IMembershipTool)
+        return bool(tool.isAnonymousUser())
+
     @memoize_contextless
     def friendly_types(self):
-        tools = getMultiAdapter((self.context, self.request), name='plone_tools')
-        properties = tools.properties()
-        
-        site_properties = getattr(properties, 'site_properties')
+        site_properties = getUtility(IPropertiesTool).site_properties
         not_searched = site_properties.getProperty('types_not_searched', [])
 
-        portal_types = tools.types()
-        types = portal_types.listContentTypes()
-
+        types = getUtility(ITypesTool).listContentTypes()
         return [t for t in types if t not in not_searched]
