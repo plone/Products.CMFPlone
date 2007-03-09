@@ -141,6 +141,9 @@
      interface="Products.PloneLanguageTool.interfaces.ILanguageTool"
      object="/portal_languages"/>
   <utility
+     interface="Products.PortalTransforms.interfaces.IPortalTransformsTool"
+     object="/portal_transforms"/>
+  <utility
      interface="Products.ResourceRegistries.interfaces.ICSSRegistry"
      object="/portal_css"/>
   <utility
