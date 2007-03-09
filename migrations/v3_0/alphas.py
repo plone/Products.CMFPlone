@@ -39,6 +39,7 @@ from Products.CMFCore.interfaces import IConfigurableWorkflowTool
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.permissions import ManagePortal
 from Products.CMFCore.DirectoryView import createDirectoryView
+from Products.CMFFormController.interfaces import IFormControllerTool
 from Products.CMFPlone import cmfplone_globals
 from Products.CMFPlone.interfaces import IControlPanel
 from Products.CMFPlone.interfaces import IFactoryTool
@@ -639,6 +640,7 @@ def registerToolsAsUtilities(portal, out):
     registration = ((portal, ISiteRoot),
                     (portal, IPloneSiteRoot),
                     (portal.portal_controlpanel, IControlPanel),
+                    (portal.portal_form_controller, IFormControllerTool),
                     (portal.portal_factory, IFactoryTool),
                     (portal.portal_interface, IInterfaceTool),
                     (portal.portal_migration, IMigrationTool),
