@@ -120,6 +120,9 @@
      interface="Products.MailHost.interfaces.IMailHost"
      object="/MailHost"/>
   <utility
+     interface="Products.PloneLanguageTool.interfaces.ILanguageTool"
+     object="/portal_languages"/>
+  <utility
      interface="Products.ResourceRegistries.interfaces.ICSSRegistry"
      object="/portal_css"/>
   <utility
