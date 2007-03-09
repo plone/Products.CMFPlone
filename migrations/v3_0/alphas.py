@@ -12,6 +12,9 @@ from Globals import package_home
 
 from Products.StandardCacheManagers import RAMCacheManager
 
+from Products.Archetypes.interfaces import IArchetypeTool
+from Products.Archetypes.interfaces import IReferenceCatalog
+from Products.Archetypes.interfaces import IUIDCatalog
 from Products.ATContentTypes.interface import IATCTTool
 from Products.ATContentTypes.migration.v1_2 import upgradeATCTTool
 from Products.CMFActionIcons.interfaces import IActionIconsTool
@@ -23,7 +26,6 @@ from Products.CMFCore.interfaces import IActionsTool
 from Products.CMFCore.interfaces import ICachingPolicyManager
 from Products.CMFCore.interfaces import ICatalogTool
 from Products.CMFCore.interfaces import IContentTypeRegistry
-from Products.CMFCore.interfaces import ICookieCrumbler
 from Products.CMFCore.interfaces import IDiscussionTool
 from Products.CMFCore.interfaces import IMemberDataTool
 from Products.CMFCore.interfaces import IMembershipTool
@@ -642,6 +644,9 @@ def registerToolsAsUtilities(portal, out):
     sm = getSiteManager(portal)
     registration = ((portal, ISiteRoot),
                     (portal, IPloneSiteRoot),
+                    (portal.archetype_tool, IArchetypeTool),
+                    (portal.reference_catalog, IReferenceCatalog),
+                    (portal.uid_catalog, IUIDCatalog),
                     (portal.portal_atct, IATCTTool),
                     (portal.portal_controlpanel, IControlPanel),
                     (portal.portal_form_controller, IFormControllerTool),

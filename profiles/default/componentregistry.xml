@@ -21,6 +21,15 @@
      interface="plone.app.i18n.locales.interfaces.IMetadataLanguages"
      object="/plone_app_metadata_languages"/>
   <utility
+     interface="Products.Archetypes.interfaces.IArchetypeTool"
+     object="/archetype_tool"/>
+  <utility
+     interface="Products.Archetypes.interfaces.IReferenceCatalog"
+     object="/reference_catalog"/>
+  <utility
+     interface="Products.Archetypes.interfaces.IUIDCatalog"
+     object="/uid_catalog"/>
+  <utility
      interface="Products.ATContentTypes.interface.IATCTTool"
      object="/portal_atct"/>
   <utility

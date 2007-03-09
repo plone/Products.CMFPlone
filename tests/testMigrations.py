@@ -10,6 +10,9 @@ from Products.CMFPlone.tests import PloneTestCase
 
 from Acquisition import aq_base
 from OFS.SimpleItem import SimpleItem
+from Products.Archetypes.interfaces import IArchetypeTool
+from Products.Archetypes.interfaces import IReferenceCatalog
+from Products.Archetypes.interfaces import IUIDCatalog
 from Products.ATContentTypes.interface import IATCTTool
 from Products.CMFActionIcons.interfaces import IActionIconsTool
 from Products.CMFCalendar.interfaces import ICalendarTool
@@ -21,7 +24,6 @@ from Products.CMFCore.interfaces import IActionsTool
 from Products.CMFCore.interfaces import ICachingPolicyManager
 from Products.CMFCore.interfaces import ICatalogTool
 from Products.CMFCore.interfaces import IContentTypeRegistry
-from Products.CMFCore.interfaces import ICookieCrumbler
 from Products.CMFCore.interfaces import IDiscussionTool
 from Products.CMFCore.interfaces import IMemberDataTool
 from Products.CMFCore.interfaces import IMembershipTool
@@ -1683,7 +1685,8 @@ class TestMigrations_v3_0(MigrationTest):
                       IUniqueIdGenerator, IUniqueIdHandler, ISetupTool, 
                       IQuickInstallerTool, ICSSRegistry, IJSRegistry, 
                       IFormControllerTool, ILanguageTool, IDiffTool,
-                      IATCTTool, )
+                      IATCTTool, IArchetypeTool, IReferenceCatalog,
+                      IUIDCatalog, )
         for i in interfaces:
             sm.unregisterUtility(provided=i)
         registerToolsAsUtilities(self.portal, [])
