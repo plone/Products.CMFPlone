@@ -135,6 +135,9 @@
      interface="Products.MailHost.interfaces.IMailHost"
      object="/MailHost"/>
   <utility
+     interface="Products.MimetypesRegistry.interfaces.IMimetypesRegistryTool"
+     object="/mimetypes_registry"/>
+  <utility
      interface="Products.PloneLanguageTool.interfaces.ILanguageTool"
      object="/portal_languages"/>
   <utility

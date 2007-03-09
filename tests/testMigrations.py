@@ -57,6 +57,7 @@ from Products.CMFUid.interfaces import IUniqueIdGenerator
 from Products.CMFUid.interfaces import IUniqueIdHandler
 from Products.GenericSetup.interfaces import ISetupTool
 from Products.MailHost.interfaces import IMailHost
+from Products.MimetypesRegistry.interfaces import IMimetypesRegistryTool
 from Products.PloneLanguageTool.interfaces import ILanguageTool
 from Products.ResourceRegistries.interfaces import ICSSRegistry
 from Products.ResourceRegistries.interfaces import IJSRegistry
@@ -1686,7 +1687,7 @@ class TestMigrations_v3_0(MigrationTest):
                       IQuickInstallerTool, ICSSRegistry, IJSRegistry, 
                       IFormControllerTool, ILanguageTool, IDiffTool,
                       IATCTTool, IArchetypeTool, IReferenceCatalog,
-                      IUIDCatalog, )
+                      IUIDCatalog, IMimetypesRegistryTool, )
         for i in interfaces:
             sm.unregisterUtility(provided=i)
         registerToolsAsUtilities(self.portal, [])

@@ -61,6 +61,7 @@ from Products.DCWorkflow.DCWorkflow import DCWorkflowDefinition
 from Products.DCWorkflow.exportimport import WorkflowDefinitionConfigurator, _initDCWorkflow
 from Products.GenericSetup.interfaces import ISetupTool
 from Products.MailHost.interfaces import IMailHost
+from Products.MimetypesRegistry.interfaces import IMimetypesRegistryTool
 from Products.PloneLanguageTool.interfaces import ILanguageTool
 from Products.ResourceRegistries.interfaces import ICSSRegistry
 from Products.ResourceRegistries.interfaces import IJSRegistry
@@ -680,6 +681,7 @@ def registerToolsAsUtilities(portal, out):
                     (portal.portal_uidhandler, IUniqueIdHandler),
                     (portal.portal_setup, ISetupTool),
                     (portal.MailHost, IMailHost),
+                    (portal.mimetypes_registry, IMimetypesRegistryTool),
                     (portal.portal_languages, ILanguageTool),
                     (portal.portal_css, ICSSRegistry),
                     (portal.portal_javascripts, IJSRegistry),
