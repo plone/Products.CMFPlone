@@ -52,7 +52,7 @@
     visible="True">
   <permission>Manage portal</permission>
  </configlet>
- <configlet title="Text Markup" action_id="MarkupSettings"
+ <configlet title="Markup" action_id="MarkupSettings"
     appId="MarkupSettings" category="Plone" condition_expr=""
     url_expr="string:${portal_url}/@@markup-controlpanel"
     visible="True">

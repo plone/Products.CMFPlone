@@ -451,7 +451,7 @@ def addMarkupConfiglet(portal, out):
             controlPanel.registerConfiglet(
                 id         = 'MarkupSettings',
                 appId      = 'Plone',
-                name       = 'Text Markup',
+                name       = 'Markup',
                 action     = 'string:${portal_url}/@@markup-controlpanel',
                 category   = 'Plone',
                 permission = ManagePortal,
@@ -470,7 +470,7 @@ def addIconForMarkupConfiglet(portal, out):
                 category='controlpanel',
                 action_id='MarkupSettings',
                 icon_expr='edit.gif',
-                title='Text Markup',
+                title='Markup',
                 )
         out.append("Added markup configlet icon to actionicons tool.")     
             
