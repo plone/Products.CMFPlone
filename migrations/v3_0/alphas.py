@@ -5,6 +5,7 @@ from zope.app.component.interfaces import ISite
 from zope.component import getMultiAdapter
 from zope.component import getSiteManager
 from zope.component import getUtility
+from zope.component import queryUtility
 
 from Acquisition import aq_base
 from Globals import package_home
