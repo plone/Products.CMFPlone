@@ -39,6 +39,7 @@ from Products.CMFCore.interfaces import IConfigurableWorkflowTool
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.permissions import ManagePortal
 from Products.CMFCore.DirectoryView import createDirectoryView
+from Products.CMFDiffTool.interfaces import IDiffTool
 from Products.CMFFormController.interfaces import IFormControllerTool
 from Products.CMFPlone import cmfplone_globals
 from Products.CMFPlone.interfaces import IControlPanel
@@ -653,6 +654,7 @@ def registerToolsAsUtilities(portal, out):
                     (portal.portal_actions, IActionsTool),
                     (portal.caching_policy_manager, ICachingPolicyManager),
                     (portal.portal_catalog, ICatalogTool),
+                    (portal.portal_diff, IDiffTool),
                     (portal.content_type_registry, IContentTypeRegistry),
                     (portal.portal_discussion, IDiscussionTool),
                     (portal.portal_memberdata, IMemberDataTool),

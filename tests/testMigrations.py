@@ -36,6 +36,7 @@ from Products.CMFCore.interfaces import IURLTool
 from Products.CMFCore.interfaces import IConfigurableWorkflowTool
 from Products.CMFCore.ActionInformation import Action
 from Products.CMFCore.ActionInformation import ActionInformation
+from Products.CMFDiffTool.interfaces import IDiffTool
 from Products.CMFFormController.interfaces import IFormControllerTool
 from Products.CMFPlone.PloneTool import AllowSendto
 from Products.CMFPlone.interfaces import IControlPanel
@@ -1680,7 +1681,7 @@ class TestMigrations_v3_0(MigrationTest):
                       IConfigurableWorkflowTool, IUniqueIdAnnotationManagement,
                       IUniqueIdGenerator, IUniqueIdHandler, ISetupTool, 
                       IQuickInstallerTool, ICSSRegistry, IJSRegistry, 
-                      IFormControllerTool, ILanguageTool, )
+                      IFormControllerTool, ILanguageTool, IDiffTool, )
         for i in interfaces:
             sm.unregisterUtility(provided=i)
         registerToolsAsUtilities(self.portal, [])

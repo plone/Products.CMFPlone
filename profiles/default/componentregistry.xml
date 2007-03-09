@@ -78,6 +78,9 @@
      interface="Products.CMFCore.interfaces.IConfigurableWorkflowTool"
      object="/portal_workflow"/>
   <utility
+     interface="Products.CMFDiffTool.interfaces.IDiffTool"
+     object="/portal_diff"/>
+  <utility
      interface="Products.CMFUid.interfaces.IUniqueIdAnnotationManagement"
      object="/portal_uidannotation"/>
   <utility
