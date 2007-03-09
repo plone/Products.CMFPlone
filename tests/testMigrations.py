@@ -10,6 +10,7 @@ from Products.CMFPlone.tests import PloneTestCase
 
 from Acquisition import aq_base
 from OFS.SimpleItem import SimpleItem
+from Products.ATContentTypes.interface import IATCTTool
 from Products.CMFActionIcons.interfaces import IActionIconsTool
 from Products.CMFCalendar.interfaces import ICalendarTool
 from Products.CMFCore.Expression import Expression
@@ -1681,7 +1682,8 @@ class TestMigrations_v3_0(MigrationTest):
                       IConfigurableWorkflowTool, IUniqueIdAnnotationManagement,
                       IUniqueIdGenerator, IUniqueIdHandler, ISetupTool, 
                       IQuickInstallerTool, ICSSRegistry, IJSRegistry, 
-                      IFormControllerTool, ILanguageTool, IDiffTool, )
+                      IFormControllerTool, ILanguageTool, IDiffTool,
+                      IATCTTool, )
         for i in interfaces:
             sm.unregisterUtility(provided=i)
         registerToolsAsUtilities(self.portal, [])

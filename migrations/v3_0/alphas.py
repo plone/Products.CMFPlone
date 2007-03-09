@@ -12,6 +12,7 @@ from Globals import package_home
 
 from Products.StandardCacheManagers import RAMCacheManager
 
+from Products.ATContentTypes.interface import IATCTTool
 from Products.ATContentTypes.migration.v1_2 import upgradeATCTTool
 from Products.CMFActionIcons.interfaces import IActionIconsTool
 from Products.CMFCalendar.interfaces import ICalendarTool
@@ -641,6 +642,7 @@ def registerToolsAsUtilities(portal, out):
     sm = getSiteManager(portal)
     registration = ((portal, ISiteRoot),
                     (portal, IPloneSiteRoot),
+                    (portal.portal_atct, IATCTTool),
                     (portal.portal_controlpanel, IControlPanel),
                     (portal.portal_form_controller, IFormControllerTool),
                     (portal.portal_factory, IFactoryTool),
