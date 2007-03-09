@@ -200,7 +200,7 @@
             <div tal:condition="view/have_new_workflow">
                 <img tal:replace="structure here/info_icon.gif" />
                 <span style="color: red" i18n:translate="types_controlpanel_warn_remap">
-                    This operation may take a long time, and may slow down Plone significantly.
+                    Changing the workflow of a type may take a while, and may slow down Plone significantly during that period. 
                 </span>
             </div>
 
