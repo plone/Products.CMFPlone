@@ -8,7 +8,6 @@ from plone.memoize.view import memoize, memoize_contextless
 
 from Acquisition import aq_inner
 from Products.CMFCore.interfaces import ISiteRoot
-from Products.CMFCore.utils import getToolByName
 from Products.Five.browser import BrowserView
 
 from plone.app.layout.navigation.root import getNavigationRoot
@@ -27,8 +26,7 @@ class PortalState(BrowserView):
 
     @memoize_contextless
     def portal(self):
-        return getToolByName(aq_inner(self.context), 'portal_url').getPortalObject()
-        # return getUtility(ISiteRoot).getPortalObject()
+        return getUtility(ISiteRoot)
     
     @memoize_contextless
     def portal_title(self):
