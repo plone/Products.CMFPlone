@@ -11,9 +11,9 @@ from plone.i18n.normalizer.interfaces import IUserPreferredFileNameNormalizer
 import zope.interface
 from zope.interface import implementedBy
 from zope.component import getMultiAdapter
+from zope.component import queryMultiAdapter
 from zope.component import queryUtility
 from zope.component import getUtility
-from zope.component.interfaces import ComponentLookupError
 
 from Products.CMFCore.interfaces import IPropertiesTool
 from Products.CMFCore.interfaces import ITypesTool
@@ -82,9 +82,8 @@ def _getDefaultPageView(obj, request):
        the default skin.  Explicitly marking the request appears to cause
        connection errors, so we just instantiate the view manually.
     """
-    try:
-        view = getMultiAdapter((obj, request), name='default_page')
-    except ComponentLookupError:
+    view = queryMultiAdapter((obj, request), name='default_page')
+    if view is None:
         # XXX: import here to avoid a circular dependency
         from plone.app.layout.navigation.defaultpage import DefaultPage
         view = DefaultPage(obj, request)
@@ -779,7 +778,6 @@ def scale_image(image_file, max_size=None, default_format=None):
 # Put these at the end to avoid an ImportError for safe_unicode
 from i18nl10n import utranslate
 from i18nl10n import ulocalized_time
-from i18nl10n import getGlobalTranslationService
 
 import zope.deprecation
 zope.deprecation.deprecated(
