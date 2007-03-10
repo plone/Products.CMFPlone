@@ -59,7 +59,7 @@
                          configlets python:here.createMultiColumnList(allconfiglets, numCols=3);">
 
             <div tal:repeat="sublist configlets"
-                 style="float:left; margin-right: 2em; width: 29%">
+                 style="float:left; margin-right: 1em; width: 29%">
 
                 <ul class="configlets">
 
