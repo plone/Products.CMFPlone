@@ -98,14 +98,15 @@ class PloneSite(CMFSite, OrderedContainer, BrowserDefaultMixin):
 
     def _management_page_charset(self):
         """ Returns default_charset for management screens """
-        properties = getUtility(IPropertiesTool)
+        properties = queryUtility(IPropertiesTool)
         # Let's be a bit careful here because we don't want to break the ZMI
         # just because people screw up their Plone sites (however thoroughly).
-        site_properties = getattr(properties, 'site_properties', None)
-        if site_properties is not None:
-            getProperty = getattr(site_properties, 'getProperty', None)
-            if getProperty is not None:
-                return getProperty('default_charset', 'utf-8')
+        if properties is not None:
+            site_properties = getattr(properties, 'site_properties', None)
+            if site_properties is not None:
+                getProperty = getattr(site_properties, 'getProperty', None)
+                if getProperty is not None:
+                    return getProperty('default_charset', 'utf-8')
         return 'utf-8'
 
     management_page_charset = ComputedAttribute(_management_page_charset, 1)

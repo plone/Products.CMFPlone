@@ -669,7 +669,6 @@ def registerToolsAsUtilities(portal, out):
                     (portal.portal_actions, IActionsTool),
                     (portal.caching_policy_manager, ICachingPolicyManager),
                     (portal.portal_catalog, ICatalogTool),
-                    (portal.portal_diff, IDiffTool),
                     (portal.content_type_registry, IContentTypeRegistry),
                     (portal.portal_discussion, IDiscussionTool),
                     (portal.portal_memberdata, IMemberDataTool),
@@ -683,30 +682,40 @@ def registerToolsAsUtilities(portal, out):
                     (portal.portal_undo, IUndoTool),
                     (portal.portal_url, IURLTool),
                     (portal.portal_workflow, IConfigurableWorkflowTool),
-                    (portal.portal_uidannotation, IUniqueIdAnnotationManagement),
-                    (portal.portal_uidgenerator, IUniqueIdGenerator),
-                    (portal.portal_uidhandler, IUniqueIdHandler),
                     (portal.portal_setup, ISetupTool),
-                    (portal.portal_archivist, IArchivistTool),
-                    (portal.portal_modifier, IPortalModifierTool),
-                    (portal.portal_purgepolicy, IPurgePolicyTool),
-                    (portal.portal_repository, IRepositoryTool),
-                    (portal.portal_historiesstorage, IStorageTool),
                     (portal.MailHost, IMailHost),
                     (portal.mimetypes_registry, IMimetypesRegistryTool),
                     (portal.portal_transforms, IPortalTransformsTool),
                     (portal.portal_groups, IGroupTool),
                     (portal.portal_groupdata, IGroupDataTool),
-                    (portal.portal_languages, ILanguageTool),
                     (portal.portal_css, ICSSRegistry),
                     (portal.portal_javascripts, IJSRegistry),
                    )
+
+    registration2 = (
+                   ('portal_diff', IDiffTool),
+                   ('portal_uidannotation', IUniqueIdAnnotationManagement),
+                   ('portal_uidgenerator', IUniqueIdGenerator),
+                   ('portal_uidhandler', IUniqueIdHandler),
+                   ('portal_archivist', IArchivistTool),
+                   ('portal_modifier', IPortalModifierTool),
+                   ('portal_purgepolicy', IPurgePolicyTool),
+                   ('portal_repository', IRepositoryTool),
+                   ('portal_historiesstorage', IStorageTool),
+                   ('portal_languages', ILanguageTool),
+                   )
+
     for reg in registration:
         if sm.queryUtility(reg[1]) is None:
             sm.registerUtility(aq_base(reg[0]), reg[1])
 
-    out.append("Registered portal, controlpanel, interface, migration and "
-               "translation service tools as utilities.")
+    for reg in registration2:
+        if sm.queryUtility(reg[1]) is None:
+            if reg[0] in portal.keys():
+                tool = aq_base(portal[reg[0]])
+                sm.registerUtility(tool, reg[1])
+
+    out.append("Registered tools as utilities.")
 
 def installRedirectorUtility(portal, out):
     from plone.app.redirector.interfaces import IRedirectionStorage
