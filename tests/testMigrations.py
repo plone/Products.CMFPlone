@@ -65,6 +65,8 @@ from Products.MailHost.interfaces import IMailHost
 from Products.MimetypesRegistry.interfaces import IMimetypesRegistryTool
 from Products.PortalTransforms.interfaces import IPortalTransformsTool
 from Products.PloneLanguageTool.interfaces import ILanguageTool
+from Products.PlonePAS.interfaces.group import IGroupTool
+from Products.PlonePAS.interfaces.group import IGroupDataTool
 from Products.ResourceRegistries.interfaces import ICSSRegistry
 from Products.ResourceRegistries.interfaces import IJSRegistry
 
@@ -1695,8 +1697,8 @@ class TestMigrations_v3_0(MigrationTest):
                       IATCTTool, IArchetypeTool, IReferenceCatalog,
                       IUIDCatalog, IMimetypesRegistryTool, IRepositoryTool,
                       IPortalTransformsTool, IArchivistTool, IStorageTool,
-                      IPortalModifierTool, IPurgePolicyTool, )
-
+                      IPortalModifierTool, IPurgePolicyTool, IGroupTool,
+                      IGroupDataTool, )
         for i in interfaces:
             sm.unregisterUtility(provided=i)
         registerToolsAsUtilities(self.portal, [])

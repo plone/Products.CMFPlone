@@ -156,6 +156,12 @@
      interface="Products.PloneLanguageTool.interfaces.ILanguageTool"
      object="/portal_languages"/>
   <utility
+     interface="Products.PlonePAS.interfaces.group.IGroupTool"
+     object="/portal_groups"/>
+  <utility
+     interface="Products.PlonePAS.interfaces.group.IGroupDataTool"
+     object="/portal_groupdata"/>
+  <utility
      interface="Products.PortalTransforms.interfaces.IPortalTransformsTool"
      object="/portal_transforms"/>
   <utility
