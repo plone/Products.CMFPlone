@@ -1,7 +1,7 @@
 def final_two11(portal):
     """2.1-final -> 2.1.1
     """
-    from Products.MimetypesRegistry.Extensions.Install import fixUpSMIGlobs
+    from Products.MimetypesRegistry.setuphandlers import fixUpSMIGlobs
     out = []
     fixUpSMIGlobs(portal)
 

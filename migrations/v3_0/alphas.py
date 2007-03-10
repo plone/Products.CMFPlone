@@ -703,7 +703,7 @@ def registerToolsAsUtilities(portal, out):
                    )
     for reg in registration:
         if sm.queryUtility(reg[1]) is None:
-            sm.registerUtility(reg[0], reg[1])
+            sm.registerUtility(aq_base(reg[0]), reg[1])
 
     out.append("Registered portal, controlpanel, interface, migration and "
                "translation service tools as utilities.")

@@ -134,10 +134,16 @@ def addMemberData(portal, out):
 
 def reinstallPortalTransforms(portal, out):
     """Reinstalls PortalTransforms."""
-    transforms = queryUtility(IPortalTransformsTool)
-    try:
-        transforms.safe_html.get_parameter_value('disable_transform')
-    except (AttributeError, KeyError):
+    reinstall = False
+    if 'portal_transforms' not in portal.keys():
+        reinstall = True
+    if 'portal_transforms' in portal.keys():
+        transforms = portal.portal_transforms
+        try:
+            transforms.safe_html.get_parameter_value('disable_transform')
+        except (AttributeError, KeyError):
+            reinstall = True
+    if reinstall:
         qi = queryUtility(IQuickInstallerTool)
         if qi is not None:
             qi.reinstallProducts(['PortalTransforms'])
