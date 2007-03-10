@@ -168,6 +168,7 @@
               handler="plone.app.kss.exportimport.setup.setupMimetype"
               title="KSS setup / mimetype">
   <dependency step="plone_various"/>
+  <dependency step="mimetypes-registry-various"/>
     KSS (Kinetic Style Sheet) setup. Register kss mimetype.
  </import-step>
 </import-steps>
