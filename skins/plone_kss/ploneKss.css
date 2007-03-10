@@ -22,7 +22,7 @@
     border-right: 1px solid #8cacbb;
     border-bottom: 1px solid #8cacbb;
     cursor: text;
-    background-image: url(edit_inline.gif);
+    background-image: url(&dtml-portal_url;/edit_inline.gif);
     background-position: top right;
     background-repeat: no-repeat;
 }
