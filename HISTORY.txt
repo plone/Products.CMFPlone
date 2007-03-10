@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Location is now a standard metadata field available for categorizing 
+      content. This means that you can geotag images, display content with
+      location data on a map, etc.
+      [limi, nouri]
+
     - Extended the timeout on password resets from 1 day to 1 week by default.
       [limi]
 
