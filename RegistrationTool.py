@@ -16,9 +16,10 @@ from Products.CMFCore.permissions import AddPortalMember
 from Globals import InitializeClass
 from AccessControl import ClassSecurityInfo, Unauthorized
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
-from Products.SecureMailHost.SecureMailHost import EMAIL_RE
 from Products.CMFDefault.utils import checkEmailAddress
 from Products.CMFDefault.exceptions import EmailAddressInvalid
+from Products.PlonePAS.interfaces.group import IGroupTool
+from Products.SecureMailHost.SecureMailHost import EMAIL_RE
 
 from Products.PluggableAuthService.interfaces.authservice \
         import IPluggableAuthService
@@ -174,7 +175,7 @@ class RegistrationTool(PloneBaseTool, BaseTool):
             membership = getUtility(IMembershipTool)
             if membership.getMemberById(id) is not None:
                 return 0
-            groups = getToolByName(self, 'portal_groups')
+            groups = getUtility(IGroupTool)
             if groups.getGroupById(id) is not None:
                 return 0
 
@@ -267,7 +268,7 @@ class RegistrationTool(PloneBaseTool, BaseTool):
             membership = getUtility(IMembershipTool)
             if membership.getMemberById(id) is not None:
                 return 0
-            groups = getToolByName(self, 'portal_groups')
+            groups = getUtility(IGroupTool)
             if groups.getGroupById(id) is not None:
                 return 0
 

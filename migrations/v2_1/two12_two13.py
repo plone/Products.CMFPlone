@@ -1,5 +1,10 @@
-import string
-from Products.CMFCore.utils import getToolByName
+from zope.component import queryUtility
+
+from Products.CMFActionIcons.interfaces import IActionIconsTool
+from Products.CMFCore.interfaces import ICatalogTool
+from Products.CMFCore.interfaces import IMembershipTool
+from Products.CMFCore.interfaces import IPropertiesTool
+from Products.ResourceRegistries.interfaces import IJSRegistry
 
 def two12_two13(portal):
     """2.1.2 -> 2.1.3
@@ -38,7 +43,7 @@ def normalizeNavtreeProperties(portal, out):
     toAdd = {'name' : ('string', ''), 
              'root' : ('string', '/'), 
              'currentFolderOnlyInNavtree' : ('boolean', False)}
-    portal_properties = getToolByName(portal, 'portal_properties', None)
+    portal_properties = queryUtility(IPropertiesTool)
     if portal_properties is not None:
         navtree_properties = getattr(portal_properties, 'navtree_properties', None)
         if navtree_properties is not None:
@@ -55,7 +60,7 @@ def normalizeNavtreeProperties(portal, out):
 def removeVcXMLRPC(portal, out):
     """Remove vcXMLRPC.js from ResourceRegistries
     """
-    jsreg = getToolByName(portal, 'portal_javascripts', None)
+    jsreg = queryUtility(IJSRegistry)
     if jsreg is not None:
         if 'vcXMLRPC.js' in jsreg.getResourceIds():
             jsreg.unregisterResource('vcXMLRPC.js')
@@ -64,7 +69,7 @@ def removeVcXMLRPC(portal, out):
 def addActionDropDownMenuIcons(portal, out):
     """Add icons for copy, cut, paste and delete
     """
-    ai=getToolByName(portal, 'portal_actionicons', None)
+    ai = queryUtility(IActionIconsTool)
     if ai is None:
         return
     icons = dict([
@@ -99,7 +104,7 @@ def addActionDropDownMenuIcons(portal, out):
 
 def reindexCatalog(portal, out):
     """Rebuilds the portal_catalog."""
-    catalog = getToolByName(portal, 'portal_catalog', None)
+    catalog = queryUtility(ICatalogTool)
     if catalog is not None:
         # Reduce threshold for the reindex run
         old_threshold = catalog.threshold
@@ -113,9 +118,9 @@ def reindexCatalog(portal, out):
 
 def indexMembersFolder(portal, out):
     """Makes sure the Members folder is cataloged."""
-    catalog = getToolByName(portal, 'portal_catalog', None)
+    catalog = queryUtility(ICatalogTool)
     if catalog is not None:
-        membershipTool = getToolByName(portal, 'portal_membership', None)
+        membershipTool = queryUtility(IMembershipTool)
         if membershipTool is not None:
             members = membershipTool.getMembersFolder()
             if members is not None:

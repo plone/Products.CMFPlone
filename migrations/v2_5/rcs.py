@@ -1,4 +1,6 @@
-from Products.CMFCore.utils import getToolByName
+from zope.component import queryUtility
+
+from Products.CMFCore.interfaces import IPropertiesTool
 
 def beta2_rc1(portal):
     """2.5-beta2 -> 2.5-rc1
@@ -6,7 +8,7 @@ def beta2_rc1(portal):
     out = []
     # add a property indicating if this is a big or small site, so the UI can
     # change depending on it
-    propTool = getToolByName(portal, 'portal_properties', None)
+    propTool = queryUtility(IPropertiesTool)
     propSheet = getattr(propTool, 'site_properties', None)
     if not propSheet.hasProperty('many_users'):
         if propSheet.hasProperty('large_site'):

@@ -9,7 +9,6 @@ from Products.CMFCore.permissions import ListFolderContents
 from Products.CMFCore.permissions import ModifyPortalContent
 from Products.CMFCore.permissions import ReviewPortalContent
 from Products.CMFCore.utils import _checkPermission
-from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import utils
 from Products.CMFPlone.browser.interfaces import IPlone
 from Products.CMFPlone.interfaces import IBrowserDefault
@@ -105,7 +104,7 @@ class Plone(utils.BrowserView):
         self._data['mtool'] = mtool = tools.membership()
         self._data['atool'] = atool = tools.actions()
         self._data['putils'] = putils = getUtility(IPloneTool)
-        self._data['acl_users'] = getToolByName(context, 'acl_users')
+        self._data['acl_users'] = getattr(portal, 'acl_users')
         self._data['wtool'] = wtool = tools.workflow()
         self._data['ifacetool'] = tools.interface()
         self._data['syntool'] = tools.syndication()

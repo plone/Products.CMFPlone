@@ -1,7 +1,12 @@
+from zope.component import queryUtility
+
 from Products.CMFCore.ActionInformation import Action
-from Products.CMFCore.Expression import Expression
+from Products.CMFCore.interfaces import IActionsTool
+from Products.CMFCore.interfaces import ICatalogTool
+from Products.ResourceRegistries.interfaces import ICSSRegistry
+from Products.ResourceRegistries.interfaces import IJSRegistry
+
 from Products.CMFCore.permissions import DeleteObjects
-from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.UnicodeSplitter import Splitter, CaseNormalizer
 from Products.CMFPlone.migrations.v2_1.two12_two13 import reindexCatalog, \
      indexMembersFolder
@@ -40,7 +45,7 @@ def final_two51(portal):
 def removePloneCssFromRR(portal, out):
     """Removes the redundant, deprecated, and failing plone.css from portal_css.
        It is a python script now and just calls portal_css itself."""
-    css_reg = getToolByName(portal, 'portal_css', None)
+    css_reg = queryUtility(ICSSRegistry)
     if css_reg is not None:
         stylesheet_ids = css_reg.getResourceIds()
         if 'plone.css' in stylesheet_ids:
@@ -50,7 +55,7 @@ def removePloneCssFromRR(portal, out):
 def addEventRegistrationJS(portal, out):
     """Add event-registration.js to ResourceRegistries.
     """
-    jsreg = getToolByName(portal, 'portal_javascripts', None)
+    jsreg = queryUtility(IJSRegistry)
     script = 'event-registration.js'
     if jsreg is not None:
         script_ids = jsreg.getResourceIds()
@@ -65,7 +70,7 @@ def fixupPloneLexicon(portal, out):
     """Updates the plone_lexicon pipeline with the new splitter
        and case normalizer.
     """
-    catalog = getToolByName(portal, 'portal_catalog', None)
+    catalog = queryUtility(ICatalogTool)
     if catalog is not None:
         if 'plone_lexicon' in catalog.objectIds():
             lexicon = catalog.plone_lexicon
@@ -96,7 +101,7 @@ def fixObjDeleteAction(portal, out):
         permissions=(DeleteObjects,),
         visible=True)
 
-    actionsTool = getToolByName(portal, 'portal_actions', None)
+    actionsTool = queryUtility(IActionsTool)
     if actionsTool is not None:
         category = actionsTool.object_buttons
         for action in category.objectIds():

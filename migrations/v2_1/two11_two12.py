@@ -1,6 +1,16 @@
 import string
+from zope.component import queryUtility
+
 from Products.CMFCore.ActionInformation import Action
-from Products.CMFCore.utils import getToolByName
+
+from Products.CMFCore.interfaces import IActionsTool
+from Products.CMFCore.interfaces import ISkinsTool
+from Products.CMFCore.interfaces import IConfigurableWorkflowTool
+from Products.CMFQuickInstallerTool.interfaces import IQuickInstallerTool
+from Products.PortalTransforms.interfaces import IPortalTransformsTool
+from Products.ResourceRegistries.interfaces import ICSSRegistry
+from Products.ResourceRegistries.interfaces import IJSRegistry
+
 from Products.CMFCore.permissions import AddPortalContent
 from Products.CMFPlone.migrations.migration_util import safeGetMemberDataTool, \
      safeEditProperty
@@ -15,9 +25,9 @@ def two11_two12rc1(portal):
     # Remove plone_3rdParty\CMFTopic from skin layers
     removeCMFTopicSkinLayer(portal, out)
 
-
     # We need to migrate all existing actions to new-style actions first
     migrateOldActions(portal, out)
+
     # Add rename object action
     addRenameObjectButton(portal, out)
 
@@ -48,7 +58,7 @@ def two12rc2_two12(portal):
 def removeCMFTopicSkinLayer(portal, out):
     """Removes plone_3rdParty\CMFTopic layer from all skins."""
 
-    st = getToolByName(portal, 'portal_skins', None)
+    st = queryUtility(ISkinsTool)
     if st is not None:
         old = 'plone_3rdParty/CMFTopic'
         skins = st.getSkinSelections()
@@ -64,7 +74,7 @@ def removeCMFTopicSkinLayer(portal, out):
 def addRenameObjectButton(portal,out):
     """Add the missing rename action for renaming single content items.
     """
-    actionsTool = getToolByName(portal, 'portal_actions', None)
+    actionsTool = queryUtility(IActionsTool)
     if actionsTool is not None:
         category = actionsTool.object_buttons
         for action in category.objectIds():
@@ -89,7 +99,7 @@ def addRenameObjectButton(portal,out):
 def addSEHighLightJS(portal, out):
     """Add se-highlight.js (plone_3rdParty) to ResourceRegistries.
     """
-    jsreg = getToolByName(portal, 'portal_javascripts', None)
+    jsreg = queryUtility(IJSRegistry)
     script = 'se-highlight.js'
     if jsreg is not None:
         script_ids = jsreg.getResourceIds()
@@ -108,7 +118,7 @@ def removeDiscussionItemWorkflow(portal, out):
     """Discussion Item should not have a workflow associated with it, since
     it may then have permissions out-of-sync with the parent.
     """
-    wftool = getToolByName(portal, 'portal_workflow', None)
+    wftool = queryUtility(IConfigurableWorkflowTool)
     if wftool is not None:
         wftool.setChainForPortalTypes(('Discussion Item',), ())
         out.append("Removing workflow from Discussion Item")
@@ -124,11 +134,11 @@ def addMemberData(portal, out):
 
 def reinstallPortalTransforms(portal, out):
     """Reinstalls PortalTransforms."""
-    transforms = getToolByName(portal, 'portal_transforms', None)
+    transforms = queryUtility(IPortalTransformsTool)
     try:
         transforms.safe_html.get_parameter_value('disable_transform')
     except (AttributeError, KeyError):
-        qi = getToolByName(portal, 'portal_quickinstaller', None)
+        qi = queryUtility(IQuickInstallerTool)
         if qi is not None:
             qi.reinstallProducts(['PortalTransforms'])
             out.append('Reinstalled PortalTransforms.')

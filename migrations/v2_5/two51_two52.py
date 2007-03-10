@@ -1,6 +1,3 @@
-from Products.CMFCore.utils import getToolByName
-
-
 def two51_two52(portal):
     """2.5.1 -> 2.5.2
     """

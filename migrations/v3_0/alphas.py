@@ -39,7 +39,6 @@ from Products.CMFCore.interfaces import ITypesTool
 from Products.CMFCore.interfaces import IUndoTool
 from Products.CMFCore.interfaces import IURLTool
 from Products.CMFCore.interfaces import IConfigurableWorkflowTool
-from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.permissions import ManagePortal
 from Products.CMFCore.DirectoryView import createDirectoryView
 from Products.CMFDiffTool.interfaces import IDiffTool
@@ -291,7 +290,7 @@ class installKss(object):
      
     def install_resources(self):
         portal, out = self.portal, self.out
-        jstool = getToolByName(portal, 'portal_javascripts')
+        jstool = getUtility(IJSRegistry)
         for id in self.js_unregister:
             if self._old_res(jstool, id):
                 jstool.unregisterResource(id)
@@ -304,7 +303,7 @@ class installKss(object):
                     cookable = True,
                     compression = compression,
                     )
-        csstool = getToolByName(portal, 'portal_css')
+        csstool = getUtility(ICSSRegistry)
         for css in self.css_all:
             if not self._old_res(csstool, css):
                 csstool.manage_addStylesheet(
@@ -327,7 +326,7 @@ class installKss(object):
 
     def install_mimetype(self):
         portal, out = self.portal, self.out
-        mt = getToolByName(portal, 'mimetypes_registry')
+        mt = getUtility(IMimetypesRegistryTool)
         mt.manage_addMimeType('KSS (Azax) StyleSheet', ('text/kss', ), ('kss', ), 'text.png',
                                binary=0, globs=('*.kss', ))
         out.append("Registered kss mimetype")
@@ -417,7 +416,7 @@ def migrateOldActions(portal, out):
 
 def addNewCSSFiles(portal, out):
     # add new css files to the portal_css registries
-    cssreg = getToolByName(portal, 'portal_css', None)
+    cssreg = queryUtility(ICSSRegistry)
     stylesheet_ids = cssreg.getResourceIds()
     if 'navtree.css' not in stylesheet_ids:
         cssreg.registerStylesheet('navtree.css', media='screen')
@@ -614,7 +613,7 @@ def updateSearchAndMailHostConfiglet(portal, out):
 
 def removeGeneratedCSS(portal, out):
     # remove generated.css from the portal_css registries
-    cssreg = getToolByName(portal, 'portal_css', None)
+    cssreg = queryUtility(ICSSRegistry)
     stylesheet_ids = cssreg.getResourceIds()
     if 'generated.css' in stylesheet_ids:
         cssreg.unregisterResource('generated.css')
@@ -623,7 +622,7 @@ def removeGeneratedCSS(portal, out):
 def addFormTabbingJS(portal, out):
     """Add form_tabbing.js to ResourceRegistries.
     """
-    jsreg = getToolByName(portal, 'portal_javascripts', None)
+    jsreg = queryUtility(IJSRegistry)
     script = 'form_tabbing.js'
     if jsreg is not None:
         script_ids = jsreg.getResourceIds()
@@ -640,7 +639,7 @@ def addFormTabbingJS(portal, out):
 def addFormInputLabelJS(portal, out):
     """Add input-label.js to ResourceRegistries.
     """
-    jsreg = getToolByName(portal, 'portal_javascripts', None)
+    jsreg = queryUtility(IJSRegistry)
     script = 'input-label.js'
     if jsreg is not None:
         script_ids = jsreg.getResourceIds()
@@ -799,7 +798,7 @@ def reorderUserActions(portal, out):
 
 def updateRtlCSSexpression(portal, out):
     # update expression on rtl css file
-    cssreg = getToolByName(portal, 'portal_css', None)
+    cssreg = queryUtility(ICSSRegistry)
     if cssreg is not None:
         stylesheet_ids = cssreg.getResourceIds()
         if 'RTL.css' in stylesheet_ids:
@@ -905,7 +904,7 @@ def addLinkIntegritySwitch(portal, out):
 def addWebstatsJSFile(portal, out):
     """Add webstats.js for Google Analytics and other trackers support.
     """
-    jsreg = getToolByName(portal, 'portal_javascripts', None)
+    jsreg = queryUtility(IJSRegistry)
     script = 'webstats.js'
     if jsreg is not None:
         script_ids = jsreg.getResourceIds()
@@ -924,11 +923,11 @@ def addWebstatsJSFile(portal, out):
 
 def addTableContents(portal, out):
     """ Adds in table of contents """
-    csstool = getToolByName(portal, "portal_css", None)
+    csstool = queryUtility(ICSSRegistry)
     if csstool is not None:
         if 'toc.css' not in csstool.getResourceIds():
             csstool.manage_addStylesheet(id="toc.css",rel="stylesheet", enabled=True)
-    jstool = getToolByName(portal, "portal_javascripts", None)
+    jstool = queryUtility(IJSRegistry)
     if jstool is not None:
         if 'toc.js' not in jstool.getResourceIds():
             jstool.registerScript(id="toc.js", enabled=True)
@@ -1069,7 +1068,7 @@ def addSitemapProperty(portal, out):
 def updateKukitJS(portal, out):
     """Use the unpacked kukit-src.js and pack it ourself.
     """
-    jsreg = getToolByName(portal, 'portal_javascripts', None)
+    jsreg = queryUtility(IJSRegistry)
     old_id = '++resource++kukit.js'
     new_id = '++resource++kukit-src.js'
     if jsreg is not None:
@@ -1094,12 +1093,12 @@ def addCacheForResourceRegistry(portal, out):
         settings['request_vars'] = ('URL',)
         cache.manage_editProps('Cache for saved ResourceRegistry files', settings)
         out.append('Created RAMCache %s for ResourceRegistry output' % ram_cache_id)
-    reg = getToolByName(portal, 'portal_css', None)
+    reg = queryUtility(ICSSRegistry)
     if reg is not None and getattr(aq_base(reg), 'ZCacheable_setManagerId', None) is not None:
         reg.ZCacheable_setManagerId(ram_cache_id)
         reg.ZCacheable_setEnabled(1)
         out.append('Associated portal_css with %s' % ram_cache_id)
-    reg = getToolByName(portal, 'portal_javascripts', None)
+    reg = queryUtility(IJSRegistry)
     if reg is not None and getattr(aq_base(reg), 'ZCacheable_setManagerId', None) is not None:
         reg.ZCacheable_setManagerId(ram_cache_id)
         reg.ZCacheable_setEnabled(1)
@@ -1118,7 +1117,7 @@ def removeTablelessSkin(portal, out):
 def updateCssQueryJS(portal, out):
     """Compress cssQuery with full-encode like it's supposed to.
     """
-    jsreg = getToolByName(portal, 'portal_javascripts', None)
+    jsreg = queryUtility(IJSRegistry)
     script_id = 'cssQuery.js'
     if jsreg is not None:
         script_ids = jsreg.getResourceIds()
@@ -1130,7 +1129,7 @@ def updateCssQueryJS(portal, out):
 def removeHideAddItemsJS(portal, out):
     """Remove very old javascript.
     """
-    jsreg = getToolByName(portal, 'portal_javascripts', None)
+    jsreg = queryUtility(IJSRegistry)
     script_id = 'folder_contents_hideAddItems.js'
     if jsreg is not None:
         jsreg.unregisterResource(script_id)

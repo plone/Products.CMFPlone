@@ -20,7 +20,6 @@ from Products.StandardCacheManagers.AcceleratedHTTPCacheManager import \
 from Products.StandardCacheManagers.RAMCacheManager import \
      RAMCacheManager
 
-from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import _createObjectByType
 from Products.CMFPlone import migrations as migs
 from Products.CMFPlone.events import SiteManagerCreatedEvent
@@ -38,6 +37,8 @@ from Products.CMFCore.interfaces import ICatalogTool
 from Products.CMFCore.interfaces import IMembershipTool
 from Products.CMFCore.interfaces import IPropertiesTool
 from Products.CMFCore.interfaces import ISyndicationTool
+from Products.ResourceRegistries.interfaces import ICSSRegistry
+from Products.ResourceRegistries.interfaces import IJSRegistry
 
 class HiddenProducts(object):
     implements(INonInstallable)
@@ -92,11 +93,11 @@ class PloneGenerator:
             settings['max_age'] = 24*3600 # keep for up to 24 hours
             settings['request_vars'] = ('URL',)
             cache.manage_editProps('Cache for saved ResourceRegistry files', settings)
-        reg = getToolByName(portal, 'portal_css', None)
+        reg = queryUtility(ICSSRegistry)
         if reg is not None and getattr(aq_base(reg), 'ZCacheable_setManagerId', None) is not None:
             reg.ZCacheable_setManagerId(ram_cache_id)
             reg.ZCacheable_setEnabled(1)
-        reg = getToolByName(portal, 'portal_javascripts', None)
+        reg = queryUtility(IJSRegistry)
         if reg is not None and getattr(aq_base(reg), 'ZCacheable_setManagerId', None) is not None:
             reg.ZCacheable_setManagerId(ram_cache_id)
             reg.ZCacheable_setEnabled(1)
