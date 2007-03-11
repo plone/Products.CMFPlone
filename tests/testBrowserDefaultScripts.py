@@ -2,10 +2,6 @@
 # Test methods used to make browser-default-mixin enabled display menu work
 #
 
-import os, sys
-if __name__ == '__main__':
-    execfile(os.path.join(sys.path[0], 'framework.py'))
-
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.utils import _createObjectByType
 
@@ -59,6 +55,3 @@ def test_suite():
     suite = TestSuite()
     suite.addTest(makeSuite(TestBrowserDefaultScripts))
     return suite
-
-if __name__ == '__main__':
-    framework()

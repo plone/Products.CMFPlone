@@ -2,10 +2,6 @@
 # CSSRegistry tests
 #
 
-import os, sys
-if __name__ == '__main__':
-    execfile(os.path.join(sys.path[0], 'framework.py'))
-
 from Products.CMFPlone.tests import PloneTestCase
 
 from zope.component import getUtility
@@ -91,6 +87,3 @@ def test_suite():
     suite.addTest(makeSuite(TestCSSRegistry))
     suite.addTest(makeSuite(TestJSRegistry))
     return suite
-
-if __name__ == '__main__':
-    framework()

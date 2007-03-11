@@ -2,10 +2,6 @@
 # Tests the control panel scripts
 #
 
-import os, sys
-if __name__ == '__main__':
-    execfile(os.path.join(sys.path[0], 'framework.py'))
-
 from Products.CMFPlone.tests import PloneTestCase
 
 from DateTime import DateTime
@@ -76,6 +72,3 @@ def test_suite():
     suite.addTest(makeSuite(TestPrefsUserManage))
     suite.addTest(makeSuite(TestAccessControlPanelScripts))
     return suite
-
-if __name__ == '__main__':
-    framework()

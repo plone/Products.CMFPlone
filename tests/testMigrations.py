@@ -2,10 +2,7 @@
 # Tests for migration components
 #
 
-import os, sys
-if __name__ == '__main__':
-    execfile(os.path.join(sys.path[0], 'framework.py'))
-
+import os
 from Products.CMFPlone.tests import PloneTestCase
 
 from Acquisition import aq_base
@@ -2394,6 +2391,3 @@ def test_suite():
     suite.addTest(makeSuite(TestMigrations_v3_0))
     suite.addTest(makeSuite(TestMigrations_v3_0_Actions))
     return suite
-
-if __name__ == '__main__':
-    framework()

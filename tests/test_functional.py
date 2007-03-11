@@ -6,11 +6,7 @@
 
 """
 
-import os, sys
-
-if __name__ == '__main__':
-    execfile(os.path.join(sys.path[0], 'framework.py'))
-
+import os
 import glob
 from zope.testing import doctest
 import unittest
@@ -40,7 +36,4 @@ def test_suite():
               for filename in filenames]
 
     return unittest.TestSuite(suites)
-
-if __name__ == '__main__':
-    framework()
 

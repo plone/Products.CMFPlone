@@ -2,10 +2,6 @@
 # logged_in.cpy tests
 #
 
-import os, sys
-if __name__ == '__main__':
-    execfile(os.path.join(sys.path[0], 'framework.py'))
-
 from Products.CMFPlone.tests import PloneTestCase
 
 from Products.CMFCore.permissions import SetOwnProperties
@@ -69,6 +65,3 @@ def test_suite():
     suite = TestSuite()
     suite.addTest(makeSuite(TestLogin))
     return suite
-
-if __name__ == '__main__':
-    framework()

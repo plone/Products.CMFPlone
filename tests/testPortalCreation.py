@@ -2,10 +2,7 @@
 # Tests portal creation
 #
 
-import os, sys
-if __name__ == '__main__':
-    execfile(os.path.join(sys.path[0], 'framework.py'))
-
+import os
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
 
@@ -919,6 +916,3 @@ def test_suite():
     suite.addTest(makeSuite(TestPortalBugs))
     suite.addTest(makeSuite(TestManagementPageCharset))
     return suite
-
-if __name__ == '__main__':
-    framework()

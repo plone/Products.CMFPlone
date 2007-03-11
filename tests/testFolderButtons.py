@@ -2,10 +2,6 @@
 # Tests for scripts behind folder_contents view
 #
 
-import os, sys
-if __name__ == '__main__':
-    execfile(os.path.join(sys.path[0], 'framework.py'))
-
 from AccessControl import Unauthorized
 from Products.CMFPlone.tests import PloneTestCase
 from Products.PloneTestCase.setup import default_user
@@ -327,6 +323,3 @@ def test_suite():
     suite.addTest(makeSuite(TestFolderCutCopy))
     suite.addTest(makeSuite(TestObjectActions))
     return suite
-
-if __name__ == '__main__':
-    framework()

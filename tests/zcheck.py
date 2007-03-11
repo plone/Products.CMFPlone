@@ -1,18 +1,10 @@
 #
 # To run the ZChecker on all skins in this instance type
 #
-#   $ python zcheck.py [-q]
+# $ ./bin/zopectl test -q --nowarn -s Products.CMFPlone --tests-pattern zcheck
 #
 
-__version__ = '0.2.0'
-
-import os, sys
-if __name__ == '__main__':
-    execfile(os.path.join(sys.path[0], 'framework.py'))
-
-# Suppress DeprecationWarnings, we really don't want any in these tests
-import warnings
-warnings.simplefilter('ignore', DeprecationWarning, append=1)
+__version__ = '0.3.0'
 
 from Testing import ZopeTestCase
 from Testing.ZopeTestCase import _print
@@ -21,14 +13,7 @@ ZopeTestCase.installProduct('PlacelessTranslationService')
 ZopeTestCase.installProduct('ZChecker')
 
 from Products.CMFPlone.tests import PloneTestCase
-
 from Products.PloneTestCase import setup
-from Products.PloneTestCase import layer
-
-if setup.USELAYER:
-    # Set up the Plone site "layer"
-    layer.ZCML.setUp()
-    layer.PloneSite.setUp()
 
 ignoredSkinLayers = ['portal_skins/kupu_plone', 'portal_skins/kupu_tests']
 
@@ -49,6 +34,7 @@ class TestSkins(PloneTestCase.PloneTestCase):
         factory = self.portal.manage_addProduct['ZChecker']
         factory.manage_addZChecker('zchecker')
         self.portal.zchecker.setIgnoreObjectIds(ignoredObjectIds)
+        import sys
         self.verbose = not '-q' in sys.argv
 
     def testSkins(self):
@@ -77,10 +63,17 @@ class TestSkins(PloneTestCase.PloneTestCase):
                 _print('.')
 
     def _skinpath(self, obj):
-        path = obj.absolute_url(1)
-        path = path.split('/')
-        return '/'.join(path[1:])
+        return '/'.join(obj.getPhysicalPath()[2:])
+
+    def _filepath(self, obj):
+        filepath = getattr(obj, 'getObjectFSPath', None)
+        if filepath is not None:
+            return filepath()
 
 
-if __name__ == '__main__':
-    TestRunner(verbosity=0).run(test_suite())
+def test_suite():
+    from unittest import TestSuite, makeSuite
+    suite = TestSuite()
+    suite.addTest(makeSuite(TestSkins))
+    return suite
+

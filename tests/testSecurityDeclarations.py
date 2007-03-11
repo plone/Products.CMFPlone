@@ -3,10 +3,6 @@
 # for access by restricted code (aka PythonScripts)
 #
 
-import os, sys
-if __name__ == '__main__':
-    execfile(os.path.join(sys.path[0], 'framework.py'))
-
 from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
@@ -501,6 +497,3 @@ def test_suite():
     suite.addTest(makeSuite(TestSkinSecurity))
     suite.addTest(makeSuite(TestNavtreeSecurity))
     return suite
-
-if __name__ == '__main__':
-    framework()

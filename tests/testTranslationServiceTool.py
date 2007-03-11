@@ -4,10 +4,6 @@
 # Tries to cover http://plone.org/products/plone/roadmap/98
 #
 
-import os, sys
-if __name__ == '__main__':
-    execfile(os.path.join(sys.path[0], 'framework.py'))
-
 from Products.CMFPlone.tests import PloneTestCase
 
 from zope.component import getUtility
@@ -71,6 +67,3 @@ def test_suite():
     suite.addTest(makeSuite(TestUTranslate))
     suite.addTest(makeSuite(TestTranslationServiceTool))
     return suite
-
-if __name__ == '__main__':
-    framework()

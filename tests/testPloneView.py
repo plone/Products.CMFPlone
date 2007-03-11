@@ -2,10 +2,6 @@
 # Test methods used to make ...
 #
 
-import os, sys
-if __name__ == '__main__':
-    execfile(os.path.join(sys.path[0], 'framework.py'))
-
 from Products.CMFPlone.interfaces.NonStructuralFolder import \
      INonStructuralFolder as z2INonStructuralFolder
 from Products.CMFPlone.tests import PloneTestCase
@@ -241,6 +237,3 @@ def test_suite():
     suite.addTest(makeSuite(TestPloneView))
     suite.addTest(makeSuite(TestVisibleIdsEnabled))
     return suite
-
-if __name__ == '__main__':
-    framework()

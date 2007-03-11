@@ -2,10 +2,6 @@
 # Test queryCatalog and plone search forms
 #
 
-import os, sys
-if __name__ == '__main__':
-    execfile(os.path.join(sys.path[0], 'framework.py'))
-
 from Products.CMFPlone.tests import PloneTestCase
 
 from Products.ZCTextIndex.ParseTree import ParseError
@@ -234,6 +230,3 @@ def test_suite():
     suite.addTest(makeSuite(TestQueryCatalogParseError))
     suite.addTest(makeSuite(TestSearchForms))
     return suite
-
-if __name__ == '__main__':
-    framework()

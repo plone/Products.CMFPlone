@@ -3,10 +3,6 @@
 # code inspired by Ween
 #
 
-import os, sys
-if __name__ == '__main__':
-    execfile(os.path.join(sys.path[0], 'framework.py'))
-
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
 
@@ -230,6 +226,3 @@ def test_suite():
     suite = TestSuite()
     suite.addTest(makeSuite(TestContentPublishing))
     return suite
-
-if __name__ == '__main__':
-    framework()

@@ -1,10 +1,6 @@
 # Tests the CalendarPortlet View
 #
 
-import os, sys
-if __name__ == '__main__':
-    execfile(os.path.join(sys.path[0], 'framework.py'))
-
 from Products.CMFPlone.tests import PloneTestCase
 
 from Products.CMFPlone.tests.PloneTestCase import default_user
@@ -179,6 +175,3 @@ def test_suite():
     suite.addTest(makeSuite(TestCalendarPortletView))
     suite.addTest(makeSuite(TestCalendarPortlet))
     return suite
-
-if __name__ == '__main__':
-    framework()
