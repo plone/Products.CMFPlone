@@ -122,6 +122,9 @@ def three0_alpha1(portal):
     installProduct('CMFDiffTool', portal, out)
 
     # Migrate legacy portlets
+    addPortletManagers(portal, out)
+
+    # Migrate legacy portlets
     convertLegacyPortlets(portal, out)
 
     # Add icon for calendar settings configlet
@@ -547,6 +550,23 @@ def updateFTII18NDomain(portal, out):
         fti.i18n_domain = 'plone'
     out.append('Updated type informations i18n domain attribute.')
 
+
+def addPortletManagers(portal, out):
+    """Add new portlets managers."""
+    tool = getUtility(ISetupTool)
+    plone_base_profileid = 'profile-Products.CMFPlone:plone'
+    current_context = tool.getImportContextID()
+    tool.setImportContext(plone_base_profileid)
+    tool.runImportStep('portlets', run_dependencies=False)
+
+    # Restore import context again
+    try:
+        tool.setImportContext(current_context)
+    except KeyError:
+        # If the old import context wasn't valid anymore, we set it to the
+        # Plone base profile
+        tool.setImportContext(plone_base_profileid)
+    
 
 def convertLegacyPortlets(portal, out):
     """Convert portlets defined in left_slots and right_slots at the portal

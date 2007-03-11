@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Added missing migration step addPortletManagers, to add the new portlet
+      manager adapters.
+      [hannosch]
+
     - Fixed various bugs in the migration code. We need to register additional
       GenericSetup import steps manually or the componentregistry step is not
       available, which new products like CMFEditions depend on. When add-ons
