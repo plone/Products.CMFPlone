@@ -1,14 +1,26 @@
+from Products.MimetypesRegistry.setuphandlers import fixUpSMIGlobs
+from Products.CMFPlone.migrations.v3_0.alphas import enableZope3Site
+from Products.CMFPlone.migrations.v3_0.alphas import registerToolsAsUtilities
+
+
 def final_two11(portal):
     """2.1-final -> 2.1.1
     """
-    from Products.MimetypesRegistry.setuphandlers import fixUpSMIGlobs
     out = []
+    
+    # Make the portal a Zope3 site
+    enableZope3Site(portal, out)
+
+    # register some tools as utilities
+    registerToolsAsUtilities(portal, out)
+    
     fixUpSMIGlobs(portal)
 
     # Update path index for new EPI version
     reindexPathIndex(portal, out)
 
     return out
+
 
 def reindexPathIndex(portal, out):
     """Rebuilds the path index."""

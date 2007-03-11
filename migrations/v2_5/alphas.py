@@ -2,24 +2,41 @@ import os
 from zope.component import queryUtility
 
 from Acquisition import aq_base
-from Products.CMFPlone.migrations.migration_util import installOrReinstallProduct
 from Products.CMFCore.interfaces import ISkinsTool
 from Products.CMFCore.DirectoryView import createDirectoryView
+
+from Products.CMFPlone.migrations.migration_util import installOrReinstallProduct
+from Products.CMFPlone.migrations.v3_0.alphas import enableZope3Site
+from Products.CMFPlone.migrations.v3_0.alphas import registerToolsAsUtilities
+
 
 def two5_alpha1(portal):
     """2.1.2 -> 2.5-alpha1
     """
     out = []
 
+    # Make the portal a Zope3 site
+    enableZope3Site(portal, out)
+
+    # register some tools as utilities
+    registerToolsAsUtilities(portal, out)
+
     # Install CMFPlacefulWorkflow
     installPlacefulWorkflow(portal, out)
 
     return out
 
+
 def alpha1_alpha2(portal):
     """2.5-alpha1 -> 2.5-alpha2
     """
     out = []
+
+    # Make the portal a Zope3 site
+    enableZope3Site(portal, out)
+
+    # register some tools as utilities
+    registerToolsAsUtilities(portal, out)
 
     # Install PlonePAS
     installPlonePAS(portal, out)
@@ -36,12 +53,14 @@ def installPlacefulWorkflow(portal, out):
     if 'CMFPlacefulWorkflow' in portal.Control_Panel.Products.objectIds():
         installOrReinstallProduct(portal, 'CMFPlacefulWorkflow', out)
 
+
 def installPlonePAS(portal, out):
     """Quickinstalls PlonePAS if not installed yet."""
     NO_PLONEPAS = os.environ.get('SUPPRESS_PLONEPAS_INSTALLATION',None)=='YES'
     if not NO_PLONEPAS:
         installOrReinstallProduct(portal, 'PasswordResetTool', out)
         installOrReinstallProduct(portal, 'PlonePAS', out)
+
 
 def installDeprecated(portal, out):
     # register login skin
@@ -67,4 +86,3 @@ def installDeprecated(portal, out):
                 path.append('plone_deprecated')
             st.addSkinSelection(s, ','.join(path))
             out.append('Added plone_deprecated to %s' % s)
-

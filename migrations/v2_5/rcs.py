@@ -1,11 +1,21 @@
 from zope.component import queryUtility
 
 from Products.CMFCore.interfaces import IPropertiesTool
+from Products.CMFPlone.migrations.v3_0.alphas import enableZope3Site
+from Products.CMFPlone.migrations.v3_0.alphas import registerToolsAsUtilities
+
 
 def beta2_rc1(portal):
     """2.5-beta2 -> 2.5-rc1
     """
     out = []
+
+    # Make the portal a Zope3 site
+    enableZope3Site(portal, out)
+
+    # register some tools as utilities
+    registerToolsAsUtilities(portal, out)
+
     # add a property indicating if this is a big or small site, so the UI can
     # change depending on it
     propTool = queryUtility(IPropertiesTool)

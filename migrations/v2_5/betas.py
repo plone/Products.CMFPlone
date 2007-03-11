@@ -9,6 +9,8 @@ from Products.CMFPlone.migrations.v2_1.two12_two13 import removeVcXMLRPC
 from Products.CMFPlone.migrations.v2_1.two12_two13 import addActionDropDownMenuIcons
 from Products.CMFPlone.migrations.v2_5.alphas import installDeprecated
 from Products.CMFPlone.migrations.v3_0.alphas import migrateOldActions
+from Products.CMFPlone.migrations.v3_0.alphas import enableZope3Site
+from Products.CMFPlone.migrations.v3_0.alphas import registerToolsAsUtilities
 from Products.CMFPlone.factory import _TOOL_ID as SETUP_TOOL_ID
 
 from Products.CMFCore.ActionInformation import Action
@@ -22,10 +24,17 @@ from Products.CMFCore.permissions import View
 
 from Products.GenericSetup.tool import SetupTool
 
+
 def alpha2_beta1(portal):
     """2.5-alpha2 -> 2.5-beta1
     """
     out = []
+
+    # Make the portal a Zope3 site
+    enableZope3Site(portal, out)
+
+    # register some tools as utilities
+    registerToolsAsUtilities(portal, out)
 
     # Add dragdropreorder.js to ResourceRegistries.
     addDragDropReorderJS(portal, out)
@@ -42,13 +51,19 @@ def alpha2_beta1(portal):
     # need to be done again for those migrating from alphas)
     normalizeNavtreeProperties(portal, out)
 
-
     return out
+
 
 def beta1_beta2(portal):
     """2.5-beta1 - > 2.5-beta2
     """
     out = []
+
+    # Make the portal a Zope3 site
+    enableZope3Site(portal, out)
+
+    # register some tools as utilities
+    registerToolsAsUtilities(portal, out)
 
     # The migration done during the alpha screwed things up, so we do it again
     # and fix the mistake while we're at it
@@ -95,6 +110,7 @@ def beta1_beta2(portal):
 
     return out
 
+
 def addDragDropReorderJS(portal, out):
     """Add dragdropreorder.js to ResourceRegistries.
     """
@@ -111,6 +127,7 @@ def addDragDropReorderJS(portal, out):
                 # put it at the bottom of the stack
                 jsreg.moveResourceToBottom(script)
             out.append("Added " + script + " to portal_javascipt")
+
 
 def addGetEventTypeIndex(portal, out):
     """Adds the getEventType KeywordIndex."""
@@ -131,6 +148,7 @@ def addGetEventTypeIndex(portal, out):
         out.append("Added KeywordIndex 'getEventType' to portal_catalog.")
         return 1 # Ask for reindexing
     return 0
+
 
 def fixHomeAction(portal, out):
     """Make the 'home' action use the @@plone view to get a properly rooted
@@ -157,6 +175,7 @@ def fixHomeAction(portal, out):
         category.moveObjectsToTop(('index_html',))
         out.append("Added/modified home/index_html portal_tabs action.")
 
+
 def removeBogusSkin(portal, out):
     skins = queryUtility(ISkinsTool)
     if skins is not None:
@@ -178,11 +197,13 @@ def addPloneSkinLayers(portal, out):
             st.addSkinSelection(skin, ','.join(path))
             out.append('Added plone_deprecated to %s' % skin)
 
+
 def installPortalSetup(portal, out):
     """Adds portal_setup if not installed yet."""
     if SETUP_TOOL_ID not in portal.objectIds():
         portal._setObject(SETUP_TOOL_ID, SetupTool(SETUP_TOOL_ID))
         out.append('Added setup_tool.')
+
 
 # A set of regexes and substitution strings for cleaning up the current
 # actions, in particular to make optimal use of the methods provided by
@@ -210,6 +231,7 @@ action_replacements = [
 (re.compile(r"^python:portal\.portal_membership\.getHomeUrl\(\)\+(?:\"|')/(.+)(?:\"|')$"),
  r"string:${portal/portal_membership/getHomeUrl}/\1"),
 ]
+
 
 def simplifyActions(portal, out):
     from Products.CMFCore.ActionInformation import ActionCategory

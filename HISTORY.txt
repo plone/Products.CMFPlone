@@ -4,6 +4,18 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Fixed various bugs in the migration code. We need to register additional
+      GenericSetup import steps manually or the componentregistry step is not
+      available, which new products like CMFEditions depend on. When add-ons
+      use this step we need to make sure they are allowed to run all the
+      dependent steps, so we needed to make the plone-site step available for
+      all extension profiles, by not requiring a flag file anymore. We also
+      need to call the enableZope3Site and registerToolsAsUtilities migration
+      steps as the first step in every possible version migration, as the
+      migration code itself depends on these to be present. Otherwise migrating
+      from older versions would fail with ComponentLookupErrors.
+      [hannosch]
+
     - Location is now a standard metadata field available for categorizing 
       content. This means that you can geotag images, display content with
       location data on a map, etc.

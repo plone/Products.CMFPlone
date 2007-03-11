@@ -90,6 +90,10 @@ def three0_alpha1(portal):
     # register some tools as utilities
     registerToolsAsUtilities(portal, out)
 
+    # Updates the available import steps, so the componentregistry step is
+    # available for add-on product installation
+    updateImportStepsFromBaseProfile(portal, out)
+
     # Migrate old ActionInformation to Actions and move them to the actions tool
     migrateOldActions(portal, out)
 
@@ -431,6 +435,7 @@ def addNewCSSFiles(portal, out):
         cssreg.moveResourceAfter('forms.css', 'invisibles.css')
         out.append("Added forms.css to the registry")
 
+
 def addDefaultAndForbiddenContentTypesProperties(portal, out):
     """Adds sitewide config for default and forbidden content types for AT textfields."""
     propTool = queryUtility(IPropertiesTool)
@@ -451,7 +456,8 @@ def addDefaultAndForbiddenContentTypesProperties(portal, out):
                     'text/x-web-textile',
                     'text/x-web-intelligent')
             out.append("Added 'forbidden_contenttypes' property to site_properties.")
-            
+
+
 def addMarkupConfiglet(portal, out):
     """Add the markup configlet."""
     controlPanel = queryUtility(IControlPanel)
@@ -470,7 +476,8 @@ def addMarkupConfiglet(portal, out):
                 permission = ManagePortal,
             )
             out.append("Added Markup Settings to the control panel")
-            
+
+
 def addIconForMarkupConfiglet(portal, out):
     """Adds an icon for the markup settings configlet. """
     iconsTool = queryUtility(IActionIconsTool)
@@ -486,7 +493,8 @@ def addIconForMarkupConfiglet(portal, out):
                 title='Markup',
                 )
         out.append("Added markup configlet icon to actionicons tool.")     
-            
+
+
 def addTypesConfiglet(portal, out):
     """Add the types configlet."""
     controlPanel = queryUtility(IControlPanel)
@@ -505,7 +513,8 @@ def addTypesConfiglet(portal, out):
                 permission = ManagePortal,
             )
             out.append("Added Types Settings to the control panel")
-            
+
+
 def addIconForTypesConfiglet(portal, out):
     """Adds an icon for the types settings configlet. """
     iconsTool = queryUtility(IActionIconsTool)
@@ -522,6 +531,7 @@ def addIconForTypesConfiglet(portal, out):
                 )
         out.append("Added types configlet icon to actionicons tool.")            
 
+
 def updateActionsI18NDomain(portal, out):
     actions = portal.portal_actions.listActions()
     domainless_actions = [a for a in actions if not a.i18n_domain]
@@ -529,12 +539,14 @@ def updateActionsI18NDomain(portal, out):
         action.i18n_domain = 'plone'
     out.append('Updated actions i18n domain attribute.')
 
+
 def updateFTII18NDomain(portal, out):
     types = portal.portal_types.listTypeInfo()
     domainless_types = [fti for fti in types if not fti.i18n_domain]
     for fti in domainless_types:
         fti.i18n_domain = 'plone'
     out.append('Updated type informations i18n domain attribute.')
+
 
 def convertLegacyPortlets(portal, out):
     """Convert portlets defined in left_slots and right_slots at the portal
@@ -559,10 +571,12 @@ def convertLegacyPortlets(portal, out):
             portletAssignments.setBlacklistStatus(CONTEXT_PORTLETS, True)
             out.append('Blacklisted contextual portlets in the Members folder')
 
+
 def installProduct(product, portal, out):
     """Quickinstalls a product if it is not installed yet."""
     if product in portal.Control_Panel.Products.objectIds():
         installOrReinstallProduct(portal, product, out)
+
 
 def addIconForCalendarSettingsConfiglet(portal, out):
     """Adds an icon for the calendar settings configlet. """
@@ -579,6 +593,7 @@ def addIconForCalendarSettingsConfiglet(portal, out):
                 title='Calendar Settings',
                 )
         out.append("Added 'calendar' icon to actionicons tool.")
+
 
 def addCalendarConfiglet(portal, out):
     """Add the configlet for the calendar settings"""
@@ -597,6 +612,7 @@ def addCalendarConfiglet(portal, out):
                                            permission = ManagePortal,)
             out.append("Added calendar settings to the control panel")
 
+
 def updateSearchAndMailHostConfiglet(portal, out):
     """Use new configlets for the search and mailhost settings"""
     controlPanel = queryUtility(IControlPanel)
@@ -611,6 +627,7 @@ def updateSearchAndMailHostConfiglet(portal, out):
             mail.title = "Mail"
             mail.action = Expression('string:${portal_url}/@@mail-controlpanel')
 
+
 def removeGeneratedCSS(portal, out):
     # remove generated.css from the portal_css registries
     cssreg = queryUtility(ICSSRegistry)
@@ -618,6 +635,7 @@ def removeGeneratedCSS(portal, out):
     if 'generated.css' in stylesheet_ids:
         cssreg.unregisterResource('generated.css')
         out.append("Removed generated.css from the registry")
+
 
 def addFormTabbingJS(portal, out):
     """Add form_tabbing.js to ResourceRegistries.
@@ -636,6 +654,7 @@ def addFormTabbingJS(portal, out):
                 jsreg.moveResourceToBottom(script)
             out.append("Added " + script + " to portal_javascipt")
 
+
 def addFormInputLabelJS(portal, out):
     """Add input-label.js to ResourceRegistries.
     """
@@ -648,74 +667,74 @@ def addFormInputLabelJS(portal, out):
             jsreg.registerScript(script)
             out.append("Added " + script + " to portal_javascipt")
 
+
 def registerToolsAsUtilities(portal, out):
     sm = getSiteManager(portal)
-    registration = ((portal, ISiteRoot),
-                    (portal, IPloneSiteRoot),
-                    (portal.archetype_tool, IArchetypeTool),
-                    (portal.reference_catalog, IReferenceCatalog),
-                    (portal.uid_catalog, IUIDCatalog),
-                    (portal.portal_atct, IATCTTool),
-                    (portal.portal_controlpanel, IControlPanel),
-                    (portal.portal_form_controller, IFormControllerTool),
-                    (portal.portal_factory, IFactoryTool),
-                    (portal.portal_interface, IInterfaceTool),
-                    (portal.portal_migration, IMigrationTool),
-                    (portal.portal_quickinstaller, IQuickInstallerTool),
-                    (portal.plone_utils, IPloneTool),
-                    (portal.translation_service, ITranslationServiceTool),
-                    (portal.portal_actionicons, IActionIconsTool),
-                    (portal.portal_calendar, ICalendarTool),
-                    (portal.portal_actions, IActionsTool),
-                    (portal.caching_policy_manager, ICachingPolicyManager),
-                    (portal.portal_catalog, ICatalogTool),
-                    (portal.content_type_registry, IContentTypeRegistry),
-                    (portal.portal_discussion, IDiscussionTool),
-                    (portal.portal_memberdata, IMemberDataTool),
-                    (portal.portal_membership, IMembershipTool),
-                    (portal.portal_metadata, IMetadataTool),
-                    (portal.portal_properties, IPropertiesTool),
-                    (portal.portal_registration, IRegistrationTool),
-                    (portal.portal_skins, ISkinsTool),
-                    (portal.portal_syndication, ISyndicationTool),
-                    (portal.portal_types, ITypesTool),
-                    (portal.portal_undo, IUndoTool),
-                    (portal.portal_url, IURLTool),
-                    (portal.portal_workflow, IConfigurableWorkflowTool),
-                    (portal.portal_setup, ISetupTool),
-                    (portal.MailHost, IMailHost),
-                    (portal.mimetypes_registry, IMimetypesRegistryTool),
-                    (portal.portal_transforms, IPortalTransformsTool),
-                    (portal.portal_groups, IGroupTool),
-                    (portal.portal_groupdata, IGroupDataTool),
-                    (portal.portal_css, ICSSRegistry),
-                    (portal.portal_javascripts, IJSRegistry),
+    portalregistration = ((portal, ISiteRoot),
+                          (portal, IPloneSiteRoot),)
+
+    registration = (('archetype_tool', IArchetypeTool),
+                    ('reference_catalog', IReferenceCatalog),
+                    ('uid_catalog', IUIDCatalog),
+                    ('mimetypes_registry', IMimetypesRegistryTool),
+                    ('portal_transforms', IPortalTransformsTool),
+                    ('portal_atct', IATCTTool),
+                    ('portal_actionicons', IActionIconsTool),
+                    ('portal_calendar', ICalendarTool),
+                    ('portal_actions', IActionsTool),
+                    ('caching_policy_manager', ICachingPolicyManager),
+                    ('portal_catalog', ICatalogTool),
+                    ('content_type_registry', IContentTypeRegistry),
+                    ('portal_discussion', IDiscussionTool),
+                    ('portal_memberdata', IMemberDataTool),
+                    ('portal_membership', IMembershipTool),
+                    ('portal_metadata', IMetadataTool),
+                    ('portal_properties', IPropertiesTool),
+                    ('portal_registration', IRegistrationTool),
+                    ('portal_setup', ISetupTool),
+                    ('portal_skins', ISkinsTool),
+                    ('portal_syndication', ISyndicationTool),
+                    ('portal_types', ITypesTool),
+                    ('portal_undo', IUndoTool),
+                    ('portal_url', IURLTool),
+                    ('portal_workflow', IConfigurableWorkflowTool),
+                    ('portal_controlpanel', IControlPanel),
+                    ('portal_form_controller', IFormControllerTool),
+                    ('portal_factory', IFactoryTool),
+                    ('portal_interface', IInterfaceTool),
+                    ('portal_migration', IMigrationTool),
+                    ('portal_quickinstaller', IQuickInstallerTool),
+                    ('plone_utils', IPloneTool),
+                    ('translation_service', ITranslationServiceTool),
+                    ('MailHost', IMailHost),
+                    ('portal_groups', IGroupTool),
+                    ('portal_groupdata', IGroupDataTool),
+                    ('portal_css', ICSSRegistry),
+                    ('portal_javascripts', IJSRegistry),
+                    ('portal_diff', IDiffTool),
+                    ('portal_uidannotation', IUniqueIdAnnotationManagement),
+                    ('portal_uidgenerator', IUniqueIdGenerator),
+                    ('portal_uidhandler', IUniqueIdHandler),
+                    ('portal_archivist', IArchivistTool),
+                    ('portal_modifier', IPortalModifierTool),
+                    ('portal_purgepolicy', IPurgePolicyTool),
+                    ('portal_repository', IRepositoryTool),
+                    ('portal_historiesstorage', IStorageTool),
+                    ('portal_languages', ILanguageTool),
                    )
 
-    registration2 = (
-                   ('portal_diff', IDiffTool),
-                   ('portal_uidannotation', IUniqueIdAnnotationManagement),
-                   ('portal_uidgenerator', IUniqueIdGenerator),
-                   ('portal_uidhandler', IUniqueIdHandler),
-                   ('portal_archivist', IArchivistTool),
-                   ('portal_modifier', IPortalModifierTool),
-                   ('portal_purgepolicy', IPurgePolicyTool),
-                   ('portal_repository', IRepositoryTool),
-                   ('portal_historiesstorage', IStorageTool),
-                   ('portal_languages', ILanguageTool),
-                   )
-
-    for reg in registration:
+    for reg in portalregistration:
         if sm.queryUtility(reg[1]) is None:
             sm.registerUtility(aq_base(reg[0]), reg[1])
 
-    for reg in registration2:
+    for reg in registration:
         if sm.queryUtility(reg[1]) is None:
             if reg[0] in portal.keys():
                 tool = aq_base(portal[reg[0]])
                 sm.registerUtility(tool, reg[1])
 
     out.append("Registered tools as utilities.")
+
 
 def installRedirectorUtility(portal, out):
     from plone.app.redirector.interfaces import IRedirectionStorage
@@ -726,6 +745,7 @@ def installRedirectorUtility(portal, out):
         sm.registerUtility(RedirectionStorage(), IRedirectionStorage)
 
     out.append("Registered redirector utility")
+
 
 def addContentRulesAction(portal, out):
     portal_actions = queryUtility(IActionsTool)
@@ -743,6 +763,7 @@ def addContentRulesAction(portal, out):
                 object_tabs._setObject('contentrules', new_action)
                 out.append("Added content rules action to object_tabs")
 
+
 def installContentRulesUtility(portal, out):
     from plone.contentrules.engine.interfaces import IRuleStorage
     from plone.contentrules.engine.storage import RuleStorage
@@ -752,6 +773,7 @@ def installContentRulesUtility(portal, out):
         sm.registerUtility(RuleStorage(), IRuleStorage)
 
     out.append("Registered content rules storage utility")
+
 
 def addReaderAndEditorRoles(portal, out):
     if 'Reader' not in portal.valid_roles():
@@ -776,6 +798,7 @@ def addReaderAndEditorRoles(portal, out):
 
     out.append('Added reader and editor roles')
 
+
 def migrateLocalroleForm(portal, out):
     portal_types = queryUtility(ITypesTool)
     if portal_types is not None:
@@ -794,6 +817,7 @@ def migrateLocalroleForm(portal, out):
                     a.setActionExpression(expr.replace('folder_localrole_form', '@@sharing'))
     out.append('Ensured references to folder_localrole_form point to @@sharing now')
 
+
 def reorderUserActions(portal, out):
     portal_actions = queryUtility(IActionsTool)
     if portal_actions is not None:
@@ -805,6 +829,7 @@ def reorderUserActions(portal, out):
                 if action in user_category.objectIds():
                     user_category.moveObjectsToTop([action])
 
+
 def updateRtlCSSexpression(portal, out):
     # update expression on rtl css file
     cssreg = queryUtility(ICSSRegistry)
@@ -814,6 +839,7 @@ def updateRtlCSSexpression(portal, out):
             rtl = cssreg.getResource('RTL.css')
             rtl.setExpression("python:portal.restrictedTraverse('@@plone_portal_state').is_rtl()")
             out.append("Updated RTL.css expression.")
+
 
 def installS5(portal, out):
     portalTypes = queryUtility(ITypesTool)
@@ -848,6 +874,7 @@ def installS5(portal, out):
                 )
         out.append("Added 's5_presentation' icon to actionicons tool.")
 
+
 def addIconForMaintenanceConfiglet(portal, out):
     """Adds an icon for the maintenance settings configlet. """
     iconsTool = queryUtility(IActionIconsTool)
@@ -863,6 +890,7 @@ def addIconForMaintenanceConfiglet(portal, out):
                 title='Maintenance',
                 )
         out.append("Added 'maintenance' icon to actionicons tool.")
+
 
 def addMaintenanceConfiglet(portal, out):
     """Add the configlet for the calendar settings"""
@@ -881,6 +909,7 @@ def addMaintenanceConfiglet(portal, out):
                                            permission = ManagePortal,)
             out.append("Added 'Maintenance' to the control panel")
 
+
 def addMaintenanceProperty(portal, out):
     """ adds a site property to portal_properties"""
     tool = queryUtility(IPropertiesTool)
@@ -890,7 +919,8 @@ def addMaintenanceProperty(portal, out):
             if not sheet.hasProperty('number_of_days_to_keep'):
                 sheet.manage_addProperty('number_of_days_to_keep', 7, 'int')
                 out.append("Added 'number_of_days_to_keep' property to site properties")
-        
+
+
 def addWebstatsJSProperty(portal, out):
     """ adds a site property to portal_properties"""
     tool = queryUtility(IPropertiesTool)
@@ -899,6 +929,7 @@ def addWebstatsJSProperty(portal, out):
         if not sheet.hasProperty('webstats_js'):
             sheet.manage_addProperty('webstats_js','','string')
             out.append("Added 'webstats_js' property to site properties")
+
 
 def addLinkIntegritySwitch(portal, out):
     """ adds a site property to portal_properties """
@@ -909,6 +940,7 @@ def addLinkIntegritySwitch(portal, out):
             if not sheet.hasProperty('enable_link_integrity_checks'):
                 sheet.manage_addProperty('enable_link_integrity_checks', True, 'boolean')
                 out.append("Added 'enable_link_integrity_checks' property to site properties")
+
 
 def addWebstatsJSFile(portal, out):
     """Add webstats.js for Google Analytics and other trackers support.
@@ -930,6 +962,7 @@ def addWebstatsJSFile(portal, out):
                 jsreg.moveResourceToBottom(script)
             out.append("Added " + script + " to portal_javascipts")
 
+
 def addTableContents(portal, out):
     """ Adds in table of contents """
     csstool = queryUtility(ICSSRegistry)
@@ -941,7 +974,8 @@ def addTableContents(portal, out):
         if 'toc.js' not in jstool.getResourceIds():
             jstool.registerScript(id="toc.js", enabled=True)
     out.append("Added in css and js for table of contents")
-    
+
+
 def updateMemberSecurity(portal, out):
     pprop = getUtility(IPropertiesTool)
     portal.manage_permission('Add portal member', roles=['Manager','Owner'], acquire=0)
@@ -983,6 +1017,7 @@ def updateSkinsAndSiteConfiglet(portal, out):
             site.action = Expression('string:${portal_url}/@@site-controlpanel')
             site.title = "Site settings"
 
+
 def updateConfigletTitles(portal, out):
     """Update titles of some configlets"""
     controlPanel = queryUtility(IControlPanel)
@@ -1006,6 +1041,7 @@ def updateConfigletTitles(portal, out):
             users.title = "Users and Groups"
         if users2 is not None:
             users2.title = "Users and Groups"
+
 
 def addIconsForFilterAndSecurityConfiglets(portal, out):
     """Adds icons for the filter and security configlets."""
@@ -1034,6 +1070,7 @@ def addIconsForFilterAndSecurityConfiglets(portal, out):
                 title='Security Settings',
                 )
             out.append("Added 'security' icon to actionicons tool.")
+
 
 def addFilterAndSecurityConfiglets(portal, out):
     """Add the configlets for the filter and security settings"""
@@ -1092,6 +1129,7 @@ def updateKukitJS(portal, out):
             resource.setCompression('full')
             out.append("Set 'full' compression on %s" % new_id)
 
+
 def addCacheForResourceRegistry(portal, out):
     ram_cache_id = 'ResourceRegistryCache'
     if not ram_cache_id in portal.objectIds():
@@ -1112,6 +1150,7 @@ def addCacheForResourceRegistry(portal, out):
         reg.ZCacheable_setManagerId(ram_cache_id)
         reg.ZCacheable_setEnabled(1)
         out.append('Associated portal_javascripts with %s' % ram_cache_id)
+
 
 def removeTablelessSkin(portal, out):
     st = getUtility(ISkinsTool)
@@ -1135,6 +1174,7 @@ def updateCssQueryJS(portal, out):
             resource.setCompression('full-encode')
             out.append("Set 'full-encode' compression on %s" % script_id)
 
+
 def removeHideAddItemsJS(portal, out):
     """Remove very old javascript.
     """
@@ -1144,9 +1184,6 @@ def removeHideAddItemsJS(portal, out):
         jsreg.unregisterResource(script_id)
         out.append('Removed %s from portal_javascripts.' % script_id)
 
-# --
-# ContentRules migration
-# --
 
 def addContentRulesConfiglet(portal, out):
     """Add the configlet for the contentrules settings"""
@@ -1165,6 +1202,7 @@ def addContentRulesConfiglet(portal, out):
                                            permission = 'Content rules: Manage rules',)
             out.append("Added 'Content Rules Settings' to the control panel")
 
+
 def addIconForContentRulesConfiglet(portal, out):
     """Adds an icon for the maintenance settings configlet. """
     iconsTool = queryUtility(IActionIconsTool)
@@ -1181,6 +1219,7 @@ def addIconForContentRulesConfiglet(portal, out):
                 )
         out.append("Added 'Content Rules Settings' icon to actionicons tool.")
 
+
 def addObjectProvidesIndex(portal, out):
     """Add the object_provides index to the portal_catalog.
     """
@@ -1188,6 +1227,7 @@ def addObjectProvidesIndex(portal, out):
     if 'object_provides' not in catalog.indexes():
         catalog.addIndex('object_provides', 'KeywordIndex')
         out.append("Added object_provides index to portal_catalog")
+
 
 def removeMyStuffAction(portal, out):
     """The mystuff action is now covered by the dashboard"""
@@ -1199,6 +1239,7 @@ def removeMyStuffAction(portal, out):
         category.manage_delObjects(ids=['mystuff'])
         out.append("Removed the mystuff user action")
 
+
 def addExternalLinksOpenNewWindowProperty(portal, out):
     """ adds a site property to portal_properties"""
     tool = getUtility(IPropertiesTool)
@@ -1207,10 +1248,10 @@ def addExternalLinksOpenNewWindowProperty(portal, out):
         sheet.manage_addProperty('external_links_open_new_window','false','string')
         out.append("Added 'external_links_open_new_window' property to site properties")
 
+
 def addMissingWorkflows(portal, out):
     """Add new Plone 3.0 workflows
     """
-    
     wft = queryUtility(IConfigurableWorkflowTool)
     if wft is None:
         return
@@ -1260,6 +1301,7 @@ def addMissingWorkflows(portal, out):
                       )
         out.append("Added workflow %s" % wf_id)
 
+
 def addManyGroupsProperty(portal, out):
     """ adds a site property to portal_properties"""
     tool = getUtility(IPropertiesTool)
@@ -1268,3 +1310,20 @@ def addManyGroupsProperty(portal, out):
         sheet.manage_addProperty('many_groups',
                 getattr(sheet, 'many_users', False) ,'boolean')
         out.append("Added 'many_groups' property to site properties")
+
+
+def updateImportStepsFromBaseProfile(portal, out):
+    """Updates the available import steps for existing sites."""
+    tool = getUtility(ISetupTool)
+    plone_base_profileid = 'profile-Products.CMFPlone:plone'
+    current_context = tool.getImportContextID()
+    # This reads the import_steps.xml file from the base profile and
+    # registers the additional steps, like the componentregistry step.
+    tool.setImportContext(plone_base_profileid)
+    # Restore import context again
+    try:
+        tool.setImportContext(current_context)
+    except KeyError:
+        # If the old import context wasn't valid anymore, we set it to the
+        # Plone base profile
+        tool.setImportContext(plone_base_profileid)

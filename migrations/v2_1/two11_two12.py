@@ -15,12 +15,20 @@ from Products.CMFCore.permissions import AddPortalContent
 from Products.CMFPlone.migrations.migration_util import safeGetMemberDataTool, \
      safeEditProperty
 from Products.CMFPlone.migrations.v3_0.alphas import migrateOldActions
+from Products.CMFPlone.migrations.v3_0.alphas import enableZope3Site
+from Products.CMFPlone.migrations.v3_0.alphas import registerToolsAsUtilities
 
 
 def two11_two12rc1(portal):
     """2.1.1 -> 2.1.2-rc1
     """
     out = []
+
+    # Make the portal a Zope3 site
+    enableZope3Site(portal, out)
+
+    # register some tools as utilities
+    registerToolsAsUtilities(portal, out)
 
     # Remove plone_3rdParty\CMFTopic from skin layers
     removeCMFTopicSkinLayer(portal, out)
@@ -47,6 +55,12 @@ def two12rc2_two12(portal):
     """2.1.2-rc2 -> 2.1.2
     """
     out = []
+
+    # Make the portal a Zope3 site
+    enableZope3Site(portal, out)
+
+    # register some tools as utilities
+    registerToolsAsUtilities(portal, out)
 
     # Reinstall PortalTransforms to activate the
     # configurable safe_html transformation.

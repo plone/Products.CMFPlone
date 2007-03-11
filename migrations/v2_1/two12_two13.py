@@ -6,10 +6,20 @@ from Products.CMFCore.interfaces import IMembershipTool
 from Products.CMFCore.interfaces import IPropertiesTool
 from Products.ResourceRegistries.interfaces import IJSRegistry
 
+from Products.CMFPlone.migrations.v3_0.alphas import enableZope3Site
+from Products.CMFPlone.migrations.v3_0.alphas import registerToolsAsUtilities
+
+
 def two12_two13(portal):
     """2.1.2 -> 2.1.3
     """
     out = []
+
+    # Make the portal a Zope3 site
+    enableZope3Site(portal, out)
+
+    # register some tools as utilities
+    registerToolsAsUtilities(portal, out)
 
     # Put navtree properties in a sensible state
     normalizeNavtreeProperties(portal, out)
@@ -30,6 +40,7 @@ def two12_two13(portal):
     addActionDropDownMenuIcons(portal, out)
 
     return out
+
 
 def normalizeNavtreeProperties(portal, out):
     """Remove unused navtree properties, add 'name' and 'root' properties. Set
@@ -57,6 +68,7 @@ def normalizeNavtreeProperties(portal, out):
             if bottomLevel == 65535:
                 navtree_properties.manage_changeProperties(bottomLevel = 0)
 
+
 def removeVcXMLRPC(portal, out):
     """Remove vcXMLRPC.js from ResourceRegistries
     """
@@ -65,6 +77,7 @@ def removeVcXMLRPC(portal, out):
         if 'vcXMLRPC.js' in jsreg.getResourceIds():
             jsreg.unregisterResource('vcXMLRPC.js')
             out.append('Removed vcXMLRPC.js')
+
 
 def addActionDropDownMenuIcons(portal, out):
     """Add icons for copy, cut, paste and delete
@@ -102,6 +115,7 @@ def addActionDropDownMenuIcons(portal, out):
     else:
         out.append('Updated icons for copy, cut, paste and delete')
 
+
 def reindexCatalog(portal, out):
     """Rebuilds the portal_catalog."""
     catalog = queryUtility(ICatalogTool)
@@ -115,6 +129,7 @@ def reindexCatalog(portal, out):
         catalog.threshold = old_threshold
         catalog.pgthreshold = pg_threshold
         out.append("Reindexed portal_catalog.")
+
 
 def indexMembersFolder(portal, out):
     """Makes sure the Members folder is cataloged."""

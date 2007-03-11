@@ -1,7 +1,17 @@
+from Products.CMFPlone.migrations.v3_0.alphas import enableZope3Site
+from Products.CMFPlone.migrations.v3_0.alphas import registerToolsAsUtilities
+
+
 def two51_two52(portal):
     """2.5.1 -> 2.5.2
     """
     out = []
+
+    # Make the portal a Zope3 site
+    enableZope3Site(portal, out)
+
+    # register some tools as utilities
+    registerToolsAsUtilities(portal, out)
 
     # Make sure the cookie auth redirects to the correct location
     setLoginFormInCookieAuth(portal, out)

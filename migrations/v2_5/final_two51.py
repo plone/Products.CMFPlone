@@ -11,12 +11,21 @@ from Products.CMFPlone.UnicodeSplitter import Splitter, CaseNormalizer
 from Products.CMFPlone.migrations.v2_1.two12_two13 import reindexCatalog, \
      indexMembersFolder
 from Products.CMFPlone.migrations.v3_0.alphas import migrateOldActions
+from Products.CMFPlone.migrations.v3_0.alphas import enableZope3Site
+from Products.CMFPlone.migrations.v3_0.alphas import registerToolsAsUtilities
 
 
 def final_two51(portal):
     """2.5-final -> 2.5.1
     """
     out = []
+
+    # Make the portal a Zope3 site
+    enableZope3Site(portal, out)
+
+    # register some tools as utilities
+    registerToolsAsUtilities(portal, out)
+
     removePloneCssFromRR(portal, out)
 
     # add event_registration.js
@@ -42,6 +51,7 @@ def final_two51(portal):
 
     return out
 
+
 def removePloneCssFromRR(portal, out):
     """Removes the redundant, deprecated, and failing plone.css from portal_css.
        It is a python script now and just calls portal_css itself."""
@@ -51,6 +61,7 @@ def removePloneCssFromRR(portal, out):
         if 'plone.css' in stylesheet_ids:
             css_reg.unregisterResource('plone.css')
             out.append('Unregistered deprecated plone.css')
+
 
 def addEventRegistrationJS(portal, out):
     """Add event-registration.js to ResourceRegistries.
@@ -65,6 +76,7 @@ def addEventRegistrationJS(portal, out):
             # put it at the top of the stack
             jsreg.moveResourceToTop(script)
             out.append("Added " + script + " to portal_javascipt")
+
 
 def fixupPloneLexicon(portal, out):
     """Updates the plone_lexicon pipeline with the new splitter
@@ -89,6 +101,7 @@ def fixupPloneLexicon(portal, out):
                     lexicon._words = IOBTree()
                     lexicon.length = Length()
                     out.append('Updated plone_lexicon pipeline.')
+
 
 def fixObjDeleteAction(portal, out):
     """Make the delete action use the new confirmation form
