@@ -557,7 +557,7 @@ def addPortletManagers(portal, out):
     plone_base_profileid = 'profile-Products.CMFPlone:plone'
     current_context = tool.getImportContextID()
     tool.setImportContext(plone_base_profileid)
-    tool.runImportStep('portlets', run_dependencies=False)
+    tool.runImportStep('portlets', run_dependencies=False, purge_old=False)
 
     # Restore import context again
     try:

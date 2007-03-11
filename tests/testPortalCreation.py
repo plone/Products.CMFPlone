@@ -28,6 +28,7 @@ from Products.CMFCore.permissions import AccessInactivePortalContent
 from Products.CMFPlone import setuphandlers
 from Products.CMFPlone.interfaces import IControlPanel
 from Products.CMFPlone.UnicodeSplitter import Splitter, CaseNormalizer
+from Products.GenericSetup.interfaces import ISetupTool
 
 from Products.StandardCacheManagers.AcceleratedHTTPCacheManager import \
      AcceleratedHTTPCacheManager
@@ -822,8 +823,9 @@ class TestPortalBugs(PloneTestCase.PloneTestCase):
     def testSubsequentProfileImportSucceeds(self):
         # Subsequent profile imports fail (#5439)
         self.loginAsPortalOwner()
-        setup_tool = self.portal.portal_setup
-        setup_tool.runAllImportSteps() # this will raise an error if it fails
+        setup_tool = getUtility(ISetupTool)
+        # this will raise an error if it fails
+        setup_tool.runAllImportSteps(purge_old=True)
         self.failUnless(1 == 1)
 
     def testFinalStepsWithMembersFolderDeleted(self):
