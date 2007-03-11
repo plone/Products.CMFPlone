@@ -33,7 +33,7 @@ from ZODB.POSException import ConflictError
 from Products.CMFCore.utils import getToolByInterfaceName
 from AccessControl import Unauthorized
 
-portal_url = getToolByInterfaceName('Products.CMFCore.interfaces.IURLTool')
+portal = getToolByInterfaceName('Products.CMFCore.interfaces.ISiteRoot')
 plone_utils = getToolByInterfaceName('Products.CMFPlone.interfaces.IPloneTool')
 portal_membership = getToolByInterfaceName('Products.CMFCore.interfaces.IMembershipTool')
 
@@ -52,7 +52,7 @@ if fallThroughDefaultPage:
         return None
 
 # Abort if we are at the root of the portal
-if obj is portal_url.getPortalObject():
+if obj.getPhysicalPath() == portal.getPhysicalPath():
     return None
 
 # Get the parent. If we can't get it (unauthorized), use the portal
