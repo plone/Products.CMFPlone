@@ -12,6 +12,7 @@ from zope.component import queryUtility
 from zope.event import notify
 from zope.i18n.interfaces import ITranslationDomain
 from zope.i18n.interfaces import IUserPreferredLanguages
+from zope.i18n.locales import locales, LoadLocaleError
 from zope.interface import implements
 
 from Acquisition import aq_base, aq_get
@@ -24,9 +25,11 @@ from Products.CMFPlone.utils import _createObjectByType
 from Products.CMFPlone import migrations as migs
 from Products.CMFPlone.events import SiteManagerCreatedEvent
 from Products.CMFPlone.Portal import member_indexhtml
+from Products.PloneLanguageTool.interfaces import ILanguageTool
 from Products.CMFQuickInstallerTool.interfaces import INonInstallable
 from Products.CMFQuickInstallerTool.interfaces import IQuickInstallerTool
 
+from plone.i18n.normalizer.interfaces import IURLNormalizer
 from plone.portlets.interfaces import IPortletAssignmentMapping
 from plone.portlets.interfaces import IPortletManager
 from plone.portlets.interfaces import ILocalPortletAssignmentManager
@@ -111,28 +114,74 @@ class PloneGenerator:
         """
         existing = p.objectIds()
 
-        # Special handling of the front-page, as we want to translate it into
-        # the current user preferred language
+        # Figure out the current user preferred language
+        language = None
+        locale = None
+        pl = IUserPreferredLanguages(p.REQUEST)
+        if pl is not None:
+            languages = pl.getPreferredLanguages()
+            for httplang in languages:
+                parts = (httplang.split('-') + [None, None])[:3]
+                try:
+                    locale = locales.getLocale(*parts)
+                    break
+                except LoadLocaleError:
+                    # Just try the next combination
+                    pass
+            if len(languages) > 0:
+                language = languages[0]
+
+        # Set the default language of the portal
+        if language is not None and locale is not None:
+            localeid = locale.getLocaleID()
+            base_language = locale.id.language
+
+            # If we get a territory, we enable the combined language codes
+            use_combined = False
+            if locale.id.territory:
+                use_combined = True
+
+            # As we have a sensible language code set now, we disable the
+            # start neutral functionality
+            tool = getUtility(ILanguageTool)
+            tool.manage_setLanguageSettings(language,
+                [language],
+                setUseCombinedLanguageCodes=use_combined,
+                startNeutral=False)
+
+            # Enable visible_ids for non-latin scripts
+
+            # See if we have an url normalizer
+            normalizer = queryUtility(IURLNormalizer, name=localeid)
+            if normalizer is None:
+                normalizer = queryUtility(IURLNormalizer, name=base_language)
+
+            # If we get a script other than Latn we enable visible_ids
+            if locale.id.script is not None:
+                if locale.id.script.lower() != 'latn':
+                    sheet.visible_ids = True
+
+            # If we have a normalizer it is safe to disable the visible ids
+            if normalizer is not None:
+                sheet.visible_ids = False
+
+        # Special handling of the front-page, as we want to translate it
         if 'front-page' in existing:
             fp = p['front-page']
-            pl = IUserPreferredLanguages(p.REQUEST)
-            if pl is not None:
-                languages = pl.getPreferredLanguages()
-                if len(languages) > 0:
-                    language = languages[0]
-                    util = queryUtility(ITranslationDomain, 'plonefrontpage')
-                    if util is not None:
-                        title = util.translate(u'title',
-                                               target_language=language)
-                        desc = util.translate(u'description',
-                                              target_language=language)
-                        text = util.translate(u'text',
-                                              target_language=language)
-                        if title <> u'title' and text <> u'text':
-                            fp.setLanguage(language)
-                            fp.setTitle(title)
-                            fp.setDescription(desc)
-                            fp.setText(text)
+            if language is not None:
+                util = queryUtility(ITranslationDomain, 'plonefrontpage')
+                if util is not None:
+                    title = util.translate(u'title',
+                                           target_language=language)
+                    desc = util.translate(u'description',
+                                          target_language=language)
+                    text = util.translate(u'text',
+                                          target_language=language)
+                    if title <> u'title' and text <> u'text':
+                        fp.setLanguage(language)
+                        fp.setTitle(title)
+                        fp.setDescription(desc)
+                        fp.setText(text)
 
         # News topic
         if 'news' not in existing:

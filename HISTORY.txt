@@ -4,6 +4,14 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Updated language dependend portal creation step. We set the default
+      language of the portal, the allowed languages and if necessary the
+      combined languages support option. If we get a territory code in the
+      locale we also set the visible_ids setting to true for non-latin-scripts,
+      for which we don't have a IURLNormalizer registered. This closes
+      http://dev.plone.org/plone/ticket/5971.
+      [hannosch]
+
     - Removed tests/runalltests.py and test/framework.py as they have
       outlived their usefulness. To run tests use Zope's testrunner:
       ./bin/zopectl test --nowarn -s Products.CMFPlone
