@@ -49,7 +49,9 @@ class HiddenProducts(object):
                 'CMFTopic', 'CMFUid', 'DCWorkflow', 'GroupUserFolder',
                 'PasswordResetTool', 'wicked.at', 'kupu',
                 'Kupu', 'CMFFormController', 'MimetypesRegistry',
-                'PortalTransforms', 'CMFDiffTool', 'CMFEditions'
+                'PortalTransforms', 'CMFDiffTool', 'CMFEditions',
+                'Products.ATReferenceBrowserWidget',
+                'Products.CMFFormController',
                ]
 
 

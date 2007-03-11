@@ -12,24 +12,12 @@ Plone 3.0 - unreleased
     - Extended the timeout on password resets from 1 day to 1 week by default.
       [limi]
 
-    - Added an interface declaration to the factory tool aka portal_factory
-      and register it as a utility.
-      [hannosch]
-
     - Fix bug #6227 : Batch-workflowing objects would erroneously give them 
       the effective date of the portal object or their container. 
       [elvix]
 
-    - Replaced various getToolByName calls in the ploneview with getUtility.
-      [hannosch]
-
-    - Added an interface declaration to the Plone tool aka plone_utils and
-      register it as a utility.
-      [hannosch]
-
-    - Registered all standard CMF tools as local utilities with the exception
-      of the actionicons and syndication tools, as these don't implement any
-      Zope 3 interfaces yet.
+    - Registered all standard CMF and Plone tools as local utilities and
+      replaced most getToolByName calls with getUtility/queryUtility.
       [hannosch]
 
     - Registered the portal itself as a utility providing IPloneSiteRoot and
