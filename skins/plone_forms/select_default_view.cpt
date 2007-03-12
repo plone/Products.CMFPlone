@@ -23,21 +23,12 @@
       <form name="default_view_form"
             action="."
             method="post"
-            tal:attributes="action string:${here_url}/${template_id}"
-            tal:define="parent_folder plone_view/getCurrentFolder;
-                        contextHasIndexHtml context/hasIndexHtml;
-                        folderHasIndexHtml parent_folder/hasIndexHtml;
-                        parentVocab parent_folder/getSelectableViews;
-                        contextVocab here/getSelectableViews;
-                        canSelectDefaultFolderPage parent_folder/canSelectDefaultPage;
-                        canSelectDefaultContextPage here/canSelectDefaultPage;
-                        parentHasActions python:parentVocab or canSelectDefaultFolderPage;
-                        contextHasActions python:contextVocab or canSelectDefaultContextPage;">
+            tal:attributes="action string:${here_url}/${template_id}">
 
         <input type="hidden" name="form.submitted" value="1"/>
     
-            <div tal:define="vocab parentVocab;
-                            actualLayout parent_folder/getLayout|nothing;
+            <div tal:define="vocab context/getAvailableLayouts;
+                            actualLayout context/getLayout|nothing;
                             selectedLayout python:test(isContextDefaultPage, '', actualLayout)">
                 <tal:item repeat="layout vocab">
                     <tal:vars define="value python:layout[0];
@@ -56,11 +47,11 @@
                               i18n:translate="label_current">(current)</span><br />
                     </tal:vars>
                 </tal:item>
-                <p tal:condition="canSelectDefaultFolderPage">
+                <p tal:condition="context/canSelectDefaultPage">
                     <tal:selected condition="python:selectedLayout != ''">
                         <span i18n:translate="label_or">or</span>
                         <a title="Select an item to be used as default view in this folder" href="#" class="selected"
-                           tal:attributes="href string:${parent_folder/absolute_url}/select_default_page;"
+                           tal:attributes="href string:${context/absolute_url}/select_default_page;"
                            i18n:attributes="title title_select_default_page;"
                            i18n:translate="label_choose_content_item">
                              Choose a content item&hellip;
@@ -69,7 +60,7 @@
                     <tal:selected condition="python:selectedLayout == ''">
                         <span i18n:translate="label_or">or</span>
                         <a title="Change the item used as default view in this folder" href="#" class="selected"
-                           tal:attributes="href string:${parent_folder/absolute_url}/select_default_page;"
+                           tal:attributes="href string:${context/absolute_url}/select_default_page;"
                            i18n:attributes="title title_change_default_view_item;"
                            i18n:translate="label_select_content_item">
                              Select a content item&hellip;
