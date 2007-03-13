@@ -26,7 +26,7 @@
             <legend i18n:translate="legend_member_search_criteria">User Search Criteria</legend>
 
             <div class="field">
-                <label for="name"
+                <label for="login"
                        i18n:translate="label_name">Name</label>
                 
                 <div class="formHelp" i18n:translate="help_search_name">
@@ -143,7 +143,7 @@
                  tal:define="memberRoles request/roles|nothing;
                              portalRoles python:mtool.getPortalRoles()">
 
-                <label for="roles"
+                <label
                        i18n:translate="label_roles">Role(s)</label>
 
                 <div class="formHelp" i18n:translate="help_search_roles">
