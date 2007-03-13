@@ -43,11 +43,13 @@
        summary="Calendar"
        i18n:domain="plone"
        i18n:attributes="summary summary_calendar;">
+    <thead>
         <tr class="weekdays"
             ><tal:data tal:repeat="weekday view/getWeekdays"
                 ><td tal:content="weekday">Su</td
             ></tal:data>
         </tr>
+    </thead>
     <tbody>
         <tr tal:repeat="week view/weeks"
             ><tal:block repeat="day week"
