@@ -59,9 +59,10 @@
                          configlets python:here.createMultiColumnList(allconfiglets, numCols=3);">
 
             <div tal:repeat="sublist configlets"
+                 tal:condition="configlets"
                  style="float:left; margin-right: 1em; width: 29%">
 
-                <ul class="configlets">
+                <ul class="configlets" tal:condition="sublist">
 
                     <tal:configlet repeat="configlet sublist">
                         <li tal:condition="configlet/visible">
