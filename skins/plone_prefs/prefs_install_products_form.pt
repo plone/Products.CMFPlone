@@ -68,8 +68,11 @@
                         </span>
                     </label>
                     
-                    <ul class="configletDetails">
-                        <li tal:condition="python:container.portal_quickinstaller.getProductFile(pid)">
+                    <ul class="configletDetails"
+                        tal:define="product_file python:container.portal_quickinstaller.getProductFile(pid);
+                                    has_error product/hasError"
+                        tal:condition="python: product_file or has_error">
+                        <li tal:condition="product_file">
                             <a tal:attributes="href string:${QI/absolute_url}/prefs_install_product_readme?filereadme=${product/id}">
                                 <img src="" alt="" 
                                      tal:replace="structure here/book_icon.gif" />
@@ -79,7 +82,7 @@
                             </a>
                         </li>
                         
-                        <li tal:condition="product/hasError">    
+                        <li tal:condition="has_error">    
                             <a tal:attributes="href string:${QI/absolute_url}/${pid}/prefs_installed_product_overview">
                                 <img src="" alt="" 
                                      tal:replace="structure here/error_icon.gif" />
