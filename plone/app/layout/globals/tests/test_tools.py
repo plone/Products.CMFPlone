@@ -7,11 +7,11 @@ from Products.CMFCore.interfaces import IActionsTool
 from Products.CMFCore.interfaces import ICatalogTool
 from Products.CMFCore.interfaces import IMembershipTool
 from Products.CMFCore.interfaces import IPropertiesTool
+from Products.CMFCore.interfaces import ISyndicationTool
 from Products.CMFCore.interfaces import ITypesTool
 from Products.CMFCore.interfaces import IURLTool
 from Products.CMFCore.interfaces import IConfigurableWorkflowTool
 
-from Products.CMFCore.utils import getToolByName
 
 class TestToolsView(GlobalsTestCase):
     """Ensure that the basic redirector setup is successful.
@@ -33,7 +33,7 @@ class TestToolsView(GlobalsTestCase):
         self.assertEquals(self.view.properties(), getUtility(IPropertiesTool))
         
     def test_syndication(self):
-        self.assertEquals(self.view.syndication(), getToolByName(self.folder, 'portal_syndication'))
+        self.assertEquals(self.view.syndication(), getUtility(ISyndicationTool)
         
     def test_types(self):
         self.assertEquals(self.view.types(), getUtility(ITypesTool))
