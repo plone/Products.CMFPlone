@@ -9,11 +9,11 @@ from zope.schema import Tuple
 
 from Products.CMFCore.interfaces import IPropertiesTool
 from Products.CMFCore.interfaces import ITypesTool
-from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault.formlib.schema import ProxyFieldProperty
 from Products.CMFDefault.formlib.schema import SchemaAdapterBase
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.interfaces import IPloneSiteRoot
+from Products.ResourceRegistries.interfaces import IJSRegistry
 
 from form import ControlPanelForm
 from widgets import MultiCheckBoxThreeColumnWidget
@@ -52,7 +52,7 @@ class SearchControlPanelAdapter(SchemaAdapterBase):
         super(SearchControlPanelAdapter, self).__init__(context)
         pprop = getUtility(IPropertiesTool)
         self.context = pprop.site_properties
-        self.jstool = getToolByName(context, 'portal_javascripts')
+        self.jstool = getUtility(IJSRegistry)
         self.ttool = getUtility(ITypesTool)
 
     def get_enable_livesearch(self):

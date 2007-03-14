@@ -10,7 +10,7 @@ from AccessControl import Unauthorized
 from Products.CMFCore.interfaces import IPropertiesTool
 from Products.CMFCore.interfaces import ITypesTool
 from Products.CMFCore.interfaces import IConfigurableWorkflowTool
-from Products.CMFCore.utils import getToolByName
+from Products.CMFEditions.interfaces.IRepository import IRepositoryTool
 from Products.CMFEditions.setuphandlers import DEFAULT_POLICIES
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.Five.browser import BrowserView
@@ -53,7 +53,7 @@ class TypesControlPanel(BrowserView):
         if submitted and type_id and not cancel_button:
             
             portal_types = getUtility(ITypesTool)
-            portal_repository = getToolByName(context, 'portal_repository')
+            portal_repository = getUtility(IRepositoryTool)
             portal_properties = getUtility(IPropertiesTool)
             site_properties = getattr(portal_properties, 'site_properties')
             
@@ -131,7 +131,7 @@ class TypesControlPanel(BrowserView):
     
     def is_versionable(self):
         context = aq_inner(self.context)
-        portal_repository = getToolByName(context, 'portal_repository')
+        portal_repository = getUtility(IRepositoryTool)
         return (self.type_id in portal_repository.getVersionableContentTypes())
         
     def is_searchable(self):

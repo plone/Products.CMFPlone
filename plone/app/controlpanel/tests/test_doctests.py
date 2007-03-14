@@ -7,7 +7,6 @@ from Products.PloneTestCase.PloneTestCase import FunctionalTestCase
 from Products.PloneTestCase.PloneTestCase import setupPloneSite
 
 from zope.component import getUtility
-from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.interfaces import IPropertiesTool
 
 setupPloneSite()
@@ -36,10 +35,6 @@ class ControlPanelTestCase(FunctionalTestCase):
         self.browser.getControl('Login Name').value = 'root'
         self.browser.getControl('Password').value = 'secret'
         self.browser.getControl('Log in').click()
-    
-    def getToolByName(self, name):
-        """docstring for getToolByName"""
-        return getToolByName(self.portal, name)
 
 
 def test_suite():
