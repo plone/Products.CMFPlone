@@ -33,7 +33,7 @@
             tal:attributes="href view/url"
            i18n:translate="box_more_rss_link"
                 >
-                More news&hellip;
+                More&hellip;
             </a>
             <span class="portletBottomLeft"></span>
             <span class="portletBottomRight"></span>
