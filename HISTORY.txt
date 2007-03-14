@@ -12,7 +12,7 @@ Plone 3.0 - unreleased
       http://dev.plone.org/plone/ticket/5971.
       [hannosch]
 
-    - Removed tests/runalltests.py and test/framework.py as they have
+    - Removed tests/runalltests.py and tests/framework.py as they have
       outlived their usefulness. To run tests use Zope's testrunner:
       ./bin/zopectl test --nowarn -s Products.CMFPlone
       [stefan]
