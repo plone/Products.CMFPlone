@@ -33,7 +33,7 @@ class TestToolsView(GlobalsTestCase):
         self.assertEquals(self.view.properties(), getUtility(IPropertiesTool))
         
     def test_syndication(self):
-        self.assertEquals(self.view.syndication(), getUtility(ISyndicationTool)
+        self.assertEquals(self.view.syndication(), getUtility(ISyndicationTool))
         
     def test_types(self):
         self.assertEquals(self.view.types(), getUtility(ITypesTool))
