@@ -412,7 +412,7 @@ h3, h4, h5, h6 {
     border-bottom: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
 }
 .newsImage {
-    border: 1px solid black;
+    border: 1px solid #ccc;
 }
 .newsImageContainer {
     float:right;
