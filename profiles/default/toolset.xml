@@ -15,7 +15,7 @@
  <required tool_id="plone_app_metadata_languages"
            class="plone.app.i18n.locales.languages.MetadataLanguages"/>
  <required tool_id="plone_utils"
-           class="Products.PlonePAS.tools.plonetool.PloneTool"/>
+           class="Products.CMFPlone.PloneTool.PloneTool"/>
  <required tool_id="portal_actionicons"
            class="Products.CMFPlone.ActionIconsTool.ActionIconsTool"/>
  <required tool_id="portal_actions"

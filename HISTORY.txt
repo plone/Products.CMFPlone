@@ -4,6 +4,17 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Add migration code to remove the PlonePAS PloneTool from the site and
+      replace it with a standard PloneTool.
+      [wichert]
+
+    - Improve the test for GRUF presence; it also considered a PlonePAS
+      monkeyed PAS as GRUF.
+      [wichert]
+
+    - Remove GRUF usage for local role handling in PloneTool
+      [wichert]
+
     - Updated language dependend portal creation step. We set the default
       language of the portal, the allowed languages and if necessary the
       combined languages support option. If we get a territory code in the

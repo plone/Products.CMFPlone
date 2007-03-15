@@ -930,10 +930,15 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         mt = getUtility(IMembershipTool)
         if not mt.checkPermission(ModifyPortalContent, obj):
             raise Unauthorized
-        # Set local role status
-        gruf = getUtility(IURLTool).getPortalObject().acl_users
-        # We perform our own security check
-        gruf._acquireLocalRoles(obj, status)
+
+        # Set local role status...
+        # set the variable (or unset it if it's defined)
+        if not status:
+            obj.__ac_local_roles_block__ = 1
+        else:
+            if getattr(obj, '__ac_local_roles_block__', None):
+                obj.__ac_local_roles_block__ = None
+
         # Reindex the whole stuff.
         obj.reindexObjectSecurity()
 
@@ -942,10 +947,10 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         """Returns local role acquisition blocking status.
 
         True if normal, false if blocked.
-        GRUF IS REQUIRED FOR THIS TO WORK.
         """
-        gruf = getUtility(IURLTool).getPortalObject().acl_users
-        return gruf.isLocalRoleAcquired(obj)
+        if getattr(folder, '__ac_local_roles_block__', None):
+            return False
+        return True
 
     security.declarePublic('getOwnerName')
     def getOwnerName(self, obj):
@@ -1004,7 +1009,6 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
         >>> ptool.normalizeString(" a string    ")
         'a-string'
-
         >>> ptool.normalizeString(">here's another!")
         'heres-another'
 

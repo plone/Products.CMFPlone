@@ -260,6 +260,9 @@ def alpha2_alpha3(portal):
     # register some tools as utilities
     registerToolsAsUtilities(portal, out)
 
+    # Replace obsolete PlonePAS version of plone tool
+    restorePloneTool(portal, out)
+  
     return out
 
 # --
@@ -1276,10 +1279,12 @@ def addMissingWorkflows(portal, out):
     if wft is None:
         return
 
-    new_workflow_ids = ['community_workflow', 'community_folder_workflow', 'intranet_workflow',
-                        'intranet_folder_workflow', 'one_state_workflow', 'simple_publication_workflow']
+    new_workflow_ids = ['community_workflow', 'community_folder_workflow',
+                        'intranet_workflow', 'intranet_folder_workflow',
+                        'one_state_workflow', 'simple_publication_workflow']
     encoding = 'utf-8'
-    path_prefix = os.path.join(package_home(cmfplone_globals), 'profiles', 'default', 'workflows')
+    path_prefix = os.path.join(package_home(cmfplone_globals), 'profiles',
+            'default', 'workflows')
     
     for wf_id in new_workflow_ids:
         if wf_id in wft.objectIds():
@@ -1330,6 +1335,20 @@ def addManyGroupsProperty(portal, out):
         sheet.manage_addProperty('many_groups',
                 getattr(sheet, 'many_users', False) ,'boolean')
         out.append("Added 'many_groups' property to site properties")
+
+
+def restorePloneTool(portal, out):
+    tool = getUtility(IPloneTool)
+    if tool.meta_type == 'PlonePAS Utilities Tool':
+        from Products.CMFPlone.PloneTool import PloneTool
+        from Products.CMFDefault.Portal import CMFSite
+
+        portal = getUtility(ISiteRoot)
+        # PloneSite has its own security check for manage_delObjects which
+        # breaks in the test runner. So we bypass this check.
+        CMFSite.manage_delObjects(portal, ['plone_utils'])
+        portal._setObject(PloneTool.id, PloneTool())
+        out.append("Replaced obsolete PlonePAS version of plone tool with the normal one.")
 
 
 def updateImportStepsFromBaseProfile(portal, out):

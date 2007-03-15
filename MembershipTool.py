@@ -191,7 +191,7 @@ class MembershipTool(PloneBaseTool, BaseTool):
         possible anymore to have a method returning several hundred of users :)
         '''
         uf = self.acl_users
-        if hasattr(aq_base(uf), 'getPureUsers'): # GRUF
+        if uf.meta_type == 'Group User Folder':
             return [BaseTool.wrapUser(self, x) for x in uf.getPureUsers()]
         else:
             return BaseTool.listMembers(self)

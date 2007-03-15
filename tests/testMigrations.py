@@ -149,6 +149,7 @@ from Products.CMFPlone.migrations.v3_0.alphas import addTypesConfiglet
 from Products.CMFPlone.migrations.v3_0.alphas import addIconForTypesConfiglet
 from Products.CMFPlone.migrations.v3_0.alphas import addMissingWorkflows
 from Products.CMFPlone.migrations.v3_0.alphas import addManyGroupsProperty
+from Products.CMFPlone.migrations.v3_0.alphas import restorePloneTool
 
 from zope.app.component.hooks import clearSite
 from zope.app.component.interfaces import ISite
@@ -2378,6 +2379,15 @@ class TestMigrations_v3_0(MigrationTest):
         addManyGroupsProperty(self.portal, [])
         self.failUnless(sheet.hasProperty('many_groups'))
         self.failUnless(sheet.many_groups == False)
+
+
+    def testMigratePloneTool(self):
+        from Products.CMFPlone import ToolNames
+        tool = self.portal.plone_utils
+        tool.meta_type = 'PlonePAS Utilities Tool'
+        restorePloneTool(self.portal, [])
+        tool = self.portal.plone_utils
+        self.assertEquals(ToolNames.UtilsTool, tool.meta_type)
 
 
 def test_suite():
