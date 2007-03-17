@@ -94,8 +94,7 @@
     </dd>
 </dl>
 
-<dl class="portlet"
-    class="portletLogin"
+<dl class="portlet portletLogin"
     tal:condition="not:view/available">
 
     <dt class="portletHeader">

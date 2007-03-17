@@ -32,9 +32,12 @@ class Renderer(base.Renderer):
         
         self.context_state = getMultiAdapter((context, request), name=u'plone_context_state')
         self.portal_state = getMultiAdapter((context, request), name=u'plone_portal_state')
+        self.pas_info = getMultiAdapter((context, request), name=u'pas_info')
 
     def show(self):
         if not self.portal_state.anonymous():
+            return False
+        if not self.pas_info.hasLoginPasswordExtractor():
             return False
         page = self.request.get('URL', '').split('/')[-1]
         return page not in ('login_form', 'join_form')
