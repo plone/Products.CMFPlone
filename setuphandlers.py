@@ -65,6 +65,12 @@ class PloneGenerator:
         # XXX The product installations should be done by a GenericSetup
         # handler
         qi = getUtility(IQuickInstallerTool)
+        # Archetypes installs MimetypesRegistry and PortalTransforms without
+        # using their GS profile. As a result their tools are not correctly
+        # registered as utilities. Work around that by installing them here
+        # using their GS profile.
+        qi.installProduct('MimetypesRegistry', locked=1, hidden=1, forceProfile=True)
+        qi.installProduct('PortalTransforms', locked=1, hidden=1, forceProfile=True)
         qi.installProduct('Archetypes', locked=1, hidden=1)
         qi.installProduct('PlonePAS', locked=1, hidden=1, forceProfile=True)
         qi.installProduct('kupu', locked=0, forceProfile=True)
