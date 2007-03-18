@@ -786,7 +786,7 @@ def addContentRulesAction(portal, out):
                                     title='Rules',
                                     description='',
                                     url_expr='string:${plone_context_state/canonical_object_url}/@@manage-content-rules',
-                                    available_expr="python:plone_context_state.canonical_object()['@@plone_interface_info'].provides('plone.contentrules.engine.interfaces.IRuleContainer')",
+                                    available_expr="python:plone_context_state.canonical_object().restrictedTraverse('@@plone_interface_info').provides('plone.contentrules.engine.interfaces.IRuleAssignable')",
                                     permissions='Content rules: Manage rules',
                                     visible=True)
                 object_tabs._setObject('contentrules', new_action)
