@@ -16,8 +16,8 @@
          show_single_year show_single_year | python: 1;
          show_jscal show_jscal | python: 1;
          input_id string:${formname}_${inputname}_${inputIndex};
-         use_ampm python: '%p' in site_properties.getProperty('localLongTimeFormat');
-         values   python:here.date_components_support(inputvalue, use_ampm, starting_year, ending_year, future_years);
+         date_components_support_view context/@@date_components_support;
+         values python:date_components_support_view.result(inputvalue, 0, starting_year, ending_year, future_years);
          years values/years;
          months values/months;
          days values/days;
@@ -25,8 +25,7 @@
          minutes values/minutes;
          ampm values/ampm;
          yearStart python:years[0]['value'];
-         yearEnd python:years[-1]['value'];
-         translation_service nocall:here/translation_service;">
+         yearEnd python:years[-1]['value'];">
 
       <input type="hidden" tal:attributes="name string:$inputname;
 	     id input_id;
@@ -80,11 +79,9 @@
                               onchange string:update_date_field('${input_id}','${input_id}_year','${input_id}_month','${input_id}_day','${input_id}_hour','${input_id}_minute','${input_id}_ampm');">
         <option value="subj"
                 tal:repeat="month months"
-                tal:attributes="value month/value; selected month/selected">
-          <tal:block define="month_id python:translation_service.month(month['value'], default=month['id'])"
-                     content="month_id">
+                tal:attributes="value month/value; selected month/selected"
+                tal:content="month/title">
             month name
-          </tal:block>
         </option>
       </select>
       </span>
@@ -177,7 +174,7 @@
       </span>
 
 
-      <span tal:condition="python: use_ampm and show_hm">
+      <span tal:condition="python: ampm and show_hm">
         <select name="ic_ampm"
                 id="ic_ampm"
                 size="1"
@@ -197,7 +194,7 @@
         </select>
       </span>
 
-      <span tal:condition="python:not use_ampm or not show_hm">
+      <span tal:condition="python:not ampm or not show_hm">
         <input name="ic_ampm"
                 type="hidden"
                 id="ic_ampm"
