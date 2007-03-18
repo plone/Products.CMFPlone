@@ -49,7 +49,6 @@
               handler="Products.CMFPlone.exportimport.controlpanel.importControlPanel"
               title="Control Panel">
   <dependency step="actions"/>
-  <dependency step="toolset"/>
   <dependency step="componentregistry"/>
     Import Plone control panel actions.
  </import-step>
@@ -85,6 +84,13 @@
   <dependency step="componentregistry"/>
     Import MemberData properties
  </import-step>
+ <import-step id="plone-archetypes" version="20070318-01"
+              handler="Products.CMFPlone.setuphandlers.importArchetypes"
+              title="Plone Archetypes Import">
+  <dependency step="componentregistry"/>
+    Plone Archetypes import
+ </import-step>
+
  <import-step id="plone-content" version="20061230-01"
               handler="Products.CMFPlone.setuphandlers.importContent"
               title="Plone Content Import">
@@ -167,7 +173,7 @@
  <import-step id="kss_mimetype" version="20061125-01"
               handler="plone.app.kss.exportimport.setup.setupMimetype"
               title="KSS setup / mimetype">
-  <dependency step="plone_various"/>
+  <dependency step="plone-archetypes"/>
   <dependency step="mimetypes-registry-various"/>
     KSS (Kinetic Style Sheet) setup. Register kss mimetype.
  </import-step>

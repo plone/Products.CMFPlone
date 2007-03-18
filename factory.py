@@ -23,9 +23,11 @@ class HiddenProfiles(object):
         return [u'Products.Archetypes:Archetypes',
                 u'Products.CMFDiffTool:CMFDiffTool',
                 u'Products.CMFEditions:CMFEditions',
+                u'Products.CMFFormController:CMFFormController',
                 u'Products.CMFQuickInstallerTool:CMFQuickInstallerTool',
                 u'Products.MimetypesRegistry:MimetypesRegistry',
                 u'Products.PortalTransforms:PortalTransforms',
+                u'Products.PloneLanguageTool:PloneLanguageTool',
                 u'Products.PlonePAS:PlonePAS',
                 u'kupu:default']
 

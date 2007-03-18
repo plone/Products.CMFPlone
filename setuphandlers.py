@@ -55,28 +55,26 @@ class HiddenProducts(object):
                 'PortalTransforms', 'CMFDiffTool', 'CMFEditions',
                 'Products.ATReferenceBrowserWidget',
                 'Products.CMFFormController',
+                'Products.PloneLanguageTool',
                ]
 
 
 class PloneGenerator:
 
-    def installProducts(self, p):
-        """QuickInstaller install of required Products"""
-        # XXX The product installations should be done by a GenericSetup
-        # handler
+    def installArchetypes(self):
+        """QuickInstaller install of Archetypes and required dependencies."""
         qi = getUtility(IQuickInstallerTool)
-        # Archetypes installs MimetypesRegistry and PortalTransforms without
-        # using their GS profile. As a result their tools are not correctly
-        # registered as utilities. Work around that by installing them here
-        # using their GS profile.
+        qi.installProduct('CMFFormController', locked=1, hidden=1, forceProfile=True)
         qi.installProduct('MimetypesRegistry', locked=1, hidden=1, forceProfile=True)
         qi.installProduct('PortalTransforms', locked=1, hidden=1, forceProfile=True)
         qi.installProduct('Archetypes', locked=1, hidden=1)
+
+    def installProducts(self):
+        """QuickInstaller install of required Products"""
+        qi = getUtility(IQuickInstallerTool)
+        # qi.installProduct('PloneLanguageTool', locked=1, hidden=1, forceProfile=True)
         qi.installProduct('PlonePAS', locked=1, hidden=1, forceProfile=True)
         qi.installProduct('kupu', locked=0, forceProfile=True)
-        
-        # The following two products are "installed" based on a GenericSetup
-        # extension profile by CMFQuickInstallerTool
         qi.installProduct('CMFDiffTool', locked=0, forceProfile=True)
         qi.installProduct('CMFEditions', locked=0, forceProfile=True)
 
@@ -152,6 +150,7 @@ class PloneGenerator:
             tool = getUtility(ILanguageTool)
             pprop = getUtility(IPropertiesTool)
             sheet = pprop.site_properties
+
             tool.manage_setLanguageSettings(language,
                 [language],
                 setUseCombinedLanguageCodes=use_combined,
@@ -354,6 +353,16 @@ def importSite(context):
     gen = PloneGenerator()
     gen.enableSite(site)
 
+def importArchetypes(context):
+    """
+    Install Archetypes and it's dependencies.
+    """
+    # Only run step if a flag file is present (e.g. not an extension profile)
+    if context.readDataFile('plone_archetypes.txt') is None:
+        return
+    gen = PloneGenerator()
+    gen.installArchetypes()
+
 def importVarious(context):
     """
     Import various settings.
@@ -365,11 +374,8 @@ def importVarious(context):
     if context.readDataFile('plone_various.txt') is None:
         return
     site = context.getSite()
-    
-    # Ensure we get a proper site context during these steps
-    setSite(site)
     gen = PloneGenerator()
-    gen.installProducts(site)
+    gen.installProducts()
     gen.addCacheHandlers(site)
     gen.addCacheForResourceRegistry(site)
 

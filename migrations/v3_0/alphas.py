@@ -262,7 +262,14 @@ def alpha2_alpha3(portal):
 
     # Replace obsolete PlonePAS version of plone tool
     restorePloneTool(portal, out)
-  
+
+    # install plone.app.i18n
+    installI18NUtilities(portal, out)
+
+    # Install PloneLanguageTool
+    # XXX enable this
+    # installProduct('PloneLanguageTool', portal, out)
+
     return out
 
 # --
@@ -1343,7 +1350,6 @@ def restorePloneTool(portal, out):
         from Products.CMFPlone.PloneTool import PloneTool
         from Products.CMFDefault.Portal import CMFSite
 
-        portal = getUtility(ISiteRoot)
         # PloneSite has its own security check for manage_delObjects which
         # breaks in the test runner. So we bypass this check.
         CMFSite.manage_delObjects(portal, ['plone_utils'])
@@ -1366,3 +1372,24 @@ def updateImportStepsFromBaseProfile(portal, out):
         # If the old import context wasn't valid anymore, we set it to the
         # Plone base profile
         tool.setImportContext(plone_base_profileid)
+
+
+def installI18NUtilities(portal, out):
+    from plone.app.i18n.locales.interfaces import ICountries
+    from plone.app.i18n.locales.countries import Countries
+
+    from plone.app.i18n.locales.interfaces import IContentLanguages
+    from plone.app.i18n.locales.languages import ContentLanguages
+
+    from plone.app.i18n.locales.interfaces import IMetadataLanguages
+    from plone.app.i18n.locales.languages import MetadataLanguages
+
+    sm = getSiteManager(portal)
+    if sm.queryUtility(ICountries) is None:
+        sm.registerUtility(Countries(), ICountries)
+    if sm.queryUtility(IContentLanguages) is None:
+        sm.registerUtility(ContentLanguages(), IContentLanguages)
+    if sm.queryUtility(IMetadataLanguages) is None:
+        sm.registerUtility(MetadataLanguages(), IMetadataLanguages)
+
+    out.append("Registered plone.app.i18n utilities.")

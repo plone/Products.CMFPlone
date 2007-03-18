@@ -8,12 +8,6 @@
            class="Products.CMFCore.ContentTypeRegistry.ContentTypeRegistry"/>
  <required tool_id="error_log"
            class="Products.SiteErrorLog.SiteErrorLog.SiteErrorLog"/>
- <required tool_id="plone_app_countries"
-           class="plone.app.i18n.locales.countries.Countries"/>
- <required tool_id="plone_app_content_languages"
-           class="plone.app.i18n.locales.languages.ContentLanguages"/>
- <required tool_id="plone_app_metadata_languages"
-           class="plone.app.i18n.locales.languages.MetadataLanguages"/>
  <required tool_id="plone_utils"
            class="Products.CMFPlone.PloneTool.PloneTool"/>
  <required tool_id="portal_actionicons"

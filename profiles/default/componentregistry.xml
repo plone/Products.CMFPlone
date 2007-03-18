@@ -13,13 +13,13 @@
      factory="plone.contentrules.engine.storage.RuleStorage"/>
   <utility 
      interface="plone.app.i18n.locales.interfaces.ICountries"
-     object="/plone_app_countries"/>
+     factory="plone.app.i18n.locales.countries.Countries"/>
   <utility
      interface="plone.app.i18n.locales.interfaces.IContentLanguages"
-     object="/plone_app_content_languages"/>
+     factory="plone.app.i18n.locales.languages.ContentLanguages"/>
   <utility
      interface="plone.app.i18n.locales.interfaces.IMetadataLanguages"
-     object="/plone_app_metadata_languages"/>
+     factory="plone.app.i18n.locales.languages.MetadataLanguages"/>
   <utility
      interface="Products.ATContentTypes.interface.IATCTTool"
      object="/portal_atct"/>

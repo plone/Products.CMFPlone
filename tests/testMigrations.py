@@ -150,12 +150,13 @@ from Products.CMFPlone.migrations.v3_0.alphas import addIconForTypesConfiglet
 from Products.CMFPlone.migrations.v3_0.alphas import addMissingWorkflows
 from Products.CMFPlone.migrations.v3_0.alphas import addManyGroupsProperty
 from Products.CMFPlone.migrations.v3_0.alphas import restorePloneTool
+from Products.CMFPlone.migrations.v3_0.alphas import installI18NUtilities
+from Products.CMFPlone.migrations.v3_0.alphas import installProduct
 
 from zope.app.component.hooks import clearSite
 from zope.app.component.interfaces import ISite
 from zope.component import getGlobalSiteManager
 from zope.component import getSiteManager
-
 from zope.component import getUtility, getMultiAdapter, queryUtility
 
 from Products.CMFDynamicViewFTI.migrate import migrateFTI
@@ -164,15 +165,23 @@ from Products.Five.component import disableSite
 import types
 from Acquisition import aq_base
 
+from plone.app.i18n.locales.countries import Countries
+from plone.app.i18n.locales.interfaces import IContentLanguages
+from plone.app.i18n.locales.interfaces import ICountries
+from plone.app.i18n.locales.interfaces import IMetadataLanguages
+from plone.app.i18n.locales.languages import ContentLanguages
+from plone.app.i18n.locales.languages import MetadataLanguages
+
+from plone.app.redirector.interfaces import IRedirectionStorage
+from plone.contentrules.engine.interfaces import IRuleStorage
+
+from plone.app.portlets import portlets
 from plone.portlets.interfaces import IPortletManager
 from plone.portlets.interfaces import IPortletAssignmentMapping
 from plone.portlets.interfaces import IPortletManager
 from plone.portlets.interfaces import ILocalPortletAssignmentManager
 from plone.portlets.constants import CONTEXT_CATEGORY as CONTEXT_PORTLETS
-from plone.app.portlets import portlets
 
-from plone.app.redirector.interfaces import IRedirectionStorage
-from plone.contentrules.engine.interfaces import IRuleStorage
 
 class BogusMailHost(SimpleItem):
     meta_type = 'Bad Mailer'
@@ -2380,7 +2389,6 @@ class TestMigrations_v3_0(MigrationTest):
         self.failUnless(sheet.hasProperty('many_groups'))
         self.failUnless(sheet.many_groups == False)
 
-
     def testMigratePloneTool(self):
         from Products.CMFPlone import ToolNames
         tool = self.portal.plone_utils
@@ -2388,6 +2396,34 @@ class TestMigrations_v3_0(MigrationTest):
         restorePloneTool(self.portal, [])
         tool = self.portal.plone_utils
         self.assertEquals(ToolNames.UtilsTool, tool.meta_type)
+
+    def testInstallI18NUtilities(self):
+        sm = getSiteManager()
+        sm.unregisterUtility(provided=ICountries)
+        sm.unregisterUtility(provided=IContentLanguages)
+        sm.unregisterUtility(provided=IMetadataLanguages)
+        installI18NUtilities(self.portal, [])
+        self.failIf(sm.queryUtility(ICountries) is None)
+        self.failIf(sm.queryUtility(IContentLanguages) is None)
+        self.failIf(sm.queryUtility(IMetadataLanguages) is None)
+
+    def testInstallI18NUtilitiesTwice(self):
+        sm = getSiteManager()
+        sm.unregisterUtility(provided=ICountries)
+        sm.unregisterUtility(provided=IContentLanguages)
+        sm.unregisterUtility(provided=IMetadataLanguages)
+        installI18NUtilities(self.portal, [])
+        installI18NUtilities(self.portal, [])
+        self.failIf(sm.queryUtility(ICountries) is None)
+        self.failIf(sm.queryUtility(IContentLanguages) is None)
+        self.failIf(sm.queryUtility(IMetadataLanguages) is None)
+
+    def XXX_disabled_testInstallPloneLanguageTool(self):
+        self.uninstallProduct('PloneLanguageTool')
+        qi = getUtility(IQuickInstallerTool)
+        installProduct('PloneLanguageTool', self.portal, [])
+        self.failUnless(qi.isProductInstalled('PloneLanguageTool'))
+        self.failUnless('portal_languages' in self.portal.keys())
 
 
 def test_suite():
