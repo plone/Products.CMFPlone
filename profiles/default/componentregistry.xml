@@ -90,9 +90,6 @@
      interface="Products.CMFUid.interfaces.IUniqueIdHandler"
      object="/portal_uidhandler"/>
   <utility
-     interface="Products.CMFFormController.interfaces.IFormControllerTool"
-     object="/portal_form_controller"/>
-  <utility
      interface="Products.CMFPlone.interfaces.IPloneSiteRoot"
      object="/"/>
   <utility

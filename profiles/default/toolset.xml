@@ -34,8 +34,6 @@
            class="Products.CMFPlone.DiscussionTool.DiscussionTool"/>
  <required tool_id="portal_factory"
            class="Products.CMFPlone.FactoryTool.FactoryTool"/>
- <required tool_id="portal_form_controller"
-           class="Products.CMFFormController.FormController.FormController"/>
  <required tool_id="portal_groupdata"
            class="Products.PlonePAS.tools.groupdata.GroupDataTool"/>
  <required tool_id="portal_groups"
