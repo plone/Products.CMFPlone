@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Properly install PloneLanguageTool during site setup and migrations.
+      [hannosch]
+
     - Updated setup code. Archetypes and all its dependencies are installed
       based on GenericSetup extension profiles now.
       [hannosch]

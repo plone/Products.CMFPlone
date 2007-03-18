@@ -36,6 +36,7 @@ from Products.CMFCore.interfaces import IURLTool
 from Products.CMFCore.interfaces import IConfigurableWorkflowTool
 from Products.CMFCore.ActionInformation import Action
 from Products.CMFCore.ActionInformation import ActionInformation
+from Products.CMFDefault.Portal import CMFSite
 from Products.CMFDiffTool.interfaces import IDiffTool
 from Products.CMFEditions.interfaces import IArchivistTool
 from Products.CMFEditions.interfaces import IPortalModifierTool
@@ -2418,7 +2419,8 @@ class TestMigrations_v3_0(MigrationTest):
         self.failIf(sm.queryUtility(IContentLanguages) is None)
         self.failIf(sm.queryUtility(IMetadataLanguages) is None)
 
-    def XXX_disabled_testInstallPloneLanguageTool(self):
+    def testInstallPloneLanguageTool(self):
+        CMFSite.manage_delObjects(self.portal, ['portal_languages'])
         self.uninstallProduct('PloneLanguageTool')
         qi = getUtility(IQuickInstallerTool)
         installProduct('PloneLanguageTool', self.portal, [])

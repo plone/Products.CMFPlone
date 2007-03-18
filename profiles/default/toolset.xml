@@ -36,8 +36,6 @@
            class="Products.CMFPlone.InterfaceTool.InterfaceTool"/>
  <required tool_id="portal_javascripts"
            class="Products.ResourceRegistries.tools.JSRegistry.JSRegistryTool"/>
- <required tool_id="portal_languages"
-           class="Products.PloneLanguageTool.LanguageTool"/>
  <required tool_id="portal_memberdata"
            class="Products.PlonePAS.tools.memberdata.MemberDataTool"/>
  <required tool_id="portal_membership"

@@ -267,8 +267,7 @@ def alpha2_alpha3(portal):
     installI18NUtilities(portal, out)
 
     # Install PloneLanguageTool
-    # XXX enable this
-    # installProduct('PloneLanguageTool', portal, out)
+    installProduct('PloneLanguageTool', portal, out)
 
     return out
 

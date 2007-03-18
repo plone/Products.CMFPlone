@@ -73,11 +73,11 @@ class PloneGenerator:
     def installProducts(self):
         """QuickInstaller install of required Products"""
         qi = getUtility(IQuickInstallerTool)
-        # qi.installProduct('PloneLanguageTool', locked=1, hidden=1, forceProfile=True)
         qi.installProduct('PlonePAS', locked=1, hidden=1, forceProfile=True)
         qi.installProduct('kupu', locked=0, forceProfile=True)
         qi.installProduct('CMFDiffTool', locked=0, forceProfile=True)
         qi.installProduct('CMFEditions', locked=0, forceProfile=True)
+        qi.installProduct('PloneLanguageTool', locked=1, hidden=1, forceProfile=True)
 
     def addCacheHandlers(self, p):
         """ Add RAM and AcceleratedHTTP cache handlers """
