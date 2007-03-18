@@ -12,7 +12,7 @@
  <object name="simple_publication_workflow" meta_type="Workflow"/>
  <bindings>
   <default>
-   <bound-workflow workflow_id="simple_publication_workflow"/>
+   <bound-workflow workflow_id="plone_workflow"/>
   </default>
   <type type_id="ATBooleanCriterion"/>
   <type type_id="ATCurrentAuthorCriterion"/>
@@ -28,6 +28,15 @@
   <type type_id="ATSimpleStringCriterion"/>
   <type type_id="ATSortCriterion"/>
   <type type_id="Discussion Item"/>
+  <type type_id="Folder">
+   <bound-workflow workflow_id="folder_workflow"/>
+  </type>
+  <type type_id="Large Plone Folder">
+   <bound-workflow workflow_id="folder_workflow"/>
+  </type>
   <type type_id="Plone Site"/>
+  <type type_id="Topic">
+   <bound-workflow workflow_id="folder_workflow"/>
+  </type>
  </bindings>
 </object>
