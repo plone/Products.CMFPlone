@@ -150,6 +150,8 @@ class PloneGenerator:
             # As we have a sensible language code set now, we disable the
             # start neutral functionality
             tool = getUtility(ILanguageTool)
+            pprop = getUtility(IPropertiesTool)
+            sheet = pprop.site_properties
             tool.manage_setLanguageSettings(language,
                 [language],
                 setUseCombinedLanguageCodes=use_combined,
