@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Added temporary monkey-patch for GenericSetup's components handler. We
+      need to ensure we store Acquisition free tools as utilities.
+      [hannosch]
+
     - Properly install PloneLanguageTool during site setup and migrations.
       [hannosch]
 
