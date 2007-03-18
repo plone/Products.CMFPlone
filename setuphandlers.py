@@ -67,7 +67,8 @@ class PloneGenerator:
         qi.installProduct('CMFFormController', locked=1, hidden=1, forceProfile=True)
         qi.installProduct('MimetypesRegistry', locked=1, hidden=1, forceProfile=True)
         qi.installProduct('PortalTransforms', locked=1, hidden=1, forceProfile=True)
-        qi.installProduct('Archetypes', locked=1, hidden=1)
+        qi.installProduct('Archetypes', locked=1, hidden=1,
+            profile=u'Products.Archetypes:Archetypes')
 
     def installProducts(self):
         """QuickInstaller install of required Products"""
@@ -349,9 +350,9 @@ def importSite(context):
     Import site settings.
     """
     site = context.getSite()
-    setSite(site)
     gen = PloneGenerator()
     gen.enableSite(site)
+    setSite(site)
 
 def importArchetypes(context):
     """

@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Updated setup code. Archetypes and all its dependencies are installed
+      based on GenericSetup extension profiles now.
+      [hannosch]
+
     - Add migration code to remove the PlonePAS PloneTool from the site and
       replace it with a standard PloneTool.
       [wichert]
