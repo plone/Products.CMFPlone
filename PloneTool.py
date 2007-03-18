@@ -948,7 +948,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
         True if normal, false if blocked.
         """
-        if getattr(folder, '__ac_local_roles_block__', None):
+        if getattr(obj, '__ac_local_roles_block__', None):
             return False
         return True
 
