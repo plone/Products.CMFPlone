@@ -118,8 +118,8 @@ def three0_alpha1(portal):
     upgradeATCTTool(portal, out)
 
     # Install CMFEditions and 
-    installProduct('CMFEditions', portal, out)
-    installProduct('CMFDiffTool', portal, out)
+    installProduct('CMFEditions', portal, out, hidden=True)
+    installProduct('CMFDiffTool', portal, out, hidden=True)
 
     # Migrate legacy portlets
     addPortletManagers(portal, out)
@@ -187,6 +187,9 @@ def alpha2_alpha3(portal):
     
     # Add action icon
     addIconForMaintenanceConfiglet(portal, out)
+
+    # Add number_of_days_to_keep property
+    addMaintenanceProperty(portal, out)
 
     installS5(portal, out)
     
@@ -267,7 +270,7 @@ def alpha2_alpha3(portal):
     installI18NUtilities(portal, out)
 
     # Install PloneLanguageTool
-    installProduct('PloneLanguageTool', portal, out)
+    installProduct('PloneLanguageTool', portal, out, hidden=True)
 
     return out
 
@@ -601,10 +604,10 @@ def convertLegacyPortlets(portal, out):
             out.append('Blacklisted contextual portlets in the Members folder')
 
 
-def installProduct(product, portal, out):
+def installProduct(product, portal, out, hidden=False):
     """Quickinstalls a product if it is not installed yet."""
     if product in portal.Control_Panel.Products.objectIds():
-        installOrReinstallProduct(portal, product, out)
+        installOrReinstallProduct(portal, product, out, hidden=hidden)
 
 
 def addIconForCalendarSettingsConfiglet(portal, out):

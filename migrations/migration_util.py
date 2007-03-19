@@ -76,7 +76,7 @@ def cleanupSkinPath(portal, skinName, test=1):
          new_path.append(layer)
    skinstool.addSkinSelection(skinName, ','.join(new_path), test=test)
 
-def installOrReinstallProduct(portal, product_name, out):
+def installOrReinstallProduct(portal, product_name, out, hidden=False):
     """Installs a product
 
     If product is already installed test if it needs to be reinstalled. Also
@@ -84,7 +84,7 @@ def installOrReinstallProduct(portal, product_name, out):
     """
     qi = getUtility(IQuickInstallerTool)
     if not qi.isProductInstalled(product_name):
-        qi.installProduct(product_name)
+        qi.installProduct(product_name, hidden=hidden)
         # Refresh skins
         if getattr(aq_base(portal), '_v_skindata', None) is not None:
             portal._v_skindata = None
