@@ -1450,9 +1450,8 @@ class TestMigrations_v3_0(MigrationTest):
         
         lp = left.values()
         self.assertEquals(2, len(lp))
-        self.assertEquals(lp[0].template, u'portlet_recent')
-        self.assertEquals(lp[0].macro, u'portlet')
-        
+
+        self.failUnless(isinstance(lp[0], portlets.recent.Assignment))
         self.failUnless(isinstance(lp[1], portlets.news.Assignment))
         
         rp = right.values()
@@ -1488,9 +1487,8 @@ class TestMigrations_v3_0(MigrationTest):
         
         lp = left.values()
         self.assertEquals(2, len(lp))
-        self.assertEquals(lp[0].template, u'portlet_recent')
-        self.assertEquals(lp[0].macro, u'portlet')
         
+        self.failUnless(isinstance(lp[0], portlets.recent.Assignment))
         self.failUnless(isinstance(lp[1], portlets.news.Assignment))
         
         rp = right.values()
@@ -1525,9 +1523,8 @@ class TestMigrations_v3_0(MigrationTest):
         
         lp = left.values()
         self.assertEquals(2, len(lp))
-        self.assertEquals(lp[0].template, u'portlet_recent')
-        self.assertEquals(lp[0].macro, u'portlet')
         
+        self.failUnless(isinstance(lp[0], portlets.recent.Assignment))
         self.failUnless(isinstance(lp[1], portlets.news.Assignment))
         
         rp = right.values()
@@ -1562,9 +1559,8 @@ class TestMigrations_v3_0(MigrationTest):
         
         lp = left.values()
         self.assertEquals(2, len(lp))
-        self.assertEquals(lp[0].template, u'portlet_recent')
-        self.assertEquals(lp[0].macro, u'portlet')
-        
+
+        self.failUnless(isinstance(lp[0], portlets.recent.Assignment))
         self.failUnless(isinstance(lp[1], portlets.news.Assignment))
         
         rp = right.values()
@@ -1603,9 +1599,8 @@ class TestMigrations_v3_0(MigrationTest):
         
         lp = left.values()
         self.assertEquals(2, len(lp))
-        self.assertEquals(lp[0].template, u'portlet_recent')
-        self.assertEquals(lp[0].macro, u'portlet')
         
+        self.failUnless(isinstance(lp[0], portlets.recent.Assignment))
         self.failUnless(isinstance(lp[1], portlets.news.Assignment))
         
         rp = right.values()
