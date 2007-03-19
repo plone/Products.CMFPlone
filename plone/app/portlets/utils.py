@@ -8,11 +8,14 @@ from plone.portlets.constants import CONTEXT_CATEGORY
 
 from plone.app.portlets.interfaces import IPortletPermissionChecker
 
+from plone.app.portlets.portlets import calendar
 from plone.app.portlets.portlets import classic
 from plone.app.portlets.portlets import login
 from plone.app.portlets.portlets import news
 from plone.app.portlets.portlets import events
 from plone.app.portlets.portlets import navigation
+from plone.app.portlets.portlets import recent
+from plone.app.portlets.portlets import review
 
 from Acquisition import aq_base
 from Products.CMFCore.interfaces import ISiteRoot
@@ -50,6 +53,9 @@ portletsMapping = { 'portlet_login'      : login.Assignment(),
                     'portlet_news'       : news.Assignment(count=5),
                     'portlet_events'     : events.Assignment(count=5),
                     'portlet_navigation' : navigation.Assignment(),
+                    'portlet_calendar'   : calendar.Assignment(),
+                    'portlet_review'     : review.Assignment(),
+                    'portlet_recent'     : recent.Assignment(count=5),
                   }
                   
 def convert_legacy_portlets(context):
