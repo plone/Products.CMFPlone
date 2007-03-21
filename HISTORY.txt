@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Changed the default navigation tree configuration to start at level 1,
+      thus there is no longer an redundant overlap with the global navigation
+      section at the top. If you want the old behavior back, configure the
+      navigation portlet to start at level 0.
+      [limi]
+
     - Added temporary monkey-patch for GenericSetup's components handler. We
       need to ensure we store Acquisition free tools as utilities.
       [hannosch]
