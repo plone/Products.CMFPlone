@@ -20,11 +20,11 @@ from widgets import WeekdayWidget
 
 class ICalendarSchema(Interface):
 
-    firstweekday = Int(title=_(u'First day of week used in the calendar.'),
+    firstweekday = Int(title=_(u'First day of week in the calendar'),
                        default=0,
                        required=True)
 
-    calendar_states = Tuple(title=_(u'Workflow states to show in the calendar.'),
+    calendar_states = Tuple(title=_(u'Workflow states to show in the calendar'),
                             required=True,
                             missing_value=set(),
                             value_type=Choice(
