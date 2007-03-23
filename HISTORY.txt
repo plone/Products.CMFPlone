@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Removed all mail templates which are part of PasswordResetTool and
+      weren't used anymore.
+      [hannosch]
+
     - Replaced a few last occurrences of the term member with user. This closes
       http://dev.plone.org/plone/ticket/5792.
       [hannosch]
