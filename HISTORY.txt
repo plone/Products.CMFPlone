@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Replaced a few last occurrences of the term member with user. This closes
+      http://dev.plone.org/plone/ticket/5792.
+      [hannosch]
+
     - Changed the default navigation tree configuration to start at level 1,
       thus there is no longer an redundant overlap with the global navigation
       section at the top. If you want the old behavior back, configure the

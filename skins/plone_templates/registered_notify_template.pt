@@ -2,14 +2,12 @@
                   dummy python:request.RESPONSE.setHeader('Content-Type', 'text/plain;; charset=%s' % here.plone_utils.getSiteEncoding())"
 >From: "<span tal:replace="here/email_from_name" />" <span tal:replace="structure lt"/><span tal:replace="here/email_from_address" /><span tal:replace="structure gt"/>
 To: <span tal:replace="options/email" />
-Subject: <span i18n:domain="plone" i18n:translate="mailtemplate_registered_portal_membership_info" tal:omit-tag="">Portal Membership Information</span>
+Subject: <span i18n:domain="plone" i18n:translate="mailtemplate_user_account_info" tal:omit-tag="">User Account Information</span>
 Content-Type: text/plain; charset=<span tal:replace="here/portal_properties/site_properties/default_charset" />
 Content-Transfer-Encoding: 8bit
 
-<div i18n:domain="plone" i18n:translate="mailtemplate_registered_body" tal:omit-tag="">
-You have been registered as a member of <span i18n:name="portal_name" tal:omit-tag="" tal:content="python:here.portal_url.getPortalObject().Title()" />, which
-allows you to personalize your view of the website and participate in
-the community.
+<div i18n:domain="plone" i18n:translate="mailtemplate_registered_user_body" tal:omit-tag="">
+Your user account has been created.
 
 Description:
 <span i18n:name="description" tal:omit-tag="" tal:content="here/description" />

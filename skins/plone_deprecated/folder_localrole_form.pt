@@ -240,8 +240,8 @@
             Search results
         </h1>
 
-        <p i18n:translate="no_members_found">
-            No members were found using your search criteria.
+        <p i18n:translate="no_users_found">
+            No users were found using your search criteria.
         </p>
         <hr />
     </metal:block>
