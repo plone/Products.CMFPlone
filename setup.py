@@ -27,7 +27,4 @@ setup(name='plone.app.controlpanel',
       install_requires=[
         'setuptools',
       ],
-      entry_points="""
-      # -*- Entry points: -*-
-      """,
       )

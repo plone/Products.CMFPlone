@@ -2,6 +2,14 @@ Changelog for plone.app.controlpanel
 
     (name of developer listed in brackets)
 
+plone.app.controlpanel - 1.0b2 Released March 23, 2007
+
+    - Spelling corrections and wording.
+      [limi]
+
+    - Replace getToolByNames by getUtility.
+      [hannosch]
+
 plone.app.controlpanel - 1.0b1 Released March 5, 2007
 
     - Lots more control panels.
