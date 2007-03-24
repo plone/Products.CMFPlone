@@ -72,9 +72,13 @@ class ContextState(BrowserView):
     @memoize
     def is_view_template(self):
         current_url = self.current_base_url()
+        canonical_url = self.canonical_object_url()
         object_url = self.object_url()
         
-        if current_url == object_url:
+        if current_url.endswith('/'):
+            current_url = current_url[:-1]
+        
+        if current_url == canonical_url or current_url == object_url:
             return True
         elif current_url == object_url + '/view':
             return True

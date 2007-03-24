@@ -47,11 +47,17 @@ class TestContextStateView(GlobalsTestCase):
         self.folder.setLayout('foo_view')
         self.assertEquals(self.fview.view_template_id(), 'foo_view')
                             
-    def test_is_view_template_default(self):
+    def test_is_view_template_default_page(self):
         self.app.REQUEST['ACTUAL_URL'] = self.folder.absolute_url()
+        # Whether you're viewing the folder or its default page ...
         self.assertEquals(self.fview.is_view_template(), True)
-        self.assertEquals(self.dview.is_view_template(), False)
-                            
+        self.assertEquals(self.dview.is_view_template(), True)
+        
+    def test_is_view_template_trailing_slash(self):
+        self.app.REQUEST['ACTUAL_URL'] = self.folder.absolute_url() + '/'
+        self.assertEquals(self.fview.is_view_template(), True)
+        self.assertEquals(self.dview.is_view_template(), True)
+                                    
     def test_is_view_template_template(self):
         self.folder.setLayout('foo_view')
         self.app.REQUEST['ACTUAL_URL'] = self.folder.absolute_url() + '/foo_view'
