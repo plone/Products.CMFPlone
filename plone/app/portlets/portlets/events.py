@@ -21,11 +21,21 @@ class IEventsPortlet(IPortletDataProvider):
                        required=True,
                        default=5)
 
+    state = schema.Tuple(title=_(u"Workflow state"),
+                         description=_(u"Items in which workflow state to show."),
+                         default=('published', ),
+                         required=True,
+                         max_length=1,
+                         value_type=schema.Choice(
+                             vocabulary="plone.app.vocabularies.WorkflowStates")
+                         )
+
 class Assignment(base.Assignment):
     implements(IEventsPortlet)
 
-    def __init__(self, count=5):
-        self.count = 5
+    def __init__(self, count=5, state=('published', )):
+        self.count = count
+        self.state = state
 
     @property
     def title(self):
@@ -68,8 +78,12 @@ class Renderer(base.Renderer):
         context = aq_inner(self.context)
         catalog = getUtility(ICatalogTool)
         limit = self.data.count
+        state = self.data.state
+        # We don't support querying for more than one state at a time yet
+        if len(state) > 0:
+            state = state[0]
         return catalog(portal_type='Event',
-                       review_state='published',
+                       review_state=state,
                        end={'query': DateTime(),
                             'range': 'min'},
                        sort_on='start',

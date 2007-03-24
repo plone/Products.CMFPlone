@@ -24,7 +24,7 @@ class TestPortlet(PortletsTestCase):
         self.assertEquals(portlet.addview, 'portlets.Events')
 
     def testInterfaces(self):
-        portlet = events.Assignment(count=5)
+        portlet = events.Assignment()
         self.failUnless(IPortletAssignment.providedBy(portlet))
         self.failUnless(IPortletDataProvider.providedBy(portlet.data))
 
@@ -75,6 +75,8 @@ class TestRenderer(PortletsTestCase):
 
     def test_published_events(self):
         r = self.renderer(assignment=events.Assignment(count=5))
+        self.assertEquals(0, len(r.published_events()))
+        r = self.renderer(assignment=events.Assignment(count=5, state=('visible', )))
         self.assertEquals(0, len(r.published_events()))
 
     def test_all_events_link(self):

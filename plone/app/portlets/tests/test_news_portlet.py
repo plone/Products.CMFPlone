@@ -76,6 +76,8 @@ class TestRenderer(PortletsTestCase):
     def test_published_news_items(self):
         r = self.renderer(assignment=news.Assignment(count=5))
         self.assertEquals(0, len(r.published_news_items()))
+        r = self.renderer(assignment=news.Assignment(count=5, state=('visible', )))
+        self.assertEquals(0, len(r.published_news_items()))
 
     def test_all_news_link(self):
         r = self.renderer(assignment=news.Assignment(count=5))
