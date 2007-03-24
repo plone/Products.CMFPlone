@@ -26,7 +26,7 @@ class ISiteSchema(Interface):
 
     site_description = Text(title=_(u'Site description'),
                            description=_(u"The site description is available "
-                               "in syndicated content and elsewhere. Keep it "
+                               "in syndicated content and in search engines. Keep it "
                                "brief."),
                            default=u'',
                            required=False)
