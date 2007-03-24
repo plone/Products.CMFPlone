@@ -4,6 +4,13 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Made the content menu (in plone.app.contentmenu) only show up on the
+      main view of an object; on other tabs, it makes less sense, especially
+      on the edit tab where it may cause confusion and lead users to 
+      accidentally cancel their edit operation by clicking a content menu
+      link.
+      [optilude]
+
     - Removed all mail templates which are part of PasswordResetTool and
       weren't used anymore.
       [hannosch]
