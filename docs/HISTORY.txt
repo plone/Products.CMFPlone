@@ -4,9 +4,50 @@ Changelog for plone.app.portlets
 
 plone.app.portlets - Unreleased
 
+    - Fixed tests to deal with the new default start_level of the navigation
+      portlet.
+      [hannosch]
+
     - Made the workflow state to show configurable for the news and events
       portlets. This closes http://dev.plone.org/plone/ticket/1395.
       [hannosch]
+
+    - Changed the default navigation tree configuration to start at level 1,
+      thus there is no longer an overlap with the global navigation section at
+      the top. If you want the old behavior back, configure the portlet to
+      start at level 0.
+      [limi]
+
+    - Updated migration code to handle more converted portlets.
+      [hannosch]
+
+    - Do now show the login portlet if there is no login/password PAS
+      extractor configured.
+      [wichert]
+
+    - Changed 'More news...' to 'More...' on RSS portlet as RSS feeds are not
+      always news related. This closes http://dev.plone.org/plone/ticket/6228.
+      [sparcd]
+
+    - Added <thead> tags to calendar portlet because the <tbody> tags were
+      causing it to fail W3C validation.
+      [sparcd]
+
+    - Duplicate classes in login.pt were causing this to fail W3C HTML checks.
+      Have merged the classes as this has a style="display:none" on it anyway.
+      This closes http://dev.plone.org/plone/ticket/6241.
+      [sparcd]
+
+    - Replaced getToolByName with getUtility.
+      [hannosch]
+
+    - Moved class name from a to li tag for Cornelius (NuPlone skin).
+      [jvloothuis]
+
+    - Make URLs more ploneish, by removing .html at the end. .html really
+      should be reserved for when people create content that way, e.g. if
+      uploading from WebDAV. :)
+      [optilude]
 
 plone.app.portlets - 1.0b1 Released March 5, 2007
 

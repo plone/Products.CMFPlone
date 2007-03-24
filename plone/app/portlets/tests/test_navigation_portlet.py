@@ -1,5 +1,4 @@
 from zope.component import getUtility, getMultiAdapter
-from zope.app.component.hooks import setHooks, setSite
 
 from plone.portlets.interfaces import IPortletType
 from plone.portlets.interfaces import IPortletManager
@@ -17,8 +16,6 @@ from Products.CMFPlone.tests import dummy
 class TestPortlet(PortletsTestCase):
 
     def afterSetUp(self):
-        setHooks()
-        setSite(self.portal)
         self.setRoles(('Manager',))
 
     def testPortletTypeRegistered(self):
@@ -63,8 +60,6 @@ class TestPortlet(PortletsTestCase):
 class TestRenderer(PortletsTestCase):
 
     def afterSetUp(self):
-        setHooks()
-        setSite(self.portal)
         self.populateSite()
         
     def renderer(self, context=None, request=None, view=None, manager=None, assignment=None):
@@ -72,7 +67,7 @@ class TestRenderer(PortletsTestCase):
         request = request or self.folder.REQUEST
         view = view or self.folder.restrictedTraverse('@@plone')
         manager = manager or getUtility(IPortletManager, name='plone.leftcolumn', context=self.portal)
-        assignment = assignment or navigation.Assignment()
+        assignment = assignment or navigation.Assignment(topLevel=0)
 
         return getMultiAdapter((context, request, view, manager, assignment), IPortletRenderer)
 
@@ -247,7 +242,7 @@ class TestRenderer(PortletsTestCase):
         tree = view.getNavTree()
     
     def testShowAllParentsOverridesBottomLevel(self):
-        view = self.renderer(self.portal.folder2.file21, assignment=navigation.Assignment(bottomLevel=1))
+        view = self.renderer(self.portal.folder2.file21, assignment=navigation.Assignment(bottomLevel=1, topLevel=0))
         tree = view.getNavTree()
         self.failUnless(tree)
         # Note: showAllParents makes sure we actually return items on the,
@@ -258,32 +253,32 @@ class TestRenderer(PortletsTestCase):
         self.assertEqual(tree['children'][-1]['children'][0]['item'].getPath(), '/plone/folder2/file21')
         
     def testBottomLevelStopsAtFolder(self):
-        view = self.renderer(self.portal.folder2, assignment=navigation.Assignment(bottomLevel=1))
+        view = self.renderer(self.portal.folder2, assignment=navigation.Assignment(bottomLevel=1, topLevel=0))
         tree = view.getNavTree()
         self.failUnless(tree)
         self.assertEqual(tree['children'][-1]['item'].getPath(), '/plone/folder2')
         self.assertEqual(len(tree['children'][-1]['children']), 0)
         
     def testNoRootSet(self):
-        view = self.renderer(self.portal.folder2.file21, assignment=navigation.Assignment(root=''))
+        view = self.renderer(self.portal.folder2.file21, assignment=navigation.Assignment(root='', topLevel=0))
         tree = view.getNavTree()
         self.failUnless(tree)
         self.assertEqual(tree['children'][-1]['item'].getPath(), '/plone/folder2')
         
     def testRootIsPortal(self):
-        view = self.renderer(self.portal.folder2.file21, assignment=navigation.Assignment(root='/'))
+        view = self.renderer(self.portal.folder2.file21, assignment=navigation.Assignment(root='/', topLevel=0))
         tree = view.getNavTree()
         self.failUnless(tree)
         self.assertEqual(tree['children'][-1]['item'].getPath(), '/plone/folder2')
         
     def testRootIsNotPortal(self):
-        view = self.renderer(self.portal.folder2.file21, assignment=navigation.Assignment(root='/folder2'))
+        view = self.renderer(self.portal.folder2.file21, assignment=navigation.Assignment(root='/folder2', topLevel=0))
         tree = view.getNavTree()
         self.failUnless(tree)
         self.assertEqual(tree['children'][0]['item'].getPath(), '/plone/folder2/doc21')
 
     def testRootDoesNotExist(self):
-        view = self.renderer(self.portal.folder2.file21, assignment=navigation.Assignment(root='/dodo'))
+        view = self.renderer(self.portal.folder2.file21, assignment=navigation.Assignment(root='/dodo', topLevel=0))
         tree = view.getNavTree()
         self.failUnless(tree)
         self.assertEqual(tree.get('item', None), None)
