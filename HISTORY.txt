@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Increased the calendar_starting_year property to 2001, so the available
+      calendar range doesn't end in 2010, which is quite soon ;)
+      [hannosch]
+
     - Made the content menu (in plone.app.contentmenu) only show up on the
       main view of an object; on other tabs, it makes less sense, especially
       on the edit tab where it may cause confusion and lead users to 
