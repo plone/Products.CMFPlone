@@ -32,8 +32,7 @@
     <dd class="portletFooter">
         <a href=""
            tal:attributes="href view/all_news_link"
-           i18n:translate="box_more_news_link"
-           >
+           i18n:translate="box_more_news_link">
           More news&hellip;
         </a>
         <span class="portletBottomLeft"></span>
