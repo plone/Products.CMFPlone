@@ -21,7 +21,7 @@ from form import ControlPanelForm
 class ISiteSchema(Interface):
 
     site_title = TextLine(title=_(u'Site title'),
-                          description=_(u"""The title of your site."""),
+                          description=_(u"""This shows up in the title bar of browsers, in syndication feeds, etc."""),
                           default=u'')
 
     site_description = Text(title=_(u'Site description'),
