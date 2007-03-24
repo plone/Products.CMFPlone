@@ -48,23 +48,13 @@
 
       <h1 i18n:translate="heading_publishing_process">Publishing process</h1>
 
-      <p i18n:translate="description_publishing_process">
+      <p i18n:translate="description_publishing_process_short">
         An item's status (also called its review state) determines who
-        can see it. A <strong>private</strong> item can only be
-        viewed by its Owner and by the site management. Only
-        <strong>published</strong> items are available to the general
-        user base and anonymous visitors. To make an item published,
-        it has to be reviewed by one of the site's Reviewers. You can
-        request that an item be reviewed by <strong>submitting it for
-        review</strong>.
-        <br />
-        Another way to control the visibility of an item is with its
-        <strong>effective date</strong>. An item is not publicly
-        searchable before its effective date, <em>even if its status is
-        <strong>published</strong></em>. This will prevent the item
-        from showing up in portlets (or any other templates fed by catalog
-        queries), although the item will still be available if accessed 
-        directly via URL.
+        can see it.<br /> Another way to control the visibility of an item is
+        with its <strong>effective date</strong>. An item is not publicly
+        searchable before its effective date. This will prevent the item
+        from showing up in portlets and folder listings, although the item
+        will still be available if accessed directly via its URL.
       </p>
 
       <form id="edit_form"

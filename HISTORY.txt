@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Removed references to specific workflow states from the publishing
+      process explanation in content_status_history.cpt. This closes
+      http://dev.plone.org/plone/ticket/4648.
+      [hannosch]
+
     - Increased the calendar_starting_year property to 2001, so the available
       calendar range doesn't end in 2010, which is quite soon ;)
       [hannosch]
