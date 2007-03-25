@@ -73,7 +73,7 @@ class Assignment(base.Assignment):
 
     title = _(u'Navigation')
     
-    def __init__(self, name=u"", root=u"", currentFolderOnly=False, topLevel=1, bottomLevel=0):
+    def __init__(self, name=u"", root=u"", currentFolderOnly=False, topLevel=0, bottomLevel=0):
         self.name = name
         self.root = root
         self.currentFolderOnly = currentFolderOnly
