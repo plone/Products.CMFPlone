@@ -15,9 +15,9 @@ Plone 3.0 - unreleased
       property. This closes http://dev.plone.org/plone/ticket/5585.
       [hannosch]
 
-    - Added email_charset property, which should be used as the charset to send
-      mail, so you are not restricted to the default_charset which has to be
-      utf-8 right now. This refs http://dev.plone.org/plone/ticket/5585.
+    - Added email_charset property, which should be used as the charset to
+      send mail, so you are not restricted to the default_charset which has to 
+      be utf-8 right now. This refs http://dev.plone.org/plone/ticket/5585.
       [hannosch]
 
     - Opera 9 is now a supported browser for the rich text editor.
@@ -51,15 +51,9 @@ Plone 3.0 - unreleased
       weren't used anymore.
       [hannosch]
 
-    - Replaced a few last occurrences of the term member with user. This closes
-      http://dev.plone.org/plone/ticket/5792.
+    - Replaced a few last occurrences of the term member with user. This
+      closes http://dev.plone.org/plone/ticket/5792.
       [hannosch]
-
-    - Changed the default navigation tree configuration to start at level 1,
-      thus there is no longer an redundant overlap with the global navigation
-      section at the top. If you want the old behavior back, configure the
-      navigation portlet to start at level 0.
-      [limi]
 
     - Added temporary monkey-patch for GenericSetup's components handler. We
       need to ensure we store Acquisition free tools as utilities.
