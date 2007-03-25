@@ -3,7 +3,7 @@
 // Table sorter script, thanks to Geir Bækholt for this.
 // DOM table sorter originally made by Paul Sowden 
 
-function compare(a,b)
+function tablecompare(a,b)
 {
     au = new String(a);
     bu = new String(b);
@@ -108,7 +108,7 @@ function sort(e) {
 
     if (a.length > 1) {
     
-        a.sort(compare);
+        a.sort(tablecompare);
 
         // not a perfect way to check, but hell, it suits me fine
         if (a[0][0] == getConcatenedTextContent(tbody.getElementsByTagName("tr").item(0).getElementsByTagName("td").item(i))
