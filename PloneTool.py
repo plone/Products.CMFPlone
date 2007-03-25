@@ -600,7 +600,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             while cont:
                 if not getattr(parent, 'acl_users', False):
                     break
-                userroles = parent.acl_users.getLocalRolesForDisplay(parent)
+                userroles = parent.acl_users._getLocalRolesForDisplay(parent)
                 for user, roles, role_type, name in userroles:
                     # Find user in result
                     found = 0
