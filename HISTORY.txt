@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Use plone.session for authentication.
+      [wichert]
+
     - Replaced getToolByName calls with getUtility/queryUtility for placeful
       workflow tool.
       [encolpe]

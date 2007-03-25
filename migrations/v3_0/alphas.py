@@ -1024,18 +1024,20 @@ def updateMemberSecurity(portal, out):
 
 
 def updatePASPlugins(portal, out):
-    pas = portal.acl_users
-    plugin = pas.mutable_properties
+    from Products.PlonePAS.Extensions.Install import activatePluginInterfaces
+    from StringIO import StringIO
 
-    activate = []
-    for info in pas.plugins.listPluginTypeInfo():
-        interface = info['interface']
-        id = info['id']
-        if plugin.testImplements(interface):
-            activate.append(id)
-            out.append('Activate interface for PAS plugin %s: %s' % 
-                    (plugin.getId(), info['title']))
-    plugin.manage_activateInterfaces(activate)
+    sout=StringIO()
+
+    activatePluginInterfaces(portal, 'mutable_properties', sout)
+    activatePluginInterfaces(portal, 'source_users', sout)
+    activatePluginInterfaces(portal, 'credentials_cookie_auth', sout,
+            disable=['ICredentialsResetPlugin', 'ICredentialsUpdatePlugin'])
+    if not portal.acl_users.objectIds(['Plone Session Plugin']):
+        from plone.session.plugins.session import manage_addSessionPlugin
+        manage_addSessionPlugin(portal.acl_users, 'session')
+        activatePluginInterfaces(portal, "session", sout)
+        out.append("Added Plone Session Plugin.")
 
 
 def updateSkinsAndSiteConfiglet(portal, out):
@@ -1405,3 +1407,5 @@ def addEmailCharsetProperty(portal, out):
     if not portal.hasProperty('email_charset'):
         portal.manage_addProperty('email_charset', 'utf-8', 'string')
     out.append("Added 'email_charset' property to the portal.")
+
+
