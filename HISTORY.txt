@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - id="relatedItems" is now a class="relatedItems".
+      This closes http://dev.plone.org/plone/ticket/6229.
+      [limi]
+
     - Removed references to specific workflow states from the publishing
       process explanation in content_status_history.cpt. This closes
       http://dev.plone.org/plone/ticket/4648.

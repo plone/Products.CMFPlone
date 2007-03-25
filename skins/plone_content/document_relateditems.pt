@@ -6,7 +6,7 @@
 
 <body>
 <div metal:define-macro="relatedItems"
-    id="relatedItems"
+    class="relatedItems"
     tal:define="getInfoFor python:wtool.getInfoFor;">
     <tal:allowed condition="isViewTemplate">
         <tal:relatedItems tal:define="related python:here.computeRelatedItems();">
