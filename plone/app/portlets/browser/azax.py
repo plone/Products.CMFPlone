@@ -24,7 +24,7 @@ class PortletManagerAzax(base):
         assignments = assignment_mapping_from_key(self.context, 
                         info['manager'], info['category'], info['key'])
         
-        IPortletPermissionChecker(assignments)()
+        IPortletPermissionChecker(assignments.__of__(aq_inner(self.context)))()
         
         keys = list(assignments.keys())
         name = info['name']
@@ -41,7 +41,7 @@ class PortletManagerAzax(base):
         assignments = assignment_mapping_from_key(self.context, 
                         info['manager'], info['category'], info['key'])
         
-        IPortletPermissionChecker(assignments)()
+        IPortletPermissionChecker(assignments.__of__(aq_inner(self.context)))()
         
         keys = list(assignments.keys())
         name = info['name']
@@ -57,7 +57,7 @@ class PortletManagerAzax(base):
         assignments = assignment_mapping_from_key(self.context, 
                         info['manager'], info['category'], info['key'])
                         
-        IPortletPermissionChecker(assignments)()
+        IPortletPermissionChecker(assignments.__of__(aq_inner(self.context)))()
         
         del assignments[info['name']]
         return self._render_column(info, viewname)
