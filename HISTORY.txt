@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Opera 9 is now a supported browser for the rich text editor.
+      [duncan]
+
     - Removed computeRoleMap.py, as it can't be deprecated in a safe manner.
       If your product depended on this, you need to update it.
       [limi]
