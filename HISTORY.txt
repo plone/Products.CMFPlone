@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Removed computeRoleMap.py, as it can't be deprecated in a safe manner.
+      If your product depended on this, you need to update it.
+      [limi]
+
     - id="relatedItems" is now a class="relatedItems".
       This closes http://dev.plone.org/plone/ticket/6229.
       [limi]
