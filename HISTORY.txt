@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Changed all mail related templates and methods to use the email_charset
+      property. This closes http://dev.plone.org/plone/ticket/5585.
+      [hannosch]
+
     - Added email_charset property, which should be used as the charset to send
       mail, so you are not restricted to the default_charset which has to be
       utf-8 right now. This refs http://dev.plone.org/plone/ticket/5585.

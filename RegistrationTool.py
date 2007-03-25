@@ -5,6 +5,7 @@ from smtplib import SMTPRecipientsRefused
 from zope.component import getUtility
 
 from Products.CMFCore.interfaces import IMembershipTool
+from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFPlone.interfaces import IPloneTool
 
 from Products.CMFCore.utils import getToolByName
@@ -230,7 +231,7 @@ class RegistrationTool(PloneBaseTool, BaseTool):
                 raise ValueError, 'The email address did not validate'
 
         email = member.getProperty( 'email' )
-	try:
+        try:
             checkEmailAddress(email)
         except EmailAddressInvalid:
             raise ValueError, 'The email address did not validate'
@@ -249,7 +250,8 @@ class RegistrationTool(PloneBaseTool, BaseTool):
                                                    )
 
         host = self.MailHost
-        host.send(mail_text.encode('utf-8'))
+        encoding = getUtility(ISiteRoot).getProperty('email_charset')
+        host.send(mail_text.encode(encoding))
 
         return self.mail_password_response( self, self.REQUEST )
 

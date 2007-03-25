@@ -54,7 +54,7 @@ if send_from_address == '':
 sender_id = "%s (%s), %s" % (sender.getProperty('fullname'), sender.getId(), send_from_address)
 
 host = context.MailHost # plone_utils.getMailHost() (is private)
-encoding = plone_utils.getSiteEncoding()
+encoding = portal.getProperty('email_charset')
 
 ## TODO:
 ##

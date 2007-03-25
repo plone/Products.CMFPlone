@@ -37,7 +37,7 @@ envelope_from = portal.getProperty('email_from_address')
 state.set(status=state_success) ## until proven otherwise
 
 host = context.MailHost # plone_utils.getMailHost() (is private)
-encoding = plone_utils.getSiteEncoding()
+encoding = portal.getProperty('email_charset')
 
 variables = {'sender_from_address' : sender_from_address,
              'sender_fullname'     : sender_fullname,             

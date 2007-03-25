@@ -14,6 +14,7 @@ from Products.CMFCore.interfaces import IConfigurableWorkflowTool
 from Products.CMFCore.interfaces import IDiscussionTool
 from Products.CMFCore.interfaces import IMembershipTool
 from Products.CMFCore.interfaces import IPropertiesTool
+from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFCore.interfaces import ISkinsTool
 from Products.CMFCore.interfaces import ITypesTool
 from Products.CMFCore.interfaces import IURLTool
@@ -168,7 +169,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         """Sends a link of a page to someone."""
         host = self.getMailHost()
         template = getattr(self, 'sendto_template')
-        encoding = self.getSiteEncoding()
+        encoding = getUtility(ISiteRoot).getProperty('email_charset')
         if 'envelope_from' in kwargs:
             envelope_from = kwargs['envelope_from']
         else:

@@ -2,7 +2,8 @@
      tal:omit-tag=""
      tal:define="utool nocall:here/portal_url;
                  portal utool/getPortalObject;
-		 dummy python:request.RESPONSE.setHeader('Content-Type', 'text/plain;; charset=%s' % portal.plone_utils.getSiteEncoding());"
+                 charset portal/email_charset|string:utf-8;
+                 dummy python:request.RESPONSE.setHeader('Content-Type', 'text/plain;;charset=%s' % charset);"
 ><div i18n:translate="site_feedback_mailtemplate_body" tal:omit-tag="">
 You are receiving this mail because <span i18n:name="fullname" tal:omit-tag="" tal:content="options/sender_fullname|nothing" />
 <span i18n:name="from_address" tal:omit-tag="" tal:content="options/sender_from_address"/>
