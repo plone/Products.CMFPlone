@@ -55,8 +55,7 @@ If you do not have an account here, head over to the
     If you have forgotten your password,
     <span i18n:name="click_here">
         <a tal:attributes="href python:'mail_password_form?'+ztu.make_query(userid=login_name)"
-           i18n:translate="label_click_here_to_retrieve">click here to retrieve it</a>
-    </span>.
+           i18n:translate="label_click_here_to_retrieve">click here to retrieve it</a></span>.
 </p>
 
 <div id="enable_cookies_message" i18n:translate="enable_cookies_message" class="portalMessage" style="display:none">
