@@ -28,11 +28,6 @@
 
 <h1 i18n:translate="heading_sign_in">Please log in</h1>
 
-<p i18n:translate="description_sign_in">
-    To access this part of the site, you need to log in with your user name
-    and password.
-</p>
-
 <p i18n:translate="description_no_account"
    tal:define="join python:[a['url'] for a in actions['user'] if a['id']=='join']"
    tal:condition="python: join and checkPermission('Add portal member', here)">
