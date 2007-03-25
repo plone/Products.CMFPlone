@@ -31,7 +31,7 @@ existing role names to roles understood by the CMF.</p>
 
   <tr>
     <form method="post" action="setRoleMapping">
-    <td class="form-label"><dtml-var name="sequence-item"><input type="hidden" n
+    <td class="form-label"><dtml-var name="sequence-item"><input type="hidden" name="portal_role" value="&dtml-sequence-item;"></td>
     <td class="form-element"><input type="text" size="30" name="userfolder_role"
               value="<dtml-var expr="getMappedRole(_['sequence-item'])">"></td>
     <td><input type="submit" value="Set Mapping"></td>
