@@ -34,11 +34,11 @@ Installing Plone manually, step by step instructions.
 
   **MANDATORY**
 
-  - Zope 2.9.5+ (does not run natively on Zope 3)
-     http://www.zope.org/Products/Zope/2.9.5
+  - Zope 2.9.7+ (does not run natively on Zope 3)
+     http://www.zope.org/Products/Zope/2.9.7
    or
-    Zope 2.8.7+
-     http://www.zope.org/Products/Zope/2.8.7
+    Zope 2.8.9+
+     http://www.zope.org/Products/Zope/2.8.9
      **To use Plone 2.5 with Zope 2.8, you must add ``Five`` to your instance
      Products, you may find it here:
      http://codespeak.net/z3/five/release/Five-1.2.6.tgz**

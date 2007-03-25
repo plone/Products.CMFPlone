@@ -1,5 +1,15 @@
+Plone 2.5.3 - Unreleased
+========================
+
+The following is a short summary of changes in Plone 2.5.3 which may impact
+existing deployments or products:
+
+* The recommended Zope version for this release is now 2.9.7+.
+It can be used with Zope 2.8.9 by installing the latest
+"Five 1.2.x release":http://codespeak.net/z3/five
+
 Plone 2.5.2 - January 16, 2007
-=========================
+==============================
 
 The following is a list of important things to note when installing or upgrading
 to Plone 2.5.2:
