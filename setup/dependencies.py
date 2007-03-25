@@ -1,15 +1,11 @@
-#this should be automated in the CMFSetup product
-#you should be able to define Product dependencies and error messages
-#in the config file
-
 import logging
 import sys
 
-MINIMUM_PYTHON_VER = (2, 4, 0)
-PREFERRED_PYTHON_VER = "2.4.1 or newer"
+MINIMUM_PYTHON_VER = (2, 4, 3)
+PREFERRED_PYTHON_VER = "2.4.4 or newer"
 
-MINIMUM_ZOPE_VER = (2, 10, 2)
-PREFERRED_ZOPE_VER = "2.10.2 or newer"
+MINIMUM_ZOPE_VER = (2, 10, 3)
+PREFERRED_ZOPE_VER = "2.10.3 or newer"
 
 MINIMUM_CMF_VER = (2, 1, 0)
 
