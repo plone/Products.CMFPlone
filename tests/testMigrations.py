@@ -153,6 +153,7 @@ from Products.CMFPlone.migrations.v3_0.alphas import addManyGroupsProperty
 from Products.CMFPlone.migrations.v3_0.alphas import restorePloneTool
 from Products.CMFPlone.migrations.v3_0.alphas import installI18NUtilities
 from Products.CMFPlone.migrations.v3_0.alphas import installProduct
+from Products.CMFPlone.migrations.v3_0.alphas import addEmailCharsetProperty
 
 from zope.app.component.hooks import clearSite
 from zope.app.component.interfaces import ISite
@@ -2421,6 +2422,22 @@ class TestMigrations_v3_0(MigrationTest):
         installProduct('PloneLanguageTool', self.portal, [])
         self.failUnless(qi.isProductInstalled('PloneLanguageTool'))
         self.failUnless('portal_languages' in self.portal.keys())
+
+    def testAddEmailCharsetProperty(self):
+        if self.portal.hasProperty('email_charset'):
+            self.portal.manage_delProperties(['email_charset'])
+        addEmailCharsetProperty(self.portal, [])
+        self.failUnless(self.portal.hasProperty('email_charset'))
+        self.assertEquals(self.portal.getProperty('email_charset'), 'utf-8')
+
+    def testAddEmailCharsetPropertyTwice(self):
+        out = []
+        if self.portal.hasProperty('email_charset'):
+            self.portal.manage_delProperties(['email_charset'])
+        addEmailCharsetProperty(self.portal, out)
+        addEmailCharsetProperty(self.portal, out)
+        self.failUnless(self.portal.hasProperty('email_charset'))
+        self.assertEquals(self.portal.getProperty('email_charset'), 'utf-8')
 
 
 def test_suite():

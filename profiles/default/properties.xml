@@ -12,5 +12,6 @@
  <property name="email_from_name"
     type="string">Site Administrator</property>
  <property name="validate_email" type="boolean">True</property>
+ <property name="email_charset" type="string">utf-8</property>
  <property name="enable_permalink" type="boolean">False</property>
 </site>

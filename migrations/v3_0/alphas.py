@@ -272,6 +272,9 @@ def alpha2_alpha3(portal):
     # Install PloneLanguageTool
     installProduct('PloneLanguageTool', portal, out, hidden=True)
 
+    # Add email_charset property
+    addEmailCharsetProperty(portal, out)
+
     return out
 
 # --
@@ -1395,3 +1398,10 @@ def installI18NUtilities(portal, out):
         sm.registerUtility(MetadataLanguages(), IMetadataLanguages)
 
     out.append("Registered plone.app.i18n utilities.")
+
+
+def addEmailCharsetProperty(portal, out):
+    # Add email_charset property
+    if not portal.hasProperty('email_charset'):
+        portal.manage_addProperty('email_charset', 'utf-8', 'string')
+    out.append("Added 'email_charset' property to the portal.")
