@@ -235,7 +235,7 @@
                                        checked not:many_users;"
                        />
 
-                <label for="cb_nosmall_site" i18n:translate="no">No</label>
+                <label for="cb_nomany_users" i18n:translate="no">No</label>
             </div>
 
             <div class="field"
