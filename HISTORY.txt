@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Replaced getToolByName calls with getUtility/queryUtility for placeful
+      workflow tool.
+      [encolpe]
+
     - Changed all mail related templates and methods to use the email_charset
       property. This closes http://dev.plone.org/plone/ticket/5585.
       [hannosch]
