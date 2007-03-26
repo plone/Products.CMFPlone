@@ -4,6 +4,8 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+Plone 3.0-beta1 - released March 26, 2007
+
     - Use plone.session for authentication.
       [wichert]
 
@@ -323,7 +325,7 @@ Plone 3.0 - unreleased
       handling are based on plone.i18n / plone.app.i18n now.
       [hannosch]
 
-Plone 3.0-alpha2 - released February 13, 2006
+Plone 3.0-alpha2 - released February 13, 2007
 
     - Deprecated the isRightToLeft method on the ploneview in favour of the
       is_rtl method on the plone_portal_state view.
