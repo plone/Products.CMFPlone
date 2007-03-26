@@ -1,5 +1,5 @@
 Plone 3.0 - May, 2007
-====================
+=====================
 
 The following is a list of important things to note when installing or
 upgrading to Plone 3.0:
@@ -24,6 +24,21 @@ upgrading to Plone 3.0:
   possible to upgrade a site using GRUF with external user folders such as
   LDAPUserFolder. In those cases it is advised to create a new site and move
   the content over manually.
+
+
+Plone 3.0 is still in development
+---------------------------------
+
+Plone 3.0 is not finished yet. Some important things to take into account:
+
+* Migration from older sites is not working correctly in Plone 3.0-beta1. This
+  will be fixed in beta2.
+
+* the kss related ids and classes are subject to change. They will be fixed in
+  beta2.
+
+* the release notes and upgrade instructions are not completed yet.
+
 
 Important notes for users
 -------------------------
