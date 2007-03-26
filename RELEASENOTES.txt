@@ -116,6 +116,9 @@ For migration instructions please see http://plone.org/documentation/<nog even o
 Important notes for developers
 ------------------------------
 
+The latest information on migrating products to Plone 3.0 can be found online
+at http://plone.org/documentation/manual/migration-guide/version-specific/adjusting-third-party-products-from-plone-2-5-to-3.0/
+
 * getToolByName has been deprectaed in favour of getUtility, queryUtility and
   getUtilityByName. Please see http://svn.zope.org/CMF/trunk/docs/ToolsAreUtilities.stx
   for more information on this change.
@@ -130,23 +133,26 @@ Important notes for developers
 * Skins: main_template now uses viewlet managers instead of metal macros
   -> Alexander Limi or Cornelis to fill in stuff here
 
-* workflows must he implemented via GenericSetup profiles now
+* It is no longer possible to define workflows using python code. Instead
+  workflows have to be created via a GenericSetup profile.
 
-* CMF 2.1 instead of CMF 1.x:
-   - Products.CMFCore.CMFPermissions is now called Products.CMFCore.permissions
+* The long deprecated Products.CMFCore.CMFPermissions module is no longer
+  present. Code should now use its replacement Products.CMFCore.permissions
 
-* You can use the contentmigration product to write migrations for your own products
-  -> this should be a seperate tutorial on plone.org !
+* You can use the contentmigration product to write migrations for your own products.
+  More information on this product can be found in the RichDocument tutorial:
+  http://plone.org/documentation/tutorial/richdocument/migrations/
 
-Preferred but not obligatory (right now):
 
-* use the python logging module instead of zLOG
+Preferred but not obligatory (right now)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 * QuickInstaller-based installation should use GenericSetup profiles instead 
 
 * use events instead of manage_ methods (which will probably disappear in plone 3.5 or 4.0)
 
 * Packaging technology:
+
   - Use python packages instead of Zope products
 
   - Ship packages as eggs and register in the cheeseshop
