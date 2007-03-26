@@ -111,20 +111,28 @@ Installing Plone manually, step by step instructions.
 
   **The following python package dependencies are included in the Plone tarball**
   - archetypes.kss
+  - five.customerize
+  - five.localsitemanager
   - kss.core
-  - plone.app.linkintegrity
+  - plone.app.content
   - plone.app.contentmenu
   - plone.app.contentrules
   - plone.app.controlpanel
+  - plone.app.form
+  - plone.app.i18n
   - plone.app.iterate
   - plone.app.kss
   - plone.app.layout
+  - plone.app.linkintegrity
   - plone.app.openid
   - plone.app.portlets
   - plone.app.redirector
   - plone.app.vocabularies
   - plone.app.workflow
   - plone.contentrules
+  - plone.fieldsets
+  - plone.i18n
+  - plone.intelligenttext
   - plone.locking
   - plone.memoize
   - plone.openid
