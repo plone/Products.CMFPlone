@@ -177,8 +177,8 @@ def alpha1_alpha2(portal):
     return out
 
 
-def alpha2_alpha3(portal):
-    """ 3.0-alpha2 -> 3.0-alpha3
+def alpha2_beta1(portal):
+    """ 3.0-alpha2 -> 3.0-beta1
     """
     out = []
 
