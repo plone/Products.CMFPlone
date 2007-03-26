@@ -52,7 +52,6 @@ class TestCookieAuth(PloneTestCase.FunctionalTestCase):
 
         cookie = response.getCookie('__ac')
         self.assertEqual(cookie.get('path'), '/')
-        self.assertEqual(cookie.get('value'), quote(self.cookie))
         self.assertEqual(cookie.get('expires'), None)
 
     def testSetPersistentCookie(self):
@@ -66,7 +65,6 @@ class TestCookieAuth(PloneTestCase.FunctionalTestCase):
         self.assertEqual(response.getStatus(), 200)
 
         cookie = response.getCookie('__ac')
-        self.assertEqual(cookie.get('path'), '/')
         self.assertEqual(cookie.get('value'), quote(self.cookie))
         self.failIfEqual(cookie.get('expires'), None)
 
