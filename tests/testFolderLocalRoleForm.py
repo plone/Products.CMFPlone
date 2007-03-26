@@ -39,8 +39,10 @@ class TestFolderLocalRole(PloneTestCase.PloneTestCase):
                          ('Authenticated', 'Member'))
 
     def testFolderLocalRoleView(self):
-        # Folder_localrole_form should render
-        self.folder.folder_localrole_form()
+        # sharing should render
+        self.loginAsPortalOwner()
+        view = self.folder.restrictedTraverse("sharing")
+        view()
 
     def testDeleteSingleRole(self):
         # Try deleting a single role
