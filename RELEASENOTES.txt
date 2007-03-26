@@ -116,6 +116,14 @@ For migration instructions please see http://plone.org/documentation/<nog even o
 Important notes for developers
 ------------------------------
 
+* getToolByName has been deprectaed in favour of getUtility, queryUtility and
+  getUtilityByName. Please see http://svn.zope.org/CMF/trunk/docs/ToolsAreUtilities.stx
+  for more information on this change.
+
+* Searching for users and groups using the portal_membership and portal_groups
+  tools has been deprectaed. Please use the search features of PAS directly
+  or the PlonePAS pas_search browser view.
+
 * portlets have been re-implemented using the Zope3 component architecture.
   -> Martin Aspeli to fill in stuff here
 
