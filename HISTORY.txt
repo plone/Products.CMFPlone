@@ -2,8 +2,6 @@ Changelog for Plone
 
     (name of developer listed in brackets)
 
-Plone 3.0 - unreleased
-
 Plone 3.0-beta1 - released March 26, 2007
 
     - Use plone.session for authentication.
