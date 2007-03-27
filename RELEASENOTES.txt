@@ -80,27 +80,41 @@ Important notes for users
 
   - customize portlets per-user, per-group and per content type
 
-  - control the number of items in listing portlets
+  - configure individual portlets, for example to change the number
+    of items shown in portlets.
 
+* Users now have a personal dashboard. They can customise this with
+  multiple portlets.
+  
 * Plone now supports the Google Sitemap protocol, described in 
   https://www.google.com/webmasters/tools/docs/en/protocol.html
 
-  It is enabled by default and the sitemap.xml.gz file is provided in the root
-  of your portal.
-
-  You can switch the sitemap feature off under Site Settings in the Site Setup
-  page.
+  You can switch the sitemap feature on under Site Settings in the Site Setup
+  page. When enabled the sitemap.xml.gz file is provided in the root of your
+  portal.
 
 * The Plone Tableless skin has been removed. The standard Plone skin makes
   very minimal use of tables and can be flexibly styled, as is demonstrated
-  by the NuPlone theme.
+  by the new NuPlone theme.
+
+* Content types can now be configured through a new control panel. Using this
+  panel a number of new features are available:
+
+  - rich text fields in types can act as wiki fields, making it possible to
+    create wiki-style links by surrounding a phrase (( .. ))
+
+* The standard Page type has added two new options: 
+
+  - a toggle which allows pages to be shown as S5 presentations. This makes
+    it trivial to create simple presentations in Plone.
+
+  - a table of contents can be generated automatically based on the headers 
+    used in the page.
 
 * KSS/Azax
 * new workflows
-* wicked
 * versioning, staging and locking
 * content rules
-* S5
 
 
 Important notes for system administrators
