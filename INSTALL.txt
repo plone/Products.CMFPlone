@@ -38,9 +38,9 @@ Installing Plone manually, step by step instructions.
 
   **MANDATORY**
 
-  - Zope 2.10.x (does not run natively on Zope 3)
+  - Zope 2.10.3 or later (does not run on Zope 3 or Zope 2.11)
      Not included in the Plone tarball.
-     http://www.zope.org/Products/Zope/2.10.2
+     http://www.zope.org/Products/Zope/2.10.3
 
   - Python Imaging Library 1.1.5 or newer
     Not included in the Plone tarball.
