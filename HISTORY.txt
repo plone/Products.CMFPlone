@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Changed order of action providers to fit the way we want to see
+      content tabs.
+      [davconvent, nouri]
+
 Plone 3.0-beta1 - released March 26, 2007
 
     - Use plone.session for authentication.

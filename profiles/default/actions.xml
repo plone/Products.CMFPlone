@@ -2,8 +2,8 @@
 <object name="portal_actions" meta_type="Plone Actions Tool"
    xmlns:i18n="http://xml.zope.org/namespaces/i18n">
  <action-provider name="portal_workflow"/>
- <action-provider name="portal_actions" />
  <action-provider name="portal_types"/>
+ <action-provider name="portal_actions" />
  <object name="document_actions" meta_type="CMF Action Category">
   <property name="title"></property>
   <object name="rss" meta_type="CMF Action" i18n:domain="plone">

@@ -155,6 +155,7 @@ from Products.CMFPlone.migrations.v3_0.alphas import installI18NUtilities
 from Products.CMFPlone.migrations.v3_0.alphas import installProduct
 from Products.CMFPlone.migrations.v3_0.alphas import addEmailCharsetProperty
 from Products.CMFPlone.migrations.v3_0.betas import migrateHistoryTab
+from Products.CMFPlone.migrations.v3_0.betas import changeOrderOfActionProviders
 
 from zope.app.component.hooks import clearSite
 from zope.app.component.interfaces import ISite
@@ -2451,6 +2452,30 @@ class TestMigrations_v3_0(MigrationTest):
         self.failUnless(self.portal.hasProperty('email_charset'))
         self.assertEquals(self.portal.getProperty('email_charset'), 'utf-8')
 
+    def testChangeOrderOfActionProviders(self):
+        out = []
+        self.actions.deleteActionProvider('portal_types')
+        self.actions.addActionProvider('portal_types')
+        self.assertEquals(
+            self.actions.listActionProviders(),
+            ('portal_workflow', 'portal_actions', 'portal_types'))
+        changeOrderOfActionProviders(self.portal, out)
+        self.assertEquals(
+            self.actions.listActionProviders(),
+            ('portal_workflow', 'portal_types', 'portal_actions'))
+
+    def testChangeOrderOfActionProvidersTwice(self):
+        out = []
+        self.actions.deleteActionProvider('portal_types')
+        self.actions.addActionProvider('portal_types')
+        self.assertEquals(
+            self.actions.listActionProviders(),
+            ('portal_workflow', 'portal_actions', 'portal_types'))
+        changeOrderOfActionProviders(self.portal, out)
+        changeOrderOfActionProviders(self.portal, out)
+        self.assertEquals(
+            self.actions.listActionProviders(),
+            ('portal_workflow', 'portal_types', 'portal_actions'))
 
 def test_suite():
     from unittest import TestSuite, makeSuite

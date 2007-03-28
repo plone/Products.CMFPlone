@@ -57,3 +57,26 @@ And finally a tuple of lists:
   [[1, 2], [2, 3]]
 
 
+Tests for plonifyActions.py
+---------------------------
+
+plonifyActions is the script that returns a list of actions for use in
+the content tabs.  It should return the actions in the order we want
+them.
+
+For the 'History' tab to also show up, we need to add folder to the
+list of versionable content types:
+
+  >>> folder = self.folder
+  >>> self.portal.portal_repository.setVersionableContentTypes(
+  ...     self.portal.portal_repository.getVersionableContentTypes() +
+  ...     [folder.portal_type])
+
+
+Now let us list the tabs that would show up in the page:
+
+  >>> context_state = folder.restrictedTraverse('@@plone_context_state')
+  >>> pactions = folder.plonifyActions(
+  ...     template_id='view', actions=context_state.actions())
+  >>> [str(a['title']) for a in pactions]
+  ['Contents', 'View', 'Edit', 'Sharing', 'History']

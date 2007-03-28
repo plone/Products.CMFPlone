@@ -11,6 +11,7 @@ def beta1_beta2(portal):
     out = []
 
     migrateHistoryTab(portal, out)
+    changeOrderOfActionProviders(portal, out)
 
     return out
 
@@ -22,3 +23,11 @@ def migrateHistoryTab(portal, out):
         if objects is not None:
             if 'rss' in objects.objectIds():
                 objects.manage_renameObjects(['rss'], ['history'])
+                out.append('Migrated history action.')
+
+def changeOrderOfActionProviders(portal, out):
+    portal_actions = queryUtility(IActionsTool)
+    if portal_actions is not None:
+        portal_actions.deleteActionProvider('portal_actions')
+        portal_actions.addActionProvider('portal_actions')
+        out.append('Changed the order of action providers.')

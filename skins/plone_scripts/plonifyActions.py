@@ -74,4 +74,8 @@ if use_default:
             action['selected']=1
             break
 
+first = ['folderContents']
+plone_actions.sort(lambda a, b: a['id'] in first and -1 or
+                                b['id'] in first and 1 or 0)
+
 return plone_actions
