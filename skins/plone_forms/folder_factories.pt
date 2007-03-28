@@ -17,9 +17,10 @@
                                dummy python:request.response.redirect(creation_url); " />
     </metal:block>
 
-    <h1 i18n:translate="heading_add_new_item">Add new item</h1>
+    <h1 class="documentFirstHeading" i18n:translate="heading_add_new_item">Add new item</h1>
 
-    <p i18n:translate="description_add_new_item">
+    <p class="documentDescription"
+       i18n:translate="description_add_new_item">
         Select the type of item you want to add to your folder.
     </p>
 
@@ -40,56 +41,45 @@
                      id_query string:&amp;id=$create_id;
                      query python:test(create_id, id_query, '');">
 
-        <fieldset tal:define="allowedContentTypes python:here.sortObjects(here.allowedContentTypes())">
-
-            <legend i18n:translate="legend_items_available">Items Available</legend>
-
-            <tal:types tal:repeat="ctype allowedContentTypes">
-
-            <div class="field" tal:define="pss modules/Products/PythonScripts/standard;
-                                           Title ctype/Title;
-                                           Id ctype/getId;
-                                           item_icon python:plone_view.getIcon(ctype);"
-                               tal:condition="python:test(Id not in filterOut, 1, 0)">
-
-                <form name="quickAdd" action="createObject" method="post">
-    
-                    <label tal:define="normalized_id python:normalizeString(Id);"
-                           tal:attributes="class string:contenttype-${normalized_id};
-                                           for normalized_id">
-                        <img tal:replace="structure item_icon/html_tag" />
-                    </label>
-
-                    <input name="type_name"
-                         type="hidden"
-                         value=""
-                         tal:attributes="value Id" />
-                    <input name="id"
-                         type="hidden"
-                         value=""
-                         tal:attributes="value create_id"
-                         tal:condition="create_id"
-                         />
-                    <input class="standalone"
-                         type="submit"
-                         value="Add"
-                         tabindex=""
-                         i18n:attributes="value"
-                         tal:define="ttitle python: here.utranslate(Title)"
-                         tal:attributes="id python:normalizeString(Id);
-                                         value python: here.utranslate('Add ${type}', {'type': ttitle})"
-                         />
-                        <p class="formHelp" tal:content="ctype/Description" i18n:translate="">
-                    Item description
-                    </p>
+        <form name="quickAdd" action="createObject" method="post">
+            <input name="id"
+                   type="hidden"
+                   value=""
+                   tal:attributes="value create_id"
+                   tal:condition="create_id"/>
+            <fieldset tal:define="allowedContentTypes python:here.sortObjects(here.allowedContentTypes())">
+            
+                <legend i18n:translate="legend_items_available">Items Available</legend>
                 
-                </form>
-                    
-            </div>
-
-            </tal:types>
-
+                <tal:types tal:repeat="ctype allowedContentTypes">
+                    <div class="field"
+                         tal:define="pss modules/Products/PythonScripts/standard;
+                                     Title ctype/Title;
+                                     Id ctype/getId;
+                                     normalized_id python:normalizeString(Id);
+                                     item_icon python:plone_view.getIcon(ctype);"
+                         tal:attributes="title ctype/Description"
+                         tal:condition="python:test(Id not in filterOut, 1, 0)">
+                        <input type="radio" name="type_name"
+                               tal:attributes="value Id;
+                                               id string:form-field-${normalized_id}" />
+                        <label tal:attributes="class string:contenttype-${normalized_id};
+                                               for string:form-field-${normalized_id};">
+                            <img tal:attributes="src item_icon/url" alt="" />
+                            <span tal:replace="python:here.utranslate(Title)">Type title</span>
+                        </label>                                 
+                    </div>
+                </tal:types>
+            
+                <div class="formControls">
+                    <input class="standalone"
+                          type="submit"
+                          value="Add"
+                          i18n:attributes="value label_add"
+                          />
+                </div>
         </fieldset>
+ </form>
     </div>
 
 </div>
