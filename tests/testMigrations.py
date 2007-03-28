@@ -154,6 +154,7 @@ from Products.CMFPlone.migrations.v3_0.alphas import restorePloneTool
 from Products.CMFPlone.migrations.v3_0.alphas import installI18NUtilities
 from Products.CMFPlone.migrations.v3_0.alphas import installProduct
 from Products.CMFPlone.migrations.v3_0.alphas import addEmailCharsetProperty
+from Products.CMFPlone.migrations.v3_0.betas import migrateHistoryTab
 
 from zope.app.component.hooks import clearSite
 from zope.app.component.interfaces import ISite
@@ -1184,6 +1185,17 @@ class TestMigrations_v3_0_Actions(MigrationTest):
         updateActionsI18NDomain(self.portal, [])
 
         self.assertEquals(reply.i18n_domain, 'plone')
+
+    def testHistoryActionID(self):
+        migrateHistoryTab(self.portal, [])
+        objects = getattr(self.actions, 'object', None)
+        self.failIf('rss' in objects.objectIds())
+
+    def testHistoryActionIDTwice(self):
+        migrateHistoryTab(self.portal, [])
+        migrateHistoryTab(self.portal, [])
+        objects = getattr(self.actions, 'object', None)
+        self.failIf('rss' in objects.objectIds())
 
     def beforeTearDown(self):
         if len(self.discussion._actions) > 0:
