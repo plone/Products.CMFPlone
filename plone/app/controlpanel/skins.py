@@ -17,6 +17,8 @@ from Products.ResourceRegistries.interfaces import IJSRegistry
 from form import ControlPanelForm
 from widgets import DropdownChoiceWidget
 
+from zope.schema.vocabulary import SimpleVocabulary
+
 class ISkinsSchema(Interface):
 
     theme = Choice(title=_(u'Default theme'),
@@ -39,8 +41,14 @@ class ISkinsSchema(Interface):
                                                     "region open in a new  "
                                                     "window."),
                                      default=False)
-
-
+                    
+    icon_visibility = Choice(title=_(u'Show content type icons'),
+                             description=_(u"If disabled the content icons "
+                                            "in folder listings and portlets "
+                                            "won't be visible."),
+                             vocabulary="plone.app.vocabularies.IconVisibility")
+                  
+                  
 class SkinsControlPanelAdapter(SchemaAdapterBase):
 
     adapts(IPloneSiteRoot)
@@ -87,7 +95,14 @@ class SkinsControlPanelAdapter(SchemaAdapterBase):
         self.jstool.cookResources()
 
     ext_links_open_new_window = property(get_ext_links_open_new_window,
-                                         set_ext_links_open_new_window)
+                                         set_ext_links_open_new_window)                                
+    def get_icon_visibility(self):
+        return self.props.icon_visibility
+
+    def set_icon_visibility(self, value):
+        self.props.manage_changeProperties(icon_visibility=value)
+
+    icon_visibility = property(get_icon_visibility,set_icon_visibility)
 
 
 class SkinsControlPanel(ControlPanelForm):
