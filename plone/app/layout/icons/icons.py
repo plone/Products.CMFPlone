@@ -127,7 +127,7 @@ class PloneSiteContentIcon(BaseIcon):
 
     @property
     def description(self):
-        return self.obj.Title
+        return self.obj.Title()
 
     @property
     def title(self):
