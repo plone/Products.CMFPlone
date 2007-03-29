@@ -132,5 +132,7 @@
   <property name="enable_link_integrity_checks" type="boolean">True</property>
   <property name="webstats_js" type="string"></property>
   <property name="external_links_open_new_window" type="string">false</property>
+  <property name="icon_visibility" type="string">enabled</property>
+  
  </object>
 </object>
