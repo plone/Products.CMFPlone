@@ -156,6 +156,7 @@ from Products.CMFPlone.migrations.v3_0.alphas import installProduct
 from Products.CMFPlone.migrations.v3_0.alphas import addEmailCharsetProperty
 from Products.CMFPlone.migrations.v3_0.betas import migrateHistoryTab
 from Products.CMFPlone.migrations.v3_0.betas import changeOrderOfActionProviders
+from Products.CMFPlone.migrations.v3_0.betas import addNewBeta2CSSFiles
 
 from zope.app.component.hooks import clearSite
 from zope.app.component.interfaces import ISite
@@ -1275,6 +1276,23 @@ class TestMigrations_v3_0(MigrationTest):
             self.failUnless(id in stylesheet_ids)
         # perform migration twice
         addNewCSSFiles(self.portal, [])
+        for id in added_ids:
+            self.failUnless(id in stylesheet_ids)
+
+    def testAddNewBeta2CSSFiles(self):
+        cssreg = self.portal.portal_css
+        added_ids = ['controlpanel.css']
+        for id in added_ids:
+            cssreg.unregisterResource(id)
+        stylesheet_ids = cssreg.getResourceIds()
+        for id in added_ids:
+            self.failIf('controlpanel.css' in stylesheet_ids)
+        addNewBeta2CSSFiles(self.portal, [])
+        stylesheet_ids = cssreg.getResourceIds()
+        for id in added_ids:
+            self.failUnless(id in stylesheet_ids)
+        # perform migration twice
+        addNewBeta2CSSFiles(self.portal, [])
         for id in added_ids:
             self.failUnless(id in stylesheet_ids)
 

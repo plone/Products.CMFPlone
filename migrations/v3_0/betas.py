@@ -1,6 +1,7 @@
 from zope.component import queryUtility
 
 from Products.CMFCore.interfaces import IActionsTool
+from Products.ResourceRegistries.interfaces import ICSSRegistry
 from Products.CMFCore.ActionInformation import Action
 from Products.CMFCore.ActionInformation import ActionInformation
 
@@ -12,9 +13,19 @@ def beta1_beta2(portal):
 
     migrateHistoryTab(portal, out)
     changeOrderOfActionProviders(portal, out)
+    addControlpanelStylesheet(portal, out)
 
     return out
 
+
+def addNewBeta2CSSFiles(portal, out):
+    # add new css files to the portal_css registries
+    cssreg = queryUtility(ICSSRegistry)
+    stylesheet_ids = cssreg.getResourceIds()
+    if 'controlpanel.css' not in stylesheet_ids:
+        cssreg.registerStylesheet('controlpanel.css', media='screen')
+        cssreg.moveResourceAfter('controlpanel.css', 'portlets.css')
+        out.append("Added controlpanel.css to the registry")
 
 def migrateHistoryTab(portal, out):
     portal_actions = queryUtility(IActionsTool)
