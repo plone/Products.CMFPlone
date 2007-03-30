@@ -156,6 +156,7 @@ from Products.CMFPlone.migrations.v3_0.alphas import installProduct
 from Products.CMFPlone.migrations.v3_0.alphas import addEmailCharsetProperty
 from Products.CMFPlone.migrations.v3_0.betas import migrateHistoryTab
 from Products.CMFPlone.migrations.v3_0.betas import changeOrderOfActionProviders
+from Products.CMFPlone.migrations.v3_0.betas import updateEditActionConditionForLocking
 
 from zope.app.component.hooks import clearSite
 from zope.app.component.interfaces import ISite
@@ -2476,6 +2477,55 @@ class TestMigrations_v3_0(MigrationTest):
         self.assertEquals(
             self.actions.listActionProviders(),
             ('portal_workflow', 'portal_types', 'portal_actions'))
+
+    def testUpdateEditActionConditionForLocking(self):
+        out = []
+        lockable_types = ['Document', 'Event', 'Favorite', 'File', 'Folder',
+                          'Image', 'Large Plone Folder', 'Link',
+                          'News Item', 'Topic']
+        for contentType in lockable_types:
+            fti = self.types.getTypeInfo(contentType)
+            for action in fti.listActions():
+                if action.getId() == 'edit':
+                    action.condition = ''
+        updateEditActionConditionForLocking(self.portal, out)
+        for contentType in lockable_types:
+            fti = self.types.getTypeInfo(contentType)
+            for action in fti.listActions():
+                if action.getId() == 'edit':
+                    expressionCondition = action.condition
+                    self.assertEquals(action.condition.text, "not:object/@@plone_lock_info/is_locked_for_current_user|python:True")
+
+    def testUpdateEditActionConditionForLockingTwice(self):
+        out = []
+        lockable_types = ['Document', 'Event', 'Favorite', 'File', 'Folder',
+                          'Image', 'Large Plone Folder', 'Link',
+                          'News Item', 'Topic']
+        for contentType in lockable_types:
+            fti = self.types.getTypeInfo(contentType)
+            for action in fti.listActions():
+                if action.getId() == 'edit':
+                    action.condition = ''
+        updateEditActionConditionForLocking(self.portal, out)
+        updateEditActionConditionForLocking(self.portal, out)
+        for contentType in lockable_types:
+            fti = self.types.getTypeInfo(contentType)
+            for action in fti.listActions():
+                if action.getId() == 'edit':
+                    expressionCondition = action.condition
+                    self.assertEquals(action.condition.text, "not:object/@@plone_lock_info/is_locked_for_current_user|python:True")
+
+    def testUpdateEditExistingActionConditionForLocking(self):
+        out = []
+        fti = self.types.getTypeInfo('Document')
+        for action in fti.listActions():
+            if action.getId() == 'edit':
+                action.condition = Expression("foo")
+        updateEditActionConditionForLocking(self.portal, out)
+        fti = self.types.getTypeInfo('Document')
+        for action in fti.listActions():
+            if action.getId() == 'edit':
+                self.assertEquals(action.condition.text, 'foo')
 
 def test_suite():
     from unittest import TestSuite, makeSuite

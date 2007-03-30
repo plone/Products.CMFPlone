@@ -21,6 +21,7 @@ ul.contentViews li a:plone-formProtectionChecked {
     replaceContentRegion-tabid: nodeAttr(id, true);
     replaceContentRegion-url: nodeAttr(href);
     replaceContentRegion-error: plone-followLink;
+    action-client: plone-removeLockProtection;
 }
 
 /* 
@@ -187,6 +188,11 @@ form.enableFormTabbing:load {
 form.enableUnloadProtection:load {
     evt-load-initial: false;
     action-client: plone-initFormProtection;
+}
+
+form.enableLockingProtection:load {
+    evt-load-initial: false;
+    action-client: plone-initLockingProtection;
 }
 
 /* Temporarily disabled because it acts foul with queryFormLeave.
