@@ -7,6 +7,10 @@
 
 /* <dtml-with base_properties> */
 
+.inlineDisplay {
+    display:inline
+}
+
 table.controlpanel-listing {
     width:100%;
 }
