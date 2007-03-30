@@ -11,8 +11,16 @@ function scanforlinks() {
     // first make external links open in a new window, afterwards do the
     // normal plone link wrapping in only the content area
 
-    if ((typeof external_links_in_content_only != 'undefined') &&
-        (external_links_in_content_only == false)) {
+    if (typeof external_links_open_new_window == 'string') {
+        if (external_links_open_new_window.toLowerCase() == 'true') {
+             external_links_open_new_window = Boolean(true)
+         } else {
+             external_links_open_new_window = Boolean(false)
+         }
+    }
+
+    if ((typeof external_links_open_new_window != 'undefined') &&
+        (external_links_open_new_window == true)) {
         links = document.getElementsByTagName('a');
         for (i=0; i < links.length; i++) {
             if ( (links[i].getAttribute('href'))
