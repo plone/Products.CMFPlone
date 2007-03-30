@@ -19,6 +19,12 @@ from widgets import DropdownChoiceWidget
 
 from zope.schema.vocabulary import SimpleVocabulary
 
+ICON_VISIBILITY_CHOICES = {
+    _(u"Only for users who are logged in"): 'authenticated',
+    _(u"Never show icons"): 'disabled',
+    _(u"Always show icons"): 'enabled',
+}
+    
 class ISkinsSchema(Interface):
 
     theme = Choice(title=_(u'Default theme'),
@@ -46,9 +52,10 @@ class ISkinsSchema(Interface):
                              description=_(u"If disabled the content icons "
                                             "in folder listings and portlets "
                                             "won't be visible."),
-                             vocabulary="plone.app.vocabularies.IconVisibility")
-                  
-                  
+                             vocabulary=SimpleVocabulary.fromItems(
+                                                ICON_VISIBILITY_CHOICES.items()))
+
+
 class SkinsControlPanelAdapter(SchemaAdapterBase):
 
     adapts(IPloneSiteRoot)
