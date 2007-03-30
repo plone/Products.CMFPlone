@@ -37,13 +37,15 @@ class ISiteSchema(Interface):
                            "URL part of a content item's address. Once "
                            "enabled, users will then be able to enable this "
                            "option in their preferences."),
-                       default=False)
+                       default=False,
+                       required=False)
 
     enable_link_integrity_checks = Bool(title=_(u'Enable link integrity checks'),
                           description=_(u"Determines if the users should get "
                               "warnings when they delete or move content that "
                               "is linked from inside the site"),
-                          default=True)
+                          default=True,
+                          required=False)
 
     ext_editor = Bool(title=_(u'Enable External Editor feature'),
                           description=_(u"Determines if the external editor "
@@ -51,7 +53,8 @@ class ISiteSchema(Interface):
                               "special client-side application installed. The "
                               "users also have to enable this in their "
                               "preferences."),
-                          default=False)
+                          default=False,
+                          required=False)
 
     enable_sitemap = Bool(title=_(u'Provide sitemap.xml.gz in the portal root'),
                           description=_(u"A sitemap.xml.gz file might be "
@@ -60,7 +63,8 @@ class ISiteSchema(Interface):
                               "generating the sitemap is an expensive "
                               "operation which can be abused to slow down "
                               "your site."),
-                          default=False)
+                          default=False,
+                          required=False)
                           
     webstats_js = SourceText(title=_(u'JavaScript for web statistics support'),
                         description=_(u"For enabling web statistics support "
