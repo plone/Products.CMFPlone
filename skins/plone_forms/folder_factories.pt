@@ -6,6 +6,13 @@
       metal:use-macro="here/main_template/macros/master"
       i18n:domain="plone">
 
+<head>
+    <metal:block fill-slot="top_slot"
+                 tal:define="dummy python:request.set('disable_border',1)" />
+    <metal:block fill-slot="column_one_slot" />
+    <metal:block fill-slot="column_two_slot" />
+</head>
+
 <body>
 
 <div metal:fill-slot="main">
@@ -47,19 +54,16 @@
                    value=""
                    tal:attributes="value create_id"
                    tal:condition="create_id"/>
-            <fieldset tal:define="allowedContentTypes python:here.sortObjects(here.allowedContentTypes())">
+            <tal:typelist define="allowedContentTypes python:here.sortObjects(here.allowedContentTypes());"
+                          repeat="ctype allowedContentTypes">
             
-                <legend i18n:translate="legend_items_available">Items Available</legend>
-                
-                <tal:types tal:repeat="ctype allowedContentTypes">
-                    <div class="field"
-                         tal:define="pss modules/Products/PythonScripts/standard;
+                <dl tal:define="pss modules/Products/PythonScripts/standard;
                                      Title ctype/Title;
                                      Id ctype/getId;
                                      normalized_id python:normalizeString(Id);
                                      item_icon python:plone_view.getIcon(ctype);"
-                         tal:attributes="title ctype/Description"
-                         tal:condition="python:test(Id not in filterOut, 1, 0)">
+                     tal:condition="python:test(Id not in filterOut, 1, 0)">
+                    <dt>
                         <input type="radio" name="type_name"
                                tal:attributes="value Id;
                                                id string:form-field-${normalized_id}" />
@@ -68,18 +72,20 @@
                             <img tal:attributes="src item_icon/url" alt="" />
                             <span tal:replace="python:here.utranslate(Title)">Type title</span>
                         </label>                                 
-                    </div>
-                </tal:types>
+                    </dt>
+                    <dd tal:content="ctype/Description">Type description</dd>
+                </dl>
+
+            </tal:typelist>
             
-                <div class="formControls">
-                    <input class="standalone"
-                          type="submit"
-                          value="Add"
-                          i18n:attributes="value label_add"
-                          />
-                </div>
-        </fieldset>
- </form>
+            <div class="formControls">
+                <input class="standalone"
+                      type="submit"
+                      value="Add"
+                      i18n:attributes="value label_add"
+                      />
+            </div>
+        </form>
     </div>
 
 </div>
