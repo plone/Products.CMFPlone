@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Removed lots of unused actions and the entire object_tabs and global
+      action categories. This closes http://dev.plone.org/plone/ticket/6336.
+      [hannosch]
+
     - Cleaned up code in unicodehacks.py so we don't have a performance penality
       for mixed unicode/non-unicode pages.
       [hannosch]

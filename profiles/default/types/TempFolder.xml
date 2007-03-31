@@ -46,29 +46,9 @@
     visible="True">
   <permission value="List folder contents"/>
  </action>
- <action title="New..." action_id="new" category="object" condition_expr=""
-    url_expr="string:${object_url}/folder_factories" visible="False">
-  <permission value="Add portal content"/>
- </action>
- <action title="Rename items" action_id="rename_items" category="object"
-    condition_expr="" url_expr="string:${object_url}/folder_rename_form"
-    visible="False">
-  <permission value="Add portal content"/>
- </action>
- <action title="State" action_id="content_status_history"
-    category="object_tabs"
-    condition_expr="python:object and portal.portal_workflow.getTransitionsFor(object, object.getParentNode())"
-    url_expr="string:$object_url/content_status_history" visible="False">
-  <permission value="View"/>
- </action>
  <action title="Sharing" action_id="local_roles" category="object"
     condition_expr="" url_expr="string:${object_url}/@@sharing"
     visible="True">
   <permission value="Manage properties"/>
- </action>
- <action title="External Edit" action_id="external_edit" category="object"
-    condition_expr="" url_expr="string:$object_url/external_edit"
-    visible="False">
-  <permission value="Modify portal content"/>
  </action>
 </object>

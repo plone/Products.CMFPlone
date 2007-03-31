@@ -211,19 +211,6 @@
    </property>
    <property name="visible">True</property>
   </object>
-  <object name="reply" meta_type="CMF Action" i18n:domain="plone">
-   <property name="title" i18n:translate="">Reply</property>
-   <property name="description" i18n:translate=""></property>
-   <property
-      name="url_expr">string:${object_url}/discussion_reply_form</property>
-   <property name="icon_expr"></property>
-   <property
-      name="available_expr">python:object is not None and portal.portal_discussion.isDiscussionAllowedFor(object)</property>
-   <property name="permissions">
-    <element value="Reply to item"/>
-   </property>
-   <property name="visible">False</property>
-  </object>
   <object name="syndication" meta_type="CMF Action" i18n:domain="plone">
    <property name="title" i18n:translate="">Syndication</property>
    <property name="description" i18n:translate=""></property>
@@ -235,6 +222,19 @@
     <element value="Manage properties"/>
    </property>
    <property name="visible">False</property>
+  </object>
+  <object name="contentrules" meta_type="CMF Action" i18n:domain="plone">
+   <property name="title" i18n:translate="">Rules</property>
+   <property name="description" i18n:translate=""></property>
+   <property
+      name="url_expr">string:${plone_context_state/canonical_object_url}/@@manage-content-rules</property>
+   <property name="icon_expr"></property>
+   <property
+      name="available_expr">python:plone_context_state.canonical_object().restrictedTraverse('@@plone_interface_info').provides('plone.contentrules.engine.interfaces.IRuleAssignable')</property>
+   <property name="permissions">
+    <element value="Content rules: Manage rules"/>
+   </property>
+   <property name="visible">True</property>
   </object>
  </object>
  <object name="object_buttons" meta_type="CMF Action Category">
@@ -319,33 +319,6 @@
    <property name="visible">True</property>
   </object>
  </object>
- <object name="object_tabs" meta_type="CMF Action Category">
-  <property name="title"></property>
-  <object name="change_ownership" meta_type="CMF Action" i18n:domain="plone">
-   <property name="title" i18n:translate="">Ownership</property>
-   <property name="description" i18n:translate=""></property>
-   <property name="url_expr">string:${object_url}/ownership_form</property>
-   <property name="icon_expr"></property>
-   <property name="available_expr"></property>
-   <property name="permissions">
-    <element value="Manage portal"/>
-   </property>
-   <property name="visible">False</property>
-  </object>
-  <object name="contentrules" meta_type="CMF Action" i18n:domain="plone">
-   <property name="title" i18n:translate="">Rules</property>
-   <property name="description" i18n:translate=""></property>
-   <property
-      name="url_expr">string:${plone_context_state/canonical_object_url}/@@manage-content-rules</property>
-   <property name="icon_expr"></property>
-   <property
-      name="available_expr">python:plone_context_state.canonical_object().restrictedTraverse('@@plone_interface_info').provides('plone.contentrules.engine.interfaces.IRuleAssignable')</property>
-   <property name="permissions">
-    <element value="Content rules: Manage rules"/>
-   </property>
-   <property name="visible">True</property>
-  </object>
- </object>
  <object name="user" meta_type="CMF Action Category">
   <property name="title"></property>
   <object name="mystuff" meta_type="CMF Action" i18n:domain="plone">
@@ -417,30 +390,6 @@
    </property>
    <property name="visible">True</property>
   </object>
-  <object name="logged_in" meta_type="CMF Action" i18n:domain="plone">
-   <property name="title" i18n:translate="">Logged in</property>
-   <property name="description" i18n:translate=""></property>
-   <property name="url_expr">string:${portal_url}/logged_in</property>
-   <property name="icon_expr"></property>
-   <property name="available_expr"></property>
-   <property name="permissions">
-    <element value="View"/>
-   </property>
-   <property name="visible">False</property>
-  </object>
-  <object name="myworkspace" meta_type="CMF Action" i18n:domain="plone">
-   <property name="title" i18n:translate="">Workspace</property>
-   <property name="description" i18n:translate=""></property>
-   <property
-      name="url_expr">string:${portal/portal_membership/getHomeUrl}/workspace</property>
-   <property name="icon_expr"></property>
-   <property
-      name="available_expr">python:(member is not None) and (portal.portal_membership.getHomeFolder() is not None)</property>
-   <property name="permissions">
-    <element value="View"/>
-   </property>
-   <property name="visible">False</property>
-  </object>
   <object name="addFavorite" meta_type="CMF Action" i18n:domain="plone">
    <property name="title" i18n:translate="">Add to favorites</property>
    <property name="description" i18n:translate=""></property>
@@ -463,32 +412,6 @@
       name="available_expr">python:(member is not None) and hasattr(portal.portal_membership.getHomeFolder(), "Favorites")</property>
    <property name="permissions">
     <element value="View"/>
-   </property>
-   <property name="visible">False</property>
-  </object>
- </object>
- <object name="global" meta_type="CMF Action Category">
-  <property name="title"></property>
-  <object name="manage_members" meta_type="CMF Action" i18n:domain="plone">
-   <property name="title" i18n:translate="">Manage members</property>
-   <property name="description" i18n:translate=""></property>
-   <property
-      name="url_expr">string:${portal_url}/members_manage_form</property>
-   <property name="icon_expr"></property>
-   <property name="available_expr"></property>
-   <property name="permissions">
-    <element value="Manage users"/>
-   </property>
-   <property name="visible">True</property>
-  </object>
-  <object name="configPortal" meta_type="CMF Action" i18n:domain="plone">
-   <property name="title" i18n:translate="">Reconfigure Portal</property>
-   <property name="description" i18n:translate=""></property>
-   <property name="url_expr">string:${portal_url}/reconfig_form</property>
-   <property name="icon_expr"></property>
-   <property name="available_expr"></property>
-   <property name="permissions">
-    <element value="Manage portal"/>
    </property>
    <property name="visible">False</property>
   </object>

@@ -839,7 +839,6 @@ class TestMigrations_v2_5(MigrationTest):
         rename = tool.object_buttons.rename
         contents = tool.object.folderContents
         index = tool.portal_tabs.index_html
-        wkspace = tool.user.myworkspace
         # Set the expressions and conditions to their 2.5 analogues to test
         # every substitution
         paste._updateProperty('url_expr',
@@ -852,8 +851,6 @@ class TestMigrations_v2_5(MigrationTest):
                 "python:((object.isDefaultPageInFolder() and object.getParentNode().absolute_url()) or folder_url)+'/folder_contents'")
         index._updateProperty('url_expr',
                 'string: ${here/@@plone/navigationRootUrl}')
-        wkspace._updateProperty('url_expr',
-                                "python: portal.portal_membership.getHomeUrl()+'/workspace'")
 
         # Verify that the changes have been made
         paste = tool.object_buttons.paste
@@ -871,8 +868,6 @@ class TestMigrations_v2_5(MigrationTest):
                 "string:${globals_view/getCurrentFolderUrl}/folder_contents")
         self.assertEqual(index.getProperty('url_expr'),
                 "string:${globals_view/navigationRootUrl}")
-        self.assertEqual(wkspace.getProperty('url_expr'),
-                "string:${portal/portal_membership/getHomeUrl}/workspace")
 
     def testSimplifyActionsTwice(self):
         # Should result in the same string when applied twice
@@ -1833,22 +1828,22 @@ class TestMigrations_v3_0(MigrationTest):
         self.failIf(sm.queryUtility(IRedirectionStorage) is None)
         
     def testAddContentRulesAction(self):
-        self.portal.portal_actions.object_tabs._delObject('contentrules')
+        self.portal.portal_actions.object._delObject('contentrules')
         addContentRulesAction(self.portal, [])
-        self.failUnless('contentrules' in self.portal.portal_actions.object_tabs.objectIds())
+        self.failUnless('contentrules' in self.portal.portal_actions.object.objectIds())
         
     def testAddContentRulesActionTwice(self):
-        self.portal.portal_actions.object_tabs._delOb('contentrules')
+        self.portal.portal_actions.object._delOb('contentrules')
         addContentRulesAction(self.portal, [])
         addContentRulesAction(self.portal, [])
-        self.failUnless('contentrules' in self.portal.portal_actions.object_tabs.objectIds())
+        self.failUnless('contentrules' in self.portal.portal_actions.object.objectIds())
         
     def testAddContentRulesActionNoTool(self):
         self.portal._delOb('portal_actions')
         addContentRulesAction(self.portal, [])
         
     def testAddContentRulesActionNoCategory(self):
-        self.portal.portal_actions._delOb('object_tabs')
+        self.portal.portal_actions._delOb('object')
         addContentRulesAction(self.portal, [])
         
     def testAddReaderEditorRoles(self):
@@ -1888,7 +1883,7 @@ class TestMigrations_v3_0(MigrationTest):
         aliases = fti.getMethodAliases()
         aliases['sharing'] = 'folder_localrole_form'
         fti.setMethodAliases(aliases)
-        fti.addAction('test', 'Test', 'string:${object_url}/folder_localrole_form', None, 'View', 'object_tabs')
+        fti.addAction('test', 'Test', 'string:${object_url}/folder_localrole_form', None, 'View', 'object')
         migrateLocalroleForm(self.portal, [])
         self.assertEquals('@@sharing', fti.getMethodAliases()['sharing'])
         test_action = fti.listActions()[-1]
@@ -1899,7 +1894,7 @@ class TestMigrations_v3_0(MigrationTest):
         aliases = fti.getMethodAliases()
         aliases['sharing'] = 'folder_localrole_form'
         fti.setMethodAliases(aliases)
-        fti.addAction('test', 'Test', 'string:${object_url}/folder_localrole_form', None, 'View', 'object_tabs')
+        fti.addAction('test', 'Test', 'string:${object_url}/folder_localrole_form', None, 'View', 'object')
         migrateLocalroleForm(self.portal, [])
         migrateLocalroleForm(self.portal, [])
         self.assertEquals('@@sharing', fti.getMethodAliases()['sharing'])

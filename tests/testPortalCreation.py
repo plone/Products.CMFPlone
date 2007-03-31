@@ -83,11 +83,6 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         # The workflow tool is one of the last remaining action providers.
         self.failUnless('portal_workflow' in self.actions.listActionProviders())
 
-    def testReplyTabIsOff(self):
-        # Ensure 'reply' tab is turned off
-        reply = self.actions.getActionInfo('object/reply')
-        self.assertEqual(reply['visible'], False)
-
     def testLargePloneFolderWorkflow(self):
         # Large Plone Folder should use folder_workflow
         # http://dev.plone.org/plone/ticket/2744
@@ -158,15 +153,6 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
                 break
         else:
             self.fail("Folder has no 'folderlisting' action")
-
-    def testTopicHasFolderListingAction(self):
-        # Topics should have a 'folderlisting' action
-        topic = self.types.getTypeInfo('Topic')
-        for action in topic._cloneActions():
-            if action.id == 'folderlisting':
-                break
-        else:
-            self.fail("Topic has no 'folderlisting' action")
 
     def testImagePatch(self):
         # Is it ok to remove the imagePatch? Probably not as we

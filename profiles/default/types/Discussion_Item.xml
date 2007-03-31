@@ -20,12 +20,6 @@
     url_expr="string:${object_url}/discussionitem_view" visible="True">
   <permission value="View"/>
  </action>
- <action title="State" action_id="content_status_history"
-    category="object_tabs"
-    condition_expr="python:object and portal.portal_workflow.getTransitionsFor(object, object.getParentNode())"
-    url_expr="string:$object_url/content_status_history" visible="False">
-  <permission value="View"/>
- </action>
  <action title="Sharing" action_id="local_roles" category="object"
     condition_expr="" url_expr="string:${object_url}/@@sharing"
     visible="True">

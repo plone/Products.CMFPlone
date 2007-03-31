@@ -139,15 +139,6 @@
    <guard-role>Owner</guard-role>
   </guard>
  </transition>
- <worklist worklist_id="reviewer_queue" title="">
-  <description>Reviewer tasks</description>
-  <action url="%(portal_url)s/search?review_state=pending"
-          category="global">Pending (%(count)d)</action>
-  <guard>
-   <guard-permission>Review portal content</guard-permission>
-  </guard>
-  <match name="review_state" values="pending"/>
- </worklist>
  <variable variable_id="action" for_catalog="False"
            for_status="True" update_always="True">
   <description>The last transition</description>

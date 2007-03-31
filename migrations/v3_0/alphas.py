@@ -785,9 +785,9 @@ def installRedirectorUtility(portal, out):
 def addContentRulesAction(portal, out):
     portal_actions = queryUtility(IActionsTool)
     if portal_actions is not None:
-        object_tabs = getattr(portal_actions, 'object_tabs', None)
-        if object_tabs is not None:
-            if 'contentrules' not in object_tabs.objectIds():
+        object_category = getattr(portal_actions, 'object', None)
+        if object_category is not None:
+            if 'contentrules' not in object_category.objectIds():
                 new_action = Action('contentrules',
                                     title='Rules',
                                     description='',
@@ -795,8 +795,8 @@ def addContentRulesAction(portal, out):
                                     available_expr="python:plone_context_state.canonical_object().restrictedTraverse('@@plone_interface_info').provides('plone.contentrules.engine.interfaces.IRuleAssignable')",
                                     permissions='Content rules: Manage rules',
                                     visible=True)
-                object_tabs._setObject('contentrules', new_action)
-                out.append("Added content rules action to object_tabs")
+                object_category._setObject('contentrules', new_action)
+                out.append("Added content rules action to object category")
 
 
 def installContentRulesUtility(portal, out):
@@ -1407,5 +1407,3 @@ def addEmailCharsetProperty(portal, out):
     if not portal.hasProperty('email_charset'):
         portal.manage_addProperty('email_charset', 'utf-8', 'string')
     out.append("Added 'email_charset' property to the portal.")
-
-
