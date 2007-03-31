@@ -24,10 +24,11 @@ from plone.app.controlpanel.interfaces import IPloneControlPanelForm
 
 class IMaintenanceSchema(Interface):
 
-    days = Int(title=_(u"Number of days to keep"),
-        description=_(u"The Zope Database keeps deleted and previous versions "
-                       "of objects. Packing the database will actually delete "
-                       "these to a certain point in time and free diskspace."),
+    days = Int(title=_(u"Days of object history to keep after packing"),
+        description=_(u"You should pack your database regularly. This number indicates "
+                       "how many days of undo history you want to keep. It is unrelated "
+                       "to versioning, so even if you pack the database, the history of the "
+                       "content changes will be kept. Recommended value is 7 days."),
         default=7,
         required=True)
 
@@ -61,7 +62,7 @@ class MaintenanceControlPanel(FieldsetsEditForm):
     form_fields = form.FormFields(IMaintenanceSchema)
     label = _(u'Maintenance')
     description = _(u"Zope server and site maintenance options.")
-    form_name = _(u'Zope Database')
+    form_name = _(u'Zope Database Packing')
 
     @form.action(_(u'Pack'))
     def handle_edit_action(self, action, data):

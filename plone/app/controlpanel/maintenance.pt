@@ -132,7 +132,7 @@
                             tal:content="form_name">Form name</legend>
 
                     <p i18n:translate="text_zope_database_size">
-                        Database size: <span i18n:name="size" tal:replace="view/dbSize" />
+                        <strong>Current database size:</strong> <span i18n:name="size" tal:replace="view/dbSize" />
                     </p>
 
                     <tal:block tal:repeat="widget view/widgets">
@@ -184,7 +184,7 @@
                             <input type="submit"
                                    id="form.actions.pack"
                                    name="form.actions.pack"
-                                   value="Pack"
+                                   value="Pack database now"
                                    i18n:attributes="value"
                                    class="context" />
                         </span>
