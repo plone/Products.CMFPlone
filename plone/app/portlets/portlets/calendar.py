@@ -54,11 +54,9 @@ class Renderer(base.Renderer):
         self.monthName = PLMF(self._ts.month_msgid(self.month),
                               default=self._ts.month_english(self.month))
 
-        states = self.calendar.getCalendarStates()
-        self.review_state_string = self.getReviewStateString(states)
-        self.weeks = self.getEventsForCalendar(self.month, self.year)
-
-    def getEventsForCalendar(self, month, year):
+    def getEventsForCalendar(self):
+        year = self.year
+        month = self.month
         weeks = self.calendar.getEventsForCalendar(month, year)
         for week in weeks:
             for day in week:
@@ -162,9 +160,9 @@ class Renderer(base.Renderer):
         return self.current_day==day and self.current.month()==self.month and \
                self.current.year()==self.year
 
-    @memoize
-    def getReviewStateString(self, showStates):
-        return ''.join(map(lambda x : 'review_state=%s&amp;' % self.url_quote_plus(x), showStates))
+    def getReviewStateString(self):
+        states = self.calendar.getCalendarStates()
+        return ''.join(map(lambda x : 'review_state=%s&amp;' % self.url_quote_plus(x), states))
 
 
 class AddForm(base.NullAddForm):

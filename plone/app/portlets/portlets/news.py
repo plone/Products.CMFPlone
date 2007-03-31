@@ -44,13 +44,6 @@ class Renderer(base.Renderer):
 
     render = ViewPageTemplateFile('news.pt')
 
-    def __init__(self, *args):
-        base.Renderer.__init__(self, *args)
-
-        portal_state = getMultiAdapter((self.context, self.request), name=u'plone_portal_state')
-        self.portal_url = portal_state.portal_url()
-        self.portal = portal_state.portal()
-
     @property
     def available(self):
         return len(self._data())
@@ -59,10 +52,14 @@ class Renderer(base.Renderer):
         return self._data()
 
     def all_news_link(self):
-        if 'news' in self.portal.objectIds():
-            return '%s/news' % self.portal_url
+        portal_state = getMultiAdapter((self.context, self.request), name=u'plone_portal_state')
+        portal_url = portal_state.portal_url()
+        portal = portal_state.portal()
+        
+        if 'news' in portal.objectIds():
+            return '%s/news' % portal_url
         else:
-            return '%s/news_listing' % self.portal_url
+            return '%s/news_listing' % portal_url
 
     @memoize
     def _data(self):

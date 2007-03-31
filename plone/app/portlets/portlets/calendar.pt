@@ -51,7 +51,7 @@
         </tr>
     </thead>
     <tbody>
-        <tr tal:repeat="week view/weeks"
+        <tr tal:repeat="week view/getEventsForCalendar"
             ><tal:block repeat="day week"
                 ><tal:day define="daynumber day/day;"
                     ><tal:isday condition="daynumber"
@@ -61,7 +61,7 @@
                                 tal:condition="day_event"
                                 tal:attributes="class python:is_today and 'todayevent' or 'event'"
                                ><a href=""
-                                   tal:attributes="href string:${portal_url}/search?${view/review_state_string}start.query:record:list:date=${day/date_string}+23%3A59%3A59&amp;start.range:record=max&amp;end.query:record:list:date=${day/date_string}+00%3A00%3A00&amp;end.range:record=min;
+                                   tal:attributes="href string:${portal_url}/search?${view/getReviewStateString}start.query:record:list:date=${day/date_string}+23%3A59%3A59&amp;start.range:record=max&amp;end.query:record:list:date=${day/date_string}+00%3A00%3A00&amp;end.range:record=min;
                                                    title day/eventstring;"
                                    tal:content="daynumber">
                                    31
