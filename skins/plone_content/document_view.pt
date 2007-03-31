@@ -12,7 +12,7 @@
            tal:define="kssClassesView context/@@kss_field_decorator_view;
                        getKssClasses nocall:kssClassesView/getKssClassesInlineEditable;
                        templateId template/getId;
-                       text python: here.CookedBody(stx_level=2)">
+                       text here/getText;">
 
         <div tal:replace="structure provider:plone.abovecontenttitle" />
 
@@ -41,7 +41,7 @@
              id="parent-fieldname-text" class="stx"
              tal:define="kss_class python:getKssClasses('text',
                          templateId=templateId, macro='text-field-view');
-                         text here/getText|nothing"
+                         text text|here/getText|nothing"
              tal:condition="text"
              tal:attributes="class python:test(here.Format() in ('text/structured',
                                                    'text/x-rst', ), 'stx' + kss_class, 'plain' + kss_class)">

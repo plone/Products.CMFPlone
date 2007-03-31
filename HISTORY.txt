@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Stop calculating the body text of a document twice in document_view.
+      [hannosch]
+
     - Changed order of action providers to fit the way we want to see
       content tabs.
       [davconvent, nouri]
