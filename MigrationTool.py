@@ -9,6 +9,7 @@ from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFPlone.utils import versionTupleFromString
 from Products.CMFPlone.utils import log
 from Products.CMFPlone.utils import log_deprecated
+from Products.CMFPlone.utils import postonly
 import transaction
 
 import logging
@@ -386,6 +387,7 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
             return self.manage_results(self, out=out)
         except NameError:
             pass
+    upgrade = postonly(upgrade)
 
     ##############################################################
     # Private methods

@@ -27,6 +27,7 @@ from Products.CMFPlone import ToolNames
 from Products.CMFPlone.utils import transaction_note
 from Products.CMFPlone.utils import base_hasattr
 from Products.CMFPlone.utils import safe_hasattr
+from Products.CMFPlone.utils import postonly
 from Products.CMFPlone.interfaces import IBrowserDefault
 
 from OFS.SimpleItem import SimpleItem
@@ -434,7 +435,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     security.declareProtected(ManagePortal,
                               'changeOwnershipOf')
-    def changeOwnershipOf(self, object, userid, recursive=0):
+    def changeOwnershipOf(self, object, userid, recursive=0, REQUEST=None):
         """Changes the ownership of an object."""
         membership = getToolByName(self, 'portal_membership')
         acl_users = getattr(self, 'acl_users')
@@ -472,6 +473,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                 fixOwnerRole(obj, user.getId())
                 if base_hasattr(obj, 'reindexObject'):
                     obj.reindexObject()
+    changeOwnershipOf = postonly(changeOwnershipOf)
 
     security.declarePublic('urlparse')
     def urlparse(self, url):

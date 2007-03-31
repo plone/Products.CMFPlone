@@ -15,7 +15,8 @@ if change_type == 'add':
     for role in member_role:
         pm.setLocalRoles( obj=context,
                           member_ids=member_ids,
-                          member_role=role )
+                          member_role=role,
+                          REQUEST=context.REQUEST)
 else:
     pm.deleteLocalRoles( obj=context,
                          member_ids=member_ids )
