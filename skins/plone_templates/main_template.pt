@@ -5,11 +5,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xml:lang="en"
       lang="en"
-      tal:attributes="lang language;
-                      xml:lang language">
+      tal:define="lang language"
+      tal:attributes="lang lang;
+                      xml:lang lang">
 
-  <tal:cache tal:define="lang language;
-                         charset site_properties/default_charset|string:utf-8">
+  <tal:cache tal:define="charset site_properties/default_charset|string:utf-8">
     <metal:cache use-macro="here/global_cache_settings/macros/cacheheaders">
       Get the global cache headers located in global_cache_settings.
     </metal:cache>

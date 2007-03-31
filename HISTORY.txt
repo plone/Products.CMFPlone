@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Micro optimization: Use a truly local variable for language lookup, which
+      is faster than getting the value from the globals.
+      [hannosch]
+
     - Stop calculating the body text of a document twice in document_view.
       [hannosch]
 
