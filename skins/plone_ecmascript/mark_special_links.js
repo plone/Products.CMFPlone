@@ -19,6 +19,10 @@ function scanforlinks() {
          }
     }
 
+    this_page = window.location.protocol
+                + '//'
+                + window.location.host
+
     if ((typeof external_links_open_new_window != 'undefined') &&
         (external_links_open_new_window == true)) {
         links = document.getElementsByTagName('a');
@@ -29,9 +33,7 @@ function scanforlinks() {
 
                 // check if the link href is a relative link, or an absolute link to
                 // the current host.
-                if (linkval.toLowerCase().indexOf(window.location.protocol
-                                                  + '//'
-                                                  + window.location.host)==0) {
+                if (linkval.toLowerCase().indexOf(this_page)==0) {
                     // absolute link internal to our host - do nothing
                 } else if (linkval.indexOf('http:') != 0) {
                     // not a http-link. Possibly an internal relative link, but also
@@ -41,6 +43,9 @@ function scanforlinks() {
                 } else {
                     // we are in here if the link points to somewhere else than our
                     // site.
+                    // set external_links_open_new_window in Site setup / Theme
+                    // to true if you want external links to be opened in a new
+                    // window.
                     links[i].setAttribute('target', '_blank');
                 }
             }
@@ -51,6 +56,9 @@ function scanforlinks() {
     if (!contentarea)
         return false;
 
+    protocols = ['mailto', 'ftp', 'news', 'irc', 'h323', 'sip',
+                 'callto', 'https', 'feed', 'webcal'];
+
     links = contentarea.getElementsByTagName('a');
     for (i=0; i < links.length; i++) {
         if ( (links[i].getAttribute('href'))
@@ -59,16 +67,12 @@ function scanforlinks() {
 
             // check if the link href is a relative link, or an absolute link to
             // the current host.
-            if (linkval.toLowerCase().indexOf(window.location.protocol
-                                              + '//'
-                                              + window.location.host)==0) {
+            if (linkval.toLowerCase().indexOf(this_page)==0) {
                 // absolute link internal to our host - do nothing
             } else if (linkval.indexOf('http:') != 0) {
                 // not a http-link. Possibly an internal relative link, but also
                 // possibly a mailto or other protocol add tests for relevant
                 // protocols as you like.
-                protocols = ['mailto', 'ftp', 'news', 'irc', 'h323', 'sip',
-                             'callto', 'https', 'feed', 'webcal'];
                 // h323, sip and callto are internet telephony VoIP protocols
                 for (p=0; p < protocols.length; p++) {
                     if (linkval.indexOf(protocols[p]+':') == 0) {
@@ -85,13 +89,6 @@ function scanforlinks() {
                     // we do not want to mess with those links that already have
                     // images in them
                     wrapNode(links[i], 'span', 'link-external');
-                }
-                // set open_links_in_external_window in plone_javascript_variables.js.pt
-                // to true if you want external links to be opened in a new
-                // window.
-                if ((typeof external_links_open_new_window != 'undefined') &&
-                    (external_links_open_new_window == true)) {
-                    links[i].setAttribute('target', '_blank');
                 }
             }
         }

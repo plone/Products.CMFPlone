@@ -9,6 +9,4 @@ var form_resubmit_message = '<tal:block tal:replace="python: context.translate('
 // the following are flags for mark_special_links.js
 // links get the target="_blank" attribute
 var external_links_open_new_window = '<tal:block replace="portal_props/external_links_open_new_window" />';
-// apply only to links in content area (id="content" or id="region-content")
-var external_links_in_content_only = true;
 </metal:block>
