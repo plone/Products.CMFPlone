@@ -36,7 +36,7 @@ for user in users:
     else:
         pw = None
         
-    acl_users.userFolderEditUser(user.id, pw, user.get('roles',[]), member.getDomains())
+    acl_users.userFolderEditUser(user.id, pw, user.get('roles',[]), member.getDomains(), REQUEST=context.REQUEST)
     if pw:
         context.REQUEST.form['new_password'] = pw
         mailPassword(user.id, context.REQUEST)
@@ -44,7 +44,7 @@ for user in users:
 if delete:
     # TODO We should eventually have a global switch to determine member area
     # deletion
-    mtool.deleteMembers(delete, delete_memberareas=0, delete_localroles=1)
+    mtool.deleteMembers(delete, delete_memberareas=0, delete_localroles=1, REQUEST=context.REQUEST)
 
 context.plone_utils.addPortalMessage(_(u'Changes applied.'))
 return state

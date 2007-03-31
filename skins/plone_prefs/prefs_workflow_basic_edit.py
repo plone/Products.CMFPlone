@@ -17,6 +17,7 @@ RESPONSE =  request.RESPONSE
 if default_workflow:
     context.portal_workflow.setChainForPortalTypes(
         context.portal_types.listContentTypes(),
-        default_workflow)
+        default_workflow,
+	REQUEST = context.REQUEST)
 
 return context.prefs_workflow_basic()

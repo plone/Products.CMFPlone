@@ -15,5 +15,5 @@ request = container.REQUEST
 RESPONSE =  request.RESPONSE
 
 for w in wf.keys():
-    context.portal_workflow.setChainForPortalTypes((w,), wf[w])
+    context.portal_workflow.setChainForPortalTypes((w,), wf[w], REQUEST=context.REQUEST)
 return context.prefs_workflow_advanced()

@@ -941,7 +941,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             return True
 
     security.declarePublic('acquireLocalRoles')
-    def acquireLocalRoles(self, obj, status = 1):
+    def acquireLocalRoles(self, obj, status = 1, REQUEST=None):
         """If status is 1, allow acquisition of local roles (regular behaviour).
 
         If it's 0, prohibit it (it will allow some kind of local role
@@ -956,6 +956,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         gruf._acquireLocalRoles(obj, status)
         # Reindex the whole stuff.
         obj.reindexObjectSecurity()
+    acquireLocalRoles = postonly(acquireLocalRoles)
 
     security.declarePublic('isLocalRoleAcquired')
     def isLocalRoleAcquired(self, obj):

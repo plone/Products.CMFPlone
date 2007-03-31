@@ -49,7 +49,7 @@ if site_properties.validate_email or REQUEST.get('mail_me', 0):
                 mapping={u'address' : str(err)})
         state.setError('email', msg)
         state.set(came_from='login_success')
-        context.acl_users.userFolderDelUsers([username,])
+        context.acl_users.userFolderDelUsers([username,],REQUEST=context.REQUEST)
         context.plone_utils.addPortalMessage(_(u'Please enter a valid email address.'))
         return state.set(status='failure')
 

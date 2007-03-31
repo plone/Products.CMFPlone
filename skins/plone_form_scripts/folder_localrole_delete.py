@@ -15,7 +15,8 @@ if len(member_ids)>0:
     reindex=True
     pm.deleteLocalRoles( obj=context,
                          member_ids=member_ids,
-                         reindex=False)
+			 reindex=False,
+			 REQUEST=context.REQUEST)
 
 def parseMemberRoleString( s ):
     sidx = s.find('((')
@@ -55,15 +56,15 @@ if len(member_role_ids)>0:
         # delete all roles for that member
         pm.deleteLocalRoles( obj=context,
                              member_ids=(member_id,),
-                             reindex=False)
+			     reindex=False,
+			     REQUEST=context.REQUEST)
 
         # add the other roles again
         for role in newRoles:
             pm.setLocalRoles( obj=context,
-                              member_ids=(member_id,),
-                              member_role=role,
-                              reindex=False,
-                              REQUEST=context.REQUEST)
+                          member_ids=(member_id,),
+                          member_role=role,
+			  reindex=False)
 
 if reindex:
     context.reindexObjectSecurity()

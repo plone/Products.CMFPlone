@@ -40,7 +40,7 @@ the members to whom those portraits belonged.
   </dtml-let>
 <dtml-elif purge_bad_members>
   
-  <dtml-let deleted="deleteMembers(member_ids, REQUEST.get('delete_memberareas', False))">
+  <dtml-let deleted="deleteMembers(member_ids, REQUEST.get('delete_memberareas', False), REQUEST=REQUEST)">
     <dtml-call "portal_memberdata.pruneMemberDataContents()">
     <p>Deleted <dtml-var "len(deleted)"> bad members</p>
   </dtml-let>

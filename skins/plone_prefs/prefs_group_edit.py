@@ -14,7 +14,7 @@ REQUEST=context.REQUEST
 msg = _(u'No changes done.')
 
 if addname:
-    success = context.portal_groups.addGroup(addname,(),())
+    success = context.portal_groups.addGroup(addname,(),(),REQUEST=context.REQUEST)
     if not success:
         msg = _(u'Could not add group ${name}, perhaps a member or group with '
                 u'this name already exists.', mapping={u'name' : addname})

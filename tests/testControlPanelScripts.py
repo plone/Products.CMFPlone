@@ -7,6 +7,7 @@ if __name__ == '__main__':
     execfile(os.path.join(sys.path[0], 'framework.py'))
 
 from Products.CMFPlone.tests import PloneTestCase
+from zExceptions import Forbidden
 
 from DateTime import DateTime
 
@@ -26,6 +27,11 @@ class TestPrefsUserManage(PloneTestCase.PloneTestCase):
         member.setMemberProperties({'fullname': fullname, 'email': email,
                                     'last_login_time': DateTime(last_login_time),})
 
+    def testPrefsAddGroupPostOnly(self):
+ 	self.setRoles(['Manager'])	
+        self.app.REQUEST.set('REQUEST_METHOD', 'GET')
+ 	self.assertRaises(Forbidden, self.portal.prefs_group_edit, addname='foo')
+
     def test_bug4333_delete_user_remove_memberdata(self):
         # delete user should delete portal_memberdata
         memberdata = self.portal.portal_memberdata
@@ -35,7 +41,9 @@ class TestPrefsUserManage(PloneTestCase.PloneTestCase):
         self.failUnlessEqual(barney.getProperty('email'), 'barney@bedrock.com')
         del barney
 
+        self.app.REQUEST.set('REQUEST_METHOD', 'POST')
         self.portal.prefs_user_manage(delete=['barney'])
+        self.app.REQUEST.set('REQUEST_METHOD', 'GET')
         md = memberdata._members
         self.failIf(md.has_key('barney'))
 
