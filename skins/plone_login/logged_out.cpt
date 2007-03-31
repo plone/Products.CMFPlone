@@ -1,0 +1,202 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+      <head>
+          <script type="text/javascript" metal:fill-slot="javascript_head_slot">
+          </script>
+          <metal:block fill-slot="top_slot"
+                       tal:define="dummy python:request.set('disable_border',1)" />
+          <metal:block fill-slot="column_one_slot" />
+          <metal:block fill-slot="column_two_slot" />
+      </head>
+<body>
+
+  <div metal:fill-slot="main"
+       tal:define="auth nocall:here/acl_users/credentials_cookie_auth|here/cookie_authentication|nothing;
+                   came_from request/came_from|request/HTTP_REFERER|nothing;
+                   came_from python:test(utool.isURLInPortal(came_from), came_from, None);
+                   errors options/state/getErrors;
+                   ac_name auth/name_cookie|string:__ac_name;
+                   ac_password auth/pw_cookie|string:__ac_password;
+                   ac_persist auth/persist_cookie|nothing;
+                   login_name python:request.get('login_name', request.get(ac_name, ''));">
+
+<tal:reallyloggedout condition="isAnon">
+  <h1 i18n:translate="heading_signed_out">You are now logged out</h1>
+
+  <div i18n:translate="description_logged_out" tal:omit-tag="">
+    <p>We hope you enjoyed using our services. We look forward to seeing you again.</p>
+
+    <p>Best Regards from the
+      <strong tal:content="python:container.portal_url.getPortalObject().Title()" i18n:name="portal_title">portal title</strong>
+      team.
+    </p>
+  </div>
+  
+  <h1 i18n:translate="heading_sign_in">Please log in</h1>
+
+  <p i18n:translate="description_no_account"
+     tal:define="join python:[a['url'] for a in actions['user'] if a['id']=='join']"
+     tal:condition="python: join and checkPermission('Add portal member', here)">
+
+  If you do not have an account here, head over to the
+
+  <span i18n:name="registration_form">
+      <a href=""
+         tal:define="join python:join.pop();
+                     join join;
+                     join python:join+test(join.find('?')==-1, '?', '&amp;')+ztu.make_query(came_from=came_from);"
+         tal:attributes="href join"
+         i18n:translate="description_no_account_registration_linktext">
+          registration form</a></span>.
+
+  </p>
+
+  <p tal:condition="python:checkPermission('Mail forgotten password', here)"
+       i18n:translate="help_password_retrieval">
+      If you have forgotten your password,
+      <span i18n:name="click_here">
+          <a tal:attributes="href python:'mail_password_form?'+ztu.make_query(userid=login_name)"
+             i18n:translate="label_click_here_to_retrieve">click here to retrieve it</a></span>.
+  </p>
+
+  <div id="enable_cookies_message" i18n:translate="enable_cookies_message" class="portalMessage" style="display:none">
+      Cookies are not enabled. You must enable cookies before you can log in.
+  </div>
+
+  <div tal:condition="python: not auth" i18n:translate="login_form_disabled">
+      While cookie authentication is disabled, cookie-based login is not available.
+  </div>
+
+  <form tal:attributes="action python:context.absolute_url()+'/'+template.id"
+        method="post"
+        id="login_form"
+        tal:condition="python:auth">
+
+      <fieldset>
+
+          <legend i18n:translate="legend_account_details">Account details</legend>
+
+          <input type="hidden"
+              name="came_from"
+              value=""
+          tal:attributes="value came_from" />
+
+          <input type="hidden" name="form.submitted" value="1" />
+          <input type="hidden" name="js_enabled" id="js_enabled" value="0" />
+          <input type="hidden" name="cookies_enabled" id="cookies_enabled" value="" />
+          <input type="hidden" name="login_name" id="login_name" value="" />
+          <input type="hidden" name="pwd_empty" id="pwd_empty" value="0" />
+
+          <div class="field"
+               tal:define="error python:errors.get(ac_name, None);"
+               tal:attributes="class python:test(error, 'field error', 'field')">
+
+              <label i18n:translate="label_login_name"
+                     tal:attributes="for ac_name">Login Name</label>
+
+              <div i18n:translate="help_login_name_caps"
+                   class="formHelp">
+              Login names are case sensitive, make sure the caps lock key is not enabled.
+              </div>
+
+              <div tal:content="error">Validation error output</div>
+
+              <input type="text"
+                     size="15"
+                     tabindex=""
+                     tal:attributes="name ac_name;
+                                     id ac_name;
+                                     value login_name;
+                                     tabindex tabindex/next;"
+                     />
+
+      </div>
+
+      <div class="field"
+               tal:define="error python:errors.get(ac_password, None);"
+               tal:attributes="class python:test(error, 'field error', 'field')">
+
+              <label i18n:translate="label_password"
+                     tal:attributes="for ac_password">Password</label>
+
+              <div class="formHelp">
+                  <div i18n:translate="help_capslock_password">
+                      Case sensitive, make sure caps lock is not enabled.
+                  </div>
+              </div>
+
+              <div tal:content="error">Validation error output</div>
+
+              <input type="password"
+                     size="15"
+                     tabindex=""
+                     tal:attributes="name ac_password;
+                                     id ac_password;
+                                     tabindex tabindex/next;"
+                     />
+      </div>
+
+          <div class="field" tal:condition="ac_persist">
+
+              <input type="checkbox"
+                     class="noborder formRememberName"
+                     value="1"
+                     checked="checked"
+                     id="cb_remember"
+                     tabindex=""
+                     tal:attributes="name ac_persist;
+                                     tabindex tabindex/next;
+                                     checked python:request.get(ac_name, '') and 'checked' or None;"
+                     />
+
+              <label for="cb_remember" i18n:translate="label_remember_my_name">Remember my name.</label>
+
+              <div i18n:translate="help_remember_my_name"
+                   class="formHelp">
+                  Check this to have your user name filled in automatically when you log in later.
+              </div>
+
+          </div>
+
+          <div class="formControls">
+
+              <input class="context"
+                     tabindex=""
+                     type="submit"
+                     name="submit"
+                     value="Log in"
+                     i18n:attributes="value label_log_in;"
+                     tal:attributes="tabindex tabindex/next;
+                                 onclick string:javascript:return setLoginVars('$ac_name','login_name','$ac_password','pwd_empty','js_enabled','cookies_enabled');"
+                     />
+
+          </div>
+
+          <p i18n:translate="remember_to_log_out">
+              Please log out or exit your browser when you're done.
+          </p>
+
+      </fieldset>
+
+  </form>
+  
+</tal:reallyloggedout>
+
+<tal:notloggedoutafterall tal:condition="not: isAnon">
+    <h1 i18n:translate="heading_quit_to_log_out">Quit your web browser to log out</h1>
+    
+    <p i18n:translate="description_quit_to_log_out">
+    Because you are logged in via HTTP authentication 
+    (i.e. the Zope Management Interface), the only
+    way to log out is to quit your web browser.
+    </p>
+</tal:notloggedoutafterall>
+
+</div>
+</body>
+</html>
