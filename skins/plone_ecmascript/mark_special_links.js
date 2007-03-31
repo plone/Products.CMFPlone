@@ -19,9 +19,10 @@ function scanforlinks() {
          }
     }
 
-    this_page = window.location.protocol
-                + '//'
-                + window.location.host
+    var this_site = window.location.protocol
+                    + '//'
+                    + window.location.host;
+    var links;
 
     if ((typeof external_links_open_new_window != 'undefined') &&
         (external_links_open_new_window == true)) {
@@ -33,7 +34,7 @@ function scanforlinks() {
 
                 // check if the link href is a relative link, or an absolute link to
                 // the current host.
-                if (linkval.toLowerCase().indexOf(this_page)==0) {
+                if (linkval.toLowerCase().indexOf(this_site)==0) {
                     // absolute link internal to our host - do nothing
                 } else if (linkval.indexOf('http:') != 0) {
                     // not a http-link. Possibly an internal relative link, but also
@@ -52,12 +53,12 @@ function scanforlinks() {
         }
     }
 
-    contentarea = getContentArea();
+    var contentarea = getContentArea();
     if (!contentarea)
         return false;
 
-    protocols = ['mailto', 'ftp', 'news', 'irc', 'h323', 'sip',
-                 'callto', 'https', 'feed', 'webcal'];
+    var protocols = ['mailto', 'ftp', 'news', 'irc', 'h323', 'sip',
+                     'callto', 'https', 'feed', 'webcal'];
 
     links = contentarea.getElementsByTagName('a');
     for (i=0; i < links.length; i++) {
@@ -67,7 +68,7 @@ function scanforlinks() {
 
             // check if the link href is a relative link, or an absolute link to
             // the current host.
-            if (linkval.toLowerCase().indexOf(this_page)==0) {
+            if (linkval.toLowerCase().indexOf(this_site)==0) {
                 // absolute link internal to our host - do nothing
             } else if (linkval.indexOf('http:') != 0) {
                 // not a http-link. Possibly an internal relative link, but also
