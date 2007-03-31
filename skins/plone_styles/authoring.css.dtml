@@ -98,7 +98,7 @@
     padding: 0em 0.5em;
     position: relative;
     white-space: nowrap;
-    display: block;
+    display: inline;
 }
 .contentActions a span.subMenuTitle {
     padding: 0px;
